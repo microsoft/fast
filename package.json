@@ -5,5 +5,8 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-design.git"
+  },
+  "devDependencies": {
+    "lerna": "^2.9.0"
   }
 }
