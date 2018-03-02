@@ -1,0 +1,9 @@
+{
+  "name": "@microsoft/fast-design",
+  "private": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast-design.git"
+  }
+}
