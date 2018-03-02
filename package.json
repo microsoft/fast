@@ -2,11 +2,18 @@
   "name": "@microsoft/fast-design",
   "private": true,
   "license": "MIT",
+  "scripts": {
+    "tslint": "tslint -c ./tslint.json **/*.ts **/*.tsx",
+    "tslint-fix": "tslint -c ./tslint.json --fix **/*.ts **/*.tsx"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-design.git"
   },
   "devDependencies": {
-    "lerna": "^2.9.0"
+    "@microsoft/fast-tslint-rules": "^1.0.4",
+    "lerna": "^2.9.0",
+    "tslint": "^5.9.1",
+    "typescript": "^2.7.2"
   }
 }
