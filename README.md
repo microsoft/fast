@@ -1,5 +1,18 @@
-
 # Contributing
+## Getting started
+First, clone the repository and `cd` into the project.
+
+Then, install [lerna](https://github.com/lerna/lerna):
+```shell
+npm install --global lerna
+```
+
+
+Bootstrap lerna to install all dependencies:
+```shell
+lerna bootstrap
+```
+
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
