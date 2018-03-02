@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "moduleResolution": "node",
+        "module": "ES6",
+        "target": "ES6",
+        "baseUrl": ".",
+        "declaration": true,
+        "jsx": "react",
+        "outDir": "./dist"
+    }
+}
