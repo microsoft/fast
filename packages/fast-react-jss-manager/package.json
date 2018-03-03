@@ -6,7 +6,7 @@
   "typings": "dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Microsoft/fast-react-jss-manager.git"
+    "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
   "keywords": [
     "React",
