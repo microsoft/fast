@@ -1,2 +1,2 @@
-import Site, { ISiteProps, ISiteCategoryProps } from "./site";
-export { Site, ISiteProps, ISiteCategoryProps };
+import Site, { ISiteProps, ICategoryProps } from "./site";
+export { Site, ISiteProps, ICategoryProps };

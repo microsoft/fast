@@ -1,8 +1,10 @@
 import * as React from "react";
-import {ISiteCategoryItemProps} from "./";
 
-interface ICategoryItemProps {
-    item: ISiteCategoryItemProps;
+export interface ICategoryItemProps {
+    name: string;
+    component: any;
+    type?: string;
+    data: any;
 }
 
 class CategoryItem extends React.Component<ICategoryItemProps, {}> {
@@ -10,23 +12,23 @@ class CategoryItem extends React.Component<ICategoryItemProps, {}> {
     public render(): JSX.Element {
         return (
             <div>
-                <h1>{this.props.item.name}</h1>
+                <h1>{this.props.name}</h1>
                 {this.renderComponent()}
             </div>
         );
     }
 
     private renderComponent(): JSX.Element[] {
-        return this.props.item.data.map((data: any, index: number) => {
-            if (this.props.item.type === "polymer") {
+        return this.props.data.map((data: any, index: number) => {
+            if (this.props.type === "polymer") {
                 return (
-                    <this.props.item.component.is key={index} {...data}>
+                    <this.props.component.is key={index} {...data}>
                         {...data.children}
-                    </this.props.item.component.is>
+                    </this.props.component.is>
                 );
             } else {
                 return (
-                    <this.props.item.component key={index} {...data} />
+                    <this.props.component key={index} {...data} />
                 );
             }
         });

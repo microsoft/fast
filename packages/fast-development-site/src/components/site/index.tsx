@@ -2,24 +2,12 @@ import * as React from "react";
 import {BrowserRouter} from "react-router-dom";
 import {Switch, Route} from "react-router-dom";
 import CategoryList from "./category-list";
-import Category from "./category";
-import CategoryItem from "./category-item";
+import Category, {ICategoryProps} from "./category";
+import CategoryItem, {ICategoryItemProps} from "./category-item";
 import NotFound from "./not-found";
 
-interface ISiteCategoryItemProps {
-    name: string;
-    component: any;
-    type?: string;
-    data: any;
-}
-
-interface ISiteCategoryProps {
-    name: string;
-    items: ISiteCategoryItemProps[];
-}
-
 interface ISiteProps {
-    categories: ISiteCategoryProps[];
+    categories: ICategoryProps[];
 }
 
 class Site extends React.Component<ISiteProps, {}> {
@@ -40,25 +28,25 @@ class Site extends React.Component<ISiteProps, {}> {
     }
 
     private renderCategoryRoutes(): JSX.Element[] {
-        return this.props.categories.map((category: ISiteCategoryProps, itemIndex: number): JSX.Element => {
+        return this.props.categories.map((category: ICategoryProps, itemIndex: number): JSX.Element => {
             return (
                 <Route key={itemIndex} exact={true} path={`/${category.name}`}>
-                    <Category category={category} />
+                    <Category {...category} />
                 </Route>
             );
         });
     }
 
     private renderCategoryItemRoutes(): JSX.Element[][] {
-        return this.props.categories.map((category: ISiteCategoryProps): JSX.Element[] => {
-            return category.items.map((categoryItem: ISiteCategoryItemProps, itemIndex: number): JSX.Element => {
+        return this.props.categories.map((category: ICategoryProps): JSX.Element[] => {
+            return category.items.map((categoryItem: ICategoryItemProps, itemIndex: number): JSX.Element => {
                 return (
                     <Route
                         key={itemIndex}
                         exact={true}
                         path={`/${category.name}/${categoryItem.name}`}
                     >
-                        <CategoryItem item={categoryItem} />
+                        <CategoryItem {...categoryItem} />
                     </Route>
                 );
             });
@@ -67,4 +55,4 @@ class Site extends React.Component<ISiteProps, {}> {
 }
 
 export default Site;
-export {ISiteProps, ISiteCategoryProps, ISiteCategoryItemProps};
+export {ISiteProps, ICategoryProps};

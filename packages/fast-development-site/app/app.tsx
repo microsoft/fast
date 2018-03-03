@@ -1,12 +1,12 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import Site, { ISiteProps, ISiteCategoryProps } from "../src";
+import Site, { ISiteProps, ICategoryProps } from "../src";
 
 import Button from "./components/button";
 import Paragraph from "./components/paragraph";
 import PolymerHeading from "./components/polymer-heading";
 
-const items: ISiteCategoryProps[] = [
+const items: ICategoryProps[] = [
     {
         name: "components",
         items: [

@@ -1,9 +1,11 @@
 import * as React from "react";
 import {Link} from "react-router-dom";
-import {ISiteCategoryProps, ISiteCategoryItemProps} from "./";
+import {ICategoryItemProps} from "./category-item";
+import {ICategoryProps} from "./category";
 
-interface ICategoryProps {
-    category: ISiteCategoryProps;
+export interface ICategoryProps {
+    name: string;
+    items: ICategoryItemProps[];
 }
 
 class Category extends React.Component<ICategoryProps, {}> {
@@ -11,7 +13,7 @@ class Category extends React.Component<ICategoryProps, {}> {
     public render(): JSX.Element {
         return (
             <div>
-                <h1>{this.props.category.name}</h1>
+                <h1>{this.props.name}</h1>
                 <ul>
                     {this.renderCategoryLinks()}
                 </ul>
@@ -20,10 +22,10 @@ class Category extends React.Component<ICategoryProps, {}> {
     }
 
     private renderCategoryLinks(): JSX.Element[] {
-        return this.props.category.items.map((item: ISiteCategoryItemProps, index: number) => {
+        return this.props.items.map((item: ICategoryItemProps, index: number) => {
             return (
                 <li key={index}>
-                    <Link to={`/${this.props.category.name}/${item.name}`}>
+                    <Link to={`/${this.props.name}/${item.name}`}>
                         {item.name}
                     </Link>
                 </li>
