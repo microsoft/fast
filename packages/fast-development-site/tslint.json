@@ -1,0 +1,6 @@
+{
+    "extends": [
+        "@microsoft/fast-tslint-rules",
+        "tslint-react"
+    ]
+}

@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "target": "es6",
+        "jsx": "react"
+    }
+  }
