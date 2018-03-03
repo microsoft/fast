@@ -1,0 +1,23 @@
+{
+  "name": "@microsoft/fast-dna",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "tslint": "tslint -c ./tslint.json **/*.ts **/*.tsx",
+    "tslint-fix": "tslint -c ./tslint.json --fix **/*.ts **/*.tsx"
+  },
+  "author": {
+    "name": "Fluent Web",
+    "email": "fwq@microsoft.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast-dna.git"
+  },
+  "devDependencies": {
+    "@microsoft/fast-tslint-rules": "^1.0.4",
+    "lerna": "^2.9.0",
+    "tslint": "^5.9.1",
+    "typescript": "^2.7.2"
+  }
+}

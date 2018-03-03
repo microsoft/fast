@@ -1,0 +1,7 @@
+{
+    "extends": "@microsoft/fast-tslint-rules",
+    "linterOptions": {
+        "exclude": ["node_modules/**/*.*"]
+    }
+}
+
