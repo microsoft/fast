@@ -19,19 +19,21 @@ class CategoryItem extends React.Component<ICategoryItemProps, {}> {
     }
 
     private renderComponent(): JSX.Element[] {
-        return this.props.data.map((data: any, index: number) => {
-            if (this.props.type === "polymer") {
-                return (
-                    <this.props.component.is key={index} {...data}>
-                        {...data.children}
-                    </this.props.component.is>
-                );
-            } else {
-                return (
-                    <this.props.component key={index} {...data} />
-                );
-            }
-        });
+        if (this.props.data) {
+            return this.props.data.map((data: any, index: number) => {
+                if (this.props.type === "polymer") {
+                    return (
+                        <this.props.component.is key={index} {...data}>
+                            {...data.children}
+                        </this.props.component.is>
+                    );
+                } else {
+                    return (
+                        <this.props.component key={index} {...data} />
+                    );
+                }
+            });
+        }
     }
 }
 

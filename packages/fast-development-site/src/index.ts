@@ -1,4 +1,4 @@
-import { Site, ICategoryProps, ISiteProps } from "./components";
-export { ICategoryProps, ISiteProps };
+import Site from "./components";
+export * from "./components";
 
 export default Site;
