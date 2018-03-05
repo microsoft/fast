@@ -61,4 +61,4 @@ typings/
 dist/
 
 # Ignore build www directories
-www
+www/
