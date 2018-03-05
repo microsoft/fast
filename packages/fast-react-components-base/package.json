@@ -8,10 +8,13 @@
     "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
   "scripts": {
+    "build": "tsc -p ./tsconfig.json",
+    "clean:dist": "node ./build/clean.js dist",
     "start": "webpack-dev-server",
     "test": "jest",
     "tslint": "tslint -c ../../tslint.json **/*.ts **/*.tsx",
-    "tslint:fix": "tslint -c ../../tslint.json --fix **/*.ts **/*.tsx"
+    "tslint:fix": "tslint -c ../../tslint.json --fix **/*.ts **/*.tsx",
+    "prepack": "npm run build"
   },
   "author": {
     "name": "Fluent Web",
@@ -40,6 +43,7 @@
     "jest": "^22.4.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "rimraf": "^2.6.2",
     "ts-jest": "^22.4.1",
     "ts-loader": "^4.0.1",
     "tslint": "^5.9.1",
@@ -47,6 +51,7 @@
     "typescript": "^2.7.2",
     "webpack": "^4.1.0",
     "webpack-cli": "^2.0.10",
-    "webpack-dev-server": "^3.1.0"
+    "webpack-dev-server": "^3.1.0",
+    "yargs": "^11.0.0"
   }
 }
