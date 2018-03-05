@@ -8,7 +8,9 @@
     "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "tslint": "tslint -c ../../tslint.json **/*.ts **/*.tsx",
+    "tslint:fix": "tslint -c ../../tslint.json --fix **/*.ts **/*.tsx"
   },
   "author": {
     "name": "Fluent Web",
