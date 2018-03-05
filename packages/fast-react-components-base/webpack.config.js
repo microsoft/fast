@@ -6,7 +6,7 @@ const appDir = path.resolve(__dirname, "./app");
 const outDir = path.resolve(__dirname, "./www");
 
 module.exports = {
-    entry: path.resolve(appDir, "index.ts"),
+    entry: path.resolve(appDir, "index.tsx"),
     output: {
         path: outDir,
         filename: "[name].js"
