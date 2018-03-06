@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@microsoft/fast-react-components-base": "^0.0.0",
+    "@microsoft/fast-react-components-fluent": "^0.0.0",
     "react": "^16.2.0",
     "react-router-dom": "^4.2.2"
   },

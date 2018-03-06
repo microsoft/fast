@@ -3,8 +3,8 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "tslint": "tslint -c ./tslint.json **/*.ts **/*.tsx",
-    "tslint-fix": "tslint -c ./tslint.json --fix **/*.ts **/*.tsx"
+    "tslint": "tslint -c ./tslint.json \"**/*.ts\" \"**/*.tsx\"",
+    "tslint:fix": "tslint -c ./tslint.json --fix \"**/*.ts\" \"**/*.tsx\""
   },
   "author": {
     "name": "Fluent Web",
