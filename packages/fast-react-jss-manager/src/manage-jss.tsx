@@ -37,17 +37,9 @@ export interface ICSSRules {
 /**
  * Definition of a JSS style object
  */
-export interface IComponentStyles {
-    [className: string]: ICSSRules;
+export type ComponentStyles<T> = {
+    [P in keyof T]: ICSSRules;
 }
-
-export type Foo<T> = {
-    [ P in keyof T ]: ICSSRules;
-}
-
-// type foo<T> = {
-//     [ P in keyof T ]?: T[P];
-// }
 
 /**
  * State interface for JSS manager
@@ -67,11 +59,11 @@ export interface IJSSManagerState {
 /**
  * Defines a object that has been separated into dynamic and static stylesheets
  */
-export interface ISeparatedStylesheet {
+export interface ISeparatedStylesheet<T> {
     /**
      * The static styles for a given component and stylesheet combination
      */
-    staticStyles?: IComponentStyles;
+    staticStyles?: ComponentStyles<T>;
 
     /**
      * Store the jss stylesheet so that multiple components can access it
@@ -81,7 +73,7 @@ export interface ISeparatedStylesheet {
     /**
      * The dynamic styles for a given component and stylesheet combination
      */
-    dynamicStyles?: IComponentStyles;
+    dynamicStyles?: ComponentStyles<T>;
 }
 
 export type ClassNames<T> = {
@@ -103,7 +95,7 @@ export interface IInjectedProps<T> {
  * higher order component. That higher-order component can then be used to compose a component
  * with styles managed
  */
-function manageJss<S>(styles?: Foo<S>): <T>(Component: React.ComponentType<T & IInjectedProps<S>>) => React.ComponentType<T> {
+function manageJss<S>(styles?: ComponentStyles<S>): <T>(Component: React.ComponentType<T & IInjectedProps<S>>) => React.ComponentType<T> {
     return function<T>(Component: React.ComponentType<T & IInjectedProps<S>>): React.ComponentType<T> {
 
         // Define the manager higher-order component inside of the return method of the higher-order function.
@@ -127,12 +119,12 @@ function manageJss<S>(styles?: Foo<S>): <T>(Component: React.ComponentType<T & I
             /**
              * Map of all style objects that have been initialized via this component
              */
-            private static styleMap: WeakMap<IComponentStyles, string> = new WeakMap();
+            private static styleMap: WeakMap<ComponentStyles<S>, string> = new WeakMap();
 
             /**
              * Store references to all separated stylesheets
              */
-            private static separatedStyles: {[key: string]: ISeparatedStylesheet} = {};
+            private static separatedStyles: {[key: string]: ISeparatedStylesheet<S>} = {};
 
             /**
              * Tracks the ID of an instance of the JSSManager. Multiple instances can have the same ID
@@ -159,7 +151,7 @@ function manageJss<S>(styles?: Foo<S>): <T>(Component: React.ComponentType<T & I
 
                 // Store the instance id as a combination of the generated IDs
                 this.instanceId = `${componentId}${styleId}`;
-                let separatedStylesInstance: ISeparatedStylesheet = JSSManager.separatedStyles[this.instanceId];
+                let separatedStylesInstance: ISeparatedStylesheet<S> = JSSManager.separatedStyles[this.instanceId];
 
                 // Check if we have a separatedStyles object stored at the instanceId key.
                 // If we don"t, we need to create that object
@@ -251,19 +243,19 @@ function manageJss<S>(styles?: Foo<S>): <T>(Component: React.ComponentType<T & I
             }
 
             /**
-             * Separates a single IComponentStyles object into an ISeparatedStylesheet object
+             * Separates a single ComponentStyles object into an ISeparatedStylesheet object
              * If either a dynamic or static stylesheet is empty (there are no styles) then that
              * key will not be created.
              */
-            private separateStyles(componentStyles: IComponentStyles): ISeparatedStylesheet {
+            private separateStyles(componentStyles: ComponentStyles<S>): ISeparatedStylesheet<S> {
                 // TODO: write a test for this method to make sure it always returns an object.
                 // TODO: write a test to make sure this does not create a static/dynamic key if
                 //       no corresponding styles are passed
-                const dynamicStyles: IComponentStyles = getDynamicStyles(componentStyles);
+                const dynamicStyles: ComponentStyles<S> = getDynamicStyles(componentStyles);
 
                 // TODO: figure out how to type this without coercion
-                const staticStyles: IComponentStyles = getStaticStyles(componentStyles) as IComponentStyles;
-                const separatedStyles: ISeparatedStylesheet = {};
+                const staticStyles: ComponentStyles<S> = getStaticStyles(componentStyles) as ComponentStyles<S>;
+                const separatedStyles: ISeparatedStylesheet<S> = {};
 
                 if (Boolean(dynamicStyles) && !isEmptyObject(dynamicStyles)) {
                     separatedStyles.dynamicStyles = dynamicStyles;

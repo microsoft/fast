@@ -29,7 +29,7 @@
     "lint": "tslint -c tslint.json ./src/**/*.ts{,x}",
     "lint:fix": "tslint -c tslint.json ./src/**/*.ts{,x} --fix",
     "lint:watch": "node build/tslint-watch.js",
-    "prepack": "npm run build"
+    "prepare": "npm run build"
   },
   "jest": {
     "testPathIgnorePatterns": [

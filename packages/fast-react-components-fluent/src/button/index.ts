@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Button, IButtonProps, IButtonManagedClasses } from "@microsoft/fast-react-components-base";
-import manageJss, { Foo } from "@microsoft/fast-react-jss-manager";
+import manageJss, { ComponentStyles } from "@microsoft/fast-react-jss-manager";
 
-const styles: Foo<IButtonManagedClasses> = {
+const styles: ComponentStyles<IButtonManagedClasses> = {
     host: {
         color: "red"
     },

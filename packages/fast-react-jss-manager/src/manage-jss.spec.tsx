@@ -1,5 +1,5 @@
 import * as React from "react";
-import manageJss, { IComponentStyles } from "./manage-jss";
+import manageJss, { ComponentStyles } from "./manage-jss";
 import * as ShallowRenderer from "react-test-renderer/shallow";
 
 // Disable "no-string-literal" so we can access private members easily
@@ -11,13 +11,13 @@ class SimpleComponent extends React.Component<any, any> {
     }
 }
 
-const staticStyles: IComponentStyles = {
+const staticStyles: ComponentStyles<any> = {
     staticStyleClass: {
         color: "red"
     }
 };
 
-const dynamicStyles: IComponentStyles = {
+const dynamicStyles: ComponentStyles<any> = {
     dynamicStylesClass: {
         background: (): string => {
             return "blue";
@@ -25,7 +25,7 @@ const dynamicStyles: IComponentStyles = {
     }
 };
 
-const staticAndDynamicStyles: IComponentStyles = {
+const staticAndDynamicStyles: ComponentStyles<any> = {
     staticAndDynamicStylesClass: Object.assign({}, staticStyles.staticStyleClass, dynamicStyles.dynamicStylesClass)
 };
 
