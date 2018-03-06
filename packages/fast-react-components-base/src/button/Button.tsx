@@ -1,14 +1,19 @@
 import * as React from "react";
 import Foundation from "../foundation";
 import IButtonProps from "./Button.props";
+import { IInjectedProps } from "@microsoft/fast-react-jss-manager";
 
-class Button extends Foundation<any, any> {
+interface IButtonManagedClasses {
+    host: string;
+}
+
+class Button extends Foundation<IButtonProps & IInjectedProps<IButtonManagedClasses>, {}> {
     public render(): JSX.Element {
         return (
-            <button>{ this.props.children }</button>
+            <button className={this.props.managedClasses.host}>{ this.props.children }</button>
         );
     }
 }
 
 export default Button;
-export { IButtonProps };
+export { IButtonProps, IButtonManagedClasses };
