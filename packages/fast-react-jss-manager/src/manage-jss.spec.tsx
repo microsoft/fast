@@ -11,13 +11,13 @@ class SimpleComponent extends React.Component<any, any> {
     }
 }
 
-const staticStyles: ComponentStyles<any> = {
+const staticStyles: ComponentStyles<any, any> = {
     staticStyleClass: {
         color: "red"
     }
 };
 
-const dynamicStyles: ComponentStyles<any> = {
+const dynamicStyles: ComponentStyles<any, any> = {
     dynamicStylesClass: {
         background: (): string => {
             return "blue";
@@ -25,7 +25,7 @@ const dynamicStyles: ComponentStyles<any> = {
     }
 };
 
-const staticAndDynamicStyles: ComponentStyles<any> = {
+const staticAndDynamicStyles: ComponentStyles<any, any> = {
     staticAndDynamicStylesClass: Object.assign({}, staticStyles.staticStyleClass, dynamicStyles.dynamicStylesClass)
 };
 
