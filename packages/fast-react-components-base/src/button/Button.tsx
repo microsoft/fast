@@ -1,6 +1,6 @@
 import * as React from "react";
 import Foundation from "../foundation";
-import IButtonProps from "./Button.props";
+import { IButtonProps }  from "./Button.props";
 import { IInjectedProps } from "@microsoft/fast-react-jss-manager";
 
 interface IButtonManagedClasses {

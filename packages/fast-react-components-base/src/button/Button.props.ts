@@ -1,3 +1,7 @@
 import * as React from "react";
 
-export default interface IButtonProps { }
+interface IButtonProps {
+    test?: any;
+}
+
+export { IButtonProps };
