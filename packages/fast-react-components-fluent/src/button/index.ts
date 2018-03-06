@@ -4,7 +4,7 @@ import manageJss, { ComponentStyles } from "@microsoft/fast-react-jss-manager";
 import {IFluentDesignSystem} from "../design-system";
 
 const styles: ComponentStyles<IButtonManagedClasses, IFluentDesignSystem> = {
-    host: {
+    button: {
         color: (config: IFluentDesignSystem): string => {
             return config.foregroundColor;
         },
