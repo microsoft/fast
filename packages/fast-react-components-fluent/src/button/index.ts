@@ -1,18 +1,15 @@
 import * as React from "react";
 import { Button, IButtonProps, IButtonManagedClasses } from "@microsoft/fast-react-components-base";
 import manageJss, { ComponentStyles } from "@microsoft/fast-react-jss-manager";
+import {IFluentDesignSystem} from "../design-system";
 
-export interface IConfig {
-    foreground: string;
-    background: string;
-}
-
-const styles: ComponentStyles<IButtonManagedClasses, boolean> = {
+const styles: ComponentStyles<IButtonManagedClasses, IFluentDesignSystem> = {
     host: {
-        color: "red",
-        backgroundColor: (config: boolean): string => {
-            // return "red";
-            return config.toString();
+        color: (config: IFluentDesignSystem): string => {
+            return config.foregroundColor;
+        },
+        backgroundColor: (config: IFluentDesignSystem): string => {
+            return config.brandColor;
         }
     },
 };
