@@ -1,6 +1,4 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-
-class Foundation<P, S> extends React.Component<P, S> { }
+import Foundation from "./Foundation";
 
 export default Foundation;
+export * from "./Foundation";
