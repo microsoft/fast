@@ -64,6 +64,8 @@
     "react": "^16.0.0"
   },
   "dependencies": {
+    "@microsoft/fast-react-components-base": "^0.0.0",
+    "@microsoft/fast-react-components-fluent": "^0.0.0",
     "hoist-non-react-statics": "^2.3.1",
     "jss": "^9.8.0",
     "jss-preset-default": "^4.3.0",

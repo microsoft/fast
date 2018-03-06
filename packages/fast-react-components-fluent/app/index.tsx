@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import Button from "../src/button";
 
 /**
  * Create the root node
@@ -10,7 +11,7 @@ document.body.appendChild(root);
 
 function render(): void {
     ReactDOM.render(
-        <h1>Hello world</h1>,
+        <Button>Hello world</Button>,
         root
     );
 }

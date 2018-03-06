@@ -1,7 +1,7 @@
 {
-  "name": "@microsoft/fast-react-components-base",
+  "name": "@microsoft/fast-react-components-fluent",
   "version": "0.0.0",
-  "description": "FAST base components implemented in React",
+  "description": "FAST Fluent components implemented in React",
   "main": "dist/index.js",
   "repository": {
     "type": "git",
@@ -63,6 +63,7 @@
     "react-dom": "^16.2.0"
   },
   "dependencies": {
+    "@microsoft/fast-react-components-base": "^0.0.0",
     "@microsoft/fast-react-jss-manager": "^1.0.0"
   }
 }
