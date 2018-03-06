@@ -1,7 +1,6 @@
 import * as React from "react";
 
-interface IButtonProps {
-    test?: any;
-}
+/* tslint:disable-next-line */
+interface IButtonProps {}
 
 export { IButtonProps };
