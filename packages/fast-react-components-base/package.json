@@ -12,8 +12,8 @@
     "clean:dist": "node ./build/clean.js dist",
     "start": "webpack-dev-server",
     "test": "jest",
-    "tslint": "tslint -c ../../tslint.json **/*.ts **/*.tsx",
-    "tslint:fix": "tslint -c ../../tslint.json --fix **/*.ts **/*.tsx",
+    "tslint": "tslint -c ../../tslint.json \"**/*.ts\" \"**/*.tsx\"",
+    "tslint:fix": "tslint -c ../../tslint.json --fix \"**/*.ts\" \"**/*.tsx\"",
     "prepack": "npm run build"
   },
   "author": {
@@ -38,6 +38,10 @@
     ]
   },
   "devDependencies": {
+    "@microsoft/fast-tslint-rules": "^1.0.4",
+    "@types/jest": "^22.2.0",
+    "@types/node": "^9.4.6",
+    "@types/react": "^16.0.40",
     "fork-ts-checker-webpack-plugin": "^0.4.0",
     "html-webpack-plugin": "^3.0.4",
     "jest": "^22.4.2",
