@@ -15,7 +15,9 @@ function render(): void {
     ReactDOM.render(
         <div>
             <DesignSystemProvider designSystem={fluentDesignSystemDefaults}>
-                <Button>Hello world</Button>
+                <DesignSystemProvider designSystem={{ brandColor: "blue"}}>
+                    <Button>Hello world</Button>
+                </DesignSystemProvider>
             </DesignSystemProvider>
         </div>,
         root
