@@ -31,7 +31,7 @@ export type CSSRuleResolver<T> = (config: T) => string;
  * TODO: can we define this more accurately?
  */
 export interface ICSSRules<T> {
-    [rule: string]: CSSRuleResolver<T> | string;
+    [rule: string]: ICSSRules<T> | CSSRuleResolver<T> | string;
 }
 
 /**

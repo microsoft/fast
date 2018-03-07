@@ -12,7 +12,7 @@
     "build": "npm run clean:dist && tsc -p ./tsconfig.json",
     "clean:dist": "node ./build/clean.js dist",
     "start": "webpack-dev-server",
-    "test": "jest",
+    "test": "echo No tests",
     "tslint": "tslint -c ../../tslint.json \"**/*.ts\" \"**/*.tsx\"",
     "tslint:fix": "tslint -c ../../tslint.json --fix \"**/*.ts\" \"**/*.tsx\"",
     "prepare": "npm run build"
