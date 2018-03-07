@@ -1,13 +1,21 @@
 {
-  "name": "fast-development-site",
+  "name": "@microsoft/fast-development-site",
+  "description": "FAST development testing site.",
+  "author": {
+    "name": "Fluent Web",
+    "email": "fwq@microsoft.com"
+  },
   "version": "1.0.0",
-  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast-dna.git"
+  },
   "main": "index.js",
   "scripts": {
     "dev-server": "webpack-dev-server --progress"
   },
-  "author": "",
-  "license": "ISC",
+  "license": "MIT",
+  "readme": "README.md",
   "dependencies": {
     "@microsoft/fast-react-components-base": "^0.0.0",
     "@microsoft/fast-react-components-fluent": "^0.0.0",

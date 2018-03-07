@@ -1,27 +1,17 @@
 {
   "name": "@microsoft/fast-react-jss-manager",
-  "version": "1.0.0",
   "description": "React HOC for managing component JSS stylesheets",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Microsoft/fast-dna.git"
-  },
-  "keywords": [
-    "React",
-    "JSS"
-  ],
   "author": {
     "name": "Fluent Web",
     "email": "fwq@microsoft.com"
   },
-  "license": "MIT",
-  "private": true,
-  "bugs": {
-    "url": "https://github.com/Microsoft/fast-react-jss-manager/issues"
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
-  "homepage": "https://github.com/Microsoft/fast-react-jss-manager#readme",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -p ./tsconfig.json",
     "test": "jest",
@@ -31,6 +21,8 @@
     "lint:watch": "node build/tslint-watch.js",
     "prepare": "npm run build"
   },
+  "license": "MIT",
+  "readme": "README.md",
   "jest": {
     "testPathIgnorePatterns": [
       "/node_modules/",

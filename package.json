@@ -1,18 +1,21 @@
 {
   "name": "@microsoft/fast-dna",
-  "private": true,
-  "license": "MIT",
-  "scripts": {
-    "tslint": "tslint -c ./tslint.json \"**/*.ts\" \"**/*.tsx\"",
-    "tslint:fix": "tslint -c ./tslint.json --fix \"**/*.ts\" \"**/*.tsx\""
-  },
+  "description": "Fast, adaptive, secure, and timeless design network architecture.",
   "author": {
     "name": "Fluent Web",
     "email": "fwq@microsoft.com"
   },
+  "version": "1.0.0",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"
+  },
+  "license": "MIT",
+  "readme": "README.md",
+  "scripts": {
+    "tslint": "tslint -c ./tslint.json \"**/*.ts\" \"**/*.tsx\"",
+    "tslint:fix": "tslint -c ./tslint.json --fix \"**/*.ts\" \"**/*.tsx\""
   },
   "devDependencies": {
     "@microsoft/fast-tslint-rules": "^1.0.4",
