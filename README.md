@@ -5,13 +5,7 @@ Fast, adaptive, secure, and timeless design network architecture.
 ### Contributions
 Details including getting start can be found [here](https://github.com/Microsoft/fast-dna/blob/master/CONTRIBUTING.md).
 
-### Code of conduct
-Details are located [here](https://github.com/Microsoft/fast-dna/blob/master/CODE_OF_CONDUCT.md).
-
-### Guiding principles and governance
-Details around process, expectations, and quality [visit](https://fluentweb.com/prototyping/contribution-policy).
-
-## Getting started
+#### Getting started
 First, clone the repository and `cd` into the project.
 
 Install [lerna](https://github.com/lerna/lerna):
@@ -23,6 +17,12 @@ Bootstrap lerna to install all dependencies:
 ```shell
 lerna bootstrap
 ```
+
+### Code of conduct
+Details are located [here](https://github.com/Microsoft/fast-dna/blob/master/CODE_OF_CONDUCT.md).
+
+### Guiding principles and governance
+Details around process, expectations, and quality [visit](https://fluentweb.com/prototyping/contribution-policy).
 
 ## Commit and merge messages
 FAST-DNA takes inspiration from [conventional commits](https://conventionalcommits.org/) and has been modified to meet requirements.
@@ -76,7 +76,7 @@ Example message detail
 ```
 Sequence indicators markup was moved from being located after the slider markup to at the top for improved accessibility because the screen reader can read all of the slide options individually before interacting with the slider.
 
-fix 915,920
-close 213
-resolve 429
+fix #915,#920
+close #213
+resolve #429
 ```
