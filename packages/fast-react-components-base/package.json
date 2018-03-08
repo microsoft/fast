@@ -1,13 +1,17 @@
 {
   "name": "@microsoft/fast-react-components-base",
-  "version": "0.0.0",
-  "description": "FAST base components implemented in React",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "description": "FAST base components implemented in React.",
+  "author": {
+    "name": "Fluent Web",
+    "email": "fwq@microsoft.com"
+  },
+  "version": "1.0.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "npm run clean:dist && tsc -p ./tsconfig.json",
     "clean:dist": "node ./build/clean.js dist",
@@ -16,12 +20,9 @@
     "tslint": "tslint -c ../../tslint.json \"**/*.ts\" \"**/*.tsx\"",
     "tslint:fix": "tslint -c ../../tslint.json --fix \"**/*.ts\" \"**/*.tsx\"",
     "prepare": "npm run build"
-  },
-  "author": {
-    "name": "Fluent Web",
-    "email": "fwq@microsoft.com"
-  },
+  }, 
   "license": "MIT",
+  "readme": "README.md",
   "jest": {
     "testPathIgnorePatterns": [
       "/node_modules/",
