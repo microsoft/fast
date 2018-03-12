@@ -1,0 +1,102 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Alert",
+    "description": "A Fluent Web alert module's schema definition.",
+    "type": "object",
+    "id": "/modules/alert",
+    "properties": {
+        "alertType": {
+            "title": "Alert type",
+            "type": "string",
+            "enum": [
+                "information",
+                "warning",
+                "error"
+            ]
+        },
+        "message": {
+            "title": "Textual message",
+            "type": "string",
+            "example": "Alert message"
+        },
+        "closeButton": {
+            "title": "Close action trigger",
+            "allOf": [
+                {
+                    "$ref": "/components/action-trigger#/definitions/button"
+                },
+                {
+                    "not": {
+                        "required": [
+                            "heavyweight",
+                            "glyphOnly",
+                            "glyph",
+                            "disabled"
+                        ]
+                    }
+                }
+            ]
+        },
+        "icon": {
+            "title": "Alert's icon",
+            "type": "string",
+            "enum": [
+                "glyph-info",
+                "glyph-warning",
+                "glyph-incident-triangle"
+            ]
+        },
+        "iconAriaLabel": {
+            "title": "Aria label for the alert's icon",
+            "type": "string",
+            "example": "Alert label"
+        },
+        "title": {
+            "title": "Title",
+            "type": "string",
+            "example": "Title"
+        },
+        "actions": {
+            "title": "Actions",
+            "type": "array",
+            "items": {
+                "allOf": [
+                    {
+                        "$ref": "/components/action-trigger#/definitions/anchor"
+                    },
+                    {
+                        "not": {
+                            "required": [
+                                "heavyweight",
+                                "glyphOnly",
+                                "glyph"
+                            ]
+                        }
+                    }
+                ]
+            },
+            "maxItems": 2
+        },
+        "fixed": {
+            "title": "Fixed positioning styling option",
+            "type": "boolean"
+        },
+        "visible": {
+            "title": "Visibility state",
+            "type": "boolean"
+        }
+    },
+    "dependencies": {
+        "icon": [
+            "iconAriaLabel"
+        ],
+        "iconAriaLabel": [
+            "icon"
+        ]
+    },
+    "required": [
+        "alertType",
+        "message",
+        "closeButton"
+    ]
+}

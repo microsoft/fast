@@ -1,0 +1,23 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "id": "/primitives/enum",
+    "properties": {
+        "enumNumberItem": {
+            "enum":[
+                1,
+                2
+            ]
+        },
+        "enumStringItem": {
+            "enum": [
+                "hello",
+                "world"
+            ]
+        }
+    },
+    "required": [
+        "enumNumberItem",
+        "enumStringItem"
+    ]
+}

@@ -1,0 +1,7 @@
+app/
+src/
+
+#  Tests
+__test__/
+*.spec.*
+*.test.*

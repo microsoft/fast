@@ -1,0 +1,379 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Mosaic",
+    "description": "A Fluent Web mosaic module's schema definition.",
+    "type": "object",
+    "id": "/modules/mosaic",
+    "oneOf": [
+        {
+            "type": "object",
+            "properties": {
+                "pattern": {
+                    "title": "Layout pattern",
+                    "type": "number",
+                    "enum": [
+                        1
+                    ]
+                },
+                "placements": {
+                    "title": "Content",
+                    "type": "object",
+                    "properties": {
+                        "one": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "two": {
+                            "$ref": "/components/mosaic-placement"
+                        }
+                    }
+                }
+            },
+            "required": [
+                "pattern",
+                "placements"
+            ]
+        },
+        {
+            "type": "object",
+            "properties": {
+                "pattern": {
+                    "title": "Layout pattern",
+                    "type": "number",
+                    "enum": [
+                        2
+                    ]
+                },
+                "placements": {
+                    "title": "Content",
+                    "type": "object",
+                    "properties": {
+                        "one": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "two": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "three": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "four": {
+                            "$ref": "/components/mosaic-placement"
+                        }
+                    }
+                }
+            },
+            "required": [
+                "pattern",
+                "placements"
+            ]
+        },
+        {
+            "type": "object",
+            "properties": {
+                "pattern": {
+                    "title": "Layout pattern",
+                    "type": "number",
+                    "enum": [
+                        3
+                    ]
+                },
+                "placements": {
+                    "title": "Content",
+                    "type": "object",
+                    "properties": {
+                        "one": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "two": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "three": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "four": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "five": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "six": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "seven": {
+                            "$ref": "/components/mosaic-placement"
+                        }
+                    }
+                }
+            },
+            "required": [
+                "pattern",
+                "placements"
+            ]
+        },
+        {
+            "type": "object",
+            "properties": {
+                "pattern": {
+                    "title": "Layout pattern",
+                    "type": "number",
+                    "enum": [
+                        4
+                    ]
+                },
+                "placements": {
+                    "title": "Content",
+                    "type": "object",
+                    "properties": {
+                        "one": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "two": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "three": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "four": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "five": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "six": {
+                            "$ref": "/components/mosaic-placement"
+                        }
+                    }
+                }
+            },
+            "required": [
+                "pattern",
+                "placements"
+            ]
+        },
+        {
+            "type": "object",
+            "properties": {
+                "pattern": {
+                    "title": "Layout pattern",
+                    "type": "number",
+                    "enum": [
+                        5
+                    ]
+                },
+                "placements": {
+                    "title": "Content",
+                    "type": "object",
+                    "properties": {
+                        "one": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "two": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "three": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "four": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "five": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "six": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "seven": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "eight": {
+                            "$ref": "/components/mosaic-placement"
+                        }
+                    }
+                }
+            },
+            "required": [
+                "pattern",
+                "placements"
+            ]
+        },
+        {
+            "type": "object",
+            "properties": {
+                "pattern": {
+                    "title": "Layout pattern",
+                    "type": "number",
+                    "enum": [
+                        6
+                    ]
+                },
+                "placements": {
+                    "title": "Content",
+                    "type": "object",
+                    "properties": {
+                        "one": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "two": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "three": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "four": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "five": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "six": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "seven": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "eight": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "nine": {
+                            "$ref": "/components/mosaic-placement"
+                        }
+                    }
+                }
+            },
+            "required": [
+                "pattern",
+                "placements"
+            ]
+        },
+        {
+            "type": "object",
+            "properties": {
+                "pattern": {
+                    "title": "Layout pattern",
+                    "type": "number",
+                    "enum": [
+                        7
+                    ]
+                },
+                "placements": {
+                    "title": "Content",
+                    "type": "object",
+                    "properties": {
+                        "one": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "two": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "three": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "four": {
+                            "$ref": "/components/mosaic-placement"
+                        }
+                    }
+                }
+            },
+            "required": [
+                "pattern",
+                "placements"
+            ]
+        },
+        {
+            "type": "object",
+            "properties": {
+                "pattern": {
+                    "title": "Layout pattern",
+                    "type": "number",
+                    "enum": [
+                        8
+                    ]
+                },
+                "placements": {
+                    "title": "Content",
+                    "type": "object",
+                    "properties": {
+                        "one": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "two": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "three": {
+                            "$ref": "/components/mosaic-placement"
+                        }
+                    }
+                }
+            },
+            "required": [
+                "pattern",
+                "placements"
+            ]
+        },
+        {
+            "type": "object",
+            "properties": {
+                "pattern": {
+                    "title": "Layout pattern",
+                    "type": "number",
+                    "enum": [
+                        9
+                    ]
+                },
+                "placements": {
+                    "title": "Content",
+                    "type": "object",
+                    "properties": {
+                        "one": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "two": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "three": {
+                            "$ref": "/components/mosaic-placement"
+                        }
+                    }
+                }
+            },
+            "required": [
+                "pattern",
+                "placements"
+            ]
+        },
+        {
+            "type": "object",
+            "properties": {
+                "pattern": {
+                    "title": "Layout pattern",
+                    "type": "number",
+                    "enum": [
+                        10
+                    ]
+                },
+                "placements": {
+                    "title": "Content",
+                    "type": "object",
+                    "properties": {
+                        "one": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "two": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "three": {
+                            "$ref": "/components/mosaic-placement"
+                        },
+                        "four": {
+                            "$ref": "/components/mosaic-placement"
+                        }
+                    }
+                }
+            },
+            "required": [
+                "pattern",
+                "placements"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,44 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "id": "/primitives/definition",
+    "properties": {
+        "defaultItem": {
+            "type": "object",
+            "properties": {
+                "one": {
+                    "$ref": "#/definitions/stringItem"
+                }
+            },
+            "required": [
+                "one"
+            ]
+        },
+        "optionalItem": {
+            "type": "object",
+            "properties": {
+                "one": {
+                    "$ref": "#/definitions/numberItem"
+                },
+                "two": {
+                    "$ref": "#/definitions/numberItem"
+                }
+            },
+            "required": [
+                "one",
+                "two"
+            ]
+        }
+    },
+    "required": [
+        "defaultItem"
+    ],
+    "definitions": {
+        "stringItem": {
+            "type": "string"
+        },
+        "numberItem": {
+            "type": "number"
+        }
+    }
+}

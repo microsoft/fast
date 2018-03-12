@@ -1,0 +1,55 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "id": "/primitives/object",
+    "properties": {
+        "firstItem": {
+            "type": "object",
+            "properties": {
+                "stringItem": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "stringItem"
+            ]
+        },
+        "secondItem": {
+            "type": "object",
+            "properties": {
+                "secondObj": {
+                    "type": "object",
+                    "properties": {
+                        "numberItem": {
+                            "type": "number"
+                        },
+                        "stringItem": {
+                            "type": "string"
+                        },
+                        "boolItem": {
+                            "type": "boolean"
+                        }
+                    },
+                    "required": [
+                        "stringItem",
+                        "boolItem"
+                    ]
+                },
+                "secondObj2": {
+                    "type": "object",
+                    "properties": {
+                        "numberItem": {
+                            "type": "number"
+                        }
+                    },
+                    "required": [
+                        "numberItem"
+                    ]
+                }
+            }
+        }
+    },
+    "required": [
+        "firstItem"
+    ]
+}

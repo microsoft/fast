@@ -1,0 +1,31 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "id": "/primitives/ref",
+    "properties": {
+        "definitionItem": {
+            "$ref": "/primitives/definition"
+        },
+        "allOfItem": {
+            "allOf": [
+                {
+                    "$ref": "/primitives/oneOf#/definitions/numberObj"
+                },
+                {
+                    "properties": {
+                        "secondNumberItem": {
+                            "type": "number"
+                        }
+                    },
+                    "required": [
+                        "secondNumberItem"
+                    ]
+                }
+            ]
+        }
+    },
+    "required": [
+        "definitionItem",
+        "allOfItem"
+    ]
+}

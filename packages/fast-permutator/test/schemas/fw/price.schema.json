@@ -1,0 +1,78 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Price",
+    "description": "A Fluent Web price component's schema definition.",
+    "type": "object",
+    "id": "/components/price",
+    "properties": {
+        "tag": {
+            "title": "The price tag",
+            "type": "string",
+            "enum": [
+                "div",
+                "span"
+            ],
+            "default": "div"
+        },
+        "size": {
+            "title": "The price size",
+            "type": "string",
+            "enum": [
+                "large"
+            ]
+        },
+        "currencySymbol": {
+            "title": "The price currency symbol",
+            "type": "string",
+            "example": "$"
+        },
+        "currencyCode": {
+            "title": "The currency code for the price",
+            "type": "string",
+            "example": "USD"
+        },
+        "beforeText": {
+            "title": "The text that goes before the price",
+            "type": "string",
+            "example": "Starting at"
+        },
+        "afterText": {
+            "title": "The text that goes after the price",
+            "type": "string",
+            "example": "after tax"
+        },
+        "freeText": {
+            "title": "The text if item is free",
+            "type": "string",
+            "example": "free"
+        },
+        "price": {
+            "title": "The price itself",
+            "type": "number",
+            "example": 100
+        },
+        "discountedPriceText": {
+            "title": "The discounted price text",
+            "type": "string",
+            "example": "now"
+        },
+        "discountedPrice": {
+            "title": "The discounted price",
+            "type": "number",
+            "example": 0
+        }
+    },
+    "dependencies": {
+        "discountedPriceText": [
+            "discountedPrice"
+        ],
+        "price": [
+            "currencySymbol",
+            "currencyCode"
+        ],
+        "discountedPrice": [
+            "currencySymbol",
+            "currencyCode"
+        ]
+    }
+}

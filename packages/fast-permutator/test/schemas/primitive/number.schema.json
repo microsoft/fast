@@ -1,0 +1,24 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "id": "/primitives/number",
+    "properties": {
+        "defaultItem": {
+            "type": "number"
+        },
+        "optionalItem": {
+            "type": "number"
+        },
+        "enumItem": {
+            "type": "number",
+            "enum": [
+                1,
+                2
+            ]
+        }
+    },
+    "required": [
+        "defaultItem",
+        "enumItem"
+    ]
+}

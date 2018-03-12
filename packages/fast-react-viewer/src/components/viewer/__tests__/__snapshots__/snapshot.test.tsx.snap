@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`default 1`] = `
+<div>
+  <base
+    target="_blank"
+  />
+  <iframe
+    className="iframe-0-0-3"
+    style={
+      Object {
+        "height": "0px",
+      }
+    }
+  >
+    Your browser does not support iframes.
+  </iframe>
+</div>
+`;
