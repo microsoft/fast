@@ -1,0 +1,85 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Supplemental navigation",
+    "description": "A Fluent Web supplemental navigation module's schema definition.",
+    "type": "object",
+    "id": "/modules/supplemental-navigation",
+    "properties": {
+        "navItems": {
+            "title": "Items",
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {
+                        "$ref": "#/definitions/link"
+                    },
+                    {
+                        "$ref": "#/definitions/nestedNav"
+                    }
+                ]
+            },
+            "minItems": 1
+        }
+    },
+    "required": [
+        "navItems"
+    ],
+    "definitions": {
+        "link": {
+            "description": "Link",
+            "type": "object",
+            "properties": {
+                "text": {
+                    "title": "Text",
+                    "type": "string",
+                    "example": "Link"
+                },
+                "href": {
+                    "title": "Destination address",
+                    "type": "string",
+                    "example": "#"
+                }
+            },
+            "required": [
+                "text",
+                "href"
+            ]
+        },
+        "nestedNav": {
+            "description": "Nested navigation",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "title": "ID",
+                    "type": "string",
+                    "example": "nestedNav1"
+                },
+                "text": {
+                    "title": "Button text",
+                    "type": "string",
+                    "example": "Nested nav 1"
+                },
+                "navItems": {
+                    "title": "Items",
+                    "type": "array",
+                    "items": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/definitions/link"
+                            },
+                            {
+                                "$ref": "#/definitions/nestedNav"
+                            }
+                        ]
+                    },
+                    "minItems": 1
+                }
+            },
+            "required": [
+                "id",
+                "text",
+                "navItems"
+            ]
+        }
+    }
+}

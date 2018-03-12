@@ -1,0 +1,53 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Context menu",
+    "description": "A Fluent Web context menu component's schema definition.",
+    "type": "object",
+    "id": "/components/context-menu",
+    "properties": {
+        "items": {
+            "title": "Menu items",
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "Unique ID",
+                        "type": "string",
+                        "example": "default"
+                    },
+                    "context": {
+                        "title": "Context",
+                        "type": "string",
+                        "enum": [
+                            "action-trigger",
+                            "text-only"
+                        ]
+                    },
+                    "text": {
+                        "title": "Textual content",
+                        "type": "string",
+                        "example": "context menu"
+                    },
+                    "glyph": {
+                        "title": "Glyph",
+                        "type": "string",
+                        "example": "glyph-chevron-down"
+                    },
+                    "divider": {
+                        "title": "Divider option",
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "id",
+                    "text"
+                ]
+            }
+        }
+    },
+    "required": [
+        "items"
+    ]
+}

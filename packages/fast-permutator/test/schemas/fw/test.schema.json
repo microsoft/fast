@@ -1,0 +1,583 @@
+{
+    "test": [
+        {
+            "$schema": "http://json-schema.org/schema#",
+            "title": "Panes",
+            "description": "A Fluent Web panes module's schema definition.",
+            "type": "object",
+            "id": "/modules/panes",
+            "properties": {
+                "pattern": {
+                    "title": "Layout pattern",
+                    "type": "number",
+                    "enum": [
+                        1
+                    ]
+                },
+                "placements": {
+                    "title": "Content",
+                    "type": "array",
+                    "items": {
+                        "$schema": "http://json-schema.org/schema#",
+                        "title": "Panes placement",
+                        "description": "A Fluent Web panes placement component's schema definition.",
+                        "type": "object",
+                        "id": "/components/panes-placement",
+                        "properties": {
+                            "image": {
+                                "type": "object",
+                                "properties": {
+                                    "alt": {
+                                        "title": "The image alt text",
+                                        "type": "string",
+                                        "example": "alt text"
+                                    },
+                                    "padding": {
+                                        "title": "The padding options of the image",
+                                        "type": "array",
+                                        "whitelisted": true,
+                                        "items": {
+                                            "type": "string",
+                                            "enum": [
+                                                "bottom-3x",
+                                                "bottom-6x",
+                                                "horizontal-3x",
+                                                "horizontal-6x",
+                                                "left-3x",
+                                                "left-6x",
+                                                "right-3x",
+                                                "right-6x",
+                                                "top-3x",
+                                                "top-6x",
+                                                "vertical-3x",
+                                                "vertical-6x"
+                                            ]
+                                        }
+                                    },
+                                    "vp6": {
+                                        "title": "The image to show at VP6",
+                                        "type": "string",
+                                        "example": "http://placehold.it/2048x600/2F2F2F/171717"
+                                    },
+                                    "vp5": {
+                                        "title": "The image to show at VP5",
+                                        "type": "string",
+                                        "example": "http://placehold.it/1778x600/2F2F2F/171717"
+                                    },
+                                    "vp4": {
+                                        "title": "The image to show at VP4",
+                                        "type": "string",
+                                        "example": "http://placehold.it/1399x600/2F2F2F/171717"
+                                    },
+                                    "vp3": {
+                                        "title": "The image to show at VP3",
+                                        "type": "string",
+                                        "example": "http://placehold.it/1083x500/2F2F2F/171717"
+                                    },
+                                    "vp2": {
+                                        "title": "The image to show at VP2",
+                                        "type": "string",
+                                        "example": "http://placehold.it/767x400/2F2F2F/171717"
+                                    },
+                                    "vp1": {
+                                        "title": "The image to show at VP1",
+                                        "type": "string",
+                                        "example": "http://placehold.it/539x300/2F2F2F/171717"
+                                    }
+                                },
+                                "required": [
+                                    "alt",
+                                    "vp4",
+                                    "vp1",
+                                    "vp2",
+                                    "vp3",
+                                    "vp4",
+                                    "vp5",
+                                    "vp6"
+                                ]
+                            },
+                            "heading": {
+                                "$schema": "http://json-schema.org/schema#",
+                                "title": "Heading",
+                                "description": "A Fluent Web heading component's schema definition.",
+                                "type": "object",
+                                "id": "/components/heading",
+                                "properties": {
+                                    "tag": {
+                                        "title": "The HTML tag that the Heading should use",
+                                        "type": "string",
+                                        "enum": [
+                                            "h1",
+                                            "h2",
+                                            "h3",
+                                            "h4",
+                                            "h5",
+                                            "h6",
+                                            "p"
+                                        ]
+                                    },
+                                    "text": {
+                                        "title": "The textual content of the Heading",
+                                        "type": "string",
+                                        "example": "Heading"
+                                    }
+                                },
+                                "required": [
+                                    "tag",
+                                    "text"
+                                ]
+                            },
+                            "paragraph": {
+                                "$schema": "http://json-schema.org/schema#",
+                                "title": "Paragraph",
+                                "description": "A Fluent Web paragraph component's schema definition.",
+                                "type": "object",
+                                "id": "/components/paragraph",
+                                "properties": {
+                                    "level": {
+                                        "title": "The paragraph's hierarchy level",
+                                        "type": "number",
+                                        "default": 3,
+                                        "enum": [
+                                            -1
+                                        ]
+                                    },
+                                    "text": {
+                                        "title": "The textual content of the paragraph",
+                                        "type": "string",
+                                        "example": "Paragraph"
+                                    }
+                                },
+                                "required": [
+                                    "text"
+                                ]
+                            },
+                            "callToAction": {
+                                "$schema": "http://json-schema.org/schema#",
+                                "title": "Call to action",
+                                "description": "A Fluent Web call-to-action component's schema definition.",
+                                "type": "object",
+                                "id": "/components/call-to-action",
+                                "properties": {
+                                    "href": {
+                                        "title": "The URl that the CTA should navigate to on click",
+                                        "type": "string",
+                                        "example": "#"
+                                    },
+                                    "text": {
+                                        "title": "The textual content of the CTA",
+                                        "type": "string",
+                                        "example": "CALL TO ACTION"
+                                    }
+                                },
+                                "required": [
+                                    "href",
+                                    "text"
+                                ]
+                            }
+                        },
+                        "required": [
+                            "image",
+                            "heading",
+                            "paragraph",
+                            "price",
+                            "callToAction"
+                        ]
+                    },
+                    "minItems": 3,
+                    "maxItems": 3
+                }
+            },
+            "required": [
+                "pattern",
+                "placements"
+            ]
+        },
+        {
+            "$schema": "http://json-schema.org/schema#",
+            "title": "Panes",
+            "description": "A Fluent Web panes module's schema definition.",
+            "type": "object",
+            "id": "/modules/panes",
+            "properties": {
+                "pattern": {
+                    "title": "Layout pattern",
+                    "type": "number",
+                    "enum": [
+                        2
+                    ]
+                },
+                "placements": {
+                    "title": "Content",
+                    "type": "array",
+                    "items": {
+                        "$schema": "http://json-schema.org/schema#",
+                        "title": "Panes placement",
+                        "description": "A Fluent Web panes placement component's schema definition.",
+                        "type": "object",
+                        "id": "/components/panes-placement",
+                        "properties": {
+                            "image": {
+                                "type": "object",
+                                "properties": {
+                                    "alt": {
+                                        "title": "The image alt text",
+                                        "type": "string",
+                                        "example": "alt text"
+                                    },
+                                    "padding": {
+                                        "title": "The padding options of the image",
+                                        "type": "array",
+                                        "whitelisted": true,
+                                        "items": {
+                                            "type": "string",
+                                            "enum": [
+                                                "bottom-3x",
+                                                "bottom-6x",
+                                                "horizontal-3x",
+                                                "horizontal-6x",
+                                                "left-3x",
+                                                "left-6x",
+                                                "right-3x",
+                                                "right-6x",
+                                                "top-3x",
+                                                "top-6x",
+                                                "vertical-3x",
+                                                "vertical-6x"
+                                            ]
+                                        }
+                                    },
+                                    "vp6": {
+                                        "title": "The image to show at VP6",
+                                        "type": "string",
+                                        "example": "http://placehold.it/2048x600/2F2F2F/171717"
+                                    },
+                                    "vp5": {
+                                        "title": "The image to show at VP5",
+                                        "type": "string",
+                                        "example": "http://placehold.it/1778x600/2F2F2F/171717"
+                                    },
+                                    "vp4": {
+                                        "title": "The image to show at VP4",
+                                        "type": "string",
+                                        "example": "http://placehold.it/1399x600/2F2F2F/171717"
+                                    },
+                                    "vp3": {
+                                        "title": "The image to show at VP3",
+                                        "type": "string",
+                                        "example": "http://placehold.it/1083x500/2F2F2F/171717"
+                                    },
+                                    "vp2": {
+                                        "title": "The image to show at VP2",
+                                        "type": "string",
+                                        "example": "http://placehold.it/767x400/2F2F2F/171717"
+                                    },
+                                    "vp1": {
+                                        "title": "The image to show at VP1",
+                                        "type": "string",
+                                        "example": "http://placehold.it/539x300/2F2F2F/171717"
+                                    }
+                                },
+                                "required": [
+                                    "alt",
+                                    "vp4",
+                                    "vp1",
+                                    "vp2",
+                                    "vp3",
+                                    "vp4",
+                                    "vp5",
+                                    "vp6"
+                                ]
+                            },
+                            "heading": {
+                                "$schema": "http://json-schema.org/schema#",
+                                "title": "Heading",
+                                "description": "A Fluent Web heading component's schema definition.",
+                                "type": "object",
+                                "id": "/components/heading",
+                                "properties": {
+                                    "tag": {
+                                        "title": "The HTML tag that the Heading should use",
+                                        "type": "string",
+                                        "enum": [
+                                            "h1",
+                                            "h2",
+                                            "h3",
+                                            "h4",
+                                            "h5",
+                                            "h6",
+                                            "p"
+                                        ]
+                                    },
+                                    "text": {
+                                        "title": "The textual content of the Heading",
+                                        "type": "string",
+                                        "example": "Heading"
+                                    }
+                                },
+                                "required": [
+                                    "tag",
+                                    "text"
+                                ]
+                            },
+                            "paragraph": {
+                                "$schema": "http://json-schema.org/schema#",
+                                "title": "Paragraph",
+                                "description": "A Fluent Web paragraph component's schema definition.",
+                                "type": "object",
+                                "id": "/components/paragraph",
+                                "properties": {
+                                    "level": {
+                                        "title": "The paragraph's hierarchy level",
+                                        "type": "number",
+                                        "default": 3,
+                                        "enum": [
+                                            -1
+                                        ]
+                                    },
+                                    "text": {
+                                        "title": "The textual content of the paragraph",
+                                        "type": "string",
+                                        "example": "Paragraph"
+                                    }
+                                },
+                                "required": [
+                                    "text"
+                                ]
+                            },
+                            "callToAction": {
+                                "$schema": "http://json-schema.org/schema#",
+                                "title": "Call to action",
+                                "description": "A Fluent Web call-to-action component's schema definition.",
+                                "type": "object",
+                                "id": "/components/call-to-action",
+                                "properties": {
+                                    "href": {
+                                        "title": "The URl that the CTA should navigate to on click",
+                                        "type": "string",
+                                        "example": "#"
+                                    },
+                                    "text": {
+                                        "title": "The textual content of the CTA",
+                                        "type": "string",
+                                        "example": "CALL TO ACTION"
+                                    }
+                                },
+                                "required": [
+                                    "href",
+                                    "text"
+                                ]
+                            }
+                        },
+                        "required": [
+                            "image",
+                            "heading",
+                            "paragraph",
+                            "price",
+                            "callToAction"
+                        ]
+                    },
+                    "minItems": 3,
+                    "maxItems": 3
+                }
+            },
+            "required": [
+                "pattern",
+                "placements"
+            ]
+        },
+        {
+            "$schema": "http://json-schema.org/schema#",
+            "title": "Panes",
+            "description": "A Fluent Web panes module's schema definition.",
+            "type": "object",
+            "id": "/modules/panes",
+            "properties": {
+                "pattern": {
+                    "title": "Layout pattern",
+                    "type": "number",
+                    "enum": [
+                        3
+                    ]
+                },
+                "placements": {
+                    "title": "Content",
+                    "type": "array",
+                    "items": {
+                        "$schema": "http://json-schema.org/schema#",
+                        "title": "Panes placement",
+                        "description": "A Fluent Web panes placement component's schema definition.",
+                        "type": "object",
+                        "id": "/components/panes-placement",
+                        "properties": {
+                            "image": {
+                                "type": "object",
+                                "properties": {
+                                    "alt": {
+                                        "title": "The image alt text",
+                                        "type": "string",
+                                        "example": "alt text"
+                                    },
+                                    "padding": {
+                                        "title": "The padding options of the image",
+                                        "type": "array",
+                                        "whitelisted": true,
+                                        "items": {
+                                            "type": "string",
+                                            "enum": [
+                                                "bottom-3x",
+                                                "bottom-6x",
+                                                "horizontal-3x",
+                                                "horizontal-6x",
+                                                "left-3x",
+                                                "left-6x",
+                                                "right-3x",
+                                                "right-6x",
+                                                "top-3x",
+                                                "top-6x",
+                                                "vertical-3x",
+                                                "vertical-6x"
+                                            ]
+                                        }
+                                    },
+                                    "vp6": {
+                                        "title": "The image to show at VP6",
+                                        "type": "string",
+                                        "example": "http://placehold.it/2048x600/2F2F2F/171717"
+                                    },
+                                    "vp5": {
+                                        "title": "The image to show at VP5",
+                                        "type": "string",
+                                        "example": "http://placehold.it/1778x600/2F2F2F/171717"
+                                    },
+                                    "vp4": {
+                                        "title": "The image to show at VP4",
+                                        "type": "string",
+                                        "example": "http://placehold.it/1399x600/2F2F2F/171717"
+                                    },
+                                    "vp3": {
+                                        "title": "The image to show at VP3",
+                                        "type": "string",
+                                        "example": "http://placehold.it/1083x500/2F2F2F/171717"
+                                    },
+                                    "vp2": {
+                                        "title": "The image to show at VP2",
+                                        "type": "string",
+                                        "example": "http://placehold.it/767x400/2F2F2F/171717"
+                                    },
+                                    "vp1": {
+                                        "title": "The image to show at VP1",
+                                        "type": "string",
+                                        "example": "http://placehold.it/539x300/2F2F2F/171717"
+                                    }
+                                },
+                                "required": [
+                                    "alt",
+                                    "vp4",
+                                    "vp1",
+                                    "vp2",
+                                    "vp3",
+                                    "vp4",
+                                    "vp5",
+                                    "vp6"
+                                ]
+                            },
+                            "heading": {
+                                "$schema": "http://json-schema.org/schema#",
+                                "title": "Heading",
+                                "description": "A Fluent Web heading component's schema definition.",
+                                "type": "object",
+                                "id": "/components/heading",
+                                "properties": {
+                                    "tag": {
+                                        "title": "The HTML tag that the Heading should use",
+                                        "type": "string",
+                                        "enum": [
+                                            "h1",
+                                            "h2",
+                                            "h3",
+                                            "h4",
+                                            "h5",
+                                            "h6",
+                                            "p"
+                                        ]
+                                    },
+                                    "text": {
+                                        "title": "The textual content of the Heading",
+                                        "type": "string",
+                                        "example": "Heading"
+                                    }
+                                },
+                                "required": [
+                                    "tag",
+                                    "text"
+                                ]
+                            },
+                            "paragraph": {
+                                "$schema": "http://json-schema.org/schema#",
+                                "title": "Paragraph",
+                                "description": "A Fluent Web paragraph component's schema definition.",
+                                "type": "object",
+                                "id": "/components/paragraph",
+                                "properties": {
+                                    "level": {
+                                        "title": "The paragraph's hierarchy level",
+                                        "type": "number",
+                                        "default": 3,
+                                        "enum": [
+                                            -1
+                                        ]
+                                    },
+                                    "text": {
+                                        "title": "The textual content of the paragraph",
+                                        "type": "string",
+                                        "example": "Paragraph"
+                                    }
+                                },
+                                "required": [
+                                    "text"
+                                ]
+                            },
+                            "callToAction": {
+                                "$schema": "http://json-schema.org/schema#",
+                                "title": "Call to action",
+                                "description": "A Fluent Web call-to-action component's schema definition.",
+                                "type": "object",
+                                "id": "/components/call-to-action",
+                                "properties": {
+                                    "href": {
+                                        "title": "The URl that the CTA should navigate to on click",
+                                        "type": "string",
+                                        "example": "#"
+                                    },
+                                    "text": {
+                                        "title": "The textual content of the CTA",
+                                        "type": "string",
+                                        "example": "CALL TO ACTION"
+                                    }
+                                },
+                                "required": [
+                                    "href",
+                                    "text"
+                                ]
+                            }
+                        },
+                        "required": [
+                            "image",
+                            "heading",
+                            "paragraph",
+                            "price",
+                            "callToAction"
+                        ]
+                    },
+                    "minItems": 2,
+                    "maxItems": 2
+                }
+            },
+            "required": [
+                "pattern",
+                "placements"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "jsx": "react",
+      "target": "es5",
+      "lib": [ "es2015", "es2017", "dom", "scripthost" ],
+      "module": "commonjs",
+      "moduleResolution": "Node",
+      "removeComments": true,
+      "sourceMap": true,
+      "rootDir": "./src",
+      "baseUrl": ".",
+      "types" : [ "node", "chrome", "jest" ],
+      "typeRoots": [ "node_modules/@types", "./typings" ],
+      "skipLibCheck": true,
+      "outDir": "./dist"
+    }
+  }

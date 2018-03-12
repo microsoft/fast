@@ -22,12 +22,67 @@ const items: ICategoryProps[] = [
                     },
                     {
                         children: "bat"
+                    },
+                    {
+                        children: "foo"
+                    },
+                    {
+                        children: "bar"
+                    },
+                    {
+                        children: "bat"
+                    },
+                    {
+                        children: "foo"
+                    },
+                    {
+                        children: "bar"
+                    },
+                    {
+                        children: "bat"
+                    },
+                    {
+                        children: "foo"
+                    },
+                    {
+                        children: "bar"
+                    },
+                    {
+                        children: "bat"
+                    },
+                    {
+                        children: "foo"
+                    },
+                    {
+                        children: "bar"
+                    },
+                    {
+                        children: "bat"
+                    },
+                    {
+                        children: "foo"
+                    },
+                    {
+                        children: "bar"
+                    },
+                    {
+                        children: "bat"
+                    },
+                    {
+                        children: "foo"
+                    },
+                    {
+                        children: "bar"
+                    },
+                    {
+                        children: "bat"
                     }
                 ]
             },
             {
                 name: "paragraph",
                 component: Paragraph,
+                categoryItemComponentMinWidth: 400,
                 data: [{}, {}, {}, {}]
             },
             {
@@ -55,7 +110,7 @@ const items: ICategoryProps[] = [
 
 const render: any = (): void => {
     ReactDOM.render(
-        <Site categories={items} />,
+        <Site title={"FAST Development site test"} categories={items} />,
         document.getElementById("root")
     );
 };

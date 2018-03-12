@@ -1,0 +1,23 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "id": "/primitives/boolean",
+    "properties": {
+        "defaultItem": {
+            "type": "boolean"
+        },
+        "optionalItem": {
+            "type": "boolean"
+        },
+        "enumItem": {
+            "type": "boolean",
+            "enum": [
+                true
+            ]
+        }
+    },
+    "required": [
+        "defaultItem",
+        "enumItem"
+    ]
+}
