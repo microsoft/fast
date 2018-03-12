@@ -1,2 +1,2 @@
 
-React HOC for managing component JSS stylesheets
+A React higher order component (HOC) library for managing component JSS stylesheets.
