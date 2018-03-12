@@ -20,7 +20,7 @@
     "tslint": "tslint -c ../../tslint.json \"**/*.ts\" \"**/*.tsx\"",
     "tslint:fix": "tslint -c ../../tslint.json --fix \"**/*.ts\" \"**/*.tsx\"",
     "prepare": "npm run build"
-  }, 
+  },
   "license": "MIT",
   "readme": "README.md",
   "jest": {
@@ -42,11 +42,13 @@
   "devDependencies": {
     "@microsoft/fast-tslint-rules": "^1.0.4",
     "@types/jest": "^22.2.0",
+    "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.6",
     "@types/react": "^16.0.40",
     "fork-ts-checker-webpack-plugin": "^0.4.0",
     "html-webpack-plugin": "^3.0.4",
     "jest": "^22.4.2",
+    "lodash-es": "^4.17.7",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "rimraf": "^2.6.2",
