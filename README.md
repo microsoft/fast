@@ -1,6 +1,8 @@
 # FAST-DNA
 Fast, adaptive, secure, and timeless design network architecture.
 
+A design architecture for the web that uses variables for property values to enable real-time updating of user experiences based on changing inputs.
+
 ## Policies
 ### Contributions
 Details including getting start can be found [here](https://github.com/Microsoft/fast-dna/blob/master/CONTRIBUTING.md).
@@ -80,3 +82,8 @@ fix #915,#920
 close #213
 resolve #429
 ```
+
+## Contact
+* Submit [for help](https://stackoverflow.com/questions/tagged/fast-dna) 
+* Submit [feature requests](https://github.com/Microsoft/fast-dna/issues/new?labels=feature%20:%20request)
+* Submit [feature questions](https://github.com/Microsoft/fast-dna/issues/new?labels=feature%20:%20question)
