@@ -1,0 +1,32 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Action trigger",
+    "description": "A MWF action trigger component's schema definition.",
+    "type": "object",
+    "id": "/components/action-trigger",
+    "properties": {
+        "stringItem": {
+            "type": "string"
+        },
+        "numberItem": {
+            "type": "number"
+        },
+        "booleanItem": {
+            "type": "boolean"
+        },
+        "stringItem2": {
+            "type": "string"
+        }
+    },
+    "dependencies": {
+        "stringItem": [
+            "numberItem"
+        ],
+        "booleanItem": [
+            "stringItem2"
+        ]
+    },
+    "required": [
+        "booleanItem"
+    ]
+}

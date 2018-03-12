@@ -1,0 +1,52 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "id": "/primitives/deepRef",
+    "oneOf": [
+        {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/shared"
+                },
+                {
+                    "$ref": "#/definitions/stringObj"
+                }
+            ]
+        },
+        {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/shared"
+                },
+                {
+                    "$ref": "#/definitions/numberObj"
+                }
+            ]
+        }
+    ],
+    "definitions": {
+        "shared": {
+            "$ref": "/primitives/oneOf#/definitions/numberObj"
+        },
+        "stringObj": {
+            "properties": {
+                "stringItem": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "stringItem"
+            ]
+        },
+        "numberObj": {
+            "properties": {
+                "numberItem": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "numberItem"
+            ]
+        }
+    }
+}

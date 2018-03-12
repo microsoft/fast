@@ -1,0 +1,58 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "id": "/primitives/anyOf",
+    "definitions": {
+        "anyObj": {
+            "oneOf": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "secondaryBooleanItem": {
+                            "type": "boolean"
+                        }
+                    },
+                    "required": [
+                        "secondaryBooleanItem"
+                    ]
+                },
+                {
+                    "$ref": "/primitives/number"
+                }
+            ]
+        },
+        "numberObj": {
+            "type": "object",
+            "properties": {
+                "numberItem": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "numberItem"
+            ]
+        },
+        "booleanObj": {
+            "type": "object",
+            "properties": {
+                "booleanItem": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "booleanItem"
+            ]
+        }
+    },
+    "anyOf": [
+        {
+            "$ref": "#/definitions/booleanObj"
+        },
+        {
+            "$ref": "#/definitions/numberObj"
+        },
+        {
+            "$ref": "#/definitions/anyObj"
+        }
+    ]
+}

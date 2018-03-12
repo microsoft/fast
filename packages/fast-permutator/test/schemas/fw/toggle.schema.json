@@ -1,0 +1,64 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Toggle",
+    "description": "A Fluent Web toggle component's schema definition.",
+    "type": "object",
+    "id": "/components/toggle",
+    "properties": {
+        "selected": {
+            "title": "Selected state",
+            "type": "boolean"
+        },
+        "selectedString": {
+            "title": "Selected state textual content",
+            "type": "string",
+            "example": "selected"
+        },
+        "unselectedString": {
+            "title": "Unselected state textual content",
+            "type": "string",
+            "example": "unselected"
+        },
+        "spanId": {
+            "title": "Unique ID for the span element",
+            "type": "string",
+            "example": "defaultSpan"
+        },
+        "name": {
+            "title": "Name",
+            "type": "string",
+            "example": "default"
+        },
+        "labelId": {
+            "title": "Unique ID for the label",
+            "type": "string",
+            "example": "defaultLabel"
+        },
+        "label": {
+            "allOf": [
+                { "$ref": "/components/label#/definitions/labelTag" },
+                {
+                    "not": {
+                        "required": [
+                            "tag",
+                            "for"
+                        ]
+                    }
+                }
+            ]
+        },
+        "disabled": {
+            "title": "Disabled state",
+            "type": "boolean"
+        }
+    },
+    "required": [
+        "selected",
+        "selectedString",
+        "unselectedString",
+        "spanId",
+        "name",
+        "labelId",
+        "label"
+    ]
+}
