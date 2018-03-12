@@ -1,0 +1,45 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Subheading",
+    "description": "A Fluent Web subheading component's schema definition.",
+    "type": "object",
+    "id": "/components/subheading",
+    "properties": {
+        "tag": {
+            "title": "The HTML tag that the Subheading should use",
+            "type": "string",
+            "enum": [
+                "h1",
+                "h2",
+                "h3",
+                "h4",
+                "h5",
+                "h6",
+                "p"
+            ],
+            "default": "p"
+        },
+        "level": {
+            "title": "The subheadings hierarchy level",
+            "type": "number",
+            "enum": [
+                -1,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+            ],
+            "default": 3
+        },
+        "text": {
+            "title": "The textual content of the Subheading",
+            "type": "string",
+            "example": "Subheading"
+        }
+    },
+    "required": [
+        "text"
+    ]
+}

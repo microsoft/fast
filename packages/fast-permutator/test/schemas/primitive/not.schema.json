@@ -1,0 +1,32 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "id": "/primitives/not",
+    "properties": {
+        "firstItem": {
+            "type": "object",
+            "properties": {
+                "stringItem": {
+                    "type": "string"
+                },
+                "boolItem": {
+                    "type": "boolean"
+                },
+                "numberItem": {
+                    "type": "number"
+                }
+            },
+            "not": {
+                "required": [
+                    "boolItem"
+                ]
+            },
+            "required": [
+                "stringItem"
+            ]
+        }
+    },
+    "required": [
+        "firstItem"
+    ]
+}

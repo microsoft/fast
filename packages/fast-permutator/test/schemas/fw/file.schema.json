@@ -1,0 +1,45 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "File",
+    "description": "A Fluent Web file component's schema definition.",
+    "type": "object",
+    "id": "/components/file",
+    "properties": {
+        "textField": {
+            "allOf": [
+                {
+                    "$ref": "/components/text-field"
+                },
+                {
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "file"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        "button": {
+            "allOf": [
+                {
+                    "$ref": "/components/button"
+                },
+                {
+                    "not": {
+                        "required": [
+                            "href",
+                            "style",
+                            "flex"
+                        ]
+                    }
+                }
+            ]
+        }
+    },
+    "required": [
+        "textField",
+        "button"
+    ]
+}

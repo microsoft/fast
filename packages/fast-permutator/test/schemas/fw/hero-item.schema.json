@@ -1,0 +1,200 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Hero item",
+    "description": "A Fluent Web hero item module's schema definition.",
+    "type": "object",
+    "id": "/modules/hero-item",
+    "properties": {
+        "alignHorizontal": {
+            "title": "Horizontal alignment",
+            "type": "string",
+            "enum": [
+                "left",
+                "center",
+                "right"
+            ]
+        },
+        "alignVertical": {
+            "title": "Vertical alignment",
+            "type": "string",
+            "enum": [
+                "top",
+                "center",
+                "bottom"
+            ]
+        },
+        "theme": {
+            "title": "Color theme",
+            "type": "string",
+            "enum": [
+                "light",
+                "dark"
+            ]
+        },
+        "context": {
+            "title": "Context",
+            "type": "string",
+            "whitelisted": true,
+            "enum": [
+                "accessory",
+                "app",
+                "article",
+                "device",
+                "game",
+                "movie",
+                "music-album",
+                "music-artist",
+                "software",
+                "tv-show"
+            ]
+        },
+        "itemtype": {
+            "title": "Schema.org item type",
+            "type": "string",
+            "example": "https://schema.org/Product"
+        },
+        "productTitle": {
+            "title": "Product title",
+            "type": "string",
+            "example": "Product title"
+        },
+        "productSubtitle": {
+            "title": "Product subtitle",
+            "type": "string",
+            "example": "Product subtitle"
+        },
+        "image": {
+            "allOf": [
+                {
+                    "$ref": "/components/image#/definitions/picture-element"
+                },
+                {
+                    "not": {
+                        "required": [
+                            "padding",
+                            "round"
+                        ]
+                    },
+                    "required": [
+                        "vp1",
+                        "vp2",
+                        "vp3",
+                        "vp4",
+                        "vp5"
+                    ]
+                }
+            ]
+        },
+        "backgroundImage": {
+            "allOf": [
+                {
+                    "$ref": "/components/image#/definitions/picture-element"
+                },
+                {
+                    "not": {
+                        "required": [
+                            "padding",
+                            "round"
+                        ]
+                    },
+                    "required": [
+                        "vp1",
+                        "vp2",
+                        "vp3",
+                        "vp4",
+                        "vp5"
+                    ]
+                }
+            ]
+        },
+        "heading": {
+            "allOf": [
+                {
+                    "$ref": "/components/heading"
+                },
+                {
+                    "not": {
+                        "required": [
+                            "level",
+                            "hyperlink",
+                            "lean",
+                            "initialBaseline"
+                        ]
+                    }
+                }
+            ]
+        },
+        "subheading": {
+            "allOf": [
+                {
+                    "$ref": "/components/subheading"
+                },
+                {
+                    "not": {
+                        "required": [
+                            "level"
+                        ]
+                    }
+                }
+            ]
+        },
+        "logo": {
+            "allOf": [
+                {
+                    "$ref": "/components/logo"
+                },
+                {
+                    "required": [
+                        "image"
+                    ]
+                }
+            ]
+        },
+        "price": {
+            "$ref": "/components/price"
+        },
+        "callToActions": {
+            "$ref": "#/definitions/callToActions"
+        }
+    },
+    "definitions": {
+        "callToAction": {
+            "allOf": [
+                {
+                    "$ref": "/components/call-to-action"
+                },
+                {
+                    "not": {
+                        "required": [
+                            "style",
+                            "disabled"
+                        ]
+                    }
+                }
+            ]
+        },
+        "callToActions": {
+            "oneOf": [
+                {
+                    "$ref": "#/definitions/callToAction"
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/callToAction"
+                    },
+                    "maxItems": 2
+                }
+            ]
+        }
+    },
+    "required": [
+        "alignHorizontal",
+        "alignVertical",
+        "theme",
+        "context",
+        "itemtype",
+        "backgroundImage",
+        "callToActions"
+    ]
+}

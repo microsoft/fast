@@ -1,0 +1,33 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Action menu",
+    "description": "A Fluent Web action menu component's schema definition.",
+    "type": "object",
+    "id": "/components/action-menu",
+    "properties": {
+        "id": {
+            "title": "Unique ID",
+            "type": "string",
+            "example": "default"
+        },
+        "actionTrigger": {
+            "$ref": "/components/action-trigger"
+        },
+        "menu": {
+            "$ref": "/components/context-menu"
+        },
+        "disabled": {
+            "title": "Disabled state",
+            "type": "boolean"
+        },
+        "scroll": {
+            "title": "Scroll option",
+            "type": "boolean"
+        }
+    },
+    "required": [
+        "id",
+        "actionTrigger",
+        "menu"
+    ]
+}
