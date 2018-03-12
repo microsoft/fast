@@ -1,7 +1,7 @@
 # FAST-DNA
 Fast, adaptive, secure, and timeless design network architecture.
 
-A design architecture for the web that uses variables for property values to enable real-time updating of user experiences based on changing inputs.
+A design architecture for the web that enables real-time updating of user experiences based on changing inputs.
 
 ## Policies
 ### Contributions
