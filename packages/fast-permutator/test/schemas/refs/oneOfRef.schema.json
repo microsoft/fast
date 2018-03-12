@@ -1,0 +1,29 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "id": "/refs/oneOfRef",
+    "oneOf": [
+        {
+            "$ref": "#/definitions/first"
+        },
+        {
+            "$ref": "#/definitions/second"
+        }
+    ],
+    "definitions": {
+        "first": {
+            "type": "object",
+            "properties": {
+                "firstOption": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "firstOption"
+            ]
+        },
+        "second": {
+            "$ref": "/refs/ref"
+        }
+    }
+}

@@ -1,0 +1,45 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Button",
+    "description": "A Fluent Web button component's schema definition.",
+    "type": "object",
+    "id": "/components/button",
+    "properties": {
+        "text": {
+            "title": "Textual content",
+            "type": "string",
+            "example": "Button"
+        },
+        "type": {
+            "title": "HTML button type",
+            "type": "string",
+            "enum": [
+                "submit"
+            ]
+        },
+        "href": {
+            "title": "Destination",
+            "type": "string",
+            "example": "#"
+        },
+        "disabled": {
+            "title": "Disabled state",
+            "type": "boolean"
+        },
+        "flex": {
+            "title": "Flex option",
+            "type": "boolean"
+        },
+        "style": {
+            "title": "Styling option",
+            "type": "string",
+            "enum": [
+                "lightweight",
+                "primary"
+            ]
+        }
+    },
+    "required": [
+        "text"
+    ]
+}

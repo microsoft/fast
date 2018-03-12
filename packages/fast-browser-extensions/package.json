@@ -1,0 +1,38 @@
+{
+  "name": "@microsoft/fast-browser-extensions",
+  "description": "An extension for testing real-world localization, theming, and other production type scenarios in web development.",
+  "author": {
+    "name": "Fluent Web",
+    "email": "fwq@microsoft.com"
+  },
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Microsoft/fast-dna.git"
+  },
+  "license": "MIT",
+  "private": true,
+  "main": "dist/index.js",
+  "scripts": {
+    "dev:chrome": "cross-env TARGET_BROWSER=chrome NODE_ENV=development ts-node ./node_modules/webpack/bin/webpack.js --progress",
+    "build:chrome": "cross-env TARGET_BROWSER=chrome NODE_ENV=production ts-node ./node_modules/webpack/bin/webpack.js --progress",
+    "build:interface": "tsc -p ./tsconfig.json",
+    "prepack": "rm -rf ./dist && npm run build:interface"
+  },
+  "devDependencies": {
+    "@types/chrome": "0.0.56",
+    "@types/node": "^8.5.1",
+    "copy-webpack-plugin": "^4.3.0",
+    "cross-env": "^5.1.1",
+    "fork-ts-checker-webpack-plugin": "^0.2.9",
+    "generate-json-webpack-plugin": "^0.2.2",
+    "ts-loader": "^3.2.0",
+    "ts-node": "^4.0.2",
+    "tslint": "^5.8.0",
+    "tslint-loader": "^3.5.3",
+    "tslint-react": "^3.2.0",
+    "typescript": "^2.6.2",
+    "uglifyjs-webpack-plugin": "^1.1.4",
+    "webpack": "^3.10.0"
+  }
+}

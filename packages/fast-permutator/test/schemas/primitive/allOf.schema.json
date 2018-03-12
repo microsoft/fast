@@ -1,0 +1,68 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "properties": {
+        "example": {
+            "allOf": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "size": {
+                            "type": "string",
+                            "enum": [
+                                "world",
+                                "alpha"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "size"
+                    ]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "size": {
+                            "enum": [
+                                "hello",
+                                "bravo",
+                                "foxtrot",
+                                "world"
+                            ]
+                        },
+                        "text": {
+                            "type": "string"
+                        }
+                    }
+                }
+            ]
+        },
+        "exampleArray": {
+            "type": "array",
+            "items": {
+                "allOf": [
+                    {
+                        "type": "object",
+                        "properties": {
+                            "arrayProp1": {
+                                "type": "number"
+                            }
+                        },
+                        "required": [
+                            "arrayProp1"
+                        ]
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "arrayProp2": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ]
+            },
+            "maxItems": 1
+        }
+    }
+}
