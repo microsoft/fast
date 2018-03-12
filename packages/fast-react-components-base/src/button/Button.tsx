@@ -10,7 +10,12 @@ interface IButtonManagedClasses {
 class Button extends Foundation<IButtonProps & IInjectedProps<IButtonManagedClasses>, {}> {
     public render(): JSX.Element {
         return (
-            <button className={this.props.managedClasses.button}>{this.props.children}</button>
+            <button
+            	{...this.unhandledProps()}
+            	className={this.props.managedClasses.button}
+            >
+            	{this.props.children}
+            </button>
         );
     }
 }
