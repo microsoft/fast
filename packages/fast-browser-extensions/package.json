@@ -22,7 +22,7 @@
   "devDependencies": {
     "@types/chrome": "0.0.56",
     "@types/node": "^8.5.1",
-    "copy-webpack-plugin": "^4.3.0",
+    "copy-webpack-plugin": "^4.5.1",
     "cross-env": "^5.1.1",
     "fork-ts-checker-webpack-plugin": "^0.2.9",
     "generate-json-webpack-plugin": "^0.2.2",
@@ -32,7 +32,7 @@
     "tslint-loader": "^3.5.3",
     "tslint-react": "^3.2.0",
     "typescript": "^2.6.2",
-    "uglifyjs-webpack-plugin": "^1.1.4",
+    "uglifyjs-webpack-plugin": "^1.2.3",
     "webpack": "^3.10.0"
   }
 }
