@@ -1,10 +1,24 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { set, get, pick, has } from "lodash-es";
+import { set, get, pick, has, isPlainObject } from "lodash-es";
 
 export interface IUnhandledProps {
     [key: string]: any;
 }
+
+
+export interface IReferenceResolverStore {
+    [key: string]: IReferenceResolverStore | ReferenceResolver;
+}
+
+export interface IReferenceStore {
+    [key: string]: React.ReactNode;
+}
+
+/**
+ * Typing for a ref callback
+ */
+export type ReferenceResolver = <T>(reference: T) => void;
 
 class Foundation<P, S> extends React.Component<P, S> {
     /**
@@ -12,81 +26,50 @@ class Foundation<P, S> extends React.Component<P, S> {
      */
     public static defaultProps: object;
 
+
+    protected referenceResolvers: IReferenceResolverStore = {};
+
     /**
-     * Stores ref objects themselves.
+     * Stores ref elements themselves.
      * @name references
      * @type {object}
      */
-    protected references: {
-        [name: string]: any;
-    } = {};
+    protected referenceStore: IReferenceStore = {};
 
     /**
-     * Stores ref callbacks by name
-     * @name refResolvers
-     * @type {object}
+     * Stores a react ref callback under the path provided as arguments. Paths are resolved using lodash's get/set API.
+     * The reference object itself will be stored on the referenceStore under the path provided and can be accessed via 
+     * the getRef method under the same path.
      */
-    private refResolvers: {
-        [name: string]: (ref?: any) => void;
-    } = {};
+    protected setRef(...args: (string | number)[]): ReferenceResolver {
+        const storageKey: string = this.processStorageKey(args);
+        let resolverFunction: ReferenceResolver | IReferenceResolverStore = get(this.referenceResolvers, storageKey);
 
-    /**
-     * Creates, store, and returns a new ref resolver callback in the case where a callback hasn't been created for that key yet,
-     * but otherwise returns the memoized function by that key.
-     * @name setRef
-     * @param ...args {string[]} - The key structure to store the resulting ref on.
-     * @param ...args {number[]} - The index structure to store the resulting ref on.
-     * @param ...args {boolean[]} - Pass 'true' if the method should resolve React Component references to dom nodes.
-     */
-    protected setRef(...args: Array<(string | boolean | number)>): (ref?: any) => void {
-        let resolveComponentsToDom: boolean = false;
-        let key: (string | number);
-        const keys: any[] = args.filter((arg: (string | boolean | number)) => {
-            if (typeof arg === "string" || typeof arg === "number") {
-                return true;
+        if (!storageKey || isPlainObject(resolverFunction) || Array.isArray(resolverFunction)) {
+            return;
+        }
+        
+        if (typeof resolverFunction === "function") {
+            return resolverFunction;
+        } else {
+            resolverFunction = (ref) => {
+                set(this.referenceStore, storageKey, ref);
             }
 
-            if (typeof arg === "boolean") {
-                resolveComponentsToDom = arg;
-                return false;
-            }
-        }) as Array<(string | number)>;
+            set(this.referenceResolvers, storageKey, resolverFunction);
 
-        // get/set will resolves keys like 'foo[0]' to an arry if the sole param passed
-        // is a string. To support this, if we only have 1 param, we should
-        // not pass it as an array
-        if (keys.length === 1) {
-            key = keys[0] as string;
+            return resolverFunction;
         }
-
-        // If we haven't stored a resolver function for this key yet,
-        // create one and store it
-        if (!get(this.refResolvers, key || keys)) {
-            set(this.refResolvers, key || keys, (ref: any) => {
-                if (resolveComponentsToDom) {
-                    ref = ReactDOM.findDOMNode(ref);
-                }
-
-                return set(this.references, key || keys, ref);
-            });
-        }
-
-        return get(this.refResolvers, key || keys);
     }
+
 
     /**
      * gets a reference stored by the baseclass by keyname, where arguments are
      * used as keynames, eg getRef('foo', 'bar', 0) resolves to this.references.foo.bar[0];
      * @param args {(string|number)[]}
      */
-    protected getRef(...args: Array<(string | number)>): any {
-        let key: (string | number);
-
-        if (args.length === 1) {
-            key = args[0];
-        }
-
-        return get(this.references, key || args);
+    protected getRef(...args: (string | number)[]): React.ReactNode {
+        return get(this.referenceStore, this.processStorageKey(args));
     }
 
     /**
@@ -123,6 +106,18 @@ class Foundation<P, S> extends React.Component<P, S> {
         }
 
         return componentClasses.concat(` ${this.props[classKey]}`).trim().replace(/(\s){2,}/g, " ");
+    }
+
+    /**
+     * Generates a string that conforms to object/array accessor syntax that can be used by lodash's get / set,
+     * eg. => ["foo", "bar", 0] => "foo[bar][0]"
+     */
+    private processStorageKey(args: (string | number)[]): string {
+        return args.filter(item => {
+            return typeof item === "string" || typeof item === "number";
+        }).map((item, index) => {
+                return index === 0 ? item : `[${item}]`;
+        }).join("");
     }
 }
 
