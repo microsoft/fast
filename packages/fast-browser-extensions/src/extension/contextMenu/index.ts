@@ -27,6 +27,10 @@ export interface IContextMenus {
     [key: string]: IContextMenuItem[];
 }
 
+// Store menu ids for later reference
+let menuIdStore: {[key: string]: IContextMenuItem} = {};
+const rootId = createContextMenu();
+
 /**
  * Creates the FW context menu
  * @return {string} the menu id
@@ -101,10 +105,6 @@ function handleExternalMessages(message: CreateMessage, sender, sendResponse) {
             createSubmenuItems(message.data, rootId);
     }
 }
-
-// Store menu ids for later reference
-let menuIdStore: {[key: string]: IContextMenuItem} = {};
-const rootId = createContextMenu();
 
 // Listen for messages coming from the client pages
 ExtensionApi.runtime.onMessageExternal.addListener(handleExternalMessages);

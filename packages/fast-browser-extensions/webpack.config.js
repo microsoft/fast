@@ -25,6 +25,7 @@ let config = {
         path: BUILD_DIR,
         filename: '[name].js'
     },
+    mode: process.env.NODE_ENV || 'development',
     watchOptions: {
         ignored: '/node_modules/',
     },
@@ -58,16 +59,13 @@ let config = {
         ]
     },
     plugins: [
-        new webpack.DefinePlugin({
-            'process.env': {
-                'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-            }
+        new ForkTsCheckerWebpackPlugin({
+            tslint: path.resolve(__dirname, "./tslint.json")
         }),
-        new ForkTsCheckerWebpackPlugin(),
-         new CopyWebpackPlugin([
-             // Copy icons to build directory
-             { from: path.resolve(EXTENSION_DIR, 'icons'), to: path.resolve(BUILD_DIR, 'icons') },
-         ]),
+        new CopyWebpackPlugin([
+            // Copy icons to build directory
+            { from: path.resolve(EXTENSION_DIR, 'icons'), to: path.resolve(BUILD_DIR, 'icons') },
+        ]),
         new GenerateJsonWebpackPlugin('manifest.json', browser_manifest)
     ]
 };
