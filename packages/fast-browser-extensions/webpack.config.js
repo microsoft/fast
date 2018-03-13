@@ -25,7 +25,7 @@ let config = {
         path: BUILD_DIR,
         filename: '[name].js'
     },
-    mode: process.env.NODE_ENV,
+    mode: process.env.NODE_ENV || 'development',
     watchOptions: {
         ignored: '/node_modules/',
     },
