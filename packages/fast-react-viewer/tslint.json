@@ -3,10 +3,10 @@
         "@microsoft/fast-tslint-rules"
     ],
     "linterOptions": {
-    	"exclude": [
-    		"helpers/**",
-    		"src/components/*/__tests__/**"
-    	]
+        "exclude": [
+            "helpers/**",
+            "src/components/*/__tests__/**"
+        ]
     },
     "rules": {
         "indent": [true, 4],

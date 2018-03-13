@@ -11,7 +11,7 @@
       "sourceMap": true,
       "rootDir": "./src",
       "baseUrl": ".",
-      "types" : [ "node", "chrome", "jest" ],
+      "types" : [ "node", "chrome" ],
       "typeRoots": [ "node_modules/@types", "./typings" ],
       "skipLibCheck": true,
       "outDir": "./dist"

@@ -24,15 +24,16 @@
     "@types/node": "^8.5.1",
     "copy-webpack-plugin": "^4.5.1",
     "cross-env": "^5.1.1",
-    "fork-ts-checker-webpack-plugin": "^0.2.9",
+    "fork-ts-checker-webpack-plugin": "^0.4.0",
     "generate-json-webpack-plugin": "^0.2.2",
-    "ts-loader": "^3.2.0",
+    "ts-loader": "^4.0.1",
     "ts-node": "^4.0.2",
-    "tslint": "^5.8.0",
-    "tslint-loader": "^3.5.3",
-    "tslint-react": "^3.2.0",
+    "tslint": "^5.9.1",
+    "tslint-loader": "^3.6.0",
+    "tslint-react": "^3.3.3",
     "typescript": "^2.6.2",
     "uglifyjs-webpack-plugin": "^1.2.3",
-    "webpack": "^3.10.0"
+    "webpack": "^4.0.1",
+    "webpack-cli": "^2.0.11"
   }
 }
