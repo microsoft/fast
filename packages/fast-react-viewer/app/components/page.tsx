@@ -101,9 +101,9 @@ class Page extends React.Component<{}, IPageState> {
     public render(): JSX.Element {
         return (
             <div className={stylesheet.classes.wrapper}>
-                { this.state.data.textValue }
+                {this.state.data.textValue}
                 <div>
-                    { `width: ${this.state.width}%` }
+                    {`width: ${this.state.width}%`}
                     <input type="range" min={0} max={100} value={this.state.width} onChange={this.handleRangeUpdate} />
                     <input type="text" onChange={this.handleTextUpdate} value={this.state.data.textValue} />
                 </div>

@@ -61,7 +61,7 @@ class Example extends React.Component<IExampleProps, {}> {
 
     public render(): JSX.Element {
         return (
-            <div className={ stylesheet.classes.div } key={2}>
+            <div className={stylesheet.classes.div} key={2}>
                 <input type="text" value={this.props.textValue} onChange={this.handleLabelUpdate} />
                 <img src="https://placehold.it/300x300" />
                 <link href="https://fluentweb.com/fw-d192a11b84ce02288037ba0722f3ee33.min.css" rel="stylesheet" />
