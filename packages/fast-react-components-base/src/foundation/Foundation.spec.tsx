@@ -1,13 +1,13 @@
 import * as React from "react";
 import Foundation from "./Foundation";
 import * as ReactTestUtils from "react-dom/test-utils";
-// import { merge, has } from "lodash-es";
+import { merge, has } from "lodash-es";
 
 // Todo: [Task #2756] Tests are failing so they have been ignored in the config found in package.json.
 // Remove this comment and testPathIgnorePatterns when fixed
 describe("setRef", () => {
     let getRefTestComponent;
-    class GetRefTestComponent extends Foundation<undefined, undefined> {
+    class GetRefTestComponent extends Foundation<undefined, undefined, undefined> {
         public render() { return <div ref={this.setRef("foobar")} />; }
     }
 
@@ -97,7 +97,7 @@ describe("setRef", () => {
 
 describe("getRef", () => {
     let getRefTestComponent;
-    class GetRefTestComponent extends Foundation<undefined, undefined> {
+    class GetRefTestComponent extends Foundation<undefined, undefined, undefined> {
         public render() { return <div ref={this.setRef("foobar")} />; }
     }
 
@@ -128,90 +128,92 @@ describe("getRef", () => {
         expect(getRefTestComponent.getRef("stringAndNumber[0]")).toBe(true);
     });
 });
-//
-// describe("unhandledProps", () => {
-//     let unhandledPropsTestComponentClean;
-//     let unhandledPropsTestComponentDirty;
-//     const cleanProps = {
-//         boolean: true,
-//         string: "string",
-//         array: ["array"],
-//         object: {},
-//         number: 1,
-//         undefined: void(0),
-//         null: null
-//     };
-//
-//     const dirtyProps = {
-//         booleanDirty: true,
-//         stringDirty: "string",
-//         arrayDirty: ["array"],
-//         objectDirty: {},
-//         numberDirty: 1,
-//         undefinedDirty: void(0),
-//         nullDirty: null
-//     };
-//
-//     interface IUnhandledPropsTestComponentProps {
-//         boolean: boolean;
-//         string: string;
-//         array: string[];
-//         object: any;
-//         number: number;
-//         undefined: undefined;
-//         null: null;
-//     }
-//
-//     class UnhandledPropsTestComponent extends BaseComponent<IUnhandledPropsTestComponentProps, undefined> {
-//         public static defaultProps = {
-//             boolean: true,
-//             string: "string",
-//             array: ["array"],
-//             object: {},
-//             number: 1,
-//             undefined: void(0),
-//             null: null
-//         };
-//
-//         render() {
-//             return <h1>hello world</h1>;
-//         }
-//     }
-//
-//     beforeEach(() => {
-//         unhandledPropsTestComponentClean = new ReactTestUtils.renderIntoDocument(<UnhandledPropsTestComponent {...cleanProps}/>);
-//         unhandledPropsTestComponentDirty = new ReactTestUtils.renderIntoDocument(
-//             <UnhandledPropsTestComponent {...merge(cleanProps, dirtyProps)}/>
-//         );
-//     });
-//
-//     test("should return an object", () => {
-//         expect(typeof unhandledPropsTestComponentClean.unhandledProps()).toBe("object");
-//         expect(unhandledPropsTestComponentClean.unhandledProps()).not.toBe(null);
-//     });
-//     test("return object should contain all property keys passed to props that is not also referenced by defaultProps", () => {
-//         const unhandledProps = unhandledPropsTestComponentDirty.unhandledProps();
-//
-//         expect(has(unhandledProps, "booleanDirty")).toBe(true);
-//         expect(has(unhandledProps, "stringDirty")).toBe(true);
-//         expect(has(unhandledProps, "arrayDirty")).toBe(true);
-//         expect(has(unhandledProps, "objectDirty")).toBe(true);
-//         expect(has(unhandledProps, "numberDirty")).toBe(true);
-//         expect(has(unhandledProps, "undefinedDirty")).toBe(true);
-//         expect(has(unhandledProps, "nullDirty")).toBe(true);
-//     });
-//     test("return object should not contain any property keys contained in defaultProps", () => {
-//         const unhandledProps = unhandledPropsTestComponentClean.unhandledProps();
-//
-//         expect(has(unhandledProps, "boolean")).toBe(false);
-//         expect(has(unhandledProps, "string")).toBe(false);
-//         expect(has(unhandledProps, "array")).toBe(false);
-//         expect(has(unhandledProps, "object")).toBe(false);
-//         expect(has(unhandledProps, "number")).toBe(false);
-//         expect(has(unhandledProps, "undefined")).toBe(false);
-//         expect(has(unhandledProps, "null")).toBe(false);
-//     });
-// });
+
+describe("unhandledProps", () => {
+    let unhandledPropsTestComponentClean;
+    let unhandledPropsTestComponentDirty;
+    const cleanProps = {
+        boolean: true,
+        string: "string",
+        array: ["array"],
+        object: {},
+        number: 1,
+        undefined: void(0),
+        null: null
+    };
+
+    const dirtyProps = {
+        booleanDirty: true,
+        stringDirty: "string",
+        arrayDirty: ["array"],
+        objectDirty: {},
+        numberDirty: 1,
+        undefinedDirty: void(0),
+        nullDirty: null
+    };
+
+    interface IUnhandledPropsTestComponentProps {
+        boolean: boolean;
+        string: string;
+        array: string[];
+        object: any;
+        number: number;
+        undefined: undefined;
+        null: null;
+    }
+
+    class UnhandledPropsTestComponent extends Foundation<IUnhandledPropsTestComponentProps, undefined, undefined> {
+        public handledProps = {
+            boolean: void 0,
+            string: void 0,
+            array: void 0,
+            object: void 0,
+            number: void 0,
+            undefined: void 0,
+            null: void 0
+        };
+
+        render() {
+            return <h1>hello world</h1>;
+        }
+    }
+
+    beforeEach(() => {
+        unhandledPropsTestComponentClean = new ReactTestUtils.renderIntoDocument(<UnhandledPropsTestComponent {...cleanProps}/>);
+        unhandledPropsTestComponentDirty = new ReactTestUtils.renderIntoDocument(
+            <UnhandledPropsTestComponent {...merge(cleanProps, dirtyProps)}/>
+        );
+    });
+
+    test("should return an object", () => {
+        expect(typeof unhandledPropsTestComponentClean.unhandledProps()).toBe("object");
+        expect(unhandledPropsTestComponentClean.unhandledProps()).not.toBe(null);
+    });
+
+    test("return object should contain all property keys passed to props that is not enumerated on handledProps", () => {
+        const unhandledProps = unhandledPropsTestComponentDirty.unhandledProps();
+
+        expect(has(unhandledProps, "booleanDirty")).toBe(true);
+        expect(has(unhandledProps, "stringDirty")).toBe(true);
+        expect(has(unhandledProps, "arrayDirty")).toBe(true);
+        expect(has(unhandledProps, "objectDirty")).toBe(true);
+        expect(has(unhandledProps, "numberDirty")).toBe(true);
+        expect(has(unhandledProps, "undefinedDirty")).toBe(true);
+        expect(has(unhandledProps, "nullDirty")).toBe(true);
+    });
+
+    test("return object should not contain any property keys contained on handledProps", () => {
+        const unhandledProps = unhandledPropsTestComponentClean.unhandledProps();
+
+        expect(has(unhandledProps, "boolean")).toBe(false);
+        expect(has(unhandledProps, "string")).toBe(false);
+        expect(has(unhandledProps, "array")).toBe(false);
+        expect(has(unhandledProps, "object")).toBe(false);
+        expect(has(unhandledProps, "number")).toBe(false);
+        expect(has(unhandledProps, "undefined")).toBe(false);
+        expect(has(unhandledProps, "null")).toBe(false);
+    });
+});
 //
 // describe("generateClassNames", () => {
 //     let applyClassNameWithEmptyComponentClasses;

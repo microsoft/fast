@@ -1,18 +1,24 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { set, get, pick, has, isPlainObject } from "lodash-es";
+import { set, get, pick, has, isPlainObject, without } from "lodash-es";
 
-export interface IUnhandledProps {
-    [key: string]: any;
-}
-
-
+/**
+ * Interface to describe the refereceResolver store
+ */
 export interface IReferenceResolverStore {
     [key: string]: IReferenceResolverStore | ReferenceResolver;
 }
 
+/**
+ * Interface of reference store for elements resolved by react. Allows for quick access
+ * by getRef
+ */
 export interface IReferenceStore {
-    [key: string]: React.ReactNode;
+    [key: string]: IReferenceStore | React.ReactNode;
+}
+
+export type HandledProps<T> = {
+    [P in keyof T]: void
 }
 
 /**
@@ -20,13 +26,22 @@ export interface IReferenceStore {
  */
 export type ReferenceResolver = <T>(reference: T) => void;
 
-class Foundation<P, S> extends React.Component<P, S> {
+class Foundation<H, U, S> extends React.Component<H & U, S> {
     /**
      * default props for the component
      */
     public static defaultProps: object;
 
+    /**
+     * An enumeration of all prop keys that are handled by the component. All props passed
+     * to the component that are not enumerated here will be treated as unhandled props
+     */
+    protected handledProps: HandledProps<H>;
 
+    /**
+     * Store all  memoized ref callbacks so they can quickly be accessed. Storing the functions
+     * allows us to not create new ref functions every update cycle
+     */
     protected referenceResolvers: IReferenceResolverStore = {};
 
     /**
@@ -76,17 +91,12 @@ class Foundation<P, S> extends React.Component<P, S> {
      * Gets all props that aren't handled by the component.
      * @return {object} - an object containing all properties of 'props' that are not found on defaultProps
      */
-    protected unhandledProps(): IUnhandledProps {
-        const defaultPropsKey: string = "defaultProps";
-        const defaultProps: object = this.constructor[defaultPropsKey];
+    protected unhandledProps(): U {
+        const unhandledPropKeys: string[] = Object.keys(this.props).filter(key => {
+            return !this.handledProps.hasOwnProperty(key);
+        });
 
-        if (!defaultProps) {
-            return this.props;
-        }
-
-        return pick(this.props, Object.keys(this.props).filter((key: any) => {
-            return !has(defaultProps, key);
-        }));
+        return pick(this.props, unhandledPropKeys) as U;
     }
 
     /**
