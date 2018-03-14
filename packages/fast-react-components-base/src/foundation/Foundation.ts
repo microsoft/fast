@@ -1,129 +1,133 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { set, get, pick, has } from "lodash-es";
+import { set, get, pick, isPlainObject } from "lodash-es";
+import { IFoundationProps } from "./Foundation.props";
 
-export interface IUnhandledProps {
-    [key: string]: any;
+/**
+ * Describes the object that stores memoized reference resolver functions
+ */
+export interface IReferenceResolverStore {
+    [key: string]: IReferenceResolverStore | ReferenceResolver;
 }
 
-class Foundation<P, S> extends React.Component<P, S> {
+/**
+ * Describes the object that stores all resolved react element and component references
+ */
+export interface IReferenceStore {
+    [key: string]: IReferenceStore | React.ReactNode;
+}
+
+/**
+ * Describes the object that enumerates all handled props for a component. This
+ * object includes all props that are in some way consumed or manipulated by component
+ * code. These props will not be mapped onto the underlying root DOM node
+ */
+export type HandledProps<T> = {
+    [P in keyof T]: void
+};
+
+/**
+ * Describes a function that that resolves a react reference element or component.
+ */
+export type ReferenceResolver = <T>(reference: T) => void;
+
+/**
+ * The foundation component is the component that all fast base components are built on top of. It provides a common
+ * set of utilities that each component inherits.
+ * @param H - These are the props that are "handled". "handled" props are not mapped automatically to the root element
+ * returned by the render function. Use handled props to expose inputs that will not map directly to DOM attributes
+ * (eg a custom callback) or where the DOM attribute would be required.
+ * @param U - These are "unhandled" props. Any props from this interface will be mapped onto the root DOM node of the
+ * render function as-is. It is advised that these props map to valid HTML attributes - otherwise you will likely have HTML errors.
+ * @param S - The state interface of the component.
+ */
+class Foundation<H, U, S> extends React.Component<H & U & IFoundationProps, S> {
     /**
-     * default props for the component
+     * An enumeration of all handled props. All props passed to the component that are not enumerated here will be
+     * treated as unhandled props
      */
-    public static defaultProps: object;
+    protected handledProps: HandledProps<H>;
 
     /**
-     * Stores ref objects themselves.
-     * @name references
-     * @type {object}
+     * Store all memoized ref callbacks so they can quickly be accessed. Storing the functions
+     * allows us to not create new ref functions every update cycle
      */
-    protected references: {
-        [name: string]: any;
-    } = {};
+    protected referenceResolverStore: IReferenceResolverStore = {};
 
     /**
-     * Stores ref callbacks by name
-     * @name refResolvers
-     * @type {object}
+     * Location where all react element and component references are stored
      */
-    private refResolvers: {
-        [name: string]: (ref?: any) => void;
-    } = {};
+    protected referenceStore: IReferenceStore = {};
 
     /**
-     * Creates, store, and returns a new ref resolver callback in the case where a callback hasn't been created for that key yet,
-     * but otherwise returns the memoized function by that key.
-     * @name setRef
-     * @param ...args {string[]} - The key structure to store the resulting ref on.
-     * @param ...args {number[]} - The index structure to store the resulting ref on.
-     * @param ...args {boolean[]} - Pass 'true' if the method should resolve React Component references to dom nodes.
+     * Stores a react ref callback under the path provided as arguments. Paths are resolved using lodash's get/set API.
+     * The reference object itself will be stored on the referenceStore under the path provided and can be accessed via
+     * the getRef method under the same path.
+     *
+     * Usage: <div ref={this.setRef("content-container")} />
      */
-    protected setRef(...args: Array<(string | boolean | number)>): (ref?: any) => void {
-        let resolveComponentsToDom: boolean = false;
-        let key: (string | number);
-        const keys: any[] = args.filter((arg: (string | boolean | number)) => {
-            if (typeof arg === "string" || typeof arg === "number") {
-                return true;
-            }
+    protected setRef(...args: Array<string | number>): ReferenceResolver {
+        const storageKey: string = this.processStorageKey(args);
+        let resolverFunction: ReferenceResolver | IReferenceResolverStore = get(this.referenceResolverStore, storageKey);
 
-            if (typeof arg === "boolean") {
-                resolveComponentsToDom = arg;
-                return false;
-            }
-        }) as Array<(string | number)>;
-
-        // get/set will resolves keys like 'foo[0]' to an arry if the sole param passed
-        // is a string. To support this, if we only have 1 param, we should
-        // not pass it as an array
-        if (keys.length === 1) {
-            key = keys[0] as string;
+        if (!storageKey || isPlainObject(resolverFunction) || Array.isArray(resolverFunction)) {
+            return;
         }
 
-        // If we haven't stored a resolver function for this key yet,
-        // create one and store it
-        if (!get(this.refResolvers, key || keys)) {
-            set(this.refResolvers, key || keys, (ref: any) => {
-                if (resolveComponentsToDom) {
-                    ref = ReactDOM.findDOMNode(ref);
-                }
+        if (typeof resolverFunction === "function") {
+            return resolverFunction;
+        } else {
+            resolverFunction = (ref: React.ReactNode): void => {
+                set(this.referenceStore, storageKey, ref);
+            };
 
-                return set(this.references, key || keys, ref);
-            });
+            set(this.referenceResolverStore, storageKey, resolverFunction);
+
+            return resolverFunction;
         }
-
-        return get(this.refResolvers, key || keys);
     }
 
     /**
-     * gets a reference stored by the baseclass by keyname, where arguments are
-     * used as keynames, eg getRef('foo', 'bar', 0) resolves to this.references.foo.bar[0];
-     * @param args {(string|number)[]}
+     * Get a reference by key , where function arguments are used as to create the keyname,
+     * eg. getRef('foo', 'bar', 0) resolves to this.references.foo.bar[0];
+     *
+     * Usage: const contentContainer = this.getRef("content-container");
      */
-    protected getRef(...args: Array<(string | number)>): any {
-        let key: (string | number);
-
-        if (args.length === 1) {
-            key = args[0];
-        }
-
-        return get(this.references, key || args);
+    protected getRef(...args: Array<string | number>): React.ReactNode {
+        return get(this.referenceStore, this.processStorageKey(args));
     }
 
     /**
-     * Gets all props that aren't handled by the component.
-     * @return {object} - an object containing all properties of 'props' that are not found on defaultProps
+     * Returns an object containing all props that are not enumerated as handledProps
      */
-    protected unhandledProps(): IUnhandledProps {
-        const defaultPropsKey: string = "defaultProps";
-        const defaultProps: object = this.constructor[defaultPropsKey];
+    protected unhandledProps(): U {
+        const unhandledPropKeys: string[] = Object.keys(this.props).filter((key: string) => {
+            return !this.handledProps.hasOwnProperty(key);
+        });
 
-        if (!defaultProps) {
-            return this.props;
-        }
-
-        return pick(this.props, Object.keys(this.props).filter((key: any) => {
-            return !has(defaultProps, key);
-        }));
+        return pick(this.props, unhandledPropKeys) as U;
     }
 
     /**
-     * Concatenates a component's generated className string with any additional classNames passed as props.
-     * @param {string} componentClasses the HTML class attribute string generated by the component
+     * Joins any string with the className prop passed to the component. Used for applying a className to the root
+     * element of a component's render function.
      */
-    protected generateClassNames(componentClasses?: string): string {
-        const hasComponentClasses: boolean = typeof componentClasses === "string";
-        const classKey: string = "className";
+    protected generateClassNames(componentClasses: string = ""): string | null {
+        return componentClasses.concat(` ${this.props.className || ""}`).trim().replace(/(\s){2,}/g, " ") || null;
+    }
 
-        if (!has(this.props, classKey)) {
-            return hasComponentClasses ? componentClasses : null;
-        }
-
-        if (!hasComponentClasses) {
-            return this.props[classKey];
-        }
-
-        return componentClasses.concat(` ${this.props[classKey]}`).trim().replace(/(\s){2,}/g, " ");
+    /**
+     * Generates a string that conforms to object/array accessor syntax that can be used by lodash's get / set,
+     * eg. => ["foo", "bar", 0] => "foo[bar][0]"
+     */
+    private processStorageKey(args: Array<string | number>): string {
+        return args.filter((item: string | number) => {
+            return typeof item === "string" || typeof item === "number";
+        }).map((item: string | number, index: number) => {
+                return index === 0 ? item : `[${item}]`;
+        }).join("");
     }
 }
 
 export default Foundation;
+export { IFoundationProps };

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button, IButtonProps, IButtonManagedClasses } from "@microsoft/fast-react-components-base";
+import { Button, IButtonProps, IButtonManagedClasses, IFoundationProps } from "@microsoft/fast-react-components-base";
 import manageJss, { ComponentStyles } from "@microsoft/fast-react-jss-manager";
 import {IFluentDesignSystem} from "../design-system";
 
