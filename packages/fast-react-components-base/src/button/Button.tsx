@@ -1,35 +1,20 @@
 import * as React from "react";
-<<<<<<< HEAD
 import * as ReactDOM from "react-dom";
 import Foundation, { HandledProps } from "../foundation";
-import { IButtonProps } from "./Button.props";
-=======
-import Foundation from "../foundation";
 import { IButtonProps, ButtonHTMLTags } from "./Button.props";
->>>>>>> update(button): update button to support html button or anchor configuration
 import { IInjectedProps } from "@microsoft/fast-react-jss-manager";
 
 interface IButtonManagedClasses {
     button: string;
 }
 
-<<<<<<< HEAD
 /* tslint:disable-next-line */
-class Button extends Foundation<IButtonProps & IInjectedProps<IButtonManagedClasses>,  React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, {}> {
+class Button extends Foundation<IButtonProps & IInjectedProps<IButtonManagedClasses>,  React.AllHTMLAttributes<HTMLElement>, {}> {
     protected handledProps: HandledProps<IButtonProps & IInjectedProps<IButtonManagedClasses>> = {
-        managedClasses: void 0
+        managedClasses: void 0,
+        tag: void 0
     };
 
-    public render(): JSX.Element {
-=======
-class Button extends Foundation<IButtonProps & IInjectedProps<IButtonManagedClasses>, {}> {
-    /**
-     * Default props
-     */
-    public static defaultProps: Partial<IButtonProps & IInjectedProps<IButtonManagedClasses>> = {
-        managedClasses: void(0),
-        tag: void(0)
-    };
 
     /**
      * Stores HTML tag for use in render
@@ -42,7 +27,6 @@ class Button extends Foundation<IButtonProps & IInjectedProps<IButtonManagedClas
     public render(): React.ReactElement<HTMLButtonElement | HTMLAnchorElement> {
         this.tag = this.generateHTMLTag();
 
->>>>>>> update(button): update button to support html button or anchor configuration
         return (
             <this.tag
                 {...this.unhandledProps()}

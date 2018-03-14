@@ -8,9 +8,9 @@ export enum ButtonHTMLTags {
     button = "button" as any
 }
 
-export interface IButtonProps extends React.HTMLProps<HTMLButtonElement | HTMLAnchorElement> {
+export interface IButtonProps {
     /**
-     * The HTML tag
+     * The HTML tag (defaults to ButtonHTMLTags.button)
      */
     tag?: ButtonHTMLTags;
 }
