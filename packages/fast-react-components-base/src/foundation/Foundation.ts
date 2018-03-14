@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { set, get, pick, has, isPlainObject, without } from "lodash-es";
-import IFoundationProps from "./Foundation.props";
+import { IFoundationProps } from "./Foundation.props";
 
 /**
  * Interface to describe the refereceResolver store
@@ -118,3 +118,4 @@ class Foundation<H, U, S> extends React.Component<H & U & IFoundationProps, S> {
 }
 
 export default Foundation;
+export { IFoundationProps };

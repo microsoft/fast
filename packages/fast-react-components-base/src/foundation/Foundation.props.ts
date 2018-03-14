@@ -1,4 +1,4 @@
-export default interface IFoundationProps {
+export interface IFoundationProps {
     /**
      * allow class-names on all components
      */
