@@ -1,4 +1,4 @@
-import Button, {IButtonProps, IButtonManagedClasses, ButtonHTMLTags} from "./Button";
+import Button from "./Button";
 
 export default Button;
-export {IButtonProps, IButtonManagedClasses, ButtonHTMLTags};
+export * from "./Button";
