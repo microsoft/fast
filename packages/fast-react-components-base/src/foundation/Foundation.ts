@@ -24,7 +24,7 @@ export interface IReferenceStore {
  */
 export type HandledProps<T> = {
     [P in keyof T]: void
-}
+};
 
 /**
  * Describes a function that that resolves a react reference element or component.
@@ -43,7 +43,7 @@ export type ReferenceResolver = <T>(reference: T) => void;
  */
 class Foundation<H, U, S> extends React.Component<H & U & IFoundationProps, S> {
     /**
-     * An enumeration of all handled props. All props passed * to the component that are not enumerated here will be
+     * An enumeration of all handled props. All props passed to the component that are not enumerated here will be
      * treated as unhandled props
      */
     protected handledProps: HandledProps<H>;
@@ -61,25 +61,25 @@ class Foundation<H, U, S> extends React.Component<H & U & IFoundationProps, S> {
 
     /**
      * Stores a react ref callback under the path provided as arguments. Paths are resolved using lodash's get/set API.
-     * The reference object itself will be stored on the referenceStore under the path provided and can be accessed via 
+     * The reference object itself will be stored on the referenceStore under the path provided and can be accessed via
      * the getRef method under the same path.
-     * 
+     *
      * Usage: <div ref={this.setRef("content-container")} />
      */
-    protected setRef(...args: (string | number)[]): ReferenceResolver {
+    protected setRef(...args: Array<string | number>): ReferenceResolver {
         const storageKey: string = this.processStorageKey(args);
         let resolverFunction: ReferenceResolver | IReferenceResolverStore = get(this.referenceResolverStore, storageKey);
 
         if (!storageKey || isPlainObject(resolverFunction) || Array.isArray(resolverFunction)) {
             return;
         }
-        
+
         if (typeof resolverFunction === "function") {
             return resolverFunction;
         } else {
-            resolverFunction = (ref) => {
+            resolverFunction = (ref: React.ReactNode): void => {
                 set(this.referenceStore, storageKey, ref);
-            }
+            };
 
             set(this.referenceResolverStore, storageKey, resolverFunction);
 
@@ -87,14 +87,13 @@ class Foundation<H, U, S> extends React.Component<H & U & IFoundationProps, S> {
         }
     }
 
-
     /**
      * Get a reference by key , where function arguments are used as to create the keyname,
      * eg. getRef('foo', 'bar', 0) resolves to this.references.foo.bar[0];
      *
      * Usage: const contentContainer = this.getRef("content-container");
      */
-    protected getRef(...args: (string | number)[]): React.ReactNode {
+    protected getRef(...args: Array<string | number>): React.ReactNode {
         return get(this.referenceStore, this.processStorageKey(args));
     }
 
@@ -102,7 +101,7 @@ class Foundation<H, U, S> extends React.Component<H & U & IFoundationProps, S> {
      * Returns an object containing all props that are not enumerated as handledProps
      */
     protected unhandledProps(): U {
-        const unhandledPropKeys: string[] = Object.keys(this.props).filter(key => {
+        const unhandledPropKeys: string[] = Object.keys(this.props).filter((key: string) => {
             return !this.handledProps.hasOwnProperty(key);
         });
 
@@ -112,7 +111,7 @@ class Foundation<H, U, S> extends React.Component<H & U & IFoundationProps, S> {
     /**
      * Joins any string with the className prop passed to the component. Used for applying a className to the root
      * element of a component's render function.
-     */ 
+     */
     protected generateClassNames(componentClasses: string = ""): string | null {
         return componentClasses.concat(` ${this.props.className || ""}`).trim().replace(/(\s){2,}/g, " ") || null;
     }
@@ -121,10 +120,10 @@ class Foundation<H, U, S> extends React.Component<H & U & IFoundationProps, S> {
      * Generates a string that conforms to object/array accessor syntax that can be used by lodash's get / set,
      * eg. => ["foo", "bar", 0] => "foo[bar][0]"
      */
-    private processStorageKey(args: (string | number)[]): string {
-        return args.filter(item => {
+    private processStorageKey(args: Array<string | number>): string {
+        return args.filter((item: string | number) => {
             return typeof item === "string" || typeof item === "number";
-        }).map((item, index) => {
+        }).map((item: string | number, index: number) => {
                 return index === 0 ? item : `[${item}]`;
         }).join("");
     }

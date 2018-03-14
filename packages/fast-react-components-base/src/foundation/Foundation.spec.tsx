@@ -1,15 +1,18 @@
+/* tslint:disable:max-classes-per-file */
+/* tslint:disable:no-string-literal */
 import * as React from "react";
-import Foundation from "./Foundation";
+import Foundation, { ReferenceResolver, HandledProps } from "./Foundation";
 import * as ReactTestUtils from "react-dom/test-utils";
 import { merge, has } from "lodash-es";
 
-// Todo: [Task #2756] Tests are failing so they have been ignored in the config found in package.json.
-// Remove this comment and testPathIgnorePatterns when fixed
-describe("setRef", () => {
-    let getRefTestComponent;
-    class GetRefTestComponent extends Foundation<undefined, undefined, undefined> {
-        public render() { return <div ref={this.setRef("foobar")} />; }
+class GetRefTestComponent extends Foundation<undefined, undefined, undefined> {
+    public render(): JSX.Element {
+        return <div ref={this.setRef("foobar")} />;
     }
+}
+
+describe("setRef", () => {
+    let getRefTestComponent: any;
 
     beforeEach(() => {
         getRefTestComponent = new ReactTestUtils.renderIntoDocument(<GetRefTestComponent />);
@@ -73,33 +76,30 @@ describe("setRef", () => {
     });
 
     test("should store the returned method under the path determined by args", () => {
-        const stringCallback = getRefTestComponent.setRef("string");
-        const numberCallback = getRefTestComponent.setRef(0);
-        const stringAndNumberCallback = getRefTestComponent.setRef("stringAndNumber", 0);
+        const stringCallback: ReferenceResolver = getRefTestComponent.setRef("string");
+        const numberCallback: ReferenceResolver = getRefTestComponent.setRef(0);
+        const stringAndNumberCallback: ReferenceResolver = getRefTestComponent.setRef("stringAndNumber", 0);
 
-        expect(stringCallback).toBe(getRefTestComponent.referenceResolvers.string);
-        expect(numberCallback).toBe(getRefTestComponent.referenceResolvers[0]);
-        expect(stringAndNumberCallback).toBe(getRefTestComponent.referenceResolvers.stringAndNumber[0]);
+        expect(stringCallback).toBe(getRefTestComponent.referenceResolverStore.string);
+        expect(numberCallback).toBe(getRefTestComponent.referenceResolverStore[0]);
+        expect(stringAndNumberCallback).toBe(getRefTestComponent.referenceResolverStore.stringAndNumber[0]);
     });
 
     test("should not factor booleans into the referenceResolvers object structure", () => {
-        const stringCallback = getRefTestComponent.setRef("string", true);
-        const numberCallback = getRefTestComponent.setRef(0, true);
-        const stringAndNumberCallback = getRefTestComponent.setRef("stringAndNumber", 0, true);
-        const stringAndNumberCallback1 = getRefTestComponent.setRef("stringAndNumber[1]", true);
+        const stringCallback: ReferenceResolver = getRefTestComponent.setRef("string", true);
+        const numberCallback: ReferenceResolver = getRefTestComponent.setRef(0, true);
+        const stringAndNumberCallback: ReferenceResolver = getRefTestComponent.setRef("stringAndNumber", 0, true);
+        const stringAndNumberCallback1: ReferenceResolver = getRefTestComponent.setRef("stringAndNumber[1]", true);
 
-        expect(stringCallback).toBe(getRefTestComponent.referenceResolvers.string);
-        expect(numberCallback).toBe(getRefTestComponent.referenceResolvers[0]);
-        expect(stringAndNumberCallback).toBe(getRefTestComponent.referenceResolvers.stringAndNumber[0]);
-        expect(stringAndNumberCallback1).toBe(getRefTestComponent.referenceResolvers.stringAndNumber[1]);
+        expect(stringCallback).toBe(getRefTestComponent.referenceResolverStore.string);
+        expect(numberCallback).toBe(getRefTestComponent.referenceResolverStore[0]);
+        expect(stringAndNumberCallback).toBe(getRefTestComponent.referenceResolverStore.stringAndNumber[0]);
+        expect(stringAndNumberCallback1).toBe(getRefTestComponent.referenceResolverStore.stringAndNumber[1]);
     });
 });
 
 describe("getRef", () => {
-    let getRefTestComponent;
-    class GetRefTestComponent extends Foundation<undefined, undefined, undefined> {
-        public render() { return <div ref={this.setRef("foobar")} />; }
-    }
+    let getRefTestComponent: any;
 
     beforeEach(() => {
         getRefTestComponent = new ReactTestUtils.renderIntoDocument(<GetRefTestComponent />);
@@ -130,29 +130,7 @@ describe("getRef", () => {
 });
 
 describe("unhandledProps", () => {
-    let unhandledPropsTestComponentClean;
-    let unhandledPropsTestComponentDirty;
-    const cleanProps = {
-        boolean: true,
-        string: "string",
-        array: ["array"],
-        object: {},
-        number: 1,
-        undefined: void(0),
-        null: null
-    };
-
-    const dirtyProps = {
-        booleanDirty: true,
-        stringDirty: "string",
-        arrayDirty: ["array"],
-        objectDirty: {},
-        numberDirty: 1,
-        undefinedDirty: void(0),
-        nullDirty: null
-    };
-
-    interface IUnhandledPropsTestComponentProps {
+    interface IHandledProps {
         boolean: boolean;
         string: string;
         array: string[];
@@ -162,8 +140,38 @@ describe("unhandledProps", () => {
         null: null;
     }
 
-    class UnhandledPropsTestComponent extends Foundation<IUnhandledPropsTestComponentProps, undefined, undefined> {
-        public handledProps = {
+    interface IUnhandledProps {
+        booleanDirty?: boolean;
+        stringDirty?: string;
+        arrayDirty?: string[];
+        objectDirty?: any;
+        numberDirty?: number;
+        undefinedDirty?: void;
+        nullDirty?: null;
+    }
+
+    const cleanProps: IHandledProps = {
+        boolean: true,
+        string: "string",
+        array: ["array"],
+        object: {},
+        number: 1,
+        undefined: void(0),
+        null: null
+    };
+
+    const dirtyProps: IUnhandledProps = {
+        booleanDirty: true,
+        stringDirty: "string",
+        arrayDirty: ["array"],
+        objectDirty: {},
+        numberDirty: 1,
+        undefinedDirty: void(0),
+        nullDirty: null
+    };
+
+    class UnhandledPropsTestComponent extends Foundation<IHandledProps, IUnhandledProps, undefined> {
+        public handledProps: HandledProps<IHandledProps> = {
             boolean: void 0,
             string: void 0,
             array: void 0,
@@ -173,10 +181,13 @@ describe("unhandledProps", () => {
             null: void 0
         };
 
-        render() {
+        public render(): JSX.Element {
             return <h1>hello world</h1>;
         }
     }
+
+    let unhandledPropsTestComponentClean: UnhandledPropsTestComponent;
+    let unhandledPropsTestComponentDirty: UnhandledPropsTestComponent;
 
     beforeEach(() => {
         unhandledPropsTestComponentClean = new ReactTestUtils.renderIntoDocument(<UnhandledPropsTestComponent {...cleanProps}/>);
@@ -186,12 +197,12 @@ describe("unhandledProps", () => {
     });
 
     test("should return an object", () => {
-        expect(typeof unhandledPropsTestComponentClean.unhandledProps()).toBe("object");
-        expect(unhandledPropsTestComponentClean.unhandledProps()).not.toBe(null);
+        expect(typeof unhandledPropsTestComponentClean["unhandledProps"]()).toBe("object");
+        expect(unhandledPropsTestComponentClean["unhandledProps"]()).not.toBe(null);
     });
 
     test("return object should contain all property keys passed to props that is not enumerated on handledProps", () => {
-        const unhandledProps = unhandledPropsTestComponentDirty.unhandledProps();
+        const unhandledProps: IUnhandledProps = unhandledPropsTestComponentDirty["unhandledProps"]();
 
         expect(has(unhandledProps, "booleanDirty")).toBe(true);
         expect(has(unhandledProps, "stringDirty")).toBe(true);
@@ -203,7 +214,7 @@ describe("unhandledProps", () => {
     });
 
     test("return object should not contain any property keys contained on handledProps", () => {
-        const unhandledProps = unhandledPropsTestComponentClean.unhandledProps();
+        const unhandledProps: IUnhandledProps = unhandledPropsTestComponentClean["unhandledProps"]();
 
         expect(has(unhandledProps, "boolean")).toBe(false);
         expect(has(unhandledProps, "string")).toBe(false);
@@ -216,15 +227,17 @@ describe("unhandledProps", () => {
 });
 
 describe("generateClassNames", () => {
-    let applyClassNameWithEmptyComponentClasses;
-    let applyClassNameWithProps;
-    let applyClassNameWithComponentClasses;
-
     class ApplyClassNameComponent extends Foundation<any, any, any> {
-        render() { return <div>Hello World</div>; }
+        public render(): JSX.Element {
+            return <div>Hello World</div>;
+        }
     }
 
-    beforeEach(() => {
+    let applyClassNameWithEmptyComponentClasses: ApplyClassNameComponent;
+    let applyClassNameWithProps: ApplyClassNameComponent;
+    let applyClassNameWithComponentClasses: ApplyClassNameComponent;
+
+    beforeEach((): void => {
         applyClassNameWithEmptyComponentClasses = new ReactTestUtils.renderIntoDocument(<ApplyClassNameComponent />);
         applyClassNameWithProps = new ReactTestUtils.renderIntoDocument(<ApplyClassNameComponent foo="bar" />);
         applyClassNameWithComponentClasses = new ReactTestUtils.renderIntoDocument(
@@ -233,32 +246,32 @@ describe("generateClassNames", () => {
     });
 
     test("should return null if props are undefined and componentClasses is not a string", () => {
-        expect(applyClassNameWithEmptyComponentClasses.generateClassNames()).toBe(null);
+        expect(applyClassNameWithEmptyComponentClasses["generateClassNames"]()).toBe(null);
     });
 
     test("should return null if componentClasses are not a string and no className prop is passed", () => {
-        expect(applyClassNameWithProps.generateClassNames()).toBe(null);
+        expect(applyClassNameWithProps["generateClassNames"]()).toBe(null);
     });
 
     test("should return componentClasses if componentClasses is a string and no props are passed", () => {
-        expect(applyClassNameWithEmptyComponentClasses.generateClassNames("component-classes")).toBe("component-classes");
+        expect(applyClassNameWithEmptyComponentClasses["generateClassNames"]("component-classes")).toBe("component-classes");
     });
 
     test("should return componentClasses if componentClasses is a string and no className prop is passed", () => {
-        expect(applyClassNameWithProps.generateClassNames("component-classes")).toBe("component-classes");
+        expect(applyClassNameWithProps["generateClassNames"]("component-classes")).toBe("component-classes");
     });
 
     test("should combine component classes and className props if both are passed", () => {
-        expect(applyClassNameWithComponentClasses.generateClassNames("component-classes")).toBe("component-classes custom-class-name");
-        expect(applyClassNameWithComponentClasses.generateClassNames(" component-classes")).toBe("component-classes custom-class-name");
-        expect(applyClassNameWithComponentClasses.generateClassNames(" component-classes ")).toBe("component-classes custom-class-name");
+        expect(applyClassNameWithComponentClasses["generateClassNames"]("component-classes")).toBe("component-classes custom-class-name");
+        expect(applyClassNameWithComponentClasses["generateClassNames"](" component-classes")).toBe("component-classes custom-class-name");
+        expect(applyClassNameWithComponentClasses["generateClassNames"](" component-classes ")).toBe("component-classes custom-class-name");
         expect(
-            applyClassNameWithComponentClasses.generateClassNames(" component-classes       ")
+            applyClassNameWithComponentClasses["generateClassNames"](" component-classes       ")
         ).toBe("component-classes custom-class-name");
         expect(
             new ReactTestUtils.renderIntoDocument(
                 <ApplyClassNameComponent className="   custom-class-name   "/>
-            ).generateClassNames(" component-classes     ")
+            )["generateClassNames"](" component-classes     ")
         ).toBe("component-classes custom-class-name");
     });
 });
