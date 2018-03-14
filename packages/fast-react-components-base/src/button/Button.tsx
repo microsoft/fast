@@ -8,9 +8,7 @@ interface IButtonManagedClasses {
     button: string;
 }
 
-// class Button extends Foundation<IButtonProps & IInjectedProps<IButtonManagedClasses>,  JSX.IntrinsicElements, {}> {
-class Button extends Foundation<IButtonProps & IInjectedProps<IButtonManagedClasses>,  React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> | React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>, {}> {
-// class Button extends Foundation<IButtonProps & IInjectedProps<IButtonManagedClasses>,  React.HTMLProps<HTMLButtonElement>, {}> {
+class Button extends Foundation<IButtonProps & IInjectedProps<IButtonManagedClasses>,  React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, {}> {
     protected handledPropsObject = {
         managedClasses: true,
     }
@@ -27,7 +25,5 @@ class Button extends Foundation<IButtonProps & IInjectedProps<IButtonManagedClas
     }
 }
 
-
-<Button type={"submit"}  managedClasses={{button: ""}} name="name" />
 export default Button;
 export { IButtonProps, IButtonManagedClasses };

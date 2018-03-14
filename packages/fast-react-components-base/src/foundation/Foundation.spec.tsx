@@ -214,51 +214,51 @@ describe("unhandledProps", () => {
         expect(has(unhandledProps, "null")).toBe(false);
     });
 });
-//
-// describe("generateClassNames", () => {
-//     let applyClassNameWithEmptyComponentClasses;
-//     let applyClassNameWithProps;
-//     let applyClassNameWithComponentClasses;
-//
-//     class ApplyClassNameComponent extends BaseComponent<any, any> {
-//         render() { return <div>Hello World</div>; }
-//     }
-//
-//     beforeEach(() => {
-//         applyClassNameWithEmptyComponentClasses = new ReactTestUtils.renderIntoDocument(<ApplyClassNameComponent />);
-//         applyClassNameWithProps = new ReactTestUtils.renderIntoDocument(<ApplyClassNameComponent foo="bar" />);
-//         applyClassNameWithComponentClasses = new ReactTestUtils.renderIntoDocument(
-//             <ApplyClassNameComponent className="custom-class-name"/>
-//         );
-//     });
-//
-//     test("should return null if props are undefined and componentClasses is not a string", () => {
-//         expect(applyClassNameWithEmptyComponentClasses.generateClassNames()).toBe(null);
-//     });
-//
-//     test("should return null if componentClasses are not a string and no className prop is passed", () => {
-//         expect(applyClassNameWithProps.generateClassNames()).toBe(null);
-//     });
-//
-//     test("should return componentClasses if componentClasses is a string and no props are passed", () => {
-//         expect(applyClassNameWithEmptyComponentClasses.generateClassNames("component-classes")).toBe("component-classes");
-//     });
-//
-//     test("should return componentClasses if componentClasses is a string and no className prop is passed", () => {
-//         expect(applyClassNameWithProps.generateClassNames("component-classes")).toBe("component-classes");
-//     });
-//
-//     test("should combine component classes and className props if both are passed", () => {
-//         expect(applyClassNameWithComponentClasses.generateClassNames("component-classes")).toBe("component-classes custom-class-name");
-//         expect(applyClassNameWithComponentClasses.generateClassNames(" component-classes")).toBe("component-classes custom-class-name");
-//         expect(applyClassNameWithComponentClasses.generateClassNames(" component-classes ")).toBe("component-classes custom-class-name");
-//         expect(
-//             applyClassNameWithComponentClasses.generateClassNames(" component-classes       ")
-//         ).toBe("component-classes custom-class-name");
-//         expect(
-//             new ReactTestUtils.renderIntoDocument(
-//                 <ApplyClassNameComponent className="   custom-class-name   "/>
-//             ).generateClassNames(" component-classes     ")
-//         ).toBe("component-classes custom-class-name");
-//     });
-// });
+
+describe("generateClassNames", () => {
+    let applyClassNameWithEmptyComponentClasses;
+    let applyClassNameWithProps;
+    let applyClassNameWithComponentClasses;
+
+    class ApplyClassNameComponent extends Foundation<any, any, any> {
+        render() { return <div>Hello World</div>; }
+    }
+
+    beforeEach(() => {
+        applyClassNameWithEmptyComponentClasses = new ReactTestUtils.renderIntoDocument(<ApplyClassNameComponent />);
+        applyClassNameWithProps = new ReactTestUtils.renderIntoDocument(<ApplyClassNameComponent foo="bar" />);
+        applyClassNameWithComponentClasses = new ReactTestUtils.renderIntoDocument(
+            <ApplyClassNameComponent className="custom-class-name"/>
+        );
+    });
+
+    test("should return null if props are undefined and componentClasses is not a string", () => {
+        expect(applyClassNameWithEmptyComponentClasses.generateClassNames()).toBe(null);
+    });
+
+    test("should return null if componentClasses are not a string and no className prop is passed", () => {
+        expect(applyClassNameWithProps.generateClassNames()).toBe(null);
+    });
+
+    test("should return componentClasses if componentClasses is a string and no props are passed", () => {
+        expect(applyClassNameWithEmptyComponentClasses.generateClassNames("component-classes")).toBe("component-classes");
+    });
+
+    test("should return componentClasses if componentClasses is a string and no className prop is passed", () => {
+        expect(applyClassNameWithProps.generateClassNames("component-classes")).toBe("component-classes");
+    });
+
+    test("should combine component classes and className props if both are passed", () => {
+        expect(applyClassNameWithComponentClasses.generateClassNames("component-classes")).toBe("component-classes custom-class-name");
+        expect(applyClassNameWithComponentClasses.generateClassNames(" component-classes")).toBe("component-classes custom-class-name");
+        expect(applyClassNameWithComponentClasses.generateClassNames(" component-classes ")).toBe("component-classes custom-class-name");
+        expect(
+            applyClassNameWithComponentClasses.generateClassNames(" component-classes       ")
+        ).toBe("component-classes custom-class-name");
+        expect(
+            new ReactTestUtils.renderIntoDocument(
+                <ApplyClassNameComponent className="   custom-class-name   "/>
+            ).generateClassNames(" component-classes     ")
+        ).toBe("component-classes custom-class-name");
+    });
+});
