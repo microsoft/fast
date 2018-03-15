@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "declaration": true,
+    "lib": [ "es2015", "es2017", "dom", "scripthost" ],
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "outDir": "../build",
+    "removeComments": true,
+    "rootDir": "./",
+    "sourceMap": true,
+    "target": "es5",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "types": [
+      "node",
+     "web-animations-js"
+    ]
+  }
+}
