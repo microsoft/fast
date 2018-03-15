@@ -15,18 +15,21 @@ class Button extends Foundation<IButtonProps & IInjectedProps<IButtonManagedClas
         tag: void 0
     };
 
+    protected defaultProps: IButtonProps = {
+        tag: ButtonHTMLTags.button
+    };
 
     /**
      * Stores HTML tag for use in render
      */
-    private tag: string;
+    private get tag(): string {
+        return this.generateHTMLTag();
+    }
 
     /**
      * Renders the component
      */
     public render(): React.ReactElement<HTMLButtonElement | HTMLAnchorElement> {
-        this.tag = this.generateHTMLTag();
-
         return (
             <this.tag
                 {...this.unhandledProps()}
