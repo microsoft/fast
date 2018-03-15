@@ -1,6 +1,16 @@
 import * as React from "react";
 
-/* tslint:disable-next-line */
-interface IButtonProps {}
+/**
+ * Button HTML tags
+ */
+export enum ButtonHTMLTags {
+    a = "a" as any,
+    button = "button" as any
+}
 
-export { IButtonProps };
+export interface IButtonProps {
+    /**
+     * The HTML tag (defaults to ButtonHTMLTags.button)
+     */
+    tag?: ButtonHTMLTags;
+}

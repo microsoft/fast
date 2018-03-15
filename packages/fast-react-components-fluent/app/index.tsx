@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import {ButtonHTMLTags} from "@microsoft/fast-react-components-base";
 import Button from "../src/button";
 import { DesignSystemProvider } from "@microsoft/fast-react-jss-manager";
 import fluentDesignSystemDefaults from "../src/design-system";
@@ -15,7 +16,7 @@ function render(): void {
     ReactDOM.render(
         <div>
             <DesignSystemProvider designSystem={fluentDesignSystemDefaults}>
-                <Button>Hello world</Button>
+                <Button tag={ButtonHTMLTags.button}>Hello world</Button>
             </DesignSystemProvider>
         </div>,
         root
