@@ -1,0 +1,90 @@
+{
+  "name": "@microsoft/fast-animation",
+  "version": "0.0.12-beta.0",
+  "description": "An animation library that simplifies interactions and animations using the Web Animation API.",
+  "license": "MIT",
+  "main": "build/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Microsoft/fast-animation.git"
+  },
+  "registry": "https://registry.npmjs.org/",
+  "publishConfig": {
+    "registry": "https://www.npmjs.com/package/@microsoft/fast-animation"
+  },
+  "author": {
+    "name": "Microsoft Corporation"
+  },
+  "scripts": {
+    "build": "tsc -p ./lib/tsconfig.json",
+    "test": "jest",
+    "build:react": "webpack --config webpack/webpack.react.config.js",
+    "dev-server:react": "node_modules/.bin/webpack-dev-server --config webpack/webpack.react.config.js --progress",
+    "prepack": "npm run build"
+  },
+  "devDependencies": {
+    "@types/jest": "^21.1.2",
+    "@types/node": "^7.0.22",
+    "@types/react": "^15.0.24",
+    "@types/react-dom": "^15.5.0",
+    "@types/react-redux": "^4.4.47",
+    "awesome-typescript-loader": "^3.1.3",
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-plugin-module-alias": "^1.6.0",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^0.27.1",
+    "eslint": "^4.3.0",
+    "eslint-loader": "^1.7.1",
+    "extract-text-webpack-plugin": "^2.1.0",
+    "file-loader": "^0.11.1",
+    "fork-ts-checker-webpack-plugin": "^0.4.0",
+    "jest": "^21.2.1",
+    "lodash.get": "^4.4.2",
+    "lodash.set": "^4.3.2",
+    "modernizr-webpack-plugin": "^1.0.5",
+    "node-sass": "^4.5.3",
+    "postcss": "^5.2.16",
+    "postcss-loader": "^1.3.3",
+    "postcss-scss": "^0.4.1",
+    "react": "^15.6.2",
+    "react-dom": "^15.6.2",
+    "react-redux": "^5.0.5",
+    "react-router": "^4.1.1",
+    "require-dir": "^0.3.2",
+    "sass-loader": "^6.0.3",
+    "style-loader": "^0.13.2",
+    "ts-jest": "^21.0.1",
+    "tslint": "^5.3.2",
+    "tslint-loader": "^3.5.3",
+    "tslint-react": "^3.0.0",
+    "typescript": "^2.3.3",
+    "webpack": "^2.6.0",
+    "webpack-bundle-analyzer": "^2.8.2",
+    "webpack-dev-server": "^2.4.5"
+  },
+  "dependencies": {
+    "@types/web-animations-js": "^2.2.5",
+    "lodash.throttle": "^4.1.1"
+  },
+  "jest": {
+    "rootDir": "./",
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "collectCoverage": true,
+    "moduleDirectories": [
+      "node_modules"
+    ]
+  }
+}
