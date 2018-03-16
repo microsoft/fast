@@ -12,25 +12,23 @@ module.exports = {
         filename: "[name].js"
     },
     mode: process.env.NODE_ENV || "development",
+    resolve: {
+        extensions: ['.js', '.ts', '.tsx'],
+    },
     module: {
         rules: [
             {
                 test: /.tsx?$/,
                 use: [
                     {
-                        loader: "ts-loader",
-                        options: {
-                            transpileOnly: true
-                        }
+                        loader: "ts-loader"
                     }
-                ]
+                ],
+                exclude: /node_modules/
             }
         ]
     },
     plugins: [
-        new ForkTsCheckerWebpackPlugin({
-            tslint: path.resolve(__dirname, "../../tslint.json")
-        }),
         new HtmlWebpackPlugin({
             contentBase: outDir,
         })

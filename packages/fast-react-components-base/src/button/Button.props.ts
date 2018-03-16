@@ -13,4 +13,6 @@ export interface IButtonProps {
      * The HTML tag (defaults to ButtonHTMLTags.button)
      */
     tag?: ButtonHTMLTags;
+
+    children?: React.ReactNode | React.ReactNode[];
 }

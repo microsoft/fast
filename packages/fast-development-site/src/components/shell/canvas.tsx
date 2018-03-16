@@ -30,4 +30,5 @@ class ShellCanvas extends React.Component<ICanvasHeaderProps & IInjectedProps<IS
     }
 }
 
+export { ICanvasHeaderProps };
 export default manageJss(style)(ShellCanvas);
