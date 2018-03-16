@@ -1,0 +1,31 @@
+{
+  "name": "@microsoft/fast-tslint-rules",
+  "version": "1.0.4",
+  "description": "tslint rules for FAST projects",
+  "main": "tslint.json",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast-tslint-rules.git"
+  },
+  "keywords": [
+    "tslint",
+    "typescript"
+  ],
+  "author": {
+    "name": "Fluent Web",
+    "email": "fwq@microsoft.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Microsoft/fast-tslint-rules/issues"
+  },
+  "homepage": "https://github.com/Microsoft/fast-tslint-rules#readme",
+  "dependencies": {
+    "tslint": "^5.9.1",
+    "tslint-react": "^3.4.0",
+    "typescript": "^2.7.1"
+  }
+}
