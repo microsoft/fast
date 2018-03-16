@@ -21,7 +21,7 @@ document.body.appendChild(root);
 
 function render(): void {
     ReactDOM.render(
-        <div></div> /*<Site title={"FAST components base"} categories={items} />*/,
+        <Site title={"FAST components base"} categories={items} />,
         root
     );
 }
