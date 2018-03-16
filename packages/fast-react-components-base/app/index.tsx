@@ -7,7 +7,7 @@ const items: ICategoryProps[] = [
     {
         name: "Fast Components",
         items: [
-            examples.buttonExamples
+            examples.ButtonExamples
         ]
     }
 ];
