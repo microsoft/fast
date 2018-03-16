@@ -12,6 +12,9 @@ module.exports = {
         filename: "[name].js"
     },
     mode: process.env.NODE_ENV || "development",
+    resolve: {
+        extensions: ['.js', '.ts', '.tsx'],
+    },
     module: {
         rules: [
             {
@@ -23,7 +26,8 @@ module.exports = {
                             transpileOnly: true
                         }
                     }
-                ]
+                ],
+                exclude: /node_modules/
             }
         ]
     },
