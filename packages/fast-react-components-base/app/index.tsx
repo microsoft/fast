@@ -1,13 +1,13 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import Site, { ISiteProps, ICategoryProps } from "@microsoft/fast-development-site/dist";
-import buttonExamples from "../src/button/examples.data";
+import Site, { ISiteProps, ICategoryProps } from "@microsoft/fast-development-site";
+import * as examples from "./examples";
 
 const items: ICategoryProps[] = [
     {
         name: "Fast Components",
         items: [
-            buttonExamples
+            examples.buttonExamples
         ]
     }
 ];

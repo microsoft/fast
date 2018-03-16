@@ -1,7 +1,7 @@
 import {ICategoryItemProps} from "@microsoft/fast-development-site";
 import Button from "./Button";
 
-const buttonExamples: ICategoryItemProps = {
+export default {
     name: "button",
     component: Button,
     data: [
@@ -11,5 +11,3 @@ const buttonExamples: ICategoryItemProps = {
         }
     ]
 };
-
-export default buttonExamples;
