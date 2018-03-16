@@ -1,9 +1,18 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import {ButtonHTMLTags} from "@microsoft/fast-react-components-base";
-import Button from "../src/button";
 import { DesignSystemProvider } from "@microsoft/fast-react-jss-manager";
 import fluentDesignSystemDefaults from "../src/design-system";
+import Site, { ISiteProps, ICategoryProps } from "@microsoft/fast-development-site";
+import * as examples from "./examples";
+
+const items: ICategoryProps[] = [
+    {
+        name: "Fast Components",
+        items: [
+            examples.ButtonExamples
+        ]
+    }
+];
 
 /**
  * Create the root node
@@ -16,7 +25,7 @@ function render(): void {
     ReactDOM.render(
         <div>
             <DesignSystemProvider designSystem={fluentDesignSystemDefaults}>
-                <Button tag={ButtonHTMLTags.button}>Hello world</Button>
+                <Site title={"FAST components base"} categories={items} />,
             </DesignSystemProvider>
         </div>,
         root
