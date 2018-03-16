@@ -21,10 +21,7 @@ module.exports = {
                 test: /.tsx?$/,
                 use: [
                     {
-                        loader: "ts-loader",
-                        options: {
-                            transpileOnly: true
-                        }
+                        loader: "ts-loader"
                     }
                 ],
                 exclude: /node_modules/
@@ -32,9 +29,6 @@ module.exports = {
         ]
     },
     plugins: [
-        new ForkTsCheckerWebpackPlugin({
-            tslint: path.resolve(__dirname, "../../tslint.json")
-        }),
         new HtmlWebpackPlugin({
             contentBase: outDir,
         })

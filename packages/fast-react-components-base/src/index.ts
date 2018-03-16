@@ -1,6 +1,6 @@
 import Button from "./button";
 export { Button };
-export * from "./button";
+export {IButtonProps, IButtonManagedClasses, ButtonHTMLTags} from "./button";
 
 import Foundation from "./foundation";
 export { Foundation };
