@@ -1,7 +1,6 @@
-## Detail
+<body>
 
+<footer>
+ 
 
-## Attributes
-
-
-For [details on formatting](https://fluentweb.com/prototyping/contribution-policy) the title, details, and attributes.
+For [details on formatting](https://fluentweb.com/prototyping/contribution-policy#pull-request-guidance) pull requests.
