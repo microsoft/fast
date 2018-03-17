@@ -1,4 +1,4 @@
-const fs = require("fs");
+import * as fs from "fs";
 
 export type ExportFileType = "ts" | "js";
 
@@ -7,38 +7,37 @@ export interface IGlyph {
     svg: string;
 }
 
+export interface IConvertGlyphOptions {
+    glyphFolderPath: string;
+    indexFileType?: ExportFileType;
+    indexFileDestination?: string;
+}
+
 export default class ConvertGlyphs {
-    private _glyphs: IGlyph[];
-    private _index: string;
-    private _indexFileType: ExportFileType;
-    private _indexFileDestination: string;
+    private glyphs: IGlyph[];
+    private index: string;
+    private indexFileType: ExportFileType;
+    private indexFileDestination: string;
 
     constructor(
-        glyphFolderPath: string,
-        indexFileType?: ExportFileType,
-        indexFileDestination?: string
+        options: IConvertGlyphOptions
     ) {
-        this._glyphs = this.getGlyphs(glyphFolderPath, "svg");
-        this._index = this.getIndex();
-        this._indexFileType = indexFileType || "js";
-        this._indexFileDestination = indexFileDestination
-            ? `${indexFileDestination}/index.${this._indexFileType}`
-            : `${glyphFolderPath}/index.${this._indexFileType}`;
+        this.glyphs = this.getGlyphs(options.glyphFolderPath, "svg");
+        this.index = this.getIndexFileContents();
+        this.indexFileType = options.indexFileType || "js";
+        this.indexFileDestination = options.indexFileDestination
+            ? `${options.indexFileDestination}/index.${this.indexFileType}`
+            : `${options.glyphFolderPath}/index.${this.indexFileType}`;
 
         this.writeIndexFile();
     }
 
-    private writeIndexFile(): void {
-        fs.writeFileSync(this._indexFileDestination, this._index, "UTF-8");
-    }
-
-    private normalizeName(glyphName: string): string {
-        return `glyph${glyphName.charAt(0).toUpperCase()}${glyphName.slice(1, glyphName.length - 4).replace(/[^0-9a-zA-Z]/g, "")}`;
-    }
-
+    /**
+     * Gets an object containing the glyph names and a string which represents the SVG
+     */
     public getGlyphs(glyphFolderPath: string, glyphFileExtension: string): IGlyph[] {
-        let glyphs: IGlyph[] = [];
-        let files = fs.readdirSync(glyphFolderPath);
+        const glyphs: IGlyph[] = [];
+        const files: string[] = fs.readdirSync(glyphFolderPath);
 
         files.forEach((fileName: string): void => {
             if (fileName.slice(fileName.length - glyphFileExtension.length, fileName.length) === glyphFileExtension) {
@@ -52,14 +51,32 @@ export default class ConvertGlyphs {
         return glyphs;
     }
 
-    public getIndex(): string {
-        let index = "";
+    /**
+     * Creates and returns the content to be used in the index file
+     */
+    public getIndexFileContents(): string {
+        let index: string = "";
 
-        this._glyphs.forEach((glyph: IGlyph) => {
+        this.glyphs.forEach((glyph: IGlyph) => {
             index += `const ${glyph.name} = \`${glyph.svg}\`;\n`;
-            index += `export { ${glyph.name} };\n`
+            index += `export { ${glyph.name} };\n`;
         });
 
         return index;
+    }
+
+    /**
+     * Saves the index file containing the SVG string exports to disk
+     */
+    private writeIndexFile(): void {
+        fs.writeFileSync(this.indexFileDestination, this.index, "UTF-8");
+    }
+
+    /**
+     * Normalizes the name of the glyph so that it does not use any characters
+     * that JavaScript cannot use in a variable name
+     */
+    private normalizeName(glyphName: string): string {
+        return `glyph${glyphName.charAt(0).toUpperCase()}${glyphName.slice(1, glyphName.length - 4).replace(/[^0-9a-zA-Z]/g, "")}`;
     }
 }

@@ -1,5 +1,5 @@
-import isElementInView from '../utilities/isElementInView';
-import ScrollBase from './ScrollBase';
+import isElementInView from "../utilities/isElementInView";
+import ScrollBase from "./ScrollBase";
 
 /**
  * Utility for registering element/callback pairs where the callback will be called when the element enters the view-port
@@ -12,7 +12,7 @@ export default class ViewEnterTrigger extends ScrollBase {
         super.update();
 
         this.subscriptions.forEach((subscription, index) => {
-            let inView = isElementInView(subscription.element);
+            const inView = isElementInView(subscription.element);
 
             // If the element is in view but previously wasn't
             if (inView && !subscription.inView) {

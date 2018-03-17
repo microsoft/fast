@@ -1,5 +1,5 @@
-import AnimateFrom from '../animateFrom';
-import AnimateTo from '../animateTo';
+import AnimateFrom from "../animateFrom";
+import AnimateTo from "../animateTo";
 
 /**
  * Key frame object for fade-in animations
@@ -21,7 +21,7 @@ export const fadeOutKeyframes = [
  * EffectTiming defaults for fade animations
  */
 export const fadeEffectTiming = {
-    easing: 'linear',
+    easing: "linear",
     duration: 500
 };
 

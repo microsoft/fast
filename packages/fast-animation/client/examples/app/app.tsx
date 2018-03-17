@@ -1,8 +1,8 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { connect } from 'react-redux';
-import { set, get, cloneDeep } from 'lodash';
-import TestPage from './components/TestPage';
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import { connect } from "react-redux";
+import { set, get, cloneDeep } from "lodash";
+import TestPage from "./components/TestPage";
 
 /**
  * App component definition
@@ -10,13 +10,11 @@ import TestPage from './components/TestPage';
  */
 class App extends React.Component {
 
-    
-
     /**
      * Renders the component
      * @return {function}
      */
-    render() {
+    public render() {
         return (
             <TestPage />
         );
@@ -28,5 +26,5 @@ class App extends React.Component {
  */
 ReactDOM.render(
     <App />,
-    document.getElementById('root')
+    document.getElementById("root")
 );

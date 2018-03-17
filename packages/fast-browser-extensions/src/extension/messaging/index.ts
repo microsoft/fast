@@ -1,8 +1,8 @@
-import { IContextMenus, IContextMenuItem } from '../contextMenu';
-import { extensionId, menuItemClickEvent } from '../config';
+import { IContextMenus, IContextMenuItem } from "../contextMenu";
+import { extensionId, menuItemClickEvent } from "../config";
 
-export type CREATE_MENUS_MESSAGE = 'MESSAGE::CREATE_MENUS';
-export const CREATE_MENUS_MESSAGE: CREATE_MENUS_MESSAGE = 'MESSAGE::CREATE_MENUS';
+export type CREATE_MENUS_MESSAGE = "MESSAGE::CREATE_MENUS";
+export const CREATE_MENUS_MESSAGE: CREATE_MENUS_MESSAGE = "MESSAGE::CREATE_MENUS";
 
 /**
  * Message to create a new menu system
@@ -27,29 +27,28 @@ export type CreateMessage = ICreateMessage;
 /**
  * Supported themes
  */
-export const themes: string[] = ['Theme default', 'Theme alt'];
+export const themes: string[] = ["Theme default", "Theme alt"];
 
 /**
  * Supported regions
  */
 export const regions: string[] = [
-    'Arabic',
-    'Hebrew',
-    'Armenian',
-    'Chinese-simplified',
-    'Chinese-traditional',
-    'Cyrillic',
-    'East-european',
-    'Georgian',
-    'Greek',
-    'Indian',
-    'Japanese',
-    'Korean',
-    'Thai',
-    'Vietnamese',
-    'West-european'
+    "Arabic",
+    "Hebrew",
+    "Armenian",
+    "Chinese-simplified",
+    "Chinese-traditional",
+    "Cyrillic",
+    "East-european",
+    "Georgian",
+    "Greek",
+    "Indian",
+    "Japanese",
+    "Korean",
+    "Thai",
+    "Vietnamese",
+    "West-european"
 ];
-
 
 /**
  * Subscribe to menu item click events
@@ -66,7 +65,7 @@ export function createContextMenus(config: IContextMenus): void {
         type: CREATE_MENUS_MESSAGE,
         data: config
     };
-    
+
     // TODO: create x-browser version of this using extension api
     chrome.runtime.sendMessage(extensionId, data);
 }

@@ -1,4 +1,4 @@
-import * as bezierCurves from './config';
+import * as bezierCurves from "./config";
 
 /**
  * Defines interface for a cubic bezier curve
@@ -16,7 +16,7 @@ export interface BezierCurve {
 }
 
 export function cubicBezier(name: string): string {
-    return bezierCurves.hasOwnProperty(name) ? formatCubicBezier(bezierCurves[name]) : '';
+    return bezierCurves.hasOwnProperty(name) ? formatCubicBezier(bezierCurves[name]) : "";
 }
 
 /**
@@ -24,11 +24,11 @@ export function cubicBezier(name: string): string {
  */
 export function formatCubicBezier(points) {
     if (!Array.isArray(points) || !Array.isArray(points[0]) || !Array.isArray(points[1])) {
-        return '';
+        return "";
     }
 
     const p0 = points[0];
     const p1 = points[1];
-    
+
     return `cubic-bezier(${p0[0]}, ${p0[1]}, ${p1[0]}, ${p1[1]})`;
 }

@@ -1,6 +1,6 @@
-import isElementInView from '../utilities/isElementInView';
-import throttle from 'lodash.throttle';
-import scrollY from '../utilities/scrollY';
+import isElementInView from "../utilities/isElementInView";
+import throttle from "lodash.throttle";
+import scrollY from "../utilities/scrollY";
 
 /**
  * AnimationTrigger callback contract
@@ -16,13 +16,13 @@ export default abstract class ScrollTrigger {
     private useRequestAnimationFrame: boolean = false;
     private lastScrollY: number;
     protected scrollDistance: number = 0;
-    
+
     constructor() {
-        this.useRequestAnimationFrame = window.hasOwnProperty('requestAnimationFrame');
+        this.useRequestAnimationFrame = window.hasOwnProperty("requestAnimationFrame");
         this.lastScrollY = scrollY();
 
         // We need to use .bind instead of lambda (fat-arrow) syntax here because
-        // protected methods declared as lambda functions cannot be invoked by 
+        // protected methods declared as lambda functions cannot be invoked by
         // extending classes via the `super` object
         this.update = this.update.bind(this);
     }
@@ -40,17 +40,17 @@ export default abstract class ScrollTrigger {
      * Subscribe an element and callback for scroll triggers
      */
     public subscribe(element: HTMLElement, callback: ScrollTriggerCallback) {
-        if (!(element instanceof HTMLElement) || typeof callback !== 'function' || this.isSubscribed(element, callback)) {
+        if (!(element instanceof HTMLElement) || typeof callback !== "function" || this.isSubscribed(element, callback)) {
             return;
         }
 
         if (this.subscriptions.length === 0) {
             if (this.useRequestAnimationFrame) {
-                window.addEventListener('scroll', this.requestFrame);
+                window.addEventListener("scroll", this.requestFrame);
             } else {
                 // If we can't use window.requestAnimationFrame, just throttle the update method
                 this.update = throttle(this.update, 1000 / 60); // 60fps
-                window.addEventListener('scroll', this.update);
+                window.addEventListener("scroll", this.update);
             }
         }
 
@@ -66,7 +66,7 @@ export default abstract class ScrollTrigger {
         });
 
         if (this.subscriptions.length === 0) {
-            window.removeEventListener('scroll', this.useRequestAnimationFrame ? this.requestFrame : this.update);
+            window.removeEventListener("scroll", this.useRequestAnimationFrame ? this.requestFrame : this.update);
         }
     }
 
@@ -86,7 +86,7 @@ export default abstract class ScrollTrigger {
      * Make any arbitrary updates to UI
      */
     protected update() {
-        let yOffset = scrollY();
+        const yOffset = scrollY();
         this.openRequestAnimationFrame = false;
         this.scrollDistance = yOffset - this.lastScrollY;
         this.lastScrollY = yOffset;

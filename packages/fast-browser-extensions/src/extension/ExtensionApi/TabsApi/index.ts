@@ -1,4 +1,4 @@
-import { getApiSupport, APIName } from '../';
+import { getApiSupport, APIName } from "../";
 
 /**
  * Wrap tab api
@@ -7,7 +7,7 @@ export default class TabsApi {
     /**
      * Tab query wrapper
      */
-    query(queryInfo: chrome.tabs.QueryInfo, callback?: (results: chrome.tabs.Tab[]) => void): void {
+    public query(queryInfo: chrome.tabs.QueryInfo, callback?: (results: chrome.tabs.Tab[]) => void): void {
         switch (getApiSupport()) {
             case APIName.chrome:
                 chrome.tabs.query(queryInfo, callback) as any;
@@ -24,7 +24,7 @@ export default class TabsApi {
     /**
      * Tab sendMessage wrapper
      */
-    sendMessage(tabId: number, message: any) {
+    public sendMessage(tabId: number, message: any) {
         switch (getApiSupport()) {
             case APIName.chrome:
                 chrome.tabs.sendMessage(tabId, message);
@@ -35,4 +35,3 @@ export default class TabsApi {
         }
     }
 }
-

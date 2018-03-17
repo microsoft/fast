@@ -8,7 +8,7 @@ The package can be used as a `ts-node` script and pointed to the directory conta
 This will create an `index.js` file which can be imported that holds named exports based on the file name of the SVG it has imported.
 
 ```js
-    const glyphPath = path.resolve(__dirname, "path/to/file");
+    const glyphPath = path.resolve(__dirname, "path/to/folder");
     const glyphConverter = new ConvertGlyphs(glyphPath);
 ```
 
@@ -16,7 +16,7 @@ This will create an `index.js` file which can be imported that holds named expor
 This will create the export file in a different directory than that of the SVGs.
 
 ```js
-    const glyphPath = path.resolve(__dirname, "path/to/file");
+    const glyphPath = path.resolve(__dirname, "path/to/folder");
     const glyphConverter = new ConvertGlyphs(glyphPath, path.resolve(__dirname, void(0), "path/to/file"));
 ```
 
@@ -24,6 +24,6 @@ This will create the export file in a different directory than that of the SVGs.
 If you are using typescript you can specify `ts` as the index file type. The default is `js`.
 
 ```js
-    const glyphPath = path.resolve(__dirname, "path/to/file", "ts");
+    const glyphPath = path.resolve(__dirname, "path/to/folder", "ts");
     const glyphConverter = new ConvertGlyphs(glyphPath);
 ```
