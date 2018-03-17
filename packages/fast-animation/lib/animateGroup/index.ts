@@ -1,26 +1,26 @@
-import AnimateTo from '../animateTo';
-import AnimateFrom from '../animateFrom';
+import AnimateTo from "../animateTo";
+import AnimateFrom from "../animateFrom";
 
 class AnimateGroup {
-    constructor(animations: (AnimateTo | AnimateFrom)[]) {
+    constructor(animations: Array<AnimateTo | AnimateFrom>) {
         this.animations = animations;
     }
 
     /**
      * Stores the group effect object
      */
-    private animations: (AnimateTo | AnimateFrom)[];    
-    
+    private animations: Array<AnimateTo | AnimateFrom>;
+
     /**
      * Returns the longest running animation in the group
      */
     private getLongestAnimation(): AnimateTo | AnimateFrom {
         return this.animations.reduce((previousValue, currentValue) => {
-            let previousDuration = this.getAnimationDuration(previousValue.effectTiming);
-            let currentDuration = this.getAnimationDuration(currentValue.effectTiming);
-                
+            const previousDuration = this.getAnimationDuration(previousValue.effectTiming);
+            const currentDuration = this.getAnimationDuration(currentValue.effectTiming);
+
             return currentDuration > previousDuration ? currentValue : previousValue;
-        });    
+        });
     }
 
     /**
@@ -39,7 +39,7 @@ class AnimateGroup {
      * Expose onFinish callback
      */
     public set onFinish(callback: () => void) {
-        this._onFinish = callback; 
+        this._onFinish = callback;
 
         this.getLongestAnimation().onFinish = callback;
     }
@@ -48,35 +48,35 @@ class AnimateGroup {
      * Play the group of animations
      */
     public play() {
-        this.animations.forEach(animation => animation.play());
+        this.animations.forEach((animation) => animation.play());
     }
 
     /**
      * Reverses all animations in the group
      */
     public reverse() {
-        this.animations.forEach(animation => animation.reverse());
+        this.animations.forEach((animation) => animation.reverse());
     }
 
     /**
      * Pauses all animations in the group
      */
     public pause = () => {
-        this.animations.forEach(animation => animation.pause());
+        this.animations.forEach((animation) => animation.pause());
     }
 
     /**
      * Finishes all animations in the group
      */
     public finish = () => {
-        this.animations.forEach(animation => animation.finish());
+        this.animations.forEach((animation) => animation.finish());
     }
 
     /**
      * Cancels all animations in the group
      */
     public cancel = () => {
-        this.animations.forEach(animation => animation.cancel());
+        this.animations.forEach((animation) => animation.cancel());
     }
 }
 

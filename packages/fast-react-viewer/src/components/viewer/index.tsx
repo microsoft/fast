@@ -238,7 +238,7 @@ export default class Viewer extends React.Component<IViewerProps, IViewerState> 
             <div key={"viewer-main"}>
                 <base target="_blank" />
                 <iframe
-                    ref={(iframe: HTMLIFrameElement): void => { this.iframe = iframe; } }
+                    ref={(iframe: HTMLIFrameElement): void => { this.iframe = iframe; }}
                     className={this.stylesheet.classes.iframe}
                     style={{height: this.state.iframeHeight}}
                 >

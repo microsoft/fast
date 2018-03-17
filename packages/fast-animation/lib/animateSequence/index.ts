@@ -1,12 +1,12 @@
-import AnimateTo from '../animateTo';
-import AnimateFrom from '../animateFrom';
+import AnimateTo from "../animateTo";
+import AnimateFrom from "../animateFrom";
 
 class AnimateSequence {
-    constructor(animations: (AnimateTo | AnimateFrom)[]) {
-        this.animations = animations; 
+    constructor(animations: Array<AnimateTo | AnimateFrom>) {
+        this.animations = animations;
     }
 
-    private animations: (AnimateTo | AnimateFrom)[];
+    private animations: Array<AnimateTo | AnimateFrom>;
 
     /**
      * onFinish callback method
@@ -16,8 +16,8 @@ class AnimateSequence {
     /**
      * Sequences a set of animations and calls the specified method
      */
-    private applySequencedCallback(animations: (AnimateTo | AnimateFrom)[], method: string) {
-        let animationCount = animations.length;
+    private applySequencedCallback(animations: Array<AnimateTo | AnimateFrom>, method: string) {
+        const animationCount = animations.length;
 
         if (animationCount <= 0) {
             return;
@@ -29,7 +29,7 @@ class AnimateSequence {
                 animation.onFinish = this.animations[index + 1][method];
             } else {
                 // Else attach onFinish or nullify any existing onFinish on the animation
-                animation.onFinish = this.onFinish || void(0); 
+                animation.onFinish = this.onFinish || void(0);
             }
         });
 
@@ -40,35 +40,35 @@ class AnimateSequence {
      * Play the sequence of animations
      */
     public play = () => {
-        this.applySequencedCallback(this.animations, 'play');
+        this.applySequencedCallback(this.animations, "play");
     }
 
     /**
      * Play the sequence in reverse
      */
     public reverse = () => {
-        this.applySequencedCallback(this.animations.reverse(), 'reverse');
+        this.applySequencedCallback(this.animations.reverse(), "reverse");
     }
 
     /**
      * Pauses all animations in the sequence
      */
     public pause = () => {
-        this.animations.forEach(animation => animation.pause());
+        this.animations.forEach((animation) => animation.pause());
     }
 
     /**
      * Finishes all animations in the sequence
      */
     public finish = () => {
-        this.animations.forEach(animation => animation.finish());
+        this.animations.forEach((animation) => animation.finish());
     }
 
     /**
      * Cancels all animations in the sequence
      */
     public cancel = () => {
-        this.animations.forEach(animation => animation.cancel());
+        this.animations.forEach((animation) => animation.cancel());
     }
 }
 

@@ -1,15 +1,15 @@
-import { validDomains } from '../config';
-import ExtensionApi from '../ExtensionApi';
-import { CreateMessage, CREATE_MENUS_MESSAGE } from '../messaging';
+import { validDomains } from "../config";
+import ExtensionApi from "../ExtensionApi";
+import { CreateMessage, CREATE_MENUS_MESSAGE } from "../messaging";
 
 /**
  * Describes all types of context menu item
  */
 export enum ContextMenuType {
-    radio = 'radio',
-    checkbox = 'checkbox',
-    normal = 'normal',
-    separator = 'separator'
+    radio = "radio",
+    checkbox = "checkbox",
+    normal = "normal",
+    separator = "separator"
 }
 
 /**
@@ -37,8 +37,8 @@ const rootId = createContextMenu();
  */
 function createContextMenu(): string {
     return ExtensionApi.contextMenus.create({
-        title: 'Fluent Web',
-        contexts:['all'],
+        title: "Fluent Web",
+        contexts: ["all"],
         documentUrlPatterns: validDomains
     });
 }
@@ -48,7 +48,7 @@ function createContextMenu(): string {
  */
 function createSubmenuItems(config: IContextMenus, rootId: string) {
     Object.keys(config).map((key, index) => {
-        let menuConfigs = config[key].slice(0);
+        const menuConfigs = config[key].slice(0);
 
         if (index !== 0) {
             // Add a separator before all groups
@@ -57,13 +57,13 @@ function createSubmenuItems(config: IContextMenus, rootId: string) {
         }
 
         menuConfigs
-            .map(config => {
+            .map((config) => {
                 return Object.assign({}, config, {
                     parentId: rootId,
                     onclick: handleContextMenuItemClick
                 });
             })
-            .forEach(config => {
+            .forEach((config) => {
                 const menuId = ExtensionApi.contextMenus.create(config);
                 menuIdStore[menuId] = config;
             });
@@ -91,7 +91,7 @@ function handleContextMenuItemClick(info) {
  * Remove all context menu items
  */
 function removeAllContextMenuItems() {
-    Object.keys(menuIdStore).forEach(menuId => {
+    Object.keys(menuIdStore).forEach((menuId) => {
         ExtensionApi.contextMenus.remove(menuId);
     });
 

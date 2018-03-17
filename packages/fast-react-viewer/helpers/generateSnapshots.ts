@@ -1,5 +1,5 @@
-import React = require('react');
-import renderer = require('react-test-renderer');
+import React = require("react");
+import renderer = require("react-test-renderer");
 
 /**
  * @name generateSnapshots
@@ -10,30 +10,30 @@ import renderer = require('react-test-renderer');
  */
 const generateSnapshots = (examples, reactComponent) => {
     if (!reactComponent) {
-        console.error('No component param passed to generateSnapshots.');
+        console.error("No component param passed to generateSnapshots.");
         return;
     }
-    
+
     if (!examples) {
-        console.error('No examples param passed to generateSnapshots.');
+        console.error("No examples param passed to generateSnapshots.");
         return;
     }
 
     if (!examples.data.length) {
         console.warn(
-            'No examples found - ensure your example exports an object with a `data` member containing an array of component examples.'
+            "No examples found - ensure your example exports an object with a `data` member containing an array of component examples."
         );
     }
-    
-    for (var i = 0; i < examples.data.length; i++) {
-        let example = examples.data[i];
+
+    for (let i = 0; i < examples.data.length; i++) {
+        const example = examples.data[i];
 
         test(example.title, () => {
             const component = renderer.create(
                 React.createElement(reactComponent, example.props, example.children)
             );
-            
-            let json = component.toJSON();
+
+            const json = component.toJSON();
 
             expect(json).toMatchSnapshot();
         });

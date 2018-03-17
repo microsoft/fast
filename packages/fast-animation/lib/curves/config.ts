@@ -1,4 +1,4 @@
-import { BezierCurve } from './';
+import { BezierCurve } from "./";
 
 export const linear: BezierCurve = [
     [0, 0],
@@ -18,7 +18,7 @@ export const easeIn: BezierCurve = [
 ];
 export const drillIn: BezierCurve = [
     [0.17, 0.17],
-    [0, 1] 
+    [0, 1]
 ];
 export const backToApp: BezierCurve = [
     [0.5, 0],
@@ -26,11 +26,11 @@ export const backToApp: BezierCurve = [
 ];
 export const appToApp: BezierCurve = [
     [0.5, 0],
-    [1, 0.9] 
+    [1, 0.9]
 ];
 export const fastIn: BezierCurve = [
     [0.1, 0.9],
-    [0.2, 1] 
+    [0.2, 1]
 ];
 export const fastOut: BezierCurve = [
     [0.9, 0.1],
