@@ -1,6 +1,8 @@
 import { variants } from './index';
-import AccentColor from './original';
 
+/**
+ * The know and desired input with corresponding color-variant ouputs
+ */
 const fixtures = [
     {
         "source": "#ffb900",
@@ -580,30 +582,14 @@ const fixtures = [
     }
 ];
 
-fixtures.forEach(fixture => {
-    const variations = variants(fixture.source);
-    let originalVariations = new AccentColor(fixture.source);
-    originalVariations = Object.keys(originalVariations.variants).map(key => originalVariations.variants[key]);
+describe("variants", () => {
+    fixtures.forEach(fixture => {
+        const variations = variants(fixture.source);
 
-    // test(`${fixture.source}[0]: ${fixture.variations[0]}`, () => {
-    //     expect(fixture.variations[0]).toBe(originalVariations[0]);
-    // });
-    // test(`${fixture.source}[1]: ${fixture.variations[1]}`, () => {
-    //     expect(fixture.variations[1]).toBe(originalVariations[1]);
-    // });
-    fixture.variations.forEach((variant, index) => {
-        test(`${fixture.source}[${index}]: ${variant}`, () => {
-            expect(variant).toBe(variations[index]);
-            // expect(variant).toBe(originalVariations[index]);
+        fixture.variations.forEach((variant, index) => {
+            test(`${fixture.source}[${index}]: ${variant}`, () => {
+                expect(variant).toBe(variations[index]);
+            })
         })
-    })
-});
-
-// test("variations", () => {
-//     fixtures.forEach(item => {
-//         const variations = variants(item.source);
-//         item.variations.forEach((variant, index) => {
-//             expect(variant).toBe(variations[index]);
-//         })
-//     })
-// })
+    });
+})
