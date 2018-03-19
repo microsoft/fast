@@ -9,5 +9,8 @@
         "definitionRef": {
             "$ref": "/refs/ref#/definitions/def"
         }
-    }
+    },
+    "required": [
+        "oneOfRef"
+    ]
 }
