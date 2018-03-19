@@ -1,6 +1,5 @@
-var get = require('lodash').get,
-    permutator = require('../../src/index'),
-    refSchemas = [];
+const get = require('lodash').get,
+    permutator = require('../../src/index');
 
 function prettyJSON(obj) {
     return JSON.stringify(obj, null, 2);
@@ -13,17 +12,15 @@ function prettyJSON(obj) {
 describe('Reference IDs', function() {
     let possibleRefs;
 
-    beforeAll((done) => { // done
-        let schemaData = require('../schemas/primitive/ref.schema.json');
+    beforeAll(() => {
+        const schemaData = require('../schemas/primitive/ref.schema.json');
 
-        let refLocations = permutator.getDeepPropLocations(schemaData, '$ref');
+        const refLocations = permutator.getDeepPropLocations(schemaData, '$ref');
         possibleRefs = [];
         
-        for (let refLocation of refLocations) {
+        for (const refLocation of refLocations) {
             possibleRefs.push(get(schemaData, `${refLocation}['$ref']`));
         }
-
-        done();
     });
     it('should the correct number schema IDs', function() {
         expect(possibleRefs).toHaveLength(2);
@@ -41,15 +38,15 @@ describe('Reference IDs', function() {
 describe('Deep reference IDs', function() {
     let possibleRefs;
 
-    beforeAll((done) => { // done
+    beforeAll(() => {
         let refSchemas = [];
 
-        let refRef = require('../schemas/primitive/ref.schema.json');
-        let refDefinition = require('../schemas/primitive/definition.schema.json');
-        let refBoolean = require('../schemas/primitive/boolean.schema.json');
-        let refString = require('../schemas/primitive/string.schema.json');
-        let refNumber = require('../schemas/primitive/number.schema.json');
-        let refOneOf = require('../schemas/primitive/oneOf.schema.json');
+        const refRef = require('../schemas/primitive/ref.schema.json');
+        const refDefinition = require('../schemas/primitive/definition.schema.json');
+        const refBoolean = require('../schemas/primitive/boolean.schema.json');
+        const refString = require('../schemas/primitive/string.schema.json');
+        const refNumber = require('../schemas/primitive/number.schema.json');
+        const refOneOf = require('../schemas/primitive/oneOf.schema.json');
 
         refSchemas.push(refRef);
         refSchemas.push(refDefinition);
@@ -58,15 +55,13 @@ describe('Deep reference IDs', function() {
         refSchemas.push(refNumber);
         refSchemas.push(refOneOf);
 
-        let schemaData = require('../schemas/primitive/deepRef.schema.json');
-        let refLocations = permutator.getDeepPropLocations(schemaData, '$ref');
+        const schemaData = require('../schemas/primitive/deepRef.schema.json');
+        const refLocations = permutator.getDeepPropLocations(schemaData, '$ref');
         possibleRefs = [];
         
-        for (let refLocation of refLocations) {
+        for (const refLocation of refLocations) {
             possibleRefs.push(get(schemaData, `${refLocation}['$ref']`));
         }
-
-        done();
     });
     it('should the correct number schema IDs', function() {
         expect(possibleRefs).toHaveLength(5);
@@ -82,15 +77,15 @@ describe('Locations of properties', function() {
     let possibleAllOf;
     let possibleRequired;
 
-    beforeAll((done) => { // done
+    beforeAll(() => { 
         let refSchemas = [];
 
-        let refRef = require('../schemas/primitive/ref.schema.json');
-        let refDefinition = require('../schemas/primitive/definition.schema.json');
-        let refBoolean = require('../schemas/primitive/boolean.schema.json');
-        let refString = require('../schemas/primitive/string.schema.json');
-        let refNumber = require('../schemas/primitive/number.schema.json');
-        let refOneOf = require('../schemas/primitive/oneOf.schema.json');
+        const refRef = require('../schemas/primitive/ref.schema.json');
+        const refDefinition = require('../schemas/primitive/definition.schema.json');
+        const refBoolean = require('../schemas/primitive/boolean.schema.json');
+        const refString = require('../schemas/primitive/string.schema.json');
+        const refNumber = require('../schemas/primitive/number.schema.json');
+        const refOneOf = require('../schemas/primitive/oneOf.schema.json');
 
         refSchemas.push(refRef);
         refSchemas.push(refDefinition);
@@ -99,12 +94,10 @@ describe('Locations of properties', function() {
         refSchemas.push(refNumber);
         refSchemas.push(refOneOf);
 
-        let schemaData = require('../schemas/primitive/deepRef.schema.json');
+        const schemaData = require('../schemas/primitive/deepRef.schema.json');
         possibleRefs = permutator.getDeepPropLocations(schemaData, '$ref');
         possibleAllOf = permutator.getDeepPropLocations(schemaData, 'allOf');
         possibleRequired = permutator.getDeepPropLocations(schemaData, 'required');
-
-        done();
     });
     it('should the correct number of locations', function() {
         expect(possibleRefs).toHaveLength(5);
@@ -116,19 +109,17 @@ describe('Locations of properties', function() {
 describe('Reference resolver', function() {
     let possibleSchema;
 
-    beforeAll((done) => { // done
+    beforeAll(() => { 
         let refSchemas = [];
 
-        let refRef = require('../schemas/refs/ref.schema.json');
-        let oneOfRef = require('../schemas/refs/oneOfRef.schema.json');
+        const refRef = require('../schemas/refs/ref.schema.json');
+        const oneOfRef = require('../schemas/refs/oneOfRef.schema.json');
         
         refSchemas.push(refRef);
         refSchemas.push(oneOfRef);
 
-        let schemaData = require('../schemas/refs/base.schema.json');
+        const schemaData = require('../schemas/refs/base.schema.json');
         possibleSchema = permutator.resolveReferences(schemaData, refSchemas);
-
-        done();
     });
     it('should generate correct number of references', function() {
         let refs = permutator.getDeepPropLocations(possibleSchema, '$ref');
@@ -140,14 +131,14 @@ describe('Reference resolver', function() {
 describe('Schema permutator', function() {
     let possibleData;
 
-    beforeAll((done) => { // done
+    beforeAll(() => { 
         let refSchemas = [];
 
-        let refDefinition = require('../schemas/primitive/definition.schema.json');
-        let refBoolean = require('../schemas/primitive/boolean.schema.json');
-        let refString = require('../schemas/primitive/string.schema.json');
-        let refNumber = require('../schemas/primitive/number.schema.json');
-        let refOneOf = require('../schemas/primitive/oneOf.schema.json');
+        const refDefinition = require('../schemas/primitive/definition.schema.json');
+        const refBoolean = require('../schemas/primitive/boolean.schema.json');
+        const refString = require('../schemas/primitive/string.schema.json');
+        const refNumber = require('../schemas/primitive/number.schema.json');
+        const refOneOf = require('../schemas/primitive/oneOf.schema.json');
 
         refSchemas.push(refDefinition);
         refSchemas.push(refBoolean);
@@ -155,10 +146,8 @@ describe('Schema permutator', function() {
         refSchemas.push(refNumber);
         refSchemas.push(refOneOf);
 
-        let schemaData = require('../schemas/primitive/oneOf.schema.json');
+        const schemaData = require('../schemas/primitive/oneOf.schema.json');
         possibleData = permutator.simplifySchemas(schemaData, refSchemas);
-
-        done();
     });
     it('should generate correct number of schemas', function() {
         expect(possibleData).toHaveLength(2);
@@ -169,26 +158,24 @@ describe('Property resolver', function() {
     let refsArray;
     let allOfArray;
 
-    beforeAll((done) => { // done
+    beforeAll(() => { 
         let refSchemas = [];
 
-        let refRef = require('../schemas/refs/ref.schema.json');
-        let oneOfRef = require('../schemas/refs/oneOfRef.schema.json');
+        const refRef = require('../schemas/refs/ref.schema.json');
+        const oneOfRef = require('../schemas/refs/oneOfRef.schema.json');
 
         refSchemas.push(refRef);
         refSchemas.push(oneOfRef);
 
-        let propsToResolve = [
+        const propsToResolve = [
             'allOf',
             '$ref'
         ];
 
-        let schemaData = require('../schemas/refs/base.schema.json');
-        let possibleData = permutator.resolveSchemaProps(schemaData, refSchemas, propsToResolve);
+        const schemaData = require('../schemas/refs/base.schema.json');
+        const possibleData = permutator.resolveSchemaProps(schemaData, refSchemas, propsToResolve);
         refsArray = permutator.getDeepPropLocations(possibleData, '$ref');
         allOfArray = permutator.getDeepPropLocations(possibleData, 'allOf');
-
-        done();
     });
     it('should not find any $ref or allOf properties', function() {
         expect(refsArray).toHaveLength(0);
@@ -199,19 +186,17 @@ describe('Property resolver', function() {
 describe('Get an example', function() {
     let possibleData;
 
-    beforeAll((done) => { // done
+    beforeAll(() => { 
         let refSchemas = [];
 
-        let refRef = require('../schemas/refs/ref.schema.json');
-        let oneOfRef = require('../schemas/refs/oneOfRef.schema.json');
+        const refRef = require('../schemas/refs/ref.schema.json');
+        const oneOfRef = require('../schemas/refs/oneOfRef.schema.json');
 
         refSchemas.push(refRef);
         refSchemas.push(oneOfRef);
 
-        let schemaData = require('../schemas/refs/base.schema.json');
+        const schemaData = require('../schemas/refs/base.schema.json');
         possibleData = permutator.getExample(schemaData, refSchemas);
-
-        done();
     });
     it('should return a single example from the required data available', function() {
         expect(possibleData).toHaveProperty('oneOfRef');
@@ -221,19 +206,17 @@ describe('Get an example', function() {
 describe('Get an example of an array', function() {
     let possibleData;
 
-    beforeAll((done) => { // done
+    beforeAll(() => { 
         let refSchemas = [];
 
-        let contextMenu = require('../schemas/fw/context-menu.schema.json');
-        let actionTrigger = require('../schemas/fw/action-trigger.schema.json');
+        const contextMenu = require('../schemas/fw/context-menu.schema.json');
+        const actionTrigger = require('../schemas/fw/action-trigger.schema.json');
 
         refSchemas.push(contextMenu);
         refSchemas.push(actionTrigger);
 
-        let schemaData = require('../schemas/fw/action-menu.schema.json');
+        const schemaData = require('../schemas/fw/action-menu.schema.json');
         possibleData = permutator.getExample(schemaData, refSchemas);
-
-        done();
     });
     it('should return a single example from the required data available', function() {
         expect(possibleData).toHaveProperty('menu');
@@ -245,12 +228,10 @@ describe('Get an example of an array', function() {
 describe('Get an example of nested arrays', function() {
     let possibleData;
 
-    beforeAll((done) => { // done
+    beforeAll(() => { 
         let refSchemas = [];
-        let schemaData = require('../schemas/primitive/nested-array.schema.json');
+        const schemaData = require('../schemas/primitive/nested-array.schema.json');
         possibleData = permutator.getExample(schemaData, refSchemas);
-
-        done();
     });
     it('should return a single example from the required data available', function() {
         expect(possibleData).toHaveProperty('defaultObj');
@@ -264,18 +245,16 @@ describe('Get an example of nested arrays', function() {
 describe('Resolve a recursive reference', function() {
     let resolvedRecursiveSchema;
 
-    beforeAll((done) => { // done
+    beforeAll(() => { 
         let refSchemas = [];
-        let propsToResolve = [
+        const propsToResolve = [
             'allOf',
             '$ref'
         ];
 
-        let schemaData = require('../schemas/fw/supplemental-navigation.schema.json');
-        let resolvedSchema = permutator.resolveSchemaProps(schemaData, refSchemas, propsToResolve);
+        const schemaData = require('../schemas/fw/supplemental-navigation.schema.json');
+        const resolvedSchema = permutator.resolveSchemaProps(schemaData, refSchemas, propsToResolve);
         resolvedRecursiveSchema = permutator.resolveRecursiveReferences(resolvedSchema);
-
-        done();
     });
     it('should not throw a circular reference error', function() {
         prettyJSON(resolvedRecursiveSchema);

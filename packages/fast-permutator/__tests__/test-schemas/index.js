@@ -1,7 +1,6 @@
 import { request } from 'http';
 
-var permutator = require('../../src/index'),
-    refSchemas = [];
+const permutator = require('../../src/index');
 
 function prettyJSON(obj) {
     return JSON.stringify(obj, null, 4);
@@ -14,11 +13,9 @@ function prettyJSON(obj) {
 describe('Boolean primitive', function() {
     let possibleData;
 
-    beforeAll((done) => { // done
-        let schemaData = require('../schemas/primitive/boolean.schema.json');
+    beforeAll(() => { // done
+        const schemaData = require('../schemas/primitive/boolean.schema.json');
         possibleData = permutator(schemaData);
-
-        done();
     });
     it('should generate correct number of permutations', function() {
         expect(possibleData).toHaveLength(6);
@@ -53,11 +50,9 @@ describe('Boolean primitive', function() {
 describe('String primitive', function() {
     let possibleData;
 
-    beforeAll((done) => { // done
-        let schemaData = require('../schemas/primitive/string.schema.json');
+    beforeAll(() => { // done
+        const schemaData = require('../schemas/primitive/string.schema.json');
         possibleData = permutator(schemaData);
-
-        done();
     });
     it('should generate correct number of permutations', function() {
         expect(possibleData).toHaveLength(4);
@@ -84,11 +79,9 @@ describe('String primitive', function() {
 describe('Number primitive', function() {
     let possibleData;
 
-    beforeAll((done) => { // done
-        let schemaData = require('../schemas/primitive/number.schema.json');
+    beforeAll(() => { // done
+        const schemaData = require('../schemas/primitive/number.schema.json');
         possibleData = permutator(schemaData);
-
-        done();
     });
     it('should generate correct number of permutations', function() {
         expect(possibleData).toHaveLength(4);
@@ -115,11 +108,9 @@ describe('Number primitive', function() {
 describe('Enum primitive', function() {
     let possibleData;
 
-    beforeAll((done) => { // done
-        let schemaData = require('../schemas/primitive/enum.schema.json');
+    beforeAll(() => { // done
+        const schemaData = require('../schemas/primitive/enum.schema.json');
         possibleData = permutator(schemaData);
-
-        done();
     });
     it('should generate correct number of permutations', function() {
         expect(possibleData).toHaveLength(4);
@@ -142,11 +133,9 @@ describe('Enum primitive', function() {
 describe('Not primitive', function() {
     let possibleData;
 
-    beforeAll((done) => { // done
-        let schemaData = require('../schemas/primitive/not.schema.json');
+    beforeAll(() => { // done
+        const schemaData = require('../schemas/primitive/not.schema.json');
         possibleData = permutator(schemaData);
-
-        done();
     });
     it('should generate correct number of permutations', function() {
         expect(possibleData).toHaveLength(2);
@@ -166,16 +155,14 @@ describe('Not primitive', function() {
 describe('Array primitive', function() {
     let possibleData;
 
-    beforeAll((done) => { // done
+    beforeAll(() => { // done
         let refSchemas = [];
-        let refBoolean = require('../schemas/primitive/boolean.schema.json');
+        const refBoolean = require('../schemas/primitive/boolean.schema.json');
 
         refSchemas.push(refBoolean);
 
-        let schemaData = require('../schemas/primitive/array.schema.json');
+        const schemaData = require('../schemas/primitive/array.schema.json');
         possibleData = permutator(schemaData, refSchemas);
-
-        done();
     });
     it('should generate correct number of permutations', function() {
         expect(possibleData).toHaveLength(1);
@@ -192,11 +179,9 @@ describe('Array primitive', function() {
 describe('Object primitive', function() {
     let possibleData;
 
-    beforeAll((done) => { // done
-        let schemaData = require('../schemas/primitive/object.schema.json');
+    beforeAll(() => { // done
+        const schemaData = require('../schemas/primitive/object.schema.json');
         possibleData = permutator(schemaData);
-
-        done();
     });
     it('should generate correct number of permutations', function() {
         expect(possibleData).toHaveLength(10);
@@ -216,11 +201,9 @@ describe('Object primitive', function() {
 describe('Definition primitive', function() {
     let possibleData;
 
-    beforeAll((done) => { // done
-        let schemaData = require('../schemas/primitive/definition.schema.json');
+    beforeAll(() => { // done
+        const schemaData = require('../schemas/primitive/definition.schema.json');
         possibleData = permutator(schemaData);
-
-        done();
     });
     it('should generate correct number of permutations', function() {
         expect(possibleData).toHaveLength(2);
@@ -244,14 +227,14 @@ describe('Definition primitive', function() {
 describe('Refs primitive', function() {
     let possibleData;
 
-    beforeAll((done) => { // done
+    beforeAll(() => { // done
         let refSchemas = [];
 
-        let refDefinition = require('../schemas/primitive/definition.schema.json');
-        let refBoolean = require('../schemas/primitive/boolean.schema.json');
-        let refString = require('../schemas/primitive/string.schema.json');
-        let refNumber = require('../schemas/primitive/number.schema.json');
-        let refOneOf = require('../schemas/primitive/oneOf.schema.json');
+        const refDefinition = require('../schemas/primitive/definition.schema.json');
+        const refBoolean = require('../schemas/primitive/boolean.schema.json');
+        const refString = require('../schemas/primitive/string.schema.json');
+        const refNumber = require('../schemas/primitive/number.schema.json');
+        const refOneOf = require('../schemas/primitive/oneOf.schema.json');
 
         refSchemas.push(refDefinition);
         refSchemas.push(refBoolean);
@@ -259,10 +242,8 @@ describe('Refs primitive', function() {
         refSchemas.push(refNumber);
         refSchemas.push(refOneOf);
         
-        let schemaData = require('../schemas/primitive/ref.schema.json');
+        const schemaData = require('../schemas/primitive/ref.schema.json');
         possibleData = permutator(schemaData, refSchemas);
-
-        done();
     });
     it('should generate correct number of permutations', function() {
         expect(possibleData).toHaveLength(2);
@@ -287,15 +268,15 @@ describe('Refs primitive', function() {
 describe('Deep reference primitive', function() {
     let possibleData;
 
-    beforeAll((done) => { // done
+    beforeAll(() => { // done
         let refSchemas = [];
 
-        let refRef = require('../schemas/primitive/ref.schema.json');
-        let refDefinition = require('../schemas/primitive/definition.schema.json');
-        let refBoolean = require('../schemas/primitive/boolean.schema.json');
-        let refString = require('../schemas/primitive/string.schema.json');
-        let refNumber = require('../schemas/primitive/number.schema.json');
-        let refOneOf = require('../schemas/primitive/oneOf.schema.json');
+        const refRef = require('../schemas/primitive/ref.schema.json');
+        const refDefinition = require('../schemas/primitive/definition.schema.json');
+        const refBoolean = require('../schemas/primitive/boolean.schema.json');
+        const refString = require('../schemas/primitive/string.schema.json');
+        const refNumber = require('../schemas/primitive/number.schema.json');
+        const refOneOf = require('../schemas/primitive/oneOf.schema.json');
 
         refSchemas.push(refRef);
         refSchemas.push(refDefinition);
@@ -304,10 +285,8 @@ describe('Deep reference primitive', function() {
         refSchemas.push(refNumber);
         refSchemas.push(refOneOf);
 
-        let schemaData = require('../schemas/primitive/deepRef.schema.json');
+        const schemaData = require('../schemas/primitive/deepRef.schema.json');
         possibleData = permutator(schemaData, refSchemas);
-
-        done();
     });
     it('should the correct number of permutations', function() {
         expect(possibleData).toHaveLength(2);
@@ -317,16 +296,14 @@ describe('Deep reference primitive', function() {
 describe('OneOf primitive', function() {
     let possibleData;
 
-    beforeAll((done) => { // done
+    beforeAll(() => { // done
         let refSchemas = [];
-        let refNumber = require('../schemas/primitive/number.schema.json');
+        const refNumber = require('../schemas/primitive/number.schema.json');
 
         refSchemas.push(refNumber);
 
-        let schemaData = require('../schemas/primitive/oneOf.schema.json');
+        const schemaData = require('../schemas/primitive/oneOf.schema.json');
         possibleData = permutator(schemaData, refSchemas);
-
-        done();
     });
     it('should generate correct number of permutations', function() {
         expect(possibleData).toHaveLength(3);
@@ -341,16 +318,14 @@ describe('OneOf primitive', function() {
 describe('AnyOf primitive', function() {
     let possibleData;
 
-    beforeAll((done) => { // done
+    beforeAll(() => { // done
         let refSchemas = [];
-        let refNumber = require('../schemas/primitive/number.schema.json');
+        const refNumber = require('../schemas/primitive/number.schema.json');
 
         refSchemas.push(refNumber);
 
-        let schemaData = require('../schemas/primitive/anyOf.schema.json');
+        const schemaData = require('../schemas/primitive/anyOf.schema.json');
         possibleData = permutator(schemaData, refSchemas);
-
-        done();
     });
     it('should generate correct number of permutations', function() {
         expect(possibleData).toHaveLength(10);
@@ -367,11 +342,9 @@ describe('AnyOf primitive', function() {
 describe('AllOf primitive', function() {
     let possibleData;
 
-    beforeAll((done) => { // done
-        let schemaData = require('../schemas/primitive/allOf.schema.json');
+    beforeAll(() => { // done
+        const schemaData = require('../schemas/primitive/allOf.schema.json');
         possibleData = permutator(schemaData);
-
-        done();
     });
     it('should generate correct number of permutations', function() {
         expect(possibleData).toHaveLength(6);
@@ -388,11 +361,9 @@ describe('AllOf primitive', function() {
 describe('Dependencies primitive', function() {
     let possibleData;
 
-    beforeAll((done) => { // done
-        let schemaData = require('../schemas/primitive/dependencies.schema.json');
+    beforeAll(() => { // done
+        const schemaData = require('../schemas/primitive/dependencies.schema.json');
         possibleData = permutator(schemaData);
-
-        done();
     });
     it('should generate correct number of permutations', function() {
         expect(possibleData).toHaveLength(6);
@@ -430,19 +401,19 @@ describe('Dependencies primitive', function() {
 describe('FW: Hero item', function() {
     let possibleSchemas;
 
-    beforeAll((done) => { // done
+    beforeAll(() => { // done
         let refSchemas = [];
-        let heading = require('../schemas/fw/heading.schema.json');
-        let subheading = require('../schemas/fw/subheading.schema.json');
-        let badge = require('../schemas/fw/badge.schema.json');
-        let callToAction = require('../schemas/fw/call-to-action.schema.json');
-        let hyperlink = require('../schemas/fw/hyperlink.schema.json');
-        let paragraph = require('../schemas/fw/paragraph.schema.json');
-        let image = require('../schemas/fw/image.schema.json');
-        let mosaicPlacement = require('../schemas/fw/mosaic-placement.schema.json');
-        let panesPlacement = require('../schemas/fw/panes-placement.schema.json');
-        let logo = require('../schemas/fw/logo.schema.json');
-        let price = require('../schemas/fw/price.schema.json');
+        const heading = require('../schemas/fw/heading.schema.json');
+        const subheading = require('../schemas/fw/subheading.schema.json');
+        const badge = require('../schemas/fw/badge.schema.json');
+        const callToAction = require('../schemas/fw/call-to-action.schema.json');
+        const hyperlink = require('../schemas/fw/hyperlink.schema.json');
+        const paragraph = require('../schemas/fw/paragraph.schema.json');
+        const image = require('../schemas/fw/image.schema.json');
+        const mosaicPlacement = require('../schemas/fw/mosaic-placement.schema.json');
+        const panesPlacement = require('../schemas/fw/panes-placement.schema.json');
+        const logo = require('../schemas/fw/logo.schema.json');
+        const price = require('../schemas/fw/price.schema.json');
 
         refSchemas.push(heading);
         refSchemas.push(subheading);
@@ -456,10 +427,8 @@ describe('FW: Hero item', function() {
         refSchemas.push(panesPlacement);
         refSchemas.push(price);
 
-        let schemaData = require('../schemas/fw/hero-item.schema.json');
+        const schemaData = require('../schemas/fw/hero-item.schema.json');
         possibleSchemas = permutator.simplifySchemas(schemaData, refSchemas);
-
-        done();
     });
     it('should generate correct number of permutations', function() {
         expect(possibleSchemas).toHaveLength(2);
@@ -469,17 +438,15 @@ describe('FW: Hero item', function() {
 describe('FW: Supplemental navigation', function() {
     let possibleData;
 
-    beforeAll((done) => { // done
+    beforeAll(() => { // done
         let refSchemas = [];
-        let propsToResolve = [
+        const propsToResolve = [
             'allOf',
             '$ref'
         ];
 
-        let schemaData = require('../schemas/fw/supplemental-navigation.schema.json');
+        const schemaData = require('../schemas/fw/supplemental-navigation.schema.json');
         possibleData = permutator(schemaData, refSchemas);
-
-        done();
     });
     it('should resolve only the first level of props', function() {
         expect(possibleData).toHaveLength(2);
