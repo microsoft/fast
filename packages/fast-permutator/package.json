@@ -14,16 +14,24 @@
   "main": "index.js",
   "registry": "https://registry.npmjs.org/",
   "scripts": {
-    "test-utils": "eslint src/** && mocha './test/test-utils' --timeout 15000",
-    "test-schemas": "eslint src/** && mocha './test/test-schemas' --timeout 15000",
+    "test": "eslint src/** && jest",
     "build": "babel src --presets babel-preset-es2015 --out-dir dist"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/"
+    ],
+    "testRegex": "(/__tests__/.*|(\\.|/))\\.(js?)$",
+    "moduleFileExtensions": [
+      "js"
+    ]
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-preset-es2015": "^6.24.1",
-    "chai": "^3.5.0",
     "eslint": "^3.19.0",
-    "mocha": "^3.0.2"
+    "jest": "^22.4.2"
   },
   "dependencies": {
     "lodash": "^4.17.4"

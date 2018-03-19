@@ -2,8 +2,8 @@
  * Utility for cleaning directories.
  * Usage: node build/clean.js %path%
  */
+const fs = require("fs");
 const path = require("path");
-const rimraf = require("rimraf");
 const argv = require("yargs").argv;
 
 /**
@@ -15,10 +15,20 @@ const paths = argv._;
  * Function to remove a given path
  */
 function cleanPath(cleanPath) {
-    const removePath = path.resolve(process.cwd(), cleanPath)
-    rimraf(removePath, () => {
-        console.log(removePath, "cleaned");
-    });
+    if (fs.existsSync(path)) {
+        fs.readdirSync(path).forEach(function(file, index){
+            var currentPath = `${path}/${file}`;
+            
+            if (fs.lstatSync(currentPath).isDirectory()) { // recurse
+                deleteFolderRecursive(currentPath);
+                console.log(currentPath, "cleaned");
+            } else { // delete file
+                fs.unlinkSync(currentPath);
+            }
+        });
+
+        fs.rmdirSync(path);
+    }
 }
 
 /**

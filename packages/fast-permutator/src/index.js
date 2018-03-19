@@ -110,7 +110,7 @@ permutator.generateByType = function (schema, propertyName, required, arrayConfi
                 permutator.typelessEnum(schema, propertyName, required, arrayConfig);
             } else if (schema.properties) {
                 permutator.typeObject(schema, propertyName, required, arrayConfig);
-            } else {
+            } else if (!schema.oneOf && !schema.anyOf) {
                 console.log('Schema does not contain a type or has a type that is not allowed on the root level.');
             }
             break;
