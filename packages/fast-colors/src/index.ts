@@ -60,30 +60,22 @@ export interface IColorOptions {
 const white = "#FFF";
 const black = "#000";
 
-
 /**
  * Saturates a color by a given value. If the value is lower than the lowpass it will not make an adjustment
  */
-function saturate(color: any, referenceColor: any, value: number, lowpass: number = 0.05, highpass:number = 100) {
-    const saturation = Chroma(color).get("hsl.s");
-
+function saturate(color: any, referenceColor: any, value: number, lowpass: number = 0.05, highpass:number = 1) {
+    const saturation = Chroma(referenceColor).get("hsl.s");
     return saturation >= lowpass && saturation <= highpass ? color.saturate(value) : color;
 }
 
 /**
- * Multiply a two colors
+ * Creates a filter function by the name of the filter
  */
-function multiplyFilter(background: any, foreground: any, value: number) {
-    const adjustment = Chroma.blend(background, foreground, "multiply");
-    return Chroma.mix(foreground, adjustment, value, "rgb");
-}
-
-/**
- * Overlay one color onto another
- */
-function overlayFilter(background: any, foreground: any, value: number) {
-    const adjustment = Chroma.blend(background, foreground, "overlay");
-    return Chroma.mix(foreground, adjustment, value, "rgb");
+function filter(name: string) {
+    return (background: any, foreground: any, value: number) => {
+        const adjustment = Chroma.blend(background, foreground, name);
+        return Chroma.mix(foreground, adjustment, value, "rgb");
+    }
 }
 
 /**
@@ -94,14 +86,14 @@ function adjustThreshold(thresholdColor: string, referenceColor: any, saturation
     const color: any = Chroma(thresholdColor);
     const saturated = saturate(color, referenceColor, saturation);
     const brightened = saturated.brighten(brightness);
-    const multiplied = multiplyFilter(referenceColor, brightened, multiply);
-    return overlayFilter(referenceColor, brightened, overlay);
+    const multiplied = filter("multiply")(referenceColor, brightened, multiply);
+    return filter("overlay")(referenceColor, multiplied, overlay);
 }
 
 /**
  * Algorithm to generate a color range based on an original color. 
  */
-export function variants(color: string, options: Partial<IColorOptions> = {}) {
+export function variants(color: string, options: Partial<IColorOptions> = {}): string[] {
     const normalizedOptions: IColorOptions = Object.assign({}, options, {
         variants: 7,
         paddingLight: 0.185,
@@ -142,42 +134,3 @@ export function variants(color: string, options: Partial<IColorOptions> = {}) {
         .scale([lightest, color, darkest])
         .colors(normalizedOptions.variants);
 }
-
-/**
- * TODO: what should we call this?
- */
-// export default class Color {
-// 
-//     /**
-//      * Describes the options / inputs into the utility
-//      */
-// 
-//     /**
-//      * The color value that the class is initialized with
-//      */
-//     private sourceColor: string;
-// 
-//     private get scale(): string[] {
-//         return Chroma
-//             .scale(["#FFF", this.sourceColor, "#000"])
-//             .padding([this.options.paddingLight, this.options.paddingDark])
-//             .colors(3);
-//     }
-// 
-//     /**
-//      * Adjusts a threshold (brightest or darkest) using various inputs
-//      * TODO: typings for Chroma?
-//      */
-// 
-//     constructor(sourceColor: string, options?: Partial<IColorOptions>) {
-//         this.options = Object.assign({}, this.options, options);
-//         this.sourceColor = sourceColor;
-//     }
-// 
-//     /**
-//      * TODO: what should the return type be? Probably an array of strings
-//      */
-//     public variants(): string[] {
-//         const scale = this.scale;
-//     }
-// }
