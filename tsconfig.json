@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "moduleResolution": "node",
+        "module": "ES6",
+        "target": "ES6",
+        "baseUrl": ".",
+        "declaration": true,
+        "outDir": "./dist"
+    },
+    "include": [
+        "build/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "packages"
+    ]
+}

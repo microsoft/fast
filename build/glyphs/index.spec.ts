@@ -1,8 +1,6 @@
 import ConvertGlyphs, { IConvertGlyphOptions } from "./";
 import * as path from "path";
 import * as fs from "fs";
-import { expect } from "chai";
-import "mocha";
 
 describe("Glyph string conversion", () => {
     it("should generate a file in a default location", () => {
@@ -10,7 +8,11 @@ describe("Glyph string conversion", () => {
         const glyphConverter: ConvertGlyphs = new ConvertGlyphs(({glyphFolderPath} as IConvertGlyphOptions));
 
         // This will throw an error if the file does not exist
-        fs.unlink(`${glyphFolderPath}/index.js`, (err: Error) => { if (err) { throw err; } });
+        fs.readFile(`${glyphFolderPath}/index.js`, (err) => {
+            if (err) {
+                throw err;
+            }
+        });
     });
     it("should generate a file in a specified location", () => {
         const glyphFolderPath: string = path.resolve(__dirname, "./__tests__/");
@@ -23,8 +25,8 @@ describe("Glyph string conversion", () => {
         const glyphFolderPath: string = path.resolve(__dirname, "./__tests__/");
         const glyphConverter: ConvertGlyphs = new ConvertGlyphs(({glyphFolderPath} as IConvertGlyphOptions));
 
-        expect(glyphConverter.getIndexFileContents().match(/const/g).length).to.equal(6);
-        expect(glyphConverter.getIndexFileContents().match(/export/g).length).to.equal(6);
+        expect(glyphConverter.getIndexFileContents().match(/const/g).length).toEqual(6);
+        expect(glyphConverter.getIndexFileContents().match(/export/g).length).toEqual(6);
 
         fs.unlink(`${glyphFolderPath}/index.js`, (err: Error) => { if (err) { throw err; } });
     });
@@ -34,7 +36,7 @@ describe("Glyph string conversion", () => {
 
         expect(
             glyphConverter.getIndexFileContents().match(/const\s[a-z|A-Z]+\s=\s`.*`;\nexport\s{\s.*\s}/g).length
-        ).to.equal(6);
+        ).toEqual(6);
 
         fs.unlink(`${glyphFolderPath}/index.js`, (err: Error) => { if (err) { throw err; } });
     });

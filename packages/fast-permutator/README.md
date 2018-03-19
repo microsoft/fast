@@ -84,8 +84,7 @@ permutator.resolveSchemaProps(schema, ['$ref', 'allOf']);
 Contribute to files in the lib folder, these are the ES6 source files.
 
 ## Testing
-Run `npm run test-utils` to test the exposed utilities
-Run `npm run test-schemas` to test a range of schemas
+Run `npm run test` to test the exposed utilities and schemas
 
 ## Building
 Run `npm run build` to build before `npm publish` to convert files to ES5 from ES6.
