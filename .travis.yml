@@ -2,3 +2,17 @@
 language: node_js
 node_js:
   - "lts/*"
+dist: trusty
+sudo: false
+cache:
+  directories:
+  - node_modules
+  - packages/fast-animation/node_modules
+  - packages/fast-browser-extensions/node_modules
+  - packages/fast-development-site/node_modules
+  - packages/fast-permutator/node_modules
+  - packages/fast-react-components-base/node_modules
+  - packages/fast-react-components-fluent/node_modules
+  - packages/fast-react-jss-manager/node_modules
+  - packages/fast-react-viewer/node_modules
+  - packages/fast-tslint-rules/node_modules
