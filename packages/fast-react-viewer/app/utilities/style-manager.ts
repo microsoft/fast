@@ -3,8 +3,8 @@ import { SheetsManager } from "jss";
 const manager: any = new SheetsManager();
 
 class Theme {
-    private Background: string = "blue";
-    private Width: string = "100%";
+    private _background: string = "blue";
+    private _width: string = "100%";
 
     private updateStylesheets(): void {
         manager.sheets.forEach((sheet: any) => {
@@ -13,20 +13,20 @@ class Theme {
     }
 
     get background(): string {
-        return this.Background;
+        return this._background;
     }
 
     set background(value: string) {
-        this.Background = value;
+        this._background = value;
         this.updateStylesheets();
     }
 
     get width(): string {
-        return this.Width;
+        return this._width;
     }
 
     set width(value: string) {
-        this.Width = value;
+        this._width = value;
         this.updateStylesheets();
     }
 }
