@@ -3,7 +3,7 @@
   "version": "0.0.12-beta.0",
   "description": "An animation library that simplifies interactions and animations using the Web Animation API.",
   "license": "MIT",
-  "main": "build/index.js",
+  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/Microsoft/fast-animation.git"
@@ -20,7 +20,7 @@
     "test": "jest",
     "build:react": "webpack --config webpack/webpack.react.config.js",
     "dev-server:react": "node_modules/.bin/webpack-dev-server --config webpack/webpack.react.config.js --progress",
-    "prepack": "npm run build"
+    "prepare": "npm run build"
   },
   "devDependencies": {
     "@types/jest": "^21.1.2",

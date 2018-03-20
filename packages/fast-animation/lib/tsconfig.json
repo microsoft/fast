@@ -7,7 +7,7 @@
     "lib": [ "es2015", "es2017", "dom", "scripthost" ],
     "module": "CommonJS",
     "moduleResolution": "node",
-    "outDir": "../build",
+    "outDir": "../dist",
     "removeComments": true,
     "rootDir": "./",
     "sourceMap": true,
