@@ -1,6 +1,6 @@
 {
-  "name": "@microsoft/fast-development-site",
-  "description": "FAST development testing site.",
+  "name": "@microsoft/fast-react-development-site",
+  "description": "FAST development testing site for react.",
   "author": {
     "name": "Fluent Web",
     "email": "fwq@microsoft.com"
