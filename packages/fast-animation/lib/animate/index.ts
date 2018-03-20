@@ -269,6 +269,10 @@ export default abstract class Animate {
      * to known-working starting values
      */
     private normalizeInitialValue(property: string, value: string): string {
+        if (value === undefined) {
+            return;
+        }
+
         const coercedReturn: string = "0.01";
 
         switch (property) {
