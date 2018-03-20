@@ -3,9 +3,9 @@ import TabsApi from "./TabsApi";
 import RuntimeApi from "./RuntimeApi";
 
 class ExtensionApi {
-    public contextMenus = new ContextMenuApi();
-    public tabs = new TabsApi();
-    public runtime = new RuntimeApi();
+    public contextMenus: ContextMenuApi = new ContextMenuApi();
+    public tabs: TabsApi = new TabsApi();
+    public runtime: RuntimeApi = new RuntimeApi();
 }
 
 export default new ExtensionApi();

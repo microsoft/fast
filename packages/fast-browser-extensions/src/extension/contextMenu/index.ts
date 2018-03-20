@@ -29,7 +29,7 @@ export interface IContextMenus {
 
 // Store menu ids for later reference
 let menuIdStore: {[key: string]: IContextMenuItem} = {};
-const rootId = createContextMenu();
+const rootId: string = createContextMenu();
 
 /**
  * Creates the FW context menu
@@ -46,9 +46,9 @@ function createContextMenu(): string {
 /**
  * Create submenu items for a root menu
  */
-function createSubmenuItems(config: IContextMenus, rootId: string) {
-    Object.keys(config).map((key, index) => {
-        const menuConfigs = config[key].slice(0);
+function createSubmenuItems(config: IContextMenus, id: string): void {
+    Object.keys(config).map((key: string, index: number) => {
+        const menuConfigs: IContextMenuItem[] = config[key].slice(0);
 
         if (index !== 0) {
             // Add a separator before all groups
@@ -57,15 +57,15 @@ function createSubmenuItems(config: IContextMenus, rootId: string) {
         }
 
         menuConfigs
-            .map((config) => {
-                return Object.assign({}, config, {
-                    parentId: rootId,
+            .map((menuConfig: any) => {
+                return Object.assign({}, menuConfig, {
+                    parentId: id,
                     onclick: handleContextMenuItemClick
                 });
             })
-            .forEach((config) => {
-                const menuId = ExtensionApi.contextMenus.create(config);
-                menuIdStore[menuId] = config;
+            .forEach((menuConfig: any) => {
+                const menuId: string = ExtensionApi.contextMenus.create(menuConfig);
+                menuIdStore[menuId] = menuConfig;
             });
     });
 }
@@ -73,13 +73,13 @@ function createSubmenuItems(config: IContextMenus, rootId: string) {
 /**
  * Handles menu item click events
  */
-function handleContextMenuItemClick(info) {
-    ExtensionApi.tabs.query({active: true, currentWindow: true}, (tabs) => {
+function handleContextMenuItemClick(info: any): void {
+    ExtensionApi.tabs.query({active: true, currentWindow: true}, (tabs: any[]) => {
         if (!Array.isArray(tabs) || !tabs.length) {
             return;
         }
 
-        const clickedMenuConfig = menuIdStore[info.menuItemId];
+        const clickedMenuConfig: IContextMenuItem = menuIdStore[info.menuItemId];
 
         if (clickedMenuConfig !== undefined) {
             ExtensionApi.tabs.sendMessage(tabs[0].id, clickedMenuConfig);
@@ -90,15 +90,15 @@ function handleContextMenuItemClick(info) {
 /**
  * Remove all context menu items
  */
-function removeAllContextMenuItems() {
-    Object.keys(menuIdStore).forEach((menuId) => {
+function removeAllContextMenuItems(): void {
+    Object.keys(menuIdStore).forEach((menuId: string) => {
         ExtensionApi.contextMenus.remove(menuId);
     });
 
     menuIdStore = {};
 }
 
-function handleExternalMessages(message: CreateMessage, sender, sendResponse) {
+function handleExternalMessages(message: CreateMessage, sender: any, sendResponse: any): void {
     switch (message.type) {
         case CREATE_MENUS_MESSAGE:
             removeAllContextMenuItems();

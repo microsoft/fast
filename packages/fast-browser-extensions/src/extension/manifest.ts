@@ -10,7 +10,7 @@ const manifest: any = {
     description: "Configure Fluent Web content and domains",
     externally_connectable: {
         // '<all_urls>' is not valid in this property
-        matches: validDomains.filter((domain) => domain !== "<all_urls>")
+        matches: validDomains.filter((domain: string) => domain !== "<all_urls>")
     },
     permissions: [
         "activeTab",
