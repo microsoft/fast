@@ -1,14 +1,14 @@
 import * as React from "react";
 import { Button, IButtonProps, IButtonManagedClasses, IFoundationProps } from "@microsoft/fast-react-components-base";
 import manageJss, { ComponentStyles } from "@microsoft/fast-react-jss-manager";
-import {IFluentDesignSystem} from "../design-system";
+import {IDesignSystem} from "../design-system";
 
-const styles: ComponentStyles<IButtonManagedClasses, IFluentDesignSystem> = {
+const styles: ComponentStyles<IButtonManagedClasses, IDesignSystem> = {
     button: {
-        color: (config: IFluentDesignSystem): string => {
+        color: (config: IDesignSystem): string => {
             return config.foregroundColor;
         },
-        backgroundColor: (config: IFluentDesignSystem): string => {
+        backgroundColor: (config: IDesignSystem): string => {
             return config.brandColor;
         }
     },
