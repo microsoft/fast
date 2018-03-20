@@ -4,8 +4,8 @@
   "description": "An initial implementation of a React iframe that is self-contained.",
   "main": "dist/index.js",
   "scripts": {
-    "test": "ts-node helpers/unitTests.ts",
-    "test:update": "ts-node helpers/unitTests.ts --update",
+    "test": "jest",
+    "test:update": "jest --update",
     "dev-server": "webpack-dev-server --progress",
     "build": "tsc -p ./src/tsconfig.json",
     "prepack": "npm run build"

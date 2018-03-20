@@ -1,7 +1,9 @@
 import * as React from "react";
 import Example from "../../../../app/components/example";
 
-function handleGetStyles(style: string): void {}
+function handleGetStyles(style: string): void {
+    return void 0;
+}
 
 export default {
     data: [
