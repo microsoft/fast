@@ -1,5 +1,3 @@
-export type formatToPx = (item: number) => string;
-
-export const toPx: formatToPx = (item: number): string => {
+export function toPx(item: number): string {
     return `${item}px`;
-};
+}

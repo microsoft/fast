@@ -7,8 +7,11 @@ export interface IBreakpoints {
     vp6: number;
 }
 
+/**
+ * These are the minimum widths for the breakpoint
+ */
 const breakpoints: IBreakpoints = {
-    vp1: 320,
+    vp1: 0,
     vp2: 540,
     vp3: 768,
     vp4: 1084,
