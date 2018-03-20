@@ -4,7 +4,7 @@ import AnimateTo from "../animateTo";
 /**
  * Key frame object for fade-in animations
  */
-export const fadeInKeyframes = [
+export const fadeInKeyframes: AnimationKeyFrame[] = [
     { opacity: 0.01 }, // Start at 0.01 due to a bug animating from 0
     { opacity: 1 }
 ];
@@ -12,7 +12,7 @@ export const fadeInKeyframes = [
 /**
  * Key frame object for fade-out animations
  */
-export const fadeOutKeyframes = [
+export const fadeOutKeyframes: AnimationKeyFrame[] = [
     { opacity: 1 },
     { opacity: 0 }
 ];
@@ -20,7 +20,7 @@ export const fadeOutKeyframes = [
 /**
  * EffectTiming defaults for fade animations
  */
-export const fadeEffectTiming = {
+export const fadeEffectTiming: AnimationEffectTiming = {
     easing: "linear",
     duration: 500
 };
@@ -29,22 +29,22 @@ export const fadeEffectTiming = {
  * Creates an animation to fade an element into view
  */
 export function fadeIn(element: HTMLElement, effectTiming: AnimationEffectTiming = {}): AnimateTo {
-    const fadeInEffectTiming = Object.assign({}, fadeEffectTiming, effectTiming);
-    const fadeIn = new AnimateTo(element, null, fadeInEffectTiming);
+    const fadeInEffectTiming: AnimationEffectTiming = Object.assign({}, fadeEffectTiming, effectTiming);
+    const fadeInAnimation: AnimateTo = new AnimateTo(element, null, fadeInEffectTiming);
 
-    fadeIn.addKeyframes(fadeInKeyframes);
+    fadeInAnimation.addKeyframes(fadeInKeyframes);
 
-    return fadeIn;
+    return fadeInAnimation;
 }
 
 /**
  * Creates an animation to fade an element out of view
  */
 export function fadeOut(element: HTMLElement, effectTiming: AnimationEffectTiming = {}): AnimateTo {
-    const fadeOutEffectTiming = Object.assign({}, fadeEffectTiming, effectTiming);
-    const fadeOut = new AnimateTo(element, null, fadeOutEffectTiming);
+    const fadeOutEffectTiming: AnimationEffectTiming = Object.assign({}, fadeEffectTiming, effectTiming);
+    const fadeOutAnimation: AnimateTo = new AnimateTo(element, null, fadeOutEffectTiming);
 
-    fadeOut.addKeyframes(fadeOutKeyframes);
+    fadeOutAnimation.addKeyframes(fadeOutKeyframes);
 
-    return fadeOut;
+    return fadeOutAnimation;
 }

@@ -2,7 +2,7 @@
  * Checks to see if any part of an element is within the viewport
  */
 export default function isElementInView(el: HTMLElement): boolean {
-    const rect = el.getBoundingClientRect();
+    const rect: ClientRect = el.getBoundingClientRect();
 
     return (
         rect.bottom >= 0

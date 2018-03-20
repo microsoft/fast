@@ -1,5 +1,5 @@
 import isElementInView from "../utilities/isElementInView";
-import ScrollBase from "./ScrollBase";
+import ScrollBase, { IScrollTriggerSubscription } from "./ScrollBase";
 
 /**
  * Utility for registering element/callback pairs where the callback will be called on scroll while the element is in view.
@@ -8,11 +8,11 @@ export default class ScrollTrigger extends ScrollBase {
     /**
      * Check if elements are in view-port and apply scroll method if they are
      */
-    protected update() {
+    protected update(): void {
         super.update();
 
-        this.subscriptions.forEach((subscription) => {
-            const inView = isElementInView(subscription.element);
+        this.subscriptions.forEach((subscription: IScrollTriggerSubscription) => {
+            const inView: boolean = isElementInView(subscription.element);
 
             if (inView) {
                 subscription.callback(this.scrollDistance);
