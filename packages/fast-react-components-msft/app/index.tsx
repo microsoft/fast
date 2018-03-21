@@ -25,7 +25,7 @@ function render(): void {
     ReactDOM.render(
         <div>
             <DesignSystemProvider designSystem={fluentDesignSystemDefaults}>
-                <Site title={"FAST components base"} categories={items} />,
+                <Site title={"FAST Microsoft components"} categories={items} />,
             </DesignSystemProvider>
         </div>,
         root

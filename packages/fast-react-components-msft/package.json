@@ -1,6 +1,6 @@
 {
-  "name": "@microsoft/fast-react-components-fluent",
-  "description": "FAST Fluent components implemented in React",
+  "name": "@microsoft/fast-react-components-microsoft",
+  "description": "FAST Microsoft components implemented in React",
   "author": {
     "name": "Fluent Web",
     "email": "fwq@microsoft.com"
