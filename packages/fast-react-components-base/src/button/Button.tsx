@@ -9,7 +9,7 @@ interface IButtonManagedClasses {
 }
 
 /* tslint:disable-next-line */
-class Button extends Foundation<IButtonProps & IInjectedProps<IButtonManagedClasses>,  React.AllHTMLAttributes<HTMLElement>, {}> {
+class Button extends React.cloneElement>,  React.AllHTMLAttributes<HTMLElement>, {}> {
     protected handledProps: HandledProps<IButtonProps & IInjectedProps<IButtonManagedClasses>> = {
         managedClasses: void 0,
         tag: void 0
