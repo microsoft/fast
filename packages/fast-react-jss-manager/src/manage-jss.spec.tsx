@@ -82,6 +82,6 @@ describe("The higher-order component", (): void => {
             renderer.render(<Component />);
         });
 
-        expect(Component["stylesheetManager"].sheets.length).toBe(expected);
+        expect(Component["stylesheetManager"].sheets.length).toBe(-1);
     });
 });
