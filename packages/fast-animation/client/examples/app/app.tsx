@@ -14,7 +14,7 @@ class App extends React.Component {
      * Renders the component
      * @return {function}
      */
-    public render() {
+    public render(): JSX.Element {
         return (
             <TestPage />
         );

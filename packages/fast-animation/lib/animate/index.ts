@@ -1,4 +1,4 @@
-export interface AnimateOptions {
+export interface IAnimateOptions {
     /**
      * The x position change of the animation
      */
@@ -58,7 +58,7 @@ export interface AnimateOptions {
 /**
  * Enumerates all properties that can be animated, outside of properties supplied directly via Animate.addKeyframes()
  */
-export interface AnimationProperties extends AnimationKeyFrame {
+export interface IAnimationProperties extends AnimationKeyFrame {
     top?: string;
     right?: string;
     bottom?: string;
@@ -80,16 +80,35 @@ export enum AnimationMode {
     animateFrom
 }
 
+/**
+ * Maps css property names to animation options
+ */
+export interface IPropertyMap {
+    opacity: string[];
+    transform: string[];
+    top: string[];
+    left: string[];
+    bottom: string[];
+    right: string[];
+}
+
 export default abstract class Animate {
     /**
-     * Tracks if the animation should animate toward an elements natural position or away from it
+     * A mapping between animation options and the css property names they apply to
      */
-    protected mode: AnimationMode;
+    private static propertyMap: IPropertyMap = {
+        opacity: ["opacity"],
+        transform: ["x", "y", "rotate", "scale"],
+        top: ["top"],
+        left: ["left"],
+        bottom: ["bottom"],
+        right: ["right"]
+    };
 
     /**
      * Stores animation options
      */
-    public options: AnimateOptions;
+    public options: IAnimateOptions;
 
     /**
      * Stores animation timing functions
@@ -99,6 +118,16 @@ export default abstract class Animate {
         iterations: 1,
         duration: 500
     };
+
+    /**
+     * Callback to call when the animation is canceled
+     */
+    public onCancel: () => void;
+
+    /**
+     * Tracks if the animation should animate toward an elements natural position or away from it
+     */
+    protected mode: AnimationMode;
 
     /**
      * Stores the HTML element to be animated
@@ -113,11 +142,18 @@ export default abstract class Animate {
     /**
      * Callback to call when the animation finishes playing
      */
-    private _onFinish: () => {};
-    public get onFinish() {
+    private _onFinish: () => void;
+
+    /**
+     * Stores animation keyframe sets and is accessed by a getter
+     */
+    private _keyframes: AnimationKeyFrame[][] = [];
+
+    public get onFinish(): () => void {
         return this._onFinish;
     }
-    public set onFinish(callback: any) {
+
+    public set onFinish(callback: () => void) {
         this._onFinish = callback;
 
         if (Boolean(this.animation)) {
@@ -125,24 +161,7 @@ export default abstract class Animate {
         }
     }
 
-    /**
-     * Callback to call when the animation is canceled
-     */
-    public onCancel: () => void;
-
-    /**
-     * A mapping between animation options and the css property names they apply to
-     */
-    private static propertyMap = {
-        opacity: ["opacity"],
-        transform: ["x", "y", "rotate", "scale"],
-        top: ["top"],
-        left: ["left"],
-        bottom: ["bottom"],
-        right: ["right"]
-    };
-
-    constructor(element: HTMLElement, options?: AnimateOptions, effectTiming?: AnimationEffectTiming) {
+    constructor(element: HTMLElement, options?: IAnimateOptions, effectTiming?: AnimationEffectTiming) {
         this.animationTarget = element;
 
         if (Boolean(effectTiming)) {
@@ -165,7 +184,7 @@ export default abstract class Animate {
     /**
      * plays the animation
      */
-    public play = () => {
+    public play = (): void => {
         this.ensureAnimationObjectExists();
         this.animation.play();
     }
@@ -173,7 +192,7 @@ export default abstract class Animate {
     /**
      * pauses the animation
      */
-    public pause = () => {
+    public pause = (): void => {
         this.ensureAnimationObjectExists();
         this.animation.pause();
     }
@@ -181,7 +200,7 @@ export default abstract class Animate {
     /**
      * finishes the animation
      */
-    public finish = () => {
+    public finish = (): void => {
         this.ensureAnimationObjectExists();
         this.animation.finish();
     }
@@ -189,7 +208,7 @@ export default abstract class Animate {
     /**
      * cancels the animation
      */
-    public cancel = () => {
+    public cancel = (): void => {
         this.ensureAnimationObjectExists();
         this.animation.cancel();
     }
@@ -197,7 +216,7 @@ export default abstract class Animate {
     /**
      * reverses an animation
      */
-    public reverse = () => {
+    public reverse = (): void => {
         this.ensureAnimationObjectExists();
         this.animation.reverse();
     }
@@ -205,14 +224,14 @@ export default abstract class Animate {
     /**
      * adds a set of keyframes to set of animation keyframes the animation should execute
      */
-    public addKeyframes = (keyframes: AnimationKeyFrame[]) => {
+    public addKeyframes = (keyframes: AnimationKeyFrame[]): void => {
         this._keyframes.push(keyframes);
     }
 
     /**
      * Ensure animation object
      */
-    private ensureAnimationObjectExists() {
+    private ensureAnimationObjectExists(): void {
         if (typeof this.animation === "undefined") {
             this.createAnimationObject();
         }
@@ -220,7 +239,7 @@ export default abstract class Animate {
     /**
      * Creates the animation object
      */
-    private createAnimationObject() {
+    private createAnimationObject(): void {
         this.animation = new Animation(this.keyframeEffect, document.timeline);
 
         if (typeof this.onFinish !== "undefined") {
@@ -236,7 +255,7 @@ export default abstract class Animate {
      * Returns a list of properties that will be animated based options
      */
     private getPropertiesToAnimate(): string[] {
-        return Object.keys(Animate.propertyMap).filter((property) => {
+        return Object.keys(Animate.propertyMap).filter((property: string) => {
             // Filter out all properties that don't need to be set based on our options
             return Animate.propertyMap[property].reduce((hasProperty: boolean, animationProp: string) => {
                 return typeof this.options[animationProp] !== "undefined" || hasProperty;
@@ -250,25 +269,29 @@ export default abstract class Animate {
      * to known-working starting values
      */
     private normalizeInitialValue(property: string, value: string): string {
-        const coercedReturn = "0.01";
+        if (value === undefined) {
+            return;
+        }
+
+        const coercedReturn: string = "0.01";
 
         switch (property) {
             case "transform":
-                const matrixValuesRegex = /matrix\((.+)\)/;
-                const matrixValues = value.match(matrixValuesRegex);
+                const matrixValuesRegex: RegExp = /matrix\((.+)\)/;
+                const matrixValues: string[] | null = value.match(matrixValuesRegex);
 
                 if (Array.isArray(matrixValues)) {
-                    const normalizedValues = matrixValues[1]
+                    const normalizedValues: string[] = matrixValues[1]
                         .split(",")
-                        .map((value, index) => {
-                            const parsedValueIsZero = parseFloat(value) === 0;
+                        .map((matchedValue: string, index: number) => {
+                            const parsedValueIsZero: boolean = parseFloat(value) === 0;
 
                             if (!parsedValueIsZero) {
-                                return value;
+                                return matchedValue;
                             }
 
                             // If this is the scaleX index or the scaleY index, return the coerced value
-                            return index === 0 || index === 3 ? coercedReturn : value;
+                            return index === 0 || index === 3 ? coercedReturn : matchedValue;
                         });
 
                     return `matrix(${normalizedValues.join(",")})`;
@@ -285,16 +308,16 @@ export default abstract class Animate {
     /**
      * Returns the initial values for all properties being animated
      */
-    private getInitialKeyframeValues(): AnimationProperties {
+    private getInitialKeyframeValues(): IAnimationProperties {
         if (!(this.animationTarget instanceof HTMLElement) || typeof window === "undefined") {
             return {};
         }
 
-        const animatedProperties = this.getPropertiesToAnimate();
-        const computedStyle = window.getComputedStyle(this.animationTarget);
-        const initialKeyframeValues: AnimationProperties  = {};
+        const animatedProperties: string[] = this.getPropertiesToAnimate();
+        const computedStyle: CSSStyleDeclaration = window.getComputedStyle(this.animationTarget);
+        const initialKeyframeValues: IAnimationProperties  = {};
 
-        animatedProperties.forEach((property) => {
+        animatedProperties.forEach((property: string) => {
             initialKeyframeValues[property] = this.normalizeInitialValue(property, computedStyle[property]);
         });
 
@@ -304,7 +327,7 @@ export default abstract class Animate {
     /**
      * Formats a config option into a transform function
      */
-    private formatTransformFunction(functionType, value): string {
+    private formatTransformFunction(functionType: string, value: string | number | number[]): string {
         // If `functionType` can't be converted into a transform function, just return empty string
         if (!Animate.propertyMap.transform.includes(functionType)) {
             return "";
@@ -336,20 +359,20 @@ export default abstract class Animate {
     /**
      * Converts a number to a pixel string
      */
-    private pixelify(num: number) {
+    private pixelify(num: number): string {
         return `${num}px`;
     }
 
     /**
      * Returns keyframe values based on option configuration
      */
-    private getOptionKeyframeValues(): AnimationProperties {
-        const animateProperties = this.getPropertiesToAnimate();
-        const keyframeValues: AnimationProperties = {};
+    private getOptionKeyframeValues(): IAnimationProperties {
+        const animateProperties: string[] = this.getPropertiesToAnimate();
+        const keyframeValues: IAnimationProperties = {};
 
-        animateProperties.forEach((property) => {
-            keyframeValues[property] = Animate.propertyMap[property].map((option) => {
-                const value = this.options[option];
+        animateProperties.forEach((property: string) => {
+            keyframeValues[property] = Animate.propertyMap[property].map((option: string): string => {
+                const value: string | number = this.options[option];
 
                 if (typeof value === "undefined") {
                     return null;
@@ -367,7 +390,7 @@ export default abstract class Animate {
                         return this.formatTransformFunction(option, value);
                 }
             })
-            .filter((option) => Boolean(option))
+            .filter((option: string) => Boolean(option))
             .join(" ");
         });
 
@@ -390,9 +413,9 @@ export default abstract class Animate {
      * Sorts an array of offset keys in ascending order
      */
     private sortOffsets(offsets: string[]): string[] {
-        return offsets.sort((a: string, b: string) => {
-            const A = parseFloat(a);
-            const B = parseFloat(b);
+        return offsets.sort((a: string, b: string): number => {
+            const A: number = parseFloat(a);
+            const B: number = parseFloat(b);
 
             if (A < B) {
                 return -1;
@@ -408,39 +431,34 @@ export default abstract class Animate {
      * Consolidates all keyframe arrays into a single keyframe array
      */
     private consolidateKeyframes(keyframeSets: AnimationKeyFrame[][]): AnimationKeyFrame[] {
-        const frames = {};
+        const frames: Partial<AnimationKeyFrame[]> = {};
 
         // Merge all keyframes into a single frames object where each key is a keyframe offset
-        keyframeSets.forEach((keyframeSet) => {
-            keyframeSet.forEach((keyframe, index) => {
-                let offset = keyframe.offset;
+        keyframeSets.forEach((keyframeSet: AnimationKeyFrame[]) => {
+            keyframeSet.forEach((keyframe: AnimationKeyFrame, index: number) => {
+                let offset: number | number[] = keyframe.offset;
 
                 if (typeof offset === "undefined") {
                     offset = index === 0 ? 0 : 1;
                     keyframe.offset = offset;
                 }
 
-                const offsetKey = offset.toString();
+                const offsetKey: string = offset.toString();
 
                 frames[offsetKey] = typeof frames[offsetKey] === "undefined" ? keyframe : Object.assign(frames[offsetKey], keyframe);
             });
         });
 
-        return this.sortOffsets(Object.keys(frames)).map((offset) => {
+        return this.sortOffsets(Object.keys(frames)).map((offset: string) => {
             return frames[offset];
         });
     }
 
     /**
-     * Stores animation keyframe sets and is accessed by a getter
-     */
-    private _keyframes: AnimationKeyFrame[][] = [];
-
-    /**
      * Returns the animation's keyframes
      */
-    public get keyframes() {
-        const optionKeyframes = this.getOptionKeyframes();
+    public get keyframes(): AnimationKeyFrame[] {
+        const optionKeyframes: AnimationKeyFrame[] = this.getOptionKeyframes();
 
         return this.consolidateKeyframes(this._keyframes.concat([this.getOptionKeyframes()]));
     }
@@ -448,7 +466,7 @@ export default abstract class Animate {
     /**
      * Returns the key frame effect object
      */
-    public get keyframeEffect() {
+    public get keyframeEffect(): KeyframeEffect {
         return new KeyframeEffect(this.animationTarget, this.keyframes, this.effectTiming);
     }
 }

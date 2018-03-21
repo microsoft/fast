@@ -1,5 +1,5 @@
 {
-    "extends": "@microsoft/fast-tslint-rules",
+    "extends": "./packages/fast-tslint-rules/tslint.json",
     "linterOptions": {
         "exclude": ["node_modules/**/*.*", "**/*/node_modules/**/*.*", "**/*.d.ts"]
     }

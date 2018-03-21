@@ -8,7 +8,7 @@ describe("Glyph string conversion", () => {
         const glyphConverter: ConvertGlyphs = new ConvertGlyphs(({glyphFolderPath} as IConvertGlyphOptions));
 
         // This will throw an error if the file does not exist
-        fs.readFile(`${glyphFolderPath}/index.js`, (err) => {
+        fs.readFile(`${glyphFolderPath}/index.js`, (err: Error) => {
             if (err) {
                 throw err;
             }

@@ -1,13 +1,13 @@
 /**
  * Define configuration values
  */
-const validDomains = [ "*://*.fluentweb.com/*" ];
-const extensionId = "jhhigejkemaekdcempcigaapebobmimg";
+const validDomains: string[] = [ "*://*.fluentweb.com/*" ];
+const extensionId: string = "jhhigejkemaekdcempcigaapebobmimg";
 
 /**
  * Define event names
  */
-export const menuItemClickEvent = "FW_EXTENSION::MENU_ITEM_CLICK";
+export const menuItemClickEvent: string = "FW_EXTENSION::MENU_ITEM_CLICK";
 
 /**
  * Non-production environments

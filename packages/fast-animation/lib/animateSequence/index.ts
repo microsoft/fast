@@ -2,28 +2,63 @@ import AnimateTo from "../animateTo";
 import AnimateFrom from "../animateFrom";
 
 class AnimateSequence {
-    constructor(animations: Array<AnimateTo | AnimateFrom>) {
-        this.animations = animations;
-    }
-
-    private animations: Array<AnimateTo | AnimateFrom>;
-
     /**
      * onFinish callback method
      */
     public onFinish: () => void;
 
+    private animations: Array<AnimateTo | AnimateFrom>;
+
+    constructor(animations: Array<AnimateTo | AnimateFrom>) {
+        this.animations = animations;
+    }
+
+    /**
+     * Play the sequence of animations
+     */
+    public play = (): void => {
+        this.applySequencedCallback(this.animations, "play");
+    }
+
+    /**
+     * Play the sequence in reverse
+     */
+    public reverse = (): void => {
+        this.applySequencedCallback(this.animations.reverse(), "reverse");
+    }
+
+    /**
+     * Pauses all animations in the sequence
+     */
+    public pause = (): void => {
+        this.animations.forEach((animation: AnimateTo | AnimateFrom) => animation.pause());
+    }
+
+    /**
+     * Finishes all animations in the sequence
+     */
+    public finish = (): void => {
+        this.animations.forEach((animation: AnimateTo | AnimateFrom) => animation.finish());
+    }
+
+    /**
+     * Cancels all animations in the sequence
+     */
+    public cancel = (): void => {
+        this.animations.forEach((animation: AnimateTo | AnimateFrom) => animation.cancel());
+    }
+
     /**
      * Sequences a set of animations and calls the specified method
      */
-    private applySequencedCallback(animations: Array<AnimateTo | AnimateFrom>, method: string) {
-        const animationCount = animations.length;
+    private applySequencedCallback(animations: Array<AnimateTo | AnimateFrom>, method: string): void {
+        const animationCount: number = animations.length;
 
         if (animationCount <= 0) {
             return;
         }
 
-        animations.forEach((animation, index) => {
+        animations.forEach((animation: AnimateTo | AnimateFrom, index: number) => {
             // If this is not the last animation, format animation sequence chain
             if (index < animationCount - 1) {
                 animation.onFinish = this.animations[index + 1][method];
@@ -34,41 +69,6 @@ class AnimateSequence {
         });
 
         animations[0][method]();
-    }
-
-    /**
-     * Play the sequence of animations
-     */
-    public play = () => {
-        this.applySequencedCallback(this.animations, "play");
-    }
-
-    /**
-     * Play the sequence in reverse
-     */
-    public reverse = () => {
-        this.applySequencedCallback(this.animations.reverse(), "reverse");
-    }
-
-    /**
-     * Pauses all animations in the sequence
-     */
-    public pause = () => {
-        this.animations.forEach((animation) => animation.pause());
-    }
-
-    /**
-     * Finishes all animations in the sequence
-     */
-    public finish = () => {
-        this.animations.forEach((animation) => animation.finish());
-    }
-
-    /**
-     * Cancels all animations in the sequence
-     */
-    public cancel = () => {
-        this.animations.forEach((animation) => animation.cancel());
     }
 }
 

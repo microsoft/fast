@@ -10,10 +10,10 @@ export default class TabsApi {
     public query(queryInfo: chrome.tabs.QueryInfo, callback?: (results: chrome.tabs.Tab[]) => void): void {
         switch (getApiSupport()) {
             case APIName.chrome:
-                chrome.tabs.query(queryInfo, callback) as any;
+                chrome.tabs.query(queryInfo, callback);
                 break;
             case APIName.browser:
-                browser.tabs.query(queryInfo).then(callback, (error) => {
+                browser.tabs.query(queryInfo).then(callback, (error: Error) => {
                     throw error;
                 });
                 break;
@@ -24,7 +24,7 @@ export default class TabsApi {
     /**
      * Tab sendMessage wrapper
      */
-    public sendMessage(tabId: number, message: any) {
+    public sendMessage(tabId: number, message: any): void {
         switch (getApiSupport()) {
             case APIName.chrome:
                 chrome.tabs.sendMessage(tabId, message);

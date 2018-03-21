@@ -61,7 +61,7 @@ export function onMenuItemClick(callback: (e: Event) => void): void {
  * Communicates from a client to the browser extension that a new menu system should be created
  */
 export function createContextMenus(config: IContextMenus): void {
-    const data = {
+    const data: ICreateMessage = {
         type: CREATE_MENUS_MESSAGE,
         data: config
     };

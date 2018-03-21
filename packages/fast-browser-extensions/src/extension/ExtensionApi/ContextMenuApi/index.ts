@@ -4,7 +4,7 @@ export default class ContextMenuApi {
     /**
      * Remove a context menu by id
      */
-    public remove(menuId: string) {
+    public remove(menuId: string): void {
         switch (getApiSupport()) {
             case APIName.chrome:
                 chrome.contextMenus.remove(menuId);

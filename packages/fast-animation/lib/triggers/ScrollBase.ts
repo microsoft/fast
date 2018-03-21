@@ -8,14 +8,23 @@ import scrollY from "../utilities/scrollY";
 export type ScrollTriggerCallback = (distance: any) => void;
 
 /**
+ * Export subscription interface
+ */
+export interface IScrollTriggerSubscription {
+    element: HTMLElement;
+    callback: ScrollTriggerCallback;
+    inView: boolean;
+}
+
+/**
  * Scroll trigger base-class that handles event binding and element/callback registration.
  */
 export default abstract class ScrollTrigger {
-    protected subscriptions: any = [];
+    protected subscriptions: IScrollTriggerSubscription[] = [];
+    protected scrollDistance: number = 0;
     private openRequestAnimationFrame: boolean = false;
     private useRequestAnimationFrame: boolean = false;
     private lastScrollY: number;
-    protected scrollDistance: number = 0;
 
     constructor() {
         this.useRequestAnimationFrame = window.hasOwnProperty("requestAnimationFrame");
@@ -28,18 +37,9 @@ export default abstract class ScrollTrigger {
     }
 
     /**
-     * Checks to see if element/callback pairs have been registered so we don't duplicate registration.
-     */
-    private isSubscribed(element: HTMLElement, callback: ScrollTriggerCallback) {
-        return !!this.subscriptions.filter((subscription) => {
-            return element === subscription.element && callback === subscription.callback;
-        }).length;
-    }
-
-    /**
      * Subscribe an element and callback for scroll triggers
      */
-    public subscribe(element: HTMLElement, callback: ScrollTriggerCallback) {
+    public subscribe(element: HTMLElement, callback: ScrollTriggerCallback): void {
         if (!(element instanceof HTMLElement) || typeof callback !== "function" || this.isSubscribed(element, callback)) {
             return;
         }
@@ -60,8 +60,8 @@ export default abstract class ScrollTrigger {
     /**
      * Unsubscribe an element and callback for scroll triggers
      */
-    public unsubscribe(element: HTMLElement, callback: ScrollTriggerCallback) {
-        this.subscriptions = this.subscriptions.filter((subscription) => {
+    public unsubscribe(element: HTMLElement, callback: ScrollTriggerCallback): void {
+        this.subscriptions = this.subscriptions.filter((subscription: IScrollTriggerSubscription) => {
             return !(element === subscription.element && callback === subscription.callback);
         });
 
@@ -71,24 +71,33 @@ export default abstract class ScrollTrigger {
     }
 
     /**
+     * Make any arbitrary updates to UI
+     */
+    protected update(): void {
+        const yOffset: number = scrollY();
+        this.openRequestAnimationFrame = false;
+        this.scrollDistance = yOffset - this.lastScrollY;
+        this.lastScrollY = yOffset;
+    }
+
+    /**
+     * Checks to see if element/callback pairs have been registered so we don't duplicate registration.
+     */
+    private isSubscribed(element: HTMLElement, callback: ScrollTriggerCallback): boolean {
+        return !!this.subscriptions.filter((subscription: IScrollTriggerSubscription): boolean => {
+            return element === subscription.element && callback === subscription.callback;
+        }).length;
+    }
+
+    /**
      * Request's an animation frame if there are currently no open animation frame requests
      */
-    private requestFrame = () => {
+    private requestFrame = (): void => {
         if (this.openRequestAnimationFrame) {
             return;
         }
 
         this.openRequestAnimationFrame = true;
         window.requestAnimationFrame(this.update);
-    }
-
-    /**
-     * Make any arbitrary updates to UI
-     */
-    protected update() {
-        const yOffset = scrollY();
-        this.openRequestAnimationFrame = false;
-        this.scrollDistance = yOffset - this.lastScrollY;
-        this.lastScrollY = yOffset;
     }
 }
