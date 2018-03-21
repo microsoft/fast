@@ -1,7 +1,7 @@
 import AnimateTo from "./animateTo";
 import AnimateFrom from "./animateFrom";
 import AnimateGroup from "./animateGroup";
-import AnimateSequence from "./animateSequence";
+import AnimateSequence from "./animateSequence"
 
 import { fadeIn, fadeOut } from "./fade";
 import { cubicBezier } from "./curves";
