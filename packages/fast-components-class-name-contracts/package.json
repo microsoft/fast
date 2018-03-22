@@ -1,0 +1,18 @@
+{
+  "name": "@microsoft/fast-components-class-name-contracts",
+  "version": "1.0.0",
+  "description": "Type descriptions for the classnames that any given component can expect as props.",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p ./tsconfig.json",
+    "clean:dist": "node ../../build/clean.js dist",
+    "prepare": "npm run clean:dist && npm run build",
+    "test": "echo \"Error: no test specified\" && exit 0"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^2.7.2"
+  }
+}
