@@ -1,5 +1,5 @@
 {
-  "name": "@microsoft/fast-react-viewer",
+  "name": "@microsoft/fast-viewer-react",
   "version": "1.0.0",
   "description": "An initial implementation of a React iframe that is self-contained.",
   "main": "dist/index.js",
