@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import Site, { ISiteProps, ICategoryProps } from "@microsoft/fast-react-development-site";
+import Site, { ISiteProps, ICategoryProps } from "@microsoft/fast-development-site-react";
 import * as examples from "./examples";
 
 const items: ICategoryProps[] = [
