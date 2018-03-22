@@ -4,14 +4,14 @@ Fast, adaptive, secure, and timeless design network architecture.
 A design architecture for the web that enables real-time updating of user experiences based on changing inputs.
 
 ## Packages
-### FAST animation library (Beta)
+### FAST animation library
 An animation library that simplifies interactions and animations using the Web Animation API. Provides a convenient abstraction layer over the Web Animation API while still allowing full access to it.
 
-### FAST browser extension (Beta)
+### FAST browser extension
 An extension for testing real-world localization, theming, and other production type scenarios in web development. Originally devised for Fluent on Web as a way to visualize prototypes in many different user scenarios. For example, view a website in one of the 194 different localized settings.
 
 ### FAST React components base
-A set of generic base web components written in React.
+A set of base components written in React that deliver quality HTML markup optimized for performance, accessibility, and modern browsers. A large amount of effort in all component frameworks often goes into just this, so delivering these base components as a package that then allows users to add a design language can reap major efficiency benefits in the design process.
 
 ### FAST React MSFT
 A set of React components with a Microsoft design system driving the look and feel.
