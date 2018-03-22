@@ -1,5 +1,5 @@
 import * as React from "react";
-import manageJss, { IInjectedProps, ComponentStyles } from "@microsoft/fast-react-jss-manager";
+import manageJss, { IInjectedProps, ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import {IDevSiteDesignSystem} from "../design-system";
 
 /* tslint:disable-next-line */

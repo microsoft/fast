@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Foundation, { HandledProps } from "../foundation";
 import { IButtonProps, ButtonHTMLTags } from "./Button.props";
-import { IInjectedProps } from "@microsoft/fast-react-jss-manager";
+import { IInjectedProps } from "@microsoft/fast-jss-manager-react";
 
 interface IButtonManagedClasses {
     button: string;

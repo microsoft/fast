@@ -1,5 +1,5 @@
 {
-  "name": "@microsoft/fast-development-react-site",
+  "name": "@microsoft/fast-development-site-react",
   "description": "FAST development testing site for react.",
   "author": {
     "name": "Fluent Web",
@@ -21,7 +21,7 @@
   "license": "MIT",
   "readme": "README.md",
   "dependencies": {
-    "@microsoft/fast-react-jss-manager": "^1.0.0",
+    "@microsoft/fast-jss-manager-react": "^1.0.0",
     "react": "^16.2.0",
     "react-router-dom": "^4.2.2"
   },
