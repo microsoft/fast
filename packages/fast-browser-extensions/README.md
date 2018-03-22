@@ -2,7 +2,7 @@
 # FAST browser extension (Beta)
 An extension for testing real-world localization, theming, and other production type scenarios in web development.
 
-Originally, devised for Fluent on Web, as a way to visualize prototypes in many different user scenarios. For example, view a website in one of the 194 different localized settings.
+Originally devised for Fluent on Web as a way to visualize prototypes in many different user scenarios. For example, view a website in one of the 194 different localized settings.
 
 Initially, focused on Chrome, with a follow up for Edge.
 
