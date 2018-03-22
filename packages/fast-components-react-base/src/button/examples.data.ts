@@ -1,7 +1,7 @@
 import {ICategoryItemProps} from "@microsoft/fast-development-site-react";
 import {IGenericExample} from "../examples";
 import { IInjectedProps } from "@microsoft/fast-jss-manager-react";
-import Button, {IButtonProps, IButtonManagedClasses} from "./Button";
+import Button, {IButtonProps, IButtonClassNameContract} from "./Button";
 
 export default {
     name: "button",
@@ -14,4 +14,4 @@ export default {
             children: "Button text"
         }
     ]
-} as IGenericExample<IButtonProps & IInjectedProps<IButtonManagedClasses>>;
+} as IGenericExample<IButtonProps & IInjectedProps<IButtonClassNameContract>>;
