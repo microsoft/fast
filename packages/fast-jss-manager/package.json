@@ -1,0 +1,17 @@
+{
+  "name": "@microsoft/fast-jss-manager",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "clean:dist": "node ../../build/clean.js dist",
+    "build": "tsc -p ./tsconfig.json",
+    "prepare": "npm run clean:dist && npm run build"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^2.7.2"
+  }
+}

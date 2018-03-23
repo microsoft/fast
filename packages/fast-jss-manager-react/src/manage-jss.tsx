@@ -13,33 +13,12 @@ import { SheetsManager, StyleSheet } from "jss";
 import { IDesignSystemProviderProps } from "./design-system-provider";
 import * as propTypes from "prop-types";
 import isEqual from "lodash.isequal";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 
 // hoist-non-react-statics does not seem to be a properly formatted ES6 module, so we need to require it instead
 // Disable rule disallowing require statements
 /* tslint:disable-next-line */
 const hoistNonReactStatics: any = require("hoist-non-react-statics");
-
-/**
- * Type definition for a function that resovles to a CSS property value
- * It optionally expects a config object.
- * TODO: How can we add typings to this config object
- */
-export type CSSRuleResolver<T> = (config: T) => string;
-
-/**
- * Definition of a set of css rules
- * TODO: can we define this more accurately?
- */
-export interface ICSSRules<T> {
-    [rule: string]: ICSSRules<T> | CSSRuleResolver<T> | string;
-}
-
-/**
- * Definition of a JSS style object
- */
-export type ComponentStyles<T, C> = {
-    [P in keyof T]: ICSSRules<C>;
-};
 
 /**
  * State interface for JSS manager
@@ -300,3 +279,4 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
 }
 
 export default manageJss;
+export * from "@microsoft/fast-jss-manager";
