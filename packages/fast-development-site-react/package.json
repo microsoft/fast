@@ -15,7 +15,7 @@
   "scripts": {
     "build": "npm run clean:dist && tsc -p ./tsconfig.json",
     "clean:dist": "node ../../build/clean.js dist",
-    "dev-server": "webpack-dev-server --progress",
+    "start": "webpack-dev-server --progress",
     "prepare": "npm run build"
   },
   "license": "MIT",
