@@ -19,10 +19,13 @@
     "prepare": "tsc -p ./lib/tsconfig.json",
     "unit-tests": "jest",
     "test": "npm run unit-tests && npm run build-test-app",
+    "tslint": "tslint -c ./tslint.json \"**/*.ts\" \"**/*.tsx\"",
+    "tslint:fix": "tslint -c ./tslint.json --fix \"**/*.ts\" \"**/*.tsx\"",
     "build-test-app": "webpack --config webpack/webpack.react.config.js",
     "start": "node_modules/.bin/webpack-dev-server --config webpack/webpack.react.config.js --progress"
   },
   "devDependencies": {
+    "@microsoft/fast-tslint-rules": "^1.0.4",
     "@types/jest": "^21.1.2",
     "@types/node": "^7.0.22",
     "@types/react": "^15.0.24",
@@ -66,7 +69,6 @@
     "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
-    "@microsoft/fast-tslint-rules": "^1.0.4",
     "@types/web-animations-js": "^2.2.5",
     "lodash.throttle": "^4.1.1"
   },

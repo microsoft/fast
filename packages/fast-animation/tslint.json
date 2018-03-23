@@ -4,11 +4,8 @@
     ],
     "linterOptions": {
         "exclude": [
-            "./__tests__/**"
+            "node_modules/**",
+            "dist/**"
         ]
-    },
-    "rules": {
-        "indent": [true, 4],
-        "jsx-curly-spacing": "never"
     }
 }
