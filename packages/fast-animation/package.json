@@ -20,8 +20,7 @@
     "unit-tests": "jest",
     "test": "npm run unit-tests && npm run build-test-app",
     "build-test-app": "webpack --config webpack/webpack.react.config.js",
-    "start": "node_modules/.bin/webpack-dev-server --config webpack/webpack.react.config.js --progress",
-    "prepare": "npm run build"
+    "start": "node_modules/.bin/webpack-dev-server --config webpack/webpack.react.config.js --progress"
   },
   "devDependencies": {
     "@types/jest": "^21.1.2",
@@ -39,8 +38,6 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "css-loader": "^0.27.1",
-    "eslint": "^4.3.0",
-    "eslint-loader": "^1.7.1",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.11.1",
     "fork-ts-checker-webpack-plugin": "^0.4.0",
@@ -69,6 +66,7 @@
     "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
+    "@microsoft/fast-tslint-rules": "^1.0.4",
     "@types/web-animations-js": "^2.2.5",
     "lodash.throttle": "^4.1.1"
   },

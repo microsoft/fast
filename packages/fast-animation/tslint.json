@@ -1,55 +1,14 @@
 {
-    "extends": [ "tslint-react" ],
+    "extends": [
+        "@microsoft/fast-tslint-rules"
+    ],
     "linterOptions": {
-      "exclude": [
-        "./__tests__/**"
-      ]
+        "exclude": [
+            "./__tests__/**"
+        ]
     },
     "rules": {
-      "jsx-curly-spacing": ["always"],
-      "jsx-no-lambda": true,
-      "class-name": true,
-      "curly": true,
-      "eofline": false,
-      "forin": true,
-      "indent": [true, 4],
-      "label-position": true,
-      "max-line-length": [true, 140],
-      "no-arg": true,
-      "no-bitwise": true,
-      "no-console": [true,
-        "debug",
-        "info",
-        "time",
-        "timeEnd",
-        "trace"
-      ],
-      "no-construct": true,
-      "no-debugger": true,
-      "no-duplicate-variable": true,
-      "no-empty": true,
-      "no-eval": true,
-      "no-string-literal": false,
-      "trailing-comma": true,
-      "no-trailing-whitespace": false,
-      "no-unused-variable": false,
-      "no-use-before-declare": true,
-      "one-line": [true,
-        "check-open-brace",
-        "check-catch",
-        "check-else",
-        "check-whitespace"
-      ],
-      "quotemark": [true, "single", "avoid-escape"],
-      "radix": true,
-      "semicolon": true,
-      "triple-equals": [true, "allow-null-check"],
-      "variable-name": false,
-      "whitespace": [true,
-        "check-branch",
-        "check-decl",
-        "check-operator",
-        "check-separator"
-      ]
+        "indent": [true, 4],
+        "jsx-curly-spacing": "never"
     }
-  }
+}
