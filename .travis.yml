@@ -6,7 +6,6 @@ install:
   - npm install 
   - lerna bootstrap
 script:
-  - lerna run build
   - npm test
   - lerna run test
   - npm run tslint

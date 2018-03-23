@@ -19,7 +19,7 @@
     "build:interface": "tsc -p ./tsconfig.json",
     "tslint": "tslint -c ./tslint.json \"**/*.ts\" \"**/*.tsx\"",
     "tslint:fix": "tslint -c ./tslint.json --fix \"**/*.ts\" \"**/*.tsx\"",
-    "test": "npm run build:interface && npm run build:chrome",
+    "test": "npm run tslint && npm run build:interface && npm run build:chrome",
     "prepack": "rm -rf ./dist && npm run build:interface"
   },
   "devDependencies": {

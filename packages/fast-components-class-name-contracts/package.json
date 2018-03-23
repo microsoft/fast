@@ -6,11 +6,16 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "clean:dist": "node ../../build/clean.js dist",
-    "prepare": "npm run clean:dist && tsc -p ./tsconfig.json"
+    "prepare": "npm run clean:dist && tsc -p ./tsconfig.json",
+    "test": "npm run tslint",
+    "tslint": "tslint -c ./tslint.json \"**/*.ts\" \"**/*.tsx\"",
+    "tslint:fix": "tslint -c ./tslint.json --fix \"**/*.ts\" \"**/*.tsx\""
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@microsoft/fast-tslint-rules": "^1.0.4",
+    "tslint": "^5.9.1",
     "typescript": "^2.7.2"
   }
 }
