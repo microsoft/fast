@@ -6,9 +6,8 @@
   "scripts": {
     "test": "jest",
     "test:update": "jest --update",
-    "dev-server": "webpack-dev-server --progress",
-    "build": "tsc -p ./src/tsconfig.json",
-    "prepack": "npm run build"
+    "start": "webpack-dev-server --progress",
+    "prepare": "tsc -p ./src/tsconfig.json"
   },
   "repository": {
     "type": "git",

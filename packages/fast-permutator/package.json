@@ -15,7 +15,7 @@
   "registry": "https://registry.npmjs.org/",
   "scripts": {
     "test": "eslint src/** && jest",
-    "build": "babel src --presets babel-preset-es2015 --out-dir dist"
+    "prepare": "babel src --presets babel-preset-es2015 --out-dir dist"
   },
   "jest": {
     "testPathIgnorePatterns": [

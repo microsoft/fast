@@ -5,10 +5,8 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc -p ./tsconfig.json",
     "clean:dist": "node ../../build/clean.js dist",
-    "prepare": "npm run clean:dist && npm run build",
-    "test": "echo \"Error: no test specified\" && exit 0"
+    "prepare": "npm run clean:dist && tsc -p ./tsconfig.json"
   },
   "author": "",
   "license": "MIT",

@@ -13,13 +13,12 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc -p ./tsconfig.json",
+    "prepare": "tsc -p ./tsconfig.json",
     "test": "jest",
     "test:watch": "jest --watch && npm-watch",
-    "lint": "tslint -c tslint.json ./src/**/*.ts{,x}",
-    "lint:fix": "tslint -c tslint.json ./src/**/*.ts{,x} --fix",
-    "lint:watch": "node build/tslint-watch.js",
-    "prepare": "npm run build"
+    "tslint": "tslint -c tslint.json ./src/**/*.ts{,x}",
+    "tslint:fix": "tslint -c tslint.json ./src/**/*.ts{,x} --fix",
+    "tslint:watch": "node build/tslint-watch.js"
   },
   "license": "MIT",
   "readme": "README.md",

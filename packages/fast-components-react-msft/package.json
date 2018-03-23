@@ -13,13 +13,12 @@
   "main": "dist/index.js",
   "type": "dist/index.d.ts",
   "scripts": {
-    "build": "npm run clean:dist && tsc -p ./tsconfig.json",
+    "prepare": "npm run clean:dist && tsc -p ./tsconfig.json",
     "clean:dist": "node ../../build/clean.js dist",
     "start": "webpack-dev-server",
-    "test": "echo No tests",
+    "test": "webpack --progress",
     "tslint": "tslint -c ../../tslint.json \"**/*.ts\" \"**/*.tsx\"",
-    "tslint:fix": "tslint -c ../../tslint.json --fix \"**/*.ts\" \"**/*.tsx\"",
-    "prepare": "npm run build"
+    "tslint:fix": "tslint -c ../../tslint.json --fix \"**/*.ts\" \"**/*.tsx\""
   },
   "license": "MIT",
   "readme": "README.md",
