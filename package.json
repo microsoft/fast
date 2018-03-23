@@ -15,8 +15,6 @@
   "readme": "README.md",
   "scripts": {
     "test": "jest",
-    "tslint": "tslint -c ./tslint.json \"**/*.ts\" \"**/*.tsx\"",
-    "tslint:fix": "tslint -c ./tslint.json --fix \"**/*.ts\" \"**/*.tsx\"",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
   },
   "jest": {
@@ -44,8 +42,6 @@
     "rimraf": "^2.6.2",
     "ts-jest": "^22.4.2",
     "ts-node": "^5.0.1",
-    "tslint": "^5.9.1",
-    "tslint-react": "^3.5.1",
     "typescript": "^2.7.2",
     "yargs": "^11.0.0"
   }
