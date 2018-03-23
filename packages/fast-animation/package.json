@@ -16,10 +16,11 @@
     "name": "Microsoft Corporation"
   },
   "scripts": {
-    "build": "tsc -p ./lib/tsconfig.json",
-    "test": "jest",
-    "build:react": "webpack --config webpack/webpack.react.config.js",
-    "dev-server:react": "node_modules/.bin/webpack-dev-server --config webpack/webpack.react.config.js --progress",
+    "prepare": "tsc -p ./lib/tsconfig.json",
+    "unit-tests": "jest",
+    "test": "npm run unit-tests && npm run build-test-app",
+    "build-test-app": "webpack --config webpack/webpack.react.config.js",
+    "start": "node_modules/.bin/webpack-dev-server --config webpack/webpack.react.config.js --progress",
     "prepare": "npm run build"
   },
   "devDependencies": {
