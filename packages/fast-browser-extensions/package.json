@@ -17,9 +17,13 @@
     "dev:chrome": "cross-env TARGET_BROWSER=chrome NODE_ENV=development ts-node ./node_modules/webpack/bin/webpack.js --progress",
     "build:chrome": "cross-env TARGET_BROWSER=chrome NODE_ENV=production ts-node ./node_modules/webpack/bin/webpack.js --progress",
     "build:interface": "tsc -p ./tsconfig.json",
+    "tslint": "tslint -c ./tslint.json \"**/*.ts\" \"**/*.tsx\"",
+    "tslint:fix": "tslint -c ./tslint.json --fix \"**/*.ts\" \"**/*.tsx\"",
+    "test": "npm run build:interface && npm run build:chrome",
     "prepack": "rm -rf ./dist && npm run build:interface"
   },
   "devDependencies": {
+    "@microsoft/fast-tslint-rules": "^1.0.4",
     "@types/chrome": "0.0.56",
     "@types/node": "^8.5.1",
     "copy-webpack-plugin": "^4.5.1",
