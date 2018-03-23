@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 module.exports = {
     devtool: 'inline-source-map',
@@ -20,17 +21,20 @@ module.exports = {
                 test: /\.tsx?$/,
                 use: [
                     {
-                        loader: 'ts-loader'
+                        loader: 'ts-loader',
+                        options: {
+                            transpileOnly: true
+                        }
                     },
-                    {
-                        loader: 'tslint-loader'
-                    }
+                    
                 ],
-                exclude: /node_modules/
             }
         ]
     },
     plugins: [
+        new ForkTsCheckerWebpackPlugin({
+            tslint: path.resolve(__dirname, "./tslint.json")
+        }),
         new HtmlWebpackPlugin({
             title: 'Test',
             template: path.resolve(__dirname, './app/index.html')
