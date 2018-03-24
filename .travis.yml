@@ -8,6 +8,5 @@ install:
 script:
   - npm test
   - lerna run test
-  - npm run tslint
 dist: trusty
 sudo: false
