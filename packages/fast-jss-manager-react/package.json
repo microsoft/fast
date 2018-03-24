@@ -14,12 +14,12 @@
   "typings": "dist/index.d.ts",
   "scripts": {
     "prepare": "tsc -p ./tsconfig.json",
-    "unit-test": "jest",
-    "unit-test:watch": "jest --watch && npm-watch",
     "test": "npm run tslint && npm run unit-test",
     "tslint": "tslint -c tslint.json ./src/**/*.ts{,x}",
     "tslint:fix": "tslint -c tslint.json ./src/**/*.ts{,x} --fix",
-    "tslint:watch": "node build/tslint-watch.js"
+    "tslint:watch": "node build/tslint-watch.js",
+    "unit-test": "jest",
+    "unit-test:watch": "jest --watch && npm-watch"
   },
   "license": "MIT",
   "readme": "README.md",
