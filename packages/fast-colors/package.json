@@ -1,8 +1,19 @@
 {
   "name": "@microsoft/fast-color-variants",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A color utility for generating a range of colors from a single color",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "author": {
+    "name": "Fluent Web",
+    "email": "fwq@microsoft.com"
+  },
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast-dna.git"
+  },
   "scripts": {
     "unit-tests": "jest",
     "unit-tests:watch": "jest --watch",
@@ -10,8 +21,6 @@
     "tslint:fix": "tslint -c ./tslint.json --fix ./src/**/*.ts",
     "test": "npm run unit-tests"
   },
-  "author": "",
-  "license": "ISC",
   "jest": {
     "testPathIgnorePatterns": [
       "/node_modules/",
