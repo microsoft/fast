@@ -168,7 +168,7 @@ Projects including intellectual property are only available for contributions by
 For support:
 + Submit [for help](https://stackoverflow.com/questions/tagged/fluent-web)
 + Submit [feature requests](https://fluentweb.visualstudio.com/Fluent%20Web/_workitems?_a=new&witd=Feature)
-+ Submit [a bug](https://fluentweb.visualstudio.com/Fluent%20Web/_workitems/create/Bug)
++ Submit [a bug](https://fluentweb.visualstudio.com/Fluent%20Web/_workitems/create/BuGg)
 + Submit [feature questions](https://stackoverflow.microsoft.com/questions/tagged/fluent-web)
 
 These packages that are available on [VSTS](https://fluentweb.visualstudio.com/Fluent%20Web/_packaging?feed=ms.fw&_a=feed) with a `@ms.fw/` namespace prepended.
@@ -189,3 +189,24 @@ Aspects of our open source policy have been influenced and in some cases copied 
 * [Contributions @Node] : https://github.com/nodejs/node/blob/master/CONTRIBUTING.md
 * [Open Source @Github] : https://github.com/blog/2039-adopting-the-open-code-of-conduct
 * [Open Source exmaples @todogroup] : https://github.com/todogroup/policies
+
+## Development workflow
+Clone the repository, `cd` into the project, and install [Lerna](https://github.com/lerna/lerna):
+
+```shell
+git clone https://github.com/Microsoft/fast-dna.git
+cd fast-dna
+npm install --global lerna
+```
+
+Install all Lerna dependencies:
+```shell
+lerna bootstrap
+```
+
+Each package in fast-dna has its own unique requirements and commands, but the following commands are relatively standard across all packages:
+- `npm run tslint` or `npm run tslint:fix` runs tslint on all typescript in the project.
+- `npm run unit-tests` runs all unit-tests.
+- `npm run test` runs all processes required to pass prior to check-in. Generally includes building, linting, and unit-testing.
+
+To run these processes across *all* projects, substitute `lerna` for `npm`. eg, `lerna run test`.

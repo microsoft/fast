@@ -54,20 +54,6 @@ Details are located [here](https://github.com/Microsoft/fast-dna/blob/master/COD
 ### Accessibility
 FAST-DNA has partnered with Deque & Microsoft to build accessibility into our components ensuring we are WCAG 2.0 AA compliant. [Readme](https://github.com/Microsoft/fast-dna/wiki/Accessibility)
 
-## Getting started
-Clone the repository, `cd` into the project, and install [Lerna](https://github.com/lerna/lerna):
-
-```shell
-git clone https://github.com/Microsoft/fast-dna.git
-cd fast-dna
-npm install --global lerna
-```
-
-Install all Lerna dependencies:
-```shell
-lerna bootstrap
-```
-
 ## Contact
 * Submit [for help](https://stackoverflow.com/questions/tagged/fast-dna) 
 * Submit [feature requests](https://github.com/Microsoft/fast-dna/issues/new?labels=feature%20:%20request)
