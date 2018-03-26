@@ -115,7 +115,7 @@ function adjustThreshold(
  * Algorithm to generate a range of color variants based on a single color, where the input color is the middle
  * of the returned color range.
  */
-export function variants(color: Color, options: Partial<IColorOptions> = {}): Color[] {
+export function range(color: Color, options: Partial<IColorOptions> = {}): Color[] {
     const defaults = {
         variants: 7,
         paddingLight: 0.185,
