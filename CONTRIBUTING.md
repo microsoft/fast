@@ -168,7 +168,7 @@ Projects including intellectual property are only available for contributions by
 For support:
 + Submit [for help](https://stackoverflow.com/questions/tagged/fluent-web)
 + Submit [feature requests](https://fluentweb.visualstudio.com/Fluent%20Web/_workitems?_a=new&witd=Feature)
-+ Submit [a bug](https://fluentweb.visualstudio.com/Fluent%20Web/_workitems/create/BuGg)
++ Submit [a bug](https://fluentweb.visualstudio.com/Fluent%20Web/_workitems/create/Bug)
 + Submit [feature questions](https://stackoverflow.microsoft.com/questions/tagged/fluent-web)
 
 These packages that are available on [VSTS](https://fluentweb.visualstudio.com/Fluent%20Web/_packaging?feed=ms.fw&_a=feed) with a `@ms.fw/` namespace prepended.
@@ -204,7 +204,7 @@ Install all Lerna dependencies:
 lerna bootstrap
 ```
 
-Each package in fast-dna has its own unique requirements and commands, but the following commands are relatively standard across all packages:
+Each package in FAST-DNA has its own unique requirements and commands, but the following commands are relatively standard across all packages:
 - `npm run tslint` or `npm run tslint:fix` runs tslint on all typescript in the project.
 - `npm run unit-tests` runs all unit-tests.
 - `npm run test` runs all processes required to pass prior to check-in. Generally includes building, linting, and unit-testing.
