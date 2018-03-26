@@ -54,7 +54,7 @@ export interface IColorOptions {
      * The multiply filter on light values
      */
     filterMultiplyLight: number;
-    
+
     /**
      * The multiply filter on dark values
      */
@@ -72,7 +72,7 @@ const black = "#000";
 /**
  * Saturates a color by a given value. If the value is lower than the lowpass it will not make an adjustment
  */
-function saturate(color: Chroma, referenceColor: Color, value: number, lowpass: number = 0.05, highpass:number = 1) {
+function saturate(color: Chroma, referenceColor: Color, value: number, lowpass: number = 0.05, highpass: number = 1) {
     const saturation = Chroma(referenceColor).get("hsl.s");
     return saturation >= lowpass && saturation <= highpass ? color.saturate(value) : color;
 }
@@ -84,7 +84,7 @@ function filter(name: string) {
     return (background: Color, foreground: Color, value: number) => {
         const adjustment = Chroma.blend(background, foreground, name);
         return Chroma.mix(foreground, adjustment, value, "rgb");
-    }
+    };
 }
 
 /**
