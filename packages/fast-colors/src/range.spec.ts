@@ -1,4 +1,4 @@
-import { range } from "./index";
+import { range } from "./range";
 
 const white = "#ffffff";
 
