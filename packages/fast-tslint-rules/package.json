@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Microsoft/fast-tslint-rules.git"
+    "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
   "keywords": [
     "tslint",
