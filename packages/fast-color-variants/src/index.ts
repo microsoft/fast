@@ -116,7 +116,7 @@ function adjustThreshold(
  * of the returned color range.
  */
 export function variants(color: Color, options: Partial<IColorOptions> = {}): Color[] {
-    const normalizedOptions: IColorOptions = Object.assign({}, options, {
+    const defaults = {
         variants: 7,
         paddingLight: 0.185,
         paddingDark: 0.16,
@@ -128,7 +128,9 @@ export function variants(color: Color, options: Partial<IColorOptions> = {}): Co
         filterOverlayDark: 0.25,
         filterMultiplyLight: 0,
         filterMultiplyDark: 0
-    });
+    };
+
+    const normalizedOptions: IColorOptions = Object.assign({}, defaults, options);
 
     // Create the color-range to derive the color variants from
     const colorRange: Color[] = Chroma
