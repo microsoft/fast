@@ -66,23 +66,28 @@ export interface IColorOptions {
  */
 export type Color = string;
 
-const white = "#FFF";
-const black = "#000";
+/**
+ * A function that applies a filter to a color
+ */
+export type FilterFunction = (background: Color, foreground: Color, amount: number) => Chroma;
+
+const white: Color = "#FFF";
+const black: Color = "#000";
 
 /**
  * Saturates a color by a given value. If the value is lower than the lowpass it will not make an adjustment
  */
-function saturate(color: Chroma, referenceColor: Color, value: number, lowpass: number = 0.05, highpass: number = 1) {
-    const saturation = Chroma(referenceColor).get("hsl.s");
+function saturate(color: Chroma, referenceColor: Color, value: number, lowpass: number = 0.05, highpass: number = 1): Chroma {
+    const saturation: number = Chroma(referenceColor).get("hsl.s");
     return saturation >= lowpass && saturation <= highpass ? color.saturate(value) : color;
 }
 
 /**
  * Creates a filter function by the name of the filter
  */
-function filter(name: string) {
-    return (background: Color, foreground: Color, value: number) => {
-        const adjustment = Chroma.blend(background, foreground, name);
+function filter(name: string): FilterFunction {
+    return (background: Color, foreground: Color, value: number): Chroma => {
+        const adjustment: Chroma = Chroma.blend(background, foreground, name);
         return Chroma.mix(foreground, adjustment, value, "rgb");
     };
 }
@@ -91,11 +96,18 @@ function filter(name: string) {
  * Adjusts the threshold of a color-range based on configuration. Applies various color transformations and returns
  * the new color threshold. This function is used to adjust the extremes of a color range.
  */
-function adjustThreshold(thresholdColor: Color, referenceColor: Color, saturation: number, brightness: number, multiply: number, overlay: number): Color {
+function adjustThreshold(
+    thresholdColor: Color,
+    referenceColor: Color,
+    saturation: number,
+    brightness: number,
+    multiply: number,
+    overlay: number
+): Chroma {
     const color: any = Chroma(thresholdColor);
-    const saturated = saturate(color, referenceColor, saturation);
-    const brightened = saturated.brighten(brightness);
-    const multiplied = filter("multiply")(referenceColor, brightened, multiply);
+    const saturated: Chroma = saturate(color, referenceColor, saturation);
+    const brightened: Chroma = saturated.brighten(brightness);
+    const multiplied: Chroma = filter("multiply")(referenceColor, brightened, multiply);
     return filter("overlay")(referenceColor, multiplied, overlay);
 }
 
@@ -130,7 +142,8 @@ export function variants(color: Color, options: Partial<IColorOptions> = {}): Co
         normalizedOptions.saturationLight,
         normalizedOptions.brightnessLight,
         normalizedOptions.filterMultiplyLight,
-        normalizedOptions.filterOverlayLight);
+        normalizedOptions.filterOverlayLight
+    );
 
     const darkest: Color = adjustThreshold(
         colorRange[2],
@@ -138,7 +151,8 @@ export function variants(color: Color, options: Partial<IColorOptions> = {}): Co
         normalizedOptions.saturationDark,
         normalizedOptions.brightnessDark,
         normalizedOptions.filterMultiplyDark,
-        normalizedOptions.filterOverlayDark);
+        normalizedOptions.filterOverlayDark
+    );
 
     return Chroma
         .scale([lightest, color, darkest])

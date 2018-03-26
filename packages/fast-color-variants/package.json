@@ -7,7 +7,8 @@
     "unit-tests": "jest",
     "unit-tests:watch": "jest --watch",
     "tslint": "tslint -c ./tslint.json ./src/**/*.ts",
-    "tslint:fix": "tslint -c ./tslint.json --fix ./src/**/*.ts"
+    "tslint:fix": "tslint -c ./tslint.json --fix ./src/**/*.ts",
+    "test": "npm run unit-tests"
   },
   "author": "",
   "license": "ISC",
