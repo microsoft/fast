@@ -1,5 +1,8 @@
+/**
+ * A huge thanks to bobbyrayit and mlijanto for creating the algorithm implemented in the range function.
+ * This code borrows heavily from their original implementation.
+ */
 import * as Chroma from "chroma-js";
-// Add github handles for Martin & Bobby
 
 /**
  * Interface that describes the configuration options of the color algorithm .

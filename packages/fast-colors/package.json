@@ -5,10 +5,18 @@
   "license": "MIT",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "author": {
-    "name": "Fluent Web",
-    "email": "fwq@microsoft.com"
-  },
+  "contributors": [
+    {
+      "name": "Fluent Web",
+      "email": "fwq@microsoft.com"
+    },
+    {
+      "name": "bobbyrayit"
+    },
+    {
+      "name": "mlijanto"
+    }
+  ],
   "version": "1.0.0",
   "repository": {
     "type": "git",
