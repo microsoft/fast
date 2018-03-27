@@ -2,20 +2,18 @@ import { Component, Input, ElementRef, SimpleChanges } from "@angular/core";
 import { SheetsManager, StyleSheet, getDynamicStyles } from "jss";
 import * as uuid from "uuid/v1";
 import getStaticStyles from "./utilities/get-static-styles";
-import { eventTypes } from "./utilities/get-event-types";
+import { eventNames } from "./utilities/get-event-names";
 import { isEmptyObject } from "./utilities/object";
 import jss, { stylesheetManager } from "./jss";
 
 /**
  * Type definition for a function that resovles to a CSS property value
  * It optionally expects a config object.
- * TODO: How can we add typings to this config object
  */
 export type CSSRuleResolver<T> = (config: T) => string;
 
 /**
  * Definition of a set of css rules
- * TODO: can we define this more accurately?
  */
 export interface ICSSRules<T> {
     [rule: string]: ICSSRules<T> | CSSRuleResolver<T> | string;
@@ -49,7 +47,7 @@ export interface IJSSManagerState {
 export interface ISeparatedStylesheet<T, C> {
     /**
      * The static styles for a given component and stylesheet combination
-     * TODO: these are always static so they shouldn"t use CSSRuleResolver
+     * TODO #144: these are always static so they shouldn't use CSSRuleResolver
      */
     staticStyles?: ComponentStyles<T, C>;
 
@@ -103,8 +101,14 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(BaseComponent: any
              */
             private instanceId: string;
 
+            /**
+             * The HTML class names as determined by the static and dymanic styles
+             */
             private className: string;
 
+            /**
+             * The JSS managers state object
+             */
             private state: any;
 
             private ngOnInit(): void {
@@ -114,7 +118,7 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(BaseComponent: any
 
                 this.state = {};
 
-                this.el.nativeElement.addEventListener(eventTypes.getConfig, (e: CustomEvent) => {
+                this.el.nativeElement.addEventListener(eventNames.getConfig, (e: CustomEvent) => {
                     this.config = e.detail;
 
                     if (this.state.dynamicStyleSheet) {
@@ -122,13 +126,13 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(BaseComponent: any
                     }
                 }, true);
 
-                const registerComponentEvent: CustomEvent = new CustomEvent(eventTypes.registerComponent);
+                const registerComponentEvent: CustomEvent = new CustomEvent(eventNames.registerComponent);
                 this.el.nativeElement.dispatchEvent(registerComponentEvent);
 
-                const updateStylesEvent: CustomEvent = new CustomEvent(eventTypes.getConfig, {detail: {}});
+                const updateStylesEvent: CustomEvent = new CustomEvent(eventNames.getConfig, {detail: {}});
                 this.el.nativeElement.dispatchEvent(updateStylesEvent);
 
-                this.el.nativeElement.addEventListener(eventTypes.update, (e: CustomEvent) => {
+                this.el.nativeElement.addEventListener(eventNames.update, (e: CustomEvent) => {
                     this.el.nativeElement.dispatchEvent(updateStylesEvent);
                 }, true);
             }
@@ -200,7 +204,6 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(BaseComponent: any
                 if (Boolean(this.state.dynamicStyleSheet)) {
                     // It appears we need to update the stylesheet for any style properties defined as functions
                     // to work.
-                    // TODO: We"ll need to call this with a context if it exists
                     this.state.dynamicStyleSheet.attach().update(this.designSystem);
                 }
             }
@@ -215,7 +218,7 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(BaseComponent: any
                     jss.removeStyleSheet(this.state.dynamicStyleSheet);
                 }
 
-                const deregisterComponentEvent: CustomEvent = new CustomEvent(eventTypes.deregisterComponent);
+                const deregisterComponentEvent: CustomEvent = new CustomEvent(eventNames.deregisterComponent);
                 this.el.nativeElement.dispatchEvent(deregisterComponentEvent);
             }
 
@@ -243,12 +246,12 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(BaseComponent: any
              * key will not be created.
              */
             private separateStyles(componentStyles: ComponentStyles<S, C>): ISeparatedStylesheet<S, C> {
-                // TODO: write a test for this method to make sure it always returns an object.
-                // TODO: write a test to make sure this does not create a static/dynamic key if
+                // TODO #142: write a test for this method to make sure it always returns an object.
+                // TODO #142: write a test to make sure this does not create a static/dynamic key if
                 //       no corresponding styles are passed
                 const dynamicStyles: ComponentStyles<S, C> = getDynamicStyles(componentStyles);
 
-                // TODO: figure out how to type this without coercion
+                // TODO #144: figure out how to type this without coercion
                 const staticStyles: ComponentStyles<S, C> = getStaticStyles(componentStyles) as ComponentStyles<S, C>;
                 const separatedStyles: ISeparatedStylesheet<S, C> = {};
 

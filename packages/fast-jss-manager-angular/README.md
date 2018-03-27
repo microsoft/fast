@@ -1,2 +1,2 @@
 
-An angular directive and component library for managing component JSS stylesheets.
+An Angular directive and component library for managing component JSS stylesheets.

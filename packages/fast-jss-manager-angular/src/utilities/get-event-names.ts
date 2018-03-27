@@ -1,11 +1,11 @@
-export interface IEvent {
+export interface IEventNames {
     getConfig: string;
     update: string;
     registerComponent: string;
     deregisterComponent: string;
 }
 
-export const eventTypes: IEvent = {
+export const eventNames: IEventNames = {
     getConfig: "design-system-get-config",
     update: "design-system-update",
     registerComponent: "design-system-register-component",

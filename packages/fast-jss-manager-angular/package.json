@@ -14,8 +14,8 @@
   "typings": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -p ./tsconfig.json",
-    "test": "jest",
-    "test:watch": "jest --watch && npm-watch",
+    "test": "jest && npm run tslint",
+    "test:watch": "jest --watch",
     "tslint": "tslint -c tslint.json ./src/**/*.ts",
     "tslint:fix": "tslint -c tslint.json ./src/**/*.ts --fix",
     "tslint:watch": "node build/tslint-watch.js",
@@ -25,13 +25,23 @@
   "readme": "README.md",
   "jest": {
     "preset": "jest-preset-angular",
-    "setupTestFrameworkScriptFile": "./build/setupJest.ts",
-    "testPathIgnorePatterns": ["<rootDir>/node_modules/", "<rootDir>/dist/"]
+    "setupTestFrameworkScriptFile": "./build/setup-jest.ts",
+    "testPathIgnorePatterns": [
+      "<rootDir>/node_modules/",
+      "<rootDir>/dist/"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    }
   },
   "devDependencies": {
     "@angular/common": "^5.2.0",
-    "@angular/core": "^5.2.0",
     "@angular/compiler": "^5.2.9",
+    "@angular/core": "^5.2.0",
     "@angular/platform-browser": "^5.2.9",
     "@angular/platform-browser-dynamic": "^5.2.9",
     "@microsoft/fast-tslint-rules": "^1.0.4",

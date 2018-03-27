@@ -35,7 +35,7 @@ const styles: any = {
 
 const JSSComponent: any = manageJss(styles)(SimpleDirectiveComponent);
 
-describe("The return value of manageJss", (): void => {
+describe("The return value of manage JSS", (): void => {
     test("should return a function", (): void => {
         expect(typeof manageJss()).toBe("function");
     });
