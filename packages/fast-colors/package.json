@@ -1,0 +1,52 @@
+{
+  "name": "@microsoft/fast-colors",
+  "version": "1.0.0",
+  "description": "A color utility for generating a range of colors from a single color",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "author": {
+      "name": "Fluent Web",
+      "email": "fwq@microsoft.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast-dna.git"
+  },
+  "scripts": {
+    "clean:dist": "node ../../build/clean.js dist",
+    "unit-tests": "jest",
+    "unit-tests:watch": "jest --watch",
+    "tslint": "tslint -c ./tslint.json ./src/**/*.ts",
+    "tslint:fix": "tslint -c ./tslint.json --fix ./src/**/*.ts",
+    "test": "npm run tslint && npm run unit-tests",
+    "prepare": "npm run clean:dist && tsc -p ./tsconfig.json"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx"
+    ]
+  },
+  "devDependencies": {
+    "@microsoft/fast-tslint-rules": "^1.0.4",
+    "@types/jest": "^22.2.0",
+    "jest": "^22.4.2",
+    "ts-jest": "^22.4.2",
+    "tslint": "^5.9.1",
+    "typescript": "^2.7.2"
+  },
+  "dependencies": {
+    "chroma-js": "^1.3.6"
+  }
+}
