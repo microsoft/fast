@@ -27,7 +27,7 @@ const range = range("#dddddd"); // [ '#f2f2f2', '#ebebeb', '#e4e4e4', '#dddddd',
 // Custom configuration
 const range = range("#dddddd", {
     count: 3,
-    padingLight: .2,
+    paddingLight: .2,
     paddingDark: .2
 }); // [ '#f1f1f1`, `#dddddd`, `#777777` ]
 ```
