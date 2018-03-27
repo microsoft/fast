@@ -5,18 +5,10 @@
   "license": "MIT",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "contributors": [
-    {
+  "author": {
       "name": "Fluent Web",
       "email": "fwq@microsoft.com"
-    },
-    {
-      "name": "bobbyrayit"
-    },
-    {
-      "name": "mlijanto"
-    }
-  ],
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"

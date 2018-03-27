@@ -9,7 +9,7 @@ describe("range", (): void => {
     test("should return a custom number of range", (): void => {
         expect(expect(range(white, { count: 2 }).length).toBe(2));
     });
-    test("should create range from a hexidecimal color", (): void => {
+    test("should create range from a hexadecimal color", (): void => {
         expect(range(white)[3]).toBe(white);
     });
     test("should create range from a rgb color", (): void => {

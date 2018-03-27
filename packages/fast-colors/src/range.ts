@@ -1,7 +1,3 @@
-/**
- * A huge thanks to bobbyrayit and mlijanto for creating the algorithm implemented in the range function.
- * This code borrows heavily from their original implementation.
- */
 import * as Chroma from "chroma-js";
 
 /**
