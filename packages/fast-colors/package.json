@@ -1,5 +1,5 @@
 {
-  "name": "@microsoft/fast-color-variants",
+  "name": "@microsoft/fast-colors",
   "version": "1.0.0",
   "description": "A color utility for generating a range of colors from a single color",
   "license": "MIT",
@@ -27,7 +27,7 @@
     "unit-tests:watch": "jest --watch",
     "tslint": "tslint -c ./tslint.json ./src/**/*.ts",
     "tslint:fix": "tslint -c ./tslint.json --fix ./src/**/*.ts",
-    "test": "npm run unit-tests",
+    "test": "npm run tslint && npm run unit-tests",
     "prepare": "npm run clean:dist && tsc -p ./tsconfig.json"
   },
   "jest": {
