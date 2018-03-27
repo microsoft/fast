@@ -9,9 +9,9 @@ import * as Chroma from "chroma-js";
  */
 export interface IColorOptions {
     /**
-     * The number of variants to generate
+     * The number of colors to generate
      */
-    variants: number;
+    count: number;
 
     /**
      * The amount to pad light values
@@ -119,8 +119,8 @@ function adjustThreshold(
  * of the returned color range.
  */
 export function range(color: Color, options: Partial<IColorOptions> = {}): Color[] {
-    const defaults = {
-        variants: 7,
+    const defaults: IColorOptions = {
+        count: 7,
         paddingLight: 0.185,
         paddingDark: 0.16,
         saturationLight: 0.35,
@@ -161,5 +161,5 @@ export function range(color: Color, options: Partial<IColorOptions> = {}): Color
 
     return Chroma
         .scale([lightest, color, darkest])
-        .colors(normalizedOptions.variants);
+        .colors(normalizedOptions.count);
 }

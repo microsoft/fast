@@ -2,12 +2,17 @@ import { range } from "./range";
 
 const white = "#ffffff";
 
+console.log(range("#DDD", {
+    count: 3,
+    paddingLight: .2,
+    paddingDark: .2
+}));
 describe("range", (): void => {
     test("should return 7 range by default", (): void => {
         expect(range(white).length).toBe(7);
     });
     test("should return a custom number of range", (): void => {
-        expect(expect(range(white, { variants: 2 }).length).toBe(2));
+        expect(expect(range(white, { count: 2 }).length).toBe(2));
     });
     test("should create range from a hexidecimal color", (): void => {
         expect(range(white)[3]).toBe(white);
