@@ -56,6 +56,7 @@
     "react": "^16.0.0"
   },
   "dependencies": {
+    "@microsoft/fast-jss-manager": "^1.0.0",
     "hoist-non-react-statics": "^2.3.1",
     "jss": "^9.8.0",
     "jss-preset-default": "^4.3.0",
