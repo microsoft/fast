@@ -191,12 +191,13 @@ Aspects of our open source policy have been influenced and in some cases copied 
 * [Open Source exmaples @todogroup] : https://github.com/todogroup/policies
 
 ## Development workflow
-Clone the repository, `cd` into the project, and install [Lerna](https://github.com/lerna/lerna):
+Clone the repository, `cd` into the project, install [Lerna](https://github.com/lerna/lerna) and install dependencies:
 
 ```shell
 git clone https://github.com/Microsoft/fast-dna.git
 cd fast-dna
 npm install --global lerna
+npm install
 ```
 
 Install all Lerna dependencies:
