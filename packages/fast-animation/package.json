@@ -17,13 +17,16 @@
     "email": "fwq@microsoft.com"
   },
   "scripts": {
-    "build": "tsc -p ./lib/tsconfig.json",
-    "test": "jest",
-    "build:react": "webpack --config webpack/webpack.react.config.js",
-    "dev-server:react": "node_modules/.bin/webpack-dev-server --config webpack/webpack.react.config.js --progress",
-    "prepare": "npm run build"
+    "build-test-app": "webpack --config webpack/webpack.react.config.js",
+    "prepare": "tsc -p ./lib/tsconfig.json",
+    "start": "node_modules/.bin/webpack-dev-server --config webpack/webpack.react.config.js --progress",
+    "test": "npm run unit-tests && npm run build-test-app",
+    "tslint": "tslint -c ./tslint.json **/*.ts{,x}",
+    "tslint:fix": "tslint -c ./tslint.json --fix **/*.ts{,x}",
+    "unit-tests": "jest"
   },
   "devDependencies": {
+    "@microsoft/fast-tslint-rules": "^1.0.4",
     "@types/jest": "^21.1.2",
     "@types/node": "^7.0.22",
     "@types/react": "^15.0.24",
@@ -39,8 +42,6 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "css-loader": "^0.27.1",
-    "eslint": "^4.3.0",
-    "eslint-loader": "^1.7.1",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.11.1",
     "fork-ts-checker-webpack-plugin": "^0.4.0",

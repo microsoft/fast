@@ -97,4 +97,4 @@ class Site extends React.Component<ISiteProps, {}> {
 }
 
 export default Site;
-export {ISiteProps, ICategoryProps};
+export {ISiteProps};

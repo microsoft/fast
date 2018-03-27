@@ -3,9 +3,6 @@
   "version": "1.0.4",
   "description": "tslint rules for FAST projects",
   "main": "tslint.json",
-  "scripts": {
-    "test": "echo \"No tests specified\""
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"

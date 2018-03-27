@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "allowJs": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "jsx": "react",

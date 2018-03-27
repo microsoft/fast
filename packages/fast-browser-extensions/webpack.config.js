@@ -4,7 +4,6 @@
 const webpack                       = require('webpack');
 const path                          = require('path');
 const fs                            = require('fs');
-const UglifyJsPlugin                = require('uglifyjs-webpack-plugin');
 const ForkTsCheckerWebpackPlugin    = require('fork-ts-checker-webpack-plugin');
 const CopyWebpackPlugin             = require('copy-webpack-plugin');
 const GenerateJsonWebpackPlugin     = require('generate-json-webpack-plugin');
@@ -25,6 +24,7 @@ let config = {
         path: BUILD_DIR,
         filename: '[name].js'
     },
+    optimization: {},
     mode: process.env.NODE_ENV || 'development',
     watchOptions: {
         ignored: '/node_modules/',
@@ -73,16 +73,13 @@ let config = {
 /**
  * Development and Production configurations
  */
-const productionPlugins = [
-    new UglifyJsPlugin()
-];
 
 switch (process.env.NODE_ENV) {
     case 'development':
         config.watch = true;
         break;
     case 'production':
-        config.plugins = config.plugins.concat(productionPlugins);
+        config.optimization.minimize = true
         break;
 }
 
