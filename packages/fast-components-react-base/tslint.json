@@ -4,8 +4,9 @@
     ],
     "linterOptions": {
         "exclude": [
-            "helpers/**",
-            "src/components/*/__tests__/**"
+            "node_modules/**",
+            "dist/**",
+            "www/**"
         ]
     }
 }

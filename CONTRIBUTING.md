@@ -189,3 +189,25 @@ Aspects of our open source policy have been influenced and in some cases copied 
 * [Contributions @Node] : https://github.com/nodejs/node/blob/master/CONTRIBUTING.md
 * [Open Source @Github] : https://github.com/blog/2039-adopting-the-open-code-of-conduct
 * [Open Source exmaples @todogroup] : https://github.com/todogroup/policies
+
+## Development workflow
+Clone the repository, `cd` into the project, install [Lerna](https://github.com/lerna/lerna) and install dependencies:
+
+```shell
+git clone https://github.com/Microsoft/fast-dna.git
+cd fast-dna
+npm install --global lerna
+npm install
+```
+
+Install all Lerna dependencies:
+```shell
+lerna bootstrap
+```
+
+Each package in FAST-DNA has its own unique requirements and commands, but the following commands are relatively standard across all packages:
+- `npm run tslint` or `npm run tslint:fix` runs tslint on all typescript in the project.
+- `npm run unit-tests` runs all unit-tests.
+- `npm run test` runs all processes required to pass prior to check-in. Generally includes building, linting, and unit-testing.
+
+To run these processes across *all* projects, substitute `lerna` for `npm`. eg, `lerna run test`.

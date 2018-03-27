@@ -4,11 +4,13 @@
   "description": "An initial implementation of a React iframe that is self-contained.",
   "main": "dist/index.js",
   "scripts": {
-    "test": "jest",
-    "test:update": "jest --update",
-    "dev-server": "webpack-dev-server --progress",
-    "build": "tsc -p ./src/tsconfig.json",
-    "prepack": "npm run build"
+    "prepare": "tsc -p ./src/tsconfig.json",
+    "start": "webpack-dev-server --progress",
+    "test": "npm run tslint && npm run unit-tests && webpack --progress",
+    "tslint": "tslint -c tslint.json ./src/**/*.ts{,x}",
+    "tslint:fix": "tslint -c tslint.json ./src/**/*.ts{,x} --fix",
+    "unit-tests": "jest",
+    "unit-tests:update": "jest --update"
   },
   "repository": {
     "type": "git",
