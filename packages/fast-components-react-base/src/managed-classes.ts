@@ -1,6 +1,6 @@
 
 /**
- * Class names under a given object keys 
+ * Class names under a given object keys
  */
  export type ClassNames<T> = {
     [className in keyof T]: string;
