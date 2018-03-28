@@ -8,6 +8,6 @@
 /**
  * The interface for class names passed as props
  */
-export interface IManagedClasses<T> {
+ export interface IManagedClasses<T> {
     managedClasses: ClassNames<T>;
 }
