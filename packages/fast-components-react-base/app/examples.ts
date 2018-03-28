@@ -1,2 +1,2 @@
-import ButtonExamples from "../src/button/examples.data";
-export { ButtonExamples };
+import Button from "../src/button/examples.data";
+export { Button };

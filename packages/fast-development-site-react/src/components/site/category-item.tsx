@@ -2,12 +2,12 @@ import * as React from "react";
 import manageJss, { ComponentStyles, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { IDevSiteDesignSystem } from "../design-system";
 
-export interface ICategoryItemManagedClasses {
+export interface ISiteCategoryItemManagedClasses {
     category_item: string;
     category_item__component: string;
 }
 
-const style: ComponentStyles<ICategoryItemManagedClasses, IDevSiteDesignSystem> = {
+const style: ComponentStyles<ISiteCategoryItemManagedClasses, IDevSiteDesignSystem> = {
     category_item: {
         display: "flex",
         flexWrap: "wrap",
@@ -27,63 +27,21 @@ const style: ComponentStyles<ICategoryItemManagedClasses, IDevSiteDesignSystem> 
     }
 };
 
-export interface ICategoryItemProps {
-    name: string;
+export interface ISiteCategoryItemProps {
+    slot: string;
     categoryItemComponentMinWidth?: number;
     type?: string;
-    component: any;
-    data: any[];
 }
 
-class CategoryItem extends React.Component<ICategoryItemProps & IManagedClasses<ICategoryItemManagedClasses>, {}> {
+class SiteCategoryItem extends React.Component<ISiteCategoryItemProps & IManagedClasses<ISiteCategoryItemManagedClasses>, {}> {
 
     public render(): JSX.Element {
         return (
             <div className={this.props.managedClasses.category_item}>
-                {this.renderComponent()}
+                {this.props.children}
             </div>
         );
     }
-
-    private generateStyle(): any {
-        if (this.props.categoryItemComponentMinWidth) {
-            return {
-                style: {
-                    minWidth: `${this.props.categoryItemComponentMinWidth}px`
-                }
-            };
-        }
-    }
-
-    private renderComponent(): JSX.Element[] {
-        if (this.props.data) {
-            return this.props.data.map((data: any, index: number) => {
-                if (this.props.type === "polymer") {
-                    return (
-                        <div
-                            key={index}
-                            className={this.props.managedClasses.category_item__component}
-                            {...this.generateStyle()}
-                        >
-                            <this.props.component.is {...data}>
-                                {...data.children}
-                            </this.props.component.is>
-                        </div>
-                    );
-                } else {
-                    return (
-                        <div
-                            key={index}
-                            className={this.props.managedClasses.category_item__component}
-                            {...this.generateStyle()}
-                        >
-                            <this.props.component {...data} />
-                        </div>
-                    );
-                }
-            });
-        }
-    }
 }
 
-export default manageJss(style)(CategoryItem);
+export default manageJss(style)(SiteCategoryItem);

@@ -2,9 +2,11 @@ import * as React from "react";
 import manageJss, { ComponentStyles, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { IDevSiteDesignSystem } from "../design-system";
 import ShellActionBar from "./action-bar";
+import ShellInfoBar from "./info-bar";
 import ShellCanvas from "./canvas";
 import ShellHeader from "./header";
 import ShellPane from "./pane";
+import ShellPaneCollapse from "./pane-collapse";
 import ShellRow from "./row";
 
 /* tslint:disable-next-line */
@@ -32,4 +34,4 @@ class Shell extends React.Component<IShellProps & IManagedClasses<IShellManagedC
 }
 
 export default manageJss(style)(Shell);
-export { ShellActionBar, ShellCanvas, ShellHeader, ShellPane, ShellRow };
+export { ShellActionBar, ShellInfoBar, ShellCanvas, ShellHeader, ShellPane, ShellPaneCollapse, ShellRow };

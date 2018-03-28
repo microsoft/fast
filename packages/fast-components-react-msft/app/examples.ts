@@ -1,5 +1,5 @@
-import ButtonExamples from "../src/button/examples.data";
-export {ButtonExamples};
+import Button from "../src/button/examples.data";
+export {Button};
 
-import DividerExamples from "../src/divider/examples.data";
-export {DividerExamples};
+import Divider from "../src/divider/examples.data";
+export {Divider};

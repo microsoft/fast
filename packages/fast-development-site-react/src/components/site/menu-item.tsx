@@ -1,14 +1,14 @@
 import * as React from "react";
 
-class Paragraph extends React.Component<{}, {}> {
+class SiteMenuItem extends React.Component<{}, {}> {
 
     public render(): JSX.Element {
         return (
-            <p>
+            <li>
                 {this.props.children}
-            </p>
+            </li>
         );
     }
 }
 
-export default Paragraph;
+export default SiteMenuItem;
