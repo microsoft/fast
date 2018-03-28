@@ -2,12 +2,12 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Foundation, { HandledProps } from "../foundation";
 import { IButtonProps, ButtonHTMLTags } from "./Button.props";
-import { IInjectedProps } from "@microsoft/fast-jss-manager-react";
+import { IManagedClasses } from "../managed-classes";
 import { IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts";
 
 /* tslint:disable-next-line */
-class Button extends Foundation<IButtonProps & IInjectedProps<IButtonClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
-    protected handledProps: HandledProps<IButtonProps & IInjectedProps<IButtonClassNameContract>> = {
+class Button extends Foundation<IButtonProps & IManagedClasses<IButtonClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
+    protected handledProps: HandledProps<IButtonProps & IManagedClasses<IButtonClassNameContract>> = {
         managedClasses: void 0,
         tag: void 0
     };
