@@ -92,6 +92,3 @@ Run `npm run build` to build before `npm publish` to convert files to ES5 from E
 ## Special properties
 - `whitelisted` ignores a property
 - `example` is a piece of supplied example data
-
-## Ownership
-Contact Fluent Web Questions <fwq@microsoft.com> for details on this repository.

@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/schema#",
     "title": "Refine menu",
-    "description": "A Fluent Web refine menu component's schema definition.",
+    "description": "A refine menu component's schema definition.",
     "type": "object",
     "id": "/components/refine-menu",
     "properties": {

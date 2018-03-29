@@ -6,7 +6,7 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "author": {
-      "name": "Fluent Web",
+      "name": "Microsoft",
       "email": "fwq@microsoft.com"
   },
   "repository": {

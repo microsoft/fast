@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/schema#",
     "title": "Hyperlink",
-    "description": "A Fluent Web hyperlink component's schema definition.",
+    "description": "A hyperlink component's schema definition.",
     "type": "object",
     "id": "/components/hyperlink",
     "properties": {

@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/schema#",
     "title": "Supplemental navigation",
-    "description": "A Fluent Web supplemental navigation module's schema definition.",
+    "description": "A supplemental navigation module's schema definition.",
     "type": "object",
     "id": "/modules/supplemental-navigation",
     "properties": {

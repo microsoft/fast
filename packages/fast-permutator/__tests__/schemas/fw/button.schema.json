@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/schema#",
     "title": "Button",
-    "description": "A Fluent Web button component's schema definition.",
+    "description": "A button component's schema definition.",
     "type": "object",
     "id": "/components/button",
     "properties": {

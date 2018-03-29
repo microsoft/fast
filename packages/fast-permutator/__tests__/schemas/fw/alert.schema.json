@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/schema#",
     "title": "Alert",
-    "description": "A Fluent Web alert module's schema definition.",
+    "description": "An alert module's schema definition.",
     "type": "object",
     "id": "/modules/alert",
     "properties": {

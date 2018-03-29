@@ -3,4 +3,4 @@
 <footer>
  
 
-For [details on formatting](https://fluentweb.com/prototyping/contribution-policy#pull-request-guidance) pull requests.
+For [details on formatting](https://github.com/Microsoft/fast-dna/blob/master/CONTRIBUTING.md#pull-request-guidance) pull requests.

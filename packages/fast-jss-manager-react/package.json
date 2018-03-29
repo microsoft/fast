@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-jss-manager-react",
   "description": "React HOC for managing component JSS stylesheets",
   "author": {
-    "name": "Fluent Web",
+    "name": "Microsoft",
     "email": "fwq@microsoft.com"
   },
   "version": "1.0.0",

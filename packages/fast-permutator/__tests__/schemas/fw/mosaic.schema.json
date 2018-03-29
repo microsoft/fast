@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/schema#",
     "title": "Mosaic",
-    "description": "A Fluent Web mosaic module's schema definition.",
+    "description": "A mosaic module's schema definition.",
     "type": "object",
     "id": "/modules/mosaic",
     "oneOf": [

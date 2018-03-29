@@ -395,9 +395,6 @@ describe('Dependencies primitive', function() {
     });
 });
 
-/**
- * Fluent Web
- */
 describe('FW: Hero item', function() {
     let possibleSchemas;
 

@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/schema#",
     "title": "Price",
-    "description": "A Fluent Web price component's schema definition.",
+    "description": "A price component's schema definition.",
     "type": "object",
     "id": "/components/price",
     "properties": {

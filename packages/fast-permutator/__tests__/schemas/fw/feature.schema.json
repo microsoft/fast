@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/schema#",
     "title": "Feature",
-    "description": "A Fluent Web feature module's schema definition.",
+    "description": "A feature module's schema definition.",
     "type": "object",
     "id": "/modules/feature",
     "properties": {

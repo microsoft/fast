@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Type descriptions for the classnames that any given component can expect as props.",
   "author": {
-    "name": "Fluent Web",
+    "name": "Microsoft",
     "email": "fwq@microsoft.com"
   },
   "repository": {

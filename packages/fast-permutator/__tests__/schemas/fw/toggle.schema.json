@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/schema#",
     "title": "Toggle",
-    "description": "A Fluent Web toggle component's schema definition.",
+    "description": "A toggle component's schema definition.",
     "type": "object",
     "id": "/components/toggle",
     "properties": {
