@@ -13,7 +13,7 @@
     "registry": "https://www.npmjs.com/package/@microsoft/fast-animation"
   },
   "author": {
-    "name": "Fluent Web",
+    "name": "Microsoft",
     "email": "fwq@microsoft.com"
   },
   "scripts": {

@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/schema#",
     "title": "Badge",
-    "description": "A Fluent Web badge component's schema definition.",
+    "description": "A badge component's schema definition.",
     "type": "object",
     "id": "/components/badge",
     "oneOf": [

@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/schema#",
     "title": "Call to action",
-    "description": "A Fluent Web call-to-action component's schema definition.",
+    "description": "A call-to-action component's schema definition.",
     "type": "object",
     "id": "/components/call-to-action",
     "properties": {

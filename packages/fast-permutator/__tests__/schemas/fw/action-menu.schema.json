@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/schema#",
     "title": "Action menu",
-    "description": "A Fluent Web action menu component's schema definition.",
+    "description": "An action menu component's schema definition.",
     "type": "object",
     "id": "/components/action-menu",
     "properties": {

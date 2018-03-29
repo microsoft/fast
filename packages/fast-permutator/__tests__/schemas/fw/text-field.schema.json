@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/schema#",
     "title": "Text field",
-    "description": "A Fluent Web text field component's schema definition.",
+    "description": "A text field component's schema definition.",
     "type": "object",
     "id": "/components/text-field",
     "properties": {

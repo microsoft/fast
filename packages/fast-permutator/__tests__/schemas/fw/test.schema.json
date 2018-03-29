@@ -3,7 +3,7 @@
         {
             "$schema": "http://json-schema.org/schema#",
             "title": "Panes",
-            "description": "A Fluent Web panes module's schema definition.",
+            "description": "A panes module's schema definition.",
             "type": "object",
             "id": "/modules/panes",
             "properties": {
@@ -20,7 +20,7 @@
                     "items": {
                         "$schema": "http://json-schema.org/schema#",
                         "title": "Panes placement",
-                        "description": "A Fluent Web panes placement component's schema definition.",
+                        "description": "A panes placement component's schema definition.",
                         "type": "object",
                         "id": "/components/panes-placement",
                         "properties": {
@@ -99,7 +99,7 @@
                             "heading": {
                                 "$schema": "http://json-schema.org/schema#",
                                 "title": "Heading",
-                                "description": "A Fluent Web heading component's schema definition.",
+                                "description": "An heading component's schema definition.",
                                 "type": "object",
                                 "id": "/components/heading",
                                 "properties": {
@@ -130,7 +130,7 @@
                             "paragraph": {
                                 "$schema": "http://json-schema.org/schema#",
                                 "title": "Paragraph",
-                                "description": "A Fluent Web paragraph component's schema definition.",
+                                "description": "An paragraph component's schema definition.",
                                 "type": "object",
                                 "id": "/components/paragraph",
                                 "properties": {
@@ -155,7 +155,7 @@
                             "callToAction": {
                                 "$schema": "http://json-schema.org/schema#",
                                 "title": "Call to action",
-                                "description": "A Fluent Web call-to-action component's schema definition.",
+                                "description": "An call-to-action component's schema definition.",
                                 "type": "object",
                                 "id": "/components/call-to-action",
                                 "properties": {
@@ -196,7 +196,7 @@
         {
             "$schema": "http://json-schema.org/schema#",
             "title": "Panes",
-            "description": "A Fluent Web panes module's schema definition.",
+            "description": "An panes module's schema definition.",
             "type": "object",
             "id": "/modules/panes",
             "properties": {
@@ -213,7 +213,7 @@
                     "items": {
                         "$schema": "http://json-schema.org/schema#",
                         "title": "Panes placement",
-                        "description": "A Fluent Web panes placement component's schema definition.",
+                        "description": "An panes placement component's schema definition.",
                         "type": "object",
                         "id": "/components/panes-placement",
                         "properties": {
@@ -292,7 +292,7 @@
                             "heading": {
                                 "$schema": "http://json-schema.org/schema#",
                                 "title": "Heading",
-                                "description": "A Fluent Web heading component's schema definition.",
+                                "description": "An heading component's schema definition.",
                                 "type": "object",
                                 "id": "/components/heading",
                                 "properties": {
@@ -323,7 +323,7 @@
                             "paragraph": {
                                 "$schema": "http://json-schema.org/schema#",
                                 "title": "Paragraph",
-                                "description": "A Fluent Web paragraph component's schema definition.",
+                                "description": "An paragraph component's schema definition.",
                                 "type": "object",
                                 "id": "/components/paragraph",
                                 "properties": {
@@ -348,7 +348,7 @@
                             "callToAction": {
                                 "$schema": "http://json-schema.org/schema#",
                                 "title": "Call to action",
-                                "description": "A Fluent Web call-to-action component's schema definition.",
+                                "description": "An call-to-action component's schema definition.",
                                 "type": "object",
                                 "id": "/components/call-to-action",
                                 "properties": {
@@ -389,7 +389,7 @@
         {
             "$schema": "http://json-schema.org/schema#",
             "title": "Panes",
-            "description": "A Fluent Web panes module's schema definition.",
+            "description": "An panes module's schema definition.",
             "type": "object",
             "id": "/modules/panes",
             "properties": {
@@ -406,7 +406,7 @@
                     "items": {
                         "$schema": "http://json-schema.org/schema#",
                         "title": "Panes placement",
-                        "description": "A Fluent Web panes placement component's schema definition.",
+                        "description": "An panes placement component's schema definition.",
                         "type": "object",
                         "id": "/components/panes-placement",
                         "properties": {
@@ -485,7 +485,7 @@
                             "heading": {
                                 "$schema": "http://json-schema.org/schema#",
                                 "title": "Heading",
-                                "description": "A Fluent Web heading component's schema definition.",
+                                "description": "An heading component's schema definition.",
                                 "type": "object",
                                 "id": "/components/heading",
                                 "properties": {
@@ -516,7 +516,7 @@
                             "paragraph": {
                                 "$schema": "http://json-schema.org/schema#",
                                 "title": "Paragraph",
-                                "description": "A Fluent Web paragraph component's schema definition.",
+                                "description": "An paragraph component's schema definition.",
                                 "type": "object",
                                 "id": "/components/paragraph",
                                 "properties": {
@@ -541,7 +541,7 @@
                             "callToAction": {
                                 "$schema": "http://json-schema.org/schema#",
                                 "title": "Call to action",
-                                "description": "A Fluent Web call-to-action component's schema definition.",
+                                "description": "An call-to-action component's schema definition.",
                                 "type": "object",
                                 "id": "/components/call-to-action",
                                 "properties": {

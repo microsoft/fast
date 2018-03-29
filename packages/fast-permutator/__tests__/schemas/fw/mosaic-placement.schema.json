@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/schema#",
     "title": "Mosaic placement",
-    "description": "A Fluent Web mosaic placement component's schema definition.",
+    "description": "A mosaic placement component's schema definition.",
     "type": "object",
     "id": "/components/mosaic-placement",
     "properties": {

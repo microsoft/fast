@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/schema#",
     "title": "Label",
-    "description": "A Fluent Web label component's schema definition.",
+    "description": "A label component's schema definition.",
     "type": "object",
     "id": "/components/label",
     "oneOf": [

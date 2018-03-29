@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/schema#",
     "title": "Hero item",
-    "description": "A Fluent Web hero item module's schema definition.",
+    "description": "A hero item module's schema definition.",
     "type": "object",
     "id": "/modules/hero-item",
     "properties": {

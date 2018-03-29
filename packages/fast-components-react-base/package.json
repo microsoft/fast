@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components-react-base",
   "description": "FAST base components implemented in React.",
   "author": {
-    "name": "Fluent Web",
+    "name": "Microsoft",
     "email": "fwq@microsoft.com"
   },
   "version": "1.0.0",

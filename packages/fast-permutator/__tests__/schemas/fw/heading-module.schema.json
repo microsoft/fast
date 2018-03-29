@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/schema#",
     "title": "Heading",
-    "description": "A Fluent Web heading module's schema definition",
+    "description": "A heading module's schema definition",
     "type": "object",
     "id": "/modules/heading",
     "properties": {

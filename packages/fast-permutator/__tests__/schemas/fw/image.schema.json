@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/schema#",
     "title": "Image",
-    "description": "A Fluent Web Image component's schema definition.",
+    "description": "An image component's schema definition.",
     "type": "object",
     "id": "/components/image",
     "url": "http://www.fluentweb.com/components/image",
