@@ -1,0 +1,12 @@
+plugins:
+  fixme:
+    enabled: true
+    config:
+      strings:
+      - BUG
+      - FIXME
+      - HACK
+      - TODO
+      - CUSTOM
+  markdownlint:
+    enabled: true
