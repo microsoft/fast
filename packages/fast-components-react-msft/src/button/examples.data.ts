@@ -1,6 +1,6 @@
 import {ICategoryItemProps} from "@microsoft/fast-development-site-react";
 import {IGenericExample} from "../examples";
-import {IInjectedProps} from "@microsoft/fast-jss-manager-react";
+import {IManagedClasses} from "@microsoft/fast-jss-manager-react";
 import Button from "./index";
 import {IButtonProps} from "@microsoft/fast-components-react-base";
 

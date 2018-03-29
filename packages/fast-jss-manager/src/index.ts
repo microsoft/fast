@@ -1,3 +1,5 @@
+import { ClassNames, IManagedClasses } from "@microsoft/fast-components-class-name-contracts";
+export { ClassNames, IManagedClasses };
 /**
  * Type definition for a function that resolves to a CSS property value. It optionally expects a config object.
  * @param T - This describes the design system configuration values that will be available to all
@@ -24,5 +26,3 @@ export interface ICSSRules<T> {
 export type ComponentStyles<T, C> = {
     [P in keyof T]: ICSSRules<C>;
 };
-
-export { ClassNames, IManagedClasses } from "@microsoft/fast-components-class-name-contracts";

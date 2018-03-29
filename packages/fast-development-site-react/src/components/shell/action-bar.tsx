@@ -1,5 +1,5 @@
 import * as React from "react";
-import manageJss, { IInjectedProps, ComponentStyles } from "@microsoft/fast-jss-manager-react";
+import manageJss, { IManagedClasses, ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import {IDevSiteDesignSystem} from "../design-system";
 
 /* tslint:disable-next-line */
@@ -23,7 +23,7 @@ const style: ComponentStyles<IShellActionBarManagedClasses, IDevSiteDesignSystem
     }
 };
 
-class ShellActionBar extends React.Component<IShellActionBarProps & IInjectedProps<IShellActionBarManagedClasses>, {}> {
+class ShellActionBar extends React.Component<IShellActionBarProps & IManagedClasses<IShellActionBarManagedClasses>, {}> {
 
     public render(): JSX.Element {
         return (

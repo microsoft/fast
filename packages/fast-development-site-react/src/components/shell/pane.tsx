@@ -1,5 +1,5 @@
 import * as React from "react";
-import manageJss, {IInjectedProps, ComponentStyles} from "@microsoft/fast-jss-manager-react";
+import manageJss, {IManagedClasses, ComponentStyles} from "@microsoft/fast-jss-manager-react";
 import {IDevSiteDesignSystem} from "../design-system";
 
 /* tslint:disable-next-line */
@@ -16,7 +16,7 @@ const style: ComponentStyles<IShellPaneManagedClasses, IDevSiteDesignSystem> = {
     }
 };
 
-class ShellPane extends React.Component<IShellPaneProps & IInjectedProps<IShellPaneManagedClasses>, {}> {
+class ShellPane extends React.Component<IShellPaneProps & IManagedClasses<IShellPaneManagedClasses>, {}> {
 
     public render(): JSX.Element {
         return (
