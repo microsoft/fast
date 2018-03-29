@@ -53,10 +53,10 @@ Collaborators sign-off on a pull request by explicitly stating their approval in
 Exception to this process is allowed for high-priority changes that address security vulnerabilities. A shorter review period and modified sign-off process may be necessary depending on the nature of the change and severity of the issue. 
 
 ## Release policy
-The guiding light, at all times, should be the long-term stability, reliability, maintainability, extensibility, performance, and ultimately quality as informed through current industry standards and best practices.
+The guiding light, at all times, should be the long-term stability, reliability, maintainability, extensibility, performance, and ultimately quality, as informed by current industry standards and best practices.
 
 * Pull requests should be of production quality, stable, and ready for deployment. 
-* Pull requests should include updates to release notes, documentation, code comments, and incrementing the current version number.
+* Pull requests should include updates to release notes, documentation, code comments.
 
 Production errors or bugs with major impact to users, contributors, and/or collaborators, may require shorter review periods and are indicated by the highest priority and severity levels as indicated by an `issue` label with generally immediate action to be taken to rectify, release, and deploy.
 
@@ -72,7 +72,7 @@ By making a contribution to this project, I certify that:
 * d. I understand and agree that this project and the contribution are public and that a record of the contribution (including all personal information I submit with it, including my sign-off) is maintained indefinitely and may be redistributed consistent with this project or the open source license(s) involved.
 
 ## Resources
-Aspects of our open source policy have been influenced and from other well respected community projects.
+Aspects of our open source policy have been influenced from other well respected community projects.
 * [Project Governance @Node] : https://nodejs.org/en/about/governance/
 * [Contributions @Node] : https://github.com/nodejs/node/blob/master/CONTRIBUTING.md
 * [Open Source @Github] : https://github.com/blog/2039-adopting-the-open-code-of-conduct
