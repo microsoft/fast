@@ -14,17 +14,11 @@ Teams spend significant time building parts of the design system (colors, variab
 
 [Learn more about FAST-DNA packages on wiki...](https://github.com/Microsoft/fast-dna/wiki/Packages)
 
-## Policies
-### Guiding principles, contributions, and governance
-Details including getting started can be found [on the wiki](https://github.com/Microsoft/fast-dna/blob/master/CONTRIBUTING.md).
-
-### Code of conduct
-Details are located [on the wiki](https://github.com/Microsoft/fast-dna/blob/master/CODE_OF_CONDUCT.md).
-
-### Accessibility
-FAST-DNA has partnered with Deque & Microsoft to build accessibility into our components ensuring we are WCAG 2.0 AA compliant. More about accessibility can be found [on the wiki](https://github.com/Microsoft/fast-dna/wiki/Accessibility).
+## Documentation
+Detailed documentation can be found on the [GitHub Wiki](https://github.com/Microsoft/fast-dna/wiki) which covers getting started, community policies, and guidance on contributing, developing, quality, and testing.
 
 ## Contact
-* Submit [for help](https://stackoverflow.com/questions/tagged/fast-dna) 
-* Submit [feature requests](https://github.com/Microsoft/fast-dna/issues/new?labels=feature%20:%20request)
-* Submit [feature questions](https://github.com/Microsoft/fast-dna/issues/new?labels=feature%20:%20question)
+* Ask for help [on Stack Overflow](https://stackoverflow.com/questions/tagged/fast-dna) 
+* Submit [help requests](https://github.com/Microsoft/fast-dna/issues/new?labels=help%20:%20request)
+* Submit [help questions](https://github.com/Microsoft/fast-dna/issues/new?labels=help%20:%20question)
+* Contributors [find issues to work on](https://github.com/Microsoft/fast-dna/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+%3A+request%22)
