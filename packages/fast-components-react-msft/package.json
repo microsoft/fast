@@ -66,6 +66,7 @@
   },
   "dependencies": {
     "@microsoft/fast-components-react-base": "^1.0.0",
+    "@microsoft/fast-components-styles-msft": "^1.0.0",
     "@microsoft/fast-jss-manager-react": "^1.0.0"
   }
 }

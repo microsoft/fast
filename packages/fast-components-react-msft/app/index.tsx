@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
-import fluentDesignSystemDefaults from "../src/design-system";
+import {DesignSystemDefaults} from "@microsoft/fast-components-styles-msft";
 import Site, { ISiteProps, ICategoryProps } from "@microsoft/fast-development-site-react";
 import * as examples from "./examples";
 
@@ -24,7 +24,7 @@ document.body.appendChild(root);
 function render(): void {
     ReactDOM.render(
         <div>
-            <DesignSystemProvider designSystem={fluentDesignSystemDefaults}>
+            <DesignSystemProvider designSystem={DesignSystemDefaults}>
                 <Site title={"FAST Microsoft components"} categories={items} />,
             </DesignSystemProvider>
         </div>,
