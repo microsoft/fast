@@ -3,4 +3,4 @@
 <footer>
  
 
-For [details on formatting](https://github.com/Microsoft/fast-dna/blob/master/CONTRIBUTING.md#pull-request-guidance) pull requests.
+For [details on formatting](https://github.com/Microsoft/fast-dna/wiki/pull-request-guidance) pull requests.
