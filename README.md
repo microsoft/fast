@@ -15,9 +15,10 @@ Teams spend significant time building parts of the design system (colors, variab
 [Learn more about FAST-DNA packages on wiki...](https://github.com/Microsoft/fast-dna/wiki/Packages)
 
 ## Documentation
-Detailed documentation can be found on our [GitHub Wiki](https://github.com/Microsoft/fast-dna/wiki) which covers getting started, community policies, and guidance on contributing, developing, quality, and testing.
+Detailed documentation can be found on the [GitHub Wiki](https://github.com/Microsoft/fast-dna/wiki) which covers getting started, community policies, and guidance on contributing, developing, quality, and testing.
 
 ## Contact
-* Submit [for help](https://stackoverflow.com/questions/tagged/fast-dna) 
-* Submit [feature requests](https://github.com/Microsoft/fast-dna/issues/new?labels=feature%20:%20request)
-* Submit [feature questions](https://github.com/Microsoft/fast-dna/issues/new?labels=feature%20:%20question)
+* Ask for help [on S.O.](https://stackoverflow.com/questions/tagged/fast-dna) 
+* Submit [help requests](https://github.com/Microsoft/fast-dna/issues/new?labels=help%20:%20request)
+* Submit [help questions](https://github.com/Microsoft/fast-dna/issues/new?labels=help%20:%20question)
+* Contributors [find issues to work on](https://github.com/Microsoft/fast-dna/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+%3A+request%22)
