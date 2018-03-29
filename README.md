@@ -8,6 +8,8 @@ Teams spend significant time building parts of the design system (colors, variab
 
 ## Status
 [![Build Status](https://travis-ci.org/Microsoft/fast-dna.svg?branch=master)](https://travis-ci.org/Microsoft/fast-dna)
+[![Maintainability](https://api.codeclimate.com/v1/badges/8a74621e634a6e9b9561/maintainability)](https://codeclimate.com/github/Microsoft/fast-dna/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/8a74621e634a6e9b9561/test_coverage)](https://codeclimate.com/github/Microsoft/fast-dna/test_coverage)
 
 ## Packages
 [Lerna in independent mode](https://github.com/lerna/lerna#independent-mode---independent) is used to organize and manage this monorepository and contains utilities each of which are published to NPM. Users can choose one package, some packages, or all of them together.
