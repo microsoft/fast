@@ -1,5 +1,5 @@
 import * as React from "react";
-import manageJss, { IInjectedProps, ComponentStyles } from "@microsoft/fast-jss-manager-react";
+import manageJss, { IManagedClasses, ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import {IDevSiteDesignSystem} from "../design-system";
 
 export interface ICategoryItemManagedClasses {
@@ -35,7 +35,7 @@ export interface ICategoryItemProps {
     data: any[];
 }
 
-class CategoryItem extends React.Component<ICategoryItemProps & IInjectedProps<ICategoryItemManagedClasses>, {}> {
+class CategoryItem extends React.Component<ICategoryItemProps & IManagedClasses<ICategoryItemManagedClasses>, {}> {
 
     public render(): JSX.Element {
         return (

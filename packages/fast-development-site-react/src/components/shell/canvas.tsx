@@ -1,5 +1,5 @@
 import * as React from "react";
-import manageJss, { IInjectedProps, ComponentStyles } from "@microsoft/fast-jss-manager-react";
+import manageJss, { IManagedClasses, ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import {IDevSiteDesignSystem} from "../design-system";
 
 /* tslint:disable-next-line */
@@ -19,7 +19,7 @@ const style: ComponentStyles<IShellCanvasManagedClasses, IDevSiteDesignSystem> =
     }
 };
 
-class ShellCanvas extends React.Component<ICanvasHeaderProps & IInjectedProps<IShellCanvasManagedClasses>, {}> {
+class ShellCanvas extends React.Component<ICanvasHeaderProps & IManagedClasses<IShellCanvasManagedClasses>, {}> {
 
     public render(): JSX.Element {
         return (

@@ -1,6 +1,6 @@
 import * as React from "react";
 import {IDevSiteDesignSystem} from "../design-system";
-import manageJss, {IInjectedProps, ComponentStyles} from "@microsoft/fast-jss-manager-react";
+import manageJss, {IManagedClasses, ComponentStyles} from "@microsoft/fast-jss-manager-react";
 import BreadcrumbItem from "./breadcrumb-item";
 
 /* tslint:disable-next-line */
@@ -20,7 +20,7 @@ const style: ComponentStyles<IBreadcrumbManagedClasses, IDevSiteDesignSystem> = 
     }
 };
 
-class Breadcrumb extends React.Component<IBreadcrumbProps & IInjectedProps<IBreadcrumbManagedClasses>, {}> {
+class Breadcrumb extends React.Component<IBreadcrumbProps & IManagedClasses<IBreadcrumbManagedClasses>, {}> {
 
     public render(): JSX.Element {
         return (

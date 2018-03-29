@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Link} from "react-router-dom";
 import {IDevSiteDesignSystem} from "../design-system";
-import manageJss, {IInjectedProps, ComponentStyles} from "@microsoft/fast-jss-manager-react";
+import manageJss, {IManagedClasses, ComponentStyles} from "@microsoft/fast-jss-manager-react";
 
 export interface IBreadcrumbItemProps {
     to: string;
@@ -28,7 +28,7 @@ const style: ComponentStyles<IBreadcrumbItemManagedClasses, IDevSiteDesignSystem
     }
 };
 
-class BreadcrumbItem extends React.Component<IBreadcrumbItemProps & IInjectedProps<IBreadcrumbItemManagedClasses>, {}> {
+class BreadcrumbItem extends React.Component<IBreadcrumbItemProps & IManagedClasses<IBreadcrumbItemManagedClasses>, {}> {
 
     public render(): JSX.Element {
         if (this.props.to) {

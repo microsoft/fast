@@ -1,5 +1,5 @@
 import * as React from "react";
-import manageJss, {IInjectedProps, ComponentStyles} from "@microsoft/fast-jss-manager-react";
+import manageJss, {IManagedClasses, ComponentStyles} from "@microsoft/fast-jss-manager-react";
 import {IDevSiteDesignSystem} from "../design-system";
 import ShellActionBar from "./action-bar";
 import ShellCanvas from "./canvas";
@@ -21,7 +21,7 @@ const style: ComponentStyles<IShellManagedClasses, IDevSiteDesignSystem> = {
     }
 };
 
-class Shell extends React.Component<IShellProps & IInjectedProps<IShellManagedClasses>, {}> {
+class Shell extends React.Component<IShellProps & IManagedClasses<IShellManagedClasses>, {}> {
     public render(): JSX.Element {
         return (
             <div className={this.props.managedClasses.shell}>
