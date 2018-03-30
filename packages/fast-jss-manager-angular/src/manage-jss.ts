@@ -246,9 +246,11 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(BaseComponent: any
              * key will not be created.
              */
             private separateStyles(componentStyles: ComponentStyles<S, C>): ISeparatedStylesheet<S, C> {
-                // TODO #142: write a test for this method to make sure it always returns an object.
-                // TODO #142: write a test to make sure this does not create a static/dynamic key if
-                //       no corresponding styles are passed
+                /* 
+                TODO #142: write a test for this method to make sure it always returns an object.
+                TODO #142: write a test to make sure this does not create a static/dynamic key if
+                no corresponding styles are passed 
+                */
                 const dynamicStyles: ComponentStyles<S, C> = getDynamicStyles(componentStyles);
 
                 // TODO #144: figure out how to type this without coercion
