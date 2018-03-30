@@ -1,5 +1,5 @@
 plugins:
-  TODO:
+  fixme:
     enabled: true
     config:
       strings:
