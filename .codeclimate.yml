@@ -50,12 +50,7 @@ plugins:
   markdownlint:
     enabled: false
 exclude_patterns:
-- "dist/"
-- "features/"
+- "**/dist/"
+- "**/www/"
 - "**/node_modules/"
-- "script/"
-- "**/spec/"
-- "**/test/"
-- "**/tests/"
-- "**/vendor/"
 - "**/*.d.ts"
