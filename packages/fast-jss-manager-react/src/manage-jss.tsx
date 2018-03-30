@@ -4,16 +4,16 @@
  * registered with manageJss.
  */
 import * as React from "react";
-import jss, { stylesheetManager } from "./jss";
-import { getDynamicStyles } from "jss";
+import jss, {stylesheetManager} from "./jss";
+import {getDynamicStyles} from "jss";
 import getStaticStyles from "./utilities/get-static-styles";
-import { isEmptyObject } from "./utilities/object";
+import {isEmptyObject} from "./utilities/object";
 import * as uuid from "uuid/v1";
-import { SheetsManager, StyleSheet } from "jss";
-import { IDesignSystemProviderProps } from "./design-system-provider";
+import {SheetsManager, StyleSheet} from "jss";
+import {IDesignSystemProviderProps} from "./design-system-provider";
 import * as propTypes from "prop-types";
 import isEqual from "lodash.isequal";
-import { ComponentStyles, IManagedClasses, ClassNames } from "@microsoft/fast-jss-manager";
+import {ClassNames, ComponentStyles, IManagedClasses} from "@microsoft/fast-jss-manager";
 
 // hoist-non-react-statics does not seem to be a properly formatted ES6 module, so we need to require it instead
 // Disable rule disallowing require statements

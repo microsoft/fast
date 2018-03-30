@@ -7,10 +7,11 @@
     "jsRules": {},
     "rules": {
         "max-line-length": [true, 140],
+        "object-literal-key-quotes": [false],
         "object-literal-sort-keys": false,
         "only-arrow-functions": false,
         "ordered-imports": [
-            "true",
+            true,
             { 
                 "import-sources-order": "any",
                 "named-imports-order": "case-insensitive"

@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { set, get, pick, isPlainObject } from "lodash-es";
-import { IFoundationProps } from "./Foundation.props";
+import {get, isPlainObject, pick, set} from "lodash-es";
+import {IFoundationProps} from "./Foundation.props";
 
 /**
  * Describes the object that stores memoized reference resolver functions

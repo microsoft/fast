@@ -1,5 +1,5 @@
 import * as React from "react";
-import manageJss, {IManagedClasses, ComponentStyles} from "@microsoft/fast-jss-manager-react";
+import manageJss, {ComponentStyles, IManagedClasses} from "@microsoft/fast-jss-manager-react";
 import {IDevSiteDesignSystem} from "../design-system";
 import ShellActionBar from "./action-bar";
 import ShellCanvas from "./canvas";

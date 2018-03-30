@@ -1,5 +1,5 @@
 import * as React from "react";
-import manageJss, { ComponentStyles } from "./manage-jss";
+import manageJss, {ComponentStyles} from "./manage-jss";
 import * as ShallowRenderer from "react-test-renderer/shallow";
 
 // Disable "no-string-literal" so we can access private members easily
