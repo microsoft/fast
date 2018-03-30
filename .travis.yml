@@ -19,5 +19,5 @@ script:
   #- npm test
   - lerna run test
 after_script:
-  - ./cc-test-reporter format-coverage -t lcov after-build --exit-code $TRAVIS_TEST_RESULT
+  - ./cc-test-reporter format-coverage -t lcov after-build $TRAVIS_TEST_RESULT
   #- ./cc-test-reporter -d after-build --exit-code $TRAVIS_TEST_RESULT
