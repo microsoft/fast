@@ -18,7 +18,7 @@
   "readme": "README.md",
   "main": "tslint.json",
   "homepage": "https://github.com/Microsoft/fast-tslint-rules#readme",
-  "peerDependencies": {
+  "dependencies": {
     "tslint": "^5.9.1",
     "tslint-react": "^3.4.0",
     "typescript": "^2.7.1"
