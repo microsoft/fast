@@ -16,7 +16,7 @@ export interface IDesignSystemProviderProps<T> {
 }
 
 class DesignSystemProvider<T> extends React.Component<IDesignSystemProviderProps<T>, {}> {
-    // TODO: How can we type these to be generics but also static properties
+    // FIXME: How can we type these to be generics but also static properties
     public static contextTypes: any = {
         designSystem: propTypes.any
     };

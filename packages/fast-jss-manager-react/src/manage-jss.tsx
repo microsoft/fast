@@ -41,7 +41,7 @@ export interface IJSSManagerState {
 export interface ISeparatedStylesheet<T, C> {
     /**
      * The static styles for a given component and stylesheet combination
-     * TODO: these are always static so they shouldn't use CSSRuleResolver
+     * FIXME: these are always static so they shouldn't use CSSRuleResolver
      */
     staticStyles?: ComponentStyles<T, C>;
 
@@ -67,7 +67,7 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
 
         // Define the manager higher-order component inside of the return method of the higher-order function.
         class JSSManager extends React.Component<T, IJSSManagerState> {
-            // TODO: figure out if there is a better way to type this object
+            // FIXME: figure out if there is a better way to type this object
             public static contextTypes: any = {
                 designSystem: propTypes.any
             };
@@ -159,7 +159,7 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
                 if (Boolean(this.state.dynamicStyleSheet)) {
                     // It appears we need to update the stylesheet for any style properties defined as functions
                     // to work.
-                    // TODO: We'll need to call this with a context if it exists
+                    // FIXME: We'll need to call this with a context if it exists
 
                     this.state.dynamicStyleSheet.attach().update(this.designSystem);
                 }
@@ -215,12 +215,12 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
              * key will not be created.
              */
             private separateStyles(componentStyles: ComponentStyles<S, C>): ISeparatedStylesheet<S, C> {
-                // TODO: write a test for this method to make sure it always returns an object.
-                // TODO: write a test to make sure this does not create a static/dynamic key if
+                // FIXME: write a test for this method to make sure it always returns an object.
+                // FIXME: write a test to make sure this does not create a static/dynamic key if
                 //       no corresponding styles are passed
                 const dynamicStyles: ComponentStyles<S, C> = getDynamicStyles(componentStyles);
 
-                // TODO: figure out how to type this without coercion
+                // FIXME: figure out how to type this without coercion
                 const staticStyles: ComponentStyles<S, C> = getStaticStyles(componentStyles) as ComponentStyles<S, C>;
                 const separatedStyles: ISeparatedStylesheet<S, C> = {};
 

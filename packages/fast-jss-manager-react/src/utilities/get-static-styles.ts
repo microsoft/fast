@@ -2,7 +2,7 @@ import { isEmptyObject } from "./object";
 
 /**
  * Recurse over an object and coppies all keys with primitive values over to a new object
- * TODO: Write tests and perhaphs abstract this a bit. It could be a general purpose function
+ * FIXME: Write tests and perhaphs abstract this a bit. It could be a general purpose function
  * "exclude" which accepts two objects and returns a new object with only the keys that aren't shared.
  */
 export interface IGetStaticStyles {
