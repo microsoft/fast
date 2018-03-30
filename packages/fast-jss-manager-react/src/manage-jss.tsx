@@ -12,8 +12,8 @@ import * as uuid from "uuid/v1";
 import {SheetsManager, StyleSheet} from "jss";
 import {IDesignSystemProviderProps} from "./design-system-provider";
 import * as propTypes from "prop-types";
-import isEqual from "lodash.isequal";
 import {ClassNames, ComponentStyles, IManagedClasses} from "@microsoft/fast-jss-manager";
+import {isEqual} from "lodash-es";
 
 // hoist-non-react-statics does not seem to be a properly formatted ES6 module, so we need to require it instead
 // Disable rule disallowing require statements

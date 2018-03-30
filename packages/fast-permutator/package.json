@@ -41,9 +41,10 @@
     "babel-cli": "^6.24.1",
     "babel-preset-es2015": "^6.24.1",
     "eslint": "^3.19.0",
-    "jest": "^22.4.2"
-  },
-  "dependencies": {
+    "jest": "^22.4.2",
     "lodash": "^4.17.4"
+  },
+  "peerDependencies": {
+    "lodash": "^4.0.0"
   }
 }
