@@ -1,5 +1,5 @@
 import { fontWeight } from "./fonts";
-import { toPx } from "../utilities";
+import { toPx } from "./units";
 
 /**
  * The type ramp item config

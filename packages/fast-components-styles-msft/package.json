@@ -1,0 +1,32 @@
+{
+  "name": "@microsoft/fast-components-styles-msft",
+  "version": "1.0.0",
+  "description": "Javascript style sheets for FAST components",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "author": {
+    "name": "Microsoft",
+    "email": "fwq@microsoft.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast-dna.git"
+  },
+  "scripts": {
+    "clean:dist": "node ../../build/clean.js dist",
+    "tslint": "tslint -c ./tslint.json ./src/**/*.ts",
+    "tslint:fix": "tslint -c ./tslint.json --fix ./src/**/*.ts",
+    "test": "npm run tslint",
+    "prepare": "npm run clean:dist && tsc -p ./tsconfig.json"
+  },
+  "devDependencies": {
+    "@microsoft/fast-tslint-rules": "^1.0.4",
+    "tslint": "^5.9.1",
+    "typescript": "^2.7.2"
+  },
+  "dependencies": {
+    "@microsoft/fast-components-class-name-contracts": "^1.0.0",
+    "@microsoft/fast-jss-manager": "^1.0.0"
+  }
+}
