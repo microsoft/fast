@@ -66,6 +66,6 @@ export function createContextMenus(config: IContextMenus): void {
         data: config
     };
 
-    // FIXME #160: create x-browser version of this using extension api
+    // TODO #160: create x-browser version of this using extension api
     chrome.runtime.sendMessage(extensionId, data);
 }

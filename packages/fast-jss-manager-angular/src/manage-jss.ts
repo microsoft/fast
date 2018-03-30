@@ -47,7 +47,7 @@ export interface IJSSManagerState {
 export interface ISeparatedStylesheet<T, C> {
     /**
      * The static styles for a given component and stylesheet combination
-     * FIXME #144: these are always static so they shouldn't use CSSRuleResolver
+     * TODO #144: these are always static so they shouldn't use CSSRuleResolver
      */
     staticStyles?: ComponentStyles<T, C>;
 
@@ -247,13 +247,13 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(BaseComponent: any
              */
             private separateStyles(componentStyles: ComponentStyles<S, C>): ISeparatedStylesheet<S, C> {
                 /* 
-                FIXME #142: write a test for this method to make sure it always returns an object.
-                FIXME #142: write a test to make sure this does not create a static/dynamic key if
+                TODO #142: write a test for this method to make sure it always returns an object.
+                TODO #142: write a test to make sure this does not create a static/dynamic key if
                 no corresponding styles are passed 
                 */
                 const dynamicStyles: ComponentStyles<S, C> = getDynamicStyles(componentStyles);
 
-                // FIXME #144: figure out how to type this without coercion
+                // TODO #144: figure out how to type this without coercion
                 const staticStyles: ComponentStyles<S, C> = getStaticStyles(componentStyles) as ComponentStyles<S, C>;
                 const separatedStyles: ISeparatedStylesheet<S, C> = {};
 

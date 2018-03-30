@@ -1,12 +1,11 @@
 plugins:
-  fixme:
+  TODO:
     enabled: true
     config:
       strings:
-      - BUG
-      - FIXME
       - HACK
       - TODO
-      - CUSTOM
+      issue_override:
+      severity: info
   markdownlint:
     enabled: true
