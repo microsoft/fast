@@ -10,3 +10,14 @@ script:
   - lerna run test
 dist: trusty
 sudo: false
+env:
+  global:
+    - CC_TEST_REPORTER_ID=08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
+before_script:
+    - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+    - chmod +x ./cc-test-reporter
+    - ./cc-test-reporter before-build
+script:
+  - bundle exec rspec
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
