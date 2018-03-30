@@ -6,4 +6,4 @@ plugins:
       - HACK
       - TODO
   markdownlint:
-    enabled: true
+    enabled: false
