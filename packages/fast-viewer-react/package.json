@@ -1,7 +1,21 @@
 {
   "name": "@microsoft/fast-viewer-react",
+  "description": "An implementation of a React iframe that is self-contained.",
+  "author": {
+    "name": "Fluent Web",
+    "email": "fwq@microsoft.com"
+  },
   "version": "1.0.0",
-  "description": "An initial implementation of a React iframe that is self-contained.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast-dna.git"
+  },
+  "keywords": [
+    "javascript",
+    "typescript",
+    "reactjs"
+  ],
   "main": "dist/index.js",
   "scripts": {
     "prepare": "tsc -p ./src/tsconfig.json",
@@ -12,20 +26,36 @@
     "unit-tests": "jest",
     "unit-tests:update": "jest --update"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Microsoft/fast-dna.git"
+  "jest": {
+    "collectCoverage": true,
+    "coverageThreshold": {
+      "global": {
+        "branches": 29,
+        "functions": 57,
+        "lines": 67,
+        "statements": 68
+        }
+    },
+    "testRegex": "(/__tests__/.*(test|spec))\\.(ts|tsx)$",
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "moduleFileExtensions": [
+      "js",
+      "ts",
+      "tsx"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ],
+    "globals": {
+      "ts-jest": {
+        "tsConfigFile": "./src/tsconfig.json"
+      }
+    }
   },
-  "keywords": [
-    "javascript",
-    "typescript",
-    "reactjs"
-  ],
-  "author": {
-    "name": "Fluent Web",
-    "email": "fwq@microsoft.com"
-  },
-  "license": "MIT",
+
   "peerDependencies": {
     "jss": "^9.8.0",
     "jss-preset-default": "^4.3.0",
@@ -56,26 +86,6 @@
     "webpack": "^4.0.1",
     "webpack-cli": "^2.0.11",
     "webpack-dev-server": "^3.1.0"
-  },
-  "jest": {
-    "testRegex": "(/__tests__/.*(test|spec))\\.(ts|tsx)$",
-    "transform": {
-      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-    },
-    "moduleFileExtensions": [
-      "js",
-      "ts",
-      "tsx"
-    ],
-    "moduleDirectories": [
-      "node_modules",
-      "src"
-    ],
-    "globals": {
-      "ts-jest": {
-        "tsConfigFile": "./src/tsconfig.json"
-      }
-    }
   },
   "dependencies": {
     "jss": "^9.8.0",
