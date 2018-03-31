@@ -59,9 +59,9 @@
     "glob": "^7.1.2",
     "html-webpack-plugin": "^3.0.4",
     "jest": "^22.4.2",
-    "lodash-es": "^4.0.7",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
+    "lodash-es": "^4.0.0",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
     "regenerator-runtime": "^0.11.1",
     "rimraf": "^2.6.2",
     "ts-jest": "^22.4.1",
@@ -76,8 +76,8 @@
   },
   "peerDependencies": {
     "lodash-es": "^4.0.0",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
   },
   "dependencies": {
     "@microsoft/fast-components-class-name-contracts": "^1.0.0"
