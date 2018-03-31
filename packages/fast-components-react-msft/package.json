@@ -6,10 +6,12 @@
     "email": "fwq@microsoft.com"
   },
   "version": "1.0.0",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
+  "readme": "README.md",
   "main": "dist/index.js",
   "type": "dist/index.d.ts",
   "scripts": {
@@ -20,8 +22,6 @@
     "tslint": "tslint -c ./tslint.json ./src/**/*.ts{,x}",
     "tslint:fix": "tslint -c ./tslint.json --fix ./src/**/*.ts{,x}"
   },
-  "license": "MIT",
-  "readme": "README.md",
   "devDependencies": {
     "@microsoft/fast-development-site-react": "^1.0.0",
     "@microsoft/fast-tslint-rules": "^1.0.4",

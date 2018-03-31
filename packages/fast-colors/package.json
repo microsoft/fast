@@ -1,18 +1,19 @@
 {
   "name": "@microsoft/fast-colors",
-  "version": "1.0.0",
   "description": "A color utility for generating a range of colors from a single color",
-  "license": "MIT",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "author": {
       "name": "Microsoft",
       "email": "fwq@microsoft.com"
   },
+  "version": "1.0.0",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
+  "readme": "README.md",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "clean:dist": "node ../../build/clean.js dist",
     "unit-tests": "jest",
