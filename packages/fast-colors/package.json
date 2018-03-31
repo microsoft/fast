@@ -16,12 +16,12 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "clean:dist": "node ../../build/clean.js dist",
-    "unit-tests": "jest",
-    "unit-tests:watch": "jest --watch",
+    "prepare": "npm run clean:dist && tsc -p ./tsconfig.json",
+    "test": "npm run tslint && npm run unit-tests",
     "tslint": "tslint -c ./tslint.json ./src/**/*.ts",
     "tslint:fix": "tslint -c ./tslint.json --fix ./src/**/*.ts",
-    "test": "npm run tslint && npm run unit-tests",
-    "prepare": "npm run clean:dist && tsc -p ./tsconfig.json"
+    "unit-tests": "jest",
+    "unit-tests:watch": "jest --watch"
   },
   "jest": {
     "collectCoverage": true,
