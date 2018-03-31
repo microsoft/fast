@@ -50,6 +50,7 @@ plugins:
   markdownlint:
     enabled: false
 exclude_patterns:
+- "**/coverage/"
 - "**/dist/"
 - "**/www/"
 - "**/node_modules/"
