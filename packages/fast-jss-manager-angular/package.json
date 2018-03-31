@@ -25,15 +25,17 @@
     "unit-tests:watch": "jest --watch"
   },
   "jest": {
+    "collectCoverage": true,
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json"
+    ],
     "preset": "jest-preset-angular",
     "setupTestFrameworkScriptFile": "./build/setup-jest.ts",
     "testPathIgnorePatterns": [
-      "<rootDir>/node_modules/",
-      "<rootDir>/dist/"
-    ],
-    "moduleFileExtensions": [
-      "ts",
-      "js"
+      "/node_modules/",
+      "/dist/"
     ],
     "transform": {
       "^.+\\.ts$": "ts-jest"
