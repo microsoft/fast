@@ -1,15 +1,17 @@
 {
   "name": "@microsoft/fast-development-site-react",
-  "description": "FAST development testing site for react.",
+  "description": "FAST development testing site for React",
   "author": {
     "name": "Microsoft",
     "email": "fwq@microsoft.com"
   },
   "version": "1.0.0",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
+  "readme": "README.md",
   "main": "dist/index.js",
   "type": "dist/index.d.ts",
   "scripts": {
@@ -20,8 +22,6 @@
     "tslint": "tslint -c ./tslint.json **/*.ts{,x}",
     "tslint:fix": "tslint -c ./tslint.json --fix **/*.ts{,x}"
   },
-  "license": "MIT",
-  "readme": "README.md",
   "dependencies": {
     "@microsoft/fast-jss-manager-react": "^1.0.0",
     "react": "^16.2.0",
