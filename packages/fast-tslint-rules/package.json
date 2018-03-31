@@ -1,25 +1,22 @@
 {
   "name": "@microsoft/fast-tslint-rules",
-  "version": "1.0.4",
   "description": "tslint rules for FAST projects",
-  "main": "tslint.json",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Microsoft/fast-dna.git"
-  },
   "keywords": [
     "tslint",
     "typescript"
   ],
   "author": {
-    "name": "Fluent Web",
+    "name": "Microsoft",
     "email": "fwq@microsoft.com"
   },
+  "version": "1.0.4",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Microsoft/fast-tslint-rules/issues"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
-  "homepage": "https://github.com/Microsoft/fast-tslint-rules#readme",
+  "readme": "README.md",
+  "main": "tslint.json",
   "dependencies": {
     "tslint": "^5.9.1",
     "tslint-react": "^3.4.0",
