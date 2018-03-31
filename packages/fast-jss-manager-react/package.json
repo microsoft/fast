@@ -1,6 +1,5 @@
-{
-  "name": "@microsoft/fast-jss-manager-react",
-  "description": "React HOC for managing component JSS stylesheets",
+{ "name": "@microsoft/fast-jss-manager-react",
+   "description": "React HOC for managing component JSS stylesheets",
   "author": {
     "name": "Microsoft",
     "email": "fwq@microsoft.com"
@@ -33,6 +32,15 @@
         "statements": -10
         }
     },
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest",
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "!<rootDir>/node_modules/lodash-es",
+      "<rootDir>/node_modules/jss-*",
+      "<rootDir>/node_modules/css-vendor"
+    ],
     "moduleFileExtensions": [
       "ts",
       "tsx",
@@ -44,15 +52,18 @@
       "/dist/"
     ],
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    }
   },
   "devDependencies": {
     "@microsoft/fast-tslint-rules": "^1.0.4",
     "@types/jest": "^22.1.2",
+    "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.6",
     "@types/react": "^16.0.38",
+    "babel-core": "^6.26.0",
+    "babel-jest": "^22.4.3",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
     "hoist-non-react-statics": "^2.5.0",
     "jest": "^22.3.0",
     "jss": "^9.8.1",
