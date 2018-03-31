@@ -20,4 +20,4 @@ script:
   - lerna run test
 after_script:
   #- ./cc-test-reporter format-coverage -t lcov after-build .exit $TRAVIS_TEST_RESULT
-  - ./cc-test-reporter after-build .exit $TRAVIS_TEST_RESULT
+  - ./cc-test-reporter format-coverage -t lcov after-build .exit $TRAVIS_TEST_RESULT
