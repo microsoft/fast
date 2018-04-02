@@ -1,6 +1,6 @@
-import { validDomains } from "../config";
+import {validDomains} from "../config";
 import ExtensionApi from "../ExtensionApi";
-import { CreateMessage, CREATE_MENUS_MESSAGE } from "../messaging";
+import {CREATE_MENUS_MESSAGE, CreateMessage} from "../messaging";
 
 /**
  * Describes all types of context menu item

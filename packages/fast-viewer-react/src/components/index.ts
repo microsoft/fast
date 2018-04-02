@@ -1,2 +1,2 @@
 import viewer from "./viewer";
-export { viewer };
+export {viewer};

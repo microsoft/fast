@@ -1,6 +1,6 @@
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { DesignSystemDirective } from "./design-system.directive";
+import {NgModule} from "@angular/core";
+import {CommonModule} from "@angular/common";
+import {DesignSystemDirective} from "./design-system.directive";
 
 @NgModule({
     declarations: [

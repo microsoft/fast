@@ -1,10 +1,10 @@
-import { Component, Input, ElementRef, SimpleChanges } from "@angular/core";
-import { SheetsManager, StyleSheet, getDynamicStyles } from "jss";
+import {Component, ElementRef, Input, SimpleChanges} from "@angular/core";
+import {getDynamicStyles, SheetsManager, StyleSheet} from "jss";
 import * as uuid from "uuid/v1";
 import getStaticStyles from "./utilities/get-static-styles";
-import { eventNames } from "./utilities/get-event-names";
-import { isEmptyObject } from "./utilities/object";
-import jss, { stylesheetManager } from "./jss";
+import {eventNames} from "./utilities/get-event-names";
+import {isEmptyObject} from "./utilities/object";
+import jss, {stylesheetManager} from "./jss";
 
 /**
  * Type definition for a function that resovles to a CSS property value

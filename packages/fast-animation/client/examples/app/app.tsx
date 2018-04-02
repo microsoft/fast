@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { connect } from "react-redux";
-import { set, get, cloneDeep } from "lodash";
+import {connect} from "react-redux";
+import {cloneDeep, get, set} from "lodash";
 import TestPage from "./components/TestPage";
 
 /**

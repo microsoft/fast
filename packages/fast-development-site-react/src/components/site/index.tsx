@@ -1,6 +1,6 @@
 import * as React from "react";
-import {BrowserRouter, Switch, Route} from "react-router-dom";
-import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
+import {BrowserRouter, Route, Switch} from "react-router-dom";
+import {DesignSystemProvider} from "@microsoft/fast-jss-manager-react";
 import devSiteDesignSystemDefaults from "../design-system";
 
 import Shell, { ShellActionBar, ShellCanvas, ShellHeader, ShellPane, ShellRow } from "../shell";

@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import {DesignSystemDefaults} from "@microsoft/fast-components-styles-msft";
-import Site, { ISiteProps, ICategoryProps } from "@microsoft/fast-development-site-react";
+import Site, {ICategoryProps, ISiteProps} from "@microsoft/fast-development-site-react";
 import * as examples from "./examples";
 
 const items: ICategoryProps[] = [

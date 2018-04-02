@@ -1,4 +1,4 @@
-import { isEmptyObject } from "./object";
+import {isEmptyObject} from "./object";
 
 describe("isEmptyObject", () => {
     test("should return false if passed undefined", () => {

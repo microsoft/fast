@@ -1,8 +1,8 @@
 import * as React from "react";
 import jss from "jss";
 import preset from "jss-preset-default";
-import Viewer, { IViewerProps, IViewerConfig} from "../../src/components/viewer";
-import manager, { theme } from "../utilities/style-manager";
+import Viewer, {IViewerConfig, IViewerProps} from "../../src/components/viewer";
+import manager, {theme} from "../utilities/style-manager";
 import Example from "./example";
 
 jss.setup(preset());

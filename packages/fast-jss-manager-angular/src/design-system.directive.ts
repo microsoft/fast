@@ -1,6 +1,6 @@
-import { Directive, ElementRef, Input, SimpleChanges } from "@angular/core";
-import { eventNames } from "./utilities/get-event-names";
-import jss, { stylesheetManager } from "./jss";
+import {Directive, ElementRef, Input, SimpleChanges} from "@angular/core";
+import {eventNames} from "./utilities/get-event-names";
+import jss, {stylesheetManager} from "./jss";
 
 @Directive({
     selector: "design-system",

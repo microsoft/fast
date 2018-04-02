@@ -3,7 +3,7 @@ import preset from "jss-preset-default";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as ReactDOMServer from "react-dom/server";
-import { windowControls, addressBarControls } from "./browserControls";
+import {addressBarControls, windowControls} from "./browserControls";
 
 export interface IViewerHeightConfig {
     min?: number;

@@ -1,5 +1,5 @@
-import { IContextMenuItem } from "./contextMenu";
-import { menuItemClickEvent } from "./config";
+import {IContextMenuItem} from "./contextMenu";
+import {menuItemClickEvent} from "./config";
 
 /**
  * Subscribe to messages from background scripts

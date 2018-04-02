@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Foundation, { HandledProps } from "../foundation";
-import {IButtonProps, ButtonHTMLTags} from "./Button.props";
+import {ButtonHTMLTags, IButtonProps} from "./Button.props";
 import {IButtonClassNameContract, IManagedClasses} from "@microsoft/fast-components-class-name-contracts";
 
 /* tslint:disable-next-line */
