@@ -9,6 +9,7 @@ module.exports = {
     entry: path.resolve(appDir, "index.tsx"),
     output: {
         path: outDir,
+        publicPath: "/",
         filename: "[name].js"
     },
     mode: process.env.NODE_ENV || "development",
@@ -39,9 +40,10 @@ module.exports = {
         extensions: [".js", ".tsx", ".ts", ".json"],
     },
     devServer: {
-        port: 7001,
         compress: false,
+        historyApiFallback: true,
         open: true,
-        overlay: true 
+        overlay: true,
+        port: 7001
     }
 }
