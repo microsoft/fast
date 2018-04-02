@@ -37,8 +37,7 @@
       "ts",
       "tsx",
       "js",
-      "jsx",
-      "json"
+      "jsx"
     ],
     "testPathIgnorePatterns": [
       "/node_modules/",

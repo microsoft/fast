@@ -28,8 +28,7 @@
     "collectCoverage": true,
     "moduleFileExtensions": [
       "ts",
-      "js",
-      "json"
+      "js"
     ],
     "preset": "jest-preset-angular",
     "setupTestFrameworkScriptFile": "./build/setup-jest.ts",
