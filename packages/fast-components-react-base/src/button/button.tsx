@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import Foundation, { HandledProps } from "../foundation";
+import Foundation, {HandledProps} from "../foundation";
 import {ButtonHTMLTags, IButtonProps} from "./button.props";
 import {IButtonClassNameContract, IManagedClasses} from "@microsoft/fast-components-class-name-contracts";
 
