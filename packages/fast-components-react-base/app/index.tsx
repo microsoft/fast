@@ -9,6 +9,19 @@ import Site, {
 } from "@microsoft/fast-development-site-react";
 import * as examples from "./examples";
 
+<<<<<<< HEAD
+=======
+const items: ICategoryProps[] = [
+    {
+        name: "Fast Components",
+        items: [
+            examples.ButtonExamples,
+            examples.HypertextExamples
+        ]
+    }
+];
+
+>>>>>>> renamed all to hypertext from hyperlink
 /**
  * Create the root node
  */

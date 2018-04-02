@@ -6,9 +6,9 @@ import Divider from "./divider";
 export { Divider };
 export * from "./divider";
 
-import Hyperlink from "./hyperlink";
-export { Hyperlink };
-export * from "./hyperlink";
+import Hypertext from "./hypertext";
+export { Hypertext };
+export * from "./hypertext";
 
 import Foundation from "./foundation";
 export { Foundation };
