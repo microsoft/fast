@@ -1,4 +1,4 @@
-import Foundation from "./Foundation";
+import Foundation from "./foundation";
 
 export default Foundation;
-export * from "./Foundation";
+export * from "./foundation";

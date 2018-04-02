@@ -1,4 +1,4 @@
-import Button from "./Button";
+import Button from "./button";
 
 export default Button;
-export * from "./Button";
+export * from "./button";

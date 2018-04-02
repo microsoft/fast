@@ -1,7 +1,7 @@
 import {ICategoryItemProps} from "@microsoft/fast-development-site-react";
 import {IGenericExample} from "../examples";
 import {IManagedClasses} from "@microsoft/fast-components-class-name-contracts";
-import Button, {IButtonClassNameContract, IButtonProps} from "./Button";
+import Button, {IButtonClassNameContract, IButtonProps} from "./button";
 
 export default {
     name: "button",
