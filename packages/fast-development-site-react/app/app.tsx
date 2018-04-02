@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import Site, {ICategoryProps, ISiteProps} from "../src";
+import {ICategoryProps} from "../src/components/site/category";
+import Site, {ISiteProps} from "../src";
 
 import Button from "./components/button";
 import Paragraph from "./components/paragraph";
