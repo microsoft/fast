@@ -2,8 +2,14 @@
 The FAST permutator creates all possible data permutations from a given JSON Schema, allowing for deep testing or display of complex data sets.
 
 ## Use
+### Including the permutator
+Add the permutator as a required variable:
+```javascript
+const permutator = require('@Microsoft/fast-permutator');
+```
+
 ### Permutating data sets
-The main export of the `permutator` is to recieve a schema and any schema references. For example, take this simple schema:
+The main export of the permutator is to recieve a schema and any schema references. For example, take this simple schema:
 
 ```javascript
 let schema = {
@@ -25,7 +31,7 @@ let schema = {
 permutator(schema);
 ```
 
-This main export `permutator` will generate the following data:
+This main export permutator will generate the following data:
 
 ```javascript
 [
