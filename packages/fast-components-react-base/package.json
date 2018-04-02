@@ -25,6 +25,7 @@
   "license": "MIT",
   "readme": "README.md",
   "jest": {
+    "collectCoverage": true,
     "testPathIgnorePatterns": [
       "/node_modules/",
       "/dist/"

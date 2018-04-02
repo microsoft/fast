@@ -6,11 +6,12 @@
     "email": "fwq@microsoft.com"
   },
   "version": "0.1.0-beta.0",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/Microsoft/fast-dna.git"
   },
-  "license": "MIT",
+  "readme": "README.md",
   "main": "index.js",
   "registry": "https://registry.npmjs.org/",
   "scripts": {
@@ -18,14 +19,23 @@
     "test": "eslint src/** && jest"
   },
   "jest": {
+    "collectCoverage": true,
+    "coverageThreshold": {
+      "global": {
+        "branches": 75,
+        "functions": 95,
+        "lines": 85,
+        "statements": 85
+        }
+    },
+    "moduleFileExtensions": [
+      "js"
+    ],
     "testPathIgnorePatterns": [
       "/node_modules/",
       "/dist/"
     ],
-    "testRegex": "(/__tests__/.*|(\\.|/))\\.(js?)$",
-    "moduleFileExtensions": [
-      "js"
-    ]
+    "testRegex": "(/__tests__/.*|(\\.|/))\\.(js?)$"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",

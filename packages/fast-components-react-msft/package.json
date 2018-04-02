@@ -6,10 +6,12 @@
     "email": "fwq@microsoft.com"
   },
   "version": "1.0.0",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
+  "readme": "README.md",
   "main": "dist/index.js",
   "type": "dist/index.d.ts",
   "scripts": {
@@ -17,26 +19,8 @@
     "prepare": "npm run clean:dist && tsc -p ./tsconfig.json",
     "start": "webpack-dev-server",
     "test": "npm run tslint && webpack --progress",
-    "tslint": "tslint -c ./tslint.json **/*.ts{,x}",
-    "tslint:fix": "tslint -c ./tslint.json --fix **/*.ts{,x}"
-  },
-  "license": "MIT",
-  "readme": "README.md",
-  "jest": {
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/dist/"
-    ],
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx"
-    ]
+    "tslint": "tslint -c ./tslint.json ./src/**/*.ts{,x}",
+    "tslint:fix": "tslint -c ./tslint.json --fix ./src/**/*.ts{,x}"
   },
   "devDependencies": {
     "@microsoft/fast-development-site-react": "^1.0.0",
@@ -50,7 +34,6 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "rimraf": "^2.6.2",
-    "ts-jest": "^22.4.1",
     "ts-loader": "^4.0.1",
     "tslint": "^5.9.1",
     "tslint-loader": "^3.6.0",

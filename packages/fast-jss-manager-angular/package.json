@@ -6,33 +6,35 @@
     "email": "fwq@microsoft.com"
   },
   "version": "1.0.0",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
+  "readme": "README.md",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -p ./tsconfig.json",
-    "test": "jest && npm run tslint",
-    "test:watch": "jest --watch",
-    "tslint": "tslint -c tslint.json ./src/**/*.ts",
-    "tslint:fix": "tslint -c tslint.json ./src/**/*.ts --fix",
+    "prepare": "npm run build",
+    "test": "npm run tslint && npm run unit-tests",
+    "tslint": "tslint -c ./tslint.json ./src/**/*.ts",
+    "tslint:fix": "tslint -c ./tslint.json --fix ./src/**/*.ts",
     "tslint:watch": "node build/tslint-watch.js",
-    "prepare": "npm run build"
+    "unit-tests": "jest",
+    "unit-tests:watch": "jest --watch"
   },
-  "license": "MIT",
-  "readme": "README.md",
   "jest": {
-    "preset": "jest-preset-angular",
-    "setupTestFrameworkScriptFile": "./build/setup-jest.ts",
-    "testPathIgnorePatterns": [
-      "<rootDir>/node_modules/",
-      "<rootDir>/dist/"
-    ],
+    "collectCoverage": true,
     "moduleFileExtensions": [
       "ts",
       "js"
+    ],
+    "preset": "jest-preset-angular",
+    "setupTestFrameworkScriptFile": "./build/setup-jest.ts",
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/"
     ],
     "transform": {
       "^.+\\.ts$": "ts-jest"

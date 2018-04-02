@@ -1,18 +1,19 @@
 {
   "name": "@microsoft/fast-jss-manager",
-  "version": "1.0.0",
   "description": "Provides common code to all JSS manager implementations.",
-  "license": "MIT",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "author": {
     "name": "Microsoft",
     "email": "fwq@microsoft.com"
   },
+  "version": "1.0.0",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
+  "readme": "README.md",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "clean:dist": "node ../../build/clean.js dist",
     "prepare": "npm run clean:dist && tsc -p ./tsconfig.json",

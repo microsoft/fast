@@ -25,6 +25,22 @@
     "tslint:fix": "tslint -c ./tslint.json --fix **/*.ts{,x}",
     "unit-tests": "jest"
   },
+  "jest": {
+    "rootDir": "./",
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "collectCoverage": true,
+    "moduleDirectories": [
+      "node_modules"
+    ]
+  },
   "devDependencies": {
     "@microsoft/fast-tslint-rules": "^1.0.4",
     "@types/jest": "^21.1.2",
@@ -72,21 +88,5 @@
   "dependencies": {
     "@types/web-animations-js": "^2.2.5",
     "lodash.throttle": "^4.1.1"
-  },
-  "jest": {
-    "rootDir": "./",
-    "transform": {
-      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-    },
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
-    "collectCoverage": true,
-    "moduleDirectories": [
-      "node_modules"
-    ]
   }
 }

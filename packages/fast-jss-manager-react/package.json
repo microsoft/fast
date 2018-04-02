@@ -6,10 +6,12 @@
     "email": "fwq@microsoft.com"
   },
   "version": "1.0.0",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
+  "readme": "README.md",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
@@ -21,23 +23,30 @@
     "unit-test": "jest",
     "unit-test:watch": "jest --watch && npm-watch"
   },
-  "license": "MIT",
-  "readme": "README.md",
   "jest": {
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/dist/"
-    ],
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
+    "collectCoverage": true,
+    "coverageThreshold": {
+      "global": {
+        "branches": 69,
+        "functions": 80,
+        "lines": 80,
+        "statements": -10
+        }
     },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "moduleFileExtensions": [
       "ts",
       "tsx",
       "js",
       "jsx"
-    ]
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/"
+    ],
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    }
   },
   "devDependencies": {
     "@microsoft/fast-tslint-rules": "^1.0.4",
