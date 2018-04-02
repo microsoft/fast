@@ -11,10 +11,8 @@ export default {
             managedClasses: {
                 hypertext: "hypertext"
             },
-            href: "https://247sports.com",
-            children: "Sports!",
-            ariaLabel: "Testing aria label here",
-            id: "test id"
+            href: "https://msdn.microsoft.com/en-us/",
+            children: "MSDN"
         }
     ]
 } as IGenericExample<IHypertextProps & IManagedClasses<IHypertextClassNameContract>>;
