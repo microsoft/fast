@@ -55,7 +55,6 @@
       }
     }
   },
-
   "peerDependencies": {
     "jss": "^9.8.0",
     "jss-preset-default": "^4.3.0",
