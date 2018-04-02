@@ -1,7 +1,7 @@
 /* tslint:disable:max-classes-per-file */
 /* tslint:disable:no-string-literal */
 import * as React from "react";
-import Foundation, {HandledProps, ReferenceResolver} from "./Foundation";
+import Foundation, {HandledProps, ReferenceResolver} from "./foundation";
 import * as ReactTestUtils from "react-dom/test-utils";
 import {has,  merge} from "lodash-es";
 
