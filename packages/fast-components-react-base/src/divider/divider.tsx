@@ -4,7 +4,6 @@ import Foundation, { HandledProps } from "../foundation";
 import { IDividerProps } from './divider.props';
 import { IDividerClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts";
 
-
 /**
  * Divider component class
  */
@@ -21,8 +20,8 @@ class Divider extends Foundation<IDividerProps & IManagedClasses<IDividerClassNa
         return (
             <hr
                 {...this.unhandledProps()}
-                {...this.generateAttributes()}
-                className={this.generateClassNames()}
+                //{...this.generateAttributes()}
+                //className={this.generateClassNames()}
             />
         );
     } 
