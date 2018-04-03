@@ -12,6 +12,17 @@ import Site, {
 } from "@microsoft/fast-development-site-react";
 import * as examples from "./examples";
 
+const items: ICategoryProps[] = [
+    {
+        name: "Fast Components",
+        items: [
+            examples.ButtonExamples,
+            examples.DividerExamples,
+            examples.MediaExamples
+        ]
+    }
+];
+
 /**
  * Create the root node
  */
