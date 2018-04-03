@@ -4,6 +4,9 @@
 import ButtonStyles from "./button";
 export { ButtonStyles };
 
+import MediaStyles from "./media";
+export {MediaStyles};
+
 /**
  * Export design system defaults and typings
  */

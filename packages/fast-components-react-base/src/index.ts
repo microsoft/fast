@@ -9,3 +9,8 @@ export * from "./divider";
 import Foundation from "./foundation";
 export { Foundation };
 export * from "./foundation";
+
+import Media from "./media";
+export {Media};
+export * from "./media";
+
