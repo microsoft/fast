@@ -51,7 +51,7 @@
       "/node_modules/",
       "/dist/"
     ],
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$"
   },
   "devDependencies": {
     "@microsoft/fast-tslint-rules": "^1.0.4",
