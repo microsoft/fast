@@ -4,5 +4,8 @@ export {ButtonExamples};
 import DividerExamples from "../src/divider/examples.data";
 export {DividerExamples};
 
+import MediaExamples from "../src/media/examples.data";
+export {MediaExamples};
+
 import ToggleExamples from "../src/toggle/examples.data";
 export {ToggleExamples};
