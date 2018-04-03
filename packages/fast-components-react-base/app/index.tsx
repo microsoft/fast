@@ -9,6 +9,19 @@ import Site, {
 } from "@microsoft/fast-development-site-react";
 import * as examples from "./examples";
 
+<<<<<<< HEAD
+=======
+const items: ICategoryProps[] = [
+    {
+        name: "Fast Components",
+        items: [
+            examples.ButtonExamples,
+            examples.ToggleExamples
+        ]
+    }
+];
+
+>>>>>>> Adds base structure for toggle - commiting to rebase
 /**
  * Create the root node
  */
