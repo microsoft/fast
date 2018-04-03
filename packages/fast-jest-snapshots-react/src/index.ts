@@ -18,7 +18,7 @@ export interface ISnapshotTestSuite<T> {
     /**
      * Prop instances to pass to a component
      */
-    data: T[];
+    props: T[];
 }
 
 /**
@@ -26,8 +26,8 @@ export interface ISnapshotTestSuite<T> {
  */
 export function renderSnapshot<T>(props: T, component: React.ComponentClass<T>, title: string): void {
     test(title, (): void => {
-        const renderedComponent = renderer.create(React.createElement(component, props));
-        const componentJson = renderedComponent.toJSON();
+        const renderedComponent: any = renderer.create(React.createElement(component, props));
+        const componentJson: JSON = renderedComponent.toJSON();
 
         expect(componentJson).toMatchSnapshot();
     });
@@ -37,11 +37,11 @@ export function renderSnapshot<T>(props: T, component: React.ComponentClass<T>, 
  * Generate a set of snapshot tests given a snapshot suite
  */
 export function generateSnapshots<T>(examples: ISnapshotTestSuite<T>): void {
-    const data: T[] = examples.data;
+    const props: T[] = examples.props;
     const component: React.ComponentClass<T> = examples.component;
 
-    if (Array.isArray(data)) {
-        data.forEach((example: T, index: number): void => {
+    if (Array.isArray(props)) {
+        props.forEach((example: T, index: number): void => {
             renderSnapshot(example, component, `${examples.name}: ${index}`);
         });
     }
