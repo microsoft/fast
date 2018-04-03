@@ -1,11 +1,10 @@
 import {ICategoryItemProps} from "@microsoft/fast-development-site-react";
-// import {IComponentExamples} from "../../../../test/component-examples";
+import {ISnapshotTestSuite} from "@microsoft/fast-jest-snapshots-react";
 import {IManagedClasses} from "@microsoft/fast-components-class-name-contracts";
 import Button, {IButtonHandledProps, IButtonMangedClasses, IButtonUnhandledProps} from "./button";
 import * as React from "react";
 
-// const examples: IComponentExamples<IButtonHandledProps & IButtonMangedClasses> = {
-const examples: any = {
+const examples: ISnapshotTestSuite<IButtonHandledProps & IButtonMangedClasses> = {
     name: "button",
     component: Button,
     data: [
