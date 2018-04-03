@@ -1,18 +1,18 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Foundation, {HandledProps} from "../foundation";
-import {ButtonHTMLTags, IButtonProps} from "./button.props";
+import {ButtonHTMLTags, IButtonHandledProps, IButtonMangedClasses, IButtonUnhandledProps} from "./button.props";
 import {IButtonClassNameContract, IManagedClasses} from "@microsoft/fast-components-class-name-contracts";
 
 /* tslint:disable-next-line */
-class Button extends Foundation<IButtonProps & IManagedClasses<IButtonClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
-    protected handledProps: HandledProps<IButtonProps & IManagedClasses<IButtonClassNameContract>> = {
-        managedClasses: void 0,
-        tag: void 0
+class Button extends Foundation<IButtonHandledProps & IButtonMangedClasses,  IButtonUnhandledProps, {}> {
+    public static defaultProps: IButtonHandledProps = {
+        tag: ButtonHTMLTags.button
     };
 
-    protected defaultProps: IButtonProps = {
-        tag: ButtonHTMLTags.button
+    protected handledProps: HandledProps<IButtonHandledProps & IButtonMangedClasses> = {
+        managedClasses: void 0,
+        tag: void 0
     };
 
     /**
@@ -58,4 +58,5 @@ class Button extends Foundation<IButtonProps & IManagedClasses<IButtonClassNameC
 }
 
 export default Button;
-export {IButtonProps, IButtonClassNameContract, ButtonHTMLTags};
+export * from "./button.props";
+export {IButtonClassNameContract};

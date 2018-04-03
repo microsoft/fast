@@ -9,3 +9,9 @@ export interface IGenericExample<T> {
 
     data: Array<IExampleData<T>>;
 }
+
+export interface IComponentExamples<T> {
+    name: string;
+    component: React.ComponentClass<T>;
+    data: T[];
+}
