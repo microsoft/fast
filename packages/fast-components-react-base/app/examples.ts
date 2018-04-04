@@ -21,4 +21,8 @@ export {ButtonExamples};
 
 import HypertextExamples from "../src/hypertext/examples.data";
 export {HypertextExamples};
+<<<<<<< HEAD
 >>>>>>> renamed all to hypertext from hyperlink
+=======
+
+>>>>>>> added hypertext references in react-msft and styles-msft

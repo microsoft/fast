@@ -9,3 +9,6 @@ export {Image};
 
 import Toggle from "./toggle";
 export { Toggle };
+
+import Hypertext from "./hypertext";
+export { Hypertext };
