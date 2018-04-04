@@ -18,15 +18,15 @@ export interface ISnapshotTestSuite<T> {
     /**
      * Prop instances to pass to a component
      */
-    props: T[];
+    data: T[];
 }
 
 /**
- * Executes a single snapshot test given a component, component props, and a test title
+ * Executes a single snapshot test given a component, component data, and a test title
  */
-export function renderSnapshot<T>(props: T, component: React.ComponentClass<T>, title: string): void {
+export function renderSnapshot<T>(data: T, component: React.ComponentClass<T>, title: string): void {
     test(title, (): void => {
-        const renderedComponent: any = renderer.create(React.createElement(component, props));
+        const renderedComponent: any = renderer.create(React.createElement(component, data));
         const componentJson: JSON = renderedComponent.toJSON();
 
         expect(componentJson).toMatchSnapshot();
@@ -37,11 +37,11 @@ export function renderSnapshot<T>(props: T, component: React.ComponentClass<T>, 
  * Generate a set of snapshot tests given a snapshot suite
  */
 export function generateSnapshots<T>(examples: ISnapshotTestSuite<T>): void {
-    const props: T[] = examples.props;
+    const data: T[] = examples.data;
     const component: React.ComponentClass<T> = examples.component;
 
-    if (Array.isArray(props)) {
-        props.forEach((example: T, index: number): void => {
+    if (Array.isArray(data)) {
+        data.forEach((example: T, index: number): void => {
             renderSnapshot(example, component, `${examples.name}: ${index}`);
         });
     }

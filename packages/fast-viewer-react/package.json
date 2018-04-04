@@ -64,7 +64,7 @@
   "devDependencies": {
     "@microsoft/fast-tslint-rules": "^1.0.2",
     "@types/jest": "^22.1.1",
-    "@types/react": "^16.0.34",
+    "@types/react": "^16.0.0",
     "@types/react-dom": "^16.0.3",
     "@types/react-redux": "^5.0.14",
     "@types/react-router": "^4.0.21",
