@@ -11,7 +11,6 @@ class Divider extends Foundation<IDividerHandledProps & IManagedClasses<IDivider
         role: void 0
     };
 
-
     /**
      * Renders the component
      */

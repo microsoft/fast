@@ -8,5 +8,4 @@ Use *divider* to separate sections that may not otherwise have a clear beginning
 When white space or headings can clearly define new sections, dividers are not needed. They are also not for graphic decoration.
 
 ## Accessibility
-The *divider* is intrinsically set as `role="presentation"`, and therefore is not necessary to explicitly include when usage involves changing the look of the page but does not have all the functional, interactive, or structural relevance implied by the `hr` element. 
-When the *divider* separates and distinguishes sections of content or groups of menu items, apply `role="separator"` attribute. 
+The *divider* is intrinsically set as `role="separator"`, so it's not necessary to include when the *divider* separates and distinguishes sections of content.  However, when changing the look, functional, interactive, or structural relevance implied by the `hr` element a `role="presentation"` may be applied.
