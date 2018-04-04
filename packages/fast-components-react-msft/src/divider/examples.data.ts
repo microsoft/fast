@@ -9,7 +9,6 @@ export default {
     component: Divider,
     data: [
         {
-
         },
         {
             role: DividerRole.presentation
