@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Foundation, { HandledProps } from "../foundation";
-import {HypertextHTMLTags, IHypertextProps} from "./Hypertext.props";
+import {HypertextHTMLTags, IHypertextProps} from "./hypertext.props";
 import {IHypertextClassNameContract, IManagedClasses} from "@microsoft/fast-components-class-name-contracts";
 
 /* tslint:disable-next-line */

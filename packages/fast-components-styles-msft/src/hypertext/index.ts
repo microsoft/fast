@@ -4,13 +4,18 @@ import {IHypertextClassNameContract} from "@microsoft/fast-components-class-name
 
 const styles: ComponentStyles<IHypertextClassNameContract, IDesignSystem> = {
     hypertext: {
-        color: (config: IDesignSystem): string => {
-            return config.foregroundColor;
+        borderBottom: (config: IDesignSystem): string => {
+            return `1px solid ${config.brandColor}`;
         },
-        backgroundColor: (config: IDesignSystem): string => {
+        color: (config: IDesignSystem): string => {
             return config.brandColor;
+        },
+        "&:hover, &:focus": {
+            borderBottom: (config: IDesignSystem): string => {
+                return `2px solid ${config.brandColor}`;
+            }
         }
-    },
+    }
 };
 
 export default styles;

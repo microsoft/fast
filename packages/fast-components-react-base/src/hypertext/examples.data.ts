@@ -1,7 +1,7 @@
 import {ICategoryItemProps} from "@microsoft/fast-development-site-react";
 import {IGenericExample} from "../examples";
 import {IManagedClasses} from "@microsoft/fast-components-class-name-contracts";
-import Hypertext, {IHypertextClassNameContract, IHypertextProps} from "./Hypertext";
+import Hypertext, {IHypertextClassNameContract, IHypertextProps} from "./hypertext";
 
 export default {
     name: "hypertext",
