@@ -1,6 +1,5 @@
-{
-  "name": "@microsoft/fast-jss-manager-react",
-  "description": "React HOC for managing component JSS stylesheets",
+{ "name": "@microsoft/fast-jss-manager-react",
+   "description": "React HOC for managing component JSS stylesheets",
   "author": {
     "name": "Microsoft",
     "email": "fwq@microsoft.com"
@@ -33,6 +32,15 @@
         "statements": -10
         }
     },
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest",
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "!<rootDir>/node_modules/lodash-es",
+      "<rootDir>/node_modules/jss-*",
+      "<rootDir>/node_modules/css-vendor"
+    ],
     "moduleFileExtensions": [
       "ts",
       "tsx",
@@ -43,34 +51,42 @@
       "/node_modules/",
       "/dist/"
     ],
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    }
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$"
   },
   "devDependencies": {
     "@microsoft/fast-tslint-rules": "^1.0.4",
     "@types/jest": "^22.1.2",
+    "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.6",
     "@types/react": "^16.0.38",
+    "babel-core": "^6.26.0",
+    "babel-jest": "^22.4.3",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "hoist-non-react-statics": "^2.5.0",
     "jest": "^22.3.0",
+    "jss": "^9.8.0",
+    "jss-preset-default": "^4.3.0",
+    "lodash-es": "^4.0.0",
+    "prop-types": "^15.6.1",
     "react": "^16.0.0",
     "react-test-renderer": "^16.2.0",
     "ts-jest": "^22.0.4",
     "tslint": "^5.9.1",
     "typescript": "^2.7.1",
+    "uuid": "^3.0.0",
     "watch": "^1.0.2"
   },
   "peerDependencies": {
-    "react": "^16.0.0"
-  },
-  "dependencies": {
-    "@microsoft/fast-jss-manager": "^1.0.0",
-    "hoist-non-react-statics": "^2.3.1",
+    "hoist-non-react-statics": "^2.5.0",
+    "react": "^16.0.0",
     "jss": "^9.8.0",
     "jss-preset-default": "^4.3.0",
-    "lodash.isequal": "^4.5.0",
-    "prop-types": "^15.6.0",
-    "uuid": "^3.2.1"
+    "lodash-es": "^4.0.0",
+    "prop-types": "^15.0.0",
+    "uuid": "^3.0.0"
+  },
+  "dependencies": {
+    "@microsoft/fast-jss-manager": "^1.0.0"
   }
 }

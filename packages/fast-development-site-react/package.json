@@ -23,9 +23,7 @@
     "tslint:fix": "tslint -c ./tslint.json --fix **/*.ts{,x}"
   },
   "dependencies": {
-    "@microsoft/fast-jss-manager-react": "^1.0.0",
-    "react": "^16.2.0",
-    "react-router-dom": "^4.2.2"
+    "@microsoft/fast-jss-manager-react": "^1.0.0"
   },
   "devDependencies": {
     "@microsoft/fast-tslint-rules": "^1.0.4",
@@ -34,7 +32,9 @@
     "@types/react-dom": "^16.0.4",
     "fork-ts-checker-webpack-plugin": "^0.4.1",
     "html-webpack-plugin": "^3.0.4",
-    "react-dom": "^16.2.0",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-router-dom": "^4.2.2",
     "rimraf": "^2.6.2",
     "ts-loader": "^4.0.0",
     "tslint": "^5.9.1",
@@ -45,5 +45,10 @@
     "webpack-cli": "^2.0.11",
     "webpack-dev-server": "^3.1.0",
     "yargs": "^11.0.0"
+  },
+  "peerDependencies": {
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-router-dom": "^4.0.0"
   }
 }

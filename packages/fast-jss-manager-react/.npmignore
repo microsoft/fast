@@ -5,3 +5,6 @@ __test__/
 
 # Source files
 src/
+
+# babel config
+.babelrc
