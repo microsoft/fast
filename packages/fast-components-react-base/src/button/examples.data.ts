@@ -13,12 +13,6 @@ const examples: ISnapshotTestSuite<IButtonHandledProps & IButtonMangedClasses> =
                 button: "button"
             },
             children: "Button text"
-        },
-        {
-            managedClasses: {
-                button: "button-2"
-            },
-            children: "Button text"
         }
     ]
 };
