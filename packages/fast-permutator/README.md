@@ -5,7 +5,7 @@ The FAST permutator creates all possible data permutations from a given JSON Sch
 ### Including the permutator
 Add the permutator as a required variable:
 ```javascript
-const permutator = require('@Microsoft/fast-permutator');
+const permutator = require('@microsoft/fast-permutator');
 ```
 
 ### Permutating data sets
