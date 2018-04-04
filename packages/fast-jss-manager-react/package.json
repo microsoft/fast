@@ -14,7 +14,8 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
-    "prepare": "tsc -p ./tsconfig.json",
+    "clean:dist": "node ../../build/clean.js dist",
+    "prepare": "npm run clean:dist && tsc -p ./tsconfig.json",
     "test": "npm run tslint && npm run unit-test",
     "tslint": "tslint -c tslint.json ./src/**/*.ts{,x}",
     "tslint:fix": "tslint -c tslint.json ./src/**/*.ts{,x} --fix",
@@ -46,10 +47,6 @@
       "tsx",
       "js",
       "jsx"
-    ],
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/dist/"
     ],
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$"
   },

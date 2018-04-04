@@ -16,7 +16,8 @@
   "typings": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -p ./tsconfig.json",
-    "prepare": "npm run build",
+    "clean:dist": "node ../../build/clean.js dist",
+    "prepare": "npm run clean:dist && npm run build",
     "test": "npm run tslint && npm run unit-tests",
     "tslint": "tslint -c ./tslint.json ./src/**/*.ts",
     "tslint:fix": "tslint -c ./tslint.json --fix ./src/**/*.ts",

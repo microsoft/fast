@@ -31,10 +31,6 @@
     "moduleFileExtensions": [
       "js"
     ],
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/dist/"
-    ],
     "testRegex": "(/__tests__/.*|(\\.|/))\\.(js?)$"
   },
   "devDependencies": {
