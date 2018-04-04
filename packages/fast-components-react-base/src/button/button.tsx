@@ -4,13 +4,8 @@ import Foundation, {HandledProps} from "../foundation";
 import {ButtonHTMLTags, IButtonHandledProps, IButtonMangedClasses, IButtonUnhandledProps} from "./button.props";
 import {IButtonClassNameContract, IManagedClasses} from "@microsoft/fast-components-class-name-contracts";
 
-/* tslint:disable-next-line */
-class Button extends Foundation<IButtonHandledProps & IButtonMangedClasses,  IButtonUnhandledProps, {}> {
-    public static defaultProps: IButtonHandledProps = {
-        tag: ButtonHTMLTags.button
-    };
-
-    protected handledProps: HandledProps<IButtonHandledProps & IButtonMangedClasses> = {
+class Button extends Foundation<IButtonHandledProps & IManagedClasses<IButtonClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
+    protected handledProps: HandledProps<IButtonHandledProps & IManagedClasses<IButtonClassNameContract>> = {
         managedClasses: void 0,
         tag: void 0
     };

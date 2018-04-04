@@ -4,7 +4,6 @@ import Foundation, {HandledProps} from "../foundation";
 import {DividerRole, IDividerProps} from './divider.props';
 import {IDividerClassNameContract, IManagedClasses} from "@microsoft/fast-components-class-name-contracts";
 
-/* tslint:disable-next-line */
 class Divider extends Foundation<IDividerProps & IManagedClasses<IDividerClassNameContract>, React.AllHTMLAttributes<HTMLElement>, {}> {
 
     protected handledProps: HandledProps<IDividerProps & IManagedClasses<IDividerClassNameContract>> = {

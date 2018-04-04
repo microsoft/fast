@@ -3,12 +3,14 @@ import {IGenericExample} from "../examples";
 import {IManagedClasses} from "@microsoft/fast-jss-manager-react";
 import Divider from "./index";
 import {IDividerProps} from "@microsoft/fast-components-react-base";
+import { DividerRole } from "../../../fast-components-react-base/dist/divider/divider.props";
 
 export default {
     name: "divider",
     component: Divider,
     data: [
         {
+            role: DividerRole.presentation
         }
     ]
 } as IGenericExample<IDividerProps>;
