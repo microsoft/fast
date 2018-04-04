@@ -1,4 +1,4 @@
-import Hyperlink from "./Hypertext";
+import Hypertext from "./hypertext";
 
-export default Hyperlink;
-export * from "./Hypertext";
+export default Hypertext;
+export * from "./hypertext";
