@@ -9,7 +9,6 @@ export default {
     component: Divider,
     data: [
         {
-            children: "Divider"
         }
     ]
 } as IGenericExample<IDividerProps>;

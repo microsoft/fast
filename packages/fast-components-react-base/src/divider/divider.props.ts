@@ -14,6 +14,4 @@ export interface IDividerProps {
      * The option to set HTML role attribute.
      */
     role?: DividerRole;
-
-    children?: React.ReactNode | React.ReactNode[];
 }

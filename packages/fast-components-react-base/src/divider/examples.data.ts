@@ -10,8 +10,7 @@ export default {
         {
             managedClasses: {
                 divider: "divider"
-            },
-            children: "Divider"
+            }
         }
     ]
 } as IGenericExample<IDividerProps & IManagedClasses<IDividerClassNameContract>>;

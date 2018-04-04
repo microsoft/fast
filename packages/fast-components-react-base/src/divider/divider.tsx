@@ -42,6 +42,13 @@ class Divider extends Foundation<IDividerProps & IManagedClasses<IDividerClassNa
             return ({role: this.props.role});
         }
     }
+
+    /**
+     * Generates class names
+     */
+    protected generateClassNames(): string {
+        return super.generateClassNames(this.props.managedClasses.divider);
+    }
 }
 
 export default Divider;
