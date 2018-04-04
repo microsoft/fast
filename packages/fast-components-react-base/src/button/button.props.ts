@@ -20,4 +20,4 @@ export interface IButtonHandledProps {
 
 export interface IButtonUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
 export interface IButtonMangedClasses extends IManagedClasses<IButtonClassNameContract> {}
-// export interface IButtonProps extends IButtonHandledProps, IButtonUnhandledProps, IButtonMangedClasses {}
+export type ButtonProps = IButtonHandledProps & IButtonUnhandledProps & IButtonMangedClasses;

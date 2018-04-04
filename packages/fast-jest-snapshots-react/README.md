@@ -9,7 +9,7 @@ To use, import the `ISnapshotTestSuite` interface and the `generateSnapshots` fu
 import {generateSnapshots, ISnapshotTestSuite} from "@microsoft/fast-jest-snapshots-react";
 ```
 
-Then, create you test data snapshot suite, where ever index of `data` is a valid prop object for your `component`:
+Then, create you test data snapshot suite, where every index of `data` is a valid prop object for your `component`:
 ```ts
 // in a Jest test file
 import {MyReactComponent, IMyReactComponentProps} from "my-react-component.tsx";
