@@ -1,8 +1,8 @@
 import {ICategoryItemProps} from "@microsoft/fast-development-site-react";
-import {IGenericExample} from "../examples";
+import {ISnapshotTestSuite} from "@microsoft/fast-jest-snapshots-react";
 import {IManagedClasses} from "@microsoft/fast-jss-manager-react";
 import Button from "./index";
-import {IButtonProps} from "@microsoft/fast-components-react-base";
+import {IButtonHandledProps} from "@microsoft/fast-components-react-base";
 
 export default {
     name: "button",
@@ -12,4 +12,4 @@ export default {
             children: "Button text"
         }
     ]
-} as IGenericExample<IButtonProps>;
+} as ISnapshotTestSuite<IButtonHandledProps>;

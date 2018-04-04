@@ -20,16 +20,13 @@
     "tslint": "tslint -c ./tslint.json **/*.ts{,x}",
     "tslint:fix": "tslint -c ./tslint.json --fix **/*.ts{,x}",
     "unit-tests": "jest",
+    "unit-tests:update": "jest --updateSnapshot",
     "unit-tests:watch": "jest --watch"
   },
   "license": "MIT",
   "readme": "README.md",
   "jest": {
     "collectCoverage": true,
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/dist/"
-    ],
     "transform": {
       "^.+\\.tsx?$": "ts-jest",
       "^.+\\.jsx?$": "babel-jest"
@@ -47,11 +44,12 @@
   },
   "devDependencies": {
     "@microsoft/fast-development-site-react": "1.0.0",
+    "@microsoft/fast-jest-snapshots-react": "^1.0.0",
     "@microsoft/fast-tslint-rules": "^1.0.4",
     "@types/jest": "^22.2.0",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.6",
-    "@types/react": "^16.0.40",
+    "@types/react": "^16.0.0",
     "babel-core": "^6.26.0",
     "babel-jest": "^22.4.1",
     "babel-preset-env": "^1.6.1",

@@ -1,9 +1,10 @@
 import {ICategoryItemProps} from "@microsoft/fast-development-site-react";
-import {IGenericExample} from "../examples";
+import {ISnapshotTestSuite} from "@microsoft/fast-jest-snapshots-react";
 import {IManagedClasses} from "@microsoft/fast-components-class-name-contracts";
-import Button, {IButtonClassNameContract, IButtonProps} from "./button";
+import Button, {IButtonHandledProps, IButtonMangedClasses, IButtonUnhandledProps} from "./button";
+import * as React from "react";
 
-export default {
+const examples: ISnapshotTestSuite<IButtonHandledProps & IButtonMangedClasses> = {
     name: "button",
     component: Button,
     data: [
@@ -14,4 +15,6 @@ export default {
             children: "Button text"
         }
     ]
-} as IGenericExample<IButtonProps & IManagedClasses<IButtonClassNameContract>>;
+};
+
+export default examples;

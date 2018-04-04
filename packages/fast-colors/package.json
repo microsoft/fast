@@ -25,10 +25,6 @@
   },
   "jest": {
     "collectCoverage": true,
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/dist/"
-    ],
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
