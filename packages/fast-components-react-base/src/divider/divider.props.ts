@@ -8,7 +8,7 @@ export enum DividerRole {
     separator = 'separator'
 }
 
-export interface IDividerProps {
+export interface IDividerHandledProps {
 
     /**
      * The option to set HTML role attribute.
