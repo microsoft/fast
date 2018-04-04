@@ -11,12 +11,13 @@ export default {
             managedClasses: {
                 toggle: "toggle"
             },
+            children: 'Toggle label',
             disabled: false,
-            id: 'id01',
-            labelId: 'labelId01',
+            id: 'toggle01',
+            labelId: 'label01',
             selected: true,
             selectedString: 'On',
-            spanId: 'spanId01',
+            spanId: 'span01',
             unselectedString: 'Off'
         }
     ]

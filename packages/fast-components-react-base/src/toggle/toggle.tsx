@@ -1,14 +1,19 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Foundation, {HandledProps} from "../foundation";
-import {isUndefined} from 'lodash';
+
 import {IToggleProps} from "./toggle.props";
 import {IToggleClassNameContract, IManagedClasses} from "@microsoft/fast-components-class-name-contracts";
 
+/**
+ * Toggle state interface
+ */
 export interface IToggleState {
-    selected: boolean;
+    checked: boolean;
 }
-
+/**
+ * Toggle base component
+ */
 /* tslint:disable-next-line */
 class Toggle extends Foundation<IToggleProps & IManagedClasses<IToggleClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, IToggleState> {
     protected handledProps: HandledProps<IToggleProps & IManagedClasses<IToggleClassNameContract>> = {
@@ -22,18 +27,27 @@ class Toggle extends Foundation<IToggleProps & IManagedClasses<IToggleClassNameC
         unselectedString: void 0
     };
 
+    /**
+     * Define constructor
+     */
     constructor(props) {
         super(props);
 
         this.state = {
-            selected: this.props.selected
+            checked: this.props.selected
         };
     }
 
+    /**
+     * Generates global aria-disabled
+     */
     private generateAttributes() {
         return this.props.disabled ?  {'aria-disabled': true} : null;
     }
 
+    /**
+     * Generates toggle attributes
+     */
     private generateToggleAttributes() {
         let toggleAttributes = {};
 
@@ -42,36 +56,33 @@ class Toggle extends Foundation<IToggleProps & IManagedClasses<IToggleClassNameC
         }
 
         toggleAttributes['id'] = this.props.id;
-        toggleAttributes['name'] = this.props.name;
-        toggleAttributes['defaultChecked'] = this.state.selected;
+        toggleAttributes['defaultChecked'] = this.state.checked;
         toggleAttributes['aria-describedby'] = this.props.spanId;
 
         return toggleAttributes;
     }
 
     /**
-     * Generate HTML attributes for span element based on props
-     */
-    private generateStateDescriptorAttributes() {
-        return {id: this.props.spanId};
-    }
-
-    /**
-     * Creates span element child nodes based on props
+     * Creates proper string based on state
      */
     private generateChildren() {
-        return this.state.selected ? this.props.selectedString : this.props.unselectedString;
+        return this.state.checked ? this.props.selectedString : this.props.unselectedString;
     }
 
     /**
-     * Handles toggle click
+     * Passes toggle onClick to consumer
      */
     private handleClickEvent = (e) => {
-        console.log('click');
+        if (this.props.onClick) {
+            this.props.onClick(e);
+        }
     }
 
+    /**
+     * Handles onChange as a controlled component
+     */
     private handleToggleChange = (e) => {
-        this.setState({selected: !this.state.selected})
+        this.setState({checked: !this.state.checked})
     }
 
     /**
@@ -107,7 +118,7 @@ class Toggle extends Foundation<IToggleProps & IManagedClasses<IToggleClassNameC
                     />
                     <span />
                 </div>
-                <span {...this.generateStateDescriptorAttributes()}>
+                <span id={this.props.spanId}>
                     {this.generateChildren()}
                 </span>
             </div>
