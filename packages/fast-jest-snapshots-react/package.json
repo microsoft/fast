@@ -18,7 +18,6 @@
     "prepare": "tsc -p ./tsconfig.json",
     "test": "npm run tslint",
     "start": "webpack-dev-server",
-    "test": "npm run tslint && npm run unit-tests && webpack --progress",
     "tslint": "tslint -c ./tslint.json **/*.ts{,x}",
     "tslint:fix": "tslint -c ./tslint.json --fix **/*.ts{,x}"
   },
