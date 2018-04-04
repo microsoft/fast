@@ -11,7 +11,7 @@ export default {
             managedClasses: {
                 divider: "divider"
             },
-            children: "Divider text"
+            children: "Divider"
         }
     ]
 } as IGenericExample<IDividerProps & IManagedClasses<IDividerClassNameContract>>;

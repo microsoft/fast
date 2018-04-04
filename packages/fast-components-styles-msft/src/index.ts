@@ -1,6 +1,12 @@
 /**
  * Export component styles
  */
+import DividerStyles from "./divider";
+export {DividerStyles};
+
+/**
+ * Export component styles
+ */
 import ButtonStyles from "./button";
 export {ButtonStyles};
 

@@ -1,3 +1,7 @@
+import Divider from "./divider";
+export { Divider };
+export * from "./divider";
+
 import Button from "./button";
 export {Button};
 export * from "./button";
