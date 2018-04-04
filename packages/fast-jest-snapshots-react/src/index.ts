@@ -16,7 +16,7 @@ export interface ISnapshotTestSuite<T> {
     component: React.ComponentClass<T>;
 
     /**
-     * Prop instances to pass to a component
+     * An array of prop instances for the component
      */
     data: T[];
 }
