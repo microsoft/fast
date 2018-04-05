@@ -31,7 +31,7 @@ class Divider extends Foundation<IDividerHandledProps & IManagedClasses<IDivider
 
         // Do not render role="separator" on page because it's intrinsically set.
         if (this.props.role && this.props.role !== DividerRoles.separator) {
-            return ({role: this.props.role});
+            return ({role: DividerRoles[this.props.role]});
         }
     }
 
