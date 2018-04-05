@@ -12,3 +12,6 @@ export { ToggleExamples };
 
 import TypographyExamples from "../src/typography/examples.data";
 export { TypographyExamples };
+
+import HyperlinkExamples from "../src/hyperlink/examples.data";
+export { HyperlinkExamples };

@@ -6,6 +6,10 @@ import Divider from "./divider";
 export { Divider };
 export * from "./divider";
 
+import Hyperlink from "./hyperlink";
+export { Hyperlink };
+export * from "./hyperlink";
+
 import Foundation from "./foundation";
 export { Foundation };
 export * from "./foundation";
