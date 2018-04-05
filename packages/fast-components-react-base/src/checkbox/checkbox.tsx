@@ -1,12 +1,12 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Foundation, {HandledProps} from "../foundation";
-import { ICheckboxItem, ICheckboxProps} from "./checkbox.props";
+import {ICheckboxHandledProps, ICheckboxItem, ICheckboxManagedClasses, ICheckboxUnhandledProps} from "./checkbox.props";
 import {ICheckboxClassNameContract, IManagedClasses} from "@microsoft/fast-components-class-name-contracts";
 
 /* tslint:disable-next-line */
-class Checkbox extends Foundation<ICheckboxProps & IManagedClasses<ICheckboxClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
-    protected handledProps: HandledProps<ICheckboxProps & IManagedClasses<ICheckboxClassNameContract>> = {
+class Checkbox extends Foundation<ICheckboxHandledProps & ICheckboxManagedClasses, ICheckboxUnhandledProps, {}> {
+    protected handledProps: HandledProps<ICheckboxHandledProps & IManagedClasses<ICheckboxClassNameContract>> = {
         managedClasses: void 0,
         items: void(0)
     };
@@ -83,4 +83,5 @@ class Checkbox extends Foundation<ICheckboxProps & IManagedClasses<ICheckboxClas
 }
 
 export default Checkbox;
-export {ICheckboxItem, ICheckboxProps, ICheckboxClassNameContract};
+export * from "./checkbox.props";
+export {ICheckboxClassNameContract};

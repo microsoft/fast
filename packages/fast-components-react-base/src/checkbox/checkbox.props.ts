@@ -1,4 +1,5 @@
 import * as React from "react";
+import {ICheckboxClassNameContract, IManagedClasses} from "@microsoft/fast-components-class-name-contracts";
 
 // export interface ICheckboxProps {
 
@@ -24,17 +25,17 @@ export interface ICheckboxItemCommon {
     /**
      * The HTML id attribute
      */
-    id: string;
+    id?: string;
 
     /**
      * The HTML name attribute
      */
-    name: string;
+    name?: string;
 
     /**
      * The HTML value attribute
      */
-    value: string;
+    value?: string;
 
     /**
      * The textual content
@@ -42,7 +43,7 @@ export interface ICheckboxItemCommon {
     text: string;
 }
 
-export interface ICheckboxProps {
+export interface ICheckboxHandledProps {
 
     /**
      * The checkbox items
@@ -59,3 +60,6 @@ export interface ICheckboxItem extends ICheckboxItemCommon {
 }
 
 export type CheckboxOnChange = (event?: React.ChangeEvent<HTMLElement>) => void;
+export interface ICheckboxUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
+export interface ICheckboxManagedClasses extends IManagedClasses<ICheckboxClassNameContract> {}
+export type CheckboxProps = ICheckboxHandledProps & ICheckboxUnhandledProps & ICheckboxManagedClasses;

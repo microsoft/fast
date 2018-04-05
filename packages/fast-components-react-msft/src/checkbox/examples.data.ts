@@ -1,8 +1,8 @@
 import {ICategoryItemProps} from "@microsoft/fast-development-site-react";
-import {IGenericExample} from "../examples";
+import {ISnapshotTestSuite} from "@microsoft/fast-jest-snapshots-react";
 import {IManagedClasses} from "@microsoft/fast-jss-manager-react";
 import Checkbox from "./index";
-import {ICheckboxProps} from "@microsoft/fast-components-react-base";
+import {ICheckboxHandledProps} from "@microsoft/fast-components-react-base";
 
 export default {
     name: "checkbox",
@@ -16,4 +16,4 @@ export default {
             ]
         }
     ]
-} as IGenericExample<ICheckboxProps>;
+} as ISnapshotTestSuite<ICheckboxHandledProps>;

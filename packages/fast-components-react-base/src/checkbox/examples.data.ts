@@ -1,9 +1,10 @@
 import {ICategoryItemProps} from "@microsoft/fast-development-site-react";
-import {IGenericExample} from "../examples";
+import {ISnapshotTestSuite} from "@microsoft/fast-jest-snapshots-react";
 import {IManagedClasses} from "@microsoft/fast-components-class-name-contracts";
-import Checkbox, {ICheckboxClassNameContract, ICheckboxItem, ICheckboxProps} from "./checkbox";
+import Checkbox, {ICheckboxHandledProps, ICheckboxManagedClasses, ICheckboxUnhandledProps} from "./checkbox";
+import * as React from "react";
 
-export default {
+const examples: ISnapshotTestSuite<ICheckboxHandledProps & ICheckboxManagedClasses> = {
     name: "checkbox",
     component: Checkbox,
     data: [
@@ -18,4 +19,6 @@ export default {
             ]
         }
     ]
-} as IGenericExample<ICheckboxProps & IManagedClasses<ICheckboxClassNameContract>>;
+};
+
+export default examples;
