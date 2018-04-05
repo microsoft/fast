@@ -10,7 +10,7 @@ export default {
     data: [
         {
             href: "https://msdn.microsoft.com",
-            children: "Hyper text"
+            children: "Hypertext"
         }
     ]
 } as IGenericExample<IHypertextProps>;
