@@ -1,9 +1,33 @@
-import {IDesignSystem} from "../design-system";
+import {IDesignSystem, hexToRGB} from "../design-system";
 import {ComponentStyles} from "@microsoft/fast-jss-manager";
 import {IToggleClassNameContract} from "@microsoft/fast-components-class-name-contracts";
 
 const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = {
     toggle: {
+        '& > label': {
+            display: 'inline-block',
+            fontSize: '13px',
+            lineHeight: '20px',
+            marginTop: '21px',
+            paddingBottom: '7px',
+            float: 'left',
+            clear: 'left',
+            '& + div': {
+                marginTop: '0',
+                float: 'left',
+                clear: 'left',
+                '& + span': {
+                    float: 'left',
+                    marginLeft: '5px'
+                }
+            }
+        },
+        '& span': {
+            userSelect: 'none',
+            marginTop: '0',
+            paddingBottom: '0',
+            cursor: 'pointer'
+        },
         '& > div': {
             position: 'relative',
             '& > span': {
@@ -32,12 +56,39 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = {
                 },
                 borderRadius: '20px',
                 appearance: 'none',
+                '@media screen and (-ms-high-contrast)': {
+                    '&:after, &:checked+span': {
+                        background: (config: IDesignSystem): string => {
+                            return config.backgroundColor;
+                        }
+                    }
+                },
+                '@media screen and (-ms-high-contrast: black-on-white)': {
+                    '&:after, &:checked+span': {
+                        background: (config: IDesignSystem): string => {
+                            return config.foregroundColor;
+                        }
+                    }
+                },
                 '&:checked': {
                     backgroundColor: (config: IDesignSystem): string => {
                         return config.brandColor;
                     },
                     borderColor: (config: IDesignSystem): string => {
                         return config.brandColor;
+                    },
+                    '&:hover': {
+                        backgroundColor: (config: IDesignSystem): string => {
+                            return hexToRGB(config.brandColor, .8);
+                        },
+                        borderColor: (config: IDesignSystem): string => {
+                            return hexToRGB(config.brandColor, .8);
+                        }
+                    },
+                    '&:focus': {
+                        borderColor: (config: IDesignSystem): string => {
+                            return config.brandColor;
+                        }
                     },
                     '& + span': {
                         left: '28px',
@@ -46,10 +97,14 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = {
                         }
                     },
                     '&:disabled': {
-                        background: 'rgba(0,0,0,.2)',
+                        background: (config: IDesignSystem): string => {
+                            return hexToRGB(config.foregroundColor, .2);
+                        },
                         borderColor: 'transparent',
                         '& + span': {
-                            background: 'rgba(0,0,0,.2)'
+                            background: (config: IDesignSystem): string => {
+                                return hexToRGB(config.foregroundColor, .2);
+                            }
                         }
                     }
                 },
@@ -66,7 +121,14 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = {
                 },
                 '&:disabled': {
                     background: 'transparent',
-                    borderColor:  'rgba(0,0,0,.2)'
+                    borderColor: (config: IDesignSystem): string => {
+                        return hexToRGB(config.foregroundColor, .2);
+                    },
+                    '& + span': {
+                        backgroundColor: (config: IDesignSystem): string => {
+                            return hexToRGB(config.foregroundColor, .2);
+                        }
+                    }
                 },
                 '&:focus': {
                     outline: '0'
