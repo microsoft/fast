@@ -22,7 +22,7 @@ class Divider extends Foundation<IDividerHandledProps & IManagedClasses<IDivider
                 className={this.generateClassNames()}
             />
         );
-    } 
+    }
 
     /**
      * Generates the attributes
