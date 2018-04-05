@@ -5,11 +5,11 @@ import {toPx} from "../utilities/units";
 
 const styles: ComponentStyles<IDividerClassNameContract, IDesignSystem> = {
     divider: {
-        // boxSizing: "content-box",
-        // height: toPx(0),
-        // marginTop: toPx(12),
-        // marginBottom: toPx(12),
-        // borderTop: `${toPx(1)} solid rgba(0,0,0,0.2)`
+        boxSizing: "content-box",
+        height: toPx(0),
+        marginTop: toPx(12),
+        marginBottom: toPx(12),
+        borderTop: `${toPx(1)} solid rgba(0,0,0,0.2)`
     },
 };
 
