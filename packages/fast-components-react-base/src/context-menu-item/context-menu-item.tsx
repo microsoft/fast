@@ -1,5 +1,6 @@
 import * as React from "react";
 import Foundation, {HandledProps} from "../foundation";
+import {IContextMenuItemClassNameContract} from "@microsoft/fast-components-class-name-contracts";
 import {
     ContextMenuItemProps,
     IContextMenuItemHandledProps,
@@ -37,3 +38,7 @@ class ContextMenuItem extends Foundation<IContextMenuItemHandledProps & IContext
         );
     }
 }
+
+export default ContextMenuItem;
+export * from "./context-menu-item.props";
+export {IContextMenuItemClassNameContract};
