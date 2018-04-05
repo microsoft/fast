@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Foundation, { HandledProps } from "../foundation";
-import {HypertextHTMLTags, IHypertextProps} from "./hypertext.props";
+import {IHypertextProps} from "./hypertext.props";
 import {IHypertextClassNameContract, IManagedClasses} from "@microsoft/fast-components-class-name-contracts";
 
 /* tslint:disable-next-line */
@@ -10,23 +10,13 @@ class Hypertext extends Foundation<IHypertextProps & IManagedClasses<IHypertextC
         managedClasses: void 0,
     };
 
-    protected defaultProps: IHypertextProps = {
-        ariaLabel: void(0),
-        href: void(0),
-        text: void(0),
-        onClick: (event?: React.MouseEvent<HTMLElement>) => void 0
-    };
-
     private generateAttributes() {
         let attributes = {};
 
         if (this.props.href) {
-            attributes['href'] = this.props.href;
+            attributes["href"] = this.props.href;
         }
-
-        if (this.props.ariaLabel) {
-            attributes['aria-label'] = this.props.ariaLabel;
-        }
+        
         return attributes;
     }
     
@@ -54,4 +44,4 @@ class Hypertext extends Foundation<IHypertextProps & IManagedClasses<IHypertextC
 }
 
 export default Hypertext;
-export {IHypertextProps, IHypertextClassNameContract, HypertextHTMLTags};
+export {IHypertextProps, IHypertextClassNameContract};
