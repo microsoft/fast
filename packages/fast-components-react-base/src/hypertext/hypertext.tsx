@@ -1,12 +1,12 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Foundation, { HandledProps } from "../foundation";
-import {IHypertextProps} from "./hypertext.props";
+import {IHypertextHandledProps, IHypertextManagedClasses, IHypertextUnhandledProps} from "./hypertext.props";
 import {IHypertextClassNameContract, IManagedClasses} from "@microsoft/fast-components-class-name-contracts";
 
 /* tslint:disable-next-line */
-class Hypertext extends Foundation<IHypertextProps & IManagedClasses<IHypertextClassNameContract>,  React.AllHTMLAttributes<HTMLAnchorElement>, {}> {
-    protected handledProps: HandledProps<IHypertextProps & IManagedClasses<IHypertextClassNameContract>> = {
+class Hypertext extends Foundation<IHypertextHandledProps & IManagedClasses<IHypertextClassNameContract>,  React.AllHTMLAttributes<HTMLAnchorElement>, {}> {
+    protected handledProps: HandledProps<IHypertextHandledProps & IManagedClasses<IHypertextClassNameContract>> = {
         managedClasses: void 0,
     };
 
@@ -43,5 +43,8 @@ class Hypertext extends Foundation<IHypertextProps & IManagedClasses<IHypertextC
     }
 }
 
+
 export default Hypertext;
-export {IHypertextProps, IHypertextClassNameContract};
+export * from "./hypertext.props";
+export {IHypertextClassNameContract};
+

@@ -1,8 +1,8 @@
 import {ICategoryItemProps} from "@microsoft/fast-development-site-react";
-import {IGenericExample} from "../examples";
+import {ISnapshotTestSuite} from "@microsoft/fast-jest-snapshots-react";
 import {IManagedClasses} from "@microsoft/fast-jss-manager-react";
 import Hypertext from "./index";
-import {IHypertextProps} from "@microsoft/fast-components-react-base";
+import {IHypertextHandledProps} from "@microsoft/fast-components-react-base";
 
 export default {
     name: "hypertext",
@@ -13,4 +13,4 @@ export default {
             children: "Hypertext"
         }
     ]
-} as IGenericExample<IHypertextProps>;
+} as ISnapshotTestSuite<IHypertextHandledProps>;

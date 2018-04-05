@@ -1,9 +1,10 @@
 import {ICategoryItemProps} from "@microsoft/fast-development-site-react";
-import {IGenericExample} from "../examples";
+import {ISnapshotTestSuite} from "@microsoft/fast-jest-snapshots-react";
 import {IManagedClasses} from "@microsoft/fast-components-class-name-contracts";
-import Hypertext, {IHypertextClassNameContract, IHypertextProps} from "./hypertext";
+import Hypertext, {IHypertextHandledProps, IHypertextManagedClasses, IHypertextUnhandledProps } from "./hypertext";
+import * as React from "react";
 
-export default {
+const examples: ISnapshotTestSuite<IHypertextHandledProps & IHypertextManagedClasses> = {
     name: "hypertext",
     component: Hypertext,
     data: [
@@ -15,4 +16,6 @@ export default {
             children: "MSDN"
         }
     ]
-} as IGenericExample<IHypertextProps & IManagedClasses<IHypertextClassNameContract>>;
+}
+
+export default examples;
