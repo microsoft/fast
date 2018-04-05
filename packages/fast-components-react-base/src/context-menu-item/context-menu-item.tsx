@@ -31,11 +31,20 @@ class ContextMenuItem extends Foundation<IContextMenuItemHandledProps & IContext
     public render(): React.ReactElement<HTMLLIElement> {
         return (
             <li
+                {...this.unhandledProps()}
+                className={this.generateClassNames()}
                 role={ContextMenuItemRole[this.props.role] || ContextMenuItem.defaultProps.role}
             >
                 {this.props.children}
             </li>
         );
+    }
+
+    /**
+     * Create class-names
+     */
+    protected generateClassNames(): string {
+        return super.generateClassNames(this.props.managedClasses.contextMenuItem);
     }
 }
 
