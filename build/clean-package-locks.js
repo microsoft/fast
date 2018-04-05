@@ -11,4 +11,4 @@ rimraf('./packages/**/package-lock.json', (err) => {
     }
 
     console.log("All `package-lock.json` files have been deleted");
-})
+});
