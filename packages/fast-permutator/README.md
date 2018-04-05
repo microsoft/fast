@@ -1,9 +1,15 @@
 # FAST permutator (Beta)
-Creates all possible data permutations from a JSON Schema.
+The FAST permutator creates all possible data permutations from a given JSON Schema, allowing for deep testing or display of complex data sets.
 
 ## Use
+### Including the permutator
+Add the permutator as a required variable:
+```javascript
+const permutator = require('@microsoft/fast-permutator');
+```
+
 ### Permutating data sets
-The main export of the permutator is to recieve a schema and any schema references.
+The main export of the permutator is to recieve a schema and any schema references. For example, take this simple schema:
 
 ```javascript
 let schema = {
@@ -25,7 +31,7 @@ let schema = {
 permutator(schema);
 ```
 
-This will generate the following data:
+This main export permutator will generate the following data:
 
 ```javascript
 [
@@ -46,42 +52,42 @@ This will generate the following data:
 If an example or a default is not provided, fake data will be generated.
 
 ### Exporting an example
-An export `getExample` to retrieve an example piece of data.
+Use the export `getExample` to retrieve an example piece of data.
 
 ```javascript
 permutator.getExample(schema);
 ```
 
 ### Simplifying schemas
-An export `simplifySchemas` is available to show all schema permutations. This can be useful for extrapolating out all possible schema combinations.
+Use the export `simplifySchemas` to show all schema permutations. This can be useful for extrapolating out all possible schema combinations.
 
 ```javascript
 permutator.simplifySchemas(schema, references);
 ```
 
 ### Finding properties
-An export `getDeepPropLocations` is available to find properties within the schema.
+Use the export `getDeepPropLocations` to find properties within the schema.
 
 ```javascript
 permutator.getDeepPropLocations(schema, propertyName);
 ```
 
 ### Resolve references
-An export `resolveReferences` can be used to resolve the references of a schema by consolidating them with their referenced schema.
+Use the export `resolveReferences` to resolve the references of a schema by consolidating them with their referenced schema.
 
 ```javascript
 permutator.resolveReferences(schema, references);
 ```
 
 ### Resolving properties
-An export `resolveSchemaProps` can be used to resolve the given props for a schema.
+Use the export `resolveSchemaProps` to resolve the given props for a schema.
 
 ```javascript
 permutator.resolveSchemaProps(schema, ['$ref', 'allOf']);
 ```
 
 ## Developing
-Contribute to files in the lib folder, these are the ES6 source files.
+Contribute to the ES6 source files in the lib folder.
 
 ## Testing
 Run `npm run test` to test the exposed utilities and schemas
