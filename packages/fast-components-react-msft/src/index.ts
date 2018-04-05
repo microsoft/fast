@@ -1,6 +1,9 @@
 import Button from "./button";
 export { Button };
 
+import Checkbox from "./checkbox";
+export { Checkbox };
+
 import Divider from "./divider";
 export { Divider };
 

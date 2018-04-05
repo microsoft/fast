@@ -11,10 +11,6 @@ class Checkbox extends Foundation<ICheckboxProps & IManagedClasses<ICheckboxClas
         items: void(0)
     };
 
-    // protected defaultProps: ICheckboxProps = {
-    //     tag: ButtonHTMLTags.button
-    // };
-
     /**
      * Generate HTML attributes based on props
      */
@@ -29,15 +25,6 @@ class Checkbox extends Foundation<ICheckboxProps & IManagedClasses<ICheckboxClas
             // this is here to maintain shape
             attributes["data-js-checkbox"] = "indeterminate";
         }
-
-        // If the author is not setting the checked state, we should let the checkbox manage itself
-        // if (!isUndefined(item.checked)) {
-        //     if (item.onChange) {
-        //         attributes['checked'] = !!item.checked;
-        //     } else {
-        //         attributes['defaultChecked'] = !!item.checked;
-        //     }
-        // }
 
         attributes["id"] = item.id;
         attributes["name"] = item.name;
@@ -78,13 +65,6 @@ class Checkbox extends Foundation<ICheckboxProps & IManagedClasses<ICheckboxClas
      */
     public render(): React.ReactElement<HTMLInputElement> {
         return (
-            // <div>
-            //     <input
-            //         type="checkbox"
-            //         {...this.unhandledProps()}
-            //         className={this.generateClassNames()}
-            //     />
-            // </div>
             <div
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}

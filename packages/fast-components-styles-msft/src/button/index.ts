@@ -7,10 +7,8 @@ const styles: ComponentStyles<IButtonClassNameContract, IDesignSystem> = {
         color: (config: IDesignSystem): string => {
             return config.foregroundColor;
         },
-        backgroundColor: (config: IDesignSystem): string => {
-            return config.brandColor;
-        }
-    },
+        backgroundColor: "purple"
+    }
 };
 
 export default styles;

@@ -24,22 +24,22 @@ export interface ICheckboxItemCommon {
     /**
      * The HTML id attribute
      */
-    id?: string;
+    id: string;
 
     /**
      * The HTML name attribute
      */
-    name?: string;
+    name: string;
 
     /**
      * The HTML value attribute
      */
-    value?: string;
+    value: string;
 
     /**
      * The textual content
      */
-    text?: string;
+    text: string;
 }
 
 export interface ICheckboxProps {

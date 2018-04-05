@@ -4,6 +4,8 @@
 import ButtonStyles from "./button";
 export { ButtonStyles };
 
+import CheckboxStyles from "./checkbox";
+export { CheckboxStyles };
 import HypertextStyles from "./hypertext";
 export { HypertextStyles };
 

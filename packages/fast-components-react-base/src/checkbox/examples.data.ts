@@ -11,9 +11,11 @@ export default {
             managedClasses: {
                 checkbox: "checkbox"
             },
-            items: [{
-                text: "somestring"
-            }]
+            items: [
+                {
+                    text: "Sign up"
+                }
+            ]
         }
     ]
 } as IGenericExample<ICheckboxProps & IManagedClasses<ICheckboxClassNameContract>>;
