@@ -12,6 +12,12 @@ export * from "./design-system";
 export {DesignSystemDefaults};
 
 /**
+ * Export component styles
+ */
+import DividerStyles from "./divider";
+export {DividerStyles};
+
+/**
  * Export utilities
  */
 export * from "./utilities/breakpoints";

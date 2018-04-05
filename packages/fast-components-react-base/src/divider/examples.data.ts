@@ -1,18 +1,17 @@
 import {ICategoryItemProps} from "@microsoft/fast-development-site-react";
 import {ISnapshotTestSuite} from "@microsoft/fast-jest-snapshots-react";
 import {IManagedClasses} from "@microsoft/fast-components-class-name-contracts";
-import Button, {IButtonHandledProps, IButtonManagedClasses, IButtonUnhandledProps} from "./button";
+import Divider, {IDividerHandledProps, IDividerManagedClasses, IDividerUnhandledProps} from "./divider";
 import * as React from "react";
 
-const examples: ISnapshotTestSuite<IButtonHandledProps & IButtonManagedClasses> = {
-    name: "button",
-    component: Button,
+const examples: ISnapshotTestSuite<IDividerHandledProps & IDividerManagedClasses> = {
+    name: "divider",
+    component: Divider,
     data: [
         {
             managedClasses: {
-                button: "button"
-            },
-            children: "Button text"
+                divider: "divider"
+            }
         }
     ]
 };
