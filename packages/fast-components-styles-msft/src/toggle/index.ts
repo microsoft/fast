@@ -25,8 +25,12 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = {
         '& span': {
             userSelect: 'none',
             marginTop: '0',
-            paddingBottom: '0',
-            cursor: 'pointer'
+            paddingBottom: '0'
+        },
+        '&[aria-disabled="true"]': {
+            color: (config: IDesignSystem): string => {
+                return hexToRGB(config.foregroundColor, .2);
+            }
         },
         '& > div': {
             position: 'relative',
@@ -56,6 +60,7 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = {
                 },
                 borderRadius: '20px',
                 appearance: 'none',
+                cursor: 'pointer',
                 '@media screen and (-ms-high-contrast)': {
                     '&:after, &:checked+span': {
                         background: (config: IDesignSystem): string => {
@@ -97,6 +102,7 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = {
                         }
                     },
                     '&:disabled': {
+                        cursor: 'not-allowed',
                         background: (config: IDesignSystem): string => {
                             return hexToRGB(config.foregroundColor, .2);
                         },
@@ -105,6 +111,9 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = {
                             background: (config: IDesignSystem): string => {
                                 return hexToRGB(config.foregroundColor, .2);
                             }
+                        },
+                        '&:hover': {
+                            borderColor: 'transparent'
                         }
                     }
                 },
@@ -118,15 +127,16 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = {
                             return config.foregroundColor;
                         }
                     },
-                },
-                '&:disabled': {
-                    background: 'transparent',
-                    borderColor: (config: IDesignSystem): string => {
-                        return hexToRGB(config.foregroundColor, .2);
-                    },
-                    '& + span': {
-                        backgroundColor: (config: IDesignSystem): string => {
+                    '&:disabled': {
+                        cursor: 'not-allowed',
+                        background: 'transparent',
+                        borderColor: (config: IDesignSystem): string => {
                             return hexToRGB(config.foregroundColor, .2);
+                        },
+                        '& + span': {
+                            backgroundColor: (config: IDesignSystem): string => {
+                                return hexToRGB(config.foregroundColor, .2);
+                            }
                         }
                     }
                 },
