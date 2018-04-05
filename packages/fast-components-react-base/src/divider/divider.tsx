@@ -1,11 +1,11 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Foundation, {HandledProps} from "../foundation";
-import {DividerRole, IDividerHandledProps} from './divider.props';
+import {DividerRoles, IDividerHandledProps, IDividerManagedClasses, IDividerUnhandledProps} from "./divider.props";
 import {IDividerClassNameContract, IManagedClasses} from "@microsoft/fast-components-class-name-contracts";
 
-class Divider extends Foundation<IDividerHandledProps & IManagedClasses<IDividerClassNameContract>, React.AllHTMLAttributes<HTMLElement>, {}> {
-
+/* tslint:disable-next-line */
+class Divider extends Foundation<IDividerHandledProps & IManagedClasses<IDividerClassNameContract>, React.HTMLAttributes<HTMLHRElement>, {}> {
     protected handledProps: HandledProps<IDividerHandledProps & IManagedClasses<IDividerClassNameContract>> = {
         managedClasses: void 0,
         role: void 0
@@ -30,7 +30,7 @@ class Divider extends Foundation<IDividerHandledProps & IManagedClasses<IDivider
     protected generateAttributes(): React.HTMLAttributes<HTMLHRElement> {
 
         // Do not render role="separator" on page because it's intrinsically set.
-        if (this.props.role && this.props.role !== DividerRole.separator) {
+        if (this.props.role && this.props.role !== DividerRoles.separator) {
             return ({role: this.props.role});
         }
     }
@@ -44,4 +44,5 @@ class Divider extends Foundation<IDividerHandledProps & IManagedClasses<IDivider
 }
 
 export default Divider;
-export {IDividerHandledProps, IDividerClassNameContract, DividerRole};
+export * from "./divider.props";
+export {IDividerClassNameContract};

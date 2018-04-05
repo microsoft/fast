@@ -1,9 +1,10 @@
 import {ICategoryItemProps} from "@microsoft/fast-development-site-react";
-import {IGenericExample} from "../examples";
+import {ISnapshotTestSuite} from "@microsoft/fast-jest-snapshots-react";
 import {IManagedClasses} from "@microsoft/fast-components-class-name-contracts";
-import Divider, {IDividerClassNameContract, IDividerHandledProps} from "./divider";
+import Divider, {IDividerHandledProps, IDividerManagedClasses, IDividerUnhandledProps} from "./divider";
+import * as React from "react";
 
-export default {
+const examples: ISnapshotTestSuite<IDividerHandledProps & IDividerManagedClasses> = {
     name: "divider",
     component: Divider,
     data: [
@@ -13,4 +14,6 @@ export default {
             }
         }
     ]
-} as IGenericExample<IDividerHandledProps & IManagedClasses<IDividerClassNameContract>>;
+};
+
+export default examples;

@@ -1,9 +1,10 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Foundation, {HandledProps} from "../foundation";
-import {ButtonHTMLTags, IButtonHandledProps, IButtonMangedClasses, IButtonUnhandledProps} from "./button.props";
+import {ButtonHTMLTags, IButtonHandledProps, IButtonManagedClasses, IButtonUnhandledProps} from "./button.props";
 import {IButtonClassNameContract, IManagedClasses} from "@microsoft/fast-components-class-name-contracts";
 
+/* tslint:disable-next-line */
 class Button extends Foundation<IButtonHandledProps & IManagedClasses<IButtonClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
     protected handledProps: HandledProps<IButtonHandledProps & IManagedClasses<IButtonClassNameContract>> = {
         managedClasses: void 0,
