@@ -25,6 +25,16 @@ class ContextMenuItem extends Foundation<IContextMenuItemHandledProps & IContext
         children: void 0
     };
 
+    private get ariaChecked(): boolean | null {
+        switch (ContextMenuItemRole[this.props.role]) {
+            case ContextMenuItemRole.menuitemcheckbox:
+            case ContextMenuItemRole.menuitemradio:
+                return Boolean(this.props.checked);
+            default:
+                return null;
+        }
+    }
+
     /**
      * Renders the component
      */
@@ -33,6 +43,7 @@ class ContextMenuItem extends Foundation<IContextMenuItemHandledProps & IContext
             <li
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
+                aria-checked={this.ariaChecked}
                 role={ContextMenuItemRole[this.props.role] || ContextMenuItem.defaultProps.role}
             >
                 {this.props.children}

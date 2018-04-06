@@ -12,6 +12,11 @@ export interface IContextMenuItemHandledProps {
      * The role attribute of the context-menu-item
      */
     role?: ContextMenuItemRole;
+
+    /**
+     * The checked state of the menuitemradio or menuitemcheckbox
+     */
+    checked?: boolean;
 }
 
 export interface IContextMenuItemUnhandledProps extends React.LiHTMLAttributes<HTMLLIElement> {}
