@@ -28,12 +28,6 @@ const examples: ISnapshotTestSuite<IContextMenuItemHandledProps & IContextMenuIt
         },
         {
             ...managedClasses,
-            children: "menuitem checked",
-            role: ContextMenuItemRole.menuitem,
-            checked: true
-        },
-        {
-            ...managedClasses,
             children: "menuitemradio",
             role: ContextMenuItemRole.menuitemradio
         },
@@ -41,6 +35,24 @@ const examples: ISnapshotTestSuite<IContextMenuItemHandledProps & IContextMenuIt
             ...managedClasses,
             children: "menuitemcheckbox",
             role: ContextMenuItemRole.menuitemcheckbox
+        },
+        {
+            ...managedClasses,
+            children: "menuitem checked",
+            role: ContextMenuItemRole.menuitem,
+            checked: true
+        },
+        {
+            ...managedClasses,
+            children: "menuitemradio checked",
+            role: ContextMenuItemRole.menuitemradio,
+            checked: true
+        },
+        {
+            ...managedClasses,
+            children: "menuitemcheckbox checked",
+            role: ContextMenuItemRole.menuitemcheckbox,
+            checked: true
         }
     ]
 };
