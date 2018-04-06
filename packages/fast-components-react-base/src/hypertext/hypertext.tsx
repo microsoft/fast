@@ -10,16 +10,13 @@ class Hypertext extends Foundation<IHypertextHandledProps & IManagedClasses<IHyp
         managedClasses: void 0,
     };
 
-    private generateAttributes() {
-        let attributes = {};
-
-        if (this.props.href) {
-            attributes["href"] = this.props.href;
-        }
-        
-        return attributes;
+    /**
+     * Generates class names
+     */
+    protected generateClassNames(): string {
+        return super.generateClassNames(this.props.managedClasses.hypertext);
     }
-    
+
     /**
      * Renders the component
      */
@@ -33,18 +30,20 @@ class Hypertext extends Foundation<IHypertextHandledProps & IManagedClasses<IHyp
                 {this.props.children}
             </a>
         );
-    }
+    }    
 
-    /**
-     * Generates class names
-     */
-    protected generateClassNames(): string {
-        return super.generateClassNames(this.props.managedClasses.hypertext);
+    private generateAttributes(): {} {
+        const attributes = {};
+        const HREF_INDEX = "href";
+
+        if (this.props.href) {
+            attributes[HREF_INDEX] = this.props.href;
+        }
+        
+        return attributes;
     }
 }
-
 
 export default Hypertext;
 export * from "./hypertext.props";
 export {IHypertextClassNameContract};
-
