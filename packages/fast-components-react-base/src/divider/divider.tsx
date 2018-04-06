@@ -1,8 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import Foundation, {HandledProps} from "../foundation";
-import {DividerRoles, IDividerHandledProps, IDividerManagedClasses, IDividerUnhandledProps} from "./divider.props";
-import {IDividerClassNameContract, IManagedClasses} from "@microsoft/fast-components-class-name-contracts";
+import Foundation, { HandledProps } from "../foundation";
+import { DividerRoles, IDividerHandledProps, IDividerManagedClasses, IDividerUnhandledProps } from "./divider.props";
+import { IDividerClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts";
 
 /* tslint:disable-next-line */
 class Divider extends Foundation<IDividerHandledProps & IManagedClasses<IDividerClassNameContract>, React.HTMLAttributes<HTMLHRElement>, {}> {
@@ -45,4 +45,4 @@ class Divider extends Foundation<IDividerHandledProps & IManagedClasses<IDivider
 
 export default Divider;
 export * from "./divider.props";
-export {IDividerClassNameContract};
+export { IDividerClassNameContract };

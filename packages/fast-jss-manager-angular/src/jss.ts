@@ -1,4 +1,4 @@
-import JSS, {create, SheetsManager} from "jss";
+import JSS, { create, SheetsManager } from "jss";
 import presets from "jss-preset-default";
 
 const jss: JSS = create(presets());

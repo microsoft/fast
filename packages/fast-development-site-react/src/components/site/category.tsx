@@ -1,6 +1,6 @@
 import * as React from "react";
-import {Link} from "react-router-dom";
-import {ICategoryItemProps} from "./category-item";
+import { Link } from "react-router-dom";
+import { ICategoryItemProps } from "./category-item";
 
 export interface ICategoryProps {
     name: string;

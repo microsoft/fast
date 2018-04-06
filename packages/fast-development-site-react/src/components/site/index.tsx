@@ -1,13 +1,13 @@
 import * as React from "react";
-import {BrowserRouter, Route, Switch} from "react-router-dom";
-import {DesignSystemProvider} from "@microsoft/fast-jss-manager-react";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import devSiteDesignSystemDefaults from "../design-system";
 
 import Shell, { ShellActionBar, ShellCanvas, ShellHeader, ShellPane, ShellRow } from "../shell";
 import Breadcrumb, { BreadcrumbItem } from "../breadcrumb";
 import CategoryList from "./category-list";
-import Category, {ICategoryProps} from "./category";
-import CategoryItem, {ICategoryItemProps} from "./category-item";
+import Category, { ICategoryProps } from "./category";
+import CategoryItem, { ICategoryItemProps } from "./category-item";
 import NotFound from "./not-found";
 
 interface ISiteProps {
@@ -97,4 +97,4 @@ class Site extends React.Component<ISiteProps, {}> {
 }
 
 export default Site;
-export {ISiteProps};
+export { ISiteProps };

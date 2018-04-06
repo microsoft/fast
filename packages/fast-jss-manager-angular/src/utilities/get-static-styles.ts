@@ -1,4 +1,4 @@
-import {isEmptyObject} from "./object";
+import { isEmptyObject } from "./object";
 
 /**
  * Recurse over an object and coppies all keys with primitive values over to a new object

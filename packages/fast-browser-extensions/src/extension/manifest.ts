@@ -1,4 +1,4 @@
-import {validDomains} from "./config";
+import { validDomains } from "./config";
 
 /**
  * Programmatically generate the browser extension manifest.json

@@ -1,4 +1,4 @@
-import {APIName, getApiSupport} from "../";
+import { APIName, getApiSupport } from "../";
 
 /**
  * Wrap tab api

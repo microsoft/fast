@@ -1,4 +1,4 @@
-import {isEmptyObject} from "./object";
+import { isEmptyObject } from "./object";
 
 describe("isEmptyObject", () => {
     test("should return false if passed undefined", () => {
@@ -33,7 +33,7 @@ describe("isEmptyObject", () => {
         expect(isEmptyObject(class Test {})).toBe(false);
     });
     test("should return false if passed a non-empty object", () => {
-        expect(isEmptyObject({ key: "value" })).toBe(false);
+        expect(isEmptyObject({key: "value" })).toBe(false);
     });
     test("should return true if passed a empty object", () => {
         expect(isEmptyObject({})).toBe(true);

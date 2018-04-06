@@ -1,5 +1,5 @@
 import isElementInView from "../utilities/isElementInView";
-import {throttle} from "lodash-es";
+import { throttle } from "lodash-es";
 import scrollY from "../utilities/scrollY";
 
 /**
