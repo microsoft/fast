@@ -1,7 +1,7 @@
-import {Component, ElementRef, Input} from "@angular/core";
-import {async, TestBed} from "@angular/core/testing";
-import manageJss, {ComponentStyles} from "./manage-jss";
-import {DesignSystemDirective} from "./design-system.directive";
+import { Component, ElementRef, Input } from "@angular/core";
+import { async, TestBed } from "@angular/core/testing";
+import manageJss, { ComponentStyles } from "./manage-jss";
+import { DesignSystemDirective } from "./design-system.directive";
 
 /**
  * Component definition

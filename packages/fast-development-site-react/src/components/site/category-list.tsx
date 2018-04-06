@@ -1,8 +1,8 @@
 import * as React from "react";
-import {Link} from "react-router-dom";
-import {ICategoryItemProps} from "./category-item";
-import {ICategoryProps} from "./category";
-import {ISiteProps} from "./";
+import { Link } from "react-router-dom";
+import { ICategoryItemProps } from "./category-item";
+import { ICategoryProps } from "./category";
+import { ISiteProps } from "./";
 
 class CategoryList extends React.Component<ISiteProps, {}> {
 

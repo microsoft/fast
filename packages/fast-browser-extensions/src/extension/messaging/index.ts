@@ -1,5 +1,5 @@
-import {IContextMenuItem, IContextMenus} from "../contextMenu";
-import {extensionId, menuItemClickEvent} from "../config";
+import { IContextMenuItem, IContextMenus } from "../contextMenu";
+import { extensionId, menuItemClickEvent } from "../config";
 
 export type CREATE_MENUS_MESSAGE = "MESSAGE::CREATE_MENUS";
 export const CREATE_MENUS_MESSAGE: CREATE_MENUS_MESSAGE = "MESSAGE::CREATE_MENUS";

@@ -21,8 +21,8 @@
     "prepare": "tsc -p ./lib/tsconfig.json",
     "start": "node_modules/.bin/webpack-dev-server --config webpack/webpack.react.config.js --progress",
     "test": "npm run unit-tests && npm run build-test-app",
-    "tslint": "tslint -c ./tslint.json **/*.ts{,x}",
-    "tslint:fix": "tslint -c ./tslint.json --fix **/*.ts{,x}",
+    "tslint": "tslint -c ./tslint.json 'lib/**/*.ts{,x}' 'client/**/*.ts{,x}'",
+    "tslint:fix": "tslint -c ./tslint.json --fix 'lib/**/*.ts{,x}' 'client/**/*.ts{,x}'",
     "unit-tests": "jest"
   },
   "devDependencies": {

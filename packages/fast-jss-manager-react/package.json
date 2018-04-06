@@ -17,8 +17,8 @@
     "clean:dist": "node ../../build/clean.js dist",
     "prepare": "npm run clean:dist && tsc -p ./tsconfig.json",
     "test": "npm run tslint && npm run unit-test",
-    "tslint": "tslint -c tslint.json ./src/**/*.ts{,x}",
-    "tslint:fix": "tslint -c tslint.json ./src/**/*.ts{,x} --fix",
+    "tslint": "tslint -c tslint.json 'src/**/*.ts{,x}'",
+    "tslint:fix": "tslint -c tslint.json 'src/**/*.ts{,x}' --fix",
     "tslint:watch": "node build/tslint-watch.js",
     "unit-test": "jest",
     "unit-test:watch": "jest --watch && npm-watch"

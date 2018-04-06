@@ -17,8 +17,8 @@
     "prepare": "npm run clean:dist && tsc -p ./tsconfig.json",
     "start": "webpack-dev-server",
     "test": "npm run tslint && npm run unit-tests && webpack --progress",
-    "tslint": "tslint -c ./tslint.json **/*.ts{,x}",
-    "tslint:fix": "tslint -c ./tslint.json --fix **/*.ts{,x}",
+    "tslint": "tslint -c ./tslint.json 'src/**/*.ts{,x}' 'app/**/*.ts{,x}'",
+    "tslint:fix": "tslint -c ./tslint.json --fix 'src/**/*.ts{,x}' 'app/**/*.ts{,x}'",
     "unit-tests": "jest",
     "unit-tests:update": "jest --updateSnapshot",
     "unit-tests:watch": "jest --watch"

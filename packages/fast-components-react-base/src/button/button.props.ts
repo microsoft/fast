@@ -1,5 +1,5 @@
 import * as React from "react";
-import {IButtonClassNameContract, IManagedClasses} from "@microsoft/fast-components-class-name-contracts";
+import { IButtonClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts";
 
 /**
  * Button HTML tags

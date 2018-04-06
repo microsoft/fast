@@ -2,20 +2,20 @@
  * Export component styles
  */
 import ButtonStyles from "./button";
-export {ButtonStyles};
+export { ButtonStyles };
 
 /**
  * Export design system defaults and typings
  */
 import DesignSystemDefaults from "./design-system";
 export * from "./design-system";
-export {DesignSystemDefaults};
+export { DesignSystemDefaults };
 
 /**
  * Export component styles
  */
 import DividerStyles from "./divider";
-export {DividerStyles};
+export { DividerStyles };
 
 /**
  * Export utilities

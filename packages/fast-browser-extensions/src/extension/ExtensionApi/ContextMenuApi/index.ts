@@ -1,4 +1,4 @@
-import {APIName, getApiSupport} from "../";
+import { APIName, getApiSupport } from "../";
 
 export default class ContextMenuApi {
     /**
