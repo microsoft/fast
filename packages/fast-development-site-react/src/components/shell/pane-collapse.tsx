@@ -1,6 +1,6 @@
 import * as React from "react";
 import manageJss, { ComponentStyles, IManagedClasses } from "@microsoft/fast-jss-manager-react";
-import {IDevSiteDesignSystem} from "../design-system";
+import { IDevSiteDesignSystem } from "../design-system";
 
 /* tslint:disable-next-line */
 export interface IShellPaneCollapseProps {

@@ -1,5 +1,5 @@
 import * as React from "react";
-import {IDevSiteDesignSystem} from "../design-system";
+import { IDevSiteDesignSystem } from "../design-system";
 import manageJss, { ComponentStyles, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import TocItem from "./toc-item";
 import TocMenu from "./toc-menu";

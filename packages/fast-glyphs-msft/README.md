@@ -1,0 +1,1 @@
+# FAST Microsoft SVG Glyphs

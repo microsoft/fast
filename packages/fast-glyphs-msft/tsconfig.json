@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "declaration": true,
+        "experimentalDecorators": true,
+        "moduleResolution": "node",
+        "outDir": "./dist",
+        "sourceMap": true,
+        "target": "es6"
+    },
+    "include": [
+        "utilities/**/*"
+    ]
+  }
