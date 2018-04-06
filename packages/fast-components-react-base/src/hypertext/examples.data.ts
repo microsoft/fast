@@ -16,6 +16,6 @@ const examples: ISnapshotTestSuite<IHypertextHandledProps & IHypertextManagedCla
             children: "MSDN"
         }
     ]
-}
+};
 
 export default examples;

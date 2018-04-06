@@ -8,7 +8,6 @@ export interface IHypertextHandledProps {
     children?: React.ReactNode | React.ReactNode[];
 }
 
-
 export interface IHypertextUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
 export interface IHypertextManagedClasses extends IManagedClasses<IHypertextClassNameContract> {}
 export type HypertextProps = IHypertextHandledProps & IHypertextUnhandledProps & IHypertextManagedClasses;

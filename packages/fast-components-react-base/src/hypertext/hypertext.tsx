@@ -11,13 +11,6 @@ class Hypertext extends Foundation<IHypertextHandledProps & IManagedClasses<IHyp
     };
 
     /**
-     * Generates class names
-     */
-    protected generateClassNames(): string {
-        return super.generateClassNames(this.props.managedClasses.hypertext);
-    }
-
-    /**
      * Renders the component
      */
     public render(): React.ReactElement<HTMLAnchorElement> {
@@ -32,14 +25,20 @@ class Hypertext extends Foundation<IHypertextHandledProps & IManagedClasses<IHyp
         );
     }    
 
+    /**
+     * Generates class names
+     */
+    protected generateClassNames(): string {
+        return super.generateClassNames(this.props.managedClasses.hypertext);
+    }
+
     private generateAttributes(): {} {
         const attributes = {};
-        const HREF_INDEX = "href";
+        const HREF_INDEX: string = "href";
 
         if (this.props.href) {
             attributes[HREF_INDEX] = this.props.href;
-        }
-        
+        }        
         return attributes;
     }
 }
