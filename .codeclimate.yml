@@ -9,9 +9,7 @@ checks:
     config:
       threshold: 4
   file-lines:
-    enabled: true
-    config:
-      threshold: 250
+    enabled: false
   method-complexity:
     enabled: true
     config:
@@ -21,9 +19,7 @@ checks:
     config:
       threshold: 20
   method-lines:
-    enabled: true
-    config:
-      threshold: 25
+    enabled: false
   nested-control-flow:
     enabled: true
     config:
