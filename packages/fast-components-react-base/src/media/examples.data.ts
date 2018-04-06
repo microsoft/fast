@@ -1,7 +1,7 @@
-import {ICategoryItemProps} from "@microsoft/fast-development-site-react";
-import {ISnapshotTestSuite} from "@microsoft/fast-jest-snapshots-react";
-import {IManagedClasses} from "@microsoft/fast-components-class-name-contracts";
-import Media, {IMediaHandledProps, IMediaMangedClasses, IMediaUnhandledProps} from "./media";
+import { ICategoryItemProps } from "@microsoft/fast-development-site-react";
+import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
+import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts";
+import Media, { IMediaHandledProps, IMediaMangedClasses, IMediaUnhandledProps } from "./media";
 
 const examples: ISnapshotTestSuite<IMediaHandledProps & IMediaMangedClasses> = {
     name: "media",

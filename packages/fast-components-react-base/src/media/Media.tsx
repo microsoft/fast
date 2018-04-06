@@ -1,8 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Foundation, { HandledProps } from "../foundation";
-import {IMediaHandledProps, IMediaMangedClasses, IMediaSourceSet, IMediaUnhandledProps} from "./media.props";
-import {IManagedClasses, IMediaClassNameContract} from "@microsoft/fast-components-class-name-contracts";
+import { IMediaHandledProps, IMediaMangedClasses, IMediaSourceSet, IMediaUnhandledProps } from "./media.props";
+import { IManagedClasses, IMediaClassNameContract } from "@microsoft/fast-components-class-name-contracts";
 
 /* tslint:disable-next-line */
 class Media extends Foundation<IMediaHandledProps & IManagedClasses<IMediaClassNameContract>,  React.HTMLAttributes<HTMLImageElement | HTMLPictureElement>, {}> {
@@ -43,7 +43,7 @@ class Media extends Foundation<IMediaHandledProps & IManagedClasses<IMediaClassN
         return imgSrcSet.join(", ");
     }
 
-    private generateMediaQuery(item): string {
+    private generateMediaQuery(item: any): string {
         const maxWidth: string = (item.maxWidth != null) ? `(max-width: ${item.maxWidth})` : "";
         const and: string = (item.maxWidth != null && item.minWidth != null) ? ` and ` : "";
         const minWidth: string = (item.minWidth != null) ? `(min-width: ${item.minWidth})` : "";

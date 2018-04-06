@@ -1,5 +1,5 @@
 import * as React from "react";
-import {IManagedClasses, IMediaClassNameContract} from "@microsoft/fast-components-class-name-contracts";
+import { IManagedClasses, IMediaClassNameContract } from "@microsoft/fast-components-class-name-contracts";
 
 export interface IMediaSourceSet {
     /**
