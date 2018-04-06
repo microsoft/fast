@@ -1,6 +1,6 @@
 import {ISnapshotTestSuite} from "@microsoft/fast-jest-snapshots-react";
 import {IManagedClasses} from "@microsoft/fast-components-class-name-contracts";
-import ContextMenuItem, {IContextMenuItemHandledProps, IContextMenuItemManagedClasses} from "./context-menu-item";
+import ContextMenuItem, {ContextMenuItemRole, IContextMenuItemHandledProps, IContextMenuItemManagedClasses } from "./context-menu-item";
 
 const managedClasses: IContextMenuItemManagedClasses = {
     managedClasses: {
@@ -20,6 +20,27 @@ const examples: ISnapshotTestSuite<IContextMenuItemHandledProps & IContextMenuIt
             ...managedClasses,
             children: "child",
             role: "invalid-role" as any
+        },
+        {
+            ...managedClasses,
+            children: "menuitem",
+            role: ContextMenuItemRole.menuitem
+        },
+        {
+            ...managedClasses,
+            children: "menuitem checked",
+            role: ContextMenuItemRole.menuitem,
+            checked: true
+        },
+        {
+            ...managedClasses,
+            children: "menuitemradio",
+            role: ContextMenuItemRole.menuitemradio
+        },
+        {
+            ...managedClasses,
+            children: "menuitemcheckbox",
+            role: ContextMenuItemRole.menuitemcheckbox
         }
     ]
 };
