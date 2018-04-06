@@ -1,6 +1,6 @@
-import {IDesignSystem} from "../design-system";
-import {ComponentStyles} from "@microsoft/fast-jss-manager";
-import {IMediaClassNameContract} from "@microsoft/fast-components-class-name-contracts";
+import { IDesignSystem } from "../design-system";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { IMediaClassNameContract } from "@microsoft/fast-components-class-name-contracts";
 
 const styles: ComponentStyles<IMediaClassNameContract, IDesignSystem> = {
     image: {
