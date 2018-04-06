@@ -1,5 +1,5 @@
 import * as React from "react";
-import {IMediaClassNameContract, IManagedClasses} from "@microsoft/fast-components-class-name-contracts";
+import {IManagedClasses, IMediaClassNameContract} from "@microsoft/fast-components-class-name-contracts";
 
 export interface IMediaSourceSet {
     /**
@@ -20,13 +20,13 @@ export interface IMediaSourceSet {
 
 export interface IMediaHandledProps {
     /**
-     * The HTML alt attribute value is important for overall accessibility, providing a textual 
-     * alternative to non-text content 
+     * The HTML alt attribute value is important for overall accessibility, providing a textual
+     * alternative to non-text content
      */
     alt?: string;
 
     /**
-     * The HTML itemScope attribute defines the scope of associated metadata and is used for associating the 
+     * The HTML itemScope attribute defines the scope of associated metadata and is used for associating the
      * element context with definitions on schema.org (important for seach engine optimization)
      */
     itemScope?: boolean;
@@ -49,7 +49,7 @@ export interface IMediaHandledProps {
     /**
      * The HTML sizes attribute for the image element
      */
-    sizes?: string
+    sizes?: string;
 }
 
 export interface IMediaUnhandledProps extends React.HTMLAttributes<HTMLImageElement | HTMLPictureElement> {}
