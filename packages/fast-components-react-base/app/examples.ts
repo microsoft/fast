@@ -1,6 +1,7 @@
 import ButtonExamples from "../src/button/examples.data";
 export { ButtonExamples };
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 import DividerExamples from "../src/divider/examples.data";
 export { DividerExamples };
@@ -29,3 +30,8 @@ export {HypertextExamples};
 >>>>>>> added hypertext references in react-msft and styles-msft
 =======
 >>>>>>> updates to fix server build rules
+=======
+
+import HypertextExamples from "../src/hypertext/examples.data";
+export { HypertextExamples };
+>>>>>>> tslint stuff again
