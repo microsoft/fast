@@ -3,8 +3,6 @@ import {IHypertextClassNameContract, IManagedClasses} from "@microsoft/fast-comp
 
 export interface IHypertextHandledProps {
 
-    text?: string;
-
     href?: string;
 
     children?: React.ReactNode | React.ReactNode[];
