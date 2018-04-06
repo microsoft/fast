@@ -1,9 +1,15 @@
 import ButtonExamples from "../src/button/examples.data";
 <<<<<<< HEAD
 export { ButtonExamples };
-=======
-import MediaExamples from "../src/media/examples.data";
 
+import MediaExamples from "../src/media/examples.data";
+export { MediaExamples };
+=======
 export {ButtonExamples};
+
+import DividerExamples from "../src/divider/examples.data"
+export {DividerExamples};
+
+import MediaExamples from "../src/media/examples.data";
 export {MediaExamples};
->>>>>>> More work to add Media component
+>>>>>>> Rsolved Merge conflicts
