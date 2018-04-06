@@ -1,52 +1,14 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Foundation, { HandledProps } from "../foundation";
-import {IMediaHandledProps, IMediaMangedClasses, IMediaUnhandledProps, IMediaSourceSet} from "./media.props";
-import {IMediaClassNameContract, IManagedClasses} from "@microsoft/fast-components-class-name-contracts";
+import {IMediaHandledProps, IMediaMangedClasses, IMediaSourceSet, IMediaUnhandledProps} from "./media.props";
+import {IManagedClasses, IMediaClassNameContract} from "@microsoft/fast-components-class-name-contracts";
 
 /* tslint:disable-next-line */
-class Media extends Foundation<IMediaHandledProps & IMediaMangedClasses,  IMediaUnhandledProps, {}> {
+class Media extends Foundation<IMediaHandledProps & IManagedClasses<IMediaClassNameContract>,  React.HTMLAttributes<HTMLImageElement | HTMLPictureElement>, {}> {
     protected handledProps: HandledProps<IMediaHandledProps & IManagedClasses<IMediaClassNameContract>> = {
         managedClasses: void 0
     };
-
-    generateSrcSetString() {
-        let imgSrcSet = this.props.mediaSrcSet.map((item , index) => {
-            return item.srcSet
-        });
-
-        return imgSrcSet.join(", ");
-    }
-
-    generatePicture(): React.ReactElement<HTMLPictureElement> {
-        let sources = this.props.mediaSrcSet.map((item , index) => {
-        let maxWidth = (item.maxWidth != null) ? `(max-width: ${item.maxWidth})` : "";
-        let and = (item.maxWidth != null && item.minWidth != null) ? ` and ` : "";
-        let minWidth = (item.minWidth != null) ? `(min-width: ${item.minWidth})`: "";
-        return (
-            <source key={index} srcSet={item.srcSet} media={minWidth + and + maxWidth}/>
-        );
-        });
-
-        return (
-        <picture
-            className={this.generateClassNames()}>
-            {sources}
-            <img srcSet={this.props.mediaSrcSet[0].srcSet} src={this.props.mediaSrcSet[0].srcSet} alt={this.props.alt} />
-        </picture>
-        );
-    }
-
-    generateSimpleImage(): React.ReactElement<HTMLImageElement> {
-        return (
-            <img
-                className={this.generateClassNames()}
-                src={this.props.src}
-                srcSet={this.generateSrcSetString()}
-                alt={this.props.alt}
-                sizes={this.props.sizes}/>
-        );
-    }
 
     /**
      * Renders the component
@@ -56,9 +18,69 @@ class Media extends Foundation<IMediaHandledProps & IMediaMangedClasses,  IMedia
              (this.props.src) ? this.generateSimpleImage() : this.generatePicture()
         );
     }
+
+    protected generateClassNames(): string {
+        let classNames: string = this.props.src ? this.props.managedClasses.image : this.props.managedClasses.picture;
+
+        if (this.props.src) {
+            classNames = this.generateRoundClass(classNames);
+        }
+
+        return super.generateClassNames(classNames);
+    }
+
+    private generateRoundClass(className: string): string {
+        const classNames: string = this.props.round ? `${className} ${this.props.managedClasses.image_round}` : className;
+
+        return classNames;
+    }
+
+    private generateSrcSetString(): string {
+        const imgSrcSet: any = this.props.mediaSrcSet.map((item: any , index: number) => {
+            return item.srcSet;
+        });
+
+        return imgSrcSet.join(", ");
+    }
+
+    private generatePicture(): React.ReactElement<HTMLPictureElement> {
+        const sources: any = this.props.mediaSrcSet.map((item: any , index: number) => {
+        const maxWidth: string = (item.maxWidth != null) ? `(max-width: ${item.maxWidth})` : "";
+        const and: string = (item.maxWidth != null && item.minWidth != null) ? ` and ` : "";
+        const minWidth: string = (item.minWidth != null) ? `(min-width: ${item.minWidth})` : "";
+        return (
+            <source key={index} srcSet={item.srcSet} media={minWidth + and + maxWidth}/>
+        );
+        });
+
+        return (
+        <picture
+            className={this.generateClassNames()}
+        >
+            {sources}
+            <img
+                className={this.generateRoundClass(this.props.managedClasses.image)}
+                srcSet={this.props.mediaSrcSet[0].srcSet}
+                src={this.props.mediaSrcSet[0].srcSet}
+                alt={this.props.alt}
+            />
+        </picture>
+        );
+    }
+
+    private generateSimpleImage(): React.ReactElement<HTMLImageElement> {
+        return (
+            <img
+                className={this.generateClassNames()}
+                src={this.props.src}
+                srcSet={this.generateSrcSetString()}
+                alt={this.props.alt}
+                sizes={this.props.sizes}
+            />
+        );
+    }
 }
 
 export default Media;
 export * from "./media.props";
 export {IMediaClassNameContract};
-

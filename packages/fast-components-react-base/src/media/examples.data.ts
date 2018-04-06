@@ -9,7 +9,7 @@ const examples: ISnapshotTestSuite<IMediaHandledProps & IMediaMangedClasses> = {
     data: [
         // {
         //     managedClasses: {
-        //         media: "media"
+        //         image: "image round"
         //     },
         //     mediaSrcSet: [
         //         {
@@ -36,7 +36,7 @@ const examples: ISnapshotTestSuite<IMediaHandledProps & IMediaMangedClasses> = {
         // }
         {
             managedClasses: {
-                media: "media"
+                picture: "picture"
             },
             mediaSrcSet: [
                 {
@@ -53,8 +53,7 @@ const examples: ISnapshotTestSuite<IMediaHandledProps & IMediaMangedClasses> = {
                 },
                 {
                     srcSet: "https://placehold.it/539x300/2F2F2F/171717",
-                    minWidth: "0px",
-                    maxWidth: "500px"
+                    minWidth: "0px"
                 }
 
             ],

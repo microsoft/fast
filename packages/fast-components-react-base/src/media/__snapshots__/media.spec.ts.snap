@@ -2,7 +2,7 @@
 
 exports[`media media: 0 1`] = `
 <picture
-  className={null}
+  className="picture"
 >
   <source
     media="(min-width: 1399px)"
@@ -22,6 +22,7 @@ exports[`media media: 0 1`] = `
   />
   <img
     alt="Placeholder with grey background and dimension watermark without any imagery"
+    className={undefined}
     src="https://placehold.it/1399x600/2F2F2F/171717"
     srcSet="https://placehold.it/1399x600/2F2F2F/171717"
   />

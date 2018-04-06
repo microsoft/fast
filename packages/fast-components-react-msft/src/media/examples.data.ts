@@ -11,23 +11,26 @@ export default {
         {
             mediaSrcSet: [
                 {
-                    srcSet: "https://placehold.it/1399x600/2F2F2F/171717",
+                    srcSet: "https://placehold.it/1399x600/2F2F2F/171717 1399w",
                     minWidth: "1399px"
                 },
                 {
-                    srcSet: "https://placehold.it/1083x500/2F2F2F/171717",
+                    srcSet: "https://placehold.it/1083x500/2F2F2F/171717 1083w",
                     minWidth: "1083px"
                 },
                 {
-                    srcSet: "https://placehold.it/767x400/2F2F2F/171717",
+                    srcSet: "https://placehold.it/767x400/2F2F2F/171717 767w",
                     minWidth: "767px"
                 },
                 {
-                    srcSet: "https://placehold.it/539x300/2F2F2F/171717",
+                    srcSet: "https://placehold.it/539x300/2F2F2F/171717 0w",
                     minWidth: "0px",
-                    maxWidth: "500px"
                 }
+
             ],
+            round: true,
+            src: "https://placehold.it/539x300/2F2F2F/171717",
+            sizes: "100vw",
             alt: "Placeholder with grey background and dimension watermark without any imagery"
         }
     ]
