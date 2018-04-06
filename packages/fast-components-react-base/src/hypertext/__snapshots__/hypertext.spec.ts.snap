@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`hypertext hypertext: 0 1`] = `
+<a
+  className="hypertext"
+  href="https://msdn.microsoft.com/en-us/"
+>
+  MSDN
+</a>
+`;
