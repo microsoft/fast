@@ -43,13 +43,18 @@ class Media extends Foundation<IMediaHandledProps & IManagedClasses<IMediaClassN
         return imgSrcSet.join(", ");
     }
 
+    private generateMediaQuery(item): string {
+        const maxWidth: string = (item.maxWidth != null) ? `(max-width: ${item.maxWidth})` : "";
+        const and: string = (item.maxWidth != null && item.minWidth != null) ? ` and ` : "";
+        const minWidth: string = (item.minWidth != null) ? `(min-width: ${item.minWidth})` : "";
+
+        return minWidth + and + maxWidth;
+    }
+
     private generatePicture(): React.ReactElement<HTMLPictureElement> {
         const sources: any = this.props.mediaSrcSet.map((item: any , index: number) => {
-            const maxWidth: string = (item.maxWidth != null) ? `(max-width: ${item.maxWidth})` : "";
-            const and: string = (item.maxWidth != null && item.minWidth != null) ? ` and ` : "";
-            const minWidth: string = (item.minWidth != null) ? `(min-width: ${item.minWidth})` : "";
             return (
-                <source key={index} srcSet={item.srcSet} media={minWidth + and + maxWidth}/>
+                <source key={index} srcSet={item.srcSet} media={this.generateMediaQuery(item)}/>
             );
         });
 
