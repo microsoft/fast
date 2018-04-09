@@ -1,6 +1,7 @@
 import * as React from "react";
+import { IToggleClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts";
 
-export interface IToggleProps {
+export interface IToggleHandledProps {
     children?: React.ReactNode | React.ReactNode[];
     disabled?: boolean;
     id: string;
@@ -8,6 +9,10 @@ export interface IToggleProps {
     onClick?: (event?: React.MouseEvent<HTMLElement>) => void;
     selected: boolean;
     selectedString: string;
-    spanId: string;
+    statusLabelId: string;
     unselectedString: string;
 }
+
+export interface IToggleUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
+export interface IToggleManagedClasses extends IManagedClasses<IToggleClassNameContract> {}
+export type ToggleProps = IToggleHandledProps & IToggleUnhandledProps & IToggleManagedClasses;

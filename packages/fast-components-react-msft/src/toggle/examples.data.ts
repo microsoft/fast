@@ -1,8 +1,8 @@
-import {ICategoryItemProps} from "@microsoft/fast-development-site-react";
-import {IGenericExample} from "../examples";
-import {IManagedClasses} from "@microsoft/fast-jss-manager-react";
+import { ICategoryItemProps } from "@microsoft/fast-development-site-react";
+import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
+import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import Toggle from "./index";
-import {IToggleProps} from "@microsoft/fast-components-react-base";
+import { IToggleHandledProps } from "@microsoft/fast-components-react-base";
 
 export default {
     name: "toggle",
@@ -15,7 +15,7 @@ export default {
             labelId: "label01",
             selected: true,
             selectedString: "On",
-            spanId: "span01",
+            statusLabelId: "span01",
             unselectedString: "Off"
         },
         {
@@ -25,7 +25,7 @@ export default {
             labelId: "label01",
             selected: false,
             selectedString: "On",
-            spanId: "span01",
+            statusLabelId: "span01",
             unselectedString: "Off"
         },
         {
@@ -35,7 +35,7 @@ export default {
             labelId: "label02",
             selected: true,
             selectedString: "On",
-            spanId: "span02",
+            statusLabelId: "span02",
             unselectedString: "Off"
         },
         {
@@ -45,8 +45,8 @@ export default {
             labelId: "label02",
             selected: false,
             selectedString: "On",
-            spanId: "span02",
+            statusLabelId: "span02",
             unselectedString: "Off"
         }
     ]
-} as IGenericExample<IToggleProps>;
+} as ISnapshotTestSuite<IToggleHandledProps>;

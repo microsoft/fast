@@ -1,5 +1,7 @@
 import {IDesignSystem, hexToRGB} from "../design-system";
 import {ComponentStyles} from "@microsoft/fast-jss-manager";
+import {toPx} from "../utilities/units";
+import {typeRamp} from "../utilities/typography";
 import {IToggleClassNameContract} from "@microsoft/fast-components-class-name-contracts";
 
 const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = {
@@ -8,8 +10,8 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = {
             display: 'inline-block',
             fontSize: '13px',
             lineHeight: '20px',
-            marginTop: '21px',
-            paddingBottom: '7px',
+            marginTop: toPx(21),
+            paddingBottom: toPx(7),
             float: 'left',
             clear: 'left',
             '& + div': {
@@ -18,7 +20,7 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = {
                 clear: 'left',
                 '& + span': {
                     float: 'left',
-                    marginLeft: '5px'
+                    marginLeft: toPx(5)
                 }
             }
         },
@@ -37,28 +39,28 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = {
             '& > span': {
                 position: 'absolute',
                 pointerEvents: 'none',
-                left: '5px',
-                top: '5px',
+                left: toPx(5),
+                top: toPx(5),
                 transition: 'all .1s ease',
                 backgroundColor: (config: IDesignSystem): string => {
                     return config.backgroundColor;
                 },   
                 content: "''",
-                borderRadius: '10px',
-                width: '10px',
-                height: '10px'
+                borderRadius: toPx(10),
+                width: toPx(10),
+                height: toPx(10)
             },
             '& > input': {
                 position: 'relative',
                 margin: '0',
-                width: '44px',
-                height: '20px',
+                width: toPx(44),
+                height: toPx(20),
                 background: 'transparent',
-                border: '1px solid',
+                border: `${toPx(1)} solid`,
                 borderColor: (config: IDesignSystem): string => {
                     return config.foregroundColor;
                 },
-                borderRadius: '20px',
+                borderRadius: toPx(20),
                 appearance: 'none',
                 cursor: 'pointer',
                 '@media screen and (-ms-high-contrast)': {
