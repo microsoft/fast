@@ -28,7 +28,6 @@ export default {
                 }
 
             ],
-            round: true,
             src: "https://placehold.it/539x300/2F2F2F/171717",
             sizes: "100vw",
             alt: "Placeholder with grey background and dimension watermark without any imagery"
