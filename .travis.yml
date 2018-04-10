@@ -17,7 +17,6 @@ before_script:
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
 script:
-  - npm test
   - lerna run test
 after_script:
   - ./cc-test-reporter format-coverage -t lcov after-build .exit $TRAVIS_TEST_RESULT

@@ -2,9 +2,11 @@ import * as React from "react";
 import manageJss, { ComponentStyles, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { IDevSiteDesignSystem } from "../design-system";
 import ShellActionBar from "./action-bar";
+import ShellInfoBar from "./info-bar";
 import ShellCanvas from "./canvas";
 import ShellHeader from "./header";
 import ShellPane from "./pane";
+import ShellPaneCollapse from "./pane-collapse";
 import ShellRow from "./row";
 
 /* tslint:disable-next-line */
@@ -12,6 +14,15 @@ export interface IShellProps { }
 
 export interface IShellManagedClasses {
     shell: string;
+}
+
+export enum ShellSlot {
+    header = "header",
+    actionBar = "action-bar",
+    canvas = "canvas",
+    infoBar = "info-bar",
+    pane = "pane",
+    row = "row"
 }
 
 const style: ComponentStyles<IShellManagedClasses, IDevSiteDesignSystem> = {
@@ -32,4 +43,4 @@ class Shell extends React.Component<IShellProps & IManagedClasses<IShellManagedC
 }
 
 export default manageJss(style)(Shell);
-export { ShellActionBar, ShellCanvas, ShellHeader, ShellPane, ShellRow };
+export { ShellActionBar, ShellInfoBar, ShellCanvas, ShellHeader, ShellPane, ShellPaneCollapse, ShellRow };
