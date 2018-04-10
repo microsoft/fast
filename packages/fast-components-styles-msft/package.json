@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@microsoft/fast-components-class-name-contracts-base": "^1.0.0",
+    "@microsoft/fast-components-class-name-contracts-msft": "^1.0.0",
     "@microsoft/fast-jss-manager": "^1.0.0"
   }
 }

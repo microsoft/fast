@@ -18,6 +18,12 @@ import DividerStyles from "./divider";
 export { DividerStyles };
 
 /**
+ * Export component styles
+ */
+import ImageStyles from "./image";
+export { ImageStyles };
+
+/**
  * Export utilities
  */
 export * from "./utilities/breakpoints";
