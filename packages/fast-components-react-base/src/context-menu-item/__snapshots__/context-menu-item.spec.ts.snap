@@ -53,6 +53,14 @@ exports[`button context-menu-item: 4 1`] = `
 exports[`button context-menu-item: 5 1`] = `
 <li
   aria-checked={null}
+  className="context-menu-item"
+  role="separator"
+/>
+`;
+
+exports[`button context-menu-item: 6 1`] = `
+<li
+  aria-checked={null}
   checked={true}
   className="context-menu-item"
   role="menuitem"
@@ -61,7 +69,7 @@ exports[`button context-menu-item: 5 1`] = `
 </li>
 `;
 
-exports[`button context-menu-item: 6 1`] = `
+exports[`button context-menu-item: 7 1`] = `
 <li
   aria-checked={true}
   checked={true}
@@ -72,7 +80,7 @@ exports[`button context-menu-item: 6 1`] = `
 </li>
 `;
 
-exports[`button context-menu-item: 7 1`] = `
+exports[`button context-menu-item: 8 1`] = `
 <li
   aria-checked={true}
   checked={true}
@@ -81,14 +89,6 @@ exports[`button context-menu-item: 7 1`] = `
 >
   menuitemcheckbox checked
 </li>
-`;
-
-exports[`button context-menu-item: 8 1`] = `
-<li
-  aria-checked={null}
-  className="context-menu-item"
-  role="separator"
-/>
 `;
 
 exports[`button context-menu-item: 9 1`] = `

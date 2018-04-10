@@ -7,6 +7,6 @@ import {
     IFoundationProps
 } from "@microsoft/fast-components-react-base";
 import manageJss from "@microsoft/fast-jss-manager-react";
-import {ContextMenuItemStyles} from "@microsoft/fast-components-styles-msft";
+import { ContextMenuItemStyles } from "@microsoft/fast-components-styles-msft";
 
 export default manageJss(ContextMenuItemStyles)(ContextMenuItem);

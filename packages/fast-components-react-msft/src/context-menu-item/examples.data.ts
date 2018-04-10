@@ -1,6 +1,6 @@
-import {ISnapshotTestSuite} from "@microsoft/fast-jest-snapshots-react";
+import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import ContextMenuItem from "./index";
-import {IContextMenuItemHandledProps} from "@microsoft/fast-components-react-base";
+import { IContextMenuItemHandledProps } from "@microsoft/fast-components-react-base";
 
 export default {
     name: "context-menu-item",
