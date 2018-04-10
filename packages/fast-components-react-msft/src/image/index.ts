@@ -1,10 +1,11 @@
 import * as React from "react";
-import Image, {
+import {
+    IFoundationProps,
     IImageClassNameContract,
     IImageHandledProps,
-    IImageUnhandledProps
-} from "./image";
-import IFoundationProps from "@microsoft/fast-components-react-base"
+    IImageUnhandledProps,
+    Image
+} from "@microsoft/fast-components-react-base";
 import manageJss from "@microsoft/fast-jss-manager-react";
 import { ImageStyles } from "@microsoft/fast-components-styles-msft";
 

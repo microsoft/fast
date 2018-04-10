@@ -1,8 +1,8 @@
 import Button from "./button";
 export { Button };
 
-import Media from "./media";
-export {Media};
+import Image from "./image";
+export {Image};
 
 import Divider from "./divider";
 export { Divider };
