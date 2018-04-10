@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`attribute-assignment attribute-assignment: 0 1`] = `
+<div>
+  <form
+    onSubmit={[Function]}
+  >
+    <h2>
+      Component with attribute assignment
+    </h2>
+    <div>
+      <div>
+        <div>
+          <div
+            className="context-form"
+          >
+            <label
+              htmlFor="text"
+            >
+              text
+            </label>
+            <textarea
+              id="text"
+              name="text"
+              onChange={[Function]}
+              rows={1}
+              value="example text"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+`;

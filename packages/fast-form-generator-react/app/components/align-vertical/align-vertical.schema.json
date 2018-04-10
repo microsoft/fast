@@ -1,0 +1,21 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Component with align vertical",
+    "description": "A test component's schema definition.",
+    "type": "object",
+    "id": "alignVertical",
+    "properties": {
+        "alignVertical": {
+            "title": "align vertical",
+            "type": "string",
+            "enum": [
+                "top",
+                "bottom",
+                "center"
+            ]
+        }
+    },
+    "required": [
+        "alignVertical"
+    ]
+}

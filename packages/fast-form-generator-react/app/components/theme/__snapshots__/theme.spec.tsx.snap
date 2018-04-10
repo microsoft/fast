@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`theme theme: 0 1`] = `
+<div>
+  <form
+    onSubmit={[Function]}
+  >
+    <h2>
+      Component with theme
+    </h2>
+    <div>
+      <div>
+        <div>
+          <div>
+            <div>
+              <label
+                htmlFor="theme"
+              >
+                theme
+              </label>
+              <div>
+                <span>
+                  <input
+                    aria-label="theme light"
+                    checked={true}
+                    id="theme"
+                    name="theme"
+                    onChange={[Function]}
+                    type="radio"
+                    value="light"
+                  />
+                  <span />
+                </span>
+                <span>
+                  <input
+                    aria-label="theme dark"
+                    checked={false}
+                    id="theme"
+                    name="theme"
+                    onChange={[Function]}
+                    type="radio"
+                    value="dark"
+                  />
+                  <span />
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+`;

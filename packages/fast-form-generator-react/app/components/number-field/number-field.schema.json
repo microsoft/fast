@@ -1,0 +1,37 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Component with number-field",
+    "description": "A test component's schema definition.",
+    "type": "object",
+    "id": "numberField",
+    "properties": {
+        "level": {
+            "title": "level",
+            "type": "number",
+            "enum": [
+                1,
+                2,
+                3,
+                4
+            ],
+            "default": 1
+        },
+        "quantity": {
+            "title": "quantity",
+            "type": "number",
+            "example": 10,
+            "minimum": 0,
+            "maximum": 50,
+            "multipleOf": 5
+        },
+        "random": {
+            "title": "random",
+            "type": "number"
+        }
+    },
+    "required": [
+        "level",
+        "quantity",
+        "random"
+    ]
+}

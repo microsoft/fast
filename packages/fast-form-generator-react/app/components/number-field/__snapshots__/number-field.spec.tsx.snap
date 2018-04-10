@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`number-field number-field: 0 1`] = `
+<div>
+  <form
+    onSubmit={[Function]}
+  >
+    <h2>
+      Component with number-field
+    </h2>
+    <div>
+      <div>
+        <div>
+          <label>
+            level
+          </label>
+          <select
+            onChange={[Function]}
+            value={1}
+          >
+            <option
+              value={1}
+            >
+              1
+            </option>
+            <option
+              value={2}
+            >
+              2
+            </option>
+            <option
+              value={3}
+            >
+              3
+            </option>
+            <option
+              value={4}
+            >
+              4
+            </option>
+          </select>
+          <div>
+            <label
+              htmlFor="quantity"
+            >
+              quantity
+            </label>
+            <input
+              id="quantity"
+              max={50}
+              min={0}
+              name="number10"
+              onChange={[Function]}
+              step={5}
+              type="number"
+              value="10"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="random"
+            >
+              random
+            </label>
+            <input
+              id="random"
+              max={undefined}
+              min={undefined}
+              name="number82"
+              onChange={[Function]}
+              step={undefined}
+              type="number"
+              value="82"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+`;

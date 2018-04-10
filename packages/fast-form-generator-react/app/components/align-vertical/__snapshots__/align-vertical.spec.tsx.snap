@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`align-vertical align-vertical: 0 1`] = `
+<div>
+  <form
+    onSubmit={[Function]}
+  >
+    <h2>
+      Component with align vertical
+    </h2>
+    <div>
+      <div>
+        <div>
+          <div>
+            <div>
+              <label
+                htmlFor="alignVertical"
+              >
+                align vertical
+              </label>
+              <div>
+                <span>
+                  <input
+                    aria-label="top align"
+                    checked={true}
+                    id="alignVertical1"
+                    name="alignVertical"
+                    onChange={[Function]}
+                    type="radio"
+                    value="top"
+                  />
+                </span>
+                <span>
+                  <input
+                    aria-label="center align"
+                    checked={false}
+                    id="alignVertical2"
+                    name="alignVertical"
+                    onChange={[Function]}
+                    type="radio"
+                    value="center"
+                  />
+                </span>
+                <span>
+                  <input
+                    aria-label="bottom align"
+                    checked={false}
+                    id="alignVertical3"
+                    name="alignVertical"
+                    onChange={[Function]}
+                    type="radio"
+                    value="bottom"
+                  />
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+`;

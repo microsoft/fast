@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`any-of any-of: 0 1`] = `
+<div>
+  <form
+    onSubmit={[Function]}
+  >
+    <h2>
+      Component with anyOf
+    </h2>
+    <div>
+      <div>
+        <div>
+          <label
+            htmlFor="1"
+          >
+            Configuration
+          </label>
+          <select
+            id="1"
+            onChange={[Function]}
+            value={0}
+          >
+            <option
+              value={0}
+            >
+              string
+            </option>
+            <option
+              value={1}
+            >
+              number
+            </option>
+          </select>
+          <hr
+            role="presentation"
+          />
+          <div
+            className="context-form"
+          >
+            <label
+              htmlFor="string"
+            >
+              string
+            </label>
+            <textarea
+              id="string"
+              name="string"
+              onChange={[Function]}
+              rows={3}
+              value={undefined}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+`;

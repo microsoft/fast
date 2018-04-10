@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`objects objects: 0 1`] = `
+<div>
+  <form
+    onSubmit={[Function]}
+  >
+    <h2>
+      Component with objects
+    </h2>
+    <div>
+      <div>
+        <div />
+        <div>
+          <label
+            htmlFor="1"
+          >
+            optional object
+            <button
+              aria-pressed={false}
+              onClick={[Function]}
+              role="switch"
+            >
+              Off
+            </button>
+          </label>
+          <input
+            aria-hidden="true"
+            id="1"
+            type="hidden"
+            value="Off"
+          />
+        </div>
+        <div>
+          <label
+            htmlFor="2"
+          >
+            object with no required items
+            <button
+              aria-pressed={false}
+              onClick={[Function]}
+              role="switch"
+            >
+              Off
+            </button>
+          </label>
+          <input
+            aria-hidden="true"
+            id="2"
+            type="hidden"
+            value="Off"
+          />
+        </div>
+        <div>
+          <h3>
+            Sections
+          </h3>
+          <ul>
+            <li>
+              <a
+                onClick={[Function]}
+              >
+                object with no required items
+              </a>
+            </li>
+            <li>
+              <a
+                onClick={[Function]}
+              >
+                object with required items
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+`;

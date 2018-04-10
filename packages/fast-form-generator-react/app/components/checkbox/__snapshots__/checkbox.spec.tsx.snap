@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`checkbox checkbox: 0 1`] = `
+<div>
+  <form
+    onSubmit={[Function]}
+  >
+    <h2>
+      Component with checkbox
+    </h2>
+    <div>
+      <div>
+        <div>
+          <label
+            htmlFor="toggle"
+          >
+            toggle
+          </label>
+          <input
+            checked={true}
+            id="toggle"
+            onChange={[Function]}
+            type="checkbox"
+            value="true"
+          />
+          <label
+            htmlFor="optionalToggle"
+          >
+            optional toggle
+          </label>
+          <input
+            checked={false}
+            id="optionalToggle"
+            onChange={[Function]}
+            type="checkbox"
+            value="false"
+          />
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+`;
