@@ -1,3 +1,5 @@
+import { fontWeight } from "../utilities/fonts";
+
 export interface IDesignSystem {
     foregroundColor: string;
     backgroundColor: string;

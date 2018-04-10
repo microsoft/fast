@@ -1,5 +1,5 @@
 /**
- * Export component styles
+ * Export button styles
  */
 import ButtonStyles from "./button";
 export { ButtonStyles };
@@ -7,27 +7,33 @@ export { ButtonStyles };
 /**
  * Export design system defaults and typings
  */
-import DesignSystemDefaults from "./design-system";
+import DesignSystemDefaults, { IDesignSystem } from "./design-system";
 export * from "./design-system";
 export { DesignSystemDefaults };
 
 /**
- * Export component styles
+ * Export divider styles
  */
 import DividerStyles from "./divider";
 export { DividerStyles };
 
 /**
- * Export component styles
+ * Export image styles
  */
 import ImageStyles from "./image";
 export { ImageStyles };
 
 /**
- * Export component styles
+ * Export toggle styles
  */
 import ToggleStyles from "./toggle";
 export { ToggleStyles };
+
+/**
+ * Export typography styles
+ */
+import TypographyStyles from "./typography";
+export { TypographyStyles };
 
 /**
  * Export utilities

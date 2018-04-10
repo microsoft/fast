@@ -1,5 +1,6 @@
-import { fontWeight } from "./fonts";
+import { breakpoints } from "../utilities/breakpoints";
 import { toPx } from "./units";
+import { ICSSRules } from "@microsoft/fast-jss-manager";
 
 /**
  * The type ramp item config
@@ -11,7 +12,7 @@ export interface ITypeRampItemConfig {
 
 /**
  * The vp1 config affects all viewports while the optional vp3 config
- * should be implemented on vp3r viewports.
+ * should be implemented on vp3 viewports.
  */
 export interface ITypeRampItem {
     vp3?: ITypeRampItemConfig;
@@ -130,315 +131,35 @@ export const typeRamp: ITypeRamp = {
  * The typographic items full JSS configuration
  */
 export interface ITypographyItemConfig {
-    fontWeight?: number;
-    letterSpacing?: string;
-    padding: string;
     fontSize: string;
     lineHeight: string;
 }
 
-export type typographyItemConfig = () => ITypographyItemConfig;
-
 export interface ITypographyItem {
-    vp3?: typographyItemConfig;
-    vp1: typographyItemConfig;
+    [key: string]: ITypographyItemConfig | object;
 }
 
 /**
- * The heading configuration
+ * Takes a param of type ramp key (string) and returns a type ramp configuration
  */
+export function applyTypeRampConfig(typeConfig: keyof ITypeRamp): ICSSRules<ITypographyItem> {
+    const baseType: ITypographyItem = {
+        [`@media only screen and (min-width: ${breakpoints.vp1}px)`]: {
+            fontSize: toPx(typeRamp[typeConfig].vp1.fontSize),
+            lineHeight: toPx(typeRamp[typeConfig].vp1.lineHeight)
+        }
+    };
 
-export interface IHeading {
-    h1: ITypographyItem;
-    h2: ITypographyItem;
-    h3: ITypographyItem;
-    h4: ITypographyItem;
-    h5: ITypographyItem;
-    h6: ITypographyItem;
-}
+    if (typeRamp[typeConfig].vp3) {
+        const responsiveType: ITypographyItem = {
+            [`@media only screen and (min-width: ${breakpoints.vp3}px)`]: {
+                fontSize: toPx(typeRamp[typeConfig].vp3.fontSize),
+                lineHeight: toPx(typeRamp[typeConfig].vp3.lineHeight)
+            }
+        };
 
-export const heading: IHeading = {
-    h1: {
-        vp3: (): ITypographyItemConfig => {
-            return {
-                fontSize: toPx(typeRamp.t1.vp3.fontSize),
-                lineHeight: toPx(typeRamp.t1.vp3.lineHeight),
-                padding: "38px 0 6px"
-            };
-        },
-        vp1: (): ITypographyItemConfig => {
-            return {
-                fontWeight: fontWeight.bold,
-                fontSize: toPx(typeRamp.t1.vp1.fontSize),
-                letterSpacing: "-0.01em",
-                lineHeight: toPx(typeRamp.t1.vp1.lineHeight),
-                padding: "37px 0 6px",
-            };
-        }
-    },
-    h2: {
-        vp3: (): ITypographyItemConfig => {
-            return {
-                fontSize: toPx(typeRamp.t2.vp3.fontSize),
-                lineHeight: toPx(typeRamp.t2.vp3.lineHeight),
-                padding: "37px 0 3px",
-            };
-        },
-        vp1: (): ITypographyItemConfig => {
-            return {
-                fontWeight: fontWeight.bold,
-                fontSize: toPx(typeRamp.t2.vp1.fontSize),
-                letterSpacing: "-0.01em",
-                lineHeight: toPx(typeRamp.t2.vp1.lineHeight),
-                padding: "38px 0 2px",
-            };
-        }
-    },
-    h3: {
-        vp1: (): ITypographyItemConfig => {
-            return {
-                fontWeight: fontWeight.bold,
-                fontSize: toPx(typeRamp.t3.vp1.fontSize),
-                lineHeight: toPx(typeRamp.t3.vp1.lineHeight),
-                padding: "38px 0 2px"
-            };
-        }
-    },
-    h4: {
-        vp1: (): ITypographyItemConfig => {
-            return {
-                fontWeight: fontWeight.bold,
-                fontSize: toPx(typeRamp.t4.vp1.fontSize),
-                lineHeight: toPx(typeRamp.t4.vp1.lineHeight),
-                padding: "36px 0 4px"
-            };
-        }
-    },
-    h5: {
-        vp3: (): ITypographyItemConfig => {
-            return {
-                fontSize: toPx(typeRamp.t5.vp3.fontSize),
-                lineHeight: toPx(typeRamp.t5.vp3.lineHeight),
-                padding: "35px 0 5px"
-            };
-        },
-        vp1: (): ITypographyItemConfig => {
-            return {
-                fontWeight: fontWeight.bold,
-                fontSize: toPx(typeRamp.t5.vp1.fontSize),
-                lineHeight: toPx(typeRamp.t5.vp1.lineHeight),
-                padding: "37px 0 3px"
-            };
-        }
-    },
-    h6: {
-        vp3: (): ITypographyItemConfig => {
-            return {
-                fontSize: toPx(typeRamp.t6.vp3.fontSize),
-                lineHeight: toPx(typeRamp.t6.vp3.lineHeight),
-                padding: "37px 0 3px",
-            };
-        },
-        vp1: (): ITypographyItemConfig => {
-            return {
-                fontSize: toPx(typeRamp.t6.vp1.fontSize),
-                fontWeight: fontWeight.bold,
-                lineHeight: toPx(typeRamp.t6.vp1.lineHeight),
-                padding: "39px 0 1px"
-            };
-        }
+        return Object.assign({}, baseType, responsiveType);
     }
-};
 
-/**
- * The subheading configuration
- */
-
-export interface ISubheading {
-    sh1: ITypographyItem;
-    sh2: ITypographyItem;
-    sh3: ITypographyItem;
-    sh4: ITypographyItem;
-    sh5: ITypographyItem;
+    return baseType;
 }
-
-export const subheading: ISubheading = {
-    sh1: {
-        vp3: (): ITypographyItemConfig => {
-            return {
-                fontSize: toPx(typeRamp.t3.vp3.fontSize),
-                lineHeight: toPx(typeRamp.t3.vp3.lineHeight),
-                padding: "12px 0 2px"
-            };
-        },
-        vp1: (): ITypographyItemConfig => {
-            return {
-                fontSize: toPx(typeRamp.t3.vp3.fontSize),
-                fontWeight: fontWeight.light,
-                lineHeight: toPx(typeRamp.t3.vp3.lineHeight),
-                padding: "9px 0 3px"
-            };
-        },
-    },
-    sh2: {
-        vp3: (): ITypographyItemConfig => {
-            return {
-                fontSize: toPx(typeRamp.t4.vp3.fontSize),
-                lineHeight: toPx(typeRamp.t4.vp3.lineHeight),
-                padding: "4px 0 8px"
-            };
-        },
-        vp1: (): ITypographyItemConfig => {
-            return {
-                fontWeight: fontWeight.semilight,
-                fontSize: toPx(typeRamp.t4.vp1.fontSize),
-                lineHeight: toPx(typeRamp.t4.vp1.lineHeight),
-                padding: "8px 0 4px"
-            };
-        }
-    },
-    sh3: {
-        vp3: (): ITypographyItemConfig => {
-            return {
-                fontSize: toPx(typeRamp.t5.vp3.fontSize),
-                lineHeight: toPx(typeRamp.t5.vp3.lineHeight),
-                padding: "8px 0 4px"
-            };
-        },
-        vp1: (): ITypographyItemConfig => {
-            return {
-                fontWeight: fontWeight.normal,
-                fontSize: toPx(typeRamp.t5.vp1.fontSize),
-                lineHeight: toPx(typeRamp.t5.vp1.lineHeight),
-                padding: "4px 0 4px"
-            };
-        }
-    },
-    sh4: {
-        vp3: (): ITypographyItemConfig => {
-            return {
-                fontSize: toPx(typeRamp.t6.vp3.fontSize),
-                lineHeight: toPx(typeRamp.t6.vp3.lineHeight),
-                padding: "9px 0 3px"
-            };
-        },
-        vp1: (): ITypographyItemConfig => {
-            return {
-                fontWeight: fontWeight.normal,
-                fontSize: toPx(typeRamp.t6.vp1.fontSize),
-                lineHeight: toPx(typeRamp.t6.vp1.lineHeight),
-                padding: "7px 0 5px"
-            };
-        }
-    },
-    sh5: {
-        vp1: (): ITypographyItemConfig => {
-            return {
-                fontWeight: fontWeight.normal,
-                fontSize: toPx(typeRamp.t7.vp1.fontSize),
-                lineHeight: toPx(typeRamp.t7.vp1.lineHeight),
-                padding: "8px 0 0"
-            };
-        }
-    }
-};
-
-/**
- * The paragraph configuration
- */
-
-export interface IParagraph {
-    p1: ITypographyItem;
-    p2: ITypographyItem;
-    p3: ITypographyItem;
-    p4: ITypographyItem;
-}
-
-export const paragraph: IParagraph = {
-    p1: {
-        vp1: (): ITypographyItemConfig => {
-            return {
-                fontWeight: fontWeight.semilight,
-                fontSize: toPx(typeRamp.t5.vp1.fontSize),
-                lineHeight: toPx(typeRamp.t5.vp1.lineHeight),
-                padding: "24px 0 4px"
-            };
-        }
-    },
-    p2: {
-        vp3: (): ITypographyItemConfig => {
-            return {
-                fontSize: toPx(typeRamp.t6.vp3.fontSize),
-                lineHeight: toPx(typeRamp.t6.vp3.lineHeight),
-                padding: "25px 0 3px"
-            };
-        },
-        vp1: (): ITypographyItemConfig => {
-            return {
-                fontWeight: fontWeight.normal,
-                fontSize: toPx(typeRamp.t6.vp1.fontSize),
-                lineHeight: toPx(typeRamp.t6.vp1.lineHeight),
-                padding: "27px 0 1px"
-            };
-        }
-    },
-    p3: {
-        vp1: (): ITypographyItemConfig => {
-            return {
-                fontWeight: fontWeight.normal,
-                fontSize: toPx(typeRamp.t7.vp1.fontSize),
-                lineHeight: toPx(typeRamp.t7.vp1.lineHeight),
-                padding: "24px 0 0"
-            };
-        }
-    },
-    p4: {
-        vp1: (): ITypographyItemConfig => {
-            return {
-                fontWeight: fontWeight.normal,
-                fontSize: toPx(typeRamp.t7.vp1.fontSize),
-                lineHeight: toPx(typeRamp.t7.vp1.lineHeight),
-                padding: "12px 0 0"
-            };
-        }
-    }
-};
-
-/**
- * The caption configuration
- */
-
-export interface ICaption {
-    c1: ITypographyItem;
-    c2: ITypographyItem;
-}
-
-export const caption: ICaption = {
-    c1: {
-        vp1: (): ITypographyItemConfig => {
-            return {
-                fontWeight: fontWeight.normal,
-                fontSize: toPx(typeRamp.t8.vp1.fontSize),
-                lineHeight: toPx(typeRamp.t8.vp1.lineHeight),
-                padding: "3px 0 1px"
-            };
-        }
-    },
-    c2: {
-        vp3: (): ITypographyItemConfig => {
-            return {
-                fontSize: toPx(typeRamp.t9.vp3.fontSize),
-                lineHeight: toPx(typeRamp.t9.vp3.lineHeight),
-                padding: "4px 0 4px"
-            };
-        },
-        vp1: (): ITypographyItemConfig => {
-            return {
-                fontWeight: fontWeight.normal,
-                fontSize: toPx(typeRamp.t9.vp3.fontSize),
-                lineHeight: toPx(typeRamp.t9.vp3.lineHeight),
-                padding: "2px 0 2px"
-            };
-        }
-    }
-};
