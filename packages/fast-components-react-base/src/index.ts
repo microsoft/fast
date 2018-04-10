@@ -10,9 +10,9 @@ import Foundation from "./foundation";
 export { Foundation };
 export * from "./foundation";
 
-import Media from "./media";
-export {Media};
-export * from "./media";
+import Image from "./image";
+export {Image};
+export * from "./image";
 
 import Toggle from "./toggle";
 export { Toggle };

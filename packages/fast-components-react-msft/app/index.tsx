@@ -18,7 +18,7 @@ const items: ICategoryProps[] = [
         items: [
             examples.ButtonExamples,
             examples.DividerExamples,
-            examples.MediaExamples
+            examples.ImageExamples
         ]
     }
 ];
