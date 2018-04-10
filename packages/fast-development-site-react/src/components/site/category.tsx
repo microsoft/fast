@@ -10,7 +10,7 @@ class SiteCategory extends React.Component<ISiteCategoryProps, {}> {
     public render(): JSX.Element {
         return (
             <React.Fragment>
-                {(this.props.children as JSX.Element)}
+                {this.props.children}
             </React.Fragment>
         );
     }

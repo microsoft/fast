@@ -4,7 +4,7 @@ import manageJss, { ComponentStyles, DesignSystemProvider, IManagedClasses } fro
 import { glyphBuildingblocks, glyphGlobalnavbutton } from "@microsoft/fast-glyphs-msft";
 import uuid from "uuid/v1";
 import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
-import Shell, { ShellActionBar, ShellCanvas, ShellHeader, ShellInfoBar, ShellPane, ShellPaneCollapse, ShellRow } from "../shell";
+import Shell, { ShellActionBar, ShellCanvas, ShellHeader, ShellInfoBar, ShellPane, ShellPaneCollapse, ShellRow, ShellSlot } from "../shell";
 import Toc, { TocItem } from "../toc";
 import CategoryList from "./category-list";
 import SiteMenu from "./menu";
@@ -25,22 +25,27 @@ export interface IComponentRoutes {
 }
 
 export interface ISiteState {
-    tocCollapsed: boolean;
+    tableOfContentsCollapsed: boolean;
     routes: IComponentRoutes[];
 }
 
+export enum SiteSlot {
+    category = "category",
+    categoryIcon = "category-icon"
+}
+
 export interface ISiteManagedClasses {
-    site__pane__button: string;
-    site__pane__button__icon: string;
+    site__paneToggleButton: string;
+    site__paneTogglButtonIcon: string;
 }
 
 const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
-    site__pane__button: {
+    site__paneToggleButton: {
         width: "32px",
         height: "32px",
         padding: "0"
     },
-    site__pane__button__icon: {
+    site__paneTogglButtonIcon: {
         display: "inline-block",
         width: "32px",
         height: "32px"
@@ -53,8 +58,8 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         super(props);
 
         this.state = {
-            tocCollapsed: this.props.collapsed || false,
-            routes: this.getRoutes((this.props.children as JSX.Element), "/", "category")
+            tableOfContentsCollapsed: this.props.collapsed || false,
+            routes: this.getRoutes((this.props.children as JSX.Element), "/", SiteSlot.category)
         };
     }
 
@@ -93,7 +98,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     private renderShellHeader(): JSX.Element {
         return (
             <ShellHeader>
-                {this.getSlotItems(this, "header")}
+                {this.getSlotItems(this, ShellSlot.header)}
                 {this.props.title}
             </ShellHeader>
         );
@@ -102,16 +107,16 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     private renderShellRow(CanvasComponent: any, path: string): JSX.Element {
         return (
             <ShellRow>
-                <ShellPane collapsed={this.state.tocCollapsed}>
+                <ShellPane collapsed={this.state.tableOfContentsCollapsed}>
                     {this.getPaneCollapseToggle()}
-                    {this.getSlotItems(this, "pane")}
-                    {this.getRootToc(this.props.children, "category", path, "/")}
+                    {this.getSlotItems(this, ShellSlot.pane)}
+                    {this.getRootToc(this.props.children, SiteSlot.category, path, "/")}
                 </ShellPane>
                 <ShellCanvas>
                     <ShellActionBar>
-                        {this.getSlotItems(this, "action-bar")}
+                        {this.getSlotItems(this, ShellSlot.actionBar)}
                     </ShellActionBar>
-                    {this.getSlotItems(this, "canvas")}
+                    {this.getSlotItems(this, ShellSlot.canvas)}
                     {CanvasComponent}
                 </ShellCanvas>
             </ShellRow>
@@ -121,7 +126,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     private renderShellInfoBar(): JSX.Element {
         return (
             <ShellInfoBar>
-                {this.getSlotItems(this, "info-bar")}
+                {this.getSlotItems(this, ShellSlot.infoBar)}
             </ShellInfoBar>
         );
     }
@@ -145,7 +150,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     private getCurrentRoute(item: JSX.Element, slot: string, baseRoute: string, currentRoutes: IComponentRoutes[]): IComponentRoutes[] {
         const currentRoute: IComponentRoutes[] = currentRoutes;
         const itemRoute: string = `${baseRoute}${item.props.name}/`;
-        const slotItems: JSX.Element[] = this.getSlotItems(item, "canvas");
+        const slotItems: JSX.Element[] = this.getSlotItems(item, ShellSlot.canvas);
 
         if (slotItems && slotItems.length > 0) {
             currentRoute.push({
@@ -163,7 +168,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
 
     private handlePaneCollapse = (): void => {
         this.setState({
-            tocCollapsed: !this.state.tocCollapsed
+            tableOfContentsCollapsed: !this.state.tableOfContentsCollapsed
         });
     }
 
@@ -179,18 +184,16 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         return (
             <button
                 onClick={this.handlePaneCollapse}
-                className={this.props.managedClasses.site__pane__button}
+                className={this.props.managedClasses.site__paneToggleButton}
                 dangerouslySetInnerHTML={{__html: glyphGlobalnavbutton}}
             />
         );
     }
 
     private getRootToc(items: any, slot: string, currentPath: string, itemsPath: string): JSX.Element {
-        return (
-            <React.Fragment>
-                {this.props && this.props.children ? this.getToc(items, slot, currentPath, itemsPath, this.state.tocCollapsed) : null}
-            </React.Fragment>
-        );
+        if (this.props && this.props.children) {
+            return (this.getToc(items, slot, currentPath, itemsPath, this.state.tableOfContentsCollapsed) as JSX.Element);
+        }
     }
 
     private getToc(
@@ -243,7 +246,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         if (child && child.props && child.props.name) {
             return (
                 <TocItem {...attributes}>
-                    <React.Fragment>{this.getTocItemCategory(child.props.name, this.getTocItemCategoryIcon(child))}</React.Fragment>
+                    {this.getTocItemCategory(child.props.name, this.getTocItemCategoryIcon(child))}
                     {this.getTocItemMenu(child, slot, currentPath, tocItemPath)}
                 </TocItem>
             );
@@ -255,22 +258,22 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     private getTocItemMenu(item: JSX.Element, slot: string, currentPath: string, tocItemPath: string): JSX.Element {
         if (
             item.props.children &&
-            (!item.props.children.props || (item.props.children.props && item.props.children.props.slot !== "category-icon"))
+            (!item.props.children.props || (item.props.children.props && item.props.children.props.slot !== SiteSlot.categoryIcon))
         ) {
-            return <React.Fragment>{this.getToc(item.props.children, slot, currentPath, tocItemPath)}</React.Fragment>;
+            return (this.getToc(item.props.children, slot, currentPath, tocItemPath) as JSX.Element);
         }
 
         return null;
     }
 
     private getTocItemCategory(name: string | any, icon?: JSX.Element): JSX.Element {
-        if (this.state.tocCollapsed) {
-            return icon ? <span className={this.props.managedClasses.site__pane__button__icon}>{icon}</span> : null;
+        if (this.state.tableOfContentsCollapsed) {
+            return icon ? <span className={this.props.managedClasses.site__paneTogglButtonIcon}>{icon}</span> : null;
         }
 
         return (
             <React.Fragment>
-                {icon ? <span className={this.props.managedClasses.site__pane__button__icon}>{icon}</span> : null} {name}
+                {icon ? <span className={this.props.managedClasses.site__paneTogglButtonIcon}>{icon}</span> : null} {name}
             </React.Fragment>
         );
     }
@@ -278,12 +281,12 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     private getTocItemCategoryIcon(item: JSX.Element): JSX.Element {
         if (Array.isArray(item.props.children)) {
             item.props.children.forEach((childElement: JSX.Element) => {
-                if (childElement.props.slot === "category-icon") {
+                if (childElement.props.slot === SiteSlot.categoryIcon) {
                     return childElement;
                 }
             });
         } else {
-            if (item.props.children.props.slot === "category-icon") {
+            if (item.props.children.props.slot === SiteSlot.categoryIcon) {
                 return item;
             }
         }
@@ -293,7 +296,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
 
     private hasCanvasContent(item: JSX.Element): boolean {
         let hasCanvasContent: boolean = false;
-        const slot: string = "canvas";
+        const slot: string = ShellSlot.canvas;
 
         if (item.props.children) {
             if (Array.isArray(item.props.children)) {

@@ -16,6 +16,15 @@ export interface IShellManagedClasses {
     shell: string;
 }
 
+export enum ShellSlot {
+    header = "header",
+    actionBar = "action-bar",
+    canvas = "canvas",
+    infoBar = "info-bar",
+    pane = "pane",
+    row = "row"
+}
+
 const style: ComponentStyles<IShellManagedClasses, IDevSiteDesignSystem> = {
     shell: {
         fontFamily: "Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif",

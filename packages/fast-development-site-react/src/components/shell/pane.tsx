@@ -40,11 +40,7 @@ class ShellPane extends React.Component<IShellPaneProps & IManagedClasses<IShell
     }
 
     private getInnerDivClassNames(): string {
-        if (this.props.collapsed === false) {
-            return this.props.managedClasses.shell__pane_expanded;
-        } else if (this.props.collapsed === true) {
-            return this.props.managedClasses.shell__pane_collapsed;
-        }
+        return this.props.collapsed ? this.props.managedClasses.shell__pane_collapsed : this.props.managedClasses.shell__pane_expanded;
     }
 }
 

@@ -39,13 +39,9 @@ class TocItem extends React.Component<ITocItemProps & IManagedClasses<ITocItemMa
 
         return (
             <li className={this.getClassNames()}>
-                {type !== null ? this.renderType(type) : this.props.children}
+                {this.renderType(type)}
             </li>
         );
-    }
-
-    public getActive(): any {
-        return this.props.active;
     }
 
     private renderLink(): JSX.Element {

@@ -30,7 +30,9 @@ class ShellPaneCollapse extends React.Component<IShellPaneCollapseProps & IManag
     }
 
     private handleUpdateCollapse = (): void => {
-        this.props.onUpdate();
+        if (this.props.onUpdate) {
+            this.props.onUpdate();
+        }
     }
 }
 

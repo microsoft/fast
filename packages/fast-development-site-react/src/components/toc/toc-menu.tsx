@@ -57,7 +57,9 @@ class TocMenu extends React.Component<ITocMenuProps & IManagedClasses<ITocMenuMa
             <React.Fragment>
                 <button
                     className={this.props.managedClasses.toc__menu__button}
-                    {...this.getButtonAttributes()}
+                    onClick={this.handleButtonClick}
+                    aria-expanded={this.state.active}
+                    aria-controls={this.props.controls}
                 >
                     {this.props.children[0]}
                 </button>
@@ -68,21 +70,7 @@ class TocMenu extends React.Component<ITocMenuProps & IManagedClasses<ITocMenuMa
         );
     }
 
-    private getButtonAttributes(): string {
-        const attributes: any = {};
-
-        attributes.onClick = this.handleButtonClick;
-
-        attributes["aria-expanded"] = this.state.active;
-
-        if (this.props.controls) {
-            attributes["aria-controls"] = this.props.controls;
-        }
-
-        return attributes;
-    }
-
-    private handleButtonClick = (e: MouseEvent): void => {
+    private handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
         this.setState({
             active: !this.state.active
         });

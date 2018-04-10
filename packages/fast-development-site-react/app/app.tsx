@@ -6,7 +6,7 @@ import Button from "./components/button";
 import Paragraph from "./components/paragraph";
 import PolymerHeading from "./components/polymer-heading";
 
-const renderSiteMenu: any = (): JSX.Element => {
+function renderSiteMenu(): JSX.Element {
     return (
         <SiteMenu slot={"header"}>
             <SiteMenuItem>Hello</SiteMenuItem>
@@ -15,7 +15,7 @@ const renderSiteMenu: any = (): JSX.Element => {
     );
 };
 
-const renderBuildingBlocks: any = (): JSX.Element => {
+function renderBuildingBlocks(): JSX.Element {
     return (
         <SiteCategory slot={"category"} name={"Building blocks"}>
             <SiteCategoryIcon slot="category-icon">
@@ -25,7 +25,7 @@ const renderBuildingBlocks: any = (): JSX.Element => {
     );
 };
 
-const renderComponents1ButtonFactory: any = (buttonStrings: string[]): JSX.Element[] => {
+function renderComponents1ButtonFactory(buttonStrings: string[]): JSX.Element[] {
     return buttonStrings.map((buttonString: string, index: number) => {
         return (
             <SiteCategoryItem slot={"canvas"} key={index}>
@@ -35,7 +35,7 @@ const renderComponents1ButtonFactory: any = (buttonStrings: string[]): JSX.Eleme
     });
 };
 
-const renderComponents1: any = (): JSX.Element => {
+function renderComponents1(): JSX.Element {
     return (
         <SiteCategory slot={"category"} name={"Components"}>
             <SiteCategory slot={"category"} name={"Button 1"}>
@@ -48,7 +48,7 @@ const renderComponents1: any = (): JSX.Element => {
     );
 };
 
-const renderComponents2ParagraphFactory: any = (paragraphStrings: string[]): JSX.Element[] => {
+function renderComponents2ParagraphFactory(paragraphStrings: string[]): JSX.Element[] {
     return paragraphStrings.map((paragraphString: string, index: number) => {
         return (
             <SiteCategoryItem slot={"canvas"} key={index}>
@@ -58,7 +58,7 @@ const renderComponents2ParagraphFactory: any = (paragraphStrings: string[]): JSX
     });
 };
 
-const renderComponents2: any = (): JSX.Element => {
+function renderComponents2(): JSX.Element {
     return (
         <SiteCategory slot={"category"} name={"Components 2"}>
             <SiteCategory slot={"category"} name={"Paragraph"}>
@@ -69,7 +69,7 @@ const renderComponents2: any = (): JSX.Element => {
     );
 };
 
-const renderComponents2Nested: any = (): JSX.Element => {
+function renderComponents2Nested(): JSX.Element {
     return (
         <SiteCategory slot={"category"} name={"Components 2 nested"}>
             <SiteCategory slot={"category"} name={"Paragraph 2 nested"}>
@@ -79,7 +79,7 @@ const renderComponents2Nested: any = (): JSX.Element => {
     );
 };
 
-const render: any = (): void => {
+function render(): void {
     ReactDOM.render(
         <Site title={"FAST Development site test"}>
             {renderSiteMenu()}
