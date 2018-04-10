@@ -1,0 +1,21 @@
+import * as React from "react";
+<<<<<<< HEAD
+import {
+    IFoundationProps,
+    IImageClassNameContract,
+    IImageHandledProps,
+    IImageUnhandledProps,
+    Image
+} from "@microsoft/fast-components-react-base";
+=======
+import Image, {
+    IImageClassNameContract,
+    IImageHandledProps,
+    IImageUnhandledProps
+} from "./image";
+import IFoundationProps from "@microsoft/fast-components-react-base"
+>>>>>>> More work to add Media component
+import manageJss from "@microsoft/fast-jss-manager-react";
+import { ImageStyles } from "@microsoft/fast-components-styles-msft";
+
+export default manageJss(ImageStyles)(Image);

@@ -1,0 +1,12 @@
+/**
+<<<<<<< HEAD
+ * The classname contract for the image component
+=======
+ * The classname contract for the media component
+>>>>>>> New Image Component
+ */
+export interface IImageClassNameContract {
+    image?: string;
+    image_round?: string;
+    picture?: string;
+}
