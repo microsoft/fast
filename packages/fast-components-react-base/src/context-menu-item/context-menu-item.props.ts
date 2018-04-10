@@ -1,6 +1,6 @@
 import * as React from "react";
-import {IContextMenuItemClassNameContract, IManagedClasses} from "@microsoft/fast-components-class-name-contracts";
-import {ContextMenuItemRole} from "./context-menu-item";
+import { IContextMenuItemClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts";
+import { ContextMenuItemRole } from "./context-menu-item";
 
 export interface IContextMenuItemHandledProps {
     /**
