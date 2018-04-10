@@ -4,6 +4,10 @@ An animation library that simplifies interactions and animations using the Web A
 * Provides a convenient abstraction layer over the Web Animation API while still allowing full access to it.
 * Simplifies complex animations on anything with any timeframe by sequencing and grouping animation effects for multi-motion loading.
 
+## Status
+[![Package Quality](http://npm.packagequality.com/badge/@microsoft/fast-animation.png)](http://packagequality.com/#?package=@microsoft/fast-animation)
+***
+
 ## Peer dependencies
 This system uses the emerging Web Animations API that is not supported in all browsers. To provide the broadest support, we recommend you include the web animations polyfill (use the 'next' version). This polyfill can be found [here](https://cdnjs.com/libraries/web-animations).
 
