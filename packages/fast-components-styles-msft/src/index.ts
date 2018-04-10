@@ -16,6 +16,9 @@ export { HeadingStyles };
 import HypertextStyles from "./hypertext";
 export { HypertextStyles };
 
+import ContextMenuItemStyles from "./context-menu-item";
+export {ContextMenuItemStyles};
+
 /**
  * Export design system defaults and typings
  */
