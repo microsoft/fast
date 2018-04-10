@@ -13,7 +13,7 @@ function renderSiteMenu(): JSX.Element {
             <SiteMenuItem>World</SiteMenuItem>
         </SiteMenu>
     );
-};
+}
 
 function renderBuildingBlocks(): JSX.Element {
     return (
@@ -23,61 +23,51 @@ function renderBuildingBlocks(): JSX.Element {
             </SiteCategoryIcon>
         </SiteCategory>
     );
-};
+}
 
-function renderComponents1ButtonFactory(buttonStrings: string[]): JSX.Element[] {
-    return buttonStrings.map((buttonString: string, index: number) => {
+function renderComponentsFactory(componentStrings: string[], Component: any): JSX.Element[] {
+    return componentStrings.map((componentString: string, index: number) => {
         return (
             <SiteCategoryItem slot={"canvas"} key={index}>
-                <Button>{buttonString}</Button>
+                <Component>{componentString}</Component>
             </SiteCategoryItem>
         );
     });
-};
+}
 
 function renderComponents1(): JSX.Element {
     return (
         <SiteCategory slot={"category"} name={"Components"}>
             <SiteCategory slot={"category"} name={"Button 1"}>
-                {renderComponents1ButtonFactory(["foo", "bar", "bat"])}
+                {renderComponentsFactory(["foo", "bar", "bat"], Button)}
             </SiteCategory>
             <SiteCategory slot={"category"} name={"Button 2"}>
-                {renderComponents1ButtonFactory(["foo 1", "bar 2", "bat 3"])}
+                {renderComponentsFactory(["foo 1", "bar 2", "bat 3"], Button)}
             </SiteCategory>
         </SiteCategory>
     );
-};
-
-function renderComponents2ParagraphFactory(paragraphStrings: string[]): JSX.Element[] {
-    return paragraphStrings.map((paragraphString: string, index: number) => {
-        return (
-            <SiteCategoryItem slot={"canvas"} key={index}>
-                <Paragraph>{paragraphString}</Paragraph>
-            </SiteCategoryItem>
-        );
-    });
-};
+}
 
 function renderComponents2(): JSX.Element {
     return (
         <SiteCategory slot={"category"} name={"Components 2"}>
             <SiteCategory slot={"category"} name={"Paragraph"}>
-                {renderComponents2ParagraphFactory(["itsy", "bitsy", "spider"])}
+                {renderComponentsFactory(["itsy", "bitsy", "spider"], Paragraph)}
             </SiteCategory>
             {renderComponents2Nested()}
         </SiteCategory>
     );
-};
+}
 
 function renderComponents2Nested(): JSX.Element {
     return (
         <SiteCategory slot={"category"} name={"Components 2 nested"}>
             <SiteCategory slot={"category"} name={"Paragraph 2 nested"}>
-                {renderComponents2ParagraphFactory(["fee", "fi", "fo", "fum"])}
+                {renderComponentsFactory(["fee", "fi", "fo", "fum"], Paragraph)}
             </SiteCategory>
         </SiteCategory>
     );
-};
+}
 
 function render(): void {
     ReactDOM.render(
@@ -89,6 +79,6 @@ function render(): void {
         </Site>,
         document.getElementById("root")
     );
-};
+}
 
 render();
