@@ -82,3 +82,20 @@ exports[`button context-menu-item: 7 1`] = `
   menuitemcheckbox checked
 </li>
 `;
+
+exports[`button context-menu-item: 8 1`] = `
+<li
+  aria-checked={null}
+  className="context-menu-item"
+  role="separator"
+/>
+`;
+
+exports[`button context-menu-item: 9 1`] = `
+<li
+  aria-checked={null}
+  checked={true}
+  className="context-menu-item"
+  role="separator"
+/>
+`;

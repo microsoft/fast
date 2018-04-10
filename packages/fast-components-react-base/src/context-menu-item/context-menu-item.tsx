@@ -1,6 +1,6 @@
 import * as React from "react";
-import Foundation, {HandledProps} from "../foundation";
-import {IContextMenuItemClassNameContract} from "@microsoft/fast-components-class-name-contracts";
+import Foundation, { HandledProps } from "../foundation";
+import { IContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts";
 import {
     ContextMenuItemProps,
     IContextMenuItemHandledProps,
@@ -11,7 +11,8 @@ import {
 export enum ContextMenuItemRole {
     menuitem = "menuitem",
     menuitemcheckbox = "menuitemcheckbox",
-    menuitemradio = "menuitemradio"
+    menuitemradio = "menuitemradio",
+    separator = "separator"
 }
 
 /* tslint:disable-next-line */
@@ -46,7 +47,7 @@ class ContextMenuItem extends Foundation<IContextMenuItemHandledProps & IContext
                 aria-checked={this.ariaChecked}
                 role={ContextMenuItemRole[this.props.role] || ContextMenuItem.defaultProps.role}
             >
-                {this.props.children}
+                {this.props.role === ContextMenuItemRole.separator ? null : this.props.children}
             </li>
         );
     }
@@ -58,6 +59,7 @@ class ContextMenuItem extends Foundation<IContextMenuItemHandledProps & IContext
         return super.generateClassNames(this.props.managedClasses.contextMenuItem);
     }
 }
+
 
 export default ContextMenuItem;
 export * from "./context-menu-item.props";
