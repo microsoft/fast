@@ -16,14 +16,14 @@ const examples: ISnapshotTestSuite<IToggleHandledProps & IToggleManagedClasses> 
                 toggle_input: "toggle_input",
                 toggle_button: "toggle_button",
             },
-            children: 'Toggle label',
+            children: "Toggle label",
             disabled: false,
-            id: 'toggle01',
-            labelId: 'label01',
+            id: "toggle01",
+            labelId: "label01",
             selected: true,
-            selectedString: 'On',
-            statusLabelId: 'span01',
-            unselectedString: 'Off'
+            selectedString: "On",
+            statusLabelId: "span01",
+            unselectedString: "Off"
         }
     ]
 };

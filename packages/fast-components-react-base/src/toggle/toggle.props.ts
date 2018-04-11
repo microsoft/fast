@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IToggleClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts";
+import { IManagedClasses, IToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts";
 
 export interface IToggleHandledProps {
     children?: React.ReactNode | React.ReactNode[];
