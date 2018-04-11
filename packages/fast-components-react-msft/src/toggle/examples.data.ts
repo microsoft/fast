@@ -21,31 +21,31 @@ export default {
         {
             children: "Toggle label (default off)",
             disabled: false,
-            id: "toggle01",
-            labelId: "label01",
+            id: "toggle02",
+            labelId: "label02",
             selected: false,
             selectedString: "On",
-            statusLabelId: "span01",
+            statusLabelId: "span02",
             unselectedString: "Off"
         },
         {
             children: "Toggle label (disabled on)",
             disabled: true,
-            id: "toggle02",
-            labelId: "label02",
+            id: "toggle03",
+            labelId: "label03",
             selected: true,
             selectedString: "On",
-            statusLabelId: "span02",
+            statusLabelId: "span03",
             unselectedString: "Off"
         },
         {
             children: "Toggle label (disabled off)",
             disabled: true,
-            id: "toggle02",
-            labelId: "label02",
+            id: "toggle04",
+            labelId: "label04",
             selected: false,
             selectedString: "On",
-            statusLabelId: "span02",
+            statusLabelId: "span04",
             unselectedString: "Off"
         }
     ]

@@ -10,7 +10,12 @@ const examples: ISnapshotTestSuite<IToggleHandledProps & IToggleManagedClasses> 
     data: [
         {
             managedClasses: {
-                toggle: "toggle"            },
+                toggle: "toggle",
+                toggle_label: "toggle_label",
+                toggle_wrapper: "toggle_wrapper",
+                toggle_input: "toggle_input",
+                toggle_button: "toggle_button",
+            },
             children: 'Toggle label',
             disabled: false,
             id: 'toggle01',

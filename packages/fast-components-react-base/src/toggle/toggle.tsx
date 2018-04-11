@@ -66,6 +66,7 @@ class Toggle extends Foundation<IToggleHandledProps & IManagedClasses<IToggleCla
         if (this.props.labelId) {
             return(
                 <label
+                    className={this.props.managedClasses.toggle_label}
                     id={this.props.labelId}
                     htmlFor={this.props.id}
                 >
@@ -93,8 +94,9 @@ class Toggle extends Foundation<IToggleHandledProps & IManagedClasses<IToggleCla
                 aria-disabled={ this.props.disabled || null }
             >
                 {this.generateLabel()}
-                <div>
+                <div className={this.props.managedClasses.toggle_wrapper}>
                     <input
+                        className={this.props.managedClasses.toggle_input}
                         type='checkbox'
                         id={this.props.id}
                         defaultChecked={this.state.checked}
@@ -104,9 +106,11 @@ class Toggle extends Foundation<IToggleHandledProps & IManagedClasses<IToggleCla
                         value={this.generateToggleStateLabel()}
                         onChange={this.handleToggleChange}
                     />
-                    <span />
+                    <span className={this.props.managedClasses.toggle_button} />
                 </div>
-                <span id={this.props.statusLabelId}>
+                <span 
+                    id={this.props.statusLabelId}
+                >
                     {this.generateToggleStateLabel()}
                 </span>
             </div>
