@@ -26,7 +26,7 @@ const breakpoints: IBreakpoints = {
 };
 
 /* tslint:disable-next-line */
-class Image extends Foundation<IImageHandledProps & IManagedClasses<IImageClassNameContract>,  React.HTMLAttributes<HTMLImageElement | HTMLPictureElement>, {}> {
+class Image extends Foundation<IImageHandledProps & IManagedClasses<IImageClassNameContract>, React.HTMLAttributes<HTMLImageElement | HTMLPictureElement>, {}> {
     protected handledProps: HandledProps<IImageHandledProps & IManagedClasses<IImageClassNameContract>> = {
         managedClasses: void 0,
         alt: void(0),
@@ -38,29 +38,31 @@ class Image extends Foundation<IImageHandledProps & IManagedClasses<IImageClassN
         vp3: void(0),
         vp4: void(0),
         vp5: void(0),
-        vp6: void(0),
+        vp6: void(0)
     };
 
     /**
      * Renders the component
      */
     public render(): React.ReactElement<HTMLImageElement | HTMLPictureElement> {
+        if (!this.props.src && !this.props.vp1) {
+            return;
+        }
+
         if (this.props.src) {
             return (
                 <img
                     {...this.unhandledProps()}
-                    className={this.generateClassNames()}
+                    className={this.generateClasses()}
                     alt={this.props.alt}
                     src={this.props.src}
                 />
             );
         } else {
-            const classes: string = this.generateRoundClass(this.props.managedClasses.image);
-
             return (
                 <picture
                     {...this.unhandledProps()}
-                    className={this.generateClassNames()}
+                    className={this.generateClasses()}
                 >
                     {this.generateSourceElement(6)}
                     {this.generateSourceElement(5)}
@@ -68,7 +70,7 @@ class Image extends Foundation<IImageHandledProps & IManagedClasses<IImageClassN
                     {this.generateSourceElement(3)}
                     {this.generateSourceElement(2)}
                     {this.generateSourceElement(1)}
-                    {this.props.vp1 ? <img srcSet={this.props.vp1}src={this.props.vp1} alt={this.props.alt} className={classes}/> : null}
+                    <img srcSet={this.props.vp1} src={this.props.vp1} alt={this.props.alt} className={this.generateClasses(true)}/>
                 </picture>
             );
         }
@@ -77,20 +79,18 @@ class Image extends Foundation<IImageHandledProps & IManagedClasses<IImageClassN
     /**
      * Generates class names using optional props
      */
-    protected generateClassNames(): string {
-        let classNames: string = this.props.src ? this.props.managedClasses.image : this.props.managedClasses.picture;
+    protected generateClasses(isNestedImage: boolean = false): string {
+        let classNames: string = this.props.src || isNestedImage ? this.props.managedClasses.image : this.props.managedClasses.picture;
 
-        if (this.props.src) {
-            classNames = this.generateRoundClass(classNames);
+        if (this.props.src || isNestedImage) {
+            classNames = this.props.round ? `${classNames} ${this.props.managedClasses.image_round}` : classNames;
+        }
+
+        if (isNestedImage) {
+            return classNames;
         }
 
         return super.generateClassNames(classNames);
-    }
-
-    private generateRoundClass(className: string): string {
-        const classNames: string = this.props.round ? `${className} ${this.props.managedClasses.image_round}` : className;
-
-        return classNames;
     }
 
     /**

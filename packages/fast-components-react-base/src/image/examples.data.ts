@@ -9,14 +9,17 @@ const examples: ISnapshotTestSuite<IImageHandledProps & IImageMangedClasses> = {
     data: [
         {
             managedClasses: {
-                picture: "picture"
+                picture: "picture",
+                image: "image",
+                image_round: "image-round"
             },
-            vp6: "http://placehold.it/2048x600/2F2F2F/171717",
-            vp5: "http://placehold.it/1778x600/2F2F2F/171717",
-            vp4: "http://placehold.it/1399x600/2F2F2F/171717",
-            vp3: "http://placehold.it/1083x500/2F2F2F/171717",
-            vp2: "http://placehold.it/767x400/2F2F2F/171717",
-            vp1: "http://placehold.it/539x300/2F2F2F/171717",
+            round: true,
+            vp6: "https://placehold.it/2048x600/2F2F2F/171717",
+            vp5: "https://placehold.it/1778x600/2F2F2F/171717",
+            vp4: "https://placehold.it/1399x600/2F2F2F/171717",
+            vp3: "https://placehold.it/1083x500/2F2F2F/171717",
+            vp2: "https://placehold.it/767x400/2F2F2F/171717",
+            vp1: "https://placehold.it/539x300/2F2F2F/171717",
             alt: "Placeholder with grey background and dimension watermark without any imagery"
         }
     ]

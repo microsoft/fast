@@ -1,5 +1,5 @@
 /**
- * The classname contract for the media component
+ * The classname contract for the image component
  */
 export interface IImageClassNameContract {
     image?: string;
