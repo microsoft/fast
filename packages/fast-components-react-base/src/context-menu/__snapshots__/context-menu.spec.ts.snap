@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`context-menu context-menu: 0 1`] = `
+<ul
+  aria-hidden={true}
+  className="context-menu"
+>
+  child
+</ul>
+`;
