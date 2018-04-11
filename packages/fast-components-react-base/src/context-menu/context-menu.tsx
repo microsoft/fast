@@ -10,11 +10,14 @@ import {
 
 /* tslint:disable-next-line */
 class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuManagedClasses, IContextMenuUnhandledProps, {}> {
-    public static defaultProps: IContextMenuHandledProps = {};
+    public static defaultProps: IContextMenuHandledProps = {
+        open: false
+    };
 
     protected handledProps: HandledProps<IContextMenuHandledProps & IContextMenuManagedClasses> = {
+        children: void 0,
         managedClasses: void 0,
-        children: void 0
+        open: void 0
     };
 
     /**
@@ -22,8 +25,12 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
      */
     public render(): React.ReactElement<HTMLUListElement> {
         return (
-            <ul>
-                { this.props.children }
+            <ul
+                aria-hidden={!this.props.open}
+                className={this.generateClassNames()}
+                tabIndex={0}
+            >
+                {this.props.children}
             </ul>
         );
     }
