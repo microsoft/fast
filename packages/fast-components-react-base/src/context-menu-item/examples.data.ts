@@ -1,6 +1,7 @@
 import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts";
 import ContextMenuItem, { ContextMenuItemRole, IContextMenuItemHandledProps, IContextMenuItemManagedClasses } from "./context-menu-item";
+import { uniqueId } from "lodash-es";
 
 const managedClasses: IContextMenuItemManagedClasses = {
     managedClasses: {
@@ -14,55 +15,65 @@ const examples: ISnapshotTestSuite<IContextMenuItemHandledProps & IContextMenuIt
     data: [
         {
             ...managedClasses,
-            children: "child"
+            children: "child",
+            id: uniqueId()
         },
         {
             ...managedClasses,
             children: "child",
-            role: "invalid-role" as any
+            role: "invalid-role" as any,
+            id: uniqueId()
         },
         {
             ...managedClasses,
             children: "menuitem",
-            role: ContextMenuItemRole.menuitem
+            role: ContextMenuItemRole.menuitem,
+            id: uniqueId()
         },
         {
             ...managedClasses,
             children: "menuitemradio",
-            role: ContextMenuItemRole.menuitemradio
+            role: ContextMenuItemRole.menuitemradio,
+            id: uniqueId()
         },
         {
             ...managedClasses,
             children: "menuitemcheckbox",
-            role: ContextMenuItemRole.menuitemcheckbox
+            role: ContextMenuItemRole.menuitemcheckbox,
+            id: uniqueId()
         },
         {
             ...managedClasses,
-            role: ContextMenuItemRole.separator
+            role: ContextMenuItemRole.separator,
+            id: uniqueId()
         },
         {
             ...managedClasses,
             children: "menuitem checked",
             role: ContextMenuItemRole.menuitem,
-            checked: true
+            checked: true,
+            id: uniqueId()
         },
         {
             ...managedClasses,
             children: "menuitemradio checked",
             role: ContextMenuItemRole.menuitemradio,
-            checked: true
+            checked: true,
+            id: uniqueId()
         },
         {
             ...managedClasses,
             children: "menuitemcheckbox checked",
             role: ContextMenuItemRole.menuitemcheckbox,
-            checked: true
+            checked: true,
+            id: uniqueId()
         },
         {
             ...managedClasses,
             children: "separator checked with children",
             role: ContextMenuItemRole.separator,
-            checked: true
+            checked: true,
+            id: uniqueId()
         }
     ]
 };

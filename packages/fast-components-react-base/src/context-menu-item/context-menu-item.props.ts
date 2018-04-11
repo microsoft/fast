@@ -4,6 +4,11 @@ import { ContextMenuItemRole } from "./context-menu-item";
 
 export interface IContextMenuItemHandledProps {
     /**
+     * The id attribute of the context-menu-item
+     */
+    id: string;
+
+    /**
      * The children of the context-menu-item
      */
     children?: React.ReactNode;

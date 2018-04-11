@@ -17,13 +17,14 @@ export enum ContextMenuItemRole {
 
 /* tslint:disable-next-line */
 class ContextMenuItem extends Foundation<IContextMenuItemHandledProps & IContextMenuItemManagedClasses, IContextMenuItemUnhandledProps, {}> {
-    public static defaultProps: IContextMenuItemHandledProps = {
+    public static defaultProps: Partial<IContextMenuItemHandledProps> = {
         role: ContextMenuItemRole.menuitem
     };
 
     protected handledProps: HandledProps<IContextMenuItemHandledProps & IContextMenuItemManagedClasses> = {
         managedClasses: void 0,
-        children: void 0
+        children: void 0,
+        id: void 0
     };
 
     private get ariaChecked(): boolean | null {
@@ -43,6 +44,7 @@ class ContextMenuItem extends Foundation<IContextMenuItemHandledProps & IContext
         return (
             <li
                 {...this.unhandledProps()}
+                id={this.props.id}
                 className={this.generateClassNames()}
                 aria-checked={this.ariaChecked}
                 role={ContextMenuItemRole[this.props.role] || ContextMenuItem.defaultProps.role}
