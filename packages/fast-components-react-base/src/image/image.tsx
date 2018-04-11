@@ -5,7 +5,7 @@ import { IImageHandledProps, IImageMangedClasses, IImageUnhandledProps } from ".
 import { IImageClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts";
 
 /**
- * TODO: Hook viewports values into Styles
+ * TODO #239 #240: Hook viewports values into Styles
  */
 export interface IBreakpoints {
     vp1: number;
@@ -96,9 +96,9 @@ class Image extends Foundation<IImageHandledProps & IManagedClasses<IImageClassN
     /**
      * Generate a source element
      */
-    private generateSourceElement(breakpointsID: any): any {
-        const srcset: string = this.props[`vp${breakpointsID}`];
-        const vp: number = breakpoints[`vp${breakpointsID}`];
+    private generateSourceElement(breakpointsId: number): any {
+        const srcset: string = this.props[`vp${breakpointsId}`];
+        const vp: number = breakpoints[`vp${breakpointsId}`];
         const minWidth: number = vp;
 
         if (!srcset) {
