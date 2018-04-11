@@ -10,8 +10,6 @@ Teams spend significant time building parts of the design system (colors, variab
 [![Build Status](https://travis-ci.org/Microsoft/fast-dna.svg?branch=master)](https://travis-ci.org/Microsoft/fast-dna)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8a74621e634a6e9b9561/maintainability)](https://codeclimate.com/github/Microsoft/fast-dna/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/8a74621e634a6e9b9561/test_coverage)](https://codeclimate.com/github/Microsoft/fast-dna/test_coverage)
-![GitHub contributors](https://img.shields.io/github/contributors/cdnjs/cdnjs.svg)
-![GitHub commit activity the past week, 4 weeks, year](https://img.shields.io/github/commit-activity/y/eslint/eslint.svg)
 ![license](https://img.shields.io/github/license/mashape/apistatus.svg)
 
 ## Packages
