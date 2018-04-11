@@ -5,9 +5,8 @@ export interface IToggleHandledProps {
     children?: React.ReactNode | React.ReactNode[];
     disabled?: boolean;
     id: string;
-    labelId: string;
-    onClick?: (event?: React.MouseEvent<HTMLElement>) => void;
-    selected: boolean;
+    labelId?: string;
+    selected?: boolean;
     selectedString: string;
     statusLabelId: string;
     unselectedString: string;

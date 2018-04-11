@@ -47,21 +47,15 @@ class Toggle extends Foundation<IToggleHandledProps & IManagedClasses<IToggleCla
     }
 
     /**
-     * Passes toggle onClick to consumer
-     */
-    private handleClickEvent = (e) => {
-        if (this.props.onClick) {
-            this.props.onClick(e);
-        }
-    }
-
-    /**
      * Handles onChange as a controlled component
      */
     private handleToggleChange = (e) => {
         this.setState({checked: !this.state.checked})
     }
 
+    /**
+     * Generates label if it exists
+     */
     private generateLabel() {
         if (this.props.labelId) {
             return(
@@ -102,7 +96,6 @@ class Toggle extends Foundation<IToggleHandledProps & IManagedClasses<IToggleCla
                         defaultChecked={this.state.checked}
                         aria-describedby={this.props.statusLabelId}
                         disabled={this.props.disabled}
-                        onClick={this.handleClickEvent}
                         value={this.generateToggleStateLabel()}
                         onChange={this.handleToggleChange}
                     />
