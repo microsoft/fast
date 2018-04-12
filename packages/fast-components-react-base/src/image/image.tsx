@@ -57,7 +57,9 @@ class Image extends Foundation<IImageHandledProps & IManagedClasses<IImageClassN
                     {...this.unhandledProps()}
                     className={this.generateClasses()}
                     alt={this.props.alt}
+                    sizes={this.props.sizes ? this.props.sizes : null}
                     src={this.props.src}
+                    srcSet={this.props.srcSet ? this.props.srcSet : null}
                 />
             );
         } else {
@@ -72,7 +74,7 @@ class Image extends Foundation<IImageHandledProps & IManagedClasses<IImageClassN
                     {this.generateSourceElement(3)}
                     {this.generateSourceElement(2)}
                     {this.generateSourceElement(1)}
-                    <img srcSet={this.props.vp1} src={this.props.vp1} alt={this.props.alt} className={this.generateClasses(true)}/>
+                    <img src={this.props.vp1} alt={this.props.alt} className={this.generateClasses(true)}/>
                 </picture>
             );
         }

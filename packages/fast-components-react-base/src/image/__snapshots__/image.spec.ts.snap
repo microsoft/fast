@@ -32,7 +32,6 @@ exports[`image image: 0 1`] = `
     alt="Placeholder with grey background and dimension watermark without any imagery"
     className="image image-round"
     src="https://placehold.it/539x300/2F2F2F/171717"
-    srcSet="https://placehold.it/539x300/2F2F2F/171717"
   />
 </picture>
 `;
