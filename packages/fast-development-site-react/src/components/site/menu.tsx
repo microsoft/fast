@@ -20,7 +20,8 @@ export interface ISiteNavManagedClasses {
 const style: ComponentStyles<ISiteNavManagedClasses, IDevSiteDesignSystem> = {
     site__menu: {
         position: "relative",
-        display: "inline-block"
+        display: "inline-block",
+        float: "left"
     },
     site__menu__nav: {
         position: "absolute",

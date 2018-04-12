@@ -17,8 +17,8 @@ const style: ComponentStyles<IShellHeaderManagedClasses, IDevSiteDesignSystem> =
         color: (config: IDevSiteDesignSystem): string => {
             return config.backgroundColor;
         },
-        textAlign: "center",
-        padding: "12px",
+        textAlign: "left",
+        padding: "8px",
         minHeight: "24px"
     }
 };

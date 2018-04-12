@@ -11,9 +11,7 @@ export interface IShellActionBarManagedClasses {
 
 const style: ComponentStyles<IShellActionBarManagedClasses, IDevSiteDesignSystem> = {
     shell__action_bar: {
-        background: (config: IDevSiteDesignSystem): string => {
-            return config.lightGrey;
-        },
+        background: "#FFFFFF",
         padding: (config: IDevSiteDesignSystem): string => {
             return `${config.navigationBarHeight / 4}px`;
         },

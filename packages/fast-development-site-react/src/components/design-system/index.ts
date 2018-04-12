@@ -10,8 +10,8 @@ export interface IDevSiteDesignSystem {
 const devSiteDesignSystemDefaults: IDevSiteDesignSystem = {
     foregroundColor: "#000",
     backgroundColor: "#FFF",
-    brandColor: "#0078D4",
-    lightGrey: "#EEEEEE",
+    brandColor: "#343434",
+    lightGrey: "#F4F5F6",
     navigationBarHeight: 48,
     categoryItemComponentMinWidth: 80
 };

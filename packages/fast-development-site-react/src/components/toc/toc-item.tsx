@@ -13,22 +13,30 @@ export interface ITocItemProps {
 }
 
 export interface ITocItemManagedClasses {
+    a: string;
     toc__item: string;
     toc__item_active: string;
 }
 
 export enum itemType {
+    a = "a",
     tocMenu = "tocMenu",
     link = "link"
 }
 
 const style: ComponentStyles<ITocItemManagedClasses, IDevSiteDesignSystem> = {
+    a: {
+        color: "#000000",
+        textDecoration: "none"
+    },
     toc__item: {
-        padding: "6px 12px",
-        display: "block"
+        padding: "10px 12px",
+        display: "block",
+        color: "#000000"
     },
     toc__item_active: {
-        background: "lightgray"
+        background: "#FFFFFF",
+        color: "#000000"
     }
 };
 
@@ -46,7 +54,7 @@ class TocItem extends React.Component<ITocItemProps & IManagedClasses<ITocItemMa
 
     private renderLink(): JSX.Element {
         return (
-            <Link to={this.props.to}>
+            <Link to={this.props.to} className={this.props.managedClasses.a}>
                 {this.props.children}
             </Link>
         );
