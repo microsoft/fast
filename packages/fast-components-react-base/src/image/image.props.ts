@@ -20,6 +20,11 @@ export interface IImageHandledProps {
     round?: boolean;
 
     /**
+     * The HTML sizes attribute for the image element
+     */
+    sizes?: string;
+
+    /**
      * The HTML src attribute for the image element (specifying src will chose the image element rather than the picture element)
      */
     src?: string;
@@ -28,11 +33,6 @@ export interface IImageHandledProps {
      * The HTML srcSet attribute for the image element
      */
     srcSet?: string;
-
-    /**
-     * The HTML sizes attribute for the image element
-     */
-    sizes?: string;
 
     /**
      * The viewport 1 (320px-539px) source address
