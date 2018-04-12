@@ -32,7 +32,9 @@ const style: ComponentStyles<ISiteNavManagedClasses, IDevSiteDesignSystem> = {
     site__menu__button: {
         width: "32px",
         height: "32px",
-        padding: "0"
+        padding: "0",
+        border: "None",
+        background: "None"
     },
     site__menu__button__svg: {
         fill: "#FFFFFF"

@@ -18,8 +18,9 @@ const style: ComponentStyles<IShellHeaderManagedClasses, IDevSiteDesignSystem> =
             return config.backgroundColor;
         },
         textAlign: "left",
-        padding: "8px",
-        minHeight: "24px"
+        padding: "3px",
+        minHeight: "24px",
+        overflow: "hidden"
     }
 };
 

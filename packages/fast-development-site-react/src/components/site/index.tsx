@@ -35,11 +35,21 @@ export enum SiteSlot {
 }
 
 export interface ISiteManagedClasses {
+    site__paneToc: string;
+    site__paneTocTitle: string;
     site__paneToggleButton: string;
     site__paneTogglButtonIcon: string;
 }
 
 const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
+    site__paneToc: {
+        margin: "0px -12px",
+        padding: "0"
+    },
+    site__paneTocTitle: {
+        margin: "0px -12px",
+        padding: "0"
+    },
     site__paneToggleButton: {
         width: "32px",
         height: "32px",
@@ -110,7 +120,9 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 <ShellPane collapsed={this.state.tableOfContentsCollapsed}>
                     {this.getPaneCollapseToggle()}
                     {this.getSlotItems(this, ShellSlot.pane)}
-                    {this.getRootToc(this.props.children, SiteSlot.category, path, "/")}
+                    <ul className={this.props.managedClasses.site__paneToc}>
+                        {this.getRootToc(this.props.children, SiteSlot.category, path, "/")}
+                    </ul>
                 </ShellPane>
                 <ShellCanvas>
                     <ShellActionBar>
@@ -272,9 +284,9 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         }
 
         return (
-            <React.Fragment>
+            <span>
                 {icon ? <span className={this.props.managedClasses.site__paneTogglButtonIcon}>{icon}</span> : null} {name}
-            </React.Fragment>
+            </span>
         );
     }
 

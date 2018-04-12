@@ -27,10 +27,12 @@ export enum itemType {
 const style: ComponentStyles<ITocItemManagedClasses, IDevSiteDesignSystem> = {
     a: {
         color: "#000000",
-        textDecoration: "none"
+        textDecoration: "none",
+        display: "block",
+        padding: "10px 12px",
     },
     toc__item: {
-        padding: "10px 12px",
+        padding: "0px 12px",
         display: "block",
         color: "#000000"
     },

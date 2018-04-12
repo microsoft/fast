@@ -26,6 +26,12 @@ const dropdownInactive: string = "PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllci
 const style: ComponentStyles<ITocMenuManagedClasses, IDevSiteDesignSystem> = {
     toc__menu: {},
     toc__menu__button: {
+        fill: "None",
+        background: "None",
+        border: "None",
+        padding: "10px 12px",
+        width: "100%",
+        textAlign: "Left",
         "&[aria-expanded='true']": {
             "&::after": {
                 content: `url('data:image/svg+xml;base64,${dropdownActive}')`
@@ -36,8 +42,7 @@ const style: ComponentStyles<ITocMenuManagedClasses, IDevSiteDesignSystem> = {
             fill: "white",
             display: "inline-block",
             width: "16px",
-            height: "16px",
-            paddingLeft: "10px"
+            height: "16px"
         }
     }
 };
