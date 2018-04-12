@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { get } from "lodash-es";
 import Foundation, { HandledProps } from "../foundation";
 import {
     ITypographyHandledProps,
@@ -44,9 +45,7 @@ class Typography extends Foundation<ITypographyHandledProps & IManagedClasses<IT
     }
 
     protected generateClassNames(): string {
-        const classNames: string = this.getManagedClassName();
-
-        return super.generateClassNames(classNames);
+        return super.generateClassNames(this.getManagedClassName());
     }
 
     /**
@@ -76,27 +75,30 @@ class Typography extends Foundation<ITypographyHandledProps & IManagedClasses<IT
         }
     }
 
+    /**
+     * Gets managed class names based on props
+     */
     private getManagedClassName(): string {
         switch (this.props.typeLevel) {
             case TypeLevel._1:
             default:
-                return this.props.managedClasses.typography_1;
+                return get(this.props, "managedClasses.typography_1");
             case TypeLevel._2:
-                return this.props.managedClasses.typography_2;
+                return get(this.props, "managedClasses.typography_2");
             case TypeLevel._3:
-                return this.props.managedClasses.typography_3;
+                return get(this.props, "managedClasses.typography_3");
             case TypeLevel._4:
-                return this.props.managedClasses.typography_4;
+                return get(this.props, "managedClasses.typography_4");
             case TypeLevel._5:
-                return this.props.managedClasses.typography_5;
+                return get(this.props, "managedClasses.typography_5");
             case TypeLevel._6:
-                return this.props.managedClasses.typography_6;
+                return get(this.props, "managedClasses.typography_6");
             case TypeLevel._7:
-                return this.props.managedClasses.typography_7;
+                return get(this.props, "managedClasses.typography_7");
             case TypeLevel._8:
-                return this.props.managedClasses.typography_8;
+                return get(this.props, "managedClasses.typography_8");
             case TypeLevel._9:
-                return this.props.managedClasses.typography_9;
+                return get(this.props, "managedClasses.typography_9");
         }
     }
 }

@@ -27,7 +27,7 @@ export enum TypeLevel {
 
 export interface ITypographyHandledProps {
     /**
-     * The component children
+     * The typographic content
      */
     children?: React.ReactNode | React.ReactNode[];
 
