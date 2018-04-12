@@ -12,6 +12,9 @@ export interface ITypeRampItemConfig {
     lineHeight: number;
 }
 
+/**
+ * The type ramp item type
+ */
 export type ITypeRampItem = Partial<KeyOfToType<IBreakpoints, ITypeRampItemConfig>>;
 
 /**
@@ -121,18 +124,6 @@ export const typeRamp: ITypeRamp = {
         }
     }
 };
-
-/**
- * The typographic items full JSS configuration
- */
-export interface ITypographyItemConfig {
-    fontSize: string;
-    lineHeight: string;
-}
-
-export interface ITypographyItem {
-    [key: string]: ITypographyItemConfig | object;
-}
 
 /**
  * Applies a type ramp config instance based on viewport
