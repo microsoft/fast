@@ -48,7 +48,10 @@ class Typography extends Foundation<ITypographyHandledProps & IManagedClasses<IT
      * Generates class names based on props
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(this.getManagedClassName());
+        const classes: string = this.props.typeLevel ?
+            get(this.props, `managedClasses.typography_${this.props.typeLevel}`) : get(this.props, "managedClasses.typography_1");
+
+        return super.generateClassNames(classes);
     }
 
     /**
@@ -56,33 +59,6 @@ class Typography extends Foundation<ITypographyHandledProps & IManagedClasses<IT
      */
     private generateHTMLTag(): string {
         return TypographyTag[this.props.tag] || TypographyTag.p;
-    }
-
-    /**
-     * Gets managed class names based on props
-     */
-    private getManagedClassName(): string {
-        switch (this.props.typeLevel) {
-            default:
-            case TypeLevel._1:
-                return get(this.props, "managedClasses.typography_1");
-            case TypeLevel._2:
-                return get(this.props, "managedClasses.typography_2");
-            case TypeLevel._3:
-                return get(this.props, "managedClasses.typography_3");
-            case TypeLevel._4:
-                return get(this.props, "managedClasses.typography_4");
-            case TypeLevel._5:
-                return get(this.props, "managedClasses.typography_5");
-            case TypeLevel._6:
-                return get(this.props, "managedClasses.typography_6");
-            case TypeLevel._7:
-                return get(this.props, "managedClasses.typography_7");
-            case TypeLevel._8:
-                return get(this.props, "managedClasses.typography_8");
-            case TypeLevel._9:
-                return get(this.props, "managedClasses.typography_9");
-        }
     }
 }
 
