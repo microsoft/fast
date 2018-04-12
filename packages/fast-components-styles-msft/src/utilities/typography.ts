@@ -134,6 +134,9 @@ export interface ITypographyItem {
     [key: string]: ITypographyItemConfig | object;
 }
 
+/**
+ * Applies a type ramp config instance based on viewport
+ */
 export function applyType(typeConfig: keyof ITypeRamp, viewport: keyof ITypeRampItem): ICSSRules<IDesignSystem> {
     return {
         fontSize: toPx(typeRamp[typeConfig][viewport].fontSize),
