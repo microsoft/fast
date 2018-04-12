@@ -1,57 +1,21 @@
 import * as React from "react";
 import {ICheckboxClassNameContract, IManagedClasses} from "@microsoft/fast-components-class-name-contracts";
 
-// export interface ICheckboxProps {
-
-//     children?: React.ReactNode | React.ReactNode[];
-// }
-export interface ICheckboxItemCommon {
-
-    /**
-     * The disabled state
-     */
-    disabled?: boolean;
-
+export interface ICheckboxHandledProps {
     /**
      * The checked state
      */
     checked?: boolean;
 
     /**
+     * The textual content
+     */
+    text?: string;
+
+    /**
      * The indeterminate option
      */
     indeterminate?: boolean;
-
-    /**
-     * The HTML id attribute
-     */
-    id?: string;
-
-    /**
-     * The HTML name attribute
-     */
-    name?: string;
-
-    /**
-     * The HTML value attribute
-     */
-    value?: string;
-
-    /**
-     * The textual content
-     */
-    text: string;
-}
-
-export interface ICheckboxHandledProps {
-
-    /**
-     * The checkbox items
-     */
-    items: ICheckboxItem[];
-}
-
-export interface ICheckboxItem extends ICheckboxItemCommon {
 
     /**
      * The onChange event handler

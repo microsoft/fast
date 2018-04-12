@@ -10,13 +10,10 @@ const examples: ISnapshotTestSuite<ICheckboxHandledProps & ICheckboxManagedClass
     data: [
         {
             managedClasses: {
-                checkbox: "checkbox"
-            },
-            items: [
-                {
-                    text: "Sign up"
-                }
-            ]
+                checkbox: "checkbox",
+                checkbox_input: "checkbox-input",
+                checkbox_label: "checkbox-label"
+            }
         }
     ]
 };

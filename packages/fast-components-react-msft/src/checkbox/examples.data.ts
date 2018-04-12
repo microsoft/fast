@@ -9,11 +9,7 @@ export default {
     component: Checkbox,
     data: [
         {
-            items: [
-                {
-                    text: "Sign up"
-                }
-            ]
+            text: "Sign up"
         }
     ]
 } as ISnapshotTestSuite<ICheckboxHandledProps>;
