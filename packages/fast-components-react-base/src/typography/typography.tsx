@@ -44,6 +44,9 @@ class Typography extends Foundation<ITypographyHandledProps & IManagedClasses<IT
         );
     }
 
+    /**
+     * Generates class names based on props
+     */
     protected generateClassNames(): string {
         return super.generateClassNames(this.getManagedClassName());
     }
@@ -52,27 +55,7 @@ class Typography extends Foundation<ITypographyHandledProps & IManagedClasses<IT
      * Creates tags for rendering based on href
      */
     private generateHTMLTag(): string {
-        switch (this.props.tag) {
-            case TypographyTag.caption:
-                return "caption";
-            case TypographyTag.h1:
-                return "h1";
-            case TypographyTag.h2:
-                return "h2";
-            case TypographyTag.h3:
-                return "h3";
-            case TypographyTag.h4:
-                return "h4";
-            case TypographyTag.h5:
-                return "h5";
-            case TypographyTag.h6:
-                return "h6";
-            case TypographyTag.span:
-                return "span";
-            case TypographyTag.p:
-            default:
-                return "p";
-        }
+        return TypographyTag[this.props.tag] || TypographyTag.p;
     }
 
     /**
