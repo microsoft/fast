@@ -78,7 +78,7 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
     /**
      * get the ID props of all child menu items
      */
-    private getChildIds(): string[] {
+    private get childIds(): string[] {
         return React.Children.map(this.props.children, (child: React.ReactElement<ContextMenuItemProps>): string => child.props.id) || [];
     }
 
@@ -87,7 +87,7 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
      */
     private handleMenuFocus = (e: React.FocusEvent<HTMLUListElement>): void => {
         this.setState({
-            activeDescendent: this.getChildIds()[0] || ""
+            activeDescendent: this.childIds[0] || ""
         });
     }
 
@@ -115,32 +115,30 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
                 // Navigate up and wrap
                 break;
 
+            case KeyCodes.Enter:
             case KeyCodes.Space:
+                document.getElementById(this.state.activeDescendent).click();
                 // When menuitemcheckbox, change state without closing menu
                 // when menuitemradio, changes the state of all radios accordingly
                 // when menuitem, active the menu item and close the menu
                 break;
 
-            case KeyCodes.Enter:
-                // Active item and close the menu
-                break;
-
             case KeyCodes.End:
-                let ids = this.getChildIds();
-                this.setState({
-                    activeDescendent: ids[ids.length - 1] || ""
-                });
                 // Navigate to the last item
+                this.setState({
+                    activeDescendent: this.childIds[this.childIds.length] || ""
+                });
                 break;
               
             case KeyCodes.Home:  
+                // Navigate to the first item
                 this.setState({
-                    activeDescendent: this.getChildIds()[0] || ""
+                    activeDescendent: this.childIds[0] || ""
                 });
 
-                // Navigate to the first item
                 break;
 
+                
             case KeyCodes.Escape:
                 // Close the menu
                 if (isFunction(this.props.onClose)) {

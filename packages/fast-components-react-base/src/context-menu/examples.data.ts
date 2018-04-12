@@ -10,7 +10,10 @@ function contextMenuItemPropFactory(): ContextMenuItemProps {
         managedClasses: {
             contextMenuItem: "foo",
         },
-        id: uniqueId()
+        id: uniqueId(),
+        onClick: (e: any) => {
+            console.log(e);
+        }
     }
 }
 
