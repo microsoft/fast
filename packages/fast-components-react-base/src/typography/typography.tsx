@@ -80,8 +80,8 @@ class Typography extends Foundation<ITypographyHandledProps & IManagedClasses<IT
      */
     private getManagedClassName(): string {
         switch (this.props.typeLevel) {
-            case TypeLevel._1:
             default:
+            case TypeLevel._1:
                 return get(this.props, "managedClasses.typography_1");
             case TypeLevel._2:
                 return get(this.props, "managedClasses.typography_2");
