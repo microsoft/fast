@@ -4,6 +4,9 @@
 import ButtonStyles from "./button";
 export { ButtonStyles };
 
+import ToggleStyles from "./toggle";
+export {ToggleStyles};
+
 /**
  * Export design system defaults and typings
  */

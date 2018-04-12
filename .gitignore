@@ -63,3 +63,9 @@ dist/
 
 # Ignore build www directories
 www/
+
+#Ignore Mac .DS_Store
+.DS_Store
+
+#Ignore VSCode
+.vscode/
