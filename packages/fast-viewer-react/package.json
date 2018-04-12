@@ -34,7 +34,7 @@
         "functions": 57,
         "lines": 67,
         "statements": 68
-        }
+      }
     },
     "testRegex": "(/__tests__/.*(test|spec))\\.(ts|tsx)$",
     "transform": {
@@ -58,13 +58,13 @@
   "peerDependencies": {
     "jss": "^9.8.0",
     "jss-preset-default": "^4.3.0",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0"
   },
   "devDependencies": {
     "@microsoft/fast-tslint-rules": "^1.0.2",
     "@types/jest": "^22.1.1",
-    "@types/react": "^16.0.0",
+    "@types/react": "^16.3.0",
     "@types/react-dom": "^16.0.3",
     "@types/react-redux": "^5.0.14",
     "@types/react-router": "^4.0.21",
@@ -72,6 +72,10 @@
     "fork-ts-checker-webpack-plugin": "^0.4.0",
     "html-webpack-plugin": "^3.0.0",
     "jest": "^22.2.1",
+    "jss": "^9.8.1",
+    "jss-preset-default": "^4.3.0",
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "react-test-renderer": "^16.2.0",
@@ -85,11 +89,5 @@
     "webpack": "^4.0.1",
     "webpack-cli": "^2.0.11",
     "webpack-dev-server": "^3.1.0"
-  },
-  "dependencies": {
-    "jss": "^9.8.0",
-    "jss-preset-default": "^4.3.0",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0"
   }
 }
