@@ -1,5 +1,6 @@
 import * as React from "react";
 import Foundation, { HandledProps } from "../foundation";
+import {get} from "lodash-es";
 import { IContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts";
 import {
     ContextMenuItemProps,
@@ -8,34 +9,14 @@ import {
     IContextMenuItemUnhandledProps,
 } from "./context-menu-item.props";
 
-export enum ContextMenuItemRole {
-    menuitem = "menuitem",
-    menuitemcheckbox = "menuitemcheckbox",
-    menuitemradio = "menuitemradio",
-    separator = "separator"
-}
 
-/* tslint:disable-next-line */
 class ContextMenuItem extends Foundation<IContextMenuItemHandledProps & IContextMenuItemManagedClasses, IContextMenuItemUnhandledProps, {}> {
-    public static defaultProps: Partial<IContextMenuItemHandledProps> = {
-        role: ContextMenuItemRole.menuitem
-    };
 
     protected handledProps: HandledProps<IContextMenuItemHandledProps & IContextMenuItemManagedClasses> = {
         managedClasses: void 0,
         children: void 0,
         id: void 0
     };
-
-    private get ariaChecked(): boolean | null {
-        switch (ContextMenuItemRole[this.props.role]) {
-            case ContextMenuItemRole.menuitemcheckbox:
-            case ContextMenuItemRole.menuitemradio:
-                return Boolean(this.props.checked);
-            default:
-                return null;
-        }
-    }
 
     /**
      * Renders the component
@@ -46,10 +27,9 @@ class ContextMenuItem extends Foundation<IContextMenuItemHandledProps & IContext
                 {...this.unhandledProps()}
                 id={this.props.id}
                 className={this.generateClassNames()}
-                aria-checked={this.ariaChecked}
-                role={ContextMenuItemRole[this.props.role] || ContextMenuItem.defaultProps.role}
+                role="menuitem"
             >
-                {this.props.role === ContextMenuItemRole.separator ? null : this.props.children}
+                {this.props.children}
             </li>
         );
     }
@@ -58,7 +38,7 @@ class ContextMenuItem extends Foundation<IContextMenuItemHandledProps & IContext
      * Create class-names
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(this.props.managedClasses.contextMenuItem);
+        return super.generateClassNames(get(this.props.managedClasses, "contextMenuItem"));
     }
 }
 

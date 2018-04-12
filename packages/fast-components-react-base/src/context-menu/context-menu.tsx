@@ -9,6 +9,7 @@ import {
 } from "./context-menu.props";
 import {ContextMenuItemProps} from "../context-menu-item";
 import KeyCodes from "../utilities/keycodes";
+import {isFunction} from "lodash-es";
 
 export interface IContextMenuState {
     activeDescendent: string;
@@ -20,7 +21,7 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
         super(props);
 
         this.state = {
-            activeDescendent: null
+            activeDescendent: ""
         };
     }
 
@@ -78,9 +79,7 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
      * get the ID props of all child menu items
      */
     private getChildIds(): string[] {
-        return React.Children.count(this.props.children) > 0
-            ? React.Children.map(this.props.children, (child: React.ReactElement<ContextMenuItemProps>): string => child.props.id)
-            : []
+        return React.Children.map(this.props.children, (child: React.ReactElement<ContextMenuItemProps>): string => child.props.id) || [];
     }
 
     /**
@@ -88,7 +87,7 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
      */
     private handleMenuFocus = (e: React.FocusEvent<HTMLUListElement>): void => {
         this.setState({
-            activeDescendent: this.getChildIds()[0] || null
+            activeDescendent: this.getChildIds()[0] || ""
         });
     }
 
@@ -127,15 +126,27 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
                 break;
 
             case KeyCodes.End:
+                let ids = this.getChildIds();
+                this.setState({
+                    activeDescendent: ids[ids.length - 1] || ""
+                });
                 // Navigate to the last item
                 break;
               
             case KeyCodes.Home:  
+                this.setState({
+                    activeDescendent: this.getChildIds()[0] || ""
+                });
+
                 // Navigate to the first item
                 break;
 
             case KeyCodes.Escape:
                 // Close the menu
+                if (isFunction(this.props.onClose)) {
+                    this.props.onClose();
+                }
+
                 break;
         }
     }
