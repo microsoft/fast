@@ -1,8 +1,0 @@
-export * from "./button";
-export * from "./divider";
-export * from "./image";
-<<<<<<< HEAD
-export * from "./toggle";
-=======
->>>>>>> New Image Component
-export * from "./managed-classes";
