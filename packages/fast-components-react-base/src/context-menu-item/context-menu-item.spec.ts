@@ -1,6 +1,6 @@
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 
-describe("button", (): void => {
+describe("context-menu-item", (): void => {
     generateSnapshots(examples);
 });

@@ -8,7 +8,7 @@ import { uniqueId } from "lodash-es";
 function contextMenuItemPropFactory(): ContextMenuItemProps {
     return {
         managedClasses: {
-            contextMenuItem: "foo"
+            contextMenuItem: "foo",
         },
         id: uniqueId()
     }
@@ -16,7 +16,8 @@ function contextMenuItemPropFactory(): ContextMenuItemProps {
 
 const managedClasses: IContextMenuManagedClasses = {
     managedClasses: {
-        contextMenu: "context-menu"
+        contextMenu: "context-menu",
+        contextMenu_open: "open"
     }
 };
 
