@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`toggle toggle: 0 1`] = `
+<div
+  aria-disabled={null}
+  className="toggle"
+>
+  <label
+    className="toggle_label"
+    htmlFor="toggle01"
+    id="label01"
+  >
+    Toggle label
+  </label>
+  <div
+    className="toggle_wrapper"
+  >
+    <input
+      aria-describedby="span01"
+      className="toggle_input"
+      defaultChecked={true}
+      disabled={false}
+      id="toggle01"
+      onChange={[Function]}
+      type="checkbox"
+      value="On"
+    />
+    <span
+      className="toggle_button"
+    />
+  </div>
+  <span
+    id="span01"
+  >
+    On
+  </span>
+</div>
+`;
