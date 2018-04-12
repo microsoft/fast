@@ -1,11 +1,14 @@
-import ButtonExample from "../src/button/examples.data";
-export {ButtonExample};
+import ButtonExamples from "../src/button/examples.data";
+export { ButtonExamples };
 
 import DividerExample from "../src/divider/examples.data";
-export {DividerExample};
+export { DividerExample };
 
 import ImageExamples from "../src/image/examples.data";
 export {ImageExamples};
 
 import ToggleExamples from "../src/toggle/examples.data";
-export {ToggleExamples};
+export { ToggleExamples };
+
+import TypographyExamples from "../src/typography/examples.data";
+export { TypographyExamples };

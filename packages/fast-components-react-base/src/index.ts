@@ -17,3 +17,7 @@ export * from "./image";
 import Toggle from "./toggle";
 export { Toggle };
 export * from "./toggle";
+
+import Typography from "./typography";
+export { Typography };
+export * from "./typography";
