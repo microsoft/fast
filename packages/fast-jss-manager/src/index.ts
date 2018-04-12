@@ -13,7 +13,7 @@ export type CSSRuleResolver<T> = (config?: T) => string;
  * property functions that resolve to a CSS value.
  */
 export interface ICSSRules<T> {
-    [rule: string]: ICSSRules<T> | CSSRuleResolver<T> | string | object;
+    [rule: string]: ICSSRules<T> | CSSRuleResolver<T> | string;
 }
 
 /**
