@@ -29,12 +29,12 @@
     "@microsoft/fast-glyphs-msft": "^1.0.0",
     "@microsoft/fast-tslint-rules": "^1.0.4",
     "@polymer/polymer": "^3.0.0-pre.10",
-    "@types/react": "^16.0.0",
+    "@types/react": "^16.3.0",
     "@types/react-dom": "^16.0.4",
     "fork-ts-checker-webpack-plugin": "^0.4.1",
     "html-webpack-plugin": "^3.0.4",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0",
     "react-router-dom": "^4.2.2",
     "rimraf": "^2.6.2",
     "ts-loader": "^4.0.0",
@@ -48,8 +48,8 @@
     "yargs": "^11.0.0"
   },
   "peerDependencies": {
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0",
     "react-router-dom": "^4.0.0"
   }
 }
