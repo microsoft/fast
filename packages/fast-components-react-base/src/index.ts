@@ -2,6 +2,10 @@ import Button from "./button";
 export { Button };
 export * from "./button";
 
+import Checkbox from "./checkbox";
+export {Checkbox};
+export * from "./checkbox";
+
 import Divider from "./divider";
 export { Divider };
 export * from "./divider";

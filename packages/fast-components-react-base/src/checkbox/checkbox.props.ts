@@ -1,5 +1,5 @@
 import * as React from "react";
-import {ICheckboxClassNameContract, IManagedClasses} from "@microsoft/fast-components-class-name-contracts";
+import { ICheckboxClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts";
 
 export interface ICheckboxHandledProps {
     /**
