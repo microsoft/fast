@@ -6,7 +6,7 @@ import { toPx } from "../utilities/units";
 const styles: ComponentStyles<IHypertextClassNameContract, IDesignSystem> = {
     hypertext: {
         borderBottom: (config: IDesignSystem): string => {
-            return `1px solid ${config.brandColor}`;
+            return `${toPx(1)} solid ${config.brandColor}`;
         },
         color: (config: IDesignSystem): string => {
             return config.brandColor;
@@ -15,7 +15,7 @@ const styles: ComponentStyles<IHypertextClassNameContract, IDesignSystem> = {
         textDecoration: "none",
         "&:hover, &:focus": {
             borderBottom: (config: IDesignSystem): string => {
-                return `2px solid ${config.brandColor}`;
+                return `${toPx(2)} solid ${config.brandColor}`;
             }
         }
     }
