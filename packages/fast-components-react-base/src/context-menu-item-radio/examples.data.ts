@@ -1,6 +1,6 @@
 import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts";
-import ContextMenuItemRadio, { IContextMenuItemRadioHandledProps, IContextMenuItemRadioManagedClasses } from "./context-menu-item-radio";
+import ContextMenuItemRadio, { ContextMenuItemRadioProps, IContextMenuItemRadioHandledProps, IContextMenuItemRadioManagedClasses } from "./context-menu-item-radio";
 import { uniqueId } from "lodash-es";
 
 const managedClasses: IContextMenuItemRadioManagedClasses = {
@@ -16,7 +16,9 @@ const examples: ISnapshotTestSuite<IContextMenuItemRadioHandledProps & IContextM
         {
             ...managedClasses,
             children: "child",
-            id: uniqueId()
+            checked: true,
+            id: uniqueId(),
+            onChange: (item: React.ReactElement<ContextMenuItemRadioProps>) => { console.log(item) }
         }
     ]
 };
