@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { get } from "lodash-es";
 import Foundation, { HandledProps } from "../foundation";
-
 import { IToggleHandledProps, IToggleManagedClasses, IToggleUnhandledProps } from "./toggle.props";
 import { IManagedClasses, IToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts";
 
@@ -50,9 +50,9 @@ class Toggle extends Foundation<IToggleHandledProps & IManagedClasses<IToggleCla
                 aria-disabled={this.props.disabled || null}
             >
                 {this.generateLabel()}
-                <div className={this.props.managedClasses.toggle_wrapper}>
+                <div className={get(this.props, "managedClasses.toggle_wrapper")}>
                     <input
-                        className={this.props.managedClasses.toggle_input}
+                        className={get(this.props, "managedClasses.toggle_input")}
                         type="checkbox"
                         id={this.props.id}
                         defaultChecked={this.state.checked}
@@ -61,7 +61,7 @@ class Toggle extends Foundation<IToggleHandledProps & IManagedClasses<IToggleCla
                         value={this.generateToggleStateLabel()}
                         onChange={this.handleToggleChange}
                     />
-                    <span className={this.props.managedClasses.toggle_button} />
+                    <span className={get(this.props, "managedClasses.toggle_button")} />
                 </div>
                 <span
                     id={this.props.statusLabelId}
@@ -76,7 +76,7 @@ class Toggle extends Foundation<IToggleHandledProps & IManagedClasses<IToggleCla
      * Generates class names
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(this.props.managedClasses.toggle);
+        return super.generateClassNames(get(this.props, "managedClasses.toggle"));
     }
 
     /**
@@ -100,7 +100,7 @@ class Toggle extends Foundation<IToggleHandledProps & IManagedClasses<IToggleCla
         if (this.props.labelId) {
             return(
                 <label
-                    className={this.props.managedClasses.toggle_label}
+                    className={get(this.props, "managedClasses.toggle_label")}
                     id={this.props.labelId}
                     htmlFor={this.props.id}
                 >
