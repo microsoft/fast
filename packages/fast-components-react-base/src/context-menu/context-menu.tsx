@@ -10,11 +10,11 @@ import {
 } from "./context-menu.props";
 import {ContextMenuItemProps} from "../context-menu-item";
 import KeyCodes from "../utilities/keycodes";
-import {get, isFunction} from "lodash-es";
+import {get, isFunction, clamp} from "lodash-es";
 import {MenuItemRole} from "../utilities/aria";
 
 export interface IContextMenuState {
-    activeDescendent: string;
+    activeDescendant: string;
 }
 
 
@@ -23,7 +23,7 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
         super(props);
 
         this.state = {
-            activeDescendent: ""
+            activeDescendant: ""
         };
     }
 
@@ -43,7 +43,9 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
     public render(): React.ReactElement<HTMLUListElement> {
         return (
             <ul
-                aria-activedescendant={this.state.activeDescendent}
+                {...this.unhandledProps()}
+                role="menu"
+                aria-activedescendant={this.state.activeDescendant}
                 aria-hidden={!this.props.open}
                 className={this.generateClassNames()}
                 tabIndex={this.props.open ? 0 : -1}
@@ -84,8 +86,11 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
         return React.Children.map(this.props.children, (child: React.ReactElement<ContextMenuItemProps>): string => child.props.id) || [];
     }
 
-    private get activeDescendentNode(): HTMLElement {
-        return ReactDOM.findDOMNode(this.getRef(this.state.activeDescendent));
+    /**
+     * The HTML element associated with the current activedescendent
+     */
+    private get activeDescendantNode(): HTMLElement {
+        return ReactDOM.findDOMNode(this.getRef(this.state.activeDescendant));
     }
 
     /**
@@ -93,7 +98,7 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
      */
     private handleMenuFocus = (e: React.FocusEvent<HTMLUListElement>): void => {
         this.setState({
-            activeDescendent: this.childIds[0] || ""
+            activeDescendant: this.childIds[0] || ""
         });
     }
 
@@ -103,27 +108,40 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
     private handleMenuBlur = (e: React.FocusEvent<HTMLUListElement>): void => {
         // TODO: we'll only want to change this & close of the focus is still inside the root element
         this.setState({
-            activeDescendent: null
+            activeDescendant: null
         });
     }
 
     /**
-     * Manually fire click events on the activeDescendent - needed because document focus isn't
+     * Manually fire click events on the activeDescendant - needed because document focus isn't
      * actually on that element
      */
-    private clickActiveDescendent(): void {
-        const activeNode = ReactDOM.findDOMNode(this.getRef(this.state.activeDescendent));
+    private clickActiveDescendant(): void {
+        const activeNode = ReactDOM.findDOMNode(this.getRef(this.state.activeDescendant));
 
         if (isFunction(get(activeNode, "click"))) {
             activeNode.click();
         }
     }
     
+    /**
+     * Inform integrations that the menu should be closed
+     */
     private close(): void {
-        console.log("close");
         if (isFunction(this.props.onClose)) {
             this.props.onClose();
         }
+    }
+
+    /**
+     * Shift the activedescendant by a given number
+     */
+    private shiftActiveDescendant(delta: number): void {
+        this.setState({
+            activeDescendant: this.childIds[
+                clamp(this.childIds.indexOf(this.state.activeDescendant) + delta, 0, this.childIds.length - 1)
+            ] || ""
+        });
     }
 
     /**
@@ -133,47 +151,39 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
         switch (e.keyCode) {
             case KeyCodes.ArrowDown:
             case KeyCodes.ArrowRight:
-                // Navigate down and wrap
+                this.shiftActiveDescendant(1);
                 break;
+
             case KeyCodes.ArrowUp:
             case KeyCodes.ArrowLeft:
-                // Navigate up and wrap
+                this.shiftActiveDescendant(-1);
                 break;
 
             case KeyCodes.Enter:
-                this.clickActiveDescendent();
+                this.clickActiveDescendant();
                 this.close();
                 break;
 
             case KeyCodes.Space:
-                this.clickActiveDescendent();
+                this.clickActiveDescendant();
 
-                if (this.activeDescendentNode && this.activeDescendentNode.getAttribute("role") === MenuItemRole.menuitem) {
+                if (this.activeDescendantNode && this.activeDescendantNode.getAttribute("role") === MenuItemRole.menuitem) {
                     this.close();
                 }
 
-                // When menuitemcheckbox, change state without closing menu
-                // when menuitemradio, changes the state of all radios accordingly - don't close menu
+                // TODO: When menuitemcheckbox, change state without closing menu
+                // TODO: when menuitemradio, changes the state of all radios accordingly - don't close menu
                 break;
 
             case KeyCodes.End:
-                // Navigate to the last item
-                this.setState({
-                    activeDescendent: this.childIds[this.childIds.length] || ""
-                });
+                this.shiftActiveDescendant(this.childIds.length - 1 - this.childIds.indexOf(this.state.activeDescendant))
                 break;
               
             case KeyCodes.Home:  
-                // Navigate to the first item
-                this.setState({
-                    activeDescendent: this.childIds[0] || ""
-                });
-
+                this.shiftActiveDescendant(this.childIds.indexOf(this.state.activeDescendant) * -1)
                 break;
-
                 
             case KeyCodes.Escape:
-                // Close the menu
                 this.close();
                 break;
         }
