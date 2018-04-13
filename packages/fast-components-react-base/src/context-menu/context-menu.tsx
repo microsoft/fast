@@ -144,6 +144,7 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
                 this.clickActiveDescendent();
                 this.close();
                 break;
+
             case KeyCodes.Space:
                 this.clickActiveDescendent();
 
