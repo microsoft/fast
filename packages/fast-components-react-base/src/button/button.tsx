@@ -3,7 +3,7 @@ import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "../foundation";
 import { ButtonHTMLTags, IButtonHandledProps, IButtonManagedClasses, IButtonUnhandledProps } from "./button.props";
-import { IButtonClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts";
+import { IButtonClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 /* tslint:disable-next-line */
 class Button extends Foundation<IButtonHandledProps & IManagedClasses<IButtonClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {

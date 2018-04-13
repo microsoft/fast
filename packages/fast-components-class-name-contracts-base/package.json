@@ -1,32 +1,28 @@
 {
-  "name": "@microsoft/fast-jss-manager",
-  "description": "Provides common code to all JSS manager implementations.",
+  "name": "@microsoft/fast-components-class-name-contracts-base",
+  "version": "1.0.0",
+  "description": "Type descriptions for the classnames that any given component can expect as props.",
   "author": {
     "name": "Microsoft",
     "email": "fwq@microsoft.com"
   },
-  "version": "1.0.0",
-  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
-  "readme": "README.md",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
     "clean:dist": "node ../../build/clean.js dist",
     "prepare": "npm run clean:dist && tsc -p ./tsconfig.json",
+    "test": "npm run tslint",
     "tslint": "tslint -c ./tslint.json '**/*.ts{,x}'",
-    "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'",
-    "test": "npm run tslint"
+    "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'"
   },
+  "license": "MIT",
   "devDependencies": {
     "@microsoft/fast-tslint-rules": "^1.0.4",
     "tslint": "^5.9.1",
     "typescript": "^2.7.2"
-  },
-  "dependencies": {
-    "@microsoft/fast-components-class-name-contracts-base": "^1.0.0"
   }
 }

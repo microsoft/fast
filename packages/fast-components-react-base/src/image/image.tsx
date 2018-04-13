@@ -3,7 +3,7 @@ import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "../foundation";
 import { IImageHandledProps, IImageMangedClasses, IImageUnhandledProps } from "./image.props";
-import { IImageClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts";
+import { IImageClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
  * TODO #239 #240: Hook viewports values into Styles

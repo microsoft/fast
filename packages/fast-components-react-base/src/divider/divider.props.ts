@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IDividerClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts";
+import { IDividerClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
  * Divider HTML Roles

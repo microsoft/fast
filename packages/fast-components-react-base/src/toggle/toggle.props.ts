@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IManagedClasses, IToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts";
+import { IManagedClasses, IToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 
 export interface IToggleHandledProps {
     /**
