@@ -90,7 +90,14 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
      * The HTML element associated with the current activedescendent
      */
     private get activeDescendantNode(): HTMLElement {
-        return ReactDOM.findDOMNode(this.getRef(this.state.activeDescendant));
+        return ReactDOM.findDOMNode(this.activeDescendant);
+    }
+
+    /**
+     * Get the activeDescendant react node
+     */
+    private get activeDescendant(): React.ReactNode {
+        return this.getRef(this.state.activeDescendant);
     }
 
     /**
