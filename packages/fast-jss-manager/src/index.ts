@@ -1,4 +1,4 @@
-import { ClassNames, IManagedClasses } from "@microsoft/fast-components-class-name-contracts";
+import { ClassNames, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 export { ClassNames, IManagedClasses };
 /**
  * Type definition for a function that resolves to a CSS property value. It optionally expects a config object.

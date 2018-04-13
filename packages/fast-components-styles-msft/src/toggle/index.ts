@@ -2,7 +2,7 @@ import { IDesignSystem } from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { toPx } from "../utilities/units";
 import { typeRamp } from "../utilities/typography";
-import { IToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts";
+import { IToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import * as Chroma from "chroma-js";
 
 const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = {

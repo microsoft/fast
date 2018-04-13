@@ -9,7 +9,7 @@ import {
     TypeLevel,
     TypographyTag
 } from "./typography.props";
-import { IManagedClasses, ITypographyClassNameContract } from "@microsoft/fast-components-class-name-contracts";
+import { IManagedClasses, ITypographyClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 
 /* tslint:disable-next-line */
 class Typography extends Foundation<ITypographyHandledProps & IManagedClasses<ITypographyClassNameContract>, ITypographyUnhandledProps, {}> {

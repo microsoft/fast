@@ -27,6 +27,6 @@
     "typescript": "^2.7.2"
   },
   "dependencies": {
-    "@microsoft/fast-components-class-name-contracts": "^1.0.0"
+    "@microsoft/fast-components-class-name-contracts-base": "^1.0.0"
   }
 }

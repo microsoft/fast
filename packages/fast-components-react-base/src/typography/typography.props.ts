@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IManagedClasses, ITypographyClassNameContract } from "@microsoft/fast-components-class-name-contracts";
+import { IManagedClasses, ITypographyClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 
 export enum TypographyTag {
     caption = "caption",
