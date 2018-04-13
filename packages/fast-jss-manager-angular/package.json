@@ -41,7 +41,7 @@
       "^.+\\.ts$": "ts-jest"
     },
     "transformIgnorePatterns": [
-      "!<rootDir>/node_modules/lodash-es"
+      "node_modules/(?!@ngrx|lodash-es)"
     ]
   },
   "devDependencies": {
@@ -52,6 +52,7 @@
     "@angular/platform-browser-dynamic": "^5.2.9",
     "@microsoft/fast-tslint-rules": "^1.0.4",
     "@types/jest": "^22.1.2",
+    "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.6",
     "core-js": "^2.4.1",
     "jest": "^22.3.0",
