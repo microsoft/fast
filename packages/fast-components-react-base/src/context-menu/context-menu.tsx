@@ -9,6 +9,7 @@ import {
     IContextMenuUnhandledProps,
 } from "./context-menu.props";
 import {ContextMenuItemProps} from "../context-menu-item";
+import {ContextMenuItemRadioProps} from "../context-menu-item-radio";
 import KeyCodes from "../utilities/keycodes";
 import {get, isFunction, clamp} from "lodash-es";
 import {MenuItemRole} from "../utilities/aria";
@@ -101,12 +102,47 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
     }
 
     /**
+     * Return all children that are radio-items
+     */
+    private get radioDescendants(): React.ReactElement<ContextMenuItemRadioProps>[] {
+        return React.Children.toArray(this.props.children)
+            .filter(this.isMenuItemRadioComponent);
+    }
+
+    /**
      * Handles the focus event on the root menu
      */
     private handleMenuFocus = (e: React.FocusEvent<HTMLUListElement>): void => {
         this.setState({
             activeDescendant: this.childIds[0] || ""
         });
+    }
+
+    /**
+     * Check if the child can be checkable
+     * TODO: add checkbox
+     */
+    private isCheckableMenuItem = (child: React.ReactNode): child is React.ReactElement<ContextMenuItemRadioProps> => {
+        return (
+            typeof child === "object"
+            && get(child, "props")
+            && get(child, "props.checked") !== undefined
+            && isFunction(get(child, "props.onChange"))
+        );
+    }
+
+    /**
+     * Determines if a react child conforms to expectations of a menuitemradio
+     */
+    private isMenuItemRadioComponent = (child: React.ReactNode): child is React.ReactElement<ContextMenuItemRadioProps> => {
+        return this.isCheckableMenuItem(child) && ReactDOM.findDOMNode(child).getAttribute("role") === MenuItemRole.menuitemradio;
+    }
+
+    /**
+     * Determines if a react child conforms to expectations of a menuitemcheckbox
+     */
+    private isMenuItemCheckboxComponent = (child: React.ReactNode): child is React.ReactElement<ContextMenuItemRadioProps> => {
+        return this.isCheckableMenuItem(child) && ReactDOM.findDOMNode(child).getAttribute("role") === MenuItemRole.menuitemcheckbox;
     }
 
     /**
@@ -152,6 +188,17 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
     }
 
     /**
+     * Fire the correct callbacks for each radio item in a menu when an radio item is clicked
+     */
+    private handleRadioClick(): void {
+        this.radioDescendants.forEach((child: React.ReactElement<ContextMenuItemRadioProps>): void => {
+            if (child === this.activeDescendant || child.props.checked) {
+                child.props.onChange(child);
+            }
+        });
+    }
+
+    /**
      * Handle the keydown event of the root menu
      */
     private handleMenuKeyDown = (e: React.KeyboardEvent<HTMLUListElement>): void => {
@@ -178,8 +225,12 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
                     this.close();
                 }
 
-                // TODO: When menuitemcheckbox, change state without closing menu
-                // TODO: when menuitemradio, changes the state of all radios accordingly - don't close menu
+                if (this.isMenuItemRadioComponent(this.activeDescendant)) {
+                    this.handleRadioClick();
+                } else if (this.isMenuItemCheckboxComponent(this.activeDescendant)) {
+                    this.activeDescendant.props.onChange(this.activeDescendant);
+                }
+
                 break;
 
             case KeyCodes.End:

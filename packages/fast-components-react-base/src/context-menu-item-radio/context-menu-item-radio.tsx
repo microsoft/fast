@@ -9,15 +9,18 @@ import {
     IContextMenuItemRadioUnhandledProps,
 } from "./context-menu-item-radio.props";
 import {MenuItemRole} from "../utilities/aria";
+import {isFunction} from "lodash-es";
 
 
 class ContextMenuItemRadio extends Foundation<IContextMenuItemRadioHandledProps & IContextMenuItemRadioManagedClasses, IContextMenuItemRadioUnhandledProps, {}> {
+    public readonly role: string = MenuItemRole.menuitemradio;
 
     protected handledProps: HandledProps<IContextMenuItemRadioHandledProps & IContextMenuItemRadioManagedClasses> = {
         managedClasses: void 0,
         children: void 0,
         id: void 0,
-        onChange: void 0
+        onChange: void 0,
+        checked: void 0
     };
 
     /**
@@ -27,9 +30,10 @@ class ContextMenuItemRadio extends Foundation<IContextMenuItemRadioHandledProps 
         return (
             <li
                 {...this.unhandledProps()}
-                id={this.props.id}
                 className={this.generateClassNames()}
-                role={MenuItemRole.menuitemradio}
+                id={this.props.id}
+                onClick={this.handleClick}
+                role={this.role}
             >
                 {this.props.children}
             </li>
@@ -42,8 +46,20 @@ class ContextMenuItemRadio extends Foundation<IContextMenuItemRadioHandledProps 
     protected generateClassNames(): string {
         return super.generateClassNames(get(this.props.managedClasses, "contextMenuItemRadio"));
     }
-}
 
+    /**
+     * Handle click events
+     */
+    private handleClick = (e: React.MouseEvent<HTMLLIElement>): void => {
+        if (!this.props["aria-disabled"] && isFunction(this.props.onChange)) {
+            this.props.onChange(this);
+        }
+
+        if (isFunction(this.props.onClick)) {
+            this.props.onClick(e);
+        }
+    }
+}
 
 export default ContextMenuItemRadio;
 export * from "./context-menu-item-radio.props";
