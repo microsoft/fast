@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, SimpleChanges } from "@angular/core";
 import { getDynamicStyles, SheetsManager, StyleSheet } from "jss";
-import * as uuid from "uuid/v1";
+import { uniqueId } from "lodash-es";
 import getStaticStyles from "./utilities/get-static-styles";
 import { eventNames } from "./utilities/get-event-names";
 import { isEmptyObject } from "./utilities/object";
@@ -145,11 +145,11 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(BaseComponent: any
                 // On construction, check if the style object or component object have already been used.
                 // If not, we need to store them in our weakmaps for later use
                 if (!Boolean(JSSManager.styleMap.get(styles))) {
-                    JSSManager.styleMap.set(styles, uuid());
+                    JSSManager.styleMap.set(styles, uniqueId());
                 }
 
                 if (!Boolean(JSSManager.componentMap.get(Component))) {
-                    JSSManager.componentMap.set(Component, uuid());
+                    JSSManager.componentMap.set(Component, uniqueId());
                 }
 
                 const styleId: string = JSSManager.styleMap.get(styles);

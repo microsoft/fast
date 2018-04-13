@@ -8,12 +8,11 @@ import jss, { stylesheetManager } from "./jss";
 import { getDynamicStyles } from "jss";
 import getStaticStyles from "./utilities/get-static-styles";
 import { isEmptyObject } from "./utilities/object";
-import * as uuid from "uuid/v1";
 import { SheetsManager, StyleSheet } from "jss";
 import { IDesignSystemProviderProps } from "./design-system-provider";
 import * as propTypes from "prop-types";
 import { ClassNames, ComponentStyles, IManagedClasses } from "@microsoft/fast-jss-manager";
-import { isEqual } from "lodash-es";
+import { isEqual, uniqueId } from "lodash-es";
 
 // hoist-non-react-statics does not seem to be a properly formatted ES6 module, so we need to require it instead
 // Disable rule disallowing require statements
@@ -106,11 +105,11 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
                 // On construction, check if the style object or component object have already been used.
                 // If not, we need to store them in our weakmaps for later use
                 if (!Boolean(JSSManager.styleMap.get(styles))) {
-                    JSSManager.styleMap.set(styles, uuid());
+                    JSSManager.styleMap.set(styles, uniqueId());
                 }
 
                 if (!Boolean(JSSManager.componentMap.get(Component))) {
-                    JSSManager.componentMap.set(Component, uuid());
+                    JSSManager.componentMap.set(Component, uniqueId());
                 }
 
                 const styleId: string = JSSManager.styleMap.get(styles);
