@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as ReactDOM from "react-dom";
 import Foundation, { HandledProps } from "../foundation";
 import { IContextMenuClassNameContract } from "@microsoft/fast-components-class-name-contracts";
 import {
@@ -9,7 +10,8 @@ import {
 } from "./context-menu.props";
 import {ContextMenuItemProps} from "../context-menu-item";
 import KeyCodes from "../utilities/keycodes";
-import {isFunction} from "lodash-es";
+import {get, isFunction} from "lodash-es";
+import {MenuItemRole} from "../utilities/aria";
 
 export interface IContextMenuState {
     activeDescendent: string;
@@ -71,8 +73,8 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
     /**
      * Render a single child
      */
-    private renderChild(child: React.ReactElement<ContextMenuItemProps>): React.ReactChild {
-        return child;
+    private renderChild = (child: React.ReactElement<ContextMenuItemProps>): React.ReactChild => {
+        return React.cloneElement(child, {ref: this.setRef(child.props.id)} as any);
     }
 
     /**
@@ -80,6 +82,10 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
      */
     private get childIds(): string[] {
         return React.Children.map(this.props.children, (child: React.ReactElement<ContextMenuItemProps>): string => child.props.id) || [];
+    }
+
+    private get activeDescendentNode(): HTMLElement {
+        return ReactDOM.findDOMNode(this.getRef(this.state.activeDescendent));
     }
 
     /**
@@ -102,6 +108,25 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
     }
 
     /**
+     * Manually fire click events on the activeDescendent - needed because document focus isn't
+     * actually on that element
+     */
+    private clickActiveDescendent(): void {
+        const activeNode = ReactDOM.findDOMNode(this.getRef(this.state.activeDescendent));
+
+        if (isFunction(get(activeNode, "click"))) {
+            activeNode.click();
+        }
+    }
+    
+    private close(): void {
+        console.log("close");
+        if (isFunction(this.props.onClose)) {
+            this.props.onClose();
+        }
+    }
+
+    /**
      * Handle the keydown event of the root menu
      */
     private handleMenuKeyDown = (e: React.KeyboardEvent<HTMLUListElement>): void => {
@@ -116,11 +141,18 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
                 break;
 
             case KeyCodes.Enter:
+                this.clickActiveDescendent();
+                this.close();
+                break;
             case KeyCodes.Space:
-                document.getElementById(this.state.activeDescendent).click();
+                this.clickActiveDescendent();
+
+                if (this.activeDescendentNode && this.activeDescendentNode.getAttribute("role") === MenuItemRole.menuitem) {
+                    this.close();
+                }
+
                 // When menuitemcheckbox, change state without closing menu
-                // when menuitemradio, changes the state of all radios accordingly
-                // when menuitem, active the menu item and close the menu
+                // when menuitemradio, changes the state of all radios accordingly - don't close menu
                 break;
 
             case KeyCodes.End:
@@ -141,10 +173,7 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
                 
             case KeyCodes.Escape:
                 // Close the menu
-                if (isFunction(this.props.onClose)) {
-                    this.props.onClose();
-                }
-
+                this.close();
                 break;
         }
     }

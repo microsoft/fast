@@ -8,6 +8,7 @@ import {
     IContextMenuItemManagedClasses,
     IContextMenuItemUnhandledProps,
 } from "./context-menu-item.props";
+import {MenuItemRole} from "../utilities/aria";
 
 
 class ContextMenuItem extends Foundation<IContextMenuItemHandledProps & IContextMenuItemManagedClasses, IContextMenuItemUnhandledProps, {}> {
@@ -27,7 +28,7 @@ class ContextMenuItem extends Foundation<IContextMenuItemHandledProps & IContext
                 {...this.unhandledProps()}
                 id={this.props.id}
                 className={this.generateClassNames()}
-                role="menuitem"
+                role={MenuItemRole.menuitem}
             >
                 {this.props.children}
             </li>
