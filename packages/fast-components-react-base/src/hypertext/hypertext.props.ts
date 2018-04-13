@@ -3,8 +3,14 @@ import { IHypertextClassNameContract, IManagedClasses } from "@microsoft/fast-co
 
 export interface IHypertextHandledProps {
 
+    /**
+     * The HTML src attribute for the href attribute.
+     */
     href?: string;
 
+    /**
+     * The option to set the content wrapped by hypertext.
+     */
     children?: React.ReactNode | React.ReactNode[];
 }
 
