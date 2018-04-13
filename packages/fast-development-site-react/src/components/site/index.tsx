@@ -2,7 +2,7 @@ import * as React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import manageJss, { ComponentStyles, DesignSystemProvider, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { glyphBuildingblocks, glyphGlobalnavbutton } from "@microsoft/fast-glyphs-msft";
-import uuid from "uuid/v1";
+import { uniqueId } from "lodash-es";
 import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
 import Shell, { ShellActionBar, ShellCanvas, ShellHeader, ShellInfoBar, ShellPane, ShellPaneCollapse, ShellRow, ShellSlot } from "../shell";
 import Toc, { TocItem } from "../toc";
@@ -229,7 +229,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         slot: string
     ): JSX.Element {
         const tocItemPath: string = this.convertToHyphenated(`${itemsPath}${items.props.name}/`);
-        const contentId: string = uuid();
+        const contentId: string = uniqueId(this.convertToHyphenated(items.props.name));
         const active: boolean = currentPath.match(tocItemPath) !== null;
         const attributes: any = {
             key: index,
