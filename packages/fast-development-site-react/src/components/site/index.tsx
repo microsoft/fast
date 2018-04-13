@@ -229,7 +229,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         slot: string
     ): JSX.Element {
         const tocItemPath: string = this.convertToHyphenated(`${itemsPath}${items.props.name}/`);
-        const contentId: string = uniqueId(`${this.convertToHyphenated(items.props.name)}`);
+        const contentId: string = uniqueId(this.convertToHyphenated(items.props.name));
         const active: boolean = currentPath.match(tocItemPath) !== null;
         const attributes: any = {
             key: index,
