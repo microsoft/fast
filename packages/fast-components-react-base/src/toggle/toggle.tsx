@@ -3,7 +3,7 @@ import * as ReactDOM from "react-dom";
 import Foundation, { HandledProps } from "../foundation";
 
 import { IToggleHandledProps, IToggleManagedClasses, IToggleUnhandledProps } from "./toggle.props";
-import { IManagedClasses, IToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts";
+import { IManagedClasses, IToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
  * Toggle state interface

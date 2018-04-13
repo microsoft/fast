@@ -1,6 +1,6 @@
 import { ICategoryItemProps } from "@microsoft/fast-development-site-react";
 import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts";
+import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import Toggle, { IToggleHandledProps, IToggleManagedClasses, IToggleUnhandledProps } from "./toggle";
 import * as React from "react";
 

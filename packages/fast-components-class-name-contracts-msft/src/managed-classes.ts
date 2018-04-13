@@ -1,3 +1,4 @@
+import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 /**
  * Class names under a given object keys
  */
@@ -8,6 +9,4 @@
 /**
  * The interface for class names passed as props
  */
- export interface IManagedClasses<T> {
-    managedClasses: ClassNames<T>;
-}
+export {IManagedClasses};

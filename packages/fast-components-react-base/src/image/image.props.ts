@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IImageClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts";
+import { IImageClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 export interface IImageHandledProps {
     /**

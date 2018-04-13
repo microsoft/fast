@@ -21,6 +21,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@microsoft/fast-components-class-name-contracts-base": "^1.0.0",
     "@microsoft/fast-tslint-rules": "^1.0.4",
     "tslint": "^5.9.1",
     "typescript": "^2.7.2"
