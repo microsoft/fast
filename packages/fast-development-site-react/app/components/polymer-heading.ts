@@ -1,6 +1,4 @@
-import {
-    Element as PolymerElement
-} from "../../node_modules/@polymer/polymer/polymer-element.js";
+import { PolymerElement } from "../../node_modules/@polymer/polymer/polymer-element.js";
 
 export default class PolymerHeading extends PolymerElement {
     private class: string;
