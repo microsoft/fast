@@ -5,7 +5,7 @@ import ButtonStyles from "./button";
 export { ButtonStyles };
 
 import HypertextStyles from "./hypertext";
-export {HypertextStyles};
+export { HypertextStyles };
 
 /**
  * Export design system defaults and typings

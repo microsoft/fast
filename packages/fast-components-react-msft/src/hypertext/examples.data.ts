@@ -12,6 +12,9 @@ export default {
         {
             href: "https://msdn.microsoft.com",
             children: "Hypertext"
+        },
+        {
+            children: "Hypertext"
         }
     ]
 } as ISnapshotTestSuite<IHypertextHandledProps>;
