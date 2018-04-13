@@ -38,7 +38,8 @@
       "/dist/"
     ],
     "transform": {
-      "^.+\\.ts$": "ts-jest"
+      "^.+\\.ts$": "ts-jest",
+      "^.+\\.js?$": "babel-jest"
     },
     "transformIgnorePatterns": [
       "node_modules/(?!@ngrx|lodash-es)"
@@ -54,6 +55,8 @@
     "@types/jest": "^22.1.2",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.6",
+    "babel-jest": "^22.4.3",
+    "babel-preset-env": "^1.6.1",
     "core-js": "^2.4.1",
     "jest": "^22.3.0",
     "jest-preset-angular": "^5.2.1",
