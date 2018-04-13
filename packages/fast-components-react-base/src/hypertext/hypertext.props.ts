@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IHypertextClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts";
+import { IHypertextClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 export interface IHypertextHandledProps {
 
