@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { get } from "lodash-es";
 import Foundation, { HandledProps } from "../foundation";
 import { DividerRoles, IDividerHandledProps, IDividerManagedClasses, IDividerUnhandledProps } from "./divider.props";
 import { IDividerClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts";
@@ -39,7 +40,7 @@ class Divider extends Foundation<IDividerHandledProps & IManagedClasses<IDivider
      * Generates class names
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(this.props.managedClasses.divider);
+        return super.generateClassNames(get(this.props, "managedClasses.divider"));
     }
 }
 

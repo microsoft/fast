@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { get } from "lodash-es";
 import Foundation, { HandledProps } from "../foundation";
 import { ButtonHTMLTags, IButtonHandledProps, IButtonManagedClasses, IButtonUnhandledProps } from "./button.props";
 import { IButtonClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts";
@@ -36,7 +37,7 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IButtonCla
      * Generates class names
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(this.props.managedClasses.button);
+        return super.generateClassNames(get(this.props, "managedClasses.button"));
     }
 
     /**

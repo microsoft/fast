@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { get } from "lodash-es";
 import Foundation, { HandledProps } from "../foundation";
 import { IImageHandledProps, IImageMangedClasses, IImageUnhandledProps } from "./image.props";
 import { IImageClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts";
@@ -84,10 +85,11 @@ class Image extends Foundation<IImageHandledProps & IManagedClasses<IImageClassN
      * Generates class names using optional props
      */
     protected generateClasses(isNestedImage: boolean = false): string {
-        let classNames: string = this.props.src || isNestedImage ? this.props.managedClasses.image : this.props.managedClasses.picture;
+        let classNames: string = this.props.src || isNestedImage ?
+            get(this.props, "managedClasses.image") : get(this.props, "managedClasses.picture");
 
         if (this.props.src || isNestedImage) {
-            classNames = this.props.round ? `${classNames} ${this.props.managedClasses.image_round}` : classNames;
+            classNames = this.props.round ? `${classNames} ${get(this.props, "managedClasses.image_round")}` : classNames;
         }
 
         if (isNestedImage) {
