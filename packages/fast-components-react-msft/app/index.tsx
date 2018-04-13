@@ -12,20 +12,6 @@ import Site, {
 } from "@microsoft/fast-development-site-react";
 import * as examples from "./examples";
 
-<<<<<<< HEAD
-=======
-const items: ICategoryProps[] = [
-    {
-        name: "Fast Components",
-        items: [
-            examples.ButtonExamples,
-            examples.DividerExamples,
-            examples.HypertextExamples
-        ]
-    }
-];
-
->>>>>>> added hypertext references in react-msft and styles-msft
 /**
  * Create the root node
  */
