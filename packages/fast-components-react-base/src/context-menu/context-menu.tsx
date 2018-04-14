@@ -10,6 +10,7 @@ import {
 } from "./context-menu.props";
 import {ContextMenuItemProps} from "../context-menu-item";
 import {ContextMenuItemRadioProps} from "../context-menu-item-radio";
+import {ContextMenuItemCheckboxProps} from "../context-menu-item-checkbox";
 import KeyCodes from "../utilities/keycodes";
 import {get, isFunction, clamp} from "lodash-es";
 import {MenuItemRole} from "../utilities/aria";
@@ -17,7 +18,6 @@ import {MenuItemRole} from "../utilities/aria";
 export interface IContextMenuState {
     activeDescendant: string;
 }
-
 
 class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuManagedClasses, IContextMenuUnhandledProps, IContextMenuState> {
     constructor(props: ContextMenuProps) {
@@ -122,7 +122,7 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
      * Check if the child can be checkable
      * TODO: add checkbox
      */
-    private isCheckableMenuItem = (child: React.ReactNode): child is React.ReactElement<ContextMenuItemRadioProps> => {
+    private isCheckableMenuItem = (child: React.ReactNode): child is React.ReactElement<ContextMenuItemRadioProps | ContextMenuItemCheckboxProps> => {
         return (
             typeof child === "object"
             && get(child, "props")
@@ -191,10 +191,11 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
      * Fire the correct callbacks for each radio item in a menu when an radio item is clicked
      */
     private handleRadioClick(): void {
-        this.radioDescendants.forEach((child: React.ReactElement<ContextMenuItemRadioProps>): void => {
-            if (child === this.activeDescendant || child.props.checked) {
-                child.props.onChange(child);
-            }
+        this.childIds
+        .map((id: string) => this.getRef(id))
+        .filter((child: React.ReactNode) => this.isMenuItemRadioComponent)
+        .forEach((child: React.ReactElement<ContextMenuItemRadioProps>) => {
+            child.props.onChange(child);
         });
     }
 

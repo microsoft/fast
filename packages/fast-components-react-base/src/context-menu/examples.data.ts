@@ -3,15 +3,29 @@ import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts";
 import ContextMenu, { IContextMenuHandledProps, IContextMenuManagedClasses } from "./context-menu";
 import ContextMenuItem, { ContextMenuItemProps } from "../context-menu-item";
+import ContextMenuItemRadio, { ContextMenuItemRadioProps } from "../context-menu-item-radio";
 import { uniqueId } from "lodash-es";
 
 function contextMenuItemPropFactory(): ContextMenuItemProps {
     return {
         managedClasses: {
-            contextMenuItem: "foo",
+            contextMenuItem: "context-menu-item",
         },
         id: uniqueId(),
         onClick: (e: any) => {
+            console.log(e);
+        }
+    }
+}
+
+function contextMenuItemRadioPropFactory(checked: boolean = false): ContextMenuItemRadioProps {
+    return {
+        managedClasses: {
+            contextMenuItemRadio: "context-menu-item-radio",
+        },
+        checked,
+        id: uniqueId(),
+        onChange: (e: any) => {
             console.log(e);
         }
     }
@@ -32,8 +46,18 @@ const examples: ISnapshotTestSuite<IContextMenuHandledProps & IContextMenuManage
             ...managedClasses,
             open: true,
             children: [
-                React.createElement(ContextMenuItem, contextMenuItemPropFactory(), "hello"),
-                React.createElement(ContextMenuItem, contextMenuItemPropFactory(), "goodbye")
+                React.createElement(ContextMenuItem, contextMenuItemPropFactory(), "context menu item 1"),
+                React.createElement(ContextMenuItem, contextMenuItemPropFactory(), "context menu item 2"),
+                React.createElement(ContextMenuItem, contextMenuItemPropFactory(), "context menu item 3")
+            ]
+        },
+        {
+            ...managedClasses,
+            open: true,
+            children: [
+                React.createElement(ContextMenuItemRadio, contextMenuItemRadioPropFactory(), "context menu item radio 1"),
+                React.createElement(ContextMenuItemRadio, contextMenuItemRadioPropFactory(), "context menu item radio 2"),
+                React.createElement(ContextMenuItemRadio, contextMenuItemRadioPropFactory(), "context menu item radio 3")
             ]
         }
     ]
