@@ -7,6 +7,9 @@ export { Divider };
 import Image from "./image";
 export { Image} ;
 
+import Label from "./label";
+export { Label} ;
+
 import Toggle from "./toggle";
 export { Toggle };
 

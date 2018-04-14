@@ -27,6 +27,12 @@ import ImageStyles from "./image";
 export { ImageStyles };
 
 /**
+ * Export label styles
+ */
+import LabelStyles from "./label";
+export { LabelStyles };
+
+/**
  * Export toggle styles
  */
 import ToggleStyles from "./toggle";

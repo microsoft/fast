@@ -8,7 +8,7 @@ import {
     ILabelUnhandledProps,
     LabelTag
 } from "./label.props";
-import { ILabelClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts";
+import { ILabelClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 /* tslint:disable-next-line */
 class Label extends Foundation<ILabelHandledProps & IManagedClasses<ILabelClassNameContract>, React.HTMLAttributes<HTMLLabelElement>, {}> {

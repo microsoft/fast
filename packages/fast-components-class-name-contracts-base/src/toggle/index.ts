@@ -1,5 +1,5 @@
 /**
- * The classname contract for the toggle component
+ * The class name contract for the toggle component
  */
 export interface IToggleClassNameContract {
     toggle: string;

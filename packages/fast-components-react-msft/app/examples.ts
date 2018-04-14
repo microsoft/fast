@@ -7,6 +7,9 @@ export { DividerExample };
 import ImageExamples from "../src/image/examples.data";
 export {ImageExamples};
 
+import LabelExamples from "../src/label/examples.data";
+export {LabelExamples};
+
 import ToggleExamples from "../src/toggle/examples.data";
 export { ToggleExamples };
 
