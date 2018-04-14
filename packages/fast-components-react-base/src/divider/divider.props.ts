@@ -10,9 +10,8 @@ export enum DividerRoles {
 }
 
 export interface IDividerHandledProps {
-
     /**
-     * The option to set HTML role attribute.
+     * The HTML role attribute
      */
     role?: DividerRoles;
 }

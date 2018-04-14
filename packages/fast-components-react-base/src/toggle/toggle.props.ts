@@ -3,12 +3,12 @@ import { IManagedClasses, IToggleClassNameContract } from "@microsoft/fast-compo
 
 export interface IToggleHandledProps {
     /**
-     * Label content
+     * The label content
      */
     children?: React.ReactNode | React.ReactNode[];
 
     /**
-     * Disabled state
+     * The disabled state
      */
     disabled?: boolean;
 
@@ -33,7 +33,7 @@ export interface IToggleHandledProps {
     selectedString: string;
 
     /**
-     * The selections status HTML id attribute
+     * The status label HTML id attribute
      */
     statusLabelId: string;
 
