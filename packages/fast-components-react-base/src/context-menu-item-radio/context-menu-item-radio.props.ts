@@ -19,9 +19,9 @@ export interface IContextMenuItemRadioHandledProps {
 
     /**
      * Callback back to call when the radio item's checked value should be changed
+     * TODO: These types are incompatabile with native react names - what should we change this to? update?
      */
     onChange: (component: React.ReactElement<ContextMenuItemRadioProps>) => void;
-
 }
 
 export interface IContextMenuItemRadioUnhandledProps extends React.LiHTMLAttributes<HTMLLIElement> {}
