@@ -76,6 +76,7 @@ const examples: ISnapshotTestSuite<IContextMenuHandledProps & IContextMenuManage
                 React.createElement(ContextMenuItemRadio, contextMenuItemRadioPropFactory(), "context menu item radio 3")
             ]
         }
+    ]
 };
 
 export default examples;
