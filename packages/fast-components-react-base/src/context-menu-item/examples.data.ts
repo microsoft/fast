@@ -1,5 +1,5 @@
 import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts";
+import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import ContextMenuItem, { IContextMenuItemHandledProps, IContextMenuItemManagedClasses } from "./context-menu-item";
 import { uniqueId } from "lodash-es";
 

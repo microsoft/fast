@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IContextMenuItemCheckboxClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts";
+import { IContextMenuItemCheckboxClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 export interface IContextMenuItemCheckboxHandledProps {
     /**

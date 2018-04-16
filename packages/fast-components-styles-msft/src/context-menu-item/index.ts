@@ -1,6 +1,6 @@
 import { IDesignSystem } from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import { IContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts";
+import { IContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 
 const styles: ComponentStyles<IContextMenuItemClassNameContract, IDesignSystem> = {
     contextMenuItem: {

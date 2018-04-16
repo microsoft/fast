@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IContextMenuItemRadioClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts";
+import { IContextMenuItemRadioClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 export interface IContextMenuItemRadioHandledProps {
     /**

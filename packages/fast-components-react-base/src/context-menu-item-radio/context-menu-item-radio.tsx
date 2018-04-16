@@ -1,7 +1,7 @@
 import * as React from "react";
 import Foundation, { HandledProps } from "../foundation";
 import {get} from "lodash-es";
-import { IContextMenuItemRadioClassNameContract } from "@microsoft/fast-components-class-name-contracts";
+import { IContextMenuItemRadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
     ContextMenuItemRadioProps,
     IContextMenuItemRadioHandledProps,
