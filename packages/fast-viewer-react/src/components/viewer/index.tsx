@@ -4,6 +4,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as ReactDOMServer from "react-dom/server";
 import { addressBarControls, windowControls } from "./browserControls";
+import { get } from "lodash-es";
 
 export interface IViewerHeightConfig {
     min?: number;
@@ -187,7 +188,7 @@ export default class Viewer extends React.Component<IViewerProps, IViewerState> 
         let minHeight: number = 0;
         let maxHeight: number = Infinity;
 
-        if (this.props.config && this.props.config.height) {
+        if (this.props.config && get(this.props, "config.height")) {
             autoHeight = this.props.config.height.auto ? this.props.config.height.auto : autoHeight;
             minHeight = this.props.config.height.min ? this.props.config.height.min : minHeight;
             maxHeight = this.props.config.height.max ? this.props.config.height.max : maxHeight;
