@@ -14,7 +14,8 @@
   "license": "MIT",
   "readme": "README.md",
   "scripts": {
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
+    "checkBranchStatus": "node ./build/check-branch-status.js"
   },
   "devDependencies": {
     "@types/node": "^9.4.7",
@@ -23,5 +24,8 @@
     "ts-node": "^5.0.1",
     "typescript": "^2.7.2",
     "yargs": "^11.0.0"
+  },
+  "dependencies": {
+    "request": "^2.85.0"
   }
 }
