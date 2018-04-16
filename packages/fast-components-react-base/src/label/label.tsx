@@ -26,7 +26,7 @@ class Label extends Foundation<ILabelHandledProps & IManagedClasses<ILabelClassN
      * Stores HTML tag for use in render
      */
     private get tag(): string {
-        return this.generateHTMLTag();
+        return LabelTag[this.props.tag];
     }
 
     /**
@@ -48,13 +48,6 @@ class Label extends Foundation<ILabelHandledProps & IManagedClasses<ILabelClassN
      */
     protected generateClassNames(): string {
         return super.generateClassNames(get(this.props, "managedClasses.label"));
-    }
-
-    /**
-     * Creates tags for rendering based on href
-     */
-    private generateHTMLTag(): string {
-        return LabelTag[this.props.tag];
     }
 }
 
