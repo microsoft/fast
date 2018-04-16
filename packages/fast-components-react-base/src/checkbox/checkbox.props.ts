@@ -8,9 +8,9 @@ export interface ICheckboxHandledProps {
     checked?: boolean;
 
     /**
-     * The textual content
+     * The disabled state
      */
-    text?: string;
+    disabled?: boolean;
 
     /**
      * The indeterminate option
@@ -21,6 +21,11 @@ export interface ICheckboxHandledProps {
      * The onChange event handler
      */
     onChange?: CheckboxOnChange;
+
+    /**
+     * The textual content
+     */
+    text?: string;
 }
 
 export type CheckboxOnChange = (event?: React.ChangeEvent<HTMLElement>) => void;

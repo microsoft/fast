@@ -12,7 +12,8 @@ const examples: ISnapshotTestSuite<ICheckboxHandledProps & ICheckboxManagedClass
             managedClasses: {
                 checkbox: "checkbox",
                 checkbox_input: "checkbox-input",
-                checkbox_label: "checkbox-label"
+                checkbox_label: "checkbox-label",
+                checkbox_disabled: "checkbox-label"
             }
         }
     ]
