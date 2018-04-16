@@ -9,30 +9,6 @@ exports[`label label: 0 1`] = `
 `;
 
 exports[`label label: 1 1`] = `
-<div
-  className="label"
->
-  div label
-</div>
-`;
-
-exports[`label label: 2 1`] = `
-<p
-  className="paragraph label"
->
-  Label
-</p>
-`;
-
-exports[`label label: 3 1`] = `
-<span
-  className="span label"
->
-  Label
-</span>
-`;
-
-exports[`label label: 4 1`] = `
 <legend
   className="legend label"
 >

@@ -21,27 +21,6 @@ const examples: ISnapshotTestSuite<ILabelHandledProps & ILabelMangedClasses> = {
         },
         {
             managedClasses: {
-                label: "label"
-            },
-            tag: LabelTag.div,
-            children: "div label"
-        },
-        {
-            managedClasses: {
-                label: "paragraph label"
-            },
-            tag: LabelTag.p,
-            children: "Label"
-        },
-        {
-            managedClasses: {
-                label: "span label"
-            },
-            tag: LabelTag.span,
-            children: "Label"
-        },
-        {
-            managedClasses: {
                 label: "legend label"
             },
             tag: LabelTag.legend,

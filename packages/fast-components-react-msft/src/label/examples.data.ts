@@ -14,18 +14,6 @@ export default {
             children: "Label"
         },
         {
-            tag: LabelTag.div,
-            children: "div label"
-        },
-        {
-            tag: LabelTag.p,
-            children: "Label"
-        },
-        {
-            tag: LabelTag.span,
-            children: "Label"
-        },
-        {
             tag: LabelTag.legend,
             children: "Legend label"
         }

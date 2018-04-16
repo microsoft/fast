@@ -32,7 +32,7 @@ class Label extends Foundation<ILabelHandledProps & IManagedClasses<ILabelClassN
     /**
      * Renders the component
      */
-    public render(): React.ReactElement<HTMLLabelElement> {
+    public render(): React.ReactElement<HTMLLabelElement | HTMLFieldSetElement> {
         return (
             <this.tag
                 {...this.unhandledProps()}
@@ -54,7 +54,7 @@ class Label extends Foundation<ILabelHandledProps & IManagedClasses<ILabelClassN
      * Creates tags for rendering based on href
      */
     private generateHTMLTag(): string {
-        return LabelTag[this.props.tag] || LabelTag.p;
+        return LabelTag[this.props.tag];
     }
 }
 

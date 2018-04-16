@@ -8,12 +8,9 @@ const styles: ComponentStyles<ILabelClassNameContract, IDesignSystem> = {
     label: {
         fontSize: toPx(typeRamp.t8.vp3.fontSize),
         display: "inline-block",
-        marginTop: toPx(21),
+        marginTop: toPx(0),
         paddingBottom: toPx(7),
-        lineHeight: toPx(20),
-        "& + input": {
-            margin: toPx(0)
-        }
+        lineHeight: toPx(20)
     }
 };
 

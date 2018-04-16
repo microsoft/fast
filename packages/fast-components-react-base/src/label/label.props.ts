@@ -2,11 +2,8 @@ import * as React from "react";
 import { ILabelClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 export enum LabelTag {
-    div = "div",
     label = "label",
-    legend = "legend",
-    p = "p",
-    span = "span"
+    legend = "legend"
 }
 
 export interface ILabelHandledProps {
