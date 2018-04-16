@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { get } from "lodash-es";
+import { get, isUndefined } from "lodash-es";
 import Foundation, { HandledProps } from "../foundation";
 import {
     ILabelHandledProps,
@@ -26,7 +26,7 @@ class Label extends Foundation<ILabelHandledProps & IManagedClasses<ILabelClassN
      * Stores HTML tag for use in render
      */
     private get tag(): string {
-        return LabelTag[this.props.tag];
+        return isUndefined(LabelTag[this.props.tag]) ? LabelTag.label : LabelTag[this.props.tag];
     }
 
     /**
