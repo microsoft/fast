@@ -1,10 +1,6 @@
 let request = require("request");
 let https = require("https");
 
-const errHandler = function(err) {
-    console.log(err);
-}
-
 function getBranch(url, auth) {
     // Setting URL and headers for request
     let options = {
@@ -38,16 +34,15 @@ const getBranchStatus = async (branch, auth) => {
             let errString = data.status === undefined ? 
                 "Something went wrong - try restarting the build" : `Branch is currently ${data.status} - please rebase locally`
 
-            console.log(errString);
-            
+            console.error(errString);
+
             return process.exit(1);
         } else {
             console.log(`Branch is currently ${data.status}`);
         }
     } catch (err) {
-        console.log(err)
+        console.error(err)
     }
 }
-
 
 getBranchStatus(process.argv[2], process.argv[3]);
