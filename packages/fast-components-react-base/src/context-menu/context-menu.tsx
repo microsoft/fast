@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Foundation, { HandledProps } from "../foundation";
-import { IContextMenuClassNameContract } from "@microsoft/fast-components-class-name-contracts";
+import { IContextMenuClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
     ContextMenuProps,
     IContextMenuHandledProps,
