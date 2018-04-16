@@ -1,22 +1,23 @@
-
 language: node_js
 node_js:
-  - "lts/*"
+- lts/*
 install:
-  - npm install 
-  - lerna bootstrap
+- npm install
+- lerna bootstrap
 dist: trusty
 sudo: false
 env:
   global:
-    - CC_TEST_REPORTER_ID=08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
+  - CC_TEST_REPORTER_ID=08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
+  Check_Branch:
+  - secure: IeGQBwfDwxNEdN/Lahs4Urxj0h6d/1KLimsJ9q5ziJn0nW49ZYIeOj8PRLomuZIDbiLxSNEq3Zb2uJcaaL0I7wY0UNzjvc4zJ9ulb0Ypk6jGApxKWZ4eLIZA0HC5cak6FsbwO9mvTthkP1y99y26uuAj9geH7KS1UpzF5wbZtRvzQ5g83bLp7uAmO2aLt2RM7XW4WwzUU77RIjbFCmc8Bj2a7cvh5YtDIIpHznhBtrF0WWV34Kkq+dBLtlpHhq0c1UGRfk5uXKR8lmaUNlUrjgs/07plyjG3OOhesorSptYkuyzHXNGDYjvUufwHHR/C8P6f/FXZzMBAujrR4RoUJmUshKpu7YDHd7qHQCkpO8Wf4IxOLsWLat1H+aH3+DgB3F4FbheKzj0i/aZ6BNArKtDUkGzT0hoFs1VNCOUcPNqyythf6paXUsyak+R+wCc+nhVilX+l/cAriG/PvDOk/UMk1ltTm26L5d/LnHvASd7nMTOZipHfDBd4yjuLR6ZuNXsdtqmGMtosbJ153YfTmv1gYDZHDYKkBjV7iJeWCuWiK2xRNEkTtXzB7Ac3H4AMoliqjPqsHlw3XdNtEvpoyKZqgyl/PLzoXpNvT0fp0FvsOmSCknmreJGdpycVGemyS9RkBfpMqLja6i2uu4JDWjY/ZDII+25vuT7O0rCAZX0=
 before_script:
-  # Commented out for local testing only on MacOS
-  #- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-darwin-amd64 > ./cc-test-reporter
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
+- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
+  > ./cc-test-reporter
+- chmod +x ./cc-test-reporter
+- "./cc-test-reporter before-build"
 script:
-  - lerna run test
+- npm run checkBranchStatus $TRAVIS_BRANCH Check_Branch
+- lerna run test
 after_script:
-  - ./cc-test-reporter format-coverage -t lcov after-build .exit $TRAVIS_TEST_RESULT
+- "./cc-test-reporter format-coverage -t lcov after-build .exit $TRAVIS_TEST_RESULT"
