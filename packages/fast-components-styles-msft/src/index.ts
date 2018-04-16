@@ -50,5 +50,6 @@ export { TypographyStyles };
 export * from "./utilities/breakpoints";
 export * from "./utilities/fonts";
 export * from "./utilities/keyof-to-type";
+export * from "./utilities/screen-reader";
 export * from "./utilities/typography";
 export * from "./utilities/units";

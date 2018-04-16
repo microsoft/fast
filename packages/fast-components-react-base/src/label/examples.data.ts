@@ -14,17 +14,28 @@ const examples: ISnapshotTestSuite<ILabelHandledProps & ILabelMangedClasses> = {
     data: [
         {
             managedClasses: {
-                label: "label"
+                label: "label",
+                label_hidden: "hidden_label"
             },
             tag: LabelTag.label,
             children: "Label"
         },
         {
             managedClasses: {
-                label: "legend label"
+                label: "label",
+                label_hidden: "hidden_label"
             },
             tag: LabelTag.legend,
             children: "Legend label"
+        },
+        {
+            managedClasses: {
+                label: "label",
+                label_hidden: "hidden_label"
+            },
+            hidden: true,
+            tag: LabelTag.label,
+            children: "Hidden label for screen readers"
         }
     ]
 };

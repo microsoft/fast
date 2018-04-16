@@ -16,6 +16,11 @@ export default {
         {
             tag: LabelTag.legend,
             children: "Legend label"
+        },
+        {
+            hidden: true,
+            tag: LabelTag.label,
+            children: "Hidden label"
         }
     ]
 } as ISnapshotTestSuite<ILabelHandledProps>;

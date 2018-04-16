@@ -18,6 +18,7 @@ class Label extends Foundation<ILabelHandledProps & IManagedClasses<ILabelClassN
 
     protected handledProps: HandledProps<ILabelHandledProps & IManagedClasses<ILabelClassNameContract>> = {
         children: void 0,
+        hidden: void 0,
         managedClasses: void 0,
         tag: void 0
     };
@@ -47,7 +48,7 @@ class Label extends Foundation<ILabelHandledProps & IManagedClasses<ILabelClassN
      * Generates class names based on props
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(get(this.props, "managedClasses.label"));
+        return super.generateClassNames(get(this.props, this.props.hidden ? "managedClasses.label_hidden" : "managedClasses.label"));
     }
 }
 

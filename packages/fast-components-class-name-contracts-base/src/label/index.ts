@@ -3,4 +3,5 @@
  */
 export interface ILabelClassNameContract {
     label: string;
+    label_hidden: string;
 }
