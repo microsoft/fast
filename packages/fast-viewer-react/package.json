@@ -31,9 +31,9 @@
     "coverageThreshold": {
       "global": {
         "branches": 29,
-        "functions": 57,
-        "lines": 67,
-        "statements": 68
+        "functions": 50,
+        "lines": 50,
+        "statements": 50
       }
     },
     "testRegex": "(/__tests__/.*(test|spec))\\.(ts|tsx)$",
