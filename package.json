@@ -24,5 +24,8 @@
     "ts-node": "^5.0.1",
     "typescript": "^2.7.2",
     "yargs": "^11.0.0"
+  },
+  "dependencies": {
+    "request": "^2.85.0"
   }
 }

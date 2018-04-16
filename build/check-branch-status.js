@@ -34,9 +34,15 @@ const getBranchStatus = async (branch, auth) => {
         // this parse may fail
         let data = JSON.parse(await getBranch(url, auth))
 
-        if (data.status === "ahead") {
-            const error = new Error(`Branch is currently ${data.status} - please rebase locally`);
-            throw error;
+        if (data.status !== "ahead") {
+            let errString = data.status === undefined ? 
+                "Something went wrong - try restarting the build" : `Branch is currently ${data.status} - please rebase locally`
+
+            console.log(errString);
+            
+            return process.exit(1);
+        } else {
+            console.log(`Branch is currently ${data.status}`);
         }
     } catch (err) {
         console.log(err)
