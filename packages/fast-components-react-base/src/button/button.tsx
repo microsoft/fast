@@ -2,21 +2,33 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "../foundation";
-import { ButtonHTMLTags, IButtonHandledProps, IButtonManagedClasses, IButtonUnhandledProps } from "./button.props";
+import { IButtonHandledProps, IButtonManagedClasses, IButtonUnhandledProps } from "./button.props";
 import { IButtonClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+
+/**
+ * Button HTML tags
+ */
+export enum ButtonHTMLTags {
+    a = "a",
+    button = "button"
+}
 
 /* tslint:disable-next-line */
 class Button extends Foundation<IButtonHandledProps & IManagedClasses<IButtonClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
     protected handledProps: HandledProps<IButtonHandledProps & IManagedClasses<IButtonClassNameContract>> = {
         managedClasses: void 0,
-        tag: void 0
+        href: void 0
     };
 
     /**
      * Stores HTML tag for use in render
      */
     private get tag(): string {
-        return this.generateHTMLTag();
+        if (typeof this.props.href === "string") {
+            return ButtonHTMLTags.a;
+        } else {
+            return ButtonHTMLTags.button;
+        }
     }
 
     /**
@@ -38,19 +50,6 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IButtonCla
      */
     protected generateClassNames(): string {
         return super.generateClassNames(get(this.props, "managedClasses.button"));
-    }
-
-    /**
-     * Creates tags for rendering based on href
-     */
-    private generateHTMLTag(): string {
-        switch (this.props.tag) {
-            case ButtonHTMLTags.a:
-                return "a";
-            case ButtonHTMLTags.button:
-            default:
-                return "button";
-        }
     }
 }
 
