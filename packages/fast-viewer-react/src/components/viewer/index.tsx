@@ -4,6 +4,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as ReactDOMServer from "react-dom/server";
 import { addressBarControls, windowControls } from "./browserControls";
+import { get } from "lodash-es";
 
 export interface IViewerHeightConfig {
     min?: number;
@@ -175,28 +176,23 @@ export default class Viewer extends React.Component<IViewerProps, IViewerState> 
             const iframeImages: HTMLCollection = this.iframe.contentDocument.images;
             const iframeLinks: NodeListOf<HTMLLinkElement> = this.iframe.contentDocument.getElementsByTagName("link");
 
-            for (let i: number = 0, iframeImageLength: number = iframeImages.length; i < iframeImageLength; i++) {
-                iframeImages[i].addEventListener("load", this.resetHeight);
-            }
-
-            for (let i: number = 0, iframeLinkLength: number = iframeLinks.length; i < iframeLinkLength; i++) {
-                iframeLinks[i].addEventListener("load", this.resetHeight);
-            }
+            this.addLoadEventListenerToItems(iframeImages);
+            this.addLoadEventListenerToItems(iframeLinks);
 
             this.resetHeight();
         }
     }
 
     public getHeight(totalHeight: number): number {
-        const autoHeight: number = this.props.config && this.props.config.height && this.props.config.height.auto
-            ? this.props.config.height.auto
-            : void(0);
-        const minHeight: number = this.props.config && this.props.config.height && this.props.config.height.min
-            ? this.props.config.height.min
-            : 0;
-        const maxHeight: number = this.props.config && this.props.config.height && this.props.config.height.max
-            ? this.props.config.height.max
-            : Infinity;
+        let autoHeight: number = void(0);
+        let minHeight: number = 0;
+        let maxHeight: number = Infinity;
+
+        if (get(this.props, "config.height")) {
+            autoHeight = this.props.config.height.auto ? this.props.config.height.auto : autoHeight;
+            minHeight = this.props.config.height.min ? this.props.config.height.min : minHeight;
+            maxHeight = this.props.config.height.max ? this.props.config.height.max : maxHeight;
+        }
 
         if (typeof autoHeight === "number") {
             return autoHeight;
@@ -253,6 +249,12 @@ export default class Viewer extends React.Component<IViewerProps, IViewerState> 
             return this.renderBrowser();
         } else {
             return this.renderIFrame();
+        }
+    }
+
+    private addLoadEventListenerToItems(items: HTMLCollection | NodeListOf<HTMLLinkElement>): void {
+        for (let i: number = 0, itemsLength: number = items.length; i < itemsLength; i++) {
+            items[i].addEventListener("load", this.resetHeight);
         }
     }
 }
