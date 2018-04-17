@@ -17,6 +17,7 @@ const style: ComponentStyles<ITocManagedClasses, IDevSiteDesignSystem> = {
     toc: {
         margin: "0",
         padding: "0",
+        fontSize: "14px",
         "&[aria-hidden='true']": {
             display: "none"
         }

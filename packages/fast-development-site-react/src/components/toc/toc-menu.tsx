@@ -26,12 +26,15 @@ const dropdownInactive: string = "PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllci
 const style: ComponentStyles<ITocMenuManagedClasses, IDevSiteDesignSystem> = {
     toc__menu: {},
     toc__menu__button: {
-        fill: "None",
-        background: "None",
-        border: "None",
-        padding: "10px 12px",
+        fill: "none",
+        background: "none",
+        outline: "0",
+        border: "none",
+        position: "relative",
         width: "100%",
-        textAlign: "Left",
+        fontFamily: "Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif",
+        padding: "10px 24px",
+        textAlign: "left",
         "&[aria-expanded='true']": {
             "&::after": {
                 content: `url('data:image/svg+xml;base64,${dropdownActive}')`
@@ -40,9 +43,13 @@ const style: ComponentStyles<ITocMenuManagedClasses, IDevSiteDesignSystem> = {
         "&::after": {
             content: `url('data:image/svg+xml;base64,${dropdownInactive}')`,
             fill: "white",
+            position: "absolute",
+            right: "11px",
+            top: "11px",
+            verticalAlign: "middle",
             display: "inline-block",
-            width: "16px",
-            height: "16px"
+            width: "11px",
+            height: "11px"
         }
     }
 };

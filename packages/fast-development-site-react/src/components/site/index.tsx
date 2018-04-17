@@ -35,30 +35,52 @@ export enum SiteSlot {
 }
 
 export interface ISiteManagedClasses {
+    site__headerTitle: string;
     site__paneToc: string;
+    site__paneTocRow: string;
     site__paneTocTitle: string;
     site__paneToggleButton: string;
-    site__paneTogglButtonIcon: string;
+    site__paneToggleButtonIcon: string;
+    site__paneToggleButtonIconLayout: string;
 }
 
 const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
+    site__headerTitle: {
+        verticalAlign: "middle"
+    },
     site__paneToc: {
-        margin: "0px -12px",
         padding: "0"
+    },
+    site__paneTocRow: {
+        display: "flex",
+        flexWrap: "nowrap",
+        alignItems: "center",
     },
     site__paneTocTitle: {
-        margin: "0px -12px",
-        padding: "0"
+        fontWeight: "bold",
+        marginLeft: "-8px",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+        overflow: "hidden"
     },
     site__paneToggleButton: {
-        width: "32px",
-        height: "32px",
-        padding: "0"
+        border: "none",
+        background: "none",
+        padding: "12px",
+        outline: "0"
     },
-    site__paneTogglButtonIcon: {
-        display: "inline-block",
-        width: "32px",
-        height: "32px"
+    site__paneToggleButtonIcon: {
+        height: "16px",
+        width: "16px",
+        justifyContent: "center",
+        fontSize: "16px"
+    },
+    site__paneToggleButtonIconLayout: {
+        height: "40px",
+        width: "40px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
     }
 };
 
@@ -109,7 +131,9 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         return (
             <ShellHeader>
                 {this.getSlotItems(this, ShellSlot.header)}
-                {this.props.title}
+                <span className={this.props.managedClasses.site__headerTitle}>
+                    {this.props.title}
+                </span>
             </ShellHeader>
         );
     }
@@ -191,16 +215,18 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
             }
         });
     }
-
+    /* tslint:disable */
     private getPaneCollapseToggle(): JSX.Element {
         return (
             <button
                 onClick={this.handlePaneCollapse}
                 className={this.props.managedClasses.site__paneToggleButton}
-                dangerouslySetInnerHTML={{__html: glyphGlobalnavbutton}}
-            />
+            >
+                <div className={this.props.managedClasses.site__paneToggleButtonIcon} dangerouslySetInnerHTML={{__html: glyphGlobalnavbutton}}/>
+            </button>
         );
     }
+    /* tslint:enable */
 
     private getRootToc(items: any, slot: string, currentPath: string, itemsPath: string): JSX.Element {
         if (this.props && this.props.children) {
@@ -278,17 +304,20 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         return null;
     }
 
+    /* tslint:disable */
     private getTocItemCategory(name: string | any, icon?: JSX.Element): JSX.Element {
         if (this.state.tableOfContentsCollapsed) {
-            return icon ? <span className={this.props.managedClasses.site__paneTogglButtonIcon}>{icon}</span> : null;
+            return icon ? <span className={this.props.managedClasses.site__paneToggleButtonIconLayout}><div className={this.props.managedClasses.site__paneToggleButtonIcon}>{icon}</div></span> : null;
         }
 
         return (
-            <span>
-                {icon ? <span className={this.props.managedClasses.site__paneTogglButtonIcon}>{icon}</span> : null} {name}
+            <span className={this.props.managedClasses.site__paneTocRow}>
+                {icon ? <span className={this.props.managedClasses.site__paneToggleButtonIconLayout}><div className={this.props.managedClasses.site__paneToggleButtonIcon}>{icon}</div></span> : null}
+                <div className={icon ? this.props.managedClasses.site__paneTocTitle : null}>{name}</div>
             </span>
         );
     }
+    /* tslint:enable */
 
     private getTocItemCategoryIcon(item: JSX.Element): JSX.Element {
         if (Array.isArray(item.props.children)) {

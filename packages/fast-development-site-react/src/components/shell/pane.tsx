@@ -15,12 +15,13 @@ export interface IShellPaneManagedClasses {
 const style: ComponentStyles<IShellPaneManagedClasses, IDevSiteDesignSystem> = {
     shell__pane: {
         display: "inline-block",
+        overflow: "hidden",
         backgroundColor: (config: IDevSiteDesignSystem): string => {
             return config.lightGrey;
         }
     },
     shell__pane_collapsed: {
-        width: "48px",
+        width: "40px",
     },
     shell__pane_expanded: {
         width: "300px"
