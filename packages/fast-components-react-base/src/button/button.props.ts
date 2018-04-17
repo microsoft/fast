@@ -15,6 +15,9 @@ export interface IButtonHandledProps {
      */
     tag?: ButtonHTMLTags;
 
+    /**
+     * The button content
+     */
     children?: React.ReactNode | React.ReactNode[];
 }
 

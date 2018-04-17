@@ -37,7 +37,7 @@ export interface ITypographyHandledProps {
     tag?: TypographyTag;
 
     /**
-     * The level which aligns to a type ramp instance
+     * The type level which aligns to a type ramp instance
      */
     typeLevel?: TypeLevel;
 }
