@@ -16,8 +16,13 @@ export enum ButtonHTMLTags {
 /* tslint:disable-next-line */
 class Button extends Foundation<IButtonHandledProps & IManagedClasses<IButtonClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
     protected handledProps: HandledProps<IButtonHandledProps & IManagedClasses<IButtonClassNameContract>> = {
+        children: void 0,
+        href: void 0,
+        justified: void 0,
+        lightweight: void 0,
         managedClasses: void 0,
-        href: void 0
+        outline: void 0,
+        primary: void 0
     };
 
     /**
@@ -49,7 +54,21 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IButtonCla
      * Generates class names
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(get(this.props, "managedClasses.button"));
+        let className: string;
+
+        if (this.props.primary) {
+            className = "managedClasses.button_primary";
+        } else if (this.props.outline) {
+            className = "managedClasses.button_outline";
+        } else if (this.props.lightweight) {
+            className = "managedClasses.button_lightweight";
+        } else if (this.props.justified) {
+            className = "managedClasses.button_justified";
+        } else {
+            className = "managedClasses.button";
+        }
+
+        return super.generateClassNames(get(this.props, className));
     }
 }
 
