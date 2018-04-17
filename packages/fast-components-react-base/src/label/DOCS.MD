@@ -1,5 +1,5 @@
 #Introduction
-*Label* is a replacement for the HTML `label` element. Unlike the HTML element, *label* is not restricted for use only in forms &mdash; it can be used alone or grouped with other related components. Some components have the *label* built-in, but most do not. *Labels* cannot exceed one line of text.
+*Label* is a replacement for the HTML `label` or `legend` element. It can be used alone or grouped with other related components. Some components have the *label* built-in, but most do not. *Labels* cannot exceed one line of text.
 
 ## Best practices
 Use *label* to inform the user of information about one or more visually co-located components. For example, use *label* to tell the user what they should enter into an adjacent input component, or to group a set of related components. It is possible use *label* to display instructional text near a group of related components, but there are better choices such as caption or paragraph.
