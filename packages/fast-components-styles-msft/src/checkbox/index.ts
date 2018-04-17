@@ -1,6 +1,6 @@
 import { IDesignSystem } from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import { ICheckboxClassNameContract } from "@microsoft/fast-components-class-name-contracts";
+import { ICheckboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 
 const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = {
     checkbox: {

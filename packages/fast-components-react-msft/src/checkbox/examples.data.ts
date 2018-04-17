@@ -9,6 +9,9 @@ export default {
     component: Checkbox,
     data: [
         {
+            tag: "div"
+        },
+        {
             text: "Default"
         },
         {

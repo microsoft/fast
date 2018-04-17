@@ -1,8 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Foundation, { HandledProps } from "../foundation";
-import { CheckboxProps, ICheckboxHandledProps, ICheckboxManagedClasses, ICheckboxUnhandledProps } from "./checkbox.props";
-import { ICheckboxClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts";
+import { CheckboxHTMLTags, CheckboxProps, ICheckboxHandledProps, ICheckboxManagedClasses, ICheckboxUnhandledProps } from "./checkbox.props";
+import { ICheckboxClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
 
 /* tslint:disable-next-line */
@@ -13,8 +13,16 @@ class Checkbox extends Foundation<ICheckboxHandledProps & ICheckboxManagedClasse
         checked: void 0,
         indeterminate: void 0,
         onChange: void 0,
-        disabled: void 0
+        disabled: void 0,
+        tag: void 0
     };
+
+    /**
+     * Stores HTML tag for use in render
+     */
+    private get tag(): string {
+        return CheckboxHTMLTags[this.props.tag] || CheckboxHTMLTags.label;
+    }
 
     private inputRef: React.RefObject<HTMLInputElement>;
         constructor(props: CheckboxProps) {
@@ -52,7 +60,7 @@ class Checkbox extends Foundation<ICheckboxHandledProps & ICheckboxManagedClasse
      */
     public render(): React.ReactElement<HTMLInputElement> {
         return (
-            <label className={this.generateClassNames()}>
+            <this.tag className={this.generateClassNames()}>
                 <input
                     {...this.unhandledProps()}
                     className={get(this.props, "managedClasses.checkbox_input")}
@@ -65,7 +73,7 @@ class Checkbox extends Foundation<ICheckboxHandledProps & ICheckboxManagedClasse
                 <span className={get(this.props, "managedClasses.checkbox_label")}>
                     {this.props.text ? this.props.text : null}
                 </span>
-            </label>
+            </this.tag>
         );
     }
 

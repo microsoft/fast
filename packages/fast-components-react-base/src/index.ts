@@ -18,10 +18,6 @@ import Foundation from "./foundation";
 export { Foundation };
 export * from "./foundation";
 
-import Checkbox from "./checkbox";
-export {Checkbox};
-export * from "./checkbox";
-
 import Image from "./image";
 export {Image};
 export * from "./image";

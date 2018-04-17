@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`checkbox checkbox: 0 1`] = `
+<label
+  className="checkbox"
+>
+  <input
+    checked={undefined}
+    className="checkbox-input"
+    disabled={undefined}
+    onChange={undefined}
+    type="checkbox"
+  />
+  <span
+    className="checkbox-label"
+  />
+</label>
+`;
+
+exports[`checkbox checkbox: 1 1`] = `
+<label
+  className="checkbox"
+>
+  <input
+    checked={undefined}
+    className="checkbox-input"
+    disabled={undefined}
+    onChange={undefined}
+    type="checkbox"
+  />
+  <span
+    className="checkbox-label"
+  />
+</label>
+`;
+
+exports[`checkbox checkbox: 2 1`] = `
+<div
+  className="checkbox"
+>
+  <input
+    checked={undefined}
+    className="checkbox-input"
+    disabled={undefined}
+    onChange={undefined}
+    type="checkbox"
+  />
+  <span
+    className="checkbox-label"
+  />
+</div>
+`;
+
+exports[`checkbox checkbox: 3 1`] = `
+<label
+  className="checkbox"
+>
+  <input
+    checked={undefined}
+    className="checkbox-input"
+    disabled={undefined}
+    onChange={undefined}
+    type="checkbox"
+  />
+  <span
+    className="checkbox-label"
+  />
+</label>
+`;
