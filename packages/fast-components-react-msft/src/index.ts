@@ -5,10 +5,10 @@ import Divider from "./divider";
 export { Divider };
 
 import Image from "./image";
-export { Image} ;
+export { Image } ;
 
 import Label from "./label";
-export { Label} ;
+export { Label } ;
 
 import Toggle from "./toggle";
 export { Toggle };
