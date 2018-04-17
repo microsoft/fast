@@ -1,5 +1,5 @@
 /**
- * The classname contract for the image component
+ * The class name contract for the image component
  */
 export interface IImageClassNameContract {
     image?: string;

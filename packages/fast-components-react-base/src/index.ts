@@ -18,6 +18,10 @@ import Image from "./image";
 export {Image};
 export * from "./image";
 
+import Label from "./label";
+export {Label};
+export * from "./label";
+
 import Toggle from "./toggle";
 export { Toggle };
 export * from "./toggle";

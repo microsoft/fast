@@ -27,6 +27,12 @@ import ImageStyles from "./image";
 export { ImageStyles };
 
 /**
+ * Export label styles
+ */
+import LabelStyles from "./label";
+export { LabelStyles };
+
+/**
  * Export toggle styles
  */
 import ToggleStyles from "./toggle";
@@ -44,5 +50,6 @@ export { TypographyStyles };
 export * from "./utilities/breakpoints";
 export * from "./utilities/fonts";
 export * from "./utilities/keyof-to-type";
+export * from "./utilities/screen-reader";
 export * from "./utilities/typography";
 export * from "./utilities/units";
