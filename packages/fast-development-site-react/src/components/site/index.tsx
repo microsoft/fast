@@ -306,13 +306,15 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
 
     /* tslint:disable */
     private getTocItemCategory(name: string | any, icon?: JSX.Element): JSX.Element {
+        let renderLayout = icon ? <span className={this.props.managedClasses.site__paneToggleButtonIconLayout}><div className={this.props.managedClasses.site__paneToggleButtonIcon}>{icon}</div></span> : null;
+
         if (this.state.tableOfContentsCollapsed) {
-            return icon ? <span className={this.props.managedClasses.site__paneToggleButtonIconLayout}><div className={this.props.managedClasses.site__paneToggleButtonIcon}>{icon}</div></span> : null;
+            return renderLayout;
         }
 
         return (
             <span className={this.props.managedClasses.site__paneTocRow}>
-                {icon ? <span className={this.props.managedClasses.site__paneToggleButtonIconLayout}><div className={this.props.managedClasses.site__paneToggleButtonIcon}>{icon}</div></span> : null}
+                {renderLayout}
                 <div className={icon ? this.props.managedClasses.site__paneTocTitle : null}>{name}</div>
             </span>
         );
