@@ -3,7 +3,7 @@ export { Button };
 export * from "./button";
 
 import Checkbox from "./checkbox";
-export {Checkbox};
+export { Checkbox };
 export * from "./checkbox";
 
 import Divider from "./divider";
