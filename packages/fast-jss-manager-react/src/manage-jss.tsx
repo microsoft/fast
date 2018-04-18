@@ -12,7 +12,7 @@ import { SheetsManager, StyleSheet } from "jss";
 import { IDesignSystemProviderProps } from "./design-system-provider";
 import * as propTypes from "prop-types";
 import { ClassNames, ComponentStyles, IManagedClasses } from "@microsoft/fast-jss-manager";
-import { isEqual, uniqueId, merge, omit } from "lodash-es";
+import { isEqual, merge, omit, uniqueId } from "lodash-es";
 
 // hoist-non-react-statics does not seem to be a properly formatted ES6 module, so we need to require it instead
 // Disable rule disallowing require statements
@@ -147,7 +147,7 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
                 }
 
                 if (Boolean(dynamicStyles)) {
-                    state.dynamicStyleSheet = this.createDynamicStyleSheet(); 
+                    state.dynamicStyleSheet = this.createDynamicStyleSheet();
                 }
 
                 this.state = state;
@@ -173,7 +173,7 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
                 }
             }
 
-            public componentDidUpdate(prevProps: T & IJSSManagerProps<S, C>, prevState: IJSSManagerState) {
+            public componentDidUpdate(prevProps: T & IJSSManagerProps<S, C>, prevState: IJSSManagerState): void {
                 if (this.props.jssStyleSheet !== prevProps.jssStyleSheet) {
                     jss.removeStyleSheet(this.state.dynamicStyleSheet);
 
@@ -183,7 +183,7 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
                         };
                     }, (): void => {
                         if (this.hasDynamicStyleSheet()) {
-                            this.state.dynamicStyleSheet.attach().update(this.designSystem)
+                            this.state.dynamicStyleSheet.attach().update(this.designSystem);
                         }
                     });
                 }
@@ -203,7 +203,7 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
             public render(): React.ReactNode {
                 return (
                     <Component
-                        {...omit(this.props, ['jssStyleSheet'])}
+                        {...omit(this.props, ["jssStyleSheet"])}
                         managedClasses={this.getClassNames()}
                     />
                 );
