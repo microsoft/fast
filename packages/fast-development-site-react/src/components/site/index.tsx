@@ -1,11 +1,11 @@
+import Toc, { TocItem } from "../toc";
 import * as React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
-import manageJss, { ComponentStyles, DesignSystemProvider, IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, DesignSystemProvider, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { glyphBuildingblocks, glyphGlobalnavbutton } from "@microsoft/fast-glyphs-msft";
 import { uniqueId } from "lodash-es";
 import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
 import Shell, { ShellActionBar, ShellCanvas, ShellHeader, ShellInfoBar, ShellPane, ShellPaneCollapse, ShellRow, ShellSlot } from "../shell";
-import Toc, { TocItem } from "../toc";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import CategoryList from "./category-list";
 import SiteMenu from "./menu";
 import SiteMenuItem from "./menu-item";

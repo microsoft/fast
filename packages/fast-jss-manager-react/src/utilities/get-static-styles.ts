@@ -1,16 +1,10 @@
 import { isEmptyObject } from "./object";
 
 /**
- * Recurse over an object and coppies all keys with primitive values over to a new object
- * TODO: Write tests and perhaphs abstract this a bit. It could be a general purpose function
- * "exclude" which accepts two objects and returns a new object with only the keys that aren't shared.
+ * Recurse over an object and copies all keys with primitive values over to a new object
  */
-export interface IGetStaticStyles {
-    [key: string]: any;
-}
-
-function getStaticStyles(styleObject: IGetStaticStyles): IGetStaticStyles | void {
-    const clone: IGetStaticStyles = {};
+function getStaticStyles<T>(styleObject: T): T {
+    const clone: Partial<T> = {};
 
     for (const key in styleObject) {
         if (styleObject.hasOwnProperty(key)) {
@@ -23,7 +17,7 @@ function getStaticStyles(styleObject: IGetStaticStyles): IGetStaticStyles | void
 
                 case "object":
                     if (styleObject[key] !== null) {
-                        const staticStyles: IGetStaticStyles | void = getStaticStyles(styleObject[key]);
+                        const staticStyles: T[keyof T] = getStaticStyles(styleObject[key]);
 
                         if (staticStyles) {
                             clone[key] = staticStyles;
@@ -34,7 +28,7 @@ function getStaticStyles(styleObject: IGetStaticStyles): IGetStaticStyles | void
     }
 
     if (Object.keys(clone).length) {
-        return clone;
+        return clone as T;
     }
 }
 

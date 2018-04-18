@@ -11,6 +11,7 @@ import Site, {
     SiteCategoryItem
 } from "@microsoft/fast-development-site-react";
 import * as examples from "./examples";
+import Button from "../src/button";
 
 /**
  * Create the root node
@@ -24,6 +25,7 @@ function render(): void {
     ReactDOM.render(
         <div>
             <DesignSystemProvider designSystem={DesignSystemDefaults}>
+                <Button>Hello world</Button>
                 <Site title={"FAST Microsoft components"}>
                     <SiteCategory slot={"category"} name={"Building blocks"}>
                         <SiteCategoryIcon slot="category-icon">
