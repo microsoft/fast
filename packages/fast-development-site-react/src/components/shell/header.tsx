@@ -6,11 +6,11 @@ import { IDevSiteDesignSystem } from "../design-system";
 export interface IShellHeaderProps { }
 
 export interface IShellHeaderManagedClasses {
-    shell__header: string;
+    shell_header: string;
 }
 
 const style: ComponentStyles<IShellHeaderManagedClasses, IDevSiteDesignSystem> = {
-    shell__header: {
+    shell_header: {
         background: (config: IDevSiteDesignSystem): string => {
             return config.brandColor;
         },
@@ -28,7 +28,7 @@ class ShellHeader extends React.Component<IShellHeaderProps & IManagedClasses<IS
 
     public render(): JSX.Element {
         return (
-            <div className={this.props.managedClasses.shell__header}>
+            <div className={this.props.managedClasses.shell_header}>
                 {this.props.children}
             </div>
         );

@@ -4,7 +4,7 @@ import { IDevSiteDesignSystem } from "../design-system";
 
 export interface ISiteCategoryItemManagedClasses {
     category_item: string;
-    category_item__component: string;
+    category_item_component: string;
 }
 
 const style: ComponentStyles<ISiteCategoryItemManagedClasses, IDevSiteDesignSystem> = {
@@ -15,7 +15,7 @@ const style: ComponentStyles<ISiteCategoryItemManagedClasses, IDevSiteDesignSyst
         borderTop: "1px solid rgb(226, 226, 226)",
         borderLeft: "1px solid rgb(226, 226, 226)"
     },
-    category_item__component: {
+    category_item_component: {
         flexGrow: "1",
         flexBasis: "0",
         padding: "12px",

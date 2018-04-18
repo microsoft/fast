@@ -8,13 +8,13 @@ export interface IBreadcrumbProps { }
 
 export interface IBreadcrumbManagedClasses {
     breadcrumb: string;
-    breadcrumb__list: string;
+    breadcrumb_list: string;
 }
 
 const style: ComponentStyles<IBreadcrumbManagedClasses, IDevSiteDesignSystem> = {
     breadcrumb: {
     },
-    breadcrumb__list: {
+    breadcrumb_list: {
         margin: "0",
         padding: "0"
     }
@@ -25,7 +25,7 @@ class Breadcrumb extends React.Component<IBreadcrumbProps & IManagedClasses<IBre
     public render(): JSX.Element {
         return (
             <nav className={this.props.managedClasses.breadcrumb}>
-                <ul className={this.props.managedClasses.breadcrumb__list}>
+                <ul className={this.props.managedClasses.breadcrumb_list}>
                     {this.props.children}
                 </ul>
             </nav>

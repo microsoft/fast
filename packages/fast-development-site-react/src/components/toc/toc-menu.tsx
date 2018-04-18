@@ -14,8 +14,8 @@ export interface ITocMenuState {
 }
 
 export interface ITocMenuManagedClasses {
-    toc__menu: string;
-    toc__menu__button: string;
+    toc_menu: string;
+    toc_menu_button: string;
 }
 
 // tslint:disable-next-line
@@ -24,8 +24,8 @@ const dropdownActive: string = "PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAx
 const dropdownInactive: string = "PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHRpdGxlPmNoZXZyb24tcmlnaHQ8L3RpdGxlPjxwYXRoIGQ9Ik0yMi43OCwxNiw4LjI1LDEuNDUsOS42NSwwbDE2LDE2LTE2LDE2LTEuNC0xLjQxWiIvPjwvc3ZnPg==";
 
 const style: ComponentStyles<ITocMenuManagedClasses, IDevSiteDesignSystem> = {
-    toc__menu: {},
-    toc__menu__button: {
+    toc_menu: {},
+    toc_menu_button: {
         fill: "none",
         background: "none",
         outline: "0",
@@ -68,7 +68,7 @@ class TocMenu extends React.Component<ITocMenuProps & IManagedClasses<ITocMenuMa
         return (
             <React.Fragment>
                 <button
-                    className={this.props.managedClasses.toc__menu__button}
+                    className={this.props.managedClasses.toc_menu_button}
                     onClick={this.handleButtonClick}
                     aria-expanded={this.state.active}
                     aria-controls={this.props.controls}
