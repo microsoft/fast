@@ -69,3 +69,4 @@ www/
 
 #Ignore VSCode
 .vscode/
+.vs/
