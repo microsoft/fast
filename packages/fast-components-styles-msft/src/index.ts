@@ -6,6 +6,10 @@ export { ButtonStyles };
 
 import CheckboxStyles from "./checkbox";
 export { CheckboxStyles };
+
+import HeadingStyles from "./heading";
+export { HeadingStyles };
+
 import HypertextStyles from "./hypertext";
 export { HypertextStyles };
 

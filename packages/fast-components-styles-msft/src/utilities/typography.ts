@@ -1,5 +1,5 @@
 import { toPx } from "@microsoft/fast-jss-utilities";
-import { breakpoints, IBreakpoints } from "../utilities/breakpoints";
+import { applyBreakpoint, IBreakpoints } from "../utilities/breakpoints";
 import { KeyOfToType } from "./keyof-to-type";
 import { ICSSRules } from "@microsoft/fast-jss-manager";
 import { IDesignSystem } from "../design-system";
@@ -141,7 +141,7 @@ export function applyType(typeConfig: keyof ITypeRamp, viewport: keyof ITypeRamp
 export function applyTypeRampConfig(typeConfig: keyof ITypeRamp): ICSSRules<IDesignSystem> {
     return Object.keys(typeRamp[typeConfig]).map((key: keyof ITypeRampItem): ICSSRules<IDesignSystem> => {
         return {
-            [`@media only screen and (min-width: ${breakpoints[key]}px)`]: applyType(typeConfig, key)
+            [applyBreakpoint(key)]: applyType(typeConfig, key)
         };
     }).reduce((accumulator: ICSSRules<IDesignSystem>, value: ICSSRules<IDesignSystem>) => Object.assign({}, accumulator, value));
 }
