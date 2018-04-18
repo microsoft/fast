@@ -11,9 +11,7 @@ export interface IShellHeaderManagedClasses {
 
 const style: ComponentStyles<IShellHeaderManagedClasses, IDevSiteDesignSystem> = {
     shell_header: {
-        background: (config: IDevSiteDesignSystem): string => {
-            return config.brandColor;
-        },
+        background: "#343434",
         color: (config: IDevSiteDesignSystem): string => {
             return config.backgroundColor;
         },
