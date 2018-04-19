@@ -74,7 +74,8 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
         height: "16px",
         width: "16px",
         justifyContent: "center",
-        fontSize: "16px"
+        fontSize: "16px",
+        display: "inline-block"
     },
     site_pane_toggle_button_icon_layout: {
         height: "40px",

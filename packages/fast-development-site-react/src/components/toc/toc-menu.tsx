@@ -26,7 +26,6 @@ const dropdownInactive: string = "PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllci
 const style: ComponentStyles<ITocMenuManagedClasses, IDevSiteDesignSystem> = {
     toc_menu: {},
     toc_menu_button: {
-        fill: "none",
         background: "none",
         outline: "0",
         border: "none",
