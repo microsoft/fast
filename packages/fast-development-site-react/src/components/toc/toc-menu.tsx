@@ -31,7 +31,7 @@ const style: ComponentStyles<ITocMenuManagedClasses, IDevSiteDesignSystem> = {
         border: "none",
         position: "relative",
         width: "100%",
-        fontFamily: "Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif",
+        fontFamily: "inherit",
         padding: "10px 24px",
         textAlign: "left",
         "&[aria-expanded='true']": {
