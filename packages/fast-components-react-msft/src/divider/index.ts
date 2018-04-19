@@ -6,7 +6,7 @@ import {
     IDividerUnhandledProps,
     IFoundationProps
 } from "@microsoft/fast-components-react-base";
-import manageJss from "@microsoft/fast-jss-manager-react";
-import { DividerStyles } from "@microsoft/fast-components-styles-msft";
+import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import { DividerStyles, IDesignSystem } from "@microsoft/fast-components-styles-msft";
 
 export default manageJss(DividerStyles)(Divider);

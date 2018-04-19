@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { IDevSiteDesignSystem } from "../design-system";
-import manageJss, { ComponentStyles, IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import Toc from "./";
 
 export interface ITocMenuProps {

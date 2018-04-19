@@ -1,5 +1,5 @@
 import * as React from "react";
-import manageJss, { ComponentStyles, IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { IDevSiteDesignSystem } from "../design-system";
 
 export interface ISiteCategoryItemManagedClasses {
