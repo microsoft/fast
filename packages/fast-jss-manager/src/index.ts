@@ -1,3 +1,4 @@
+import * as CSS from "csstype";
 import { ClassNames, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 export { ClassNames, IManagedClasses };
 /**
@@ -13,7 +14,7 @@ export type CSSRuleResolver<T> = (config?: T) => string;
  * property functions that resolve to a CSS value.
  */
 export interface ICSSRules<T> {
-    [rule: string]: ICSSRules<T> | CSSRuleResolver<T> | string;
+    [rule: string]: ICSSRules<T> | CSSRuleResolver<T> | CSS.Properties | string;
 }
 
 /**

@@ -2,7 +2,7 @@ import { IDesignSystem } from "../design-system";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { ITypographyClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyTypeRampConfig } from "../utilities/typography";
-import { toPx } from "../utilities/units";
+import { toPx } from "@microsoft/fast-jss-utilities";
 
 function applyParagraphDefaults(): ICSSRules<IDesignSystem> {
     return {

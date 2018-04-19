@@ -23,7 +23,8 @@
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'"
   },
   "dependencies": {
-    "@microsoft/fast-jss-manager-react": "^1.0.0"
+    "@microsoft/fast-jss-manager-react": "^1.0.0",
+    "@microsoft/fast-jss-utilities": "^1.0.0"
   },
   "devDependencies": {
     "@microsoft/fast-glyphs-msft": "^1.0.0",
