@@ -1,5 +1,6 @@
-{ "name": "@microsoft/fast-jss-manager-react",
-   "description": "React HOC for managing component JSS stylesheets",
+{
+  "name": "@microsoft/fast-jss-manager-react",
+  "description": "React HOC for managing component JSS stylesheets",
   "author": {
     "name": "Microsoft",
     "email": "fwq@microsoft.com"
@@ -26,9 +27,9 @@
   "jest": {
     "collectCoverage": true,
     "coverageReporters": [
-        "json",
-        "text",
-        "html"
+      "json",
+      "text",
+      "html"
     ],
     "coverageThreshold": {
       "global": {
@@ -36,7 +37,7 @@
         "functions": 80,
         "lines": 80,
         "statements": -10
-        }
+      }
     },
     "transform": {
       "^.+\\.tsx?$": "ts-jest",
@@ -65,6 +66,8 @@
     "babel-jest": "^22.4.3",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "hoist-non-react-statics": "^2.5.0",
     "jest": "^22.3.0",
     "jss": "^9.8.0",
@@ -72,6 +75,7 @@
     "lodash-es": "^4.0.0",
     "prop-types": "^15.6.1",
     "react": "^16.3.0",
+    "react-dom": "^16.3.2",
     "react-test-renderer": "^16.2.0",
     "ts-jest": "^22.0.4",
     "tslint": "^5.9.1",
