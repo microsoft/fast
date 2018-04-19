@@ -134,7 +134,7 @@ describe("The higher-order component", (): void => {
 
         const dynamicStyleSheet: any = rendered.state("dynamicStyleSheet");
 
-        rendered.setProps({jssStyleSheet: {dynamicStylesClass: { margin: "1" }}});
+        rendered.setProps({jssStyleSheet: {dynamicStylesClass: { margin: "1px" }}});
 
         expect(dynamicStyleSheet.attached).toBe(false);
         expect(rendered.state("dynamicStyleSheet").attached).toBe(true);

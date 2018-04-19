@@ -6,11 +6,11 @@
 ### Create a react component
 `manageJss` is a HOC that passes as props the generated classes from a given stylesheet. The generated classes are made available on the `managedClasses` prop of the rendered component.
 ```jsx
-// button.js
+// button.jsx
 import * as React from "react";
 
 class Button extends React.Component {
-    render(): {
+    render() {
         return (
             <button className={this.props.managedClasses.button}>
                 {this.props.children}
@@ -21,7 +21,7 @@ class Button extends React.Component {
 ```
 
 ### Create a JSS stylesheet
-You should also create a JSS stylesheet - for detailed information please reference (https://github.com/cssinjs/jss)[https://github.com/cssinjs/jss]. The JSS instance used by the manager uses (jss-preset-default)[https://github.com/cssinjs/jss-preset-default] so feel free to use any syntaxes supported by those plugins.
+You should also create a JSS stylesheet - for detailed information please reference [https://github.com/cssinjs/jss]. The JSS instance used by the manager uses (jss-preset-default)[https://github.com/cssinjs/jss-preset-default] so feel free to use any syntaxes supported by those plugins.
 ```js
 // buttonSyles.js
 const buttonStyles = {
