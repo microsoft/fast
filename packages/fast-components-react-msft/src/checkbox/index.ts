@@ -6,7 +6,7 @@ import {
     ICheckboxUnhandledProps,
     IFoundationProps
 } from "@microsoft/fast-components-react-base";
-import manageJss from "@microsoft/fast-jss-manager-react";
-import { CheckboxStyles } from "@microsoft/fast-components-styles-msft";
+import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import { CheckboxStyles, IDesignSystem } from "@microsoft/fast-components-styles-msft";
 
 export default manageJss(CheckboxStyles)(Checkbox);
