@@ -1,6 +1,14 @@
 import * as React from "react";
-import manageJss, { ComponentStyles } from "./manage-jss";
+import manageJss from "./manage-jss";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import * as ShallowRenderer from "react-test-renderer/shallow";
+import { shallow, mount, render, configure } from "enzyme";
+import * as Adapter from "enzyme-adapter-react-16";
+
+/*
+ * Configure Enzyme
+ */
+configure({adapter: new Adapter()});
 
 // Disable "no-string-literal" so we can access private members easily
 /* tslint:disable:no-string-literal */
@@ -83,5 +91,52 @@ describe("The higher-order component", (): void => {
         });
 
         expect(Component["stylesheetManager"].sheets.length).toBe(expected);
+    });
+
+    test("should update the stylesheet when context changes", (): void => {
+        const Component: any = manageJss(staticAndDynamicStyles)(SimpleComponent);
+        const mock = jest.fn();
+        const rendered = shallow(
+            <Component />,
+            { context: {designSystem: true} }
+        );
+        rendered.instance().updateDynamicStyleSheet = mock;
+        
+        // Change context
+        rendered.setContext({designSystem: false});
+
+        expect(mock.mock.calls.length).toBe(1);
+    });
+
+    test("should remove stylesheets when unmounting" , (): void => {
+        const Component: any = manageJss(staticAndDynamicStyles)(SimpleComponent);
+        const rendered = shallow(
+            <Component />,
+            { context: {designSystem: true} }
+        );
+        let staticStyleSheet = rendered.state("staticStyleSheet");
+        let dynamicStyleSheet = rendered.state("dynamicStyleSheet");
+        expect(staticStyleSheet.attached).toBe(true);
+        expect(dynamicStyleSheet.attached).toBe(true);
+
+        rendered.unmount();
+
+        expect(staticStyleSheet.attached).toBe(false);
+        expect(dynamicStyleSheet.attached).toBe(false);
+    });
+
+    test("should create a new stylesheet when stylesheet props are changed", () => {
+        const Component: any = manageJss(staticAndDynamicStyles)(SimpleComponent);
+        const rendered = shallow(
+            <Component jssStyleSheet={{dynamicStylesClass: { margin: "0" }}} />,
+            { context: {designSystem: true} }
+        );
+
+        const dynamicStyleSheet = rendered.state("dynamicStyleSheet");
+
+        rendered.setProps({jssStyleSheet: {dynamicStylesClass: { margin: "1" }}});
+
+        expect(dynamicStyleSheet.attached).toBe(false);
+        expect(rendered.state("dynamicStyleSheet").attached).toBe(true);
     });
 });

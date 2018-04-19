@@ -153,6 +153,15 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
                 this.state = state;
             }
 
+            /**
+             * Updates a dynamic stylesheet with context
+             */
+            public updateDynamicStyleSheet(): void {
+                if (Boolean(this.state.dynamicStyleSheet)) {
+                    this.state.dynamicStyleSheet.update(this.designSystem);
+                }
+            }
+
             public componentWillMount(): void {
                 if (Boolean(this.state.staticStyleSheet)) {
                     JSSManager.stylesheetManager.add(this.state.staticStyleSheet, this.state.staticStyleSheet);
@@ -163,13 +172,14 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
                     // It appears we need to update the stylesheet for any style properties defined as functions
                     // to work.
 
-                    this.state.dynamicStyleSheet.attach().update(this.designSystem);
+                    this.state.dynamicStyleSheet.attach();
+                    this.updateDynamicStyleSheet();
                 }
             }
 
             public componentWillUpdate(nextProps: T & IJSSManagerProps<S, C>, nextState: IJSSManagerState, nextContext: any): void {
                 if (!isEqual(this.context, nextContext)) {
-                    this.state.dynamicStyleSheet.update(nextContext.designSystem);
+                    this.updateDynamicStyleSheet();
                 }
             }
 
