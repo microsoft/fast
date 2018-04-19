@@ -26,7 +26,7 @@ const dynamicStyles: ComponentStyles<any, any> = {
 };
 
 const staticAndDynamicStyles: ComponentStyles<any, any> = {
-    staticAndDynamicStylesClass: Object.assign({}, staticStyles.staticStyleClass, dynamicStyles.dynamicStylesClass)
+    staticAndDynamicStylesClass: { ...staticStyles.staticStyleClass, ...dynamicStyles.dynamicStylesClass } 
 };
 
 // Because stylesheets are stored on a static property of manageJss"s HOC, we need to track how many have been created
