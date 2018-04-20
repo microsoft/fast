@@ -8,6 +8,12 @@ describe("margin:", (): void => {
     test("locMarginLeft should return 'margin-right' when dir='rtl'", (): void => {
         expect(locMarginLeft(Direction.rtl)).toBe("margin-right")
     });
+    test("locMarginRight should return 'margin-right' when dir='ltr'", (): void => {
+        expect(locMarginRight(Direction.ltr)).toBe("margin-right")
+    });
+    test("locMarginRight should return 'margin-left' when dir='rtl'", (): void => {
+        expect(locMarginRight(Direction.rtl)).toBe("margin-left")
+    });
 });
 
 describe("padding:", (): void => {
@@ -16,6 +22,12 @@ describe("padding:", (): void => {
     });
     test("locPaddingLeft should return 'padding-right' when dir='rtl'", (): void => {
         expect(locPaddingLeft(Direction.rtl)).toBe("padding-right")
+    });
+    test("locPaddingRight should return 'margin-right' when dir='ltr'", (): void => {
+        expect(locPaddingRight(Direction.ltr)).toBe("padding-right")
+    });
+    test("locPaddingRight should return 'margin-left' when dir='rtl'", (): void => {
+        expect(locPaddingRight(Direction.rtl)).toBe("padding-left")
     });
 });
 
