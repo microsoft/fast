@@ -21,7 +21,7 @@ export enum itemType {
 export interface ITocItemManagedClasses {
     toc_anchor: string;
     toc_item: string;
-    toc_item_active: string;
+    toc_item__active: string;
 }
 
 const tocItemActivePipeHeight: number = 20;
@@ -44,7 +44,7 @@ const style: ComponentStyles<ITocItemManagedClasses, IDevSiteDesignSystem> = {
             return config.foregroundColor;
         },
     },
-    toc_item_active: {
+    toc_item__active: {
         background: (config: IDevSiteDesignSystem): string => {
             return config.backgroundColor;
         },
@@ -128,7 +128,7 @@ class TocItem extends React.Component<ITocItemProps & IManagedClasses<ITocItemMa
         const classNames: string = this.props.managedClasses.toc_item;
 
         if (this.props.active && this.props.to) {
-            return `${classNames} ${this.props.managedClasses.toc_item_active}`;
+            return `${classNames} ${this.props.managedClasses.toc_item__active}`;
         }
 
         return classNames;

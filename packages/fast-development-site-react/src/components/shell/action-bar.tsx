@@ -6,11 +6,11 @@ import { IDevSiteDesignSystem } from "../design-system";
 export interface IShellActionBarProps {}
 
 export interface IShellActionBarManagedClasses {
-    shell_action_bar: string;
+    shell_actionBar: string;
 }
 
 const style: ComponentStyles<IShellActionBarManagedClasses, IDevSiteDesignSystem> = {
-    shell_action_bar: {
+    shell_actionBar: {
         background: (config: IDevSiteDesignSystem): string => {
             return config.backgroundColor;
         },
@@ -27,7 +27,7 @@ class ShellActionBar extends React.Component<IShellActionBarProps & IManagedClas
 
     public render(): JSX.Element {
         return (
-            <div className={this.props.managedClasses.shell_action_bar}>
+            <div className={this.props.managedClasses.shell_actionBar}>
                 {this.props.children}
             </div>
         );
