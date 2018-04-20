@@ -1,5 +1,4 @@
 import * as CSS from "csstype";
-import { JSSUtilities } from "./typedef";
 
 export interface IEllipsis {
     whiteSpace: CSS.WhiteSpaceProperty;
@@ -7,9 +6,7 @@ export interface IEllipsis {
     textOverflow: CSS.TextOverflowProperty;
 }
 
-export type Ellipsis = JSSUtilities<IEllipsis>;
-
-export function ellipsis(): Ellipsis {
+export function ellipsis(): IEllipsis {
     return {
         whiteSpace: "nowrap",
         overflow: "hidden",

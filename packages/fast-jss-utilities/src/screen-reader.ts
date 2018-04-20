@@ -1,5 +1,4 @@
 import * as CSS from "csstype";
-import { JSSUtilities } from "./typedef";
 
 export interface IScreenReaderOnly {
     position: CSS.PositionProperty;
@@ -12,9 +11,7 @@ export interface IScreenReaderOnly {
     margin: CSS.MarginProperty<string>;
 }
 
-export type ScreenReaderOnly = JSSUtilities<IScreenReaderOnly>;
-
-export function applyScreenReader(): ScreenReaderOnly {
+export function applyScreenReader(): IScreenReaderOnly {
     return {
         position: "absolute",
         overflow: "hidden",
