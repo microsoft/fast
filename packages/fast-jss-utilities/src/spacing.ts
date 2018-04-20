@@ -1,7 +1,7 @@
 import { Direction, locLeft, locRight } from "./direction";
 
 const margin = "margin";
-const padding = "margin";
+const padding = "padding";
 
 export function locMarginRight(dir: Direction): string {
     return `${margin}-${locRight(dir)}`;
