@@ -1,54 +1,23 @@
-import { Direction, locLeft, locRight } from "./direction";
-
-const margin = "margin";
-const padding = "padding";
-
-/**
- * Returns "margin-left" when dir is "rtl", otherwise returns "margin-right"
- */
-export function locMarginRight(dir: Direction): string {
-    return `${margin}-${locRight(dir)}`;
-}
-
-/**
- * Returns "margin-right" when dir is "rtl", otherwise returns "margin-left"
- */
-export function locMarginLeft(dir: Direction): string {
-    return `${margin}-${locLeft(dir)}`;
-}
-
-/**
- * Returns "padding-left" when dir is "rtl", otherwise returns "margin-right"
- */
-export function locPaddingRight(dir: Direction): string {
-    return `${padding}-${locRight(dir)}`;
-}
-
-/**
- * Returns "padding-right" when dir is "rtl", otherwise returns "margin-left"
- */
-export function locPaddingLeft(dir: Direction): string {
-    return `${padding}-${locLeft(dir)}`;
-}
+import { Direction } from "./direction";
 
 /**
  * Localizes top/left/bottom/right formatted arguments, such as the format used by CSS's padding and margin
  * properties. 
+ * eg. when dir is RTL, "2px 3px 4px 5px" -> "2px 5px 4px 3px"
  */
-export function locSpacing(dir): (...args: string[]) => string {  
-    let space = " ";
-    return (...args: string[]): string => {
-        switch(args.length) {
-            case 1:
-            case 2:
-            case 3:
-                return args.join(space);
-            case 4:
-                return dir === Direction.rtl
-                    ? [args[0], args[3], args[2], args[1]].join(space)
-                    : args.join(space)
-            default: 
-                return "";
+export function locSpacing(dir): (value: string) => string {  
+    return (value: string): string => {
+        if (typeof value !== "string") {
+            return ""
         }
+
+        const space = " ";
+        const split = value.split(space);
+
+        return split.length !== 4 
+            ? value
+            : dir === Direction.rtl
+            ? [split[0], split[3], split[2], split[1]].join(space)
+            : value;
     }
 }
