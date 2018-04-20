@@ -1,7 +1,7 @@
 import { IDesignSystem } from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { IHypertextClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { toPx } from "../utilities/units";
+import { toPx } from "@microsoft/fast-jss-utilities";
 
 const styles: ComponentStyles<IHypertextClassNameContract, IDesignSystem> = {
     hypertext: {

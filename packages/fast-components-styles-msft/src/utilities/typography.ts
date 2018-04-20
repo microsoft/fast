@@ -1,5 +1,5 @@
+import { toPx } from "@microsoft/fast-jss-utilities";
 import { breakpoints, IBreakpoints } from "../utilities/breakpoints";
-import { toPx } from "./units";
 import { KeyOfToType } from "./keyof-to-type";
 import { ICSSRules } from "@microsoft/fast-jss-manager";
 import { IDesignSystem } from "../design-system";
