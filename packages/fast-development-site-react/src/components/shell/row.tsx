@@ -1,19 +1,20 @@
 import * as React from "react";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import { toPx } from "@microsoft/fast-jss-utilities";
 import { IDevSiteDesignSystem } from "../design-system";
 
 /* tslint:disable-next-line */
 export interface IShellRowProps { }
 
 export interface IShellRowManagedClasses {
-    shell__row: string;
+    shellRow: string;
 }
 
 const style: ComponentStyles<IShellRowManagedClasses, IDevSiteDesignSystem> = {
-    shell__row: {
+    shellRow: {
         display: "flex",
         alignItems: "stretch",
-        height: (config: IDevSiteDesignSystem): string => `calc(100% - ${config.navigationBarHeight * 2}px)`
+        height: (config: IDevSiteDesignSystem): string => `calc(100% - ${toPx(config.navigationBarHeight * 2)}`
     }
 };
 
@@ -24,7 +25,7 @@ class ShellRow extends React.Component<IShellRowProps & IManagedClasses<IShellRo
 
     public render(): JSX.Element {
         return (
-            <div className={this.props.managedClasses.shell__row}>
+            <div className={this.props.managedClasses.shellRow}>
                 {this.props.children}
             </div>
         );

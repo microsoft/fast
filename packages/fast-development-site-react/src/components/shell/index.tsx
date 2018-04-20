@@ -1,5 +1,6 @@
 import * as React from "react";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import { toPx } from "@microsoft/fast-jss-utilities";
 import { IDevSiteDesignSystem } from "../design-system";
 import ShellActionBar from "./action-bar";
 import ShellInfoBar from "./info-bar";
@@ -28,7 +29,7 @@ export enum ShellSlot {
 const style: ComponentStyles<IShellManagedClasses, IDevSiteDesignSystem> = {
     shell: {
         fontFamily: "Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif",
-        fontSize: "14px",
+        fontSize: toPx(14),
         height: "100vh"
     }
 };
