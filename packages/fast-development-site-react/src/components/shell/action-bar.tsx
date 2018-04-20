@@ -6,13 +6,13 @@ import { IDevSiteDesignSystem } from "../design-system";
 export interface IShellActionBarProps {}
 
 export interface IShellActionBarManagedClasses {
-    shell__action_bar: string;
+    shell_actionBar: string;
 }
 
 const style: ComponentStyles<IShellActionBarManagedClasses, IDevSiteDesignSystem> = {
-    shell__action_bar: {
+    shell_actionBar: {
         background: (config: IDevSiteDesignSystem): string => {
-            return config.lightGrey;
+            return config.backgroundColor;
         },
         padding: (config: IDevSiteDesignSystem): string => {
             return `${config.navigationBarHeight / 4}px`;
@@ -27,7 +27,7 @@ class ShellActionBar extends React.Component<IShellActionBarProps & IManagedClas
 
     public render(): JSX.Element {
         return (
-            <div className={this.props.managedClasses.shell__action_bar}>
+            <div className={this.props.managedClasses.shell_actionBar}>
                 {this.props.children}
             </div>
         );

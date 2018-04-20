@@ -11,30 +11,34 @@ export interface ISiteMenuState {
 }
 
 export interface ISiteNavManagedClasses {
-    site__menu: string;
-    site__menu__nav: string;
-    site__menu__button: string;
-    site__menu__button__svg: string;
+    site_menu: string;
+    site_menu_nav: string;
+    site_menu_button: string;
+    site_menu_button_svg: string;
 }
 
 const style: ComponentStyles<ISiteNavManagedClasses, IDevSiteDesignSystem> = {
-    site__menu: {
-        position: "relative",
-        display: "inline-block"
+    site_menu: {
+        display: "inline-block",
+        verticalAlign: "middle"
     },
-    site__menu__nav: {
+    site_menu_nav: {
         position: "absolute",
         "&[aria-hidden=\"true\"]": {
             display: "none"
         }
     },
-    site__menu__button: {
+    site_menu_button: {
         width: "32px",
         height: "32px",
-        padding: "0"
+        padding: "3px",
+        border: "none",
+        background: "none"
     },
-    site__menu__button__svg: {
-        fill: "#FFFFFF"
+    site_menu_button_svg: {
+        fill: (config: IDevSiteDesignSystem): string => {
+            return config.backgroundColor;
+        },
     }
 };
 
@@ -51,20 +55,20 @@ class SiteMenu extends React.Component<ISiteMenuProps & IManagedClasses<ISiteNav
     // tslint:disable
     public render(): JSX.Element {
         return (
-            <div className={this.props.managedClasses.site__menu}>
-                <button onClick={this.handleMenuVisibilityToggle} className={this.props.managedClasses.site__menu__button}>
+            <div className={this.props.managedClasses.site_menu}>
+                <button onClick={this.handleMenuVisibilityToggle} className={this.props.managedClasses.site_menu_button}>
                     <svg
                         id="Layer_1"
                         data-name="Layer 1"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 32 32"
-                        className={this.props.managedClasses.site__menu__button__svg}
+                        className={this.props.managedClasses.site_menu_button_svg}
                     >
                         <title>waffle</title>
                         <path d="M6.2,10V6h4v4Zm0,8V14h4v4Zm0,8V22h4v4Zm8-16V6h4v4Zm0,8V14h4v4Zm0,8V22h4v4Zm8-20h4v4h-4Zm0,12V14h4v4Zm0,8V22h4v4Z"/>
                     </svg>
                 </button>
-                <nav className={this.props.managedClasses.site__menu__nav} {...this.getNavigationAttributes()}>
+                <nav className={this.props.managedClasses.site_menu_nav} {...this.getNavigationAttributes()}>
                     <ul>
                         {this.props.children}
                     </ul>

@@ -8,11 +8,11 @@ export interface IShellPaneCollapseProps {
 }
 
 export interface IShellPaneCollapseManagedClasses {
-    shell__pane_collapse: string;
+    shell_pane_collapse: string;
 }
 
 const style: ComponentStyles<IShellPaneCollapseManagedClasses, IDevSiteDesignSystem> = {
-    shell__pane_collapse: {
+    shell_pane_collapse: {
         background: "blue",
         height: "48px",
         width: "48px"
@@ -23,7 +23,7 @@ class ShellPaneCollapse extends React.Component<IShellPaneCollapseProps & IManag
 
     public render(): JSX.Element {
         return (
-            <button className={this.props.managedClasses.shell__pane_collapse} onClick={this.handleUpdateCollapse}>
+            <button className={this.props.managedClasses.shell_pane_collapse} onClick={this.handleUpdateCollapse}>
                 {this.props.children}
             </button>
         );

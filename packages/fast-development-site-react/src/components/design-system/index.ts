@@ -2,7 +2,7 @@ export interface IDevSiteDesignSystem {
     foregroundColor: string;
     backgroundColor: string;
     brandColor: string;
-    lightGrey: string;
+    lightGray: string;
     navigationBarHeight: number;
     categoryItemComponentMinWidth: number;
 }
@@ -10,8 +10,8 @@ export interface IDevSiteDesignSystem {
 const devSiteDesignSystemDefaults: IDevSiteDesignSystem = {
     foregroundColor: "#000",
     backgroundColor: "#FFF",
-    brandColor: "#0078D4",
-    lightGrey: "#EEEEEE",
+    brandColor: "#FB356D",
+    lightGray: "#F4F5F6",
     navigationBarHeight: 48,
     categoryItemComponentMinWidth: 80
 };

@@ -6,13 +6,13 @@ import { IDevSiteDesignSystem } from "../design-system";
 export interface IShellInfoBarProps {}
 
 export interface IShellInfoBarManagedClasses {
-    shell__info_bar: string;
+    shell_info_bar: string;
 }
 
 const style: ComponentStyles<IShellInfoBarManagedClasses, IDevSiteDesignSystem> = {
-    shell__info_bar: {
+    shell_info_bar: {
         background: (config: IDevSiteDesignSystem): string => {
-            return config.lightGrey;
+            return config.lightGray;
         },
         padding: (config: IDevSiteDesignSystem): string => {
             return `${config.navigationBarHeight / 4}px`;
@@ -27,7 +27,7 @@ class ShellInfoBar extends React.Component<IShellInfoBarProps & IManagedClasses<
 
     public render(): JSX.Element {
         return (
-            <div className={this.props.managedClasses.shell__info_bar}>
+            <div className={this.props.managedClasses.shell_info_bar}>
                 {this.props.children}
             </div>
         );

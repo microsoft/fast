@@ -35,20 +35,54 @@ export enum SiteSlot {
 }
 
 export interface ISiteManagedClasses {
-    site__paneToggleButton: string;
-    site__paneTogglButtonIcon: string;
+    site_header_title: string;
+    site_pane_toc: string;
+    site_pane_toc_row: string;
+    site_pane_toc_title: string;
+    site_pane_toggle_button: string;
+    site_pane_toggle_button_icon: string;
+    site_pane_toggle_button_icon_layout: string;
 }
 
 const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
-    site__paneToggleButton: {
-        width: "32px",
-        height: "32px",
+    site_header_title: {
+        verticalAlign: "middle"
+    },
+    site_pane_toc: {
         padding: "0"
     },
-    site__paneTogglButtonIcon: {
-        display: "inline-block",
-        width: "32px",
-        height: "32px"
+    site_pane_toc_row: {
+        display: "flex",
+        flexWrap: "nowrap",
+        alignItems: "center",
+    },
+    site_pane_toc_title: {
+        fontWeight: "bold",
+        marginLeft: "-8px",
+        // TODO #279: Create a utility to apply ellipsis cross browser
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+        overflow: "hidden"
+    },
+    site_pane_toggle_button: {
+        border: "none",
+        background: "none",
+        padding: "12px",
+        outline: "0"
+    },
+    site_pane_toggle_button_icon: {
+        height: "16px",
+        width: "16px",
+        justifyContent: "center",
+        fontSize: "16px",
+        display: "inline-block"
+    },
+    site_pane_toggle_button_icon_layout: {
+        height: "40px",
+        width: "40px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
     }
 };
 
@@ -99,7 +133,9 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         return (
             <ShellHeader>
                 {this.getSlotItems(this, ShellSlot.header)}
-                {this.props.title}
+                <span className={this.props.managedClasses.site_header_title}>
+                    {this.props.title}
+                </span>
             </ShellHeader>
         );
     }
@@ -110,7 +146,9 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 <ShellPane collapsed={this.state.tableOfContentsCollapsed}>
                     {this.getPaneCollapseToggle()}
                     {this.getSlotItems(this, ShellSlot.pane)}
-                    {this.getRootToc(this.props.children, SiteSlot.category, path, "/")}
+                    <ul className={this.props.managedClasses.site_pane_toc}>
+                        {this.getRootToc(this.props.children, SiteSlot.category, path, "/")}
+                    </ul>
                 </ShellPane>
                 <ShellCanvas>
                     <ShellActionBar>
@@ -179,16 +217,18 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
             }
         });
     }
-
+    /* tslint:disable:max-line-length */
     private getPaneCollapseToggle(): JSX.Element {
         return (
             <button
                 onClick={this.handlePaneCollapse}
-                className={this.props.managedClasses.site__paneToggleButton}
-                dangerouslySetInnerHTML={{__html: glyphGlobalnavbutton}}
-            />
+                className={this.props.managedClasses.site_pane_toggle_button}
+            >
+                <span className={this.props.managedClasses.site_pane_toggle_button_icon} dangerouslySetInnerHTML={{__html: glyphGlobalnavbutton}}/>
+            </button>
         );
     }
+    /* tslint:enable:max-line-length */
 
     private getRootToc(items: any, slot: string, currentPath: string, itemsPath: string): JSX.Element {
         if (this.props && this.props.children) {
@@ -266,17 +306,22 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         return null;
     }
 
+    /* tslint:disable:max-line-length */
     private getTocItemCategory(name: string | any, icon?: JSX.Element): JSX.Element {
+        const renderLayout: JSX.Element = icon ? <div className={this.props.managedClasses.site_pane_toggle_button_icon_layout}><span className={this.props.managedClasses.site_pane_toggle_button_icon}>{icon}</span></div> : null;
+
         if (this.state.tableOfContentsCollapsed) {
-            return icon ? <span className={this.props.managedClasses.site__paneTogglButtonIcon}>{icon}</span> : null;
+            return renderLayout;
         }
 
         return (
-            <React.Fragment>
-                {icon ? <span className={this.props.managedClasses.site__paneTogglButtonIcon}>{icon}</span> : null} {name}
-            </React.Fragment>
+            <div className={this.props.managedClasses.site_pane_toc_row}>
+                {renderLayout}
+                <div className={icon ? this.props.managedClasses.site_pane_toc_title : null}>{name}</div>
+            </div>
         );
     }
+    /* tslint:enable:max-line-length */
 
     private getTocItemCategoryIcon(item: JSX.Element): JSX.Element {
         if (Array.isArray(item.props.children)) {

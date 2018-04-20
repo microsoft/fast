@@ -12,23 +12,59 @@ export interface ITocItemProps {
     active: boolean;
 }
 
-export interface ITocItemManagedClasses {
-    toc__item: string;
-    toc__item_active: string;
-}
-
 export enum itemType {
+    a = "a",
     tocMenu = "tocMenu",
     link = "link"
 }
 
+export interface ITocItemManagedClasses {
+    toc_anchor: string;
+    toc_item: string;
+    toc_item__active: string;
+}
+
+const tocItemActivePipeHeight: number = 20;
+
 const style: ComponentStyles<ITocItemManagedClasses, IDevSiteDesignSystem> = {
-    toc__item: {
-        padding: "6px 12px",
-        display: "block"
+    toc_anchor: {
+        color: (config: IDevSiteDesignSystem): string => {
+            return config.foregroundColor;
+        },
+        textDecoration: "none",
+        display: "block",
+        textIndent: "48px",
+        lineHeight: "40px",
+        outline: "0"
     },
-    toc__item_active: {
-        background: "lightgray"
+    toc_item: {
+        display: "block",
+        position: "relative",
+        color: (config: IDevSiteDesignSystem): string => {
+            return config.foregroundColor;
+        },
+    },
+    toc_item__active: {
+        background: (config: IDevSiteDesignSystem): string => {
+            return config.backgroundColor;
+        },
+        color: (config: IDevSiteDesignSystem): string => {
+            return config.foregroundColor;
+        },
+        boxShadow: "0px 2px 4px -1px #ccc;",
+        "&::before": {
+            content: "''",
+            width: "2px",
+            height: `${tocItemActivePipeHeight}px`,
+            borderRadius: "2px",
+            display: "block",
+            background: (config: IDevSiteDesignSystem): string => {
+                return config.brandColor;
+            },
+            position: "absolute",
+            left: "0",
+            top: `calc((100% / 2) - ${tocItemActivePipeHeight / 2}px)`
+        }
     }
 };
 
@@ -46,7 +82,7 @@ class TocItem extends React.Component<ITocItemProps & IManagedClasses<ITocItemMa
 
     private renderLink(): JSX.Element {
         return (
-            <Link to={this.props.to}>
+            <Link to={this.props.to} className={this.props.managedClasses.toc_anchor}>
                 {this.props.children}
             </Link>
         );
@@ -89,10 +125,10 @@ class TocItem extends React.Component<ITocItemProps & IManagedClasses<ITocItemMa
     }
 
     private getClassNames(): string {
-        const classNames: string = this.props.managedClasses.toc__item;
+        const classNames: string = this.props.managedClasses.toc_item;
 
         if (this.props.active && this.props.to) {
-            return `${classNames} ${this.props.managedClasses.toc__item_active}`;
+            return `${classNames} ${this.props.managedClasses.toc_item__active}`;
         }
 
         return classNames;

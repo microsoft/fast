@@ -8,11 +8,11 @@ export interface IBreadcrumbItemProps {
 }
 
 export interface IBreadcrumbItemManagedClasses {
-    breadcrumb__list__item: string;
+    breadcrumb_listItem: string;
 }
 
 const style: ComponentStyles<IBreadcrumbItemManagedClasses, IDevSiteDesignSystem> = {
-    breadcrumb__list__item: {
+    breadcrumb_listItem: {
         "paddingRight": "12px",
         "display": "inline",
         "&::after": {
@@ -33,7 +33,7 @@ class BreadcrumbItem extends React.Component<IBreadcrumbItemProps & IManagedClas
     public render(): JSX.Element {
         if (this.props.to) {
             return (
-                <li className={this.props.managedClasses.breadcrumb__list__item}>
+                <li className={this.props.managedClasses.breadcrumb_listItem}>
                     <Link to={this.props.to}>
                         {this.props.children}
                     </Link>
@@ -41,7 +41,7 @@ class BreadcrumbItem extends React.Component<IBreadcrumbItemProps & IManagedClas
             );
         } else {
             return (
-                <li className={this.props.managedClasses.breadcrumb__list__item}>
+                <li className={this.props.managedClasses.breadcrumb_listItem}>
                     <span>
                         {this.props.children}
                     </span>
