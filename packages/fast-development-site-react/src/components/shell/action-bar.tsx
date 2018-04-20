@@ -1,24 +1,25 @@
 import * as React from "react";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import { toPx } from "@microsoft/fast-jss-utilities";
 import { IDevSiteDesignSystem } from "../design-system";
 
 /* tslint:disable-next-line */
 export interface IShellActionBarProps {}
 
 export interface IShellActionBarManagedClasses {
-    shell_actionBar: string;
+    shellActionBar: string;
 }
 
 const style: ComponentStyles<IShellActionBarManagedClasses, IDevSiteDesignSystem> = {
-    shell_actionBar: {
+    shellActionBar: {
         background: (config: IDevSiteDesignSystem): string => {
             return config.backgroundColor;
         },
         padding: (config: IDevSiteDesignSystem): string => {
-            return `${config.navigationBarHeight / 4}px`;
+            return toPx(config.navigationBarHeight / 4);
         },
         minHeight: (config: IDevSiteDesignSystem): string => {
-            return `${config.navigationBarHeight / 2}px`;
+            return toPx(config.navigationBarHeight / 2);
         }
     }
 };
@@ -27,7 +28,7 @@ class ShellActionBar extends React.Component<IShellActionBarProps & IManagedClas
 
     public render(): JSX.Element {
         return (
-            <div className={this.props.managedClasses.shell_actionBar}>
+            <div className={this.props.managedClasses.shellActionBar}>
                 {this.props.children}
             </div>
         );

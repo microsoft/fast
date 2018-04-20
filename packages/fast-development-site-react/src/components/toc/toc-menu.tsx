@@ -2,6 +2,7 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import { IDevSiteDesignSystem } from "../design-system";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import { toPx } from "@microsoft/fast-jss-utilities";
 import Toc from "./";
 
 export interface ITocMenuProps {
@@ -14,8 +15,7 @@ export interface ITocMenuState {
 }
 
 export interface ITocMenuManagedClasses {
-    toc_menu: string;
-    toc_menu_button: string;
+    tocMenu_button: string;
 }
 
 // tslint:disable-next-line
@@ -24,15 +24,14 @@ const dropdownActive: string = "PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAx
 const dropdownInactive: string = "PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHRpdGxlPmNoZXZyb24tcmlnaHQ8L3RpdGxlPjxwYXRoIGQ9Ik0yMi43OCwxNiw4LjI1LDEuNDUsOS42NSwwbDE2LDE2LTE2LDE2LTEuNC0xLjQxWiIvPjwvc3ZnPg==";
 
 const style: ComponentStyles<ITocMenuManagedClasses, IDevSiteDesignSystem> = {
-    toc_menu: {},
-    toc_menu_button: {
+    tocMenu_button: {
         background: "none",
         outline: "0",
         border: "none",
         position: "relative",
         width: "100%",
         fontFamily: "inherit",
-        padding: "10px 24px",
+        padding: `${toPx(10)} ${toPx(24)}`,
         textAlign: "left",
         "&[aria-expanded='true']": {
             "&::after": {
@@ -43,12 +42,12 @@ const style: ComponentStyles<ITocMenuManagedClasses, IDevSiteDesignSystem> = {
             content: `url('data:image/svg+xml;base64,${dropdownInactive}')`,
             fill: "white",
             position: "absolute",
-            right: "11px",
-            top: "11px",
+            right: toPx(11),
+            top: toPx(11),
             verticalAlign: "middle",
             display: "inline-block",
-            width: "11px",
-            height: "11px"
+            width: toPx(11),
+            height: toPx(11)
         }
     }
 };
@@ -67,7 +66,7 @@ class TocMenu extends React.Component<ITocMenuProps & IManagedClasses<ITocMenuMa
         return (
             <React.Fragment>
                 <button
-                    className={this.props.managedClasses.toc_menu_button}
+                    className={this.props.managedClasses.tocMenu_button}
                     onClick={this.handleButtonClick}
                     aria-expanded={this.state.active}
                     aria-controls={this.props.controls}

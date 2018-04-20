@@ -1,24 +1,25 @@
 import * as React from "react";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import { toPx } from "@microsoft/fast-jss-utilities";
 import { IDevSiteDesignSystem } from "../design-system";
 
 /* tslint:disable-next-line */
 export interface IShellInfoBarProps {}
 
 export interface IShellInfoBarManagedClasses {
-    shell_info_bar: string;
+    shellInfoBar: string;
 }
 
 const style: ComponentStyles<IShellInfoBarManagedClasses, IDevSiteDesignSystem> = {
-    shell_info_bar: {
+    shellInfoBar: {
         background: (config: IDevSiteDesignSystem): string => {
             return config.lightGray;
         },
         padding: (config: IDevSiteDesignSystem): string => {
-            return `${config.navigationBarHeight / 4}px`;
+            return toPx(config.navigationBarHeight / 4);
         },
         minHeight: (config: IDevSiteDesignSystem): string => {
-            return `${config.navigationBarHeight / 2}px`;
+            return toPx(config.navigationBarHeight / 2);
         }
     }
 };
@@ -27,7 +28,7 @@ class ShellInfoBar extends React.Component<IShellInfoBarProps & IManagedClasses<
 
     public render(): JSX.Element {
         return (
-            <div className={this.props.managedClasses.shell_info_bar}>
+            <div className={this.props.managedClasses.shellInfoBar}>
                 {this.props.children}
             </div>
         );

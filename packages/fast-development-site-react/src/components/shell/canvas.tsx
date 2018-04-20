@@ -6,11 +6,11 @@ import { IDevSiteDesignSystem } from "../design-system";
 interface ICanvasHeaderProps { }
 
 export interface IShellCanvasManagedClasses {
-    shell_canvas: string;
+    shellCanvas: string;
 }
 
 const style: ComponentStyles<IShellCanvasManagedClasses, IDevSiteDesignSystem> = {
-    shell_canvas: {
+    shellCanvas: {
         display: "inline-block",
         background: (config: IDevSiteDesignSystem): string => {
             return config.backgroundColor;
@@ -23,7 +23,7 @@ class ShellCanvas extends React.Component<ICanvasHeaderProps & IManagedClasses<I
 
     public render(): JSX.Element {
         return (
-            <div className={this.props.managedClasses.shell_canvas}>
+            <div className={this.props.managedClasses.shellCanvas}>
                 {this.props.children}
             </div>
         );
