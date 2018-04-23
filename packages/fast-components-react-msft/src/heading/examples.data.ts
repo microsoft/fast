@@ -1,8 +1,17 @@
+import * as React from "react";
 import { ICategoryItemProps } from "@microsoft/fast-development-site-react";
 import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import Heading from "./index";
-import { AlignHeadingBaseline, HeadingLevel, HeadingTag, IHeadingHandledProps } from "./heading.props";
+import {
+    AlignHeadingBaseline,
+    HeadingLevel,
+    HeadingProps,
+    HeadingTag,
+    IHeadingHandledProps,
+    IHeadingManagedClasses,
+    IHeadingUnhandledProps
+} from "./heading.props";
 
 const testString: string = "Heading test string";
 

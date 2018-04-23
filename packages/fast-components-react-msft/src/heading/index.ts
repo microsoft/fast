@@ -12,3 +12,4 @@ import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
 import { HeadingStyles, IDesignSystem } from "@microsoft/fast-components-styles-msft";
 
 export default manageJss(HeadingStyles)(Heading);
+export * from "./heading";

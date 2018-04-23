@@ -4,9 +4,8 @@
             "env", {
                 "targets": {
                     "node": "current"
-                } 
+                }
             }
-        ],
-        "react"
+        ]
     ]
 }

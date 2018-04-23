@@ -13,7 +13,7 @@ import Typography from "../typography";
 import { IHeadingClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
 
 /* tslint:disable-next-line */
-class Heading extends Foundation<IHeadingHandledProps & IManagedClasses<IHeadingClassNameContract>, IHeadingUnhandledProps, {}> {
+class Heading extends Foundation<IHeadingHandledProps & IManagedClasses<IHeadingClassNameContract>, React.HTMLAttributes<HTMLElement>, {}> {
     protected handledProps: HandledProps<IHeadingHandledProps & IManagedClasses<IHeadingClassNameContract>> = {
         level: void 0,
         managedClasses: void 0,
