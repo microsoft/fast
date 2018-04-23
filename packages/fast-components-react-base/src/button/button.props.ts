@@ -8,6 +8,11 @@ export interface IButtonHandledProps {
     children?: React.ReactNode | React.ReactNode[];
 
     /**
+     * The disabled state
+     */
+    disabled?: boolean;
+
+    /**
      * The destination address (turns button to anchor)
      */
     href?: string;

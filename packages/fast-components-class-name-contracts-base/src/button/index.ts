@@ -7,4 +7,5 @@ export interface IButtonClassNameContract {
     button_outline: string;
     button_lightweight: string;
     button_justified: string;
+    button_span: string;
 }

@@ -17,6 +17,7 @@ export enum ButtonHTMLTags {
 class Button extends Foundation<IButtonHandledProps & IManagedClasses<IButtonClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
     protected handledProps: HandledProps<IButtonHandledProps & IManagedClasses<IButtonClassNameContract>> = {
         children: void 0,
+        disabled: void 0,
         href: void 0,
         justified: void 0,
         lightweight: void 0,
@@ -26,17 +27,6 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IButtonCla
     };
 
     /**
-     * Stores HTML tag for use in render
-     */
-    private get tag(): string {
-        if (typeof this.props.href === "string") {
-            return ButtonHTMLTags.a;
-        } else {
-            return ButtonHTMLTags.button;
-        }
-    }
-
-    /**
      * Renders the component
      */
     public render(): React.ReactElement<HTMLButtonElement | HTMLAnchorElement> {
@@ -44,8 +34,9 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IButtonCla
             <this.tag
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
+                {...this.renderDisabled()}
             >
-                {this.props.children}
+                {this.generateInnerContent()}
             </this.tag>
         );
     }
@@ -69,6 +60,38 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IButtonCla
         }
 
         return super.generateClassNames(get(this.props, className));
+    }
+
+    /**
+     * Stores HTML tag for use in render
+     */
+    private renderDisabled(): any {
+        if (this.props.disabled) {
+            if (this.tag === ButtonHTMLTags.a) {
+                return {"aria-disabled": true};
+            } else {
+                return {"disabled": true};
+            }
+        }
+    }
+
+    /**
+     * Stores HTML tag for use in render
+     */
+    private get tag(): string {
+        if (typeof this.props.href === "string") {
+            return ButtonHTMLTags.a;
+        } else {
+            return ButtonHTMLTags.button;
+        }
+    }
+
+    private generateInnerContent(): React.ReactElement<HTMLSpanElement> | (React.ReactNode | React.ReactNode[]) {
+        if (this.props.lightweight || this.props.justified) {
+            return <span className={get(this.props, "managedClasses.button_span")}>{this.props.children}</span>;
+        } else {
+            return this.props.children;
+        }
     }
 }
 
