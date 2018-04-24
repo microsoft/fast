@@ -45,21 +45,21 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IButtonCla
      * Generates class names
      */
     protected generateClassNames(): string {
-        let className: string;
+        let classLocation: string;
 
         if (this.props.primary) {
-            className = "managedClasses.button_primary";
+            classLocation = "managedClasses.button_primary";
         } else if (this.props.outline) {
-            className = "managedClasses.button_outline";
+            classLocation = "managedClasses.button_outline";
         } else if (this.props.lightweight) {
-            className = "managedClasses.button_lightweight";
+            classLocation = "managedClasses.button_lightweight";
         } else if (this.props.justified) {
-            className = "managedClasses.button_justified";
+            classLocation = "managedClasses.button_justified";
         } else {
-            className = "managedClasses.button";
+            classLocation = "managedClasses.button";
         }
 
-        return super.generateClassNames(get(this.props, className));
+        return super.generateClassNames(get(this.props, classLocation));
     }
 
     /**
