@@ -79,11 +79,7 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IButtonCla
      * Stores HTML tag for use in render
      */
     private get tag(): string {
-        if (typeof this.props.href === "string") {
-            return ButtonHTMLTags.a;
-        } else {
-            return ButtonHTMLTags.button;
-        }
+        return typeof this.props.href === "string" ? ButtonHTMLTags.a : ButtonHTMLTags.button;
     }
 
     private generateInnerContent(): React.ReactElement<HTMLSpanElement> | (React.ReactNode | React.ReactNode[]) {
