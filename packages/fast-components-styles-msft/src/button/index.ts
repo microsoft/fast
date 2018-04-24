@@ -1,7 +1,7 @@
 import { IDesignSystem } from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { toPx } from "../utilities/units";
+import { toPx } from "@microsoft/fast-jss-utilities";
 import { applyType } from "../utilities/typography";
 import * as Chroma from "chroma-js";
 
