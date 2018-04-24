@@ -18,3 +18,7 @@ export const breakpoints: IBreakpoints = {
     vp5: 1400,
     vp6: 1779
 };
+
+export function applyBreakpoint(breakpoint: keyof IBreakpoints): string {
+    return `@media only screen and (min-width: ${breakpoints[breakpoint]}px)`;
+}

@@ -7,11 +7,14 @@ export { CheckboxExamples };
 import DividerExample from "../src/divider/examples.data";
 export { DividerExample };
 
+import HeadingExample from "../src/heading/examples.data";
+export { HeadingExample };
+
 import ImageExamples from "../src/image/examples.data";
-export {ImageExamples};
+export { ImageExamples };
 
 import LabelExamples from "../src/label/examples.data";
-export {LabelExamples};
+export { LabelExamples };
 
 import ToggleExamples from "../src/toggle/examples.data";
 export { ToggleExamples };

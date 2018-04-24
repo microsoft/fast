@@ -7,6 +7,9 @@ export { Checkbox };
 import Divider from "./divider";
 export { Divider };
 
+import Heading from "./heading";
+export { Heading };
+
 import Image from "./image";
 export { Image } ;
 

@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`heading heading: 0 1`] = `
+<h1
+  className="typography_1-0-1-7 typography_1-0-1-16 heading_1-0-1-1"
+>
+  Heading test string
+</h1>
+`;
+
+exports[`heading heading: 1 1`] = `
+<h1
+  className="typography_1-0-1-7 typography_1-0-1-25 heading_1-0-1-1"
+>
+  Heading test string
+</h1>
+`;
+
+exports[`heading heading: 2 1`] = `
+<h2
+  className="typography_2-0-1-8 typography_2-0-1-35 heading_2-0-1-2"
+>
+  Heading test string
+</h2>
+`;
+
+exports[`heading heading: 3 1`] = `
+<h3
+  className="typography_3-0-1-9 typography_3-0-1-45 heading_3-0-1-3"
+>
+  Heading test string
+</h3>
+`;
+
+exports[`heading heading: 4 1`] = `
+<h4
+  className="typography_4-0-1-10 typography_4-0-1-55 heading_4-0-1-4"
+>
+  Heading test string
+</h4>
+`;
+
+exports[`heading heading: 5 1`] = `
+<h5
+  className="typography_5-0-1-11 typography_5-0-1-65 heading_5-0-1-5"
+>
+  Heading test string
+</h5>
+`;
+
+exports[`heading heading: 6 1`] = `
+<h6
+  className="typography_6-0-1-12 typography_6-0-1-75 heading_6-0-1-6"
+>
+  Heading test string
+</h6>
+`;
