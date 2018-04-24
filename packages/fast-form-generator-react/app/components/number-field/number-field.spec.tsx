@@ -10,10 +10,11 @@ const name: string = "number-field";
 const exampleData: IFormProps = {
     schema: numberFieldSchema,
     data: getExample(numberFieldSchema),
+    /* tslint:disable-next-line */
     onChange: (data: any): void => {}
-}
+};
 
-const examples = {
+const examples: ISnapshotTestSuite<IFormProps> = {
     name,
     component: Form,
     data: [

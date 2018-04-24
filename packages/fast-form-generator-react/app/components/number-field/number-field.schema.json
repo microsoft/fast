@@ -24,14 +24,13 @@
             "maximum": 50,
             "multipleOf": 5
         },
-        "random": {
+        "optional": {
             "title": "random",
             "type": "number"
         }
     },
     "required": [
         "level",
-        "quantity",
-        "random"
+        "quantity"
     ]
 }

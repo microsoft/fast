@@ -10,10 +10,11 @@ const name: string = "one-of";
 const exampleData: IFormProps = {
     schema: oneOfSchema,
     data: getExample(oneOfSchema),
+    /* tslint:disable-next-line */
     onChange: (data: any): void => {}
-}
+};
 
-const examples = {
+const examples: ISnapshotTestSuite<IFormProps> = {
     name,
     component: Form,
     data: [

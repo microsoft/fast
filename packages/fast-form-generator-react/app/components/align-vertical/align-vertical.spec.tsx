@@ -11,11 +11,12 @@ const name: string = "align-vertical";
 const exampleData: IFormProps = {
     schema: alignVerticalSchema,
     data: getExample(alignVerticalSchema),
+    /* tslint:disable-next-line */
     onChange: (data: any): void => {},
     componentMappingToPropertyNames: config
-}
+};
 
-const examples = {
+const examples: ISnapshotTestSuite<IFormProps> = {
     name,
     component: Form,
     data: [

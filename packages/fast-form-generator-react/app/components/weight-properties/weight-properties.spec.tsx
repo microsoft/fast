@@ -3,7 +3,7 @@ import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { getExample } from "@microsoft/fast-permutator";
 import Form, { IFormProps } from "../../../src/form";
-import { weightPropertiesWeight, weightPropertiesConfig } from "./weight-properties.config";
+import { weightPropertiesConfig, weightPropertiesWeight } from "./weight-properties.config";
 import * as weightPropertiesSchema from "./weight-properties.schema.json";
 
 const name: string = "weight-properties";
@@ -11,12 +11,13 @@ const name: string = "weight-properties";
 const exampleData: IFormProps = {
     schema: weightPropertiesSchema,
     data: getExample(weightPropertiesSchema),
+    /* tslint:disable-next-line */
     onChange: (data: any): void => {},
     orderByPropertyNames: weightPropertiesWeight,
     componentMappingToPropertyNames: weightPropertiesConfig
-}
+};
 
-const examples = {
+const examples: ISnapshotTestSuite<IFormProps> = {
     name,
     component: Form,
     data: [

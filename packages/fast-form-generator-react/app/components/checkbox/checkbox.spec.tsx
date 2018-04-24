@@ -10,10 +10,11 @@ const name: string = "checkbox";
 const exampleData: IFormProps = {
     schema: checkboxSchema,
     data: getExample(checkboxSchema),
+    /* tslint:disable-next-line */
     onChange: (data: any): void => {}
-}
+};
 
-const examples = {
+const examples: ISnapshotTestSuite<IFormProps> = {
     name,
     component: Form,
     data: [

@@ -10,6 +10,35 @@ Fluent Web utilizes the form generator to dynamically generate the component con
 ## Getting started
 - Run `npm run dev-server`
 
+## Using the form generator
+### Basic usage
+The required properties are the data, schema and onChange function. The data should be tied to your state, this will change.
+
+```jsx
+import Form from "@microsoft/fast-form-generator-react";
+
+<Form
+    data={this.state.currentComponentData}
+    schema={currentComponentSchema}
+    onChange={handleChange}
+/>
+```
+
+### onChange
+The onChange is used as a callback, it should take one argument that is the data taht should be updated when any data has been changed from within the generated form.
+
+example onChange:
+```jsx
+/**
+ * The app on change event
+ */
+onChange = (data) => {
+    this.setState({
+        currentComponentData: data
+    });
+}
+```
+
 ## Writing JSON Schemas
 The schema form generator can interpret most [JSON schemas](http://json-schema.org/), however there are some things to note when writing JSON schemas that make for a better UI.
 

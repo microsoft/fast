@@ -11,11 +11,12 @@ const name: string = "theme";
 const exampleData: IFormProps = {
     schema: themeSchema,
     data: getExample(themeSchema),
+    /* tslint:disable-next-line */
     onChange: (data: any): void => {},
     componentMappingToPropertyNames: config
-}
+};
 
-const examples = {
+const examples: ISnapshotTestSuite<IFormProps> = {
     name,
     component: Form,
     data: [

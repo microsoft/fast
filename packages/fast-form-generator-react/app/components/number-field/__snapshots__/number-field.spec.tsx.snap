@@ -58,19 +58,19 @@ exports[`number-field number-field: 0 1`] = `
           </div>
           <div>
             <label
-              htmlFor="random"
+              htmlFor="optional"
             >
               random
             </label>
             <input
-              id="random"
+              id="optional"
               max={undefined}
               min={undefined}
-              name="number82"
+              name="number"
               onChange={[Function]}
               step={undefined}
               type="number"
-              value="82"
+              value=""
             />
           </div>
         </div>

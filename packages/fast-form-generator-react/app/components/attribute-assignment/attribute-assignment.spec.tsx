@@ -11,11 +11,12 @@ const name: string = "attribute-assignment";
 const exampleData: IFormProps = {
     schema: attributeAssignmentSchema,
     data: getExample(attributeAssignmentSchema),
+    /* tslint:disable-next-line */
     onChange: (data: any): void => {},
     attributeSettingsMappingToPropertyNames: config
-}
+};
 
-const examples = {
+const examples: ISnapshotTestSuite<IFormProps> = {
     name,
     component: Form,
     data: [

@@ -1,19 +1,18 @@
 import * as React from "react";
 import { cloneDeep, get, isEqual, mergeWith, set, uniqueId, unset } from "lodash-es";
 import { getExample } from "@microsoft/fast-permutator";
+import tv4 from "tv4";
 import {
     AttributeSettingsMappingToPropertyNames,
     IFormComponentMappingToPropertyNamesProps
 } from "./form.props";
 import { mappingName } from "./form-item";
 
-const tv4: any = require("tv4");
-
 /**
  * Validate a schema against a set of data
  */
 export function validateSchema(schema: any, data: any): boolean {
-    return tv4.validate(data, schema);
+    return tv4 ? tv4.validate(data, schema) : false;
 }
 
 /**
