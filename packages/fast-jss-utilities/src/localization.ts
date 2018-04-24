@@ -1,11 +1,17 @@
-import { Direction } from "./direction";
+/**
+ * Expose ltr and rtl strings
+ */
+export enum Direction {
+    ltr = "ltr",
+    rtl = "rtl"
+}
 
 /**
  * Localizes top/left/bottom/right formatted arguments, such as the format used by CSS's padding and margin
  * properties.
  * eg. when dir is RTL, "2px 3px 4px 5px" -> "2px 5px 4px 3px"
  */
-export function locSpacing(dir: Direction): (value: string) => string {
+export function localizeSpacing(dir: Direction): (value: string) => string {
     return (value: string): string => {
         if (typeof value !== "string") {
             return "";
