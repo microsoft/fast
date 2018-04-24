@@ -3,10 +3,10 @@ import { Direction } from "./direction";
 
 describe("locSpacing", (): void => {
     test("should return an empty string if no arguments are passed", (): void => {
-        expect(locSpacing(Direction.ltr)(void 0)).toBe("")
+        expect(locSpacing(Direction.ltr)(void 0)).toBe("");
     });
     test("should return the inital value when dir='ltr'", (): void => {
-        const value: string = "top right bottom left"
+        const value: string = "top right bottom left";
         expect(locSpacing(Direction.ltr)(value)).toBe(value);
     });
     test("should invert index 1 and 3 when dir='rtl'", (): void => {
