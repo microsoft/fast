@@ -26,6 +26,15 @@ let permutator = {};
 let optionalData;
 let requiredData;
 
+let handleRequiredData = function(isRequired, array) {
+    if (isRequired) {
+        requiredData.push(array);
+    } else {
+        array.push({});
+        optionalData.push(array);
+    }
+};
+
 /**
  * Data permutator
  * Generates data permutations based on a given JSON Schema.
@@ -207,12 +216,7 @@ permutator.typeArray = function (schema, propertyName, required, arrayConfig) {
 permutator.typeBoolean = function (schema, propertyName, required, arrayConfig) {
     let boolArray = typeBoolean(schema, propertyName, required, arrayConfig);
 
-    if (required) {
-        requiredData.push(boolArray);
-    } else {
-        boolArray.push({});
-        optionalData.push(boolArray);
-    }
+    handleRequiredData(required, boolArray);
 };
 
 /**
@@ -224,12 +228,7 @@ permutator.typeBoolean = function (schema, propertyName, required, arrayConfig) 
 permutator.typeString = function (schema, propertyName, required, arrayConfig) {
     let stringArray = typeString(schema, propertyName, required, arrayConfig);
 
-    if (required) {
-        requiredData.push(stringArray);
-    } else {
-        stringArray.push({});
-        optionalData.push(stringArray);
-    }
+    handleRequiredData(required, stringArray);
 };
 
 /**
@@ -241,12 +240,7 @@ permutator.typeString = function (schema, propertyName, required, arrayConfig) {
 permutator.typeNumber = function (schema, propertyName, required, arrayConfig) {
     let numberArray = typeNumber(schema, propertyName, required, arrayConfig);
 
-    if (required) {
-        requiredData.push(numberArray);
-    } else {
-        numberArray.push({});
-        optionalData.push(numberArray);
-    }
+    handleRequiredData(required, numberArray);
 };
 
 /**
@@ -258,12 +252,7 @@ permutator.typeNumber = function (schema, propertyName, required, arrayConfig) {
 permutator.typeNull = function (schema, propertyName, required, arrayConfig) {
     let nullArray = typeNull(schema, propertyName, required, arrayConfig);
 
-    if (required) {
-        requiredData.push(nullArray);
-    } else {
-        nullArray.push({});
-        optionalData.push(nullArray);
-    }
+    handleRequiredData(required, nullArray);
 };
 
 /**
@@ -275,12 +264,7 @@ permutator.typeNull = function (schema, propertyName, required, arrayConfig) {
 permutator.typelessEnum = function (schema, propertyName, required, arrayConfig) {
     let enumArray = typelessEnum(schema, propertyName, required, arrayConfig);
 
-    if (required) {
-        requiredData.push(enumArray);
-    } else {
-        enumArray.push({});
-        optionalData.push(enumArray);
-    }
+    handleRequiredData(required, enumArray);
 };
 
 /**
