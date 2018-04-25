@@ -9,7 +9,7 @@ dist: trusty
 sudo: false
 env:
   global:
-    - CC_TEST_REPORTER_ID=08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
+    - CC_TEST_REPORTER_ID=c8ed0722e6e2eb42ee8b9618cbcc4d56ff2c12d6b449541586bf5cb36247abf9
 before_script:
   # Commented out for local testing only on MacOS
   #- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-darwin-amd64 > ./cc-test-reporter
