@@ -169,3 +169,22 @@ export interface IFormItemParameters {
      */
     title: string;
 }
+
+export interface IAssignedCategoryParams {
+    /**
+     * The category name
+     */
+    category: string;
+
+    /**
+     * The category weight, acts the same as z-index,
+     * the larger the weight, the higher it is displayed
+     */
+    categoryWeight: number;
+
+    /**
+     * The item weight, similar to category weight will
+     * display higher the larger the weight is
+     */
+    itemWeight: number;
+}

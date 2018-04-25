@@ -36,7 +36,7 @@ export interface IOption {
 }
 
 export interface IGroupItem {
-    items: any,
+    items: any;
     type: string;
 }
 

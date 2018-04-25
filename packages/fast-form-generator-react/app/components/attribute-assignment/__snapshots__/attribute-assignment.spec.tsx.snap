@@ -11,9 +11,7 @@ exports[`attribute-assignment attribute-assignment: 0 1`] = `
     <div>
       <div>
         <div>
-          <div
-            className="context-form"
-          >
+          <div>
             <label
               htmlFor="text"
             >

@@ -29,9 +29,7 @@ exports[`text-field text-field: 0 1`] = `
               button
             </option>
           </select>
-          <div
-            className="context-form"
-          >
+          <div>
             <label
               htmlFor="text"
             >

@@ -207,48 +207,56 @@ class FormItemArray extends React.Component<IFormItemArrayProps, {}> {
         return schema ? schema.title || schema.description || this.props.untitled : null;
     }
 
+    private getArrayLength(): number {
+        return Array.isArray(this.props.data) ? this.props.data.length : 0;
+    }
+
+    private getSubschema(): any  {
+        return this.props.schemaLocation !== "" ? get(this.props.schema, this.props.schemaLocation) : this.props.schema;
+    }
+
+    private getArrayMenuItem(action: ArrayAction, text: string, index?: number): IArrayMenuItem {
+        return {
+            type: action,
+            text,
+            onClick: this.arrayItemClickHandlerFactory(
+                this.props.dataLocation, this.props.schema, action, index
+            )
+        };
+    }
+
+    private hasLessThanMaxItems(schema: any, arrayLength: number): boolean {
+        const maxItems: boolean = Boolean(schema) && Boolean(schema.maxItems);
+        return schema && ((maxItems && arrayLength < schema.maxItems) || !maxItems);
+    }
+
+    private hasMoreThanMinItems(schema: any, arrayLength: number): boolean {
+        const minItems: boolean = Boolean(schema) && Boolean(schema.minItems);
+        return schema && ((minItems && arrayLength > schema.minItems) || !minItems);
+    }
+
     private renderArrayMenuItems(): JSX.Element[] {
-        const dataLength: number = Array.isArray(this.props.data) ? this.props.data.length : 0;
-        const schema: any = (this.props.schemaLocation !== "")
-            ? get(this.props.schema, this.props.schemaLocation)
-            : this.props.schema;
+        const arrayLength: number = this.getArrayLength();
+        const schema: any = this.getSubschema();
+        const lessThanMaxItems: boolean = this.hasLessThanMaxItems(schema, arrayLength);
+        const moreThanMinItems: boolean = this.hasMoreThanMinItems(schema, arrayLength);
         const items: IArrayMenuItem[] = [];
 
         // if we have maxItems and the data is less than max items, allow adding items
-        if (schema &&
-            ((schema.maxItems && dataLength < schema.maxItems)
-            || typeof schema.maxItems === "undefined")
-        ) {
-            items.push({
-                type: ArrayAction.add,
-                text: "Add item",
-                onClick: this.arrayItemClickHandlerFactory(
-                    this.props.dataLocation, this.props.schema, ArrayAction.add, void(0)
-                )
-            });
+        if (lessThanMaxItems) {
+            items.push(this.getArrayMenuItem(ArrayAction.add, "Add item"));
         }
 
          // if we have minItems and the data is more than min items, allow removal of the items
-        if (schema &&
-            ((schema.minItems && dataLength > schema.minItems)
-            || typeof schema.minItems === "undefined")
-        ) {
-            for (let index: number = 0; index < dataLength; index++) {
-                items.push({
-                    type: ArrayAction.remove,
-                    text: this.props.data[index].text || `Item ${index + 1}`,
-                    onClick: this.arrayItemClickHandlerFactory(
-                        this.props.dataLocation, this.props.schema, ArrayAction.remove, index
-                    )
-                });
+        if (moreThanMinItems) {
+            for (let index: number = 0; index < arrayLength; index++) {
+                items.push(this.getArrayMenuItem(ArrayAction.remove, this.props.data[index].text || `Item ${index + 1}`, index));
             }
         }
 
         // we have nothing to add or delete
         if (items.length === 0) {
-            items.push({
-                text: "No actions available"
-            });
+            items.push({text: "No actions available"});
         }
 
         return items.map((item: any, index: number) => {

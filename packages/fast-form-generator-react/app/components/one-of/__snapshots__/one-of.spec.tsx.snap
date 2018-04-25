@@ -35,9 +35,7 @@ exports[`one-of one-of: 0 1`] = `
           <hr
             role="presentation"
           />
-          <div
-            className="context-form"
-          >
+          <div>
             <label
               htmlFor="string"
             >
