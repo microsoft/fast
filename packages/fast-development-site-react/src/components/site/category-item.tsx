@@ -1,18 +1,19 @@
 import * as React from "react";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import { toPx } from "@microsoft/fast-jss-utilities";
 import { IDevSiteDesignSystem } from "../design-system";
 
 export interface ISiteCategoryItemManagedClasses {
-    categoryItem: string;
+    siteCategoryItem: string;
 }
 
 const style: ComponentStyles<ISiteCategoryItemManagedClasses, IDevSiteDesignSystem> = {
-    categoryItem: {
+    siteCategoryItem: {
         display: "flex",
         flexWrap: "wrap",
-        margin: "24px",
-        borderTop: "1px solid rgb(226, 226, 226)",
-        borderLeft: "1px solid rgb(226, 226, 226)"
+        margin: toPx(24),
+        borderTop: `${toPx(1)} solid rgb(226, 226, 226)`,
+        borderLeft: `${toPx(1)} solid rgb(226, 226, 226)`
     }
 };
 
@@ -26,7 +27,7 @@ class SiteCategoryItem extends React.Component<ISiteCategoryItemProps & IManaged
 
     public render(): JSX.Element {
         return (
-            <div className={this.props.managedClasses.categoryItem}>
+            <div className={this.props.managedClasses.siteCategoryItem}>
                 {this.props.children}
             </div>
         );

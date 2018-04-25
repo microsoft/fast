@@ -1,5 +1,6 @@
 import * as React from "react";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import { toPx } from "@microsoft/fast-jss-utilities";
 import { IDevSiteDesignSystem } from "../design-system";
 
 export interface IShellPaneProps {
@@ -7,24 +8,24 @@ export interface IShellPaneProps {
 }
 
 export interface IShellPaneManagedClasses {
-    shell_pane: string;
-    shell_pane_collapsed: string;
-    shell_pane_expanded: string;
+    shellPane: string;
+    shellPane__collapsed: string;
+    shellPane__expanded: string;
 }
 
 const style: ComponentStyles<IShellPaneManagedClasses, IDevSiteDesignSystem> = {
-    shell_pane: {
+    shellPane: {
         display: "inline-block",
         overflow: "hidden",
         backgroundColor: (config: IDevSiteDesignSystem): string => {
             return config.lightGray;
         }
     },
-    shell_pane_collapsed: {
-        width: "40px",
+    shellPane__collapsed: {
+        width: toPx(40),
     },
-    shell_pane_expanded: {
-        width: "300px"
+    shellPane__expanded: {
+        width: toPx(300)
     }
 };
 
@@ -32,7 +33,7 @@ class ShellPane extends React.Component<IShellPaneProps & IManagedClasses<IShell
 
     public render(): JSX.Element {
         return (
-            <div className={this.props.managedClasses.shell_pane}>
+            <div className={this.props.managedClasses.shellPane}>
                 <div className={this.getInnerDivClassNames()}>
                     {this.props.children}
                 </div>
@@ -41,7 +42,7 @@ class ShellPane extends React.Component<IShellPaneProps & IManagedClasses<IShell
     }
 
     private getInnerDivClassNames(): string {
-        return this.props.collapsed ? this.props.managedClasses.shell_pane_collapsed : this.props.managedClasses.shell_pane_expanded;
+        return this.props.collapsed ? this.props.managedClasses.shellPane__collapsed : this.props.managedClasses.shellPane__expanded;
     }
 }
 

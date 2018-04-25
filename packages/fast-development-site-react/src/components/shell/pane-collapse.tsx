@@ -1,5 +1,6 @@
 import * as React from "react";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import { toPx } from "@microsoft/fast-jss-utilities";
 import { IDevSiteDesignSystem } from "../design-system";
 
 /* tslint:disable-next-line */
@@ -8,14 +9,14 @@ export interface IShellPaneCollapseProps {
 }
 
 export interface IShellPaneCollapseManagedClasses {
-    shell_pane_collapse: string;
+    shellPaneCollapse: string;
 }
 
 const style: ComponentStyles<IShellPaneCollapseManagedClasses, IDevSiteDesignSystem> = {
-    shell_pane_collapse: {
+    shellPaneCollapse: {
         background: "blue",
-        height: "48px",
-        width: "48px"
+        height: toPx(48),
+        width: toPx(48)
     }
 };
 
@@ -23,7 +24,7 @@ class ShellPaneCollapse extends React.Component<IShellPaneCollapseProps & IManag
 
     public render(): JSX.Element {
         return (
-            <button className={this.props.managedClasses.shell_pane_collapse} onClick={this.handleUpdateCollapse}>
+            <button className={this.props.managedClasses.shellPaneCollapse} onClick={this.handleUpdateCollapse}>
                 {this.props.children}
             </button>
         );

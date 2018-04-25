@@ -2,6 +2,7 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import TocMenu from "./toc-menu";
 import { IDevSiteDesignSystem } from "../design-system";
+import { toPx } from "@microsoft/fast-jss-utilities";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 
 export interface ITocItemProps {
@@ -19,51 +20,51 @@ export enum itemType {
 }
 
 export interface ITocItemManagedClasses {
-    toc_anchor: string;
-    toc_item: string;
-    toc_item__active: string;
+    tocItem_anchor: string;
+    tocItem: string;
+    tocItem__active: string;
 }
 
 const tocItemActivePipeHeight: number = 20;
 
 const style: ComponentStyles<ITocItemManagedClasses, IDevSiteDesignSystem> = {
-    toc_anchor: {
+    tocItem_anchor: {
         color: (config: IDevSiteDesignSystem): string => {
             return config.foregroundColor;
         },
         textDecoration: "none",
         display: "block",
-        textIndent: "48px",
-        lineHeight: "40px",
+        textIndent: toPx(48),
+        lineHeight: toPx(40),
         outline: "0"
     },
-    toc_item: {
+    tocItem: {
         display: "block",
         position: "relative",
         color: (config: IDevSiteDesignSystem): string => {
             return config.foregroundColor;
         },
     },
-    toc_item__active: {
+    tocItem__active: {
         background: (config: IDevSiteDesignSystem): string => {
             return config.backgroundColor;
         },
         color: (config: IDevSiteDesignSystem): string => {
             return config.foregroundColor;
         },
-        boxShadow: "0px 2px 4px -1px #ccc;",
+        boxShadow: `0 ${toPx(2)} ${toPx(4)} ${toPx(-1)} #ccc`,
         "&::before": {
             content: "''",
-            width: "2px",
-            height: `${tocItemActivePipeHeight}px`,
-            borderRadius: "2px",
+            width: toPx(2),
+            height: toPx(tocItemActivePipeHeight),
+            borderRadius: toPx(2),
             display: "block",
             background: (config: IDevSiteDesignSystem): string => {
                 return config.brandColor;
             },
             position: "absolute",
             left: "0",
-            top: `calc((100% / 2) - ${tocItemActivePipeHeight / 2}px)`
+            top: `calc((100% / 2) - ${toPx(tocItemActivePipeHeight / 2)})`
         }
     }
 };
@@ -82,7 +83,7 @@ class TocItem extends React.Component<ITocItemProps & IManagedClasses<ITocItemMa
 
     private renderLink(): JSX.Element {
         return (
-            <Link to={this.props.to} className={this.props.managedClasses.toc_anchor}>
+            <Link to={this.props.to} className={this.props.managedClasses.tocItem_anchor}>
                 {this.props.children}
             </Link>
         );
@@ -125,10 +126,10 @@ class TocItem extends React.Component<ITocItemProps & IManagedClasses<ITocItemMa
     }
 
     private getClassNames(): string {
-        const classNames: string = this.props.managedClasses.toc_item;
+        const classNames: string = this.props.managedClasses.tocItem;
 
         if (this.props.active && this.props.to) {
-            return `${classNames} ${this.props.managedClasses.toc_item__active}`;
+            return `${classNames} ${this.props.managedClasses.tocItem__active}`;
         }
 
         return classNames;
