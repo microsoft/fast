@@ -14,7 +14,9 @@
   "license": "MIT",
   "readme": "README.md",
   "scripts": {
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
+    "test": "lerna run test --stream",
+    "coverage": "lerna run coverage --stream"
   },
   "devDependencies": {
     "@types/node": "^9.4.7",
