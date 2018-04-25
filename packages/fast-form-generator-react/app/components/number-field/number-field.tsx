@@ -12,6 +12,11 @@ export interface INumberFieldProps {
     quantity: number;
 }
 
+/**
+ * This test components API should have:
+ * - a required number-field property which should display as a select dropdown because it is an enum
+ * - a required number-field which should display as a text box
+ */
 export default class NumberField extends React.Component<INumberFieldProps, {}> {
     public render(): JSX.Element {
         return (

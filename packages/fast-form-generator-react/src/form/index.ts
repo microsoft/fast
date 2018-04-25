@@ -1,4 +1,3 @@
-import Form, { IFormProps } from "./form";
+import Form from "./form";
 
 export default Form;
-export { IFormProps };

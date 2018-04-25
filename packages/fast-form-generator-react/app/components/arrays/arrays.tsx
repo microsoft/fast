@@ -4,6 +4,10 @@ export interface IArrayProps {
     strings: string[];
 }
 
+/**
+ * This test components API should have:
+ * - a required string array
+ */
 export default class Array extends React.Component<IArrayProps, {}> {
 
     public render(): JSX.Element {

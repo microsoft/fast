@@ -21,7 +21,7 @@ class FormItemTextField extends React.Component<IFormItemTextFieldProps, {}> {
             : this.getStringValue(this.props.default);
 
         return (
-            <div className="context-form">
+            <div>
                 <label htmlFor={this.getStringValue(this.props.data)}>
                     {this.props.label}
                 </label>

@@ -30,7 +30,7 @@ module.exports = {
     },
     plugins: [
         new ForkTsCheckerWebpackPlugin({
-            tslint: path.resolve(__dirname, "../../tslint.json")
+            tslint: path.resolve(__dirname, "./tslint.json")
         }),
         new HtmlWebpackPlugin({
             contentBase: outDir,

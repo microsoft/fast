@@ -1,6 +1,3 @@
-import Form, { IFormProps } from "./form";
-export { IFormProps };
-export default Form;
+import Form from "./form";
 
-import Pin from "./pin";
-export { Pin };
+export default Form;

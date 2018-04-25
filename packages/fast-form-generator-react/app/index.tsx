@@ -3,23 +3,27 @@ import * as ReactDOM from "react-dom";
 import { cloneDeep, get, set, unset } from "lodash-es";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import { getExample } from "@microsoft/fast-permutator";
-import Form, { IFormProps } from "../src";
+import Form from "../src";
 import {
+    IChildOptionItem,
     IFormAttributeSettingsMappingToPropertyNames,
     IFormComponentMappingToPropertyNamesProps,
-    IFormOrderByPropertyNamesProps
+    IFormOrderByPropertyNamesProps,
+    IFormProps
 } from "../src/form/form.props";
 import { Shell, ShellActionBar, ShellCanvas, ShellHeader, ShellInfoBar, ShellPane, ShellRow } from "@microsoft/fast-development-site-react";
 import * as testComponents from "./components";
+
+export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
 
 export interface IAppState {
     currentComponentSchema: any;
     currentComponentData: any;
     currentComponentConfig?: IFormComponentMappingToPropertyNamesProps;
-    currentComponentOrderByPropertyNames?: IFormComponentMappingToPropertyNamesProps;
+    currentComponentOrderByPropertyNames?: IFormOrderByPropertyNamesProps;
     currentComponentAttributeAssignment?: IFormAttributeSettingsMappingToPropertyNames;
     currentComponent: any;
-    onChange: any;
+    onChange: componentDataOnChange;
     showExtendedControls: boolean;
     dataLocation: string;
     schemaLocation: string;
@@ -32,9 +36,8 @@ export interface IOption {
 }
 
 export interface IGroupItem {
-    name: string;
-    component: JSX.Element;
-    schema: any;
+    items: any,
+    type: string;
 }
 
 const designSystemDefaults: any = {
@@ -49,14 +52,9 @@ const designSystemDefaults: any = {
 export default class App extends React.Component<{}, IAppState> {
 
     /**
-     * The different components available
-     */
-    private selectOptions: any[];
-
-    /**
      * These are the children that can be added
      */
-    private childOptions: any[];
+    private childOptions: IChildOptionItem[];
 
     /**
      * The schema form attribute settings mapping configuration
@@ -111,9 +109,9 @@ export default class App extends React.Component<{}, IAppState> {
     /**
      * Gets the child options for the schema form
      */
-    private getChildOptions(): IGroupItem[] {
-        const childOptions: IGroupItem[] = [];
-        const groups: any[] = [
+    private getChildOptions(): IChildOptionItem[] {
+        const childOptions: IChildOptionItem[] = [];
+        const groups: IGroupItem[] = [
             {
                 items: testComponents,
                 type: "components"
@@ -123,7 +121,7 @@ export default class App extends React.Component<{}, IAppState> {
         for (const group of groups) {
             Object.keys(group.items).map((itemName: any, key: number): void => {
                 if (typeof testComponents[itemName].schema !== "undefined") {
-                    const childObj: IGroupItem = {
+                    const childObj: IChildOptionItem = {
                         name: testComponents[itemName].schema.title || "Untitled",
                         component: testComponents[itemName].component,
                         schema: testComponents[itemName].schema
@@ -137,8 +135,8 @@ export default class App extends React.Component<{}, IAppState> {
         return childOptions;
     }
 
-    private coerceFormProps(): any {
-        const formProps: any = {
+    private coerceFormProps(): IFormProps {
+        const formProps: IFormProps = {
             schema: this.state.currentComponentSchema,
             data: this.state.currentComponentData,
             onChange: this.state.onChange,
@@ -146,7 +144,7 @@ export default class App extends React.Component<{}, IAppState> {
             componentMappingToPropertyNames: this.state.currentComponentConfig,
             attributeSettingsMappingToPropertyNames: this.state.currentComponentAttributeAssignment,
             orderByPropertyNames: this.state.currentComponentOrderByPropertyNames
-        } as any;
+        };
 
         if (typeof this.state.dataLocation !== "undefined" && typeof this.state.schemaLocation !== "undefined") {
             formProps.location = {
@@ -178,7 +176,7 @@ export default class App extends React.Component<{}, IAppState> {
         });
     }
 
-    private handleComponentUpdate = (e: any): void => {
+    private handleComponentUpdate = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         this.setState({
             currentComponent: testComponents[e.target.value].component,
             currentComponentSchema: testComponents[e.target.value].schema,

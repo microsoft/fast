@@ -23,6 +23,13 @@ export interface IObjectsProps {
     optionalObjectNoRequired: IOptionalObjectNoRequired;
 }
 
+/**
+ * This test components API should have:
+ * - a required object containing a required attribute which should have an example generated
+ * - a required object containing an optional attribute which should not be generated
+ * - an optional object containing a required attribute which should have an example generated
+ * - an optional object containing an optional attribute which should not be generated
+ */
 export default class Objects extends React.Component<IObjectsProps, {}> {
 
     public render(): JSX.Element {

@@ -45,7 +45,7 @@ class FormItemFileUpload extends React.Component<IFormItemComponentMappingToProp
      */
     public render(): JSX.Element {
         return (
-            <div className={this.generateClassName()}>
+            <div>
                 <label htmlFor={this.fileId}>{this.props.label}</label>
                 <div
                     onDragEnter={this.cancelEvent}
@@ -134,19 +134,6 @@ class FormItemFileUpload extends React.Component<IFormItemComponentMappingToProp
      */
     private handleInputOnChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         this.updateWithFile(e.target.files[0]);
-    }
-
-    /**
-     * Generates class-names for the component
-     */
-    private generateClassName(): string {
-        let className: string;
-
-        if ((this.state as any).dragging as any) {
-            className = `s-dragging`;
-        }
-
-        return className;
     }
 
     private generateStaticUI(): JSX.Element[] {

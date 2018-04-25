@@ -5,6 +5,10 @@ export interface IOneOfProps {
     string?: string;
 }
 
+/**
+ * This test components API should have:
+ * - two optional properties which in the JSON schema correspond to an oneOf
+ */
 export default class OneOf extends React.Component<IOneOfProps, {}> {
     public render(): JSX.Element {
         return (

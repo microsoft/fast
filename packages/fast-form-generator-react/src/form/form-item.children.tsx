@@ -85,8 +85,8 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps, IFormItem
                             autoComplete="off"
                             ref={this.storeSearchRef}
                         />
-                        <button  name="search-button">
-                            <span className="x-screen-reader">Search building blocks</span>
+                        <button name="search-button">
+                            <span>Search building blocks</span>
                         </button>
                     </div>
                     <ul>

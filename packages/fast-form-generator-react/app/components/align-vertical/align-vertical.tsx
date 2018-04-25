@@ -10,6 +10,10 @@ export interface IAlignVerticalProps {
     alignVertical: alignVerticalEnum;
 }
 
+/**
+ * This test components API should have:
+ * - a required property which maps to a configuration
+ */
 export default class AlignVertical extends React.Component<IAlignVerticalProps, {}> {
     public render(): JSX.Element {
         return (

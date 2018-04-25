@@ -1,3 +1,7 @@
+import {
+    IFormAttributeSettingsMappingToPropertyNames
+} from "../../../src/form/form.props";
+
 export default {
     textarea: {
         rows: [
@@ -7,4 +11,4 @@ export default {
             }
         ]
     }
-};
+} as IFormAttributeSettingsMappingToPropertyNames;

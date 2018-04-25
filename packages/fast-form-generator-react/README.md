@@ -1,14 +1,14 @@
 
-# FAST form generator (Beta)
-A self generating UI based on JSON Schemas as seen on [Fluent Web](https://fluentweb.com).
+# ReactJS FAST form generator
+A self generating UI based on JSON Schemas.
 
-Fluent Web utilizes the form generator to dynamically generate the component configurator as seen on all of our components listed on [Building blocks](https://fluentweb.com/building-blocks).
+It can be utilized to dynamically generate a form for changing data values on a React component.
 
 ## Installing
 - Run `npm i`
 
 ## Getting started
-- Run `npm run dev-server`
+- Run `npm start`
 
 ## Using the form generator
 ### Basic usage
@@ -41,8 +41,6 @@ onChange = (data) => {
 
 ## Writing JSON Schemas
 The schema form generator can interpret most [JSON schemas](http://json-schema.org/), however there are some things to note when writing JSON schemas that make for a better UI.
-
-Additional documentation can be found on [Fluent Web](https://fluentweb.com/prototyping/getting-started/schemas).
 
 ### title
 Using a title will add a label to the left or top of the corresponding form element. All properties are required to have a title.
@@ -180,7 +178,4 @@ The object type will create its own section which can be navigated to via a link
 ### Keywords that cannot be interpreted
 
 #### allOf & $ref
-The allOf and $ref keywords cannot be interpreted by the schema form generator. To allow for most of the functionality there is a tool inside the [data permutator](https://fluentweb.visualstudio.com/Fluent%20Web/_packaging?feed=ms.fw&upstreamSource=local&package=%40ms-fw%2Ffw-utilities-data-permutator&version=0.1.10&protocolType=Npm&_a=package) which will simplify the schema and merge allOf arrays when it finds them, see `simplifySchemas`.
-
-## Ownership
-Contact Fluent Web Questions <fwq@microsoft.com> for details on this repository.
+The allOf and $ref keywords cannot be interpreted by the schema form generator. To allow for most of the functionality there is a tool inside the @microsoft/fast-permutator which will simplify the schema and merge allOf arrays when it finds them, see `simplifySchemas`.

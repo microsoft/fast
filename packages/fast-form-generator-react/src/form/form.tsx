@@ -2,6 +2,7 @@ import * as React from "react";
 import { cloneDeep, get, set, unset } from "lodash-es";
 import {
     ComponentTree,
+    IChildOptionItem,
     IComponentItem,
     IFormProps,
     IFormState
@@ -306,4 +307,3 @@ class Form extends React.Component<IFormProps, IFormState> {
 }
 
 export default Form;
-export { IFormProps };

@@ -6,6 +6,12 @@ export type LocationOnChange = (schemaLocation: string, dataLocation: string) =>
 
 export type FormTag = "form" | "div";
 
+export interface IChildOptionItem {
+    name: string;
+    component: JSX.Element;
+    schema: any;
+}
+
 /**
  * The schema form props
  */
@@ -28,7 +34,7 @@ export interface IFormProps {
     /**
      * The optional components to be added as children
      */
-    childOptions?: React.Component[];
+    childOptions?: IChildOptionItem[];
 
     /**
      * The custom passed location of a subsection to initially activate

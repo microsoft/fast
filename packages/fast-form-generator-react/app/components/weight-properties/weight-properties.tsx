@@ -15,6 +15,10 @@ export interface IWeightPropertiesProps {
     text: string;
 }
 
+/**
+ * This test components API should have:
+ * - a number of required property which maps to a configuration which will organise them by weight
+ */
 export default class WeightProperties extends React.Component<IWeightPropertiesProps, {}> {
     public render(): JSX.Element {
         return (

@@ -1,4 +1,9 @@
-export const weightPropertiesWeight: any = {
+import {
+    IFormComponentMappingToPropertyNamesProps,
+    IFormOrderByPropertyNamesProps
+} from "../../../src/form/form.props";
+
+export const weightPropertiesWeight: IFormOrderByPropertyNamesProps = {
     showCategoriesAtPropertyCount: 4,
     defaultCategoryWeight: 20,
     categories: [
@@ -29,7 +34,7 @@ export const weightPropertiesWeight: any = {
     ]
 };
 
-export const weightPropertiesConfig: any = {
+export const weightPropertiesConfig: IFormComponentMappingToPropertyNamesProps = {
     alignHorizontal: [
         "alignHorizontal"
     ]

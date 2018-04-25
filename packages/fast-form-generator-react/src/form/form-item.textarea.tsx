@@ -22,7 +22,7 @@ class FormItemTextarea extends React.Component<IFormItemTextareaProps, {}> {
 
     public render(): JSX.Element {
         return (
-            <div className="context-form">
+            <div>
                 <label htmlFor={this.props.dataLocation}>{this.props.label}</label>
                 <textarea
                     id={this.props.dataLocation}
