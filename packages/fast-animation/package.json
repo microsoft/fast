@@ -87,7 +87,7 @@
     ],
     "collectCoverage": true,
     "coverageDirectory": "/coverage/",
-    "coverageReporters": [`lcov`],
+    "coverageReporters": ["lcov"],
     "moduleDirectories": [
       "node_modules"
     ]
