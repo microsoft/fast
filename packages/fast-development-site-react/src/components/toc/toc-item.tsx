@@ -52,7 +52,7 @@ const style: ComponentStyles<ITocItemManagedClasses, IDevSiteDesignSystem> = {
         color: (config: IDevSiteDesignSystem): string => {
             return config.foregroundColor;
         },
-        boxShadow: `0 ${toPx(2)} ${toPx(4)} ${toPx(-1)} #ccc;`,
+        boxShadow: `0 ${toPx(2)} ${toPx(4)} ${toPx(-1)} #ccc`,
         "&::before": {
             content: "''",
             width: toPx(2),
