@@ -18,14 +18,37 @@
     "clean:dist": "node ../../build/clean.js dist",
     "tslint": "tslint -c ./tslint.json '**/*.ts'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts'",
-    "test": "npm run tslint",
+    "test": "npm run tslint && npm run unit-tests",
+    "unit-tests": "jest",
     "prepare": "npm run clean:dist && tsc -p ./tsconfig.json"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "coverageThreshold": {
+      "global": {
+        "branches": 69,
+        "functions": 90,
+        "lines": 80,
+        "statements": -10
+      }
+    },
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(js|ts)$",
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ]
   },
   "devDependencies": {
     "@microsoft/fast-tslint-rules": "^1.0.4",
     "babel-core": "^6.26.0",
     "babel-preset-env": "^1.6.1",
+    "@types/jest": "^22.2.3",
     "csstype": "^2.3.0",
+    "jest": "^22.4.3",
+    "ts-jest": "^22.4.4",
     "tslint": "^5.9.1",
     "typescript": "^2.7.2"
   },
