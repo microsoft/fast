@@ -86,6 +86,8 @@
       "js"
     ],
     "collectCoverage": true,
+    "coverageDirectory": ["/coverage"],
+    "coverageFormats": ["json"],
     "moduleDirectories": [
       "node_modules"
     ]
