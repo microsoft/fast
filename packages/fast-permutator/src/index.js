@@ -214,7 +214,7 @@ permutator.typeArray = function (schema, propertyName, required, arrayConfig) {
  * @param {boolean} required - Whether this property is required.
  */
 permutator.typeBoolean = function (schema, propertyName, required, arrayConfig) {
-    let boolArray = typeBoolean(schema, propertyName, required, arrayConfig);
+    const boolArray = typeBoolean(schema, propertyName, required, arrayConfig);
 
     handleRequiredData(required, boolArray);
 };
@@ -226,7 +226,7 @@ permutator.typeBoolean = function (schema, propertyName, required, arrayConfig) 
  * @param {boolean} required - Whether this property is required.
  */
 permutator.typeString = function (schema, propertyName, required, arrayConfig) {
-    let stringArray = typeString(schema, propertyName, required, arrayConfig);
+    const stringArray = typeString(schema, propertyName, required, arrayConfig);
 
     handleRequiredData(required, stringArray);
 };
@@ -238,7 +238,7 @@ permutator.typeString = function (schema, propertyName, required, arrayConfig) {
  * @param {boolean} required - Whether this property is required.
  */
 permutator.typeNumber = function (schema, propertyName, required, arrayConfig) {
-    let numberArray = typeNumber(schema, propertyName, required, arrayConfig);
+    const numberArray = typeNumber(schema, propertyName, required, arrayConfig);
 
     handleRequiredData(required, numberArray);
 };
@@ -250,7 +250,7 @@ permutator.typeNumber = function (schema, propertyName, required, arrayConfig) {
  * @param {boolean} required - Whether this property is required.
  */
 permutator.typeNull = function (schema, propertyName, required, arrayConfig) {
-    let nullArray = typeNull(schema, propertyName, required, arrayConfig);
+    const nullArray = typeNull(schema, propertyName, required, arrayConfig);
 
     handleRequiredData(required, nullArray);
 };
@@ -262,7 +262,7 @@ permutator.typeNull = function (schema, propertyName, required, arrayConfig) {
  * @param {boolean} required - Whether this property is required.
  */
 permutator.typelessEnum = function (schema, propertyName, required, arrayConfig) {
-    let enumArray = typelessEnum(schema, propertyName, required, arrayConfig);
+    const enumArray = typelessEnum(schema, propertyName, required, arrayConfig);
 
     handleRequiredData(required, enumArray);
 };
