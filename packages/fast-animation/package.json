@@ -86,7 +86,7 @@
       "js"
     ],
     "collectCoverage": true,
-    "coverageDirectory": ["coverage"],
+    "coverageDirectory": ['./coverage'],
     "coverageReporters": ["lcov"],
     "moduleDirectories": [
       "node_modules"
