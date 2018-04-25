@@ -19,5 +19,14 @@ before_script:
 script:
   - lerna run test
 after_script:
-  - ./cc-test-reporter format-coverage -t lcov
-  - ./cc-test-reporter after-build --debug .exit $TRAVIS_TEST_RESULT
+  # See https://github.com/codeclimate/test-reporter/issues/263
+  - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+      for f in packages/*; do
+        if [ -d $f ]; then
+          echo $f;
+          ./cc-test-reporter format-coverage -t lcov -o coverage/coverage.${f//\//-}.json $f/coverage/lcov.info;
+        fi
+      done;
+      ./cc-test-reporter sum-coverage -o coverage/coverage.total.json coverage/coverage.*.json;
+      ./cc-test-reporter upload-coverage -i coverage/coverage.total.json;
+    fi
