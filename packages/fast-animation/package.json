@@ -85,9 +85,6 @@
       "tsx",
       "js"
     ],
-    "collectCoverage": true,
-    "coverageDirectory": "/coverage/",
-    "coverageReporters": ["lcov"],
     "moduleDirectories": [
       "node_modules"
     ]
