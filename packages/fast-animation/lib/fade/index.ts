@@ -29,22 +29,21 @@ export const fadeEffectTiming: AnimationEffectTiming = {
  * Creates an animation to fade an element into view
  */
 export function fadeIn(element: HTMLElement, effectTiming: AnimationEffectTiming = {}): AnimateTo {
-    const fadeInEffectTiming: AnimationEffectTiming = Object.assign({}, fadeEffectTiming, effectTiming);
-    const fadeInAnimation: AnimateTo = new AnimateTo(element, null, fadeInEffectTiming);
-
-    fadeInAnimation.addKeyframes(fadeInKeyframes);
-
-    return fadeInAnimation;
+    return applyFade(element, fadeInKeyframes, effectTiming);
 }
 
 /**
  * Creates an animation to fade an element out of view
  */
 export function fadeOut(element: HTMLElement, effectTiming: AnimationEffectTiming = {}): AnimateTo {
-    const fadeOutEffectTiming: AnimationEffectTiming = Object.assign({}, fadeEffectTiming, effectTiming);
-    const fadeOutAnimation: AnimateTo = new AnimateTo(element, null, fadeOutEffectTiming);
+    return applyFade(element, fadeOutKeyframes, effectTiming);
+}
 
-    fadeOutAnimation.addKeyframes(fadeOutKeyframes);
+export function applyFade(element: HTMLElement, keyframes: AnimationKeyFrame[], timing: AnimationEffectTiming = {}): AnimateTo {
+    const fadeAnimationTiming: AnimationEffectTiming = Object.assign({}, fadeEffectTiming, timing);
+    const fadeAnimation: AnimateTo = new AnimateTo(element, null, fadeAnimationTiming);
 
-    return fadeOutAnimation;
+    fadeAnimation.addKeyframes(keyframes);
+
+    return fadeAnimation;
 }

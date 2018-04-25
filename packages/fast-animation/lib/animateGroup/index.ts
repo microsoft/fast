@@ -29,7 +29,7 @@ class AnimateGroup {
      * Play the group of animations
      */
     public play(): void {
-        this.animations.forEach((animation: AnimateTo |  AnimateFrom) => animation.play());
+        this.action("play");
     }
 
     /**
@@ -37,29 +37,34 @@ class AnimateGroup {
      */
 
     public reverse(): void {
-        this.animations.forEach((animation: AnimateTo |  AnimateFrom) => animation.reverse());
+        this.action("reverse");
     }
 
     /**
      * Pauses all animations in the group
      */
     public pause = (): void => {
-        this.animations.forEach((animation: AnimateTo |  AnimateFrom) => animation.pause());
+        this.action("pause");
     }
 
     /**
      * Finishes all animations in the group
      */
     public finish = (): void => {
-        this.animations.forEach((animation: AnimateTo |  AnimateFrom) => animation.finish());
+        this.action("finish");
     }
 
     /**
      * Cancels all animations in the group
      */
     public cancel = (): void => {
-        this.animations.forEach((animation: AnimateTo |  AnimateFrom) => animation.cancel());
+        this.action("cancel");
     }
+
+    private action = (name: string): void => {
+        this.animations.forEach((animation: AnimateTo | AnimateFrom) => animation[name]());
+    }
+
     /**
      * Returns the longest running animation in the group
      */
