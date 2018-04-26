@@ -62,12 +62,8 @@ class TestPage extends React.Component {
                     <div id="highlighter"/>
                     <div className="page-container">
                         <div className="ui-line"/>
-                        <div className="ui-box" onClick={this.clickContainer1}>
-                            <div id="circle1" className="ui-circle"/>
-                        </div>
-                        <div className="ui-box" onClick={this.clickContainer1}>
-                            <div id="circle2" className="ui-circle"/>
-                        </div>
+                        {this.generateUIBox("circle1")}
+                        {this.generateUIBox("circle2")}
                     </div>
                 </div>
                 <div className="container-square" onClick={this.clickContainer2}>
@@ -130,6 +126,14 @@ class TestPage extends React.Component {
                         <div id="fourSquare4" className="light-square size-medium"/>
                     </div>
                 </div>
+            </div>
+        );
+    }
+
+    private generateUIBox(id: string): JSX.Element {
+        return (
+            <div className="ui-box" onClick={this.clickContainer1}>
+                <div id={id} className="ui-circle"/>
             </div>
         );
     }

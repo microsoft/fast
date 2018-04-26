@@ -1,5 +1,6 @@
 import AnimateTo from "../animateTo";
 import AnimateFrom from "../animateFrom";
+import { invokeFunctionForEach } from "../utilities/invokeFunctionForEach";
 
 class AnimateGroup {
     /**
@@ -29,7 +30,7 @@ class AnimateGroup {
      * Play the group of animations
      */
     public play(): void {
-        this.action("play");
+        invokeFunctionForEach(this.animations, "play");
     }
 
     /**
@@ -37,32 +38,28 @@ class AnimateGroup {
      */
 
     public reverse(): void {
-        this.action("reverse");
+        invokeFunctionForEach(this.animations, "reverse");
     }
 
     /**
      * Pauses all animations in the group
      */
     public pause = (): void => {
-        this.action("pause");
+        invokeFunctionForEach(this.animations, "pause");
     }
 
     /**
      * Finishes all animations in the group
      */
     public finish = (): void => {
-        this.action("finish");
+        invokeFunctionForEach(this.animations, "finish");
     }
 
     /**
      * Cancels all animations in the group
      */
     public cancel = (): void => {
-        this.action("cancel");
-    }
-
-    private action = (name: string): void => {
-        this.animations.forEach((animation: AnimateTo | AnimateFrom) => animation[name]());
+        invokeFunctionForEach(this.animations, "cancel");
     }
 
     /**

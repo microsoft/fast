@@ -1,5 +1,6 @@
 import AnimateTo from "../animateTo";
 import AnimateFrom from "../animateFrom";
+import { invokeFunctionForEach } from "../utilities/invokeFunctionForEach";
 
 class AnimateSequence {
     /**
@@ -31,21 +32,21 @@ class AnimateSequence {
      * Pauses all animations in the sequence
      */
     public pause = (): void => {
-        this.animations.forEach((animation: AnimateTo | AnimateFrom) => animation.pause());
+        invokeFunctionForEach(this.animations, "pause");
     }
 
     /**
      * Finishes all animations in the sequence
      */
     public finish = (): void => {
-        this.animations.forEach((animation: AnimateTo | AnimateFrom) => animation.finish());
+        invokeFunctionForEach(this.animations, "finish");
     }
 
     /**
      * Cancels all animations in the sequence
      */
     public cancel = (): void => {
-        this.animations.forEach((animation: AnimateTo | AnimateFrom) => animation.cancel());
+        invokeFunctionForEach(this.animations, "cancel");
     }
 
     /**
