@@ -5,11 +5,10 @@ import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import Button from "./index";
 import { IButtonHandledProps } from "@microsoft/fast-components-react-base";
 import {
-    MSFTButtonProps,
     IMSFTButtonHandledProps,
     IMSFTButtonManagedClasses,
-    IMSFTButtonUnhandledProps
-
+    IMSFTButtonUnhandledProps,
+    MSFTButtonProps
 } from "./button.props";
 export default {
     name: "button",

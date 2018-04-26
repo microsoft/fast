@@ -87,14 +87,14 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = {
         borderColor: (config: IDesignSystem): string => {
             return config.gray;
         },
-        backgroundColor: () => {
+        backgroundColor: (): string => {
             return "transparent";
         },
         "&:hover": {
             borderColor: (config: IDesignSystem): string => {
                 return Chroma(config.gray).alpha(0.8).css();
             },
-            backgroundColor: () => {
+            backgroundColor: (): string => {
                 return "transparent";
             }
         },
@@ -118,11 +118,11 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = {
     },
     button_lightweight: {
         extend: "button",
-        backgroundColor: () => {
+        backgroundColor: (): string => {
             return "transparent";
         },
         "&:hover": {
-            backgroundColor: () => {
+            backgroundColor: (): string => {
                 return "transparent";
             }
         },
@@ -140,7 +140,7 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = {
         },
         "&:disabled, &[aria-disabled]": {
             "&:hover": {
-                background: () => {
+                background: (): string => {
                     return "transparent";
                 }
             }
@@ -148,11 +148,11 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = {
     },
     button_justified: {
         extend: "button",
-        backgroundColor: () => {
+        backgroundColor: (): string => {
             return "transparent";
         },
         "&:hover": {
-            backgroundColor: () => {
+            backgroundColor: (): string => {
                 return "transparent";
             }
         },
@@ -171,7 +171,7 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = {
         padding: `${toPx(23)} ${toPx(2)} ${toPx(2)} 0`,
         "&:disabled, &[aria-disabled]": {
             "&:hover": {
-                background: () => {
+                background: (): string => {
                     return "transparent";
                 }
             }

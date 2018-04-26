@@ -4,8 +4,13 @@ import { get } from "lodash-es";
 import { Foundation, HandledProps } from "@microsoft/fast-components-react-base";
 import { IMSFTButtonHandledProps, IMSFTButtonManagedClasses, IMSFTButtonUnhandledProps } from "./button.props";
 import { IManagedClasses, IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-// import BaseButton from "../button";
-import {default as BaseButton, IButtonHandledProps, IButtonManagedClasses, IButtonUnhandledProps, IButtonClassNameContract } from "@microsoft/fast-components-react-base/src/button";
+import {
+    default as BaseButton,
+    IButtonClassNameContract,
+    IButtonHandledProps,
+    IButtonManagedClasses,
+    IButtonUnhandledProps,
+} from "@microsoft/fast-components-react-base/src/button";
 import Divider from "@microsoft/fast-components-react-base/src/divider";
 
 /* tslint:disable-next-line */
@@ -23,7 +28,6 @@ class Button extends Foundation<IMSFTButtonHandledProps & IManagedClasses<IMSFTB
      * Renders the component
      */
     public render(): React.ReactElement<HTMLButtonElement | HTMLAnchorElement> {
-        console.log(this.props);
         return (
             <BaseButton
                 className={this.generateClassNames()}

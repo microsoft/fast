@@ -47,10 +47,8 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IButtonCla
     /**
      * Stores HTML tag for use in render
      */
-    private renderDisabled(): any {
-        console.log(typeof this.props.disabled);
+    private renderDisabled(): object {
         if (this.props.disabled === true) {
-            console.log('TRUE');
             return this.tag === ButtonHTMLTags.a ? {"aria-disabled": true} : {"disabled": true};
         }
     }
