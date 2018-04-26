@@ -2,6 +2,7 @@ const clone = require('lodash').cloneDeep;
 const set = require('lodash').set;
 const get = require('lodash').get;
 const unset = require('lodash').unset;
+const isRecursive = require('./is-location-recursive');
 
 /**
  * Exports a schema with resolved circular references
@@ -26,7 +27,7 @@ const resolveRecursiveReference = function(schema, location) {
     Object.keys(subSchema).map((value, index) => {
         let newLocation = typeof location === 'undefined' ? value : `${location}${formatLocation(value)}`;
 
-        if (isRecursive(newLocation)) {
+        if (isRecursive(newLocation, /(.*)\.\1\.\1\.\1/)) {
             schemaClone = removeSubschemaCircularReferences(schemaClone, newLocation);
         } else {
             if (typeof get(schemaClone, newLocation) === 'object') {
@@ -78,17 +79,6 @@ let removeSubschemaCircularReferences = function(schema, location) {
     }
 
     return schemaClone;
-};
-
-/**
- * Determines if a location is recursive if it has 3 consecutively repeating sections
- * @param {string} location 
- */
-let isRecursive = function(location) {
-    let repeatingPattern = /(.*)\.\1\.\1\.\1/;
-    let isLocationRecursive = location.match(repeatingPattern) === null ? false : true;
-
-    return isLocationRecursive;
 };
 
 /**
