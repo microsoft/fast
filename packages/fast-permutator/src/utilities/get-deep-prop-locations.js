@@ -1,4 +1,5 @@
 const get = require('lodash').get;
+const isRecursive = require('./is-location-recursive');
 
 /**
  * Returns an array of locations of the given property name
@@ -71,6 +72,7 @@ let findPropsInDefinitions = function (schema, location, propName) {
  */
 let findProps = function (schema, location, propName) {
     let matches = [];
+    let repeatingPattern = /(.*)\.\1\.\1/;
 
     if (schema[propName]) {
         let newLocation = (location === '') ? `` : `${location}`;
@@ -85,13 +87,13 @@ let findProps = function (schema, location, propName) {
             if (schema.properties[key].items) {
                 let newLocation = (location === '') ? `properties.${key}.items` : `${location}.properties.${key}.items`;
 
-                if (!isRecursive(newLocation)) {
+                if (!isRecursive(newLocation, repeatingPattern)) {
                     matches = matches.concat(findProps(schema.properties[key].items, newLocation, propName));
                 }
             } else {
                 let newLocation = (location === '') ? `properties.${key}` : `${location}.properties.${key}`;
 
-                if (!isRecursive(newLocation)) {
+                if (!isRecursive(newLocation, repeatingPattern)) {
                     matches = matches.concat(findProps(schema.properties[key], newLocation, propName));
                 }
             }
@@ -101,7 +103,7 @@ let findProps = function (schema, location, propName) {
     if (schema.items) {
         let newLocation = (location === '') ? `items` : `${location}.items`;
 
-        if (!isRecursive(newLocation)) {
+        if (!isRecursive(newLocation, repeatingPattern)) {
             matches = matches.concat(findProps(schema.items, newLocation, propName));
         }
     }
@@ -126,7 +128,7 @@ let findProps = function (schema, location, propName) {
                 for (let key of keys) {
                     let newLocation = (location === '') ? `${oneOfAnyOfAllOf}[${i}].properties.${key}` : `${location}.${oneOfAnyOfAllOf}[${i}].properties.${key}`;
 
-                    if (!isRecursive(newLocation)) {
+                    if (!isRecursive(newLocation, repeatingPattern)) {
                         matches = matches.concat(findProps(arrayItem.properties[key], newLocation, propName));
                     }
                 }
@@ -135,7 +137,7 @@ let findProps = function (schema, location, propName) {
                     ? `${oneOfAnyOfAllOf}[${i}].items`
                     : `${location}.${oneOfAnyOfAllOf}[${i}].items`;
 
-                if (!isRecursive(newLocation)) {
+                if (!isRecursive(newLocation, repeatingPattern)) {
                     matches = matches.concat(findProps(arrayItem.items, newLocation, propName));
                 }
             }
@@ -143,7 +145,7 @@ let findProps = function (schema, location, propName) {
             if (arrayItem.allOf || arrayItem.anyOf || arrayItem.oneOf) {
                 let newLocation = (location === '') ? `${oneOfAnyOfAllOf}[${i}]` : `${location}.${oneOfAnyOfAllOf}[${i}]`;
 
-                if (!isRecursive(newLocation)) {
+                if (!isRecursive(newLocation, repeatingPattern)) {
                     matches = matches.concat(findProps(arrayItem, newLocation, propName));
                 }
             }
@@ -151,15 +153,4 @@ let findProps = function (schema, location, propName) {
     }
 
     return matches;
-};
-
-/**
- * Determines if a location is recursive if it has 3 consecutively repeating sections
- * @param {string} location 
- */
-let isRecursive = function(location) {
-    let repeatingPattern = /(.*)\.\1\.\1/;
-    let isLocationRecursive = location.match(repeatingPattern) === null ? false : true;
-
-    return isLocationRecursive;
 };
