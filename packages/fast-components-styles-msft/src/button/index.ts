@@ -1,11 +1,12 @@
 import { IDesignSystem } from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { applyType } from "../utilities/typography";
 import * as Chroma from "chroma-js";
 
-const styles: ComponentStyles<IButtonClassNameContract, IDesignSystem> = {
+const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = {
     button: {
         ...applyType("t7", "vp1"),
         maxWidth: toPx(374),
@@ -70,6 +71,11 @@ const styles: ComponentStyles<IButtonClassNameContract, IDesignSystem> = {
         "&:disabled, &[aria-disabled]": {
             backgroundColor: (config: IDesignSystem): string => {
                 return config.brandColor;
+            },
+            "&:hover": {
+                backgroundColor: (config: IDesignSystem): string => {
+                    return config.brandColor;
+                }
             }
         }
     },
@@ -81,11 +87,16 @@ const styles: ComponentStyles<IButtonClassNameContract, IDesignSystem> = {
         borderColor: (config: IDesignSystem): string => {
             return config.gray;
         },
-        backgroundColor: "transparent",
+        backgroundColor: () => {
+            return "transparent";
+        },
         "&:hover": {
             borderColor: (config: IDesignSystem): string => {
                 return Chroma(config.gray).alpha(0.8).css();
             },
+            backgroundColor: () => {
+                return "transparent";
+            }
         },
         "&:focus": {
             borderColor: "transparent",
@@ -97,12 +108,24 @@ const styles: ComponentStyles<IButtonClassNameContract, IDesignSystem> = {
         "&:disabled, &[aria-disabled]": {
             backgroundColor: (config: IDesignSystem): string => {
                 return config.gray;
+            },
+            "&:hover": {
+                backgroundColor: (config: IDesignSystem): string => {
+                    return config.gray;
+                }
             }
         }
     },
-    "button_lightweight": {
+    button_lightweight: {
         extend: "button",
-        background: "transparent",
+        backgroundColor: () => {
+            return "transparent";
+        },
+        "&:hover": {
+            backgroundColor: () => {
+                return "transparent";
+            }
+        },
         color: (config: IDesignSystem): string => {
             return config.brandColor;
         },
@@ -114,11 +137,25 @@ const styles: ComponentStyles<IButtonClassNameContract, IDesignSystem> = {
             background: (config: IDesignSystem): string => {
                 return config.brandColor;
             }
+        },
+        "&:disabled, &[aria-disabled]": {
+            "&:hover": {
+                background: () => {
+                    return "transparent";
+                }
+            }
         }
     },
-    "button_justified": {
+    button_justified: {
         extend: "button",
-        background: "transparent",
+        backgroundColor: () => {
+            return "transparent";
+        },
+        "&:hover": {
+            backgroundColor: () => {
+                return "transparent";
+            }
+        },
         color: (config: IDesignSystem): string => {
             return config.brandColor;
         },
@@ -132,6 +169,13 @@ const styles: ComponentStyles<IButtonClassNameContract, IDesignSystem> = {
             }
         },
         padding: `${toPx(23)} ${toPx(2)} ${toPx(2)} 0`,
+        "&:disabled, &[aria-disabled]": {
+            "&:hover": {
+                background: () => {
+                    return "transparent";
+                }
+            }
+        }
     },
     button_span: {
         position: "relative",

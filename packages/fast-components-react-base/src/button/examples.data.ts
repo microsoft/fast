@@ -10,12 +10,7 @@ const examples: ISnapshotTestSuite<IButtonHandledProps & IButtonManagedClasses> 
     data: [
         {
             managedClasses: {
-                button: "button",
-                button_primary: "button_primary",
-                button_outline: "button_outline",
-                button_lightweight: "button_lightweight",
-                button_justified: "button_justified",
-                button_span: "button_span"
+                button: "button"
             },
             children: "Button text"
         }

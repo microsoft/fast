@@ -1,9 +1,16 @@
+import * as React from "react";
 import { ICategoryItemProps } from "@microsoft/fast-development-site-react";
 import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import Button from "./index";
 import { IButtonHandledProps } from "@microsoft/fast-components-react-base";
+import {
+    MSFTButtonProps,
+    IMSFTButtonHandledProps,
+    IMSFTButtonManagedClasses,
+    IMSFTButtonUnhandledProps
 
+} from "./button.props";
 export default {
     name: "button",
     component: Button,

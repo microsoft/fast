@@ -19,11 +19,7 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IButtonCla
         children: void 0,
         disabled: void 0,
         href: void 0,
-        justified: void 0,
-        lightweight: void 0,
-        managedClasses: void 0,
-        outline: void 0,
-        primary: void 0
+        managedClasses: void 0
     };
 
     /**
@@ -36,7 +32,7 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IButtonCla
                 className={this.generateClassNames()}
                 {...this.renderDisabled()}
             >
-                {this.generateInnerContent()}
+                {this.props.children}
             </this.tag>
         );
     }
@@ -45,33 +41,17 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IButtonCla
      * Generates class names
      */
     protected generateClassNames(): string {
-        let classLocation: string;
-
-        if (this.props.primary) {
-            classLocation = "managedClasses.button_primary";
-        } else if (this.props.outline) {
-            classLocation = "managedClasses.button_outline";
-        } else if (this.props.lightweight) {
-            classLocation = "managedClasses.button_lightweight";
-        } else if (this.props.justified) {
-            classLocation = "managedClasses.button_justified";
-        } else {
-            classLocation = "managedClasses.button";
-        }
-
-        return super.generateClassNames(get(this.props, classLocation));
+        return super.generateClassNames(get(this.props, "managedClasses.button"));
     }
 
     /**
      * Stores HTML tag for use in render
      */
     private renderDisabled(): any {
-        if (this.props.disabled) {
-            if (this.tag === ButtonHTMLTags.a) {
-                return {"aria-disabled": true};
-            } else {
-                return {"disabled": true};
-            }
+        console.log(typeof this.props.disabled);
+        if (this.props.disabled === true) {
+            console.log('TRUE');
+            return this.tag === ButtonHTMLTags.a ? {"aria-disabled": true} : {"disabled": true};
         }
     }
 
@@ -80,14 +60,6 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IButtonCla
      */
     private get tag(): string {
         return typeof this.props.href === "string" ? ButtonHTMLTags.a : ButtonHTMLTags.button;
-    }
-
-    private generateInnerContent(): React.ReactElement<HTMLSpanElement> | (React.ReactNode | React.ReactNode[]) {
-        if (this.props.lightweight || this.props.justified) {
-            return <span className={get(this.props, "managedClasses.button_span")}>{this.props.children}</span>;
-        } else {
-            return this.props.children;
-        }
     }
 }
 
