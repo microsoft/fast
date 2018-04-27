@@ -101,7 +101,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
 
         this.state = {
             tableOfContentsCollapsed: this.props.collapsed || false,
-            componentView: ComponentView.examples
+            componentView: ComponentView.detail
         };
     }
 
@@ -109,11 +109,17 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         return (
             <DesignSystemProvider designSystem={devSiteDesignSystemDefaults}>
                 <BrowserRouter>
-                    <Switch>
-                        {this.renderShell(0, "/", null)}
-                        {this.renderRoutes()}
-                        <Route path="*" component={NotFound} />
-                    </Switch>
+                        <Shell>
+                            {this.renderShellHeader()}
+
+                            <Switch>
+                                <Route exact={true} path={"/"} component={this.renderShellRow.bind(this, null, "/")} />
+                                {this.renderRoutes()}
+                                <Route path="*" component={NotFound} />
+                            </Switch>
+
+                            {this.renderShellInfoBar()}
+                       </Shell>
                 </BrowserRouter>
             </DesignSystemProvider>
         );
@@ -128,12 +134,10 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
 
     private renderShell(key: number, path: string, CanvasComponent: any): JSX.Element {
         return (
-            <Route key={key} exact={true} path={path}>
-                <Shell>
-                    {this.renderShellHeader()}
+            <Route key={key} path={path}>
+                <React.Fragment>
                     {this.renderShellRow(CanvasComponent, path)}
-                    {this.renderShellInfoBar()}
-                </Shell>
+                </React.Fragment>
             </Route>
         );
     }
