@@ -161,9 +161,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                     </ul>
                 </ShellPane>
                 <ShellCanvas>
-                    <ShellActionBar>
-                        {this.getSlotItems(this, ShellSlot.actionBar)}
-                    </ShellActionBar>
+                    <ShellActionBar componentView={this.state.componentView} />
                     {this.getSlotItems(this, ShellSlot.canvas)}
                     {CanvasComponent}
                 </ShellCanvas>
