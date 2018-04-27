@@ -168,7 +168,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     private renderShellHeader(): JSX.Element {
         return (
             <ShellHeader>
-                {this.getSlotItems(this, ShellSlot.header)}
+                {this.getChildrenBySlot(this, ShellSlot.header)}
                 <span className={this.props.managedClasses.site_headerTitle}>
                     {this.props.title}
                 </span>
@@ -181,7 +181,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
             <ShellRow>
                 <ShellPane collapsed={this.state.tableOfContentsCollapsed}>
                     {this.getPaneCollapseToggle()}
-                    {this.getSlotItems(this, ShellSlot.pane)}
+                    {this.getChildrenBySlot(this, ShellSlot.pane)}
                     <ul className={this.props.managedClasses.site_paneToc}>
                         {this.getRootToc(this.props.children, SiteSlot.category, route.route, "/")}
                     </ul>
@@ -189,7 +189,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 <ShellCanvas
                     componentView={this.state.componentView}
                 >
-                    {this.getSlotItems(this, ShellSlot.canvas)}
+                    {this.getChildrenBySlot(this, ShellSlot.canvas)}
                     {route.component}
                 </ShellCanvas>
             </ShellRow>
@@ -199,7 +199,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     private renderShellInfoBar(): JSX.Element {
         return (
             <ShellInfoBar>
-                {this.getSlotItems(this, ShellSlot.infoBar)}
+                {this.getChildrenBySlot(this, ShellSlot.infoBar)}
             </ShellInfoBar>
         );
     }
@@ -223,7 +223,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     private getCurrentRoute(item: JSX.Element, slot: SiteSlot, baseRoute: string, currentRoutes: IComponentRoute[]): IComponentRoute[] {
         const currentRoute: IComponentRoute[] = currentRoutes;
         const itemRoute: string = `${baseRoute}${item.props.name}/`;
-        const slotItems: JSX.Element[] = this.getSlotItems(item, ShellSlot.canvas);
+        const slotItems: JSX.Element[] = this.getChildrenBySlot(item, ShellSlot.canvas);
 
         if (slotItems && slotItems.length > 0) {
             currentRoute.push({
@@ -245,13 +245,14 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         });
     }
 
-    private getSlotItems(component: any, slot: string): JSX.Element[] {
+    private getChildrenBySlot(component: any, slot: string): JSX.Element[] {
         return React.Children.map(component.props.children, (child: JSX.Element, index: number) => {
             if (child.props && child.props.slot === slot) {
                 return child;
             }
         });
     }
+
     /* tslint:disable:max-line-length */
     private getPaneCollapseToggle(): JSX.Element {
         return (
