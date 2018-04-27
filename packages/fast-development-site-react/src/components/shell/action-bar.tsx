@@ -2,11 +2,9 @@ import * as React from "react";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { IDevSiteDesignSystem } from "../design-system";
-import { Link, withRouter } from "react-router-dom";
-import { RouteComponentProps } from "react-router";
 
 /* tslint:disable-next-line */
-export interface IShellActionBarProps extends RouteComponentProps<any> { }
+export interface IShellActionBarProps {}
 
 export interface IShellActionBarManagedClasses {
     shellActionBar: string;
@@ -36,4 +34,4 @@ class ShellActionBar extends React.Component<IShellActionBarProps & IManagedClas
     }
 }
 
-export default withRouter(manageJss(style)(ShellActionBar));
+export default manageJss(style)(ShellActionBar);
