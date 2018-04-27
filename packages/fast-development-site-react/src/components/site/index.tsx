@@ -160,8 +160,9 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                         {this.getRootToc(this.props.children, SiteSlot.category, path, "/")}
                     </ul>
                 </ShellPane>
-                <ShellCanvas>
-                    <ShellActionBar componentView={this.state.componentView} />
+                <ShellCanvas
+                    componentView={this.state.componentView}
+                >
                     {this.getSlotItems(this, ShellSlot.canvas)}
                     {CanvasComponent}
                 </ShellCanvas>

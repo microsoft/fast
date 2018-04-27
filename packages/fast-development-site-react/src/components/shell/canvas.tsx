@@ -4,9 +4,12 @@ import { IDevSiteDesignSystem } from "../design-system";
 import { ComponentView } from "../site";
 import { Route, Switch, withRouter } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
+import ShellActionBar from "./action-bar";
 
 /* tslint:disable-next-line */
-interface ICanvasHeaderProps extends RouteComponentProps<any> { }
+interface ICanvasHeaderProps extends RouteComponentProps<any> {
+    componentView: ComponentView;
+}
 
 export interface IShellCanvasManagedClasses {
     shellCanvas: string;
@@ -25,9 +28,15 @@ const style: ComponentStyles<IShellCanvasManagedClasses, IDevSiteDesignSystem> =
 class ShellCanvas extends React.Component<ICanvasHeaderProps & IManagedClasses<IShellCanvasManagedClasses>, {}> {
     public render(): JSX.Element {
         return (
-            <div className={this.props.managedClasses.shell_canvas}>
+            <div className={this.props.managedClasses.shellCanvas}>
+            <ShellActionBar componentView={this.props.componentView} />
                 <Switch>
-                    <Route path={this.props.match.url} exact={true} component={this.renderDetailPage} />
+                    <Route path="/" exact={true} component={null} />
+                    <Route
+                        path={this.props.match.url}
+                        exact={true}
+                        component={this.renderDetailPage}
+                    />
                     <Route
                         path={this.props.match.url + `/${ComponentView[ComponentView.examples]}`}
                         exact={true}
