@@ -273,7 +273,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
      * Formats the URL of a TOC item
      */
     private formatTocItemPath(base: string, name: string): string {
-        return this.convertToHyphenated(`${base}${name}/`);
+        return this.convertToHyphenated(`${base}${name}/${this.state.componentView === ComponentView.examples ? "examples/" : ""}`);
     }
 
     private getTocItem(
