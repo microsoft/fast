@@ -95,7 +95,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
 
         this.state = {
             tableOfContentsCollapsed: this.props.collapsed || false,
-            componentView: ComponentViewTypes.detail
+            componentView: ComponentViewTypes.examples
         };
     }
 
@@ -106,7 +106,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                     <Shell>
                         {this.renderShellHeader()}
                         <Switch>
-                            <Route exact={true} path={"/"} component={this.renderShellRow.bind(this, null, "/")} />
+                            <Route exact={true} path={"/"} component={this.renderShellRow.bind(this, {component: null, route: "/"})} />
                             {this.renderRoutes()}
                             <Route path="*" component={NotFound} />
                         </Switch>
