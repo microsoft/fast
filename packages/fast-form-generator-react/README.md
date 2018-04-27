@@ -2,7 +2,7 @@
 # ReactJS FAST form generator
 A self generating UI based on JSON Schemas.
 
-It can be utilized to dynamically generate a form for changing data values on a React component.
+Dynamically generates a form user interface based on incoming JSON Schemas to change data values of a React component.
 
 ## Installing
 - Run `npm i`
@@ -12,7 +12,7 @@ It can be utilized to dynamically generate a form for changing data values on a 
 
 ## Using the form generator
 ### Basic usage
-The required properties are the data, schema and onChange function. The data should be tied to your state, this will change.
+The required properties are the data, schema, and onChange function. The data should be tied to your state, this will change.
 
 ```jsx
 import Form from "@microsoft/fast-form-generator-react";
@@ -73,7 +73,7 @@ Example:
 ```
 
 ### examples & default
-If an example or a default value is given, that is what will be used instead of 'example text' in case of a string, or a randomly generated number instead of a number. It is generally better to add this extra information in case the schema form generator needs to create a new set of data.
+Providing an example or default value will replace the placeholder 'example text' or randomly generated number. It is generally better to add this extra information in case the schema form generator needs to create a new set of data.
 
 Example:
 ```
