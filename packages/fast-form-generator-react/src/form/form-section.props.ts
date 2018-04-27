@@ -208,3 +208,12 @@ export interface IOptionalToggleConfig {
     data: any;
     dataCache: any;
 }
+
+export interface ISchemaSubsectionConfig {
+    oneOfAnyOf: any;
+    objectProperty: string;
+    dataLocation: string;
+    schemaLocation: string;
+    state: any;
+    props: any;
+}

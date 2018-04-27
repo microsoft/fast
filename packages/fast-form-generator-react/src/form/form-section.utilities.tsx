@@ -7,7 +7,8 @@ import {
     IFormComponentMappingToPropertyNamesProps
 } from "./form.props";
 import {
-    IOptionalToggleConfig
+    IOptionalToggleConfig,
+    ISchemaSubsectionConfig
 } from "./form-section.props";
 import { mappingName } from "./form-item";
 
@@ -282,6 +283,47 @@ function isSelected(propertyKey: string, data: any): boolean {
     return selected;
 }
 
+function getSchemaLocation(schemaLocation: string, oneOfAnyOf: any): string {
+    const schemaLocationClone: string = oneOfAnyOf
+        ? `${oneOfAnyOf.type}[${oneOfAnyOf.activeIndex}]${schemaLocation}`
+        : schemaLocation;
+    return schemaLocationClone === "" ? "" : `${schemaLocationClone}.`;
+}
+
+function getDataLocation(dataLocation: string, location: string): string {
+    return dataLocation === "" ? "" : `${dataLocation}${location ? "" : "."}`;
+}
+
+function checkIsObjectOrOneOfAnyOf(property: any): boolean {
+    return property.properties || property.anyOf || property.oneOf;
+}
+
+function getSubsectionOneOfAnyOf(oneOfAnyOf: any, objectProperty: any): string {
+    return typeof oneOfAnyOf !== "undefined" ? `${oneOfAnyOf.type}[${oneOfAnyOf.activeIndex}]` : "";
+}
+
+function getSchemaSubsectionText(state: any, objectProperty: string): string {
+    return state.schema.properties[objectProperty].title || "Untitled";
+}
+
+function getSchemaSubsectionSchemaLocation(config: ISchemaSubsectionConfig): string {
+    return `${config.props.location ? config.schemaLocation : ""}${config.oneOfAnyOf}properties.${config.objectProperty}`;
+}
+
+function getSchemaSubsectionDataLocation(config: ISchemaSubsectionConfig): string {
+    return config.props.location ? config.dataLocation : `${config.dataLocation}${config.objectProperty}`;
+}
+
+function getSchemaSubsection(schemaSubsectionConfig: ISchemaSubsectionConfig): any {
+    return {
+        text: getSchemaSubsectionText(schemaSubsectionConfig.state, schemaSubsectionConfig.objectProperty),
+        schemaLocation: getSchemaSubsectionSchemaLocation(schemaSubsectionConfig),
+        dataLocation: getSchemaSubsectionDataLocation(schemaSubsectionConfig),
+        active: get(schemaSubsectionConfig.props.data, schemaSubsectionConfig.objectProperty),
+        required: getIsRequired(schemaSubsectionConfig.objectProperty, schemaSubsectionConfig.state.schema.required)
+    };
+}
+
 /**
  * Gets the schemas subsections
  */
@@ -293,31 +335,21 @@ export function getSchemaSubsections(state: any, props: any): any[] {
     }
 
     const objectProperties: string[] = Object.keys(state.schema.properties);
-    let schemaLocationClone: string = props.schemaLocation;
-    let dataLocationClone: string = props.dataLocation;
-
-    schemaLocationClone = state.oneOfAnyOf
-        ? `${state.oneOfAnyOf.type}[${state.oneOfAnyOf.activeIndex}]${schemaLocationClone}`
-        : schemaLocationClone;
-    schemaLocationClone = schemaLocationClone === "" ? "" : `${schemaLocationClone}.`;
-    dataLocationClone = dataLocationClone === "" ? "" : `${dataLocationClone}${props.location ? "" : "."}`;
+    const schemaLocationClone: string = getSchemaLocation(props.schemaLocation, state.oneOfAnyOf);
+    const dataLocationClone: string = getDataLocation(props.dataLocation, props.location);
 
     for (let i: number = 0, objectPropertiesLength: number = objectProperties.length; i < objectPropertiesLength; i++) {
-        if (state.schema.properties[objectProperties[i]].properties ||
-            state.schema.properties[objectProperties[i]].anyOf ||
-            state.schema.properties[objectProperties[i]].oneOf
-        ) {
-            const oneOfAnyOf: string = typeof state.oneOfAnyOf !== "undefined"
-                ? `${state.oneOfAnyOf.type}[${state.oneOfAnyOf.activeIndex}]`
-                : "" ;
+        if (checkIsObjectOrOneOfAnyOf(state.schema.properties[objectProperties[i]])) {
+            const oneOfAnyOf: string = getSubsectionOneOfAnyOf(state.oneOfAnyOf, objectProperties[i]);
 
-            subSections.push({
-                text: state.schema.properties[objectProperties[i]].title || "Untitled",
-                schemaLocation: `${props.location ? schemaLocationClone : ""}${oneOfAnyOf}properties.${objectProperties[i]}`,
-                dataLocation: props.location ? dataLocationClone : `${dataLocationClone}${objectProperties[i]}`,
-                active: get(props.data, objectProperties[i]),
-                required: getIsRequired(objectProperties[i], state.schema.required)
-            });
+            subSections.push(getSchemaSubsection({
+                oneOfAnyOf,
+                objectProperty: objectProperties[i],
+                dataLocation: dataLocationClone,
+                schemaLocation: schemaLocationClone,
+                state,
+                props
+            }));
         }
     }
 
