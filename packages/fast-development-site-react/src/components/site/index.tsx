@@ -6,7 +6,6 @@ import { uniqueId } from "lodash-es";
 import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
 import Shell, { ShellActionBar, ShellCanvas, ShellHeader, ShellInfoBar, ShellPane, ShellPaneCollapse, ShellRow, ShellSlot } from "../shell";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import * as history from "history";
 import { ellipsis, toPx } from "@microsoft/fast-jss-utilities";
 import CategoryList from "./category-list";
 import SiteMenu from "./menu";
@@ -14,6 +13,7 @@ import SiteMenuItem from "./menu-item";
 import SiteCategory from "./category";
 import SiteCategoryIcon from "./category-icon";
 import SiteCategoryItem from "./category-item";
+import ActionBar from "./action-bar";
 import NotFound from "./not-found";
 import ComponentView, { ComponentViewTypes } from "./component-view";
 
@@ -180,7 +180,9 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                     </ul>
                 </ShellPane>
                 <ShellCanvas >
-                    <ShellActionBar />
+                    <ShellActionBar>
+                        <ActionBar onComponentViewChange={this.onComponentViewChange} />
+                    </ShellActionBar>
                     <ComponentView>
                         {this.getChildrenBySlot(this, ShellSlot.canvas)}
                         {route.component}
@@ -188,6 +190,12 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 </ShellCanvas>
             </ShellRow>
         );
+    }
+
+    private onComponentViewChange = (type: ComponentViewTypes): void => {
+        this.setState({
+            componentView: type
+        });
     }
 
     private renderShellInfoBar(): JSX.Element {

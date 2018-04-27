@@ -30,8 +30,7 @@ class ShellActionBar extends React.Component<IShellActionBarProps & IManagedClas
     public render(): JSX.Element {
         return (
             <div className={this.props.managedClasses.shellActionBar}>
-                <Link to={this.props.match.path}>View detail</Link>
-                <Link to={this.props.match.path + "examples/"}>View examples</Link>
+                {this.props.children}
             </div>
         );
     }
