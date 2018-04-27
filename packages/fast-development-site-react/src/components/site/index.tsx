@@ -146,7 +146,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     /**
      * Renders a route based on the active component
      */
-    private renderComponentRoute = (route: IComponentRoute): JSX.Element => {
+    private renderComponentRoute = (route: IComponentRoute | null): JSX.Element | null => {
         const path: string = route.route;
 
         return (
