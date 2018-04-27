@@ -11,7 +11,6 @@ import {
     IButtonManagedClasses,
     IButtonUnhandledProps,
 } from "@microsoft/fast-components-react-base/src/button";
-import Divider from "@microsoft/fast-components-react-base/src/divider";
 
 /* tslint:disable-next-line */
 class Button extends Foundation<IMSFTButtonHandledProps & IManagedClasses<IMSFTButtonClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
@@ -21,7 +20,9 @@ class Button extends Foundation<IMSFTButtonHandledProps & IManagedClasses<IMSFTB
         lightweight: void 0,
         managedClasses: void 0,
         outline: void 0,
-        primary: void 0
+        primary: void 0,
+        href: void 0,
+        disabled: void 0
     };
 
     /**
@@ -31,7 +32,9 @@ class Button extends Foundation<IMSFTButtonHandledProps & IManagedClasses<IMSFTB
         return (
             <BaseButton
                 className={this.generateClassNames()}
-                {...this.props}
+                managedClasses={this.props.managedClasses}
+                href={this.props.href}
+                disabled={this.props.disabled}
             >
                 {this.generateInnerContent()}
             </BaseButton>
@@ -52,6 +55,8 @@ class Button extends Foundation<IMSFTButtonHandledProps & IManagedClasses<IMSFTB
             classLocation = "managedClasses.button_lightweight";
         } else if (this.props.justified) {
             classLocation = "managedClasses.button_justified";
+        } else {
+            classLocation = "managedClasses.button";
         }
 
         return super.generateClassNames(get(this.props, classLocation));

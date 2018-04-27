@@ -1,10 +1,48 @@
 import { IDesignSystem } from "../design-system";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { applyType } from "../utilities/typography";
 import * as Chroma from "chroma-js";
+
+function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
+    return {
+        extend: "button",
+        backgroundColor: (): string => {
+            return "transparent";
+        },
+        "&:hover": {
+            backgroundColor: (): string => {
+                return "transparent";
+            }
+        },
+        color: (config: IDesignSystem): string => {
+            return config.brandColor;
+        },
+        "&:disabled span:before, &[aria-disabled] span:before": {
+            background: "transparent"
+        },
+        "&:focus span:before, &:active span:before, &:hover span:before": {
+            // TODO: Issue #309 https://github.com/Microsoft/fast-dna/issues/309
+            background: (config: IDesignSystem): string => {
+                return config.brandColor;
+            }
+        },
+        "&:disabled, &[aria-disabled]": {
+            "&:hover": {
+                background: (): string => {
+                    return "transparent";
+                }
+            }
+        }
+    };
+}
+function gray(): ICSSRules<IDesignSystem> {
+return (config: IDesignSystem): string => {
+        return config.brandColor;
+    };
+}
 
 const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = {
     button: {
@@ -25,8 +63,10 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = {
         color: (config: IDesignSystem): string => {
             return config.backgroundColor;
         },
+        // backgroundColor: gray(),
         backgroundColor: (config: IDesignSystem): string => {
-            return config.gray;
+            console.log(Chroma.mix(config.foregroundColor, config.backgroundColor, 0.46).hex());
+            return Chroma.mix(config.foregroundColor, config.backgroundColor, 0.46).hex();
         },
         "&:hover": {
             backgroundColor: (config: IDesignSystem): string => {
@@ -117,65 +157,11 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = {
         }
     },
     button_lightweight: {
-        extend: "button",
-        backgroundColor: (): string => {
-            return "transparent";
-        },
-        "&:hover": {
-            backgroundColor: (): string => {
-                return "transparent";
-            }
-        },
-        color: (config: IDesignSystem): string => {
-            return config.brandColor;
-        },
-        "&:disabled span:before, &[aria-disabled] span:before": {
-            background: "transparent"
-        },
-        "&:focus span:before, &:active span:before, &:hover span:before": {
-            // TODO: Issue #309 https://github.com/Microsoft/fast-dna/issues/309
-            background: (config: IDesignSystem): string => {
-                return config.brandColor;
-            }
-        },
-        "&:disabled, &[aria-disabled]": {
-            "&:hover": {
-                background: (): string => {
-                    return "transparent";
-                }
-            }
-        }
+        ...applyTransaprentBackplateStyles()
     },
     button_justified: {
-        extend: "button",
-        backgroundColor: (): string => {
-            return "transparent";
-        },
-        "&:hover": {
-            backgroundColor: (): string => {
-                return "transparent";
-            }
-        },
-        color: (config: IDesignSystem): string => {
-            return config.brandColor;
-        },
-        "&:disabled span:before, &[aria-disabled] span:before": {
-            background: "transparent"
-        },
-        "&:focus span:before, &:active span:before, &:hover span:before": {
-            // TODO: Issue #309 https://github.com/Microsoft/fast-dna/issues/309
-            background: (config: IDesignSystem): string => {
-                return config.brandColor;
-            }
-        },
-        padding: `${toPx(23)} ${toPx(2)} ${toPx(2)} 0`,
-        "&:disabled, &[aria-disabled]": {
-            "&:hover": {
-                background: (): string => {
-                    return "transparent";
-                }
-            }
-        }
+        ...applyTransaprentBackplateStyles(),
+        padding: `${toPx(23)} ${toPx(2)} ${toPx(2)} 0`
     },
     button_span: {
         position: "relative",
