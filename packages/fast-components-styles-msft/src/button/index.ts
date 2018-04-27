@@ -38,10 +38,36 @@ function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
         }
     };
 }
-function gray(): ICSSRules<IDesignSystem> {
-return (config: IDesignSystem): string => {
-        return config.brandColor;
-    };
+
+function applyMixedColor(incomingProperty: string, value: number, alpha?: number): ICSSRules<IDesignSystem> {
+
+    function applyColors(config: IDesignSystem): string {
+        if (alpha) {
+            return Chroma.mix(config.foregroundColor, config.backgroundColor, value).alpha(alpha).css();
+        } else {
+            return Chroma.mix(config.foregroundColor, config.backgroundColor, value).css();
+        }
+    }
+
+    switch (incomingProperty) {
+        case "background":
+            return {background: (config: IDesignSystem): string => {
+                return applyColors(config);
+            }};
+        case "backgroundColor":
+            return {backgroundColor: (config: IDesignSystem): string => {
+                return applyColors(config);
+            }};
+        case "boxShadowColor":
+            return {boxShadowColor: (config: IDesignSystem): string => {
+                return applyColors(config);
+            }};
+        case "borderColor":
+            return {borderColor: (config: IDesignSystem): string => {
+                return applyColors(config);
+            }
+        };
+    }
 }
 
 const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = {
@@ -63,29 +89,19 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = {
         color: (config: IDesignSystem): string => {
             return config.backgroundColor;
         },
-        // backgroundColor: gray(),
-        backgroundColor: (config: IDesignSystem): string => {
-            console.log(Chroma.mix(config.foregroundColor, config.backgroundColor, 0.46).hex());
-            return Chroma.mix(config.foregroundColor, config.backgroundColor, 0.46).hex();
-        },
+        ...applyMixedColor("backgroundColor", 0.46),
         "&:hover": {
-            backgroundColor: (config: IDesignSystem): string => {
-                return Chroma(config.gray).alpha(0.8).css();
-            }
+            ...applyMixedColor("backgroundColor", 0.46, 0.8)
         },
         "&:focus": {
             outline: "none",
-            backgroundColor: (config: IDesignSystem): string => {
-                return Chroma(config.gray).darken().css();
-            }
+            ...applyMixedColor("backgroundColor", 0.38)
         },
         "&:disabled, &[aria-disabled]": {
             opacity: ".4",
             cursor: "not-allowed",
             "&:hover": {
-                backgroundColor: (config: IDesignSystem): string => {
-                    return config.gray;
-                }
+                ...applyMixedColor("backgroundColor", 0.46)
             }
         }
     },
@@ -124,16 +140,12 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = {
         color: (config: IDesignSystem): string => {
             return config.foregroundColor;
         },
-        borderColor: (config: IDesignSystem): string => {
-            return config.gray;
-        },
+        ...applyMixedColor("borderColor", 0.46),
         backgroundColor: (): string => {
             return "transparent";
         },
         "&:hover": {
-            borderColor: (config: IDesignSystem): string => {
-                return Chroma(config.gray).alpha(0.8).css();
-            },
+            ...applyMixedColor("borderColor", 0.46, 0.8),
             backgroundColor: (): string => {
                 return "transparent";
             }
@@ -141,18 +153,15 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = {
         "&:focus": {
             borderColor: "transparent",
             boxShadow: `0 0 0 ${toPx(2)}`,
-            boxShadowColor: (config: IDesignSystem): string => {
-                return config.gray;
+            ...applyMixedColor("boxShadowColor", 0.46),
+            backgroundColor: (): string => {
+                return "transparent";
             }
         },
         "&:disabled, &[aria-disabled]": {
-            backgroundColor: (config: IDesignSystem): string => {
-                return config.gray;
-            },
+            ...applyMixedColor("backgroundColor", 0.46),
             "&:hover": {
-                backgroundColor: (config: IDesignSystem): string => {
-                    return config.gray;
-                }
+                ...applyMixedColor("backgroundColor", 0.46)
             }
         }
     },
