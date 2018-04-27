@@ -23,9 +23,8 @@ const styles: ComponentStyles<IComponentViewToggleClassNameContract, IDevSiteDes
                 left: "4px",
                 bottom: "0px",
                 height: "2px",
-                background: (config: IDevSiteDesignSystem) => {
-                    return config.brandColor;
-                }
+                // TODO: use callback with brand-color when #342 is fixed
+                background: "pink"
             }
         }
     }
