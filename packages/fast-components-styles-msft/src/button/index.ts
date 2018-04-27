@@ -5,6 +5,7 @@ import { IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-n
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { applyType } from "../utilities/typography";
 import * as Chroma from "chroma-js";
+import { isNullOrUndefined } from "util";
 
 function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
     return {
@@ -39,11 +40,15 @@ function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
     };
 }
 
-function applyMixedColor(incomingProperty: string, value: number, alpha?: number): ICSSRules<IDesignSystem> {
+function applyMixedColor(incomingProperty: string, value?: number, alpha?: number, accent?: boolean): ICSSRules<IDesignSystem> {
 
     function applyColors(config: IDesignSystem): string {
         if (alpha) {
-            return Chroma.mix(config.foregroundColor, config.backgroundColor, value).alpha(alpha).css();
+            if (accent && isNullOrUndefined(value)) {
+                return Chroma(config.brandColor).alpha(alpha).css();
+            } else {
+                return Chroma.mix(config.foregroundColor, config.backgroundColor, value).alpha(alpha).css();
+            }
         } else {
             return Chroma.mix(config.foregroundColor, config.backgroundColor, value).css();
         }
@@ -114,9 +119,7 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = {
             return config.brandColor;
         },
         "&:hover": {
-            backgroundColor: (config: IDesignSystem): string => {
-                return Chroma(config.brandColor).alpha(0.8).css();
-            }
+            ...applyMixedColor("backgroundColor", null, 0.8, true)
         },
         "&:focus": {
             outline: "none",
