@@ -23,10 +23,6 @@
             "minimum": 0,
             "maximum": 50,
             "multipleOf": 5
-        },
-        "optional": {
-            "title": "random",
-            "type": "number"
         }
     },
     "required": [

@@ -9,6 +9,11 @@ import { IFormLocation } from "./form.props";
 import { isRootLocation } from "./form.utilities";
 import { getArrayLinks } from "./form-item.array.utilities";
 
+export enum ItemConstraints {
+    minItems = "minItems",
+    maxItems = "maxItems"
+}
+
 export enum ArrayAction {
     add = "add",
     remove = "remove"
@@ -79,7 +84,7 @@ class FormItemArray extends React.Component<IFormItemArrayProps, {}> {
     private arrayItemClickHandlerFactory(
         dataLocation: string,
         schema: any,
-        type: string,
+        type: ArrayAction,
         index?: number
     ): (e: React.MouseEvent<HTMLElement>) => void {
         return (e: React.MouseEvent<HTMLElement>): void => {
@@ -202,7 +207,7 @@ class FormItemArray extends React.Component<IFormItemArrayProps, {}> {
     }
 
     private getLabelText(): string | null {
-        const schema: any = this.props.schemaLocation !== "" ? get(this.props.schema, this.props.schemaLocation) : this.props.schema;
+        const schema: any = this.getSubschema();
 
         return schema ? schema.title || schema.description || this.props.untitled : null;
     }
@@ -225,21 +230,22 @@ class FormItemArray extends React.Component<IFormItemArrayProps, {}> {
         };
     }
 
-    private hasLessThanMaxItems(schema: any, arrayLength: number): boolean {
-        const maxItems: boolean = Boolean(schema) && Boolean(schema.maxItems);
-        return schema && ((maxItems && arrayLength < schema.maxItems) || !maxItems);
-    }
+    private hasItemConstraints(schema: any, arrayLength: number, constraints: ItemConstraints): boolean {
+        const constrainedItems: boolean = Boolean(schema) && Boolean(schema[constraints]);
 
-    private hasMoreThanMinItems(schema: any, arrayLength: number): boolean {
-        const minItems: boolean = Boolean(schema) && Boolean(schema.minItems);
-        return schema && ((minItems && arrayLength > schema.minItems) || !minItems);
+        switch (constraints) {
+            case ItemConstraints.minItems:
+                return schema && ((constrainedItems && arrayLength > schema.minItems) || !constrainedItems);
+            case ItemConstraints.maxItems:
+                return schema && ((constrainedItems && arrayLength < schema.maxItems) || !constrainedItems);
+        }
     }
 
     private renderArrayMenuItems(): JSX.Element[] {
         const arrayLength: number = this.getArrayLength();
         const schema: any = this.getSubschema();
-        const lessThanMaxItems: boolean = this.hasLessThanMaxItems(schema, arrayLength);
-        const moreThanMinItems: boolean = this.hasMoreThanMinItems(schema, arrayLength);
+        const lessThanMaxItems: boolean = this.hasItemConstraints(schema, arrayLength, ItemConstraints.maxItems);
+        const moreThanMinItems: boolean = this.hasItemConstraints(schema, arrayLength, ItemConstraints.minItems);
         const items: IArrayMenuItem[] = [];
 
         // if we have maxItems and the data is less than max items, allow adding items

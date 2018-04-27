@@ -223,7 +223,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps, IFormItem
         // we have nothing to add or delete
         if (items.length === 0) {
             return [
-                (<li>No actions available</li>)
+                (<li key={0}>No actions available</li>)
             ];
         }
 
@@ -246,7 +246,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps, IFormItem
             return option.name.toLowerCase().includes(this.state.childrenSearchTerm.toLowerCase());
         }).map((option: any, index: number): JSX.Element => {
             return (
-                <li key={index}>
+                <li key={uniqueId()}>
                     <a onClick={this.clickComponentFactory("add", option)}>
                         {option.name}
                     </a>
@@ -265,7 +265,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps, IFormItem
 
     private generateChildItem = (item: any, index?: number): JSX.Element => {
         return (
-            <SortableListItem key={index}>
+            <SortableListItem key={uniqueId()}>
                 <a onClick={this.clickComponentFactory("edit", item, index)}>
                     {this.generateChildOptionText(item)}
                     {this.generateChildCaption(item)}

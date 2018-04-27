@@ -5,13 +5,15 @@ import {
     IChildOptionItem,
     IComponentItem,
     IFormProps,
-    IFormState
+    IFormState,
+    LocationOnChange
 } from "./form.props";
 import { IFormSectionProps } from "./form-section.props";
 import {
     getActiveComponentAndSection,
     getBreadcrumbItems,
     getComponentTracker,
+    getComponentTrackerByLocation,
     getDataCache,
     IBreadcrumbItem,
     isRootLocation
@@ -143,9 +145,7 @@ class Form extends React.Component<IFormProps, IFormState> {
             activeSchemaLocation: "",
             activeDataLocation: "",
             dataCache: cloneDeep(props.data),
-            componentTracker: typeof props.location !== "undefined" // Location has been passed
-                ? getComponentTracker(props.location.schemaLocation, props.location.dataLocation, props.schema, [rootLocation])
-                : [rootLocation]
+            componentTracker: getComponentTrackerByLocation(props, rootLocation)
         };
 
         return (Object.assign({}, state, schemaState) as Partial<IFormState>);
@@ -164,12 +164,14 @@ class Form extends React.Component<IFormProps, IFormState> {
                 schemaLocation: props.location.schemaLocation,
                 onChange: props.location.onChange
             },
-            componentTracker: typeof props.location !== "undefined" // Location has been passed
-                ? getComponentTracker(props.location.schemaLocation, props.location.dataLocation, props.schema, [rootLocation])
-                : [rootLocation]
+            componentTracker: getComponentTrackerByLocation(props, rootLocation)
         };
 
         return Object.assign({}, state, locationState);
+    }
+
+    private getUpdateLocationCallback(): LocationOnChange | undefined {
+        return this.props.location && this.props.location.onChange ? this.props.location.onChange : void(0);
     }
 
     /**
@@ -187,7 +189,7 @@ class Form extends React.Component<IFormProps, IFormState> {
                     activeDataLocation: component.dataLocation,
                     schema: component.schema,
                     onUpdateActiveSection: this.handleUpdateActiveSection,
-                    onUpdateLocation: this.props.location && this.props.location.onChange ? this.props.location.onChange : void(0)
+                    onUpdateLocation: this.getUpdateLocationCallback()
                 }));
             });
         } else {
@@ -196,7 +198,7 @@ class Form extends React.Component<IFormProps, IFormState> {
                 activeDataLocation: this.state.activeDataLocation,
                 schema: this.props.schema,
                 onUpdateActiveSection: this.handleUpdateActiveSection,
-                onUpdateLocation: this.props.location && this.props.location.onChange ? this.props.location.onChange : void(0)
+                onUpdateLocation: this.getUpdateLocationCallback()
             });
         }
 
@@ -215,6 +217,12 @@ class Form extends React.Component<IFormProps, IFormState> {
         });
     }
 
+    private getData(propKey: string, location: string): any {
+        return isRootLocation(this.state.activeDataLocation)
+            ? this[location][propKey]
+            : get(this[location][propKey], this.state.activeDataLocation);
+    }
+
     /**
      * Generate the section to be shown
      */
@@ -225,12 +233,8 @@ class Form extends React.Component<IFormProps, IFormState> {
                 : get(this.state.schema, this.state.activeSchemaLocation) || this.state.schema,
             onChange: this.handleOnChange,
             onUpdateActiveSection: this.handleUpdateActiveSection,
-            data: isRootLocation(this.state.activeDataLocation)
-                ? this.props.data
-                : get(this.props.data, this.state.activeDataLocation),
-            dataCache: isRootLocation(this.state.activeDataLocation)
-                ? this.state.dataCache
-                : get(this.state.dataCache, this.state.activeDataLocation),
+            data: this.getData("data", "props"),
+            dataCache: this.getData("dataCache", "state"),
             schemaLocation: this.state.activeSchemaLocation,
             dataLocation: this.state.activeDataLocation,
             untitled: this.untitled,

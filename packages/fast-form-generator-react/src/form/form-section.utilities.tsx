@@ -168,6 +168,8 @@ function checkIsObjectAndSetType(schemaSection: any): any {
     if (schemaSection.properties && schemaSection.type !== "object") {
         return "object";
     }
+
+    return schemaSection.type;
 }
 
 /**

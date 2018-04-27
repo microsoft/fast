@@ -1,5 +1,6 @@
 import * as React from "react";
 import IFormItemCommon from "./form-item";
+import { getStringValue } from "./form-item.utilities";
 
 export interface IFormItemNumberFieldProps extends IFormItemCommon {
     /**
@@ -25,9 +26,7 @@ export interface IFormItemNumberFieldProps extends IFormItemCommon {
 class FormItemNumberField extends React.Component<IFormItemNumberFieldProps, {}> {
 
     public render(): JSX.Element {
-        const value: string = (typeof this.props.data === "string" || typeof this.props.data === "number")
-            ? this.getStringValue(this.props.data)
-            : this.getStringValue(this.props.default);
+        const value: string = getStringValue(this.props.data, this.props.default);
 
         return (
             <div>
@@ -46,17 +45,6 @@ class FormItemNumberField extends React.Component<IFormItemNumberFieldProps, {}>
                 />
             </div>
         );
-    }
-
-    /**
-     * Get the string value of a number
-     */
-    private getStringValue(data: string | number): string {
-        if (typeof data === "number") {
-            return data.toString();
-        }
-
-        return data || "";
     }
 
     /**

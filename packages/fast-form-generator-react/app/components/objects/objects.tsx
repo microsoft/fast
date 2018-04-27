@@ -35,18 +35,10 @@ export default class Objects extends React.Component<IObjectsProps, {}> {
     public render(): JSX.Element {
         return (
             <div>
-                <div id="objectNoRequired">
-                    {this.props.objectNoRequired.number ? this.props.objectNoRequired.number.toString() : null}
-                </div>
-                <div id="objectWithRequired">
-                    {this.props.objectWithRequired.boolean ? this.props.objectWithRequired.boolean.toString() : null}
-                </div>
-                <div id="optionalObjectNoRequired">
-                    {this.renderOptionalObjectNoRequired()}
-                </div>
-                <div id="optionalObjectWithRequired">
-                    {this.renderOptionalObjectWithRequired()}
-                </div>
+                {this.props.objectNoRequired.number ? this.props.objectNoRequired.number.toString() : null}
+                {this.props.objectWithRequired.boolean ? this.props.objectWithRequired.boolean.toString() : null}
+                {this.renderOptionalObjectNoRequired()}
+                {this.renderOptionalObjectWithRequired()}
             </div>
         );
     }
