@@ -25,7 +25,7 @@ import Form from "@microsoft/fast-form-generator-react";
 ```
 
 ### onChange
-The onChange is used as a callback, it should take one argument that is the data taht should be updated when any data has been changed from within the generated form.
+The onChange is used as a callback, it should take one argument that is the data that should be updated when any data has been changed from within the generated form.
 
 example onChange:
 ```jsx
