@@ -1,7 +1,6 @@
 import * as React from "react";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { IDevSiteDesignSystem } from "../design-system";
-import ShellActionBar from "./action-bar";
 
 /* tslint:disable-next-line */
 interface ICanvasHeaderProps { }
