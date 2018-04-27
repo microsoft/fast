@@ -1,9 +1,7 @@
 import { Component, ElementRef, Input, SimpleChanges } from "@angular/core";
-import { getDynamicStyles, SheetsManager, StyleSheet } from "jss";
-import { uniqueId } from "lodash-es";
+import { SheetsManager, StyleSheet } from "jss";
 import { ClassNames, ComponentStyles } from "@microsoft/fast-jss-manager";
 import { eventNames } from "./utilities/get-event-names";
-import { isEmptyObject } from "./utilities/object";
 import jss, { stylesheetManager } from "./jss";
 
 /**
@@ -11,9 +9,9 @@ import jss, { stylesheetManager } from "./jss";
  */
 export interface IJSSManagerState {
     /**
-     * Stores a JSS stylesheet containing all config-driven styles rules for a component
+     * Stores a JSS stylesheet containing all style rules for a component
      */
-    dynamicStyleSheet?: any;
+    styleSheet?: any;
 }
 
 function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(BaseComponent: any) => any {
@@ -25,21 +23,6 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(BaseComponent: any
              * components mount and un-mount
              */
             private static stylesheetManager: SheetsManager = stylesheetManager;
-
-            /**
-             * Map of all components that have been initialized via this component
-             */
-            private static componentMap: WeakMap<any, string> = new WeakMap();
-
-            /**
-             * Map of all style objects that have been initialized via this component
-             */
-            private static styleMap: WeakMap<any, string> = new WeakMap();
-
-            /**
-             * All static and dynamic styles for this component
-             */
-            private static styles: ComponentStyles<S, C>;
 
             /**
              * The HTML class names as determined by the static and dymanic styles
@@ -61,8 +44,8 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(BaseComponent: any
                 this.el.nativeElement.addEventListener(eventNames.getConfig, (e: CustomEvent) => {
                     this.config = e.detail;
 
-                    if (this.state.dynamicStyleSheet) {
-                        this.state.dynamicStyleSheet.update(this.designSystem);
+                    if (this.state.styleSheet) {
+                        this.state.styleSheet.update(this.designSystem);
                     }
                 }, true);
 
@@ -82,13 +65,11 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(BaseComponent: any
                     super.ngAfterContentInit();
                 }
 
-                JSSManager.styles = styles;
-
                 const state: IJSSManagerState = {};
 
-                if (Boolean(JSSManager.styles)) {
-                    state.dynamicStyleSheet = jss.createStyleSheet(
-                        JSSManager.styles,
+                if (Boolean(styles)) {
+                    state.styleSheet = jss.createStyleSheet(
+                        styles,
                         { link: true }
                     );
                 }
@@ -103,17 +84,17 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(BaseComponent: any
                     super.ngAfterViewInit();
                 }
 
-                if (Boolean(this.state.dynamicStyleSheet)) {
+                if (Boolean(this.state.styleSheet)) {
                     // It appears we need to update the stylesheet for any style properties defined as functions
                     // to work.
-                    this.state.dynamicStyleSheet.attach().update(this.designSystem);
+                    this.state.styleSheet.attach().update(this.designSystem);
                 }
             }
 
             private ngOnDestroy(): void {
-                if (this.hasDynamicStyleSheet()) {
-                    this.state.dynamicStyleSheet.detach();
-                    jss.removeStyleSheet(this.state.dynamicStyleSheet);
+                if (this.hasStyleSheet()) {
+                    this.state.styleSheet.detach();
+                    jss.removeStyleSheet(this.state.styleSheet);
                 }
 
                 const deregisterComponentEvent: CustomEvent = new CustomEvent(eventNames.deregisterComponent);
@@ -127,8 +108,8 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(BaseComponent: any
             /**
              * Checks to see if this component has an associated dynamic stylesheet
              */
-            private hasDynamicStyleSheet(): boolean {
-                return Boolean(this.state.dynamicStyleSheet);
+            private hasStyleSheet(): boolean {
+                return Boolean(this.state.styleSheet);
             }
 
             /**
@@ -137,12 +118,12 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(BaseComponent: any
             private getClassNames(): ClassNames<S> {
                 const classNames: Partial<ClassNames<S>> = {};
 
-                if (this.hasDynamicStyleSheet()) {
-                    for (const key in this.state.dynamicStyleSheet.classes) {
-                        if (this.state.dynamicStyleSheet.classes.hasOwnProperty(key as keyof S)) {
+                if (this.hasStyleSheet()) {
+                    for (const key in this.state.styleSheet.classes) {
+                        if (this.state.styleSheet.classes.hasOwnProperty(key as keyof S)) {
                             classNames[key as keyof S] = typeof classNames[key as keyof S] !== "undefined"
-                                ? `${classNames[key as keyof S]} ${this.state.dynamicStyleSheet.classes[key as keyof S]}`
-                                : this.state.dynamicStyleSheet.classes[key as keyof S];
+                                ? `${classNames[key as keyof S]} ${this.state.styleSheet.classes[key as keyof S]}`
+                                : this.state.styleSheet.classes[key as keyof S];
                         }
                     }
                 }
