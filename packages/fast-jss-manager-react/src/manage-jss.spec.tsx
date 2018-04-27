@@ -37,10 +37,6 @@ const staticAndDynamicStyles: ComponentStyles<any, any> = {
     staticAndDynamicStylesClass: { ...staticStyles.staticStyleClass, ...dynamicStyles.dynamicStylesClass }
 };
 
-// Because stylesheets are stored on a static property of manageJss"s HOC, we need to track how many have been created
-// across all of our tests. This value should be updated for every time the HOC is rendered .
-let stylesheetCount: number = 0;
-
 describe("The return value of manageJss", (): void => {
     test("should return a higher order function", (): void => {
          expect(typeof manageJss()).toBe("function");
@@ -63,13 +59,13 @@ describe("The higher-order component", (): void => {
         expect( manageJss()(SimpleComponent)[key]).toBe(manageJss()(SimpleComponent)[key]);
     });
 
-    test("should share static stylesheets across component instances", (): void => {
+    test("should not share static styles across component instances", (): void => {
         const renderers: ShallowRenderer[] = [
             new ShallowRenderer(),
             new ShallowRenderer()
         ];
         const Component: any = manageJss(staticStyles)(SimpleComponent);
-        const expected: number = stylesheetCount += 1;
+        const expected: number = 0;
 
         renderers.forEach((renderer: ShallowRenderer) => {
             renderer.render(<Component />);
@@ -78,13 +74,13 @@ describe("The higher-order component", (): void => {
         expect(Component["stylesheetManager"].sheets.length).toBe(expected);
     });
     // tslint:disable-next-line
-    test("should share the static portion of a stylesheet and not share the dynamic portion of a stylesheets across component instances", (): void => {
+    test("should note share the static portion or the dynamic portion of a stylesheets across component instances", (): void => {
         const renderers: ShallowRenderer[] = [
             new ShallowRenderer(),
             new ShallowRenderer()
         ];
         const Component: any = manageJss(staticAndDynamicStyles)(SimpleComponent);
-        const expected: number = stylesheetCount += 1;
+        const expected: number = 0;
 
         renderers.forEach((renderer: ShallowRenderer) => {
             renderer.render(<Component />);
@@ -114,14 +110,11 @@ describe("The higher-order component", (): void => {
             <Component />,
             { context: {designSystem: true} }
         );
-        const staticStyleSheet: any = rendered.state("staticStyleSheet");
         const dynamicStyleSheet: any = rendered.state("dynamicStyleSheet");
-        expect(staticStyleSheet.attached).toBe(true);
         expect(dynamicStyleSheet.attached).toBe(true);
 
         rendered.unmount();
 
-        expect(staticStyleSheet.attached).toBe(false);
         expect(dynamicStyleSheet.attached).toBe(false);
     });
 
