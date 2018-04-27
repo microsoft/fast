@@ -5,14 +5,11 @@
  */
 import * as React from "react";
 import jss, { stylesheetManager } from "./jss";
-import { getDynamicStyles } from "jss";
-import getStaticStyles from "./utilities/get-static-styles";
-import { isEmptyObject } from "./utilities/object";
 import { SheetsManager, StyleSheet } from "jss";
 import { IDesignSystemProviderProps } from "./design-system-provider";
 import * as propTypes from "prop-types";
 import { ClassNames, ComponentStyles, IManagedClasses } from "@microsoft/fast-jss-manager";
-import { isEqual, merge, omit, uniqueId } from "lodash-es";
+import { isEqual, merge, omit } from "lodash-es";
 
 // hoist-non-react-statics does not seem to be a properly formatted ES6 module, so we need to require it instead
 // Disable rule disallowing require statements
@@ -26,33 +23,7 @@ export interface IJSSManagerState {
     /**
      * Stores a JSS stylesheet containing all config-driven styles rules for a component
      */
-    dynamicStyleSheet?: any;
-
-    /**
-     * Stores a JSS stylesheet containing all static style rules for a component
-     */
-    staticStyleSheet?: any;
-}
-
-/**
- * Defines a object that has been separated into dynamic and static stylesheets
- */
-export interface ISeparatedStylesheet<T, C> {
-    /**
-     * The static styles for a given component and stylesheet combination
-     * TODO: these are always static so they shouldn't use CSSRuleResolver
-     */
-    staticStyles?: ComponentStyles<T, C>;
-
-    /**
-     * Store the jss stylesheet so that multiple components can access it
-     */
-    staticStyleSheet?: any;
-
-    /**
-     * The dynamic styles for a given component and stylesheet combination
-     */
-    dynamicStyles?: ComponentStyles<T, C>;
+    styleSheet?: any;
 }
 
 /**
@@ -84,70 +55,13 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
              */
             private static stylesheetManager: SheetsManager = stylesheetManager;
 
-            /**
-             * Map of all components that have been initialized via this component
-             */
-            private static componentMap: WeakMap<React.ComponentType<T & IManagedClasses<S>>, string> = new WeakMap();
-
-            /**
-             * Map of all style objects that have been initialized via this component
-             */
-            private static styleMap: WeakMap<ComponentStyles<S, C>, string> = new WeakMap();
-
-            /**
-             * Store references to all separated stylesheets
-             */
-            private static separatedStyles: {[key: string]: ISeparatedStylesheet<S, C>} = {};
-
-            /**
-             * Tracks the ID of an instance of the JSSManager. Multiple instances can have the same ID
-             * if the the backing Component and styles objects are shared because the ID is is derived from
-             * both the Component and styles IDs
-             */
-            private instanceId: string;
-
             constructor(props: T) {
                 super(props);
 
-                // On construction, check if the style object or component object have already been used.
-                // If not, we need to store them in our weakmaps for later use
-                if (!Boolean(JSSManager.styleMap.get(styles))) {
-                    JSSManager.styleMap.set(styles, uniqueId());
-                }
-
-                if (!Boolean(JSSManager.componentMap.get(Component))) {
-                    JSSManager.componentMap.set(Component, uniqueId());
-                }
-
-                const styleId: string = JSSManager.styleMap.get(styles);
-                const componentId: string = JSSManager.componentMap.get(Component);
-
-                // Store the instance id as a combination of the generated IDs
-                this.instanceId = `${componentId}${styleId}`;
-                let separatedStylesInstance: ISeparatedStylesheet<S, C> = JSSManager.separatedStyles[this.instanceId];
-
-                // Check if we have a separatedStyles object stored at the instanceId key.
-                // If we don"t, we need to create that object
-                if (!Boolean(separatedStylesInstance)) {
-                    separatedStylesInstance = JSSManager.separatedStyles[this.instanceId] = this.separateStyles(styles);
-                }
-
-                // Now lets store those newly created stylesheet objects in state so we can easily reference them later
-                // Since dynamic styles can be different across components, we should create the dynamic styles as a
-                // new object so that identity checks between dynamic stylesheets do not pass.
                 const state: IJSSManagerState = {};
 
-                // Extract the static stylesheet and dynamic style object and apply them to the state
-                // object if they exist
-                const staticStyleSheet: StyleSheet = separatedStylesInstance.staticStyleSheet;
-                const dynamicStyles: StyleSheet = separatedStylesInstance.dynamicStyles;
-
-                if (Boolean(staticStyleSheet)) {
-                    state.staticStyleSheet = separatedStylesInstance.staticStyleSheet;
-                }
-
-                if (Boolean(dynamicStyles)) {
-                    state.dynamicStyleSheet = this.createDynamicStyleSheet();
+                if (Boolean(styles)) {
+                    state.styleSheet = this.createStyleSheet();
                 }
 
                 this.state = state;
@@ -156,57 +70,48 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
             /**
              * Updates a dynamic stylesheet with context
              */
-            public updateDynamicStyleSheet(): void {
-                if (Boolean(this.state.dynamicStyleSheet)) {
-                    this.state.dynamicStyleSheet.update(this.designSystem);
+            public updateStyleSheet(): void {
+                if (Boolean(this.state.styleSheet)) {
+                    this.state.styleSheet.update(this.designSystem);
                 }
             }
 
             public componentWillMount(): void {
-                if (Boolean(this.state.staticStyleSheet)) {
-                    JSSManager.stylesheetManager.add(this.state.staticStyleSheet, this.state.staticStyleSheet);
-                    JSSManager.stylesheetManager.manage(this.state.staticStyleSheet);
-                }
-
-                if (Boolean(this.state.dynamicStyleSheet)) {
+                if (Boolean(this.state.styleSheet)) {
                     // It appears we need to update the stylesheet for any style properties defined as functions
                     // to work.
 
-                    this.state.dynamicStyleSheet.attach();
-                    this.updateDynamicStyleSheet();
+                    this.state.styleSheet.attach();
+                    this.updateStyleSheet();
                 }
             }
 
             public componentWillUpdate(nextProps: T & IJSSManagerProps<S, C>, nextState: IJSSManagerState, nextContext: any): void {
                 if (!isEqual(this.context, nextContext)) {
-                    this.updateDynamicStyleSheet();
+                    this.updateStyleSheet();
                 }
             }
 
             public componentDidUpdate(prevProps: T & IJSSManagerProps<S, C>, prevState: IJSSManagerState): void {
                 if (this.props.jssStyleSheet !== prevProps.jssStyleSheet) {
-                    jss.removeStyleSheet(this.state.dynamicStyleSheet);
+                    jss.removeStyleSheet(this.state.styleSheet);
 
                     this.setState((previousState: IJSSManagerState, props: T & IJSSManagerProps<S, C>): Partial<IJSSManagerState> => {
                         return {
-                            dynamicStyleSheet: this.hasDynamicStyleSheet() ? this.createDynamicStyleSheet() : null
+                            styleSheet: this.hasStyleSheet() ? this.createStyleSheet() : null
                         };
                     }, (): void => {
-                        if (this.hasDynamicStyleSheet()) {
-                            this.state.dynamicStyleSheet.attach().update(this.designSystem);
+                        if (this.hasStyleSheet()) {
+                            this.state.styleSheet.attach().update(this.designSystem);
                         }
                     });
                 }
             }
 
             public componentWillUnmount(): void {
-                if (this.hasStaticStyleSheet()) {
-                    JSSManager.stylesheetManager.unmanage(this.state.staticStyleSheet);
-                }
-
-                if (this.hasDynamicStyleSheet()) {
-                    this.state.dynamicStyleSheet.detach();
-                    jss.removeStyleSheet(this.state.dynamicStyleSheet);
+                if (this.hasStyleSheet()) {
+                    this.state.styleSheet.detach();
+                    jss.removeStyleSheet(this.state.styleSheet);
                 }
             }
 
@@ -230,65 +135,32 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
              * Creates a jss stylesheet from the dynamic portion of an associated style object and any style object passed
              * as props
              */
-            private createDynamicStyleSheet(): any {
+            private createStyleSheet(): any {
                 return jss.createStyleSheet(
-                    merge({}, JSSManager.separatedStyles[this.instanceId].dynamicStyles, this.props.jssStyleSheet),
+                    merge({}, styles, this.props.jssStyleSheet),
                     { link: true }
                 );
             }
 
             /**
-             * Checks to see if this component has an associated static stylesheet
-             */
-            private hasStaticStyleSheet(): boolean {
-                return Boolean(JSSManager.separatedStyles[this.instanceId].staticStyleSheet);
-            }
-
-            /**
              * Checks to see if this component has an associated dynamic stylesheet
              */
-            private hasDynamicStyleSheet(): boolean {
-                return Boolean(JSSManager.separatedStyles[this.instanceId].dynamicStyles || this.props.jssStyleSheet);
-            }
-
-            /**
-             * Separates a single ComponentStyles object into an ISeparatedStylesheet object
-             * If either a dynamic or static stylesheet is empty (there are no styles) then that
-             * key will not be created.
-             */
-            private separateStyles(componentStyles: ComponentStyles<S, C>): ISeparatedStylesheet<S, C> {
-                const dynamicStyles: ComponentStyles<S, C> = getDynamicStyles(componentStyles);
-                const staticStyles: ComponentStyles<S, C> = getStaticStyles(componentStyles);
-                const separatedStyles: ISeparatedStylesheet<S, C> = {};
-
-                if (Boolean(dynamicStyles) && !isEmptyObject(dynamicStyles)) {
-                    separatedStyles.dynamicStyles = dynamicStyles;
-                }
-
-                if (Boolean(staticStyles) && !isEmptyObject(staticStyles)) {
-                    separatedStyles.staticStyles = staticStyles;
-                    separatedStyles.staticStyleSheet = jss.createStyleSheet(staticStyles);
-                }
-
-                return separatedStyles;
+            private hasStyleSheet(): boolean {
+                return Boolean(styles || this.props.jssStyleSheet);
             }
 
             /**
              * Merges static and dynamic stylesheet classnames into one object
              */
             private getClassNames(): ClassNames<S> {
-                let classNames: Partial<ClassNames<S>> = {};
+                const classNames: Partial<ClassNames<S>> = {};
 
-                if (this.hasStaticStyleSheet()) {
-                    classNames = Object.assign({}, this.state.staticStyleSheet.classes);
-                }
-
-                if (this.hasDynamicStyleSheet()) {
-                    for (const key in this.state.dynamicStyleSheet.classes) {
-                        if (this.state.dynamicStyleSheet.classes.hasOwnProperty(key)) {
+                if (this.hasStyleSheet()) {
+                    for (const key in this.state.styleSheet.classes) {
+                        if (this.state.styleSheet.classes.hasOwnProperty(key)) {
                             classNames[key] = typeof classNames[key] !== "undefined"
-                                ? `${classNames[key]} ${this.state.dynamicStyleSheet.classes[key]}`
-                                : this.state.dynamicStyleSheet.classes[key];
+                                ? `${classNames[key]} ${this.state.styleSheet.classes[key]}`
+                                : this.state.styleSheet.classes[key];
                         }
                     }
                 }
