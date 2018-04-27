@@ -27,11 +27,20 @@ export interface IComponentRoutes {
 
 export interface ISiteState {
     tableOfContentsCollapsed: boolean;
+    componentView: ComponentView;
 }
 
 export enum SiteSlot {
     category = "category",
     categoryIcon = "category-icon"
+}
+
+/**
+ * Describes the possible views for a component
+ */
+export enum ComponentView {
+    examples,
+    detail
 }
 
 export interface ISiteManagedClasses {
@@ -91,7 +100,8 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         super(props);
 
         this.state = {
-            tableOfContentsCollapsed: this.props.collapsed || false
+            tableOfContentsCollapsed: this.props.collapsed || false,
+            componentView: ComponentView.examples
         };
     }
 
@@ -259,6 +269,13 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         return rootTocItems;
     }
 
+    /**
+     * Formats the URL of a TOC item
+     */
+    private formatTocItemPath(base: string, name: string): string {
+        return this.convertToHyphenated(`${base}${name}/`);
+    }
+
     private getTocItem(
         index: number,
         itemsPath: string,
@@ -267,7 +284,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         currentPath: string,
         slot: string
     ): JSX.Element {
-        const tocItemPath: string = this.convertToHyphenated(`${itemsPath}${items.props.name}/`);
+        const tocItemPath: string = this.formatTocItemPath(itemsPath, items.props.name);
         const contentId: string = uniqueId(this.convertToHyphenated(items.props.name));
         const active: boolean = currentPath.match(tocItemPath) !== null;
         const attributes: any = {
