@@ -111,11 +111,11 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 <BrowserRouter>
                         <Shell>
                             {this.renderShellHeader()}
-
-                                <Route exact={true} path={"/"} component={this.renderShellRow.bind(this, null, "/")} />
-                                {this.renderRoutes()}
-                                <Route path="*" component={NotFound} />
-
+                                <Switch>
+                                    <Route exact={true} path={"/"} component={this.renderShellRow.bind(this, null, "/")} />
+                                    {this.renderRoutes()}
+                                    <Route path="*" component={NotFound} />
+                                </Switch>
                             {this.renderShellInfoBar()}
                        </Shell>
                 </BrowserRouter>
@@ -126,19 +126,16 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     private renderRoutes(): JSX.Element[] {
         return this.getRoutes((this.props.children as JSX.Element), "/", SiteSlot.category)
             .map((route: IComponentRoutes, index: number) => {
-                return this.renderShell(index + 1, route.route, route.component);
+                return this.renderComponentRoute(index + 1, route.route, route.component);
             });
     }
 
-    private renderShell(key: number, path: string, CanvasComponent: any): JSX.Element {
+    /**
+     * Renders a route based on the active component
+     */
+    private renderComponentRoute(key: number, path: string, CanvasComponent: any): JSX.Element {
         return (
-            <Route key={key} path={path} render={ () => {
-                return (
-                    <React.Fragment>
-                        {this.renderShellRow(CanvasComponent, path)}
-                    </React.Fragment>
-                );
-            } } />
+            <Route key={key} path={path} component={this.renderShellRow.bind(this, CanvasComponent, path)} />
         );
     }
 
@@ -274,9 +271,9 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     }
 
     /**
-     * Formats the URL of a TOC item
+     * Adjust URL of TocItem based on the current component-view
      */
-    private formatTocItemPathWithComponentView(path): string {
+    private formatTocItemPathWithComponentView(path: string): string {
         return this.state.componentView === ComponentView.examples
             ? `${path}${ComponentView[ComponentView.examples]}/`
             : path;
