@@ -1,6 +1,7 @@
 import { Component, ElementRef, Input } from "@angular/core";
 import { async, TestBed } from "@angular/core/testing";
-import manageJss, { ComponentStyles } from "./manage-jss";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import manageJss from "./manage-jss";
 import { DesignSystemDirective } from "./design-system.directive";
 
 /**
@@ -54,6 +55,7 @@ describe("The directive", (): void => {
             ],
         }).compileComponents();
     }));
+
     it("should create a component wrapped with the directive", async(() => {
         const fixture: any = TestBed.createComponent(JSSComponent);
         const directiveComponent: any = fixture.debugElement.componentInstance;
