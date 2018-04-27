@@ -25,6 +25,7 @@ const style: ComponentStyles<IShellActionBarManagedClasses, IDevSiteDesignSystem
 };
 
 class ShellActionBar extends React.Component<IShellActionBarProps & IManagedClasses<IShellActionBarManagedClasses>, {}> {
+
     public render(): JSX.Element {
         return (
             <div className={this.props.managedClasses.shellActionBar}>

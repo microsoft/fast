@@ -20,6 +20,7 @@ const style: ComponentStyles<IShellCanvasManagedClasses, IDevSiteDesignSystem> =
 };
 
 class ShellCanvas extends React.Component<ICanvasHeaderProps & IManagedClasses<IShellCanvasManagedClasses>, {}> {
+
     public render(): JSX.Element {
         return (
             <div className={this.props.managedClasses.shellCanvas}>
