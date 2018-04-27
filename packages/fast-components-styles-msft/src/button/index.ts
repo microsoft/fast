@@ -10,13 +10,9 @@ import { isNullOrUndefined } from "util";
 function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
     return {
         extend: "button",
-        backgroundColor: (): string => {
-            return "transparent";
-        },
-        "&:hover": {
-            backgroundColor: (): string => {
-                return "transparent";
-            }
+        ...applyTransaprentBackground(),
+        "&:hover, &:focus": {
+            ...applyTransaprentBackground()
         },
         color: (config: IDesignSystem): string => {
             return config.brandColor;
@@ -32,10 +28,16 @@ function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
         },
         "&:disabled, &[aria-disabled]": {
             "&:hover": {
-                background: (): string => {
-                    return "transparent";
-                }
+                ...applyTransaprentBackground()
             }
+        }
+    };
+}
+
+function applyTransaprentBackground(): ICSSRules<IDesignSystem> {
+    return {
+        backgroundColor: (): string => {
+            return "transparent";
         }
     };
 }
@@ -142,27 +144,21 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = {
             return config.foregroundColor;
         },
         ...applyMixedColor("borderColor", 0.46),
-        backgroundColor: (): string => {
-            return "transparent";
-        },
+        ...applyTransaprentBackground(),
         "&:hover": {
             ...applyMixedColor("borderColor", 0.46, 0.8),
-            backgroundColor: (): string => {
-                return "transparent";
-            }
+            ...applyTransaprentBackground()
         },
         "&:focus": {
             borderColor: "transparent",
             boxShadow: `0 0 0 ${toPx(2)}`,
             ...applyMixedColor("boxShadowColor", 0.46),
-            backgroundColor: (): string => {
-                return "transparent";
-            }
+            ...applyTransaprentBackground()
         },
         "&:disabled, &[aria-disabled]": {
-            ...applyMixedColor("backgroundColor", 0.46),
+            ...applyTransaprentBackground(),
             "&:hover": {
-                ...applyMixedColor("backgroundColor", 0.46)
+                ...applyTransaprentBackground()
             }
         }
     },

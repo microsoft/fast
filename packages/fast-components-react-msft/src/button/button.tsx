@@ -31,6 +31,7 @@ class Button extends Foundation<IMSFTButtonHandledProps & IManagedClasses<IMSFTB
     public render(): React.ReactElement<HTMLButtonElement | HTMLAnchorElement> {
         return (
             <BaseButton
+                {...this.unhandledProps()}
                 className={this.generateClassNames()}
                 managedClasses={this.props.managedClasses}
                 href={this.props.href}
@@ -55,8 +56,6 @@ class Button extends Foundation<IMSFTButtonHandledProps & IManagedClasses<IMSFTB
             classLocation = "managedClasses.button_lightweight";
         } else if (this.props.justified) {
             classLocation = "managedClasses.button_justified";
-        } else {
-            classLocation = "managedClasses.button";
         }
 
         return super.generateClassNames(get(this.props, classLocation));

@@ -67,4 +67,4 @@ export default {
             children: "Anchor"
         }
     ]
-} as ISnapshotTestSuite<IButtonHandledProps>;
+} as ISnapshotTestSuite<IMSFTButtonHandledProps>;
