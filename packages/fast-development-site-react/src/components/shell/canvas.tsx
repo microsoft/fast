@@ -1,15 +1,11 @@
 import * as React from "react";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { IDevSiteDesignSystem } from "../design-system";
-import { ComponentView } from "../site";
-import { Route, Switch, withRouter } from "react-router-dom";
-import { RouteComponentProps } from "react-router";
+import { ComponentViewTypes } from "../site";
 import ShellActionBar from "./action-bar";
 
 /* tslint:disable-next-line */
-interface ICanvasHeaderProps extends RouteComponentProps<any> {
-    componentView: ComponentView;
-}
+interface ICanvasHeaderProps { }
 
 export interface IShellCanvasManagedClasses {
     shellCanvas: string;
@@ -29,38 +25,11 @@ class ShellCanvas extends React.Component<ICanvasHeaderProps & IManagedClasses<I
     public render(): JSX.Element {
         return (
             <div className={this.props.managedClasses.shellCanvas}>
-            <ShellActionBar componentView={this.props.componentView} />
-                <Switch>
-                    <Route path="/" exact={true} component={null} />
-                    <Route
-                        path={this.props.match.url}
-                        exact={true}
-                        component={this.renderDetailPage}
-                    />
-                    <Route
-                        path={this.props.match.url + `/${ComponentView[ComponentView.examples]}`}
-                        exact={true}
-                        component={this.renderExamplesPage}
-                    />
-                </Switch>
-            </div>
-        );
-    }
-
-    private renderDetailPage = (): React.ReactElement<HTMLElement> => {
-        return (
-            <h1>Detail</h1>
-        );
-    }
-
-    private renderExamplesPage = (): React.ReactNode => {
-        return (
-            <React.Fragment>
                 {this.props.children}
-            </React.Fragment>
+            </div>
         );
     }
 }
 
 export { ICanvasHeaderProps };
-export default withRouter(manageJss(style)(ShellCanvas));
+export default manageJss(style)(ShellCanvas);

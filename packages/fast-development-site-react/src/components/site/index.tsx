@@ -15,6 +15,7 @@ import SiteCategory from "./category";
 import SiteCategoryIcon from "./category-icon";
 import SiteCategoryItem from "./category-item";
 import NotFound from "./not-found";
+import ComponentView, { ComponentViewTypes } from "./component-view";
 
 export interface ISiteProps {
     title: string;
@@ -28,20 +29,12 @@ export interface IComponentRoute {
 
 export interface ISiteState {
     tableOfContentsCollapsed: boolean;
-    componentView: ComponentView;
+    componentView: ComponentViewTypes;
 }
 
 export enum SiteSlot {
     category = "category",
     categoryIcon = "category-icon"
-}
-
-/**
- * Describes the possible views for a component
- */
-export enum ComponentView {
-    examples,
-    detail
 }
 
 export interface ISiteManagedClasses {
@@ -102,7 +95,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
 
         this.state = {
             tableOfContentsCollapsed: this.props.collapsed || false,
-            componentView: ComponentView.detail
+            componentView: ComponentViewTypes.detail
         };
     }
 
@@ -127,9 +120,9 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     public componentDidMount(): void {
         // If the path we load the site in doesn't match component view, update state
         // to match the path
-        if (this.getComponentViewByLocation() !== this.state.componentView) {
+        if (this.getComponentViewTypesByLocation() !== this.state.componentView) {
             this.setState({
-                componentView: this.getComponentViewByLocation()
+                componentView: this.getComponentViewTypesByLocation()
             });
         }
     }
@@ -137,12 +130,12 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     /**
      * Determine if we're looking at the examples path of a component
      */
-    private getComponentViewByLocation(): ComponentView {
+    private getComponentViewTypesByLocation(): ComponentViewTypes {
         return window
             && window.location
-            && new RegExp(`${ComponentView[ComponentView.examples]}/?$`).test(window.location.pathname)
-            ? ComponentView.examples
-            : ComponentView.detail;
+            && new RegExp(`${ComponentViewTypes[ComponentViewTypes.examples]}/?$`).test(window.location.pathname)
+            ? ComponentViewTypes.examples
+            : ComponentViewTypes.detail;
     }
 
     private renderRoutes(): JSX.Element[] {
@@ -186,11 +179,12 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                         {this.getRootToc(this.props.children, SiteSlot.category, route.route, "/")}
                     </ul>
                 </ShellPane>
-                <ShellCanvas
-                    componentView={this.state.componentView}
-                >
-                    {this.getChildrenBySlot(this, ShellSlot.canvas)}
-                    {route.component}
+                <ShellCanvas >
+                    <ShellActionBar />
+                    <ComponentView>
+                        {this.getChildrenBySlot(this, ShellSlot.canvas)}
+                        {route.component}
+                    </ComponentView>
                 </ShellCanvas>
             </ShellRow>
         );
@@ -299,9 +293,9 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     /**
      * Adjust URL of TocItem based on the current component-view
      */
-    private formatTocItemPathWithComponentView(path: string): string {
-        return this.state.componentView === ComponentView.examples
-            ? `${path}${ComponentView[ComponentView.examples]}/`
+    private formatTocItemPathWithComponentViewTypes(path: string): string {
+        return this.state.componentView === ComponentViewTypes.examples
+            ? `${path}${ComponentViewTypes[ComponentViewTypes.examples]}/`
             : path;
     }
 
@@ -325,7 +319,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         };
 
         if (this.hasCanvasContent(items)) {
-            attributes.to = this.formatTocItemPathWithComponentView(tocItemPath);
+            attributes.to = this.formatTocItemPathWithComponentViewTypes(tocItemPath);
         }
 
         if (child && child.props && child.props.name) {

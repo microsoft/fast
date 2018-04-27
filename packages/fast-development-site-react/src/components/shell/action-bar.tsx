@@ -4,12 +4,9 @@ import { toPx } from "@microsoft/fast-jss-utilities";
 import { IDevSiteDesignSystem } from "../design-system";
 import { Link, withRouter } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
-import { ComponentView } from "../site";
 
 /* tslint:disable-next-line */
-export interface IShellActionBarProps extends RouteComponentProps<any> {
-    componentView: ComponentView;
-}
+export interface IShellActionBarProps extends RouteComponentProps<any> { }
 
 export interface IShellActionBarManagedClasses {
     shellActionBar: string;
