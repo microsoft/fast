@@ -26,16 +26,33 @@ import {
     ITextareaAttributeSettingsMappingToPropertyNames
 } from "./form.props";
 import {
+    checkCategoryConfigPropertyCount,
+    checkHasOneOfAnyOf,
+    checkIsDifferentData,
+    checkIsDifferentSchema,
+    checkIsObject,
+    findAssignedParamsByCategoryProperties,
+    findOrderedByPropertyNames,
     formItemAttributeMapping,
     formItemMapping,
     getArraySchemaLocation,
+    getCategoryIndex,
+    getCategoryParams,
+    getData,
+    getDataLocationRelativeToRoot,
     getIsNotRequired,
     getIsRequired,
+    getLabel,
     getOneOfAnyOfActiveIndex,
     getOneOfAnyOfSelectOptions,
+    getOneOfAnyOfState,
     getOptionalToggles,
     getSchemaSubsections,
+    getWeightedCategoriesAndItems,
+    handleToggleClick,
     IOptionalToggle,
+    isMapping,
+    isSelect,
     resolveExampleDataWithCachedData
 } from "./form-section.utilities";
 
@@ -87,9 +104,9 @@ class FormSection extends React.Component<IFormSectionProps, IFormSectionState> 
     public componentWillUpdate(nextProps: IFormSectionProps, nextState: IFormSectionState): void {
         const state: any = {};
 
-        if (this.checkIsDifferentSchema(this.props.schema, nextProps.schema)) {
-            if (this.checkHasOneOfAnyOf(nextProps.schema.oneOf, nextProps.schema.anyOf)) {
-                state.oneOfAnyOf = this.getOneOfAnyOfState(state.oneOfAnyOf, nextProps);
+        if (checkIsDifferentSchema(this.props.schema, nextProps.schema)) {
+            if (checkHasOneOfAnyOf(nextProps.schema.oneOf, nextProps.schema.anyOf)) {
+                state.oneOfAnyOf = getOneOfAnyOfState(state.oneOfAnyOf, nextProps);
                 state.schema = nextProps.schema[state.oneOfAnyOf.type][state.oneOfAnyOf.activeIndex];
             } else {
                 state.oneOfAnyOf = void(0);
@@ -99,36 +116,11 @@ class FormSection extends React.Component<IFormSectionProps, IFormSectionState> 
             state.sections = getSchemaSubsections(state, nextProps);
 
             this.setState(state);
-        } else if (this.checkIsDifferentData(this.props.data, nextProps.data)) {
+        } else if (checkIsDifferentData(this.props.data, nextProps.data)) {
             state.sections = getSchemaSubsections(nextState, nextProps);
 
             this.setState(state);
         }
-    }
-
-    private getOneOfAnyOfState(oneOfAnyOf: IOneOfAnyOf, nextProps: IFormSectionProps): IOneOfAnyOf {
-        const oneOfAnyOfState: Partial<IOneOfAnyOf> = oneOfAnyOf || {};
-
-        oneOfAnyOfState.type = nextProps.schema.oneOf ? oneOfAnyOfType.oneOf : oneOfAnyOfType.anyOf;
-        oneOfAnyOfState.activeIndex = getOneOfAnyOfActiveIndex(
-            oneOfAnyOfState.type,
-            nextProps.schema,
-            nextProps.data
-        );
-
-        return oneOfAnyOfState as IOneOfAnyOf;
-    }
-
-    private checkHasOneOfAnyOf(oneOf: any, anyOf: any): boolean {
-        return oneOf || anyOf;
-    }
-
-    private checkIsDifferentData(currentData: any, nextData: any): boolean {
-        return currentData !== nextData;
-    }
-
-    private checkIsDifferentSchema(currentSchema: any, nextSchema: any): boolean {
-        return nextSchema !== currentSchema;
     }
 
     /**
@@ -170,20 +162,6 @@ class FormSection extends React.Component<IFormSectionProps, IFormSectionState> 
             : this.handleUpdateSection(schemaLocation, dataLocation);
     }
 
-    private getDataLocation(location: string): string {
-        return isRootLocation(this.props.dataLocation) || isRootLocation(location)
-            ? `${this.props.dataLocation}${location}`
-            : `${this.props.dataLocation}.${location}`;
-    }
-
-    private getData(location: string): any {
-        return isRootLocation(location) ? this.props.data : get(this.props.data, location);
-    }
-
-    private getLabel(label: string): string {
-        return label === "" && this.state.schema.title !== void(0) ? this.state.schema.title : label;
-    }
-
     private generateFormItemTextarea(location: string, formItemProps: IFormItemCommon): JSX.Element {
         if (this.props.attributeSettingsMappingToPropertyNames && this.props.attributeSettingsMappingToPropertyNames.textarea) {
             const rowAttribute: number | null = formItemAttributeMapping(
@@ -194,15 +172,6 @@ class FormSection extends React.Component<IFormSectionProps, IFormSectionState> 
         }
 
         return <FormItemTextarea {...formItemProps} />;
-    }
-
-    private isMapping(location: string): boolean {
-        return this.props.componentMappingToPropertyNames &&
-        typeof formItemMapping(this.props.componentMappingToPropertyNames, location) === "string";
-    }
-
-    private isSelect(property: any): boolean {
-        return typeof property.enum !== "undefined" && property.enum.length > 0;
     }
 
     private renderFormItemSelect(property: any, required: boolean, formItemProps: any): JSX.Element {
@@ -219,19 +188,19 @@ class FormSection extends React.Component<IFormSectionProps, IFormSectionState> 
      * Generates form elements based on field type
      */
     private generateFormElement(property: any, index: number, location: string, required: boolean, label: string): JSX.Element | any {
-        const dataLocation: string = this.getDataLocation(location);
+        const dataLocation: string = getDataLocationRelativeToRoot(location, this.props.dataLocation);
         const formItemProps: IFormItemCommon = {
             key: location + index,
             default: property.default || void(0),
             index,
             dataLocation,
-            data: this.getData(location),
+            data: getData(location, this.props.data),
             required,
-            label: this.getLabel(label),
+            label: getLabel(label, this.state.schema.title),
             onChange: this.props.onChange
         };
 
-        if (this.isMapping(location)) {
+        if (isMapping(location, this.props.componentMappingToPropertyNames)) {
             const name: mappingName = formItemMapping(this.props.componentMappingToPropertyNames, location);
 
             return (
@@ -243,7 +212,7 @@ class FormSection extends React.Component<IFormSectionProps, IFormSectionState> 
             );
         }
 
-        if (this.isSelect(property)) {
+        if (isSelect(property)) {
             return this.renderFormItemSelect(property, required, formItemProps);
         }
 
@@ -319,128 +288,11 @@ class FormSection extends React.Component<IFormSectionProps, IFormSectionState> 
     }
 
     /**
-     * Organizes the categories and items by weight
-     */
-    private getWeightedCategoriesAndItems(categoryParams: IFormCategories[]): IFormCategories[] {
-        categoryParams.sort(function(a: any, b: any): number {
-            return b.weight - a.weight;
-        });
-
-        for (const categoryParam of categoryParams) {
-            categoryParam.items.sort(function(a: any, b: any): number {
-                return b.weight - a.weight;
-            });
-        }
-
-        return categoryParams;
-    }
-
-    private findOrderedByPropertyNames(
-        category: IFormOrderByPropertyNamesCategories,
-        formItemParameter: IFormItemParameters,
-        assignedItemWeight: number
-    ): IAssignedCategoryParams {
-        for (const categoryProperty of category.properties) {
-            const categoryProperties: string[] = Array.isArray(categoryProperty.propertyName)
-                ? categoryProperty.propertyName
-                : [categoryProperty.propertyName];
-
-            const assignedParamsByCategoryProperties: IAssignedCategoryParams = this.findAssignedParamsByCategoryProperties(
-                categoryProperties,
-                formItemParameter,
-                category,
-                categoryProperty,
-                assignedItemWeight
-            );
-
-            if (Boolean(assignedParamsByCategoryProperties)) {
-                return assignedParamsByCategoryProperties;
-            }
-        }
-    }
-
-    private findAssignedParamsByCategoryProperties(
-        categoryProperties: string[],
-        formItemParameter: IFormItemParameters,
-        category: IFormOrderByPropertyNamesCategories,
-        categoryProperty: IFormOrderByPropertyNamesProperties,
-        assignedItemWeight: number
-    ): IAssignedCategoryParams {
-        for (const propertyName of categoryProperties) {
-            if (propertyName === formItemParameter.item) {
-                return {
-                    category: category.title,
-                    categoryWeight: category.weight,
-                    itemWeight: categoryProperty.weight || assignedItemWeight
-                };
-            }
-        }
-    }
-
-    private getAssignedCategoryParams(
-        formItemParameter: IFormItemParameters,
-        assignedItemWeight: number
-    ): IAssignedCategoryParams {
-        for (const category of this.props.orderByPropertyNames.categories) {
-            const formItemOrderedByPropertyNames: IAssignedCategoryParams = this.findOrderedByPropertyNames(
-                category,
-                formItemParameter,
-                assignedItemWeight
-            );
-
-            if (Boolean(formItemOrderedByPropertyNames)) {
-                return formItemOrderedByPropertyNames;
-            }
-        }
-
-        return {
-            category: "Default",
-            categoryWeight: this.props.orderByPropertyNames.defaultCategoryWeight || 0,
-            itemWeight: 0
-        };
-    }
-
-    private getCategoryIndex(assignedCategoryParams: IAssignedCategoryParams, categoryParams: IFormCategories[]): number {
-        for (let i: number = 0, categoryParamsLength: number = categoryParams.length; i < categoryParamsLength; i++) {
-            if (assignedCategoryParams.category === categoryParams[i].title) {
-                return i;
-            }
-        }
-    }
-
-    private getCategoryParams(formItemParameters: IFormItemParameters[]): IFormCategories[] {
-        const categoryParams: IFormCategories[] = [];
-
-        for (const formItemParameter of formItemParameters) {
-            const assignedCategoryParams: IAssignedCategoryParams = this.getAssignedCategoryParams(formItemParameter, 0);
-            const categoryIndex: number = this.getCategoryIndex(assignedCategoryParams, categoryParams);
-
-            if (typeof categoryIndex === "number") {
-                categoryParams[categoryIndex].items.push({
-                    weight: assignedCategoryParams.itemWeight,
-                    params: formItemParameter
-                });
-            } else {
-                categoryParams.push({
-                    title: assignedCategoryParams.category,
-                    weight: assignedCategoryParams.categoryWeight,
-                    items: [{
-                        weight: assignedCategoryParams.itemWeight,
-                        params: formItemParameter
-                    }]
-                });
-            }
-        }
-
-        return this.getWeightedCategoriesAndItems(categoryParams);
-    }
-
-    /**
      * Gets the categories
      */
     private getCategories(formItemParameters: IFormItemParameters[]): JSX.Element[] {
         const categories: JSX.Element[] = [];
-        const categoryParams: IFormCategories[] = this.getCategoryParams(formItemParameters);
+        const categoryParams: IFormCategories[] = getCategoryParams(formItemParameters, this.props.orderByPropertyNames);
 
         for (const category of categoryParams) {
             const categoryFormItems: JSX.Element[] = [];
@@ -463,10 +315,6 @@ class FormSection extends React.Component<IFormSectionProps, IFormSectionState> 
         }
 
         return categories;
-    }
-
-    private checkIsObject(property: any): boolean {
-        return property.properties && property === this.state.schema;
     }
 
     private getFormItemsAndConfigurationOptions(property: any, required: string[], not: string[]): IFormItemsWithConfigOptions {
@@ -501,14 +349,9 @@ class FormSection extends React.Component<IFormSectionProps, IFormSectionState> 
         return formItems;
     }
 
-    private checkCategoryConfigPropertyCount(formItems: IFormItemsWithConfigOptions): boolean {
-        return typeof this.props.orderByPropertyNames.showCategoriesAtPropertyCount === "number"
-            && this.props.orderByPropertyNames.showCategoriesAtPropertyCount >= formItems.items.length;
-    }
-
     private getFormObjectItemsOrConfigCategories(formItems: IFormItemsWithConfigOptions): JSX.Element[] {
         if (this.props.orderByPropertyNames) {
-            if (this.checkCategoryConfigPropertyCount(formItems)) {
+            if (checkCategoryConfigPropertyCount(formItems, this.props.orderByPropertyNames)) {
                 return formItems.items;
             }
 
@@ -524,7 +367,7 @@ class FormSection extends React.Component<IFormSectionProps, IFormSectionState> 
     private generateFormObject(property: any, location: string, required: string[], not?: string[]): JSX.Element[] {
         let formItems: IFormItemsWithConfigOptions;
 
-        if (this.checkIsObject(property)) {
+        if (checkIsObject(property, this.state.schema)) {
             // assign items to form elements
             formItems = this.getFormItemsAndConfigurationOptions(property, required, not);
 
@@ -582,7 +425,7 @@ class FormSection extends React.Component<IFormSectionProps, IFormSectionState> 
                         <button
                             role="switch"
                             aria-pressed={property.selected}
-                            onClick={this.handleToggleClick(property.selected, property.id, property.updateRequested)}
+                            onClick={handleToggleClick(property.selected, property.id, property.updateRequested)}
                         >
                             {property.selected ? property.selectedString : property.unselectedString}
                         </button>
@@ -596,14 +439,6 @@ class FormSection extends React.Component<IFormSectionProps, IFormSectionState> 
                 </div>
             );
         });
-    }
-
-    private handleToggleClick(value: any, id: string, updateRequested: any): any {
-        return (e: React.MouseEvent<MouseEvent>): void => {
-            e.preventDefault();
-
-            updateRequested(value, id);
-        };
     }
 
     /**

@@ -4,6 +4,8 @@ import {
     IFormAttributeSettingsMappingToPropertyNames,
     IFormComponentMappingToPropertyNamesProps,
     IFormLocation,
+    IFormOrderByPropertyNamesCategories,
+    IFormOrderByPropertyNamesProperties,
     IFormOrderByPropertyNamesProps
 } from "./form.props";
 
@@ -216,4 +218,12 @@ export interface ISchemaSubsectionConfig {
     schemaLocation: string;
     state: any;
     props: any;
+}
+
+export interface IAssignedParamsByCategoryConfig {
+    categoryProperties: string[];
+    formItemParameter: IFormItemParameters;
+    category: IFormOrderByPropertyNamesCategories;
+    categoryProperty: IFormOrderByPropertyNamesProperties;
+    assignedItemWeight: number;
 }

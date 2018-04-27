@@ -4,11 +4,23 @@ import { getExample } from "@microsoft/fast-permutator";
 import tv4 from "tv4";
 import {
     AttributeSettingsMappingToPropertyNames,
-    IFormComponentMappingToPropertyNamesProps
+    IFormComponentMappingToPropertyNamesProps,
+    IFormOrderByPropertyNamesCategories,
+    IFormOrderByPropertyNamesProperties,
+    IFormOrderByPropertyNamesProps
 } from "./form.props";
+import { isRootLocation } from "./form.utilities";
 import {
+    IAssignedCategoryParams,
+    IAssignedParamsByCategoryConfig,
+    IFormCategories,
+    IFormItemParameters,
+    IFormItemsWithConfigOptions,
+    IFormSectionProps,
+    IOneOfAnyOf,
     IOptionalToggleConfig,
-    ISchemaSubsectionConfig
+    ISchemaSubsectionConfig,
+    oneOfAnyOfType
 } from "./form-section.props";
 import { mappingName } from "./form-item";
 
@@ -412,4 +424,189 @@ export function formItemAttributeMapping(
     });
 
     return itemAttributeValue;
+}
+
+export function checkHasOneOfAnyOf(oneOf: any, anyOf: any): boolean {
+    return oneOf || anyOf;
+}
+
+export function checkIsDifferentSchema(currentSchema: any, nextSchema: any): boolean {
+    return nextSchema !== currentSchema;
+}
+
+export function checkIsDifferentData(currentData: any, nextData: any): boolean {
+    return currentData !== nextData;
+}
+
+export function getOneOfAnyOfState(oneOfAnyOf: IOneOfAnyOf, nextProps: IFormSectionProps): IOneOfAnyOf {
+    const oneOfAnyOfState: Partial<IOneOfAnyOf> = oneOfAnyOf || {};
+
+    oneOfAnyOfState.type = nextProps.schema.oneOf ? oneOfAnyOfType.oneOf : oneOfAnyOfType.anyOf;
+    oneOfAnyOfState.activeIndex = getOneOfAnyOfActiveIndex(
+        oneOfAnyOfState.type,
+        nextProps.schema,
+        nextProps.data
+    );
+
+    return oneOfAnyOfState as IOneOfAnyOf;
+}
+
+export function getDataLocationRelativeToRoot(location: string, dataLocation: string): string {
+    return isRootLocation(dataLocation) || isRootLocation(location)
+        ? `${dataLocation}${location}`
+        : `${dataLocation}.${location}`;
+}
+
+export function getData(location: string, data: any): any {
+    return isRootLocation(location) ? data : get(data, location);
+}
+
+export function isSelect(property: any): boolean {
+    return typeof property.enum !== "undefined" && property.enum.length > 0;
+}
+
+/**
+ * Organizes the categories and items by weight
+ */
+export function getWeightedCategoriesAndItems(categoryParams: IFormCategories[]): IFormCategories[] {
+    categoryParams.sort(function(a: any, b: any): number {
+        return b.weight - a.weight;
+    });
+
+    for (const categoryParam of categoryParams) {
+        categoryParam.items.sort(function(a: any, b: any): number {
+            return b.weight - a.weight;
+        });
+    }
+
+    return categoryParams;
+}
+
+export function checkIsObject(property: any, schema: any): boolean {
+    return property.properties && property === schema;
+}
+
+export function findAssignedParamsByCategoryProperties(
+    config: IAssignedParamsByCategoryConfig
+): IAssignedCategoryParams {
+    for (const propertyName of config.categoryProperties) {
+        if (propertyName === config.formItemParameter.item) {
+            return {
+                category: config.category.title,
+                categoryWeight: config.category.weight,
+                itemWeight: config.categoryProperty.weight || config.assignedItemWeight
+            };
+        }
+    }
+}
+
+export function getCategoryIndex(assignedCategoryParams: IAssignedCategoryParams, categoryParams: IFormCategories[]): number {
+    for (let i: number = 0, categoryParamsLength: number = categoryParams.length; i < categoryParamsLength; i++) {
+        if (assignedCategoryParams.category === categoryParams[i].title) {
+            return i;
+        }
+    }
+}
+
+export function checkCategoryConfigPropertyCount(
+    formItems: IFormItemsWithConfigOptions,
+    orderByPropertyNames: IFormOrderByPropertyNamesProps
+): boolean {
+    return typeof orderByPropertyNames.showCategoriesAtPropertyCount === "number"
+        && orderByPropertyNames.showCategoriesAtPropertyCount >= formItems.items.length;
+}
+
+export function findOrderedByPropertyNames(
+    category: IFormOrderByPropertyNamesCategories,
+    formItemParameter: IFormItemParameters,
+    assignedItemWeight: number
+): IAssignedCategoryParams {
+    for (const categoryProperty of category.properties) {
+        const categoryProperties: string[] = Array.isArray(categoryProperty.propertyName)
+            ? categoryProperty.propertyName
+            : [categoryProperty.propertyName];
+
+        const assignedParamsByCategoryProperties: IAssignedCategoryParams = findAssignedParamsByCategoryProperties({
+            categoryProperties,
+            formItemParameter,
+            category,
+            categoryProperty,
+            assignedItemWeight
+        });
+
+        if (Boolean(assignedParamsByCategoryProperties)) {
+            return assignedParamsByCategoryProperties;
+        }
+    }
+}
+
+function getAssignedCategoryParams(
+    formItemParameter: IFormItemParameters,
+    assignedItemWeight: number,
+    orderByPropertyNames: IFormOrderByPropertyNamesProps
+): IAssignedCategoryParams {
+    for (const category of orderByPropertyNames.categories) {
+        const formItemOrderedByPropertyNames: IAssignedCategoryParams = findOrderedByPropertyNames(
+            category,
+            formItemParameter,
+            assignedItemWeight
+        );
+
+        if (Boolean(formItemOrderedByPropertyNames)) {
+            return formItemOrderedByPropertyNames;
+        }
+    }
+
+    return {
+        category: "Default",
+        categoryWeight: orderByPropertyNames.defaultCategoryWeight || 0,
+        itemWeight: 0
+    };
+}
+
+export function getCategoryParams(
+    formItemParameters: IFormItemParameters[],
+    orderByPropertyNames: IFormOrderByPropertyNamesProps
+): IFormCategories[] {
+    const categoryParams: IFormCategories[] = [];
+
+    for (const formItemParameter of formItemParameters) {
+        const assignedCategoryParams: IAssignedCategoryParams = getAssignedCategoryParams(formItemParameter, 0, orderByPropertyNames);
+        const categoryIndex: number = getCategoryIndex(assignedCategoryParams, categoryParams);
+
+        if (typeof categoryIndex === "number") {
+            categoryParams[categoryIndex].items.push({
+                weight: assignedCategoryParams.itemWeight,
+                params: formItemParameter
+            });
+        } else {
+            categoryParams.push({
+                title: assignedCategoryParams.category,
+                weight: assignedCategoryParams.categoryWeight,
+                items: [{
+                    weight: assignedCategoryParams.itemWeight,
+                    params: formItemParameter
+                }]
+            });
+        }
+    }
+
+    return getWeightedCategoriesAndItems(categoryParams);
+}
+
+export function handleToggleClick(value: any, id: string, updateRequested: any): any {
+    return (e: React.MouseEvent<MouseEvent>): void => {
+        e.preventDefault();
+
+        updateRequested(value, id);
+    };
+}
+
+export function isMapping(location: string, componentMappingToPropertyNames: IFormComponentMappingToPropertyNamesProps): boolean {
+    return componentMappingToPropertyNames &&
+    typeof formItemMapping(componentMappingToPropertyNames, location) === "string";
+}
+
+export function getLabel(label: string, title: string): string {
+    return label === "" && title !== void(0) ? title : label;
 }
