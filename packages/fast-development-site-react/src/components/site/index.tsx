@@ -27,7 +27,6 @@ export interface IComponentRoutes {
 
 export interface ISiteState {
     tableOfContentsCollapsed: boolean;
-    routes: IComponentRoutes[];
 }
 
 export enum SiteSlot {
@@ -92,8 +91,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         super(props);
 
         this.state = {
-            tableOfContentsCollapsed: this.props.collapsed || false,
-            routes: this.getRoutes((this.props.children as JSX.Element), "/", SiteSlot.category)
+            tableOfContentsCollapsed: this.props.collapsed || false
         };
     }
 
@@ -112,9 +110,10 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     }
 
     private renderRoutes(): JSX.Element[] {
-        return this.state.routes.map((route: IComponentRoutes, index: number) => {
-            return this.renderShell(index + 1, route.route, route.component);
-        });
+        return this.getRoutes((this.props.children as JSX.Element), "/", SiteSlot.category)
+            .map((route: IComponentRoutes, index: number) => {
+                return this.renderShell(index + 1, route.route, route.component);
+            });
     }
 
     private renderShell(key: number, path: string, CanvasComponent: any): JSX.Element {
