@@ -4,29 +4,45 @@ import { IDevSiteDesignSystem } from "../design-system";
 import { Link, withRouter } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
 import { ComponentViewTypes } from "./component-view";
+import { glyphExamples, glyphPage } from "@microsoft/fast-glyphs-msft";
+import ComponentViewToggle from "./component-view-toggle";
 
 export interface IActionBarProps extends RouteComponentProps<any> {
+    /*
+     * The current ComponentView of the app
+     */
+    componentView: ComponentViewTypes;
+
+    /**
+     * A callback to get called when the app/s ComponentView should be changed
+     */
     onComponentViewChange: (type: ComponentViewTypes) => void;
 }
 
 class ActionBar extends React.Component<IActionBarProps, {}> {
     public render(): JSX.Element {
         return (
-            <div>
-                <Link
+            <div style={{display: "flex"}}>
+                <ComponentViewToggle
                     to={this.props.match.path}
                     onClick={this.onComponentViewChangeCallback(ComponentViewTypes.detail)}
-                >
-                        View detail
-                </Link>
-                <Link
+                    label="View detail"
+                    current={this.isAriaCurrent(ComponentViewTypes.detail)}
+                    glyph={glyphPage}
+                />
+                <ComponentViewToggle
                     to={this.props.match.path + `${ComponentViewTypes[ComponentViewTypes.examples]}/`}
                     onClick={this.onComponentViewChangeCallback(ComponentViewTypes.examples)}
-                >
-                   View examples
-                </Link>
+                    label="View examples"
+                    current={this.isAriaCurrent(ComponentViewTypes.examples)}
+                    glyph={glyphExamples}
+                />
             </div>
         );
+    }
+
+    private isAriaCurrent(type: ComponentViewTypes): boolean {
+        return this.props.componentView === type;
     }
 
     /**

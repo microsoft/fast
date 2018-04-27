@@ -181,7 +181,10 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 </ShellPane>
                 <ShellCanvas >
                     <ShellActionBar>
-                        <ActionBar onComponentViewChange={this.onComponentViewChange} />
+                        <ActionBar
+                            onComponentViewChange={this.onComponentViewChange}
+                            componentView={this.state.componentView}
+                        />
                     </ShellActionBar>
                     <ComponentView>
                         {this.getChildrenBySlot(this, ShellSlot.canvas)}
