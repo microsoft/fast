@@ -200,3 +200,11 @@ export interface IFormItemsWithConfigOptions {
      */
     items: JSX.Element[];
 }
+
+export interface IOptionalToggleConfig {
+    schema: any;
+    onChange: (propertyLocation: string, value: any) => void;
+    dataLocation: string;
+    data: any;
+    dataCache: any;
+}

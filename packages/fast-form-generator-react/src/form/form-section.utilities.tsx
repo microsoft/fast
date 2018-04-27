@@ -6,6 +6,9 @@ import {
     AttributeSettingsMappingToPropertyNames,
     IFormComponentMappingToPropertyNamesProps
 } from "./form.props";
+import {
+    IOptionalToggleConfig
+} from "./form-section.props";
 import { mappingName } from "./form-item";
 
 /**
@@ -62,24 +65,34 @@ export function getOneOfAnyOfSelectOptions(schema: any, state: any): JSX.Element
     });
 }
 
+function removeUndefinedKeys(data: any): any {
+    const clonedData: any = cloneDeep(data);
+
+    Object.keys(clonedData).forEach((key: string) => {
+        if (typeof clonedData[key] === "undefined") { // if this is a child we may be getting undefined default props, remove these
+            delete clonedData[key];
+        }
+    });
+
+    return clonedData;
+}
+
+function checkSchemaTypeIsArray(schema: any, type: string): boolean {
+    return schema && Array.isArray(schema[type]);
+}
+
 /**
  * Find out what the active index should be based on the data
  */
 export function getOneOfAnyOfActiveIndex(type: string, schema: any, data: any): number {
-    if (schema && Array.isArray(schema[type])) {
-        const newData: any = cloneDeep(data);
+    if (checkSchemaTypeIsArray(schema, type)) {
+        const newData: any = removeUndefinedKeys(data);
 
-        Object.keys(newData).forEach((key: string) => {
-            if (typeof newData[key] === "undefined") { // if this is a child we may be getting undefined default props, remove these
-                delete newData[key];
+        schema[type].forEach((oneOfAnyOfItem: any, index: number) => {
+            if (validateSchema(oneOfAnyOfItem, newData)) {
+                return index;
             }
         });
-
-        for (let i: number = 0, oneOfAnyOfItems: number = schema[type].length; i < oneOfAnyOfItems; i++) {
-            if (validateSchema(schema[type][i], newData)) {
-                return i;
-            }
-        }
     }
 
     return 0;
@@ -140,6 +153,22 @@ export function getNormalizedLocation(location: string, property: string, schema
     return normalizedLocation;
 }
 
+function getArrayExample(schemaSection: any): any[] {
+    const example: any = getExample(schemaSection.items);
+
+    if (schemaSection.minItems) {
+        return new Array(schemaSection.length - 1).fill(example);
+    }
+
+    return [example];
+}
+
+function checkIsObjectAndSetType(schemaSection: any): any {
+    if (schemaSection.properties && schemaSection.type !== "object") {
+        return "object";
+    }
+}
+
 /**
  * Generates example data for a newly added optional schema item
  */
@@ -154,18 +183,10 @@ export function generateExampleData(schema: any, propertyLocation: string): any 
         schemaSection = schemaSection.anyOf[0];
     }
 
-    if (schemaSection.properties && schemaSection.type !== "object") {
-        schemaSection.type = "object";
-    }
+    schemaSection.type = checkIsObjectAndSetType(schemaSection);
 
     if (schemaSection.items) {
-        const example: any = getExample(schemaSection.items);
-
-        if (schemaSection.minItems) {
-            return new Array(schemaSection.length - 1).fill(example);
-        }
-
-        return [example];
+        return getArrayExample(schemaSection);
     }
 
     return getExample(schemaSection);
@@ -181,54 +202,67 @@ export interface IOptionalToggle {
     updateRequested: (value: any, id: string) => void;
 }
 
+function getPropertyLocation(dataLocation: string, propertyName: string): string {
+    return dataLocation === "" ? propertyName : `${dataLocation}.${propertyName}`;
+}
+
+function getIsNotRequiredList(schema: any): string[] {
+    return schema.not && schema.not.required ? schema.not.required : void(0);
+}
+
+function getOptionalToggle(config: IOptionalToggleConfig, key: string, propertyLocation: string): IOptionalToggle {
+    return {
+        id: uniqueId(),
+        label: config.schema.properties[key].title || "Untitled",
+        selected: isSelected(key, config.data),
+        selectedString: "On",
+        unselectedString: "Off",
+        name: "defaultSelected",
+        updateRequested: (value: any, id: string): void => {
+            config.onChange(
+                propertyLocation,
+                value
+                    ? void(0)
+                    : get(config.dataCache, propertyLocation) || generateExampleData(config.schema, `properties.${key}`)
+            );
+        }
+    };
+}
+
+function checkIsPropertyOptional(required: string[], key: string): boolean {
+    for (const requiredItem of required) {
+        if (requiredItem === key) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+function getPropertyKeys(schema: any): string[] {
+    return schema.properties ? Object.keys(schema.properties) : [];
+}
+
 /**
  * Get the optional objects in the schema.
  */
 export function getOptionalToggles(
-    schema: any,
-    onChange: (propertyLocation: string, value: any) => void,
-    location: string,
-    data: any,
-    dataCache: any
+    config: IOptionalToggleConfig
 ): IOptionalToggle[] {
     const optionalObjects: IOptionalToggle[] = [];
-    const required: string[] = schema.required || [];
-    const propertyKeys: string[] = schema.properties ? Object.keys(schema.properties) : [];
-    const notRequiredList: string[] = schema.not && schema.not.required ? schema.not.required : void(0);
+    const required: string[] = config.schema.required || [];
+    const propertyKeys: string[] = getPropertyKeys(config.schema);
+    const notRequiredList: string[] = getIsNotRequiredList(config.schema);
 
     for (const key of propertyKeys) {
-        let isOptional: boolean = true;
+        const isOptional: boolean = checkIsPropertyOptional(required, key);
+        const isObject: boolean = config.schema.properties[key].type === "object" || config.schema.properties[key].properties;
+        const isOneOfAnyOf: boolean = config.schema.properties[key].anyOf || config.schema.properties[key].oneOf;
         const isNotRequired: boolean = getIsNotRequired(key, notRequiredList);
-        const propertyLocation: string = location === "" ? key : `${location}.${key}`;
+        const propertyLocation: string = getPropertyLocation(config.dataLocation, key);
 
-        if (!isNotRequired) {
-            for (const requiredItem of required) {
-                if (requiredItem === key) {
-                    isOptional = false;
-                }
-            }
-
-            if (isOptional &&
-                (schema.properties[key].type === "object" ||
-                schema.properties[key].properties ||
-                schema.properties[key].anyOf ||
-                schema.properties[key].oneOf)
-            ) {
-                optionalObjects.push({
-                    id: uniqueId(),
-                    label: schema.properties[key].title || "Untitled",
-                    selected: isSelected(key, data),
-                    selectedString: "On",
-                    unselectedString: "Off",
-                    name: "defaultSelected",
-                    updateRequested: (value: any, id: string): void => {
-                        onChange(
-                            propertyLocation,
-                            value ? void(0) : get(dataCache, propertyLocation) || generateExampleData(schema, `properties.${key}`)
-                        );
-                    }
-                });
-            }
+        if (!isNotRequired && isOptional && (isObject || isOneOfAnyOf)) {
+            optionalObjects.push(getOptionalToggle(config, key, propertyLocation));
         }
     }
 

@@ -566,13 +566,13 @@ class FormSection extends React.Component<IFormSectionProps, IFormSectionState> 
      * which includes objects, anyOf/oneOf
      */
     private generateOptionToggles(): JSX.Element[] {
-        const optionToggles: IOptionalToggle[] = getOptionalToggles(
-            this.state.schema,
-            this.props.onChange,
-            this.props.dataLocation,
-            this.props.data,
-            this.props.dataCache
-        );
+        const optionToggles: IOptionalToggle[] = getOptionalToggles({
+            schema: this.state.schema,
+            onChange: this.props.onChange,
+            dataLocation: this.props.dataLocation,
+            data: this.props.data,
+            dataCache: this.props.dataCache
+        });
 
         return optionToggles.map((property: any, index: number): JSX.Element => {
             return (
