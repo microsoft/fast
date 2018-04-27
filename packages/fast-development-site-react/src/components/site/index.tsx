@@ -101,7 +101,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
 
         this.state = {
             tableOfContentsCollapsed: this.props.collapsed || false,
-            componentView: ComponentView.detail
+            componentView: ComponentView.examples
         };
     }
 
@@ -112,11 +112,9 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                         <Shell>
                             {this.renderShellHeader()}
 
-                            <Switch>
                                 <Route exact={true} path={"/"} component={this.renderShellRow.bind(this, null, "/")} />
                                 {this.renderRoutes()}
                                 <Route path="*" component={NotFound} />
-                            </Switch>
 
                             {this.renderShellInfoBar()}
                        </Shell>
@@ -134,11 +132,13 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
 
     private renderShell(key: number, path: string, CanvasComponent: any): JSX.Element {
         return (
-            <Route key={key} path={path}>
-                <React.Fragment>
-                    {this.renderShellRow(CanvasComponent, path)}
-                </React.Fragment>
-            </Route>
+            <Route key={key} path={path} render={ () => {
+                return (
+                    <React.Fragment>
+                        {this.renderShellRow(CanvasComponent, path)}
+                    </React.Fragment>
+                );
+            } } />
         );
     }
 
@@ -276,8 +276,10 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     /**
      * Formats the URL of a TOC item
      */
-    private formatTocItemPath(base: string, name: string): string {
-        return this.convertToHyphenated(`${base}${name}/${this.state.componentView === ComponentView.examples ? "examples/" : ""}`);
+    private formatTocItemPathWithComponentView(path): string {
+        return this.state.componentView === ComponentView.examples
+            ? `${path}${ComponentView[ComponentView.examples]}/`
+            : path;
     }
 
     private getTocItem(
@@ -288,7 +290,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         currentPath: string,
         slot: string
     ): JSX.Element {
-        const tocItemPath: string = this.formatTocItemPath(itemsPath, items.props.name);
+        const tocItemPath: string = this.convertToHyphenated(`${itemsPath}${items.props.name}/`);
         const contentId: string = uniqueId(this.convertToHyphenated(items.props.name));
         const active: boolean = currentPath.match(tocItemPath) !== null;
         const attributes: any = {
@@ -300,7 +302,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         };
 
         if (this.hasCanvasContent(items)) {
-            attributes.to = tocItemPath;
+            attributes.to = this.formatTocItemPathWithComponentView(tocItemPath);
         }
 
         if (child && child.props && child.props.name) {

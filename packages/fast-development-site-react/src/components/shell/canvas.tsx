@@ -1,9 +1,12 @@
 import * as React from "react";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { IDevSiteDesignSystem } from "../design-system";
+import { ComponentView } from "../site";
+import { Route, withRouter } from "react-router-dom";
+import { RouteComponentProps } from "react-router";
 
 /* tslint:disable-next-line */
-interface ICanvasHeaderProps { }
+interface ICanvasHeaderProps extends RouteComponentProps<any> { }
 
 export interface IShellCanvasManagedClasses {
     shellCanvas: string;
@@ -31,4 +34,4 @@ class ShellCanvas extends React.Component<ICanvasHeaderProps & IManagedClasses<I
 }
 
 export { ICanvasHeaderProps };
-export default manageJss(style)(ShellCanvas);
+export default withRouter(manageJss(style)(ShellCanvas));
