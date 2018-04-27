@@ -6,6 +6,7 @@ import { uniqueId } from "lodash-es";
 import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
 import Shell, { ShellActionBar, ShellCanvas, ShellHeader, ShellInfoBar, ShellPane, ShellPaneCollapse, ShellRow, ShellSlot } from "../shell";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import * as history from "history";
 import { ellipsis, toPx } from "@microsoft/fast-jss-utilities";
 import CategoryList from "./category-list";
 import SiteMenu from "./menu";
@@ -20,7 +21,7 @@ export interface ISiteProps {
     collapsed?: boolean;
 }
 
-export interface IComponentRoutes {
+export interface IComponentRoute {
     route: string;
     component: JSX.Element[];
 }
@@ -101,7 +102,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
 
         this.state = {
             tableOfContentsCollapsed: this.props.collapsed || false,
-            componentView: ComponentView.examples
+            componentView: ComponentView.detail
         };
     }
 
@@ -109,33 +110,58 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         return (
             <DesignSystemProvider designSystem={devSiteDesignSystemDefaults}>
                 <BrowserRouter>
-                        <Shell>
-                            {this.renderShellHeader()}
-                                <Switch>
-                                    <Route exact={true} path={"/"} component={this.renderShellRow.bind(this, null, "/")} />
-                                    {this.renderRoutes()}
-                                    <Route path="*" component={NotFound} />
-                                </Switch>
-                            {this.renderShellInfoBar()}
-                       </Shell>
+                    <Shell>
+                        {this.renderShellHeader()}
+                        <Switch>
+                            <Route exact={true} path={"/"} component={this.renderShellRow.bind(this, null, "/")} />
+                            {this.renderRoutes()}
+                            <Route path="*" component={NotFound} />
+                        </Switch>
+                        {this.renderShellInfoBar()}
+                    </Shell>
                 </BrowserRouter>
             </DesignSystemProvider>
         );
     }
 
+    public componentDidMount(): void {
+        // If the path we load the site in doesn't match component view, update state
+        // to match the path
+        if (this.getComponentViewByLocation() !== this.state.componentView) {
+            this.setState({
+                componentView: this.getComponentViewByLocation()
+            });
+        }
+    }
+
+    /**
+     * Determine if we're looking at the examples path of a component
+     */
+    private getComponentViewByLocation(): ComponentView {
+        return window
+            && window.location
+            && new RegExp(`${ComponentView[ComponentView.examples]}/?$`).test(window.location.pathname)
+            ? ComponentView.examples
+            : ComponentView.detail;
+    }
+
     private renderRoutes(): JSX.Element[] {
         return this.getRoutes((this.props.children as JSX.Element), "/", SiteSlot.category)
-            .map((route: IComponentRoutes, index: number) => {
-                return this.renderComponentRoute(index + 1, route.route, route.component);
-            });
+            .map(this.renderComponentRoute);
     }
 
     /**
      * Renders a route based on the active component
      */
-    private renderComponentRoute(key: number, path: string, CanvasComponent: any): JSX.Element {
+    private renderComponentRoute = (route: IComponentRoute): JSX.Element => {
+        const path: string = route.route;
+
         return (
-            <Route key={key} path={path} component={this.renderShellRow.bind(this, CanvasComponent, path)} />
+            <Route
+                key={path}
+                path={path}
+                component={this.renderShellRow.bind(this, route)}
+            />
         );
     }
 
@@ -150,21 +176,21 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         );
     }
 
-    private renderShellRow(CanvasComponent: any, path: string): JSX.Element {
+    private renderShellRow(route: IComponentRoute): JSX.Element {
         return (
             <ShellRow>
                 <ShellPane collapsed={this.state.tableOfContentsCollapsed}>
                     {this.getPaneCollapseToggle()}
                     {this.getSlotItems(this, ShellSlot.pane)}
                     <ul className={this.props.managedClasses.site_paneToc}>
-                        {this.getRootToc(this.props.children, SiteSlot.category, path, "/")}
+                        {this.getRootToc(this.props.children, SiteSlot.category, route.route, "/")}
                     </ul>
                 </ShellPane>
                 <ShellCanvas
                     componentView={this.state.componentView}
                 >
                     {this.getSlotItems(this, ShellSlot.canvas)}
-                    {CanvasComponent}
+                    {route.component}
                 </ShellCanvas>
             </ShellRow>
         );
@@ -181,8 +207,8 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     /**
      * Gets all of the potential routes as strings to be used to build the shell
      */
-    private getRoutes(items: JSX.Element, baseRoute: string, slot: string, routes?: IComponentRoutes[]): IComponentRoutes[] {
-        let currentRoutes: IComponentRoutes[] = routes;
+    private getRoutes(items: JSX.Element, baseRoute: string, slot: SiteSlot, routes?: IComponentRoute[]): IComponentRoute[] {
+        let currentRoutes: IComponentRoute[] = routes;
         const childItems: JSX.Element[] = Array.isArray(items) ? items : [items];
 
         childItems.forEach((item: JSX.Element): void => {
@@ -194,8 +220,8 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         return currentRoutes;
     }
 
-    private getCurrentRoute(item: JSX.Element, slot: string, baseRoute: string, currentRoutes: IComponentRoutes[]): IComponentRoutes[] {
-        const currentRoute: IComponentRoutes[] = currentRoutes;
+    private getCurrentRoute(item: JSX.Element, slot: SiteSlot, baseRoute: string, currentRoutes: IComponentRoute[]): IComponentRoute[] {
+        const currentRoute: IComponentRoute[] = currentRoutes;
         const itemRoute: string = `${baseRoute}${item.props.name}/`;
         const slotItems: JSX.Element[] = this.getSlotItems(item, ShellSlot.canvas);
 
