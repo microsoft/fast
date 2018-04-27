@@ -55,23 +55,6 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
              */
             private static stylesheetManager: SheetsManager = stylesheetManager;
 
-            /**
-             * Map of all components that have been initialized via this component
-             */
-            private static componentMap: WeakMap<React.ComponentType<T & IManagedClasses<S>>, string> = new WeakMap();
-
-            /**
-             * Map of all style objects that have been initialized via this component
-             */
-            private static styleMap: WeakMap<ComponentStyles<S, C>, string> = new WeakMap();
-
-            /**
-             * Tracks the ID of an instance of the JSSManager. Multiple instances can have the same ID
-             * if the the backing Component and styles objects are shared because the ID is is derived from
-             * both the Component and styles IDs
-             */
-            private instanceId: string;
-
             constructor(props: T) {
                 super(props);
 
