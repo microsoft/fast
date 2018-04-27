@@ -40,17 +40,13 @@ function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
     };
 }
 
-function applyMixedColor(incomingProperty: string, value?: number, alpha?: number, accent?: boolean): ICSSRules<IDesignSystem> {
+function applyMixedColor(incomingProperty: string, mixValue?: number, alpha?: number): ICSSRules<IDesignSystem> {
 
     function applyColors(config: IDesignSystem): string {
         if (alpha) {
-            if (accent && isNullOrUndefined(value)) {
-                return Chroma(config.brandColor).alpha(alpha).css();
-            } else {
-                return Chroma.mix(config.foregroundColor, config.backgroundColor, value).alpha(alpha).css();
-            }
+            return Chroma.mix(config.foregroundColor, config.backgroundColor, mixValue).alpha(alpha).css();
         } else {
-            return Chroma.mix(config.foregroundColor, config.backgroundColor, value).css();
+            return Chroma.mix(config.foregroundColor, config.backgroundColor, mixValue).css();
         }
     }
 
@@ -119,7 +115,9 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = {
             return config.brandColor;
         },
         "&:hover": {
-            ...applyMixedColor("backgroundColor", null, 0.8, true)
+            backgroundColor: (config: IDesignSystem): string => {
+                return Chroma(config.brandColor).alpha(0.8).css();
+            }
         },
         "&:focus": {
             outline: "none",
