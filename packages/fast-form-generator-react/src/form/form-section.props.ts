@@ -188,3 +188,15 @@ export interface IAssignedCategoryParams {
      */
     itemWeight: number;
 }
+
+export interface IFormItemsWithConfigOptions {
+    /**
+     * Parameters such as weight, attribute assignment etc
+     */
+    parameters: IFormItemParameters[];
+
+    /**
+     * Form items which conform to a section
+     */
+    items: JSX.Element[];
+}

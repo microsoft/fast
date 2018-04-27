@@ -88,7 +88,7 @@ export function getOneOfAnyOfActiveIndex(type: string, schema: any, data: any): 
 /**
  * Resolves generated example data with any matching data in the cache
  */
-export function resolveExampleDataWithCachedData(schema: any, cachedData: any, currentData: any): any {
+export function resolveExampleDataWithCachedData(schema: any, cachedData: any): any {
     const exampleData: any = generateExampleData(schema, "");
     const curatedCachedData: any = cloneDeep(cachedData);
 
@@ -109,7 +109,7 @@ export function resolveExampleDataWithCachedData(schema: any, cachedData: any, c
 /**
  * Resolves cached data into example data if the schema still validates with the new data
  */
-function cachedDataResolver(objValue: any, srcValue: any, key: number, object: any, source: any): any {
+function cachedDataResolver(objValue: any, srcValue: any, key: number, object: any): any {
     if (
         typeof srcValue !== "undefined"
         && typeof objValue !== "undefined"

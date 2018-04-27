@@ -126,22 +126,24 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps, IFormItem
         );
     }
 
+    private getDataLocation(index?: number): string {
+        if (typeof index === "number") {
+            return isRootLocation(this.props.dataLocation)
+                ? `children[${index}].props`
+                : `${this.props.dataLocation}.children[${index}].props`;
+        }
+
+        return isRootLocation(this.props.dataLocation)
+            ? `children.props`
+            : `${this.props.dataLocation}.children.props`;
+    }
+
     /**
      * Click handler for editing a component
      */
     private onEditComponent(componentObj: any, index: number): void {
         let schema: any;
-        let dataLocation: string;
-
-        if (typeof index === "number") {
-            dataLocation = isRootLocation(this.props.dataLocation)
-                ? `children[${index}].props`
-                : `${this.props.dataLocation}.children[${index}].props`;
-        } else {
-            dataLocation = isRootLocation(this.props.dataLocation)
-                ? `children.props`
-                : `${this.props.dataLocation}.children.props`;
-        }
+        const dataLocation: string = this.getDataLocation(index);
 
         this.props.childOptions.forEach((childOption: any) => {
             if (childOption.component === componentObj.type) {
