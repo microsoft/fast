@@ -6,6 +6,7 @@ import { RouteComponentProps } from "react-router";
 import { ComponentViewTypes } from "./component-view";
 import { glyphExamples, glyphPage } from "@microsoft/fast-glyphs-msft";
 import ComponentViewToggle from "./component-view-toggle";
+import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 
 export interface IActionBarProps extends RouteComponentProps<any> {
     /*
@@ -19,24 +20,41 @@ export interface IActionBarProps extends RouteComponentProps<any> {
     onComponentViewChange: (type: ComponentViewTypes) => void;
 }
 
-class ActionBar extends React.Component<IActionBarProps, {}> {
+export interface IActionBarClassNameContract {
+    actionBar: string;
+    actionBar_componentViewToggles: string;
+}
+
+const styles: ComponentStyles<IActionBarClassNameContract, IDevSiteDesignSystem> = {
+    actionBar: {
+        display: "flex",
+        justifyContent: "flex-end"
+    },
+    actionBar_componentViewToggles: {
+        display: "flex"
+    }
+};
+
+class ActionBar extends React.Component<IActionBarProps & IManagedClasses<IActionBarClassNameContract>, {}> {
     public render(): JSX.Element {
         return (
-            <div style={{display: "flex"}}>
-                <ComponentViewToggle
-                    to={this.props.match.path}
-                    onClick={this.onComponentViewChangeCallback(ComponentViewTypes.detail)}
-                    label="View detail"
-                    current={this.isAriaCurrent(ComponentViewTypes.detail)}
-                    glyph={glyphPage}
-                />
-                <ComponentViewToggle
-                    to={this.props.match.path + `${ComponentViewTypes[ComponentViewTypes.examples]}/`}
-                    onClick={this.onComponentViewChangeCallback(ComponentViewTypes.examples)}
-                    label="View examples"
-                    current={this.isAriaCurrent(ComponentViewTypes.examples)}
-                    glyph={glyphExamples}
-                />
+            <div className={this.props.managedClasses.actionBar}>
+                <div className={this.props.managedClasses.actionBar_componentViewToggles}>
+                    <ComponentViewToggle
+                        to={this.props.match.path}
+                        onClick={this.onComponentViewChangeCallback(ComponentViewTypes.detail)}
+                        label="View detail"
+                        current={this.isAriaCurrent(ComponentViewTypes.detail)}
+                        glyph={glyphPage}
+                    />
+                    <ComponentViewToggle
+                        to={this.props.match.path + `${ComponentViewTypes[ComponentViewTypes.examples]}/`}
+                        onClick={this.onComponentViewChangeCallback(ComponentViewTypes.examples)}
+                        label="View examples"
+                        current={this.isAriaCurrent(ComponentViewTypes.examples)}
+                        glyph={glyphExamples}
+                    />
+                </div>
             </div>
         );
     }
@@ -57,4 +75,4 @@ class ActionBar extends React.Component<IActionBarProps, {}> {
     }
 }
 
-export default withRouter(ActionBar);
+export default withRouter(manageJss(styles)(ActionBar));
