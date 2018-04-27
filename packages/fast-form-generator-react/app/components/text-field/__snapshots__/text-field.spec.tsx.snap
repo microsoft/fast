@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`text-field text-field: 0 1`] = `
+<div>
+  <form
+    onSubmit={[Function]}
+  >
+    <h2>
+      Component with text-field
+    </h2>
+    <div>
+      <div>
+        <div>
+          <label>
+            tag
+          </label>
+          <select
+            onChange={[Function]}
+            value="span"
+          >
+            <option
+              value="span"
+            >
+              span
+            </option>
+            <option
+              value="button"
+            >
+              button
+            </option>
+          </select>
+          <div>
+            <label
+              htmlFor="text"
+            >
+              text
+            </label>
+            <textarea
+              id="text"
+              name="text"
+              onChange={[Function]}
+              rows={3}
+              value="example text"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+`;

@@ -1,0 +1,15 @@
+tslint.json
+tsconfig.json
+.babelrc
+.tmp/
+app/
+coverage/
+node_modules/
+scripts/
+src/
+
+# Tests
+__tests__/
+__snapshots__/
+*.spec.*
+*.test.*

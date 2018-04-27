@@ -1,0 +1,63 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Component with weighted properties",
+    "description": "A test component's schema definition.",
+    "type": "object",
+    "id": "weightProperties",
+    "properties": {
+        "title": {
+            "title": "title",
+            "type": "string"
+        },
+        "details": {
+            "title": "details",
+            "type": "string"
+        },
+        "tag": {
+            "title": "tag",
+            "type": "string",
+            "enum": [
+                "span",
+                "button"
+            ],
+            "default": "button"
+        },
+        "text": {
+            "title": "text",
+            "type": "string",
+            "example": "example text"
+        },
+        "alignHorizontal": {
+            "title": "align horizontal",
+            "type": "string",
+            "enum": [
+                "left",
+                "center",
+                "right"
+            ]
+        },
+        "alignVertical": {
+            "title": "align vertical",
+            "type": "string",
+            "enum": [
+                "top",
+                "bottom",
+                "center"
+            ]
+        },
+        "level": {
+            "title": "level",
+            "type": "number",
+            "example": 5
+        }
+    },
+    "required": [
+        "alignHorizontal",
+        "alignVertical",
+        "level",
+        "title",
+        "details",
+        "tag",
+        "text"
+    ]
+}

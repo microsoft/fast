@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`align-horizontal align-horizontal: 0 1`] = `
+<div>
+  <form
+    onSubmit={[Function]}
+  >
+    <h2>
+      Component with align horizontal
+    </h2>
+    <div>
+      <div>
+        <div>
+          <div>
+            <div>
+              <label
+                htmlFor="alignHorizontal"
+              >
+                align horizontal
+              </label>
+              <div>
+                <span>
+                  <input
+                    aria-label="left align"
+                    checked={true}
+                    id="alignHorizontal1"
+                    name="alignHorizontal"
+                    onChange={[Function]}
+                    type="radio"
+                    value="left"
+                  />
+                </span>
+                <span>
+                  <input
+                    aria-label="right align"
+                    checked={false}
+                    id="alignHorizontal3"
+                    name="alignHorizontal"
+                    onChange={[Function]}
+                    type="radio"
+                    value="right"
+                  />
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+`;
