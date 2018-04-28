@@ -2,27 +2,21 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import { Foundation, HandledProps } from "@microsoft/fast-components-react-base";
-import { IMSFTButtonHandledProps, IMSFTButtonManagedClasses, IMSFTButtonUnhandledProps } from "./button.props";
+import { IButtonHandledProps, IButtonManagedClasses, IButtonUnhandledProps } from "./button.props";
 import { IManagedClasses, IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import {
-    default as BaseButton,
-    IButtonClassNameContract,
-    IButtonHandledProps,
-    IButtonManagedClasses,
-    IButtonUnhandledProps,
-} from "@microsoft/fast-components-react-base/src/button";
+import { default as BaseButton } from "@microsoft/fast-components-react-base/src/button";
 
 /* tslint:disable-next-line */
-class Button extends Foundation<IMSFTButtonHandledProps & IManagedClasses<IMSFTButtonClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
-    protected handledProps: HandledProps<IMSFTButtonHandledProps & IManagedClasses<IMSFTButtonClassNameContract>> = {
+class Button extends Foundation<IButtonHandledProps & IManagedClasses<IMSFTButtonClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
+    protected handledProps: HandledProps<IButtonHandledProps & IManagedClasses<IMSFTButtonClassNameContract>> = {
         children: void 0,
+        disabled: void 0,
+        href: void 0,
         justified: void 0,
         lightweight: void 0,
         managedClasses: void 0,
         outline: void 0,
-        primary: void 0,
-        href: void 0,
-        disabled: void 0
+        primary: void 0
     };
 
     /**

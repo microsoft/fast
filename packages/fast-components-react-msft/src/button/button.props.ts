@@ -1,8 +1,8 @@
 import * as React from "react";
-import { IButtonHandledProps } from "@microsoft/fast-components-react-base";
+import { IButtonHandledProps as IBaseButtonHandledProps } from "@microsoft/fast-components-react-base";
 import { IManagedClasses, IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 
-export interface IMSFTButtonHandledProps extends IButtonHandledProps {
+export interface IButtonHandledProps extends IBaseButtonHandledProps {
     /**
      * The lightweight justified option
      */
@@ -24,6 +24,6 @@ export interface IMSFTButtonHandledProps extends IButtonHandledProps {
     primary?: boolean;
 }
 
-export interface IMSFTButtonUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
-export interface IMSFTButtonManagedClasses extends IManagedClasses<IMSFTButtonClassNameContract> {}
-export type MSFTButtonProps = IButtonHandledProps & IMSFTButtonUnhandledProps & IMSFTButtonManagedClasses;
+export interface IButtonUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
+export interface IButtonManagedClasses extends IManagedClasses<IMSFTButtonClassNameContract> {}
+export type ButtonProps = IButtonHandledProps & IButtonUnhandledProps & IButtonManagedClasses;

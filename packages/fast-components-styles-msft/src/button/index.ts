@@ -2,10 +2,9 @@ import { IDesignSystem } from "../design-system";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { toPx } from "@microsoft/fast-jss-utilities";
+import { Direction, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
 import { applyType } from "../utilities/typography";
 import * as Chroma from "chroma-js";
-import { isNullOrUndefined } from "util";
 
 function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
     return {
@@ -167,7 +166,8 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = {
     },
     button_justified: {
         ...applyTransaprentBackplateStyles(),
-        padding: `${toPx(23)} ${toPx(2)} ${toPx(2)} 0`
+        // padding: `${toPx(23)} ${toPx(2)} ${toPx(2)} 0`
+        padding: localizeSpacing(Direction.ltr)(`${toPx(23)} ${toPx(2)} ${toPx(2)} 0`)
     },
     button_span: {
         position: "relative",
