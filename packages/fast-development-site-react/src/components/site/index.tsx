@@ -179,7 +179,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                         {this.getRootToc(this.props.children, SiteSlot.category, route.route, "/")}
                     </ul>
                 </ShellPane>
-                <ShellCanvas >
+                <ShellCanvas>
                     <ShellActionBar>
                         <ActionBar
                             onComponentViewChange={this.onComponentViewChange}
