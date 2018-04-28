@@ -1,0 +1,15 @@
+<svg width="16" height="16" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="Canvas" fill="none">
+<g id="Group">
+<g id="Vector">
+<path d="M 4 2.9L 5.6 3.8L 5 4.8L 3.4 3.9L 3.4 5.8L 2.3 5.8L 2.3 3.9L 0.6 4.8L -3.8147e-07 3.8L 1.7 2.9L 0.1 2L 0.7 1L 2.2 1.9L 2.2 2.38419e-08L 3.3 2.38419e-08L 3.3 1.9L 4.9 1L 5.5 2L 4 2.9Z" transform="translate(10.3999 1.09998)" fill="black"/>
+</g>
+<g id="Vector_2">
+<path d="M 4 2.9L 5.6 3.8L 5 4.8L 3.4 3.9L 3.4 5.8L 2.2 5.8L 2.2 3.9L 0.6 4.8L 4.76837e-08 3.8L 1.6 2.9L 4.76837e-08 2L 0.6 1L 2.2 1.9L 2.2 -1.90735e-07L 3.3 -1.90735e-07L 3.3 1.9L 4.9 1L 5.5 2L 4 2.9Z" transform="translate(1.19995 10.2)" fill="black"/>
+</g>
+<g id="Vector_3">
+<path d="M 0 8L 0 0L 8 0L 8 8L 0 8ZM 1 1L 1 7L 7 7L 7 1L 1 1ZM 14.4 13.1L 16 14L 15.4 15L 13.8 14.1L 13.8 16L 12.7 16L 12.7 14.1L 11 15.1L 10.4 14.1L 12 13.2L 10.4 12.3L 11 11.3L 12.6 12.2L 12.6 10.3L 13.7 10.3L 13.7 12.2L 15.3 11.3L 15.9 12.3L 14.4 13.1Z" fill="black"/>
+</g>
+</g>
+</g>
+</svg>
