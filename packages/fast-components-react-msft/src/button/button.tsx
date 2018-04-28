@@ -58,9 +58,9 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IMSFTButto
     private generateInnerContent(): React.ReactElement<HTMLSpanElement> | (React.ReactNode | React.ReactNode[]) {
         if (this.props.lightweight || this.props.justified) {
             return <span className={get(this.props, "managedClasses.button_span")}>{this.props.children}</span>;
-        } else {
-            return this.props.children;
         }
+
+        return this.props.children;
     }
 }
 
