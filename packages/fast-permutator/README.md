@@ -9,7 +9,7 @@ const permutator = require('@microsoft/fast-permutator');
 ```
 
 ### Permutating data sets
-The main export of the permutator is to recieve a schema and any schema references. For example, take this simple schema:
+The main export of the permutator is to receive a schema and any schema references. For example, take this simple schema:
 
 ```javascript
 let schema = {
@@ -87,7 +87,7 @@ permutator.resolveSchemaProps(schema, ['$ref', 'allOf']);
 ```
 
 ## Developing
-Contribute to the ES6 source files in the lib folder.
+Contribute to the ES6 source files in the `lib` folder.
 
 ## Testing
 Run `npm run test` to test the exposed utilities and schemas
