@@ -166,7 +166,6 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = {
     },
     button_justified: {
         ...applyTransaprentBackplateStyles(),
-        // padding: `${toPx(23)} ${toPx(2)} ${toPx(2)} 0`
         padding: localizeSpacing(Direction.ltr)(`${toPx(23)} ${toPx(2)} ${toPx(2)} 0`)
     },
     button_span: {

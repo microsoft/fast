@@ -30,7 +30,7 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IButtonCla
             <this.tag
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
-                {...this.renderDisabled()}
+                {...this.renderDisabledAttribute()}
             >
                 {this.props.children}
             </this.tag>
@@ -47,7 +47,7 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IButtonCla
     /**
      * Stores HTML tag for use in render
      */
-    private renderDisabled(): object {
+    private renderDisabledAttribute(): object {
         if (this.props.disabled === true) {
             return this.tag === ButtonHTMLTags.a ? {"aria-disabled": true} : {"disabled": true};
         }
