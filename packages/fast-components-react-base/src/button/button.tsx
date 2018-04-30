@@ -2,22 +2,25 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "../foundation";
-import { ButtonHTMLTags, IButtonHandledProps, IButtonManagedClasses, IButtonUnhandledProps } from "./button.props";
+import { IButtonHandledProps, IButtonManagedClasses, IButtonUnhandledProps } from "./button.props";
 import { IButtonClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+
+/**
+ * Button HTML tags
+ */
+export enum ButtonHTMLTags {
+    a = "a",
+    button = "button"
+}
 
 /* tslint:disable-next-line */
 class Button extends Foundation<IButtonHandledProps & IManagedClasses<IButtonClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
     protected handledProps: HandledProps<IButtonHandledProps & IManagedClasses<IButtonClassNameContract>> = {
-        managedClasses: void 0,
-        tag: void 0
+        children: void 0,
+        disabled: void 0,
+        href: void 0,
+        managedClasses: void 0
     };
-
-    /**
-     * Stores HTML tag for use in render
-     */
-    private get tag(): string {
-        return this.generateHTMLTag();
-    }
 
     /**
      * Renders the component
@@ -27,6 +30,7 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IButtonCla
             <this.tag
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
+                {...this.renderDisabledAttribute()}
             >
                 {this.props.children}
             </this.tag>
@@ -41,16 +45,19 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IButtonCla
     }
 
     /**
-     * Creates tags for rendering based on href
+     * Stores HTML tag for use in render
      */
-    private generateHTMLTag(): string {
-        switch (this.props.tag) {
-            case ButtonHTMLTags.a:
-                return "a";
-            case ButtonHTMLTags.button:
-            default:
-                return "button";
+    private renderDisabledAttribute(): object {
+        if (this.props.disabled === true) {
+            return this.tag === ButtonHTMLTags.a ? {"aria-disabled": true} : {"disabled": true};
         }
+    }
+
+    /**
+     * Stores HTML tag for use in render
+     */
+    private get tag(): string {
+        return typeof this.props.href === "string" ? ButtonHTMLTags.a : ButtonHTMLTags.button;
     }
 }
 
