@@ -19,6 +19,10 @@ export default class CreateRule {
         this.renderComponents(state);
     }
 
+    /**
+     * Renders custom JSX components in place of HTML
+     * generated from the markdown-it package
+     */
     private renderComponents = (state: IState): void => {
 
         for (let i: number = 0, tokenLength: number = state.tokens.length; i < tokenLength; i++) {

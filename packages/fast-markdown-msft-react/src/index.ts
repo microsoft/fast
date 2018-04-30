@@ -44,6 +44,10 @@ class FastMarkdownIt {
         };
     }
 
+    /**
+     * Due to special characters such as {, }, < and > being interpreted by React
+     * as meaningful characters, these are replaced with the HTML code versions
+     */
     private replaceSpecialCharacters = (content: string): string => {
         return content.replace(/{/g, "&#123;").replace(/}/g, "&#125;").replace(/</g, "&#60;").replace(/>/g, "&#62;");
     }
