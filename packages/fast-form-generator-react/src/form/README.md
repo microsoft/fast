@@ -28,9 +28,6 @@ It controls:
 ##### `onUpdateActiveSection`
 The `onUpdateActiveSection` is a callback that takes the `schemaLocation`, `dataLocation` and `schema`. It will update the `componentTracker`, `activeSchemaLocation` and `activeDataLocation`.
 
-##### `Breadcrumbs`
-The `Form` uses the `Breadcrumb` module from fluent web to generate a list of linked breadcrumbs that when clicked will activate the section of the schema they relate to. If they are related to a different component, this will be checked by the component tracker
-
 ##### `componentTracker`
 The `componentTracker` keeps track of the `dataLocation`, `schemaLocation` and `schema`. If a user moves into a child element, this adds a new component to be tracked by the component tracker. If the user moves 'up' the tree (via breadcrumbs) all sub items from the section selected will be removed from the `componentTracker`.
 
