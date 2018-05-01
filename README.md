@@ -1,6 +1,6 @@
 
 # What is FAST-DNA
-FAST-DNA stands for Fast, Adaptive, Secure, and Timeless Design Network Architecture. A set of resources that can be used to accelerate building Web sites and applications.
+FAST-DNA is a set of resources and components that can be used to accelerate building Web sites and applications.
 
 Teams spend significant time building parts of the design system (colors, variable font, typography, grid, components, etc.) which can slow adoption of the latest design guidance and related technologies. FAST-DNA solves this problem by providing resources to accelerate development with code that is performant and accessible. The resources work with multiple component frameworks such as (Fabric, MWF, Foundation, etc.) as well as JavaScript frameworks and libraries (React, Angular, Vue, etc.).
 
