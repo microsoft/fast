@@ -88,6 +88,10 @@
     "yargs": "^11.0.0"
   },
   "dependencies": {
-    "@microsoft/fast-jest-snapshots-react": "^1.0.0"
+    "@microsoft/fast-components-class-name-contracts-base": "^1.0.0",
+    "@microsoft/fast-glyphs-msft": "^1.0.0",
+    "@microsoft/fast-jest-snapshots-react": "^1.0.0",
+    "@microsoft/fast-jss-manager": "^1.0.0",
+    "@microsoft/fast-jss-utilities": "^1.0.0"
   }
 }
