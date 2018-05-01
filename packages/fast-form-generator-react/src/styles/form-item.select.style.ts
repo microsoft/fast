@@ -1,5 +1,11 @@
 import { Direction, ellipsis, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
 
+function applypaddingStyle(): any {
+    return {
+        padding: localizeSpacing(Direction.ltr)(`${toPx(8)} ${toPx(24)} ${toPx(8)} ${toPx(8)}`)
+    };
+}
+
 const styles: any = {
     form_item_select_wrapper: {
         display: "flex",
@@ -45,7 +51,7 @@ const styles: any = {
         borderRadius: "2px",
         boxShadow: "inset 0px 0px 4px rgba(0, 0, 0, 0.08)",
         appearance: "none",
-        padding: localizeSpacing(Direction.ltr)(`${toPx(8)} ${toPx(24)} ${toPx(8)} ${toPx(8)}`),
+        ...applypaddingStyle(),
         border: "none",
         outline: "none",
         "&:-ms-expand": {
@@ -57,7 +63,7 @@ const styles: any = {
         }
     },
     form_item_select_option: {
-        padding: localizeSpacing(Direction.ltr)(`${toPx(8)} ${toPx(24)} ${toPx(8)} ${toPx(8)}`)
+        ...applypaddingStyle()
     }
 };
 
