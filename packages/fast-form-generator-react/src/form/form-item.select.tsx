@@ -1,6 +1,6 @@
 import * as React from "react";
 import IFormItemCommon from "./form-item";
-import { SelectStyles } from "../styles/";
+import { default as SelectStyles } from "./form-item.select.style";
 import { IFormItemSelectClassNameContract } from "../class-name-contracts/";
 import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
@@ -33,13 +33,13 @@ class FormItemSelect extends Foundation<IFormItemSelectProps & IManagedClasses<I
         }
 
         return (
-            <div className={this.props.managedClasses.form_item_select_wrapper}>
-                <label className={this.props.managedClasses.form_item_select_label}>
+            <div className={this.props.managedClasses.formItemSelect}>
+                <label className={this.props.managedClasses.formItemSelect_label}>
                     {this.props.label}
                 </label>
-                <span className={this.props.managedClasses.form_item_select_span}>
+                <span className={this.props.managedClasses.formItemSelect_span}>
                     <select
-                        className={this.props.managedClasses.form_item_select_input}
+                        className={this.props.managedClasses.formItemSelect_input}
                         onChange={this.handleChange}
                         value={this.props.data || this.props.default || this.props.options[0]}
                     >
@@ -68,7 +68,7 @@ class FormItemSelect extends Foundation<IFormItemSelectProps & IManagedClasses<I
         return this.props.options.map((item: any, index: number) => {
             return (
                 <option
-                    className={this.props.managedClasses.form_item_select_option}
+                    className={this.props.managedClasses.formItemSelect_option}
                     key={index}
                     value={item}
                 >

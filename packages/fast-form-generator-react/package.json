@@ -54,6 +54,7 @@
   "devDependencies": {
     "@microsoft/fast-components-react-base": "^1.0.0",
     "@microsoft/fast-development-site-react": "^1.0.0",
+    "@microsoft/fast-jest-snapshots-react": "^1.0.0",
     "@microsoft/fast-jss-manager-react": "^1.0.0",
     "@microsoft/fast-permutator": "^0.1.0-beta.0",
     "@microsoft/fast-tslint-rules": "^1.0.4",
@@ -89,8 +90,6 @@
   },
   "dependencies": {
     "@microsoft/fast-components-class-name-contracts-base": "^1.0.0",
-    "@microsoft/fast-glyphs-msft": "^1.0.0",
-    "@microsoft/fast-jest-snapshots-react": "^1.0.0",
     "@microsoft/fast-jss-manager": "^1.0.0",
     "@microsoft/fast-jss-utilities": "^1.0.0"
   }
