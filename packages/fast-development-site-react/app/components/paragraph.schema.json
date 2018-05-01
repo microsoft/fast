@@ -1,0 +1,14 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Paragraph",
+    "description": "A paragraph component's schema definition.",
+    "type": "object",
+    "id": "paragraph",
+    "properties": {
+        "text": {
+            "title": "text",
+            "type": "string",
+            "example": "Submit"
+        }
+    }
+}

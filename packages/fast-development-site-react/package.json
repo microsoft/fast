@@ -24,6 +24,7 @@
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'"
   },
   "dependencies": {
+    "@microsoft/fast-form-generator-react": "^1.0.4",
     "@microsoft/fast-jss-manager-react": "^1.0.4",
     "@microsoft/fast-jss-utilities": "^1.0.4"
   },
@@ -54,7 +55,6 @@
     "yargs": "^11.0.0"
   },
   "peerDependencies": {
-    "@types/react-router": "^4.0.0",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
     "react-router-dom": "^4.0.0"

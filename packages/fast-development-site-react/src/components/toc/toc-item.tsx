@@ -9,6 +9,7 @@ export interface ITocItemProps {
     to?: string;
     controls?: string;
     onToggleExpand?: () => void;
+    onClick?: () => void;
     heading: boolean;
     active: boolean;
 }
@@ -83,7 +84,7 @@ class TocItem extends React.Component<ITocItemProps & IManagedClasses<ITocItemMa
 
     private renderLink(): JSX.Element {
         return (
-            <Link to={this.props.to} className={this.props.managedClasses.tocItem_anchor}>
+            <Link to={this.props.to} className={this.props.managedClasses.tocItem_anchor} onClick={this.props.onClick}>
                 {this.props.children}
             </Link>
         );
