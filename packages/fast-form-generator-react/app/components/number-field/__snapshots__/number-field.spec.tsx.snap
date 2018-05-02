@@ -11,34 +11,49 @@ exports[`number-field number-field: 0 1`] = `
     <div>
       <div>
         <div>
-          <label>
-            level
-          </label>
-          <select
-            onChange={[Function]}
-            value={1}
+          <div
+            className={undefined}
           >
-            <option
-              value={1}
+            <label
+              className={undefined}
             >
-              1
-            </option>
-            <option
-              value={2}
+              level
+            </label>
+            <span
+              className={undefined}
             >
-              2
-            </option>
-            <option
-              value={3}
-            >
-              3
-            </option>
-            <option
-              value={4}
-            >
-              4
-            </option>
-          </select>
+              <select
+                className={undefined}
+                onChange={[Function]}
+                value={1}
+              >
+                <option
+                  className={undefined}
+                  value={1}
+                >
+                  1
+                </option>
+                <option
+                  className={undefined}
+                  value={2}
+                >
+                  2
+                </option>
+                <option
+                  className={undefined}
+                  value={3}
+                >
+                  3
+                </option>
+                <option
+                  className={undefined}
+                  value={4}
+                >
+                  4
+                </option>
+              </select>
+            </span>
+          </div>
           <div>
             <label
               htmlFor="quantity"

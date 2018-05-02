@@ -106,29 +106,43 @@ exports[`weight-properties weight-properties: 0 1`] = `
                 </div>
               </div>
             </div>
-            <label>
-              align vertical
-            </label>
-            <select
-              onChange={[Function]}
-              value="top"
+            <div
+              className={undefined}
             >
-              <option
-                value="top"
+              <label
+                className={undefined}
               >
-                top
-              </option>
-              <option
-                value="bottom"
+                align vertical
+              </label>
+              <span
+                className={undefined}
               >
-                bottom
-              </option>
-              <option
-                value="center"
-              >
-                center
-              </option>
-            </select>
+                <select
+                  className={undefined}
+                  onChange={[Function]}
+                  value="top"
+                >
+                  <option
+                    className={undefined}
+                    value="top"
+                  >
+                    top
+                  </option>
+                  <option
+                    className={undefined}
+                    value="bottom"
+                  >
+                    bottom
+                  </option>
+                  <option
+                    className={undefined}
+                    value="center"
+                  >
+                    center
+                  </option>
+                </select>
+              </span>
+            </div>
             <div>
               <label
                 htmlFor="level"
@@ -151,24 +165,37 @@ exports[`weight-properties weight-properties: 0 1`] = `
             <h3>
               Developer
             </h3>
-            <label>
-              tag
-            </label>
-            <select
-              onChange={[Function]}
-              value="span"
+            <div
+              className={undefined}
             >
-              <option
-                value="span"
+              <label
+                className={undefined}
               >
-                span
-              </option>
-              <option
-                value="button"
+                tag
+              </label>
+              <span
+                className={undefined}
               >
-                button
-              </option>
-            </select>
+                <select
+                  className={undefined}
+                  onChange={[Function]}
+                  value="span"
+                >
+                  <option
+                    className={undefined}
+                    value="span"
+                  >
+                    span
+                  </option>
+                  <option
+                    className={undefined}
+                    value="button"
+                  >
+                    button
+                  </option>
+                </select>
+              </span>
+            </div>
           </div>
         </div>
       </div>
