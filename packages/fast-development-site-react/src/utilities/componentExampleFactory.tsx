@@ -8,7 +8,7 @@ export default function componentExampleFactory<T>(examples: any, componentExamp
     return examples[componentExample].data.map((componentExampleData: any, index: number) => {
         return (
             <SiteCategoryItem key={index} slot={"canvas"}>
-                <DesignSystemProvider designSystem={designSystem ? designSystem : null}>
+                <DesignSystemProvider designSystem={designSystem ? designSystem : void 0}>
                     <Component {...componentExampleData} />
                 </DesignSystemProvider>
             </SiteCategoryItem>
