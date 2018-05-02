@@ -1,2 +1,2 @@
 # FAST - JSS Utilities
-Utilities specific to JSS (JavaScript Style Sheets) packages intended to be shared across different frameworks. For example, React, Angular, or Vue.
+This package (@microsoft/fast-jss-utilities) is a collection of utilities intended to be used with JSS (JavaScript Style Sheets) projects.
