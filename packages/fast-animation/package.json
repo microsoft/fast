@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-animation",
-  "version": "0.0.12-beta.0",
   "description": "An animation library that simplifies interactions and animations using the Web Animation API.",
+  "version": "1.0.4",
   "license": "MIT",
   "main": "dist/index.js",
   "repository": {

@@ -1,6 +1,7 @@
 {
   "name": "@microsoft/fast-glyphs-msft",
   "description": "Microsoft SVG Glyphs",
+  "version": "1.0.4",
   "keywords": [
     "svg"
   ],
@@ -8,7 +9,6 @@
     "name": "Microsoft",
     "email": "fwq@microsoft.com"
   },
-  "version": "1.0.0",
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {

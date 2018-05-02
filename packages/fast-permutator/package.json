@@ -1,11 +1,11 @@
 {
   "name": "@microsoft/fast-permutator",
   "description": "Creates all possible permutations of a component based on its JSON Schema.",
+  "version": "1.0.4",
   "author": {
     "name": "Fluent Web",
     "email": "fwq@microsoft.com"
   },
-  "version": "0.1.0-beta.0",
   "license": "MIT",
   "repository": {
     "type": "git",

@@ -1,11 +1,11 @@
 {
   "name": "@microsoft/fast-colors",
   "description": "A color utility for generating a range of colors from a single color",
+  "version": "1.0.4",
   "author": {
       "name": "Microsoft",
       "email": "fwq@microsoft.com"
   },
-  "version": "1.0.0",
   "license": "MIT",
   "repository": {
     "type": "git",

@@ -1,11 +1,11 @@
 {
   "name": "@microsoft/fast-components-react-msft",
+  "version": "1.0.4",
   "description": "FAST Microsoft components implemented in React",
   "author": {
     "name": "Microsoft",
     "email": "fwq@microsoft.com"
   },
-  "version": "1.0.0",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -49,9 +49,9 @@
     ]
   },
   "devDependencies": {
-    "@microsoft/fast-development-site-react": "^1.0.0",
-    "@microsoft/fast-glyphs-msft": "^1.0.0",
-    "@microsoft/fast-jest-snapshots-react": "^1.0.0",
+    "@microsoft/fast-development-site-react": "^1.0.4",
+    "@microsoft/fast-glyphs-msft": "^1.0.4",
+    "@microsoft/fast-jest-snapshots-react": "^1.0.4",
     "@microsoft/fast-tslint-rules": "^1.0.4",
     "@types/jest": "^22.2.0",
     "@types/lodash-es": "^4.17.0",
@@ -84,9 +84,9 @@
     "react-dom": "^16.3.0"
   },
   "dependencies": {
-    "@microsoft/fast-components-class-name-contracts-msft": "^1.0.0",
-    "@microsoft/fast-components-react-base": "^1.0.0",
-    "@microsoft/fast-components-styles-msft": "^1.0.0",
-    "@microsoft/fast-jss-manager-react": "^1.0.0"
+    "@microsoft/fast-components-class-name-contracts-msft": "^1.0.4",
+    "@microsoft/fast-components-react-base": "^1.0.4",
+    "@microsoft/fast-components-styles-msft": "^1.0.4",
+    "@microsoft/fast-jss-manager-react": "^1.0.4"
   }
 }

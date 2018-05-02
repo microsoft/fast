@@ -1,11 +1,11 @@
 {
   "name": "@microsoft/fast-jest-snapshots-react",
   "description": "A small utility for automating Jest snapshot creation of React components",
+  "version": "1.0.4",
   "author": {
     "name": "Microsoft",
     "email": "fwq@microsoft.com"
   },
-  "version": "1.0.0",
   "license": "MIT",
   "repository": {
     "type": "git",

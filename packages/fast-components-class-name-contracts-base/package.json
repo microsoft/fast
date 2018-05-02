@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-components-class-name-contracts-base",
-  "version": "1.0.0",
   "description": "Type descriptions for the classnames that any given component can expect as props.",
+  "version": "1.0.4",
   "author": {
     "name": "Microsoft",
     "email": "fwq@microsoft.com"

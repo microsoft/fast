@@ -1,11 +1,11 @@
 {
   "name": "@microsoft/fast-jss-manager-react",
   "description": "React HOC for managing component JSS stylesheets",
+  "version": "1.0.4",
   "author": {
     "name": "Microsoft",
     "email": "fwq@microsoft.com"
   },
-  "version": "1.0.0",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -91,6 +91,6 @@
     "prop-types": "^15.0.0"
   },
   "dependencies": {
-    "@microsoft/fast-jss-manager": "^1.0.0"
+    "@microsoft/fast-jss-manager": "^1.0.4"
   }
 }
