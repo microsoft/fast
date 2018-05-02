@@ -31,7 +31,7 @@ function render(): void {
                         </SiteCategoryIcon>
                     </SiteCategory>
                     <SiteCategory slot={"category"} name={"Components"}>
-                        {componentFactory(examples)}
+                        {componentFactory(examples, DesignSystemDefaults)}
                     </SiteCategory>
                 </Site>
             </DesignSystemProvider>
