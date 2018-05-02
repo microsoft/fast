@@ -1,26 +1,28 @@
 import { Direction, ellipsis, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
+import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
+import { IFormItemSelectClassNameContract } from "../class-name-contracts/";
 
-function applypaddingStyle(): any {
+function applypaddingStyle(): ICSSRules<{}> {
     return {
         padding: localizeSpacing(Direction.ltr)(`${toPx(8)} ${toPx(24)} ${toPx(8)} ${toPx(8)}`)
     };
 }
 
-const styles: any = {
-    form_item_select_wrapper: {
+const styles: ComponentStyles<IFormItemSelectClassNameContract, {}> = {
+    formItemSelect: {
         display: "flex",
         alignItems: "center",
         flexDirection: "row",
         paddingTop: toPx(8)
     },
-    form_item_select_label: {
+    formItemSelect_label: {
         flexGrow: "1",
         lineHeight: toPx(16),
         fontSize: toPx(14),
         marginRight: toPx(16),
         ...ellipsis()
     },
-    form_item_select_span: {
+    formItemSelect_span: {
         position: "relative",
         display: "flex",
         flexGrow: "1",
@@ -43,7 +45,7 @@ const styles: any = {
             transform: "rotate(-45deg)"
         }
     },
-    form_item_select_input: {
+    formItemSelect_input: {
         flexGrow: "1",
         lineHeight: toPx(16),
         fontSize: toPx(14),
@@ -62,7 +64,7 @@ const styles: any = {
             color: "black"
         }
     },
-    form_item_select_option: {
+    formItemSelect_option: {
         ...applypaddingStyle()
     }
 };
