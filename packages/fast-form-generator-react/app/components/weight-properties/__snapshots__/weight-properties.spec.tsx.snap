@@ -106,29 +106,43 @@ exports[`weight-properties weight-properties: 0 1`] = `
                 </div>
               </div>
             </div>
-            <label>
-              align vertical
-            </label>
-            <select
-              onChange={[Function]}
-              value="top"
+            <div
+              className="formItemSelect-0-1-1"
             >
-              <option
-                value="top"
+              <label
+                className="formItemSelect_label-0-1-2"
               >
-                top
-              </option>
-              <option
-                value="bottom"
+                align vertical
+              </label>
+              <span
+                className="formItemSelect_span-0-1-3"
               >
-                bottom
-              </option>
-              <option
-                value="center"
-              >
-                center
-              </option>
-            </select>
+                <select
+                  className="formItemSelect_input-0-1-4"
+                  onChange={[Function]}
+                  value="top"
+                >
+                  <option
+                    className="formItemSelect_option-0-1-5"
+                    value="top"
+                  >
+                    top
+                  </option>
+                  <option
+                    className="formItemSelect_option-0-1-5"
+                    value="bottom"
+                  >
+                    bottom
+                  </option>
+                  <option
+                    className="formItemSelect_option-0-1-5"
+                    value="center"
+                  >
+                    center
+                  </option>
+                </select>
+              </span>
+            </div>
             <div>
               <label
                 htmlFor="level"
@@ -151,24 +165,37 @@ exports[`weight-properties weight-properties: 0 1`] = `
             <h3>
               Developer
             </h3>
-            <label>
-              tag
-            </label>
-            <select
-              onChange={[Function]}
-              value="span"
+            <div
+              className="formItemSelect-0-1-6"
             >
-              <option
-                value="span"
+              <label
+                className="formItemSelect_label-0-1-7"
               >
-                span
-              </option>
-              <option
-                value="button"
+                tag
+              </label>
+              <span
+                className="formItemSelect_span-0-1-8"
               >
-                button
-              </option>
-            </select>
+                <select
+                  className="formItemSelect_input-0-1-9"
+                  onChange={[Function]}
+                  value="span"
+                >
+                  <option
+                    className="formItemSelect_option-0-1-10"
+                    value="span"
+                  >
+                    span
+                  </option>
+                  <option
+                    className="formItemSelect_option-0-1-10"
+                    value="button"
+                  >
+                    button
+                  </option>
+                </select>
+              </span>
+            </div>
           </div>
         </div>
       </div>
