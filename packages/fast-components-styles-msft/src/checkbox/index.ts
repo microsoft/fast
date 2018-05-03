@@ -28,6 +28,26 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = {
             width: "1px",
             backgroundColor: "black"
         },
+        "&:focus": {
+            outline: "none",
+            borderWidth: toPx(2),
+            "&:checked": {
+                "&:before": {
+                    left: toPx(5),
+                    top: toPx(9)
+                },
+                "&:after": {
+                    left: toPx(10),
+                    top: toPx(4)
+                }
+            },
+            "&:indeterminate": {
+                "&:before": {
+                    left: toPx(4),
+                    top: toPx(4)
+                }
+            }
+        },
         "&:checked": {
             "&:before": {
                 height: "5px",
@@ -50,9 +70,6 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = {
                 height: toPx(10),
                 width: toPx(10)
             }
-        },
-        "&:focus": {
-            outline: "none"
         }
     },
     checkbox_label: {
