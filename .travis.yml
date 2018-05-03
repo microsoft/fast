@@ -4,6 +4,7 @@ node_js:
 install:
   - npm install 
   - lerna bootstrap
+  - travis_wait mvn install
 dist: trusty
 sudo: false
 env:
