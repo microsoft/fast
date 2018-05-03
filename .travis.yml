@@ -3,8 +3,7 @@ node_js:
   - "lts/*"
 install:
   - npm install 
-  - lerna bootstrap
-  - travis_wait mvn install
+  - travis_wait lerna bootstrap
 dist: trusty
 sudo: false
 env:
