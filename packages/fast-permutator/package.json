@@ -16,7 +16,7 @@
   "registry": "https://registry.npmjs.org/",
   "scripts": {
     "prepare": "babel src --presets babel-preset-es2015 --out-dir dist",
-    "test": "npm run eslint && npm run unit-test",
+    "test": "npm run eslint && npm run unit-tests",
     "eslint": "eslint src/**",
     "unit-tests": "jest"
   },

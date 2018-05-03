@@ -17,10 +17,10 @@
     "email": "fwq@microsoft.com"
   },
   "scripts": {
-    "build:dist": "webpack --config webpack/webpack.react.config.js",
+    "build:app": "webpack --config webpack/webpack.react.config.js",
     "prepare": "tsc -p ./lib/tsconfig.json",
     "start": "node_modules/.bin/webpack-dev-server --config webpack/webpack.react.config.js --progress",
-    "test": "npm run unit-tests && npm run build:dist",
+    "test": "npm run unit-tests && npm run build:app",
     "tslint": "tslint -c ./tslint.json '**/*.ts{,x}'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'",
     "unit-tests": "jest"
