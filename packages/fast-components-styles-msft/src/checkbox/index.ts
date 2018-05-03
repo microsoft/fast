@@ -11,29 +11,44 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = {
         flexDirection: "row"
     },
     checkbox_input: {
+        position: "relative",
         cursor: "pointer",
         width: toPx(20),
         height: toPx(20),
         appearance: "none",
         border: `${toPx(1)} solid`,
+        borderRadius: toPx(2),
         borderColor: (config: IDesignSystem): string => {
             return Chroma.mix(config.foregroundColor, config.backgroundColor, 0.46).css();
         },
-        "&:after": {
-            content: "''",
+        "&:after, &:before": {
+            position: "absolute",
             display: "block",
-            transform: "scale(0)",
-            transition: "transform .2s",
-            position: "absolute"
+            content: "''",
+            width: "1px",
+            backgroundColor: "black"
         },
         "&:checked": {
+            "&:before": {
+                height: "5px",
+                left: "5px",
+                top: "9px",
+                transform: "rotate(-45deg)"
+            },
             "&:after": {
-                width: "3px",
-                height: "9px",
-                backgroundColor: "black",
-                left: "11px",
-                top: "6px",
-                transform: "scale(1)"
+                height: "11px",
+                left: "10px",
+                top: "4px",
+                transform: "rotate(45deg)"
+            }
+        },
+        "&:indeterminate": {
+            "&:before": {
+                display: "block",
+                left: toPx(4),
+                top: toPx(4),
+                height: toPx(10),
+                width: toPx(10)
             }
         },
         "&:focus": {

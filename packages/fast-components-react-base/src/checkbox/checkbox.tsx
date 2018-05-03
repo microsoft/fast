@@ -46,6 +46,7 @@ class Checkbox extends Foundation<ICheckboxHandledProps & ICheckboxManagedClasse
      */
     public componentDidMount(): void {
         this.applyIndeterminateState();
+        this.setState({checked: this.props.checked});
     }
 
     /**
