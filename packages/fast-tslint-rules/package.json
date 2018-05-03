@@ -1,6 +1,7 @@
 {
   "name": "@microsoft/fast-tslint-rules",
   "description": "tslint rules for FAST projects",
+  "version": "1.0.4",
   "keywords": [
     "tslint",
     "typescript"
@@ -9,7 +10,6 @@
     "name": "Microsoft",
     "email": "fwq@microsoft.com"
   },
-  "version": "1.0.4",
   "license": "MIT",
   "repository": {
     "type": "git",

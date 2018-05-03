@@ -1,11 +1,11 @@
 {
   "name": "@microsoft/fast-development-site-react",
   "description": "FAST development testing site for React",
+  "version": "1.0.4",
   "author": {
     "name": "Microsoft",
     "email": "fwq@microsoft.com"
   },
-  "version": "1.0.0",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -23,11 +23,11 @@
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'"
   },
   "dependencies": {
-    "@microsoft/fast-jss-manager-react": "^1.0.0",
-    "@microsoft/fast-jss-utilities": "^1.0.0"
+    "@microsoft/fast-jss-manager-react": "^1.0.4",
+    "@microsoft/fast-jss-utilities": "^1.0.4"
   },
   "devDependencies": {
-    "@microsoft/fast-glyphs-msft": "^1.0.0",
+    "@microsoft/fast-glyphs-msft": "^1.0.4",
     "@microsoft/fast-tslint-rules": "^1.0.4",
     "@polymer/polymer": "^3.0.0-pre.10",
     "@types/node": "^9.6.7",

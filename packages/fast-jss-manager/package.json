@@ -1,11 +1,11 @@
 {
   "name": "@microsoft/fast-jss-manager",
   "description": "Provides common code to all JSS manager implementations.",
+  "version": "1.0.4",
   "author": {
     "name": "Microsoft",
     "email": "fwq@microsoft.com"
   },
-  "version": "1.0.0",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -28,7 +28,7 @@
     "typescript": "^2.7.2"
   },
   "dependencies": {
-    "@microsoft/fast-components-class-name-contracts-base": "^1.0.0"
+    "@microsoft/fast-components-class-name-contracts-base": "^1.0.4"
   },
   "peerDependencies": {
     "csstype": "^2.3.0"
