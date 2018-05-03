@@ -25,40 +25,44 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = {
             position: "absolute",
             display: "block",
             content: "''",
-            width: "1px",
-            backgroundColor: "black"
+            width: toPx(1),
+            // TODO: Issue #309 https://github.com/Microsoft/fast-dna/issues/309
+            // background: (config: IDesignSystem): string => {
+            //     return config.foregroundColor;
+            // },
+            background: "black"
         },
         "&:focus": {
             outline: "none",
             borderWidth: toPx(2),
             "&:checked": {
                 "&:before": {
-                    left: toPx(5),
-                    top: toPx(9)
+                    left: toPx(4),
+                    top: toPx(8)
                 },
                 "&:after": {
-                    left: toPx(10),
-                    top: toPx(4)
+                    left: toPx(9),
+                    top: toPx(3)
                 }
             },
             "&:indeterminate": {
                 "&:before": {
-                    left: toPx(4),
-                    top: toPx(4)
+                    left: toPx(3),
+                    top: toPx(3)
                 }
             }
         },
         "&:checked": {
             "&:before": {
-                height: "5px",
-                left: "5px",
-                top: "9px",
+                height: toPx(5),
+                left: toPx(5),
+                top: toPx(9),
                 transform: "rotate(-45deg)"
             },
             "&:after": {
-                height: "11px",
-                left: "10px",
-                top: "4px",
+                height: toPx(11),
+                left: toPx(10),
+                top: toPx(4),
                 transform: "rotate(45deg)"
             }
         },
