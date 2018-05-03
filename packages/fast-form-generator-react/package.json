@@ -44,6 +44,8 @@
     ]
   },
   "peerDependencies": {
+    "@microsoft/fast-components-react-base": "^1.0.4",
+    "@microsoft/fast-jss": "^1.0.4",
     "@microsoft/fast-jss-manager-react": "^1.0.4",
     "@microsoft/fast-permutator": "^1.0.4",
     "lodash-es": "^4.0.0",
@@ -55,6 +57,7 @@
   "devDependencies": {
     "@microsoft/fast-components-react-base": "^1.0.4",
     "@microsoft/fast-development-site-react": "^1.0.4",
+    "@microsoft/fast-jest-snapshots-react": "^1.0.4",
     "@microsoft/fast-jss-manager-react": "^1.0.4",
     "@microsoft/fast-permutator": "^1.0.4",
     "@microsoft/fast-tslint-rules": "^1.0.4",
@@ -89,6 +92,8 @@
     "yargs": "^11.0.0"
   },
   "dependencies": {
-    "@microsoft/fast-jest-snapshots-react": "^1.0.4"
+    "@microsoft/fast-components-class-name-contracts-base": "^1.0.4",
+    "@microsoft/fast-jss-manager": "^1.0.4",
+    "@microsoft/fast-jss-utilities": "^1.0.4"
   }
 }
