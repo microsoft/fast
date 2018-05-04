@@ -45,10 +45,13 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = {
                     top: toPx(3)
                 }
             },
-            "&:indeterminate": {
+            "&:indeterminate, &:indeterminate:checked": {
                 "&:before": {
                     left: toPx(3),
                     top: toPx(3)
+                },
+                "&:after": {
+                    display: "none"
                 }
             }
         },
@@ -66,13 +69,17 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = {
                 transform: "rotate(45deg)"
             }
         },
-        "&:indeterminate": {
+        "&:indeterminate, &:indeterminate:checked": {
             "&:before": {
                 display: "block",
+                transform: "none",
                 left: toPx(4),
                 top: toPx(4),
                 height: toPx(10),
                 width: toPx(10)
+            },
+            "&:after": {
+                display: "none"
             }
         }
     },
