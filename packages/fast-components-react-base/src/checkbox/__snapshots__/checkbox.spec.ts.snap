@@ -5,10 +5,10 @@ exports[`checkbox checkbox: 0 1`] = `
   className="checkbox"
 >
   <input
-    checked={undefined}
     className="checkbox-input"
+    defaultChecked={undefined}
     disabled={undefined}
-    onChange={undefined}
+    onChange={[Function]}
     type="checkbox"
   />
   <span
@@ -22,10 +22,10 @@ exports[`checkbox checkbox: 1 1`] = `
   className="checkbox"
 >
   <input
-    checked={undefined}
     className="checkbox-input"
+    defaultChecked={undefined}
     disabled={undefined}
-    onChange={undefined}
+    onChange={[Function]}
     type="checkbox"
   />
   <span
@@ -39,10 +39,10 @@ exports[`checkbox checkbox: 2 1`] = `
   className="checkbox"
 >
   <input
-    checked={undefined}
     className="checkbox-input"
+    defaultChecked={undefined}
     disabled={undefined}
-    onChange={undefined}
+    onChange={[Function]}
     type="checkbox"
   />
   <span
@@ -56,10 +56,61 @@ exports[`checkbox checkbox: 3 1`] = `
   className="checkbox"
 >
   <input
-    checked={undefined}
     className="checkbox-input"
+    defaultChecked={undefined}
     disabled={undefined}
-    onChange={undefined}
+    onChange={[Function]}
+    type="checkbox"
+  />
+  <span
+    className="checkbox-label"
+  />
+</label>
+`;
+
+exports[`checkbox checkbox: 4 1`] = `
+<label
+  className="checkbox"
+>
+  <input
+    className="checkbox-input"
+    defaultChecked={true}
+    disabled={undefined}
+    onChange={[Function]}
+    type="checkbox"
+  />
+  <span
+    className="checkbox-label"
+  />
+</label>
+`;
+
+exports[`checkbox checkbox: 5 1`] = `
+<label
+  className="checkbox"
+>
+  <input
+    className="checkbox-input"
+    defaultChecked={true}
+    disabled={undefined}
+    onChange={[Function]}
+    type="checkbox"
+  />
+  <span
+    className="checkbox-label"
+  />
+</label>
+`;
+
+exports[`checkbox checkbox: 6 1`] = `
+<label
+  className="checkbox checkbox-disabled"
+>
+  <input
+    className="checkbox-input"
+    defaultChecked={undefined}
+    disabled={true}
+    onChange={[Function]}
     type="checkbox"
   />
   <span
