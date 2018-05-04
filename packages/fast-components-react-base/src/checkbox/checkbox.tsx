@@ -35,7 +35,7 @@ class Checkbox extends Foundation<ICheckboxHandledProps & ICheckboxManagedClasse
         super(props);
 
         this.state = {
-            checked: this.props.checked
+            checked: this.props.checked || false
         };
 
         this.inputRef = React.createRef();
@@ -109,8 +109,12 @@ class Checkbox extends Foundation<ICheckboxHandledProps & ICheckboxManagedClasse
     /**
      * Handles onChange as a controlled component
      */
-    private handleCheckboxChange = (): void => {
+    private handleCheckboxChange = (e: any): void => {
         this.setState({checked: !this.state.checked});
+
+        if (this.props.onChange) {
+            this.props.onChange(e);
+        }
     }
 }
 

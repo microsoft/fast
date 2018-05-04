@@ -31,11 +31,17 @@ export interface ICheckboxHandledProps {
     indeterminate?: boolean;
 
     /**
+     * The onChange event handler
+     */
+    onChange?: CheckboxOnChange;
+
+    /**
      * The textual content
      */
     text?: string;
 }
 
 export interface ICheckboxUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
+export type CheckboxOnChange = (event?: React.ChangeEvent<HTMLElement>) => void;
 export interface ICheckboxManagedClasses extends IManagedClasses<ICheckboxClassNameContract> {}
 export type CheckboxProps = ICheckboxHandledProps & ICheckboxUnhandledProps & ICheckboxManagedClasses;
