@@ -269,6 +269,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                             key={index}
                             onClick={this.handleComponentClick}
                             index={index}
+                            designSystem={componentItem.props.designSystem}
                             active={index === this.state.activeComponentIndex}
                         >
                             <route.componentMapping {...this.state.componentData[route.route][index]} />
