@@ -46,8 +46,7 @@
     ]
   },
   "peerDependencies": {
-    "@microsoft/fast-components-react-base": "^1.0.4",
-    "@microsoft/fast-jss": "^1.0.4",
+    "@microsoft/fast-jss-manager": "^1.0.4",
     "@microsoft/fast-jss-manager-react": "^1.0.4",
     "@microsoft/fast-jss-utilities": "^1.0.4",
     "@microsoft/fast-permutator": "^1.0.4",
@@ -59,9 +58,8 @@
   },
   "devDependencies": {
     "@microsoft/fast-components-class-name-contracts-base": "^1.0.4",
-    "@microsoft/fast-components-react-base": "^1.0.4",
     "@microsoft/fast-jest-snapshots-react": "^1.0.4",
-    "@microsoft/fast-jss": "^1.0.4",
+    "@microsoft/fast-jss-manager": "^1.0.4",
     "@microsoft/fast-jss-manager-react": "^1.0.4",
     "@microsoft/fast-jss-utilities": "^1.0.4",
     "@microsoft/fast-permutator": "^1.0.4",

@@ -83,7 +83,9 @@ export default class App extends React.Component<{}, IAppState> {
         return (
             <DesignSystemProvider designSystem={designSystemDefaults}>
                 <div>
-                    <div>
+                    <div
+                        style={{width: "300px", height: "100vh", background: "rgb(244, 245, 246)", float: "left"}}
+                    >
                         <Form {...this.coerceFormProps()} />
                     </div>
                     <div>

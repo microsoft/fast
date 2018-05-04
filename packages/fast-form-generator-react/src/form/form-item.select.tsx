@@ -4,7 +4,6 @@ import styles from "./form-item.select.style";
 import { IFormItemSelectClassNameContract } from "../class-name-contracts/";
 import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import { Foundation, HandledProps, IFoundationProps } from "@microsoft/fast-components-react-base";
 
 /**
  * Select state interface
@@ -22,7 +21,7 @@ export interface IFormItemSelectProps extends IFormItemCommon {
  * @extends React.Component
  */
 /* tslint:disable-next-line */
-class FormItemSelect extends Foundation<IFormItemSelectProps & IManagedClasses<IFormItemSelectClassNameContract>, React.Component<IFormItemSelectProps>, {}> {
+class FormItemSelect extends React.Component<IFormItemSelectProps & IManagedClasses<IFormItemSelectClassNameContract>, {}> {
 
     /**
      * Renders the component
