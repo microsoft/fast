@@ -67,7 +67,6 @@
     "watch": "^1.0.2"
   },
   "peerDependencies": {
-    "@microsoft/fast-components-react-msft": "^1.0.4",
     "react": "^16.3.1",
     "react-dom": "^16.3.1"
   },

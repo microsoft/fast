@@ -5,12 +5,14 @@ import { IDevSiteDesignSystem } from "../design-system";
 
 export interface IShellPaneProps {
     collapsed?: boolean;
+    hidden?: boolean;
 }
 
 export interface IShellPaneManagedClasses {
     shellPane: string;
     shellPane__collapsed: string;
     shellPane__expanded: string;
+    shellPane__hidden: string;
 }
 
 const style: ComponentStyles<IShellPaneManagedClasses, IDevSiteDesignSystem> = {
@@ -26,6 +28,9 @@ const style: ComponentStyles<IShellPaneManagedClasses, IDevSiteDesignSystem> = {
     },
     shellPane__expanded: {
         width: toPx(300)
+    },
+    shellPane__hidden: {
+        display: "none"
     }
 };
 
@@ -33,7 +38,7 @@ class ShellPane extends React.Component<IShellPaneProps & IManagedClasses<IShell
 
     public render(): JSX.Element {
         return (
-            <div className={this.props.managedClasses.shellPane}>
+            <div className={this.getClassNames()}>
                 <div className={this.getInnerDivClassNames()}>
                     {this.props.children}
                 </div>
@@ -41,8 +46,16 @@ class ShellPane extends React.Component<IShellPaneProps & IManagedClasses<IShell
         );
     }
 
+    private getClassNames(): string {
+        return this.props.hidden
+            ? this.props.managedClasses.shellPane__hidden
+            : this.props.managedClasses.shellPane;
+    }
+
     private getInnerDivClassNames(): string {
-        return this.props.collapsed ? this.props.managedClasses.shellPane__collapsed : this.props.managedClasses.shellPane__expanded;
+        return this.props.collapsed
+            ? this.props.managedClasses.shellPane__collapsed
+            : this.props.managedClasses.shellPane__expanded;
     }
 }
 

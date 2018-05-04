@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 export interface ISiteCategoryProps {
     slot: string;
     name: string;
+    component?: any;
+    schema?: any;
 }
 
 class SiteCategory extends React.Component<ISiteCategoryProps, {}> {

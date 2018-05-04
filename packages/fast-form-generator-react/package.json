@@ -10,8 +10,8 @@
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "clean:dist": "node ../../build/clean.js dist",
     "build:app": "webpack --progress",
@@ -46,9 +46,9 @@
     ]
   },
   "peerDependencies": {
-    "@microsoft/fast-components-react-base": "^1.0.4",
-    "@microsoft/fast-jss": "^1.0.4",
+    "@microsoft/fast-jss-manager": "^1.0.4",
     "@microsoft/fast-jss-manager-react": "^1.0.4",
+    "@microsoft/fast-jss-utilities": "^1.0.4",
     "@microsoft/fast-permutator": "^1.0.4",
     "lodash-es": "^4.0.0",
     "react": "^16.0.0",
@@ -57,10 +57,11 @@
     "tv4": "^1.3.0"
   },
   "devDependencies": {
-    "@microsoft/fast-components-react-base": "^1.0.4",
-    "@microsoft/fast-development-site-react": "^1.0.4",
+    "@microsoft/fast-components-class-name-contracts-base": "^1.0.4",
     "@microsoft/fast-jest-snapshots-react": "^1.0.4",
+    "@microsoft/fast-jss-manager": "^1.0.4",
     "@microsoft/fast-jss-manager-react": "^1.0.4",
+    "@microsoft/fast-jss-utilities": "^1.0.4",
     "@microsoft/fast-permutator": "^1.0.4",
     "@microsoft/fast-tslint-rules": "^1.0.4",
     "@types/jest": "^22.2.2",
@@ -92,10 +93,5 @@
     "webpack-cli": "^2.0.14",
     "webpack-dev-server": "^3.1.3",
     "yargs": "^11.0.0"
-  },
-  "dependencies": {
-    "@microsoft/fast-components-class-name-contracts-base": "^1.0.4",
-    "@microsoft/fast-jss-manager": "^1.0.4",
-    "@microsoft/fast-jss-utilities": "^1.0.4"
   }
 }

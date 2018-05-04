@@ -2,11 +2,13 @@ import Toc, { TocItem } from "../toc";
 import * as React from "react";
 import manageJss, { ComponentStyles, DesignSystemProvider, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { glyphBuildingblocks, glyphGlobalnavbutton } from "@microsoft/fast-glyphs-msft";
+import Form from "@microsoft/fast-form-generator-react";
 import { uniqueId } from "lodash-es";
 import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
 import Shell, { ShellActionBar, ShellCanvas, ShellHeader, ShellInfoBar, ShellPane, ShellPaneCollapse, ShellRow, ShellSlot } from "../shell";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { ellipsis, toPx } from "@microsoft/fast-jss-utilities";
+import ComponentWrapper from "./component-wrapper";
 import CategoryList from "./category-list";
 import SiteMenu from "./menu";
 import SiteMenuItem from "./menu-item";
@@ -24,12 +26,21 @@ export interface ISiteProps {
 
 export interface IComponentRoute {
     route: string;
+    schema: any;
+    componentMapping: any;
     component: JSX.Element[];
 }
 
+export interface IComponentData {
+    [T: string]: any[];
+}
+
 export interface ISiteState {
+    activeComponentIndex: number;
+    componentData: IComponentData;
     tableOfContentsCollapsed: boolean;
     componentView: ComponentViewTypes;
+    formView: boolean;
 }
 
 export enum SiteSlot {
@@ -94,8 +105,11 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         super(props);
 
         this.state = {
+            activeComponentIndex: 0,
             tableOfContentsCollapsed: this.props.collapsed || false,
-            componentView: ComponentViewTypes.examples
+            componentView: ComponentViewTypes.examples,
+            componentData: this.getComponentData(),
+            formView: true
         };
     }
 
@@ -106,7 +120,12 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                     <Shell>
                         {this.renderShellHeader()}
                         <Switch>
-                            <Route exact={true} path={"/"} component={this.renderShellRow.bind(this, {component: null, route: "/"})} />
+                            <Route
+                                exact={true}
+                                path={"/"}
+                            >
+                                {this.renderShellRow({component: null, route: "/"} as IComponentRoute)}
+                            </Route>
                             {this.renderRoutes()}
                             <Route path="*" component={NotFound} />
                         </Switch>
@@ -125,6 +144,22 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 componentView: this.getComponentViewTypesByLocation()
             });
         }
+    }
+
+    /**
+     * Gets the component data for each of the routes
+     */
+    private getComponentData(): IComponentData {
+        const componentData: IComponentData = {};
+
+        this.getRoutes((this.props.children as JSX.Element), "/", SiteSlot.category).forEach((route: IComponentRoute) => {
+            componentData[route.route] = [];
+            route.component.forEach((routeChild: JSX.Element, index: number) => {
+                componentData[route.route][index] = routeChild.props.data;
+            });
+        });
+
+        return componentData;
     }
 
     /**
@@ -153,8 +188,9 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
             <Route
                 key={path}
                 path={path}
-                component={this.renderShellRow.bind(this, route)}
-            />
+            >
+                {this.renderShellRow(route)}
+            </Route>
         );
     }
 
@@ -171,7 +207,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
 
     private renderShellRow(route: IComponentRoute): JSX.Element {
         return (
-            <ShellRow>
+            <ShellRow key={route.route}>
                 <ShellPane collapsed={this.state.tableOfContentsCollapsed}>
                     {this.getPaneCollapseToggle()}
                     {this.getChildrenBySlot(this, ShellSlot.pane)}
@@ -183,21 +219,81 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                     <ShellActionBar>
                         <ActionBar
                             onComponentViewChange={this.onComponentViewChange}
+                            onFormToggle={this.onFormToggle}
                             componentView={this.state.componentView}
+                            formView={this.state.formView}
                         />
                     </ShellActionBar>
                     <ComponentView>
                         {this.getChildrenBySlot(this, ShellSlot.canvas)}
-                        {route.component}
+                        {this.getComponentByRoute(route)}
                     </ComponentView>
                 </ShellCanvas>
+                <ShellPane hidden={!this.state.formView}>
+                    {this.generateForm(route.component, route.schema, route.route)}
+                </ShellPane>
             </ShellRow>
         );
+    }
+
+    private handleComponentDataChange = (data: any): void => {
+        const pathName: string = this.getComponentViewTypesByLocation() === ComponentViewTypes.detail
+            ? window.location.pathname
+            : window.location.pathname.slice(0, window.location.pathname.length - 9);
+        const componentData: IComponentData = Object.assign({}, this.state.componentData);
+        componentData[pathName][this.state.activeComponentIndex] = data;
+
+        this.setState({
+            componentData
+        });
+    }
+
+    private generateForm(component: JSX.Element[], schema: any, route: string): JSX.Element {
+        if (component && schema) {
+            return (
+                <Form
+                    schema={schema}
+                    data={Object.assign({}, this.state.componentData[route][this.state.activeComponentIndex])}
+                    onChange={this.handleComponentDataChange.bind(route)}
+                />
+            );
+        }
+    }
+
+    private getComponentByRoute(route: IComponentRoute): JSX.Element[] {
+        if (route.component) {
+            return route.component.map((componentItem: JSX.Element, index: number) => {
+                if (route.componentMapping) {
+                    return (
+                        <ComponentWrapper
+                            key={index}
+                            onClick={this.handleComponentClick}
+                            index={index}
+                            active={index === this.state.activeComponentIndex}
+                        >
+                            <route.componentMapping {...this.state.componentData[route.route][index]} />
+                        </ComponentWrapper>
+                    );
+                }
+            });
+        }
+    }
+
+    private handleComponentClick = (activeIndex: number): void => {
+        this.setState({
+            activeComponentIndex: activeIndex
+        });
     }
 
     private onComponentViewChange = (type: ComponentViewTypes): void => {
         this.setState({
             componentView: type
+        });
+    }
+
+    private onFormToggle = (): void => {
+        this.setState({
+            formView: !this.state.formView
         });
     }
 
@@ -233,7 +329,9 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         if (slotItems && slotItems.length > 0) {
             currentRoute.push({
                 route: this.convertToHyphenated(itemRoute),
-                component: slotItems
+                component: slotItems,
+                schema: item.props.schema,
+                componentMapping: item.props.component
             });
         }
 
@@ -326,7 +424,12 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
             active,
             heading: child && child.props ? !Boolean(child.props.children) : false,
             to: void(0),
-            controls: contentId
+            controls: contentId,
+            onClick: (e: React.MouseEvent<HTMLButtonElement>): void => {
+                this.setState({
+                    activeComponentIndex: 0
+                });
+            }
         };
 
         if (this.hasCanvasContent(items)) {

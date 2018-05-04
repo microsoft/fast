@@ -1,11 +1,15 @@
 import * as React from "react";
 
-class Paragraph extends React.Component<{}, {}> {
+export interface IParagraphProps {
+    text: string;
+}
+
+class Paragraph extends React.Component<IParagraphProps, {}> {
 
     public render(): JSX.Element {
         return (
             <p>
-                {this.props.children}
+                {this.props.text}
             </p>
         );
     }
