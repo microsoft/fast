@@ -50,7 +50,7 @@ const styles: ComponentStyles<IFormItemSelectClassNameContract, {}> = {
         lineHeight: toPx(16),
         fontSize: toPx(14),
         backgroundColor: "rgba(0, 0, 0, 0.04)",
-        borderRadius: "2px",
+        borderRadius: toPx(2),
         boxShadow: "inset 0px 0px 4px rgba(0, 0, 0, 0.08)",
         appearance: "none",
         ...applypaddingStyle(),
@@ -58,10 +58,6 @@ const styles: ComponentStyles<IFormItemSelectClassNameContract, {}> = {
         outline: "none",
         "&:-ms-expand": {
             display: "none"
-        },
-        "&:-ms-value": {
-            background: "white",
-            color: "black"
         }
     },
     formItemSelect_option: {
