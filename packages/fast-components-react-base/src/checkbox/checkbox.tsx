@@ -3,7 +3,7 @@ import * as ReactDOM from "react-dom";
 import Foundation, { HandledProps } from "../foundation";
 import { CheckboxHTMLTags, CheckboxProps, ICheckboxHandledProps, ICheckboxManagedClasses, ICheckboxUnhandledProps } from "./checkbox.props";
 import { ICheckboxClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import { get } from "lodash-es";
+import { get, isUndefined } from "lodash-es";
 
 /**
  * Checkbox state interface
@@ -46,7 +46,9 @@ class Checkbox extends Foundation<ICheckboxHandledProps & ICheckboxManagedClasse
      */
     public componentDidMount(): void {
         this.applyIndeterminateState();
-        this.setState({checked: this.props.checked});
+        if (!isUndefined(this.props.checked)) {
+            this.setState({checked: this.props.checked});
+        }
     }
 
     /**
@@ -110,7 +112,9 @@ class Checkbox extends Foundation<ICheckboxHandledProps & ICheckboxManagedClasse
      * Handles onChange as a controlled component
      */
     private handleCheckboxChange = (e: any): void => {
-        this.setState({checked: !this.state.checked});
+        if (isUndefined(this.props.checked) || this.props.indeterminate) {
+            this.setState({checked: !this.state.checked});
+        }
 
         if (this.props.onChange) {
             this.props.onChange(e);
