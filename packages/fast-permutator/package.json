@@ -16,7 +16,9 @@
   "registry": "https://registry.npmjs.org/",
   "scripts": {
     "prepare": "babel src --presets babel-preset-es2015 --out-dir dist",
-    "test": "eslint src/** && jest"
+    "test": "npm run eslint && npm run unit-tests",
+    "eslint": "eslint src/**",
+    "unit-tests": "jest"
   },
   "jest": {
     "collectCoverage": true,
