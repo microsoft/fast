@@ -1,4 +1,5 @@
 import * as React from "react";
+import { toPx } from "@microsoft/fast-jss-utilities";
 import { Link, withRouter } from "react-router-dom";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { IDevSiteDesignSystem } from "../design-system";
@@ -8,8 +9,8 @@ export interface IComponentViewToggleClassNameContract {
 }
 const styles: ComponentStyles<IComponentViewToggleClassNameContract, IDevSiteDesignSystem> = {
     componentViewToggle: {
-        width: "40px",
-        height: "40px",
+        width: toPx(40),
+        height: toPx(40),
         display: "flex",
         position: "relative",
         alignItems: "center",
@@ -19,10 +20,10 @@ const styles: ComponentStyles<IComponentViewToggleClassNameContract, IDevSiteDes
                 content: "''",
                 position: "absolute",
                 display: "block",
-                width: "32px",
-                left: "4px",
-                bottom: "0px",
-                height: "2px",
+                width: toPx(32),
+                left: toPx(4),
+                bottom: toPx(0),
+                height: toPx(2),
                 // TODO: use callback with brand-color when #342 is fixed
                 background: "pink"
             }

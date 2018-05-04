@@ -41,16 +41,16 @@ export interface IActionBarClassNameContract {
 function menuButtonBase(): ICSSRules<IDevSiteDesignSystem> {
     return {
         position: "relative",
-        height: "40px",
+        height: toPx(40),
         border: "none",
         background: "none",
         padding: "0",
         "& span": {
-            width: "16px",
-            height: "16px",
-            marginRight: "5px",
+            width: toPx(16),
+            height: toPx(16),
+            marginRight: toPx(5),
             display: "inline-block",
-            fontSize: "16px",
+            fontSize: toPx(16),
             verticalAlign: "text-bottom"
         }
     };
@@ -79,7 +79,7 @@ const styles: ComponentStyles<IActionBarClassNameContract, IDevSiteDesignSystem>
             display: "block",
             width: "100%",
             bottom: "0",
-            height: "2px",
+            height: toPx(2),
             // TODO: use callback with brand-color when #342 is fixed
             background: "pink"
         }
