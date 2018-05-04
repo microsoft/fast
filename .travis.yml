@@ -17,7 +17,7 @@ before_script:
   - ./cc-test-reporter before-build
 script:
   - lerna run tslint
-  - lerna run unit-tests
+  - lerna run unit-tests --maxWorkers=4
   - lerna run build:production
   - lerna run build:dist
   - lerna run build:app
