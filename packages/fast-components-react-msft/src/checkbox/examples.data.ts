@@ -24,6 +24,7 @@ export default {
         },
         {
             indeterminate: true,
+            checked: true,
             text: "Indeterminate"
         }
     ]

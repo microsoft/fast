@@ -31,6 +31,19 @@ const examples: ISnapshotTestSuite<ICheckboxHandledProps & ICheckboxManagedClass
         {
             ...classes,
             tag: CheckboxHTMLTags.label
+        },
+        {
+            ...classes,
+            checked: true
+        },
+        {
+            ...classes,
+            indeterminate: true,
+            checked: true
+        },
+        {
+            ...classes,
+            disabled: true
         }
     ]
 };
