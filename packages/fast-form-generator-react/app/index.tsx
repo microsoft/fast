@@ -11,7 +11,6 @@ import {
     IFormOrderByPropertyNamesProps,
     IFormProps
 } from "../src/form/form.props";
-import { Shell, ShellActionBar, ShellCanvas, ShellHeader, ShellInfoBar, ShellPane, ShellRow } from "@microsoft/fast-development-site-react";
 import * as testComponents from "./components";
 
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
@@ -83,25 +82,21 @@ export default class App extends React.Component<{}, IAppState> {
     public render(): JSX.Element {
         return (
             <DesignSystemProvider designSystem={designSystemDefaults}>
-                <Shell>
-                    <ShellHeader>FAST form generator</ShellHeader>
-                    <ShellRow>
-                        <ShellPane>
-                            <Form {...this.coerceFormProps()} />
-                        </ShellPane>
-                        <ShellCanvas>
-                            <ShellActionBar>
-                                <select onChange={this.handleComponentUpdate}>
-                                    {this.getComponentOptions()}
-                                </select>
-                            </ShellActionBar>
-                            <this.state.currentComponent
-                                {...this.state.currentComponentData}
-                            />
-                        </ShellCanvas>
-                    </ShellRow>
-                    <ShellInfoBar />
-                </Shell>
+                <div>
+                    <div>
+                        <Form {...this.coerceFormProps()} />
+                    </div>
+                    <div>
+                        <div>
+                            <select onChange={this.handleComponentUpdate}>
+                                {this.getComponentOptions()}
+                            </select>
+                        </div>
+                        <this.state.currentComponent
+                            {...this.state.currentComponentData}
+                        />
+                    </div>
+                </div>
             </DesignSystemProvider>
         );
     }
