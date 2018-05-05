@@ -19,7 +19,7 @@
     "tslint": "tslint -c ./tslint.json '**/*.ts'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts'",
     "test": "npm run tslint && npm run unit-tests",
-    "unit-tests": "jest",
+    "unit-tests": "jest --maxWorkers=4",
     "prepare": "npm run clean:dist && tsc -p ./tsconfig.json"
   },
   "jest": {

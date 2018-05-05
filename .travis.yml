@@ -16,14 +16,8 @@ before_script:
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
 script:
-  - lerna run tslint
-  - lerna run unit-tests --maxWorkers=4
-  - lerna run build:production
-  - lerna run build:dist
-  - lerna run build:app
-  - lerna run build:interface
-  - lerna run build:chrome
-  - lerna run eslint
+  - lerna run test --stream
+
 after_script:
   # See https://github.com/codeclimate/test-reporter/issues/263
   - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
