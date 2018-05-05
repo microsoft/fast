@@ -20,6 +20,11 @@ export interface IActionBarProps extends RouteComponentProps<any> {
     formView: boolean;
 
     /**
+     * The current viewable state of the Dev Tools
+     */
+    devToolsView: boolean;
+
+    /**
      * A callback to get called when the app's ComponentView should be changed
      */
     onComponentViewChange: (type: ComponentViewTypes) => void;
@@ -28,6 +33,11 @@ export interface IActionBarProps extends RouteComponentProps<any> {
      * A callback to get called when the pane containing the form changes visibility
      */
     onFormToggle: () => void;
+
+    /**
+     * A callback to get called when the dev tools changes visibility
+     */
+    onDevToolsToggle: () => void;
 }
 
 export interface IActionBarClassNameContract {
@@ -41,10 +51,13 @@ export interface IActionBarClassNameContract {
 function menuButtonBase(): ICSSRules<IDevSiteDesignSystem> {
     return {
         position: "relative",
-        height: toPx(40),
+        height: toPx(34),
         border: "none",
+        borderRadius: toPx(3),
         background: "none",
-        padding: "0",
+        padding: `0 ${toPx(12)}`,
+        margin: `${toPx(3)}`,
+        fontSize: toPx(14),
         "& span": {
             width: toPx(16),
             height: toPx(16),
@@ -73,16 +86,7 @@ const styles: ComponentStyles<IActionBarClassNameContract, IDevSiteDesignSystem>
     },
     actionBar_menu_button__active: {
         ...menuButtonBase(),
-        "&:after": {
-            content: "''",
-            position: "absolute",
-            display: "block",
-            width: "100%",
-            bottom: "0",
-            height: toPx(2),
-            // TODO: use callback with brand-color when #342 is fixed
-            background: "pink"
-        }
+        background: "#EBEBEB"
     }
 };
 
@@ -91,9 +95,12 @@ class ActionBar extends React.Component<IActionBarProps & IManagedClasses<IActio
         return (
             <div className={this.props.managedClasses.actionBar}>
                 <div className={this.props.managedClasses.actionBar_menu}>
-                    <button className={this.getActionBarMenuButtonClassNames()} onClick={this.props.onFormToggle}>
+                    <button className={this.getActionBarMenuButtonClassNames("configure")} onClick={this.props.onFormToggle}>
                         <span dangerouslySetInnerHTML={{__html: glyphBuildingblocks}} />
                         Configure
+                    </button>
+                    <button className={this.getActionBarMenuButtonClassNames("view")} onClick={this.props.onDevToolsToggle}>
+                        Dev Tools
                     </button>
                 </div>
                 <div className={this.props.managedClasses.actionBar_componentViewToggles}>
@@ -116,8 +123,11 @@ class ActionBar extends React.Component<IActionBarProps & IManagedClasses<IActio
         );
     }
 
-    private getActionBarMenuButtonClassNames(): string {
-        if (this.props.formView) {
+    private getActionBarMenuButtonClassNames(type: string): string {
+        if (
+            (this.props.formView && type === "configure") ||
+            (this.props.devToolsView && type === "view")
+        ) {
             return this.props.managedClasses.actionBar_menu_button__active;
         }
 

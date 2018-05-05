@@ -31,6 +31,7 @@ const style: ComponentStyles<ITocMenuManagedClasses, IDevSiteDesignSystem> = {
         position: "relative",
         width: "100%",
         fontFamily: "inherit",
+        fontSize: toPx(14),
         padding: `${toPx(10)} ${toPx(24)}`,
         textAlign: "left",
         "&[aria-expanded='true']": {
