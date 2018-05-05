@@ -15,7 +15,6 @@ before_script:
   - "./cc-test-reporter before-build"
 script:
   - lerna run test --stream
-
 after_script:
   # See https://github.com/codeclimate/test-reporter/issues/263
   - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then 
