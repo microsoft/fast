@@ -22,7 +22,7 @@
     "tslint": "tslint -c ./tslint.json '**/*.ts'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts'",
     "tslint:watch": "node build/tslint-watch.js",
-    "unit-tests": "jest",
+    "unit-tests": "jest --maxWorkers=4",
     "unit-tests:watch": "jest --watch"
   },
   "jest": {
