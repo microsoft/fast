@@ -1,5 +1,6 @@
 import { Direction, ellipsis, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
+import { applyInputStyle, applyLabelStyle, applyWrapperStyle } from "../utilities/form-input.shared-style.style";
 import { IFormItemSelectClassNameContract } from "../class-name-contracts/";
 
 function applypaddingStyle(): ICSSRules<{}> {
@@ -10,17 +11,10 @@ function applypaddingStyle(): ICSSRules<{}> {
 
 const styles: ComponentStyles<IFormItemSelectClassNameContract, {}> = {
     formItemSelect: {
-        display: "flex",
-        alignItems: "center",
-        flexDirection: "row",
-        paddingTop: toPx(8)
+        ...applyWrapperStyle()
     },
     formItemSelect_label: {
-        flexGrow: "1",
-        lineHeight: toPx(16),
-        fontSize: toPx(14),
-        marginRight: toPx(16),
-        ...ellipsis()
+        ...applyLabelStyle()
     },
     formItemSelect_span: {
         position: "relative",

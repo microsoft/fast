@@ -1,6 +1,7 @@
 import { Direction, ellipsis, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IFormItemCheckboxClassNameContract } from "../class-name-contracts/";
+import { applyLabelStyle } from "../utilities/form-input.shared-style.style";
 
 const styles: ComponentStyles<IFormItemCheckboxClassNameContract, {}> = {
     formItemCheckbox: {
@@ -8,11 +9,7 @@ const styles: ComponentStyles<IFormItemCheckboxClassNameContract, {}> = {
         flexDirection: "row"
     },
     formItemCheckbox_label: {
-        flexGrow: "1",
-        lineHeight: toPx(16),
-        fontSize: toPx(14),
-        marginRight: toPx(16),
-        ...ellipsis()
+        ...applyLabelStyle()
     },
     formItemCheckbox_input: {
         position: "relative",

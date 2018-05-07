@@ -1,5 +1,9 @@
 import * as React from "react";
 import IFormItemCommon from "./form-item";
+import styles from "./form-item.textarea.style";
+import { IFormItemTextareaClassNameContract } from "../class-name-contracts/";
+import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 export interface IFormItemTextareaProps extends IFormItemCommon {
 
@@ -18,13 +22,19 @@ export interface IFormItemTextareaProps extends IFormItemCommon {
  * Schema form component definition
  * @extends React.Component
  */
-class FormItemTextarea extends React.Component<IFormItemTextareaProps, {}> {
+class FormItemTextarea extends React.Component<IFormItemTextareaProps & IManagedClasses<IFormItemTextareaClassNameContract>, {}> {
 
     public render(): JSX.Element {
         return (
-            <div>
-                <label htmlFor={this.props.dataLocation}>{this.props.label}</label>
+            <div className={this.props.managedClasses.formItemTextarea}>
+                <label
+                    htmlFor={this.props.dataLocation}
+                    className={this.props.managedClasses.formItemTextarea_label}
+                >
+                    {this.props.label}
+                </label>
                 <textarea
+                    className={this.props.managedClasses.formItemTextarea_textarea}
                     id={this.props.dataLocation}
                     name={this.props.dataLocation}
                     rows={typeof this.props.rows === "number" ? this.props.rows : 3}
@@ -40,4 +50,4 @@ class FormItemTextarea extends React.Component<IFormItemTextareaProps, {}> {
     }
 }
 
-export default FormItemTextarea;
+export default manageJss(styles)(FormItemTextarea);
