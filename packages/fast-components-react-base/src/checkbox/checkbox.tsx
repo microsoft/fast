@@ -46,9 +46,6 @@ class Checkbox extends Foundation<ICheckboxHandledProps & ICheckboxManagedClasse
      */
     public componentDidMount(): void {
         this.applyIndeterminateState();
-        if (!isUndefined(this.props.checked)) {
-            this.setState({checked: this.props.checked});
-        }
     }
 
     /**
@@ -70,8 +67,7 @@ class Checkbox extends Foundation<ICheckboxHandledProps & ICheckboxManagedClasse
                     type="checkbox"
                     ref={this.inputRef}
                     onChange={this.handleCheckboxChange}
-                    defaultChecked={this.state.checked}
-                    disabled={this.props.disabled}
+                    {...this.generateAttributes()}
                 />
                 <span className={get(this.props, "managedClasses.checkbox_label")}>
                     {this.props.text ? this.props.text : null}
@@ -91,6 +87,27 @@ class Checkbox extends Foundation<ICheckboxHandledProps & ICheckboxManagedClasse
         return super.generateClassNames(classes);
     }
 
+    private generateAttributes(): object {
+        const attributes: object = {};
+
+        /* tslint:disable:no-string-literal */
+        if (this.props.disabled) {
+            attributes["disabled"] = "disabled";
+        }
+
+        // If the author is not setting the checked state, we should let the checkbox manage itself
+        if (!isUndefined(this.props.checked)) {
+            if (this.props.onChange) {
+                attributes["checked"] = !!this.props.checked;
+            } else {
+                attributes["defaultChecked"] = !!this.props.checked;
+            }
+        }
+        /* tslint:enable:no-string-literal */
+
+        return attributes;
+    }
+
     /**
      * Stores HTML tag for use in render
      */
@@ -103,7 +120,7 @@ class Checkbox extends Foundation<ICheckboxHandledProps & ICheckboxManagedClasse
      * This method should be called after render because it relies on element references.
      */
     private applyIndeterminateState(): void {
-         if (this.props.indeterminate !== undefined && this.inputRef.current && this.state.checked) {
+         if (!isUndefined(this.props.indeterminate) && this.inputRef.current && this.state.checked) {
             this.inputRef.current.indeterminate = this.props.indeterminate;
         }
     }
@@ -111,7 +128,7 @@ class Checkbox extends Foundation<ICheckboxHandledProps & ICheckboxManagedClasse
     /**
      * Handles onChange as a controlled component
      */
-    private handleCheckboxChange = (e: any): void => {
+    private handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         if (isUndefined(this.props.checked) || this.props.indeterminate) {
             this.setState({checked: !this.state.checked});
         }
