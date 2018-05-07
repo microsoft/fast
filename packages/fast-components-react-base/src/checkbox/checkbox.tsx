@@ -106,6 +106,8 @@ class Checkbox extends Foundation<ICheckboxHandledProps & ICheckboxManagedClasse
             } else {
                 attributes["defaultChecked"] = !!this.props.checked;
             }
+        } else {
+            attributes["checked"] = this.state.checked;
         }
         /* tslint:enable:no-string-literal */
 
