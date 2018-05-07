@@ -4,7 +4,7 @@ import { get } from "lodash-es";
 import { Foundation, HandledProps } from "@microsoft/fast-components-react-base";
 import { IButtonHandledProps, IButtonManagedClasses, IButtonUnhandledProps } from "./button.props";
 import { IManagedClasses, IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { default as BaseButton } from "@microsoft/fast-components-react-base/src/button";
+import { Button as BaseButton } from "@microsoft/fast-components-react-base";
 
 /* tslint:disable-next-line */
 class Button extends Foundation<IButtonHandledProps & IManagedClasses<IMSFTButtonClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
