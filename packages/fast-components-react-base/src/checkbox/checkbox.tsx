@@ -15,12 +15,13 @@ export interface ICheckboxState {
 /* tslint:disable-next-line */
 class Checkbox extends Foundation<ICheckboxHandledProps & ICheckboxManagedClasses, ICheckboxUnhandledProps, ICheckboxState> {
     protected handledProps: HandledProps<ICheckboxHandledProps & IManagedClasses<ICheckboxClassNameContract>> = {
-        managedClasses: void 0,
-        text: void 0,
         checked: void 0,
-        indeterminate: void 0,
         disabled: void 0,
-        tag: void 0
+        indeterminate: void 0,
+        managedClasses: void 0,
+        onChange: void 0,
+        tag: void 0,
+        text: void 0
     };
 
     /**
@@ -87,6 +88,9 @@ class Checkbox extends Foundation<ICheckboxHandledProps & ICheckboxManagedClasse
         return super.generateClassNames(classes);
     }
 
+    /**
+     * Generates the correct attributes
+     */
     private generateAttributes(): object {
         const attributes: object = {};
 
