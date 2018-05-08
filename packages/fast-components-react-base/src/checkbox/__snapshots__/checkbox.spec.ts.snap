@@ -5,7 +5,9 @@ exports[`checkbox checkbox: 0 1`] = `
   className="checkbox"
 >
   <input
+    checked={false}
     className="checkbox-input"
+    disabled={null}
     onChange={[Function]}
     type="checkbox"
   />
@@ -20,7 +22,9 @@ exports[`checkbox checkbox: 1 1`] = `
   className="checkbox"
 >
   <input
+    checked={false}
     className="checkbox-input"
+    disabled={null}
     onChange={[Function]}
     type="checkbox"
   />
@@ -35,7 +39,9 @@ exports[`checkbox checkbox: 2 1`] = `
   className="checkbox"
 >
   <input
+    checked={false}
     className="checkbox-input"
+    disabled={null}
     onChange={[Function]}
     type="checkbox"
   />
@@ -50,7 +56,9 @@ exports[`checkbox checkbox: 3 1`] = `
   className="checkbox"
 >
   <input
+    checked={false}
     className="checkbox-input"
+    disabled={null}
     onChange={[Function]}
     type="checkbox"
   />
@@ -65,8 +73,9 @@ exports[`checkbox checkbox: 4 1`] = `
   className="checkbox"
 >
   <input
+    checked={true}
     className="checkbox-input"
-    defaultChecked={true}
+    disabled={null}
     onChange={[Function]}
     type="checkbox"
   />
@@ -81,8 +90,9 @@ exports[`checkbox checkbox: 5 1`] = `
   className="checkbox"
 >
   <input
+    checked={true}
     className="checkbox-input"
-    defaultChecked={true}
+    disabled={null}
     onChange={[Function]}
     type="checkbox"
   />
@@ -97,8 +107,9 @@ exports[`checkbox checkbox: 6 1`] = `
   className="checkbox checkbox-disabled"
 >
   <input
+    checked={false}
     className="checkbox-input"
-    disabled="disabled"
+    disabled={true}
     onChange={[Function]}
     type="checkbox"
   />
