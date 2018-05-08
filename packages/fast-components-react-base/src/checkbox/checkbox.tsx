@@ -68,7 +68,8 @@ class Checkbox extends Foundation<ICheckboxHandledProps & ICheckboxManagedClasse
                     type="checkbox"
                     ref={this.inputRef}
                     onChange={this.handleCheckboxChange}
-                    {...this.generateAttributes()}
+                    disabled={this.props.disabled || null}
+                    checked={!!this.state.checked}
                 />
                 <span className={get(this.props, "managedClasses.checkbox_label")}>
                     {this.props.text ? this.props.text : null}
@@ -86,32 +87,6 @@ class Checkbox extends Foundation<ICheckboxHandledProps & ICheckboxManagedClasse
         classes = this.props.disabled ? `${classes} ${get(this.props, "managedClasses.checkbox_disabled")}` : classes;
 
         return super.generateClassNames(classes);
-    }
-
-    /**
-     * Generates the correct attributes
-     */
-    private generateAttributes(): object {
-        const attributes: object = {};
-
-        /* tslint:disable:no-string-literal */
-        if (this.props.disabled) {
-            attributes["disabled"] = "disabled";
-        }
-
-        // If the author is not setting the checked state, we should let the checkbox manage itself
-        if (!isUndefined(this.props.checked)) {
-            if (this.props.onChange) {
-                attributes["checked"] = !!this.props.checked;
-            } else {
-                attributes["defaultChecked"] = !!this.props.checked;
-            }
-        } else {
-            attributes["checked"] = this.state.checked;
-        }
-        /* tslint:enable:no-string-literal */
-
-        return attributes;
     }
 
     /**
@@ -135,9 +110,7 @@ class Checkbox extends Foundation<ICheckboxHandledProps & ICheckboxManagedClasse
      * Handles onChange as a controlled component
      */
     private handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        if (isUndefined(this.props.checked) || this.props.indeterminate) {
-            this.setState({checked: !this.state.checked});
-        }
+        this.setState({checked: !this.state.checked});
 
         if (this.props.onChange) {
             this.props.onChange(e);
