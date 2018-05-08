@@ -8,6 +8,11 @@ import { glyphBuildingblocks, glyphExamples, glyphPage } from "@microsoft/fast-g
 import ComponentViewToggle from "./component-view-toggle";
 import manageJss, { ComponentStyles, ICSSRules, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 
+export enum actionEnum {
+    configure = "configure",
+    view = "view"
+}
+
 export interface IActionBarProps extends RouteComponentProps<any> {
     /*
      * The current ComponentView of the app
@@ -104,11 +109,11 @@ class ActionBar extends React.Component<IActionBarProps & IManagedClasses<IActio
         return (
             <div className={this.props.managedClasses.actionBar}>
                 <div className={this.props.managedClasses.actionBar_menu}>
-                    <button className={this.getActionBarMenuButtonClassNames("configure")} onClick={this.props.onFormToggle}>
+                    <button className={this.getActionBarMenuButtonClassNames(actionEnum.configure)} onClick={this.props.onFormToggle}>
                         <span dangerouslySetInnerHTML={{__html: glyphBuildingblocks}} />
                         Configure
                     </button>
-                    <button className={this.getActionBarMenuButtonClassNames("view")} onClick={this.props.onDevToolsToggle}>
+                    <button className={this.getActionBarMenuButtonClassNames(actionEnum.view)} onClick={this.props.onDevToolsToggle}>
                         Dev Tools
                     </button>
                 </div>
@@ -132,10 +137,10 @@ class ActionBar extends React.Component<IActionBarProps & IManagedClasses<IActio
         );
     }
 
-    private getActionBarMenuButtonClassNames(type: string): string {
+    private getActionBarMenuButtonClassNames(type: actionEnum): string {
         if (
-            (this.props.formView && type === "configure") ||
-            (this.props.devToolsView && type === "view")
+            (this.props.formView && type === actionEnum.configure) ||
+            (this.props.devToolsView && type === actionEnum.view)
         ) {
             return this.props.managedClasses.actionBar_menu_button__active;
         }
