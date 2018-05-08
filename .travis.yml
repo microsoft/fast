@@ -18,17 +18,21 @@ script:
   - lerna run test --stream
 after_script:
   # See https://github.com/codeclimate/test-reporter/issues/263
+  - echo "Start after_script"
   - |
     if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_EVENT_TYPE" != "cron" ]; then
       for f in packages/*; do
         if [ -d $f]; then
-          echo $f; 
-          ./cc-test-reporter format-coverage -t lcov -o coverage/coverage.${f//\//-}.json $f/coverage/lcov.info; 
-        fi 
+          echo $f;
+          ./cc-test-reporter format-coverage -t lcov -o coverage/coverage.${f//\//-}.json $f/coverage/lcov.info;
+        fi
       done;
-      ./cc-test-reporter sum-coverage -o coverage/coverage.total.json coverage/coverage.*.json; 
+      ./cc-test-reporter sum-coverage -o coverage/coverage.total.json coverage/coverage.*.json;
       ./cc-test-reporter upload-coverage -i coverage/coverage.total.json;
     fi
+  - test $TRAVIS_PULL_REQUEST = false && echo "Execution is not a pull request."
+  - test $TRAVIS_EVENT_TYPE = "cron" && echo "Execution by cron to deploy release."
+  - echo "Finish after_script."
 deploy:
   provider: npm
   email: "EMAIL_ADDRESS"
@@ -36,7 +40,10 @@ deploy:
   api_key:
     secure: AQpAGAHolfKGOkO/RCPWF0nt4W5h43NNZJ0sIjPD6rHP7uqd9I/VAU6gYHTgWW0aLvP+OD/wFYMTP9M3U5VSdPBH1O+nTZW/iB/jTdxfJnbJ+yx/KtrgShur+V+s+ldLUQoMX//F7G/ljnknV34JAv01L4veeFkytthuca/9eMEYAnRjMnMyUSJApBli6V2lVK1O/xvyOcmPnhz1llWKgZYXjs7mwVwNP5xzFsmuFYCt6Ryn5tf3yj88M6mLyEzqKtb9HRPFxdflFj4zweG1AqvNRkU1lllfV/FWs3j1bfZRPVA1DmaYFKmtplKAKdHFUZNU8I2RTB+5z8btAxmQYw2BNhaxRWuxgFHA3NjG3pOecWVy3rhEUObuaavXqXHrnc/28H43nGM3nH3EbvmsLXGHl6gBlXe4q1xoYVHjDGU7fCngvOXU1zDIoXwDnb9hl76gnUPrdX8WTjhAUYwgD9YzdS0C5IP+8K2QeiVzvyT5pZUEOzkKiB39y+Fp9GYRjOVFcaLh0c/PuYnR0NIfQM6RRyvbupUG9vCz6cXXLPnHPtiAImYeSXkNQ3zV2OlUP2MF4J+cQfQkN5o4lGmgrEeJbgSfqudRUEpRSZflEuLdywC9XSngHbv9onxXryGBkiM3U3EXuqkClEutQrdDbb68Ty/mc/QyHeMo2IpJ87c=
   script: 
+    - echo "Start publishing..."
+    - lerna bootstrap
     - lerna publish --yes
+    - echo "Finish publishing..."
   on:
     branch: master
     condition: $TRAVIS_EVENT_TYPE = "cron"
