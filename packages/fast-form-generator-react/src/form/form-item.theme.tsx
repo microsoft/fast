@@ -44,9 +44,13 @@ class FormItemTheme extends React.Component<IFormItemComponentMappingToProperyNa
             });
 
             if (typeof option !== "undefined") {
+                const className: any = theme === "dark"
+                    ? this.props.managedClasses.formItemTheme_input__dark
+                    : this.props.managedClasses.formItemTheme_input__light;
+
                 return (
                     <input
-                        className={this.props.managedClasses.formItemTheme_input}
+                        className={className}
                         id={this.props.dataLocation}
                         type="radio"
                         value={theme}

@@ -1,16 +1,25 @@
 import * as React from "react";
 import { IFormItemComponentMappingToProperyNamesProps } from "./form-item";
+import styles from "./form-item.align-horizontal.style";
+import { IFormItemAlignHorizontalClassNameContract } from "../class-name-contracts/";
+import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
  * Schema form component definition
  * @extends React.Component
  */
-class FormItemAlignHorizontal extends React.Component<IFormItemComponentMappingToProperyNamesProps, {}> {
-
+/* tslint:disable-next-line */
+class FormItemAlignHorizontal extends React.Component<IFormItemComponentMappingToProperyNamesProps & IManagedClasses<IFormItemAlignHorizontalClassNameContract>, {}> {
     public render(): JSX.Element {
         return (
-            <div>
-                <label htmlFor="alignHorizontal">{this.props.label}</label>
+            <div className={this.props.managedClasses.formItemAlignHorizontal}>
+                <label
+                    className={this.props.managedClasses.formItemAlignHorizontal_label}
+                    htmlFor="alignHorizontal"
+                >
+                    {this.props.label}
+                </label>
                 <div>
                     {this.renderInput("left", 1)}
                     {this.renderInput("center", 2)}
@@ -35,9 +44,23 @@ class FormItemAlignHorizontal extends React.Component<IFormItemComponentMappingT
             });
 
             if (typeof option !== "undefined") {
+                let className: string = "";
+
+                switch (direction) {
+                    case "left":
+                        className = this.props.managedClasses.formItemAlignHorizontal_input__left;
+                        break;
+                    case "center":
+                        className = this.props.managedClasses.formItemAlignHorizontal_input__center;
+                        break;
+                    case "right":
+                        className = this.props.managedClasses.formItemAlignHorizontal_input__right;
+                }
+
                 return (
                     <span>
                         <input
+                            className={className}
                             id={`alignHorizontal${index}`}
                             type="radio"
                             value={direction}
@@ -53,4 +76,4 @@ class FormItemAlignHorizontal extends React.Component<IFormItemComponentMappingT
     }
 }
 
-export default FormItemAlignHorizontal;
+export default manageJss(styles)(FormItemAlignHorizontal);
