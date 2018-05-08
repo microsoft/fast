@@ -7,6 +7,10 @@ import { isRootLocation } from "./form.utilities";
 import { generateExampleData } from "./form-section.utilities";
 import { updateActiveSection } from "./form-section.props";
 import { ComponentTree, DataOnChange } from "./form.props";
+import styles from "./form-item.children.style";
+import { IFormItemChildrenClassNameContract } from "../class-name-contracts/";
+import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 export interface IFormItemChildrenProps {
     /**
@@ -51,14 +55,15 @@ export interface IFormItemChildrenState {
  * Schema form component definition
  * @extends React.Component
  */
-class FormItemChildren extends React.Component<IFormItemChildrenProps, IFormItemChildrenState> {
+/* tslint:disable-next-line */
+class FormItemChildren extends React.Component<IFormItemChildrenProps & IManagedClasses<IFormItemChildrenClassNameContract>, IFormItemChildrenState> {
 
     /**
      * Store a reference to the search input element
      */
     private searchRef: HTMLInputElement;
 
-    constructor(props: IFormItemChildrenProps) {
+    constructor(props: IFormItemChildrenProps & IManagedClasses<IFormItemChildrenClassNameContract>) {
         super(props);
 
         this.state = {
@@ -69,12 +74,12 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps, IFormItem
     public render(): JSX.Element {
         // Convert to search component when #3006 has been completed
         return (
-            <div>
+            <div className={this.props.managedClasses.formItemChildren}>
                 {this.generateExistingChildrenHeader()}
                 {this.generateExistingChildren()}
                 <div>
                     <h3>Add building blocks</h3>
-                    <div>
+                    <div className={this.props.managedClasses.formItemChildren_inputWrapper}>
                         <input
                             aria-label="Enter your search"
                             type="search"
@@ -86,7 +91,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps, IFormItem
                             ref={this.storeSearchRef}
                         />
                         <button name="search-button">
-                            <span>Search building blocks</span>
+                            <span>Search</span>
                         </button>
                     </div>
                     <ul>
@@ -384,4 +389,4 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps, IFormItem
     }
 }
 
-export default FormItemChildren;
+export default manageJss(styles)(FormItemChildren);

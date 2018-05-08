@@ -23,12 +23,13 @@ export const sortingProps: ISortingProps = {
 
 export interface ISortableListItemProps {
     id?: string;
+    onClick?: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
 export class SortableListItem extends React.Component<ISortableListItemProps, {}> {
     public render(): JSX.Element {
         return(
-            <li draggable={true} id={this.props.id}>
+            <li draggable={true} id={this.props.id} onClick={this.props.onClick}>
                 {this.props.children}
             </li>
         );

@@ -34,13 +34,13 @@ const styles: ComponentStyles<IFormItemCheckboxClassNameContract, {}> = {
         "&:checked": {
             "&:before": {
                 height: toPx(5),
-                left: toPx(7),
+                left: toPx(6),
                 top: toPx(10),
                 transform: "rotate(-45deg)"
             },
             "&:after": {
                 height: toPx(12),
-                left: toPx(13),
+                left: toPx(12),
                 top: toPx(4),
                 transform: "rotate(45deg)"
             }

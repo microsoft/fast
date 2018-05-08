@@ -7,8 +7,14 @@ export { IFormItemArrayClassNameContract };
 import IFormItemCheckboxClassNameContract from "./form-item.checkbox.class-name-contract";
 export { IFormItemCheckboxClassNameContract };
 
+import IFormItemChildrenClassNameContract from "./form-item.children.class-name-contract";
+export { IFormItemChildrenClassNameContract };
+
 import IFormItemNumberFieldClassNameContract from "./form-item.number-field.class-name-contract";
 export { IFormItemNumberFieldClassNameContract };
+
+import IFormSectionClassNameContract from "./form-section.class-name-contract";
+export { IFormSectionClassNameContract };
 
 import IFormItemSelectClassNameContract from "./form-item.select.class-name-contract";
 export { IFormItemSelectClassNameContract };

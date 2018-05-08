@@ -73,10 +73,10 @@ class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasse
                 <div>
                     <label>{this.getLabelText()}</label>
                     <button>Open menu</button>
-                    <ul>
-                        {this.renderArrayMenuItems()}
-                    </ul>
                 </div>
+                <ul className={this.props.managedClasses.formItemArray_menu}>
+                    {this.renderArrayMenuItems()}
+                </ul>
                 {this.generateArrayLinks()}
             </div>
         );
@@ -160,7 +160,7 @@ class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasse
      */
     private generateArrayLinkItem = (value: any, index: number): JSX.Element => {
         return (
-            <SortableListItem key={`item-${index}`} id={index.toString()}>
+            <SortableListItem key={`item-${index}`} id={index.toString()} onClick={this.arrayClickHandlerFactory(value, index)}>
                 <button onClick={this.arrayClickHandlerFactory(value, index)}>
                     {value}
                 </button>
@@ -202,7 +202,7 @@ class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasse
         if (arraySections.length > 0) {
             return React.createElement(SortableContainer(() => {
                 return (
-                    <ul>
+                    <ul className={this.props.managedClasses.formItemArray_linkMenu}>
                         {this.generateArrayLinkItems()}
                     </ul>
                 );
