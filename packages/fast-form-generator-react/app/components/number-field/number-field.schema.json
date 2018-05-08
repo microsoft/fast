@@ -6,7 +6,7 @@
     "id": "numberField",
     "properties": {
         "level": {
-            "title": "level",
+            "title": "Level",
             "type": "number",
             "enum": [
                 1,
@@ -17,7 +17,7 @@
             "default": 1
         },
         "quantity": {
-            "title": "quantity",
+            "title": "Quantity",
             "type": "number",
             "example": 10,
             "minimum": 0,

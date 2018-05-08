@@ -6,7 +6,7 @@
     "id": "textField",
     "properties": {
         "tag": {
-            "title": "tag",
+            "title": "Tag",
             "type": "string",
             "enum": [
                 "span",
@@ -15,9 +15,9 @@
             "default": "button"
         },
         "text": {
-            "title": "text",
+            "title": "Text",
             "type": "string",
-            "example": "example text"
+            "example": "Example text"
         }
     },
     "required": [

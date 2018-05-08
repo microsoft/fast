@@ -6,7 +6,7 @@
     "id": "alignHorizontal",
     "properties": {
         "alignHorizontal": {
-            "title": "align horizontal",
+            "title": "Align horizontal",
             "type": "string",
             "enum": [
                 "left",

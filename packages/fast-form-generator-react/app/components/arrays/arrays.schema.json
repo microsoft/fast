@@ -6,7 +6,7 @@
     "id": "arrays",
     "properties": {
         "strings": {
-            "title": "array",
+            "title": "Array",
             "type": "array",
             "items": {
                 "type": "string"

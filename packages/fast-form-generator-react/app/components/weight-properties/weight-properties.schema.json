@@ -6,15 +6,15 @@
     "id": "weightProperties",
     "properties": {
         "title": {
-            "title": "title",
+            "title": "Title",
             "type": "string"
         },
         "details": {
-            "title": "details",
+            "title": "Details",
             "type": "string"
         },
         "tag": {
-            "title": "tag",
+            "title": "HTML tag",
             "type": "string",
             "enum": [
                 "span",
@@ -23,12 +23,12 @@
             "default": "button"
         },
         "text": {
-            "title": "text",
+            "title": "Text",
             "type": "string",
-            "example": "example text"
+            "example": "Example text"
         },
         "alignHorizontal": {
-            "title": "align horizontal",
+            "title": "Align horizontal",
             "type": "string",
             "enum": [
                 "left",
@@ -37,7 +37,7 @@
             ]
         },
         "alignVertical": {
-            "title": "align vertical",
+            "title": "Align vertical",
             "type": "string",
             "enum": [
                 "top",
@@ -46,7 +46,7 @@
             ]
         },
         "level": {
-            "title": "level",
+            "title": "Level",
             "type": "number",
             "example": 5
         }

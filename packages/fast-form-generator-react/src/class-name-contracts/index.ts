@@ -1,6 +1,9 @@
 import IFormItemAlignHorizontalClassNameContract from "./form-item.align-horizontal.class-name-contract";
 export { IFormItemAlignHorizontalClassNameContract };
 
+import IFormItemArrayClassNameContract from "./form-item.array.class-name-contract";
+export { IFormItemArrayClassNameContract };
+
 import IFormItemCheckboxClassNameContract from "./form-item.checkbox.class-name-contract";
 export { IFormItemCheckboxClassNameContract };
 

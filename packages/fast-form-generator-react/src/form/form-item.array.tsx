@@ -8,6 +8,10 @@ import { generateExampleData } from "./form-section.utilities";
 import { IFormLocation } from "./form.props";
 import { isRootLocation } from "./form.utilities";
 import { getArrayLinks } from "./form-item.array.utilities";
+import styles from "./form-item.array.style";
+import { IFormItemArrayClassNameContract } from "../class-name-contracts/";
+import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 export enum ItemConstraints {
     minItems = "minItems",
@@ -61,11 +65,11 @@ export interface IFormItemArrayProps extends IFormItemCommon {
  * Schema form component definition
  * @extends React.Component
  */
-class FormItemArray extends React.Component<IFormItemArrayProps, {}> {
+class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasses<IFormItemArrayClassNameContract>, {}> {
 
     public render(): JSX.Element {
         return (
-            <div>
+            <div className={this.props.managedClasses.formItemArray}>
                 <div>
                     <label>{this.getLabelText()}</label>
                     <button>Open menu</button>
@@ -279,4 +283,4 @@ class FormItemArray extends React.Component<IFormItemArrayProps, {}> {
     }
 }
 
-export default FormItemArray;
+export default manageJss(styles)(FormItemArray);

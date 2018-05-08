@@ -6,7 +6,7 @@
     "id": "alignVertical",
     "properties": {
         "alignVertical": {
-            "title": "align vertical",
+            "title": "Align vertical",
             "type": "string",
             "enum": [
                 "top",
