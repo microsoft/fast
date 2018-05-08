@@ -10,6 +10,7 @@ env:
   global:
     - CC_TEST_REPORTER_ID=08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
 before_script:
+  - git config core.autocrlf false
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - "./cc-test-reporter before-build"
@@ -30,6 +31,7 @@ after_script:
 deploy:
   provider: npm
   email: "EMAIL_ADDRESS"
+  skip_cleanup: true
   api_key:
     secure: AQpAGAHolfKGOkO/RCPWF0nt4W5h43NNZJ0sIjPD6rHP7uqd9I/VAU6gYHTgWW0aLvP+OD/wFYMTP9M3U5VSdPBH1O+nTZW/iB/jTdxfJnbJ+yx/KtrgShur+V+s+ldLUQoMX//F7G/ljnknV34JAv01L4veeFkytthuca/9eMEYAnRjMnMyUSJApBli6V2lVK1O/xvyOcmPnhz1llWKgZYXjs7mwVwNP5xzFsmuFYCt6Ryn5tf3yj88M6mLyEzqKtb9HRPFxdflFj4zweG1AqvNRkU1lllfV/FWs3j1bfZRPVA1DmaYFKmtplKAKdHFUZNU8I2RTB+5z8btAxmQYw2BNhaxRWuxgFHA3NjG3pOecWVy3rhEUObuaavXqXHrnc/28H43nGM3nH3EbvmsLXGHl6gBlXe4q1xoYVHjDGU7fCngvOXU1zDIoXwDnb9hl76gnUPrdX8WTjhAUYwgD9YzdS0C5IP+8K2QeiVzvyT5pZUEOzkKiB39y+Fp9GYRjOVFcaLh0c/PuYnR0NIfQM6RRyvbupUG9vCz6cXXLPnHPtiAImYeSXkNQ3zV2OlUP2MF4J+cQfQkN5o4lGmgrEeJbgSfqudRUEpRSZflEuLdywC9XSngHbv9onxXryGBkiM3U3EXuqkClEutQrdDbb68Ty/mc/QyHeMo2IpJ87c=
   script: 
