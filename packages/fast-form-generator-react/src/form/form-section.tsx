@@ -55,14 +55,18 @@ import {
     isSelect,
     resolveExampleDataWithCachedData
 } from "./form-section.utilities";
+import styles from "./form-section.style";
+import { IFormSectionClassNameContract } from "../class-name-contracts/";
+import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
  * Schema form component definition
  * @extends React.Component
  */
-class FormSection extends React.Component<IFormSectionProps, IFormSectionState> {
+class FormSection extends React.Component<IFormSectionProps & IManagedClasses<IFormSectionClassNameContract>, IFormSectionState> {
 
-    constructor(props: IFormSectionProps) {
+    constructor(props: IFormSectionProps & IManagedClasses<IFormSectionClassNameContract>) {
         super(props);
 
         let oneOfAnyOf: oneOfAnyOfType;
@@ -466,9 +470,9 @@ class FormSection extends React.Component<IFormSectionProps, IFormSectionState> 
         }
 
         return (
-            <div>
+            <div className={this.props.managedClasses.formSection}>
                 <h3>Sections</h3>
-                <ul>
+                <ul className={this.props.managedClasses.formSection_menu}>
                     {sections}
                 </ul>
             </div>
@@ -509,4 +513,5 @@ class FormSection extends React.Component<IFormSectionProps, IFormSectionState> 
     }
 }
 
-export default FormSection;
+// export default FormSection;
+export default manageJss(styles)(FormSection);

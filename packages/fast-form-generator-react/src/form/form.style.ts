@@ -1,7 +1,7 @@
 import { ellipsis, toPx } from "@microsoft/fast-jss-utilities";
 import { applyInputStyle, applyLabelStyle, applyWrapperStyle } from "../utilities/form-input.shared-style.style";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
-import { IFormSectionClassNameContract } from "../class-name-contracts/";
+import { IFormClassNameContract } from "../class-name-contracts/";
 
 function applyCleanListStyle(): ICSSRules<{}> {
     return {
@@ -11,12 +11,10 @@ function applyCleanListStyle(): ICSSRules<{}> {
     };
 }
 
-const styles: ComponentStyles<IFormSectionClassNameContract, {}> = {
-    formSection: {
-        display: "block"
-    },
-    formSection_menu: {
-        listStyle: "none"
+const styles: ComponentStyles<IFormClassNameContract, {}> = {
+    form_breadcrumbs: {
+        display: "flex",
+        flexFlow: "row-wrap"
     }
 };
 

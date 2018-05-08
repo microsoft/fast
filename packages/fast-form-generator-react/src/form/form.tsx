@@ -19,6 +19,10 @@ import {
     isRootLocation
 } from "./form.utilities";
 import FormSection from "./form-section";
+import styles from "./form-section.style";
+import { IFormClassNameContract } from "../class-name-contracts/";
+import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
  * Schema form component definition
@@ -304,4 +308,5 @@ class Form extends React.Component<IFormProps, IFormState> {
     }
 }
 
+// export default manageJss(styles)(Form);
 export default Form;

@@ -1,3 +1,6 @@
+import IFormClassNameContract from "./form.class-name-contract";
+export { IFormClassNameContract };
+
 import IFormItemAlignHorizontalClassNameContract from "./form-item.align-horizontal.class-name-contract";
 export { IFormItemAlignHorizontalClassNameContract };
 
