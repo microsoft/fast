@@ -1,7 +1,7 @@
 # FAST colors
 A color utility library designed to make working with colors easier.
 
-A huge thanks to [https://github.com/bobbyrayit](bobbyrayit) and [https://github.com/mlijanto](mlijanto) for creating the algorithm implemented in the `range` function.
+A huge thanks to [bobbyrayit](https://github.com/bobbyrayit) and [mlijanto](https://github.com/mlijanto) for creating the algorithm implemented in the `range` function.
 This code borrows heavily from their original implementation.
 
 ## range(color, [options])
