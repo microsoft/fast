@@ -17,7 +17,7 @@ const style: ComponentStyles<IShellActionBarManagedClasses, IDevSiteDesignSystem
         },
         height: toPx(39),
         overflow: "hidden",
-        borderBottom: "1px solid #CCCCCC"
+        borderBottom: `${toPx(1)} solid #CCCCCC`
     }
 };
 

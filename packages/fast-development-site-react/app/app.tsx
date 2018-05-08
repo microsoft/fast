@@ -50,7 +50,7 @@ function renderComponents1(): JSX.Element {
         schema: ButtonSchema,
         component: Button
     };
-    const componentObj1: any[] = [{text: "foo"}, {text: "bar"}, {text: "bat"}, {text: "foo"}, {text: "bar"}, {text: "bat"}, {text: "bat"}, {text: "foo"}, {text: "bar"}, {text: "bat"}, {text: "bat"}, {text: "foo"}, {text: "bar"}, {text: "bat"}, {text: "bat"}, {text: "foo"}, {text: "bar"}, {text: "bat"}];
+    const componentObj1: any[] = [{text: "foo"}, {text: "bar"}, {text: "bat"}];
     const categoryObj1: Partial<ISiteCategoryProps> = {
         ...categoryBase,
         name: "Button 1"
