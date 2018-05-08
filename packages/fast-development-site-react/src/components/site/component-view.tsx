@@ -1,6 +1,8 @@
 import * as React from "react";
 import { Route, Switch, withRouter } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
+import { IDevSiteDesignSystem } from "../design-system";
+import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 
 /**
  * Describes the possible views for a component
@@ -10,10 +12,22 @@ export enum ComponentViewTypes {
     detail
 }
 
-class ComponentView extends React.Component<RouteComponentProps<any>, {}> {
+export interface IComponentViewManagedClasses {
+    componentView: string;
+}
+
+const style: ComponentStyles<IComponentViewManagedClasses, IDevSiteDesignSystem> = {
+    componentView: {
+        overflow: "auto",
+        flexGrow: "1",
+        width: "100%"
+    }
+};
+
+class ComponentView extends React.Component<RouteComponentProps<{}> & IManagedClasses<IComponentViewManagedClasses>, {}> {
     public render(): React.ReactElement<HTMLDivElement> {
         return (
-            <div>
+            <div className={this.props.managedClasses.componentView}>
                 <Switch>
                     <Route path="/" exact={true} component={null} />
                     <Route
@@ -46,4 +60,4 @@ class ComponentView extends React.Component<RouteComponentProps<any>, {}> {
     }
 }
 
-export default withRouter(ComponentView);
+export default manageJss(style)(withRouter(ComponentView));

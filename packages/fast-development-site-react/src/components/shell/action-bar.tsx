@@ -15,12 +15,9 @@ const style: ComponentStyles<IShellActionBarManagedClasses, IDevSiteDesignSystem
         background: (config: IDevSiteDesignSystem): string => {
             return config.backgroundColor;
         },
-        padding: (config: IDevSiteDesignSystem): string => {
-            return toPx(config.navigationBarHeight / 4);
-        },
-        minHeight: (config: IDevSiteDesignSystem): string => {
-            return toPx(config.navigationBarHeight / 2);
-        }
+        height: toPx(39),
+        overflow: "hidden",
+        borderBottom: `${toPx(1)} solid #CCCCCC`
     }
 };
 

@@ -14,9 +14,10 @@ export interface IComponentWrapperManagedClasses {
     componentWrapper__active: string;
 }
 
-export interface IComponentWrapperProps {
+export interface IComponentWrapperProps<T> {
     active: boolean;
     index: number;
+    designSystem: T;
     onClick: (activeIndex: number) => void;
 }
 
@@ -45,12 +46,29 @@ const styles: ComponentStyles<IComponentWrapperManagedClasses, IDevSiteDesignSys
     }
 };
 
-class ComponentWrapper extends React.Component<IComponentWrapperProps & IManagedClasses<IComponentWrapperManagedClasses>, {}> {
+/* tslint:disable-next-line */
+class ComponentWrapper extends React.Component<IComponentWrapperProps<IDevSiteDesignSystem> & IManagedClasses<IComponentWrapperManagedClasses>, {}> {
     public render(): JSX.Element {
         return (
             <div className={this.getClassNames()} onClick={this.handleClick}>
-                {this.props.children}
+                {this.renderChildren()}
             </div>
+        );
+    }
+
+    private renderChildren(): JSX.Element {
+        if (this.props.designSystem) {
+            return (
+                <DesignSystemProvider designSystem={this.props.designSystem}>
+                    {this.props.children}
+                </DesignSystemProvider>
+            );
+        }
+
+        return (
+            <React.Fragment>
+                {this.props.children}
+            </React.Fragment>
         );
     }
 

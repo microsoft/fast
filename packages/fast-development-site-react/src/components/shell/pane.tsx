@@ -18,7 +18,7 @@ export interface IShellPaneManagedClasses {
 const style: ComponentStyles<IShellPaneManagedClasses, IDevSiteDesignSystem> = {
     shellPane: {
         display: "inline-block",
-        overflow: "hidden",
+        overflowX: "hidden",
         backgroundColor: (config: IDevSiteDesignSystem): string => {
             return config.lightGray;
         }

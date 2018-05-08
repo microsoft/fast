@@ -12,6 +12,8 @@ export interface IShellCanvasManagedClasses {
 const style: ComponentStyles<IShellCanvasManagedClasses, IDevSiteDesignSystem> = {
     shellCanvas: {
         display: "inline-block",
+        position: "relative",
+        overflow: "hidden",
         background: (config: IDevSiteDesignSystem): string => {
             return config.backgroundColor;
         },

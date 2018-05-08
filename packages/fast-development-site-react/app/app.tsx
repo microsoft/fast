@@ -104,7 +104,7 @@ function renderComponents2Nested(): JSX.Element {
 
 function render(): void {
     ReactDOM.render(
-        <Site title={"FAST Development site test"}>
+        <Site title={"FAST Development site test"} frameworks={["react", "angular"]}>
             {renderSiteMenu()}
             {renderBuildingBlocks()}
             {renderComponents1()}
