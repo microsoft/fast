@@ -4,6 +4,8 @@ import {
     applyInputStyle,
     applyLabelStyle,
     applyListItemStyle,
+    applySelectInputStyles,
+    applySelectSpanStyles,
     applyWrapperStyle
 } from "../utilities/form-input.style";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
@@ -61,6 +63,21 @@ const styles: ComponentStyles<IFormSectionClassNameContract, {}> = {
         "& + span": {
             float: "right"
         }
+    },
+    formSection_selectWrapper: {
+        ...applyWrapperStyle(),
+        borderBottom: `${toPx(1)} solid rgba(0,0,0,.2)`,
+        paddingBottom: toPx(12),
+        marginBottom: toPx(4)
+    },
+    formSection_selectSpan: {
+        ...applySelectSpanStyles()
+    },
+    formSection_selectInput: {
+        ...applySelectInputStyles()
+    },
+    formSection_selectLabel: {
+        ...applyLabelStyle()
     }
 };
 

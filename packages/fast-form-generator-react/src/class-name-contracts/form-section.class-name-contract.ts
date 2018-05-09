@@ -6,4 +6,8 @@ export default interface IFormSectionClassNameContract {
     formSection_menu: string;
     formSection_toggle: string;
     formSection_toggleWrapper: string;
+    formSection_selectWrapper: string;
+    formSection_selectInput: string;
+    formSection_selectSpan: string;
+    formSection_selectLabel: string;
 }

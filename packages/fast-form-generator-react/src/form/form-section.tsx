@@ -391,17 +391,19 @@ class FormSection extends React.Component<IFormSectionProps & IManagedClasses<IF
             const options: JSX.Element[] = getOneOfAnyOfSelectOptions(this.props.schema, this.state);
 
             return (
-                <React.Fragment>
-                    <label htmlFor={id}>Configuration</label>
-                    <select
-                        id={id}
-                        onChange={this.handleAnyOfOneOfClick}
-                        value={this.state.oneOfAnyOf.activeIndex || 0}
-                    >
-                        {options}
-                    </select>
-                    <hr role="presentation" />
-                </React.Fragment>
+                <div className={this.props.managedClasses.formSection_selectWrapper}>
+                    <label htmlFor={id} className={this.props.managedClasses.formSection_selectLabel}>Configuration</label>
+                    <span className={this.props.managedClasses.formSection_selectSpan}>
+                        <select
+                            className={this.props.managedClasses.formSection_selectInput}
+                            id={id}
+                            onChange={this.handleAnyOfOneOfClick}
+                            value={this.state.oneOfAnyOf.activeIndex || 0}
+                        >
+                            {options}
+                        </select>
+                    </span>
+                </div>
             );
         }
 
