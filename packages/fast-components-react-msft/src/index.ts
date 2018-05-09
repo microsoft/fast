@@ -16,6 +16,9 @@ export { Image } ;
 import Label from "./label";
 export { Label } ;
 
+import TextField from "./text-field";
+export { TextField };
+
 import Toggle from "./toggle";
 export { Toggle };
 
