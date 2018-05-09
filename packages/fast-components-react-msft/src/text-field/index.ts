@@ -1,13 +1,13 @@
 import * as React from "react";
 import {
     IFoundationProps,
-    ITextfieldClassNameContract,
-    ITextfieldHandledProps,
-    ITextfieldManagedClasses,
-    ITextfieldUnhandledProps,
+    ITextFieldClassNameContract,
+    ITextFieldHandledProps,
+    ITextFieldManagedClasses,
+    ITextFieldUnhandledProps,
     TextField
 } from "@microsoft/fast-components-react-base";
 import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
-import { IDesignSystem, TextfieldStyles } from "@microsoft/fast-components-styles-msft";
+import { IDesignSystem, TextFieldStyles } from "@microsoft/fast-components-styles-msft";
 
-export default manageJss(TextfieldStyles)(TextField);
+export default manageJss(TextFieldStyles)(TextField);
