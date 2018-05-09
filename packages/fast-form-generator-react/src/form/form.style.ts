@@ -1,5 +1,5 @@
 import { ellipsis, toPx } from "@microsoft/fast-jss-utilities";
-import {  applyCleanListStyle, applyInputStyle, applyLabelStyle, applyWrapperStyle } from "../utilities/form-input.shared-style.style";
+import {  applyCleanListStyle, applyInputStyle, applyLabelStyle, applyWrapperStyle } from "../utilities/form-input.style";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IFormClassNameContract } from "../class-name-contracts/";
 

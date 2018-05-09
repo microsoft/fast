@@ -5,7 +5,7 @@ import {
     applyLabelStyle,
     applyListItemStyle,
     applyWrapperStyle
-} from "../utilities/form-input.shared-style.style";
+} from "../utilities/form-input.style";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IFormSectionClassNameContract } from "../class-name-contracts/";
 

@@ -6,7 +6,7 @@ import {
     applyPopupHeadingStyles,
     applyPopupMenuButtonStyles,
     applyPopupMenuStyles
-} from "../utilities/form-input.shared-style.style";
+} from "../utilities/form-input.style";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IFormItemArrayClassNameContract } from "../class-name-contracts/";
 

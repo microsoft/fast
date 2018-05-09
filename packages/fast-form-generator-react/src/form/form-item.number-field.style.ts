@@ -1,5 +1,5 @@
 import { toPx } from "@microsoft/fast-jss-utilities";
-import { applyInputStyle, applyLabelStyle, applyWrapperStyle } from "../utilities/form-input.shared-style.style";
+import { applyInputStyle, applyLabelStyle, applyWrapperStyle } from "../utilities/form-input.style";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { IFormItemNumberFieldClassNameContract } from "../class-name-contracts/";
 

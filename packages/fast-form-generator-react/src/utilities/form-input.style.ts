@@ -27,7 +27,6 @@ export function applyInputStyle(): ICSSRules<{}> {
 export function applyWrapperStyle(): ICSSRules<{}> {
     return {
         display: "flex",
-        alignItems: "center",
         flexDirection: "row",
         paddingTop: toPx(8)
     };

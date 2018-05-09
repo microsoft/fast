@@ -1,7 +1,7 @@
 import { Direction, ellipsis, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IFormItemCheckboxClassNameContract } from "../class-name-contracts/";
-import { applyLabelStyle } from "../utilities/form-input.shared-style.style";
+import { applyLabelStyle } from "../utilities/form-input.style";
 
 const styles: ComponentStyles<IFormItemCheckboxClassNameContract, {}> = {
     formItemCheckbox: {

@@ -1,6 +1,6 @@
 import { Direction, ellipsis, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
-import { applyInputStyle, applyLabelStyle, applyWrapperStyle } from "../utilities/form-input.shared-style.style";
+import { applyInputStyle, applyLabelStyle, applyWrapperStyle } from "../utilities/form-input.style";
 import { IFormItemSelectClassNameContract } from "../class-name-contracts/";
 
 function applypaddingStyle(): ICSSRules<{}> {
