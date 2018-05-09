@@ -71,6 +71,7 @@ class Checkbox extends Foundation<ICheckboxHandledProps & ICheckboxManagedClasse
                     disabled={this.props.disabled || null}
                     checked={!!this.state.checked}
                 />
+                <span className={get(this.props, "managedClasses.checkbox_span")} />
                 <span className={get(this.props, "managedClasses.checkbox_label")}>
                     {this.props.text ? this.props.text : null}
                 </span>

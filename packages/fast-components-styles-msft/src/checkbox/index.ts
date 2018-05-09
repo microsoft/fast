@@ -11,7 +11,7 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = {
         flexDirection: "row"
     },
     checkbox_input: {
-        position: "relative",
+        position: "absolute",
         cursor: "pointer",
         width: toPx(20),
         height: toPx(20),
@@ -81,6 +81,19 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = {
             "&:after": {
                 display: "none"
             }
+        }
+    },
+    checkbox_span: {
+        "&:after, &:before": {
+            position: "absolute",
+            display: "block",
+            content: "''",
+            width: toPx(1),
+            // TODO: Issue #309 https://github.com/Microsoft/fast-dna/issues/309
+            // background: (config: IDesignSystem): string => {
+            //     return config.foregroundColor;
+            // },
+            background: "black"
         }
     },
     checkbox_label: {
