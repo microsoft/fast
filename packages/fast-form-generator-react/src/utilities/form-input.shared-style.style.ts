@@ -17,7 +17,7 @@ export function applyInputStyle(): ICSSRules<{}> {
         fontSize: toPx(14),
         backgroundColor: "rgba(0, 0, 0, 0.04)",
         borderRadius: toPx(2),
-        boxShadow: "inset 0px 0px 4px rgba(0, 0, 0, 0.08)",
+        boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(4)} rgba(0, 0, 0, 0.08)`,
         padding: toPx(8),
         border: "none",
         outline: "none"
@@ -127,7 +127,7 @@ export function applyPopupMenuButtonStyles(): ICSSRules<{}> {
         "&[aria-expanded='true']": {
             background: "#EBEBEB",
             borderLeftColor: "rgba(0,0,0,.1)",
-            borderRadius: `2px 2px 0 0`,
+            borderRadius: `${toPx(2)} ${toPx(2)} 0 0`,
             borderRightColor: "rgba(0,0,0,.1)",
             borderTopColor: "rgba(0,0,0,.1)",
             color: "black"

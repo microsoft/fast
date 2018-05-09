@@ -18,7 +18,7 @@ const styles: ComponentStyles<IFormItemCheckboxClassNameContract, {}> = {
         height: toPx(20),
         appearance: "none",
         borderRadius: toPx(2),
-        boxShadow: "inset 0px 0px 4px rgba(0, 0, 0, 0.08)",
+        boxShadow: `inset ${toPx(0)} 0${toPx(0)} ${toPx(4)} rgba(0, 0, 0, 0.08)`,
         backgroundColor: "rgba(0, 0, 0, 0.04)",
         "&:after, &:before": {
             position: "absolute",
@@ -29,7 +29,7 @@ const styles: ComponentStyles<IFormItemCheckboxClassNameContract, {}> = {
         },
         "&:focus": {
             outline: "none",
-            boxShadow: " inset 0px 0px 0px 1px rgba(0,0,0, 0.5)"
+            boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(0)} ${toPx(1)} rgba(0,0,0, 0.5)`
         },
         "&:checked": {
             "&:before": {
