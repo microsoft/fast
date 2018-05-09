@@ -20,15 +20,16 @@ class FormItemCheckbox extends React.Component<IFormItemCommon & IManagedClasses
             <div className={this.props.managedClasses.formItemCheckbox}>
                 <label className={this.props.managedClasses.formItemCheckbox_label} htmlFor={this.props.dataLocation}>
                     {this.props.label}
+                    <input
+                        className={this.props.managedClasses.formItemCheckbox_input}
+                        id={this.props.dataLocation}
+                        type="checkbox"
+                        value={value.toString()}
+                        onChange={this.handleChange}
+                        checked={value}
+                    />
+                    <span />
                 </label>
-                <input
-                    className={this.props.managedClasses.formItemCheckbox_input}
-                    id={this.props.dataLocation}
-                    type="checkbox"
-                    value={value.toString()}
-                    onChange={this.handleChange}
-                    checked={value}
-                />
             </div>
         );
     }
