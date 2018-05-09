@@ -86,7 +86,7 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = {
     checkbox_span: {
         "&:after, &:before": {
             position: "absolute",
-            display: "block",
+            zIndex: "1",
             content: "''",
             width: toPx(1),
             // TODO: Issue #309 https://github.com/Microsoft/fast-dna/issues/309
@@ -94,6 +94,12 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = {
             //     return config.foregroundColor;
             // },
             background: "black"
+        },
+        "& $checkbox_input &:checked": {
+            "&:after, &:before": {
+                borderRadius: toPx(2),
+                width: toPx(2)
+            }
         }
     },
     checkbox_label: {
