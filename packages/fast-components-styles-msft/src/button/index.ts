@@ -16,11 +16,10 @@ function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
         color: (config: IDesignSystem): string => {
             return config.brandColor;
         },
-        "&:disabled span:before, &[aria-disabled] span:before": {
+        "&:disabled span::before, &[aria-disabled] span::before": {
             background: "transparent"
         },
-        "&:focus span:before, &:active span:before, &:hover span:before": {
-            // TODO: Issue #309 https://github.com/Microsoft/fast-dna/issues/309
+        "&:focus span::before, &:active span::before, &:hover span::before": {
             background: (config: IDesignSystem): string => {
                 return config.brandColor;
             }

@@ -12,7 +12,7 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = {
             marginTop: "0",
             paddingBottom: "0"
         },
-        "&[aria-disabled='true']": {
+        "&[aria-disabled=\"true\"]": {
             color: (config: IDesignSystem): string => {
                 return Chroma(config.foregroundColor).alpha(0.5).css();
             }
@@ -48,7 +48,6 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = {
         backgroundColor: (config: IDesignSystem): string => {
             return config.backgroundColor;
         },
-        content: "''",
         borderRadius: toPx(10),
         width: toPx(10),
         height: toPx(10)
@@ -67,19 +66,22 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = {
         appearance: "none",
         cursor: "pointer",
         "@media screen and (-ms-high-contrast)": {
-            "&:after, &:checked+span": {
-                background: (config: IDesignSystem): string => {
-                    return config.backgroundColor;
-                }
-            }
+            background: (config: IDesignSystem): string => config.backgroundColor
         },
-        "@media screen and (-ms-high-contrast: black-on-white)": {
-            "&:after, &:checked+span": {
-                background: (config: IDesignSystem): string => {
-                    return config.foregroundColor;
-                }
-            }
-        },
+        // "@media screen and (-ms-high-contrast)": {
+         //    "&::after, &:checked + span": {
+         //        background: (config: IDesignSystem): string => {
+         //            return config.backgroundColor;
+         //        }
+         //    },
+        // },
+        // "@media screen and (-ms-high-contrast: black-on-white)": {
+            // "&::after, &:checked + span": {
+            //     background: (config: IDesignSystem): string => {
+            //         return config.foregroundColor;
+            //     }
+            // },
+        // },
         "&:checked": {
             backgroundColor: (config: IDesignSystem): string => {
                 return config.brandColor;
