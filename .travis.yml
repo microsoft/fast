@@ -33,7 +33,8 @@ deploy:
   provider: script
   skip_cleanup: true
   script:
-    - echo $NPM_AUTH_TOKEN > ~/.npmrc
+    - echo -e "//registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN\nemail=$NPM_AUTH_EMAIL" > ~/.npmrc
+    - cat ~/.npmrc
     - NPM_USER=`npm whoami`
     - echo -e "Publishing to npm as $NPM_USER...\n"
     - lerna publish --yes --loglevel=silly
