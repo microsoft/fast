@@ -30,7 +30,7 @@ after_script:
         ./cc-test-reporter upload-coverage -i coverage/coverage.total.json;
       fi
   - |
-      if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_EVENT_TYPE" == "cron" ]; then
+      if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_EVENT_TYPE" == "cron" ] && [ $TRAVIS_BRANCH = "master" ]; then
         echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc;
         echo "Publishing to npm as ";
         npm whoami;
