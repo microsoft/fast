@@ -1,16 +1,26 @@
 import * as React from "react";
 import { IFormItemComponentMappingToProperyNamesProps } from "./form-item";
+import styles from "./form-item.align-vertical.style";
+import { IFormItemAlignVerticalClassNameContract } from "../class-name-contracts/";
+import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
  * Schema form component definition
  * @extends React.Component
  */
-class FormItemAlignVertical extends React.Component<IFormItemComponentMappingToProperyNamesProps, {}> {
+/* tslint:disable-next-line */
+class FormItemAlignVertical extends React.Component<IFormItemComponentMappingToProperyNamesProps & IManagedClasses<IFormItemAlignVerticalClassNameContract>, {}> {
 
     public render(): JSX.Element {
         return (
-            <div>
-                <label htmlFor="alignVertical">{this.props.label}</label>
+            <div className={this.props.managedClasses.formItemAlignVertical}>
+                <label
+                    className={this.props.managedClasses.formItemAlignVertical_label}
+                    htmlFor={this.props.dataLocation}
+                >
+                    {this.props.label}
+                </label>
                 <div>
                     {this.renderInput("top", 1)}
                     {this.renderInput("center", 2)}
@@ -28,6 +38,17 @@ class FormItemAlignVertical extends React.Component<IFormItemComponentMappingToP
         return this.props.data === direction || (typeof this.props.data === "undefined" && this.props.default === direction);
     }
 
+    private getInputClassName(direction: string): string {
+        switch (direction) {
+            case "left":
+                return this.props.managedClasses.formItemAlignVertical_input__top;
+            case "center":
+                return this.props.managedClasses.formItemAlignVertical_input__center;
+            case "right":
+                return this.props.managedClasses.formItemAlignVertical_input__bottom;
+        }
+    }
+
     private renderInput(direction: string, index: number): JSX.Element {
         if (this.props.options && Array.isArray(this.props.options)) {
             const option: string = this.props.options.find((item: string) => {
@@ -35,13 +56,16 @@ class FormItemAlignVertical extends React.Component<IFormItemComponentMappingToP
             });
 
             if (typeof option !== "undefined") {
+                const className: string = this.getInputClassName(direction);
+
                 return (
                     <span>
                         <input
-                            id={`alignVertical${index}`}
+                            className={className}
+                            id={this.props.dataLocation}
                             type="radio"
                             value={direction}
-                            name="alignVertical"
+                            name={this.props.dataLocation}
                             aria-label={`${direction} align`}
                             onChange={this.onChange.bind(this, direction)}
                             checked={this.isChecked(direction)}
@@ -53,4 +77,4 @@ class FormItemAlignVertical extends React.Component<IFormItemComponentMappingToP
     }
 }
 
-export default FormItemAlignVertical;
+export default manageJss(styles)(FormItemAlignVertical);

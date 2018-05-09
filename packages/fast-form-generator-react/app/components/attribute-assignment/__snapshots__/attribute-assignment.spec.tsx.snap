@@ -11,13 +11,17 @@ exports[`attribute-assignment attribute-assignment: 0 1`] = `
     <div>
       <div>
         <div>
-          <div>
+          <div
+            className="formItemTextarea-0-1-10"
+          >
             <label
+              className="formItemTextarea_label-0-1-11"
               htmlFor="text"
             >
               text
             </label>
             <textarea
+              className="formItemTextarea_textarea-0-1-12"
               id="text"
               name="text"
               onChange={[Function]}

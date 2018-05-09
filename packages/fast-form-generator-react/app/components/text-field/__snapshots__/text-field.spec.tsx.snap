@@ -12,29 +12,27 @@ exports[`text-field text-field: 0 1`] = `
       <div>
         <div>
           <div
-            className="formItemSelect-0-1-1"
+            className="formItemSelect-0-1-10"
           >
             <label
-              className="formItemSelect_label-0-1-2"
+              className="formItemSelect_label-0-1-11"
             >
-              tag
+              Tag
             </label>
             <span
-              className="formItemSelect_span-0-1-3"
+              className="formItemSelect_span-0-1-12"
             >
               <select
-                className="formItemSelect_input-0-1-4"
+                className="formItemSelect_input-0-1-13"
                 onChange={[Function]}
                 value="span"
               >
                 <option
-                  className="formItemSelect_option-0-1-5"
                   value="span"
                 >
                   span
                 </option>
                 <option
-                  className="formItemSelect_option-0-1-5"
                   value="button"
                 >
                   button
@@ -42,18 +40,22 @@ exports[`text-field text-field: 0 1`] = `
               </select>
             </span>
           </div>
-          <div>
+          <div
+            className="formItemTextarea-0-1-14"
+          >
             <label
+              className="formItemTextarea_label-0-1-15"
               htmlFor="text"
             >
-              text
+              Text
             </label>
             <textarea
+              className="formItemTextarea_textarea-0-1-16"
               id="text"
               name="text"
               onChange={[Function]}
               rows={3}
-              value="example text"
+              value="Example text"
             />
           </div>
         </div>

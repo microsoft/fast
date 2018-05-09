@@ -6,11 +6,7 @@
     "id": "checkbox",
     "properties": {
         "toggle": {
-            "title": "toggle",
-            "type": "boolean"
-        },
-        "optionalToggle": {
-            "title": "optional toggle",
+            "title": "Checkbox",
             "type": "boolean"
         }
     },

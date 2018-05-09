@@ -1,6 +1,10 @@
 import * as React from "react";
 import IFormItemCommon from "./form-item";
 import { getStringValue } from "./form-item.utilities";
+import styles from "./form-item.number-field.style";
+import { IFormItemNumberFieldClassNameContract } from "../class-name-contracts/";
+import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 export interface IFormItemNumberFieldProps extends IFormItemCommon {
     /**
@@ -23,17 +27,21 @@ export interface IFormItemNumberFieldProps extends IFormItemCommon {
  * Schema form component definition
  * @extends React.Component
  */
-class FormItemNumberField extends React.Component<IFormItemNumberFieldProps, {}> {
+class FormItemNumberField extends React.Component<IFormItemNumberFieldProps & IManagedClasses<IFormItemNumberFieldClassNameContract>, {}> {
 
     public render(): JSX.Element {
         const value: string = getStringValue(this.props.data, this.props.default);
 
         return (
-            <div>
-                <label htmlFor={this.props.dataLocation}>
+            <div className={this.props.managedClasses.formItemNumberField}>
+                <label
+                    className={this.props.managedClasses.formItemNumberField_label}
+                    htmlFor={this.props.dataLocation}
+                >
                     {this.props.label}
                 </label>
                 <input
+                    className={this.props.managedClasses.formItemNumberField_input}
                     id={this.props.dataLocation}
                     type="number"
                     value={value}
@@ -68,4 +76,4 @@ class FormItemNumberField extends React.Component<IFormItemNumberFieldProps, {}>
     }
 }
 
-export default FormItemNumberField;
+export default manageJss(styles)(FormItemNumberField);

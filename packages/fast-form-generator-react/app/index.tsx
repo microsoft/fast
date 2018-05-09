@@ -42,10 +42,7 @@ export interface IGroupItem {
 const designSystemDefaults: any = {
     foregroundColor: "#000",
     backgroundColor: "#FFF",
-    brandColor: "#0078D4",
-    lightGrey: "#EEEEEE",
-    navigationBarHeight: 48,
-    categoryItemComponentMinWidth: 80
+    brandColor: "#0078D4"
 };
 
 export default class App extends React.Component<{}, IAppState> {

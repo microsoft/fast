@@ -8,6 +8,10 @@ import { generateExampleData } from "./form-section.utilities";
 import { IFormLocation } from "./form.props";
 import { isRootLocation } from "./form.utilities";
 import { getArrayLinks } from "./form-item.array.utilities";
+import styles from "./form-item.array.style";
+import { IFormItemArrayClassNameContract } from "../class-name-contracts/";
+import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 export enum ItemConstraints {
     minItems = "minItems",
@@ -58,24 +62,43 @@ export interface IFormItemArrayProps extends IFormItemCommon {
 }
 
 /**
+ * State object for the FormItemChildren component
+ */
+export interface IFormItemArrayState {
+    hideOptionMenu: boolean;
+}
+
+/**
  * Schema form component definition
  * @extends React.Component
  */
-class FormItemArray extends React.Component<IFormItemArrayProps, {}> {
+class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasses<IFormItemArrayClassNameContract>, IFormItemArrayState> {
+
+    constructor(props: IFormItemArrayProps & IManagedClasses<IFormItemArrayClassNameContract>) {
+        super(props);
+
+        this.state = {
+            hideOptionMenu: true
+        };
+    }
 
     public render(): JSX.Element {
         return (
-            <div>
+            <div className={this.props.managedClasses.formItemArray}>
                 <div>
-                    <label>{this.getLabelText()}</label>
-                    <button>Open menu</button>
-                    <ul>
+                    <h3>{this.getLabelText()}</h3>
+                    <button onClick={this.toggleMenu} aria-expanded={!this.state.hideOptionMenu}>Options</button>
+                    <ul aria-hidden={this.state.hideOptionMenu} className={this.props.managedClasses.formItemArray_menu}>
                         {this.renderArrayMenuItems()}
                     </ul>
                 </div>
                 {this.generateArrayLinks()}
             </div>
         );
+    }
+
+    private toggleMenu = (): void => {
+        this.setState({hideOptionMenu: !this.state.hideOptionMenu});
     }
 
     /**
@@ -198,7 +221,7 @@ class FormItemArray extends React.Component<IFormItemArrayProps, {}> {
         if (arraySections.length > 0) {
             return React.createElement(SortableContainer(() => {
                 return (
-                    <ul>
+                    <ul className={this.props.managedClasses.formItemArray_linkMenu}>
                         {this.generateArrayLinkItems()}
                     </ul>
                 );
@@ -279,4 +302,4 @@ class FormItemArray extends React.Component<IFormItemArrayProps, {}> {
     }
 }
 
-export default FormItemArray;
+export default manageJss(styles)(FormItemArray);

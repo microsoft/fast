@@ -12,18 +12,22 @@ exports[`align-vertical align-vertical: 0 1`] = `
       <div>
         <div>
           <div>
-            <div>
+            <div
+              className="formItemAlignVertical-0-1-10"
+            >
               <label
+                className="formItemAlignVertical_label-0-1-11"
                 htmlFor="alignVertical"
               >
-                align vertical
+                Align vertical
               </label>
               <div>
                 <span>
                   <input
                     aria-label="top align"
                     checked={true}
-                    id="alignVertical1"
+                    className={undefined}
+                    id="alignVertical"
                     name="alignVertical"
                     onChange={[Function]}
                     type="radio"
@@ -34,7 +38,8 @@ exports[`align-vertical align-vertical: 0 1`] = `
                   <input
                     aria-label="center align"
                     checked={false}
-                    id="alignVertical2"
+                    className="formItemAlignVertical_input__center-0-1-13"
+                    id="alignVertical"
                     name="alignVertical"
                     onChange={[Function]}
                     type="radio"
@@ -45,7 +50,8 @@ exports[`align-vertical align-vertical: 0 1`] = `
                   <input
                     aria-label="bottom align"
                     checked={false}
-                    id="alignVertical3"
+                    className={undefined}
+                    id="alignVertical"
                     name="alignVertical"
                     onChange={[Function]}
                     type="radio"

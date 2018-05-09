@@ -1,16 +1,26 @@
 import * as React from "react";
 import { IFormItemComponentMappingToProperyNamesProps } from "./form-item";
+import styles from "./form-item.theme.style";
+import { IFormItemThemeClassNameContract } from "../class-name-contracts/";
+import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
  * Schema form component definition
  * @extends React.Component
  */
-class FormItemTheme extends React.Component<IFormItemComponentMappingToProperyNamesProps, {}> {
+/* tslint:disable-next-line */
+class FormItemTheme extends React.Component<IFormItemComponentMappingToProperyNamesProps & IManagedClasses<IFormItemThemeClassNameContract>, {}> {
 
     public render(): JSX.Element {
         return (
-            <div>
-                <label htmlFor={this.props.dataLocation}>{this.props.label}</label>
+            <div className={this.props.managedClasses.formItemTheme}>
+                <label
+                    className={this.props.managedClasses.formItemTheme_label}
+                    htmlFor={this.props.dataLocation}
+                >
+                    {this.props.label}
+                </label>
                 <div>
                     {this.renderInput("light", 1)}
                     {this.renderInput("dark", 2)}
@@ -27,6 +37,12 @@ class FormItemTheme extends React.Component<IFormItemComponentMappingToProperyNa
         return this.props.data === theme || (typeof this.props.data === "undefined" && this.props.default === theme);
     }
 
+    private getInputClassName(theme: string): string {
+        return theme === "dark"
+            ? this.props.managedClasses.formItemTheme_input__dark
+            : this.props.managedClasses.formItemTheme_input__light;
+    }
+
     private renderInput(theme: string, index: number): JSX.Element {
         if (this.props.options && Array.isArray(this.props.options)) {
             const option: any = this.props.options.find((item: string): any => {
@@ -34,23 +50,23 @@ class FormItemTheme extends React.Component<IFormItemComponentMappingToProperyNa
             });
 
             if (typeof option !== "undefined") {
+                const className: string = this.getInputClassName(theme);
+
                 return (
-                    <span>
-                        <input
-                            id={this.props.dataLocation}
-                            type="radio"
-                            value={theme}
-                            name="theme"
-                            aria-label={`theme ${theme}`}
-                            onChange={this.onChange.bind(this, theme)}
-                            checked={this.isChecked(theme)}
-                        />
-                        <span />
-                    </span>
+                    <input
+                        className={className}
+                        id={this.props.dataLocation}
+                        type="radio"
+                        value={theme}
+                        name="theme"
+                        aria-label={`theme ${theme}`}
+                        onChange={this.onChange.bind(this, theme)}
+                        checked={this.isChecked(theme)}
+                    />
                 );
             }
         }
     }
 }
 
-export default FormItemTheme;
+export default manageJss(styles)(FormItemTheme);

@@ -6,5 +6,4 @@ export default interface IFormItemSelectClassNameContract {
     formItemSelect_label: string;
     formItemSelect_span: string;
     formItemSelect_input: string;
-    formItemSelect_option: string;
 }

@@ -55,14 +55,18 @@ import {
     isSelect,
     resolveExampleDataWithCachedData
 } from "./form-section.utilities";
+import styles from "./form-section.style";
+import { IFormSectionClassNameContract } from "../class-name-contracts/";
+import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
  * Schema form component definition
  * @extends React.Component
  */
-class FormSection extends React.Component<IFormSectionProps, IFormSectionState> {
+class FormSection extends React.Component<IFormSectionProps & IManagedClasses<IFormSectionClassNameContract>, IFormSectionState> {
 
-    constructor(props: IFormSectionProps) {
+    constructor(props: IFormSectionProps & IManagedClasses<IFormSectionClassNameContract>) {
         super(props);
 
         let oneOfAnyOf: oneOfAnyOfType;
@@ -387,17 +391,19 @@ class FormSection extends React.Component<IFormSectionProps, IFormSectionState> 
             const options: JSX.Element[] = getOneOfAnyOfSelectOptions(this.props.schema, this.state);
 
             return (
-                <React.Fragment>
-                    <label htmlFor={id}>Configuration</label>
-                    <select
-                        id={id}
-                        onChange={this.handleAnyOfOneOfClick}
-                        value={this.state.oneOfAnyOf.activeIndex || 0}
-                    >
-                        {options}
-                    </select>
-                    <hr role="presentation" />
-                </React.Fragment>
+                <div className={this.props.managedClasses.formSection_selectWrapper}>
+                    <label htmlFor={id} className={this.props.managedClasses.formSection_selectLabel}>Configuration</label>
+                    <span className={this.props.managedClasses.formSection_selectSpan}>
+                        <select
+                            className={this.props.managedClasses.formSection_selectInput}
+                            id={id}
+                            onChange={this.handleAnyOfOneOfClick}
+                            value={this.state.oneOfAnyOf.activeIndex || 0}
+                        >
+                            {options}
+                        </select>
+                    </span>
+                </div>
             );
         }
 
@@ -419,16 +425,18 @@ class FormSection extends React.Component<IFormSectionProps, IFormSectionState> 
 
         return optionToggles.map((property: any, index: number): JSX.Element => {
             return (
-                <div key={index}>
+                <div className={this.props.managedClasses.formSection_toggleWrapper} key={index}>
                     <label htmlFor={property.id}>
                         {property.label || this.props.untitled}
                         <button
+                            className={this.props.managedClasses.formSection_toggle}
                             role="switch"
                             aria-pressed={property.selected}
                             onClick={handleToggleClick(property.selected, property.id, property.updateRequested)}
                         >
-                            {property.selected ? property.selectedString : property.unselectedString}
+                            <span />
                         </button>
+                        <span>{property.selected ? property.selectedString : property.unselectedString}</span>
                     </label>
                     <input
                         id={property.id}
@@ -450,7 +458,7 @@ class FormSection extends React.Component<IFormSectionProps, IFormSectionState> 
         this.state.sections.map((property: any, index: number) => {
             if (typeof property.active !== "undefined" || property.required) {
                 sections.push(
-                    <li key={uniqueId()}>
+                    <li onClick={this.handleSectionLinkClick.bind(this, property.schemaLocation, property.dataLocation)} key={uniqueId()}>
                         <a
                             onClick={this.handleSectionLinkClick.bind(this, property.schemaLocation, property.dataLocation)}
                         >
@@ -466,9 +474,9 @@ class FormSection extends React.Component<IFormSectionProps, IFormSectionState> 
         }
 
         return (
-            <div>
+            <div className={this.props.managedClasses.formSection}>
                 <h3>Sections</h3>
-                <ul>
+                <ul className={this.props.managedClasses.formSection_menu}>
                     {sections}
                 </ul>
             </div>
@@ -509,4 +517,4 @@ class FormSection extends React.Component<IFormSectionProps, IFormSectionState> 
     }
 }
 
-export default FormSection;
+export default manageJss(styles)(FormSection);

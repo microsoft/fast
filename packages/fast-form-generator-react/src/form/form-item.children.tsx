@@ -7,6 +7,10 @@ import { isRootLocation } from "./form.utilities";
 import { generateExampleData } from "./form-section.utilities";
 import { updateActiveSection } from "./form-section.props";
 import { ComponentTree, DataOnChange } from "./form.props";
+import styles from "./form-item.children.style";
+import { IFormItemChildrenClassNameContract } from "../class-name-contracts/";
+import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 export interface IFormItemChildrenProps {
     /**
@@ -45,36 +49,39 @@ export interface IFormItemChildrenProps {
  */
 export interface IFormItemChildrenState {
     childrenSearchTerm: string;
+    hideOptionMenu: boolean;
 }
 
 /**
  * Schema form component definition
  * @extends React.Component
  */
-class FormItemChildren extends React.Component<IFormItemChildrenProps, IFormItemChildrenState> {
+/* tslint:disable-next-line */
+class FormItemChildren extends React.Component<IFormItemChildrenProps & IManagedClasses<IFormItemChildrenClassNameContract>, IFormItemChildrenState> {
 
     /**
      * Store a reference to the search input element
      */
     private searchRef: HTMLInputElement;
 
-    constructor(props: IFormItemChildrenProps) {
+    constructor(props: IFormItemChildrenProps & IManagedClasses<IFormItemChildrenClassNameContract>) {
         super(props);
 
         this.state = {
-            childrenSearchTerm: ""
+            childrenSearchTerm: "",
+            hideOptionMenu: true
         };
     }
 
     public render(): JSX.Element {
         // Convert to search component when #3006 has been completed
         return (
-            <div>
+            <div className={this.props.managedClasses.formItemChildren}>
                 {this.generateExistingChildrenHeader()}
                 {this.generateExistingChildren()}
                 <div>
                     <h3>Add building blocks</h3>
-                    <div>
+                    <div className={this.props.managedClasses.formItemChildren_inputWrapper}>
                         <input
                             aria-label="Enter your search"
                             type="search"
@@ -86,10 +93,10 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps, IFormItem
                             ref={this.storeSearchRef}
                         />
                         <button name="search-button">
-                            <span>Search building blocks</span>
+                            <span>Search</span>
                         </button>
                     </div>
-                    <ul>
+                    <ul className={this.props.managedClasses.formItemChildren_childOptionsMenu}>
                         {this.generateChildOptions()}
                     </ul>
                 </div>
@@ -174,6 +181,10 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps, IFormItem
     private clickComponentFactory = (type: string, componentObj?: any, index?: number): any => {
         return (e: React.MouseEvent<MouseEvent>): void => {
             e.preventDefault();
+
+            if (!this.state.hideOptionMenu) {
+                this.toggleMenu();
+            }
 
             switch (type) {
                 case "edit":
@@ -326,17 +337,21 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps, IFormItem
 
         if (typeof currentChildren !== "undefined") {
             return (
-                <div>
-                    <h3>Building blocks</h3>
+                <div className={this.props.managedClasses.formItemChildren_existingChildren}>
                     <div>
-                        <button>Children menu</button>
-                        <ul>
+                        <h3>Building blocks</h3>
+                        <button onClick={this.toggleMenu} aria-expanded={!this.state.hideOptionMenu}>Options</button>
+                        <ul className={this.props.managedClasses.formItemChildren_optionMenu} aria-hidden={this.state.hideOptionMenu}>
                             {this.getActionMenuChildItems()}
                         </ul>
                     </div>
                 </div>
             );
         }
+    }
+
+    private toggleMenu = (): void => {
+        this.setState({hideOptionMenu: !this.state.hideOptionMenu});
     }
 
     /**
@@ -349,7 +364,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps, IFormItem
 
         return React.createElement(SortableContainer((): JSX.Element => {
             return (
-                <ul>
+                <ul className={this.props.managedClasses.formItemChildren_addedChildren}>
                     {this.generateChildItems()}
                 </ul>
             );
@@ -384,4 +399,4 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps, IFormItem
     }
 }
 
-export default FormItemChildren;
+export default manageJss(styles)(FormItemChildren);

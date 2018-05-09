@@ -23,6 +23,7 @@ export const sortingProps: ISortingProps = {
 
 export interface ISortableListItemProps {
     id?: string;
+    onClick?: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
 export class SortableListItem extends React.Component<ISortableListItemProps, {}> {

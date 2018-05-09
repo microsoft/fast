@@ -6,7 +6,7 @@
     "id": "theme",
     "properties": {
         "theme": {
-            "title": "theme",
+            "title": "Theme",
             "type": "string",
             "enum": [
                 "light",

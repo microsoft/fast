@@ -6,21 +6,21 @@
     "id": "anyOf",
     "anyOf": [
         {
-            "description": "string",
+            "description": "String",
             "type": "object",
             "properties": {
                 "string": {
-                    "title": "string",
+                    "title": "String",
                     "type": "string"
                 }
             }
         },
         {
-            "description": "number",
+            "description": "Number",
             "type": "object",
             "properties": {
                 "number": {
-                    "title": "number",
+                    "title": "Number",
                     "type": "number"
                 }
             }

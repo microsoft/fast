@@ -12,37 +12,36 @@ exports[`theme theme: 0 1`] = `
       <div>
         <div>
           <div>
-            <div>
+            <div
+              className="formItemTheme-0-1-10"
+            >
               <label
+                className="formItemTheme_label-0-1-11"
                 htmlFor="theme"
               >
-                theme
+                Theme
               </label>
               <div>
-                <span>
-                  <input
-                    aria-label="theme light"
-                    checked={true}
-                    id="theme"
-                    name="theme"
-                    onChange={[Function]}
-                    type="radio"
-                    value="light"
-                  />
-                  <span />
-                </span>
-                <span>
-                  <input
-                    aria-label="theme dark"
-                    checked={false}
-                    id="theme"
-                    name="theme"
-                    onChange={[Function]}
-                    type="radio"
-                    value="dark"
-                  />
-                  <span />
-                </span>
+                <input
+                  aria-label="theme light"
+                  checked={true}
+                  className="formItemTheme_input__light-0-1-12"
+                  id="theme"
+                  name="theme"
+                  onChange={[Function]}
+                  type="radio"
+                  value="light"
+                />
+                <input
+                  aria-label="theme dark"
+                  checked={false}
+                  className="formItemTheme_input__dark-0-1-13"
+                  id="theme"
+                  name="theme"
+                  onChange={[Function]}
+                  type="radio"
+                  value="dark"
+                />
               </div>
             </div>
           </div>

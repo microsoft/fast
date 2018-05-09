@@ -67,7 +67,6 @@ class FormItemSelect extends React.Component<IFormItemSelectProps & IManagedClas
         return this.props.options.map((item: any, index: number) => {
             return (
                 <option
-                    className={this.props.managedClasses.formItemSelect_option}
                     key={index}
                     value={item}
                 >
