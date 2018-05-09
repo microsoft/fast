@@ -45,6 +45,12 @@ import ToggleStyles from "./toggle";
 export { ToggleStyles };
 
 /**
+ * Export toggle styles
+ */
+import TextfieldStyles from "./text-field";
+export { TextfieldStyles };
+
+/**
  * Export typography styles
  */
 import TypographyStyles from "./typography";
