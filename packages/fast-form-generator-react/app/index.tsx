@@ -67,9 +67,9 @@ export default class App extends React.Component<{}, IAppState> {
         this.onChange = this.onChange.bind(this);
 
         this.state = {
-            currentComponent: testComponents.arrays.component,
-            currentComponentSchema: testComponents.arrays.schema,
-            currentComponentData: getExample(testComponents.arrays.schema),
+            currentComponent: testComponents.textField.component,
+            currentComponentSchema: testComponents.textField.schema,
+            currentComponentData: getExample(testComponents.textField.schema),
             currentComponentOrderByPropertyNames: void(0),
             currentComponentAttributeAssignment: void(0),
             onChange: this.onChange,
