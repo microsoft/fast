@@ -12,41 +12,37 @@ exports[`number-field number-field: 0 1`] = `
       <div>
         <div>
           <div
-            className="formItemSelect-0-1-6"
+            className="formItemSelect-0-1-10"
           >
             <label
-              className="formItemSelect_label-0-1-7"
+              className="formItemSelect_label-0-1-11"
             >
               Level
             </label>
             <span
-              className="formItemSelect_span-0-1-8"
+              className="formItemSelect_span-0-1-12"
             >
               <select
-                className="formItemSelect_input-0-1-9"
+                className="formItemSelect_input-0-1-13"
                 onChange={[Function]}
                 value={1}
               >
                 <option
-                  className="formItemSelect_option-0-1-10"
                   value={1}
                 >
                   1
                 </option>
                 <option
-                  className="formItemSelect_option-0-1-10"
                   value={2}
                 >
                   2
                 </option>
                 <option
-                  className="formItemSelect_option-0-1-10"
                   value={3}
                 >
                   3
                 </option>
                 <option
-                  className="formItemSelect_option-0-1-10"
                   value={4}
                 >
                   4
@@ -55,16 +51,16 @@ exports[`number-field number-field: 0 1`] = `
             </span>
           </div>
           <div
-            className="formItemNumberField-0-1-11"
+            className="formItemNumberField-0-1-14"
           >
             <label
-              className="formItemNumberField_label-0-1-12"
+              className="formItemNumberField_label-0-1-15"
               htmlFor="quantity"
             >
               Quantity
             </label>
             <input
-              className="formItemNumberField_input-0-1-13"
+              className="formItemNumberField_input-0-1-16"
               id="quantity"
               max={50}
               min={0}

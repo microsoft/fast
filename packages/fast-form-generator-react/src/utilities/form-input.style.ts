@@ -111,29 +111,6 @@ export function applyPopupMenuStyles(): ICSSRules<{}> {
     };
 }
 
-export function applyPopupMenuButtonStyles(): ICSSRules<{}> {
-    return {
-        background: "none",
-        border: "none",
-        padding: `${toPx(2)} ${toPx(12)}`,
-        color: "#0078D7",
-        "&:focus": {
-            outline: "none"
-        },
-        "&:hover": {
-            textDecoration: "underline"
-        },
-        "&[aria-expanded='true']": {
-            background: "#EBEBEB",
-            borderLeftColor: "rgba(0,0,0,.1)",
-            borderRadius: `${toPx(2)} ${toPx(2)} 0 0`,
-            borderRightColor: "rgba(0,0,0,.1)",
-            borderTopColor: "rgba(0,0,0,.1)",
-            color: "black"
-        }
-    };
-}
-
 export function applyPopupHeadingStyles(): ICSSRules<{}> {
     return {
         "& > div": {
@@ -142,7 +119,24 @@ export function applyPopupHeadingStyles(): ICSSRules<{}> {
             "& h3": {
                 flexGrow: "1",
                 "& + button": {
-                    ...applyPopupMenuButtonStyles()
+                    background: "none",
+                    border: "none",
+                    padding: `${toPx(2)} ${toPx(12)}`,
+                    color: "#0078D7",
+                    "&:focus": {
+                        outline: "none"
+                    },
+                    "&:hover": {
+                        textDecoration: "underline"
+                    },
+                    "&[aria-expanded='true']": {
+                        background: "#EBEBEB",
+                        borderLeftColor: "rgba(0,0,0,.1)",
+                        borderRadius: `${toPx(2)} ${toPx(2)} 0 0`,
+                        borderRightColor: "rgba(0,0,0,.1)",
+                        borderTopColor: "rgba(0,0,0,.1)",
+                        color: "black"
+                    }
                 }
             }
         }

@@ -1,7 +1,6 @@
-import { Direction, ellipsis, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
+import { toPx } from "@microsoft/fast-jss-utilities";
 import {
     applyCleanListStyle,
-    applyInputStyle,
     applyLabelStyle,
     applyListItemStyle,
     applySelectInputStyles,

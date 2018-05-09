@@ -11,41 +11,48 @@ exports[`any-of any-of: 0 1`] = `
     <div>
       <div>
         <div>
-          <label
-            htmlFor="1"
-          >
-            Configuration
-          </label>
-          <select
-            id="1"
-            onChange={[Function]}
-            value={0}
-          >
-            <option
-              value={0}
-            >
-              String
-            </option>
-            <option
-              value={1}
-            >
-              Number
-            </option>
-          </select>
-          <hr
-            role="presentation"
-          />
           <div
-            className="formItemTextarea-0-1-6"
+            className="formSection_selectWrapper-0-1-6"
           >
             <label
-              className="formItemTextarea_label-0-1-7"
+              className="formSection_selectLabel-0-1-9"
+              htmlFor="1"
+            >
+              Configuration
+            </label>
+            <span
+              className="formSection_selectSpan-0-1-7"
+            >
+              <select
+                className="formSection_selectInput-0-1-8"
+                id="1"
+                onChange={[Function]}
+                value={0}
+              >
+                <option
+                  value={0}
+                >
+                  String
+                </option>
+                <option
+                  value={1}
+                >
+                  Number
+                </option>
+              </select>
+            </span>
+          </div>
+          <div
+            className="formItemTextarea-0-1-10"
+          >
+            <label
+              className="formItemTextarea_label-0-1-11"
               htmlFor="string"
             >
               String
             </label>
             <textarea
-              className="formItemTextarea_textarea-0-1-8"
+              className="formItemTextarea_textarea-0-1-12"
               id="string"
               name="string"
               onChange={[Function]}

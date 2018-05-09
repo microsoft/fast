@@ -1,4 +1,3 @@
-import { Direction, ellipsis, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import {
     applyInputStyle,

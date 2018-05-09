@@ -12,16 +12,16 @@ exports[`checkbox checkbox: 0 1`] = `
       <div>
         <div>
           <div
-            className="formItemCheckbox-0-1-6"
+            className="formItemCheckbox-0-1-10"
           >
             <label
-              className="formItemCheckbox_label-0-1-7"
+              className="formItemCheckbox_label-0-1-11"
               htmlFor="toggle"
             >
               Checkbox
               <input
                 checked={true}
-                className="formItemCheckbox_input-0-1-8"
+                className="formItemCheckbox_input-0-1-12"
                 id="toggle"
                 onChange={[Function]}
                 type="checkbox"

@@ -1,10 +1,9 @@
-import { ellipsis, toPx } from "@microsoft/fast-jss-utilities";
+import { toPx } from "@microsoft/fast-jss-utilities";
 import {
     applyAriaHiddenStyles,
     applyCleanListStyle,
     applyListItemStyle,
     applyPopupHeadingStyles,
-    applyPopupMenuButtonStyles,
     applyPopupMenuStyles
 } from "../utilities/form-input.style";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
