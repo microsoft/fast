@@ -2,7 +2,7 @@ import { ICategoryItemProps } from "@microsoft/fast-development-site-react";
 import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import TextField from "./index";
-import { ITextfieldHandledProps, TextFieldType } from "@microsoft/fast-components-react-base";
+import { ITextFieldHandledProps, TextFieldType } from "@microsoft/fast-components-react-base";
 import * as React from "react";
 
 export default {
@@ -35,4 +35,4 @@ export default {
             type: TextFieldType.password
         }
     ]
-} as ISnapshotTestSuite<ITextfieldHandledProps>;
+} as ISnapshotTestSuite<ITextFieldHandledProps>;
