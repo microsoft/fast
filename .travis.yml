@@ -8,36 +8,38 @@ dist: trusty
 sudo: false
 env:
   global:
-    - CC_TEST_REPORTER_ID=08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
+  - CC_TEST_REPORTER_ID=08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
+  - secure: MK/kzidtAXDRx97SPPWx4InFkfD3/1EV6DKcpdeHuWJ7iv1A9/WXMZvHO4Ab6DWLWIUSbzxLatGv/mDxg/veclXi/A+sibURC7QYIwUGH0RpA/L4fj5pEvewT+uOpPo7t7sZQIVQ1j/uOGNRbpaJajBom4G2b1RJ4tQET5rCSj7q8xewSxpYBMfuid/W95ddaGNKnIDvmmoap2JFktDHQMXqSNRFcPq6+Wk7MsqCXql6z3NtlKeFOU28lJb6s0tDq00Zx5K4OEpGC0z6Cf4XOaFcOVjONF1CI+W6apG/mQP8VqV4gvjEkvXKbtvIu4z+H8gkJBNOnKi9ksZfnj0ZiobzLyZtTk1ZGzQg9oiTthGGqSg+l/BIbJmFJQmlr0ewYVde60y4BeUCFWWy4D4AKJSY6Qn/eQIlH7hD9PLiYXgnRmI/TsMbpKHbJ3FmTtoi/Vkyxt8jCLZJtyEY5RKyfWxoShLiv9SSkP7MPIzJboRccyC6QP3XnhXKMkuQTvSewt9FCC3hLU8zelyhIGLL5SvHXtvXoUPQ181w1nfsQhtPyUKE23wEpzpSBLHWdlwt8t90qcF7tgT4w3E5HQpJwiHw8YX6I5ayoAGepEM/YHBjPWq8vQ7NL5lHJd7gDStCtF0E+1kvy5ESyFbCbWk4CwN0719SGg9y6fb6wqxfMJE=
 before_script:
   - git config core.autocrlf false
-  - git config --global user.email 'awentzel@users.noreply.github.com'
-  - git config --global user.name 'Aaron Wentzel'
+  - git config --global user.email 'travis@travis-ci.org'
+  - git config --global user.name 'Travis CI'
   - git config --list
+  - git remote add master https://${GH_TOKEN}@github.com/Microsoft/fast-dna.git > /dev/null 2>&1
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - "./cc-test-reporter before-build"
 script:
   - lerna run test --stream
 after_script:
-  # See https://github.com/codeclimate/test-reporter/issues/263
   - |
-      if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_EVENT_TYPE" != "cron" ]; then
-        for f in packages/*; do
-          if [ -d $f]; then
-            echo $f;
-            ./cc-test-reporter format-coverage -t lcov -o coverage/coverage.${f//\//-}.json $f/coverage/lcov.info;
-          fi
-        done;
-        ./cc-test-reporter sum-coverage -o coverage/coverage.total.json coverage/coverage.*.json;
-        ./cc-test-reporter upload-coverage -i coverage/coverage.total.json;
-      fi
+    if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_EVENT_TYPE" != "cron" ]; then
+      for f in packages/*; do
+        if [ -d $f]; then
+          echo $f;
+          ./cc-test-reporter format-coverage -t lcov -o coverage/coverage.${f//\//-}.json $f/coverage/lcov.info;
+        fi
+      done;
+      ./cc-test-reporter sum-coverage -o coverage/coverage.total.json coverage/coverage.*.json;
+      ./cc-test-reporter upload-coverage -i coverage/coverage.total.json;
+    fi
   - |
-      if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_EVENT_TYPE" == "cron" ] && [ $TRAVIS_BRANCH = "master" ]; then
-        echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc;
-        echo "Publishing to npm as ";
-        npm whoami;
-        lerna updated;
-        lerna publish --conventional-commits --yes --loglevel=silly;
-        git status;
-      fi
+    if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_EVENT_TYPE" == "cron" ] && [ $TRAVIS_BRANCH = "master" ]; then
+      echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc;
+      echo "Publishing to npm as ";
+      npm whoami;
+      lerna updated;
+      lerna publish --conventional-commits --yes --loglevel=silly;
+      git status;
+      git log;
+    fi
