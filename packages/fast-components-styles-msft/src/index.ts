@@ -47,8 +47,8 @@ export { ToggleStyles };
 /**
  * Export toggle styles
  */
-import TextfieldStyles from "./text-field";
-export { TextfieldStyles };
+import TextFieldStyles from "./text-field";
+export { TextFieldStyles };
 
 /**
  * Export typography styles

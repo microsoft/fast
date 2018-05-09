@@ -1,10 +1,10 @@
 import { IDesignSystem } from "../design-system";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
-import { ITextfieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { ITextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import * as Chroma from "chroma-js";
 
-const styles: ComponentStyles<ITextfieldClassNameContract, IDesignSystem> = {
+const styles: ComponentStyles<ITextFieldClassNameContract, IDesignSystem> = {
     textField: {
         color: "#757575",
         outline: `${toPx(1)} solid transparent`,

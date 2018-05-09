@@ -2,17 +2,17 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Foundation, { HandledProps } from "../foundation";
 import {
-    ITextfieldHandledProps,
-    ITextfieldManagedClasses,
-    ITextfieldUnhandledProps,
+    ITextFieldHandledProps,
+    ITextFieldManagedClasses,
+    ITextFieldUnhandledProps,
     TextFieldType
 } from "./text-field.props";
-import { IManagedClasses, ITextfieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { IManagedClasses, ITextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
 
 /* tslint:disable-next-line */
-class TextField extends Foundation<ITextfieldHandledProps & IManagedClasses<ITextfieldClassNameContract>, React.HTMLAttributes<HTMLInputElement>, {}> {
-    protected handledProps: HandledProps<ITextfieldHandledProps & IManagedClasses<ITextfieldClassNameContract>> = {
+class TextField extends Foundation<ITextFieldHandledProps & IManagedClasses<ITextFieldClassNameContract>, React.HTMLAttributes<HTMLInputElement>, {}> {
+    protected handledProps: HandledProps<ITextFieldHandledProps & IManagedClasses<ITextFieldClassNameContract>> = {
         disabled: void 0,
         placeholder: void 0,
         managedClasses: void 0,
@@ -43,8 +43,8 @@ class TextField extends Foundation<ITextfieldHandledProps & IManagedClasses<ITex
     /**
      * Generates handled attributes based on props
      */
-    private generateHandledAttributes(): Partial<ITextfieldHandledProps> {
-        const attributes: Partial<ITextfieldHandledProps> = {};
+    private generateHandledAttributes(): Partial<ITextFieldHandledProps> {
+        const attributes: Partial<ITextFieldHandledProps> = {};
 
         attributes.type = this.props.type ? this.props.type : TextFieldType.text;
 
@@ -66,4 +66,4 @@ class TextField extends Foundation<ITextfieldHandledProps & IManagedClasses<ITex
 
 export default TextField;
 export * from "./text-field.props";
-export { ITextfieldClassNameContract };
+export { ITextFieldClassNameContract };

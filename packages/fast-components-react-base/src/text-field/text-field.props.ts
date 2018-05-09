@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IManagedClasses, ITextfieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { IManagedClasses, ITextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 
 export enum TextFieldType {
    date = "date",
@@ -17,7 +17,7 @@ export enum TextFieldType {
    week = "week"
 }
 
-export interface ITextfieldHandledProps {
+export interface ITextFieldHandledProps {
     /**
      * The disabled state
      */
@@ -31,7 +31,7 @@ export interface ITextfieldHandledProps {
     /**
      * Placeholder Text for input field
      */
-    placeholder: string;
+    placeholder?: string;
 
     /**
      * The text field input type
@@ -44,6 +44,6 @@ export interface ITextfieldHandledProps {
     value?: string;
 }
 
-export interface ITextfieldUnhandledProps extends React.HTMLAttributes<HTMLInputElement> {}
-export interface ITextfieldManagedClasses extends IManagedClasses<ITextfieldClassNameContract> {}
-export type TextfieldProps = ITextfieldHandledProps & ITextfieldUnhandledProps & ITextfieldManagedClasses;
+export interface ITextFieldUnhandledProps extends React.HTMLAttributes<HTMLInputElement> {}
+export interface ITextFieldManagedClasses extends IManagedClasses<ITextFieldClassNameContract> {}
+export type TextFieldProps = ITextFieldHandledProps & ITextFieldUnhandledProps & ITextFieldManagedClasses;

@@ -3,13 +3,13 @@ import { ICategoryItemProps } from "@microsoft/fast-development-site-react";
 import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import TextField, {
-    ITextfieldHandledProps,
-    ITextfieldManagedClasses,
-    ITextfieldUnhandledProps,
+    ITextFieldHandledProps,
+    ITextFieldManagedClasses,
+    ITextFieldUnhandledProps,
     TextFieldType
 } from "./text-field";
 
-const examples: ISnapshotTestSuite<ITextfieldHandledProps & ITextfieldManagedClasses> = {
+const examples: ISnapshotTestSuite<ITextFieldHandledProps & ITextFieldManagedClasses> = {
     name: "textfield",
     component: TextField,
     data: [
