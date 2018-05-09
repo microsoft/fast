@@ -4,6 +4,9 @@ export { IFormClassNameContract };
 import IFormItemAlignHorizontalClassNameContract from "./form-item.align-horizontal.class-name-contract";
 export { IFormItemAlignHorizontalClassNameContract };
 
+import IFormItemAlignVerticalClassNameContract from "./form-item.align-vertical.class-name-contract";
+export { IFormItemAlignVerticalClassNameContract };
+
 import IFormItemArrayClassNameContract from "./form-item.array.class-name-contract";
 export { IFormItemArrayClassNameContract };
 

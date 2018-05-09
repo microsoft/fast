@@ -148,3 +148,15 @@ export function applyPopupHeadingStyles(): ICSSRules<{}> {
         }
     };
 }
+
+export function applyInputBackplateStyle(): ICSSRules<{}> {
+    return {
+        appearance: "none",
+        height: toPx(36),
+        width: toPx(36),
+        backgroundColor: "transparent",
+        "&:focus": {
+            outline: "none",
+        }
+    };
+}
