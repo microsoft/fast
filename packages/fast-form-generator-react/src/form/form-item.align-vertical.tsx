@@ -17,7 +17,7 @@ class FormItemAlignVertical extends React.Component<IFormItemComponentMappingToP
             <div className={this.props.managedClasses.formItemAlignVertical}>
                 <label
                     className={this.props.managedClasses.formItemAlignVertical_label}
-                    htmlFor="alignVertical"
+                    htmlFor={this.props.dataLocation}
                 >
                     {this.props.label}
                 </label>
@@ -62,10 +62,10 @@ class FormItemAlignVertical extends React.Component<IFormItemComponentMappingToP
                     <span>
                         <input
                             className={className}
-                            id={`alignVertical${index}`}
+                            id={this.props.dataLocation}
                             type="radio"
                             value={direction}
-                            name="alignVertical"
+                            name={this.props.dataLocation}
                             aria-label={`${direction} align`}
                             onChange={this.onChange.bind(this, direction)}
                             checked={this.isChecked(direction)}
