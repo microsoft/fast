@@ -1,6 +1,27 @@
 import { ICSSRules } from "@microsoft/fast-jss-manager";
 import { Direction, ellipsis, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
 
+export const colors: any = {
+    black: "#000",
+    white: "#FFF",
+    pink: "#FB356D",
+    blue: "#0078D4",
+    lightBlue: "#0075CF",
+    darkBlue: "#005EA6",
+    gray: "#8A8A8A",
+    grayBackground: "rgba(0, 0, 0, 0.04)",
+    boxShadow: "rgba(0, 0, 0, 0.08)",
+    border: "rgba(0,0,0,.2)",
+    lightBorder: "rgba(0,0,0,.1)",
+    menuGray: "#EBEBEB"
+};
+
+export function localizePadding(top: number, right: number, bottom: number, left: number): ICSSRules<{}> {
+    return {
+        padding: localizeSpacing(Direction.ltr)(`${toPx(top)} ${toPx(right)} ${toPx(bottom)} ${toPx(left)}`)
+    };
+}
+
 export function applyLabelStyle(): ICSSRules<{}> {
     return {
         flexGrow: "1",
@@ -40,12 +61,6 @@ export function applyCleanListStyle(): ICSSRules<{}> {
     };
 }
 
-export function listPadding(): ICSSRules<{}> {
-    return {
-        padding: localizeSpacing(Direction.ltr)(`${toPx(12)} ${toPx(30)} ${toPx(12)} ${toPx(12)}`)
-    };
-}
-
 export function applyListItemStyle(): ICSSRules<{}> {
     return {
         "& li": {
@@ -69,12 +84,12 @@ export function applyListItemStyle(): ICSSRules<{}> {
             "& button": {
                 width: "100%",
                 textAlign: "left",
-                ...listPadding(),
+                ...localizePadding(12, 30, 12, 12)
             },
             "& a": {
                 textAlign: "left",
                 display: "block",
-                ...listPadding(),
+                ...localizePadding(12, 30, 12, 12),
                 "& span": {
                     display: "block",
                     fontStyle: "italic",
@@ -108,7 +123,7 @@ export function applyPopupMenuStyles(): ICSSRules<{}> {
         "& li > button": {
             cursor: "pointer",
             display: "block",
-            padding: localizeSpacing(Direction.ltr)(`${toPx(12)} ${toPx(12)} ${toPx(12)} ${toPx(40)}`),
+            ...localizePadding(12, 12, 12, 40),
             position: "relative",
             border: "none",
             background: "transparent",
@@ -190,7 +205,7 @@ export function applySelectInputStyles(): ICSSRules<{}> {
         borderRadius: toPx(2),
         boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(4)} ${colors.boxShadow}`,
         appearance: "none",
-        padding: localizeSpacing(Direction.ltr)(`${toPx(8)} ${toPx(24)} ${toPx(8)} ${toPx(8)}`),
+        ...localizePadding(8, 24, 8, 8),
         border: "none",
         outline: "none",
         "&:-ms-expand": {
@@ -225,17 +240,3 @@ export function applySelectSpanStyles(): ICSSRules<{}> {
     };
 }
 
-export const colors: any = {
-    black: "#000",
-    white: "#FFF",
-    pink: "#FB356D",
-    blue: "#0078D4",
-    lightBlue: "#0075CF",
-    darkBlue: "#005EA6",
-    gray: "#8A8A8A",
-    grayBackground: "rgba(0, 0, 0, 0.04)",
-    boxShadow: "rgba(0, 0, 0, 0.08)",
-    border: "rgba(0,0,0,.2)",
-    lightBorder: "rgba(0,0,0,.1)",
-    menuGray: "#EBEBEB"
-};
