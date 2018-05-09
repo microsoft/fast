@@ -29,15 +29,10 @@ after_script:
         ./cc-test-reporter sum-coverage -o coverage/coverage.total.json coverage/coverage.*.json;
         ./cc-test-reporter upload-coverage -i coverage/coverage.total.json;
       fi
-deploy:
-  provider: script
-  skip_cleanup: true
-  script:
-    - echo -e "//registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN\nemail=$NPM_AUTH_EMAIL" > ~/.npmrc
-    - cat ~/.npmrc
-    - NPM_USER=`npm whoami`
-    - echo -e "Publishing to npm as $NPM_USER...\n"
-    - lerna publish --yes --loglevel=silly
-  on:
-    branch: master
-    condition: $TRAVIS_EVENT_TYPE = "cron"
+  - |
+      if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_EVENT_TYPE" == "cron" ]; then
+        echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc;
+        echo "Publishing to npm as ";
+        npm whoami;
+        lerna publish --yes --loglevel=silly;  
+      fi
