@@ -4,6 +4,7 @@ import {
     applyCleanListStyle,
     applyInputStyle,
     applyListItemStyle,
+    applyPopupHeadingStyles,
     applyPopupMenuButtonStyles,
     applyPopupMenuStyles
 } from "../utilities/form-input.shared-style.style";
@@ -69,16 +70,7 @@ const styles: ComponentStyles<IFormItemChildrenClassNameContract, {}> = {
     },
     formItemChildren_existingChildren: {
         position: "relative",
-        "& > div": {
-            display: "flex",
-            borderBottom: `${toPx(1)} solid rgba(0,0,0,.2)`,
-            "& h3": {
-                flexGrow: "1",
-                "& + button": {
-                    ...applyPopupMenuButtonStyles()
-                }
-            }
-        },
+        ...applyPopupHeadingStyles(),
         "& ul": {
             ...applyAriaHiddenStyles()
         }
