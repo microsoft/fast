@@ -8,32 +8,37 @@ dist: trusty
 sudo: false
 env:
   global:
-    - CC_TEST_REPORTER_ID=08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
+  - CC_TEST_REPORTER_ID=08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
 before_script:
   - git config core.autocrlf false
+  - git config --global user.email 'travis@travis-ci.org'
+  - git config --global user.name 'Travis CI'
+  - git remote add master https://${GH_TOKEN}@github.com/Microsoft/fast-dna.git > /dev/null 2>&1
+  - git config --list
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - "./cc-test-reporter before-build"
 script:
   - lerna run test --stream
 after_script:
-  # See https://github.com/codeclimate/test-reporter/issues/263
   - |
-      if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_EVENT_TYPE" != "cron" ]; then
-        for f in packages/*; do
-          if [ -d $f]; then
-            echo $f;
-            ./cc-test-reporter format-coverage -t lcov -o coverage/coverage.${f//\//-}.json $f/coverage/lcov.info;
-          fi
-        done;
-        ./cc-test-reporter sum-coverage -o coverage/coverage.total.json coverage/coverage.*.json;
-        ./cc-test-reporter upload-coverage -i coverage/coverage.total.json;
-      fi
+    if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_EVENT_TYPE" != "cron" ]; then
+      for f in packages/*; do
+        if [ -d $f]; then
+          echo $f;
+          ./cc-test-reporter format-coverage -t lcov -o coverage/coverage.${f//\//-}.json $f/coverage/lcov.info;
+        fi
+      done;
+      ./cc-test-reporter sum-coverage -o coverage/coverage.total.json coverage/coverage.*.json;
+      ./cc-test-reporter upload-coverage -i coverage/coverage.total.json;
+    fi
   - |
-      if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_EVENT_TYPE" == "cron" ]; then
-        echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc;
-        echo "Publishing to npm as ";
-        npm whoami;
-        lerna publish --yes --conventional-commits --loglevel=silly;
-        lerna updated;
-      fi
+    if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_EVENT_TYPE" == "cron" ] && [ $TRAVIS_BRANCH = "master" ]; then
+      echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc;
+      echo "Publishing to npm as ";
+      npm whoami;
+      lerna updated;
+      lerna publish --conventional-commits --yes --loglevel=silly;
+      git status;
+      git log;
+    fi
