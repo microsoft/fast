@@ -12,8 +12,11 @@ exports[`align-vertical align-vertical: 0 1`] = `
       <div>
         <div>
           <div>
-            <div>
+            <div
+              className="formItemAlignVertical-0-1-6"
+            >
               <label
+                className="formItemAlignVertical_label-0-1-7"
                 htmlFor="alignVertical"
               >
                 Align vertical
@@ -23,6 +26,7 @@ exports[`align-vertical align-vertical: 0 1`] = `
                   <input
                     aria-label="top align"
                     checked={true}
+                    className="formItemAlignVertical_input__top-0-1-8"
                     id="alignVertical1"
                     name="alignVertical"
                     onChange={[Function]}
@@ -34,6 +38,7 @@ exports[`align-vertical align-vertical: 0 1`] = `
                   <input
                     aria-label="center align"
                     checked={false}
+                    className="formItemAlignVertical_input__center-0-1-9"
                     id="alignVertical2"
                     name="alignVertical"
                     onChange={[Function]}
@@ -45,6 +50,7 @@ exports[`align-vertical align-vertical: 0 1`] = `
                   <input
                     aria-label="bottom align"
                     checked={false}
+                    className="formItemAlignVertical_input__bottom-0-1-10"
                     id="alignVertical3"
                     name="alignVertical"
                     onChange={[Function]}
