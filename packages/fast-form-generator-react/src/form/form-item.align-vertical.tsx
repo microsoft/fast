@@ -38,6 +38,17 @@ class FormItemAlignVertical extends React.Component<IFormItemComponentMappingToP
         return this.props.data === direction || (typeof this.props.data === "undefined" && this.props.default === direction);
     }
 
+    private getInputClassName(direction: string): string {
+        switch (direction) {
+            case "left":
+                return this.props.managedClasses.formItemAlignVertical_input__top;
+            case "center":
+                return this.props.managedClasses.formItemAlignVertical_input__center;
+            case "right":
+                return this.props.managedClasses.formItemAlignVertical_input__bottom;
+        }
+    }
+
     private renderInput(direction: string, index: number): JSX.Element {
         if (this.props.options && Array.isArray(this.props.options)) {
             const option: string = this.props.options.find((item: string) => {
@@ -45,18 +56,7 @@ class FormItemAlignVertical extends React.Component<IFormItemComponentMappingToP
             });
 
             if (typeof option !== "undefined") {
-                let className: string = "";
-
-                switch (direction) {
-                    case "top":
-                        className = this.props.managedClasses.formItemAlignVertical_input__top;
-                        break;
-                    case "center":
-                        className = this.props.managedClasses.formItemAlignVertical_input__center;
-                        break;
-                    case "bottom":
-                        className = this.props.managedClasses.formItemAlignVertical_input__bottom;
-                }
+                const className: string = this.getInputClassName(direction);
 
                 return (
                     <span>

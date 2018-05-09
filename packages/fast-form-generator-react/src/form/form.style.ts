@@ -1,6 +1,6 @@
 import { toPx } from "@microsoft/fast-jss-utilities";
-import {  applyCleanListStyle } from "../utilities/form-input.style";
-import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
+import {  applyCleanListStyle, colors } from "../utilities/form-input.style";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { IFormClassNameContract } from "../class-name-contracts/";
 
 const styles: ComponentStyles<IFormClassNameContract, {}> = {
@@ -22,7 +22,7 @@ const styles: ComponentStyles<IFormClassNameContract, {}> = {
                 paddingLeft: "0"
             },
             "& a": {
-                color: "#0078D7"
+                color: colors.blue
             }
         }
     }

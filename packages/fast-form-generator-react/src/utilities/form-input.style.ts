@@ -139,7 +139,7 @@ export function applyPopupHeadingStyles(): ICSSRules<{}> {
                     background: "none",
                     border: "none",
                     padding: `${toPx(2)} ${toPx(12)}`,
-                    color: "#0078D7",
+                    color: colors.blue,
                     "&:focus": {
                         outline: "none"
                     },
@@ -202,11 +202,11 @@ export function applySelectSpanStyles(): ICSSRules<{}> {
             content: "''",
             position: "absolute",
             top: toPx(12),
-            zIndex: 1,
+            zIndex: "1",
             borderRadius: toPx(2),
             width: toPx(1),
             height: toPx(10),
-            background: "black"
+            background: colors.black
         },
         "&:before": {
             right: toPx(15),

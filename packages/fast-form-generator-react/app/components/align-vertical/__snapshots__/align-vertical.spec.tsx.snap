@@ -26,7 +26,7 @@ exports[`align-vertical align-vertical: 0 1`] = `
                   <input
                     aria-label="top align"
                     checked={true}
-                    className="formItemAlignVertical_input__top-0-1-12"
+                    className={undefined}
                     id="alignVertical"
                     name="alignVertical"
                     onChange={[Function]}
@@ -50,7 +50,7 @@ exports[`align-vertical align-vertical: 0 1`] = `
                   <input
                     aria-label="bottom align"
                     checked={false}
-                    className="formItemAlignVertical_input__bottom-0-1-14"
+                    className={undefined}
                     id="alignVertical"
                     name="alignVertical"
                     onChange={[Function]}

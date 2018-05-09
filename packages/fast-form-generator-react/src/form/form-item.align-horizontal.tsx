@@ -4,6 +4,7 @@ import styles from "./form-item.align-horizontal.style";
 import { IFormItemAlignHorizontalClassNameContract } from "../class-name-contracts/";
 import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { Direction } from "@microsoft/fast-jss-utilities";
 
 /**
  * Schema form component definition
@@ -37,6 +38,17 @@ class FormItemAlignHorizontal extends React.Component<IFormItemComponentMappingT
         return this.props.data === direction || (typeof this.props.data === "undefined" && this.props.default === direction);
     }
 
+    private getInputClassName(direction: string): string {
+        switch (direction) {
+            case "left":
+                return this.props.managedClasses.formItemAlignHorizontal_input__left;
+            case "center":
+                return this.props.managedClasses.formItemAlignHorizontal_input__center;
+            case "right":
+                return this.props.managedClasses.formItemAlignHorizontal_input__right;
+        }
+    }
+
     private renderInput(direction: string, index: number): JSX.Element {
         if (this.props.options && Array.isArray(this.props.options)) {
             const option: string = this.props.options.find((item: string) => {
@@ -44,18 +56,7 @@ class FormItemAlignHorizontal extends React.Component<IFormItemComponentMappingT
             });
 
             if (typeof option !== "undefined") {
-                let className: string = "";
-
-                switch (direction) {
-                    case "left":
-                        className = this.props.managedClasses.formItemAlignHorizontal_input__left;
-                        break;
-                    case "center":
-                        className = this.props.managedClasses.formItemAlignHorizontal_input__center;
-                        break;
-                    case "right":
-                        className = this.props.managedClasses.formItemAlignHorizontal_input__right;
-                }
+                const className: string = this.getInputClassName(direction);
 
                 return (
                     <span>
