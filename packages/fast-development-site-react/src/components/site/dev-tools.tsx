@@ -2,6 +2,8 @@ import * as React from "react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { IDevSiteDesignSystem } from "../design-system";
+import CodePreview from "./dev-tools-code-preview";
+import { IFormChildOption } from "./";
 
 export enum frameworkEnum {
     react = "react",
@@ -12,8 +14,11 @@ export type tabType = "code" | "properties" | "schema";
 
 export interface IDevToolsProps {
     onToggleView: () => void;
+    activeFormData: any;
+    activeComponentName: string;
+    activeFramework: frameworkEnum;
+    childOptions: IFormChildOption[];
     frameworks?: frameworkEnum[];
-    activeFramework?: frameworkEnum;
     activeTab?: tabType;
 }
 
@@ -234,7 +239,14 @@ class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevTool
     }
 
     private renderCode(): JSX.Element {
-        return <span>TBD</span>;
+        return (
+            <CodePreview
+                componentName={this.props.activeComponentName}
+                childOptions={this.props.childOptions}
+                framework={this.state.activeFramework}
+                data={this.props.activeFormData}
+            />
+        );
     }
 
     private renderProperties(): JSX.Element {

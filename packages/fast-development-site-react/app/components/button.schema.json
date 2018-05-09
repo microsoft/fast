@@ -4,6 +4,7 @@
     "description": "A button component's schema definition.",
     "type": "object",
     "id": "button",
+    "children": true,
     "properties": {
         "text": {
             "title": "text",

@@ -10,6 +10,7 @@ class Button extends React.Component<IButtonProps, {}> {
         return (
             <button>
                 {this.props.text}
+                {this.props.children}
             </button>
         );
     }
