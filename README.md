@@ -22,6 +22,5 @@ Detailed documentation can be found on the [GitHub Wiki](https://github.com/Micr
 
 ## Contact
 * Ask for help [on Stack Overflow](https://stackoverflow.com/questions/tagged/fast-dna) 
-* Submit [help requests](https://github.com/Microsoft/fast-dna/issues/new?labels=help%20:%20request)
-* Submit [help questions](https://github.com/Microsoft/fast-dna/issues/new?labels=help%20:%20question)
-* Contributors [find issues to work on](https://github.com/Microsoft/fast-dna/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+%3A+request%22)
+* Submit [requests/issues](https://github.com/Microsoft/fast-dna/issues/new)
+* Contributors [find issues to work on](https://github.com/Microsoft/fast-dna/labels/contribute%20%3A%20good%20first%20issue)
