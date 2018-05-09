@@ -11,7 +11,7 @@ env:
     - CC_TEST_REPORTER_ID=08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
 before_script:
   - git config core.autocrlf false
-  - git config --global user.email 'awentzel@microsoft.com'
+  - git config --global user.email 'awentzel@users.noreply.github.com'
   - git config --global user.name 'Aaron Wentzel'
   - git config --list
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
@@ -38,8 +38,6 @@ after_script:
         echo "Publishing to npm as ";
         npm whoami;
         lerna updated;
-        lerna ls --since master;
         lerna publish --conventional-commits --yes --loglevel=silly;
         git status;
-        
       fi
