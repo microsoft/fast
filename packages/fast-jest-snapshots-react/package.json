@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-jest-snapshots-react",
   "description": "A small utility for automating Jest snapshot creation of React components",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "author": {
     "name": "Microsoft",
     "email": "fwq@microsoft.com"
@@ -22,7 +22,7 @@
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'"
   },
   "devDependencies": {
-    "@microsoft/fast-tslint-rules": "^1.0.4",
+    "@microsoft/fast-tslint-rules": "^1.1.0",
     "@types/jest": "^22.2.2",
     "jest": "^22.4.3",
     "react": "^16.3.0",
@@ -31,11 +31,11 @@
     "typescript": "^2.8.1"
   },
   "dependencies": {
-	  "@types/react": "^16.3.0",
-	  "react-test-renderer": "^16.3.0"
+    "@types/react": "^16.3.0",
+    "react-test-renderer": "^16.3.0"
   },
   "peerDependencies": {
-	  "react": "^16.3.0",
-	  "jest": "^22.0.0"
+    "jest": "^22.0.0",
+    "react": "^16.3.0"
   }
 }
