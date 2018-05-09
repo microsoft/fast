@@ -14,8 +14,8 @@ before_script:
   - git config core.autocrlf false
   - git config --global user.email 'travis@travis-ci.org'
   - git config --global user.name 'Travis CI'
-  - git config --list
   - git remote add master https://${GH_TOKEN}@github.com/Microsoft/fast-dna.git > /dev/null 2>&1
+  - git config --list
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - "./cc-test-reporter before-build"
