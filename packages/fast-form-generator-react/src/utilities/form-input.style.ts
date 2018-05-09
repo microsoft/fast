@@ -40,6 +40,12 @@ export function applyCleanListStyle(): ICSSRules<{}> {
     };
 }
 
+export function listPadding(): ICSSRules<{}> {
+    return {
+        padding: localizeSpacing(Direction.ltr)(`${toPx(12)} ${toPx(30)} ${toPx(12)} ${toPx(12)}`)
+    };
+}
+
 export function applyListItemStyle(): ICSSRules<{}> {
     return {
         "& li": {
@@ -63,12 +69,12 @@ export function applyListItemStyle(): ICSSRules<{}> {
             "& button": {
                 width: "100%",
                 textAlign: "left",
-                padding: localizeSpacing(Direction.ltr)(`${toPx(12)} ${toPx(30)} ${toPx(12)} ${toPx(12)}`),
+                ...listPadding(),
             },
             "& a": {
                 textAlign: "left",
                 display: "block",
-                padding: localizeSpacing(Direction.ltr)(`${toPx(12)} ${toPx(30)} ${toPx(12)} ${toPx(12)}`),
+                ...listPadding(),
                 "& span": {
                     display: "block",
                     fontStyle: "italic",

@@ -37,6 +37,12 @@ class FormItemTheme extends React.Component<IFormItemComponentMappingToProperyNa
         return this.props.data === theme || (typeof this.props.data === "undefined" && this.props.default === theme);
     }
 
+    private getInputClassName(theme: string): string {
+        return theme === "dark"
+            ? this.props.managedClasses.formItemTheme_input__dark
+            : this.props.managedClasses.formItemTheme_input__light;
+    }
+
     private renderInput(theme: string, index: number): JSX.Element {
         if (this.props.options && Array.isArray(this.props.options)) {
             const option: any = this.props.options.find((item: string): any => {
@@ -44,9 +50,7 @@ class FormItemTheme extends React.Component<IFormItemComponentMappingToProperyNa
             });
 
             if (typeof option !== "undefined") {
-                const className: any = theme === "dark"
-                    ? this.props.managedClasses.formItemTheme_input__dark
-                    : this.props.managedClasses.formItemTheme_input__light;
+                const className: string = this.getInputClassName(theme);
 
                 return (
                     <input
