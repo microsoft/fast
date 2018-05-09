@@ -34,5 +34,6 @@ after_script:
         echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc;
         echo "Publishing to npm as ";
         npm whoami;
-        lerna publish --yes --loglevel=silly;  
+        lerna publish --yes --conventional-commits --loglevel=silly;
+        lerna updated;
       fi
