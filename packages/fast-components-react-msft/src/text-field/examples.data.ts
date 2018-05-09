@@ -33,10 +33,6 @@ export default {
         {
             placeholder: "Enter Password",
             type: TextFieldType.password
-        },
-        {
-            placeholder: "Error",
-            type: TextFieldType.text
         }
     ]
 } as ISnapshotTestSuite<ITextfieldHandledProps>;
