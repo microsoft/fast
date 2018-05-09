@@ -14,7 +14,8 @@ const styles: ComponentStyles<ITextfieldClassNameContract, IDesignSystem> = {
         boxSizing: "border-box",
         borderRadius: toPx(2),
         padding: toPx(10),
-        margin: toPx(0),
+        margin: toPx(10),
+        fontWeight: "100",
         "&:focus": {
             outline: `${toPx(1)} solid #616161`,
             border: `${toPx(1)} solid #616161`
