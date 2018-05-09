@@ -423,16 +423,18 @@ class FormSection extends React.Component<IFormSectionProps & IManagedClasses<IF
 
         return optionToggles.map((property: any, index: number): JSX.Element => {
             return (
-                <div key={index}>
+                <div className={this.props.managedClasses.formSection_toggleWrapper} key={index}>
                     <label htmlFor={property.id}>
                         {property.label || this.props.untitled}
                         <button
+                            className={this.props.managedClasses.formSection_toggle}
                             role="switch"
                             aria-pressed={property.selected}
                             onClick={handleToggleClick(property.selected, property.id, property.updateRequested)}
                         >
-                            {property.selected ? property.selectedString : property.unselectedString}
+                            <span />
                         </button>
+                        <span>{property.selected ? property.selectedString : property.unselectedString}</span>
                     </label>
                     <input
                         id={property.id}
@@ -454,7 +456,7 @@ class FormSection extends React.Component<IFormSectionProps & IManagedClasses<IF
         this.state.sections.map((property: any, index: number) => {
             if (typeof property.active !== "undefined" || property.required) {
                 sections.push(
-                    <li key={uniqueId()}>
+                    <li onClick={this.handleSectionLinkClick.bind(this, property.schemaLocation, property.dataLocation)} key={uniqueId()}>
                         <a
                             onClick={this.handleSectionLinkClick.bind(this, property.schemaLocation, property.dataLocation)}
                         >

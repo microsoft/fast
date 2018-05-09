@@ -49,6 +49,7 @@ export interface IFormItemChildrenProps {
  */
 export interface IFormItemChildrenState {
     childrenSearchTerm: string;
+    hideOptionMenu: boolean;
 }
 
 /**
@@ -67,7 +68,8 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
         super(props);
 
         this.state = {
-            childrenSearchTerm: ""
+            childrenSearchTerm: "",
+            hideOptionMenu: true
         };
     }
 
@@ -94,7 +96,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
                             <span>Search</span>
                         </button>
                     </div>
-                    <ul>
+                    <ul className={this.props.managedClasses.formItemChildren_childOptionsMenu}>
                         {this.generateChildOptions()}
                     </ul>
                 </div>
@@ -270,8 +272,8 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
 
     private generateChildItem = (item: any, index?: number): JSX.Element => {
         return (
-            <SortableListItem key={uniqueId()}>
-                <a onClick={this.clickComponentFactory("edit", item, index)}>
+            <SortableListItem key={uniqueId()} onClick={this.clickComponentFactory("edit", item, index)}>
+                <a>
                     {this.generateChildOptionText(item)}
                     {this.generateChildCaption(item)}
                 </a>
@@ -331,17 +333,21 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
 
         if (typeof currentChildren !== "undefined") {
             return (
-                <div>
-                    <h3>Building blocks</h3>
+                <div className={this.props.managedClasses.formItemChildren_existingChildren}>
                     <div>
-                        <button>Children menu</button>
-                        <ul>
+                        <h3>Building blocks</h3>
+                        <button onClick={this.toggleMenu} aria-expanded={!this.state.hideOptionMenu}>Options</button>
+                        <ul className={this.props.managedClasses.formItemChildren_optionMenu} aria-hidden={this.state.hideOptionMenu}>
                             {this.getActionMenuChildItems()}
                         </ul>
                     </div>
                 </div>
             );
         }
+    }
+
+    private toggleMenu = (): void => {
+        this.setState({hideOptionMenu: !this.state.hideOptionMenu});
     }
 
     /**
@@ -354,7 +360,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
 
         return React.createElement(SortableContainer((): JSX.Element => {
             return (
-                <ul>
+                <ul className={this.props.managedClasses.formItemChildren_addedChildren}>
                     {this.generateChildItems()}
                 </ul>
             );

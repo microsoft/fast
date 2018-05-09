@@ -16,7 +16,7 @@ exports[`align-vertical align-vertical: 0 1`] = `
               <label
                 htmlFor="alignVertical"
               >
-                align vertical
+                Align vertical
               </label>
               <div>
                 <span>

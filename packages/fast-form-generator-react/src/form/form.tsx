@@ -19,7 +19,7 @@ import {
     isRootLocation
 } from "./form.utilities";
 import FormSection from "./form-section";
-import styles from "./form-section.style";
+import styles from "./form.style";
 import { IFormClassNameContract } from "../class-name-contracts/";
 import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
@@ -28,7 +28,7 @@ import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts
  * Schema form component definition
  * @extends React.Component
  */
-class Form extends React.Component<IFormProps, IFormState> {
+class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameContract>, IFormState> {
 
     /**
      * The default untitled string
@@ -40,7 +40,7 @@ class Form extends React.Component<IFormProps, IFormState> {
      */
     private rootComponentTrackerLocation: IComponentItem;
 
-    constructor(props: IFormProps) {
+    constructor(props: IFormProps & IManagedClasses<IFormClassNameContract>) {
         super(props);
 
         this.untitled = "Untitled";
@@ -207,7 +207,7 @@ class Form extends React.Component<IFormProps, IFormState> {
         }
 
         if (breadcrumbs.length > 1) {
-            return <ul>{this.generateBreadcrumbItems(breadcrumbs)}</ul>;
+            return <ul className={this.props.managedClasses.form_breadcrumbs}>{this.generateBreadcrumbItems(breadcrumbs)}</ul>;
         }
     }
 
@@ -308,5 +308,4 @@ class Form extends React.Component<IFormProps, IFormState> {
     }
 }
 
-// export default manageJss(styles)(Form);
-export default Form;
+export default manageJss(styles)(Form);

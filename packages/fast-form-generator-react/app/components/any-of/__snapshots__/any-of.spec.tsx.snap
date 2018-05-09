@@ -24,24 +24,28 @@ exports[`any-of any-of: 0 1`] = `
             <option
               value={0}
             >
-              string
+              String
             </option>
             <option
               value={1}
             >
-              number
+              Number
             </option>
           </select>
           <hr
             role="presentation"
           />
-          <div>
+          <div
+            className="formItemTextarea-0-1-6"
+          >
             <label
+              className="formItemTextarea_label-0-1-7"
               htmlFor="string"
             >
-              string
+              String
             </label>
             <textarea
+              className="formItemTextarea_textarea-0-1-8"
               id="string"
               name="string"
               onChange={[Function]}

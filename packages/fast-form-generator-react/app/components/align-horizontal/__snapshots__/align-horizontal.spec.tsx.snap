@@ -12,17 +12,21 @@ exports[`align-horizontal align-horizontal: 0 1`] = `
       <div>
         <div>
           <div>
-            <div>
+            <div
+              className="formItemAlignHorizontal-0-1-6"
+            >
               <label
+                className="formItemAlignHorizontal_label-0-1-7"
                 htmlFor="alignHorizontal"
               >
-                align horizontal
+                Align horizontal
               </label>
               <div>
                 <span>
                   <input
                     aria-label="left align"
                     checked={true}
+                    className="formItemAlignHorizontal_input__left-0-1-8"
                     id="alignHorizontal1"
                     name="alignHorizontal"
                     onChange={[Function]}
@@ -32,8 +36,21 @@ exports[`align-horizontal align-horizontal: 0 1`] = `
                 </span>
                 <span>
                   <input
+                    aria-label="center align"
+                    checked={false}
+                    className="formItemAlignHorizontal_input__center-0-1-9"
+                    id="alignHorizontal2"
+                    name="alignHorizontal"
+                    onChange={[Function]}
+                    type="radio"
+                    value="center"
+                  />
+                </span>
+                <span>
+                  <input
                     aria-label="right align"
                     checked={false}
+                    className="formItemAlignHorizontal_input__right-0-1-10"
                     id="alignHorizontal3"
                     name="alignHorizontal"
                     onChange={[Function]}

@@ -1,20 +1,30 @@
 import { ellipsis, toPx } from "@microsoft/fast-jss-utilities";
-import { applyInputStyle, applyLabelStyle, applyWrapperStyle } from "../utilities/form-input.shared-style.style";
+import {  applyCleanListStyle, applyInputStyle, applyLabelStyle, applyWrapperStyle } from "../utilities/form-input.shared-style.style";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IFormClassNameContract } from "../class-name-contracts/";
-
-function applyCleanListStyle(): ICSSRules<{}> {
-    return {
-        listStyle: "none",
-        margin: "0",
-        padding: "0"
-    };
-}
 
 const styles: ComponentStyles<IFormClassNameContract, {}> = {
     form_breadcrumbs: {
         display: "flex",
-        flexFlow: "row-wrap"
+        flexWrap: "wrap",
+        marginTop: toPx(4),
+        paddingBottom: toPx(24),
+        ...applyCleanListStyle(),
+        "& li": {
+            display: "inline-block",
+            paddingRight: toPx(8),
+            "&:after": {
+                content: "'/'",
+                paddingLeft: toPx(8)
+            },
+            "&:last-child:after": {
+                content: "''",
+                paddingLeft: "0"
+            },
+            "& a": {
+                color: "#0078D7"
+            }
+        }
     }
 };
 

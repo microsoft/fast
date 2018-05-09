@@ -1,15 +1,14 @@
 import { ellipsis, toPx } from "@microsoft/fast-jss-utilities";
-import { applyInputStyle, applyLabelStyle, applyWrapperStyle } from "../utilities/form-input.shared-style.style";
+import {
+    applyAriaHiddenStyles,
+    applyCleanListStyle,
+    applyInputStyle,
+    applyListItemStyle,
+    applyPopupMenuButtonStyles,
+    applyPopupMenuStyles
+} from "../utilities/form-input.shared-style.style";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IFormItemChildrenClassNameContract } from "../class-name-contracts/";
-
-function applyCleanListStyle(): ICSSRules<{}> {
-    return {
-        listStyle: "none",
-        margin: "0",
-        padding: "0"
-    };
-}
 
 const styles: ComponentStyles<IFormItemChildrenClassNameContract, {}> = {
     formItemChildren: {
@@ -18,6 +17,7 @@ const styles: ComponentStyles<IFormItemChildrenClassNameContract, {}> = {
     },
     formItemChildren_inputWrapper: {
         display: "flex",
+        paddingBottom: toPx(12),
         "& input": {
             ...applyInputStyle(),
             flex: "2",
@@ -56,6 +56,46 @@ const styles: ComponentStyles<IFormItemChildrenClassNameContract, {}> = {
                 }
             }
         }
+    },
+    formItemChildren_childOptionsMenu: {
+        ...applyCleanListStyle(),
+        "& li": {
+            padding: `${toPx(4)} 0`,
+            "& a": {
+                color: "#0078D7",
+                textDecoration: "underline"
+            }
+        }
+    },
+    formItemChildren_existingChildren: {
+        position: "relative",
+        "& > div": {
+            display: "flex",
+            borderBottom: `${toPx(1)} solid rgba(0,0,0,.2)`,
+            "& h3": {
+                flexGrow: "1",
+                "& + button": {
+                    ...applyPopupMenuButtonStyles()
+                }
+            }
+        },
+        "& ul": {
+            ...applyAriaHiddenStyles()
+        }
+    },
+    formItemChildren_addedChildren: {
+        ...applyCleanListStyle(),
+        ...applyListItemStyle(),
+        "& li a > span": {
+            display: "block",
+            fontStyle: "italic",
+            fontSize: toPx(13),
+            paddingTop: toPx(4)
+        }
+    },
+    formItemChildren_optionMenu: {
+        ...applyCleanListStyle(),
+        ...applyPopupMenuStyles()
     }
 };
 

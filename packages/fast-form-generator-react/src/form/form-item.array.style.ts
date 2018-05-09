@@ -1,18 +1,16 @@
 import { ellipsis, toPx } from "@microsoft/fast-jss-utilities";
-import { applyInputStyle, applyLabelStyle, applyWrapperStyle } from "../utilities/form-input.shared-style.style";
+import {
+    applyAriaHiddenStyles,
+    applyCleanListStyle,
+    applyPopupMenuButtonStyles,
+    applyPopupMenuStyles,
+} from "../utilities/form-input.shared-style.style";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IFormItemArrayClassNameContract } from "../class-name-contracts/";
 
-function applyCleanListStyle(): ICSSRules<{}> {
-    return {
-        listStyle: "none",
-        margin: "0",
-        padding: "0"
-    };
-}
-
 const styles: ComponentStyles<IFormItemArrayClassNameContract, {}> = {
     formItemArray: {
+        position: "relative",
         "& button": {
             lineHeight: "1",
             fontSize: toPx(14),
@@ -31,14 +29,19 @@ const styles: ComponentStyles<IFormItemArrayClassNameContract, {}> = {
         },
         "& > div": {
             display: "flex",
-            alignItems: "baseline",
-            "& label": {
-                flexGrow: "1"
+            borderBottom: `${toPx(1)} solid rgba(0,0,0,.2)`,
+            "& h3": {
+                flexGrow: "1",
+                "& + button": {
+                    ...applyPopupMenuButtonStyles()
+                }
             }
         }
     },
     formItemArray_menu: {
         ...applyCleanListStyle(),
+        ...applyAriaHiddenStyles(),
+        ...applyPopupMenuStyles(),
         "& li": {
             flex: "1 100%",
             padding: `${toPx(12)} 0`

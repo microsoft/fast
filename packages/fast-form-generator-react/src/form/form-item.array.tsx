@@ -62,24 +62,43 @@ export interface IFormItemArrayProps extends IFormItemCommon {
 }
 
 /**
+ * State object for the FormItemChildren component
+ */
+export interface IFormItemArrayState {
+    hideOptionMenu: boolean;
+}
+
+/**
  * Schema form component definition
  * @extends React.Component
  */
-class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasses<IFormItemArrayClassNameContract>, {}> {
+class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasses<IFormItemArrayClassNameContract>, IFormItemArrayState> {
+
+    constructor(props: IFormItemArrayProps & IManagedClasses<IFormItemArrayClassNameContract>) {
+        super(props);
+
+        this.state = {
+            hideOptionMenu: true
+        };
+    }
 
     public render(): JSX.Element {
         return (
             <div className={this.props.managedClasses.formItemArray}>
                 <div>
-                    <label>{this.getLabelText()}</label>
-                    <button>Open menu</button>
+                    <h3>{this.getLabelText()}</h3>
+                    <button onClick={this.toggleMenu} aria-expanded={!this.state.hideOptionMenu}>Options</button>
+                    <ul aria-hidden={this.state.hideOptionMenu} className={this.props.managedClasses.formItemArray_menu}>
+                        {this.renderArrayMenuItems()}
+                    </ul>
                 </div>
-                <ul className={this.props.managedClasses.formItemArray_menu}>
-                    {this.renderArrayMenuItems()}
-                </ul>
                 {this.generateArrayLinks()}
             </div>
         );
+    }
+
+    private toggleMenu = (): void => {
+        this.setState({hideOptionMenu: !this.state.hideOptionMenu});
     }
 
     /**

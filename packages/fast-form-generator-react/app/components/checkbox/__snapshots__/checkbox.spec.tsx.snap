@@ -11,30 +11,24 @@ exports[`checkbox checkbox: 0 1`] = `
     <div>
       <div>
         <div>
-          <label
-            htmlFor="toggle"
+          <div
+            className="formItemCheckbox-0-1-6"
           >
-            toggle
-          </label>
-          <input
-            checked={true}
-            id="toggle"
-            onChange={[Function]}
-            type="checkbox"
-            value="true"
-          />
-          <label
-            htmlFor="optionalToggle"
-          >
-            optional toggle
-          </label>
-          <input
-            checked={false}
-            id="optionalToggle"
-            onChange={[Function]}
-            type="checkbox"
-            value="false"
-          />
+            <label
+              className="formItemCheckbox_label-0-1-7"
+              htmlFor="toggle"
+            >
+              Checkbox
+            </label>
+            <input
+              checked={true}
+              className="formItemCheckbox_input-0-1-8"
+              id="toggle"
+              onChange={[Function]}
+              type="checkbox"
+              value="true"
+            />
+          </div>
         </div>
       </div>
     </div>
