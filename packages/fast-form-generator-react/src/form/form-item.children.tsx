@@ -182,6 +182,10 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
         return (e: React.MouseEvent<MouseEvent>): void => {
             e.preventDefault();
 
+            if (!this.state.hideOptionMenu) {
+                this.toggleMenu();
+            }
+
             switch (type) {
                 case "edit":
                     this.onEditComponent(componentObj, index);
@@ -272,8 +276,8 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
 
     private generateChildItem = (item: any, index?: number): JSX.Element => {
         return (
-            <SortableListItem key={uniqueId()} onClick={this.clickComponentFactory("edit", item, index)}>
-                <a>
+            <SortableListItem key={uniqueId()}>
+                <a onClick={this.clickComponentFactory("edit", item, index)}>
                     {this.generateChildOptionText(item)}
                     {this.generateChildCaption(item)}
                 </a>

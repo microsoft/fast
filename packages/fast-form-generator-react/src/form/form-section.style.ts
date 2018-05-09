@@ -5,7 +5,8 @@ import {
     applyListItemStyle,
     applySelectInputStyles,
     applySelectSpanStyles,
-    applyWrapperStyle
+    applyWrapperStyle,
+    colors
 } from "../utilities/form-input.style";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IFormSectionClassNameContract } from "../class-name-contracts/";
@@ -32,14 +33,14 @@ const styles: ComponentStyles<IFormSectionClassNameContract, {}> = {
         height: toPx(20),
         lineHeight: toPx(16),
         fontSize: toPx(14),
-        backgroundColor: "rgba(0, 0, 0, 0.04)",
-        border: `${toPx(1)} solid #8A8A8A`,
+        backgroundColor: colors.grayBackground,
+        border: `${toPx(1)} solid ${colors.gray}`,
         position: "relative",
         float: "right",
         marginLeft: toPx(8),
         "& > span": {
             position: "absolute",
-            background: "black",
+            backgroundColor: colors.black,
             borderRadius: toPx(10),
             content: "''",
             height: toPx(10),
@@ -50,10 +51,10 @@ const styles: ComponentStyles<IFormSectionClassNameContract, {}> = {
             width: toPx(10)
         },
         "&[aria-pressed='true']": {
-            backgroundColor: "#0078D7",
+            backgroundColor: colors.pink,
             "& > span": {
                 left: toPx(28),
-                background: "white",
+                backgroundColor: colors.white
             }
         },
         "&:focus": {
@@ -65,7 +66,7 @@ const styles: ComponentStyles<IFormSectionClassNameContract, {}> = {
     },
     formSection_selectWrapper: {
         ...applyWrapperStyle(),
-        borderBottom: `${toPx(1)} solid rgba(0,0,0,.2)`,
+        borderBottom: `${toPx(1)} solid ${colors.border}`,
         paddingBottom: toPx(12),
         marginBottom: toPx(4)
     },

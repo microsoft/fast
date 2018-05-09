@@ -5,7 +5,8 @@ import {
     applyInputStyle,
     applyListItemStyle,
     applyPopupHeadingStyles,
-    applyPopupMenuStyles
+    applyPopupMenuStyles,
+    colors
 } from "../utilities/form-input.style";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IFormItemChildrenClassNameContract } from "../class-name-contracts/";
@@ -39,21 +40,14 @@ const styles: ComponentStyles<IFormItemChildrenClassNameContract, {}> = {
             whiteSpace: "nowrap",
             verticalAlign: "bottom",
             transition: "all 0.2s ease-in-out",
-            color: "white",
-            background: "#0078D4",
+            color: colors.white,
+            background: colors.blue,
             "&:hover": {
-                background: "#0075CF"
+                background: colors.lightBlue
             },
             "&:focus": {
                 outline: "none",
-                background: "#005EA6"
-            },
-            "&:disabled, &[aria-disabled]": {
-                opacity: ".4",
-                cursor: "not-allowed",
-                "&:hover": {
-                    background: "#D3E6F5"
-                }
+                background: colors.darkBlue
             }
         }
     },
@@ -62,13 +56,12 @@ const styles: ComponentStyles<IFormItemChildrenClassNameContract, {}> = {
         "& li": {
             padding: `${toPx(4)} 0`,
             "& a": {
-                color: "#0078D7",
+                color: colors.blue,
                 textDecoration: "underline"
             }
         }
     },
     formItemChildren_existingChildren: {
-        position: "relative",
         ...applyPopupHeadingStyles(),
         "& ul": {
             ...applyAriaHiddenStyles()
@@ -76,13 +69,7 @@ const styles: ComponentStyles<IFormItemChildrenClassNameContract, {}> = {
     },
     formItemChildren_addedChildren: {
         ...applyCleanListStyle(),
-        ...applyListItemStyle(),
-        "& li a > span": {
-            display: "block",
-            fontStyle: "italic",
-            fontSize: toPx(13),
-            paddingTop: toPx(4)
-        }
+        ...applyListItemStyle()
     },
     formItemChildren_optionMenu: {
         ...applyCleanListStyle(),

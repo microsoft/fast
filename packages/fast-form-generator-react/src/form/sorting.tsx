@@ -29,7 +29,7 @@ export interface ISortableListItemProps {
 export class SortableListItem extends React.Component<ISortableListItemProps, {}> {
     public render(): JSX.Element {
         return(
-            <li draggable={true} id={this.props.id} onClick={this.props.onClick}>
+            <li draggable={true} id={this.props.id}>
                 {this.props.children}
             </li>
         );

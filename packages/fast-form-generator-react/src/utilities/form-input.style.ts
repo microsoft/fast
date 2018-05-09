@@ -15,9 +15,9 @@ export function applyInputStyle(): ICSSRules<{}> {
     return {
         lineHeight: toPx(16),
         fontSize: toPx(14),
-        backgroundColor: "rgba(0, 0, 0, 0.04)",
+        backgroundColor: colors.grayBackground,
         borderRadius: toPx(2),
-        boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(4)} rgba(0, 0, 0, 0.08)`,
+        boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(4)} ${colors.boxShadow}`,
         padding: toPx(8),
         border: "none",
         outline: "none"
@@ -44,8 +44,7 @@ export function applyListItemStyle(): ICSSRules<{}> {
     return {
         "& li": {
             flex: "1 100%",
-            padding: localizeSpacing(Direction.ltr)(`${toPx(12)} ${toPx(30)} ${toPx(12)} ${toPx(12)}`),
-            borderBottom: `${toPx(1)} solid rgba(0,0,0,.2)`,
+            borderBottom: `${toPx(1)} solid ${colors.border}`,
             alignItems: "center",
             position: "relative",
             cursor: "pointer",
@@ -60,6 +59,22 @@ export function applyListItemStyle(): ICSSRules<{}> {
                 /* tslint:disable-next-line */
                 background: "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNyIgaGVpZ2h0PSIxMSIgdmlld0JveD0iMCAwIDcgMTEiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+PGcgaWQ9IkNhbnZhcyIgZmlsbD0ibm9uZSI+PGcgaWQ9IiYjMjM4OyYjMTI4OyYjMTQ1OyI+PHBhdGggZD0iTSA1LjUgNy40MjI4NUwgMTAuNDE0NiAyLjUwODNMIDEwLjg5NzkgMi45OTE3TCA1LjUgOC4zODk2NUwgMC4xMDIwNTEgMi45OTE3TCAwLjU4NTQ0OSAyLjUwODNMIDUuNSA3LjQyMjg1WiIgdHJhbnNmb3JtPSJtYXRyaXgoMCAtMSAxIDAgLTIgMTEpIiBmaWxsPSJibGFjayIvPjwvZz48L2c+PC9zdmc+) center no-repeat",
                 right: toPx(14),
+            },
+            "& button": {
+                width: "100%",
+                textAlign: "left",
+                padding: localizeSpacing(Direction.ltr)(`${toPx(12)} ${toPx(30)} ${toPx(12)} ${toPx(12)}`),
+            },
+            "& a": {
+                textAlign: "left",
+                display: "block",
+                padding: localizeSpacing(Direction.ltr)(`${toPx(12)} ${toPx(30)} ${toPx(12)} ${toPx(12)}`),
+                "& span": {
+                    display: "block",
+                    fontStyle: "italic",
+                    fontSize: toPx(13),
+                    paddingTop: toPx(4)
+                }
             }
         }
     };
@@ -81,7 +96,7 @@ export function applyPopupMenuStyles(): ICSSRules<{}> {
         position: "absolute",
         right: "0",
         width: toPx(200),
-        background: "#EBEBEB",
+        background: colors.menuGray,
         zIndex: "1",
         top: toPx(55),
         "& li > button": {
@@ -113,12 +128,14 @@ export function applyPopupMenuStyles(): ICSSRules<{}> {
 
 export function applyPopupHeadingStyles(): ICSSRules<{}> {
     return {
+        position: "relative",
         "& > div": {
             display: "flex",
-            borderBottom: `${toPx(1)} solid rgba(0,0,0,.2)`,
+            borderBottom: `${toPx(1)} solid ${colors.border}`,
             "& h3": {
                 flexGrow: "1",
                 "& + button": {
+                    fontSize: toPx(14),
                     background: "none",
                     border: "none",
                     padding: `${toPx(2)} ${toPx(12)}`,
@@ -130,12 +147,15 @@ export function applyPopupHeadingStyles(): ICSSRules<{}> {
                         textDecoration: "underline"
                     },
                     "&[aria-expanded='true']": {
-                        background: "#EBEBEB",
-                        borderLeftColor: "rgba(0,0,0,.1)",
+                        background: colors.menuGray,
+                        borderLeftColor: colors.lightBorder,
                         borderRadius: `${toPx(2)} ${toPx(2)} 0 0`,
-                        borderRightColor: "rgba(0,0,0,.1)",
-                        borderTopColor: "rgba(0,0,0,.1)",
-                        color: "black"
+                        borderRightColor: colors.lightBorder,
+                        borderTopColor: colors.lightBorder,
+                        color: colors.black,
+                        "&:hover": {
+                            textDecoration: "none"
+                        }
                     }
                 }
             }
@@ -160,9 +180,9 @@ export function applySelectInputStyles(): ICSSRules<{}> {
         flexGrow: "1",
         lineHeight: toPx(16),
         fontSize: toPx(14),
-        backgroundColor: "rgba(0, 0, 0, 0.04)",
+        backgroundColor: colors.grayBackground,
         borderRadius: toPx(2),
-        boxShadow: "inset 0px 0px 4px rgba(0, 0, 0, 0.08)",
+        boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(4)} ${colors.boxShadow}`,
         appearance: "none",
         padding: localizeSpacing(Direction.ltr)(`${toPx(8)} ${toPx(24)} ${toPx(8)} ${toPx(8)}`),
         border: "none",
@@ -198,3 +218,18 @@ export function applySelectSpanStyles(): ICSSRules<{}> {
         }
     };
 }
+
+export const colors: any = {
+    black: "#000",
+    white: "#FFF",
+    pink: "#FB356D",
+    blue: "#0078D4",
+    lightBlue: "#0075CF",
+    darkBlue: "#005EA6",
+    gray: "#8A8A8A",
+    grayBackground: "rgba(0, 0, 0, 0.04)",
+    boxShadow: "rgba(0, 0, 0, 0.08)",
+    border: "rgba(0,0,0,.2)",
+    lightBorder: "rgba(0,0,0,.1)",
+    menuGray: "#EBEBEB"
+};

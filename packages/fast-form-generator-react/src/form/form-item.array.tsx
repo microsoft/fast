@@ -179,7 +179,7 @@ class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasse
      */
     private generateArrayLinkItem = (value: any, index: number): JSX.Element => {
         return (
-            <SortableListItem key={`item-${index}`} id={index.toString()} onClick={this.arrayClickHandlerFactory(value, index)}>
+            <SortableListItem key={`item-${index}`} id={index.toString()}>
                 <button onClick={this.arrayClickHandlerFactory(value, index)}>
                     {value}
                 </button>

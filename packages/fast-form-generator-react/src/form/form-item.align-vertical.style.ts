@@ -1,4 +1,4 @@
-import { applyInputBackplateStyle, applyLabelStyle, applyWrapperStyle } from "../utilities/form-input.style";
+import { applyInputBackplateStyle, applyLabelStyle, applyWrapperStyle, colors } from "../utilities/form-input.style";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IFormItemAlignVerticalClassNameContract } from "../class-name-contracts/";
 
@@ -16,7 +16,7 @@ const styles: ComponentStyles<IFormItemAlignVerticalClassNameContract, {}> = {
         "&:checked": {
             /* tslint:disable-next-line */
             background: "url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDE2IDE2OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHN0eWxlIHR5cGU9InRleHQvY3NzIj4uc3Qwe2ZpbGw6I0ZGRkZGRjt9PC9zdHlsZT48cGF0aCBjbGFzcz0ic3QwIiBkPSJNMTUuOCwwLjZ2MUgwLjJ2LTFIMTUuOHogTTMuMSwyLjZIN3YxMi44SDMuMVYyLjZ6IE00LjEsMTQuNGgyVjMuNmgtMlYxNC40eiBNOSwyLjZoMy45djguOEg5VjIuNnogTTEwLDEwLjVoMlYzLjZoLTJWMTAuNXoiLz48L3N2Zz4=) center no-repeat",
-            backgroundColor: "#FB356D"
+            backgroundColor: colors.pink
         }
     },
     formItemAlignVertical_input__center: {
@@ -26,7 +26,7 @@ const styles: ComponentStyles<IFormItemAlignVerticalClassNameContract, {}> = {
         "&:checked": {
             /* tslint:disable-next-line */
             background: "url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDE2IDE2OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHN0eWxlIHR5cGU9InRleHQvY3NzIj4uc3Qwe2ZpbGw6I0ZGRkZGRjt9PC9zdHlsZT48cGF0aCBjbGFzcz0ic3QwIiBkPSJNMTUuOCw4LjVoLTIuOXYzLjlIOVY4LjVIN3Y1LjlIMy4xVjguNUgwLjJ2LTFoMi45VjEuNkg3djUuOWgyVjMuNmgzLjl2My45aDIuOUMxNS44LDcuNSwxNS44LDguNSwxNS44LDguNXogTTYsMi42SDR2MTAuOGgyVjIuNnogTTExLjksNC42aC0ydjYuOWgyVjQuNnoiLz48L3N2Zz4=) center no-repeat",
-            backgroundColor: "#FB356D"
+            backgroundColor: colors.pink
         }
     },
     formItemAlignVertical_input__bottom: {
@@ -36,7 +36,7 @@ const styles: ComponentStyles<IFormItemAlignVerticalClassNameContract, {}> = {
         "&:checked": {
             /* tslint:disable-next-line */
             background: "url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDE2IDE2OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHN0eWxlIHR5cGU9InRleHQvY3NzIj4uc3Qwe2ZpbGw6I0ZGRkZGRjt9PC9zdHlsZT48cGF0aCBjbGFzcz0ic3QwIiBkPSJNMTUuOCwxNC40djFIMC4ydi0xSDE1Ljh6IE03LDEzLjRIMy4xVjAuNkg3VjEzLjR6IE02LDEuNkg0djEwLjhoMlYxLjZ6IE0xMi45LDEzLjRIOVY0LjZoMy45VjEzLjR6IE0xMS45LDUuNWgtMnY2LjloMlY1LjV6Ii8+PC9zdmc+) center no-repeat",
-            backgroundColor: "#FB356D"
+            backgroundColor: colors.pink
         }
     }
 };

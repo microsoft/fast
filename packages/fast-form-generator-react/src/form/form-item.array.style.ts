@@ -4,14 +4,14 @@ import {
     applyCleanListStyle,
     applyListItemStyle,
     applyPopupHeadingStyles,
-    applyPopupMenuStyles
+    applyPopupMenuStyles,
+    colors
 } from "../utilities/form-input.style";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IFormItemArrayClassNameContract } from "../class-name-contracts/";
 
 const styles: ComponentStyles<IFormItemArrayClassNameContract, {}> = {
     formItemArray: {
-        position: "relative",
         ...applyPopupHeadingStyles(),
         "& button": {
             lineHeight: "1",
@@ -20,7 +20,7 @@ const styles: ComponentStyles<IFormItemArrayClassNameContract, {}> = {
             background: "transparent",
             border: "none",
             padding: `${toPx(4)}`,
-            color: "#0078D7",
+            color: colors.blue,
             "&:focus": {
                 outline: "none"
             }
@@ -39,7 +39,7 @@ const styles: ComponentStyles<IFormItemArrayClassNameContract, {}> = {
         ...applyCleanListStyle(),
         ...applyListItemStyle(),
         "& li button": {
-            color: "black"
+            color: colors.black
         }
     }
 };
