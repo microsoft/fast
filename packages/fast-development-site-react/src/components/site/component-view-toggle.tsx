@@ -24,7 +24,7 @@ const styles: ComponentStyles<IComponentViewToggleClassNameContract, IDevSiteDes
                 left: toPx(4),
                 bottom: toPx(0),
                 height: toPx(2),
-                background: (config: IDevSiteDesignSystem) => config.brandColor
+                background: (config: IDevSiteDesignSystem): string => config.brandColor
             }
         }
     }
