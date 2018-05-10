@@ -12,24 +12,33 @@ jobs:
     #working_directory: ~/repo
 
     steps:
+      - run: echo $CIRCLE_REPOSITORY_URL
       - checkout
       - run:
-          name: update-npm
-          command: 'sudo npm install -g npm@latest'
+          name: Install the latest NPM version
+          command: |
+            sudo npm i npm@latest -g
+            npm update rc --depth 4
+      - run:
+          name: Install the latest Lerna version
+          command: |
+            sudo npm i lerna@latest -g
       - restore_cache:
           keys:
-          - dependency-cache-{{ checksum "package.json" }}
+          - v1-dependency-cache-{{ checksum "package.json" }}
       - run:
-          name: install-npm-packages
-          command: 'npm install'
+          name: Install all dependency packages
+          command: |
+            npm i
       - run:
-          name: bootstrap-lerna
+          name: Execute Lerna bootstrap
           command: 'lerna bootstrap'
       - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: v1-dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
       - run:
-          name: test
+          name: Test
           command: lerna run test --stream
+      
       
