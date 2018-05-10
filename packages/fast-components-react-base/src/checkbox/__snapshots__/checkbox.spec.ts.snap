@@ -5,14 +5,17 @@ exports[`checkbox checkbox: 0 1`] = `
   className="checkbox"
 >
   <input
-    checked={undefined}
-    className="checkbox-input"
-    disabled={undefined}
-    onChange={undefined}
+    checked={false}
+    className="checkbox_input"
+    disabled={null}
+    onChange={[Function]}
     type="checkbox"
   />
   <span
-    className="checkbox-label"
+    className="checkbox_span"
+  />
+  <span
+    className="checkbox_label"
   />
 </label>
 `;
@@ -22,14 +25,17 @@ exports[`checkbox checkbox: 1 1`] = `
   className="checkbox"
 >
   <input
-    checked={undefined}
-    className="checkbox-input"
-    disabled={undefined}
-    onChange={undefined}
+    checked={false}
+    className="checkbox_input"
+    disabled={null}
+    onChange={[Function]}
     type="checkbox"
   />
   <span
-    className="checkbox-label"
+    className="checkbox_span"
+  />
+  <span
+    className="checkbox_label"
   />
 </label>
 `;
@@ -39,14 +45,17 @@ exports[`checkbox checkbox: 2 1`] = `
   className="checkbox"
 >
   <input
-    checked={undefined}
-    className="checkbox-input"
-    disabled={undefined}
-    onChange={undefined}
+    checked={false}
+    className="checkbox_input"
+    disabled={null}
+    onChange={[Function]}
     type="checkbox"
   />
   <span
-    className="checkbox-label"
+    className="checkbox_span"
+  />
+  <span
+    className="checkbox_label"
   />
 </div>
 `;
@@ -56,14 +65,77 @@ exports[`checkbox checkbox: 3 1`] = `
   className="checkbox"
 >
   <input
-    checked={undefined}
-    className="checkbox-input"
-    disabled={undefined}
-    onChange={undefined}
+    checked={false}
+    className="checkbox_input"
+    disabled={null}
+    onChange={[Function]}
     type="checkbox"
   />
   <span
-    className="checkbox-label"
+    className="checkbox_span"
+  />
+  <span
+    className="checkbox_label"
+  />
+</label>
+`;
+
+exports[`checkbox checkbox: 4 1`] = `
+<label
+  className="checkbox"
+>
+  <input
+    checked={true}
+    className="checkbox_input"
+    disabled={null}
+    onChange={[Function]}
+    type="checkbox"
+  />
+  <span
+    className="checkbox_span"
+  />
+  <span
+    className="checkbox_label"
+  />
+</label>
+`;
+
+exports[`checkbox checkbox: 5 1`] = `
+<label
+  className="checkbox"
+>
+  <input
+    checked={false}
+    className="checkbox_input"
+    disabled={null}
+    onChange={[Function]}
+    type="checkbox"
+  />
+  <span
+    className="checkbox_span"
+  />
+  <span
+    className="checkbox_label"
+  />
+</label>
+`;
+
+exports[`checkbox checkbox: 6 1`] = `
+<label
+  className="checkbox checkbox_disabled"
+>
+  <input
+    checked={false}
+    className="checkbox_input"
+    disabled={true}
+    onChange={[Function]}
+    type="checkbox"
+  />
+  <span
+    className="checkbox_span"
+  />
+  <span
+    className="checkbox_label"
   />
 </label>
 `;

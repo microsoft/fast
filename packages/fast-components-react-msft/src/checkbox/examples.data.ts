@@ -9,14 +9,15 @@ export default {
     component: Checkbox,
     data: [
         {
-            tag: "div"
-        },
-        {
             text: "Default"
         },
         {
+            tag: "div",
+            text: "div tag"
+        },
+        {
             checked: true,
-            text: "Checked"
+            text: "Checked (controlled)"
         },
         {
             disabled: true,
@@ -25,6 +26,11 @@ export default {
         {
             indeterminate: true,
             text: "Indeterminate"
+        },
+        {
+            indeterminate: true,
+            checked: true,
+            text: "Indeterminate checked (controlled)"
         }
     ]
 } as ISnapshotTestSuite<ICheckboxHandledProps>;

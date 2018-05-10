@@ -7,9 +7,10 @@ import * as React from "react";
 const classes: ICheckboxManagedClasses = {
     managedClasses: {
         checkbox: "checkbox",
-        checkbox_input: "checkbox-input",
-        checkbox_label: "checkbox-label",
-        checkbox_disabled: "checkbox-disabled"
+        checkbox_input: "checkbox_input",
+        checkbox_label: "checkbox_label",
+        checkbox_disabled: "checkbox_disabled",
+        checkbox_span: "checkbox_span"
     }
 };
 
@@ -31,6 +32,18 @@ const examples: ISnapshotTestSuite<ICheckboxHandledProps & ICheckboxManagedClass
         {
             ...classes,
             tag: CheckboxHTMLTags.label
+        },
+        {
+            ...classes,
+            checked: true
+        },
+        {
+            ...classes,
+            indeterminate: true
+        },
+        {
+            ...classes,
+            disabled: true
         }
     ]
 };
