@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-viewer-react",
   "description": "An implementation of a React iframe that is self-contained.",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "author": {
     "name": "Fluent Web",
     "email": "fwq@microsoft.com"
@@ -70,7 +70,7 @@
     "react-dom": "^16.3.0"
   },
   "devDependencies": {
-    "@microsoft/fast-tslint-rules": "^1.0.4",
+    "@microsoft/fast-tslint-rules": "^1.1.0",
     "@types/jest": "^22.1.1",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.6.7",

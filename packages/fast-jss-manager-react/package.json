@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-jss-manager-react",
   "description": "React HOC for managing component JSS stylesheets",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "author": {
     "name": "Microsoft",
     "email": "fwq@microsoft.com"
@@ -57,7 +57,7 @@
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$"
   },
   "devDependencies": {
-    "@microsoft/fast-tslint-rules": "^1.0.4",
+    "@microsoft/fast-tslint-rules": "^1.1.0",
     "@types/jest": "^22.1.2",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.6",
@@ -84,13 +84,13 @@
   },
   "peerDependencies": {
     "hoist-non-react-statics": "^2.5.0",
-    "react": "^16.3.0",
     "jss": "^9.8.0",
     "jss-preset-default": "^4.3.0",
     "lodash-es": "^4.0.0",
-    "prop-types": "^15.0.0"
+    "prop-types": "^15.0.0",
+    "react": "^16.3.0"
   },
   "dependencies": {
-    "@microsoft/fast-jss-manager": "^1.0.4"
+    "@microsoft/fast-jss-manager": "^1.1.0"
   }
 }
