@@ -9,13 +9,11 @@ jobs:
       # specify the version you desire here
       - image: circleci/node:latest
 
-    #working_directory: ~/repo
-
     steps:
       - run: echo $CIRCLE_REPOSITORY_URL
       - checkout
       - run:
-          name: Install the latest NPM version
+          name: Install the latest NPM version and patches
           command: |
             sudo npm i npm@latest -g
             npm update rc --depth 4
@@ -32,13 +30,30 @@ jobs:
             npm i
       - run:
           name: Execute Lerna bootstrap
-          command: 'lerna bootstrap'
+          command: |
+            lerna bootstrap
       - save_cache:
           key: v1-dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
-      - run:
-          name: Test
-          command: lerna run test --stream
       
+    test:
+        docker:
+            - image: circleci/node:latest
+        steps:
+          - checkout
+          - run:
+            name: Test
+            command: lerna run test --stream
       
+workflows:
+    version 2:
+        build_and_test:
+            jobs:
+                - build
+                - test:
+                    requires: 
+                        - build
+                    filters:
+                        branches:
+                            only: master
