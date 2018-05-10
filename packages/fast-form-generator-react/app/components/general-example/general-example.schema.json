@@ -1,0 +1,68 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "General example",
+    "description": "A test component's schema definition.",
+    "type": "object",
+    "id": "generalExample",
+    "properties": {
+        "title": {
+            "title": "Title",
+            "type": "string"
+        },
+        "toggle": {
+            "title": "Checkbox",
+            "type": "boolean"
+        },
+        "details": {
+            "title": "Details",
+            "type": "string"
+        },
+        "tag": {
+            "title": "HTML tag",
+            "type": "string",
+            "enum": [
+                "span",
+                "button"
+            ],
+            "default": "button"
+        },
+        "text": {
+            "title": "Text",
+            "type": "string",
+            "example": "Example text"
+        },
+        "alignHorizontal": {
+            "title": "Align horizontal",
+            "type": "string",
+            "enum": [
+                "left",
+                "center",
+                "right"
+            ]
+        },
+        "alignVertical": {
+            "title": "Align vertical",
+            "type": "string",
+            "enum": [
+                "top",
+                "bottom",
+                "center"
+            ]
+        },
+        "level": {
+            "title": "Level",
+            "type": "number",
+            "example": 5
+        }
+    },
+    "required": [
+        "alignHorizontal",
+        "alignVertical",
+        "level",
+        "title",
+        "details",
+        "tag",
+        "text",
+        "toggle"
+    ]
+}

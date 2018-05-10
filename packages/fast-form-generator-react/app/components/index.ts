@@ -101,6 +101,14 @@ export const weightProperties: IExampleComponent = {
     schema: WeightPropertiesSchema
 };
 
+import GeneralExample from "./general-example/general-example";
+import * as GeneralExampleSchema from "./general-example/general-example.schema.json";
+
+export const generalExample: IExampleComponent = {
+    component: GeneralExample,
+    schema: GeneralExampleSchema
+};
+
 import AttributeAssignment from "./attribute-assignment/attribute-assignment";
 import AttributeAssignmentConfig from "./attribute-assignment/attribute-assignment.config";
 import * as AttributeAssignmentSchema from "./attribute-assignment/attribute-assignment.schema.json";
