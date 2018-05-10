@@ -9,24 +9,27 @@ jobs:
       # specify the version you desire here
       - image: circleci/node:latest
 
-    working_directory: ~/repo
+    #working_directory: ~/repo
 
     steps:
       - checkout
-
-      # Download and cache dependencies
+      - run:
+          name: update-npm
+          command: 'sudo npm install -g npm@latest'
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
-      - run: learna bootstrap
-
+          - dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: install-npm-packages
+          command: 'npm install'
+      - run:
+          name: bootstrap-lerna
+          command: 'lerna bootstrap'
       - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
           paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-        
-      # run tests!
-      - run: lerna run test --stream
+            - ./node_modules
+      - run:
+          name: test
+          command: lerna run test --stream
+      
