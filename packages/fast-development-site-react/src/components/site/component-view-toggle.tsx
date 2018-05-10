@@ -16,7 +16,7 @@ const styles: ComponentStyles<IComponentViewToggleClassNameContract, IDevSiteDes
         alignItems: "center",
         justifyContent: "center",
         "&[aria-current=\"page\"]": {
-            "&:before": {
+            "&::before": {
                 content: "''",
                 position: "absolute",
                 display: "block",
@@ -24,8 +24,7 @@ const styles: ComponentStyles<IComponentViewToggleClassNameContract, IDevSiteDes
                 left: toPx(4),
                 bottom: toPx(0),
                 height: toPx(2),
-                // TODO: use callback with brand-color when #342 is fixed
-                background: "pink"
+                background: (config: IDevSiteDesignSystem): string => config.brandColor
             }
         }
     }

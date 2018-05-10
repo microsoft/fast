@@ -86,7 +86,16 @@ const styles: ComponentStyles<IActionBarClassNameContract, IDevSiteDesignSystem>
     },
     actionBar_menu_button__active: {
         ...menuButtonBase(),
-        background: "#EBEBEB"
+        background: "#EBEBEB",
+        "&::after": {
+            content: "''",
+            position: "absolute",
+            display: "block",
+            width: "100%",
+            bottom: "0",
+            height: toPx(2),
+            background: (config: IDevSiteDesignSystem): string => config.brandColor
+        }
     }
 };
 

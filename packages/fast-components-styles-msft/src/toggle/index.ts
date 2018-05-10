@@ -10,9 +10,8 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = {
         "& span": {
             userSelect: "none",
             marginTop: "0",
-            paddingBottom: "0"
-        },
-        "&[aria-disabled='true']": {
+            paddingBottom: "0" },
+        "&[aria-disabled=\"true\"]": {
             color: (config: IDesignSystem): string => {
                 return Chroma(config.foregroundColor).alpha(0.5).css();
             }
@@ -48,7 +47,6 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = {
         backgroundColor: (config: IDesignSystem): string => {
             return config.backgroundColor;
         },
-        content: "''",
         borderRadius: toPx(10),
         width: toPx(10),
         height: toPx(10)
@@ -66,15 +64,15 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = {
         borderRadius: toPx(20),
         appearance: "none",
         cursor: "pointer",
-        "@media screen and (-ms-high-contrast)": {
-            "&:after, &:checked+span": {
+        "@media screen and (-ms-high-contrast:active)": {
+            "&::after, &:checked + span": {
                 background: (config: IDesignSystem): string => {
                     return config.backgroundColor;
                 }
-            }
+            },
         },
-        "@media screen and (-ms-high-contrast: black-on-white)": {
-            "&:after, &:checked+span": {
+        "@media screen and (-ms-high-contrast:black-on-white)": {
+            "&::after, &:checked + span": {
                 background: (config: IDesignSystem): string => {
                     return config.foregroundColor;
                 }
