@@ -39,8 +39,7 @@ const examples: ISnapshotTestSuite<ICheckboxHandledProps & ICheckboxManagedClass
         },
         {
             ...classes,
-            indeterminate: true,
-            checked: true
+            indeterminate: true
         },
         {
             ...classes,

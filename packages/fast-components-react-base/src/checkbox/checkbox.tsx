@@ -45,6 +45,15 @@ class Checkbox extends Foundation<ICheckboxHandledProps & ICheckboxManagedClasse
     /**
      * React life-cycle method
      */
+    public componentWillReceiveProps(nextProps: ICheckboxHandledProps): void {
+        if (nextProps.checked !== this.state.checked && !isUndefined(nextProps.checked)) {
+            this.setState({checked: nextProps.checked});
+        }
+    }
+
+    /**
+     * React life-cycle method
+     */
     public componentDidMount(): void {
         this.applyIndeterminateState();
     }
@@ -111,7 +120,9 @@ class Checkbox extends Foundation<ICheckboxHandledProps & ICheckboxManagedClasse
      * Handles onChange as a controlled component
      */
     private handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        this.setState({checked: !this.state.checked});
+        if (isUndefined(this.props.checked)) {
+            this.setState({checked: !this.state.checked});
+        }
 
         if (this.props.onChange) {
             this.props.onChange(e);
