@@ -10,7 +10,6 @@ jobs:
       - image: circleci/node:latest
 
     steps:
-      - run: echo $CIRCLE_REPOSITORY_URL
       - checkout
       - run:
           name: Install the latest NPM version and patches
