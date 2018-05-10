@@ -7,4 +7,5 @@ export interface IToggleClassNameContract {
     toggle_wrapper: string;
     toggle_input: string;
     toggle_button: string;
+    [media: string]: string;
 }

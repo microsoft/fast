@@ -52,6 +52,11 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = {
         width: toPx(10),
         height: toPx(10)
     },
+    "@media screen and (-ms-high-contrast: active)": {
+        toggle_button: {
+            background: (config: IDesignSystem): string => config.backgroundColor
+        }
+    },
     toggle_input: {
         position: "relative",
         margin: "0",
@@ -65,9 +70,6 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = {
         borderRadius: toPx(20),
         appearance: "none",
         cursor: "pointer",
-        "@media screen and (-ms-high-contrast)": {
-            background: (config: IDesignSystem): string => config.backgroundColor
-        },
         // "@media screen and (-ms-high-contrast)": {
          //    "&::after, &:checked + span": {
          //        background: (config: IDesignSystem): string => {
