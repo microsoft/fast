@@ -14,6 +14,23 @@ export interface ICheckboxState {
 
 /* tslint:disable-next-line */
 class Checkbox extends Foundation<ICheckboxHandledProps & ICheckboxManagedClasses, ICheckboxUnhandledProps, ICheckboxState> {
+
+    /**
+     * React life-cycle method
+     */
+    public static getDerivedStateFromProps(nextProps: ICheckboxHandledProps, prevState: ICheckboxState): null | Partial<ICheckboxState> {
+        if (nextProps.checked !== prevState.checked && !isUndefined(nextProps.checked)) {
+            return {
+                checked: nextProps.checked
+            };
+        }
+
+        return null;
+    }
+
+    /**
+     * Handled props instantiation
+     */
     protected handledProps: HandledProps<ICheckboxHandledProps & IManagedClasses<ICheckboxClassNameContract>> = {
         checked: void 0,
         disabled: void 0,
@@ -40,15 +57,6 @@ class Checkbox extends Foundation<ICheckboxHandledProps & ICheckboxManagedClasse
         };
 
         this.inputRef = React.createRef();
-    }
-
-    /**
-     * React life-cycle method
-     */
-    public componentWillReceiveProps(nextProps: ICheckboxHandledProps): void {
-        if (nextProps.checked !== this.state.checked && !isUndefined(nextProps.checked)) {
-            this.setState({checked: nextProps.checked});
-        }
     }
 
     /**

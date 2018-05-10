@@ -14,7 +14,6 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = {
     },
     checkbox_input: {
         position: "absolute",
-        cursor: "pointer",
         width: toPx(20),
         height: toPx(20),
         appearance: "none",
@@ -25,6 +24,12 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = {
         boxShadow: (config: IDesignSystem): string => {
             /* tslint:disable-next-line */
             return `inset ${toPx(0)} ${toPx(0)} ${toPx(0)} ${toPx(1)} ${Chroma.mix(config.foregroundColor, config.backgroundColor, 0.46).css()}`;
+        },
+        "&:hover": {
+            boxShadow: (config: IDesignSystem): string => {
+                /* tslint:disable-next-line */
+                return `inset ${toPx(0)} ${toPx(0)} ${toPx(0)} ${toPx(1)} ${Chroma.mix(config.foregroundColor, config.backgroundColor, 0.51).css()}`;
+            }
         },
         "&:focus": {
             outline: "none",
