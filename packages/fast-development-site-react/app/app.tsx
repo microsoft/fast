@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { glyphBuildingblocks } from "@microsoft/fast-glyphs-msft";
-import Site, { SiteCategory, SiteCategoryIcon, SiteCategoryItem, SiteMenu, SiteMenuItem } from "../src";
+import Site, { IFormChildOption, SiteCategory, SiteCategoryIcon, SiteCategoryItem, SiteMenu, SiteMenuItem } from "../src";
 import Button from "./components/button";
 import ButtonSchema from "./components/button.schema.json";
 import Paragraph from "./components/paragraph";
@@ -53,12 +53,12 @@ function renderComponents1(): JSX.Element {
     const componentObj1: any[] = [{text: "foo"}, {text: "bar"}, {text: "bat"}];
     const categoryObj1: Partial<ISiteCategoryProps> = {
         ...categoryBase,
-        name: "Button 1"
+        name: "Button"
     };
     const componentObj2: any[] = [{text: "lorem"}, {text: "ipsum"}];
     const categoryObj2: Partial<ISiteCategoryProps> = {
         ...categoryBase,
-        name: "Button 2"
+        name: "Other Button"
     };
 
     return (
@@ -90,7 +90,7 @@ function renderComponents2Nested(): JSX.Element {
     const componentObj: any[] = [{text: "fee"}, {text: "fi"}, {text: "fo"}, {text: "fum"}];
     const categoryObj: ISiteCategoryProps = {
         slot: "category",
-        name: "Paragraph 2 nested",
+        name: "Paragraph Nested",
         schema: ParagraphSchema,
         component: Paragraph
     };
@@ -102,9 +102,26 @@ function renderComponents2Nested(): JSX.Element {
     );
 }
 
+const formChildOptions: IFormChildOption[] = [
+    {
+        name: ParagraphSchema.title,
+        component: Paragraph,
+        schema: ParagraphSchema
+    },
+    {
+        name: ButtonSchema.title,
+        component: Button,
+        schema: ButtonSchema
+    }
+];
+
 function render(): void {
     ReactDOM.render(
-        <Site title={"FAST Development site test"} frameworks={["react", "angular"]}>
+        <Site
+            title={"FAST Development site test"}
+            formChildOptions={formChildOptions}
+            frameworks={["react" as any, "angular" as any]}
+        >
             {renderSiteMenu()}
             {renderBuildingBlocks()}
             {renderComponents1()}

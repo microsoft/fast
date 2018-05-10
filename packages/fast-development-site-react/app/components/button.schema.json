@@ -4,11 +4,21 @@
     "description": "A button component's schema definition.",
     "type": "object",
     "id": "button",
+    "children": true,
     "properties": {
         "text": {
             "title": "text",
             "type": "string",
             "example": "Submit"
+        },
+        "object": {
+            "title": "object",
+            "type": "object",
+            "properties": {
+                "bool": {
+                    "type": "boolean"
+                }
+            }
         }
     }
 }

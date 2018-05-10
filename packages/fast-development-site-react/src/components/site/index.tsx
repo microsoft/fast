@@ -16,15 +16,22 @@ import SiteCategory from "./category";
 import SiteCategoryIcon from "./category-icon";
 import SiteCategoryItem from "./category-item";
 import ActionBar from "./action-bar";
-import DevTools, { frameworkType } from "./dev-tools";
+import DevTools, { FrameworkEnum } from "./dev-tools";
 import NotFound from "./not-found";
 import ComponentView, { ComponentViewTypes } from "./component-view";
 
 export interface ISiteProps {
     title: string;
-    frameworks?: frameworkType | frameworkType[];
-    activeFramework?: frameworkType;
+    formChildOptions: IFormChildOption[];
+    frameworks?: FrameworkEnum | FrameworkEnum[];
+    activeFramework?: FrameworkEnum;
     collapsed?: boolean;
+}
+
+export interface IFormChildOption {
+    component: any;
+    schema: JSON;
+    name: string;
 }
 
 export interface IComponentRoute {
@@ -39,7 +46,9 @@ export interface IComponentData {
 }
 
 export interface ISiteState {
+    currentPath: string;
     activeComponentIndex: number;
+    componentName: string;
     componentData: IComponentData;
     tableOfContentsCollapsed: boolean;
     componentView: ComponentViewTypes;
@@ -115,9 +124,11 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         super(props);
 
         this.state = {
+            currentPath: this.getCurrentPath(),
             activeComponentIndex: 0,
             tableOfContentsCollapsed: this.props.collapsed || false,
             componentView: ComponentViewTypes.examples,
+            componentName: this.getComponentName(),
             componentData: this.getComponentData(),
             formView: true,
             devToolsView: false
@@ -173,8 +184,21 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         return componentData;
     }
 
+    private getComponentName = (currentPath?: string): string => {
+        const matchedPath: RegExpMatchArray = currentPath
+            ? currentPath.match(/([a-z\d\-]+)(\/*)$/i)
+            : this.getCurrentPath().match(/([a-z\d\-]+)(\/*)$/i);
+        let componentName: string = matchedPath !== null && matchedPath[1] ? matchedPath[1] : "";
+        componentName = componentName.charAt(0).toUpperCase() + componentName.slice(1, componentName.length);
+        componentName = componentName.replace(/-([a-z])/g, (match: string) => {
+            return match[1].toUpperCase();
+        });
+
+        return componentName;
+    }
+
     /**
-     * Determine if we're looking at the examples path of a component
+     * Determine if the view is to the examples or detail of a component
      */
     private getComponentViewTypesByLocation(): ComponentViewTypes {
         return window
@@ -257,6 +281,9 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
             return (
                 <DevTools
                     activeFramework={this.props.activeFramework}
+                    activeComponentName={this.state.componentName}
+                    activeFormData={this.state.componentData[this.state.currentPath][this.state.activeComponentIndex]}
+                    childOptions={this.props.formChildOptions}
                     frameworks={Array.isArray(this.props.frameworks) ? this.props.frameworks : [this.props.frameworks]}
                     onToggleView={this.handleToggleDevToolsView}
                 />
@@ -265,14 +292,13 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     }
 
     private handleComponentDataChange = (data: any): void => {
-        const pathName: string = this.getComponentViewTypesByLocation() === ComponentViewTypes.detail
-            ? window.location.pathname
-            : window.location.pathname.slice(0, window.location.pathname.length - 9);
+        const currentPath: string = this.getCurrentPath();
         const componentData: IComponentData = Object.assign({}, this.state.componentData);
-        componentData[pathName][this.state.activeComponentIndex] = data;
+        componentData[currentPath][this.state.activeComponentIndex] = data;
 
         this.setState({
-            componentData
+            componentData,
+            currentPath
         });
     }
 
@@ -282,6 +308,12 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         });
     }
 
+    private getCurrentPath = (): string => {
+        return this.getComponentViewTypesByLocation() === ComponentViewTypes.detail
+            ? window.location.pathname
+            : window.location.pathname.slice(0, window.location.pathname.length - 9);
+    }
+
     private generateForm(component: JSX.Element[], schema: any, route: string): JSX.Element {
         if (component && schema) {
             return (
@@ -289,6 +321,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                     schema={schema}
                     data={Object.assign({}, this.state.componentData[route][this.state.activeComponentIndex])}
                     onChange={this.handleComponentDataChange.bind(route)}
+                    childOptions={this.props.formChildOptions}
                 />
             );
         }
@@ -397,18 +430,19 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         });
     }
 
-    /* tslint:disable:max-line-length */
     private renderPaneCollapseToggle(): JSX.Element {
         return (
             <button
                 onClick={this.handlePaneCollapse}
                 className={this.props.managedClasses.site_paneToggleButton}
             >
-                <span className={this.props.managedClasses.site_paneToggleButtonIcon} dangerouslySetInnerHTML={{__html: glyphGlobalnavbutton}}/>
+                <span
+                    className={this.props.managedClasses.site_paneToggleButtonIcon}
+                    dangerouslySetInnerHTML={{__html: glyphGlobalnavbutton}}
+                />
             </button>
         );
     }
-    /* tslint:enable:max-line-length */
 
     private renderRootToc(items: any, slot: string, currentPath: string, itemsPath: string): JSX.Element {
         if (this.props && this.props.children) {
@@ -468,7 +502,8 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
             controls: contentId,
             onClick: (e: React.MouseEvent<HTMLButtonElement>): void => {
                 this.setState({
-                    activeComponentIndex: 0
+                    activeComponentIndex: 0,
+                    componentName: this.getComponentName(tocItemPath)
                 });
             }
         };
@@ -500,9 +535,14 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         return null;
     }
 
-    /* tslint:disable:max-line-length */
     private renderTocItemCategory(name: string | any, icon?: JSX.Element): JSX.Element {
-        const renderLayout: JSX.Element = icon ? <div className={this.props.managedClasses.site_paneToggleButtonIconLayout}><span className={this.props.managedClasses.site_paneToggleButtonIcon}>{icon}</span></div> : null;
+        const renderLayout: JSX.Element = icon
+            ? (
+                <div className={this.props.managedClasses.site_paneToggleButtonIconLayout}>
+                    <span className={this.props.managedClasses.site_paneToggleButtonIcon}>{icon}</span>
+                </div>
+            )
+            : null;
 
         if (this.state.tableOfContentsCollapsed) {
             return renderLayout;
@@ -515,7 +555,6 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
             </div>
         );
     }
-    /* tslint:enable:max-line-length */
 
     private renderTocItemCategoryIcon(item: JSX.Element): JSX.Element {
         if (Array.isArray(item.props.children)) {

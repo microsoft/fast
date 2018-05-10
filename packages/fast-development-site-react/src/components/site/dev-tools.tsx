@@ -2,20 +2,28 @@ import * as React from "react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { IDevSiteDesignSystem } from "../design-system";
+import CodePreview from "./dev-tools-code-preview";
+import { IFormChildOption } from "./";
 
-export type frameworkType = "react" | "angular";
+export enum FrameworkEnum {
+    react = "react",
+    angular = "angular"
+}
 
 export type tabType = "code" | "properties" | "schema";
 
 export interface IDevToolsProps {
     onToggleView: () => void;
-    frameworks?: frameworkType[];
-    activeFramework?: frameworkType;
+    activeFormData: any;
+    activeComponentName: string;
+    activeFramework: FrameworkEnum;
+    childOptions: IFormChildOption[];
+    frameworks?: FrameworkEnum[];
     activeTab?: tabType;
 }
 
 export interface IDevToolsState {
-    activeFramework: frameworkType;
+    activeFramework: FrameworkEnum;
     activeTab: tabType;
 }
 
@@ -153,7 +161,7 @@ class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevTool
         this.tabs = ["code", "properties", "schema"];
 
         this.state = {
-            activeFramework: this.props.activeFramework || "react",
+            activeFramework: this.props.activeFramework || FrameworkEnum.react,
             activeTab: this.props.activeTab || "code"
         };
     }
@@ -231,7 +239,14 @@ class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevTool
     }
 
     private renderCode(): JSX.Element {
-        return <span>TBD</span>;
+        return (
+            <CodePreview
+                componentName={this.props.activeComponentName}
+                childOptions={this.props.childOptions}
+                framework={this.state.activeFramework}
+                data={this.props.activeFormData}
+            />
+        );
     }
 
     private renderProperties(): JSX.Element {
@@ -255,7 +270,7 @@ class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevTool
     }
 
     private renderComponentFrameworkTypeToggle(): JSX.Element[] {
-        return this.props.frameworks.map((framework: frameworkType, index: number) => {
+        return this.props.frameworks.map((framework: FrameworkEnum, index: number) => {
             return (
                 <li
                     key={index}
@@ -270,13 +285,13 @@ class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevTool
         });
     }
 
-    private getFrameworkClassName(framework: frameworkType): string {
+    private getFrameworkClassName(framework: FrameworkEnum): string {
         return framework === "angular"
             ? this.props.managedClasses.devTools_controls_framework_angular
             : this.props.managedClasses.devTools_controls_framework_react;
     }
 
-    private getFrameworkActiveClassName(framework: frameworkType): string {
+    private getFrameworkActiveClassName(framework: FrameworkEnum): string {
         return this.state.activeFramework === framework
             ? this.props.managedClasses.devTools_controls_framework__active
             : "";
@@ -290,7 +305,7 @@ class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevTool
         return this.props.managedClasses.devTools_tab;
     }
 
-    private handleChangeFramework(framework: frameworkType): (e: React.MouseEvent<HTMLButtonElement>) => void {
+    private handleChangeFramework(framework: FrameworkEnum): (e: React.MouseEvent<HTMLButtonElement>) => void {
         return (e: React.MouseEvent<HTMLButtonElement>): void => {
             this.setState({
                 activeFramework: framework
