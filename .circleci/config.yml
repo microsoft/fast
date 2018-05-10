@@ -1,14 +1,10 @@
-# Javascript Node CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-javascript/ for more details
-#
 version: 2
+
 jobs:
   build:
     docker:
-      # specify the version you desire here
       - image: circleci/node:latest
-
+    working_directory: ~/fast-dna
     steps:
       - checkout
       - run:
@@ -34,25 +30,20 @@ jobs:
       - save_cache:
           key: v1-dependency-cache-{{ checksum "package.json" }}
           paths:
-            - ./node_modules
-      
-    test:
-        docker:
-            - image: circleci/node:latest
-        steps:
-          - checkout
-          - run:
-            name: Test
-            command: lerna run test --stream
-      
+            - ./node_modules   
+            
+  test:
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - run: lerna run test --stream
+ 
 workflows:
-    version 2:
-        build_and_test:
-            jobs:
-                - build
-                - test:
-                    requires: 
-                        - build
-                    filters:
-                        branches:
-                            only: master
+  version: 2
+  build-and-test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+  
