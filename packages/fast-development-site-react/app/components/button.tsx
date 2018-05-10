@@ -2,6 +2,7 @@ import * as React from "react";
 
 export interface IButtonProps {
     text: string;
+    object: any;
 }
 
 class Button extends React.Component<IButtonProps, {}> {

@@ -10,6 +10,15 @@
             "title": "text",
             "type": "string",
             "example": "Submit"
+        },
+        "object": {
+            "title": "object",
+            "type": "object",
+            "properties": {
+                "bool": {
+                    "type": "boolean"
+                }
+            }
         }
     }
 }

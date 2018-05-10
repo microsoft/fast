@@ -10,6 +10,14 @@ export interface ICodePreviewProps {
     data: any;
 }
 
+export interface IReactChildren {
+    id: string;
+    propertyName: string;
+    location: string;
+    data: any;
+    component?: any;
+}
+
 export default class CodePreview extends React.Component<ICodePreviewProps, {}> {
 
     private variables: string;
@@ -26,6 +34,7 @@ export default class CodePreview extends React.Component<ICodePreviewProps, {}> 
 
     private getCodePreview(): string {
         let codePreview: string = "TBD";
+        this.variables = "";
 
         switch (this.props.framework) {
             case frameworkEnum.react:
@@ -33,7 +42,7 @@ export default class CodePreview extends React.Component<ICodePreviewProps, {}> 
                 break;
         }
 
-        return codePreview;
+        return this.variables + codePreview;
     }
 
     /**
@@ -127,10 +136,23 @@ export default class CodePreview extends React.Component<ICodePreviewProps, {}> 
             ? property
             : location + property.charAt(0).toUpperCase() + property.slice(1);
         const childrenLocations: string[] = this.findChildren(data[property], "", []);
-        const propertyChildren: any[] = [];
-        let attributes: string = "";
+        const propertyChildren: IReactChildren[] = this.getReactChildrenFromProperties(data, property, propertyName, childrenLocations);
+        const attributes: string = `\n${tab}${property}={${propertyName}}`;
 
-        attributes += `\n${tab}${property}={${propertyName}}`;
+        this.variables += `var ${propertyName} = `;
+        this.variables += `${this.replaceReactPropertyChildren(data[property], propertyChildren)};\n\n`;
+        this.setReactChildrenVariables(childrenLocations, propertyChildren, propertyName);
+
+        return attributes;
+    }
+
+    private getReactChildrenFromProperties(
+        data: any,
+        property: string,
+        propertyName: string,
+        childrenLocations: string[]
+    ): IReactChildren[] {
+        const propertyChildren: IReactChildren[] = [];
 
         if (childrenLocations.length > 0) {
             for (let i: number = childrenLocations.length - 1; i >= 0; i--) {
@@ -143,9 +165,13 @@ export default class CodePreview extends React.Component<ICodePreviewProps, {}> 
             }
         }
 
-        this.variables += `var ${propertyName} = `;
-        this.variables += `${this.replaceReactPropertyChildren(data[property], propertyChildren)};\n\n`;
+        return propertyChildren;
+    }
 
+    /**
+     * Sets the private variables to children objects
+     */
+    private setReactChildrenVariables(childrenLocations: string[], propertyChildren: IReactChildren[], propertyName: string): void {
         if (childrenLocations.length > 0) {
             for (let i: number = childrenLocations.length - 1; i >= 0; i--) {
                 let stringDataWithReactComponentNames: string = JSON.stringify(propertyChildren[i].data.props, null, 2);
@@ -161,8 +187,6 @@ export default class CodePreview extends React.Component<ICodePreviewProps, {}> 
                 this.variables += `${stringDataWithReactComponentNames};\n\n`;
             }
         }
-
-        return attributes;
     }
 
     /**
@@ -214,7 +238,7 @@ export default class CodePreview extends React.Component<ICodePreviewProps, {}> 
     }
 
     /**
-     * Find children in an object
+     * Find children in data
      */
     private findChildren(data: any, location: string, childLocations: string[]): string[] {
         const locations: string[] = childLocations;
@@ -228,12 +252,18 @@ export default class CodePreview extends React.Component<ICodePreviewProps, {}> 
         return locations;
     }
 
+    /**
+     * Find children in an array
+     */
     private findChildrenFromArray(data: any, location: string, childLocations: string[]): string[] {
         for (let i: number = 0, dataLength: number = data.length; i < dataLength; i++) {
             return this.findChildren(data[i], `${location === "" ? "" : `${location}.`}${i}`, childLocations);
         }
     }
 
+    /**
+     * Find children in an object
+     */
     private findChildrenFromObject(data: any, location: string, childLocations: string[]): string[] {
         const locations: string[] = [];
 
