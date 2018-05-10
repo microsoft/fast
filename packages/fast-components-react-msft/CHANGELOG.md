@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.2.0"></a>
+# 1.2.0 (2018-05-10)
+
+
+### Bug Fixes
+
+* **typography:** fixes an issue where typography was not being exported ([#405](https://github.com/Microsoft/fast-dna/issues/405)) ([3079eab](https://github.com/Microsoft/fast-dna/commit/3079eab))
+
+
+### Features
+
+* **checkbox:** update styling and incorrect states ([#371](https://github.com/Microsoft/fast-dna/issues/371)) ([45cbe3c](https://github.com/Microsoft/fast-dna/commit/45cbe3c))
+
+
+
+
 <a name="1.1.0"></a>
 # 1.1.0 (2018-05-09)
 
