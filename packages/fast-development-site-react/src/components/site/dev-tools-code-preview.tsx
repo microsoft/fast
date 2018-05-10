@@ -1,12 +1,12 @@
 import * as React from "react";
-import { frameworkEnum } from "./dev-tools";
+import { FrameworkEnum } from "./dev-tools";
 import { IFormChildOption } from "./";
 import { get, isEmpty, isObject, set, uniqueId } from "lodash-es";
 
 export interface ICodePreviewProps {
     componentName: string;
     childOptions: IFormChildOption[];
-    framework: frameworkEnum;
+    framework: FrameworkEnum;
     data: any;
 }
 
@@ -37,7 +37,7 @@ export default class CodePreview extends React.Component<ICodePreviewProps, {}> 
         this.variables = "";
 
         switch (this.props.framework) {
-            case frameworkEnum.react:
+            case FrameworkEnum.react:
                 codePreview = this.generateReactCodePreview(this.props.componentName, this.props.data, "", "");
                 break;
         }
@@ -139,7 +139,7 @@ export default class CodePreview extends React.Component<ICodePreviewProps, {}> 
         const propertyChildren: IReactChildren[] = this.getReactChildrenFromProperties(data, property, propertyName, childrenLocations);
         const attributes: string = `\n${tab}${property}={${propertyName}}`;
 
-        this.variables += `var ${propertyName} = `;
+        this.variables += `const ${propertyName} = `;
         this.variables += `${this.replaceReactPropertyChildren(data[property], propertyChildren)};\n\n`;
         this.setReactChildrenVariables(childrenLocations, propertyChildren, propertyName);
 
@@ -182,7 +182,7 @@ export default class CodePreview extends React.Component<ICodePreviewProps, {}> 
                     stringDataWithReactComponentNames
                 );
 
-                this.variables += `var ${propertyName}${propertyChildren[i].location.replace(/children|props|\./g, "")} = `;
+                this.variables += `const ${propertyName}${propertyChildren[i].location.replace(/children|props|\./g, "")} = `;
                 this.variables += `${stringDataWithReactComponentNames};\n\n`;
             }
         }
@@ -225,17 +225,6 @@ export default class CodePreview extends React.Component<ICodePreviewProps, {}> 
         }
 
         return JSONStringWithReactChildComponents;
-    }
-
-    /**
-     * Derive camel cased class name from hyphenated name
-     */
-    private convertToCamelCase: (itemName: string) => string = (itemName: string): string => {
-       itemName = `${itemName.charAt(0).toUpperCase()}${itemName.slice(1)}`;
-
-       return itemName.replace(/-[a-z]/g, (a: string): string => {
-           return a.charAt(1).toUpperCase();
-       });
     }
 
     /**

@@ -105,8 +105,8 @@ function renderComponents2Nested(): JSX.Element {
 const formChildOptions: IFormChildOption[] = [
     {
         name: ParagraphSchema.title,
-        component: Paragraph, schema:
-        ParagraphSchema
+        component: Paragraph,
+        schema: ParagraphSchema
     },
     {
         name: ButtonSchema.title,

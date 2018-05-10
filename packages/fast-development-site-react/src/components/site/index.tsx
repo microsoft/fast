@@ -16,15 +16,15 @@ import SiteCategory from "./category";
 import SiteCategoryIcon from "./category-icon";
 import SiteCategoryItem from "./category-item";
 import ActionBar from "./action-bar";
-import DevTools, { frameworkEnum } from "./dev-tools";
+import DevTools, { FrameworkEnum } from "./dev-tools";
 import NotFound from "./not-found";
 import ComponentView, { ComponentViewTypes } from "./component-view";
 
 export interface ISiteProps {
     title: string;
     formChildOptions: IFormChildOption[];
-    frameworks?: frameworkEnum | frameworkEnum[];
-    activeFramework?: frameworkEnum;
+    frameworks?: FrameworkEnum | FrameworkEnum[];
+    activeFramework?: FrameworkEnum;
     collapsed?: boolean;
 }
 

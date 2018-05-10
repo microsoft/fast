@@ -5,7 +5,7 @@ import { IDevSiteDesignSystem } from "../design-system";
 import CodePreview from "./dev-tools-code-preview";
 import { IFormChildOption } from "./";
 
-export enum frameworkEnum {
+export enum FrameworkEnum {
     react = "react",
     angular = "angular"
 }
@@ -16,14 +16,14 @@ export interface IDevToolsProps {
     onToggleView: () => void;
     activeFormData: any;
     activeComponentName: string;
-    activeFramework: frameworkEnum;
+    activeFramework: FrameworkEnum;
     childOptions: IFormChildOption[];
-    frameworks?: frameworkEnum[];
+    frameworks?: FrameworkEnum[];
     activeTab?: tabType;
 }
 
 export interface IDevToolsState {
-    activeFramework: frameworkEnum;
+    activeFramework: FrameworkEnum;
     activeTab: tabType;
 }
 
@@ -161,7 +161,7 @@ class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevTool
         this.tabs = ["code", "properties", "schema"];
 
         this.state = {
-            activeFramework: this.props.activeFramework || frameworkEnum.react,
+            activeFramework: this.props.activeFramework || FrameworkEnum.react,
             activeTab: this.props.activeTab || "code"
         };
     }
@@ -270,7 +270,7 @@ class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevTool
     }
 
     private renderComponentFrameworkTypeToggle(): JSX.Element[] {
-        return this.props.frameworks.map((framework: frameworkEnum, index: number) => {
+        return this.props.frameworks.map((framework: FrameworkEnum, index: number) => {
             return (
                 <li
                     key={index}
@@ -285,13 +285,13 @@ class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevTool
         });
     }
 
-    private getFrameworkClassName(framework: frameworkEnum): string {
+    private getFrameworkClassName(framework: FrameworkEnum): string {
         return framework === "angular"
             ? this.props.managedClasses.devTools_controls_framework_angular
             : this.props.managedClasses.devTools_controls_framework_react;
     }
 
-    private getFrameworkActiveClassName(framework: frameworkEnum): string {
+    private getFrameworkActiveClassName(framework: FrameworkEnum): string {
         return this.state.activeFramework === framework
             ? this.props.managedClasses.devTools_controls_framework__active
             : "";
@@ -305,7 +305,7 @@ class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevTool
         return this.props.managedClasses.devTools_tab;
     }
 
-    private handleChangeFramework(framework: frameworkEnum): (e: React.MouseEvent<HTMLButtonElement>) => void {
+    private handleChangeFramework(framework: FrameworkEnum): (e: React.MouseEvent<HTMLButtonElement>) => void {
         return (e: React.MouseEvent<HTMLButtonElement>): void => {
             this.setState({
                 activeFramework: framework
