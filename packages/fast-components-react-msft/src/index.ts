@@ -10,6 +10,9 @@ export { Divider };
 import Heading from "./heading";
 export { Heading };
 
+import Hypertext from "./hypertext";
+export { Hypertext };
+
 import Image from "./image";
 export { Image } ;
 
@@ -19,5 +22,5 @@ export { Label } ;
 import Toggle from "./toggle";
 export { Toggle };
 
-import Hypertext from "./hypertext";
-export { Hypertext };
+import Typography from "./typography";
+export { Typography };
