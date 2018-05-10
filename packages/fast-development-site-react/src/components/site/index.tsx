@@ -198,7 +198,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     }
 
     /**
-     * Determine if we're looking at the examples path of a component
+     * Determine if the view is to the examples or detail of a component
      */
     private getComponentViewTypesByLocation(): ComponentViewTypes {
         return window
