@@ -74,8 +74,8 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = {
         position: "relative",
         borderRadius: toPx(2),
         display: "inline-block",
-        width: "20px",
-        height: "20px",
+        width: toPx(20),
+        height: toPx(20),
         "&:before": {
             top: toPx(4),
             left: toPx(11),
