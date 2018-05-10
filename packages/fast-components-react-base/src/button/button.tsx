@@ -30,6 +30,7 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IButtonCla
             <this.tag
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
+                href={this.props.href || null}
                 {...this.renderDisabledAttribute()}
             >
                 {this.props.children}

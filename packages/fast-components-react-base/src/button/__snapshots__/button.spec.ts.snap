@@ -3,6 +3,7 @@
 exports[`button button: 0 1`] = `
 <button
   className="button"
+  href={null}
 >
   Button text
 </button>
