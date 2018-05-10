@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`typography typography: 0 1`] = `
+<p
+  className="typography_1-0-1-1"
+>
+  Typography example string
+</p>
+`;
+
+exports[`typography typography: 1 1`] = `
+<h1
+  className="typography_1-0-1-10"
+>
+  Typography example string
+</h1>
+`;
+
+exports[`typography typography: 2 1`] = `
+<h2
+  className="typography_2-0-1-20"
+>
+  Typography example string
+</h2>
+`;
+
+exports[`typography typography: 3 1`] = `
+<h3
+  className="typography_3-0-1-30"
+>
+  Typography example string
+</h3>
+`;
+
+exports[`typography typography: 4 1`] = `
+<h4
+  className="typography_4-0-1-40"
+>
+  Typography example string
+</h4>
+`;
+
+exports[`typography typography: 5 1`] = `
+<h5
+  className="typography_5-0-1-50"
+>
+  Typography example string
+</h5>
+`;
+
+exports[`typography typography: 6 1`] = `
+<h6
+  className="typography_6-0-1-60"
+>
+  Typography example string
+</h6>
+`;
+
+exports[`typography typography: 7 1`] = `
+<span
+  className="typography_7-0-1-70"
+>
+  Typography example string
+</span>
+`;
+
+exports[`typography typography: 8 1`] = `
+<caption
+  className="typography_8-0-1-80"
+>
+  Typography example string
+</caption>
+`;
+
+exports[`typography typography: 9 1`] = `
+<p
+  className="typography_9-0-1-90"
+>
+  Typography example string
+</p>
+`;
