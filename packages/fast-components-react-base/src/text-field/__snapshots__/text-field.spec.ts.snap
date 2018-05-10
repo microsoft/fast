@@ -3,6 +3,8 @@
 exports[`textfield textfield: 0 1`] = `
 <input
   className="textfield"
+  disabled={undefined}
+  placeholder={undefined}
   type="text"
 />
 `;
@@ -10,6 +12,8 @@ exports[`textfield textfield: 0 1`] = `
 exports[`textfield textfield: 1 1`] = `
 <input
   className="textfield"
+  disabled={undefined}
+  placeholder={undefined}
   type="email"
 />
 `;
@@ -17,6 +21,8 @@ exports[`textfield textfield: 1 1`] = `
 exports[`textfield textfield: 2 1`] = `
 <input
   className="textfield"
+  disabled={undefined}
+  placeholder={undefined}
   type="number"
 />
 `;
@@ -24,6 +30,8 @@ exports[`textfield textfield: 2 1`] = `
 exports[`textfield textfield: 3 1`] = `
 <input
   className="textfield"
+  disabled={undefined}
+  placeholder={undefined}
   type="tel"
 />
 `;
