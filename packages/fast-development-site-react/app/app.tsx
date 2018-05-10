@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { glyphBuildingblocks } from "@microsoft/fast-glyphs-msft";
-import Site, { SiteCategory, SiteCategoryIcon, SiteCategoryItem, SiteMenu, SiteMenuItem } from "../src";
+import Site, { IFormChildOption, SiteCategory, SiteCategoryIcon, SiteCategoryItem, SiteMenu, SiteMenuItem } from "../src";
 import Button from "./components/button";
 import ButtonSchema from "./components/button.schema.json";
 import Paragraph from "./components/paragraph";
@@ -102,11 +102,24 @@ function renderComponents2Nested(): JSX.Element {
     );
 }
 
+const formChildOptions: IFormChildOption[] = [
+    {
+        name: ParagraphSchema.title,
+        component: Paragraph, schema:
+        ParagraphSchema
+    },
+    {
+        name: ButtonSchema.title,
+        component: Button,
+        schema: ButtonSchema
+    }
+];
+
 function render(): void {
     ReactDOM.render(
         <Site
             title={"FAST Development site test"}
-            formChildOptions={[{name: ParagraphSchema.title, component: Paragraph, schema: ParagraphSchema}, {name: ButtonSchema.title, component: Button, schema: ButtonSchema}]}
+            formChildOptions={formChildOptions}
             frameworks={["react" as any, "angular" as any]}
         >
             {renderSiteMenu()}
