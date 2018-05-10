@@ -7,10 +7,12 @@ import Label, {
     ILabelUnhandledProps,
     LabelTag
 } from "./label";
+import * as schema from "./label.schema.json";
 
 const examples: ISnapshotTestSuite<ILabelHandledProps & ILabelMangedClasses> = {
     name: "label",
     component: Label,
+    schema,
     data: [
         {
             managedClasses: {

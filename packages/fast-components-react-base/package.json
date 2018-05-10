@@ -14,8 +14,9 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "clean:dist": "node ../../build/clean.js dist",
+    "copy:json-schema": "node ../../build/copy.js --src src/**/*.schema.json --dist dist",
     "build:app": "webpack --progress",
-    "prepare": "npm run clean:dist && tsc -p ./tsconfig.json",
+    "prepare": "npm run clean:dist && tsc -p ./tsconfig.json && npm run copy:json-schema",
     "start": "webpack-dev-server",
     "test": "npm run tslint && npm run unit-tests && npm run build:app",
     "tslint": "tslint -c ./tslint.json 'src/**/*.ts{,x}' '**/*.ts{,x}'",

@@ -10,9 +10,12 @@ import {
     IButtonManagedClasses,
     IButtonUnhandledProps
 } from "./button.props";
+import * as schema from "./button.schema.json";
+
 export default {
     name: "button",
     component: Button,
+    schema,
     data: [
         {
             children: "Default button"

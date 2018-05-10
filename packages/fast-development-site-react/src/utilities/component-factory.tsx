@@ -1,5 +1,5 @@
 import * as React from "react";
-import componentExampleFactory from "./componentExampleFactory";
+import componentExampleFactory from "./component-example-factory";
 import { SiteCategory } from "../";
 
 export default function componentFactory<T>(examples: any, designSystem?: T): JSX.Element[] {

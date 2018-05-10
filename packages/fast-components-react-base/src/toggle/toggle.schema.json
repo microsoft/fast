@@ -1,0 +1,38 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Toggle",
+    "description": "A toggle component's schema definition.",
+    "type": "object",
+    "id": "toggle",
+    "children": true,
+    "properties": {
+        "disabled": {
+            "title": "Disabled",
+            "type": "boolean"
+        },
+        "id": {
+            "title": "HTML id attribute",
+            "type": "string"
+        },
+        "labelId": {
+            "title": "HTML label id attribute",
+            "type": "string"
+        },
+        "selected": {
+            "title": "Selected",
+            "type": "boolean"
+        },
+        "selectedString": {
+            "title": "Selected text",
+            "type": "string"
+        },
+        "statusLabelId": {
+            "title": "HTML status label id attribute",
+            "type": "string"
+        },
+        "unselectedString": {
+            "title": "Unselected text",
+            "type": "string"
+        }
+    }
+}

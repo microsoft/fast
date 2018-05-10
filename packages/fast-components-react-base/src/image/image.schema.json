@@ -1,0 +1,60 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Image",
+    "description": "An image component's schema definition.",
+    "type": "object",
+    "id": "image",
+    "properties": {
+        "alt": {
+            "title": "HTML alt attribute",
+            "type": "string"
+        },
+        "itemScope": {
+            "title": "HTML itemScope attribute",
+            "type": "string"
+        },
+        "round": {
+            "title": "Round",
+            "type": "boolean"
+        },
+        "sizes": {
+            "title": "HTML sizes attribute",
+            "type": "string"
+        },
+        "src": {
+            "title": "HTML src attribute",
+            "type": "string"
+        },
+        "srcSet": {
+            "title": "HTML srcSet attribute",
+            "type": "string"
+        },
+        "vp1": {
+            "title": "Image address at viewport 1",
+            "type": "string"
+        },
+        "vp2": {
+            "title": "Image address at viewport 2",
+            "type": "string"
+        },
+        "vp3": {
+            "title": "Image address at viewport 3",
+            "type": "string"
+        },
+        "vp4": {
+            "title": "Image address at viewport 4",
+            "type": "string"
+        },
+        "vp5": {
+            "title": "Image address at viewport 5",
+            "type": "string"
+        },
+        "vp6": {
+            "title": "Image address at viewport 6",
+            "type": "string"
+        }
+    },
+    "required": [
+        "alt"
+    ]
+}

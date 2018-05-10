@@ -12,12 +12,14 @@ import {
     IHeadingManagedClasses,
     IHeadingUnhandledProps
 } from "./heading.props";
+import * as schema from "./heading.schema.json";
 
 const testString: string = "Heading test string";
 
 export default {
     name: "heading",
     component: Heading,
+    schema,
     data: [
         {
             children: testString

@@ -59,7 +59,9 @@ export default class CodePreview extends React.Component<ICodePreviewProps, {}> 
         if (hasChildren) {
             renderedComponent += this.generateReactChildren(componentName, componentData, tab, newTab, location);
         } else {
-            renderedComponent += `${this.hasOnlyChildrenOrNoProps(Object.keys(componentData), componentData) ? " " : tab}/>`;
+            renderedComponent += isObject(componentData)
+                ? `${this.hasOnlyChildrenOrNoProps(Object.keys(componentData), componentData) ? " " : tab}/>`
+                : ` />`;
         }
 
         return renderedComponent;

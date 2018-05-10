@@ -510,7 +510,8 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
             onClick: (e: React.MouseEvent<HTMLButtonElement>): void => {
                 this.setState({
                     activeComponentIndex: 0,
-                    componentName: this.getComponentName(tocItemPath)
+                    componentName: this.getComponentName(tocItemPath),
+                    currentPath: tocItemPath
                 });
             }
         };

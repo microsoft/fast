@@ -2,6 +2,7 @@ import { ICategoryItemProps } from "@microsoft/fast-development-site-react";
 import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import Checkbox, { CheckboxHTMLTags, ICheckboxHandledProps,  ICheckboxManagedClasses, ICheckboxUnhandledProps  } from "./checkbox";
+import * as schema from "./checkbox.schema.json";
 import * as React from "react";
 
 const classes: ICheckboxManagedClasses = {
@@ -17,6 +18,7 @@ const classes: ICheckboxManagedClasses = {
 const examples: ISnapshotTestSuite<ICheckboxHandledProps & ICheckboxManagedClasses> = {
     name: "checkbox",
     component: Checkbox,
+    schema,
     data: [
         {
             ...classes
