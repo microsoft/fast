@@ -176,17 +176,33 @@ export default class CodePreview extends React.Component<ICodePreviewProps, {}> 
             for (let i: number = childrenLocations.length - 1; i >= 0; i--) {
                 let stringDataWithReactComponentNames: string = JSON.stringify(propertyChildren[i].data.props, null, 2);
 
-                for (let j: number = childrenLocations.length - 1; j >= 0; j--) {
-                    stringDataWithReactComponentNames = stringDataWithReactComponentNames.replace(
-                        `"${propertyChildren[j].id}"`,
-                        propertyChildren[j].component
-                    );
-                }
+                stringDataWithReactComponentNames = this.replaceReactChildrenVariableIdsWithComponent(
+                    childrenLocations,
+                    propertyChildren,
+                    stringDataWithReactComponentNames
+                );
 
                 this.variables += `var ${propertyName}${propertyChildren[i].location.replace(/children|props|\./g, "")} = `;
                 this.variables += `${stringDataWithReactComponentNames};\n\n`;
             }
         }
+    }
+
+    private replaceReactChildrenVariableIdsWithComponent(
+        childrenLocations: string[],
+        propertyChildren: IReactChildren[],
+        stringDataWithReactComponentNames: string
+    ): string {
+        let updatedStringDataWithReactComponentNames: string = stringDataWithReactComponentNames;
+
+        for (let j: number = childrenLocations.length - 1; j >= 0; j--) {
+            updatedStringDataWithReactComponentNames = updatedStringDataWithReactComponentNames.replace(
+                `"${propertyChildren[j].id}"`,
+                propertyChildren[j].component
+            );
+        }
+
+        return updatedStringDataWithReactComponentNames;
     }
 
     /**
