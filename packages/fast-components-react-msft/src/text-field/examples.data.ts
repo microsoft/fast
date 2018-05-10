@@ -15,7 +15,7 @@ export default {
         },
         {
             type: TextFieldType.email,
-            defaultValue: "jasfalk@microsoft.com"
+            defaultValue: "name@email.com"
         },
         {
             type: TextFieldType.number,

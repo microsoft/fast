@@ -14,6 +14,7 @@ import { get } from "lodash-es";
 class TextField extends Foundation<ITextFieldHandledProps & IManagedClasses<ITextFieldClassNameContract>, React.HTMLAttributes<HTMLInputElement>, {}> {
     protected handledProps: HandledProps<ITextFieldHandledProps & IManagedClasses<ITextFieldClassNameContract>> = {
         disabled: void 0,
+        error: void 0,
         placeholder: void 0,
         managedClasses: void 0,
         type: void 0,
@@ -27,8 +28,10 @@ class TextField extends Foundation<ITextFieldHandledProps & IManagedClasses<ITex
         return (
             <input
                 {...this.unhandledProps()}
-                {...this.generateHandledAttributes()}
                 className={this.generateClassNames()}
+                disabled={this.props.disabled}
+                placeholder={this.props.placeholder}
+                type={this.props.type || TextFieldType.text}
             />
         );
     }
@@ -38,28 +41,6 @@ class TextField extends Foundation<ITextFieldHandledProps & IManagedClasses<ITex
      */
     protected generateClassNames(): string {
         return super.generateClassNames(get(this.props, "managedClasses.textField"));
-    }
-
-    /**
-     * Generates handled attributes based on props
-     */
-    private generateHandledAttributes(): Partial<ITextFieldHandledProps> {
-        const attributes: Partial<ITextFieldHandledProps> = {};
-
-        attributes.type = this.props.type ? this.props.type : TextFieldType.text;
-
-        if (this.props.disabled) {
-            attributes.disabled = this.props.disabled;
-        }
-        if (this.props.placeholder) {
-            attributes.placeholder = this.props.placeholder;
-        }
-
-        if (this.props.value) {
-            attributes.value = this.props.value;
-        }
-
-        return attributes;
     }
 
 }
