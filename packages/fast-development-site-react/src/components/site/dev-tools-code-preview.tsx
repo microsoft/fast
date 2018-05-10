@@ -36,6 +36,9 @@ export default class CodePreview extends React.Component<ICodePreviewProps, {}> 
         return codePreview;
     }
 
+    /**
+     * Generates the react code preview as a string
+     */
     private generateReactCodePreview(componentName: string, componentData: any, tab: string, location: string): string {
         let renderedComponent: string = "";
         const newTab: string = `    ${tab}`;
@@ -45,26 +48,35 @@ export default class CodePreview extends React.Component<ICodePreviewProps, {}> 
         renderedComponent += this.generateReactAttributes(componentData, newTab, location);
 
         if (hasChildren) {
-            renderedComponent += `${tab}>`;
-            const componentChildren: any[] = Array.isArray(componentData.children) ? componentData.children : [componentData.children];
-
-            for (let i: number = 0, childrenLength: number = componentChildren.length; i < childrenLength; i++) {
-                renderedComponent += this.generateReactCodePreview(
-                    this.getComponentName(componentChildren[i]),
-                    componentChildren[i].props,
-                    newTab,
-                    location === ""
-                        ? componentName.charAt(0).toLowerCase() + componentName.slice(1) + i
-                        : location + componentName + i
-                );
-            }
-
-            renderedComponent += `\n${tab}</${componentName}>`;
+            renderedComponent += this.generateReactChildren(componentName, componentData, tab, newTab, location);
         } else {
-            renderedComponent += `${isEmpty(componentData) ? "" : tab}/>`;
+            renderedComponent += `${this.hasOnlyChildrenOrNoProps(Object.keys(componentData), componentData) ? " " : tab}/>`;
         }
 
         return renderedComponent;
+    }
+
+    /**
+     * Generates the string if the component contains children
+     */
+    private generateReactChildren(componentName: string, componentData: any, tab: string, newTab: string, location: string): string {
+        let renderedComponentWithChild: string = `${Object.keys(componentData).length < 2 ? "" : tab}>`;
+        const componentChildren: any[] = Array.isArray(componentData.children) ? componentData.children : [componentData.children];
+
+        for (let i: number = 0, childrenLength: number = componentChildren.length; i < childrenLength; i++) {
+            renderedComponentWithChild += this.generateReactCodePreview(
+                this.getComponentName(componentChildren[i]),
+                componentChildren[i].props,
+                newTab,
+                location === ""
+                    ? componentName.charAt(0).toLowerCase() + componentName.slice(1) + i
+                    : location + componentName + i
+            );
+        }
+
+        renderedComponentWithChild += `\n${tab}</${componentName}>`;
+
+        return renderedComponentWithChild;
     }
 
     /**
@@ -78,25 +90,33 @@ export default class CodePreview extends React.Component<ICodePreviewProps, {}> 
             const propertyKeys: string[] = Object.keys(data);
 
             for (const property of propertyKeys) {
-                if (property !== "children") {
-                    if (isObject(data[property])) {
-                        attributes += this.getReactAttributeObject(location, property, data, tab);
-                    } else if (typeof data[property] === "string") {
-                        attributes += `\n${tab}${property}="${data[property]}"`;
-                    } else if (typeof data[property] !== "undefined") {
-                        attributes += `\n${tab}${property}={${data[property]}}`;
-                    }
-                }
+                attributes += this.getReactAttributesFromProperties(property, data, tab, location);
             }
 
-            if (Object.keys(data).length !== 0) {
-                attributes += `\n`;
-            } else {
-                attributes += ` `;
-            }
+            attributes += this.hasOnlyChildrenOrNoProps(propertyKeys, data)
+                ? ``
+                : `\n`;
         }
 
         return attributes;
+    }
+
+    private hasOnlyChildrenOrNoProps(propertyKeys: string[], data: any): boolean {
+        return (propertyKeys.length === 1 && data.children) || propertyKeys.length === 0;
+    }
+
+    private getReactAttributesFromProperties(property: string, data: any, tab: string, location: string): string {
+        if (property !== "children") {
+            if (isObject(data[property])) {
+                return this.getReactAttributeObject(location, property, data, tab);
+            } else if (typeof data[property] === "string") {
+                return `\n${tab}${property}="${data[property]}"`;
+            } else if (typeof data[property] !== "undefined") {
+                return `\n${tab}${property}={${data[property]}}`;
+            }
+        }
+
+        return "";
     }
 
     /**
@@ -200,22 +220,32 @@ export default class CodePreview extends React.Component<ICodePreviewProps, {}> 
         const locations: string[] = childLocations;
 
         if (Array.isArray(data)) {
-            for (let i: number = 0, dataLength: number = data.length; i < dataLength; i++) {
-                if (typeof data[i] === "object" && typeof data[i] !== null) {
-                    locations.concat(this.findChildren(data[i], `${location === "" ? "" : `${location}.`}${i}`, childLocations));
-                }
-            }
+            locations.concat(this.findChildrenFromArray(data, location, childLocations));
         } else if (typeof data === "object" && data !== null) {
-            Object.keys(data).forEach((item: string) => {
-                if (item === "children") {
-                    locations.push(location);
-                }
-
-                if (typeof data[item] === "object") {
-                    locations.concat(this.findChildren(data[item], `${location === "" ? "" : `${location}.`}${item}`, childLocations));
-                }
-            });
+            locations.concat(this.findChildrenFromObject(data, location, childLocations));
         }
+
+        return locations;
+    }
+
+    private findChildrenFromArray(data: any, location: string, childLocations: string[]): string[] {
+        for (let i: number = 0, dataLength: number = data.length; i < dataLength; i++) {
+            return this.findChildren(data[i], `${location === "" ? "" : `${location}.`}${i}`, childLocations);
+        }
+    }
+
+    private findChildrenFromObject(data: any, location: string, childLocations: string[]): string[] {
+        const locations: string[] = [];
+
+        Object.keys(data).forEach((item: string) => {
+            if (item === "children") {
+                locations.push(location);
+            }
+
+            if (typeof data[item] === "object") {
+                locations.concat(this.findChildren(data[item], `${location === "" ? "" : `${location}.`}${item}`, childLocations));
+            }
+        });
 
         return locations;
     }
