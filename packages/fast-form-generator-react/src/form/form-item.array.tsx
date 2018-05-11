@@ -113,6 +113,10 @@ class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasse
         return (e: React.MouseEvent<HTMLElement>): void => {
             e.preventDefault();
 
+            if (!this.state.hideOptionMenu) {
+                this.toggleMenu();
+            }
+
             type === ArrayAction.add ? this.handleAddArrayItem(dataLocation, schema) : this.handleRemoveArrayItem(dataLocation, index);
         };
     }
@@ -289,12 +293,17 @@ class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasse
         }
 
         return items.map((item: any, index: number) => {
+            const className: string = item.type === ArrayAction.remove
+                ? this.props.managedClasses.formItemArray_linkMenuItem__remove
+                : this.props.managedClasses.formItemArray_linkMenuItem__add;
+
             return (
                 <li key={index}>
                     <button
+                        className={className}
                         onClick={item.onClick}
                     >
-                        {item.type === ArrayAction.remove ? "-" : "+"} {item.text}
+                        {item.text}
                     </button>
                 </li>
             );

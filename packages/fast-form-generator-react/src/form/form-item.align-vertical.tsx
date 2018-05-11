@@ -40,11 +40,11 @@ class FormItemAlignVertical extends React.Component<IFormItemComponentMappingToP
 
     private getInputClassName(direction: string): string {
         switch (direction) {
-            case "left":
+            case "top":
                 return this.props.managedClasses.formItemAlignVertical_input__top;
             case "center":
                 return this.props.managedClasses.formItemAlignVertical_input__center;
-            case "right":
+            case "bottom":
                 return this.props.managedClasses.formItemAlignVertical_input__bottom;
         }
     }

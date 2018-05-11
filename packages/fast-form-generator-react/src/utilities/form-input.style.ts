@@ -28,6 +28,7 @@ export function applyLabelStyle(): ICSSRules<{}> {
         lineHeight: toPx(16),
         fontSize: toPx(14),
         marginRight: toPx(16),
+        paddingTop: toPx(6),
         ...ellipsis()
     };
 }
@@ -49,7 +50,7 @@ export function applyWrapperStyle(): ICSSRules<{}> {
     return {
         display: "flex",
         flexDirection: "row",
-        paddingTop: toPx(8)
+        marginTop: toPx(8)
     };
 }
 
@@ -120,28 +121,39 @@ export function applyPopupMenuStyles(): ICSSRules<{}> {
         background: colors.menuGray,
         zIndex: "1",
         top: toPx(55),
-        "& li > button": {
-            cursor: "pointer",
-            display: "block",
-            ...localizePadding(12, 12, 12, 40),
-            position: "relative",
-            border: "none",
-            background: "transparent",
-            textAlign: "left",
-            "&:before": {
-                position: "absolute",
-                content: "''",
-                opacity: ".6",
-                pointerEvents: "none",
-                top: toPx(12),
-                width: toPx(16),
-                height: toPx(16),
-                left: toPx(12),
-                /* tslint:disable-next-line */
-                background: "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxMyAxNiIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48ZyBpZD0iQ2FudmFzIiBmaWxsPSJub25lIj48ZyBpZD0iJiMyMzg7JiMxNTk7JiMxMzE7Ij48cGF0aCBkPSJNIDE0IDQuMjg5MDZMIDE0IDE2TCAxIDE2TCAxIDBMIDkuNzEwOTQgMEwgMTQgNC4yODkwNlpNIDEwIDRMIDEyLjI4OTEgNEwgMTAgMS43MTA5NEwgMTAgNFpNIDEzIDE1TCAxMyA1TCA5IDVMIDkgMUwgMiAxTCAyIDE1TCAxMyAxNVoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xIDApIiBmaWxsPSJibGFjayIvPjwvZz48L2c+PC9zdmc+) center no-repeat"
+        "& li": {
+            "& > button": {
+                cursor: "pointer",
+                display: "block",
+                ...localizePadding(12, 12, 12, 36),
+                position: "relative",
+                border: "none",
+                background: "transparent",
+                textAlign: "left",
+                width: "100%",
+                ...ellipsis(),
+                "&:before": {
+                    position: "absolute",
+                    content: "''",
+                    opacity: ".6",
+                    pointerEvents: "none",
+                    top: toPx(12),
+                    width: toPx(16),
+                    height: toPx(16),
+                    left: toPx(12),
+                    /* tslint:disable-next-line */
+                    background: "url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNSAyNSI+PGRlZnM+PHN0eWxlPi5jbHMtMXtpc29sYXRpb246aXNvbGF0ZTtmb250LXNpemU6MjVweDtmb250LWZhbWlseTpNV0ZNREwyQXNzZXRzLCBNV0YgTURMMiBBc3NldHM7fTwvc3R5bGU+PC9kZWZzPjx0aXRsZT50cnNzc3NBc3NldCAyPC90aXRsZT48ZyBpZD0iTGF5ZXJfMiIgZGF0YS1uYW1lPSJMYXllciAyIj48ZyBpZD0iTGF5ZXJfMS0yIiBkYXRhLW5hbWU9IkxheWVyIDEiPjx0ZXh0IGNsYXNzPSJjbHMtMSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAyNSkiPu6djTwvdGV4dD48L2c+PC9nPjwvc3ZnPg==) center no-repeat"
+                },
+                "&:focus": {
+                    outline: "none"
+                },
+                "&:hover": {
+                    backgroundColor: colors.grayBackground
+                }
             },
-            "&:focus": {
-                outline: "none"
+            "& > span": {
+                display: "block",
+                padding: toPx(12)
             }
         }
     };
@@ -198,14 +210,14 @@ export function applyInputBackplateStyle(): ICSSRules<{}> {
 
 export function applySelectInputStyles(): ICSSRules<{}> {
     return {
-        flexGrow: "1",
+        width: "100%",
         lineHeight: toPx(16),
         fontSize: toPx(14),
         backgroundColor: colors.grayBackground,
         borderRadius: toPx(2),
         boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(4)} ${colors.boxShadow}`,
         appearance: "none",
-        ...localizePadding(8, 24, 8, 8),
+        ...localizePadding(8, 36, 8, 10),
         border: "none",
         outline: "none",
         "&:-ms-expand": {
@@ -218,7 +230,6 @@ export function applySelectSpanStyles(): ICSSRules<{}> {
     return {
         position: "relative",
         display: "flex",
-        flexGrow: "1",
         "&:before, &:after": {
             content: "''",
             position: "absolute",

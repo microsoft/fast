@@ -11,7 +11,7 @@ const styles: ComponentStyles<IFormItemNumberFieldClassNameContract, {}> = {
         ...applyLabelStyle()
     },
     formItemNumberField_input: {
-        minWidth: toPx(75),
+        maxWidth: toPx(75),
         ...applyInputStyle()
     }
 };

@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`general-example general-example: 0 1`] = `
+<div>
+  <form
+    onSubmit={[Function]}
+  >
+    <h2>
+      Untitled
+    </h2>
+    <div>
+      <div>
+        <div />
+      </div>
+    </div>
+  </form>
+</div>
+`;

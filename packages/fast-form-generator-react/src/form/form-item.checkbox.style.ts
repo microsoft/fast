@@ -1,18 +1,15 @@
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IFormItemCheckboxClassNameContract } from "../class-name-contracts/";
-import { applyLabelStyle, colors } from "../utilities/form-input.style";
+import { applyLabelStyle, applyWrapperStyle, colors } from "../utilities/form-input.style";
 
 const styles: ComponentStyles<IFormItemCheckboxClassNameContract, {}> = {
     formItemCheckbox: {
-        display: "flex",
-        flexDirection: "row"
+        ...applyWrapperStyle(),
+        position: "relative"
     },
     formItemCheckbox_label: {
-        ...applyLabelStyle(),
-        position: "relative",
-        lineHeight: toPx(31),
-        marginRight: "0"
+        ...applyLabelStyle()
     },
     formItemCheckbox_input: {
         appearance: "none",
@@ -22,17 +19,17 @@ const styles: ComponentStyles<IFormItemCheckboxClassNameContract, {}> = {
         boxShadow: `inset ${toPx(0)} 0${toPx(0)} ${toPx(4)} ${colors.boxShadow}`,
         backgroundColor: colors.grayBackground,
         float: "right",
+        zIndex: "1",
+        margin: "0",
         "&:focus": {
             outline: "none",
             boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(0)} ${toPx(1)} rgba(0,0,0, 0.5)`
         },
         "& + span": {
             position: "absolute",
-            right: toPx(8),
-            top: toPx(3),
-            width: toPx(16),
-            height: toPx(16),
-            cursor: "pointer",
+            right: "0",
+            width: toPx(20),
+            height: toPx(20),
             "&:after, &:before": {
                 position: "absolute",
                 display: "block",

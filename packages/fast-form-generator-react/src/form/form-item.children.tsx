@@ -234,7 +234,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
         // we have nothing to add or delete
         if (items.length === 0) {
             return [
-                (<li key={0}>No actions available</li>)
+                (<li key={0}><span>No actions available</span></li>)
             ];
         }
 
@@ -242,7 +242,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
             return (
                 <li key={uniqueId()}>
                     <button onClick={this.clickComponentFactory("delete", void(0), index)}>
-                        remove {item}
+                        {item}
                     </button>
                 </li>
             );

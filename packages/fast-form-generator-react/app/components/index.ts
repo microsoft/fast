@@ -102,10 +102,12 @@ export const weightProperties: IExampleComponent = {
 };
 
 import GeneralExample from "./general-example/general-example";
+import GeneralExampleConfig from "./general-example/general-example.config";
 import * as GeneralExampleSchema from "./general-example/general-example.schema.json";
 
 export const generalExample: IExampleComponent = {
     component: GeneralExample,
+    config: GeneralExampleConfig,
     schema: GeneralExampleSchema
 };
 
