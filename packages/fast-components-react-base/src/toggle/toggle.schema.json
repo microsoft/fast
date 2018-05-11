@@ -34,5 +34,11 @@
             "title": "Unselected text",
             "type": "string"
         }
-    }
+    },
+    "required": [
+        "id",
+        "selectedString",
+        "statusLabelId",
+        "unselectedString"
+    ]
 }

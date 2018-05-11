@@ -6,7 +6,7 @@
     "id": "checkbox",
     "properties": {
         "tag": {
-            "title": "HTML element tag",
+            "title": "HTML tag",
             "type": "string",
             "enum": [
                 "div",
