@@ -8,7 +8,7 @@ jobs:
     docker:
       - image: circleci/node:latest
     environment:
-      CC_TEST_REPORTER_ID=08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
+      CC_TEST_REPORTER_ID: 08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
     working_directory: ~/fast-dna
     steps:
       - checkout
@@ -48,11 +48,11 @@ jobs:
             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
             chmod +x ./tmp/cc-test-reporter
       - run:
-          name: Run tests
+          name: Code Coverage
           command: |
             ./tmp/cc-test-reporter before-build
             for f in packages/*; do
-              if [ -d $f ]; then
+              if [ -d "$f" ]; then
                  echo $f
                 ./tmp/cc-test-reporter format-coverage -t lcov -o tmp/coverage.${f//\//-}.json $f/coverage/lcov.info
               fi
