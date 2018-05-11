@@ -27,15 +27,12 @@ const styles: ComponentStyles<IComponentWrapperManagedClasses, IDevSiteDesignSys
         display: "block",
         padding: toPx(24),
         borderBottom: componentWrapperBorder,
-        "&:nth-child(3n + 1)": {
+        "&:last-child:not(:nth-child(3n + 3)), &:nth-child(3n + 1)": {
             borderRight: componentWrapperBorder,
         },
         "&:nth-child(3n + 3)": {
             borderLeft: componentWrapperBorder
         },
-        "&:last-child": {
-            borderRight: componentWrapperBorder,
-        }
     },
     componentWrapper__active: {
         position: "relative",
