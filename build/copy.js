@@ -1,6 +1,6 @@
 /**
  * Utility for copy files to directories.
- * Usage: node build/copy.js --src %srcPathGlob% --dist %distDirectory%
+ * Usage: node build/copy.js --src %srcPathGlob% --dest %destDirectory%
  */
 const path = require("path");
 const fs = require("fs");
@@ -19,8 +19,8 @@ const srcPaths = argv._.concat(argv.src);
 function copyPath(srcPath) {
     const firstDirectoryRegex = /[^\/]*/;
 
-    if (argv.dist) {
-        fs.copyFileSync(srcPath, srcPath.replace(firstDirectoryRegex, argv.dist));
+    if (argv.dest) {
+        fs.copyFileSync(srcPath, srcPath.replace(firstDirectoryRegex, argv.dest));
     }
 }
 

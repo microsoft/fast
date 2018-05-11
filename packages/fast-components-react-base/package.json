@@ -14,7 +14,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "clean:dist": "node ../../build/clean.js dist",
-    "copy:json-schema": "node ../../build/copy.js --src src/**/*.schema.json --dist dist",
+    "copy:json-schema": "node ../../build/copy.js --src src/**/*.schema.json --dest dist",
     "build:app": "webpack --progress",
     "prepare": "npm run clean:dist && tsc -p ./tsconfig.json && npm run copy:json-schema",
     "start": "webpack-dev-server",

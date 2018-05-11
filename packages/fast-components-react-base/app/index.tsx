@@ -23,7 +23,7 @@ const formChildOptions: IFormChildOption[] = formChildFromExamplesFactory(exampl
 /* tslint:disable */
 function render(): void {
     ReactDOM.render(
-        <Site title={"FAST components base"} formChildOptions={formChildOptions} frameworks={["react"]}>
+        <Site title={"FAST components base"} formChildOptions={formChildOptions}>
             <SiteCategory slot={"category"} name={"Components"}>
                 {componentFactory(examples)}
             </SiteCategory>
