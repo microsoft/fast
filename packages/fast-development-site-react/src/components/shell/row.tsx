@@ -14,7 +14,7 @@ const style: ComponentStyles<IShellRowManagedClasses, IDevSiteDesignSystem> = {
     shellRow: {
         display: "flex",
         alignItems: "stretch",
-        height: (config: IDevSiteDesignSystem): string => `calc(100% - ${toPx(config.navigationBarHeight * 2)}`
+        flexGrow: "1"
     }
 };
 

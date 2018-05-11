@@ -62,6 +62,7 @@ export enum SiteSlot {
 }
 
 export interface ISiteManagedClasses {
+    "@global": string;
     site_canvasContent: string;
     site_headerTitle: string;
     site_paneToc: string;
@@ -73,6 +74,12 @@ export interface ISiteManagedClasses {
 }
 
 const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
+    "@global": {
+        "body, html": {
+            padding: toPx(0),
+            margin: toPx(0)
+        }
+    },
     site_canvasContent: {
         height: `calc(100% - ${toPx(40)})`,
         display: "flex",

@@ -20,7 +20,9 @@ const style: ComponentStyles<IComponentViewManagedClasses, IDevSiteDesignSystem>
     componentView: {
         overflow: "auto",
         flexGrow: "1",
-        width: "100%"
+        width: "100%",
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr 1fr",
     }
 };
 
