@@ -87,20 +87,14 @@ const styles: ComponentStyles<IActionBarClassNameContract, IDevSiteDesignSystem>
         flexGrow: "1"
     },
     actionBar_menu_button: {
-        ...menuButtonBase()
+        ...menuButtonBase(),
+        "&:active": {
+            background: "#EBEBEB"
+        }
     },
     actionBar_menu_button__active: {
         ...menuButtonBase(),
-        background: "#EBEBEB",
-        "&::after": {
-            content: "''",
-            position: "absolute",
-            display: "block",
-            width: "100%",
-            bottom: "0",
-            height: toPx(2),
-            background: (config: IDevSiteDesignSystem): string => config.brandColor
-        }
+        background: "#EBEBEB"
     }
 };
 

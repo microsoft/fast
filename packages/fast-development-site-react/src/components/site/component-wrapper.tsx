@@ -21,22 +21,27 @@ export interface IComponentWrapperProps<T> {
     onClick: (activeIndex: number) => void;
 }
 
-const baseStyle: ICSSRules<IDevSiteDesignSystem> = {
-    display: "flex",
-    flexWrap: "wrap",
-    margin: toPx(24),
-    borderTop: `${toPx(1)} solid rgb(226, 226, 226)`,
-    borderLeft: `${toPx(1)} solid rgb(226, 226, 226)`
-};
-
+const componentWrapperBorder: string = `${toPx(1)} solid rgb(226, 226, 226)`;
 const styles: ComponentStyles<IComponentWrapperManagedClasses, IDevSiteDesignSystem> = {
-    componentWrapper: baseStyle,
+    componentWrapper: {
+        display: "block",
+        padding: toPx(24),
+        borderBottom: componentWrapperBorder,
+        "&:last-child:not(:nth-child(3n + 3)), &:nth-child(3n + 1)": {
+            borderRight: componentWrapperBorder,
+        },
+        "&:nth-child(3n + 3)": {
+            borderLeft: componentWrapperBorder
+        },
+    },
     componentWrapper__active: {
-        ...baseStyle,
         position: "relative",
         "&::before": {
             content: "''",
             position: "absolute",
+            top: toPx(0),
+            bottom: toPx(0),
+            left: toPx(0),
             background: (config: IDevSiteDesignSystem): string => {
                 return config.brandColor;
             },
@@ -74,7 +79,7 @@ class ComponentWrapper extends React.Component<IComponentWrapperProps<IDevSiteDe
 
     private getClassNames(): string {
         return this.props.active
-            ? this.props.managedClasses.componentWrapper__active
+            ? `${this.props.managedClasses.componentWrapper} ${this.props.managedClasses.componentWrapper__active}`
             : this.props.managedClasses.componentWrapper;
     }
 

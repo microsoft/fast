@@ -15,7 +15,7 @@ const style: ComponentStyles<IShellActionBarManagedClasses, IDevSiteDesignSystem
         background: (config: IDevSiteDesignSystem): string => {
             return config.backgroundColor;
         },
-        height: toPx(39),
+        height: toPx(40),
         overflow: "hidden",
         borderBottom: `${toPx(1)} solid #CCCCCC`
     }
