@@ -31,6 +31,7 @@ jobs:
           key: v1-dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules   
+            - ./coverage
       - run: 
           name: Test
           command: |
@@ -47,21 +48,22 @@ jobs:
       - run:
           name: Setup Code Climate test-reporter
           command: |
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-            chmod +x ./cc-test-reporter
-            ./cc-test-reporter before-build
+            mkdir -p tmp/
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
+            chmod +x ./tmp/cc-test-reporter
       - run:
           name: Run tests
           command: |
+            ./tmp/cc-test-reporter before-build
             for f in packages/*; do
               if [ -d $f ]; then
                  echo $f
-                ./cc-test-reporter format-coverage -t lcov -o coverage/coverage.${f//\//-}.json $f/coverage/lcov.info
+                ./tmp/cc-test-reporter format-coverage -t lcov -o tmp/coverage.${f//\//-}.json $f/coverage/lcov.info
               fi
             done;
-            ./cc-test-reporter sum-coverage -o coverage/coverage.total.json coverage/coverage.*.json
-            ./cc-test-reporter upload-coverage -i coverage/coverage.total.json
-            ./cc-test-reporter after-build --coverage-input-type clover --exit-code $?
+            ./tmp/cc-test-reporter sum-coverage -o tmp/coverage.total.json tmp/coverage.*.json
+            ./tmp/cc-test-reporter upload-coverage -i tmp/coverage.total.json
+            ./tmp/cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
 workflows:
   version: 2
   build-and-test:
