@@ -4,7 +4,7 @@ export interface IExample {
     name: string;
     component: any;
     schema: JSON;
-    data: any[]
+    data: any[];
 }
 
 export default function componentFactory(examples: IExample): IFormChildOption[] {

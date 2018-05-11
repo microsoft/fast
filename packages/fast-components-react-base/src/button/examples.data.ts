@@ -8,7 +8,7 @@ import * as React from "react";
 const examples: ISnapshotTestSuite<IButtonHandledProps & IButtonManagedClasses> = {
     name: "button",
     component: Button,
-    schema: schema,
+    schema,
     data: [
         {
             managedClasses: {
