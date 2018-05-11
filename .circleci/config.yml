@@ -1,9 +1,14 @@
+# Validate this file using
+# $ circleci config validate -c .circleci/config.yml
+# Reference url: https://circleci.com/blog/circleci-hacks-validate-circleci-config-on-every-commit-with-a-git-hook/
 version: 2
 
 jobs:
   build:
     docker:
       - image: circleci/node:latest
+    environment:
+      CC_TEST_REPORTER_ID=08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
     working_directory: ~/fast-dna
     steps:
       - checkout
@@ -18,7 +23,7 @@ jobs:
             sudo npm i lerna@latest -g
       - restore_cache:
           keys:
-          - v1-dependency-cache-{{ checksum "package.json" }}
+          - ci-cache-{{ checksum "package.json" }}          
       - run:
           name: Install all dependency packages
           command: |
@@ -27,24 +32,15 @@ jobs:
           name: Execute Lerna bootstrap
           command: |
             lerna bootstrap
-      - save_cache:
-          key: v1-dependency-cache-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules   
-            - ./coverage
       - run: 
           name: Test
           command: |
             lerna run test --stream
-
-  "test-coverage":
-    environment:
-      CC_TEST_REPORTER_ID=08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/fast-dna
-    steps:
-      - checkout
+      - save_cache:
+          key: ci-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+            - ./coverage
       - run:
           name: Setup Code Climate test-reporter
           command: |
@@ -63,12 +59,40 @@ jobs:
             done;
             ./tmp/cc-test-reporter sum-coverage -o tmp/coverage.total.json tmp/coverage.*.json
             ./tmp/cc-test-reporter upload-coverage -i tmp/coverage.total.json
-            ./tmp/cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
-workflows:
-  version: 2
-  build-and-test:
-    jobs:
-      - build
-      - "test-coverage":
-          requires:
-            - build
+            #./tmp/cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
+  
+#   "test-coverage":
+#     environment:
+#       CC_TEST_REPORTER_ID=08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
+#     docker:
+#       - image: circleci/node:latest
+#     working_directory: ~/fast-dna
+#     steps:
+#       - checkout
+#       - run:
+#           name: Setup Code Climate test-reporter
+#           command: |
+#             mkdir -p tmp/
+#             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
+#             chmod +x ./tmp/cc-test-reporter
+#       - run:
+#           name: Run tests
+#           command: |
+#             ./tmp/cc-test-reporter before-build
+#             for f in packages/*; do
+#               if [ -d $f ]; then
+#                  echo $f
+#                 ./tmp/cc-test-reporter format-coverage -t lcov -o tmp/coverage.${f//\//-}.json $f/coverage/lcov.info
+#               fi
+#             done;
+#             ./tmp/cc-test-reporter sum-coverage -o tmp/coverage.total.json tmp/coverage.*.json
+#             ./tmp/cc-test-reporter upload-coverage -i tmp/coverage.total.json
+#             ./tmp/cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
+# workflows:
+#   version: 2
+#   build-and-test:
+#     jobs:
+#       - build
+#       - "test-coverage":
+#           requires:
+#             - build
