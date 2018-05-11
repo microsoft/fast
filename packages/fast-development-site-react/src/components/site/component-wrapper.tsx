@@ -21,7 +21,7 @@ export interface IComponentWrapperProps<T> {
     onClick: (activeIndex: number) => void;
 }
 
-const componentWrapperBorder = `${toPx(1)} solid rgb(226, 226, 226)`;
+const componentWrapperBorder: string = `${toPx(1)} solid rgb(226, 226, 226)`;
 const styles: ComponentStyles<IComponentWrapperManagedClasses, IDevSiteDesignSystem> = {
     componentWrapper: {
         display: "block",
