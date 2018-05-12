@@ -233,14 +233,19 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
 
         // we have nothing to add or delete
         if (items.length === 0) {
-            return [
-                (<li key={0}><span>No actions available</span></li>)
+            return [(
+                <li
+                    key={0}
+                    className={this.props.managedClasses.formItemChildren_optionMenu__listItem}
+                >
+                    <span>No actions available</span>
+                </li>)
             ];
         }
 
         return items.map((item: any, index: number) => {
             return (
-                <li key={uniqueId()}>
+                <li key={uniqueId()} className={this.props.managedClasses.formItemChildren_optionMenu__listItem}>
                     <button onClick={this.clickComponentFactory("delete", void(0), index)}>
                         {item}
                     </button>

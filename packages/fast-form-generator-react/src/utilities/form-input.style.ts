@@ -70,7 +70,7 @@ export function applyListItemStyle(): ICSSRules<{}> {
             alignItems: "center",
             position: "relative",
             cursor: "pointer",
-            "&:after": {
+            "&::after": {
                 position: "absolute",
                 content: "''",
                 opacity: ".6",
@@ -121,6 +121,7 @@ export function applyPopupMenuStyles(): ICSSRules<{}> {
         background: colors.menuGray,
         zIndex: "1",
         top: toPx(55),
+        boxShadow: `${toPx(0)} ${toPx(1)} ${toPx(0)} ${toPx(0)} ${colors.border}`,
         "& li": {
             "& > button": {
                 cursor: "pointer",
@@ -132,18 +133,6 @@ export function applyPopupMenuStyles(): ICSSRules<{}> {
                 textAlign: "left",
                 width: "100%",
                 ...ellipsis(),
-                "&:before": {
-                    position: "absolute",
-                    content: "''",
-                    opacity: ".6",
-                    pointerEvents: "none",
-                    top: toPx(12),
-                    width: toPx(16),
-                    height: toPx(16),
-                    left: toPx(12),
-                    /* tslint:disable-next-line */
-                    background: "url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNSAyNSI+PGRlZnM+PHN0eWxlPi5jbHMtMXtpc29sYXRpb246aXNvbGF0ZTtmb250LXNpemU6MjVweDtmb250LWZhbWlseTpNV0ZNREwyQXNzZXRzLCBNV0YgTURMMiBBc3NldHM7fTwvc3R5bGU+PC9kZWZzPjx0aXRsZT50cnNzc3NBc3NldCAyPC90aXRsZT48ZyBpZD0iTGF5ZXJfMiIgZGF0YS1uYW1lPSJMYXllciAyIj48ZyBpZD0iTGF5ZXJfMS0yIiBkYXRhLW5hbWU9IkxheWVyIDEiPjx0ZXh0IGNsYXNzPSJjbHMtMSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAyNSkiPu6djTwvdGV4dD48L2c+PC9nPjwvc3ZnPg==) center no-repeat"
-                },
                 "&:focus": {
                     outline: "none"
                 },
@@ -230,7 +219,7 @@ export function applySelectSpanStyles(): ICSSRules<{}> {
     return {
         position: "relative",
         display: "flex",
-        "&:before, &:after": {
+        "&::before, &::after": {
             content: "''",
             position: "absolute",
             top: toPx(12),
@@ -240,11 +229,11 @@ export function applySelectSpanStyles(): ICSSRules<{}> {
             height: toPx(10),
             background: colors.black
         },
-        "&:before": {
+        "&::before": {
             right: toPx(15),
             transform: "rotate(45deg)"
         },
-        "&:after": {
+        "&::after": {
             right: toPx(22),
             transform: "rotate(-45deg)"
         }

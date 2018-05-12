@@ -88,7 +88,7 @@ class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasse
                 <div>
                     <h3>{this.getLabelText()}</h3>
                     <button onClick={this.toggleMenu} aria-expanded={!this.state.hideOptionMenu}>Options</button>
-                    <ul aria-hidden={this.state.hideOptionMenu} className={this.props.managedClasses.formItemArray_menu}>
+                    <ul aria-hidden={this.state.hideOptionMenu} className={this.props.managedClasses.formItemArray_actionMenu}>
                         {this.renderArrayMenuItems()}
                     </ul>
                 </div>
@@ -294,8 +294,8 @@ class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasse
 
         return items.map((item: any, index: number) => {
             const className: string = item.type === ArrayAction.remove
-                ? this.props.managedClasses.formItemArray_linkMenuItem__remove
-                : this.props.managedClasses.formItemArray_linkMenuItem__add;
+                ? this.props.managedClasses.formItemArray_actionMenuItem__remove
+                : this.props.managedClasses.formItemArray_actionMenuItem__add;
 
             return (
                 <li key={index}>

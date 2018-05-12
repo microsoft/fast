@@ -1,13 +1,13 @@
 import * as React from "react";
 
-export enum alignVerticalEnum {
+export enum AlignVerticalPositions {
     top = "top",
     bottom = "bottom",
     center = "center"
 }
 
 export interface IAlignVerticalProps {
-    alignVertical: alignVerticalEnum;
+    alignVertical: AlignVerticalPositions;
 }
 
 /**

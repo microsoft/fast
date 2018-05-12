@@ -30,7 +30,7 @@ const styles: ComponentStyles<IFormItemCheckboxClassNameContract, {}> = {
             right: "0",
             width: toPx(20),
             height: toPx(20),
-            "&:after, &:before": {
+            "&::after, &::before": {
                 position: "absolute",
                 display: "block",
                 content: "''",
@@ -40,13 +40,13 @@ const styles: ComponentStyles<IFormItemCheckboxClassNameContract, {}> = {
         },
         "&:checked": {
             "& + span": {
-                "&:before": {
+                "&::before": {
                     height: toPx(5),
                     left: toPx(6),
                     top: toPx(10),
                     transform: "rotate(-45deg)"
                 },
-                "&:after": {
+                "&::after": {
                     height: toPx(12),
                     left: toPx(12),
                     top: toPx(4),

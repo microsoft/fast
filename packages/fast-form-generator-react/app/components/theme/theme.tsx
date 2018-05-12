@@ -1,12 +1,12 @@
 import * as React from "react";
 
-export enum themeEnum {
+export enum Themes {
     light = "light",
     dark = "dark"
 }
 
 export interface IThemeProps {
-    theme: themeEnum;
+    theme: Themes;
 }
 
 /**

@@ -3,7 +3,7 @@ import Array, { IArrayProps } from "../arrays/arrays";
 import Objects, { IObjectsProps } from "../objects/objects";
 import Theme, { IThemeProps } from "../theme/theme";
 
-export enum tagEnum {
+export enum GeneralExampleTags {
     button = "button",
     span = "span"
 }
@@ -13,7 +13,7 @@ export interface IGeneralExampleProps {
     alignVertical: string;
     level: number;
     level2: number;
-    tag: tagEnum;
+    tag: GeneralExampleTags;
     title: string;
     details: string;
     text: string;

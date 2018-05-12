@@ -22,24 +22,22 @@ const styles: ComponentStyles<IFormItemArrayClassNameContract, {}> = {
             background: "transparent",
             border: "none",
             padding: `${toPx(4)}`,
-            color: colors.blue,
             "&:focus": {
                 outline: "none"
             }
         }
     },
-    formItemArray_menu: {
+    formItemArray_actionMenu: {
         ...applyCleanListStyle(),
         ...applyAriaHiddenStyles(),
         ...applyPopupMenuStyles(),
-        "& li": {
-            "& $formItemArray_linkMenuItem__add, & $formItemArray_linkMenuItem__remove": {
+        "& $formItemArray_actionMenuItem__add, & $formItemArray_actionMenuItem__remove": {
                 ...localizePadding(12, 12, 12, 36),
                 width: "100%",
                 ...ellipsis(),
                 textAlign: "left",
                 color: colors.black,
-                "&:before": {
+                "&::before": {
                     position: "absolute",
                     content: "''",
                     opacity: ".6",
@@ -52,26 +50,22 @@ const styles: ComponentStyles<IFormItemArrayClassNameContract, {}> = {
                     backgroundColor: colors.grayBackground
                 }
             }
-        }
     },
-    formItemArray_linkMenu: {
-        ...applyCleanListStyle(),
-        ...applyListItemStyle(),
-        "& li button": {
-            color: colors.black
-        }
-    },
-    formItemArray_linkMenuItem__add: {
-        "&:before": {
+    formItemArray_actionMenuItem__add: {
+        "&::before": {
              /* tslint:disable-next-line */
             background: "url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNSAyNSI+PGRlZnM+PHN0eWxlPi5jbHMtMXtmb250LXNpemU6MjVweDtmb250LWZhbWlseTpNV0ZNREwyQXNzZXRzLCBNV0YgTURMMiBBc3NldHM7fTwvc3R5bGU+PC9kZWZzPjx0aXRsZT5Bc3NldCAyPC90aXRsZT48ZyBpZD0iTGF5ZXJfMiIgZGF0YS1uYW1lPSJMYXllciAyIj48ZyBpZD0iTGF5ZXJfMS0yIiBkYXRhLW5hbWU9IkxheWVyIDEiPjx0ZXh0IGNsYXNzPSJjbHMtMSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAyNSkiPu6ckDwvdGV4dD48L2c+PC9nPjwvc3ZnPg==) center no-repeat"
         }
     },
-    formItemArray_linkMenuItem__remove: {
-        "&:before": {
+    formItemArray_actionMenuItem__remove: {
+        "&::before": {
             /* tslint:disable-next-line */
             background: "url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNSAyNSI+PGRlZnM+PHN0eWxlPi5jbHMtMXtmb250LXNpemU6MjVweDtmb250LWZhbWlseTpNV0ZNREwyQXNzZXRzLCBNV0YgTURMMiBBc3NldHM7fTwvc3R5bGU+PC9kZWZzPjx0aXRsZT5Bc3NldCAxPC90aXRsZT48ZyBpZD0iTGF5ZXJfMiIgZGF0YS1uYW1lPSJMYXllciAyIj48ZyBpZD0iTGF5ZXJfMS0yIiBkYXRhLW5hbWU9IkxheWVyIDEiPjx0ZXh0IGNsYXNzPSJjbHMtMSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAyNSkiPu6cuDwvdGV4dD48L2c+PC9nPjwvc3ZnPg==) center no-repeat"
         }
+    },
+    formItemArray_linkMenu: {
+        ...applyCleanListStyle(),
+        ...applyListItemStyle()
     }
 };
 
