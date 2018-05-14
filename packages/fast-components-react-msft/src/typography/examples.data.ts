@@ -1,14 +1,15 @@
-import { ICategoryItemProps } from "@microsoft/fast-development-site-react";
 import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import Typography from "./index";
 import { ITypographyHandledProps, ITypographyManagedClasses, TypeLevel, TypographyTag } from "@microsoft/fast-components-react-base";
+import * as schema from "@microsoft/fast-components-react-base/dist/typography/typography.schema.json";
 
 const testString: string = "Typography example string";
 
 export default {
     name: "typography",
     component: Typography,
+    schema: schema as any,
     data: [
         {
             children: testString

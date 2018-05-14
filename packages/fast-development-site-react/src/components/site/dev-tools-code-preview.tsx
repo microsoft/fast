@@ -18,6 +18,15 @@ export interface IReactChildren {
     component?: any;
 }
 
+export interface IReactComponentConfig {
+    hasChildren: boolean;
+    componentName: string;
+    componentData: any;
+    tab: string;
+    newTab: string;
+    location: string;
+}
+
 export default class CodePreview extends React.Component<ICodePreviewProps, {}> {
 
     private variables: string;
@@ -55,14 +64,37 @@ export default class CodePreview extends React.Component<ICodePreviewProps, {}> 
 
         renderedComponent += `\n${tab}<${componentName}`;
         renderedComponent += this.generateReactAttributes(componentData, newTab, location);
-
-        if (hasChildren) {
-            renderedComponent += this.generateReactChildren(componentName, componentData, tab, newTab, location);
-        } else {
-            renderedComponent += `${this.hasOnlyChildrenOrNoProps(Object.keys(componentData), componentData) ? " " : tab}/>`;
-        }
+        renderedComponent += this.generateReactComponent({
+            hasChildren,
+            componentName,
+            componentData,
+            tab,
+            newTab,
+            location
+        });
 
         return renderedComponent;
+    }
+
+    /**
+     * Generate the syntax for the react component code preview
+     */
+    private generateReactComponent(componentConfig: IReactComponentConfig): string {
+        if (componentConfig.hasChildren) {
+            return this.generateReactChildren(
+                componentConfig.componentName,
+                componentConfig.componentData,
+                componentConfig.tab,
+                componentConfig.newTab,
+                componentConfig.location
+            );
+        }
+
+        return isObject(componentConfig.componentData)
+            ? `${this.hasOnlyChildrenOrNoProps(Object.keys(componentConfig.componentData), componentConfig.componentData)
+                    ? " "
+                    : componentConfig.tab}/>`
+            : ` />`;
     }
 
     /**

@@ -1,4 +1,3 @@
-import { ICategoryItemProps } from "@microsoft/fast-development-site-react";
 import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import Typography, {
@@ -8,6 +7,7 @@ import Typography, {
     TypeLevel,
     TypographyTag
 } from "./typography";
+import * as schema from "./typography.schema.json";
 import * as React from "react";
 
 const testString: string = "Test string";
@@ -26,6 +26,7 @@ const managedClassExamples: any = {
 const examples: ISnapshotTestSuite<ITypographyHandledProps & ITypographyManagedClasses> = {
     name: "typography",
     component: Typography,
+    schema: schema as any,
     data: [
         {
             managedClasses: managedClassExamples,

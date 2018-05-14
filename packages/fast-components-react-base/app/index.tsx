@@ -2,6 +2,8 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Site, {
     componentFactory,
+    formChildFromExamplesFactory,
+    IFormChildOption,
     ISiteProps,
     SiteCategory,
     SiteCategoryIcon,
@@ -16,10 +18,12 @@ const root: HTMLElement = document.createElement("div");
 root.setAttribute("id", "root");
 document.body.appendChild(root);
 
+const formChildOptions: IFormChildOption[] = formChildFromExamplesFactory(examples);
+
 /* tslint:disable */
 function render(): void {
     ReactDOM.render(
-        <Site title={"FAST components base"}>
+        <Site title={"FAST components base"} formChildOptions={formChildOptions}>
             <SiteCategory slot={"category"} name={"Components"}>
                 {componentFactory(examples)}
             </SiteCategory>

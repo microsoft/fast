@@ -1,0 +1,34 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Checkbox",
+    "description": "A checkbox component's schema definition.",
+    "type": "object",
+    "id": "checkbox",
+    "properties": {
+        "tag": {
+            "title": "HTML tag",
+            "type": "string",
+            "enum": [
+                "div",
+                "label"
+            ],
+            "default": "label"
+        },
+        "checked": {
+            "title": "Checked",
+            "type": "boolean"
+        },
+        "disabled": {
+            "title": "Disabled",
+            "type": "boolean"
+        },
+        "indeterminate": {
+            "title": "Indeterminate",
+            "type": "boolean"
+        },
+        "text": {
+            "title": "Text",
+            "type": "string"
+        }
+    }
+}

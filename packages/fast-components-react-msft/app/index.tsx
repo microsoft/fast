@@ -5,6 +5,8 @@ import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import { DesignSystemDefaults } from "@microsoft/fast-components-styles-msft";
 import Site, {
     componentFactory,
+    formChildFromExamplesFactory,
+    IFormChildOption,
     ISiteProps,
     SiteCategory,
     SiteCategoryIcon,
@@ -19,12 +21,14 @@ const root: HTMLElement = document.createElement("div");
 root.setAttribute("id", "root");
 document.body.appendChild(root);
 
+const formChildOptions: IFormChildOption[] = formChildFromExamplesFactory(examples);
+
 /* tslint:disable */
 function render(): void {
     ReactDOM.render(
         <div>
             <DesignSystemProvider designSystem={DesignSystemDefaults}>
-                <Site title={"FAST Microsoft components"}>
+                <Site title={"FAST Microsoft components"} formChildOptions={formChildOptions}>
                     <SiteCategory slot={"category"} name={"Building blocks"}>
                         <SiteCategoryIcon slot="category-icon">
                             <div dangerouslySetInnerHTML={{__html: glyphBuildingblocks}} />

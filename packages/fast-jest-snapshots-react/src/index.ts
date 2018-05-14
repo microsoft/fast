@@ -11,6 +11,11 @@ export interface ISnapshotTestSuite<T> {
     name: string;
 
     /**
+     * The JSON schema for the components data
+     */
+    schema: any;
+
+    /**
      * The component constructor
      */
     component: React.ComponentClass<T>;
