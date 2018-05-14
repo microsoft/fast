@@ -13,7 +13,7 @@ export interface ISnapshotTestSuite<T> {
     /**
      * The JSON schema for the components data
      */
-    schema: JSON;
+    schema: any;
 
     /**
      * The component constructor

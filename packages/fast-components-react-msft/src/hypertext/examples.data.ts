@@ -1,4 +1,3 @@
-import { ICategoryItemProps } from "@microsoft/fast-development-site-react";
 import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import Hypertext from "./index";
@@ -9,7 +8,7 @@ import * as React from "react";
 export default {
     name: "hypertext",
     component: Hypertext,
-    schema,
+    schema: schema as any,
     data: [
         {
             href: "https://msdn.microsoft.com",

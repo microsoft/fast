@@ -30,7 +30,7 @@ export interface ISiteProps {
 
 export interface IFormChildOption {
     component: any;
-    schema: JSON;
+    schema: any;
     name: string;
 }
 

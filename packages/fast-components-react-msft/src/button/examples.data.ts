@@ -1,5 +1,4 @@
 import * as React from "react";
-import { ICategoryItemProps } from "@microsoft/fast-development-site-react";
 import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import Button from "./index";
@@ -15,7 +14,7 @@ import * as schema from "./button.schema.json";
 export default {
     name: "button",
     component: Button,
-    schema,
+    schema: schema as any,
     data: [
         {
             children: "Default button"

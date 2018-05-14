@@ -3,7 +3,7 @@ import { IFormChildOption } from "../components/";
 export interface IExample {
     name: string;
     component: any;
-    schema: JSON;
+    schema: any;
     data: any[];
 }
 

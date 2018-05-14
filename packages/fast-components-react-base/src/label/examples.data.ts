@@ -1,4 +1,3 @@
-import { ICategoryItemProps } from "@microsoft/fast-development-site-react";
 import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import Label, {
@@ -12,7 +11,7 @@ import * as schema from "./label.schema.json";
 const examples: ISnapshotTestSuite<ILabelHandledProps & ILabelMangedClasses> = {
     name: "label",
     component: Label,
-    schema,
+    schema: schema as any,
     data: [
         {
             managedClasses: {

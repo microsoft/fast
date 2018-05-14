@@ -1,4 +1,3 @@
-import { ICategoryItemProps } from "@microsoft/fast-development-site-react";
 import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import Divider from "./index";
@@ -8,7 +7,7 @@ import * as schema from "@microsoft/fast-components-react-base/dist/divider/divi
 export default {
     name: "divider",
     component: Divider,
-    schema,
+    schema: schema as any,
     data: [
         {
             role: void 0
