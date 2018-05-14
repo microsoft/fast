@@ -6,8 +6,8 @@ export const colors: any = {
     white: "#FFF",
     pink: "#FB356D",
     blue: "#0078D4",
-    lightBlue: "#0075CF",
-    darkBlue: "#005EA6",
+    lightPink: "rgb(251,53,109)",
+    darkPink: "rgb(194, 0, 67)",
     gray: "#8A8A8A",
     grayBackground: "rgba(0, 0, 0, 0.04)",
     boxShadow: "rgba(0, 0, 0, 0.08)",
@@ -161,7 +161,7 @@ export function applyPopupHeadingStyles(): ICSSRules<{}> {
                     background: "none",
                     border: "none",
                     padding: `${toPx(2)} ${toPx(12)}`,
-                    color: colors.blue,
+                    color: colors.pink,
                     "&:focus": {
                         outline: "none"
                     },

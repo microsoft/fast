@@ -40,13 +40,13 @@ const styles: ComponentStyles<IFormItemChildrenClassNameContract, {}> = {
             verticalAlign: "bottom",
             transition: "all 0.2s ease-in-out",
             color: colors.white,
-            background: colors.blue,
+            background: colors.pink,
             "&:hover": {
-                background: colors.lightBlue
+                background: colors.lightPink
             },
             "&:focus": {
                 outline: "none",
-                background: colors.darkBlue
+                background: colors.darkPink
             }
         }
     },
@@ -55,7 +55,7 @@ const styles: ComponentStyles<IFormItemChildrenClassNameContract, {}> = {
         "& li": {
             padding: `${toPx(4)} 0`,
             "& a": {
-                color: colors.blue,
+                color: colors.pink,
                 textDecoration: "underline"
             }
         }

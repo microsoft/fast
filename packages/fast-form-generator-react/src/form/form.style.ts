@@ -22,7 +22,7 @@ const styles: ComponentStyles<IFormClassNameContract, {}> = {
                 paddingLeft: "0"
             },
             "& a": {
-                color: colors.blue
+                color: colors.pink
             }
         }
     }
