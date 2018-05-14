@@ -1,12 +1,12 @@
 import * as React from "react";
 
-export enum alignHorizontalEnum {
+export enum AlignHorizontalPositions {
     left = "left",
     right = "right"
 }
 
 export interface IAlignHorizontalProps {
-    alignHorizontal: alignHorizontalEnum;
+    alignHorizontal: AlignHorizontalPositions;
 }
 
 /**

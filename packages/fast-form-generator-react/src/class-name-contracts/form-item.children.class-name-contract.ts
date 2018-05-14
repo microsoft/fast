@@ -8,4 +8,5 @@ export default interface IFormItemChildrenClassNameContract {
     formItemChildren_existingChildren: string;
     formItemChildren_addedChildren: string;
     formItemChildren_optionMenu: string;
+    formItemChildren_optionMenu__listItem: string;
 }

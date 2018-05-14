@@ -19,16 +19,16 @@ exports[`checkbox checkbox: 0 1`] = `
               htmlFor="toggle"
             >
               Checkbox
-              <input
-                checked={true}
-                className="formItemCheckbox_input-0-1-12"
-                id="toggle"
-                onChange={[Function]}
-                type="checkbox"
-                value="true"
-              />
-              <span />
             </label>
+            <input
+              checked={true}
+              className="formItemCheckbox_input-0-1-12"
+              id="toggle"
+              onChange={[Function]}
+              type="checkbox"
+              value="true"
+            />
+            <span />
           </div>
         </div>
       </div>

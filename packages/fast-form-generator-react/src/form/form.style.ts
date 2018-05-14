@@ -13,11 +13,11 @@ const styles: ComponentStyles<IFormClassNameContract, {}> = {
         "& li": {
             display: "inline-block",
             paddingRight: toPx(8),
-            "&:after": {
+            "&::after": {
                 content: "'/'",
                 paddingLeft: toPx(8)
             },
-            "&:last-child:after": {
+            "&:last-child::after": {
                 content: "''",
                 paddingLeft: "0"
             },

@@ -88,7 +88,7 @@ class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasse
                 <div>
                     <h3>{this.getLabelText()}</h3>
                     <button onClick={this.toggleMenu} aria-expanded={!this.state.hideOptionMenu}>Options</button>
-                    <ul aria-hidden={this.state.hideOptionMenu} className={this.props.managedClasses.formItemArray_menu}>
+                    <ul aria-hidden={this.state.hideOptionMenu} className={this.props.managedClasses.formItemArray_actionMenu}>
                         {this.renderArrayMenuItems()}
                     </ul>
                 </div>
@@ -112,6 +112,10 @@ class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasse
     ): (e: React.MouseEvent<HTMLElement>) => void {
         return (e: React.MouseEvent<HTMLElement>): void => {
             e.preventDefault();
+
+            if (!this.state.hideOptionMenu) {
+                this.toggleMenu();
+            }
 
             type === ArrayAction.add ? this.handleAddArrayItem(dataLocation, schema) : this.handleRemoveArrayItem(dataLocation, index);
         };
@@ -289,12 +293,17 @@ class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasse
         }
 
         return items.map((item: any, index: number) => {
+            const className: string = item.type === ArrayAction.remove
+                ? this.props.managedClasses.formItemArray_actionMenuItem__remove
+                : this.props.managedClasses.formItemArray_actionMenuItem__add;
+
             return (
                 <li key={index}>
                     <button
+                        className={className}
                         onClick={item.onClick}
                     >
-                        {item.type === ArrayAction.remove ? "-" : "+"} {item.text}
+                        {item.text}
                     </button>
                 </li>
             );

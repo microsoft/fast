@@ -1,12 +1,12 @@
 import * as React from "react";
 
-export enum tagEnum {
+export enum TextFieldTags {
     button = "button",
     span = "span"
 }
 
 export interface ITextFieldProps {
-    tag: tagEnum;
+    tag: TextFieldTags;
     text: string;
 }
 

@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export enum levelEnum {
+export enum Levels {
     _1 = 1,
     _2 = 2,
     _3 = 3,
@@ -8,7 +8,7 @@ export enum levelEnum {
 }
 
 export interface INumberFieldProps {
-    level: levelEnum;
+    level: Levels;
     quantity: number;
 }
 

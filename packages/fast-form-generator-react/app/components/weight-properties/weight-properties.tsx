@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export enum tagEnum {
+export enum WeightPropertiesTags {
     button = "button",
     span = "span"
 }
@@ -9,7 +9,7 @@ export interface IWeightPropertiesProps {
     alignHorizontal: string;
     alignVertical: string;
     level: number;
-    tag: tagEnum;
+    tag: WeightPropertiesTags;
     title: string;
     details: string;
     text: string;
