@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-components-class-name-contracts-base",
   "description": "Type descriptions for the classnames that any given component can expect as props.",
-  "version": "1.2.0",
+  "version": "1.4.0",
   "author": {
     "name": "Microsoft",
     "email": "fwq@microsoft.com"
@@ -21,7 +21,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@microsoft/fast-tslint-rules": "^1.2.0",
+    "@microsoft/fast-tslint-rules": "^1.4.0",
     "tslint": "^5.9.1",
     "typescript": "^2.7.2"
   }

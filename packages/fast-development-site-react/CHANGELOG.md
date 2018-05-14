@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.4.0"></a>
+# [1.4.0](https://github.com/Microsoft/fast-dna/compare/v1.2.0...v1.4.0) (2018-05-14)
+
+
+### Bug Fixes
+
+* **development-site:** update styling ([#416](https://github.com/Microsoft/fast-dna/issues/416)) ([97ac11a](https://github.com/Microsoft/fast-dna/commit/97ac11a))
+* **jss:** fix errors caused by un-linked JSS rules ([#409](https://github.com/Microsoft/fast-dna/issues/409)) ([c9c4a9c](https://github.com/Microsoft/fast-dna/commit/c9c4a9c))
+
+
+### Features
+
+* **code-preview:** add react code preview ([#399](https://github.com/Microsoft/fast-dna/issues/399)) ([fee05e7](https://github.com/Microsoft/fast-dna/commit/fee05e7))
+* **form generator:** updates styles found in configuration pane ([#420](https://github.com/Microsoft/fast-dna/issues/420)) ([919121b](https://github.com/Microsoft/fast-dna/commit/919121b))
+
+
+
+
 <a name="1.3.0"></a>
 # [1.3.0](https://github.com/Microsoft/fast-dna/compare/v1.2.0...v1.3.0) (2018-05-11)
 

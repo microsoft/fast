@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.4.0"></a>
+# [1.4.0](https://github.com/Microsoft/fast-dna/compare/v1.2.0...v1.4.0) (2018-05-14)
+
+
+### Features
+
+* **form generator:** add SVGs, additional JSS, and general examples ([#418](https://github.com/Microsoft/fast-dna/issues/418)) ([86f36df](https://github.com/Microsoft/fast-dna/commit/86f36df))
+* **form generator:** updates styles found in configuration pane ([#420](https://github.com/Microsoft/fast-dna/issues/420)) ([919121b](https://github.com/Microsoft/fast-dna/commit/919121b))
+
+
+
+
 <a name="1.2.0"></a>
 # 1.2.0 (2018-05-10)
 

@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-browser-extensions",
   "description": "An extension for testing real-world localization, theming, and other production type scenarios in web development.",
-  "version": "1.2.0",
+  "version": "1.4.0",
   "author": {
     "name": "Microsoft",
     "email": "fwq@microsoft.com"
@@ -23,7 +23,7 @@
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts'"
   },
   "devDependencies": {
-    "@microsoft/fast-tslint-rules": "^1.2.0",
+    "@microsoft/fast-tslint-rules": "^1.4.0",
     "@types/chrome": "0.0.56",
     "@types/node": "^8.5.1",
     "copy-webpack-plugin": "^4.5.1",
