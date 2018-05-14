@@ -27,7 +27,8 @@ const style: ComponentStyles<IShellPaneManagedClasses, IDevSiteDesignSystem> = {
         width: toPx(40),
     },
     shellPane__expanded: {
-        width: toPx(300)
+        width: toPx(300),
+        padding: toPx(12)
     },
     shellPane__hidden: {
         display: "none"

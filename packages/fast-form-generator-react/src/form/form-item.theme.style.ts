@@ -13,7 +13,7 @@ function applyThemeInputBackplateStyle(): ICSSRules<{}> {
             outline: "none",
         },
         "&:checked": {
-            borderColor: colors.blue
+            borderColor: colors.pink
         }
     };
 }

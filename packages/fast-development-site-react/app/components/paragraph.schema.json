@@ -6,7 +6,7 @@
     "id": "paragraph",
     "properties": {
         "text": {
-            "title": "text",
+            "title": "Text",
             "type": "string",
             "example": "Submit"
         }

@@ -13,7 +13,12 @@ import { IFormSectionClassNameContract } from "../class-name-contracts/";
 
 const styles: ComponentStyles<IFormSectionClassNameContract, {}> = {
     formSection: {
-        display: "block"
+        display: "block",
+        "& h3": {
+            borderBottom: `${toPx(1)} solid ${colors.border}`,
+            paddingBottom: toPx(12),
+            marginBottom: "0"
+        }
     },
     formSection_menu: {
         ...applyCleanListStyle(),
@@ -24,7 +29,7 @@ const styles: ComponentStyles<IFormSectionClassNameContract, {}> = {
         alignItems: "baseline",
         "& label": {
             flexGrow: "1",
-            padding: toPx(12)
+            padding: `${toPx(12)} 0`
         }
     },
     formSection_toggle: {

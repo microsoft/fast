@@ -7,15 +7,16 @@
     "children": true,
     "properties": {
         "text": {
-            "title": "text",
+            "title": "Text",
             "type": "string",
             "example": "Submit"
         },
         "object": {
-            "title": "object",
+            "title": "Object",
             "type": "object",
             "properties": {
                 "bool": {
+                    "title": "Primary",
                     "type": "boolean"
                 }
             }
