@@ -7,7 +7,11 @@ export interface IExample {
     data: any[];
 }
 
-export default function componentFactory(examples: IExample): IFormChildOption[] {
+export interface IExampleObj {
+    [key: string]: IExample;
+}
+
+export default function formChildFromExamplesFactory(examples: IExampleObj): IFormChildOption[] {
     return Object.keys(examples).map((key: string) => {
         return {
             name: examples[key].name,
