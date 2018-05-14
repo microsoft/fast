@@ -27,7 +27,6 @@ const styles: ComponentStyles<IFormItemChildrenClassNameContract, {}> = {
         "& button": {
             fontSize: toPx(15),
             maxWidth: toPx(374),
-            minWidth: toPx(120),
             flex: "1",
             display: "inline-block",
             padding: `${toPx(13)} ${toPx(12)} ${toPx(12)}`,

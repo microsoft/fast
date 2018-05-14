@@ -80,17 +80,17 @@ export function applyListItemStyle(): ICSSRules<{}> {
                 height: toPx(16),
                 /* tslint:disable-next-line */
                 background: "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNyIgaGVpZ2h0PSIxMSIgdmlld0JveD0iMCAwIDcgMTEiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+PGcgaWQ9IkNhbnZhcyIgZmlsbD0ibm9uZSI+PGcgaWQ9IiYjMjM4OyYjMTI4OyYjMTQ1OyI+PHBhdGggZD0iTSA1LjUgNy40MjI4NUwgMTAuNDE0NiAyLjUwODNMIDEwLjg5NzkgMi45OTE3TCA1LjUgOC4zODk2NUwgMC4xMDIwNTEgMi45OTE3TCAwLjU4NTQ0OSAyLjUwODNMIDUuNSA3LjQyMjg1WiIgdHJhbnNmb3JtPSJtYXRyaXgoMCAtMSAxIDAgLTIgMTEpIiBmaWxsPSJibGFjayIvPjwvZz48L2c+PC9zdmc+) center no-repeat",
-                right: toPx(14),
+                right: "0",
             },
             "& button": {
                 width: "100%",
                 textAlign: "left",
-                ...localizePadding(12, 30, 12, 12)
+                ...localizePadding(12, 18, 12, 1)
             },
             "& a": {
                 textAlign: "left",
                 display: "block",
-                ...localizePadding(12, 30, 12, 12),
+                ...localizePadding(12, 18, 12, 1),
                 "& span": {
                     display: "block",
                     fontStyle: "italic",
