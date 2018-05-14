@@ -16,6 +16,7 @@
             "type": "object",
             "properties": {
                 "bool": {
+                    "title": "Primary",
                     "type": "boolean"
                 }
             }
