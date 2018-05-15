@@ -65,7 +65,7 @@ jobs:
             - ./node_modules
             - ./coverage
             - ./tmp/cc-test-reporter
-
+# // TODO #428: Reconfigure to support workflows to improve performmance
 #   "test-coverage":
 #     environment:
 #       CC_TEST_REPORTER_ID=08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
