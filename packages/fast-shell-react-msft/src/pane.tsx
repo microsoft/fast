@@ -1,7 +1,7 @@
 import * as React from "react";
 import { throttle } from "lodash";
-import { IPaneProps } from "./Pane.props";
-import { west } from "./Row";
+import { IPaneProps } from "./pane.props";
+import { west } from "./row";
 import rafThrottle from "raf-throttle";
 import { toPx } from "./utilities";
 

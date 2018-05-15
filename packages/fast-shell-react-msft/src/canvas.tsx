@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ICanvasProps } from "./Canvas.props";
+import { ICanvasProps } from "./canvas.props";
 
 /**
  * Grid Canvas - this is the main content area of the grid.
@@ -26,7 +26,7 @@ class Canvas extends React.Component<ICanvasProps, undefined> {
     /**
      * Render the Canvas
      */
-    public render() {
+    public render(): React.ReactElement<HTMLDivElement> {
         return (
             <div
                 // TODO: {...this.unhandledProps()}

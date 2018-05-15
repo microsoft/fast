@@ -1,5 +1,5 @@
 import * as React from "react";
-import Pane from "./Pane";
+import Pane from "./pane";
 
 export interface IPaneProps {
     /**

@@ -1,7 +1,7 @@
 import * as React from "react";
-import Pane from "./Pane";
-import Canvas from "./Canvas";
-import { IRowProps } from "./Row.props";
+import Pane from "./pane";
+import Canvas from "./canvas";
+import { IRowProps } from "./row.props";
 
 export const east: string  = "east";
 export const west: string = "west";

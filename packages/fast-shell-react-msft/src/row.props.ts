@@ -1,5 +1,5 @@
-import Row from "./Row";
-import Canvas from "./Canvas";
+import Row from "./row";
+import Canvas from "./canvas";
 
 /**
  * Possible justify options: 'center' | 'start' | 'end' | 'space-around' | 'space-between'
