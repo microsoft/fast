@@ -69,7 +69,7 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
 
     public render(): JSX.Element {
         return (
-            <div>
+            <div className={this.props.className || null}>
                 <form onSubmit={this.handleSubmit}>
                     <h2>{this.state.titleProps}</h2>
                     {this.generateBreadcrumbs()}
