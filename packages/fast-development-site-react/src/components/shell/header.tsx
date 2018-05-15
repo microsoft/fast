@@ -20,7 +20,7 @@ const style: ComponentStyles<IShellHeaderManagedClasses, IDevSiteDesignSystem> =
         },
         textAlign: "left",
         padding: toPx(3),
-        minHeight: "calc(40px - 6px)",
+        minHeight: toPx(34),
         overflow: "hidden"
     }
 };
