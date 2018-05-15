@@ -124,8 +124,8 @@ class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasse
     /**
      * Array section link click handler factory
      */
-    private arrayClickHandlerFactory = (item: any, index: number): (e: React.MouseEvent<HTMLButtonElement>) => void => {
-        return (e: React.MouseEvent<HTMLButtonElement>): void => {
+    private arrayClickHandlerFactory = (item: any, index: number): (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => void => {
+        return (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>): void => {
             e.preventDefault();
 
             const oneOfAnyOfRegex: RegExp = /(oneOf|anyOf)\[\d+\]/;
@@ -184,9 +184,9 @@ class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasse
     private generateArrayLinkItem = (value: any, index: number): JSX.Element => {
         return (
             <SortableListItem key={`item-${index}`} id={index.toString()}>
-                <button onClick={this.arrayClickHandlerFactory(value, index)}>
+                <a onClick={this.arrayClickHandlerFactory(value, index)}>
                     {value}
-                </button>
+                </a>
             </SortableListItem>
          );
     }

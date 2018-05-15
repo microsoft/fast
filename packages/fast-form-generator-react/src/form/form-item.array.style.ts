@@ -2,16 +2,22 @@ import { ellipsis, toPx } from "@microsoft/fast-jss-utilities";
 import {
     applyAriaHiddenStyles,
     applyCleanListStyle,
+    applyGlobalStyle,
     applyListItemStyle,
     applyPopupHeadingStyles,
     applyPopupMenuStyles,
     colors,
+    draggingStyles,
+    listItem,
     localizePadding
 } from "../utilities/form-input.style";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IFormItemArrayClassNameContract } from "../class-name-contracts/";
 
 const styles: ComponentStyles<IFormItemArrayClassNameContract, {}> = {
+    "@global": {
+        ...applyGlobalStyle()
+    },
     formItemArray: {
         ...applyPopupHeadingStyles(),
         marginTop: toPx(8),
@@ -65,7 +71,9 @@ const styles: ComponentStyles<IFormItemArrayClassNameContract, {}> = {
     },
     formItemArray_linkMenu: {
         ...applyCleanListStyle(),
-        ...applyListItemStyle()
+        ...applyListItemStyle(),
+        maxWidth: "100%",
+        overflow: "hidden"
     }
 };
 

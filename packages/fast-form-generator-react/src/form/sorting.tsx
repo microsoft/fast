@@ -18,7 +18,7 @@ export interface ISortingProps {
 
 export const sortingProps: ISortingProps = {
     pressDelay: 150,
-    lockAxis: axis.x
+    lockAxis: axis.y
 };
 
 export interface ISortableListItemProps {

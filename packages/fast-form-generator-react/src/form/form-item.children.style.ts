@@ -2,16 +2,22 @@ import { toPx } from "@microsoft/fast-jss-utilities";
 import {
     applyAriaHiddenStyles,
     applyCleanListStyle,
+    applyGlobalStyle,
     applyInputStyle,
     applyListItemStyle,
     applyPopupHeadingStyles,
     applyPopupMenuStyles,
-    colors
+    colors,
+    draggingStyles,
+    listItem
 } from "../utilities/form-input.style";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IFormItemChildrenClassNameContract } from "../class-name-contracts/";
 
 const styles: ComponentStyles<IFormItemChildrenClassNameContract, {}> = {
+    "@global": {
+        ...applyGlobalStyle()
+    },
     formItemChildren: {
         display: "flex",
         flexDirection: "column"
