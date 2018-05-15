@@ -107,7 +107,7 @@ class Image extends Foundation<IImageHandledProps & IManagedClasses<IImageClassN
         const vp: number = breakpoints[`vp${breakpointsId}`];
         const minWidth: number = vp;
 
-        if (!srcset) {
+        if (!srcset || this.props.src) {
             return null;
         }
 
