@@ -1,0 +1,10 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Text Field",
+    "description": "A Text Field component's schema definition.",
+    "type": "object",
+    "id": "text-field",
+    "children": true,
+    "properties": {
+    }
+}

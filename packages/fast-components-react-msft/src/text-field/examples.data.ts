@@ -1,13 +1,13 @@
-import { ICategoryItemProps } from "@microsoft/fast-development-site-react";
 import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import TextField from "./index";
 import { ITextFieldHandledProps, TextFieldType } from "@microsoft/fast-components-react-base";
-import * as React from "react";
+import * as schema from "@microsoft/fast-components-react-base/dist/text-field/text-field.schema.json";
 
 export default {
     name: "textfield",
     component: TextField,
+    schema: schema as any,
     data: [
         {
             placeholder: "Placeholder",
