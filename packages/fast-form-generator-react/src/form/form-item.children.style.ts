@@ -7,9 +7,7 @@ import {
     applyListItemStyle,
     applyPopupHeadingStyles,
     applyPopupMenuStyles,
-    colors,
-    draggingStyles,
-    listItem
+    colors
 } from "../utilities/form-input.style";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IFormItemChildrenClassNameContract } from "../class-name-contracts/";
@@ -62,7 +60,8 @@ const styles: ComponentStyles<IFormItemChildrenClassNameContract, {}> = {
             padding: `${toPx(4)} 0`,
             "& a": {
                 color: colors.pink,
-                textDecoration: "underline"
+                textDecoration: "underline",
+                cursor: "pointer"
             }
         }
     },

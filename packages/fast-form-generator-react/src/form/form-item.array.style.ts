@@ -7,8 +7,6 @@ import {
     applyPopupHeadingStyles,
     applyPopupMenuStyles,
     colors,
-    draggingStyles,
-    listItem,
     localizePadding
 } from "../utilities/form-input.style";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
@@ -71,9 +69,7 @@ const styles: ComponentStyles<IFormItemArrayClassNameContract, {}> = {
     },
     formItemArray_linkMenu: {
         ...applyCleanListStyle(),
-        ...applyListItemStyle(),
-        maxWidth: "100%",
-        overflow: "hidden"
+        ...applyListItemStyle()
     }
 };
 

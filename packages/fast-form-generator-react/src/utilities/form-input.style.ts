@@ -4,10 +4,10 @@ import { Direction, ellipsis, localizeSpacing, toPx } from "@microsoft/fast-jss-
 export const colors: any = {
     black: "#000",
     white: "#FFF",
-    pink: "#FB356D",
     blue: "#0078D4",
-    lightPink: "#fb4e7f",
-    darkPink: "#fb1c5b",
+    pink: "#FB356D",
+    lightPink: "#FB4E7F",
+    darkPink: "#FB1C5B",
     gray: "#8A8A8A",
     grayBackground: "rgba(0, 0, 0, 0.04)",
     boxShadow: "rgba(0, 0, 0, 0.08)",
@@ -56,7 +56,7 @@ export function applyWrapperStyle(): ICSSRules<{}> {
 
 export function applyCleanListStyle(): ICSSRules<{}> {
     return {
-        listStyle: "none !important",
+        listStyle: "none",
         margin: "0",
         padding: "0",
         listStylePosition: "outside"
