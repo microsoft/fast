@@ -56,12 +56,12 @@ export interface IActionBarClassNameContract {
 function menuButtonBase(): ICSSRules<IDevSiteDesignSystem> {
     return {
         position: "relative",
-        height: toPx(34),
+        height: toPx(36),
         border: "none",
         borderRadius: toPx(3),
         background: "none",
         padding: `0 ${toPx(12)}`,
-        margin: `${toPx(3)}`,
+        margin: `${toPx(2)} ${toPx(3)}`,
         fontSize: toPx(14),
         "& span": {
             width: toPx(16),
@@ -70,6 +70,12 @@ function menuButtonBase(): ICSSRules<IDevSiteDesignSystem> {
             display: "inline-block",
             fontSize: toPx(16),
             verticalAlign: "text-bottom"
+        },
+        "&:hover": {
+            background: "#EBEBEB"
+        },
+        "&:focus": {
+            outline: "none"
         }
     };
 }
@@ -87,14 +93,21 @@ const styles: ComponentStyles<IActionBarClassNameContract, IDevSiteDesignSystem>
         flexGrow: "1"
     },
     actionBar_menu_button: {
-        ...menuButtonBase(),
-        "&:active": {
-            background: "#EBEBEB"
-        }
+        ...menuButtonBase()
     },
     actionBar_menu_button__active: {
         ...menuButtonBase(),
-        background: "#EBEBEB"
+        "&::after": {
+            content: "''",
+            position: "absolute",
+            height: toPx(2),
+            bottom: toPx(-2),
+            left: toPx(12),
+            right: toPx(12),
+            background: (config: IDevSiteDesignSystem): string => {
+                return config.brandColor;
+            }
+        }
     }
 };
 
@@ -115,15 +128,8 @@ class ActionBar extends React.Component<IActionBarProps & IManagedClasses<IActio
                     <ComponentViewToggle
                         to={this.props.match.path}
                         onClick={this.onComponentViewChangeCallback(ComponentViewTypes.detail)}
-                        label="View detail"
-                        current={this.isAriaCurrent(ComponentViewTypes.detail)}
-                        glyph={glyphPage}
-                    />
-                    <ComponentViewToggle
-                        to={`${this.props.match.path}${ComponentViewTypes[ComponentViewTypes.examples]}/`}
-                        onClick={this.onComponentViewChangeCallback(ComponentViewTypes.examples)}
                         label="View examples"
-                        current={this.isAriaCurrent(ComponentViewTypes.examples)}
+                        current={this.isAriaCurrent(ComponentViewTypes.detail)}
                         glyph={glyphExamples}
                     />
                 </div>

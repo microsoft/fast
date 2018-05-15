@@ -28,20 +28,14 @@ const style: ComponentStyles<IComponentViewManagedClasses, IDevSiteDesignSystem>
 
 class ComponentView extends React.Component<RouteComponentProps<{}> & IManagedClasses<IComponentViewManagedClasses>, {}> {
     public render(): React.ReactElement<HTMLDivElement> {
+        // TODO: #294, #295 uncomment and use exact match for the detail page and examples page when detail page
+        // content is available
         return (
             <div className={this.props.managedClasses.componentView}>
                 <Switch>
                     <Route path="/" exact={true} component={null} />
-                    <Route
-                        path={this.props.match.url}
-                        exact={true}
-                        component={this.renderDetailPage}
-                    />
-                    <Route
-                        path={this.props.match.url + `/${ComponentViewTypes[ComponentViewTypes.examples]}`}
-                        exact={true}
-                        component={this.renderExamplesPage}
-                    />
+                    {/* <Route path={this.props.match.url} exact={true} component={this.renderDetailPage} /> */}
+                    <Route path={this.props.match.url} component={this.renderExamplesPage} />
                 </Switch>
             </div>
         );
