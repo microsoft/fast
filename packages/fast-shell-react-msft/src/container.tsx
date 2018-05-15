@@ -1,12 +1,19 @@
 import * as React from "react";
-import manageJss, { IManagedClasses, IJSSManagerProps, ComponentStyles } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import { ContainerProps } from "./container.props";
 
-class Foundation<H, U, S> extends React.Component<H & U, S> { }
 export interface IContainerClassNamesContract {
+    "@global": string;
     container: string;
 }
 
 export const styles: ComponentStyles<IContainerClassNamesContract, undefined> = {
+    "@global": {
+        "html, body": {
+            padding: 0,
+            margin: 0
+        }
+    },
     container: {
         display: "flex",
         width: "100vw",
@@ -14,18 +21,10 @@ export const styles: ComponentStyles<IContainerClassNamesContract, undefined> = 
         flexDirection: "column"
     }
 };
-export interface IContainerHandledProps {}
-export interface IContainerUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
-export interface IContainerManagedClasses extends IManagedClasses<IContainerClassNamesContract> {}
-
-export type ContainerProps = IContainerHandledProps & IContainerUnhandledProps & IContainerManagedClasses;
-// export type IButtonManagedClasses = IManagedClasses<IButtonClassNameContract>;
-
 
 /**
  * The Grid Container. This element wraps all other grid elements.
  */
-// class Container extends Foundation<IManagedClasses<IContainerClassNamesContract>, React.HTMLAttributes<HTMLDivElement>>, undefined> {
 class Container extends React.Component<ContainerProps, undefined> {
     /**
      * Renders the Container markup
@@ -42,5 +41,5 @@ class Container extends React.Component<ContainerProps, undefined> {
         );
     }
 }
-export default Container;
-//export default manageJss(styles)(Container);
+
+export default manageJss(styles)(Container);
