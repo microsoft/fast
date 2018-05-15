@@ -33,34 +33,38 @@ jobs:
           command: |
             lerna bootstrap
       - run: 
-          name: Test
+          name: Test all packages
           command: |
             lerna run test --stream
+      - run:
+          name: Setup and execute Code Climate reporter
+          command: |
+            if [ ! -f ./tmp/cc-test-reporter ]; then
+              mkdir -p tmp/
+              curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
+              chmod +x ./tmp/cc-test-reporter
+            fi
+
+            # Code Coverage
+            # Notify Code Climate that a build is about to start
+            ./tmp/cc-test-reporter before-build --debug
+
+            for f in packages/*; do
+              if [ -d "$f" ]; then
+                echo $f
+                ./tmp/cc-test-reporter format-coverage -t lcov -o tmp/coverage.${f//\//-}.json $f/coverage/lcov.info --debug
+              fi
+            done;
+
+            ./tmp/cc-test-reporter sum-coverage -o tmp/coverage.total.json tmp/coverage.*.json --debug
+            ./tmp/cc-test-reporter upload-coverage -i tmp/coverage.total.json --debug
       - save_cache:
           key: ci-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
             - ./coverage
-      - run:
-          name: Setup Code Climate test-reporter
-          command: |
-            mkdir -p tmp/
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
-            chmod +x ./tmp/cc-test-reporter
-      - run:
-          name: Code Coverage
-          command: |
-            ./tmp/cc-test-reporter before-build
-            for f in packages/*; do
-              if [ -d "$f" ]; then
-                 echo $f
-                ./tmp/cc-test-reporter format-coverage -t lcov -o tmp/coverage.${f//\//-}.json $f/coverage/lcov.info
-              fi
-            done;
-            ./tmp/cc-test-reporter sum-coverage -o tmp/coverage.total.json tmp/coverage.*.json
-            ./tmp/cc-test-reporter upload-coverage -i tmp/coverage.total.json
-            #./tmp/cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
-  
+            - ./tmp/cc-test-reporter
+
 #   "test-coverage":
 #     environment:
 #       CC_TEST_REPORTER_ID=08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32

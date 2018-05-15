@@ -11,7 +11,7 @@
  
 curl --user ${CIRCLE_CI_TOKEN}: \
     --request POST \
-    --form revision=0be29db7274a44c7cad532de15f01ae8dd3ecccd \
+    --form revision=01e79b6448629a279c77e66ca1ba87503ded9bfc \
     --form config=@config.yml \
     --form notify=false \
         https://circleci.com/api/v1.1/project/github/Microsoft/fast-dna/tree/master

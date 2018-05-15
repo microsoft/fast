@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# To debug code coverage run with bash and debug (-x)
-# $ bash -x ./fast-dna/.circleci/run-coverage.sh
+# To debug code coverage run with bash and debug (-x) from the directory root
+# $ bash -x .circleci/run-coverage.sh
 
 # Prebuilt Binaries
 # Choose a binary below that matches your build environment.
@@ -33,3 +33,4 @@ done;
 
 ./tmp/cc-test-reporter sum-coverage -o tmp/coverage.total.json tmp/coverage.*.json --debug
 ./tmp/cc-test-reporter upload-coverage -i tmp/coverage.total.json --debug
+#./tmp/cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
