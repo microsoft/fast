@@ -84,18 +84,17 @@ export function applyListItemStyle(): ICSSRules<{}> {
 }
 
 export const draggingStyles: ICSSRules<{}> = {
-    boxShadow: `0 ${toPx(15)} ${toPx(10)} ${toPx(-15)} rgba(0,0,0,.8)`,
-    borderBottom: "none",
+    boxShadow: `0 ${toPx(4)} ${toPx(4)} ${toPx(-4)} rgba(0, 0, 0, 0.15)`,
+    borderColor: "transparent",
     display: "flex",
-    paddingLeft: toPx(10),
     "&::after": {
         background: rightArrow,
-        right: toPx(12)
+        right: toPx(0)
     },
     "&::before": {
         background: lines,
-        left: toPx(12)
-    },
+        left: toPx(0)
+    }
 };
 
 export const listItem: ICSSRules<{}> = {
