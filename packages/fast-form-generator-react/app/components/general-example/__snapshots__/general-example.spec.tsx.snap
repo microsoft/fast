@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`general-example general-example: 0 1`] = `
-<div>
+<div
+  className={null}
+>
   <form
     onSubmit={[Function]}
   >

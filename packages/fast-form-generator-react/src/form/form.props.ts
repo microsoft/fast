@@ -19,6 +19,11 @@ export interface IChildOptionItem {
  */
 export interface IFormProps {
     /**
+     * The optional class name
+     */
+    className?: string;
+
+    /**
      * The schema to base the form on
      */
     schema: any;

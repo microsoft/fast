@@ -65,6 +65,7 @@ export interface ISiteManagedClasses {
     "@global": string;
     site_canvasContent: string;
     site_headerTitle: string;
+    site_paneForm: string;
     site_paneToc: string;
     site_paneTocRow: string;
     site_paneTocTitle: string;
@@ -86,7 +87,11 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
         flexDirection: "column"
     },
     site_headerTitle: {
-        verticalAlign: "middle"
+        fontSize: toPx(15),
+        marginLeft: toPx(4)
+    },
+    site_paneForm: {
+        padding: toPx(12)
     },
     site_paneToc: {
         padding: "0"
@@ -325,6 +330,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         if (component && schema) {
             return (
                 <Form
+                    className={this.props.managedClasses.site_paneForm}
                     schema={schema}
                     data={Object.assign({}, this.state.componentData[route][this.state.activeComponentIndex])}
                     onChange={this.handleComponentDataChange.bind(route)}

@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`align-horizontal align-horizontal: 0 1`] = `
-<div>
+<div
+  className={null}
+>
   <form
     onSubmit={[Function]}
   >
