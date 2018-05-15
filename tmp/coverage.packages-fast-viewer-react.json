@@ -1,0 +1,106 @@
+{
+  "ci_service": {
+    "branch": "users/awentzel/circle-ci",
+    "build_identifier": "",
+    "build_url": "",
+    "commit_sha": "0be29db7274a44c7cad532de15f01ae8dd3ecccd",
+    "committed_at": 1526009819,
+    "name": ""
+  },
+  "environment": {
+    "gem_version": "2.6.8",
+    "package_version": "",
+    "pwd": "/Users/aaronw/aWork/Microsoft/Projects/FluentWeb/fast-dna",
+    "prefix": "/Users/aaronw/aWork/Microsoft/Projects/FluentWeb/fast-dna",
+    "rails_root": "",
+    "reporter_version": "0.5.1",
+    "simplecov_root": ""
+  },
+  "git": {
+    "branch": "users/awentzel/circle-ci",
+    "head": "0be29db7274a44c7cad532de15f01ae8dd3ecccd",
+    "committed_at": 1526009819
+  },
+  "covered_percent": 66.43835616438356,
+  "covered_strength": 0,
+  "line_counts": {
+    "missed": 49,
+    "covered": 97,
+    "total": 146
+  },
+  "source_files": [
+    {
+      "blob_id": "7ba0d08460bcede109f5f1a5f05c3a5c38a687cc",
+      "coverage": "[null,2,2,2,2,null,2,null,2,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,2,null,null,null,null,null,null,null,null,null,null,null,3,null,2,3,3,null,null,2,2,null,null,2,0,null,null,2,0,null,null,3,0,null,null,2,3,null,null,null,null,null,null,null,2,null,2]",
+      "covered_percent": 86.95652173913044,
+      "covered_strength": 1.9565217391304348,
+      "line_counts": {
+        "missed": 3,
+        "covered": 20,
+        "total": 23
+      },
+      "name": "packages/fast-viewer-react/app/components/example.tsx"
+    },
+    {
+      "blob_id": "2ce3fd52793db920563f87b48655a18a4a968c78",
+      "coverage": "[2,null,2,null,2,2,2,null,2,0,0,null,null,null,2,0,null,null,null,0,0,null,null,2,0,null,null,null,0,0,null,2,null,2,null,2,null,2]",
+      "covered_percent": 60,
+      "covered_strength": 1.2,
+      "line_counts": {
+        "missed": 8,
+        "covered": 12,
+        "total": 20
+      },
+      "name": "packages/fast-viewer-react/app/utilities/style-manager.ts"
+    },
+    {
+      "blob_id": "7c61578aee2f540cd7de68cd6539a39b5b17c228",
+      "coverage": "[null,1,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,1,1,0,0,null,null,1,0,0,null,null,1,0,null,null,null,null,1,1,1,null,null,null,1,null,1]",
+      "covered_percent": 68.75,
+      "covered_strength": 0.6875,
+      "line_counts": {
+        "missed": 5,
+        "covered": 11,
+        "total": 16
+      },
+      "name": "packages/fast-viewer-react/helpers/generateSnapshots.ts"
+    },
+    {
+      "blob_id": "0c49ded3878239e92667715fa2b53df604092070",
+      "coverage": "[2,null,null,2,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,2]",
+      "covered_percent": 100,
+      "covered_strength": 2,
+      "line_counts": {
+        "missed": 0,
+        "covered": 3,
+        "total": 3
+      },
+      "name": "packages/fast-viewer-react/src/components/viewer/browserControls.tsx"
+    },
+    {
+      "blob_id": "074243b06d4b60d41ee48b1b190b7f7b2a018937",
+      "coverage": "[2,2,2,2,2,2,2,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,2,null,null,null,null,null,null,null,null,null,null,null,null,2,null,2,null,null,null,2,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,2,null,2,null,null,2,0,null,null,null,null,null,null,0,null,null,0,null,null,2,2,2,2,2,null,2,0,0,0,0,null,null,2,2,null,2,null,null,2,0,null,null,2,0,null,null,2,1,null,null,2,1,null,null,2,2,2,null,null,null,2,null,null,2,null,null,null,null,null,2,null,null,null,null,null,2,0,null,null,null,null,2,4,0,0,null,0,0,null,0,null,null,null,2,0,0,0,null,0,0,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,null,null,2,0,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,2,2,null,null,null,2,null,null,null,null,null,null,null,null,null,2,2,0,null,2,null,null,null,2,0,0,null,null,2]",
+      "covered_percent": 59.25925925925925,
+      "covered_strength": 1.1851851851851851,
+      "line_counts": {
+        "missed": 33,
+        "covered": 48,
+        "total": 81
+      },
+      "name": "packages/fast-viewer-react/src/components/viewer/index.tsx"
+    },
+    {
+      "blob_id": "a1a62b258bf1e1839b67dc044355427134a4d0b4",
+      "coverage": "[null,2,null,null,2,null,null,2]",
+      "covered_percent": 100,
+      "covered_strength": 2,
+      "line_counts": {
+        "missed": 0,
+        "covered": 3,
+        "total": 3
+      },
+      "name": "packages/fast-viewer-react/src/components/viewer/__tests__/data.tsx"
+    }
+  ],
+  "repo_token": "08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32"
+}

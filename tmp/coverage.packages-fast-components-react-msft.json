@@ -1,0 +1,94 @@
+{
+  "ci_service": {
+    "branch": "users/awentzel/circle-ci",
+    "build_identifier": "",
+    "build_url": "",
+    "commit_sha": "0be29db7274a44c7cad532de15f01ae8dd3ecccd",
+    "committed_at": 1526009819,
+    "name": ""
+  },
+  "environment": {
+    "gem_version": "2.6.8",
+    "package_version": "",
+    "pwd": "/Users/aaronw/aWork/Microsoft/Projects/FluentWeb/fast-dna",
+    "prefix": "/Users/aaronw/aWork/Microsoft/Projects/FluentWeb/fast-dna",
+    "rails_root": "",
+    "reporter_version": "0.5.1",
+    "simplecov_root": ""
+  },
+  "git": {
+    "branch": "users/awentzel/circle-ci",
+    "head": "0be29db7274a44c7cad532de15f01ae8dd3ecccd",
+    "committed_at": 1526009819
+  },
+  "covered_percent": 100,
+  "covered_strength": 0,
+  "line_counts": {
+    "missed": 0,
+    "covered": 45,
+    "total": 45
+  },
+  "source_files": [
+    {
+      "blob_id": "5e20592b5f51dd1f474a8c51ece3def95e2b9d8b",
+      "coverage": "[null,null,null,null,1,1,null,null,null,null,null,null,null,null,null,1,null,1]",
+      "covered_percent": 100,
+      "covered_strength": 1,
+      "line_counts": {
+        "missed": 0,
+        "covered": 4,
+        "total": 4
+      },
+      "name": "packages/fast-components-react-msft/src/heading/examples.data.ts"
+    },
+    {
+      "blob_id": "2850a1184693acb0266965ff6ea179fedc4566ac",
+      "coverage": "[null,null,null,1,1,1,null,null,1,1,1,1,1,1,1,null,null,1,1,1,1,1,1,1,1]",
+      "covered_percent": 100,
+      "covered_strength": 1,
+      "line_counts": {
+        "missed": 0,
+        "covered": 18,
+        "total": 18
+      },
+      "name": "packages/fast-components-react-msft/src/heading/heading.props.ts"
+    },
+    {
+      "blob_id": "b6f11d19fd8a08729089a97dd5004e5e535c31a3",
+      "coverage": "[1,null,1,1,null,null,null,null,null,null,null,1,1,null,null,null,7,null,null,null,null,null,null,null,null,null,7,null,null,null,null,null,null,7,null,null,null,null,null,null,7,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,7,null,null,7,null,null,null,1,1,1]",
+      "covered_percent": 100,
+      "covered_strength": 3.5714285714285716,
+      "line_counts": {
+        "missed": 0,
+        "covered": 14,
+        "total": 14
+      },
+      "name": "packages/fast-components-react-msft/src/heading/heading.tsx"
+    },
+    {
+      "blob_id": "13bae13891b82f92bdb2b34523469f2ca52296a8",
+      "coverage": "[null,null,null,1,null,null,null,null,null,null,1,1,null,1,1]",
+      "covered_percent": 100,
+      "covered_strength": 1,
+      "line_counts": {
+        "missed": 0,
+        "covered": 5,
+        "total": 5
+      },
+      "name": "packages/fast-components-react-msft/src/heading/index.ts"
+    },
+    {
+      "blob_id": "5d308080e627af7f932e124b8172b83cec1b212a",
+      "coverage": "[null,1,null,null,null,null,null,null,1,1,null,1]",
+      "covered_percent": 100,
+      "covered_strength": 1,
+      "line_counts": {
+        "missed": 0,
+        "covered": 4,
+        "total": 4
+      },
+      "name": "packages/fast-components-react-msft/src/typography/index.ts"
+    }
+  ],
+  "repo_token": "08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32"
+}

@@ -1,0 +1,310 @@
+{
+  "ci_service": {
+    "branch": "users/awentzel/circle-ci",
+    "build_identifier": "",
+    "build_url": "",
+    "commit_sha": "0be29db7274a44c7cad532de15f01ae8dd3ecccd",
+    "committed_at": 1526009819,
+    "name": ""
+  },
+  "environment": {
+    "gem_version": "2.6.8",
+    "package_version": "",
+    "pwd": "/Users/aaronw/aWork/Microsoft/Projects/FluentWeb/fast-dna",
+    "prefix": "/Users/aaronw/aWork/Microsoft/Projects/FluentWeb/fast-dna",
+    "rails_root": "",
+    "reporter_version": "0.5.1",
+    "simplecov_root": ""
+  },
+  "git": {
+    "branch": "users/awentzel/circle-ci",
+    "head": "0be29db7274a44c7cad532de15f01ae8dd3ecccd",
+    "committed_at": 1526009819
+  },
+  "covered_percent": 95.85253456221197,
+  "covered_strength": 0,
+  "line_counts": {
+    "missed": 9,
+    "covered": 208,
+    "total": 217
+  },
+  "source_files": [
+    {
+      "blob_id": "d0352c10a37eac799ff59dacfa7e4904f926eb7c",
+      "coverage": "[null,null,null,null,null,null,1,1,1]",
+      "covered_percent": 100,
+      "covered_strength": 1,
+      "line_counts": {
+        "missed": 0,
+        "covered": 3,
+        "total": 3
+      },
+      "name": "packages/fast-components-react-base/src/checkbox/checkbox.props.ts"
+    },
+    {
+      "blob_id": "6e4fd686e31e24bc45190f935181fc8907213294",
+      "coverage": "[null,null,null,1,null,null,1,null,null,null,null,null,null,null,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,1]",
+      "covered_percent": 100,
+      "covered_strength": 1,
+      "line_counts": {
+        "missed": 0,
+        "covered": 4,
+        "total": 4
+      },
+      "name": "packages/fast-components-react-base/src/checkbox/examples.data.ts"
+    },
+    {
+      "blob_id": "c062b2c22c8ee9c639c471ad5f1a4bfb23f1e1ff",
+      "coverage": "[1,null,1,null,1,1,null,null,null,1,null,null,null,null,null,null,null,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,1,null,null,null,1,1,1]",
+      "covered_percent": 100,
+      "covered_strength": 1,
+      "line_counts": {
+        "missed": 0,
+        "covered": 10,
+        "total": 10
+      },
+      "name": "packages/fast-components-react-base/src/hypertext/hypertext.tsx"
+    },
+    {
+      "blob_id": "8dc97009e2a4ecbfcf5a8398e765175ceba30dbf",
+      "coverage": "[null,null,null,1,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,1]",
+      "covered_percent": 100,
+      "covered_strength": 1,
+      "line_counts": {
+        "missed": 0,
+        "covered": 3,
+        "total": 3
+      },
+      "name": "packages/fast-components-react-base/src/image/examples.data.ts"
+    },
+    {
+      "blob_id": "774fe3a54e488f203df93b39e090577e4dcfa327",
+      "coverage": "[1,null,1,1,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,1,null,null,null,null,null,null,null,null,null,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,1,0,null,null,1,0,null,null,null,null,null,null,null,null,null,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,2,null,null,2,1,null,null,2,1,null,null,1,null,null,null,null,null,null,6,6,6,null,6,0,null,null,6,null,6,null,null,null,1,1,1]",
+      "covered_percent": 88.88888888888889,
+      "covered_strength": 2.111111111111111,
+      "line_counts": {
+        "missed": 3,
+        "covered": 24,
+        "total": 27
+      },
+      "name": "packages/fast-components-react-base/src/image/image.tsx"
+    },
+    {
+      "blob_id": "b7e2aadffc2680aeb81743a5a2c2094e2312253a",
+      "coverage": "[1,null,1,1,1,null,null,null,null,null,1,null,null,null,1,null,null,null,3,null,null,null,null,null,null,null,null,null,null,3,null,null,null,null,null,null,3,null,null,null,null,null,null,null,null,null,null,null,null,null,3,null,null,null,1,1,1]",
+      "covered_percent": 100,
+      "covered_strength": 1.6153846153846154,
+      "line_counts": {
+        "missed": 0,
+        "covered": 13,
+        "total": 13
+      },
+      "name": "packages/fast-components-react-base/src/label/label.tsx"
+    },
+    {
+      "blob_id": "58674e593deea536d6373d97282552e8193ab32a",
+      "coverage": "[null,null,null,1,1,1,1,1,1,1,1,1,1,null,null,1,1,1,1,1,1,1,1,1,1]",
+      "covered_percent": 100,
+      "covered_strength": 1,
+      "line_counts": {
+        "missed": 0,
+        "covered": 20,
+        "total": 20
+      },
+      "name": "packages/fast-components-react-base/src/typography/typography.props.ts"
+    },
+    {
+      "blob_id": "06b608d0781cf3ce4c8c8bdb5f4a87f535fd3fc6",
+      "coverage": "[1,null,1,1,1,null,null,null,null,null,null,1,null,null,null,1,null,null,null,9,null,null,null,null,null,null,null,null,null,9,null,null,null,null,null,null,9,null,null,null,null,null,null,null,null,null,null,null,null,null,9,null,null,9,null,null,null,null,null,null,9,null,null,null,1,1,1]",
+      "covered_percent": 100,
+      "covered_strength": 4.2,
+      "line_counts": {
+        "missed": 0,
+        "covered": 15,
+        "total": 15
+      },
+      "name": "packages/fast-components-react-base/src/typography/typography.tsx"
+    },
+    {
+      "blob_id": "4c872b5087530ef449ee548014a4d6431af00047",
+      "coverage": "[null,null,null,null,null,null,1,1,1]",
+      "covered_percent": 100,
+      "covered_strength": 1,
+      "line_counts": {
+        "missed": 0,
+        "covered": 3,
+        "total": 3
+      },
+      "name": "packages/fast-components-react-base/src/divider/divider.props.ts"
+    },
+    {
+      "blob_id": "3ce72dd892846802d7e5b3aac61ae9df5f274601",
+      "coverage": "[null,null,null,1,null,null,1,null,null,null,null,null,null,null,null,null,null,null,1]",
+      "covered_percent": 100,
+      "covered_strength": 1,
+      "line_counts": {
+        "missed": 0,
+        "covered": 3,
+        "total": 3
+      },
+      "name": "packages/fast-components-react-base/src/divider/examples.data.ts"
+    },
+    {
+      "blob_id": "cc0d23242b413448dfa2eb4fafbfd87c2ac31384",
+      "coverage": "[9,null,9,9,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,61,null,null,null,null,61,null,null,null,null,null,null,null,null,null,43,43,null,43,8,null,null,35,0,null,35,18,null,null,35,null,35,null,null,null,null,null,null,null,null,null,null,8,null,null,null,null,null,null,25,119,null,null,25,null,null,null,null,null,null,null,30,null,null,null,null,null,null,null,51,67,null,46,null,null,null,null,9,9]",
+      "covered_percent": 96,
+      "covered_strength": 33.32,
+      "line_counts": {
+        "missed": 1,
+        "covered": 24,
+        "total": 25
+      },
+      "name": "packages/fast-components-react-base/src/foundation/foundation.ts"
+    },
+    {
+      "blob_id": "6613f7e39a84b6bb644f796e89e0cb2e54465cf8",
+      "coverage": "[null,null,null,1,null,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,1]",
+      "covered_percent": 100,
+      "covered_strength": 1,
+      "line_counts": {
+        "missed": 0,
+        "covered": 3,
+        "total": 3
+      },
+      "name": "packages/fast-components-react-base/src/toggle/examples.data.ts"
+    },
+    {
+      "blob_id": "ed6684c9a206791bbe880f13d42839071c8222fb",
+      "coverage": "[null,null,null,null,null,null,1,1,1]",
+      "covered_percent": 100,
+      "covered_strength": 1,
+      "line_counts": {
+        "missed": 0,
+        "covered": 3,
+        "total": 3
+      },
+      "name": "packages/fast-components-react-base/src/button/button.props.ts"
+    },
+    {
+      "blob_id": "d7e42d19895aa2fe1d2e8853733f41e9f30615f8",
+      "coverage": "[1,null,1,1,1,1,null,null,null,4,null,null,null,null,null,null,null,null,null,null,null,null,null,4,null,null,null,null,4,null,4,null,null,null,null,null,null,null,4,0,null,null,null,null,null,null,null,4,null,null,null,null,null,null,0,null,null,null,null,null,null,4,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,4,null,4,null,4,null,null,null,1,1,1]",
+      "covered_percent": 90,
+      "covered_strength": 2.4,
+      "line_counts": {
+        "missed": 2,
+        "covered": 18,
+        "total": 20
+      },
+      "name": "packages/fast-components-react-base/src/checkbox/checkbox.tsx"
+    },
+    {
+      "blob_id": "ca0aa313b20474ca52dc2dc264e321b38124bc36",
+      "coverage": "[1,null,1,1,1,1,null,null,null,1,null,null,null,null,null,null,null,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,1,0,null,null,null,null,null,null,null,1,null,null,null,1,1,1]",
+      "covered_percent": 92.3076923076923,
+      "covered_strength": 0.9230769230769231,
+      "line_counts": {
+        "missed": 1,
+        "covered": 12,
+        "total": 13
+      },
+      "name": "packages/fast-components-react-base/src/divider/divider.tsx"
+    },
+    {
+      "blob_id": "79b82fa8ab8cac119dc0ada4ad7789b28bf2738a",
+      "coverage": "[null,null,null,1,null,null,null,null,null,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,1]",
+      "covered_percent": 100,
+      "covered_strength": 1,
+      "line_counts": {
+        "missed": 0,
+        "covered": 3,
+        "total": 3
+      },
+      "name": "packages/fast-components-react-base/src/label/examples.data.ts"
+    },
+    {
+      "blob_id": "ddbc46f644f6c4d5ba3ef8c7dea3c5edff088efa",
+      "coverage": "[null,null,null,1,1,1]",
+      "covered_percent": 100,
+      "covered_strength": 1,
+      "line_counts": {
+        "missed": 0,
+        "covered": 3,
+        "total": 3
+      },
+      "name": "packages/fast-components-react-base/src/label/label.props.ts"
+    },
+    {
+      "blob_id": "1f36380371200420428f0b7b4273545f34372f8d",
+      "coverage": "[1,null,1,1,1,1,null,null,null,1,null,null,null,null,null,null,null,null,1,null,null,null,null,null,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,1,null,null,null,null,null,null,1,null,0,null,null,1,null,null,null,null,1,1,1]",
+      "covered_percent": 93.33333333333333,
+      "covered_strength": 0.9333333333333333,
+      "line_counts": {
+        "missed": 1,
+        "covered": 14,
+        "total": 15
+      },
+      "name": "packages/fast-components-react-base/src/button/button.tsx"
+    },
+    {
+      "blob_id": "e5bc817d0303ac95f32b1d94e2f7df97e49c68e2",
+      "coverage": "[null,null,null,1,null,null,1,null,null,null,null,null,null,null,null,null,null,null,null,1]",
+      "covered_percent": 100,
+      "covered_strength": 1,
+      "line_counts": {
+        "missed": 0,
+        "covered": 3,
+        "total": 3
+      },
+      "name": "packages/fast-components-react-base/src/button/examples.data.ts"
+    },
+    {
+      "blob_id": "f3c7f511c388d9060375b4c70e50f9edb3c9ad19",
+      "coverage": "[8,null,8,8]",
+      "covered_percent": 100,
+      "covered_strength": 8,
+      "line_counts": {
+        "missed": 0,
+        "covered": 3,
+        "total": 3
+      },
+      "name": "packages/fast-components-react-base/src/foundation/index.ts"
+    },
+    {
+      "blob_id": "35f94f11dd01d8b799bb2d7f53e2c52721b8cc16",
+      "coverage": "[null,null,null,1,null,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,1]",
+      "covered_percent": 100,
+      "covered_strength": 1,
+      "line_counts": {
+        "missed": 0,
+        "covered": 3,
+        "total": 3
+      },
+      "name": "packages/fast-components-react-base/src/hypertext/examples.data.ts"
+    },
+    {
+      "blob_id": "06c1342060977c19a4d4bbcfe852506b70d4c0af",
+      "coverage": "[1,null,1,1,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,1,null,1,null,null,null,null,null,null,null,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,1,null,null,null,null,null,null,2,null,null,null,null,null,1,0,null,null,null,null,null,null,1,1,null,null,null,null,null,null,null,null,null,null,null,null,1,1,1]",
+      "covered_percent": 94.11764705882352,
+      "covered_strength": 1,
+      "line_counts": {
+        "missed": 1,
+        "covered": 16,
+        "total": 17
+      },
+      "name": "packages/fast-components-react-base/src/toggle/toggle.tsx"
+    },
+    {
+      "blob_id": "a84dd0353a069caa3b793f7c404f26b802b527ae",
+      "coverage": "[null,null,null,1,null,null,null,null,null,null,null,null,1,1,null,null,null,null,null,null,null,null,null,null,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,1]",
+      "covered_percent": 100,
+      "covered_strength": 1,
+      "line_counts": {
+        "missed": 0,
+        "covered": 5,
+        "total": 5
+      },
+      "name": "packages/fast-components-react-base/src/typography/examples.data.ts"
+    }
+  ],
+  "repo_token": "08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32"
+}
