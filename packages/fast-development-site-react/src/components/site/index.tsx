@@ -86,7 +86,8 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
         flexDirection: "column"
     },
     site_headerTitle: {
-        verticalAlign: "middle"
+        fontSize: toPx(15),
+        marginLeft: toPx(4)
     },
     site_paneToc: {
         padding: "0"

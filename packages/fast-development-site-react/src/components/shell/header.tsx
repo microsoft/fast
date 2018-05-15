@@ -12,13 +12,15 @@ export interface IShellHeaderManagedClasses {
 
 const style: ComponentStyles<IShellHeaderManagedClasses, IDevSiteDesignSystem> = {
     shellHeader: {
+        display: "flex",
+        alignItems: "center",
         background: "#343434",
         color: (config: IDevSiteDesignSystem): string => {
             return config.backgroundColor;
         },
         textAlign: "left",
         padding: toPx(3),
-        minHeight: toPx(24),
+        minHeight: "calc(40px - 6px)",
         overflow: "hidden"
     }
 };
