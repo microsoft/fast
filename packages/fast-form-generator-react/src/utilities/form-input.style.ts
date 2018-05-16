@@ -1,13 +1,18 @@
 import { ICSSRules } from "@microsoft/fast-jss-manager";
 import { Direction, ellipsis, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
 
+/* tslint:disable */
+const rightArrow: string = "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNyIgaGVpZ2h0PSIxMSIgdmlld0JveD0iMCAwIDcgMTEiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+PGcgaWQ9IkNhbnZhcyIgZmlsbD0ibm9uZSI+PGcgaWQ9IiYjMjM4OyYjMTI4OyYjMTQ1OyI+PHBhdGggZD0iTSA1LjUgNy40MjI4NUwgMTAuNDE0NiAyLjUwODNMIDEwLjg5NzkgMi45OTE3TCA1LjUgOC4zODk2NUwgMC4xMDIwNTEgMi45OTE3TCAwLjU4NTQ0OSAyLjUwODNMIDUuNSA3LjQyMjg1WiIgdHJhbnNmb3JtPSJtYXRyaXgoMCAtMSAxIDAgLTIgMTEpIiBmaWxsPSJibGFjayIvPjwvZz48L2c+PC9zdmc+) center no-repeat";
+const lines: string = "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iOSIgdmlld0JveD0iMCAwIDE2IDkiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTE2IDVIMFY0SDE2VjVaTTE2IDEzSDBWMTJIMTZWMTNaTTE2IDguOTkyMTlIMFY4SDE2VjguOTkyMTlaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwIC00LjAwMDAzKSIgZmlsbD0iYmxhY2siLz48L3N2Zz4=) center no-repeat";
+/* tslint:enable */
+
 export const colors: any = {
     black: "#000",
     white: "#FFF",
-    pink: "#FB356D",
     blue: "#0078D4",
-    lightPink: "rgb(251,53,109)",
-    darkPink: "rgb(194, 0, 67)",
+    pink: "#FB356D",
+    lightPink: "#FB4E7F",
+    darkPink: "#FB1C5B",
     gray: "#8A8A8A",
     grayBackground: "rgba(0, 0, 0, 0.04)",
     boxShadow: "rgba(0, 0, 0, 0.08)",
@@ -58,49 +63,84 @@ export function applyCleanListStyle(): ICSSRules<{}> {
     return {
         listStyle: "none",
         margin: "0",
-        padding: "0"
+        padding: "0",
+        listStylePosition: "outside"
+    };
+}
+
+export function applyGlobalStyle(): ICSSRules<{}> {
+    return {
+        "body > li[draggable=\"true\"]": {
+            ...listItem,
+            ...draggingStyles
+        }
     };
 }
 
 export function applyListItemStyle(): ICSSRules<{}> {
     return {
-        "& li": {
-            flex: "1 100%",
-            borderBottom: `${toPx(1)} solid ${colors.border}`,
-            alignItems: "center",
-            position: "relative",
-            cursor: "pointer",
-            "&::after": {
-                position: "absolute",
-                content: "''",
-                opacity: ".6",
-                pointerEvents: "none",
-                top: toPx(14),
-                width: toPx(16),
-                height: toPx(16),
-                /* tslint:disable-next-line */
-                background: "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNyIgaGVpZ2h0PSIxMSIgdmlld0JveD0iMCAwIDcgMTEiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+PGcgaWQ9IkNhbnZhcyIgZmlsbD0ibm9uZSI+PGcgaWQ9IiYjMjM4OyYjMTI4OyYjMTQ1OyI+PHBhdGggZD0iTSA1LjUgNy40MjI4NUwgMTAuNDE0NiAyLjUwODNMIDEwLjg5NzkgMi45OTE3TCA1LjUgOC4zODk2NUwgMC4xMDIwNTEgMi45OTE3TCAwLjU4NTQ0OSAyLjUwODNMIDUuNSA3LjQyMjg1WiIgdHJhbnNmb3JtPSJtYXRyaXgoMCAtMSAxIDAgLTIgMTEpIiBmaWxsPSJibGFjayIvPjwvZz48L2c+PC9zdmc+) center no-repeat",
-                right: "0",
-            },
-            "& button": {
-                width: "100%",
-                textAlign: "left",
-                ...localizePadding(12, 18, 12, 1)
-            },
-            "& a": {
-                textAlign: "left",
-                display: "block",
-                ...localizePadding(12, 18, 12, 1),
-                "& span": {
-                    display: "block",
-                    fontStyle: "italic",
-                    fontSize: toPx(13),
-                    paddingTop: toPx(4)
-                }
-            }
-        }
+        "& li[draggable=\"true\"], li[draggable=\"true\"]": listItem
     };
 }
+
+export const draggingStyles: ICSSRules<{}> = {
+    boxShadow: `0 ${toPx(4)} ${toPx(4)} ${toPx(-4)} rgba(0, 0, 0, 0.15)`,
+    borderColor: "transparent",
+    display: "flex",
+    "&::after": {
+        background: rightArrow,
+        right: toPx(0)
+    },
+    "&::before": {
+        background: lines,
+        left: toPx(0)
+    }
+};
+
+export const listItem: ICSSRules<{}> = {
+    flex: "1 100%",
+    borderBottom: `${toPx(1)} solid ${colors.border}`,
+    alignItems: "center",
+    position: "relative",
+    cursor: "pointer",
+    background: "rgb(244, 245, 246)",
+    "&::after, &::before": {
+        position: "absolute",
+        content: "''",
+        opacity: ".6",
+        pointerEvents: "none",
+        top: toPx(13),
+        width: toPx(16),
+        height: toPx(16)
+    },
+    "&::after": {
+        background: rightArrow,
+        right: "0"
+    },
+    "&::before": {
+        background: lines,
+        left: "0"
+    },
+    "& button": {
+        fontSize: toPx(14),
+        border: "none",
+        background: "transparent",
+        textAlign: "left",
+        marginLeft: toPx(25),
+        ...localizePadding(12, 18, 12, 1)
+    },
+    "& a": {
+        textAlign: "left",
+        display: "block",
+        ...localizePadding(12, 18, 12, 26),
+        "& span": {
+            display: "block",
+            fontStyle: "italic",
+            fontSize: toPx(13),
+            paddingTop: toPx(4)
+        }
+    }
+};
 
 export function applyAriaHiddenStyles(): ICSSRules<{}> {
     return {

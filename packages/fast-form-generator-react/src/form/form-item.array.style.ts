@@ -2,6 +2,7 @@ import { ellipsis, toPx } from "@microsoft/fast-jss-utilities";
 import {
     applyAriaHiddenStyles,
     applyCleanListStyle,
+    applyGlobalStyle,
     applyListItemStyle,
     applyPopupHeadingStyles,
     applyPopupMenuStyles,
@@ -12,6 +13,9 @@ import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IFormItemArrayClassNameContract } from "../class-name-contracts/";
 
 const styles: ComponentStyles<IFormItemArrayClassNameContract, {}> = {
+    "@global": {
+        ...applyGlobalStyle()
+    },
     formItemArray: {
         ...applyPopupHeadingStyles(),
         marginTop: toPx(8),

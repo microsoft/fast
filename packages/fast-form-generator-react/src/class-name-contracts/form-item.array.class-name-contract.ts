@@ -2,6 +2,7 @@
  * Array class name contract
  */
 export default interface IFormItemArrayClassNameContract {
+    "@global": string;
     formItemArray: string;
     formItemArray_actionMenu: string;
     formItemArray_actionMenuItem__add: string;
