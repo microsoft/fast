@@ -6,7 +6,9 @@ import {
     applySelectInputStyles,
     applySelectSpanStyles,
     applyWrapperStyle,
-    colors
+    colors,
+    localizePadding,
+    rightArrow
 } from "../utilities/form-input.style";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IFormSectionClassNameContract } from "../class-name-contracts/";
@@ -22,7 +24,26 @@ const styles: ComponentStyles<IFormSectionClassNameContract, {}> = {
     },
     formSection_menu: {
         ...applyCleanListStyle(),
-        ...applyListItemStyle()
+        "& li": {
+            borderBottom: `${toPx(1)} solid ${colors.border}`,
+            position: "relative",
+            cursor: "pointer",
+            "&::after": {
+                position: "absolute",
+                content: "''",
+                opacity: ".6",
+                pointerEvents: "none",
+                top: toPx(13),
+                width: toPx(16),
+                height: toPx(16),
+                background: rightArrow,
+                right: "0"
+            },
+            "& a": {
+                display: "block",
+                ...localizePadding(12, 18, 12, 1)
+            }
+        }
     },
     formSection_toggleWrapper: {
         display: "flex",
