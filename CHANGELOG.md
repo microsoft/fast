@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.6.0"></a>
+# [1.6.0](https://github.com/Microsoft/fast-dna/compare/v1.2.0...v1.6.0) (2018-05-16)
+
+
+### Bug Fixes
+
+* **button:** fixes an issue where href was not being passed as part of the created anchor element ([#411](https://github.com/Microsoft/fast-dna/issues/411)) ([35928e1](https://github.com/Microsoft/fast-dna/commit/35928e1))
+* **development-site:** update styling ([#416](https://github.com/Microsoft/fast-dna/issues/416)) ([97ac11a](https://github.com/Microsoft/fast-dna/commit/97ac11a))
+* **form generator:** fixes drag and drop, updates styles and shape ([#426](https://github.com/Microsoft/fast-dna/issues/426)) ([b5013a8](https://github.com/Microsoft/fast-dna/commit/b5013a8))
+* **jss:** fix errors caused by un-linked JSS rules ([#409](https://github.com/Microsoft/fast-dna/issues/409)) ([c9c4a9c](https://github.com/Microsoft/fast-dna/commit/c9c4a9c))
+* **svg:** fix some malformed SVG icons ([#434](https://github.com/Microsoft/fast-dna/issues/434)) ([002dbd4](https://github.com/Microsoft/fast-dna/commit/002dbd4))
+
+
+### Features
+
+* **code-preview:** add react code preview ([#399](https://github.com/Microsoft/fast-dna/issues/399)) ([fee05e7](https://github.com/Microsoft/fast-dna/commit/fee05e7))
+* **form generator:** add SVGs, additional JSS, and general examples ([#418](https://github.com/Microsoft/fast-dna/issues/418)) ([86f36df](https://github.com/Microsoft/fast-dna/commit/86f36df))
+* **form generator:** updates styles found in configuration pane ([#420](https://github.com/Microsoft/fast-dna/issues/420)) ([919121b](https://github.com/Microsoft/fast-dna/commit/919121b))
+
+
+
+
 <a name="1.5.0"></a>
 # [1.5.0](https://github.com/Microsoft/fast-dna/compare/v1.2.0...v1.5.0) (2018-05-16)
 

@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-development-site-react",
   "description": "FAST development testing site for React",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "author": {
     "name": "Microsoft",
     "email": "fwq@microsoft.com"
@@ -24,13 +24,13 @@
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'"
   },
   "dependencies": {
-    "@microsoft/fast-form-generator-react": "^1.5.0",
-    "@microsoft/fast-glyphs-msft": "^1.5.0",
-    "@microsoft/fast-jss-manager-react": "^1.5.0",
-    "@microsoft/fast-jss-utilities": "^1.5.0"
+    "@microsoft/fast-form-generator-react": "^1.6.0",
+    "@microsoft/fast-glyphs-msft": "^1.6.0",
+    "@microsoft/fast-jss-manager-react": "^1.6.0",
+    "@microsoft/fast-jss-utilities": "^1.6.0"
   },
   "devDependencies": {
-    "@microsoft/fast-tslint-rules": "^1.5.0",
+    "@microsoft/fast-tslint-rules": "^1.6.0",
     "@polymer/polymer": "^3.0.0-pre.10",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.6.7",
