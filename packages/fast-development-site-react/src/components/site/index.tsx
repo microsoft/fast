@@ -77,6 +77,8 @@ export interface ISiteManagedClasses {
 const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
     "@global": {
         "body, html": {
+            fontFamily: "Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif",
+            fontSize: toPx(14),
             padding: toPx(0),
             margin: toPx(0)
         }
