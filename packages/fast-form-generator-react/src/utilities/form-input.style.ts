@@ -79,7 +79,7 @@ export function applyGlobalStyle(): ICSSRules<{}> {
 
 export function applyListItemStyle(): ICSSRules<{}> {
     return {
-        "& li[draggable=\"true\"], li[draggable=\"true\"]": listItem
+        "& li": listItem
     };
 }
 
@@ -173,6 +173,7 @@ export function applyPopupMenuStyles(): ICSSRules<{}> {
                 textAlign: "left",
                 width: "100%",
                 ...ellipsis(),
+                lineHeight: toPx(16),
                 "&:focus": {
                     outline: "none"
                 },
