@@ -30,7 +30,6 @@ const styles: ComponentStyles<IRowClassNamesContract, undefined> = {
  */
 class Row extends React.Component<RowProps, undefined> {
     public static defaultProps: IRowHandledProps = {
-        justify: void(0),
         fill: false
     };
 

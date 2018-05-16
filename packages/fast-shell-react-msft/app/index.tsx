@@ -3,8 +3,7 @@ import * as ReactDOM from "react-dom";
 import Canvas from "../src/canvas";
 import Container from "../src/container";
 import Row from "../src/row";
-import Pane from "../src/pane";
-import { PaneResizeDirection } from "../src/pane.props";
+import Pane, { PaneResizeDirection } from "../src/pane";
 
 /**
  * Create the root node

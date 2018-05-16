@@ -34,7 +34,6 @@ class Container extends React.Component<ContainerProps, undefined> {
             <div
                 // TODO {...this.unhandledProps()}
                 className={this.props.managedClasses.container}
-                data-grid-app="container"
             >
                 {this.props.children}
             </div>

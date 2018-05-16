@@ -32,6 +32,7 @@ export interface IPaneClassNamesContract {
     pane__resizeWest: string;
     pane__resizeEast: string;
     pane__overlay: string;
+    pane__hidden: string;
 }
 
 const paneStyleSheet: ComponentStyles<IPaneClassNamesContract, undefined> = {
@@ -73,6 +74,9 @@ const paneStyleSheet: ComponentStyles<IPaneClassNamesContract, undefined> = {
         position: "absolute",
         height: "100%",
         zIndex: "2"
+    },
+    pane__hidden: {
+        display: "none"
     }
 };
 
@@ -83,14 +87,10 @@ class Pane extends React.Component<PaneProps, IPaneState> {
     public static defaultProps: IPaneHandledProps = {
         minWidth: 100,
         maxWidth: 800,
-        width: void(0),
-        id: void(0),
         resizable: false,
         collapsed: false,
-        onWidthChange: void(0),
         overlay: false,
         hidden: false,
-        resizeFrom: void(0),
     };
 
     /**
@@ -299,6 +299,10 @@ class Pane extends React.Component<PaneProps, IPaneState> {
 
         if (this.props.overlay) {
             classes = `${classes} ${this.props.managedClasses.pane__overlay}`;
+        }
+
+        if (this.props.hidden) {
+            classes = `${classes} ${this.props.managedClasses.pane__hidden}`;
         }
 
         return classes;

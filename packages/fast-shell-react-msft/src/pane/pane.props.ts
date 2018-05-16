@@ -10,11 +10,6 @@ export enum PaneResizeDirection {
     west = "west"
 }
 
-/**
- * Callback for when the width of the pane should change
- */
-export type PaneOnWidthChange = (width: number, id: string) => void;
-
 export interface IPaneHandledProps {
     /**
      * The minimum width of the pane
@@ -45,11 +40,6 @@ export interface IPaneHandledProps {
      * The collapsed state of the Pane
      */
     collapsed?: boolean;
-
-    /**
-     * Action creator to update width of pane
-     */
-    onWidthChange?: PaneOnWidthChange;
 
     /**
      * Determines if this pane is overlaid
