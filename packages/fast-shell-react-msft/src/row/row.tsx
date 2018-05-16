@@ -1,6 +1,6 @@
 import * as React from "react";
-import Pane from "./pane";
-import Canvas from "./canvas";
+import Pane from "../pane";
+import Canvas from "../canvas";
 import { IRowHandledProps, IRowUnhandledProps, RowProps } from "./row.props";
 import manageJss, { ComponentStyles, IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
 
@@ -12,7 +12,7 @@ export interface IRowClassNamesContract {
     row__fill: string;
 }
 
-export const styles: ComponentStyles<IRowClassNamesContract, undefined> = {
+const styles: ComponentStyles<IRowClassNamesContract, undefined> = {
     row: {
         position: "relative",
         display: "flex",

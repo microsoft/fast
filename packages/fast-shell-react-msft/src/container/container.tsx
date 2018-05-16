@@ -7,7 +7,7 @@ export interface IContainerClassNamesContract {
     container: string;
 }
 
-export const styles: ComponentStyles<IContainerClassNamesContract, undefined> = {
+const styles: ComponentStyles<IContainerClassNamesContract, undefined> = {
     "@global": {
         "html, body": {
             padding: 0,

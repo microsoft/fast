@@ -1,9 +1,9 @@
 import * as React from "react";
 import { throttle } from "lodash";
 import { IPaneHandledProps, IPaneUnhandledProps, PaneProps, PaneResizeDirection } from "./pane.props";
-import { west } from "./row";
+import { west } from "../row";
 import rafThrottle from "raf-throttle";
-import { toPx } from "./utilities";
+import { toPx } from "../utilities";
 import manageJss, { ComponentStyles, IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
 
 /**

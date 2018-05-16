@@ -19,7 +19,6 @@ const styles: ComponentStyles<ICanvasClassNamesContract, undefined> = {
 class Canvas extends React.Component<CanvasProps, undefined> {
     /**
      * Default props for the Canvas component
-     * @type {Partial<ICanvasProps>}
      */
     public static defaultProps: ICanvasHandledProps = {
         minWidth: 300
@@ -27,7 +26,6 @@ class Canvas extends React.Component<CanvasProps, undefined> {
 
     /**
      * Generate the style attribute object
-     * @returns {object}
      */
     public renderStyleAttribute(): object {
         return {
