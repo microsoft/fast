@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-components-react-base",
   "description": "FAST base components implemented in React.",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "author": {
     "name": "Microsoft",
     "email": "fwq@microsoft.com"
@@ -45,9 +45,9 @@
     ]
   },
   "devDependencies": {
-    "@microsoft/fast-development-site-react": "^1.4.0",
-    "@microsoft/fast-jest-snapshots-react": "^1.4.0",
-    "@microsoft/fast-tslint-rules": "^1.4.0",
+    "@microsoft/fast-development-site-react": "^1.5.0",
+    "@microsoft/fast-jest-snapshots-react": "^1.5.0",
+    "@microsoft/fast-tslint-rules": "^1.5.0",
     "@types/jest": "^22.2.0",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.6",
@@ -80,6 +80,6 @@
     "react-dom": "^16.3.0"
   },
   "dependencies": {
-    "@microsoft/fast-components-class-name-contracts-base": "^1.4.0"
+    "@microsoft/fast-components-class-name-contracts-base": "^1.5.0"
   }
 }
