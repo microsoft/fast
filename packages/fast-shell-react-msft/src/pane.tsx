@@ -1,9 +1,10 @@
 import * as React from "react";
 import { throttle } from "lodash";
-import { IPaneProps } from "./pane.props";
+import { IPaneHandledProps, IPaneUnhandledProps, PaneProps, PaneResizeDirection } from "./pane.props";
 import { west } from "./row";
 import rafThrottle from "raf-throttle";
 import { toPx } from "./utilities";
+import manageJss, { ComponentStyles, IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
 
 /**
  * The interface for the Pane's state object
@@ -25,11 +26,61 @@ export interface IPaneState {
     width: number;
 }
 
-class Pane extends React.Component<IPaneProps, IPaneState> {
+export interface IPaneClassNamesContract {
+    pane: string;
+    pane_resizeHandle: string;
+    pane__resizeWest: string;
+    pane__resizeEast: string;
+    pane__overlay: string;
+}
+
+const paneStyleSheet: ComponentStyles<IPaneClassNamesContract, undefined> = {
+    pane: {
+        position: "relative",
+        flex: "0 1 auto",
+        display: "flex",
+        flexDirection: "column"
+    },
+    pane_resizeHandle: {
+        position: "absolute",
+        padding: "0",
+        opacity: "0",
+        top: "0",
+        width: "8px",
+        height: "100%",
+        zIndex: "1",
+        transition: "transform .04s ease-in-out",
+        outline: "none",
+        transform: "scale(.5, 1)",
+        "&:hover": {
+            cursor: "ew-resize"
+        },
+        "&:active": {
+            opacity: "1", transform: "scale(1)"
+        }
+    },
+    pane__resizeWest: {
+        "& $pane_resizeHandle": {
+            left: "-4px"
+        }
+    },
+    pane__resizeEast: {
+        "& $pane_resizeHandle": {
+            right: "-4px"
+        }
+    },
+    pane__overlay: {
+        position: "absolute",
+        height: "100%",
+        zIndex: "2"
+    }
+};
+
+class Pane extends React.Component<PaneProps, IPaneState> {
     /**
      * The default props of the Pane component
      */
-    public static defaultProps: IPaneProps = {
+    public static defaultProps: IPaneHandledProps = {
         minWidth: 100,
         maxWidth: 800,
         width: void(0),
@@ -52,7 +103,7 @@ class Pane extends React.Component<IPaneProps, IPaneState> {
      */
     private ref: HTMLElement;
 
-    constructor(props: IPaneProps) {
+    constructor(props: PaneProps) {
         super(props);
 
         this.state = {
@@ -67,9 +118,6 @@ class Pane extends React.Component<IPaneProps, IPaneState> {
 
     /**
      * Return the width of Pane. Sources from props first, and then state if props.width is undefined
-     * @name width
-     * @type {function}
-     * @returns {number}
      */
     public width(): number {
         return this.props.width || this.state.width;
@@ -92,7 +140,7 @@ class Pane extends React.Component<IPaneProps, IPaneState> {
     /**
      * Handle when component updates
      */
-    public componentDidUpdate(prevProps: IPaneProps, prevState: IPaneState): void {
+    public componentDidUpdate(prevProps: PaneProps, prevState: IPaneState): void {
         if ( this.state.resizing && !prevState.resizing ) {
             document.addEventListener("mouseup", this.onMouseUp);
             document.addEventListener("mousemove", this.onMouseMove);
@@ -149,7 +197,13 @@ class Pane extends React.Component<IPaneProps, IPaneState> {
             return null;
         }
 
-        return ( <button aria-hidden={true} onMouseDown={this.onMouseDown}/>);
+        return (
+            <button
+                className={this.props.managedClasses.pane_resizeHandle}
+                aria-hidden={true}
+                onMouseDown={this.onMouseDown}
+            />
+        );
     }
 
     /**
@@ -221,22 +275,34 @@ class Pane extends React.Component<IPaneProps, IPaneState> {
     public render(): React.ReactElement<HTMLDivElement> {
         return (
             <div
+                className={this.generateClassNames()}
                 // TODO: {...this.unhandledProps()}
-                data-grid-app="pane"
-                data-grid-app-resize-from={this.props.resizeFrom}
-                data-grid-app-collapsed={this.props.collapsed}
-                data-grid-app-overlay={this.props.overlay}
                 style={this.generateStyleAttribute()}
                 ref={this.storeRef}
                 id={this.props.id}
-                arai-hidden={this.props.hidden}
+                aria-hidden={this.props.hidden}
             >
                 {this.props.children}
                 {this.renderResizeControl()}
             </div>
         );
     }
+
+    private generateClassNames(): string {
+        let classes: string = this.props.managedClasses.pane;
+
+        if (this.props.resizeFrom === PaneResizeDirection.east) {
+            classes = `${classes} ${this.props.managedClasses.pane__resizeEast}`;
+        } else if (this.props.resizeFrom === PaneResizeDirection.west) {
+            classes = `${classes} ${this.props.managedClasses.pane__resizeWest}`;
+        }
+
+        if (this.props.overlay) {
+            classes = `${classes} ${this.props.managedClasses.pane__overlay}`;
+        }
+
+        return classes;
+    }
 }
 
-export default Pane;
-export { IPaneProps };
+export default manageJss(paneStyleSheet)(Pane);

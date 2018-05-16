@@ -1,15 +1,27 @@
 import * as React from "react";
-import { ICanvasProps } from "./canvas.props";
+import { CanvasProps, ICanvasHandledProps, ICanvasUnhandledProps } from "./canvas.props";
+import manageJss, { ComponentStyles, IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+
+export interface ICanvasClassNamesContract {
+    canvas: string;
+}
+
+const styles: ComponentStyles<ICanvasClassNamesContract, undefined> = {
+    canvas: {
+        flex: "1",
+        overflowY: "auto"
+    }
+};
 
 /**
  * Grid Canvas - this is the main content area of the grid.
  */
-class Canvas extends React.Component<ICanvasProps, undefined> {
+class Canvas extends React.Component<CanvasProps, undefined> {
     /**
      * Default props for the Canvas component
      * @type {Partial<ICanvasProps>}
      */
-    public static defaultProps: ICanvasProps = {
+    public static defaultProps: ICanvasHandledProps = {
         minWidth: 300
     };
 
@@ -30,6 +42,7 @@ class Canvas extends React.Component<ICanvasProps, undefined> {
         return (
             <div
                 // TODO: {...this.unhandledProps()}
+                className={this.props.managedClasses.canvas}
                 data-grid-app="canvas"
                 style={this.renderStyleAttribute()}
             >
@@ -39,5 +52,4 @@ class Canvas extends React.Component<ICanvasProps, undefined> {
     }
 }
 
-export default Canvas;
-export { ICanvasProps };
+export default manageJss(styles)(Canvas);

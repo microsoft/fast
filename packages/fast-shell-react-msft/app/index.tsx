@@ -1,9 +1,10 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import Canvas from "../src/Canvas";
+import Canvas from "../src/canvas";
 import Container from "../src/container";
 import Row from "../src/row";
 import Pane from "../src/pane";
+import { PaneResizeDirection } from "../src/pane.props";
 
 /**
  * Create the root node
@@ -18,6 +19,18 @@ function render(): void {
             <Container>
                 <Row>
                     hello world
+                </Row>
+                <Row fill={true}>
+                    <Pane resizable={true} resizeFrom={PaneResizeDirection.east}>
+                        <p>{(new Array(1000) as any).fill("pane").join(" ")}</p>
+                    </Pane>
+                    <Canvas>
+                        canvas
+                    </Canvas>
+
+                    <Pane collapsed={true}>
+
+                    </Pane>
                 </Row>
             </Container>
         ),

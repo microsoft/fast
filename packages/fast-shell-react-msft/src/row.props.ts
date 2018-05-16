@@ -1,5 +1,5 @@
-import Row from "./row";
-import Canvas from "./canvas";
+import { IRowClassNamesContract } from "./row";
+import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
 
 /**
  * Possible justify options: 'center' | 'start' | 'end' | 'space-around' | 'space-between'
@@ -13,20 +13,19 @@ export type RowJustify = "center" | "start" | "end" | "space-around" | "space-be
  * Defines the possible props for the Row component
  * @interface
  */
-export interface IRowProps {
+export interface IRowHandledProps {
     /**
      * How to justify child content
-     * @name justify
-     * @type {RowJustify}
+     * TODO is this necessary? doesn't appear to do anything
      */
     justify?: RowJustify;
 
     /**
      * Causes the row to fill all available vertical space
-     * @name fill
-     * @type {boolean}
      */
     fill?: boolean;
-
-    // TODO: can we limit row children to Canvas and Pane?
 }
+
+export interface IRowManagedClasses extends IManagedClasses<IRowClassNamesContract> {}
+export interface IRowUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type RowProps = IRowHandledProps & IRowUnhandledProps & IRowManagedClasses;

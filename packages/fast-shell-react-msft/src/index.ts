@@ -1,14 +1,11 @@
-import Canvas, { ICanvasProps } from "./Canvas";
+import Canvas from "./Canvas";
 import Container from "./Container";
-import Pane, { IPaneProps } from "./Pane";
-import Row , { IRowProps } from "./Row";
+import Pane from "./Pane";
+import Row from "./Row";
 
 export {
     Canvas,
-    ICanvasProps,
     Container,
-    IPaneProps,
     Pane,
-    Row,
-    IRowProps
+    Row
 };

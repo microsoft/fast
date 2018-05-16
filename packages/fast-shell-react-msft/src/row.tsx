@@ -1,16 +1,35 @@
 import * as React from "react";
 import Pane from "./pane";
 import Canvas from "./canvas";
-import { IRowProps } from "./row.props";
+import { IRowHandledProps, IRowUnhandledProps, RowProps } from "./row.props";
+import manageJss, { ComponentStyles, IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
 
 export const east: string  = "east";
 export const west: string = "west";
 
+export interface IRowClassNamesContract {
+    row: string;
+    row__fill: string;
+}
+
+export const styles: ComponentStyles<IRowClassNamesContract, undefined> = {
+    row: {
+        position: "relative",
+        display: "flex",
+        flexDirection: "row",
+        flexBasis: "auto"
+    },
+    row__fill: {
+        flex: "1",
+        overflow: "hidden"
+    }
+};
+
 /**
  * Grid Row - use this to create rows of pane/canvas content or other content.
  */
-class Row extends React.Component<IRowProps, undefined> {
-    public static defaultProps: IRowProps = {
+class Row extends React.Component<RowProps, undefined> {
+    public static defaultProps: IRowHandledProps = {
         justify: void(0),
         fill: false
     };
@@ -53,15 +72,18 @@ class Row extends React.Component<IRowProps, undefined> {
         return (
             <div
                 // TODO: {...this.unhandledProps()}
-                data-grid-app="row"
-                data-grid-app-fill={this.props.fill}
-                data-grid-app-justify={this.props.justify}
+                className={this.generateClassNames()}
             >
                 {this.renderChildren()}
             </div>
         );
     }
+
+    private generateClassNames(): string {
+        return this.props.fill
+            ?  `${this.props.managedClasses.row} ${this.props.managedClasses.row__fill}`
+            : this.props.managedClasses.row;
+    }
 }
 
-export default Row;
-export { IRowProps };
+export default manageJss(styles)(Row);
