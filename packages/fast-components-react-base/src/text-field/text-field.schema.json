@@ -6,5 +6,40 @@
     "id": "text-field",
     "children": true,
     "properties": {
+        "disabled": {
+            "title": "Disabled",
+            "type": "boolean"
+        },
+        "error": {
+            "title": "Error",
+            "type": "boolean"
+        },
+        "type": {
+            "title": "Text Field type",
+            "type": "string",
+            "enum": [
+                "date",
+                "email",
+                "hidden",
+                "month",
+                "number",
+                "password",
+                "range",
+                "search",
+                "tel",
+                "text",
+                "time",
+                "url",
+                "week"
+            ]
+        },
+        "placeholder": {
+            "title": "Text Field placeholder",
+            "type": "string"
+        },
+        "value" : {
+            "title": "Text Field value",
+            "type": "string"
+        }
     }
 }
