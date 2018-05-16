@@ -120,7 +120,10 @@ const style: ComponentStyles<IDevToolsManagedClasses, IDevSiteDesignSystem> = {
     },
     devTools_tab: {
         "& button": {
-            background: "none"
+            background: "none",
+            "&:focus": {
+                outline: "none"
+            }
         }
     },
     devTools_tab__active: {
@@ -193,13 +196,16 @@ class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevTool
 
     private renderTabItems(): JSX.Element[] {
         return this.tabs.map((tabItem: tabType, index: number) => {
-            return (
-                <li key={index} className={this.getTabClassNames(tabItem)}>
-                    <button onClick={this.handleChangeTab(tabItem)}>
-                        {tabItem}
-                    </button>
-                </li>
-            );
+            // TODO: #297, #299 remove this if statement once other tab contents are created
+            if (tabItem === "code") {
+                return (
+                    <li key={index} className={this.getTabClassNames(tabItem)}>
+                        <button onClick={this.handleChangeTab(tabItem)}>
+                            {tabItem}
+                        </button>
+                    </li>
+                );
+            }
         });
     }
 
