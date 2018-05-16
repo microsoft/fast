@@ -6,6 +6,7 @@ import manageJss, {
     IJSSManagerProps,
     IManagedClasses
 } from "@microsoft/fast-jss-manager-react";
+import { ErrorBoundary, IErrorBoundaryProps } from "../../utilities";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
 
@@ -67,14 +68,18 @@ class ComponentWrapper extends React.Component<IComponentWrapperProps<IDevSiteDe
         if (this.props.designSystem) {
             return (
                 <DesignSystemProvider designSystem={this.props.designSystem}>
-                    {this.props.children}
+                    <ErrorBoundary>
+                        {this.props.children}
+                    </ErrorBoundary>
                 </DesignSystemProvider>
             );
         }
 
         return (
             <React.Fragment>
-                {this.props.children}
+                <ErrorBoundary>
+                    {this.props.children}
+                </ErrorBoundary>
             </React.Fragment>
         );
     }
