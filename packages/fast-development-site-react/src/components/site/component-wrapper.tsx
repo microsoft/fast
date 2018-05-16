@@ -39,14 +39,16 @@ const styles: ComponentStyles<IComponentWrapperManagedClasses, IDevSiteDesignSys
         "&::before": {
             content: "''",
             position: "absolute",
-            top: toPx(0),
-            bottom: toPx(0),
-            left: toPx(0),
-            background: (config: IDevSiteDesignSystem): string => {
-                return config.brandColor;
+            height: "0",
+            width: "0",
+            transform: "rotate(-45deg)",
+            bottom: toPx(-10),
+            left: toPx(-10),
+            border: `${toPx(10)} solid transparent`,
+            opacity: ".5",
+            borderRight: (config: IDevSiteDesignSystem): string => {
+                return `${toPx(10)} solid ${config.brandColor}`;
             },
-            width: toPx(2),
-            height: "100%"
         }
     }
 };
