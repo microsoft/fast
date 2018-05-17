@@ -7,11 +7,6 @@
 # Linux : https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64gi
 # MacOS : https://codeclimate.com/downloads/test-reporter/test-reporter-latest-darwin-amd64 
 
-# Setup Exports
-# // TODO #427: hide values and provide details on where to find these.
-# $ export CC_TEST_REPORTER_ID=08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
-# $ export CIRCLE_CI_TOKEN=fb829683ff3896003eda260b82bf90e1d6e10051
-
 # Setup Code Climate test-reporter
 # If the package is not found then download from internet and set appropriate permissions
 if [ ! -f ./coverage/cc-test-reporter ]; then
