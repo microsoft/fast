@@ -8,7 +8,8 @@ jobs:
     docker:
       - image: circleci/node:latest
     environment:
-      CC_TEST_REPORTER_ID: 08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
+      ENV: CC_TEST_REPORTER_ID
+      ENV: CIRCLE_CI_TOKEN
     working_directory: ~/fast-dna
     steps:
       - checkout
