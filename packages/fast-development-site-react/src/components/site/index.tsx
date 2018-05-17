@@ -280,7 +280,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                             {this.renderChildrenBySlot(this, ShellSlot.canvas)}
                             {this.renderComponentByRoute(route)}
                         </ComponentView>
-                        {this.renderDevTools()}
+                        {this.renderDevTools(route.schema)}
                     </div>
                 </ShellCanvas>
                 <ShellPane hidden={!this.state.formView}>
@@ -290,11 +290,12 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         );
     }
 
-    private renderDevTools(): JSX.Element {
+    private renderDevTools(schema: any): JSX.Element {
         if (this.state.devToolsView) {
             return (
                 <DevTools
                     activeFramework={this.props.activeFramework}
+                    activeSchema={schema}
                     activeComponentName={this.state.componentName}
                     activeFormData={this.state.componentData[this.state.currentPath][this.state.activeComponentIndex]}
                     childOptions={this.props.formChildOptions}

@@ -15,6 +15,7 @@ export type tabType = "code" | "properties" | "schema";
 export interface IDevToolsProps {
     onToggleView: () => void;
     activeFormData: any;
+    activeSchema: any;
     activeComponentName: string;
     activeFramework: FrameworkEnum;
     childOptions: IFormChildOption[];
@@ -196,8 +197,8 @@ class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevTool
 
     private renderTabItems(): JSX.Element[] {
         return this.tabs.map((tabItem: tabType, index: number) => {
-            // TODO: #297, #299 remove this if statement once other tab contents are created
-            if (tabItem === "code") {
+            // TODO: #297 remove this if statement once other tab contents are created
+            if (tabItem === "code" || tabItem === "schema") {
                 return (
                     <li key={index} className={this.getTabClassNames(tabItem)}>
                         <button onClick={this.handleChangeTab(tabItem)}>
@@ -260,7 +261,7 @@ class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevTool
     }
 
     private renderSchema(): JSX.Element {
-        return <span>TBD</span>;
+        return <pre dangerouslySetInnerHTML={{__html: JSON.stringify(this.props.activeSchema, null, 2)}} />;
     }
 
     private renderComponentFrameworkType(): JSX.Element {
