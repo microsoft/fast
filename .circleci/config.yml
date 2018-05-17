@@ -53,7 +53,9 @@ jobs:
               if [ -d "$f" ]; then
                 echo $f
                 set +e
-                ./coverage/cc-test-reporter format-coverage -t lcov -o coverage/coverage.${f//\//-}.json $f/coverage/lcov.info
+                if [ -d "$f/coverage" ]; then
+                  ./coverage/cc-test-reporter format-coverage -t lcov -o coverage/coverage.${f//\//-}.json $f/coverage/lcov.info
+                fi
               fi
             done;
 

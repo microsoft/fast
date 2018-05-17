@@ -26,11 +26,6 @@
   },
   "jest": {
     "collectCoverage": true,
-    "coverageReporters": [
-      "json",
-      "text",
-      "html"
-    ],
     "coverageThreshold": {
       "global": {
         "branches": 50,

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # To debug code coverage run with bash and debug (-x) from the directory root
-# $ bash -x .circleci/run-coverage.sh
+# $ bash -x .circleci/run-coverage-locally.sh
 
 # Prebuilt Binaries
 # Choose a binary below that matches your build environment.
@@ -14,23 +14,26 @@
 
 # Setup Code Climate test-reporter
 # If the package is not found then download from internet and set appropriate permissions
-if [ ! -f ./tmp/cc-test-reporter ]; then
-    mkdir -p tmp/
-    curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-darwin-amd64 > ./tmp/cc-test-reporter
-    chmod +x ./tmp/cc-test-reporter
+if [ ! -f ./coverage/cc-test-reporter ]; then
+    mkdir -p coverage/
+    curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-darwin-amd64 > ./coverage/cc-test-reporter
+    chmod +x ./coverage/cc-test-reporter
 fi
 
 # Code Coverage
 # Notify Code Climate that a build is about to start
-./tmp/cc-test-reporter before-build --debug
+# Add --debug to cc-test-reporter when necessary
+./coverage/cc-test-reporter before-build
 
 for f in packages/*; do
-    if [ -d "$f" ]; then
-        echo $f
-        ./tmp/cc-test-reporter format-coverage -t lcov -o tmp/coverage.${f//\//-}.json $f/coverage/lcov.info --debug
+  if [ -d "$f" ]; then
+    echo $f
+    if [ -d "$f/coverage" ]; then
+      ./coverage/cc-test-reporter format-coverage -t lcov -o coverage/coverage.${f//\//-}.json $f/coverage/lcov.info
     fi
+  fi
 done;
 
-./tmp/cc-test-reporter sum-coverage -o tmp/coverage.total.json tmp/coverage.*.json --debug
-./tmp/cc-test-reporter upload-coverage -i tmp/coverage.total.json --debug
-#./tmp/cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
+./coverage/cc-test-reporter sum-coverage -o coverage/coverage.total.json coverage/coverage.*.json
+./coverage/cc-test-reporter upload-coverage -i coverage/coverage.total.json
+#./coverage/cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
