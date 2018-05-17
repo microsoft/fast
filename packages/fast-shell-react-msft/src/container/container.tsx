@@ -33,7 +33,7 @@ class Container extends Foundation<ContainerProps, undefined> {
     public render(): React.ReactElement<HTMLDivElement> {
         return (
             <div
-                // TODO {...this.unhandledProps()}
+                {...this.unhandledProps()}
                 className={super.generateClassNames(this.props.managedClasses.container)}
             >
                 {this.props.children}

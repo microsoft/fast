@@ -270,8 +270,8 @@ class Pane extends Foundation<PaneProps, IPaneState> {
     public render(): React.ReactElement<HTMLDivElement> {
         return (
             <div
+                {...this.unhandledProps()}
                 className={this.generateClassNames()}
-                // TODO: {...this.unhandledProps()}
                 style={this.generateStyleAttribute()}
                 ref={this.rootElement}
                 id={this.props.id}

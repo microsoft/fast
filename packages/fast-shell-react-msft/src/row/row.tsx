@@ -72,7 +72,7 @@ class Row extends Foundation<RowProps, undefined> {
     public render(): React.ReactElement<HTMLDivElement> {
         return (
             <div
-                // TODO: {...this.unhandledProps()}
+                {...this.unhandledProps()}
                 className={this.generateClassNames()}
             >
                 {this.renderChildren()}

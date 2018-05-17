@@ -40,7 +40,7 @@ class Canvas extends Foundation<CanvasProps, undefined> {
     public render(): React.ReactElement<HTMLDivElement> {
         return (
             <div
-                // TODO: {...this.unhandledProps()}
+                {...this.unhandledProps()}
                 className={super.generateClassNames(this.props.managedClasses.canvas)}
                 data-grid-app="canvas"
                 style={this.renderStyleAttribute()}
