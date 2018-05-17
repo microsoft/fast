@@ -3,9 +3,9 @@ import { toPx } from "@microsoft/fast-jss-utilities";
 import { IDevSiteDesignSystem } from "../../src/components/design-system";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 
-/*tslint:disable:no-empty-interface*/
+/* tslint:disable:no-empty-interface */
 export interface IErrorBoundaryProps {}
-/*tslint:disable:no-empty-interface*/
+/* tslint:enable:no-empty-interface */
 
 export interface IErrorBoundaryState {
     hasError: boolean;
