@@ -11,7 +11,6 @@ export default {
     data: [
         {
             round: true,
-            src: "https://placehold.it/600x600/2F2F2F/171717",
             vp5: "https://placehold.it/600x600/2F2F2F/171717",
             vp4: "https://placehold.it/600x600/2F2F2F/171717",
             vp3: "https://placehold.it/500x500/2F2F2F/171717",
@@ -23,7 +22,7 @@ export default {
             round: true,
             src: "https://placehold.it/300x300/2F2F2F/171717",
             /* tslint:disable-next-line */
-            srcSet: "https://placehold.it/600x600/2F2F2F/171717 2048w, https://placehold.it/600x600/2F2F2F/171717 1778w, https://placehold.it/1600x600/2F2F2F/171717 1399w, https://placehold.it/500x500/2F2F2F/171717 1083w, https://placehold.it/400x400/2F2F2F/171717 767w, https://placehold.it/300x300/2F2F2F/171717 0w",
+            srcSet: "https://placehold.it/600x600/2F2F2F/171717 2048w, https://placehold.it/600x600/2F2F2F/171717 1778w, https://placehold.it/1600x600/2F2F2F/171717 1399w, https://placehold.it/500x500/2F2F2F/171717 1083w, https://placehold.it/400x400/2F2F2F/171717 767w, https://placehold.it/300x300/2F2F2F/171717 1w",
             sizes: "100vw",
             alt: "Placeholder with grey background and dimension watermark without any imagery"
         },
@@ -33,7 +32,6 @@ export default {
             alt: "Placeholder with grey background and dimension watermark without any imagery"
         },
         {
-            src: "https://placehold.it/600x600/2F2F2F/171717",
             vp5: "https://placehold.it/600x600/2F2F2F/171717",
             vp4: "https://placehold.it/600x600/2F2F2F/171717",
             vp3: "https://placehold.it/500x500/2F2F2F/171717",
@@ -44,7 +42,7 @@ export default {
         {
             src: "https://placehold.it/539x300/2F2F2F/171717",
             /* tslint:disable-next-line */
-            srcSet: "https://placehold.it/2048x600/2F2F2F/171717 2048w, https://placehold.it/1778x600/2F2F2F/171717 1778w, https://placehold.it/1399x600/2F2F2F/171717 1399w, https://placehold.it/1083x500/2F2F2F/171717 1083w, https://placehold.it/767x400/2F2F2F/171717 767w, https://placehold.it/539x300/2F2F2F/171717 0w",
+            srcSet: "https://placehold.it/2048x600/2F2F2F/171717 2048w, https://placehold.it/1778x600/2F2F2F/171717 1778w, https://placehold.it/1399x600/2F2F2F/171717 1399w, https://placehold.it/1083x500/2F2F2F/171717 1083w, https://placehold.it/767x400/2F2F2F/171717 767w, https://placehold.it/539x300/2F2F2F/171717 1w",
             sizes: "100vw",
             alt: "Placeholder with grey background and dimension watermark without any imagery"
         },
