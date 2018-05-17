@@ -28,8 +28,6 @@ export enum ShellSlot {
 
 const style: ComponentStyles<IShellManagedClasses, IDevSiteDesignSystem> = {
     shell: {
-        fontFamily: "Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif",
-        fontSize: toPx(14),
         height: "100vh",
         display: "flex",
         flexDirection: "column"
