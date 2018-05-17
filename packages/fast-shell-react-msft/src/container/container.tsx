@@ -1,6 +1,7 @@
 import * as React from "react";
 import manageJss, { ComponentStyles, IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
 import { ContainerProps } from "./container.props";
+import Foundation, { IFoundationProps } from "../foundation";
 
 export interface IContainerClassNamesContract {
     "@global": string;
@@ -25,7 +26,7 @@ const styles: ComponentStyles<IContainerClassNamesContract, undefined> = {
 /**
  * The Grid Container. This element wraps all other grid elements.
  */
-class Container extends React.Component<ContainerProps, undefined> {
+class Container extends Foundation<ContainerProps, undefined> {
     /**
      * Renders the Container markup
      */
@@ -33,7 +34,7 @@ class Container extends React.Component<ContainerProps, undefined> {
         return (
             <div
                 // TODO {...this.unhandledProps()}
-                className={this.props.managedClasses.container}
+                className={super.generateClassNames(this.props.managedClasses.container)}
             >
                 {this.props.children}
             </div>

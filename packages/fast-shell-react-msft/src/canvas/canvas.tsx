@@ -1,6 +1,7 @@
 import * as React from "react";
 import { CanvasProps, ICanvasHandledProps, ICanvasUnhandledProps } from "./canvas.props";
 import manageJss, { ComponentStyles, IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import Foundation, { IFoundationProps } from "../foundation";
 
 export interface ICanvasClassNamesContract {
     canvas: string;
@@ -16,7 +17,7 @@ const styles: ComponentStyles<ICanvasClassNamesContract, undefined> = {
 /**
  * Grid Canvas - this is the main content area of the grid.
  */
-class Canvas extends React.Component<CanvasProps, undefined> {
+class Canvas extends Foundation<CanvasProps, undefined> {
     /**
      * Default props for the Canvas component
      */
@@ -40,7 +41,7 @@ class Canvas extends React.Component<CanvasProps, undefined> {
         return (
             <div
                 // TODO: {...this.unhandledProps()}
-                className={this.props.managedClasses.canvas}
+                className={super.generateClassNames(this.props.managedClasses.canvas)}
                 data-grid-app="canvas"
                 style={this.renderStyleAttribute()}
             >

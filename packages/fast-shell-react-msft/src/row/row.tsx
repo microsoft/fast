@@ -3,6 +3,7 @@ import Pane from "../pane";
 import Canvas from "../canvas";
 import { IRowHandledProps, IRowUnhandledProps, RowProps } from "./row.props";
 import manageJss, { ComponentStyles, IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import Foundation, { IFoundationProps } from "../foundation";
 
 export const east: string  = "east";
 export const west: string = "west";
@@ -28,7 +29,7 @@ const styles: ComponentStyles<IRowClassNamesContract, undefined> = {
 /**
  * Grid Row - use this to create rows of pane/canvas content or other content.
  */
-class Row extends React.Component<RowProps, undefined> {
+class Row extends Foundation<RowProps, undefined> {
     public static defaultProps: IRowHandledProps = {
         fill: false
     };
@@ -37,6 +38,7 @@ class Row extends React.Component<RowProps, undefined> {
      * We need to manipulate props based on where Pane components are in relation to the Canvas.
      * This is because the Panes resize from the right when they are to the left of the Canvas,
      * and vice-versa when they are on the right of the canvas.
+     * TODO: rip this out and make it manual
      */
     public renderChildren(): React.ReactChild[] {
         let canvasFound: boolean = false; // Flag for if canvas is found
@@ -78,10 +80,12 @@ class Row extends React.Component<RowProps, undefined> {
         );
     }
 
-    private generateClassNames(): string {
-        return this.props.fill
+    protected generateClassNames(): string {
+        const classes: string = this.props.fill
             ?  `${this.props.managedClasses.row} ${this.props.managedClasses.row__fill}`
             : this.props.managedClasses.row;
+
+        return super.generateClassNames(classes);
     }
 }
 

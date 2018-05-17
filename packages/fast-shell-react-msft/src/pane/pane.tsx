@@ -5,6 +5,7 @@ import { west } from "../row";
 import rafThrottle from "raf-throttle";
 import { toPx } from "../utilities";
 import manageJss, { ComponentStyles, IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import Foundation, { IFoundationProps } from "../foundation";
 
 /**
  * The interface for the Pane's state object
@@ -80,7 +81,7 @@ const paneStyleSheet: ComponentStyles<IPaneClassNamesContract, undefined> = {
     }
 };
 
-class Pane extends React.Component<PaneProps, IPaneState> {
+class Pane extends Foundation<PaneProps, IPaneState> {
     /**
      * The default props of the Pane component
      */
@@ -101,7 +102,7 @@ class Pane extends React.Component<PaneProps, IPaneState> {
     /**
      * Stores a reference to the pane HTML element
      */
-    private ref: HTMLElement;
+    private rootElement: React.RefObject<HTMLDivElement>;
 
     constructor(props: PaneProps) {
         super(props);
@@ -114,6 +115,7 @@ class Pane extends React.Component<PaneProps, IPaneState> {
 
         this.onMouseMove    = throttle(this.onMouseMove, 16);
         this.onWindowResize = rafThrottle(this.onWindowResize);
+        this.rootElement = React.createRef();
     }
 
     /**
@@ -256,14 +258,7 @@ class Pane extends React.Component<PaneProps, IPaneState> {
     }
 
     public onWindowResize = (e: UIEvent): void => {
-        this.setWidth(this.ref.clientWidth);
-    }
-
-    // TODO: update this with react refs
-    public storeRef = (ref: any): void => {
-        if (!!ref) {
-            this.ref = ref;
-        }
+        this.setWidth(this.rootElement.current.clientWidth);
     }
 
     public setWidth(width: number): void {
@@ -278,7 +273,7 @@ class Pane extends React.Component<PaneProps, IPaneState> {
                 className={this.generateClassNames()}
                 // TODO: {...this.unhandledProps()}
                 style={this.generateStyleAttribute()}
-                ref={this.storeRef}
+                ref={this.rootElement}
                 id={this.props.id}
                 aria-hidden={this.props.hidden}
             >
@@ -288,7 +283,7 @@ class Pane extends React.Component<PaneProps, IPaneState> {
         );
     }
 
-    private generateClassNames(): string {
+    protected generateClassNames(): string {
         let classes: string = this.props.managedClasses.pane;
 
         if (this.props.resizeFrom === PaneResizeDirection.east) {
@@ -305,7 +300,7 @@ class Pane extends React.Component<PaneProps, IPaneState> {
             classes = `${classes} ${this.props.managedClasses.pane__hidden}`;
         }
 
-        return classes;
+        return super.generateClassNames(classes);
     }
 }
 
