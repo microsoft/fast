@@ -10,7 +10,7 @@ import * as schema from "./text-field.schema.json";
 import * as React from "react";
 
 const examples: ISnapshotTestSuite<ITextFieldHandledProps & ITextFieldManagedClasses> = {
-    name: "textfield",
+    name: "text-field",
     component: TextField,
     schema: schema as any,
     data: [
