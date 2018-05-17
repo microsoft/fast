@@ -6,11 +6,11 @@ abstract class Foundation<P, S> extends React.Component<IFoundationProps & P, S>
     protected generateClassNames(classes: string = ""): string {
         return this.props && this.props.className
             ? classes.concat(` ${this.props.className || ""}`).trim().replace(/(\s){2,}/g, " ")
-            : "";
+            : classes;
     }
 
     protected unhandledProps(): Partial<P> {
-        return !this.props
+        return !this.props || !this.handledProps
         ? {}
         : Object.keys(this.props)
         .filter((key: string) => {
