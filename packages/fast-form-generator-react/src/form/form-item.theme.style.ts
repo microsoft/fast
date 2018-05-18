@@ -5,7 +5,6 @@ import {
     applyWrapperStyle,
     colors,
     darkTheme,
-    insetStrongBoxShadow,
     lightTheme
 } from "../utilities/form-input.style";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";

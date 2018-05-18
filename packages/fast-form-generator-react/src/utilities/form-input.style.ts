@@ -15,6 +15,15 @@ export const darkTheme: string = "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0i
 export const trashcan: string = "url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDE2IDE2OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHRpdGxlPnRyYXNoY2FuVVBEQVRFRDwvdGl0bGU+PGc+PHBhdGggZD0iTTE0LjMsMy4yaC0xdjExLjRjMCwwLjgtMC43LDEuNS0xLjUsMS41YzAsMCwwLDAsMCwwSDRjLTAuNCwwLTAuOC0wLjItMS0wLjRjLTAuMy0wLjMtMC40LTAuNy0wLjQtMVYzLjJoLTF2LTFoMy45di0xYzAtMC4xLDAtMC4zLDAuMS0wLjRjMC0wLjEsMC4xLTAuMiwwLjItMC4zQzUuOCwwLjQsNiwwLjMsNi4xLDAuM2MwLjEtMC4xLDAuMy0wLjEsMC40LTAuMWgzYzAuMSwwLDAuMywwLDAuNCwwLjFjMC4xLDAuMSwwLjIsMC4xLDAuMywwLjJjMC4xLDAuMSwwLjIsMC4yLDAuMiwwLjNjMC4xLDAuMSwwLjEsMC4zLDAuMSwwLjR2MWgzLjlMMTQuMywzLjJ6IE0xMi40LDMuMkgzLjV2MTEuNGMwLDAuMSwwLjEsMC4zLDAuMSwwLjNDMy43LDE1LDMuOSwxNSw0LDE1aDcuOWMwLjEsMCwwLjMtMC4xLDAuMy0wLjFjMC4xLTAuMSwwLjEtMC4yLDAuMS0wLjNMMTIuNCwzLjJ6IE02LjUsMTNoLTFWNS4xaDFMNi41LDEzeiBNNi41LDIuMmgzdi0xaC0zVjIuMnogTTguNCwxM2gtMVY1LjFoMVYxM3ogTTEwLjQsMTNoLTFWNS4xaDFMMTAuNCwxM3oiLz48L2c+PC9zdmc+) center no-repeat";
 /* tslint:enable */
 
+export interface IBoxShadowConfig {
+    offsetX: number;
+    offsetY: number;
+    blurRadius: number;
+    spreadRadius: number;
+    color: string;
+    inset?: boolean;
+}
+
 export const colors: any = {
     black: "#000",
     white: "#FFF",
@@ -38,31 +47,43 @@ export function localizePadding(top: number, right: number, bottom: number, left
     };
 }
 
-// TODO: #459: Fix "argument_count"
-export function boxShadow(
-    offsetX: number,
-    offsetY: number,
-    blurRadius: number,
-    spreadRadius: number,
-    color: string,
-    inset?: boolean): ICSSRules<{}> {
-        return {
-            boxShadow: `${inset ? "inset " : ""}${toPx(offsetX)} ${toPx(offsetY)} ${toPx(blurRadius)} ${toPx(spreadRadius)} ${color}`
-        };
+export function boxShadow(config: IBoxShadowConfig): ICSSRules<{}> {
+    return {
+        boxShadow: `${config.inset ? "inset " : ""}
+        ${toPx(config.offsetX)} ${toPx(config.offsetY)} ${toPx(config.blurRadius)} ${toPx(config.spreadRadius)} ${config.color}`
+    };
 }
 
 /**
  * Mimics a border but with boxShadow (strong in the sense of no blur)
  */
 export function insetStrongBoxShadow(color: string): ICSSRules<{}> {
+    const shadow: IBoxShadowConfig = {
+        offsetX: 0,
+        offsetY: 0,
+        blurRadius: 0,
+        spreadRadius: 1,
+        color,
+        inset: true
+    };
+
     return {
-        ...boxShadow(0, 0, 0, 1, color, true)
+        ...boxShadow(shadow)
     };
 }
 
 export function insetHoverBoxShadow(): ICSSRules<{}> {
+    const shadow: IBoxShadowConfig = {
+        offsetX: 0,
+        offsetY: 0,
+        blurRadius: 2,
+        spreadRadius: 0,
+        color: colors.hover,
+        inset: true
+    };
+
     return {
-        ...boxShadow(0, 0, 2, 0, colors.hover, true)
+        ...boxShadow(shadow)
     };
 }
 
@@ -78,12 +99,21 @@ export function applyLabelStyle(): ICSSRules<{}> {
 }
 
 export function applyInputStyle(): ICSSRules<{}> {
+    const shadow: IBoxShadowConfig = {
+        offsetX: 0,
+        offsetY: 0,
+        blurRadius: 4,
+        spreadRadius: 0,
+        color: colors.boxShadow,
+        inset: true
+    };
+
     return {
         lineHeight: toPx(16),
         fontSize: toPx(14),
         backgroundColor: colors.grayBackground,
         borderRadius: toPx(2),
-        ...boxShadow(0, 0, 4, 0, colors.boxShadow, true),
+        ...boxShadow(shadow),
         padding: toPx(8),
         border: "none",
         outline: "none",
@@ -192,16 +222,24 @@ export const listItem: ICSSRules<{}> = {
 
 export function applyAriaHiddenStyles(): ICSSRules<{}> {
     return {
-        "&[aria-hidden='true']": {
+        "&[aria-hidden=\"true\"]": {
             display: "none"
         },
-        "&[aria-hidden='false']": {
+        "&[aria-hidden=\"false\"]": {
             display: "block"
         }
     };
 }
 
 export function applyPopupMenuStyles(): ICSSRules<{}> {
+    const shadow: IBoxShadowConfig = {
+        offsetX: 0,
+        offsetY: 1,
+        blurRadius: 0,
+        spreadRadius: 0,
+        color: colors.border
+    };
+
     return {
         position: "absolute",
         right: "0",
@@ -209,7 +247,7 @@ export function applyPopupMenuStyles(): ICSSRules<{}> {
         background: colors.menuGray,
         zIndex: "1",
         top: toPx(55),
-        ...boxShadow(0, 1, 0, 0, colors.border),
+        ...boxShadow(shadow),
         "& li": {
             "& > button": {
                 cursor: "pointer",
@@ -279,7 +317,7 @@ export function applyPopupHeadingStyles(): ICSSRules<{}> {
                     padding: `${toPx(2)} ${toPx(12)}`,
                     color: colors.pink,
                     ...thickLine,
-                    "&[aria-expanded='true']": {
+                    "&[aria-expanded=\"true\"]": {
                         background: colors.menuGray,
                         borderLeftColor: colors.lightBorder,
                         borderRadius: `${toPx(2)} ${toPx(2)} 0 0`,
@@ -305,6 +343,15 @@ export function applyPopupHeadingStyles(): ICSSRules<{}> {
  * Used for styles radio buttons (vertical and horizontal alignment)
  */
 export function applyInputBackplateStyle(): ICSSRules<{}> {
+    const shadow: IBoxShadowConfig = {
+        offsetX: 0,
+        offsetY: 0,
+        blurRadius: 0,
+        spreadRadius: 2,
+        color: colors.black,
+        inset: true
+    };
+
     return {
         appearance: "none",
         height: toPx(36),
@@ -312,19 +359,28 @@ export function applyInputBackplateStyle(): ICSSRules<{}> {
         backgroundColor: "transparent",
         "&:focus, &:hover": {
             outline: "none",
-            ...boxShadow(0, 0, 0, 2, colors.black, true)
+            ...boxShadow(shadow)
         }
     };
 }
 
 export function applySelectInputStyles(): ICSSRules<{}> {
+    const shadow: IBoxShadowConfig = {
+        offsetX: 0,
+        offsetY: 0,
+        blurRadius: 4,
+        spreadRadius: 0,
+        color: colors.boxShadow,
+        inset: true
+    };
+
     return {
         width: "100%",
         lineHeight: toPx(16),
         fontSize: toPx(14),
         backgroundColor: colors.grayBackground,
         borderRadius: toPx(2),
-        ...boxShadow(0, 0, 4, 0, colors.boxShadow, true),
+        ...boxShadow(shadow),
         appearance: "none",
         ...localizePadding(8, 36, 8, 10),
         border: "none",
