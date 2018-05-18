@@ -7,12 +7,11 @@ Teams spend significant time building parts of the design system (colors, variab
 **How do we accelerate?** A team can use these resources as guidance, reference, fork, or as dependencies.
 
 ## Status
-[![Build Status](https://travis-ci.org/Microsoft/fast-dna.svg?branch=master)](https://travis-ci.org/Microsoft/fast-dna)
+[![CircleCI](https://circleci.com/gh/Microsoft/fast-dna/tree/master.svg?style=shield&circle-token=d159a8b24ccb8046e07138c98717c32cb92589d6)](https://circleci.com/gh/Microsoft/fast-dna/tree/master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8a74621e634a6e9b9561/maintainability)](https://codeclimate.com/github/Microsoft/fast-dna/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/8a74621e634a6e9b9561/test_coverage)](https://codeclimate.com/github/Microsoft/fast-dna/test_coverage)
-![license](https://img.shields.io/github/license/mashape/apistatus.svg)
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
-[![CircleCI](https://circleci.com/gh/Microsoft/fast-dna/tree/master.svg?style=shield&circle-token=d159a8b24ccb8046e07138c98717c32cb92589d6)](https://circleci.com/gh/Microsoft/fast-dna/tree/master)
+![license](https://img.shields.io/github/license/mashape/apistatus.svg)
 
 ## Packages
 [Lerna in independent mode](https://github.com/lerna/lerna#independent-mode---independent) is used to organize and manage this monorepository and contains utilities each of which are published to NPM. Users can choose one package, some packages, or all of them together.
