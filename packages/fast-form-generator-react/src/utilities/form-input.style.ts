@@ -202,6 +202,30 @@ export function applyPopupMenuStyles(): ICSSRules<{}> {
     };
 }
 
+export const thickLine: ICSSRules<{}> = {
+    "& > span": {
+        position: "relative",
+        paddingBottom: toPx(3),
+        display: "block",
+        ...ellipsis(),
+    },
+    "&:hover, &:focus": {
+        outline: "none",
+        "& > span": {
+            "&::after": {
+                position: "absolute",
+                content: "''",
+                pointerEvents: "none",
+                display: "block",
+                background: colors.pink,
+                width: "100%",
+                height: toPx(2),
+                bottom: "0"
+            }
+        }
+    }
+};
+
 export function applyPopupHeadingStyles(): ICSSRules<{}> {
     return {
         position: "relative",
@@ -216,27 +240,7 @@ export function applyPopupHeadingStyles(): ICSSRules<{}> {
                     border: "none",
                     padding: `${toPx(2)} ${toPx(12)}`,
                     color: colors.pink,
-                    "& > span": {
-                        position: "relative",
-                        paddingBottom: toPx(3),
-                        display: "block",
-                        ...ellipsis(),
-                    },
-                    "&:hover, &:focus": {
-                        outline: "none",
-                        "& > span": {
-                            "&::after": {
-                                position: "absolute",
-                                content: "''",
-                                pointerEvents: "none",
-                                display: "block",
-                                background: colors.pink,
-                                width: "100%",
-                                height: toPx(2),
-                                bottom: "0"
-                            }
-                        }
-                    },
+                    ...thickLine,
                     "&[aria-expanded='true']": {
                         background: colors.menuGray,
                         borderLeftColor: colors.lightBorder,

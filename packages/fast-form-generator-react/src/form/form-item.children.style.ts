@@ -10,6 +10,7 @@ import {
     colors,
     localizePadding,
     pinkPlus,
+    thickLine,
     trashcan
 } from "../utilities/form-input.style";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
@@ -80,27 +81,7 @@ const styles: ComponentStyles<IFormItemChildrenClassNameContract, {}> = {
                     height: toPx(16),
                     left: "0"
                 },
-                "& > span": {
-                    position: "relative",
-                    paddingBottom: toPx(3),
-                    display: "block",
-                    ...ellipsis(),
-                },
-                "&:hover, &:focus": {
-                    outline: "none",
-                    "& > span": {
-                        "&::after": {
-                            position: "absolute",
-                            content: "''",
-                            pointerEvents: "none",
-                            display: "block",
-                            background: colors.pink,
-                            width: "100%",
-                            height: toPx(2),
-                            bottom: "0"
-                        }
-                    }
-                }
+                ...thickLine
             }
         }
     },
