@@ -34,6 +34,18 @@ export function localizePadding(top: number, right: number, bottom: number, left
     };
 }
 
+export function insetStrongBoxShadow(color: string): ICSSRules<{}> {
+    return {
+        boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(0)} ${toPx(1)} ${color}`
+    };
+}
+
+export function insetHoverBoxShadow(): ICSSRules<{}> {
+    return {
+        boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(2)} ${colors.hover}`
+    };
+}
+
 export function applyLabelStyle(): ICSSRules<{}> {
     return {
         flexGrow: "1",
@@ -56,10 +68,10 @@ export function applyInputStyle(): ICSSRules<{}> {
         border: "none",
         outline: "none",
         "&:hover": {
-            boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(2)} ${colors.hover}`
+            ...insetHoverBoxShadow()
         },
         "&:focus": {
-            boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(0)} ${toPx(1)} ${colors.pink}`
+            ...insetStrongBoxShadow(colors.pink)
         }
     };
 }
@@ -271,7 +283,7 @@ export function applyInputBackplateStyle(): ICSSRules<{}> {
         backgroundColor: "transparent",
         "&:focus": {
             outline: "none",
-            boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(0)} ${toPx(1)} ${colors.black}`,
+            ...insetStrongBoxShadow(colors.black)
         }
     };
 }
@@ -292,10 +304,10 @@ export function applySelectInputStyles(): ICSSRules<{}> {
             display: "none"
         },
         "&:hover": {
-            boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(2)} ${colors.hover}`
+            ...insetHoverBoxShadow()
         },
         "&:focus": {
-            boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(0)} ${toPx(1)} ${colors.pink}`
+            ...insetStrongBoxShadow(colors.pink)
         }
     };
 }

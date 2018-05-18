@@ -1,7 +1,7 @@
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IFormItemCheckboxClassNameContract } from "../class-name-contracts/";
-import { applyLabelStyle, applyWrapperStyle, colors } from "../utilities/form-input.style";
+import { applyLabelStyle, applyWrapperStyle, colors, insetStrongBoxShadow } from "../utilities/form-input.style";
 
 const styles: ComponentStyles<IFormItemCheckboxClassNameContract, {}> = {
     formItemCheckbox: {
@@ -22,11 +22,11 @@ const styles: ComponentStyles<IFormItemCheckboxClassNameContract, {}> = {
         zIndex: "1",
         margin: "0",
         "&:hover": {
-            boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(0)} ${toPx(1)} ${colors.hover}`
+            ...insetStrongBoxShadow(colors.hover)
         },
         "&:focus": {
             outline: "none",
-            boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(0)} ${toPx(1)} ${colors.pink}`
+            ...insetStrongBoxShadow(colors.pink)
         },
         "& + span": {
             position: "absolute",

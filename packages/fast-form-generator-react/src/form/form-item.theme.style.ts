@@ -1,5 +1,13 @@
 import { toPx } from "@microsoft/fast-jss-utilities";
-import { applyInputStyle, applyLabelStyle, applyWrapperStyle, colors, darkTheme, lightTheme } from "../utilities/form-input.style";
+import {
+    applyInputStyle,
+    applyLabelStyle,
+    applyWrapperStyle,
+    colors,
+    darkTheme,
+    insetStrongBoxShadow,
+    lightTheme
+} from "../utilities/form-input.style";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IFormItemThemeClassNameContract } from "../class-name-contracts/";
 
@@ -37,7 +45,7 @@ const styles: ComponentStyles<IFormItemThemeClassNameContract, {}> = {
         backgroundColor: colors.black,
         "&:focus": {
             outline: "none",
-            boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(0)} ${toPx(1)} ${colors.white}`
+            ...insetStrongBoxShadow(colors.white)
         }
     }
 };
