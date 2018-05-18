@@ -97,7 +97,7 @@ class Pane extends Foundation<PaneProps, IPaneState> {
     /**
      * The width of a pane when it is collapsed
      */
-    private static collapsedWidth: number = 48;
+    private static collapsedWidth: number = 40;
 
     /**
      * Stores a reference to the pane HTML element
