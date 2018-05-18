@@ -345,6 +345,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
                 <div className={this.props.managedClasses.formItemChildren_existingChildren}>
                     <div>
                         <h3>Building blocks</h3>
+                        {/* TODO: #460 Fix "identical-code" */}
                         <button onClick={this.toggleMenu} aria-expanded={!this.state.hideOptionMenu}><span>Options</span></button>
                         <ul className={this.props.managedClasses.formItemChildren_optionMenu} aria-hidden={this.state.hideOptionMenu}>
                             {this.getActionMenuChildItems()}

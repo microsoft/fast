@@ -38,6 +38,7 @@ export function localizePadding(top: number, right: number, bottom: number, left
     };
 }
 
+// TODO: #459: Fix "argument_count"
 export function boxShadow(
     offsetX: number,
     offsetY: number,
