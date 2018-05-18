@@ -22,9 +22,9 @@ export const colors: any = {
     gray: "#8A8A8A",
     grayBackground: "rgba(0, 0, 0, 0.04)",
     boxShadow: "rgba(0, 0, 0, 0.08)",
-    hover: "rgba(0,0,0,.3)",
-    border: "rgba(0,0,0,.2)",
-    lightBorder: "rgba(0,0,0,.1)",
+    hover: "rgba(0,0,0, .3)",
+    border: "rgba(0,0,0, .2)",
+    lightBorder: "rgba(0,0,0, .1)",
     menuGray: "#EBEBEB"
 };
 
@@ -34,15 +34,27 @@ export function localizePadding(top: number, right: number, bottom: number, left
     };
 }
 
+export function boxShadow(
+    offsetX: number,
+    offsetY: number,
+    blurRadius: number,
+    spreadRadius: number,
+    color: string,
+    inset?: boolean): ICSSRules<{}> {
+        return {
+            boxShadow: `${inset ? "inset " : ""}${toPx(offsetX)} ${toPx(offsetY)} ${toPx(blurRadius)} ${toPx(spreadRadius)} ${color}`
+        };
+}
+
 export function insetStrongBoxShadow(color: string): ICSSRules<{}> {
     return {
-        boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(0)} ${toPx(1)} ${color}`
+        ...boxShadow(0, 0, 0, 1, color, true)
     };
 }
 
 export function insetHoverBoxShadow(): ICSSRules<{}> {
     return {
-        boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(2)} ${colors.hover}`
+        ...boxShadow(0, 0, 2, 0, colors.hover, true)
     };
 }
 
@@ -63,7 +75,7 @@ export function applyInputStyle(): ICSSRules<{}> {
         fontSize: toPx(14),
         backgroundColor: colors.grayBackground,
         borderRadius: toPx(2),
-        boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(4)} ${colors.boxShadow}`,
+        ...boxShadow(0, 0, 4, 0, colors.boxShadow, true),
         padding: toPx(8),
         border: "none",
         outline: "none",
@@ -186,7 +198,7 @@ export function applyPopupMenuStyles(): ICSSRules<{}> {
         background: colors.menuGray,
         zIndex: "1",
         top: toPx(55),
-        boxShadow: `${toPx(0)} ${toPx(1)} ${toPx(0)} ${toPx(0)} ${colors.border}`,
+        ...boxShadow(0, 1, 0, 0, colors.border),
         "& li": {
             "& > button": {
                 cursor: "pointer",
@@ -295,7 +307,7 @@ export function applySelectInputStyles(): ICSSRules<{}> {
         fontSize: toPx(14),
         backgroundColor: colors.grayBackground,
         borderRadius: toPx(2),
-        boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(4)} ${colors.boxShadow}`,
+        ...boxShadow(0, 0, 4, 0, colors.boxShadow, true),
         appearance: "none",
         ...localizePadding(8, 36, 8, 10),
         border: "none",
