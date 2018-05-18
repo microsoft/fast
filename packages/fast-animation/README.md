@@ -1,4 +1,4 @@
-# Animation library
+# FAST animation library
 An animation library that simplifies interactions and animations using the Web Animation API.
 
 * Provides a convenient abstraction layer over the Web Animation API while still allowing full access to it.
