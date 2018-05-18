@@ -20,6 +20,7 @@ import DevTools, { FrameworkEnum } from "./dev-tools";
 import NotFound from "./not-found";
 import ComponentView, { ComponentViewTypes } from "./component-view";
 import {
+    Canvas,
     Container,
     IContainerClassNamesContract,
     IPaneClassNamesContract,
@@ -268,8 +269,8 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         return (
             <Row fill={true}>
                 {this.renderNavigationPane(route)}
-                <ShellCanvas>
-                    <ShellActionBar>
+                <Canvas>
+                    <Row>
                         <ActionBar
                             onComponentViewChange={this.onComponentViewChange}
                             onFormToggle={this.onFormToggle}
@@ -278,7 +279,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                             formView={this.state.formView}
                             devToolsView={this.state.devToolsView}
                         />
-                    </ShellActionBar>
+                    </Row>
                     <div className={this.props.managedClasses.site_canvasContent}>
                         <ComponentView>
                             {this.renderChildrenBySlot(this, ShellSlot.canvas)}
@@ -286,7 +287,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                         </ComponentView>
                         {this.renderDevTools(route.schema)}
                     </div>
-                </ShellCanvas>
+                </Canvas>
                 {this.renderExtendedPane(route)}
             </Row>
         );
