@@ -21,9 +21,12 @@ const styles: ComponentStyles<IFormItemCheckboxClassNameContract, {}> = {
         float: "right",
         zIndex: "1",
         margin: "0",
+        "&:hover": {
+            boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(0)} ${toPx(1)} ${colors.hover}`
+        },
         "&:focus": {
             outline: "none",
-            boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(0)} ${toPx(1)} rgba(0,0,0, 0.5)`
+            boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(0)} ${toPx(1)} ${colors.pink}`
         },
         "& + span": {
             position: "absolute",

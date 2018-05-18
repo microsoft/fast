@@ -263,9 +263,9 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
         }).map((option: any, index: number): JSX.Element => {
             return (
                 <li key={uniqueId()}>
-                    <a onClick={this.clickComponentFactory("add", option)}>
-                        {option.name}
-                    </a>
+                    <button onClick={this.clickComponentFactory("add", option)}>
+                        <span>{option.name}</span>
+                    </button>
                 </li>
             );
         });
@@ -345,7 +345,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
                 <div className={this.props.managedClasses.formItemChildren_existingChildren}>
                     <div>
                         <h3>Building blocks</h3>
-                        <button onClick={this.toggleMenu} aria-expanded={!this.state.hideOptionMenu}>Options</button>
+                        <button onClick={this.toggleMenu} aria-expanded={!this.state.hideOptionMenu}><span>Options</span></button>
                         <ul className={this.props.managedClasses.formItemChildren_optionMenu} aria-hidden={this.state.hideOptionMenu}>
                             {this.getActionMenuChildItems()}
                         </ul>

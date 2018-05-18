@@ -1,4 +1,4 @@
-import { toPx } from "@microsoft/fast-jss-utilities";
+import { ellipsis, toPx } from "@microsoft/fast-jss-utilities";
 import {
     applyAriaHiddenStyles,
     applyCleanListStyle,
@@ -7,7 +7,10 @@ import {
     applyListItemStyle,
     applyPopupHeadingStyles,
     applyPopupMenuStyles,
-    colors
+    colors,
+    localizePadding,
+    pinkPlus,
+    trashcan
 } from "../utilities/form-input.style";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IFormItemChildrenClassNameContract } from "../class-name-contracts/";
@@ -57,11 +60,47 @@ const styles: ComponentStyles<IFormItemChildrenClassNameContract, {}> = {
     formItemChildren_childOptionsMenu: {
         ...applyCleanListStyle(),
         "& li": {
-            padding: `${toPx(4)} 0`,
-            "& a": {
+            padding: `${toPx(8)} 0`,
+            "& button": {
+                position: "relative",
                 color: colors.pink,
-                textDecoration: "underline",
-                cursor: "pointer"
+                cursor: "pointer",
+                ...localizePadding(0, 0, 0, 24),
+                border: "none",
+                background: "transparent",
+                lineHeight: toPx(16),
+                fontSize: toPx(14),
+                maxWidth: toPx(290),
+                "&::before": {
+                    position: "absolute",
+                    content: "''",
+                    pointerEvents: "none",
+                    background: pinkPlus,
+                    width: toPx(16),
+                    height: toPx(16),
+                    left: "0"
+                },
+                "& > span": {
+                    position: "relative",
+                    paddingBottom: toPx(3),
+                    display: "block",
+                    ...ellipsis(),
+                },
+                "&:hover, &:focus": {
+                    outline: "none",
+                    "& > span": {
+                        "&::after": {
+                            position: "absolute",
+                            content: "''",
+                            pointerEvents: "none",
+                            display: "block",
+                            background: colors.pink,
+                            width: "100%",
+                            height: toPx(2),
+                            bottom: "0"
+                        }
+                    }
+                }
             }
         }
     },
@@ -91,7 +130,7 @@ const styles: ComponentStyles<IFormItemChildrenClassNameContract, {}> = {
                 height: toPx(16),
                 left: toPx(12),
                 /* tslint:disable-next-line */
-                background: "url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDE2IDE2OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHRpdGxlPnRyYXNoY2FuVVBEQVRFRDwvdGl0bGU+PGc+PHBhdGggZD0iTTE0LjMsMy4yaC0xdjExLjRjMCwwLjgtMC43LDEuNS0xLjUsMS41YzAsMCwwLDAsMCwwSDRjLTAuNCwwLTAuOC0wLjItMS0wLjRjLTAuMy0wLjMtMC40LTAuNy0wLjQtMVYzLjJoLTF2LTFoMy45di0xYzAtMC4xLDAtMC4zLDAuMS0wLjRjMC0wLjEsMC4xLTAuMiwwLjItMC4zQzUuOCwwLjQsNiwwLjMsNi4xLDAuM2MwLjEtMC4xLDAuMy0wLjEsMC40LTAuMWgzYzAuMSwwLDAuMywwLDAuNCwwLjFjMC4xLDAuMSwwLjIsMC4xLDAuMywwLjJjMC4xLDAuMSwwLjIsMC4yLDAuMiwwLjNjMC4xLDAuMSwwLjEsMC4zLDAuMSwwLjR2MWgzLjlMMTQuMywzLjJ6IE0xMi40LDMuMkgzLjV2MTEuNGMwLDAuMSwwLjEsMC4zLDAuMSwwLjNDMy43LDE1LDMuOSwxNSw0LDE1aDcuOWMwLjEsMCwwLjMtMC4xLDAuMy0wLjFjMC4xLTAuMSwwLjEtMC4yLDAuMS0wLjNMMTIuNCwzLjJ6IE02LjUsMTNoLTFWNS4xaDFMNi41LDEzeiBNNi41LDIuMmgzdi0xaC0zVjIuMnogTTguNCwxM2gtMVY1LjFoMVYxM3ogTTEwLjQsMTNoLTFWNS4xaDFMMTAuNCwxM3oiLz48L2c+PC9zdmc+) center no-repeat"
+                background: trashcan
             }
         }
     }

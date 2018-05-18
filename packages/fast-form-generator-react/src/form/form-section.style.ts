@@ -78,13 +78,18 @@ const styles: ComponentStyles<IFormSectionClassNameContract, {}> = {
         },
         "&[aria-pressed='true']": {
             backgroundColor: colors.pink,
+            borderColor: colors.pink,
             "& > span": {
                 left: toPx(28),
                 backgroundColor: colors.white
+            },
+            "&:hover": {
+                backgroundColor: colors.lightPink
             }
         },
         "&:focus": {
-            outline: "none"
+            outline: "none",
+            borderColor: colors.pink
         },
         "& + span": {
             float: "right"
