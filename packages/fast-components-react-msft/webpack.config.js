@@ -1,6 +1,7 @@
 const path = require("path");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const WebpackShellPlugin = require("webpack-shell-plugin");
 
 const appDir = path.resolve(__dirname, "./app");
 const outDir = path.resolve(__dirname, "./www");
@@ -35,6 +36,11 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             contentBase: outDir,
+        }),
+        new WebpackShellPlugin({
+            onBuildStart: [
+                `npm run convert:readme`
+            ]
         })
     ],
     resolve: {

@@ -2,6 +2,7 @@ import * as React from "react";
 import { Route, Switch, withRouter } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
 import { IDevSiteDesignSystem } from "../design-system";
+import { toPx } from "@microsoft/fast-jss-utilities";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 
 /**
@@ -13,41 +14,56 @@ export enum ComponentViewTypes {
 }
 
 export interface IComponentViewManagedClasses {
-    componentView: string;
+    componentExampleView: string;
+    componentDetailView: string;
+}
+
+export interface IComponentViewProps extends RouteComponentProps<{}> {
+    viewType: ComponentViewTypes;
 }
 
 const style: ComponentStyles<IComponentViewManagedClasses, IDevSiteDesignSystem> = {
-    componentView: {
+    componentExampleView: {
         overflow: "auto",
         flexGrow: "1",
         width: "100%",
         display: "grid",
         gridTemplateColumns: "1fr 1fr 1fr",
+    },
+    componentDetailView: {
+        overflow: "auto",
+        flexGrow: "1"
     }
 };
 
-class ComponentView extends React.Component<RouteComponentProps<{}> & IManagedClasses<IComponentViewManagedClasses>, {}> {
+class ComponentView extends React.Component<IComponentViewProps & IManagedClasses<IComponentViewManagedClasses>, {}> {
     public render(): React.ReactElement<HTMLDivElement> {
-        // TODO: #294, #295 uncomment and use exact match for the detail page and examples page when detail page
-        // content is available
         return (
-            <div className={this.props.managedClasses.componentView}>
+            <div className={this.getClassName()}>
                 <Switch>
                     <Route path="/" exact={true} component={null} />
-                    {/* <Route path={this.props.match.url} exact={true} component={this.renderDetailPage} /> */}
-                    <Route path={this.props.match.url} component={this.renderExamplesPage} />
+                    <Route
+                        path={this.props.match.url}
+                        exact={true}
+                        component={this.renderView}
+                    />
+                    <Route
+                        path={`${this.props.match.url}/${ComponentViewTypes[ComponentViewTypes.examples]}`}
+                        exact={true}
+                        component={this.renderView}
+                    />
                 </Switch>
             </div>
         );
     }
 
-    private renderDetailPage = (): React.ReactElement<HTMLElement> => {
-        return (
-            <h1>Detail</h1>
-        );
+    private getClassName(): string {
+        return this.props.viewType === ComponentViewTypes.examples
+            ? this.props.managedClasses.componentExampleView
+            : this.props.managedClasses.componentDetailView;
     }
 
-    private renderExamplesPage = (): React.ReactNode => {
+    private renderView = (): React.ReactElement<HTMLElement> => {
         return (
             <React.Fragment>
                 {this.props.children}

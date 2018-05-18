@@ -3,11 +3,22 @@ import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import Toggle from "./index";
 import { IToggleHandledProps } from "@microsoft/fast-components-react-base";
 import * as schema from "@microsoft/fast-components-react-base/dist/toggle/toggle.schema.json";
+import Documentation from "./.tmp/documentation";
+import * as React from "react";
 
 export default {
     name: "toggle",
     component: Toggle,
     schema: schema as any,
+    documentation: <Documentation />,
+    detailData: {
+        children: "Toggle label (default on)",
+        id: "toggle01",
+        labelId: "label01",
+        selectedString: "On",
+        statusLabelId: "span01",
+        unselectedString: "Off"
+    },
     data: [
         {
             children: "Toggle label (default on)",

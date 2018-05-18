@@ -1,5 +1,11 @@
+import componentDocumentationFactory from "./component-documentation-factory";
+export { componentDocumentationFactory };
+
 import componentFactory from "./component-factory";
 export { componentFactory };
+
+import componentDetailExampleFactory from "./component-detail-example-factory";
+export { componentDetailExampleFactory };
 
 import componentExampleFactory from "./component-example-factory";
 export { componentExampleFactory };

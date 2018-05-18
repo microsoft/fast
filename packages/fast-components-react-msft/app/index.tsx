@@ -28,7 +28,7 @@ function render(): void {
     ReactDOM.render(
         <div>
             <DesignSystemProvider designSystem={DesignSystemDefaults}>
-                <Site title={"FAST Microsoft components"} formChildOptions={formChildOptions}>
+                <Site title={"FAST Microsoft component documentation"} formChildOptions={formChildOptions}>
                     <SiteCategory slot={"category"} name={"Building blocks"}>
                         <SiteCategoryIcon slot="category-icon">
                             <div dangerouslySetInnerHTML={{__html: glyphBuildingblocks}} />

@@ -3,11 +3,19 @@ import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import Image from "./index";
 import { IImageHandledProps } from "@microsoft/fast-components-react-base";
 import * as schema from "@microsoft/fast-components-react-base/dist/image/image.schema.json";
+import Documentation from "./.tmp/documentation";
+import * as React from "react";
 
 export default {
     name: "image",
     component: Image,
     schema: schema as any,
+    documentation: <Documentation />,
+    detailData: {
+        round: true,
+        vp1: "https://placehold.it/300x300/3E3E3E/171717",
+        alt: "Placeholder with grey background and dimension watermark without any imagery"
+    },
     data: [
         {
             round: true,

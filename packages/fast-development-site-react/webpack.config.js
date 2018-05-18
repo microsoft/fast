@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const WebpackShellPlugin = require('webpack-shell-plugin');
 
 module.exports = {
     devtool: 'inline-source-map',
@@ -38,6 +39,11 @@ module.exports = {
         new HtmlWebpackPlugin({
             title: 'Test',
             template: path.resolve(__dirname, './app/index.html')
+        }),
+        new WebpackShellPlugin({
+            onBuildStart: [
+                `npm run convert:readme`
+            ]
         })
     ],
     devServer: {

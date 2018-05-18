@@ -67,14 +67,14 @@ describe("Convert markdown to HTML", function(): void {
     test("should convert any code snippets into a PrismCode react component", function(): void {
         const markdown: string = "```\n{}\n```";
         expect(md.render(markdown).replace(newlineRegex, "")).toBe(
-            `<PrismCode>{\"{}\\n\"}</PrismCode>`
+            `<pre><code>{\"{}\\n\"}</code></pre>`
         );
     });
 
     test("should convert any code snippets with a language specified into a PrismCode react component", function(): void {
         const markdown: string = "```jsx\n{}\n```";
         expect(md.render(markdown).replace(newlineRegex, "")).toBe(
-            `<PrismCode className="language-jsx">{\"{}\\n\"}</PrismCode>`
+            `<pre className="language-jsx"><code>{\"{}\\n\"}</code></pre>`
         );
     });
 

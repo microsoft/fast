@@ -3,6 +3,8 @@ import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import Typography from "./index";
 import { ITypographyHandledProps, ITypographyManagedClasses, TypeLevel, TypographyTag } from "@microsoft/fast-components-react-base";
 import * as schema from "@microsoft/fast-components-react-base/dist/typography/typography.schema.json";
+import Documentation from "./.tmp/documentation";
+import * as React from "react";
 
 const testString: string = "Typography example string";
 
@@ -10,6 +12,10 @@ export default {
     name: "typography",
     component: Typography,
     schema: schema as any,
+    documentation: <Documentation />,
+    detailData: {
+        children: "Typography"
+    },
     data: [
         {
             children: testString

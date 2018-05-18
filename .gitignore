@@ -71,3 +71,6 @@ www/
 #Ignore VSCode
 .vscode/
 .vs/
+
+# tmp directories
+.tmp/

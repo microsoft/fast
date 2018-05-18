@@ -6,12 +6,23 @@ import Label, {
     ILabelUnhandledProps,
     LabelTag
 } from "./label";
+import * as React from "react";
 import * as schema from "./label.schema.json";
+import Documentation from "./.tmp/documentation";
 
 const examples: ISnapshotTestSuite<ILabelHandledProps & ILabelMangedClasses> = {
     name: "label",
     component: Label,
     schema: schema as any,
+    documentation: <Documentation />,
+    detailData: {
+        managedClasses: {
+            label: "label",
+            label_hidden: "hidden_label"
+        },
+        tag: LabelTag.label,
+        children: "Label"
+    },
     data: [
         {
             managedClasses: {
