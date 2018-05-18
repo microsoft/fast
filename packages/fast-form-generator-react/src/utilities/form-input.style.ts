@@ -21,6 +21,7 @@ export const colors: any = {
     darkPink: "#FB1C5B",
     gray: "#8A8A8A",
     grayBackground: "rgba(0, 0, 0, 0.04)",
+    containerBackground: "rgb(244, 245, 246)",
     boxShadow: "rgba(0, 0, 0, 0.08)",
     hover: "rgba(0,0,0, .3)",
     border: "rgba(0,0,0, .2)",
@@ -140,7 +141,7 @@ export const listItem: ICSSRules<{}> = {
     alignItems: "center",
     position: "relative",
     cursor: "pointer",
-    background: "rgb(244, 245, 246)",
+    background: colors.containerBackground,
     "&::after, &::before": {
         position: "absolute",
         content: "''",
@@ -293,9 +294,9 @@ export function applyInputBackplateStyle(): ICSSRules<{}> {
         height: toPx(36),
         width: toPx(36),
         backgroundColor: "transparent",
-        "&:focus": {
+        "&:focus, &:hover": {
             outline: "none",
-            ...insetStrongBoxShadow(colors.black)
+            ...boxShadow(0, 0, 0, 2, colors.black, true)
         }
     };
 }

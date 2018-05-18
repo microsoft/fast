@@ -14,11 +14,15 @@ import { IFormItemThemeClassNameContract } from "../class-name-contracts/";
 function applyThemeInputBackplateStyle(): ICSSRules<{}> {
     return {
         appearance: "none",
-        border: `${toPx(2)} solid transparent`,
+        border: `${toPx(2)} solid ${colors.containerBackground}`,
         height: toPx(36),
         width: toPx(36),
-        "&:checked": {
+        "&:checked, &:focus": {
+            outline: "none",
             borderColor: colors.pink
+        },
+        "&:hover": {
+            borderColor: colors.black
         }
     };
 }
@@ -33,20 +37,12 @@ const styles: ComponentStyles<IFormItemThemeClassNameContract, {}> = {
     formItemTheme_input__light: {
         ...applyThemeInputBackplateStyle(),
         background: lightTheme,
-        backgroundColor: colors.white,
-        "&:focus": {
-            outline: "none",
-            boxShadow: `${toPx(0)} ${toPx(0)} ${toPx(0)} ${toPx(2)} ${colors.black}`
-        }
+        backgroundColor: colors.white
     },
     formItemTheme_input__dark: {
         ...applyThemeInputBackplateStyle(),
         background: darkTheme,
-        backgroundColor: colors.black,
-        "&:focus": {
-            outline: "none",
-            ...insetStrongBoxShadow(colors.white)
-        }
+        backgroundColor: colors.black
     }
 };
 
