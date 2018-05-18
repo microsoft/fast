@@ -76,7 +76,7 @@ const styles: ComponentStyles<IFormSectionClassNameContract, {}> = {
             transition: "all .1s ease",
             width: toPx(10)
         },
-        "&[aria-pressed='true']": {
+        "&[aria-pressed=\"true\"]": {
             backgroundColor: colors.pink,
             borderColor: colors.pink,
             "& > span": {
