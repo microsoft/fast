@@ -566,10 +566,10 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         }
 
         return (
-            <div className={this.props.managedClasses.site_paneTocRow}>
+            <span className={this.props.managedClasses.site_paneTocRow}>
                 {renderLayout}
-                <div className={icon ? this.props.managedClasses.site_paneTocTitle : null}>{name}</div>
-            </div>
+                {icon ? <span className={this.props.managedClasses.site_paneTocTitle}>{name}</span> : name}
+            </span>
         );
     }
 
