@@ -266,9 +266,30 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
 
     private renderShellRow(route: IComponentRoute): JSX.Element {
 
+        const paneStyleSheet: ComponentStyles<IPaneClassNamesContract, IDevSiteDesignSystem> = {
+            pane: {
+                backgroundColor: (config: IDevSiteDesignSystem): string => {
+                    return config.lightGray;
+                }
+            }
+        };
         return (
             <Row fill={true}>
-                {this.renderNavigationPane(route)}
+                <Pane
+                    collapsed={this.state.tableOfContentsCollapsed}
+                    resizable={true}
+                    resizeFrom={PaneResizeDirection.east}
+                    jssStyleSheet={paneStyleSheet}
+                    minWidth={200}
+                >
+                    <div>
+                        {this.renderPaneCollapseToggle()}
+                        {this.renderChildrenBySlot(this, ShellSlot.pane)}
+                        <ul className={this.props.managedClasses.site_paneToc}>
+                            {this.renderRootToc(this.props.children, SiteSlot.category, route.route, "/")}
+                        </ul>
+                    </div>
+                </Pane>
                 <Canvas>
                     <Row>
                         <ActionBar
@@ -288,58 +309,16 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                         {this.renderDevTools(route.schema)}
                     </div>
                 </Canvas>
-                {this.renderExtendedPane(route)}
-            </Row>
-        );
-    }
-
-    private renderExtendedPane(route: IComponentRoute): React.ReactElement<IPaneProps> {
-        const paneStyleSheet: ComponentStyles<IPaneClassNamesContract, IDevSiteDesignSystem> = {
-            pane: {
-                backgroundColor: (config: IDevSiteDesignSystem): string => {
-                    return config.lightGray;
-                },
-                padding: "0 8px"
-            }
-        };
-        return (
-            <Pane
-                hidden={!this.state.formView}
-                resizable={true}
-                resizeFrom={PaneResizeDirection.west}
-                jssStyleSheet={paneStyleSheet}
-                minWidth={324}
-            >
-                {this.generateForm(route.component, route.schema, route.route)}
-            </Pane>
-        );
-    }
-
-    private renderNavigationPane(route: IComponentRoute): React.ReactElement<IPaneProps> {
-        const paneStyleSheet: ComponentStyles<IPaneClassNamesContract, IDevSiteDesignSystem> = {
-            pane: {
-                backgroundColor: (config: IDevSiteDesignSystem): string => {
-                    return config.lightGray;
-                }
-            }
-        };
-
-        return (
                 <Pane
-                    collapsed={this.state.tableOfContentsCollapsed}
+                    hidden={!this.state.formView}
                     resizable={true}
-                    resizeFrom={PaneResizeDirection.east}
+                    resizeFrom={PaneResizeDirection.west}
                     jssStyleSheet={paneStyleSheet}
-                    minWidth={200}
+                    minWidth={324}
                 >
-                    <div>
-                        {this.renderPaneCollapseToggle()}
-                        {this.renderChildrenBySlot(this, ShellSlot.pane)}
-                        <ul className={this.props.managedClasses.site_paneToc}>
-                            {this.renderRootToc(this.props.children, SiteSlot.category, route.route, "/")}
-                        </ul>
-                    </div>
+                    {this.generateForm(route.component, route.schema, route.route)}
                 </Pane>
+            </Row>
         );
     }
 
