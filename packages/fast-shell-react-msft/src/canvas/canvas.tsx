@@ -1,6 +1,6 @@
 import * as React from "react";
 import { CanvasProps, ICanvasHandledProps, ICanvasUnhandledProps } from "./canvas.props";
-import manageJss, { ComponentStyles, IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import Foundation, { IFoundationProps } from "../foundation";
 
 export interface ICanvasClassNamesContract {
@@ -23,6 +23,14 @@ class Canvas extends Foundation<CanvasProps, undefined> {
      */
     public static defaultProps: ICanvasHandledProps = {
         minWidth: 300
+    };
+
+    /**
+     * Handled prop enumeration
+     */
+    protected handledProps: ICanvasHandledProps & IManagedClasses<ICanvasClassNamesContract> = {
+        minWidth: void 0,
+        managedClasses: void 0
     };
 
     /**

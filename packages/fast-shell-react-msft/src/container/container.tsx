@@ -27,6 +27,10 @@ const styles: ComponentStyles<IContainerClassNamesContract, undefined> = {
  * The Grid Container. This element wraps all other grid elements.
  */
 class Container extends Foundation<ContainerProps, undefined> {
+    protected handledProps: ContainerProps = {
+        managedClasses: void 0
+    };
+
     /**
      * Renders the Container markup
      */
