@@ -2,13 +2,9 @@ import * as React from "react";
 import { ComponentStyles, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { IDevSiteDesignSystem } from "../design-system";
-import ShellActionBar from "./action-bar";
 import ShellInfoBar from "./info-bar";
-import ShellCanvas from "./canvas";
 import ShellHeader from "./header";
-import ShellPane from "./pane";
 import ShellPaneCollapse from "./pane-collapse";
-import ShellRow from "./row";
 import { Container, IContainerClassNamesContract } from "@microsoft/fast-shell-react-msft";
 
 export enum ShellSlot {
@@ -39,4 +35,4 @@ class Shell extends React.Component<{}, {}> {
 }
 
 export default Shell;
-export { ShellActionBar, ShellInfoBar, ShellCanvas, ShellHeader, ShellPane, ShellPaneCollapse, ShellRow };
+export { ShellHeader, ShellInfoBar, ShellPaneCollapse };
