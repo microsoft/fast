@@ -4,7 +4,7 @@ import { IPaneHandledProps, IPaneUnhandledProps, PaneProps, PaneResizeDirection 
 import { west } from "../row";
 import rafThrottle from "raf-throttle";
 import { toPx } from "../utilities";
-import manageJss, { ComponentStyles, IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import Foundation, { IFoundationProps } from "../foundation";
 
 /**
@@ -100,6 +100,21 @@ class Pane extends Foundation<PaneProps, IPaneState> {
     private static collapsedWidth: number = 40;
 
     /**
+     * All handled props
+     */
+    protected handledProps: IPaneHandledProps & IManagedClasses<IPaneClassNamesContract> = {
+        minWidth: void 0,
+        maxWidth: void 0,
+        width: void 0,
+        resizable: void 0,
+        id: void 0,
+        collapsed: void 0,
+        overlay: void 0,
+        hidden: void 0,
+        resizeFrom: void 0,
+        managedClasses: void 0
+    };
+    /**
      * Stores a reference to the pane HTML element
      */
     private rootElement: React.RefObject<HTMLDivElement>;
@@ -188,7 +203,9 @@ class Pane extends Foundation<PaneProps, IPaneState> {
             styles.flexBasis = width;
         }
 
-        return styles;
+        return this.props.style
+            ? Object.assign(styles, this.props.style)
+            : styles;
     }
 
     /**

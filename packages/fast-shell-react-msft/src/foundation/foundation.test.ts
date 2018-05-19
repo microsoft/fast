@@ -9,7 +9,7 @@ interface IFoundationTestUnhandledProps extends React.HTMLAttributes<HTMLDivElem
 class FoundationTest extends Foundation<IFoundationTestHandledProps & IFoundationTestUnhandledProps, undefined> {
     protected handledProps: IFoundationTestHandledProps = {
         test: "test"
-    }
+    };
 
     public generateClassNames(value: string = ""): string {
         return super.generateClassNames(value);
@@ -20,34 +20,34 @@ class FoundationTest extends Foundation<IFoundationTestHandledProps & IFoundatio
     }
 }
 
-const testUndefinedProps = new FoundationTest(undefined);
+const testUndefinedProps: FoundationTest = new FoundationTest(undefined);
 
 describe("foundation", (): void => {
     test("should not error on any method when no props are available", (): void => {
-        expect((): void => {testUndefinedProps.generateClassNames()}).not.toThrow();
-        expect((): void => {testUndefinedProps.unhandledProps()}).not.toThrow();
-    })
+        expect((): void => { testUndefinedProps.generateClassNames(); }).not.toThrow();
+        expect((): void => { testUndefinedProps.unhandledProps(); }).not.toThrow();
+    });
 
     test("should return an empty string when generateClassNames is called with no input and no className prop", (): void => {
-        expect(testUndefinedProps.generateClassNames()).toBe("")
+        expect(testUndefinedProps.generateClassNames()).toBe("");
     });
 
     test("should accept className props", (): void => {
         const classProp: string = "test";
         const instanceClass: string = "instance-class";
-        const test = new FoundationTest({className: classProp});
+        const test: FoundationTest = new FoundationTest({className: classProp});
 
         expect(test.generateClassNames()).toBe(classProp);
         expect(test.generateClassNames(instanceClass)).toBe(`${instanceClass} ${classProp}`);
     });
 
     test("should return all unhandled props", (): void => {
-        const unhandledProps = {
+        const unhandledProps: IFoundationTestUnhandledProps = {
             id: "id"
         };
-        const test = new FoundationTest(Object.assign({test: "foo"}, unhandledProps));
+        const test: FoundationTest = new FoundationTest(Object.assign({test: "foo"}, unhandledProps));
 
         expect(Object.keys(test.unhandledProps())).toEqual(Object.keys(unhandledProps));
 
-    })
+    });
 });

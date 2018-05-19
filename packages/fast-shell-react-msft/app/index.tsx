@@ -16,20 +16,12 @@ function render(): void {
     ReactDOM.render(
         (
             <Container>
-                <Row>
-                    hello world
-                </Row>
+                <Row style={{background: "#CCC", height: "40px"}} />
                 <Row fill={true}>
-                    <Pane resizable={true} resizeFrom={PaneResizeDirection.east}>
-                        <p>{(new Array(1000) as any).fill("pane").join(" ")}</p>
-                    </Pane>
-                    <Canvas>
-                        canvas
-                    </Canvas>
+                    <Pane resizable={true} resizeFrom={PaneResizeDirection.east} style={{background: "#E6E6E6"}} />
+                    <Canvas />
 
-                    <Pane collapsed={true}>
-
-                    </Pane>
+                    <Pane collapsed={true} style={{background: "#E1E1E1"}} />
                 </Row>
             </Container>
         ),

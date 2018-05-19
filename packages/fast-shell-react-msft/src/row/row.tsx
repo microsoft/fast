@@ -2,7 +2,7 @@ import * as React from "react";
 import Pane from "../pane";
 import Canvas from "../canvas";
 import { IRowHandledProps, IRowUnhandledProps, RowProps } from "./row.props";
-import manageJss, { ComponentStyles, IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import Foundation, { IFoundationProps } from "../foundation";
 
 export const east: string  = "east";
@@ -32,6 +32,11 @@ const styles: ComponentStyles<IRowClassNamesContract, undefined> = {
 class Row extends Foundation<RowProps, undefined> {
     public static defaultProps: IRowHandledProps = {
         fill: false
+    };
+
+    protected handledProps: IRowHandledProps & IManagedClasses<IRowClassNamesContract> = {
+        fill: void 0,
+        managedClasses: void 0
     };
 
     public render(): React.ReactElement<HTMLDivElement> {
