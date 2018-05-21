@@ -28,7 +28,7 @@ import {
     Pane,
     PaneResizeDirection,
     Row
-} from "@microsoft/fast-shell-react-msft";
+} from "@microsoft/fast-layouts-react";
 
 export interface ISiteProps {
     title: string;

@@ -2,7 +2,7 @@ import * as React from "react";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { IDevSiteDesignSystem } from "../design-system";
-import { IRowManagedClasses, Pane, Row } from "@microsoft/fast-shell-react-msft";
+import { IRowManagedClasses, Pane, Row } from "@microsoft/fast-layouts-react";
 
 class ShellHeader extends React.Component<{}, {}> {
     private rowStyles: ComponentStyles<IRowManagedClasses, IDevSiteDesignSystem> = {

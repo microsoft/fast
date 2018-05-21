@@ -5,7 +5,7 @@ import { IDevSiteDesignSystem } from "../design-system";
 import ShellInfoBar from "./info-bar";
 import ShellHeader from "./header";
 import ShellPaneCollapse from "./pane-collapse";
-import { Container, IContainerClassNamesContract } from "@microsoft/fast-shell-react-msft";
+import { Container, IContainerClassNamesContract } from "@microsoft/fast-layouts-react";
 
 export enum ShellSlot {
     header = "header",
