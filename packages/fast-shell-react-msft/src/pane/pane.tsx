@@ -6,6 +6,7 @@ import rafThrottle from "raf-throttle";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import Foundation, { IFoundationProps } from "../foundation";
+import { canUseDOM } from "exenv-es6";
 
 /**
  * The interface for the Pane's state object
@@ -144,26 +145,32 @@ class Pane extends Foundation<PaneProps, IPaneState> {
      * Handle when component is mounted to the DOM
      */
     public componentDidMount(): void {
-        window.addEventListener("resize", this.onWindowResize);
+        if (canUseDOM()) {
+            window.addEventListener("resize", this.onWindowResize);
+        }
     }
 
     /**
      * Handle when component is removed from the DOM
      */
     public componentWillUnmount(): void {
-        window.removeEventListener("resize", this.onWindowResize);
+        if (canUseDOM()) {
+            window.removeEventListener("resize", this.onWindowResize);
+        }
     }
 
     /**
      * Handle when component updates
      */
     public componentDidUpdate(prevProps: PaneProps, prevState: IPaneState): void {
-        if ( this.state.resizing && !prevState.resizing ) {
-            document.addEventListener("mouseup", this.onMouseUp);
-            document.addEventListener("mousemove", this.onMouseMove);
-        } else if ( !this.state.resizing && prevState.resizing ) {
-            document.removeEventListener("mouseup", this.onMouseUp);
-            document.removeEventListener("mousemove", this.onMouseMove);
+        if (canUseDOM()) {
+            if (this.state.resizing && !prevState.resizing) {
+                document.addEventListener("mouseup", this.onMouseUp);
+                document.addEventListener("mousemove", this.onMouseMove);
+            } else if (!this.state.resizing && prevState.resizing) {
+                document.removeEventListener("mouseup", this.onMouseUp);
+                document.removeEventListener("mousemove", this.onMouseMove);
+            }
         }
     }
 
