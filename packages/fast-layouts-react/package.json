@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-layouts-react",
   "version": "1.0.0",
-  "description": "FAST Microsoft app shell written in React",
+  "description": "FAST layout components written in React",
   "author": {
     "name": "Microsoft",
     "email": "fwq@microsoft.com"

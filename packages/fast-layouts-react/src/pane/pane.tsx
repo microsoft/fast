@@ -197,7 +197,7 @@ class Pane extends Foundation<PaneProps, IPaneState> {
         const width: string = toPx(this.getWidth());
         const styles: React.CSSProperties = {};
 
-        styles.minWidth = 
+        styles.minWidth =
             this.props.collapsed
             ? Pane.collapsedWidth
             : this.props.resizable
@@ -210,7 +210,7 @@ class Pane extends Foundation<PaneProps, IPaneState> {
             styles.flexBasis = width;
         }
 
-        return Object.assign(styles, this.props.style)
+        return Object.assign(styles, this.props.style);
     }
 
     /**
@@ -312,10 +312,10 @@ class Pane extends Foundation<PaneProps, IPaneState> {
             pane__resizeWest,
             pane__overlay,
             pane__hidden
-        } = this.props.managedClasses;
-        const resizeFrom = this.props.resizeFrom;
+        }: IPaneClassNamesContract = this.props.managedClasses;
+        const resizeFrom: PaneResizeDirection = this.props.resizeFrom;
 
-        let classes = joinClasses(resizeFrom === PaneResizeDirection.east, pane, pane__resizeEast);
+        let classes: string = joinClasses(resizeFrom === PaneResizeDirection.east, pane, pane__resizeEast);
         classes = joinClasses(resizeFrom === PaneResizeDirection.west, classes, pane__resizeWest);
         classes = joinClasses(this.props.overlay, classes, pane__overlay);
         classes = joinClasses(this.props.hidden, classes, pane__hidden);

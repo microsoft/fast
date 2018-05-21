@@ -52,7 +52,7 @@ class Row extends Foundation<RowProps, undefined> {
     }
 
     protected generateClassNames(): string {
-        const { row, row__fill } = this.props.managedClasses;
+        const { row, row__fill }: IRowClassNamesContract = this.props.managedClasses;
 
         return super.generateClassNames(joinClasses(this.props.fill, row, row__fill));
     }
