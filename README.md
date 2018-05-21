@@ -2,7 +2,7 @@
 # What is FAST-DNA
 FAST-DNA is a set of resources and components that can be used to accelerate building Web sites and applications.
 
-Teams spend significant time building parts of the design system (colors, variable font, typography, grid, components, etc.) which can slow adoption of the latest design guidance and related technologies. FAST-DNA solves this problem by providing resources to accelerate development with code that is performant and accessible. The resources work with multiple component frameworks such as (Fabric, MWF, Foundation, etc.) as well as JavaScript frameworks and libraries (React, Angular, Vue, etc.).
+Teams spend significant time building parts of the design system (colors, variable font, typography, grid, components, etc.) which can slow adoption of the latest design guidelines and related technologies. FAST-DNA solves this problem by providing resources to accelerate development with code that is performant and accessible. The resources work with multiple component frameworks such as (Fabric, MWF, Foundation, etc.) as well as JavaScript frameworks and libraries (React, Angular, Vue, etc.).
 
 **How do we accelerate?** A team can use these resources as guidance, reference, fork, or as dependencies.
 
@@ -14,14 +14,14 @@ Teams spend significant time building parts of the design system (colors, variab
 ![license](https://img.shields.io/github/license/mashape/apistatus.svg)
 
 ## Packages
-[Lerna in independent mode](https://github.com/lerna/lerna#independent-mode---independent) is used to organize and manage this monorepository and contains utilities each of which are published to NPM. Users can choose one package, some packages, or all of them together.
+[Lerna](https://github.com/lerna/lerna#independent-mode---independent) is used to organize and manage this mono repository. Most of these packages are published to NPM. Users can choose à la carte which utility service to use in their development efforts.
 
-[Learn more about FAST-DNA packages on wiki...](https://github.com/Microsoft/fast-dna/wiki/Packages)
+[Continue on Wiki...](https://github.com/Microsoft/fast-dna/wiki/Packages)
 
 ## Documentation
-Detailed documentation can be found on the [GitHub Wiki](https://github.com/Microsoft/fast-dna/wiki) which covers getting started, community policies, and guidance on contributing, developing, quality, and testing.
+This [GitHub Wiki](https://github.com/Microsoft/fast-dna/wiki) includes guidance on getting started, contributing, consumption, quality, testing, help, and community policies.
 
 ## Contact
 * Ask for help [on Stack Overflow](https://stackoverflow.com/questions/tagged/fast-dna) 
-* Submit [requests/issues](https://github.com/Microsoft/fast-dna/issues/new)
+* Submit [requests / issues](https://github.com/Microsoft/fast-dna/issues/new/choose)
 * Contributors [find issues to work on](https://github.com/Microsoft/fast-dna/labels/contribute%20%3A%20good%20first%20issue)
