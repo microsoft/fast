@@ -35,7 +35,7 @@ const style: ComponentStyles<ITocItemManagedClasses, IDevSiteDesignSystem> = {
         },
         textDecoration: "none",
         display: "block",
-        textIndent: toPx(48),
+        paddingLeft: toPx(48),
         lineHeight: toPx(40),
         outline: "0"
     },
