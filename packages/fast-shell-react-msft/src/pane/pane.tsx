@@ -3,7 +3,7 @@ import { throttle } from "lodash";
 import { IPaneHandledProps, IPaneUnhandledProps, PaneProps, PaneResizeDirection } from "./pane.props";
 import { west } from "../row";
 import rafThrottle from "raf-throttle";
-import { toPx } from "../utilities";
+import { toPx } from "@microsoft/fast-jss-utilities";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import Foundation, { IFoundationProps } from "../foundation";
 

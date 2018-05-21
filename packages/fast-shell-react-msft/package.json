@@ -7,7 +7,8 @@
     "email": "fwq@microsoft.com"
   },
   "license": "MIT",
-  "repository": { "type": "git",
+  "repository": {
+    "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
   "readme": "README.md",
@@ -49,8 +50,6 @@
     ]
   },
   "devDependencies": {
-    "@microsoft/fast-glyphs-msft": "^1.2.0",
-    "@microsoft/fast-jest-snapshots-react": "^1.2.0",
     "@microsoft/fast-tslint-rules": "^1.2.0",
     "@types/jest": "^22.2.0",
     "@types/lodash-es": "^4.17.0",
@@ -82,6 +81,7 @@
     "react-dom": "^16.3.0"
   },
   "dependencies": {
-    "@microsoft/fast-jss-manager-react": "^1.2.0"
+    "@microsoft/fast-jss-manager-react": "^1.2.0",
+    "@microsoft/fast-jss-utilities": "^1.6.0"
   }
 }
