@@ -7,6 +7,7 @@ import { toPx } from "@microsoft/fast-jss-utilities";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import Foundation, { IFoundationProps } from "../foundation";
 import { canUseDOM } from "exenv-es6";
+import { joinClasses } from "../utilities";
 
 /**
  * The interface for the Pane's state object
@@ -196,13 +197,12 @@ class Pane extends Foundation<PaneProps, IPaneState> {
         const width: string = toPx(this.getWidth());
         const styles: React.CSSProperties = {};
 
-        if (this.props.collapsed) {
-            styles.minWidth = toPx(Pane.collapsedWidth);
-        } else if (this.props.resizable) {
-            styles.minWidth = toPx(this.props.minWidth);
-        } else {
-            styles.minWidth = width;
-        }
+        styles.minWidth = 
+            this.props.collapsed
+            ? Pane.collapsedWidth
+            : this.props.resizable
+            ? toPx(this.props.minWidth)
+            : width;
 
         if (this.props.overlay) {
             styles.width = width;
@@ -210,9 +210,7 @@ class Pane extends Foundation<PaneProps, IPaneState> {
             styles.flexBasis = width;
         }
 
-        return this.props.style
-            ? Object.assign(styles, this.props.style)
-            : styles;
+        return Object.assign(styles, this.props.style)
     }
 
     /**
@@ -308,21 +306,19 @@ class Pane extends Foundation<PaneProps, IPaneState> {
     }
 
     protected generateClassNames(): string {
-        let classes: string = this.props.managedClasses.pane;
+        const {
+            pane,
+            pane__resizeEast,
+            pane__resizeWest,
+            pane__overlay,
+            pane__hidden
+        } = this.props.managedClasses;
+        const resizeFrom = this.props.resizeFrom;
 
-        if (this.props.resizeFrom === PaneResizeDirection.east) {
-            classes = `${classes} ${this.props.managedClasses.pane__resizeEast}`;
-        } else if (this.props.resizeFrom === PaneResizeDirection.west) {
-            classes = `${classes} ${this.props.managedClasses.pane__resizeWest}`;
-        }
-
-        if (this.props.overlay) {
-            classes = `${classes} ${this.props.managedClasses.pane__overlay}`;
-        }
-
-        if (this.props.hidden) {
-            classes = `${classes} ${this.props.managedClasses.pane__hidden}`;
-        }
+        let classes = joinClasses(resizeFrom === PaneResizeDirection.east, pane, pane__resizeEast);
+        classes = joinClasses(resizeFrom === PaneResizeDirection.west, classes, pane__resizeWest);
+        classes = joinClasses(this.props.overlay, classes, pane__overlay);
+        classes = joinClasses(this.props.hidden, classes, pane__hidden);
 
         return super.generateClassNames(classes);
     }

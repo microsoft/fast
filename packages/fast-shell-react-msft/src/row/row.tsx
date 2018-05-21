@@ -4,6 +4,7 @@ import Canvas from "../canvas";
 import { IRowHandledProps, IRowUnhandledProps, RowProps } from "./row.props";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import Foundation, { IFoundationProps } from "../foundation";
+import { joinClasses } from "../utilities";
 
 export const east: string  = "east";
 export const west: string = "west";
@@ -51,11 +52,9 @@ class Row extends Foundation<RowProps, undefined> {
     }
 
     protected generateClassNames(): string {
-        const classes: string = this.props.fill
-            ?  `${this.props.managedClasses.row} ${this.props.managedClasses.row__fill}`
-            : this.props.managedClasses.row;
+        const { row, row__fill } = this.props.managedClasses;
 
-        return super.generateClassNames(classes);
+        return super.generateClassNames(joinClasses(this.props.fill, row, row__fill));
     }
 }
 
