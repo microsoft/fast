@@ -14,11 +14,9 @@ import { get } from "lodash-es";
 class TextField extends Foundation<ITextFieldHandledProps & IManagedClasses<ITextFieldClassNameContract>, React.HTMLAttributes<HTMLInputElement>, {}> {
     protected handledProps: HandledProps<ITextFieldHandledProps & IManagedClasses<ITextFieldClassNameContract>> = {
         disabled: void 0,
-        error: void 0,
         placeholder: void 0,
         managedClasses: void 0,
-        type: void 0,
-        value: void 0
+        type: void 0
     };
 
     /**
@@ -29,8 +27,8 @@ class TextField extends Foundation<ITextFieldHandledProps & IManagedClasses<ITex
             <input
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
-                disabled={this.props.disabled}
-                placeholder={this.props.placeholder}
+                disabled={this.props.disabled || null}
+                placeholder={this.props.placeholder || null}
                 type={this.props.type || TextFieldType.text}
             />
         );

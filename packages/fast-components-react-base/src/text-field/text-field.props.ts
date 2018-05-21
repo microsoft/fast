@@ -24,11 +24,6 @@ export interface ITextFieldHandledProps {
     disabled?: boolean;
 
     /**
-     * The error state
-     */
-    error?: boolean;
-
-    /**
      * Placeholder Text for input field
      */
     placeholder?: string;
@@ -37,11 +32,6 @@ export interface ITextFieldHandledProps {
      * The text field input type
      */
     type?: TextFieldType;
-
-    /**
-     * The text field value
-     */
-    value?: string;
 }
 
 export interface ITextFieldUnhandledProps extends React.HTMLAttributes<HTMLInputElement> {}

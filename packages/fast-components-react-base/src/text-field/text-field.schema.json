@@ -10,10 +10,6 @@
             "title": "Disabled",
             "type": "boolean"
         },
-        "error": {
-            "title": "Error",
-            "type": "boolean"
-        },
         "type": {
             "title": "Text Field type",
             "type": "string",
@@ -35,10 +31,6 @@
         },
         "placeholder": {
             "title": "Text Field placeholder",
-            "type": "string"
-        },
-        "value" : {
-            "title": "Text Field value",
             "type": "string"
         }
     }
