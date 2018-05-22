@@ -50,7 +50,7 @@ const paneStyleSheet: ComponentStyles<IPaneClassNamesContract, undefined> = {
         padding: "0",
         opacity: "0",
         top: "0",
-        width: "8px",
+        width: toPx(8),
         height: "100%",
         zIndex: "1",
         transition: "transform .04s ease-in-out",
