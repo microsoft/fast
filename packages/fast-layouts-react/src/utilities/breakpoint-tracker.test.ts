@@ -1,4 +1,4 @@
-import breakpointTracker, { Breakpoints, defaultBreakpoints, identifyBreakpoint } from "./breakpoint-tracker";
+import breakpointTracker, { Breakpoints, defaultBreakpoints, identifyBreakpoint, BreakpointTrackerCallback } from "./breakpoint-tracker";
 
 describe("identifyBreakpoint", (): void => {
     test("should return the correct breakpoint values", (): void => {
@@ -18,9 +18,11 @@ describe("identifyBreakpoint", (): void => {
 
 /* tslint:disable:no-string-literal */
 describe("breakpointTracker", (): void => {
-    beforeEach(() => {
-        const onBreakpointChange: any = (): any => true;
-    });
+    const subscriber: any = {
+        onBreakpointChanged: (notification: BreakpointTrackerCallback): void => {
+            return;
+        }
+    };
 
     test("should initialize automatically without the 'new' keyword", (): void => {
         expect(breakpointTracker).toBeDefined();
@@ -30,23 +32,23 @@ describe("breakpointTracker", (): void => {
     test("should successfully track subscribers", (): void => {
         expect(breakpointTracker["subscriptions"].length).toBe(0);
 
-        breakpointTracker.subscribe(this.onBreakpointChange);
+        breakpointTracker.subscribe(subscriber.onBreakpointChanged);
 
         expect(breakpointTracker["subscriptions"].length).toBe(1);
     });
 
     test("should successfully remove subscribers", (): void => {
-        breakpointTracker.subscribe(this.onBreakpointChange);
+        breakpointTracker.subscribe(subscriber.onBreakpointChanged);
 
         expect(breakpointTracker["subscriptions"].length).toBe(1);
 
-        breakpointTracker.unsubscribe(this.onBreakpointChange);
+        breakpointTracker.unsubscribe(subscriber.onBreakpointChanged);
 
         expect(breakpointTracker["subscriptions"].length).toBe(0);
     });
 
     test("should initialize with default breakpoint values", (): void => {
-        breakpointTracker.subscribe(this.onBreakpointChange);
+        breakpointTracker.subscribe(subscriber.onBreakpointChanged);
 
         expect(breakpointTracker["_breakpointConfig"]).toEqual(defaultBreakpoints);
     });
