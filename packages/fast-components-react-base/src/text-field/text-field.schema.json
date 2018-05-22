@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/schema#",
-    "title": "Text Field",
+    "title": "Text field",
     "description": "A Text Field component's schema definition.",
     "type": "object",
     "id": "text-field",
@@ -11,7 +11,7 @@
             "type": "boolean"
         },
         "type": {
-            "title": "Text Field type",
+            "title": "Input type",
             "type": "string",
             "enum": [
                 "date",
@@ -30,7 +30,7 @@
             ]
         },
         "placeholder": {
-            "title": "Text Field placeholder",
+            "title": "Placeholder",
             "type": "string"
         }
     }
