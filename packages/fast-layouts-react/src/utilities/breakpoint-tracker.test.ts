@@ -1,4 +1,4 @@
-import breakpointTracker, { Breakpoints, defaultBreakpoints, identifyBreakpoint, BreakpointTrackerCallback } from "./breakpoint-tracker";
+import breakpointTracker, { Breakpoints, BreakpointTrackerCallback, defaultBreakpoints, identifyBreakpoint } from "./breakpoint-tracker";
 
 describe("identifyBreakpoint", (): void => {
     test("should return the correct breakpoint values", (): void => {
