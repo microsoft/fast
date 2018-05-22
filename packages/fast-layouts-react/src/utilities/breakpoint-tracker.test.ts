@@ -18,11 +18,15 @@ describe("identifyBreakpoint", (): void => {
 
 /* tslint:disable:no-string-literal */
 describe("breakpointTracker", (): void => {
-    const subscriber: any = {
-        onBreakpointChanged: (notification: BreakpointTrackerCallback): void => {
-            return;
-        }
-    };
+    let subscriber: any;
+
+    beforeEach(() => {
+        subscriber = {
+            onBreakpointChanged: (notification: BreakpointTrackerCallback): void => {
+                return;
+            }
+        };
+    });
 
     test("should initialize automatically without the 'new' keyword", (): void => {
         expect(breakpointTracker).toBeDefined();
@@ -32,23 +36,23 @@ describe("breakpointTracker", (): void => {
     test("should successfully track subscribers", (): void => {
         expect(breakpointTracker["subscriptions"].length).toBe(0);
 
-        breakpointTracker.subscribe(subscriber.onBreakpointChanged);
+        breakpointTracker.subscribe(subscriber.onBreakpointChange);
 
         expect(breakpointTracker["subscriptions"].length).toBe(1);
     });
 
     test("should successfully remove subscribers", (): void => {
-        breakpointTracker.subscribe(subscriber.onBreakpointChanged);
+        breakpointTracker.subscribe(subscriber.onBreakpointChange);
 
         expect(breakpointTracker["subscriptions"].length).toBe(1);
 
-        breakpointTracker.unsubscribe(subscriber.onBreakpointChanged);
+        breakpointTracker.unsubscribe(subscriber.onBreakpointChange);
 
         expect(breakpointTracker["subscriptions"].length).toBe(0);
     });
 
     test("should initialize with default breakpoint values", (): void => {
-        breakpointTracker.subscribe(subscriber.onBreakpointChanged);
+        breakpointTracker.subscribe(subscriber.onBreakpointChange);
 
         expect(breakpointTracker["_breakpointConfig"]).toEqual(defaultBreakpoints);
     });
@@ -56,7 +60,7 @@ describe("breakpointTracker", (): void => {
     test("should set new breakpoint values in config when passed during subscribe", (): void => {
         const newBreakpoints: Breakpoints = [0, 500, 900, 1400];
 
-        breakpointTracker.subscribe(this.onBreakpointChange, newBreakpoints);
+        breakpointTracker.subscribe(subscriber.onBreakpointChange, newBreakpoints);
 
         expect(breakpointTracker["_breakpointConfig"]).toEqual(newBreakpoints);
     });
