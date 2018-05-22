@@ -1,21 +1,11 @@
 import * as React from "react";
-import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import { ComponentStyles, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { IDevSiteDesignSystem } from "../design-system";
-import ShellActionBar from "./action-bar";
 import ShellInfoBar from "./info-bar";
-import ShellCanvas from "./canvas";
 import ShellHeader from "./header";
-import ShellPane from "./pane";
 import ShellPaneCollapse from "./pane-collapse";
-import ShellRow from "./row";
-
-/* tslint:disable-next-line */
-export interface IShellProps { }
-
-export interface IShellManagedClasses {
-    shell: string;
-}
+import { Container, IContainerClassNamesContract } from "@microsoft/fast-layouts-react";
 
 export enum ShellSlot {
     header = "header",
@@ -26,23 +16,23 @@ export enum ShellSlot {
     row = "row"
 }
 
-const style: ComponentStyles<IShellManagedClasses, IDevSiteDesignSystem> = {
-    shell: {
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column"
-    }
-};
+class Shell extends React.Component<{}, {}> {
+    private containerStyles: ComponentStyles<IContainerClassNamesContract, undefined> = {
+        container: {
+            fontFamily: "Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif",
+            fontSize: toPx(14),
+            height: "100vh"
+        }
+    };
 
-class Shell extends React.Component<IShellProps & IManagedClasses<IShellManagedClasses>, {}> {
     public render(): JSX.Element {
         return (
-            <div className={this.props.managedClasses.shell}>
+            <Container jssStyleSheet={this.containerStyles}>
                 {this.props.children}
-            </div>
+            </Container>
         );
     }
 }
 
-export default manageJss(style)(Shell);
-export { ShellActionBar, ShellInfoBar, ShellCanvas, ShellHeader, ShellPane, ShellPaneCollapse, ShellRow };
+export default Shell;
+export { ShellHeader, ShellInfoBar, ShellPaneCollapse };

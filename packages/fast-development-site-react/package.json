@@ -27,7 +27,8 @@
     "@microsoft/fast-form-generator-react": "^1.6.0",
     "@microsoft/fast-glyphs-msft": "^1.6.0",
     "@microsoft/fast-jss-manager-react": "^1.6.0",
-    "@microsoft/fast-jss-utilities": "^1.6.0"
+    "@microsoft/fast-jss-utilities": "^1.6.0",
+    "@microsoft/fast-layouts-react": "^1.0.0"
   },
   "devDependencies": {
     "@microsoft/fast-tslint-rules": "^1.6.0",

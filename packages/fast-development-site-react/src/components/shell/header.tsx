@@ -2,37 +2,29 @@ import * as React from "react";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { IDevSiteDesignSystem } from "../design-system";
+import { IRowManagedClasses, Pane, Row } from "@microsoft/fast-layouts-react";
 
-/* tslint:disable-next-line */
-export interface IShellHeaderProps { }
-
-export interface IShellHeaderManagedClasses {
-    shellHeader: string;
-}
-
-const style: ComponentStyles<IShellHeaderManagedClasses, IDevSiteDesignSystem> = {
-    shellHeader: {
-        display: "flex",
-        alignItems: "center",
-        background: "#343434",
-        color: (config: IDevSiteDesignSystem): string => {
-            return config.backgroundColor;
-        },
-        textAlign: "left",
-        padding: toPx(3),
-        minHeight: toPx(34),
-        overflow: "hidden"
-    }
-};
-
-class ShellHeader extends React.Component<IShellHeaderProps & IManagedClasses<IShellHeaderManagedClasses>, {}> {
+class ShellHeader extends React.Component<{}, {}> {
+    private rowStyles: ComponentStyles<IRowManagedClasses, IDevSiteDesignSystem> = {
+        row: {
+            background: "#343434",
+            alignItems: "center",
+            color: (config: IDevSiteDesignSystem): string => {
+                return config.backgroundColor;
+            },
+            textAlign: "left",
+            padding: toPx(3),
+            minHeight: toPx(24),
+            overflow: "hidden",
+        }
+    };
 
     public render(): JSX.Element {
         return (
-            <div className={this.props.managedClasses.shellHeader}>
+            <Row jssStyleSheet={this.rowStyles}>
                 {this.props.children}
-            </div>
+            </Row>
         );
     }
 }
-export default manageJss(style)(ShellHeader);
+export default ShellHeader;

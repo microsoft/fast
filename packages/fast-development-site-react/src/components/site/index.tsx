@@ -5,7 +5,7 @@ import { glyphBuildingblocks, glyphGlobalnavbutton } from "@microsoft/fast-glyph
 import Form from "@microsoft/fast-form-generator-react";
 import { uniqueId } from "lodash-es";
 import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
-import Shell, { ShellActionBar, ShellCanvas, ShellHeader, ShellInfoBar, ShellPane, ShellPaneCollapse, ShellRow, ShellSlot } from "../shell";
+import Shell, { ShellHeader, ShellInfoBar, ShellPaneCollapse, ShellSlot } from "../shell";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { ellipsis, toPx } from "@microsoft/fast-jss-utilities";
 import ComponentWrapper from "./component-wrapper";
@@ -19,6 +19,16 @@ import ActionBar from "./action-bar";
 import DevTools, { FrameworkEnum } from "./dev-tools";
 import NotFound from "./not-found";
 import ComponentView, { ComponentViewTypes } from "./component-view";
+import {
+    Canvas,
+    Container,
+    IContainerClassNamesContract,
+    IPaneClassNamesContract,
+    IPaneProps,
+    Pane,
+    PaneResizeDirection,
+    Row
+} from "@microsoft/fast-layouts-react";
 
 export interface ISiteProps {
     title: string;
@@ -255,17 +265,33 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     }
 
     private renderShellRow(route: IComponentRoute): JSX.Element {
+
+        const paneStyleSheet: ComponentStyles<IPaneClassNamesContract, IDevSiteDesignSystem> = {
+            pane: {
+                backgroundColor: (config: IDevSiteDesignSystem): string => {
+                    return config.lightGray;
+                }
+            }
+        };
         return (
-            <ShellRow key={route.route}>
-                <ShellPane collapsed={this.state.tableOfContentsCollapsed}>
-                    {this.renderPaneCollapseToggle()}
-                    {this.renderChildrenBySlot(this, ShellSlot.pane)}
-                    <ul className={this.props.managedClasses.site_paneToc}>
-                        {this.renderRootToc(this.props.children, SiteSlot.category, route.route, "/")}
-                    </ul>
-                </ShellPane>
-                <ShellCanvas>
-                    <ShellActionBar>
+            <Row fill={true}>
+                <Pane
+                    collapsed={this.state.tableOfContentsCollapsed}
+                    resizable={true}
+                    resizeFrom={PaneResizeDirection.east}
+                    jssStyleSheet={paneStyleSheet}
+                    minWidth={200}
+                >
+                    <div>
+                        {this.renderPaneCollapseToggle()}
+                        {this.renderChildrenBySlot(this, ShellSlot.pane)}
+                        <ul className={this.props.managedClasses.site_paneToc}>
+                            {this.renderRootToc(this.props.children, SiteSlot.category, route.route, "/")}
+                        </ul>
+                    </div>
+                </Pane>
+                <Canvas>
+                    <Row>
                         <ActionBar
                             onComponentViewChange={this.onComponentViewChange}
                             onFormToggle={this.onFormToggle}
@@ -274,7 +300,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                             formView={this.state.formView}
                             devToolsView={this.state.devToolsView}
                         />
-                    </ShellActionBar>
+                    </Row>
                     <div className={this.props.managedClasses.site_canvasContent}>
                         <ComponentView>
                             {this.renderChildrenBySlot(this, ShellSlot.canvas)}
@@ -282,11 +308,17 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                         </ComponentView>
                         {this.renderDevTools(route.schema)}
                     </div>
-                </ShellCanvas>
-                <ShellPane hidden={!this.state.formView}>
+                </Canvas>
+                <Pane
+                    hidden={!this.state.formView}
+                    resizable={true}
+                    resizeFrom={PaneResizeDirection.west}
+                    jssStyleSheet={paneStyleSheet}
+                    minWidth={324}
+                >
                     {this.generateForm(route.component, route.schema, route.route)}
-                </ShellPane>
-            </ShellRow>
+                </Pane>
+            </Row>
         );
     }
 

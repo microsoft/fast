@@ -83,6 +83,8 @@ function menuButtonBase(): ICSSRules<IDevSiteDesignSystem> {
 const styles: ComponentStyles<IActionBarClassNameContract, IDevSiteDesignSystem> = {
     actionBar: {
         display: "flex",
+        flexBasis: "100%",
+        borderBottom: `${toPx(1)} solid #CCCCCC`
     },
     actionBar_componentViewToggles: {
         display: "flex",
