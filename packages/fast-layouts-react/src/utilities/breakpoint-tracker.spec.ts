@@ -16,8 +16,10 @@ describe("identifyBreakpoint", (): void => {
     });
 });
 
+/* tslint:disable:no-string-literal */
 describe("breakpointTracker", (): void => {
     let subscriber: any;
+    let callback: any;
 
     beforeEach(() => {
         subscriber = {
@@ -25,32 +27,29 @@ describe("breakpointTracker", (): void => {
                 return;
             }
         };
+
+        callback = jest.fn();
     });
 
     test("should successfully track subscribers", (): void => {
-        expect(subscriber.onBreakpointChange).toHaveNotBeenCalled();
+        breakpointTracker.subscribe(callback);
+        breakpointTracker.notifySubscribers(1);
 
-        breakpointTracker.subscribe(subscriber.onBreakpointChange);
-
-        expect(subscriber.onBreakpointChange).toHaveBeenCalled();
+        expect(callback).toBeCalled();
     });
 
     test("should successfully remove subscribers", (): void => {
-        breakpointTracker.subscribe(subscriber.onBreakpointChange);
+        breakpointTracker.subscribe(callback);
+        breakpointTracker.unsubscribe(callback);
+        breakpointTracker.notifySubscribers(2);
 
-        expect(subscriber.onBreakpointChange).toHaveBeenCalled();
-
-        breakpointTracker.unsubscribe(subscriber.onBreakpointChange);
-
-        breakpointTracker.notifySubscribers(1);
-
-        expect(subscriber.onBreakpointChange).toHaveNotBeenCalled();
+        expect(callback).not.toBeCalled();
     });
 
     test("should initialize with default breakpoint values", (): void => {
         breakpointTracker.subscribe(subscriber.onBreakpointChange);
 
-        expect(breakpointTracker["_breakpointConfig"]).toEqual(defaultBreakpoints);
+        expect(breakpointTracker["breakpointConfig"]).toEqual(defaultBreakpoints);
     });
 
     test("should set new breakpoint values in config when passed during subscribe", (): void => {
@@ -58,6 +57,7 @@ describe("breakpointTracker", (): void => {
 
         breakpointTracker.subscribe(subscriber.onBreakpointChange, newBreakpoints);
 
-        expect(breakpointTracker["_breakpointConfig"]).toEqual(newBreakpoints);
+        expect(breakpointTracker["breakpointConfig"]).toEqual(newBreakpoints);
     });
 });
+/* tslint:enable:no-string-literal */
