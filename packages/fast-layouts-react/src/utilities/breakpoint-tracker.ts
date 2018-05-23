@@ -30,12 +30,7 @@ export class BreakpointTracker {
     /**
      * The current breakpoint.
      */
-    private _breakpointConfig: Breakpoints = defaultBreakpoints;
-
-    /**
-     * Store if requestAnimationFrame can be used
-     */
-    private useRequestAnimationFrame: boolean;
+    private breakpointConfig: Breakpoints = defaultBreakpoints;
 
     /**
      * Track if we have an open animation frame request
@@ -48,20 +43,6 @@ export class BreakpointTracker {
     private subscriptions: BreakpointTrackerCallback[];
 
     /**
-     * Stores breakpoint config
-     */
-    private get breakpointConfig(): Breakpoints {
-        return this._breakpointConfig;
-    }
-
-    /**
-     * Sets breakpoint config
-     */
-    private set breakpointConfig(config: Breakpoints) {
-        this._breakpointConfig = config;
-    }
-
-    /**
      * Constructor for the BreakpointTracker component.
      */
     constructor() {
@@ -70,16 +51,9 @@ export class BreakpointTracker {
         }
 
         this.subscriptions = [];
-        this.breakpoint = identifyBreakpoint(window.innerWidth, this._breakpointConfig);
-        this.useRequestAnimationFrame = window.hasOwnProperty("requestAnimationFrame");
+        this.breakpoint = identifyBreakpoint(window.innerWidth, this.breakpointConfig);
 
-        if (!this.useRequestAnimationFrame) {
-            // If we can't use window.requestAnimationFrame, just throttle the update method
-            this.update = throttle(this.update, 1000 / 60); // 60fps
-            window.addEventListener("resize", this.update);
-        } else {
-            window.addEventListener("resize", this.requestFrame);
-        }
+        window.addEventListener("resize", this.requestFrame);
     }
 
     /**
@@ -103,23 +77,11 @@ export class BreakpointTracker {
     }
 
     /**
-     * Request's an animation frame if there are currently no open animation frame requests
-     */
-    private requestFrame = (): void => {
-        if (this.openRequestAnimationFrame) {
-            return;
-        }
-
-        this.openRequestAnimationFrame = true;
-        window.requestAnimationFrame(this.update);
-    }
-
-    /**
      * Notifies subscribes if a breakpoint threshold has been crossed
      */
-    private update = (): void => {
+    public update = (): void => {
         const windowWidth: number = window.innerWidth;
-        const breakpoint: Breakpoint = identifyBreakpoint(windowWidth, this._breakpointConfig);
+        const breakpoint: Breakpoint = identifyBreakpoint(windowWidth, this.breakpointConfig);
 
         if (this.breakpoint !== breakpoint) {
             this.breakpoint = breakpoint;
@@ -132,10 +94,22 @@ export class BreakpointTracker {
     /**
      * Call all subscribed callbacks
      */
-    private notifySubscribers(breakpoint: Breakpoint): void {
+    public notifySubscribers(breakpoint: Breakpoint): void {
         this.subscriptions.forEach((subscription: BreakpointTrackerCallback) => {
             subscription(breakpoint);
         });
+    }
+
+    /**
+     * Request's an animation frame if there are currently no open animation frame requests
+     */
+    private requestFrame = (): void => {
+        if (this.openRequestAnimationFrame) {
+            return;
+        }
+
+        this.openRequestAnimationFrame = true;
+        window.requestAnimationFrame(this.update);
     }
 }
 

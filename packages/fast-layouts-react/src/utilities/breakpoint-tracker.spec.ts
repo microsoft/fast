@@ -16,7 +16,6 @@ describe("identifyBreakpoint", (): void => {
     });
 });
 
-/* tslint:disable:no-string-literal */
 describe("breakpointTracker", (): void => {
     let subscriber: any;
 
@@ -28,27 +27,24 @@ describe("breakpointTracker", (): void => {
         };
     });
 
-    test("should initialize automatically without the 'new' keyword", (): void => {
-        expect(breakpointTracker).toBeDefined();
-        expect(breakpointTracker).toBeTruthy();
-    });
-
     test("should successfully track subscribers", (): void => {
-        expect(breakpointTracker["subscriptions"].length).toBe(0);
+        expect(subscriber.onBreakpointChange).toHaveNotBeenCalled();
 
         breakpointTracker.subscribe(subscriber.onBreakpointChange);
 
-        expect(breakpointTracker["subscriptions"].length).toBe(1);
+        expect(subscriber.onBreakpointChange).toHaveBeenCalled();
     });
 
     test("should successfully remove subscribers", (): void => {
         breakpointTracker.subscribe(subscriber.onBreakpointChange);
 
-        expect(breakpointTracker["subscriptions"].length).toBe(1);
+        expect(subscriber.onBreakpointChange).toHaveBeenCalled();
 
         breakpointTracker.unsubscribe(subscriber.onBreakpointChange);
 
-        expect(breakpointTracker["subscriptions"].length).toBe(0);
+        breakpointTracker.notifySubscribers(1);
+
+        expect(subscriber.onBreakpointChange).toHaveNotBeenCalled();
     });
 
     test("should initialize with default breakpoint values", (): void => {
@@ -65,4 +61,3 @@ describe("breakpointTracker", (): void => {
         expect(breakpointTracker["_breakpointConfig"]).toEqual(newBreakpoints);
     });
 });
-/* tslint:enable:no-string-literal */
