@@ -600,7 +600,9 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         const tocItems: any[] = Array.isArray(items) ? items : [items];
 
         tocItems.forEach((item: JSX.Element) => {
-            if (item && item.props && item.props.slot === slot && ((collapsed && this.renderTocItemCategoryIcon(item)) || !collapsed)) {
+            const isInSlot: boolean = item && item.props && item.props.slot === slot;
+
+            if (isInSlot && ((collapsed && this.renderTocItemCategoryIcon(item)) || !collapsed)) {
                 categoryItems.push(item);
             }
         });
@@ -718,21 +720,15 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         const detailDocumentationSlot: string = ComponentViewSlot.detailDocumentation;
 
         if (item.props.children) {
-            if (Array.isArray(item.props.children)) {
-                item.props.children.forEach((child: JSX.Element): void => {
-                    hasCanvasContent = child && child.props
-                        ? child.props.slot === exampleSlot
-                            || child.props.slot === detailExampleSlot
-                            || child.props.slot === detailDocumentationSlot
-                        : false;
-                });
-            } else {
-                hasCanvasContent = item.props.children.props
-                    && (item.props.children.props.slot === exampleSlot
-                        || item.props.children.props.slot === detailExampleSlot
-                        || item.props.children.props.slot === detailDocumentationSlot
-                    );
-            }
+            const itemChildren: JSX.Element[] = Array.isArray(item.props.children) ? item.props.children : [item.props.children];
+
+            itemChildren.forEach((child: JSX.Element): void => {
+                hasCanvasContent = child && child.props
+                    ? child.props.slot === exampleSlot
+                        || child.props.slot === detailExampleSlot
+                        || child.props.slot === detailDocumentationSlot
+                    : false;
+            });
         }
 
         return hasCanvasContent;

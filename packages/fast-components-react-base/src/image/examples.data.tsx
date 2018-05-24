@@ -10,7 +10,7 @@ const examples: ISnapshotTestSuite<IImageHandledProps & IImageMangedClasses> = {
     component: Image,
     schema: schema as any,
     documentation: <Documentation />,
-    detailData:{
+    detailData: {
         managedClasses: {
             picture: "picture",
             image: "image",
