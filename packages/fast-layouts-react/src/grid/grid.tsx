@@ -125,7 +125,7 @@ class Grid extends Foundation<GridProps, {}> {
     }
 
     private generateStyleAttributes(): React.HTMLAttributes<HTMLDivElement> {
-        const style: React.CSSProperties = {
+        return Object.assign({}, this.unhandledProps().style, {
             gridColumn: this.props.gridColumn,
             gridTemplateColumns: `repeat(${this.props.columnCount} 1fr)`,
             gridColumnGap: `${this.generateGutter()}px`,
@@ -134,9 +134,7 @@ class Grid extends Foundation<GridProps, {}> {
             alignItems: this.generateAlignment(this.props.verticalAlign || GridAlignment.stretch),
             msGridColumns: `1fr (${this.generateGutter()})[${this.props.columnCount - 1}]`,
             ["msGridRow" as any]: this.props.row
-        };
-
-        return style;
+        });
     }
 
     /**

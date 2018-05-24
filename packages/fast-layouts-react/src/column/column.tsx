@@ -158,27 +158,22 @@ class Column extends Foundation<ColumnProps, {}> {
         const gridColumnValue: string = [position, `span ${span}`].filter((item: string | number) => Boolean(item)).join(" / ");
         let order: number | null;
 
-        if (!canUseDOM()) {
-            order = Array.isArray(this.props.order) ? this.props.order[0] : this.props.order;
-
-            return Object.assign({}, this.unhandledProps().style, {
-                gridColumn: gridColumnValue,
-                gridRowStart: row,
-                msGridColumn: this.augmentMsGrid(position),
-                msGridColumnSpan: this.augmentMsGrid(span),
-                msGridRow: row,
-                order: typeof order === "number" ? order : null
-            });
-        }
-
-        order = Array.isArray(this.props.order) ? this.getValueByBreakpoint(this.props.order) : this.props.order;
-
-        return Object.assign({}, this.unhandledProps().style, {
+        const styleObject: React.CSSProperties = {
             gridColumn: gridColumnValue,
             gridRowStart: row,
-            msGridColumn: this.augmentMsGrid(position),
-            msGridColumnSpan: this.augmentMsGrid(span),
-            msGridRow: row,
+            ["msGridColumn" as any]: this.augmentMsGrid(position),
+            ["msGridColumnSpan" as any]: this.augmentMsGrid(span),
+            ["msGridRow" as any]: row
+        };
+
+        if (!canUseDOM()) {
+            order = Array.isArray(this.props.order) ? this.props.order[0] : this.props.order;
+        } else {
+            order = Array.isArray(this.props.order) ? this.getValueByBreakpoint(this.props.order) : this.props.order;
+        }
+
+        return Object.assign({}, this.unhandledProps().style, {
+            ...styleObject,
             order: typeof order === "number" ? order : null
         });
     }
