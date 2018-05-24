@@ -12,8 +12,8 @@ export interface IColumnClassNamesContract {
 
 const styles: ComponentStyles<IColumnClassNamesContract, undefined> = {
     column: {
-    // Fixes issue found in firefox where columns that have overflow
-    // or full width content cause scroll bars
+        // Fixes issue found in firefox where columns that have overflow
+        // or full width content cause scroll bars
         minWidth: "0"
     }
 };
