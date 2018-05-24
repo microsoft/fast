@@ -15,19 +15,18 @@ const srcDir = argv.src || "./src/**/README.md";
  */
 const startFile = `// Generated file from ../../build
 /* tslint:disable */
-import * as React from "react";\n`;
-const startFileExport = `export default class Documentation extends React.Component<{}, {}> {
+import * as React from "react";
+export default class Documentation extends React.Component<{}, {}> {
     public render(): JSX.Element {
         return (
             <div style={{padding: "14px"}}>\n                `;
 
-const startFilePlain = `${startFile}${startFileExport}`;
 const endFile = `\n           </div>
         );
     }
 }\n`;
 
-const mdPlain = new MarkdownIt({
+const md = new MarkdownIt({
     html: true,
     linkify: true,
     typographer: true,
@@ -47,10 +46,10 @@ function exportReadme(readmePath) {
 
     glob(readmePaths, void(0), function(error, files) {
         files.forEach((filePath) => {
-            let documentation = startFilePlain;
+            let documentation = startFile;
             const markdown = fs.readFileSync(filePath, "utf8");
             const exportPath = filePath.replace(/README\.md/, readmePath);
-            documentation += mdPlain.render(markdown);
+            documentation += md.render(markdown);
             documentation += endFile;
 
             if (!fs.existsSync(exportPath)){
