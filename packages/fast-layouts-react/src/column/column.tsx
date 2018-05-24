@@ -56,10 +56,10 @@ class Column extends Foundation<ColumnProps, {}> {
      */
     public componentDidUpdate(previousProps: ColumnProps): void {
         if (this.shouldTrackBreakpoints(this.props) && !this.shouldTrackBreakpoints(previousProps)) {
-            // If we should be tracking breakpoints but previously weren't, then subscribe to changes
+            // If we should be tracking breakpoints but previously weren't, subscribe to changes
             BreakpointTracker.subscribe(this.update);
         } else if (!this.shouldTrackBreakpoints(this.props) && this.shouldTrackBreakpoints(previousProps)) {
-            // If we were tracking breakpoints but we shouldn't be now, then unsubscribe from chnages
+            // If we were tracking breakpoints but we shouldn't be now, unsubscribe from changes
             BreakpointTracker.unsubscribe(this.update);
         }
     }
@@ -122,9 +122,9 @@ class Column extends Foundation<ColumnProps, {}> {
             return this.props.position;
         } else if (Array.isArray(this.props.position)) {
             return this.getValueByBreakpoint(this.props.position);
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**
@@ -135,9 +135,9 @@ class Column extends Foundation<ColumnProps, {}> {
             return this.props.row.toString();
         } else if (Array.isArray(this.props.row)) {
             return this.getValueByBreakpoint(this.props.row).toString();
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     private augmentMsGrid(value: number | null): number {
@@ -158,14 +158,6 @@ class Column extends Foundation<ColumnProps, {}> {
         const gridColumnValue: string = [position, `span ${span}`].filter((item: string | number) => Boolean(item)).join(" / ");
         let order: number | null;
 
-        const styleObject: React.CSSProperties = {
-            gridColumn: gridColumnValue,
-            gridRowStart: row,
-            ["msGridColumn" as any]: this.augmentMsGrid(position),
-            ["msGridColumnSpan" as any]: this.augmentMsGrid(span),
-            ["msGridRow" as any]: row
-        };
-
         if (!canUseDOM()) {
             order = Array.isArray(this.props.order) ? this.props.order[0] : this.props.order;
         } else {
@@ -173,7 +165,11 @@ class Column extends Foundation<ColumnProps, {}> {
         }
 
         return Object.assign({}, this.unhandledProps().style, {
-            ...styleObject,
+            gridColumn: gridColumnValue,
+            gridRowStart: row,
+            msGridColumn: this.augmentMsGrid(position),
+            msGridColumnSpan: this.augmentMsGrid(span),
+            msGridRow: row,
             order: typeof order === "number" ? order : null
         });
     }

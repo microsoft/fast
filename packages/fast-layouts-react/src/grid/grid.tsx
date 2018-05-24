@@ -79,10 +79,10 @@ class Grid extends Foundation<GridProps, {}> {
      */
     public componentDidUpdate(previousProps: GridProps): void {
         if (this.shouldTrackBreakpoints(this.props) && !this.shouldTrackBreakpoints(previousProps)) {
-            // If we should be tracking breakpoints but previously weren't, then subscribe to changes
+            // If we should be tracking breakpoints but previously weren't, subscribe to changes
             BreakpointTracker.subscribe(this.update);
         } else if (!this.shouldTrackBreakpoints(this.props) && this.shouldTrackBreakpoints(previousProps)) {
-            // If we were tracking breakpoints but we shouldn't be now, then unsubscribe from chnages
+            // If we were tracking breakpoints but we shouldn't be now, unsubscribe from changes
             BreakpointTracker.unsubscribe(this.update);
         }
     }
@@ -108,9 +108,9 @@ class Grid extends Foundation<GridProps, {}> {
             return this.props.gutter;
         } else if (Array.isArray(this.props.gutter)) {
             return getValueByBreakpoint(this.props.gutter);
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     private generateAlignment(alignment: GridAlignment): string {

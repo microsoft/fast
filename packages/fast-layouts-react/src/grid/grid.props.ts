@@ -36,6 +36,10 @@ export interface IGridHandledProps {
      */
     tag?: GridTag;
 
+    /**
+     * The column the grid should occupy
+     * Use this property to change the positioning of the grid within the page component
+     */
     gridColumn?: number;
 
     /**
