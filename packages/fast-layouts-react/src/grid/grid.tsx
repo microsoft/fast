@@ -130,8 +130,8 @@ class Grid extends Foundation<GridProps, {}> {
             gridTemplateColumns: `repeat(${this.props.columnCount} 1fr)`,
             gridColumnGap: `${this.generateGutter()}px`,
             gridRow: this.props.row,
-            justifyItems: this.generateAlignment(this.props.horizontalAlign || GridAlignment.stretch),
-            alignItems: this.generateAlignment(this.props.verticalAlign || GridAlignment.stretch),
+            justifyItems: this.generateAlignment(this.props.horizontalAlign),
+            alignItems: this.generateAlignment(this.props.verticalAlign),
             msGridColumns: `1fr (${this.generateGutter()})[${this.props.columnCount - 1}]`,
             ["msGridRow" as any]: this.props.row
         });

@@ -21,6 +21,11 @@ const styles: ComponentStyles<IPageClassNamesContract, undefined> = {
 };
 
 class Page extends Foundation<PageProps, undefined> {
+    public static defaultProps: Partial<IPageHandledProps> = {
+        margin: "minmax(5vw, 1fr)",
+        maxWidth: "1600px"
+    };
+
     protected handledProps: IPageHandledProps & IManagedClasses<IPageClassNamesContract> = {
         managedClasses: void 0,
         margin: void 0,
@@ -42,24 +47,19 @@ class Page extends Foundation<PageProps, undefined> {
         const attributes: React.HTMLAttributes<HTMLDivElement> = Object.assign({}, this.unhandledProps(), {
             className: super.generateClassNames(this.props.managedClasses.page)
         });
+        const margin: string = this.props.margin;
+        const maxWidth: string = this.props.maxWidth;
 
         if (!attributes.style) {
             attributes.style = {};
         }
 
-        attributes.style = this.generatePageLayout();
-
-        return attributes;
-    }
-
-    private generatePageLayout(): React.CSSProperties {
-        const margin: string = this.props.margin || "minmax(5vw, 1fr)";
-        const maxWidth: string = this.props.maxWidth || "1600px";
-
-        return {
+        attributes.style = {
             gridTemplateColumns: `${margin} minmax(auto, ${maxWidth}) ${margin}`,
             msGridColumns: `${margin} minmax(0, ${maxWidth}) ${margin}`
         };
+
+        return attributes;
     }
 }
 
