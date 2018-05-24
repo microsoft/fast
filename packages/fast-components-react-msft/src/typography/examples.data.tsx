@@ -1,10 +1,10 @@
+import * as React from "react";
 import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import Typography from "./index";
 import { ITypographyHandledProps, ITypographyManagedClasses, TypeLevel, TypographyTag } from "@microsoft/fast-components-react-base";
 import * as schema from "@microsoft/fast-components-react-base/dist/typography/typography.schema.json";
 import Documentation from "./.tmp/documentation";
-import * as React from "react";
 
 const testString: string = "Typography example string";
 

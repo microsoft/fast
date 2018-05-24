@@ -1,10 +1,10 @@
+import * as React from "react";
 import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import Toggle from "./index";
 import { IToggleHandledProps } from "@microsoft/fast-components-react-base";
 import * as schema from "@microsoft/fast-components-react-base/dist/toggle/toggle.schema.json";
 import Documentation from "./.tmp/documentation";
-import * as React from "react";
 
 export default {
     name: "toggle",

@@ -1,9 +1,9 @@
+import * as React from "react";
 import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import Hypertext, { IHypertextHandledProps, IHypertextManagedClasses, IHypertextUnhandledProps } from "./hypertext";
 import * as schema from "./hypertext.schema.json";
 import Documentation from "./.tmp/documentation";
-import * as React from "react";
 
 const examples: ISnapshotTestSuite<IHypertextHandledProps & IHypertextManagedClasses> = {
     name: "hypertext",

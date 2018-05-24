@@ -1,3 +1,4 @@
+import * as React from "react";
 import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import Typography, {
@@ -8,7 +9,6 @@ import Typography, {
     TypographyTag
 } from "./typography";
 import * as schema from "./typography.schema.json";
-import * as React from "react";
 import Documentation from "./.tmp/documentation";
 
 const testString: string = "Test string";

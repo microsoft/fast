@@ -1,3 +1,4 @@
+import * as React from "react";
 import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import Label, {
@@ -6,7 +7,6 @@ import Label, {
     ILabelUnhandledProps,
     LabelTag
 } from "./label";
-import * as React from "react";
 import * as schema from "./label.schema.json";
 import Documentation from "./.tmp/documentation";
 
