@@ -97,7 +97,7 @@ class Grid extends Foundation<GridProps, {}> {
      * Determines if we should be tracking breakpoints based on a set of props
      */
     private shouldTrackBreakpoints(props: GridProps): boolean {
-        return Array.isArray(props.gutter);
+        return Array.isArray(props.gutter) && props.gutter.length > 1;
     }
 
     /**

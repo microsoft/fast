@@ -178,7 +178,7 @@ class Column extends Foundation<ColumnProps, {}> {
      * Determines if we should be tracking breakpoints based on a set of props
      */
     private shouldTrackBreakpoints(props: ColumnProps): boolean {
-        return Array.isArray(props.span) || Array.isArray(props.position);
+        return Array.isArray(props.span) && props.span.length > 1 || Array.isArray(props.position) && props.position.length > 1;
     }
 
     /**
