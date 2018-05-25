@@ -9,7 +9,7 @@ export interface ISiteCategoryItemManagedClasses {
 }
 
 export interface ISiteCategoryItemProps {
-    slot: string;
+    slot?: string;
     categoryItemComponentMinWidth?: number;
     designSystem?: any;
     data: any;

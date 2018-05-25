@@ -26,19 +26,19 @@ class FastMarkdownIt {
     constructor(md: MarkdownIt) {
         md.core.ruler.push("fast", (new CreateRule(md) as any));
         md.renderer.rules.paragraph_open = function(): string {
-            return `<Typography tag="p" typeLevel={2}>`;
+            return `<Typography tag="p" typeLevel={7}>`;
         };
         md.renderer.rules.heading_open = function(tokens: ITokens<IToken>, idx: number): string {
             const id: string = tokens[idx + 1].children[0].content.toLowerCase().replace(/\s/g, "-").replace(/[^a-z\-]/g, "");
-            return `<Heading id="${id}" tag="${tokens[idx].tag}" typeLevel={${parseInt(tokens[idx].tag.charAt(1), 10) + 2}}>`;
+            return `<Heading id="${id}" tag="${tokens[idx].tag}" level={${parseInt(tokens[idx].tag.charAt(1), 10) + 2}}>`;
         };
         md.renderer.rules.text = (tokens: ITokens<IToken>, idx: number): string => {
             return this.replaceSpecialCharacters(tokens[idx].content);
         };
         md.renderer.rules.fence = function(tokens: ITokens<IToken>, idx: number): string {
-            let codeSnippet: string = `<PrismCode${tokens[idx].info ? ` className="language-${tokens[idx].info}"` : ""}>`;
+            let codeSnippet: string = `<pre${tokens[idx].info ? ` className="language-${tokens[idx].info}"` : ""}><code>`;
             codeSnippet += `{${JSON.stringify(tokens[idx].content, null, 2)}}`;
-            codeSnippet += `</PrismCode>`;
+            codeSnippet += `</code></pre>`;
 
             return codeSnippet;
         };

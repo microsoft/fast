@@ -10,11 +10,16 @@ import {
     IButtonUnhandledProps
 } from "./button.props";
 import * as schema from "./button.schema.json";
+import Documentation from "./.tmp/documentation";
 
 export default {
     name: "button",
     component: Button,
     schema: schema as any,
+    documentation: <Documentation />,
+    detailData: {
+        children: "Button"
+    },
     data: [
         {
             children: "Default button"

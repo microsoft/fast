@@ -18,8 +18,9 @@ export interface IComponentWrapperManagedClasses {
 export interface IComponentWrapperProps<T> {
     active: boolean;
     index: number;
+    singleRow?: boolean;
     designSystem: T;
-    onClick: (activeIndex: number) => void;
+    onClick?: (activeIndex: number) => void;
 }
 
 const componentWrapperBorder: string = `${toPx(1)} solid rgb(226, 226, 226)`;
@@ -91,7 +92,9 @@ class ComponentWrapper extends React.Component<IComponentWrapperProps<IDevSiteDe
     }
 
     private handleClick = (): void => {
-        this.props.onClick(this.props.index);
+        if (this.props.onClick) {
+            this.props.onClick(this.props.index);
+        }
     }
 }
 

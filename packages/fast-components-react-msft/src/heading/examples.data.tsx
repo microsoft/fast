@@ -12,6 +12,7 @@ import {
     IHeadingUnhandledProps
 } from "./heading.props";
 import * as schema from "./heading.schema.json";
+import Documentation from "./.tmp/documentation";
 
 const testString: string = "Heading test string";
 
@@ -19,6 +20,10 @@ export default {
     name: "heading",
     component: Heading,
     schema: schema as any,
+    documentation: <Documentation />,
+    detailData: {
+        children: "Heading"
+    },
     data: [
         {
             children: testString

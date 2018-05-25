@@ -1,12 +1,24 @@
+import * as React from "react";
 import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import Image, { IImageHandledProps, IImageMangedClasses, IImageUnhandledProps } from "./image";
 import * as schema from "./image.schema.json";
+import Documentation from "./.tmp/documentation";
 
 const examples: ISnapshotTestSuite<IImageHandledProps & IImageMangedClasses> = {
     name: "image",
     component: Image,
     schema: schema as any,
+    documentation: <Documentation />,
+    detailData: {
+        managedClasses: {
+            picture: "picture",
+            image: "image",
+            image_round: "image-round"
+        },
+        vp1: "https://placehold.it/539x300/2F2F2F/171717",
+        alt: "Placeholder with grey background and dimension watermark without any imagery"
+    },
     data: [
         {
             managedClasses: {

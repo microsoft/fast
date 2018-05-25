@@ -130,8 +130,15 @@ class ActionBar extends React.Component<IActionBarProps & IManagedClasses<IActio
                     <ComponentViewToggle
                         to={this.props.match.path}
                         onClick={this.onComponentViewChangeCallback(ComponentViewTypes.detail)}
-                        label="View examples"
+                        label="View detail"
                         current={this.isAriaCurrent(ComponentViewTypes.detail)}
+                        glyph={glyphPage}
+                    />
+                    <ComponentViewToggle
+                        to={`${this.props.match.path}${ComponentViewTypes[ComponentViewTypes.examples]}/`}
+                        onClick={this.onComponentViewChangeCallback(ComponentViewTypes.examples)}
+                        label="View examples"
+                        current={this.isAriaCurrent(ComponentViewTypes.examples)}
                         glyph={glyphExamples}
                     />
                 </div>

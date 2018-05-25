@@ -1,4 +1,4 @@
-#Introduction
+# Introduction
 *Label* is a replacement for the HTML `label` or `legend` element. It can be used alone or grouped with other related components. Some components have the *label* built-in, but most do not. *Labels* cannot exceed one line of text.
 
 ## Best practices

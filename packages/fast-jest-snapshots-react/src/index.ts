@@ -21,9 +21,19 @@ export interface ISnapshotTestSuite<T> {
     component: React.ComponentClass<T>;
 
     /**
+     * The detail view component data
+     */
+    detailData: T;
+
+    /**
      * An array of prop instances for the component
      */
     data: T[];
+
+    /**
+     * Documentation for the component
+     */
+    documentation?: JSX.Element;
 }
 
 /**
