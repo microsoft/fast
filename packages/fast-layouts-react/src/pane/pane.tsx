@@ -1,5 +1,5 @@
 import * as React from "react";
-import { throttle } from "lodash";
+import { throttle } from "lodash-es";
 import { IPaneHandledProps, IPaneUnhandledProps, PaneProps, PaneResizeDirection } from "./pane.props";
 import { west } from "../row";
 import rafThrottle from "raf-throttle";
