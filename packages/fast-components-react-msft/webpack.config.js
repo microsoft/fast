@@ -2,6 +2,7 @@ const path = require("path");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WebpackShellPlugin = require("webpack-shell-plugin");
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const appDir = path.resolve(__dirname, "./app");
 const outDir = path.resolve(__dirname, "./www");
@@ -41,6 +42,10 @@ module.exports = {
             onBuildStart: [
                 `npm run convert:readme`
             ]
+        }),
+        new BundleAnalyzerPlugin({
+            // Remove this to inspect bundle sizes.
+            analyzerMode: "disabled"
         })
     ],
     resolve: {
