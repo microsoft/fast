@@ -7,7 +7,7 @@ import { uniqueId } from "lodash-es";
 import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
 import Shell, { ShellHeader, ShellInfoBar, ShellPaneCollapse, ShellSlot } from "../shell";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { ellipsis, toPx } from "@microsoft/fast-jss-utilities";
+import { ellipsis, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
 import ComponentWrapper from "./component-wrapper";
 import CategoryList from "./category-list";
 import SiteMenu from "./menu";
@@ -30,6 +30,7 @@ import {
     PaneResizeDirection,
     Row
 } from "@microsoft/fast-layouts-react";
+import { isRTL } from "@microsoft/fast-application-utilities";
 
 export enum ComponentViewSlot {
     example = "canvas-example-view",
@@ -37,9 +38,16 @@ export enum ComponentViewSlot {
     detailDocumentation = "canvas-detail-view-documentation"
 }
 
+export enum Direction {
+    rtl = "rtl",
+    ltr = "ltr"
+}
+
 export interface ISiteProps {
     title: string;
     formChildOptions: IFormChildOption[];
+    onUpdateLTR?: (ltr: Direction) => void;
+    locales?: string[];
     frameworks?: FrameworkEnum | FrameworkEnum[];
     activeFramework?: FrameworkEnum;
     collapsed?: boolean;
@@ -73,6 +81,7 @@ export interface ISiteState {
     componentView: ComponentViewTypes;
     formView: boolean;
     devToolsView: boolean;
+    locale: string;
 }
 
 export enum SiteSlot {
@@ -84,6 +93,9 @@ export interface ISiteManagedClasses {
     "@global": string;
     site_canvasContent: string;
     site_headerTitle: string;
+    site_infoBarConfiguration: string;
+    site_infoBarConfiguration_ltr: string;
+    site_infoBarConfiguration_ltr_input: string;
     site_paneForm: string;
     site_paneToc: string;
     site_paneTocRow: string;
@@ -110,6 +122,56 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
     site_headerTitle: {
         fontSize: toPx(15),
         marginLeft: toPx(4)
+    },
+    site_infoBarConfiguration: {
+        verticalAlign: "middle",
+        padding: toPx(4),
+        width: "50%",
+        float: "right",
+        textAlign: "right"
+    },
+    site_infoBarConfiguration_ltr: {
+        position: "relative",
+        "&::before, &::after": {
+            content: "''",
+            position: "absolute",
+            top: toPx(6),
+            zIndex: "1",
+            borderRadius: toPx(2),
+            width: toPx(1),
+            height: toPx(10),
+            background: "#000000"
+        },
+        "&::before": {
+            right: toPx(15),
+            transform: "rotate(45deg)"
+        },
+        "&::after": {
+            right: toPx(22),
+            transform: "rotate(-45deg)"
+        }
+    },
+    site_infoBarConfiguration_ltr_input: {
+        lineHeight: toPx(16),
+        fontSize: toPx(14),
+        backgroundColor: "rgba(0, 0, 0, 0.04)",
+        borderRadius: toPx(2),
+        boxShadow: `inset 0 0 ${toPx(4)} 0 rgba(0, 0, 0, 0.08)`,
+        appearance: "none",
+        padding: localizeSpacing(Direction.ltr)(`${toPx(8)} ${toPx(36)} ${toPx(8)} ${toPx(10)}`),
+        border: "none",
+        outline: "none",
+        "&:-ms-expand": {
+            display: "none"
+        },
+        "&:hover": {
+            boxShadow: `inset 0 0 ${toPx(2)} 0 rgba(0,0,0, .3)`
+        },
+        "&:focus": {
+            boxShadow: (config: IDevSiteDesignSystem): string => {
+                return `inset 0 0 0 1 ${config.brandColor}`;
+            }
+        }
     },
     site_paneForm: {
         padding: toPx(12)
@@ -153,6 +215,10 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
 
 class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClasses>, ISiteState> {
 
+    public static defaultProps: Partial<ISiteProps> = {
+        locales: ["en", "en-rtl"]
+    };
+
     constructor(props: ISiteProps & IManagedClasses<ISiteManagedClasses>) {
         super(props);
 
@@ -165,7 +231,8 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
             componentData: this.getComponentData(),
             detailViewComponentData: this.getDetailViewComponentData(),
             formView: true,
-            devToolsView: false
+            devToolsView: false,
+            locale: "en"
         };
     }
 
@@ -506,9 +573,46 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     private renderShellInfoBar(): JSX.Element {
         return (
             <ShellInfoBar>
+                {this.renderInfoBarConfiguration()}
                 {this.renderChildrenBySlot(this, ShellSlot.infoBar)}
             </ShellInfoBar>
         );
+    }
+
+    private renderInfoBarConfiguration(): JSX.Element {
+        return (
+            <div className={this.props.managedClasses.site_infoBarConfiguration}>
+                <span className={this.props.managedClasses.site_infoBarConfiguration_ltr}>
+                    <select
+                        className={this.props.managedClasses.site_infoBarConfiguration_ltr_input}
+                        onChange={this.handleLocaleUpdate}
+                        value={this.state.locale}
+                    >
+                        {this.renderLocales()}
+                    </select>
+                </span>
+            </div>
+        );
+    }
+
+    private renderLocales(): JSX.Element[] {
+        return this.props.locales.map((locale: string, index: number): JSX.Element => {
+            return (
+                <option key={index}>
+                    {locale}
+                </option>
+            );
+        });
+    }
+
+    private handleLocaleUpdate = (e: any): void => {
+        if (this.props.onUpdateLTR) {
+            this.props.onUpdateLTR(isRTL(e.target.value) ? Direction.rtl : Direction.ltr);
+        }
+
+        this.setState({
+            locale: e.target.value
+        });
     }
 
     /**

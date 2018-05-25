@@ -15,9 +15,6 @@ const style: ComponentStyles<IShellInfoBarManagedClasses, IDevSiteDesignSystem> 
         background: (config: IDevSiteDesignSystem): string => {
             return config.lightGray;
         },
-        padding: (config: IDevSiteDesignSystem): string => {
-            return toPx(config.navigationBarHeight / 4);
-        },
         minHeight: (config: IDevSiteDesignSystem): string => {
             return toPx(config.navigationBarHeight / 2);
         }

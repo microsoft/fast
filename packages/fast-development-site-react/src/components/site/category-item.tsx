@@ -16,16 +16,6 @@ export interface ISiteCategoryItemProps {
     type?: string;
 }
 
-class SiteCategoryItem extends React.Component<ISiteCategoryItemProps, {}> {
-    public render(): JSX.Element {
-        return (
-            <DesignSystemProvider designSystem={this.props.designSystem}>
-                <div>
-                    {this.props.children}
-                </div>
-            </DesignSystemProvider>
-        );
-    }
-}
+class SiteCategoryItem extends React.Component<ISiteCategoryItemProps, {}> {}
 
 export default SiteCategoryItem;

@@ -70,9 +70,9 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
             /**
              * Updates a dynamic stylesheet with context
              */
-            public updateStyleSheet(): void {
+            public updateStyleSheet(nextContext?: propTypes.any): void {
                 if (Boolean(this.state.styleSheet)) {
-                    this.state.styleSheet.update(this.designSystem);
+                    this.state.styleSheet.update(nextContext && nextContext.designSystem ? nextContext.designSystem : this.designSystem);
                 }
             }
 
@@ -88,7 +88,7 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
 
             public componentWillUpdate(nextProps: T & IJSSManagerProps<S, C>, nextState: IJSSManagerState, nextContext: any): void {
                 if (!isEqual(this.context, nextContext)) {
-                    this.updateStyleSheet();
+                    this.updateStyleSheet(nextContext);
                 }
             }
 
