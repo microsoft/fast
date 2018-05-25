@@ -1,6 +1,7 @@
 {
   "name": "@microsoft/fast-form-generator-react",
   "description": "A self generating user interface based on JSON Schemas.",
+  "sideEffects": false,
   "author": {
     "name": "Microsoft",
     "email": "fwq@microsoft.com"

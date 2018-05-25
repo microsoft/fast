@@ -1,6 +1,7 @@
 {
   "name": "@microsoft/fast-colors",
   "description": "A color utility for generating a range of colors from a single color",
+  "sideEffects": false,
   "version": "1.6.0",
   "author": {
     "name": "Microsoft",

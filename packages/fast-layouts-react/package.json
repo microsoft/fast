@@ -2,6 +2,7 @@
   "name": "@microsoft/fast-layouts-react",
   "version": "1.0.0",
   "description": "FAST layout components written in React",
+  "sideEffects": false,
   "author": {
     "name": "Microsoft",
     "email": "fwq@microsoft.com"

@@ -1,6 +1,7 @@
 {
   "name": "@microsoft/fast-jss-manager-react",
   "description": "React HOC for managing component JSS stylesheets",
+  "sideEffects": false,
   "version": "1.6.0",
   "author": {
     "name": "Microsoft",

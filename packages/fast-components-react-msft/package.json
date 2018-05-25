@@ -2,6 +2,7 @@
   "name": "@microsoft/fast-components-react-msft",
   "version": "1.6.0",
   "description": "FAST Microsoft components implemented in React",
+  "sideEffects": false,
   "author": {
     "name": "Microsoft",
     "email": "fwq@microsoft.com"

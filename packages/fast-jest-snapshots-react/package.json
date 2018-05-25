@@ -1,6 +1,7 @@
 {
   "name": "@microsoft/fast-jest-snapshots-react",
   "description": "A small utility for automating Jest snapshot creation of React components",
+  "sideEffects": false,
   "version": "1.6.0",
   "author": {
     "name": "Microsoft",

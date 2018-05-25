@@ -1,6 +1,7 @@
 {
   "name": "@microsoft/fast-jss-manager",
   "description": "Provides common code to all JSS manager implementations.",
+  "sideEffects": false,
   "version": "1.6.0",
   "author": {
     "name": "Microsoft",

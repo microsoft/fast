@@ -1,6 +1,7 @@
 {
   "name": "@microsoft/fast-development-site-react",
   "description": "FAST development testing site for React",
+  "sideEffects": false,
   "version": "1.6.0",
   "author": {
     "name": "Microsoft",

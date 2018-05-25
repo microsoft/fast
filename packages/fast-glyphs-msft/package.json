@@ -1,6 +1,7 @@
 {
   "name": "@microsoft/fast-glyphs-msft",
   "description": "Microsoft SVG Glyphs",
+  "sideEffects": false,
   "version": "1.6.0",
   "keywords": [
     "svg"
