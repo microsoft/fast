@@ -15,7 +15,7 @@ module.exports = {
         publicPath: "/",
         filename: "[name].js"
     },
-    mode: "production",
+    mode: process.env.NODE_ENV || "development",
     module: {
         rules: [
             {
