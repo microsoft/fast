@@ -1,7 +1,7 @@
-const clone = require('lodash').cloneDeep;
-const set = require('lodash').set;
-const get = require('lodash').get;
-const unset = require('lodash').unset;
+const clone = require('lodash/cloneDeep');
+const set = require('lodash/set');
+const get = require('lodash/get');
+const unset = require('lodash/unset');
 const isRecursive = require('./is-location-recursive');
 
 /**

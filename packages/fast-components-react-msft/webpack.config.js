@@ -3,12 +3,13 @@ const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WebpackShellPlugin = require("webpack-shell-plugin");
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const UglifyJsWebpackPlugin = require('uglifyjs-webpack-plugin');
 
 const appDir = path.resolve(__dirname, "./app");
 const outDir = path.resolve(__dirname, "./www");
 
 module.exports = {
-    devtool: 'inline-source-map',
+    devtool: false,
     entry: path.resolve(appDir, "index.tsx"),
     output: {
         path: outDir,
@@ -29,6 +30,13 @@ module.exports = {
                     }
                 ]
             }
+        ]
+    },
+    optimization: {
+        minimizer: [
+            new UglifyJsWebpackPlugin({
+                sourceMap: false
+            })
         ]
     },
     plugins: [

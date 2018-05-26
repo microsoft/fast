@@ -1,6 +1,6 @@
-const clone = require('lodash').cloneDeep;
-const get = require('lodash').get;
-const unset = require('lodash').unset;
+const clone = require('lodash/cloneDeep');
+const get = require('lodash/get');
+const unset = require('lodash/unset');
 
 const getDeepPropLocations = require('./get-deep-prop-locations');
 

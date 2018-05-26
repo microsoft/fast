@@ -1,4 +1,4 @@
-const get = require('lodash').get,
+const get = require('lodash/get'),
     permutator = require('../../src/index');
 
 function prettyJSON(obj) {
