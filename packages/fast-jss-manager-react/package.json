@@ -71,7 +71,7 @@
     "lodash-es": "^4.0.0",
     "prop-types": "^15.6.1",
     "react": "^16.3.0",
-    "react-dom": "^16.3.2",
+    "react-dom": "^16.3.0",
     "react-test-renderer": "^16.2.0",
     "ts-jest": "^22.0.4",
     "tslint": "^5.9.1",

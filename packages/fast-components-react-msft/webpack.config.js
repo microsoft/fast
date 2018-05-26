@@ -9,7 +9,7 @@ const appDir = path.resolve(__dirname, "./app");
 const outDir = path.resolve(__dirname, "./www");
 
 module.exports = {
-    devtool: false,
+    devtool: "inline-source-map",
     entry: path.resolve(appDir, "index.tsx"),
     output: {
         path: outDir,
@@ -34,9 +34,7 @@ module.exports = {
     },
     optimization: {
         minimizer: [
-            new UglifyJsWebpackPlugin({
-                sourceMap: false
-            })
+            new UglifyJsWebpackPlugin()
         ]
     },
     plugins: [
@@ -58,6 +56,11 @@ module.exports = {
     ],
     resolve: {
         extensions: [".js", ".tsx", ".ts", ".json"],
+        alias: {
+            'lodash-es': path.resolve('./node_modules/lodash-es'),
+            react: path.resolve('./node_modules/react'),
+            'react-dom': path.resolve('./node_modules/react-dom'),
+        }
     },
     devServer: {
         compress: false,
