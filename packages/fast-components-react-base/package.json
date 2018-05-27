@@ -86,7 +86,6 @@
     "react-dom": "^16.3.0"
   },
   "dependencies": {
-    "@microsoft/fast-components-class-name-contracts-base": "^1.6.0",
-    "uglifyjs-webpack-plugin": "^1.2.5"
+    "@microsoft/fast-components-class-name-contracts-base": "^1.6.0"
   }
 }
