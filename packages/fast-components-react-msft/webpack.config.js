@@ -33,6 +33,7 @@ module.exports = {
         ]
     },
     optimization: {
+        nodeEnv: 'production',
         minimizer: [
             new UglifyJsWebpackPlugin()
         ]
@@ -57,6 +58,8 @@ module.exports = {
     resolve: {
         extensions: [".js", ".tsx", ".ts", ".json"],
         alias: {
+            fbjs: path.resolve('./node_modules/fbjs'),
+            lodash: path.resolve('./node_modules/lodash-es'),
             'lodash-es': path.resolve('./node_modules/lodash-es'),
             react: path.resolve('./node_modules/react'),
             'react-dom': path.resolve('./node_modules/react-dom'),
