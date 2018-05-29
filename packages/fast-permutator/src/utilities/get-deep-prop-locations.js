@@ -1,4 +1,4 @@
-const get = require('lodash').get;
+const get = require('lodash/get');
 const isRecursive = require('./is-location-recursive');
 
 /**

@@ -1,6 +1,7 @@
 {
   "name": "@microsoft/fast-markdown-msft-react",
   "description": "Converter for markdown files to JSX as a string which can be embedded in a site",
+  "sideEffects": false,
   "version": "1.6.0",
   "author": {
     "name": "Microsoft",
@@ -62,8 +63,8 @@
     "watch": "^1.0.2"
   },
   "peerDependencies": {
-    "react": "^16.3.1",
-    "react-dom": "^16.3.1"
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0"
   },
   "dependencies": {
     "markdown-it": "^8.4.0"

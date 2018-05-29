@@ -1,7 +1,7 @@
-const set = require('lodash').set;
-const get = require('lodash').get;
-const merge = require('lodash').merge;
-const clone = require('lodash').cloneDeep;
+const set = require('lodash/set');
+const get = require('lodash/get');
+const merge = require('lodash/merge');
+const clone = require('lodash/cloneDeep');
 
 const resolveSchemaProps = require('./resolve-schema-props');
 const getDeepPropLocations = require('./get-deep-prop-locations');

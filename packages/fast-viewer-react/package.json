@@ -1,6 +1,7 @@
 {
   "name": "@microsoft/fast-viewer-react",
   "description": "An implementation of a React iframe that is self-contained.",
+  "sideEffects": false,
   "version": "1.6.0",
   "author": {
     "name": "Fluent Web",

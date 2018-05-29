@@ -1,4 +1,4 @@
-const clone = require('lodash').cloneDeep;
+const clone = require('lodash/cloneDeep');
 
 /**
  * Exports schemas with dependencies accounted for in required

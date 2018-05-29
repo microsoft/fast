@@ -3,12 +3,13 @@ const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WebpackShellPlugin = require("webpack-shell-plugin");
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const UglifyJsWebpackPlugin = require('uglifyjs-webpack-plugin');
 
 const appDir = path.resolve(__dirname, "./app");
 const outDir = path.resolve(__dirname, "./www");
 
 module.exports = {
-    devtool: 'inline-source-map',
+    devtool: "inline-source-map",
     entry: path.resolve(appDir, "index.tsx"),
     output: {
         path: outDir,
@@ -31,6 +32,12 @@ module.exports = {
             }
         ]
     },
+    optimization: {
+        nodeEnv: 'production',
+        minimizer: [
+            new UglifyJsWebpackPlugin()
+        ]
+    },
     plugins: [
         new ForkTsCheckerWebpackPlugin({
             tslint: path.resolve(__dirname, "../../tslint.json")
@@ -50,6 +57,13 @@ module.exports = {
     ],
     resolve: {
         extensions: [".js", ".tsx", ".ts", ".json"],
+        alias: {
+            fbjs: path.resolve('./node_modules/fbjs'),
+            lodash: path.resolve('./node_modules/lodash-es'),
+            'lodash-es': path.resolve('./node_modules/lodash-es'),
+            react: path.resolve('./node_modules/react'),
+            'react-dom': path.resolve('./node_modules/react-dom'),
+        }
     },
     devServer: {
         compress: false,
