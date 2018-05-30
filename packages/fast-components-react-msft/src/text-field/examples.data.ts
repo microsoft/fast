@@ -5,7 +5,7 @@ import { ITextFieldHandledProps, TextFieldType } from "@microsoft/fast-component
 import * as schema from "@microsoft/fast-components-react-base/dist/text-field/text-field.schema.json";
 
 export default {
-    name: "text-field",
+    name: "text field",
     component: TextField,
     schema: schema as any,
     data: [
