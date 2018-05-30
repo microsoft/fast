@@ -74,6 +74,7 @@ function applyMixedColor(incomingProperty: string, mixValue?: number, alpha?: nu
 const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = {
     button: {
         ...applyType("t7", "vp1"),
+        boxSizing: "border-box",
         maxWidth: toPx(374),
         minWidth: toPx(120),
         display: "inline-block",
@@ -165,7 +166,9 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = {
     },
     button_justified: {
         ...applyTransaprentBackplateStyles(),
-        padding: localizeSpacing(Direction.ltr)(`${toPx(23)} ${toPx(2)} ${toPx(2)} 0`)
+        minWidth: toPx(74),
+        padding: localizeSpacing(Direction.ltr)(`${toPx(13)} ${toPx(12)} ${toPx(12)} 0`),
+        textAlign: "left"
     },
     button_span: {
         position: "relative",
