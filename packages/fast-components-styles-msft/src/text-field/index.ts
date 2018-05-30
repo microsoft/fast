@@ -3,6 +3,7 @@ import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { ITextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { applyType } from "../utilities/typography";
+import { fontWeight } from "../utilities/fonts";
 import * as Chroma from "chroma-js";
 
 function applyMixedColor(mixValue?: number, alpha?: number): (config: IDesignSystem) => string {
@@ -19,7 +20,7 @@ const styles: ComponentStyles<ITextFieldClassNameContract, IDesignSystem> = {
     textField: {
         ...applyType("t7", "vp1"),
         color: applyMixedColor(0.46),
-        fontWeight: "100",
+        fontWeight: fontWeight.light.toString(),
         outline: `${toPx(1)} solid transparent`,
         border: `${toPx(1)} solid transparent`,
         borderColor: applyMixedColor(0.46),
