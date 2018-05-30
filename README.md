@@ -22,6 +22,7 @@ Teams spend significant time building parts of the design system (colors, variab
 This [GitHub Wiki](https://github.com/Microsoft/fast-dna/wiki) includes guidance on getting started, contributing, consumption, quality, testing, help, and community policies.
 
 ## Contact
-* Ask for help [on Stack Overflow](https://stackoverflow.com/questions/tagged/fast-dna) 
+* Ask for help [on Stack Overflow](https://stackoverflow.com/questions/tagged/fast-dna)
+* Join the community [on Discord](https://discord.gg/FcSNfg4)
 * Submit [requests / issues](https://github.com/Microsoft/fast-dna/issues/new/choose)
 * Contributors [find issues to work on](https://github.com/Microsoft/fast-dna/labels/contribute%20%3A%20good%20first%20issue)
