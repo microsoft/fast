@@ -72,6 +72,7 @@ function menuButtonBase(): ICSSRules<IDevSiteDesignSystem> {
             verticalAlign: "text-bottom"
         },
         "&:hover": {
+            cursor: "pointer",
             background: "#EBEBEB"
         },
         "&:focus": {
