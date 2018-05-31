@@ -4,14 +4,9 @@
   "version": "1.6.0",
   "license": "MIT",
   "main": "dist/index.js",
-  "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"
-  },
-  "registry": "https://registry.npmjs.org/",
-  "publishConfig": {
-    "registry": "https://www.npmjs.com/package/@microsoft/fast-animation"
   },
   "author": {
     "name": "Microsoft",
