@@ -26,6 +26,10 @@ import Label from "./label";
 export {Label};
 export * from "./label";
 
+import TextField from "./text-field";
+export { TextField };
+export * from "./text-field";
+
 import Toggle from "./toggle";
 export { Toggle };
 export * from "./toggle";

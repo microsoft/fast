@@ -19,6 +19,9 @@ export { LabelExamples };
 import ToggleExamples from "../src/toggle/examples.data";
 export { ToggleExamples };
 
+import TextFieldExamples from "../src/text-field/examples.data";
+export { TextFieldExamples };
+
 import TypographyExamples from "../src/typography/examples.data";
 export { TypographyExamples };
 
