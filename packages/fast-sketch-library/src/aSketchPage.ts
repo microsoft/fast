@@ -16,12 +16,11 @@ export function getAsketchPage(source): JSON {
     nodes.map((node: Element) => {
         const { left: x, top: y, width, height } = node.getBoundingClientRect();
         const symbol = new SymbolMaster({ x, y, width, height });
-        console.log(symbol);
         const children = Array.from(node.querySelectorAll("*"));
+        const nodes = [node].concat(children);
         symbol.setName("Example symbol")
 
-        const thing = [node].concat(children);
-        thing
+        nodes
             .filter((filtered: Element) => filtered !== null || undefined)
             .map(convertNodeToSketchLayers)
             .reduce((accumulator: any[], value: any[]) => accumulator.concat(value), [])
