@@ -1,5 +1,10 @@
-client
-webpack
+# Source files
+client/
+lib/
+webpack/
+www/
+
+# Configs
 tsconfig.json
 .babelrc
 postcss.config.js
