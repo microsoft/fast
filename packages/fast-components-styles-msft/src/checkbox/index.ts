@@ -21,6 +21,7 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = {
         boxSizing: "content-box",
         margin: "0",
         zIndex: "1",
+        alignSelf: "center",
         boxShadow: (config: IDesignSystem): string => {
             /* tslint:disable-next-line */
             return `inset ${toPx(0)} ${toPx(0)} ${toPx(0)} ${toPx(1)} ${Chroma.mix(config.foregroundColor, config.backgroundColor, 0.46).css()}`;
@@ -81,6 +82,7 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = {
         display: "inline-block",
         width: toPx(20),
         height: toPx(20),
+        alignSelf: "center",
         "&:before": {
             top: toPx(4),
             left: toPx(11),
@@ -103,7 +105,7 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = {
         marginTop: toPx(2)
     },
     checkbox_disabled: {
-        "& $checkbox_input, & $checkbox_label": {
+        "& $checkbox_input, & $checkbox_label, & $checkbox_span": {
             cursor: "default",
             opacity: ".6"
         }
