@@ -1,19 +1,9 @@
 import { Page, nodeToSketchLayers, SymbolMaster } from "@brainly/html-sketchapp";
 
-/**
- * Get aSketch page data from a source object
- */
-export function getAsketchPage(source): JSON {
+export function getAsketchSymbols(source): JSON[] {
     const nodes = Array.from(document.querySelectorAll(source.selectors));
-    const page = new Page({
-        width: 1200,
-        height: 1200
-    });
-
-    // TODO where can we get this name from?
-    page.setName("Example page");
-
-    nodes.map((node: Element) => {
+    
+    return nodes.map((node: Element) => {
         const { left: x, top: y, width, height } = node.getBoundingClientRect();
         const symbol = new SymbolMaster({ x, y, width, height });
         const children = Array.from(node.querySelectorAll("*"));
@@ -32,11 +22,7 @@ export function getAsketchPage(source): JSON {
         // TODO where can we get this name from?
 
         return symbol;
-    }).forEach((symbol: any) => {
-        page.addLayer(symbol);
-    });
-
-    return page.toJSON();
+    }).map(symbol => symbol.toJSON());
 }
 
 function convertNodeToSketchLayers(node: Element): any[] {

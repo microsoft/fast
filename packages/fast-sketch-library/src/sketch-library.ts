@@ -2,7 +2,11 @@ import * as puppeteer from "puppeteer";
 import { Browser, Page } from "puppeteer";
 import * as fs from "fs";
 import * as path from "path";
+import { Page as SketchPage } from "@brainly/html-sketchapp";
 
+/**
+ * Store in-page script content as a string to be loaded into the browser
+ */
 const aSketchPage = fs.readFileSync(path.resolve(__dirname, "./aSketchPage.js")).toString();
 
 export interface ISymbolLibrarySource {
@@ -18,110 +22,106 @@ export interface ISymbolLibrarySource {
 }
 
 /**
- * Extracts sketch symbol library from a given config
+ * Ensure our source object structure is consistent
  */
-export async function extractSymbols(sources: ISymbolLibrarySource | ISymbolLibrarySource[]): Promise<string[]> {
-    const standardizedSources: ISymbolLibrarySource[] = Array.isArray(sources) ? sources : [sources];
-    const browser: Browser = await puppeteer.launch();
-
-    // Standardize the input
-    if (!Array.isArray(sources)) {
-        sources = [sources];
-    }
-
-    return new Promise<string[]>((resolve, reject) => {
-        const sourcesPromises = standardizedSources.map((source: ISymbolLibrarySource) => {
-            return getSymbolsFromSource(source, browser);
-        });
-
-        Promise.all(sourcesPromises)
-            .then((values: string[]) => {
-                browser.close();
-                resolve(values);
-            })
-            .catch((err: Error) => {
-                browser.close();
-                reject(err);
-            });
-    });
+function normalizeSources(sources: ISymbolLibrarySource | ISymbolLibrarySource[]): ISymbolLibrarySource[] {
+    return Array.isArray(sources) ? sources : [sources];
 }
 
 /**
- * Extract symbol data from a single source
+ * Extracts sketch symbol library given a config
  */
-async function getSymbolsFromSource(source: ISymbolLibrarySource, browser: Browser): Promise<string> {
+export async function extractSymbols(sources: ISymbolLibrarySource | ISymbolLibrarySource[]): Promise<string> {
+    const standardizedSources: ISymbolLibrarySource[] = normalizeSources(sources);
+    const browser: Browser = await puppeteer.launch();
     const page: Page = await browser.newPage();
-
-    page.on("console", (message: any) => {
-        // console.log(message);
-        // if (Array.isArray(message._args)) {
-        //     message._args.forEach((arg: string) => {
-        //         console.log(arg);
-        //     });
-        // }
-    });
+    let symbols = [];
 
     await page.setViewport({
         width: 1680,
         height: 930
     });
 
+    page.on("console", (message: any) => {
+        // Uncomment the following line for debugging
+        // console.log(message);
+    });
+
+    for (const source of standardizedSources) {
+        symbols = symbols.concat(await getSymbolsFromSource(source, page));
+    }
+
+    symbols = positionSymbols(symbols);
+
+    return new Promise<string>((resolve, reject) => {
+        const sketchPage = new SketchPage({
+            width: 1200,
+            height: 12000
+        });
+
+        const flattenedLayers = symbols.reduce((accumulator, currentValue) => accumulator.concat(currentValue), []);
+
+        // It should be noted that this is not actually JSON
+        const sketchPageJson: any = sketchPage.toJSON();
+
+        sketchPageJson.layers = flattenedLayers;
+        browser.close();
+        resolve(JSON.stringify(sketchPageJson));
+    });
+}
+
+/**
+ * Extract symbol data from a single source
+ */
+async function getSymbolsFromSource(source: ISymbolLibrarySource, page: Page): Promise<string[]> {
+    // Navigate to the source URL
     await page.goto(source.url, {
         waitUntil: "domcontentloaded"
     });
 
+    // Load the script into the browser that will allow generating sketch symbols
     await page.addScriptTag({
         content: aSketchPage
     });
 
-    const argument = JSON.stringify(source);
-    const aSketchJson = await page.evaluate(`sketchLibrary.getAsketchPage(${argument})`);
+    const symbols = await page.evaluate(`sketchLibrary.getAsketchSymbols(${JSON.stringify(source)})`);
 
-    return new Promise<string>((resolve, reject) => {
-        resolve(JSON.stringify(aSketchJson));
+    return new Promise<string[]>((resolve, reject) => {
+        resolve(symbols);
     });
 }
 
-// /**
-//  * Get aSketch page data from a source object
-//  */
-// function getAsketchPage(source): () => JSON {
-//     const nodes = Array.from(document.querySelectorAll(source.selectors));
-//     const page = new SketchPage({
-//         width: 1200,
-//         height: 1200
-//     });
-// 
-//     // TODO where can we get this name from?
-//     page.setName("Example page");
-// 
-//     nodes.map((node: Element) => {
-//         const { left: x, top: y, width, height } = node.getBoundingClientRect();
-//         const symbol = new SymbolMaster({ x, y, width, height });
-//         const children = Array.from(node.querySelectorAll("*"));
-// 
-//         [node].concat(children)
-//             .filter((filtered: Element) => Boolean(filtered))
-//             .map(convertNodeToSketchLayers)
-//             .forEach((layer: any): void => {
-//                 symbol.addLayer(layer);
-//             });
-// 
-//         // TODO where can we get this name from?
-//         symbol.setName("Example symbol")
-// 
-//         return symbol;
-//     }).forEach((symbol: any) => {
-//         page.addLayer(symbol);
-//     });
-// 
-//     return page.toJSON();
-// }
-// 
-// function convertNodeToSketchLayers(node: Element): any {
-//     const layers = nodeToSketchLayers(node);
-// 
-//     return layers.map((layer: any) => {
-//         layer.setName("New layer");
-//     });
-// }
+/**
+ * Positions symbols so they don't overlap.
+ */
+function positionSymbols(symbols: any): any {
+    let x = 0;
+    let y = 0;
+    let rowHeight = 0;
+    let pageWidth = 1200;
+    const verticalGutter = 28;
+
+    return symbols.map(symbol => {
+        const { width, height } = symbol.frame;
+
+        // If it can fit on the current row
+        if (width <= pageWidth - x) {
+            symbol.frame.x = x;
+            symbol.frame.y = y;
+
+            x = x + width;
+
+            if (height > rowHeight) {
+                rowHeight = height;
+            }
+        } else {
+            x = width;
+            y = y + rowHeight + verticalGutter;
+            rowHeight = height;
+            symbol.frame.x = 0;
+            symbol.frame.y = y;
+        }
+
+        return symbol;
+    });
+}
