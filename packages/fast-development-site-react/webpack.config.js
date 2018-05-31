@@ -6,7 +6,7 @@ const WebpackShellPlugin = require('webpack-shell-plugin');
 
 module.exports = {
     devtool: 'inline-source-map',
-    entry: './app/app.tsx',
+    entry: './app',
     mode: 'development',
     output: {
         path: path.resolve('www'),
