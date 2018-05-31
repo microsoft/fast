@@ -97,8 +97,7 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = {
             return config.foregroundColor;
         },
         ...applyTypeRampConfig("t7"),
-        marginLeft: toPx(5),
-        marginTop: toPx(2)
+        marginLeft: toPx(5)
     },
     checkbox_disabled: {
         cursor: "not-allowed",
