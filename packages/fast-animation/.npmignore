@@ -1,11 +1,14 @@
 # Source files
+__tests__/
+
+# Source files
 client/
 lib/
 webpack/
 www/
 
 # Configs
-tsconfig.json
 .babelrc
+tsconfig.json
 postcss.config.js
-.eslintrc
+tslint.json
