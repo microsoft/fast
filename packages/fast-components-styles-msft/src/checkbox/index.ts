@@ -47,7 +47,6 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = {
                     zIndex: "1",
                     content: "\"\"",
                     borderRadius: toPx(2),
-                    width: toPx(2),
                     background: (config: IDesignSystem): string => {
                         return config.foregroundColor;
                     }
@@ -79,6 +78,9 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = {
         display: "inline-block",
         width: toPx(20),
         height: toPx(20),
+        "&::before, &::after": {
+            width: toPx(2)
+        },
         "&::before": {
             top: toPx(4),
             left: toPx(11),
