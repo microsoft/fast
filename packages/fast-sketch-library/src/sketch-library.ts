@@ -36,9 +36,11 @@ export async function extractSymbols(sources: ISymbolLibrarySource | ISymbolLibr
 
         Promise.all(sourcesPromises)
             .then((values: string[]) => {
+                browser.close();
                 resolve(values);
             })
             .catch((err: Error) => {
+                browser.close();
                 reject(err);
             });
     });
@@ -73,10 +75,9 @@ async function getSymbolsFromSource(source: ISymbolLibrarySource, browser: Brows
     });
 
     const argument = JSON.stringify(source);
-    const aSketchJson = await page.evaluate(`sketchLibrary.getAsketchPage(${argument})`, source);
+    const aSketchJson = await page.evaluate(`sketchLibrary.getAsketchPage(${argument})`);
 
     return new Promise<string>((resolve, reject) => {
-        browser.close();
         resolve(JSON.stringify(aSketchJson));
     });
 }
