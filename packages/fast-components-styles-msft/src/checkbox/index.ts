@@ -101,9 +101,7 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = {
     },
     checkbox_disabled: {
         cursor: "not-allowed",
-        "& $checkbox_input, & $checkbox_label": {
-            opacity: ".6"
-        }
+        opacity: ".6"
     }
 };
 
