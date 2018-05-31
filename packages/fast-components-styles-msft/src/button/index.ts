@@ -85,6 +85,7 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = {
         overflow: "hidden",
         lineHeight: "1",
         textAlign: "center",
+        textDecoration: "none",
         whiteSpace: "nowrap",
         verticalAlign: "bottom",
         transition: "all 0.2s ease-in-out",
