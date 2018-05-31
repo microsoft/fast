@@ -7,6 +7,7 @@ import * as Chroma from "chroma-js";
 
 const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = {
     toggle: {
+        display: "inline-block",
         "& span": {
             userSelect: "none",
             marginTop: "0",
@@ -21,7 +22,6 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = {
         display: "inline-block",
         fontSize: toPx(typeRamp.t8.vp3.fontSize),
         lineHeight: toPx(typeRamp.t8.vp3.lineHeight),
-        marginTop: toPx(21),
         paddingBottom: toPx(7),
         float: "left",
         clear: "left",

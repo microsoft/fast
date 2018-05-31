@@ -14,7 +14,7 @@ class ShellHeader extends React.Component<{}, {}> {
             },
             textAlign: "left",
             padding: toPx(3),
-            minHeight: toPx(24),
+            minHeight: toPx(34),
             overflow: "hidden",
         }
     };

@@ -39,6 +39,9 @@ const style: ComponentStyles<ITocMenuManagedClasses, IDevSiteDesignSystem> = {
                 content: `url('data:image/svg+xml;base64,${dropdownActive}')`
             }
         },
+        "&:hover": {
+            cursor: "pointer"
+        },
         "&::after": {
             content: `url('data:image/svg+xml;base64,${dropdownInactive}')`,
             fill: "white",

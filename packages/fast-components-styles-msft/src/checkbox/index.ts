@@ -8,11 +8,13 @@ import { relative } from "path";
 
 const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = {
     checkbox: {
-        display: "flex",
+        display: "inline-flex",
         flexDirection: "row",
-        verticalAlign: "middle"
+        alignItems: "center",
+        cursor: "pointer"
     },
     checkbox_input: {
+        cursor: "inherit",
         position: "absolute",
         width: toPx(20),
         height: toPx(20),
@@ -40,37 +42,33 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = {
         },
         "&:checked": {
             "& + span": {
-                "&:after, &:before": {
+                "&::after, &::before": {
                     position: "absolute",
                     zIndex: "1",
-                    content: "''",
+                    content: "\"\"",
                     borderRadius: toPx(2),
                     width: toPx(2),
-                    background: "black",
-                    // TODO: Issue #309 https://github.com/Microsoft/fast-dna/issues/309
-                    // background: (config: IDesignSystem): string => {
-                    //     return config.foregroundColor;
-                    // }
+                    background: (config: IDesignSystem): string => {
+                        return config.foregroundColor;
+                    }
                 }
             }
         },
         "&:indeterminate": {
             "& + span": {
-                "&:before": {
+                "&::before": {
                     position: "absolute",
                     zIndex: "1",
-                    content: "''",
+                    content: "\"\"",
                     borderRadius: toPx(2),
                     transform: "none",
                     left: toPx(5),
                     top: toPx(5),
                     height: toPx(10),
                     width: toPx(10),
-                    background: "black",
-                    // TODO: Issue #309 https://github.com/Microsoft/fast-dna/issues/309
-                    // background: (config: IDesignSystem): string => {
-                    //     return config.foregroundColor;
-                    // }
+                    background: (config: IDesignSystem): string => {
+                        return config.foregroundColor;
+                    }
                 }
             }
         }
@@ -81,13 +79,13 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = {
         display: "inline-block",
         width: toPx(20),
         height: toPx(20),
-        "&:before": {
+        "&::before": {
             top: toPx(4),
             left: toPx(11),
             height: toPx(12),
             transform: "rotate(40deg)"
         },
-        "&:after": {
+        "&::after": {
             top: toPx(9),
             left: toPx(6),
             height: toPx(6),
@@ -99,14 +97,11 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = {
             return config.foregroundColor;
         },
         ...applyTypeRampConfig("t7"),
-        marginLeft: toPx(5),
-        marginTop: toPx(2)
+        marginLeft: toPx(5)
     },
     checkbox_disabled: {
-        "& $checkbox_input, & $checkbox_label": {
-            cursor: "default",
-            opacity: ".6"
-        }
+        cursor: "not-allowed",
+        opacity: ".6"
     }
 };
 
