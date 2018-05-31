@@ -105,7 +105,7 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = {
         marginTop: toPx(2)
     },
     checkbox_disabled: {
-        "& $checkbox_input, & $checkbox_label": {
+        "& $checkbox_input, & $checkbox_label, & $checkbox_span": {
             cursor: "default",
             opacity: ".6"
         }
