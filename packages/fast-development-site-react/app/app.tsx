@@ -19,6 +19,7 @@ import PolymerHeading from "./components/polymer-heading";
 import { ISiteCategoryProps } from "../src/components/site/category";
 import ParagraphDocs from "./components/paragraph/.tmp/documentation";
 import ButtonDocs from "./components/button/.tmp/documentation";
+import { FrameworkEnum } from "../src/components/site/dev-tools";
 
 export interface IAppState {
     direction: Direction;
@@ -38,8 +39,12 @@ export default class App extends React.Component<{}, IAppState> {
         }
     ];
 
+    private frameworks: FrameworkEnum[];
+
     constructor(props: {}) {
         super(props);
+
+        this.frameworks = [FrameworkEnum.react, FrameworkEnum.angular];
 
         this.state = {
             direction: Direction.ltr
@@ -51,8 +56,8 @@ export default class App extends React.Component<{}, IAppState> {
             <Site
                 title={"FAST Documentation site"}
                 formChildOptions={this.formChildOptions}
-                frameworks={["react" as any, "angular" as any]}
-                onUpdateLTR={this.handleUpdateLTR}
+                frameworks={this.frameworks}
+                onUpdateDirection={this.handleUpdateDirection}
             >
                 {this.renderSiteMenu()}
                 {this.renderBuildingBlocks()}
@@ -182,7 +187,7 @@ export default class App extends React.Component<{}, IAppState> {
         );
     }
 
-    private handleUpdateLTR = (direction: Direction): void => {
+    private handleUpdateDirection = (direction: Direction): void => {
         this.setState({
             direction
         });

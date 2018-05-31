@@ -1,7 +1,4 @@
-export enum Direction {
-    ltr = "ltr",
-    rtl = "rtl"
-}
+import { Direction } from "@microsoft/fast-application-utilities";
 
 export interface IDesignSystem {
     ltr: Direction;

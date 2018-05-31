@@ -30,7 +30,7 @@ import {
     PaneResizeDirection,
     Row
 } from "@microsoft/fast-layouts-react";
-import { isRTL } from "@microsoft/fast-application-utilities";
+import { Direction, isRTL } from "@microsoft/fast-application-utilities";
 
 export enum ComponentViewSlot {
     example = "canvas-example-view",
@@ -38,15 +38,10 @@ export enum ComponentViewSlot {
     detailDocumentation = "canvas-detail-view-documentation"
 }
 
-export enum Direction {
-    rtl = "rtl",
-    ltr = "ltr"
-}
-
 export interface ISiteProps {
     title: string;
     formChildOptions: IFormChildOption[];
-    onUpdateLTR?: (ltr: Direction) => void;
+    onUpdateDirection?: (ltr: Direction) => void;
     locales?: string[];
     frameworks?: FrameworkEnum | FrameworkEnum[];
     activeFramework?: FrameworkEnum;
@@ -94,8 +89,8 @@ export interface ISiteManagedClasses {
     site_canvasContent: string;
     site_headerTitle: string;
     site_infoBarConfiguration: string;
-    site_infoBarConfiguration_ltr: string;
-    site_infoBarConfiguration_ltr_input: string;
+    site_infoBarConfiguration_direction: string;
+    site_infoBarConfiguration_direction_input: string;
     site_paneForm: string;
     site_paneToc: string;
     site_paneTocRow: string;
@@ -130,7 +125,7 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
         float: "right",
         textAlign: "right"
     },
-    site_infoBarConfiguration_ltr: {
+    site_infoBarConfiguration_direction: {
         position: "relative",
         "&::before, &::after": {
             content: "''",
@@ -151,7 +146,7 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
             transform: "rotate(-45deg)"
         }
     },
-    site_infoBarConfiguration_ltr_input: {
+    site_infoBarConfiguration_direction_input: {
         lineHeight: toPx(16),
         fontSize: toPx(14),
         backgroundColor: "rgba(0, 0, 0, 0.04)",
@@ -582,9 +577,9 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     private renderInfoBarConfiguration(): JSX.Element {
         return (
             <div className={this.props.managedClasses.site_infoBarConfiguration}>
-                <span className={this.props.managedClasses.site_infoBarConfiguration_ltr}>
+                <span className={this.props.managedClasses.site_infoBarConfiguration_direction}>
                     <select
-                        className={this.props.managedClasses.site_infoBarConfiguration_ltr_input}
+                        className={this.props.managedClasses.site_infoBarConfiguration_direction_input}
                         onChange={this.handleLocaleUpdate}
                         value={this.state.locale}
                     >
@@ -606,8 +601,8 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     }
 
     private handleLocaleUpdate = (e: any): void => {
-        if (this.props.onUpdateLTR) {
-            this.props.onUpdateLTR(isRTL(e.target.value) ? Direction.rtl : Direction.ltr);
+        if (this.props.onUpdateDirection) {
+            this.props.onUpdateDirection(isRTL(e.target.value) ? Direction.rtl : Direction.ltr);
         }
 
         this.setState({

@@ -93,6 +93,7 @@
     "react-dom": "^16.3.0"
   },
   "dependencies": {
+    "@microsoft/fast-application-utilities": "^1.6.0",
     "@microsoft/fast-components-class-name-contracts-msft": "^1.6.0",
     "@microsoft/fast-components-react-base": "^1.6.0",
     "@microsoft/fast-components-styles-msft": "^1.6.0",

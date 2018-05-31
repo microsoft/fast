@@ -11,14 +11,10 @@ import Site, {
     SiteCategoryIcon,
     SiteCategoryItem
 } from "@microsoft/fast-development-site-react";
+import { Direction } from "@microsoft/fast-application-utilities";
 import * as examples from "./examples";
 
 const formChildOptions: IFormChildOption[] = formChildFromExamplesFactory(examples);
-
-export enum Direction {
-    rtl = "rtl",
-    ltr = "ltr"
-}
 
 export default class App extends React.Component<{}, {}> {
 
@@ -27,7 +23,7 @@ export default class App extends React.Component<{}, {}> {
             <Site
                 title={"FAST Microsoft component documentation"}
                 formChildOptions={formChildOptions}
-                onUpdateLTR={this.handleUpdateLTR}
+                onUpdateDirection={this.handleUpdateDirection}
             >
                 <SiteCategory slot={"category"} name={"Building blocks"}>
                     <SiteCategoryIcon slot="category-icon">
@@ -41,7 +37,7 @@ export default class App extends React.Component<{}, {}> {
         );
     }
 
-    private handleUpdateLTR = (direction: Direction): void => {
+    private handleUpdateDirection = (direction: Direction): void => {
         // TODO: #486 change the design system direction (ltr)
     }
 }
