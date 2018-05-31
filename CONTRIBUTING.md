@@ -24,7 +24,7 @@ Collaborators can be nominated to become members of the Steering Committee follo
 Membership for Owners, having 'admin' access, have ultimate authority and are responsible for management, maintainenance, and operations of repositories.
 
 ### Collaborators
-Membership for Collaborators, having 'write' access, have major impact on the project and participate in triaging issues, reviewing code, mentoring, and working to improve and maintain overall architecutural quality.
+Membership for Collaborators, having 'write' access, have major impact on the project and participate in triaging issues, reviewing code, mentoring, and working to improve and maintain overall architectural quality.
 
 Contributors can be nominated as Collaborators by Steering Committee members. Once the nomination is approved by the Steering Committee, the invitation to become a Collaborator is extended to the individual. Assuming the individual accepts the invitation and agrees to the terms of DCO (Developer Certificate of Origin) they are granted commit-access to the project.
 
