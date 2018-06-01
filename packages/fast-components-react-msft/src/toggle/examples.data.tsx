@@ -28,7 +28,8 @@ export default {
             selected: true,
             selectedString: "On",
             statusLabelId: "span01",
-            unselectedString: "Off"
+            unselectedString: "Off",
+            "data-sketch-symbol": "Toggle (on)"
         },
         {
             children: "Toggle label (default off)",
@@ -38,7 +39,8 @@ export default {
             selected: false,
             selectedString: "On",
             statusLabelId: "span02",
-            unselectedString: "Off"
+            unselectedString: "Off",
+            "data-sketch-symbol": "Toggle (off)"
         },
         {
             children: "Toggle label (disabled on)",
@@ -48,7 +50,8 @@ export default {
             selected: true,
             selectedString: "On",
             statusLabelId: "span03",
-            unselectedString: "Off"
+            unselectedString: "Off",
+            "data-sketch-symbol": "Toggle disabled (on)"
         },
         {
             children: "Toggle label (disabled off)",
@@ -58,7 +61,8 @@ export default {
             selected: false,
             selectedString: "On",
             statusLabelId: "span04",
-            unselectedString: "Off"
+            unselectedString: "Off",
+            "data-sketch-symbol": "Toggle disabled (off)"
         }
     ]
 } as ISnapshotTestSuite<IToggleHandledProps>;

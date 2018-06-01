@@ -22,23 +22,28 @@ export default {
     },
     data: [
         {
-            children: "Default button"
+            children: "Default button",
+            "data-sketch-symbol": "Default button"
         },
         {
             primary: true,
-            children: "Primary (submit) button"
+            children: "Primary (submit) button",
+            "data-sketch-symbol": "Primary button"
         },
         {
             outline: true,
-            children: "Outline button"
+            children: "Outline button",
+            "data-sketch-symbol": "Outline button"
         },
         {
             lightweight: true,
-            children: "Lightweight button"
+            children: "Lightweight button",
+            "data-sketch-symbol": "Lightweight button"
         },
         {
             justified: true,
-            children: "Justified button"
+            children: "Justified button",
+            "data-sketch-symbol": "Justified button"
         },
         {
             href: "#",
@@ -46,32 +51,38 @@ export default {
         },
         {
             disabled: true,
-            children: "Default button"
+            children: "Default button",
+            "data-sketch-symbol": "Disabled default button"
         },
         {
             disabled: true,
             primary: true,
-            children: "Primary (submit) button"
+            children: "Primary (submit) button",
+            "data-sketch-symbol": "Disabled primary button"
         },
         {
             disabled: true,
             outline: true,
-            children: "Outline button"
+            children: "Outline button",
+            "data-sketch-symbol": "Disabled outline button"
         },
         {
             disabled: true,
             lightweight: true,
-            children: "Lightweight button"
+            children: "Lightweight button",
+            "data-sketch-symbol": "Disabled lightweight button"
         },
         {
             disabled: true,
             justified: true,
-            children: "Justified button"
+            children: "Justified button",
+            "data-sketch-symbol": "Disabled justified button"
         },
         {
             disabled: true,
             href: "#",
-            children: "Anchor"
+            children: "Anchor",
+            "data-sketch-symbol": "Disabled anchor button"
         }
     ]
 } as ISnapshotTestSuite<IButtonHandledProps>;

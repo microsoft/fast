@@ -18,7 +18,8 @@ export default {
     data: [
         {
             href: "https://msdn.microsoft.com",
-            children: "Hypertext"
+            children: "Hypertext",
+            "data-sketch-symbol": "Hypertext"
         },
         {
             children: "Hypertext"

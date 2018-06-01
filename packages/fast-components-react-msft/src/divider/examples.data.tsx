@@ -16,7 +16,8 @@ export default {
     },
     data: [
         {
-            role: void 0
+            role: void 0,
+            "data-sketch-symbol": "Divider"
         },
         {
             role: DividerRoles.presentation
