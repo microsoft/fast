@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-jest-snapshots-react",
   "description": "A small utility for automating Jest snapshot creation of React components",
   "sideEffects": false,
-  "version": "1.6.0",
+  "version": "1.7.0",
   "author": {
     "name": "Microsoft",
     "email": "fwq@microsoft.com"
@@ -23,7 +23,7 @@
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'"
   },
   "devDependencies": {
-    "@microsoft/fast-tslint-rules": "^1.6.0",
+    "@microsoft/fast-tslint-rules": "^1.7.0",
     "@types/jest": "^22.2.2",
     "jest": "^22.4.3",
     "react": "^16.3.0",

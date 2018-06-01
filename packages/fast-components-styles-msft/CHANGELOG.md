@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.7.0"></a>
+# [1.7.0](https://github.com/Microsoft/fast-dna/compare/v1.6.0...v1.7.0) (2018-06-01)
+
+
+### Bug Fixes
+
+* **checkbox:** fix broken indeterminate state UI in Firefox ([#489](https://github.com/Microsoft/fast-dna/issues/489)) ([dd55c0c](https://github.com/Microsoft/fast-dna/commit/dd55c0c))
+
+
+### Features
+
+* **detail view:** add detail view ([#470](https://github.com/Microsoft/fast-dna/issues/470)) ([665b871](https://github.com/Microsoft/fast-dna/commit/665b871))
+
+
+
+
 <a name="1.6.0"></a>
 # [1.6.0](https://github.com/Microsoft/fast-dna/compare/v1.2.0...v1.6.0) (2018-05-16)
 
