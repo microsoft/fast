@@ -1,4 +1,5 @@
 import { Page, Text, nodeToSketchLayers, SymbolMaster } from "@brainly/html-sketchapp";
+const symbolNameDataAttribute = "data-sketch-symbol";
 
 export function getAsketchSymbols(source): JSON[] {
     const nodes = Array.from(document.querySelectorAll(source.selectors));
@@ -8,7 +9,12 @@ export function getAsketchSymbols(source): JSON[] {
         const symbol = new SymbolMaster({ x, y, width, height });
         const children = Array.from(node.querySelectorAll("*"));
         const nodes = [node].concat(children);
-        symbol.setName("Example symbol")
+
+        if (node.hasAttribute(symbolNameDataAttribute)) {
+            symbol.setName(node.getAttribute(symbolNameDataAttribute));
+        } else {
+            symbol.setName("Symbol")
+        }
 
         nodes
             .filter((filtered: Element) => filtered !== null || undefined)
@@ -18,9 +24,6 @@ export function getAsketchSymbols(source): JSON[] {
             .forEach((layer: any): void => {
                 symbol.addLayer(layer);
             });
-
-        // TODO where can we get this name from?
-
         return symbol;
     }).map(symbol => symbol.toJSON());
 }

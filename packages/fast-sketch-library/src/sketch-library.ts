@@ -100,6 +100,7 @@ function positionSymbols(symbols: any): any {
     let rowHeight = 0;
     let pageWidth = 1200;
     const verticalGutter = 28;
+    const horizontalGutter = 28;
 
     return symbols.map(symbol => {
         const { width, height } = symbol.frame;
@@ -109,13 +110,13 @@ function positionSymbols(symbols: any): any {
             symbol.frame.x = x;
             symbol.frame.y = y;
 
-            x = x + width;
+            x = x + width + horizontalGutter;
 
             if (height > rowHeight) {
                 rowHeight = height;
             }
         } else {
-            x = width;
+            x = width + horizontalGutter;
             y = y + rowHeight + verticalGutter;
             rowHeight = height;
             symbol.frame.x = 0;
