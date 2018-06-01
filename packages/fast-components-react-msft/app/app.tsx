@@ -13,6 +13,10 @@ import Site, {
 } from "@microsoft/fast-development-site-react";
 import { Direction } from "@microsoft/fast-application-utilities";
 import * as examples from "./examples";
+import Hypertext from "../src/hypertext";
+
+/* tslint:disable-next-line */
+const sketchDesignKit = require("./fast-dna-msft-design-kit.sketch");
 
 const formChildOptions: IFormChildOption[] = formChildFromExamplesFactory(examples);
 
@@ -33,6 +37,9 @@ export default class App extends React.Component<{}, {}> {
                 <SiteCategory slot={"category"} name={"Components"}>
                     {componentFactory(examples, DesignSystemDefaults)}
                 </SiteCategory>
+                <div slot="info-bar">
+                    <Hypertext href={sketchDesignKit}>Download design kit - sketch</Hypertext>
+                </div>
             </Site>
         );
     }
