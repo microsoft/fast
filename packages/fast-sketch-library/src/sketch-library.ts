@@ -2,12 +2,12 @@ import * as puppeteer from "puppeteer";
 import { Browser, Page } from "puppeteer";
 import * as fs from "fs";
 import * as path from "path";
-import { Page as SketchPage, Group } from "@brainly/html-sketchapp";
+import { Page as SketchPage } from "@brainly/html-sketchapp";
 
 /**
  * Store in-page script content as a string to be loaded into the browser
  */
-const aSketchPage = fs.readFileSync(path.resolve(__dirname, "./aSketchPage.js")).toString();
+const aSketchPage: string = fs.readFileSync(path.resolve(__dirname, "./aSketchPage.js")).toString();
 
 export interface ISymbolLibrarySource {
     /**
@@ -37,13 +37,11 @@ export interface IExtractSymbolLibraryConfig {
      */
     pageWidth: number;
 
-
     /**
      * The height of the page to create
      */
     pageHeight: number;
 }
-
 
 const extractSymbolLibraryConfigDefaults: IExtractSymbolLibraryConfig = {
     sources: [],
@@ -68,7 +66,7 @@ export async function extractSymbolLibrary(config: IExtractSymbolLibraryConfig):
     const standardizedSources: ISymbolLibrarySource[] = normalizeSources(config.sources);
     const browser: Browser = await puppeteer.launch();
     const page: Page = await browser.newPage();
-    let symbols = [];
+    let symbols: string[][] = [];
 
     await page.setViewport({
         width: config.pageWidth,
@@ -86,17 +84,18 @@ export async function extractSymbolLibrary(config: IExtractSymbolLibraryConfig):
 
     symbols = positionSymbols(symbols, config.pageWidth);
 
-    return new Promise<string>((resolve, reject) => {
-        const sketchPage = new SketchPage({
+    return new Promise<string>((resolve: (result: string) => void, reject: (error: Error) => void): void => {
+        const sketchPage: SketchPage = new SketchPage({
             width: config.pageWidth,
             height: config.pageHeight
         });
 
         sketchPage.setName(config.name);
 
-        const flattenedLayers = symbols.reduce((accumulator, currentValue) => accumulator.concat(currentValue), []);
+        const flattenedLayers: string[] = symbols.reduce((accumulator: string[], currentValue: string[]) => {
+            return accumulator.concat(currentValue);
+        }, []);
 
-        // It should be noted that this is not actually JSON
         const sketchPageJson: any = sketchPage.toJSON();
 
         sketchPageJson.layers = flattenedLayers;
@@ -119,9 +118,9 @@ async function getSymbolsFromSource(source: ISymbolLibrarySource, page: Page): P
         content: aSketchPage
     });
 
-    const symbols = await page.evaluate(`sketchLibrary.getAsketchSymbols(${JSON.stringify(source)})`);
+    const symbols: string[] = await page.evaluate(`sketchLibrary.getAsketchSymbols(${JSON.stringify(source)})`);
 
-    return new Promise<string[]>((resolve, reject) => {
+    return new Promise<string[]>((resolve: (result: string[]) => void, reject: (error: Error) => void): void => {
         resolve(symbols);
     });
 }

@@ -1,22 +1,28 @@
-import { Page, Text, nodeToSketchLayers, SymbolMaster } from "@brainly/html-sketchapp";
-const symbolNameDataAttribute = "data-sketch-symbol";
+import { Base, nodeToSketchLayers, Page, SymbolMaster, Text,  } from "@brainly/html-sketchapp";
+import { ISymbolLibrarySource } from "./sketch-library";
+const symbolNameDataAttribute: string = "data-sketch-symbol";
 
-export function getAsketchSymbols(source): JSON[] {
-    const nodes = Array.from(document.querySelectorAll(source.selectors));
-    
+export function getAsketchSymbols(source: ISymbolLibrarySource): JSON[] {
+    const selectors: string = Array.isArray(source.selectors) ? source.selectors.join(", ") : source.selectors;
+    const nodes: Element[] = Array.from(document.querySelectorAll(selectors));
+
     return nodes.map((node: Element) => {
-        const { left: x, top: y, width, height } = node.getBoundingClientRect();
-        const symbol = new SymbolMaster({ x, y, width, height });
-        const children = Array.from(node.querySelectorAll("*"));
-        const nodes = [node].concat(children);
+        const rect: ClientRect = node.getBoundingClientRect();
+        const x: number = rect.left;
+        const y: number = rect.top;
+        const height: number = rect.height;
+        const width: number = rect.width;
+        const symbol: SymbolMaster = new SymbolMaster({ x, y, width, height });
+        const children: Element[] = Array.from(node.querySelectorAll("*"));
+        const allNodes: Element[] = [node].concat(children);
 
         if (node.hasAttribute(symbolNameDataAttribute)) {
             symbol.setName(node.getAttribute(symbolNameDataAttribute));
         } else {
-            symbol.setName("Symbol")
+            symbol.setName("Symbol");
         }
 
-        nodes
+        allNodes
             .filter((filtered: Element) => filtered !== null || undefined)
             .map(convertNodeToSketchLayers)
             .reduce((accumulator: any[], value: any[]) => accumulator.concat(value), [])
@@ -25,19 +31,19 @@ export function getAsketchSymbols(source): JSON[] {
                 symbol.addLayer(layer);
             });
         return symbol;
-    }).map(symbol => symbol.toJSON());
+    }).map((symbol: SymbolMaster) => symbol.toJSON());
 }
 
 function convertNodeToSketchLayers(node: Element): any[] {
-    const layers = nodeToSketchLayers(node);
+    const layers: Base[] = nodeToSketchLayers(node);
 
-    return layers.map((layer: any) => {
+    return layers.map((layer: Base) => {
         if (!(layer instanceof Text) && node.classList && node.classList.length) {
-            let classes = Array.from(node.classList).join(" ");
+            const classes: string = Array.from(node.classList).join(" ");
 
             // Trim unique class ids created by JSS
-            let trimmed = classes.replace(/[-0-9]+/, "");
-            layer.setName(trimmed.replace(/[^A-Za-z0-9_]/g, " "))
+            const trimmed: string = classes.replace(/[-0-9]+/g, "");
+            layer.setName(trimmed.replace(/[^A-Za-z0-9_]/g, " "));
         }
 
         return layer;
