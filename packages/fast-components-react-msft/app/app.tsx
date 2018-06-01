@@ -38,7 +38,12 @@ export default class App extends React.Component<{}, {}> {
                     {componentFactory(examples, DesignSystemDefaults)}
                 </SiteCategory>
                 <div slot="info-bar">
-                    <Hypertext href={sketchDesignKit}>Download design kit - sketch</Hypertext>
+                    <Hypertext
+                        jssStyleSheet={{hypertext: {marginTop: "8px", display: "inline-block"}}}
+                        href={sketchDesignKit}
+                    >
+                        Download design kit - sketch
+                    </Hypertext>
                 </div>
             </Site>
         );
