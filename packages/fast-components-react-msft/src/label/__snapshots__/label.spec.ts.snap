@@ -3,6 +3,7 @@
 exports[`label label: 0 1`] = `
 <label
   className="label-0-1-1"
+  data-sketch-symbol="Label"
 >
   Label
 </label>
