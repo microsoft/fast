@@ -1,5 +1,5 @@
 import { Base, nodeToSketchLayers, Page, SymbolMaster, Text,  } from "@brainly/html-sketchapp";
-import { ISymbolLibrarySource } from "./sketch-library";
+import { ISymbolLibrarySource } from "./index";
 const symbolNameDataAttribute: string = "data-sketch-symbol";
 
 export function getAsketchSymbols(source: ISymbolLibrarySource): JSON[] {
