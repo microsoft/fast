@@ -79,7 +79,7 @@ class Checkbox extends Foundation<ICheckboxHandledProps & ICheckboxManagedClasse
     public render(): React.ReactElement<HTMLElement> {
         return (
             <this.tag
-            {...this.unhandledProps()}
+                {...this.unhandledProps()}
                 className={this.generateClassNames()}
             >
                 <input
