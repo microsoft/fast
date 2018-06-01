@@ -16,22 +16,22 @@ In order to best serve the community as a whole, the development, release, and w
 
 ## Governance
 ### Steering Committee
-The Fluent Web Steering Committee ("Steering Committee"), membership consists of key Fluent Web Collaborators ("Collaborators") who have demonstrated both design and technical expertise critical to the ongoing support, maintenance, evolution, and a long term commitment to driving the project and community forward.
+Membership for the Steering Committee consists of key Collaborators who have demonstrated both design and technical expertise critical to the ongoing support, maintenance, evolution, and a long term commitment to driving the project and community forward.
 
 Collaborators can be nominated to become members of the Steering Committee following the same nomination and approval model. However, Collaborators cannot nominate themselves for Steering Committee membership. A Contributor cannot be nominated and accepted into the Steering Committee without first having been nominated and accepted as a Collaborator.
 
 ### Owners
-Fluent Web Owners ("Owners"), having 'admin' access, have ultimate authority and are responsible for management, maintainenance, and operations of repositories.
+Membership for Owners, having 'admin' access, have ultimate authority and are responsible for management, maintainenance, and operations of repositories.
 
 ### Collaborators
-Fluent Web Collaborators ("Collaborators"), having 'write' access, have major impact on the project and participate in triaging issues, reviewing code, mentoring, and working to improve and maintain overall architecutural quality.
+Membership for Collaborators, having 'write' access, have major impact on the project and participate in triaging issues, reviewing code, mentoring, and working to improve and maintain overall architectural quality.
 
 Contributors can be nominated as Collaborators by Steering Committee members. Once the nomination is approved by the Steering Committee, the invitation to become a Collaborator is extended to the individual. Assuming the individual accepts the invitation and agrees to the terms of DCO (Developer Certificate of Origin) they are granted commit-access to the project.
 
 Nominations for Collaborator status happen through the typical Steering Committee decision making process. That is, to nominate one or more Collaborators, Steering Committee then moves to interview the nominees. The nominee is approved or rejected following the same consensus seeking process for new team members.
 
 ### Contributors
-Fluent Web Contributors ("Contributors"), having 'read' access, can be any individual who have shown interest by contributing a pull request to the project.
+Membership for Contributors, having 'read' access, can be any individual who have shown interest by contributing a pull request to the project.
 
 Contributors can self-petition the Steering Committee for Collaborator status by written request to be put on the Steering Committee meeting agenda. In order to be considered however, such self-nominations must be sponsored by an existing Steering Committee member, after which it follows the same process as above. To sponsor a nomination, the Steering Committee member must indicate consent.
 
