@@ -76,11 +76,13 @@ class Checkbox extends Foundation<ICheckboxHandledProps & ICheckboxManagedClasse
     /**
      * Renders the component
      */
-    public render(): React.ReactElement<HTMLInputElement> {
+    public render(): React.ReactElement<HTMLElement> {
         return (
-            <this.tag className={this.generateClassNames()}>
+            <this.tag
+            {...this.unhandledProps()}
+                className={this.generateClassNames()}
+            >
                 <input
-                    {...this.unhandledProps()}
                     className={get(this.props, "managedClasses.checkbox_input")}
                     type="checkbox"
                     ref={this.inputRef}
