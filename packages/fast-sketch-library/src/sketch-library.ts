@@ -2,7 +2,7 @@ import * as puppeteer from "puppeteer";
 import { Browser, Page } from "puppeteer";
 import * as fs from "fs";
 import * as path from "path";
-import { Page as SketchPage } from "@brainly/html-sketchapp";
+import { Page as SketchPage, Group } from "@brainly/html-sketchapp";
 
 /**
  * Store in-page script content as a string to be loaded into the browser

@@ -16,8 +16,7 @@ export default {
     },
     data: [
         {
-            text: "Default",
-            "data-sketch-symbol": "Unchecked checkbox"
+            text: "Default"
         },
         {
             tag: "div",
@@ -25,24 +24,20 @@ export default {
         },
         {
             checked: true,
-            text: "Checked (controlled)",
-            "data-sketch-symbol": "Checked checkbox"
+            text: "Checked (controlled)"
         },
         {
             disabled: true,
-            text: "Disabled",
-            "data-sketch-symbol": "Disabled checkbox"
+            text: "Disabled"
         },
         {
             indeterminate: true,
-            text: "Indeterminate",
-            "data-sketch-symbol": "Indeterminate unchecked checkbox"
+            text: "Indeterminate"
         },
         {
             indeterminate: true,
             checked: true,
-            text: "Indeterminate checked (controlled)",
-            "data-sketch-symbol": "Indeterminate checked checkbox"
+            text: "Indeterminate checked (controlled)"
         }
     ]
 } as ISnapshotTestSuite<ICheckboxHandledProps>;
