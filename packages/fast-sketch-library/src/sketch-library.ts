@@ -21,6 +21,37 @@ export interface ISymbolLibrarySource {
     selectors: string | string[];
 }
 
+export interface IExtractSymbolLibraryConfig {
+    /**
+     * The sources to extract symbols from
+     */
+    sources: ISymbolLibrarySource | ISymbolLibrarySource[];
+
+    /**
+     * The name of the library
+     */
+    name: string;
+
+    /**
+     * The width of the page to create
+     */
+    pageWidth: number;
+
+
+    /**
+     * The height of the page to create
+     */
+    pageHeight: number;
+}
+
+
+const extractSymbolLibraryConfigDefaults: IExtractSymbolLibraryConfig = {
+    sources: [],
+    name: "Symbol library",
+    pageWidth: 1600,
+    pageHeight: 1600
+};
+
 /**
  * Ensure our source object structure is consistent
  */
@@ -31,15 +62,17 @@ function normalizeSources(sources: ISymbolLibrarySource | ISymbolLibrarySource[]
 /**
  * Extracts sketch symbol library given a config
  */
-export async function extractSymbols(sources: ISymbolLibrarySource | ISymbolLibrarySource[]): Promise<string> {
-    const standardizedSources: ISymbolLibrarySource[] = normalizeSources(sources);
+export async function extractSymbolLibrary(config: IExtractSymbolLibraryConfig): Promise<string> {
+    // Apply defaults to config
+    config = Object.assign({}, extractSymbolLibraryConfigDefaults, config);
+    const standardizedSources: ISymbolLibrarySource[] = normalizeSources(config.sources);
     const browser: Browser = await puppeteer.launch();
     const page: Page = await browser.newPage();
     let symbols = [];
 
     await page.setViewport({
-        width: 1680,
-        height: 930
+        width: config.pageWidth,
+        height: config.pageHeight
     });
 
     page.on("console", (message: any) => {
@@ -51,13 +84,15 @@ export async function extractSymbols(sources: ISymbolLibrarySource | ISymbolLibr
         symbols = symbols.concat(await getSymbolsFromSource(source, page));
     }
 
-    symbols = positionSymbols(symbols);
+    symbols = positionSymbols(symbols, config.pageWidth);
 
     return new Promise<string>((resolve, reject) => {
         const sketchPage = new SketchPage({
-            width: 1200,
-            height: 12000
+            width: config.pageWidth,
+            height: config.pageHeight
         });
+
+        sketchPage.setName(config.name);
 
         const flattenedLayers = symbols.reduce((accumulator, currentValue) => accumulator.concat(currentValue), []);
 
@@ -94,16 +129,16 @@ async function getSymbolsFromSource(source: ISymbolLibrarySource, page: Page): P
 /**
  * Positions symbols so they don't overlap.
  */
-function positionSymbols(symbols: any): any {
-    let x = 0;
-    let y = 0;
-    let rowHeight = 0;
-    let pageWidth = 1200;
-    const verticalGutter = 28;
-    const horizontalGutter = 28;
+function positionSymbols(symbols: any, pageWidth: number = 1600): any {
+    let x: number = 0;
+    let y: number = 0;
+    let rowHeight: number = 0;
+    const verticalGutter: number = 28;
+    const horizontalGutter: number = 28;
 
-    return symbols.map(symbol => {
-        const { width, height } = symbol.frame;
+    return symbols.map((symbol: any) => {
+        const width: number = symbol.frame.width;
+        const height: number = symbol.frame.height;
 
         // If it can fit on the current row
         if (width <= pageWidth - x) {
