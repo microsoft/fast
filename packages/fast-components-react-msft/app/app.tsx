@@ -39,7 +39,7 @@ export default class App extends React.Component<{}, {}> {
                 </SiteCategory>
                 <div slot="info-bar">
                     <Hypertext
-                        jssStyleSheet={{hypertext: {marginTop: "8px", display: "inline-block"}}}
+                        jssStyleSheet={{hypertext: {marginTop: "16px", marginLeft: "4px", display: "inline-block"}}}
                         href={sketchDesignKit}
                     >
                         Download design kit - sketch
