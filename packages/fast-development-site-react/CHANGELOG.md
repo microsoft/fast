@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.7.0"></a>
+# [1.7.0](https://github.com/Microsoft/fast-dna/compare/v1.6.0...v1.7.0) (2018-06-01)
+
+
+### Bug Fixes
+
+* **dev-site:** fixes html5 validation issues with dev site markup ([#463](https://github.com/Microsoft/fast-dna/issues/463)) ([c171e79](https://github.com/Microsoft/fast-dna/commit/c171e79))
+
+
+### Features
+
+* **detail view:** add detail view ([#470](https://github.com/Microsoft/fast-dna/issues/470)) ([665b871](https://github.com/Microsoft/fast-dna/commit/665b871))
+* **dev-site:** adds error boundary to dev site component wrapper to prevent entire views from breaking ([#438](https://github.com/Microsoft/fast-dna/issues/438)) ([54918b9](https://github.com/Microsoft/fast-dna/commit/54918b9))
+* **localization:** adds direction rtl/ltr updating ([#485](https://github.com/Microsoft/fast-dna/issues/485)) ([0a5e1e7](https://github.com/Microsoft/fast-dna/commit/0a5e1e7))
+* **schema:** add schema view to dev tools ([#448](https://github.com/Microsoft/fast-dna/issues/448)) ([681585d](https://github.com/Microsoft/fast-dna/commit/681585d))
+* **shell:** add shell package with app-grid ([#461](https://github.com/Microsoft/fast-dna/issues/461)) ([dabb3b4](https://github.com/Microsoft/fast-dna/commit/dabb3b4))
+
+
+
+
 <a name="1.6.0"></a>
 # [1.6.0](https://github.com/Microsoft/fast-dna/compare/v1.2.0...v1.6.0) (2018-05-16)
 

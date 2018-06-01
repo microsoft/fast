@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-components-react-msft",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "FAST Microsoft components implemented in React",
   "sideEffects": false,
   "author": {
@@ -55,10 +55,10 @@
     ]
   },
   "devDependencies": {
-    "@microsoft/fast-development-site-react": "^1.6.0",
-    "@microsoft/fast-glyphs-msft": "^1.6.0",
-    "@microsoft/fast-jest-snapshots-react": "^1.6.0",
-    "@microsoft/fast-tslint-rules": "^1.6.0",
+    "@microsoft/fast-development-site-react": "^1.7.0",
+    "@microsoft/fast-glyphs-msft": "^1.7.0",
+    "@microsoft/fast-jest-snapshots-react": "^1.7.0",
+    "@microsoft/fast-tslint-rules": "^1.7.0",
     "@types/jest": "^22.2.0",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.6",
@@ -93,10 +93,10 @@
     "react-dom": "^16.3.0"
   },
   "dependencies": {
-    "@microsoft/fast-application-utilities": "^1.6.0",
-    "@microsoft/fast-components-class-name-contracts-msft": "^1.6.0",
-    "@microsoft/fast-components-react-base": "^1.6.0",
-    "@microsoft/fast-components-styles-msft": "^1.6.0",
-    "@microsoft/fast-jss-manager-react": "^1.6.0"
+    "@microsoft/fast-application-utilities": "^1.7.0",
+    "@microsoft/fast-components-class-name-contracts-msft": "^1.7.0",
+    "@microsoft/fast-components-react-base": "^1.7.0",
+    "@microsoft/fast-components-styles-msft": "^1.7.0",
+    "@microsoft/fast-jss-manager-react": "^1.7.0"
   }
 }
