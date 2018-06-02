@@ -11,14 +11,14 @@ const extractSymbolLibrary = require("@microsoft/fast-sketch-library").extractSy
 const fs = require("fs");
 
 const sources = [
-    "http://localhost:7001/components/button/",
-    "http://localhost:7001/components/checkbox/",
-    "http://localhost:7001/components/divider/",
-    "http://localhost:7001/components/heading/",
-    "http://localhost:7001/components/label/",
-    "http://localhost:7001/components/toggle/",
-    "http://localhost:7001/components/typography/",
-    "http://localhost:7001/components/hypertext/",
+    "http://localhost:7001/components/button/examples/",
+    "http://localhost:7001/components/checkbox/examples/",
+    "http://localhost:7001/components/divider/examples/",
+    "http://localhost:7001/components/heading/examples/",
+    "http://localhost:7001/components/label/examples/",
+    "http://localhost:7001/components/toggle/examples/",
+    "http://localhost:7001/components/typography/examples/",
+    "http://localhost:7001/components/hypertext/examples/",
 ].map(value => {
     return {
         url: value,
