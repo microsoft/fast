@@ -1,4 +1,4 @@
-# FAST-DNA sketch library
+# FAST sketch library
 `@microsoft/fast-sketch-library` is a tool for quickly extracting sketch libraries from a website. It uses [https://github.com/brainly/html-sketchapp/](https://github.com/brainly/html-sketchapp/) to create an "almost sketch" JSON file which can be loaded into sketch using the plugin provided by `html-sketchapp`.
 
 ## Usage
@@ -12,7 +12,7 @@ const extractSymbolLibrary = require("@microsoft/fast-sketch-library").extractSy
 const fs = require("fs");
 
 const config = {
-    name: "Fast-dna MSFT design kit",
+    name: "Your name",
     pageWidth: 1600,
     pageHeight: 1600,
     sources: [

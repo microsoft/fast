@@ -9,6 +9,9 @@ import { Page as SketchPage } from "@brainly/html-sketchapp";
  */
 const aSketchPage: string = fs.readFileSync(path.resolve(__dirname, "./aSketchPage.js")).toString();
 
+/**
+ * A configuration object used to extract symbols from a given url
+ */
 export interface ISymbolLibrarySource {
     /**
      * The URL of a symbol source
@@ -21,6 +24,9 @@ export interface ISymbolLibrarySource {
     selectors: string | string[];
 }
 
+/**
+ * Configuration object for the extractSymbolLibrary function
+ */
 export interface IExtractSymbolLibraryConfig {
     /**
      * The sources to extract symbols from

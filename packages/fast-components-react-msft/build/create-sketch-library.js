@@ -27,7 +27,7 @@ const sources = [
 });
 
 const config = {
-    name: "Fast-dna MSFT design kit",
+    name: "FAST-DNA MSFT design kit",
     pageWidth: 1600,
     pageHeight: 1600,
     sources
