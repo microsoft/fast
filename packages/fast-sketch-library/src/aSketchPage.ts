@@ -1,3 +1,7 @@
+/**
+ * This script is injected into the DOM with server-side utilities.
+ * This script will fail if exectued outside of a browser context
+ */
 import { Base, nodeToSketchLayers, Page, SymbolMaster, Text,  } from "@brainly/html-sketchapp";
 import { ISymbolLibrarySource } from "./index";
 const symbolNameDataAttribute: string = "data-sketch-symbol";
