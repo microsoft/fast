@@ -3,6 +3,7 @@
 exports[`divider divider: 0 1`] = `
 <hr
   className="divider-0-1-1"
+  data-sketch-symbol="Divider"
 />
 `;
 

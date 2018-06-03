@@ -23,47 +23,56 @@ export default {
         {
             tag: TypographyTag.h1,
             typeLevel: TypeLevel._1,
-            children: testString
+            children: testString,
+            "data-sketch-symbol": "Typographic level 1"
         },
         {
             tag: TypographyTag.h2,
             typeLevel: TypeLevel._2,
-            children: testString
+            children: testString,
+            "data-sketch-symbol": "Typographic level 2"
         },
         {
             tag: TypographyTag.h3,
             typeLevel: TypeLevel._3,
-            children: testString
+            children: testString,
+            "data-sketch-symbol": "Typographic level 3"
         },
         {
             tag: TypographyTag.h4,
             typeLevel: TypeLevel._4,
-            children: testString
+            children: testString,
+            "data-sketch-symbol": "Typographic level 4"
         },
         {
             tag: TypographyTag.h5,
             typeLevel: TypeLevel._5,
-            children: testString
+            children: testString,
+            "data-sketch-symbol": "Typographic level 5"
         },
         {
             tag: TypographyTag.h6,
             typeLevel: TypeLevel._6,
-            children: testString
+            children: testString,
+            "data-sketch-symbol": "Typographic level 6"
         },
         {
             tag: TypographyTag.span,
             typeLevel: TypeLevel._7,
-            children: testString
+            children: testString,
+            "data-sketch-symbol": "Typographic level 7"
         },
         {
             tag: TypographyTag.caption,
             typeLevel: TypeLevel._8,
-            children: testString
+            children: testString,
+            "data-sketch-symbol": "Typographic level 8"
         },
         {
             tag: TypographyTag.p,
             typeLevel: TypeLevel._9,
-            children: testString
+            children: testString,
+            "data-sketch-symbol": "Typographic level 9"
         }
     ]
 } as ISnapshotTestSuite<ITypographyHandledProps>;

@@ -18,7 +18,8 @@ export default {
     data: [
         {
             tag: LabelTag.label,
-            children: "Label"
+            children: "Label",
+            "data-sketch-symbol": "Label"
         },
         {
             tag: LabelTag.legend,

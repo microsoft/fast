@@ -3,6 +3,7 @@
 exports[`hypertext hypertext: 0 1`] = `
 <a
   className="hypertext-0-1-1"
+  data-sketch-symbol="Hypertext"
   href="https://msdn.microsoft.com"
 >
   Hypertext

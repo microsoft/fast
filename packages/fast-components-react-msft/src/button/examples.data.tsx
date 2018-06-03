@@ -22,19 +22,23 @@ export default {
     },
     data: [
         {
-            children: "Default button"
+            children: "Default button",
+            "data-sketch-symbol": "Button - default"
         },
         {
             primary: true,
-            children: "Primary (submit) button"
+            children: "Primary (submit) button",
+            "data-sketch-symbol": "Button - primary"
         },
         {
             outline: true,
-            children: "Outline button"
+            children: "Outline button",
+            "data-sketch-symbol": "Button - outline"
         },
         {
             lightweight: true,
-            children: "Lightweight button"
+            children: "Lightweight button",
+            "data-sketch-symbol": "Button - lightweight"
         },
         {
             justified: true,
@@ -46,22 +50,26 @@ export default {
         },
         {
             disabled: true,
-            children: "Default button"
+            children: "Default button",
+            "data-sketch-symbol": "Button - default disabled"
         },
         {
             disabled: true,
             primary: true,
-            children: "Primary (submit) button"
+            children: "Primary (submit) button",
+            "data-sketch-symbol": "Button - primary disabled"
         },
         {
             disabled: true,
             outline: true,
-            children: "Outline button"
+            children: "Outline button",
+            "data-sketch-symbol": "Button - outline disabled"
         },
         {
             disabled: true,
             lightweight: true,
-            children: "Lightweight button"
+            children: "Lightweight button",
+            "data-sketch-symbol": "Button - lightweight disabled"
         },
         {
             disabled: true,
