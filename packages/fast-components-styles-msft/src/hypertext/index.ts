@@ -13,14 +13,16 @@ function applyHypertextBorder(pixels: number): ICSSRules<IDesignSystem> {
 
 const styles: ComponentStyles<IHypertextClassNameContract, IDesignSystem> = {
     hypertext: {
-        ...applyHypertextBorder(1),
-        color: (config: IDesignSystem): string => {
-            return config.brandColor;
-        },
         outline: toPx(0),
         textDecoration: "none",
-        "&:hover, &:focus": {
-            ...applyHypertextBorder(2)
+        "&[href]": {
+            ...applyHypertextBorder(1),
+            color: (config: IDesignSystem): string => {
+                return config.brandColor;
+            },
+            "&:hover, &:focus": {
+                ...applyHypertextBorder(2)
+            }
         }
     }
 };
