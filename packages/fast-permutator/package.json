@@ -31,6 +31,9 @@
         "statements": 85
       }
     },
+    "transformIgnorePatterns": [
+      "!<rootDir>/node_modules/lodash-es"
+    ],
     "moduleFileExtensions": [
       "js"
     ],
@@ -41,9 +44,9 @@
     "babel-preset-es2015": "^6.24.1",
     "eslint": "^3.19.0",
     "jest": "^22.4.2",
-    "lodash": "^4.17.4"
+    "lodash-es": "^4.17.10"
   },
   "peerDependencies": {
-    "lodash": "^4.0.0"
+    "lodash-es": "^4.17.10"
   }
 }

@@ -1,5 +1,5 @@
-const get = require('lodash/get'),
-    permutator = require('../../src/index');
+const get = require('lodash-es').get;
+const permutator = require('../../src/index');
 
 function prettyJSON(obj) {
     return JSON.stringify(obj, null, 2);
