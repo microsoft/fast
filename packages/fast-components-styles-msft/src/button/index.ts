@@ -4,6 +4,7 @@ import { IButtonClassNameContract } from "@microsoft/fast-components-class-name-
 import { IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { Direction, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
 import { applyType } from "../utilities/typography";
+import { applyMixedColor } from "../utilities/colors";
 import * as Chroma from "chroma-js";
 
 function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
@@ -40,35 +41,12 @@ function applyTransaprentBackground(): ICSSRules<IDesignSystem> {
     };
 }
 
-function applyMixedColor(incomingProperty: string, mixValue?: number, alpha?: number): ICSSRules<IDesignSystem> {
-
-    function applyColors(config: IDesignSystem): string {
-        if (alpha) {
-            return Chroma.mix(config.foregroundColor, config.backgroundColor, mixValue).alpha(alpha).css();
-        } else {
-            return Chroma.mix(config.foregroundColor, config.backgroundColor, mixValue).css();
+function applyPropertyDrivenColor(incomingProperty: string, mixValue?: number, alpha?: number): ICSSRules<IDesignSystem> {
+    return {
+        [incomingProperty]: (config: IDesignSystem): string => {
+            return applyMixedColor(config.foregroundColor, config.backgroundColor, mixValue, alpha);
         }
-    }
-
-    switch (incomingProperty) {
-        case "background":
-            return {background: (config: IDesignSystem): string => {
-                return applyColors(config);
-            }};
-        case "backgroundColor":
-            return {backgroundColor: (config: IDesignSystem): string => {
-                return applyColors(config);
-            }};
-        case "boxShadowColor":
-            return {boxShadowColor: (config: IDesignSystem): string => {
-                return applyColors(config);
-            }};
-        case "borderColor":
-            return {borderColor: (config: IDesignSystem): string => {
-                return applyColors(config);
-            }
-        };
-    }
+    };
 }
 
 const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = {
@@ -92,19 +70,19 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = {
         color: (config: IDesignSystem): string => {
             return config.backgroundColor;
         },
-        ...applyMixedColor("backgroundColor", 0.46),
+        ...applyPropertyDrivenColor("backgroundColor", 0.46),
         "&:hover": {
-            ...applyMixedColor("backgroundColor", 0.46, 0.8)
+            ...applyPropertyDrivenColor("backgroundColor", 0.46, 0.8)
         },
         "&:focus": {
             outline: "none",
-            ...applyMixedColor("backgroundColor", 0.38)
+            ...applyPropertyDrivenColor("backgroundColor", 0.38)
         },
         "&:disabled, &[aria-disabled]": {
             opacity: ".4",
             cursor: "not-allowed",
             "&:hover": {
-                ...applyMixedColor("backgroundColor", 0.46)
+                ...applyPropertyDrivenColor("backgroundColor", 0.46)
             }
         }
     },
@@ -143,16 +121,17 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = {
         color: (config: IDesignSystem): string => {
             return config.foregroundColor;
         },
-        ...applyMixedColor("borderColor", 0.46),
+        ...applyPropertyDrivenColor("borderColor", 0.46),
         ...applyTransaprentBackground(),
         "&:hover": {
-            ...applyMixedColor("borderColor", 0.46, 0.8),
+            ...applyPropertyDrivenColor("borderColor", 0.46, 0.8),
             ...applyTransaprentBackground()
         },
         "&:focus": {
             borderColor: "transparent",
-            boxShadow: `0 0 0 ${toPx(2)}`,
-            ...applyMixedColor("boxShadowColor", 0.46),
+            boxShadow: (config: IDesignSystem): string => {
+                return `0 0 0 ${toPx(2)} ${applyMixedColor(config.foregroundColor, config.backgroundColor, 0.46)}`;
+            },
             ...applyTransaprentBackground()
         },
         "&:disabled, &[aria-disabled]": {
