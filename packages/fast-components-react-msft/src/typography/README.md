@@ -1,2 +1,2 @@
 ## Guidance
-This component uses the [typography](https://github.com/Microsoft/fast-dna/tree/master/packages/fast-components-react-base/src/typography) base component.
+This component uses a type ramp and can be used to create a number of inline typographic elements.
