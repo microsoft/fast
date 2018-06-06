@@ -7,10 +7,10 @@ import Site, {
     SiteCategoryDocumentation,
     SiteCategoryIcon,
     SiteCategoryItem,
-    SiteTitle,
-    SiteTitleBrand,
     SiteMenu,
-    SiteMenuItem
+    SiteMenuItem,
+    SiteTitle,
+    SiteTitleBrand
 } from "../src";
 import designSystemDefaults, { Direction } from "./design-system";
 import Button from "./components/button/button";
