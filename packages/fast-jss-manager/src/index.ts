@@ -7,7 +7,6 @@ export { ClassNames, IManagedClasses };
  */
 export type ICSSStaticRule =  CSS.Properties | string;
 
-
 /**
  * Type definition for a function that resolves to a CSS property value. It optionally expects a config object.
  * @param T - This describes the design system configuration values that will be available to all
@@ -40,4 +39,4 @@ export type ComponentStyleSheetResolver<T, C> = (config: C) => ComponentStyleShe
  */
 export type ComponentStyleSheet<T, C> = {
     [P in keyof T]: ICSSRules<C>;
-}
+};
