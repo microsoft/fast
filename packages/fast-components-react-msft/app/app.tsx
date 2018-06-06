@@ -33,7 +33,7 @@ export default class App extends React.Component<{}, {}> {
                 onUpdateDirection={this.handleUpdateDirection}
             >
                 <SiteTitle slot={"title"}>
-                    <SiteTitleBrand>FAST</SiteTitleBrand> Microsoft component documentation
+                    <SiteTitleBrand>FAST</SiteTitleBrand> documentation
                 </SiteTitle>
                 <SiteCategory slot={"category"} name={"Building blocks"}>
                     <SiteCategoryIcon slot="category-icon">
