@@ -8,7 +8,7 @@ import jss, { stylesheetManager } from "./jss";
 import { SheetsManager, StyleSheet } from "jss";
 import { IDesignSystemProviderProps } from "./design-system-provider";
 import * as propTypes from "prop-types";
-import { ClassNames, ComponentStyles, IManagedClasses } from "@microsoft/fast-jss-manager";
+import { ClassNames, ComponentStyles, ComponentStyleSheet, IManagedClasses } from "@microsoft/fast-jss-manager";
 import { isEqual, merge, omit } from "lodash-es";
 
 // hoist-non-react-statics does not seem to be a properly formatted ES6 module, so we need to require it instead
@@ -133,7 +133,6 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
                 }
             }
 
-
             /**
              * Reset a JSS stylesheet relative to current props
              */
@@ -155,10 +154,10 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
              * as props
              */
             private createStyleSheet(): any {
-                const stylesheet = typeof styles === "function" 
+                const stylesheet: ComponentStyleSheet<S, C> = typeof styles === "function"
                     ? styles(this.designSystem)
-                    : styles
-                        
+                    : styles;
+
                 return jss.createStyleSheet(
                     merge({}, stylesheet, this.props.jssStyleSheet),
                     { link: true }

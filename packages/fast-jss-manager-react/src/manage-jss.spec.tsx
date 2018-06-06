@@ -1,6 +1,6 @@
 import * as React from "react";
 import manageJss from "./manage-jss";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { ComponentStyles, ComponentStyleSheetResolver } from "@microsoft/fast-jss-manager";
 import * as ShallowRenderer from "react-test-renderer/shallow";
 import { configure, mount, render, shallow } from "enzyme";
 import * as Adapter from "enzyme-adapter-react-16";
@@ -31,6 +31,17 @@ const dynamicStyles: ComponentStyles<any, any> = {
             return "blue";
         }
     }
+};
+
+const stylesheetResolver: ComponentStyles<any, any> = (config: any): any => {
+    return {
+        resolvedStylesClass: {
+            background: "green",
+            color: (): string => {
+                return "yellow";
+            }
+        }
+    };
 };
 
 const staticAndDynamicStyles: ComponentStyles<any, any> = {
@@ -131,5 +142,17 @@ describe("The higher-order component", (): void => {
 
         expect(styleSheet.attached).toBe(false);
         expect(rendered.state("styleSheet").attached).toBe(true);
+    });
+
+    test("should accept a function as a stylesheet", () => {
+        const Component: any = manageJss(stylesheetResolver)(SimpleComponent);
+        const rendered: any = shallow(
+            <Component />
+        );
+
+        const styleSheet: any = rendered.state("styleSheet");
+
+        expect(styleSheet.attached).toBe(true);
+        expect(styleSheet.classes.resolvedStylesClass).not.toBe(undefined);
     });
 });
