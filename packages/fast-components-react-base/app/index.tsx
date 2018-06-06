@@ -7,7 +7,9 @@ import Site, {
     ISiteProps,
     SiteCategory,
     SiteCategoryIcon,
-    SiteCategoryItem
+    SiteCategoryItem,
+    SiteTitle,
+    SiteTitleBrand
 } from "@microsoft/fast-development-site-react";
 import * as examples from "./examples";
 
@@ -23,7 +25,10 @@ const formChildOptions: IFormChildOption[] = formChildFromExamplesFactory(exampl
 /* tslint:disable */
 function render(): void {
     ReactDOM.render(
-        <Site title={"FAST base component documentation"} formChildOptions={formChildOptions}>
+        <Site formChildOptions={formChildOptions}>
+            <SiteTitle slot={"title"}>
+                <SiteTitleBrand>FAST</SiteTitleBrand> base component documentation
+            </SiteTitle>
             <SiteCategory slot={"category"} name={"Components"}>
                 {componentFactory(examples)}
             </SiteCategory>

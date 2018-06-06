@@ -10,6 +10,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { ellipsis, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
 import ComponentWrapper from "./component-wrapper";
 import CategoryList from "./category-list";
+import SiteTitle, { SiteTitleBrand } from "./title";
 import SiteMenu from "./menu";
 import SiteMenuItem from "./menu-item";
 import SiteCategory from "./category";
@@ -39,7 +40,6 @@ export enum ComponentViewSlot {
 }
 
 export interface ISiteProps {
-    title: string;
     formChildOptions: IFormChildOption[];
     onUpdateDirection?: (ltr: Direction) => void;
     locales?: string[];
@@ -344,9 +344,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         return (
             <ShellHeader>
                 {this.renderChildrenBySlot(this, ShellSlot.header)}
-                <span className={this.props.managedClasses.site_headerTitle}>
-                    {this.props.title}
-                </span>
+                {this.renderTitle()}
             </ShellHeader>
         );
     }
@@ -423,6 +421,23 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 />
             );
         }
+    }
+
+    private renderTitle(): JSX.Element {
+        const children: React.ReactNode[] = Array.isArray(this.props.children) ? this.props.children : [this.props.children];
+        let title: JSX.Element = null;
+
+        children.forEach((child: JSX.Element) => {
+            if (child && child.props && child.props.slot === "title") {
+                title = (
+                    <span className={this.props.managedClasses.site_headerTitle}>
+                        {child}
+                    </span>
+                );
+            }
+        });
+
+        return title;
     }
 
     private getCurrentComponentData(): any {
@@ -839,4 +854,13 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
 }
 
 export default manageJss(styles)(Site);
-export { SiteMenu, SiteMenuItem, SiteCategory, SiteCategoryDocumentation, SiteCategoryIcon, SiteCategoryItem };
+export {
+    SiteTitle,
+    SiteTitleBrand,
+    SiteMenu,
+    SiteMenuItem,
+    SiteCategory,
+    SiteCategoryDocumentation,
+    SiteCategoryIcon,
+    SiteCategoryItem
+};

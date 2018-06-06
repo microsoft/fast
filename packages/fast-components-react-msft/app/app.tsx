@@ -1,7 +1,8 @@
 import * as React from "react";
 import { glyphBuildingblocks } from "@microsoft/fast-glyphs-msft";
-import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
-import { DesignSystemDefaults } from "@microsoft/fast-components-styles-msft";
+import manageJss, { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
+import { DesignSystemDefaults, IDesignSystem } from "@microsoft/fast-components-styles-msft";
+import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import Site, {
     componentFactory,
     formChildFromExamplesFactory,
@@ -9,8 +10,11 @@ import Site, {
     ISiteProps,
     SiteCategory,
     SiteCategoryIcon,
-    SiteCategoryItem
+    SiteCategoryItem,
+    SiteTitle,
+    SiteTitleBrand
 } from "@microsoft/fast-development-site-react";
+import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { Direction } from "@microsoft/fast-application-utilities";
 import * as examples from "./examples";
 import Hypertext from "../src/hypertext";
@@ -25,10 +29,12 @@ export default class App extends React.Component<{}, {}> {
     public render(): JSX.Element {
         return (
             <Site
-                title={"FAST Microsoft component documentation"}
                 formChildOptions={formChildOptions}
                 onUpdateDirection={this.handleUpdateDirection}
             >
+                <SiteTitle slot={"title"}>
+                    <SiteTitleBrand>FAST</SiteTitleBrand> Microsoft component documentation
+                </SiteTitle>
                 <SiteCategory slot={"category"} name={"Building blocks"}>
                     <SiteCategoryIcon slot="category-icon">
                         <div dangerouslySetInnerHTML={{__html: glyphBuildingblocks}} />

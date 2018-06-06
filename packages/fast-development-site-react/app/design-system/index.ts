@@ -9,3 +9,4 @@ const designSystemDefaults: IDesignSystem = {
 };
 
 export default designSystemDefaults;
+export { Direction };
