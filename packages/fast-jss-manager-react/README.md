@@ -67,13 +67,13 @@ const stylesheetOverride = {
 ```
 
 ## Server side compiling
-Server side compiling is achieved by through the use of a JSS [https://github.com/cssinjs/jss/blob/master/docs/js-api.md#style-sheets-registry](style-sheet-registry). Once the app is run server-side, all stylesheets will be stored in a single registry (`stylesheetRegistry`) for easy output:
+Server side compiling is achieved through the use of a JSS [https://github.com/cssinjs/jss/blob/master/docs/js-api.md#style-sheets-registry](style-sheet-registry). Once the app is run server-side, all stylesheets will be stored in a single registry (`stylesheetRegistry`) for easy output:
 
 ```jsx
 import { stylesheetRegistry } from "@microsoft/fast-jss-manager-react";
 
 // run code that renders the app
 
-// Compile CSS can be accessed like this
+// Compiled CSS can be accessed via the `toString` method
 const serverSideCss = stylesheetRegistry.toString();
 ```
