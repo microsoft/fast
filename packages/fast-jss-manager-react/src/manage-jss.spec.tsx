@@ -53,6 +53,9 @@ const stylesheetResolver: ComponentStyles<any, any> = (config: any): any => {
     };
 };
 
+/**
+ * JSS stylesheet with static and dynamic values for CSS properties
+ */
 const staticAndDynamicStyles: ComponentStyles<any, any> = {
     staticAndDynamicStylesClass: { ...staticStyles.staticStyleClass, ...dynamicStyles.dynamicStylesClass }
 };
