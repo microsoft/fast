@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WebpackShellPlugin = require("webpack-shell-plugin");
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const UglifyJsWebpackPlugin = require('uglifyjs-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 const appDir = path.resolve(__dirname, "./app");
 const outDir = path.resolve(__dirname, "./www");
@@ -64,7 +65,8 @@ module.exports = {
         new BundleAnalyzerPlugin({
             // Remove this to inspect bundle sizes.
             analyzerMode: "disabled"
-        })
+        }),
+        new FaviconsWebpackPlugin(path.resolve(__dirname, "favicon.png"))
     ],
     resolve: {
         extensions: [".js", ".tsx", ".ts", ".json"],
