@@ -1,5 +1,6 @@
 import * as React from "react";
 import manageJss from "./manage-jss";
+import { stylesheetRegistry } from "./jss";
 import { ComponentStyles, ComponentStyleSheetResolver } from "@microsoft/fast-jss-manager";
 import * as ShallowRenderer from "react-test-renderer/shallow";
 import { configure, mount, render, shallow } from "enzyme";
@@ -166,5 +167,17 @@ describe("The higher-order component", (): void => {
 
         expect(styleSheet.attached).toBe(true);
         expect(styleSheet.classes.resolvedStylesClass).not.toBe(undefined);
+    });
+
+    test("should store all stylesheets in the registry", (): void => {
+        stylesheetRegistry.reset();
+        expect(stylesheetRegistry.registry.length).toBe(0);
+
+        const Component: any = manageJss(staticAndDynamicStyles)(SimpleComponent);
+        const rendered: any = shallow(
+            <Component />
+        );
+
+        expect(stylesheetRegistry.registry.length).toBe(1);
     });
 });

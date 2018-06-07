@@ -4,7 +4,7 @@
  * registered with manageJss.
  */
 import * as React from "react";
-import jss, { stylesheetManager } from "./jss";
+import jss, { stylesheetManager, stylesheetRegistry } from "./jss";
 import { SheetsManager, StyleSheet } from "jss";
 import { IDesignSystemProviderProps } from "./design-system-provider";
 import * as propTypes from "prop-types";
@@ -129,6 +129,7 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
             private removeStyleSheet(): void {
                 if (this.hasStyleSheet()) {
                     this.state.styleSheet.detach();
+                    stylesheetRegistry.remove(this.state.styleSheet);
                     jss.removeStyleSheet(this.state.styleSheet);
                 }
             }
@@ -158,10 +159,14 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
                     ? styles(this.designSystem)
                     : styles;
 
-                return jss.createStyleSheet(
+                const jssSheet =  jss.createStyleSheet(
                     merge({}, stylesheet, this.props.jssStyleSheet),
                     { link: true }
                 );
+
+                stylesheetRegistry.add(jssSheet);
+
+                return jssSheet;
             }
 
             /**
@@ -197,3 +202,4 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
 
 export default manageJss;
 export * from "@microsoft/fast-jss-manager";
+export { stylesheetRegistry };
