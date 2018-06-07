@@ -26,9 +26,8 @@ module.exports = {
                         options: {
                             transpileOnly: true
                         }
-                    },
-                    
-                ],
+                    }
+                ]
             }
         ]
     },
