@@ -1,6 +1,6 @@
 import * as React from "react";
 import manageJss from "./manage-jss";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { ComponentStyles, ComponentStyleSheetResolver } from "@microsoft/fast-jss-manager";
 import * as ShallowRenderer from "react-test-renderer/shallow";
 import { configure, mount, render, shallow } from "enzyme";
 import * as Adapter from "enzyme-adapter-react-16";
@@ -19,12 +19,18 @@ class SimpleComponent extends React.Component<any, any> {
     }
 }
 
+/**
+ * JSS stylesheet with only static values for CSS properties
+ */
 const staticStyles: ComponentStyles<any, any> = {
     staticStyleClass: {
         color: "red"
     }
 };
 
+/**
+ * JSS stylesheet with dynamic values for CSS properties
+ */
 const dynamicStyles: ComponentStyles<any, any> = {
     dynamicStylesClass: {
         background: (): string => {
@@ -33,6 +39,23 @@ const dynamicStyles: ComponentStyles<any, any> = {
     }
 };
 
+/**
+ * JSS stylesheet defined as a function
+ */
+const stylesheetResolver: ComponentStyles<any, any> = (config: any): any => {
+    return {
+        resolvedStylesClass: {
+            background: "green",
+            color: (): string => {
+                return "yellow";
+            }
+        }
+    };
+};
+
+/**
+ * JSS stylesheet with static and dynamic values for CSS properties
+ */
 const staticAndDynamicStyles: ComponentStyles<any, any> = {
     staticAndDynamicStylesClass: { ...staticStyles.staticStyleClass, ...dynamicStyles.dynamicStylesClass }
 };
@@ -131,5 +154,17 @@ describe("The higher-order component", (): void => {
 
         expect(styleSheet.attached).toBe(false);
         expect(rendered.state("styleSheet").attached).toBe(true);
+    });
+
+    test("should accept a function as a stylesheet", () => {
+        const Component: any = manageJss(stylesheetResolver)(SimpleComponent);
+        const rendered: any = shallow(
+            <Component />
+        );
+
+        const styleSheet: any = rendered.state("styleSheet");
+
+        expect(styleSheet.attached).toBe(true);
+        expect(styleSheet.classes.resolvedStylesClass).not.toBe(undefined);
     });
 });

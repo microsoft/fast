@@ -8,11 +8,11 @@ import jss, { stylesheetManager } from "./jss";
 import { SheetsManager, StyleSheet } from "jss";
 import { IDesignSystemProviderProps } from "./design-system-provider";
 import * as propTypes from "prop-types";
-import { ClassNames, ComponentStyles, IManagedClasses } from "@microsoft/fast-jss-manager";
+import { ClassNames, ComponentStyles, ComponentStyleSheet, IManagedClasses } from "@microsoft/fast-jss-manager";
 import { isEqual, merge, omit } from "lodash-es";
 
 // hoist-non-react-statics does not seem to be a properly formatted ES6 module, so we need to require it instead
-// Disable rule disallowing require statements
+// TODO https://github.com/Microsoft/fast-dna/issues/512
 /* tslint:disable-next-line */
 const hoistNonReactStatics: any = require("hoist-non-react-statics");
 
@@ -71,7 +71,13 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
              * Updates a dynamic stylesheet with context
              */
             public updateStyleSheet(nextContext?: propTypes.any): void {
-                if (Boolean(this.state.styleSheet)) {
+                if (!Boolean(this.state.styleSheet)) {
+                    return;
+                }
+
+                if (typeof styles === "function") {
+                    this.resetStyleSheet();
+                } else {
                     this.state.styleSheet.update(nextContext && nextContext.designSystem ? nextContext.designSystem : this.designSystem);
                 }
             }
@@ -80,7 +86,6 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
                 if (Boolean(this.state.styleSheet)) {
                     // It appears we need to update the stylesheet for any style properties defined as functions
                     // to work.
-
                     this.state.styleSheet.attach();
                     this.updateStyleSheet();
                 }
@@ -94,25 +99,12 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
 
             public componentDidUpdate(prevProps: T & IJSSManagerProps<S, C>, prevState: IJSSManagerState): void {
                 if (this.props.jssStyleSheet !== prevProps.jssStyleSheet) {
-                    jss.removeStyleSheet(this.state.styleSheet);
-
-                    this.setState((previousState: IJSSManagerState, props: T & IJSSManagerProps<S, C>): Partial<IJSSManagerState> => {
-                        return {
-                            styleSheet: this.hasStyleSheet() ? this.createStyleSheet() : null
-                        };
-                    }, (): void => {
-                        if (this.hasStyleSheet()) {
-                            this.state.styleSheet.attach().update(this.designSystem);
-                        }
-                    });
+                    this.resetStyleSheet();
                 }
             }
 
             public componentWillUnmount(): void {
-                if (this.hasStyleSheet()) {
-                    this.state.styleSheet.detach();
-                    jss.removeStyleSheet(this.state.styleSheet);
-                }
+                this.removeStyleSheet();
             }
 
             public render(): React.ReactNode {
@@ -132,12 +124,42 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
             }
 
             /**
-             * Creates a jss stylesheet from the dynamic portion of an associated style object and any style object passed
+             * Remove a JSS stylesheet
+             */
+            private removeStyleSheet(): void {
+                if (this.hasStyleSheet()) {
+                    this.state.styleSheet.detach();
+                    jss.removeStyleSheet(this.state.styleSheet);
+                }
+            }
+
+            /**
+             * Reset a JSS stylesheet relative to current props
+             */
+            private resetStyleSheet(): any {
+                this.removeStyleSheet();
+                this.setState((previousState: IJSSManagerState, props: T & IJSSManagerProps<S, C>): Partial<IJSSManagerState> => {
+                    return {
+                        styleSheet: this.hasStyleSheet() ? this.createStyleSheet() : null
+                    };
+                }, (): void => {
+                    if (this.hasStyleSheet()) {
+                        this.state.styleSheet.attach().update(this.designSystem);
+                    }
+                });
+            }
+
+            /**
+             * Creates a JSS stylesheet from the dynamic portion of an associated style object and any style object passed
              * as props
              */
             private createStyleSheet(): any {
+                const stylesheet: ComponentStyleSheet<S, C> = typeof styles === "function"
+                    ? styles(this.designSystem)
+                    : styles;
+
                 return jss.createStyleSheet(
-                    merge({}, styles, this.props.jssStyleSheet),
+                    merge({}, stylesheet, this.props.jssStyleSheet),
                     { link: true }
                 );
             }
