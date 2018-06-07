@@ -1,10 +1,8 @@
 
-# What is FAST-DNA
-FAST-DNA is a set of resources and components that can be used to accelerate building Web sites and applications.
+# FAST-DNA overview
+FAST-DNA is tooling, resources, and components used to accelerate building Web sites and applications.
 
-Teams spend significant time building parts of the design system (colors, variable font, typography, grid, components, etc.) which can slow adoption of the latest design guidelines and related technologies. FAST-DNA solves this problem by providing resources to accelerate development with code that is performant and accessible. The resources work with multiple component frameworks such as (Fabric, MWF, Foundation, etc.) as well as JavaScript frameworks and libraries (React, Angular, Vue, etc.).
-
-**How do we accelerate?** A team can use these resources as guidance, reference, fork, or as dependencies.
+Teams spend significant time building parts of the design system (colors, variable font, typography, grid, components, etc.) which can slow adoption of the latest design guidelines and related technologies. FAST-DNA solves this problem by providing tooling and resources to accelerate development with code that is performant and accessible. The resources work with multiple component frameworks such as (Fabric, Foundation, etc.) as well as JavaScript frameworks and libraries (React, Angular, etc.).
 
 ## Status
 [![CircleCI](https://circleci.com/gh/Microsoft/fast-dna/tree/master.svg?style=shield&circle-token=d159a8b24ccb8046e07138c98717c32cb92589d6)](https://circleci.com/gh/Microsoft/fast-dna/tree/master)
