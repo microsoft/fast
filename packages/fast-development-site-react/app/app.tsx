@@ -8,7 +8,9 @@ import Site, {
     SiteCategoryIcon,
     SiteCategoryItem,
     SiteMenu,
-    SiteMenuItem
+    SiteMenuItem,
+    SiteTitle,
+    SiteTitleBrand
 } from "../src";
 import designSystemDefaults, { Direction } from "./design-system";
 import Button from "./components/button/button";
@@ -54,16 +56,24 @@ export default class App extends React.Component<{}, IAppState> {
     public render(): JSX.Element {
         return (
             <Site
-                title={"FAST Documentation site"}
                 formChildOptions={this.formChildOptions}
                 frameworks={this.frameworks}
                 onUpdateDirection={this.handleUpdateDirection}
             >
+                {this.renderSiteTitle()}
                 {this.renderSiteMenu()}
                 {this.renderBuildingBlocks()}
                 {this.renderComponents1()}
                 {this.renderComponents2()}
             </Site>
+        );
+    }
+
+    private renderSiteTitle(): JSX.Element {
+        return (
+            <SiteTitle slot="title">
+                <SiteTitleBrand>FAST</SiteTitleBrand> Documentation site
+            </SiteTitle>
         );
     }
 

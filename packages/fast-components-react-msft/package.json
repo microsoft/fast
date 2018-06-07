@@ -55,9 +55,11 @@
     ]
   },
   "devDependencies": {
+    "@microsoft/fast-components-class-name-contracts-base": "^1.7.0",
     "@microsoft/fast-development-site-react": "^1.7.0",
     "@microsoft/fast-glyphs-msft": "^1.7.0",
     "@microsoft/fast-jest-snapshots-react": "^1.7.0",
+    "@microsoft/fast-jss-manager": "^1.7.0",
     "@microsoft/fast-sketch-library": "^1.0.0",
     "@microsoft/fast-tslint-rules": "^1.7.0",
     "@types/jest": "^22.2.0",
