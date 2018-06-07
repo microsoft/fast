@@ -1,4 +1,4 @@
-const clone = require('lodash/cloneDeep');
+const clone = require('lodash-es').cloneDeep;
 const resolveReferences = require('./resolve-references');
 const resolveAllOf = require('./resolve-all-of');
 const resolveOneOfAnyOf = require('./resolve-one-of-any-of');

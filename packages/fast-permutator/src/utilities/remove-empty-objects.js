@@ -1,4 +1,4 @@
-const clone = require('lodash/cloneDeep');
+const clone = require('lodash-es').cloneDeep;
 
 /**
  * Removes empty objects from data

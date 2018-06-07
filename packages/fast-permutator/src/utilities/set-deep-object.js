@@ -1,5 +1,5 @@
-const set = require('lodash/set');
-const get = require('lodash/get');
+const set = require('lodash-es').set;
+const get = require('lodash-es').get;
 
 const removeUndefined = require('./remove-undefined');
 

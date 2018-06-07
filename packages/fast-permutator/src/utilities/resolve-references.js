@@ -1,7 +1,7 @@
-const clone = require('lodash/cloneDeep');
-const set = require('lodash/set');
-const get = require('lodash/get');
-const unset = require('lodash/unset');
+const clone = require('lodash-es').cloneDeep;
+const set = require('lodash-es').set;
+const get = require('lodash-es').get;
+const unset = require('lodash-es').unset;
 
 const getDeepPropLocations = require('./get-deep-prop-locations');
 const convertRefsToIds = require('./convert-refs-to-ids');

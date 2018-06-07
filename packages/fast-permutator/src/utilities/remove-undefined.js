@@ -1,4 +1,4 @@
-const clone = require('lodash/cloneDeep');
+const clone = require('lodash-es').cloneDeep;
 
 /**
  * Remove any undefined keys in an object
