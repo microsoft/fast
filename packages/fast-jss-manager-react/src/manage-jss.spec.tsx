@@ -19,12 +19,18 @@ class SimpleComponent extends React.Component<any, any> {
     }
 }
 
+/**
+ * JSS stylesheet with only static values for CSS properties
+ */
 const staticStyles: ComponentStyles<any, any> = {
     staticStyleClass: {
         color: "red"
     }
 };
 
+/**
+ * JSS stylesheet with dynamic values for CSS properties
+ */
 const dynamicStyles: ComponentStyles<any, any> = {
     dynamicStylesClass: {
         background: (): string => {
@@ -33,6 +39,9 @@ const dynamicStyles: ComponentStyles<any, any> = {
     }
 };
 
+/**
+ * JSS stylesheet defined as a function
+ */
 const stylesheetResolver: ComponentStyles<any, any> = (config: any): any => {
     return {
         resolvedStylesClass: {

@@ -23,10 +23,21 @@ export interface ICSSRules<T> {
     [rule: string]: ICSSRules<T> | CSSRuleResolver<T> | ICSSStaticRule;
 }
 
+/**
+ * A stylesheet supplied to a JSS manager
+ * @param T - This is the stylesheet contract, which is an enumeration of all keys available on
+ * the JSS style object.
+ * @param C - This describes the design system configuration values that will be available to all
+ * property functions that resolve to a CSS value.
+ */
 export type ComponentStyles<T, C> = ComponentStyleSheet<T, C> | ComponentStyleSheetResolver<T, C>;
 
 /**
  * A function that resolves to a static JSS stylesheet
+ * @param T - This is the stylesheet contract, which is an enumeration of all keys available on
+ * the JSS style object.
+ * @param C - This describes the design system configuration values that will be available to all
+ * property functions that resolve to a CSS value.
  */
 export type ComponentStyleSheetResolver<T, C> = (config: C) => ComponentStyleSheet<T, C>;
 

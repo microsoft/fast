@@ -12,7 +12,7 @@ import { ClassNames, ComponentStyles, ComponentStyleSheet, IManagedClasses } fro
 import { isEqual, merge, omit } from "lodash-es";
 
 // hoist-non-react-statics does not seem to be a properly formatted ES6 module, so we need to require it instead
-// Disable rule disallowing require statements
+// TODO https://github.com/Microsoft/fast-dna/issues/512
 /* tslint:disable-next-line */
 const hoistNonReactStatics: any = require("hoist-non-react-statics");
 
@@ -150,7 +150,7 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
             }
 
             /**
-             * Creates a jss stylesheet from the dynamic portion of an associated style object and any style object passed
+             * Creates a JSS stylesheet from the dynamic portion of an associated style object and any style object passed
              * as props
              */
             private createStyleSheet(): any {
