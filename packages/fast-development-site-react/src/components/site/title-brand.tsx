@@ -6,6 +6,9 @@ export interface ISiteTitleBrandedManagedClasses {
     titleBranded: string;
 }
 
+/* tslint:disable-next-line */
+export interface ISiteTItleBrandedProps {}
+
 const titleBrandStyle: ComponentStyles<ISiteTitleBrandedManagedClasses, {}> = {
     titleBranded: {
         fontWeight: "bold",
@@ -15,7 +18,7 @@ const titleBrandStyle: ComponentStyles<ISiteTitleBrandedManagedClasses, {}> = {
     }
 };
 
-class SiteTitleBranded extends React.Component<IManagedClasses<ISiteTitleBrandedManagedClasses>, {}> {
+class SiteTitleBranded extends React.Component<ISiteTItleBrandedProps & IManagedClasses<ISiteTitleBrandedManagedClasses>, {}> {
     public render(): JSX.Element {
         return (
             <span className={this.props.managedClasses.titleBranded}>
