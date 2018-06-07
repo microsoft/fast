@@ -1,9 +1,17 @@
 import { IDesignSystem } from "../design-system";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { typeRamp } from "../utilities/typography";
 import { IToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import * as Chroma from "chroma-js";
+import { Direction } from "@microsoft/fast-application-utilities";
+
+function setFloatAndClear(clearFloat: boolean = true): ICSSRules<IDesignSystem> {
+    return {
+        float: (config: IDesignSystem): string => config.direction === Direction.ltr ? "left" : "right",
+        clear: clearFloat ? ((config: IDesignSystem): string => config.direction === Direction.ltr ? "left" : "right") : null
+    };
+}
 
 const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = {
     toggle: {
@@ -23,15 +31,15 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = {
         fontSize: toPx(typeRamp.t8.vp3.fontSize),
         lineHeight: toPx(typeRamp.t8.vp3.lineHeight),
         paddingBottom: toPx(7),
-        float: "left",
-        clear: "left",
+        ...setFloatAndClear(),
         "& + div": {
             marginTop: "0",
-            float: "left",
-            clear: "left",
+            ...setFloatAndClear(),
             "& + span": {
-                float: "left",
-                marginLeft: toPx(5)
+                ...setFloatAndClear(false),
+                // function(config: IDesignSystem): ICSSRules<IDesignSystem> {
+                //     return {[config.direction === Direction.ltr ? "margin-left" : "margin-right"]: toPx(5)};
+                // }
             }
         }
     },
@@ -41,8 +49,10 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = {
     toggle_button: {
         position: "absolute",
         pointerEvents: "none",
-        left: toPx(5),
         top: toPx(5),
+        // function(config: IDesignSystem): ICSSRules<IDesignSystem> {
+        //     return {[config.direction === Direction.ltr ? "left" : "right"]: toPx(5)};
+        // },
         transition: "all .1s ease",
         backgroundColor: (config: IDesignSystem): string => {
             return config.backgroundColor;

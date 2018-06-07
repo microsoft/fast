@@ -147,8 +147,10 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = {
     button_justified: {
         ...applyTransaprentBackplateStyles(),
         minWidth: toPx(74),
-        padding: localizeSpacing(Direction.ltr)(`${toPx(13)} ${toPx(12)} ${toPx(12)} 0`),
-        textAlign: "left"
+        padding: (config: IDesignSystem): string => {
+            return localizeSpacing(config.direction)(`${toPx(13)} ${toPx(12)} ${toPx(12)} 0`);
+        },
+        textAlign: (config: IDesignSystem): string => config.direction === Direction.ltr ? "left" : "right"
     },
     button_span: {
         position: "relative",
@@ -159,7 +161,9 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = {
             position: "absolute",
             bottom: toPx(-1),
             width: "100%",
-            left: "0"
+            function(config: IDesignSystem): ICSSRules<IDesignSystem> {
+                return {[config.direction === Direction.ltr ? "left" : "right"]: "0"};
+            }
         }
     }
 };

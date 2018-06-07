@@ -1,10 +1,11 @@
 import { IDesignSystem } from "../design-system";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { ICheckboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyTypeRampConfig } from "../utilities/typography";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import * as Chroma from "chroma-js";
 import { relative } from "path";
+import { Direction } from "@microsoft/fast-application-utilities";
 
 const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = {
     checkbox: {
@@ -61,7 +62,9 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = {
                     content: "\"\"",
                     borderRadius: toPx(2),
                     transform: "none",
-                    left: toPx(5),
+                    // function(config: IDesignSystem): ICSSRules<IDesignSystem> {
+                    //     return {[config.direction === Direction.ltr ? "left" : "right"]: toPx(5)};
+                    // },
                     top: toPx(5),
                     height: toPx(10),
                     width: toPx(10),
@@ -83,13 +86,17 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = {
         },
         "&::before": {
             top: toPx(4),
-            left: toPx(11),
+            // function(config: IDesignSystem): ICSSRules<IDesignSystem> {
+            //     return {[config.direction === Direction.ltr ? "left" : "right"]: toPx(11)};
+            // },
             height: toPx(12),
             transform: "rotate(40deg)"
         },
         "&::after": {
             top: toPx(9),
-            left: toPx(6),
+            // function(config: IDesignSystem): ICSSRules<IDesignSystem> {
+            //     return {[config.direction === Direction.ltr ? "left" : "right"]: toPx(6)};
+            // },
             height: toPx(6),
             transform: "rotate(-45deg)"
         }
@@ -99,7 +106,9 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = {
             return config.foregroundColor;
         },
         ...applyTypeRampConfig("t7"),
-        marginLeft: toPx(5)
+        // function(config: IDesignSystem): ICSSRules<IDesignSystem> {
+        //     return {[config.direction === Direction.ltr ? "margin-left" : "margin-right"]: toPx(5)};
+        // }
     },
     checkbox_disabled: {
         cursor: "not-allowed",
