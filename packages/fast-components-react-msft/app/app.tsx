@@ -24,7 +24,18 @@ const sketchDesignKit = require("./fast-dna-msft-design-kit.sketch");
 
 const formChildOptions: IFormChildOption[] = formChildFromExamplesFactory(examples);
 
-export default class App extends React.Component<{}, {}> {
+export interface IAppState {
+    direction: Direction;
+}
+
+export default class App extends React.Component<{}, IAppState> {
+    constructor(props: {}) {
+        super(props);
+
+        this.state = {
+            direction: Direction.ltr
+        };
+    }
 
     public render(): JSX.Element {
         return (
@@ -41,7 +52,7 @@ export default class App extends React.Component<{}, {}> {
                     </SiteCategoryIcon>
                 </SiteCategory>
                 <SiteCategory slot={"category"} name={"Components"}>
-                    {componentFactory(examples, DesignSystemDefaults)}
+                    {componentFactory(examples, Object.assign({}, DesignSystemDefaults, {direction: this.state.direction}))}
                 </SiteCategory>
                 <div slot="info-bar">
                     <Hypertext
@@ -56,6 +67,12 @@ export default class App extends React.Component<{}, {}> {
     }
 
     private handleUpdateDirection = (direction: Direction): void => {
-        // TODO: #486 change the design system direction (ltr)
+        const newDir: Direction = this.state.direction === Direction.ltr ? Direction.rtl : Direction.ltr;
+
+        if (this.state.direction === newDir) { return; }
+
+        this.setState({
+            direction: newDir
+        });
     }
 }

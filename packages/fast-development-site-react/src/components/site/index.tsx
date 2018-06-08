@@ -387,7 +387,10 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                             devToolsView={this.state.devToolsView}
                         />
                     </Row>
-                    <div className={this.props.managedClasses.site_canvasContent}>
+                    <div
+                        dir={this.state.locale === "en" ? "ltr" : "rtl"}
+                        className={this.props.managedClasses.site_canvasContent}
+                    >
                         <ComponentView {...{ viewType: this.state.componentView }}>
                             {this.renderChildrenBySlot(this, ShellSlot.canvas)}
                             {this.renderComponentByRoute(route)}
