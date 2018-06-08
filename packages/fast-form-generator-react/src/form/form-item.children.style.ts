@@ -1,5 +1,6 @@
 import { ellipsis, toPx } from "@microsoft/fast-jss-utilities";
 import {
+    applyAddItemStyle,
     applyAriaHiddenStyles,
     applyCleanListStyle,
     applyGlobalStyle,
@@ -63,27 +64,18 @@ const styles: ComponentStyles<IFormItemChildrenClassNameContract, {}> = {
         "& li": {
             padding: `${toPx(8)} 0`,
             "& button": {
-                position: "relative",
-                color: colors.pink,
-                cursor: "pointer",
+                ...applyAddItemStyle(),
                 ...localizePadding(0, 0, 0, 24),
-                border: "none",
-                background: "transparent",
-                lineHeight: toPx(16),
-                fontSize: toPx(14),
-                maxWidth: toPx(290),
-                "&::before": {
-                    position: "absolute",
-                    content: "''",
-                    pointerEvents: "none",
-                    background: pinkPlus,
-                    width: toPx(16),
-                    height: toPx(16),
-                    left: "0"
-                },
                 ...thickLine
             }
         }
+    },
+    formItemChildren_childOptionsTextButton: {
+        ...applyAddItemStyle(),
+        ...localizePadding(12, 8, 8, 24),
+        ...thickLine,
+        display: "flex",
+        width: "fit-content"
     },
     formItemChildren_existingChildren: {
         ...applyPopupHeadingStyles(),

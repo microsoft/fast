@@ -210,6 +210,7 @@ export const listItem: ICSSRules<{}> = {
     "& a": {
         textAlign: "left",
         display: "block",
+        minHeight: toPx(19),
         ...localizePadding(12, 18, 12, 26),
         "& span": {
             display: "block",
@@ -418,6 +419,28 @@ export function applySelectSpanStyles(): ICSSRules<{}> {
         "&::after": {
             right: toPx(22),
             transform: "rotate(-45deg)"
+        }
+    };
+}
+
+export function applyAddItemStyle(): ICSSRules<{}> {
+    return {
+        position: "relative",
+        color: colors.pink,
+        cursor: "pointer",
+        border: "none",
+        background: "transparent",
+        lineHeight: toPx(16),
+        fontSize: toPx(14),
+        maxWidth: toPx(290),
+        "&::before": {
+            position: "absolute",
+            content: "''",
+            pointerEvents: "none",
+            background: pinkPlus,
+            width: toPx(16),
+            height: toPx(16),
+            left: "0"
         }
     };
 }

@@ -277,6 +277,10 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
             }
         }
 
+        if (obj && obj.children && Array.isArray(obj.children) && obj.children.length === 1) {
+            obj.children = obj.children[0];
+        }
+
         this.props.onChange(obj);
     }
 
