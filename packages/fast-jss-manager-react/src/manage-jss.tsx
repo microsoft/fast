@@ -159,7 +159,7 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
                     ? styles(this.designSystem)
                     : styles;
 
-                const jssSheet =  jss.createStyleSheet(
+                const jssSheet: any =  jss.createStyleSheet(
                     merge({}, stylesheet, this.props.jssStyleSheet),
                     { link: true }
                 );
