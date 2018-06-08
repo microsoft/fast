@@ -1,4 +1,4 @@
-import { Direction, localizeSpacing } from "./localization";
+import { applyLocalizedProperty, Direction, localizeSpacing } from "./localization";
 
 describe("localizeSpacing", (): void => {
     test("should return an empty string if no arguments are passed", (): void => {
@@ -19,5 +19,14 @@ describe("localizeSpacing", (): void => {
     });
     test("should not localize three arguments", (): void => {
         expect(localizeSpacing(Direction.ltr)("top left-right bottom")).toBe(localizeSpacing(Direction.rtl)("top left-right bottom"));
+    });
+});
+
+describe("applyLocalizedProperty", (): void => {
+    test("should return the first argument when dir='ltr'", (): void => {
+        expect(applyLocalizedProperty("left", "right", Direction.ltr)).toBe("left");
+    });
+    test("should return the second argument when dir='rtl'", (): void => {
+        expect(applyLocalizedProperty("left", "right", Direction.rtl)).toBe("right");
     });
 });
