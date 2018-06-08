@@ -27,3 +27,10 @@ export function localizeSpacing(dir: Direction): (value: string) => string {
             : value;
     };
 }
+
+/**
+ * Returns a css property based on a given direction value
+ */
+export function applyLocalizedProperty(ltrProperty: string, rtlProperty: string, dir: Direction): string {
+    return dir === Direction.ltr ? ltrProperty : rtlProperty;
+}
