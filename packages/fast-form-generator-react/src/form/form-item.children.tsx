@@ -115,27 +115,16 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
      * Click event for adding a component
      */
     private onAddComponent(item: any): void {
-        const dataLocation: string = "children";
-        const currentChildren: JSX.Element = get(this.props.data, dataLocation);
-        const currentChildrenArray: JSX.Element[] = Array.isArray(currentChildren)
-            ? currentChildren
-            : typeof currentChildren !== "undefined"
-            ? [currentChildren]
-            : [];
+        const currentChildren: JSX.Element = get(this.props.data, "children");
+        const currentChildrenArray: JSX.Element[] = this.getCurrentChildArray(currentChildren);
+        const dataLocation: string = isRootLocation(this.props.dataLocation) ? `children` : `${this.props.dataLocation}.children`;
         const components: any[] = currentChildrenArray;
 
         if (typeof item === "object") {
-            const component: JSX.Element = (
-                <item.component
-                    key={uniqueId()}
-                    {...generateExampleData(item.schema, "")}
-                />
-            );
-
-            components.push(component);
+            components.push(this.getChildComponent(item));
 
             this.props.onChange(
-                isRootLocation(this.props.dataLocation) ? `children` : `${this.props.dataLocation}.children`,
+                dataLocation,
                 components
             );
         } else if (typeof item === "string") {
@@ -144,10 +133,27 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
             }
 
             this.props.onChange(
-                isRootLocation(this.props.dataLocation) ? `children` : `${this.props.dataLocation}.children`,
+                dataLocation,
                 components.length > 0 ? components : item
             );
         }
+    }
+
+    private getCurrentChildArray(currentChildren: JSX.Element): any[] {
+        return Array.isArray(currentChildren)
+            ? currentChildren
+            : typeof currentChildren !== "undefined"
+            ? [currentChildren]
+            : [];
+    }
+
+    private getChildComponent(item: any): JSX.Element {
+        return (
+            <item.component
+                key={uniqueId()}
+                {...generateExampleData(item.schema, "")}
+            />
+        );
     }
 
     private getDataLocation(component: any, index: number): string {
