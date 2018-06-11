@@ -6,7 +6,7 @@ import Form from "@microsoft/fast-form-generator-react";
 import { uniqueId } from "lodash-es";
 import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
 import Shell, { ShellHeader, ShellInfoBar, ShellPaneCollapse, ShellSlot } from "../shell";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { ellipsis, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
 import ComponentWrapper from "./component-wrapper";
 import CategoryList from "./category-list";
@@ -215,15 +215,19 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         locales: ["en", "en-rtl"]
     };
 
+    private initialPath: string;
+
     constructor(props: ISiteProps & IManagedClasses<ISiteManagedClasses>) {
         super(props);
 
+        this.initialPath = this.getInitialPath();
+
         this.state = {
-            currentPath: this.getCurrentPath(),
+            currentPath: this.initialPath,
             activeComponentIndex: 0,
             tableOfContentsCollapsed: this.props.collapsed || false,
             componentView: ComponentViewTypes.examples,
-            componentName: this.getComponentName(),
+            componentName: this.getComponentName(this.initialPath),
             componentData: this.getComponentData(),
             detailViewComponentData: this.getDetailViewComponentData(),
             formView: true,
@@ -243,7 +247,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                                 exact={true}
                                 path={"/"}
                             >
-                                {this.renderShellRow({exampleView: null, route: "/"} as IComponentRoute)}
+                                <Redirect to={this.initialPath} />
                             </Route>
                             {this.renderRoutes()}
                             <Route path="*" component={NotFound} />
@@ -335,6 +339,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
             <Route
                 key={path}
                 path={path}
+                exact={true}
             >
                 {this.renderShellRow(route)}
             </Route>
@@ -478,6 +483,10 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         this.setState({
             devToolsView: !this.state.devToolsView
         });
+    }
+
+    private getInitialPath = (): string => {
+        return Object.keys(this.getComponentData())[0];
     }
 
     private getCurrentPath = (): string => {
