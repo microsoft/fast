@@ -118,25 +118,35 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
         const currentChildren: JSX.Element = get(this.props.data, "children");
         const currentChildrenArray: JSX.Element[] = this.getCurrentChildArray(currentChildren);
         const dataLocation: string = isRootLocation(this.props.dataLocation) ? `children` : `${this.props.dataLocation}.children`;
-        const components: any[] = currentChildrenArray;
 
         if (typeof item === "object") {
-            components.push(this.getChildComponent(item));
-
             this.props.onChange(
                 dataLocation,
-                components
+                this.getReactComponents(currentChildrenArray, item)
             );
         } else if (typeof item === "string") {
-            if (components.length > 0) {
-                components.push(item);
-            }
-
             this.props.onChange(
                 dataLocation,
-                components.length > 0 ? components : item
+                this.getStringComponents(currentChildrenArray, item)
             );
         }
+    }
+
+    private getReactComponents(currentChildrenArray: any[], item: any): any[] {
+        const components: any[] = currentChildrenArray;
+        components.push(this.getChildComponent(item));
+
+        return components;
+    }
+
+    private getStringComponents(currentChildrenArray: any[], item: string): any[] | string {
+        const components: any[] = currentChildrenArray;
+
+        if (components.length > 0) {
+            components.push(item);
+        }
+
+        return components.length > 0 ? components : item;
     }
 
     private getCurrentChildArray(currentChildren: JSX.Element): any[] {
