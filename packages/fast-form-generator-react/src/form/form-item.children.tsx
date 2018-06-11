@@ -78,12 +78,6 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
         // Convert to search component when #3006 has been completed
         return (
             <div className={this.props.managedClasses.formItemChildren}>
-                <button
-                    onClick={this.clickComponentFactory("add", "Example text")}
-                    className={this.props.managedClasses.formItemChildren_childOptionsTextButton}
-                >
-                    <span>Text</span>
-                </button>
                 {this.generateExistingChildrenHeader()}
                 {this.generateExistingChildren()}
                 <div>
@@ -104,6 +98,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
                         </button>
                     </div>
                     <ul className={this.props.managedClasses.formItemChildren_childOptionsMenu}>
+                        {this.generateStringChildOption()}
                         {this.generateChildOptions()}
                     </ul>
                 </div>
@@ -291,6 +286,20 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
                 </li>
             );
         });
+    }
+
+    /**
+     * Generate the string child option
+     */
+    private generateStringChildOption(): JSX.Element {
+        return (
+            <button
+                onClick={this.clickComponentFactory("add", "Example text")}
+                className={this.props.managedClasses.formItemChildren_childOptionsTextButton}
+            >
+                <span>Text</span>
+            </button>
+        );
     }
 
     /**
