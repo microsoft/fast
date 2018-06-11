@@ -7,6 +7,7 @@ import { isRootLocation } from "./form.utilities";
 import { generateExampleData } from "./form-section.utilities";
 import { updateActiveSection } from "./form-section.props";
 import { ComponentTree, DataOnChange } from "./form.props";
+import { reactChildrenStringSchema } from "./form-item.children.text";
 import styles from "./form-item.children.style";
 import { IFormItemChildrenClassNameContract } from "../class-name-contracts/";
 import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
@@ -97,6 +98,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
                         </button>
                     </div>
                     <ul className={this.props.managedClasses.formItemChildren_childOptionsMenu}>
+                        {this.generateStringChildOption()}
                         {this.generateChildOptions()}
                     </ul>
                 </div>
@@ -107,42 +109,70 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
     /**
      * Click event for adding a component
      */
-    private onAddComponent(componentObj: any): void {
-        const dataLocation: string = "children";
-        const currentChildren: JSX.Element = get(this.props.data, dataLocation);
-        let components: JSX.Element[] = [];
+    private onAddComponent(item: any): void {
+        const currentChildren: JSX.Element = get(this.props.data, "children");
+        const currentChildrenArray: JSX.Element[] = this.getCurrentChildArray(currentChildren);
+        const dataLocation: string = isRootLocation(this.props.dataLocation) ? `children` : `${this.props.dataLocation}.children`;
 
-        if (Array.isArray(currentChildren)) {
-            components = components.concat(currentChildren);
-        } else if (typeof currentChildren === "object") {
-            components = components.concat([currentChildren]);
+        if (typeof item === "object") {
+            this.props.onChange(
+                dataLocation,
+                this.getReactComponents(currentChildrenArray, item)
+            );
+        } else if (typeof item === "string") {
+            this.props.onChange(
+                dataLocation,
+                this.getStringComponents(currentChildrenArray, item)
+            );
+        }
+    }
+
+    private getReactComponents(currentChildrenArray: any[], item: any): any[] {
+        const components: any[] = currentChildrenArray;
+        components.push(this.getChildComponent(item));
+
+        return components;
+    }
+
+    private getStringComponents(currentChildrenArray: any[], item: string): any[] | string {
+        const components: any[] = currentChildrenArray;
+
+        if (components.length > 0) {
+            components.push(item);
         }
 
-        const component: JSX.Element = (
-            <componentObj.component
+        return components.length > 0 ? components : item;
+    }
+
+    private getCurrentChildArray(currentChildren: JSX.Element): any[] {
+        return Array.isArray(currentChildren)
+            ? currentChildren
+            : typeof currentChildren !== "undefined"
+            ? [currentChildren]
+            : [];
+    }
+
+    private getChildComponent(item: any): JSX.Element {
+        return (
+            <item.component
                 key={uniqueId()}
-                {...generateExampleData(componentObj.schema, "")}
+                {...generateExampleData(item.schema, "")}
             />
-        );
-
-        components.push(component);
-
-        this.props.onChange(
-            isRootLocation(this.props.dataLocation) ? `children` : `${this.props.dataLocation}.children`,
-            components
         );
     }
 
-    private getDataLocation(index?: number): string {
+    private getDataLocation(component: any, index: number): string {
+        const propLocation: string = typeof component === "string" ? "" : ".props";
+
         if (typeof index === "number") {
             return isRootLocation(this.props.dataLocation)
-                ? `children[${index}].props`
-                : `${this.props.dataLocation}.children[${index}].props`;
+                ? `children[${index}]${propLocation}`
+                : `${this.props.dataLocation}.children[${index}]${propLocation}`;
         }
 
         return isRootLocation(this.props.dataLocation)
-            ? `children.props`
-            : `${this.props.dataLocation}.children.props`;
+            ? `children${propLocation}`
+            : `${this.props.dataLocation}.children${propLocation}`;
     }
 
     /**
@@ -150,13 +180,17 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
      */
     private onEditComponent(componentObj: any, index: number): void {
         let schema: any;
-        const dataLocation: string = this.getDataLocation(index);
+        const dataLocation: string = this.getDataLocation(componentObj, index);
 
-        this.props.childOptions.forEach((childOption: any) => {
-            if (childOption.component === componentObj.type) {
-                schema = childOption.schema;
-            }
-        });
+        if (typeof componentObj === "object") {
+            this.props.childOptions.forEach((childOption: any) => {
+                if (childOption.component === componentObj.type) {
+                    schema = childOption.schema;
+                }
+            });
+        } else if (typeof componentObj === "string") {
+            schema = reactChildrenStringSchema;
+        }
 
         this.props.onUpdateActiveSection("", dataLocation, schema);
     }
@@ -255,6 +289,20 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
     }
 
     /**
+     * Generate the string child option
+     */
+    private generateStringChildOption(): JSX.Element {
+        return (
+            <button
+                onClick={this.clickComponentFactory("add", "Example text")}
+                className={this.props.managedClasses.formItemChildren_childOptionsTextButton}
+            >
+                <span>Text</span>
+            </button>
+        );
+    }
+
+    /**
      * Generate the optional children
      */
     private generateChildOptions(): JSX.Element[] {
@@ -272,7 +320,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
     }
 
     private generateChildCaption(instance: any): JSX.Element {
-        if (Boolean(instance.props.text)) {
+        if (instance && instance.props && instance.props.text) {
             return <span>{instance.props.text}</span>;
         } else {
             return null;
@@ -292,7 +340,11 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
 
     private generateChildOptionText(instance: any): string {
         const item: any = this.getChildOptionByConstructor(instance.type);
-        return item.name || "Untitled";
+        return typeof item === "object"
+            ? item.name || "Untitled"
+            : typeof instance === "string"
+            ? instance
+            : "Untitled";
     }
 
     /**
@@ -310,25 +362,22 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
     private generateChildItems(): JSX.Element | JSX.Element[] {
         const dataLocation: string = "children";
         const currentChildren: JSX.Element = get(this.props.data, dataLocation);
+        const currentChildrenArray: JSX.Element[] = Array.isArray(currentChildren) ? currentChildren : [currentChildren];
 
-        if (Array.isArray(currentChildren)) {
-            return currentChildren.map((item: any, index: number): JSX.Element => {
+        if (currentChildren) {
+            return currentChildrenArray.map((item: any, index: number): JSX.Element => {
                 const options: any = {
                     key: `item-${index}`,
                     index,
-                    value: this.generateChildOptionText(item)
+                    value: typeof item === "object" ? this.generateChildOptionText(item) : item
                 };
 
-                return React.createElement(SortableElement(this.generateChildItem.bind(this, item, index)), options);
-            });
-        } else if (typeof currentChildren === "object") {
-            const options: any = {
-                key: `item`,
-                index: 0,
-                value: this.generateChildOptionText(currentChildren)
-            };
+                if (currentChildrenArray.length > 1) {
+                    return React.createElement(SortableElement(this.generateChildItem.bind(this, item, index)), options);
+                }
 
-            return React.createElement(SortableElement(this.generateChildItem.bind(this, currentChildren)), options);
+                return React.createElement(SortableElement(this.generateChildItem.bind(this, currentChildren)), options);
+            });
         }
 
         return null;

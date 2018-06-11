@@ -105,19 +105,35 @@ export default class CodePreview extends React.Component<ICodePreviewProps, {}> 
         const componentChildren: any[] = Array.isArray(componentData.children) ? componentData.children : [componentData.children];
 
         for (let i: number = 0, childrenLength: number = componentChildren.length; i < childrenLength; i++) {
-            renderedComponentWithChild += this.generateReactCodePreview(
-                this.getComponentName(componentChildren[i]),
-                componentChildren[i].props,
-                newTab,
-                location === ""
-                    ? componentName.charAt(0).toLowerCase() + componentName.slice(1) + i
-                    : location + componentName + i
-            );
+            renderedComponentWithChild += this.getReactChildAsComponentOrString(componentChildren, i, componentName, location, newTab);
         }
 
         renderedComponentWithChild += `\n${tab}</${componentName}>`;
 
         return renderedComponentWithChild;
+    }
+
+    private getReactChildAsComponentOrString(
+        componentChildren: any[],
+        index: number,
+        componentName: string,
+        location: string,
+        newTab: string
+    ): string {
+        if (typeof componentChildren[index] === "object") {
+            return this.generateReactCodePreview(
+                this.getComponentName(componentChildren[index]),
+                componentChildren[index].props,
+                newTab,
+                location === ""
+                    ? componentName.charAt(0).toLowerCase() + componentName.slice(1) + index
+                    : location + componentName + index
+            );
+        } else if (typeof componentChildren[index] === "string") {
+            return `\n${newTab}${componentChildren[index]}`;
+        }
+
+        return "";
     }
 
     /**
