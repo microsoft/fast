@@ -129,14 +129,14 @@ class ActionBar extends React.Component<IActionBarProps & IManagedClasses<IActio
                 </div>
                 <div className={this.props.managedClasses.actionBar_componentViewToggles}>
                     <ComponentViewToggle
-                        to={this.props.match.path}
+                        to={this.normalizePath()}
                         onClick={this.onComponentViewChangeCallback(ComponentViewTypes.detail)}
                         label="View detail"
                         current={this.isAriaCurrent(ComponentViewTypes.detail)}
                         glyph={glyphPage}
                     />
                     <ComponentViewToggle
-                        to={`${this.props.match.path}${ComponentViewTypes[ComponentViewTypes.examples]}/`}
+                        to={`${this.normalizePath()}${ComponentViewTypes[ComponentViewTypes.examples]}/`}
                         onClick={this.onComponentViewChangeCallback(ComponentViewTypes.examples)}
                         label="View examples"
                         current={this.isAriaCurrent(ComponentViewTypes.examples)}
@@ -145,6 +145,14 @@ class ActionBar extends React.Component<IActionBarProps & IManagedClasses<IActio
                 </div>
             </div>
         );
+    }
+
+    private normalizePath(local?: string): string {
+        const rootPathRegex: RegExp = /\(.*/g;
+        let normalizePath: string = this.props.match.path;
+        normalizePath = normalizePath.replace(rootPathRegex, "");
+
+        return normalizePath;
     }
 
     private getActionBarMenuButtonClassNames(type: ActionEnum): string {

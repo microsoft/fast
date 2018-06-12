@@ -338,7 +338,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         return (
             <Route
                 key={path}
-                path={path}
+                path={`${path}(|examples)`}
                 exact={true}
             >
                 {this.renderShellRow(route)}
