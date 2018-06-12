@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.8.0"></a>
+# [1.8.0](https://github.com/Microsoft/fast-dna/compare/v1.6.0...v1.8.0) (2018-06-12)
+
+
+### Bug Fixes
+
+* **fast-components-styles-msft:** remove duplicate code and creates a utility to apply mixed colors ([#500](https://github.com/Microsoft/fast-dna/issues/500)) ([179c584](https://github.com/Microsoft/fast-dna/commit/179c584))
+* **fast-development-site:** fix a pathing issue between the detail and example pages ([#525](https://github.com/Microsoft/fast-dna/issues/525)) ([ef577c4](https://github.com/Microsoft/fast-dna/commit/ef577c4))
+* **fast-development-site-react:** fix the selection model to always point to a component/item ([#522](https://github.com/Microsoft/fast-dna/issues/522)) ([608f548](https://github.com/Microsoft/fast-dna/commit/608f548))
+* **hypertext:** fix hypertext style when no href value exists ([#499](https://github.com/Microsoft/fast-dna/issues/499)) ([cd5d3d2](https://github.com/Microsoft/fast-dna/commit/cd5d3d2))
+* **permutator:** fix an issue where lodash was being referred to and not lodash-es ([#509](https://github.com/Microsoft/fast-dna/issues/509)) ([88f4b90](https://github.com/Microsoft/fast-dna/commit/88f4b90))
+
+
+### Features
+
+* **development-site:** add ability to have children as strings in the form generator and development site dev tools ([#518](https://github.com/Microsoft/fast-dna/issues/518)) ([2a4a87f](https://github.com/Microsoft/fast-dna/commit/2a4a87f))
+* **development-site:** add component for title and component for title with brand color applied ([#501](https://github.com/Microsoft/fast-dna/issues/501)) ([d1d9d5c](https://github.com/Microsoft/fast-dna/commit/d1d9d5c))
+* **fast-components-react-msft:** add localized styles and enable ltr/rtl swapping on documentation site ([#517](https://github.com/Microsoft/fast-dna/issues/517)) ([ce939b7](https://github.com/Microsoft/fast-dna/commit/ce939b7))
+* **jss:** update manager to support function stylesheets ([#508](https://github.com/Microsoft/fast-dna/issues/508)) ([8e7c947](https://github.com/Microsoft/fast-dna/commit/8e7c947))
+* **jss-manager:** update to enable server-side rendering of stylesheets. ([#516](https://github.com/Microsoft/fast-dna/issues/516)) ([a5072d0](https://github.com/Microsoft/fast-dna/commit/a5072d0))
+* add sketch utility and design kit ([#495](https://github.com/Microsoft/fast-dna/issues/495)) ([ce8feb3](https://github.com/Microsoft/fast-dna/commit/ce8feb3))
+
+
+
+
 <a name="1.7.0"></a>
 # [1.7.0](https://github.com/Microsoft/fast-dna/compare/v1.6.0...v1.7.0) (2018-06-01)
 

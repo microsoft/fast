@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-tslint-rules",
   "description": "tslint rules for FAST projects",
   "sideEffects": false,
-  "version": "1.7.0",
+  "version": "1.8.0",
   "keywords": [
     "tslint",
     "typescript"
