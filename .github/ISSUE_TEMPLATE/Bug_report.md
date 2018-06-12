@@ -22,14 +22,14 @@ If applicable, add screenshots to help explain your problem.
 
 **Desktop (please complete the following information):**
  - OS: [e.g. MacOS, Windows, Linux]
- - Browser [e.g. Edge, Chrome, Safari]
- - Version [e.g. 22]
+ - Browser [e.g. Edge, Chrome, Safari, FireFox]
+ - Version [e.g. 1.8.0]
 
 **Smartphone (please complete the following information):**
  - Device: [e.g. iPhone6]
  - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, Safari]
- - Version [e.g. 22]
+ - Browser [e.g. Device browser, Edge, Chrome, Safari, FireFox]
+ - Version [e.g. 1.8.0]
 
 **Additional context**
 Add any other context about the problem here.
