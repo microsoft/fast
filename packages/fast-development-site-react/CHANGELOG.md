@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.8.0"></a>
+# [1.8.0](https://github.com/Microsoft/fast-dna/compare/v1.6.0...v1.8.0) (2018-06-12)
+
+
+### Bug Fixes
+
+* **fast-development-site:** fix a pathing issue between the detail and example pages ([#525](https://github.com/Microsoft/fast-dna/issues/525)) ([ef577c4](https://github.com/Microsoft/fast-dna/commit/ef577c4))
+* **fast-development-site-react:** fix the selection model to always point to a component/item ([#522](https://github.com/Microsoft/fast-dna/issues/522)) ([608f548](https://github.com/Microsoft/fast-dna/commit/608f548))
+
+
+### Features
+
+* **development-site:** add ability to have children as strings in the form generator and development site dev tools ([#518](https://github.com/Microsoft/fast-dna/issues/518)) ([2a4a87f](https://github.com/Microsoft/fast-dna/commit/2a4a87f))
+* **development-site:** add component for title and component for title with brand color applied ([#501](https://github.com/Microsoft/fast-dna/issues/501)) ([d1d9d5c](https://github.com/Microsoft/fast-dna/commit/d1d9d5c))
+* **fast-components-react-msft:** add localized styles and enable ltr/rtl swapping on documentation site ([#517](https://github.com/Microsoft/fast-dna/issues/517)) ([ce939b7](https://github.com/Microsoft/fast-dna/commit/ce939b7))
+
+
+
+
 <a name="1.7.0"></a>
 # [1.7.0](https://github.com/Microsoft/fast-dna/compare/v1.6.0...v1.7.0) (2018-06-01)
 
