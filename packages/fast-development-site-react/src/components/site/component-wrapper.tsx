@@ -13,7 +13,7 @@ import { ComponentViewTypes } from "./component-view";
 
 export interface IComponentWrapperManagedClasses {
     componentWrapper: string;
-    componentWrapperFullWidth: string;
+    componentWrapperExamples: string;
     componentWrapper__active: string;
 }
 
@@ -32,17 +32,14 @@ const styles: ComponentStyles<IComponentWrapperManagedClasses, IDevSiteDesignSys
         display: "block",
         padding: toPx(24),
         borderBottom: componentWrapperBorder,
+    },
+    componentWrapperExamples: {
         "&:last-child:not(:nth-child(3n + 3)), &:nth-child(3n + 1)": {
             borderRight: componentWrapperBorder,
         },
         "&:nth-child(3n + 3)": {
             borderLeft: componentWrapperBorder
         },
-    },
-    componentWrapperFullWidth: {
-        display: "block",
-        padding: toPx(24),
-        borderBottom: componentWrapperBorder,
     },
     componentWrapper__active: {
         position: "relative",
@@ -94,11 +91,13 @@ class ComponentWrapper extends React.Component<IComponentWrapperProps<IDevSiteDe
     }
 
     private getClassNames(): string {
+        const classNames: string = this.props.managedClasses.componentWrapper;
+
         return this.props.active && this.props.view === ComponentViewTypes.examples
-            ? `${this.props.managedClasses.componentWrapper} ${this.props.managedClasses.componentWrapper__active}`
+            ? `${classNames} ${this.props.managedClasses.componentWrapperExamples} ${this.props.managedClasses.componentWrapper__active}`
             : this.props.view === ComponentViewTypes.detail
-            ? `${this.props.managedClasses.componentWrapperFullWidth} ${this.props.managedClasses.componentWrapper__active}`
-            : this.props.managedClasses.componentWrapper;
+            ? `${classNames} ${this.props.managedClasses.componentWrapper__active}`
+            : classNames;
     }
 
     private handleClick = (): void => {
