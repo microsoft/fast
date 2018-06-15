@@ -18,7 +18,7 @@ import ButtonSchema from "./components/button/button.schema.json";
 import Paragraph from "./components/paragraph/paragraph";
 import ParagraphSchema from "./components/paragraph/paragraph.schema.json";
 import PolymerHeading from "./components/polymer-heading";
-import { ISiteCategoryProps } from "../src/components/site/category";
+import { ISiteCategoryProps, Status } from "../src/components/site/category";
 import ParagraphDocs from "./components/paragraph/.tmp/documentation";
 import ButtonDocs from "./components/button/.tmp/documentation";
 import { FrameworkEnum } from "../src/components/site/dev-tools";
@@ -99,7 +99,8 @@ export default class App extends React.Component<{}, IAppState> {
             slot: "category",
             name: "Paragraph",
             schema: ParagraphSchema,
-            component: Paragraph
+            component: Paragraph,
+            status: Status.inProgress
         };
 
         return (
@@ -114,7 +115,8 @@ export default class App extends React.Component<{}, IAppState> {
         const categoryBase: Partial<ISiteCategoryProps> = {
             slot: "category",
             schema: ButtonSchema,
-            component: Button
+            component: Button,
+            status: Status.complete,
         };
         const componentObj1: any[] = [{text: "foo"}, {text: "bar"}, {text: "bat"}];
         const categoryObj1: Partial<ISiteCategoryProps> = {

@@ -14,7 +14,7 @@ import SiteTitle from "./title";
 import SiteTitleBrand from "./title-brand";
 import SiteMenu from "./menu";
 import SiteMenuItem from "./menu-item";
-import SiteCategory from "./category";
+import SiteCategory, { Status } from "./category";
 import SiteCategoryDocumentation from "./category-documentation";
 import SiteCategoryIcon from "./category-icon";
 import SiteCategoryItem from "./category-item";
@@ -61,6 +61,7 @@ export interface IComponentRoute {
     componentMapping: any;
     exampleView: JSX.Element[];
     detailView: JSX.Element[];
+    status: Status;
 }
 
 export interface IComponentData {
@@ -72,6 +73,7 @@ export interface ISiteState {
     activeComponentIndex: number;
     componentName: string;
     componentData: IComponentData;
+    componentStatus: Status;
     detailViewComponentData: IComponentData;
     tableOfContentsCollapsed: boolean;
     componentView: ComponentViewTypes;
@@ -99,6 +101,10 @@ export interface ISiteManagedClasses {
     site_paneToggleButton: string;
     site_paneToggleButtonIcon: string;
     site_paneToggleButtonIconLayout: string;
+    site_statusBar: string;
+    site_statusComponentName: string;
+    site_statusComplete: string;
+    site_statusInProgress: string;
 }
 
 const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
@@ -206,6 +212,35 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
         display: "flex",
         alignItems: "center",
         justifyContent: "center"
+    },
+    site_statusBar: {
+        width: "50%",
+        display: "flex",
+        alignItems: "center",
+        lineHeight: "1",
+        textAlign: "left"
+    },
+    site_statusComponentName: {
+        marginLeft: toPx(12),
+        marginRight: toPx(15),
+    },
+    site_statusComplete: {
+        backgroundColor: "#3EC28F",
+        borderRadius: "50%",
+        height: toPx(16),
+        width: toPx(16),
+        marginRight: toPx(4),
+        boxSizing: "border-box",
+        border: `${toPx(1)} solid #FFFFFF`,
+    },
+    site_statusInProgress: {
+        backgroundColor: "#F2D925",
+        borderRadius: "50%",
+        height: toPx(16),
+        width: toPx(16),
+        marginRight: toPx(4),
+        boxSizing: "border-box",
+        border: `${toPx(1)} solid #FFFFFF`,
     }
 };
 
@@ -229,6 +264,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
             componentView: ComponentViewTypes.examples,
             componentName: this.getComponentName(this.initialPath),
             componentData: this.getComponentData(),
+            componentStatus: this.getComponentStatus(this.initialPath),
             detailViewComponentData: this.getDetailViewComponentData(),
             formView: true,
             devToolsView: false,
@@ -283,6 +319,18 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         });
 
         return componentData;
+    }
+
+    private getComponentStatus(currentPath?: string): Status {
+        let componentStatus: Status = Status.inProgress;
+
+        this.getRoutes((this.props.children as JSX.Element), "/", SiteSlot.category).forEach((route: IComponentRoute) => {
+            if ((currentPath && route.route === currentPath || !currentPath && route.route === this.state.currentPath) && route.status) {
+                componentStatus = route.status;
+            }
+        });
+
+        return componentStatus;
     }
 
     private getDetailViewComponentData(): IComponentData {
@@ -598,6 +646,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     private renderShellInfoBar(): JSX.Element {
         return (
             <ShellInfoBar>
+                {this.renderStatusBar()}
                 {this.renderInfoBarConfiguration()}
                 {this.renderChildrenBySlot(this, ShellSlot.infoBar)}
             </ShellInfoBar>
@@ -618,6 +667,22 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 </span>
             </div>
         );
+    }
+
+    private renderStatusBar(): JSX.Element {
+        return (
+            <div className={this.props.managedClasses.site_statusBar}>
+                <span className={this.props.managedClasses.site_statusComponentName}>Component: {this.state.componentName}</span>
+                {this.renderComponentStatusIndicator()}
+                {this.state.componentStatus}
+            </div>
+        );
+    }
+
+    private renderComponentStatusIndicator(): JSX.Element {
+        return this.state.componentStatus === Status.complete
+            ? <span className={this.props.managedClasses.site_statusComplete}/>
+            : <span className={this.props.managedClasses.site_statusInProgress}/>;
     }
 
     private renderLocales(): JSX.Element[] {
@@ -670,7 +735,8 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 exampleView: exampleSlotItems,
                 detailView: detailSlotItems,
                 schema: item.props.schema,
-                componentMapping: item.props.component
+                componentMapping: item.props.component,
+                status: item.props.status
             });
         }
 
@@ -773,6 +839,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 this.setState({
                     activeComponentIndex: 0,
                     componentName: this.getComponentName(tocItemPath),
+                    componentStatus: this.getComponentStatus(tocItemPath),
                     currentPath: tocItemPath
                 });
             }

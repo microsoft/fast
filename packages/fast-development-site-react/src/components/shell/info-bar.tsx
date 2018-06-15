@@ -12,9 +12,8 @@ export interface IShellInfoBarManagedClasses {
 
 const style: ComponentStyles<IShellInfoBarManagedClasses, IDevSiteDesignSystem> = {
     shellInfoBar: {
-        background: (config: IDevSiteDesignSystem): string => {
-            return config.lightGray;
-        },
+        display: "flex",
+        background: "#E9ECEC",
         minHeight: (config: IDevSiteDesignSystem): string => {
             return toPx(config.navigationBarHeight / 2);
         }
