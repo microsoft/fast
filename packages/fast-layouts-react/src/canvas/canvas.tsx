@@ -10,7 +10,7 @@ export interface ICanvasClassNamesContract {
 const styles: ComponentStyles<ICanvasClassNamesContract, undefined> = {
     canvas: {
         flex: "1",
-        overflowY: "auto"
+        overflow: "hidden",
     }
 };
 
@@ -38,7 +38,7 @@ class Canvas extends Foundation<CanvasProps, undefined> {
      */
     public renderStyleAttribute(): object {
         return {
-            minWidth: this.props.minWidth
+            minWidth: `${this.props.minWidth}px`
         };
     }
 

@@ -10,7 +10,7 @@ export enum FrameworkEnum {
     angular = "angular"
 }
 
-export type tabType = "code" | "properties" | "schema";
+export type tabType = "Code" | "Properties" | "Schema";
 
 export interface IDevToolsProps {
     onToggleView: () => void;
@@ -162,11 +162,11 @@ class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevTool
     constructor(props: IDevToolsProps & IManagedClasses<IDevToolsManagedClasses>) {
         super(props);
 
-        this.tabs = ["code", "properties", "schema"];
+        this.tabs = ["Code", "Properties", "Schema"];
 
         this.state = {
             activeFramework: this.props.activeFramework || FrameworkEnum.react,
-            activeTab: this.props.activeTab || "code"
+            activeTab: this.props.activeTab || "Code"
         };
     }
 
@@ -198,7 +198,7 @@ class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevTool
     private renderTabItems(): JSX.Element[] {
         return this.tabs.map((tabItem: tabType, index: number) => {
             // TODO: #297 remove this if statement once other tab contents are created
-            if (tabItem === "code" || tabItem === "schema") {
+            if (tabItem === "Code" || tabItem === "Schema") {
                 return (
                     <li key={index} className={this.getTabClassNames(tabItem)}>
                         <button onClick={this.handleChangeTab(tabItem)}>
@@ -234,11 +234,11 @@ class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevTool
 
     private renderTabPanelContent(tabItem: tabType): JSX.Element {
         switch (tabItem) {
-            case "code":
+            case "Code":
                 return this.renderCode();
-            case "properties":
+            case "Properties":
                 return this.renderProperties();
-            case "schema":
+            case "Schema":
                 return this.renderSchema();
             default:
                 return null;

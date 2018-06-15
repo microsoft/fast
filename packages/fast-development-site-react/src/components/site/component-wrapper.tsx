@@ -9,9 +9,11 @@ import manageJss, {
 import { ErrorBoundary, IErrorBoundaryProps } from "../../utilities";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
+import { ComponentViewTypes } from "./component-view";
 
 export interface IComponentWrapperManagedClasses {
     componentWrapper: string;
+    componentWrapperExamples: string;
     componentWrapper__active: string;
 }
 
@@ -20,15 +22,18 @@ export interface IComponentWrapperProps<T> {
     index: number;
     singleRow?: boolean;
     designSystem: T;
+    view: ComponentViewTypes;
     onClick?: (activeIndex: number) => void;
 }
 
-const componentWrapperBorder: string = `${toPx(1)} solid rgb(226, 226, 226)`;
+const componentWrapperBorder: string = `${toPx(1)} solid rgb(204, 204, 204)`;
 const styles: ComponentStyles<IComponentWrapperManagedClasses, IDevSiteDesignSystem> = {
     componentWrapper: {
         display: "block",
         padding: toPx(24),
         borderBottom: componentWrapperBorder,
+    },
+    componentWrapperExamples: {
         "&:last-child:not(:nth-child(3n + 3)), &:nth-child(3n + 1)": {
             borderRight: componentWrapperBorder,
         },
@@ -86,9 +91,13 @@ class ComponentWrapper extends React.Component<IComponentWrapperProps<IDevSiteDe
     }
 
     private getClassNames(): string {
-        return this.props.active
-            ? `${this.props.managedClasses.componentWrapper} ${this.props.managedClasses.componentWrapper__active}`
-            : this.props.managedClasses.componentWrapper;
+        const classNames: string = this.props.managedClasses.componentWrapper;
+
+        return this.props.active && this.props.view === ComponentViewTypes.examples
+            ? `${classNames} ${this.props.managedClasses.componentWrapperExamples} ${this.props.managedClasses.componentWrapper__active}`
+            : this.props.view === ComponentViewTypes.detail
+            ? `${classNames} ${this.props.managedClasses.componentWrapper__active}`
+            : classNames;
     }
 
     private handleClick = (): void => {
