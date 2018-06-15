@@ -59,10 +59,11 @@ export default class CodePreview extends React.Component<ICodePreviewProps, {}> 
      */
     private generateReactCodePreview(componentName: string, componentData: any, tab: string, location: string): string {
         let renderedComponent: string = "";
+        const currentTab: string = `${tab === "" ? "" : "\n"}${tab}`;
         const newTab: string = `    ${tab}`;
         const hasChildren: boolean = componentData && componentData.children;
 
-        renderedComponent += `\n${tab}<${componentName}`;
+        renderedComponent += `${currentTab}<${componentName}`;
         renderedComponent += this.generateReactAttributes(componentData, newTab, location);
         renderedComponent += this.generateReactComponent({
             hasChildren,

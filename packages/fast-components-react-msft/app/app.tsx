@@ -44,7 +44,7 @@ export default class App extends React.Component<{}, IAppState> {
                 onUpdateDirection={this.handleUpdateDirection}
             >
                 <SiteTitle slot={"title"}>
-                    <SiteTitleBrand>FAST</SiteTitleBrand> documentation
+                    <SiteTitleBrand>FAST</SiteTitleBrand> Documentation
                 </SiteTitle>
                 <SiteCategory slot={"category"} name={"Building blocks"}>
                     <SiteCategoryIcon slot="category-icon">

@@ -524,6 +524,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                             index={index}
                             designSystem={componentItem.props.designSystem}
                             active={index === this.state.activeComponentIndex}
+                            view={this.state.componentView}
                         >
                             <route.componentMapping {...this.state.componentData[route.route][index]} />
                         </ComponentWrapper>
@@ -552,6 +553,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                     index={index}
                     designSystem={component.props.designSystem}
                     active={true}
+                    view={this.state.componentView}
                 >
                     <route.componentMapping {...this.state.detailViewComponentData[route.route]} />
                 </ComponentWrapper>

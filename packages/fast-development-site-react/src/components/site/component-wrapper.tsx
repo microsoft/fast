@@ -9,9 +9,11 @@ import manageJss, {
 import { ErrorBoundary, IErrorBoundaryProps } from "../../utilities";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
+import { ComponentViewTypes } from "./component-view";
 
 export interface IComponentWrapperManagedClasses {
     componentWrapper: string;
+    componentWrapperFullWidth: string;
     componentWrapper__active: string;
 }
 
@@ -20,10 +22,11 @@ export interface IComponentWrapperProps<T> {
     index: number;
     singleRow?: boolean;
     designSystem: T;
+    view: ComponentViewTypes;
     onClick?: (activeIndex: number) => void;
 }
 
-const componentWrapperBorder: string = `${toPx(1)} solid rgb(226, 226, 226)`;
+const componentWrapperBorder: string = `${toPx(1)} solid rgb(204, 204, 204)`;
 const styles: ComponentStyles<IComponentWrapperManagedClasses, IDevSiteDesignSystem> = {
     componentWrapper: {
         display: "block",
@@ -35,6 +38,11 @@ const styles: ComponentStyles<IComponentWrapperManagedClasses, IDevSiteDesignSys
         "&:nth-child(3n + 3)": {
             borderLeft: componentWrapperBorder
         },
+    },
+    componentWrapperFullWidth: {
+        display: "block",
+        padding: toPx(24),
+        borderBottom: componentWrapperBorder,
     },
     componentWrapper__active: {
         position: "relative",
@@ -86,8 +94,10 @@ class ComponentWrapper extends React.Component<IComponentWrapperProps<IDevSiteDe
     }
 
     private getClassNames(): string {
-        return this.props.active
+        return this.props.active && this.props.view === ComponentViewTypes.examples
             ? `${this.props.managedClasses.componentWrapper} ${this.props.managedClasses.componentWrapper__active}`
+            : this.props.view === ComponentViewTypes.detail
+            ? `${this.props.managedClasses.componentWrapperFullWidth} ${this.props.managedClasses.componentWrapper__active}`
             : this.props.managedClasses.componentWrapper;
     }
 
