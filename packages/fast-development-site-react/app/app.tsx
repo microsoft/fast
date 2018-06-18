@@ -100,7 +100,7 @@ export default class App extends React.Component<{}, IAppState> {
             name: "Paragraph",
             schema: ParagraphSchema,
             component: Paragraph,
-            status: Status.inProgress
+            status: Status.alpha
         };
 
         return (
@@ -116,7 +116,7 @@ export default class App extends React.Component<{}, IAppState> {
             slot: "category",
             schema: ButtonSchema,
             component: Button,
-            status: Status.complete,
+            status: Status.released,
         };
         const componentObj1: any[] = [{text: "foo"}, {text: "bar"}, {text: "bat"}];
         const categoryObj1: Partial<ISiteCategoryProps> = {

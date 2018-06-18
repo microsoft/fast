@@ -103,8 +103,10 @@ export interface ISiteManagedClasses {
     site_paneToggleButtonIconLayout: string;
     site_statusBar: string;
     site_statusComponentName: string;
-    site_statusComplete: string;
-    site_statusInProgress: string;
+    site_statusIndicator: string;
+    site_statusReleased: string;
+    site_statusAlpha: string;
+    site_statusBeta: string;
 }
 
 const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
@@ -224,8 +226,7 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
         marginLeft: toPx(12),
         marginRight: toPx(15),
     },
-    site_statusComplete: {
-        backgroundColor: "#3EC28F",
+    site_statusIndicator: {
         borderRadius: "50%",
         height: toPx(16),
         width: toPx(16),
@@ -233,14 +234,14 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
         boxSizing: "border-box",
         border: `${toPx(1)} solid #FFFFFF`,
     },
-    site_statusInProgress: {
-        backgroundColor: "#F2D925",
-        borderRadius: "50%",
-        height: toPx(16),
-        width: toPx(16),
-        marginRight: toPx(4),
-        boxSizing: "border-box",
-        border: `${toPx(1)} solid #FFFFFF`,
+    site_statusReleased: {
+        backgroundColor: "#3EC28F",
+    },
+    site_statusAlpha: {
+        backgroundColor: "#824ED2",
+    },
+    site_statusBeta: {
+        backgroundColor: "#950811",
     }
 };
 
@@ -322,7 +323,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     }
 
     private getComponentStatus(currentPath?: string): Status {
-        let componentStatus: Status = Status.inProgress;
+        let componentStatus: Status = Status.beta;
 
         this.getRoutes((this.props.children as JSX.Element), "/", SiteSlot.category).forEach((route: IComponentRoute) => {
             if ((currentPath && route.route === currentPath || !currentPath && route.route === this.state.currentPath) && route.status) {
@@ -673,16 +674,23 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         return (
             <div className={this.props.managedClasses.site_statusBar}>
                 <span className={this.props.managedClasses.site_statusComponentName}>Component: {this.state.componentName}</span>
-                {this.renderComponentStatusIndicator()}
+                <span className={this.getClassNames()}/>
                 {this.state.componentStatus}
             </div>
         );
     }
 
-    private renderComponentStatusIndicator(): JSX.Element {
-        return this.state.componentStatus === Status.complete
-            ? <span className={this.props.managedClasses.site_statusComplete}/>
-            : <span className={this.props.managedClasses.site_statusInProgress}/>;
+    private getClassNames(): string {
+        const classNames: string = this.props.managedClasses.site_statusIndicator;
+
+        switch (this.state.componentStatus) {
+            case Status.released:
+                return `${classNames} ${this.props.managedClasses.site_statusReleased}`;
+            case Status.alpha:
+                return `${classNames} ${this.props.managedClasses.site_statusAlpha}`;
+            default:
+                return `${classNames} ${this.props.managedClasses.site_statusBeta}`;
+        }
     }
 
     private renderLocales(): JSX.Element[] {

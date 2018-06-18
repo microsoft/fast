@@ -10,9 +10,9 @@ export interface ISiteCategoryProps {
 }
 
 export enum Status {
-    complete = "Complete",
-    inProgress = "In Progress",
-    underConsideration = "Under Consideration"
+    released = "Released",
+    alpha = "Alpha",
+    beta = "Beta"
 }
 
 class SiteCategory extends React.Component<ISiteCategoryProps, {}> {
