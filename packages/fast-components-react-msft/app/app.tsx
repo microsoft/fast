@@ -24,6 +24,16 @@ const sketchDesignKit = require("./fast-dna-msft-design-kit.sketch");
 
 const formChildOptions: IFormChildOption[] = formChildFromExamplesFactory(examples);
 
+const hypertextStyles: ComponentStyles<IColumnClassNamesContract, undefined> = {
+    hypertext: {
+        marginLeft: "8px",
+        marginRight: "8px",
+        display: "inline-block",
+        lineHeight: "1",
+        whiteSpace: "nowrap"
+    }
+};
+
 export interface IAppState {
     direction: Direction;
 }
@@ -56,7 +66,7 @@ export default class App extends React.Component<{}, IAppState> {
                 </SiteCategory>
                 <div slot="info-bar" style={{display: "flex", alignItems: "center"}}>
                     <Hypertext
-                        jssStyleSheet={{hypertext: {marginLeft: "8px", marginRight: "8px", display: "inline-block", lineHeight: "1", whiteSpace: "nowrap"}}}
+                        jssStyleSheet={hypertextStyles}
                         href={sketchDesignKit}
                     >
                         Download design kit - sketch
