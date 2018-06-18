@@ -130,7 +130,7 @@ class Pane extends Foundation<PaneProps, IPaneState> {
             width: 300
         };
 
-        this.onMouseMove    = throttle(this.onMouseMove, 16);
+        this.onMouseMove    = throttle(this.onMouseMove, 1);
         this.onWindowResize = rafThrottle(this.onWindowResize);
         this.rootElement = React.createRef();
     }
