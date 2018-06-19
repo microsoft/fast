@@ -47,10 +47,10 @@ const styles: ComponentStyles<IFormSectionClassNameContract, {}> = {
     },
     formSection_toggleWrapper: {
         display: "flex",
-        alignItems: "baseline",
+        minHeight: toPx(40),
+        alignItems: "center",
         "& label": {
             flexGrow: "1",
-            padding: `${toPx(12)} 0`
         }
     },
     formSection_toggle: {

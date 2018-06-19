@@ -93,7 +93,6 @@ export function applyLabelStyle(): ICSSRules<{}> {
         lineHeight: toPx(16),
         fontSize: toPx(14),
         marginRight: toPx(16),
-        paddingTop: toPx(6),
         ...ellipsis()
     };
 }
@@ -114,7 +113,7 @@ export function applyInputStyle(): ICSSRules<{}> {
         backgroundColor: colors.grayBackground,
         borderRadius: toPx(2),
         ...boxShadow(shadow),
-        padding: toPx(8),
+        padding: `${toPx(10)} ${toPx(8)} ${toPx(10)}`,
         border: "none",
         outline: "none",
         "&:hover": {
@@ -130,7 +129,8 @@ export function applyWrapperStyle(): ICSSRules<{}> {
     return {
         display: "flex",
         flexDirection: "row",
-        marginTop: toPx(8)
+        minHeight: toPx(40),
+        alignItems: "center"
     };
 }
 
@@ -357,6 +357,7 @@ export function applyInputBackplateStyle(): ICSSRules<{}> {
         appearance: "none",
         height: toPx(36),
         width: toPx(36),
+        margin: toPx(0),
         backgroundColor: "transparent",
         "&:focus, &:hover": {
             outline: "none",
@@ -383,7 +384,7 @@ export function applySelectInputStyles(): ICSSRules<{}> {
         borderRadius: toPx(2),
         ...boxShadow(shadow),
         appearance: "none",
-        ...localizePadding(8, 36, 8, 10),
+        ...localizePadding(10, 36, 10, 10),
         border: "none",
         outline: "none",
         "&:-ms-expand": {
