@@ -26,8 +26,7 @@ const formChildOptions: IFormChildOption[] = formChildFromExamplesFactory(exampl
 
 const hypertextStyles: ComponentStyles<IColumnClassNamesContract, undefined> = {
     hypertext: {
-        marginLeft: "8px",
-        marginRight: "8px",
+        margin: "0 8px",
         display: "inline-block",
         lineHeight: "1",
         whiteSpace: "nowrap"
