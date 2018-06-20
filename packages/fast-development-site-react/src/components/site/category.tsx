@@ -6,6 +6,13 @@ export interface ISiteCategoryProps {
     name: string;
     component?: any;
     schema?: any;
+    status?: Status;
+}
+
+export enum Status {
+    released = "Released",
+    alpha = "Alpha",
+    beta = "Beta"
 }
 
 class SiteCategory extends React.Component<ISiteCategoryProps, {}> {
