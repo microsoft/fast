@@ -1,4 +1,10 @@
-import { applyInputBackplateStyle, applyLabelStyle, applyWrapperStyle, colors } from "../utilities/form-input.style";
+import {
+    applyInputBackplateStyle,
+    applyInputWrapperStyle,
+    applyLabelStyle,
+    applyWrapperStyle,
+    colors
+} from "../utilities/form-input.style";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IFormItemAlignVerticalClassNameContract } from "../class-name-contracts/";
 
@@ -17,6 +23,9 @@ const styles: ComponentStyles<IFormItemAlignVerticalClassNameContract, {}> = {
     },
     formItemAlignVertical_label: {
         ...applyLabelStyle()
+    },
+    formItemAlignVertical_input: {
+        ...applyInputWrapperStyle()
     },
     formItemAlignVertical_input__top: {
         ...applyInputBackplateStyle(),

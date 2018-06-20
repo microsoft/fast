@@ -1,6 +1,13 @@
-import { applyInputBackplateStyle, applyLabelStyle, applyWrapperStyle, colors } from "../utilities/form-input.style";
+import {
+    applyInputBackplateStyle,
+    applyInputWrapperStyle,
+    applyLabelStyle,
+    applyWrapperStyle,
+    colors
+} from "../utilities/form-input.style";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IFormItemAlignHorizontalClassNameContract } from "../class-name-contracts/";
+import { toPx } from "@microsoft/fast-jss-utilities";
 
 /* tslint:disable */
 const leftDark: string = "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxNiAxMyIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48ZyBpZD0iQ2FudmFzIiBmaWxsPSJub25lIj48ZyBpZD0iJiMyMzg7JiMxMzQ7JiMxNjI7Ij48cGF0aCBkPSJNIDE2IDFMIDE2IDJMIDAgMkwgMCAxTCAxNiAxWk0gMTYgMTRMIDAgMTRMIDAgMTNMIDE2IDEzTCAxNiAxNFpNIDE2IDhMIDAgOEwgMCA3TCAxNiA3TCAxNiA4Wk0gMTIgNUwgMCA1TCAwIDRMIDEyIDRMIDEyIDVaTSAxMiAxMUwgMCAxMUwgMCAxMEwgMTIgMTBMIDEyIDExWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAtMSkiIGZpbGw9ImJsYWNrIi8+PC9nPjwvZz48L3N2Zz4=) center no-repeat";
@@ -17,6 +24,9 @@ const styles: ComponentStyles<IFormItemAlignHorizontalClassNameContract, {}> = {
     },
     formItemAlignHorizontal_label: {
         ...applyLabelStyle()
+    },
+    formItemAlignHorizontal_input: {
+        ...applyInputWrapperStyle()
     },
     formItemAlignHorizontal_input__left: {
         ...applyInputBackplateStyle(),

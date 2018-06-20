@@ -97,6 +97,12 @@ export function applyLabelStyle(): ICSSRules<{}> {
     };
 }
 
+export function applyInputWrapperStyle(): ICSSRules<{}> {
+    return {
+        height: toPx(36),
+    };
+}
+
 export function applyInputStyle(): ICSSRules<{}> {
     const shadow: IBoxShadowConfig = {
         offsetX: 0,
@@ -181,6 +187,8 @@ export const listItem: ICSSRules<{}> = {
     alignItems: "center",
     position: "relative",
     cursor: "pointer",
+    display: "flex",
+    height: toPx(40),
     background: colors.containerBackground,
     "&::after, &::before": {
         position: "absolute",
@@ -211,7 +219,7 @@ export const listItem: ICSSRules<{}> = {
         textAlign: "left",
         display: "block",
         minHeight: toPx(19),
-        ...localizePadding(12, 18, 12, 26),
+        ...localizePadding(0, 0, 0, 26),
         "& span": {
             display: "block",
             fontStyle: "italic",
@@ -358,6 +366,7 @@ export function applyInputBackplateStyle(): ICSSRules<{}> {
         height: toPx(36),
         width: toPx(36),
         margin: toPx(0),
+        borderRadius: toPx(2),
         backgroundColor: "transparent",
         "&:focus, &:hover": {
             outline: "none",

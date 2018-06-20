@@ -21,7 +21,7 @@ class FormItemAlignHorizontal extends React.Component<IFormItemComponentMappingT
                 >
                     {this.props.label}
                 </label>
-                <div>
+                <div className={this.props.managedClasses.formItemAlignHorizontal_input}>
                     {this.renderInput("left", 1)}
                     {this.renderInput("center", 2)}
                     {this.renderInput("right", 3)}

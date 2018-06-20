@@ -28,6 +28,9 @@ const styles: ComponentStyles<IFormSectionClassNameContract, {}> = {
             borderBottom: `${toPx(1)} solid ${colors.border}`,
             position: "relative",
             cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            height: toPx(40),
             "&::after": {
                 position: "absolute",
                 content: "''",
@@ -40,8 +43,7 @@ const styles: ComponentStyles<IFormSectionClassNameContract, {}> = {
                 right: "0"
             },
             "& a": {
-                display: "block",
-                ...localizePadding(12, 18, 12, 1)
+                display: "block"
             }
         }
     },
