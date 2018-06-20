@@ -455,7 +455,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                             resizeFrom={RowResizeDirection.north}
                             minHeight={180}
                         >
-                                {this.renderDevTools(route.schema)}
+                            {this.renderDevTools(route.schema)}
                         </Row>
                     </div>
                 </Canvas>

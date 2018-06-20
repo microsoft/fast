@@ -245,7 +245,7 @@ class Row extends Foundation<RowProps, IRowState> {
      */
     public onMouseDown = (e: React.MouseEvent<HTMLButtonElement>): void => {
         // only listen for left click
-        if ( e.button !== 0 ) {
+        if (e.button !== 0) {
             return;
         }
 
