@@ -30,7 +30,8 @@ import {
     IPaneProps,
     Pane,
     PaneResizeDirection,
-    Row
+    Row,
+    RowResizeDirection
 } from "@microsoft/fast-layouts-react";
 import { Direction, isRTL } from "@microsoft/fast-application-utilities";
 
@@ -449,7 +450,13 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                             {this.renderChildrenBySlot(this, ShellSlot.canvas)}
                             {this.renderComponentByRoute(route)}
                         </ComponentView>
-                        {this.renderDevTools(route.schema)}
+                        <Row
+                            resizable={true}
+                            resizeFrom={RowResizeDirection.north}
+                            minHeight={180}
+                        >
+                            {this.renderDevTools(route.schema)}
+                        </Row>
                     </div>
                 </Canvas>
                 <Pane
