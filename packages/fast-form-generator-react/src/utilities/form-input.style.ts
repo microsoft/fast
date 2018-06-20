@@ -434,6 +434,7 @@ export function applyAddItemStyle(): ICSSRules<{}> {
         lineHeight: toPx(16),
         fontSize: toPx(14),
         maxWidth: toPx(290),
+        minHeight: toPx(40),
         "&::before": {
             position: "absolute",
             content: "''",
