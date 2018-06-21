@@ -12,7 +12,9 @@ import Site, {
     SiteCategoryIcon,
     SiteCategoryItem,
     SiteTitle,
-    SiteTitleBrand
+    SiteTitleBrand,
+    SiteMenu,
+    SiteMenuItem
 } from "@microsoft/fast-development-site-react";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { Direction } from "@microsoft/fast-application-utilities";
@@ -52,6 +54,16 @@ export default class App extends React.Component<{}, IAppState> {
                 formChildOptions={formChildOptions}
                 onUpdateDirection={this.handleUpdateDirection}
             >
+                <SiteMenu slot={"header"}>
+                    <SiteMenuItem>
+                        <Hypertext
+                            jssStyleSheet={hypertextStyles}
+                            href={sketchDesignKit}
+                        >
+                            Download design kit - sketch
+                        </Hypertext>
+                    </SiteMenuItem>
+                </SiteMenu>
                 <SiteTitle slot={"title"}>
                     <SiteTitleBrand>FAST</SiteTitleBrand> Documentation
                 </SiteTitle>
@@ -63,14 +75,6 @@ export default class App extends React.Component<{}, IAppState> {
                 <SiteCategory slot={"category"} name={"Components"}>
                     {componentFactory(examples, Object.assign({}, DesignSystemDefaults, {direction: this.state.direction}))}
                 </SiteCategory>
-                <div slot="info-bar" style={{display: "flex", alignItems: "center"}}>
-                    <Hypertext
-                        jssStyleSheet={hypertextStyles}
-                        href={sketchDesignKit}
-                    >
-                        Download design kit - sketch
-                    </Hypertext>
-                </div>
             </Site>
         );
     }
