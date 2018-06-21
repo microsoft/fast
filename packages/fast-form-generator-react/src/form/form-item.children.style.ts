@@ -4,6 +4,7 @@ import {
     applyAriaHiddenStyles,
     applyCleanListStyle,
     applyGlobalStyle,
+    applyHeaderStyle,
     applyInputStyle,
     applyListItemStyle,
     applyPopupHeadingStyles,
@@ -74,6 +75,9 @@ const styles: ComponentStyles<IFormItemChildrenClassNameContract, {}> = {
         ...thickLine,
         display: "flex",
         width: "fit-content"
+    },
+    formItemChildren_header: {
+        ...applyHeaderStyle(),
     },
     formItemChildren_existingChildren: {
         ...applyPopupHeadingStyles(),

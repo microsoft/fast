@@ -152,6 +152,15 @@ export function applyCleanListStyle(): ICSSRules<{}> {
     };
 }
 
+export function applyHeaderStyle(): ICSSRules<{}> {
+    return {
+        display: "flex",
+        alignItems: "center",
+        margin: `${toPx(20)} 0 0 0`,
+        minHeight: toPx(40)
+    };
+}
+
 export function applyGlobalStyle(): ICSSRules<{}> {
     return {
         "body > li[draggable=\"true\"]": {

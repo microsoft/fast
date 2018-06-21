@@ -1,6 +1,7 @@
 import { toPx } from "@microsoft/fast-jss-utilities";
 import {
     applyCleanListStyle,
+    applyHeaderStyle,
     applyLabelStyle,
     applyListItemStyle,
     applySelectInputStyles,
@@ -46,6 +47,9 @@ const styles: ComponentStyles<IFormSectionClassNameContract, {}> = {
                 display: "block"
             }
         }
+    },
+    formSection_header: {
+        ...applyHeaderStyle(),
     },
     formSection_toggleWrapper: {
         display: "flex",
