@@ -290,7 +290,9 @@ class Row extends Foundation<RowProps, IRowState> {
     }
 
     public onWindowResize = (e: UIEvent): void => {
-        this.setHeight(this.rootElement.current.clientHeight);
+        if (this.state.resizing) {
+            this.setHeight(this.rootElement.current.clientHeight);
+        }
     }
 
     public setHeight(height: number): void {
