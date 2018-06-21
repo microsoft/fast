@@ -141,7 +141,6 @@ class Row extends Foundation<RowProps, IRowState> {
         };
 
         this.onMouseMove    = throttle(this.onMouseMove, 16);
-        this.onWindowResize = rafThrottle(this.onWindowResize);
         this.rootElement = React.createRef();
     }
 
@@ -150,24 +149,6 @@ class Row extends Foundation<RowProps, IRowState> {
      */
     public height(): number {
         return this.props.height || this.state.height;
-    }
-
-    /**
-     * Handle when component is mounted to the DOM
-     */
-    public componentDidMount(): void {
-        if (canUseDOM()) {
-            window.addEventListener("resize", this.onWindowResize);
-        }
-    }
-
-    /**
-     * Handle when component is removed from the DOM
-     */
-    public componentWillUnmount(): void {
-        if (canUseDOM()) {
-            window.removeEventListener("resize", this.onWindowResize);
-        }
     }
 
     /**
@@ -287,12 +268,6 @@ class Row extends Foundation<RowProps, IRowState> {
         });
 
         this.setHeight(updatedHeight);
-    }
-
-    public onWindowResize = (e: UIEvent): void => {
-        if (this.state.resizing) {
-            this.setHeight(this.rootElement.current.clientHeight);
-        }
     }
 
     public setHeight(height: number): void {
