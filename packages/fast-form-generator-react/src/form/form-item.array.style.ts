@@ -3,6 +3,7 @@ import {
     applyAriaHiddenStyles,
     applyCleanListStyle,
     applyGlobalStyle,
+    applyHeaderStyle,
     applyListItemStyle,
     applyPopupHeadingStyles,
     applyPopupMenuStyles,
@@ -66,6 +67,9 @@ const styles: ComponentStyles<IFormItemArrayClassNameContract, {}> = {
         "&::before": {
             background: minus
         }
+    },
+    formItemArray_header: {
+        ...applyHeaderStyle()
     },
     formItemArray_linkMenu: {
         ...applyCleanListStyle(),

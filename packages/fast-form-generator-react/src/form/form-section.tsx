@@ -285,7 +285,7 @@ class FormSection extends React.Component<IFormSectionProps & IManagedClasses<IF
 
         return (
             <div key={title}>
-                <h3>{title}</h3>
+                <h3 className={this.props.managedClasses.formSection_header}>{title}</h3>
                 {categoryItems}
             </div>
         );
@@ -475,7 +475,7 @@ class FormSection extends React.Component<IFormSectionProps & IManagedClasses<IF
 
         return (
             <div className={this.props.managedClasses.formSection}>
-                <h3>Sections</h3>
+                <h3 className={this.props.managedClasses.formSection_header}>Sections</h3>
                 <ul className={this.props.managedClasses.formSection_menu}>
                     {sections}
                 </ul>

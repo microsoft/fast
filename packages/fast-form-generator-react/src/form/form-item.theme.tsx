@@ -21,7 +21,7 @@ class FormItemTheme extends React.Component<IFormItemComponentMappingToProperyNa
                 >
                     {this.props.label}
                 </label>
-                <div>
+                <div className={this.props.managedClasses.formItemTheme_inputContainer}>
                     {this.renderInput("light", 1)}
                     {this.renderInput("dark", 2)}
                 </div>

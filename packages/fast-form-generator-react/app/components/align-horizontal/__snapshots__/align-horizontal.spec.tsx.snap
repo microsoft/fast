@@ -15,20 +15,22 @@ exports[`align-horizontal align-horizontal: 0 1`] = `
         <div>
           <div>
             <div
-              className="formItemAlignHorizontal-0-1-10"
+              className="formItemAlignHorizontal-0-1-11"
             >
               <label
-                className="formItemAlignHorizontal_label-0-1-11"
+                className="formItemAlignHorizontal_label-0-1-12"
                 htmlFor="alignHorizontal"
               >
                 Align horizontal
               </label>
-              <div>
+              <div
+                className="formItemAlignHorizontal_inputContainer-0-1-13"
+              >
                 <span>
                   <input
                     aria-label="left align"
                     checked={true}
-                    className="formItemAlignHorizontal_input__left-0-1-12"
+                    className="formItemAlignHorizontal_input__left-0-1-14"
                     id="alignHorizontal"
                     name="alignHorizontal"
                     onChange={[Function]}
@@ -40,7 +42,7 @@ exports[`align-horizontal align-horizontal: 0 1`] = `
                   <input
                     aria-label="center align"
                     checked={false}
-                    className="formItemAlignHorizontal_input__center-0-1-13"
+                    className="formItemAlignHorizontal_input__center-0-1-15"
                     id="alignHorizontal"
                     name="alignHorizontal"
                     onChange={[Function]}
@@ -52,7 +54,7 @@ exports[`align-horizontal align-horizontal: 0 1`] = `
                   <input
                     aria-label="right align"
                     checked={false}
-                    className="formItemAlignHorizontal_input__right-0-1-14"
+                    className="formItemAlignHorizontal_input__right-0-1-16"
                     id="alignHorizontal"
                     name="alignHorizontal"
                     onChange={[Function]}

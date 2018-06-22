@@ -14,19 +14,19 @@ exports[`any-of any-of: 0 1`] = `
       <div>
         <div>
           <div
-            className="formSection_selectWrapper-0-1-6"
+            className="formSection_selectWrapper-0-1-7"
           >
             <label
-              className="formSection_selectLabel-0-1-9"
+              className="formSection_selectLabel-0-1-10"
               htmlFor="1"
             >
               Configuration
             </label>
             <span
-              className="formSection_selectSpan-0-1-7"
+              className="formSection_selectSpan-0-1-8"
             >
               <select
-                className="formSection_selectInput-0-1-8"
+                className="formSection_selectInput-0-1-9"
                 id="1"
                 onChange={[Function]}
                 value={0}
@@ -45,16 +45,16 @@ exports[`any-of any-of: 0 1`] = `
             </span>
           </div>
           <div
-            className="formItemTextarea-0-1-10"
+            className="formItemTextarea-0-1-11"
           >
             <label
-              className="formItemTextarea_label-0-1-11"
+              className="formItemTextarea_label-0-1-12"
               htmlFor="string"
             >
               String
             </label>
             <textarea
-              className="formItemTextarea_textarea-0-1-12"
+              className="formItemTextarea_textarea-0-1-13"
               id="string"
               name="string"
               onChange={[Function]}

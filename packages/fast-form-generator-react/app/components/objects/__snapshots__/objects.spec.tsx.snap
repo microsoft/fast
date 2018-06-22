@@ -14,7 +14,7 @@ exports[`objects objects: 0 1`] = `
       <div>
         <div />
         <div
-          className="formSection_toggleWrapper-0-1-4"
+          className="formSection_toggleWrapper-0-1-5"
         >
           <label
             htmlFor="1"
@@ -22,7 +22,7 @@ exports[`objects objects: 0 1`] = `
             optional object
             <button
               aria-pressed={false}
-              className="formSection_toggle-0-1-5"
+              className="formSection_toggle-0-1-6"
               onClick={[Function]}
               role="switch"
             >
@@ -40,7 +40,7 @@ exports[`objects objects: 0 1`] = `
           />
         </div>
         <div
-          className="formSection_toggleWrapper-0-1-4"
+          className="formSection_toggleWrapper-0-1-5"
         >
           <label
             htmlFor="2"
@@ -48,7 +48,7 @@ exports[`objects objects: 0 1`] = `
             object with no required items
             <button
               aria-pressed={false}
-              className="formSection_toggle-0-1-5"
+              className="formSection_toggle-0-1-6"
               onClick={[Function]}
               role="switch"
             >
@@ -68,7 +68,9 @@ exports[`objects objects: 0 1`] = `
         <div
           className="formSection-0-1-2"
         >
-          <h3>
+          <h3
+            className="formSection_header-0-1-4"
+          >
             Sections
           </h3>
           <ul

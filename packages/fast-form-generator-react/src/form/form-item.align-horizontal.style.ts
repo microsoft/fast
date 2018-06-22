@@ -1,4 +1,10 @@
-import { applyInputBackplateStyle, applyLabelStyle, applyWrapperStyle, colors } from "../utilities/form-input.style";
+import {
+    applyInputBackplateStyle,
+    applyInputContainerStyle,
+    applyLabelStyle,
+    applyWrapperStyle,
+    colors
+} from "../utilities/form-input.style";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IFormItemAlignHorizontalClassNameContract } from "../class-name-contracts/";
 
@@ -17,6 +23,9 @@ const styles: ComponentStyles<IFormItemAlignHorizontalClassNameContract, {}> = {
     },
     formItemAlignHorizontal_label: {
         ...applyLabelStyle()
+    },
+    formItemAlignHorizontal_inputContainer: {
+        ...applyInputContainerStyle()
     },
     formItemAlignHorizontal_input__left: {
         ...applyInputBackplateStyle(),

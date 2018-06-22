@@ -14,20 +14,22 @@ exports[`weight-properties weight-properties: 0 1`] = `
       <div>
         <div>
           <div>
-            <h3>
+            <h3
+              className="formSection_header-0-1-4"
+            >
               Content
             </h3>
             <div
-              className="formItemTextarea-0-1-10"
+              className="formItemTextarea-0-1-11"
             >
               <label
-                className="formItemTextarea_label-0-1-11"
+                className="formItemTextarea_label-0-1-12"
                 htmlFor="title"
               >
                 Title
               </label>
               <textarea
-                className="formItemTextarea_textarea-0-1-12"
+                className="formItemTextarea_textarea-0-1-13"
                 id="title"
                 name="title"
                 onChange={[Function]}
@@ -36,16 +38,16 @@ exports[`weight-properties weight-properties: 0 1`] = `
               />
             </div>
             <div
-              className="formItemTextarea-0-1-13"
+              className="formItemTextarea-0-1-14"
             >
               <label
-                className="formItemTextarea_label-0-1-14"
+                className="formItemTextarea_label-0-1-15"
                 htmlFor="text"
               >
                 Text
               </label>
               <textarea
-                className="formItemTextarea_textarea-0-1-15"
+                className="formItemTextarea_textarea-0-1-16"
                 id="text"
                 name="text"
                 onChange={[Function]}
@@ -54,16 +56,16 @@ exports[`weight-properties weight-properties: 0 1`] = `
               />
             </div>
             <div
-              className="formItemTextarea-0-1-16"
+              className="formItemTextarea-0-1-17"
             >
               <label
-                className="formItemTextarea_label-0-1-17"
+                className="formItemTextarea_label-0-1-18"
                 htmlFor="details"
               >
                 Details
               </label>
               <textarea
-                className="formItemTextarea_textarea-0-1-18"
+                className="formItemTextarea_textarea-0-1-19"
                 id="details"
                 name="details"
                 onChange={[Function]}
@@ -73,25 +75,29 @@ exports[`weight-properties weight-properties: 0 1`] = `
             </div>
           </div>
           <div>
-            <h3>
+            <h3
+              className="formSection_header-0-1-4"
+            >
               Formatting
             </h3>
             <div>
               <div
-                className="formItemAlignHorizontal-0-1-19"
+                className="formItemAlignHorizontal-0-1-20"
               >
                 <label
-                  className="formItemAlignHorizontal_label-0-1-20"
+                  className="formItemAlignHorizontal_label-0-1-21"
                   htmlFor="alignHorizontal"
                 >
                   Align horizontal
                 </label>
-                <div>
+                <div
+                  className="formItemAlignHorizontal_inputContainer-0-1-22"
+                >
                   <span>
                     <input
                       aria-label="left align"
                       checked={true}
-                      className="formItemAlignHorizontal_input__left-0-1-21"
+                      className="formItemAlignHorizontal_input__left-0-1-23"
                       id="alignHorizontal"
                       name="alignHorizontal"
                       onChange={[Function]}
@@ -103,7 +109,7 @@ exports[`weight-properties weight-properties: 0 1`] = `
                     <input
                       aria-label="center align"
                       checked={false}
-                      className="formItemAlignHorizontal_input__center-0-1-22"
+                      className="formItemAlignHorizontal_input__center-0-1-24"
                       id="alignHorizontal"
                       name="alignHorizontal"
                       onChange={[Function]}
@@ -115,7 +121,7 @@ exports[`weight-properties weight-properties: 0 1`] = `
                     <input
                       aria-label="right align"
                       checked={false}
-                      className="formItemAlignHorizontal_input__right-0-1-23"
+                      className="formItemAlignHorizontal_input__right-0-1-25"
                       id="alignHorizontal"
                       name="alignHorizontal"
                       onChange={[Function]}
@@ -127,18 +133,18 @@ exports[`weight-properties weight-properties: 0 1`] = `
               </div>
             </div>
             <div
-              className="formItemSelect-0-1-24"
+              className="formItemSelect-0-1-26"
             >
               <label
-                className="formItemSelect_label-0-1-25"
+                className="formItemSelect_label-0-1-27"
               >
                 Align vertical
               </label>
               <span
-                className="formItemSelect_span-0-1-26"
+                className="formItemSelect_span-0-1-28"
               >
                 <select
-                  className="formItemSelect_input-0-1-27"
+                  className="formItemSelect_input-0-1-29"
                   onChange={[Function]}
                   value="top"
                 >
@@ -161,16 +167,16 @@ exports[`weight-properties weight-properties: 0 1`] = `
               </span>
             </div>
             <div
-              className="formItemNumberField-0-1-28"
+              className="formItemNumberField-0-1-30"
             >
               <label
-                className="formItemNumberField_label-0-1-29"
+                className="formItemNumberField_label-0-1-31"
                 htmlFor="level"
               >
                 Level
               </label>
               <input
-                className="formItemNumberField_input-0-1-30"
+                className="formItemNumberField_input-0-1-32"
                 id="level"
                 max={undefined}
                 min={undefined}
@@ -183,22 +189,24 @@ exports[`weight-properties weight-properties: 0 1`] = `
             </div>
           </div>
           <div>
-            <h3>
+            <h3
+              className="formSection_header-0-1-4"
+            >
               Developer
             </h3>
             <div
-              className="formItemSelect-0-1-31"
+              className="formItemSelect-0-1-33"
             >
               <label
-                className="formItemSelect_label-0-1-32"
+                className="formItemSelect_label-0-1-34"
               >
                 HTML tag
               </label>
               <span
-                className="formItemSelect_span-0-1-33"
+                className="formItemSelect_span-0-1-35"
               >
                 <select
-                  className="formItemSelect_input-0-1-34"
+                  className="formItemSelect_input-0-1-36"
                   onChange={[Function]}
                   value="span"
                 >

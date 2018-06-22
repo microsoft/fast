@@ -6,15 +6,18 @@ import { IFormItemTextareaClassNameContract } from "../class-name-contracts/";
 const styles: ComponentStyles<IFormItemTextareaClassNameContract, {}> = {
     formItemTextarea: {
         ...applyWrapperStyle(),
-        flexDirection: "column"
+        flexDirection: "column",
+        alignItems: "stretch"
     },
     formItemTextarea_label: {
         ...applyLabelStyle(),
-        display: "block"
+        display: "block",
+        marginTop: toPx(12)
     },
     formItemTextarea_textarea: {
         ...applyInputStyle(),
-        marginTop: toPx(8)
+        marginTop: toPx(8),
+        marginBottom: toPx(2)
     }
 };
 

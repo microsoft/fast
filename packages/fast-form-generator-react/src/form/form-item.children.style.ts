@@ -4,6 +4,7 @@ import {
     applyAriaHiddenStyles,
     applyCleanListStyle,
     applyGlobalStyle,
+    applyHeaderStyle,
     applyInputStyle,
     applyListItemStyle,
     applyPopupHeadingStyles,
@@ -27,7 +28,6 @@ const styles: ComponentStyles<IFormItemChildrenClassNameContract, {}> = {
     },
     formItemChildren_inputWrapper: {
         display: "flex",
-        paddingBottom: toPx(12),
         "& input": {
             ...applyInputStyle(),
             flex: "2",
@@ -38,7 +38,7 @@ const styles: ComponentStyles<IFormItemChildrenClassNameContract, {}> = {
             maxWidth: toPx(374),
             flex: "1",
             display: "inline-block",
-            padding: `${toPx(13)} ${toPx(12)} ${toPx(12)}`,
+            padding: `${toPx(11)} ${toPx(12)} ${toPx(10)}`,
             border: `${toPx(2)} solid transparent`,
             borderRadius: toPx(2),
             cursor: "pointer",
@@ -62,7 +62,6 @@ const styles: ComponentStyles<IFormItemChildrenClassNameContract, {}> = {
     formItemChildren_childOptionsMenu: {
         ...applyCleanListStyle(),
         "& li": {
-            padding: `${toPx(8)} 0`,
             "& button": {
                 ...applyAddItemStyle(),
                 ...localizePadding(0, 0, 0, 24),
@@ -76,6 +75,9 @@ const styles: ComponentStyles<IFormItemChildrenClassNameContract, {}> = {
         ...thickLine,
         display: "flex",
         width: "fit-content"
+    },
+    formItemChildren_header: {
+        ...applyHeaderStyle(),
     },
     formItemChildren_existingChildren: {
         ...applyPopupHeadingStyles(),

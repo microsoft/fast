@@ -1,13 +1,13 @@
 import { toPx } from "@microsoft/fast-jss-utilities";
 import {
     applyCleanListStyle,
+    applyHeaderStyle,
     applyLabelStyle,
     applyListItemStyle,
     applySelectInputStyles,
     applySelectSpanStyles,
     applyWrapperStyle,
     colors,
-    localizePadding,
     rightArrow
 } from "../utilities/form-input.style";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
@@ -28,6 +28,9 @@ const styles: ComponentStyles<IFormSectionClassNameContract, {}> = {
             borderBottom: `${toPx(1)} solid ${colors.border}`,
             position: "relative",
             cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            height: toPx(40),
             "&::after": {
                 position: "absolute",
                 content: "''",
@@ -40,17 +43,19 @@ const styles: ComponentStyles<IFormSectionClassNameContract, {}> = {
                 right: "0"
             },
             "& a": {
-                display: "block",
-                ...localizePadding(12, 18, 12, 1)
+                display: "block"
             }
         }
     },
+    formSection_header: {
+        ...applyHeaderStyle(),
+    },
     formSection_toggleWrapper: {
         display: "flex",
-        alignItems: "baseline",
+        minHeight: toPx(40),
+        alignItems: "center",
         "& label": {
             flexGrow: "1",
-            padding: `${toPx(12)} 0`
         }
     },
     formSection_toggle: {

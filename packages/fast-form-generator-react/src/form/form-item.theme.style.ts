@@ -1,5 +1,6 @@
 import { toPx } from "@microsoft/fast-jss-utilities";
 import {
+    applyInputContainerStyle,
     applyInputStyle,
     applyLabelStyle,
     applyWrapperStyle,
@@ -16,6 +17,8 @@ function applyThemeInputBackplateStyle(): ICSSRules<{}> {
         border: `${toPx(2)} solid ${colors.containerBackground}`,
         height: toPx(36),
         width: toPx(36),
+        margin: toPx(0),
+        borderRadius: toPx(2),
         "&:checked, &:focus": {
             outline: "none",
             borderColor: colors.pink
@@ -32,6 +35,9 @@ const styles: ComponentStyles<IFormItemThemeClassNameContract, {}> = {
     },
     formItemTheme_label: {
         ...applyLabelStyle()
+    },
+    formItemTheme_inputContainer: {
+        ...applyInputContainerStyle()
     },
     formItemTheme_input__light: {
         ...applyThemeInputBackplateStyle(),

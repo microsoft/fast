@@ -85,7 +85,7 @@ class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasse
     public render(): JSX.Element {
         return (
             <div className={this.props.managedClasses.formItemArray}>
-                <div>
+                <div className={this.props.managedClasses.formItemArray_header}>
                     <h3>{this.getLabelText()}</h3>
                     {/* TODO: #460 Fix "identical-code" */}
                     <button onClick={this.toggleMenu} aria-expanded={!this.state.hideOptionMenu}><span>Options</span></button>

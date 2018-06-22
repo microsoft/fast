@@ -81,7 +81,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
                 {this.generateExistingChildrenHeader()}
                 {this.generateExistingChildren()}
                 <div>
-                    <h3>Add building blocks</h3>
+                    <h3 className={this.props.managedClasses.formItemChildren_header}>Add building blocks</h3>
                     <div className={this.props.managedClasses.formItemChildren_inputWrapper}>
                         <input
                             aria-label="Enter your search"
@@ -392,7 +392,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
         if (typeof currentChildren !== "undefined") {
             return (
                 <div className={this.props.managedClasses.formItemChildren_existingChildren}>
-                    <div>
+                    <div className={this.props.managedClasses.formItemChildren_header}>
                         <h3>Building blocks</h3>
                         {/* TODO: #460 Fix "identical-code" */}
                         <button onClick={this.toggleMenu} aria-expanded={!this.state.hideOptionMenu}><span>Options</span></button>
