@@ -20,6 +20,7 @@ import SiteCategoryIcon from "./category-icon";
 import SiteCategoryItem from "./category-item";
 import ActionBar from "./action-bar";
 import DevTools, { FrameworkEnum } from "./dev-tools";
+import ConfigurationPanel from "./configuration-panel";
 import NotFound from "./not-found";
 import ComponentView, { ComponentViewTypes } from "./component-view";
 import {
@@ -558,12 +559,11 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 : Object.assign({}, this.state.detailViewComponentData[route]);
 
             return (
-                <Form
-                    className={this.props.managedClasses.site_paneForm}
+                <ConfigurationPanel
                     schema={schema}
                     data={componentData}
                     onChange={this.handleComponentDataChange.bind(route)}
-                    childOptions={this.props.formChildOptions}
+                    formChildOptions={this.props.formChildOptions}
                 />
             );
         }
