@@ -40,6 +40,7 @@ export interface IDevToolsManagedClasses {
     devTools_tab: string;
     devTools_tab__active: string;
     devTools_tabPanel: string;
+    devTools_tabPanelContainter: string;
 }
 
 const style: ComponentStyles<IDevToolsManagedClasses, IDevSiteDesignSystem> = {
@@ -49,6 +50,7 @@ const style: ComponentStyles<IDevToolsManagedClasses, IDevSiteDesignSystem> = {
     devTools_controls: {
         display: "flex",
         background: "#EBEBEB",
+        height: toPx(28),
         padding: `${toPx(2)} ${toPx(4)}`,
         "& ul": {
             margin: "0",
@@ -152,6 +154,10 @@ const style: ComponentStyles<IDevToolsManagedClasses, IDevSiteDesignSystem> = {
         "&[aria-hidden=\"true\"]": {
             display: "none"
         }
+    },
+    devTools_tabPanelContainter: {
+        overflow: "auto",
+        height: `calc(100% - ${toPx(32)})`
     }
 };
 
@@ -212,7 +218,7 @@ class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevTool
 
     private renderTabPanels(): JSX.Element {
         return (
-            <div>
+            <div className={this.props.managedClasses.devTools_tabPanelContainter}>
                 {this.renderTabPanelItems()}
             </div>
         );
