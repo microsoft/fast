@@ -11,7 +11,7 @@ import manageJss, { ComponentStyles, ICSSRules, IJSSManagerProps, IManagedClasse
 
 export enum TabType {
     presets = "Presets"
-};
+}
 
 export interface IConfigurationPanelProps {
     // onToggleView: () => void;

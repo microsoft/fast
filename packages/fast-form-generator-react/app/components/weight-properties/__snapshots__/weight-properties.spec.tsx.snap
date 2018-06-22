@@ -7,9 +7,6 @@ exports[`weight-properties weight-properties: 0 1`] = `
   <form
     onSubmit={[Function]}
   >
-    <h2>
-      Component with weighted properties
-    </h2>
     <div>
       <div>
         <div>

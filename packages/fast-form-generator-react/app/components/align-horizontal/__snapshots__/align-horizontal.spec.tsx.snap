@@ -7,9 +7,6 @@ exports[`align-horizontal align-horizontal: 0 1`] = `
   <form
     onSubmit={[Function]}
   >
-    <h2>
-      Component with align horizontal
-    </h2>
     <div>
       <div>
         <div>

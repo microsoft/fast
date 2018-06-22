@@ -7,9 +7,6 @@ exports[`text-field text-field: 0 1`] = `
   <form
     onSubmit={[Function]}
   >
-    <h2>
-      Component with text-field
-    </h2>
     <div>
       <div>
         <div>

@@ -7,9 +7,6 @@ exports[`attribute-assignment attribute-assignment: 0 1`] = `
   <form
     onSubmit={[Function]}
   >
-    <h2>
-      Component with attribute assignment
-    </h2>
     <div>
       <div>
         <div>

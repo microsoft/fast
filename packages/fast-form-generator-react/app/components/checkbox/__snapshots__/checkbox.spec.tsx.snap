@@ -7,9 +7,6 @@ exports[`checkbox checkbox: 0 1`] = `
   <form
     onSubmit={[Function]}
   >
-    <h2>
-      Component with checkbox
-    </h2>
     <div>
       <div>
         <div>
