@@ -9,7 +9,9 @@ import { glyphBuildingblocks, glyphExamples, glyphPage } from "@microsoft/fast-g
 import ComponentViewToggle from "./component-view-toggle";
 import manageJss, { ComponentStyles, ICSSRules, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 
-export type tabType = "Presets" | "Properties";
+export enum TabType {
+    presets = "Presets"
+};
 
 export interface IConfigurationPanelProps {
     // onToggleView: () => void;
@@ -20,11 +22,11 @@ export interface IConfigurationPanelProps {
     schema: any;
     data: any;
     onChange: any;
-    activeTab?: tabType;
+    activeTab?: TabType;
 }
 
 export interface IConfigurationPanelState {
-    activeTab: tabType;
+    activeTab: TabType;
 }
 
 export interface IConfigurationPanelManagedClasses {
@@ -34,7 +36,7 @@ export interface IConfigurationPanelManagedClasses {
     configurationPanel_tab: string;
     configurationPanel_tab__active: string;
     configurationPanel_tabPanel: string;
-    site_paneForm: string;
+    configurationPanel_paneForm: string;
 }
 
 const style: ComponentStyles<IConfigurationPanelManagedClasses, IDevSiteDesignSystem> = {
@@ -96,22 +98,22 @@ const style: ComponentStyles<IConfigurationPanelManagedClasses, IDevSiteDesignSy
             display: "none"
         }
     },
-    site_paneForm: {
+    configurationPanel_paneForm: {
         padding: toPx(12)
     },
 };
 
 /* tslint:disable-next-line */
 class ConfigurationPanel extends React.Component<IConfigurationPanelProps & IManagedClasses<IConfigurationPanelManagedClasses>, IConfigurationPanelState> {
-    private tabs: tabType[];
+    private tabs: TabType[];
 
     constructor(props: IConfigurationPanelProps & IManagedClasses<IConfigurationPanelManagedClasses>) {
         super(props);
 
-        this.tabs = ["Presets", "Properties"];
+        this.tabs = [TabType.presets];
 
         this.state = {
-            activeTab: this.props.activeTab || "Presets"
+            activeTab: this.props.activeTab || TabType.presets
         };
     }
 
@@ -135,8 +137,8 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps & IMan
     }
 
     private renderTabItems(): JSX.Element[] {
-        return this.tabs.map((tabItem: tabType, index: number) => {
-            if (tabItem === "Presets" || tabItem === "Properties") {
+        return this.tabs.map((tabItem: TabType, index: number) => {
+            if (tabItem === "Presets") {
                 return (
                     <li key={index} className={this.getTabClassNames(tabItem)}>
                         <button onClick={this.handleChangeTab(tabItem)}>
@@ -157,7 +159,7 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps & IMan
     }
 
     private renderTabPanelItems(): JSX.Element[] {
-        return this.tabs.map((tabItem: tabType, index: number) => {
+        return this.tabs.map((tabItem: TabType, index: number) => {
             return (
                 <div
                     key={index}
@@ -170,12 +172,10 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps & IMan
         });
     }
 
-    private renderTabPanelContent(tabItem: tabType): JSX.Element {
+    private renderTabPanelContent(tabItem: TabType): JSX.Element {
         switch (tabItem) {
             case "Presets":
                 return this.renderPresets();
-            case "Properties":
-                return this.renderProperties();
             default:
                 return null;
         }
@@ -184,7 +184,7 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps & IMan
     private renderPresets(): JSX.Element {
         return (
             <Form
-                className={this.props.managedClasses.site_paneForm}
+                className={this.props.managedClasses.configurationPanel_paneForm}
                 schema={this.props.schema}
                 data={this.props.data}
                 onChange={this.props.onChange}
@@ -193,11 +193,7 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps & IMan
         );
     }
 
-    private renderProperties(): JSX.Element {
-        return <span>TBD</span>;
-    }
-
-    private getTabClassNames(tabItem: tabType): string {
+    private getTabClassNames(tabItem: TabType): string {
         if (tabItem === this.state.activeTab) {
             return `${this.props.managedClasses.configurationPanel_tab} ${this.props.managedClasses.configurationPanel_tab__active}`;
         }
@@ -205,7 +201,7 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps & IMan
         return this.props.managedClasses.configurationPanel_tab;
     }
 
-    private handleChangeTab(tab: tabType): (e: React.MouseEvent<HTMLButtonElement>) => void {
+    private handleChangeTab(tab: TabType): (e: React.MouseEvent<HTMLButtonElement>) => void {
         return (e: React.MouseEvent<HTMLButtonElement>): void => {
             this.setState({
                 activeTab: tab
