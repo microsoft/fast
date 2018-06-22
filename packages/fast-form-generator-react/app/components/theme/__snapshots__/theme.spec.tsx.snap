@@ -15,19 +15,21 @@ exports[`theme theme: 0 1`] = `
         <div>
           <div>
             <div
-              className="formItemTheme-0-1-10"
+              className="formItemTheme-0-1-11"
             >
               <label
-                className="formItemTheme_label-0-1-11"
+                className="formItemTheme_label-0-1-12"
                 htmlFor="theme"
               >
                 Theme
               </label>
-              <div>
+              <div
+                className="formItemTheme_input-0-1-13"
+              >
                 <input
                   aria-label="theme light"
                   checked={true}
-                  className="formItemTheme_input__light-0-1-12"
+                  className="formItemTheme_input__light-0-1-14"
                   id="theme"
                   name="theme"
                   onChange={[Function]}
@@ -37,7 +39,7 @@ exports[`theme theme: 0 1`] = `
                 <input
                   aria-label="theme dark"
                   checked={false}
-                  className="formItemTheme_input__dark-0-1-13"
+                  className="formItemTheme_input__dark-0-1-15"
                   id="theme"
                   name="theme"
                   onChange={[Function]}
