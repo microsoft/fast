@@ -16,6 +16,7 @@ export interface ISiteNavManagedClasses {
     siteMenu_nav: string;
     siteMenu_button: string;
     siteMenu_buttonGlyph: string;
+    siteMenu_ul: string;
 }
 
 const style: ComponentStyles<ISiteNavManagedClasses, IDevSiteDesignSystem> = {
@@ -25,6 +26,9 @@ const style: ComponentStyles<ISiteNavManagedClasses, IDevSiteDesignSystem> = {
     },
     siteMenu_nav: {
         position: "absolute",
+        background: "#FFFFFF",
+        zIndex: "5",
+        boxShadow: `outline ${toPx(-2)} 0 ${toPx(4)} ${toPx(4)} rgba(0, 0, 0, 0.2)`,
         "&[aria-hidden=\"true\"]": {
             display: "none"
         }
@@ -40,7 +44,11 @@ const style: ComponentStyles<ISiteNavManagedClasses, IDevSiteDesignSystem> = {
         fill: (config: IDevSiteDesignSystem): string => {
             return config.backgroundColor;
         },
-    }
+    },
+    siteMenu_ul: {
+        listStyle: "none",
+        padding: toPx(12)
+    },
 };
 
 class SiteMenu extends React.Component<ISiteMenuProps & IManagedClasses<ISiteNavManagedClasses>, ISiteMenuState> {
@@ -70,7 +78,7 @@ class SiteMenu extends React.Component<ISiteMenuProps & IManagedClasses<ISiteNav
                     </svg>
                 </button>
                 <nav className={this.props.managedClasses.siteMenu_nav} {...this.getNavigationAttributes()}>
-                    <ul>
+                    <ul className={this.props.managedClasses.siteMenu_ul}>
                         {this.props.children}
                     </ul>
                 </nav>
