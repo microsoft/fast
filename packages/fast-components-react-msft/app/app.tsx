@@ -11,10 +11,10 @@ import Site, {
     SiteCategory,
     SiteCategoryIcon,
     SiteCategoryItem,
+    SiteMenu,
+    SiteMenuItem,
     SiteTitle,
     SiteTitleBrand,
-    SiteMenu,
-    SiteMenuItem
 } from "@microsoft/fast-development-site-react";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { Direction } from "@microsoft/fast-application-utilities";
