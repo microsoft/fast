@@ -24,7 +24,7 @@ exports[`theme theme: 0 1`] = `
                 Theme
               </label>
               <div
-                className="formItemTheme_input-0-1-13"
+                className="formItemTheme_inputContainer-0-1-13"
               >
                 <input
                   aria-label="theme light"

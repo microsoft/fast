@@ -1,6 +1,6 @@
 import {
     applyInputBackplateStyle,
-    applyInputWrapperStyle,
+    applyInputContainerStyle,
     applyLabelStyle,
     applyWrapperStyle,
     colors
@@ -24,8 +24,8 @@ const styles: ComponentStyles<IFormItemAlignVerticalClassNameContract, {}> = {
     formItemAlignVertical_label: {
         ...applyLabelStyle()
     },
-    formItemAlignVertical_input: {
-        ...applyInputWrapperStyle()
+    formItemAlignVertical_inputContainer: {
+        ...applyInputContainerStyle()
     },
     formItemAlignVertical_input__top: {
         ...applyInputBackplateStyle(),

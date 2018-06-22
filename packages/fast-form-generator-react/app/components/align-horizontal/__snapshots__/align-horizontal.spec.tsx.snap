@@ -24,7 +24,7 @@ exports[`align-horizontal align-horizontal: 0 1`] = `
                 Align horizontal
               </label>
               <div
-                className="formItemAlignHorizontal_input-0-1-13"
+                className="formItemAlignHorizontal_inputContainer-0-1-13"
               >
                 <span>
                   <input

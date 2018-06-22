@@ -97,7 +97,7 @@ export function applyLabelStyle(): ICSSRules<{}> {
     };
 }
 
-export function applyInputWrapperStyle(): ICSSRules<{}> {
+export function applyInputContainerStyle(): ICSSRules<{}> {
     return {
         height: toPx(36),
     };
@@ -157,7 +157,13 @@ export function applyHeaderStyle(): ICSSRules<{}> {
         display: "flex",
         alignItems: "center",
         margin: `${toPx(20)} 0 0 0`,
-        minHeight: toPx(40)
+        minHeight: toPx(40),
+        "& h3": {
+            margin: toPx(0)
+        },
+        "& button": {
+            marginTop: toPx(7)
+        }
     };
 }
 

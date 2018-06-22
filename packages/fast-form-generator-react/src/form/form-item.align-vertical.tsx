@@ -21,7 +21,7 @@ class FormItemAlignVertical extends React.Component<IFormItemComponentMappingToP
                 >
                     {this.props.label}
                 </label>
-                <div className={this.props.managedClasses.formItemAlignVertical_input}>
+                <div className={this.props.managedClasses.formItemAlignVertical_inputContainer}>
                     {this.renderInput("top", 1)}
                     {this.renderInput("center", 2)}
                     {this.renderInput("bottom", 3)}

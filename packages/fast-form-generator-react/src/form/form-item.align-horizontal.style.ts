@@ -1,6 +1,6 @@
 import {
     applyInputBackplateStyle,
-    applyInputWrapperStyle,
+    applyInputContainerStyle,
     applyLabelStyle,
     applyWrapperStyle,
     colors
@@ -24,8 +24,8 @@ const styles: ComponentStyles<IFormItemAlignHorizontalClassNameContract, {}> = {
     formItemAlignHorizontal_label: {
         ...applyLabelStyle()
     },
-    formItemAlignHorizontal_input: {
-        ...applyInputWrapperStyle()
+    formItemAlignHorizontal_inputContainer: {
+        ...applyInputContainerStyle()
     },
     formItemAlignHorizontal_input__left: {
         ...applyInputBackplateStyle(),

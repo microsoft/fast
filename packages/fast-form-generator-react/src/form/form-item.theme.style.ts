@@ -1,7 +1,7 @@
 import { toPx } from "@microsoft/fast-jss-utilities";
 import {
+    applyInputContainerStyle,
     applyInputStyle,
-    applyInputWrapperStyle,
     applyLabelStyle,
     applyWrapperStyle,
     colors,
@@ -36,8 +36,8 @@ const styles: ComponentStyles<IFormItemThemeClassNameContract, {}> = {
     formItemTheme_label: {
         ...applyLabelStyle()
     },
-    formItemTheme_input: {
-        ...applyInputWrapperStyle()
+    formItemTheme_inputContainer: {
+        ...applyInputContainerStyle()
     },
     formItemTheme_input__light: {
         ...applyThemeInputBackplateStyle(),

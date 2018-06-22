@@ -91,7 +91,7 @@ exports[`weight-properties weight-properties: 0 1`] = `
                   Align horizontal
                 </label>
                 <div
-                  className="formItemAlignHorizontal_input-0-1-22"
+                  className="formItemAlignHorizontal_inputContainer-0-1-22"
                 >
                   <span>
                     <input

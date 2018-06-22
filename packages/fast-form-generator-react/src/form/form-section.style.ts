@@ -8,7 +8,6 @@ import {
     applySelectSpanStyles,
     applyWrapperStyle,
     colors,
-    localizePadding,
     rightArrow
 } from "../utilities/form-input.style";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";

@@ -24,7 +24,7 @@ exports[`align-vertical align-vertical: 0 1`] = `
                 Align vertical
               </label>
               <div
-                className="formItemAlignVertical_input-0-1-13"
+                className="formItemAlignVertical_inputContainer-0-1-13"
               >
                 <span>
                   <input
