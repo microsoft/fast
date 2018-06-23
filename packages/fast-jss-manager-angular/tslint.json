@@ -2,6 +2,9 @@
     "extends": [
         "@microsoft/fast-tslint-rules"
     ],
+    "compilerOptions": {
+        "experimentalDecorators": true
+    },
     "linterOptions": {
         "exclude": [
             "node_modules/**",
