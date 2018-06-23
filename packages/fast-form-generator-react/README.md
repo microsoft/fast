@@ -5,18 +5,18 @@ A self generating UI based on JSON Schemas.
 Dynamically generates a form user interface based on incoming JSON Schemas to change data values of a React component.
 
 ## Installing
-- Run `npm i`
-
-## Getting started
-- Run `npm start`
+`npm i --save @microsoft/fast-form-generator-react`
 
 ## Using the form generator
 ### Basic usage
-The required properties are the data, schema, and onChange function. The data should be tied to your state, this will change.
+The required properties are the data, schema, and onChange function. The data should be tied to your state as this will change.
 
 ```jsx
 import Form from "@microsoft/fast-form-generator-react";
 
+/**
+ * Add to your render function
+ */
 <Form
     data={this.state.currentComponentData}
     schema={currentComponentSchema}
@@ -37,6 +37,108 @@ onChange = (data) => {
         currentComponentData: data
     });
 }
+```
+
+### Advanced usage
+Outside of the basic use case you can provide some additional functionality through optional properties.
+
+**childOptions** - Children by default only include text elements. If you want to add some child components you are providing, you can do this through the `childOptions`.
+
+```jsx
+import Form from "@microsoft/fast-form-generator-react";
+import { Button, ButtonSchema } from "@microsoft/fast-components-react-msft";
+
+<Form
+    data={this.state.currentComponentData}
+    schema={currentComponentSchema}
+    onChange={handleChange}
+    childOptions={[
+        {
+            name: "Button",
+            component: Button,
+            schema: ButtonSchema
+        }
+    ]}
+/>
+```
+
+**componentMappingToPropertyNames** - There are special components that can be mapped to property names so that they are used. An example would be `alignHorizontal`, you can map them to one or more different property names so if your component has a property `alignHorizontalSpacingForTitle` and `alignHorizontalSpacingForImage`:
+
+```jsx
+import Form from "@microsoft/fast-form-generator-react";
+
+<Form
+    data={this.state.currentComponentData}
+    schema={currentComponentSchema}
+    onChange={handleChange}
+    componentMappingToPropertyNames={{
+        alignHorizontal: [
+            "alignHorizontalSpacingForTitle",
+            "alignHorizontalSpacingForImage"
+        ]
+    }}
+/>
+```
+
+Each special component is listed in the form component [README.md](./src/form/README.md)
+
+**attributeSettingsMappingToPropertyNames** - The attributes of a form item can be mapped to by this prop. An example of updating the textarea row to be 1 when the property name is `text`:
+
+```jsx
+import Form from "@microsoft/fast-form-generator-react";
+
+<Form
+    data={this.state.currentComponentData}
+    schema={currentComponentSchema}
+    onChange={handleChange}
+    attributeSettingsMappingToPropertyNames={{
+        textarea: {
+            rows: [
+                {
+                    propertyNames: ["text"],
+                    value: 1
+                }
+            ]
+        }
+    }
+/>
+```
+
+**orderByPropertyNames** - Properties can be assigned category with titles to give the form more structure. They can also be weighted, an example of displaying properties related to content on top of properties which relate to formatting:
+
+*This also tells the form generator to only display categories once there are 4 or more and gives a default category weight*
+
+```jsx
+
+import Form from "@microsoft/fast-form-generator-react";
+
+<Form
+    data={this.state.currentComponentData}
+    schema={currentComponentSchema}
+    onChange={handleChange}
+    orderByPropertyNames={{
+        showCategoriesAtPropertyCount: 4,
+        defaultCategoryWeight: 20,
+        categories: [
+            {
+                title: "Content",
+                weight: 50,
+                properties: [
+                    { weight: 5, propertyName: ["title, text"] },
+                    { weight: 0, propertyName: "details" }
+                ]
+            },
+            {
+                title: "Formatting",
+                weight: 40,
+                properties: [
+                    { weight: 9, propertyName: "alignVertical" },
+                    { weight: 7, propertyName: "alignHorizontal" }
+                ]
+            }
+        ]
+    }}
+/>
 ```
 
 ## Writing JSON Schemas

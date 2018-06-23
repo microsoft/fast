@@ -1,6 +1,8 @@
 # React JSS Manager
 `fast-react-jss-manager` is a React higher order component (HOC) library for managing component JSS stylesheets. It facilitates using JSS with your react components by controlling when to add, update, and remove a JSS stylesheets. It also allows top-down variable injection into JSS stylesheet functions using the exported `DesignSystemProvider`.
 
+## Installation
+`npm i --save @microsoft/fast-react-jss-manager`
 
 ## Usage
 ### Create a react component

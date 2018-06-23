@@ -51,22 +51,22 @@ If the section being viewed has subsections, the links of these will be generate
 ##### Toggling new section links
 If the section is an object and the section has optional properties that are also objects, these will generate a toggle to add/remove them.
 
-### `FormItem.Children`
+### `FormItemChildren`
 This element displays a dropdown for removing `children`, a list of current `children` and a list of possible `children` that can be added.
 
-### `FormItem.Array`
+### `FormItemArray`
 This element displays a dropdown for removing items and a list of current items.
 
 #### Navigation - Array item links
 If an array item exists, it will generate a link, click it will call the `onUpdateActiveSection` callback to the `Form` to trigger the subsection of the array to display.
 
-### `FormItem.Checkbox`
+### `FormItemCheckbox`
 This element is generated from a type `boolean`.
 
-### `FormItem.Select`
+### `FormItemSelect`
 This element is generated from an `enum` of any type.
 
-### `FormItem.TextField`
+### `FormItemTextField`
 This element is generated from type `string` or `number`.
 
 ## Configuring the Schema Form
