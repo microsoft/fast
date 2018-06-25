@@ -2,7 +2,7 @@ import * as React from "react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { IDevSiteDesignSystem } from "../design-system";
 import Form from "@microsoft/fast-form-generator-react";
-import manageJss, { ComponentStyles, IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 
 export enum TabType {
     presets = "Presets"
@@ -23,7 +23,7 @@ export interface IConfigurationPanelState {
 export interface IConfigurationPanelManagedClasses {
     configurationPanel: string;
     configurationPanel_controls: string;
-    configurationPanel_controls_tabs: string;
+    configurationPanel_controlsTabs: string;
     configurationPanel_tab: string;
     configurationPanel_tab__active: string;
     configurationPanel_tabPanel: string;
@@ -53,7 +53,7 @@ const style: ComponentStyles<IConfigurationPanelManagedClasses, IDevSiteDesignSy
             backgroundPosition: "center"
         }
     },
-    configurationPanel_controls_tabs: {
+    configurationPanel_controlsTabs: {
         flexGrow: "1"
     },
     configurationPanel_tab: {
@@ -118,7 +118,7 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps & IMan
 
     private renderTabs(): JSX.Element {
         return (
-            <ul className={this.props.managedClasses.configurationPanel_controls_tabs}>
+            <ul className={this.props.managedClasses.configurationPanel_controlsTabs}>
                 {this.renderTabItems()}
             </ul>
         );
