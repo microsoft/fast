@@ -2,22 +2,13 @@ import * as React from "react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { IDevSiteDesignSystem } from "../design-system";
 import Form from "@microsoft/fast-form-generator-react";
-import { Link, withRouter } from "react-router-dom";
-import { RouteComponentProps } from "react-router";
-import { ComponentViewTypes } from "./component-view";
-import { glyphBuildingblocks, glyphExamples, glyphPage } from "@microsoft/fast-glyphs-msft";
-import ComponentViewToggle from "./component-view-toggle";
-import manageJss, { ComponentStyles, ICSSRules, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 
 export enum TabType {
     presets = "Presets"
 }
 
 export interface IConfigurationPanelProps {
-    // onToggleView: () => void;
-    // activeFormData: any;
-    // activeSchema: any;
-    // activeComponentName: string;
     formChildOptions: any;
     schema: any;
     data: any;
@@ -85,10 +76,7 @@ const style: ComponentStyles<IConfigurationPanelManagedClasses, IDevSiteDesignSy
                 content: "''",
                 height: toPx(2),
                 borderRadius: toPx(3),
-                // TODO: Issue #309 https://github.com/Microsoft/fast-dna/issues/309
-                // background: (config: IDevSiteDesignSystem): string => {
-                //     return config.brandColor;
-                // }
+
                 background: "#FB356D"
             }
         }
@@ -138,7 +126,7 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps & IMan
 
     private renderTabItems(): JSX.Element[] {
         return this.tabs.map((tabItem: TabType, index: number) => {
-            if (tabItem === "Presets") {
+            if (tabItem === TabType.presets) {
                 return (
                     <li key={index} className={this.getTabClassNames(tabItem)}>
                         <button onClick={this.handleChangeTab(tabItem)}>
@@ -174,7 +162,7 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps & IMan
 
     private renderTabPanelContent(tabItem: TabType): JSX.Element {
         switch (tabItem) {
-            case "Presets":
+            case TabType.presets:
                 return this.renderPresets();
             default:
                 return null;
