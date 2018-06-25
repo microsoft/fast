@@ -7,9 +7,6 @@ exports[`one-of one-of: 0 1`] = `
   <form
     onSubmit={[Function]}
   >
-    <h2>
-      Component with oneOf
-    </h2>
     <div>
       <div>
         <div>

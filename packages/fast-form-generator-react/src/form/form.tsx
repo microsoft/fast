@@ -71,7 +71,6 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
         return (
             <div className={this.props.className || null}>
                 <form onSubmit={this.handleSubmit}>
-                    <h2>{this.state.titleProps}</h2>
                     {this.generateBreadcrumbs()}
                     {this.generateSection()}
                 </form>

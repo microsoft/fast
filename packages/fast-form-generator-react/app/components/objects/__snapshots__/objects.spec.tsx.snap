@@ -7,9 +7,6 @@ exports[`objects objects: 0 1`] = `
   <form
     onSubmit={[Function]}
   >
-    <h2>
-      Component with objects
-    </h2>
     <div>
       <div>
         <div />

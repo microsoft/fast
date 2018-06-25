@@ -7,9 +7,6 @@ exports[`align-vertical align-vertical: 0 1`] = `
   <form
     onSubmit={[Function]}
   >
-    <h2>
-      Component with align vertical
-    </h2>
     <div>
       <div>
         <div>

@@ -7,9 +7,6 @@ exports[`number-field number-field: 0 1`] = `
   <form
     onSubmit={[Function]}
   >
-    <h2>
-      Component with number-field
-    </h2>
     <div>
       <div>
         <div>

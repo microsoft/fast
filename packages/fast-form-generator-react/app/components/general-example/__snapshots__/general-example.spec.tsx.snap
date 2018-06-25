@@ -7,9 +7,6 @@ exports[`general-example general-example: 0 1`] = `
   <form
     onSubmit={[Function]}
   >
-    <h2>
-      Untitled
-    </h2>
     <div>
       <div>
         <div />
