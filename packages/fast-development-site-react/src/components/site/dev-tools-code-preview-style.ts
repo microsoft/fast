@@ -67,8 +67,8 @@ export default {
         "padding": ".2em",
         "paddingTop": "1px",
         "paddingBottom": "1px",
-        "background": "#f8f8f8",
-        "border": "1px solid #dddddd"
+        "background": "#F8F8F8",
+        "border": "1px solid #DDDDDD"
     },
     "comment": {
         "color": "#008000",
@@ -87,7 +87,7 @@ export default {
         "fontStyle": "italic"
     },
     "namespace": {
-        "Opacity": ".7"
+        "opacity": ".7"
     },
     "string": {
         "color": "#A31515"
@@ -99,61 +99,61 @@ export default {
         "color": "#464646"
     },
     "url": {
-        "color": "#36acaa"
+        "color": "#36ACAA"
     },
     "symbol": {
-        "color": "#36acaa"
+        "color": "#36ACAA"
     },
     "number": {
-        "color": "#36acaa"
+        "color": "#36ACAA"
     },
     "boolean": {
-        "color": "#36acaa"
+        "color": "#36ACAA"
     },
     "variable": {
-        "color": "#36acaa"
+        "color": "#36ACAA"
     },
     "constant": {
-        "color": "#36acaa"
+        "color": "#36ACAA"
     },
     "inserted": {
-        "color": "#36acaa"
+        "color": "#36ACAA"
     },
     "atrule": {
-        "color": "#2f80ed"
+        "color": "#2F80ED"
     },
     "keyword": {
-        "color": "#2f80ed"
+        "color": "#2F80ED"
     },
     "attr-value": {
-        "color": "#2f80ed"
+        "color": "#2F80ED"
     },
     ".language-autohotkey .token.selector": {
-        "color": "#2f80ed"
+        "color": "#2F80ED"
     },
     ".language-json .token.boolean": {
-        "color": "#2f80ed"
+        "color": "#2F80ED"
     },
     ".language-json .token.number": {
-        "color": "#2f80ed"
+        "color": "#2F80ED"
     },
     "code[class*=\"language-css\"]": {
-        "color": "#2f80ed"
+        "color": "#2F80ED"
     },
     "function": {
         "color": "#464646"
     },
     "deleted": {
-        "color": "#9a050f"
+        "color": "#9A050F"
     },
     ".language-autohotkey .token.tag": {
-        "color": "#9a050f"
+        "color": "#9A050F"
     },
     "selector": {
-        "color": "#2d9cdb"
+        "color": "#2D9CDB"
     },
     ".language-autohotkey .token.keyword": {
-        "color": "#00009f"
+        "color": "#00009F"
     },
     "important": {
         "fontWeight": "bold"
@@ -171,26 +171,26 @@ export default {
         "color": "#2B91AF"
     },
     "tag": {
-        "color": "#2d9cdb"
+        "color": "#2D9CDB"
     },
     "attr-name": {
-        "color": "#bb6bd9"
+        "color": "#BB6BD9"
     },
     "property": {
-        "color": "#bb6bd9"
+        "color": "#BB6BD9"
     },
     "regex": {
-        "color": "#bb6bd9"
+        "color": "#BB6BD9"
     },
     "entity": {
-        "color": "#bb6bd9"
+        "color": "#BB6BD9"
     },
     "directive.tag  .tag": {
-        "background": "#ffff00",
+        "background": "#FFFF00",
         "color": "#464646"
     },
     ".line-numbers .line-numbers-rows": {
-        "borderRightColor": "#a5a5a5"
+        "borderRightColor": "#A5A5A5"
     },
     ".line-numbers-rows > span:before": {
         "color": "#2B91AF"
