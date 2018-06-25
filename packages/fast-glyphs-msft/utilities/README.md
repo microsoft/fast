@@ -21,7 +21,7 @@ This will create the export file in a different directory than that of the SVGs.
 ```
 
 ### Change the index file type
-If you are using typescript you can specify `ts` as the index file type. The default is `js`.
+If you are using TypeScript you can specify `ts` as the index file type. The default is `js`.
 
 ```js
     const glyphPath = path.resolve(__dirname, "path/to/folder", "ts");

@@ -1,5 +1,5 @@
 # FAST React development site
-This is the development site that can be used to create a React site for a library of React components.
+This is the development site that can be used to create a React site for a library of React components. It will generate the necessary navigational elements and routing to provide a full site for the documentation and testing of components.
 
 ## Installation
 `npm i --save @microsoft/fast-development-site-react`

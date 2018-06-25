@@ -5,7 +5,7 @@ An Angular directive and component library for managing component JSS (JavaScrip
 `npm i --save @microsoft/fast-jss-manager-angular`
 
 ## Usage
-Any configuration can be passed down and will serve as a scoped configuration for it's containing children. Any component making use of the design system must be constructed with these additions:
+Any configuration can be passed down and will serve as a scoped configuration for its containing children. Any component making use of the design system must be constructed with these additions:
 - The `@angular/core` `ElementRef` must be passed as a parameter in the components constructor
 - The component must pass JSS styles into the `manageJss` higher order component and use that as the styled component
 - The component must have an input named `className`
