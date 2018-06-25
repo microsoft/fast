@@ -2,6 +2,11 @@ import * as React from "react";
 import { FrameworkEnum } from "./dev-tools";
 import { IFormChildOption } from "./";
 import { get, isEmpty, isObject, set, uniqueId } from "lodash-es";
+import SyntaxHighlighter, { registerLanguage } from "react-syntax-highlighter/prism-light";
+import jsx from "react-syntax-highlighter/languages/prism/jsx";
+import vs from "./dev-tools-code-preview-style";
+
+registerLanguage("jsx", jsx);
 
 export interface ICodePreviewProps {
     componentName: string;
@@ -33,11 +38,9 @@ export default class CodePreview extends React.Component<ICodePreviewProps, {}> 
 
     public render(): JSX.Element {
         return (
-            <pre>
-                <code>
-                    {this.getCodePreview()}
-                </code>
-            </pre>
+            <SyntaxHighlighter language="jsx" style={vs}>
+                {this.getCodePreview()}
+            </SyntaxHighlighter>
         );
     }
 
