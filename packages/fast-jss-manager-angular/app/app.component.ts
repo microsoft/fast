@@ -34,6 +34,6 @@ export class AppComponent {
       purple: {
         color: "purple"
       }
-    }
+    };
   }
 }
