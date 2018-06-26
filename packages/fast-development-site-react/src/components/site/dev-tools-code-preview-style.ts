@@ -7,8 +7,8 @@ export default {
         "whiteSpace": "pre",
         "wordSpacing": "normal",
         "wordBreak": "normal",
-        "fontSize": "0.95em",
-        "lineHeight": "1.2em",
+        "fontSize": "13px",
+        "lineHeight": "16px",
         "MozTabSize": "4",
         "OTabSize": "4",
         "tabSize": "4",
@@ -25,8 +25,8 @@ export default {
         "whiteSpace": "pre",
         "wordSpacing": "normal",
         "wordBreak": "normal",
-        "fontSize": "0.95em",
-        "lineHeight": "1.2em",
+        "fontSize": "13px",
+        "lineHeight": "16px",
         "MozTabSize": "4",
         "OTabSize": "4",
         "tabSize": "4",
@@ -34,37 +34,25 @@ export default {
         "MozHyphens": "none",
         "msHyphens": "none",
         "hyphens": "none",
-        "padding": "1em",
-        "margin": ".5em 0",
+        "padding": "12px",
+        "margin": "6px 0",
         "overflow": "auto",
         "backgroundColor": "white"
     },
     "pre[class*=\"language-\"]::-moz-selection": {
         "background": "#C1DEF1"
     },
-    "pre[class*=\"language-\"] ::-moz-selection": {
-        "background": "#C1DEF1"
-    },
     "code[class*=\"language-\"]::-moz-selection": {
-        "background": "#C1DEF1"
-    },
-    "code[class*=\"language-\"] ::-moz-selection": {
         "background": "#C1DEF1"
     },
     "pre[class*=\"language-\"]::selection": {
         "background": "#C1DEF1"
     },
-    "pre[class*=\"language-\"] ::selection": {
-        "background": "#C1DEF1"
-    },
     "code[class*=\"language-\"]::selection": {
         "background": "#C1DEF1"
     },
-    "code[class*=\"language-\"] ::selection": {
-        "background": "#C1DEF1"
-    },
     ":not(pre) > code[class*=\"language-\"]": {
-        "padding": ".2em",
+        "padding": "2px",
         "paddingTop": "1px",
         "paddingBottom": "1px",
         "background": "#F8F8F8",
