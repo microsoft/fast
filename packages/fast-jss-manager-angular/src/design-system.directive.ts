@@ -1,22 +1,20 @@
-import { Directive, ElementRef, Input, SimpleChanges } from "@angular/core";
+import { Directive, ElementRef, Inject, Input, SimpleChanges } from "@angular/core";
 import { eventNames } from "./utilities/get-event-names";
-import jss, { stylesheetManager } from "./jss";
-
-@Directive({
-    selector: "design-system",
-})
 
 /**
  * This directive stores and manages custom events requesting the design system configuration
  */
+@Directive({
+    selector: "design-system",
+})
 export class DesignSystemDirective {
     @Input() private config: any;
 
     private el: HTMLElement;
     private children: EventTarget[];
 
-    constructor(el: ElementRef) {
-        this.el = el.nativeElement;
+    constructor(@Inject(ElementRef) private hostElement: ElementRef) {
+        this.el = hostElement.nativeElement;
         this.children = [];
 
         this.el.addEventListener(eventNames.getConfig, this.handleGetConfig, true);
