@@ -1,7 +1,5 @@
 # FAST Components React Base
-A set of React components without styles.
-
-These can be combined with JSS styles to create styled components or used as-is.
+Base components are the structural, semantic, and interactive core of a piece of UI without any explicit visual representation. For the most part, base components are only as opinionated as they have to be to support the semantic and structural goals. In rare cases, there are structural changes made to support external styling (such as native elements like an input of type checkbox). Base components are useful when building out a new design system, or when you have two components that require the same base functionality and structure, but completely different visual represenations (button vs flipper).
 
 ## Installation
 `npm i --save @microsoft/fast-components-react-base`

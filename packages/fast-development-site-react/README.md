@@ -27,7 +27,8 @@ function render(): void {
                 slot={"category"}
                 name={"Components"}
                 schema={ParagraphSchema},
-                component={Paragraph}
+                component={Paragraph},
+                status={"Released}
             >
                 <SiteCategoryDocumentation slot={"canvas-detail-view-documentation"}>
                     <div>
@@ -75,6 +76,9 @@ The `SiteTitleBrand` can be used as a child of `SiteTitle` and will bold and col
 The `SiteCategory` is used as a child of `Site` and can contain other `SiteCategory` components to create a nested structure.
 
 **slot** - The `slot` property is required and must pass the string `"category"`.
+
+**status**
+If the `SiteCategory` contains `SiteCategoryItem` component(s) it can set the status of these items which can be Alpha, Beta or Release. The default is always set to Beta. As the component becomes more stable or is release ready the status can be updated on ISiteCategory props by setting status "Alpha","Beta" or "Released".
 
 ### SiteCategoryItem
 The `SiteCategoryItem` is used as a child of `SiteCategory`, 
