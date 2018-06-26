@@ -227,14 +227,13 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
         background: "none",
         height: toPx(32),
         width: toPx(32),
-        outline: "0"
+        outline: "0",
+        verticalAlign: "middle"
     },
     site_transparencyToggleButtonIcon: {
-        height: toPx(15),
-        width: toPx(15),
-        justifyContent: "center",
-        fontSize: toPx(16),
-        display: "inline-block"
+        display: "block",
+        verticalAlign: "middle",
+        fontSize: "0"
     },
     site_statusBar: {
         width: "50%",
@@ -686,16 +685,16 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     private renderInfoBarConfiguration(): JSX.Element {
         return (
             <div className={this.props.managedClasses.site_infoBarConfiguration}>
+                <button
+                    onClick={this.handleComponentTransparent}
+                    className={this.props.managedClasses.site_transparencyToggleButton}
+                >
+                    <span
+                        className={this.props.managedClasses.site_transparencyToggleButtonIcon}
+                        dangerouslySetInnerHTML={{__html: glyphTransparency}}
+                    />
+                </button>
                 <span className={this.props.managedClasses.site_infoBarConfiguration_direction}>
-                    <button
-                        onClick={this.handleComponentTransparent}
-                        className={this.props.managedClasses.site_transparencyToggleButton}
-                    >
-                        <span
-                            className={this.props.managedClasses.site_transparencyToggleButtonIcon}
-                            dangerouslySetInnerHTML={{__html: glyphTransparency}}
-                        />
-                    </button>
                     <select
                         className={this.props.managedClasses.site_infoBarConfiguration_direction_input}
                         onChange={this.handleLocaleUpdate}
@@ -802,7 +801,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     private handleComponentTransparent = (): void => {
         this.setState({
             isComponentViewTransparent: !this.state.isComponentViewTransparent
-        })
+        });
     }
 
     private renderChildrenBySlot(component: any, slot: string): JSX.Element[] {
