@@ -32,7 +32,8 @@
     "@microsoft/fast-jss-manager-react": "^1.8.0",
     "@microsoft/fast-jss-utilities": "^1.8.0",
     "@microsoft/fast-layouts-react": "^1.8.0",
-    "@microsoft/fast-markdown-msft-react": "^1.8.0"
+    "@microsoft/fast-markdown-msft-react": "^1.8.0",
+    "react-syntax-highlighter": "^7.0.4"
   },
   "devDependencies": {
     "@microsoft/fast-components-class-name-contracts-base": "^1.8.0",
