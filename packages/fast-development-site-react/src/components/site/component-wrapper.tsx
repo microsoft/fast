@@ -7,12 +7,14 @@ import manageJss, {
     IManagedClasses
 } from "@microsoft/fast-jss-manager-react";
 import { ErrorBoundary, IErrorBoundaryProps } from "../../utilities";
+import { glyphBuildingblocks } from "@microsoft/fast-glyphs-msft";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
 import { ComponentViewTypes } from "./component-view";
 
 export interface IComponentWrapperManagedClasses {
     componentWrapper: string;
+    componentWrapper__Transparent: string;
     componentWrapperExamples: string;
     componentWrapper__active: string;
 }
@@ -23,6 +25,7 @@ export interface IComponentWrapperProps<T> {
     singleRow?: boolean;
     designSystem: T;
     view: ComponentViewTypes;
+    transparent: boolean;
     onClick?: (activeIndex: number) => void;
 }
 
@@ -31,6 +34,14 @@ const styles: ComponentStyles<IComponentWrapperManagedClasses, IDevSiteDesignSys
     componentWrapper: {
         display: "block",
         padding: toPx(24),
+        borderBottom: componentWrapperBorder,
+    },
+    componentWrapper__Transparent: {
+        display: "block",
+        padding: toPx(24),
+        background: "red",
+        // backgroundImage: `url('data:image/svg+xml;${glyphBuildingblocks}')`,
+        // backgroundRepeat: "repeat",
         borderBottom: componentWrapperBorder,
     },
     componentWrapperExamples: {
@@ -91,7 +102,7 @@ class ComponentWrapper extends React.Component<IComponentWrapperProps<IDevSiteDe
     }
 
     private getClassNames(): string {
-        const classNames: string = this.props.managedClasses.componentWrapper;
+        const classNames: string = this.props.transparent ? this.props.managedClasses.componentWrapper__Transparent : this.props.managedClasses.componentWrapper;
 
         return this.props.active && this.props.view === ComponentViewTypes.examples
             ? `${classNames} ${this.props.managedClasses.componentWrapperExamples} ${this.props.managedClasses.componentWrapper__active}`
