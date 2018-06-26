@@ -39,6 +39,14 @@ onChange = (data) => {
 }
 ```
 
+Where the component is a button and the data being passed to the `onChange` is:
+
+```json
+{
+    "disabled": true
+}
+```
+
 ### Advanced usage
 Outside of the basic use case you can provide some additional functionality through optional properties.
 
