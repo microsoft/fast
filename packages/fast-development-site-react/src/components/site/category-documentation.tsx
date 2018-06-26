@@ -13,7 +13,12 @@ export interface ICategoryDocumentationManagedClasses {
 
 const style: ComponentStyles<ICategoryDocumentationManagedClasses, IDevSiteDesignSystem> = {
     documentationPanel: {
-        maxWidth: toPx(1000)
+        maxWidth: toPx(1000),
+        "& a": {
+            color: (config: IDevSiteDesignSystem): string => {
+                return `${config.brandColor}`;
+            }
+        }
     }
 };
 
