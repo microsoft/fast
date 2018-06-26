@@ -1,5 +1,5 @@
 # FAST Convert Markdown to React strings
-This is a plugin for `markdown-it` and will convert markdown to strings which correspond to MSFT styled React components from the `@microsoft/fast-components-react-msft`.
+This is a plugin for [markdown-it](https://github.com/markdown-it/markdown-it) and will convert markdown to strings which correspond to MSFT styled React components from the `@microsoft/fast-components-react-msft`.
 
 ## Installation
 `npm i --save @microsoft/fast-markdown-msft-react`

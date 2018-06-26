@@ -9,7 +9,7 @@ Dynamically generates a form user interface based on incoming JSON Schemas to ch
 
 ## Using the form generator
 ### Basic usage
-The required properties are the data, schema, and onChange function. The data should be tied to your state as this will change.
+The required properties are the data, schema, and onChange function. The data should be tied to your state as the data will change when editing the form.
 
 ```jsx
 import Form from "@microsoft/fast-form-generator-react";
@@ -62,7 +62,7 @@ import { Button, ButtonSchema } from "@microsoft/fast-components-react-msft";
 />
 ```
 
-**componentMappingToPropertyNames** - There are special components that can be mapped to property names so that they are used. An example would be `alignHorizontal`, you can map them to one or more different property names so if your component has a property `alignHorizontalSpacingForTitle` and `alignHorizontalSpacingForImage`:
+**componentMappingToPropertyNames** - There are special components that can be mapped to property names so that they are used. An example would be `alignHorizontal` which when mapped will show alignment controls instead of a select dropdown. You can map them to one or more different property names so if your component has a property `alignHorizontalSpacingForTitle` and `alignHorizontalSpacingForImage`:
 
 ```jsx
 import Form from "@microsoft/fast-form-generator-react";
@@ -104,7 +104,7 @@ import Form from "@microsoft/fast-form-generator-react";
 />
 ```
 
-**orderByPropertyNames** - Properties can be assigned category with titles to give the form more structure. They can also be weighted, an example of displaying properties related to content on top of properties which relate to formatting:
+**orderByPropertyNames** - Properties can be assigned a category with titles to give the form more structure. They can also be weighted, an example of displaying properties related to content on top of properties which relate to formatting:
 
 *This also tells the form generator to only display categories once there are 4 or more and gives a default category weight*
 

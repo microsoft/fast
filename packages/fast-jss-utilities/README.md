@@ -7,7 +7,7 @@ This package is a collection of utilities intended to be used with JSS (JavaScri
 ## Usage
 
 ### Direction
-The direction is an enum which can be either ltr or rtl.
+The `Direction` is an enum which can be either ltr or rtl.
 
 ```ts
 import { Direction } from "@microsoft/fast-jss-utilities";
@@ -16,7 +16,7 @@ const direction = Direction.ltr;
 ```
 
 ### localizeSpacing
-This function should be used in conjuction with `Direction` to switch the spacing on a padding or margin.
+The `localizeSpacing` function should be used in conjuction with `Direction` to switch the spacing on a padding or margin.
 
 ```ts
 import { Direction, localizeSpacing } from "@microsoft/fast-jss-utilities";
@@ -29,7 +29,7 @@ const styles = {
 ```
 
 ### applyLocalizedProperty
-This function will swap the strings for the property based on the `Direction`.
+The `applyLocalizedProperty` function will swap the strings for the property based on the `Direction`.
 
 ```ts
 import { Direction, applyLocalizedProperty } from "@microsoft/fast-jss-utilities";
@@ -42,7 +42,7 @@ const styles = {
 ```
 
 ### toPx
-This method transforms a number to a string appended with `px`.
+The `toPx` function transforms a number to a string appended with `px`.
 
 ```ts
 import { toPx } from "@microsoft/fast-jss-utilities";
@@ -55,7 +55,7 @@ const styles = {
 ```
 
 ### applyMaxLines
-The apply maxlines function is used whenever there is a limit on the number of lines shown. It takes two parameters, the number of lines and the line-height in px.
+The `applyMaxLines` function is used whenever there is a limit on the number of lines shown. It takes two parameters, the number of lines and the line-height in px.
 
 ```ts
 import { applyMaxLines } from "@microsoft/fast-jss-utilities";
@@ -68,7 +68,7 @@ const styles = {
 ```
 
 ### applyScreenReader
-The apply screenreader function should be used whenever there is an item that is hidden from a sighted user but visible to screen readers.
+The `applyScreenReader` function should be used whenever there is an item that is hidden from a sighted user but visible to screen readers.
 
 ```ts
 import { applyScreenReader } from "@microsoft/fast-jss-utilities";
@@ -81,7 +81,7 @@ const styles = {
 ```
 
 ### ellipsis
-The ellipsis function will create the standard CSS needed to give an element with text an ellipsis.
+The `ellipsis` function will create the standard CSS needed to give an element with text an ellipsis.
 
 ```ts
 import { ellipsis } from "@microsoft/fast-jss-utilities";

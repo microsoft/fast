@@ -1,5 +1,5 @@
 # FAST React development site
-This is the development site that can be used to create a React site for a library of React components. It will generate the necessary navigational elements and routing to provide a full site for the documentation and testing of components.
+A boilerplate development site that can be used to show a library of React components. All necessary navigational elements and routing will be generated to provide a full site for the documentation and testing of components.
 
 ## Installation
 `npm i --save @microsoft/fast-development-site-react`
@@ -53,12 +53,15 @@ function render(): void {
 render();
 ```
 
+### Slots
+You will see that a lot of the components require the passing of a property called **slot**. In a similar vein to how web components use slots we have them assigned to our components and they can also be used for arbirary components to place any component into the location indicated by the slot. Using your own components with a **slot** is still in flux so do this at your own risk.
+
 ### Site
 The `Site` component should be used as the wrapping component for the development site.
 
-**formChildOptions** - The options are provided to the implementation the FAST development site makes of the `@microsoft/fast-form-generator-react`, the data structure that is used is from the `Form` property `childOptions` and can be referenced [here](../fast-form-generator-react/README.md)
+**formChildOptions** - The form child options are the optional children that can be added to a component that can have children, as specified in its JSON schema. The options are provided to the implementation the FAST development site makes of the `@microsoft/fast-form-generator-react`, the data structure that is used is from the `Form` property `childOptions` and can be referenced [here](../fast-form-generator-react/README.md).
 
-**onUpdateDirection** - 
+**onUpdateDirection** - The callback provided for an update in RTL, it will execute the given callback with "rtl" or "ltr".
 
 ### SiteTitle
 The `SiteTitle` is used as a child of `Site` and should contain the title of the application/site which will appear in the header.
@@ -76,8 +79,10 @@ The `SiteCategory` is used as a child of `Site` and can contain other `SiteCateg
 ### SiteCategoryItem
 The `SiteCategoryItem` is used as a child of `SiteCategory`, 
 
-**slot** - The `slot` property is required, the first `SiteCategoryItem` should pass `"canvas-detail-view-documentation"` and any subsequent `SiteCategoryItem` components must pass `"canvas-detail-view-example"`.
+**slot** - The `slot` property is required, the first `SiteCategoryItem` should pass `"canvas-detail-view-documentation"` and any subsequent `SiteCategoryItem` components must pass `"canvas-detail-view-example"`. The item that has the `"canvas-detail-view-documentation"` will show up on the documentation tab while the `"canvas-detail-view-example"` items will be displayed on the examples tab.
+
 **data** - The data is should map to the properties of the component in the parent `SiteCategory`
+
 **designSystem** - (Optional) If a design system is used from the `@microsoft/fast-jss-manager-react` then you can provide any design system configurations to this property.
 
 ### SiteCategoryDocumentation

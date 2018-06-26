@@ -32,7 +32,6 @@ render();
 ```
 
 ### Styled implementation
-
 An example of using the `manageJss` from `@microsoft/fast-jss-manager-react` higher order component to export a component with a JSS style. See the `@microsoft/fast-components-class-name-contracts-base` for the list of class names that can be applied to the base components.
 
 ```
