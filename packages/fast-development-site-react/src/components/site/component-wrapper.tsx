@@ -7,14 +7,13 @@ import manageJss, {
     IManagedClasses
 } from "@microsoft/fast-jss-manager-react";
 import { ErrorBoundary, IErrorBoundaryProps } from "../../utilities";
-import { glyphBuildingblocks } from "@microsoft/fast-glyphs-msft";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
 import { ComponentViewTypes } from "./component-view";
 
 export interface IComponentWrapperManagedClasses {
     componentWrapper: string;
-    componentWrapper__Transparent: string;
+    componentWrapper__transparent: string;
     componentWrapperExamples: string;
     componentWrapper__active: string;
 }
@@ -25,11 +24,11 @@ export interface IComponentWrapperProps<T> {
     singleRow?: boolean;
     designSystem: T;
     view: ComponentViewTypes;
-    transparent: boolean;
+    transparentBackground?: boolean;
     onClick?: (activeIndex: number) => void;
 }
 
-/* tslint:disable */
+/* tslint:disable-next-line */
 const checker: string = "url('data:image/gif;base64,R0lGODlhEAAQAPAAANfX1wAAACH5BAEAAAEALAAAAAAQABAAAAIfhG+hq4jM3IFLJhoswNly/XkcBpIiVaInlLJr9FZWAQAh/wtYTVAgRGF0YVhNUDw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+Cjx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTM4IDc5LjE1OTgyNCwgMjAxNi8wOS8xNC0wMTowOTowMSAgICAgICAgIj4KIDxyZGY6UkRGIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyI+CiAgPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIvPgogPC9yZGY6UkRGPgo8L3g6eG1wbWV0YT4KPD94cGFja2V0IGVuZD0iciI/PgH//v38+/r5+Pf29fTz8vHw7+7t7Ovq6ejn5uXk4+Lh4N/e3dzb2tnY19bV1NPS0dDPzs3My8rJyMfGxcTDwsHAv769vLu6ubi3trW0s7KxsK+urayrqqmop6alpKOioaCfnp2cm5qZmJeWlZSTkpGQj46NjIuKiYiHhoWEg4KBgH9+fXx7enl4d3Z1dHNycXBvbm1sa2ppaGdmZWRjYmFgX15dXFtaWVhXVlVUU1JRUE9OTUxLSklIR0ZFRENCQUA/Pj08Ozo5ODc2NTQzMjEwLy4tLCsqKSgnJiUkIyIhIB8eHRwbGhkYFxYVFBMSERAPDg0MCwoJCAcGBQQDAgEAADs=')";
 
 const componentWrapperBorder: string = `${toPx(1)} solid rgb(204, 204, 204)`;
@@ -39,10 +38,8 @@ const styles: ComponentStyles<IComponentWrapperManagedClasses, IDevSiteDesignSys
         padding: toPx(24),
         borderBottom: componentWrapperBorder,
     },
-    componentWrapper__Transparent: {
-        backgroundSize: `${toPx(8)} ${toPx(8)}`,
-        background: checker,
-        backgroundRepeat: "repeat",
+    componentWrapper__transparent: {
+        background: `transparent ${toPx(8)}/${toPx(8)} ${checker} repeat`
     },
     componentWrapperExamples: {
         "&:last-child:not(:nth-child(3n + 3)), &:nth-child(3n + 1)": {
@@ -102,9 +99,11 @@ class ComponentWrapper extends React.Component<IComponentWrapperProps<IDevSiteDe
     }
 
     private getClassNames(): string {
-        const classNames: string = this.props.transparent
-            ? `${this.props.managedClasses.componentWrapper__Transparent} ${this.props.managedClasses.componentWrapper}`
-            : this.props.managedClasses.componentWrapper;
+        let classNames: string = this.props.managedClasses.componentWrapper;
+
+        classNames = this.props.transparentBackground
+            ? `${this.props.managedClasses.componentWrapper__transparent} ${classNames}`
+            : classNames;
 
         return this.props.active && this.props.view === ComponentViewTypes.examples
             ? `${classNames} ${this.props.managedClasses.componentWrapperExamples} ${this.props.managedClasses.componentWrapper__active}`

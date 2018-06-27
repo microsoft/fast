@@ -80,7 +80,7 @@ export interface ISiteState {
     detailViewComponentData: IComponentData;
     tableOfContentsCollapsed: boolean;
     componentView: ComponentViewTypes;
-    isComponentViewTransparent: boolean;
+    componentBackgroundTransparent: boolean;
     formView: boolean;
     devToolsView: boolean;
     locale: string;
@@ -106,7 +106,6 @@ export interface ISiteManagedClasses {
     site_paneToggleButtonIcon: string;
     site_paneToggleButtonIconLayout: string;
     site_transparencyToggleButton: string;
-    site_transparencyToggleButtonIcon: string;
     site_statusBar: string;
     site_statusComponentName: string;
     site_statusIndicator: string;
@@ -228,12 +227,8 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
         height: toPx(32),
         width: toPx(32),
         outline: "0",
-        verticalAlign: "middle"
-    },
-    site_transparencyToggleButtonIcon: {
-        display: "block",
         verticalAlign: "middle",
-        fontSize: "0"
+        display: "inline-flex"
     },
     site_statusBar: {
         width: "50%",
@@ -282,7 +277,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
             currentPath: this.initialPath,
             activeComponentIndex: 0,
             tableOfContentsCollapsed: this.props.collapsed || false,
-            isComponentViewTransparent: this.props.transparent || false,
+            componentBackgroundTransparent: this.props.transparent || false,
             componentView: ComponentViewTypes.examples,
             componentName: this.getComponentName(this.initialPath),
             componentData: this.getComponentData(),
@@ -597,7 +592,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                             key={index}
                             onClick={this.handleComponentClick}
                             index={index}
-                            transparent={this.state.isComponentViewTransparent}
+                            transparentBackground={this.state.componentBackgroundTransparent}
                             designSystem={componentItem.props.designSystem}
                             active={index === this.state.activeComponentIndex}
                             view={this.state.componentView}
@@ -627,7 +622,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 <ComponentWrapper
                     key={index}
                     index={index}
-                    transparent={this.state.isComponentViewTransparent}
+                    transparentBackground={this.state.componentBackgroundTransparent}
                     designSystem={component.props.designSystem}
                     active={true}
                     view={this.state.componentView}
@@ -686,13 +681,10 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         return (
             <div className={this.props.managedClasses.site_infoBarConfiguration}>
                 <button
-                    onClick={this.handleComponentTransparent}
+                    onClick={this.handleTransparencyToggleClick}
                     className={this.props.managedClasses.site_transparencyToggleButton}
                 >
-                    <span
-                        className={this.props.managedClasses.site_transparencyToggleButtonIcon}
-                        dangerouslySetInnerHTML={{__html: glyphTransparency}}
-                    />
+                    <span dangerouslySetInnerHTML={{__html: glyphTransparency}}/>
                 </button>
                 <span className={this.props.managedClasses.site_infoBarConfiguration_direction}>
                     <select
@@ -798,9 +790,9 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         });
     }
 
-    private handleComponentTransparent = (): void => {
+    private handleTransparencyToggleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
         this.setState({
-            isComponentViewTransparent: !this.state.isComponentViewTransparent
+            componentBackgroundTransparent: !this.state.componentBackgroundTransparent
         });
     }
 
