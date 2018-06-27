@@ -11,6 +11,7 @@ import {
     oneOfAnyOfType
 } from "./form-section.props";
 import IFormItemCommon, { mappingName } from "./form-item";
+import FormCategory from "./form-category";
 import FormItemCheckbox from "./form-item.checkbox";
 import FormItemTextarea from "./form-item.textarea";
 import FormItemTextField from "./form-item.text-field";
@@ -89,7 +90,7 @@ class FormSection extends React.Component<IFormSectionProps & IManagedClasses<IF
         this.state = {
             schema: schemaState,
             oneOfAnyOf: oneOfAnyOfState,
-            sections: getSchemaSubsections({schema: schemaState, oneOfAnyOf: oneOfAnyOfState}, this.props)
+            sections: getSchemaSubsections({schema: schemaState, oneOfAnyOf: oneOfAnyOfState}, this.props),
         };
     }
 
@@ -274,34 +275,17 @@ class FormSection extends React.Component<IFormSectionProps & IManagedClasses<IF
     }
 
     /**
-     * Generates categories to place items into
-     */
-    private generateFormItemCategories(categoryItems: JSX.Element[], title: string): JSX.Element {
-        // Exit if the array is only one item long and that item is null or undefined
-        if (categoryItems.length < 1 && categoryItems[0] === null ||
-            categoryItems.length < 1 && categoryItems[0] === undefined) {
-            return;
-        }
-
-        return (
-            <div key={title}>
-                <h3 className={this.props.managedClasses.formSection_header}>{title}</h3>
-                {categoryItems}
-            </div>
-        );
-    }
-
-    /**
      * Gets the categories
      */
     private getCategories(formItemParameters: IFormItemParameters[]): JSX.Element[] {
         const categories: JSX.Element[] = [];
         const categoryParams: IFormCategories[] = getCategoryParams(formItemParameters, this.props.orderByPropertyNames);
 
-        for (const category of categoryParams) {
+        for (let i: number = 0, categoryParamLength: number = categoryParams.length; i < categoryParamLength; i++) {
             const categoryFormItems: JSX.Element[] = [];
+            const contentId: string = uniqueId(this.convertToHyphenated(categoryParams[i].title));
 
-            for (const item of category.items) {
+            for (const item of categoryParams[i].items) {
                 categoryFormItems.push(
                     this.generateFormElement(
                         item.params.property,
@@ -314,11 +298,21 @@ class FormSection extends React.Component<IFormSectionProps & IManagedClasses<IF
             }
 
             categories.push(
-                this.generateFormItemCategories(categoryFormItems, category.title)
+                <FormCategory
+                    id={contentId}
+                    isExpanded={true}
+                    key={i}
+                    categoryItem={categoryFormItems}
+                    title={categoryParams[i].title}
+                />
             );
         }
 
         return categories;
+    }
+
+    private convertToHyphenated(name: string): string {
+        return name.toLowerCase().replace(/\s/g, "-");
     }
 
     private getFormItemsAndConfigurationOptions(property: any, required: string[], not: string[]): IFormItemsWithConfigOptions {

@@ -11,214 +11,241 @@ exports[`weight-properties weight-properties: 0 1`] = `
       <div>
         <div>
           <div>
-            <h3
-              className="formSection_header-0-1-4"
+            <button
+              aria-controls="content1"
+              aria-expanded={true}
+              className="formCategory_button-0-1-11"
+              onClick={[Function]}
             >
               Content
-            </h3>
+            </button>
             <div
-              className="formItemTextarea-0-1-11"
+              aria-hidden={false}
+              className="formCategory-0-1-12"
+              id="content1"
             >
-              <label
-                className="formItemTextarea_label-0-1-12"
-                htmlFor="title"
-              >
-                Title
-              </label>
-              <textarea
-                className="formItemTextarea_textarea-0-1-13"
-                id="title"
-                name="title"
-                onChange={[Function]}
-                rows={3}
-                value="example text"
-              />
-            </div>
-            <div
-              className="formItemTextarea-0-1-14"
-            >
-              <label
-                className="formItemTextarea_label-0-1-15"
-                htmlFor="text"
-              >
-                Text
-              </label>
-              <textarea
-                className="formItemTextarea_textarea-0-1-16"
-                id="text"
-                name="text"
-                onChange={[Function]}
-                rows={3}
-                value="Example text"
-              />
-            </div>
-            <div
-              className="formItemTextarea-0-1-17"
-            >
-              <label
-                className="formItemTextarea_label-0-1-18"
-                htmlFor="details"
-              >
-                Details
-              </label>
-              <textarea
-                className="formItemTextarea_textarea-0-1-19"
-                id="details"
-                name="details"
-                onChange={[Function]}
-                rows={3}
-                value="example text"
-              />
-            </div>
-          </div>
-          <div>
-            <h3
-              className="formSection_header-0-1-4"
-            >
-              Formatting
-            </h3>
-            <div>
               <div
-                className="formItemAlignHorizontal-0-1-20"
+                className="formItemTextarea-0-1-14"
               >
                 <label
-                  className="formItemAlignHorizontal_label-0-1-21"
-                  htmlFor="alignHorizontal"
+                  className="formItemTextarea_label-0-1-15"
+                  htmlFor="title"
                 >
-                  Align horizontal
+                  Title
                 </label>
-                <div
-                  className="formItemAlignHorizontal_inputContainer-0-1-22"
-                >
-                  <span>
-                    <input
-                      aria-label="left align"
-                      checked={true}
-                      className="formItemAlignHorizontal_input__left-0-1-23"
-                      id="alignHorizontal"
-                      name="alignHorizontal"
-                      onChange={[Function]}
-                      type="radio"
-                      value="left"
-                    />
-                  </span>
-                  <span>
-                    <input
-                      aria-label="center align"
-                      checked={false}
-                      className="formItemAlignHorizontal_input__center-0-1-24"
-                      id="alignHorizontal"
-                      name="alignHorizontal"
-                      onChange={[Function]}
-                      type="radio"
-                      value="center"
-                    />
-                  </span>
-                  <span>
-                    <input
-                      aria-label="right align"
-                      checked={false}
-                      className="formItemAlignHorizontal_input__right-0-1-25"
-                      id="alignHorizontal"
-                      name="alignHorizontal"
-                      onChange={[Function]}
-                      type="radio"
-                      value="right"
-                    />
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div
-              className="formItemSelect-0-1-26"
-            >
-              <label
-                className="formItemSelect_label-0-1-27"
-              >
-                Align vertical
-              </label>
-              <span
-                className="formItemSelect_span-0-1-28"
-              >
-                <select
-                  className="formItemSelect_input-0-1-29"
+                <textarea
+                  className="formItemTextarea_textarea-0-1-16"
+                  id="title"
+                  name="title"
                   onChange={[Function]}
-                  value="top"
-                >
-                  <option
-                    value="top"
-                  >
-                    top
-                  </option>
-                  <option
-                    value="bottom"
-                  >
-                    bottom
-                  </option>
-                  <option
-                    value="center"
-                  >
-                    center
-                  </option>
-                </select>
-              </span>
-            </div>
-            <div
-              className="formItemNumberField-0-1-30"
-            >
-              <label
-                className="formItemNumberField_label-0-1-31"
-                htmlFor="level"
+                  rows={3}
+                  value="example text"
+                />
+              </div>
+              <div
+                className="formItemTextarea-0-1-17"
               >
-                Level
-              </label>
-              <input
-                className="formItemNumberField_input-0-1-32"
-                id="level"
-                max={undefined}
-                min={undefined}
-                name="number5"
-                onChange={[Function]}
-                step={undefined}
-                type="number"
-                value="5"
-              />
+                <label
+                  className="formItemTextarea_label-0-1-18"
+                  htmlFor="text"
+                >
+                  Text
+                </label>
+                <textarea
+                  className="formItemTextarea_textarea-0-1-19"
+                  id="text"
+                  name="text"
+                  onChange={[Function]}
+                  rows={3}
+                  value="Example text"
+                />
+              </div>
+              <div
+                className="formItemTextarea-0-1-20"
+              >
+                <label
+                  className="formItemTextarea_label-0-1-21"
+                  htmlFor="details"
+                >
+                  Details
+                </label>
+                <textarea
+                  className="formItemTextarea_textarea-0-1-22"
+                  id="details"
+                  name="details"
+                  onChange={[Function]}
+                  rows={3}
+                  value="example text"
+                />
+              </div>
             </div>
           </div>
           <div>
-            <h3
-              className="formSection_header-0-1-4"
+            <button
+              aria-controls="formatting2"
+              aria-expanded={true}
+              className="formCategory_button-0-1-23"
+              onClick={[Function]}
+            >
+              Formatting
+            </button>
+            <div
+              aria-hidden={false}
+              className="formCategory-0-1-24"
+              id="formatting2"
+            >
+              <div>
+                <div
+                  className="formItemAlignHorizontal-0-1-26"
+                >
+                  <label
+                    className="formItemAlignHorizontal_label-0-1-27"
+                    htmlFor="alignHorizontal"
+                  >
+                    Align horizontal
+                  </label>
+                  <div
+                    className="formItemAlignHorizontal_inputContainer-0-1-28"
+                  >
+                    <span>
+                      <input
+                        aria-label="left align"
+                        checked={true}
+                        className="formItemAlignHorizontal_input__left-0-1-29"
+                        id="alignHorizontal"
+                        name="alignHorizontal"
+                        onChange={[Function]}
+                        type="radio"
+                        value="left"
+                      />
+                    </span>
+                    <span>
+                      <input
+                        aria-label="center align"
+                        checked={false}
+                        className="formItemAlignHorizontal_input__center-0-1-30"
+                        id="alignHorizontal"
+                        name="alignHorizontal"
+                        onChange={[Function]}
+                        type="radio"
+                        value="center"
+                      />
+                    </span>
+                    <span>
+                      <input
+                        aria-label="right align"
+                        checked={false}
+                        className="formItemAlignHorizontal_input__right-0-1-31"
+                        id="alignHorizontal"
+                        name="alignHorizontal"
+                        onChange={[Function]}
+                        type="radio"
+                        value="right"
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="formItemSelect-0-1-32"
+              >
+                <label
+                  className="formItemSelect_label-0-1-33"
+                >
+                  Align vertical
+                </label>
+                <span
+                  className="formItemSelect_span-0-1-34"
+                >
+                  <select
+                    className="formItemSelect_input-0-1-35"
+                    onChange={[Function]}
+                    value="top"
+                  >
+                    <option
+                      value="top"
+                    >
+                      top
+                    </option>
+                    <option
+                      value="bottom"
+                    >
+                      bottom
+                    </option>
+                    <option
+                      value="center"
+                    >
+                      center
+                    </option>
+                  </select>
+                </span>
+              </div>
+              <div
+                className="formItemNumberField-0-1-36"
+              >
+                <label
+                  className="formItemNumberField_label-0-1-37"
+                  htmlFor="level"
+                >
+                  Level
+                </label>
+                <input
+                  className="formItemNumberField_input-0-1-38"
+                  id="level"
+                  max={undefined}
+                  min={undefined}
+                  name="number5"
+                  onChange={[Function]}
+                  step={undefined}
+                  type="number"
+                  value="5"
+                />
+              </div>
+            </div>
+          </div>
+          <div>
+            <button
+              aria-controls="developer3"
+              aria-expanded={true}
+              className="formCategory_button-0-1-39"
+              onClick={[Function]}
             >
               Developer
-            </h3>
+            </button>
             <div
-              className="formItemSelect-0-1-33"
+              aria-hidden={false}
+              className="formCategory-0-1-40"
+              id="developer3"
             >
-              <label
-                className="formItemSelect_label-0-1-34"
+              <div
+                className="formItemSelect-0-1-42"
               >
-                HTML tag
-              </label>
-              <span
-                className="formItemSelect_span-0-1-35"
-              >
-                <select
-                  className="formItemSelect_input-0-1-36"
-                  onChange={[Function]}
-                  value="span"
+                <label
+                  className="formItemSelect_label-0-1-43"
                 >
-                  <option
+                  HTML tag
+                </label>
+                <span
+                  className="formItemSelect_span-0-1-44"
+                >
+                  <select
+                    className="formItemSelect_input-0-1-45"
+                    onChange={[Function]}
                     value="span"
                   >
-                    span
-                  </option>
-                  <option
-                    value="button"
-                  >
-                    button
-                  </option>
-                </select>
-              </span>
+                    <option
+                      value="span"
+                    >
+                      span
+                    </option>
+                    <option
+                      value="button"
+                    >
+                      button
+                    </option>
+                  </select>
+                </span>
+              </div>
             </div>
           </div>
         </div>
