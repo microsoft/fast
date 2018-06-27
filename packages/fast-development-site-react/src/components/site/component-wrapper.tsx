@@ -110,7 +110,6 @@ class ComponentWrapper extends React.Component<IComponentWrapperProps<IDevSiteDe
         return this.props.view === ComponentViewTypes.examples
             ? `${classNames} ${this.props.managedClasses.componentWrapperExamples}`
             : classNames;
-
     }
 
     private handleClick = (): void => {
