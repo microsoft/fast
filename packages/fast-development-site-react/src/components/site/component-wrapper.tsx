@@ -44,11 +44,8 @@ const styles: ComponentStyles<IComponentWrapperManagedClasses, IDevSiteDesignSys
         background: checker
     },
     componentWrapperExamples: {
-        "&:last-child:not(:nth-child(3n + 3)), &:nth-child(3n + 1)": {
+        "&:nth-child(3n + 1), &:nth-child(3n + 2)": {
             borderRight: componentWrapperBorder,
-        },
-        "&:nth-child(3n + 3)": {
-            borderLeft: componentWrapperBorder
         },
     },
     componentWrapper__active: {
@@ -107,11 +104,13 @@ class ComponentWrapper extends React.Component<IComponentWrapperProps<IDevSiteDe
             ? `${this.props.managedClasses.componentWrapper__transparent} ${classNames}`
             : classNames;
 
-        return this.props.active && this.props.view === ComponentViewTypes.examples
-            ? `${classNames} ${this.props.managedClasses.componentWrapperExamples} ${this.props.managedClasses.componentWrapper__active}`
-            : this.props.view === ComponentViewTypes.detail
-            ? `${classNames} ${this.props.managedClasses.componentWrapper__active}`
+        classNames = this.props.active
+            ? `${this.props.managedClasses.componentWrapper} ${this.props.managedClasses.componentWrapper__active}`
+            : this.props.managedClasses.componentWrapper;
+        return this.props.view === ComponentViewTypes.examples
+            ? `${classNames} ${this.props.managedClasses.componentWrapperExamples}`
             : classNames;
+
     }
 
     private handleClick = (): void => {
