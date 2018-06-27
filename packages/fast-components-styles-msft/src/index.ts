@@ -27,6 +27,12 @@ import DividerStyles from "./divider";
 export { DividerStyles };
 
 /**
+ * Export flipper styles
+ */
+import FlipperStyles from "./flipper";
+export { FlipperStyles };
+
+/**
  * Export image styles
  */
 import ImageStyles from "./image";

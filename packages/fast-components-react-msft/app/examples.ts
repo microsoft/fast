@@ -7,6 +7,9 @@ export { CheckboxExamples };
 import DividerExample from "../src/divider/examples.data";
 export { DividerExample };
 
+import FlipperExample from "../src/flipper/examples.data";
+export { FlipperExample };
+
 import HeadingExample from "../src/heading/examples.data";
 export { HeadingExample };
 
