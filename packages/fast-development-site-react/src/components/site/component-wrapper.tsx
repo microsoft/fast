@@ -24,6 +24,7 @@ export interface IComponentWrapperProps<T> {
     singleRow?: boolean;
     designSystem: T;
     view: ComponentViewTypes;
+    dir?: string;
     transparentBackground?: boolean;
     onClick?: (activeIndex: number) => void;
 }
@@ -72,7 +73,7 @@ const styles: ComponentStyles<IComponentWrapperManagedClasses, IDevSiteDesignSys
 class ComponentWrapper extends React.Component<IComponentWrapperProps<IDevSiteDesignSystem> & IManagedClasses<IComponentWrapperManagedClasses>, {}> {
     public render(): JSX.Element {
         return (
-            <div className={this.getClassNames()} onClick={this.handleClick}>
+            <div className={this.getClassNames()} onClick={this.handleClick} dir={this.props.dir}>
                 {this.renderChildren()}
             </div>
         );
