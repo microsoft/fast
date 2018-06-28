@@ -8,6 +8,7 @@ import manageJss, {
 } from "@microsoft/fast-jss-manager-react";
 import { ErrorBoundary, IErrorBoundaryProps } from "../../utilities";
 import { toPx } from "@microsoft/fast-jss-utilities";
+import { Direction } from "@microsoft/fast-application-utilities";
 import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
 import { ComponentViewTypes } from "./component-view";
 

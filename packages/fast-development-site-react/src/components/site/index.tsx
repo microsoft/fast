@@ -624,6 +624,8 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 <ComponentWrapper
                     key={index}
                     index={index}
+                    dir={isRTL(this.state.locale) ? Direction.rtl : Direction.ltr}
+                    transparentBackground={this.state.componentBackgroundTransparent}
                     designSystem={component.props.designSystem}
                     active={true}
                     view={this.state.componentView}
