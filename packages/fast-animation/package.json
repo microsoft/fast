@@ -2,16 +2,17 @@
   "name": "@microsoft/fast-animation",
   "description": "An animation library that simplifies interactions and animations using the Web Animation API.",
   "version": "1.8.0",
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
   "license": "MIT",
-  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
-  "author": {
-    "name": "Microsoft",
-    "email": "fwq@microsoft.com"
-  },
+  "readme": "README.md",
+  "main": "dist/index.js",
   "scripts": {
     "build:app": "webpack --config webpack/webpack.react.config.js",
     "prepare": "tsc -p ./lib/tsconfig.json",
@@ -20,6 +21,22 @@
     "tslint": "tslint -c ./tslint.json '**/*.ts{,x}'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'",
     "unit-tests": "jest"
+  },
+  "jest": {
+    "rootDir": "./",
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "collectCoverage": true,
+    "moduleDirectories": [
+      "node_modules"
+    ]
   },
   "devDependencies": {
     "@microsoft/fast-tslint-rules": "^1.8.0",
@@ -68,21 +85,5 @@
   },
   "peerDependencies": {
     "lodash-es": "^4.0.0"
-  },
-  "jest": {
-    "rootDir": "./",
-    "transform": {
-      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-    },
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
-    "collectCoverage": true,
-    "moduleDirectories": [
-      "node_modules"
-    ]
   }
 }
