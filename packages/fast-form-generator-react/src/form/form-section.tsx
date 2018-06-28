@@ -300,8 +300,9 @@ class FormSection extends React.Component<IFormSectionProps & IManagedClasses<IF
             categories.push(
                 <FormCategory
                     id={contentId}
-                    isExpanded={true}
                     key={i}
+                    Expandable={true}
+                    isExpanded={true}
                     categoryItem={categoryFormItems}
                     title={categoryParams[i].title}
                 />

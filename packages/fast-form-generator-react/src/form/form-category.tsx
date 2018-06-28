@@ -21,6 +21,11 @@ export interface IFormCategoryProps {
     title: string;
 
     /**
+     * Is the category expandable
+     */
+    Expandable?: boolean;
+
+    /**
      * Is the category expanded
      */
     isExpanded?: boolean;
@@ -28,7 +33,7 @@ export interface IFormCategoryProps {
     /**
      * Passes the id
      */
-    id: string;
+    id?: string;
 }
 
 export interface IFormCategoryState {
@@ -45,9 +50,11 @@ class FormCategory extends React.Component<IFormCategoryProps & IManagedClasses<
     constructor(props: IFormCategoryProps & IManagedClasses<IFormCategoryClassNameContract>) {
         super(props);
 
-        this.state = {
-            isCategoryExpanded: this.props.isExpanded || true
-        };
+        if (this.props.Expandable) {
+            this.state = {
+                isCategoryExpanded: this.props.isExpanded,
+            };
+        }
     }
     /**
      * Renders the component
@@ -61,23 +68,27 @@ class FormCategory extends React.Component<IFormCategoryProps & IManagedClasses<
 
         return (
             <div key={this.props.title}>
-                <button
-                    onClick={this.handleCategoryCollapse}
-                    aria-expanded={this.state.isCategoryExpanded}
-                    aria-controls={this.props.id}
-                    className={this.props.managedClasses.formCategory_button}
-                >
-                        {this.props.title}
-                </button>
+                {this.renderHeader()}
                 <div
-                    id={this.props.id}
                     className={this.getClassNames()}
-                    aria-hidden={!this.state.isCategoryExpanded}
+                    {...this.generateContainerAttributes()}
                 >
                     {this.props.categoryItem}
                 </div>
             </div>
         );
+    }
+
+    private generateContainerAttributes(): React.HtmlHTMLAttributes<HTMLDivElement> {
+        if (!this.props.Expandable) {
+            return;
+        }
+
+        const attributes: Partial<React.HtmlHTMLAttributes<HTMLDivElement>> = {};
+        attributes["aria-hidden"] = !this.state.isCategoryExpanded;
+        attributes.id = this.props.id;
+
+        return attributes;
     }
 
     private handleCategoryCollapse = (): void => {
@@ -87,11 +98,38 @@ class FormCategory extends React.Component<IFormCategoryProps & IManagedClasses<
     }
 
     private getClassNames(): string {
-        const classNames: string = this.state.isCategoryExpanded
+        const classNames: string = this.props.Expandable
+            ? this.state.isCategoryExpanded
             ? this.props.managedClasses.formCategory
-            : this.props.managedClasses.formCategory__collapsed;
+            : this.props.managedClasses.formCategory__collapsed
+            : this.props.managedClasses.formCategory;
 
         return classNames;
+    }
+
+    private renderHeader(): JSX.Element {
+        const header: JSX.Element = this.props.Expandable
+        ? {...this.renderHeaderButton()}
+        : {...this.renderHeaderTitle()};
+
+        return header;
+    }
+
+    private renderHeaderButton(): JSX.Element {
+        return (
+            <button
+                onClick={this.handleCategoryCollapse}
+                aria-expanded={this.state.isCategoryExpanded}
+                aria-controls={this.props.id}
+                className={this.props.managedClasses.formCategory_button}
+            >
+                {this.props.title}
+            </button>
+        );
+    }
+
+    private renderHeaderTitle(): JSX.Element {
+        return <h3 className={this.props.managedClasses.formCategory_header}>{this.props.title}</h3>;
     }
 }
 

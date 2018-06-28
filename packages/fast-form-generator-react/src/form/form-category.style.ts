@@ -1,4 +1,5 @@
 import { toPx } from "@microsoft/fast-jss-utilities";
+import { applyHeaderStyle } from "../utilities/form-input.style";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IFormCategoryClassNameContract } from "../class-name-contracts/";
 import formCategory from "./form-category";
@@ -41,6 +42,10 @@ const styles: ComponentStyles<IFormCategoryClassNameContract, {}> = {
             width: toPx(11),
             height: toPx(11)
         }
+    },
+    formCategory_header: {
+        ...applyHeaderStyle(),
+        fontSize: toPx(14),
     },
     formCategory: {
     },
