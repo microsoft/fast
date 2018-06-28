@@ -1,17 +1,17 @@
 {
   "name": "@microsoft/fast-dna",
   "description": "Fast, adaptive, secure, and timeless design network architecture.",
+  "version": "1.8.0",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
   },
-  "version": "1.0.4",
+  "license": "MIT",
   "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
-  "license": "MIT",
   "readme": "README.md",
   "scripts": {
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"

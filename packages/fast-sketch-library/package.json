@@ -8,10 +8,12 @@
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
   },
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
+  "readme": "README.md",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -21,8 +23,6 @@
     "tslint": "tslint -c ./tslint.json 'src/**/*.ts{,x}' '**/*.ts{,x}'",
     "tslint:fix": "tslint -c ./tslint.json --fix 'src/**/*.ts{,x}' '**/*.ts{,x}'"
   },
-  "license": "MIT",
-  "readme": "README.md",
   "devDependencies": {
     "@brainly/html-sketchapp": "^3.1.0",
     "@microsoft/fast-tslint-rules": "^1.8.0",

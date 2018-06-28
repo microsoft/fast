@@ -12,6 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
+  "readme": "README.md",
   "keywords": [
     "javascript",
     "typescript",

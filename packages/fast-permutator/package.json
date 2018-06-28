@@ -14,7 +14,6 @@
   },
   "readme": "README.md",
   "main": "index.js",
-  "registry": "https://registry.npmjs.org/",
   "scripts": {
     "prepare": "babel src --presets babel-preset-es2015 --out-dir dist",
     "test": "npm run eslint && npm run unit-tests",

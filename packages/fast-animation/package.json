@@ -23,6 +23,15 @@
     "unit-tests": "jest"
   },
   "jest": {
+    "collectCoverage": true,
+    "coverageThreshold": {
+      "global": {
+        "branches": 50,
+        "functions": 50,
+        "lines": 50,
+        "statements": -10
+      }
+    },
     "rootDir": "./",
     "transform": {
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
@@ -33,7 +42,6 @@
       "tsx",
       "js"
     ],
-    "collectCoverage": true,
     "moduleDirectories": [
       "node_modules"
     ]

@@ -3,14 +3,14 @@
   "description": "tslint rules for FAST projects",
   "sideEffects": false,
   "version": "1.8.0",
-  "keywords": [
-    "tslint",
-    "typescript"
-  ],
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
   },
+  "keywords": [
+    "tslint",
+    "typescript"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
