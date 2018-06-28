@@ -1,0 +1,96 @@
+{
+  "name": "@microsoft/fast-css-editor-react",
+  "version": "1.8.0",
+  "description": "A set of React components that allows the user to edit CSS properties",
+  "sideEffects": false,
+  "author": {
+    "name": "Microsoft",
+    "email": "fwq@microsoft.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast-dna.git"
+  },
+  "readme": "README.md",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "clean:dist": "node ../../build/clean.js dist",
+    "copy:all": "npm run copy:json-schema",
+    "copy:json-schema": "node ../../build/copy-schemas.js",
+    "build:app": "webpack --progress",
+    "prepare": "npm run clean:dist && tsc -p ./tsconfig.json && npm run copy:all",
+    "start": "webpack-dev-server",
+    "test": "npm run unit-tests && npm run build:app",
+    "tslint": "tslint -c ./tslint.json '**/*.ts{,x}'",
+    "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'",
+    "unit-tests": "jest --maxWorkers=4",
+    "unit-tests:update": "jest --updateSnapshot",
+    "unit-tests:watch": "jest --watch"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest",
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "!<rootDir>/node_modules/lodash-es",
+      "node_modules/jss-*",
+      "node_modules/css-vendor"
+    ],
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ]
+  },
+  "devDependencies": {
+    "@microsoft/fast-development-site-react": "^1.8.0",
+    "@microsoft/fast-glyphs-msft": "^1.8.0",
+    "@microsoft/fast-jest-snapshots-react": "^1.8.0",
+    "@microsoft/fast-jss-manager": "^1.8.0",
+    "@microsoft/fast-sketch-library": "^1.8.0",
+    "@microsoft/fast-tslint-rules": "^1.8.0",
+    "@types/jest": "^22.2.0",
+    "@types/lodash-es": "^4.17.0",
+    "@types/node": "^9.4.6",
+    "@types/react": "^16.3.0",
+    "babel-core": "^6.26.0",
+    "babel-jest": "^22.4.1",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "fork-ts-checker-webpack-plugin": "^0.4.0",
+    "html-webpack-plugin": "^3.0.4",
+    "jest": "^22.4.2",
+    "lodash-es": "^4.0.0",
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0",
+    "ts-jest": "^22.4.1",
+    "ts-loader": "^4.0.1",
+    "tslint": "^5.9.1",
+    "tslint-loader": "^3.6.0",
+    "typescript": "^2.7.2",
+    "webpack": "^4.1.0",
+    "webpack-cli": "^2.0.11",
+    "webpack-dev-server": "^3.1.0"
+  },
+  "peerDependencies": {
+    "lodash-es": "^4.0.0",
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0"
+  },
+  "dependencies": {
+    "@microsoft/fast-application-utilities": "^1.8.0",
+    "@microsoft/fast-components-class-name-contracts-base": "^1.8.0",
+    "@microsoft/fast-jss-manager-react": "^1.8.0",
+    "@microsoft/fast-jss-utilities": "^1.8.0"
+  }
+}
