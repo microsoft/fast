@@ -106,6 +106,7 @@ export interface ISiteManagedClasses {
     site_paneToggleButtonIcon: string;
     site_paneToggleButtonIconLayout: string;
     site_transparencyToggleButton: string;
+    site_transparencyToggleButtonIcon: string;
     site_statusBar: string;
     site_statusComponentName: string;
     site_statusIndicator: string;
@@ -133,18 +134,18 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
         marginLeft: toPx(4)
     },
     site_infoBarConfiguration: {
-        verticalAlign: "middle",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "flex-end",
         padding: toPx(4),
         width: "50%",
-        float: "right",
-        textAlign: "right"
     },
     site_infoBarConfiguration_direction: {
         position: "relative",
         "&::before, &::after": {
             content: "''",
             position: "absolute",
-            top: toPx(6),
+            top: toPx(11),
             zIndex: "1",
             borderRadius: toPx(2),
             width: toPx(1),
@@ -226,9 +227,11 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
         background: "none",
         height: toPx(32),
         width: toPx(32),
-        outline: "0",
-        verticalAlign: "middle",
-        display: "inline-flex"
+        outline: "0"
+    },
+    site_transparencyToggleButtonIcon: {
+        position: "relative",
+        top: toPx(1)
     },
     site_statusBar: {
         width: "50%",
