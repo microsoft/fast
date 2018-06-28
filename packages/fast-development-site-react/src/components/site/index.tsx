@@ -593,7 +593,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                             key={index}
                             onClick={this.handleComponentClick}
                             index={index}
-                            dir={this.state.locale === "en" ? "ltr" : "rtl"}
+                            dir={isRTL(this.state.locale) ? Direction.rtl : Direction.ltr}
                             transparentBackground={this.state.componentBackgroundTransparent}
                             designSystem={componentItem.props.designSystem}
                             active={index === this.state.activeComponentIndex}
