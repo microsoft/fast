@@ -11,7 +11,7 @@ import * as React from "react";
 import Documentation from "./.tmp/documentation";
 
 const examples: ISnapshotTestSuite<ITextFieldHandledProps & ITextFieldManagedClasses> = {
-    name: "text field",
+    name: "Text field",
     component: TextField,
     schema: schema as any,
     documentation: <Documentation />,

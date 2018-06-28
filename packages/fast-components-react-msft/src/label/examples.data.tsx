@@ -7,7 +7,7 @@ import * as schema from "@microsoft/fast-components-react-base/dist/label/label.
 import Documentation from "./.tmp/documentation";
 
 export default {
-    name: "label",
+    name: "Label",
     component: Label,
     schema: schema as any,
     documentation: <Documentation />,

@@ -11,7 +11,7 @@ import * as schema from "./label.schema.json";
 import Documentation from "./.tmp/documentation";
 
 const examples: ISnapshotTestSuite<ILabelHandledProps & ILabelMangedClasses> = {
-    name: "label",
+    name: "Label",
     component: Label,
     schema: schema as any,
     documentation: <Documentation />,

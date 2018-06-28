@@ -6,7 +6,7 @@ import * as schema from "./hypertext.schema.json";
 import Documentation from "./.tmp/documentation";
 
 const examples: ISnapshotTestSuite<IHypertextHandledProps & IHypertextManagedClasses> = {
-    name: "hypertext",
+    name: "Hypertext",
     component: Hypertext,
     schema: schema as any,
     documentation: <Documentation />,

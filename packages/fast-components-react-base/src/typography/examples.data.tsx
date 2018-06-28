@@ -25,7 +25,7 @@ const managedClassExamples: any = {
 };
 
 const examples: ISnapshotTestSuite<ITypographyHandledProps & ITypographyManagedClasses> = {
-    name: "typography",
+    name: "Typography",
     component: Typography,
     schema: schema as any,
     documentation: <Documentation />,

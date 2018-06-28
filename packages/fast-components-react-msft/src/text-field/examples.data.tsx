@@ -7,7 +7,7 @@ import * as schema from "@microsoft/fast-components-react-base/dist/text-field/t
 import Documentation from "./.tmp/documentation";
 
 export default {
-    name: "text field",
+    name: "Text field",
     component: TextField,
     schema: schema as any,
     documentation: <Documentation />,

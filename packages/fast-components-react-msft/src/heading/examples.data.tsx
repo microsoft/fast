@@ -17,7 +17,7 @@ import Documentation from "./.tmp/documentation";
 const testString: string = "Heading test string";
 
 export default {
-    name: "heading",
+    name: "Heading",
     component: Heading,
     schema: schema as any,
     documentation: <Documentation />,

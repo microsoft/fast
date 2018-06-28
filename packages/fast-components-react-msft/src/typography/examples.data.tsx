@@ -9,7 +9,7 @@ import Documentation from "./.tmp/documentation";
 const testString: string = "Typography example string";
 
 export default {
-    name: "typography",
+    name: "Typography",
     component: Typography,
     schema: schema as any,
     documentation: <Documentation />,

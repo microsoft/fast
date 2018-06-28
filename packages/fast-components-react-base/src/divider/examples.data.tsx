@@ -6,7 +6,7 @@ import * as schema from "./divider.schema.json";
 import Documentation from "./.tmp/documentation";
 
 const examples: ISnapshotTestSuite<IDividerHandledProps & IDividerManagedClasses> = {
-    name: "divider",
+    name: "Divider",
     component: Divider,
     schema: schema as any,
     documentation: <Documentation />,

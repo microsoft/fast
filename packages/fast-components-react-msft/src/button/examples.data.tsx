@@ -13,7 +13,7 @@ import * as schema from "./button.schema.json";
 import Documentation from "./.tmp/documentation";
 
 export default {
-    name: "button",
+    name: "Button",
     component: Button,
     schema: schema as any,
     documentation: <Documentation />,

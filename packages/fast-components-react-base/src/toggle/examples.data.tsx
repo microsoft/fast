@@ -6,7 +6,7 @@ import * as schema from "./toggle.schema.json";
 import Documentation from "./.tmp/documentation";
 
 const examples: ISnapshotTestSuite<IToggleHandledProps & IToggleManagedClasses> = {
-    name: "toggle",
+    name: "Toggle",
     component: Toggle,
     schema: schema as any,
     documentation: <Documentation />,
