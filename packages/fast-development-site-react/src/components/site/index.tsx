@@ -227,6 +227,7 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
         background: "none",
         height: toPx(32),
         width: toPx(32),
+        cursor: "pointer",
         outline: "0"
     },
     site_transparencyToggleButtonIcon: {
