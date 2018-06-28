@@ -5,9 +5,7 @@ import { IFormCategoryClassNameContract } from "../class-name-contracts/";
 import formCategory from "./form-category";
 
 // tslint:disable-next-line
-const dropdownActive: string = "PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHRpdGxlPmNoZXZyb24tZG93bjwvdGl0bGU+PHBhdGggZD0iTTMwLjUsNy4yOSwzMS45LDguNywxNi4yLDI0LjQuNSw4LjcsMS45LDcuMjlsMTQuMywxNC4zWiIvPjwvc3ZnPg==";
-// tslint:disable-next-line
-const dropdownInactive: string = "PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHRpdGxlPmNoZXZyb24tcmlnaHQ8L3RpdGxlPjxwYXRoIGQ9Ik0yMi43OCwxNiw4LjI1LDEuNDUsOS42NSwwbDE2LDE2LTE2LDE2LTEuNC0xLjQxWiIvPjwvc3ZnPg==";
+const dropdownArrow: string = "PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHRpdGxlPmNoZXZyb24tZG93bjwvdGl0bGU+PHBhdGggZD0iTTMwLjUsNy4yOSwzMS45LDguNywxNi4yLDI0LjQuNSw4LjcsMS45LDcuMjlsMTQuMywxNC4zWiIvPjwvc3ZnPg==";
 
 const styles: ComponentStyles<IFormCategoryClassNameContract, {}> = {
     formCategory_button: {
@@ -25,14 +23,15 @@ const styles: ComponentStyles<IFormCategoryClassNameContract, {}> = {
         textAlign: "left",
         "&[aria-expanded='true']": {
             "&::after": {
-                content: `url('data:image/svg+xml;base64,${dropdownActive}')`
+                content: `url('data:image/svg+xml;base64,${dropdownArrow}')`,
+                transform: "rotate(180deg)",
             }
         },
         "&:hover": {
             cursor: "pointer"
         },
         "&::after": {
-            content: `url('data:image/svg+xml;base64,${dropdownInactive}')`,
+            content: `url('data:image/svg+xml;base64,${dropdownArrow}')`,
             fill: "white",
             position: "absolute",
             right: toPx(11),
