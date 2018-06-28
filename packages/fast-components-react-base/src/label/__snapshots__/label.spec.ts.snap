@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`label label: 0 1`] = `
+exports[`label Label: 0 1`] = `
 <label
   className="label"
 >
@@ -8,7 +8,7 @@ exports[`label label: 0 1`] = `
 </label>
 `;
 
-exports[`label label: 1 1`] = `
+exports[`label Label: 1 1`] = `
 <legend
   className="label"
 >
@@ -16,7 +16,7 @@ exports[`label label: 1 1`] = `
 </legend>
 `;
 
-exports[`label label: 2 1`] = `
+exports[`label Label: 2 1`] = `
 <label
   className="hidden_label"
 >

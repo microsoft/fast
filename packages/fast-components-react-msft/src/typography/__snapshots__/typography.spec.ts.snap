@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`typography typography: 0 1`] = `
+exports[`typography Typography: 0 1`] = `
 <p
   className="typography_1-0-1-1"
 >
@@ -8,7 +8,7 @@ exports[`typography typography: 0 1`] = `
 </p>
 `;
 
-exports[`typography typography: 1 1`] = `
+exports[`typography Typography: 1 1`] = `
 <h1
   className="typography_1-0-1-10"
   data-sketch-symbol="Typographic level 1"
@@ -17,7 +17,7 @@ exports[`typography typography: 1 1`] = `
 </h1>
 `;
 
-exports[`typography typography: 2 1`] = `
+exports[`typography Typography: 2 1`] = `
 <h2
   className="typography_2-0-1-20"
   data-sketch-symbol="Typographic level 2"
@@ -26,7 +26,7 @@ exports[`typography typography: 2 1`] = `
 </h2>
 `;
 
-exports[`typography typography: 3 1`] = `
+exports[`typography Typography: 3 1`] = `
 <h3
   className="typography_3-0-1-30"
   data-sketch-symbol="Typographic level 3"
@@ -35,7 +35,7 @@ exports[`typography typography: 3 1`] = `
 </h3>
 `;
 
-exports[`typography typography: 4 1`] = `
+exports[`typography Typography: 4 1`] = `
 <h4
   className="typography_4-0-1-40"
   data-sketch-symbol="Typographic level 4"
@@ -44,7 +44,7 @@ exports[`typography typography: 4 1`] = `
 </h4>
 `;
 
-exports[`typography typography: 5 1`] = `
+exports[`typography Typography: 5 1`] = `
 <h5
   className="typography_5-0-1-50"
   data-sketch-symbol="Typographic level 5"
@@ -53,7 +53,7 @@ exports[`typography typography: 5 1`] = `
 </h5>
 `;
 
-exports[`typography typography: 6 1`] = `
+exports[`typography Typography: 6 1`] = `
 <h6
   className="typography_6-0-1-60"
   data-sketch-symbol="Typographic level 6"
@@ -62,7 +62,7 @@ exports[`typography typography: 6 1`] = `
 </h6>
 `;
 
-exports[`typography typography: 7 1`] = `
+exports[`typography Typography: 7 1`] = `
 <span
   className="typography_7-0-1-70"
   data-sketch-symbol="Typographic level 7"
@@ -71,7 +71,7 @@ exports[`typography typography: 7 1`] = `
 </span>
 `;
 
-exports[`typography typography: 8 1`] = `
+exports[`typography Typography: 8 1`] = `
 <caption
   className="typography_8-0-1-80"
   data-sketch-symbol="Typographic level 8"
@@ -80,7 +80,7 @@ exports[`typography typography: 8 1`] = `
 </caption>
 `;
 
-exports[`typography typography: 9 1`] = `
+exports[`typography Typography: 9 1`] = `
 <p
   className="typography_9-0-1-90"
   data-sketch-symbol="Typographic level 9"

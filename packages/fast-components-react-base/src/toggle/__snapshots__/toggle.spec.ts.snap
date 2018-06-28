@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`toggle toggle: 0 1`] = `
+exports[`toggle Toggle: 0 1`] = `
 <div
   aria-disabled={null}
   className="toggle"
