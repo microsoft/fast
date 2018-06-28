@@ -6,7 +6,7 @@ import * as schema from "./image.schema.json";
 import Documentation from "./.tmp/documentation";
 
 const examples: ISnapshotTestSuite<IImageHandledProps & IImageMangedClasses> = {
-    name: "image",
+    name: "Image",
     component: Image,
     schema: schema as any,
     documentation: <Documentation />,

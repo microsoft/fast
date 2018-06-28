@@ -16,7 +16,7 @@ const classes: ICheckboxManagedClasses = {
 };
 
 const examples: ISnapshotTestSuite<ICheckboxHandledProps & ICheckboxManagedClasses> = {
-    name: "checkbox",
+    name: "Checkbox",
     component: Checkbox,
     schema: schema as any,
     documentation: <Documentation />,

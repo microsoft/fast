@@ -7,7 +7,7 @@ import * as schema from "@microsoft/fast-components-react-base/dist/checkbox/che
 import Documentation from "./.tmp/documentation";
 
 export default {
-    name: "checkbox",
+    name: "Checkbox",
     component: Checkbox,
     schema: schema as any,
     documentation: <Documentation />,

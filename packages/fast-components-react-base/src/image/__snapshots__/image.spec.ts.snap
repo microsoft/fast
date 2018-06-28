@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`image image: 0 1`] = `
+exports[`image Image: 0 1`] = `
 <picture
   className="picture"
 >

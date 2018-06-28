@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`text-field text field: 0 1`] = `
+exports[`text-field Text field: 0 1`] = `
 <input
   className="textfield"
   disabled={null}
@@ -9,7 +9,7 @@ exports[`text-field text field: 0 1`] = `
 />
 `;
 
-exports[`text-field text field: 1 1`] = `
+exports[`text-field Text field: 1 1`] = `
 <input
   className="textfield"
   disabled={null}
@@ -18,7 +18,7 @@ exports[`text-field text field: 1 1`] = `
 />
 `;
 
-exports[`text-field text field: 2 1`] = `
+exports[`text-field Text field: 2 1`] = `
 <input
   className="textfield"
   disabled={null}
@@ -27,7 +27,7 @@ exports[`text-field text field: 2 1`] = `
 />
 `;
 
-exports[`text-field text field: 3 1`] = `
+exports[`text-field Text field: 3 1`] = `
 <input
   className="textfield"
   disabled={null}

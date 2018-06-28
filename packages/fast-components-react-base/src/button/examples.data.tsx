@@ -6,7 +6,7 @@ import * as schema from "./button.schema.json";
 import Documentation from "./.tmp/documentation";
 
 const examples: ISnapshotTestSuite<IButtonHandledProps & IButtonManagedClasses> = {
-    name: "button",
+    name: "Button",
     component: Button,
     schema: schema as any,
     documentation: <Documentation />,

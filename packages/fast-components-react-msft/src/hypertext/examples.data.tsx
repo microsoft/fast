@@ -7,7 +7,7 @@ import * as schema from "@microsoft/fast-components-react-base/dist/hypertext/hy
 import Documentation from "./.tmp/documentation";
 
 export default {
-    name: "hypertext",
+    name: "Hypertext",
     component: Hypertext,
     schema: schema as any,
     documentation: <Documentation />,

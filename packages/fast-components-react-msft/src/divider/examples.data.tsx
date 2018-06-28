@@ -7,7 +7,7 @@ import * as schema from "@microsoft/fast-components-react-base/dist/divider/divi
 import Documentation from "./.tmp/documentation";
 
 export default {
-    name: "divider",
+    name: "Divider",
     component: Divider,
     schema: schema as any,
     documentation: <Documentation />,

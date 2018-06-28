@@ -7,7 +7,7 @@ import * as schema from "@microsoft/fast-components-react-base/dist/toggle/toggl
 import Documentation from "./.tmp/documentation";
 
 export default {
-    name: "toggle",
+    name: "Toggle",
     component: Toggle,
     schema: schema as any,
     documentation: <Documentation />,
