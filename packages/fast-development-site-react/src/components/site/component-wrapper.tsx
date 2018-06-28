@@ -74,7 +74,7 @@ const styles: ComponentStyles<IComponentWrapperManagedClasses, IDevSiteDesignSys
 class ComponentWrapper extends React.Component<IComponentWrapperProps<IDevSiteDesignSystem> & IManagedClasses<IComponentWrapperManagedClasses>, {}> {
     public render(): JSX.Element {
         return (
-            <div className={this.getClassNames()} onClick={this.handleClick} dir={this.props.dir}>
+            <div className={this.getClassNames()} onClick={this.handleClick} dir={this.props.dir || null}>
                 {this.renderChildren()}
             </div>
         );
