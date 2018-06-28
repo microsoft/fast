@@ -41,7 +41,7 @@ const styles: ComponentStyles<IComponentWrapperManagedClasses, IDevSiteDesignSys
         borderBottom: componentWrapperBorder,
     },
     componentWrapper__transparent: {
-        background: `transparent ${toPx(8)}/${toPx(8)} ${checker} repeat`
+        background: `transparent 0 ${toPx(16)}/${toPx(16)} ${checker} repeat`
     },
     componentWrapperExamples: {
         "&:last-child:not(:nth-child(3n + 3)), &:nth-child(3n + 1)": {
