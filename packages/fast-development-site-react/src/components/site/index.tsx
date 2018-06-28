@@ -49,7 +49,7 @@ export interface ISiteProps {
     frameworks?: FrameworkEnum | FrameworkEnum[];
     activeFramework?: FrameworkEnum;
     collapsed?: boolean;
-    transparent?: boolean;
+    componentBackgroundTransparent?: boolean;
 }
 
 export interface IFormChildOption {
@@ -281,7 +281,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
             currentPath: this.initialPath,
             activeComponentIndex: 0,
             tableOfContentsCollapsed: this.props.collapsed || false,
-            componentBackgroundTransparent: this.props.transparent || false,
+            componentBackgroundTransparent: this.props.componentBackgroundTransparent || false,
             componentView: ComponentViewTypes.examples,
             componentName: this.getComponentName(this.initialPath),
             componentData: this.getComponentData(),
