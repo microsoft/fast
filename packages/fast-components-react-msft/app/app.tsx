@@ -2,7 +2,7 @@ import * as React from "react";
 import { glyphBuildingblocks } from "@microsoft/fast-glyphs-msft";
 import manageJss, { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import { DesignSystemDefaults, IDesignSystem } from "@microsoft/fast-components-styles-msft";
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { IHypertextClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import Site, {
     componentFactory,
     formChildFromExamplesFactory,
@@ -26,7 +26,7 @@ const sketchDesignKit = require("./fast-dna-msft-design-kit.sketch");
 
 const formChildOptions: IFormChildOption[] = formChildFromExamplesFactory(examples);
 
-const hypertextStyles: ComponentStyles<IColumnClassNamesContract, undefined> = {
+const hypertextStyles: ComponentStyles<IHypertextClassNameContract, undefined> = {
     hypertext: {
         margin: "0 8px",
         display: "inline-block",
