@@ -64,6 +64,8 @@ The `Site` component should be used as the wrapping component for the developmen
 
 **onUpdateDirection** - The callback provided for an update in RTL, it will execute the given callback with "rtl" or "ltr".
 
+**componentBackgroundTransparent** - Adds an initial background transparency to the examples on the component view.
+
 ### SiteTitle
 The `SiteTitle` is used as a child of `Site` and should contain the title of the application/site which will appear in the header.
 

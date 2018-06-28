@@ -1,7 +1,7 @@
 import Toc, { TocItem } from "../toc";
 import * as React from "react";
 import manageJss, { ComponentStyles, DesignSystemProvider, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
-import { glyphBuildingblocks, glyphGlobalnavbutton } from "@microsoft/fast-glyphs-msft";
+import { glyphBuildingblocks, glyphGlobalnavbutton, glyphTransparency } from "@microsoft/fast-glyphs-msft";
 import Form from "@microsoft/fast-form-generator-react";
 import { uniqueId } from "lodash-es";
 import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
@@ -49,6 +49,7 @@ export interface ISiteProps {
     frameworks?: FrameworkEnum | FrameworkEnum[];
     activeFramework?: FrameworkEnum;
     collapsed?: boolean;
+    componentBackgroundTransparent?: boolean;
 }
 
 export interface IFormChildOption {
@@ -79,6 +80,7 @@ export interface ISiteState {
     detailViewComponentData: IComponentData;
     tableOfContentsCollapsed: boolean;
     componentView: ComponentViewTypes;
+    componentBackgroundTransparent: boolean;
     formView: boolean;
     devToolsView: boolean;
     locale: string;
@@ -103,6 +105,8 @@ export interface ISiteManagedClasses {
     site_paneToggleButton: string;
     site_paneToggleButtonIcon: string;
     site_paneToggleButtonIconLayout: string;
+    site_transparencyToggleButton: string;
+    site_transparencyToggleButtonIcon: string;
     site_statusBar: string;
     site_statusComponentName: string;
     site_statusIndicator: string;
@@ -130,18 +134,18 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
         marginLeft: toPx(4)
     },
     site_infoBarConfiguration: {
-        verticalAlign: "middle",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "flex-end",
         padding: toPx(4),
         width: "50%",
-        float: "right",
-        textAlign: "right"
     },
     site_infoBarConfiguration_direction: {
         position: "relative",
         "&::before, &::after": {
             content: "''",
             position: "absolute",
-            top: toPx(6),
+            top: toPx(11),
             zIndex: "1",
             borderRadius: toPx(2),
             width: toPx(1),
@@ -208,6 +212,7 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
         width: toPx(16),
         justifyContent: "center",
         fontSize: toPx(16),
+        paddingTop: toPx(2),
         display: "inline-block"
     },
     site_paneToggleButtonIconLayout: {
@@ -216,6 +221,18 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
         display: "flex",
         alignItems: "center",
         justifyContent: "center"
+    },
+    site_transparencyToggleButton: {
+        border: "none",
+        background: "none",
+        height: toPx(32),
+        width: toPx(32),
+        cursor: "pointer",
+        outline: "0"
+    },
+    site_transparencyToggleButtonIcon: {
+        position: "relative",
+        top: toPx(1)
     },
     site_statusBar: {
         width: "50%",
@@ -264,6 +281,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
             currentPath: this.initialPath,
             activeComponentIndex: 0,
             tableOfContentsCollapsed: this.props.collapsed || false,
+            componentBackgroundTransparent: this.props.componentBackgroundTransparent || false,
             componentView: ComponentViewTypes.examples,
             componentName: this.getComponentName(this.initialPath),
             componentData: this.getComponentData(),
@@ -578,6 +596,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                             key={index}
                             onClick={this.handleComponentClick}
                             index={index}
+                            transparentBackground={this.state.componentBackgroundTransparent}
                             designSystem={componentItem.props.designSystem}
                             active={index === this.state.activeComponentIndex}
                             view={this.state.componentView}
@@ -607,6 +626,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 <ComponentWrapper
                     key={index}
                     index={index}
+                    transparentBackground={this.state.componentBackgroundTransparent}
                     designSystem={component.props.designSystem}
                     active={true}
                     view={this.state.componentView}
@@ -664,6 +684,12 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     private renderInfoBarConfiguration(): JSX.Element {
         return (
             <div className={this.props.managedClasses.site_infoBarConfiguration}>
+                <button
+                    onClick={this.handleTransparencyToggleClick}
+                    className={this.props.managedClasses.site_transparencyToggleButton}
+                >
+                    <span dangerouslySetInnerHTML={{__html: glyphTransparency}}/>
+                </button>
                 <span className={this.props.managedClasses.site_infoBarConfiguration_direction}>
                     <select
                         className={this.props.managedClasses.site_infoBarConfiguration_direction_input}
@@ -765,6 +791,12 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     private handlePaneCollapse = (): void => {
         this.setState({
             tableOfContentsCollapsed: !this.state.tableOfContentsCollapsed
+        });
+    }
+
+    private handleTransparencyToggleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
+        this.setState({
+            componentBackgroundTransparent: !this.state.componentBackgroundTransparent
         });
     }
 
