@@ -21,20 +21,20 @@ exports[`weight-properties weight-properties: 0 1`] = `
             </button>
             <div
               aria-hidden={false}
-              className="formCategory-0-1-12"
+              className="formCategory-0-1-13"
               id="content1"
             >
               <div
-                className="formItemTextarea-0-1-14"
+                className="formItemTextarea-0-1-15"
               >
                 <label
-                  className="formItemTextarea_label-0-1-15"
+                  className="formItemTextarea_label-0-1-16"
                   htmlFor="title"
                 >
                   Title
                 </label>
                 <textarea
-                  className="formItemTextarea_textarea-0-1-16"
+                  className="formItemTextarea_textarea-0-1-17"
                   id="title"
                   name="title"
                   onChange={[Function]}
@@ -43,16 +43,16 @@ exports[`weight-properties weight-properties: 0 1`] = `
                 />
               </div>
               <div
-                className="formItemTextarea-0-1-17"
+                className="formItemTextarea-0-1-18"
               >
                 <label
-                  className="formItemTextarea_label-0-1-18"
+                  className="formItemTextarea_label-0-1-19"
                   htmlFor="text"
                 >
                   Text
                 </label>
                 <textarea
-                  className="formItemTextarea_textarea-0-1-19"
+                  className="formItemTextarea_textarea-0-1-20"
                   id="text"
                   name="text"
                   onChange={[Function]}
@@ -61,16 +61,16 @@ exports[`weight-properties weight-properties: 0 1`] = `
                 />
               </div>
               <div
-                className="formItemTextarea-0-1-20"
+                className="formItemTextarea-0-1-21"
               >
                 <label
-                  className="formItemTextarea_label-0-1-21"
+                  className="formItemTextarea_label-0-1-22"
                   htmlFor="details"
                 >
                   Details
                 </label>
                 <textarea
-                  className="formItemTextarea_textarea-0-1-22"
+                  className="formItemTextarea_textarea-0-1-23"
                   id="details"
                   name="details"
                   onChange={[Function]}
@@ -84,34 +84,34 @@ exports[`weight-properties weight-properties: 0 1`] = `
             <button
               aria-controls="formatting2"
               aria-expanded={true}
-              className="formCategory_button-0-1-23"
+              className="formCategory_button-0-1-24"
               onClick={[Function]}
             >
               Formatting
             </button>
             <div
               aria-hidden={false}
-              className="formCategory-0-1-24"
+              className="formCategory-0-1-26"
               id="formatting2"
             >
               <div>
                 <div
-                  className="formItemAlignHorizontal-0-1-26"
+                  className="formItemAlignHorizontal-0-1-28"
                 >
                   <label
-                    className="formItemAlignHorizontal_label-0-1-27"
+                    className="formItemAlignHorizontal_label-0-1-29"
                     htmlFor="alignHorizontal"
                   >
                     Align horizontal
                   </label>
                   <div
-                    className="formItemAlignHorizontal_inputContainer-0-1-28"
+                    className="formItemAlignHorizontal_inputContainer-0-1-30"
                   >
                     <span>
                       <input
                         aria-label="left align"
                         checked={true}
-                        className="formItemAlignHorizontal_input__left-0-1-29"
+                        className="formItemAlignHorizontal_input__left-0-1-31"
                         id="alignHorizontal"
                         name="alignHorizontal"
                         onChange={[Function]}
@@ -123,7 +123,7 @@ exports[`weight-properties weight-properties: 0 1`] = `
                       <input
                         aria-label="center align"
                         checked={false}
-                        className="formItemAlignHorizontal_input__center-0-1-30"
+                        className="formItemAlignHorizontal_input__center-0-1-32"
                         id="alignHorizontal"
                         name="alignHorizontal"
                         onChange={[Function]}
@@ -135,7 +135,7 @@ exports[`weight-properties weight-properties: 0 1`] = `
                       <input
                         aria-label="right align"
                         checked={false}
-                        className="formItemAlignHorizontal_input__right-0-1-31"
+                        className="formItemAlignHorizontal_input__right-0-1-33"
                         id="alignHorizontal"
                         name="alignHorizontal"
                         onChange={[Function]}
@@ -147,18 +147,18 @@ exports[`weight-properties weight-properties: 0 1`] = `
                 </div>
               </div>
               <div
-                className="formItemSelect-0-1-32"
+                className="formItemSelect-0-1-34"
               >
                 <label
-                  className="formItemSelect_label-0-1-33"
+                  className="formItemSelect_label-0-1-35"
                 >
                   Align vertical
                 </label>
                 <span
-                  className="formItemSelect_span-0-1-34"
+                  className="formItemSelect_span-0-1-36"
                 >
                   <select
-                    className="formItemSelect_input-0-1-35"
+                    className="formItemSelect_input-0-1-37"
                     onChange={[Function]}
                     value="top"
                   >
@@ -181,16 +181,16 @@ exports[`weight-properties weight-properties: 0 1`] = `
                 </span>
               </div>
               <div
-                className="formItemNumberField-0-1-36"
+                className="formItemNumberField-0-1-38"
               >
                 <label
-                  className="formItemNumberField_label-0-1-37"
+                  className="formItemNumberField_label-0-1-39"
                   htmlFor="level"
                 >
                   Level
                 </label>
                 <input
-                  className="formItemNumberField_input-0-1-38"
+                  className="formItemNumberField_input-0-1-40"
                   id="level"
                   max={undefined}
                   min={undefined}
@@ -207,29 +207,29 @@ exports[`weight-properties weight-properties: 0 1`] = `
             <button
               aria-controls="developer3"
               aria-expanded={true}
-              className="formCategory_button-0-1-39"
+              className="formCategory_button-0-1-41"
               onClick={[Function]}
             >
               Developer
             </button>
             <div
               aria-hidden={false}
-              className="formCategory-0-1-40"
+              className="formCategory-0-1-43"
               id="developer3"
             >
               <div
-                className="formItemSelect-0-1-42"
+                className="formItemSelect-0-1-45"
               >
                 <label
-                  className="formItemSelect_label-0-1-43"
+                  className="formItemSelect_label-0-1-46"
                 >
                   HTML tag
                 </label>
                 <span
-                  className="formItemSelect_span-0-1-44"
+                  className="formItemSelect_span-0-1-47"
                 >
                   <select
-                    className="formItemSelect_input-0-1-45"
+                    className="formItemSelect_input-0-1-48"
                     onChange={[Function]}
                     value="span"
                   >
