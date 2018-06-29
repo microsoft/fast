@@ -1,0 +1,75 @@
+# Code Owners
+# Code owners have the ability to approve a pull request that has made changes in the below files or package(s).
+# At least one Code Owner will be required for any package.
+
+# Lines starting with '#' are comments.
+# Each line is a file pattern followed by one or more owners,
+# the last matching pattern has the most precendence.
+
+# These owners will be the default owners for everything in the repo.
+*       @chrisdholt @janechu @nicholasrice
+
+# File type specific owners
+
+# .md specific files
+*.md    @awentzel @nalogiudice
+
+# Package specific owners
+
+# fast-animation
+packages/fast-animation/*  @nicholasrice @chrisdholt
+
+# fast-application-utils
+packages/fast-application-utils/* @janechu @chrisdholt
+
+# fast-browser-extension
+packages/fast-browser-extension/* @nicholasrice @janechu
+
+# fast-colors
+packages/fast-colors/* @nicholasrice @chrisdholt
+
+# fast-components-*
+packages/fast-components-class-name-contracts-base/* @chrisdholt @janechu
+packages/fast-components-class-name-contracts-msft/* @chrisdholt @janechu
+packages/fast-components-react-base/* @chrisdholt @janechu
+packages/fast-components-react-msft/* @chrisdholt @janechu
+packages/fast-components-styles-msft/* @chrisdholt @janechu
+
+# fast-development-site
+packages/fast-development-site/* @nicholasrice @chrisdholt @janechu
+
+# fast-form-generator
+packages/fast-form-generator/* @janechu, @nicholasrice
+
+# fast-glyphs
+packages/fast-glyphs/* @janechu, @chrisdholt
+
+# fast-jest-snapshots
+packages/fast-jest-snapshots @nicholasrice @janechu @chrisdholt
+
+# fast-jss-manager-*
+packages/fast-jss-manager @nicholasrice @janechu @chrisdholt
+packages/fast-jss-manager-angular @nicholasrice @janechu @chrisdholt
+packages/fast-jss-manager-react @nicholasrice @janechu @chrisdholt
+packages/fast-jss-utilities @nicholasrice @janechu @chrisdholt
+
+# fast-layouts-react
+packages/fast-layouts-react/* @chrisdholt @nicholasrice
+
+# fast-markdown-react
+packages/fast-markdown-msft-react/* @janechu @chrisdholt
+
+# fast-permutator
+packages/fast-permutator/* @janechu @nicholasrice
+
+# fast-sketch-library
+packages/fast-sketch-library/* @nicholasrice @janechu
+
+# fast-tslint-rules
+packages/fast-tslint-rules/* @nicholasrice @janechu @chrisdholt
+
+# fast-viewer-react
+packages/fast-viewer-react/* @janechu @chrisdholt
+
+# Other
+.github/CODEOWNERS.md @awentzel @janechu @chrisdholt @nicholasrice
