@@ -30,6 +30,19 @@ Contributors can be nominated as Collaborators by Steering Committee members. On
 
 Nominations for Collaborator status happen through the typical Steering Committee decision making process. That is, to nominate one or more Collaborators, Steering Committee then moves to interview the nominees. The nominee is approved or rejected following the same consensus seeking process for new team members.
 
+#### Code Owners
+Collaborators can become a Code Owner for a specific package(s). They have the ability to approve a pull request that has made changes in those package(s) and at least one Code Owner will be required for any package.
+
+Collaborators can be nominated as a Code Owner for a specific package by Steering Committee members and will go through the same process that a Contributor does to become a Collaborator.
+
+##### Expectations of owners
+Owners should:
+- Be providing valuable, high-quality reviews and feedback.
+- Have submitted substantial and non-trivial changes to the package/filetype they are assigned to.
+- Have the bandwidth to do code reviews in a timely manner.
+
+The current list of Code Owners is located in [CODEOWNERS](.github/CODEOWNERS).
+
 ### Contributors
 Membership for Contributors, having 'read' access, can be any individual who have shown interest by contributing a pull request to the project.
 
