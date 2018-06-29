@@ -8,6 +8,7 @@ import manageJss, {
 } from "@microsoft/fast-jss-manager-react";
 import { ErrorBoundary, IErrorBoundaryProps } from "../../utilities";
 import { toPx } from "@microsoft/fast-jss-utilities";
+import { Direction } from "@microsoft/fast-application-utilities";
 import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
 import { ComponentViewTypes } from "./component-view";
 
@@ -24,6 +25,7 @@ export interface IComponentWrapperProps<T> {
     singleRow?: boolean;
     designSystem: T;
     view: ComponentViewTypes;
+    dir?: string;
     transparentBackground?: boolean;
     onClick?: (activeIndex: number) => void;
 }
@@ -72,7 +74,7 @@ const styles: ComponentStyles<IComponentWrapperManagedClasses, IDevSiteDesignSys
 class ComponentWrapper extends React.Component<IComponentWrapperProps<IDevSiteDesignSystem> & IManagedClasses<IComponentWrapperManagedClasses>, {}> {
     public render(): JSX.Element {
         return (
-            <div className={this.getClassNames()} onClick={this.handleClick}>
+            <div className={this.getClassNames()} onClick={this.handleClick} dir={this.props.dir || null}>
                 {this.renderChildren()}
             </div>
         );

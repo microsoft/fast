@@ -461,10 +461,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                             devToolsView={this.state.devToolsView}
                         />
                     </Row>
-                    <div
-                        dir={this.state.locale === "en" ? "ltr" : "rtl"}
-                        className={this.props.managedClasses.site_canvasContent}
-                    >
+                    <div className={this.props.managedClasses.site_canvasContent}>
                         <ComponentView {...{ viewType: this.state.componentView }}>
                             {this.renderChildrenBySlot(this, ShellSlot.canvas)}
                             {this.renderComponentByRoute(route)}
@@ -596,6 +593,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                             key={index}
                             onClick={this.handleComponentClick}
                             index={index}
+                            dir={isRTL(this.state.locale) ? Direction.rtl : Direction.ltr}
                             transparentBackground={this.state.componentBackgroundTransparent}
                             designSystem={componentItem.props.designSystem}
                             active={index === this.state.activeComponentIndex}
@@ -626,6 +624,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 <ComponentWrapper
                     key={index}
                     index={index}
+                    dir={isRTL(this.state.locale) ? Direction.rtl : Direction.ltr}
                     transparentBackground={this.state.componentBackgroundTransparent}
                     designSystem={component.props.designSystem}
                     active={true}
