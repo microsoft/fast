@@ -143,6 +143,11 @@ export interface IFormCategories {
      * The category title
      */
     title: string;
+
+    /**
+     * Allows category to be expandable
+     */
+    expandable?: boolean;
 }
 
 export interface IFormItemParameters {
@@ -189,6 +194,11 @@ export interface IAssignedCategoryParams {
      * display higher the larger the weight is
      */
     itemWeight: number;
+
+    /**
+     * Allows category to be expandable
+     */
+    expandable?: boolean;
 }
 
 export interface IFormItemsWithConfigOptions {

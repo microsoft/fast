@@ -23,7 +23,6 @@ const styles: ComponentStyles<IFormCategoryClassNameContract, {}> = {
         textAlign: "left",
         "&[aria-expanded='true']": {
             "&::after": {
-                content: `url('data:image/svg+xml;base64,${dropdownArrow}')`,
                 transform: "rotate(180deg)",
             }
         },
@@ -35,8 +34,7 @@ const styles: ComponentStyles<IFormCategoryClassNameContract, {}> = {
             fill: "white",
             position: "absolute",
             right: toPx(11),
-            top: toPx(11),
-            verticalAlign: "middle",
+            top: toPx(16),
             display: "inline-block",
             width: toPx(11),
             height: toPx(11)
@@ -45,8 +43,6 @@ const styles: ComponentStyles<IFormCategoryClassNameContract, {}> = {
     formCategory_header: {
         ...applyHeaderStyle(),
         fontSize: toPx(14),
-    },
-    formCategory: {
     },
     formCategory__collapsed: {
         display: "none"

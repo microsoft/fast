@@ -256,6 +256,11 @@ export interface IFormOrderByPropertyNamesCategories {
      * The properties belonging to the category
      */
     properties: IFormOrderByPropertyNamesProperties[];
+
+    /**
+     * Allows category to be expandable
+     */
+    expandable?: boolean;
 }
 
 /**
