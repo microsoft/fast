@@ -26,7 +26,7 @@ class FastMarkdownIt {
     constructor(md: MarkdownIt) {
         md.core.ruler.push("fast", (new CreateRule(md) as any));
         md.renderer.rules.paragraph_open = function(): string {
-            return `<Typography tag="p" typeLevel={7}>`;
+            return `<Typography typeLevel={7}>`;
         };
         md.renderer.rules.heading_open = function(tokens: ITokens<IToken>, idx: number): string {
             const id: string = tokens[idx + 1].children[0].content.toLowerCase().replace(/\s/g, "-").replace(/[^a-z\-]/g, "");
