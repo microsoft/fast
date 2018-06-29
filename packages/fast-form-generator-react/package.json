@@ -28,11 +28,13 @@
   },
   "jest": {
     "collectCoverage": true,
-    "global": {
-      "statements": 60,
-      "branches": 38,
-      "functions": 54,
-      "lines": 60
+    "coverageThreshold": {
+      "global": {
+        "statements": 60,
+        "branches": 38,
+        "functions": 54,
+        "lines": 60
+      }
     },
     "transform": {
       "^.+\\.tsx?$": "ts-jest",
