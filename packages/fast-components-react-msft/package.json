@@ -34,10 +34,10 @@
   "jest": {
     "collectCoverage": true,
     "global": {
-      "branches": 50,
-      "functions": 50,
-      "lines": 50,
-      "statements": 50
+      "statements": 94,
+      "branches": 100,
+      "functions": 57,
+      "lines": 94
     },
     "transform": {
       "^.+\\.tsx?$": "ts-jest",
