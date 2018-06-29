@@ -41,7 +41,7 @@ const styles: ComponentStyles<IComponentWrapperManagedClasses, IDevSiteDesignSys
         borderBottom: componentWrapperBorder,
     },
     componentWrapper__transparent: {
-        background: `${checker}`
+        background: checker
     },
     componentWrapperExamples: {
         "&:last-child:not(:nth-child(3n + 3)), &:nth-child(3n + 1)": {
