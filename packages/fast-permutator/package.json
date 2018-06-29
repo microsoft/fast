@@ -12,7 +12,6 @@
     "type": "git",
     "url": "https://github.com/Microsoft/fast-dna.git"
   },
-  "readme": "README.md",
   "main": "index.js",
   "scripts": {
     "prepare": "babel src --presets babel-preset-es2015 --out-dir dist",

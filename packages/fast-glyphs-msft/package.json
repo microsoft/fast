@@ -25,7 +25,6 @@
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
-  "readme": "README.md",
   "homepage": "https://github.com/Microsoft/fast-tslint-rules#readme",
   "devDependencies": {
     "@microsoft/fast-tslint-rules": "^1.8.0",
