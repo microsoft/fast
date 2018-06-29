@@ -3,14 +3,16 @@
   "description": "Microsoft SVG Glyphs",
   "sideEffects": false,
   "version": "1.8.0",
-  "keywords": [
-    "svg"
-  ],
   "author": {
     "name": "Microsoft",
-    "email": "fwq@microsoft.com"
+    "url": "https://discord.gg/FcSNfg4"
   },
   "license": "MIT",
+  "keywords": [
+    "svg",
+    "icons",
+    "glyphs"
+  ],
   "main": "dist/index.js",
   "scripts": {
     "clean:dist": "node ../../build/clean.js dist",
@@ -23,7 +25,6 @@
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
-  "readme": "README.md",
   "homepage": "https://github.com/Microsoft/fast-tslint-rules#readme",
   "devDependencies": {
     "@microsoft/fast-tslint-rules": "^1.8.0",

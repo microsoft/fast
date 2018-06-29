@@ -5,14 +5,13 @@
   "version": "1.8.0",
   "author": {
     "name": "Microsoft",
-    "email": "fwq@microsoft.com"
+    "url": "https://discord.gg/FcSNfg4"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
-  "readme": "README.md",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
@@ -26,6 +25,14 @@
   },
   "jest": {
     "collectCoverage": true,
+    "coverageThreshold": {
+      "global": {
+        "statements": 100,
+        "branches": 71,
+        "functions": 100,
+        "lines": 100       
+      }
+    },
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },

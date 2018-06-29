@@ -5,16 +5,14 @@
   "version": "1.8.0",
   "author": {
     "name": "Fluent Web",
-    "email": "fwq@microsoft.com"
+    "url": "https://discord.gg/FcSNfg4"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/Microsoft/fast-dna.git"
   },
-  "readme": "README.md",
   "main": "index.js",
-  "registry": "https://registry.npmjs.org/",
   "scripts": {
     "prepare": "babel src --presets babel-preset-es2015 --out-dir dist",
     "test": "npm run eslint && npm run unit-tests",
@@ -25,10 +23,10 @@
     "collectCoverage": true,
     "coverageThreshold": {
       "global": {
-        "branches": 75,
-        "functions": 95,
-        "lines": 85,
-        "statements": 85
+        "statements": 89,
+        "branches": 78,
+        "functions": 96,
+        "lines": 90
       }
     },
     "transformIgnorePatterns": [

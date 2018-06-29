@@ -4,13 +4,13 @@
   "version": "1.8.0",
   "author": {
     "name": "Microsoft",
-    "email": "fwq@microsoft.com"
+    "url": "https://discord.gg/FcSNfg4"
   },
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/Microsoft/fast-dna.git"
   },
-  "license": "MIT",
   "private": true,
   "main": "dist/index.js",
   "scripts": {

@@ -5,8 +5,9 @@
   "version": "1.8.0",
   "author": {
     "name": "Microsoft",
-    "email": "fwq@microsoft.com"
+    "url": "https://discord.gg/FcSNfg4"
   },
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"
@@ -29,10 +30,16 @@
     "unit-tests:update": "jest --updateSnapshot",
     "unit-tests:watch": "jest --watch"
   },
-  "license": "MIT",
-  "readme": "README.md",
   "jest": {
     "collectCoverage": true,
+    "coverageThreshold": {
+      "global": {
+        "statements": 92,
+        "branches": 74,
+        "functions": 82,
+        "lines": 92
+      }
+    },
     "transform": {
       "^.+\\.tsx?$": "ts-jest",
       "^.+\\.jsx?$": "babel-jest"

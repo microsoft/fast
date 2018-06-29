@@ -5,7 +5,7 @@
   "version": "1.8.0",
   "author": {
     "name": "Fluent Web",
-    "email": "fwq@microsoft.com"
+    "url": "https://discord.gg/FcSNfg4"
   },
   "license": "MIT",
   "repository": {
@@ -32,10 +32,10 @@
     "collectCoverage": true,
     "coverageThreshold": {
       "global": {
-        "branches": 29,
-        "functions": 50,
-        "lines": 50,
-        "statements": 50
+        "statements": 66,
+        "branches": 34,
+        "functions": 55,
+        "lines": 66
       }
     },
     "testRegex": "(/__tests__/.*(test|spec))\\.(ts|tsx)$",

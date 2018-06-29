@@ -3,20 +3,19 @@
   "description": "tslint rules for FAST projects",
   "sideEffects": false,
   "version": "1.8.0",
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
   "keywords": [
     "tslint",
     "typescript"
   ],
-  "author": {
-    "name": "Microsoft",
-    "email": "fwq@microsoft.com"
-  },
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
-  "readme": "README.md",
   "main": "tslint.json",
   "homepage": "https://github.com/Microsoft/fast-tslint-rules#readme",
   "dependencies": {
