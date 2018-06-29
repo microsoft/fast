@@ -105,8 +105,9 @@ class ComponentWrapper extends React.Component<IComponentWrapperProps<IDevSiteDe
             : classNames;
 
         classNames = this.props.active
-            ? `${this.props.managedClasses.componentWrapper} ${this.props.managedClasses.componentWrapper__active}`
-            : this.props.managedClasses.componentWrapper;
+            ? `${classNames} ${this.props.managedClasses.componentWrapper__active}`
+            : classNames;
+
         return this.props.view === ComponentViewTypes.examples
             ? `${classNames} ${this.props.managedClasses.componentWrapperExamples}`
             : classNames;
