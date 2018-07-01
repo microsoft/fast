@@ -45,11 +45,7 @@ class FormCategory extends React.Component<IFormCategoryProps & IManagedClasses<
     constructor(props: IFormCategoryProps & IManagedClasses<IFormCategoryClassNameContract>) {
         super(props);
 
-        if (this.props.expandable) {
-            this.state = {
-                expanded: true,
-            };
-        }
+        this.state = { isCategoryExpanded: !!this.props.isExpanded };
     }
     /**
      * Renders the component
@@ -92,7 +88,7 @@ class FormCategory extends React.Component<IFormCategoryProps & IManagedClasses<
         });
     }
 
-    private getClassNames(): string {
+    private getClassNames(): string | null {
         return this.props.expandable && !this.state.expanded ? this.props.managedClasses.formCategory__collapsed : null;
     }
 
