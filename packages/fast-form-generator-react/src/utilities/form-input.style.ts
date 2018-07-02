@@ -466,7 +466,8 @@ export function applyAddItemStyle(): ICSSRules<{}> {
             background: pinkPlus,
             width: toPx(16),
             height: toPx(16),
-            left: "0"
+            left: "0",
+            top: toPx(11)
         }
     };
 }
