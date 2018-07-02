@@ -2,7 +2,7 @@
 # At least one Code Owner will be required for any package.
 
 # Lines starting with '#' are comments.
-# Each line is a file pattern followed by one or more owners,
+# Each line is a file pattern followed by one or more owners
 # the last matching pattern has the most precendence.
 
 # These owners will be the default owners for everything in the repo.
@@ -38,10 +38,10 @@
 /packages/fast-development-site/ @nicholasrice @chrisdholt @janechu
 
 # fast-form-generator
-/packages/fast-form-generator/ @janechu, @nicholasrice
+/packages/fast-form-generator/ @janechu @nicholasrice
 
 # fast-glyphs
-/packages/fast-glyphs/ @janechu, @chrisdholt
+/packages/fast-glyphs/ @janechu @chrisdholt
 
 # fast-jest-snapshots
 /packages/fast-jest-snapshots/ @nicholasrice @janechu @chrisdholt
