@@ -30,6 +30,7 @@ exports[`toggle Toggle: 0 1`] = `
     />
   </div>
   <span
+    className="toggle_statusLabel"
     id="span01"
   >
     On

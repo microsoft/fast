@@ -14,6 +14,7 @@ const examples: ISnapshotTestSuite<IToggleHandledProps & IToggleManagedClasses> 
         managedClasses: {
             toggle: "toggle",
             toggle_label: "toggle_label",
+            toggle_statusLabel: "toggle_statusLabel",
             toggle_wrapper: "toggle_wrapper",
             toggle_input: "toggle_input",
             toggle_button: "toggle_button",
@@ -30,6 +31,7 @@ const examples: ISnapshotTestSuite<IToggleHandledProps & IToggleManagedClasses> 
             managedClasses: {
                 toggle: "toggle",
                 toggle_label: "toggle_label",
+                toggle_statusLabel: "toggle_statusLabel",
                 toggle_wrapper: "toggle_wrapper",
                 toggle_input: "toggle_input",
                 toggle_button: "toggle_button",

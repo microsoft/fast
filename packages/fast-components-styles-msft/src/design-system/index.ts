@@ -8,8 +8,8 @@ export interface IDesignSystem {
 }
 
 const designSystemDefaults: IDesignSystem = {
-    foregroundColor: "#000",
-    backgroundColor: "#FFF",
+    foregroundColor: "#000000",
+    backgroundColor: "#FFFFFF",
     brandColor: "#0078D4",
     direction: Direction.ltr
 };

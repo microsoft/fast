@@ -1,13 +1,18 @@
-import { IDesignSystem } from "../design-system";
+import designSystemDefaults, { IDesignSystem } from "../design-system";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { ITextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { toPx } from "@microsoft/fast-jss-utilities";
+import { isEmpty } from "lodash-es";
 import { applyType } from "../utilities/typography";
 import { fontWeight } from "../utilities/fonts";
 import { applyMixedColor } from "../utilities/colors";
 
 function applyTextFieldMixedColor(mixValue?: number): (config: IDesignSystem) => string {
-    return (config: IDesignSystem): string => applyMixedColor(config.foregroundColor, config.backgroundColor, mixValue);
+    return (config: IDesignSystem): string => {
+        config = isEmpty(config) ? designSystemDefaults : config;
+
+        return applyMixedColor(config.foregroundColor, config.backgroundColor, mixValue);
+    };
 }
 
 const styles: ComponentStyles<ITextFieldClassNameContract, IDesignSystem> = {
@@ -28,7 +33,7 @@ const styles: ComponentStyles<ITextFieldClassNameContract, IDesignSystem> = {
         },
         "&:disabled": {
             background: (config: IDesignSystem): string => {
-                return config.backgroundColor;
+                return config.backgroundColor || designSystemDefaults.backgroundColor;
             },
             borderColor: applyTextFieldMixedColor(0.863),
             color: applyTextFieldMixedColor(0.80),
