@@ -3,8 +3,10 @@ import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast
 import { IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { applyLocalizedProperty, Direction, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
+import { isEmpty } from "lodash-es";
 import { applyType } from "../utilities/typography";
 import { applyMixedColor } from "../utilities/colors";
+import designSystemDefaults from "../design-system";
 import * as Chroma from "chroma-js";
 
 function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
@@ -15,14 +17,14 @@ function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
             ...applyTransaprentBackground()
         },
         color: (config: IDesignSystem): string => {
-            return config.brandColor;
+            return config.brandColor || designSystemDefaults.brandColor;
         },
         "&:disabled span::before, &[aria-disabled] span::before": {
             background: "transparent"
         },
         "&:focus span::before, &:active span::before, &:hover span::before": {
             background: (config: IDesignSystem): string => {
-                return config.brandColor;
+                return config.brandColor || designSystemDefaults.brandColor;
             }
         },
         "&:disabled, &[aria-disabled]": {
@@ -44,13 +46,18 @@ function applyTransaprentBackground(): ICSSRules<IDesignSystem> {
 function applyPropertyDrivenColor(incomingProperty: string, mixValue?: number, alpha?: number): ICSSRules<IDesignSystem> {
     return {
         [incomingProperty]: (config: IDesignSystem): string => {
+            if (isEmpty(config)) {
+                return applyMixedColor(designSystemDefaults.foregroundColor, designSystemDefaults.backgroundColor, mixValue, alpha);
+            }
+
             return applyMixedColor(config.foregroundColor, config.backgroundColor, mixValue, alpha);
         }
     };
 }
-/* tslint:disable:max-line-length */
+/* tslint:disable-next-line */
 const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<IMSFTButtonClassNameContract, IDesignSystem> => {
-/* tslint:enable:max-line-length */
+    config = isEmpty(config) ? designSystemDefaults : config;
+
     return {
         button: {
             ...applyType("t7", "vp1"),

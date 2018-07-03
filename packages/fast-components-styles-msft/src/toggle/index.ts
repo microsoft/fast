@@ -1,21 +1,27 @@
-import { IDesignSystem } from "../design-system";
+import designSystemDefaults, { IDesignSystem } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
 import { applyLocalizedProperty, toPx } from "@microsoft/fast-jss-utilities";
 import { typeRamp } from "../utilities/typography";
 import { IToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { isEmpty } from "lodash-es";
 import * as Chroma from "chroma-js";
 import { Direction } from "@microsoft/fast-application-utilities";
 
 function setFloatAndClear(clearFloat: boolean = true): ICSSRules<IDesignSystem> {
     return {
-        float: (config: IDesignSystem): string => config.direction === Direction.ltr ? "left" : "right",
-        clear: clearFloat ? ((config: IDesignSystem): string => config.direction === Direction.ltr ? "left" : "right") : null
+        float: (config: IDesignSystem): string => {
+            return (isEmpty(config) || config.direction === Direction.ltr) ? "left" : "right";
+        },
+        clear: (config: IDesignSystem): string => {
+            return clearFloat ? (isEmpty(config) || config.direction === Direction.ltr ? "left" : "right") : null;
+        }
     };
 }
 
-/* tslint:disable:max-line-length */
+/* tslint:disable-next-line */
 const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<IToggleClassNameContract, IDesignSystem> => {
-/* tslint:enable:max-line-length */
+    config = isEmpty(config) ? designSystemDefaults : config;
+
     return {
         toggle: {
             display: "inline-block",
@@ -34,18 +40,16 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config
             fontSize: toPx(typeRamp.t8.vp3.fontSize),
             lineHeight: toPx(typeRamp.t8.vp3.lineHeight),
             paddingBottom: toPx(7),
-            ...setFloatAndClear(),
-            "& + div": {
-                marginTop: "0",
-                ...setFloatAndClear(),
-                "& + span": {
-                    ...setFloatAndClear(false),
-                    [applyLocalizedProperty("margin-left", "margin-right", config.direction)]: toPx(5),
-                }
-            }
+            ...setFloatAndClear()
         },
         toggle_wrapper: {
-            position: "relative"
+            position: "relative",
+            marginTop: "0",
+            ...setFloatAndClear()
+        },
+        toggle_statusLabel: {
+            ...setFloatAndClear(false),
+            [applyLocalizedProperty("margin-left", "margin-right", config.direction)]: toPx(5)
         },
         toggle_button: {
             position: "absolute",

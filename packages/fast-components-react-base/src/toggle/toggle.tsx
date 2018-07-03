@@ -64,6 +64,7 @@ class Toggle extends Foundation<IToggleHandledProps & IManagedClasses<IToggleCla
                     <span className={get(this.props, "managedClasses.toggle_button")} />
                 </div>
                 <span
+                    className={get(this.props, "managedClasses.toggle_statusLabel")}
                     id={this.props.statusLabelId}
                 >
                     {this.generateToggleStateLabel()}

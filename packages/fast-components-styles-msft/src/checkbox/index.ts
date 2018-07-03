@@ -1,14 +1,15 @@
-import { IDesignSystem } from "../design-system";
+import designSystemDefaults, { IDesignSystem } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
 import { ICheckboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyTypeRampConfig } from "../utilities/typography";
 import { applyLocalizedProperty, Direction, toPx } from "@microsoft/fast-jss-utilities";
+import { isEmpty } from "lodash-es";
 import * as Chroma from "chroma-js";
-import { relative } from "path";
 
-/* tslint:disable:max-line-length */
+/* tslint:disable-next-line */
 const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<ICheckboxClassNameContract, IDesignSystem> => {
-/* tslint:disable:max-line-length */
+    config = isEmpty(config) ? designSystemDefaults : config;
+
     return {
         checkbox: {
             display: "inline-flex",
