@@ -1,8 +1,9 @@
-import { IDesignSystem } from "../design-system";
+import designSystemDefaults, { IDesignSystem } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { applyLocalizedProperty, Direction, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
+import { get } from "lodash-es";
 import { applyType } from "../utilities/typography";
 import { applyMixedColor } from "../utilities/colors";
 import * as Chroma from "chroma-js";
@@ -15,14 +16,14 @@ function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
             ...applyTransaprentBackground()
         },
         color: (config: IDesignSystem): string => {
-            return config.brandColor;
+            return get(config, "brandColor") || designSystemDefaults.brandColor;
         },
         "&:disabled span::before, &[aria-disabled] span::before": {
             background: "transparent"
         },
         "&:focus span::before, &:active span::before, &:hover span::before": {
             background: (config: IDesignSystem): string => {
-                return config.brandColor;
+                return get(config, "brandColor") || designSystemDefaults.brandColor;
             }
         },
         "&:disabled, &[aria-disabled]": {
@@ -44,7 +45,10 @@ function applyTransaprentBackground(): ICSSRules<IDesignSystem> {
 function applyPropertyDrivenColor(incomingProperty: string, mixValue?: number, alpha?: number): ICSSRules<IDesignSystem> {
     return {
         [incomingProperty]: (config: IDesignSystem): string => {
-            return applyMixedColor(config.foregroundColor, config.backgroundColor, mixValue, alpha);
+            const backgroundColor: string = get(config, "backgroundColor") || designSystemDefaults.backgroundColor;
+            const foregroundColor: string = get(config, "foregroundColor") || designSystemDefaults.foregroundColor;
+
+            return applyMixedColor(foregroundColor, backgroundColor, mixValue, alpha);
         }
     };
 }
@@ -70,7 +74,7 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
             verticalAlign: "bottom",
             transition: "all 0.2s ease-in-out",
             color: (): string => {
-                return config.backgroundColor;
+                return get(config, "backgroundColor") || designSystemDefaults.backgroundColor;
             },
             ...applyPropertyDrivenColor("backgroundColor", 0.46),
             "&:hover": {
@@ -94,26 +98,26 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
                 return config.backgroundColor;
             },
             backgroundColor: (): string => {
-                return config.brandColor;
+                return get(config, "brandColor") || designSystemDefaults.brandColor;
             },
             "&:hover": {
                 backgroundColor: (): string => {
-                    return Chroma(config.brandColor).alpha(0.8).css();
+                    return Chroma(get(config, "brandColor") || designSystemDefaults.brandColor).alpha(0.8).css();
                 }
             },
             "&:focus": {
                 outline: "none",
                 backgroundColor: (): string => {
-                    return Chroma(config.brandColor).darken().css();
+                    return Chroma(get(config, "brandColor") || designSystemDefaults.brandColor).darken().css();
                 }
             },
             "&:disabled, &[aria-disabled]": {
                 backgroundColor: (): string => {
-                    return config.brandColor;
+                    return get(config, "brandColor") || designSystemDefaults.brandColor;
                 },
                 "&:hover": {
                     backgroundColor: (): string => {
-                        return config.brandColor;
+                        return get(config, "brandColor") || designSystemDefaults.brandColor;
                     }
                 }
             }
@@ -121,7 +125,7 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
         button_outline: {
             extend: "button",
             color: (): string => {
-                return config.foregroundColor;
+                return get(config, "foregroundColor") || designSystemDefaults.foregroundColor;
             },
             ...applyPropertyDrivenColor("borderColor", 0.46),
             ...applyTransaprentBackground(),
@@ -132,7 +136,9 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
             "&:focus": {
                 borderColor: "transparent",
                 boxShadow: (): string => {
-                    return `0 0 0 ${toPx(2)} ${applyMixedColor(config.foregroundColor, config.backgroundColor, 0.46)}`;
+                    /* tslint:disable max-line-length */
+                    return `0 0 0 ${toPx(2)} ${applyMixedColor(get(config, "foregroundColor") || designSystemDefaults.foregroundColor, get(config, "backgroundColor") || designSystemDefaults.backgroundColor, 0.46)}`;
+                    /* tslint:enable max-line-length */
                 },
                 ...applyTransaprentBackground()
             },
@@ -150,9 +156,9 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
             ...applyTransaprentBackplateStyles(),
             minWidth: toPx(74),
             padding: (): string => {
-                return localizeSpacing(config.direction)(`${toPx(13)} ${toPx(12)} ${toPx(12)} 0`);
+                return localizeSpacing(get(config, "direction") || designSystemDefaults.direction)(`${toPx(13)} ${toPx(12)} ${toPx(12)} 0`);
             },
-            textAlign: (): string => config.direction === Direction.ltr ? "left" : "right"
+            textAlign: (): string => get(config, "direction") === Direction.ltr || designSystemDefaults.direction ? "left" : "right"
         },
         button_span: {
             position: "relative",
@@ -163,7 +169,7 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
                 position: "absolute",
                 bottom: toPx(-1),
                 width: "100%",
-                [applyLocalizedProperty("left", "right", config.direction)]: "0"
+                [applyLocalizedProperty("left", "right", get(config, "direction") || designSystemDefaults.direction)]: "0"
             }
         }
     };
