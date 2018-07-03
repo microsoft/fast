@@ -35,12 +35,6 @@ Collaborators can become a Code Owner for a specific package(s). They have the a
 
 Collaborators can be nominated as a Code Owner for a specific package by Steering Committee members and will go through the same process that a Contributor does to become a Collaborator.
 
-##### Expectations of owners
-Owners should:
-- Be providing valuable, high-quality reviews and feedback.
-- Have submitted substantial and non-trivial changes to the package/filetype they are assigned to.
-- Have the bandwidth to do code reviews in a timely manner.
-
 The current list of Code Owners is located in [CODEOWNERS](.github/CODEOWNERS).
 
 ### Contributors
