@@ -305,6 +305,7 @@ export function applyPopupMenuStyles(): ICSSRules<{}> {
 export const thickLine: ICSSRules<{}> = {
     "& > span": {
         position: "relative",
+        paddingTop: toPx(3),
         paddingBottom: toPx(3),
         display: "block",
         ...ellipsis(),
@@ -467,7 +468,8 @@ export function applyAddItemStyle(): ICSSRules<{}> {
             width: toPx(16),
             height: toPx(16),
             left: "0",
-            top: toPx(11)
+            top: "50%",
+            transform: "translateY(-50%)"
         }
     };
 }
