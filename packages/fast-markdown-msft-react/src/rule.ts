@@ -35,7 +35,6 @@ export default class CreateRule {
                 case "link_open":
                     const linkToken: IToken = new state.Token(state.tokens[i].type, "Hypertext", 1);
 
-                    linkToken.attrPush(["text", state.tokens[i + 1].content || ""]);
                     linkToken.attrPush(["href", state.tokens[i].attrs[0][1]]);
 
                     if (state.tokens[i].attrs[0][1].substr(0, 4) === "http") {

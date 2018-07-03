@@ -37,14 +37,25 @@
       "^.+\\.ts$": "ts-jest",
       "^.+\\.js$": "babel-jest"
     },
+    "transformIgnorePatterns": [
+      "!<rootDir>/node_modules/lodash-es",
+      "node_modules/jss-*",
+      "node_modules/css-vendor"
+    ],
     "moduleFileExtensions": [
       "ts",
       "js"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "src"
     ],
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(js|ts)$"
   },
   "devDependencies": {
     "@microsoft/fast-jest-snapshots-react": "^1.8.0",
+    "@microsoft/fast-components-react-base": "^1.8.0",
+    "@microsoft/fast-components-react-msft": "^1.8.0",
     "@microsoft/fast-tslint-rules": "^1.8.0",
     "@types/jest": "^22.1.2",
     "@types/markdown-it": "0.0.4",
@@ -62,6 +73,8 @@
     "watch": "^1.0.2"
   },
   "peerDependencies": {
+    "@microsoft/fast-components-react-base": "^1.8.0",
+    "@microsoft/fast-components-react-msft": "^1.8.0",
     "react": "^16.3.0",
     "react-dom": "^16.3.0"
   },

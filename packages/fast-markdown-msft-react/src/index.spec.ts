@@ -18,7 +18,7 @@ describe("Convert markdown to HTML", function(): void {
         const markdown: string = "https://test.com";
         expect(md.render(markdown).replace(newlineRegex, "")).toBe(
             /* tslint:disable-next-line */
-            "<Typography typeLevel={7}><Hypertext text=\"https://test.com\" href=\"https://test.com\" target=\"_blank\">https://test.com</Hypertext></Typography>"
+            "<Typography typeLevel={7}><Hypertext href=\"https://test.com\" target=\"_blank\">https://test.com</Hypertext></Typography>"
         );
     });
 
@@ -39,7 +39,7 @@ describe("Convert markdown to HTML", function(): void {
     test("should convert a markdown link to a FAST MSFT hypertext", function(): void {
         const markdown: string = "[Test](/test)";
         expect(md.render(markdown).replace(newlineRegex, "")).toBe(
-            "<Typography typeLevel={7}><Hypertext text=\"Test\" href=\"/test\">Test</Hypertext></Typography>"
+            "<Typography typeLevel={7}><Hypertext href=\"/test\">Test</Hypertext></Typography>"
         );
     });
 

@@ -9,6 +9,7 @@ export { Divider };
 
 import Heading from "./heading";
 export { Heading };
+export * from "./heading";
 
 import Hypertext from "./hypertext";
 export { Hypertext };
