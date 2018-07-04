@@ -9,10 +9,20 @@ import { Direction } from "@microsoft/fast-application-utilities";
 
 function setFloatAndClear(clearFloat: boolean = true): ICSSRules<IDesignSystem> {
     return {
-        float: (config: IDesignSystem): string =>
-            get(config, "direction") || designSystemDefaults.direction === Direction.ltr ? "left" : "right",
-        clear: clearFloat ? ((config: IDesignSystem): string =>
-            get(config, "direction") || designSystemDefaults.direction === Direction.ltr ? "left" : "right") : null
+        float: (config: IDesignSystem): string => {
+            const direction: Direction = get(config, "direction") || designSystemDefaults.direction;
+
+            return direction === Direction.ltr ? "left" : "right";
+        },
+        clear: (config: IDesignSystem): string => {
+            if (!clearFloat) {
+                return null;
+            }
+
+            const direction: Direction = get(config, "direction") || designSystemDefaults.direction;
+
+            return direction === Direction.ltr ? "left" : "right";
+        }
     };
 }
 
