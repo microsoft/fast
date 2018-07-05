@@ -1,14 +1,19 @@
-import { IDesignSystem } from "../design-system";
+import designSystemDefaults, { IDesignSystem } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
 import { ICheckboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyTypeRampConfig } from "../utilities/typography";
 import { applyLocalizedProperty, Direction, toPx } from "@microsoft/fast-jss-utilities";
+import { get } from "lodash-es";
 import * as Chroma from "chroma-js";
-import { relative } from "path";
 
 /* tslint:disable:max-line-length */
 const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<ICheckboxClassNameContract, IDesignSystem> => {
 /* tslint:disable:max-line-length */
+    const backgroundColor: string = get(config, "backgroundColor") || designSystemDefaults.backgroundColor;
+    const brandColor: string = get(config, "brandColor") || designSystemDefaults.brandColor;
+    const direction: Direction = get(config, "direction") || designSystemDefaults.direction;
+    const foregroundColor: string = get(config, "foregroundColor") || designSystemDefaults.foregroundColor;
+
     return {
         checkbox: {
             display: "inline-flex",
@@ -26,22 +31,16 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = (conf
             boxSizing: "content-box",
             margin: "0",
             zIndex: "1",
-            boxShadow: (): string => {
-                /* tslint:disable-next-line */
-                return `inset ${toPx(0)} ${toPx(0)} ${toPx(0)} ${toPx(1)} ${Chroma.mix(config.foregroundColor, config.backgroundColor, 0.46).css()}`;
-            },
+            /* tslint:disable-next-line */
+            boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(0)} ${toPx(1)} ${Chroma.mix(foregroundColor, backgroundColor, 0.46).css()}`,
             "&:hover": {
-                boxShadow: (): string => {
-                    /* tslint:disable-next-line */
-                    return `inset ${toPx(0)} ${toPx(0)} ${toPx(0)} ${toPx(1)} ${Chroma.mix(config.foregroundColor, config.backgroundColor, 0.51).css()}`;
-                }
+                /* tslint:disable-next-line */
+                boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(0)} ${toPx(1)} ${Chroma.mix(foregroundColor, backgroundColor, 0.51).css()}`
             },
             "&:focus": {
                 outline: "none",
-                boxShadow: (): string => {
-                    /* tslint:disable-next-line */
-                    return `inset ${toPx(0)} ${toPx(0)} ${toPx(0)} ${toPx(2)} ${Chroma.mix(config.foregroundColor, config.backgroundColor, 0.46).css()}`;
-                }
+                /* tslint:disable-next-line */
+                boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(0)} ${toPx(2)} ${Chroma.mix(foregroundColor, backgroundColor, 0.46).css()}`
             },
             "&:checked": {
                 "& + span": {
@@ -50,9 +49,7 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = (conf
                         zIndex: "1",
                         content: "\"\"",
                         borderRadius: toPx(2),
-                        background: (): string => {
-                            return config.foregroundColor;
-                        }
+                        background: foregroundColor
                     }
                 }
             },
@@ -64,13 +61,11 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = (conf
                         content: "\"\"",
                         borderRadius: toPx(2),
                         transform: "none",
-                        [applyLocalizedProperty("left", "right", config.direction)]: toPx(5),
+                        [applyLocalizedProperty("left", "right", direction)]: toPx(5),
                         top: toPx(5),
                         height: toPx(10),
                         width: toPx(10),
-                        background: (): string => {
-                            return config.foregroundColor;
-                        }
+                        background: foregroundColor
                     }
                 }
             }
@@ -86,23 +81,21 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = (conf
             },
             "&::before": {
                 top: toPx(4),
-                [applyLocalizedProperty("left", "right", config.direction)]: toPx(11),
+                [applyLocalizedProperty("left", "right", direction)]: toPx(11),
                 height: toPx(12),
-                transform: (): string => config.direction === Direction.ltr ? "rotate(40deg)" : "rotate(-40deg)"
+                transform: direction === Direction.ltr ? "rotate(40deg)" : "rotate(-40deg)"
             },
             "&::after": {
                 top: toPx(9),
-                [applyLocalizedProperty("left", "right", config.direction)]: toPx(6),
+                [applyLocalizedProperty("left", "right", direction)]: toPx(6),
                 height: toPx(6),
-                transform: (): string => config.direction === Direction.ltr ? "rotate(-45deg)" : "rotate(45deg)"
+                transform: direction === Direction.ltr ? "rotate(-45deg)" : "rotate(45deg)"
             }
         },
         checkbox_label: {
-            color: (): string => {
-                return config.foregroundColor;
-            },
+            color: foregroundColor,
             ...applyTypeRampConfig("t7"),
-            [applyLocalizedProperty("marginLeft", "marginRight", config.direction)]: toPx(5),
+            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: toPx(5),
         },
         checkbox_disabled: {
             cursor: "not-allowed",

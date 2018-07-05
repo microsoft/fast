@@ -1,21 +1,18 @@
-import { IDesignSystem } from "../design-system";
+import designSystemDefaults, { IDesignSystem } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
-import { applyLocalizedProperty, toPx } from "@microsoft/fast-jss-utilities";
+import { applyLocalizedProperty, Direction, toPx } from "@microsoft/fast-jss-utilities";
 import { typeRamp } from "../utilities/typography";
 import { IToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { get } from "lodash";
 import * as Chroma from "chroma-js";
-import { Direction } from "@microsoft/fast-application-utilities";
 
-function setFloatAndClear(clearFloat: boolean = true): ICSSRules<IDesignSystem> {
-    return {
-        float: (config: IDesignSystem): string => config.direction === Direction.ltr ? "left" : "right",
-        clear: clearFloat ? ((config: IDesignSystem): string => config.direction === Direction.ltr ? "left" : "right") : null
-    };
-}
-
-/* tslint:disable:max-line-length */
+/* tslint:disable-next-line */
 const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<IToggleClassNameContract, IDesignSystem> => {
-/* tslint:enable:max-line-length */
+    const backgroundColor: string = get(config, "backgroundColor") || designSystemDefaults.backgroundColor;
+    const brandColor: string = get(config, "brandColor") || designSystemDefaults.brandColor;
+    const direction: Direction = get(config, "direction") || designSystemDefaults.direction;
+    const foregroundColor: string = get(config, "foregroundColor") || designSystemDefaults.foregroundColor;
+
     return {
         toggle: {
             display: "inline-block",
@@ -24,9 +21,7 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config
                 marginTop: "0",
                 paddingBottom: "0" },
             "&[aria-disabled=\"true\"]": {
-                color: (): string => {
-                    return Chroma(config.foregroundColor).alpha(0.5).css();
-                }
+                color: Chroma(foregroundColor).alpha(0.5).css()
             }
         },
         toggle_label: {
@@ -34,13 +29,15 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config
             fontSize: toPx(typeRamp.t8.vp3.fontSize),
             lineHeight: toPx(typeRamp.t8.vp3.lineHeight),
             paddingBottom: toPx(7),
-            ...setFloatAndClear(),
+            float: applyLocalizedProperty("left", "right", direction),
+            clear: applyLocalizedProperty("left", "right", direction),
             "& + div": {
                 marginTop: "0",
-                ...setFloatAndClear(),
+                float: applyLocalizedProperty("left", "right", direction),
+                clear: applyLocalizedProperty("left", "right", direction),
                 "& + span": {
-                    ...setFloatAndClear(false),
-                    [applyLocalizedProperty("margin-left", "margin-right", config.direction)]: toPx(5),
+                    float: applyLocalizedProperty("left", "right", direction),
+                    [applyLocalizedProperty("margin-left", "margin-right", direction)]: toPx(5),
                 }
             }
         },
@@ -51,11 +48,9 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config
             position: "absolute",
             pointerEvents: "none",
             top: toPx(5),
-            [applyLocalizedProperty("left", "right", config.direction)]: toPx(5),
+            [applyLocalizedProperty("left", "right", direction)]: toPx(5),
             transition: "all .1s ease",
-            backgroundColor: (): string => {
-                return config.backgroundColor;
-            },
+            backgroundColor,
             borderRadius: toPx(10),
             width: toPx(10),
             height: toPx(10)
@@ -67,62 +62,40 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config
             height: toPx(20),
             background: "transparent",
             border: `${toPx(1)} solid`,
-            borderColor: (): string => {
-                return config.foregroundColor;
-            },
+            borderColor: foregroundColor,
             borderRadius: toPx(20),
             appearance: "none",
             cursor: "pointer",
             "@media screen and (-ms-high-contrast:active)": {
                 "&::after, &:checked + span": {
-                    background: (): string => {
-                        return config.backgroundColor;
-                    }
+                    background: backgroundColor
                 },
             },
             "@media screen and (-ms-high-contrast:black-on-white)": {
                 "&::after, &:checked + span": {
-                    background: (): string => {
-                        return config.foregroundColor;
-                    }
+                    background: foregroundColor
                 }
             },
             "&:checked": {
-                backgroundColor: (): string => {
-                    return config.brandColor;
-                },
-                borderColor: (): string => {
-                    return config.brandColor;
-                },
+                backgroundColor: brandColor,
+                borderColor: brandColor,
                 "&:hover": {
-                    backgroundColor: (): string => {
-                        return Chroma(config.brandColor).alpha(0.8).css();
-                    },
-                    borderColor: (): string => {
-                        return Chroma(config.brandColor).alpha(0.8).css();
-                    }
+                    backgroundColor: Chroma(brandColor).alpha(0.8).css(),
+                    borderColor: Chroma(brandColor).alpha(0.8).css()
                 },
                 "&:focus": {
-                    borderColor: (): string => {
-                        return config.brandColor;
-                    }
+                    borderColor: brandColor
                 },
                 "& + span": {
                     left: "28px",
-                    backgroundColor: (): string => {
-                        return config.backgroundColor;
-                    }
+                    backgroundColor
                 },
                 "&:disabled": {
                     cursor: "not-allowed",
-                    background: (): string => {
-                        return Chroma(config.foregroundColor).alpha(0.2).css();
-                    },
+                    background: Chroma(foregroundColor).alpha(0.2).css(),
                     borderColor: "transparent",
                     "& + span": {
-                        background: (): string => {
-                            return Chroma(config.foregroundColor).alpha(0.2).css();
-                        }
+                        background: Chroma(foregroundColor).alpha(0.2).css()
                     },
                     "&:hover": {
                         borderColor: "transparent"
@@ -131,24 +104,16 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config
             },
             "&:not(:checked)": {
                 background: "transparent",
-                borderColor: (): string => {
-                    return config.foregroundColor;
-                },
+                borderColor: foregroundColor,
                 "& + span": {
-                    backgroundColor: (): string => {
-                        return config.foregroundColor;
-                    }
+                    backgroundColor: foregroundColor
                 },
                 "&:disabled": {
                     cursor: "not-allowed",
                     background: "transparent",
-                    borderColor: (): string => {
-                        return Chroma(config.foregroundColor).alpha(0.2).css();
-                    },
+                    borderColor: Chroma(foregroundColor).alpha(0.2).css(),
                     "& + span": {
-                        backgroundColor: (): string => {
-                            return Chroma(config.foregroundColor).alpha(0.2).css();
-                        }
+                        backgroundColor: Chroma(foregroundColor).alpha(0.2).css()
                     }
                 }
             },
