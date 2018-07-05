@@ -7,18 +7,19 @@ import { get } from "lodash";
 import * as Chroma from "chroma-js";
 import { Direction } from "@microsoft/fast-application-utilities";
 
-function setFloatAndClear(clearFloat: boolean = true): ICSSRules<IDesignSystem> {
+function setLocalizedFloat(): ICSSRules<IDesignSystem> {
     return {
         float: (config: IDesignSystem): string => {
             const direction: Direction = get(config, "direction") || designSystemDefaults.direction;
 
             return direction === Direction.ltr ? "left" : "right";
-        },
-        clear: (config: IDesignSystem): string => {
-            if (!clearFloat) {
-                return null;
-            }
+        }
+    };
+}
 
+function setLocalizedClear(): ICSSRules<IDesignSystem> {
+    return {
+        clear: (config: IDesignSystem): string => {
             const direction: Direction = get(config, "direction") || designSystemDefaults.direction;
 
             return direction === Direction.ltr ? "left" : "right";
@@ -41,9 +42,7 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config
                 marginTop: "0",
                 paddingBottom: "0" },
             "&[aria-disabled=\"true\"]": {
-                color: (): string => {
-                    return Chroma(foregroundColor).alpha(0.5).css();
-                }
+                color: Chroma(foregroundColor).alpha(0.5).css()
             }
         },
         toggle_label: {
@@ -51,12 +50,14 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config
             fontSize: toPx(typeRamp.t8.vp3.fontSize),
             lineHeight: toPx(typeRamp.t8.vp3.lineHeight),
             paddingBottom: toPx(7),
-            ...setFloatAndClear(),
+            ...setLocalizedFloat(),
+            ...setLocalizedClear(),
             "& + div": {
                 marginTop: "0",
-                ...setFloatAndClear(),
+                ...setLocalizedFloat(),
+                ...setLocalizedClear(),
                 "& + span": {
-                    ...setFloatAndClear(false),
+                    ...setLocalizedFloat(),
                     [applyLocalizedProperty("margin-left", "margin-right", direction)]: toPx(5),
                 }
             }
@@ -70,9 +71,7 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config
             top: toPx(5),
             [applyLocalizedProperty("left", "right", direction)]: toPx(5),
             transition: "all .1s ease",
-            backgroundColor: (): string => {
-                return backgroundColor;
-            },
+            backgroundColor,
             borderRadius: toPx(10),
             width: toPx(10),
             height: toPx(10)
@@ -84,62 +83,40 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config
             height: toPx(20),
             background: "transparent",
             border: `${toPx(1)} solid`,
-            borderColor: (): string => {
-                return foregroundColor;
-            },
+            borderColor: foregroundColor,
             borderRadius: toPx(20),
             appearance: "none",
             cursor: "pointer",
             "@media screen and (-ms-high-contrast:active)": {
                 "&::after, &:checked + span": {
-                    background: (): string => {
-                        return backgroundColor;
-                    }
+                    background: backgroundColor
                 },
             },
             "@media screen and (-ms-high-contrast:black-on-white)": {
                 "&::after, &:checked + span": {
-                    background: (): string => {
-                        return foregroundColor;
-                    }
+                    background: foregroundColor
                 }
             },
             "&:checked": {
-                backgroundColor: (): string => {
-                    return brandColor;
-                },
-                borderColor: (): string => {
-                    return brandColor;
-                },
+                backgroundColor: brandColor,
+                borderColor: brandColor,
                 "&:hover": {
-                    backgroundColor: (): string => {
-                        return Chroma(brandColor).alpha(0.8).css();
-                    },
-                    borderColor: (): string => {
-                        return Chroma(brandColor).alpha(0.8).css();
-                    }
+                    backgroundColor: Chroma(brandColor).alpha(0.8).css(),
+                    borderColor: Chroma(brandColor).alpha(0.8).css()
                 },
                 "&:focus": {
-                    borderColor: (): string => {
-                        return brandColor;
-                    }
+                    borderColor: brandColor
                 },
                 "& + span": {
                     left: "28px",
-                    backgroundColor: (): string => {
-                        return backgroundColor;
-                    }
+                    backgroundColor
                 },
                 "&:disabled": {
                     cursor: "not-allowed",
-                    background: (): string => {
-                        return Chroma(foregroundColor).alpha(0.2).css();
-                    },
+                    background: Chroma(foregroundColor).alpha(0.2).css(),
                     borderColor: "transparent",
                     "& + span": {
-                        background: (): string => {
-                            return Chroma(foregroundColor).alpha(0.2).css();
-                        }
+                        background: Chroma(foregroundColor).alpha(0.2).css()
                     },
                     "&:hover": {
                         borderColor: "transparent"
@@ -148,24 +125,16 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config
             },
             "&:not(:checked)": {
                 background: "transparent",
-                borderColor: (): string => {
-                    return foregroundColor;
-                },
+                borderColor: foregroundColor,
                 "& + span": {
-                    backgroundColor: (): string => {
-                        return foregroundColor;
-                    }
+                    backgroundColor: foregroundColor
                 },
                 "&:disabled": {
                     cursor: "not-allowed",
                     background: "transparent",
-                    borderColor: (): string => {
-                        return Chroma(foregroundColor).alpha(0.2).css();
-                    },
+                    borderColor: Chroma(foregroundColor).alpha(0.2).css(),
                     "& + span": {
-                        backgroundColor: (): string => {
-                            return Chroma(foregroundColor).alpha(0.2).css();
-                        }
+                        backgroundColor: Chroma(foregroundColor).alpha(0.2).css()
                     }
                 }
             },

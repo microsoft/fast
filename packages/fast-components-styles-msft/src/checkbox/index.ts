@@ -31,22 +31,16 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = (conf
             boxSizing: "content-box",
             margin: "0",
             zIndex: "1",
-            boxShadow: (): string => {
-                /* tslint:disable-next-line */
-                return `inset ${toPx(0)} ${toPx(0)} ${toPx(0)} ${toPx(1)} ${Chroma.mix(foregroundColor, backgroundColor, 0.46).css()}`;
-            },
+            /* tslint:disable-next-line */
+            boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(0)} ${toPx(1)} ${Chroma.mix(foregroundColor, backgroundColor, 0.46).css()}`,
             "&:hover": {
-                boxShadow: (): string => {
-                    /* tslint:disable-next-line */
-                    return `inset ${toPx(0)} ${toPx(0)} ${toPx(0)} ${toPx(1)} ${Chroma.mix(foregroundColor, backgroundColor, 0.51).css()}`;
-                }
+                /* tslint:disable-next-line */
+                boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(0)} ${toPx(1)} ${Chroma.mix(foregroundColor, backgroundColor, 0.51).css()}`
             },
             "&:focus": {
                 outline: "none",
-                boxShadow: (): string => {
-                    /* tslint:disable-next-line */
-                    return `inset ${toPx(0)} ${toPx(0)} ${toPx(0)} ${toPx(2)} ${Chroma.mix(foregroundColor, backgroundColor, 0.46).css()}`;
-                }
+                /* tslint:disable-next-line */
+                boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(0)} ${toPx(2)} ${Chroma.mix(foregroundColor, backgroundColor, 0.46).css()}`
             },
             "&:checked": {
                 "& + span": {
@@ -55,9 +49,7 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = (conf
                         zIndex: "1",
                         content: "\"\"",
                         borderRadius: toPx(2),
-                        background: (): string => {
-                            return foregroundColor;
-                        }
+                        background: foregroundColor
                     }
                 }
             },
@@ -73,9 +65,7 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = (conf
                         top: toPx(5),
                         height: toPx(10),
                         width: toPx(10),
-                        background: (): string => {
-                            return foregroundColor;
-                        }
+                        background: foregroundColor
                     }
                 }
             }
@@ -93,19 +83,17 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = (conf
                 top: toPx(4),
                 [applyLocalizedProperty("left", "right", direction)]: toPx(11),
                 height: toPx(12),
-                transform: (): string => direction === Direction.ltr ? "rotate(40deg)" : "rotate(-40deg)"
+                transform: direction === Direction.ltr ? "rotate(40deg)" : "rotate(-40deg)"
             },
             "&::after": {
                 top: toPx(9),
                 [applyLocalizedProperty("left", "right", direction)]: toPx(6),
                 height: toPx(6),
-                transform: (): string => direction === Direction.ltr ? "rotate(-45deg)" : "rotate(45deg)"
+                transform: direction === Direction.ltr ? "rotate(-45deg)" : "rotate(45deg)"
             }
         },
         checkbox_label: {
-            color: (): string => {
-                return foregroundColor;
-            },
+            color: foregroundColor,
             ...applyTypeRampConfig("t7"),
             [applyLocalizedProperty("marginLeft", "marginRight", direction)]: toPx(5),
         },
