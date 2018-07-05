@@ -326,6 +326,15 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         }
     }
 
+    public componentDidUpdate(prevProps: ISiteProps): void {
+        if (prevProps !== this.props) {
+            this.setState({
+                componentData: this.getComponentData(),
+                detailViewComponentData: this.getDetailViewComponentData()
+            });
+        }
+    }
+
     /**
      * Gets the component data for each of the routes
      */
