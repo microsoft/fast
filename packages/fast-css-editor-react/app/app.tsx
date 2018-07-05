@@ -1,9 +1,7 @@
 import * as React from "react";
 import Site, {
-    IFormChildOption,
     ISiteProps,
     SiteCategory,
-    SiteCategoryIcon,
     SiteCategoryDocumentation,
     SiteCategoryItem,
     SiteTitle,

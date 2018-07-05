@@ -24,6 +24,7 @@
   "devDependencies": {
     "@microsoft/fast-tslint-rules": "^1.8.0",
     "@types/jest": "^22.2.2",
+    "@types/react": "^16.3.0",
     "jest": "^22.4.3",
     "react": "^16.3.0",
     "ts-jest": "^22.4.2",
@@ -31,7 +32,6 @@
     "typescript": "^2.8.1"
   },
   "dependencies": {
-    "@types/react": "^16.3.0",
     "react-test-renderer": "^16.3.0"
   },
   "peerDependencies": {
