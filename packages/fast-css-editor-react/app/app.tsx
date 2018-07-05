@@ -28,28 +28,38 @@ export enum EditorView {
 }
 
 class App extends React.Component<{}, IAppState> {
-    public readonly state: IAppState = {
-        editorDetail: {
-            position: {
-                position: PositionValue.static
-            }
-        },
-        editorExample: {
-            position: {
+    public state: IAppState;
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            editorDetail: {
+                position: {
+                    position: PositionValue.static
+                },
+                onChange: this.handleEditorDetailUpdate
+            },
+            editorExample: {
+                position: {
+                    position: PositionValue.absolute,
+                    left: 4,
+                    top: 12
+                },
+                onChange: this.handleEditorExampleUpdate
+            },
+            positionDetail:{
+                position: PositionValue.static,
+                onChange: this.handlePositionDetailUpdate}
+            ,
+            positionExample: {
                 position: PositionValue.absolute,
-                left: 4,
-                top: 12
+                left: 1,
+                top: 5,
+                onChange: this.handlePositionExampleUpdate
             }
-        },
-        positionDetail: {
-            position: PositionValue.static
-        },
-        positionExample: {
-            position: PositionValue.absolute,
-            left: 1,
-            top: 5
-        }
-    };
+        };
+    }
 
     public render(): JSX.Element {
         return (
@@ -101,15 +111,6 @@ class App extends React.Component<{}, IAppState> {
                 </SiteCategory>
             </Site>
         );
-    }
-
-    public componentWillMount(): void {
-        this.setState({
-            editorDetail: Object.assign({}, this.state.editorDetail, {onChange: this.handleEditorDetailUpdate}),
-            editorExample: Object.assign({}, this.state.editorExample, {onChange: this.handleEditorExampleUpdate}),
-            positionDetail:  Object.assign({}, this.state.positionDetail, {onChange: this.handlePositionDetailUpdate}),
-            positionExample: Object.assign({}, this.state.positionExample, {onChange: this.handlePositionExampleUpdate})
-        });
     }
 
     private handleEditorDetailUpdate = (updateEditorDetail: any): void => {

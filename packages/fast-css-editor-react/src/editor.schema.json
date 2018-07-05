@@ -9,7 +9,7 @@
             "title": "Position",
             "oneOf": [
                 {
-                    "title": "Static",
+                    "title": "Static (default)",
                     "type": "object",
                     "properties": {
                         "position": {
@@ -17,8 +17,7 @@
                             "type": "string",
                             "enum": [
                                 "static"
-                            ],
-                            "default": "static"
+                            ]
                         }
                     },
                     "required": [
@@ -34,8 +33,7 @@
                             "type": "string",
                             "enum": [
                                 "absolute"
-                            ],
-                            "default": "absolute"
+                            ]
                         },
                         "left": {
                             "title": "Left (px)",

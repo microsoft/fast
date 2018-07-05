@@ -1,5 +1,5 @@
 # CSSPosition
-The `CSSPosition` component shows the CSS position value as a select, it will also provide a callback for updated this value. When set to "absolute" it will include a UI for allowing the user to select left/right/top/bottom and enter numbers for pixel positioning. The components position will default to static if not set.
+The `CSSPosition` component shows the CSS position value as a select, it will also provide a callback for updating this value. When set to "absolute" it will include a UI for allowing the user to select left/right/top/bottom and enter numbers for pixel positioning. The components position will default to static if not set.
 
 ## Usage
 ```jsx

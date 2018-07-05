@@ -26,7 +26,7 @@ export interface ICSSPositionProps {
     right?: number;
     top?: number;
     bottom?: number;
-    onChange: (positionValues: any) => void;
+    onChange?: (positionValues: any) => void;
 }
 
 class CSSPosition extends React.Component<ICSSPositionProps & IManagedClasses<ICSSPositionClassNameContract>, {}> {
@@ -84,7 +84,7 @@ class CSSPosition extends React.Component<ICSSPositionProps & IManagedClasses<IC
                 onChange={this.handleOnChange}
                 value={this.props[location] || ""}
             />
-        )
+        );
     }
 
     private generateCenterRowClassNames(): string {
@@ -159,6 +159,9 @@ class CSSPosition extends React.Component<ICSSPositionProps & IManagedClasses<IC
         return updatedProps;
     }
 
+    // Get the location that should be excluded from being added to the object,
+    // this should be used for the opposing location, eg. if left is being set,
+    // do not set right value.
     private getExcludedLocation(updatedPropKey: Location): Location {
         return updatedPropKey === Location.left
             ? Location.right
