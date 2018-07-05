@@ -5,7 +5,7 @@ import { IDevSiteDesignSystem } from "../design-system";
 import { IRowManagedClasses, Pane, Row } from "@microsoft/fast-layouts-react";
 
 class ShellHeader extends React.Component<{}, {}> {
-    private rowStyles: ComponentStyles<IRowManagedClasses, IDevSiteDesignSystem> = {
+    private rowStyles: Partial<ComponentStyles<IRowManagedClasses, IDevSiteDesignSystem>> = {
         row: {
             background: "#343434",
             alignItems: "center",

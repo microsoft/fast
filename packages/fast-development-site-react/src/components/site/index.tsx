@@ -1,6 +1,6 @@
 import Toc, { TocItem } from "../toc";
 import * as React from "react";
-import manageJss, { ComponentStyles, DesignSystemProvider, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, ComponentStyleSheet, DesignSystemProvider, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { glyphBuildingblocks, glyphGlobalnavbutton, glyphTransparency } from "@microsoft/fast-glyphs-msft";
 import Form from "@microsoft/fast-form-generator-react";
 import { uniqueId } from "lodash-es";
@@ -28,7 +28,6 @@ import {
     Container,
     IContainerClassNamesContract,
     IPaneClassNamesContract,
-    IPaneProps,
     Pane,
     PaneResizeDirection,
     Row,
@@ -435,13 +434,14 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
 
     private renderShellRow(route: IComponentRoute): JSX.Element {
 
-        const paneStyleSheet: ComponentStyles<IPaneClassNamesContract, IDevSiteDesignSystem> = {
+        const paneStyleSheet: Partial<ComponentStyles<IPaneClassNamesContract, IDevSiteDesignSystem>> = {
             pane: {
                 backgroundColor: (config: IDevSiteDesignSystem): string => {
                     return config.lightGray;
                 }
             }
-        };
+        }
+
         return (
             <Row fill={true}>
                 <Pane
