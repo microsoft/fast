@@ -76,7 +76,6 @@
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.6.7",
     "@types/react": "^16.3.6",
-    "@types/react-dom": "^16.0.3",
     "@types/react-redux": "^5.0.14",
     "@types/react-router": "^4.0.21",
     "@types/react-router-dom": "^4.2.3",
