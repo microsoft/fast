@@ -1,31 +1,10 @@
 import designSystemDefaults, { IDesignSystem } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
-import { applyLocalizedProperty, toPx } from "@microsoft/fast-jss-utilities";
+import { applyLocalizedProperty, Direction, toPx } from "@microsoft/fast-jss-utilities";
 import { typeRamp } from "../utilities/typography";
 import { IToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash";
 import * as Chroma from "chroma-js";
-import { Direction } from "@microsoft/fast-application-utilities";
-
-function setLocalizedFloat(): ICSSRules<IDesignSystem> {
-    return {
-        float: (config: IDesignSystem): string => {
-            const direction: Direction = get(config, "direction") || designSystemDefaults.direction;
-
-            return direction === Direction.ltr ? "left" : "right";
-        }
-    };
-}
-
-function setLocalizedClear(): ICSSRules<IDesignSystem> {
-    return {
-        clear: (config: IDesignSystem): string => {
-            const direction: Direction = get(config, "direction") || designSystemDefaults.direction;
-
-            return direction === Direction.ltr ? "left" : "right";
-        }
-    };
-}
 
 /* tslint:disable-next-line */
 const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<IToggleClassNameContract, IDesignSystem> => {
@@ -50,14 +29,14 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config
             fontSize: toPx(typeRamp.t8.vp3.fontSize),
             lineHeight: toPx(typeRamp.t8.vp3.lineHeight),
             paddingBottom: toPx(7),
-            ...setLocalizedFloat(),
-            ...setLocalizedClear(),
+            float: applyLocalizedProperty("left", "right", direction),
+            clear: applyLocalizedProperty("left", "right", direction),
             "& + div": {
                 marginTop: "0",
-                ...setLocalizedFloat(),
-                ...setLocalizedClear(),
+                float: applyLocalizedProperty("left", "right", direction),
+                clear: applyLocalizedProperty("left", "right", direction),
                 "& + span": {
-                    ...setLocalizedFloat(),
+                    float: applyLocalizedProperty("left", "right", direction),
                     [applyLocalizedProperty("margin-left", "margin-right", direction)]: toPx(5),
                 }
             }
