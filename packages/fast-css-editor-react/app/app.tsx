@@ -20,6 +20,13 @@ export interface IAppState {
     positionExample: ICSSPositionProps;
 }
 
+export enum EditorView {
+    detail = "editorDetail",
+    example = "editorExample",
+    positionDetail = "positionDetail",
+    positionExample = "positionExample"
+}
+
 class App extends React.Component<{}, IAppState> {
     public readonly state: IAppState = {
         editorDetail: {
@@ -106,27 +113,32 @@ class App extends React.Component<{}, IAppState> {
     }
 
     private handleEditorDetailUpdate = (updateEditorDetail: any): void => {
-        this.setState({
-            editorDetail: updateEditorDetail
-        });
+        this.handleExampleUpdate(updateEditorDetail, EditorView.detail);
     }
 
     private handleEditorExampleUpdate = (updateEditorExample: any): void => {
-        this.setState({
-            editorExample: updateEditorExample
-        });
+        this.handleExampleUpdate(updateEditorExample, EditorView.example);
+    }
+
+    private handleExampleUpdate = (updateExample: any, stateKey: EditorView): void => {
+        const stateUpdate: Partial<IAppState> = {};
+        stateUpdate[stateKey] = updateExample;
+
+        this.setState(stateUpdate as IAppState);
     }
 
     private handlePositionDetailUpdate = (updatePositionDetail: any): void => {
-        this.setState({
-            positionDetail: Object.assign({}, { onChange: this.state.positionDetail.onChange }, updatePositionDetail)
-        });
+        this.handleExampleUpdate(
+            Object.assign({}, { onChange: this.state.positionDetail.onChange }, updatePositionDetail),
+            EditorView.positionDetail,
+        );
     }
 
     private handlePositionExampleUpdate = (updatePositionExample: any): void => {
-        this.setState({
-            positionExample: Object.assign({}, { onChange: this.state.positionExample.onChange }, updatePositionExample)
-        });
+        this.handleExampleUpdate(
+            Object.assign({}, { onChange: this.state.positionExample.onChange }, updatePositionExample),
+            EditorView.positionExample,
+        );
     }
 }
 

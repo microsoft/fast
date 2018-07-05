@@ -15,6 +15,11 @@ export enum Location {
     bottom = "bottom"
 }
 
+export interface ILocationsMappedToClassNames {
+    location: Location;
+    className: string;
+}
+
 export interface ICSSPositionProps {
     position?: PositionValue;
     left?: number;
@@ -52,39 +57,15 @@ class CSSPosition extends React.Component<ICSSPositionProps & IManagedClasses<IC
                 return (
                     <div>
                         <div className={this.props.managedClasses.absoluteInput_row}>
-                            <input
-                                type="number"
-                                className={this.props.managedClasses.cssPosition_input}
-                                data-location={Location.top}
-                                onChange={this.handleOnChange}
-                                value={this.props.top || ""}
-                            />
+                            {this.renderLocationInput(Location.top)}
                         </div>
                         <div className={this.props.managedClasses.absoluteInput_row}>
-                            <input
-                                type="number"
-                                className={this.props.managedClasses.cssPosition_input}
-                                data-location={Location.left}
-                                onChange={this.handleOnChange}
-                                value={this.props.left || ""}
-                            />
+                            {this.renderLocationInput(Location.left)}
                             <div className={this.generateCenterRowClassNames()} />
-                            <input
-                                type="number"
-                                className={this.props.managedClasses.cssPosition_input}
-                                data-location={Location.right}
-                                onChange={this.handleOnChange}
-                                value={this.props.right || ""}
-                            />
+                            {this.renderLocationInput(Location.right)}
                         </div>
                         <div className={this.props.managedClasses.absoluteInput_row}>
-                            <input
-                                type="number"
-                                className={this.props.managedClasses.cssPosition_input}
-                                data-location={Location.bottom}
-                                onChange={this.handleOnChange}
-                                value={this.props.bottom || ""}
-                            />
+                            {this.renderLocationInput(Location.bottom)}
                         </div>
                     </div>
                 );
@@ -94,13 +75,43 @@ class CSSPosition extends React.Component<ICSSPositionProps & IManagedClasses<IC
         }
     }
 
+    private renderLocationInput(location: Location): JSX.Element {
+        return (
+            <input
+                type="number"
+                className={this.props.managedClasses.cssPosition_input}
+                data-location={location}
+                onChange={this.handleOnChange}
+                value={this.props[location] || ""}
+            />
+        )
+    }
+
     private generateCenterRowClassNames(): string {
         let classNames: string = this.props.managedClasses.absoluteInput_row_center;
 
-        classNames = this.props.top ? `${classNames} ${this.props.managedClasses.absoluteInput_row_center__activeTop}` : classNames;
-        classNames = this.props.bottom ? `${classNames} ${this.props.managedClasses.absoluteInput_row_center__activeBottom}` : classNames;
-        classNames = this.props.left ? `${classNames} ${this.props.managedClasses.absoluteInput_row_center__activeLeft}` : classNames;
-        classNames = this.props.right ? `${classNames} ${this.props.managedClasses.absoluteInput_row_center__activeRight}` : classNames;
+        [
+            {
+                location: Location.top,
+                className: this.props.managedClasses.absoluteInput_row_center__activeTop
+            },
+            {
+                location: Location.bottom,
+                className: this.props.managedClasses.absoluteInput_row_center__activeBottom
+            },
+            {
+                location: Location.left,
+                className: this.props.managedClasses.absoluteInput_row_center__activeLeft
+            },
+            {
+                location: Location.right,
+                className: this.props.managedClasses.absoluteInput_row_center__activeRight
+            }
+        ].forEach((locationsMappedToClassNames: ILocationsMappedToClassNames): void => {
+            classNames = this.props[locationsMappedToClassNames.location]
+                ? `${classNames} ${locationsMappedToClassNames.className}`
+                : classNames;
+        });
 
         return classNames;
     }
@@ -133,15 +144,9 @@ class CSSPosition extends React.Component<ICSSPositionProps & IManagedClasses<IC
         return updatedProps;
     }
 
-    private getUpdatedPositions(props: string[], updatedPropKey: string, updatedPropValue: string): Partial<ICSSPositionProps> {
+    private getUpdatedPositions(props: string[], updatedPropKey: Location, updatedPropValue: string): Partial<ICSSPositionProps> {
         const updatedProps: Partial<ICSSPositionProps> = {};
-        const excludedProp: Location = updatedPropKey === Location.left
-            ? Location.right
-            : updatedPropKey === Location.right
-            ? Location.left
-            : updatedPropKey === Location.top
-            ? Location.bottom
-            : Location.top;
+        const excludedProp: Location = this.getExcludedLocation(updatedPropKey);
 
         props.forEach((prop: string): void => {
             if (this.props[prop] && prop !== excludedProp) {
@@ -152,6 +157,16 @@ class CSSPosition extends React.Component<ICSSPositionProps & IManagedClasses<IC
         updatedProps[updatedPropKey] = parseInt(updatedPropValue, 10);
 
         return updatedProps;
+    }
+
+    private getExcludedLocation(updatedPropKey: Location): Location {
+        return updatedPropKey === Location.left
+            ? Location.right
+            : updatedPropKey === Location.right
+            ? Location.left
+            : updatedPropKey === Location.top
+            ? Location.bottom
+            : Location.top;
     }
 }
 
