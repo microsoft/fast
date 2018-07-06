@@ -8,7 +8,7 @@ import Typography, {
     TypeLevel,
     TypographyTag
 } from "./typography";
-import * as schema from "./typography.schema.json";
+import schema from "./typography.schema.json";
 import Documentation from "./.tmp/documentation";
 
 const testString: string = "Test string";

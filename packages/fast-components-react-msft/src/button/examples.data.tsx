@@ -9,7 +9,7 @@ import {
     IButtonManagedClasses,
     IButtonUnhandledProps
 } from "./button.props";
-import * as schema from "./button.schema.json";
+import schema from "./button.schema.json";
 import Documentation from "./.tmp/documentation";
 
 export default {

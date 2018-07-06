@@ -7,7 +7,7 @@ export interface IExampleComponent {
 }
 
 import TextField from "./text-field/text-field";
-import * as TextFieldSchema from "./text-field/text-field.schema.json";
+import TextFieldSchema from "./text-field/text-field.schema.json";
 
 export const textField: IExampleComponent = {
     component: TextField,
@@ -15,7 +15,7 @@ export const textField: IExampleComponent = {
 };
 
 import NumberField from "./number-field/number-field";
-import * as NumberFieldSchema from "./number-field/number-field.schema.json";
+import NumberFieldSchema from "./number-field/number-field.schema.json";
 
 export const numberField: IExampleComponent = {
     component: NumberField,
@@ -23,7 +23,7 @@ export const numberField: IExampleComponent = {
 };
 
 import Checkbox from "./checkbox/checkbox";
-import * as CheckboxSchema from "./checkbox/checkbox.schema.json";
+import CheckboxSchema from "./checkbox/checkbox.schema.json";
 
 export const checkbox: IExampleComponent = {
     component: Checkbox,
@@ -31,7 +31,7 @@ export const checkbox: IExampleComponent = {
 };
 
 import AnyOf from "./any-of/any-of";
-import * as AnyOfSchema from "./any-of/any-of.schema.json";
+import AnyOfSchema from "./any-of/any-of.schema.json";
 
 export const anyOf: IExampleComponent = {
     component: AnyOf,
@@ -39,7 +39,7 @@ export const anyOf: IExampleComponent = {
 };
 
 import OneOf from "./one-of/one-of";
-import * as OneOfSchema from "./one-of/one-of.schema.json";
+import OneOfSchema from "./one-of/one-of.schema.json";
 
 export const oneOf: IExampleComponent = {
     component: OneOf,
@@ -47,7 +47,7 @@ export const oneOf: IExampleComponent = {
 };
 
 import Objects from "./objects/objects";
-import * as ObjectsSchema from "./objects/objects.schema.json";
+import ObjectsSchema from "./objects/objects.schema.json";
 
 export const objects: IExampleComponent = {
     component: Objects,
@@ -55,7 +55,7 @@ export const objects: IExampleComponent = {
 };
 
 import Arrays from "./arrays/arrays";
-import * as ArraysSchema from "./arrays/arrays.schema.json";
+import ArraysSchema from "./arrays/arrays.schema.json";
 
 export const arrays: IExampleComponent = {
     component: Arrays,
@@ -63,7 +63,7 @@ export const arrays: IExampleComponent = {
 };
 
 import Children from "./children/children";
-import * as ChildrenSchema from "./children/children.schema.json";
+import ChildrenSchema from "./children/children.schema.json";
 
 export const children: IExampleComponent = {
     component: Children,
@@ -72,7 +72,7 @@ export const children: IExampleComponent = {
 
 import AlignHorizontal from "./align-horizontal/align-horizontal";
 import AlignHorizontalConfig from "./align-horizontal/align-horizontal.config";
-import * as AlignHorizontalSchema from "./align-horizontal/align-horizontal.schema.json";
+import AlignHorizontalSchema from "./align-horizontal/align-horizontal.schema.json";
 
 export const alignHorizontal: IExampleComponent = {
     component: AlignHorizontal,
@@ -82,7 +82,7 @@ export const alignHorizontal: IExampleComponent = {
 
 import AlignVertical from "./align-vertical/align-vertical";
 import AlignVerticalConfig from "./align-vertical/align-vertical.config";
-import * as AlignVerticalSchema from "./align-vertical/align-vertical.schema.json";
+import AlignVerticalSchema from "./align-vertical/align-vertical.schema.json";
 
 export const alignVertical: IExampleComponent = {
     component: AlignVertical,
@@ -92,7 +92,7 @@ export const alignVertical: IExampleComponent = {
 
 import WeightProperties from "./weight-properties/weight-properties";
 import { weightPropertiesConfig, weightPropertiesWeight } from "./weight-properties/weight-properties.config";
-import * as WeightPropertiesSchema from "./weight-properties/weight-properties.schema.json";
+import WeightPropertiesSchema from "./weight-properties/weight-properties.schema.json";
 
 export const weightProperties: IExampleComponent = {
     component: WeightProperties,
@@ -103,7 +103,7 @@ export const weightProperties: IExampleComponent = {
 
 import GeneralExample from "./general-example/general-example";
 import GeneralExampleConfig from "./general-example/general-example.config";
-import * as GeneralExampleSchema from "./general-example/general-example.schema.json";
+import GeneralExampleSchema from "./general-example/general-example.schema.json";
 
 export const generalExample: IExampleComponent = {
     component: GeneralExample,
@@ -113,7 +113,7 @@ export const generalExample: IExampleComponent = {
 
 import AttributeAssignment from "./attribute-assignment/attribute-assignment";
 import AttributeAssignmentConfig from "./attribute-assignment/attribute-assignment.config";
-import * as AttributeAssignmentSchema from "./attribute-assignment/attribute-assignment.schema.json";
+import AttributeAssignmentSchema from "./attribute-assignment/attribute-assignment.schema.json";
 
 export const attributeAssignment: IExampleComponent = {
     component: AttributeAssignment,
@@ -123,7 +123,7 @@ export const attributeAssignment: IExampleComponent = {
 
 import Theme from "./theme/theme";
 import ThemeConfig from "./theme/theme.config";
-import * as ThemeSchema from "./theme/theme.schema.json";
+import ThemeSchema from "./theme/theme.schema.json";
 
 export const theme: IExampleComponent = {
     component: Theme,
