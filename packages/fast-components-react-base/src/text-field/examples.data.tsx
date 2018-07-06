@@ -6,7 +6,7 @@ import TextField, {
     ITextFieldUnhandledProps,
     TextFieldType
 } from "./text-field";
-import * as schema from "./text-field.schema.json";
+import schema from "./text-field.schema.json";
 import * as React from "react";
 import Documentation from "./.tmp/documentation";
 

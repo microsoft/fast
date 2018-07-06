@@ -7,7 +7,7 @@ import Label, {
     ILabelUnhandledProps,
     LabelTag
 } from "./label";
-import * as schema from "./label.schema.json";
+import schema from "./label.schema.json";
 import Documentation from "./.tmp/documentation";
 
 const examples: ISnapshotTestSuite<ILabelHandledProps & ILabelMangedClasses> = {

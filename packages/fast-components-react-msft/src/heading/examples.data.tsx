@@ -11,7 +11,7 @@ import {
     IHeadingManagedClasses,
     IHeadingUnhandledProps
 } from "./heading.props";
-import * as schema from "./heading.schema.json";
+import schema from "./heading.schema.json";
 import Documentation from "./.tmp/documentation";
 
 const testString: string = "Heading test string";

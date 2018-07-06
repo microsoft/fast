@@ -3,7 +3,7 @@ import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import TextField from "./index";
 import { ITextFieldHandledProps, TextFieldType } from "@microsoft/fast-components-react-base";
-import * as schema from "@microsoft/fast-components-react-base/dist/text-field/text-field.schema.json";
+import schema from "@microsoft/fast-components-react-base/dist/text-field/text-field.schema.json";
 import Documentation from "./.tmp/documentation";
 
 export default {

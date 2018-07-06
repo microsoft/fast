@@ -3,7 +3,7 @@ import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import Divider from "./index";
 import { DividerRoles, IDividerHandledProps } from "@microsoft/fast-components-react-base";
-import * as schema from "@microsoft/fast-components-react-base/dist/divider/divider.schema.json";
+import schema from "@microsoft/fast-components-react-base/dist/divider/divider.schema.json";
 import Documentation from "./.tmp/documentation";
 
 export default {
