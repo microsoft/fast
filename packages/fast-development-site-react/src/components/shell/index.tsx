@@ -17,7 +17,7 @@ export enum ShellSlot {
 }
 
 class Shell extends React.Component<{}, {}> {
-    private containerStyles: ComponentStyles<IContainerClassNamesContract, undefined> = {
+    private containerStyles: Partial<ComponentStyles<IContainerClassNamesContract, undefined>> = {
         container: {
             fontFamily: "Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif",
             fontSize: toPx(14),

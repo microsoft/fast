@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "moduleResolution": "node",
+        "module": "ES6",
+        "target": "ES6",
+        "baseUrl": ".",
+        "declaration": true,
+        "jsx": "react",
+        "outDir": "./dist"
+    },
+    "files": [
+        "typings.d.ts"
+    ],
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts",
+        "**/*.spec.tsx",
+        "**/examples.data.tsx"
+    ]
+}

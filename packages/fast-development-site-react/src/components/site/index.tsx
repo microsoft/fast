@@ -28,7 +28,6 @@ import {
     Container,
     IContainerClassNamesContract,
     IPaneClassNamesContract,
-    IPaneProps,
     Pane,
     PaneResizeDirection,
     Row,
@@ -435,13 +434,14 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
 
     private renderShellRow(route: IComponentRoute): JSX.Element {
 
-        const paneStyleSheet: ComponentStyles<IPaneClassNamesContract, IDevSiteDesignSystem> = {
+        const paneStyleSheet: Partial<ComponentStyles<IPaneClassNamesContract, IDevSiteDesignSystem>> = {
             pane: {
                 backgroundColor: (config: IDevSiteDesignSystem): string => {
                     return config.lightGray;
                 }
             }
         };
+
         return (
             <Row fill={true}>
                 <Pane

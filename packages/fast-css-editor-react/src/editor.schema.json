@@ -1,0 +1,62 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "CSS Editor",
+    "description": "A CSS editor component's schema definition.",
+    "type": "object",
+    "id": "css-editor",
+    "properties": {
+        "position": {
+            "title": "Position",
+            "oneOf": [
+                {
+                    "title": "Static (default)",
+                    "type": "object",
+                    "properties": {
+                        "position": {
+                            "title": "Position",
+                            "type": "string",
+                            "enum": [
+                                "static"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "position"
+                    ]
+                },
+                {
+                    "title": "Absolute",
+                    "type": "object",
+                    "properties": {
+                        "position": {
+                            "title": "Position",
+                            "type": "string",
+                            "enum": [
+                                "absolute"
+                            ]
+                        },
+                        "left": {
+                            "title": "Left (px)",
+                            "type": "number"
+                        },
+                        "right": {
+                            "title": "Right (px)",
+                            "type": "number"
+                        },
+                        "top": {
+                            "title": "Top (px)",
+                            "type": "number"
+                        },
+                        "bottom": {
+                            "title": "Bottom (px)",
+                            "type": "number"
+                        }
+                    },
+                    "required": [
+                        "position"
+                    ]
+                }
+            ]
+        }
+    }
+}
