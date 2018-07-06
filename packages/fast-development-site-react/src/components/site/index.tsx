@@ -1,6 +1,6 @@
 import Toc, { TocItem } from "../toc";
 import * as React from "react";
-import manageJss, { ComponentStyles, ComponentStyleSheet, DesignSystemProvider, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, DesignSystemProvider, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { glyphBuildingblocks, glyphGlobalnavbutton, glyphTransparency } from "@microsoft/fast-glyphs-msft";
 import Form from "@microsoft/fast-form-generator-react";
 import { uniqueId } from "lodash-es";
@@ -440,7 +440,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                     return config.lightGray;
                 }
             }
-        }
+        };
 
         return (
             <Row fill={true}>
