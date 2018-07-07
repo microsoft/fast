@@ -33,28 +33,20 @@ class App extends React.Component<{}, IAppState> {
 
         this.state = {
             editorDetail: {
-                position: {
-                    position: PositionValue.static
-                },
-                onChange: this.handleEditorDetailUpdate
+                position: PositionValue.static,
             },
             editorExample: {
-                position: {
-                    position: PositionValue.absolute,
-                    left: 4,
-                    top: 12
-                },
-                onChange: this.handleEditorExampleUpdate
+                position: PositionValue.absolute,
+                left: 4,
+                top: 12
             },
             positionDetail:{
-                position: PositionValue.static,
-                onChange: this.handlePositionDetailUpdate}
-            ,
+                position: PositionValue.static
+            },
             positionExample: {
                 position: PositionValue.absolute,
                 left: 1,
-                top: 5,
-                onChange: this.handlePositionExampleUpdate
+                top: 5
             }
         };
     }
@@ -79,11 +71,11 @@ class App extends React.Component<{}, IAppState> {
                         </SiteCategoryDocumentation>
                         <SiteCategoryItem
                             slot={"canvas-example-view"}
-                            data={this.state.editorExample}
+                            data={Object.assign({}, this.state.editorExample, {onChange: this.handleEditorExampleUpdate})}
                         />
                         <SiteCategoryItem
                             slot={"canvas-detail-view-example"}
-                            data={this.state.editorDetail}
+                            data={Object.assign({}, this.state.editorDetail, {onChange: this.handleEditorDetailUpdate})}
                         />
                     </SiteCategory>
                     <SiteCategory
@@ -99,11 +91,11 @@ class App extends React.Component<{}, IAppState> {
                         </SiteCategoryDocumentation>
                         <SiteCategoryItem
                             slot={"canvas-example-view"}
-                            data={this.state.positionExample}
+                            data={Object.assign({}, this.state.positionExample, {onChange: this.handlePositionExampleUpdate})}
                         />
                         <SiteCategoryItem
                             slot={"canvas-detail-view-example"}
-                            data={this.state.positionDetail}
+                            data={Object.assign({}, this.state.positionDetail, {onChange: this.handlePositionDetailUpdate})}
                         />
                     </SiteCategory>
                 </SiteCategory>

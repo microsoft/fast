@@ -1,10 +1,9 @@
 import * as React from "react";
-import CSSPosition, { ICSSPositionProps } from "./position";
+import { omit } from "lodash-es";
+import CSSPosition, { ICSSPositionProps, Location } from "./position";
 
-export interface ICSSEditorProps {
-    position: ICSSPositionProps;
-    onChange?: (cssValues: any) => void;
-}
+/*tslint:disable-next-line*/
+export interface ICSSEditorProps extends ICSSPositionProps {}
 
 class CSSEditor extends React.Component<ICSSEditorProps, {}> {
     public render(): JSX.Element {
@@ -16,18 +15,26 @@ class CSSEditor extends React.Component<ICSSEditorProps, {}> {
     }
 
     private renderPosition(): JSX.Element {
-        if (this.props.position) {
-            return (
-                <CSSPosition
-                    {...this.props.position}
-                    onChange={this.handlePositionChange}
-                />
-            );
-        }
+        return (
+            <CSSPosition
+                position={this.props.position}
+                top={this.props.top}
+                bottom={this.props.bottom}
+                left={this.props.left}
+                right={this.props.right}
+                onChange={this.handlePositionUpdate}
+            />
+        );
     }
 
-    private handlePositionChange = (positionProps: ICSSPositionProps): void => {
-        this.props.onChange(Object.assign({}, this.props, { position: positionProps }));
+    private handlePositionUpdate = (position: Partial<ICSSEditorProps>): void => {
+        this.props.onChange(
+            Object.assign(
+                {},
+                omit(this.props, ["position", "onChange", Location.top, Location.bottom, Location.left, Location.right]),
+                { ...position }
+            )
+        );
     }
 }
 

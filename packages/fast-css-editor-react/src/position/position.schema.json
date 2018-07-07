@@ -3,54 +3,31 @@
     "title": "CSS Position",
     "description": "A CSS position component's schema definition.",
     "id": "css-position",
-    "oneOf": [
-        {
-            "title": "Static (default)",
-            "type": "object",
-            "properties": {
-                "position": {
-                    "title": "Position",
-                    "type": "string",
-                    "enum": [
-                        "static"
-                    ]
-                }
-            },
-            "required": [
-                "position"
+    "type": "object",
+    "properties": {
+        "position": {
+            "title": "Position",
+            "type": "string",
+            "enum": [
+                "absolute",
+                "static"
             ]
         },
-        {
-            "title": "Absolute",
-            "type": "object",
-            "properties": {
-                "position": {
-                    "title": "Position",
-                    "type": "string",
-                    "enum": [
-                        "absolute"
-                    ]
-                },
-                "left": {
-                    "title": "Left (px)",
-                    "type": "number"
-                },
-                "right": {
-                    "title": "Right (px)",
-                    "type": "number"
-                },
-                "top": {
-                    "title": "Top (px)",
-                    "type": "number"
-                },
-                "bottom": {
-                    "title": "Bottom (px)",
-                    "type": "number"
-                }
-            },
-            "required": [
-                "position"
-            ]
+        "left": {
+            "title": "Left (px)",
+            "type": "number"
+        },
+        "right": {
+            "title": "Right (px)",
+            "type": "number"
+        },
+        "top": {
+            "title": "Top (px)",
+            "type": "number"
+        },
+        "bottom": {
+            "title": "Bottom (px)",
+            "type": "number"
         }
-    ]
+    }
 }
