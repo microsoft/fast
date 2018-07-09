@@ -52,7 +52,7 @@ class Flipper extends Foundation<IFlipperHandledProps & IManagedClasses<IFlipper
         };
 
         if (!this.props.visible) {
-            coercedProps["aria-hidden"] = "true";
+            coercedProps["aria-hidden"] = true;
             coercedProps.tabIndex = -1;
         }
 
