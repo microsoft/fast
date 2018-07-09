@@ -35,7 +35,7 @@ const styles: ComponentStyles<IFlipperClassNameContract, IDesignSystem> = (confi
                 border: `${toPx(1)} solid ${applyMixedColor(foregroundColor, backgroundColor, .46)}`,
             }
         },
-        flipperGlyph: {
+        flipper_glyph: {
             display: "inline-flex",
             justifyContent: "center",
             alignItems: "center",
@@ -51,13 +51,13 @@ const styles: ComponentStyles<IFlipperClassNameContract, IDesignSystem> = (confi
             }
         },
         flipper_next: {
-            "& $flipperGlyph": {
+            "& $flipper_glyph": {
                 [applyLocalizedProperty("marginRight", "marginLeft", direction)]: toPx(6),
                 transform: applyLocalizedProperty("rotate(45deg)", "rotate(-135deg)", direction)
             }
         },
         flipper_previous: {
-            "& $flipperGlyph": {
+            "& $flipper_glyph": {
                 [applyLocalizedProperty("marginLeft", "marginRight", direction)]: toPx(6),
                 transform: applyLocalizedProperty("rotate(-135deg)", "rotate(45deg)", direction)
             }

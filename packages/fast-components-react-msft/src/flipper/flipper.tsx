@@ -29,7 +29,7 @@ class Flipper extends Foundation<IFlipperHandledProps & IManagedClasses<IFlipper
                 managedClasses={this.props.managedClasses}
                 className={this.generateClassNames()}
             >
-                <span className={this.props.managedClasses.flipperGlyph}>{this.props.children}</span>
+                <span className={this.props.managedClasses.flipper_glyph}>{this.props.children}</span>
             </Button>
         );
     }
