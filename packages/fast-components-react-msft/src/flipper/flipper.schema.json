@@ -1,0 +1,28 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Flipper",
+    "description": "A flipper component's schema definition.",
+    "type": "object",
+    "id": "flipper",
+    "children": true,
+    "properties": {
+        "direction": {
+            "title": "Direction",
+            "type": "string",
+            "enum": [
+                "next",
+                "previous"
+            ],
+            "default": "next"
+        },
+        "visible": {
+            "title": "Visible to screen readers",
+            "type": "boolean"
+        },
+        "label": {
+            "title": "HTML aria-label attribute",
+            "type": "string",
+            "example": "See previous"
+        }
+    }
+}
