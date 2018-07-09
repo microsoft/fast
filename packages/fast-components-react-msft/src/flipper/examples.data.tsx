@@ -10,13 +10,13 @@ import {
     IFlipperUnhandledProps
 } from "./flipper.props";
 import schema from "./flipper.schema.json";
-// import Documentation from "./.tmp/documentation";
+import Documentation from "./.tmp/documentation";
 
 export default {
     name: "Flipper",
     component: Flipper,
     schema: schema as any,
-    // documentation: <Documentation />,
+    documentation: <Documentation />,
     detailData: {
         ariaHidden: true
     },
