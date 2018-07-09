@@ -7,19 +7,15 @@ import CSSEditor, { ICSSEditorProps, PositionValue } from "../../src";
 const name: string = "css-editor";
 
 const exampleData: ICSSEditorProps = {
-    position: {
-        position: PositionValue.static
-    },
+    position: PositionValue.static,
     /* tslint:disable-next-line */
     onChange: (data: any): void => {}
 };
 
 const detailData: ICSSEditorProps = {
-    position: {
-        position: PositionValue.absolute,
-        bottom: 8,
-        right: 4,
-    },
+    position: PositionValue.absolute,
+    bottom: 8,
+    right: 4,
     /* tslint:disable-next-line */
     onChange: (data: any): void => {}
 };

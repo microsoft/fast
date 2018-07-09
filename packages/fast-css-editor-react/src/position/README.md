@@ -21,7 +21,7 @@ export class Example extends React.Component {
     render() {
         return (
             <CSSPosition
-                data={this.state.positionValues}
+                {...this.state.positionValues}
                 onChange={this.handlePositionValueUpdate}
             />
         );
