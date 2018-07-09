@@ -9,7 +9,7 @@ export enum FlipperDirection {
 
 export interface IFlipperHandledProps extends IButtonHandledProps {
     /**
-     * The flag to expose the flipper to screen readers
+     * The flipper direction
      */
     direction?: FlipperDirection;
 
