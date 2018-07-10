@@ -63,7 +63,7 @@ class FormCategory extends React.Component<IFormCategoryProps & IManagedClasses<
 
         return (
             <div key={this.props.id}>
-                { this.props.expandable ? this.renderHeaderButton() : this.renderHeaderTitle() }
+                {this.props.expandable ? this.renderHeaderButton() : this.renderHeaderTitle()}
                 <div
                     className={this.getClassNames()}
                     {...this.generateContainerAttributes()}
