@@ -56,7 +56,7 @@ export default class App extends React.Component<{}, IAppState> {
                 formChildOptions={formChildOptions}
                 onUpdateDirection={this.handleUpdateDirection}
                 onUpdateTheme={this.handleUpdateTheme}
-                themes={["light", "dark"]}
+                themes={[{name: "light", background: DesignSystemDefaults.backgroundColor}, {name: "dark", background: DesignSystemDefaults.foregroundColor}]}
             >
                 <SiteMenu slot={"header"}>
                     <SiteMenuItem>

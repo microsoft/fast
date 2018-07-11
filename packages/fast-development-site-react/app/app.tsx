@@ -61,7 +61,7 @@ export default class App extends React.Component<{}, IAppState> {
                 formChildOptions={this.formChildOptions}
                 frameworks={this.frameworks}
                 onUpdateDirection={this.handleUpdateDirection}
-                themes={["Foo", "Bar", "Rumple"]}
+                themes={[{name: "Foo", background: "#000"}, {name: "Bar", background: "#FFF"}, {name: "Rumple", background: "#333"}]}
                 onUpdateTheme={this.handleUpdateTheme}
             >
                 {this.renderSiteTitle()}

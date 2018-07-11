@@ -46,7 +46,7 @@ export interface ISiteProps {
     onUpdateDirection?: (ltr: Direction) => void;
     onUpdateTheme?: (theme: string) => void;
     locales?: string[];
-    themes?: string[];
+    themes?: IThemeValues[];
     frameworks?: FrameworkEnum | FrameworkEnum[];
     activeFramework?: FrameworkEnum;
     collapsed?: boolean;
@@ -85,12 +85,17 @@ export interface ISiteState {
     formView: boolean;
     devToolsView: boolean;
     locale: string;
-    theme: string;
+    theme: IThemeValues;
 }
 
 export enum SiteSlot {
     category = "category",
     categoryIcon = "category-icon"
+}
+
+export interface IThemeValues {
+    name: string;
+    background: string;
 }
 
 export interface ISiteManagedClasses {
@@ -607,6 +612,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                             key={index}
                             onClick={this.handleComponentClick}
                             index={index}
+                            background={this.state.theme.background}
                             dir={isRTL(this.state.locale) ? Direction.rtl : Direction.ltr}
                             transparentBackground={this.state.componentBackgroundTransparent}
                             designSystem={componentItem.props.designSystem}
@@ -638,6 +644,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 <ComponentWrapper
                     key={index}
                     index={index}
+                    background={this.state.theme.background}
                     dir={isRTL(this.state.locale) ? Direction.rtl : Direction.ltr}
                     transparentBackground={this.state.componentBackgroundTransparent}
                     designSystem={component.props.designSystem}
@@ -726,15 +733,15 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
             </div>
         );
     }
-    
+
     private renderThemeSelect(): JSX.Element {
-        if(Array.isArray(this.props.themes)){
+        if (Array.isArray(this.props.themes)) {
             return (
                 <span className={this.props.managedClasses.site_infoBarConfiguration_direction}>
                     <select
                         className={this.props.managedClasses.site_infoBarConfiguration_direction_input}
                         onChange={this.handleThemeUpdate}
-                        value={this.state.theme}
+                        value={this.state.theme.name}
                     >
                         {this.renderThemes()}
                     </select>
@@ -767,10 +774,10 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     }
 
     private renderThemes(): JSX.Element[] {
-        return this.props.themes.map((theme: string, index: number): JSX.Element => {
+        return this.props.themes.map((theme: IThemeValues, index: number): JSX.Element => {
             return (
                 <option key={index}>
-                    {theme}
+                    {theme.name}
                 </option>
             );
         });
@@ -791,9 +798,11 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
             this.props.onUpdateTheme(e.target.value);
         }
 
+        const found: IThemeValues = this.props.themes.find(function(item: IThemeValues): boolean { return item.name === e.target.value; });
+
         this.setState({
-            theme: e.target.value
-        })
+            theme: found
+        });
     }
 
     /**
