@@ -12,7 +12,8 @@ const styles: ComponentStyles<ILabelClassNameContract, IDesignSystem> = {
         display: "inline-block",
         color: (config: IDesignSystem): string => {
             return get(config, "foregroundColor") || designSystemDefaults.foregroundColor;
-        }
+        },
+        padding: "0"
     },
     label_hidden: {
         ...applyScreenReader()
