@@ -40,6 +40,11 @@ export interface IAppState {
     theme: string;
 }
 
+const themes: any[] = [
+    {id: "light", displayName: "light", background: DesignSystemDefaults.backgroundColor},
+    {id: "dark", displayName: "dark", background: DesignSystemDefaults.foregroundColor}
+];
+
 export default class App extends React.Component<{}, IAppState> {
     constructor(props: {}) {
         super(props);
@@ -56,9 +61,7 @@ export default class App extends React.Component<{}, IAppState> {
                 formChildOptions={formChildOptions}
                 onUpdateDirection={this.handleUpdateDirection}
                 onUpdateTheme={this.handleUpdateTheme}
-                /* tslint:disable:max-line-length */
-                themes={[{name: "light", background: DesignSystemDefaults.backgroundColor}, {name: "dark", background: DesignSystemDefaults.foregroundColor}]}
-                /* tslint:enable:max-line-length */
+                themes={themes}
             >
                 <SiteMenu slot={"header"}>
                     <SiteMenuItem>

@@ -72,7 +72,7 @@ const styles: ComponentStyles<IComponentWrapperManagedClasses, IDevSiteDesignSys
 class ComponentWrapper extends React.Component<IComponentWrapperProps<IDevSiteDesignSystem> & IManagedClasses<IComponentWrapperManagedClasses>, {}> {
     public render(): JSX.Element {
         return (
-            <div className={this.getClassNames()} onClick={this.handleClick} dir={this.props.dir || null} style={this.getThemeBackground()}>
+            <div className={this.getClassNames()} onClick={this.handleClick} dir={this.props.dir || null} style={this.getInlineStyle()}>
                 {this.renderChildren()}
             </div>
         );
@@ -98,7 +98,9 @@ class ComponentWrapper extends React.Component<IComponentWrapperProps<IDevSiteDe
         );
     }
 
-    private getThemeBackground(): React.CSSProperties {
+    private getInlineStyle(): React.CSSProperties {
+        if (!this.props.background) { return; }
+
         return this.props.transparentBackground ? null : {background: this.props.background};
     }
 

@@ -46,7 +46,7 @@ export interface ISiteProps {
     onUpdateDirection?: (ltr: Direction) => void;
     onUpdateTheme?: (theme: string) => void;
     locales?: string[];
-    themes?: IThemeValues[];
+    themes?: ITheme[];
     frameworks?: FrameworkEnum | FrameworkEnum[];
     activeFramework?: FrameworkEnum;
     collapsed?: boolean;
@@ -85,7 +85,7 @@ export interface ISiteState {
     formView: boolean;
     devToolsView: boolean;
     locale: string;
-    theme: IThemeValues;
+    theme: ITheme;
 }
 
 export enum SiteSlot {
@@ -93,8 +93,9 @@ export enum SiteSlot {
     categoryIcon = "category-icon"
 }
 
-export interface IThemeValues {
-    name: string;
+export interface ITheme {
+    id: string;
+    displayName: string;
     background: string;
 }
 
@@ -103,8 +104,9 @@ export interface ISiteManagedClasses {
     site_canvasContent: string;
     site_headerTitle: string;
     site_infoBarConfiguration: string;
-    site_infoBarConfiguration_direction: string;
-    site_infoBarConfiguration_direction_input: string;
+    site_infoBarConfiguration_base: string;
+    site_infoBarConfiguration_input: string;
+    site_infoBarConfiguration_theme: string;
     site_paneForm: string;
     site_paneToc: string;
     site_paneTocRow: string;
@@ -147,7 +149,7 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
         padding: toPx(4),
         width: "50%",
     },
-    site_infoBarConfiguration_direction: {
+    site_infoBarConfiguration_base: {
         position: "relative",
         "&::before, &::after": {
             content: "''",
@@ -168,7 +170,10 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
             transform: "rotate(-45deg)"
         }
     },
-    site_infoBarConfiguration_direction_input: {
+    site_infoBarConfiguration_theme: {
+        marginRight: toPx(4)
+    },
+    site_infoBarConfiguration_input: {
         lineHeight: toPx(16),
         fontSize: toPx(14),
         backgroundColor: "rgba(0, 0, 0, 0.04)",
@@ -612,7 +617,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                             key={index}
                             onClick={this.handleComponentClick}
                             index={index}
-                            background={this.state.theme.background}
+                            background={this.state.theme.background || null}
                             dir={isRTL(this.state.locale) ? Direction.rtl : Direction.ltr}
                             transparentBackground={this.state.componentBackgroundTransparent}
                             designSystem={componentItem.props.designSystem}
@@ -644,7 +649,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 <ComponentWrapper
                     key={index}
                     index={index}
-                    background={this.state.theme.background}
+                    background={this.state.theme.background || null}
                     dir={isRTL(this.state.locale) ? Direction.rtl : Direction.ltr}
                     transparentBackground={this.state.componentBackgroundTransparent}
                     designSystem={component.props.designSystem}
@@ -711,9 +716,9 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                     <span dangerouslySetInnerHTML={{__html: glyphTransparency}}/>
                 </button>
                 {this.renderThemeSelect()}
-                <span className={this.props.managedClasses.site_infoBarConfiguration_direction}>
+                <span className={this.props.managedClasses.site_infoBarConfiguration_base}>
                     <select
-                        className={this.props.managedClasses.site_infoBarConfiguration_direction_input}
+                        className={this.props.managedClasses.site_infoBarConfiguration_input}
                         onChange={this.handleLocaleUpdate}
                         value={this.state.locale}
                     >
@@ -735,13 +740,16 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     }
 
     private renderThemeSelect(): JSX.Element {
-        if (Array.isArray(this.props.themes)) {
+        /* tslint:disable-next-line */
+        const className: string = `${this.props.managedClasses.site_infoBarConfiguration_base} ${this.props.managedClasses.site_infoBarConfiguration_theme}`
+
+        if (Array.isArray(this.props.themes) && this.props.themes.length > 0) {
             return (
-                <span className={this.props.managedClasses.site_infoBarConfiguration_direction}>
+                <span className={className}>
                     <select
-                        className={this.props.managedClasses.site_infoBarConfiguration_direction_input}
+                        className={this.props.managedClasses.site_infoBarConfiguration_input}
                         onChange={this.handleThemeUpdate}
-                        value={this.state.theme.name}
+                        value={this.state.theme.displayName}
                     >
                         {this.renderThemes()}
                     </select>
@@ -774,10 +782,10 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     }
 
     private renderThemes(): JSX.Element[] {
-        return this.props.themes.map((theme: IThemeValues, index: number): JSX.Element => {
+        return this.props.themes.map((theme: ITheme, index: number): JSX.Element => {
             return (
                 <option key={index}>
-                    {theme.name}
+                    {theme.displayName}
                 </option>
             );
         });
@@ -798,10 +806,12 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
             this.props.onUpdateTheme(e.target.value);
         }
 
-        const found: IThemeValues = this.props.themes.find(function(item: IThemeValues): boolean { return item.name === e.target.value; });
+        const selectedTheme: ITheme = this.props.themes.find((item: ITheme): boolean => {
+            return item.displayName === e.target.value;
+        });
 
         this.setState({
-            theme: found
+            theme: selectedTheme
         });
     }
 

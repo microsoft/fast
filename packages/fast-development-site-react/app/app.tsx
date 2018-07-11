@@ -28,6 +28,12 @@ export interface IAppState {
     theme: string;
 }
 
+const themes: any[] = [
+    {id: "Foo", displayName: "Foo", background: "#000"},
+    {id: "Bar", displayName: "Bar", background: "#FFF"},
+    {id: "Rumple", displayName: "Rumple", background: "#333"}
+];
+
 export default class App extends React.Component<{}, IAppState> {
     private formChildOptions: IFormChildOption[] = [
         {
@@ -55,13 +61,15 @@ export default class App extends React.Component<{}, IAppState> {
         };
     }
 
+
     public render(): JSX.Element {
+
         return (
             <Site
                 formChildOptions={this.formChildOptions}
                 frameworks={this.frameworks}
                 onUpdateDirection={this.handleUpdateDirection}
-                themes={[{name: "Foo", background: "#000"}, {name: "Bar", background: "#FFF"}, {name: "Rumple", background: "#333"}]}
+                themes={themes}
                 onUpdateTheme={this.handleUpdateTheme}
             >
                 {this.renderSiteTitle()}
