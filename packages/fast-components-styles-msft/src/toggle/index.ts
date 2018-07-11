@@ -60,7 +60,7 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config
             margin: "0",
             width: toPx(44),
             height: toPx(20),
-            background: "transparent",
+            background: backgroundColor,
             border: `${toPx(1)} solid`,
             borderColor: foregroundColor,
             borderRadius: toPx(20),
@@ -103,14 +103,12 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config
                 }
             },
             "&:not(:checked)": {
-                background: "transparent",
                 borderColor: foregroundColor,
                 "& + span": {
                     backgroundColor: foregroundColor
                 },
                 "&:disabled": {
                     cursor: "not-allowed",
-                    background: "transparent",
                     borderColor: Chroma(foregroundColor).alpha(0.2).css(),
                     "& + span": {
                         backgroundColor: Chroma(foregroundColor).alpha(0.2).css()

@@ -23,6 +23,11 @@ export interface IToggleHandledProps {
     labelId?: string;
 
     /**
+     * The onChange event handler
+     */
+    onChange?: ToggleOnChange;
+
+    /**
      * The toggle selected state
      */
     selected?: boolean;
@@ -44,5 +49,6 @@ export interface IToggleHandledProps {
 }
 
 export interface IToggleUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
+export type ToggleOnChange = (event?: React.ChangeEvent<HTMLElement>) => void;
 export interface IToggleManagedClasses extends IManagedClasses<IToggleClassNameContract> {}
 export type ToggleProps = IToggleHandledProps & IToggleUnhandledProps & IToggleManagedClasses;
