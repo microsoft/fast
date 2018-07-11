@@ -270,7 +270,7 @@ export function applyPopupMenuStyles(): ICSSRules<{}> {
         width: toPx(200),
         background: colors.menuGray,
         zIndex: "1",
-        top: toPx(55),
+        top: toPx(78),
         ...boxShadow(shadow),
         "& li": {
             "& > button": {
@@ -305,7 +305,6 @@ export function applyPopupMenuStyles(): ICSSRules<{}> {
 export const thickLine: ICSSRules<{}> = {
     "& > span": {
         position: "relative",
-        paddingTop: toPx(3),
         paddingBottom: toPx(3),
         display: "block",
         ...ellipsis(),
@@ -339,9 +338,12 @@ export function applyPopupHeadingStyles(): ICSSRules<{}> {
                     fontSize: toPx(14),
                     background: "none",
                     border: "none",
-                    padding: `${toPx(2)} ${toPx(12)}`,
+                    padding: `${toPx(14)} ${toPx(12)}`,
                     color: colors.pink,
                     ...thickLine,
+                    "&:hover": {
+                        cursor: "pointer",
+                    },
                     "&[aria-expanded=\"true\"]": {
                         background: colors.menuGray,
                         borderLeftColor: colors.lightBorder,
