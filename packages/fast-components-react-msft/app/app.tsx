@@ -56,7 +56,9 @@ export default class App extends React.Component<{}, IAppState> {
                 formChildOptions={formChildOptions}
                 onUpdateDirection={this.handleUpdateDirection}
                 onUpdateTheme={this.handleUpdateTheme}
+                /* tslint:disable:max-line-length */
                 themes={[{name: "light", background: DesignSystemDefaults.backgroundColor}, {name: "dark", background: DesignSystemDefaults.foregroundColor}]}
+                /* tslint:enable:max-line-length */
             >
                 <SiteMenu slot={"header"}>
                     <SiteMenuItem>
@@ -89,7 +91,7 @@ export default class App extends React.Component<{}, IAppState> {
             foregroundColor: this.state.theme === "dark" ? DesignSystemDefaults.backgroundColor : DesignSystemDefaults.foregroundColor,
             backgroundColor: this.state.theme === "dark" ? DesignSystemDefaults.foregroundColor : DesignSystemDefaults.backgroundColor
         };
-        
+
         return Object.assign({}, DesignSystemDefaults, designSystem);
     }
 
@@ -102,10 +104,10 @@ export default class App extends React.Component<{}, IAppState> {
             direction: newDir
         });
     }
-    
+
     private handleUpdateTheme = (theme: string): void => {
         this.setState({
             theme
-        })
+        });
     }
 }
