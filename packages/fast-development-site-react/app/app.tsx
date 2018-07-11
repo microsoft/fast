@@ -25,6 +25,7 @@ import { FrameworkEnum } from "../src/components/site/dev-tools";
 
 export interface IAppState {
     direction: Direction;
+    theme: string;
 }
 
 export default class App extends React.Component<{}, IAppState> {
@@ -49,7 +50,8 @@ export default class App extends React.Component<{}, IAppState> {
         this.frameworks = [FrameworkEnum.react, FrameworkEnum.angular];
 
         this.state = {
-            direction: Direction.ltr
+            direction: Direction.ltr,
+            theme: "Foo"
         };
     }
 
@@ -59,6 +61,8 @@ export default class App extends React.Component<{}, IAppState> {
                 formChildOptions={this.formChildOptions}
                 frameworks={this.frameworks}
                 onUpdateDirection={this.handleUpdateDirection}
+                themes={["Foo", "Bar", "Rumple"]}
+                onUpdateTheme={this.handleUpdateTheme}
             >
                 {this.renderSiteTitle()}
                 {this.renderSiteMenu()}
@@ -180,6 +184,10 @@ export default class App extends React.Component<{}, IAppState> {
         });
     }
 
+    public componentDidUpdate(prevProps: ISiteProps): void {
+        console.log(this.state.theme)
+    }
+
     private renderBuildingBlocks(): JSX.Element {
         return (
             <SiteCategory slot={"category"} name={"Building blocks"}>
@@ -203,5 +211,11 @@ export default class App extends React.Component<{}, IAppState> {
         this.setState({
             direction
         });
+    }
+
+    private handleUpdateTheme = (theme: string): void => {
+        this.setState({
+            theme
+        })
     }
 }
