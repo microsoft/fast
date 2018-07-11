@@ -151,6 +151,7 @@ const style: ComponentStyles<IDevToolsManagedClasses, IDevSiteDesignSystem> = {
         }
     },
     devTools_tabPanel: {
+        display: "inline-flex",
         "&[aria-hidden=\"true\"]": {
             display: "none"
         }
