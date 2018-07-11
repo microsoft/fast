@@ -7,7 +7,7 @@
     "children": true,
     "properties": {
         "tag": {
-            "title": "Element",
+            "title": "HTML element",
             "type": "string",
             "enum": [
                 "label",
