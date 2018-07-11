@@ -477,6 +477,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                         </ComponentView>
                         <Row
                             resizable={true}
+                            hidden={!this.state.devToolsView}
                             resizeFrom={RowResizeDirection.north}
                             minHeight={180}
                         >
