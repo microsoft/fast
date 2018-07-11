@@ -184,10 +184,6 @@ export default class App extends React.Component<{}, IAppState> {
         });
     }
 
-    public componentDidUpdate(prevProps: ISiteProps): void {
-        console.log(this.state.theme)
-    }
-
     private renderBuildingBlocks(): JSX.Element {
         return (
             <SiteCategory slot={"category"} name={"Building blocks"}>
@@ -216,6 +212,6 @@ export default class App extends React.Component<{}, IAppState> {
     private handleUpdateTheme = (theme: string): void => {
         this.setState({
             theme
-        })
+        });
     }
 }
