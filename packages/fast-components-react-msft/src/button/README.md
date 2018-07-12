@@ -1,5 +1,5 @@
 ## Guidance
-The *Button* component can be either an [anchor](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) or [button](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button) element but will appear with button styling.
+The *Button* component can be either an [anchor](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) or [button](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button) element but will appear with button styling. Setting the `href` prop will automatically set the element type to `anchor`.
 
 ## Usage
 Make sure the button text conveys a clear purpose to the user. Button text must describe the action the button will perform and should include a verb. Use concise, specific, self-explanatory text &ndash; usually a single word. Buttons should always include a noun if there is any room for interpretation about what the verb operates on. If the button’s text content is dynamic, consider how the button will resize and what will happen to components around it. Use only a single line of text. The text shouldn’t change unless for localization. Default buttons should always perform safe operations. For example, a default button should never delete.
