@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { get, isUndefined } from "lodash-es";
 import Foundation, { HandledProps } from "../foundation";
-import { IToggleHandledProps, ToggleProps, IToggleManagedClasses, IToggleUnhandledProps } from "./toggle.props";
+import { IToggleHandledProps, IToggleManagedClasses, IToggleUnhandledProps, ToggleProps } from "./toggle.props";
 import { IManagedClasses, IToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
