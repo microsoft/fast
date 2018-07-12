@@ -31,6 +31,7 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = (conf
             boxSizing: "content-box",
             margin: "0",
             zIndex: "1",
+            background: backgroundColor,
             /* tslint:disable-next-line */
             boxShadow: `inset ${toPx(0)} ${toPx(0)} ${toPx(0)} ${toPx(1)} ${Chroma.mix(foregroundColor, backgroundColor, 0.46).css()}`,
             "&:hover": {
@@ -81,15 +82,15 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = (conf
             },
             "&::before": {
                 top: toPx(4),
-                [applyLocalizedProperty("left", "right", direction)]: toPx(11),
+                left: toPx(11),
                 height: toPx(12),
-                transform: direction === Direction.ltr ? "rotate(40deg)" : "rotate(-40deg)"
+                transform: "rotate(40deg)"
             },
             "&::after": {
                 top: toPx(9),
-                [applyLocalizedProperty("left", "right", direction)]: toPx(6),
+                left: toPx(6),
                 height: toPx(6),
-                transform: direction === Direction.ltr ? "rotate(-45deg)" : "rotate(45deg)"
+                transform: "rotate(-45deg)"
             }
         },
         checkbox_label: {
