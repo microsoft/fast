@@ -3,6 +3,7 @@ import * as ReactDOM from "react-dom";
 import { glyphBuildingblocks } from "@microsoft/fast-glyphs-msft";
 import Site, {
     IFormChildOption,
+    ITheme,
     SiteCategory,
     SiteCategoryDocumentation,
     SiteCategoryIcon,
@@ -25,7 +26,14 @@ import { FrameworkEnum } from "../src/components/site/dev-tools";
 
 export interface IAppState {
     direction: Direction;
+    theme: string;
 }
+
+const themes: ITheme[] = [
+    {id: "Foo", displayName: "Foo", background: "#000"},
+    {id: "Bar", displayName: "Bar", background: "#FFF"},
+    {id: "Rumple", displayName: "Rumple", background: "#333"}
+];
 
 export default class App extends React.Component<{}, IAppState> {
     private formChildOptions: IFormChildOption[] = [
@@ -49,16 +57,20 @@ export default class App extends React.Component<{}, IAppState> {
         this.frameworks = [FrameworkEnum.react, FrameworkEnum.angular];
 
         this.state = {
-            direction: Direction.ltr
+            direction: Direction.ltr,
+            theme: "Foo"
         };
     }
 
     public render(): JSX.Element {
+
         return (
             <Site
                 formChildOptions={this.formChildOptions}
                 frameworks={this.frameworks}
                 onUpdateDirection={this.handleUpdateDirection}
+                themes={themes}
+                onUpdateTheme={this.handleUpdateTheme}
             >
                 {this.renderSiteTitle()}
                 {this.renderSiteMenu()}
@@ -202,6 +214,12 @@ export default class App extends React.Component<{}, IAppState> {
     private handleUpdateDirection = (direction: Direction): void => {
         this.setState({
             direction
+        });
+    }
+
+    private handleUpdateTheme = (theme: string): void => {
+        this.setState({
+            theme
         });
     }
 }

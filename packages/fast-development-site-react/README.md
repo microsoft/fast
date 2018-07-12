@@ -64,6 +64,25 @@ The `Site` component should be used as the wrapping component for the developmen
 
 **onUpdateDirection** - The callback provided for an update in RTL, it will execute the given callback with "rtl" or "ltr".
 
+**onUpdateTheme** - The callback provided for an update for theme, it well execute the given callback with the selected theme.
+
+#### Example callback to be passed to `onUpdateTheme`
+```jsx
+handleOnUpdateTheme = (theme: string) {
+    this.setState({theme});
+}
+```
+**themes** - An object with properties `id`,`displayName` and `background`. The `background` property will be applied to the container of the component examples on the detail and example pages.
+
+#### Example on usage of `themes`
+```jsx
+const themes = [
+    {id: "Light", displayName: "Light", background: "#FFF"},
+    {id: "Dark", displayName: "Dark", background: "#000"},
+    {id: "Blue", displayName: "Blue", background: "#0000FF"}];
+}
+```
+
 **componentBackgroundTransparent** - Adds an initial background transparency to the examples on the component view.
 
 ### SiteTitle

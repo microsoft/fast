@@ -44,7 +44,9 @@ export enum ComponentViewSlot {
 export interface ISiteProps {
     formChildOptions: IFormChildOption[];
     onUpdateDirection?: (ltr: Direction) => void;
+    onUpdateTheme?: (theme: string) => void;
     locales?: string[];
+    themes?: ITheme[];
     frameworks?: FrameworkEnum | FrameworkEnum[];
     activeFramework?: FrameworkEnum;
     collapsed?: boolean;
@@ -83,6 +85,7 @@ export interface ISiteState {
     formView: boolean;
     devToolsView: boolean;
     locale: string;
+    theme: ITheme;
 }
 
 export enum SiteSlot {
@@ -90,13 +93,20 @@ export enum SiteSlot {
     categoryIcon = "category-icon"
 }
 
+export interface ITheme {
+    id: string;
+    displayName: string;
+    background: string;
+}
+
 export interface ISiteManagedClasses {
     "@global": string;
     site_canvasContent: string;
     site_headerTitle: string;
     site_infoBarConfiguration: string;
-    site_infoBarConfiguration_direction: string;
-    site_infoBarConfiguration_direction_input: string;
+    site_infoBarConfiguration_base: string;
+    site_infoBarConfiguration_input: string;
+    site_infoBarConfiguration_theme: string;
     site_paneForm: string;
     site_paneToc: string;
     site_paneTocRow: string;
@@ -139,7 +149,7 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
         padding: toPx(4),
         width: "50%",
     },
-    site_infoBarConfiguration_direction: {
+    site_infoBarConfiguration_base: {
         position: "relative",
         "&::before, &::after": {
             content: "''",
@@ -160,7 +170,10 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
             transform: "rotate(-45deg)"
         }
     },
-    site_infoBarConfiguration_direction_input: {
+    site_infoBarConfiguration_theme: {
+        marginRight: toPx(4)
+    },
+    site_infoBarConfiguration_input: {
         lineHeight: toPx(16),
         fontSize: toPx(14),
         backgroundColor: "rgba(0, 0, 0, 0.04)",
@@ -288,7 +301,8 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
             detailViewComponentData: this.getDetailViewComponentData(),
             formView: true,
             devToolsView: false,
-            locale: "en"
+            locale: "en",
+            theme: this.props.themes[0]
         };
     }
 
@@ -594,6 +608,10 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         }
     }
 
+    private generateComponentWrapperBackground(): string {
+        return this.state.theme && this.state.theme.background ? this.state.theme.background : null;
+    }
+
     private renderComponentByRoute(route: IComponentRoute): JSX.Element[] {
         if (route.exampleView && this.state.componentView === ComponentViewTypes.examples) {
             return route.exampleView.map((componentItem: JSX.Element, index: number) => {
@@ -603,6 +621,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                             key={index}
                             onClick={this.handleComponentClick}
                             index={index}
+                            background={this.generateComponentWrapperBackground()}
                             dir={isRTL(this.state.locale) ? Direction.rtl : Direction.ltr}
                             transparentBackground={this.state.componentBackgroundTransparent}
                             designSystem={componentItem.props.designSystem}
@@ -634,6 +653,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 <ComponentWrapper
                     key={index}
                     index={index}
+                    background={this.generateComponentWrapperBackground()}
                     dir={isRTL(this.state.locale) ? Direction.rtl : Direction.ltr}
                     transparentBackground={this.state.componentBackgroundTransparent}
                     designSystem={component.props.designSystem}
@@ -699,9 +719,10 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 >
                     <span dangerouslySetInnerHTML={{__html: glyphTransparency}}/>
                 </button>
-                <span className={this.props.managedClasses.site_infoBarConfiguration_direction}>
+                {this.renderThemeSelect()}
+                <span className={this.props.managedClasses.site_infoBarConfiguration_base}>
                     <select
-                        className={this.props.managedClasses.site_infoBarConfiguration_direction_input}
+                        className={this.props.managedClasses.site_infoBarConfiguration_input}
                         onChange={this.handleLocaleUpdate}
                         value={this.state.locale}
                     >
@@ -720,6 +741,25 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 {this.state.componentStatus}
             </div>
         );
+    }
+
+    private renderThemeSelect(): JSX.Element {
+        /* tslint:disable-next-line */
+        const className: string = `${this.props.managedClasses.site_infoBarConfiguration_base} ${this.props.managedClasses.site_infoBarConfiguration_theme}`
+
+        if (Array.isArray(this.props.themes) && this.props.themes.length > 0) {
+            return (
+                <span className={className}>
+                    <select
+                        className={this.props.managedClasses.site_infoBarConfiguration_input}
+                        onChange={this.handleThemeUpdate}
+                        value={this.state.theme.displayName}
+                    >
+                        {this.renderThemes()}
+                    </select>
+                </span>
+            );
+        }
     }
 
     private getClassNames(): string {
@@ -745,13 +785,37 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         });
     }
 
-    private handleLocaleUpdate = (e: any): void => {
+    private renderThemes(): JSX.Element[] {
+        return this.props.themes.map((theme: ITheme, index: number): JSX.Element => {
+            return (
+                <option key={theme.id} value={theme.id}>
+                    {theme.displayName}
+                </option>
+            );
+        });
+    }
+
+    private handleLocaleUpdate = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         if (this.props.onUpdateDirection) {
             this.props.onUpdateDirection(isRTL(e.target.value) ? Direction.rtl : Direction.ltr);
         }
 
         this.setState({
             locale: e.target.value
+        });
+    }
+
+    private handleThemeUpdate = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+        if (this.props.onUpdateTheme) {
+            this.props.onUpdateTheme(e.target.value);
+        }
+
+        const selectedTheme: ITheme = this.props.themes.find((item: ITheme): boolean => {
+            return item.id === e.target.value;
+        });
+
+        this.setState({
+            theme: selectedTheme
         });
     }
 

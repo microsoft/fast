@@ -8,6 +8,7 @@ import Site, {
     formChildFromExamplesFactory,
     IFormChildOption,
     ISiteProps,
+    ITheme,
     SiteCategory,
     SiteCategoryIcon,
     SiteCategoryItem,
@@ -37,14 +38,21 @@ const hypertextStyles: ComponentStyles<IHypertextClassNameContract, undefined> =
 
 export interface IAppState {
     direction: Direction;
+    theme: string;
 }
+
+const themes: ITheme[] = [
+    {id: "light", displayName: "light", background: DesignSystemDefaults.backgroundColor},
+    {id: "dark", displayName: "dark", background: DesignSystemDefaults.foregroundColor}
+];
 
 export default class App extends React.Component<{}, IAppState> {
     constructor(props: {}) {
         super(props);
 
         this.state = {
-            direction: Direction.ltr
+            direction: Direction.ltr,
+            theme: "light"
         };
     }
 
@@ -53,6 +61,8 @@ export default class App extends React.Component<{}, IAppState> {
             <Site
                 formChildOptions={formChildOptions}
                 onUpdateDirection={this.handleUpdateDirection}
+                onUpdateTheme={this.handleUpdateTheme}
+                themes={themes}
             >
                 <SiteMenu slot={"header"}>
                     <SiteMenuItem>
@@ -73,10 +83,20 @@ export default class App extends React.Component<{}, IAppState> {
                     </SiteCategoryIcon>
                 </SiteCategory>
                 <SiteCategory slot={"category"} name={"Components"}>
-                    {componentFactory(examples, Object.assign({}, DesignSystemDefaults, {direction: this.state.direction}))}
+                    {componentFactory(examples, {...this.generateDesignSystem()})}
                 </SiteCategory>
             </Site>
         );
+    }
+
+    private generateDesignSystem(): IDesignSystem {
+        const designSystem: Partial<IDesignSystem> = {
+            direction: this.state.direction,
+            foregroundColor: this.state.theme === "dark" ? DesignSystemDefaults.backgroundColor : DesignSystemDefaults.foregroundColor,
+            backgroundColor: this.state.theme === "dark" ? DesignSystemDefaults.foregroundColor : DesignSystemDefaults.backgroundColor
+        };
+
+        return Object.assign({}, DesignSystemDefaults, designSystem);
     }
 
     private handleUpdateDirection = (direction: Direction): void => {
@@ -86,6 +106,12 @@ export default class App extends React.Component<{}, IAppState> {
 
         this.setState({
             direction: newDir
+        });
+    }
+
+    private handleUpdateTheme = (theme: string): void => {
+        this.setState({
+            theme
         });
     }
 }

@@ -28,6 +28,7 @@ export interface IComponentWrapperProps<T> {
     dir?: string;
     transparentBackground?: boolean;
     onClick?: (activeIndex: number) => void;
+    background?: string;
 }
 
 /* tslint:disable-next-line */
@@ -71,7 +72,7 @@ const styles: ComponentStyles<IComponentWrapperManagedClasses, IDevSiteDesignSys
 class ComponentWrapper extends React.Component<IComponentWrapperProps<IDevSiteDesignSystem> & IManagedClasses<IComponentWrapperManagedClasses>, {}> {
     public render(): JSX.Element {
         return (
-            <div className={this.getClassNames()} onClick={this.handleClick} dir={this.props.dir || null}>
+            <div className={this.getClassNames()} onClick={this.handleClick} dir={this.props.dir || null} style={this.getInlineStyle()}>
                 {this.renderChildren()}
             </div>
         );
@@ -95,6 +96,14 @@ class ComponentWrapper extends React.Component<IComponentWrapperProps<IDevSiteDe
                 </ErrorBoundary>
             </React.Fragment>
         );
+    }
+
+    private getInlineStyle(): React.CSSProperties {
+        if (!this.props.background) {
+            return;
+        }
+
+        return this.props.transparentBackground ? null : {background: this.props.background};
     }
 
     private getClassNames(): string {
