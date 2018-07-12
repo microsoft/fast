@@ -98,17 +98,20 @@ function checkSchemaTypeIsArray(schema: any, type: string): boolean {
  * Find out what the active index should be based on the data
  */
 export function getOneOfAnyOfActiveIndex(type: string, schema: any, data: any): number {
+    let activeIndex: number = 0;
+
     if (checkSchemaTypeIsArray(schema, type)) {
         const newData: any = removeUndefinedKeys(data);
 
         schema[type].forEach((oneOfAnyOfItem: any, index: number) => {
             if (validateSchema(oneOfAnyOfItem, newData)) {
-                return index;
+                activeIndex = index;
+                return;
             }
         });
     }
 
-    return 0;
+    return activeIndex;
 }
 
 /**
