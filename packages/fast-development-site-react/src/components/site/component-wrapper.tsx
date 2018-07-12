@@ -99,7 +99,7 @@ class ComponentWrapper extends React.Component<IComponentWrapperProps<IDevSiteDe
     }
 
     private getInlineStyle(): React.CSSProperties {
-        if (!this.props.background) { 
+        if (!this.props.background) {
             return;
         }
 

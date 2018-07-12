@@ -608,6 +608,10 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         }
     }
 
+    private generateComponentWrapperBackground(): string {
+        return this.state.theme && this.state.theme.background ? this.state.theme.background : null;
+    }
+
     private renderComponentByRoute(route: IComponentRoute): JSX.Element[] {
         if (route.exampleView && this.state.componentView === ComponentViewTypes.examples) {
             return route.exampleView.map((componentItem: JSX.Element, index: number) => {
@@ -617,7 +621,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                             key={index}
                             onClick={this.handleComponentClick}
                             index={index}
-                            background={this.state.theme.background || null}
+                            background={this.generateComponentWrapperBackground()}
                             dir={isRTL(this.state.locale) ? Direction.rtl : Direction.ltr}
                             transparentBackground={this.state.componentBackgroundTransparent}
                             designSystem={componentItem.props.designSystem}
@@ -649,7 +653,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 <ComponentWrapper
                     key={index}
                     index={index}
-                    background={this.state.theme.background || null}
+                    background={this.generateComponentWrapperBackground()}
                     dir={isRTL(this.state.locale) ? Direction.rtl : Direction.ltr}
                     transparentBackground={this.state.componentBackgroundTransparent}
                     designSystem={component.props.designSystem}
@@ -784,7 +788,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     private renderThemes(): JSX.Element[] {
         return this.props.themes.map((theme: ITheme, index: number): JSX.Element => {
             return (
-                <option key={index}>
+                <option key={theme.id} value={theme.id}>
                     {theme.displayName}
                 </option>
             );
@@ -807,7 +811,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         }
 
         const selectedTheme: ITheme = this.props.themes.find((item: ITheme): boolean => {
-            return item.displayName === e.target.value;
+            return item.id === e.target.value;
         });
 
         this.setState({
