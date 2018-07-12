@@ -13,6 +13,9 @@ export { FlipperExample };
 import HeadingExample from "../src/heading/examples.data";
 export { HeadingExample };
 
+import HypertextExamples from "../src/hypertext/examples.data";
+export { HypertextExamples };
+
 import ImageExamples from "../src/image/examples.data";
 export { ImageExamples };
 
@@ -27,6 +30,3 @@ export { TextFieldExamples };
 
 import TypographyExamples from "../src/typography/examples.data";
 export { TypographyExamples };
-
-import HypertextExamples from "../src/hypertext/examples.data";
-export { HypertextExamples };
