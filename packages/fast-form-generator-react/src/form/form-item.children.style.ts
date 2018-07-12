@@ -11,7 +11,6 @@ import {
     applyPopupMenuStyles,
     colors,
     localizePadding,
-    pinkPlus,
     thickLine,
     trashcan
 } from "../utilities/form-input.style";
