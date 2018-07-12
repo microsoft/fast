@@ -28,6 +28,7 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config
             display: "inline-block",
             fontSize: toPx(typeRamp.t8.vp3.fontSize),
             lineHeight: toPx(typeRamp.t8.vp3.lineHeight),
+            foreground: foregroundColor,
             paddingBottom: toPx(7),
             float: applyLocalizedProperty("left", "right", direction),
             clear: applyLocalizedProperty("left", "right", direction),
@@ -47,8 +48,9 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config
         toggle_button: {
             position: "absolute",
             pointerEvents: "none",
+            foreground: foregroundColor,
             top: toPx(5),
-            [applyLocalizedProperty("left", "right", direction)]: toPx(5),
+            left: toPx(5),
             transition: "all .1s ease",
             backgroundColor,
             borderRadius: toPx(10),
@@ -92,10 +94,10 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config
                 },
                 "&:disabled": {
                     cursor: "not-allowed",
-                    background: Chroma(foregroundColor).alpha(0.2).css(),
+                    background: Chroma.mix(foregroundColor, backgroundColor, 0.8).css(),
                     borderColor: "transparent",
                     "& + span": {
-                        background: Chroma(foregroundColor).alpha(0.2).css()
+                        background: backgroundColor
                     },
                     "&:hover": {
                         borderColor: "transparent"

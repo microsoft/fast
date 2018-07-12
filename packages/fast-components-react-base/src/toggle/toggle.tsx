@@ -18,19 +18,6 @@ export interface IToggleState {
 /* tslint:disable-next-line */
 class Toggle extends Foundation<IToggleHandledProps & IManagedClasses<IToggleClassNameContract>,  React.HTMLAttributes<HTMLDivElement>, IToggleState> {
 
-    /**
-     * React life-cycle method
-     */
-    public static getDerivedStateFromProps(nextProps: IToggleHandledProps, prevState: IToggleState): null | Partial<IToggleState> {
-        if (nextProps.selected !== prevState.checked && !isUndefined(nextProps.selected)) {
-            return {
-                checked: nextProps.selected
-            };
-        }
-
-        return null;
-    }
-
     protected handledProps: HandledProps<IToggleHandledProps & IManagedClasses<IToggleClassNameContract>> = {
         managedClasses: void 0,
         disabled: void 0,
@@ -85,6 +72,19 @@ class Toggle extends Foundation<IToggleHandledProps & IManagedClasses<IToggleCla
                 </span>
             </div>
         );
+    }
+
+    /**
+     * React life-cycle method
+     */
+    public static getDerivedStateFromProps(nextProps: IToggleHandledProps, prevState: IToggleState): null | Partial<IToggleState> {
+        if (nextProps.selected !== prevState.checked && !isUndefined(nextProps.selected)) {
+            return {
+                checked: nextProps.selected
+            };
+        }
+
+        return null;
     }
 
     /**

@@ -12,7 +12,7 @@ export default {
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
-        children: "Toggle label (default on)",
+        children: "Toggle label default on",
         id: "toggle01",
         labelId: "label01",
         selectedString: "On",
@@ -21,7 +21,7 @@ export default {
     },
     data: [
         {
-            children: "Toggle label (default on)",
+            children: "Toggle label default on",
             disabled: false,
             id: "toggle01",
             labelId: "label01",
@@ -32,7 +32,7 @@ export default {
             "data-sketch-symbol": "Toggle (on)"
         },
         {
-            children: "Toggle label (default off)",
+            children: "Toggle label default off",
             disabled: false,
             id: "toggle02",
             labelId: "label02",
@@ -43,7 +43,7 @@ export default {
             "data-sketch-symbol": "Toggle (off)"
         },
         {
-            children: "Toggle label (disabled on)",
+            children: "Toggle label disabled on",
             disabled: true,
             id: "toggle03",
             labelId: "label03",
@@ -54,7 +54,7 @@ export default {
             "data-sketch-symbol": "Toggle disabled (on)"
         },
         {
-            children: "Toggle label (disabled off)",
+            children: "Toggle label disabled off",
             disabled: true,
             id: "toggle04",
             labelId: "label04",
