@@ -791,7 +791,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         });
     }
 
-    private handleLocaleUpdate = (e: any): void => {
+    private handleLocaleUpdate = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         if (this.props.onUpdateDirection) {
             this.props.onUpdateDirection(isRTL(e.target.value) ? Direction.rtl : Direction.ltr);
         }
@@ -801,7 +801,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         });
     }
 
-    private handleThemeUpdate = (e: any): void => {
+    private handleThemeUpdate = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         if (this.props.onUpdateTheme) {
             this.props.onUpdateTheme(e.target.value);
         }

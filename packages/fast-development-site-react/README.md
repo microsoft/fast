@@ -72,14 +72,14 @@ handleOnUpdateTheme = (theme: string): void {
     this.setState({theme});
 }
 ```
-**themes** - An object that passes a theme `id`,`displayName` and `background`. `background` will be the color teh component renders on top of.
+**themes** - An object with properties `id`,`displayName` and `background`. The `background` property will be applied to the container of the component examples on the detail and example pages.
 
 #### Example on usage of `themes`
 ```jsx
-const themes: any[] = [
-    {id: "Foo", displayName: "Foo", background: "#000"},
-    {id: "Bar", displayName: "Bar", background: "#FFF"},
-    {id: "Rumple", displayName: "Rumple", background: "#333"}];
+const themes = [
+    {id: "Light", displayName: "Light", background: "#FFF"},
+    {id: "Dark", displayName: "Dark", background: "#000"},
+    {id: "Blue", displayName: "Blue", background: "#0000FF"}];
 }
 ```
 
