@@ -55,6 +55,7 @@ module.exports = {
             tslint: path.resolve(__dirname, "../../tslint.json")
         }),
         new HtmlWebpackPlugin({
+            title: "FAST documentation",
             contentBase: outDir,
         }),
         new WebpackShellPlugin({
