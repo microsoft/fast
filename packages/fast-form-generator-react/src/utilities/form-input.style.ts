@@ -155,13 +155,10 @@ export function applyHeaderStyle(): ICSSRules<{}> {
     return {
         display: "flex",
         alignItems: "center",
-        margin: `${toPx(20)} 0 0 0`,
+        padding: `${toPx(20)} 0 0 0`,
         minHeight: toPx(40),
         "& h3": {
             margin: toPx(0)
-        },
-        "& button": {
-            marginTop: toPx(7)
         }
     };
 }
@@ -270,7 +267,7 @@ export function applyPopupMenuStyles(): ICSSRules<{}> {
         width: toPx(200),
         background: colors.menuGray,
         zIndex: "1",
-        top: toPx(78),
+        top: toPx(65),
         ...boxShadow(shadow),
         "& li": {
             "& > button": {

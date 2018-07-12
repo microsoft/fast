@@ -21,7 +21,6 @@ const styles: ComponentStyles<IFormItemArrayClassNameContract, {}> = {
     },
     formItemArray: {
         ...applyPopupHeadingStyles(),
-        marginTop: toPx(8),
         "& button": {
             lineHeight: "1",
             fontSize: toPx(14),
