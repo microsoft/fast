@@ -17,6 +17,7 @@ exports[`toggle Toggle: 0 1`] = `
   >
     <input
       aria-describedby="span01"
+      checked={true}
       className="toggle_input"
       defaultChecked={true}
       disabled={false}
