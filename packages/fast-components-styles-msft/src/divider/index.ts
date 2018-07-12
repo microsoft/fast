@@ -14,7 +14,7 @@ const styles: ComponentStyles<IDividerClassNameContract, IDesignSystem> = {
         marginBottom: toPx(12),
         border: "none",
         borderTop: (config: IDesignSystem): string => {
-            return `${toPx(1)} solid ${Chroma(get(config, "foregroundColor") || designSystemDefaults.foregroundColor).alpha(0.2).css()}`
+            return `${toPx(1)} solid ${Chroma(get(config, "foregroundColor") || designSystemDefaults.foregroundColor).alpha(0.2).css()}`;
         }
     }
 };
