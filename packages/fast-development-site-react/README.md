@@ -68,7 +68,7 @@ The `Site` component should be used as the wrapping component for the developmen
 
 #### Example callback to be passed to `onUpdateTheme`
 ```jsx
-handleOnUpdateTheme = (theme: string): void {
+handleOnUpdateTheme = (theme: string) {
     this.setState({theme});
 }
 ```
