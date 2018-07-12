@@ -38,7 +38,7 @@ class FormItemTextarea extends React.Component<IFormItemTextareaProps & IManaged
                     id={this.props.dataLocation}
                     name={this.props.dataLocation}
                     rows={typeof this.props.rows === "number" ? this.props.rows : 3}
-                    value={this.props.data}
+                    value={this.props.data || ""}
                     onChange={this.handleChange}
                 />
             </div>
