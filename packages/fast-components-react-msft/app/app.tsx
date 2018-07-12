@@ -8,6 +8,7 @@ import Site, {
     formChildFromExamplesFactory,
     IFormChildOption,
     ISiteProps,
+    ITheme,
     SiteCategory,
     SiteCategoryIcon,
     SiteCategoryItem,
@@ -40,7 +41,7 @@ export interface IAppState {
     theme: string;
 }
 
-const themes: any[] = [
+const themes: ITheme[] = [
     {id: "light", displayName: "light", background: DesignSystemDefaults.backgroundColor},
     {id: "dark", displayName: "dark", background: DesignSystemDefaults.foregroundColor}
 ];

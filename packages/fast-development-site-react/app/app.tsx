@@ -3,6 +3,7 @@ import * as ReactDOM from "react-dom";
 import { glyphBuildingblocks } from "@microsoft/fast-glyphs-msft";
 import Site, {
     IFormChildOption,
+    ITheme,
     SiteCategory,
     SiteCategoryDocumentation,
     SiteCategoryIcon,
@@ -28,7 +29,7 @@ export interface IAppState {
     theme: string;
 }
 
-const themes: any[] = [
+const themes: ITheme[] = [
     {id: "Foo", displayName: "Foo", background: "#000"},
     {id: "Bar", displayName: "Bar", background: "#FFF"},
     {id: "Rumple", displayName: "Rumple", background: "#333"}
