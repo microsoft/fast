@@ -61,7 +61,6 @@ export default class App extends React.Component<{}, IAppState> {
         };
     }
 
-
     public render(): JSX.Element {
 
         return (
