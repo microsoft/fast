@@ -1,8 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { get } from "lodash-es";
+import { get, isUndefined } from "lodash-es";
 import Foundation, { HandledProps } from "../foundation";
-import { IToggleHandledProps, IToggleManagedClasses, IToggleUnhandledProps } from "./toggle.props";
+import { IToggleHandledProps, IToggleManagedClasses, IToggleUnhandledProps, ToggleProps } from "./toggle.props";
 import { IManagedClasses, IToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
@@ -17,6 +17,20 @@ export interface IToggleState {
  */
 /* tslint:disable-next-line */
 class Toggle extends Foundation<IToggleHandledProps & IManagedClasses<IToggleClassNameContract>,  React.HTMLAttributes<HTMLDivElement>, IToggleState> {
+
+    /**
+     * React life-cycle method
+     */
+    public static getDerivedStateFromProps(nextProps: IToggleHandledProps, prevState: IToggleState): null | Partial<IToggleState> {
+        if (nextProps.selected !== prevState.checked && !isUndefined(nextProps.selected)) {
+            return {
+                checked: nextProps.selected
+            };
+        }
+
+        return null;
+    }
+
     protected handledProps: HandledProps<IToggleHandledProps & IManagedClasses<IToggleClassNameContract>> = {
         managedClasses: void 0,
         disabled: void 0,
@@ -31,7 +45,7 @@ class Toggle extends Foundation<IToggleHandledProps & IManagedClasses<IToggleCla
     /**
      * Define constructor
      */
-    constructor(props: IToggleHandledProps & IManagedClasses<IToggleClassNameContract>) {
+    constructor(props: ToggleProps) {
         super(props);
 
         this.state = {
@@ -60,6 +74,7 @@ class Toggle extends Foundation<IToggleHandledProps & IManagedClasses<IToggleCla
                         disabled={this.props.disabled}
                         value={this.generateToggleStateLabel()}
                         onChange={this.handleToggleChange}
+                        checked={!!this.state.checked}
                     />
                     <span className={get(this.props, "managedClasses.toggle_button")} />
                 </div>
@@ -89,8 +104,14 @@ class Toggle extends Foundation<IToggleHandledProps & IManagedClasses<IToggleCla
     /**
      * Handles onChange as a controlled component
      */
-    private handleToggleChange = (): void => {
-        this.setState({checked: !this.state.checked});
+    private handleToggleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        if (isUndefined(this.props.selected)) {
+            this.setState({checked: !this.state.checked});
+        }
+
+        if (this.props.onChange) {
+            this.props.onChange(e);
+        }
     }
 
     /**
