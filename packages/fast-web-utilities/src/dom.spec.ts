@@ -1,47 +1,5 @@
-import { getKeyCode, isDescendant } from "./dom";
+import { getKeyCode } from "./dom";
 import { KeyCodes } from "./key-codes";
-
-describe("isDescendant", () => {
-    let parent: HTMLElement;
-    let child: HTMLElement;
-    let nestedChild: HTMLElement;
-    let sibling: HTMLElement;
-
-    beforeEach(() => {
-        document.body.innerHTML = `
-            <div id="parent">
-                <span id="child">
-                    <span id="nestedChild"></span>
-                </span>
-            </div>
-            <div id="sibling"></div>
-        `;
-
-        parent = document.getElementById("parent");
-        child = document.getElementById("child");
-        nestedChild = document.getElementById("nestedChild");
-        sibling = document.getElementById("sibling");
-    });
-
-    test("should correctly handle undefined values for parent or child params", () => {
-        expect(() => isDescendant(undefined, undefined)).not.toThrow();
-        expect(() => isDescendant(parent, undefined)).not.toThrow();
-        expect(() => isDescendant(undefined, child)).not.toThrow();
-    });
-
-    test("should return true when an element is a descendant of parent element", () => {
-        expect(isDescendant(parent, child)).toBe(true);
-    });
-
-    test("should return true when an child is a deeply nested descendant of an element", () => {
-        expect(isDescendant(parent, child)).toBe(true);
-    });
-
-    test("should return false when an child is not a descendant of an element", () => {
-        expect(isDescendant(parent, sibling)).toBe(false);
-        expect(isDescendant(child, parent)).toBe(false);
-    });
-});
 
 describe("getKeyCode", () => {
     test("should correctly handle null", () => {
