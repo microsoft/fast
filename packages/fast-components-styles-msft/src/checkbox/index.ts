@@ -4,7 +4,7 @@ import { ICheckboxClassNameContract } from "@microsoft/fast-components-class-nam
 import { applyTypeRampConfig } from "../utilities/typography";
 import { applyLocalizedProperty, Direction, toPx } from "@microsoft/fast-jss-utilities";
 import { get } from "lodash-es";
-import * as Chroma from "chroma-js";
+import Chroma from "chroma-js";
 
 /* tslint:disable:max-line-length */
 const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<ICheckboxClassNameContract, IDesignSystem> => {

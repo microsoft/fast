@@ -1,4 +1,4 @@
-import * as Chroma from "chroma-js";
+import Chroma from "chroma-js";
 
 /**
  * Interface that describes the configuration options of the color algorithm .

@@ -4,7 +4,7 @@ import { applyLocalizedProperty, Direction, toPx } from "@microsoft/fast-jss-uti
 import { typeRamp } from "../utilities/typography";
 import { IToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash";
-import * as Chroma from "chroma-js";
+import Chroma from "chroma-js";
 
 /* tslint:disable-next-line */
 const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<IToggleClassNameContract, IDesignSystem> => {

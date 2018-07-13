@@ -6,7 +6,7 @@ import { applyLocalizedProperty, Direction, localizeSpacing, toPx } from "@micro
 import { get } from "lodash-es";
 import { applyType } from "../utilities/typography";
 import { applyMixedColor } from "../utilities/colors";
-import * as Chroma from "chroma-js";
+import Chroma from "chroma-js";
 
 function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
     return {
@@ -36,19 +36,19 @@ function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
 
 function applyTransaprentBackground(): ICSSRules<IDesignSystem> {
     return {
-        backgroundColor: (): string => {
-            return "transparent";
-        }
+        backgroundColor: "transparent"
     };
 }
 
 function applyPropertyDrivenColor(incomingProperty: string, mixValue?: number, alpha?: number): ICSSRules<IDesignSystem> {
     return {
         [incomingProperty]: (config: IDesignSystem): string => {
-            const backgroundColor: string = get(config, "backgroundColor") || designSystemDefaults.backgroundColor;
-            const foregroundColor: string = get(config, "foregroundColor") || designSystemDefaults.foregroundColor;
-
-            return applyMixedColor(foregroundColor, backgroundColor, mixValue, alpha);
+            return applyMixedColor(
+                get(config, "foregroundColor") || designSystemDefaults.foregroundColor,
+                get(config, "backgroundColor") || designSystemDefaults.backgroundColor,
+                mixValue,
+                alpha
+            );
         }
     };
 }
