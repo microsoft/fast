@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`text-field Text field: 0 1`] = `
+<input
+  className="textField-0-1-1"
+  disabled={null}
+  placeholder="Placeholder"
+  type="text"
+/>
+`;
+
+exports[`text-field Text field: 1 1`] = `
+<input
+  className="textField-0-1-2"
+  defaultValue="name@email.com"
+  disabled={null}
+  placeholder={null}
+  type="email"
+/>
+`;
+
+exports[`text-field Text field: 2 1`] = `
+<input
+  className="textField-0-1-3"
+  defaultValue="12345"
+  disabled={null}
+  placeholder={null}
+  type="number"
+/>
+`;
+
+exports[`text-field Text field: 3 1`] = `
+<input
+  className="textField-0-1-4"
+  defaultValue="(201) 867-5309"
+  disabled={null}
+  placeholder={null}
+  type="tel"
+/>
+`;
+
+exports[`text-field Text field: 4 1`] = `
+<input
+  className="textField-0-1-5"
+  defaultValue="Disabled"
+  disabled={true}
+  placeholder={null}
+  type="text"
+/>
+`;
+
+exports[`text-field Text field: 5 1`] = `
+<input
+  className="textField-0-1-6"
+  disabled={null}
+  placeholder="Enter Password"
+  type="password"
+/>
+`;

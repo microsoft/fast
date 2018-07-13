@@ -1,0 +1,139 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`button Button: 0 1`] = `
+<button
+  className="button-0-1-7"
+  data-sketch-symbol="Button - default"
+  href={null}
+>
+  Default button
+</button>
+`;
+
+exports[`button Button: 1 1`] = `
+<button
+  className="button-0-1-19 button_primary-0-1-20"
+  data-sketch-symbol="Button - primary"
+  href={null}
+>
+  Primary (submit) button
+</button>
+`;
+
+exports[`button Button: 2 1`] = `
+<button
+  className="button-0-1-31 button_outline-0-1-33"
+  data-sketch-symbol="Button - outline"
+  href={null}
+>
+  Outline button
+</button>
+`;
+
+exports[`button Button: 3 1`] = `
+<button
+  className="button-0-1-43 button_lightweight-0-1-46"
+  data-sketch-symbol="Button - lightweight"
+  href={null}
+>
+  <span
+    className="button_span-0-1-48"
+  >
+    Lightweight button
+  </span>
+</button>
+`;
+
+exports[`button Button: 4 1`] = `
+<button
+  className="button-0-1-55 button_justified-0-1-59"
+  href={null}
+>
+  <span
+    className="button_span-0-1-60"
+  >
+    Justified button
+  </span>
+</button>
+`;
+
+exports[`button Button: 5 1`] = `
+<a
+  className="button-0-1-67"
+  href="#"
+>
+  Anchor
+</a>
+`;
+
+exports[`button Button: 6 1`] = `
+<button
+  className="button-0-1-79"
+  data-sketch-symbol="Button - default disabled"
+  disabled={true}
+  href={null}
+>
+  Default button
+</button>
+`;
+
+exports[`button Button: 7 1`] = `
+<button
+  className="button-0-1-91 button_primary-0-1-92"
+  data-sketch-symbol="Button - primary disabled"
+  disabled={true}
+  href={null}
+>
+  Primary (submit) button
+</button>
+`;
+
+exports[`button Button: 8 1`] = `
+<button
+  className="button-0-1-103 button_outline-0-1-105"
+  data-sketch-symbol="Button - outline disabled"
+  disabled={true}
+  href={null}
+>
+  Outline button
+</button>
+`;
+
+exports[`button Button: 9 1`] = `
+<button
+  className="button-0-1-115 button_lightweight-0-1-118"
+  data-sketch-symbol="Button - lightweight disabled"
+  disabled={true}
+  href={null}
+>
+  <span
+    className="button_span-0-1-120"
+  >
+    Lightweight button
+  </span>
+</button>
+`;
+
+exports[`button Button: 10 1`] = `
+<button
+  className="button-0-1-127 button_justified-0-1-131"
+  disabled={true}
+  href={null}
+>
+  <span
+    className="button_span-0-1-132"
+  >
+    Justified button
+  </span>
+</button>
+`;
+
+exports[`button Button: 11 1`] = `
+<a
+  aria-disabled={true}
+  className="button-0-1-139"
+  href="#"
+>
+  Anchor
+</a>
+`;

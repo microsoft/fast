@@ -1,0 +1,157 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`toggle Toggle: 0 1`] = `
+<div
+  aria-disabled={null}
+  className="toggle-0-1-6"
+  data-sketch-symbol="Toggle (on)"
+>
+  <label
+    className="toggle_label-0-1-7"
+    htmlFor="toggle01"
+    id="label01"
+  >
+    Toggle label default on
+  </label>
+  <div
+    className="toggle_wrapper-0-1-8"
+  >
+    <input
+      aria-describedby="span01"
+      checked={true}
+      className="toggle_input-0-1-10"
+      defaultChecked={true}
+      disabled={false}
+      id="toggle01"
+      onChange={[Function]}
+      type="checkbox"
+      value="On"
+    />
+    <span
+      className="toggle_button-0-1-9"
+    />
+  </div>
+  <span
+    id="span01"
+  >
+    On
+  </span>
+</div>
+`;
+
+exports[`toggle Toggle: 1 1`] = `
+<div
+  aria-disabled={null}
+  className="toggle-0-1-16"
+  data-sketch-symbol="Toggle (off)"
+>
+  <label
+    className="toggle_label-0-1-17"
+    htmlFor="toggle02"
+    id="label02"
+  >
+    Toggle label default off
+  </label>
+  <div
+    className="toggle_wrapper-0-1-18"
+  >
+    <input
+      aria-describedby="span02"
+      checked={false}
+      className="toggle_input-0-1-20"
+      defaultChecked={false}
+      disabled={false}
+      id="toggle02"
+      onChange={[Function]}
+      type="checkbox"
+      value="Off"
+    />
+    <span
+      className="toggle_button-0-1-19"
+    />
+  </div>
+  <span
+    id="span02"
+  >
+    Off
+  </span>
+</div>
+`;
+
+exports[`toggle Toggle: 2 1`] = `
+<div
+  aria-disabled={true}
+  className="toggle-0-1-26"
+  data-sketch-symbol="Toggle disabled (on)"
+>
+  <label
+    className="toggle_label-0-1-27"
+    htmlFor="toggle03"
+    id="label03"
+  >
+    Toggle label disabled on
+  </label>
+  <div
+    className="toggle_wrapper-0-1-28"
+  >
+    <input
+      aria-describedby="span03"
+      checked={true}
+      className="toggle_input-0-1-30"
+      defaultChecked={true}
+      disabled={true}
+      id="toggle03"
+      onChange={[Function]}
+      type="checkbox"
+      value="On"
+    />
+    <span
+      className="toggle_button-0-1-29"
+    />
+  </div>
+  <span
+    id="span03"
+  >
+    On
+  </span>
+</div>
+`;
+
+exports[`toggle Toggle: 3 1`] = `
+<div
+  aria-disabled={true}
+  className="toggle-0-1-36"
+  data-sketch-symbol="Toggle disabled (off)"
+>
+  <label
+    className="toggle_label-0-1-37"
+    htmlFor="toggle04"
+    id="label04"
+  >
+    Toggle label disabled off
+  </label>
+  <div
+    className="toggle_wrapper-0-1-38"
+  >
+    <input
+      aria-describedby="span04"
+      checked={false}
+      className="toggle_input-0-1-40"
+      defaultChecked={false}
+      disabled={true}
+      id="toggle04"
+      onChange={[Function]}
+      type="checkbox"
+      value="Off"
+    />
+    <span
+      className="toggle_button-0-1-39"
+    />
+  </div>
+  <span
+    id="span04"
+  >
+    Off
+  </span>
+</div>
+`;

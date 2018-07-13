@@ -1,0 +1,133 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`checkbox Checkbox: 0 1`] = `
+<label
+  className="checkbox-0-1-6"
+>
+  <input
+    checked={false}
+    className="checkbox_input-0-1-7"
+    disabled={null}
+    onChange={[Function]}
+    type="checkbox"
+  />
+  <span
+    className="checkbox_span-0-1-8"
+  />
+  <span
+    className="checkbox_label-0-1-9"
+  >
+    Default
+  </span>
+</label>
+`;
+
+exports[`checkbox Checkbox: 1 1`] = `
+<div
+  className="checkbox-0-1-16"
+>
+  <input
+    checked={false}
+    className="checkbox_input-0-1-17"
+    disabled={null}
+    onChange={[Function]}
+    type="checkbox"
+  />
+  <span
+    className="checkbox_span-0-1-18"
+  />
+  <span
+    className="checkbox_label-0-1-19"
+  >
+    div tag
+  </span>
+</div>
+`;
+
+exports[`checkbox Checkbox: 2 1`] = `
+<label
+  className="checkbox-0-1-26"
+>
+  <input
+    checked={true}
+    className="checkbox_input-0-1-27"
+    disabled={null}
+    onChange={[Function]}
+    type="checkbox"
+  />
+  <span
+    className="checkbox_span-0-1-28"
+  />
+  <span
+    className="checkbox_label-0-1-29"
+  >
+    Checked (controlled)
+  </span>
+</label>
+`;
+
+exports[`checkbox Checkbox: 3 1`] = `
+<label
+  className="checkbox-0-1-36 checkbox_disabled-0-1-40"
+>
+  <input
+    checked={false}
+    className="checkbox_input-0-1-37"
+    disabled={true}
+    onChange={[Function]}
+    type="checkbox"
+  />
+  <span
+    className="checkbox_span-0-1-38"
+  />
+  <span
+    className="checkbox_label-0-1-39"
+  >
+    Disabled
+  </span>
+</label>
+`;
+
+exports[`checkbox Checkbox: 4 1`] = `
+<label
+  className="checkbox-0-1-46"
+>
+  <input
+    checked={false}
+    className="checkbox_input-0-1-47"
+    disabled={null}
+    onChange={[Function]}
+    type="checkbox"
+  />
+  <span
+    className="checkbox_span-0-1-48"
+  />
+  <span
+    className="checkbox_label-0-1-49"
+  >
+    Indeterminate
+  </span>
+</label>
+`;
+
+exports[`checkbox Checkbox: 5 1`] = `
+<label
+  className="checkbox-0-1-56"
+>
+  <input
+    checked={true}
+    className="checkbox_input-0-1-57"
+    disabled={null}
+    onChange={[Function]}
+    type="checkbox"
+  />
+  <span
+    className="checkbox_span-0-1-58"
+  />
+  <span
+    className="checkbox_label-0-1-59"
+  >
+    Indeterminate checked (controlled)
+  </span>
+</label>
+`;

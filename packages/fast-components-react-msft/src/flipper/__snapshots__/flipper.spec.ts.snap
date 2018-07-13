@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`flipper Flipper: 0 1`] = `
+<button
+  aria-hidden={true}
+  className="button-0-1-5 flipper_next-0-1-7"
+  data-sketch-symbol="Flipper - default"
+  href={null}
+  tabIndex={-1}
+>
+  <span
+    className="flipper_glyph-0-1-6"
+  />
+</button>
+`;
+
+exports[`flipper Flipper: 1 1`] = `
+<button
+  aria-hidden={true}
+  className="button-0-1-13 flipper_previous-0-1-16"
+  direction="previous"
+  href={null}
+  tabIndex={-1}
+>
+  <span
+    className="flipper_glyph-0-1-14"
+  />
+</button>
+`;
+
+exports[`flipper Flipper: 2 1`] = `
+<button
+  aria-label="See next"
+  className="button-0-1-21 flipper_next-0-1-23"
+  direction="next"
+  href={null}
+>
+  <span
+    className="flipper_glyph-0-1-22"
+  />
+</button>
+`;
+
+exports[`flipper Flipper: 3 1`] = `
+<button
+  aria-label="See previous"
+  className="button-0-1-29 flipper_previous-0-1-32"
+  direction="previous"
+  href={null}
+>
+  <span
+    className="flipper_glyph-0-1-30"
+  />
+</button>
+`;

@@ -4,7 +4,7 @@ import { IFlipperClassNameContract } from "@microsoft/fast-components-class-name
 import { applyLocalizedProperty, Direction, toPx } from "@microsoft/fast-jss-utilities";
 import { applyMixedColor } from "../utilities/colors";
 import { get } from "lodash-es";
-import * as Chroma from "chroma-js";
+import Chroma from "chroma-js";
 
 /* tslint:disable:max-line-length */
 const styles: ComponentStyles<IFlipperClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<IFlipperClassNameContract, IDesignSystem> => {
