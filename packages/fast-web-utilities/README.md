@@ -1,5 +1,5 @@
 # FAST - Web Utilities
-This package is a collection of utilities intended to be used with JSS (JavaScript Style Sheets) projects.
+This package is a collection of utilities intended to be used for web projects.
 
 ## Installation
 `npm i --save @microsoft/fast-web-utilities`
@@ -11,7 +11,7 @@ This package is a collection of utilities intended to be used with JSS (JavaScri
 #### getKeyCode
 The `getKeyCode` function gets the numeric key code associated with a keyboard event. This method is for use with DOM level 3 events that still use the deprecated keyCode property.
 
-```ts
+```js
 import { getKeyCode } from "@microsoft/fast-web-utilities";
 
 handleKeyPress = (e) => {
@@ -26,26 +26,26 @@ handleKeyPress = (e) => {
 #### getClientRectWithMargin
 The `getClientRectWithMargin` function gets the client bounding rectangle including any margins of an element.
 
-```ts
+```js
 import { getClientRectWithMargin } from "@microsoft/fast-web-utilities";
 
-const itemWidth: number = getClientRectWithMargin(item).width;
-const itemHeight: number = getClientRectWithMargin(item).height;
+const itemWidth = getClientRectWithMargin(item).width;
+const itemHeight = getClientRectWithMargin(item).height;
 ```
 
 #### convertStylePropertyPixelsToNumber
 The `convertStylePropertyPixelsToNumber` function will convert a property value from an elements computed style from pixels to a number value.
 
-```ts
+```js
 import { convertStylePropertyPixelsToNumber } from "@microsoft/fast-web-utilities";
 
-const elementTopMargin: number = convertStylePropertyPixelsToNumber(style, "margin-top");
+const elementTopMargin = convertStylePropertyPixelsToNumber(style, "margin-top");
 ```
 
 ### Key code utilities
 
 #### KeyCodes (enum)
-```ts
+```js
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 handleKeyPress = (e) => {
@@ -60,46 +60,67 @@ handleKeyPress = (e) => {
 }
 ```
 
+### Number utilities
+
+#### limit
+The `limit` function ensures that a value is between a min and max value. If the value is lower than min, min will be returned. If the value is greater than max, max will be retured.
+
+```js
+import { limit } from "@microsoft/fast-web-utilities";
+const incomingNumber; // 11 
+const setNumberByLimit = limit(0, 10, incomingNumber); // returns 10
+```
+
+#### wrapInBounds
+The `wrapInBounds` function keeps a given value within the bounds of a min and max value. If the value is larger than the max, the minimum value will be returned. If the value is smaller than the minimum, the maximum will be returned. Otherwise, the value is returned un-changed.
+
+```js
+import { wrapInBounds } from "@microsoft/fast-web-utilities";
+const slides; // 5
+const index; // 5
+const activeIndex = wrapInBounds(0, this.slides.length - 1, index) // returns 0
+```
+
 ### String utilities
 
 #### format
 The `format` function builds a string from a format specifier and replacement parameters.
 
-```ts
+```js
 import { format } from "@microsoft/fast-web-utilities";
 
-const formatterString: string = "View {0} {1}";
+const formatterString = "View {0} {1}";
 
-const newString: string = format(formatterString, "page", "4")); // "View page 4"
+const newString = format(formatterString, "page", "4")); // "View page 4"
 ```
 
 #### startsWith
 The `startsWith` function checks to see if one string starts with another. The function is case sensitive.
 
-```ts
+```js
 import { startsWith } from "@microsoft/fast-web-utilities";
 
-const matchIsFalse: string = startsWith("HelloWorld", "World"); // false
-const matchIsTrue: string = startsWith("HelloWorld", "Hello"); // true
+const matchIsFalse = startsWith("HelloWorld", "World"); // false
+const matchIsTrue = startsWith("HelloWorld", "Hello"); // true
 ```
 
 #### isNullOrWhiteSpace
 The `isNullOrWhiteSpace` function determines if the specified string is undefined, null, empty, or whitespace. The function returns true if the value is undefined, null, empty, or whitespace, otherwise false.
 
-```ts
+```js
 import { isNullOrWhiteSpace } from "@microsoft/fast-web-utilities";
 
-const myAnchor: HTMLElement = document.getElementById("#id");
-const checkWhitespace: string = isNullOrWhiteSpace(myAnchor.href);
+const myAnchor = document.getElementById("#id");
+const checkWhitespace = isNullOrWhiteSpace(myAnchor.href);
 ```
 
 #### pascalCase
 The `pascalCase` function converts a string to Pascal Case
 
-```ts
+```js
 import { pascalCase } from "@microsoft/fast-web-utilities";
 
-const hyphenatedToPascal: string = pascalCase("my-string");
-const uppercaseToPascal: string = pascalCase("MY STRING");
-const whitespaceToPascal: string = pascalCase(" my string ");
+const hyphenatedToPascal = pascalCase("my-string");
+const uppercaseToPascal = pascalCase("MY STRING");
+const whitespaceToPascal = pascalCase(" my string ");
 ```
