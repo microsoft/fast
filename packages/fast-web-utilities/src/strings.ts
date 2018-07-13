@@ -31,7 +31,6 @@ export function startsWith(stringToSearch: string, searchFor: string, position: 
 }
 
 /**
- * @name - isNullOrWhiteSpace
  * Determines if the specified string is undefined, null, empty, or whitespace.
  * True if the value is undefined, null, empty, or whitespace, otherwise false.
  */
