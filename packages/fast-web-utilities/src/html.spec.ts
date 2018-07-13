@@ -3,7 +3,7 @@ import { convertStylePropertyPixelsToNumber, getClientRectWithMargin } from "./h
 describe("getClientRectWithMargin", () => {
     const mockWidth: number = 120;
     const mockHeight: number = 120;
-    const mockRect: any = {
+    const mockRect: ClientRect | DOMRect = {
         width: mockWidth,
         height: mockHeight,
         top: 0,
@@ -32,7 +32,7 @@ describe("getClientRectWithMargin", () => {
         const expectedWidth: number = mockWidth + 40;
         const expectedHeight: number = mockHeight + 20;
 
-        const expectedRect: any = Object.assign({}, mockRect, { width: expectedWidth, height: expectedHeight});
+        const expectedRect: ClientRect | DOMRect = Object.assign({}, mockRect, { width: expectedWidth, height: expectedHeight});
 
         expect(getClientRectWithMargin(element)).toEqual(expectedRect);
     });

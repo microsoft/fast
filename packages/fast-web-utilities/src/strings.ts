@@ -36,7 +36,7 @@ export function startsWith(stringToSearch: string, searchFor: string, position: 
  * True if the value is undefined, null, empty, or whitespace, otherwise false.
  */
 export function isNullOrWhiteSpace(value: string): boolean {
-    return (!value) || (!value.trim());
+    return !value || !value.trim();
 }
 
 /**

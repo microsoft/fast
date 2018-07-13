@@ -8,9 +8,9 @@ export function wrapInBounds(min: number, max: number, value: number): number {
         return max;
     } else if (value > max) {
         return min;
-    } else {
-        return value;
     }
+
+    return value;
 }
 
 /**
