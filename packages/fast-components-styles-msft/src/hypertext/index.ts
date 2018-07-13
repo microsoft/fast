@@ -16,6 +16,9 @@ const styles: ComponentStyles<IHypertextClassNameContract, IDesignSystem> = {
     hypertext: {
         outline: toPx(0),
         textDecoration: "none",
+        color: (config: IDesignSystem): string => {
+            return get(config, "foregroundColor") || designSystemDefaults.foregroundColor;
+        },
         "&[href]": {
             ...applyHypertextBorder(1),
             color: (config: IDesignSystem): string => {
