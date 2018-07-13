@@ -70,5 +70,8 @@
 # fast-viewer-react
 /packages/fast-viewer-react/ @janechu @chrisdholt
 
+# fast-web-utilities
+/packages/fast-web-utilities/ @janechu @chrisdholt @nicholasrice
+
 # Other
 .github/ @awentzel @janechu @chrisdholt @nicholasrice
