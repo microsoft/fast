@@ -3,7 +3,7 @@ import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { IDividerClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { get } from "lodash-es";
-import * as Chroma from "chroma-js";
+import Chroma from "chroma-js";
 
 const styles: ComponentStyles<IDividerClassNameContract, IDesignSystem> = {
 
