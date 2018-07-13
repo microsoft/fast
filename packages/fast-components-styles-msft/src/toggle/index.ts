@@ -16,6 +16,7 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config
     return {
         toggle: {
             display: "inline-block",
+            color: foregroundColor,
             "& span": {
                 userSelect: "none",
                 marginTop: "0",
