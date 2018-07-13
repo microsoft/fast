@@ -1,0 +1,70 @@
+{
+  "name": "@microsoft/fast-web-utilities",
+  "description": "FAST web utilities",
+  "version": "1.8.0",
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast-dna.git"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "clean:dist": "node ../../build/clean.js dist",
+    "prepare": "npm run clean:dist && tsc -p ./tsconfig.json",
+    "test": "npm run tslint && npm run unit-tests",
+    "tslint": "tslint -c ./tslint.json '**/*.ts{,x}'",
+    "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'",
+    "unit-tests": "jest --maxWorkers=4",
+    "unit-tests:watch": "jest --watch"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "coverageThreshold": {
+      "global": {
+        "statements": 100,
+        "branches": 100,
+        "functions": 100,
+        "lines": 100
+      }
+    },
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest",
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "!<rootDir>/node_modules/lodash-es"
+    ],
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(js|ts)$",
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ]
+  },
+  "devDependencies": {
+    "@microsoft/fast-tslint-rules": "^1.8.0",
+    "@types/jest": "^22.2.0",
+    "@types/lodash-es": "^4.17.0",
+    "babel-core": "^6.26.0",
+    "babel-jest": "^22.4.1",
+    "babel-preset-env": "^1.6.1",
+    "jest": "^22.4.2",
+    "lodash-es": "^4.17.10",
+    "ts-jest": "^22.4.1",
+    "ts-loader": "^4.0.1",
+    "tslint": "^5.9.1",
+    "tslint-loader": "^3.6.0",
+    "typescript": "^2.7.2"
+  },
+  "peerDependencies": {
+    "lodash-es": "^4.17.10"
+  }
+}
