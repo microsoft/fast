@@ -12,6 +12,7 @@ import styles from "./form-item.array.style";
 import { IFormItemArrayClassNameContract } from "../class-name-contracts/";
 import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { isDescendant } from "@microsoft/fast-web-utilities";
 
 export enum ItemConstraints {
     minItems = "minItems",
@@ -77,6 +78,8 @@ class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasse
     constructor(props: IFormItemArrayProps & IManagedClasses<IFormItemArrayClassNameContract>) {
         super(props);
 
+        window.addEventListener("click", this.handleWindowClick)
+
         this.state = {
             hideOptionMenu: true
         };
@@ -84,7 +87,7 @@ class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasse
 
     public render(): JSX.Element {
         return (
-            <div className={this.props.managedClasses.formItemArray}>
+            <div className={this.props.managedClasses.formItemArray} ref={this.setRef("rootElement")}>
                 <div className={this.props.managedClasses.formItemArray_header}>
                     <h3>{this.getLabelText()}</h3>
                     {/* TODO: #460 Fix "identical-code" */}
@@ -212,6 +215,16 @@ class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasse
      */
     private handleSort = ({oldIndex, newIndex}: any): void => {
         this.props.onChange(this.props.dataLocation, arrayMove(this.props.data, oldIndex, newIndex));
+    }
+
+    /**
+     * Handle clicking on the window - closes the Select if the users
+     * is clicking somewhere other than the Select.
+     */
+    private handleWindowClick = (e: React.MouseEvent): void => {
+        if (!isDescendant(this.getRef('rootElement'), e.target)) {
+            this.closeMenu();
+        }
     }
 
     /**

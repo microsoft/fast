@@ -1,4 +1,4 @@
-import { getKeyCode } from "./dom";
+import { getKeyCode, isDescendant } from "./dom";
 import { KeyCodes } from "./key-codes";
 
 describe("getKeyCode", () => {
@@ -34,5 +34,11 @@ describe("getKeyCode", () => {
         expect(getKeyCode(new KeyboardEvent("keypress", {charCode: 13} as KeyboardEventInit))).toBe(KeyCodes.enter);
         expect(getKeyCode(new KeyboardEvent("keypress", {charCode: 32} as KeyboardEventInit))).toBe(KeyCodes.space);
         expect(getKeyCode(new KeyboardEvent("keypress", {charCode: 9} as KeyboardEventInit))).toBe(KeyCodes.tab);
+    });
+});
+
+describe("isDescendant", () => {
+    test("should correctly handle null", () => {
+        expect(isDescendant(null, null)).toBe(false);
     });
 });
