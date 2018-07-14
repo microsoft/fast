@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-application-utilities",
   "description": "FAST application utilities",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -52,7 +52,7 @@
     ]
   },
   "devDependencies": {
-    "@microsoft/fast-tslint-rules": "^1.9.0",
+    "@microsoft/fast-tslint-rules": "^1.9.1",
     "@types/jest": "^22.2.0",
     "@types/lodash-es": "^4.17.0",
     "babel-core": "^6.26.0",
