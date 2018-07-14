@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.9.0"></a>
+# [1.9.0](https://github.com/Microsoft/fast-dna/compare/v1.6.0...v1.9.0) (2018-07-14)
+
+
+### Bug Fixes
+
+* fix imports after updating types ([#644](https://github.com/Microsoft/fast-dna/issues/644)) ([65ed738](https://github.com/Microsoft/fast-dna/commit/65ed738))
+* **fast-components-react-msft:** fixes error running jest with components that require chroma ([#687](https://github.com/Microsoft/fast-dna/issues/687)) ([140457c](https://github.com/Microsoft/fast-dna/commit/140457c))
+* **image:** fix image schema to match the current code implementation ([#671](https://github.com/Microsoft/fast-dna/issues/671)) ([8618cd1](https://github.com/Microsoft/fast-dna/commit/8618cd1))
+* **toggle:** toggle "Selected" option does not work and is missing background color ([#663](https://github.com/Microsoft/fast-dna/issues/663)) ([e05abca](https://github.com/Microsoft/fast-dna/commit/e05abca))
+
+
+### Features
+
+* **detail view:** add detail view ([#470](https://github.com/Microsoft/fast-dna/issues/470)) ([665b871](https://github.com/Microsoft/fast-dna/commit/665b871))
+* add sketch utility and design kit ([#495](https://github.com/Microsoft/fast-dna/issues/495)) ([ce8feb3](https://github.com/Microsoft/fast-dna/commit/ce8feb3))
+* **development-site:** add component for title and component for title with brand color applied ([#501](https://github.com/Microsoft/fast-dna/issues/501)) ([d1d9d5c](https://github.com/Microsoft/fast-dna/commit/d1d9d5c))
+* **fast-css-editor-react:** add default editor component and position component ([#636](https://github.com/Microsoft/fast-dna/issues/636)) ([72037a8](https://github.com/Microsoft/fast-dna/commit/72037a8))
+
+
+
+
 <a name="1.8.0"></a>
 # [1.8.0](https://github.com/Microsoft/fast-dna/compare/v1.6.0...v1.8.0) (2018-06-12)
 

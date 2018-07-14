@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.9.0"></a>
+# [1.9.0](https://github.com/Microsoft/fast-dna/compare/v1.6.0...v1.9.0) (2018-07-14)
+
+
+### Bug Fixes
+
+* fix imports after updating types ([#644](https://github.com/Microsoft/fast-dna/issues/644)) ([65ed738](https://github.com/Microsoft/fast-dna/commit/65ed738))
+* **fast-components-react-msft:** fixes error running jest with components that require chroma ([#687](https://github.com/Microsoft/fast-dna/issues/687)) ([140457c](https://github.com/Microsoft/fast-dna/commit/140457c))
+* **fast-development-site:** fix for text field example not rendering ([#590](https://github.com/Microsoft/fast-dna/issues/590)) ([f02de43](https://github.com/Microsoft/fast-dna/commit/f02de43))
+* **hypertext:** fix hypertext style when no href value exists ([#499](https://github.com/Microsoft/fast-dna/issues/499)) ([cd5d3d2](https://github.com/Microsoft/fast-dna/commit/cd5d3d2))
+* **image:** fix incorrect data causing error in srcSet 'w' value ([#422](https://github.com/Microsoft/fast-dna/issues/422)) ([cb8646e](https://github.com/Microsoft/fast-dna/commit/cb8646e))
+* **permutator:** fix an issue where lodash was being referred to and not lodash-es ([#509](https://github.com/Microsoft/fast-dna/issues/509)) ([88f4b90](https://github.com/Microsoft/fast-dna/commit/88f4b90))
+* **toggle:** toggle "Selected" option does not work and is missing background color ([#663](https://github.com/Microsoft/fast-dna/issues/663)) ([e05abca](https://github.com/Microsoft/fast-dna/commit/e05abca))
+
+
+### Features
+
+* **detail view:** add detail view ([#470](https://github.com/Microsoft/fast-dna/issues/470)) ([665b871](https://github.com/Microsoft/fast-dna/commit/665b871))
+* add sketch utility and design kit ([#495](https://github.com/Microsoft/fast-dna/issues/495)) ([ce8feb3](https://github.com/Microsoft/fast-dna/commit/ce8feb3))
+* **development-site:** add component for title and component for title with brand color applied ([#501](https://github.com/Microsoft/fast-dna/issues/501)) ([d1d9d5c](https://github.com/Microsoft/fast-dna/commit/d1d9d5c))
+* **fast-components-react-msft:** add flipper as a new component ([#642](https://github.com/Microsoft/fast-dna/issues/642)) ([5ac4496](https://github.com/Microsoft/fast-dna/commit/5ac4496))
+* **fast-components-react-msft:** add localized styles and enable ltr/rtl swapping on documentation site ([#517](https://github.com/Microsoft/fast-dna/issues/517)) ([ce939b7](https://github.com/Microsoft/fast-dna/commit/ce939b7))
+* **fast-css-editor-react:** add default editor component and position component ([#636](https://github.com/Microsoft/fast-dna/issues/636)) ([72037a8](https://github.com/Microsoft/fast-dna/commit/72037a8))
+* **fast-development-site:** add component theme support ([#655](https://github.com/Microsoft/fast-dna/issues/655)) ([4c4ce6b](https://github.com/Microsoft/fast-dna/commit/4c4ce6b))
+* **fast-development-site:** Create infobar for fast site ([#558](https://github.com/Microsoft/fast-dna/issues/558)) ([86335ea](https://github.com/Microsoft/fast-dna/commit/86335ea))
+* **localization:** adds direction rtl/ltr updating ([#485](https://github.com/Microsoft/fast-dna/issues/485)) ([0a5e1e7](https://github.com/Microsoft/fast-dna/commit/0a5e1e7))
+
+
+
+
 <a name="1.8.0"></a>
 # [1.8.0](https://github.com/Microsoft/fast-dna/compare/v1.6.0...v1.8.0) (2018-06-12)
 
