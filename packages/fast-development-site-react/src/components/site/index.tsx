@@ -302,7 +302,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
             formView: true,
             devToolsView: false,
             locale: "en",
-            theme: this.props.themes[0]
+            theme: this.getInitialTheme()
         };
     }
 
@@ -345,6 +345,12 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 componentData: this.getComponentData(),
                 detailViewComponentData: this.getDetailViewComponentData()
             });
+        }
+    }
+
+    private getInitialTheme(): ITheme {
+        if (Array.isArray(this.props.themes) && this.props.themes.length) {
+            return this.props.themes[0];
         }
     }
 
