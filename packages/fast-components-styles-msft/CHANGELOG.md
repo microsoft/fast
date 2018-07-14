@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.9.0"></a>
+# [1.9.0](https://github.com/Microsoft/fast-dna/compare/v1.6.0...v1.9.0) (2018-07-14)
+
+
+### Bug Fixes
+
+* **checkbox:** fix broken indeterminate state UI in Firefox ([#489](https://github.com/Microsoft/fast-dna/issues/489)) ([dd55c0c](https://github.com/Microsoft/fast-dna/commit/dd55c0c))
+* **divider:** remove hard coded color value on divider to support theming ([#675](https://github.com/Microsoft/fast-dna/issues/675)) ([85d07d7](https://github.com/Microsoft/fast-dna/commit/85d07d7))
+* **fast-components-react-msft:** fixes error running jest with components that require chroma ([#687](https://github.com/Microsoft/fast-dna/issues/687)) ([140457c](https://github.com/Microsoft/fast-dna/commit/140457c))
+* **fast-components-styles-msft:** remove duplicate code and creates a utility to apply mixed colors ([#500](https://github.com/Microsoft/fast-dna/issues/500)) ([179c584](https://github.com/Microsoft/fast-dna/commit/179c584))
+* **hypertext:** fix hypertext style when no href value exists ([#499](https://github.com/Microsoft/fast-dna/issues/499)) ([cd5d3d2](https://github.com/Microsoft/fast-dna/commit/cd5d3d2))
+* **toggle:** toggle "Selected" option does not work and is missing background color ([#663](https://github.com/Microsoft/fast-dna/issues/663)) ([e05abca](https://github.com/Microsoft/fast-dna/commit/e05abca))
+
+
+### Features
+
+* **detail view:** add detail view ([#470](https://github.com/Microsoft/fast-dna/issues/470)) ([665b871](https://github.com/Microsoft/fast-dna/commit/665b871))
+* **fast-components-react-msft:** add flipper as a new component ([#642](https://github.com/Microsoft/fast-dna/issues/642)) ([5ac4496](https://github.com/Microsoft/fast-dna/commit/5ac4496))
+* **fast-components-react-msft:** add localized styles and enable ltr/rtl swapping on documentation site ([#517](https://github.com/Microsoft/fast-dna/issues/517)) ([ce939b7](https://github.com/Microsoft/fast-dna/commit/ce939b7))
+* **fast-components-styles-msft:** set default config values as a fallback if there is a missing or incomplete design system ([#633](https://github.com/Microsoft/fast-dna/issues/633)) ([ffeafc7](https://github.com/Microsoft/fast-dna/commit/ffeafc7))
+* **fast-css-editor-react:** add default editor component and position component ([#636](https://github.com/Microsoft/fast-dna/issues/636)) ([72037a8](https://github.com/Microsoft/fast-dna/commit/72037a8))
+
+
+
+
 <a name="1.8.0"></a>
 # [1.8.0](https://github.com/Microsoft/fast-dna/compare/v1.6.0...v1.8.0) (2018-06-12)
 
