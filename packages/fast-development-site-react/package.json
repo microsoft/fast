@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-development-site-react",
   "description": "FAST development testing site for React",
   "sideEffects": false,
-  "version": "1.8.0",
+  "version": "1.9.0",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -25,18 +25,18 @@
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'"
   },
   "dependencies": {
-    "@microsoft/fast-application-utilities": "^1.8.0",
-    "@microsoft/fast-form-generator-react": "^1.8.0",
-    "@microsoft/fast-glyphs-msft": "^1.8.0",
-    "@microsoft/fast-jss-manager-react": "^1.8.0",
-    "@microsoft/fast-jss-utilities": "^1.8.0",
-    "@microsoft/fast-layouts-react": "^1.8.0",
+    "@microsoft/fast-application-utilities": "^1.9.0",
+    "@microsoft/fast-form-generator-react": "^1.9.0",
+    "@microsoft/fast-glyphs-msft": "^1.9.0",
+    "@microsoft/fast-jss-manager-react": "^1.9.0",
+    "@microsoft/fast-jss-utilities": "^1.9.0",
+    "@microsoft/fast-layouts-react": "^1.9.0",
     "react-syntax-highlighter": "^7.0.4"
   },
   "devDependencies": {
-    "@microsoft/fast-components-class-name-contracts-base": "^1.8.0",
-    "@microsoft/fast-jss-manager": "^1.8.0",
-    "@microsoft/fast-tslint-rules": "^1.8.0",
+    "@microsoft/fast-components-class-name-contracts-base": "^1.9.0",
+    "@microsoft/fast-jss-manager": "^1.9.0",
+    "@microsoft/fast-tslint-rules": "^1.9.0",
     "@polymer/polymer": "^3.0.0-pre.10",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.6.7",

@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-tslint-rules",
   "description": "tslint rules for FAST projects",
   "sideEffects": false,
-  "version": "1.8.0",
+  "version": "1.9.0",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
