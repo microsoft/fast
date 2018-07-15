@@ -66,5 +66,5 @@ export interface IImageHandledProps {
 }
 
 export interface IImageUnhandledProps extends React.HTMLAttributes<HTMLImageElement | HTMLPictureElement> {}
-export interface IImageMangedClasses extends IManagedClasses<IImageClassNameContract> {}
-export type ImageProps = IImageHandledProps & IImageUnhandledProps & IImageMangedClasses;
+export interface IImageManagedClasses extends IManagedClasses<IImageClassNameContract> {}
+export type ImageProps = IImageHandledProps & IImageUnhandledProps & IImageManagedClasses;
