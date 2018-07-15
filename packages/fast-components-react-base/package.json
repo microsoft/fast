@@ -40,6 +40,9 @@
         "lines": 91
       }
     },
+    "coveragePathIgnorePatterns":[
+      "/.tmp/*"
+    ],
     "transform": {
       "^.+\\.tsx?$": "ts-jest",
       "^.+\\.jsx?$": "babel-jest"
