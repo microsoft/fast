@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components-class-name-contracts-base",
   "description": "Type descriptions for the classnames that any given component can expect as props.",
   "sideEffects": false,
-  "version": "1.8.0",
+  "version": "1.9.1",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -22,7 +22,7 @@
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'"
   },
   "devDependencies": {
-    "@microsoft/fast-tslint-rules": "^1.8.0",
+    "@microsoft/fast-tslint-rules": "^1.9.1",
     "tslint": "^5.9.1",
     "typescript": "^2.7.2"
   }

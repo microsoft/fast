@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-jss-manager",
   "description": "Provides common code to all JSS manager implementations.",
   "sideEffects": false,
-  "version": "1.8.0",
+  "version": "1.9.1",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -22,13 +22,13 @@
     "test": "npm run tslint"
   },
   "devDependencies": {
-    "@microsoft/fast-tslint-rules": "^1.8.0",
+    "@microsoft/fast-tslint-rules": "^1.9.1",
     "csstype": "^2.3.0",
     "tslint": "^5.9.1",
     "typescript": "^2.7.2"
   },
   "dependencies": {
-    "@microsoft/fast-components-class-name-contracts-base": "^1.8.0"
+    "@microsoft/fast-components-class-name-contracts-base": "^1.9.1"
   },
   "peerDependencies": {
     "csstype": "^2.3.0"

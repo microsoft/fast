@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.9.0"></a>
+# [1.9.0](https://github.com/Microsoft/fast-dna/compare/v1.6.0...v1.9.0) (2018-07-14)
+
+
+### Bug Fixes
+
+* fix imports after updating types ([#644](https://github.com/Microsoft/fast-dna/issues/644)) ([65ed738](https://github.com/Microsoft/fast-dna/commit/65ed738))
+* **fast-components-react-msft:** fixes error running jest with components that require chroma ([#687](https://github.com/Microsoft/fast-dna/issues/687)) ([140457c](https://github.com/Microsoft/fast-dna/commit/140457c))
+* **fast-development-site:** remove component name and add presets tab ([#579](https://github.com/Microsoft/fast-dna/issues/579)) ([9266132](https://github.com/Microsoft/fast-dna/commit/9266132))
+* **fast-form-generator-react:** correct the validation between oneOf and anyOf checks ([#677](https://github.com/Microsoft/fast-dna/issues/677)) ([f5d185c](https://github.com/Microsoft/fast-dna/commit/f5d185c))
+* **fast-form-generator-react:** entire list item should be clickable when navigating between sections ([#673](https://github.com/Microsoft/fast-dna/issues/673)) ([5504475](https://github.com/Microsoft/fast-dna/commit/5504475))
+* **fast-form-generator-react:** sets the value of the textarea to an empty string if it is undefined ([#683](https://github.com/Microsoft/fast-dna/issues/683)) ([0bc66ac](https://github.com/Microsoft/fast-dna/commit/0bc66ac))
+* **fast-form-generator-react:** update + glyph positioning ([#626](https://github.com/Microsoft/fast-dna/issues/626)) ([4902ea4](https://github.com/Microsoft/fast-dna/commit/4902ea4))
+
+
+### Features
+
+* **detail view:** add detail view ([#470](https://github.com/Microsoft/fast-dna/issues/470)) ([665b871](https://github.com/Microsoft/fast-dna/commit/665b871))
+* **development-site:** add ability to have children as strings in the form generator and development site dev tools ([#518](https://github.com/Microsoft/fast-dna/issues/518)) ([2a4a87f](https://github.com/Microsoft/fast-dna/commit/2a4a87f))
+* **fast-css-editor-react:** add default editor component and position component ([#636](https://github.com/Microsoft/fast-dna/issues/636)) ([72037a8](https://github.com/Microsoft/fast-dna/commit/72037a8))
+* **form generator:** add focus/hover states ([#449](https://github.com/Microsoft/fast-dna/issues/449)) ([4dbe9a3](https://github.com/Microsoft/fast-dna/commit/4dbe9a3))
+
+
+
+
 <a name="1.8.0"></a>
 # [1.8.0](https://github.com/Microsoft/fast-dna/compare/v1.6.0...v1.8.0) (2018-06-12)
 

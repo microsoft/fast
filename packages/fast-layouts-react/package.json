@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-layouts-react",
-  "version": "1.8.0",
+  "version": "1.9.1",
   "description": "FAST layout components written in React",
   "sideEffects": false,
   "author": {
@@ -58,7 +58,7 @@
     ]
   },
   "devDependencies": {
-    "@microsoft/fast-tslint-rules": "^1.8.0",
+    "@microsoft/fast-tslint-rules": "^1.9.1",
     "@types/jest": "^22.2.0",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.6",
@@ -92,7 +92,7 @@
     "react-dom": "^16.3.0"
   },
   "dependencies": {
-    "@microsoft/fast-jss-manager-react": "^1.8.0",
-    "@microsoft/fast-jss-utilities": "^1.8.0"
+    "@microsoft/fast-jss-manager-react": "^1.9.1",
+    "@microsoft/fast-jss-utilities": "^1.9.1"
   }
 }
