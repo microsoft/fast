@@ -69,6 +69,7 @@ describe("label unit-tests", (): void => {
 
         expect(rendered.prop("tag")).toBe(undefined);
         expect(rendered.instance().props.tag).toEqual(LabelTag.label);
+        expect(rendered.type()).toBe(LabelTag.label);
     });
 
     test("should render the correct `tag` when `tag` prop is passed", () => {
@@ -78,5 +79,6 @@ describe("label unit-tests", (): void => {
 
         expect(rendered.instance().props.tag).not.toBe(undefined);
         expect(rendered.instance().props.tag).toEqual(LabelTag.legend);
+        expect(rendered.type()).toBe(LabelTag.legend);
     });
 });

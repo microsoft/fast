@@ -64,6 +64,7 @@ describe("typography unit-tests", (): void => {
 
         expect(rendered.prop("tag")).toBe(undefined);
         expect(rendered.instance().props.tag).toEqual(TypographyTag.p);
+        expect(rendered.type()).toEqual(TypographyTag.p);
     });
 
     test("should render the correct `tag` when `tag` prop is passed", () => {
@@ -73,5 +74,17 @@ describe("typography unit-tests", (): void => {
 
         expect(rendered.instance().props.tag).not.toBe(undefined);
         expect(rendered.instance().props.tag).toEqual(TypographyTag.h1);
+        expect(rendered.type()).toEqual(TypographyTag.h1);
+    });
+
+    test("should correctly render children", () => {
+        const rendered: any = shallow(
+            <Component managedClasses={managedClasses}>
+                Children
+            </Component>
+        );
+
+        expect(rendered.prop("children")).not.toBe(undefined);
+        expect(rendered.prop("children")).toEqual("Children");
     });
 });
