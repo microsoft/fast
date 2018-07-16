@@ -9,6 +9,7 @@ export const weightPropertiesWeight: IFormOrderByPropertyNamesProps = {
     categories: [
         {
             title: "Content",
+            expandable: true,
             weight: 50,
             properties: [
                 { weight: 5, propertyName: ["title"] },
@@ -18,6 +19,7 @@ export const weightPropertiesWeight: IFormOrderByPropertyNamesProps = {
         },
         {
             title: "Formatting",
+            expandable: true,
             weight: 40,
             properties: [
                 { weight: 9, propertyName: ["alignHorizontal", "alignVertical"] },

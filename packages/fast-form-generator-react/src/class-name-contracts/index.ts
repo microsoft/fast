@@ -1,3 +1,6 @@
+import IFormCategoryClassNameContract from "./form-category.class-name-contracts";
+export { IFormCategoryClassNameContract };
+
 import IFormClassNameContract from "./form.class-name-contract";
 export { IFormClassNameContract };
 

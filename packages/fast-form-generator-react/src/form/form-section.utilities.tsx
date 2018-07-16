@@ -496,6 +496,7 @@ export function findAssignedParamsByCategoryProperties(
         if (propertyName === config.formItemParameter.item) {
             return {
                 category: config.category.title,
+                expandable: config.category.expandable,
                 categoryWeight: config.category.weight,
                 itemWeight: config.categoryProperty.weight || config.assignedItemWeight
             };
@@ -586,6 +587,7 @@ export function getCategoryParams(
             categoryParams.push({
                 title: assignedCategoryParams.category,
                 weight: assignedCategoryParams.categoryWeight,
+                expandable: assignedCategoryParams.expandable,
                 items: [{
                     weight: assignedCategoryParams.itemWeight,
                     params: formItemParameter
