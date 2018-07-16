@@ -64,7 +64,7 @@ describe("toggle unit-tests", (): void => {
 
         const state: any = rendered.state("checked");
 
-        expect(state).toBe(false);
+        expect(state).toBe(undefined);
     });
 
     test("should correcly operate as an uncontrolled component and handle `onChange` events when `selected` prop is not passed", () => {
@@ -72,7 +72,7 @@ describe("toggle unit-tests", (): void => {
             <Component {...handledProps} />
         );
 
-        expect(rendered.state("checked")).toBe(false);
+        expect(rendered.state("checked")).toBe(undefined);
 
         const input: any = rendered.find(".toggle-input-class");
         input.prop("onChange")(); // we have to fire the internal onChange from the input as we aren't passing one
@@ -101,7 +101,7 @@ describe("toggle unit-tests", (): void => {
             selected: true
         };
 
-        expect(rendered.state("checked")).toEqual(false);
+        expect(rendered.state("checked")).toEqual(undefined);
 
         rendered.setProps(newProps);
 
