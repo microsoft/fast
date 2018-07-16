@@ -2,26 +2,18 @@ import * as React from "react";
 import { IButtonHandledProps as IBaseButtonHandledProps } from "@microsoft/fast-components-react-base";
 import { IManagedClasses, IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 
+export enum Subtype {
+    justified= "justified",
+    lightweight= "lightweight",
+    outline= "outline",
+    primary= "primary",
+}
+
 export interface IButtonHandledProps extends IBaseButtonHandledProps {
     /**
-     * The lightweight justified option
+     * The Button subType
      */
-    justified?: boolean;
-
-    /**
-     * The lightweight option
-     */
-    lightweight?: boolean;
-
-    /**
-     * The outline option
-     */
-    outline?: boolean;
-
-    /**
-     * The primary option
-     */
-    primary?: boolean;
+    subtype?: Subtype;
 }
 
 export interface IButtonUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}

@@ -14,21 +14,15 @@
             "title": "HTML href attribute",
             "type": "string"
         },
-        "justified": {
-            "title": "Justified",
-            "type": "boolean"
-        },
-        "lightweight": {
-            "title": "Lightweight",
-            "type": "boolean"
-        },
-        "outline": {
-            "title": "Outline",
-            "type": "boolean"
-        },
-        "primary": {
-            "title": "Primary",
-            "type": "boolean"
+        "subtype": {
+            "title": "Subtype",
+            "type": "string",
+            "enum": [
+                "justfied",
+                "lightweight",
+                "outline",
+                "primary"
+            ]
         }
     }
 }

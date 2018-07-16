@@ -7,7 +7,8 @@ import {
     ButtonProps,
     IButtonHandledProps,
     IButtonManagedClasses,
-    IButtonUnhandledProps
+    IButtonUnhandledProps,
+    Subtype
 } from "./button.props";
 import schema from "./button.schema.json";
 import Documentation from "./.tmp/documentation";
@@ -26,22 +27,22 @@ export default {
             "data-sketch-symbol": "Button - default"
         },
         {
-            primary: true,
+            subtype: Subtype.primary,
             children: "Primary (submit) button",
             "data-sketch-symbol": "Button - primary"
         },
         {
-            outline: true,
+            subtype: Subtype.outline,
             children: "Outline button",
             "data-sketch-symbol": "Button - outline"
         },
         {
-            lightweight: true,
+            subtype: Subtype.lightweight,
             children: "Lightweight button",
             "data-sketch-symbol": "Button - lightweight"
         },
         {
-            justified: true,
+            subtype: Subtype.justified,
             children: "Justified button"
         },
         {
@@ -55,25 +56,25 @@ export default {
         },
         {
             disabled: true,
-            primary: true,
+            subtype: Subtype.primary,
             children: "Primary (submit) button",
             "data-sketch-symbol": "Button - primary disabled"
         },
         {
             disabled: true,
-            outline: true,
+            subtype: Subtype.outline,
             children: "Outline button",
             "data-sketch-symbol": "Button - outline disabled"
         },
         {
             disabled: true,
-            lightweight: true,
+            subtype: Subtype.lightweight,
             children: "Lightweight button",
             "data-sketch-symbol": "Button - lightweight disabled"
         },
         {
             disabled: true,
-            justified: true,
+            subtype: Subtype.justified,
             children: "Justified button"
         },
         {
