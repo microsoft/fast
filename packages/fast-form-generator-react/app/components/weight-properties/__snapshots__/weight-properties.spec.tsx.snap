@@ -211,6 +211,7 @@ exports[`weight-properties weight-properties: 0 1`] = `
             </h3>
             <div
               className={null}
+              id="developer3"
             >
               <div
                 className="formItemSelect-0-1-42"
