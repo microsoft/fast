@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-jss-utilities",
   "description": "Utilities for use with JSS",
   "sideEffects": false,
-  "version": "1.9.1",
+  "version": "1.9.2",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -42,7 +42,7 @@
     ]
   },
   "devDependencies": {
-    "@microsoft/fast-tslint-rules": "^1.9.1",
+    "@microsoft/fast-tslint-rules": "^1.9.2",
     "@types/jest": "^22.2.3",
     "babel-core": "^6.26.0",
     "babel-preset-env": "^1.6.1",
@@ -53,7 +53,7 @@
     "typescript": "^2.7.2"
   },
   "dependencies": {
-    "@microsoft/fast-jss-manager": "^1.9.1"
+    "@microsoft/fast-jss-manager": "^1.9.2"
   },
   "peerDependencies": {
     "csstype": "^2.3.0"
