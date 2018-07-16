@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-jss-manager-angular",
   "description": "Angular directive and component for managing component JSS stylesheets",
   "sideEffects": false,
-  "version": "1.9.1",
+  "version": "1.9.2",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -60,7 +60,7 @@
     "@angular/core": "^5.2.0",
     "@angular/platform-browser": "^5.2.9",
     "@angular/platform-browser-dynamic": "^5.2.9",
-    "@microsoft/fast-tslint-rules": "^1.9.1",
+    "@microsoft/fast-tslint-rules": "^1.9.2",
     "@types/jest": "^22.1.2",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.6",
@@ -96,6 +96,6 @@
     "zone.js": "^0.8.19"
   },
   "dependencies": {
-    "@microsoft/fast-jss-manager": "^1.9.1"
+    "@microsoft/fast-jss-manager": "^1.9.2"
   }
 }
