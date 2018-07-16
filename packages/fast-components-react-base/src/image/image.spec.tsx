@@ -61,4 +61,81 @@ describe("image unit-tests", (): void => {
 
         expect(rendered.type()).toEqual(null);
     });
+
+    test("should correctly render an `<img/>` element if `src` prop is passed", () => {
+        const rendered: any = shallow(
+            <Component managedClasses={managedClasses} alt={alt} src={"https://placehold.it/20x20"} />
+        );
+
+        expect(rendered.type()).toBe("img");
+    });
+
+    test("should correctly render a `<Picture>` element if `vp` props are passed", () => {
+        const rendered: any = shallow(
+            <Component managedClasses={managedClasses} alt={alt} vp1={"https://placehold.it/20x20"} />
+        );
+
+        expect(rendered.type()).toBe("picture");
+    });
+
+    test("should NOT render with a srcset value if no `srcSet` prop is passed", () => {
+        const rendered: any = shallow(
+            <Component managedClasses={managedClasses} alt={alt} src={"https://placehold.it/20x20"} />
+        );
+
+        expect(rendered.prop("srcSet")).toBe(null);
+    });
+
+    test("should render with a srcset value when `srcSet` prop is passed", () => {
+        const rendered: any = shallow(
+            <Component
+                managedClasses={managedClasses}
+                alt={alt}
+                src={"https://placehold.it/20x20"}
+                srcSet={"https://placehold.it/20x20/ 767w, https://placehold.it/40x40/ 1w"}
+            />
+        );
+
+        expect(rendered.prop("srcSet")).toBe("https://placehold.it/20x20/ 767w, https://placehold.it/40x40/ 1w");
+    });
+
+    test("should NOT render with a sizes value if no `sizes` prop is passed", () => {
+        const rendered: any = shallow(
+            <Component managedClasses={managedClasses} alt={alt} src={"https://placehold.it/20x20"} />
+        );
+
+        expect(rendered.prop("sizes")).toBe(null);
+    });
+
+    test("should render with a sizes value when `sizes` prop is passed", () => {
+        const rendered: any = shallow(
+            <Component
+                managedClasses={managedClasses}
+                alt={alt}
+                src={"https://placehold.it/400x400"}
+                sizes={"100vw"}
+            />
+        );
+
+        expect(rendered.prop("sizes")).toBe("100vw");
+    });
+
+    test("should only render `<srcset />` elements to picture if `vp` prop instances are present", () => {
+        const props: IImageHandledProps & IImageManagedClasses = {
+            managedClasses,
+            alt,
+            vp1: "https://placehold.it/80x80",
+            vp2: "https://placehold.it/100x100"
+        };
+        const rendered: any = shallow(
+            <Component {...props}/>
+        );
+
+        expect(rendered.instance().props.vp1).toEqual(props.vp1);
+        expect(rendered.instance().props.vp2).toEqual(props.vp2);
+        expect(rendered.instance().props.vp3).toBe(undefined);
+        expect(rendered.instance().props.vp4).toBe(undefined);
+        expect(rendered.instance().props.vp5).toBe(undefined);
+        expect(rendered.instance().props.vp6).toBe(undefined);
+    });
 });
