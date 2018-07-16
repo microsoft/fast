@@ -49,7 +49,7 @@ class Toggle extends Foundation<IToggleHandledProps & IManagedClasses<IToggleCla
         super(props);
 
         this.state = {
-            checked: this.props.selected
+            checked: this.props.selected || false
         };
     }
 

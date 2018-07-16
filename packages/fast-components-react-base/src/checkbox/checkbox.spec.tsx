@@ -106,8 +106,7 @@ describe("checkbox unit-tests", (): void => {
         );
 
         const newProps: Partial<ICheckboxHandledProps> = {
-            checked: true,
-            disabled: false
+            checked: true
         };
 
         expect(rendered.state("checked")).toEqual(false);

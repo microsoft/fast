@@ -22,7 +22,7 @@ describe("text-field", (): void => {
     generateSnapshots(examples);
 });
 
-describe("label unit-tests", (): void => {
+describe("text-field unit-tests", (): void => {
     let Component: React.ComponentClass<ITextFieldHandledProps & ITextFieldManagedClasses>;
     let managedClasses: ITextFieldClassNameContract;
 
