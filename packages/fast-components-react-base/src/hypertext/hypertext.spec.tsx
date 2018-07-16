@@ -50,4 +50,19 @@ describe("hypertext unit-tests", (): void => {
         expect(rendered.props()["aria-hidden"]).not.toBe(undefined);
         expect(rendered.props()["aria-hidden"]).toEqual(true);
     });
+
+    test("should correctly handle children", () => {
+        const handledProps: IHypertextHandledProps & IHypertextManagedClasses = {
+            managedClasses,
+            href: "http://www.microsoft.com"
+        };
+        const rendered: any = shallow(
+            <Component managedClasses={managedClasses}>
+                Children
+            </Component>
+        );
+
+        expect(rendered.prop("children")).not.toBe(undefined);
+        expect(rendered.prop("children")).toEqual("Children");
+    });
 });

@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`label Label: 0 1`] = `
+<label
+  className="label"
+>
+  Label
+</label>
+`;
+
+exports[`label Label: 1 1`] = `
+<legend
+  className="label"
+>
+  Legend label
+</legend>
+`;
+
+exports[`label Label: 2 1`] = `
+<label
+  className="hidden_label"
+>
+  Hidden label for screen readers
+</label>
+`;
