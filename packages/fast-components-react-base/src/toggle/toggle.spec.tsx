@@ -4,13 +4,14 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
-import { IToggleClassNameContract, IToggleState } from "./toggle";
 import {
+    IToggleClassNameContract,
     IToggleHandledProps,
     IToggleManagedClasses,
+    IToggleState,
     IToggleUnhandledProps,
     ToggleProps,
-} from "./toggle.props";
+} from "./toggle";
 
 /*
  * Configure Enzyme

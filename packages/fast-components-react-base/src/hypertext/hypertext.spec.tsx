@@ -4,13 +4,13 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
-import { IHypertextClassNameContract } from "./hypertext";
 import {
     HypertextProps,
+    IHypertextClassNameContract,
     IHypertextHandledProps,
     IHypertextManagedClasses,
     IHypertextUnhandledProps
-} from "./hypertext.props";
+} from "./hypertext";
 
 /*
  * Configure Enzyme

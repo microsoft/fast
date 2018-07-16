@@ -4,13 +4,13 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
-import { IButtonClassNameContract } from "./button";
 import {
     ButtonProps,
+    IButtonClassNameContract,
     IButtonHandledProps,
     IButtonManagedClasses,
     IButtonUnhandledProps
-} from "./button.props";
+} from "./button";
 
 /*
  * Configure Enzyme

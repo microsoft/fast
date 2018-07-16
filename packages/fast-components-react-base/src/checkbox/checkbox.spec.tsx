@@ -4,13 +4,14 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
-import { ICheckboxClassNameContract, ICheckboxState } from "./checkbox";
 import {
     CheckboxProps,
+    ICheckboxClassNameContract,
     ICheckboxHandledProps,
     ICheckboxManagedClasses,
+    ICheckboxState,
     ICheckboxUnhandledProps
-} from "./checkbox.props";
+} from "./checkbox";
 
 /*
  * Configure Enzyme

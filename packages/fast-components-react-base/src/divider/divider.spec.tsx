@@ -4,14 +4,14 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
-import { IDividerClassNameContract } from "./divider";
 import {
     DividerProps,
     DividerRoles,
+    IDividerClassNameContract,
     IDividerHandledProps,
     IDividerManagedClasses,
     IDividerUnhandledProps
-} from "./divider.props";
+} from "./divider";
 
 describe("divider", (): void => {
     generateSnapshots(examples);

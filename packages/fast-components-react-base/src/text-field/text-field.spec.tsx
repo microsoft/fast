@@ -4,14 +4,14 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
-import TextField, { ITextFieldClassNameContract } from "./text-field";
 import {
+    ITextFieldClassNameContract,
     ITextFieldHandledProps,
     ITextFieldManagedClasses,
     ITextFieldUnhandledProps,
     TextFieldProps,
     TextFieldType
-} from "./text-field.props";
+} from "./text-field";
 
 /*
  * Configure Enzyme
