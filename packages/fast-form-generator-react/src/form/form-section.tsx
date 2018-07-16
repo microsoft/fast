@@ -90,7 +90,7 @@ class FormSection extends React.Component<IFormSectionProps & IManagedClasses<IF
         this.state = {
             schema: schemaState,
             oneOfAnyOf: oneOfAnyOfState,
-            sections: getSchemaSubsections({schema: schemaState, oneOfAnyOf: oneOfAnyOfState}, this.props),
+            sections: getSchemaSubsections({schema: schemaState, oneOfAnyOf: oneOfAnyOfState}, this.props)
         };
     }
 

@@ -75,13 +75,14 @@ class FormCategory extends React.Component<IFormCategoryProps & IManagedClasses<
     }
 
     private generateContainerAttributes(): React.HtmlHTMLAttributes<HTMLDivElement> {
+        const attributes: Partial<React.HtmlHTMLAttributes<HTMLDivElement>> = {};
+        attributes.id = this.props.id;
+
         if (!this.props.expandable) {
-            return;
+            return attributes;
         }
 
-        const attributes: Partial<React.HtmlHTMLAttributes<HTMLDivElement>> = {};
         attributes["aria-hidden"] = !this.state.expanded;
-        attributes.id = this.props.id;
 
         return attributes;
     }
