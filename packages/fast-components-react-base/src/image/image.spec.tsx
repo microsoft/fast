@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
-import { configure, mount, shallow } from "enzyme";
+import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import { IImageClassNameContract } from "./image";
@@ -46,7 +46,7 @@ describe("image unit-tests", (): void => {
             "aria-hidden": true
         };
         const props: ImageProps = {...handledProps, ...unhandledProps};
-        const rendered: any = mount(
+        const rendered: any = shallow(
             <Component {...props} />
         );
 
