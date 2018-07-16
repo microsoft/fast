@@ -23,27 +23,21 @@ describe("toggle", (): void => {
 });
 
 describe("toggle unit-tests", (): void => {
-    let Component: React.ComponentClass<IToggleHandledProps & IToggleManagedClasses>;
-    let managedClasses: IToggleClassNameContract;
-    let handledProps: IToggleHandledProps & IToggleManagedClasses;
-
-    beforeEach(() => {
-        Component = examples.component;
-        handledProps = {
-            managedClasses,
-            id: "id",
-            selectedString: "Selected",
-            statusLabelId: "statusLabelId",
-            unselectedString: "Unselected"
-        };
-        managedClasses = {
-            toggle: "toggle-class",
-            toggle_label: "toggle-label-class",
-            toggle_wrapper: "toggle-wrapper-class",
-            toggle_input: "toggle-input-class",
-            toggle_button: "toggle-button-class"
-        };
-    });
+    const Component: React.ComponentClass<IToggleHandledProps & IToggleManagedClasses> = examples.component;
+    const managedClasses: IToggleClassNameContract = {
+        toggle: "toggle-class",
+        toggle_label: "toggle-label-class",
+        toggle_wrapper: "toggle-wrapper-class",
+        toggle_input: "toggle-input-class",
+        toggle_button: "toggle-button-class"
+    };
+    const handledProps: IToggleHandledProps & IToggleManagedClasses = {
+        managedClasses,
+        id: "id",
+        selectedString: "Selected",
+        statusLabelId: "statusLabelId",
+        unselectedString: "Unselected"
+    };
 
     test("should correctly manage unhandledProps", () => {
         const unhandledProps: IToggleUnhandledProps = {

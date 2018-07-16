@@ -23,15 +23,10 @@ describe("text-field", (): void => {
 });
 
 describe("text-field unit-tests", (): void => {
-    let Component: React.ComponentClass<ITextFieldHandledProps & ITextFieldManagedClasses>;
-    let managedClasses: ITextFieldClassNameContract;
-
-    beforeEach(() => {
-        Component = examples.component;
-        managedClasses = {
-            textField: "text-field-class"
-        };
-    });
+    const Component: React.ComponentClass<ITextFieldHandledProps & ITextFieldManagedClasses> = examples.component;
+    const managedClasses: ITextFieldClassNameContract = {
+        textField: "text-field-class"
+    };
 
     test("should correctly manage unhandledProps", () => {
         const handledProps: ITextFieldHandledProps & ITextFieldManagedClasses = {

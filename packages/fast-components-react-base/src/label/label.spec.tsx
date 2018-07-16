@@ -23,16 +23,11 @@ describe("label", (): void => {
 });
 
 describe("label unit-tests", (): void => {
-    let Component: React.ComponentClass<ILabelHandledProps & ILabelMangedClasses>;
-    let managedClasses: ILabelClassNameContract;
-
-    beforeEach(() => {
-        Component = examples.component;
-        managedClasses = {
-            label: "label-class",
-            label_hidden: "label-hidden-class"
-        };
-    });
+    const Component: React.ComponentClass<ILabelHandledProps & ILabelMangedClasses> = examples.component;
+    const managedClasses: ILabelClassNameContract = {
+        label: "label-class",
+        label_hidden: "label-hidden-class"
+    };
 
     test("should correctly manage unhandledProps", () => {
         const handledProps: ILabelHandledProps & ILabelMangedClasses = {
@@ -47,8 +42,8 @@ describe("label unit-tests", (): void => {
             <Component {...props} />
         );
 
-        expect(rendered.props()["aria-hidden"]).not.toBe(undefined);
-        expect(rendered.props()["aria-hidden"]).toEqual(true);
+        expect(rendered.prop("aria-hidden")).not.toBe(undefined);
+        expect(rendered.prop("aria-hidden")).toEqual(true);
     });
 
     test("should correctly handle children", () => {

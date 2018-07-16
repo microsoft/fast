@@ -22,15 +22,10 @@ describe("hypertext", (): void => {
 });
 
 describe("hypertext unit-tests", (): void => {
-    let Component: React.ComponentClass<IHypertextHandledProps & IHypertextManagedClasses>;
-    let managedClasses: IHypertextClassNameContract;
-
-    beforeEach(() => {
-        Component = examples.component;
-        managedClasses = {
-            hypertext: "hypertext-class"
-        };
-    });
+    const Component: React.ComponentClass<IHypertextHandledProps & IHypertextManagedClasses> = examples.component;
+    const managedClasses: IHypertextClassNameContract = {
+        hypertext: "hypertext-class"
+    };
 
     test("should correctly manage unhandledProps", () => {
         const handledProps: IHypertextHandledProps & IHypertextManagedClasses = {

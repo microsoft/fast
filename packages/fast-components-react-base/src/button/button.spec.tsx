@@ -23,17 +23,11 @@ describe("button", (): void => {
 });
 
 describe("button unit-tests", (): void => {
-    let Component: React.ComponentClass<IButtonHandledProps & IButtonManagedClasses>;
-    let managedClasses: IButtonClassNameContract;
-    const testClassName: string = "test-button";
+    const Component: React.ComponentClass<IButtonHandledProps & IButtonManagedClasses> = examples.component;
+    const managedClasses: IButtonClassNameContract = {
+        button: "test-button"
+    };
     const href: string = "https://www.microsoft.com";
-
-    beforeEach(() => {
-        Component = examples.component;
-        managedClasses = {
-            button: testClassName
-        };
-    });
 
     test("should correctly manage unhandledProps", () => {
         const handledProps: IButtonHandledProps & IButtonManagedClasses = {

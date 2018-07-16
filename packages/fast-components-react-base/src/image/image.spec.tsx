@@ -22,19 +22,13 @@ describe("image", (): void => {
 });
 
 describe("image unit-tests", (): void => {
-    let Component: React.ComponentClass<IImageHandledProps & IImageManagedClasses>;
-    let managedClasses: IImageClassNameContract;
-    let alt: string;
-
-    beforeEach(() => {
-        alt = "Image alt text test string";
-        Component = examples.component;
-        managedClasses = {
-            image: "image-class",
-            image_round: "image-round",
-            picture: "picture"
-        };
-    });
+    const Component: React.ComponentClass<IImageHandledProps & IImageManagedClasses> = examples.component;
+    const managedClasses: IImageClassNameContract = {
+        image: "image-class",
+        image_round: "image-round",
+        picture: "picture"
+    };
+    const alt: string = "Image alt text test string";
 
     test("should correctly manage unhandledProps", () => {
         const handledProps: IImageHandledProps & IImageManagedClasses = {

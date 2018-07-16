@@ -23,19 +23,14 @@ describe("checkbox", (): void => {
 });
 
 describe("checkbox unit-tests", (): void => {
-    let Component: React.ComponentClass<ICheckboxHandledProps & ICheckboxManagedClasses>;
-    let managedClasses: ICheckboxClassNameContract;
-
-    beforeEach(() => {
-        Component = examples.component;
-        managedClasses = {
-            checkbox: "checkbox-class",
-            checkbox_disabled: "disabled-class",
-            checkbox_input: "input-class",
-            checkbox_label: "label-class",
-            checkbox_span: "span-class",
-        };
-    });
+    const Component: React.ComponentClass<ICheckboxHandledProps & ICheckboxManagedClasses> = examples.component;
+    const managedClasses: ICheckboxClassNameContract = {
+        checkbox: "checkbox-class",
+        checkbox_disabled: "disabled-class",
+        checkbox_input: "input-class",
+        checkbox_label: "label-class",
+        checkbox_span: "span-class",
+    };
 
     test("should correctly manage unhandledProps", () => {
         const handledProps: ICheckboxHandledProps & ICheckboxManagedClasses = {

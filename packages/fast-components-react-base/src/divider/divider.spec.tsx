@@ -20,15 +20,10 @@ describe("divider", (): void => {
 configure({adapter: new Adapter()});
 
 describe("divider unit-tests", (): void => {
-    let Component: React.ComponentClass<IDividerHandledProps & IDividerManagedClasses>;
-    let managedClasses: IDividerClassNameContract;
-
-    beforeEach(() => {
-        Component = examples.component;
-        managedClasses = {
-            divider: "divider-class",
-        };
-    });
+    const Component: React.ComponentClass<IDividerHandledProps & IDividerManagedClasses> = examples.component;
+    const managedClasses: IDividerClassNameContract = {
+        divider: "divider-class",
+    };
 
     test("should correctly manage unhandledProps", () => {
         const handledProps: IDividerHandledProps & IDividerManagedClasses = {

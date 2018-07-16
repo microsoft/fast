@@ -23,23 +23,18 @@ describe("typography", (): void => {
 });
 
 describe("typography unit-tests", (): void => {
-    let Component: React.ComponentClass<ITypographyHandledProps & ITypographyManagedClasses>;
-    let managedClasses: ITypographyClassNameContract;
-
-    beforeEach(() => {
-        Component = examples.component;
-        managedClasses = {
-            typography_1: "typography-1-class",
-            typography_2: "typography-2-class",
-            typography_3: "typography-3-class",
-            typography_4: "typography-4-class",
-            typography_5: "typography-5-class",
-            typography_6: "typography-6-class",
-            typography_7: "typography-7-class",
-            typography_8: "typography-8-class",
-            typography_9: "typography-9-class"
-        };
-    });
+    const Component: React.ComponentClass<ITypographyHandledProps & ITypographyManagedClasses> = examples.component;
+    const managedClasses: ITypographyClassNameContract = {
+        typography_1: "typography-1-class",
+        typography_2: "typography-2-class",
+        typography_3: "typography-3-class",
+        typography_4: "typography-4-class",
+        typography_5: "typography-5-class",
+        typography_6: "typography-6-class",
+        typography_7: "typography-7-class",
+        typography_8: "typography-8-class",
+        typography_9: "typography-9-class"
+    };
 
     test("should correctly manage unhandledProps", () => {
         const handledProps: ITypographyHandledProps & ITypographyManagedClasses = {
