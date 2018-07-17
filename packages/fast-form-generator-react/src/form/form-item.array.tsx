@@ -74,8 +74,21 @@ export interface IFormItemArrayState {
  */
 class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasses<IFormItemArrayClassNameContract>, IFormItemArrayState> {
 
+    /**
+     * Store a reference to the option menu
+     */
+    private optionMenuRef: React.RefObject<HTMLUListElement>;
+
+    /**
+     * Store a reference to the option menu trigger
+     */
+    private optionMenuTriggerRef: React.RefObject<HTMLButtonElement>;
+
     constructor(props: IFormItemArrayProps & IManagedClasses<IFormItemArrayClassNameContract>) {
         super(props);
+
+        this.optionMenuRef = React.createRef();
+        this.optionMenuTriggerRef = React.createRef();
 
         this.state = {
             hideOptionMenu: true
@@ -88,14 +101,46 @@ class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasse
                 <div className={this.props.managedClasses.formItemArray_header}>
                     <h3>{this.getLabelText()}</h3>
                     {/* TODO: #460 Fix "identical-code" */}
-                    <button onClick={this.toggleMenu} aria-expanded={!this.state.hideOptionMenu}><span>Options</span></button>
-                    <ul aria-hidden={this.state.hideOptionMenu} className={this.props.managedClasses.formItemArray_actionMenu}>
+                    <button
+                        ref={this.optionMenuTriggerRef}
+                        onClick={this.toggleMenu}
+                        aria-expanded={!this.state.hideOptionMenu}
+                    >
+                        <span>Options</span>
+                    </button>
+                    <ul
+                        aria-hidden={this.state.hideOptionMenu}
+                        className={this.props.managedClasses.formItemArray_actionMenu}
+                        ref={this.optionMenuRef}
+                    >
                         {this.renderArrayMenuItems()}
                     </ul>
                 </div>
                 {this.generateArrayLinks()}
             </div>
         );
+    }
+
+    public componentDidMount(): void {
+        document.addEventListener("click", this.handleWindowClick);
+    }
+
+    public componentWillUnmount(): void {
+        document.removeEventListener("click", this.handleWindowClick);
+    }
+
+    private handleWindowClick = (e: MouseEvent): void => {
+        if (e.target instanceof Element) {
+            if (!this.optionMenuRef.current.contains(e.target)
+                && !this.optionMenuTriggerRef.current.contains(e.target)
+                && this.optionMenuTriggerRef.current !== e.target) {
+                this.closeMenu();
+            }
+        }
+    }
+
+    private closeMenu = (): void => {
+        this.setState({hideOptionMenu: true});
     }
 
     private toggleMenu = (): void => {
