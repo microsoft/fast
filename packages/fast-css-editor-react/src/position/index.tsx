@@ -22,10 +22,10 @@ export interface ILocationsMappedToClassNames {
 
 export interface ICSSPositionProps {
     position?: PositionValue;
-    left?: number;
-    right?: number;
-    top?: number;
-    bottom?: number;
+    left?: string;
+    right?: string;
+    top?: string;
+    bottom?: string;
     onChange?: (positionValues: any) => void;
 }
 
@@ -78,7 +78,7 @@ class CSSPosition extends React.Component<ICSSPositionProps & IManagedClasses<IC
     private renderLocationInput(location: Location): JSX.Element {
         return (
             <input
-                type="number"
+                type="text"
                 className={this.props.managedClasses.cssPosition_input}
                 data-location={location}
                 onChange={this.handleOnChange}
@@ -154,7 +154,7 @@ class CSSPosition extends React.Component<ICSSPositionProps & IManagedClasses<IC
             }
         });
 
-        updatedProps[updatedPropKey] = parseInt(updatedPropValue, 10);
+        updatedProps[updatedPropKey] = updatedPropValue;
 
         return updatedProps;
     }

@@ -14,20 +14,20 @@
             ]
         },
         "left": {
-            "title": "Left (px)",
-            "type": "number"
+            "title": "Left",
+            "type": "string"
         },
         "right": {
-            "title": "Right (px)",
-            "type": "number"
+            "title": "Right",
+            "type": "string"
         },
         "top": {
-            "title": "Top (px)",
-            "type": "number"
+            "title": "Top",
+            "type": "string"
         },
         "bottom": {
-            "title": "Bottom (px)",
-            "type": "number"
+            "title": "Bottom",
+            "type": "string"
         }
     }
 }

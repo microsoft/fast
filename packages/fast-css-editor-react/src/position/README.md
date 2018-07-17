@@ -13,7 +13,7 @@ export class Example extends React.Component {
         this.state = {
             positionValues: {
                 position: "absolute",
-                left: 0
+                left: "0"
             }
         }
     }
