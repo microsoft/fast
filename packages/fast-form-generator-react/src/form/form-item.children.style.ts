@@ -103,7 +103,6 @@ const styles: ComponentStyles<IFormItemChildrenClassNameContract, {}> = {
                 width: toPx(16),
                 height: toPx(16),
                 left: toPx(12),
-                /* tslint:disable-next-line */
                 background: trashcan
             }
         }

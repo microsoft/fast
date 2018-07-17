@@ -75,10 +75,23 @@ export interface IFormItemArrayState {
  */
 class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasses<IFormItemArrayClassNameContract>, IFormItemArrayState> {
 
+    /**
+     * Store a reference to the menu element
+     */
+    private menuElement: HTMLUListElement;
+
+    /**
+     * Store a reference to the button element
+     */
+    private buttonElement: HTMLButtonElement;
+
+    /**
+     * Store a reference to the span element
+     */
+    private spanElement: HTMLSpanElement;
+
     constructor(props: IFormItemArrayProps & IManagedClasses<IFormItemArrayClassNameContract>) {
         super(props);
-
-        window.addEventListener("click", this.handleWindowClick)
 
         this.state = {
             hideOptionMenu: true
@@ -87,12 +100,19 @@ class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasse
 
     public render(): JSX.Element {
         return (
-            <div className={this.props.managedClasses.formItemArray} ref={this.setRef("rootElement")}>
+            // tslint:disable-next-line:jsx-no-string-ref
+            <div className={this.props.managedClasses.formItemArray}>
                 <div className={this.props.managedClasses.formItemArray_header}>
                     <h3>{this.getLabelText()}</h3>
                     {/* TODO: #460 Fix "identical-code" */}
-                    <button onClick={this.toggleMenu} aria-expanded={!this.state.hideOptionMenu}><span>Options</span></button>
-                    <ul aria-hidden={this.state.hideOptionMenu} className={this.props.managedClasses.formItemArray_actionMenu}>
+                    <button onClick={this.toggleMenu} aria-expanded={!this.state.hideOptionMenu} ref={this.storeButtonRef}>
+                        <span ref={this.storeSpanRef}>Options</span>
+                    </button>
+                    <ul
+                        ref={this.storeMenuRef}
+                        aria-hidden={this.state.hideOptionMenu}
+                        className={this.props.managedClasses.formItemArray_actionMenu}
+                    >
                         {this.renderArrayMenuItems()}
                     </ul>
                 </div>
@@ -101,8 +121,36 @@ class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasse
         );
     }
 
+    public componentDidUpdate(): void {
+        this.state.hideOptionMenu
+            ? window.removeEventListener("click", this.handleWindowClick)
+            : window.addEventListener("click", this.handleWindowClick);
+    }
+
+    private storeMenuRef = (ref?: HTMLUListElement): void => {
+        if (ref) {
+            this.menuElement = ref;
+        }
+    }
+
+    private storeButtonRef = (ref?: HTMLButtonElement): void => {
+        if (ref) {
+            this.buttonElement = ref;
+        }
+    }
+
+    private storeSpanRef = (ref?: HTMLSpanElement): void => {
+        if (ref) {
+            this.spanElement = ref;
+        }
+    }
+
     private toggleMenu = (): void => {
         this.setState({hideOptionMenu: !this.state.hideOptionMenu});
+    }
+
+    private closeMenu = (): void => {
+        this.setState({hideOptionMenu: true});
     }
 
     /**
@@ -219,10 +267,10 @@ class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasse
 
     /**
      * Handle clicking on the window - closes the Select if the users
-     * is clicking somewhere other than the Select.
+     * is clicking somewhere other than the menu.
      */
-    private handleWindowClick = (e: React.MouseEvent): void => {
-        if (!isDescendant(this.getRef('rootElement'), e.target)) {
+    private handleWindowClick = (e: any): void => {
+        if (!isDescendant(this.menuElement , e.target) && e.target !== this.buttonElement && e.target !== this.spanElement) {
             this.closeMenu();
         }
     }

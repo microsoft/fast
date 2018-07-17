@@ -12,6 +12,7 @@ import styles from "./form-item.children.style";
 import { IFormItemChildrenClassNameContract } from "../class-name-contracts/";
 import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { isDescendant } from "@microsoft/fast-web-utilities";
 
 export interface IFormItemChildrenProps {
     /**
@@ -65,6 +66,21 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
      */
     private searchRef: HTMLInputElement;
 
+    /**
+     * Store a reference to the menu element
+     */
+    private menuElement: HTMLUListElement;
+
+    /**
+     * Store a reference to the button element
+     */
+    private buttonElement: HTMLButtonElement;
+
+    /**
+     * Store a reference to the span element
+     */
+    private spanElement: HTMLSpanElement;
+
     constructor(props: IFormItemChildrenProps & IManagedClasses<IFormItemChildrenClassNameContract>) {
         super(props);
 
@@ -72,6 +88,12 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
             childrenSearchTerm: "",
             hideOptionMenu: true
         };
+    }
+
+    public componentDidUpdate(): void {
+        this.state.hideOptionMenu
+            ? window.removeEventListener("click", this.handleWindowClick)
+            : window.addEventListener("click", this.handleWindowClick);
     }
 
     public render(): JSX.Element {
@@ -395,8 +417,18 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
                     <div className={this.props.managedClasses.formItemChildren_header}>
                         <h3>Building blocks</h3>
                         {/* TODO: #460 Fix "identical-code" */}
-                        <button onClick={this.toggleMenu} aria-expanded={!this.state.hideOptionMenu}><span>Options</span></button>
-                        <ul className={this.props.managedClasses.formItemChildren_optionMenu} aria-hidden={this.state.hideOptionMenu}>
+                        <button
+                            onClick={this.toggleMenu}
+                            aria-expanded={!this.state.hideOptionMenu}
+                            ref={this.storeButtonRef}
+                        >
+                            <span ref={this.storeSpanRef}>Options</span>
+                        </button>
+                        <ul
+                            className={this.props.managedClasses.formItemChildren_optionMenu}
+                            aria-hidden={this.state.hideOptionMenu}
+                            ref={this.storeMenuRef}
+                        >
                             {this.getActionMenuChildItems()}
                         </ul>
                     </div>
@@ -405,8 +437,30 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
         }
     }
 
+    private storeMenuRef = (ref?: HTMLUListElement): void => {
+        if (ref) {
+            this.menuElement = ref;
+        }
+    }
+
+    private storeButtonRef = (ref?: HTMLButtonElement): void => {
+        if (ref) {
+            this.buttonElement = ref;
+        }
+    }
+
+    private storeSpanRef = (ref?: HTMLSpanElement): void => {
+        if (ref) {
+            this.spanElement = ref;
+        }
+    }
+
     private toggleMenu = (): void => {
         this.setState({hideOptionMenu: !this.state.hideOptionMenu});
+    }
+
+    private closeMenu = (): void => {
+        this.setState({hideOptionMenu: true});
     }
 
     /**
@@ -442,6 +496,16 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
         this.setState({
             childrenSearchTerm: e.target.value
         });
+    }
+
+    /**
+     * Handle clicking on the window - closes the Select if the users
+     * is clicking somewhere other than the menu.
+     */
+    private handleWindowClick = (e: any): void => {
+        if (!isDescendant(this.menuElement , e.target) && e.target !== this.buttonElement && e.target !== this.spanElement) {
+            this.closeMenu();
+        }
     }
 
     /**
