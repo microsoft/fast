@@ -28,7 +28,7 @@ describe("text-field unit-tests", (): void => {
         textField: "text-field-class"
     };
 
-    test("should correctly manage unhandledProps", () => {
+    test("should return an object that includes all valid props which are note enumarated as handledProps", () => {
         const handledProps: ITextFieldHandledProps & ITextFieldManagedClasses = {
             managedClasses,
             type: TextFieldType.email
@@ -41,8 +41,8 @@ describe("text-field unit-tests", (): void => {
             <Component {...props} />
         );
 
-        expect(rendered.props()["aria-hidden"]).not.toBe(undefined);
-        expect(rendered.props()["aria-hidden"]).toEqual(true);
+        expect(rendered.prop("aria-hidden")).not.toBe(undefined);
+        expect(rendered.prop("aria-hidden")).toEqual(true);
     });
 
     test("should set a default type of `text` if no `type` prop is passed", () => {

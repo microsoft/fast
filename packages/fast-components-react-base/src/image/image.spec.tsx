@@ -30,7 +30,7 @@ describe("image unit-tests", (): void => {
     };
     const alt: string = "Image alt text test string";
 
-    test("should correctly manage unhandledProps", () => {
+    test("should return an object that includes all valid props which are note enumarated as handledProps", () => {
         const handledProps: IImageHandledProps & IImageManagedClasses = {
             managedClasses,
             alt,
@@ -44,8 +44,8 @@ describe("image unit-tests", (): void => {
             <Component {...props} />
         );
 
-        expect(rendered.props()["aria-hidden"]).not.toBe(undefined);
-        expect(rendered.props()["aria-hidden"]).toEqual(true);
+        expect(rendered.prop("aria-hidden")).not.toBe(undefined);
+        expect(rendered.prop("aria-hidden")).toEqual(true);
     });
 
     test("should correctly NOT render anything if `src` and `vp1` props are both undefined", () => {

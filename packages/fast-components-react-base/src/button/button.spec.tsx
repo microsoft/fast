@@ -29,13 +29,13 @@ describe("button unit-tests", (): void => {
     };
     const href: string = "https://www.microsoft.com";
 
-    test("should correctly manage unhandledProps", () => {
+    test("should return an object that includes all valid props which are note enumarated as handledProps", () => {
         const handledProps: IButtonHandledProps & IButtonManagedClasses = {
             managedClasses
         };
 
         const unhandledProps: IButtonUnhandledProps = {
-            "aria-label": "Test aria label"
+            "aria-hidden": true
         };
 
         const props: ButtonProps = {...handledProps, ...unhandledProps};
@@ -44,8 +44,8 @@ describe("button unit-tests", (): void => {
             <Component {...props} />
         );
 
-        expect(rendered.props()["aria-label"]).not.toBe(undefined);
-        expect(rendered.props()["aria-label"]).toEqual("Test aria label");
+        expect(rendered.prop("aria-hidden")).not.toBe(undefined);
+        expect(rendered.prop("aria-hidden")).toEqual(true);
     });
 
     test("should render by default as a `button` element", () => {
@@ -82,7 +82,7 @@ describe("button unit-tests", (): void => {
         expect(rendered.prop("disabled")).toBe(true);
     });
 
-    test("should correctly render children", () => {
+    test("should accept and render children", () => {
         const rendered: any = shallow(
             <Component managedClasses={managedClasses}>
                 Children

@@ -27,7 +27,7 @@ describe("hypertext unit-tests", (): void => {
         hypertext: "hypertext-class"
     };
 
-    test("should correctly manage unhandledProps", () => {
+    test("should return an object that includes all valid props which are note enumarated as handledProps", () => {
         const handledProps: IHypertextHandledProps & IHypertextManagedClasses = {
             managedClasses
         };
@@ -42,8 +42,8 @@ describe("hypertext unit-tests", (): void => {
             <Component {...props} />
         );
 
-        expect(rendered.props()["aria-hidden"]).not.toBe(undefined);
-        expect(rendered.props()["aria-hidden"]).toEqual(true);
+        expect(rendered.prop("aria-hidden")).not.toBe(undefined);
+        expect(rendered.prop("aria-hidden")).toEqual(true);
     });
 
     test("should correctly handle children", () => {

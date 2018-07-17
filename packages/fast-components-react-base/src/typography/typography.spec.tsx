@@ -36,7 +36,7 @@ describe("typography unit-tests", (): void => {
         typography_9: "typography-9-class"
     };
 
-    test("should correctly manage unhandledProps", () => {
+    test("should return an object that includes all valid props which are note enumarated as handledProps", () => {
         const handledProps: ITypographyHandledProps & ITypographyManagedClasses = {
             managedClasses
         };
@@ -48,8 +48,8 @@ describe("typography unit-tests", (): void => {
             <Component {...props} />
         );
 
-        expect(rendered.props()["aria-hidden"]).not.toBe(undefined);
-        expect(rendered.props()["aria-hidden"]).toEqual(true);
+        expect(rendered.prop("aria-hidden")).not.toBe(undefined);
+        expect(rendered.prop("aria-hidden")).toEqual(true);
     });
 
     test("should render with a default tag of `p` if no `tag` prop is passed", () => {
@@ -72,7 +72,7 @@ describe("typography unit-tests", (): void => {
         expect(rendered.type()).toEqual(TypographyTag.h1);
     });
 
-    test("should correctly render children", () => {
+    test("should accept and render children", () => {
         const rendered: any = shallow(
             <Component managedClasses={managedClasses}>
                 Children

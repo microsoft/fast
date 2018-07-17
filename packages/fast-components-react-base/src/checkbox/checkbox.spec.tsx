@@ -32,7 +32,7 @@ describe("checkbox unit-tests", (): void => {
         checkbox_span: "span-class",
     };
 
-    test("should correctly manage unhandledProps", () => {
+    test("should return an object that includes all valid props which are note enumarated as handledProps", () => {
         const handledProps: ICheckboxHandledProps & ICheckboxManagedClasses = {
             managedClasses
         };
@@ -47,8 +47,8 @@ describe("checkbox unit-tests", (): void => {
             <Component {...props} />
         );
 
-        expect(rendered.props()["aria-hidden"]).not.toBe(undefined);
-        expect(rendered.props()["aria-hidden"]).toEqual(true);
+        expect(rendered.prop("aria-hidden")).not.toBe(undefined);
+        expect(rendered.prop("aria-hidden")).toEqual(true);
     });
 
     test("should correctly manage the disabled prop by adding a class and passing `disabled` to the input element", () => {
@@ -61,7 +61,7 @@ describe("checkbox unit-tests", (): void => {
         expect(rendered.find(".input-class[disabled]").prop("disabled")).toBe(true);
     });
 
-    test("should correcly operate as an uncontrolled component and set initial state if `checked` prop is not passed", () => {
+    test("should correctly operate as an uncontrolled component and set initial state if `checked` prop is not passed", () => {
         const rendered: any = shallow(
             <Component managedClasses={managedClasses} />
         );
@@ -71,7 +71,7 @@ describe("checkbox unit-tests", (): void => {
         expect(state).toBe(false);
     });
 
-    test("should correcly operate as an uncontrolled component and handle `onChange` events when `onChange` prop is not passed", () => {
+    test("should correctly operate as an uncontrolled component and handle `onChange` events when `onChange` prop is not passed", () => {
         const rendered: any = shallow(
             <Component managedClasses={managedClasses} />
         );
@@ -84,7 +84,7 @@ describe("checkbox unit-tests", (): void => {
         expect(rendered.state("checked")).toBe(true);
     });
 
-    test("should correcly operate as a controlled component when `onChange` and `checked` prop is passed", () => {
+    test("should correctly operate as a controlled component when `onChange` and `checked` prop is passed", () => {
         const onChange: any = jest.fn();
         const rendered: any = shallow(
             <Component managedClasses={managedClasses} checked={true} onChange={onChange} />
@@ -96,7 +96,7 @@ describe("checkbox unit-tests", (): void => {
         expect(onChange).toHaveBeenCalled();
     });
 
-    test("should correcly call getDerivedStateFromProps if an updated `checked` prop is passed which differs from the state", () => {
+    test("should correctly update the checked state if an updated `checked` prop is passed which differs from the state", () => {
         const rendered: any = shallow(
             <Component managedClasses={managedClasses} />
         );

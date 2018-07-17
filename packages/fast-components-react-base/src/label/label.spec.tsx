@@ -29,7 +29,7 @@ describe("label unit-tests", (): void => {
         label_hidden: "label-hidden-class"
     };
 
-    test("should correctly manage unhandledProps", () => {
+    test("should return an object that includes all valid props which are note enumarated as handledProps", () => {
         const handledProps: ILabelHandledProps & ILabelMangedClasses = {
             managedClasses,
             tag: LabelTag.label
