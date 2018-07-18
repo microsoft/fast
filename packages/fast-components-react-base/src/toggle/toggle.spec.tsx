@@ -39,7 +39,7 @@ describe("toggle", (): void => {
         unselectedString: "Unselected"
     };
 
-    test("should return an object that includes all valid props which are not enumarated as handledProps", () => {
+    test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const unhandledProps: IToggleUnhandledProps = {
             "aria-hidden": true
         };

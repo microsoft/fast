@@ -36,7 +36,7 @@ describe("typography", (): void => {
         typography_9: "typography-9-class"
     };
 
-    test("should return an object that includes all valid props which are not enumarated as handledProps", () => {
+    test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: ITypographyHandledProps & ITypographyManagedClasses = {
             managedClasses
         };

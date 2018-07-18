@@ -29,7 +29,7 @@ describe("label", (): void => {
         label_hidden: "label-hidden-class"
     };
 
-    test("should return an object that includes all valid props which are not enumarated as handledProps", () => {
+    test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: ILabelHandledProps & ILabelMangedClasses = {
             managedClasses,
             tag: LabelTag.label

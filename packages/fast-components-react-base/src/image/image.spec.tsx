@@ -30,7 +30,7 @@ describe("image", (): void => {
     };
     const alt: string = "Image alt text test string";
 
-    test("should return an object that includes all valid props which are not enumarated as handledProps", () => {
+    test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: IImageHandledProps & IImageManagedClasses = {
             managedClasses,
             alt,

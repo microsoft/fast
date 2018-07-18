@@ -29,7 +29,7 @@ describe("button", (): void => {
     };
     const href: string = "https://www.microsoft.com";
 
-    test("should return an object that includes all valid props which are not enumarated as handledProps", () => {
+    test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: IButtonHandledProps & IButtonManagedClasses = {
             managedClasses
         };

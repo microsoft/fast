@@ -27,7 +27,7 @@ describe("hypertext", (): void => {
         hypertext: "hypertext-class"
     };
 
-    test("should return an object that includes all valid props which are not enumarated as handledProps", () => {
+    test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: IHypertextHandledProps & IHypertextManagedClasses = {
             managedClasses
         };
