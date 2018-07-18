@@ -107,6 +107,7 @@ export interface ISiteManagedClasses {
     site_infoBarConfiguration_base: string;
     site_infoBarConfiguration_input: string;
     site_infoBarConfiguration_theme: string;
+    site_measureSpan: string;
     site_paneForm: string;
     site_paneToc: string;
     site_paneTocRow: string;
@@ -123,6 +124,9 @@ export interface ISiteManagedClasses {
     site_statusAlpha: string;
     site_statusBeta: string;
 }
+
+let localeMeasure: number;
+let themeMeasure: number;
 
 const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
     "@global": {
@@ -155,19 +159,19 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
         "&::before, &::after": {
             content: "''",
             position: "absolute",
-            top: toPx(11),
+            top: toPx(13),
             zIndex: "1",
             borderRadius: toPx(2),
             width: toPx(1),
-            height: toPx(10),
+            height: toPx(7),
             background: "#000000"
         },
         "&::before": {
-            right: toPx(15),
+            right: toPx(16),
             transform: "rotate(45deg)"
         },
         "&::after": {
-            right: toPx(22),
+            right: toPx(21),
             transform: "rotate(-45deg)"
         }
     },
@@ -177,24 +181,29 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
     site_infoBarConfiguration_input: {
         lineHeight: toPx(16),
         fontSize: toPx(14),
-        backgroundColor: "rgba(0, 0, 0, 0.04)",
-        borderRadius: toPx(2),
-        boxShadow: `inset 0 0 ${toPx(4)} 0 rgba(0, 0, 0, 0.08)`,
+        backgroundColor: "transparent",
         appearance: "none",
-        padding: localizeSpacing(Direction.ltr)(`${toPx(8)} ${toPx(36)} ${toPx(8)} ${toPx(10)}`),
+        padding: localizeSpacing(Direction.ltr)(`${toPx(8)} ${toPx(28)} ${toPx(8)} ${toPx(10)}`),
         border: "none",
         outline: "none",
+        transition: "all 0.1s ease-in-out",
         "&:-ms-expand": {
             display: "none"
         },
         "&:hover": {
-            boxShadow: `inset 0 0 ${toPx(2)} 0 rgba(0,0,0, .3)`
+            backgroundColor: "rgba(0, 0, 0, 0.04)",
         },
         "&:focus": {
             boxShadow: (config: IDevSiteDesignSystem): string => {
                 return `inset 0 0 0 1 ${config.brandColor}`;
             }
         }
+    },
+    site_measureSpan: {
+        position: "absolute",
+        height: "auto",
+        width: "auto",
+        opacity: "0"
     },
     site_paneForm: {
         padding: toPx(12)
@@ -292,7 +301,7 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
 class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClasses>, ISiteState> {
 
     public static defaultProps: Partial<ISiteProps> = {
-        locales: ["en", "en-rtl"]
+        locales: ["English", "en-rtl"]
     };
 
     private initialPath: string;
@@ -314,7 +323,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
             detailViewComponentData: this.getDetailViewComponentData(),
             formView: true,
             devToolsView: false,
-            locale: "en",
+            locale: "English",
             theme: this.getInitialTheme()
         };
     }
@@ -345,6 +354,8 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     public componentDidMount(): void {
         // If the path we load the site in doesn't match component view, update state
         // to match the path
+        localeMeasure = this.visualLength("measureLocale");
+        themeMeasure = this.visualLength("measureTheme");
         if (this.getComponentViewTypesByLocation() !== this.state.componentView) {
             this.setState({
                 componentView: this.getComponentViewTypesByLocation()
@@ -353,6 +364,8 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     }
 
     public componentDidUpdate(prevProps: ISiteProps): void {
+        localeMeasure = this.visualLength("measureLocale");
+        themeMeasure = this.visualLength("measureTheme");
         if (prevProps !== this.props) {
             this.setState({
                 componentData: this.getComponentData(),
@@ -739,9 +752,12 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 >
                     <span dangerouslySetInnerHTML={{__html: glyphTransparency}}/>
                 </button>
+                {this.renderMeasureSpan("measureTheme", `${this.state.theme.displayName}`)}
                 {this.renderThemeSelect()}
+                {this.renderMeasureSpan("measureLocale", `${this.state.locale}`)}
                 <span className={this.props.managedClasses.site_infoBarConfiguration_base}>
                     <select
+                        style={{width: toPx(localeMeasure)}}
                         className={this.props.managedClasses.site_infoBarConfiguration_input}
                         onChange={this.handleLocaleUpdate}
                         value={this.state.locale}
@@ -771,6 +787,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
             return (
                 <span className={className}>
                     <select
+                        style={{width: toPx(themeMeasure)}}
                         className={this.props.managedClasses.site_infoBarConfiguration_input}
                         onChange={this.handleThemeUpdate}
                         value={this.state.theme.displayName}
@@ -780,6 +797,14 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 </span>
             );
         }
+    }
+
+    private renderMeasureSpan(id: string, displayString: string): JSX.Element {
+        return (
+            <span id={id} aria-hidden="true" className={this.props.managedClasses.site_measureSpan}>
+                {displayString}
+            </span>
+        );
     }
 
     private getClassNames(): string {
@@ -815,7 +840,16 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         });
     }
 
+    private visualLength(id: string): number {
+        const ruler: HTMLElement = document.getElementById(id);
+        if (ruler != null) {
+            console.log(ruler.offsetWidth);
+            return ruler.offsetWidth + 42;
+        }
+    }
+
     private handleLocaleUpdate = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+
         if (this.props.onUpdateDirection) {
             this.props.onUpdateDirection(isRTL(e.target.value) ? Direction.rtl : Direction.ltr);
         }
@@ -826,6 +860,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     }
 
     private handleThemeUpdate = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+        
         if (this.props.onUpdateTheme) {
             this.props.onUpdateTheme(e.target.value);
         }
