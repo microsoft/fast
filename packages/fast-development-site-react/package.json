@@ -31,6 +31,7 @@
     "@microsoft/fast-jss-manager-react": "^1.9.2",
     "@microsoft/fast-jss-utilities": "^1.9.2",
     "@microsoft/fast-layouts-react": "^1.9.2",
+    "@microsoft/fast-web-utilities": "^1.9.2",
     "react-syntax-highlighter": "^7.0.4"
   },
   "devDependencies": {

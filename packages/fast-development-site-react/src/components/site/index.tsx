@@ -22,6 +22,7 @@ import ActionBar from "./action-bar";
 import DevTools, { FrameworkEnum } from "./dev-tools";
 import ConfigurationPanel from "./configuration-panel";
 import NotFound from "./not-found";
+import { convertStylePropertyPixelsToNumber } from "@microsoft/fast-web-utilities";
 import ComponentView, { ComponentViewTypes } from "./component-view";
 import {
     Canvas,
@@ -203,6 +204,7 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
         position: "absolute",
         height: "auto",
         width: "auto",
+        padding: toPx(1),
         opacity: "0"
     },
     site_paneForm: {
@@ -304,10 +306,16 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         locales: ["English", "en-rtl"]
     };
 
+    private localeSelect: React.RefObject<HTMLSelectElement>;
+    private themeSelect: React.RefObject<HTMLSelectElement>;
+
     private initialPath: string;
 
     constructor(props: ISiteProps & IManagedClasses<ISiteManagedClasses>) {
         super(props);
+
+        this.localeSelect = React.createRef();
+        this.themeSelect = React.createRef();
 
         this.initialPath = this.getInitialPath();
 
@@ -354,8 +362,8 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     public componentDidMount(): void {
         // If the path we load the site in doesn't match component view, update state
         // to match the path
-        localeMeasure = this.visualLength("measureLocale");
-        themeMeasure = this.visualLength("measureTheme");
+        localeMeasure = this.visualLength("measureLocale", this.localeSelect);
+        themeMeasure = this.visualLength("measureTheme", this.themeSelect);
         if (this.getComponentViewTypesByLocation() !== this.state.componentView) {
             this.setState({
                 componentView: this.getComponentViewTypesByLocation()
@@ -364,8 +372,8 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     }
 
     public componentDidUpdate(prevProps: ISiteProps): void {
-        localeMeasure = this.visualLength("measureLocale");
-        themeMeasure = this.visualLength("measureTheme");
+        localeMeasure = this.visualLength("measureLocale", this.localeSelect);
+        themeMeasure = this.visualLength("measureTheme", this.themeSelect);
         if (prevProps !== this.props) {
             this.setState({
                 componentData: this.getComponentData(),
@@ -757,6 +765,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 {this.renderMeasureSpan("measureLocale", `${this.state.locale}`)}
                 <span className={this.props.managedClasses.site_infoBarConfiguration_base}>
                     <select
+                        ref={this.localeSelect}
                         style={{width: toPx(localeMeasure)}}
                         className={this.props.managedClasses.site_infoBarConfiguration_input}
                         onChange={this.handleLocaleUpdate}
@@ -787,6 +796,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
             return (
                 <span className={className}>
                     <select
+                        ref={this.themeSelect}
                         style={{width: toPx(themeMeasure)}}
                         className={this.props.managedClasses.site_infoBarConfiguration_input}
                         onChange={this.handleThemeUpdate}
@@ -805,6 +815,16 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 {displayString}
             </span>
         );
+    }
+
+    private visualLength(id: string, ref: React.RefObject<HTMLSelectElement>): number {
+        const ruler: HTMLElement = document.getElementById(id);
+        const computedStyle: CSSStyleDeclaration = window.getComputedStyle(ref.current);
+        const paddingLeft: number = convertStylePropertyPixelsToNumber(computedStyle, "padding-left");
+        const paddingRight: number = convertStylePropertyPixelsToNumber(computedStyle, "padding-Right");
+        if (ruler != null) {
+            return ruler.offsetWidth + paddingLeft + paddingRight;
+        }
     }
 
     private getClassNames(): string {
@@ -840,16 +860,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         });
     }
 
-    private visualLength(id: string): number {
-        const ruler: HTMLElement = document.getElementById(id);
-        if (ruler != null) {
-            console.log(ruler.offsetWidth);
-            return ruler.offsetWidth + 42;
-        }
-    }
-
     private handleLocaleUpdate = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-
         if (this.props.onUpdateDirection) {
             this.props.onUpdateDirection(isRTL(e.target.value) ? Direction.rtl : Direction.ltr);
         }
@@ -860,7 +871,6 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     }
 
     private handleThemeUpdate = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-        
         if (this.props.onUpdateTheme) {
             this.props.onUpdateTheme(e.target.value);
         }
