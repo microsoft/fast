@@ -236,11 +236,22 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
     },
     site_transparencyToggleButton: {
         border: "none",
+        borderRadius: toPx(2),
         background: "none",
         height: toPx(32),
         width: toPx(32),
         cursor: "pointer",
-        outline: "0"
+        outline: "0",
+        marginRight: toPx(4),
+        opacity: ".85",
+        paddingTop: toPx(4),
+        "&:hover": {
+            opacity: "1"
+        },
+        "&[aria-pressed=\"true\"]": {
+            background: "#FFFFFF",
+            opacity: "1"
+        }
     },
     site_transparencyToggleButtonIcon: {
         position: "relative",
@@ -720,6 +731,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         return (
             <div className={this.props.managedClasses.site_infoBarConfiguration}>
                 <button
+                    aria-pressed={this.state.componentBackgroundTransparent}
                     onClick={this.handleTransparencyToggleClick}
                     className={this.props.managedClasses.site_transparencyToggleButton}
                 >
