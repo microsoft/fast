@@ -18,11 +18,11 @@ import {
  */
 configure({adapter: new Adapter()});
 
-describe("typography", (): void => {
+describe("typography snapshot", (): void => {
     generateSnapshots(examples);
 });
 
-describe("typography unit-tests", (): void => {
+describe("typography", (): void => {
     const Component: React.ComponentClass<ITypographyHandledProps & ITypographyManagedClasses> = examples.component;
     const managedClasses: ITypographyClassNameContract = {
         typography_1: "typography-1-class",
@@ -36,7 +36,7 @@ describe("typography unit-tests", (): void => {
         typography_9: "typography-9-class"
     };
 
-    test("should return an object that includes all valid props which are note enumarated as handledProps", () => {
+    test("should return an object that includes all valid props which are not enumarated as handledProps", () => {
         const handledProps: ITypographyHandledProps & ITypographyManagedClasses = {
             managedClasses
         };

@@ -40,7 +40,7 @@
         "lines": 99
       }
     },
-    "coveragePathIgnorePatterns":[
+    "coveragePathIgnorePatterns": [
       "/.tmp/*"
     ],
     "transform": {

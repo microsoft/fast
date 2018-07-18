@@ -17,17 +17,17 @@ import {
  */
 configure({adapter: new Adapter()});
 
-describe("hypertext", (): void => {
+describe("hypertext snapshot", (): void => {
     generateSnapshots(examples);
 });
 
-describe("hypertext unit-tests", (): void => {
+describe("hypertext", (): void => {
     const Component: React.ComponentClass<IHypertextHandledProps & IHypertextManagedClasses> = examples.component;
     const managedClasses: IHypertextClassNameContract = {
         hypertext: "hypertext-class"
     };
 
-    test("should return an object that includes all valid props which are note enumarated as handledProps", () => {
+    test("should return an object that includes all valid props which are not enumarated as handledProps", () => {
         const handledProps: IHypertextHandledProps & IHypertextManagedClasses = {
             managedClasses
         };

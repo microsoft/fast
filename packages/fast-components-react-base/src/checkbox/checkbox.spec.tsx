@@ -18,11 +18,11 @@ import {
  */
 configure({adapter: new Adapter()});
 
-describe("checkbox", (): void => {
+describe("checkbox snapshot", (): void => {
     generateSnapshots(examples);
 });
 
-describe("checkbox unit-tests", (): void => {
+describe("checkbox", (): void => {
     const Component: React.ComponentClass<ICheckboxHandledProps & ICheckboxManagedClasses> = examples.component;
     const managedClasses: ICheckboxClassNameContract = {
         checkbox: "checkbox-class",
@@ -32,7 +32,7 @@ describe("checkbox unit-tests", (): void => {
         checkbox_span: "span-class",
     };
 
-    test("should return an object that includes all valid props which are note enumarated as handledProps", () => {
+    test("should return an object that includes all valid props which are not enumarated as handledProps", () => {
         const handledProps: ICheckboxHandledProps & ICheckboxManagedClasses = {
             managedClasses
         };

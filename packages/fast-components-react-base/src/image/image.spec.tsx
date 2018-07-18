@@ -17,20 +17,20 @@ import {
  */
 configure({adapter: new Adapter()});
 
-describe("image", (): void => {
+describe("image snapshot", (): void => {
     generateSnapshots(examples);
 });
 
-describe("image unit-tests", (): void => {
+describe("image", (): void => {
     const Component: React.ComponentClass<IImageHandledProps & IImageManagedClasses> = examples.component;
     const managedClasses: IImageClassNameContract = {
         image: "image-class",
-        image_round: "image-round",
-        picture: "picture"
+        image_round: "image-round-class",
+        picture: "picture-class"
     };
     const alt: string = "Image alt text test string";
 
-    test("should return an object that includes all valid props which are note enumarated as handledProps", () => {
+    test("should return an object that includes all valid props which are not enumarated as handledProps", () => {
         const handledProps: IImageHandledProps & IImageManagedClasses = {
             managedClasses,
             alt,
@@ -56,7 +56,7 @@ describe("image unit-tests", (): void => {
         expect(rendered.type()).toEqual(null);
     });
 
-    test("should correctly render an `<img/>` element if `src` prop is passed", () => {
+    test("should render an `<img />` element if `src` prop is passed", () => {
         const rendered: any = shallow(
             <Component managedClasses={managedClasses} alt={alt} src={"https://placehold.it/20x20"} />
         );
@@ -64,7 +64,7 @@ describe("image unit-tests", (): void => {
         expect(rendered.type()).toBe("img");
     });
 
-    test("should correctly render a `<Picture>` element if `vp` props are passed", () => {
+    test("should render a `<picture>` element if `vp1` and any additional `vp2`, `vp3`, `vp4`, `vp5`, `vp6` props are passed", () => {
         const rendered: any = shallow(
             <Component managedClasses={managedClasses} alt={alt} vp1={"https://placehold.it/20x20"} />
         );

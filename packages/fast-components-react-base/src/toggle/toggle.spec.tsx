@@ -18,11 +18,11 @@ import {
  */
 configure({adapter: new Adapter()});
 
-describe("toggle", (): void => {
+describe("toggle snapshot", (): void => {
     generateSnapshots(examples);
 });
 
-describe("toggle unit-tests", (): void => {
+describe("toggle", (): void => {
     const Component: React.ComponentClass<IToggleHandledProps & IToggleManagedClasses> = examples.component;
     const managedClasses: IToggleClassNameContract = {
         toggle: "toggle-class",
@@ -39,7 +39,7 @@ describe("toggle unit-tests", (): void => {
         unselectedString: "Unselected"
     };
 
-    test("should return an object that includes all valid props which are note enumarated as handledProps", () => {
+    test("should return an object that includes all valid props which are not enumarated as handledProps", () => {
         const unhandledProps: IToggleUnhandledProps = {
             "aria-hidden": true
         };

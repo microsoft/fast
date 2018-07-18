@@ -18,18 +18,18 @@ import {
  */
 configure({adapter: new Adapter()});
 
-describe("button", (): void => {
+describe("button snapshot", (): void => {
     generateSnapshots(examples);
 });
 
-describe("button unit-tests", (): void => {
+describe("button", (): void => {
     const Component: React.ComponentClass<IButtonHandledProps & IButtonManagedClasses> = examples.component;
     const managedClasses: IButtonClassNameContract = {
         button: "test-button"
     };
     const href: string = "https://www.microsoft.com";
 
-    test("should return an object that includes all valid props which are note enumarated as handledProps", () => {
+    test("should return an object that includes all valid props which are not enumarated as handledProps", () => {
         const handledProps: IButtonHandledProps & IButtonManagedClasses = {
             managedClasses
         };

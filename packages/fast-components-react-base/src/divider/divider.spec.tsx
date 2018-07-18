@@ -13,19 +13,19 @@ import {
     IDividerUnhandledProps
 } from "./divider";
 
-describe("divider", (): void => {
+describe("divider snapshot", (): void => {
     generateSnapshots(examples);
 });
 
 configure({adapter: new Adapter()});
 
-describe("divider unit-tests", (): void => {
+describe("divider", (): void => {
     const Component: React.ComponentClass<IDividerHandledProps & IDividerManagedClasses> = examples.component;
     const managedClasses: IDividerClassNameContract = {
         divider: "divider-class",
     };
 
-    test("should return an object that includes all valid props which are note enumarated as handledProps", () => {
+    test("should return an object that includes all valid props which are not enumarated as handledProps", () => {
         const handledProps: IDividerHandledProps & IDividerManagedClasses = {
             managedClasses
         };

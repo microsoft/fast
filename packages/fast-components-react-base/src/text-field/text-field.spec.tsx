@@ -18,17 +18,17 @@ import {
  */
 configure({adapter: new Adapter()});
 
-describe("text-field", (): void => {
+describe("text-field snapshot", (): void => {
     generateSnapshots(examples);
 });
 
-describe("text-field unit-tests", (): void => {
+describe("text-field", (): void => {
     const Component: React.ComponentClass<ITextFieldHandledProps & ITextFieldManagedClasses> = examples.component;
     const managedClasses: ITextFieldClassNameContract = {
         textField: "text-field-class"
     };
 
-    test("should return an object that includes all valid props which are note enumarated as handledProps", () => {
+    test("should return an object that includes all valid props which are not enumarated as handledProps", () => {
         const handledProps: ITextFieldHandledProps & ITextFieldManagedClasses = {
             managedClasses,
             type: TextFieldType.email
