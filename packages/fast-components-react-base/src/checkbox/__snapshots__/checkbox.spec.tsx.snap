@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`checkbox Checkbox: 0 1`] = `
+exports[`checkbox snapshot Checkbox: 0 1`] = `
 <label
   className="checkbox"
 >
@@ -20,7 +20,7 @@ exports[`checkbox Checkbox: 0 1`] = `
 </label>
 `;
 
-exports[`checkbox Checkbox: 1 1`] = `
+exports[`checkbox snapshot Checkbox: 1 1`] = `
 <label
   className="checkbox"
 >
@@ -40,7 +40,7 @@ exports[`checkbox Checkbox: 1 1`] = `
 </label>
 `;
 
-exports[`checkbox Checkbox: 2 1`] = `
+exports[`checkbox snapshot Checkbox: 2 1`] = `
 <div
   className="checkbox"
 >
@@ -60,7 +60,7 @@ exports[`checkbox Checkbox: 2 1`] = `
 </div>
 `;
 
-exports[`checkbox Checkbox: 3 1`] = `
+exports[`checkbox snapshot Checkbox: 3 1`] = `
 <label
   className="checkbox"
 >
@@ -80,7 +80,7 @@ exports[`checkbox Checkbox: 3 1`] = `
 </label>
 `;
 
-exports[`checkbox Checkbox: 4 1`] = `
+exports[`checkbox snapshot Checkbox: 4 1`] = `
 <label
   className="checkbox"
 >
@@ -100,7 +100,7 @@ exports[`checkbox Checkbox: 4 1`] = `
 </label>
 `;
 
-exports[`checkbox Checkbox: 5 1`] = `
+exports[`checkbox snapshot Checkbox: 5 1`] = `
 <label
   className="checkbox"
 >
@@ -120,7 +120,7 @@ exports[`checkbox Checkbox: 5 1`] = `
 </label>
 `;
 
-exports[`checkbox Checkbox: 6 1`] = `
+exports[`checkbox snapshot Checkbox: 6 1`] = `
 <label
   className="checkbox checkbox_disabled"
 >

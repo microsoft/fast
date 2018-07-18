@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`divider Divider: 0 1`] = `
+exports[`divider snapshot Divider: 0 1`] = `
 <hr
   className="divider"
 />

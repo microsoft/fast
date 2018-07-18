@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`button Button: 0 1`] = `
+exports[`button snapshot Button: 0 1`] = `
 <button
   className="button"
   href={null}
