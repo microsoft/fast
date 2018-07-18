@@ -14,8 +14,8 @@ const exampleData: ICSSPositionProps = {
 
 const detailData: ICSSPositionProps = {
     position: PositionValue.absolute,
-    top: 5,
-    left: 12,
+    top: "5px",
+    left: "12px",
     /* tslint:disable-next-line */
     onChange: (data: any): void => {}
 };

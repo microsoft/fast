@@ -37,16 +37,16 @@ class App extends React.Component<{}, IAppState> {
             },
             editorExample: {
                 position: PositionValue.absolute,
-                left: 4,
-                top: 12
+                left: "4px",
+                top: "12px"
             },
             positionDetail:{
                 position: PositionValue.static
             },
             positionExample: {
                 position: PositionValue.absolute,
-                left: 1,
-                top: 5
+                left: "1px",
+                top: "5px"
             }
         };
     }
