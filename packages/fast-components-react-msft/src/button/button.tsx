@@ -2,14 +2,14 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import { Foundation, HandledProps } from "@microsoft/fast-components-react-base";
-import { IButtonHandledProps, IButtonManagedClasses, IButtonUnhandledProps, Subtype } from "./button.props";
+import { Appearance, IButtonHandledProps, IButtonManagedClasses, IButtonUnhandledProps } from "./button.props";
 import { IManagedClasses, IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { Button as BaseButton } from "@microsoft/fast-components-react-base";
 
 /* tslint:disable-next-line */
 class Button extends Foundation<IButtonHandledProps & IManagedClasses<IMSFTButtonClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
     protected handledProps: HandledProps<IButtonHandledProps & IManagedClasses<IMSFTButtonClassNameContract>> = {
-        subtype: void 0,
+        appearance: void 0,
         children: void 0,
         disabled: void 0,
         href: void 0,
@@ -37,23 +37,22 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IMSFTButto
      * Generates class names
      */
     protected generateClassNames(): string {
-        let classLocation: string;
-
-        if (this.props.subtype === Subtype.primary) {
-            classLocation = "managedClasses.button_primary";
-        } else if (this.props.subtype === Subtype.outline) {
-            classLocation = "managedClasses.button_outline";
-        } else if (this.props.subtype === Subtype.lightweight) {
-            classLocation = "managedClasses.button_lightweight";
-        } else if (this.props.subtype === Subtype.justified) {
-            classLocation = "managedClasses.button_justified";
+        switch (this.props.appearance) {
+            case Appearance.primary:
+                return super.generateClassNames(get(this.props, "managedClasses.button_primary"));
+            case Appearance.outline:
+                return super.generateClassNames(get(this.props, "managedClasses.button_outline"));
+            case Appearance.lightweight:
+                return super.generateClassNames(get(this.props, "managedClasses.button_lightweight"));
+            case Appearance.justified:
+                return super.generateClassNames(get(this.props, "managedClasses.button_justified"));
+            default:
+                return null;
         }
-
-        return super.generateClassNames(get(this.props, classLocation));
     }
 
     private generateInnerContent(): React.ReactElement<HTMLSpanElement> | (React.ReactNode | React.ReactNode[]) {
-        if (this.props.subtype === Subtype.lightweight || this.props.subtype === Subtype.justified) {
+        if (this.props.appearance === Appearance.lightweight || this.props.appearance === Appearance.justified) {
             return <span className={get(this.props, "managedClasses.button_span")}>{this.props.children}</span>;
         }
 

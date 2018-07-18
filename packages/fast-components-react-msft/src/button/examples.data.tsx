@@ -4,11 +4,11 @@ import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import Button from "./index";
 import { IButtonHandledProps as IBaseButtonHandledProps } from "@microsoft/fast-components-react-base";
 import {
+    Appearance,
     ButtonProps,
     IButtonHandledProps,
     IButtonManagedClasses,
-    IButtonUnhandledProps,
-    Subtype
+    IButtonUnhandledProps
 } from "./button.props";
 import schema from "./button.schema.json";
 import Documentation from "./.tmp/documentation";
@@ -27,22 +27,22 @@ export default {
             "data-sketch-symbol": "Button - default"
         },
         {
-            subtype: Subtype.primary,
+            appearance: Appearance.primary,
             children: "Primary (submit) button",
             "data-sketch-symbol": "Button - primary"
         },
         {
-            subtype: Subtype.outline,
+            appearance: Appearance.outline,
             children: "Outline button",
             "data-sketch-symbol": "Button - outline"
         },
         {
-            subtype: Subtype.lightweight,
+            appearance: Appearance.lightweight,
             children: "Lightweight button",
             "data-sketch-symbol": "Button - lightweight"
         },
         {
-            subtype: Subtype.justified,
+            appearance: Appearance.justified,
             children: "Justified button"
         },
         {
@@ -56,25 +56,25 @@ export default {
         },
         {
             disabled: true,
-            subtype: Subtype.primary,
+            appearance: Appearance.primary,
             children: "Primary (submit) button",
             "data-sketch-symbol": "Button - primary disabled"
         },
         {
             disabled: true,
-            subtype: Subtype.outline,
+            appearance: Appearance.outline,
             children: "Outline button",
             "data-sketch-symbol": "Button - outline disabled"
         },
         {
             disabled: true,
-            subtype: Subtype.lightweight,
+            appearance: Appearance.lightweight,
             children: "Lightweight button",
             "data-sketch-symbol": "Button - lightweight disabled"
         },
         {
             disabled: true,
-            subtype: Subtype.justified,
+            appearance: Appearance.justified,
             children: "Justified button"
         },
         {

@@ -14,8 +14,8 @@
             "title": "HTML href attribute",
             "type": "string"
         },
-        "subtype": {
-            "title": "Subtype",
+        "appearance": {
+            "title": "Appearance",
             "type": "string",
             "enum": [
                 "justfied",
