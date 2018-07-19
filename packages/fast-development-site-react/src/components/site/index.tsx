@@ -308,7 +308,6 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
 
     private localeSelect: React.RefObject<HTMLSelectElement>;
     private themeSelect: React.RefObject<HTMLSelectElement>;
-
     private localeRuler: React.RefObject<HTMLSpanElement>;
     private themeRuler: React.RefObject<HTMLSpanElement>;
 
@@ -823,10 +822,8 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     }
 
     private visualLength(refRuler: React.RefObject<HTMLSpanElement>, ref: React.RefObject<HTMLSelectElement>): number {
-        console.log("0")
-        if (!!refRuler){
+        if (!!refRuler) {
             const ruler: HTMLElement = refRuler.current;
-            console.log(ref.current);
             const computedStyle: CSSStyleDeclaration = window.getComputedStyle(ref.current);
             const paddingLeft: number = convertStylePropertyPixelsToNumber(computedStyle, "padding-left");
             const paddingRight: number = convertStylePropertyPixelsToNumber(computedStyle, "padding-Right");
