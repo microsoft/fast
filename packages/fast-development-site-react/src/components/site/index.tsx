@@ -309,6 +309,9 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     private localeSelect: React.RefObject<HTMLSelectElement>;
     private themeSelect: React.RefObject<HTMLSelectElement>;
 
+    private localeRuler: React.RefObject<HTMLSpanElement>;
+    private themeRuler: React.RefObject<HTMLSpanElement>;
+
     private initialPath: string;
 
     constructor(props: ISiteProps & IManagedClasses<ISiteManagedClasses>) {
@@ -316,6 +319,8 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
 
         this.localeSelect = React.createRef();
         this.themeSelect = React.createRef();
+        this.localeRuler = React.createRef();
+        this.themeRuler = React.createRef();
 
         this.initialPath = this.getInitialPath();
 
@@ -362,8 +367,8 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     public componentDidMount(): void {
         // If the path we load the site in doesn't match component view, update state
         // to match the path
-        localeMeasure = this.visualLength("measureLocale", this.localeSelect);
-        themeMeasure = this.visualLength("measureTheme", this.themeSelect);
+        localeMeasure = this.visualLength(this.localeRuler, this.localeSelect);
+        themeMeasure = this.visualLength(this.themeRuler, this.themeSelect);
         if (this.getComponentViewTypesByLocation() !== this.state.componentView) {
             this.setState({
                 componentView: this.getComponentViewTypesByLocation()
@@ -372,8 +377,8 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     }
 
     public componentDidUpdate(prevProps: ISiteProps): void {
-        localeMeasure = this.visualLength("measureLocale", this.localeSelect);
-        themeMeasure = this.visualLength("measureTheme", this.themeSelect);
+        localeMeasure = this.visualLength(this.localeRuler, this.localeSelect);
+        themeMeasure = this.visualLength(this.themeRuler, this.themeSelect);
         if (prevProps !== this.props) {
             this.setState({
                 componentData: this.getComponentData(),
@@ -760,9 +765,9 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 >
                     <span dangerouslySetInnerHTML={{__html: glyphTransparency}}/>
                 </button>
-                {this.renderMeasureSpan("measureTheme", `${this.state.theme.displayName}`)}
+                {this.renderMeasureSpan(this.themeRuler, `${this.state.theme.displayName}`)}
                 {this.renderThemeSelect()}
-                {this.renderMeasureSpan("measureLocale", `${this.state.locale}`)}
+                {this.renderMeasureSpan(this.localeRuler, `${this.state.locale}`)}
                 <span className={this.props.managedClasses.site_infoBarConfiguration_base}>
                     <select
                         ref={this.localeSelect}
@@ -809,20 +814,22 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         }
     }
 
-    private renderMeasureSpan(id: string, displayString: string): JSX.Element {
+    private renderMeasureSpan(ref: React.RefObject<HTMLSpanElement>, displayString: string): JSX.Element {
         return (
-            <span id={id} aria-hidden="true" className={this.props.managedClasses.site_measureSpan}>
+            <span ref={ref} aria-hidden="true" className={this.props.managedClasses.site_measureSpan}>
                 {displayString}
             </span>
         );
     }
 
-    private visualLength(id: string, ref: React.RefObject<HTMLSelectElement>): number {
-        const ruler: HTMLElement = document.getElementById(id);
-        const computedStyle: CSSStyleDeclaration = window.getComputedStyle(ref.current);
-        const paddingLeft: number = convertStylePropertyPixelsToNumber(computedStyle, "padding-left");
-        const paddingRight: number = convertStylePropertyPixelsToNumber(computedStyle, "padding-Right");
-        if (ruler != null) {
+    private visualLength(refRuler: React.RefObject<HTMLSpanElement>, ref: React.RefObject<HTMLSelectElement>): number {
+        console.log("0")
+        if (!!refRuler){
+            const ruler: HTMLElement = refRuler.current;
+            console.log(ref.current);
+            const computedStyle: CSSStyleDeclaration = window.getComputedStyle(ref.current);
+            const paddingLeft: number = convertStylePropertyPixelsToNumber(computedStyle, "padding-left");
+            const paddingRight: number = convertStylePropertyPixelsToNumber(computedStyle, "padding-Right");
             return ruler.offsetWidth + paddingLeft + paddingRight;
         }
     }
