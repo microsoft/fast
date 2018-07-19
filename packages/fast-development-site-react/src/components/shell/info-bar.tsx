@@ -14,6 +14,7 @@ const style: ComponentStyles<IShellInfoBarManagedClasses, IDevSiteDesignSystem> 
     shellInfoBar: {
         display: "flex",
         background: "#E9ECEC",
+        cursor: "default",
         minHeight: (config: IDevSiteDesignSystem): string => {
             return toPx(config.navigationBarHeight / 2);
         }

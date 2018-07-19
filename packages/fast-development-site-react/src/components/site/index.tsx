@@ -140,7 +140,8 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
     },
     site_headerTitle: {
         fontSize: toPx(15),
-        marginLeft: toPx(4)
+        marginLeft: toPx(4),
+        cursor: "default"
     },
     site_infoBarConfiguration: {
         display: "flex",
@@ -211,7 +212,8 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
         marginLeft: toPx(-8),
         textOverflow: ellipsis().textOverflow,
         whiteSpace: "nowrap",
-        overflow: "hidden"
+        overflow: "hidden",
+        cursor: "default"
     },
     site_paneToggleButton: {
         border: "none",
