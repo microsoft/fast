@@ -205,15 +205,15 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
     site_paneTocRow: {
         display: "flex",
         flexWrap: "nowrap",
-        alignItems: "center",
-        cursor: "default"
+        alignItems: "center"
     },
     site_paneTocTitle: {
         fontWeight: "bold",
         marginLeft: toPx(-8),
         textOverflow: ellipsis().textOverflow,
         whiteSpace: "nowrap",
-        overflow: "hidden"
+        overflow: "hidden",
+        cursor: "default"
     },
     site_paneToggleButton: {
         border: "none",
