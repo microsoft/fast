@@ -4,6 +4,7 @@ import {
     ComponentTree,
     IChildOptionItem,
     IComponentItem,
+    IFormLocation,
     IFormProps,
     IFormState,
     LocationOnChange
@@ -85,7 +86,7 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
             nextProps,
             this.props.data !== nextProps.data,
             this.props.schema.id !== nextProps.schema.id,
-            this.props.location !== nextProps.location
+            (this.props.location !== nextProps.location && !this.isChildLocation(nextProps.location))
         );
 
         if (state) {
@@ -114,20 +115,17 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
         }
 
         // Locations will only be updated when not involving children
-        if (
-            updateLocation
-            && props.location
-            && props.location.dataLocation.slice(
-                props.location.dataLocation.length - 8,
-                props.location.dataLocation.length
-            ) !== "children"
-        ) {
+        if (updateLocation) {
             state = Object.assign({}, state, this.getStateWithUpdatedLocation(props, state, this.rootComponentTrackerLocation));
         }
 
         if (updateData || updateSchema || updateLocation) {
             return state;
         }
+    }
+
+    private isChildLocation(location: IFormLocation): boolean {
+        return location && location.dataLocation.slice(location.dataLocation.length - 8, location.dataLocation.length) === "children";
     }
 
     /**
