@@ -308,6 +308,8 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
 
     private localeSelect: React.RefObject<HTMLSelectElement>;
     private themeSelect: React.RefObject<HTMLSelectElement>;
+    // Defines React Ref Objects for the <span/> that the <select/> uses
+    // to determine its width
     private localeRuler: React.RefObject<HTMLSpanElement>;
     private themeRuler: React.RefObject<HTMLSpanElement>;
 
@@ -364,10 +366,11 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     }
 
     public componentDidMount(): void {
-        // If the path we load the site in doesn't match component view, update state
-        // to match the path
         localeMeasure = this.visualLength(this.localeRuler, this.localeSelect);
         themeMeasure = this.visualLength(this.themeRuler, this.themeSelect);
+
+        // If the path we load the site in doesn't match component view, update state
+        // to match the path
         if (this.getComponentViewTypesByLocation() !== this.state.componentView) {
             this.setState({
                 componentView: this.getComponentViewTypesByLocation()
@@ -378,6 +381,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     public componentDidUpdate(prevProps: ISiteProps): void {
         localeMeasure = this.visualLength(this.localeRuler, this.localeSelect);
         themeMeasure = this.visualLength(this.themeRuler, this.themeSelect);
+
         if (prevProps !== this.props) {
             this.setState({
                 componentData: this.getComponentData(),
@@ -827,6 +831,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
             const computedStyle: CSSStyleDeclaration = window.getComputedStyle(ref.current);
             const paddingLeft: number = convertStylePropertyPixelsToNumber(computedStyle, "padding-left");
             const paddingRight: number = convertStylePropertyPixelsToNumber(computedStyle, "padding-Right");
+
             return ruler.offsetWidth + paddingLeft + paddingRight;
         }
     }
