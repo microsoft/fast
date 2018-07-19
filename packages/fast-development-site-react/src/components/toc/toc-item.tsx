@@ -37,14 +37,22 @@ const style: ComponentStyles<ITocItemManagedClasses, IDevSiteDesignSystem> = {
         display: "block",
         paddingLeft: toPx(48),
         lineHeight: toPx(40),
-        outline: "0"
+        outline: "0",
+        "&:hover": {
+            backgroundColor: "rgba(0, 0, 0, 0.04)"
+        },
+        "&:focus": {
+            outline: (config: IDevSiteDesignSystem): string => {
+                return `${toPx(1)} solid ${config.brandColor}`;
+            }
+        }
     },
     tocItem: {
         display: "block",
         position: "relative",
         color: (config: IDevSiteDesignSystem): string => {
             return config.foregroundColor;
-        },
+        }
     },
     tocItem__active: {
         background: (config: IDevSiteDesignSystem): string => {

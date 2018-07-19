@@ -40,7 +40,13 @@ const style: ComponentStyles<ITocMenuManagedClasses, IDevSiteDesignSystem> = {
             }
         },
         "&:hover": {
-            cursor: "pointer"
+            cursor: "pointer",
+            backgroundColor: "rgba(0, 0, 0, 0.04)"
+        },
+        "&:focus": {
+            outline: (config: IDevSiteDesignSystem): string => {
+                return `${toPx(1)} solid ${config.brandColor}`;
+            }
         },
         "&::after": {
             content: `url('data:image/svg+xml;base64,${dropdownInactive}')`,
