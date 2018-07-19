@@ -205,7 +205,7 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
     site_paneTocRow: {
         display: "flex",
         flexWrap: "nowrap",
-        alignItems: "center"
+        alignItems: "center",
     },
     site_paneTocTitle: {
         fontWeight: "bold",
