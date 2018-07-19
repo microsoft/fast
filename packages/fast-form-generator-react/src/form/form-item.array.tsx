@@ -140,8 +140,8 @@ class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasse
             if (this.props.location && this.props.location.onChange) {
                 this.props.location.onChange(
                     this.props.location.schemaLocation === ""
-                        ? `${coercedSchemaLocation}.items`
-                        : `${this.props.location.schemaLocation}.${coercedSchemaLocation}.items`,
+                        ? coercedSchemaLocation
+                        : `${this.props.location.schemaLocation}.${coercedSchemaLocation}`,
                     `${this.props.dataLocation}[${index}]`
                 );
             } else {

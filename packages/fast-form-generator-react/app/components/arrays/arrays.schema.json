@@ -9,6 +9,7 @@
             "title": "Array",
             "type": "array",
             "items": {
+                "title": "Item",
                 "type": "string"
             },
             "minItems": 2,

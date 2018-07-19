@@ -16,13 +16,20 @@ import * as testComponents from "./components";
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
 
 export interface IAppState {
-    currentComponentSchema: any;
-    currentComponentData: any;
-    currentComponentConfig?: IFormComponentMappingToPropertyNamesProps;
-    currentComponentOrderByPropertyNames?: IFormOrderByPropertyNamesProps;
-    currentComponentAttributeAssignment?: IFormAttributeSettingsMappingToPropertyNames;
-    currentComponent: any;
-    onChange: componentDataOnChange;
+    currentControlledComponent: any;
+    currentControlledComponentSchema: any;
+    currentControlledComponentData: any;
+    currentControlledComponentConfig?: IFormComponentMappingToPropertyNamesProps;
+    currentControlledComponentOrderByPropertyNames?: IFormOrderByPropertyNamesProps;
+    currentControlledComponentAttributeAssignment?: IFormAttributeSettingsMappingToPropertyNames;
+    controlledOnChange: componentDataOnChange;
+    currentUncontrolledComponent: any;
+    currentUncontrolledComponentSchema: any;
+    currentUncontrolledComponentData: any;
+    currentUncontrolledComponentConfig?: IFormComponentMappingToPropertyNamesProps;
+    currentUncontrolledComponentOrderByPropertyNames?: IFormOrderByPropertyNamesProps;
+    currentUncontrolledComponentAttributeAssignment?: IFormAttributeSettingsMappingToPropertyNames;
+    uncontrolledOnChange: componentDataOnChange;
     showExtendedControls: boolean;
     dataLocation: string;
     schemaLocation: string;
@@ -52,48 +59,73 @@ export default class App extends React.Component<{}, IAppState> {
      */
     private childOptions: IChildOptionItem[];
 
-    /**
-     * The schema form attribute settings mapping configuration
-     */
-    private attributeSettingsMappingToPropertyNames: IFormAttributeSettingsMappingToPropertyNames;
-
     constructor(props: {}) {
         super(props);
 
         this.childOptions = this.getChildOptions();
-        this.onChange = this.onChange.bind(this);
+        this.controlledOnChange = this.controlledOnChange.bind(this);
+        this.uncontrolledOnChange = this.uncontrolledOnChange.bind(this);
 
         this.state = {
-            currentComponent: testComponents.textField.component,
-            currentComponentSchema: testComponents.textField.schema,
-            currentComponentData: getExample(testComponents.textField.schema),
-            currentComponentOrderByPropertyNames: void(0),
-            currentComponentAttributeAssignment: void(0),
-            onChange: this.onChange,
+            currentControlledComponent: testComponents.textField.component,
+            currentControlledComponentSchema: testComponents.textField.schema,
+            currentControlledComponentData: getExample(testComponents.textField.schema),
+            currentControlledComponentOrderByPropertyNames: void(0),
+            currentControlledComponentAttributeAssignment: void(0),
+            currentUncontrolledComponent: testComponents.textField.component,
+            currentUncontrolledComponentSchema: testComponents.textField.schema,
+            currentUncontrolledComponentData: getExample(testComponents.textField.schema),
+            currentUncontrolledComponentOrderByPropertyNames: void(0),
+            currentUncontrolledComponentAttributeAssignment: void(0),
+            controlledOnChange: this.controlledOnChange,
+            uncontrolledOnChange: this.uncontrolledOnChange,
             showExtendedControls: false,
-            schemaLocation: void(0),
-            dataLocation: void(0)
+            schemaLocation: "",
+            dataLocation: ""
         };
     }
 
     public render(): JSX.Element {
         return (
             <DesignSystemProvider designSystem={designSystemDefaults}>
-                <div>
-                    <div
-                        style={{width: "300px", minHeight: "100vh", padding: "0 8px", background: "rgb(244, 245, 246)", float: "left"}}
-                    >
-                        <Form {...this.coerceFormProps()} />
-                    </div>
+                <div style={{float: "left", width: "50%"}}>
                     <div>
-                        <div>
-                            <select onChange={this.handleComponentUpdate}>
-                                {this.getComponentOptions()}
-                            </select>
+                        <div
+                            style={{width: "300px", minHeight: "100vh", padding: "0 8px", background: "rgb(244, 245, 246)", float: "left", display: "inline-block"}}
+                        >
+                            <Form {...this.coerceControlledFormProps()} />
                         </div>
-                        <this.state.currentComponent
-                            {...this.state.currentComponentData}
-                        />
+                        <div style={{display: "inline-block"}}>
+                            <h2>Controlled</h2>
+                            <div>
+                                <select onChange={this.handleControlledComponentUpdate}>
+                                    {this.getComponentOptions()}
+                                </select>
+                            </div>
+                            <this.state.currentControlledComponent
+                                {...this.state.currentControlledComponentData}
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div style={{float: "left", width: "50%"}}>
+                    <div>
+                        <div
+                            style={{width: "300px", minHeight: "100vh", padding: "0 8px", background: "rgb(244, 245, 246)", float: "left", display: "inline-block"}}
+                        >
+                            <Form {...this.coerceUncontrolledFormProps()} />
+                        </div>
+                        <div style={{display: "inline-block"}}>
+                            <h2>Uncontrolled</h2>
+                            <div>
+                                <select onChange={this.handleUncontrolledComponentUpdate}>
+                                    {this.getComponentOptions()}
+                                </select>
+                            </div>
+                            <this.state.currentUncontrolledComponent
+                                {...this.state.currentUncontrolledComponentData}
+                            />
+                        </div>
                     </div>
                 </div>
             </DesignSystemProvider>
@@ -129,24 +161,35 @@ export default class App extends React.Component<{}, IAppState> {
         return childOptions;
     }
 
-    private coerceFormProps(): IFormProps {
+    private coerceControlledFormProps(): IFormProps {
         const formProps: IFormProps = {
-            schema: this.state.currentComponentSchema,
-            data: this.state.currentComponentData,
-            onChange: this.state.onChange,
+            schema: this.state.currentControlledComponentSchema,
+            data: this.state.currentControlledComponentData,
+            onChange: this.state.controlledOnChange,
             childOptions: this.childOptions,
-            componentMappingToPropertyNames: this.state.currentComponentConfig,
-            attributeSettingsMappingToPropertyNames: this.state.currentComponentAttributeAssignment,
-            orderByPropertyNames: this.state.currentComponentOrderByPropertyNames
-        };
-
-        if (typeof this.state.dataLocation !== "undefined" && typeof this.state.schemaLocation !== "undefined") {
-            formProps.location = {
+            componentMappingToPropertyNames: this.state.currentControlledComponentConfig,
+            attributeSettingsMappingToPropertyNames: this.state.currentControlledComponentAttributeAssignment,
+            orderByPropertyNames: this.state.currentControlledComponentOrderByPropertyNames,
+            location: {
                 dataLocation: this.state.dataLocation,
                 schemaLocation: this.state.schemaLocation,
                 onChange: this.handleLocationOnChange
-            };
-        }
+            }
+        };
+
+        return formProps;
+    }
+
+    private coerceUncontrolledFormProps(): IFormProps {
+        const formProps: IFormProps = {
+            schema: this.state.currentUncontrolledComponentSchema,
+            data: this.state.currentUncontrolledComponentData,
+            onChange: this.state.uncontrolledOnChange,
+            childOptions: this.childOptions,
+            componentMappingToPropertyNames: this.state.currentUncontrolledComponentConfig,
+            attributeSettingsMappingToPropertyNames: this.state.currentUncontrolledComponentAttributeAssignment,
+            orderByPropertyNames: this.state.currentUncontrolledComponentOrderByPropertyNames
+        };
 
         return formProps;
     }
@@ -164,37 +207,43 @@ export default class App extends React.Component<{}, IAppState> {
     /**
      * The app on change event
      */
-    private onChange = (data: any): void => {
+    private controlledOnChange = (data: any): void => {
         this.setState({
-            currentComponentData: data
+            currentControlledComponentData: data
         });
     }
 
-    private handleComponentUpdate = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+    /**
+     * The app on change event
+     */
+    private uncontrolledOnChange = (data: any): void => {
         this.setState({
-            currentComponent: testComponents[e.target.value].component,
-            currentComponentSchema: testComponents[e.target.value].schema,
-            currentComponentConfig: testComponents[e.target.value].config,
-            currentComponentData: getExample(testComponents[e.target.value].schema),
-            currentComponentOrderByPropertyNames: testComponents[e.target.value].weight,
-            currentComponentAttributeAssignment: testComponents[e.target.value].attributeAssignment
+            currentUncontrolledComponentData: data
         });
     }
 
-    private getComponentById(schema: any): JSX.Element {
-        const schemaIdItems: string[] = schema.id.split("/");
-        const componentNameHyphenated: string = schemaIdItems[schemaIdItems.length - 1];
-        const componentNameUnderscored: string = componentNameHyphenated.replace(/-/g, "_");
-        /* tslint:disable-next-line*/
-        const componentNameCamelCased: string = componentNameHyphenated.replace(/-(.)/g, (letter: string): string => letter.toUpperCase()).replace(/-/g, "");
+    private handleControlledComponentUpdate = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+        this.setState({
+            currentControlledComponent: testComponents[e.target.value].component,
+            currentControlledComponentSchema: testComponents[e.target.value].schema,
+            currentControlledComponentConfig: testComponents[e.target.value].config,
+            currentControlledComponentData: getExample(testComponents[e.target.value].schema),
+            currentControlledComponentOrderByPropertyNames: testComponents[e.target.value].weight,
+            currentControlledComponentAttributeAssignment: testComponents[e.target.value].attributeAssignment,
+            dataLocation: "",
+            schemaLocation: ""
+        });
+    }
 
-        const Component: any = testComponents[componentNameCamelCased].component;
-        const ComponentProps: any = {
-            managedClasses: {}
-        };
-        ComponentProps.managedClasses[componentNameUnderscored] = componentNameHyphenated;
-
-        return <Component {...Object.assign({}, ComponentProps, getExample(schema))} />;
+    private handleUncontrolledComponentUpdate = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+        this.setState({
+            currentUncontrolledComponent: testComponents[e.target.value].component,
+            currentUncontrolledComponentSchema: testComponents[e.target.value].schema,
+            currentUncontrolledComponentConfig: testComponents[e.target.value].config,
+            currentUncontrolledComponentData: getExample(testComponents[e.target.value].schema),
+            currentUncontrolledComponentOrderByPropertyNames: testComponents[e.target.value].weight,
+            currentUncontrolledComponentAttributeAssignment: testComponents[e.target.value].attributeAssignment
+        });
     }
 
     private getComponentOptions(): JSX.Element[] {
@@ -202,17 +251,6 @@ export default class App extends React.Component<{}, IAppState> {
             return (
                 <option key={index}>{testComponents[testComponentKey].schema.id}</option>
             );
-        });
-    }
-
-    /**
-     * Handles the change to a different component
-     */
-    private handleChangeComponent = (option: IOption): void => {
-        this.setState({
-            currentComponentSchema: option.currentComponentSchema,
-            currentComponentData: option.currentComponentData,
-            currentComponent: option.currentComponent
         });
     }
 }
@@ -223,6 +261,9 @@ export default class App extends React.Component<{}, IAppState> {
 const root: HTMLElement = document.createElement("div");
 root.setAttribute("id", "root");
 document.body.appendChild(root);
+const bodyStyle: HTMLElement = document.createElement("style");
+bodyStyle.innerHTML = "body {padding: 0; margin: 0;}";
+document.body.appendChild(bodyStyle);
 
 /**
  * Primary render function for app. Called on store updates

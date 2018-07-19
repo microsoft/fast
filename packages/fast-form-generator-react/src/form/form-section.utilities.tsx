@@ -307,8 +307,8 @@ function getSchemaLocation(schemaLocation: string, oneOfAnyOf: any): string {
     return schemaLocationClone === "" ? "" : `${schemaLocationClone}.`;
 }
 
-function getDataLocation(dataLocation: string, location: string): string {
-    return dataLocation === "" ? "" : `${dataLocation}${location ? "" : "."}`;
+function getDataLocation(dataLocation: string): string {
+    return dataLocation === "" ? "" : `${dataLocation}.`;
 }
 
 function checkIsObjectOrOneOfAnyOf(property: any): boolean {
@@ -328,7 +328,7 @@ function getSchemaSubsectionSchemaLocation(config: ISchemaSubsectionConfig): str
 }
 
 function getSchemaSubsectionDataLocation(config: ISchemaSubsectionConfig): string {
-    return config.props.location ? config.dataLocation : `${config.dataLocation}${config.objectProperty}`;
+    return `${config.dataLocation}${config.objectProperty}`;
 }
 
 function getSchemaSubsection(schemaSubsectionConfig: ISchemaSubsectionConfig): any {
@@ -353,7 +353,7 @@ export function getSchemaSubsections(state: any, props: any): any[] {
 
     const objectProperties: string[] = Object.keys(state.schema.properties);
     const schemaLocationClone: string = getSchemaLocation(props.schemaLocation, state.oneOfAnyOf);
-    const dataLocationClone: string = getDataLocation(props.dataLocation, props.location);
+    const dataLocationClone: string = getDataLocation(props.dataLocation);
 
     for (let i: number = 0, objectPropertiesLength: number = objectProperties.length; i < objectPropertiesLength; i++) {
         if (checkIsObjectOrOneOfAnyOf(state.schema.properties[objectProperties[i]])) {
