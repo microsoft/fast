@@ -140,7 +140,8 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
     },
     site_headerTitle: {
         fontSize: toPx(15),
-        marginLeft: toPx(4)
+        marginLeft: toPx(4),
+        cursor: "default"
     },
     site_infoBarConfiguration: {
         display: "flex",
@@ -205,6 +206,7 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
         display: "flex",
         flexWrap: "nowrap",
         alignItems: "center",
+        cursor: "default"
     },
     site_paneTocTitle: {
         fontWeight: "bold",
