@@ -12,8 +12,8 @@ export interface ISiteMenuState {
 }
 
 export interface ISiteNavManagedClasses {
-    '@keyframes open-animation': string;
-    '@keyframes close-animation': string;
+    "@keyframes open-animation": string;
+    "@keyframes close-animation": string;
     siteMenu: string;
     siteMenu_nav: string;
     siteMenu_nav__open: string;
@@ -26,11 +26,11 @@ export interface ISiteNavManagedClasses {
 }
 
 const style: ComponentStyles<ISiteNavManagedClasses, IDevSiteDesignSystem> = {
-    '@keyframes open-animation': {
+    "@keyframes open-animation": {
         from: {opacity: 0},
         to: {opacity: 1}
     },
-    '@keyframes close-animation': {
+    "@keyframes close-animation": {
         from: {opacity: 1},
         to: {opacity: 0}
     },
@@ -104,7 +104,7 @@ class SiteMenu extends React.Component<ISiteMenuProps & IManagedClasses<ISiteNav
     public render(): JSX.Element {
         return (
             <div className={this.props.managedClasses.siteMenu}>
-                <button onClick={this.handStuff} className={this.props.managedClasses.siteMenu_button}>
+                <button onClick={this.handleMenuVisibilityToggle} className={this.props.managedClasses.siteMenu_button}>
                     <svg
                         id="Layer_1"
                         data-name="Layer 1"
@@ -117,7 +117,7 @@ class SiteMenu extends React.Component<ISiteMenuProps & IManagedClasses<ISiteNav
                     </svg>
                 </button>
                 <nav className={this.generateClassName()} {...this.getNavigationAttributes()}>
-                    <button onClick={this.handStuff} className={this.props.managedClasses.siteMenu_button_open}>
+                    <button onClick={this.handleMenuVisibilityToggle} className={this.props.managedClasses.siteMenu_button_open}>
                         <svg
                             id="Layer_1"
                             data-name="Layer 1"
