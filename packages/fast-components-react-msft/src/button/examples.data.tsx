@@ -4,7 +4,7 @@ import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import Button from "./index";
 import { IButtonHandledProps as IBaseButtonHandledProps } from "@microsoft/fast-components-react-base";
 import {
-    Appearance,
+    ButtonAppearance,
     ButtonProps,
     IButtonHandledProps,
     IButtonManagedClasses,
@@ -27,22 +27,22 @@ export default {
             "data-sketch-symbol": "Button - default"
         },
         {
-            appearance: Appearance.primary,
+            appearance: ButtonAppearance.primary,
             children: "Primary (submit) button",
             "data-sketch-symbol": "Button - primary"
         },
         {
-            appearance: Appearance.outline,
+            appearance: ButtonAppearance.outline,
             children: "Outline button",
             "data-sketch-symbol": "Button - outline"
         },
         {
-            appearance: Appearance.lightweight,
+            appearance: ButtonAppearance.lightweight,
             children: "Lightweight button",
             "data-sketch-symbol": "Button - lightweight"
         },
         {
-            appearance: Appearance.justified,
+            appearance: ButtonAppearance.justified,
             children: "Justified button"
         },
         {
@@ -56,25 +56,25 @@ export default {
         },
         {
             disabled: true,
-            appearance: Appearance.primary,
+            appearance: ButtonAppearance.primary,
             children: "Primary (submit) button",
             "data-sketch-symbol": "Button - primary disabled"
         },
         {
             disabled: true,
-            appearance: Appearance.outline,
+            appearance: ButtonAppearance.outline,
             children: "Outline button",
             "data-sketch-symbol": "Button - outline disabled"
         },
         {
             disabled: true,
-            appearance: Appearance.lightweight,
+            appearance: ButtonAppearance.lightweight,
             children: "Lightweight button",
             "data-sketch-symbol": "Button - lightweight disabled"
         },
         {
             disabled: true,
-            appearance: Appearance.justified,
+            appearance: ButtonAppearance.justified,
             children: "Justified button"
         },
         {

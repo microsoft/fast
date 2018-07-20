@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import { Foundation, HandledProps } from "@microsoft/fast-components-react-base";
-import { Appearance, IButtonHandledProps, IButtonManagedClasses, IButtonUnhandledProps } from "./button.props";
+import { ButtonAppearance, IButtonHandledProps, IButtonManagedClasses, IButtonUnhandledProps } from "./button.props";
 import { IManagedClasses, IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { Button as BaseButton } from "@microsoft/fast-components-react-base";
 
@@ -38,13 +38,13 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IMSFTButto
      */
     protected generateClassNames(): string {
         switch (this.props.appearance) {
-            case Appearance.primary:
+            case ButtonAppearance.primary:
                 return super.generateClassNames(get(this.props, "managedClasses.button_primary"));
-            case Appearance.outline:
+            case ButtonAppearance.outline:
                 return super.generateClassNames(get(this.props, "managedClasses.button_outline"));
-            case Appearance.lightweight:
+            case ButtonAppearance.lightweight:
                 return super.generateClassNames(get(this.props, "managedClasses.button_lightweight"));
-            case Appearance.justified:
+            case ButtonAppearance.justified:
                 return super.generateClassNames(get(this.props, "managedClasses.button_justified"));
             default:
                 return null;
@@ -52,7 +52,7 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IMSFTButto
     }
 
     private generateInnerContent(): React.ReactElement<HTMLSpanElement> | (React.ReactNode | React.ReactNode[]) {
-        if (this.props.appearance === Appearance.lightweight || this.props.appearance === Appearance.justified) {
+        if (this.props.appearance === ButtonAppearance.lightweight || this.props.appearance === ButtonAppearance.justified) {
             return <span className={get(this.props, "managedClasses.button_span")}>{this.props.children}</span>;
         }
 
