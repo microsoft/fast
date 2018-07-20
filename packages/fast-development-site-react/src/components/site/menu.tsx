@@ -27,12 +27,28 @@ export interface ISiteNavManagedClasses {
 
 const style: ComponentStyles<ISiteNavManagedClasses, IDevSiteDesignSystem> = {
     "@keyframes open-animation": {
-        from: {opacity: 0},
-        to: {opacity: 1}
+        "0%": {
+            opacity: 0,
+            transform: "scale(0.93)",
+            height: "65vh"
+        },
+        "100%": {
+            opacity: 1,
+            transform: "scale(1)",
+            height: "100vh"
+        }
     },
     "@keyframes close-animation": {
-        from: {opacity: 1},
-        to: {opacity: 0}
+        "0%": {
+            opacity: 1,
+            transform: "scale(1)",
+            height: "100vh"
+        },
+        "100%": {
+            opacity: 0,
+            transform: "scale(0.93)",
+            height: "65vh"
+        }
     },
     siteMenu: {
         display: "inline-block",
@@ -46,33 +62,45 @@ const style: ComponentStyles<ISiteNavManagedClasses, IDevSiteDesignSystem> = {
         top: "0",
         left: "0",
         width: toPx(320),
-        animationName: "my-animation",
-        animationDuration: "4s",
+        animationDuration: "0.25s",
+        animationFillMode: "both",
+        transformOrigin: "50% 20%",
         boxShadow: `0 ${toPx(16)} ${toPx(24)} 0 rgba(0, 0, 0, 0.1)`,
-        "&[aria-hidden=\"true\"]": {
-            display: "none"
-        }
+        // "&[aria-hidden=\"true\"]": {
+        //     display: "none"
+        // }
     },
     siteMenu_nav__open: {
-        animationName: "open-animation"
+        animationName: "open-animation",
+        transitionTimingFunction: "cubic-bezier(.26,1,.48,1)",
     },
     siteMenu_nav__close: {
-        animationName: "close-animation"
+        animationName: "close-animation",
+        transitionTimingFunction: "cubic-bezier(.52,0,.74,0)",
     },
     siteMenu_button: {
-        width: toPx(32),
-        height: toPx(32),
-        padding: toPx(3),
+        width: toPx(40),
+        height: toPx(40),
+        padding: toPx(7),
         border: "none",
-        background: "none"
+        background: "none",
+        transition: "all 0.1s ease-in-out",
+        "&:hover": {
+            background: (config: IDevSiteDesignSystem): string => {
+                return config.brandColor;
+            },
+        }
     },
     siteMenu_button_open: {
-        width: toPx(32),
-        height: toPx(32),
-        padding: toPx(3),
-        margin: `${toPx(7)} 0 0 ${toPx(3)}`,
+        width: toPx(40),
+        height: toPx(40),
+        padding: toPx(7),
         border: "none",
-        background: "none"
+        background: "none",
+        transition: "all 0.1s ease-in-out",
+        "&:hover": {
+            background: "rgba(0,0,0, .2)"
+        }
     },
     siteMenu_buttonGlyph: {
         fill: (config: IDevSiteDesignSystem): string => {
@@ -90,43 +118,60 @@ const style: ComponentStyles<ISiteNavManagedClasses, IDevSiteDesignSystem> = {
     },
 };
 
+/* tslint:disable-next-line */
+const waffleGlyph: string = "M6.2,10V6h4v4Zm0,8V14h4v4Zm0,8V22h4v4Zm8-16V6h4v4Zm0,8V14h4v4Zm0,8V22h4v4Zm8-20h4v4h-4Zm0,12V14h4v4Zm0,8V22h4v4Z";
+
 class SiteMenu extends React.Component<ISiteMenuProps & IManagedClasses<ISiteNavManagedClasses>, ISiteMenuState> {
+    private navPaneElement: React.RefObject<HTMLElement>;
 
     constructor(props: ISiteMenuProps & IManagedClasses<ISiteNavManagedClasses>) {
         super(props);
 
         this.state = {
-            visibility: true
+            visibility: false
         };
+
+        this.navPaneElement = React.createRef();
     }
 
     // tslint:disable
     public render(): JSX.Element {
         return (
             <div className={this.props.managedClasses.siteMenu}>
-                <button onClick={this.handleMenuVisibilityToggle} className={this.props.managedClasses.siteMenu_button}>
+                <button
+                    onClick={this.handleMenuVisibilityToggle}
+                    className={this.props.managedClasses.siteMenu_button}
+                    aria-label="Open"
+                >
                     <svg
-                        id="Layer_1"
-                        data-name="Layer 1"
+                        id="Open_Waffle_Glyph"
+                        data-name="Open Waffle Glyph"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 32 32"
                         className={this.props.managedClasses.siteMenu_buttonGlyph}
                     >
                         <title>waffle</title>
-                        <path d="M6.2,10V6h4v4Zm0,8V14h4v4Zm0,8V22h4v4Zm8-16V6h4v4Zm0,8V14h4v4Zm0,8V22h4v4Zm8-20h4v4h-4Zm0,12V14h4v4Zm0,8V22h4v4Z"/>
+                        <path d={waffleGlyph}/>
                     </svg>
                 </button>
-                <nav className={this.generateClassName()} {...this.getNavigationAttributes()}>
-                    <button onClick={this.handleMenuVisibilityToggle} className={this.props.managedClasses.siteMenu_button_open}>
+                <nav
+                    className={this.generateClassName()}
+                    aria-hidden={!this.state.visibility}
+                    ref={this.navPaneElement}
+                >
+                    <button onClick={this.handleMenuVisibilityToggle}
+                            className={this.props.managedClasses.siteMenu_button_open}
+                            aria-label="Close"
+                    >
                         <svg
-                            id="Layer_1"
-                            data-name="Layer 1"
+                            id="Close_Waffle_Glyph"
+                            data-name="Close Waffle Glyph"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 32 32"
                             className={this.props.managedClasses.siteMenu_buttonGlyph_open}
                         >
                             <title>waffle</title>
-                            <path d="M6.2,10V6h4v4Zm0,8V14h4v4Zm0,8V22h4v4Zm8-16V6h4v4Zm0,8V14h4v4Zm0,8V22h4v4Zm8-20h4v4h-4Zm0,12V14h4v4Zm0,8V22h4v4Z"/>
+                            <path d={waffleGlyph}/>
                         </svg>
                     </button>
                     <ul className={this.props.managedClasses.siteMenu_ul}>
@@ -137,16 +182,27 @@ class SiteMenu extends React.Component<ISiteMenuProps & IManagedClasses<ISiteNav
         );
     }
 
-    private handStuff = (): void => {
-        window.requestAnimationFrame(this.handleMenuVisibilityToggle);
+    componentDidMount() {
+        this.navPaneElement.current.style.display = "none";
     }
 
     private handleMenuVisibilityToggle = (): void => {
         this.setState({
             visibility: !this.state.visibility
+        }, () => {
+            if (this.state.visibility) {
+                this.navPaneElement.current.style.display = "block";
+            }
+            this.navPaneElement.current.addEventListener("animationend", this.handleNavAnaimtionEnd);
         });
-        if(this.state.visibility){
-            window.requestAnimationFrame(this.handleMenuVisibilityToggle);
+    }
+
+    private handleNavAnaimtionEnd = (e: AnimationEvent) => {
+        const element = this.navPaneElement.current;
+        element.removeEventListener("animationend", this.handleNavAnaimtionEnd);
+
+        if (!this.state.visibility) {
+            element.style.display = "none";
         }
     }
 
@@ -154,13 +210,10 @@ class SiteMenu extends React.Component<ISiteMenuProps & IManagedClasses<ISiteNav
         const className: string = this.props.managedClasses.siteMenu_nav;
 
         return this.state.visibility
-            ? `${className} ${this.props.managedClasses.siteMenu_nav__close}`
-            : `${className} ${this.props.managedClasses.siteMenu_nav__open}`
+            ? `${className} ${this.props.managedClasses.siteMenu_nav__open}`
+            : `${className} ${this.props.managedClasses.siteMenu_nav__close}`
     }
 
-    private getNavigationAttributes(): any {
-        return { "aria-hidden": this.state.visibility };
-    }
 }
 
 export default manageJss(style)(SiteMenu);

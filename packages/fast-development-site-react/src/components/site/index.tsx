@@ -140,7 +140,7 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
     },
     site_headerTitle: {
         fontSize: toPx(15),
-        marginLeft: toPx(4),
+        marginLeft: toPx(8),
         cursor: "default"
     },
     site_infoBarConfiguration: {
