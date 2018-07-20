@@ -90,9 +90,7 @@ export default class App extends React.Component<{}, IAppState> {
             <DesignSystemProvider designSystem={designSystemDefaults}>
                 <div style={{float: "left", width: "50%"}}>
                     <div>
-                        <div
-                            style={{width: "300px", minHeight: "100vh", padding: "0 8px", background: "rgb(244, 245, 246)", float: "left", display: "inline-block"}}
-                        >
+                        <div style={this.getColumnStyle()}>
                             <Form {...this.coerceControlledFormProps()} />
                         </div>
                         <div style={{display: "inline-block"}}>
@@ -110,9 +108,7 @@ export default class App extends React.Component<{}, IAppState> {
                 </div>
                 <div style={{float: "left", width: "50%"}}>
                     <div>
-                        <div
-                            style={{width: "300px", minHeight: "100vh", padding: "0 8px", background: "rgb(244, 245, 246)", float: "left", display: "inline-block"}}
-                        >
+                        <div style={this.getColumnStyle()}>
                             <Form {...this.coerceUncontrolledFormProps()} />
                         </div>
                         <div style={{display: "inline-block"}}>
@@ -130,6 +126,17 @@ export default class App extends React.Component<{}, IAppState> {
                 </div>
             </DesignSystemProvider>
         );
+    }
+
+    private getColumnStyle(): any {
+        return {
+            width: "300px",
+            minHeight: "100vh",
+            padding: "0 8px",
+            background: "rgb(244, 245, 246)",
+            float: "left",
+            display: "inline-block"
+        };
     }
 
     /**
