@@ -174,15 +174,19 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
     private getDataLocation(component: any, index: number): string {
         const propLocation: string = typeof component === "string" ? "" : ".props";
 
+        return `${this.getDataLocationWithoutProps(index)}${propLocation}`;
+    }
+
+    private getDataLocationWithoutProps(index?: number): string {
         if (typeof index === "number") {
             return isRootLocation(this.props.dataLocation)
-                ? `children[${index}]${propLocation}`
-                : `${this.props.dataLocation}.children[${index}]${propLocation}`;
+                ? `children[${index}]`
+                : `${this.props.dataLocation}.children[${index}]`;
         }
 
         return isRootLocation(this.props.dataLocation)
-            ? `children${propLocation}`
-            : `${this.props.dataLocation}.children${propLocation}`;
+            ? `children`
+            : `${this.props.dataLocation}.children`;
     }
 
     /**
@@ -204,7 +208,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
 
         if (this.props.location && this.props.location.onChange) {
             this.props.onUpdateActiveSectionComponentTracker("", dataLocation, schema);
-            this.props.location.onChange("", dataLocation);
+            this.props.location.onChange("", this.getDataLocationWithoutProps());
         } else {
             this.props.onUpdateActiveSection("", dataLocation, schema);
         }
