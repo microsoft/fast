@@ -19,7 +19,7 @@ const styles: ComponentStyles<IFormItemTextareaClassNameContract, {}> = {
         marginTop: toPx(8),
         marginBottom: toPx(2),
         resize: "none",
-        fontFamily: "Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif"
+        fontFamily: "inherit"
     }
 };
 
