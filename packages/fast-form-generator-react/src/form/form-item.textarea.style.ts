@@ -17,7 +17,9 @@ const styles: ComponentStyles<IFormItemTextareaClassNameContract, {}> = {
     formItemTextarea_textarea: {
         ...applyInputStyle(),
         marginTop: toPx(8),
-        marginBottom: toPx(2)
+        marginBottom: toPx(2),
+        resize: "none",
+        fontFamily: "Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif"
     }
 };
 
