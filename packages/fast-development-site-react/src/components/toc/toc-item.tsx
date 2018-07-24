@@ -42,8 +42,8 @@ const style: ComponentStyles<ITocItemManagedClasses, IDevSiteDesignSystem> = {
             backgroundColor: "rgba(0, 0, 0, 0.04)"
         },
         "&:focus": {
-            outline: (config: IDevSiteDesignSystem): string => {
-                return `${toPx(1)} solid ${config.brandColor}`;
+            boxShadow: (config: IDevSiteDesignSystem): string => {
+                return `inset 0 0 0 ${toPx(1)} ${config.brandColor}`;
             }
         }
     },
@@ -74,7 +74,10 @@ const style: ComponentStyles<ITocItemManagedClasses, IDevSiteDesignSystem> = {
             position: "absolute",
             left: "0",
             top: `calc((100% / 2) - ${toPx(tocItemActivePipeHeight / 2)})`
-        }
+        },
+        "&:hover": {
+            backgroundColor: "rgba(0, 0, 0, 0.1)"
+        },
     }
 };
 
