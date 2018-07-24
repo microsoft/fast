@@ -18,7 +18,7 @@ document.body.appendChild(root);
 
 function render(): void {
     ReactDOM.render(
-        <Button subtype="primary">
+        <Button appearance="primary">
             Click me!
         </Button>,
         root
