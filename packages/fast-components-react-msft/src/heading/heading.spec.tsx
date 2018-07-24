@@ -18,7 +18,7 @@ import { Typography } from "@microsoft/fast-components-react-base";
  */
 configure({adapter: new Adapter()});
 
-describe("heading snapshot", (): void => {
+describe("heading snapshots", (): void => {
     generateSnapshots(examples);
 });
 

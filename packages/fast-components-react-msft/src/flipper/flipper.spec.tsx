@@ -15,7 +15,7 @@ import {
  */
 configure({adapter: new Adapter()});
 
-describe("flipper snapshot", (): void => {
+describe("flipper snapshots", (): void => {
     generateSnapshots(examples);
 });
 
