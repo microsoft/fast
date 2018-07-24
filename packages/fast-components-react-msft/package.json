@@ -21,6 +21,9 @@
     "copy:json-schema": "node ../../build/copy-schemas.js",
     "copy:readme": "node ../../build/copy-readme.js",
     "build:app": "webpack --progress",
+    "integration-tests": "webpack --output-filename out.js --entry ./cypress/integration/*.ts",
+    "integration-tests:open": "cypress open",
+    "integration-tests:run": "node build/run-cypress.js",
     "prepare": "npm run clean:dist && tsc -p ./tsconfig.json && npm run copy:all",
     "start": "webpack-dev-server",
     "test": "npm run convert:readme && npm run tslint && npm run unit-tests && npm run build:app",
@@ -62,6 +65,7 @@
     ]
   },
   "devDependencies": {
+    "@cypress/webpack-preprocessor": "^2.0.1",
     "@microsoft/fast-components-class-name-contracts-base": "^1.9.2",
     "@microsoft/fast-development-site-react": "^1.9.2",
     "@microsoft/fast-glyphs-msft": "^1.9.2",
@@ -77,12 +81,15 @@
     "babel-jest": "^22.4.1",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
+    "cypress": "^3.0.2",
     "favicons-webpack-plugin": "0.0.9",
     "file-loader": "^1.1.11",
     "fork-ts-checker-webpack-plugin": "^0.4.0",
     "html-webpack-plugin": "^3.0.4",
     "jest": "^22.4.2",
     "lodash-es": "^4.0.0",
+    "node-netstat": "^1.4.2",
+    "node-spawn": "0.0.7",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
     "rimraf": "^2.6.2",
@@ -109,6 +116,7 @@
     "@microsoft/fast-components-class-name-contracts-msft": "^1.9.2",
     "@microsoft/fast-components-react-base": "^1.9.2",
     "@microsoft/fast-components-styles-msft": "^1.9.2",
-    "@microsoft/fast-jss-manager-react": "^1.9.2"
+    "@microsoft/fast-jss-manager-react": "^1.9.2",
+    "dotenv": "^6.0.0"
   }
 }

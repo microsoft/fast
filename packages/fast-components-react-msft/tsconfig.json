@@ -6,7 +6,8 @@
         "baseUrl": ".",
         "declaration": true,
         "jsx": "react",
-        "outDir": "./dist"
+        "outDir": "./dist",
+        "types": ["cypress"]
     },
     "files": [
         "typings.d.ts"
