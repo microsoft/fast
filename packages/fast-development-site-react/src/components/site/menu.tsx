@@ -18,9 +18,9 @@ export interface ISiteNavManagedClasses {
     siteMenu_nav: string;
     siteMenu_nav__open: string;
     siteMenu_nav__close: string;
-    siteMenu_button: string;
+    siteMenu_button_open: string;
     siteMenu_button_close: string;
-    siteMenu_buttonGlyph: string;
+    siteMenu_buttonGlyph_open: string;
     siteMenu_buttonGlyph_close: string;
     siteMenu_ul: string;
 }
@@ -75,7 +75,7 @@ const style: ComponentStyles<ISiteNavManagedClasses, IDevSiteDesignSystem> = {
         animationName: "close-animation",
         transitionTimingFunction: "cubic-bezier(.26,1,.48,1)"
     },
-    siteMenu_button: {
+    siteMenu_button_open: {
         width: toPx(40),
         height: toPx(40),
         padding: toPx(7),
@@ -99,7 +99,7 @@ const style: ComponentStyles<ISiteNavManagedClasses, IDevSiteDesignSystem> = {
             background: "rgba(0,0,0, .2)"
         }
     },
-    siteMenu_buttonGlyph: {
+    siteMenu_buttonGlyph_open: {
         fill: (config: IDevSiteDesignSystem): string => {
             return config.backgroundColor;
         },
@@ -135,13 +135,13 @@ class SiteMenu extends React.Component<ISiteMenuProps & IManagedClasses<ISiteNav
     public render(): JSX.Element {
         return (
             <div className={this.props.managedClasses.siteMenu}>
-                {this.renderWaffleButton(false)}
+                {this.renderWaffleButton("open")}
                 <nav
                     className={this.generateClassName()}
                     aria-hidden={!this.state.visibility}
                     ref={this.navPaneElement}
                 >
-                    {this.renderWaffleButton(true)}
+                    {this.renderWaffleButton("close")}
                     <ul className={this.props.managedClasses.siteMenu_ul}>
                         {this.props.children}
                     </ul>
@@ -150,25 +150,17 @@ class SiteMenu extends React.Component<ISiteMenuProps & IManagedClasses<ISiteNav
         );
     }
 
-    private renderWaffleButton(isClose: boolean): JSX.Element {
+    private renderWaffleButton(state: string): JSX.Element {
         return (
             <button
                 onClick={this.handleMenuVisibilityToggle}
-                className={isClose
-                    ? this.props.managedClasses.siteMenu_button_close
-                    : this.props.managedClasses.siteMenu_button
-                }
-                aria-label={isClose ? "Close" : "Open"}
+                aria-label={state}
+                className={this.props.managedClasses[`siteMenu_button_${state}`]}
             >
                 <svg
-                    id={isClose ? "Close_Waffle_Glyph" : "Open_Waffle_Glyph"}
-                    data-name={isClose ? "Close Waffle Glyph" : "Open Waffle Glyph"}
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 32 32"
-                    className={isClose
-                        ? this.props.managedClasses.siteMenu_buttonGlyph_close
-                        : this.props.managedClasses.siteMenu_buttonGlyph
-                    }
+                    className={this.props.managedClasses[`siteMenu_buttonGlyph_${state}`]}
                 >
                     <title>waffle</title>
                     <path d={waffleGlyph}/>
@@ -180,7 +172,7 @@ class SiteMenu extends React.Component<ISiteMenuProps & IManagedClasses<ISiteNav
     private handleMenuVisibilityToggle = (): void => {
         this.setState({
             visibility: !this.state.visibility
-        }, () => {
+        }, (): void => {
             if (this.state.visibility) {
                 this.navPaneElement.current.style.display = "block";
             }
