@@ -308,7 +308,7 @@ export interface ILocale {
 export interface ILocaleMapping {
     en: ILocale;
     [locale: string]: ILocale;
-};
+}
 
 class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClasses>, ISiteState> {
 
@@ -890,7 +890,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
 
     private handleLocaleUpdate = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         const localeKey: string = Object.keys(this.props.locales).find((key: string): boolean => {
-            return e.target.value === this.props.locales[key].displayName
+            return e.target.value === this.props.locales[key].displayName;
         });
 
         if (this.props.onUpdateDirection) {
