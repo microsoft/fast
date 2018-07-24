@@ -19,9 +19,9 @@ export interface ISiteNavManagedClasses {
     siteMenu_nav__open: string;
     siteMenu_nav__close: string;
     siteMenu_button: string;
-    siteMenu_button_open: string;
+    siteMenu_button_close: string;
     siteMenu_buttonGlyph: string;
-    siteMenu_buttonGlyph_open: string;
+    siteMenu_buttonGlyph_close: string;
     siteMenu_ul: string;
 }
 
@@ -58,12 +58,13 @@ const style: ComponentStyles<ISiteNavManagedClasses, IDevSiteDesignSystem> = {
         position: "absolute",
         background: "#FFFFFF",
         zIndex: "5",
-        height: "calc(100vh)",
+        height: "100vh",
         top: "0",
         left: "0",
         width: toPx(320),
         animationDuration: "0.25s",
         animationFillMode: "both",
+        display: "none",
         boxShadow: `0 ${toPx(16)} ${toPx(24)} 0 rgba(0, 0, 0, 0.1)`
     },
     siteMenu_nav__open: {
@@ -87,7 +88,7 @@ const style: ComponentStyles<ISiteNavManagedClasses, IDevSiteDesignSystem> = {
             },
         }
     },
-    siteMenu_button_open: {
+    siteMenu_button_close: {
         width: toPx(40),
         height: toPx(40),
         padding: toPx(7),
@@ -103,7 +104,7 @@ const style: ComponentStyles<ISiteNavManagedClasses, IDevSiteDesignSystem> = {
             return config.backgroundColor;
         },
     },
-    siteMenu_buttonGlyph_open: {
+    siteMenu_buttonGlyph_close: {
         fill: (config: IDevSiteDesignSystem): string => {
             return config.foregroundColor;
         },
@@ -134,43 +135,13 @@ class SiteMenu extends React.Component<ISiteMenuProps & IManagedClasses<ISiteNav
     public render(): JSX.Element {
         return (
             <div className={this.props.managedClasses.siteMenu}>
-                <button
-                    onClick={this.handleMenuVisibilityToggle}
-                    className={this.props.managedClasses.siteMenu_button}
-                    aria-label="Open"
-                >
-                    <svg
-                        id="Open_Waffle_Glyph"
-                        data-name="Open Waffle Glyph"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 32 32"
-                        className={this.props.managedClasses.siteMenu_buttonGlyph}
-                    >
-                        <title>waffle</title>
-                        <path d={waffleGlyph}/>
-                    </svg>
-                </button>
+                {this.renderWaffleButton(false)}
                 <nav
                     className={this.generateClassName()}
                     aria-hidden={!this.state.visibility}
                     ref={this.navPaneElement}
                 >
-                    <button
-                        onClick={this.handleMenuVisibilityToggle}
-                        className={this.props.managedClasses.siteMenu_button_open}
-                        aria-label="Close"
-                    >
-                        <svg
-                            id="Close_Waffle_Glyph"
-                            data-name="Close Waffle Glyph"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 32 32"
-                            className={this.props.managedClasses.siteMenu_buttonGlyph_open}
-                        >
-                            <title>waffle</title>
-                            <path d={waffleGlyph}/>
-                        </svg>
-                    </button>
+                    {this.renderWaffleButton(true)}
                     <ul className={this.props.managedClasses.siteMenu_ul}>
                         {this.props.children}
                     </ul>
@@ -179,8 +150,31 @@ class SiteMenu extends React.Component<ISiteMenuProps & IManagedClasses<ISiteNav
         );
     }
 
-    componentDidMount() {
-        this.navPaneElement.current.style.display = "none";
+    private renderWaffleButton(isClose: boolean): JSX.Element {
+        return (
+            <button
+                onClick={this.handleMenuVisibilityToggle}
+                className={isClose
+                    ? this.props.managedClasses.siteMenu_button_close
+                    : this.props.managedClasses.siteMenu_button
+                }
+                aria-label={isClose ? "Close" : "Open"}
+            >
+                <svg
+                    id={isClose ? "Close_Waffle_Glyph" : "Open_Waffle_Glyph"}
+                    data-name={isClose ? "Close Waffle Glyph" : "Open Waffle Glyph"}
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 32 32"
+                    className={isClose
+                        ? this.props.managedClasses.siteMenu_buttonGlyph_close
+                        : this.props.managedClasses.siteMenu_buttonGlyph
+                    }
+                >
+                    <title>waffle</title>
+                    <path d={waffleGlyph}/>
+                </svg>
+            </button>
+        )
     }
 
     private handleMenuVisibilityToggle = (): void => {
