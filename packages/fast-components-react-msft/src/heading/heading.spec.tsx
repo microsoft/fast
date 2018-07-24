@@ -43,7 +43,6 @@ describe("heading", (): void => {
 
         const heading: any = rendered.first().shallow();
 
-        expect(heading.prop("aria-hidden")).not.toBe(undefined);
         expect(heading.prop("aria-hidden")).toEqual(true);
     });
 
@@ -53,16 +52,6 @@ describe("heading", (): void => {
         );
         const heading: any = rendered.first().shallow();
 
-        expect(heading.instance().props.tag).not.toBe(undefined);
         expect(heading.instance().props.tag).toEqual(HeadingTag.h3);
-    });
-
-    test("should return an instance of the typography component", () => {
-        const rendered: any = shallow(
-            <Component tag={HeadingTag.h3} />
-        );
-        const heading: any = rendered.first().shallow();
-
-        expect(heading.first().shallow().type()).toEqual(Typography);
     });
 });

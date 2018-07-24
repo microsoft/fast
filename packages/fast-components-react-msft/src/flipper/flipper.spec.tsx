@@ -39,7 +39,6 @@ describe("flipper", (): void => {
 
         const flipper: any = rendered.first().shallow();
 
-        expect(flipper.prop("aria-labelledby")).not.toBe(undefined);
         expect(flipper.prop("aria-labelledby")).toEqual("foo");
     });
 
@@ -54,7 +53,6 @@ describe("flipper", (): void => {
 
         const flipper: any = rendered.first().shallow();
 
-        expect(flipper.prop("tabIndex")).not.toBe(undefined);
         expect(flipper.prop("tabIndex")).toEqual(-1);
     });
 
@@ -69,7 +67,6 @@ describe("flipper", (): void => {
 
         const flipper: any = rendered.first().shallow();
 
-        expect(flipper.prop("aria-hidden")).not.toBe(undefined);
         expect(flipper.prop("aria-hidden")).toEqual(true);
     });
 \

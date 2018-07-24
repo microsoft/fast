@@ -41,7 +41,7 @@ describe("button", (): void => {
         );
 
         const button: any = rendered.first().shallow();
-        expect(button.prop("aria-hidden")).not.toBe(undefined);
+
         expect(button.prop("aria-hidden")).toEqual(true);
     });
 });
