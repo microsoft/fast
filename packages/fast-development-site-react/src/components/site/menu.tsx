@@ -29,12 +29,12 @@ const style: ComponentStyles<ISiteNavManagedClasses, IDevSiteDesignSystem> = {
     "@keyframes open-animation": {
         "0%": {
             opacity: 0,
-            transform: "scale(0.93)",
+            transform: "scaleX(0.93)",
             height: "65vh"
         },
         "100%": {
             opacity: 1,
-            transform: "scale(1)",
+            transform: "scaleX(1)",
             height: "100vh"
         }
     },
@@ -64,19 +64,15 @@ const style: ComponentStyles<ISiteNavManagedClasses, IDevSiteDesignSystem> = {
         width: toPx(320),
         animationDuration: "0.25s",
         animationFillMode: "both",
-        transformOrigin: "50% 20%",
-        boxShadow: `0 ${toPx(16)} ${toPx(24)} 0 rgba(0, 0, 0, 0.1)`,
-        // "&[aria-hidden=\"true\"]": {
-        //     display: "none"
-        // }
+        boxShadow: `0 ${toPx(16)} ${toPx(24)} 0 rgba(0, 0, 0, 0.1)`
     },
     siteMenu_nav__open: {
         animationName: "open-animation",
-        transitionTimingFunction: "cubic-bezier(.26,1,.48,1)",
+        transitionTimingFunction: "cubic-bezier(.52,0,.74,0)"
     },
     siteMenu_nav__close: {
         animationName: "close-animation",
-        transitionTimingFunction: "cubic-bezier(.52,0,.74,0)",
+        transitionTimingFunction: "cubic-bezier(.26,1,.48,1)"
     },
     siteMenu_button: {
         width: toPx(40),
@@ -159,9 +155,10 @@ class SiteMenu extends React.Component<ISiteMenuProps & IManagedClasses<ISiteNav
                     aria-hidden={!this.state.visibility}
                     ref={this.navPaneElement}
                 >
-                    <button onClick={this.handleMenuVisibilityToggle}
-                            className={this.props.managedClasses.siteMenu_button_open}
-                            aria-label="Close"
+                    <button
+                        onClick={this.handleMenuVisibilityToggle}
+                        className={this.props.managedClasses.siteMenu_button_open}
+                        aria-label="Close"
                     >
                         <svg
                             id="Close_Waffle_Glyph"
@@ -193,13 +190,13 @@ class SiteMenu extends React.Component<ISiteMenuProps & IManagedClasses<ISiteNav
             if (this.state.visibility) {
                 this.navPaneElement.current.style.display = "block";
             }
-            this.navPaneElement.current.addEventListener("animationend", this.handleNavAnaimtionEnd);
+            this.navPaneElement.current.addEventListener("animationend", this.handleNavAnimationEnd);
         });
     }
 
-    private handleNavAnaimtionEnd = (e: AnimationEvent) => {
+    private handleNavAnimationEnd = (e: AnimationEvent) => {
         const element = this.navPaneElement.current;
-        element.removeEventListener("animationend", this.handleNavAnaimtionEnd);
+        element.removeEventListener("animationend", this.handleNavAnimationEnd);
 
         if (!this.state.visibility) {
             element.style.display = "none";
