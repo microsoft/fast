@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`heading Heading: 0 1`] = `
+exports[`heading snapshots Heading: 0 1`] = `
 <h1
   className="typography_1-0-1-7 heading_1-0-1-1"
 >
@@ -8,7 +8,7 @@ exports[`heading Heading: 0 1`] = `
 </h1>
 `;
 
-exports[`heading Heading: 1 1`] = `
+exports[`heading snapshots Heading: 1 1`] = `
 <h1
   className="typography_1-0-1-22 heading_1-0-1-16"
   data-sketch-symbol="Heading 1"
@@ -17,7 +17,7 @@ exports[`heading Heading: 1 1`] = `
 </h1>
 `;
 
-exports[`heading Heading: 2 1`] = `
+exports[`heading snapshots Heading: 2 1`] = `
 <h2
   className="typography_2-0-1-38 heading_2-0-1-32"
   data-sketch-symbol="Heading 2"
@@ -26,7 +26,7 @@ exports[`heading Heading: 2 1`] = `
 </h2>
 `;
 
-exports[`heading Heading: 3 1`] = `
+exports[`heading snapshots Heading: 3 1`] = `
 <h3
   className="typography_3-0-1-54 heading_3-0-1-48"
   data-sketch-symbol="Heading 3"
@@ -35,7 +35,7 @@ exports[`heading Heading: 3 1`] = `
 </h3>
 `;
 
-exports[`heading Heading: 4 1`] = `
+exports[`heading snapshots Heading: 4 1`] = `
 <h4
   className="typography_4-0-1-70 heading_4-0-1-64"
   data-sketch-symbol="Heading 4"
@@ -44,7 +44,7 @@ exports[`heading Heading: 4 1`] = `
 </h4>
 `;
 
-exports[`heading Heading: 5 1`] = `
+exports[`heading snapshots Heading: 5 1`] = `
 <h5
   className="typography_5-0-1-86 heading_5-0-1-80"
   data-sketch-symbol="Heading 5"
@@ -53,7 +53,7 @@ exports[`heading Heading: 5 1`] = `
 </h5>
 `;
 
-exports[`heading Heading: 6 1`] = `
+exports[`heading snapshots Heading: 6 1`] = `
 <h6
   className="typography_6-0-1-102 heading_6-0-1-96"
   data-sketch-symbol="Heading 6"
