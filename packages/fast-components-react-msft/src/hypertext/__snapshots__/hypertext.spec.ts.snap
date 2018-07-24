@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`hypertext Hypertext: 0 1`] = `
+exports[`hypertext snapshots Hypertext: 0 1`] = `
 <a
   className="hypertext-0-1-1"
   data-sketch-symbol="Hypertext"
@@ -10,7 +10,7 @@ exports[`hypertext Hypertext: 0 1`] = `
 </a>
 `;
 
-exports[`hypertext Hypertext: 1 1`] = `
+exports[`hypertext snapshots Hypertext: 1 1`] = `
 <a
   className="hypertext-0-1-2"
 >

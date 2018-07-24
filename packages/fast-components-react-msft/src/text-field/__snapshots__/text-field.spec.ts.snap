@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`text-field Text field: 0 1`] = `
+exports[`text-field snapshots Text field: 0 1`] = `
 <input
   className="textField-0-1-1"
   disabled={null}
@@ -9,7 +9,7 @@ exports[`text-field Text field: 0 1`] = `
 />
 `;
 
-exports[`text-field Text field: 1 1`] = `
+exports[`text-field snapshots Text field: 1 1`] = `
 <input
   className="textField-0-1-2"
   defaultValue="name@email.com"
@@ -19,7 +19,7 @@ exports[`text-field Text field: 1 1`] = `
 />
 `;
 
-exports[`text-field Text field: 2 1`] = `
+exports[`text-field snapshots Text field: 2 1`] = `
 <input
   className="textField-0-1-3"
   defaultValue="12345"
@@ -29,7 +29,7 @@ exports[`text-field Text field: 2 1`] = `
 />
 `;
 
-exports[`text-field Text field: 3 1`] = `
+exports[`text-field snapshots Text field: 3 1`] = `
 <input
   className="textField-0-1-4"
   defaultValue="(201) 867-5309"
@@ -39,7 +39,7 @@ exports[`text-field Text field: 3 1`] = `
 />
 `;
 
-exports[`text-field Text field: 4 1`] = `
+exports[`text-field snapshots Text field: 4 1`] = `
 <input
   className="textField-0-1-5"
   defaultValue="Disabled"
@@ -49,7 +49,7 @@ exports[`text-field Text field: 4 1`] = `
 />
 `;
 
-exports[`text-field Text field: 5 1`] = `
+exports[`text-field snapshots Text field: 5 1`] = `
 <input
   className="textField-0-1-6"
   disabled={null}

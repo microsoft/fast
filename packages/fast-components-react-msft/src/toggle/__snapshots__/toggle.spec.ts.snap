@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`toggle Toggle: 0 1`] = `
+exports[`toggle snapshots Toggle: 0 1`] = `
 <div
   aria-disabled={null}
   className="toggle-0-1-6"
@@ -39,7 +39,7 @@ exports[`toggle Toggle: 0 1`] = `
 </div>
 `;
 
-exports[`toggle Toggle: 1 1`] = `
+exports[`toggle snapshots Toggle: 1 1`] = `
 <div
   aria-disabled={null}
   className="toggle-0-1-16"
@@ -78,7 +78,7 @@ exports[`toggle Toggle: 1 1`] = `
 </div>
 `;
 
-exports[`toggle Toggle: 2 1`] = `
+exports[`toggle snapshots Toggle: 2 1`] = `
 <div
   aria-disabled={true}
   className="toggle-0-1-26"
@@ -117,7 +117,7 @@ exports[`toggle Toggle: 2 1`] = `
 </div>
 `;
 
-exports[`toggle Toggle: 3 1`] = `
+exports[`toggle snapshots Toggle: 3 1`] = `
 <div
   aria-disabled={true}
   className="toggle-0-1-36"

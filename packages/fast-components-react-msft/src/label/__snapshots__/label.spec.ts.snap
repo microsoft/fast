@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`label Label: 0 1`] = `
+exports[`label snapshots Label: 0 1`] = `
 <label
   className="label-0-1-1"
   data-sketch-symbol="Label"
@@ -9,7 +9,7 @@ exports[`label Label: 0 1`] = `
 </label>
 `;
 
-exports[`label Label: 1 1`] = `
+exports[`label snapshots Label: 1 1`] = `
 <legend
   className="label-0-1-3"
 >
@@ -17,7 +17,7 @@ exports[`label Label: 1 1`] = `
 </legend>
 `;
 
-exports[`label Label: 2 1`] = `
+exports[`label snapshots Label: 2 1`] = `
 <label
   className="label_hidden-0-1-6"
 >
