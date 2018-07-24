@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`button Button: 0 1`] = `
+exports[`button snapshots Button: 0 1`] = `
 <button
   className="button-0-1-7"
   data-sketch-symbol="Button - default"
@@ -10,7 +10,7 @@ exports[`button Button: 0 1`] = `
 </button>
 `;
 
-exports[`button Button: 1 1`] = `
+exports[`button snapshots Button: 1 1`] = `
 <button
   className="button-0-1-19 button_primary-0-1-20"
   data-sketch-symbol="Button - primary"
@@ -20,7 +20,7 @@ exports[`button Button: 1 1`] = `
 </button>
 `;
 
-exports[`button Button: 2 1`] = `
+exports[`button snapshots Button: 2 1`] = `
 <button
   className="button-0-1-31 button_outline-0-1-33"
   data-sketch-symbol="Button - outline"
@@ -30,7 +30,7 @@ exports[`button Button: 2 1`] = `
 </button>
 `;
 
-exports[`button Button: 3 1`] = `
+exports[`button snapshots Button: 3 1`] = `
 <button
   className="button-0-1-43 button_lightweight-0-1-46"
   data-sketch-symbol="Button - lightweight"
@@ -44,7 +44,7 @@ exports[`button Button: 3 1`] = `
 </button>
 `;
 
-exports[`button Button: 4 1`] = `
+exports[`button snapshots Button: 4 1`] = `
 <button
   className="button-0-1-55 button_justified-0-1-59"
   href={null}
@@ -57,7 +57,7 @@ exports[`button Button: 4 1`] = `
 </button>
 `;
 
-exports[`button Button: 5 1`] = `
+exports[`button snapshots Button: 5 1`] = `
 <a
   className="button-0-1-67"
   href="#"
@@ -66,7 +66,7 @@ exports[`button Button: 5 1`] = `
 </a>
 `;
 
-exports[`button Button: 6 1`] = `
+exports[`button snapshots Button: 6 1`] = `
 <button
   className="button-0-1-79"
   data-sketch-symbol="Button - default disabled"
@@ -77,7 +77,7 @@ exports[`button Button: 6 1`] = `
 </button>
 `;
 
-exports[`button Button: 7 1`] = `
+exports[`button snapshots Button: 7 1`] = `
 <button
   className="button-0-1-91 button_primary-0-1-92"
   data-sketch-symbol="Button - primary disabled"
@@ -88,7 +88,7 @@ exports[`button Button: 7 1`] = `
 </button>
 `;
 
-exports[`button Button: 8 1`] = `
+exports[`button snapshots Button: 8 1`] = `
 <button
   className="button-0-1-103 button_outline-0-1-105"
   data-sketch-symbol="Button - outline disabled"
@@ -99,7 +99,7 @@ exports[`button Button: 8 1`] = `
 </button>
 `;
 
-exports[`button Button: 9 1`] = `
+exports[`button snapshots Button: 9 1`] = `
 <button
   className="button-0-1-115 button_lightweight-0-1-118"
   data-sketch-symbol="Button - lightweight disabled"
@@ -114,7 +114,7 @@ exports[`button Button: 9 1`] = `
 </button>
 `;
 
-exports[`button Button: 10 1`] = `
+exports[`button snapshots Button: 10 1`] = `
 <button
   className="button-0-1-127 button_justified-0-1-131"
   disabled={true}
@@ -128,7 +128,7 @@ exports[`button Button: 10 1`] = `
 </button>
 `;
 
-exports[`button Button: 11 1`] = `
+exports[`button snapshots Button: 11 1`] = `
 <a
   aria-disabled={true}
   className="button-0-1-139"
