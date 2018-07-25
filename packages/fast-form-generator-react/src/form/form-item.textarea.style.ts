@@ -18,7 +18,7 @@ const styles: ComponentStyles<IFormItemTextareaClassNameContract, {}> = {
         ...applyInputStyle(),
         marginTop: toPx(8),
         marginBottom: toPx(2),
-        resize: "none",
+        resize: "vertical",
         fontFamily: "inherit"
     }
 };
