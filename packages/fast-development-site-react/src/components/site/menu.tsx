@@ -86,6 +86,12 @@ const style: ComponentStyles<ISiteNavManagedClasses, IDevSiteDesignSystem> = {
             background: (config: IDevSiteDesignSystem): string => {
                 return config.brandColor;
             },
+        },
+        "&:focus": {
+            border: (config: IDevSiteDesignSystem): string => {
+                return `${toPx(1)} solid ${config.brandColor}`;
+            },
+            outline: "none"
         }
     },
     siteMenu_button_close: {
@@ -97,6 +103,12 @@ const style: ComponentStyles<ISiteNavManagedClasses, IDevSiteDesignSystem> = {
         transition: "all 0.1s ease-in-out",
         "&:hover": {
             background: "rgba(0,0,0, .2)"
+        },
+        "&:focus": {
+            border: (config: IDevSiteDesignSystem): string => {
+                return `${toPx(1)} solid ${config.brandColor}`;
+            },
+            outline: "none"
         }
     },
     siteMenu_buttonGlyph_open: {
@@ -176,6 +188,7 @@ class SiteMenu extends React.Component<ISiteMenuProps & IManagedClasses<ISiteNav
             if (this.state.visibility) {
                 this.navPaneElement.current.style.display = "block";
             }
+
             this.navPaneElement.current.addEventListener("animationend", this.handleNavAnimationEnd);
         });
     }
