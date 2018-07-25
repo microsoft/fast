@@ -11,7 +11,7 @@ export enum ButtonAppearance {
 
 export interface IButtonHandledProps extends IBaseButtonHandledProps {
     /**
-     * The Button subType
+     * The Button appearance
      */
     appearance?: ButtonAppearance;
 }
