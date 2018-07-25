@@ -4,6 +4,7 @@ import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import Button from "./index";
 import { IButtonHandledProps as IBaseButtonHandledProps } from "@microsoft/fast-components-react-base";
 import {
+    ButtonAppearance,
     ButtonProps,
     IButtonHandledProps,
     IButtonManagedClasses,
@@ -26,22 +27,22 @@ export default {
             "data-sketch-symbol": "Button - default"
         },
         {
-            primary: true,
+            appearance: ButtonAppearance.primary,
             children: "Primary (submit) button",
             "data-sketch-symbol": "Button - primary"
         },
         {
-            outline: true,
+            appearance: ButtonAppearance.outline,
             children: "Outline button",
             "data-sketch-symbol": "Button - outline"
         },
         {
-            lightweight: true,
+            appearance: ButtonAppearance.lightweight,
             children: "Lightweight button",
             "data-sketch-symbol": "Button - lightweight"
         },
         {
-            justified: true,
+            appearance: ButtonAppearance.justified,
             children: "Justified button"
         },
         {
@@ -55,25 +56,25 @@ export default {
         },
         {
             disabled: true,
-            primary: true,
+            appearance: ButtonAppearance.primary,
             children: "Primary (submit) button",
             "data-sketch-symbol": "Button - primary disabled"
         },
         {
             disabled: true,
-            outline: true,
+            appearance: ButtonAppearance.outline,
             children: "Outline button",
             "data-sketch-symbol": "Button - outline disabled"
         },
         {
             disabled: true,
-            lightweight: true,
+            appearance: ButtonAppearance.lightweight,
             children: "Lightweight button",
             "data-sketch-symbol": "Button - lightweight disabled"
         },
         {
             disabled: true,
-            justified: true,
+            appearance: ButtonAppearance.justified,
             children: "Justified button"
         },
         {
