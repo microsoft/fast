@@ -50,8 +50,6 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IMSFTButto
                 return super.generateClassNames(get(this.props, "managedClasses.button_lightweight"));
             case ButtonAppearance.justified:
                 return super.generateClassNames(get(this.props, "managedClasses.button_justified"));
-            default:
-                return null;
         }
     }
 
