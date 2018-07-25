@@ -27,13 +27,14 @@ const style: ComponentStyles<ITocMenuManagedClasses, IDevSiteDesignSystem> = {
     tocMenu_button: {
         background: "none",
         outline: "0",
-        border: "none",
+        border: `${toPx(1)} solid transparent`,
         position: "relative",
         width: "100%",
         fontFamily: "inherit",
         fontSize: toPx(14),
-        padding: `${toPx(10)} ${toPx(32)}`,
+        padding: `${toPx(9)} ${toPx(31)}`,
         textAlign: "left",
+
         "&[aria-expanded='true']": {
             "&::after": {
                 content: `url('data:image/svg+xml;base64,${dropdownActive}')`
@@ -44,12 +45,9 @@ const style: ComponentStyles<ITocMenuManagedClasses, IDevSiteDesignSystem> = {
             backgroundColor: "rgba(0, 0, 0, 0.04)"
         },
         "&:focus": {
-            boxShadow: (config: IDevSiteDesignSystem): string => {
-                return `inset 0 0 0 ${toPx(1)} ${config.brandColor}`;
+            border: (config: IDevSiteDesignSystem): string => {
+                return `${toPx(1)} solid ${config.brandColor}`;
             }
-            // outline: (config: IDevSiteDesignSystem): string => {
-            //     return `${toPx(1)} solid ${config.brandColor}`;
-            // }
         },
         "&::after": {
             content: `url('data:image/svg+xml;base64,${dropdownInactive}')`,

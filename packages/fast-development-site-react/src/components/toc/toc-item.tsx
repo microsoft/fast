@@ -36,14 +36,15 @@ const style: ComponentStyles<ITocItemManagedClasses, IDevSiteDesignSystem> = {
         textDecoration: "none",
         display: "block",
         paddingLeft: toPx(48),
-        lineHeight: toPx(40),
+        lineHeight: toPx(38),
+        border: `${toPx(1)} solid transparent`,
         outline: "0",
         "&:hover": {
             backgroundColor: "rgba(0, 0, 0, 0.04)"
         },
         "&:focus": {
-            boxShadow: (config: IDevSiteDesignSystem): string => {
-                return `inset 0 0 0 ${toPx(1)} ${config.brandColor}`;
+            border: (config: IDevSiteDesignSystem): string => {
+                return `${toPx(1)} solid ${config.brandColor}`;
             }
         }
     },
