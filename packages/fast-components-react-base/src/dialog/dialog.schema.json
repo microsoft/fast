@@ -1,0 +1,24 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Dialog",
+    "description": "A dialog component's schema definition.",
+    "type": "object",
+    "id": "dialog",
+    "children": true,
+    "properties": {
+        "contentHeight": {
+            "title": "Content region height",
+            "type": "string",
+            "example": "300px"
+        },
+        "contentWidth": {
+            "title": "Content region width",
+            "type": "string",
+            "example": "500px"
+        },
+        "modal": {
+            "title": "Modal",
+            "type": "boolean"
+        }
+    }
+}
