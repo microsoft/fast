@@ -4,6 +4,9 @@ export { Button };
 import Checkbox from "./checkbox";
 export { Checkbox };
 
+import Dialog from "./dialog";
+export { Dialog };
+
 import Divider from "./divider";
 export { Divider };
 

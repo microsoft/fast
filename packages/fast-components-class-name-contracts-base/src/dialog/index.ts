@@ -3,6 +3,6 @@
  */
 export interface IDialogClassNameContract {
     dialog: string;
-    dialog_backgroundOverlay: string;
+    dialog_modalOverlay: string;
     dialog_contentRegion: string;
 }

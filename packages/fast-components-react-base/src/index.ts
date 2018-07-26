@@ -10,6 +10,10 @@ import Divider from "./divider";
 export { Divider };
 export * from "./divider";
 
+import Dialog from "./dialog";
+export { Dialog };
+export * from "./dialog";
+
 import HorizontalOverflow from "./horizontal-overflow";
 export { HorizontalOverflow };
 export * from "./horizontal-overflow";

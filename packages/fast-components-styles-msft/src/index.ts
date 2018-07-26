@@ -21,6 +21,12 @@ export * from "./design-system";
 export { DesignSystemDefaults };
 
 /**
+ * Export dialog styles
+ */
+import DialogStyles from "./dialog";
+export { DialogStyles };
+
+/**
  * Export divider styles
  */
 import DividerStyles from "./divider";

@@ -11,12 +11,10 @@ const examples: ISnapshotTestSuite<IDialogHandledProps & IDialogManagedClasses> 
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
-        contentHeight: "300px",
-        contentWidth: "500px",
-        // modal: true,
+        modal: true,
         managedClasses: {
             dialog: "dialog",
-            dialog_backgroundOverlay: "dialog-background-overlay",
+            dialog_modalOverlay: "dialog-modal-overlay",
             dialog_contentRegion: "dialog-content-region"
         }
     },
@@ -26,7 +24,7 @@ const examples: ISnapshotTestSuite<IDialogHandledProps & IDialogManagedClasses> 
             contentWidth: "500px",
             managedClasses: {
                 dialog: "dialog",
-                dialog_backgroundOverlay: "dialog-background-overlay",
+                dialog_modalOverlay: "dialog-modal-overlay",
                 dialog_contentRegion: "dialog-content-region"
 
             }
@@ -37,7 +35,7 @@ const examples: ISnapshotTestSuite<IDialogHandledProps & IDialogManagedClasses> 
             modal: true,
             managedClasses: {
                 dialog: "dialog",
-                dialog_backgroundOverlay: "dialog-background-overlay",
+                dialog_modalOverlay: "dialog-modal-overlay",
                 dialog_contentRegion: "dialog-content-region"
 
             }

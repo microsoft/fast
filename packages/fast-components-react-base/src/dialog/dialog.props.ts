@@ -23,6 +23,23 @@ export interface IDialogHandledProps {
     focusElementRef?: React.RefObject<HTMLElement>;
 
     /**
+     * The aria-describedby attribute to link the dialog to an
+     * element that describes its purpose
+     */
+    describedBy?: string;
+
+    /**
+     * The aria-label to provide an accessible name for the dialog
+     */
+    label?: string;
+
+    /**
+     * The aria-labelledby attribute to link the dialog to an existing
+     * element that provides it an accessible name
+     */
+    labelledBy?: string;
+
+    /**
      * The ref for the element that triggered the dialog
      */
     triggerElementRef?: React.RefObject<HTMLElement>;

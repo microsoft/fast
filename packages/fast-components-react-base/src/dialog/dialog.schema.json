@@ -6,6 +6,21 @@
     "id": "dialog",
     "children": true,
     "properties": {
+        "describedBy": {
+            "title": "Aria-describedby attribute",
+            "type": "string",
+            "example": "exampleId01"
+        },
+        "label": {
+            "title": "Aria-label attribute",
+            "type": "string",
+            "example": "Dialog label"
+        },
+        "labelledBy": {
+            "title": "Aria-labelledby attribute",
+            "type": "string",
+            "example": "exampleId02"
+        },
         "contentHeight": {
             "title": "Content region height",
             "type": "string",

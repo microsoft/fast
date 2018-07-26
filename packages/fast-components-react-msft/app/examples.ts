@@ -4,6 +4,9 @@ export { ButtonExamples };
 import CheckboxExamples from "../src/checkbox/examples.data";
 export { CheckboxExamples };
 
+import Dialog from "../src/dialog/examples.data";
+export { Dialog };
+
 import DividerExample from "../src/divider/examples.data";
 export { DividerExample };
 

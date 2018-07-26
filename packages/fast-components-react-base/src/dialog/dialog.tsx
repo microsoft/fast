@@ -7,7 +7,15 @@ import { IDialogClassNameContract, IManagedClasses } from "@microsoft/fast-compo
 
 /* tslint:disable-next-line */
 class Dialog extends Foundation<IDialogHandledProps & IManagedClasses<IDialogClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
+    public static defaultProps: Partial<IDialogHandledProps> = {
+        contentHeight: "480px",
+        contentWidth: "640px"
+    };
+
     protected handledProps: HandledProps<IDialogHandledProps & IManagedClasses<IDialogClassNameContract>> = {
+        describedBy: void 0,
+        label: void 0,
+        labelledBy: void 0,
         children: void 0,
         contentWidth: void 0,
         contentHeight: void 0,
@@ -26,13 +34,8 @@ class Dialog extends Foundation<IDialogHandledProps & IManagedClasses<IDialogCla
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
             >
-                {this.props.modal ? <div {...this.generateBackgroundOverlayAttributes()} /> : null}
-                <div
-                    role="dialog"
-                    tabIndex={-1}
-                    className={get(this.props, "managedClasses.dialog_contentRegion")}
-                    style={this.generateContentRegionStyles()}
-                >
+                {this.renderModalOverlay()}
+                <div {...this.generateContentRegionAttributes()}>
                     {this.props.children}
                 </div>
             </div>
@@ -47,36 +50,38 @@ class Dialog extends Foundation<IDialogHandledProps & IManagedClasses<IDialogCla
     }
 
     /**
-     * Generates background overlay attributes
+     * Generates attributes for the content region
      */
-    private generateBackgroundOverlayAttributes(): React.HTMLAttributes<HTMLDivElement> {
+    private generateContentRegionAttributes(): React.HTMLAttributes<HTMLDivElement> {
         return {
-            className: get(this.props, "managedClasses.dialog_backgroundOverlay"),
-            role: "presentation",
+            role: "dialog",
             tabIndex: -1,
+            className: get(this.props, "managedClasses.dialog_contentRegion"),
             style: {
-                position: "fixed",
-                bottom: "0",
-                left: "0",
-                right: "0",
-                top: "0",
-                background: "rgba(0, 0, 0, 0.2)",
-                zIndex: 1000
-            }
+                height: this.props.contentHeight,
+                width: this.props.contentWidth,
+            },
+            "aria-describedby": this.props.describedBy || null,
+            "aria-labelledby": this.props.labelledBy || null,
+            "aria-label": this.props.label || null
         };
     }
 
     /**
-     * Generates background overlay attributes
+     * Renders the modal overlay
      */
-    private generateContentRegionStyles(): React.CSSProperties {
-        return {
-            position: "fixed",
-            width: this.props.contentWidth,
-            height: this.props.contentHeight,
-            background: "white",
-            zIndex: 1000
-        };
+    private renderModalOverlay(): React.ReactElement<HTMLDivElement> {
+        if (!this.props.modal) {
+            return;
+        }
+
+        return (
+            <div
+                className={get(this.props, "managedClasses.dialog_modalOverlay")}
+                role={"presentation"}
+                tabIndex={-1}
+            />
+        );
     }
 }
 
