@@ -2,7 +2,7 @@
 import * as React from "react";
 const doSvg1: string = require("../assets/images/do-check.svg");
 const easingCurve: string = require("../assets/images/easing-curve.svg");
-const sass: string = require("../assets/styles/test-page.scss");
+const sass: string = require("../assets/styles/test-page.css");
 import ScrollTrigger from "[lib]/triggers/ScrollTrigger";
 import ViewEnterTrigger from "[lib]/triggers/ViewEnterTrigger";
 import ViewExitTrigger from "[lib]/triggers/ViewExitTrigger";
