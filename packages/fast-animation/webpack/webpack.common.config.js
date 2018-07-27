@@ -39,13 +39,12 @@ const config = {
                 loader: `file-loader?name=images/[name].[ext]`
             },
             {
-                test: /\.scss$/,
+                test: /\.css$/,
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
                     use: [
                         { loader: "css-loader" },
-                        { loader: "postcss-loader" },
-                        { loader: "sass-loader" }
+                        { loader: "postcss-loader" }
                     ]
                 })
             }
