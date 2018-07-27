@@ -92,3 +92,23 @@ const styles = {
     }
 };
 ```
+
+### applyAcrylic
+The `applyAcrylic` function can be used to create a partially transparent texture for the background of a specific element or UI surface.
+
+```ts
+import { applyAcrylic } from "@microsoft/fast-jss-utilities";
+
+const acrylicConfig: IAcrylicConfig = {
+    background: "rgba(0, 0, 0, 0.6)",
+    fallbackBackground: "#000000",
+    blur: "20px",
+    saturation: "112%",
+}
+
+const styles = {
+    backgroundElement: {
+        ...applyAcrylic(acrylicCofig)
+    }
+};
+```
