@@ -35,7 +35,7 @@
     "coverageThreshold": {
       "global": {
         "statements": 99,
-        "branches": 95,
+        "branches": 94,
         "functions": 100,
         "lines": 99
       }
@@ -62,6 +62,7 @@
     "@microsoft/fast-development-site-react": "^1.9.2",
     "@microsoft/fast-jest-snapshots-react": "^1.9.2",
     "@microsoft/fast-tslint-rules": "^1.9.2",
+    "@microsoft/fast-web-utilities": "^1.9.2",
     "@types/jest": "^22.2.0",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.6",
@@ -72,6 +73,7 @@
     "babel-preset-react": "^6.24.1",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
+    "exenv-es6": "^1.0.0",
     "glob": "^7.1.2",
     "html-webpack-plugin": "^3.0.4",
     "jest": "^22.4.2",
@@ -94,6 +96,8 @@
     "yargs": "^11.0.0"
   },
   "peerDependencies": {
+    "@microsoft/fast-web-utilities": "^1.9.2",
+    "exenv-es6": "^1.0.0",
     "lodash-es": "^4.0.0",
     "react": "^16.3.0",
     "react-dom": "^16.3.0"

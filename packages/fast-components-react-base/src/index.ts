@@ -10,6 +10,10 @@ import Divider from "./divider";
 export { Divider };
 export * from "./divider";
 
+import HorizontalOverflow from "./horizontal-overflow";
+export { HorizontalOverflow };
+export * from "./horizontal-overflow";
+
 import Hypertext from "./hypertext";
 export { Hypertext };
 export * from "./hypertext";

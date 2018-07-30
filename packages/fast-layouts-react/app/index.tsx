@@ -3,7 +3,6 @@ import * as ReactDOM from "react-dom";
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import Canvas from "../src/canvas";
 import Container from "../src/container";
-import HorizontalOverflow from "../src/horizontal-overflow";
 import Row, { RowResizeDirection } from "../src/row";
 import Pane, { PaneResizeDirection } from "../src/pane";
 import Page from "../src/page";
@@ -51,24 +50,6 @@ function render(): void {
                                         row={[4, 3, 3, 2]}
                                         position={[1, 1, 1, 9]}
                                     />
-                                    <Column span={12}>
-                                        <HorizontalOverflow>
-                                            <button slot="previous">previous</button>
-                                            <button slot="next">next</button>
-                                            <img src="https://placehold.it/120x100/414141/?text=1" />
-                                            <img src="https://placehold.it/180x100?text=2" />
-                                            <img src="https://placehold.it/240x100/414141/?text=3" />
-                                            <img src="https://placehold.it/120x100?text=4" />
-                                            <img src="https://placehold.it/140x100/414141/?text=5" />
-                                            <img src="https://placehold.it/200x100?text=6" />
-                                            <img src="https://placehold.it/220x100/414141/?text=7" />
-                                            <img src="https://placehold.it/170x100?text=8" />
-                                            <img src="https://placehold.it/160x100/414141/?text=9" />
-                                            <img src="https://placehold.it/240x100?text=10" />
-                                            <img src="https://placehold.it/110x100/414141/?text=11" />
-                                            <img src="https://placehold.it/270x100?text=12" />
-                                        </HorizontalOverflow>
-                                    </Column>
                                 </Grid>
                             </Page>
                         </Canvas>

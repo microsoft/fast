@@ -1,0 +1,997 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`horizontal overflow snapshot Horizontal overflow: 0 1`] = `
+<div
+  className="horizonta-overflow"
+  onLoad={[Function]}
+>
+  <div
+    style={
+      Object {
+        "height": "0px",
+        "overflow": "hidden",
+        "position": "relative",
+      }
+    }
+  >
+    <ul
+      className="horizontal-overflow_items"
+      style={
+        Object {
+          "margin": 0,
+          "overflowX": "scroll",
+          "padding": 0,
+          "position": "relative",
+          "whiteSpace": "nowrap",
+        }
+      }
+    >
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/120x100/414141/?text=1"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/180x100?text=2"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/240x100/414141/?text=3"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/120x100?text=4"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/140x100/414141/?text=5"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/200x100?text=6"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/220x100/414141/?text=7"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/170x100?text=8"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/160x100/414141/?text=9"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/240x100?text=10"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/110x100/414141/?text=11"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/270x100?text=12"
+          srcSet={null}
+        />
+      </li>
+    </ul>
+  </div>
+  <div
+    className="horizontal-overflow_previous"
+  >
+    <div>
+      <div
+        onClick={[Function]}
+      >
+        <button
+          className="button"
+          href={null}
+          slot="previous"
+        >
+          previous
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    className="horizontal-overflow_next"
+  >
+    <div>
+      <div
+        onClick={[Function]}
+      >
+        <button
+          className="button"
+          href={null}
+          slot="next"
+        >
+          next
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`horizontal overflow snapshot Horizontal overflow: 1 1`] = `
+<div
+  className="horizonta-overflow"
+  onLoad={[Function]}
+>
+  <div
+    style={
+      Object {
+        "height": "0px",
+        "overflow": "hidden",
+        "position": "relative",
+      }
+    }
+  >
+    <ul
+      className="horizontal-overflow_items"
+      style={
+        Object {
+          "margin": 0,
+          "overflowX": "scroll",
+          "padding": 0,
+          "position": "relative",
+          "whiteSpace": "nowrap",
+        }
+      }
+    >
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/120x100/414141/?text=1"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/180x100?text=2"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/240x100/414141/?text=3"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/120x100?text=4"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/140x100/414141/?text=5"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/200x100?text=6"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/220x100/414141/?text=7"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/170x100?text=8"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/160x100/414141/?text=9"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/240x100?text=10"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/110x100/414141/?text=11"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/270x100?text=12"
+          srcSet={null}
+        />
+      </li>
+    </ul>
+  </div>
+  <div
+    className="horizontal-overflow_previous"
+  >
+    <div>
+      <div
+        onClick={[Function]}
+      />
+    </div>
+  </div>
+  <div
+    className="horizontal-overflow_next"
+  >
+    <div>
+      <div
+        onClick={[Function]}
+      >
+        <button
+          className="button"
+          href={null}
+          slot="next"
+        >
+          next
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`horizontal overflow snapshot Horizontal overflow: 2 1`] = `
+<div
+  className="horizonta-overflow"
+  onLoad={[Function]}
+>
+  <div
+    style={
+      Object {
+        "height": "0px",
+        "overflow": "hidden",
+        "position": "relative",
+      }
+    }
+  >
+    <ul
+      className="horizontal-overflow_items"
+      style={
+        Object {
+          "margin": 0,
+          "overflowX": "scroll",
+          "padding": 0,
+          "position": "relative",
+          "whiteSpace": "nowrap",
+        }
+      }
+    >
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/120x100/414141/?text=1"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/180x100?text=2"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/240x100/414141/?text=3"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/120x100?text=4"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/140x100/414141/?text=5"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/200x100?text=6"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/220x100/414141/?text=7"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/170x100?text=8"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/160x100/414141/?text=9"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/240x100?text=10"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/110x100/414141/?text=11"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/270x100?text=12"
+          srcSet={null}
+        />
+      </li>
+    </ul>
+  </div>
+  <div
+    className="horizontal-overflow_previous"
+  >
+    <div>
+      <div
+        onClick={[Function]}
+      >
+        <button
+          className="button"
+          href={null}
+          slot="previous"
+        >
+          previous
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    className="horizontal-overflow_next"
+  >
+    <div>
+      <div
+        onClick={[Function]}
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`horizontal overflow snapshot Horizontal overflow: 3 1`] = `
+<div
+  className="horizonta-overflow"
+  onLoad={[Function]}
+>
+  <div
+    style={
+      Object {
+        "height": "0px",
+        "overflow": "hidden",
+        "position": "relative",
+      }
+    }
+  >
+    <ul
+      className="horizontal-overflow_items"
+      style={
+        Object {
+          "margin": 0,
+          "overflowX": "scroll",
+          "padding": 0,
+          "position": "relative",
+          "whiteSpace": "nowrap",
+        }
+      }
+    >
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/120x100/414141/?text=1"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/180x100?text=2"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/240x100/414141/?text=3"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/120x100?text=4"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/140x100/414141/?text=5"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/200x100?text=6"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/220x100/414141/?text=7"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/170x100?text=8"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/160x100/414141/?text=9"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/240x100?text=10"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/110x100/414141/?text=11"
+          srcSet={null}
+        />
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <img
+          alt="placeholder image"
+          className="image"
+          sizes={null}
+          src="https://placehold.it/270x100?text=12"
+          srcSet={null}
+        />
+      </li>
+    </ul>
+  </div>
+  <div
+    className="horizontal-overflow_previous"
+  >
+    <div>
+      <div
+        onClick={[Function]}
+      />
+    </div>
+  </div>
+  <div
+    className="horizontal-overflow_next"
+  >
+    <div>
+      <div
+        onClick={[Function]}
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`horizontal overflow snapshot Horizontal overflow: 4 1`] = `
+<div
+  className="horizonta-overflow"
+  onLoad={[Function]}
+>
+  <div
+    style={
+      Object {
+        "height": "0px",
+        "overflow": "hidden",
+        "position": "relative",
+      }
+    }
+  >
+    <ul
+      className="horizontal-overflow_items"
+      style={
+        Object {
+          "margin": 0,
+          "overflowX": "scroll",
+          "padding": 0,
+          "position": "relative",
+          "whiteSpace": "nowrap",
+        }
+      }
+    />
+  </div>
+  <div
+    className="horizontal-overflow_previous"
+  >
+    <div>
+      <div
+        onClick={[Function]}
+      />
+    </div>
+  </div>
+  <div
+    className="horizontal-overflow_next"
+  >
+    <div>
+      <div
+        onClick={[Function]}
+      />
+    </div>
+  </div>
+</div>
+`;
