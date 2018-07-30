@@ -100,9 +100,9 @@ The `applyAcrylic` function can be used to create a partially transparent textur
 import { applyAcrylic } from "@microsoft/fast-jss-utilities";
 
 const acrylicConfig: IAcrylicConfig = {
-    background: "rgba(0, 0, 0, 0.6)",
-    fallbackBackground: "#000000",
-    blur: "20px",
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    fallbackBackgroundColor: "#000000",
+    blurRadius: "20px",
     saturation: "112%",
 }
 
