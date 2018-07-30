@@ -12,21 +12,21 @@ export interface ISiteMenuState {
 }
 
 export interface ISiteNavManagedClasses {
-    "@keyframes open-animation": string;
-    "@keyframes close-animation": string;
+    "@keyframes SiteNavigationOpen": string;
+    "@keyframes SiteNavigationClose": string;
     siteMenu: string;
     siteMenu_nav: string;
     siteMenu_nav__open: string;
     siteMenu_nav__close: string;
-    siteMenu_button_open: string;
-    siteMenu_button_close: string;
-    siteMenu_buttonGlyph_open: string;
-    siteMenu_buttonGlyph_close: string;
+    siteMenu_button__open: string;
+    siteMenu_button__close: string;
+    siteMenu_buttonGlyph__open: string;
+    siteMenu_buttonGlyph__close: string;
     siteMenu_ul: string;
 }
 
 const style: ComponentStyles<ISiteNavManagedClasses, IDevSiteDesignSystem> = {
-    "@keyframes open-animation": {
+    "@keyframes SiteNavigationOpen": {
         "0%": {
             opacity: 0,
             transform: "scaleX(0.93)",
@@ -38,7 +38,7 @@ const style: ComponentStyles<ISiteNavManagedClasses, IDevSiteDesignSystem> = {
             height: "100vh"
         }
     },
-    "@keyframes close-animation": {
+    "@keyframes SiteNavigationClose": {
         "0%": {
             opacity: 1,
             transform: "scale(1)",
@@ -68,14 +68,14 @@ const style: ComponentStyles<ISiteNavManagedClasses, IDevSiteDesignSystem> = {
         boxShadow: `0 ${toPx(16)} ${toPx(24)} 0 rgba(0, 0, 0, 0.1)`
     },
     siteMenu_nav__open: {
-        animationName: "open-animation",
+        animationName: "SiteNavigationOpen",
         transitionTimingFunction: "cubic-bezier(.52,0,.74,0)"
     },
     siteMenu_nav__close: {
-        animationName: "close-animation",
+        animationName: "SiteNavigationClose",
         transitionTimingFunction: "cubic-bezier(.26,1,.48,1)"
     },
-    siteMenu_button_open: {
+    siteMenu_button__open: {
         width: toPx(40),
         height: toPx(40),
         padding: toPx(7),
@@ -94,7 +94,7 @@ const style: ComponentStyles<ISiteNavManagedClasses, IDevSiteDesignSystem> = {
             outline: "none"
         }
     },
-    siteMenu_button_close: {
+    siteMenu_button__close: {
         width: toPx(40),
         height: toPx(40),
         padding: toPx(7),
@@ -111,12 +111,12 @@ const style: ComponentStyles<ISiteNavManagedClasses, IDevSiteDesignSystem> = {
             outline: "none"
         }
     },
-    siteMenu_buttonGlyph_open: {
+    siteMenu_buttonGlyph__open: {
         fill: (config: IDevSiteDesignSystem): string => {
             return config.backgroundColor;
         },
     },
-    siteMenu_buttonGlyph_close: {
+    siteMenu_buttonGlyph__close: {
         fill: (config: IDevSiteDesignSystem): string => {
             return config.foregroundColor;
         },
@@ -167,12 +167,12 @@ class SiteMenu extends React.Component<ISiteMenuProps & IManagedClasses<ISiteNav
             <button
                 onClick={this.handleMenuVisibilityToggle}
                 aria-label={state}
-                className={this.props.managedClasses[`siteMenu_button_${state}`]}
+                className={this.props.managedClasses[`siteMenu_button__${state}`]}
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 32 32"
-                    className={this.props.managedClasses[`siteMenu_buttonGlyph_${state}`]}
+                    className={this.props.managedClasses[`siteMenu_buttonGlyph__${state}`]}
                 >
                     <title>waffle</title>
                     <path d={waffleGlyph}/>
