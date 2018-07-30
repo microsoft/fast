@@ -34,7 +34,7 @@ import {
     Row,
     RowResizeDirection
 } from "@microsoft/fast-layouts-react";
-import { Direction } from "@microsoft/fast-application-utilities";
+import { Direction, isRTL } from "@microsoft/fast-application-utilities";
 
 export enum ComponentViewSlot {
     example = "canvas-example-view",
@@ -46,7 +46,7 @@ export interface ISiteProps {
     formChildOptions: IFormChildOption[];
     onUpdateDirection?: (ltr: Direction) => void;
     onUpdateTheme?: (theme: string) => void;
-    locales?: ILocaleMapping;
+    locales?: string[];
     themes?: ITheme[];
     frameworks?: FrameworkEnum | FrameworkEnum[];
     activeFramework?: FrameworkEnum;
@@ -85,7 +85,7 @@ export interface ISiteState {
     componentBackgroundTransparent: boolean;
     formView: boolean;
     devToolsView: boolean;
-    locale: ILocale;
+    locale: string;
     theme: ITheme;
 }
 
@@ -300,29 +300,10 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
     }
 };
 
-export interface ILocale {
-    displayName: string;
-    direction: Direction;
-}
-
-export interface ILocaleMapping {
-    en: ILocale;
-    [locale: string]: ILocale;
-}
-
 class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClasses>, ISiteState> {
 
     public static defaultProps: Partial<ISiteProps> = {
-        locales: {
-            en: {
-                displayName: "English",
-                direction: Direction.ltr,
-            },
-            "en-rtl": {
-                displayName: "English-RTL",
-                direction: Direction.rtl
-            }
-        }
+        locales: ["en", "en-rtl"]
     };
 
     private localeSelect: React.RefObject<HTMLSelectElement>;
@@ -356,7 +337,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
             detailViewComponentData: this.getDetailViewComponentData(),
             formView: true,
             devToolsView: false,
-            locale: this.props.locales.en,
+            locale: "en",
             theme: this.getInitialTheme()
         };
     }
@@ -689,7 +670,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                             onClick={this.handleComponentClick}
                             index={index}
                             background={this.generateComponentWrapperBackground()}
-                            dir={this.state.locale.direction}
+                            dir={isRTL(this.state.locale) ? Direction.rtl : Direction.ltr}
                             transparentBackground={this.state.componentBackgroundTransparent}
                             designSystem={componentItem.props.designSystem}
                             active={index === this.state.activeComponentIndex}
@@ -721,7 +702,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                     key={index}
                     index={index}
                     background={this.generateComponentWrapperBackground()}
-                    dir={this.state.locale.direction}
+                    dir={isRTL(this.state.locale) ? Direction.rtl : Direction.ltr}
                     transparentBackground={this.state.componentBackgroundTransparent}
                     designSystem={component.props.designSystem}
                     active={true}
@@ -789,14 +770,14 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 </button>
                 {this.renderMeasureSpan(this.themeRuler, this.state.theme.displayName)}
                 {this.renderThemeSelect()}
-                {this.renderMeasureSpan(this.localeRuler, this.state.locale.displayName)}
+                {this.renderMeasureSpan(this.localeRuler, this.state.locale)}
                 <span className={this.props.managedClasses.site_infoBarConfiguration_base}>
                     <select
                         ref={this.localeSelect}
                         style={{width: toPx(localeMeasure)}}
                         className={this.props.managedClasses.site_infoBarConfiguration_input}
                         onChange={this.handleLocaleUpdate}
-                        value={this.state.locale.displayName}
+                        value={this.state.locale}
                     >
                         {this.renderLocales()}
                     </select>
@@ -869,10 +850,10 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     }
 
     private renderLocales(): JSX.Element[] {
-        return Object.keys(this.props.locales).map((key: string, index: number): JSX.Element => {
+        return this.props.locales.map((locale: string, index: number): JSX.Element => {
             return (
                 <option key={index}>
-                    {this.props.locales[key].displayName}
+                    {locale}
                 </option>
             );
         });
@@ -889,16 +870,13 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     }
 
     private handleLocaleUpdate = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-        const localeKey: string = Object.keys(this.props.locales).find((key: string): boolean => {
-            return e.target.value === this.props.locales[key].displayName;
-        });
 
         if (this.props.onUpdateDirection) {
-            this.props.onUpdateDirection(this.props.locales[localeKey].direction);
+            this.props.onUpdateDirection(isRTL(e.target.value) ? Direction.rtl : Direction.ltr);
         }
 
         this.setState({
-            locale: this.props.locales[localeKey]
+            locale: e.target.value
         });
     }
 
