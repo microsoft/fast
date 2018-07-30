@@ -108,7 +108,7 @@ const acrylicConfig: IAcrylicConfig = {
 
 const styles = {
     backgroundElement: {
-        ...applyAcrylic(acrylicCofig)
+        ...applyAcrylic<IDesignSystem>(acrylicCofig)
     }
 };
 ```
