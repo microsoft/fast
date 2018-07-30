@@ -17,8 +17,8 @@ export const acrylicNoise: string = "data:image/png;base64,iVBORw0KGgoAAAANSUhEU
 export function applyAcrylicMaterial(backgroundColor: string, opacity: number, fallbackOpacity: number = 0.9, topHighlight: boolean = false): ICSSRules<IDesignSystem> {
     const acrylicConfig: IAcrylicConfig = {
         textureImage: acrylicNoise,
-        background: Chroma(backgroundColor).alpha(opacity).css(),
-        fallbackBackground: Chroma(backgroundColor).alpha(fallbackOpacity).css()
+        backgroundColor: Chroma(backgroundColor).alpha(opacity).css(),
+        fallbackBackgroundColor: Chroma(backgroundColor).alpha(fallbackOpacity).css()
     };
 
     return {

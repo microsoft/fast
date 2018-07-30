@@ -10,9 +10,9 @@ import { ICSSRules } from "@microsoft/fast-jss-manager";
  */
 export interface IAcrylicConfig {
     textureImage?: string;
-    background: string;
-    fallbackBackground: string;
-    blur?: string;
+    backgroundColor: string;
+    fallbackBackgroundColor: string;
+    blurRadius?: string;
     saturation?: string;
 }
 
@@ -27,12 +27,12 @@ export const backdropFilterSupport: boolean =
  */
 export function applyAcrylic<T>(config: IAcrylicConfig): ICSSRules<T> {
     const backdropFilterStyles: ICSSRules<T> = {
-        background: config.background,
-        backdropFilter: `blur(${config.blur || "30px"}) saturate(${config.saturation || "125%"})`
+        background: config.backgroundColor,
+        backdropFilter: `blur(${config.blurRadius || "30px"}) saturate(${config.saturation || "125%"})`
     };
 
     const fallbackStyles: ICSSRules<T> = {
-        background: config.fallbackBackground
+        background: config.fallbackBackgroundColor
     };
 
     const styles: ICSSRules<T> = backdropFilterSupport ? backdropFilterStyles : fallbackStyles;
