@@ -151,8 +151,7 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
             }
 
             /**
-             * Creates a JSS stylesheet from the dynamic portion of an associated style object and any style object passed
-             * as props
+             * Creates a JSS stylesheet from the dynamic portion of an associated style object and any style object passed as props
              */
             private createStyleSheet(): any {
                 const stylesheet: ComponentStyleSheet<S, C> = typeof styles === "function"
