@@ -1,7 +1,6 @@
 import * as React from "react";
-import manageJss from "./manage-jss";
+import manageJss, { ComponentStyles, ComponentStyleSheetResolver } from "./manage-jss";
 import { stylesheetRegistry } from "./jss";
-import { ComponentStyles, ComponentStyleSheetResolver } from "@microsoft/fast-jss-manager";
 import * as ShallowRenderer from "react-test-renderer/shallow";
 import { configure, mount, render, shallow } from "enzyme";
 import * as Adapter from "enzyme-adapter-react-16";
