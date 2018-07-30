@@ -18,6 +18,7 @@ export interface ISiteNavManagedClasses {
     siteMenu_nav: string;
     siteMenu_nav__open: string;
     siteMenu_nav__close: string;
+    siteMenu_button: string;
     siteMenu_button__open: string;
     siteMenu_button__close: string;
     siteMenu_buttonGlyph__open: string;
@@ -75,41 +76,31 @@ const style: ComponentStyles<ISiteNavManagedClasses, IDevSiteDesignSystem> = {
         animationName: "SiteNavigationClose",
         transitionTimingFunction: "cubic-bezier(.26,1,.48,1)"
     },
-    siteMenu_button__open: {
+    siteMenu_button: {
         width: toPx(40),
         height: toPx(40),
         padding: toPx(7),
         border: "none",
         background: "none",
         transition: "all 0.1s ease-in-out",
+        "&:focus": {
+            border: (config: IDevSiteDesignSystem): string => {
+                return `${toPx(1)} solid ${config.brandColor}`;
+            },
+            outline: "none"
+        },
+    },
+    siteMenu_button__open: {
         "&:hover": {
             background: (config: IDevSiteDesignSystem): string => {
                 return config.brandColor;
             },
         },
-        "&:focus": {
-            border: (config: IDevSiteDesignSystem): string => {
-                return `${toPx(1)} solid ${config.brandColor}`;
-            },
-            outline: "none"
-        }
     },
     siteMenu_button__close: {
-        width: toPx(40),
-        height: toPx(40),
-        padding: toPx(7),
-        border: "none",
-        background: "none",
-        transition: "all 0.1s ease-in-out",
         "&:hover": {
             background: "rgba(0,0,0, .2)"
         },
-        "&:focus": {
-            border: (config: IDevSiteDesignSystem): string => {
-                return `${toPx(1)} solid ${config.brandColor}`;
-            },
-            outline: "none"
-        }
     },
     siteMenu_buttonGlyph__open: {
         fill: (config: IDevSiteDesignSystem): string => {
@@ -163,11 +154,13 @@ class SiteMenu extends React.Component<ISiteMenuProps & IManagedClasses<ISiteNav
     }
 
     private renderWaffleButton(state: string): JSX.Element {
+        const className: string = `${this.props.managedClasses.siteMenu_button} ${this.props.managedClasses[`siteMenu_button__${state}`]}`;
+
         return (
             <button
                 onClick={this.handleMenuVisibilityToggle}
                 aria-label={state}
-                className={this.props.managedClasses[`siteMenu_button__${state}`]}
+                className={className}
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
