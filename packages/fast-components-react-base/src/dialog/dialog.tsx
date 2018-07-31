@@ -9,7 +9,8 @@ import { IDialogClassNameContract, IManagedClasses } from "@microsoft/fast-compo
 class Dialog extends Foundation<IDialogHandledProps & IManagedClasses<IDialogClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
     public static defaultProps: Partial<IDialogHandledProps> = {
         contentHeight: "480px",
-        contentWidth: "640px"
+        contentWidth: "640px",
+        visible: false
     };
 
     protected handledProps: HandledProps<IDialogHandledProps & IManagedClasses<IDialogClassNameContract>> = {
@@ -22,7 +23,8 @@ class Dialog extends Foundation<IDialogHandledProps & IManagedClasses<IDialogCla
         focusElementRef: void 0,
         modal: void 0,
         managedClasses: void 0,
-        triggerElementRef: void 0
+        triggerElementRef: void 0,
+        visible: void 0
     };
 
     /**
@@ -33,6 +35,7 @@ class Dialog extends Foundation<IDialogHandledProps & IManagedClasses<IDialogCla
             <div
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
+                aria-hidden={!this.props.visible}
             >
                 {this.renderModalOverlay()}
                 <div {...this.generateContentRegionAttributes()}>
@@ -41,6 +44,8 @@ class Dialog extends Foundation<IDialogHandledProps & IManagedClasses<IDialogCla
             </div>
         );
     }
+
+    public componentDidMount(): void {}
 
     /**
      * Generates class names

@@ -49,6 +49,12 @@ export interface IDialogHandledProps {
      * from interacting with elements outside the dialog
      */
     modal?: boolean;
+
+    /**
+     * Sets the visibility of the dialog to assistive technologies
+     * If true, aria-hidden is false
+     */
+    visible?: boolean;
 }
 
 export interface IDialogUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
