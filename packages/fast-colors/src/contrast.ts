@@ -6,34 +6,39 @@ enum DirectionAdjustment {
     darken  
 }
 
+export type RoundingFunction = (value: number) => number;
+export type LuminocitySwitch = (a: any, b: any) => any;
+
 /**
  * Adjust the darkness/lightness of a foreground color so that it matches a target contrast ratio against a background color
 */
 export function contrast(targetRatio: number, foreground: string, background: string): string {
     const foregroundColor: any = Chroma(foreground);
-    const backgroundColor: any = Chroma(background);
-    const foregroundLuminance = foregroundColor.luminance();
-    const backgroundLuminance = backgroundColor.luminance();
+    const backgroundLuminance: number = Chroma(background).luminance();
+    const lumSwitch: LuminocitySwitch = luminanceSwitch(foregroundColor.luminance(), backgroundLuminance);
+    const roundingFunction: RoundingFunction = lumSwitch(Math.floor, Math.ceil);
 
-    // If our foreground is more luminous than the background, our target will also be more luminous so we should
-    // solve for L1. If the foreground is less luminous than the background, we should solve for L2. If they have
-    // the same luminosity, we need to determine if the luminosity is "bright" or "dark". If it is light, solve for L2,
-    // if it is dark, solve for L1. 
-    const targetLuminance: number = (
-        foregroundLuminance > backgroundLuminance
-            ? L1
+    return luminance(
+        lumSwitch(L1, L2)(targetRatio, backgroundLuminance),
+        foregroundColor,
+        lumSwitch(Math.ceil, Math.floor)
+    ).hex();
+}
+
+// If our foreground is more luminous than the background, our target will also be more luminous so we should
+// solve for L1. If the foreground is less luminous than the background, we should solve for L2. If they have
+// the same luminosity, we need to determine if the luminosity is "bright" or "dark". If it is light, solve for L2,
+// if it is dark, solve for L1. 
+function luminanceSwitch(foregroundLuminance: number, backgroundLuminance: number): LuminocitySwitch {
+    return (a: any, b: any): any => {
+        return foregroundLuminance > backgroundLuminance
+            ? a
             : foregroundLuminance !== backgroundLuminance
-            ? L2
+            ? b
             : foregroundLuminance > .5 
-            ? L2
-            : L1
-    )(targetRatio, backgroundLuminance);
-
-    let adjustedColor = luminance(targetLuminance, foregroundColor, Math.floor);
-
-    // console.log(luminance(targetLuminance, foregroundColor, Math.floor));
-
-    return adjustedColor.hex();
+            ? b
+            : a;
+    }
 }
 
 /**
@@ -66,7 +71,7 @@ function L2(r: number, L1: number): number {
  * it accepts a rounding function. This is necessary to prevent contrast ratios being slightly below
  * their target due to rounding RGB channels the wrong direction.
  */
-function luminance(targetLuminance: number, sourceColor: any, round?: (val: number) => number): any {
+function luminance(targetLuminance: number, sourceColor: any, round?: RoundingFunction): any {
     const sourceLuminocity: number = sourceColor.luminance();
     const fidelity: number = 1e-7;
     let maxItterations = 20;
