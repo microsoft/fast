@@ -104,22 +104,19 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
      */
     private getItemMaxHeight(): number {
         let itemMaxHeight: number = 0;
+        const children: HTMLElement = get(this.horizontalOverflowItemsRef, "current.childNodes");
 
-        if (!canUseDOM()) {
+        if (!canUseDOM() || !children) {
             return itemMaxHeight;
         }
 
-        const children: HTMLElement = get(this.horizontalOverflowItemsRef, "current.childNodes");
+        const childNodes: HTMLElement[] = Array.prototype.slice.call(children);
 
-        if (children) {
-            const childNodes: HTMLElement[] = Array.prototype.slice.call(children);
+        for (const childNode of childNodes) {
+            const childNodeHeight: number = getClientRectWithMargin(childNode).height;
 
-            for (const childNode of childNodes) {
-                const childNodeHeight: number = getClientRectWithMargin(childNode).height;
-
-                if (childNodeHeight > itemMaxHeight) {
-                    itemMaxHeight = childNodeHeight;
-                }
+            if (childNodeHeight > itemMaxHeight) {
+                itemMaxHeight = childNodeHeight;
             }
         }
 
@@ -160,6 +157,22 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
     }
 
     /**
+     * Gets the direction of the element
+     */
+    private getLTR(): Direction {
+        return !this.horizontalOverflowItemsRef.current
+            ? Direction.ltr
+            : getComputedStyle(this.horizontalOverflowItemsRef.current).direction === Direction.ltr
+            ? Direction.ltr
+            : Direction.rtl;
+    }
+
+    private isMovingNext(direction: ButtonDirection, ltr: Direction): boolean {
+        return (direction === ButtonDirection.next && ltr === Direction.ltr)
+            || (direction === ButtonDirection.previous && ltr === Direction.rtl);
+    }
+
+    /**
      * Gets the distance to scroll based on the direction and rtl
      */
     private getScrollDistanceFromDirection(
@@ -174,16 +187,9 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
 
         let distance: number = 0;
         const maxDistance: number = this.getMaxScrollDistance(availableWidth, itemWidths);
-        const ltr: Direction = !this.horizontalOverflowItemsRef.current
-            ? Direction.ltr
-            : getComputedStyle(this.horizontalOverflowItemsRef.current).direction === Direction.ltr
-            ? Direction.ltr
-            : Direction.rtl;
+        const ltr: Direction = this.getLTR();
 
-        if (
-            (direction === ButtonDirection.next && ltr === Direction.ltr) ||
-            (direction === ButtonDirection.previous && ltr === Direction.rtl)
-        ) {
+        if (this.isMovingNext(direction, ltr)) {
             distance = this.getWithinMaxDistance(distanceFromBeginning, availableWidth, itemWidths, maxDistance);
         } else {
             distance = this.getWithinMinDistance(distanceFromBeginning, availableWidth, itemWidths);
