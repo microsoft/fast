@@ -159,9 +159,9 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
     }
 
     /**
-     * Gets the distance to move the scroll location based on the direction
+     * Gets the distance to scroll based on the direction
      */
-    private getMoveDistanceFromDirection(
+    private getScrollDistanceFromDirection(
         direction: ButtonDirection,
         availableWidth: number,
         itemWidths: number[],
@@ -172,7 +172,7 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
         }
 
         let distance: number = 0;
-        const maxDistance: number = this.getMaxMoveDistance(availableWidth, itemWidths);
+        const maxDistance: number = this.getMaxScrollDistance(availableWidth, itemWidths);
 
         if (direction === ButtonDirection.next) {
             distance = this.getWithinMaxDistance(distanceFromBeginning, availableWidth, itemWidths, maxDistance);
@@ -218,7 +218,7 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
     }
 
     /**
-     * Gets the distance to move if the next button has been clicked
+     * Gets the distance to scroll if the next button has been clicked
      */
     private getNextDistance(availableWidth: number, itemWidths: number[], distanceFromBeginning: number): number {
         let distance: number = 0;
@@ -235,10 +235,10 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
     }
 
     /**
-     * Gets the distance to move if the previous button has been clicked
+     * Gets the distance to scroll if the previous button has been clicked
      */
     private getPreviousDistance(availableWidth: number, itemWidths: number[], distanceFromBeginning: number): number {
-        let distance: number = this.getMaxMoveDistance(availableWidth, itemWidths) + availableWidth;
+        let distance: number = this.getMaxScrollDistance(availableWidth, itemWidths) + availableWidth;
 
         for (let i: number = itemWidths.length - 1; i >= 0; i--) {
             if (distance - itemWidths[i] < distanceFromBeginning - availableWidth) {
@@ -254,7 +254,7 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
     /**
      * Gets the maximum distance that can be scrolled
      */
-    private getMaxMoveDistance(availableWidth: number, itemWidths: number[]): number {
+    private getMaxScrollDistance(availableWidth: number, itemWidths: number[]): number {
         const totalWidth: number = itemWidths.reduce((a: number, b: number) => a + b);
         return totalWidth - availableWidth;
     }
@@ -289,8 +289,8 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
             itemWidths.push(getClientRectWithMargin(item).width);
         }
 
-        this.setMoveDistance(
-            this.getMoveDistanceFromDirection(
+        this.setScrollDistance(
+            this.getScrollDistanceFromDirection(
                 direction,
                 availableWidth,
                 itemWidths,
@@ -302,7 +302,7 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
     /**
      * Sets the scroll distance for the items list
      */
-    private setMoveDistance(updatedDistance: number): void {
+    private setScrollDistance(updatedDistance: number): void {
         this.scrollLeft(
             this.horizontalOverflowItemsRef.current,
             updatedDistance,

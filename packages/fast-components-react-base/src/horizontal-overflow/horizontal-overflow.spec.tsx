@@ -98,7 +98,7 @@ describe("horizontal overflow", (): void => {
 
         expect(
             renderedWithImages.instance()[
-                "getMoveDistanceFromDirection"
+                "getScrollDistanceFromDirection"
             ](
                 ButtonDirection.next,
                 50,
@@ -110,7 +110,7 @@ describe("horizontal overflow", (): void => {
         // reaches the max distance and uses that instead
         expect(
             renderedWithImages.instance()[
-                "getMoveDistanceFromDirection"
+                "getScrollDistanceFromDirection"
             ](
                 ButtonDirection.next,
                 40,
@@ -121,7 +121,7 @@ describe("horizontal overflow", (): void => {
 
         expect(
             renderedWithImages.instance()[
-                "getMoveDistanceFromDirection"
+                "getScrollDistanceFromDirection"
             ](
                 ButtonDirection.next,
                 40,
@@ -132,7 +132,7 @@ describe("horizontal overflow", (): void => {
 
         expect(
             renderedWithImages.instance()[
-                "getMoveDistanceFromDirection"
+                "getScrollDistanceFromDirection"
             ](
                 ButtonDirection.next,
                 40,
@@ -150,7 +150,7 @@ describe("horizontal overflow", (): void => {
 
         expect(
             renderedWithImages.instance()[
-                "getMoveDistanceFromDirection"
+                "getScrollDistanceFromDirection"
             ](
                 ButtonDirection.previous,
                 50,
@@ -161,7 +161,7 @@ describe("horizontal overflow", (): void => {
 
         expect(
             renderedWithImages.instance()[
-                "getMoveDistanceFromDirection"
+                "getScrollDistanceFromDirection"
             ](
                 ButtonDirection.previous,
                 50,
@@ -232,7 +232,7 @@ describe("horizontal overflow", (): void => {
 
         expect(
             renderedWithImagesAndNextAndPrevious.instance()[
-                "getMoveDistanceFromDirection"
+                "getScrollDistanceFromDirection"
             ]("next", 500, [], 0)
         ).toBe(0);
     });
