@@ -821,7 +821,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     }
 
     private renderMeasureSpan(ref: React.RefObject<HTMLSpanElement>, displayString?: string): JSX.Element {
-        if(displayString){
+        if (displayString) {
             return (
                 <span ref={ref} aria-hidden="true" className={this.props.managedClasses.site_measureSpan}>
                     {displayString}
