@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import TocMenu from "./toc-menu";
-import { IDevSiteDesignSystem } from "../design-system";
+import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 
@@ -44,7 +44,7 @@ const style: ComponentStyles<ITocItemManagedClasses, IDevSiteDesignSystem> = {
         },
         "&:focus": {
             border: (config: IDevSiteDesignSystem): string => {
-                return `${toPx(1)} solid ${config.brandColor}`;
+                return `${toPx(1)} solid ${config.brandColor || devSiteDesignSystemDefaults.brandColor}`;
             }
         }
     },

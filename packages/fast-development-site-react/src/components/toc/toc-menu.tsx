@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { IDevSiteDesignSystem } from "../design-system";
+import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import Toc from "./";
@@ -34,7 +34,6 @@ const style: ComponentStyles<ITocMenuManagedClasses, IDevSiteDesignSystem> = {
         fontSize: toPx(14),
         padding: `${toPx(9)} ${toPx(31)}`,
         textAlign: "left",
-
         "&[aria-expanded='true']": {
             "&::after": {
                 content: `url('data:image/svg+xml;base64,${dropdownActive}')`
@@ -46,7 +45,7 @@ const style: ComponentStyles<ITocMenuManagedClasses, IDevSiteDesignSystem> = {
         },
         "&:focus": {
             border: (config: IDevSiteDesignSystem): string => {
-                return `${toPx(1)} solid ${config.brandColor}`;
+                return `${toPx(1)} solid ${config.brandColor || devSiteDesignSystemDefaults.brandColor}`;
             }
         },
         "&::after": {
