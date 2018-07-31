@@ -4,6 +4,9 @@ export { ButtonExamples };
 import CheckboxExamples from "../src/checkbox/examples.data";
 export { CheckboxExamples };
 
+import HorizontalOverflowExamples from "../src/horizontal-overflow/examples.data";
+export { HorizontalOverflowExamples };
+
 import HypertextExamples from "../src/hypertext/examples.data";
 export { HypertextExamples };
 
