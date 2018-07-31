@@ -65,6 +65,7 @@ export { TypographyStyles };
 /**
  * Export utilities
  */
+export * from "./utilities/acrylic";
 export * from "./utilities/breakpoints";
 export * from "./utilities/fonts";
 export * from "./utilities/keyof-to-type";

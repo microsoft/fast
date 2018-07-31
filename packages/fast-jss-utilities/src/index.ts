@@ -1,6 +1,7 @@
 /**
  * Export utilities
  */
+export * from "./acrylic";
 export * from "./localization";
 export * from "./max-lines";
 export * from "./screen-reader";
