@@ -142,7 +142,7 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
     }
 
     /**
-     * Gets the children displayed is items to be scrolled
+     * Gets the children displayed as items to be scrolled
      */
     private getItems(): JSX.Element[] {
         const previousButton: JSX.Element = this.getChildBySlot(ButtonDirection.previous);
@@ -160,7 +160,7 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
     }
 
     /**
-     * Gets the distance to scroll based on the direction
+     * Gets the distance to scroll based on the direction and rtl
      */
     private getScrollDistanceFromDirection(
         direction: ButtonDirection,
@@ -281,7 +281,7 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
     }
 
     /**
-     * Handler for the click event
+     * Handler for the click event fired after next or previous has been clicked
      */
     private handleClick(direction: ButtonDirection): void {
         if (!canUseDOM()) {
