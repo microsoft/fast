@@ -3,6 +3,7 @@ import { get } from "lodash-es";
 import { canUseDOM } from "exenv-es6";
 import { IHorizontalOverflowClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { getClientRectWithMargin } from "@microsoft/fast-web-utilities";
+import { Direction } from "@microsoft/fast-application-utilities";
 import Foundation, { HandledProps } from "../foundation";
 import { HorizontalOverflowProps, IHorizontalOverflowHandledProps } from "./horizontal-overflow.props";
 
@@ -43,31 +44,24 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
     public render(): React.ReactElement<HTMLDivElement> {
         return (
             <div
+                {...this.unhandledProps()}
                 className={this.props.managedClasses.horizontalOverflow}
                 onLoad={this.itemsOnLoad}
             >
                 <div style={{height: `${this.state.itemsHeight}px`, position: "relative", overflow: "hidden"}}>
                     <ul
                         className={this.props.managedClasses.horizontalOverflow_items}
-                        style={{position: "relative", whiteSpace: "nowrap", overflowX: "scroll", padding: 0, margin: 0}}
+                        style={this.getListStyle()}
                         ref={this.horizontalOverflowItemsRef}
                     >
                         {this.getItems()}
                     </ul>
                 </div>
-                <div className={this.props.managedClasses.horizontalOverflow_previous}>
-                    <div>
-                        <div onClick={this.handlePreviousClick}>
-                            {this.getChildBySlot(ButtonDirection.previous)}
-                        </div>
-                    </div>
+                <div className={this.props.managedClasses.horizontalOverflow_previous} onClick={this.handlePreviousClick}>
+                    {this.getChildBySlot(ButtonDirection.previous)}
                 </div>
-                <div className={this.props.managedClasses.horizontalOverflow_next}>
-                    <div>
-                        <div onClick={this.handleNextClick}>
-                            {this.getChildBySlot(ButtonDirection.next)}
-                        </div>
-                    </div>
+                <div className={this.props.managedClasses.horizontalOverflow_next} onClick={this.handleNextClick}>
+                    {this.getChildBySlot(ButtonDirection.next)}
                 </div>
             </div>
         );
@@ -83,6 +77,13 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
         this.setState({
             itemsHeight
         });
+    }
+
+    /**
+     * Gets the style for the `ul` element containing the items
+     */
+    private getListStyle(): React.CSSProperties {
+        return {position: "relative", whiteSpace: "nowrap", overflowX: "scroll", padding: 0, margin: 0};
     }
 
     /**
@@ -167,14 +168,22 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
         itemWidths: number[],
         distanceFromBeginning: number
     ): number {
-        if (itemWidths.length === 0) {
+        if (itemWidths.length === 0 || !canUseDOM()) {
             return 0;
         }
 
         let distance: number = 0;
         const maxDistance: number = this.getMaxScrollDistance(availableWidth, itemWidths);
+        const ltr: Direction = !this.horizontalOverflowItemsRef.current
+            ? Direction.ltr
+            : getComputedStyle(this.horizontalOverflowItemsRef.current).direction === Direction.ltr
+            ? Direction.ltr
+            : Direction.rtl;
 
-        if (direction === ButtonDirection.next) {
+        if (
+            (direction === ButtonDirection.next && ltr === Direction.ltr) ||
+            (direction === ButtonDirection.previous && ltr === Direction.rtl)
+        ) {
             distance = this.getWithinMaxDistance(distanceFromBeginning, availableWidth, itemWidths, maxDistance);
         } else {
             distance = this.getWithinMinDistance(distanceFromBeginning, availableWidth, itemWidths);
@@ -186,35 +195,32 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
     /**
      * Gets the distance unless it is over the maximum distance, then use maximum distance instead
      */
-    private getWithinMaxDistance(distanceFromBeginning: number, availableWidth: number, itemWidths: number[], maxDistance: number): number {
-        let distance: number = 0;
-
+    private getWithinMaxDistance(
+        distanceFromBeginning: number,
+        availableWidth: number,
+        itemWidths: number[],
+        maxDistance: number
+    ): number {
         if (distanceFromBeginning === maxDistance) {
-            distance = maxDistance;
-        } else {
-            distance = this.getNextDistance(availableWidth, itemWidths, distanceFromBeginning);
-
-            if (distance >= maxDistance) {
-                distance = maxDistance;
-            }
+            return maxDistance;
         }
 
-        return distance;
+        const distance: number = this.getNextDistance(availableWidth, itemWidths, distanceFromBeginning);
+
+        return distance >= maxDistance ? maxDistance : distance;
     }
 
     /**
      * Gets the distance unless it is under the minimum distance, then use minimum distance instead
      */
     private getWithinMinDistance(distanceFromBeginning: number, availableWidth: number, itemWidths: number[]): number {
-        let distance: number = 0;
-
         if (distanceFromBeginning === 0) {
-            distance = 0;
-        } else {
-            distance = this.getPreviousDistance(availableWidth, itemWidths, distanceFromBeginning);
+            return 0;
         }
 
-        return distance;
+        const distance: number = this.getPreviousDistance(availableWidth, itemWidths, distanceFromBeginning);
+
+        return distance <= 0 ? 0 : distance;
     }
 
     /**
@@ -256,6 +262,7 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
      */
     private getMaxScrollDistance(availableWidth: number, itemWidths: number[]): number {
         const totalWidth: number = itemWidths.reduce((a: number, b: number) => a + b);
+
         return totalWidth - availableWidth;
     }
 

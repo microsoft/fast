@@ -210,37 +210,27 @@ exports[`horizontal overflow snapshot Horizontal overflow: 0 1`] = `
   </div>
   <div
     className="horizontal-overflow_previous"
+    onClick={[Function]}
   >
-    <div>
-      <div
-        onClick={[Function]}
-      >
-        <button
-          className="button"
-          href={null}
-          slot="previous"
-        >
-          previous
-        </button>
-      </div>
-    </div>
+    <button
+      className="button"
+      href={null}
+      slot="previous"
+    >
+      previous
+    </button>
   </div>
   <div
     className="horizontal-overflow_next"
+    onClick={[Function]}
   >
-    <div>
-      <div
-        onClick={[Function]}
-      >
-        <button
-          className="button"
-          href={null}
-          slot="next"
-        >
-          next
-        </button>
-      </div>
-    </div>
+    <button
+      className="button"
+      href={null}
+      slot="next"
+    >
+      next
+    </button>
   </div>
 </div>
 `;
@@ -455,29 +445,19 @@ exports[`horizontal overflow snapshot Horizontal overflow: 1 1`] = `
   </div>
   <div
     className="horizontal-overflow_previous"
-  >
-    <div>
-      <div
-        onClick={[Function]}
-      />
-    </div>
-  </div>
+    onClick={[Function]}
+  />
   <div
     className="horizontal-overflow_next"
+    onClick={[Function]}
   >
-    <div>
-      <div
-        onClick={[Function]}
-      >
-        <button
-          className="button"
-          href={null}
-          slot="next"
-        >
-          next
-        </button>
-      </div>
-    </div>
+    <button
+      className="button"
+      href={null}
+      slot="next"
+    >
+      next
+    </button>
   </div>
 </div>
 `;
@@ -692,30 +672,20 @@ exports[`horizontal overflow snapshot Horizontal overflow: 2 1`] = `
   </div>
   <div
     className="horizontal-overflow_previous"
+    onClick={[Function]}
   >
-    <div>
-      <div
-        onClick={[Function]}
-      >
-        <button
-          className="button"
-          href={null}
-          slot="previous"
-        >
-          previous
-        </button>
-      </div>
-    </div>
+    <button
+      className="button"
+      href={null}
+      slot="previous"
+    >
+      previous
+    </button>
   </div>
   <div
     className="horizontal-overflow_next"
-  >
-    <div>
-      <div
-        onClick={[Function]}
-      />
-    </div>
-  </div>
+    onClick={[Function]}
+  />
 </div>
 `;
 
@@ -929,22 +899,12 @@ exports[`horizontal overflow snapshot Horizontal overflow: 3 1`] = `
   </div>
   <div
     className="horizontal-overflow_previous"
-  >
-    <div>
-      <div
-        onClick={[Function]}
-      />
-    </div>
-  </div>
+    onClick={[Function]}
+  />
   <div
     className="horizontal-overflow_next"
-  >
-    <div>
-      <div
-        onClick={[Function]}
-      />
-    </div>
-  </div>
+    onClick={[Function]}
+  />
 </div>
 `;
 
@@ -977,21 +937,11 @@ exports[`horizontal overflow snapshot Horizontal overflow: 4 1`] = `
   </div>
   <div
     className="horizontal-overflow_previous"
-  >
-    <div>
-      <div
-        onClick={[Function]}
-      />
-    </div>
-  </div>
+    onClick={[Function]}
+  />
   <div
     className="horizontal-overflow_next"
-  >
-    <div>
-      <div
-        onClick={[Function]}
-      />
-    </div>
-  </div>
+    onClick={[Function]}
+  />
 </div>
 `;
