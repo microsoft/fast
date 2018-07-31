@@ -319,9 +319,12 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         super(props);
 
         this.localeSelect = React.createRef();
-        this.themeSelect = React.createRef();
         this.localeRuler = React.createRef();
-        this.themeRuler = React.createRef();
+
+        if (Array.isArray(this.props.themes) && this.props.themes.length) {
+            this.themeSelect = React.createRef();
+            this.themeRuler = React.createRef();
+        }
 
         this.initialPath = this.getInitialPath();
 
@@ -828,16 +831,16 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     }
 
     private calculateSelectWidth(refRuler: React.RefObject<HTMLSpanElement>, ref: React.RefObject<HTMLSelectElement>): number {
-        if (!!refRuler && !!ref) {
-            const ruler: HTMLElement = refRuler.current;
-            console.log(ref, "ref");
-            console.log(refRuler, "ref Ruler");
-            const computedStyle: CSSStyleDeclaration = window.getComputedStyle(ref.current);
-            const paddingLeft: number = convertStylePropertyPixelsToNumber(computedStyle, "padding-left");
-            const paddingRight: number = convertStylePropertyPixelsToNumber(computedStyle, "padding-Right");
-
-            return ruler.offsetWidth + paddingLeft + paddingRight;
+        if (!refRuler && !ref) {
+            return;
         }
+
+        const ruler: HTMLElement = refRuler.current;
+        const computedStyle: CSSStyleDeclaration = window.getComputedStyle(ref.current);
+        const paddingLeft: number = convertStylePropertyPixelsToNumber(computedStyle, "padding-left");
+        const paddingRight: number = convertStylePropertyPixelsToNumber(computedStyle, "padding-Right");
+
+        return ruler.offsetWidth + paddingLeft + paddingRight;
     }
 
     private getClassNames(): string {
