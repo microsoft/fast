@@ -4,6 +4,7 @@ import {
     ComponentTree,
     IChildOptionItem,
     IComponentItem,
+    IFormLocation,
     IFormProps,
     IFormState,
     LocationOnChange
@@ -52,7 +53,6 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
 
         this.state = {
             titleProps: props.schema && props.schema.title ? props.schema.title : this.untitled,
-            schema: this.props.schema,
             activeSchemaLocation: "",
             activeDataLocation: "",
             dataCache: this.props.data,
@@ -86,7 +86,7 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
             nextProps,
             this.props.data !== nextProps.data,
             this.props.schema.id !== nextProps.schema.id,
-            this.props.location !== nextProps.location
+            (this.props.location !== nextProps.location && !this.isChildLocation(nextProps.location))
         );
 
         if (state) {
@@ -114,6 +114,7 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
             state = Object.assign({}, state, this.getStateWithUpdatedFormProps(props, state, this.rootComponentTrackerLocation));
         }
 
+        // Locations will only be updated when not involving children
         if (updateLocation) {
             state = Object.assign({}, state, this.getStateWithUpdatedLocation(props, state, this.rootComponentTrackerLocation));
         }
@@ -121,6 +122,10 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
         if (updateData || updateSchema || updateLocation) {
             return state;
         }
+    }
+
+    private isChildLocation(location: IFormLocation): boolean {
+        return location && location.dataLocation.slice(location.dataLocation.length - 8, location.dataLocation.length) === "children";
     }
 
     /**
@@ -144,7 +149,6 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
     private getStateWithUpdatedFormProps(props: IFormProps, state: Partial<IFormState>, rootLocation: IComponentItem): Partial<IFormState> {
         const schemaState: Partial<IFormState> = {
             titleProps: props.schema && props.schema.title ? props.schema.title : this.untitled,
-            schema: props.schema,
             activeSchemaLocation: "",
             activeDataLocation: "",
             dataCache: cloneDeep(props.data),
@@ -161,7 +165,6 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
         const locationState: Partial<IFormState> = {
             activeSchemaLocation: props.location.schemaLocation,
             activeDataLocation: props.location.dataLocation,
-            schema: props.schema,
             location: {
                 dataLocation: props.location.dataLocation,
                 schemaLocation: props.location.schemaLocation,
@@ -230,12 +233,19 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
      * Generate the section to be shown
      */
     private generateSection(): JSX.Element {
+        const lastComponentTrackerIndex: number = this.state.componentTracker.length - 1;
+        const schema: any = isRootLocation(this.state.activeSchemaLocation)
+            ? this.state.componentTracker[lastComponentTrackerIndex].schema
+            : get(
+                this.state.componentTracker[lastComponentTrackerIndex].schema,
+                this.state.activeSchemaLocation
+            ) || this.state.componentTracker[lastComponentTrackerIndex].schema;
+
         const sectionProps: IFormSectionProps = {
-            schema: isRootLocation(this.state.activeSchemaLocation)
-                ? this.state.schema
-                : get(this.state.schema, this.state.activeSchemaLocation) || this.state.schema,
+            schema,
             onChange: this.handleOnChange,
             onUpdateActiveSection: this.handleUpdateActiveSection,
+            onUpdateActiveSectionComponentTracker: this.handleUpdateActiveChildrenSection,
             data: this.getData("data", "props"),
             dataCache: this.getData("dataCache", "state"),
             schemaLocation: this.state.activeSchemaLocation,
@@ -297,21 +307,52 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
     /**
      * Handles an update to the active section and component
      */
-    private handleUpdateActiveSection = (schemaLocation: string, dataLocation: string, schema: any): void => {
+    private handleUpdateActiveSection = (schemaLocation: string, dataLocation: string, childSchema?: any): void => {
         const state: Partial<IFormState> = getActiveComponentAndSection(
             schemaLocation,
             dataLocation,
-            schema
+            this.props.schema
         );
+        let schema: any = get(this.props.schema, schemaLocation);
+        const normalizedSchemaLocation: string = schema && schema.type === "array" ? `${schemaLocation}.items` : schemaLocation;
 
-        state.componentTracker = getComponentTracker(
-            schemaLocation,
-            dataLocation,
-            schema,
-            this.state.componentTracker
-        );
+        schema = childSchema
+            ? childSchema
+            : schemaLocation === ""
+            ? this.props.schema
+            : get(this.props.schema, normalizedSchemaLocation);
+
+        state.componentTracker = this.handleAddChildComponentToComponentTracker(schemaLocation, dataLocation, schema);
 
         this.setState((state as IFormState));
+    }
+
+    private handleUpdateActiveChildrenSection = (schemaLocation: string, dataLocation: string, childSchema: any): void => {
+        const state: Partial<IFormState> = getActiveComponentAndSection(
+            schemaLocation,
+            dataLocation,
+            this.props.schema
+        );
+
+        state.componentTracker = this.handleAddChildComponentToComponentTracker(schemaLocation, dataLocation, childSchema);
+
+        this.setState((state as IFormState));
+    }
+
+    /**
+     * Handles an update involving a subschema
+     */
+    private handleAddChildComponentToComponentTracker = (
+        schemaLocation: string,
+        dataLocation: string,
+        subSchema: any
+    ): IComponentItem[] => {
+        return getComponentTracker(
+            schemaLocation,
+            dataLocation,
+            subSchema,
+            this.state.componentTracker
+        );
     }
 }
 

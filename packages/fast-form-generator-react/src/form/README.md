@@ -14,10 +14,10 @@ It controls:
 - **data** (*The data to map to the form*)
 - **onChange** (*The onChange callback to fire when the data is changed*)
 - **childOptions** (*The options to allow as children*)
+- **location** (*The location which includes `dataLocation`, `schemaLocation` and `onChange` which can have a callback passed to it that accepts two arguments, the `dataLocation` and `schemaLocation`*)
 - **config** (*The layout configuration*)
 
 #### State:
-- **schema** (*The current subset of the schema*)
 - **activeSchemaLocation** (*The current schema location -- using lodash location syntax*)
 - **activeDataLocation** (*The current data location -- using lodash location syntax*)
 - **dataCache** (*The dataCache which will store data and use it to match to the component when switching between subschemas*)

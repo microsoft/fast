@@ -74,11 +74,6 @@ export interface IFormState {
     titleProps: string;
 
     /**
-     * The current schema being edited
-     */
-    schema: any;
-
-    /**
      * Current active schema location
      */
     activeSchemaLocation: string;

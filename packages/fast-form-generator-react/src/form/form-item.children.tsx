@@ -6,7 +6,7 @@ import { SortableListItem, sortingProps } from "./sorting";
 import { isRootLocation } from "./form.utilities";
 import { generateExampleData } from "./form-section.utilities";
 import { updateActiveSection } from "./form-section.props";
-import { ComponentTree, DataOnChange } from "./form.props";
+import { ComponentTree, DataOnChange, IFormLocation } from "./form.props";
 import { reactChildrenStringSchema } from "./form-item.children.text";
 import styles from "./form-item.children.style";
 import { IFormItemChildrenClassNameContract } from "../class-name-contracts/";
@@ -40,9 +40,19 @@ export interface IFormItemChildrenProps {
     onUpdateActiveSection: updateActiveSection;
 
     /**
+     * The callback for adding a children subcomponent to the component tracker
+     */
+    onUpdateActiveSectionComponentTracker: updateActiveSection;
+
+    /**
      * The potential children to be added
      */
     childOptions: any[];
+
+    /**
+     * The custom passed location of a subsection to initially activate
+     */
+    location?: IFormLocation;
 }
 
 /**
@@ -164,15 +174,19 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
     private getDataLocation(component: any, index: number): string {
         const propLocation: string = typeof component === "string" ? "" : ".props";
 
+        return `${this.getDataLocationWithoutProps(index)}${propLocation}`;
+    }
+
+    private getDataLocationWithoutProps(index?: number): string {
         if (typeof index === "number") {
             return isRootLocation(this.props.dataLocation)
-                ? `children[${index}]${propLocation}`
-                : `${this.props.dataLocation}.children[${index}]${propLocation}`;
+                ? `children[${index}]`
+                : `${this.props.dataLocation}.children[${index}]`;
         }
 
         return isRootLocation(this.props.dataLocation)
-            ? `children${propLocation}`
-            : `${this.props.dataLocation}.children${propLocation}`;
+            ? `children`
+            : `${this.props.dataLocation}.children`;
     }
 
     /**
@@ -192,7 +206,12 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
             schema = reactChildrenStringSchema;
         }
 
-        this.props.onUpdateActiveSection("", dataLocation, schema);
+        if (this.props.location && this.props.location.onChange) {
+            this.props.onUpdateActiveSectionComponentTracker("", dataLocation, schema);
+            this.props.location.onChange("", this.getDataLocationWithoutProps());
+        } else {
+            this.props.onUpdateActiveSection("", dataLocation, schema);
+        }
     }
 
     /**
@@ -230,7 +249,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
                 case "add":
                     this.onAddComponent(componentObj);
 
-                    // If we"re searching for components, re-focus the text input
+                    // If we're searching for components, re-focus the text input
                     if (this.state.childrenSearchTerm !== "" && this.searchRef instanceof HTMLInputElement) {
                         this.searchRef.focus();
                     }

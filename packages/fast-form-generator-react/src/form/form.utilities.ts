@@ -226,7 +226,15 @@ export function isRootLocation(location: string): boolean {
 }
 
 export function getComponentTrackerByLocation(props: IFormProps, rootLocation: IComponentItem): IComponentItem[] {
+    let schema: any = props.location && props.location.schemaLocation !== ""
+        ? get(props.schema, props.location.schemaLocation)
+        : props.schema;
+
+    if (schema && schema.type === "array") {
+        schema = schema.items;
+    }
+
     return typeof props.location !== "undefined" // Location has been passed
-        ? getComponentTracker(props.location.schemaLocation, props.location.dataLocation, props.schema, [rootLocation])
+        ? getComponentTracker(props.location.schemaLocation, props.location.dataLocation, schema, [rootLocation])
         : [rootLocation];
 }

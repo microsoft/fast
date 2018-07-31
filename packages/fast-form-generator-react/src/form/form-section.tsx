@@ -155,7 +155,7 @@ class FormSection extends React.Component<IFormSectionProps & IManagedClasses<IF
      * Handles updating to another active section
      */
     private handleUpdateSection(schemaLocation: string, dataLocation: string): void {
-        this.props.onUpdateActiveSection(schemaLocation, dataLocation, this.props.schema);
+        this.props.onUpdateActiveSection(schemaLocation, dataLocation);
     }
 
     /**
@@ -490,6 +490,8 @@ class FormSection extends React.Component<IFormSectionProps & IManagedClasses<IF
                     onChange={this.props.onChange}
                     childOptions={this.props.childOptions}
                     onUpdateActiveSection={this.props.onUpdateActiveSection}
+                    onUpdateActiveSectionComponentTracker={this.props.onUpdateActiveSectionComponentTracker}
+                    location={this.props.location}
                 />
             );
         }

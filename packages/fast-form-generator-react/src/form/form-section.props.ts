@@ -91,6 +91,12 @@ export interface IFormSectionProps {
     onUpdateActiveSection: updateActiveSection;
 
     /**
+     * The update event to trigger a new active section to the component tracker
+     * used if the form is controlled
+     */
+    onUpdateActiveSectionComponentTracker?: updateActiveSection;
+
+    /**
      * The string to be used if a prop is untitled
      */
     untitled: string;
