@@ -85,6 +85,9 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
         });
     }
 
+    /**
+     * onLoad handler to make sure any children affecting height are accounted for
+     */
     private itemsOnLoad = (): void => {
         const itemsHeight: number = this.getItemMaxHeight();
 
@@ -95,6 +98,9 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
         }
     }
 
+    /**
+     * Identifies and returns the tallest child height
+     */
     private getItemMaxHeight(): number {
         let itemMaxHeight: number = 0;
 
@@ -119,6 +125,9 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
         return itemMaxHeight;
     }
 
+    /**
+     * Gets children by slot name
+     */
     private getChildBySlot(slot: ButtonDirection): JSX.Element {
         let childBySlot: JSX.Element = null;
 
@@ -131,6 +140,9 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
         return childBySlot;
     }
 
+    /**
+     * Gets the children displayed is items to be scrolled
+     */
     private getItems(): JSX.Element[] {
         const previousButton: JSX.Element = this.getChildBySlot(ButtonDirection.previous);
         const nextButton: JSX.Element = this.getChildBySlot(ButtonDirection.next);
@@ -146,6 +158,9 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
         });
     }
 
+    /**
+     * Gets the distance to move the scroll location based on the direction
+     */
     private getMoveDistanceFromDirection(
         direction: ButtonDirection,
         availableWidth: number,
@@ -168,6 +183,9 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
         return distance;
     }
 
+    /**
+     * Gets the distance unless it is over the maximum distance, then use maximum distance instead
+     */
     private getWithinMaxDistance(distanceFromBeginning: number, availableWidth: number, itemWidths: number[], maxDistance: number): number {
         let distance: number = 0;
 
@@ -184,6 +202,9 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
         return distance;
     }
 
+    /**
+     * Gets the distance unless it is under the minimum distance, then use minimum distance instead
+     */
     private getWithinMinDistance(distanceFromBeginning: number, availableWidth: number, itemWidths: number[]): number {
         let distance: number = 0;
 
@@ -196,6 +217,9 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
         return distance;
     }
 
+    /**
+     * Gets the distance to move if the next button has been clicked
+     */
     private getNextDistance(availableWidth: number, itemWidths: number[], distanceFromBeginning: number): number {
         let distance: number = 0;
 
@@ -210,6 +234,9 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
         return distance;
     }
 
+    /**
+     * Gets the distance to move if the previous button has been clicked
+     */
     private getPreviousDistance(availableWidth: number, itemWidths: number[], distanceFromBeginning: number): number {
         let distance: number = this.getMaxMoveDistance(availableWidth, itemWidths) + availableWidth;
 
@@ -224,19 +251,31 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
         return distance;
     }
 
+    /**
+     * Gets the maximum distance that can be scrolled
+     */
     private getMaxMoveDistance(availableWidth: number, itemWidths: number[]): number {
         const totalWidth: number = itemWidths.reduce((a: number, b: number) => a + b);
         return totalWidth - availableWidth;
     }
 
+    /**
+     * Handler for the previous click event
+     */
     private handlePreviousClick = (): void => {
         this.handleClick(ButtonDirection.previous);
     }
 
+    /**
+     * Handler for the next click event
+     */
     private handleNextClick = (): void => {
         this.handleClick(ButtonDirection.next);
     }
 
+    /**
+     * Handler for the click event
+     */
     private handleClick(direction: ButtonDirection): void {
         if (!canUseDOM()) {
             return;
@@ -260,6 +299,9 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
         );
     }
 
+    /**
+     * Sets the scroll distance for the items list
+     */
     private setMoveDistance(updatedDistance: number): void {
         this.scrollLeft(
             this.horizontalOverflowItemsRef.current,
@@ -269,6 +311,7 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
     }
 
     /**
+     * Easing animation
      * Inspired by the github gist contribution: https://gist.github.com/andjosh/6764939
      */
     private easeInOutQuad(
@@ -288,6 +331,9 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
         return -changeInValue / 2 * (currentTime * (currentTime - 2) - 1) + startValue;
     }
 
+    /**
+     * Scrolls the container for the items list
+     */
     private scrollLeft(element: HTMLUListElement, left: number, duration: number): void {
         const start: number = element.scrollLeft;
         const change: number = left - start;
