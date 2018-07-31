@@ -284,10 +284,6 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
      * Handler for the click event fired after next or previous has been clicked
      */
     private handleClick(direction: ButtonDirection): void {
-        if (!canUseDOM()) {
-            return;
-        }
-
         const availableWidth: number = getClientRectWithMargin(this.horizontalOverflowItemsRef.current).width;
         const items: HTMLElement[] = Array.prototype.slice.call(this.horizontalOverflowItemsRef.current.childNodes);
         const itemWidths: number[] = [];

@@ -44,20 +44,6 @@ describe("horizontal overflow server-side", (): void => {
 
         expect(renderedWithImagesAndNextAndPrevious).not.toBe(undefined);
     });
-    test("should not error when trying to fire a click on server-side", () => {
-        const renderedWithImagesAndNextAndPrevious: any = shallow(
-            <HorizontalOverflow managedClasses={managedClasses}>
-                <button id="testButtonNext" slot="next">next</button>
-                <button id="testButtonPrevious" slot="previous">previous</button>
-                {imageSet1}
-            </HorizontalOverflow>
-        );
-
-        /* tslint:disable:no-string-literal */
-        expect(renderedWithImagesAndNextAndPrevious.instance()["handleNextClick"]()).toBe(undefined);
-        expect(renderedWithImagesAndNextAndPrevious.instance()["handlePreviousClick"]()).toBe(undefined);
-        /* tslint:enable:no-string-literal */
-    });
     test("should render to string for server side rendering", () => {
         const renderedWithImagesAndNextAndPrevious: string = ReactDOMServer.renderToString(
             <HorizontalOverflow managedClasses={managedClasses}>
