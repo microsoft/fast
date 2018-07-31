@@ -2,7 +2,7 @@ import * as React from "react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { Link, withRouter } from "react-router-dom";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
-import { IDevSiteDesignSystem } from "../design-system";
+import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
 
 export interface IComponentViewToggleClassNameContract {
     componentViewToggle: string;
@@ -37,7 +37,7 @@ const styles: ComponentStyles<IComponentViewToggleClassNameContract, IDevSiteDes
         "&:focus": {
             outline: "none",
             border: (config: IDevSiteDesignSystem): string => {
-                return `${toPx(1)} solid ${config.brandColor}`;
+                return `${toPx(1)} solid ${config.brandColor || devSiteDesignSystemDefaults.brandColor}`;
             }
         }
     }

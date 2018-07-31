@@ -1,6 +1,6 @@
 import * as React from "react";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import { IDevSiteDesignSystem } from "../design-system";
+import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
 import { Link, withRouter } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
 import { ComponentViewTypes } from "./component-view";
@@ -78,7 +78,7 @@ function menuButtonBase(): ICSSRules<IDevSiteDesignSystem> {
         "&:focus": {
             outline: "none",
             border: (config: IDevSiteDesignSystem): string => {
-                return `${toPx(1)} solid ${config.brandColor}`;
+                return `${toPx(1)} solid ${config.brandColor || devSiteDesignSystemDefaults.brandColor}`;
             }
         }
     };
