@@ -32,7 +32,7 @@ export interface IAppState {
 const themes: ITheme[] = [
     {id: "Foo", displayName: "Foo", background: "#000"},
     {id: "Bar", displayName: "Bar", background: "#FFF"},
-    {id: "Rumple", displayName: "Rumple", background: "#333"}
+    {id: "Rumple Stumple Bumble", displayName: "Rumple Stumple Bumble", background: "#333"}
 ];
 
 export default class App extends React.Component<{}, IAppState> {
