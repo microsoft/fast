@@ -10,11 +10,14 @@ export interface IComponentViewToggleClassNameContract {
 const styles: ComponentStyles<IComponentViewToggleClassNameContract, IDevSiteDesignSystem> = {
     componentViewToggle: {
         width: toPx(40),
-        height: toPx(40),
+        height: toPx(38),
         display: "flex",
         position: "relative",
         alignItems: "center",
+        border: `${toPx(1)} solid transparent`,
         justifyContent: "center",
+        borderRadius: toPx(3),
+        margin: `0 ${toPx(2)}`,
         "&[aria-current=\"page\"]": {
             "&::before": {
                 content: "''",
@@ -25,6 +28,16 @@ const styles: ComponentStyles<IComponentViewToggleClassNameContract, IDevSiteDes
                 bottom: toPx(0),
                 height: toPx(2),
                 background: (config: IDevSiteDesignSystem): string => config.brandColor
+            }
+        },
+        "&:hover": {
+            cursor: "pointer",
+            background: "rgba(0, 0, 0, 0.04)"
+        },
+        "&:focus": {
+            outline: "none",
+            border: (config: IDevSiteDesignSystem): string => {
+                return `${toPx(1)} solid ${config.brandColor}`;
             }
         }
     }

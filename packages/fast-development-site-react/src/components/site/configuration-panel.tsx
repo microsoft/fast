@@ -36,7 +36,7 @@ const style: ComponentStyles<IConfigurationPanelManagedClasses, IDevSiteDesignSy
     },
     configurationPanel_controls: {
         display: "flex",
-        padding: `${toPx(2)} ${toPx(4)}`,
+        padding: `0 ${toPx(4)}`,
         "& ul": {
             margin: "0",
             padding: "0",
@@ -46,11 +46,21 @@ const style: ComponentStyles<IConfigurationPanelManagedClasses, IDevSiteDesignSy
             }
         },
         "& button": {
-            border: "none",
-            height: toPx(38),
+            border: `${toPx(1)} solid transparent`,
+            height: toPx(40),
             padding: `${toPx(6)} ${toPx(8)}`,
             minWidth: toPx(25),
-            backgroundPosition: "center"
+            backgroundPosition: "center",
+            "&:hover": {
+                cursor: "pointer",
+                background: "rgba(0, 0, 0, 0.04)"
+            },
+            "&:focus": {
+                outline: "none",
+                border: (config: IDevSiteDesignSystem): string => {
+                    return `${toPx(1)} solid ${config.brandColor}`;
+                }
+            }
         }
     },
     configurationPanel_controlsTabs: {
@@ -59,6 +69,8 @@ const style: ComponentStyles<IConfigurationPanelManagedClasses, IDevSiteDesignSy
     configurationPanel_tab: {
         "& button": {
             background: "none",
+            borderRadius: toPx(3),
+            position: "relative",
             "&:focus": {
                 outline: "none"
             }
@@ -76,7 +88,6 @@ const style: ComponentStyles<IConfigurationPanelManagedClasses, IDevSiteDesignSy
                 content: "''",
                 height: toPx(2),
                 borderRadius: toPx(3),
-
                 background: "#FB356D"
             }
         }
