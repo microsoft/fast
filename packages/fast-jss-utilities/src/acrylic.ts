@@ -1,12 +1,12 @@
 import { ICSSRules } from "@microsoft/fast-jss-manager";
 
 /*
- * - textureImage: Optionally add a background image to provide texture for the acrylic
- * - background: The background color. Should be an RGBa color value to provide transparency.
+ * - textureImage?: Optionally add a background image to provide texture for the acrylic
+ * - backgroundColor: The background color. Should be an RGBa color value to provide transparency.
  *   If not an RGBa value, be sure to add opacity to the element or surface this is applied on.
- * - fallbackBackground: Applied in the event that backdrop-filter is not supported in the current browser.
- * - blur?: The option to customize the blur filter. Defaults to 30px
- * - blur?: The option to customize the saturation filter. Defaults to 125%
+ * - fallbackBackgroundColor: Applied in the event that backdrop-filter is not supported in the current browser.
+ * - blurRadius?: The option to customize the blur filter. Defaults to 30px
+ * - saturation?: The option to customize the saturation filter. Defaults to 125%
  */
 export interface IAcrylicConfig {
     textureImage?: string;
@@ -23,7 +23,7 @@ export const backdropFilterSupport: boolean =
     "backdrop-filter" in document.documentElement.style || "-webkit-backdrop-filter" in document.documentElement.style;
 
 /*
- * Applies a parially transparent "acrylic" background to an element or UI surface
+ * Applies a partially transparent "acrylic" background to an element
  */
 export function applyAcrylic<T>(config: IAcrylicConfig): ICSSRules<T> {
     const backdropFilterStyles: ICSSRules<T> = {
