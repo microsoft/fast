@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "../foundation";
-import { IDialogHandledProps, IDialogManagedClasses, IDialogUnhandledProps } from "./dialog.props";
+import { DialogProps, IDialogHandledProps, IDialogManagedClasses, IDialogUnhandledProps } from "./dialog.props";
 import { IDialogClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 /* tslint:disable-next-line */
@@ -20,10 +20,8 @@ class Dialog extends Foundation<IDialogHandledProps & IManagedClasses<IDialogCla
         children: void 0,
         contentWidth: void 0,
         contentHeight: void 0,
-        focusElementRef: void 0,
         modal: void 0,
         managedClasses: void 0,
-        triggerElementRef: void 0,
         visible: void 0
     };
 
@@ -44,8 +42,6 @@ class Dialog extends Foundation<IDialogHandledProps & IManagedClasses<IDialogCla
             </div>
         );
     }
-
-    public componentDidMount(): void {}
 
     /**
      * Generates class names

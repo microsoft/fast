@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`dialog snapshots Dialog: 0 1`] = `
+<div
+  aria-hidden={true}
+  className="dialog-0-1-4"
+>
+  <div
+    aria-describedby={null}
+    aria-label={null}
+    aria-labelledby={null}
+    className="dialog_contentRegion-0-1-6"
+    role="dialog"
+    style={
+      Object {
+        "height": "300px",
+        "width": "500px",
+      }
+    }
+    tabIndex={-1}
+  />
+</div>
+`;
+
+exports[`dialog snapshots Dialog: 1 1`] = `
+<div
+  aria-hidden={true}
+  className="dialog-0-1-10"
+>
+  <div
+    className="dialog_modalOverlay-0-1-11"
+    role="presentation"
+    tabIndex={-1}
+  />
+  <div
+    aria-describedby={null}
+    aria-label={null}
+    aria-labelledby={null}
+    className="dialog_contentRegion-0-1-12"
+    role="dialog"
+    style={
+      Object {
+        "height": "350px",
+        "width": "500px",
+      }
+    }
+    tabIndex={-1}
+  />
+</div>
+`;

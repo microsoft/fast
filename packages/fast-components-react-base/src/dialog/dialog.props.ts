@@ -18,11 +18,6 @@ export interface IDialogHandledProps {
     contentHeight?: string;
 
     /**
-     * The ref for the first focusable element within the dialog
-     */
-    focusElementRef?: React.RefObject<HTMLElement>;
-
-    /**
      * The aria-describedby attribute to link the dialog to an
      * element that describes its purpose
      */
@@ -38,11 +33,6 @@ export interface IDialogHandledProps {
      * element that provides it an accessible name
      */
     labelledBy?: string;
-
-    /**
-     * The ref for the element that triggered the dialog
-     */
-    triggerElementRef?: React.RefObject<HTMLElement>;
 
     /**
      * The option to add modal functionality and prevent a user

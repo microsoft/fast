@@ -26,7 +26,6 @@ const examples: ISnapshotTestSuite<IDialogHandledProps & IDialogManagedClasses> 
                 dialog: "dialog",
                 dialog_modalOverlay: "dialog-modal-overlay",
                 dialog_contentRegion: "dialog-content-region"
-
             }
         },
         {
@@ -37,7 +36,6 @@ const examples: ISnapshotTestSuite<IDialogHandledProps & IDialogManagedClasses> 
                 dialog: "dialog",
                 dialog_modalOverlay: "dialog-modal-overlay",
                 dialog_contentRegion: "dialog-content-region"
-
             }
         }
     ]
