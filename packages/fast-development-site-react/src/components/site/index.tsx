@@ -768,7 +768,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 >
                     <span dangerouslySetInnerHTML={{__html: glyphTransparency}}/>
                 </button>
-                {this.renderMeasureSpan(this.themeRuler, this.state.theme.displayName)}
+                {this.renderMeasureSpan(this.themeRuler, this.state.theme ? this.state.theme.displayName : void(0))}
                 {this.renderThemeSelect()}
                 {this.renderMeasureSpan(this.localeRuler, this.state.locale)}
                 <span className={this.props.managedClasses.site_infoBarConfiguration_base}>
@@ -817,17 +817,21 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         }
     }
 
-    private renderMeasureSpan(ref: React.RefObject<HTMLSpanElement>, displayString: string): JSX.Element {
-        return (
-            <span ref={ref} aria-hidden="true" className={this.props.managedClasses.site_measureSpan}>
-                {displayString}
-            </span>
-        );
+    private renderMeasureSpan(ref: React.RefObject<HTMLSpanElement>, displayString?: string): JSX.Element {
+        if(displayString){
+            return (
+                <span ref={ref} aria-hidden="true" className={this.props.managedClasses.site_measureSpan}>
+                    {displayString}
+                </span>
+            );
+        }
     }
 
     private calculateSelectWidth(refRuler: React.RefObject<HTMLSpanElement>, ref: React.RefObject<HTMLSelectElement>): number {
-        if (!!refRuler) {
+        if (!!refRuler && !!ref) {
             const ruler: HTMLElement = refRuler.current;
+            console.log(ref, "ref");
+            console.log(refRuler, "ref Ruler");
             const computedStyle: CSSStyleDeclaration = window.getComputedStyle(ref.current);
             const paddingLeft: number = convertStylePropertyPixelsToNumber(computedStyle, "padding-left");
             const paddingRight: number = convertStylePropertyPixelsToNumber(computedStyle, "padding-Right");
