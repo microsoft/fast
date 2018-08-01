@@ -1,11 +1,8 @@
 import * as Chroma from "chroma-js";
-import { clamp } from "lodash-es";
+import { memoize } from "lodash-es";
+import { LuminositySwitch, luminance, luminanceSwitch } from "./luminosity";
 
 
-/**
- * Type definition for a luminosity switch
- */
-export type LuminocitySwitch = (a: any, b: any) => any;
 
 /**
  * Adjust the darkness/lightness of a foreground color so that it matches a target contrast ratio against a background color
@@ -13,24 +10,13 @@ export type LuminocitySwitch = (a: any, b: any) => any;
 export function contrast(targetRatio: number, foreground: string, background: string): string {
     const foregroundColor: Chroma.Color = Chroma(foreground);
     const backgroundLuminance: number = Chroma(background).luminance();
-    const lumSwitch: LuminocitySwitch = luminanceSwitch(foregroundColor.luminance(), backgroundLuminance);
+    const lumSwitch: LuminositySwitch = luminanceSwitch(foregroundColor.luminance(), backgroundLuminance);
 
-    return luminance(
+    return Chroma(luminance(
         lumSwitch(L1, L2)(targetRatio, backgroundLuminance),
         foregroundColor,
         lumSwitch(Math.ceil, Math.floor)
-    ).hex();
-}
-
-/**
- * Returns a function that selects one of two arguments based on the value of luminance inputs.
- */
-export function luminanceSwitch(foregroundLuminance: number, backgroundLuminance: number): LuminocitySwitch {
-    return (a: any, b: any): any => {
-        const difference: number = foregroundLuminance - backgroundLuminance;
-
-        return difference < 0 || (difference === 0 && foregroundLuminance > .5) ? b : a;
-    }
+    )).hex();
 }
 
 /**
@@ -55,40 +41,4 @@ function L1(ratio: number, L2: number): number {
  */
 function L2(ratio: number, L1: number): number {
     return (-0.05 * ratio + L1 + 0.05) / ratio;
-}
-
-/**
- * Adjust a color to a specific luminosity. This function is almost a direct copy of 
- * https://github.com/gka/chroma.js/blob/master/src/io/luminance.coffee, except that
- * it accepts a rounding function. This is necessary to prevent contrast ratios being slightly below
- * their target due to rounding RGB channel values the wrong direction.
- */
-function luminance(targetLuminance: number, sourceColor: Chroma.Color, round?: (value: number) => number): Chroma.Color {
-    const sourceLuminocity: number = sourceColor.luminance();
-    const fidelity: number = 1e-7;
-    let maxItterations = 20;
-
-    function test(low: Chroma.Color, high: Chroma.Color): any {
-        // Chroma typings are out of date so cast `low` as an any value
-        const middle: Chroma.Color = (low as any).interpolate(high, 0.5, "rgb");
-        const middleLuminocity: number = middle.luminance();
-        
-        if (Math.abs(targetLuminance - middleLuminocity) < fidelity || !maxItterations--) {
-            return middle;
-        } else if (middleLuminocity > targetLuminance) {
-            return test(low, middle);
-        } else {
-            return test(middle, high);
-        }
-    }
-
-    let color: any = sourceLuminocity > targetLuminance
-        ? test(Chroma("black"), sourceColor)
-        : test(sourceColor, Chroma("white"));
-
-    if (typeof round === "function") {
-        color = Chroma(color.rgb(false).map(round));
-    }
-
-    return color;
 }
