@@ -61,7 +61,7 @@ function menuButtonBase(): ICSSRules<IDevSiteDesignSystem> {
         borderRadius: toPx(3),
         background: "none",
         padding: `0 ${toPx(12)}`,
-        margin: `0 ${toPx(2)}`,
+        margin: toPx(2),
         fontSize: toPx(14),
         "& span": {
             width: toPx(16),
@@ -107,7 +107,8 @@ const styles: ComponentStyles<IActionBarClassNameContract, IDevSiteDesignSystem>
             content: "''",
             position: "absolute",
             height: toPx(2),
-            bottom: toPx(0),
+            bottom: toPx(-1),
+            borderRadius: `${toPx(3)} ${toPx(3)} 0 0`,
             left: toPx(12),
             right: toPx(12),
             background: (config: IDevSiteDesignSystem): string => {

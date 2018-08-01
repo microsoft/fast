@@ -49,6 +49,7 @@ const style: ComponentStyles<IConfigurationPanelManagedClasses, IDevSiteDesignSy
             border: `${toPx(1)} solid transparent`,
             height: toPx(40),
             padding: `${toPx(6)} ${toPx(8)}`,
+            margin: toPx(2),
             minWidth: toPx(25),
             backgroundPosition: "center",
             "&:hover": {
@@ -82,12 +83,12 @@ const style: ComponentStyles<IConfigurationPanelManagedClasses, IDevSiteDesignSy
             position: "relative",
             "&:after": {
                 position: "absolute",
-                bottom: "0",
+                bottom: toPx(-1),
                 left: toPx(4),
                 right: toPx(4),
                 content: "''",
                 height: toPx(2),
-                borderRadius: toPx(3),
+                borderRadius: `${toPx(3)} ${toPx(3)} 0 0`,
                 background: "#FB356D"
             }
         }
