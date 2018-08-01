@@ -27,13 +27,9 @@ export function contrast(targetRatio: number, foreground: string, background: st
  */
 export function luminanceSwitch(foregroundLuminance: number, backgroundLuminance: number): LuminocitySwitch {
     return (a: any, b: any): any => {
-        return foregroundLuminance > backgroundLuminance
-            ? a
-            : foregroundLuminance !== backgroundLuminance
-            ? b
-            : foregroundLuminance > .5 
-            ? b
-            : a;
+        const difference: number = foregroundLuminance - backgroundLuminance;
+
+        return difference < 0 || (difference === 0 && foregroundLuminance > .5) ? b : a;
     }
 }
 
