@@ -13,32 +13,32 @@ export type LuminositySwitch = (a: any, b: any) => any;
  */
 export function luminance(targetLuminance: number, sourceColor: Chroma, round?: (value: number) => number): number[] {
     const sourceLuminosity: number = sourceColor.luminance();
-    const fidelity: number = 1e-7;
     let maxItterations: number = 20;
-
-    function test(low: Chroma, high: Chroma): any {
-        // Chroma typings are out of date so cast `low` as an any value
-        const middle: Chroma = (low as any).interpolate(high, 0.5, "rgb");
-        const middleLuminosity: number = middle.luminance();
-
-        if (Math.abs(targetLuminance - middleLuminosity) < fidelity || !maxItterations--) {
-            return middle;
-        } else if (middleLuminosity > targetLuminance) {
-            return test(low, middle);
-        } else {
-            return test(middle, high);
-        }
-    }
-
     let color: any = sourceLuminosity > targetLuminance
-        ? test(Chroma("black"), sourceColor)
-        : test(sourceColor, Chroma("white"));
+        ? adjustLuminance(Chroma("black"), sourceColor, targetLuminance, maxItterations)
+        : adjustLuminance(sourceColor, Chroma("white"), targetLuminance, maxItterations);
 
     if (typeof round === "function") {
         color = Chroma(color.rgb(false).map(round));
     }
 
     return color.rgba();
+}
+
+/**
+ * Recursive function to adjust the luminosity value of a color
+ */
+function adjustLuminance(low: Chroma, high: Chroma, targetLuminance: number, itterations: number): any {
+    const middle: Chroma = low.interpolate(high, 0.5, "rgb");
+    const fidelity: number = 1e-7;
+    const middleLuminosity: number = middle.luminance();
+    itterations -= 1;
+
+    return (Math.abs(targetLuminance - middleLuminosity) < fidelity || itterations < 1)
+        ? middle
+        : middleLuminosity > targetLuminance
+        ? adjustLuminance(low, middle, targetLuminance, itterations)
+        : adjustLuminance(middle, high, targetLuminance, itterations);
 }
 
 /**
