@@ -16,7 +16,6 @@ export function contrast(targetRatio: number, foreground: string, background: st
     const foregroundColor: any = Chroma(foreground);
     const backgroundLuminance: number = Chroma(background).luminance();
     const lumSwitch: LuminocitySwitch = luminanceSwitch(foregroundColor.luminance(), backgroundLuminance);
-    const roundingFunction: RoundingFunction = lumSwitch(Math.floor, Math.ceil);
 
     return luminance(
         lumSwitch(L1, L2)(targetRatio, backgroundLuminance),
@@ -25,10 +24,9 @@ export function contrast(targetRatio: number, foreground: string, background: st
     ).hex();
 }
 
-// If our foreground is more luminous than the background, our target will also be more luminous so we should
-// solve for L1. If the foreground is less luminous than the background, we should solve for L2. If they have
-// the same luminosity, we need to determine if the luminosity is "bright" or "dark". If it is light, solve for L2,
-// if it is dark, solve for L1. 
+/**
+ * Returns a function that selects one of two arguments based on the value of luminance inputs.
+ */
 export function luminanceSwitch(foregroundLuminance: number, backgroundLuminance: number): LuminocitySwitch {
     return (a: any, b: any): any => {
         return foregroundLuminance > backgroundLuminance
@@ -69,7 +67,7 @@ function L2(r: number, L1: number): number {
  * Adjust a color to a specific luminosity. This function is almost a direct copy of 
  * https://github.com/gka/chroma.js/blob/master/src/io/luminance.coffee, except that
  * it accepts a rounding function. This is necessary to prevent contrast ratios being slightly below
- * their target due to rounding RGB channels the wrong direction.
+ * their target due to rounding RGB channel values the wrong direction.
  */
 function luminance(targetLuminance: number, sourceColor: any, round?: RoundingFunction): any {
     const sourceLuminocity: number = sourceColor.luminance();
