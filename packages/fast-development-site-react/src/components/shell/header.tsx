@@ -13,7 +13,6 @@ class ShellHeader extends React.Component<{}, {}> {
                 return config.backgroundColor;
             },
             textAlign: "left",
-            padding: toPx(3),
             minHeight: toPx(34)
         }
     };
