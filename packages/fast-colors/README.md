@@ -34,3 +34,18 @@ const range = range("#dddddd", {
     paddingDark: .2
 }); // [ '#f1f1f1`, `#dddddd`, `#777777` ]
 ```
+## contrast(ratio, operand, reference)
+A function that adjust an color (`operand`) to meet a contrast ratio (`ratio`) against another color (`reference`).
+- `ratio: number` - the desired contrast ratio of the returned color.
+- `operand: string` - a string representation of a color that will be adjusted to meet `ratio` against `reference`.
+- `reference: string` - a string representation of a color that will the `operand` will meet a contrast ratio against.
+
+### Usage
+```js
+import { contrast } from "@microsoft/fast-colors"
+
+const background = "#FFF";
+const foreground = "#000";
+
+const buttonTextColor = contrast(4.5, foreground, background); // -> #767675 with a contrast ratio of 4.54
+```
