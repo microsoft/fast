@@ -723,8 +723,8 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         return (
             <ShellInfoBar>
                 {this.renderStatusBar()}
-                {this.renderInfoBarConfiguration()}
                 {this.renderChildrenBySlot(this, ShellSlot.infoBar)}
+                {this.renderInfoBarConfiguration()}
             </ShellInfoBar>
         );
     }
