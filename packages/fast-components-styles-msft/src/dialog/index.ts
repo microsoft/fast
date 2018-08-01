@@ -9,6 +9,10 @@ import { applyAcrylicMaterial } from "../utilities/acrylic";
 /* tslint:disable-next-line */
 const styles: ComponentStyles<IDialogClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<IDialogClassNameContract, IDesignSystem> => {
     const backgroundColor: string = get(config, "backgroundColor") || designSystemDefaults.backgroundColor;
+    const foregroundColor: string = get(config, "foregroundColor") || designSystemDefaults.foregroundColor;
+    const dialogShadow: string =
+        `${toPx(0)} ${toPx(25.6)} ${toPx(57.6)} ${Chroma(foregroundColor).alpha(0.22).css()},
+         ${toPx(0)} ${toPx(4.8)} ${toPx(14.4)} ${Chroma(foregroundColor).alpha(0.18).css()}`;
 
     return {
         dialog: {
@@ -30,7 +34,8 @@ const styles: ComponentStyles<IDialogClassNameContract, IDesignSystem> = (config
             left: "50%",
             top: "50%",
             transform: "translate(-50%, -50%)",
-            boxShadow: `${toPx(0)} ${toPx(25.6)} ${toPx(57.6)} rgba(0,0,0,0.22), ${toPx(0)} ${toPx(4.8)} ${toPx(14.4)} rgba(0,0,0,0.18)`
+            background: backgroundColor,
+            boxShadow: dialogShadow
         }
     };
 };

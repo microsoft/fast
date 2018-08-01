@@ -29,6 +29,7 @@ class Dialog extends Foundation<IDialogHandledProps & IManagedClasses<IDialogCla
      * Renders the component
      */
     public render(): React.ReactElement<HTMLDivElement> {
+        console.log(this.props.visible, "visible in render");
         return (
             <div
                 {...this.unhandledProps()}
