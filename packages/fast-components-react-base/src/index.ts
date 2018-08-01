@@ -31,8 +31,12 @@ export {Image};
 export * from "./image";
 
 import Label from "./label";
-export {Label};
+export { Label };
 export * from "./label";
+
+import Tabs from "./tabs";
+export { Tabs };
+export * from "./tabs";
 
 import TextField from "./text-field";
 export { TextField };

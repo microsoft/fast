@@ -1,0 +1,139 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tabs snapshot Tabs: 0 1`] = `
+<div
+  className="tabs-class"
+>
+  <div
+    className="tab_list-class"
+    role="tablist"
+  >
+    <button
+      aria-controls="tab02"
+      className="tab-class"
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="tab"
+      tabIndex={-1}
+    >
+      tab 
+      2
+    </button>
+    <button
+      aria-controls="tab03"
+      className="tab-class"
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="tab"
+      tabIndex={-1}
+    >
+      tab 
+      3
+    </button>
+    <button
+      aria-controls="tab04"
+      className="tab-class tab__active-class"
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="tab"
+      tabIndex={0}
+    >
+      tab 
+      4
+    </button>
+  </div>
+  <div
+    aria-hidden={true}
+    aria-labelledby="tab02"
+    className="tab_panel-class"
+    id="tab02"
+    role="tabpanel"
+  >
+    tab 
+    2
+     content
+  </div>
+  <div
+    aria-hidden={true}
+    aria-labelledby="tab03"
+    className="tab_panel-class"
+    id="tab03"
+    role="tabpanel"
+  >
+    tab 
+    3
+     content
+  </div>
+  <div
+    aria-hidden={false}
+    aria-labelledby="tab04"
+    className="tab_panel-class"
+    id="tab04"
+    role="tabpanel"
+  >
+    tab 
+    4
+     content
+  </div>
+</div>
+`;
+
+exports[`tabs snapshot Tabs: 1 1`] = `
+<div
+  className="tabs-class"
+>
+  <div
+    className="tab_list-class"
+    role="tablist"
+  >
+    <button
+      aria-controls="tab01"
+      className="tab-class"
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="tab"
+      tabIndex={-1}
+    >
+      tab 
+      1
+    </button>
+    <button
+      aria-controls="tab03"
+      className="tab-class tab__active-class"
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="tab"
+      tabIndex={0}
+    >
+      tab 
+      3
+    </button>
+  </div>
+  <div
+    aria-hidden={true}
+    aria-labelledby="tab01"
+    className="tab_panel-class"
+    id="tab01"
+    role="tabpanel"
+  >
+    tab 
+    1
+     content
+  </div>
+  <div
+    aria-hidden={false}
+    aria-labelledby="tab03"
+    className="tab_panel-class"
+    id="tab03"
+    role="tabpanel"
+  >
+    tab 
+    3
+     content
+  </div>
+</div>
+`;
+
+exports[`tabs snapshot Tabs: 2 1`] = `null`;
+
+exports[`tabs snapshot Tabs: 3 1`] = `null`;
