@@ -1,6 +1,6 @@
 import * as React from "react";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import { IDevSiteDesignSystem } from "../design-system";
+import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
 import Form from "@microsoft/fast-form-generator-react";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 
@@ -58,7 +58,7 @@ const style: ComponentStyles<IConfigurationPanelManagedClasses, IDevSiteDesignSy
             "&:focus": {
                 outline: "none",
                 border: (config: IDevSiteDesignSystem): string => {
-                    return `${toPx(1)} solid ${config.brandColor}`;
+                    return `${toPx(1)} solid ${config.brandColor || devSiteDesignSystemDefaults.brandColor}`;
                 }
             }
         }
