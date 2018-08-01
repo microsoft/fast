@@ -1,4 +1,4 @@
-import * as Chroma from "chroma-js";
+import Chroma from "chroma-js";
 import { memoize } from "lodash-es";
 import { LuminositySwitch, luminance, luminanceSwitch } from "./luminosity";
 
@@ -8,7 +8,7 @@ import { LuminositySwitch, luminance, luminanceSwitch } from "./luminosity";
  * Adjust the darkness/lightness of a foreground color so that it matches a target contrast ratio against a background color
 */
 export function contrast(targetRatio: number, foreground: string, background: string): string {
-    const foregroundColor: Chroma.Color = Chroma(foreground);
+    const foregroundColor: Chroma = Chroma(foreground);
     const backgroundLuminance: number = Chroma(background).luminance();
     const lumSwitch: LuminositySwitch = luminanceSwitch(foregroundColor.luminance(), backgroundLuminance);
 
