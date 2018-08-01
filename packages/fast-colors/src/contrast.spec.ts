@@ -6,7 +6,7 @@ const black: string = "#000";
 
 describe("contrast", (): void => {
     test("should return a hexadecimal color", (): void => {
-        const hexregex = /\#[A-Fa-f0-9]{3,6}/;
+        const hexregex: RegExp = /\#[A-Fa-f0-9]{3,6}/;
 
         expect(contrast(4.5, white, black)).toMatch(hexregex);
         expect(contrast(4.5, black, white)).toMatch(hexregex);
@@ -18,4 +18,3 @@ describe("contrast", (): void => {
         expect(Chroma.contrast(contrast(targetRatio, black, white), white)).toBeGreaterThan(targetRatio);
     });
 });
-

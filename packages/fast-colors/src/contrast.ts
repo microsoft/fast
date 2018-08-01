@@ -1,12 +1,10 @@
 import Chroma from "chroma-js";
 import { memoize } from "lodash-es";
-import { LuminositySwitch, luminance, luminanceSwitch } from "./luminosity";
-
-
+import { luminance, luminanceSwitch, LuminositySwitch } from "./luminosity";
 
 /**
  * Adjust the darkness/lightness of a foreground color so that it matches a target contrast ratio against a background color
-*/
+ */
 export function contrast(targetRatio: number, foreground: string, background: string): string {
     const foregroundColor: Chroma = Chroma(foreground);
     const backgroundLuminance: number = Chroma(background).luminance();
@@ -25,20 +23,20 @@ export function contrast(targetRatio: number, foreground: string, background: st
  *
  * ContrastRatio = (L1 + 0.05) / (L2 + 0.05)
  *
- * Given a known contrast ratio (ratio) and a known luminosity (L2 and L1 respectively), 
+ * Given a known contrast ratio (ratio) and a known luminosity (L2 and L1 respectively),
  * these formulas solve for L1 and L2 respectively.
  */
 
 /**
  * Solve for L1 when L2 and contrast ratio are known
  */
-function L1(ratio: number, L2: number): number {
-    return (ratio * L2) + (0.05 * ratio) - 0.05;
+function L1(ratio: number, l2: number): number {
+    return (ratio * l2) + (0.05 * ratio) - 0.05;
 }
 
 /**
  * Solve for L2 when L1 and contrast ratio are known
  */
-function L2(ratio: number, L1: number): number {
-    return (-0.05 * ratio + L1 + 0.05) / ratio;
+function L2(ratio: number, l1: number): number {
+    return (-0.05 * ratio + l1 + 0.05) / ratio;
 }
