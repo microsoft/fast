@@ -3,7 +3,7 @@ import { IDialogClassNameContract, IManagedClasses } from "@microsoft/fast-compo
 
 export interface IDialogHandledProps {
     /**
-     * The button content
+     * The dialog content
      */
     children?: React.ReactNode | React.ReactNode[];
 
