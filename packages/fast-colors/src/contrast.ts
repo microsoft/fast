@@ -29,7 +29,7 @@ export function contrast(targetRatio: number, foreground: string, background: st
 // solve for L1. If the foreground is less luminous than the background, we should solve for L2. If they have
 // the same luminosity, we need to determine if the luminosity is "bright" or "dark". If it is light, solve for L2,
 // if it is dark, solve for L1. 
-function luminanceSwitch(foregroundLuminance: number, backgroundLuminance: number): LuminocitySwitch {
+export function luminanceSwitch(foregroundLuminance: number, backgroundLuminance: number): LuminocitySwitch {
     return (a: any, b: any): any => {
         return foregroundLuminance > backgroundLuminance
             ? a
