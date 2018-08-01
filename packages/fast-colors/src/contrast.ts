@@ -1,5 +1,4 @@
 import Chroma from "chroma-js";
-import { memoize } from "lodash-es";
 import { luminance, luminanceSwitch, LuminositySwitch } from "./luminosity";
 
 /**
