@@ -29,7 +29,6 @@ class Dialog extends Foundation<IDialogHandledProps & IManagedClasses<IDialogCla
      * Renders the component
      */
     public render(): React.ReactElement<HTMLDivElement> {
-        console.log(this.props.visible, "visible in render");
         return (
             <div
                 {...this.unhandledProps()}
@@ -37,7 +36,15 @@ class Dialog extends Foundation<IDialogHandledProps & IManagedClasses<IDialogCla
                 aria-hidden={!this.props.visible}
             >
                 {this.renderModalOverlay()}
-                <div {...this.generateContentRegionAttributes()}>
+                <div
+                    role="dialog"
+                    tabIndex={-1}
+                    className={get(this.props, "managedClasses.dialog_contentRegion")}
+                    style={{height: this.props.contentHeight, width: this.props.contentWidth}}
+                    aria-describedby={this.props.describedBy}
+                    aria-labelledby={this.props.labelledBy}
+                    aria-label={this.props.label}
+                >
                     {this.props.children}
                 </div>
             </div>
@@ -49,24 +56,6 @@ class Dialog extends Foundation<IDialogHandledProps & IManagedClasses<IDialogCla
      */
     protected generateClassNames(): string {
         return super.generateClassNames(get(this.props, "managedClasses.dialog"));
-    }
-
-    /**
-     * Generates attributes for the content region
-     */
-    private generateContentRegionAttributes(): React.HTMLAttributes<HTMLDivElement> {
-        return {
-            role: "dialog",
-            tabIndex: -1,
-            className: get(this.props, "managedClasses.dialog_contentRegion"),
-            style: {
-                height: this.props.contentHeight,
-                width: this.props.contentWidth,
-            },
-            "aria-describedby": this.props.describedBy || null,
-            "aria-labelledby": this.props.labelledBy || null,
-            "aria-label": this.props.label || null
-        };
     }
 
     /**
