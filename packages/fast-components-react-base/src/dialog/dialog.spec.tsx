@@ -27,7 +27,7 @@ describe("dialog", (): void => {
     const managedClasses: IDialogClassNameContract = {
         dialog: "dialog-class",
         dialog_contentRegion: "dialog-content-region-class",
-        dialog_modalOverlay: "dialog-modal-overlay",
+        dialog_modalOverlay: "dialog-modal-overlay-class",
     };
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
