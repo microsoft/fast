@@ -1,5 +1,6 @@
 export * from "./button";
 export * from "./checkbox";
+export * from "./dialog";
 export * from "./divider";
 export * from "./horizontal-overflow";
 export * from "./hypertext";

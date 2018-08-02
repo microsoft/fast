@@ -28,7 +28,7 @@ export function applyAcrylicMaterial(
     };
 
     return {
-        borderTop: topHighlight ? `${toPx(1)} solid ${Chroma(backgroundColor).alpha(0.1).css()}` : null,
+        borderTop: topHighlight ? `${toPx(1)} solid ${Chroma(backgroundColor).alpha(0.1).css()}` : "",
         ...applyAcrylic<IDesignSystem>(acrylicConfig)
     };
 }

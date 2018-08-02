@@ -1,0 +1,43 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Dialog",
+    "description": "A dialog component's schema definition.",
+    "type": "object",
+    "id": "dialog",
+    "children": true,
+    "properties": {
+        "describedBy": {
+            "title": "HTML aria-describedby attribute",
+            "type": "string",
+            "example": "exampleId01"
+        },
+        "label": {
+            "title": "HTML aria-label attribute",
+            "type": "string",
+            "example": "Dialog label"
+        },
+        "labelledBy": {
+            "title": "HTML aria-labelledby attribute",
+            "type": "string",
+            "example": "exampleId02"
+        },
+        "contentHeight": {
+            "title": "Content height",
+            "type": "string",
+            "example": "300px"
+        },
+        "contentWidth": {
+            "title": "Content width",
+            "type": "string",
+            "example": "500px"
+        },
+        "modal": {
+            "title": "Modal",
+            "type": "boolean"
+        },
+        "visible": {
+            "title": "Visible",
+            "type": "boolean"
+        }
+    }
+}

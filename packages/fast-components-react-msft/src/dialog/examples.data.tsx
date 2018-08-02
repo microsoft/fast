@@ -1,0 +1,30 @@
+import * as React from "react";
+import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
+import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import Dialog from "./index";
+import { IDialogHandledProps, IDialogManagedClasses, IDialogUnhandledProps } from "@microsoft/fast-components-react-base";
+import schema from "@microsoft/fast-components-react-base/dist/dialog/dialog.schema.json";
+import Documentation from "./.tmp/documentation";
+
+export default {
+    name: "Dialog",
+    component: Dialog,
+    schema: schema as any,
+    documentation: <Documentation />,
+    detailData: {
+        contentHeight: "300px",
+        contentWidth: "500px",
+        modal: true
+    },
+    data: [
+        {
+            contentHeight: "300px",
+            contentWidth: "500px"
+        },
+        {
+            contentHeight: "350px",
+            contentWidth: "500px",
+            modal: true
+        }
+    ]
+} as ISnapshotTestSuite<IDialogHandledProps>;
