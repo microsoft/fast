@@ -70,7 +70,7 @@ const style: ComponentStyles<IConfigurationPanelManagedClasses, IDevSiteDesignSy
     configurationPanel_tab: {
         "& button": {
             background: "none",
-            borderRadius: toPx(3),
+            borderRadius: toPx(2),
             position: "relative",
             "&:focus": {
                 outline: "none"
@@ -88,7 +88,7 @@ const style: ComponentStyles<IConfigurationPanelManagedClasses, IDevSiteDesignSy
                 right: toPx(4),
                 content: "''",
                 height: toPx(2),
-                borderRadius: `${toPx(3)} ${toPx(3)} 0 0`,
+                borderRadius: `${toPx(2)} ${toPx(2)} 0 0`,
                 background: "#FB356D"
             }
         }
