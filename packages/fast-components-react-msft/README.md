@@ -29,4 +29,4 @@ render();
 ```
 
 ## Documentation site
-[FAST Components React Microsoft](https://msft-docs.fast-dna.net/)
+[FAST Components React Microsoft](https://msft-docs.azurewebsites.net/)
