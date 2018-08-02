@@ -16,7 +16,7 @@ const styles: ComponentStyles<IComponentViewToggleClassNameContract, IDevSiteDes
         alignItems: "center",
         border: `${toPx(1)} solid transparent`,
         justifyContent: "center",
-        borderRadius: toPx(3),
+        borderRadius: toPx(2),
         margin: toPx(2),
         "&[aria-current=\"page\"]": {
             "&::before": {
@@ -26,7 +26,7 @@ const styles: ComponentStyles<IComponentViewToggleClassNameContract, IDevSiteDes
                 width: toPx(32),
                 left: toPx(4),
                 bottom: toPx(-1),
-                borderRadius: `${toPx(3)} ${toPx(3)} 0 0`,
+                borderRadius: `${toPx(2)} ${toPx(2)} 0 0`,
                 height: toPx(2),
                 background: (config: IDevSiteDesignSystem): string => config.brandColor
             }
