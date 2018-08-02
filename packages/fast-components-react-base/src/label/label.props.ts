@@ -24,5 +24,5 @@ export interface ILabelHandledProps {
 }
 
 export interface ILabelUnhandledProps extends React.HTMLAttributes<HTMLLabelElement> {}
-export interface ILabelMangedClasses extends IManagedClasses<ILabelClassNameContract> {}
-export type LabelProps = ILabelHandledProps & ILabelUnhandledProps & ILabelMangedClasses;
+export interface ILabelManagedClasses extends IManagedClasses<ILabelClassNameContract> {}
+export type LabelProps = ILabelHandledProps & ILabelUnhandledProps & ILabelManagedClasses;

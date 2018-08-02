@@ -7,7 +7,7 @@ import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import {
     ILabelClassNameContract,
     ILabelHandledProps,
-    ILabelMangedClasses,
+    ILabelManagedClasses,
     ILabelUnhandledProps,
     LabelProps,
     LabelTag
@@ -23,14 +23,14 @@ describe("label snapshot", (): void => {
 });
 
 describe("label", (): void => {
-    const Component: React.ComponentClass<ILabelHandledProps & ILabelMangedClasses> = examples.component;
+    const Component: React.ComponentClass<ILabelHandledProps & ILabelManagedClasses> = examples.component;
     const managedClasses: ILabelClassNameContract = {
         label: "label-class",
         label_hidden: "label-hidden-class"
     };
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
-        const handledProps: ILabelHandledProps & ILabelMangedClasses = {
+        const handledProps: ILabelHandledProps & ILabelManagedClasses = {
             managedClasses,
             tag: LabelTag.label
         };
