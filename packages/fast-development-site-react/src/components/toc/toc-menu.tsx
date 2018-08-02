@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { IDevSiteDesignSystem } from "../design-system";
+import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import Toc from "./";
@@ -27,12 +27,12 @@ const style: ComponentStyles<ITocMenuManagedClasses, IDevSiteDesignSystem> = {
     tocMenu_button: {
         background: "none",
         outline: "0",
-        border: "none",
+        border: `${toPx(1)} solid transparent`,
         position: "relative",
         width: "100%",
         fontFamily: "inherit",
         fontSize: toPx(14),
-        padding: `${toPx(10)} ${toPx(32)}`,
+        padding: `${toPx(9)} ${toPx(31)}`,
         textAlign: "left",
         "&[aria-expanded='true']": {
             "&::after": {
@@ -40,7 +40,13 @@ const style: ComponentStyles<ITocMenuManagedClasses, IDevSiteDesignSystem> = {
             }
         },
         "&:hover": {
-            cursor: "pointer"
+            cursor: "pointer",
+            backgroundColor: "rgba(0, 0, 0, 0.04)"
+        },
+        "&:focus": {
+            border: (config: IDevSiteDesignSystem): string => {
+                return `${toPx(1)} solid ${config.brandColor || devSiteDesignSystemDefaults.brandColor}`;
+            }
         },
         "&::after": {
             content: `url('data:image/svg+xml;base64,${dropdownInactive}')`,

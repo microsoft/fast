@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import TocMenu from "./toc-menu";
-import { IDevSiteDesignSystem } from "../design-system";
+import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 
@@ -36,15 +36,24 @@ const style: ComponentStyles<ITocItemManagedClasses, IDevSiteDesignSystem> = {
         textDecoration: "none",
         display: "block",
         paddingLeft: toPx(48),
-        lineHeight: toPx(40),
-        outline: "0"
+        lineHeight: toPx(38),
+        border: `${toPx(1)} solid transparent`,
+        outline: "0",
+        "&:hover": {
+            backgroundColor: "rgba(0, 0, 0, 0.04)"
+        },
+        "&:focus": {
+            border: (config: IDevSiteDesignSystem): string => {
+                return `${toPx(1)} solid ${config.brandColor || devSiteDesignSystemDefaults.brandColor}`;
+            }
+        }
     },
     tocItem: {
         display: "block",
         position: "relative",
         color: (config: IDevSiteDesignSystem): string => {
             return config.foregroundColor;
-        },
+        }
     },
     tocItem__active: {
         background: (config: IDevSiteDesignSystem): string => {
@@ -66,7 +75,10 @@ const style: ComponentStyles<ITocItemManagedClasses, IDevSiteDesignSystem> = {
             position: "absolute",
             left: "0",
             top: `calc((100% / 2) - ${toPx(tocItemActivePipeHeight / 2)})`
-        }
+        },
+        "&:hover": {
+            backgroundColor: "rgba(0, 0, 0, 0.1)"
+        },
     }
 };
 
