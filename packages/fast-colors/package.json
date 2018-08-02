@@ -25,6 +25,7 @@
   },
   "jest": {
     "collectCoverage": true,
+    "testURL": "http://localhost",
     "coverageThreshold": {
       "global": {
         "statements": 100,
