@@ -16,11 +16,14 @@ import Site, {
     SiteMenuItem,
     SiteTitle,
     SiteTitleBrand,
+    ShellSlot
 } from "@microsoft/fast-development-site-react";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { Direction } from "@microsoft/fast-application-utilities";
 import * as examples from "./examples";
 import Hypertext from "../src/hypertext";
+import ColorPicker, { IColorConfig } from "./color-picker";
+
 
 /* tslint:disable-next-line */
 const sketchDesignKit = require("./fast-dna-msft-design-kit.sketch");
@@ -36,14 +39,21 @@ const hypertextStyles: ComponentStyles<IHypertextClassNameContract, undefined> =
     }
 };
 
-export interface IAppState {
+enum Themes {
+    dark = "dark",
+    light = "light",
+    custom = "custom"
+}
+
+export interface IAppState extends IColorConfig {
+    theme: Themes,
     direction: Direction;
-    theme: string;
 }
 
 const themes: ITheme[] = [
-    {id: "light", displayName: "light", background: DesignSystemDefaults.backgroundColor},
-    {id: "dark", displayName: "dark", background: DesignSystemDefaults.foregroundColor}
+    {id: Themes.light, displayName: Themes.light, background: DesignSystemDefaults.backgroundColor},
+    {id: Themes.dark, displayName: Themes.dark, background: DesignSystemDefaults.foregroundColor},
+    {id: Themes.custom, displayName: Themes.custom}
 ];
 
 export default class App extends React.Component<{}, IAppState> {
@@ -52,7 +62,10 @@ export default class App extends React.Component<{}, IAppState> {
 
         this.state = {
             direction: Direction.ltr,
-            theme: "light"
+            foregroundColor: DesignSystemDefaults.foregroundColor,
+            backgroundColor: DesignSystemDefaults.backgroundColor,
+            accentColor: DesignSystemDefaults.brandColor,
+            theme: Themes.light
         };
     }
 
@@ -62,7 +75,8 @@ export default class App extends React.Component<{}, IAppState> {
                 formChildOptions={formChildOptions}
                 onUpdateDirection={this.handleUpdateDirection}
                 onUpdateTheme={this.handleUpdateTheme}
-                themes={themes}
+                themes={this.themes}
+                activeTheme={this.getThemeById(this.state.theme)}
             >
                 <SiteMenu slot={"header"}>
                     <SiteMenuItem>
@@ -85,15 +99,38 @@ export default class App extends React.Component<{}, IAppState> {
                 <SiteCategory slot={"category"} name={"Components"}>
                     {componentFactory(examples, {...this.generateDesignSystem()})}
                 </SiteCategory>
+                <div slot={ShellSlot.infoBar}>
+                    <ColorPicker
+                        foregroundColor={this.state.foregroundColor}
+                        backgroundColor={this.state.backgroundColor}
+                        accentColor={this.state.accentColor}
+                        onColorUpdate={this.handleColorUpdate}
+                    />
+                </div>
             </Site>
         );
     }
 
+    private themes: ITheme[] = [
+        {id: Themes.light, displayName: Themes.light, background: DesignSystemDefaults.backgroundColor},
+        {id: Themes.dark, displayName: Themes.dark, background: DesignSystemDefaults.foregroundColor},
+        {id: Themes.custom, displayName: Themes.custom}
+    ];
+
+    private getThemeById(id: Themes): ITheme {
+        return this.themes.find((theme: ITheme): boolean => {
+            return theme.id === id;
+        });
+    }    
+
     private generateDesignSystem(): IDesignSystem {
         const designSystem: Partial<IDesignSystem> = {
             direction: this.state.direction,
-            foregroundColor: this.state.theme === "dark" ? DesignSystemDefaults.backgroundColor : DesignSystemDefaults.foregroundColor,
-            backgroundColor: this.state.theme === "dark" ? DesignSystemDefaults.foregroundColor : DesignSystemDefaults.backgroundColor
+            foregroundColor: this.state.foregroundColor,
+            backgroundColor: this.state.backgroundColor,
+            brandColor: this.state.accentColor
+            // foregroundColor: this.state.theme === "dark" ? DesignSystemDefaults.backgroundColor : DesignSystemDefaults.foregroundColor,
+            // backgroundColor: this.state.theme === "dark" ? DesignSystemDefaults.foregroundColor : DesignSystemDefaults.backgroundColor
         };
 
         return Object.assign({}, DesignSystemDefaults, designSystem);
@@ -109,9 +146,27 @@ export default class App extends React.Component<{}, IAppState> {
         });
     }
 
-    private handleUpdateTheme = (theme: string): void => {
+    private handleUpdateTheme = (theme: Themes): void => {
+        if (theme !== Themes.custom) {
+            this.setState({
+                foregroundColor: theme === Themes.dark ? DesignSystemDefaults.backgroundColor : DesignSystemDefaults.foregroundColor,
+                backgroundColor: theme === Themes.dark ? DesignSystemDefaults.foregroundColor : DesignSystemDefaults.backgroundColor
+            });
+        } else {
+            this.themes = this.themes.map((theme: ITheme): ITheme => {
+                return theme.id !== Themes.custom ? theme : Object.assign({}, theme, { background: this.state.backgroundColor});
+            });
+        }
+
         this.setState({
             theme
+        });
+    }
+
+    private handleColorUpdate = (config: IColorConfig): void => {
+        this.setState({
+            theme: Themes.custom,
+            ...config
         });
     }
 }
