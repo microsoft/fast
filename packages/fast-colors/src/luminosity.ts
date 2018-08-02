@@ -28,13 +28,12 @@ export function luminance(targetLuminance: number, sourceColor: Chroma, round?: 
 /**
  * Recursive function to adjust the luminosity value of a color
  */
-function adjustLuminance(low: Chroma, high: Chroma, targetLuminance: number, iterations: number): any {
+function adjustLuminance(low: Chroma, high: Chroma, targetLuminance: number, iterations: number): Chroma {
     const middle: Chroma = low.interpolate(high, 0.5, "rgb");
-    const fidelity: number = 1e-7;
     const middleLuminosity: number = middle.luminance();
     iterations -= 1;
 
-    return (Math.abs(targetLuminance - middleLuminosity) < fidelity || iterations < 1)
+    return (Math.abs(targetLuminance - middleLuminosity) < 1e-7 || !iterations)
         ? middle
         : middleLuminosity > targetLuminance
         ? adjustLuminance(low, middle, targetLuminance, iterations)
