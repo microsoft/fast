@@ -4,7 +4,7 @@ import { get, isUndefined } from "lodash-es";
 import Foundation, { HandledProps } from "../foundation";
 import {
     ILabelHandledProps,
-    ILabelMangedClasses,
+    ILabelManagedClasses,
     ILabelUnhandledProps,
     LabelTag
 } from "./label.props";
