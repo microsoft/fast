@@ -43,16 +43,19 @@ export default class ColorPicker extends React.Component<IColorPickerProps, unde
     private backgroundRef: React.RefObject<HTMLInputElement>;
     private accentRef: React.RefObject<HTMLInputElement>;
 
+    /**
+     * Event handler for all color input changes
+     */
     private handleColorPickerChange = (e: React.FormEvent<HTMLInputElement>) => {
         const value = e.currentTarget.value;
-        const key: keyof IColorConfig = e.currentTarget === this.foregroundRef.current
+        const updatedColorKey: keyof IColorConfig = e.currentTarget === this.foregroundRef.current
             ? "foregroundColor"
             : e.currentTarget === this.backgroundRef.current
             ? "backgroundColor"
             : "accentColor";
 
         if (typeof this.props.onColorUpdate === "function") {
-            this.props.onColorUpdate(Object.assign({}, this.props, { [key]: value}));
+            this.props.onColorUpdate(Object.assign({}, this.props, { [updatedColorKey]: value}));
         }
     }
 }

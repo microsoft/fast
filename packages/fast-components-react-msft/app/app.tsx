@@ -149,24 +149,36 @@ export default class App extends React.Component<{}, IAppState> {
     private handleUpdateTheme = (theme: Themes): void => {
         if (theme !== Themes.custom) {
             this.setState({
+                theme,
                 foregroundColor: theme === Themes.dark ? DesignSystemDefaults.backgroundColor : DesignSystemDefaults.foregroundColor,
                 backgroundColor: theme === Themes.dark ? DesignSystemDefaults.foregroundColor : DesignSystemDefaults.backgroundColor
             });
         } else {
-            this.themes = this.themes.map((theme: ITheme): ITheme => {
-                return theme.id !== Themes.custom ? theme : Object.assign({}, theme, { background: this.state.backgroundColor});
+            this.setCustomThemeBackground(this.state.backgroundColor);
+            this.setState({
+                theme
             });
         }
-
-        this.setState({
-            theme
-        });
     }
 
+    /**
+     * Handles any changes made by the user to the color picker inputs
+     */
     private handleColorUpdate = (config: IColorConfig): void => {
+        this.setCustomThemeBackground(config.backgroundColor);
         this.setState({
             theme: Themes.custom,
             ...config
+        });
+    }
+
+    /**
+     * Assign a background color to the custom theme so that it can be applied to the background of the examples view
+     * @param value The color to assign
+     */
+    private setCustomThemeBackground(value: string) {
+        this.themes = this.themes.map((theme: ITheme): ITheme => {
+            return theme.id !== Themes.custom ? theme : Object.assign({}, theme, { background: value});
         });
     }
 }
