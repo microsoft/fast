@@ -7,27 +7,27 @@
     "children": true,
     "properties": {
         "describedBy": {
-            "title": "Aria-describedby attribute",
+            "title": "HTML aria-describedby attribute",
             "type": "string",
             "example": "exampleId01"
         },
         "label": {
-            "title": "Aria-label attribute",
+            "title": "HTML aria-label attribute",
             "type": "string",
             "example": "Dialog label"
         },
         "labelledBy": {
-            "title": "Aria-labelledby attribute",
+            "title": "HTML aria-labelledby attribute",
             "type": "string",
             "example": "exampleId02"
         },
         "contentHeight": {
-            "title": "Content region height",
+            "title": "Content height",
             "type": "string",
             "example": "300px"
         },
         "contentWidth": {
-            "title": "Content region width",
+            "title": "Content width",
             "type": "string",
             "example": "500px"
         },

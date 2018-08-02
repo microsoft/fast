@@ -6,13 +6,13 @@ import Checkbox from "./checkbox";
 export { Checkbox };
 export * from "./checkbox";
 
-import Divider from "./divider";
-export { Divider };
-export * from "./divider";
-
 import Dialog from "./dialog";
 export { Dialog };
 export * from "./dialog";
+
+import Divider from "./divider";
+export { Divider };
+export * from "./divider";
 
 import HorizontalOverflow from "./horizontal-overflow";
 export { HorizontalOverflow };

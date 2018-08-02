@@ -4,11 +4,11 @@ export { ButtonExamples };
 import CheckboxExamples from "../src/checkbox/examples.data";
 export { CheckboxExamples };
 
+import DialogExamples from "../src/dialog/examples.data";
+export { DialogExamples };
+
 import DividerExamples from "../src/divider/examples.data";
 export { DividerExamples };
-
-import Dialog from "../src/dialog/examples.data";
-export { Dialog };
 
 import HorizontalOverflowExamples from "../src/horizontal-overflow/examples.data";
 export { HorizontalOverflowExamples };
