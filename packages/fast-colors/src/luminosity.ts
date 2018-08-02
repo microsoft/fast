@@ -13,7 +13,7 @@ export type LuminositySwitch = (a: any, b: any) => any;
  */
 export function luminance(targetLuminance: number, sourceColor: Chroma, round?: (value: number) => number): number[] {
     const sourceLuminosity: number = sourceColor.luminance();
-    let maxIterations: number = 20;
+    const maxIterations: number = 20;
     let color: any = sourceLuminosity > targetLuminance
         ? adjustLuminance(Chroma("black"), sourceColor, targetLuminance, maxIterations)
         : adjustLuminance(sourceColor, Chroma("white"), targetLuminance, maxIterations);
