@@ -111,7 +111,7 @@ class ColorPicker extends React.Component<IColorPickerProps & IManagedClasses<IC
         const match: string[] | null = threeDigitHex.exec(color);
 
         return Array.isArray(match)
-            ? `#${match[1].split("").map((charecter: string) => charecter + charecter).join("")}`
+            ? `#${match[1].split("").map((character: string) => character + character).join("")}`
             : color;
     }
 }
