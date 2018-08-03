@@ -38,22 +38,22 @@ const hypertextStyles: ComponentStyles<IHypertextClassNameContract, undefined> =
     }
 };
 
-enum Themes {
+enum Theme {
     dark = "dark",
     light = "light",
     custom = "custom"
 }
 
 export interface IAppState extends IColorConfig {
-    theme: Themes;
+    theme: Theme;
     direction: Direction;
 }
 
 export default class App extends React.Component<{}, IAppState> {
     private themes: ITheme[] = [
-        {id: Themes.light, displayName: Themes.light, background: DesignSystemDefaults.backgroundColor},
-        {id: Themes.dark, displayName: Themes.dark, background: DesignSystemDefaults.foregroundColor},
-        {id: Themes.custom, displayName: Themes.custom}
+        {id: Theme.light, displayName: Theme.light, background: DesignSystemDefaults.backgroundColor},
+        {id: Theme.dark, displayName: Theme.dark, background: DesignSystemDefaults.foregroundColor},
+        {id: Theme.custom, displayName: Theme.custom}
     ];
 
     constructor(props: {}) {
@@ -64,7 +64,7 @@ export default class App extends React.Component<{}, IAppState> {
             foregroundColor: DesignSystemDefaults.foregroundColor,
             backgroundColor: DesignSystemDefaults.backgroundColor,
             accentColor: DesignSystemDefaults.brandColor,
-            theme: Themes.light
+            theme: Theme.light
         };
     }
 
@@ -110,7 +110,7 @@ export default class App extends React.Component<{}, IAppState> {
         );
     }
 
-    private getThemeById(id: Themes): ITheme {
+    private getThemeById(id: Theme): ITheme {
         return this.themes.find((theme: ITheme): boolean => {
             return theme.id === id;
         });
@@ -137,12 +137,12 @@ export default class App extends React.Component<{}, IAppState> {
         });
     }
 
-    private handleUpdateTheme = (theme: Themes): void => {
-        if (theme !== Themes.custom) {
+    private handleUpdateTheme = (theme: Theme): void => {
+        if (theme !== Theme.custom) {
             this.setState({
                 theme,
-                foregroundColor: theme === Themes.dark ? DesignSystemDefaults.backgroundColor : DesignSystemDefaults.foregroundColor,
-                backgroundColor: theme === Themes.dark ? DesignSystemDefaults.foregroundColor : DesignSystemDefaults.backgroundColor
+                foregroundColor: theme === Theme.dark ? DesignSystemDefaults.backgroundColor : DesignSystemDefaults.foregroundColor,
+                backgroundColor: theme === Theme.dark ? DesignSystemDefaults.foregroundColor : DesignSystemDefaults.backgroundColor
             });
         } else {
             this.setCustomThemeBackground(this.state.backgroundColor);
@@ -158,7 +158,7 @@ export default class App extends React.Component<{}, IAppState> {
     private handleColorUpdate = (config: IColorConfig): void => {
         this.setCustomThemeBackground(config.backgroundColor);
         this.setState({
-            theme: Themes.custom,
+            theme: Theme.custom,
             ...config
         });
     }
@@ -169,7 +169,7 @@ export default class App extends React.Component<{}, IAppState> {
      */
     private setCustomThemeBackground(value: string): void {
         this.themes = this.themes.map((theme: ITheme): ITheme => {
-            return theme.id !== Themes.custom ? theme : Object.assign({}, theme, { background: value});
+            return theme.id !== Theme.custom ? theme : Object.assign({}, theme, { background: value});
         });
     }
 }
