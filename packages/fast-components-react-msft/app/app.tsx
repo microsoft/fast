@@ -1,29 +1,28 @@
-import * as React from "react";
-import { glyphBuildingblocks } from "@microsoft/fast-glyphs-msft";
-import manageJss, { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
-import { DesignSystemDefaults, IDesignSystem } from "@microsoft/fast-components-styles-msft";
-import { IHypertextClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import Site, {
     componentFactory,
     formChildFromExamplesFactory,
     IFormChildOption,
     ISiteProps,
     ITheme,
+    ShellSlot,
     SiteCategory,
     SiteCategoryIcon,
     SiteCategoryItem,
     SiteMenu,
     SiteMenuItem,
     SiteTitle,
-    SiteTitleBrand,
-    ShellSlot
+    SiteTitleBrand
 } from "@microsoft/fast-development-site-react";
+import * as React from "react";
+import manageJss, { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
+import { DesignSystemDefaults, IDesignSystem } from "@microsoft/fast-components-styles-msft";
+import { IHypertextClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { glyphBuildingblocks } from "@microsoft/fast-glyphs-msft";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { Direction } from "@microsoft/fast-application-utilities";
 import * as examples from "./examples";
 import Hypertext from "../src/hypertext";
 import ColorPicker, { IColorConfig } from "./color-picker";
-
 
 /* tslint:disable-next-line */
 const sketchDesignKit = require("./fast-dna-msft-design-kit.sketch");
@@ -46,11 +45,17 @@ enum Themes {
 }
 
 export interface IAppState extends IColorConfig {
-    theme: Themes,
+    theme: Themes;
     direction: Direction;
 }
 
 export default class App extends React.Component<{}, IAppState> {
+    private themes: ITheme[] = [
+        {id: Themes.light, displayName: Themes.light, background: DesignSystemDefaults.backgroundColor},
+        {id: Themes.dark, displayName: Themes.dark, background: DesignSystemDefaults.foregroundColor},
+        {id: Themes.custom, displayName: Themes.custom}
+    ];
+
     constructor(props: {}) {
         super(props);
 
@@ -105,17 +110,11 @@ export default class App extends React.Component<{}, IAppState> {
         );
     }
 
-    private themes: ITheme[] = [
-        {id: Themes.light, displayName: Themes.light, background: DesignSystemDefaults.backgroundColor},
-        {id: Themes.dark, displayName: Themes.dark, background: DesignSystemDefaults.foregroundColor},
-        {id: Themes.custom, displayName: Themes.custom}
-    ];
-
     private getThemeById(id: Themes): ITheme {
         return this.themes.find((theme: ITheme): boolean => {
             return theme.id === id;
         });
-    }    
+    }
 
     private generateDesignSystem(): IDesignSystem {
         const designSystem: Partial<IDesignSystem> = {
@@ -168,7 +167,7 @@ export default class App extends React.Component<{}, IAppState> {
      * Assign a background color to the custom theme so that it can be applied to the background of the examples view
      * @param value The color to assign
      */
-    private setCustomThemeBackground(value: string) {
+    private setCustomThemeBackground(value: string): void {
         this.themes = this.themes.map((theme: ITheme): ITheme => {
             return theme.id !== Themes.custom ? theme : Object.assign({}, theme, { background: value});
         });

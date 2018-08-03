@@ -29,6 +29,21 @@ const styles: ComponentStyles<IColorPickerManagedClasses, IDesignSystem> = {
 };
 
 class ColorPicker extends React.Component<IColorPickerProps & IManagedClasses<IColorPickerManagedClasses>, undefined> {
+    /**
+     * Ref object for foreground color input
+     */
+    private foregroundRef: React.RefObject<HTMLInputElement>;
+
+    /**
+     * Ref object for background color input
+     */
+    private backgroundRef: React.RefObject<HTMLInputElement>;
+
+    /**
+     * Ref object for accent color input
+     */
+    private accentRef: React.RefObject<HTMLInputElement>;
+
     constructor(props: IColorPickerProps) {
         super(props);
 
@@ -47,7 +62,10 @@ class ColorPicker extends React.Component<IColorPickerProps & IManagedClasses<IC
         );
     }
 
-    private createColorInput(name: string, value: string, id: string, ref: React.RefObject<HTMLInputElement>) {
+    /**
+     * Creates individual label/input elements
+     */
+    private createColorInput(name: string, value: string, id: string, ref: React.RefObject<HTMLInputElement>): JSX.Element {
         return (
             <React.Fragment>
                 <label
@@ -65,18 +83,14 @@ class ColorPicker extends React.Component<IColorPickerProps & IManagedClasses<IC
                     ref={ref}
                 />
             </React.Fragment>
-        )
+        );
     }
-
-    private foregroundRef: React.RefObject<HTMLInputElement>;
-    private backgroundRef: React.RefObject<HTMLInputElement>;
-    private accentRef: React.RefObject<HTMLInputElement>;
 
     /**
      * Event handler for all color input changes
      */
-    private handleColorPickerChange = (e: React.FormEvent<HTMLInputElement>) => {
-        const value = e.currentTarget.value;
+    private handleColorPickerChange = (e: React.FormEvent<HTMLInputElement>): void => {
+        const value: string = e.currentTarget.value;
         const updatedColorKey: keyof IColorConfig = e.currentTarget === this.foregroundRef.current
             ? "foregroundColor"
             : e.currentTarget === this.backgroundRef.current
@@ -90,11 +104,11 @@ class ColorPicker extends React.Component<IColorPickerProps & IManagedClasses<IC
 
     /**
      * Ensures that colors are properly formatted
+     * Color input elements don't understand three digit hex values, so we need to convert them to 6
      */
-    private formatColor(color: string) {
-        // Color inputs don't like three digit hex values, so we need to convert it to 6
-        const threeDigitHex = /\#([a-fA-F0-9]{3})$/g;
-        const match = threeDigitHex.exec(color);
+    private formatColor(color: string): string {
+        const threeDigitHex: RegExp = /\#([a-fA-F0-9]{3})$/g;
+        const match: string[] | null = threeDigitHex.exec(color);
 
         return Array.isArray(match)
             ? `#${match[1].split("").map((charecter: string) => charecter + charecter).join("")}`
