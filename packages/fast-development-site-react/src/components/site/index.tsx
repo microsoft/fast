@@ -295,19 +295,13 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     };
 
     public static getDerivedStateFromProps(props: ISiteProps, state: ISiteState): Partial<ISiteState> | null {
-        if (props.activeTheme) {
-            return props.activeTheme !== state.theme ? { theme: props.activeTheme } : null;
-        }
+        const updatedTheme: ITheme | null = props.activeTheme
+            ? props.activeTheme
+            : props.themes
+            ? props.themes.find((theme: ITheme) => theme.id === state.theme.id)
+            : null;
 
-        if (props.themes) {
-            const theme = props.themes.find((theme: ITheme) => theme.id === state.theme.id);
-
-            if (theme && theme !== state.theme) {
-                return { theme }
-            }
-        }
-
-        return null;
+        return updatedTheme === null ? null : { theme: updatedTheme };
     }
 
     private initialPath: string;
