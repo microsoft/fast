@@ -130,12 +130,13 @@ class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasse
     }
 
     private handleWindowClick = (e: MouseEvent): void => {
-        if (e.target instanceof Element) {
-            if (!this.optionMenuRef.current.contains(e.target)
-                && !this.optionMenuTriggerRef.current.contains(e.target)
-                && this.optionMenuTriggerRef.current !== e.target) {
-                this.closeMenu();
-            }
+        if (
+            e.target instanceof Element
+            && !this.optionMenuRef.current.contains(e.target)
+            && !this.optionMenuTriggerRef.current.contains(e.target)
+            && this.optionMenuTriggerRef.current !== e.target
+        ) {
+            this.closeMenu();
         }
     }
 
