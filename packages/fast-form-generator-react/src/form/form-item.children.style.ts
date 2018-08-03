@@ -63,7 +63,7 @@ const styles: ComponentStyles<IFormItemChildrenClassNameContract, {}> = {
         "& li": {
             "& button": {
                 ...applyAddItemStyle(),
-                ...localizePadding(0, 0, 0, 24),
+                ...localizePadding(12, 8, 8, 24),
                 ...thickLine
             }
         }
