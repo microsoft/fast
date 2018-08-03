@@ -157,10 +157,11 @@ export default class App extends React.Component<{}, IAppState> {
      */
     private handleColorUpdate = (config: IColorConfig): void => {
         this.setCustomThemeBackground(config.backgroundColor);
-        this.setState({
-            theme: Theme.custom,
-            ...config
-        });
+        this.setState(
+            config.backgroundColor !== this.state.backgroundColor || config.foregroundColor !== this.state.foregroundColor
+            ? { theme: Theme.custom, ...config }
+            : config
+        );
     }
 
     /**
