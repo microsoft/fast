@@ -50,12 +50,6 @@ export interface IAppState extends IColorConfig {
     direction: Direction;
 }
 
-const themes: ITheme[] = [
-    {id: Themes.light, displayName: Themes.light, background: DesignSystemDefaults.backgroundColor},
-    {id: Themes.dark, displayName: Themes.dark, background: DesignSystemDefaults.foregroundColor},
-    {id: Themes.custom, displayName: Themes.custom}
-];
-
 export default class App extends React.Component<{}, IAppState> {
     constructor(props: {}) {
         super(props);
