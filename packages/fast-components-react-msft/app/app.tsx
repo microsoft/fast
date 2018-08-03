@@ -129,8 +129,6 @@ export default class App extends React.Component<{}, IAppState> {
             foregroundColor: this.state.foregroundColor,
             backgroundColor: this.state.backgroundColor,
             brandColor: this.state.accentColor
-            // foregroundColor: this.state.theme === "dark" ? DesignSystemDefaults.backgroundColor : DesignSystemDefaults.foregroundColor,
-            // backgroundColor: this.state.theme === "dark" ? DesignSystemDefaults.foregroundColor : DesignSystemDefaults.backgroundColor
         };
 
         return Object.assign({}, DesignSystemDefaults, designSystem);

@@ -40,9 +40,9 @@ class ColorPicker extends React.Component<IColorPickerProps & IManagedClasses<IC
     public render(): JSX.Element {
         return (
             <div className={this.props.managedClasses.colorPicker}>
-                { this.createColorInput("foreground", this.props.foregroundColor, "foregroundInput", this.foregroundRef) }
-                { this.createColorInput("background", this.props.backgroundColor, "backgroundInput", this.backgroundRef)}
-                { this.createColorInput("accent", this.props.accentColor, "accentInput", this.accentRef)}
+                {this.createColorInput("foreground", this.props.foregroundColor, "foregroundInput", this.foregroundRef)}
+                {this.createColorInput("background", this.props.backgroundColor, "backgroundInput", this.backgroundRef)}
+                {this.createColorInput("accent", this.props.accentColor, "accentInput", this.accentRef)}
             </div>
         );
     }
@@ -50,8 +50,20 @@ class ColorPicker extends React.Component<IColorPickerProps & IManagedClasses<IC
     private createColorInput(name: string, value: string, id: string, ref: React.RefObject<HTMLInputElement>) {
         return (
             <React.Fragment>
-                <label for={id} className={this.props.managedClasses.colorPicker_label}>{name}</label>
-                <input type="color" value={this.formatColor(value)} id={id} name={name} onChange={this.handleColorPickerChange} ref={ref}/>
+                <label
+                    for={id}
+                    className={this.props.managedClasses.colorPicker_label}
+                >
+                    {name}
+                </label>
+                <input
+                    type="color"
+                    value={this.formatColor(value)}
+                    id={id}
+                    name={name}
+                    onChange={this.handleColorPickerChange}
+                    ref={ref}
+                />
             </React.Fragment>
         )
     }
