@@ -1,6 +1,6 @@
 import * as React from "react";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import { IDevSiteDesignSystem } from "../design-system";
+import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
 import Form from "@microsoft/fast-form-generator-react";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 
@@ -36,7 +36,7 @@ const style: ComponentStyles<IConfigurationPanelManagedClasses, IDevSiteDesignSy
     },
     configurationPanel_controls: {
         display: "flex",
-        padding: `${toPx(2)} ${toPx(4)}`,
+        padding: `0 ${toPx(4)}`,
         "& ul": {
             margin: "0",
             padding: "0",
@@ -46,11 +46,22 @@ const style: ComponentStyles<IConfigurationPanelManagedClasses, IDevSiteDesignSy
             }
         },
         "& button": {
-            border: "none",
-            height: toPx(38),
+            border: `${toPx(1)} solid transparent`,
+            height: toPx(40),
             padding: `${toPx(6)} ${toPx(8)}`,
+            margin: toPx(2),
             minWidth: toPx(25),
-            backgroundPosition: "center"
+            backgroundPosition: "center",
+            "&:hover": {
+                cursor: "pointer",
+                background: "rgba(0, 0, 0, 0.04)"
+            },
+            "&:focus": {
+                outline: "none",
+                border: (config: IDevSiteDesignSystem): string => {
+                    return `${toPx(1)} solid ${config.brandColor || devSiteDesignSystemDefaults.brandColor}`;
+                }
+            }
         }
     },
     configurationPanel_controlsTabs: {
@@ -59,6 +70,8 @@ const style: ComponentStyles<IConfigurationPanelManagedClasses, IDevSiteDesignSy
     configurationPanel_tab: {
         "& button": {
             background: "none",
+            borderRadius: toPx(2),
+            position: "relative",
             "&:focus": {
                 outline: "none"
             }
@@ -70,13 +83,12 @@ const style: ComponentStyles<IConfigurationPanelManagedClasses, IDevSiteDesignSy
             position: "relative",
             "&:after": {
                 position: "absolute",
-                bottom: "0",
+                bottom: toPx(-1),
                 left: toPx(4),
                 right: toPx(4),
                 content: "''",
                 height: toPx(2),
-                borderRadius: toPx(3),
-
+                borderRadius: `${toPx(2)} ${toPx(2)} 0 0`,
                 background: "#FB356D"
             }
         }

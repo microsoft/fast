@@ -1,6 +1,6 @@
 import * as React from "react";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import { IDevSiteDesignSystem } from "../design-system";
+import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
 import { Link, withRouter } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
 import { ComponentViewTypes } from "./component-view";
@@ -56,12 +56,12 @@ export interface IActionBarClassNameContract {
 function menuButtonBase(): ICSSRules<IDevSiteDesignSystem> {
     return {
         position: "relative",
-        height: toPx(36),
-        border: "none",
-        borderRadius: toPx(3),
+        border: `${toPx(1)} solid transparent`,
+        height: toPx(40),
+        borderRadius: toPx(2),
         background: "none",
         padding: `0 ${toPx(12)}`,
-        margin: `${toPx(2)} ${toPx(3)}`,
+        margin: toPx(2),
         fontSize: toPx(14),
         "& span": {
             width: toPx(16),
@@ -73,10 +73,13 @@ function menuButtonBase(): ICSSRules<IDevSiteDesignSystem> {
         },
         "&:hover": {
             cursor: "pointer",
-            background: "#EBEBEB"
+            background: "rgba(0, 0, 0, 0.04)"
         },
         "&:focus": {
-            outline: "none"
+            outline: "none",
+            border: (config: IDevSiteDesignSystem): string => {
+                return `${toPx(1)} solid ${config.brandColor || devSiteDesignSystemDefaults.brandColor}`;
+            }
         }
     };
 }
@@ -104,7 +107,8 @@ const styles: ComponentStyles<IActionBarClassNameContract, IDevSiteDesignSystem>
             content: "''",
             position: "absolute",
             height: toPx(2),
-            bottom: toPx(-2),
+            bottom: toPx(-1),
+            borderRadius: `${toPx(2)} ${toPx(2)} 0 0`,
             left: toPx(12),
             right: toPx(12),
             background: (config: IDevSiteDesignSystem): string => {
