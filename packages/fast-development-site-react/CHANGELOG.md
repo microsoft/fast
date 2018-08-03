@@ -3,6 +3,47 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/Microsoft/fast-dna/compare/v1.6.0...v2.0.0) (2018-08-02)
+
+
+### Bug Fixes
+
+* **dev-site:** fixes html5 validation issues with dev site markup ([#463](https://github.com/Microsoft/fast-dna/issues/463)) ([c171e79](https://github.com/Microsoft/fast-dna/commit/c171e79))
+* **fast-components-react-msft:** fixes error running jest with components that require chroma ([#687](https://github.com/Microsoft/fast-dna/issues/687)) ([140457c](https://github.com/Microsoft/fast-dna/commit/140457c))
+* **fast-development-site:** correctly display component view border ([#595](https://github.com/Microsoft/fast-dna/issues/595)) ([b2725dd](https://github.com/Microsoft/fast-dna/commit/b2725dd))
+* **fast-development-site:** fix a pathing issue between the detail and example pages ([#525](https://github.com/Microsoft/fast-dna/issues/525)) ([ef577c4](https://github.com/Microsoft/fast-dna/commit/ef577c4))
+* **fast-development-site:** fix for switching to RTL should only affect component view ([#593](https://github.com/Microsoft/fast-dna/issues/593)) ([ab70f2a](https://github.com/Microsoft/fast-dna/commit/ab70f2a))
+* **fast-development-site:** fixes site component issue where state is expected for theme even if it does not exist ([#697](https://github.com/Microsoft/fast-dna/issues/697)) ([b85bdbf](https://github.com/Microsoft/fast-dna/commit/b85bdbf))
+* **fast-development-site:** remove component name and add presets tab ([#579](https://github.com/Microsoft/fast-dna/issues/579)) ([9266132](https://github.com/Microsoft/fast-dna/commit/9266132))
+* **fast-development-site:** text cursor for non interactable areas should be default cursor ([#715](https://github.com/Microsoft/fast-dna/issues/715)) ([58e4191](https://github.com/Microsoft/fast-dna/commit/58e4191))
+* **fast-development-site:** update background image size ([#606](https://github.com/Microsoft/fast-dna/issues/606)) ([8a2ac45](https://github.com/Microsoft/fast-dna/commit/8a2ac45))
+* **fast-development-site-react:** fix the selection model to always point to a component/item ([#522](https://github.com/Microsoft/fast-dna/issues/522)) ([608f548](https://github.com/Microsoft/fast-dna/commit/608f548))
+
+
+### Features
+
+* **detail view:** add detail view ([#470](https://github.com/Microsoft/fast-dna/issues/470)) ([665b871](https://github.com/Microsoft/fast-dna/commit/665b871))
+* **dev-site:** adds error boundary to dev site component wrapper to prevent entire views from breaking ([#438](https://github.com/Microsoft/fast-dna/issues/438)) ([54918b9](https://github.com/Microsoft/fast-dna/commit/54918b9))
+* **development-site:** add ability to have children as strings in the form generator and development site dev tools ([#518](https://github.com/Microsoft/fast-dna/issues/518)) ([2a4a87f](https://github.com/Microsoft/fast-dna/commit/2a4a87f))
+* **development-site:** add component for title and component for title with brand color applied ([#501](https://github.com/Microsoft/fast-dna/issues/501)) ([d1d9d5c](https://github.com/Microsoft/fast-dna/commit/d1d9d5c))
+* **fast-components-react-msft:** add localized styles and enable ltr/rtl swapping on documentation site ([#517](https://github.com/Microsoft/fast-dna/issues/517)) ([ce939b7](https://github.com/Microsoft/fast-dna/commit/ce939b7))
+* **fast-css-editor-react:** add default editor component and position component ([#636](https://github.com/Microsoft/fast-dna/issues/636)) ([72037a8](https://github.com/Microsoft/fast-dna/commit/72037a8))
+* **fast-development-site:** add component theme support ([#655](https://github.com/Microsoft/fast-dna/issues/655)) ([4c4ce6b](https://github.com/Microsoft/fast-dna/commit/4c4ce6b))
+* **fast-development-site:** add component transparency toggle to info bar ([#591](https://github.com/Microsoft/fast-dna/issues/591)) ([f065f6a](https://github.com/Microsoft/fast-dna/commit/f065f6a))
+* **fast-development-site:** add hover and focus states to TOC menu items ([#745](https://github.com/Microsoft/fast-dna/issues/745)) ([b74673f](https://github.com/Microsoft/fast-dna/commit/b74673f))
+* **fast-development-site:** add resize capability to row component ([#559](https://github.com/Microsoft/fast-dna/issues/559)) ([3510400](https://github.com/Microsoft/fast-dna/commit/3510400))
+* **fast-development-site:** add syntax highlighting to code preview ([#583](https://github.com/Microsoft/fast-dna/issues/583)) ([e763341](https://github.com/Microsoft/fast-dna/commit/e763341))
+* **fast-development-site:** Create infobar for fast site ([#558](https://github.com/Microsoft/fast-dna/issues/558)) ([86335ea](https://github.com/Microsoft/fast-dna/commit/86335ea))
+* **fast-development-site:** update waffle menu style and animations ([#724](https://github.com/Microsoft/fast-dna/issues/724)) ([0eb195c](https://github.com/Microsoft/fast-dna/commit/0eb195c))
+* **fast-development-site-react:** add ability to update component values dynamically from outside the site ([#634](https://github.com/Microsoft/fast-dna/issues/634)) ([3130fdf](https://github.com/Microsoft/fast-dna/commit/3130fdf))
+* **localization:** adds direction rtl/ltr updating ([#485](https://github.com/Microsoft/fast-dna/issues/485)) ([0a5e1e7](https://github.com/Microsoft/fast-dna/commit/0a5e1e7))
+* **schema:** add schema view to dev tools ([#448](https://github.com/Microsoft/fast-dna/issues/448)) ([681585d](https://github.com/Microsoft/fast-dna/commit/681585d))
+* **shell:** add shell package with app-grid ([#461](https://github.com/Microsoft/fast-dna/issues/461)) ([dabb3b4](https://github.com/Microsoft/fast-dna/commit/dabb3b4))
+
+
+
+
 <a name="1.9.0"></a>
 # [1.9.0](https://github.com/Microsoft/fast-dna/compare/v1.6.0...v1.9.0) (2018-07-14)
 
