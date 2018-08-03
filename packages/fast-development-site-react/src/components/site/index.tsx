@@ -47,7 +47,7 @@ export interface ISiteProps {
     onUpdateTheme?: (theme: string) => void;
     locales?: string[];
     themes?: ITheme[];
-    activeTheme?: ITheme,
+    activeTheme?: ITheme;
     frameworks?: FrameworkEnum | FrameworkEnum[];
     activeFramework?: FrameworkEnum;
     collapsed?: boolean;
@@ -843,7 +843,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
             const selectedTheme: ITheme = this.props.themes.find((item: ITheme): boolean => {
                 return item.id === e.target.value;
             });
-    
+
             this.setState({
                 theme: selectedTheme
             });
