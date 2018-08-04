@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Tab panel",
+    "description": "A tab panel component's schema definition.",
+    "type": "object",
+    "id": "tab-panel",
+    "children": true,
+    "properties": {
+        "slot": {
+            "title": "Slot",
+            "type": "string",
+            "enum": [
+                "tab-panel"
+            ]
+        }
+    },
+    "required": [
+        "slot"
+    ]
+}
