@@ -12,8 +12,8 @@ import {
     Tab,
     TabItem,
     TabPanel,
-    TabsProps,
-    TabSlot
+    TabSlot,
+    TabsProps
 } from "./tabs";
 
 /*

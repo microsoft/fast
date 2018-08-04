@@ -104,18 +104,16 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
         const tabElements: JSX.Element[] = [];
 
         this.getChildBySlot(this.props.children, TabSlot.tabItem).forEach((tabItem: JSX.Element, index: number): void => {
-            const id: string = get(tabItem, "props.id") ? tabItem.props.id : `tab${index}`;
-
             tabElements.push(
                 <button
-                    key={id}
+                    key={tabItem.props.id}
                     role="tab"
-                    className={this.generateTabClassNames(id)}
-                    aria-controls={id}
-                    aria-selected={this.state.activeId === id}
+                    className={this.generateTabClassNames(tabItem.props.id)}
+                    aria-controls={tabItem.props.id}
+                    aria-selected={this.state.activeId === tabItem.props.id}
                     onClick={this.handleClick}
                     onKeyDown={this.handleKeyDown}
-                    tabIndex={this.state.activeId !== id ? -1 : 0}
+                    tabIndex={this.state.activeId !== tabItem.props.id ? -1 : 0}
                 >
                     {this.getChildBySlot(tabItem.props.children, TabSlot.tab)[0]}
                 </button>
@@ -132,16 +130,14 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
         const tabPanels: JSX.Element[] = [];
 
         this.getChildBySlot(this.props.children, TabSlot.tabItem).forEach((tabItem: JSX.Element, index: number): void => {
-            const id: string = get(tabItem, "props.id") ? tabItem.props.id : `tab${index}`;
-
             tabPanels.push(
                 <div
-                    key={id}
-                    id={id}
+                    key={tabItem.props.id}
+                    id={tabItem.props.id}
                     className={this.props.managedClasses.tab_panel}
                     role="tabpanel"
-                    aria-labelledby={id}
-                    aria-hidden={this.state.activeId !== id}
+                    aria-labelledby={tabItem.props.id}
+                    aria-hidden={this.state.activeId !== tabItem.props.id}
                 >
                     {this.getChildBySlot(tabItem.props.children, TabSlot.tabPanel)[0]}
                 </div>
