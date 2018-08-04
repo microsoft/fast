@@ -82,25 +82,30 @@ const examples: ISnapshotTestSuite<ITabsHandledProps & ITabsManagedClasses> = {
     documentation: <Documentation />,
     detailData: {
         ...managedClasses,
+        label: "A set of example text content",
         children: detailChildren,
     },
     data: [
         {
             ...managedClasses,
             activeId: "tab04",
+            label: "A set of example text content",
             children: exampleChildren1
         },
         {
             ...managedClasses,
             activeId: "tab03",
+            label: "A set of example text content",
             children: exampleChildren2
         },
         {
             ...managedClasses,
+            label: "A set of example text content",
             children: exampleChildren3
         },
         {
             ...managedClasses,
+            label: "A set of example text content",
             children: exampleChildren4
         }
     ]

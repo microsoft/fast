@@ -16,6 +16,11 @@ export interface ITabsHandledProps {
      * The tab update callback
      */
     onUpdateTab?: (activeTab: string) => void;
+
+    /**
+     * The aria-label applied to the tablist for the tab items
+     */
+    label: string;
 }
 
 export interface ITabsUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}

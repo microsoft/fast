@@ -36,7 +36,8 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
     protected handledProps: HandledProps<ITabsHandledProps & IManagedClasses<ITabsClassNameContract>> = {
         children: void 0,
         managedClasses: void 0,
-        activeId: void 0
+        activeId: void 0,
+        label: void 0
     };
 
     /**
@@ -71,7 +72,12 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
                     {...this.unhandledProps()}
                     className={this.generateClassNames()}
                 >
-                    <div role="tablist" ref={this.tabListRef} className={this.props.managedClasses.tab_list}>
+                    <div
+                        role="tablist"
+                        ref={this.tabListRef}
+                        className={this.props.managedClasses.tab_list}
+                        aria-label={this.props.label}
+                    >
                         {tabElements}
                     </div>
                     {this.renderTabPanels()}
@@ -104,6 +110,7 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
                     role="tab"
                     className={this.generateTabClassNames(id)}
                     aria-controls={id}
+                    aria-selected={this.state.activeId !== id ? false : true}
                     onClick={this.handleClick}
                     onKeyDown={this.handleKeyDown}
                     tabIndex={this.state.activeId !== id ? -1 : 0}

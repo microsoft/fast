@@ -8,6 +8,13 @@
         "activeId": {
             "title": "Active tab ID",
             "type": "string"
+        },
+        "label": {
+            "title": "HTML aria-label attribute",
+            "type": "string"
         }
-    }
+    },
+    "required": [
+        "label"
+    ]
 }

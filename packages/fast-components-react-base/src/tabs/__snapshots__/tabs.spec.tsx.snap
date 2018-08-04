@@ -3,13 +3,16 @@
 exports[`tabs snapshot Tabs: 0 1`] = `
 <div
   className="tabs-class"
+  label="A set of example text content"
 >
   <div
+    aria-label="A set of example text content"
     className="tab_list-class"
     role="tablist"
   >
     <button
       aria-controls="tab02"
+      aria-selected={false}
       className="tab-class"
       onClick={[Function]}
       onKeyDown={[Function]}
@@ -21,6 +24,7 @@ exports[`tabs snapshot Tabs: 0 1`] = `
     </button>
     <button
       aria-controls="tab03"
+      aria-selected={false}
       className="tab-class"
       onClick={[Function]}
       onKeyDown={[Function]}
@@ -32,6 +36,7 @@ exports[`tabs snapshot Tabs: 0 1`] = `
     </button>
     <button
       aria-controls="tab04"
+      aria-selected={true}
       className="tab-class tab__active-class"
       onClick={[Function]}
       onKeyDown={[Function]}
@@ -81,13 +86,16 @@ exports[`tabs snapshot Tabs: 0 1`] = `
 exports[`tabs snapshot Tabs: 1 1`] = `
 <div
   className="tabs-class"
+  label="A set of example text content"
 >
   <div
+    aria-label="A set of example text content"
     className="tab_list-class"
     role="tablist"
   >
     <button
       aria-controls="tab01"
+      aria-selected={false}
       className="tab-class"
       onClick={[Function]}
       onKeyDown={[Function]}
@@ -99,6 +107,7 @@ exports[`tabs snapshot Tabs: 1 1`] = `
     </button>
     <button
       aria-controls="tab03"
+      aria-selected={true}
       className="tab-class tab__active-class"
       onClick={[Function]}
       onKeyDown={[Function]}
