@@ -1,11 +1,12 @@
 import * as React from "react";
+import { TabSlot } from "./tabs";
 
 export interface ITabPanelHandledProps {
     /**
      * The slot identifying this component to the TabPanel component as a tab-panel
      * the string passed must be "tab-panel"
      */
-    slot: string;
+    slot: TabSlot.tabPanel;
 
     /**
      * The tab-panel content

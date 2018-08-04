@@ -12,7 +12,8 @@ import {
     Tab,
     TabItem,
     TabPanel,
-    TabsProps
+    TabsProps,
+    TabSlot
 } from "./tabs";
 
 /*
@@ -38,31 +39,31 @@ describe("tabs", (): void => {
     };
     const children: JSX.Element[] = [
         (
-            <TabItem key={1} slot="tab-item" id="tab01">
-                <Tab slot="tab">
+            <TabItem key={1} slot={TabSlot.tabItem} id="tab01">
+                <Tab slot={TabSlot.tab}>
                     tab 1
                 </Tab>
-                <TabPanel slot="tab-panel">
+                <TabPanel slot={TabSlot.tabPanel}>
                     tab 1 content
                 </TabPanel>
             </TabItem>
         ),
         (
-            <TabItem key={2} slot="tab-item" id="tab02">
-                <Tab slot="tab">
+            <TabItem key={2} slot={TabSlot.tabItem} id="tab02">
+                <Tab slot={TabSlot.tab}>
                     tab 2
                 </Tab>
-                <TabPanel slot="tab-panel">
+                <TabPanel slot={TabSlot.tabPanel}>
                     tab 2 content
                 </TabPanel>
             </TabItem>
         ),
         (
-            <TabItem key={3} slot="tab-item" id="tab03">
-                <Tab slot="tab">
+            <TabItem key={3} slot={TabSlot.tabItem} id="tab03">
+                <Tab slot={TabSlot.tab}>
                     tab 3
                 </Tab>
-                <TabPanel slot="tab-panel">
+                <TabPanel slot={TabSlot.tabPanel}>
                     tab 3 content
                 </TabPanel>
             </TabItem>
@@ -70,21 +71,21 @@ describe("tabs", (): void => {
     ];
     const childrenMissingIds: JSX.Element[] = [
         (
-            <TabItem key={1} slot="tab-item" id={null}>
-                <Tab slot="tab">
+            <TabItem key={1} slot={TabSlot.tabItem} id={null}>
+                <Tab slot={TabSlot.tab}>
                     tab 1
                 </Tab>
-                <TabPanel slot="tab-panel">
+                <TabPanel slot={TabSlot.tabPanel}>
                     tab 1 content
                 </TabPanel>
             </TabItem>
         ),
         (
-            <TabItem key={2} slot="tab-item" id={null}>
-                <Tab slot="tab">
+            <TabItem key={2} slot={TabSlot.tabItem} id={null}>
+                <Tab slot={TabSlot.tab}>
                     tab 2
                 </Tab>
-                <TabPanel slot="tab-panel">
+                <TabPanel slot={TabSlot.tabPanel}>
                     tab 2 content
                 </TabPanel>
             </TabItem>
@@ -94,7 +95,8 @@ describe("tabs", (): void => {
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: ITabsHandledProps & ITabsManagedClasses = {
             ...managedClasses,
-            children
+            children,
+            label: "items"
         };
         const unhandledProps: ITabsUnhandledProps = {
             "aria-hidden": true
@@ -111,12 +113,12 @@ describe("tabs", (): void => {
 
     test("should correctly handle children", () => {
         const renderedWithChildren: any = shallow(
-            <Component managedClasses={managedClasses.managedClasses}>
+            <Component managedClasses={managedClasses.managedClasses} label={"items"}>
                 {children}
             </Component>
         );
         const renderedWithoutChildren: any = shallow(
-            <Component managedClasses={managedClasses.managedClasses} />
+            <Component managedClasses={managedClasses.managedClasses} label={"items"} />
         );
 
         expect(renderedWithChildren.prop("children")).not.toBe(undefined);
@@ -126,7 +128,7 @@ describe("tabs", (): void => {
 
     test("should generate an ID if none has been provided", () => {
         const renderedWithChildren: any = shallow(
-            <Component managedClasses={managedClasses.managedClasses}>
+            <Component managedClasses={managedClasses.managedClasses} label={"items"}>
                 {childrenMissingIds}
             </Component>
         );
@@ -137,7 +139,13 @@ describe("tabs", (): void => {
     test("should allow a user to control the component from a callback", () => {
         const onUpdate: any = jest.fn();
         const rendered: any = shallow(
-            <Component managedClasses={managedClasses.managedClasses} onUpdateTab={onUpdate} children={children} activeId={"tab01"} />
+            <Component
+                managedClasses={managedClasses.managedClasses}
+                onUpdateTab={onUpdate}
+                children={children}
+                activeId={"tab01"}
+                label={"items"}
+            />
         );
 
         const tab1: any = rendered.find("button").at(0);
@@ -212,7 +220,12 @@ describe("tabs", (): void => {
 
     test("should not use the callback if it is not a function", () => {
         const rendered: any = shallow(
-            <Component managedClasses={managedClasses.managedClasses} onUpdateTab={("test") as any} activeId={"tab01"}>
+            <Component
+                managedClasses={managedClasses.managedClasses}
+                onUpdateTab={("test") as any}
+                activeId={"tab01"}
+                label={"items"}
+            >
                 {children}
             </Component>
         );
@@ -226,7 +239,7 @@ describe("tabs", (): void => {
 
     test("should allow an uncontrolled state where when navigation is available through click or keyboard action", () => {
         const rendered: any = mount(
-            <Component managedClasses={managedClasses.managedClasses} children={children} />
+            <Component managedClasses={managedClasses.managedClasses} children={children}  label={"items"} />
         );
 
         const tab1: any = rendered.find("button").at(0);
