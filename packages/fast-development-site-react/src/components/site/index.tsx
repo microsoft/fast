@@ -47,6 +47,7 @@ export interface ISiteProps {
     onUpdateTheme?: (theme: string) => void;
     locales?: string[];
     themes?: ITheme[];
+    activeTheme?: ITheme;
     frameworks?: FrameworkEnum | FrameworkEnum[];
     activeFramework?: FrameworkEnum;
     collapsed?: boolean;
@@ -96,7 +97,7 @@ export enum SiteSlot {
 export interface ITheme {
     id: string;
     displayName: string;
-    background: string;
+    background?: string;
 }
 
 export interface ISiteManagedClasses {
@@ -146,9 +147,7 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
     site_infoBarConfiguration: {
         display: "flex",
         alignItems: "center",
-        justifyContent: "flex-end",
         padding: toPx(4),
-        width: "50%",
     },
     site_infoBarConfiguration_base: {
         position: "relative",
@@ -260,11 +259,11 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
         top: toPx(1)
     },
     site_statusBar: {
-        width: "50%",
         display: "flex",
         alignItems: "center",
         lineHeight: "1",
-        textAlign: "left"
+        textAlign: "left",
+        flex: "1"
     },
     site_statusComponentName: {
         marginLeft: toPx(12),
@@ -295,6 +294,16 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         locales: ["en", "en-rtl"]
     };
 
+    public static getDerivedStateFromProps(props: ISiteProps, state: ISiteState): Partial<ISiteState> | null {
+        const updatedTheme: ITheme | null = props.activeTheme
+            ? props.activeTheme
+            : props.themes
+            ? props.themes.find((theme: ITheme) => theme.id === state.theme.id)
+            : null;
+
+        return updatedTheme === null ? null : { theme: updatedTheme };
+    }
+
     private initialPath: string;
 
     constructor(props: ISiteProps & IManagedClasses<ISiteManagedClasses>) {
@@ -315,7 +324,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
             formView: true,
             devToolsView: false,
             locale: "en",
-            theme: this.getInitialTheme()
+            theme: this.props.activeTheme || this.getInitialTheme()
         };
     }
 
@@ -723,8 +732,8 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         return (
             <ShellInfoBar>
                 {this.renderStatusBar()}
-                {this.renderInfoBarConfiguration()}
                 {this.renderChildrenBySlot(this, ShellSlot.infoBar)}
+                {this.renderInfoBarConfiguration()}
             </ShellInfoBar>
         );
     }
@@ -830,13 +839,15 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
             this.props.onUpdateTheme(e.target.value);
         }
 
-        const selectedTheme: ITheme = this.props.themes.find((item: ITheme): boolean => {
-            return item.id === e.target.value;
-        });
+        if (!this.props.activeTheme) {
+            const selectedTheme: ITheme = this.props.themes.find((item: ITheme): boolean => {
+                return item.id === e.target.value;
+            });
 
-        this.setState({
-            theme: selectedTheme
-        });
+            this.setState({
+                theme: selectedTheme
+            });
+        }
     }
 
     /**
