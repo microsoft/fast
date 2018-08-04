@@ -112,7 +112,7 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
                     role="tab"
                     className={this.generateTabClassNames(id)}
                     aria-controls={id}
-                    aria-selected={this.state.activeId !== id ? false : true}
+                    aria-selected={this.state.activeId === id}
                     onClick={this.handleClick}
                     onKeyDown={this.handleKeyDown}
                     tabIndex={this.state.activeId !== id ? -1 : 0}
@@ -141,7 +141,7 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
                     className={this.props.managedClasses.tab_panel}
                     role="tabpanel"
                     aria-labelledby={id}
-                    aria-hidden={this.state.activeId !== id ? true : false}
+                    aria-hidden={this.state.activeId !== id}
                 >
                     {this.getChildBySlot(tabItem.props.children, TabSlot.tabPanel)[0]}
                 </div>
