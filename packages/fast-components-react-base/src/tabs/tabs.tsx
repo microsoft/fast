@@ -34,10 +34,11 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
     }
 
     protected handledProps: HandledProps<ITabsHandledProps & IManagedClasses<ITabsClassNameContract>> = {
-        children: void 0,
-        managedClasses: void 0,
         activeId: void 0,
-        label: void 0
+        children: void 0,
+        label: void 0,
+        managedClasses: void 0,
+        orientation: void 0
     };
 
     /**
@@ -77,6 +78,7 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
                         ref={this.tabListRef}
                         className={this.props.managedClasses.tab_list}
                         aria-label={this.props.label}
+                        aria-orientation={this.props.orientation}
                     >
                         {tabElements}
                     </div>

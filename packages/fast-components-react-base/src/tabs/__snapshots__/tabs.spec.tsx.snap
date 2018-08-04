@@ -3,10 +3,10 @@
 exports[`tabs snapshot Tabs: 0 1`] = `
 <div
   className="tabs-class"
-  label="A set of example text content"
 >
   <div
     aria-label="A set of example text content"
+    aria-orientation="horizontal"
     className="tab_list-class"
     role="tablist"
   >
@@ -86,10 +86,10 @@ exports[`tabs snapshot Tabs: 0 1`] = `
 exports[`tabs snapshot Tabs: 1 1`] = `
 <div
   className="tabs-class"
-  label="A set of example text content"
 >
   <div
     aria-label="A set of example text content"
+    aria-orientation="vertical"
     className="tab_list-class"
     role="tablist"
   >

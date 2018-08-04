@@ -11,6 +11,7 @@ import Tabs, {
 } from "./tabs";
 import schema from "./tabs.schema.json";
 import Documentation from "./.tmp/documentation";
+import { Orientation } from "./tabs.props";
 
 function getTabItem(index: number): JSX.Element {
     return (
@@ -90,12 +91,14 @@ const examples: ISnapshotTestSuite<ITabsHandledProps & ITabsManagedClasses> = {
             ...managedClasses,
             activeId: "tab04",
             label: "A set of example text content",
+            orientation: Orientation.horizontal,
             children: exampleChildren1
         },
         {
             ...managedClasses,
             activeId: "tab03",
             label: "A set of example text content",
+            orientation: Orientation.vertical,
             children: exampleChildren2
         },
         {

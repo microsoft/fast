@@ -12,6 +12,14 @@
         "label": {
             "title": "HTML aria-label attribute",
             "type": "string"
+        },
+        "orientation": {
+            "title": "HTML aria-orientation attribute",
+            "type": "string",
+            "enum": [
+                "horizontal",
+                "vertical"
+            ]
         }
     },
     "required": [
