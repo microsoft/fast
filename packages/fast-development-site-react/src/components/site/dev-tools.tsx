@@ -10,6 +10,12 @@ export enum FrameworkEnum {
     angular = "angular"
 }
 
+export enum TabTypeEnum {
+    code = "Code",
+    properties = "Properties",
+    schema = "Schema"
+}
+
 export type tabType = "Code" | "Properties" | "Schema";
 
 export interface IDevToolsProps {
@@ -20,12 +26,12 @@ export interface IDevToolsProps {
     activeFramework: FrameworkEnum;
     childOptions: IFormChildOption[];
     frameworks?: FrameworkEnum[];
-    activeTab?: tabType;
+    activeTab?: TabTypeEnum;
 }
 
 export interface IDevToolsState {
     activeFramework: FrameworkEnum;
-    activeTab: tabType;
+    activeTab: TabTypeEnum;
 }
 
 export interface IDevToolsManagedClasses {
@@ -164,16 +170,16 @@ const style: ComponentStyles<IDevToolsManagedClasses, IDevSiteDesignSystem> = {
 
 class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevToolsManagedClasses>, IDevToolsState> {
 
-    private tabs: tabType[];
+    private tabs: any;
 
     constructor(props: IDevToolsProps & IManagedClasses<IDevToolsManagedClasses>) {
         super(props);
 
-        this.tabs = ["Code", "Properties", "Schema"];
+        this.tabs = [TabTypeEnum.code, TabTypeEnum.properties, TabTypeEnum.schema];
 
         this.state = {
             activeFramework: this.props.activeFramework || FrameworkEnum.react,
-            activeTab: this.props.activeTab || "Code"
+            activeTab: this.props.activeTab || TabTypeEnum.code
         };
     }
 
