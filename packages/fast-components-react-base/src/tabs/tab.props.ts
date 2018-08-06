@@ -1,4 +1,5 @@
 import * as React from "react";
+import { IManagedClasses, ITabClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { TabSlot } from "./tabs";
 
 export interface ITabHandledProps {
@@ -14,5 +15,6 @@ export interface ITabHandledProps {
     children?: React.ReactNode | React.ReactNode[];
 }
 
+export interface ITabManagedClasses extends IManagedClasses<ITabClassNameContract> {}
 export interface ITabUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
-export type TabProps = ITabHandledProps & ITabUnhandledProps;
+export type TabProps = ITabHandledProps & ITabUnhandledProps & ITabManagedClasses;

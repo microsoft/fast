@@ -47,7 +47,7 @@ exports[`tabs snapshot Tabs: 0 1`] = `
   <div
     aria-hidden={true}
     aria-labelledby="tab02"
-    className="tab_panel-class"
+    className="tab_panel-class tab_panel__hidden-class"
     id="tab02"
     role="tabpanel"
   >
@@ -56,7 +56,7 @@ exports[`tabs snapshot Tabs: 0 1`] = `
   <div
     aria-hidden={true}
     aria-labelledby="tab03"
-    className="tab_panel-class"
+    className="tab_panel-class tab_panel__hidden-class"
     id="tab03"
     role="tabpanel"
   >
@@ -110,7 +110,7 @@ exports[`tabs snapshot Tabs: 1 1`] = `
   <div
     aria-hidden={true}
     aria-labelledby="tab01"
-    className="tab_panel-class"
+    className="tab_panel-class tab_panel__hidden-class"
     id="tab01"
     role="tabpanel"
   >

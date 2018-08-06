@@ -101,18 +101,15 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
 
         this.getChildBySlot(this.props.children, TabSlot.tabItem).forEach((tabItem: JSX.Element, index: number): void => {
             tabElements.push(
-                <button
+                <Tab
+                    {...this.getChildBySlot(tabItem.props.children, TabSlot.tab)[0].props}
                     key={tabItem.props.id}
-                    role="tab"
-                    className={this.generateTabClassNames(tabItem.props.id)}
                     aria-controls={tabItem.props.id}
                     aria-selected={this.state.activeId === tabItem.props.id}
                     onClick={this.handleClick}
                     onKeyDown={this.handleKeyDown}
                     tabIndex={this.state.activeId !== tabItem.props.id ? -1 : 0}
-                >
-                    {this.getChildBySlot(tabItem.props.children, TabSlot.tab)[0]}
-                </button>
+                />
             );
         });
 
@@ -127,29 +124,17 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
 
         this.getChildBySlot(this.props.children, TabSlot.tabItem).forEach((tabItem: JSX.Element, index: number): void => {
             tabPanels.push(
-                <div
+                <TabPanel
+                    {...this.getChildBySlot(tabItem.props.children, TabSlot.tabPanel)[0].props}
                     key={tabItem.props.id}
                     id={tabItem.props.id}
-                    className={this.props.managedClasses.tab_panel}
-                    role="tabpanel"
                     aria-labelledby={tabItem.props.id}
                     aria-hidden={this.state.activeId !== tabItem.props.id}
-                >
-                    {this.getChildBySlot(tabItem.props.children, TabSlot.tabPanel)[0]}
-                </div>
+                />
             );
         });
 
         return tabPanels;
-    }
-
-    /**
-     * Generate class names for tab elements
-     */
-    private generateTabClassNames(id: string): string {
-        return this.state.activeId !== id
-            ? this.props.managedClasses.tab
-            : `${this.props.managedClasses.tab} ${this.props.managedClasses.tab__active}`;
     }
 
     /**
