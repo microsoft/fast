@@ -17,10 +17,10 @@ function getTabItem(index: number): JSX.Element {
     return (
         <TabItem id={`tab0${index}`}>
             <Tab>
-                tab {index}
+                tab one
             </Tab>
             <TabPanel>
-                tab {index} content
+                tab one content
             </TabPanel>
         </TabItem>
     );
@@ -36,7 +36,7 @@ const exampleChildren1: JSX.Element[] = [
     (
         <TabItem id="tab01">
             <Tab>
-                tab 1 - missing panel
+                tab one - missing panel
             </Tab>
         </TabItem>
     ),
@@ -50,7 +50,7 @@ const exampleChildren2: JSX.Element[] = [
     (
         <TabItem id="tab02">
             <TabPanel>
-                tab 2 missing tab
+                tab two missing tab
             </TabPanel>
         </TabItem>
     ),

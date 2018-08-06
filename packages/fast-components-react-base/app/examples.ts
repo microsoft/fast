@@ -22,11 +22,11 @@ export { ImageExamples };
 import LabelExamples from "../src/label/examples.data";
 export { LabelExamples };
 
-import Tabs from "../src/tabs/examples.data";
-export { Tabs };
+import TabsExamples from "../src/tabs/examples.data";
+export { TabsExamples };
 
-import TextField from "../src/text-field/examples.data";
-export { TextField };
+import TextFieldExamples from "../src/text-field/examples.data";
+export { TextFieldExamples };
 
 import ToggleExamples from "../src/toggle/examples.data";
 export { ToggleExamples };
