@@ -51,7 +51,7 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
                 ? this.props.activeId
                 : tabItems.length > 0
                 ? tabItems[0].props.id
-                : void(0)
+                : ""
         };
     }
 
@@ -61,27 +61,23 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
     public render(): JSX.Element {
         const tabElements: JSX.Element[] = this.renderTabElements();
 
-        if (tabElements.length > 0) {
-            return (
+        return (
+            <div
+                {...this.unhandledProps()}
+                className={this.generateClassNames()}
+            >
                 <div
-                    {...this.unhandledProps()}
-                    className={this.generateClassNames()}
+                    role="tablist"
+                    ref={this.tabListRef}
+                    className={this.props.managedClasses.tab_list}
+                    aria-label={this.props.label}
+                    aria-orientation={this.props.orientation}
                 >
-                    <div
-                        role="tablist"
-                        ref={this.tabListRef}
-                        className={this.props.managedClasses.tab_list}
-                        aria-label={this.props.label}
-                        aria-orientation={this.props.orientation}
-                    >
-                        {tabElements}
-                    </div>
-                    {this.renderTabPanels()}
+                    {tabElements}
                 </div>
-            );
-        }
-
-        return null;
+                {this.renderTabPanels()}
+            </div>
+        );
     }
 
     /**

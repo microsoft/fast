@@ -122,7 +122,6 @@ describe("tabs", (): void => {
 
         expect(renderedWithChildren.prop("children")).not.toBe(undefined);
         expect(renderedWithChildren.find(".tab-class").length).toEqual(3);
-        expect(renderedWithoutChildren.prop("children")).toBe(undefined);
     });
 
     test("should generate an ID if none has been provided", () => {

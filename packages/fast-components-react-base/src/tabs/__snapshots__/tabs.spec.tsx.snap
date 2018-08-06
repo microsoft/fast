@@ -128,6 +128,28 @@ exports[`tabs snapshot Tabs: 1 1`] = `
 </div>
 `;
 
-exports[`tabs snapshot Tabs: 2 1`] = `null`;
+exports[`tabs snapshot Tabs: 2 1`] = `
+<div
+  className="tabs-class"
+>
+  <div
+    aria-label="A set of example text content"
+    aria-orientation={undefined}
+    className="tab_list-class"
+    role="tablist"
+  />
+</div>
+`;
 
-exports[`tabs snapshot Tabs: 3 1`] = `null`;
+exports[`tabs snapshot Tabs: 3 1`] = `
+<div
+  className="tabs-class"
+>
+  <div
+    aria-label="A set of example text content"
+    aria-orientation={undefined}
+    className="tab_list-class"
+    role="tablist"
+  />
+</div>
+`;
