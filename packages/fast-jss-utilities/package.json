@@ -54,7 +54,9 @@
     "typescript": "^3.0.1"
   },
   "dependencies": {
-    "@microsoft/fast-jss-manager": "^2.1.0"
+    "@microsoft/fast-jss-manager": "^2.1.0",
+    "@microsoft/fast-colors": "^2.0.0",
+    "lodash-es": "^4.17.10"
   },
   "peerDependencies": {
     "csstype": "^2.3.0"

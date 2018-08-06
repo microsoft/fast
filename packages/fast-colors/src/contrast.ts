@@ -42,3 +42,13 @@ function L1(contrastRatio: number, l2: number): number {
 function L2(contrastRatio: number, l1: number): number {
     return (-0.05 * contrastRatio + l1 + 0.05) / contrastRatio;
 }
+
+/**
+ * Ensures that two colors achieve a target contrast ratio. If they don't reach the target contrast ratio, the operand will
+ * be adjusted to meet the target contrast ratio.
+ */
+export function ensureContrast(targetRatio: number, operand: string, reference: string): string {
+    if (Chroma.contrast(operand, reference) < targetRatio) {
+        return contrast(targetRatio, operand, reference);
+    }
+}

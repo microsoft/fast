@@ -2,7 +2,7 @@ import designSystemDefaults, { IDesignSystem } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { applyLocalizedProperty, Direction, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
+import { applyLocalizedProperty, Direction, localizeSpacing, toPx, ensureContrast } from "@microsoft/fast-jss-utilities";
 import { get } from "lodash-es";
 import { applyType } from "../utilities/typography";
 import { applyMixedColor } from "../utilities/colors";
@@ -78,8 +78,8 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
             whiteSpace: "nowrap",
             verticalAlign: "bottom",
             transition: "all 0.2s ease-in-out",
-            color: backgroundColor,
-            ...applyPropertyDrivenColor("backgroundColor", 0.46),
+            color: ensureContrast(4.5, backgroundColor, foregroundColor),
+            backgroundColor: ensureContrast(4.5, foregroundColor, backgroundColor),
             "&:hover": {
                 ...applyPropertyDrivenColor("backgroundColor", 0.46, 0.8)
             },
@@ -98,7 +98,7 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
         button_primary: {
             extend: "button",
             color: backgroundColor,
-            backgroundColor: brandColor,
+            backgroundColor: ensureContrast(4.5, brandColor, foregroundColor),
             "&:hover": {
                 backgroundColor: Chroma(brandColor).alpha(0.8).css()
             },
