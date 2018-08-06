@@ -7,8 +7,7 @@ import Tabs, {
     ITabsUnhandledProps,
     Tab,
     TabItem,
-    TabPanel,
-    TabSlot
+    TabPanel
 } from "./tabs";
 import schema from "./tabs.schema.json";
 import Documentation from "./.tmp/documentation";
@@ -16,11 +15,11 @@ import { Orientation } from "./tabs.props";
 
 function getTabItem(index: number): JSX.Element {
     return (
-        <TabItem slot={TabSlot.tabItem} id={`tab0${index}`}>
-            <Tab slot={TabSlot.tab}>
+        <TabItem id={`tab0${index}`}>
+            <Tab>
                 tab {index}
             </Tab>
-            <TabPanel slot={TabSlot.tabPanel}>
+            <TabPanel>
                 tab {index} content
             </TabPanel>
         </TabItem>
@@ -35,8 +34,8 @@ const detailChildren: JSX.Element[] = [
 
 const exampleChildren1: JSX.Element[] = [
     (
-        <TabItem slot={TabSlot.tabItem} id="tab01">
-            <Tab slot={TabSlot.tab}>
+        <TabItem id="tab01">
+            <Tab>
                 tab 1 - missing panel
             </Tab>
         </TabItem>
@@ -49,8 +48,8 @@ const exampleChildren1: JSX.Element[] = [
 const exampleChildren2: JSX.Element[] = [
     getTabItem(1),
     (
-        <TabItem slot={TabSlot.tabItem} id="tab02">
-            <TabPanel slot={TabSlot.tabPanel}>
+        <TabItem id="tab02">
+            <TabPanel>
                 tab 2 missing tab
             </TabPanel>
         </TabItem>
@@ -62,7 +61,7 @@ const exampleChildren3: JSX.Element[] = [];
 
 const exampleChildren4: JSX.Element[] = [
     (
-        <TabItem slot={TabSlot.tabItem} id="tab03" />
+        <TabItem id="tab03" />
     )
 ];
 

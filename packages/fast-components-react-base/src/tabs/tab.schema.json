@@ -5,16 +5,5 @@
     "type": "object",
     "id": "tab",
     "children": true,
-    "properties": {
-        "slot": {
-            "title": "Slot",
-            "type": "string",
-            "enum": [
-                "tab"
-            ]
-        }
-    },
-    "required": [
-        "slot"
-    ]
+    "properties": {}
 }
