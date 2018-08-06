@@ -129,7 +129,9 @@ class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasse
     }
 
     public componentWillUnmount(): void {
-        document.removeEventListener("click", this.handleWindowClick);
+        if (canUseDOM()) {
+            document.removeEventListener("click", this.handleWindowClick);
+        }
     }
 
     private handleWindowClick = (e: MouseEvent): void => {

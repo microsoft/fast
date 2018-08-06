@@ -127,7 +127,9 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
     }
 
     public componentWillUnmount(): void {
-        document.removeEventListener("click", this.handleWindowClick);
+        if (canUseDOM()) {
+            document.removeEventListener("click", this.handleWindowClick);
+        }
     }
 
     private handleWindowClick = (e: MouseEvent): void => {
