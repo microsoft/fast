@@ -4,7 +4,8 @@ import { ITabPanelHandledProps, ITabPanelUnhandledProps } from "./tab-panel.prop
 
 class TabPanel extends Foundation<ITabPanelHandledProps, ITabPanelUnhandledProps, {}> {
     protected handledProps: HandledProps<ITabPanelHandledProps> = {
-        children: void 0
+        children: void 0,
+        slot: void 0
     };
 
     public render(): JSX.Element {

@@ -12,6 +12,7 @@ import {
     Tab,
     TabItem,
     TabPanel,
+    TabSlot,
     TabsProps
 } from "./tabs";
 
@@ -38,31 +39,31 @@ describe("tabs", (): void => {
     };
     const children: JSX.Element[] = [
         (
-            <TabItem key={1} id="tab01">
-                <Tab>
+            <TabItem key={1} slot={TabSlot.tabItem} id="tab01">
+                <Tab slot={TabSlot.tab}>
                     tab 1
                 </Tab>
-                <TabPanel>
+                <TabPanel slot={TabSlot.tabPanel}>
                     tab 1 content
                 </TabPanel>
             </TabItem>
         ),
         (
-            <TabItem key={2} id="tab02">
-                <Tab>
+            <TabItem key={2} slot={TabSlot.tabItem} id="tab02">
+                <Tab slot={TabSlot.tab}>
                     tab 2
                 </Tab>
-                <TabPanel>
+                <TabPanel slot={TabSlot.tabPanel}>
                     tab 2 content
                 </TabPanel>
             </TabItem>
         ),
         (
-            <TabItem key={3} id="tab03">
-                <Tab>
+            <TabItem key={3} slot={TabSlot.tabItem} id="tab03">
+                <Tab slot={TabSlot.tab}>
                     tab 3
                 </Tab>
-                <TabPanel>
+                <TabPanel slot={TabSlot.tabPanel}>
                     tab 3 content
                 </TabPanel>
             </TabItem>
@@ -70,21 +71,21 @@ describe("tabs", (): void => {
     ];
     const childrenMissingIds: JSX.Element[] = [
         (
-            <TabItem key={1} id={null}>
-                <Tab>
+            <TabItem key={1} slot={TabSlot.tabItem} id={null}>
+                <Tab slot={TabSlot.tab}>
                     tab 1
                 </Tab>
-                <TabPanel>
+                <TabPanel slot={TabSlot.tabPanel}>
                     tab 1 content
                 </TabPanel>
             </TabItem>
         ),
         (
-            <TabItem key={2} id={null}>
-                <Tab>
+            <TabItem key={2} slot={TabSlot.tabItem} id={null}>
+                <Tab slot={TabSlot.tab}>
                     tab 2
                 </Tab>
-                <TabPanel>
+                <TabPanel slot={TabSlot.tabPanel}>
                     tab 2 content
                 </TabPanel>
             </TabItem>

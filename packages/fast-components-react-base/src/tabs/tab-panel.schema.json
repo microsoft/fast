@@ -5,5 +5,16 @@
     "type": "object",
     "id": "tab-panel",
     "children": true,
-    "properties": {}
+    "properties": {
+        "slot": {
+            "title": "Slot",
+            "type": "string",
+            "enum": [
+                "tab-panel"
+            ]
+        }
+    },
+    "required": [
+        "slot"
+    ]
 }
