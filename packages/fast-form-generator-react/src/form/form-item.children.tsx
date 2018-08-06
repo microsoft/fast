@@ -1,5 +1,6 @@
 import * as React from "react";
 import { uniqueId } from "lodash-es";
+import { canUseDOM } from "exenv-es6";
 import { arrayMove, SortableContainer, SortableElement, SortableHandle } from "react-sortable-hoc";
 import { get } from "lodash-es";
 import { SortableListItem, sortingProps } from "./sorting";
@@ -120,7 +121,9 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
     }
 
     public componentDidMount(): void {
-        document.addEventListener("click", this.handleWindowClick);
+        if (canUseDOM()) {
+            document.addEventListener("click", this.handleWindowClick);
+        }
     }
 
     public componentWillUnmount(): void {

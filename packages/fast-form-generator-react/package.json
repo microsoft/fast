@@ -80,6 +80,7 @@
     "babel-jest": "^22.4.3",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
+    "exenv-es6": "^1.0.0",
     "fork-ts-checker-webpack-plugin": "^0.4.1",
     "glob": "^7.1.2",
     "html-webpack-plugin": "^3.2.0",
