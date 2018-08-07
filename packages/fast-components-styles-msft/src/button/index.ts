@@ -63,7 +63,7 @@ function applyPropertyDrivenColor(incomingProperty: string, mixValue?: number, a
 /* tslint:disable-next-line */
 const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<IMSFTButtonClassNameContract, IDesignSystem> => {
     config = safeDesignSystem(config);
-    const { foregroundColor, backgroundColor, brandColor, direction } = config;
+    const { foregroundColor, backgroundColor, accentColor, direction } = config;
     const borderColor: string = contrast(config.contrast, foregroundColor, contrast(config.contrast, foregroundColor, backgroundColor));
     const background: string = contrast(config.contrast, foregroundColor, backgroundColor);
     const white: string = "white"
@@ -105,16 +105,16 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
         button_primary: {
             extend: "button",
             color: "white",
-            backgroundColor: ensureContrast(config.contrast, brandColor, white),
+            backgroundColor: ensureContrast(config.contrast, accentColor, white),
             "&:hover": {
-                backgroundColor: contrast(config.contrast - ContrastModifiers.hover, brandColor, white)
+                backgroundColor: contrast(config.contrast - ContrastModifiers.hover, accentColor, white)
             },
             "&:focus": {
-                borderColor: contrast(config.contrast, foregroundColor, brandColor),
-                boxShadow: Chroma.contrast(contrast(config.contrast, foregroundColor, brandColor), brandColor) >= config.contrast ? "" : `inset 0 0 0 2px ${contrast(config.contrast, brandColor, contrast(config.contrast, foregroundColor, brandColor))}`
+                borderColor: contrast(config.contrast, foregroundColor, accentColor),
+                boxShadow: Chroma.contrast(contrast(config.contrast, foregroundColor, accentColor), accentColor) >= config.contrast ? "" : `inset 0 0 0 2px ${contrast(config.contrast, accentColor, contrast(config.contrast, foregroundColor, accentColor))}`
             },
             "&:disabled, &[aria-disabled]": {
-                backgroundColor: contrast(config.contrast - (ContrastModifiers.disabled - 1), brandColor, white)
+                backgroundColor: contrast(config.contrast - (ContrastModifiers.disabled - 1), accentColor, white)
             }
         },
         button_outline: {
