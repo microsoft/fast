@@ -17,7 +17,7 @@ export function getClientRectWithMargin(element: HTMLElement): IClientRectWithMa
 
     const rect: ClientRect = element.getBoundingClientRect();
     const style: CSSStyleDeclaration = window.getComputedStyle(element, null);
-    const clone: any = {
+    const clone: IClientRectWithMargin = {
         width: rect.width,
         height: rect.height,
         top: rect.top,
