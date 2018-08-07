@@ -14,7 +14,7 @@ import Tabs, {
     TabItem,
     TabPanel,
     TabSlot
-} from "./tabs";
+} from "./index";
 import schema from "./tabs.schema.json";
 import Documentation from "./.tmp/documentation";
 import { Orientation } from "./tabs.props";
@@ -35,23 +35,122 @@ const tabPanelManagedClasses: ITabPanelClassNameContract = {
     tab_panel__hidden: "tab_panel__hidden-class"
 };
 
-function getTabItem(index: number): JSX.Element {
+/**
+ * Example tab elements 1
+ */
+function getTabElementOne(): JSX.Element {
     return (
-        <TabItem slot={TabSlot.tabItem} id={`tab0${index}`}>
-            <Tab slot={TabSlot.tab} managedClasses={tabManagedClasses}>
-                tab one
-            </Tab>
-            <TabPanel slot={TabSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
-                tab one content
-            </TabPanel>
+        <Tab slot={TabSlot.tab} managedClasses={tabManagedClasses}>
+            tab one
+        </Tab>
+    );
+}
+
+function getTabPanelOne(): JSX.Element {
+    return (
+        <TabPanel slot={TabSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
+            tab one content
+        </TabPanel>
+    );
+}
+
+function getTabItemOne(): JSX.Element {
+    return (
+        <TabItem slot={TabSlot.tabItem} id={`tab01`}>
+            {getTabElementOne()}
+            {getTabPanelOne()}
+        </TabItem>
+    );
+}
+
+/**
+ * Example tab elements 2
+ */
+function getTabElementTwo(): JSX.Element {
+    return (
+        <Tab slot={TabSlot.tab} managedClasses={tabManagedClasses}>
+            tab two
+        </Tab>
+    );
+}
+
+function getTabPanelTwo(): JSX.Element {
+    return (
+        <TabPanel slot={TabSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
+            tab two content
+        </TabPanel>
+    );
+}
+
+function getTabItemTwo(): JSX.Element {
+    return (
+        <TabItem slot={TabSlot.tabItem} id={`tab02`}>
+            {getTabElementTwo()}
+            {getTabPanelTwo()}
+        </TabItem>
+    );
+}
+
+/**
+ * Example tab elements 3
+ */
+function getTabElementThree(): JSX.Element {
+    return (
+        <Tab slot={TabSlot.tab} managedClasses={tabManagedClasses}>
+            tab three
+        </Tab>
+    );
+}
+
+function getTabPanelThree(): JSX.Element {
+    return (
+        <TabPanel slot={TabSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
+            tab three content
+        </TabPanel>
+    );
+}
+
+function getTabItemThree(): JSX.Element {
+    return (
+        <TabItem slot={TabSlot.tabItem} id={`tab03`}>
+            {getTabElementThree()}
+            {getTabPanelThree()}
+        </TabItem>
+    );
+}
+
+/**
+ * Example tab elements 4
+ */
+function getTabElementFour(): JSX.Element {
+    return (
+        <Tab slot={TabSlot.tab} managedClasses={tabManagedClasses}>
+            tab four
+        </Tab>
+    );
+}
+
+function getTabPanelFour(): JSX.Element {
+    return (
+        <TabPanel slot={TabSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
+            tab four content
+        </TabPanel>
+    );
+}
+
+function getTabItemFour(): JSX.Element {
+    return (
+        <TabItem slot={TabSlot.tabItem} id={`tab04`}>
+            {getTabElementFour()}
+            {getTabPanelFour()}
         </TabItem>
     );
 }
 
 const detailChildren: JSX.Element[] = [
-    getTabItem(1),
-    getTabItem(2),
-    getTabItem(3)
+    getTabItemOne(),
+    getTabItemTwo(),
+    getTabItemThree()
 ];
 
 const exampleChildren1: JSX.Element[] = [
@@ -62,13 +161,13 @@ const exampleChildren1: JSX.Element[] = [
             </Tab>
         </TabItem>
     ),
-    getTabItem(2),
-    getTabItem(3),
-    getTabItem(4)
+    getTabItemTwo(),
+    getTabItemThree(),
+    getTabItemFour()
 ];
 
 const exampleChildren2: JSX.Element[] = [
-    getTabItem(1),
+    getTabItemOne(),
     (
         <TabItem slot={TabSlot.tabItem} id="tab02">
             <TabPanel slot={TabSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
@@ -76,7 +175,7 @@ const exampleChildren2: JSX.Element[] = [
             </TabPanel>
         </TabItem>
     ),
-    getTabItem(3)
+    getTabItemThree()
 ];
 
 const exampleChildren3: JSX.Element[] = [];

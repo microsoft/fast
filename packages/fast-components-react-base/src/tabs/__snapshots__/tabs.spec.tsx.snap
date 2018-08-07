@@ -19,7 +19,7 @@ exports[`tabs snapshot Tabs: 0 1`] = `
       role="tab"
       tabIndex={-1}
     >
-      tab one
+      tab two
     </button>
     <button
       aria-controls="tab03"
@@ -30,7 +30,7 @@ exports[`tabs snapshot Tabs: 0 1`] = `
       role="tab"
       tabIndex={-1}
     >
-      tab one
+      tab three
     </button>
     <button
       aria-controls="tab04"
@@ -41,7 +41,7 @@ exports[`tabs snapshot Tabs: 0 1`] = `
       role="tab"
       tabIndex={0}
     >
-      tab one
+      tab four
     </button>
   </div>
   <div
@@ -51,7 +51,7 @@ exports[`tabs snapshot Tabs: 0 1`] = `
     id="tab02"
     role="tabpanel"
   >
-    tab one content
+    tab two content
   </div>
   <div
     aria-hidden={true}
@@ -60,7 +60,7 @@ exports[`tabs snapshot Tabs: 0 1`] = `
     id="tab03"
     role="tabpanel"
   >
-    tab one content
+    tab three content
   </div>
   <div
     aria-hidden={false}
@@ -69,7 +69,7 @@ exports[`tabs snapshot Tabs: 0 1`] = `
     id="tab04"
     role="tabpanel"
   >
-    tab one content
+    tab four content
   </div>
 </div>
 `;
@@ -104,7 +104,7 @@ exports[`tabs snapshot Tabs: 1 1`] = `
       role="tab"
       tabIndex={0}
     >
-      tab one
+      tab three
     </button>
   </div>
   <div
@@ -123,7 +123,7 @@ exports[`tabs snapshot Tabs: 1 1`] = `
     id="tab03"
     role="tabpanel"
   >
-    tab one content
+    tab three content
   </div>
 </div>
 `;

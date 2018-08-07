@@ -4,9 +4,6 @@ import { KeyCodes } from "@microsoft/fast-web-utilities";
 import { IManagedClasses, ITabsClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "../foundation";
 import { ITabsHandledProps, ITabsManagedClasses, ITabsUnhandledProps, TabsProps } from "./tabs.props";
-import Tab from "./tab";
-import TabItem from "./tab-item";
-import TabPanel from "./tab-panel";
 
 export enum TabSlot {
     tab = "tab",
@@ -101,15 +98,17 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
 
         this.getChildBySlot(this.props.children, TabSlot.tabItem).forEach((tabItem: JSX.Element, index: number): void => {
             tabElements.push(
-                <Tab
-                    {...this.getChildBySlot(tabItem.props.children, TabSlot.tab)[0].props}
-                    key={tabItem.props.id}
-                    aria-controls={tabItem.props.id}
-                    aria-selected={this.state.activeId === tabItem.props.id}
-                    onClick={this.handleClick}
-                    onKeyDown={this.handleKeyDown}
-                    tabIndex={this.state.activeId !== tabItem.props.id ? -1 : 0}
-                />
+                React.cloneElement(
+                    this.getChildBySlot(tabItem.props.children, TabSlot.tab)[0],
+                    {
+                        key: tabItem.props.id,
+                        "aria-controls": tabItem.props.id,
+                        "aria-selected": this.state.activeId === tabItem.props.id,
+                        onClick: this.handleClick,
+                        onKeyDown: this.handleKeyDown,
+                        tabIndex: this.state.activeId !== tabItem.props.id ? -1 : 0
+                    }
+                )
             );
         });
 
@@ -124,13 +123,15 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
 
         this.getChildBySlot(this.props.children, TabSlot.tabItem).forEach((tabItem: JSX.Element, index: number): void => {
             tabPanels.push(
-                <TabPanel
-                    {...this.getChildBySlot(tabItem.props.children, TabSlot.tabPanel)[0].props}
-                    key={tabItem.props.id}
-                    id={tabItem.props.id}
-                    aria-labelledby={tabItem.props.id}
-                    aria-hidden={this.state.activeId !== tabItem.props.id}
-                />
+                React.cloneElement(
+                    this.getChildBySlot(tabItem.props.children, TabSlot.tabPanel)[0],
+                    {
+                        key: tabItem.props.id,
+                        id: tabItem.props.id,
+                        "aria-labelledby": tabItem.props.id,
+                        "aria-hidden": this.state.activeId !== tabItem.props.id
+                    }
+                )
             );
         });
 
@@ -283,8 +284,3 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
 
 export default Tabs;
 export * from "./tabs.props";
-export {
-    Tab,
-    TabItem,
-    TabPanel
-};

@@ -19,7 +19,7 @@ import {
     TabPanel,
     TabSlot,
     TabsProps
-} from "./tabs";
+} from "./index";
 
 /*
  * Configure Enzyme
@@ -242,7 +242,7 @@ describe("tabs", (): void => {
         rendered.find("Tab").at(0).simulate("keydown", {keyCode: KeyCodes.arrowLeft});
         rendered.find("Tab").at(0).simulate("keydown", {keyCode: KeyCodes.arrowRight});
         rendered.find("Tab").at(0).simulate("click", { currentTarget: { getAttribute: (): string => "tab02" }});
-    }
+    });
 
     test("should allow an uncontrolled state where when navigation is available through click or keyboard action", () => {
         const rendered: any = mount(
