@@ -11,16 +11,19 @@ import Chroma from "chroma-js";
 function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
     return {
         color: (config: IDesignSystem): string => {
-            return safeDesignSystem(config).accentColor;
+            const designSystem = safeDesignSystem(config);
+            return ensureContrast(config.contrast, designSystem.accentColor, designSystem.backgroundColor);
         },
         ...applyTransaprentBackground(),
         "&:hover, &:focus": {
             borderColor: "transparent",
+            boxShadow: "none",
             ...applyTransaprentBackground()
         },
         "&:focus span::before, &:active span::before, &:hover span::before": {
             background: (config: IDesignSystem): string => {
-                return safeDesignSystem(config).brandColor;
+                const designSystem = safeDesignSystem(config);
+                return ensureContrast(config.contrast, designSystem.accentColor, designSystem.backgroundColor);
             }
         },
         "&:disabled span::before, &[aria-disabled] span::before": {

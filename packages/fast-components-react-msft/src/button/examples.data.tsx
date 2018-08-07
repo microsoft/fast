@@ -23,7 +23,7 @@ export default {
     },
     data: [
         {
-            children: "Default button",
+            children: "Secondary button",
             "data-sketch-symbol": "Button - default"
         },
         {
@@ -51,7 +51,7 @@ export default {
         },
         {
             disabled: true,
-            children: "Default button",
+            children: "Secondary button",
             "data-sketch-symbol": "Button - default disabled"
         },
         {
