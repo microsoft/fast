@@ -8,5 +8,5 @@ export function applyMixedColor(color1: string, color2: string, mixValue: number
 export enum ContrastModifiers {
     rest = 0,
     hover = 1,
-    disabled = 4
+    disabled = 3
 };

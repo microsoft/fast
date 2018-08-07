@@ -99,7 +99,7 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
             },
             "&:disabled, &[aria-disabled]": {
                 cursor: "not-allowed",
-                backgroundColor: contrast(config.contrast + ContrastModifiers.disabled, backgroundColor, foregroundColor)
+                backgroundColor: contrast(config.contrast - ContrastModifiers.disabled, foregroundColor, backgroundColor)
             }
         },
         button_primary: {

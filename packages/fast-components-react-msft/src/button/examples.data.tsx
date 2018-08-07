@@ -28,7 +28,7 @@ export default {
         },
         {
             appearance: ButtonAppearance.primary,
-            children: "Primary (submit) button",
+            children: "Primary button",
             "data-sketch-symbol": "Button - primary"
         },
         {
@@ -51,36 +51,36 @@ export default {
         },
         {
             disabled: true,
-            children: "Secondary button",
+            children: "Secondary button (disabled)",
             "data-sketch-symbol": "Button - default disabled"
         },
         {
             disabled: true,
             appearance: ButtonAppearance.primary,
-            children: "Primary (submit) button",
+            children: "Primary button (disabled)",
             "data-sketch-symbol": "Button - primary disabled"
         },
         {
             disabled: true,
             appearance: ButtonAppearance.outline,
-            children: "Outline button",
+            children: "Outline button (disabled)",
             "data-sketch-symbol": "Button - outline disabled"
         },
         {
             disabled: true,
             appearance: ButtonAppearance.lightweight,
-            children: "Lightweight button",
+            children: "Lightweight button (disabled)",
             "data-sketch-symbol": "Button - lightweight disabled"
         },
         {
             disabled: true,
             appearance: ButtonAppearance.justified,
-            children: "Justified button"
+            children: "Justified button (disabled)"
         },
         {
             disabled: true,
             href: "#",
-            children: "Anchor"
+            children: "Anchor (disabled)"
         }
     ]
 } as IComponentFactoryExample<IButtonHandledProps>;
