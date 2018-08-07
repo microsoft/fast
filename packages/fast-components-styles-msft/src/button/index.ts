@@ -81,8 +81,7 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
             borderRadius: toPx(2),
             cursor: "pointer",
             overflow: "hidden",
-            lineHeight: "1",
-            textAlign: "center",
+            lineHeight: "1", textAlign: "center",
             textDecoration: "none",
             whiteSpace: "nowrap",
             verticalAlign: "bottom",
@@ -151,7 +150,6 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
         button_span: {
             position: "relative",
             "&:before": {
-                content: "''",
                 display: "block",
                 height: toPx(2),
                 position: "absolute",
@@ -159,7 +157,8 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
                 width: "100%",
                 [applyLocalizedProperty("left", "right", direction)]: "0"
             }
-        }
+        },
+        button__disabled: {}
     };
 };
 
