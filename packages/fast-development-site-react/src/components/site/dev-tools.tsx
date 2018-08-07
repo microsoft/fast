@@ -16,8 +16,6 @@ export enum TabTypeEnum {
     schema = "Schema"
 }
 
-export type tabType = "Code" | "Properties" | "Schema";
-
 export interface IDevToolsProps {
     onToggleView: () => void;
     activeFormData: any;
@@ -209,9 +207,9 @@ class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevTool
     }
 
     private renderTabItems(): JSX.Element[] {
-        return this.tabs.map((tabItem: tabType, index: number) => {
+        return this.tabs.map((tabItem: TabTypeEnum, index: number) => {
             // TODO: #297 remove this if statement once other tab contents are created
-            if (tabItem === "Code" || tabItem === "Schema") {
+            if (tabItem === TabTypeEnum.code || tabItem === TabTypeEnum.schema) {
                 return (
                     <li key={index} className={this.getTabClassNames(tabItem)}>
                         <button onClick={this.handleChangeTab(tabItem)}>
@@ -232,7 +230,7 @@ class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevTool
     }
 
     private renderTabPanelItems(): JSX.Element[] {
-        return this.tabs.map((tabItem: tabType, index: number) => {
+        return this.tabs.map((tabItem: TabTypeEnum, index: number) => {
             return (
                 <div
                     key={index}
@@ -245,13 +243,13 @@ class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevTool
         });
     }
 
-    private renderTabPanelContent(tabItem: tabType): JSX.Element {
+    private renderTabPanelContent(tabItem: TabTypeEnum): JSX.Element {
         switch (tabItem) {
-            case "Code":
+            case TabTypeEnum.code:
                 return this.renderCode();
-            case "Properties":
+            case TabTypeEnum.properties:
                 return this.renderProperties();
-            case "Schema":
+            case TabTypeEnum.schema:
                 return this.renderSchema();
             default:
                 return null;
@@ -317,7 +315,7 @@ class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevTool
             : "";
     }
 
-    private getTabClassNames(tabItem: tabType): string {
+    private getTabClassNames(tabItem: TabTypeEnum): string {
         if (tabItem === this.state.activeTab) {
             return `${this.props.managedClasses.devTools_tab} ${this.props.managedClasses.devTools_tab__active}`;
         }
@@ -333,7 +331,7 @@ class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevTool
         };
     }
 
-    private handleChangeTab(tab: tabType): (e: React.MouseEvent<HTMLButtonElement>) => void {
+    private handleChangeTab(tab: TabTypeEnum): (e: React.MouseEvent<HTMLButtonElement>) => void {
         return (e: React.MouseEvent<HTMLButtonElement>): void => {
             this.setState({
                 activeTab: tab
