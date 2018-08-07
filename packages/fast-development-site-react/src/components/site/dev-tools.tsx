@@ -168,7 +168,7 @@ const style: ComponentStyles<IDevToolsManagedClasses, IDevSiteDesignSystem> = {
 
 class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevToolsManagedClasses>, IDevToolsState> {
 
-    private tabs: any;
+    private tabs: TabTypeEnum[];
 
     constructor(props: IDevToolsProps & IManagedClasses<IDevToolsManagedClasses>) {
         super(props);
