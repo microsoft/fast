@@ -1,5 +1,6 @@
 import * as React from "react";
 import { uniqueId } from "lodash-es";
+import { canUseDOM } from "exenv-es6";
 import { arrayMove, SortableContainer, SortableElement, SortableHandle } from "react-sortable-hoc";
 import { get } from "lodash-es";
 import { SortableListItem, sortingProps } from "./sorting";
@@ -65,8 +66,21 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
      */
     private searchRef: HTMLInputElement;
 
+    /**
+     * Store a reference to the options menu
+     */
+    private optionMenuRef: React.RefObject<HTMLUListElement>;
+
+    /**
+     * Store a reference to the option menu trigger
+     */
+    private optionMenuTriggerRef: React.RefObject<HTMLButtonElement>;
+
     constructor(props: IFormItemChildrenProps & IManagedClasses<IFormItemChildrenClassNameContract>) {
         super(props);
+
+        this.optionMenuRef = React.createRef();
+        this.optionMenuTriggerRef = React.createRef();
 
         this.state = {
             childrenSearchTerm: "",
@@ -104,6 +118,37 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
                 </div>
             </div>
         );
+    }
+
+    public componentDidMount(): void {
+        if (canUseDOM()) {
+            document.addEventListener("click", this.handleWindowClick);
+        }
+    }
+
+    public componentWillUnmount(): void {
+        if (canUseDOM()) {
+            document.removeEventListener("click", this.handleWindowClick);
+        }
+    }
+
+    private handleWindowClick = (e: MouseEvent): void => {
+        if (
+            e.target instanceof Element
+            && !this.optionMenuRef.current.contains(e.target)
+            && !this.optionMenuTriggerRef.current.contains(e.target)
+            && this.optionMenuTriggerRef.current !== e.target
+        ) {
+            this.closeMenu();
+        }
+    }
+
+    private toggleMenu = (): void => {
+        this.setState({hideOptionMenu: !this.state.hideOptionMenu});
+    }
+
+    private closeMenu = (): void => {
+        this.setState({hideOptionMenu: true});
     }
 
     /**
@@ -395,18 +440,24 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
                     <div className={this.props.managedClasses.formItemChildren_header}>
                         <h3>Building blocks</h3>
                         {/* TODO: #460 Fix "identical-code" */}
-                        <button onClick={this.toggleMenu} aria-expanded={!this.state.hideOptionMenu}><span>Options</span></button>
-                        <ul className={this.props.managedClasses.formItemChildren_optionMenu} aria-hidden={this.state.hideOptionMenu}>
+                        <button
+                            ref={this.optionMenuTriggerRef}
+                            onClick={this.toggleMenu}
+                            aria-expanded={!this.state.hideOptionMenu}
+                        >
+                            <span>Options</span>
+                        </button>
+                        <ul
+                            className={this.props.managedClasses.formItemChildren_optionMenu}
+                            aria-hidden={this.state.hideOptionMenu}
+                            ref={this.optionMenuRef}
+                        >
                             {this.getActionMenuChildItems()}
                         </ul>
                     </div>
                 </div>
             );
         }
-    }
-
-    private toggleMenu = (): void => {
-        this.setState({hideOptionMenu: !this.state.hideOptionMenu});
     }
 
     /**
