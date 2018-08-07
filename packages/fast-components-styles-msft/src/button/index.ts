@@ -10,25 +10,28 @@ import Chroma from "chroma-js";
 
 function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
     return {
-        extend: "button",
+        color: (config: IDesignSystem): string => {
+            return safeDesignSystem(config).accentColor;
+        },
         ...applyTransaprentBackground(),
         "&:hover, &:focus": {
+            borderColor: "transparent",
             ...applyTransaprentBackground()
-        },
-        color: (config: IDesignSystem): string => {
-            return get(config, "brandColor") || designSystemDefaults.brandColor;
-        },
-        "&:disabled span::before, &[aria-disabled] span::before": {
-            background: "transparent"
         },
         "&:focus span::before, &:active span::before, &:hover span::before": {
             background: (config: IDesignSystem): string => {
-                return get(config, "brandColor") || designSystemDefaults.brandColor;
+                return safeDesignSystem(config).brandColor;
             }
         },
+        "&:disabled span::before, &[aria-disabled] span::before": {
+            ...applyTransaprentBackground(),
+        },
         "&:disabled, &[aria-disabled]": {
-            "&:hover": {
-                ...applyTransaprentBackground()
+            ...applyTransaprentBackground(),
+            borderColor: "transparent",
+            color: (config: IDesignSystem): string => {
+                const designSystem = safeDesignSystem(config);
+                return contrast(config.contrast + ContrastModifiers.disabled, designSystem.foregroundColor, designSystem.backgroundColor)
             }
         }
     };
@@ -123,10 +126,9 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
             },
             "&:focus": {
                 ...applyTransaprentBackground(),
+                borderWidth: "2px",
                 borderColor: contrast(config.contrast, foregroundColor, backgroundColor),
                 boxShadow: Chroma.contrast(foregroundColor, backgroundColor) >= config.contrast ? "" : `inset 0 0 0 2px ${contrast(config.contrast, foregroundColor, backgroundColor)}`
-                /* tslint:disable-next-line */
-                // boxShadow: `0 0 0 ${toPx(2)} ${applyMixedColor(foregroundColor, backgroundColor, 0.46)}`,
             },
             "&:disabled, &[aria-disabled]": {
                 ...applyTransaprentBackground(),
