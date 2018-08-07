@@ -1,6 +1,6 @@
-import designSystemDefaults, { IDesignSystem } from "../design-system";
+import designSystemDefaults, { IDesignSystem, safeDesignSystem } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
-import { applyLocalizedProperty, Direction, toPx } from "@microsoft/fast-jss-utilities";
+import { applyLocalizedProperty, Direction, toPx, ensureContrast, ContrastRatios } from "@microsoft/fast-jss-utilities";
 import { typeRamp } from "../utilities/typography";
 import { IToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash";
@@ -8,10 +8,12 @@ import Chroma from "chroma-js";
 
 /* tslint:disable-next-line */
 const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<IToggleClassNameContract, IDesignSystem> => {
-    const backgroundColor: string = get(config, "backgroundColor") || designSystemDefaults.backgroundColor;
-    const brandColor: string = get(config, "brandColor") || designSystemDefaults.brandColor;
-    const direction: Direction = get(config, "direction") || designSystemDefaults.direction;
-    const foregroundColor: string = get(config, "foregroundColor") || designSystemDefaults.foregroundColor;
+    const configWithDefaults = safeDesignSystem(config);
+
+    const backgroundColor: string = ensureContrast(ContrastRatios.text, configWithDefaults.backgroundColor, configWithDefaults.foregroundColor);
+    const accentColor: string = ensureContrast(ContrastRatios.text, configWithDefaults.accentColor, configWithDefaults.backgroundColor);
+    const foregroundColor: string = ensureContrast(ContrastRatios.text, configWithDefaults.foregroundColor, configWithDefaults.backgroundColor);
+    const direction: Direction = configWithDefaults.direction;
 
     return {
         toggle: {
@@ -80,14 +82,14 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config
                 }
             },
             "&:checked": {
-                backgroundColor: brandColor,
-                borderColor: brandColor,
+                backgroundColor: accentColor,
+                borderColor: accentColor,
                 "&:hover": {
-                    backgroundColor: Chroma(brandColor).alpha(0.8).css(),
-                    borderColor: Chroma(brandColor).alpha(0.8).css()
+                    backgroundColor: Chroma(accentColor).alpha(0.8).css(),
+                    borderColor: Chroma(accentColor).alpha(0.8).css()
                 },
                 "&:focus": {
-                    borderColor: brandColor
+                    borderColor: accentColor
                 },
                 "& + span": {
                     left: "28px",

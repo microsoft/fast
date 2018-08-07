@@ -39,4 +39,20 @@ const designSystemDefaults: IDesignSystem = {
     direction: Direction.ltr
 };
 
+/**
+ * Ensure that all properties of the design system are assigned
+ */
+export function safeDesignSystem(config: Partial<IDesignSystem>): IDesignSystem {
+    return Object.assign({}, designSystemDefaults, config);
+}
+
+/**
+ * Safely retrieves a single property from a design system
+ */
+export function getDesignSystemProperty(key: string): (config: IDesignSystem) => string {
+    return function(config: IDesignSystem): string {
+        return safeDesignSystem(config)[key];
+    }
+}
+
 export default designSystemDefaults;

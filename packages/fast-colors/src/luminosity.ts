@@ -45,7 +45,7 @@ function adjustLuminance(low: Chroma, high: Chroma, targetLuminance: number, ite
  */
 export function luminanceSwitch(operandLuminance: number, referenceLuminance: number): LuminositySwitch {
     return (a: any, b: any): any => {
-        const difference: number = referenceLuminance - referenceLuminance;
+        const difference: number = operandLuminance - referenceLuminance;
 
         return difference < 0 || (difference === 0 && referenceLuminance > .5) ? b : a;
     };

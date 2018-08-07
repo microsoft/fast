@@ -2,7 +2,7 @@ import designSystemDefaults, { IDesignSystem } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { applyLocalizedProperty, Direction, localizeSpacing, toPx, ensureContrast } from "@microsoft/fast-jss-utilities";
+import { applyLocalizedProperty, Direction, localizeSpacing, toPx, ensureContrast, contrast } from "@microsoft/fast-jss-utilities";
 import { get } from "lodash-es";
 import { applyType } from "../utilities/typography";
 import { applyMixedColor } from "../utilities/colors";
@@ -59,6 +59,10 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
     const brandColor: string = get(config, "brandColor") || designSystemDefaults.brandColor;
     const direction: Direction = get(config, "direction") || designSystemDefaults.direction;
     const foregroundColor: string = get(config, "foregroundColor") || designSystemDefaults.foregroundColor;
+    const restRatio: number = 4.52;
+
+    const borderColor = contrast(4.52, foregroundColor, contrast(restRatio, foregroundColor, backgroundColor));
+    const background = contrast(restRatio, foregroundColor, backgroundColor);
 
     return {
         button: {
@@ -68,7 +72,8 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
             minWidth: toPx(120),
             display: "inline-block",
             padding: `${toPx(13)} ${toPx(12)} ${toPx(12)}`,
-            border: `${toPx(2)} solid transparent`,
+            border: `${toPx(2)} solid`,
+            borderColor: "transparent",
             borderRadius: toPx(2),
             cursor: "pointer",
             overflow: "hidden",
@@ -78,17 +83,19 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
             whiteSpace: "nowrap",
             verticalAlign: "bottom",
             transition: "all 0.2s ease-in-out",
-            color: ensureContrast(4.5, backgroundColor, foregroundColor),
-            backgroundColor: ensureContrast(4.5, foregroundColor, backgroundColor),
+            color: backgroundColor,
+            backgroundColor: background,
             "&:hover": {
-                ...applyPropertyDrivenColor("backgroundColor", 0.46, 0.8)
+                backgroundColor: contrast(restRatio + 1, backgroundColor, foregroundColor),
             },
             "&:focus": {
                 outline: "none",
-                ...applyPropertyDrivenColor("backgroundColor", 0.38)
+                borderColor:  borderColor,
+                boxShadow: Chroma.contrast(borderColor, background) >= restRatio ? "" : `inset 0 0 0 2px ${contrast(4.52, backgroundColor, borderColor)}`
+                // borderColor:  contrast(restRatio * 2, foregroundColor, backgroundColor),
             },
             "&:disabled, &[aria-disabled]": {
-                opacity: ".4",
+
                 cursor: "not-allowed",
                 "&:hover": {
                     ...applyPropertyDrivenColor("backgroundColor", 0.46)
