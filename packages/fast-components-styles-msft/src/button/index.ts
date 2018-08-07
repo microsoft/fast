@@ -1,11 +1,11 @@
-import designSystemDefaults, { IDesignSystem } from "../design-system";
+import designSystemDefaults, { IDesignSystem, safeDesignSystem } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { applyLocalizedProperty, Direction, localizeSpacing, toPx, ensureContrast, contrast } from "@microsoft/fast-jss-utilities";
 import { get } from "lodash-es";
 import { applyType } from "../utilities/typography";
-import { applyMixedColor } from "../utilities/colors";
+import { applyMixedColor, ContrastModifiers } from "../utilities/colors";
 import Chroma from "chroma-js";
 
 function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
@@ -43,26 +43,24 @@ function applyTransaprentBackground(): ICSSRules<IDesignSystem> {
 function applyPropertyDrivenColor(incomingProperty: string, mixValue?: number, alpha?: number): ICSSRules<IDesignSystem> {
     return {
         [incomingProperty]: (config: IDesignSystem): string => {
+            const designSystem = safeDesignSystem(config);
+
             return applyMixedColor(
-                get(config, "foregroundColor") || designSystemDefaults.foregroundColor,
-                get(config, "backgroundColor") || designSystemDefaults.backgroundColor,
+                config.foregroundColor,
+                config.backgroundColor,
                 mixValue,
                 alpha
             );
         }
     };
 }
-/* tslint:disable:max-line-length */
+/* tslint:disable-next-line */
 const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<IMSFTButtonClassNameContract, IDesignSystem> => {
-/* tslint:enable:max-line-length */
-    const backgroundColor: string = get(config, "backgroundColor") || designSystemDefaults.backgroundColor;
-    const brandColor: string = get(config, "brandColor") || designSystemDefaults.brandColor;
-    const direction: Direction = get(config, "direction") || designSystemDefaults.direction;
-    const foregroundColor: string = get(config, "foregroundColor") || designSystemDefaults.foregroundColor;
-    const restRatio: number = 4.52;
-
-    const borderColor = contrast(4.52, foregroundColor, contrast(restRatio, foregroundColor, backgroundColor));
-    const background = contrast(restRatio, foregroundColor, backgroundColor);
+    config = safeDesignSystem(config);
+    const { foregroundColor, backgroundColor, brandColor, direction } = config;
+    const borderColor: string = contrast(config.contrast, foregroundColor, contrast(config.contrast, foregroundColor, backgroundColor));
+    const background: string = contrast(config.contrast, foregroundColor, backgroundColor);
+    const white: string = "white"
 
     return {
         button: {
@@ -86,60 +84,54 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
             color: backgroundColor,
             backgroundColor: background,
             "&:hover": {
-                backgroundColor: contrast(restRatio + 1, backgroundColor, foregroundColor),
+                backgroundColor: contrast(config.contrast + ContrastModifiers.hover, backgroundColor, foregroundColor)
             },
             "&:focus": {
                 outline: "none",
                 borderColor:  borderColor,
-                boxShadow: Chroma.contrast(borderColor, background) >= restRatio ? "" : `inset 0 0 0 2px ${contrast(4.52, backgroundColor, borderColor)}`
-                // borderColor:  contrast(restRatio * 2, foregroundColor, backgroundColor),
+                boxShadow: Chroma.contrast(borderColor, background) >= config.contrast ? "" : `inset 0 0 0 2px ${contrast(config.contrast, backgroundColor, borderColor)}`
             },
             "&:disabled, &[aria-disabled]": {
-
                 cursor: "not-allowed",
-                "&:hover": {
-                    ...applyPropertyDrivenColor("backgroundColor", 0.46)
-                }
+                backgroundColor: contrast(config.contrast + ContrastModifiers.disabled, backgroundColor, foregroundColor)
             }
         },
         button_primary: {
             extend: "button",
-            color: backgroundColor,
-            backgroundColor: ensureContrast(4.5, brandColor, foregroundColor),
+            color: "white",
+            backgroundColor: ensureContrast(config.contrast, brandColor, white),
             "&:hover": {
-                backgroundColor: Chroma(brandColor).alpha(0.8).css()
+                backgroundColor: contrast(config.contrast - ContrastModifiers.hover, brandColor, white)
             },
             "&:focus": {
-                outline: "none",
-                backgroundColor: Chroma(brandColor).darken().css()
+                borderColor: contrast(config.contrast, foregroundColor, brandColor),
+                boxShadow: Chroma.contrast(contrast(config.contrast, foregroundColor, brandColor), brandColor) >= config.contrast ? "" : `inset 0 0 0 2px ${contrast(config.contrast, brandColor, contrast(config.contrast, foregroundColor, brandColor))}`
             },
             "&:disabled, &[aria-disabled]": {
-                backgroundColor: brandColor,
-                "&:hover": {
-                    backgroundColor: brandColor
-                }
+                backgroundColor: contrast(config.contrast - (ContrastModifiers.disabled - 1), brandColor, white)
             }
         },
         button_outline: {
             extend: "button",
             color: foregroundColor,
-            ...applyPropertyDrivenColor("borderColor", 0.46),
+            borderColor: borderColor,
             ...applyTransaprentBackground(),
             "&:hover": {
-                ...applyPropertyDrivenColor("borderColor", 0.46, 0.8),
-                ...applyTransaprentBackground()
+                ...applyTransaprentBackground(),
+                borderColor: contrast(config.contrast - ContrastModifiers.hover, borderColor, white),
+                color: contrast(config.contrast - ContrastModifiers.hover, foregroundColor, backgroundColor),
             },
             "&:focus": {
-                borderColor: "transparent",
+                ...applyTransaprentBackground(),
+                borderColor: contrast(config.contrast, foregroundColor, backgroundColor),
+                boxShadow: Chroma.contrast(foregroundColor, backgroundColor) >= config.contrast ? "" : `inset 0 0 0 2px ${contrast(config.contrast, foregroundColor, backgroundColor)}`
                 /* tslint:disable-next-line */
-                boxShadow: `0 0 0 ${toPx(2)} ${applyMixedColor(foregroundColor, backgroundColor, 0.46)}`,
-                ...applyTransaprentBackground()
+                // boxShadow: `0 0 0 ${toPx(2)} ${applyMixedColor(foregroundColor, backgroundColor, 0.46)}`,
             },
             "&:disabled, &[aria-disabled]": {
                 ...applyTransaprentBackground(),
-                "&:hover": {
-                    ...applyTransaprentBackground()
-                }
+                color: contrast(config.contrast + ContrastModifiers.disabled, backgroundColor, foregroundColor),
+                borderColor: contrast(config.contrast + ContrastModifiers.disabled, backgroundColor, foregroundColor)
             }
         },
         button_lightweight: {

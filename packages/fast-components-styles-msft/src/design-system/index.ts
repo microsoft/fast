@@ -28,6 +28,12 @@ export interface IDesignSystem {
      * The primary direction of the document
      */
     direction: Direction;
+
+    /**
+     * A number between 0 and 21 that represents the contrast value used to calculate component colors.
+     */
+    contrast: number;
+    
 }
 
 const accentColor = "#0078D4";
@@ -36,7 +42,8 @@ const designSystemDefaults: IDesignSystem = {
     foregroundColor: "#000",
     backgroundColor: "#FFF",
     brandColor: accentColor,
-    direction: Direction.ltr
+    direction: Direction.ltr,
+    contrast: 4.5
 };
 
 /**
