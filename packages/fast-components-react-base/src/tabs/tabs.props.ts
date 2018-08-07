@@ -31,6 +31,21 @@ export interface ITabsHandledProps {
      * The orientation for the tablist
      */
     orientation?: Orientation;
+
+    /**
+     * A string to use for the slot property for tab item children
+     */
+    tabItemSlot?: string;
+
+    /**
+     * A string to use for the slot property for tab panel children
+     */
+    tabPanelSlot?: string;
+
+    /**
+     * A string to use for the slot property for tab children
+     */
+    tabSlot?: string;
 }
 
 export interface ITabsUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}

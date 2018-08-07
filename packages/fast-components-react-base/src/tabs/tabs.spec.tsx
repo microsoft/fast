@@ -21,6 +21,12 @@ import {
     TabsProps
 } from "./index";
 
+export enum CustomTabSlot {
+    tab = "customTab",
+    tabItem = "customTabItem",
+    tabPanel = "customTabPanel"
+}
+
 /*
  * Configure Enzyme
  */
@@ -102,6 +108,38 @@ describe("tabs", (): void => {
             </TabItem>
         )
     ];
+    const childrenWithCustomSlots: JSX.Element[] = [
+        (
+            <TabItem key={1} slot={CustomTabSlot.tabItem} id="tab01">
+                <Tab slot={CustomTabSlot.tab} managedClasses={tabManagedClasses}>
+                    tab 1
+                </Tab>
+                <TabPanel slot={CustomTabSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
+                    tab 1 content
+                </TabPanel>
+            </TabItem>
+        ),
+        (
+            <TabItem key={2} slot={CustomTabSlot.tabItem} id="tab02">
+                <Tab slot={CustomTabSlot.tab} managedClasses={tabManagedClasses}>
+                    tab 2
+                </Tab>
+                <TabPanel slot={CustomTabSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
+                    tab 2 content
+                </TabPanel>
+            </TabItem>
+        ),
+        (
+            <TabItem key={3} slot={CustomTabSlot.tabItem} id="tab03">
+                <Tab slot={CustomTabSlot.tab} managedClasses={tabManagedClasses}>
+                    tab 3
+                </Tab>
+                <TabPanel slot={CustomTabSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
+                    tab 3 content
+                </TabPanel>
+            </TabItem>
+        )
+    ];
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: ITabsHandledProps & ITabsManagedClasses = {
@@ -137,6 +175,22 @@ describe("tabs", (): void => {
         const renderedWithChildren: any = shallow(
             <Component managedClasses={tabsManagedClasses} label={"items"}>
                 {childrenMissingIds}
+            </Component>
+        );
+
+        expect(renderedWithChildren.prop("children")).not.toBe(undefined);
+    });
+
+    test("should correctly handle children when given custom slots", () => {
+        const renderedWithChildren: any = shallow(
+            <Component
+                managedClasses={tabsManagedClasses}
+                label={"items"}
+                tabSlot={"customTab"}
+                tabItemSlot={"customTabItem"}
+                tabPanelSlot={"customTabPanel"}
+            >
+                {childrenWithCustomSlots}
             </Component>
         );
 
