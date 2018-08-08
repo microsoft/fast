@@ -9,9 +9,17 @@
         "id": {
             "title": "Unique ID",
             "type": "string"
+        },
+        "slot": {
+            "title": "Slot",
+            "type": "string",
+            "enum": [
+                "tab-item"
+            ]
         }
     },
     "required": [
-        "id"
+        "id",
+        "slot"
     ]
 }
