@@ -100,60 +100,48 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
      * Renders the tab elements
      */
     private renderTabElements(): JSX.Element[] {
-        const tabElements: JSX.Element[] = [];
-
-        this.getChildBySlot(
+        return this.getChildBySlot(
             this.props.children,
             this.getSlot(TabsSlot.tabItem)
-        ).forEach((tabItem: JSX.Element, index: number): void => {
-            tabElements.push(
-                React.cloneElement(
-                    this.getChildBySlot(
-                        tabItem.props.children,
-                        this.getSlot(TabsSlot.tab)
-                    )[0],
-                    {
-                        key: tabItem.props.id,
-                        "aria-controls": tabItem.props.id,
-                        "aria-selected": this.state.activeId === tabItem.props.id,
-                        onClick: this.handleClick,
-                        onKeyDown: this.handleKeyDown,
-                        tabIndex: this.state.activeId !== tabItem.props.id ? -1 : 0
-                    }
-                )
+        ).map((tabItem: JSX.Element, index: number): JSX.Element => {
+            return React.cloneElement(
+                this.getChildBySlot(
+                    tabItem.props.children,
+                    this.getSlot(TabsSlot.tab)
+                )[0],
+                {
+                    key: tabItem.props.id,
+                    "aria-controls": tabItem.props.id,
+                    "aria-selected": this.state.activeId === tabItem.props.id,
+                    onClick: this.handleClick,
+                    onKeyDown: this.handleKeyDown,
+                    tabIndex: this.state.activeId !== tabItem.props.id ? -1 : 0
+                }
             );
         });
-
-        return tabElements;
     }
 
     /**
      * Renders the tab panels
      */
     private renderTabPanels(): JSX.Element[] {
-        const tabPanels: JSX.Element[] = [];
-
-        this.getChildBySlot(
+        return this.getChildBySlot(
             this.props.children,
             this.getSlot(TabsSlot.tabItem)
-        ).forEach((tabItem: JSX.Element, index: number): void => {
-            tabPanels.push(
-                React.cloneElement(
-                    this.getChildBySlot(
-                        tabItem.props.children,
-                        this.getSlot(TabsSlot.tabPanel)
-                    )[0],
-                    {
-                        key: tabItem.props.id,
-                        id: tabItem.props.id,
-                        "aria-labelledby": tabItem.props.id,
-                        "aria-hidden": this.state.activeId !== tabItem.props.id
-                    }
-                )
+        ).map((tabItem: JSX.Element, index: number): JSX.Element => {
+            return React.cloneElement(
+                this.getChildBySlot(
+                    tabItem.props.children,
+                    this.getSlot(TabsSlot.tabPanel)
+                )[0],
+                {
+                    key: tabItem.props.id,
+                    id: tabItem.props.id,
+                    "aria-labelledby": tabItem.props.id,
+                    "aria-hidden": this.state.activeId !== tabItem.props.id
+                }
             );
         });
-
-        return tabPanels;
     }
 
     /**
