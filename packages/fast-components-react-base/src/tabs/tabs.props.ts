@@ -19,7 +19,8 @@ export interface ITabsHandledProps {
     label: string;
 
     /**
-     * The tab update callback
+     * The tab update callback which is fired when a tab
+     * is clicked or when the focus is switched to it on keyboard action
      */
     onUpdateTab?: (activeTab: string) => void;
 
