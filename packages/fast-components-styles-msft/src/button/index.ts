@@ -2,7 +2,7 @@ import designSystemDefaults, { IDesignSystem, safeDesignSystem } from "../design
 import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { applyLocalizedProperty, Direction, localizeSpacing, toPx, ensureContrast, contrast } from "@microsoft/fast-jss-utilities";
+import { applyLocalizedProperty, contrast, Direction, ensureContrast, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
 import { get } from "lodash-es";
 import { applyType } from "../utilities/typography";
 import { applyMixedColor, ContrastModifiers } from "../utilities/colors";
@@ -11,7 +11,7 @@ import Chroma from "chroma-js";
 function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
     return {
         color: (config: IDesignSystem): string => {
-            const designSystem = safeDesignSystem(config);
+            const designSystem: IDesignSystem = safeDesignSystem(config);
             return ensureContrast(config.contrast, designSystem.brandColor, designSystem.backgroundColor);
         },
         ...applyTransaprentBackground(),
@@ -34,7 +34,7 @@ function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
             borderColor: "transparent",
             color: (config: IDesignSystem): string => {
                 const designSystem = safeDesignSystem(config);
-                return contrast(config.contrast + ContrastModifiers.disabled, designSystem.foregroundColor, designSystem.backgroundColor)
+                return contrast(config.contrast + ContrastModifiers.disabled, designSystem.foregroundColor, designSystem.backgroundColor);
             }
         }
     };
@@ -49,7 +49,7 @@ function applyTransaprentBackground(): ICSSRules<IDesignSystem> {
 function applyPropertyDrivenColor(incomingProperty: string, mixValue?: number, alpha?: number): ICSSRules<IDesignSystem> {
     return {
         [incomingProperty]: (config: IDesignSystem): string => {
-            const designSystem = safeDesignSystem(config);
+            const designSystem: IDesignSystem = safeDesignSystem(config);
 
             return applyMixedColor(
                 config.foregroundColor,
@@ -67,13 +67,30 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
     const backgroundColor: string = config.backgroundColor;
     const brandColor: string = config.brandColor;
     const direction: Direction = config.direction;
+
+    // Define secondary button colors
+    const color: string = "white";
+    const secondaryRestBackgroundColor: string = contrast(config.contrast, backgroundColor, color);
+    const sencodaryHoverBackgroundColor: string = contrast(config.contrast - ContrastModifiers.hover, secondaryRestBackgroundColor, color);
+    /* tslint:disable-next-line*/
+    const secondaryFocusBorderColor: string = contrast(config.contrast, foregroundColor, secondaryRestBackgroundColor);
+    const secondaryFocusBoxShadow: string = Chroma.contrast(secondaryRestBackgroundColor, secondaryFocusBorderColor) < config.contrast
+        ? `inset 0 0 0 2px ${contrast(config.contrast, foregroundColor, secondaryRestBackgroundColor)}`
+        : "none";
+    /* tslint:disable-next-line*/
+    const secondaryDisabledBackgroundColor: string = contrast(config.contrast - ContrastModifiers.disabled, secondaryRestBackgroundColor, backgroundColor);
+    const secondaryDisabledColor: string = contrast(config.contrast - ContrastModifiers.disabled, color, secondaryDisabledBackgroundColor);
+
+    // Define primary button colors
+    const primaryRestBackground: string = ensureContrast(config.contrast, brandColor, color);
+    const primaryFocusBorder: string = contrast(config.contrast, foregroundColor, brandColor);
+    const primaryFocusBoxShadow: string = Chroma.contrast(primaryRestBackground, primaryFocusBorder) < config.contrast
+        ? `inset 0 0 0 2px ${contrast(config.contrast, primaryRestBackground, primaryFocusBorder)}`
+        : "none";
+
     const borderColor: string = contrast(config.contrast, foregroundColor, contrast(config.contrast, foregroundColor, backgroundColor));
     const background: string = contrast(config.contrast, foregroundColor, backgroundColor);
     const white: string = "white";
-
-    const primaryRestBackground: string = ensureContrast(config.contrast, brandColor, white);
-    const primaryFocusBorder: string = contrast(config.contrast, foregroundColor, brandColor);
-    const boxShadow: string = `inset 0 0 0 2px ${contrast(config.contrast, primaryRestBackground, primaryFocusBorder)}`;
 
     return {
         button: {
@@ -93,28 +110,20 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
             whiteSpace: "nowrap",
             verticalAlign: "bottom",
             transition: "all 0.2s ease-in-out",
-            color: white,
-            backgroundColor: contrast(config.contrast, foregroundColor, white),
+            color,
+            backgroundColor: secondaryRestBackgroundColor,
             "&:hover": {
-                backgroundColor: contrast(config.contrast - ContrastModifiers.hover, foregroundColor, white)
+                backgroundColor: sencodaryHoverBackgroundColor
             },
             "&:focus": {
                 outline: "none",
-                borderColor,
-                boxShadow: Chroma.contrast(borderColor, contrast(config.contrast, foregroundColor, white)) >= config.contrast
-                    ? ""
-                    : `inset 0 0 0 2px ${contrast(config.contrast, contrast(config.contrast, foregroundColor, white), borderColor)}`
+                borderColor: secondaryFocusBorderColor,
+                boxShadow: secondaryFocusBoxShadow,
             },
             "&$button__disabled": {
                 cursor: "not-allowed",
-                ...((): ICSSRules<any> => {
-                    return {
-                        backgroundColor: contrast(config.contrast - ContrastModifiers.disabled, foregroundColor, backgroundColor),
-                        color: contrast(config.contrast - ContrastModifiers.disabled,
-                            white,
-                            contrast(config.contrast - ContrastModifiers.disabled, foregroundColor, backgroundColor))
-                    };
-                })()
+                backgroundColor: secondaryDisabledBackgroundColor,
+                color: secondaryDisabledColor
             }
         },
         button_primary: {
@@ -127,9 +136,7 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
             "&:focus": {
                 borderColor: primaryFocusBorder,
                 /*tslint:disable-next-line*/
-                boxShadow: Chroma.contrast(primaryRestBackground, primaryFocusBorder) >= config.contrast
-                    ? "none"
-                    : `inset 0 0 0 2px ${contrast(config.contrast, primaryRestBackground, primaryFocusBorder)}`
+                boxShadow: primaryFocusBoxShadow
             },
             "&$button__disabled": {
                 color: contrast(config.contrast - ContrastModifiers.disabled, white, contrast(config.contrast - ContrastModifiers.disabled, brandColor, backgroundColor)),
@@ -171,6 +178,7 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
         button_span: {
             position: "relative",
             "&::before": {
+                content: "''",
                 display: "block",
                 height: toPx(2),
                 position: "absolute",
