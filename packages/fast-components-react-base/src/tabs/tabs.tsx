@@ -78,7 +78,7 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
                 <div
                     role="tablist"
                     ref={this.tabListRef}
-                    className={this.props.managedClasses.tab_list}
+                    className={this.props.managedClasses.tabs_tabList}
                     aria-label={this.props.label}
                     aria-orientation={this.props.orientation}
                 >

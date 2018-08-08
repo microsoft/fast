@@ -20,8 +20,7 @@ import Documentation from "./.tmp/documentation";
 import { Orientation } from "./tabs.props";
 
 const tabsManagedClasses: ITabsClassNameContract = {
-    tab_item: "tab_item-class",
-    tab_list: "tab_list-class",
+    tabs_tabList: "tab_list-class",
     tabs: "tabs-class"
 };
 
@@ -31,8 +30,8 @@ const tabManagedClasses: ITabClassNameContract = {
 };
 
 const tabPanelManagedClasses: ITabPanelClassNameContract = {
-    tab_panel: "tab_panel-class",
-    tab_panel__hidden: "tab_panel__hidden-class"
+    tabPanel: "tab_panel-class",
+    tabPanel__hidden: "tab_panel__hidden-class"
 };
 
 /**

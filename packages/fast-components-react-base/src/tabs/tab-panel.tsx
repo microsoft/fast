@@ -32,9 +32,9 @@ class TabPanel extends Foundation<ITabPanelHandledProps & ITabPanelManagedClasse
     protected generateClassNames(): string {
         return this.unhandledProps()["aria-hidden"]
             ? super.generateClassNames(
-                `${get(this.props, "managedClasses.tab_panel")} ${get(this.props, "managedClasses.tab_panel__hidden")}`
+                `${get(this.props, "managedClasses.tabPanel")} ${get(this.props, "managedClasses.tabPanel__hidden")}`
               )
-            : super.generateClassNames(get(this.props, "managedClasses.tab_panel"));
+            : super.generateClassNames(get(this.props, "managedClasses.tabPanel"));
     }
 }
 

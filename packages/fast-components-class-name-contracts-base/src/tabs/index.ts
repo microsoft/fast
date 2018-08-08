@@ -2,8 +2,7 @@
  * The class name contract for the tabs component
  */
 export interface ITabsClassNameContract {
-    tab_item: string;
-    tab_list: string;
+    tabs_tabList: string;
     tabs: string;
 }
 
@@ -13,6 +12,6 @@ export interface ITabClassNameContract {
 }
 
 export interface ITabPanelClassNameContract {
-    tab_panel: string;
-    tab_panel__hidden: string;
+    tabPanel: string;
+    tabPanel__hidden: string;
 }
