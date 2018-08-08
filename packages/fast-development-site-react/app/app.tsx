@@ -22,7 +22,7 @@ import PolymerHeading from "./components/polymer-heading";
 import { ISiteCategoryProps, Status } from "../src/components/site/category";
 import ParagraphDocs from "./components/paragraph/.tmp/documentation";
 import ButtonDocs from "./components/button/.tmp/documentation";
-import { FrameworkEnum } from "../src/components/site/dev-tools";
+import { Framework } from "../src/components/site/dev-tools";
 
 export interface IAppState {
     direction: Direction;
@@ -49,12 +49,12 @@ export default class App extends React.Component<{}, IAppState> {
         }
     ];
 
-    private frameworks: FrameworkEnum[];
+    private frameworks: Framework[];
 
     constructor(props: {}) {
         super(props);
 
-        this.frameworks = [FrameworkEnum.react, FrameworkEnum.angular];
+        this.frameworks = [Framework.react, Framework.angular];
 
         this.state = {
             direction: Direction.ltr,

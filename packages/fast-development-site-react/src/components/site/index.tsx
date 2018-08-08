@@ -19,7 +19,7 @@ import SiteCategoryDocumentation from "./category-documentation";
 import SiteCategoryIcon from "./category-icon";
 import SiteCategoryItem from "./category-item";
 import ActionBar from "./action-bar";
-import DevTools, { FrameworkEnum } from "./dev-tools";
+import DevTools, { Framework } from "./dev-tools";
 import ConfigurationPanel from "./configuration-panel";
 import NotFound from "./not-found";
 import ComponentView, { ComponentViewTypes } from "./component-view";
@@ -48,8 +48,8 @@ export interface ISiteProps {
     locales?: string[];
     themes?: ITheme[];
     activeTheme?: ITheme;
-    frameworks?: FrameworkEnum | FrameworkEnum[];
-    activeFramework?: FrameworkEnum;
+    frameworks?: Framework | Framework[];
+    activeFramework?: Framework;
     collapsed?: boolean;
     componentBackgroundTransparent?: boolean;
 }
