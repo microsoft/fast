@@ -49,7 +49,10 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
     constructor(props: TabsProps) {
         super(props);
 
-        const tabItems: JSX.Element[] = this.getChildBySlot(this.props.children, typeof this.props.tabItemSlot === "string" ? this.props.tabItemSlot : TabSlot.tabItem);
+        const tabItems: JSX.Element[] = this.getChildBySlot(
+            this.props.children,
+            typeof this.props.tabItemSlot === "string" ? this.props.tabItemSlot : TabSlot.tabItem
+        );
         this.tabListRef = React.createRef();
 
         this.state = {
@@ -261,7 +264,7 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
     private activateLast(): void {
         const items: JSX.Element[] = this.getChildBySlot(
             this.props.children,
-            typeof this.props.tabItemSlot === "string"? this.props.tabItemSlot : TabSlot.tabItem
+            typeof this.props.tabItemSlot === "string" ? this.props.tabItemSlot : TabSlot.tabItem
         );
         const lastItemIndex: number = items.length - 1;
         const activeId: string = items[lastItemIndex].props.id;
