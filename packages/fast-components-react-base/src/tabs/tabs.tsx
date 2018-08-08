@@ -5,6 +5,13 @@ import { IManagedClasses, ITabsClassNameContract } from "@microsoft/fast-compone
 import Foundation, { HandledProps } from "../foundation";
 import { ITabsHandledProps, ITabsManagedClasses, ITabsUnhandledProps, TabsProps } from "./tabs.props";
 
+export enum TabLocation {
+    first,
+    last,
+    previous,
+    next
+}
+
 export enum TabsSlot {
     tab = "tab",
     tabItem = "tab-item",
@@ -164,105 +171,55 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
         switch (e.keyCode) {
             case KeyCodes.arrowLeft:
             case KeyCodes.arrowUp:
-                this.activatePrevious();
+                this.activateTab(TabLocation.previous);
                 break;
             case KeyCodes.arrowRight:
             case KeyCodes.arrowDown:
-                this.activateNext();
+                this.activateTab(TabLocation.next);
                 break;
             case KeyCodes.home:
-                this.activateFirst();
+                this.activateTab(TabLocation.first);
                 break;
             case KeyCodes.end:
-                this.activateLast();
+                this.activateTab(TabLocation.last);
                 break;
         }
     }
 
     /**
-     * Activates the previous tab item
+     * Activates a tab
      */
-    private activatePrevious(): void {
+    private activateTab(location: TabLocation): void {
         const items: JSX.Element[] = this.getChildBySlot(
             this.props.children,
             this.getSlot(TabsSlot.tabItem)
         );
         const currentItemIndex: number = items.findIndex(this.getCurrentIndexById);
-        const previousItemIndex: number = currentItemIndex > 0 ? currentItemIndex - 1 : items.length - 1;
-        const previousItemId: string = items[previousItemIndex].props.id;
+        let itemIndex: number;
 
-        if (!this.props.activeId) {
-            this.setState({
-                activeId: previousItemId
-            });
-
-            (Array.from(this.tabListRef.current.children)[previousItemIndex] as HTMLButtonElement).focus();
-        } else if (typeof this.props.onUpdateTab === "function") {
-            this.props.onUpdateTab(previousItemId);
+        switch (location) {
+            case TabLocation.first:
+                itemIndex = 0;
+                break;
+            case TabLocation.last:
+                itemIndex = items.length - 1;
+                break;
+            case TabLocation.previous:
+                itemIndex = currentItemIndex > 0 ? currentItemIndex - 1 : items.length - 1;
+                break;
+            case TabLocation.next:
+                itemIndex = currentItemIndex < items.length - 1 ? currentItemIndex + 1 : 0;
+                break;
         }
-    }
 
-    /**
-     * Activates the next tab item
-     */
-    private activateNext(): void {
-        const items: JSX.Element[] = this.getChildBySlot(
-            this.props.children,
-            this.getSlot(TabsSlot.tabItem)
-        );
-        const currentItemIndex: number = items.findIndex(this.getCurrentIndexById);
-        const nextItemIndex: number = currentItemIndex < items.length - 1 ? currentItemIndex + 1 : 0;
-        const nextItemId: string = items[nextItemIndex].props.id;
-
-        if (!this.props.activeId) {
-            this.setState({
-                activeId: nextItemId
-            });
-
-            (Array.from(this.tabListRef.current.children)[nextItemIndex] as HTMLButtonElement).focus();
-        } else if (typeof this.props.onUpdateTab === "function") {
-            this.props.onUpdateTab(nextItemId);
-        }
-    }
-
-    /**
-     * Activates the first tab item
-     */
-    private activateFirst(): void {
-        const items: JSX.Element[] = this.getChildBySlot(
-            this.props.children,
-            this.getSlot(TabsSlot.tabItem)
-        );
-        const activeId: string = items[0].props.id;
+        const activeId: string = items[itemIndex].props.id;
 
         if (!this.props.activeId) {
             this.setState({
                 activeId
             });
 
-            (Array.from(this.tabListRef.current.children)[0] as HTMLButtonElement).focus();
-        } else if (typeof this.props.onUpdateTab === "function") {
-            this.props.onUpdateTab(activeId);
-        }
-    }
-
-    /**
-     * Activates the last tab item
-     */
-    private activateLast(): void {
-        const items: JSX.Element[] = this.getChildBySlot(
-            this.props.children,
-            this.getSlot(TabsSlot.tabItem)
-        );
-        const lastItemIndex: number = items.length - 1;
-        const activeId: string = items[lastItemIndex].props.id;
-
-        if (!this.props.activeId) {
-            this.setState({
-                activeId
-            });
-
-            (Array.from(this.tabListRef.current.children)[lastItemIndex] as HTMLButtonElement).focus();
+            (Array.from(this.tabListRef.current.children)[itemIndex] as HTMLButtonElement).focus();
         } else if (typeof this.props.onUpdateTab === "function") {
             this.props.onUpdateTab(activeId);
         }
