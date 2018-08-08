@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TabSlot } from "./tabs";
+import { TabsSlot } from "./tabs";
 
 export interface ITabItemHandledProps {
     /**
@@ -9,9 +9,9 @@ export interface ITabItemHandledProps {
 
     /**
      * The slot identifying this component to the TabItem component as a tab-item
-     * the string passed must be "tab-item"
+     * the default string passed must be "tab-item"
      */
-    slot: TabSlot.tabItem;
+    slot: TabsSlot.tabItem | string;
 
     /**
      * The tab-item content

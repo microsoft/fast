@@ -13,7 +13,7 @@ import Tabs, {
     Tab,
     TabItem,
     TabPanel,
-    TabSlot
+    TabsSlot
 } from "./index";
 import schema from "./tabs.schema.json";
 import Documentation from "./.tmp/documentation";
@@ -39,7 +39,7 @@ const tabPanelManagedClasses: ITabPanelClassNameContract = {
  */
 function getTabElementOne(): JSX.Element {
     return (
-        <Tab slot={TabSlot.tab} managedClasses={tabManagedClasses}>
+        <Tab slot={TabsSlot.tab} managedClasses={tabManagedClasses}>
             tab one
         </Tab>
     );
@@ -47,7 +47,7 @@ function getTabElementOne(): JSX.Element {
 
 function getTabPanelOne(): JSX.Element {
     return (
-        <TabPanel slot={TabSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
+        <TabPanel slot={TabsSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
             tab one content
         </TabPanel>
     );
@@ -55,7 +55,7 @@ function getTabPanelOne(): JSX.Element {
 
 function getTabItemOne(): JSX.Element {
     return (
-        <TabItem slot={TabSlot.tabItem} id={`tab01`}>
+        <TabItem slot={TabsSlot.tabItem} id={`tab01`}>
             {getTabElementOne()}
             {getTabPanelOne()}
         </TabItem>
@@ -67,7 +67,7 @@ function getTabItemOne(): JSX.Element {
  */
 function getTabElementTwo(): JSX.Element {
     return (
-        <Tab slot={TabSlot.tab} managedClasses={tabManagedClasses}>
+        <Tab slot={TabsSlot.tab} managedClasses={tabManagedClasses}>
             tab two
         </Tab>
     );
@@ -75,7 +75,7 @@ function getTabElementTwo(): JSX.Element {
 
 function getTabPanelTwo(): JSX.Element {
     return (
-        <TabPanel slot={TabSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
+        <TabPanel slot={TabsSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
             tab two content
         </TabPanel>
     );
@@ -83,7 +83,7 @@ function getTabPanelTwo(): JSX.Element {
 
 function getTabItemTwo(): JSX.Element {
     return (
-        <TabItem slot={TabSlot.tabItem} id={`tab02`}>
+        <TabItem slot={TabsSlot.tabItem} id={`tab02`}>
             {getTabElementTwo()}
             {getTabPanelTwo()}
         </TabItem>
@@ -95,7 +95,7 @@ function getTabItemTwo(): JSX.Element {
  */
 function getTabElementThree(): JSX.Element {
     return (
-        <Tab slot={TabSlot.tab} managedClasses={tabManagedClasses}>
+        <Tab slot={TabsSlot.tab} managedClasses={tabManagedClasses}>
             tab three
         </Tab>
     );
@@ -103,7 +103,7 @@ function getTabElementThree(): JSX.Element {
 
 function getTabPanelThree(): JSX.Element {
     return (
-        <TabPanel slot={TabSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
+        <TabPanel slot={TabsSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
             tab three content
         </TabPanel>
     );
@@ -111,7 +111,7 @@ function getTabPanelThree(): JSX.Element {
 
 function getTabItemThree(): JSX.Element {
     return (
-        <TabItem slot={TabSlot.tabItem} id={`tab03`}>
+        <TabItem slot={TabsSlot.tabItem} id={`tab03`}>
             {getTabElementThree()}
             {getTabPanelThree()}
         </TabItem>
@@ -123,7 +123,7 @@ function getTabItemThree(): JSX.Element {
  */
 function getTabElementFour(): JSX.Element {
     return (
-        <Tab slot={TabSlot.tab} managedClasses={tabManagedClasses}>
+        <Tab slot={TabsSlot.tab} managedClasses={tabManagedClasses}>
             tab four
         </Tab>
     );
@@ -131,7 +131,7 @@ function getTabElementFour(): JSX.Element {
 
 function getTabPanelFour(): JSX.Element {
     return (
-        <TabPanel slot={TabSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
+        <TabPanel slot={TabsSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
             tab four content
         </TabPanel>
     );
@@ -139,7 +139,7 @@ function getTabPanelFour(): JSX.Element {
 
 function getTabItemFour(): JSX.Element {
     return (
-        <TabItem slot={TabSlot.tabItem} id={`tab04`}>
+        <TabItem slot={TabsSlot.tabItem} id={`tab04`}>
             {getTabElementFour()}
             {getTabPanelFour()}
         </TabItem>
@@ -154,8 +154,8 @@ const detailChildren: JSX.Element[] = [
 
 const exampleChildren1: JSX.Element[] = [
     (
-        <TabItem slot={TabSlot.tabItem} id="tab01">
-            <Tab slot={TabSlot.tab} managedClasses={tabManagedClasses}>
+        <TabItem slot={TabsSlot.tabItem} id="tab01">
+            <Tab slot={TabsSlot.tab} managedClasses={tabManagedClasses}>
                 tab one - missing panel
             </Tab>
         </TabItem>
@@ -168,8 +168,8 @@ const exampleChildren1: JSX.Element[] = [
 const exampleChildren2: JSX.Element[] = [
     getTabItemOne(),
     (
-        <TabItem slot={TabSlot.tabItem} id="tab02">
-            <TabPanel slot={TabSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
+        <TabItem slot={TabsSlot.tabItem} id="tab02">
+            <TabPanel slot={TabsSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
                 tab two missing tab
             </TabPanel>
         </TabItem>
@@ -181,7 +181,7 @@ const exampleChildren3: JSX.Element[] = [];
 
 const exampleChildren4: JSX.Element[] = [
     (
-        <TabItem slot={TabSlot.tabItem} id="tab03" />
+        <TabItem slot={TabsSlot.tabItem} id="tab03" />
     )
 ];
 

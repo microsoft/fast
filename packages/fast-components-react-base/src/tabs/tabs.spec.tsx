@@ -17,11 +17,11 @@ import {
     Tab,
     TabItem,
     TabPanel,
-    TabSlot,
-    TabsProps
+    TabsProps,
+    TabsSlot
 } from "./index";
 
-export enum CustomTabSlot {
+export enum CustomTabsSlot {
     tab = "customTab",
     tabItem = "customTabItem",
     tabPanel = "customTabPanel"
@@ -40,13 +40,12 @@ describe("tabs", (): void => {
     const Component: React.ComponentClass<ITabsHandledProps & ITabsManagedClasses> = examples.component;
     const tabsManagedClasses: ITabsClassNameContract = {
             tabs: "tabs-class",
-            tab_list: "tab_list-class",
-            tab_item: "tab_item-class"
+            tabs_tabList: "tab_list-class",
     };
 
     const tabPanelManagedClasses: ITabPanelClassNameContract = {
-        tab_panel: "tab_panel-class",
-        tab_panel__hidden: "tab_panel__hidden-class"
+        tabPanel: "tab_panel-class",
+        tabPanel__hidden: "tab_panel__hidden-class"
     };
 
     const tabManagedClasses: ITabClassNameContract = {
@@ -56,31 +55,31 @@ describe("tabs", (): void => {
 
     const children: JSX.Element[] = [
         (
-            <TabItem key={1} slot={TabSlot.tabItem} id="tab01">
-                <Tab slot={TabSlot.tab} managedClasses={tabManagedClasses}>
+            <TabItem key={1} slot={TabsSlot.tabItem} id="tab01">
+                <Tab slot={TabsSlot.tab} managedClasses={tabManagedClasses}>
                     tab 1
                 </Tab>
-                <TabPanel slot={TabSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
+                <TabPanel slot={TabsSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
                     tab 1 content
                 </TabPanel>
             </TabItem>
         ),
         (
-            <TabItem key={2} slot={TabSlot.tabItem} id="tab02">
-                <Tab slot={TabSlot.tab} managedClasses={tabManagedClasses}>
+            <TabItem key={2} slot={TabsSlot.tabItem} id="tab02">
+                <Tab slot={TabsSlot.tab} managedClasses={tabManagedClasses}>
                     tab 2
                 </Tab>
-                <TabPanel slot={TabSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
+                <TabPanel slot={TabsSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
                     tab 2 content
                 </TabPanel>
             </TabItem>
         ),
         (
-            <TabItem key={3} slot={TabSlot.tabItem} id="tab03">
-                <Tab slot={TabSlot.tab} managedClasses={tabManagedClasses}>
+            <TabItem key={3} slot={TabsSlot.tabItem} id="tab03">
+                <Tab slot={TabsSlot.tab} managedClasses={tabManagedClasses}>
                     tab 3
                 </Tab>
-                <TabPanel slot={TabSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
+                <TabPanel slot={TabsSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
                     tab 3 content
                 </TabPanel>
             </TabItem>
@@ -88,21 +87,21 @@ describe("tabs", (): void => {
     ];
     const childrenMissingIds: JSX.Element[] = [
         (
-            <TabItem key={1} slot={TabSlot.tabItem} id={null}>
-                <Tab slot={TabSlot.tab} managedClasses={tabManagedClasses}>
+            <TabItem key={1} slot={TabsSlot.tabItem} id={null}>
+                <Tab slot={TabsSlot.tab} managedClasses={tabManagedClasses}>
                     tab 1
                 </Tab>
-                <TabPanel slot={TabSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
+                <TabPanel slot={TabsSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
                     tab 1 content
                 </TabPanel>
             </TabItem>
         ),
         (
-            <TabItem key={2} slot={TabSlot.tabItem} id={null}>
-                <Tab slot={TabSlot.tab} managedClasses={tabManagedClasses}>
+            <TabItem key={2} slot={TabsSlot.tabItem} id={null}>
+                <Tab slot={TabsSlot.tab} managedClasses={tabManagedClasses}>
                     tab 2
                 </Tab>
-                <TabPanel slot={TabSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
+                <TabPanel slot={TabsSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
                     tab 2 content
                 </TabPanel>
             </TabItem>
@@ -110,31 +109,31 @@ describe("tabs", (): void => {
     ];
     const childrenWithCustomSlots: JSX.Element[] = [
         (
-            <TabItem key={1} slot={CustomTabSlot.tabItem} id="tab01">
-                <Tab slot={CustomTabSlot.tab} managedClasses={tabManagedClasses}>
+            <TabItem key={1} slot={CustomTabsSlot.tabItem} id="tab01">
+                <Tab slot={CustomTabsSlot.tab} managedClasses={tabManagedClasses}>
                     tab 1
                 </Tab>
-                <TabPanel slot={CustomTabSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
+                <TabPanel slot={CustomTabsSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
                     tab 1 content
                 </TabPanel>
             </TabItem>
         ),
         (
-            <TabItem key={2} slot={CustomTabSlot.tabItem} id="tab02">
-                <Tab slot={CustomTabSlot.tab} managedClasses={tabManagedClasses}>
+            <TabItem key={2} slot={CustomTabsSlot.tabItem} id="tab02">
+                <Tab slot={CustomTabsSlot.tab} managedClasses={tabManagedClasses}>
                     tab 2
                 </Tab>
-                <TabPanel slot={CustomTabSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
+                <TabPanel slot={CustomTabsSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
                     tab 2 content
                 </TabPanel>
             </TabItem>
         ),
         (
-            <TabItem key={3} slot={CustomTabSlot.tabItem} id="tab03">
-                <Tab slot={CustomTabSlot.tab} managedClasses={tabManagedClasses}>
+            <TabItem key={3} slot={CustomTabsSlot.tabItem} id="tab03">
+                <Tab slot={CustomTabsSlot.tab} managedClasses={tabManagedClasses}>
                     tab 3
                 </Tab>
-                <TabPanel slot={CustomTabSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
+                <TabPanel slot={CustomTabsSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
                     tab 3 content
                 </TabPanel>
             </TabItem>

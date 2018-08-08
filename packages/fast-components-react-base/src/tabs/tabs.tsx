@@ -5,7 +5,7 @@ import { IManagedClasses, ITabsClassNameContract } from "@microsoft/fast-compone
 import Foundation, { HandledProps } from "../foundation";
 import { ITabsHandledProps, ITabsManagedClasses, ITabsUnhandledProps, TabsProps } from "./tabs.props";
 
-export enum TabSlot {
+export enum TabsSlot {
     tab = "tab",
     tabItem = "tab-item",
     tabPanel = "tab-panel"
@@ -51,7 +51,7 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
 
         const tabItems: JSX.Element[] = this.getChildBySlot(
             this.props.children,
-            this.getSlot(TabSlot.tabItem)
+            this.getSlot(TabsSlot.tabItem)
         );
         this.tabListRef = React.createRef();
 
@@ -104,13 +104,13 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
 
         this.getChildBySlot(
             this.props.children,
-            this.getSlot(TabSlot.tabItem)
+            this.getSlot(TabsSlot.tabItem)
         ).forEach((tabItem: JSX.Element, index: number): void => {
             tabElements.push(
                 React.cloneElement(
                     this.getChildBySlot(
                         tabItem.props.children,
-                        this.getSlot(TabSlot.tab)
+                        this.getSlot(TabsSlot.tab)
                     )[0],
                     {
                         key: tabItem.props.id,
@@ -135,13 +135,13 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
 
         this.getChildBySlot(
             this.props.children,
-            this.getSlot(TabSlot.tabItem)
+            this.getSlot(TabsSlot.tabItem)
         ).forEach((tabItem: JSX.Element, index: number): void => {
             tabPanels.push(
                 React.cloneElement(
                     this.getChildBySlot(
                         tabItem.props.children,
-                        this.getSlot(TabSlot.tabPanel)
+                        this.getSlot(TabsSlot.tabPanel)
                     )[0],
                     {
                         key: tabItem.props.id,
@@ -197,7 +197,7 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
     private activatePrevious(): void {
         const items: JSX.Element[] = this.getChildBySlot(
             this.props.children,
-            this.getSlot(TabSlot.tabItem)
+            this.getSlot(TabsSlot.tabItem)
         );
         const currentItemIndex: number = items.findIndex(this.getCurrentIndexById);
         const previousItemIndex: number = currentItemIndex > 0 ? currentItemIndex - 1 : items.length - 1;
@@ -220,7 +220,7 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
     private activateNext(): void {
         const items: JSX.Element[] = this.getChildBySlot(
             this.props.children,
-            this.getSlot(TabSlot.tabItem)
+            this.getSlot(TabsSlot.tabItem)
         );
         const currentItemIndex: number = items.findIndex(this.getCurrentIndexById);
         const nextItemIndex: number = currentItemIndex < items.length - 1 ? currentItemIndex + 1 : 0;
@@ -243,7 +243,7 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
     private activateFirst(): void {
         const items: JSX.Element[] = this.getChildBySlot(
             this.props.children,
-            this.getSlot(TabSlot.tabItem)
+            this.getSlot(TabsSlot.tabItem)
         );
         const activeId: string = items[0].props.id;
 
@@ -264,7 +264,7 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
     private activateLast(): void {
         const items: JSX.Element[] = this.getChildBySlot(
             this.props.children,
-            this.getSlot(TabSlot.tabItem)
+            this.getSlot(TabsSlot.tabItem)
         );
         const lastItemIndex: number = items.length - 1;
         const activeId: string = items[lastItemIndex].props.id;
@@ -290,34 +290,34 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
     /**
      * Gets the slot to use for tab children
      */
-    private getSlot(slot: TabSlot): TabSlot | string {
+    private getSlot(slot: TabsSlot): TabsSlot | string {
         switch (slot) {
-            case TabSlot.tab:
-                return typeof this.props.tabSlot === "string" ? this.props.tabSlot : TabSlot.tab;
-            case TabSlot.tabItem:
-                return typeof this.props.tabItemSlot === "string" ? this.props.tabItemSlot : TabSlot.tabItem;
-            case TabSlot.tabPanel:
-                return typeof this.props.tabPanelSlot === "string" ? this.props.tabPanelSlot : TabSlot.tabPanel;
+            case TabsSlot.tab:
+                return typeof this.props.tabSlot === "string" ? this.props.tabSlot : TabsSlot.tab;
+            case TabsSlot.tabItem:
+                return typeof this.props.tabItemSlot === "string" ? this.props.tabItemSlot : TabsSlot.tabItem;
+            case TabsSlot.tabPanel:
+                return typeof this.props.tabPanelSlot === "string" ? this.props.tabPanelSlot : TabsSlot.tabPanel;
         }
     }
 
     /**
      * Gets the child by the slot property
      */
-    private getChildBySlot(children: React.ReactNode, slot: TabSlot | string): JSX.Element[] {
+    private getChildBySlot(children: React.ReactNode, slot: TabsSlot | string): JSX.Element[] {
         const childBySlot: JSX.Element[] = [];
 
         React.Children.forEach(children, (child: JSX.Element): void => {
             if (child.props && child.props.slot === slot) {
-                if (slot === this.getSlot(TabSlot.tabItem)) {
+                if (slot === this.getSlot(TabsSlot.tabItem)) {
                     if (
                         !!this.getChildBySlot(
                             child.props.children,
-                            this.getSlot(TabSlot.tab)
+                            this.getSlot(TabsSlot.tab)
                         )[0]
                         && !!this.getChildBySlot(
                             child.props.children,
-                            this.getSlot(TabSlot.tabPanel)
+                            this.getSlot(TabsSlot.tabPanel)
                         )[0]
                     ) {
                         childBySlot.push(child);

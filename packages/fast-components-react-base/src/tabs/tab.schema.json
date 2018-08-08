@@ -9,9 +9,7 @@
         "slot": {
             "title": "Slot",
             "type": "string",
-            "enum": [
-                "tab"
-            ]
+            "default": "tab"
         }
     },
     "required": [

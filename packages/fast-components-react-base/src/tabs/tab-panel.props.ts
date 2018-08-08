@@ -1,13 +1,13 @@
 import * as React from "react";
 import { IManagedClasses, ITabPanelClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { TabSlot } from "./tabs";
+import { TabsSlot } from "./tabs";
 
 export interface ITabPanelHandledProps {
     /**
      * The slot identifying this component to the TabPanel component as a tab-panel
-     * the string passed must be "tab-panel"
+     * the default string passed must be "tab-panel"
      */
-    slot: TabSlot.tabPanel;
+    slot: TabsSlot.tabPanel | string;
 
     /**
      * The tab-panel content

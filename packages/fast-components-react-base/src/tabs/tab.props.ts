@@ -1,13 +1,13 @@
 import * as React from "react";
 import { IManagedClasses, ITabClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { TabSlot } from "./tabs";
+import { TabsSlot } from "./tabs";
 
 export interface ITabHandledProps {
     /**
      * The slot identifying this component to the Tab component as a tab
-     * the string passed must be "tab"
+     * the default string passed must be "tab"
      */
-    slot: TabSlot.tab;
+    slot: TabsSlot.tab | string;
 
     /**
      * The tab content

@@ -13,9 +13,7 @@
         "slot": {
             "title": "Slot",
             "type": "string",
-            "enum": [
-                "tab-item"
-            ]
+            "default": "tab-item"
         }
     },
     "required": [
