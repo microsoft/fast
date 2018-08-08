@@ -5,12 +5,12 @@ import { IDevSiteDesignSystem } from "../design-system";
 import CodePreview from "./dev-tools-code-preview";
 import { IFormChildOption } from "./";
 
-export enum FrameworkEnum {
+export enum Framework {
     react = "react",
     angular = "angular"
 }
 
-export enum TabTypeEnum {
+export enum TabType {
     code = "Code",
     properties = "Properties",
     schema = "Schema"
@@ -21,15 +21,15 @@ export interface IDevToolsProps {
     activeFormData: any;
     activeSchema: any;
     activeComponentName: string;
-    activeFramework: FrameworkEnum;
+    activeFramework: Framework;
     childOptions: IFormChildOption[];
-    frameworks?: FrameworkEnum[];
-    activeTab?: TabTypeEnum;
+    frameworks?: Framework[];
+    activeTab?: TabType;
 }
 
 export interface IDevToolsState {
-    activeFramework: FrameworkEnum;
-    activeTab: TabTypeEnum;
+    activeFramework: Framework;
+    activeTab: TabType;
 }
 
 export interface IDevToolsManagedClasses {
@@ -168,16 +168,16 @@ const style: ComponentStyles<IDevToolsManagedClasses, IDevSiteDesignSystem> = {
 
 class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevToolsManagedClasses>, IDevToolsState> {
 
-    private tabs: TabTypeEnum[];
+    private tabs: TabType[];
 
     constructor(props: IDevToolsProps & IManagedClasses<IDevToolsManagedClasses>) {
         super(props);
 
-        this.tabs = [TabTypeEnum.code, TabTypeEnum.properties, TabTypeEnum.schema];
+        this.tabs = [TabType.code, TabType.properties, TabType.schema];
 
         this.state = {
-            activeFramework: this.props.activeFramework || FrameworkEnum.react,
-            activeTab: this.props.activeTab || TabTypeEnum.code
+            activeFramework: this.props.activeFramework || Framework.react,
+            activeTab: this.props.activeTab || TabType.code
         };
     }
 
@@ -207,9 +207,9 @@ class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevTool
     }
 
     private renderTabItems(): JSX.Element[] {
-        return this.tabs.map((tabItem: TabTypeEnum, index: number) => {
+        return this.tabs.map((tabItem: TabType, index: number) => {
             // TODO: #297 remove this if statement once other tab contents are created
-            if (tabItem === TabTypeEnum.code || tabItem === TabTypeEnum.schema) {
+            if (tabItem === TabType.code || tabItem === TabType.schema) {
                 return (
                     <li key={index} className={this.getTabClassNames(tabItem)}>
                         <button onClick={this.handleChangeTab(tabItem)}>
@@ -230,7 +230,7 @@ class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevTool
     }
 
     private renderTabPanelItems(): JSX.Element[] {
-        return this.tabs.map((tabItem: TabTypeEnum, index: number) => {
+        return this.tabs.map((tabItem: TabType, index: number) => {
             return (
                 <div
                     key={index}
@@ -243,13 +243,13 @@ class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevTool
         });
     }
 
-    private renderTabPanelContent(tabItem: TabTypeEnum): JSX.Element {
+    private renderTabPanelContent(tabItem: TabType): JSX.Element {
         switch (tabItem) {
-            case TabTypeEnum.code:
+            case TabType.code:
                 return this.renderCode();
-            case TabTypeEnum.properties:
+            case TabType.properties:
                 return this.renderProperties();
-            case TabTypeEnum.schema:
+            case TabType.schema:
                 return this.renderSchema();
             default:
                 return null;
@@ -288,7 +288,7 @@ class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevTool
     }
 
     private renderComponentFrameworkTypeToggle(): JSX.Element[] {
-        return this.props.frameworks.map((framework: FrameworkEnum, index: number) => {
+        return this.props.frameworks.map((framework: Framework, index: number) => {
             return (
                 <li
                     key={index}
@@ -303,19 +303,19 @@ class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevTool
         });
     }
 
-    private getFrameworkClassName(framework: FrameworkEnum): string {
+    private getFrameworkClassName(framework: Framework): string {
         return framework === "angular"
             ? this.props.managedClasses.devTools_controls_framework_angular
             : this.props.managedClasses.devTools_controls_framework_react;
     }
 
-    private getFrameworkActiveClassName(framework: FrameworkEnum): string {
+    private getFrameworkActiveClassName(framework: Framework): string {
         return this.state.activeFramework === framework
             ? this.props.managedClasses.devTools_controls_framework__active
             : "";
     }
 
-    private getTabClassNames(tabItem: TabTypeEnum): string {
+    private getTabClassNames(tabItem: TabType): string {
         if (tabItem === this.state.activeTab) {
             return `${this.props.managedClasses.devTools_tab} ${this.props.managedClasses.devTools_tab__active}`;
         }
@@ -323,7 +323,7 @@ class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevTool
         return this.props.managedClasses.devTools_tab;
     }
 
-    private handleChangeFramework(framework: FrameworkEnum): (e: React.MouseEvent<HTMLButtonElement>) => void {
+    private handleChangeFramework(framework: Framework): (e: React.MouseEvent<HTMLButtonElement>) => void {
         return (e: React.MouseEvent<HTMLButtonElement>): void => {
             this.setState({
                 activeFramework: framework
@@ -331,7 +331,7 @@ class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevTool
         };
     }
 
-    private handleChangeTab(tab: TabTypeEnum): (e: React.MouseEvent<HTMLButtonElement>) => void {
+    private handleChangeTab(tab: TabType): (e: React.MouseEvent<HTMLButtonElement>) => void {
         return (e: React.MouseEvent<HTMLButtonElement>): void => {
             this.setState({
                 activeTab: tab
