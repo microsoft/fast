@@ -21,6 +21,21 @@
                 "horizontal",
                 "vertical"
             ]
+        },
+        "tabItemSlot": {
+            "title": "Tab item slot",
+            "type": "string",
+            "default": "tab-item"
+        },
+        "tabPanelSlot": {
+            "title": "Tab panel slot",
+            "type": "string",
+            "default": "tab-panel"
+        },
+        "tabSlot": {
+            "title": "Tab slot",
+            "type": "string",
+            "default": "tab"
         }
     },
     "required": [
