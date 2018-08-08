@@ -1,10 +1,6 @@
 import * as React from "react";
 import { IManagedClasses, ITabsClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-
-export enum Orientation {
-    horizontal = "horizontal",
-    vertical = "vertical"
-}
+import { Orientation } from "@microsoft/fast-web-utilities";
 
 export interface ITabsHandledProps {
     /**

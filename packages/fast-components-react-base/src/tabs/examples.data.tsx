@@ -17,7 +17,7 @@ import Tabs, {
 } from "./index";
 import schema from "./tabs.schema.json";
 import Documentation from "./.tmp/documentation";
-import { Orientation } from "./tabs.props";
+import { Orientation } from "@microsoft/fast-web-utilities";
 
 const tabsManagedClasses: ITabsClassNameContract = {
     tabs_tabList: "tab_list-class",
