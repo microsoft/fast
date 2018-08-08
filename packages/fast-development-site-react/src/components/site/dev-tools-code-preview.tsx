@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FrameworkEnum } from "./dev-tools";
+import { Framework } from "./dev-tools";
 import { IFormChildOption } from "./";
 import { get, isEmpty, isObject, set, uniqueId } from "lodash-es";
 import SyntaxHighlighter, { registerLanguage } from "react-syntax-highlighter/prism-light";
@@ -11,7 +11,7 @@ registerLanguage("jsx", jsx);
 export interface ICodePreviewProps {
     componentName: string;
     childOptions: IFormChildOption[];
-    framework: FrameworkEnum;
+    framework: Framework;
     data: any;
 }
 
@@ -49,7 +49,7 @@ export default class CodePreview extends React.Component<ICodePreviewProps, {}> 
         this.variables = "";
 
         switch (this.props.framework) {
-            case FrameworkEnum.react:
+            case Framework.react:
                 codePreview = this.generateReactCodePreview(this.props.componentName, this.props.data, "", "");
                 break;
         }
