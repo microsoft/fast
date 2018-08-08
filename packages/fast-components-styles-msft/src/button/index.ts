@@ -63,10 +63,17 @@ function applyPropertyDrivenColor(incomingProperty: string, mixValue?: number, a
 /* tslint:disable-next-line */
 const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<IMSFTButtonClassNameContract, IDesignSystem> => {
     config = safeDesignSystem(config);
-    const { foregroundColor, backgroundColor, brandColor, direction } = config;
+    const foregroundColor: string = config.foregroundColor;
+    const backgroundColor: string = config.backgroundColor;
+    const brandColor: string = config.brandColor;
+    const direction: Direction = config.direction;
     const borderColor: string = contrast(config.contrast, foregroundColor, contrast(config.contrast, foregroundColor, backgroundColor));
     const background: string = contrast(config.contrast, foregroundColor, backgroundColor);
-    const white: string = "white"
+    const white: string = "white";
+
+    const primaryRestBackground: string = ensureContrast(config.contrast, brandColor, white);
+    const primaryFocusBorder: string = contrast(config.contrast, foregroundColor, brandColor);
+    const boxShadow: string = `inset 0 0 0 2px ${contrast(config.contrast, primaryRestBackground, primaryFocusBorder)}`;
 
     return {
         button: {
@@ -87,30 +94,42 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
             verticalAlign: "bottom",
             transition: "all 0.2s ease-in-out",
             color: white,
-            backgroundColor: background,
+            backgroundColor: contrast(config.contrast, foregroundColor, white),
             "&:hover": {
-                backgroundColor: contrast(config.contrast + ContrastModifiers.hover, backgroundColor, foregroundColor)
+                backgroundColor: contrast(config.contrast - ContrastModifiers.hover, foregroundColor, white)
             },
             "&:focus": {
                 outline: "none",
-                borderColor:  borderColor,
-                boxShadow: Chroma.contrast(borderColor, background) >= config.contrast ? "" : `inset 0 0 0 2px ${contrast(config.contrast, backgroundColor, borderColor)}`
+                borderColor,
+                boxShadow: Chroma.contrast(borderColor, contrast(config.contrast, foregroundColor, white)) >= config.contrast
+                    ? ""
+                    : `inset 0 0 0 2px ${contrast(config.contrast, contrast(config.contrast, foregroundColor, white), borderColor)}`
             },
             "&$button__disabled": {
                 cursor: "not-allowed",
-                backgroundColor: contrast(config.contrast - ContrastModifiers.disabled, foregroundColor, backgroundColor)
+                ...((): ICSSRules<any> => {
+                    return {
+                        backgroundColor: contrast(config.contrast - ContrastModifiers.disabled, foregroundColor, backgroundColor),
+                        color: contrast(config.contrast - ContrastModifiers.disabled,
+                            white,
+                            contrast(config.contrast - ContrastModifiers.disabled, foregroundColor, backgroundColor))
+                    };
+                })()
             }
         },
         button_primary: {
             extend: "button",
             color: "white",
-            backgroundColor: ensureContrast(config.contrast, brandColor, white),
+            backgroundColor: primaryRestBackground,
             "&:hover": {
                 backgroundColor: contrast(config.contrast - ContrastModifiers.hover, brandColor, white)
             },
             "&:focus": {
-                borderColor: contrast(config.contrast, foregroundColor, brandColor),
-                boxShadow: Chroma.contrast(contrast(config.contrast, foregroundColor, brandColor), brandColor) >= config.contrast ? "" : `inset 0 0 0 2px ${contrast(config.contrast, brandColor, contrast(config.contrast, foregroundColor, brandColor))}`
+                borderColor: primaryFocusBorder,
+                /*tslint:disable-next-line*/
+                boxShadow: Chroma.contrast(primaryRestBackground, primaryFocusBorder) >= config.contrast
+                    ? "none"
+                    : `inset 0 0 0 2px ${contrast(config.contrast, primaryRestBackground, primaryFocusBorder)}`
             },
             "&$button__disabled": {
                 color: contrast(config.contrast - ContrastModifiers.disabled, white, contrast(config.contrast - ContrastModifiers.disabled, brandColor, backgroundColor)),
@@ -120,7 +139,8 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
         button_outline: {
             extend: "button",
             color: foregroundColor,
-            borderColor: borderColor,
+            borderWidth: "1px",
+            borderColor: background,
             ...applyTransaprentBackground(),
             "&:hover": {
                 ...applyTransaprentBackground(),
@@ -129,14 +149,14 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
             },
             "&:focus": {
                 ...applyTransaprentBackground(),
-                borderWidth: "2px",
                 borderColor: contrast(config.contrast, foregroundColor, backgroundColor),
-                boxShadow: Chroma.contrast(foregroundColor, backgroundColor) >= config.contrast ? "" : `inset 0 0 0 2px ${contrast(config.contrast, foregroundColor, backgroundColor)}`
+                boxShadow: `inset 0 0 0 1px ${contrast(config.contrast, foregroundColor, backgroundColor)}`
             },
             "&$button__disabled": {
                 ...applyTransaprentBackground(),
-                color: contrast(config.contrast + ContrastModifiers.disabled, backgroundColor, foregroundColor),
-                borderColor: contrast(config.contrast + ContrastModifiers.disabled, backgroundColor, foregroundColor)
+                color: contrast(config.contrast - ContrastModifiers.disabled, foregroundColor, backgroundColor),
+                // borderColor: contrast(config.contrast + ContrastModifiers.disabled, backgroundColor, foregroundColor)
+                borderColor: contrast(config.contrast - ContrastModifiers.disabled, foregroundColor, backgroundColor),
             }
         },
         button_lightweight: {

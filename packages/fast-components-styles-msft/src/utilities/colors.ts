@@ -9,4 +9,4 @@ export enum ContrastModifiers {
     rest = 0,
     hover = 1,
     disabled = 3
-};
+}
