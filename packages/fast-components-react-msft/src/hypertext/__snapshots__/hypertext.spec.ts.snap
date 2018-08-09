@@ -13,7 +13,7 @@ exports[`hypertext snapshots Hypertext: 0 1`] = `
 exports[`hypertext snapshots Hypertext: 1 1`] = `
 <a
   className="hypertext-0-1-2"
-  href={null}
+  href={undefined}
 >
   Hypertext
 </a>
