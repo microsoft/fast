@@ -6,7 +6,7 @@ export interface IDesignSystem {
      * The accent color used to bring attention to prioritized elements
      */
     accentColor: string;
-   
+
     /**
      * The value typically used for foreground elements, such as text
      */
@@ -30,20 +30,19 @@ export interface IDesignSystem {
     direction: Direction;
 
     /**
-     * A number between 0 and 21 that represents the contrast value used to calculate component colors.
+     * A number between 0 and 100 that represents the contrast scale value.
      */
     contrast: number;
-    
 }
 
-const accentColor = "#0078D4";
+const accentColor: string = "#0078D4";
 const designSystemDefaults: IDesignSystem = {
     accentColor,
     foregroundColor: "#000",
     backgroundColor: "#FFF",
     brandColor: accentColor,
     direction: Direction.ltr,
-    contrast: 4.5
+    contrast: 0
 };
 
 /**
@@ -59,7 +58,7 @@ export function safeDesignSystem(config: Partial<IDesignSystem>): IDesignSystem 
 export function getDesignSystemProperty(key: string): (config: IDesignSystem) => string {
     return function(config: IDesignSystem): string {
         return safeDesignSystem(config)[key];
-    }
+    };
 }
 
 export default designSystemDefaults;
