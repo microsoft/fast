@@ -8,6 +8,7 @@ import { get } from "lodash-es";
 /* tslint:disable-next-line */
 class Hypertext extends Foundation<IHypertextHandledProps & IManagedClasses<IHypertextClassNameContract>, React.AnchorHTMLAttributes<HTMLAnchorElement>, {}> {
     protected handledProps: HandledProps<IHypertextHandledProps & IManagedClasses<IHypertextClassNameContract>> = {
+        href: void 0,
         managedClasses: void 0,
         children: void 0
     };
@@ -19,6 +20,7 @@ class Hypertext extends Foundation<IHypertextHandledProps & IManagedClasses<IHyp
         return (
             <a
                 {...this.unhandledProps()}
+                href={this.props.href || null}
                 className={this.generateClassNames()}
             >
                 {this.props.children}
