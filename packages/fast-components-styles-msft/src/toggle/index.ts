@@ -1,6 +1,6 @@
 import designSystemDefaults, { IDesignSystem, safeDesignSystem } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
-import { applyLocalizedProperty, Direction, toPx, ensureContrast, ContrastRatios } from "@microsoft/fast-jss-utilities";
+import { applyLocalizedProperty, Direction, ensureContrast, toPx } from "@microsoft/fast-jss-utilities";
 import { typeRamp } from "../utilities/typography";
 import { IToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash";
@@ -8,11 +8,10 @@ import Chroma from "chroma-js";
 
 /* tslint:disable-next-line */
 const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<IToggleClassNameContract, IDesignSystem> => {
-    const configWithDefaults = safeDesignSystem(config);
-
-    const backgroundColor: string = ensureContrast(ContrastRatios.text, configWithDefaults.backgroundColor, configWithDefaults.foregroundColor);
-    const accentColor: string = ensureContrast(ContrastRatios.text, configWithDefaults.accentColor, configWithDefaults.backgroundColor);
-    const foregroundColor: string = ensureContrast(ContrastRatios.text, configWithDefaults.foregroundColor, configWithDefaults.backgroundColor);
+    const configWithDefaults: IDesignSystem = safeDesignSystem(config);
+    const backgroundColor: string = ensureContrast(config.contrast, configWithDefaults.backgroundColor, configWithDefaults.foregroundColor);
+    const accentColor: string = ensureContrast(config.contrast, configWithDefaults.accentColor, configWithDefaults.backgroundColor);
+    const foregroundColor: string = ensureContrast(config.contrast, configWithDefaults.foregroundColor, configWithDefaults.backgroundColor);
     const direction: Direction = configWithDefaults.direction;
 
     return {

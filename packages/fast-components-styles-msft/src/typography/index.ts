@@ -2,7 +2,7 @@ import { IDesignSystem, getDesignSystemProperty } from "../design-system";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { ITypographyClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyTypeRampConfig } from "../utilities/typography";
-import { toPx, ensureContrast, ContrastRatios } from "@microsoft/fast-jss-utilities";
+import { toPx, ensureContrast } from "@microsoft/fast-jss-utilities";
 import { get } from "lodash-es";
 
 

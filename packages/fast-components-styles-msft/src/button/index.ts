@@ -82,11 +82,16 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
     const secondaryDisabledColor: string = contrast(config.contrast - ContrastModifiers.disabled, color, secondaryDisabledBackgroundColor);
 
     // Define primary button colors
+    const primaryBackgroundContrast: number = Chroma.contrast(brandColor, color);
     const primaryRestBackground: string = ensureContrast(config.contrast, brandColor, color);
+    const primaryHoverBackground: string = contrast(primaryBackgroundContrast - ContrastModifiers.hover, primaryRestBackground, color);
     const primaryFocusBorder: string = contrast(config.contrast, foregroundColor, brandColor);
     const primaryFocusBoxShadow: string = Chroma.contrast(primaryRestBackground, primaryFocusBorder) < config.contrast
         ? `inset 0 0 0 2px ${contrast(config.contrast, primaryRestBackground, primaryFocusBorder)}`
         : "none";
+    /* tslint:disable-next-line */
+    const primaryDisabledBackground: string = contrast(config.contrast - ContrastModifiers.disabled, primaryRestBackground, backgroundColor);
+    const primaryDisabledColor: string = contrast(config.contrast - ContrastModifiers.disabled, color, primaryDisabledBackground);
 
     const borderColor: string = contrast(config.contrast, foregroundColor, contrast(config.contrast, foregroundColor, backgroundColor));
     const background: string = contrast(config.contrast, foregroundColor, backgroundColor);
@@ -127,20 +132,18 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
             }
         },
         button_primary: {
-            extend: "button",
-            color: "white",
+            color,
             backgroundColor: primaryRestBackground,
             "&:hover": {
-                backgroundColor: contrast(config.contrast - ContrastModifiers.hover, brandColor, white)
+                backgroundColor: primaryHoverBackground
             },
             "&:focus": {
                 borderColor: primaryFocusBorder,
-                /*tslint:disable-next-line*/
                 boxShadow: primaryFocusBoxShadow
             },
             "&$button__disabled": {
-                color: contrast(config.contrast - ContrastModifiers.disabled, white, contrast(config.contrast - ContrastModifiers.disabled, brandColor, backgroundColor)),
-                backgroundColor: contrast(config.contrast - ContrastModifiers.disabled, brandColor, backgroundColor)
+                color: primaryDisabledColor,
+                backgroundColor: primaryDisabledBackground
             }
         },
         button_outline: {
