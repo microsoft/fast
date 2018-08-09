@@ -1,4 +1,4 @@
-# Text Field 
+# Text field 
 A *text field* is a form component which allows users to input and edit textual data.
 
 ## Best practices

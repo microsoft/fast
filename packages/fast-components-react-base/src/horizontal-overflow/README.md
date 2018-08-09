@@ -1,2 +1,2 @@
-# Horizontal Overflow
+# Horizontal overflow
 The *Horizontal overflow* component accepts items as children. A child can have an optional *slot* property which is either "next" or "previous" which can be used to allow the next/previous click actions.
