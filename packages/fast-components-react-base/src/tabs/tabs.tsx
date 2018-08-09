@@ -56,7 +56,7 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
     constructor(props: TabsProps) {
         super(props);
 
-        const tabItems: JSX.Element[] = this.getChildBySlot(
+        const tabItems: JSX.Element[] = this.getChildrenBySlot(
             this.props.children,
             this.getSlot(TabsSlot.tabItem)
         );
@@ -107,12 +107,12 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
      * Renders the tab elements
      */
     private renderTabElements(): JSX.Element[] {
-        return this.getChildBySlot(
+        return this.getChildrenBySlot(
             this.props.children,
             this.getSlot(TabsSlot.tabItem)
         ).map((tabItem: JSX.Element, index: number): JSX.Element => {
             return React.cloneElement(
-                this.getChildBySlot(
+                this.getChildrenBySlot(
                     tabItem.props.children,
                     this.getSlot(TabsSlot.tab)
                 )[0],
@@ -132,12 +132,12 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
      * Renders the tab panels
      */
     private renderTabPanels(): JSX.Element[] {
-        return this.getChildBySlot(
+        return this.getChildrenBySlot(
             this.props.children,
             this.getSlot(TabsSlot.tabItem)
         ).map((tabItem: JSX.Element, index: number): JSX.Element => {
             return React.cloneElement(
-                this.getChildBySlot(
+                this.getChildrenBySlot(
                     tabItem.props.children,
                     this.getSlot(TabsSlot.tabPanel)
                 )[0],
@@ -190,7 +190,7 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
      * Activates a tab
      */
     private activateTab(location: TabLocation): void {
-        const items: JSX.Element[] = this.getChildBySlot(
+        const items: JSX.Element[] = this.getChildrenBySlot(
             this.props.children,
             this.getSlot(TabsSlot.tabItem)
         );
@@ -249,22 +249,13 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
     /**
      * Gets the child by the slot property
      */
-    private getChildBySlot(children: React.ReactNode, slot: TabsSlot | string): JSX.Element[] {
+    private getChildrenBySlot(children: React.ReactNode, slot: TabsSlot | string): JSX.Element[] {
         const childBySlot: JSX.Element[] = [];
 
         React.Children.forEach(children, (child: JSX.Element): void => {
             if (child.props && child.props.slot === slot) {
                 if (slot === this.getSlot(TabsSlot.tabItem)) {
-                    if (
-                        !!this.getChildBySlot(
-                            child.props.children,
-                            this.getSlot(TabsSlot.tab)
-                        )[0]
-                        && !!this.getChildBySlot(
-                            child.props.children,
-                            this.getSlot(TabsSlot.tabPanel)
-                        )[0]
-                    ) {
+                    if (this.isValidTabItem(child)) {
                         childBySlot.push(child);
                     }
                 } else {
@@ -274,6 +265,14 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
         });
 
         return childBySlot;
+    }
+
+    /**
+     * Return a tab item if it has a tab and tab panel
+     */
+    private isValidTabItem(child: JSX.Element): boolean {
+        return !!this.getChildrenBySlot(child.props.children, this.getSlot(TabsSlot.tab))[0]
+            && !!this.getChildrenBySlot(child.props.children, this.getSlot(TabsSlot.tabPanel))[0];
     }
 }
 
