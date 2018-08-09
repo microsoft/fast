@@ -4,6 +4,7 @@ import { KeyCodes } from "@microsoft/fast-web-utilities";
 import { IManagedClasses, ITabsClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "../foundation";
 import { ITabsHandledProps, ITabsManagedClasses, ITabsUnhandledProps, TabsProps } from "./tabs.props";
+import { canUseDOM } from "../../node_modules/exenv-es6";
 
 export enum TabLocation {
     first,
@@ -106,6 +107,7 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
         if (
             typeof this.props.activeId === "string"
             && this.props.activeId !== prevProps.activeId
+            && canUseDOM()
         ) {
             const items: JSX.Element[] = this.getChildrenBySlot(
                 this.props.children,
