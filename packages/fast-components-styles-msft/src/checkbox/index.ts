@@ -1,4 +1,4 @@
-import designSystemDefaults, { IDesignSystem } from "../design-system";
+import { IDesignSystem, safeDesignSystem } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
 import { ICheckboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyTypeRampConfig } from "../utilities/typography";
@@ -8,11 +8,12 @@ import Chroma from "chroma-js";
 
 /* tslint:disable:max-line-length */
 const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<ICheckboxClassNameContract, IDesignSystem> => {
+    const designSystem: IDesignSystem = safeDesignSystem(config);
 /* tslint:disable:max-line-length */
-    const backgroundColor: string = get(config, "backgroundColor") || designSystemDefaults.backgroundColor;
-    const brandColor: string = get(config, "brandColor") || designSystemDefaults.brandColor;
-    const direction: Direction = get(config, "direction") || designSystemDefaults.direction;
-    const foregroundColor: string = get(config, "foregroundColor") || designSystemDefaults.foregroundColor;
+    const backgroundColor: string = designSystem.backgroundColor;
+    const foregroundColor: string = designSystem.foregroundColor;
+    const brandColor: string = designSystem.brandColor;
+    const direction: Direction = designSystem.direction;
 
     return {
         checkbox: {
