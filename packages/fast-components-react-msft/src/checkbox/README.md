@@ -1,4 +1,4 @@
-## Guidance
+# Checkbox
 Use a *checkbox* to select or deselect items in a list. Use a single *checkbox* by itself in a *toggle* scenario (e.g. "remember me" in a login scenario). Use it within a group for multi-select scenarios, where a user chooses one or more items from a group of choices that are NOT mutually exclusive.
 
 ## Usage

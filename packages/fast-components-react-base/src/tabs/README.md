@@ -1,4 +1,4 @@
-## Best practices
+# Tabs
 Use *tabs* when there is a paged interface where one controlling tab element corresponds to one tab panel.
 
 ## Accessibility

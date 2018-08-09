@@ -1,4 +1,4 @@
-## Guidance
+# Flipper
 Use the *flipper* component to page through content blocks one at a time or to scroll through content. 
 
 ## Accessibility
