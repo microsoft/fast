@@ -2,6 +2,14 @@ import Chroma from "chroma-js";
 import { luminance, luminanceSwitch, LuminositySwitch } from "./luminosity";
 
 /**
+ * A function to operate on contrast.
+ * @param targetRatio - The desired contrast ratio to operate from
+ * @param operand - The color value to manipulate
+ * @param reference - The color value to evaluate contrast against
+ */
+export type ContrastFunction = (targetRatio: number, operandColor: string, referenceColor: string) => string;
+
+/**
  * Adjust the darkness/lightness of a foreground color so that it matches a target contrast ratio against a background color
  * @param targetRatio - The desired contrast ratio to bring the operand to against the reference
  * @param operand - The color value to manipulate
@@ -48,7 +56,7 @@ function L2(contrastRatio: number, l1: number): number {
  * be adjusted to meet the target contrast ratio.
  */
 export function ensureContrast(targetRatio: number, operand: string, reference: string): string {
-    return Chroma.contrast(operand, reference) < targetRatio 
+    return Chroma.contrast(operand, reference) < targetRatio
         ? contrast(targetRatio, operand, reference)
         : operand;
 }
