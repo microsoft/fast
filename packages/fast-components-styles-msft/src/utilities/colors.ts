@@ -8,9 +8,8 @@ export function applyMixedColor(color1: string, color2: string, mixValue: number
 }
 
 export enum ContrastModifiers {
-    rest = 0,
-    hover = 1,
-    disabled = 3
+    hover = -1,
+    disabled = -3
 }
 
 const scaleContrastNormal: (contrast: number) => number = curry(scaleContrast)(WCAGAAContrastRatios.normal);
