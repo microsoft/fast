@@ -1,4 +1,5 @@
 import { Direction } from "@microsoft/fast-application-utilities";
+import { memoize } from "lodash-es";
 
 export interface IDesignSystem {
 
@@ -48,10 +49,12 @@ const designSystemDefaults: IDesignSystem = {
 /**
  * Ensure that all properties of the design system are assigned
  */
-export function safeDesignSystem(config: Partial<IDesignSystem>): IDesignSystem {
+function safeDesignSystem(config: Partial<IDesignSystem>): IDesignSystem {
     return Object.assign({}, designSystemDefaults, config);
 }
+const memoizedSafeDesignSystem: (config: Partial<IDesignSystem>) => IDesignSystem = memoize(safeDesignSystem);
 
+export { memoizedSafeDesignSystem as safeDesignSystem };
 /**
  * Safely retrieves a single property from a design system
  */
