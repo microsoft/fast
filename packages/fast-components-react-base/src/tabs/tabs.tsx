@@ -97,6 +97,21 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
     }
 
     /**
+     * React lifecycle hook
+     */
+    public componentDidUpdate(prevProps: TabsProps): void {
+        if (typeof this.props.activeId === "string" && this.props.activeId !== prevProps.activeId) {
+            const items: JSX.Element[] = this.getChildrenBySlot(
+                this.props.children,
+                this.getSlot(TabsSlot.tabItem)
+            );
+            const currentItemIndex: number = items.findIndex(this.getCurrentIndexById);
+
+            (Array.from(this.tabListRef.current.children)[currentItemIndex] as HTMLButtonElement).focus();
+        }
+    }
+
+    /**
      * Generates class names based on props
      */
     protected generateClassNames(): string {
