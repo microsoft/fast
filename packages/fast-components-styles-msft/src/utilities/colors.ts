@@ -1,6 +1,6 @@
 import Chroma from "chroma-js";
 import withDesignSystemDefaults, { IDesignSystem } from "../design-system";
-import { contrast, WCAGAAContrastRatios } from "@microsoft/fast-jss-utilities";
+import { contrast, ensureContrast, scaleContrast, WCAGAAContrastRatios } from "@microsoft/fast-jss-utilities";
 import { curry } from "lodash-es";
 
 export function applyMixedColor(color1: string, color2: string, mixValue: number, alpha: number = 1): string {
@@ -13,13 +13,35 @@ export enum ContrastModifiers {
     disabled = 3
 }
 
-/**
- * An instance of the contrast function with it's target ratio pre-bound
- */
-// TODO: these need to use the scaleContrast tooling
-export const normalContrast: (operandColor: string, referenceColor: string) => string = curry(contrast)(WCAGAAContrastRatios.normal);
+const scaleContrastNormal: (contrast: number) => number = curry(scaleContrast)(WCAGAAContrastRatios.normal);
+const scaleContrastLarge: (contrast: number) => number = curry(scaleContrast)(WCAGAAContrastRatios.large);
+
+export { scaleContrastNormal, scaleContrastLarge };
 
 /**
- * An instance of the contrast function with it's target ratio pre-bound
+ * Adjusts contrast for normal elements by a contrast scale value
  */
-export const largeContrast: (operandColor: string, referenceColor: string) => string = curry(contrast)(WCAGAAContrastRatios.large);
+export function normalContrast(contrastScale: number, operandColor: string, referenceColor: string): string {
+    return contrast(scaleContrastNormal(contrastScale), operandColor, referenceColor);
+}
+
+/**
+ * Ensures a color contrast where contrast is scaled
+ */
+export function ensureNormalContrast(contrastScale: number, operandColor: string, referenceColor: string): string {
+    return ensureContrast(scaleContrastNormal(contrastScale), operandColor, referenceColor);
+}
+
+/**
+ * Adjusts contrast for large elements by a contrast scale value
+ */
+export function largeContrast(contrastScale: number, operandColor: string, referenceColor: string): string {
+    return contrast(scaleContrastLarge(contrastScale), operandColor, referenceColor);
+}
+
+/**
+ * Ensures a color contrast where contrast is scaled
+ */
+export function ensureLargeContrast(contrastScale: number, operandColor: string, referenceColor: string): string {
+    return ensureContrast(scaleContrastLarge(contrastScale), operandColor, referenceColor);
+}
