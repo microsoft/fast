@@ -1,15 +1,18 @@
-import { IDesignSystem, getDesignSystemProperty } from "../design-system";
+import { IDesignSystem, safeDesignSystem } from "../design-system";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { ITypographyClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyTypeRampConfig } from "../utilities/typography";
-import { toPx, ensureContrast } from "@microsoft/fast-jss-utilities";
+import { ensureNormalContrast } from "../utilities/colors";
+import { toPx } from "@microsoft/fast-jss-utilities";
 import { get } from "lodash-es";
 
-
-const paragraphDefaults = {
-    color: getDesignSystemProperty("foregroundColor"),
-    marginTop: toPx(0),
-    marginBottom: toPx(0)
+const paragraphDefaults: ICSSRules<IDesignSystem> = {
+    color: (config: IDesignSystem): string => {
+        const designSystem: IDesignSystem = safeDesignSystem(config);
+        return ensureNormalContrast(designSystem.contrast, designSystem.foregroundColor, designSystem.backgroundColor);
+    },
+    marginTop: "0",
+    marginBottom: "0"
 };
 
 const styles: ComponentStyles<ITypographyClassNameContract, IDesignSystem> = {
