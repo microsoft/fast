@@ -1,4 +1,4 @@
-import { contrast, ContrastFunction, ensureContrast } from "@microsoft/fast-colors";
+import { adjustContrast, contrast, ContrastFunction, ensureContrast } from "@microsoft/fast-colors";
 import { clamp, memoize } from "lodash-es";
 
 /**
@@ -10,6 +10,7 @@ function resolveContrastArgs(...args: Array<string | number>): string {
 
 const memoizedContrast: ContrastFunction = memoize(contrast, resolveContrastArgs);
 const memoizedEnsureContrast: ContrastFunction = memoize(ensureContrast, resolveContrastArgs);
+const memoizedAdjustContrast: ContrastFunction = memoize(adjustContrast, resolveContrastArgs);
 
 /**
  * Export memoized contrast functions to prevent calculating the same color
@@ -17,6 +18,7 @@ const memoizedEnsureContrast: ContrastFunction = memoize(ensureContrast, resolve
  */
 export { memoizedContrast as contrast };
 export { memoizedEnsureContrast as ensureContrast };
+export { memoizedAdjustContrast as adjustContrast };
 
 /**
  * Contrast ratios for normal and large UI elements and text.

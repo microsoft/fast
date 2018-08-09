@@ -60,3 +60,10 @@ export function ensureContrast(targetRatio: number, operand: string, reference: 
         ? contrast(targetRatio, operand, reference)
         : operand;
 }
+
+/**
+ * Adjusts the contrast between two colors by a given ratio adjustment
+ */
+export function adjustContrast(adjustment: number, operand: string, reference: string): string {
+    return contrast(Chroma.contrast(operand, reference) + adjustment, operand, reference);
+}

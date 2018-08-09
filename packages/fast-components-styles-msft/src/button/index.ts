@@ -238,7 +238,7 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
                 display: "block",
                 height: "2px",
                 position: "absolute",
-                bottom: "2px",
+                bottom: "-1px",
                 width: "100%",
                 [applyLocalizedProperty("left", "right", direction)]: "0"
             }
