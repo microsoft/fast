@@ -1,4 +1,4 @@
-import designSystemDefaults, { IDesignSystem } from "../design-system";
+import { IDesignSystem, safeDesignSystem } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { IDialogClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { toPx } from "@microsoft/fast-jss-utilities";
@@ -8,11 +8,12 @@ import { applyAcrylicMaterial } from "../utilities/acrylic";
 
 /* tslint:disable-next-line */
 const styles: ComponentStyles<IDialogClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<IDialogClassNameContract, IDesignSystem> => {
-    const backgroundColor: string = get(config, "backgroundColor") || designSystemDefaults.backgroundColor;
-    const foregroundColor: string = get(config, "foregroundColor") || designSystemDefaults.foregroundColor;
+    const designSystem: IDesignSystem = safeDesignSystem(config);
+    const backgroundColor: string = designSystem.backgroundColor;
+    const foregroundColor: string = designSystem.foregroundColor;
     const dialogShadow: string =
-        `${toPx(0)} ${toPx(25.6)} ${toPx(57.6)} ${Chroma(foregroundColor).alpha(0.22).css()},
-         ${toPx(0)} ${toPx(4.8)} ${toPx(14.4)} ${Chroma(foregroundColor).alpha(0.18).css()}`;
+        `0 25.6px 57.6px ${Chroma(foregroundColor).alpha(0.22).css()},
+         0 4.8px 14.4px ${Chroma(foregroundColor).alpha(0.18).css()}`;
 
     return {
         dialog: {
