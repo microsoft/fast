@@ -20,10 +20,13 @@ import ImageExamples from "../src/image/examples.data";
 export { ImageExamples };
 
 import LabelExamples from "../src/label/examples.data";
-export {LabelExamples};
+export { LabelExamples };
 
-import TextField from "../src/text-field/examples.data";
-export { TextField };
+import TabsExamples from "../src/tabs/examples.data";
+export { TabsExamples };
+
+import TextFieldExamples from "../src/text-field/examples.data";
+export { TextFieldExamples };
 
 import ToggleExamples from "../src/toggle/examples.data";
 export { ToggleExamples };

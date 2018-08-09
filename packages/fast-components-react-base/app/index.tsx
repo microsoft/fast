@@ -13,6 +13,16 @@ import Site, {
 } from "@microsoft/fast-development-site-react";
 import * as examples from "./examples";
 
+import {
+    Tab,
+    TabItem,
+    TabPanel
+} from "../src";
+
+import TabSchema from "../src/tabs/tab.schema.json";
+import TabItemSchema from "../src/tabs/tab-item.schema.json";
+import TabPanelSchema from "../src/tabs/tab-panel.schema.json";
+
 /**
  * Create the root node
  */
@@ -20,7 +30,25 @@ const root: HTMLElement = document.createElement("div");
 root.setAttribute("id", "root");
 document.body.appendChild(root);
 
-const formChildOptions: IFormChildOption[] = formChildFromExamplesFactory(examples);
+let formChildOptions: IFormChildOption[] = formChildFromExamplesFactory(examples);
+
+formChildOptions = formChildOptions.concat([
+    {
+        name: "Tab",
+        component: Tab,
+        schema: TabSchema
+    },
+    {
+        name: "TabItem",
+        component: TabItem,
+        schema: TabItemSchema
+    },
+    {
+        name: "TabPanel",
+        component: TabPanel,
+        schema: TabPanelSchema
+    }
+]);
 
 /* tslint:disable */
 function render(): void {
