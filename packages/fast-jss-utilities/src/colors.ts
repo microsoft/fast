@@ -1,5 +1,5 @@
 import { contrast, ContrastFunction, ensureContrast } from "@microsoft/fast-colors";
-import { memoize, clamp } from "lodash-es";
+import { clamp, memoize } from "lodash-es";
 
 /**
  * Hashing function for contrast memoization
