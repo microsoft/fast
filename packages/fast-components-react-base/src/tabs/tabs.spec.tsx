@@ -198,7 +198,7 @@ describe("tabs", (): void => {
 
     test("should allow a user to control the component from a callback", () => {
         const onUpdate: any = jest.fn();
-        const rendered: any = shallow(
+        const rendered: any = mount(
             <Component
                 managedClasses={tabsManagedClasses}
                 onUpdateTab={onUpdate}
