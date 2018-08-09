@@ -40,8 +40,8 @@ export enum WCAGAAContrastRatios {
  * When scaleFactor is 0, the baseRatio is returned. When scaleFactor is 100, 21 is returned.
  * Otherwise, a number between baseRatio and 21 will be returned.
  */
-export function scaleContrast(baseRatio: number = 0, scaleFactor: number = 0): number {
-    baseRatio = clamp(baseRatio, 0, 21);
+export function scaleContrast(baseRatio: number, scaleFactor: number): number {
+    baseRatio = clamp(baseRatio || 0, 0, 21);
 
-    return (21 - baseRatio) / (100 / clamp(scaleFactor, 0, 100)) + baseRatio;
+    return (21 - baseRatio) / (100 / clamp(scaleFactor || 0, 0, 100)) + baseRatio;
 }
