@@ -1,5 +1,5 @@
 import Chroma from "chroma-js";
-import withDesignSystemDefaults, { IDesignSystem } from "../design-system";
+import withDesignSystemDefaults, { IDesignSystem, safeDesignSystem } from "../design-system";
 import { contrast, ensureContrast, scaleContrast, WCAGAAContrastRatios } from "@microsoft/fast-jss-utilities";
 import { curry } from "lodash-es";
 
@@ -18,6 +18,13 @@ const scaleContrastLarge: (contrast: number) => number = curry(scaleContrast)(WC
 export { scaleContrastNormal, scaleContrastLarge };
 
 /**
+ * The following functions use a "normal" and "large" naming convention. These names are intended
+ * to map directly to the concepts proposed by www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html
+ * where "normal" is 18pt text or 14pt bold text, or UI elements less than 3px in size, and "large" refers to
+ * text or UI elements that exceed those values.
+ */
+
+/**
  * Adjusts contrast for normal elements by a contrast scale value
  */
 export function normalContrast(contrastScale: number, operandColor: string, referenceColor: string): string {
@@ -25,7 +32,7 @@ export function normalContrast(contrastScale: number, operandColor: string, refe
 }
 
 /**
- * Ensures a color contrast where contrast is scaled
+ * Ensures a color contrast for normal elements where contrast is scaled
  */
 export function ensureNormalContrast(contrastScale: number, operandColor: string, referenceColor: string): string {
     return ensureContrast(scaleContrastNormal(contrastScale), operandColor, referenceColor);
@@ -39,8 +46,16 @@ export function largeContrast(contrastScale: number, operandColor: string, refer
 }
 
 /**
- * Ensures a color contrast where contrast is scaled
+ * Ensures a color contrast for large elements where contrast is scaled
  */
 export function ensureLargeContrast(contrastScale: number, operandColor: string, referenceColor: string): string {
     return ensureContrast(scaleContrastLarge(contrastScale), operandColor, referenceColor);
+}
+
+/**
+ * Ensures that the foreground meets normal contrast ratios against a background color
+ */
+export function foregroundNormal(config: IDesignSystem): string {
+    const designSystem: IDesignSystem = safeDesignSystem(config);
+    return ensureNormalContrast(designSystem.contrast, designSystem.foregroundColor, designSystem.backgroundColor);
 }
