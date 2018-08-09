@@ -20,6 +20,7 @@ import Documentation from "./.tmp/documentation";
 import { Orientation } from "@microsoft/fast-web-utilities";
 
 const tabsManagedClasses: ITabsClassNameContract = {
+    tabs_tabItems: "tab_items-class",
     tabs_tabList: "tab_list-class",
     tabs: "tabs-class"
 };

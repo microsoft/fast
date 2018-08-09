@@ -45,31 +45,35 @@ exports[`tabs snapshot Tabs: 0 1`] = `
     </button>
   </div>
   <div
-    aria-hidden={true}
-    aria-labelledby="tab02"
-    className="tab_panel-class tab_panel__hidden-class"
-    id="tab02"
-    role="tabpanel"
+    className="tab_items-class"
   >
-    tab two content
-  </div>
-  <div
-    aria-hidden={true}
-    aria-labelledby="tab03"
-    className="tab_panel-class tab_panel__hidden-class"
-    id="tab03"
-    role="tabpanel"
-  >
-    tab three content
-  </div>
-  <div
-    aria-hidden={false}
-    aria-labelledby="tab04"
-    className="tab_panel-class"
-    id="tab04"
-    role="tabpanel"
-  >
-    tab four content
+    <div
+      aria-hidden={true}
+      aria-labelledby="tab02"
+      className="tab_panel-class tab_panel__hidden-class"
+      id="tab02"
+      role="tabpanel"
+    >
+      tab two content
+    </div>
+    <div
+      aria-hidden={true}
+      aria-labelledby="tab03"
+      className="tab_panel-class tab_panel__hidden-class"
+      id="tab03"
+      role="tabpanel"
+    >
+      tab three content
+    </div>
+    <div
+      aria-hidden={false}
+      aria-labelledby="tab04"
+      className="tab_panel-class"
+      id="tab04"
+      role="tabpanel"
+    >
+      tab four content
+    </div>
   </div>
 </div>
 `;
@@ -108,22 +112,26 @@ exports[`tabs snapshot Tabs: 1 1`] = `
     </button>
   </div>
   <div
-    aria-hidden={true}
-    aria-labelledby="tab01"
-    className="tab_panel-class tab_panel__hidden-class"
-    id="tab01"
-    role="tabpanel"
+    className="tab_items-class"
   >
-    tab one content
-  </div>
-  <div
-    aria-hidden={false}
-    aria-labelledby="tab03"
-    className="tab_panel-class"
-    id="tab03"
-    role="tabpanel"
-  >
-    tab three content
+    <div
+      aria-hidden={true}
+      aria-labelledby="tab01"
+      className="tab_panel-class tab_panel__hidden-class"
+      id="tab01"
+      role="tabpanel"
+    >
+      tab one content
+    </div>
+    <div
+      aria-hidden={false}
+      aria-labelledby="tab03"
+      className="tab_panel-class"
+      id="tab03"
+      role="tabpanel"
+    >
+      tab three content
+    </div>
   </div>
 </div>
 `;
@@ -138,6 +146,9 @@ exports[`tabs snapshot Tabs: 2 1`] = `
     className="tab_list-class"
     role="tablist"
   />
+  <div
+    className="tab_items-class"
+  />
 </div>
 `;
 
@@ -150,6 +161,9 @@ exports[`tabs snapshot Tabs: 3 1`] = `
     aria-orientation={undefined}
     className="tab_list-class"
     role="tablist"
+  />
+  <div
+    className="tab_items-class"
   />
 </div>
 `;

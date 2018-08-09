@@ -42,6 +42,7 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
         children: void 0,
         label: void 0,
         managedClasses: void 0,
+        onUpdateTab: void 0,
         orientation: void 0,
         tabItemSlot: void 0,
         tabPanelSlot: void 0,
@@ -91,7 +92,9 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
                 >
                     {tabElements}
                 </div>
-                {this.renderTabPanels()}
+                <div className={this.props.managedClasses.tabs_tabItems}>
+                    {this.renderTabPanels()}
+                </div>
             </div>
         );
     }
@@ -100,7 +103,10 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
      * React lifecycle hook
      */
     public componentDidUpdate(prevProps: TabsProps): void {
-        if (typeof this.props.activeId === "string" && this.props.activeId !== prevProps.activeId) {
+        if (
+            typeof this.props.activeId === "string"
+            && this.props.activeId !== prevProps.activeId
+        ) {
             const items: JSX.Element[] = this.getChildrenBySlot(
                 this.props.children,
                 this.getSlot(TabsSlot.tabItem)
