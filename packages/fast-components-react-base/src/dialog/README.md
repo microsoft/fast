@@ -1,4 +1,4 @@
-## Guidance
+# Dialog
 The *Dialog* component accepts children and can either be a modal, or a non-modal dialog. Modal dialogs prevent users from interacting with the rest of the page content, while non-modal dialogs allow users the ability to continue interacting with the page. The width and height of the dialog content area can be set by props. If no props are passed to set width or height, the dialog width will default to 640px and the height will default to 480px.
 
 ## Accessibility

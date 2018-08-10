@@ -1,7 +1,7 @@
-## Guidance
+# Image
 Use *image* to break up text-heavy pages, to illustrate products for sale, or to improve storytelling on a page. The use of *image* should always support the page’s story and, when possible, contribute to that story. Size the *image* to complement the rest of the page content. Use the **picture** option to employ a selection of image versions for different viewport sizes.
 
-### Style guidance
+## Style guidance
 Don't use an image if it reduces the effectiveness of the page.
 
 ## Accessibility

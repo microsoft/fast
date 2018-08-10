@@ -1,4 +1,4 @@
-## Guidance
+# Toggle
 *Toggle* mimics a physical switch that allows users to turn things **on** or **off**. Use *toggle* for binary operations that become effective immediately after the user changes it. For example, use *toggle* to turn services or hardware components **on** or **off**.
 
 ## Usage
