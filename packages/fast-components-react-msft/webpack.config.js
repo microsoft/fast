@@ -3,7 +3,6 @@ const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WebpackShellPlugin = require("webpack-shell-plugin");
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const UglifyJsWebpackPlugin = require('uglifyjs-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 const appDir = path.resolve(__dirname, "./app");
@@ -42,12 +41,6 @@ module.exports = {
                     }
                 ]
             }
-        ]
-    },
-    optimization: {
-        nodeEnv: 'production',
-        minimizer: [
-            new UglifyJsWebpackPlugin()
         ]
     },
     plugins: [
