@@ -1,5 +1,5 @@
 import { IDesignSystem, safeDesignSystem } from "../design-system";
-import { ensureNormalContrast, foregroundNormal } from "../utilities/colors";
+import { ensureNormalContrast, ensureForegroundNormal } from "../utilities/colors";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { ILabelClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { toPx } from "@microsoft/fast-jss-utilities";
@@ -11,7 +11,7 @@ const styles: ComponentStyles<ILabelClassNameContract, IDesignSystem> = {
     label: {
         ...applyType("t8", "vp3"),
         display: "inline-block",
-        color: foregroundNormal,
+        color: ensureForegroundNormal,
         padding: "0"
     },
     label_hidden: {

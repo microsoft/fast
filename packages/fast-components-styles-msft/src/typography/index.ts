@@ -2,12 +2,12 @@ import { IDesignSystem } from "../design-system";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { ITypographyClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyTypeRampConfig } from "../utilities/typography";
-import { foregroundNormal } from "../utilities/colors";
+import { ensureForegroundNormal } from "../utilities/colors";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { get } from "lodash-es";
 
 const paragraphDefaults: ICSSRules<IDesignSystem> = {
-    color: foregroundNormal,
+    color: ensureForegroundNormal,
     marginTop: "0",
     marginBottom: "0"
 };

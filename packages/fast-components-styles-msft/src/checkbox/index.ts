@@ -3,7 +3,7 @@ import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast
 import { ICheckboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyTypeRampConfig } from "../utilities/typography";
 import { applyLocalizedProperty, contrast, Direction, toPx } from "@microsoft/fast-jss-utilities";
-import { ContrastModifiers, ensureNormalContrast, foregroundNormal, normalContrast } from "../utilities/colors";
+import { ContrastModifiers, ensureNormalContrast, ensureForegroundNormal, normalContrast } from "../utilities/colors";
 import { get } from "lodash-es";
 import Chroma from "chroma-js";
 

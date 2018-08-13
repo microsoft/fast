@@ -1,5 +1,5 @@
 import designSystemDefaults, { IDesignSystem } from "../design-system";
-import { brandNormal, foregroundNormal } from "../utilities/colors";
+import { ensureBrandNormal, ensureForegroundNormal } from "../utilities/colors";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IHypertextClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
@@ -8,7 +8,7 @@ import { toPx } from "@microsoft/fast-jss-utilities";
 function applyHypertextBorder(pixels: number): ICSSRules<IDesignSystem> {
     return {
         borderBottom: (config: IDesignSystem): string => {
-            return `${toPx(pixels)} solid ${brandNormal(config)}`;
+            return `${toPx(pixels)} solid ${ensureBrandNormal(config)}`;
         }
     };
 }
@@ -17,10 +17,10 @@ const styles: ComponentStyles<IHypertextClassNameContract, IDesignSystem> = {
     hypertext: {
         outline: "none",
         textDecoration: "none",
-        color: foregroundNormal,
+        color: ensureForegroundNormal,
         "&[href]": {
             ...applyHypertextBorder(1),
-            color: brandNormal,
+            color: ensureBrandNormal,
             "&:hover, &:focus": {
                 ...applyHypertextBorder(2)
             }
