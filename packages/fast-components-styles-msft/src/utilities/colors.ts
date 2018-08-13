@@ -53,7 +53,7 @@ export function ensureLargeContrast(contrastScale: number, operandColor: string,
 }
 
 /**
- * Ensures that the foreground meets normal contrast ratios against a background color
+ * Ensure the foreground color meets normal contrast ratios against a background color
  */
 export function ensureForegroundNormal(config: IDesignSystem): string {
     const designSystem: IDesignSystem = safeDesignSystem(config);
@@ -61,9 +61,25 @@ export function ensureForegroundNormal(config: IDesignSystem): string {
 }
 
 /**
- * Ensures that the foreground meets normal contrast ratios against a background color
+ * Set the foreground color to meet normal contrast ratios against a background color
+ */
+export function foregroundNormal(config: IDesignSystem): string {
+    const designSystem: IDesignSystem = safeDesignSystem(config);
+    return normalContrast(designSystem.contrast, designSystem.foregroundColor, designSystem.backgroundColor);
+}
+
+/**
+ * Ensure the brand color meets normal contrast ratios against a background color
  */
 export function ensureBrandNormal(config: IDesignSystem): string {
     const designSystem: IDesignSystem = safeDesignSystem(config);
     return ensureNormalContrast(designSystem.contrast, designSystem.brandColor, designSystem.backgroundColor);
+}
+
+/**
+ * Ensure the background color meets normal contrast ratios against a background color
+ */
+export function ensuresBackgroundNormal(config: IDesignSystem): string {
+    const designSystem: IDesignSystem = safeDesignSystem(config);
+    return ensureNormalContrast(designSystem.contrast, designSystem.backgroundColor, designSystem.foregroundColor);
 }
