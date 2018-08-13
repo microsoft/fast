@@ -2,8 +2,8 @@ import { IDesignSystem, safeDesignSystem } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
 import { ICheckboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyTypeRampConfig } from "../utilities/typography";
-import { applyLocalizedProperty, Direction, toPx } from "@microsoft/fast-jss-utilities";
-import { ensureNormalContrast, normalContrast } from "../utilities/colors";
+import { applyLocalizedProperty, contrast, Direction, toPx } from "@microsoft/fast-jss-utilities";
+import { ContrastModifiers, ensureNormalContrast, foregroundNormal, normalContrast } from "../utilities/colors";
 import { get } from "lodash-es";
 import Chroma from "chroma-js";
 
@@ -14,6 +14,12 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = (conf
     const foregroundColor: string = designSystem.foregroundColor;
     const brandColor: string = designSystem.brandColor;
     const direction: Direction = designSystem.direction;
+    const checkboxColor: string = normalContrast(designSystem.contrast, foregroundColor, backgroundColor);
+    const checkboxDisabled: string = contrast(
+        ContrastModifiers.disabled * -1,
+        designSystem.foregroundColor,
+        designSystem.backgroundColor
+    );
 
     return {
         checkbox: {
@@ -28,18 +34,15 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = (conf
             width: "20px",
             height: "20px",
             appearance: "none",
-            borderRadius: "20px",
+            borderRadius: "2px",
             boxSizing: "content-box",
             margin: "0",
             zIndex: "1",
             background: backgroundColor,
-            boxShadow: `inset 0 0 0 1px ${normalContrast(designSystem.contrast, foregroundColor, backgroundColor)}`,
-            "&:hover": {
-                boxShadow: `inset 0 0 0 1px ${Chroma.mix(foregroundColor, backgroundColor, 0.51).css()}`
-            },
+            boxShadow: `inset 0 0 0 1px ${checkboxColor}`,
             "&:focus": {
                 outline: "none",
-                boxShadow: `inset 0 0 0 2px ${Chroma.mix(foregroundColor, backgroundColor, 0.46).css()}`
+                boxShadow: `inset 0 0 0 2px ${checkboxColor}`,
             },
             "&:checked": {
                 "& + span": {
@@ -48,7 +51,7 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = (conf
                         zIndex: "1",
                         content: "\"\"",
                         borderRadius: "2px",
-                        background: foregroundColor
+                        background: checkboxColor
                     }
                 }
             },
@@ -64,7 +67,7 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = (conf
                         top: "5px",
                         height: "10px",
                         width: "10px",
-                        background: foregroundColor
+                        background: checkboxColor
                     }
                 }
             }
@@ -75,6 +78,7 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = (conf
             display: "inline-block",
             width: "20px",
             height: "20px",
+            flexShrink: "0",
             "&::before, &::after": {
                 width: "2px"
            },
@@ -98,7 +102,19 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = (conf
         },
         checkbox_disabled: {
             cursor: "not-allowed",
-            opacity: ".6"
+            "& $checkbox_input": {
+                boxShadow: `inset 0 0 0 1px ${checkboxDisabled}`,
+                "&:checked, &:indeterminate": {
+                    "& + $checkbox_span": {
+                        "&::after, &::before": {
+                            backgroundColor: checkboxDisabled
+                        }
+                    }
+                }
+            },
+            "& $checkbox_label": {
+                color: checkboxDisabled
+            },
         }
     };
 };
