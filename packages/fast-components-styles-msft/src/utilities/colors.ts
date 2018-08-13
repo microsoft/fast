@@ -59,3 +59,11 @@ export function foregroundNormal(config: IDesignSystem): string {
     const designSystem: IDesignSystem = safeDesignSystem(config);
     return ensureNormalContrast(designSystem.contrast, designSystem.foregroundColor, designSystem.backgroundColor);
 }
+
+/**
+ * Ensures that the foreground meets normal contrast ratios against a background color
+ */
+export function brandNormal(config: IDesignSystem): string {
+    const designSystem: IDesignSystem = safeDesignSystem(config);
+    return ensureNormalContrast(designSystem.contrast, designSystem.brandColor, designSystem.backgroundColor);
+}
