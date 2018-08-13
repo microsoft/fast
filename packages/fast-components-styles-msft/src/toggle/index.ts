@@ -1,18 +1,18 @@
 import designSystemDefaults, { IDesignSystem, safeDesignSystem } from "../design-system";
+import { ensureNormalContrast } from "../utilities/colors";
 import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
 import { applyLocalizedProperty, Direction, ensureContrast, toPx } from "@microsoft/fast-jss-utilities";
 import { typeRamp } from "../utilities/typography";
 import { IToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { get } from "lodash";
 import Chroma from "chroma-js";
 
 /* tslint:disable-next-line */
 const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<IToggleClassNameContract, IDesignSystem> => {
-    const configWithDefaults: IDesignSystem = safeDesignSystem(config);
-    const backgroundColor: string = ensureContrast(config.contrast, configWithDefaults.backgroundColor, configWithDefaults.foregroundColor);
-    const accentColor: string = ensureContrast(config.contrast, configWithDefaults.accentColor, configWithDefaults.backgroundColor);
-    const foregroundColor: string = ensureContrast(config.contrast, configWithDefaults.foregroundColor, configWithDefaults.backgroundColor);
-    const direction: Direction = configWithDefaults.direction;
+    const designSystem: IDesignSystem = safeDesignSystem(config);
+    const backgroundColor: string = ensureNormalContrast(config.contrast, designSystem.backgroundColor, designSystem.foregroundColor);
+    const brandColor: string = ensureNormalContrast(config.contrast, designSystem.brandColor, designSystem.backgroundColor);
+    const foregroundColor: string = ensureNormalContrast(config.contrast, designSystem.foregroundColor, designSystem.backgroundColor);
+    const direction: Direction = designSystem.direction;
 
     return {
         toggle: {
@@ -31,7 +31,7 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config
             fontSize: toPx(typeRamp.t8.vp3.fontSize),
             lineHeight: toPx(typeRamp.t8.vp3.lineHeight),
             foreground: foregroundColor,
-            paddingBottom: toPx(7),
+            paddingBottom: "7px",
             float: applyLocalizedProperty("left", "right", direction),
             clear: applyLocalizedProperty("left", "right", direction),
             "& + div": {
@@ -40,7 +40,7 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config
                 clear: applyLocalizedProperty("left", "right", direction),
                 "& + span": {
                     float: applyLocalizedProperty("left", "right", direction),
-                    [applyLocalizedProperty("margin-left", "margin-right", direction)]: toPx(5),
+                    [applyLocalizedProperty("margin-left", "margin-right", direction)]: "5px",
                 }
             }
         },
@@ -51,23 +51,23 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config
             position: "absolute",
             pointerEvents: "none",
             foreground: foregroundColor,
-            top: toPx(5),
-            left: toPx(5),
+            top: "5px",
+            left: "5px",
             transition: "all .1s ease",
             backgroundColor,
-            borderRadius: toPx(10),
-            width: toPx(10),
-            height: toPx(10)
+            borderRadius: "10px",
+            width: "10px",
+            height: "10px"
         },
         toggle_input: {
             position: "relative",
             margin: "0",
-            width: toPx(44),
-            height: toPx(20),
+            width: "44px",
+            height: "20px",
             background: backgroundColor,
-            border: `${toPx(1)} solid`,
+            border: `1px solid`,
             borderColor: foregroundColor,
-            borderRadius: toPx(20),
+            borderRadius: "20px",
             appearance: "none",
             cursor: "pointer",
             "@media screen and (-ms-high-contrast:active)": {
@@ -81,14 +81,10 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config
                 }
             },
             "&:checked": {
-                backgroundColor: accentColor,
-                borderColor: accentColor,
-                "&:hover": {
-                    backgroundColor: Chroma(accentColor).alpha(0.8).css(),
-                    borderColor: Chroma(accentColor).alpha(0.8).css()
-                },
+                backgroundColor: brandColor,
+                borderColor: brandColor,
                 "&:focus": {
-                    borderColor: accentColor
+                    borderColor: brandColor
                 },
                 "& + span": {
                     left: "28px",
