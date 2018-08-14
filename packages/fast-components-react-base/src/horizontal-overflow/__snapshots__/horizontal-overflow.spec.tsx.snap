@@ -2,7 +2,7 @@
 
 exports[`horizontal overflow snapshot Horizontal overflow: 0 1`] = `
 <div
-  className="horizonta-overflow"
+  className="horizontal-overflow"
   onLoad={[Function]}
 >
   <div
@@ -237,7 +237,7 @@ exports[`horizontal overflow snapshot Horizontal overflow: 0 1`] = `
 
 exports[`horizontal overflow snapshot Horizontal overflow: 1 1`] = `
 <div
-  className="horizonta-overflow"
+  className="horizontal-overflow"
   onLoad={[Function]}
 >
   <div
@@ -464,7 +464,7 @@ exports[`horizontal overflow snapshot Horizontal overflow: 1 1`] = `
 
 exports[`horizontal overflow snapshot Horizontal overflow: 2 1`] = `
 <div
-  className="horizonta-overflow"
+  className="horizontal-overflow"
   onLoad={[Function]}
 >
   <div
@@ -691,7 +691,7 @@ exports[`horizontal overflow snapshot Horizontal overflow: 2 1`] = `
 
 exports[`horizontal overflow snapshot Horizontal overflow: 3 1`] = `
 <div
-  className="horizonta-overflow"
+  className="horizontal-overflow"
   onLoad={[Function]}
 >
   <div
@@ -910,7 +910,7 @@ exports[`horizontal overflow snapshot Horizontal overflow: 3 1`] = `
 
 exports[`horizontal overflow snapshot Horizontal overflow: 4 1`] = `
 <div
-  className="horizonta-overflow"
+  className="horizontal-overflow"
   onLoad={[Function]}
 >
   <div

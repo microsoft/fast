@@ -45,7 +45,7 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
         return (
             <div
                 {...this.unhandledProps()}
-                className={this.props.managedClasses.horizontalOverflow}
+                className={this.generateClassNames()}
                 onLoad={this.itemsOnLoad}
             >
                 <div style={{height: `${this.state.itemsHeight}px`, position: "relative", overflow: "hidden"}}>
@@ -77,6 +77,13 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
         this.setState({
             itemsHeight
         });
+    }
+
+    /**
+     * Generates class names
+     */
+    protected generateClassNames(): string {
+        return super.generateClassNames(get(this.props, "managedClasses.horizontalOverflow"));
     }
 
     /**
