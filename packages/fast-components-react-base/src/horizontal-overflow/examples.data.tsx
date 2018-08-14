@@ -13,7 +13,7 @@ import Image from "../image";
 
 const classes: IHorizontalOverflowManagedClasses = {
     managedClasses: {
-        horizontalOverflow: "horizonta-overflow",
+        horizontalOverflow: "horizontal-overflow",
         horizontalOverflow_items: "horizontal-overflow_items",
         horizontalOverflow_next: "horizontal-overflow_next",
         horizontalOverflow_previous: "horizontal-overflow_previous"
