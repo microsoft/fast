@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SiteCategoryItem } from "../";
+import { ComponentViewSlot, SiteCategoryItem } from "../";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 
 export default function componentExampleFactory<T>(examples: any, componentExample: string, designSystem?: T): JSX.Element[] {
@@ -7,7 +7,7 @@ export default function componentExampleFactory<T>(examples: any, componentExamp
         return (
             <SiteCategoryItem
                 key={index}
-                slot={"canvas-example-view"}
+                slot={ComponentViewSlot.example}
                 data={componentExampleData}
                 designSystem={designSystem ? designSystem : void 0}
             />
