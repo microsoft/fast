@@ -1,5 +1,4 @@
 import * as React from "react";
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import Toggle, { IToggleHandledProps, IToggleManagedClasses, IToggleUnhandledProps } from "./toggle";
 import schema from "./toggle.schema.json";
 import Documentation from "./.tmp/documentation";

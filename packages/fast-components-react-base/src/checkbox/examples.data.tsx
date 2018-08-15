@@ -1,5 +1,4 @@
 import * as React from "react";
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import Checkbox, { CheckboxHTMLTags, ICheckboxHandledProps,  ICheckboxManagedClasses, ICheckboxUnhandledProps  } from "./checkbox";
 import schema from "./checkbox.schema.json";
 import Documentation from "./.tmp/documentation";

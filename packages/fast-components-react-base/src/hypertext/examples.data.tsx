@@ -1,5 +1,4 @@
 import * as React from "react";
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import Hypertext, { IHypertextHandledProps, IHypertextManagedClasses, IHypertextUnhandledProps } from "./hypertext";
 import schema from "./hypertext.schema.json";
 import Documentation from "./.tmp/documentation";

@@ -1,5 +1,4 @@
 import * as React from "react";
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import HorizontalOverflow, {
     IHorizontalOverflowHandledProps,
     IHorizontalOverflowManagedClasses,

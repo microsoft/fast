@@ -1,4 +1,3 @@
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import TextField, {
     ITextFieldHandledProps,
     ITextFieldManagedClasses,

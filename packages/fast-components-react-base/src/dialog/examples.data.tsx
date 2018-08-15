@@ -1,5 +1,4 @@
 import * as React from "react";
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import Dialog, { IDialogHandledProps, IDialogManagedClasses, IDialogUnhandledProps } from "./dialog";
 import schema from "./dialog.schema.json";
 import Documentation from "./.tmp/documentation";

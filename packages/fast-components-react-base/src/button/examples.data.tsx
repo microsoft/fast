@@ -1,5 +1,4 @@
 import * as React from "react";
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import Button, { IButtonHandledProps, IButtonManagedClasses, IButtonUnhandledProps } from "./button";
 import schema from "./button.schema.json";
 import Documentation from "./.tmp/documentation";

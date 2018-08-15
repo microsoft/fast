@@ -1,5 +1,4 @@
 import * as React from "react";
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import Image, { IImageHandledProps, IImageManagedClasses, IImageUnhandledProps } from "./image";
 import schema from "./image.schema.json";
 import Documentation from "./.tmp/documentation";
