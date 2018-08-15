@@ -1,5 +1,4 @@
 import * as React from "react";
-import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import Button from "./index";
 import { IButtonHandledProps as IBaseButtonHandledProps } from "@microsoft/fast-components-react-base";
@@ -12,6 +11,7 @@ import {
 } from "./button.props";
 import schema from "./button.schema.json";
 import Documentation from "./.tmp/documentation";
+import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
 export default {
     name: "Button",
@@ -83,4 +83,4 @@ export default {
             children: "Anchor"
         }
     ]
-} as ISnapshotTestSuite<IButtonHandledProps>;
+} as IComponentFactoryExample<IButtonHandledProps>;

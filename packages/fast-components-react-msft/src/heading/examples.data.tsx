@@ -1,6 +1,5 @@
 import * as React from "react";
-import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
-import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import Heading from "./index";
 import {
     AlignHeadingBaseline,
@@ -65,4 +64,4 @@ export default {
             "data-sketch-symbol": "Heading 6"
         }
     ]
-} as ISnapshotTestSuite<IHeadingHandledProps>;
+} as IComponentFactoryExample<IHeadingHandledProps>;

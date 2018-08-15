@@ -1,6 +1,5 @@
 import * as React from "react";
-import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
-import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import Divider from "./index";
 import { DividerRoles, IDividerHandledProps } from "@microsoft/fast-components-react-base";
 import schema from "@microsoft/fast-components-react-base/dist/divider/divider.schema.json";
@@ -26,4 +25,4 @@ export default {
             role: DividerRoles.separator
         }
     ]
-} as ISnapshotTestSuite<IDividerHandledProps>;
+} as IComponentFactoryExample<IDividerHandledProps>;
