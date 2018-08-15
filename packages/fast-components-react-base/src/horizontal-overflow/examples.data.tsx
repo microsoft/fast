@@ -1,6 +1,4 @@
 import * as React from "react";
-import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import HorizontalOverflow, {
     IHorizontalOverflowHandledProps,
     IHorizontalOverflowManagedClasses,
@@ -10,6 +8,7 @@ import schema from "./horizontal-overflow.schema.json";
 import Documentation from "./.tmp/documentation";
 import Button from "../button";
 import Image from "../image";
+import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
 const classes: IHorizontalOverflowManagedClasses = {
     managedClasses: {
@@ -35,7 +34,7 @@ const images: JSX.Element[] = [
     (<Image managedClasses={{image: "image"}} src="https://placehold.it/270x100?text=12" alt="placeholder image" />)
 ];
 
-const examples: ISnapshotTestSuite<IHorizontalOverflowHandledProps & IHorizontalOverflowManagedClasses> = {
+const examples: IComponentFactoryExample<IHorizontalOverflowHandledProps & IHorizontalOverflowManagedClasses> = {
     name: "Horizontal overflow",
     component: HorizontalOverflow,
     schema: schema as any,

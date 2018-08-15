@@ -1,6 +1,5 @@
 import * as React from "react";
-import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
-import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import Checkbox from "./index";
 import { ICheckboxHandledProps } from "@microsoft/fast-components-react-base";
 import schema from "@microsoft/fast-components-react-base/dist/checkbox/checkbox.schema.json";
@@ -40,4 +39,4 @@ export default {
             text: "Indeterminate checked (controlled)"
         }
     ]
-} as ISnapshotTestSuite<ICheckboxHandledProps>;
+} as IComponentFactoryExample<ICheckboxHandledProps>;

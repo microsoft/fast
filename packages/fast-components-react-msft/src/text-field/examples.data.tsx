@@ -1,6 +1,5 @@
 import * as React from "react";
-import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
-import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import TextField from "./index";
 import { ITextFieldHandledProps, TextFieldType } from "@microsoft/fast-components-react-base";
 import schema from "@microsoft/fast-components-react-base/dist/text-field/text-field.schema.json";
@@ -42,4 +41,4 @@ export default {
             type: TextFieldType.password
         }
     ]
-} as ISnapshotTestSuite<ITextFieldHandledProps>;
+} as IComponentFactoryExample<ITextFieldHandledProps>;

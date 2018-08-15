@@ -1,6 +1,4 @@
 import * as React from "react";
-import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import Typography, {
     ITypographyHandledProps,
     ITypographyManagedClasses,
@@ -10,6 +8,7 @@ import Typography, {
 } from "./typography";
 import schema from "./typography.schema.json";
 import Documentation from "./.tmp/documentation";
+import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
 const testString: string = "Test string";
 const managedClassExamples: any = {
@@ -24,7 +23,7 @@ const managedClassExamples: any = {
     typography_9: "typography-9"
 };
 
-const examples: ISnapshotTestSuite<ITypographyHandledProps & ITypographyManagedClasses> = {
+const examples: IComponentFactoryExample<ITypographyHandledProps & ITypographyManagedClasses> = {
     name: "Typography",
     component: Typography,
     schema: schema as any,

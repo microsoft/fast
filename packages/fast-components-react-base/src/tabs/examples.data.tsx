@@ -1,7 +1,5 @@
 import * as React from "react";
-import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import {
-    IManagedClasses,
     ITabClassNameContract,
     ITabPanelClassNameContract,
     ITabsClassNameContract
@@ -18,6 +16,7 @@ import Tabs, {
 import schema from "./tabs.schema.json";
 import Documentation from "./.tmp/documentation";
 import { Orientation } from "@microsoft/fast-web-utilities";
+import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
 const tabsManagedClasses: ITabsClassNameContract = {
     tabs_tabItems: "tab_items-class",
@@ -186,7 +185,7 @@ const exampleChildren4: JSX.Element[] = [
     )
 ];
 
-const examples: ISnapshotTestSuite<ITabsHandledProps & ITabsManagedClasses> = {
+const examples: IComponentFactoryExample<ITabsHandledProps & ITabsManagedClasses> = {
     name: "Tabs",
     component: Tabs,
     schema: schema as any,

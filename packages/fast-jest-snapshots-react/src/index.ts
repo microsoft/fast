@@ -11,19 +11,9 @@ export interface ISnapshotTestSuite<T> {
     name: string;
 
     /**
-     * The JSON schema for the components data
-     */
-    schema: any;
-
-    /**
      * The component constructor
      */
     component: React.ComponentClass<T>;
-
-    /**
-     * The detail view component data
-     */
-    detailData: T;
 
     /**
      * An array of prop instances for the component
@@ -31,7 +21,20 @@ export interface ISnapshotTestSuite<T> {
     data: T[];
 
     /**
+     * The JSON schema for the components data
+     * @deprecated - this property is not required for snapshot testing and will be removed
+     */
+    schema?: any;
+
+    /**
+     * The detail view component data
+     * @deprecated - this property is not required for snapshot testing and will be removed
+     */
+    detailData?: T;
+
+    /**
      * Documentation for the component
+     * @deprecated - this property is not required for snapshot testing and will be removed
      */
     documentation?: JSX.Element;
 }

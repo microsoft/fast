@@ -1,8 +1,7 @@
 import * as React from "react";
-import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
-import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import Toggle from "./index";
-import { IToggleHandledProps } from "@microsoft/fast-components-react-base";
+import { IToggleHandledProps, IToggleUnhandledProps } from "@microsoft/fast-components-react-base";
 import schema from "@microsoft/fast-components-react-base/dist/toggle/toggle.schema.json";
 import Documentation from "./.tmp/documentation";
 
@@ -65,4 +64,4 @@ export default {
             "data-sketch-symbol": "Toggle disabled (off)"
         }
     ]
-} as ISnapshotTestSuite<IToggleHandledProps>;
+} as IComponentFactoryExample<IToggleHandledProps>;

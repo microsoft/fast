@@ -1,11 +1,11 @@
 import * as React from "react";
-import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import Divider, { IDividerHandledProps, IDividerManagedClasses, IDividerUnhandledProps } from "./divider";
 import schema from "./divider.schema.json";
 import Documentation from "./.tmp/documentation";
+import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
-const examples: ISnapshotTestSuite<IDividerHandledProps & IDividerManagedClasses> = {
+const examples: IComponentFactoryExample<IDividerHandledProps & IDividerManagedClasses> = {
     name: "Divider",
     component: Divider,
     schema: schema as any,
