@@ -40,7 +40,14 @@ export interface IComponentFactoryExample<T> {
     documentation: JSX.Element;
 }
 
-export default function componentFactory<P, T>(examples: Array<IComponentFactoryExample<P>>, designSystem?: T): JSX.Element[] {
+/**
+ * An interface to describe the examples object consumed by componentFactor
+ */
+export interface IComponentFactorExamples {
+    [key: string]: IComponentFactoryExample<any>;
+}
+
+export default function componentFactory<P, T>(examples: IComponentFactorExamples, designSystem?: T): JSX.Element[] {
     return Object.keys(examples).map((exampleKey: string, index: number) => {
         const example: IComponentFactoryExample<P> = examples[exampleKey];
         return (
