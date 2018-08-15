@@ -1,4 +1,3 @@
-import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import TextField, {
     ITextFieldHandledProps,
@@ -9,8 +8,9 @@ import TextField, {
 import schema from "./text-field.schema.json";
 import * as React from "react";
 import Documentation from "./.tmp/documentation";
+import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
-const examples: ISnapshotTestSuite<ITextFieldHandledProps & ITextFieldManagedClasses> = {
+const examples: IComponentFactoryExample<ITextFieldHandledProps & ITextFieldManagedClasses> = {
     name: "Text field",
     component: TextField,
     schema: schema as any,

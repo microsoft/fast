@@ -1,11 +1,11 @@
 import * as React from "react";
-import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import Button, { IButtonHandledProps, IButtonManagedClasses, IButtonUnhandledProps } from "./button";
 import schema from "./button.schema.json";
 import Documentation from "./.tmp/documentation";
+import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
-const examples: ISnapshotTestSuite<IButtonHandledProps & IButtonManagedClasses> = {
+const examples: IComponentFactoryExample<IButtonHandledProps & IButtonManagedClasses> = {
     name: "Button",
     component: Button,
     schema: schema as any,

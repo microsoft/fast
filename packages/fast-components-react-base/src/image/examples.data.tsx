@@ -1,11 +1,11 @@
 import * as React from "react";
-import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import Image, { IImageHandledProps, IImageManagedClasses, IImageUnhandledProps } from "./image";
 import schema from "./image.schema.json";
 import Documentation from "./.tmp/documentation";
+import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
-const examples: ISnapshotTestSuite<IImageHandledProps & IImageManagedClasses> = {
+const examples: IComponentFactoryExample<IImageHandledProps & IImageManagedClasses> = {
     name: "Image",
     component: Image,
     schema: schema as any,

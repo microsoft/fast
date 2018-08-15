@@ -1,11 +1,11 @@
 import * as React from "react";
-import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import Dialog, { IDialogHandledProps, IDialogManagedClasses, IDialogUnhandledProps } from "./dialog";
 import schema from "./dialog.schema.json";
 import Documentation from "./.tmp/documentation";
+import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
-const examples: ISnapshotTestSuite<IDialogHandledProps & IDialogManagedClasses> = {
+const examples: IComponentFactoryExample<IDialogHandledProps & IDialogManagedClasses> = {
     name: "Dialog",
     component: Dialog,
     schema: schema as any,

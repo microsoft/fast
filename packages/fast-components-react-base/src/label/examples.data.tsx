@@ -1,5 +1,4 @@
 import * as React from "react";
-import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import Label, {
     ILabelHandledProps,
@@ -9,8 +8,9 @@ import Label, {
 } from "./label";
 import schema from "./label.schema.json";
 import Documentation from "./.tmp/documentation";
+import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
-const examples: ISnapshotTestSuite<ILabelHandledProps & ILabelManagedClasses> = {
+const examples: IComponentFactoryExample<ILabelHandledProps & ILabelManagedClasses> = {
     name: "Label",
     component: Label,
     schema: schema as any,
