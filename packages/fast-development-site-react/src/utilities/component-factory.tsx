@@ -43,11 +43,11 @@ export interface IComponentFactoryExample<T> {
 /**
  * An interface to describe the examples object consumed by componentFactor
  */
-export interface IComponentFactorExamples {
+export interface IComponentFactoryExamples {
     [key: string]: IComponentFactoryExample<any>;
 }
 
-export default function componentFactory<P, T>(examples: IComponentFactorExamples, designSystem?: T): JSX.Element[] {
+export default function componentFactory<P, T>(examples: IComponentFactoryExamples, designSystem?: T): JSX.Element[] {
     return Object.keys(examples).map((exampleKey: string, index: number) => {
         const example: IComponentFactoryExample<P> = examples[exampleKey];
         return (
