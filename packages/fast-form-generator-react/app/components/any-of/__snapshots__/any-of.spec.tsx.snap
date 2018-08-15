@@ -38,6 +38,11 @@ exports[`any-of any-of: 0 1`] = `
                 >
                   Number
                 </option>
+                <option
+                  value={2}
+                >
+                  Nested anyOf
+                </option>
               </select>
             </span>
           </div>

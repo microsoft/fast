@@ -13,6 +13,21 @@
             },
             "minItems": 2,
             "maxItems": 5
+        },
+        "objects": {
+            "title": "Array",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "string": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "string"
+                ]
+            }
         }
     },
     "required": [

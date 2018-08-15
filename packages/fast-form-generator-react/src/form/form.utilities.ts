@@ -1,5 +1,6 @@
 import { clone, cloneDeep, get, isEqual, mergeWith } from "lodash-es";
-import { IBreadcrumbItemConfig, IBreadcrumbItemsConfig, IComponentItem, IFormProps, IFormState, LocationOnChange } from "./form.props";
+import * as tv4 from "tv4";
+import { IBreadcrumbItemConfig, IBreadcrumbItemsConfig, IComponentItem, IFormProps, IFormState, LocationOnChange, IChildOptionItem } from "./form.props";
 
 /**
  * Gets the data cache based on a new data object and
@@ -216,6 +217,141 @@ export function getComponentTracker(
     }
 
     return updatedComponentTracker;
+}
+
+/**
+ * Creates a schema location from a data location
+ */
+export function mapSchemaLocationFromDataLocation(dataLocation: string, data: any, schema: any): string {
+    const squareBracketRegex: RegExp = /\[(\d+?)\]/g;
+    let normalizedDataLocation: string = dataLocation.replace(squareBracketRegex, `.$1`); // convert all [ ] to . notation
+    normalizedDataLocation = convertArrayItemsToBracketNotation(dataLocation, data); // convert back all array items to use [ ]
+    const dataLocationStrings: string[] = normalizedDataLocation.split(".");
+
+    if (dataLocation !== "") {
+        dataLocationStrings.unshift("");
+    }
+
+    const schemaLocationStrings: string[] = getSchemaLocationStringsFromDataLocationStrings(dataLocationStrings, schema, data);
+
+    return schemaLocationStrings.join(".").replace(squareBracketRegex, "");
+}
+
+/**
+ * Get an array of schema location strings from an array of data location strings
+ */
+export function getSchemaLocationStringsFromDataLocationStrings(dataLocationStrings: string[], schema: any, data: any): string[] {
+    const squareBracketRegex: RegExp = /\[(\d+?)\]/g;
+    let schemaLocationStrings: string[] = [];
+    let reconstitutedDataLocation: string = "";
+
+    for (let i = 0; i < dataLocationStrings.length; i++) {
+        const partialData: any = reconstitutedDataLocation === "" ? data : get(data, reconstitutedDataLocation);
+        const partialSchema: any = schemaLocationStrings.join(".").replace(squareBracketRegex, "") === ""
+            ? schema
+            : get(schema, schemaLocationStrings.join(".").replace(squareBracketRegex, ""));
+
+        if (!!partialSchema["anyOf"]) {
+            schemaLocationStrings.push(`anyOf.${getValidAnyOfOneOfIndex("anyOf", partialData, partialSchema)}`);
+        }
+
+        if (!!partialSchema["oneOf"]) {
+            schemaLocationStrings.push(`oneOf.${getValidAnyOfOneOfIndex("oneOf", partialData, partialSchema)}`);
+        }
+
+        if (dataLocationStrings[i] !== "") {
+            schemaLocationStrings = schemaLocationStrings.concat(
+                getSchemaLocationStringsFromDataLocationString(
+                    typeof partialData === "object",
+                    Array.isArray(partialData),
+                    dataLocationStrings[i],
+                    partialData,
+                    dataLocationStrings.length > i + 1
+                )
+            );
+        }
+
+        reconstitutedDataLocation += reconstitutedDataLocation === "" ? dataLocationStrings[i] : `.${dataLocationStrings[i]}`;
+    };
+
+    return schemaLocationStrings;
+}
+
+/**
+ * Get an array of schema location strings from a single data location item
+ */
+export function getSchemaLocationStringsFromDataLocationString(
+    isObject: boolean,
+    isArray: boolean,
+    dataLocation: string,
+    data: any,
+    endOfContainingString: boolean
+): string[] {
+    const schemaLocationStrings: string[] = [];
+
+    if (isObject && !isArray) {
+        schemaLocationStrings.push("properties");
+    }
+
+    schemaLocationStrings.push(dataLocation);
+
+    if ((Array.isArray(data) || checkDataLocationIsArrayItem(dataLocation)) && endOfContainingString) {
+        schemaLocationStrings.push("items");
+    }
+
+    return schemaLocationStrings;
+}
+
+/**
+ * Checks to see if the data location item is an array item
+ */
+export function checkDataLocationIsArrayItem(dataLocationItem: string): boolean {
+    const squareBracketRegex: RegExp = /\[(\d+?)\]/g;
+    const match: boolean = false;
+
+    if (dataLocationItem.match(squareBracketRegex)) {
+        const matches: string[] = dataLocationItem.match(squareBracketRegex);
+        
+        if (typeof parseInt(matches[0].replace(squareBracketRegex, "$1"), 10) === "number") {
+            return true;
+        }
+    }
+
+    return match;
+}
+
+/**
+ * Converts a data location strings array items into bracket notation
+ */
+export function convertArrayItemsToBracketNotation(dataLocation: string, data: any): string {
+    let normalizedDataLocation: string[] = [];
+    const dataLocations: string[] = dataLocation.split(".");
+
+    for (let i = 0; i < dataLocations.length; i++) {
+        if (Array.isArray(get(normalizedDataLocation, data))) {
+            normalizedDataLocation.push(`${dataLocations[i]}[${dataLocations[i + 1]}]`);
+            i++;
+        } else {
+            normalizedDataLocation.push(dataLocations[i]);
+        }
+    }
+
+    return normalizedDataLocation.join(".");
+}
+
+/**
+ * Gets the index from a JSON schemas oneOf/anyOf array that validates against the data
+ */
+export function getValidAnyOfOneOfIndex(oneOfAnyOf: string, data: any, schema: any): number {
+    let validIndex: number;
+
+    schema[oneOfAnyOf].forEach((oneOfAnyOfItem: any, index: number) => {
+        if (tv4.validate(data, oneOfAnyOfItem)) {
+            validIndex = index;
+        }
+    });
+
+    return validIndex;
 }
 
 /**

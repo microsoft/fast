@@ -63,6 +63,32 @@ exports[`objects objects: 0 1`] = `
           />
         </div>
         <div
+          className="formSection_toggleWrapper-0-1-5"
+        >
+          <label
+            htmlFor="3"
+          >
+            object with nested object
+            <button
+              aria-pressed={false}
+              className="formSection_toggle-0-1-6"
+              onClick={[Function]}
+              role="switch"
+            >
+              <span />
+            </button>
+            <span>
+              Off
+            </span>
+          </label>
+          <input
+            aria-hidden="true"
+            id="3"
+            type="hidden"
+            value="Off"
+          />
+        </div>
+        <div
           className="formSection-0-1-2"
         >
           <h3
