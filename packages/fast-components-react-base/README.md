@@ -8,8 +8,9 @@ Base components are the structural, semantic, and interactive core of a piece of
 ### Basic implementation
 An example of using one of the components from the `@microsoft/fast-components-react-base` package:
 
-```
-import React from "react";
+```tsx
+import * as React from "react";
+import { ClassNames, IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import ReactDOM from "react-dom";
 import { Button } from "@microsoft/fast-components-react-base";
 
@@ -17,9 +18,13 @@ const root = document.createElement("div");
 root.setAttribute("id", "root");
 document.body.appendChild(root);
 
+const classNames: ClassNames<IButtonClassNameContract> = {
+    button: "my-button-classname"
+};
+
 function render(): void {
     ReactDOM.render(
-        <Button>
+        <Button managedClasses={classNames}>
             Click me!
         </Button>,
         root
