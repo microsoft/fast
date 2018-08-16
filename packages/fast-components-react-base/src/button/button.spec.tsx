@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ShallowRenderer from "react-test-renderer/shallow";
-import * as Adapter from "enzyme-adapter-react-16";
+import Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
@@ -23,7 +23,7 @@ describe("button snapshot", (): void => {
 });
 
 describe("button", (): void => {
-    const Component: React.ComponentClass<IButtonHandledProps & IButtonManagedClasses> = examples.component;
+    const Component: React.ComponentType<IButtonHandledProps & IButtonManagedClasses> = examples.component;
     const managedClasses: IButtonClassNameContract = {
         button: "test-button"
     };

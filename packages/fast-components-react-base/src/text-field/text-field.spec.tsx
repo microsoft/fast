@@ -23,7 +23,7 @@ describe("text-field snapshot", (): void => {
 });
 
 describe("text-field", (): void => {
-    const Component: React.ComponentClass<ITextFieldHandledProps & ITextFieldManagedClasses> = examples.component;
+    const Component: React.ComponentType<ITextFieldHandledProps & ITextFieldManagedClasses> = examples.component;
     const managedClasses: ITextFieldClassNameContract = {
         textField: "text-field-class"
     };

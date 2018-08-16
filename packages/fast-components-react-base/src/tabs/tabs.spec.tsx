@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ShallowRenderer from "react-test-renderer/shallow";
-import * as Adapter from "enzyme-adapter-react-16";
+import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 import examples from "./examples.data";
@@ -37,10 +37,11 @@ describe("tabs snapshot", (): void => {
 });
 
 describe("tabs", (): void => {
-    const Component: React.ComponentClass<ITabsHandledProps & ITabsManagedClasses> = examples.component;
+    const Component: React.ComponentType<ITabsHandledProps & ITabsManagedClasses> = examples.component;
     const tabsManagedClasses: ITabsClassNameContract = {
             tabs: "tabs-class",
             tabs_tabList: "tab_list-class",
+            tabs_tabItems: "tab_tabItems"
     };
 
     const tabPanelManagedClasses: ITabPanelClassNameContract = {

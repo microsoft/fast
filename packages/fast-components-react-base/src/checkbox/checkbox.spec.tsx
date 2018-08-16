@@ -23,7 +23,7 @@ describe("checkbox snapshot", (): void => {
 });
 
 describe("checkbox", (): void => {
-    const Component: React.ComponentClass<ICheckboxHandledProps & ICheckboxManagedClasses> = examples.component;
+    const Component: React.ComponentType<ICheckboxHandledProps & ICheckboxManagedClasses> = examples.component;
     const managedClasses: ICheckboxClassNameContract = {
         checkbox: "checkbox-class",
         checkbox_disabled: "disabled-class",

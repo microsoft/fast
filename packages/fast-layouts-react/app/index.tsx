@@ -41,14 +41,13 @@ function render(): void {
                         <Canvas>
                             <Page>
                                 <Grid key={"breakpoint-specific-spans"} row={1}>
-                                    <Column jssStyleSheet={columnTestStyles} span={12} />
-                                    <Column jssStyleSheet={columnTestStyles} span={[12, 6, 6, 4]} row={2} />
-                                    <Column jssStyleSheet={columnTestStyles} span={[12, 6, 6, 4]} row={[3, 2]} position={[1, 7, 7, 5]} />
+                                    <Column jssStyleSheet={columnTestStyles} span={12} order={1} />
+                                    <Column jssStyleSheet={columnTestStyles} span={[12, 12, 12]} order={2} />
+                                    <Column jssStyleSheet={columnTestStyles} span={[12, 6, 6, 4]} order={3} />
                                     <Column
                                         jssStyleSheet={columnTestStyles}
                                         span={[12, 12, 12, 4]}
-                                        row={[4, 3, 3, 2]}
-                                        position={[1, 1, 1, 9]}
+                                        order={4}
                                     />
                                 </Grid>
                             </Page>

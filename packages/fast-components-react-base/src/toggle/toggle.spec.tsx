@@ -23,7 +23,7 @@ describe("toggle snapshot", (): void => {
 });
 
 describe("toggle", (): void => {
-    const Component: React.ComponentClass<IToggleHandledProps & IToggleManagedClasses> = examples.component;
+    const Component: React.ComponentType<IToggleHandledProps & IToggleManagedClasses> = examples.component;
     const managedClasses: IToggleClassNameContract = {
         toggle: "toggle-class",
         toggle_label: "toggle-label-class",

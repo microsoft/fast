@@ -3,7 +3,8 @@ import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
-import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
+import { generateSnapshots, ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
+import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import {
     ITypographyClassNameContract,
     ITypographyHandledProps,
@@ -13,17 +14,30 @@ import {
     TypographyTag
 } from "./typography";
 
+// function purify<T>(examples: IComponentFactoryExample<T>): ISnapshotTestSuite<T> {
+//     return Object.assign.apply(this, Object.keys(examples).map((key: string) => {
+//         return {
+//             [key]: {
+//                 name: examples[key].name,
+//                 component: examples[key].name,
+//                 data: examples[key].data
+//             }
+//         }
+//     }))
+// }
+
 /*
  * Configure Enzyme
  */
 configure({adapter: new Adapter()});
 
 describe("typography snapshot", (): void => {
+    // generateSnapshots(purify(examples));
     generateSnapshots(examples);
 });
 
 describe("typography", (): void => {
-    const Component: React.ComponentClass<ITypographyHandledProps & ITypographyManagedClasses> = examples.component;
+    const Component: React.ComponentType<ITypographyHandledProps & ITypographyManagedClasses> = examples.component;
     const managedClasses: ITypographyClassNameContract = {
         typography_1: "typography-1-class",
         typography_2: "typography-2-class",

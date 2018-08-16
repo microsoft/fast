@@ -23,7 +23,7 @@ describe("label snapshot", (): void => {
 });
 
 describe("label", (): void => {
-    const Component: React.ComponentClass<ILabelHandledProps & ILabelManagedClasses> = examples.component;
+    const Component: React.ComponentType<ILabelHandledProps & ILabelManagedClasses> = examples.component;
     const managedClasses: ILabelClassNameContract = {
         label: "label-class",
         label_hidden: "label-hidden-class"

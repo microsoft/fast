@@ -22,7 +22,7 @@ describe("image snapshot", (): void => {
 });
 
 describe("image", (): void => {
-    const Component: React.ComponentClass<IImageHandledProps & IImageManagedClasses> = examples.component;
+    const Component: React.ComponentType<IImageHandledProps & IImageManagedClasses> = examples.component;
     const managedClasses: IImageClassNameContract = {
         image: "image-class",
         image_round: "image-round-class",

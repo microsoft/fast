@@ -23,7 +23,7 @@ describe("dialog snapshot", (): void => {
 });
 
 describe("dialog", (): void => {
-    const Component: React.ComponentClass<IDialogHandledProps & IDialogManagedClasses> = examples.component;
+    const Component: React.ComponentType<IDialogHandledProps & IDialogManagedClasses> = examples.component;
     const managedClasses: IDialogClassNameContract = {
         dialog: "dialog-class",
         dialog_contentRegion: "dialog-content-region-class",

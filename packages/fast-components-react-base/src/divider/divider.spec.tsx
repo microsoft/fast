@@ -20,7 +20,7 @@ describe("divider snapshot", (): void => {
 configure({adapter: new Adapter()});
 
 describe("divider", (): void => {
-    const Component: React.ComponentClass<IDividerHandledProps & IDividerManagedClasses> = examples.component;
+    const Component: React.ComponentType<IDividerHandledProps & IDividerManagedClasses> = examples.component;
     const managedClasses: IDividerClassNameContract = {
         divider: "divider-class",
     };

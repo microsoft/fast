@@ -1,6 +1,6 @@
 import * as React from "react";
 import Hypertext, { IHypertextHandledProps, IHypertextManagedClasses, IHypertextUnhandledProps } from "./hypertext";
-import schema from "./hypertext.schema.json";
+import * as schema from "./hypertext.schema.json";
 import Documentation from "./.tmp/documentation";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 

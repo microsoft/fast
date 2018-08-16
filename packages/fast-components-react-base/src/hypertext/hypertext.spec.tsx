@@ -22,7 +22,7 @@ describe("hypertext snapshot", (): void => {
 });
 
 describe("hypertext", (): void => {
-    const Component: React.ComponentClass<IHypertextHandledProps & IHypertextManagedClasses> = examples.component;
+    const Component: React.ComponentType<IHypertextHandledProps & IHypertextManagedClasses> = examples.component;
     const managedClasses: IHypertextClassNameContract = {
         hypertext: "hypertext-class"
     };

@@ -6,7 +6,7 @@ import Typography, {
     TypeLevel,
     TypographyTag
 } from "./typography";
-import schema from "./typography.schema.json";
+import * as schema from "./typography.schema.json";
 import Documentation from "./.tmp/documentation";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 

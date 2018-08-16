@@ -1,0 +1,17 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "noEmit": false,
+        "outDir": "../dist",
+        "module": "ES6",
+        "resolveJsonModule": false
+    },
+    "include": [
+        "./**/*"
+    ],
+    "exclude": [
+        "**/*.spec.ts",
+        "**/*.spec.tsx",
+        "**/examples.data.tsx"
+    ]
+}

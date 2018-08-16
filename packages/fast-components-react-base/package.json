@@ -21,7 +21,7 @@
     "copy:json-schema": "node ../../build/copy-schemas.js",
     "copy:readme": "node ../../build/copy-readme.js",
     "build:app": "webpack --progress",
-    "prepare": "npm run clean:dist && tsc -p ./tsconfig.json && npm run copy:all",
+    "prepare": "npm run clean:dist && tsc -p ./src/tsconfig.json && npm run copy:all",
     "start": "webpack-dev-server",
     "test": "npm run convert:readme && npm run tslint && npm run unit-tests && npm run build:app",
     "tslint": "tslint -c ./tslint.json 'src/**/*.ts{,x}' '**/*.ts{,x}'",
@@ -31,6 +31,11 @@
     "unit-tests:watch": "jest --watch"
   },
   "jest": {
+    "globals": {
+      "ts-jest": {
+        "enableTsDiagnostics": true
+      }
+    },
     "collectCoverage": true,
     "coverageThreshold": {
       "global": {
@@ -88,7 +93,7 @@
     "ts-loader": "^4.0.1",
     "tslint": "^5.9.1",
     "tslint-loader": "^3.6.0",
-    "typescript": "^2.7.2",
+    "typescript": "^3.0.0",
     "webpack": "^4.1.0",
     "webpack-bundle-analyzer": "^2.13.1",
     "webpack-cli": "^2.0.11",
