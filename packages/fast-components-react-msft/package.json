@@ -82,6 +82,7 @@
     "babel-preset-react": "^6.24.1",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
+    "eyes.images": "0.0.52",
     "favicons-webpack-plugin": "0.0.9",
     "file-loader": "^1.1.11",
     "fork-ts-checker-webpack-plugin": "^0.4.0",
@@ -110,10 +111,11 @@
     "react-dom": "^16.3.0"
   },
   "dependencies": {
-    "@microsoft/fast-application-utilities": "^2.0.0",
-    "@microsoft/fast-components-class-name-contracts-msft": "^2.0.0",
-    "@microsoft/fast-components-react-base": "^2.0.0",
-    "@microsoft/fast-components-styles-msft": "^2.0.0",
-    "@microsoft/fast-jss-manager-react": "^2.0.0"
+    "@microsoft/fast-application-utilities": "^1.9.2",
+    "@microsoft/fast-components-class-name-contracts-msft": "^1.9.2",
+    "@microsoft/fast-components-react-base": "^1.9.2",
+    "@microsoft/fast-components-styles-msft": "^1.9.2",
+    "@microsoft/fast-jss-manager-react": "^1.9.2",
+    "dotenv": "^6.0.0"
   }
 }

@@ -56,9 +56,9 @@ jobs:
                 fi
               fi
             done;
-
             ./coverage/cc-test-reporter sum-coverage -o coverage/coverage.total.json coverage/coverage.*.json
             ./coverage/cc-test-reporter upload-coverage -i coverage/coverage.total.json
+      - run: "export APPLITOOLS_BATCH_ID=`echo $CIRCLE_SHA1`"
       - save_cache:
           key: ci-cache-{{ checksum "package.json" }}
           paths:
