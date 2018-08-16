@@ -41,6 +41,7 @@ const examples: IComponentFactoryExample<IHorizontalOverflowHandledProps & IHori
     documentation: <Documentation />,
     detailData: {
         ...classes,
+        autoRemoveClickElements: true,
         children: [
             (<Button managedClasses={{button: "button"}} slot="previous">previous</Button>),
             (<Button managedClasses={{button: "button"}} slot="next">next</Button>),
