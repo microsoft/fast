@@ -5,7 +5,7 @@
  * to all JSS rules defined as a function
  */
 import * as React from "react";
-import propTypes from "prop-types";
+import * as propTypes from "prop-types";
 
 /**
  * Describes the props that the DesignSystemProvider uses. It accepts a single prop "designSystem"
