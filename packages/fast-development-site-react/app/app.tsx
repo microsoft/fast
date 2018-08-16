@@ -18,7 +18,6 @@ import Button from "./components/button/button";
 import ButtonSchema from "./components/button/button.schema.json";
 import Paragraph from "./components/paragraph/paragraph";
 import ParagraphSchema from "./components/paragraph/paragraph.schema.json";
-import PolymerHeading from "./components/polymer-heading";
 import { ISiteCategoryProps, Status } from "../src/components/site/category";
 import ParagraphDocs from "./components/paragraph/.tmp/documentation";
 import ButtonDocs from "./components/button/.tmp/documentation";
