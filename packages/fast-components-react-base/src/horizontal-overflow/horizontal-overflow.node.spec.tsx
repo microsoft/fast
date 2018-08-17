@@ -1,6 +1,7 @@
 /**
  * @jest-environment node
  */
+import "jsdom-global/register";
 
 import * as React from "react";
 import * as ReactDOMServer from "react-dom/server";
