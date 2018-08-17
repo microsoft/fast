@@ -18,7 +18,7 @@ jobs:
       - run:
           name: Install the latest Lerna version
           command: |
-            sudo npm i lerna@^2.9.0 -g
+            sudo npm i lerna@^3.0.0 -g
       - restore_cache:
           keys:
           - ci-cache-{{ checksum "package.json" }}          
