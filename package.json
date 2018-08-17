@@ -22,7 +22,7 @@
     "markdown-it": "^8.4.1",
     "rimraf": "^2.6.2",
     "ts-node": "^5.0.1",
-    "typescript": "^2.7.2",
+    "typescript": "^3.0.1",
     "yargs": "^11.0.0"
   }
 }

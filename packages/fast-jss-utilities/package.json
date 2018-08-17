@@ -32,6 +32,7 @@
         "lines": 100
       }
     },
+    "testURL": "http://localhost",
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
@@ -49,8 +50,7 @@
     "csstype": "^2.3.0",
     "jest": "^22.4.3",
     "ts-jest": "^22.4.4",
-    "tslint": "^5.9.1",
-    "typescript": "^2.7.2"
+    "tslint": "^5.9.1"
   },
   "dependencies": {
     "@microsoft/fast-jss-manager": "^2.0.0"

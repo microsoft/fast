@@ -70,7 +70,7 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
             /**
              * Updates a dynamic stylesheet with context
              */
-            public updateStyleSheet(nextContext?: propTypes.any): void {
+            public updateStyleSheet(nextContext?: any): void {
                 if (!Boolean(this.state.styleSheet)) {
                     return;
                 }

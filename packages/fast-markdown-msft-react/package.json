@@ -33,6 +33,7 @@
         "lines": 100
       }
     },
+    "testURL": "http://localhost",
     "transform": {
       "^.+\\.ts$": "ts-jest",
       "^.+\\.js$": "babel-jest"
@@ -69,7 +70,6 @@
     "lodash-es": "^4.0.0",
     "ts-jest": "^22.0.4",
     "tslint": "^5.9.1",
-    "typescript": "^2.7.1",
     "watch": "^1.0.2"
   },
   "peerDependencies": {
