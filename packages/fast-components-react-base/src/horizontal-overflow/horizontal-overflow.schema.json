@@ -6,9 +6,18 @@
     "id": "horizontal-overflow",
     "children": true,
     "properties": {
+        "autoRemoveClickElements": {
+            "title": "Remove bottons at start and finish of scroll",
+            "type": "boolean"
+        },
         "scrollDuration": {
             "title": "Scroll duration",
             "type": "number"
+        },
+        "direction": {
+            "title": "Direction in ltr/rtl",
+            "type": "string",
+            "default": "ltr"
         }
     }
 }
