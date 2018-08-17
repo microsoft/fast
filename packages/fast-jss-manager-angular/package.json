@@ -46,6 +46,7 @@
       "/node_modules/",
       "/dist/"
     ],
+    "testURL": "http://localhost",
     "transform": {
       "^.+\\.ts$": "ts-jest",
       "^.+\\.js?$": "babel-jest"

@@ -43,6 +43,7 @@
     "coveragePathIgnorePatterns": [
       "/.tmp/*"
     ],
+    "testURL": "http://localhost",
     "transform": {
       "^.+\\.tsx?$": "ts-jest",
       "^.+\\.jsx?$": "babel-jest"

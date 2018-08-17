@@ -33,6 +33,7 @@
         "lines": 100
       }
     },
+    "testURL": "http://localhost",
     "transform": {
       "^.+\\.ts$": "ts-jest",
       "^.+\\.js$": "babel-jest"

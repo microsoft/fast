@@ -29,6 +29,7 @@
         "lines": 90
       }
     },
+    "testURL": "http://localhost",
     "transformIgnorePatterns": [
       "!<rootDir>/node_modules/lodash-es"
     ],

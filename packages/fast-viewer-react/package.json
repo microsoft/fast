@@ -39,6 +39,7 @@
       }
     },
     "testRegex": "(/__tests__/.*(test|spec))\\.(ts|tsx)$",
+    "testURL": "http://localhost",
     "transform": {
       "^.+\\.tsx?$": "ts-jest",
       "^.+\\.jsx?$": "babel-jest"

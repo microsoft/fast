@@ -169,9 +169,9 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
     private getLTR(): Direction {
         return !this.horizontalOverflowItemsRef.current
             ? Direction.ltr
-            : getComputedStyle(this.horizontalOverflowItemsRef.current).direction === Direction.ltr
-            ? Direction.ltr
-            : Direction.rtl;
+            : getComputedStyle(this.horizontalOverflowItemsRef.current).direction === Direction.rtl
+            ? Direction.rtl
+            : Direction.ltr;
     }
 
     private isMovingNext(direction: ButtonDirection, ltr: Direction): boolean {

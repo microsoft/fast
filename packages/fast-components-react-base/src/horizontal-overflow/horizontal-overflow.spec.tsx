@@ -38,7 +38,7 @@ describe("horizontal overflow snapshot", (): void => {
 /* tslint:disable:no-string-literal */
 describe("horizontal overflow", (): void => {
     test("should render a previous button if one is passed as a child with the appropriate slot prop", () => {
-        const renderedWithImagesAndPrevious: any = shallow(
+        const renderedWithImagesAndPrevious: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
                 <button id="testButtonPrevious" slot="previous">previous</button>
                 {imageSet1}
@@ -48,7 +48,7 @@ describe("horizontal overflow", (): void => {
         expect(renderedWithImagesAndPrevious.find("#testButtonPrevious")).not.toBe(undefined);
     });
     test("should render a next button if one is passed as a child with the appropriate slot prop", () => {
-        const renderedWithImagesAndNext: any = shallow(
+        const renderedWithImagesAndNext: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
                 <button id="testButtonNext" slot="next">next</button>
                 {imageSet1}
@@ -58,7 +58,7 @@ describe("horizontal overflow", (): void => {
         expect(renderedWithImagesAndNext.find("#testButtonNext")).not.toBe(undefined);
     });
     test("should render a series of items if they are passed as children", () => {
-        const renderedWithImages: any = shallow(
+        const renderedWithImages: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
                 {imageSet1}
             </HorizontalOverflow>
@@ -67,14 +67,14 @@ describe("horizontal overflow", (): void => {
         expect(renderedWithImages.find("img").length).toBe(6);
     });
     test("should not set `itemHeight` if no children have been passed", () => {
-        const rendered: any = shallow(
+        const rendered: any = mount(
             <HorizontalOverflow managedClasses={managedClasses} />
         );
 
         expect(rendered.state("itemsHeight")).toBe(0);
     });
     test("should update the rendering of a series of items if they are modified", () => {
-        const renderedWithImages: any = shallow(
+        const renderedWithImages: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
                 {imageSet1}
             </HorizontalOverflow>
@@ -90,7 +90,7 @@ describe("horizontal overflow", (): void => {
         expect(renderedWithImages.find("img").length).toBe(2);
     });
     test("should update the scrolled distance when moving next to include the next number of items that can be in view", () => {
-        const renderedWithImages: any = shallow(
+        const renderedWithImages: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
                 {imageSet1}
             </HorizontalOverflow>
@@ -142,7 +142,7 @@ describe("horizontal overflow", (): void => {
         ).toBe(70);
     });
     test("should update the scrolled distance when moving previous to include the previous number of items that can be in view", () => {
-        const renderedWithImages: any = shallow(
+        const renderedWithImages: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
                 {imageSet1}
             </HorizontalOverflow>
@@ -171,7 +171,7 @@ describe("horizontal overflow", (): void => {
         ).toBe(50);
     });
     test("should an state property `itemsHeight`", () => {
-        const renderedWithImages: any = shallow(
+        const renderedWithImages: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
                 {imageSet1}
             </HorizontalOverflow>
@@ -180,7 +180,7 @@ describe("horizontal overflow", (): void => {
         expect(renderedWithImages.state("itemsHeight")).toBe(0);
     });
     test("should ease the animation correctly when moving the scroll position", () => {
-        const renderedWithImages: any = shallow(
+        const renderedWithImages: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
                 {imageSet1}
             </HorizontalOverflow>
@@ -271,7 +271,7 @@ describe("horizontal overflow", (): void => {
         ).toBe(undefined);
     });
     test("should execute a scroll animation on the element", () => {
-        const renderedWithImages: any = shallow(
+        const renderedWithImages: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
                 {imageSet1}
             </HorizontalOverflow>
