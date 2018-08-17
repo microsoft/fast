@@ -40,7 +40,7 @@ class App extends React.Component<{}, IAppState> {
                 left: "4px",
                 top: "12px"
             },
-            positionDetail:{
+            positionDetail: {
                 position: PositionValue.static
             },
             positionExample: {
