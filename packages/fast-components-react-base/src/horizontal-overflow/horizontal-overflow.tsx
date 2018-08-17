@@ -98,14 +98,18 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
             itemsHeight
         });
 
-        this.horizontalOverflowItemsRef.current.addEventListener("scroll", this.requestFrame);
+        if (canUseDOM()) {
+            this.horizontalOverflowItemsRef.current.addEventListener("scroll", this.requestFrame);
+        }
     }
 
     /**
      * React life-cycle method
      */
     public componentWillUnmount(): void {
-        this.horizontalOverflowItemsRef.current.removeEventListener("scroll", this.requestFrame);
+        if (canUseDOM()) {
+            this.horizontalOverflowItemsRef.current.removeEventListener("scroll", this.requestFrame);
+        }
     }
 
     /**
