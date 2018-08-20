@@ -35,6 +35,7 @@
     "tslint": "^5.9.1",
     "tslint-loader": "^3.6.0",
     "tslint-react": "^3.3.3",
+    "typescript": "^3.0.1",
     "uglifyjs-webpack-plugin": "^1.2.3",
     "webpack": "^4.0.1",
     "webpack-cli": "^2.0.11"

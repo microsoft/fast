@@ -24,7 +24,8 @@
   "devDependencies": {
     "@microsoft/fast-tslint-rules": "^2.0.0",
     "csstype": "^2.3.0",
-    "tslint": "^5.9.1"
+    "tslint": "^5.9.1",
+    "typescript": "^3.0.1"
   },
   "dependencies": {
     "@microsoft/fast-components-class-name-contracts-base": "^2.0.0"

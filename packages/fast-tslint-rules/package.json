@@ -20,7 +20,9 @@
   "homepage": "https://github.com/Microsoft/fast-tslint-rules#readme",
   "dependencies": {
     "tslint": "^5.9.1",
-    "tslint-react": "^3.4.0",
-    "typescript": "^2.7.1"
+    "tslint-react": "^3.4.0"
+  },
+  "devDependencies": {
+    "typescript": "^3.0.1"
   }
 }
