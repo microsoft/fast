@@ -22,13 +22,8 @@ export type AnimateScroll = () => void;
 
 class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllHTMLAttributes<HTMLDivElement>, IHorizontalOverflowState> {
 
-    public static defaultProps: Partial<IHorizontalOverflowHandledProps> = {
-        direction: Direction.ltr
-    };
-
     protected handledProps: HandledProps<IHorizontalOverflowHandledProps & IManagedClasses<IHorizontalOverflowClassNameContract>> = {
         children: void 0,
-        direction: void 0,
         scrollDuration: void 0,
         managedClasses: void 0,
         onScrollToEnd: void 0,
@@ -98,7 +93,7 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
             itemsHeight
         });
 
-        if (canUseDOM()) {
+        if (canUseDOM() && this.horizontalOverflowItemsRef.current) {
             this.horizontalOverflowItemsRef.current.addEventListener("scroll", this.requestFrame);
         }
     }
@@ -107,7 +102,7 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
      * React life-cycle method
      */
     public componentWillUnmount(): void {
-        if (canUseDOM()) {
+        if (canUseDOM() && this.horizontalOverflowItemsRef.current) {
             this.horizontalOverflowItemsRef.current.removeEventListener("scroll", this.requestFrame);
         }
     }
@@ -202,11 +197,11 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
     }
 
     private renderPreviousButton(): JSX.Element {
-        if (this.props.direction === Direction.ltr && this.props.autoRemoveClickElements && this.state.startScroll) {
-            return;
-        }
-
-        if (this.props.direction === Direction.rtl && this.props.autoRemoveClickElements && this.state.endScroll) {
+        if (
+            this.getLTR() === Direction.ltr && this.props.autoRemoveClickElements && this.state.startScroll
+            ||
+            this.getLTR() === Direction.rtl && this.props.autoRemoveClickElements && this.state.endScroll
+            ) {
             return;
         }
 
@@ -218,11 +213,11 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
     }
 
     private renderNextButton(): JSX.Element {
-        if (this.props.direction === Direction.ltr &&  this.props.autoRemoveClickElements && this.state.endScroll) {
-            return;
-        }
-
-        if (this.props.direction === Direction.rtl && this.props.autoRemoveClickElements && this.state.startScroll) {
+        if (
+            this.getLTR() === Direction.ltr && this.props.autoRemoveClickElements && this.state.endScroll
+            ||
+            this.getLTR() === Direction.rtl && this.props.autoRemoveClickElements && this.state.startScroll
+            ) {
             return;
         }
 

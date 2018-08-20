@@ -1,12 +1,15 @@
 import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
-import { configure, mount, shallow } from "enzyme";
+import { configure, describeWithDOM, mount, shallow, spyLifecycle } from "enzyme";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import HorizontalOverflow, {
     ButtonDirection,
     IHorizontalOverflowClassNameContract
 } from "./";
 import examples from "./examples.data";
+import { Direction } from "../../node_modules/@microsoft/fast-application-utilities";
+import { componentDetailExampleFactory } from "../../node_modules/@microsoft/fast-development-site-react";
+import "raf/polyfill";
 
 /*
  * Configure Enzyme
@@ -37,8 +40,17 @@ describe("horizontal overflow snapshot", (): void => {
 
 /* tslint:disable:no-string-literal */
 describe("horizontal overflow", (): void => {
+    test("should mount with openRequestAnimationFrame as false", () => {
+        const renderedWithImagesAndPrevious: any = shallow(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        expect(renderedWithImagesAndPrevious.instance().openRequestAnimationFrame).toBe(false);
+    });
     test("should render a previous button if one is passed as a child with the appropriate slot prop", () => {
-        const renderedWithImagesAndPrevious: any = mount(
+        const renderedWithImagesAndPrevious: any = shallow(
             <HorizontalOverflow managedClasses={managedClasses}>
                 <button id="testButtonPrevious" slot="previous">previous</button>
                 {imageSet1}
@@ -46,6 +58,24 @@ describe("horizontal overflow", (): void => {
         );
 
         expect(renderedWithImagesAndPrevious.find("#testButtonPrevious")).not.toBe(undefined);
+        expect(
+            renderedWithImagesAndPrevious.instance()[
+                "renderPreviousButton"
+            ]()
+        ).not.toBe(undefined);
+    });
+    // tslint:disable-next-line:max-line-length
+    test("should not render a previous button if one is passed as a child with the appropriate slot prop and autoRemoveClickElements is true", () => {
+        const renderedWithImagesAndPrevious: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                <button id="testButtonPrevious" slot="previous">previous</button>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        renderedWithImagesAndPrevious.setProps({ autoRemoveClickElements: true});
+
+        expect(renderedWithImagesAndPrevious.find("#testButtonPrevious").length).toBe(0);
     });
     test("should render a next button if one is passed as a child with the appropriate slot prop", () => {
         const renderedWithImagesAndNext: any = mount(
@@ -56,6 +86,29 @@ describe("horizontal overflow", (): void => {
         );
 
         expect(renderedWithImagesAndNext.find("#testButtonNext")).not.toBe(undefined);
+        expect(
+            renderedWithImagesAndNext.instance()[
+                "renderNextButton"
+            ]()
+        ).not.toBe(undefined);
+    });
+    // tslint:disable-next-line:max-line-length
+    test("should not render a next button if one is passed as a child with the appropriate slot prop and autoRemoveClickElements is true and endScroll is true", () => {
+        const renderedWithImagesAndNext: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                <button id="testButtonNext" slot="next">next</button>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        renderedWithImagesAndNext.setProps({ autoRemoveClickElements: true});
+        renderedWithImagesAndNext.setState({ endScroll: true});
+
+        expect(
+            renderedWithImagesAndNext.instance()[
+                "renderNextButton"
+            ]()
+        ).toBe(undefined);
     });
     test("should render a series of items if they are passed as children", () => {
         const renderedWithImages: any = mount(
@@ -178,6 +231,11 @@ describe("horizontal overflow", (): void => {
         );
 
         expect(renderedWithImages.state("itemsHeight")).toBe(0);
+        expect(
+            renderedWithImages.instance()[
+                "getItemMaxHeight"
+            ]()
+        ).toBe(0);
     });
     test("should ease the animation correctly when moving the scroll position", () => {
         const renderedWithImages: any = mount(
@@ -257,9 +315,111 @@ describe("horizontal overflow", (): void => {
             ](0, 500, [])
         ).toBe(0);
     });
-    test("should have an `onLoad` method", () => {
+    test("should have an `onScrollToStart` method and should accept a mock callback function", () => {
+        const onScrollToStartFunction: any = jest.fn();
+        const renderedWithImages: any = shallow(
+            <HorizontalOverflow className={"foo"} onScrollToStart={onScrollToStartFunction} managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        expect(
+            renderedWithImages.instance()[
+                "onScrollToStart"
+            ]()
+        ).toBe(undefined);
+
+        renderedWithImages.instance().onScrollToStart();
+
+        expect(
+            renderedWithImages.instance()[
+                "onScrollToStart"
+            ]()
+        ).toBe(undefined);
+
+        renderedWithImages.setState({ endScroll: true});
+        renderedWithImages.instance().onScrollToStart();
+
+        expect(
+            renderedWithImages.instance().state.endScroll
+        ).toBe(false);
+    });
+    test("should have an `onScrollToEnd` method and should accept a mock callback function", () => {
+        const onScrollToEndFunction: any = jest.fn();
+        const renderedWithImages: any = shallow(
+            <HorizontalOverflow className={"foo"} onScrollToEnd={onScrollToEndFunction} managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        expect(
+            renderedWithImages.instance()[
+                "onScrollToEnd"
+            ]()
+        ).toBe(undefined);
+
+        renderedWithImages.find("div.foo").simulate("onScrollToEnd", {});
+
+        expect(
+            renderedWithImages.instance()[
+                "onScrollToEnd"
+            ]()
+        ).toBe(undefined);
+    });
+    test("should unmount appropriately by removing event listener", () => {
         const renderedWithImages: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        renderedWithImages.unmount();
+        expect(renderedWithImages.removeEventListener).toBe(undefined);
+    });
+    test("should have an `requestFrame` method", () => {
+        const renderedWithImages: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        expect(
+            renderedWithImages.instance()[
+                "requestFrame"
+            ]()
+        ).toBe(undefined);
+    });
+    test("should return out of `requestFrame` method when already animating", () => {
+        const renderedWithImages: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        renderedWithImages.instance().openRequestAnimationFrame = true;
+
+        expect(
+            renderedWithImages.instance()[
+                "requestFrame"
+            ]()
+        ).toBe(undefined);
+    });
+    test("should have an `update` method", () => {
+        const renderedWithImages: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        expect(
+            renderedWithImages.instance()[
+                "update"
+            ]()
+        ).toBe(undefined);
+    });
+    test("should have an `onLoad` method", () => {
+        const renderedWithImages: any = mount(
+            <HorizontalOverflow className="foo" managedClasses={managedClasses}>
                 {imageSet1}
             </HorizontalOverflow>
         );
@@ -269,6 +429,16 @@ describe("horizontal overflow", (): void => {
                 "itemsOnLoad"
             ]()
         ).toBe(undefined);
+
+        expect(renderedWithImages.instance().state.itemsHeight).toBe(0);
+
+        renderedWithImages.setState({ itemsHeight: 50});
+
+        expect(renderedWithImages.instance().state.itemsHeight).toBe(50);
+
+        renderedWithImages.find("div.foo").simulate("load", {});
+
+        expect(renderedWithImages.instance().state.itemsHeight).toBe(0);
     });
     test("should execute a scroll animation on the element", () => {
         const renderedWithImages: any = mount(

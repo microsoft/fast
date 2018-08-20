@@ -13,11 +13,6 @@
         "scrollDuration": {
             "title": "Scroll duration",
             "type": "number"
-        },
-        "direction": {
-            "title": "Direction in ltr/rtl",
-            "type": "string",
-            "default": "ltr"
         }
     }
 }
