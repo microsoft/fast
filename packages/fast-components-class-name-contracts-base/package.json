@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@microsoft/fast-tslint-rules": "^2.0.0",
-    "tslint": "^5.9.1"
+    "tslint": "^5.9.1",
+    "typescript": "^3.0.1"
   }
 }

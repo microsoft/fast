@@ -75,6 +75,7 @@
     "react-test-renderer": "^16.2.0",
     "ts-jest": "^22.0.4",
     "tslint": "^5.9.1",
+    "typescript": "^3.0.1",
     "watch": "^1.0.2"
   },
   "peerDependencies": {
