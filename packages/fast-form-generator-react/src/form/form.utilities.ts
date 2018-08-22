@@ -2,7 +2,7 @@ import { clone, cloneDeep, get, isEqual, mergeWith } from "lodash-es";
 import * as tv4 from "tv4";
 import { IBreadcrumbItemConfig, IBreadcrumbItemsConfig, IComponentItem, IFormProps, IFormState } from "./form.props";
 
-export interface ISchemaLocationStringsFromDataLocationStringConfig {
+export interface ISchemaLocationSegmentsFromDataLocationSegmentConfig {
     isObject: boolean;
     isArray: boolean;
     dataLocation: string;
@@ -234,52 +234,52 @@ export function mapSchemaLocationFromDataLocation(dataLocation: string, data: an
     const squareBracketRegex: RegExp = /\[(\d+?)\]/g;
     let normalizedDataLocation: string = dataLocation.replace(squareBracketRegex, `.$1`); // convert all [ ] to . notation
     normalizedDataLocation = convertArrayItemsToBracketNotation(dataLocation, data); // convert back all array items to use [ ]
-    const dataLocationStrings: string[] = normalizedDataLocation.split(".");
+    const dataLocationSegments: string[] = normalizedDataLocation.split(".");
 
     if (dataLocation !== "") {
-        dataLocationStrings.unshift("");
+        dataLocationSegments.unshift("");
     }
 
-    const schemaLocationStrings: string[] = getSchemaLocationStringsFromDataLocationStrings(dataLocationStrings, schema, data);
+    const schemaLocationSegments: string[] = getSchemaLocationSegmentsFromDataLocationSegments(dataLocationSegments, schema, data);
 
-    return schemaLocationStrings.join(".").replace(squareBracketRegex, "");
+    return schemaLocationSegments.join(".").replace(squareBracketRegex, "");
 }
 
 /**
  * Get an array of schema location strings from an array of data location strings
  */
-export function getSchemaLocationStringsFromDataLocationStrings(dataLocationStrings: string[], schema: any, data: any): string[] {
+export function getSchemaLocationSegmentsFromDataLocationSegments(dataLocationSegments: string[], schema: any, data: any): string[] {
     const squareBracketRegex: RegExp = /\[(\d+?)\]/g;
-    let schemaLocationStrings: string[] = [];
+    let schemaLocationSegments: string[] = [];
     let reconstitutedDataLocation: string = "";
 
-    for (let i: number = 0; i < dataLocationStrings.length; i++) {
+    for (let i: number = 0; i < dataLocationSegments.length; i++) {
         const partialData: any = getPartialData(reconstitutedDataLocation, data);
-        const partialSchema: any = getPartialData(schemaLocationStrings.join(".").replace(squareBracketRegex, ""), schema);
+        const partialSchema: any = getPartialData(schemaLocationSegments.join(".").replace(squareBracketRegex, ""), schema);
 
-        schemaLocationStrings = schemaLocationStrings.concat(
+        schemaLocationSegments = schemaLocationSegments.concat(
             getSchemaOneOfAnyOfLocationStrings(
                 partialSchema,
                 partialData
             )
         );
 
-        if (dataLocationStrings[i] !== "") {
-            schemaLocationStrings = schemaLocationStrings.concat(
-                getSchemaLocationStringsFromDataLocationString({
+        if (dataLocationSegments[i] !== "") {
+            schemaLocationSegments = schemaLocationSegments.concat(
+                getSchemaLocationSegmentsFromDataLocationSegment({
                     isObject: typeof partialData === "object",
                     isArray: Array.isArray(partialData),
-                    dataLocation: dataLocationStrings[i],
+                    dataLocation: dataLocationSegments[i],
                     data: partialData,
-                    endOfContainingString: dataLocationStrings.length > i + 1
+                    endOfContainingString: dataLocationSegments.length > i + 1
                 })
             );
         }
 
-        reconstitutedDataLocation += reconstitutedDataLocation === "" ? dataLocationStrings[i] : `.${dataLocationStrings[i]}`;
+        reconstitutedDataLocation += reconstitutedDataLocation === "" ? dataLocationSegments[i] : `.${dataLocationSegments[i]}`;
     }
 
-    return schemaLocationStrings;
+    return schemaLocationSegments;
 }
 
 /**
@@ -293,36 +293,36 @@ export function getPartialData(location: string, data: any): any {
  * Gets an array of oneOf/anyOf with a valid index from a schema and data
  */
 export function getSchemaOneOfAnyOfLocationStrings(schema: any, data: any): string[] {
-    const schemaLocationStrings: string[] = [];
+    const schemaLocationSegments: string[] = [];
 
     if (!!schema.anyOf) {
-        schemaLocationStrings.push(`anyOf.${getValidAnyOfOneOfIndex("anyOf", data, schema)}`);
+        schemaLocationSegments.push(`anyOf.${getValidAnyOfOneOfIndex("anyOf", data, schema)}`);
     }
 
     if (!!schema.oneOf) {
-        schemaLocationStrings.push(`oneOf.${getValidAnyOfOneOfIndex("oneOf", data, schema)}`);
+        schemaLocationSegments.push(`oneOf.${getValidAnyOfOneOfIndex("oneOf", data, schema)}`);
     }
 
-    return schemaLocationStrings;
+    return schemaLocationSegments;
 }
 
 /**
  * Get an array of schema location strings from a single data location item
  */
-export function getSchemaLocationStringsFromDataLocationString(config: ISchemaLocationStringsFromDataLocationStringConfig): string[] {
-    const schemaLocationStrings: string[] = [];
+export function getSchemaLocationSegmentsFromDataLocationSegment(config: ISchemaLocationSegmentsFromDataLocationSegmentConfig): string[] {
+    const schemaLocationSegments: string[] = [];
 
     if (config.isObject && !config.isArray) {
-        schemaLocationStrings.push("properties");
+        schemaLocationSegments.push("properties");
     }
 
-    schemaLocationStrings.push(config.dataLocation);
+    schemaLocationSegments.push(config.dataLocation);
 
     if ((Array.isArray(config.data) || checkDataLocationIsArrayItem(config.dataLocation)) && config.endOfContainingString) {
-        schemaLocationStrings.push("items");
+        schemaLocationSegments.push("items");
     }
 
-    return schemaLocationStrings;
+    return schemaLocationSegments;
 }
 
 /**
@@ -349,7 +349,7 @@ export function checkDataLocationIsArrayItem(dataLocationItem: string): boolean 
 export function convertArrayItemsToBracketNotation(dataLocation: string, data: any): string {
     const normalizedDataLocation: string[] = [];
     const dataLocations: string[] = dataLocation.split(".");
-    let currentDataLocations: string[] = [];
+    const currentDataLocations: string[] = [];
 
     for (let i: number = 0; i < dataLocations.length; i++) {
         currentDataLocations.push(dataLocations[i]);
