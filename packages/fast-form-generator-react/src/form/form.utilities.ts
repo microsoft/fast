@@ -2,6 +2,14 @@ import { clone, cloneDeep, get, isEqual, mergeWith } from "lodash-es";
 import * as tv4 from "tv4";
 import { IBreadcrumbItemConfig, IBreadcrumbItemsConfig, IComponentItem, IFormProps, IFormState, LocationOnChange, IChildOptionItem } from "./form.props";
 
+export interface ISchemaLocationStringsFromDataLocationStringConfig {
+    isObject: boolean,
+    isArray: boolean,
+    dataLocation: string,
+    data: any,
+    endOfContainingString: boolean
+}
+
 /**
  * Gets the data cache based on a new data object and
  * previous data object
@@ -246,28 +254,25 @@ export function getSchemaLocationStringsFromDataLocationStrings(dataLocationStri
     let reconstitutedDataLocation: string = "";
 
     for (let i = 0; i < dataLocationStrings.length; i++) {
-        const partialData: any = reconstitutedDataLocation === "" ? data : get(data, reconstitutedDataLocation);
-        const partialSchema: any = schemaLocationStrings.join(".").replace(squareBracketRegex, "") === ""
-            ? schema
-            : get(schema, schemaLocationStrings.join(".").replace(squareBracketRegex, ""));
+        const partialData: any = getPartialData(reconstitutedDataLocation, data);
+        const partialSchema: any = getPartialSchema(schemaLocationStrings.join(".").replace(squareBracketRegex, ""), schema);
 
-        if (!!partialSchema["anyOf"]) {
-            schemaLocationStrings.push(`anyOf.${getValidAnyOfOneOfIndex("anyOf", partialData, partialSchema)}`);
-        }
-
-        if (!!partialSchema["oneOf"]) {
-            schemaLocationStrings.push(`oneOf.${getValidAnyOfOneOfIndex("oneOf", partialData, partialSchema)}`);
-        }
+        schemaLocationStrings = schemaLocationStrings.concat(
+            getSchemaOneOfAnyOfLocationStrings(
+                partialSchema,
+                partialData
+            )
+        );
 
         if (dataLocationStrings[i] !== "") {
             schemaLocationStrings = schemaLocationStrings.concat(
-                getSchemaLocationStringsFromDataLocationString(
-                    typeof partialData === "object",
-                    Array.isArray(partialData),
-                    dataLocationStrings[i],
-                    partialData,
-                    dataLocationStrings.length > i + 1
-                )
+                getSchemaLocationStringsFromDataLocationString({
+                    isObject: typeof partialData === "object",
+                    isArray: Array.isArray(partialData),
+                    dataLocation: dataLocationStrings[i],
+                    data: partialData,
+                    endOfContainingString: dataLocationStrings.length > i + 1
+                })
             );
         }
 
@@ -278,24 +283,49 @@ export function getSchemaLocationStringsFromDataLocationStrings(dataLocationStri
 }
 
 /**
- * Get an array of schema location strings from a single data location item
+ * Gets a schema and schema location
  */
-export function getSchemaLocationStringsFromDataLocationString(
-    isObject: boolean,
-    isArray: boolean,
-    dataLocation: string,
-    data: any,
-    endOfContainingString: boolean
-): string[] {
+export function getPartialSchema(schemaLocation: string, schema: any): any {
+    return schemaLocation === "" ? schema : get(schema, schemaLocation);
+}
+
+/**
+ * Gets data from a data and data location
+ */
+export function getPartialData(dataLocation: string, data): any {
+    return dataLocation === "" ? data : get(data, dataLocation)
+}
+
+/**
+ * Gets an array of oneOf/anyOf with a valid index from a schema and data
+ */
+export function getSchemaOneOfAnyOfLocationStrings(schema: any, data: any): string[] {
     const schemaLocationStrings: string[] = [];
 
-    if (isObject && !isArray) {
+    if (!!schema["anyOf"]) {
+        schemaLocationStrings.push(`anyOf.${getValidAnyOfOneOfIndex("anyOf", data, schema)}`);
+    }
+
+    if (!!schema["oneOf"]) {
+        schemaLocationStrings.push(`oneOf.${getValidAnyOfOneOfIndex("oneOf", data, schema)}`);
+    }
+
+    return schemaLocationStrings;
+}
+
+/**
+ * Get an array of schema location strings from a single data location item
+ */
+export function getSchemaLocationStringsFromDataLocationString(config: ISchemaLocationStringsFromDataLocationStringConfig): string[] {
+    const schemaLocationStrings: string[] = [];
+
+    if (config.isObject && !config.isArray) {
         schemaLocationStrings.push("properties");
     }
 
-    schemaLocationStrings.push(dataLocation);
+    schemaLocationStrings.push(config.dataLocation);
 
-    if ((Array.isArray(data) || checkDataLocationIsArrayItem(dataLocation)) && endOfContainingString) {
+    if ((Array.isArray(config.data) || checkDataLocationIsArrayItem(config.dataLocation)) && config.endOfContainingString) {
         schemaLocationStrings.push("items");
     }
 
