@@ -58,10 +58,16 @@ class FormItemSelect extends React.Component<IFormItemSelectProps & IManagedClas
      * Handles the onChange of the select element
      */
     private handleChange = (event: React.FormEvent<HTMLSelectElement>): void => {
-        if (this.props.propertyType === "number") {
-            this.props.onChange(this.props.dataLocation, parseInt((event.target as HTMLSelectElement).value, 0));
-        } else {
-            this.props.onChange(this.props.dataLocation, (event.target as HTMLSelectElement).value);
+        switch (this.props.propertyType) {
+            case "boolean":
+                this.props.onChange(this.props.dataLocation, (event.target as HTMLSelectElement).value === "true");
+                break;
+            case "number":
+                this.props.onChange(this.props.dataLocation, parseInt((event.target as HTMLSelectElement).value, 0));
+                break;
+            default:
+                this.props.onChange(this.props.dataLocation, (event.target as HTMLSelectElement).value);
+                break;
         }
     }
 
