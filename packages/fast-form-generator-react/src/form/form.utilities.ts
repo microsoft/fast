@@ -10,6 +10,23 @@ export interface ISchemaLocationSegmentsFromDataLocationSegmentConfig {
     endOfContainingString: boolean;
 }
 
+export enum RegexType {
+    squareBracket,
+    oneOfAnyOf
+}
+
+/**
+ * Get regex
+ */
+export function getRegex(type: RegexType): RegExp {
+    switch (type) {
+        case RegexType.squareBracket:
+            return /\[(\d+?)\]/g;
+        case RegexType.oneOfAnyOf:
+            return /(oneOf|anyOf)\[\d+\]/g;
+    }
+}
+
 /**
  * Gets the data cache based on a new data object and
  * previous data object
@@ -106,9 +123,8 @@ function getBreadcrumbItem(itemConfig: IBreadcrumbItemConfig): IBreadcrumbItem {
  * Checks to see if this is pointing to an array or contains a schema
  */
 function isArrayOrHasSubSchema(schemaLocationItem: string, subSchema: any): boolean {
-    const oneOfAnyOfRegex: RegExp = /(oneOf|anyOf)\[\d+\]/g;
     const isProperties: boolean = schemaLocationItem === "properties";
-    const isOneOfAnyOf: boolean = schemaLocationItem.match(oneOfAnyOfRegex) !== null;
+    const isOneOfAnyOf: boolean = schemaLocationItem.match(getRegex(RegexType.oneOfAnyOf)) !== null;
     const isArray: boolean = checkIsArray(subSchema, isProperties, isOneOfAnyOf);
     const hasSubSchema: boolean = checkHasSubSchema(subSchema, isOneOfAnyOf);
 
@@ -231,7 +247,7 @@ export function getComponentTracker(
  * Creates a schema location from a data location
  */
 export function mapSchemaLocationFromDataLocation(dataLocation: string, data: any, schema: any): string {
-    const squareBracketRegex: RegExp = /\[(\d+?)\]/g;
+    const squareBracketRegex: RegExp = getRegex(RegexType.squareBracket);
     let normalizedDataLocation: string = dataLocation.replace(squareBracketRegex, `.$1`); // convert all [ ] to . notation
     normalizedDataLocation = convertArrayItemsToBracketNotation(dataLocation, data); // convert back all array items to use [ ]
     const dataLocationSegments: string[] = normalizedDataLocation.split(".");
@@ -249,13 +265,12 @@ export function mapSchemaLocationFromDataLocation(dataLocation: string, data: an
  * Get an array of schema location strings from an array of data location strings
  */
 export function getSchemaLocationSegmentsFromDataLocationSegments(dataLocationSegments: string[], schema: any, data: any): string[] {
-    const squareBracketRegex: RegExp = /\[(\d+?)\]/g;
     let schemaLocationSegments: string[] = [];
     let reconstitutedDataLocation: string = "";
 
     for (let i: number = 0; i < dataLocationSegments.length; i++) {
         const partialData: any = getPartialData(reconstitutedDataLocation, data);
-        const partialSchema: any = getPartialData(schemaLocationSegments.join(".").replace(squareBracketRegex, ""), schema);
+        const partialSchema: any = getPartialData(schemaLocationSegments.join(".").replace(getRegex(RegexType.squareBracket), ""), schema);
 
         schemaLocationSegments = schemaLocationSegments.concat(
             getSchemaOneOfAnyOfLocationStrings(
@@ -329,7 +344,7 @@ export function getSchemaLocationSegmentsFromDataLocationSegment(config: ISchema
  * Checks to see if the data location item is an array item
  */
 export function checkDataLocationIsArrayItem(dataLocationItem: string): boolean {
-    const squareBracketRegex: RegExp = /\[(\d+?)\]/g;
+    const squareBracketRegex: RegExp = getRegex(RegexType.squareBracket);
     const match: boolean = false;
 
     if (dataLocationItem.match(squareBracketRegex)) {
