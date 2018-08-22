@@ -52,6 +52,7 @@ export interface ISiteProps {
     activeFramework?: Framework;
     collapsed?: boolean;
     componentBackgroundTransparent?: boolean;
+    showComponentStatus?: boolean;
 }
 
 export interface IFormChildOption {
@@ -766,10 +767,20 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         return (
             <div className={this.props.managedClasses.site_statusBar}>
                 <span className={this.props.managedClasses.site_statusComponentName}>Component: {this.state.componentName}</span>
-                <span className={this.getClassNames()}/>
-                {this.state.componentStatus}
+                {this.renderStatus()}
             </div>
         );
+    }
+
+    private renderStatus(): JSX.Element | null {
+        if (this.props.showComponentStatus) {
+            return (
+                <React.Fragment>
+                    <span className={this.getClassNames()}/>
+                    {this.state.componentStatus}
+                </React.Fragment>
+            );
+        }
     }
 
     private renderThemeSelect(): JSX.Element {
