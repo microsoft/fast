@@ -349,9 +349,13 @@ export function checkDataLocationIsArrayItem(dataLocationItem: string): boolean 
 export function convertArrayItemsToBracketNotation(dataLocation: string, data: any): string {
     const normalizedDataLocation: string[] = [];
     const dataLocations: string[] = dataLocation.split(".");
+    let currentDataLocations: string[] = [];
 
     for (let i: number = 0; i < dataLocations.length; i++) {
-        if (Array.isArray(get(normalizedDataLocation, data))) {
+        currentDataLocations.push(dataLocations[i]);
+        const currentDataLocation: string = currentDataLocations.join(".");
+
+        if (Array.isArray(get(currentDataLocation, data))) {
             normalizedDataLocation.push(`${dataLocations[i]}[${dataLocations[i + 1]}]`);
             i++;
         } else {
