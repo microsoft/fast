@@ -1,8 +1,5 @@
 import "jest";
-import { getComponentTracker, mapSchemaLocationFromDataLocation } from "./form.utilities";
-import TextField from "../../app/components/text-field/text-field";
-import Children from "../../app/components/children/children";
-import { IComponentItem, IChildOptionItem } from "./form.props";
+import { mapSchemaLocationFromDataLocation } from "./form.utilities";
 import * as alignHorizontalSchema from "../../app/components/align-horizontal/align-horizontal.schema.json";
 import * as arraysSchema from "../../app/components/arrays/arrays.schema.json";
 import * as objectsSchema from "../../app/components/objects/objects.schema.json";
@@ -20,7 +17,11 @@ describe("Map schema location from data location", () => {
         expect(schemaLocation).toBe("");
     });
     test("should return a schema location from a nested property", () => {
-        const schemaLocation: string = mapSchemaLocationFromDataLocation("alignHorizontal", {alignHorizontal: "left"}, alignHorizontalSchema);
+        const schemaLocation: string = mapSchemaLocationFromDataLocation(
+            "alignHorizontal",
+            {alignHorizontal: "left"},
+            alignHorizontalSchema
+        );
 
         expect(schemaLocation).toBe("properties.alignHorizontal");
     });
@@ -30,7 +31,11 @@ describe("Map schema location from data location", () => {
         expect(schemaLocation).toBe("properties.strings");
     });
     test("should return a schema location from a nested array item", () => {
-        const schemaLocation: string = mapSchemaLocationFromDataLocation("objects[1].string", {objects: [{ string: "foo" }, { string: "bar" }]}, arraysSchema);
+        const schemaLocation: string = mapSchemaLocationFromDataLocation(
+            "objects[1].string",
+            {objects: [{ string: "foo" }, { string: "bar" }]},
+            arraysSchema
+        );
 
         expect(schemaLocation).toBe("properties.objects.items.properties.string");
     });
@@ -40,7 +45,11 @@ describe("Map schema location from data location", () => {
         expect(schemaLocation).toBe("anyOf.2.properties.number");
     });
     test("should return a schema location from a nested anyOf/oneOf location", () => {
-        const schemaLocation: string = mapSchemaLocationFromDataLocation("nestedAnyOf.string", {nestedAnyOf: {string: "foo"}}, anyOfSchema);
+        const schemaLocation: string = mapSchemaLocationFromDataLocation(
+            "nestedAnyOf.string",
+            {nestedAnyOf: {string: "foo"}},
+            anyOfSchema
+        );
 
         expect(schemaLocation).toBe("anyOf.2.properties.nestedAnyOf.anyOf.1.properties.string");
     });

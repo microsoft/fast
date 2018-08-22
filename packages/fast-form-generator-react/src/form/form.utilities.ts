@@ -1,13 +1,13 @@
 import { clone, cloneDeep, get, isEqual, mergeWith } from "lodash-es";
 import * as tv4 from "tv4";
-import { IBreadcrumbItemConfig, IBreadcrumbItemsConfig, IComponentItem, IFormProps, IFormState, LocationOnChange, IChildOptionItem } from "./form.props";
+import { IBreadcrumbItemConfig, IBreadcrumbItemsConfig, IComponentItem, IFormProps, IFormState } from "./form.props";
 
 export interface ISchemaLocationStringsFromDataLocationStringConfig {
-    isObject: boolean,
-    isArray: boolean,
-    dataLocation: string,
-    data: any,
-    endOfContainingString: boolean
+    isObject: boolean;
+    isArray: boolean;
+    dataLocation: string;
+    data: any;
+    endOfContainingString: boolean;
 }
 
 /**
@@ -253,9 +253,9 @@ export function getSchemaLocationStringsFromDataLocationStrings(dataLocationStri
     let schemaLocationStrings: string[] = [];
     let reconstitutedDataLocation: string = "";
 
-    for (let i = 0; i < dataLocationStrings.length; i++) {
+    for (let i: number = 0; i < dataLocationStrings.length; i++) {
         const partialData: any = getPartialData(reconstitutedDataLocation, data);
-        const partialSchema: any = getPartialSchema(schemaLocationStrings.join(".").replace(squareBracketRegex, ""), schema);
+        const partialSchema: any = getPartialData(schemaLocationStrings.join(".").replace(squareBracketRegex, ""), schema);
 
         schemaLocationStrings = schemaLocationStrings.concat(
             getSchemaOneOfAnyOfLocationStrings(
@@ -277,23 +277,16 @@ export function getSchemaLocationStringsFromDataLocationStrings(dataLocationStri
         }
 
         reconstitutedDataLocation += reconstitutedDataLocation === "" ? dataLocationStrings[i] : `.${dataLocationStrings[i]}`;
-    };
+    }
 
     return schemaLocationStrings;
 }
 
 /**
- * Gets a schema and schema location
+ * Gets data from a data and location
  */
-export function getPartialSchema(schemaLocation: string, schema: any): any {
-    return schemaLocation === "" ? schema : get(schema, schemaLocation);
-}
-
-/**
- * Gets data from a data and data location
- */
-export function getPartialData(dataLocation: string, data): any {
-    return dataLocation === "" ? data : get(data, dataLocation)
+export function getPartialData(location: string, data: any): any {
+    return location === "" ? data : get(data, location);
 }
 
 /**
@@ -302,11 +295,11 @@ export function getPartialData(dataLocation: string, data): any {
 export function getSchemaOneOfAnyOfLocationStrings(schema: any, data: any): string[] {
     const schemaLocationStrings: string[] = [];
 
-    if (!!schema["anyOf"]) {
+    if (!!schema.anyOf) {
         schemaLocationStrings.push(`anyOf.${getValidAnyOfOneOfIndex("anyOf", data, schema)}`);
     }
 
-    if (!!schema["oneOf"]) {
+    if (!!schema.oneOf) {
         schemaLocationStrings.push(`oneOf.${getValidAnyOfOneOfIndex("oneOf", data, schema)}`);
     }
 
@@ -341,7 +334,7 @@ export function checkDataLocationIsArrayItem(dataLocationItem: string): boolean 
 
     if (dataLocationItem.match(squareBracketRegex)) {
         const matches: string[] = dataLocationItem.match(squareBracketRegex);
-        
+
         if (typeof parseInt(matches[0].replace(squareBracketRegex, "$1"), 10) === "number") {
             return true;
         }
@@ -354,10 +347,10 @@ export function checkDataLocationIsArrayItem(dataLocationItem: string): boolean 
  * Converts a data location strings array items into bracket notation
  */
 export function convertArrayItemsToBracketNotation(dataLocation: string, data: any): string {
-    let normalizedDataLocation: string[] = [];
+    const normalizedDataLocation: string[] = [];
     const dataLocations: string[] = dataLocation.split(".");
 
-    for (let i = 0; i < dataLocations.length; i++) {
+    for (let i: number = 0; i < dataLocations.length; i++) {
         if (Array.isArray(get(normalizedDataLocation, data))) {
             normalizedDataLocation.push(`${dataLocations[i]}[${dataLocations[i + 1]}]`);
             i++;
