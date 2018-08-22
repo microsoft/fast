@@ -181,12 +181,13 @@ class FormSection extends React.Component<IFormSectionProps & IManagedClasses<IF
 
     private renderFormItemSelect(property: any, required: boolean, formItemProps: any): JSX.Element {
         const options: any[] = property.enum;
+        const propertyType: string = property.type;
 
         if (!required && typeof options[0] !== "undefined") {
             options.unshift(void(0));
         }
 
-        return <FormItemSelect options={options} {...formItemProps} />;
+        return <FormItemSelect options={options} propertyType={propertyType} {...formItemProps} />;
     }
 
     /**

@@ -14,6 +14,11 @@ export interface IFormItemSelectProps extends IFormItemCommon {
      * The select options
      */
     options: any[];
+
+    /**
+     * The property value type
+     */
+    propertyType: string;
 }
 
 /**
@@ -53,7 +58,11 @@ class FormItemSelect extends React.Component<IFormItemSelectProps & IManagedClas
      * Handles the onChange of the select element
      */
     private handleChange = (event: React.FormEvent<HTMLSelectElement>): void => {
-        this.props.onChange(this.props.dataLocation, (event.target as HTMLSelectElement).value);
+        if (this.props.propertyType === "number") {
+            this.props.onChange(this.props.dataLocation, parseInt((event.target as HTMLSelectElement).value, 0));
+        } else {
+            this.props.onChange(this.props.dataLocation, (event.target as HTMLSelectElement).value);
+        }
     }
 
     /**
