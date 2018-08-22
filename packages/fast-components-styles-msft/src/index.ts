@@ -51,6 +51,12 @@ import LabelStyles from "./label";
 export { LabelStyles };
 
 /**
+ * Export paragraph styles
+ */
+import ParagraphStyles from "./paragraph";
+export { ParagraphStyles };
+
+/**
  * Export toggle styles
  */
 import ToggleStyles from "./toggle";
