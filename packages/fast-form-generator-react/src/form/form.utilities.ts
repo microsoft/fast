@@ -271,7 +271,8 @@ export function getSchemaLocationSegmentsFromDataLocationSegments(dataLocationSe
             )
         );
 
-        if (dataLocationSegments[i] !== "") {
+        // Do not check for additional JSON schema keywords such as "properties" if this is at the root level
+        if (i !== 0) {
             schemaLocationSegments = schemaLocationSegments.concat(
                 getSchemaLocationSegmentsFromDataLocationSegment(
                     dataLocationSegments[i],
