@@ -14,11 +14,6 @@ export interface IFormItemSelectProps extends IFormItemCommon {
      * The select options
      */
     options: any[];
-
-    /**
-     * The property value type
-     */
-    propertyType: string;
 }
 
 /**
@@ -36,6 +31,10 @@ class FormItemSelect extends React.Component<IFormItemSelectProps & IManagedClas
             return null;
         }
 
+        const value: any = (typeof this.props.data !== "undefined")
+            ? this.props.data
+            : this.props.default || this.props.options[0];
+
         return (
             <div className={this.props.managedClasses.formItemSelect}>
                 <label className={this.props.managedClasses.formItemSelect_label}>
@@ -45,7 +44,7 @@ class FormItemSelect extends React.Component<IFormItemSelectProps & IManagedClas
                     <select
                         className={this.props.managedClasses.formItemSelect_input}
                         onChange={this.handleChange}
-                        value={this.props.data || this.props.default || this.props.options[0]}
+                        value={JSON.stringify(value)}
                     >
                         {this.renderOptions()}
                     </select>
@@ -58,37 +57,40 @@ class FormItemSelect extends React.Component<IFormItemSelectProps & IManagedClas
      * Handles the onChange of the select element
      */
     private handleChange = (event: React.FormEvent<HTMLSelectElement>): void => {
-        switch (this.props.propertyType) {
-            case "boolean":
-                this.props.onChange(this.props.dataLocation, (event.target as HTMLSelectElement).value === "true");
-                break;
-            case "number":
-                this.props.onChange(this.props.dataLocation, parseInt((event.target as HTMLSelectElement).value, 0));
-                break;
-            default:
-                this.props.onChange(this.props.dataLocation, (event.target as HTMLSelectElement).value);
-                break;
-        }
+        this.props.onChange(this.props.dataLocation, this.parse((event.target as HTMLSelectElement).value));
     }
 
     /**
      * Renders the selects option elements
      */
     private renderOptions(): JSX.Element[] {
-        const value: any = (typeof this.props.data !== "undefined")
-            ? this.props.data
-            : this.props.default || this.props.options[0];
-
         return this.props.options.map((item: any, index: number) => {
+            const stringifiedItem: string = this.stringify(item);
             return (
                 <option
                     key={index}
-                    value={item}
+                    value={stringifiedItem}
                 >
-                    {item}
+                    {typeof item === "string" || typeof item === "number" ? item : stringifiedItem}
                 </option>
             );
         });
+    }
+
+    private stringify(value: any): string | any {
+        try {
+            return JSON.stringify(value);
+        } catch (e) {
+            return value;
+        }
+    }
+
+    private parse(value: string): any {
+        try {
+            return JSON.parse(value);
+        } catch (e) {
+            return value;
+        }
     }
 }
 
