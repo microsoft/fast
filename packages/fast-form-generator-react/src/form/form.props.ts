@@ -10,7 +10,7 @@ export type FormTag = "form" | "div";
 
 export interface IChildOptionItem {
     name: string;
-    component: JSX.Element;
+    component: React.ReactNode;
     schema: any;
 }
 

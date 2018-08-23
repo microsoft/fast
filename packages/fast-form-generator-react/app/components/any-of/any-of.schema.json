@@ -13,7 +13,10 @@
                     "title": "String",
                     "type": "string"
                 }
-            }
+            },
+            "required": [
+                "string"
+            ]
         },
         {
             "description": "Number",
@@ -22,6 +25,67 @@
                 "number": {
                     "title": "Number",
                     "type": "number"
+                }
+            },
+            "required": [
+                "number"
+            ]
+        },
+        {
+            "description": "Nested anyOf",
+            "type": "object",
+            "properties": {
+                "nestedAnyOf": {
+                    "anyOf": [
+                        {
+                            "description": "Object",
+                            "type": "object",
+                            "properties": {
+                                "object": {
+                                    "title": "String",
+                                    "type": "object",
+                                    "properties": {
+                                        "string": {
+                                            "title": "String",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "string"
+                                    ]
+                                }
+                            },
+                            "required": [
+                                "object"
+                            ]
+                        },
+                        {
+                            "description": "String",
+                            "type": "object",
+                            "properties": {
+                                "string": {
+                                    "title": "String",
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "string"
+                            ]
+                        },
+                        {
+                            "description": "Number",
+                            "type": "object",
+                            "properties": {
+                                "number": {
+                                    "title": "Number",
+                                    "type": "number"
+                                }
+                            },
+                            "required": [
+                                "number"
+                            ]
+                        }
+                    ]
                 }
             }
         }

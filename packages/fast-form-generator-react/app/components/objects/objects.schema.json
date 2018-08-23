@@ -46,6 +46,20 @@
                     "type": "boolean"
                 }
             }
+        },
+        "optionalObjectWithNestedObject": {
+            "title": "object with nested object",
+            "type": "object",
+            "properties": {
+                "nestedObject": {
+                    "type": "object",
+                    "properties": {
+                        "boolean": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
         }
     },
     "required": [
