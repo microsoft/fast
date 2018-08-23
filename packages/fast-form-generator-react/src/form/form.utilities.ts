@@ -244,8 +244,8 @@ export function mapSchemaLocationFromDataLocation(dataLocation: string, data: an
     normalizedDataLocation = convertArrayItemsToBracketNotation(dataLocation, data); // convert back all array items to use [ ]
     const dataLocationSegments: string[] = normalizedDataLocation.split(".");
 
-    if (dataLocation !== "") {
-        dataLocationSegments.unshift("");
+    if (dataLocation === "") {
+        return "";
     }
 
     const schemaLocationSegments: string[] = getSchemaLocationSegmentsFromDataLocationSegments(dataLocationSegments, schema, data);
@@ -257,11 +257,10 @@ export function mapSchemaLocationFromDataLocation(dataLocation: string, data: an
  * Get an array of schema location strings from an array of data location strings
  */
 export function getSchemaLocationSegmentsFromDataLocationSegments(dataLocationSegments: string[], schema: any, data: any): string[] {
-    let schemaLocationSegments: string[] = [];
-    let reconstitutedDataLocation: string = "";
+    let schemaLocationSegments: string[] = getSchemaOneOfAnyOfLocationStrings(schema, data);
 
     for (let i: number = 0; i < dataLocationSegments.length; i++) {
-        const partialData: any = getPartialData(reconstitutedDataLocation, data);
+        const partialData: any = getPartialData(dataLocationSegments.slice(0, i).join("."), data);
         const partialSchema: any = getPartialData(schemaLocationSegments.join(".").replace(getRegex(RegexType.squareBracket), ""), schema);
 
         schemaLocationSegments = schemaLocationSegments.concat(
@@ -271,18 +270,13 @@ export function getSchemaLocationSegmentsFromDataLocationSegments(dataLocationSe
             )
         );
 
-        // Do not check for additional JSON schema keywords such as "properties" if this is at the root level
-        if (i !== 0) {
-            schemaLocationSegments = schemaLocationSegments.concat(
-                getSchemaLocationSegmentsFromDataLocationSegment(
-                    dataLocationSegments[i],
-                    dataLocationSegments.length > i + 1,
-                    partialData
-                )
-            );
-        }
-
-        reconstitutedDataLocation += reconstitutedDataLocation === "" ? dataLocationSegments[i] : `.${dataLocationSegments[i]}`;
+        schemaLocationSegments = schemaLocationSegments.concat(
+            getSchemaLocationSegmentsFromDataLocationSegment(
+                dataLocationSegments[i],
+                dataLocationSegments.length > i + 1,
+                partialData
+            )
+        );
     }
 
     return schemaLocationSegments;
@@ -315,7 +309,11 @@ export function getSchemaOneOfAnyOfLocationStrings(schema: any, data: any): stri
 /**
  * Get an array of schema location strings from a single data location item
  */
-export function getSchemaLocationSegmentsFromDataLocationSegment(dataLocation: string, endOfContainingString: boolean, data: any): string[] {
+export function getSchemaLocationSegmentsFromDataLocationSegment(
+    dataLocation: string,
+    endOfContainingString: boolean,
+    data: any
+): string[] {
     const schemaLocationSegments: string[] = [];
 
     if (typeof data === "object" && !Array.isArray(data)) {
