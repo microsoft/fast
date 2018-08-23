@@ -1,5 +1,5 @@
-# Heading
-This component uses the [typography](https://github.com/Microsoft/fast-dna/tree/master/packages/fast-components-react-base/src/typography) base component, but will always render as a [paragraph](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/p) element.
+# Paragraph
+The [paragraph](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/p) component accepts children.
 
 Be mindful of when and where paragraphs appear, as well as their overall size. In certain types of page layouts, paragraph is entirely appropriate and may constitute the majority of the page, whereas, in other layouts, such as one optimized for quick browsing and listings, large paragraphs can impede the usability of the page’s content. The best rule of thumb is to only allow the paragraph to be as big as it needs to be, and then cut it down by 25-50%. Keep it short and simple.
 

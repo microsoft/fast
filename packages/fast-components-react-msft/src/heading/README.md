@@ -1,6 +1,4 @@
 # Heading
-This component uses the [typography](https://github.com/Microsoft/fast-dna/tree/master/packages/fast-components-react-base/src/typography) base component.
-
 Use various heading sizes to create a clear hierarchy of page sections for enhanced usability. Large headings are hierarchically superior to smaller headings (i.e. the larger precedes the smaller). Headings are paired with HTML heading elements such as `<h1>` through `<h6>` and `<p>`.
 
 ## Usage
