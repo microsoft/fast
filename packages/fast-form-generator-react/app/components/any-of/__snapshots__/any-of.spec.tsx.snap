@@ -61,7 +61,7 @@ exports[`any-of any-of: 0 1`] = `
               name="string"
               onChange={[Function]}
               rows={3}
-              value=""
+              value="example text"
             />
           </div>
         </div>

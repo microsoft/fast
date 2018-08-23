@@ -256,14 +256,14 @@ export function mapSchemaLocationFromDataLocation(dataLocation: string, data: an
  * Get an array of schema location strings from an array of data location strings
  */
 export function getSchemaLocationSegmentsFromDataLocationSegments(dataLocationSegments: string[], schema: any, data: any): string[] {
-    let schemaLocationSegments: string[] = getSchemaOneOfAnyOfLocationStrings(schema, data);
+    let schemaLocationSegments: string[] = getSchemaOneOfAnyOfLocationSegments(schema, data);
 
     for (let i: number = 0; i < dataLocationSegments.length; i++) {
         const partialData: any = getPartialData(dataLocationSegments.slice(0, i).join("."), data);
         const partialSchema: any = getPartialData(normalizeSchemaLocation(schemaLocationSegments.join(".")), schema);
 
         schemaLocationSegments = schemaLocationSegments.concat(
-            getSchemaOneOfAnyOfLocationStrings(
+            getSchemaOneOfAnyOfLocationSegments(
                 partialSchema,
                 partialData
             )
@@ -291,7 +291,7 @@ export function getPartialData(location: string, data: any): any {
 /**
  * Gets an array of oneOf/anyOf with a valid index from a schema and data
  */
-export function getSchemaOneOfAnyOfLocationStrings(schema: any, data: any): string[] {
+export function getSchemaOneOfAnyOfLocationSegments(schema: any, data: any): string[] {
     const schemaLocationSegments: string[] = [];
 
     if (!!schema.anyOf) {
@@ -310,7 +310,7 @@ export function getSchemaOneOfAnyOfLocationStrings(schema: any, data: any): stri
  */
 export function getSchemaLocationSegmentsFromDataLocationSegment(
     dataLocation: string,
-    endOfContainingString: boolean,
+    endOfContainingSegment: boolean,
     data: any
 ): string[] {
     const schemaLocationSegments: string[] = [];
@@ -321,7 +321,7 @@ export function getSchemaLocationSegmentsFromDataLocationSegment(
 
     schemaLocationSegments.push(dataLocation);
 
-    if ((Array.isArray(data) || checkDataLocationIsArrayItem(dataLocation)) && endOfContainingString) {
+    if ((Array.isArray(data) || checkDataLocationIsArrayItem(dataLocation)) && endOfContainingSegment) {
         schemaLocationSegments.push("items");
     }
 
