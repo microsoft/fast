@@ -152,9 +152,6 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
     );
     const outlineDisabledBorderColor: string = outlineDisabledColor;
 
-    const borderColor: string = contrast(designSystem.contrast, foregroundColor, contrast(designSystem.contrast, foregroundColor, backgroundColor));
-    const background: string = contrast(designSystem.contrast, foregroundColor, backgroundColor);
-
     return {
         button: {
             ...applyType("t7", "vp1"),

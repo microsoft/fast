@@ -1,38 +1,49 @@
-import designSystemDefaults, { IDesignSystem } from "../design-system";
+import { IDesignSystem, safeDesignSystem } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { IFlipperClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { applyLocalizedProperty, Direction, toPx } from "@microsoft/fast-jss-utilities";
-import { applyMixedColor } from "../utilities/colors";
+import { applyLocalizedProperty, contrast, Direction, toPx } from "@microsoft/fast-jss-utilities";
+import { applyMixedColor, ensureNormalContrast, normalContrast } from "../utilities/colors";
 import { get } from "lodash-es";
 import Chroma from "chroma-js";
+
+const eastFlipperTransform: string = "translateX(-3px) rotate(45deg)";
+const westFlipperTransform: string = "translateX(3px) rotate(-135deg)";
 
 /* tslint:disable:max-line-length */
 const styles: ComponentStyles<IFlipperClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<IFlipperClassNameContract, IDesignSystem> => {
 /* tslint:enable:max-line-length */
-    const backgroundColor: string = get(config, "backgroundColor") || designSystemDefaults.backgroundColor;
-    const brandColor: string = get(config, "brandColor") || designSystemDefaults.brandColor;
-    const direction: Direction = get(config, "direction") || designSystemDefaults.direction;
-    const foregroundColor: string = get(config, "foregroundColor") || designSystemDefaults.foregroundColor;
+    const designSystem: IDesignSystem = safeDesignSystem(config);
+
+    const backgroundColor: string = designSystem.backgroundColor;
+    const direction: Direction = designSystem.direction;
+    const foregroundColor: string = ensureNormalContrast(
+        designSystem.contrast,
+        designSystem.foregroundColor,
+        designSystem.backgroundColor
+    );
+
+    const borderColor: string = normalContrast(
+        designSystem.contrast,
+        foregroundColor,
+        designSystem.backgroundColor
+    );
 
     return {
         button: {
-            width: toPx(40),
-            height: toPx(40),
+            width: "40px",
+            height: "40px",
             margin: "0",
-            border: `${toPx(1)} solid ${applyMixedColor(foregroundColor, backgroundColor, .86)}`,
+            color: foregroundColor,
+            border: `1px solid ${borderColor}`,
             borderRadius: "50%",
-            background: applyMixedColor(foregroundColor, backgroundColor, .98),
+            background: backgroundColor,
             padding: "0",
             "&:hover": {
                 cursor: "pointer"
             },
-            "&:hover, &:focus": {
-                background: backgroundColor,
-                outline: "none",
-                boxShadow: `0 4px 8px ${Chroma(foregroundColor).alpha(0.2).css()}`
-            },
             "&:focus": {
-                border: `${toPx(1)} solid ${applyMixedColor(foregroundColor, backgroundColor, .46)}`,
+                boxShadow: `0 0 0 1px inset ${borderColor}`,
+                outline: "none"
             }
         },
         flipper_glyph: {
@@ -52,14 +63,12 @@ const styles: ComponentStyles<IFlipperClassNameContract, IDesignSystem> = (confi
         },
         flipper_next: {
             "& $flipper_glyph": {
-                [applyLocalizedProperty("marginRight", "marginLeft", direction)]: toPx(6),
-                transform: applyLocalizedProperty("rotate(45deg)", "rotate(-135deg)", direction)
+                transform: applyLocalizedProperty(eastFlipperTransform, westFlipperTransform, direction)
             }
         },
         flipper_previous: {
             "& $flipper_glyph": {
-                [applyLocalizedProperty("marginLeft", "marginRight", direction)]: toPx(6),
-                transform: applyLocalizedProperty("rotate(-135deg)", "rotate(45deg)", direction)
+                transform: applyLocalizedProperty(westFlipperTransform, eastFlipperTransform, direction)
             }
         }
     };
