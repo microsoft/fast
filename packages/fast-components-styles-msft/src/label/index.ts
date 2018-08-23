@@ -1,5 +1,5 @@
 import { IDesignSystem, safeDesignSystem } from "../design-system";
-import { ensureNormalContrast, ensureForegroundNormal } from "../utilities/colors";
+import { ensureForegroundNormal, ensureNormalContrast } from "../utilities/colors";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { ILabelClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { toPx } from "@microsoft/fast-jss-utilities";

@@ -44,7 +44,7 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IButtonCla
         let classNames = get(this.props, "managedClasses.button");
 
         if (this.props.disabled) {
-            classNames = `${classNames} ${get(this.props, "managedClasses.button__disabled")}`
+            classNames = `${classNames} ${get(this.props, "managedClasses.button__disabled")}`;
         }
 
         return super.generateClassNames(classNames);
