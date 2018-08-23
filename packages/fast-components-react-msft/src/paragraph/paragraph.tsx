@@ -26,7 +26,7 @@ class Paragraph extends Foundation<IParagraphHandledProps & IManagedClasses<IPar
             <Typography
                 {...this.unhandledProps()}
                 tag={TypographyTag.p}
-                typeLevel={this.getTypeLevelFromProps()}
+                typeLevel={this.getTypeLevel()}
                 className={this.generateClassNames()}
             >
                 {this.props.children}
@@ -46,14 +46,13 @@ class Paragraph extends Foundation<IParagraphHandledProps & IManagedClasses<IPar
     /**
      * Stores level for use in render
      */
-    private getTypeLevelFromProps(): TypeLevel {
+    private getTypeLevel(): TypeLevel {
         switch (this.props.level) {
             case ParagraphLevel._1:
                 return TypeLevel._5;
             case ParagraphLevel._2:
                 return TypeLevel._6;
             default:
-            case ParagraphLevel._3:
                 return TypeLevel._7;
         }
     }
