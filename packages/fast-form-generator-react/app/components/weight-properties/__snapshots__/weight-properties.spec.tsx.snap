@@ -160,20 +160,20 @@ exports[`weight-properties weight-properties: 0 1`] = `
                   <select
                     className="formItemSelect_input-0-1-35"
                     onChange={[Function]}
-                    value="top"
+                    value="\\"top\\""
                   >
                     <option
-                      value="top"
+                      value="\\"top\\""
                     >
                       top
                     </option>
                     <option
-                      value="bottom"
+                      value="\\"bottom\\""
                     >
                       bottom
                     </option>
                     <option
-                      value="center"
+                      value="\\"center\\""
                     >
                       center
                     </option>
@@ -227,15 +227,15 @@ exports[`weight-properties weight-properties: 0 1`] = `
                   <select
                     className="formItemSelect_input-0-1-45"
                     onChange={[Function]}
-                    value="span"
+                    value="\\"span\\""
                   >
                     <option
-                      value="span"
+                      value="\\"span\\""
                     >
                       span
                     </option>
                     <option
-                      value="button"
+                      value="\\"button\\""
                     >
                       button
                     </option>
