@@ -42,7 +42,8 @@ class Paragraph extends Foundation<IParagraphHandledProps & IManagedClasses<IPar
      * Generates class names based on props
      */
     protected generateClassNames(): string {
-        const classes: string = get(this.props, `managedClasses.paragraph_${this.props.level}`);
+        const classes: string =
+            `${get(this.props, `managedClasses.paragraph`)} ${get(this.props, `managedClasses.paragraph_${this.props.level}`)}`;
 
         return super.generateClassNames(classes);
     }

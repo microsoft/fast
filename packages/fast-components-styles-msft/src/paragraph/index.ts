@@ -4,6 +4,7 @@ import { IParagraphClassNameContract } from "@microsoft/fast-components-class-na
 import { fontWeight } from "../utilities/fonts";
 
 const styles: ComponentStyles<IParagraphClassNameContract, IDesignSystem> = {
+    paragraph: {},
     paragraph_1: {
         fontWeight: `${fontWeight.semilight}`
     },
