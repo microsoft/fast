@@ -2,14 +2,6 @@ import { clone, cloneDeep, get, isEqual, mergeWith } from "lodash-es";
 import * as tv4 from "tv4";
 import { IBreadcrumbItemConfig, IBreadcrumbItemsConfig, IComponentItem, IFormProps, IFormState } from "./form.props";
 
-export interface ISchemaLocationSegmentsFromDataLocationSegmentConfig {
-    isObject: boolean;
-    isArray: boolean;
-    dataLocation: string;
-    data: any;
-    endOfContainingString: boolean;
-}
-
 export enum RegexType {
     squareBracket,
     oneOfAnyOf
@@ -281,13 +273,11 @@ export function getSchemaLocationSegmentsFromDataLocationSegments(dataLocationSe
 
         if (dataLocationSegments[i] !== "") {
             schemaLocationSegments = schemaLocationSegments.concat(
-                getSchemaLocationSegmentsFromDataLocationSegment({
-                    isObject: typeof partialData === "object",
-                    isArray: Array.isArray(partialData),
-                    dataLocation: dataLocationSegments[i],
-                    data: partialData,
-                    endOfContainingString: dataLocationSegments.length > i + 1
-                })
+                getSchemaLocationSegmentsFromDataLocationSegment(
+                    dataLocationSegments[i],
+                    dataLocationSegments.length > i + 1,
+                    partialData
+                )
             );
         }
 
@@ -324,16 +314,16 @@ export function getSchemaOneOfAnyOfLocationStrings(schema: any, data: any): stri
 /**
  * Get an array of schema location strings from a single data location item
  */
-export function getSchemaLocationSegmentsFromDataLocationSegment(config: ISchemaLocationSegmentsFromDataLocationSegmentConfig): string[] {
+export function getSchemaLocationSegmentsFromDataLocationSegment(dataLocation: string, endOfContainingString: boolean, data: any): string[] {
     const schemaLocationSegments: string[] = [];
 
-    if (config.isObject && !config.isArray) {
+    if (typeof data === "object" && !Array.isArray(data)) {
         schemaLocationSegments.push("properties");
     }
 
-    schemaLocationSegments.push(config.dataLocation);
+    schemaLocationSegments.push(dataLocation);
 
-    if ((Array.isArray(config.data) || checkDataLocationIsArrayItem(config.dataLocation)) && config.endOfContainingString) {
+    if ((Array.isArray(data) || checkDataLocationIsArrayItem(dataLocation)) && endOfContainingString) {
         schemaLocationSegments.push("items");
     }
 
