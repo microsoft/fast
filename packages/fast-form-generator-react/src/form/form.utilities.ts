@@ -2,22 +2,8 @@ import { clone, cloneDeep, get, isEqual, mergeWith } from "lodash-es";
 import * as tv4 from "tv4";
 import { IBreadcrumbItemConfig, IBreadcrumbItemsConfig, IComponentItem, IFormProps, IFormState } from "./form.props";
 
-export enum RegexType {
-    squareBracket,
-    oneOfAnyOf
-}
-
-/**
- * Get regex
- */
-export function getRegex(type: RegexType): RegExp {
-    switch (type) {
-        case RegexType.squareBracket:
-            return /\[(\d+?)\]/g;
-        case RegexType.oneOfAnyOf:
-            return /(oneOf|anyOf)\[\d+\]/g;
-    }
-}
+const squareBracketsRegex: RegExp = /\[(\d+?)\]/g;
+const oneOfAnyOfRegex: RegExp = /(oneOf|anyOf)\[\d+\]/g;
 
 /**
  * Gets the data cache based on a new data object and
@@ -116,7 +102,7 @@ function getBreadcrumbItem(itemConfig: IBreadcrumbItemConfig): IBreadcrumbItem {
  */
 function isArrayOrHasSubSchema(schemaLocationItem: string, subSchema: any): boolean {
     const isProperties: boolean = schemaLocationItem === "properties";
-    const isOneOfAnyOf: boolean = schemaLocationItem.match(getRegex(RegexType.oneOfAnyOf)) !== null;
+    const isOneOfAnyOf: boolean = schemaLocationItem.match(oneOfAnyOfRegex) !== null;
     const isArray: boolean = checkIsArray(subSchema, isProperties, isOneOfAnyOf);
     const hasSubSchema: boolean = checkHasSubSchema(subSchema, isOneOfAnyOf);
 
@@ -239,7 +225,7 @@ export function getComponentTracker(
  * Converts all property locations to dot notation and all array item references to bracket notation
  */
 export function normalizeDataLocation(dataLocation: string, data: any): string {
-    const normalizedDataLocation: string = dataLocation.replace(getRegex(RegexType.squareBracket), `.$1`); // convert all [ ] to . notation
+    const normalizedDataLocation: string = dataLocation.replace(squareBracketsRegex, `.$1`); // convert all [ ] to . notation
     return convertArrayItemsToBracketNotation(normalizedDataLocation, data); // convert back all array items to use [ ]
 }
 
@@ -247,14 +233,14 @@ export function normalizeDataLocation(dataLocation: string, data: any): string {
  * Removes any references to array index
  */
 export function normalizeSchemaLocation(schemaLocation: string): string {
-    return schemaLocation.replace(getRegex(RegexType.squareBracket), "");
+    return schemaLocation.replace(squareBracketsRegex, "");
 }
 
 /**
  * Creates a schema location from a data location
  */
 export function mapSchemaLocationFromDataLocation(dataLocation: string, data: any, schema: any): string {
-    let normalizedDataLocation: string = normalizeDataLocation(dataLocation, data);
+    const normalizedDataLocation: string = normalizeDataLocation(dataLocation, data);
     const dataLocationSegments: string[] = normalizedDataLocation.split(".");
 
     if (dataLocation === "") {
@@ -346,7 +332,7 @@ export function getSchemaLocationSegmentsFromDataLocationSegment(
  * Checks to see if the data location item is an array item
  */
 export function checkDataLocationIsArrayItem(dataLocationItem: string): boolean {
-    const squareBracketRegex: RegExp = getRegex(RegexType.squareBracket);
+    const squareBracketRegex: RegExp = squareBracketsRegex;
     const match: boolean = false;
 
     if (dataLocationItem.match(squareBracketRegex)) {
