@@ -44,7 +44,7 @@ describe("Map schema location from data location", () => {
         const schemaLocation: string = mapSchemaLocationFromDataLocation("number", {number: 5}, anyOfSchema);
 
         expect(schemaLocationRoot).toBe("");
-        expect(schemaLocation).toBe("anyOf.2.properties.number");
+        expect(schemaLocation).toBe("anyOf.1.properties.number");
     });
     test("should return a schema location from a nested anyOf/oneOf location", () => {
         const schemaLocationRootProperty: string = mapSchemaLocationFromDataLocation(

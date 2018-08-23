@@ -373,15 +373,7 @@ export function convertArrayItemsToBracketNotation(dataLocation: string, data: a
  * Gets the index from a JSON schemas oneOf/anyOf array that validates against the data
  */
 export function getValidAnyOfOneOfIndex(oneOfAnyOf: string, data: any, schema: any): number {
-    let validIndex: number;
-
-    schema[oneOfAnyOf].forEach((oneOfAnyOfItem: any, index: number) => {
-        if (tv4.validate(data, oneOfAnyOfItem)) {
-            validIndex = index;
-        }
-    });
-
-    return validIndex;
+    return schema[oneOfAnyOf].findIndex((item: any): number => tv4.validate(data, item));
 }
 
 /**

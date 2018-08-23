@@ -13,7 +13,10 @@
                     "title": "String",
                     "type": "string"
                 }
-            }
+            },
+            "required": [
+                "string"
+            ]
         },
         {
             "description": "Number",
@@ -23,7 +26,10 @@
                     "title": "Number",
                     "type": "number"
                 }
-            }
+            },
+            "required": [
+                "number"
+            ]
         },
         {
             "description": "Nested anyOf",
