@@ -25,10 +25,10 @@ export enum EditorView {
     positionExample = "positionExample"
 }
 
-class App extends React.Component<{}, IAppState> {
+class App extends React.Component<undefined, IAppState> {
     public state: IAppState;
 
-    constructor(props) {
+    constructor(props: undefined) {
         super(props);
 
         this.state = {
