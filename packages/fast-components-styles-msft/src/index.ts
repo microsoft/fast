@@ -54,6 +54,12 @@ import LabelStyles from "./label";
 export { LabelStyles };
 
 /**
+ * Export metatext styles
+ */
+import MetatextStyles from "./metatext";
+export { MetatextStyles };
+
+/**
  * Export paragraph styles
  */
 import ParagraphStyles from "./paragraph";
