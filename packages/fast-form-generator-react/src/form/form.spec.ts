@@ -40,17 +40,25 @@ describe("Map schema location from data location", () => {
         expect(schemaLocation).toBe("properties.objects.items.properties.string");
     });
     test("should return a schema location from anyOf/oneOf locations", () => {
+        const schemaLocationRoot: string = mapSchemaLocationFromDataLocation("", {number: 5}, anyOfSchema);
         const schemaLocation: string = mapSchemaLocationFromDataLocation("number", {number: 5}, anyOfSchema);
 
+        expect(schemaLocationRoot).toBe("");
         expect(schemaLocation).toBe("anyOf.2.properties.number");
     });
     test("should return a schema location from a nested anyOf/oneOf location", () => {
+        const schemaLocationRootProperty: string = mapSchemaLocationFromDataLocation(
+            "nestedAnyOf",
+            {nestedAnyOf: {string: "foo"}},
+            anyOfSchema
+        );
         const schemaLocation: string = mapSchemaLocationFromDataLocation(
             "nestedAnyOf.string",
             {nestedAnyOf: {string: "foo"}},
             anyOfSchema
         );
 
+        expect(schemaLocationRootProperty).toBe("anyOf.2.properties.nestedAnyOf");
         expect(schemaLocation).toBe("anyOf.2.properties.nestedAnyOf.anyOf.1.properties.string");
     });
 });

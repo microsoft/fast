@@ -236,12 +236,25 @@ export function getComponentTracker(
 }
 
 /**
+ * Converts all property locations to dot notation and all array item references to bracket notation
+ */
+export function normalizeDataLocation(dataLocation: string, data: any): string {
+    const normalizedDataLocation: string = dataLocation.replace(getRegex(RegexType.squareBracket), `.$1`); // convert all [ ] to . notation
+    return convertArrayItemsToBracketNotation(normalizedDataLocation, data); // convert back all array items to use [ ]
+}
+
+/**
+ * Removes any references to array index
+ */
+export function normalizeSchemaLocation(schemaLocation: string): string {
+    return schemaLocation.replace(getRegex(RegexType.squareBracket), "");
+}
+
+/**
  * Creates a schema location from a data location
  */
 export function mapSchemaLocationFromDataLocation(dataLocation: string, data: any, schema: any): string {
-    const squareBracketRegex: RegExp = getRegex(RegexType.squareBracket);
-    let normalizedDataLocation: string = dataLocation.replace(squareBracketRegex, `.$1`); // convert all [ ] to . notation
-    normalizedDataLocation = convertArrayItemsToBracketNotation(dataLocation, data); // convert back all array items to use [ ]
+    let normalizedDataLocation: string = normalizeDataLocation(dataLocation, data);
     const dataLocationSegments: string[] = normalizedDataLocation.split(".");
 
     if (dataLocation === "") {
@@ -250,7 +263,7 @@ export function mapSchemaLocationFromDataLocation(dataLocation: string, data: an
 
     const schemaLocationSegments: string[] = getSchemaLocationSegmentsFromDataLocationSegments(dataLocationSegments, schema, data);
 
-    return schemaLocationSegments.join(".").replace(squareBracketRegex, "");
+    return normalizeSchemaLocation(schemaLocationSegments.join("."));
 }
 
 /**
@@ -261,7 +274,7 @@ export function getSchemaLocationSegmentsFromDataLocationSegments(dataLocationSe
 
     for (let i: number = 0; i < dataLocationSegments.length; i++) {
         const partialData: any = getPartialData(dataLocationSegments.slice(0, i).join("."), data);
-        const partialSchema: any = getPartialData(schemaLocationSegments.join(".").replace(getRegex(RegexType.squareBracket), ""), schema);
+        const partialSchema: any = getPartialData(normalizeSchemaLocation(schemaLocationSegments.join(".")), schema);
 
         schemaLocationSegments = schemaLocationSegments.concat(
             getSchemaOneOfAnyOfLocationStrings(
@@ -359,7 +372,7 @@ export function convertArrayItemsToBracketNotation(dataLocation: string, data: a
         currentDataLocations.push(dataLocations[i]);
         const currentDataLocation: string = currentDataLocations.join(".");
 
-        if (Array.isArray(get(currentDataLocation, data))) {
+        if (Array.isArray(get(data, currentDataLocation))) {
             normalizedDataLocation.push(`${dataLocations[i]}[${dataLocations[i + 1]}]`);
             i++;
         } else {
