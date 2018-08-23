@@ -226,7 +226,7 @@ export function getComponentTracker(
  */
 export function normalizeDataLocation(dataLocation: string, data: any): string {
     const normalizedDataLocation: string = dataLocation.replace(squareBracketsRegex, `.$1`); // convert all [ ] to . notation
-    return convertArrayItemsToBracketNotation(normalizedDataLocation, data); // convert back all array items to use [ ]
+    return arrayItemsToBracketNotation(normalizedDataLocation, data); // convert back all array items to use [ ]
 }
 
 /**
@@ -240,13 +240,12 @@ export function normalizeSchemaLocation(schemaLocation: string): string {
  * Creates a schema location from a data location
  */
 export function mapSchemaLocationFromDataLocation(dataLocation: string, data: any, schema: any): string {
-    const normalizedDataLocation: string = normalizeDataLocation(dataLocation, data);
-    const dataLocationSegments: string[] = normalizedDataLocation.split(".");
-
     if (dataLocation === "") {
         return "";
     }
 
+    const normalizedDataLocation: string = normalizeDataLocation(dataLocation, data);
+    const dataLocationSegments: string[] = normalizedDataLocation.split(".");
     const schemaLocationSegments: string[] = getSchemaLocationSegmentsFromDataLocationSegments(dataLocationSegments, schema, data);
 
     return normalizeSchemaLocation(schemaLocationSegments.join("."));
@@ -272,7 +271,7 @@ export function getSchemaLocationSegmentsFromDataLocationSegments(dataLocationSe
         schemaLocationSegments = schemaLocationSegments.concat(
             getSchemaLocationSegmentsFromDataLocationSegment(
                 dataLocationSegments[i],
-                dataLocationSegments.length > i + 1,
+                dataLocationSegments.length === i + 1,
                 partialData
             )
         );
@@ -310,7 +309,7 @@ export function getSchemaOneOfAnyOfLocationSegments(schema: any, data: any): str
  */
 export function getSchemaLocationSegmentsFromDataLocationSegment(
     dataLocation: string,
-    endOfContainingSegment: boolean,
+    lastDataLocationSegment: boolean,
     data: any
 ): string[] {
     const schemaLocationSegments: string[] = [];
@@ -321,7 +320,9 @@ export function getSchemaLocationSegmentsFromDataLocationSegment(
 
     schemaLocationSegments.push(dataLocation);
 
-    if ((Array.isArray(data) || checkDataLocationIsArrayItem(dataLocation)) && endOfContainingSegment) {
+    // In the case that this is an array and this is not the the last item in the data location string,
+    // add the JSON schema "items" keyword
+    if ((Array.isArray(data) || isDataLocationArrayItem(dataLocation)) && !lastDataLocationSegment) {
         schemaLocationSegments.push("items");
     }
 
@@ -331,7 +332,7 @@ export function getSchemaLocationSegmentsFromDataLocationSegment(
 /**
  * Checks to see if the data location item is an array item
  */
-export function checkDataLocationIsArrayItem(dataLocationItem: string): boolean {
+export function isDataLocationArrayItem(dataLocationItem: string): boolean {
     const squareBracketRegex: RegExp = squareBracketsRegex;
     const match: boolean = false;
 
@@ -349,14 +350,12 @@ export function checkDataLocationIsArrayItem(dataLocationItem: string): boolean 
 /**
  * Converts a data location strings array items into bracket notation
  */
-export function convertArrayItemsToBracketNotation(dataLocation: string, data: any): string {
+export function arrayItemsToBracketNotation(dataLocation: string, data: any): string {
     const normalizedDataLocation: string[] = [];
     const dataLocations: string[] = dataLocation.split(".");
-    const currentDataLocations: string[] = [];
 
     for (let i: number = 0; i < dataLocations.length; i++) {
-        currentDataLocations.push(dataLocations[i]);
-        const currentDataLocation: string = currentDataLocations.join(".");
+        const currentDataLocation: string = dataLocations.slice(0, i + 1).join(".");
 
         if (Array.isArray(get(data, currentDataLocation))) {
             normalizedDataLocation.push(`${dataLocations[i]}[${dataLocations[i + 1]}]`);
