@@ -24,15 +24,15 @@ exports[`text-field text-field: 0 1`] = `
               <select
                 className="formItemSelect_input-0-1-14"
                 onChange={[Function]}
-                value="span"
+                value="\\"span\\""
               >
                 <option
-                  value="span"
+                  value="\\"span\\""
                 >
                   span
                 </option>
                 <option
-                  value="button"
+                  value="\\"button\\""
                 >
                   button
                 </option>

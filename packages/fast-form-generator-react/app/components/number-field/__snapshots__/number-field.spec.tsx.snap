@@ -24,25 +24,25 @@ exports[`number-field number-field: 0 1`] = `
               <select
                 className="formItemSelect_input-0-1-14"
                 onChange={[Function]}
-                value={1}
+                value="1"
               >
                 <option
-                  value={1}
+                  value="1"
                 >
                   1
                 </option>
                 <option
-                  value={2}
+                  value="2"
                 >
                   2
                 </option>
                 <option
-                  value={3}
+                  value="3"
                 >
                   3
                 </option>
                 <option
-                  value={4}
+                  value="4"
                 >
                   4
                 </option>
