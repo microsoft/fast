@@ -13,6 +13,10 @@ import { IManagedClasses, IParagraphClassNameContract } from "@microsoft/fast-co
 
 /* tslint:disable-next-line */
 class Paragraph extends Foundation<IParagraphHandledProps & IManagedClasses<IParagraphClassNameContract>, React.HTMLAttributes<HTMLParagraphElement>, {}> {
+    public static defaultProps: Partial<IParagraphHandledProps> = {
+        level: ParagraphLevel._3
+    };
+
     protected handledProps: HandledProps<IParagraphHandledProps & IManagedClasses<IParagraphClassNameContract>> = {
         level: void 0,
         managedClasses: void 0
@@ -38,7 +42,7 @@ class Paragraph extends Foundation<IParagraphHandledProps & IManagedClasses<IPar
      * Generates class names based on props
      */
     protected generateClassNames(): string {
-        const classes: string = get(this.props, `managedClasses.paragraph_${this.props.level || ParagraphLevel._3}`);
+        const classes: string = get(this.props, `managedClasses.paragraph_${this.props.level}`);
 
         return super.generateClassNames(classes);
     }

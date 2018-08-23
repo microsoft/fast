@@ -51,4 +51,13 @@ describe("paragraph", (): void => {
 
         expect(paragraph.instance().props.level).toEqual(ParagraphLevel._2);
     });
+
+    test("should render a default `level` of `ParagraphLevel._3` if no `level` prop is passed", () => {
+        const rendered: any = shallow(
+            <Component />
+        );
+        const paragraph: any = rendered.first().shallow();
+
+        expect(paragraph.instance().props.level).toEqual(ParagraphLevel._3);
+    });
 });
