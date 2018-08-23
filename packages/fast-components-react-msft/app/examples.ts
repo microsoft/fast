@@ -25,6 +25,9 @@ export { ImageExamples };
 import LabelExamples from "../src/label/examples.data";
 export { LabelExamples };
 
+import ParagraphExamples from "../src/paragraph/examples.data";
+export { ParagraphExamples };
+
 import ToggleExamples from "../src/toggle/examples.data";
 export { ToggleExamples };
 

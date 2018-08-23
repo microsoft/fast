@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`paragraph snapshots Paragraph: 0 1`] = `
+<p
+  className="typography_7-0-1-11 paragraph-0-1-1 paragraph_3-0-1-4"
+>
+  Paragraph test string
+</p>
+`;
+
+exports[`paragraph snapshots Paragraph: 1 1`] = `
+<p
+  className="typography_5-0-1-22 paragraph-0-1-14 paragraph_1-0-1-15"
+  data-sketch-symbol="Paragraph 1"
+>
+  Paragraph test string
+</p>
+`;
+
+exports[`paragraph snapshots Paragraph: 2 1`] = `
+<p
+  className="typography_6-0-1-36 paragraph-0-1-27 paragraph_2-0-1-29"
+  data-sketch-symbol="Paragraph 2"
+>
+  Paragraph test string
+</p>
+`;
+
+exports[`paragraph snapshots Paragraph: 3 1`] = `
+<p
+  className="typography_7-0-1-50 paragraph-0-1-40 paragraph_3-0-1-43"
+  data-sketch-symbol="Paragraph 3"
+>
+  Paragraph test string
+</p>
+`;
