@@ -1,6 +1,6 @@
 import * as React from "react";
 import { IFoundationProps } from "@microsoft/fast-components-react-base";
-import { IHeadingClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { IParagraphClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import Paragraph, {
     IParagraphHandledProps,
     IParagraphManagedClasses,
