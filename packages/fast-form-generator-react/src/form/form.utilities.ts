@@ -315,7 +315,7 @@ export function getSchemaLocationSegmentsFromDataLocationSegment(
 ): string[] {
     const schemaLocationSegments: string[] = [];
 
-    if (typeof data === "object" && !Array.isArray(data)) {
+    if (typeof data === "object" && data !== null && !Array.isArray(data)) {
         schemaLocationSegments.push("properties");
     }
 
