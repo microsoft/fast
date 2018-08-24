@@ -105,12 +105,7 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
     const secondaryDisabledBackgroundColor: string = adjustContrast(
         ContrastModifiers.disabled,
         secondaryRestBackgroundColor,
-        backgroundColor
-    );
-    const secondaryDisabledColor: string = contrast(
-        ContrastModifiers.disabled * -1,
-        color,
-        secondaryDisabledBackgroundColor
+        color
     );
 
     // Define primary button colors
@@ -184,7 +179,7 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
             "&$button__disabled": {
                 cursor: "not-allowed",
                 backgroundColor: secondaryDisabledBackgroundColor,
-                color: secondaryDisabledColor
+                color
             }
         },
         button_primary: {
