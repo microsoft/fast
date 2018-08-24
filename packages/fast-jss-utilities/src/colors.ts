@@ -4,13 +4,15 @@ import { clamp, memoize } from "lodash-es";
 /**
  * Hashing function for contrast memoization
  */
-function resolveContrastArgs(...args: Array<string | number>): string {
-    return args.join("");
+export function contrastHasher(...args: Array<string | number>): string {
+    return args.map((value: string | number) => {
+        return typeof value === "string" ? value.toLowerCase() : value;
+    }).join("");
 }
 
-const memoizedContrast: ContrastFunction = memoize(contrast, resolveContrastArgs);
-const memoizedEnsureContrast: ContrastFunction = memoize(ensureContrast, resolveContrastArgs);
-const memoizedAdjustContrast: ContrastFunction = memoize(adjustContrast, resolveContrastArgs);
+const memoizedContrast: ContrastFunction = memoize(contrast, contrastHasher);
+const memoizedEnsureContrast: ContrastFunction = memoize(ensureContrast, contrastHasher);
+const memoizedAdjustContrast: ContrastFunction = memoize(adjustContrast, contrastHasher);
 
 /**
  * Export memoized contrast functions to prevent calculating the same color
@@ -38,9 +40,9 @@ export enum WCAGAAContrastRatios {
 }
 
 /**
- * Scales a baseRatio up by a scaleFactor (a number between 0 and 100) to achieve a new contrast ratio.
- * When scaleFactor is 0, the baseRatio is returned. When scaleFactor is 100, 21 is returned.
- * Otherwise, a number between baseRatio and 21 will be returned.
+ * Scales a contrast ratio (baseRatio) up by a scaleFactor (a number between 0 and 100) to achieve
+ * a new contrast ratio. When scaleFactor is 0, the baseRatio is returned. When scaleFactor is 100,
+ * 21 is returned. Otherwise, a number between baseRatio and 21 will be returned.
  */
 export function scaleContrast(baseRatio: number, scaleFactor: number): number {
     baseRatio = clamp(baseRatio || 0, 0, 21);

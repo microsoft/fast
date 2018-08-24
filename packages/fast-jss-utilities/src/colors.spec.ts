@@ -1,4 +1,4 @@
-import { scaleContrast } from "./colors";
+import { contrastHasher, scaleContrast } from "./colors";
 
 describe("scaleContrast", (): void => {
     test("should return zero if no argument is passed", (): void => {
@@ -31,5 +31,14 @@ describe("scaleContrast", (): void => {
 
     test("should return 21 if the base ratio is 21 ", (): void => {
         expect(scaleContrast(21, 100)).toBe(21);
+    });
+});
+
+describe("contrastHasher", (): void => {
+    test("should join all arguments", (): void => {
+        expect(contrastHasher("#000", "#fff", 1)).toBe("#000#fff1");
+    });
+    test("should resolve lowercase and uppercase strings to the same value", (): void => {
+        expect(contrastHasher("#AbC", "#dEf", 1)).toBe("#abc#def1");
     });
 });
