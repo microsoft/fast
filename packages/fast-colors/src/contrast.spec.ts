@@ -40,7 +40,7 @@ describe("ensureContrast", (): void => {
     });
 });
 describe("adjustContrast", (): void => {
-    // Cast ensureContrast as an any value so TypeScript doesn't fail to compile
+    // Cast adjustContrastCast as an any value so TypeScript doesn't fail to compile
     const adjustContrastCast: any = ensureContrast;
 
     test("should not throw", (): void => {
