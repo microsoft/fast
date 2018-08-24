@@ -78,6 +78,7 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
     const applyLargeContrast: ContrastFunction = curry(largeContrast)(contrastScale);
     const applyEnsureNormalContrast: ContrastFunction = curry(ensureNormalContrast)(contrastScale);
     const applyEnsureLargeContrast: ContrastFunction = curry(ensureNormalContrast)(contrastScale);
+    const focusBoxShadowDefualts: string = "inset 0 0 0 2px";
 
     // Define secondary button colors
     const color: string = "white";
@@ -99,7 +100,7 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
         secondaryRestBackgroundColor,
         secondaryFocusBorderColor
     ) < scaleContrastNormal(contrastScale)
-        ? `inset 0 0 0 2px ${ensureNormalContrast(contrastScale, secondaryRestBackgroundColor, secondaryFocusBorderColor)}`
+        ? `${focusBoxShadowDefualts} ${ensureNormalContrast(contrastScale, secondaryRestBackgroundColor, secondaryFocusBorderColor)}`
         : "none";
     const secondaryDisabledBackgroundColor: string = adjustContrast(
         ContrastModifiers.disabled,
@@ -130,7 +131,7 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
         primaryRestBackgroundColor,
         primaryFocusBorderColor
     ) < scaleContrastNormal(contrastScale)
-        ? `inset 0 0 0 2px ${ensureNormalContrast(contrastScale, primaryRestBackgroundColor, primaryFocusBorderColor)}`
+        ? `${focusBoxShadowDefualts} ${ensureNormalContrast(contrastScale, primaryRestBackgroundColor, primaryFocusBorderColor)}`
         : "none";
     const primaryDisabledBackground: string = adjustContrast(
         ContrastModifiers.disabled,
