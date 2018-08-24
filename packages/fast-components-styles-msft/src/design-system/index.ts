@@ -2,12 +2,6 @@ import { Direction } from "@microsoft/fast-application-utilities";
 import { memoize } from "lodash-es";
 
 export interface IDesignSystem {
-
-    /**
-     * The accent color used to bring attention to prioritized elements
-     */
-    accentColor: string;
-
     /**
      * The value typically used for foreground elements, such as text
      */
@@ -36,12 +30,10 @@ export interface IDesignSystem {
     contrast: number;
 }
 
-const accentColor: string = "#0078D4";
 const designSystemDefaults: IDesignSystem = {
-    accentColor,
     foregroundColor: "#000",
     backgroundColor: "#FFF",
-    brandColor: accentColor,
+    brandColor: "#0078D4",
     direction: Direction.ltr,
     contrast: 0
 };
@@ -49,12 +41,14 @@ const designSystemDefaults: IDesignSystem = {
 /**
  * Ensure that all properties of the design system are assigned
  */
-function safeDesignSystem(config: Partial<IDesignSystem>): IDesignSystem {
-    return Object.assign({}, designSystemDefaults, config);
-}
-const memoizedSafeDesignSystem: (config: Partial<IDesignSystem>) => IDesignSystem = memoize(safeDesignSystem);
+export const safeDesignSystem: (config: Partial<IDesignSystem>) => IDesignSystem =
+    memoize(
+        (config: Partial<IDesignSystem>): IDesignSystem => {
+            return Object.assign({}, designSystemDefaults, config);
+        }
+    );
 
-export { memoizedSafeDesignSystem as safeDesignSystem };
+// export { memoizedSafeDesignSystem as safeDesignSystem };
 /**
  * Safely retrieves a single property from a design system
  */
