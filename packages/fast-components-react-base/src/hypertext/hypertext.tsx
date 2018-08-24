@@ -9,8 +9,7 @@ import { get } from "lodash-es";
 class Hypertext extends Foundation<IHypertextHandledProps & IManagedClasses<IHypertextClassNameContract>, React.AnchorHTMLAttributes<HTMLAnchorElement>, {}> {
     protected handledProps: HandledProps<IHypertextHandledProps & IManagedClasses<IHypertextClassNameContract>> = {
         href: void 0,
-        managedClasses: void 0,
-        children: void 0
+        managedClasses: void 0
     };
 
     /**

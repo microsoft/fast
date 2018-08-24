@@ -16,7 +16,6 @@ export enum ButtonHTMLTags {
 /* tslint:disable-next-line */
 class Button extends Foundation<IButtonHandledProps & IManagedClasses<IButtonClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
     protected handledProps: HandledProps<IButtonHandledProps & IManagedClasses<IButtonClassNameContract>> = {
-        children: void 0,
         disabled: void 0,
         href: void 0,
         managedClasses: void 0

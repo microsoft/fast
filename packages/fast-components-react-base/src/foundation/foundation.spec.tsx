@@ -141,6 +141,7 @@ describe("unhandledProps", () => {
     }
 
     interface IUnhandledProps {
+        children?: React.ReactNode | React.ReactNode[];
         booleanDirty?: boolean;
         stringDirty?: string;
         arrayDirty?: string[];
@@ -161,6 +162,7 @@ describe("unhandledProps", () => {
     };
 
     const dirtyProps: IUnhandledProps = {
+        children: "children",
         booleanDirty: true,
         stringDirty: "string",
         arrayDirty: ["array"],
@@ -201,7 +203,14 @@ describe("unhandledProps", () => {
         expect(unhandledPropsTestComponentClean["unhandledProps"]()).not.toBe(null);
     });
 
+    test("return object should not include children", () => {
+        const unhandledProps: IUnhandledProps = unhandledPropsTestComponentDirty["unhandledProps"]();
+
+        expect(has(unhandledProps, "children")).toBe(false);
+    });
+
     test("return object should contain all property keys passed to props that is not enumerated on handledProps", () => {
+
         const unhandledProps: IUnhandledProps = unhandledPropsTestComponentDirty["unhandledProps"]();
 
         expect(has(unhandledProps, "booleanDirty")).toBe(true);
