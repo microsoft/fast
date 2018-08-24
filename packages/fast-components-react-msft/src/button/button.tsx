@@ -10,7 +10,6 @@ import { Button as BaseButton } from "@microsoft/fast-components-react-base";
 class Button extends Foundation<IButtonHandledProps & IManagedClasses<IMSFTButtonClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
     protected handledProps: HandledProps<IButtonHandledProps & IManagedClasses<IMSFTButtonClassNameContract>> = {
         appearance: void 0,
-        children: void 0,
         disabled: void 0,
         href: void 0,
         managedClasses: void 0,

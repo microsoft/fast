@@ -39,7 +39,6 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
 
     protected handledProps: HandledProps<ITabsHandledProps & IManagedClasses<ITabsClassNameContract>> = {
         activeId: void 0,
-        children: void 0,
         label: void 0,
         managedClasses: void 0,
         onUpdateTab: void 0,

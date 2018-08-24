@@ -17,7 +17,6 @@ class Label extends Foundation<ILabelHandledProps & IManagedClasses<ILabelClassN
     };
 
     protected handledProps: HandledProps<ILabelHandledProps & IManagedClasses<ILabelClassNameContract>> = {
-        children: void 0,
         hidden: void 0,
         managedClasses: void 0,
         tag: void 0

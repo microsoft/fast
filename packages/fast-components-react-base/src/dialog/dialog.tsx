@@ -17,7 +17,6 @@ class Dialog extends Foundation<IDialogHandledProps & IManagedClasses<IDialogCla
         describedBy: void 0,
         label: void 0,
         labelledBy: void 0,
-        children: void 0,
         contentWidth: void 0,
         contentHeight: void 0,
         modal: void 0,

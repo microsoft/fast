@@ -6,7 +6,6 @@ import { ITabPanelHandledProps, ITabPanelManagedClasses, ITabPanelUnhandledProps
 
 class TabPanel extends Foundation<ITabPanelHandledProps & ITabPanelManagedClasses, ITabPanelUnhandledProps, {}> {
     protected handledProps: HandledProps<ITabPanelHandledProps & IManagedClasses<ITabPanelClassNameContract>> = {
-        children: void 0,
         managedClasses: void 0,
         slot: void 0
     };

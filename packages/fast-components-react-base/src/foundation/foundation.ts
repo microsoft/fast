@@ -43,6 +43,11 @@ export type ReferenceResolver = <T>(reference: T) => void;
  */
 class Foundation<H, U, S> extends React.Component<H & U & IFoundationProps, S> {
     /**
+     * The props that should never be passed to the root element by unhandled props
+     */
+    private static defaultHandledProps: string[] = ["children"];
+
+    /**
      * An enumeration of all handled props. All props passed to the component that are not enumerated here will be
      * treated as unhandled props
      */
@@ -102,7 +107,7 @@ class Foundation<H, U, S> extends React.Component<H & U & IFoundationProps, S> {
      */
     protected unhandledProps(): U {
         const unhandledPropKeys: string[] = Object.keys(this.props).filter((key: string) => {
-            return !this.handledProps.hasOwnProperty(key);
+            return !(Foundation.defaultHandledProps.indexOf(key) > -1) && !this.handledProps.hasOwnProperty(key);
         });
 
         return pick(this.props, unhandledPropKeys) as U;

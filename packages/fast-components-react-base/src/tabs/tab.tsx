@@ -6,7 +6,6 @@ import { ITabHandledProps, ITabManagedClasses, ITabUnhandledProps } from "./tab.
 
 class Tab extends Foundation<ITabHandledProps & ITabManagedClasses, ITabUnhandledProps, {}> {
     protected handledProps: HandledProps<ITabHandledProps & IManagedClasses<ITabClassNameContract>> = {
-        children: void 0,
         managedClasses: void 0,
         slot: void 0
     };
