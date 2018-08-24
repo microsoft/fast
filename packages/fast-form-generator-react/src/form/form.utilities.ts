@@ -4,6 +4,15 @@ import { IBreadcrumbItemConfig, IBreadcrumbItemsConfig, IComponentItem, IFormPro
 
 const squareBracketsRegex: RegExp = /\[(\d+?)\]/g;
 const oneOfAnyOfRegex: RegExp = /(oneOf|anyOf)\[\d+\]/g;
+const arrayItemsRegex: RegExp = /(\.items)$/;
+
+export interface INavigationItem {
+    dataLocation: string;
+    schemaLocation: string;
+    title: string;
+    data: any;
+    schema: any;
+}
 
 /**
  * Gets the data cache based on a new data object and
@@ -222,6 +231,43 @@ export function getComponentTracker(
 }
 
 /**
+ * Gets the navigational items
+ */
+export function getNavigation(dataLocation: string, data: any, schema: any): INavigationItem[] {
+    const navigation: INavigationItem[] = [];
+    const normalizedDataLocation: string = normalizeDataLocation(dataLocation, data);
+    const dataLocations: string[] = normalizedDataLocation.split(".");
+
+    navigation.push({
+        dataLocation: "",
+        schemaLocation: "",
+        title: schema.title,
+        data,
+        schema
+    });
+
+    if (dataLocation === "") {
+        return navigation;
+    }
+
+    for (let i: number = 0; i < dataLocations.length; i++) {
+        const currentDataLocation: string = dataLocations.slice(0, i + 1).join(".");
+        const currentSchemaLocation: string = mapSchemaLocationFromDataLocation(currentDataLocation, data, schema);
+        const currentSchema: any = get(schema, currentSchemaLocation);
+
+        navigation.push({
+            dataLocation: currentDataLocation,
+            schemaLocation: currentSchemaLocation,
+            title: currentSchema.title || "Untitled",
+            data: get(data, currentDataLocation),
+            schema: currentSchema
+        });
+    }
+
+    return navigation;
+}
+
+/**
  * Converts all property locations to dot notation and all array item references to bracket notation
  */
 export function normalizeDataLocation(dataLocation: string, data: any): string {
@@ -232,8 +278,9 @@ export function normalizeDataLocation(dataLocation: string, data: any): string {
 /**
  * Removes any references to array index
  */
-export function normalizeSchemaLocation(schemaLocation: string): string {
-    return schemaLocation.replace(squareBracketsRegex, "");
+export function normalizeSchemaLocation(schemaLocation: string, lastLocationItem?: boolean): string {
+    const schemaLocationWithoutArrayLocation: string = schemaLocation.replace(squareBracketsRegex, "");
+    return lastLocationItem ? schemaLocationWithoutArrayLocation.replace(arrayItemsRegex, "") : schemaLocationWithoutArrayLocation;
 }
 
 /**
@@ -248,7 +295,7 @@ export function mapSchemaLocationFromDataLocation(dataLocation: string, data: an
     const dataLocationSegments: string[] = normalizedDataLocation.split(".");
     const schemaLocationSegments: string[] = getSchemaLocationSegmentsFromDataLocationSegments(dataLocationSegments, schema, data);
 
-    return normalizeSchemaLocation(schemaLocationSegments.join("."));
+    return normalizeSchemaLocation(schemaLocationSegments.join("."), true);
 }
 
 /**
@@ -271,7 +318,6 @@ export function getSchemaLocationSegmentsFromDataLocationSegments(dataLocationSe
         schemaLocationSegments = schemaLocationSegments.concat(
             getSchemaLocationSegmentsFromDataLocationSegment(
                 dataLocationSegments[i],
-                dataLocationSegments.length === i + 1,
                 partialData
             )
         );
@@ -309,7 +355,6 @@ export function getSchemaOneOfAnyOfLocationSegments(schema: any, data: any): str
  */
 export function getSchemaLocationSegmentsFromDataLocationSegment(
     dataLocation: string,
-    lastDataLocationSegment: boolean,
     data: any
 ): string[] {
     const schemaLocationSegments: string[] = [];
@@ -322,7 +367,7 @@ export function getSchemaLocationSegmentsFromDataLocationSegment(
 
     // In the case that this is an array and this is not the the last item in the data location string,
     // add the JSON schema "items" keyword
-    if ((Array.isArray(data) || isDataLocationArrayItem(dataLocation)) && !lastDataLocationSegment) {
+    if ((Array.isArray(data) || isDataLocationArrayItem(dataLocation))) {
         schemaLocationSegments.push("items");
     }
 
