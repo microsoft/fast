@@ -772,7 +772,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         );
     }
 
-    private renderStatus(): JSX.Element | null {
+    private renderStatus(): JSX.Element {
         if (this.props.showComponentStatus) {
             return (
                 <React.Fragment>
