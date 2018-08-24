@@ -56,6 +56,10 @@ function L2(contrastRatio: number, l1: number): number {
  * be adjusted to meet the target contrast ratio.
  */
 export function ensureContrast(targetRatio: number, operand: string, reference: string): string {
+    if (typeof targetRatio !== "number" || typeof operand !== "string" || typeof reference !== "string") {
+        return operand;
+    }
+
     return Chroma.contrast(operand, reference) < targetRatio
         ? contrast(targetRatio, operand, reference)
         : operand;
