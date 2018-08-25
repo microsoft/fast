@@ -292,7 +292,8 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
 class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClasses>, ISiteState> {
 
     public static defaultProps: Partial<ISiteProps> = {
-        locales: ["en", "en-rtl"]
+        locales: ["en", "en-rtl"],
+        showComponentStatus: true
     };
 
     public static getDerivedStateFromProps(props: ISiteProps, state: ISiteState): Partial<ISiteState> | null {
