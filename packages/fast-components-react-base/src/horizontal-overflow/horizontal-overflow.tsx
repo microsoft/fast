@@ -26,7 +26,6 @@ export type AnimateScroll = () => void;
 class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllHTMLAttributes<HTMLDivElement>, IHorizontalOverflowState> {
 
     protected handledProps: HandledProps<IHorizontalOverflowHandledProps & IManagedClasses<IHorizontalOverflowClassNameContract>> = {
-        children: void 0,
         scrollDuration: void 0,
         managedClasses: void 0,
         onScrollChange: void 0
