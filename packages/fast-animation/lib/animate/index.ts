@@ -113,7 +113,7 @@ export default abstract class Animate {
     /**
      * Stores animation timing functions
      */
-    public effectTiming: AnimationEffectTiming = {
+    public effectTiming: EffectTiming = {
         fill: "forwards",
         iterations: 1,
         duration: 500
@@ -161,7 +161,7 @@ export default abstract class Animate {
         }
     }
 
-    constructor(element: HTMLElement, options?: IAnimateOptions, effectTiming?: AnimationEffectTiming) {
+    constructor(element: HTMLElement, options?: IAnimateOptions, effectTiming?: EffectTiming) {
         this.animationTarget = element;
 
         if (Boolean(effectTiming)) {

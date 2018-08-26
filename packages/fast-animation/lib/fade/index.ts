@@ -20,7 +20,7 @@ export const fadeOutKeyframes: AnimationKeyFrame[] = [
 /**
  * EffectTiming defaults for fade animations
  */
-export const fadeEffectTiming: AnimationEffectTiming = {
+export const fadeEffectTiming: EffectTiming = {
     easing: "linear",
     duration: 500
 };
@@ -28,19 +28,19 @@ export const fadeEffectTiming: AnimationEffectTiming = {
 /**
  * Creates an animation to fade an element into view
  */
-export function fadeIn(element: HTMLElement, effectTiming: AnimationEffectTiming = {}): AnimateTo {
+export function fadeIn(element: HTMLElement, effectTiming: EffectTiming = {}): AnimateTo {
     return applyFade(element, fadeInKeyframes, effectTiming);
 }
 
 /**
  * Creates an animation to fade an element out of view
  */
-export function fadeOut(element: HTMLElement, effectTiming: AnimationEffectTiming = {}): AnimateTo {
+export function fadeOut(element: HTMLElement, effectTiming: EffectTiming = {}): AnimateTo {
     return applyFade(element, fadeOutKeyframes, effectTiming);
 }
 
-export function applyFade(element: HTMLElement, keyframes: AnimationKeyFrame[], timing: AnimationEffectTiming = {}): AnimateTo {
-    const fadeAnimationTiming: AnimationEffectTiming = Object.assign({}, fadeEffectTiming, timing);
+export function applyFade(element: HTMLElement, keyframes: AnimationKeyFrame[], timing: EffectTiming = {}): AnimateTo {
+    const fadeAnimationTiming: EffectTiming = Object.assign({}, fadeEffectTiming, timing);
     const fadeAnimation: AnimateTo = new AnimateTo(element, null, fadeAnimationTiming);
 
     fadeAnimation.addKeyframes(keyframes);

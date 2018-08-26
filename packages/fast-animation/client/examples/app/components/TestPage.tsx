@@ -25,7 +25,7 @@ class TestPage extends React.Component {
         const lightSquare: HTMLElement = overlapping.querySelector(".light-square");
         const mediumSquare: HTMLElement = overlapping.querySelector(".medium-square");
 
-        const effects: AnimationEffectTiming = {
+        const effects: EffectTiming = {
             duration: 750,
             iterations: Infinity,
             direction: "alternate",
@@ -207,12 +207,12 @@ class TestPage extends React.Component {
         const lightSquare: HTMLElement = e.currentTarget.querySelector(".light-square");
 
         const fadeOptions: IAnimateOptions = { opacity: 0 };
-        const fadeEffect: AnimationEffectTiming = { duration: 100 };
+        const fadeEffect: EffectTiming = { duration: 100 };
 
         const slideOptions: IAnimateOptions = { x: 180 };
-        const slideEffect: AnimationEffectTiming = {
+        const slideEffect: EffectTiming = {
             duration: 300,
-            fill: "backwards" as AnimationEffectTimingFillMode,
+            fill: "backwards" as EffectTimingFillMode,
             easing: cubicBezier("easeOut")
         };
 
@@ -270,11 +270,11 @@ class TestPage extends React.Component {
 
         const fadeInOptions: IAnimateOptions = { opacity: 1 };
         const fadeOutOptions: IAnimateOptions = { opacity: 0 };
-        const fadeInEffect: AnimationEffectTiming = {
+        const fadeInEffect: EffectTiming = {
             duration: 350,
             easing: cubicBezier("fastInOut")
         };
-        const fadeOutEffect: AnimationEffectTiming = {
+        const fadeOutEffect: EffectTiming = {
             delay: 4000,
             easing: cubicBezier("easeOut")
         };
@@ -307,7 +307,7 @@ class TestPage extends React.Component {
         ];
 
         const slideOptions: IAnimateOptions = { y: -100 };
-        const slideEffect: AnimationEffectTiming = { duration: 750, easing: cubicBezier("fastInOut") };
+        const slideEffect: EffectTiming = { duration: 750, easing: cubicBezier("fastInOut") };
         const square1Animation: AnimateTo = new AnimateTo(square1, slideOptions, slideEffect);
         const square2Animation: AnimateTo = new AnimateTo(square2, slideOptions, slideEffect);
         const square3Animation: AnimateTo = new AnimateTo(square3, slideOptions, slideEffect);
