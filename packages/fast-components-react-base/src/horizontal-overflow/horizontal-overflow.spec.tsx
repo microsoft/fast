@@ -1,14 +1,12 @@
 import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
-import { configure, describeWithDOM, mount, shallow, spyLifecycle } from "enzyme";
+import { configure, mount, shallow } from "enzyme";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import HorizontalOverflow, {
     ButtonDirection,
     IHorizontalOverflowClassNameContract
 } from "./";
 import examples from "./examples.data";
-import { Direction } from "../../node_modules/@microsoft/fast-application-utilities";
-import { componentDetailExampleFactory } from "../../node_modules/@microsoft/fast-development-site-react";
 import "raf/polyfill";
 
 /*
