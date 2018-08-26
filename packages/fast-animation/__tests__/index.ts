@@ -224,10 +224,10 @@ describe("consolidateKeyframes", () => {
         {offset: 1, opacity: "0", transform: "translateX(20px) translateY(20px) rotate(20deg) scale(20)"}
     ];
     const sourceOne: IAnimateOptions = { scale: 20, opacity: 0, rotate: 20, x: 20, y: 20 };
-    const customKeyframes: AnimationKeyFrame[] = [
-        { opacity: 0 },
-        { opacity: 0.75, offset: 0.75 },
-        { opacity: 1 }
+    const customKeyframes: Array<Partial<Keyframe>> = [
+        { opacity: "0" },
+        { opacity: "0.75", offset: 0.75 },
+        { opacity: "1" }
     ];
     test("should correctly consolidate and sort keyframes created by options", () => {
         expect(new AnimateMock(fakeElement, sourceOne).keyframes).toEqual(expectedOne);
@@ -237,7 +237,7 @@ describe("consolidateKeyframes", () => {
         const mock: AnimateMock = new AnimateMock(fakeElement);
         mock.addKeyframes(customKeyframes);
 
-        expect(mock.keyframes).toEqual([{opacity: 0, offset: 0}, {opacity: 0.75, offset: 0.75 }, {opacity: 1, offset: 1}]);
+        expect(mock.keyframes).toEqual([{opacity: "0", offset: 0}, {opacity: "0.75", offset: 0.75 }, {opacity: "1", offset: 1}]);
     });
 
     test("should correclty consolidate both options and added keyframes", () => {
@@ -245,9 +245,9 @@ describe("consolidateKeyframes", () => {
         mock.addKeyframes(customKeyframes);
 
         expect(mock.keyframes).toEqual([
-            {offset: 0, opacity: 0, transform: undefined},
-            {offset: 0.75, opacity: 0.75},
-            {offset: 1, opacity: 1, transform: "scale(20)"}
+            {offset: 0, opacity: "0", transform: undefined},
+            {offset: 0.75, opacity: "0.75"},
+            {offset: 1, opacity: "1", transform: "scale(20)"}
         ]);
     });
 });

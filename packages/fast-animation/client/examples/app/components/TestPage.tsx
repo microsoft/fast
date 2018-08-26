@@ -148,7 +148,7 @@ class TestPage extends React.Component {
         const highlighter: HTMLElement = document.getElementById("highlighter");
         const circle: HTMLElement = e.currentTarget.querySelector(".ui-circle");
         const slide: AnimateTo = new AnimateTo(highlighter, { y: e.currentTarget.offsetTop - 87 }, { duration: 250 });
-        const bounceKeyframes: AnimationKeyFrame[] = [
+        const bounceKeyframes: Array<Partial<Keyframe>> = [
             { transform: "scale(1)" },
             { transform: "scale(2.2)", offset: .35 },
             { transform: "scale(2)", offset: .55 },
@@ -167,7 +167,7 @@ class TestPage extends React.Component {
         const diamond: HTMLElement = e.currentTarget.querySelector("#diamond");
         const checkmark: HTMLElement = e.currentTarget.querySelector("#doSvg1");
 
-        const diamondFrames: AnimationKeyFrame[] = [
+        const diamondFrames: Array<Partial<Keyframe>> = [
             { transform: "scale(1)" },
             { transform: "scale(1.6)", offset: 0.75 },
             { transform: "scale(0.95)", offset: 0.78 },
@@ -177,7 +177,7 @@ class TestPage extends React.Component {
             { transform: "scale(1)"}
         ];
 
-        const doSvgFrames: AnimationKeyFrame[] = [
+        const doSvgFrames: Array<Partial<Keyframe>> = [
             { transform: "scale(0)" },
             { transform: "scale(1.1)", offset: .9 },
             { transform: "scale(1)" }
@@ -212,7 +212,7 @@ class TestPage extends React.Component {
         const slideOptions: IAnimateOptions = { x: 180 };
         const slideEffect: EffectTiming = {
             duration: 300,
-            fill: "backwards" as EffectTimingFillMode,
+            fill: "backwards" as FillMode,
             easing: cubicBezier("easeOut")
         };
 
@@ -299,11 +299,11 @@ class TestPage extends React.Component {
         const square2: HTMLElement = e.currentTarget.querySelector("#fourSquare2");
         const square3: HTMLElement = e.currentTarget.querySelector("#fourSquare3");
         const square4: HTMLElement = e.currentTarget.querySelector("#fourSquare4");
-        const fadeKeyFrames: AnimationKeyFrame[] = [
-            { opacity: 1 },
-            { opacity: 0, offset: 0.4 },
-            { opacity: 0, offset: 0.8 },
-            { opacity: 1 }
+        const fadeKeyFrames: Array<Partial<Keyframe>> = [
+            { opacity: "1" },
+            { opacity: "0", offset: 0.4 },
+            { opacity: "0", offset: 0.8 },
+            { opacity: "1" }
         ];
 
         const slideOptions: IAnimateOptions = { y: -100 };
