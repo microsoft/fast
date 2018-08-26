@@ -70,6 +70,7 @@ export default class App extends React.Component<{}, IAppState> {
                 onUpdateDirection={this.handleUpdateDirection}
                 themes={themes}
                 onUpdateTheme={this.handleUpdateTheme}
+                showComponentStatus={true}
             >
                 {this.renderSiteTitle()}
                 {this.renderSiteMenu()}
