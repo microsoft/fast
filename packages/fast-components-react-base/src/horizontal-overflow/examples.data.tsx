@@ -41,9 +41,6 @@ const examples: IComponentFactoryExample<IHorizontalOverflowHandledProps & IHori
     documentation: <Documentation />,
     detailData: {
         ...classes,
-        autoRemoveClickElements: true,
-        // onScrollToStart: (): any => {console.log("Start reached"); }, // callback example - uncomment to view
-        // onScrollToEnd: (): any => {console.log("End reached"); }, // callback example - uncomment to view
         children: [
             (<Button managedClasses={{button: "button"}} slot="previous">previous</Button>),
             (<Button managedClasses={{button: "button"}} slot="next">next</Button>),

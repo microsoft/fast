@@ -34,10 +34,10 @@
     "collectCoverage": true,
     "coverageThreshold": {
       "global": {
-        "statements": 99,
+        "statements": 98,
         "branches": 93,
         "functions": 100,
-        "lines": 99
+        "lines": 98
       }
     },
     "coveragePathIgnorePatterns": [

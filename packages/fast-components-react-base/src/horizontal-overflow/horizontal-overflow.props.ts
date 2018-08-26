@@ -1,8 +1,7 @@
 import * as React from "react";
 import { IHorizontalOverflowClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
-export type onScrollToStart = () => void;
-export type onScrollToEnd = () => void;
+export type onScrollChange = () => void;
 
 export interface IHorizontalOverflowHandledProps {
     /**
@@ -16,19 +15,9 @@ export interface IHorizontalOverflowHandledProps {
     scrollDuration?: number;
 
     /**
-     * Callback for on scroll start
+     * Callback for on scroll change
      */
-    onScrollToStart?: onScrollToStart;
-
-    /**
-     * Callback for on scroll end
-     */
-    onScrollToEnd?: onScrollToEnd;
-
-    /**
-     * Option to remove previous/next buttons when scroll reaches beginning or end of container
-     */
-    autoRemoveClickElements?: boolean;
+    onScrollChange?: onScrollChange;
 }
 
 export interface IHorizontalOverflowUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
