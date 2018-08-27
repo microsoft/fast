@@ -64,6 +64,7 @@
     "lodash-es": "^4.17.10"
   },
   "peerDependencies": {
-    "csstype": "^2.3.0"
+    "csstype": "^2.3.0",
+    "lodash-es": "^4.17.10"
   }
 }
