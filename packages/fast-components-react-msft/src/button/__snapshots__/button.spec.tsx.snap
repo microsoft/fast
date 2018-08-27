@@ -3,7 +3,7 @@
 exports[`button snapshots Button: 0 1`] = `
 <button
   className="button-0-1-8"
-  data-sketch-symbol="Button - default"
+  data-sketch-symbol="Button - secondary"
   href={null}
 >
   Secondary button
@@ -69,7 +69,7 @@ exports[`button snapshots Button: 5 1`] = `
 exports[`button snapshots Button: 6 1`] = `
 <button
   className="button-0-1-92 button__disabled-0-1-98"
-  data-sketch-symbol="Button - default disabled"
+  data-sketch-symbol="Button - secondary disabled"
   disabled={true}
   href={null}
 >
