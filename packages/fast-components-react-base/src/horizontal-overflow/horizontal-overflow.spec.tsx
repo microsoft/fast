@@ -47,11 +47,6 @@ describe("horizontal overflow", (): void => {
         );
 
         expect(renderedWithImagesAndPrevious.find("#testButtonPrevious")).not.toBe(undefined);
-        expect(
-            renderedWithImagesAndPrevious.instance()[
-                "renderPreviousButton"
-            ]()
-        ).not.toBe(undefined);
     });
     test("should render a next button if one is passed as a child with the appropriate slot prop", () => {
         const renderedWithImagesAndNext: any = mount(
@@ -62,11 +57,6 @@ describe("horizontal overflow", (): void => {
         );
 
         expect(renderedWithImagesAndNext.find("#testButtonNext")).not.toBe(undefined);
-        expect(
-            renderedWithImagesAndNext.instance()[
-                "renderNextButton"
-            ]()
-        ).not.toBe(undefined);
     });
     test("should render a series of items if they are passed as children", () => {
         const renderedWithImages: any = mount(

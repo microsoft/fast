@@ -67,8 +67,12 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
                         {this.getItems()}
                     </ul>
                 </div>
-                {this.renderPreviousButton()}
-                {this.renderNextButton()}
+                <div className={this.props.managedClasses.horizontalOverflow_previous} onClick={this.handlePreviousClick}>
+                    {this.getChildBySlot(ButtonDirection.previous)}
+                </div>
+                <div className={this.props.managedClasses.horizontalOverflow_next} onClick={this.handleNextClick}>
+                    {this.getChildBySlot(ButtonDirection.next)}
+                </div>
             </div>
         );
     }
@@ -150,22 +154,6 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
                 itemsHeight
             });
         }
-    }
-
-    private renderPreviousButton(): JSX.Element {
-        return (
-            <div className={this.props.managedClasses.horizontalOverflow_previous} onClick={this.handlePreviousClick}>
-                {this.getChildBySlot(ButtonDirection.previous)}
-            </div>
-        );
-    }
-
-    private renderNextButton(): JSX.Element {
-        return (
-            <div className={this.props.managedClasses.horizontalOverflow_next} onClick={this.handleNextClick}>
-                {this.getChildBySlot(ButtonDirection.next)}
-            </div>
-        );
     }
 
     /**
