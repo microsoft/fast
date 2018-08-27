@@ -84,7 +84,7 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = (conf
            },
             "&::before": {
                 top: "4px",
-                left: "10px",
+                left: "11px",
                 height: "12px",
                 transform: "rotate(40deg)"
             },
