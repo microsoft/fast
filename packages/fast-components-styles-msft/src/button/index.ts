@@ -85,7 +85,7 @@ function applyPropertyDrivenColor(incomingProperty: string, mixValue?: number, a
 const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (
     config: IDesignSystem
 ): ComponentStyleSheet<IMSFTButtonClassNameContract, IDesignSystem> => {
-    type ContrastFunction = (operandColor: string, referenceCOlor: string) => string;
+    type ContrastFunction = (operandColor: string, referenceColor: string) => string;
     const designSystem: IDesignSystem = safeDesignSystem(config);
     const contrastScale: number = designSystem.contrast;
     const foregroundColor: string = designSystem.foregroundColor;
