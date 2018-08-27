@@ -28,7 +28,7 @@ describe("ensureContrast", (): void => {
             ensureContrastCast();
         }).not.toThrow();
     });
-    test("should return the opperand value if arguments are not valid", (): void => {
+    test("should return the operand value if arguments are not valid", (): void => {
         expect(ensureContrastCast()).toBe(undefined);
         expect(ensureContrastCast(1)).toBe(undefined);
         expect(ensureContrastCast(1, "red")).toBe("red");
@@ -48,7 +48,7 @@ describe("adjustContrast", (): void => {
             adjustContrastCast();
         }).not.toThrow();
     });
-    test("should return the opperand value if arguments are not valid", (): void => {
+    test("should return the operand value if arguments are not valid", (): void => {
         expect(adjustContrastCast()).toBe(undefined);
         expect(adjustContrastCast(1)).toBe(undefined);
         expect(adjustContrastCast(1, "red")).toBe("red");
