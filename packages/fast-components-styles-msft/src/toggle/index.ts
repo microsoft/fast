@@ -65,7 +65,7 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config
             width: "44px",
             height: "20px",
             background: backgroundColor,
-            border: `1px solid`,
+            border: "1px solid",
             borderColor: foregroundColor,
             borderRadius: "20px",
             appearance: "none",

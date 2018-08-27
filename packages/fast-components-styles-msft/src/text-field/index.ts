@@ -21,7 +21,7 @@ const styles: ComponentStyles<ITextFieldClassNameContract, IDesignSystem> = {
         color: ensureForegroundNormal,
         background: ensuresBackgroundNormal,
         fontWeight: fontWeight.light.toString(),
-        border: `1px solid transparent`,
+        border: "1px solid transparent",
         borderColor: foregroundNormal,
         boxSizing: "border-box",
         borderRadius: "2px",
