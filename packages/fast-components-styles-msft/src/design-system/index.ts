@@ -13,14 +13,13 @@ export interface IDesignSystem {
     backgroundColor: string;
 
     /**
-     * The brand color. This value is deprecated in lieu of accentColor
-     * @deprecated
+     * The brand color used as color accents.
      *
      */
     brandColor: string;
 
     /**
-     * The primary direction of the document
+     * The primary direction of the view.
      */
     direction: Direction;
 
@@ -48,7 +47,6 @@ export const safeDesignSystem: (config: Partial<IDesignSystem>) => IDesignSystem
         }
     );
 
-// export { memoizedSafeDesignSystem as safeDesignSystem };
 /**
  * Safely retrieves a single property from a design system
  */
