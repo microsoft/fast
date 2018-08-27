@@ -1,23 +1,10 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "declaration": true,
-    "lib": [ "es2015", "es2017", "dom", "scripthost" ],
-    "module": "CommonJS",
     "moduleResolution": "node",
-    "outDir": "../dist",
-    "removeComments": true,
-    "rootDir": "./",
-    "sourceMap": true,
-    "target": "es5",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "types": [
-      "node",
-     "web-animations-js"
-    ]
+    "module": "ES6",
+    "target": "ES6",
+    "baseUrl": ".",
+    "declaration": true,
+    "outDir": "../dist"
   }
 }

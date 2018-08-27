@@ -77,8 +77,13 @@ class AnimateGroup {
     /**
      * Returns the cumulative time it will take to complete an animation
      */
-    private getAnimationDuration(effectTiming: AnimationEffectTiming): number {
-        return (effectTiming.delay || 0) + (effectTiming.duration || 0);
+    private getAnimationDuration(effectTiming: EffectTiming): number {
+        const duration: string | number = effectTiming.duration;
+        const sanitizedDuration: number = typeof duration === "string"
+            ? parseFloat(duration)
+            : duration;
+
+        return (effectTiming.delay || 0) + (sanitizedDuration || 0);
     }
 }
 

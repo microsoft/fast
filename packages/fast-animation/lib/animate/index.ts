@@ -58,7 +58,7 @@ export interface IAnimateOptions {
 /**
  * Enumerates all properties that can be animated, outside of properties supplied directly via Animate.addKeyframes()
  */
-export interface IAnimationProperties extends AnimationKeyFrame {
+export interface IAnimationProperties {
     top?: string;
     right?: string;
     bottom?: string;
@@ -113,7 +113,7 @@ export default abstract class Animate {
     /**
      * Stores animation timing functions
      */
-    public effectTiming: AnimationEffectTiming = {
+    public effectTiming: EffectTiming = {
         fill: "forwards",
         iterations: 1,
         duration: 500
@@ -147,7 +147,7 @@ export default abstract class Animate {
     /**
      * Stores animation keyframe sets and is accessed by a getter
      */
-    private _keyframes: AnimationKeyFrame[][] = [];
+    private _keyframes: Keyframe[][] = [];
 
     public get onFinish(): () => void {
         return this._onFinish;
@@ -161,7 +161,7 @@ export default abstract class Animate {
         }
     }
 
-    constructor(element: HTMLElement, options?: IAnimateOptions, effectTiming?: AnimationEffectTiming) {
+    constructor(element: HTMLElement, options?: IAnimateOptions, effectTiming?: EffectTiming) {
         this.animationTarget = element;
 
         if (Boolean(effectTiming)) {
@@ -224,8 +224,8 @@ export default abstract class Animate {
     /**
      * adds a set of keyframes to set of animation keyframes the animation should execute
      */
-    public addKeyframes = (keyframes: AnimationKeyFrame[]): void => {
-        this._keyframes.push(keyframes);
+    public addKeyframes = (keyframes: Array<Partial<Keyframe>>): void => {
+        this._keyframes.push(keyframes as Keyframe[]);
     }
 
     /**
@@ -308,20 +308,20 @@ export default abstract class Animate {
     /**
      * Returns the initial values for all properties being animated
      */
-    private getInitialKeyframeValues(): IAnimationProperties {
+    private getInitialKeyframeValues(): Keyframe {
         if (!(this.animationTarget instanceof HTMLElement) || typeof window === "undefined") {
-            return {};
+            return {} as Keyframe;
         }
 
         const animatedProperties: string[] = this.getPropertiesToAnimate();
         const computedStyle: CSSStyleDeclaration = window.getComputedStyle(this.animationTarget);
-        const initialKeyframeValues: IAnimationProperties  = {};
+        const initialKeyframeValues: Partial<Keyframe>  = {};
 
         animatedProperties.forEach((property: string) => {
             initialKeyframeValues[property] = this.normalizeInitialValue(property, computedStyle[property]);
         });
 
-        return initialKeyframeValues;
+        return initialKeyframeValues as Keyframe;
     }
 
     /**
@@ -329,7 +329,7 @@ export default abstract class Animate {
      */
     private formatTransformFunction(functionType: string, value: string | number | number[]): string {
         // If `functionType` can't be converted into a transform function, just return empty string
-        if (!Animate.propertyMap.transform.includes(functionType)) {
+        if (Animate.propertyMap.transform.indexOf(functionType) === -1) {
             return "";
         }
 
@@ -366,9 +366,9 @@ export default abstract class Animate {
     /**
      * Returns keyframe values based on option configuration
      */
-    private getOptionKeyframeValues(): IAnimationProperties {
+    private getOptionKeyframeValues(): Keyframe {
         const animateProperties: string[] = this.getPropertiesToAnimate();
-        const keyframeValues: IAnimationProperties = {};
+        const keyframeValues: Partial<Keyframe> = {};
 
         animateProperties.forEach((property: string) => {
             keyframeValues[property] = Animate.propertyMap[property].map((option: string): string => {
@@ -394,14 +394,14 @@ export default abstract class Animate {
             .join(" ");
         });
 
-        return keyframeValues;
+        return keyframeValues as Keyframe;
     }
 
     /**
      * Gets all keyframes configured by options
      */
-    private getOptionKeyframes(): AnimationKeyFrame[] {
-        const keyframes: AnimationKeyFrame[] = [
+    private getOptionKeyframes(): Keyframe[] {
+        const keyframes: Keyframe[] = [
             this.getInitialKeyframeValues(),
             this.getOptionKeyframeValues()
         ];
@@ -430,12 +430,12 @@ export default abstract class Animate {
     /**
      * Consolidates all keyframe arrays into a single keyframe array
      */
-    private consolidateKeyframes(keyframeSets: AnimationKeyFrame[][]): AnimationKeyFrame[] {
-        const frames: Partial<AnimationKeyFrame[]> = {};
+    private consolidateKeyframes(keyframeSets: Keyframe[][]): Keyframe[] {
+        const frames: Partial<Keyframe[]> = {};
 
         // Merge all keyframes into a single frames object where each key is a keyframe offset
-        keyframeSets.forEach((keyframeSet: AnimationKeyFrame[]) => {
-            keyframeSet.forEach((keyframe: AnimationKeyFrame, index: number) => {
+        keyframeSets.forEach((keyframeSet: Keyframe[]) => {
+            keyframeSet.forEach((keyframe: Keyframe, index: number) => {
                 let offset: number | number[] = keyframe.offset;
 
                 if (typeof offset === "undefined") {
@@ -457,8 +457,8 @@ export default abstract class Animate {
     /**
      * Returns the animation's keyframes
      */
-    public get keyframes(): AnimationKeyFrame[] {
-        const optionKeyframes: AnimationKeyFrame[] = this.getOptionKeyframes();
+    public get keyframes(): Keyframe[] {
+        const optionKeyframes: Keyframe[] = this.getOptionKeyframes();
 
         return this.consolidateKeyframes(this._keyframes.concat([this.getOptionKeyframes()]));
     }

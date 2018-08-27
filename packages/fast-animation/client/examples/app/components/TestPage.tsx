@@ -25,7 +25,7 @@ class TestPage extends React.Component {
         const lightSquare: HTMLElement = overlapping.querySelector(".light-square");
         const mediumSquare: HTMLElement = overlapping.querySelector(".medium-square");
 
-        const effects: AnimationEffectTiming = {
+        const effects: EffectTiming = {
             duration: 750,
             iterations: Infinity,
             direction: "alternate",
@@ -148,7 +148,7 @@ class TestPage extends React.Component {
         const highlighter: HTMLElement = document.getElementById("highlighter");
         const circle: HTMLElement = e.currentTarget.querySelector(".ui-circle");
         const slide: AnimateTo = new AnimateTo(highlighter, { y: e.currentTarget.offsetTop - 87 }, { duration: 250 });
-        const bounceKeyframes: AnimationKeyFrame[] = [
+        const bounceKeyframes: Array<Partial<Keyframe>> = [
             { transform: "scale(1)" },
             { transform: "scale(2.2)", offset: .35 },
             { transform: "scale(2)", offset: .55 },
@@ -167,7 +167,7 @@ class TestPage extends React.Component {
         const diamond: HTMLElement = e.currentTarget.querySelector("#diamond");
         const checkmark: HTMLElement = e.currentTarget.querySelector("#doSvg1");
 
-        const diamondFrames: AnimationKeyFrame[] = [
+        const diamondFrames: Array<Partial<Keyframe>> = [
             { transform: "scale(1)" },
             { transform: "scale(1.6)", offset: 0.75 },
             { transform: "scale(0.95)", offset: 0.78 },
@@ -177,7 +177,7 @@ class TestPage extends React.Component {
             { transform: "scale(1)"}
         ];
 
-        const doSvgFrames: AnimationKeyFrame[] = [
+        const doSvgFrames: Array<Partial<Keyframe>> = [
             { transform: "scale(0)" },
             { transform: "scale(1.1)", offset: .9 },
             { transform: "scale(1)" }
@@ -207,12 +207,12 @@ class TestPage extends React.Component {
         const lightSquare: HTMLElement = e.currentTarget.querySelector(".light-square");
 
         const fadeOptions: IAnimateOptions = { opacity: 0 };
-        const fadeEffect: AnimationEffectTiming = { duration: 100 };
+        const fadeEffect: EffectTiming = { duration: 100 };
 
         const slideOptions: IAnimateOptions = { x: 180 };
-        const slideEffect: AnimationEffectTiming = {
+        const slideEffect: EffectTiming = {
             duration: 300,
-            fill: "backwards" as AnimationEffectTimingFillMode,
+            fill: "backwards" as FillMode,
             easing: cubicBezier("easeOut")
         };
 
@@ -270,11 +270,11 @@ class TestPage extends React.Component {
 
         const fadeInOptions: IAnimateOptions = { opacity: 1 };
         const fadeOutOptions: IAnimateOptions = { opacity: 0 };
-        const fadeInEffect: AnimationEffectTiming = {
+        const fadeInEffect: EffectTiming = {
             duration: 350,
             easing: cubicBezier("fastInOut")
         };
-        const fadeOutEffect: AnimationEffectTiming = {
+        const fadeOutEffect: EffectTiming = {
             delay: 4000,
             easing: cubicBezier("easeOut")
         };
@@ -299,15 +299,15 @@ class TestPage extends React.Component {
         const square2: HTMLElement = e.currentTarget.querySelector("#fourSquare2");
         const square3: HTMLElement = e.currentTarget.querySelector("#fourSquare3");
         const square4: HTMLElement = e.currentTarget.querySelector("#fourSquare4");
-        const fadeKeyFrames: AnimationKeyFrame[] = [
-            { opacity: 1 },
-            { opacity: 0, offset: 0.4 },
-            { opacity: 0, offset: 0.8 },
-            { opacity: 1 }
+        const fadeKeyFrames: Array<Partial<Keyframe>> = [
+            { opacity: "1" },
+            { opacity: "0", offset: 0.4 },
+            { opacity: "0", offset: 0.8 },
+            { opacity: "1" }
         ];
 
         const slideOptions: IAnimateOptions = { y: -100 };
-        const slideEffect: AnimationEffectTiming = { duration: 750, easing: cubicBezier("fastInOut") };
+        const slideEffect: EffectTiming = { duration: 750, easing: cubicBezier("fastInOut") };
         const square1Animation: AnimateTo = new AnimateTo(square1, slideOptions, slideEffect);
         const square2Animation: AnimateTo = new AnimateTo(square2, slideOptions, slideEffect);
         const square3Animation: AnimateTo = new AnimateTo(square3, slideOptions, slideEffect);

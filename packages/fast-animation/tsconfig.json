@@ -10,18 +10,7 @@
     "sourceMap": true,
     "rootDir": "./",
     "baseUrl": ".",
-    "types": [
-      "node",
-      "react",
-      "react-dom",
-      "react-redux",
-      "web-animations-js",
-      "jest"
-    ],
     "lib": [ "es2015", "es2017", "dom", "scripthost" ],
-    "typeRoots": [
-      "node_modules/@types"
-    ],
     "paths": {
       "[lib]/*": [
         "./lib/*"
