@@ -38,15 +38,6 @@ describe("horizontal overflow snapshot", (): void => {
 
 /* tslint:disable:no-string-literal */
 describe("horizontal overflow", (): void => {
-    test("should mount with openRequestAnimationFrame as false", () => {
-        const renderedWithImagesAndPrevious: any = shallow(
-            <HorizontalOverflow managedClasses={managedClasses}>
-                {imageSet1}
-            </HorizontalOverflow>
-        );
-
-        expect(renderedWithImagesAndPrevious.instance().openRequestAnimationFrame).toBe(false);
-    });
     test("should render a previous button if one is passed as a child with the appropriate slot prop", () => {
         const renderedWithImagesAndPrevious: any = shallow(
             <HorizontalOverflow managedClasses={managedClasses}>
@@ -304,34 +295,6 @@ describe("horizontal overflow", (): void => {
 
         renderedWithImages.unmount();
         expect(renderedWithImages.removeEventListener).toBe(undefined);
-    });
-    test("should have an `requestFrame` method", () => {
-        const renderedWithImages: any = mount(
-            <HorizontalOverflow managedClasses={managedClasses}>
-                {imageSet1}
-            </HorizontalOverflow>
-        );
-
-        expect(
-            renderedWithImages.instance()[
-                "requestFrame"
-            ]()
-        ).toBe(undefined);
-    });
-    test("should return out of `requestFrame` method when already animating", () => {
-        const renderedWithImages: any = mount(
-            <HorizontalOverflow managedClasses={managedClasses}>
-                {imageSet1}
-            </HorizontalOverflow>
-        );
-
-        renderedWithImages.instance().openRequestAnimationFrame = true;
-
-        expect(
-            renderedWithImages.instance()[
-                "requestFrame"
-            ]()
-        ).toBe(undefined);
     });
     test("should have an `onLoad` method", () => {
         const renderedWithImages: any = mount(

@@ -1,7 +1,12 @@
 import * as React from "react";
 import { IHorizontalOverflowClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
-export type onScrollChange = () => void;
+export interface IScrollObject {
+    start: boolean;
+    end: boolean;
+}
+
+export type onScrollChange = (scrollObject: IScrollObject) => void;
 
 export interface IHorizontalOverflowHandledProps {
     /**

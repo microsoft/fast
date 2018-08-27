@@ -5,7 +5,8 @@ import { IHorizontalOverflowClassNameContract, IManagedClasses } from "@microsof
 import { getClientRectWithMargin } from "@microsoft/fast-web-utilities";
 import { Direction } from "@microsoft/fast-application-utilities";
 import Foundation, { HandledProps } from "../foundation";
-import { HorizontalOverflowProps, IHorizontalOverflowHandledProps } from "./horizontal-overflow.props";
+import { HorizontalOverflowProps, IHorizontalOverflowHandledProps, IScrollObject } from "./horizontal-overflow.props";
+import throttle from "raf-throttle";
 
 export enum ButtonDirection {
     previous = "previous",
@@ -14,11 +15,6 @@ export enum ButtonDirection {
 
 export interface IHorizontalOverflowState {
     itemsHeight: number;
-}
-
-export interface IScrollObject {
-    start: boolean;
-    end: boolean;
 }
 
 export type AnimateScroll = () => void;
@@ -34,9 +30,9 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
     private horizontalOverflowItemsRef: React.RefObject<HTMLUListElement>;
 
     /**
-     * Track if we have an open animation frame request
+     * Throttle request animation frame usage
      */
-    private openRequestAnimationFrame: boolean;
+    private throttled: any;
 
     /**
      * Constructor
@@ -45,7 +41,7 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
         super(props);
 
         this.horizontalOverflowItemsRef = React.createRef();
-        this.openRequestAnimationFrame = false;
+        this.throttled = throttle(this.onScrollChange);
 
         this.state = {
             itemsHeight: 0
@@ -92,7 +88,7 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
         });
 
         if (canUseDOM() && this.horizontalOverflowItemsRef.current) {
-            this.horizontalOverflowItemsRef.current.addEventListener("scroll", this.requestFrame);
+            this.horizontalOverflowItemsRef.current.addEventListener("scroll", this.throttled);
         }
     }
 
@@ -101,7 +97,7 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
      */
     public componentWillUnmount(): void {
         if (canUseDOM() && this.horizontalOverflowItemsRef.current) {
-            this.horizontalOverflowItemsRef.current.removeEventListener("scroll", this.requestFrame);
+            this.horizontalOverflowItemsRef.current.removeEventListener("scroll", this.throttled);
         }
     }
 
@@ -110,41 +106,22 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
      */
     public onScrollChange = (): IScrollObject => {
         let scrollObject: IScrollObject;
+        const isLtr: boolean = this.getLTR() === Direction.ltr;
         const distanceRemaining: number =
             this.horizontalOverflowItemsRef.current.scrollWidth - this.horizontalOverflowItemsRef.current.scrollLeft;
 
-        if (this.props.onScrollChange) {
-            this.props.onScrollChange();
-        }
-
         if (this.horizontalOverflowItemsRef.current.scrollLeft === 0) {
-            this.getLTR() === Direction.ltr ?
-            scrollObject = {
-                start: true,
-                end: false
-            } :
-            scrollObject = {
-                start: false,
-                end: true
-            };
+            scrollObject = { start: isLtr, end: !isLtr };
         } else if (distanceRemaining === this.horizontalOverflowItemsRef.current.clientWidth) {
-            this.getLTR() === Direction.ltr ?
-            scrollObject = {
-                start: false,
-                end: true
-            } :
-            scrollObject = {
-                start: true,
-                end: false
-            };
+            scrollObject = { start: !isLtr, end: isLtr };
         } else {
-            scrollObject = {
-                start: false,
-                end: false
-            };
+            scrollObject = { start: false, end: false };
         }
 
-        this.openRequestAnimationFrame = false;
+        if (this.props.onScrollChange) {
+            this.props.onScrollChange(scrollObject);
+        }
+
         return scrollObject;
     }
 
@@ -153,18 +130,6 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
      */
     protected generateClassNames(): string {
         return super.generateClassNames(get(this.props, "managedClasses.horizontalOverflow"));
-    }
-
-    /**
-     * Request's an animation frame if there are currently no open animation frame requests
-     */
-    private requestFrame = (): void => {
-        if (this.openRequestAnimationFrame) {
-            return;
-        }
-
-        this.openRequestAnimationFrame = true;
-        window.requestAnimationFrame(this.onScrollChange);
     }
 
     /**
