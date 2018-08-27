@@ -1,6 +1,6 @@
 import Chroma from "chroma-js";
 import withDesignSystemDefaults, { IDesignSystem, safeDesignSystem } from "../design-system";
-import { contrast, ensureContrast, scaleContrast, WCAGAAContrastRatios } from "@microsoft/fast-jss-utilities";
+import { contrast, ensureContrast, scaleContrast, WCAGElementContrastRatios } from "@microsoft/fast-jss-utilities";
 import { curry } from "lodash-es";
 
 export function applyMixedColor(color1: string, color2: string, mixValue: number, alpha: number = 1): string {
@@ -12,8 +12,8 @@ export enum ContrastModifiers {
     disabled = -3
 }
 
-const scaleContrastNormal: (contrast: number) => number = curry(scaleContrast)(WCAGAAContrastRatios.normal);
-const scaleContrastLarge: (contrast: number) => number = curry(scaleContrast)(WCAGAAContrastRatios.large);
+const scaleContrastNormal: (contrast: number) => number = curry(scaleContrast)(WCAGElementContrastRatios.normal);
+const scaleContrastLarge: (contrast: number) => number = curry(scaleContrast)(WCAGElementContrastRatios.large);
 
 export { scaleContrastNormal, scaleContrastLarge };
 

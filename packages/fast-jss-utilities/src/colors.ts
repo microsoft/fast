@@ -27,7 +27,7 @@ export { memoizedAdjustContrast as adjustContrast };
  * See https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html
  * for more information
  */
-export enum WCAGAAContrastRatios {
+export enum WCAGElementContrastRatios {
     /**
      * The contrast ratio for normal size text elements and UI elements less than 3px
      */
