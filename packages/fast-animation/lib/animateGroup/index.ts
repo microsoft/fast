@@ -80,8 +80,8 @@ class AnimateGroup {
     private getAnimationDuration(effectTiming: EffectTiming): number {
         const duration: string | number = effectTiming.duration;
         const sanitizedDuration: number = typeof duration === "string"
-        ? parseFloat(duration)
-        : duration;
+            ? parseFloat(duration)
+            : duration;
 
         return (effectTiming.delay || 0) + (sanitizedDuration || 0);
     }
