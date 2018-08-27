@@ -8,7 +8,7 @@ export type ContrastFunction = (targetRatio: number, operandColor: string, refer
 
 /**
  * Adjust the darkness/lightness of a foreground color so that it matches a target contrast ratio against a background color
- * @param targetRatio - The desired contrast ratio to bring the operand to against the referenceColor
+ * @param targetRatio - The desired contrast ratio to bring the operandColor to against the referenceColor
  * @param operand - The color value to manipulate
  * @param referenceColor - The color value to evaluate contrast against
  */
