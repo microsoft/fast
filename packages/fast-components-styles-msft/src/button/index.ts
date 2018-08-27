@@ -92,43 +92,41 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (
     const backgroundColor: string = designSystem.backgroundColor;
     const brandColor: string = designSystem.brandColor;
     const direction: Direction = designSystem.direction;
-    const applyNormalContrast: ContrastFunction = curry(normalContrast)(contrastScale);
-    const applyLargeContrast: ContrastFunction = curry(largeContrast)(contrastScale);
-    const applyEnsureNormalContrast: ContrastFunction = curry(ensureNormalContrast)(contrastScale);
-    const applyEnsureLargeContrast: ContrastFunction = curry(ensureNormalContrast)(contrastScale);
-    const focusBoxShadowDefualts: string = "inset 0 0 0 2px";
+    const scaledNormalContrast: ContrastFunction = curry(normalContrast)(contrastScale);
+    const scaledEnsureNormalContrast: ContrastFunction = curry(ensureNormalContrast)(contrastScale);
+    const focusBoxShadowDefaults: string = "inset 0 0 0 2px";
 
     // Define secondary button colors
     const color: string = "white";
-    const secondaryRestBackgroundColor: string = applyEnsureNormalContrast(
-        applyNormalContrast(backgroundColor, foregroundColor),
+    const secondaryBackgroundColor: string = scaledEnsureNormalContrast(
+        scaledNormalContrast(backgroundColor, foregroundColor),
         color
     );
     const secondaryHoverBackgroundColor: string = adjustContrast(
         ContrastModifiers.hover,
-        secondaryRestBackgroundColor,
+        secondaryBackgroundColor,
         color
     );
-    const secondaryFocusBorderColor: string = applyEnsureNormalContrast(
-        applyEnsureNormalContrast(foregroundColor, backgroundColor),
-        secondaryRestBackgroundColor
+    const secondaryFocusBorderColor: string = scaledEnsureNormalContrast(
+        scaledEnsureNormalContrast(foregroundColor, backgroundColor),
+        secondaryBackgroundColor
     );
 
     const secondaryFocusBoxShadow: string = Chroma.contrast(
-        secondaryRestBackgroundColor,
+        secondaryBackgroundColor,
         secondaryFocusBorderColor
     ) < scaleContrastNormal(contrastScale)
-        ? `${focusBoxShadowDefualts} ${ensureNormalContrast(contrastScale, secondaryRestBackgroundColor, secondaryFocusBorderColor)}`
+        ? `${focusBoxShadowDefaults} ${ensureNormalContrast(contrastScale, secondaryBackgroundColor, secondaryFocusBorderColor)}`
         : "none";
     const secondaryDisabledBackgroundColor: string = adjustContrast(
         ContrastModifiers.disabled,
-        secondaryRestBackgroundColor,
+        secondaryBackgroundColor,
         color
     );
 
     // Define primary button colors
-    const primaryRestBackgroundColor: string = applyEnsureNormalContrast(
-        applyEnsureNormalContrast(brandColor, backgroundColor),
+    const primaryRestBackgroundColor: string = scaledEnsureNormalContrast(
+        scaledEnsureNormalContrast(brandColor, backgroundColor),
         color
     );
     const primaryHoverBackground: string = adjustContrast(
@@ -136,15 +134,15 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (
         primaryRestBackgroundColor,
         color
     );
-    const primaryFocusBorderColor: string = applyEnsureNormalContrast(
-        applyEnsureNormalContrast(foregroundColor, backgroundColor),
+    const primaryFocusBorderColor: string = scaledEnsureNormalContrast(
+        scaledEnsureNormalContrast(foregroundColor, backgroundColor),
         primaryRestBackgroundColor
     );
     const primaryFocusBoxShadow: string = Chroma.contrast(
         primaryRestBackgroundColor,
         primaryFocusBorderColor
     ) < scaleContrastNormal(contrastScale)
-        ? `${focusBoxShadowDefualts} ${ensureNormalContrast(contrastScale, primaryRestBackgroundColor, primaryFocusBorderColor)}`
+        ? `${focusBoxShadowDefaults} ${ensureNormalContrast(contrastScale, primaryRestBackgroundColor, primaryFocusBorderColor)}`
         : "none";
     const primaryDisabledBackground: string = adjustContrast(
         ContrastModifiers.disabled,
@@ -157,8 +155,8 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (
         primaryDisabledBackground
     );
 
-    const outlineColor: string = applyEnsureNormalContrast(foregroundColor, backgroundColor);
-    const outlineBorderColor: string = applyNormalContrast(foregroundColor, backgroundColor);
+    const outlineColor: string = scaledEnsureNormalContrast(foregroundColor, backgroundColor);
+    const outlineBorderColor: string = scaledNormalContrast(foregroundColor, backgroundColor);
     const outlineDisabledColor: string = contrast(
         ContrastModifiers.disabled * -1,
         outlineColor,
@@ -179,13 +177,14 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (
             borderRadius: "2px",
             cursor: "pointer",
             overflow: "hidden",
-            lineHeight: "1", textAlign: "center",
+            lineHeight: "1",
+            textAlign: "center",
             textDecoration: "none",
             whiteSpace: "nowrap",
             verticalAlign: "bottom",
             transition: "all 0.2s ease-in-out",
             color,
-            backgroundColor: secondaryRestBackgroundColor,
+            backgroundColor: secondaryBackgroundColor,
             "&:hover": {
                 backgroundColor: secondaryHoverBackgroundColor
             },
