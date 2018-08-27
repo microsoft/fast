@@ -104,7 +104,6 @@
     "@microsoft/fast-web-utilities": "^1.9.2",
     "exenv-es6": "^1.0.0",
     "lodash-es": "^4.0.0",
-    "raf-polyfill": "^1.0.0",
     "react": "^16.3.0",
     "react-dom": "^16.3.0"
   },
