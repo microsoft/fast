@@ -24,7 +24,7 @@ export default {
     data: [
         {
             children: "Secondary button",
-            "data-sketch-symbol": "Button - default"
+            "data-sketch-symbol": "Button - secondary"
         },
         {
             appearance: ButtonAppearance.primary,
@@ -52,7 +52,7 @@ export default {
         {
             disabled: true,
             children: "Secondary button (disabled)",
-            "data-sketch-symbol": "Button - default disabled"
+            "data-sketch-symbol": "Button - secondary disabled"
         },
         {
             disabled: true,
