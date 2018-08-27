@@ -1,12 +1,17 @@
 import * as React from "react";
 import { IHorizontalOverflowClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface IScrollObject {
+/**
+ * Scroll interface for consumers
+ * 'start' is when the horizontal overflow scroll is all the way left in LTR (all the way right in RTL)
+ * 'end' is when the horizontal overflow scroll is all the right in LTR (all the way left in RTL)
+ */
+export interface IScrollChange {
     start: boolean;
     end: boolean;
 }
 
-export type onScrollChange = (scrollObject: IScrollObject) => void;
+export type onScrollChange = (scrollObject: IScrollChange) => void;
 
 export interface IHorizontalOverflowHandledProps {
     /**

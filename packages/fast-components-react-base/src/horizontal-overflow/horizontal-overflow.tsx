@@ -5,7 +5,7 @@ import { IHorizontalOverflowClassNameContract, IManagedClasses } from "@microsof
 import { getClientRectWithMargin } from "@microsoft/fast-web-utilities";
 import { Direction } from "@microsoft/fast-application-utilities";
 import Foundation, { HandledProps } from "../foundation";
-import { HorizontalOverflowProps, IHorizontalOverflowHandledProps, IScrollObject } from "./horizontal-overflow.props";
+import { HorizontalOverflowProps, IHorizontalOverflowHandledProps, IScrollChange } from "./horizontal-overflow.props";
 import throttle from "raf-throttle";
 
 export enum ButtonDirection {
@@ -108,8 +108,8 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
     /**
      * Callback on scroll change
      */
-    public onScrollChange = (): IScrollObject => {
-        let scrollObject: IScrollObject;
+    public onScrollChange = (): IScrollChange => {
+        let scrollObject: IScrollChange;
         const isLtr: boolean = this.getLTR() === Direction.ltr;
         const distanceRemaining: number =
             this.horizontalOverflowItemsRef.current.scrollWidth - this.horizontalOverflowItemsRef.current.scrollLeft;
