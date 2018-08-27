@@ -50,6 +50,7 @@ function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
             borderColor: "transparent",
             color: (config: IDesignSystem): string => {
                 const designSystem: IDesignSystem = safeDesignSystem(config);
+
                 return contrast(
                     ContrastModifiers.disabled * -1,
                     designSystem.foregroundColor,
