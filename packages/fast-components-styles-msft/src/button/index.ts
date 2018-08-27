@@ -1,12 +1,27 @@
-/* tslint:disable:max-line-length */
 import designSystemDefaults, { IDesignSystem, safeDesignSystem } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { adjustContrast, applyLocalizedProperty, contrast, Direction, ensureContrast, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
+import {
+    adjustContrast,
+    applyLocalizedProperty,
+    contrast,
+    Direction,
+    ensureContrast,
+    localizeSpacing,
+    toPx
+} from "@microsoft/fast-jss-utilities";
 import { curry, get } from "lodash-es";
 import { applyType } from "../utilities/typography";
-import { applyMixedColor, ContrastModifiers, ensureLargeContrast, ensureNormalContrast, largeContrast, normalContrast, scaleContrastNormal } from "../utilities/colors";
+import {
+    applyMixedColor,
+    ContrastModifiers,
+    ensureLargeContrast,
+    ensureNormalContrast,
+    largeContrast,
+    normalContrast,
+    scaleContrastNormal
+} from "../utilities/colors";
 import Chroma from "chroma-js";
 
 function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
@@ -66,7 +81,9 @@ function applyPropertyDrivenColor(incomingProperty: string, mixValue?: number, a
     };
 }
 
-const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<IMSFTButtonClassNameContract, IDesignSystem> => {
+const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (
+    config: IDesignSystem
+): ComponentStyleSheet<IMSFTButtonClassNameContract, IDesignSystem> => {
     type ContrastFunction = (operandColor: string, referenceCOlor: string) => string;
     const designSystem: IDesignSystem = safeDesignSystem(config);
     const contrastScale: number = designSystem.contrast;
@@ -241,4 +258,3 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
 };
 
 export default styles;
-/* tslint:enable:max-line-length */
