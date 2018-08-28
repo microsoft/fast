@@ -1,15 +1,10 @@
 import Chroma from "chroma-js";
 import withDesignSystemDefaults, { IDesignSystem, safeDesignSystem } from "../design-system";
-import { contrast, ensureContrast, scaleContrast, WCAGElementContrastRatios } from "@microsoft/fast-jss-utilities";
+import { adjustContrast, contrast, ensureContrast, scaleContrast, WCAGElementContrastRatios } from "@microsoft/fast-jss-utilities";
 import { curry } from "lodash-es";
 
 export function applyMixedColor(color1: string, color2: string, mixValue: number, alpha: number = 1): string {
     return Chroma.mix(color1, color2, mixValue).alpha(alpha).css();
-}
-
-export enum ContrastModifiers {
-    hover = -1,
-    disabled = -3
 }
 
 const scaleContrastNormal: (contrast: number) => number = curry(scaleContrast)(WCAGElementContrastRatios.normal);
@@ -50,6 +45,20 @@ export function largeContrast(contrastScale: number, operandColor: string, refer
  */
 export function ensureLargeContrast(contrastScale: number, operandColor: string, referenceColor: string): string {
     return ensureContrast(scaleContrastLarge(contrastScale), operandColor, referenceColor);
+}
+
+/**
+ * Returns a low-contrast disabled color
+ */
+export function disabledContrast(contrastScale: number, operandColor: string, referenceColor: string): string {
+    return contrast(scaleContrast(1.75, contrastScale), operandColor, referenceColor);
+}
+
+/**
+ * Apply a hover treatment to a color
+ */
+export function hoverContrast(contrastScale: number, operandColor: string, referenceColor: string): string {
+    return adjustContrast(scaleContrast(1, contrastScale) * -1, operandColor, referenceColor);
 }
 
 /**

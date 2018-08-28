@@ -15,9 +15,10 @@ import { curry, get } from "lodash-es";
 import { applyType } from "../utilities/typography";
 import {
     applyMixedColor,
-    ContrastModifiers,
+    disabledContrast,
     ensureLargeContrast,
     ensureNormalContrast,
+    hoverContrast,
     largeContrast,
     normalContrast,
     scaleContrastNormal
@@ -51,10 +52,10 @@ function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
             color: (config: IDesignSystem): string => {
                 const designSystem: IDesignSystem = safeDesignSystem(config);
 
-                return contrast(
-                    ContrastModifiers.disabled * -1,
+                return disabledContrast(
+                    designSystem.contrast,
                     designSystem.foregroundColor,
-                    designSystem.backgroundColor
+                    designSystem.brandColor
                 );
             }
         }
@@ -64,21 +65,6 @@ function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
 function applyTransaprentBackground(): ICSSRules<IDesignSystem> {
     return {
         backgroundColor: "transparent"
-    };
-}
-
-function applyPropertyDrivenColor(incomingProperty: string, mixValue?: number, alpha?: number): ICSSRules<IDesignSystem> {
-    return {
-        [incomingProperty]: (config: IDesignSystem): string => {
-            const designSystem: IDesignSystem = safeDesignSystem(config);
-
-            return applyMixedColor(
-                designSystem.foregroundColor,
-                designSystem.backgroundColor,
-                mixValue,
-                alpha
-            );
-        }
     };
 }
 
@@ -102,8 +88,8 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (
         scaledNormalContrast(backgroundColor, foregroundColor),
         color
     );
-    const secondaryHoverBackgroundColor: string = adjustContrast(
-        ContrastModifiers.hover,
+    const secondaryHoverBackgroundColor: string = hoverContrast(
+        designSystem.contrast,
         secondaryBackgroundColor,
         color
     );
@@ -118,10 +104,16 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (
     ) < scaleContrastNormal(contrastScale)
         ? `${focusBoxShadowDefaults} ${ensureNormalContrast(contrastScale, secondaryBackgroundColor, secondaryFocusBorderColor)}`
         : "none";
-    const secondaryDisabledBackgroundColor: string = adjustContrast(
-        ContrastModifiers.disabled,
+    const secondaryDisabledBackgroundColor: string = disabledContrast(
+        contrastScale,
         secondaryBackgroundColor,
-        color
+        backgroundColor
+    );
+
+    const secondaryDisabledColor: string = disabledContrast(
+        contrastScale,
+        color,
+        secondaryDisabledBackgroundColor
     );
 
     // Define primary button colors
@@ -129,8 +121,9 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (
         scaledEnsureNormalContrast(brandColor, backgroundColor),
         color
     );
-    const primaryHoverBackground: string = adjustContrast(
-        ContrastModifiers.hover,
+
+    const primaryHoverBackground: string = hoverContrast(
+        designSystem.contrast,
         primaryRestBackgroundColor,
         color
     );
@@ -144,21 +137,21 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (
     ) < scaleContrastNormal(contrastScale)
         ? `${focusBoxShadowDefaults} ${ensureNormalContrast(contrastScale, primaryRestBackgroundColor, primaryFocusBorderColor)}`
         : "none";
-    const primaryDisabledBackground: string = adjustContrast(
-        ContrastModifiers.disabled,
+    const primaryDisabledBackground: string = disabledContrast(
+        contrastScale,
         primaryRestBackgroundColor,
         backgroundColor
     );
-    const primaryDisabledColor: string = contrast(
-        ContrastModifiers.disabled * -1,
+    const primaryDisabledColor: string = disabledContrast(
+        contrastScale,
         color,
         primaryDisabledBackground
     );
 
     const outlineColor: string = scaledEnsureNormalContrast(foregroundColor, backgroundColor);
     const outlineBorderColor: string = scaledNormalContrast(foregroundColor, backgroundColor);
-    const outlineDisabledColor: string = contrast(
-        ContrastModifiers.disabled * -1,
+    const outlineDisabledColor: string = disabledContrast(
+        designSystem.contrast,
         outlineColor,
         backgroundColor
     );
@@ -175,7 +168,6 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (
             border: "2px solid",
             borderColor: "transparent",
             borderRadius: "2px",
-            cursor: "pointer",
             overflow: "hidden",
             lineHeight: "1",
             textAlign: "center",
@@ -196,7 +188,7 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (
             "&$button__disabled": {
                 cursor: "not-allowed",
                 backgroundColor: secondaryDisabledBackgroundColor,
-                color
+                color: secondaryDisabledColor
             }
         },
         button_primary: {

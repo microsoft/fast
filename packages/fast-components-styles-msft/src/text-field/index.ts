@@ -5,14 +5,19 @@ import { adjustContrast, contrast, toPx } from "@microsoft/fast-jss-utilities";
 import { get } from "lodash-es";
 import { applyType } from "../utilities/typography";
 import { fontWeight } from "../utilities/fonts";
-import { ContrastModifiers, ensureForegroundNormal, ensuresBackgroundNormal, foregroundNormal  } from "../utilities/colors";
+import { disabledContrast, ensureForegroundNormal, ensuresBackgroundNormal, foregroundNormal, hoverContrast  } from "../utilities/colors";
 
 /**
  * Retrieves the disabled color
  */
 function disabledColor(config: IDesignSystem): string {
     const designSystem: IDesignSystem = safeDesignSystem(config);
-    return adjustContrast(ContrastModifiers.disabled, foregroundNormal(config), designSystem.backgroundColor);
+    return disabledContrast(designSystem.contrast, foregroundNormal(designSystem), designSystem.backgroundColor);
+}
+
+function hoverColor(config: IDesignSystem): string {
+    const designSystem: IDesignSystem = safeDesignSystem(config);
+    return hoverContrast(designSystem.contrast, foregroundNormal(designSystem), designSystem.backgroundColor);
 }
 
 const styles: ComponentStyles<ITextFieldClassNameContract, IDesignSystem> = {
@@ -27,6 +32,9 @@ const styles: ComponentStyles<ITextFieldClassNameContract, IDesignSystem> = {
         borderRadius: "2px",
         padding: "10px",
         margin: "10px",
+        "&:hover": {
+            borderColor: hoverColor
+        },
         "&:focus": {
             outline: "none",
             boxShadow: (config: IDesignSystem): string => {

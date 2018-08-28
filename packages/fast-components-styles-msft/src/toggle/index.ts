@@ -1,5 +1,5 @@
 import designSystemDefaults, { IDesignSystem, safeDesignSystem } from "../design-system";
-import { ensureNormalContrast } from "../utilities/colors";
+import { disabledContrast, ensureNormalContrast } from "../utilities/colors";
 import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
 import { applyLocalizedProperty, Direction, ensureContrast, toPx } from "@microsoft/fast-jss-utilities";
 import { typeRamp } from "../utilities/typography";
@@ -23,7 +23,7 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config
                 marginTop: "0",
                 paddingBottom: "0" },
             "&[aria-disabled=\"true\"]": {
-                color: Chroma(foregroundColor).alpha(0.5).css()
+                color: disabledContrast(designSystem.contrast, foregroundColor, backgroundColor)
             }
         },
         toggle_label: {
@@ -50,7 +50,6 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config
         toggle_button: {
             position: "absolute",
             pointerEvents: "none",
-            foreground: foregroundColor,
             top: "5px",
             left: "5px",
             transition: "all .1s ease",
@@ -69,7 +68,6 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config
             borderColor: foregroundColor,
             borderRadius: "20px",
             appearance: "none",
-            cursor: "pointer",
             "@media screen and (-ms-high-contrast:active)": {
                 "&::after, &:checked + span": {
                     background: backgroundColor
@@ -92,7 +90,7 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config
                 },
                 "&:disabled": {
                     cursor: "not-allowed",
-                    background: Chroma.mix(foregroundColor, backgroundColor, 0.8).css(),
+                    background: disabledContrast(designSystem.contrast, foregroundColor, backgroundColor),
                     borderColor: "transparent",
                     "& + span": {
                         background: backgroundColor
@@ -109,9 +107,9 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config
                 },
                 "&:disabled": {
                     cursor: "not-allowed",
-                    borderColor: Chroma(foregroundColor).alpha(0.2).css(),
+                    borderColor: disabledContrast(designSystem.contrast, foregroundColor, backgroundColor),
                     "& + span": {
-                        backgroundColor: Chroma(foregroundColor).alpha(0.2).css()
+                        backgroundColor: disabledContrast(designSystem.contrast, foregroundColor, backgroundColor),
                     }
                 }
             },

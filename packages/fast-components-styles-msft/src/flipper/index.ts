@@ -2,7 +2,7 @@ import { IDesignSystem, safeDesignSystem } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { IFlipperClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { applyLocalizedProperty, contrast, Direction, toPx } from "@microsoft/fast-jss-utilities";
-import { applyMixedColor, ensureNormalContrast, normalContrast } from "../utilities/colors";
+import { applyMixedColor, ensureNormalContrast, hoverContrast, normalContrast } from "../utilities/colors";
 import { get } from "lodash-es";
 import Chroma from "chroma-js";
 
@@ -28,6 +28,9 @@ const styles: ComponentStyles<IFlipperClassNameContract, IDesignSystem> = (confi
         designSystem.backgroundColor
     );
 
+    const borderColorHover: string = hoverContrast(config.contrast, borderColor, backgroundColor);
+    const glyphColorHover: string = hoverContrast(config.contrast, foregroundColor, backgroundColor);
+
     return {
         button: {
             width: "40px",
@@ -39,7 +42,13 @@ const styles: ComponentStyles<IFlipperClassNameContract, IDesignSystem> = (confi
             background: backgroundColor,
             padding: "0",
             "&:hover": {
-                cursor: "pointer"
+                borderColor: borderColorHover,
+                "& $flipper_glyph": {
+                    "&::before": {
+                        borderRightColor: glyphColorHover,
+                        borderTopColor: glyphColorHover
+                    }
+                }
             },
             "&:focus": {
                 boxShadow: `0 0 0 1px inset ${borderColor}`,

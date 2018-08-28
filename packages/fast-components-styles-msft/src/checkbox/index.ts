@@ -3,7 +3,13 @@ import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast
 import { ICheckboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyTypeRampConfig } from "../utilities/typography";
 import { applyLocalizedProperty, contrast, Direction, toPx } from "@microsoft/fast-jss-utilities";
-import { ContrastModifiers, ensureForegroundNormal, ensureNormalContrast, normalContrast } from "../utilities/colors";
+import {
+    disabledContrast,
+    ensureForegroundNormal,
+    ensureNormalContrast,
+    hoverContrast,
+    normalContrast
+} from "../utilities/colors";
 import { get } from "lodash-es";
 import Chroma from "chroma-js";
 
@@ -15,10 +21,11 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = (conf
     const brandColor: string = designSystem.brandColor;
     const direction: Direction = designSystem.direction;
     const checkboxColor: string = normalContrast(designSystem.contrast, foregroundColor, backgroundColor);
-    const checkboxDisabled: string = contrast(
-        ContrastModifiers.disabled * -1,
-        designSystem.foregroundColor,
-        designSystem.backgroundColor
+    const checkboxHover: string = hoverContrast(designSystem.contrast, foregroundColor, backgroundColor);
+    const checkboxDisabled: string = disabledContrast(
+        designSystem.contrast,
+        foregroundColor,
+        backgroundColor
     );
 
     return {
@@ -26,10 +33,8 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = (conf
             display: "inline-flex",
             flexDirection: "row",
             alignItems: "center",
-            cursor: "pointer"
         },
         checkbox_input: {
-            cursor: "inherit",
             position: "absolute",
             width: "20px",
             height: "20px",
@@ -40,6 +45,9 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = (conf
             zIndex: "1",
             background: backgroundColor,
             boxShadow: `inset 0 0 0 1px ${checkboxColor}`,
+            "&:hover": {
+                boxShadow: `inset 0 0 0 1px ${checkboxHover}`,
+            },
             "&:focus": {
                 outline: "none",
                 boxShadow: `inset 0 0 0 2px ${checkboxColor}`,
