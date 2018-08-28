@@ -53,7 +53,7 @@ formChildOptions = formChildOptions.concat([
 /* tslint:disable */
 function render(): void {
     ReactDOM.render(
-        <Site formChildOptions={formChildOptions}>
+        <Site formChildOptions={formChildOptions} showTransparencyToggle={true}>
             <SiteTitle slot={"title"}>
                 <SiteTitleBrand>FAST</SiteTitleBrand> base component documentation
             </SiteTitle>
