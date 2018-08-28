@@ -13,7 +13,7 @@ const styles: ComponentStyles<IMetatextClassNameContract, IDesignSystem> = (conf
     return {
         metatext: {
             ...applyTypeRampConfig("t7"),
-            color: Chroma.mix(foregroundColor, backgroundColor, 0.6).css()
+            color: Chroma.mix(backgroundColor, foregroundColor, 0.6).css()
         }
     };
 };
