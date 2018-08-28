@@ -7,6 +7,7 @@ import HorizontalOverflow, {
     IHorizontalOverflowClassNameContract
 } from "./";
 import examples from "./examples.data";
+import "raf/polyfill";
 
 /*
  * Configure Enzyme
@@ -38,7 +39,7 @@ describe("horizontal overflow snapshot", (): void => {
 /* tslint:disable:no-string-literal */
 describe("horizontal overflow", (): void => {
     test("should render a previous button if one is passed as a child with the appropriate slot prop", () => {
-        const renderedWithImagesAndPrevious: any = mount(
+        const renderedWithImagesAndPrevious: any = shallow(
             <HorizontalOverflow managedClasses={managedClasses}>
                 <button id="testButtonPrevious" slot="previous">previous</button>
                 {imageSet1}
@@ -178,6 +179,11 @@ describe("horizontal overflow", (): void => {
         );
 
         expect(renderedWithImages.state("itemsHeight")).toBe(0);
+        expect(
+            renderedWithImages.instance()[
+                "getItemMaxHeight"
+            ]()
+        ).toBe(0);
     });
     test("should ease the animation correctly when moving the scroll position", () => {
         const renderedWithImages: any = mount(
@@ -259,7 +265,7 @@ describe("horizontal overflow", (): void => {
     });
     test("should have an `onLoad` method", () => {
         const renderedWithImages: any = mount(
-            <HorizontalOverflow managedClasses={managedClasses}>
+            <HorizontalOverflow className="foo" managedClasses={managedClasses}>
                 {imageSet1}
             </HorizontalOverflow>
         );
@@ -269,6 +275,16 @@ describe("horizontal overflow", (): void => {
                 "itemsOnLoad"
             ]()
         ).toBe(undefined);
+
+        expect(renderedWithImages.instance().state.itemsHeight).toBe(0);
+
+        renderedWithImages.setState({ itemsHeight: 50});
+
+        expect(renderedWithImages.instance().state.itemsHeight).toBe(50);
+
+        renderedWithImages.find("div.foo").simulate("load", {});
+
+        expect(renderedWithImages.instance().state.itemsHeight).toBe(0);
     });
     test("should execute a scroll animation on the element", () => {
         const renderedWithImages: any = mount(
