@@ -106,9 +106,16 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
     }
 
     /**
+     * Generates class names
+     */
+    protected generateClassNames(): string {
+        return super.generateClassNames(get(this.props, "managedClasses.horizontalOverflow"));
+    }
+
+    /**
      * Callback on scroll change
      */
-    public onScrollChange = (): IScrollChange => {
+    private onScrollChange = (): IScrollChange => {
         let scrollObject: IScrollChange;
         const isLtr: boolean = this.getLTR() === Direction.ltr;
         const distanceRemaining: number =
@@ -127,13 +134,6 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
         }
 
         return scrollObject;
-    }
-
-    /**
-     * Generates class names
-     */
-    protected generateClassNames(): string {
-        return super.generateClassNames(get(this.props, "managedClasses.horizontalOverflow"));
     }
 
     /**

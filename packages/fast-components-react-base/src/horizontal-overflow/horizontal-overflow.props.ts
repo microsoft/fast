@@ -11,7 +11,7 @@ export interface IScrollChange {
     end: boolean;
 }
 
-export type onScrollChange = (scrollObject: IScrollChange) => void;
+export type OnScrollChange = (scrollObject: IScrollChange) => void;
 
 export interface IHorizontalOverflowHandledProps {
     /**
@@ -27,7 +27,7 @@ export interface IHorizontalOverflowHandledProps {
     /**
      * Callback for on scroll change
      */
-    onScrollChange?: onScrollChange;
+    onScrollChange?: OnScrollChange;
 }
 
 export interface IHorizontalOverflowUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
