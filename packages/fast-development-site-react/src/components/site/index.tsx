@@ -53,6 +53,7 @@ export interface ISiteProps {
     collapsed?: boolean;
     componentBackgroundTransparent?: boolean;
     showComponentStatus?: boolean;
+    showTransparencyToggle?: boolean;
 }
 
 export interface IFormChildOption {
@@ -293,7 +294,8 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
 
     public static defaultProps: Partial<ISiteProps> = {
         locales: ["en", "en-rtl"],
-        showComponentStatus: true
+        showComponentStatus: true,
+        showTransparencyToggle: true
     };
 
     public static getDerivedStateFromProps(props: ISiteProps, state: ISiteState): Partial<ISiteState> | null {
@@ -743,13 +745,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     private renderInfoBarConfiguration(): JSX.Element {
         return (
             <div className={this.props.managedClasses.site_infoBarConfiguration}>
-                <button
-                    aria-pressed={this.state.componentBackgroundTransparent}
-                    onClick={this.handleTransparencyToggleClick}
-                    className={this.props.managedClasses.site_transparencyToggleButton}
-                >
-                    <span dangerouslySetInnerHTML={{__html: glyphTransparency}}/>
-                </button>
+                {this.renderTransparencyToggle()}
                 {this.renderThemeSelect()}
                 <span className={this.props.managedClasses.site_infoBarConfiguration_base}>
                     <select
@@ -771,6 +767,20 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 {this.renderStatus()}
             </div>
         );
+    }
+
+    private renderTransparencyToggle(): JSX.Element {
+        if (this.props.showTransparencyToggle) {
+            return (
+                <button
+                    aria-pressed={this.state.componentBackgroundTransparent}
+                    onClick={this.handleTransparencyToggleClick}
+                    className={this.props.managedClasses.site_transparencyToggleButton}
+                >
+                    <span dangerouslySetInnerHTML={{__html: glyphTransparency}}/>
+                </button>
+            );
+        }
     }
 
     private renderStatus(): JSX.Element {

@@ -71,6 +71,7 @@ export default class App extends React.Component<{}, IAppState> {
                 themes={themes}
                 onUpdateTheme={this.handleUpdateTheme}
                 showComponentStatus={true}
+                showTransparencyToggle={true}
             >
                 {this.renderSiteTitle()}
                 {this.renderSiteMenu()}

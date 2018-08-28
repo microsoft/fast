@@ -76,6 +76,7 @@ export default class App extends React.Component<{}, IAppState> {
                 onUpdateTheme={this.handleUpdateTheme}
                 themes={this.themes}
                 activeTheme={this.getThemeById(this.state.theme)}
+                showTransparencyToggle={true}
             >
                 <SiteMenu slot={"header"}>
                     <SiteMenuItem>
