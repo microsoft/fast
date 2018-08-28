@@ -263,19 +263,6 @@ describe("horizontal overflow", (): void => {
             ](0, 500, [])
         ).toBe(0);
     });
-    test("should have an `onScrollChange` method", () => {
-        const renderedWithImages: any = mount(
-            <HorizontalOverflow managedClasses={managedClasses}>
-                {imageSet1}
-            </HorizontalOverflow>
-        );
-
-        expect(
-            renderedWithImages.instance()[
-                "onScrollChange"
-            ]()
-        ).toBe(undefined);
-    });
     test("should unmount appropriately by removing event listener", () => {
         const renderedWithImages: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
