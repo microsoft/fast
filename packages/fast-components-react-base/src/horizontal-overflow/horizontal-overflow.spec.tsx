@@ -263,16 +263,6 @@ describe("horizontal overflow", (): void => {
             ](0, 500, [])
         ).toBe(0);
     });
-    test("should unmount appropriately by removing event listener", () => {
-        const renderedWithImages: any = mount(
-            <HorizontalOverflow managedClasses={managedClasses}>
-                {imageSet1}
-            </HorizontalOverflow>
-        );
-
-        renderedWithImages.unmount();
-        expect(renderedWithImages.removeEventListener).toBe(undefined);
-    });
     test("should have an `onLoad` method", () => {
         const renderedWithImages: any = mount(
             <HorizontalOverflow className="foo" managedClasses={managedClasses}>
