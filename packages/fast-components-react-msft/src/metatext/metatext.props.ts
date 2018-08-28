@@ -15,7 +15,7 @@ export interface IMetatextHandledProps {
     /**
      * The metatext tag
      */
-    tag: MetatextTag;
+    tag?: MetatextTag;
 }
 
 export interface IMetatextUnhandledProps extends React.HTMLAttributes<HTMLSpanElement | HTMLParagraphElement> {}
