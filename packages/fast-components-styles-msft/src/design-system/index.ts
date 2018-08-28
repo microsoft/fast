@@ -40,7 +40,7 @@ const designSystemDefaults: IDesignSystem = {
 /**
  * Ensure that all properties of the design system are assigned
  */
-export const safeDesignSystem: (config: Partial<IDesignSystem>) => IDesignSystem =
+export const withDesignSystemDefaults: (config: Partial<IDesignSystem>) => IDesignSystem =
     memoize(
         (config: Partial<IDesignSystem>): IDesignSystem => {
             return Object.assign({}, designSystemDefaults, config);
@@ -52,7 +52,7 @@ export const safeDesignSystem: (config: Partial<IDesignSystem>) => IDesignSystem
  */
 export function getDesignSystemProperty(key: string): (config: IDesignSystem) => string {
     return function(config: IDesignSystem): string {
-        return safeDesignSystem(config)[key];
+        return withDesignSystemDefaults(config)[key];
     };
 }
 

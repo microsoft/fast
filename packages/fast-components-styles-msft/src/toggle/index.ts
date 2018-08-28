@@ -1,4 +1,4 @@
-import designSystemDefaults, { IDesignSystem, safeDesignSystem } from "../design-system";
+import designSystemDefaults, { IDesignSystem, withDesignSystemDefaults } from "../design-system";
 import { disabledContrast, ensureNormalContrast } from "../utilities/colors";
 import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
 import { applyLocalizedProperty, Direction, ensureContrast, toPx } from "@microsoft/fast-jss-utilities";
@@ -8,7 +8,7 @@ import Chroma from "chroma-js";
 
 /* tslint:disable-next-line */
 const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<IToggleClassNameContract, IDesignSystem> => {
-    const designSystem: IDesignSystem = safeDesignSystem(config);
+    const designSystem: IDesignSystem = withDesignSystemDefaults(config);
     const backgroundColor: string = ensureNormalContrast(config.contrast, designSystem.backgroundColor, designSystem.foregroundColor);
     const brandColor: string = ensureNormalContrast(config.contrast, designSystem.brandColor, designSystem.backgroundColor);
     const foregroundColor: string = ensureNormalContrast(config.contrast, designSystem.foregroundColor, designSystem.backgroundColor);

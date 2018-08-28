@@ -1,5 +1,5 @@
 import Chroma from "chroma-js";
-import withDesignSystemDefaults, { IDesignSystem, safeDesignSystem } from "../design-system";
+import { IDesignSystem, withDesignSystemDefaults } from "../design-system";
 import { adjustContrast, contrast, ensureContrast, scaleContrast, WCAGElementContrastRatios } from "@microsoft/fast-jss-utilities";
 import { curry } from "lodash-es";
 
@@ -65,7 +65,7 @@ export function hoverContrast(contrastScale: number, operandColor: string, refer
  * Ensure the foreground color meets normal contrast ratios against a background color
  */
 export function ensureForegroundNormal(config: IDesignSystem): string {
-    const designSystem: IDesignSystem = safeDesignSystem(config);
+    const designSystem: IDesignSystem = withDesignSystemDefaults(config);
     return ensureNormalContrast(designSystem.contrast, designSystem.foregroundColor, designSystem.backgroundColor);
 }
 
@@ -73,7 +73,7 @@ export function ensureForegroundNormal(config: IDesignSystem): string {
  * Set the foreground color to meet normal contrast ratios against a background color
  */
 export function foregroundNormal(config: IDesignSystem): string {
-    const designSystem: IDesignSystem = safeDesignSystem(config);
+    const designSystem: IDesignSystem = withDesignSystemDefaults(config);
     return normalContrast(designSystem.contrast, designSystem.foregroundColor, designSystem.backgroundColor);
 }
 
@@ -81,7 +81,7 @@ export function foregroundNormal(config: IDesignSystem): string {
  * Ensure the brand color meets normal contrast ratios against a background color
  */
 export function ensureBrandNormal(config: IDesignSystem): string {
-    const designSystem: IDesignSystem = safeDesignSystem(config);
+    const designSystem: IDesignSystem = withDesignSystemDefaults(config);
     return ensureNormalContrast(designSystem.contrast, designSystem.brandColor, designSystem.backgroundColor);
 }
 
@@ -89,6 +89,6 @@ export function ensureBrandNormal(config: IDesignSystem): string {
  * Ensure the background color meets normal contrast ratios against a background color
  */
 export function ensuresBackgroundNormal(config: IDesignSystem): string {
-    const designSystem: IDesignSystem = safeDesignSystem(config);
+    const designSystem: IDesignSystem = withDesignSystemDefaults(config);
     return ensureNormalContrast(designSystem.contrast, designSystem.backgroundColor, designSystem.foregroundColor);
 }

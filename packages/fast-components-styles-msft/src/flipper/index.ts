@@ -1,4 +1,4 @@
-import { IDesignSystem, safeDesignSystem } from "../design-system";
+import { IDesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { IFlipperClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { applyLocalizedProperty, contrast, Direction, toPx } from "@microsoft/fast-jss-utilities";
@@ -12,7 +12,7 @@ const westFlipperTransform: string = "translateX(3px) rotate(-135deg)";
 /* tslint:disable:max-line-length */
 const styles: ComponentStyles<IFlipperClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<IFlipperClassNameContract, IDesignSystem> => {
 /* tslint:enable:max-line-length */
-    const designSystem: IDesignSystem = safeDesignSystem(config);
+    const designSystem: IDesignSystem = withDesignSystemDefaults(config);
 
     const backgroundColor: string = designSystem.backgroundColor;
     const direction: Direction = designSystem.direction;

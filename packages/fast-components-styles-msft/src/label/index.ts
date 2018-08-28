@@ -1,4 +1,4 @@
-import { IDesignSystem, safeDesignSystem } from "../design-system";
+import { IDesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ensureForegroundNormal, ensureNormalContrast } from "../utilities/colors";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { ILabelClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";

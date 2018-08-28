@@ -1,4 +1,4 @@
-import { IDesignSystem, safeDesignSystem } from "../design-system";
+import { IDesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { IDialogClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { toPx } from "@microsoft/fast-jss-utilities";
@@ -8,7 +8,7 @@ import { applyAcrylicMaterial } from "../utilities/acrylic";
 
 /* tslint:disable-next-line */
 const styles: ComponentStyles<IDialogClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<IDialogClassNameContract, IDesignSystem> => {
-    const designSystem: IDesignSystem = safeDesignSystem(config);
+    const designSystem: IDesignSystem = withDesignSystemDefaults(config);
     const backgroundColor: string = designSystem.backgroundColor;
     const foregroundColor: string = designSystem.foregroundColor;
     const dialogShadow: string =

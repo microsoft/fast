@@ -1,4 +1,4 @@
-import designSystemDefaults, { IDesignSystem, safeDesignSystem } from "../design-system";
+import designSystemDefaults, { IDesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { ITextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { adjustContrast, contrast, toPx } from "@microsoft/fast-jss-utilities";
@@ -11,12 +11,12 @@ import { disabledContrast, ensureForegroundNormal, ensuresBackgroundNormal, fore
  * Retrieves the disabled color
  */
 function disabledColor(config: IDesignSystem): string {
-    const designSystem: IDesignSystem = safeDesignSystem(config);
+    const designSystem: IDesignSystem = withDesignSystemDefaults(config);
     return disabledContrast(designSystem.contrast, foregroundNormal(designSystem), designSystem.backgroundColor);
 }
 
 function hoverColor(config: IDesignSystem): string {
-    const designSystem: IDesignSystem = safeDesignSystem(config);
+    const designSystem: IDesignSystem = withDesignSystemDefaults(config);
     return hoverContrast(designSystem.contrast, foregroundNormal(designSystem), designSystem.backgroundColor);
 }
 

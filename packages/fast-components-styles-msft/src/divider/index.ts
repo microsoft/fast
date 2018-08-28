@@ -1,4 +1,4 @@
-import designSystemDefaults, { IDesignSystem, safeDesignSystem } from "../design-system";
+import designSystemDefaults, { IDesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { normalContrast } from "../utilities/colors";
 import { IDividerClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
@@ -15,7 +15,7 @@ const styles: ComponentStyles<IDividerClassNameContract, IDesignSystem> = {
         marginBottom: toPx(12),
         border: "none",
         borderTop: (config: IDesignSystem): string => {
-            const designSystem: IDesignSystem = safeDesignSystem(config);
+            const designSystem: IDesignSystem = withDesignSystemDefaults(config);
             const borderColor: string = normalContrast(designSystem.contrast, designSystem.foregroundColor, designSystem.backgroundColor);
             return `${toPx(1)} solid ${borderColor}`;
         }

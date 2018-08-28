@@ -1,4 +1,4 @@
-import designSystemDefaults, { IDesignSystem, safeDesignSystem } from "../design-system";
+import designSystemDefaults, { IDesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
@@ -28,7 +28,7 @@ import Chroma from "chroma-js";
 function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
     return {
         color: (config: IDesignSystem): string => {
-            const designSystem: IDesignSystem = safeDesignSystem(config);
+            const designSystem: IDesignSystem = withDesignSystemDefaults(config);
             return ensureNormalContrast(designSystem.contrast, designSystem.brandColor, designSystem.backgroundColor);
         },
         ...applyTransaprentBackground(),
@@ -39,7 +39,7 @@ function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
         },
         "&:focus span::before, &:active span::before, &:hover span::before": {
             background: (config: IDesignSystem): string => {
-                const designSystem: IDesignSystem = safeDesignSystem(config);
+                const designSystem: IDesignSystem = withDesignSystemDefaults(config);
                 return ensureNormalContrast(designSystem.contrast, designSystem.brandColor, designSystem.backgroundColor);
             }
         },
@@ -50,7 +50,7 @@ function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
             ...applyTransaprentBackground(),
             borderColor: "transparent",
             color: (config: IDesignSystem): string => {
-                const designSystem: IDesignSystem = safeDesignSystem(config);
+                const designSystem: IDesignSystem = withDesignSystemDefaults(config);
 
                 return disabledContrast(
                     designSystem.contrast,
@@ -72,7 +72,7 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (
     config: IDesignSystem
 ): ComponentStyleSheet<IMSFTButtonClassNameContract, IDesignSystem> => {
     type ContrastFunction = (operandColor: string, referenceColor: string) => string;
-    const designSystem: IDesignSystem = safeDesignSystem(config);
+    const designSystem: IDesignSystem = withDesignSystemDefaults(config);
     const contrastScale: number = designSystem.contrast;
     const foregroundColor: string = designSystem.foregroundColor;
     const backgroundColor: string = designSystem.backgroundColor;
