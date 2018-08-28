@@ -115,25 +115,22 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
     /**
      * Callback on scroll change
      */
-    private onScrollChange = (): IScrollChange => {
-        let scrollObject: IScrollChange;
+    private onScrollChange = (): void => {
+        if (!this.props.onScrollChange) {
+            return;
+        }
+
         const isLtr: boolean = this.getLTR() === Direction.ltr;
         const distanceRemaining: number =
             this.horizontalOverflowItemsRef.current.scrollWidth - this.horizontalOverflowItemsRef.current.scrollLeft;
 
         if (this.horizontalOverflowItemsRef.current.scrollLeft === 0) {
-            scrollObject = { start: isLtr, end: !isLtr };
+            this.props.onScrollChange({ start: isLtr, end: !isLtr });
         } else if (distanceRemaining === this.horizontalOverflowItemsRef.current.clientWidth) {
-            scrollObject = { start: !isLtr, end: isLtr };
+            this.props.onScrollChange({ start: !isLtr, end: isLtr });
         } else {
-            scrollObject = { start: false, end: false };
+            this.props.onScrollChange({ start: false, end: false });
         }
-
-        if (this.props.onScrollChange) {
-            this.props.onScrollChange(scrollObject);
-        }
-
-        return scrollObject;
     }
 
     /**
