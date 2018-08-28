@@ -274,7 +274,7 @@ describe("horizontal overflow", (): void => {
             renderedWithImages.instance()[
                 "onScrollChange"
             ]()
-        ).not.toBe(undefined);
+        ).toBe(undefined);
     });
     test("should unmount appropriately by removing event listener", () => {
         const renderedWithImages: any = mount(
