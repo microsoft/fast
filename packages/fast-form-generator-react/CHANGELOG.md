@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/Microsoft/fast-dna/compare/v2.0.0-corrected...v2.1.0) (2018-08-29)
+
+
+### Bug Fixes
+
+* **fast-form-generator-react:** fix form item select to return the correct value based on type ([#800](https://github.com/Microsoft/fast-dna/issues/800)) ([e16742b](https://github.com/Microsoft/fast-dna/commit/e16742b))
+
+
+### Features
+
+* update Lerna to ^3.0.0 ([#795](https://github.com/Microsoft/fast-dna/issues/795)) ([9ce9a56](https://github.com/Microsoft/fast-dna/commit/9ce9a56))
+* upgrade to TypeScript 3.0.0 ([#793](https://github.com/Microsoft/fast-dna/issues/793)) ([e203e86](https://github.com/Microsoft/fast-dna/commit/e203e86))
+* **fast-components-react-base:** add callback to horizontal overflow to return and object that informs scroll start and end ([#797](https://github.com/Microsoft/fast-dna/issues/797)) ([37975f3](https://github.com/Microsoft/fast-dna/commit/37975f3))
+* **fast-form-generator:** add logic to close option menus when clicking outside of menu UI ([#708](https://github.com/Microsoft/fast-dna/issues/708)) ([2c51434](https://github.com/Microsoft/fast-dna/commit/2c51434))
+* **fast-form-generator-react:** add a utility to convert a data location to a schema location ([#803](https://github.com/Microsoft/fast-dna/issues/803)) ([167b092](https://github.com/Microsoft/fast-dna/commit/167b092))
+* **paragraph:** adds paragraph as a new MSFT component ([#805](https://github.com/Microsoft/fast-dna/issues/805)) ([8325d3f](https://github.com/Microsoft/fast-dna/commit/8325d3f))
+
+
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/Microsoft/fast-dna/compare/v1.6.0...v2.0.0) (2018-08-02)
 

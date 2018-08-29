@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-viewer-react",
   "description": "An implementation of a React iframe that is self-contained.",
   "sideEffects": false,
-  "version": "2.0.0",
+  "version": "2.1.0",
   "author": {
     "name": "Fluent Web",
     "url": "https://discord.gg/FcSNfg4"
@@ -72,7 +72,7 @@
     "react-dom": "^16.3.0"
   },
   "devDependencies": {
-    "@microsoft/fast-tslint-rules": "^2.0.0",
+    "@microsoft/fast-tslint-rules": "^2.1.0",
     "@types/jest": "^22.1.1",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.6.7",
