@@ -57,6 +57,12 @@ import ParagraphStyles from "./paragraph";
 export { ParagraphStyles };
 
 /**
+ * Export subheading styles
+ */
+import SubheadingStyles from "./subheading";
+export { SubheadingStyles };
+
+/**
  * Export toggle styles
  */
 import ToggleStyles from "./toggle";

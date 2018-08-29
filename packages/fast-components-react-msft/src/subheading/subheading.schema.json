@@ -1,0 +1,36 @@
+{
+    "$schema": "http://json.schema.org/schema#",
+    "title": "Subheading",
+    "description": "A Subheading component's schema definition",
+    "type": "object",
+    "id": "Subheading",
+    "children": true,
+    "properties": {
+        "tag": {
+            "title": "HTML Tag",
+            "type": "string",
+            "enum": [
+                "h1",
+                "h2",
+                "h3",
+                "h4",
+                "h5",
+                "h6",
+                "p"                
+            ]
+        },
+        "level": {
+            "title": "Level",
+            "type": "number",
+            "enum": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+            ]
+        }
+    }
+
+}
