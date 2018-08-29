@@ -2,14 +2,9 @@ import * as React from "react";
 import { IComponentFactoryExample  } from "@microsoft/fast-development-site-react";
 import Subheading from "./index";
 import { 
-    SubheadingLevel,
-    SubheadingTag,
-    SubheadingProps,
     ISubheadingHandledProps,
-    ISubheadingUnhandledProps,,
+    ISubheadingUnhandledProps,
     SubheadingTag,
-    SubheadingLevel,
-    SubheadingTag
     SubheadingLevel
 } from "./subheading.props";
 
