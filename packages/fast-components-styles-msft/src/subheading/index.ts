@@ -2,7 +2,6 @@ import { IDesignSystem } from "../design-system";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { ISubheadingClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft"
 
-
 function applySubheadingStyles(): ICSSRules<IDesignSystem> {
     return {
         fontWeight: "500"
