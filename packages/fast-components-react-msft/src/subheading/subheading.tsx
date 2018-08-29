@@ -13,6 +13,10 @@ import { IManagedClasses, ISubheadingClassNameContract } from "@microsoft/fast-c
 
 /* tslint:disable-next-line */
 class Subheading extends Foundation<ISubheadingHandledProps & IManagedClasses<ISubheadingClassNameContract>, React.HTMLAttributes<HTMLElement>, {}> {
+    public static defaultProps: Partial<ISubheadingHandledProps> = {
+        level: SubheadingLevel._1
+    };
+
     protected handledProps: HandledProps<ISubheadingHandledProps & IManagedClasses<ISubheadingClassNameContract>> = {
         level: void 0,
         managedClasses: void 0,
@@ -20,7 +24,7 @@ class Subheading extends Foundation<ISubheadingHandledProps & IManagedClasses<IS
     };
 
     private get tag(): TypographyTag {
-        return this.props.tag ? TypographyTag[this.props.tag] : TypographyTag.h1;
+        return this.props.tag ? TypographyTag[this.props.tag] : TypographyTag.h3;
     }
 
     private get level(): TypeLevel {
@@ -35,7 +39,7 @@ class Subheading extends Foundation<ISubheadingHandledProps & IManagedClasses<IS
                 return TypeLevel._6;
             case SubheadingLevel._5:
                 return TypeLevel._7;
-            default:
+            case SubheadingLevel._6:
                 return TypeLevel._8;
         }
     }
@@ -54,8 +58,7 @@ class Subheading extends Foundation<ISubheadingHandledProps & IManagedClasses<IS
     }
 
     protected generateClassNames(): string {
-        const classes: string = this.props.level ?
-             get(this.props, `managedClasses_subheading_${this.props.level}`) : get(this.props, `managedClasses_subheading_1`);
+        const classes: string = get(this.props, `managedClasses_subheading_${this.props.level}`);
 
         return super.generateClassNames(classes);
     }

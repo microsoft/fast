@@ -6,7 +6,11 @@ import {
     SubheadingTag,
     SubheadingProps,
     ISubheadingHandledProps,
-    ISubheadingUnhandledProps
+    ISubheadingUnhandledProps,,
+    SubheadingTag,
+    SubheadingLevel,
+    SubheadingTag
+    SubheadingLevel
 } from "./subheading.props";
 
 import schema from "./subheading.schema.json";
@@ -26,6 +30,47 @@ export default {
     data: [
         {
             children: testString
-        }
+        },
+        {
+            tag: SubheadingTag.h1,
+            children: testString,
+            "data-sketch-symbol": "Subheading 1"
+        },
+        {
+            tag: SubheadingTag.h1,
+            level: SubheadingLevel._1,
+            children: testString,
+            "data-sketch-symbol": "Subheading 1"
+        },
+        {
+            tag: SubheadingTag.h2,
+            level: SubheadingLevel._2,
+            children: testString,
+            "data-sketch-symbol" : "Subheading 2"
+        },
+        {
+            tag: SubheadingTag.h3,
+            level: SubheadingLevel._3,
+            children: testString,
+            "data-sketch-symbol": "Subheading 3"
+        },
+        {
+            tag: SubheadingTag.h4,
+            level: SubheadingLevel._4,
+            children: testString,
+            "data-sketch-symbol": "Subheading 4"
+        },
+        {
+            tag: SubheadingTag.h5,
+            level: SubheadingLevel._5,
+            children: testString,
+            "data-sketch-symbol": "Subheading 5"
+        },
+        {
+            tag: SubheadingTag.h6,
+            level: SubheadingLevel._6,
+            children: testString,
+            "data-sketch-symbol": "Subheading 6"
+        }        
     ]
 } as IComponentFactoryExample<ISubheadingHandledProps>;
