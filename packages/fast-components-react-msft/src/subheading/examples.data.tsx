@@ -7,9 +7,7 @@ import {
     SubheadingTag,
     SubheadingLevel
 } from "./subheading.props";
-
-import schema from "./subheading.schema.json";
-
+import Schema from "./subheading.schema.json";
 import Documentation from "./.tmp/documentation";
 
 const testString: string = "Subheading test string";
@@ -17,7 +15,7 @@ const testString: string = "Subheading test string";
 export default {
     name: "Subheading",
     component: Subheading,
-    schema: schema as any,
+    schema: Schema as any,
     documenation: <Documentation />,
     detailData: {
         children: "Subheading test"
