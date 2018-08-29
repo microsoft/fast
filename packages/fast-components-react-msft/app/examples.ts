@@ -1,6 +1,9 @@
 import ButtonExamples from "../src/button/examples.data";
 export { ButtonExamples };
 
+import CaptionExamples from "../src/caption/examples.data";
+export { CaptionExamples };
+
 import CheckboxExamples from "../src/checkbox/examples.data";
 export { CheckboxExamples };
 
