@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "moduleResolution": "node",
-    "module": "ES6",
+    "module": "CommonJS",
     "target": "ES6",
     "baseUrl": ".",
     "declaration": true,
