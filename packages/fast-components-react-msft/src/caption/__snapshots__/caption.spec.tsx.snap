@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`caption snapshots Caption: 0 1`] = `
+<p
+  className="typography_8-0-1-11 caption-0-1-1 caption_1-0-1-2"
+>
+  Caption test string
+</p>
+`;
+
+exports[`caption snapshots Caption: 1 1`] = `
+<p
+  className="typography_8-0-1-23 caption-0-1-13 caption_1-0-1-14"
+>
+  Caption test string
+</p>
+`;

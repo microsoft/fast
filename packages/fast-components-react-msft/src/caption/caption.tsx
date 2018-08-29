@@ -7,7 +7,7 @@ import { ICaptionClassNameContract, IManagedClasses } from "@microsoft/fast-comp
 import Typography from "../typography";
 
 class Caption extends Foundation<ICaptionHandledProps & IManagedClasses<ICaptionClassNameContract>, React.HTMLAttributes<HTMLElement>, {}> {
-    protected defaultProps: Partial<ICaptionHandledProps> = {
+    public static defaultProps: Partial<ICaptionHandledProps> = {
         tag: CaptionTag.p,
         level: CaptionLevel._1
     };
