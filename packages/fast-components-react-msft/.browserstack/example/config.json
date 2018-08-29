@@ -1,0 +1,18 @@
+{
+  "remoteCfg": {
+    "host": "hub.browserstack.com",
+    "port": 80
+  },
+  "browsers": [{
+      "browserName": "internet explorer",
+      "version": "10.0",
+      "browserstack.user": "<browserstack.user>",
+      "browserstack.key": "<browserstack.key>"
+  }, {
+      "browserName": "chrome",
+      "version": "22.0",
+      "browserstack.user": "<browserstack.user>",
+      "browserstack.key": "<browserstack.key>"
+  }],
+  "concurrency": 2
+}

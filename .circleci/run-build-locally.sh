@@ -3,6 +3,7 @@
 # Debugging locally
 # For complete details visit https://circleci.com/docs/2.0/examples/#video-test-your-config-file-locally 
 
+# For MacOS/Linux
 # 1. $ export CIRCLE_CI_TOKEN=some-value-created-by-personal-ci-account
 # 2. $ cd ./.circleci
 # 3. $ circleci config validate -c config.yml

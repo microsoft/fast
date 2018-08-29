@@ -30,8 +30,13 @@ jobs:
           name: Execute Lerna bootstrap
           command: |
             lerna bootstrap
+  test:
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/fast-dna
+    steps:
       - run: 
-          name: Test all packages
+          name: Unit Test all packages
           command: |
             lerna run test --stream
       - run:
@@ -65,7 +70,53 @@ jobs:
             - ./node_modules
             - ./coverage
             - ./coverage/cc-test-reporter
-# // TODO #428: Reconfigure to support workflows to improve performmance
+  regress:
+
+workflows:
+  version: 2
+  commit:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+  schedule-nightly-workflow:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - regress:
+          requires:
+            - build
+            - test
+
+            # Steps that need further wired out
+              # regress
+              # deploy
+              # publish
+
+
+# - run:
+#   name: Install Browser Stack and Set Up Tunnel
+#   background: true
+#   command: |
+#     # Download the browserstack binary file to create a tunnel
+#     - wget "https://www.browserstack.com/browserstack-local/BrowserStackLocal-linux-x64.zip"
+#     # Unzip the browserstack binary file
+#     - unzip BrowserStackLocal-linux-x64.zip
+#     # Run the file with your access key
+#     - ./BrowserStackLocal $BROWSERSTACK KEY:
+#         background: true
+
+          # // TODO #428: Reconfigure to support workflows to improve performmance
 #   "test-coverage":
 #     environment:
 #       CC_TEST_REPORTER_ID=08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
