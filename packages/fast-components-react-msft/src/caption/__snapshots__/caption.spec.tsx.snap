@@ -23,3 +23,27 @@ exports[`caption snapshots Caption: 2 1`] = `
   Caption test string level 2
 </p>
 `;
+
+exports[`caption snapshots Caption: 3 1`] = `
+<span
+  className="typography_8-0-1-47 caption-0-1-37 caption_1-0-1-38"
+>
+  span tag test string
+</span>
+`;
+
+exports[`caption snapshots Caption: 4 1`] = `
+<caption
+  className="typography_8-0-1-59 caption-0-1-49 caption_1-0-1-50"
+>
+  caption tag test string
+</caption>
+`;
+
+exports[`caption snapshots Caption: 5 1`] = `
+<p
+  className="typography_8-0-1-71 caption-0-1-61 caption_1-0-1-62"
+>
+  figcaption tag test string
+</p>
+`;
