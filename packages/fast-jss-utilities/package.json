@@ -60,7 +60,7 @@
   },
   "dependencies": {
     "@microsoft/fast-jss-manager": "^2.1.0",
-    "@microsoft/fast-colors": "^2.0.0",
+    "@microsoft/fast-colors": "^2.1.0",
     "lodash-es": "^4.17.10"
   },
   "peerDependencies": {
