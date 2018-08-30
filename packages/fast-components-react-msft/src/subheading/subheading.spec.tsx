@@ -3,7 +3,7 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
-import { 
+import {
     ISubheadingHandledProps,
     ISubheadingManagedClasses,
     ISubheadingUnhandledProps,
@@ -14,13 +14,13 @@ import {
  /**
   * Configure enzyme
   */
- configure({adapter: new Adapter()});
+configure({adapter: new Adapter()});
 
- describe("generate snapshots", (): void => {
-     generateSnapshots(examples);
- }
+describe("generate snapshots", (): void => {
+    generateSnapshots(examples);
+}
 
- describe("subheading", (): void => {
+describe("subheading", (): void => {
 
     const Component: React.ComponentClass<ISubheadingHandledProps> = examples.component;
 
@@ -64,4 +64,4 @@ import {
 
         expect(subheading.instance().props.level).toEqual(SubheadingLevel._1);
     });
- });
+});

@@ -1,11 +1,11 @@
 import * as React from "react";
 import { IComponentFactoryExample  } from "@microsoft/fast-development-site-react";
 import Subheading from "./index";
-import { 
+import {
     ISubheadingHandledProps,
     ISubheadingUnhandledProps,
-    SubheadingTag,
-    SubheadingLevel
+    SubheadingLevel,
+    SubheadingTag
 } from "./subheading.props";
 import Schema from "./subheading.schema.json";
 import Documentation from "./.tmp/documentation";
@@ -64,6 +64,6 @@ export default {
             level: SubheadingLevel._6,
             children: testString,
             "data-sketch-symbol": "Subheading 6"
-        }        
+        }
     ]
 } as IComponentFactoryExample<ISubheadingHandledProps>;

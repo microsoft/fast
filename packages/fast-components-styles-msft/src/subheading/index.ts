@@ -1,6 +1,6 @@
 import { IDesignSystem } from "../design-system";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
-import { ISubheadingClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft"
+import { ISubheadingClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { fontWeight } from "../utilities/fonts";
 
 const styles: ComponentStyles<ISubheadingClassNameContract, IDesignSystem> = {
