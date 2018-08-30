@@ -72,7 +72,7 @@ const styles: ComponentStyles<IMSFTProgressClassNameContract, IDesignSystem> = (
             left: "10px"
         },
         progress_dot__5: {
-            animationDelay:" 0.05s",
+            animationDelay: " 0.05s",
             left: "20px"
         },
         "@keyframes dots": {
@@ -106,4 +106,4 @@ const styles: ComponentStyles<IMSFTProgressClassNameContract, IDesignSystem> = (
     };
 };
 
-export default styles
+export default styles;
