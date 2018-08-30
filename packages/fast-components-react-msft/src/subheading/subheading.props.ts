@@ -22,10 +22,19 @@ export enum SubheadingTag {
 
 export interface ISubheadingHandledProps {
 
+    /**
+     * The subheading content
+     */
     children?: React.ReactNode | React.ReactNode[];
 
+    /**
+     * The subheading level used to map to typographic level
+     */
     level?: SubheadingLevel;
 
+    /**
+     * The subheading tag used to map to available styles for this component
+     */
     tag: SubheadingTag;
 }
 

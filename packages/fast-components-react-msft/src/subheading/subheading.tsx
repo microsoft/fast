@@ -5,7 +5,8 @@ import {
     ISubheadingHandledProps,
     ISubheadingManagedClasses,
     ISubheadingUnhandledProps,
-    SubheadingLevel
+    SubheadingLevel,
+    SubheadingTag
 } from "./subheading.props";
 
 import Typography from "../typography";
@@ -14,7 +15,8 @@ import { IManagedClasses, ISubheadingClassNameContract } from "@microsoft/fast-c
 /* tslint:disable-next-line */
 class Subheading extends Foundation<ISubheadingHandledProps & IManagedClasses<ISubheadingClassNameContract>, React.HTMLAttributes<HTMLElement>, {}> {
     public static defaultProps: Partial<ISubheadingHandledProps> = {
-        level: SubheadingLevel._1
+        level: SubheadingLevel._1,
+        tag: SubheadingTag.h3
     };
 
     protected handledProps: HandledProps<ISubheadingHandledProps & IManagedClasses<ISubheadingClassNameContract>> = {
@@ -24,7 +26,7 @@ class Subheading extends Foundation<ISubheadingHandledProps & IManagedClasses<IS
     };
 
     private get tag(): TypographyTag {
-        return this.props.tag ? TypographyTag[this.props.tag] : TypographyTag.h3;
+        return TypographyTag[this.props.tag];
     }
 
     private get level(): TypeLevel {

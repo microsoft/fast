@@ -24,7 +24,7 @@ import {
 
     const Component: React.ComponentClass<ISubheadingHandledProps> = examples.component;
 
-    test("should return a valid object which includes all proper that are not enumerated as handledProps", (): void => {
+    test("should return a valid object which includes all props that are not enumerated as handledProps", (): void => {
         const handledProps: ISubheadingHandledProps = {
             tag: SubheadingTag.h1,
             level: SubheadingLevel._1
@@ -55,7 +55,7 @@ import {
         expect(subheading.instance().props.tag).toEqual(SubheadingTag.h4);
     });
 
-    test("should render default level if none specified", (): void => {
+    test("should render default level if none is specified", (): void => {
         const rendered: any = shallow(
             <Component />
         );
