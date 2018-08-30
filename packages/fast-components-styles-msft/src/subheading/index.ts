@@ -1,32 +1,26 @@
 import { IDesignSystem } from "../design-system";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { ISubheadingClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft"
-
-function applySubheadingStyles(): ICSSRules<IDesignSystem> {
-    return {
-        fontWeight: "500"
-    };
-}
+import { fontWeight } from "../utilities/fonts";
 
 const styles: ComponentStyles<ISubheadingClassNameContract, IDesignSystem> = {
-
     subheading_1: {
-        ...applySubheadingStyles()
+        fontWeight: `${fontWeight.bold}`
     },
     subheading_2: {
-        ...applySubheadingStyles()
+        fontWeight: `${fontWeight.bold}`
     },
     subheading_3: {
-        ...applySubheadingStyles()
+        fontWeight: `${fontWeight.bold}`
     },
     subheading_4: {
-        ...applySubheadingStyles()
+        fontWeight: `${fontWeight.normal}`
     },
     subheading_5: {
-        ...applySubheadingStyles()
+        fontWeight: `${fontWeight.normal}`
     },
     subheading_6: {
-        ...applySubheadingStyles()
+        fontWeight: `${fontWeight.normal}`
     }
 };
 
