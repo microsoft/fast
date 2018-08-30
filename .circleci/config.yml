@@ -80,22 +80,29 @@ workflows:
   commit:
     jobs:
       - build
-      - test:
-          requires:
-            - build
-  schedule-nightly-workflow:
-    triggers:
-      - schedule:
-          cron: "0 0 * * *"
           filters:
             branches:
-              only:
-                - master
-    jobs:
-      - build
+              only: master
       - test:
           requires:
             - build
+          filters:
+            branches:
+              only: master
+              
+  # schedule-nightly-workflow:
+  #   triggers:
+  #     - schedule:
+  #         cron: "0 0 * * *"
+  #         filters:
+  #           branches:
+  #             only:
+  #               - master
+  #   jobs:
+  #     - build
+  #     - test:
+  #         requires:
+  #           - build
    #   - regress:
    #       requires:
    #         - build
