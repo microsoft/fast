@@ -39,7 +39,7 @@ describe("horizontal overflow snapshot", (): void => {
 /* tslint:disable:no-string-literal */
 describe("horizontal overflow", (): void => {
     test("should render a previous button if one is passed as a child with the appropriate slot prop", () => {
-        const renderedWithImagesAndPrevious: any = shallow(
+        const renderedWithImagesAndPrevious: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
                 <button id="testButtonPrevious" slot="previous">previous</button>
                 {imageSet1}
