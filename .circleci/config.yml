@@ -8,7 +8,7 @@ defaults: &defaults
   working_directory: ~/fast-dna
 
 jobs:
-  build_dependencies:
+  build_and_unit_test:
     <<: *defaults
     steps:
       - checkout
@@ -38,7 +38,10 @@ jobs:
           name: Execute Lerna bootstrap
           command: |
             lerna bootstrap
-      
+      - run: 
+          name: Unit Test all packages
+          command: |
+            lerna run test --stream
       # # Save dependencies into cache
       # - save_cache:
       #     paths:
@@ -47,21 +50,6 @@ jobs:
       #       - /usr/local/lib/node_modules
       #     key: dependency-v1-{{ .Branch }}--{{ checksum "package-lock.json" }}
        
-  test_units:
-    <<: *defaults
-    steps:
-      # # Load installed dependencies from cache if possible, bundle install then save cache
-      # # Multiple caches are used to increase the chance of a cache hit
-      # - restore_cache:
-      #     keys:
-      #     - dependency-v1-{{ .Branch }}--{{ checksum "package-lock.json" }}          
-      #     - dependency-v1-{{ .Branch }}--
-      #     - dependency-v1-
-      - run: 
-          name: Unit Test all packages
-          command: |
-            lerna run test --stream
-
   test_code_coverage:
     <<: *defaults
     steps:
@@ -92,15 +80,12 @@ jobs:
 
 workflows:
   version: 2
-  build_and_test:
+  build_test_coverage:
     jobs:
-      - build_dependencies
-      - test_units:
-          requires:
-            - build_dependencies
+      - build_and_unit_test
       - test_code_coverage:
           requires:
-            - build_dependencies
+            - build_and_unit_test
 
   # schedule-nightly-workflow:
   #   triggers:
