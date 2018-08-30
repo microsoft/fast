@@ -33,7 +33,7 @@ export interface ISubheadingHandledProps {
     level?: SubheadingLevel;
 
     /**
-     * The subheading tag used to map to available styles for this component
+     * The subheading tag used to create the underlying html element
      */
     tag: SubheadingTag;
 }

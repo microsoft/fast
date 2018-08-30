@@ -25,10 +25,6 @@ class Subheading extends Foundation<ISubheadingHandledProps & IManagedClasses<IS
         tag: void 0
     };
 
-    private get tag(): TypographyTag {
-        return TypographyTag[this.props.tag];
-    }
-
     private get level(): TypeLevel {
         switch (this.props.level) {
             case SubheadingLevel._1:
@@ -50,7 +46,7 @@ class Subheading extends Foundation<ISubheadingHandledProps & IManagedClasses<IS
         return (
             <Typography
                 {...this.unhandledProps()}
-                tag={this.tag}
+                tag={TypographyTag[this.props.tag]}
                 typeLevel={this.level}
                 className={this.generateClassNames()}
             >

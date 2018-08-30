@@ -18,7 +18,7 @@ export default {
     schema: Schema as any,
     documenation: <Documentation />,
     detailData: {
-        children: "Subheading test"
+        children: "Subheading"
     },
     data: [
         {
