@@ -2,7 +2,6 @@
 # $ circleci config validate -c .circleci/config.yml
 # Reference url: https://circleci.com/blog/circleci-hacks-validate-circleci-config-on-every-commit-with-a-git-hook/
 version: 2
-
 jobs:
   build:
     docker:
@@ -70,7 +69,11 @@ jobs:
             - ./node_modules
             - ./coverage
             - ./coverage/cc-test-reporter
-  regress:
+  # regress:
+  #  docker:
+  #    - image: circleci/node:latest
+  #  working_directory: ~/fast-dna
+
 
 workflows:
   version: 2
@@ -93,10 +96,10 @@ workflows:
       - test:
           requires:
             - build
-      - regress:
-          requires:
-            - build
-            - test
+   #   - regress:
+   #       requires:
+   #         - build
+   #         - test
 
             # Steps that need further wired out
               # regress
