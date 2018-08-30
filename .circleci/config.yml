@@ -79,7 +79,7 @@ workflows:
   version: 2
   commit:
     jobs:
-      - build
+      - build:
           filters:
             branches:
               only: master
@@ -89,7 +89,7 @@ workflows:
           filters:
             branches:
               only: master
-              
+
   # schedule-nightly-workflow:
   #   triggers:
   #     - schedule:
