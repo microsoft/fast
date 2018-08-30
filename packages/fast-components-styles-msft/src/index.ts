@@ -66,6 +66,12 @@ import ParagraphStyles from "./paragraph";
 export { ParagraphStyles };
 
 /**
+ * Export progress styles
+ */
+import ProgressStyles from "./progress";
+export { ProgressStyles };
+
+/**
  * Export subheading styles
  */
 import SubheadingStyles from "./subheading";

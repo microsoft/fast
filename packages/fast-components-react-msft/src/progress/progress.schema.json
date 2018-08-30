@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Progress",
+    "description": "A progress component's schema definition.",
+    "type": "object",
+    "id": "progress",
+    "children": true,
+    "properties": {
+        "value": {
+            "title": "HTML value attribute",
+            "type": "number"
+        },
+        "minValue": {
+            "title": "HTML minValue attribute",
+            "type": "number"
+        },
+        "maxValue": {
+            "title": "HTML maxValue attribute",
+            "type": "number"
+        }
+    }
+}

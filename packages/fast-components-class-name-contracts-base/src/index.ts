@@ -6,6 +6,7 @@ export * from "./horizontal-overflow";
 export * from "./hypertext";
 export * from "./image";
 export * from "./label";
+export * from "./progress";
 export * from "./managed-classes";
 export * from "./tabs";
 export * from "./text-field";

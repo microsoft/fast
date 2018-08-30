@@ -34,6 +34,9 @@ export { MetatextExamples };
 import ParagraphExamples from "../src/paragraph/examples.data";
 export { ParagraphExamples };
 
+import ProgressExamples from "../src/progress/examples.data";
+export { ProgressExamples };
+
 import SubheadingExamples from "../src/subheading/examples.data";
 export { SubheadingExamples };
 
