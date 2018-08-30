@@ -58,16 +58,16 @@ jobs:
             - /usr/local/lib/node_modules
           key: dependency-v1-{{ .Branch }}--{{ checksum "package-lock.json" }}
        
-  test_code_coverage:
-    <<: *container_config
-    steps:
-      # Load installed dependencies from cache if possible, bundle install then save cache
-      # Multiple caches are used to increase the chance of a cache hit
-      - restore_cache:
-          keys:
-          - dependency-v1-{{ .Branch }}--{{ checksum "package-lock.json" }}          
-          - dependency-v1-{{ .Branch }}--
-          - dependency-v1-
+  # test_code_coverage:
+  #   <<: *container_config
+  #   steps:
+      # # Load installed dependencies from cache if possible, bundle install then save cache
+      # # Multiple caches are used to increase the chance of a cache hit
+      # - restore_cache:
+      #     keys:
+      #     - dependency-v1-{{ .Branch }}--{{ checksum "package-lock.json" }}          
+      #     - dependency-v1-{{ .Branch }}--
+      #     - dependency-v1-
       - run:
           name: Setup and execute Code Climate reporter
           command: |
@@ -93,23 +93,23 @@ jobs:
             ./coverage/cc-test-reporter sum-coverage -o coverage/coverage.total.json coverage/coverage.*.json
             ./coverage/cc-test-reporter upload-coverage -i coverage/coverage.total.json
             # ./coverage/cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
-      # Save dependencies into cache
-      - save_cache:
-          paths:
-            - ~/fast-dna/node_modules
-            - ~/fast-dna/packages/**/node_modules
-            - /usr/local/lib/node_modules
-            - ~/fast-dna/packages/**/coverage
-          key: dependency-v1-{{ .Branch }}--{{ checksum "package-lock.json" }}
-          
+      # # Save dependencies into cache
+      # - save_cache:
+      #     paths:
+      #       - ~/fast-dna/node_modules
+      #       - ~/fast-dna/packages/**/node_modules
+      #       - /usr/local/lib/node_modules
+      #       - ~/fast-dna/packages/**/coverage
+      #     key: dependency-v1-{{ .Branch }}--{{ checksum "package-lock.json" }}
+
 workflows:
   version: 2
   build_test_coverage:
     jobs:
       - build_and_unit_test
-      - test_code_coverage:
-          requires:
-            - build_and_unit_test
+      # - test_code_coverage:
+      #     requires:
+      #       - build_and_unit_test
 
   # schedule-nightly-workflow:
   #   triggers:
