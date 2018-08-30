@@ -10,7 +10,9 @@ import {
 import schema from "./caption.schema.json";
 import Documentation from "./.tmp/documentation";
 
-const testString: string = "Caption test string";
+const testString: string = "Caption test string default";
+const testStringLevel1: string = "Caption test string level 1";
+const testStringLevel2: string = "Caption test string level 2";
 
 export default {
     name: "Caption",
@@ -27,7 +29,12 @@ export default {
         {
             tag: CaptionTag.p,
             level: CaptionLevel._1,
-            children: testString
+            children: testStringLevel1
+        },
+        {
+            tag: CaptionTag.p,
+            level: CaptionLevel._2,
+            children: testStringLevel2
         }
     ]
 } as IComponentFactoryExample<ICaptionHandledProps>;

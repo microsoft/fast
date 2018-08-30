@@ -20,12 +20,12 @@ export interface ICaptionHandledProps {
     children?: React.ReactNode | React.ReactNode[];
 
     /**
-     * The caption level
+     * The caption level maps to the type ramp
      */
     level?: CaptionLevel;
 
     /**
-     * The caption tag
+     * The caption tag maps to appropriate HTML tag type depending on context
      */
     tag?: CaptionTag;
 }
