@@ -11,7 +11,6 @@ import {
     ICaptionManagedClasses,
     ICaptionUnHandledProps
 } from "./caption";
-import { Typography } from "@microsoft/fast-components-react-base";
 
 /**
  * Configure Enzyme
@@ -25,12 +24,21 @@ describe("caption snapshots", (): void => {
 describe("caption", (): void => {
     const Component: React.ComponentClass<ICaptionHandledProps> = examples.component;
 
-    test("should render the correct `tag` when `tag` prop is passed", () => {
+    test("should render a default `tag` of `CaptionTag.p` if no `tag` prop is passed", () => {
         const rendered: any = shallow(
-            <Component tag={CaptionTag.p} />
+            <Component />
         );
         const caption: any = rendered.first().shallow();
 
         expect(caption.instance().props.tag).toEqual(CaptionTag.p);
+    });
+
+    test("should render the correct `level` when `level` prop is passed", () => {
+        const rendered: any = shallow(
+            <Component level={CaptionLevel._2} />
+        );
+        const caption: any = rendered.first().shallow();
+
+        expect(caption.instance().props.level).toEqual(CaptionLevel._2);
     });
 });

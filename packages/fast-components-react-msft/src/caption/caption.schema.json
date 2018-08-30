@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/schema#",
-    "title": "Heading",
+    "title": "Caption",
     "description": "A caption component's schema definition.",
     "type": "object",
     "id": "caption",
