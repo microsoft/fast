@@ -4,7 +4,6 @@
     "description": "A test component's schema definition.",
     "type": "object",
     "id": "generalExample",
-    "children": true,
     "properties": {
         "title": {
             "title": "Title",
@@ -122,6 +121,11 @@
                 "light",
                 "dark"
             ]
+        }
+    },
+    "reactProperties": {
+        "children": {
+            "type": "children"
         }
     },
     "required": [

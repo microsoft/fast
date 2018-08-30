@@ -4,5 +4,57 @@
     "description": "A test component's schema definition.",
     "type": "object",
     "id": "children",
-    "children": true
+    "reactProperties": {
+        "children": {
+            "title": "Children",
+            "type": "children"
+        },
+        "restrictedWithChildren": {
+            "title": "Restricted children with react defaults",
+            "type": "children",
+            "ids": [
+                "alignHorizontal",
+                "objects",
+                "arrays",
+                "anyOf"
+            ],
+            "defaults": [
+                "text"
+            ]
+        },
+        "restrictedChildrenWithReactDefaults": {
+            "title": "Restricted children without react defaults",
+            "type": "children",
+            "ids": [
+                "alignVertical",
+                "children",
+                "theme"
+            ]
+        }
+    },
+    "properties": {
+        "objectContainingNestedChildren": {
+            "title": "Object with nested children",
+            "type": "object",
+            "reactProperties": {
+                "nestedObjectChildren": {
+                    "title": "Children in object",
+                    "type": "children"
+                }
+            }
+        },
+        "arrayContainingNestedChildren": {
+            "title": "Array with nested children",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "reactProperties": {
+                    "nestedArrayChildren": {
+                        "title": "Children",
+                        "type": "children"
+                    }
+                }
+            }
+        }
+    }
 }

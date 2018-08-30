@@ -3,7 +3,7 @@ import { INavigationItem } from "./form.utilities";
 
 export type PropsOnChange = (data: any) => void;
 
-export type DataOnChange = (location: string, data: any, isArray?: boolean, index?: number) => void;
+export type DataOnChange = (location: string, data: any, isArray?: boolean, index?: number, isChildren?: boolean) => void;
 
 export type LocationOnChange = (schemaLocation: string, dataLocation: string) => void;
 
@@ -13,7 +13,7 @@ export type FormTag = "form" | "div";
 
 export interface IChildOptionItem {
     name: string;
-    component: React.ReactNode;
+    component: React.ComponentClass;
     schema: any;
 }
 
