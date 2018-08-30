@@ -44,6 +44,7 @@ jobs:
           paths:
             - ~/fast-dna/node_modules
             - ~/fast-dna/packages/**/node_modules
+            - /usr/local/lib/node_modules
           key: dependency-v1-{{ .Branch }}--{{ checksum "package-lock.json" }}
       
  
