@@ -50,6 +50,13 @@ jobs:
   test_units:
     <<: *defaults
     steps:
+      # Load installed dependencies from cache if possible, bundle install then save cache
+      # Multiple caches are used to increase the chance of a cache hit
+      - restore_cache:
+          keys:
+          - dependency-v1-{{ .Branch }}--{{ checksum "package-lock.json" }}          
+          - dependency-v1-{{ .Branch }}--
+          - dependency-v1-
       - run: 
           name: Unit Test all packages
           command: |
@@ -58,7 +65,6 @@ jobs:
   test_code_coverage:
     <<: *defaults
     steps:
-      
       - run:
           name: Setup and execute Code Climate reporter
           command: |
@@ -68,7 +74,6 @@ jobs:
               chmod +x ./coverage/cc-test-reporter
             fi
 
-            # Code Coverage
             # Notify Code Climate that a build is about to start
             ./coverage/cc-test-reporter before-build
 
@@ -84,12 +89,6 @@ jobs:
 
             ./coverage/cc-test-reporter sum-coverage -o coverage/coverage.total.json coverage/coverage.*.json
             ./coverage/cc-test-reporter upload-coverage -i coverage/coverage.total.json
-      - save_cache:
-          key: ci-cache-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules
-            - ./coverage
-            - ./coverage/cc-test-reporter
 
 workflows:
   version: 2
@@ -101,7 +100,7 @@ workflows:
             - build_dependencies
       - test_code_coverage:
           requires:
-            - test_units
+            - build_dependencies
 
   # schedule-nightly-workflow:
   #   triggers:
