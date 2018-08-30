@@ -1,25 +1,32 @@
 # Validate this file using
 # $ circleci config validate -c .circleci/config.yml
 # Reference url: https://circleci.com/blog/circleci-hacks-validate-circleci-config-on-every-commit-with-a-git-hook/
-version: 2
-defaults: &defaults
-  docker:
-      - image: circleci/node:latest
-  working_directory: ~/fast-dna
+aliases:
+  container_config: &container_config
+    docker:
+        - image: circleci/node:latest
+    working_directory: ~/fast-dna
 
+# Publishing alias
+  # npm_auth: &npm_auth
+  #   run:
+  #     name: Authenticate with registry
+  #     command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+
+version: 2
 jobs:
   build_and_unit_test:
-    <<: *defaults
+    <<: *container_config
     steps:
       - checkout
 
-      # # Load installed dependencies from cache if possible, bundle install then save cache
-      # # Multiple caches are used to increase the chance of a cache hit
-      # - restore_cache:
-      #     keys:
-      #     - dependency-v1-{{ .Branch }}--{{ checksum "package-lock.json" }}          
-      #     - dependency-v1-{{ .Branch }}--
-      #     - dependency-v1-
+      # Load installed dependencies from cache if possible, bundle install then save cache
+      # Multiple caches are used to increase the chance of a cache hit
+      - restore_cache:
+          keys:
+          - dependency-v1-{{ .Branch }}--{{ checksum "package-lock.json" }}          
+          - dependency-v1-{{ .Branch }}--
+          - dependency-v1-
         
       - run:
           name: Install the latest NPM version and patches
@@ -42,17 +49,25 @@ jobs:
           name: Unit Test all packages
           command: |
             lerna run test --stream
-      # # Save dependencies into cache
-      # - save_cache:
-      #     paths:
-      #       - ~/fast-dna/node_modules
-      #       - ~/fast-dna/packages/**/node_modules
-      #       - /usr/local/lib/node_modules
-      #     key: dependency-v1-{{ .Branch }}--{{ checksum "package-lock.json" }}
+
+      # Save dependencies into cache
+      - save_cache:
+          paths:
+            - ~/fast-dna/node_modules
+            - ~/fast-dna/packages/**/node_modules
+            - /usr/local/lib/node_modules
+          key: dependency-v1-{{ .Branch }}--{{ checksum "package-lock.json" }}
        
   test_code_coverage:
-    <<: *defaults
+    <<: *container_config
     steps:
+      # Load installed dependencies from cache if possible, bundle install then save cache
+      # Multiple caches are used to increase the chance of a cache hit
+      - restore_cache:
+          keys:
+          - dependency-v1-{{ .Branch }}--{{ checksum "package-lock.json" }}          
+          - dependency-v1-{{ .Branch }}--
+          - dependency-v1-
       - run:
           name: Setup and execute Code Climate reporter
           command: |
@@ -77,7 +92,16 @@ jobs:
 
             ./coverage/cc-test-reporter sum-coverage -o coverage/coverage.total.json coverage/coverage.*.json
             ./coverage/cc-test-reporter upload-coverage -i coverage/coverage.total.json
-
+            # ./coverage/cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
+      # Save dependencies into cache
+      - save_cache:
+          paths:
+            - ~/fast-dna/node_modules
+            - ~/fast-dna/packages/**/node_modules
+            - /usr/local/lib/node_modules
+            - ~/fast-dna/packages/**/coverage
+          key: dependency-v1-{{ .Branch }}--{{ checksum "package-lock.json" }}
+          
 workflows:
   version: 2
   build_test_coverage:
@@ -123,31 +147,3 @@ workflows:
 #     - ./BrowserStackLocal $BROWSERSTACK KEY:
 #         background: true
 
-          # // TODO #428: Reconfigure to support workflows to improve performmance
-#   "test-coverage":
-#     environment:
-#       CC_TEST_REPORTER_ID=08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
-#     docker:
-#       - image: circleci/node:latest
-#     working_directory: ~/fast-dna
-#     steps:
-#       - checkout
-#       - run:
-#           name: Setup Code Climate test-reporter
-#           command: |
-#             mkdir -p coverage/
-#             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./coverage/cc-test-reporter
-#             chmod +x ./coverage/cc-test-reporter
-#       - run:
-#           name: Run tests
-#           command: |
-#             ./coverage/cc-test-reporter before-build
-#             for f in packages/*; do
-#               if [ -d $f ]; then
-#                  echo $f
-#                 ./coverage/cc-test-reporter format-coverage -t lcov -o coverage/coverage.${f//\//-}.json $f/coverage/lcov.info
-#               fi
-#             done;
-#             ./coverage/cc-test-reporter sum-coverage -o coverage/coverage.total.json coverage/coverage.*.json
-#             ./coverage/cc-test-reporter upload-coverage -i coverage/coverage.total.json
-#             ./coverage/cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
