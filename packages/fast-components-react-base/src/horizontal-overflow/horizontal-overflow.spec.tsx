@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
-import { configure, mount, shallow } from "enzyme";
+import { configure, mount } from "enzyme";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import HorizontalOverflow, {
     ButtonDirection,
@@ -39,7 +39,7 @@ describe("horizontal overflow snapshot", (): void => {
 /* tslint:disable:no-string-literal */
 describe("horizontal overflow", (): void => {
     test("should render a previous button if one is passed as a child with the appropriate slot prop", () => {
-        const renderedWithImagesAndPrevious: any = shallow(
+        const renderedWithImagesAndPrevious: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
                 <button id="testButtonPrevious" slot="previous">previous</button>
                 {imageSet1}
