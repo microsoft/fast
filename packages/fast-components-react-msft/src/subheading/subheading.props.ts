@@ -35,7 +35,7 @@ export interface ISubheadingHandledProps {
     /**
      * The subheading tag used to create the underlying html element
      */
-    tag: SubheadingTag;
+    tag?: SubheadingTag;
 }
 
 export interface ISubheadingUnhandledProps extends React.HTMLAttributes<HTMLHeadingElement | HTMLParagraphElement> {}

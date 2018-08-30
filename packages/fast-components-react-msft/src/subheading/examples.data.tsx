@@ -16,7 +16,7 @@ export default {
     name: "Subheading",
     component: Subheading,
     schema: Schema as any,
-    documenation: <Documentation />,
+    documentation: <Documentation />,
     detailData: {
         children: "Subheading"
     },
