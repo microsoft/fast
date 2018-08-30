@@ -41,10 +41,10 @@ jobs:
       
       # Save dependencies into cache
       - save_cache:
-        paths:
-          - ~/fast-dna/node_modules
-          - ~/fast-dna/packages/**/node_modules
-        key: dependency-v1-{{ .Branch }}--{{ checksum "package-lock.json" }}
+          paths:
+            - ~/fast-dna/node_modules
+            - ~/fast-dna/packages/**/node_modules
+          key: dependency-v1-{{ .Branch }}--{{ checksum "package-lock.json" }}
       
  
   test:
@@ -85,14 +85,7 @@ jobs:
             - ./node_modules
             - ./coverage
             - ./coverage/cc-test-reporter
-      # Persist the specified paths (workspace/echo-output) into the workspace for use in downstream job. 
-      # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is taken to be the root directory of the workspace.
-      - run: mkdir -p workspace
-      - run: echo "Hello, world!" > workspace/echo-output
-      - persist_to_workspace:
-          root: workspace
-          paths:
-            - ./node_modules
+
 
   # regress:
   #  docker:
