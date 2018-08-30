@@ -77,19 +77,13 @@ jobs:
 
 workflows:
   version: 2
-  commit:
+  build_and_test:
     jobs:
       - build:
-          filters:
-            branches:
-              only: master
       - test:
           requires:
             - build
-          filters:
-            branches:
-              only: master
-
+      
   # schedule-nightly-workflow:
   #   triggers:
   #     - schedule:
