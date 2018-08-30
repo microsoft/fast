@@ -1,34 +1,62 @@
-import designSystemDefaults, { IDesignSystem } from "../design-system";
+import designSystemDefaults, { IDesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { applyLocalizedProperty, Direction, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
-import { get } from "lodash-es";
+import {
+    adjustContrast,
+    applyLocalizedProperty,
+    contrast,
+    Direction,
+    ensureContrast,
+    localizeSpacing,
+    toPx
+} from "@microsoft/fast-jss-utilities";
+import { curry, get } from "lodash-es";
 import { applyType } from "../utilities/typography";
-import { applyMixedColor } from "../utilities/colors";
+import {
+    applyMixedColor,
+    disabledContrast,
+    ensureLargeContrast,
+    ensureNormalContrast,
+    hoverContrast,
+    largeContrast,
+    normalContrast,
+    scaleContrastNormal
+} from "../utilities/colors";
 import Chroma from "chroma-js";
 
 function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
     return {
-        extend: "button",
+        color: (config: IDesignSystem): string => {
+            const designSystem: IDesignSystem = withDesignSystemDefaults(config);
+            return ensureNormalContrast(designSystem.contrast, designSystem.brandColor, designSystem.backgroundColor);
+        },
         ...applyTransaprentBackground(),
         "&:hover, &:focus": {
+            borderColor: "transparent",
+            boxShadow: "none",
             ...applyTransaprentBackground()
-        },
-        color: (config: IDesignSystem): string => {
-            return get(config, "brandColor") || designSystemDefaults.brandColor;
-        },
-        "&:disabled span::before, &[aria-disabled] span::before": {
-            background: "transparent"
         },
         "&:focus span::before, &:active span::before, &:hover span::before": {
             background: (config: IDesignSystem): string => {
-                return get(config, "brandColor") || designSystemDefaults.brandColor;
+                const designSystem: IDesignSystem = withDesignSystemDefaults(config);
+                return ensureNormalContrast(designSystem.contrast, designSystem.brandColor, designSystem.backgroundColor);
             }
         },
+        "&$button__disabled $button_span::before, &$button__disabled $button_span::before": {
+            ...applyTransaprentBackground(),
+        },
         "&:disabled, &[aria-disabled]": {
-            "&:hover": {
-                ...applyTransaprentBackground()
+            ...applyTransaprentBackground(),
+            borderColor: "transparent",
+            color: (config: IDesignSystem): string => {
+                const designSystem: IDesignSystem = withDesignSystemDefaults(config);
+
+                return disabledContrast(
+                    designSystem.contrast,
+                    designSystem.foregroundColor,
+                    designSystem.brandColor
+                );
             }
         }
     };
@@ -40,37 +68,106 @@ function applyTransaprentBackground(): ICSSRules<IDesignSystem> {
     };
 }
 
-function applyPropertyDrivenColor(incomingProperty: string, mixValue?: number, alpha?: number): ICSSRules<IDesignSystem> {
-    return {
-        [incomingProperty]: (config: IDesignSystem): string => {
-            return applyMixedColor(
-                get(config, "foregroundColor") || designSystemDefaults.foregroundColor,
-                get(config, "backgroundColor") || designSystemDefaults.backgroundColor,
-                mixValue,
-                alpha
-            );
-        }
-    };
-}
-/* tslint:disable:max-line-length */
-const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<IMSFTButtonClassNameContract, IDesignSystem> => {
-/* tslint:enable:max-line-length */
-    const backgroundColor: string = get(config, "backgroundColor") || designSystemDefaults.backgroundColor;
-    const brandColor: string = get(config, "brandColor") || designSystemDefaults.brandColor;
-    const direction: Direction = get(config, "direction") || designSystemDefaults.direction;
-    const foregroundColor: string = get(config, "foregroundColor") || designSystemDefaults.foregroundColor;
+const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (
+    config: IDesignSystem
+): ComponentStyleSheet<IMSFTButtonClassNameContract, IDesignSystem> => {
+    type ContrastFunction = (operandColor: string, referenceColor: string) => string;
+    const designSystem: IDesignSystem = withDesignSystemDefaults(config);
+    const contrastScale: number = designSystem.contrast;
+    const foregroundColor: string = designSystem.foregroundColor;
+    const backgroundColor: string = designSystem.backgroundColor;
+    const brandColor: string = designSystem.brandColor;
+    const direction: Direction = designSystem.direction;
+    const scaledNormalContrast: ContrastFunction = curry(normalContrast)(contrastScale);
+    const scaledEnsureNormalContrast: ContrastFunction = curry(ensureNormalContrast)(contrastScale);
+    const focusBoxShadowDefaults: string = "inset 0 0 0 2px";
+
+    // Define secondary button colors
+    const color: string = "white";
+    const secondaryBackgroundColor: string = scaledEnsureNormalContrast(
+        scaledNormalContrast(backgroundColor, foregroundColor),
+        color
+    );
+    const secondaryHoverBackgroundColor: string = hoverContrast(
+        designSystem.contrast,
+        secondaryBackgroundColor,
+        color
+    );
+    const secondaryFocusBorderColor: string = scaledEnsureNormalContrast(
+        scaledEnsureNormalContrast(foregroundColor, backgroundColor),
+        secondaryBackgroundColor
+    );
+
+    const secondaryFocusBoxShadow: string = Chroma.contrast(
+        secondaryBackgroundColor,
+        secondaryFocusBorderColor
+    ) < scaleContrastNormal(contrastScale)
+        ? `${focusBoxShadowDefaults} ${ensureNormalContrast(contrastScale, secondaryBackgroundColor, secondaryFocusBorderColor)}`
+        : "none";
+    const secondaryDisabledBackgroundColor: string = disabledContrast(
+        contrastScale,
+        secondaryBackgroundColor,
+        backgroundColor
+    );
+
+    const secondaryDisabledColor: string = disabledContrast(
+        contrastScale,
+        color,
+        secondaryDisabledBackgroundColor
+    );
+
+    // Define primary button colors
+    const primaryRestBackgroundColor: string = scaledEnsureNormalContrast(
+        scaledEnsureNormalContrast(brandColor, backgroundColor),
+        color
+    );
+
+    const primaryHoverBackground: string = hoverContrast(
+        designSystem.contrast,
+        primaryRestBackgroundColor,
+        color
+    );
+    const primaryFocusBorderColor: string = scaledEnsureNormalContrast(
+        scaledEnsureNormalContrast(foregroundColor, backgroundColor),
+        primaryRestBackgroundColor
+    );
+    const primaryFocusBoxShadow: string = Chroma.contrast(
+        primaryRestBackgroundColor,
+        primaryFocusBorderColor
+    ) < scaleContrastNormal(contrastScale)
+        ? `${focusBoxShadowDefaults} ${ensureNormalContrast(contrastScale, primaryRestBackgroundColor, primaryFocusBorderColor)}`
+        : "none";
+    const primaryDisabledBackground: string = disabledContrast(
+        contrastScale,
+        primaryRestBackgroundColor,
+        backgroundColor
+    );
+    const primaryDisabledColor: string = disabledContrast(
+        contrastScale,
+        color,
+        primaryDisabledBackground
+    );
+
+    const outlineColor: string = scaledEnsureNormalContrast(foregroundColor, backgroundColor);
+    const outlineBorderColor: string = scaledNormalContrast(foregroundColor, backgroundColor);
+    const outlineDisabledColor: string = disabledContrast(
+        designSystem.contrast,
+        outlineColor,
+        backgroundColor
+    );
+    const outlineDisabledBorderColor: string = outlineDisabledColor;
 
     return {
         button: {
             ...applyType("t7", "vp1"),
             boxSizing: "border-box",
-            maxWidth: toPx(374),
-            minWidth: toPx(120),
+            maxWidth: "374px",
+            minWidth: "120px",
             display: "inline-block",
-            padding: `${toPx(13)} ${toPx(12)} ${toPx(12)}`,
-            border: `${toPx(2)} solid transparent`,
-            borderRadius: toPx(2),
-            cursor: "pointer",
+            padding: "13px 12px 12px",
+            border: "2px solid",
+            borderColor: "transparent",
+            borderRadius: "2px",
             overflow: "hidden",
             lineHeight: "1",
             textAlign: "center",
@@ -78,61 +175,53 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
             whiteSpace: "nowrap",
             verticalAlign: "bottom",
             transition: "all 0.2s ease-in-out",
-            color: backgroundColor,
-            ...applyPropertyDrivenColor("backgroundColor", 0.46),
+            color,
+            backgroundColor: secondaryBackgroundColor,
             "&:hover": {
-                ...applyPropertyDrivenColor("backgroundColor", 0.46, 0.8)
+                backgroundColor: secondaryHoverBackgroundColor
             },
             "&:focus": {
                 outline: "none",
-                ...applyPropertyDrivenColor("backgroundColor", 0.38)
+                borderColor: secondaryFocusBorderColor,
+                boxShadow: secondaryFocusBoxShadow,
             },
-            "&:disabled, &[aria-disabled]": {
-                opacity: ".4",
+            "&$button__disabled": {
                 cursor: "not-allowed",
-                "&:hover": {
-                    ...applyPropertyDrivenColor("backgroundColor", 0.46)
-                }
+                backgroundColor: secondaryDisabledBackgroundColor,
+                color: secondaryDisabledColor
             }
         },
         button_primary: {
-            extend: "button",
-            color: backgroundColor,
-            backgroundColor: brandColor,
+            color,
+            backgroundColor: primaryRestBackgroundColor,
             "&:hover": {
-                backgroundColor: Chroma(brandColor).alpha(0.8).css()
+                backgroundColor: primaryHoverBackground
             },
             "&:focus": {
-                outline: "none",
-                backgroundColor: Chroma(brandColor).darken().css()
+                borderColor: primaryFocusBorderColor,
+                boxShadow: primaryFocusBoxShadow
             },
-            "&:disabled, &[aria-disabled]": {
-                backgroundColor: brandColor,
-                "&:hover": {
-                    backgroundColor: brandColor
-                }
+            "&$button__disabled": {
+                color: primaryDisabledColor,
+                backgroundColor: primaryDisabledBackground
             }
         },
         button_outline: {
-            extend: "button",
-            color: foregroundColor,
-            ...applyPropertyDrivenColor("borderColor", 0.46),
-            ...applyTransaprentBackground(),
-            "&:hover": {
-                ...applyPropertyDrivenColor("borderColor", 0.46, 0.8),
-                ...applyTransaprentBackground()
+            borderWidth: "1px",
+            "&, &:hover": {
+                color: outlineColor,
+                borderColor: outlineBorderColor,
+                ...applyTransaprentBackground(),
             },
             "&:focus": {
-                borderColor: "transparent",
-                /* tslint:disable-next-line */
-                boxShadow: `0 0 0 ${toPx(2)} ${applyMixedColor(foregroundColor, backgroundColor, 0.46)}`,
-                ...applyTransaprentBackground()
-            },
-            "&:disabled, &[aria-disabled]": {
                 ...applyTransaprentBackground(),
-                "&:hover": {
-                    ...applyTransaprentBackground()
-                }
+                borderColor: outlineBorderColor,
+                boxShadow: `inset 0 0 0 1px ${outlineBorderColor}`
+            },
+            "&$button__disabled": {
+                ...applyTransaprentBackground(),
+                color: outlineDisabledColor,
+                borderColor: outlineDisabledBorderColor
             }
         },
         button_lightweight: {
@@ -140,22 +229,23 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (co
         },
         button_justified: {
             ...applyTransaprentBackplateStyles(),
-            minWidth: toPx(74),
-            padding: localizeSpacing(direction)(`${toPx(13)} ${toPx(12)} ${toPx(12)} 0`),
-            textAlign: direction === Direction.ltr ? "left" : "right"
+            minWidth: "74px",
+            padding: localizeSpacing(direction)("13px 12px 12px 0"),
+            textAlign: applyLocalizedProperty("left", "right", direction),
         },
         button_span: {
             position: "relative",
-            "&:before": {
+            "&::before": {
                 content: "''",
                 display: "block",
-                height: toPx(2),
+                height: "2px",
                 position: "absolute",
-                bottom: toPx(-1),
+                bottom: "-1px",
                 width: "100%",
                 [applyLocalizedProperty("left", "right", direction)]: "0"
             }
-        }
+        },
+        button__disabled: {}
     };
 };
 

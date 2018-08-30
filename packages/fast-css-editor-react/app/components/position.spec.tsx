@@ -20,7 +20,7 @@ const detailData: ICSSPositionProps = {
     onChange: (data: any): void => {}
 };
 
-const examples = {
+const examples: ISnapshotTestSuite<ICSSPositionProps> = {
     name,
     component: CSSPosition,
     schema: CSSPositionSchema,
@@ -28,7 +28,7 @@ const examples = {
     data: [
         exampleData
     ]
-} as ISnapshotTestSuite<ICSSPositionProps>;
+};
 
 describe(name, () => {
     generateSnapshots(examples);

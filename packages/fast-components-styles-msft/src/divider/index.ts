@@ -1,7 +1,8 @@
-import designSystemDefaults, { IDesignSystem } from "../design-system";
+import designSystemDefaults, { IDesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { normalContrast } from "../utilities/colors";
 import { IDividerClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { toPx } from "@microsoft/fast-jss-utilities";
+import { contrast, toPx } from "@microsoft/fast-jss-utilities";
 import { get } from "lodash-es";
 import Chroma from "chroma-js";
 
@@ -14,7 +15,9 @@ const styles: ComponentStyles<IDividerClassNameContract, IDesignSystem> = {
         marginBottom: toPx(12),
         border: "none",
         borderTop: (config: IDesignSystem): string => {
-            return `${toPx(1)} solid ${Chroma(get(config, "foregroundColor") || designSystemDefaults.foregroundColor).alpha(0.2).css()}`;
+            const designSystem: IDesignSystem = withDesignSystemDefaults(config);
+            const borderColor: string = normalContrast(designSystem.contrast, designSystem.foregroundColor, designSystem.backgroundColor);
+            return `${toPx(1)} solid ${borderColor}`;
         }
     }
 };

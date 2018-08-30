@@ -1,43 +1,49 @@
-import designSystemDefaults, { IDesignSystem } from "../design-system";
+import designSystemDefaults, { IDesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { ITextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { toPx } from "@microsoft/fast-jss-utilities";
+import { adjustContrast, contrast, toPx } from "@microsoft/fast-jss-utilities";
 import { get } from "lodash-es";
 import { applyType } from "../utilities/typography";
 import { fontWeight } from "../utilities/fonts";
-import { applyMixedColor } from "../utilities/colors";
+import { disabledContrast, ensureForegroundNormal, ensuresBackgroundNormal, foregroundNormal, hoverContrast  } from "../utilities/colors";
 
-function applyTextFieldMixedColor(mixValue?: number): (config: IDesignSystem) => string {
-    return (config: IDesignSystem): string =>
-        applyMixedColor(
-            get(config, "foregroundColor") || designSystemDefaults.foregroundColor,
-            get(config, "backgroundColor") || designSystemDefaults.backgroundColor,
-            mixValue
-        );
+/**
+ * Retrieves the disabled color
+ */
+function disabledColor(config: IDesignSystem): string {
+    const designSystem: IDesignSystem = withDesignSystemDefaults(config);
+    return disabledContrast(designSystem.contrast, foregroundNormal(designSystem), designSystem.backgroundColor);
+}
+
+function hoverColor(config: IDesignSystem): string {
+    const designSystem: IDesignSystem = withDesignSystemDefaults(config);
+    return hoverContrast(designSystem.contrast, foregroundNormal(designSystem), designSystem.backgroundColor);
 }
 
 const styles: ComponentStyles<ITextFieldClassNameContract, IDesignSystem> = {
     textField: {
         ...applyType("t7", "vp1"),
-        color: applyTextFieldMixedColor(0.46),
+        color: ensureForegroundNormal,
+        background: ensuresBackgroundNormal,
         fontWeight: fontWeight.light.toString(),
-        outline: `${toPx(1)} solid transparent`,
-        border: `${toPx(1)} solid transparent`,
-        borderColor: applyTextFieldMixedColor(0.46),
+        border: "1px solid transparent",
+        borderColor: foregroundNormal,
         boxSizing: "border-box",
-        borderRadius: toPx(2),
-        padding: toPx(10),
-        margin: toPx(10),
+        borderRadius: "2px",
+        padding: "10px",
+        margin: "10px",
+        "&:hover": {
+            borderColor: hoverColor
+        },
         "&:focus": {
-            outlineColor: applyTextFieldMixedColor(0.38),
-            borderColor: applyTextFieldMixedColor(0.38)
+            outline: "none",
+            boxShadow: (config: IDesignSystem): string => {
+                return `0 0 0 1px inset ${foregroundNormal(config)}`;
+            }
         },
         "&:disabled": {
-            background: (config: IDesignSystem): string => {
-                return get(config, "backgroundColor") || designSystemDefaults.backgroundColor;
-            },
-            borderColor: applyTextFieldMixedColor(0.863),
-            color: applyTextFieldMixedColor(0.80),
+            borderColor: disabledColor,
+            color: disabledColor,
             cursor: "not-allowed"
         }
     }

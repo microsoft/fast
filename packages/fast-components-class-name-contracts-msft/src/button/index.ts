@@ -9,4 +9,5 @@ export interface IMSFTButtonClassNameContract extends IButtonClassNameContract {
     button_lightweight: string;
     button_justified: string;
     button_span: string;
+    button__disabled: string;
 }

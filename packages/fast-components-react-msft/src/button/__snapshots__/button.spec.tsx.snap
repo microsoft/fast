@@ -2,27 +2,27 @@
 
 exports[`button snapshots Button: 0 1`] = `
 <button
-  className="button-0-1-7"
-  data-sketch-symbol="Button - default"
+  className="button-0-1-8"
+  data-sketch-symbol="Button - secondary"
   href={null}
 >
-  Default button
+  Secondary button
 </button>
 `;
 
 exports[`button snapshots Button: 1 1`] = `
 <button
-  className="button-0-1-19 button_primary-0-1-20"
+  className="button-0-1-22 button_primary-0-1-23"
   data-sketch-symbol="Button - primary"
   href={null}
 >
-  Primary (submit) button
+  Primary button
 </button>
 `;
 
 exports[`button snapshots Button: 2 1`] = `
 <button
-  className="button-0-1-31 button_outline-0-1-33"
+  className="button-0-1-36 button_outline-0-1-38"
   data-sketch-symbol="Button - outline"
   href={null}
 >
@@ -32,12 +32,12 @@ exports[`button snapshots Button: 2 1`] = `
 
 exports[`button snapshots Button: 3 1`] = `
 <button
-  className="button-0-1-43 button_lightweight-0-1-46"
+  className="button-0-1-50 button_lightweight-0-1-53"
   data-sketch-symbol="Button - lightweight"
   href={null}
 >
   <span
-    className="button_span-0-1-48"
+    className="button_span-0-1-55"
   >
     Lightweight button
   </span>
@@ -46,11 +46,11 @@ exports[`button snapshots Button: 3 1`] = `
 
 exports[`button snapshots Button: 4 1`] = `
 <button
-  className="button-0-1-55 button_justified-0-1-59"
+  className="button-0-1-64 button_justified-0-1-68"
   href={null}
 >
   <span
-    className="button_span-0-1-60"
+    className="button_span-0-1-69"
   >
     Justified button
   </span>
@@ -59,7 +59,7 @@ exports[`button snapshots Button: 4 1`] = `
 
 exports[`button snapshots Button: 5 1`] = `
 <a
-  className="button-0-1-67"
+  className="button-0-1-78"
   href="#"
 >
   Anchor
@@ -68,62 +68,62 @@ exports[`button snapshots Button: 5 1`] = `
 
 exports[`button snapshots Button: 6 1`] = `
 <button
-  className="button-0-1-79"
-  data-sketch-symbol="Button - default disabled"
+  className="button-0-1-92 button__disabled-0-1-98"
+  data-sketch-symbol="Button - secondary disabled"
   disabled={true}
   href={null}
 >
-  Default button
+  Secondary button (disabled)
 </button>
 `;
 
 exports[`button snapshots Button: 7 1`] = `
 <button
-  className="button-0-1-91 button_primary-0-1-92"
+  className="button-0-1-106 button__disabled-0-1-112 button_primary-0-1-107"
   data-sketch-symbol="Button - primary disabled"
   disabled={true}
   href={null}
 >
-  Primary (submit) button
+  Primary button (disabled)
 </button>
 `;
 
 exports[`button snapshots Button: 8 1`] = `
 <button
-  className="button-0-1-103 button_outline-0-1-105"
+  className="button-0-1-120 button__disabled-0-1-126 button_outline-0-1-122"
   data-sketch-symbol="Button - outline disabled"
   disabled={true}
   href={null}
 >
-  Outline button
+  Outline button (disabled)
 </button>
 `;
 
 exports[`button snapshots Button: 9 1`] = `
 <button
-  className="button-0-1-115 button_lightweight-0-1-118"
+  className="button-0-1-134 button__disabled-0-1-140 button_lightweight-0-1-137"
   data-sketch-symbol="Button - lightweight disabled"
   disabled={true}
   href={null}
 >
   <span
-    className="button_span-0-1-120"
+    className="button_span-0-1-139"
   >
-    Lightweight button
+    Lightweight button (disabled)
   </span>
 </button>
 `;
 
 exports[`button snapshots Button: 10 1`] = `
 <button
-  className="button-0-1-127 button_justified-0-1-131"
+  className="button-0-1-148 button__disabled-0-1-154 button_justified-0-1-152"
   disabled={true}
   href={null}
 >
   <span
-    className="button_span-0-1-132"
+    className="button_span-0-1-153"
   >
-    Justified button
+    Justified button (disabled)
   </span>
 </button>
 `;
@@ -131,9 +131,9 @@ exports[`button snapshots Button: 10 1`] = `
 exports[`button snapshots Button: 11 1`] = `
 <a
   aria-disabled={true}
-  className="button-0-1-139"
+  className="button-0-1-162 button__disabled-0-1-168"
   href="#"
 >
-  Anchor
+  Anchor (disabled)
 </a>
 `;

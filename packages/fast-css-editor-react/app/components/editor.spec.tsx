@@ -20,7 +20,7 @@ const detailData: ICSSEditorProps = {
     onChange: (data: any): void => {}
 };
 
-const examples = {
+const examples: ISnapshotTestSuite<ICSSEditorProps> = {
     name,
     component: CSSEditor,
     schema: CSSEditorSchema,
@@ -28,7 +28,7 @@ const examples = {
     data: [
         exampleData
     ]
-} as ISnapshotTestSuite<ICSSEditorProps>;
+};
 
 describe(name, () => {
     generateSnapshots(examples);
