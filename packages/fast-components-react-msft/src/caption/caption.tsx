@@ -3,7 +3,7 @@ import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import { Foundation, HandledProps, TypeLevel, TypographyTag } from "@microsoft/fast-components-react-base";
 import { CaptionLevel, CaptionTag, ICaptionHandledProps } from "./caption.props";
-import { ICaptionClassNameContract, IManagedClasses } from "@jemicrosoft/fast-components-class-name-contracts-msft";
+import { ICaptionClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
 import Typography from "../typography";
 
 class Caption extends Foundation<ICaptionHandledProps & IManagedClasses<ICaptionClassNameContract>, React.HTMLAttributes<HTMLElement>, {}> {
