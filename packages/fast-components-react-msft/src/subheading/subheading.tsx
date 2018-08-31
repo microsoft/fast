@@ -56,9 +56,7 @@ class Subheading extends Foundation<ISubheadingHandledProps & IManagedClasses<IS
     }
 
     protected generateClassNames(): string {
-        let classes: string = get(this.props, "managedClasses.subheading");
-        classes = `${classes} ${get(this.props, `managedClasses.subheading_${this.props.level}`)}`;
-
+        const classes = `${get(this.props, "managedClasses.subheading")} ${get(this.props, `managedClasses.subheading_${this.props.level}`)}`;
         return super.generateClassNames(classes);
     }
 }
