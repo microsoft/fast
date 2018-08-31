@@ -10,7 +10,8 @@ export enum TypographyTag {
     h5 = "h5",
     h6 = "h6",
     p = "p",
-    span = "span"
+    span = "span",
+    figcaption = "figcaption"
 }
 
 export enum TypeLevel {
