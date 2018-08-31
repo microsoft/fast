@@ -32,9 +32,6 @@ jobs:
           command: |
             lerna run test --stream
 
-  test_coverage:
-    <<: *container_config
-    steps:
       - run:
           name: Setup and execute Code Climate reporter
           command: |
@@ -68,11 +65,19 @@ jobs:
             ./coverage/cc-test-reporter sum-coverage -o coverage/coverage.total.json coverage/coverage.*.json
             ./coverage/cc-test-reporter upload-coverage -i coverage/coverage.total.json
 
+  test_browsers:
+      <<: *container_config
+      steps:
+        - run:
+            name: Install browser service
+            cmd: |
+                echo "hello world"
+
 workflows:
   version: 2
   build_test_coverage:
     jobs:
       - build_and_unit_test
-      - test_coverage:
+      - test_browsers:
           requires:
               - build_and_unit_test
