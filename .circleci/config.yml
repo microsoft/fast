@@ -31,6 +31,10 @@ jobs:
           name: Unit Test all packages
           command: |
             lerna run test --stream
+
+  test_coverage:
+    <<: *container_config
+    steps:
       - run:
           name: Setup and execute Code Climate reporter
           command: |
@@ -39,10 +43,15 @@ jobs:
               curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./coverage/cc-test-reporter
               chmod +x ./coverage/cc-test-reporter
             fi
-
-            # Notify Code Climate that a build is about to start
+      
+      - run:
+          name: Notify Code Climate that a build is starting
+          command: |
             ./coverage/cc-test-reporter before-build
-
+      
+      - run:
+          name: Collect coverage reports
+          command: |
             for f in packages/*; do
               if [ -d "$f" ]; then
                 echo $f
@@ -52,7 +61,9 @@ jobs:
                 fi
               fi
             done;
-
+      
+      - run:
+          name: Summarize and upload code coverage
             ./coverage/cc-test-reporter sum-coverage -o coverage/coverage.total.json coverage/coverage.*.json
             ./coverage/cc-test-reporter upload-coverage -i coverage/coverage.total.json
 
@@ -61,3 +72,6 @@ workflows:
   build_test_coverage:
     jobs:
       - build_and_unit_test
+      - test_coverage:
+          requires:
+              - build
