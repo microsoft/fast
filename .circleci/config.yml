@@ -1,63 +1,105 @@
 aliases:
-  container_config: &container_config
-    docker:
-        - image: circleci/node:latest
-    working_directory: ~/fast-dna
+    - &container_config
+        docker:
+            - image: "circleci/node:latest"
+        working_directory: ~/fast-dna
+      
+    - &node_install
+        run: 
+            name: Install Node
+            command: |
+                sudo npm i npm@latest -g
+                npm update rc --depth 4
+
+    - &lerna_install
+        run: 
+            name: Install Lerna
+            command: |
+                sudo npm i lerna@^3.0.6 -g
 
 version: 2
 jobs:
-  build_and_unit_test:
-    <<: *container_config
-    steps:
-      - checkout
-      - run:
-          name: Install the latest NPM version and patches
-          command: |
-            sudo npm i npm@latest -g
-            npm update rc --depth 4
-      - run:
-          name: Install the latest Lerna version
-          command: |
-            sudo npm i lerna@^3.0.6 -g
-      - run:
-          name: Install all dependency packages
-          command: |
-            npm i
-      - run:
-          name: Execute Lerna bootstrap
-          command: |
-            lerna bootstrap
-      - run: 
-          name: Unit Test all packages
-          command: |
-            lerna run test --stream
-      - run:
-          name: Setup and execute Code Climate reporter
-          command: |
-            if [ ! -f ./coverage/cc-test-reporter ]; then
-              mkdir -p coverage/
-              curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./coverage/cc-test-reporter
-              chmod +x ./coverage/cc-test-reporter
-            fi
+    build_dependencies:
+        <<: *container_config
+        steps:
+            - *node_install
+            - *lerna_install
+            - checkout
+            - run: 
+                name: Install package dependencies
+                command: |
+                    npm i
+            - run: 
+                name: Bootstrap dependencies
+                command: |
+                    lerna bootstrap
+            - run: 
+                name: Create persistant folder
+                command: |
+                  mkdir -p tmp/
+            - persist_to_workspace:
+                root: fast-dna
+                paths:
+                    - node_modules
+                    - packages/**/node_modules
 
-            # Notify Code Climate that a build is about to start
-            ./coverage/cc-test-reporter before-build
+    unit_test:
+        <<: *container_config
+        steps:
+            - attach_workspace:
+                at: ~/fast-dna
+            - run: 
+                name: Run unit tests
+                command: |
+                    lerna run test --stream
+            - run:
+                name: Setup and execute Code Climate reporter
+                command: |
+                    if [ ! -f ./coverage/cc-test-reporter ]; then
+                      mkdir -p coverage/
+                      curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./coverage/cc-test-reporter
+                      chmod +x ./coverage/cc-test-reporter
+                    fi
+            - run:
+                name: Notify Code Climate that a build is starting
+                command: |
+                    ./coverage/cc-test-reporter before-build
+            - run:
+                name: Collect coverage reports
+                command: |
+                    for f in packages/*; do
+                      if [ -d "$f" ]; then
+                        echo $f
+        
+                        set +e
+                        if [ -d "$f/coverage" ]; then
+                          ./coverage/cc-test-reporter format-coverage -t lcov -o coverage/coverage.${f//\//-}.json $f/coverage/lcov.info
+                        fi
+                      fi
+                    done;
+            - run:
+                name: Summarize and upload code coverage
+                command: |
+                    ./coverage/cc-test-reporter sum-coverage -o coverage/coverage.total.json coverage/coverage.*.json
+                    ./coverage/cc-test-reporter upload-coverage -i coverage/coverage.total.json
 
-            for f in packages/*; do
-              if [ -d "$f" ]; then
-                echo $f
-                set +e
-                if [ -d "$f/coverage" ]; then
-                  ./coverage/cc-test-reporter format-coverage -t lcov -o coverage/coverage.${f//\//-}.json $f/coverage/lcov.info
-                fi
-              fi
-            done;
-
-            ./coverage/cc-test-reporter sum-coverage -o coverage/coverage.total.json coverage/coverage.*.json
-            ./coverage/cc-test-reporter upload-coverage -i coverage/coverage.total.json
+    test_browsers:
+        <<: *container_config
+        steps:
+            - run:
+                name: Install browser service
+                background: true
+                command: |
+                    echo "hello world"
 
 workflows:
   version: 2
   build_test_coverage:
     jobs:
-      - build_and_unit_test
+      - build_dependencies
+      - unit_test:
+          requires: 
+            - build_dependencies
+      - test_browsers:
+          requires:
+            - build_dependencies
