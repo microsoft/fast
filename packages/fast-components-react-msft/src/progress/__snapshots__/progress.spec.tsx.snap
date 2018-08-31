@@ -9,11 +9,11 @@ exports[`progress snapshots Progress: 0 1`] = `
   role="progressbar"
 >
   <div
-    className="progress_indicator__determinate-0-1-12"
+    className="progress_indicator-0-1-13 progress_indicator__determinate-0-1-14"
     slot="determinate"
   >
     <div
-      className="progress_indicator__determinate_bar-0-1-13"
+      className="progress_determinateValueIndicator-0-1-12"
       style={
         Object {
           "width": "50%",
@@ -33,7 +33,7 @@ exports[`progress snapshots Progress: 1 1`] = `
   role="progressbar"
 >
   <div
-    className="progress_indicator__indeterminate-0-1-34"
+    className="progress_indicator-0-1-33"
     slot="indeterminate"
   >
     <span
