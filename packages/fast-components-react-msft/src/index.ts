@@ -23,6 +23,9 @@ export { Image } ;
 import Label from "./label";
 export { Label } ;
 
+import Subheading from "./subheading";
+export { Subheading };
+
 import TextField from "./text-field";
 export { TextField };
 

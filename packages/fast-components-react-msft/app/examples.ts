@@ -28,6 +28,9 @@ export { LabelExamples };
 import ParagraphExamples from "../src/paragraph/examples.data";
 export { ParagraphExamples };
 
+import SubheadingExamples from "../src/subheading/examples.data";
+export { SubheadingExamples };
+
 import ToggleExamples from "../src/toggle/examples.data";
 export { ToggleExamples };
 
