@@ -4,6 +4,9 @@
 import ButtonStyles from "./button";
 export { ButtonStyles };
 
+import CaptionStyles from "./caption";
+export { CaptionStyles };
+
 import CheckboxStyles from "./checkbox";
 export { CheckboxStyles };
 

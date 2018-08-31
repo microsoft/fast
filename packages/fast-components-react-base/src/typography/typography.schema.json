@@ -18,7 +18,8 @@
                 "h5",
                 "h6",
                 "p",
-                "span"
+                "span",
+                "figcaption"
             ]
         },
         "typeLevel": {

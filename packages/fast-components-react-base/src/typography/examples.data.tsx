@@ -88,6 +88,12 @@ const examples: IComponentFactoryExample<ITypographyHandledProps & ITypographyMa
             tag: TypographyTag.p,
             typeLevel: TypeLevel._9,
             children: testString
+        },
+        {
+            managedClasses: managedClassExamples,
+            tag: TypographyTag.figcaption,
+            typeLevel: TypeLevel._9,
+            children: testString
         }
     ]
 };

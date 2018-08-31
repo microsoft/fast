@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`caption snapshots Caption: 0 1`] = `
+<p
+  className="typography_8-0-1-11 caption-0-1-1 caption_1-0-1-2"
+>
+  Caption test string default
+</p>
+`;
+
+exports[`caption snapshots Caption: 1 1`] = `
+<p
+  className="typography_8-0-1-23 caption-0-1-13 caption_1-0-1-14"
+>
+  Caption test string level 1
+</p>
+`;
+
+exports[`caption snapshots Caption: 2 1`] = `
+<p
+  className="typography_9-0-1-36 caption-0-1-25 caption_2-0-1-27"
+>
+  Caption test string level 2
+</p>
+`;
+
+exports[`caption snapshots Caption: 3 1`] = `
+<span
+  className="typography_8-0-1-47 caption-0-1-37 caption_1-0-1-38"
+>
+  span tag test string
+</span>
+`;
+
+exports[`caption snapshots Caption: 4 1`] = `
+<caption
+  className="typography_8-0-1-59 caption-0-1-49 caption_1-0-1-50"
+>
+  caption tag test string
+</caption>
+`;
+
+exports[`caption snapshots Caption: 5 1`] = `
+<figcaption
+  className="typography_8-0-1-71 caption-0-1-61 caption_1-0-1-62"
+>
+  figcaption tag test string
+</figcaption>
+`;
