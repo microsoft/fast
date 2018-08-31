@@ -57,8 +57,7 @@ class Subheading extends Foundation<ISubheadingHandledProps & IManagedClasses<IS
 
     protected generateClassNames(): string {
         /* tslint:disable-next-line */
-        const classes: string = `${get(this.props, "managedClasses.subheading")} ${get(this.props, `managedClasses.subheading_${this.props.level}`)}`;
-        return super.generateClassNames(classes);
+        return super.generateClassNames(`${get(this.props, "managedClasses.subheading")} ${get(this.props, `managedClasses.subheading_${this.props.level}`)}`);
     }
 }
 
