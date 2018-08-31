@@ -24,6 +24,27 @@ describe("caption snapshots", (): void => {
 describe("caption", (): void => {
     const Component: React.ComponentClass<ICaptionHandledProps> = examples.component;
 
+    test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
+        const handledProps: ICaptionHandledProps = {
+            tag: CaptionTag.p,
+            level: CaptionLevel._1
+        };
+
+        const unhandledProps: ICaptionUnHandledProps = {
+            "aria-hidden": true
+        };
+
+        const props: ICaptionHandledProps & ICaptionUnHandledProps = {...handledProps, ...unhandledProps};
+
+        const rendered: any = shallow(
+            <Component {...props} />
+        );
+
+        const caption: any = rendered.first().shallow();
+
+        expect(caption.prop("aria-hidden")).toEqual(true);
+    });
+
     test("should render a default `tag` of `CaptionTag.p` if no `tag` prop is passed", () => {
         const rendered: any = shallow(
             <Component />

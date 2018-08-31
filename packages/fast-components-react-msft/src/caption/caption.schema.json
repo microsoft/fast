@@ -18,7 +18,7 @@
             "default": "p"
         },
         "level": {
-            "title": "Level",
+            "title": "Type level",
             "type": "number",
             "enum": [
                 1,
