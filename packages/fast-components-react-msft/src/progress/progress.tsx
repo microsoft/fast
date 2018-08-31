@@ -6,6 +6,10 @@ import { IProgressManagedClasses, IProgressUnhandledProps, ProgressProps } from 
 import { IManagedClasses, IMSFTProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { Progress as BaseProgress, ProgressType } from "@microsoft/fast-components-react-base";
 
+export interface ISpanData {
+    id: number;
+}
+
 /* tslint:disable-next-line */
 class Progress extends Foundation<ProgressProps & IManagedClasses<IMSFTProgressClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
     public static defaultProps: Partial<ProgressProps> = {
@@ -47,27 +51,24 @@ class Progress extends Foundation<ProgressProps & IManagedClasses<IMSFTProgressC
                     slot={ProgressType.indeterminate}
                     className={this.props.managedClasses.progress_indicator__indeterminate}
                 >
-                    {this.renderProgressSpans(this.generateProgressSpans())}
+                    {this.renderIndeterminateItems(this.generateIndeterminateItems())}
                 </div>
             </BaseProgress>
         );
     }
 
-    public generateProgressSpans(): Array<{id: number}> {
+    public generateIndeterminateItems(): ISpanData[] {
         return [{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}];
     }
 
-    /**
-     * Generate indeterminate spans
-     */
-    private renderProgressSpans(spanData: any[]): JSX.Element[] {
-        return spanData.map((span: any, index: number) => {
-            let className: string = this.props.managedClasses.progress_dot__base;
-            className = `${className} ${this.props.managedClasses[`progress_dot__${span.id}`]}`;
+    private renderIndeterminateItems(items: ISpanData[]): JSX.Element[] {
+        return items.map((item: ISpanData, index: number) => {
+            let className: string = this.props.managedClasses.progress_dot;
+            className = `${className} ${this.props.managedClasses[`progress_dot__${item.id}`]}`;
             return (
                 <span
                     className={className}
-                    key={span.id}
+                    key={item.id}
                 />
             );
         });

@@ -7,7 +7,7 @@ export interface IMSFTProgressClassNameContract extends IProgressClassNameContra
     progress_indicator__determinate: string;
     progress_indicator__determinate_bar: string;
     progress_indicator__indeterminate: string;
-    progress_dot__base: string;
+    progress_dot: string;
     progress_dot__1: string;
     progress_dot__2: string;
     progress_dot__3: string;

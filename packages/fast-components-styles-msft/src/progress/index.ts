@@ -14,18 +14,20 @@ const styles: ComponentStyles<IMSFTProgressClassNameContract, IDesignSystem> = (
 
     return {
         progress: {
-            display: "inline-block",
-            width: "100%"
+            display: "flex",
+            width: "100%",
+            alignItems: "center",
+            height: "10px"
         },
         progress_indicator__determinate: {
             display: "flex",
+            position: "relative",
             background: Chroma(foregroundColor).alpha(0.2).css(),
             height: "4px",
             borderRadius: "2px",
             width: "100%"
         },
         progress_indicator__determinate_bar: {
-            display: "inline-block",
             background: brandColor,
             borderRadius: "2px",
             height: "100%"
@@ -34,12 +36,10 @@ const styles: ComponentStyles<IMSFTProgressClassNameContract, IDesignSystem> = (
             position: "relative",
             display: "flex",
             alignItems: "center",
-            height: "10px",
             width: "100%"
         },
-        progress_dot__base: {
+        progress_dot: {
             position: "absolute",
-            display: "inline-block",
             opacity: "0",
             width: "100%",
             height: "5px",

@@ -37,19 +37,19 @@ exports[`progress snapshots Progress: 1 1`] = `
     slot="indeterminate"
   >
     <span
-      className="progress_dot__base-0-1-35 progress_dot__1-0-1-36"
+      className="progress_dot-0-1-35 progress_dot__1-0-1-36"
     />
     <span
-      className="progress_dot__base-0-1-35 progress_dot__2-0-1-37"
+      className="progress_dot-0-1-35 progress_dot__2-0-1-37"
     />
     <span
-      className="progress_dot__base-0-1-35 progress_dot__3-0-1-38"
+      className="progress_dot-0-1-35 progress_dot__3-0-1-38"
     />
     <span
-      className="progress_dot__base-0-1-35 progress_dot__4-0-1-39"
+      className="progress_dot-0-1-35 progress_dot__4-0-1-39"
     />
     <span
-      className="progress_dot__base-0-1-35 progress_dot__5-0-1-40"
+      className="progress_dot-0-1-35 progress_dot__5-0-1-40"
     />
   </div>
 </div>

@@ -8,7 +8,7 @@ import {
     IProgressUnhandledProps,
     ProgressProps
 } from "./progress.props";
-import schema from "./progress.schema.json";
+import schema from "@microsoft/fast-components-react-base/dist/progress/progress.schema.json";
 import Documentation from "./.tmp/documentation";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
@@ -29,8 +29,6 @@ export default {
             maxValue: 100,
             value: 50
         },
-        {
-
-        }
+        {}
     ]
 } as IComponentFactoryExample<IProgressHandledProps>;

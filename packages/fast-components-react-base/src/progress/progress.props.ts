@@ -6,14 +6,17 @@ export interface IProgressHandledProps {
      * The progress content
      */
     children?: React.ReactNode | React.ReactNode[];
+
     /**
      * The HTML max value attribute
      */
     maxValue?: number;
+
     /**
      * The HTML min value attribute
      */
     minValue?: number;
+
     /**
      * The HTML value attribute
      */
