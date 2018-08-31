@@ -60,7 +60,7 @@ describe("toggle", (): void => {
         expect(rendered.state("selected")).toBe(false);
     });
 
-    test("should allow a change event to updte the selected state when no `selected` prop is provided", () => {
+    test("should allow a change event to update the selected state when no `selected` prop is provided", () => {
         const rendered: any = shallow(
             <Component {...handledProps} />
         );
