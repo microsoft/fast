@@ -60,7 +60,7 @@ describe("toggle", (): void => {
         expect(rendered.state("selected")).toBe(false);
     });
 
-    test("a change event should change the selected state when no `selected` prop is not provided", () => {
+    test("should allow a change event to updte the selected state when no `selected` prop is provided", () => {
         const rendered: any = shallow(
             <Component {...handledProps} />
         );
@@ -72,7 +72,7 @@ describe("toggle", (): void => {
         expect(rendered.state("selected")).toBe(true);
     });
 
-    test("should call a regestired callback after a change event", () => {
+    test("should call a registered callback after a change event", () => {
         const onChange: any = jest.fn();
         const uncontrolled: any = shallow(
             <Component {...handledProps} onChange={onChange} />
@@ -94,7 +94,7 @@ describe("toggle", (): void => {
         expect(onChange).toHaveBeenCalledTimes(2);
     });
 
-    test("setting props.selected should prevent Toggle from updating its own selected state", () => {
+    test("should not allow a change event to update the selected state when props.selected is provided", () => {
         const rendered: any = shallow(
             <Component {...handledProps} selected={false} />
         );
