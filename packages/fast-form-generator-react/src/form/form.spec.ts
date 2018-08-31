@@ -1,5 +1,14 @@
 import "jest";
-import { getNavigation, INavigationItem, mapSchemaLocationFromDataLocation } from "./form.utilities";
+import {
+    getBreadcrumbs,
+    getNavigation,
+    IBreadcrumbItem,
+    INavigationItem,
+    mapSchemaLocationFromDataLocation
+} from "./form.utilities";
+import {
+    BreadcrumbItemEventHandler
+} from "./form.props";
 import * as alignHorizontalSchema from "../../app/components/align-horizontal/align-horizontal.schema.json";
 import * as arraysSchema from "../../app/components/arrays/arrays.schema.json";
 import * as objectsSchema from "../../app/components/objects/objects.schema.json";
@@ -158,5 +167,93 @@ describe("getNavigation", () => {
         expect(navigation[1].dataLocation).toBe("nestedAnyOf");
         expect(navigation[1].schema).toEqual(anyOfSchema.anyOf[2].properties.nestedAnyOf);
         expect(navigation[1].data).toEqual({string: "foo"});
+    });
+});
+
+/**
+ * Gets breadcrumbs from navigation items
+ */
+describe("Get the breadcrumbs", () => {
+    type BreadcrumbClickHandler = (a: string, b: string, c: any) => BreadcrumbItemEventHandler;
+
+    const handleBreadcrumbClick: BreadcrumbClickHandler = (a: string, b: string, c: any): BreadcrumbItemEventHandler => {
+        return (e: React.MouseEvent): void => {
+            e.preventDefault();
+        };
+    };
+
+    test("should return a single breadcrumb item", () => {
+        const navigation: INavigationItem[] = getNavigation(
+            "",
+            {
+                alignHorizontal: "left"
+            },
+            alignHorizontalSchema
+        );
+        const breadcrumbs: IBreadcrumbItem[] = getBreadcrumbs(navigation, handleBreadcrumbClick);
+
+        expect(breadcrumbs.length).toBe(1);
+        expect(breadcrumbs[0].href).toBe("");
+        expect(breadcrumbs[0].text).toBe("Component with align horizontal");
+    });
+    test("should return breadcrumbs for nested property locations", () => {
+        const navigation: INavigationItem[] = getNavigation(
+            "optionalObjectWithNestedObject.nestedObject",
+            {
+                optionalObjectWithNestedObject: {
+                    nestedObject: {
+                        boolean: true
+                    }
+                }
+            },
+            objectsSchema
+        );
+        const breadcrumbs: IBreadcrumbItem[] = getBreadcrumbs(navigation, handleBreadcrumbClick);
+
+        expect(breadcrumbs.length).toBe(3);
+        expect(breadcrumbs[0].href).toBe("");
+        expect(breadcrumbs[0].text).toBe("Component with objects");
+        expect(breadcrumbs[1].href).toBe("optionalObjectWithNestedObject");
+        expect(breadcrumbs[1].text).toBe("object with nested object");
+        expect(breadcrumbs[2].href).toBe("optionalObjectWithNestedObject.nestedObject");
+        expect(breadcrumbs[2].text).toBe("Nested object");
+    });
+    test("should return breadcrumb items for an array location", () => {
+        const navigation: INavigationItem[] = getNavigation(
+            "objects.1",
+            {objects: [{ string: "foo" }, { string: "bar" }]},
+            arraysSchema
+        );
+        const breadcrumbs: IBreadcrumbItem[] = getBreadcrumbs(navigation, handleBreadcrumbClick);
+
+        expect(breadcrumbs.length).toBe(2);
+        expect(breadcrumbs[0].href).toBe("");
+        expect(breadcrumbs[0].text).toBe("Component with array");
+        expect(breadcrumbs[1].href).toBe("objects[1]");
+        expect(breadcrumbs[1].text).toBe("Array");
+    });
+    test("should return items for an anyOf/oneOf location", () => {
+        const navigationRoot: INavigationItem[] = getNavigation(
+            "",
+            {nestedAnyOf: {string: "foo"}},
+            anyOfSchema
+        );
+        const navigation: INavigationItem[] = getNavigation(
+            "nestedAnyOf",
+            {nestedAnyOf: {string: "foo"}},
+            anyOfSchema
+        );
+        const breadcrumbsRoot: IBreadcrumbItem[] = getBreadcrumbs(navigationRoot, handleBreadcrumbClick);
+        const breadcrumbs: IBreadcrumbItem[] = getBreadcrumbs(navigation, handleBreadcrumbClick);
+
+        expect(breadcrumbsRoot.length).toBe(1);
+        expect(breadcrumbs[0].href).toBe("");
+        expect(breadcrumbs[0].text).toBe("Component with anyOf");
+
+        expect(breadcrumbs.length).toBe(2);
+        expect(breadcrumbs[0].href).toBe("");
+        expect(breadcrumbs[0].text).toBe("Component with anyOf");
+        expect(breadcrumbs[1].href).toBe("nestedAnyOf");
+        expect(breadcrumbs[1].text).toBe("Nested anyOf");
     });
 });

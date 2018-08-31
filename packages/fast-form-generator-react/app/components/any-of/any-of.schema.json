@@ -32,10 +32,10 @@
             ]
         },
         {
-            "description": "Nested anyOf",
             "type": "object",
             "properties": {
                 "nestedAnyOf": {
+                    "title": "Nested anyOf",
                     "anyOf": [
                         {
                             "description": "Object",

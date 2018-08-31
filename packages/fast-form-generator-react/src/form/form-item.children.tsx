@@ -7,7 +7,7 @@ import { SortableListItem, sortingProps } from "./sorting";
 import { isRootLocation } from "./form.utilities";
 import { generateExampleData } from "./form-section.utilities";
 import { updateActiveSection } from "./form-section.props";
-import { ComponentTree, DataOnChange } from "./form.props";
+import { DataOnChange } from "./form.props";
 import { reactChildrenStringSchema } from "./form-item.children.text";
 import styles from "./form-item.children.style";
 import { IFormItemChildrenClassNameContract } from "../class-name-contracts/";
