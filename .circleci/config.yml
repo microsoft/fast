@@ -1,4 +1,9 @@
 aliases:
+  container_config: &container_config
+    docker:
+        - image: circleci/node:latest
+    working_directory: ~/fast-dna
+    
 version: 2
 jobs:
   build_and_unit_test:
