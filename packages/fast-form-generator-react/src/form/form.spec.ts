@@ -66,8 +66,8 @@ describe("Map schema location from data location", () => {
 /**
  * Gets the navigation
  */
-describe("Get the navigation", () => {
-    test("should return a single navigation item", () => {
+describe("getNavigation", () => {
+    test("should return a single navigation item when the location is at the root", () => {
         const navigation: INavigationItem[] = getNavigation(
             "",
             {

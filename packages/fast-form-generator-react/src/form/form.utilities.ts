@@ -234,37 +234,36 @@ export function getComponentTracker(
  * Gets the navigational items
  */
 export function getNavigation(dataLocation: string, data: any, schema: any): INavigationItem[] {
-    const navigation: INavigationItem[] = [];
     const normalizedDataLocation: string = normalizeDataLocation(dataLocation, data);
     const dataLocations: string[] = normalizedDataLocation.split(".");
 
-    navigation.push({
+    const navigation: INavigationItem = {
         dataLocation: "",
         schemaLocation: "",
         title: schema.title,
         data,
         schema
-    });
+    };
 
     if (dataLocation === "") {
-        return navigation;
+        return [navigation];
     }
 
-    for (let i: number = 0; i < dataLocations.length; i++) {
-        const currentDataLocation: string = dataLocations.slice(0, i + 1).join(".");
-        const currentSchemaLocation: string = mapSchemaLocationFromDataLocation(currentDataLocation, data, schema);
-        const currentSchema: any = get(schema, currentSchemaLocation);
+    return [navigation].concat(
+        dataLocations.map((location: string, index: number) => {
+            const currentDataLocation: string = dataLocations.slice(0, index + 1).join(".");
+            const currentSchemaLocation: string = mapSchemaLocationFromDataLocation(currentDataLocation, data, schema);
+            const currentSchema: any = get(schema, currentSchemaLocation);
 
-        navigation.push({
-            dataLocation: currentDataLocation,
-            schemaLocation: currentSchemaLocation,
-            title: currentSchema.title || "Untitled",
-            data: get(data, currentDataLocation),
-            schema: currentSchema
-        });
-    }
-
-    return navigation;
+            return {
+                dataLocation: currentDataLocation,
+                schemaLocation: currentSchemaLocation,
+                title: currentSchema.title || "Untitled",
+                data: get(data, currentDataLocation),
+                schema: currentSchema
+            };
+        })
+    );
 }
 
 /**
@@ -278,9 +277,8 @@ export function normalizeDataLocation(dataLocation: string, data: any): string {
 /**
  * Removes any references to array index
  */
-export function normalizeSchemaLocation(schemaLocation: string, lastLocationItem?: boolean): string {
-    const schemaLocationWithoutArrayLocation: string = schemaLocation.replace(squareBracketsRegex, "");
-    return lastLocationItem ? schemaLocationWithoutArrayLocation.replace(arrayItemsRegex, "") : schemaLocationWithoutArrayLocation;
+export function normalizeSchemaLocation(schemaLocation: string): string {
+    return schemaLocation.replace(squareBracketsRegex, "");
 }
 
 /**
@@ -295,7 +293,7 @@ export function mapSchemaLocationFromDataLocation(dataLocation: string, data: an
     const dataLocationSegments: string[] = normalizedDataLocation.split(".");
     const schemaLocationSegments: string[] = getSchemaLocationSegmentsFromDataLocationSegments(dataLocationSegments, schema, data);
 
-    return normalizeSchemaLocation(schemaLocationSegments.join("."), true);
+    return normalizeSchemaLocation(schemaLocationSegments.join(".")).replace(arrayItemsRegex, "");
 }
 
 /**
