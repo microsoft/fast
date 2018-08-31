@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { get, isUndefined } from "lodash-es";
+import { get } from "lodash-es";
 import Foundation, { HandledProps } from "../foundation";
 import { IToggleHandledProps, IToggleManagedClasses, IToggleUnhandledProps, ToggleProps } from "./toggle.props";
 import { IManagedClasses, IToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
@@ -104,7 +104,7 @@ class Toggle extends Foundation<IToggleHandledProps & IManagedClasses<IToggleCla
      * Handles onChange as a controlled component
      */
     private handleToggleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        if (isUndefined(this.props.selected)) {
+        if (typeof this.props.selected !== "boolean") {
             this.setState({selected: !this.state.selected});
         }
 
