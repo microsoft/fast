@@ -1,42 +1,39 @@
-import designSystemDefaults, { IDesignSystem } from "../design-system";
+import designSystemDefaults, { IDesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
-import { applyLocalizedProperty, Direction, toPx } from "@microsoft/fast-jss-utilities";
 import { IMSFTProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { ensureBrandNormal, largeContrast } from "../utilities/colors";
 import Chroma from "chroma-js";
 import { get } from "lodash";
 
 /* tslint:disable-next-line */
 const styles: ComponentStyles<IMSFTProgressClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<IMSFTProgressClassNameContract, IDesignSystem> => {
-    const backgroundColor: string = get(config, "backgroundColor") || designSystemDefaults.backgroundColor;
-    const brandColor: string = get(config, "brandColor") || designSystemDefaults.brandColor;
-    const direction: Direction = get(config, "direction") || designSystemDefaults.direction;
-    const foregroundColor: string = get(config, "foregroundColor") || designSystemDefaults.foregroundColor;
+    const designSystem: IDesignSystem = withDesignSystemDefaults(config);
+    const brandColor: string = ensureBrandNormal(config);
+    const determinateBackgroundColor: string = largeContrast(designSystem.contrast, designSystem.foregroundColor, designSystem.backgroundColor);
 
     return {
         progress: {
             display: "flex",
             width: "100%",
             alignItems: "center",
-            height: "10px"
+            height: "10px",
+            textAlign: "left"
         },
-        progress_indicator__determinate: {
-            display: "flex",
-            position: "relative",
-            background: Chroma(foregroundColor).alpha(0.2).css(),
-            height: "4px",
-            borderRadius: "2px",
-            width: "100%"
-        },
-        progress_indicator__determinate_bar: {
+        progress_determinateValueIndicator: {
             background: brandColor,
             borderRadius: "2px",
             height: "100%"
         },
-        progress_indicator__indeterminate: {
+        progress_indicator: {
             position: "relative",
             display: "flex",
             alignItems: "center",
             width: "100%"
+        },
+        progress_indicator__determinate: {
+            background: determinateBackgroundColor,
+            height: "4px",
+            borderRadius: "2px",
         },
         progress_dot: {
             position: "absolute",
@@ -100,8 +97,7 @@ const styles: ComponentStyles<IMSFTProgressClassNameContract, IDesignSystem> = (
                 transform: "translateX(100%)",
                 opacity: "0",
             },
-            "100%": {
-            }
+            "100%": {}
         }
     };
 };

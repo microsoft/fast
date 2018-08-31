@@ -17,7 +17,7 @@ const managedClasses: IProgressClassNameContract = {
     progress: "progess"
 };
 
-describe("horizontal overflow snapshot", (): void => {
+describe("progress snapshot", (): void => {
     generateSnapshots(examples);
 });
 

@@ -6,16 +6,15 @@ import { IProgressManagedClasses, IProgressUnhandledProps, ProgressProps } from 
 import { IManagedClasses, IMSFTProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { Progress as BaseProgress, ProgressType } from "@microsoft/fast-components-react-base";
 
-export interface ISpanData {
-    id: number;
-}
-
 /* tslint:disable-next-line */
 class Progress extends Foundation<ProgressProps & IManagedClasses<IMSFTProgressClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
+
     public static defaultProps: Partial<ProgressProps> = {
         minValue: 0,
         maxValue: 100
     };
+
+    private static indicatorDotCount: number = 5;
 
     protected handledProps: HandledProps<ProgressProps & IManagedClasses<IMSFTProgressClassNameContract>> = {
         children: void 0,
@@ -29,6 +28,9 @@ class Progress extends Foundation<ProgressProps & IManagedClasses<IMSFTProgressC
      * Renders the component
      */
     public render(): React.ReactElement<HTMLButtonElement | HTMLAnchorElement> {
+        /* tslint:disable-next-line */
+        const className: string = `${this.props.managedClasses.progress_indicator} ${this.props.managedClasses.progress_indicator__determinate}`;
+
         return (
             <BaseProgress
                 {...this.unhandledProps()}
@@ -39,36 +41,32 @@ class Progress extends Foundation<ProgressProps & IManagedClasses<IMSFTProgressC
                 maxValue={this.props.maxValue}
             >
                 <div
-                    className={this.props.managedClasses.progress_indicator__determinate}
+                    className={className}
                     slot={ProgressType.determinate}
                 >
                     <div
-                        className={this.props.managedClasses.progress_indicator__determinate_bar}
+                        className={this.props.managedClasses.progress_determinateValueIndicator}
                         style={{width: `${this.props.value}%`}}
                     />
                 </div>
                 <div
                     slot={ProgressType.indeterminate}
-                    className={this.props.managedClasses.progress_indicator__indeterminate}
+                    className={this.props.managedClasses.progress_indicator}
                 >
-                    {this.renderIndeterminateItems(this.generateIndeterminateItems())}
+                    {this.renderIndeterminateItems()}
                 </div>
             </BaseProgress>
         );
     }
 
-    public generateIndeterminateItems(): ISpanData[] {
-        return [{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}];
-    }
-
-    private renderIndeterminateItems(items: ISpanData[]): JSX.Element[] {
-        return items.map((item: ISpanData, index: number) => {
+    private renderIndeterminateItems(): JSX.Element[] {
+        return new Array(Progress.indicatorDotCount).fill(undefined).map((item: undefined, index: number) => {
             let className: string = this.props.managedClasses.progress_dot;
-            className = `${className} ${this.props.managedClasses[`progress_dot__${item.id}`]}`;
+            className = `${className} ${this.props.managedClasses[`progress_dot__${index + 1}`]}`;
             return (
                 <span
                     className={className}
-                    key={item.id}
+                    key={index}
                 />
             );
         });

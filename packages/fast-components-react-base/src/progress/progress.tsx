@@ -52,7 +52,7 @@ class Progress extends Foundation<IProgressHandledProps & IManagedClasses<IProgr
     }
 
     /**
-     * renders children based on value prop
+     * Renders children based on value prop
      */
     private renderChildren(): JSX.Element[] {
         return this.props.value !== undefined
@@ -61,7 +61,7 @@ class Progress extends Foundation<IProgressHandledProps & IManagedClasses<IProgr
     }
 
     /**
-     * renders children by slot name
+     * Renders children by slot name
      */
     private renderChildElements(slot: ProgressType): JSX.Element[] {
         return this.getChildBySlot(
