@@ -41,9 +41,9 @@ exports[`caption snapshots Caption: 4 1`] = `
 `;
 
 exports[`caption snapshots Caption: 5 1`] = `
-<p
+<figcaption
   className="typography_8-0-1-71 caption-0-1-61 caption_1-0-1-62"
 >
   figcaption tag test string
-</p>
+</figcaption>
 `;
