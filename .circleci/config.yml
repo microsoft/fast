@@ -74,4 +74,4 @@ workflows:
       - build_and_unit_test
       - test_coverage:
           requires:
-              - build
+              - build_and_unit_test
