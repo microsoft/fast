@@ -71,3 +71,11 @@ exports[`typography snapshot Typography: 8 1`] = `
   Test string
 </p>
 `;
+
+exports[`typography snapshot Typography: 9 1`] = `
+<figcaption
+  className="typography-9"
+>
+  Test string
+</figcaption>
+`;
