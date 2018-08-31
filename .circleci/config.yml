@@ -6,7 +6,7 @@ aliases:
     
 version: 2
 jobs:
-  build_and_unit_test:
+  build:
     <<: *container_config
     steps:
       - checkout
@@ -27,6 +27,19 @@ jobs:
           name: Execute Lerna bootstrap
           command: |
             lerna bootstrap
+      - persist_to_workspace:
+            root: tmp
+            paths:
+              - /usr/bin/npm
+              - /usr/local/bin/lerna
+              - node_modules
+              - packages/**/node_modules
+
+  unit_test:
+    <<: *container_config
+    steps:
+      - attach_workspace:
+          at: ~/fast-dna/tmp
       - run: 
           name: Unit Test all packages
           command: |
@@ -70,14 +83,17 @@ jobs:
       steps:
         - run:
             name: Install browser service
-            cmd: |
+            background: true
+            command: |
                 echo "hello world"
 
 workflows:
   version: 2
   build_test_coverage:
     jobs:
-      - build_and_unit_test
+      - build
+      - unit_test:
+          requires: build
       - test_browsers:
           requires:
-              - build_and_unit_test
+              - build
