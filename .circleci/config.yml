@@ -22,7 +22,7 @@ jobs:
     build_dependencies:
         <<: *container_config
         steps:
-            - *node_install
+            # - *node_install
             - *lerna_install
             - checkout
             - run: 
@@ -34,24 +34,21 @@ jobs:
                 command: |
                     lerna bootstrap
             - run: 
-                name: Create persistant folder
-                command: |
-                  mkdir -p tmp/
-            - persist_to_workspace:
-                root: fast-dna
-                paths:
-                    - node_modules
-                    - packages/**/node_modules
-
-    unit_test:
-        <<: *container_config
-        steps:
-            - attach_workspace:
-                at: ~/fast-dna
-            - run: 
                 name: Run unit tests
                 command: |
                     lerna run test --stream
+            - persist_to_workspace:
+                root: ~/fast-dna
+                paths:
+                    - coverage
+                    - packages/**/coverage
+
+    test_coverage:
+        <<: *container_config
+        steps:
+            - checkout
+            - attach_workspace:
+                at: ~/fast-dna
             - run:
                 name: Setup and execute Code Climate reporter
                 command: |
@@ -69,8 +66,7 @@ jobs:
                 command: |
                     for f in packages/*; do
                       if [ -d "$f" ]; then
-                        echo $f
-        
+                        echo $
                         set +e
                         if [ -d "$f/coverage" ]; then
                           ./coverage/cc-test-reporter format-coverage -t lcov -o coverage/coverage.${f//\//-}.json $f/coverage/lcov.info
@@ -97,7 +93,7 @@ workflows:
   build_test_coverage:
     jobs:
       - build_dependencies
-      - unit_test:
+      - test_coverage:
           requires: 
             - build_dependencies
       - test_browsers:
