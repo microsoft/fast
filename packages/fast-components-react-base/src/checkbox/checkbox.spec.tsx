@@ -32,13 +32,15 @@ describe("checkbox", (): void => {
         checkbox_span: "span-class",
     };
 
-    test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
+    const inputSelector: string = `.${managedClasses.checkbox_input}`;
+
+    test("should implement unhandledProps", () => {
         const handledProps: ICheckboxHandledProps & ICheckboxManagedClasses = {
             managedClasses
         };
 
         const unhandledProps: ICheckboxUnhandledProps = {
-            "aria-hidden": true
+            "data-my-custom-attribute": true
         };
 
         const props: CheckboxProps = {...handledProps, ...unhandledProps};
@@ -47,11 +49,10 @@ describe("checkbox", (): void => {
             <Component {...props} />
         );
 
-        expect(rendered.prop("aria-hidden")).not.toBe(undefined);
-        expect(rendered.prop("aria-hidden")).toEqual(true);
+        expect(rendered.first().prop("data-my-custom-attribute")).toEqual(true);
     });
 
-    test("should correctly manage the disabled prop by adding a class and passing `disabled` to the input element", () => {
+    test("should add a class and `disabled` attribute to the input element when the disabled prop is true", () => {
         const rendered: any = shallow(
             <Component managedClasses={managedClasses} disabled={true} />
         );
@@ -61,54 +62,55 @@ describe("checkbox", (): void => {
         expect(rendered.find(".input-class[disabled]").prop("disabled")).toBe(true);
     });
 
-    test("should correctly operate as an uncontrolled component and set initial state if `checked` prop is not passed", () => {
-        const rendered: any = shallow(
-            <Component managedClasses={managedClasses} />
-        );
-
-        const state: any = rendered.state("checked");
-
-        expect(state).toBe(false);
+    test("should initialize as unchecked if the `checked` prop is not provided", () => {
+        expect(
+            shallow(<Component managedClasses={managedClasses} />)
+            .state("checked")
+        ).toBe(false);
     });
 
-    test("should correctly operate as an uncontrolled component and handle `onChange` events when `onChange` prop is not passed", () => {
+    test("should allow a change event to update the checked state when no `checked` prop is provided", () => {
         const rendered: any = shallow(
             <Component managedClasses={managedClasses} />
         );
 
         expect(rendered.state("checked")).toBe(false);
 
-        const input: any = rendered.find(".input-class");
-        input.prop("onChange")(); // we have to fire the internal onChange from the input as we aren't passing one
+        rendered.find(inputSelector).simulate("change");
 
         expect(rendered.state("checked")).toBe(true);
     });
 
-    test("should correctly operate as a controlled component when `onChange` and `checked` prop is passed", () => {
+    test("should call a registerd callback after a change event", () => {
         const onChange: any = jest.fn();
-        const rendered: any = shallow(
+        const controlled: any = shallow(
             <Component managedClasses={managedClasses} checked={true} onChange={onChange} />
         );
-        const input: any = rendered.find("input");
-
-        input.simulate("change", { checked: false });
-
-        expect(onChange).toHaveBeenCalled();
-    });
-
-    test("should correctly update the checked state if an updated `checked` prop is passed which differs from the state", () => {
-        const rendered: any = shallow(
-            <Component managedClasses={managedClasses} />
+        const uncontrolled: any = shallow(
+            <Component managedClasses={managedClasses} onChange={onChange} />
         );
 
-        const newProps: Partial<ICheckboxHandledProps> = {
-            checked: true
-        };
+        controlled.find(inputSelector).simulate("change");
+
+        expect(onChange).toHaveBeenCalledTimes(1);
+
+        uncontrolled.find(inputSelector).simulate("change");
+
+        expect(onChange).toHaveBeenCalledTimes(2);
+    });
+
+    test("should not allow a change event to update the checked state if props.checked is provided", () => {
+        const rendered: any = shallow(
+            <Component managedClasses={managedClasses} checked={false} />
+        );
 
         expect(rendered.state("checked")).toEqual(false);
+        rendered.find(inputSelector).simulate("change");
+        expect(rendered.state("checked")).toEqual(false);
 
-        rendered.setProps(newProps);
-
+        rendered.setProps({checked: true});
+        expect(rendered.state("checked")).toEqual(true);
+        rendered.find(inputSelector).simulate("change");
         expect(rendered.state("checked")).toEqual(true);
     });
 });
