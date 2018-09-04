@@ -73,5 +73,12 @@
 # fast-web-utilities
 /packages/fast-web-utilities/ @janechu @chrisdholt @nicholasrice
 
-# Other
+# Github management
 .github/ @awentzel @janechu @chrisdholt @nicholasrice
+
+# Circle Ci
+.circleci/ @awentzel @janechu @nicholasrice
+
+# DevOps
+*.yml @awentzel @janechu @nicholasriced @chrisdholt
+build/ @janechu @nicholasrice @chrisdholt
