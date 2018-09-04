@@ -66,7 +66,7 @@ describe("checkbox", (): void => {
         expect(
             shallow(<Component managedClasses={managedClasses} />)
             .state("checked")
-        ).toBe(false)
+        ).toBe(false);
     });
 
     test("should allow a change event to update the checked state when no `checked` prop is provided", () => {
@@ -108,7 +108,7 @@ describe("checkbox", (): void => {
         rendered.find(inputSelector).simulate("change");
         expect(rendered.state("checked")).toEqual(false);
 
-        rendered.setProps({checked: true})
+        rendered.setProps({checked: true});
         expect(rendered.state("checked")).toEqual(true);
         rendered.find(inputSelector).simulate("change");
         expect(rendered.state("checked")).toEqual(true);
