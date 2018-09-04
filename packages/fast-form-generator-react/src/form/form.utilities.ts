@@ -282,15 +282,11 @@ export function getBreadcrumbs(
     navigation: INavigationItem[],
     handleClick: HandleBreadcrumbClick
 ): IBreadcrumbItem[] {
-    const breadcrumbs: IBreadcrumbItem[] = [];
-
-    navigation.forEach((navigationItem: INavigationItem) => {
-        breadcrumbs.push({
+    return navigation.map((navigationItem: INavigationItem): IBreadcrumbItem => {
+        return {
             href: navigationItem.dataLocation,
             text: navigationItem.title,
             onClick: handleClick(navigationItem.schemaLocation, navigationItem.dataLocation, navigationItem.schema)
-        });
+        };
     });
-
-    return breadcrumbs;
 }
