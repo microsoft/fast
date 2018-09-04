@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`progress snapshots Progress: 0 1`] = `
+<div
+  aria-valuemax={100}
+  aria-valuemin={0}
+  aria-valuenow={50}
+  className="progress-0-1-11"
+  role="progressbar"
+>
+  <div
+    className="progress_indicator-0-1-13 progress_indicator__determinate-0-1-14"
+    slot="determinate"
+  >
+    <div
+      className="progress_determinateValueIndicator-0-1-12"
+      style={
+        Object {
+          "width": "50%",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`progress snapshots Progress: 1 1`] = `
+<div
+  aria-valuemax={100}
+  aria-valuemin={0}
+  aria-valuenow={undefined}
+  className="progress-0-1-31"
+  role="progressbar"
+>
+  <div
+    className="progress_indicator-0-1-33"
+    slot="indeterminate"
+  >
+    <span
+      className="progress_dot-0-1-35 progress_dot__1-0-1-36"
+    />
+    <span
+      className="progress_dot-0-1-35 progress_dot__2-0-1-37"
+    />
+    <span
+      className="progress_dot-0-1-35 progress_dot__3-0-1-38"
+    />
+    <span
+      className="progress_dot-0-1-35 progress_dot__4-0-1-39"
+    />
+    <span
+      className="progress_dot-0-1-35 progress_dot__5-0-1-40"
+    />
+  </div>
+</div>
+`;

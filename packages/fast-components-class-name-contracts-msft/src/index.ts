@@ -5,4 +5,5 @@ export * from "./heading";
 export * from "./managed-classes";
 export * from "./metatext";
 export * from "./paragraph";
+export * from "./progress";
 export * from "./subheading";

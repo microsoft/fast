@@ -22,6 +22,9 @@ export { ImageExamples };
 import LabelExamples from "../src/label/examples.data";
 export { LabelExamples };
 
+import ProgressExamples from "../src/progress/examples.data";
+export { ProgressExamples };
+
 import TabsExamples from "../src/tabs/examples.data";
 export { TabsExamples };
 
