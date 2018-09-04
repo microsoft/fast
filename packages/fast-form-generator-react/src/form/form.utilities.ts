@@ -23,6 +23,8 @@ export interface INavigationItem {
     schema: any;
 }
 
+export type HandleBreadcrumbClick = (schemaLocation: string, dataLocation: string, schema: any) => BreadcrumbItemEventHandler;
+
 /**
  * Gets the data cache based on a new data object and
  * previous data object
@@ -125,9 +127,8 @@ export function normalizeDataLocation(dataLocation: string, data: any): string {
 /**
  * Removes any references to array index
  */
-export function normalizeSchemaLocation(schemaLocation: string, lastLocationItem?: boolean): string {
-    const schemaLocationWithoutArrayLocation: string = schemaLocation.replace(squareBracketsRegex, "");
-    return lastLocationItem ? schemaLocationWithoutArrayLocation.replace(arrayItemsRegex, "") : schemaLocationWithoutArrayLocation;
+export function normalizeSchemaLocation(schemaLocation: string): string {
+    return schemaLocation.replace(squareBracketsRegex, "");
 }
 
 /**
@@ -279,7 +280,7 @@ export function isRootLocation(location: string): boolean {
  */
 export function getBreadcrumbs(
     navigation: INavigationItem[],
-    handleClick: (schemaLocation: string, dataLocation: string, schema: any) => BreadcrumbItemEventHandler
+    handleClick: HandleBreadcrumbClick
 ): IBreadcrumbItem[] {
     const breadcrumbs: IBreadcrumbItem[] = [];
 

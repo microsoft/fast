@@ -2,6 +2,7 @@ import "jest";
 import {
     getBreadcrumbs,
     getNavigation,
+    HandleBreadcrumbClick,
     IBreadcrumbItem,
     INavigationItem,
     mapSchemaLocationFromDataLocation
@@ -174,9 +175,11 @@ describe("getNavigation", () => {
  * Gets breadcrumbs from navigation items
  */
 describe("Get the breadcrumbs", () => {
-    type BreadcrumbClickHandler = (a: string, b: string, c: any) => BreadcrumbItemEventHandler;
-
-    const handleBreadcrumbClick: BreadcrumbClickHandler = (a: string, b: string, c: any): BreadcrumbItemEventHandler => {
+    const handleBreadcrumbClick: HandleBreadcrumbClick = (
+        schemaLocation: string,
+        dataLocation: string,
+        schema: any
+    ): BreadcrumbItemEventHandler => {
         return (e: React.MouseEvent): void => {
             e.preventDefault();
         };
