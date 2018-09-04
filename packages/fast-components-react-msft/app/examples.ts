@@ -28,6 +28,9 @@ export { ImageExamples };
 import LabelExamples from "../src/label/examples.data";
 export { LabelExamples };
 
+import MetatextExamples from "../src/metatext/examples.data";
+export { MetatextExamples };
+
 import ParagraphExamples from "../src/paragraph/examples.data";
 export { ParagraphExamples };
 

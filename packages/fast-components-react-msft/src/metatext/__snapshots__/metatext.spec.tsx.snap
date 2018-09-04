@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`metatext snapshots Metatext: 0 1`] = `
+<span
+  className="typography_7-0-1-9 metatext-0-1-2"
+>
+  Metatext test string
+</span>
+`;
+
+exports[`metatext snapshots Metatext: 1 1`] = `
+<p
+  className="typography_7-0-1-20 metatext-0-1-13"
+  data-sketch-symbol="Metatext"
+>
+  Metatext test string
+</p>
+`;
+
+exports[`metatext snapshots Metatext: 2 1`] = `
+<span
+  className="typography_7-0-1-31 metatext-0-1-24"
+>
+  Metatext test string
+</span>
+`;
