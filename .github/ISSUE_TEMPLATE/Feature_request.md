@@ -7,7 +7,7 @@ about: Suggest an idea for this project
 **What is your feature request? Please describe.**
 A clear and concise description of the requested feature and benefits it would provide.
 
-**Describe the solution you'd like**s
+**Describe the solution you'd like**
 A clear and concise description of what you want to happen.
 
 **Describe alternatives you've considered**
