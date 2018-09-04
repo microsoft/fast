@@ -5,7 +5,7 @@ about: Suggest an idea for this project
 ---
 
 **What is your feature request? Please describe.**
-A clear and concise description of the requested feature and how this will improve the user experience. Ex. I'm always frustrated when [...]
+A clear and concise description of the requested feature and benefits it would have.
 
 **Describe the solution you'd like**
 A clear and concise description of what you want to happen.
