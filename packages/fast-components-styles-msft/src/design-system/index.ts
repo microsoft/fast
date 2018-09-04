@@ -19,6 +19,11 @@ export interface IDesignSystem {
     contrast: number;
 
     /**
+     * The density multiplier
+     */
+    density: number;
+
+    /**
      * The primary direction of the view.
      */
     direction: Direction;
@@ -33,6 +38,7 @@ const designSystemDefaults: IDesignSystem = {
     backgroundColor: "#FFF",
     brandColor: "#0078D4",
     contrast: 0,
+    density: 1,
     direction: Direction.ltr,
     foregroundColor: "#000"
 };
