@@ -9,7 +9,7 @@ const styles: ComponentStyles<IMSFTProgressClassNameContract, IDesignSystem> = (
     const designSystem: IDesignSystem = withDesignSystemDefaults(config);
     const brandColor: string = ensureBrandNormal(config);
     /* tslint:disable-next-line */
-    const determinateBackgroundColor: string = largeContrast(designSystem.contrast, designSystem.foregroundColor, designSystem.backgroundColor);
+    const determinateBackgroundColor: string = largeContrast(designSystem.contrast, designSystem.backgroundColor, brandColor);
 
     return {
         progress: {
