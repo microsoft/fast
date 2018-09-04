@@ -24,6 +24,11 @@ export interface IDesignSystem {
     density: number;
 
     /**
+     * The grid-unit that UI dimensions are derived from
+     */
+    designUnit: number;
+
+    /**
      * The primary direction of the view.
      */
     direction: Direction;
@@ -39,6 +44,7 @@ const designSystemDefaults: IDesignSystem = {
     brandColor: "#0078D4",
     contrast: 0,
     density: 1,
+    designUnit: 4,
     direction: Direction.ltr,
     foregroundColor: "#000"
 };
