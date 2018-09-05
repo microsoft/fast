@@ -19,7 +19,6 @@ exports[`toggle snapshot Toggle: 0 1`] = `
       aria-describedby="span01"
       checked={true}
       className="toggle_input"
-      defaultChecked={true}
       disabled={false}
       id="toggle01"
       onChange={[Function]}

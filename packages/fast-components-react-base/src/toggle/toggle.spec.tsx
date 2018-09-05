@@ -38,68 +38,80 @@ describe("toggle", (): void => {
         statusLabelId: "statusLabelId",
         unselectedString: "Unselected"
     };
+    const inputSelector: string = `.${managedClasses.toggle_input}`;
 
-    test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
+    test("should implement unhandledProps", () => {
         const unhandledProps: IToggleUnhandledProps = {
-            "aria-hidden": true
+            "data-my-custom-attribute": true
         };
         const props: ToggleProps = {...handledProps, ...unhandledProps};
         const rendered: any = shallow(
             <Component {...props} />
         );
 
-        expect(rendered.prop("aria-hidden")).not.toBe(undefined);
-        expect(rendered.prop("aria-hidden")).toEqual(true);
+        expect(rendered.first().prop("data-my-custom-attribute")).toBe(true);
     });
 
-    test("should correctly operate as an uncontrolled component and set initial state if `selected` prop is not passed", () => {
+    test("should initalize as unselected if the `selected` prop is not provided", () => {
         const rendered: any = shallow(
             <Component {...handledProps} />
         );
 
-        const state: any = rendered.state("checked");
-
-        expect(state).toBe(undefined);
+        expect(rendered.state("selected")).toBe(false);
     });
 
-    test("should correctly operate as an uncontrolled component and handle `onChange` events when `selected` prop is not passed", () => {
+    test("should allow a change event to update the selected state when no `selected` prop is provided", () => {
         const rendered: any = shallow(
             <Component {...handledProps} />
         );
 
-        expect(rendered.state("checked")).toBe(undefined);
+        expect(rendered.state("selected")).toBe(false);
 
-        const input: any = rendered.find(".toggle-input-class");
-        input.prop("onChange")(); // we have to fire the internal onChange from the input as we aren't passing one
+        rendered.find(inputSelector).simulate("change");
 
-        expect(rendered.state("checked")).toBe(true);
+        expect(rendered.state("selected")).toBe(true);
     });
 
-    test("should correctly operate as a controlled component when `onChange` and `selected` prop is passed", () => {
+    test("should call a registered callback after a change event", () => {
         const onChange: any = jest.fn();
-        const rendered: any = shallow(
+        const uncontrolled: any = shallow(
+            <Component {...handledProps} onChange={onChange} />
+        );
+        const controlled: any = shallow(
             <Component {...handledProps} selected={true} onChange={onChange} />
         );
-        const input: any = rendered.find(".toggle-input-class");
 
-        input.simulate("change", { selected: false });
+        uncontrolled
+            .find(inputSelector)
+            .simulate("change");
 
-        expect(onChange).toHaveBeenCalled();
+        expect(onChange).toHaveBeenCalledTimes(1);
+
+        controlled
+            .find(inputSelector)
+            .simulate("change");
+
+        expect(onChange).toHaveBeenCalledTimes(2);
     });
 
-    test("should correctly call getDerivedStateFromProps if an updated `selected` prop is passed which differs from the state", () => {
+    test("should not allow a change event to update the selected state when props.selected is provided", () => {
         const rendered: any = shallow(
-            <Component {...handledProps} />
+            <Component {...handledProps} selected={false} />
         );
 
-        const newProps: Partial<IToggleHandledProps> = {
-            selected: true
-        };
+        expect(rendered.state("selected")).toEqual(false);
+        rendered
+            .find(inputSelector)
+            .simulate("change");
 
-        expect(rendered.state("checked")).toEqual(undefined);
+        expect(rendered.state("selected")).toEqual(false);
 
-        rendered.setProps(newProps);
+        rendered.setProps({selected: true});
 
-        expect(rendered.state("checked")).toEqual(true);
+        expect(rendered.state("selected")).toEqual(true);
+        rendered
+            .find(inputSelector)
+            .simulate("change");
+        expect(rendered.state("selected")).toEqual(true);
     });
 });

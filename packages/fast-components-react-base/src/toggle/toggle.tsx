@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { get, isUndefined } from "lodash-es";
+import { get } from "lodash-es";
 import Foundation, { HandledProps } from "../foundation";
 import { IToggleHandledProps, IToggleManagedClasses, IToggleUnhandledProps, ToggleProps } from "./toggle.props";
 import { IManagedClasses, IToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
@@ -9,7 +9,7 @@ import { IManagedClasses, IToggleClassNameContract } from "@microsoft/fast-compo
  * Toggle state interface
  */
 export interface IToggleState {
-    checked: boolean;
+    selected: boolean;
 }
 
 /**
@@ -22,9 +22,9 @@ class Toggle extends Foundation<IToggleHandledProps & IManagedClasses<IToggleCla
      * React life-cycle method
      */
     public static getDerivedStateFromProps(nextProps: IToggleHandledProps, prevState: IToggleState): null | Partial<IToggleState> {
-        if (nextProps.selected !== prevState.checked && !isUndefined(nextProps.selected)) {
+        if (typeof nextProps.selected === "boolean" && nextProps.selected !== prevState.selected) {
             return {
-                checked: nextProps.selected
+                selected: nextProps.selected
             };
         }
 
@@ -49,7 +49,7 @@ class Toggle extends Foundation<IToggleHandledProps & IManagedClasses<IToggleCla
         super(props);
 
         this.state = {
-            checked: this.props.selected
+            selected: this.props.selected || false
         };
     }
 
@@ -69,12 +69,11 @@ class Toggle extends Foundation<IToggleHandledProps & IManagedClasses<IToggleCla
                         className={get(this.props, "managedClasses.toggle_input")}
                         type="checkbox"
                         id={this.props.id}
-                        defaultChecked={this.state.checked}
                         aria-describedby={this.props.statusLabelId}
                         disabled={this.props.disabled}
                         value={this.generateToggleStateLabel()}
                         onChange={this.handleToggleChange}
-                        checked={!!this.state.checked}
+                        checked={this.state.selected}
                     />
                     <span className={get(this.props, "managedClasses.toggle_button")} />
                 </div>
@@ -98,15 +97,15 @@ class Toggle extends Foundation<IToggleHandledProps & IManagedClasses<IToggleCla
      * Creates proper string based on state
      */
     private generateToggleStateLabel(): string {
-        return this.state.checked ? this.props.selectedString : this.props.unselectedString;
+        return this.state.selected ? this.props.selectedString : this.props.unselectedString;
     }
 
     /**
      * Handles onChange as a controlled component
      */
     private handleToggleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        if (isUndefined(this.props.selected)) {
-            this.setState({checked: !this.state.checked});
+        if (typeof this.props.selected !== "boolean") {
+            this.setState({selected: !this.state.selected});
         }
 
         if (this.props.onChange) {
@@ -118,7 +117,7 @@ class Toggle extends Foundation<IToggleHandledProps & IManagedClasses<IToggleCla
      * Generates label if it exists
      */
     private generateLabel(): React.ReactElement<HTMLElement> {
-        if (this.props.labelId) {
+        if (this.props.labelId || this.props.children) {
             return(
                 <label
                     className={get(this.props, "managedClasses.toggle_label")}
