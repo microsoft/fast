@@ -4,6 +4,9 @@
 import ButtonStyles from "./button";
 export { ButtonStyles };
 
+import CallToActionStyles from "./call-to-action";
+export { CallToActionStyles };
+
 import CaptionStyles from "./caption";
 export { CaptionStyles };
 

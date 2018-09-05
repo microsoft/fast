@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`call to action snapshot Call to action: 0 1`] = `
+<a
+  className="hypertext-0-1-6 callToAction_primary-0-1-8"
+  data-sketch-symbol="Call to action - primary"
+  href="https://www.microsoft.com/en-us/"
+>
+  <span
+    className="callToAction_span-0-1-7"
+  >
+    Primary call to action
+  </span>
+</a>
+`;
+
+exports[`call to action snapshot Call to action: 1 1`] = `
+<a
+  className="hypertext-0-1-16 callToAction_secondary-0-1-19"
+  data-sketch-symbol="Call to action - secondary"
+  href="https://www.microsoft.com/en-us/"
+>
+  <span
+    className="callToAction_span-0-1-17"
+  >
+    Secondary call to action
+  </span>
+</a>
+`;
+
+exports[`call to action snapshot Call to action: 2 1`] = `
+<a
+  className="hypertext-0-1-26 callToAction_lightweight-0-1-30"
+  data-sketch-symbol="Call to action - lightweight"
+  href="https://www.microsoft.com/en-us/"
+>
+  <span
+    className="callToAction_span-0-1-27"
+  >
+    Lightweight call to action
+  </span>
+</a>
+`;

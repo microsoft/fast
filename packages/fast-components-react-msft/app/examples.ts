@@ -1,6 +1,9 @@
 import ButtonExamples from "../src/button/examples.data";
 export { ButtonExamples };
 
+import CallToActionExamples from "../src/call-to-action/examples.data";
+export { CallToActionExamples };
+
 import CaptionExamples from "../src/caption/examples.data";
 export { CaptionExamples };
 

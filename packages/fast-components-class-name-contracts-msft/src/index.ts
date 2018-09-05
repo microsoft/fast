@@ -1,4 +1,5 @@
 export * from "./button";
+export * from "./call-to-action";
 export * from "./caption";
 export * from "./flipper";
 export * from "./heading";
