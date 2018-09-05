@@ -1,5 +1,5 @@
 import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
-import { IMSFTCallToActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { ICallToActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { applyLocalizedProperty, Direction, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
 import { IDesignSystem, withDesignSystemDefaults } from "../design-system/index";
 import { curry } from "lodash-es";
@@ -9,9 +9,9 @@ import {
     normalContrast,
 } from "../utilities/colors";
 
-const styles: ComponentStyles<IMSFTCallToActionClassNameContract, IDesignSystem> = (
+const styles: ComponentStyles<ICallToActionClassNameContract, IDesignSystem> = (
     config: IDesignSystem
-): ComponentStyleSheet<IMSFTCallToActionClassNameContract, IDesignSystem> => {
+): ComponentStyleSheet<ICallToActionClassNameContract, IDesignSystem> => {
     type ContrastFunction = (operandColor: string, referenceColor: string) => string;
     // tslint:disable:max-line-length
     const ctaCaratRightBlue: string = "url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii00MDE0LjQgMTYxNi45OTggNC40IDgiPjxkZWZzPjxzdHlsZT4uYXtmaWxsOiMwMDc4RDQ7fTwvc3R5bGU+PC9kZWZzPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC00MTI4IDE2MDAuNjk4KSI+PHBhdGggY2xhc3M9ImEiIGQ9Ik0xNDAuNiwyMy45bDMuNy0zLjYtMy43LTMuNi40LS40LDQsNC00LDRaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMjcpIi8+PC9nPjwvc3ZnPg==)";

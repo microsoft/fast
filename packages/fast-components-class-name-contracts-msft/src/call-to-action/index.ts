@@ -3,7 +3,7 @@ import { IHypertextClassNameContract } from "@microsoft/fast-components-class-na
 /**
  * The class name contract for the call to action component
  */
-export interface IMSFTCallToActionClassNameContract extends IHypertextClassNameContract {
+export interface ICallToActionClassNameContract extends IHypertextClassNameContract {
     callToAction_primary: string;
     callToAction_secondary: string;
     callToAction_lightweight: string;

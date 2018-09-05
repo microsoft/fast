@@ -12,7 +12,7 @@ import CallToAction,
     ICallToActionManagedClasses,
     ICallToActionUnhandledProps
 } from "./call-to-action";
-import { IMSFTCallToActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { ICallToActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 
 /*
  * Configure Enzyme
@@ -25,7 +25,7 @@ describe("call to action snapshot", (): void => {
 
 describe("call to action", (): void => {
     const Component: React.ComponentClass<ICallToActionHandledProps & ICallToActionManagedClasses> = examples.component;
-    const managedClasses: IMSFTCallToActionClassNameContract = {
+    const managedClasses: ICallToActionClassNameContract = {
         hypertext: "hypertext",
         callToAction_primary: "call-to-action-primary",
         callToAction_secondary: "call-to-action-secondary",

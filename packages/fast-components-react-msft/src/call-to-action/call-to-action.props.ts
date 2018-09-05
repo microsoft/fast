@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IManagedClasses, IMSFTCallToActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { IManagedClasses, ICallToActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 
 export enum CallToActionAppearance {
     lightweight= "lightweight",
@@ -25,6 +25,6 @@ export interface ICallToActionHandledProps {
     href: string;
 }
 
-export interface ICallToActionUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
-export interface ICallToActionManagedClasses extends IManagedClasses<IMSFTCallToActionClassNameContract> { }
+export interface ICallToActionUnhandledProps extends React.AllHTMLAttributes<HTMLAnchorElement> {}
+export interface ICallToActionManagedClasses extends IManagedClasses<ICallToActionClassNameContract> { }
 export type CallToActionProps = ICallToActionHandledProps & ICallToActionUnhandledProps & ICallToActionManagedClasses;

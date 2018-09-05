@@ -2,17 +2,17 @@ import * as React from "react";
 import { Foundation, HandledProps } from "@microsoft/fast-components-react-base";
 import { Hypertext } from "@microsoft/fast-components-react-base";
 import { CallToActionAppearance, ICallToActionHandledProps } from "./call-to-action.props";
-import { IMSFTCallToActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { ICallToActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
 
 // tslint:disable-next-line:max-line-length
-class CallToAction extends Foundation<ICallToActionHandledProps & IManagedClasses<IMSFTCallToActionClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
+class CallToAction extends Foundation<ICallToActionHandledProps & IManagedClasses<ICallToActionClassNameContract>,  React.AllHTMLAttributes<HTMLAnchorElement>, {}> {
     public static defaultProps: Partial<ICallToActionHandledProps> = {
         appearance: CallToActionAppearance.primary
     };
 
-    protected handledProps: HandledProps<ICallToActionHandledProps & IManagedClasses<IMSFTCallToActionClassNameContract>> = {
+    protected handledProps: HandledProps<ICallToActionHandledProps & IManagedClasses<ICallToActionClassNameContract>> = {
         appearance: void 0,
         href: void 0,
         managedClasses: void 0
@@ -51,4 +51,4 @@ class CallToAction extends Foundation<ICallToActionHandledProps & IManagedClasse
 
 export default CallToAction;
 export * from "./call-to-action.props";
-export { IMSFTCallToActionClassNameContract };
+export { ICallToActionClassNameContract };
