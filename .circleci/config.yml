@@ -79,37 +79,15 @@ jobs:
                     ./coverage/cc-test-reporter upload-coverage -i coverage/coverage.total.json
 
     test_browsers:
-        <<: *container_config
+        
         steps:
-            - run: 
-                name: Install Sauce Labs image
-                command: |
-                    wget https://saucelabs.com/downloads/sc-4.5.1-linux.tar.gz
-                    tar -xzf sc-4.5.1-linux.tar.gz
             - run:
-                name: Test on Sauce Labs
+                name: Install browser service
                 background: true
                 command: |
-<<<<<<< HEAD
                     cd .circleci/
-                    node test-cross-browsers.js
+                    node test-cross-browser.js
 
-=======
-                    cd sc-*-linux && ./bin/sc --user $SAUCELABS_USER --api-key $SAUCELABS_KEY --readyfile ~/sauce_is_ready: 
-                    # Wait for tunnel to be read
-                    - while [ ! -e ~/sauce_is_ready  ]; do sleep 1; done
-                    - python -m hello.hello_app: 
-                      background: true
-                    # Wait for app to be ready
-                    - curl --retry 10 --retry-delay 2 -v http://localhost:5000
-                    # Run selenium tests
-                    - nosetests
-            - run: 
-                name: Wait for Sauce Connect to close the tunnel
-                command: |
-                    killall --wait sc 
-                  
->>>>>>> update configuration for sauce labs
 workflows:
   version: 2
   build_test_coverage:
