@@ -77,8 +77,8 @@
 .github/ @awentzel @janechu @chrisdholt @nicholasrice
 
 # Circle Ci
-.circleci/ @awentzel @janechu @nicholasrice
+.circleci/ @awentzel @janechu @nicholasrice @chrisdholt
 
 # DevOps
-*.yml @awentzel @janechu @nicholasriced @chrisdholt
+*.yml @awentzel @janechu @nicholasrice @chrisdholt
 build/ @janechu @nicholasrice @chrisdholt
