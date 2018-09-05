@@ -69,7 +69,7 @@ class ColorPicker extends React.Component<IColorPickerProps & IManagedClasses<IC
         return (
             <React.Fragment>
                 <label
-                    for={id}
+                    htmlFor={id}
                     className={this.props.managedClasses.colorPicker_label}
                 >
                     {name}
