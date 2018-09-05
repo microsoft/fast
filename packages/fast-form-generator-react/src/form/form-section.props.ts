@@ -1,6 +1,5 @@
 import {
     DataOnChange,
-    IComponentItem,
     IFormAttributeSettingsMappingToPropertyNames,
     IFormComponentMappingToPropertyNamesProps,
     IFormLocation,
