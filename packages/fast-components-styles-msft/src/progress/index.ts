@@ -1,5 +1,5 @@
 import designSystemDefaults, { IDesignSystem, withDesignSystemDefaults } from "../design-system";
-import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
+import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { IMSFTProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { ensureBrandNormal, largeContrast } from "../utilities/colors";
 import { get } from "lodash";
