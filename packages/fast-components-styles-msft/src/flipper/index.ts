@@ -59,15 +59,15 @@ const styles: ComponentStyles<IFlipperClassNameContract, IDesignSystem> = (confi
             display: "inline-flex",
             justifyContent: "center",
             alignItems: "center",
-            width: toPx(14),
-            height: toPx(14),
+            width: "14px",
+            height: "14px",
             "&::before": {
                 boxSizing: "border-box",
-                height: toPx(12),
-                width: toPx(12),
+                height: "12px",
+                width: "12px",
                 content: "\"\"",
-                borderRight: `${toPx(1)} solid ${foregroundColor}`,
-                borderTop: `${toPx(1)} solid ${foregroundColor}`
+                borderRight: `1px solid ${foregroundColor}`,
+                borderTop: `1px solid ${foregroundColor}`
             }
         },
         flipper_next: {
