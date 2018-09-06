@@ -21,9 +21,12 @@
     "lerna": "^3.0.6",
     "markdown-it": "^8.4.1",
     "rimraf": "^2.6.2",
-    "selenium-webdriver": "^4.0.0-alpha.1",
     "ts-node": "^5.0.1",
     "typescript": "^3.0.1",
     "yargs": "^11.0.0"
+  },
+  "dependencies": {
+    "saucelabs": "^1.5.0",
+    "selenium-webdriver": "^4.0.0-alpha.1"
   }
 }
