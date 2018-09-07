@@ -107,7 +107,7 @@ var flows = browsers.map(function(browser) {
         // Setup capabilities
         let caps = {
                 name : "FAST-DNA MSFT Documentation",
-                build : "test-build-0009",
+                build : "test-build-0010",
                 tags : "msft-docs",
                 platform : browser.platform,
                 browserName : browser.browserName,
@@ -138,28 +138,28 @@ var flows = browsers.map(function(browser) {
 
                         // After browsers matrix is determined we can fine tune and
                         // optimize to use other selectors to see what works. If we're
-                        // testing mostly on modern browsers this isn't as much a limitation.
+                        // t8esting mostly on modern browsers this isn't as much a limitation.
 
                         // Recommendation, add in data-test attributes to each component,
                         // page, layout, or container we want to capture and select on that.
 
                         // Iterate each components documentation
-                        await driver.navigate().to(domain + "/components/button");
-                        await driver.navigate().to(domain + "/components/caption");
-                        await driver.navigate().to(domain + "/components/checkbox");
-                        await driver.navigate().to(domain + "/components/dialog");
-                        await driver.navigate().to(domain + "/components/divider");
-                        await driver.navigate().to(domain + "/components/flipper");
-                        await driver.navigate().to(domain + "/components/heading");
-                        await driver.navigate().to(domain + "/components/hypertext");
-                        await driver.navigate().to(domain + "/components/image");
-                        await driver.navigate().to(domain + "/components/label");
-                        await driver.navigate().to(domain + "/components/metatext");
-                        await driver.navigate().to(domain + "/components/paragraph");
-                        await driver.navigate().to(domain + "/components/subheading");
-                        await driver.navigate().to(domain + "/components/text-field");
-                        await driver.navigate().to(domain + "/components/toggle");
-                        await driver.navigate().to(domain + "/components/typography");
+                        await driver.navigate().to(domain + "/components/button/");
+                        await driver.navigate().to(domain + "/components/caption/");
+                        await driver.navigate().to(domain + "/components/checkbox/");
+                        await driver.navigate().to(domain + "/components/dialog/");
+                        await driver.navigate().to(domain + "/components/divider/");
+                        await driver.navigate().to(domain + "/components/flipper/");
+                        await driver.navigate().to(domain + "/components/heading/");
+                        await driver.navigate().to(domain + "/components/hypertext/");
+                        await driver.navigate().to(domain + "/components/image/");
+                        await driver.navigate().to(domain + "/components/label/");
+                        await driver.navigate().to(domain + "/components/metatext/");
+                        await driver.navigate().to(domain + "/components/paragraph/");
+                        await driver.navigate().to(domain + "/components/subheading/");
+                        await driver.navigate().to(domain + "/components/text-field/");
+                        await driver.navigate().to(domain + "/components/toggle/");
+                        await driver.navigate().to(domain + "/components/typography/");
 
                         // Turn on Developer tools and iterate each component
                         // xpath selectors do not work across browsers. This in particular breaks in Internet Explorer
