@@ -13,8 +13,10 @@
   },
   "main": "dist/index.js",
   "scripts": {
+    "build": "tsc -p ./tsconfig.json",
     "build:app": "webpack --config webpack/webpack.react.config.js",
-    "prepare": "tsc -p ./lib/tsconfig.json",
+    "build:watch": "npm run build -- -w",
+    "prepare": "npm run build",
     "start": "node_modules/.bin/webpack-dev-server --config webpack/webpack.react.config.js --progress",
     "test": "npm run unit-tests && npm run build:app",
     "tslint": "tslint -c ./tslint.json '**/*.ts{,x}'",
