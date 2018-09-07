@@ -15,7 +15,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "npm run copy:all && tsc -p ./tsconfig.json",
+    "build": "tsc -p ./tsconfig.json && npm run copy:all",
     "build:app": "webpack --progress --mode=production",
     "clean:dist": "node ../../build/clean.js dist",
     "convert:readme": "node ../../build/convert-readme.js .tmp",
@@ -30,7 +30,7 @@
     "unit-tests": "jest --maxWorkers=4",
     "unit-tests:update": "jest --updateSnapshot",
     "unit-tests:watch": "jest --watch",
-    "watch": "npm run build -- -w --preserveWatchOutput"
+    "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput"
   },
   "jest": {
     "collectCoverage": true,
