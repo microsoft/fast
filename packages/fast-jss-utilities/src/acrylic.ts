@@ -41,7 +41,7 @@ export function applyAcrylic<T>(config: IAcrylicConfig): ICSSRules<T> {
         ...styles,
         "&::before": {
             content: "\"\"",
-            background: config.textureImage ? `url(${config.textureImage}) repeat` : null,
+            background: config.textureImage ? `url(${config.textureImage}) repeat` : undefined,
             position: "absolute",
             top: "0",
             bottom: "0",
