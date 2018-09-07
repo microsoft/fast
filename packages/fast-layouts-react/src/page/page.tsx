@@ -47,16 +47,15 @@ class Page extends Foundation<PageProps, undefined> {
         const attributes: React.HTMLAttributes<HTMLDivElement> = Object.assign({}, this.unhandledProps(), {
             className: super.generateClassNames(this.props.managedClasses.page)
         });
-        const margin: string = this.props.margin;
-        const maxWidth: string = this.props.maxWidth;
+        const columns: string = `${this.props.margin} minmax(0, ${this.props.maxWidth}) ${this.props.margin}`;
 
         if (!attributes.style) {
             attributes.style = {};
         }
 
         attributes.style = {
-            gridTemplateColumns: `${margin} minmax(auto, ${maxWidth}) ${margin}`,
-            msGridColumns: `${margin} minmax(0, ${maxWidth}) ${margin}`
+            gridTemplateColumns: columns,
+            msGridColumns: columns
         };
 
         return attributes;
