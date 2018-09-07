@@ -13,7 +13,7 @@
   },
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc -p ./tsconfig.json",
+    "build": "tsc -p ./lib/tsconfig.json",
     "build:app": "webpack --config webpack/webpack.react.config.js",
     "build:watch": "npm run build -- -w",
     "prepare": "npm run build",
