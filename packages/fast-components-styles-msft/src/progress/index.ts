@@ -1,14 +1,15 @@
 import designSystemDefaults, { IDesignSystem, withDesignSystemDefaults } from "../design-system";
-import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
+import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { IMSFTProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { ensureBrandNormal, largeContrast } from "../utilities/colors";
 import { get } from "lodash";
+import { toPx } from "@microsoft/fast-jss-utilities";
 
-/* tslint:disable-next-line */
-const styles: ComponentStyles<IMSFTProgressClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<IMSFTProgressClassNameContract, IDesignSystem> => {
+const styles: ComponentStyles<IMSFTProgressClassNameContract, IDesignSystem> = (
+    config: IDesignSystem
+): ComponentStyleSheet<IMSFTProgressClassNameContract, IDesignSystem> => {
     const designSystem: IDesignSystem = withDesignSystemDefaults(config);
     const brandColor: string = ensureBrandNormal(config);
-    /* tslint:disable-next-line */
     const determinateBackgroundColor: string = largeContrast(designSystem.contrast, designSystem.backgroundColor, brandColor);
 
     return {
@@ -16,7 +17,7 @@ const styles: ComponentStyles<IMSFTProgressClassNameContract, IDesignSystem> = (
             display: "flex",
             width: "100%",
             alignItems: "center",
-            height: "10px",
+            height: toPx(designSystem.designUnit),
             textAlign: "left"
         },
         progress_determinateValueIndicator: {
@@ -32,7 +33,7 @@ const styles: ComponentStyles<IMSFTProgressClassNameContract, IDesignSystem> = (
         },
         progress_indicator__determinate: {
             background: determinateBackgroundColor,
-            height: "4px",
+            height: toPx(designSystem.designUnit),
             borderRadius: "2px",
         },
         progress_dot: {
@@ -47,8 +48,8 @@ const styles: ComponentStyles<IMSFTProgressClassNameContract, IDesignSystem> = (
                 position: "absolute",
                 display: "inline-block",
                 background: brandColor,
-                width: "5px",
-                height: "5px",
+                width: toPx(designSystem.designUnit),
+                height: toPx(designSystem.designUnit),
                 borderRadius: "50%"
             }
         },

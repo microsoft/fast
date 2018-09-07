@@ -3,11 +3,6 @@ import { memoize } from "lodash-es";
 
 export interface IDesignSystem {
     /**
-     * The value typically used for foreground elements, such as text
-     */
-    foregroundColor: string;
-
-    /**
      * The value typically used for backgrounds of elements
      */
     backgroundColor: string;
@@ -19,22 +14,39 @@ export interface IDesignSystem {
     brandColor: string;
 
     /**
+     * A number between 0 and 100 that represents the contrast scale value.
+     */
+    contrast: number;
+
+    /**
+     * The density multiplier
+     */
+    density: number;
+
+    /**
+     * The grid-unit that UI dimensions are derived from
+     */
+    designUnit: number;
+
+    /**
      * The primary direction of the view.
      */
     direction: Direction;
 
     /**
-     * A number between 0 and 100 that represents the contrast scale value.
+     * The value typically used for foreground elements, such as text
      */
-    contrast: number;
+    foregroundColor: string;
 }
 
 const designSystemDefaults: IDesignSystem = {
-    foregroundColor: "#000",
     backgroundColor: "#FFF",
     brandColor: "#0078D4",
+    contrast: 0,
+    density: 1,
+    designUnit: 4,
     direction: Direction.ltr,
-    contrast: 0
+    foregroundColor: "#000"
 };
 
 /**

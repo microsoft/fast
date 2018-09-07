@@ -24,6 +24,7 @@ import {
     scaleContrastNormal
 } from "../utilities/colors";
 import Chroma from "chroma-js";
+import { density } from "../utilities/density";
 
 function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
     return {
@@ -163,17 +164,18 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (
             boxSizing: "border-box",
             maxWidth: "374px",
             minWidth: "120px",
-            display: "inline-block",
-            padding: "13px 12px 12px",
+            display: "inline-flex",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: `0 ${density(config.designUnit * 3)(designSystem)}`,
+            height: density(config.designUnit * 11)(designSystem),
             border: "2px solid",
             borderColor: "transparent",
             borderRadius: "2px",
-            overflow: "hidden",
             lineHeight: "1",
-            textAlign: "center",
+            overflow: "hidden",
             textDecoration: "none",
             whiteSpace: "nowrap",
-            verticalAlign: "bottom",
             transition: "all 0.2s ease-in-out",
             color,
             backgroundColor: secondaryBackgroundColor,
@@ -230,8 +232,8 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (
         button_justified: {
             ...applyTransaprentBackplateStyles(),
             minWidth: "74px",
-            padding: localizeSpacing(direction)("13px 12px 12px 0"),
-            textAlign: applyLocalizedProperty("left", "right", direction),
+            [applyLocalizedProperty("paddingLeft", "paddingRight", direction)]: "0",
+            justifyContent: "flex-start"
         },
         button_span: {
             position: "relative",
