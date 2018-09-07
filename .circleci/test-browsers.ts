@@ -16,16 +16,90 @@ const domain = "https://msft-docs.azurewebsites.net";
 const remoteHub = "http://" + username + ":" + accessKey + "@ondemand.saucelabs.com:80/wd/hub";
 
 // Configure browser options
-let browsers = [{
-        'platform': 'Windows 8.1',
-        'browserName': 'internet explorer',
-        'version': '11.0',
-        'screenResolution': '1024x768'
-},{
-        'platform': 'Windows 10',
-        'browserName': 'MicrosoftEdge',
-        'version': '17.17134',
-        'screenResolution': '1280x1024'}
+let browsers = [
+        {
+            'platform': 'Windows 8.1',
+            'browserName': 'internet explorer',
+            'version': '11.0',
+            'screenResolution': '1024x768'
+        },{
+            'platform': 'Windows 10',
+            'browserName': 'MicrosoftEdge',
+            'version': '17.17134',
+            'screenResolution': '1280x1024'
+        },
+        {
+            'platform': 'Windows 10',
+            'browserName': 'internet explorer',
+            'version':'11.103',
+            'screenResolution':'1400x1050'
+        },
+        {
+            'platform': 'Windows 10',
+            'browserName': 'chrome',
+            'version':'67.0',
+            'screenResolution':'1920x1080'
+        },
+        {
+            'platform': 'Windows 10',
+            'browserName': 'chrome',
+            'version':'68.0',
+            'screenResolution':'1920x1200'
+        },
+        {
+            'platform': 'Windows 10',
+            'browserName': 'firefox',
+            'version':'61.0',
+            'screenResolution':'2560x1600'
+        },
+        {
+            'platform': 'macOS 10.13',
+            'browserName': 'safari',
+            'version':'11.1',
+            'screenResolution':'1920x1440'
+        },
+        {
+            'platform': 'macOS 10.12',
+            'browserName': 'safari',
+            'version':'11.0',
+            'screenResolution':'2048x1536'
+        },
+        {
+            'platform': 'macOS 10.12',
+            'browserName': 'safari',
+            'version':'10.1',
+            'screenResolution':'2360x1770'
+        },
+        {
+            'platform': 'macOS 10.13',
+            'browserName': 'chrome',
+            'version':'69.0',
+            'screenResolution':'2360x1770'
+        },
+        {
+            'platform': 'macOS 10.13',
+            'browserName': 'firefox',
+            'version':'62.0',
+            'screenResolution':'2360x1770'
+        }/*,
+        {
+            'platform': '',
+            'browserName': '',
+            'version':'',
+            'screenResolution':''
+        },
+        {
+            'platform': '',
+            'browserName': '',
+            'version':'',
+            'screenResolution':''
+        },
+        {
+            'platform': '',
+            'browserName': '',
+            'version':'',
+            'screenResolution':''
+            },*/
 ];
 
 var flows = browsers.map(function(browser) {
@@ -33,7 +107,7 @@ var flows = browsers.map(function(browser) {
         // Setup capabilities
         let caps = {
                 name : "FAST-DNA MSFT Documentation",
-                build : "test-build-0007",
+                build : "test-build-0009",
                 tags : "msft-docs",
                 platform : browser.platform,
                 browserName : browser.browserName,
