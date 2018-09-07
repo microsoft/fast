@@ -24,7 +24,7 @@
     "tslint:watch": "node build/tslint-watch.js",
     "unit-tests": "jest --maxWorkers=4",
     "unit-tests:watch": "jest --watch && npm-watch",
-    "watch": "npm run build -- -w"
+    "watch": "npm run build -- -w --preserveWatchOutput"
   },
   "jest": {
     "collectCoverage": true,

@@ -22,7 +22,7 @@
     "tslint": "tslint -c ./tslint.json '**/*.ts'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts'",
     "unit-tests": "jest --maxWorkers=4",
-    "watch": "npm run build -- -w"
+    "watch": "npm run build -- -w --preserveWatchOutput"
   },
   "jest": {
     "collectCoverage": true,

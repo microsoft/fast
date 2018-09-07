@@ -30,7 +30,7 @@
     "unit-tests": "jest --maxWorkers=4 --env=jsdom --setupTestFrameworkScriptFile=raf/polyfill",
     "unit-tests:update": "jest --updateSnapshot",
     "unit-tests:watch": "jest --watch",
-    "watch": "npm run build -- -w"
+    "watch": "npm run build -- -w --preserveWatchOutput"
   },
   "jest": {
     "collectCoverage": true,
