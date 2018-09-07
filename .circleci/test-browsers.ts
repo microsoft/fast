@@ -16,12 +16,12 @@ const domain = "https://msft-docs.azurewebsites.net";
 const remoteHub = "http://" + username + ":" + accessKey + "@ondemand.saucelabs.com:80/wd/hub";
 
 // Configure browser options
-let browsers = [/*{
+let browsers = [{
         'platform': 'Windows 8.1',
-        'browserName': 'firefox',
-        'version': '43.0',
-        'screenResolution': '1280x1024'
-},*/{
+        'browserName': 'internet explorer',
+        'version': '11.0',
+        'screenResolution': '1024x768'
+},{
         'platform': 'Windows 10',
         'browserName': 'MicrosoftEdge',
         'version': '17.17134',
@@ -33,7 +33,7 @@ var flows = browsers.map(function(browser) {
         // Setup capabilities
         let caps = {
                 name : "FAST-DNA MSFT Documentation",
-                build : "test-build-0005",
+                build : "test-build-0007",
                 tags : "msft-docs",
                 platform : browser.platform,
                 browserName : browser.browserName,
@@ -56,29 +56,44 @@ var flows = browsers.map(function(browser) {
 
                 try {
                         await driver.get(domain);
-        
+
+                        // Note: There are many ways to nagivate/find elements on a page
+                        // unfortunately, not all are cross-browser compliant and so
+                        // for example, we can't use xpath. As a result, we're using
+                        // navigation though not necessarily most performant but effective.
+
+                        // After browsers matrix is determined we can fine tune and
+                        // optimize to use other selectors to see what works. If we're
+                        // testing mostly on modern browsers this isn't as much a limitation.
+
+                        // Recommendation, add in data-test attributes to each component,
+                        // page, layout, or container we want to capture and select on that.
+
                         // Iterate each components documentation
-                        await driver.findElement(By.linkText('Button')).click();
-                        await driver.findElement(By.linkText('Caption')).click();
-                        await driver.findElement(By.linkText('Checkbox')).click();
-                        await driver.findElement(By.linkText('Dialog')).click();
-                        await driver.findElement(By.linkText('Divider')).click();
-                        await driver.findElement(By.linkText('Flipper')).click();
-                        await driver.findElement(By.linkText('Heading')).click();
-                        await driver.findElement(By.linkText('Hypertext')).click();
-                        await driver.findElement(By.linkText('Image')).click();
-                        await driver.findElement(By.linkText('Label')).click();
-                        await driver.findElement(By.linkText('Metatext')).click();
-                        await driver.findElement(By.linkText('Paragraph')).click();
-                        await driver.findElement(By.linkText('Subheading')).click();
-                        await driver.findElement(By.linkText('Text field')).click();
-                        await driver.findElement(By.linkText('Toggle')).click();
-                        await driver.findElement(By.linkText('Typography')).click();
-                        
-                       
+                        await driver.navigate().to(domain + "/components/button");
+                        await driver.navigate().to(domain + "/components/caption");
+                        await driver.navigate().to(domain + "/components/checkbox");
+                        await driver.navigate().to(domain + "/components/dialog");
+                        await driver.navigate().to(domain + "/components/divider");
+                        await driver.navigate().to(domain + "/components/flipper");
+                        await driver.navigate().to(domain + "/components/heading");
+                        await driver.navigate().to(domain + "/components/hypertext");
+                        await driver.navigate().to(domain + "/components/image");
+                        await driver.navigate().to(domain + "/components/label");
+                        await driver.navigate().to(domain + "/components/metatext");
+                        await driver.navigate().to(domain + "/components/paragraph");
+                        await driver.navigate().to(domain + "/components/subheading");
+                        await driver.navigate().to(domain + "/components/text-field");
+                        await driver.navigate().to(domain + "/components/toggle");
+                        await driver.navigate().to(domain + "/components/typography");
+
                         // Turn on Developer tools and iterate each component
-                        await driver.findElement(By.xpath("//button[text()='Dev Tools']")).click();
-        
+                        // xpath selectors do not work across browsers. This in particular breaks in Internet Explorer
+                        // await driver.findElement(By.xpath("//button[text()='dev tools']")).click();
+                        // one possible solution would be to inject data attributes for each component we can bind to.
+                        // For example, data-test="friendly name"
+                        // driver.findElement(By.cssSelector('[data-element="city"]'))
+
                         // Navigate to example views for each component
                         await driver.navigate().to(domain + "/components/button/examples");
                         await driver.navigate().to(domain + "/components/caption/examples");
