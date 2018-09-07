@@ -4,6 +4,8 @@ import { get } from "lodash-es";
 import Foundation, { HandledProps } from "../foundation";
 import { DialogProps, IDialogHandledProps, IDialogManagedClasses, IDialogUnhandledProps } from "./dialog.props";
 import { IDialogClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { canUseDOM } from "exenv-es6";
+import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 /* tslint:disable-next-line */
 class Dialog extends Foundation<IDialogHandledProps & IManagedClasses<IDialogClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
@@ -21,6 +23,7 @@ class Dialog extends Foundation<IDialogHandledProps & IManagedClasses<IDialogCla
         contentHeight: void 0,
         modal: void 0,
         managedClasses: void 0,
+        onDismiss: void 0,
         visible: void 0
     };
 
@@ -51,6 +54,15 @@ class Dialog extends Foundation<IDialogHandledProps & IManagedClasses<IDialogCla
     }
 
     /**
+     * React life-cycle method
+     */
+    public componentDidMount(): void {
+        if (canUseDOM() && this.props.onDismiss) {
+            window.addEventListener("keydown", this.onDialogKeyboardDismiss);
+        }
+    }
+
+    /**
      * Generates class names
      */
     protected generateClassNames(): string {
@@ -68,10 +80,25 @@ class Dialog extends Foundation<IDialogHandledProps & IManagedClasses<IDialogCla
         return (
             <div
                 className={get(this.props, "managedClasses.dialog_modalOverlay")}
+                onClick={this.onClickDismiss}
                 role={"presentation"}
                 tabIndex={-1}
             />
         );
+    }
+
+    private onClickDismiss = (event: React.MouseEvent): void => {
+        if (!this.props.onDismiss || !this.props.visible) {
+            return;
+        }
+
+        this.props.onDismiss(event);
+    }
+
+    private onDialogKeyboardDismiss = (event: KeyboardEvent): void => {
+        if (this.props.visible && event.keyCode === KeyCodes.escape) {
+            this.props.onDismiss(event);
+        }
     }
 }
 
