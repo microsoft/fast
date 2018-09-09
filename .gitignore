@@ -74,3 +74,6 @@ www/
 
 # tmp directories
 .tmp/
+
+# npm package-locks
+package-lock.json
