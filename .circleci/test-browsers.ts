@@ -81,25 +81,87 @@ let browsers = [
             'browserName': 'firefox',
             'version':'62.0',
             'screenResolution':'2360x1770'
-        }/*,
-        {
-            'platform': '',
-            'browserName': '',
-            'version':'',
-            'screenResolution':''
         },
         {
-            'platform': '',
-            'browserName': '',
-            'version':'',
-            'screenResolution':''
+            'platformName': 'ios',
+            'platformVersion': '11.3',
+            'deviceOrientation': 'portrait',
+            'deviceName': 'iPhone 7 Simulator',
+            'appiumVersion': '1.8.1',
+            'browserName': 'Safari'
         },
         {
-            'platform': '',
-            'browserName': '',
-            'version':'',
-            'screenResolution':''
-            },*/
+            'platformName': 'ios',
+            'platformVersion': '11.2',
+            'deviceOrientation': 'portrait',
+            'deviceName': 'iPhone 8 Plus Simulator',
+            'appiumVersion': '1.8.1',
+            'browserName': 'Safari'
+        },
+        {
+            'platformName': 'ios',
+            'platformVersion': '11.1',
+            'deviceOrientation': 'portrait',
+            'deviceName': 'iPhone X Simulator',
+            'appiumVersion': '1.8.1',
+            'browserName': 'Safari'
+        },
+        {
+            'platformName': 'ios',
+            'platformVersion': '11.0',
+            'deviceOrientation': 'portrait',
+            'deviceName': 'iPhone 7 Simulator',
+            'appiumVersion': '1.8.1',
+            'browserName': 'Safari'
+        },
+        {
+            'platformName': 'Android',
+            'platformVersion': '7.1',
+            'deviceOrientation': 'portrait',
+            'deviceName': 'Samsung Galaxy S7 Edge FHD GoogleAPI Emulator',
+            'appiumVersion': '1.8.1',
+            'browserName': 'Chrome'
+        },
+        {
+            'platformName': 'Android',
+            'platformVersion': '7.0',
+            'deviceOrientation': 'portrait',
+            'deviceName': 'Samsung Galaxy Tab A 10 GoogleAPI Emulator',
+            'appiumVersion': '1.8.1',
+            'browserName': 'Chrome'
+        },
+        {
+            'platformName': 'Android',
+            'platformVersion': '6.0',
+            'deviceOrientation': 'portrait',
+            'deviceName': 'Android Emulator',
+            'appiumVersion': '1.8.1',
+            'browserName': 'Chrome'
+        },
+        {
+            'platformName': 'Android',
+            'platformVersion': '5.1',
+            'deviceOrientation': 'portrait',
+            'deviceName': 'Android GoogleAPI Emulator',
+            'appiumVersion': '1.8.1',
+            'browserName': 'Browser'
+        },
+        {
+            'platformName': 'Android',
+            'platformVersion': '5.0',
+            'deviceOrientation': 'portrait',
+            'deviceName': 'Android Emulator',
+            'appiumVersion': '1.8.1',
+            'browserName': 'Browser'
+        },
+        {
+            'platformName': 'Android',
+            'platformVersion': '4.4',
+            'deviceOrientation': 'portrait',
+            'deviceName': 'LG Nexus 4 Emulator',
+            'appiumVersion': '1.8.1',
+            'browserName': 'Browser'
+        }
 ];
 
 var flows = browsers.map(function(browser) {
