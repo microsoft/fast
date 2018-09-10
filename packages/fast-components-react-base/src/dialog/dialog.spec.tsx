@@ -51,7 +51,7 @@ describe("dialog", (): void => {
         expect(rendered.prop("data-m")).toEqual("foo");
     });
 
-    test("should call a registered callback after a click event on the modal overlay when `visible` prop is true", () => {
+    test("should call the `onDismiss` callback after a click event on the modal overlay when `visible` prop is true", () => {
         const onDismiss: any = jest.fn();
         const rendered: any = shallow(
             <Component
@@ -72,7 +72,7 @@ describe("dialog", (): void => {
         expect(onDismiss).toHaveBeenCalledTimes(1);
     });
 
-    test("should call a registered callback when escape key is pressed and `visible` prop is true", () => {
+    test("should call the `onDismiss` callback when escape key is pressed and `visible` prop is true", () => {
         const onDismiss: any = jest.fn();
         const map: any = {};
 
@@ -97,7 +97,7 @@ describe("dialog", (): void => {
         expect(onDismiss).toHaveBeenCalledTimes(1);
     });
 
-    test("should remove keydown event listener for a registered callback when component unmounts", () => {
+    test("should remove keydown event listener for the `onDismiss` callback when component unmounts", () => {
         const onDismiss: any = jest.fn();
         const map: any = {};
 

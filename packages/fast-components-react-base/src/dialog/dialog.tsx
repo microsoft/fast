@@ -58,7 +58,7 @@ class Dialog extends Foundation<IDialogHandledProps & IManagedClasses<IDialogCla
      */
     public componentDidMount(): void {
         if (canUseDOM() && this.props.onDismiss) {
-            window.addEventListener("keydown", this.onDialogKeyboardDismiss);
+            window.addEventListener("keydown", this.handleWindowKeyDown);
         }
     }
 
@@ -66,10 +66,12 @@ class Dialog extends Foundation<IDialogHandledProps & IManagedClasses<IDialogCla
      * React life-cycle method
      */
     public componentDidUpdate(prevProps: Partial<IDialogHandledProps>): void {
-        if (canUseDOM() && !prevProps.onDismiss && this.props.onDismiss) {
-            window.addEventListener("keydown", this.onDialogKeyboardDismiss);
-        } else if (canUseDOM() && prevProps.onDismiss && !this.props.onDismiss) {
-            window.removeEventListener("keydown", this.onDialogKeyboardDismiss);
+        if (canUseDOM()) {
+            if (!prevProps.onDismiss && this.props.onDismiss) {
+                window.addEventListener("keydown", this.handleWindowKeyDown);
+            } else if (prevProps.onDismiss && !this.props.onDismiss) {
+                window.removeEventListener("keydown", this.handleWindowKeyDown);
+            }
         }
     }
 
@@ -78,7 +80,7 @@ class Dialog extends Foundation<IDialogHandledProps & IManagedClasses<IDialogCla
      */
     public componentWillUnmount(): void {
         if (canUseDOM() && this.props.onDismiss) {
-            window.removeEventListener("keydown", this.onDialogKeyboardDismiss);
+            window.removeEventListener("keydown", this.handleWindowKeyDown);
         }
     }
 
@@ -100,21 +102,21 @@ class Dialog extends Foundation<IDialogHandledProps & IManagedClasses<IDialogCla
         return (
             <div
                 className={get(this.props, "managedClasses.dialog_modalOverlay")}
-                onClick={this.onClickDismiss}
+                onClick={this.handleOverlayClick}
                 role={"presentation"}
                 tabIndex={-1}
             />
         );
     }
 
-    private onClickDismiss = (event: React.MouseEvent): void => {
-        if (this.props.onDismiss && this.props.visible) {
+    private handleOverlayClick = (event: React.MouseEvent): void => {
+        if (typeof this.props.onDismiss === "function" && this.props.visible) {
             this.props.onDismiss(event);
         }
     }
 
-    private onDialogKeyboardDismiss = (event: KeyboardEvent): void => {
-        if (this.props.onDismiss && this.props.visible && event.keyCode === KeyCodes.escape) {
+    private handleWindowKeyDown = (event: KeyboardEvent): void => {
+        if (typeof this.props.onDismiss === "function" && this.props.visible && event.keyCode === KeyCodes.escape) {
             this.props.onDismiss(event);
         }
     }
