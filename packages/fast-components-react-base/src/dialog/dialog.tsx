@@ -63,6 +63,26 @@ class Dialog extends Foundation<IDialogHandledProps & IManagedClasses<IDialogCla
     }
 
     /**
+     * React life-cycle method
+     */
+    public componentDidUpdate(prevProps: Partial<IDialogHandledProps>): void {
+        if (canUseDOM() && !prevProps.onDismiss && this.props.onDismiss) {
+            window.addEventListener("keydown", this.onDialogKeyboardDismiss);
+        } else if (canUseDOM() && prevProps.onDismiss && !this.props.onDismiss) {
+            window.removeEventListener("keydown", this.onDialogKeyboardDismiss);
+        }
+    }
+
+    /**
+     * React life-cycle method
+     */
+    public componentWillUnmount(): void {
+        if (canUseDOM() && this.props.onDismiss) {
+            window.removeEventListener("keydown", this.onDialogKeyboardDismiss);
+        }
+    }
+
+    /**
      * Generates class names
      */
     protected generateClassNames(): string {
@@ -88,15 +108,13 @@ class Dialog extends Foundation<IDialogHandledProps & IManagedClasses<IDialogCla
     }
 
     private onClickDismiss = (event: React.MouseEvent): void => {
-        if (!this.props.onDismiss || !this.props.visible) {
-            return;
+        if (this.props.onDismiss && this.props.visible) {
+            this.props.onDismiss(event);
         }
-
-        this.props.onDismiss(event);
     }
 
     private onDialogKeyboardDismiss = (event: KeyboardEvent): void => {
-        if (this.props.visible && event.keyCode === KeyCodes.escape) {
+        if (this.props.onDismiss && this.props.visible && event.keyCode === KeyCodes.escape) {
             this.props.onDismiss(event);
         }
     }

@@ -51,7 +51,7 @@ describe("dialog", (): void => {
         expect(rendered.prop("data-m")).toEqual("foo");
     });
 
-    test("should call a registered callback after a click event on the modal when `visible` prop is true", () => {
+    test("should call a registered callback after a click event on the modal overlay when `visible` prop is true", () => {
         const onDismiss: any = jest.fn();
         const rendered: any = shallow(
             <Component
@@ -76,6 +76,7 @@ describe("dialog", (): void => {
         const onDismiss: any = jest.fn();
         const map: any = {};
 
+        // Mock window.addEventListener
         window.addEventListener = jest.fn((event: string, callback: any) => {
             map[event] = callback;
         });
@@ -90,6 +91,26 @@ describe("dialog", (): void => {
 
         // set visible prop
         rendered.setProps({visible: true});
+
+        map.keydown({ keyCode: KeyCodes.escape });
+
+        expect(onDismiss).toHaveBeenCalledTimes(1);
+    });
+
+    test("should remove keydown event listener for a registered callback when component unmounts", () => {
+        const onDismiss: any = jest.fn();
+        const map: any = {};
+
+        // Mock window.removeEventListener
+        window.removeEventListener = jest.fn((event: string, callback: any) => {
+            map[event] = callback;
+        });
+
+        const rendered: any = mount(
+            <Component managedClasses={managedClasses} modal={true} onDismiss={onDismiss} visible={true} />
+        );
+
+        rendered.unmount();
 
         map.keydown({ keyCode: KeyCodes.escape });
 

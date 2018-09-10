@@ -42,7 +42,7 @@ export interface IDialogHandledProps {
 
     /**
      * The onDismiss callback
-     * Callback is registered on click of the modal or when escape key is pressed
+     * Callback is registered on click of the modal overlay or when escape key is pressed
      */
     onDismiss?: DialogOnDismiss;
 
