@@ -22,7 +22,8 @@ let browsers = [
             'browserName': 'internet explorer',
             'version': '11.0',
             'screenResolution': '1024x768'
-        },{
+        },
+        {
             'platform': 'Windows 10',
             'browserName': 'MicrosoftEdge',
             'version': '17.17134',
@@ -71,7 +72,7 @@ let browsers = [
             'screenResolution':'2360x1770'
         },
         {
-            'platform': 'macOS 10.13',
+            'platform': 'macOS 10.11',
             'browserName': 'chrome',
             'version':'69.0',
             'screenResolution':'2360x1770'
@@ -113,7 +114,7 @@ let browsers = [
             'deviceName': 'iPhone 7 Simulator',
             'appiumVersion': '1.8.1',
             'browserName': 'Safari'
-        },
+            }/*,
         {
             'platformName': 'Android',
             'platformVersion': '7.1',
@@ -161,7 +162,7 @@ let browsers = [
             'deviceName': 'LG Nexus 4 Emulator',
             'appiumVersion': '1.8.1',
             'browserName': 'Browser'
-        }
+            }*/
 ];
 
 var flows = browsers.map(function(browser) {
@@ -169,7 +170,7 @@ var flows = browsers.map(function(browser) {
         // Setup capabilities
         let caps = {
                 name : "FAST-DNA MSFT Documentation",
-                build : "test-build-0010",
+                build : "test-build-0011",
                 tags : "msft-docs",
                 platform : browser.platform,
                 browserName : browser.browserName,
