@@ -1,6 +1,12 @@
 import * as React from "react";
 import CallToAction from "./index";
-import { CallToActionAppearance, ICallToActionHandledProps } from "./call-to-action.props";
+import {
+    CallToActionProps,
+    ICallToActionHandledProps,
+    ICallToActionManagedClasses,
+    ICallToActionUnhandledProps
+} from "./call-to-action.props";
+import { ButtonAppearance } from "../button/button.props";
 import schema from "./call-to-action.schema.json";
 import Documentation from "./.tmp/documentation";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
@@ -15,26 +21,27 @@ export default {
     documentation: <Documentation />,
     detailData: {
         children: testString,
+        appearance: ButtonAppearance.primary,
         href: testDestination
     },
     data: [
         {
-            appearance: CallToActionAppearance.primary,
+            appearance: ButtonAppearance.primary,
             children: "Primary call to action",
             href: testDestination,
             "data-sketch-symbol": "Call to action - primary"
         },
         {
-            appearance: CallToActionAppearance.secondary,
-            children: "Secondary call to action",
-            href: testDestination,
-            "data-sketch-symbol": "Call to action - secondary"
-        },
-        {
-            appearance: CallToActionAppearance.lightweight,
+            appearance: ButtonAppearance.lightweight,
             children: "Lightweight call to action",
             href: testDestination,
             "data-sketch-symbol": "Call to action - lightweight"
+        },
+        {
+            appearance: ButtonAppearance.justified,
+            children: "Secondary call to action",
+            href: testDestination,
+            "data-sketch-symbol": "Call to action - justified"
         }
     ]
 } as IComponentFactoryExample<ICallToActionHandledProps>;

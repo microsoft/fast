@@ -13,9 +13,10 @@
         "appearance": {
             "title": "Appearance",
             "type": "string",
+            "default": "primary",
             "enum": [
                 "primary",
-                "secondary",
+                "justified",
                 "lightweight"
             ]
         }

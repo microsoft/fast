@@ -1,30 +1,17 @@
 import * as React from "react";
-import { IManagedClasses, ICallToActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { ICallToActionClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
+import { ButtonAppearance, ButtonProps, IButtonHandledProps } from "../button/button.props";
 
-export enum CallToActionAppearance {
-    lightweight= "lightweight",
-    primary= "primary",
-    secondary= "secondary"
-}
+export type CallToActionAppearance = Exclude<ButtonAppearance, "outline">;
 
-export interface ICallToActionHandledProps {
+export interface ICallToActionHandledProps extends IButtonHandledProps {
 
     /**
      * The call to action appearance
      */
     appearance?: CallToActionAppearance;
-
-    /**
-     * The content
-     */
-    children?: React.ReactNode | React.ReactNode[];
-
-    /**
-     * The destination address
-     */
-    href: string;
 }
 
-export interface ICallToActionUnhandledProps extends React.AllHTMLAttributes<HTMLAnchorElement> {}
+export interface ICallToActionUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
 export interface ICallToActionManagedClasses extends IManagedClasses<ICallToActionClassNameContract> { }
 export type CallToActionProps = ICallToActionHandledProps & ICallToActionUnhandledProps & ICallToActionManagedClasses;

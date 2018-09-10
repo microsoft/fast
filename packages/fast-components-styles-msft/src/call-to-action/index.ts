@@ -1,5 +1,6 @@
 import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
 import { ICallToActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyLocalizedProperty, Direction, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
 import { IDesignSystem, withDesignSystemDefaults } from "../design-system/index";
 import { curry } from "lodash-es";
@@ -60,7 +61,7 @@ const styles: ComponentStyles<ICallToActionClassNameContract, IDesignSystem> = (
     );
 
     return {
-        hypertext: {
+        callToAction: {
             fontSize: "15px",
             display: "inline-block",
             maxWidth: "100%",
@@ -73,134 +74,211 @@ const styles: ComponentStyles<ICallToActionClassNameContract, IDesignSystem> = (
             verticalAlign: "bottom",
             marginTop: "16px",
             transition: "all 0.2s ease-in-out",
-            "& $callToAction_span, &::after": {
-                position: "relative"
-            },
-            "&::after": {
-                display: "inline-block",
-                position: "relative",
-                width: "8px",
-                [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "6px",
-                marginTop: "1px",
-                content: direction === Direction.ltr ? ctaCaratRightWhite : ctaCaratLeftWhite,
-                verticalAlign: "top",
-                animation: {
-                    name: "cta-glyph-move-in",
-                    duration: "600ms",
-                    timingFunction: animationProperties
-                }
-            },
+            // "& $glyph": {
+            //     position: "relative"
+            // },
+            // "& $button_justified": {
+            //     "& $glyph": {
+            //         fill: primaryRestBackgroundColor
+            //     }
+            // },
+            // "&$button_lightweight & $glyph": {
+            //     fill: primaryRestBackgroundColor
+            // },
+            // "& $glyph": {
+            //     display: "inline-block",
+            //     position: "relative",
+            //     width: "8px",
+            //     [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "6px",
+            //     // marginTop: "1px",
+            //     // fill: color,
+            //     transform: direction === Direction.ltr ? "none" : "rotate(180deg)",
+            //     verticalAlign: "top",
+            //     animation: {
+            //         name: "cta-glyph-move-in",
+            //         duration: "600ms",
+            //         timingFunction: animationProperties
+            //     }
+            // },
             "&:hover, &:focus": {
                 outline: "none",
-                "&::after": {
-                    animation: {
-                        name: "cta-glyph-move-out",
-                        duration: "600ms",
-                        timingFunction: animationProperties,
-                        fillMode: "forwards"
-                    }
+                "& $glyph": {
+                    left: "8px",
+                    position: "relative"
+                    // animation: {
+                    //     name: "cta-glyph-move-out",
+                    //     duration: "600ms",
+                    //     timingFunction: animationProperties,
+                    //     fillMode: "forwards"
+                    // }
                 },
-                "& $callToAction_span": {
-                    animation: {
-                        name: "cta-text-move-out",
-                        duration: "600ms",
-                        timingFunction: animationProperties,
-                        fillMode: "forwards"
-                    }
-                }
+                // "& $button_textContainer": {
+                //     animation: {
+                //         name: "cta-text-move-out",
+                //         duration: "600ms",
+                //         timingFunction: animationProperties,
+                //         fillMode: "forwards"
+                //     }
+                // }
             }
         },
-        callToAction_span: {
-            display: "inline",
-            maxWidth: "100%",
-            textOverflow: "clip",
-            overflow: "hidden",
-            animation: {
-                name: "cta-text-move-in",
-                duration: "600ms",
-                timingFunction: animationProperties
-            }
+        glyph: {
+            // fill: primaryRestBackgroundColor
+            display: "inline-block",
+            position: "relative",
+            width: "8px",
+            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "6px",
+            // marginTop: "1px",
+            // fill: color,
+            transform: direction === Direction.ltr ? "none" : "rotate(180deg)",
+            verticalAlign: "top",
+            transition: "all 600ms cubic-bezier(0.19, 1, 0.22, 1)",
+            left: "0",
+            marginTop: "1px"
+            // animation: {
+            //     name: "cta-glyph-move-in",
+            //     duration: "600ms",
+            //     timingFunction: animationProperties
+            // }
         },
-        callToAction_primary: {
-            background: primaryRestBackgroundColor,
-            color,
-            "&:hover, &:focus": {
-                background: primaryHoverBackground
-            },
-            "&:focus": {
-                borderColor: primaryFocusBorderColor
-            }
-        },
-        callToAction_secondary: {
-            background: secondaryBackgroundColor,
-            color,
-            "&:hover": {
-                background: secondaryHoverBackgroundColor
-            },
-            "&:focus": {
-                borderColor: secondaryFocusBorderColor
+        callToAction_backer: {
+            "& $glyph": {
+                fill: color
             }
         },
         callToAction_lightweight: {
-            background: "transparent",
-            color: primaryRestBackgroundColor,
-            "& $callToAction_span": {
-                animation: "none",
-                "&::before": {
-                    background: primaryRestBackgroundColor,
-                    content: "\"\"",
-                    display: "none",
-                    height: "2px",
-                    position: "absolute",
-                    bottom: "-2px",
-                    width: "100%",
-                    [applyLocalizedProperty("left", "right", direction)]: "0",
-                }
-            },
-            "&:hover, &:focus": {
-                "& $callToAction_span": {
-                    animation: "none",
-                    "&::before": {
-                        display: "block",
-                    }
-                }
-            },
-            "&::after": {
-                content: direction === Direction.ltr ? ctaCaratRightBlue : ctaCaratLeftBlue,
+            "& $glyph": {
+                fill: primaryRestBackgroundColor
             }
         },
-        "@keyframes cta-glyph-move-out": {
-            "0%": {
-                [applyLocalizedProperty("left", "right", direction)]: "0"
-            },
-            "100%": {
-                [applyLocalizedProperty("left", "right", direction)]: "4px"
-            }
-        },
-        "@keyframes cta-glyph-move-in": {
-            "0%": {
-                [applyLocalizedProperty("left", "right", direction)]: "4px"
-            },
-            "100%": {
-                [applyLocalizedProperty("left", "right", direction)]: "0"
-            }
-        },
-        "@keyframes cta-text-move-in": {
-            "0%": {
-                [applyLocalizedProperty("right", "left", direction)]: "4px"
-            },
-            "100%": {
-                [applyLocalizedProperty("right", "left", direction)]: "0"
-            }
-        },
-        "@keyframes cta-text-move-out": {
-            "0%": {
-                [applyLocalizedProperty("right", "left", direction)]: "0"
-            },
-            "100%": {
-                [applyLocalizedProperty("right", "left", direction)]: "4px"
-            }
-        }
+        // button_textContainer: {
+        //     display: "inline",
+        //     maxWidth: "100%",
+        //     textOverflow: "clip",
+        //     overflow: "hidden",
+        //     animation: {
+        //         name: "cta-text-move-in",
+        //         duration: "600ms",
+        //         timingFunction: animationProperties
+        //     }
+        // },
+        // button_lightweight: {
+        //     display: "none",
+        //     "& $button_textContainer": {
+        //         animation: "none",
+        //         "&::before": {
+        //             background: primaryRestBackgroundColor,
+        //             content: "\"\"",
+        //             display: "none",
+        //             height: "2px",
+        //             position: "absolute",
+        //             bottom: "-2px",
+        //             width: "100%",
+        //             [applyLocalizedProperty("left", "right", direction)]: "0",
+        //         }
+        //     },
+        //     "&:hover, &:focus": {
+        //         "& $button_textContainer": {
+        //             animation: "none",
+        //             "&::before": {
+        //                 display: "block",
+        //             }
+        //         }
+        //     },
+        //     "& $glyph": {
+        //         fill: primaryRestBackgroundColor
+        //     }
+        // },
+        // button_primary: {},
+        // button__disabled: {},
+        // button_outline: {},
+        // button_justified: {},
+        // button: {}
+        // callToAction_primary: {
+        //     background: primaryRestBackgroundColor,
+        //     color,
+        //     "&:hover, &:focus": {
+        //         background: primaryHoverBackground
+        //     },
+        //     "&:focus": {
+        //         borderColor: primaryFocusBorderColor
+        //     }
+        // },
+        // callToAction_secondary: {
+        //     background: secondaryBackgroundColor,
+        //     color,
+        //     "&:hover": {
+        //         background: secondaryHoverBackgroundColor
+        //     },
+        //     "&:focus": {
+        //         borderColor: secondaryFocusBorderColor
+        //     }
+        // },
+        // button_lightweight: {
+        //     background: "transparent",
+        //     color: primaryRestBackgroundColor,
+        //     "& > $button_textContainer": {
+        //         animation: "none",
+        //         "&::before": {
+        //             background: primaryRestBackgroundColor,
+        //             content: "\"\"",
+        //             display: "none",
+        //             height: "2px",
+        //             position: "absolute",
+        //             bottom: "-2px",
+        //             width: "100%",
+        //             [applyLocalizedProperty("left", "right", direction)]: "0",
+        //         }
+        //     },
+        //     "&:hover, &:focus": {
+        //         "& > $button_textContainer": {
+        //             animation: "none",
+        //             "&::before": {
+        //                 display: "block",
+        //             }
+        //         }
+        //     },
+        //     "&$glyph": {
+        //         fill: primaryRestBackgroundColor
+        //     }
+        // },
+        // button_primary: {
+        //     glyph: {
+        //         fill: color
+        //     }
+        // }
+        // "@keyframes cta-glyph-move-out": {
+        //     "0%": {
+        //         [applyLocalizedProperty("left", "right", direction)]: "0"
+        //     },
+        //     "100%": {
+        //         [applyLocalizedProperty("left", "right", direction)]: "4px"
+        //     }
+        // },
+        // "@keyframes cta-glyph-move-in": {
+        //     "0%": {
+        //         [applyLocalizedProperty("left", "right", direction)]: "4px"
+        //     },
+        //     "100%": {
+        //         [applyLocalizedProperty("left", "right", direction)]: "0"
+        //     }
+        // },
+        // "@keyframes cta-text-move-in": {
+        //     "0%": {
+        //         [applyLocalizedProperty("right", "left", direction)]: "4px"
+        //     },
+        //     "100%": {
+        //         [applyLocalizedProperty("right", "left", direction)]: "0"
+        //     }
+        // },
+        // "@keyframes cta-text-move-out": {
+        //     "0%": {
+        //         [applyLocalizedProperty("right", "left", direction)]: "0"
+        //     },
+        //     "100%": {
+        //         [applyLocalizedProperty("right", "left", direction)]: "4px"
+        //     }
+        // }
     };
 };
 

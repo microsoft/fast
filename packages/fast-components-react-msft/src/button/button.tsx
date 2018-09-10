@@ -27,7 +27,7 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IMSFTButto
                 href={this.props.href}
                 disabled={this.props.disabled}
             >
-                {this.generateInnerContent()}
+                <span className={get(this.props, "managedClasses.button_textContainer")}>{this.props.children}</span>
             </BaseButton>
         );
     }
@@ -48,14 +48,6 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IMSFTButto
             default:
                 return super.generateClassNames();
         }
-    }
-
-    private generateInnerContent(): React.ReactElement<HTMLSpanElement> | (React.ReactNode | React.ReactNode[]) {
-        if (this.props.appearance === ButtonAppearance.lightweight || this.props.appearance === ButtonAppearance.justified) {
-            return <span className={get(this.props, "managedClasses.button_span")}>{this.props.children}</span>;
-        }
-
-        return this.props.children;
     }
 }
 

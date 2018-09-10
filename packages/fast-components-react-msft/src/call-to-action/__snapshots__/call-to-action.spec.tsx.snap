@@ -2,42 +2,66 @@
 
 exports[`call to action snapshot Call to action: 0 1`] = `
 <a
-  className="hypertext-0-1-6 callToAction_primary-0-1-8"
+  className="button-0-1-16 button_primary-0-1-17 callToAction-0-1-5"
   data-sketch-symbol="Call to action - primary"
   href="https://www.microsoft.com/en-us/"
 >
   <span
-    className="callToAction_span-0-1-7"
+    className="button_textContainer-0-1-6"
   >
     Primary call to action
   </span>
+  <div
+    className="glyph-0-1-7"
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "FOO",
+      }
+    }
+  />
 </a>
 `;
 
 exports[`call to action snapshot Call to action: 1 1`] = `
 <a
-  className="hypertext-0-1-16 callToAction_secondary-0-1-19"
-  data-sketch-symbol="Call to action - secondary"
+  className="button-0-1-38 button_lightweight-0-1-41 callToAction-0-1-27"
+  data-sketch-symbol="Call to action - lightweight"
   href="https://www.microsoft.com/en-us/"
 >
   <span
-    className="callToAction_span-0-1-17"
+    className="button_textContainer-0-1-43"
   >
-    Secondary call to action
+    Lightweight call to action
+    <div
+      className="glyph-0-1-29"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "FOO",
+        }
+      }
+    />
   </span>
 </a>
 `;
 
 exports[`call to action snapshot Call to action: 2 1`] = `
 <a
-  className="hypertext-0-1-26 callToAction_lightweight-0-1-30"
-  data-sketch-symbol="Call to action - lightweight"
+  className="button-0-1-60 button_justified-0-1-64 callToAction-0-1-49"
+  data-sketch-symbol="Call to action - justified"
   href="https://www.microsoft.com/en-us/"
 >
   <span
-    className="callToAction_span-0-1-27"
+    className="button_textContainer-0-1-65"
   >
-    Lightweight call to action
+    Secondary call to action
+    <div
+      className="glyph-0-1-51"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "FOO",
+        }
+      }
+    />
   </span>
 </a>
 `;

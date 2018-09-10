@@ -44,7 +44,7 @@ function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
                 return ensureNormalContrast(designSystem.contrast, designSystem.brandColor, designSystem.backgroundColor);
             }
         },
-        "&$button__disabled $button_span::before, &$button__disabled $button_span::before": {
+        "&$button__disabled $button_textContainer::before, &$button__disabled $button_textContainer::before": {
             ...applyTransaprentBackground(),
         },
         "&:disabled, &[aria-disabled]": {
@@ -235,7 +235,7 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (
             [applyLocalizedProperty("paddingLeft", "paddingRight", direction)]: "0",
             justifyContent: "flex-start"
         },
-        button_span: {
+        button_textContainer: {
             position: "relative",
             "&::before": {
                 content: "''",

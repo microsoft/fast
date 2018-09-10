@@ -1,36 +1,74 @@
 import * as React from "react";
 import { Foundation, HandledProps } from "@microsoft/fast-components-react-base";
-import { Hypertext } from "@microsoft/fast-components-react-base";
-import { CallToActionAppearance, ICallToActionHandledProps } from "./call-to-action.props";
-import { ICallToActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import Button from "../button/index";
+import { ButtonAppearance, IMSFTButtonClassNameContract } from "../button/button";
+import { ICallToActionHandledProps } from "./call-to-action.props";
+import { ICallToActionClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
 import { get } from "lodash-es";
+import { glyphArrowright } from "@microsoft/fast-glyphs-msft";
+import { applyLocalizedProperty, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
+import { IDesignSystem, withDesignSystemDefaults } from "@microsoft/fast-components-styles-msft";
+import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
+import { Direction, isRTL } from "@microsoft/fast-application-utilities";
+
+const styles: ComponentStyles<Partial<IMSFTButtonClassNameContract>, IDesignSystem> = {
+        button: {
+            maxWidth: "100%",
+            padding: (config: IDesignSystem): string => {
+                const designSystem: IDesignSystem = withDesignSystemDefaults(config);
+                return localizeSpacing(designSystem.direction)("13px 22px 11px 24px");
+            }
+        },
+        button_textContainer: {
+            transition: "all 600ms cubic-bezier(0.19, 1, 0.22, 1)",
+            // left: "0"
+            [applyLocalizedProperty("left", "right", Direction.ltr)]: "0"
+        },
+        // button__disabled: {},
+        // button_justified: {},
+        // button_lightweight: {},
+        // button_outline: {},
+        button_primary: {
+            "&:hover": {
+                "& $button_textContainer": {
+                    // left: "-4px"
+                    [applyLocalizedProperty("left", "right", Direction.ltr)]: "-4px"
+                }
+            }
+        }
+};
 
 // tslint:disable-next-line:max-line-length
-class CallToAction extends Foundation<ICallToActionHandledProps & IManagedClasses<ICallToActionClassNameContract>,  React.AllHTMLAttributes<HTMLAnchorElement>, {}> {
-    public static defaultProps: Partial<ICallToActionHandledProps> = {
-        appearance: CallToActionAppearance.primary
+class CallToAction extends Foundation<ICallToActionHandledProps & IManagedClasses<ICallToActionClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
+    public static defaultProps: Partial<ICallToActionHandledProps  & IManagedClasses<ICallToActionClassNameContract>> = {
+        appearance: ButtonAppearance.primary
     };
 
     protected handledProps: HandledProps<ICallToActionHandledProps & IManagedClasses<ICallToActionClassNameContract>> = {
         appearance: void 0,
         href: void 0,
-        managedClasses: void 0
+        managedClasses: void 0,
+        disabled: void 0
     };
 
     /**
      * Renders the component
      */
     public render(): JSX.Element {
+        console.log(this.props);
         return (
-            <Hypertext
+            <Button
                 {...this.unhandledProps()}
-                managedClasses={this.props.managedClasses}
-                href={this.props.href}
                 className={this.generateClassNames()}
+                {...this.props}
+                jssStyleSheet={styles}
             >
-                <span className={this.props.managedClasses.callToAction_span}>{this.props.children}</span>
-            </Hypertext>
+                {this.props.children}
+                <div
+                    className={get(this.props, "managedClasses.glyph")}
+                    dangerouslySetInnerHTML={{__html: glyphArrowright}}
+                />
+            </Button>
         );
     }
 
@@ -38,13 +76,16 @@ class CallToAction extends Foundation<ICallToActionHandledProps & IManagedClasse
      * Generates class names
      */
     protected generateClassNames(): string {
-        switch (this.props.appearance) {
-            case CallToActionAppearance.primary:
-                return super.generateClassNames(get(this.props, "managedClasses.callToAction_primary"));
-            case CallToActionAppearance.secondary:
-                return super.generateClassNames(get(this.props, "managedClasses.callToAction_secondary"));
-            case CallToActionAppearance.lightweight:
-                return super.generateClassNames(get(this.props, "managedClasses.callToAction_lightweight"));
+        if (!this.props.appearance) {
+            return;
+        }
+
+        const classNames: string = super.generateClassNames(get(this.props, "managedClasses.callToAction"));
+
+        if (this.props.appearance === ButtonAppearance.primary) {
+            return `${classNames} ${get(this.props, "managedClasses.callToAction_backer")}`;
+        } else {
+            return `${classNames} ${get(this.props, "managedClasses.callToAction_lightweight")}`;
         }
     }
 }
