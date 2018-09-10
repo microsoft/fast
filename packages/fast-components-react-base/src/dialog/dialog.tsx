@@ -110,13 +110,13 @@ class Dialog extends Foundation<IDialogHandledProps & IManagedClasses<IDialogCla
     }
 
     private handleOverlayClick = (event: React.MouseEvent): void => {
-        if (typeof this.props.onDismiss === "function" && this.props.visible) {
+        if (this.props.onDismiss && typeof this.props.onDismiss === "function" && this.props.visible) {
             this.props.onDismiss(event);
         }
     }
 
     private handleWindowKeyDown = (event: KeyboardEvent): void => {
-        if (typeof this.props.onDismiss === "function" && this.props.visible && event.keyCode === KeyCodes.escape) {
+        if (this.props.onDismiss && typeof this.props.onDismiss === "function" && this.props.visible && event.keyCode === KeyCodes.escape) {
             this.props.onDismiss(event);
         }
     }
