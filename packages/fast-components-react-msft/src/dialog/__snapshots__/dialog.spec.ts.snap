@@ -29,6 +29,7 @@ exports[`dialog snapshots Dialog: 1 1`] = `
 >
   <div
     className="dialog_modalOverlay-0-1-11"
+    onClick={[Function]}
     role="presentation"
     tabIndex={-1}
   />
