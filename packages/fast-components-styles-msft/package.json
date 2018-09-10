@@ -19,7 +19,10 @@
     "tslint": "tslint -c ./tslint.json '**/*.ts'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts'",
     "test": "npm run tslint",
-    "prepare": "npm run clean:dist && tsc -p ./tsconfig.json"
+    "build": "tsc -p ./tsconfig.json",
+    "build:watch": "npm run build -- -w",
+    "prepare": "npm run clean:dist && npm run build",
+    "watch": "npm run build -- -w --preserveWatchOutput"
   },
   "devDependencies": {
     "@microsoft/fast-application-utilities": "^2.1.0",

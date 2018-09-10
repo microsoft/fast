@@ -15,20 +15,22 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
+    "build": "tsc -p ./tsconfig.json && npm run copy:all",
+    "build:app": "webpack --progress",
     "clean:dist": "node ../../build/clean.js dist",
     "convert:readme": "node ../../build/convert-readme.js .tmp",
     "copy:all": "npm run copy:json-schema && npm run copy:readme",
     "copy:json-schema": "node ../../build/copy-schemas.js",
     "copy:readme": "node ../../build/copy-readme.js",
-    "build:app": "webpack --progress",
-    "prepare": "npm run clean:dist && tsc -p ./tsconfig.json && npm run copy:all",
+    "prepare": "npm run clean:dist && npm run build",
     "start": "webpack-dev-server",
     "test": "npm run convert:readme && npm run tslint && npm run unit-tests && npm run build:app",
     "tslint": "tslint -c ./tslint.json 'src/**/*.ts{,x}' '**/*.ts{,x}'",
     "tslint:fix": "tslint -c ./tslint.json --fix 'src/**/*.ts{,x}' '**/*.ts{,x}'",
     "unit-tests": "jest --maxWorkers=4 --env=jsdom --setupTestFrameworkScriptFile=raf/polyfill",
     "unit-tests:update": "jest --updateSnapshot",
-    "unit-tests:watch": "jest --watch"
+    "unit-tests:watch": "jest --watch",
+    "watch": "tsc -p ./tsconfig -w --preserveWatchOutput"
   },
   "jest": {
     "collectCoverage": true,

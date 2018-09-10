@@ -19,14 +19,16 @@
   ],
   "main": "dist/index.js",
   "scripts": {
+    "build": "tsc -p ./src/tsconfig.json",
     "build:app": "webpack --progress",
-    "prepare": "tsc -p ./src/tsconfig.json",
+    "prepare": "npm run build",
     "start": "webpack-dev-server --progress",
     "test": "npm run tslint && npm run unit-tests && npm run build:app",
     "tslint": "tslint -c tslint.json '**/*.ts{,x}'",
     "tslint:fix": "tslint -c tslint.json '**/*.ts{,x}' --fix",
     "unit-tests": "jest --maxWorkers=4",
-    "unit-tests:update": "jest --update"
+    "unit-tests:update": "jest --update",
+    "watch": "npm run build -- -w --preserveWatchOutput"
   },
   "jest": {
     "collectCoverage": true,

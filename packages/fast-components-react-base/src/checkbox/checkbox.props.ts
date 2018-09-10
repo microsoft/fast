@@ -13,7 +13,7 @@ export interface ICheckboxHandledProps {
     /**
      * The HTML tag (defaults to CheckboxHTMLTags.checkbox)
      */
-    tag?: CheckboxHTMLTags;
+    tag?: string;
 
     /**
      * The checked state
