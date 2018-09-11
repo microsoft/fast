@@ -37,6 +37,9 @@ export * from "./label";
 import Progress from "./progress";
 export { Progress };
 export * from "./progress";
+import Radio from "./radio";
+export { Radio };
+export * from "./radio";
 
 import Tabs from "./tabs";
 export { Tabs };
