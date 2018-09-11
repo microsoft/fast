@@ -41,12 +41,19 @@ export interface IDialogHandledProps {
     modal?: boolean;
 
     /**
+     * The onDismiss callback
+     * Callback is registered on click of the modal overlay or when escape key is pressed
+     */
+    onDismiss?: DialogOnDismiss;
+
+    /**
      * Sets the visibility of the dialog to assistive technologies
      * If true, aria-hidden is false
      */
     visible?: boolean;
 }
 
+export type DialogOnDismiss = (e?: React.MouseEvent | KeyboardEvent) => void;
 export interface IDialogUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
 export interface IDialogManagedClasses extends IManagedClasses<IDialogClassNameContract> {}
 export type DialogProps = IDialogHandledProps & IDialogUnhandledProps & IDialogManagedClasses;
