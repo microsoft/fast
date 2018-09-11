@@ -32,7 +32,8 @@ export interface IConfigurationPanelManagedClasses {
 
 const style: ComponentStyles<IConfigurationPanelManagedClasses, IDevSiteDesignSystem> = {
     configurationPanel: {
-        width: "100%"
+        width: "100%",
+        overflowX: "auto"
     },
     configurationPanel_controls: {
         display: "flex",
