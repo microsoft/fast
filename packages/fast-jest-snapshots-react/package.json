@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-jest-snapshots-react",
   "description": "A small utility for automating Jest snapshot creation of React components",
   "sideEffects": false,
-  "version": "2.1.0",
+  "version": "2.2.0",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -24,7 +24,7 @@
     "watch": "npm run build -- -w --preserveWatchOutput"
   },
   "devDependencies": {
-    "@microsoft/fast-tslint-rules": "^2.1.0",
+    "@microsoft/fast-tslint-rules": "^2.2.0",
     "@types/jest": "^22.2.2",
     "@types/react": "^16.3.6",
     "jest": "^22.4.3",

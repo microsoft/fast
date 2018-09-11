@@ -3,6 +3,58 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.2.0"></a>
+# 2.2.0 (2018-09-11)
+
+
+### Features
+
+* add contrast based color system ([#810](https://github.com/Microsoft/fast-dna/issues/810)) ([5ec457c](https://github.com/Microsoft/fast-dna/commit/5ec457c))
+* **caption:** add caption component ([#829](https://github.com/Microsoft/fast-dna/issues/829)) ([026cc4e](https://github.com/Microsoft/fast-dna/commit/026cc4e))
+* **metatext:** add metatext as a new MSFT component ([#818](https://github.com/Microsoft/fast-dna/issues/818)) ([8498687](https://github.com/Microsoft/fast-dna/commit/8498687))
+* **progress:** add progress component ([#835](https://github.com/Microsoft/fast-dna/issues/835)) ([44d9bb1](https://github.com/Microsoft/fast-dna/commit/44d9bb1))
+* **subheading:** add subheading component ([#828](https://github.com/Microsoft/fast-dna/issues/828)) ([b988ade](https://github.com/Microsoft/fast-dna/commit/b988ade))
+
+
+
+<a name="2.1.0"></a>
+# 2.1.0 (2018-08-29)
+
+
+### Features
+
+* update Lerna to ^3.0.0 ([#795](https://github.com/Microsoft/fast-dna/issues/795)) ([9ce9a56](https://github.com/Microsoft/fast-dna/commit/9ce9a56))
+* upgrade to TypeScript 3.0.0 ([#793](https://github.com/Microsoft/fast-dna/issues/793)) ([e203e86](https://github.com/Microsoft/fast-dna/commit/e203e86))
+* **fast-components-react-base:** add callback to horizontal overflow to return and object that informs scroll start and end ([#797](https://github.com/Microsoft/fast-dna/issues/797)) ([37975f3](https://github.com/Microsoft/fast-dna/commit/37975f3))
+* **paragraph:** adds paragraph as a new MSFT component ([#805](https://github.com/Microsoft/fast-dna/issues/805)) ([8325d3f](https://github.com/Microsoft/fast-dna/commit/8325d3f))
+
+
+
+<a name="2.0.0-corrected"></a>
+# 2.0.0-corrected (2018-08-03)
+
+
+### Bug Fixes
+
+* travis-CI build-break ([#336](https://github.com/Microsoft/fast-dna/issues/336)) ([bffbf5e](https://github.com/Microsoft/fast-dna/commit/bffbf5e))
+* **fast-components-react-msft:** fixes error running jest with components that require chroma ([#687](https://github.com/Microsoft/fast-dna/issues/687)) ([140457c](https://github.com/Microsoft/fast-dna/commit/140457c))
+
+
+### Features
+
+* Forked Class name contracts so we can have one for Base and one for MSFT ([#262](https://github.com/Microsoft/fast-dna/issues/262)) ([a4c54c0](https://github.com/Microsoft/fast-dna/commit/a4c54c0))
+* update code coverage on travis ([#330](https://github.com/Microsoft/fast-dna/issues/330)) ([63ab4f4](https://github.com/Microsoft/fast-dna/commit/63ab4f4))
+* **button:** updates to current msft styles ([#314](https://github.com/Microsoft/fast-dna/issues/314)) ([0029e06](https://github.com/Microsoft/fast-dna/commit/0029e06))
+* **detail view:** add detail view ([#470](https://github.com/Microsoft/fast-dna/issues/470)) ([665b871](https://github.com/Microsoft/fast-dna/commit/665b871))
+* **fast-components-react-msft:** add flipper as a new component ([#642](https://github.com/Microsoft/fast-dna/issues/642)) ([5ac4496](https://github.com/Microsoft/fast-dna/commit/5ac4496))
+* **fast-css-editor-react:** add default editor component and position component ([#636](https://github.com/Microsoft/fast-dna/issues/636)) ([72037a8](https://github.com/Microsoft/fast-dna/commit/72037a8))
+* **form generator:** updates styles found in configuration pane ([#420](https://github.com/Microsoft/fast-dna/issues/420)) ([919121b](https://github.com/Microsoft/fast-dna/commit/919121b))
+* **heading:** add heading as a new msft component ([#280](https://github.com/Microsoft/fast-dna/issues/280)) ([b7ee1ab](https://github.com/Microsoft/fast-dna/commit/b7ee1ab))
+
+
+
+
+
 <a name="2.1.0"></a>
 # [2.1.0](https://github.com/Microsoft/fast-dna/compare/v2.0.0-corrected...v2.1.0) (2018-08-29)
 
