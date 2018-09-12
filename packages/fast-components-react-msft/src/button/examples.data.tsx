@@ -13,6 +13,20 @@ import schema from "./button.schema.json";
 import Documentation from "./.tmp/documentation";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
+const beforeSlotExample: JSX.Element = (
+    <div
+        slot="before"
+        dangerouslySetInnerHTML={{__html: "<"}}
+    />
+);
+
+const afterSlotExample: JSX.Element = (
+    <div
+        slot="after"
+        dangerouslySetInnerHTML={{__html: " >"}}
+    />
+);
+
 export default {
     name: "Button",
     component: Button,
@@ -48,6 +62,38 @@ export default {
         {
             href: "#",
             children: "Anchor"
+        },
+        {
+            href: "#",
+            children: [
+                "Before slot only",
+                beforeSlotExample
+            ]
+        },
+        {
+            href: "#",
+            children: [
+                "After slot only",
+                afterSlotExample
+            ]
+        },
+        {
+            href: "#",
+            children: [
+                beforeSlotExample,
+                "Both slots",
+                afterSlotExample
+            ]
+        },
+        {
+            href: "#",
+            children: [
+                beforeSlotExample,
+                beforeSlotExample,
+                "Mutliple both slots",
+                afterSlotExample,
+                afterSlotExample
+            ]
         },
         {
             disabled: true,

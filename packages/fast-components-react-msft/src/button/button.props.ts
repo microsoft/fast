@@ -1,6 +1,7 @@
 import * as React from "react";
 import { IButtonHandledProps as IBaseButtonHandledProps } from "@microsoft/fast-components-react-base";
 import { IManagedClasses, IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { ButtonSlot } from "./button";
 
 export enum ButtonAppearance {
     justified= "justified",

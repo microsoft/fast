@@ -8,9 +8,10 @@ import { get } from "lodash-es";
 import { glyphArrowright } from "@microsoft/fast-glyphs-msft";
 import { applyLocalizedProperty, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
 import { IDesignSystem, withDesignSystemDefaults } from "@microsoft/fast-components-styles-msft";
-import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
-import { Direction, isRTL } from "@microsoft/fast-application-utilities";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { Direction } from "@microsoft/fast-application-utilities";
 
+// Since MSFT button is already styled, we need to override in this way to alter button classes
 const styles: ComponentStyles<Partial<IMSFTButtonClassNameContract>, IDesignSystem> = {
         button: {
             maxWidth: "100%",
@@ -21,17 +22,11 @@ const styles: ComponentStyles<Partial<IMSFTButtonClassNameContract>, IDesignSyst
         },
         button_textContainer: {
             transition: "all 600ms cubic-bezier(0.19, 1, 0.22, 1)",
-            // left: "0"
             [applyLocalizedProperty("left", "right", Direction.ltr)]: "0"
         },
-        // button__disabled: {},
-        // button_justified: {},
-        // button_lightweight: {},
-        // button_outline: {},
         button_primary: {
             "&:hover": {
                 "& $button_textContainer": {
-                    // left: "-4px"
                     [applyLocalizedProperty("left", "right", Direction.ltr)]: "-4px"
                 }
             }
@@ -55,7 +50,6 @@ class CallToAction extends Foundation<ICallToActionHandledProps & IManagedClasse
      * Renders the component
      */
     public render(): JSX.Element {
-        console.log(this.props);
         return (
             <Button
                 {...this.unhandledProps()}
@@ -65,6 +59,7 @@ class CallToAction extends Foundation<ICallToActionHandledProps & IManagedClasse
             >
                 {this.props.children}
                 <div
+                    slot="after"
                     className={get(this.props, "managedClasses.glyph")}
                     dangerouslySetInnerHTML={{__html: glyphArrowright}}
                 />
@@ -76,10 +71,6 @@ class CallToAction extends Foundation<ICallToActionHandledProps & IManagedClasse
      * Generates class names
      */
     protected generateClassNames(): string {
-        if (!this.props.appearance) {
-            return;
-        }
-
         const classNames: string = super.generateClassNames(get(this.props, "managedClasses.callToAction"));
 
         if (this.props.appearance === ButtonAppearance.primary) {

@@ -1,11 +1,12 @@
 import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
-import { configure, shallow } from "enzyme";
+import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import { ButtonHTMLTags } from "@microsoft/fast-components-react-base";
 import { IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
+    Button,
     ButtonAppearance,
     ButtonProps,
     IButtonHandledProps,
@@ -27,6 +28,24 @@ describe("button", (): void => {
     const Component: React.ComponentClass<IButtonHandledProps & IButtonUnhandledProps> = examples.component;
 
     const href: string = "https://www.microsoft.com";
+
+    const beforeSlotExample: JSX.Element = (
+        <div
+            className={"slotBefore"}
+            key={"Slot"}
+            slot="before"
+            dangerouslySetInnerHTML={{__html: "Before slot"}}
+        />
+    );
+
+    const afterSlotExample: JSX.Element = (
+        <div
+            className={"slotAfter"}
+            key={"afterSlot"}
+            slot="after"
+            dangerouslySetInnerHTML={{__html: " After slot"}}
+        />
+    );
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: IButtonHandledProps = {
@@ -145,5 +164,37 @@ describe("button", (): void => {
         const expectedClassName: string = `${button.instance().props.managedClasses.button_justified} ${customClassNameString}`;
 
         expect(button.prop("className")).toEqual(expectedClassName);
+    });
+
+    /* tslint:disable-next-line */
+    test("should add an 'before' element when a child is passed with the before slot", () => {
+        const props: IButtonHandledProps = {
+            appearance: ButtonAppearance.lightweight,
+            href: "#",
+            children: ["foo", beforeSlotExample]
+        };
+
+        const rendered: any = mount(
+            <Component {...props} />
+        );
+
+        expect(rendered.instance().props.children[1].props.slot).toBe("before");
+        expect(rendered.find("div.slotBefore").length).toBe(1);
+    });
+
+    /* tslint:disable-next-line */
+    test("should add an 'after' element when a child is passed with the after slot", () => {
+        const props: IButtonHandledProps = {
+            appearance: ButtonAppearance.lightweight,
+            href: "#",
+            children: ["foo", afterSlotExample]
+        };
+
+        const rendered: any = mount(
+            <Component {...props} />
+        );
+
+        expect(rendered.instance().props.children[1].props.slot).toBe("after");
+        expect(rendered.find("div.slotAfter").length).toBe(1);
     });
 });

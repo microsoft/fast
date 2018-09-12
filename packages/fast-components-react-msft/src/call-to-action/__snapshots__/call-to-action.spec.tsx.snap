@@ -2,29 +2,34 @@
 
 exports[`call to action snapshot Call to action: 0 1`] = `
 <a
-  className="button-0-1-16 button_primary-0-1-17 callToAction-0-1-5"
+  className="button-0-1-16 button_primary-0-1-17 callToAction-0-1-5 callToAction_backer-0-1-7"
   data-sketch-symbol="Call to action - primary"
   href="https://www.microsoft.com/en-us/"
 >
   <span
-    className="button_textContainer-0-1-6"
+    className="button_textContainer-0-1-21"
   >
     Primary call to action
   </span>
   <div
-    className="glyph-0-1-7"
+    className="glyph-0-1-6"
     dangerouslySetInnerHTML={
       Object {
-        "__html": "FOO",
+        "__html": "<svg xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"-4014.4 1616.998 4.4 8\\">
+    <g transform=\\"translate(-4128 1600.698)\\">
+        <path d=\\"M140.6,23.9l3.7-3.6-3.7-3.6.4-.4,4,4-4,4Z\\" transform=\\"translate(-27)\\"/>
+    </g>
+</svg>",
       }
     }
+    slot="after"
   />
 </a>
 `;
 
 exports[`call to action snapshot Call to action: 1 1`] = `
 <a
-  className="button-0-1-38 button_lightweight-0-1-41 callToAction-0-1-27"
+  className="button-0-1-38 button_lightweight-0-1-41 callToAction-0-1-27 callToAction_lightweight-0-1-30"
   data-sketch-symbol="Call to action - lightweight"
   href="https://www.microsoft.com/en-us/"
 >
@@ -32,21 +37,26 @@ exports[`call to action snapshot Call to action: 1 1`] = `
     className="button_textContainer-0-1-43"
   >
     Lightweight call to action
-    <div
-      className="glyph-0-1-29"
-      dangerouslySetInnerHTML={
-        Object {
-          "__html": "FOO",
-        }
-      }
-    />
   </span>
+  <div
+    className="glyph-0-1-28"
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "<svg xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"-4014.4 1616.998 4.4 8\\">
+    <g transform=\\"translate(-4128 1600.698)\\">
+        <path d=\\"M140.6,23.9l3.7-3.6-3.7-3.6.4-.4,4,4-4,4Z\\" transform=\\"translate(-27)\\"/>
+    </g>
+</svg>",
+      }
+    }
+    slot="after"
+  />
 </a>
 `;
 
 exports[`call to action snapshot Call to action: 2 1`] = `
 <a
-  className="button-0-1-60 button_justified-0-1-64 callToAction-0-1-49"
+  className="button-0-1-60 button_justified-0-1-64 callToAction-0-1-49 callToAction_lightweight-0-1-52"
   data-sketch-symbol="Call to action - justified"
   href="https://www.microsoft.com/en-us/"
 >
@@ -54,14 +64,19 @@ exports[`call to action snapshot Call to action: 2 1`] = `
     className="button_textContainer-0-1-65"
   >
     Secondary call to action
-    <div
-      className="glyph-0-1-51"
-      dangerouslySetInnerHTML={
-        Object {
-          "__html": "FOO",
-        }
-      }
-    />
   </span>
+  <div
+    className="glyph-0-1-50"
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "<svg xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"-4014.4 1616.998 4.4 8\\">
+    <g transform=\\"translate(-4128 1600.698)\\">
+        <path d=\\"M140.6,23.9l3.7-3.6-3.7-3.6.4-.4,4,4-4,4Z\\" transform=\\"translate(-27)\\"/>
+    </g>
+</svg>",
+      }
+    }
+    slot="after"
+  />
 </a>
 `;

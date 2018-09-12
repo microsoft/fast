@@ -6,7 +6,11 @@ exports[`button snapshots Button: 0 1`] = `
   data-sketch-symbol="Button - secondary"
   href={null}
 >
-  Secondary button
+  <span
+    className="button_textContainer-0-1-13"
+  >
+    Secondary button
+  </span>
 </button>
 `;
 
@@ -16,7 +20,11 @@ exports[`button snapshots Button: 1 1`] = `
   data-sketch-symbol="Button - primary"
   href={null}
 >
-  Primary button
+  <span
+    className="button_textContainer-0-1-27"
+  >
+    Primary button
+  </span>
 </button>
 `;
 
@@ -26,7 +34,11 @@ exports[`button snapshots Button: 2 1`] = `
   data-sketch-symbol="Button - outline"
   href={null}
 >
-  Outline button
+  <span
+    className="button_textContainer-0-1-41"
+  >
+    Outline button
+  </span>
 </button>
 `;
 
@@ -37,7 +49,7 @@ exports[`button snapshots Button: 3 1`] = `
   href={null}
 >
   <span
-    className="button_span-0-1-55"
+    className="button_textContainer-0-1-55"
   >
     Lightweight button
   </span>
@@ -50,7 +62,7 @@ exports[`button snapshots Button: 4 1`] = `
   href={null}
 >
   <span
-    className="button_span-0-1-69"
+    className="button_textContainer-0-1-69"
   >
     Justified button
   </span>
@@ -62,78 +74,214 @@ exports[`button snapshots Button: 5 1`] = `
   className="button-0-1-78"
   href="#"
 >
-  Anchor
+  <span
+    className="button_textContainer-0-1-83"
+  >
+    Anchor
+  </span>
 </a>
 `;
 
 exports[`button snapshots Button: 6 1`] = `
+<a
+  className="button-0-1-92"
+  href="#"
+>
+  <div
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "<",
+      }
+    }
+    slot="before"
+  />
+  <span
+    className="button_textContainer-0-1-97"
+  >
+    Before slot only
+  </span>
+</a>
+`;
+
+exports[`button snapshots Button: 7 1`] = `
+<a
+  className="button-0-1-106"
+  href="#"
+>
+  <span
+    className="button_textContainer-0-1-111"
+  >
+    After slot only
+  </span>
+  <div
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": " >",
+      }
+    }
+    slot="after"
+  />
+</a>
+`;
+
+exports[`button snapshots Button: 8 1`] = `
+<a
+  className="button-0-1-120"
+  href="#"
+>
+  <div
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "<",
+      }
+    }
+    slot="before"
+  />
+  <span
+    className="button_textContainer-0-1-125"
+  >
+    Both slots
+  </span>
+  <div
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": " >",
+      }
+    }
+    slot="after"
+  />
+</a>
+`;
+
+exports[`button snapshots Button: 9 1`] = `
+<a
+  className="button-0-1-134"
+  href="#"
+>
+  <div
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "<",
+      }
+    }
+    slot="before"
+  />
+  <div
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "<",
+      }
+    }
+    slot="before"
+  />
+  <span
+    className="button_textContainer-0-1-139"
+  >
+    Mutliple both slots
+  </span>
+  <div
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": " >",
+      }
+    }
+    slot="after"
+  />
+  <div
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": " >",
+      }
+    }
+    slot="after"
+  />
+</a>
+`;
+
+exports[`button snapshots Button: 10 1`] = `
 <button
-  className="button-0-1-92 button__disabled-0-1-98"
+  className="button-0-1-148 button__disabled-0-1-154"
   data-sketch-symbol="Button - secondary disabled"
   disabled={true}
   href={null}
 >
-  Secondary button (disabled)
+  <span
+    className="button_textContainer-0-1-153"
+  >
+    Secondary button (disabled)
+  </span>
 </button>
 `;
 
-exports[`button snapshots Button: 7 1`] = `
+exports[`button snapshots Button: 11 1`] = `
 <button
-  className="button-0-1-106 button__disabled-0-1-112 button_primary-0-1-107"
+  className="button-0-1-162 button__disabled-0-1-168 button_primary-0-1-163"
   data-sketch-symbol="Button - primary disabled"
   disabled={true}
   href={null}
 >
-  Primary button (disabled)
+  <span
+    className="button_textContainer-0-1-167"
+  >
+    Primary button (disabled)
+  </span>
 </button>
 `;
 
-exports[`button snapshots Button: 8 1`] = `
+exports[`button snapshots Button: 12 1`] = `
 <button
-  className="button-0-1-120 button__disabled-0-1-126 button_outline-0-1-122"
+  className="button-0-1-176 button__disabled-0-1-182 button_outline-0-1-178"
   data-sketch-symbol="Button - outline disabled"
   disabled={true}
   href={null}
 >
-  Outline button (disabled)
+  <span
+    className="button_textContainer-0-1-181"
+  >
+    Outline button (disabled)
+  </span>
 </button>
 `;
 
-exports[`button snapshots Button: 9 1`] = `
+exports[`button snapshots Button: 13 1`] = `
 <button
-  className="button-0-1-134 button__disabled-0-1-140 button_lightweight-0-1-137"
+  className="button-0-1-190 button__disabled-0-1-196 button_lightweight-0-1-193"
   data-sketch-symbol="Button - lightweight disabled"
   disabled={true}
   href={null}
 >
   <span
-    className="button_span-0-1-139"
+    className="button_textContainer-0-1-195"
   >
     Lightweight button (disabled)
   </span>
 </button>
 `;
 
-exports[`button snapshots Button: 10 1`] = `
+exports[`button snapshots Button: 14 1`] = `
 <button
-  className="button-0-1-148 button__disabled-0-1-154 button_justified-0-1-152"
+  className="button-0-1-204 button__disabled-0-1-210 button_justified-0-1-208"
   disabled={true}
   href={null}
 >
   <span
-    className="button_span-0-1-153"
+    className="button_textContainer-0-1-209"
   >
     Justified button (disabled)
   </span>
 </button>
 `;
 
-exports[`button snapshots Button: 11 1`] = `
+exports[`button snapshots Button: 15 1`] = `
 <a
   aria-disabled={true}
-  className="button-0-1-162 button__disabled-0-1-168"
+  className="button-0-1-218 button__disabled-0-1-224"
   href="#"
 >
-  Anchor (disabled)
+  <span
+    className="button_textContainer-0-1-223"
+  >
+    Anchor (disabled)
+  </span>
 </a>
 `;

@@ -1,10 +1,17 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import { Foundation, HandledProps } from "@microsoft/fast-components-react-base";
 import { ButtonAppearance, IButtonHandledProps, IButtonManagedClasses, IButtonUnhandledProps } from "./button.props";
 import { IManagedClasses, IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { Button as BaseButton } from "@microsoft/fast-components-react-base";
+
+/**
+ * Button slot options
+ */
+export enum ButtonSlot {
+    before = "before",
+    after = "after"
+}
 
 /* tslint:disable-next-line */
 class Button extends Foundation<IButtonHandledProps & IManagedClasses<IMSFTButtonClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
@@ -27,7 +34,9 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IMSFTButto
                 href={this.props.href}
                 disabled={this.props.disabled}
             >
-                <span className={get(this.props, "managedClasses.button_textContainer")}>{this.props.children}</span>
+                {this.renderChildrenBySlot(ButtonSlot.before)}
+                {this.renderContent()}
+                {this.renderChildrenBySlot(ButtonSlot.after)}
             </BaseButton>
         );
     }
@@ -48,6 +57,42 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IMSFTButto
             default:
                 return super.generateClassNames();
         }
+    }
+
+    /**
+     * Renders slotted children in the appropriate slot
+     */
+    private renderChildrenBySlot(slot: ButtonSlot): JSX.Element {
+        if (Array.isArray(this.props.children)) {
+            return this.props.children.map((child: any, index: number) => {
+                if (child.props && child.props.slot === slot) {
+                    return (
+                        <React.Fragment key={index}>
+                            {child}
+                        </React.Fragment>
+                    );
+                }
+            });
+        }
+    }
+
+    /**
+     * Renders the non-slot child content
+     */
+    private renderContent(): JSX.Element {
+        let content: any = {};
+
+        if (Array.isArray(this.props.children)) {
+            this.props.children.forEach((child: any) => {
+                if (!child.props) {
+                    content = child;
+                }
+            });
+        } else {
+            content = this.props.children;
+        }
+
+        return <span className={get(this.props, "managedClasses.button_textContainer")}>{content}</span>;
     }
 }
 

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ICallToActionClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
-import { ButtonAppearance, ButtonProps, IButtonHandledProps } from "../button/button.props";
+import { ButtonAppearance, IButtonHandledProps } from "../button/button.props";
 
 export type CallToActionAppearance = Exclude<ButtonAppearance, "outline">;
 
