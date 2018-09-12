@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
-import { configure, shallow } from "enzyme";
+import { configure, render, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import {
@@ -13,6 +13,11 @@ import {
     TextFieldType
 } from "./text-field";
 
+const Component: React.ComponentClass<ITextFieldHandledProps & ITextFieldManagedClasses> = examples.component;
+const managedClasses: ITextFieldClassNameContract = {
+    textField: "text-field-class"
+};
+
 /*
  * Configure Enzyme
  */
@@ -23,11 +28,6 @@ describe("text-field snapshot", (): void => {
 });
 
 describe("text-field", (): void => {
-    const Component: React.ComponentClass<ITextFieldHandledProps & ITextFieldManagedClasses> = examples.component;
-    const managedClasses: ITextFieldClassNameContract = {
-        textField: "text-field-class"
-    };
-
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: ITextFieldHandledProps & ITextFieldManagedClasses = {
             managedClasses,
@@ -94,4 +94,60 @@ describe("text-field", (): void => {
 
         expect(rendered.prop("placeholder")).toEqual("Test");
     });
+});
+
+describe("text-field deprecated enum values", (): void => {
+    /* tslint:disable no-console */
+    beforeEach(() => {
+        console.warn = jest.fn();
+    });
+
+    test("should throw a warning in the console if `TextFieldType.date` is passed to the type prop", () => {
+        const rendered: any = render(
+            <Component managedClasses={managedClasses} type={TextFieldType.date} />
+        );
+
+        expect(console.warn).toHaveBeenCalledTimes(1);
+    });
+
+    test("should throw a warning in the console if `TextFieldType.hidden` is passed to the type prop", () => {
+        const rendered: any = render(
+            <Component managedClasses={managedClasses} type={TextFieldType.hidden} />
+        );
+
+        expect(console.warn).toHaveBeenCalledTimes(1);
+    });
+
+    test("should throw a warning in the console if `TextFieldType.month` is passed to the type prop", () => {
+        const rendered: any = render(
+            <Component managedClasses={managedClasses} type={TextFieldType.month} />
+        );
+
+        expect(console.warn).toHaveBeenCalledTimes(1);
+    });
+
+    test("should throw a warning in the console if `TextFieldType.range` is passed to the type prop", () => {
+        const rendered: any = render(
+            <Component managedClasses={managedClasses} type={TextFieldType.range} />
+        );
+
+        expect(console.warn).toHaveBeenCalledTimes(1);
+    });
+
+    test("should throw a warning in the console if `TextFieldType.time` is passed to the type prop", () => {
+        const rendered: any = render(
+            <Component managedClasses={managedClasses} type={TextFieldType.time} />
+        );
+
+        expect(console.warn).toHaveBeenCalledTimes(1);
+    });
+
+    test("should throw a warning in the console if `TextFieldType.week` is passed to the type prop", () => {
+        const rendered: any = render(
+            <Component managedClasses={managedClasses} type={TextFieldType.week} />
+        );
+
+        expect(console.warn).toHaveBeenCalledTimes(1);
+    });
+    /* tslint:enable no-console */
 });
