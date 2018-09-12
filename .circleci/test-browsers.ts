@@ -60,6 +60,12 @@ let browsers = [
             'screenResolution':'1920x1440'
         },
         {
+            'platform': 'macOS 10.13',
+            'browserName': 'firefox',
+            'version':'62.0',
+            'screenResolution':'2360x1770'
+        },
+        {
             'platform': 'macOS 10.12',
             'browserName': 'safari',
             'version':'11.0',
@@ -72,77 +78,93 @@ let browsers = [
             'screenResolution':'2360x1770'
         },
         {
-            'platform': 'macOS 10.11',
+            'platform': 'OS X 10.11',
             'browserName': 'chrome',
             'version':'69.0',
-            'screenResolution':'2360x1770'
+            'screenResolution':'2048x1536'
         },
         {
-            'platform': 'macOS 10.13',
-            'browserName': 'firefox',
-            'version':'62.0',
-            'screenResolution':'2360x1770'
-        },
-        {
-            'platformName': 'ios',
+            'platformName': 'iOS',
             'platformVersion': '11.3',
-            'deviceOrientation': 'portrait',
-            'deviceName': 'iPhone 7 Simulator',
-            'appiumVersion': '1.8.1',
-            'browserName': 'Safari'
-        },
-        {
-            'platformName': 'ios',
-            'platformVersion': '11.2',
-            'deviceOrientation': 'portrait',
-            'deviceName': 'iPhone 8 Plus Simulator',
-            'appiumVersion': '1.8.1',
-            'browserName': 'Safari'
-        },
-        {
-            'platformName': 'ios',
-            'platformVersion': '11.1',
-            'deviceOrientation': 'portrait',
+            'deviceOrientation': 'PORTRAIT',
             'deviceName': 'iPhone X Simulator',
             'appiumVersion': '1.8.1',
             'browserName': 'Safari'
         },
         {
-            'platformName': 'ios',
-            'platformVersion': '11.0',
-            'deviceOrientation': 'portrait',
+            'platformName': 'iOS',
+            'platformVersion': '11.2',
+            'deviceOrientation': 'PORTRAIT',
+            'deviceName': 'iPhone 8 Plus Simulator',
+            'appiumVersion': '1.8.1',
+            'browserName': 'Safari'
+        },
+        {
+            'platformName': 'iOS',
+            'platformVersion': '11.1',
+            'deviceOrientation': 'PORTRAIT',
             'deviceName': 'iPhone 7 Simulator',
             'appiumVersion': '1.8.1',
             'browserName': 'Safari'
-            }/*,
+        },
+        {
+            'platformName': 'iOS',
+            'platformVersion': '11.0',
+            'deviceOrientation': 'PORTRAIT',
+            'deviceName': 'iPhone 6s Simulator',
+            'appiumVersion': '1.8.1',
+            'browserName': 'Safari'
+        },
+        {
+            'platformName': 'iOS',
+            'platformVersion': '10.0',
+            'deviceOrientation': 'PORTRAIT',
+            'deviceName': 'iPad Retina Simulator',
+            'appiumVersion': '1.8.0',
+            'browserName': 'Safari'
+        },
+        {
+            'platformName': 'iOS',
+            'platformVersion': '9.3',
+            'deviceOrientation': 'PORTRAIT',
+            'deviceName': 'iPad Pro Simulator',
+            'appiumVersion': '1.7.1',
+            'browserName': 'Safari'
+        },
         {
             'platformName': 'Android',
             'platformVersion': '7.1',
-            'deviceOrientation': 'portrait',
+            'deviceOrientation': 'PORTRAIT',
             'deviceName': 'Samsung Galaxy S7 Edge FHD GoogleAPI Emulator',
             'appiumVersion': '1.8.1',
-            'browserName': 'Chrome'
+            'browserName': 'Chrome',
+            'language': 'en',
+            'locale': 'en_US'
         },
         {
             'platformName': 'Android',
             'platformVersion': '7.0',
-            'deviceOrientation': 'portrait',
+            'deviceOrientation': 'PORTRAIT',
             'deviceName': 'Samsung Galaxy Tab A 10 GoogleAPI Emulator',
             'appiumVersion': '1.8.1',
-            'browserName': 'Chrome'
+            'browserName': 'Chrome',
+            'language': 'en',
+            'locale': 'en_US'
         },
         {
             'platformName': 'Android',
             'platformVersion': '6.0',
-            'deviceOrientation': 'portrait',
+            'deviceOrientation': 'PORTRAIT',
             'deviceName': 'Android Emulator',
             'appiumVersion': '1.8.1',
-            'browserName': 'Chrome'
+            'browserName': 'Chrome',
+            'language': 'en',
+            'locale': 'en_US'
         },
         {
             'platformName': 'Android',
             'platformVersion': '5.1',
-            'deviceOrientation': 'portrait',
+            'deviceOrientation': 'PORTRAIT',
             'deviceName': 'Android GoogleAPI Emulator',
             'appiumVersion': '1.8.1',
             'browserName': 'Browser'
@@ -150,7 +172,7 @@ let browsers = [
         {
             'platformName': 'Android',
             'platformVersion': '5.0',
-            'deviceOrientation': 'portrait',
+            'deviceOrientation': 'PORTRAIT',
             'deviceName': 'Android Emulator',
             'appiumVersion': '1.8.1',
             'browserName': 'Browser'
@@ -158,11 +180,11 @@ let browsers = [
         {
             'platformName': 'Android',
             'platformVersion': '4.4',
-            'deviceOrientation': 'portrait',
+            'deviceOrientation': 'PORTRAIT',
             'deviceName': 'LG Nexus 4 Emulator',
             'appiumVersion': '1.8.1',
             'browserName': 'Browser'
-            }*/
+        }
 ];
 
 var flows = browsers.map(function(browser) {
@@ -170,12 +192,19 @@ var flows = browsers.map(function(browser) {
         // Setup capabilities
         let caps = {
                 name : "FAST-DNA MSFT Documentation",
-                build : "test-build-0011",
+                build : "test-build-0020",
                 tags : "msft-docs",
+                appiumVersion : browser.appiumVersion,
                 platform : browser.platform,
+                platformName : browser.platformName,
+                platformVersion : browser.platformVersion,
+                deviceName : browser.deviceName,
+                orientation : browser.deviceOrientation,
                 browserName : browser.browserName,
                 version : browser.version,
                 screen_resolution : browser.screenResolution,
+                language : browser.language,
+                locale : browser.locale,
                 username : username,
                 password : accessKey,
                 extendedDebugging : true
