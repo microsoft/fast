@@ -63,34 +63,43 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IMSFTButto
      * Renders slotted children in the appropriate slot
      */
     private renderChildrenBySlot(slot: ButtonSlot): JSX.Element[] {
-        if (Array.isArray(this.props.children)) {
-            return this.props.children.map((child: any, index: number) => {
-                if (child.props && child.props.slot === slot) {
-                    return (
-                        <React.Fragment key={index}>
-                            {child}
-                        </React.Fragment>
-                    );
-                }
-            });
-        }
+        return React.Children.map(this.props.children, (child: JSX.Element, index: number) => {
+            if (child.props && child.props.slot === slot) {
+                return (
+                    <React.Fragment key={index}>
+                        {child}
+                    </React.Fragment>
+                );
+            }
+        });
     }
 
     /**
      * Renders the non-slot child content
      */
     private renderContent(): JSX.Element {
-        let content: any = {};
+        const content: any[] = [];
 
-        if (Array.isArray(this.props.children)) {
-            this.props.children.forEach((child: any) => {
-                if (!child.props) {
-                    content = child;
-                }
-            });
-        } else {
-            content = this.props.children;
-        }
+        // if (Array.isArray(this.props.children)) {
+        //     this.props.children.forEach((child: any) => {
+        //         if (!child.props) {
+        //             content = child;
+        //         }
+        //     });
+        // } else {
+        //     content = this.props.children;
+        // }
+
+        React.Children.forEach(this.props.children, (child: JSX.Element, index: number) => {
+            if (get(child, "props.slot") !== ButtonSlot.after && get(child, "props.slot") !== ButtonSlot.before) {
+                content.push(child);
+            }
+            // if (!child.props) {
+            //     content = child;
+            // } else {
+            //     content = this.props.children;
+            // }
+        });
 
         return <span className={get(this.props, "managedClasses.button_span")}>{content}</span>;
     }
