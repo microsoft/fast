@@ -44,6 +44,37 @@ const examples: IComponentFactoryExample<ITextFieldHandledProps & ITextFieldMana
                 textField: "textfield"
             },
             type: TextFieldType.tel
+        },
+        // Test deprecated values still work
+        {
+            managedClasses: {
+                textField: "textfield"
+            },
+            type: TextFieldType.date
+        },
+        {
+            managedClasses: {
+                textField: "textfield"
+            },
+            type: TextFieldType.month
+        },
+        {
+            managedClasses: {
+                textField: "textfield"
+            },
+            type: TextFieldType.range
+        },
+        {
+            managedClasses: {
+                textField: "textfield"
+            },
+            type: TextFieldType.time
+        },
+        {
+            managedClasses: {
+                textField: "textfield"
+            },
+            type: TextFieldType.week
         }
     ]
 };
