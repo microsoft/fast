@@ -44,14 +44,13 @@ class TextField extends Foundation<ITextFieldHandledProps & IManagedClasses<ITex
     private isDeprecatedType(type: TextFieldType): TextFieldType {
         switch (type) {
             case TextFieldType.date:
+            case TextFieldType.hidden:
             case TextFieldType.month:
             case TextFieldType.range:
             case TextFieldType.time:
             case TextFieldType.week:
                 /* tslint:disable-next-line */
                 console.warn(`TextFieldType enum "${type}" has been deprecated as of version 2.3.0, and will be removed in version 3.0.0.`);
-                break;
-            default:
                 break;
         }
 

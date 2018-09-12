@@ -8,6 +8,10 @@ export enum TextFieldType {
      */
     date = "date",
     email = "email",
+    /**
+     * @deprecated as of v2.3.0
+     * Will be deleted in version 3.0.
+     */
     hidden = "hidden",
     /**
      * @deprecated as of v2.3.0

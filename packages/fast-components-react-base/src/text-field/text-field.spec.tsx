@@ -105,6 +105,16 @@ describe("text-field", (): void => {
         expect(console.warn).toHaveBeenCalledTimes(1);
     });
 
+    test("should throw a warning in the console if `TextFieldType.hidden` is passed to the type prop", () => {
+        console.warn = jest.fn();
+
+        const rendered: any = render(
+            <Component managedClasses={managedClasses} type={TextFieldType.hidden} />
+        );
+
+        expect(console.warn).toHaveBeenCalledTimes(1);
+    });
+
     test("should throw a warning in the console if `TextFieldType.month` is passed to the type prop", () => {
         console.warn = jest.fn();
 
