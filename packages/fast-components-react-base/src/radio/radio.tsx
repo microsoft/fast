@@ -21,7 +21,7 @@ class Radio extends Foundation<IRadioHandledProps & IRadioManagedClasses, IRadio
         checked: void 0,
         disabled: void 0,
         managedClasses: void 0,
-        onSelect: void 0,
+        onChange: void 0,
         tag: void 0,
         text: void 0
     };
@@ -54,7 +54,7 @@ class Radio extends Foundation<IRadioHandledProps & IRadioManagedClasses, IRadio
                     className={get(this.props, "managedClasses.radio_input")}
                     type="radio"
                     ref={this.inputRef}
-                    onSelect={this.handleRadioSelect}
+                    onChange={this.handleRadioChange}
                     disabled={this.props.disabled || null}
                     checked={this.state.checked}
                 />
@@ -87,13 +87,13 @@ class Radio extends Foundation<IRadioHandledProps & IRadioManagedClasses, IRadio
     /**
      * Handles onChange as a controlled component
      */
-    private handleRadioSelect = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    private handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         if (typeof this.props.checked !== "boolean") {
             this.setState({checked: !this.state.checked});
         }
 
-        if (this.props.onSelect) {
-            this.props.onSelect(e);
+        if (this.props.onChange) {
+            this.props.onChange(e);
         }
     }
 }

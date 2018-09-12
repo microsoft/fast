@@ -25,7 +25,7 @@ export interface IRadioHandledProps {
     /**
      * The selected state
      */
-    onSelect?: boolean;
+    onChange?: boolean;
 
     /**
      * The textual content
