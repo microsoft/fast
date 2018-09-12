@@ -79,14 +79,18 @@ jobs:
                     ./coverage/cc-test-reporter upload-coverage -i coverage/coverage.total.json
 
     test_browsers:
-        
         steps:
+            - checkout
+            - run: 
+                name: Install package dependencies
+                command: |
+                    npm i
+            
             - run:
-                name: Install browser service
+                name: Execute Cross Browser Testing
                 background: true
                 command: |
-                    cd .circleci/
-                    node test-cross-browser.js
+                    node .circleci/run-browser-tests.ts
 
 workflows:
   version: 2
