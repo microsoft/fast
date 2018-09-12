@@ -28,7 +28,7 @@ export { LabelExamples };
 import ProgressExamples from "../src/progress/examples.data";
 export { ProgressExamples };
 
-import RadioExamples from "../src/radio/example.data";
+import RadioExamples from "../src/radio/examples.data";
 export { RadioExamples };
 
 import TabsExamples from "../src/tabs/examples.data";

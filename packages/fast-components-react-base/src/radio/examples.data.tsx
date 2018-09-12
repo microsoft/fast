@@ -7,8 +7,8 @@ import { IComponentFactoryExample } from "@microsoft/fast-development-site-react
 const classes: IRadioManagedClasses = {
     managedClasses: {
         radio: "radio",
-        radio_input: "radio_input",
         radio_disabled: "radio_disabled",
+        radio_input: "radio_input",
         radio_label: "radio_label",
         radio_span: "radio_span"
     }
