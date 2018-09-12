@@ -79,15 +79,15 @@ jobs:
                     ./coverage/cc-test-reporter upload-coverage -i coverage/coverage.total.json
 
     test_browsers:
+        <<: *container_config
         steps:
             - checkout
             - run: 
-                name: Install package dependencies
+                name: Install Sauce Labs (only) dependencies
                 command: |
-                    npm i
-            
+                    npm i --prod
             - run:
-                name: Execute Cross Browser Testing
+                name: Test on Sauce Labs
                 background: true
                 command: |
                     node .circleci/run-browser-tests.ts
@@ -98,8 +98,8 @@ workflows:
     jobs:
       - build_dependencies
       - test_coverage:
-          requires: 
-            - build_dependencies
+            requires: 
+                - build_dependencies
       - test_browsers:
-          requires:
-            - build_dependencies
+            requires:
+                - build_dependencies
