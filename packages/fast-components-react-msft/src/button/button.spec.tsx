@@ -167,7 +167,7 @@ describe("button", (): void => {
     });
 
     /* tslint:disable-next-line */
-    test("should add a child element with the 'before' prop into the before slot", () => {
+    test("should add a child element with the slot prop set to 'before' into the before slot location", () => {
         const props: IButtonHandledProps = {
             appearance: ButtonAppearance.lightweight,
             href: "#",
@@ -183,7 +183,7 @@ describe("button", (): void => {
     });
 
     /* tslint:disable-next-line */
-    test("should add an 'after' element when a child is passed with the after slot", () => {
+    test("should add a child element with the slot prop set to 'after' into the after slot location", () => {
         const props: IButtonHandledProps = {
             appearance: ButtonAppearance.lightweight,
             href: "#",
