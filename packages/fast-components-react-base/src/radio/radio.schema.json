@@ -13,6 +13,18 @@
                 "label"
             ],
             "default": "div"
+        },
+        "checked": {
+            "title": "Checked",
+            "type": "boolean"
+        },
+        "disabled": {
+            "title": "Disabled",
+            "type": "boolean"
+        },
+        "text": {
+            "title": "Text",
+            "type": "string"
         }
     }
 }

@@ -23,9 +23,9 @@ export interface IRadioHandledProps {
     disabled?: boolean;
 
     /**
-     * The onChange event handler
+     * The selected state
      */
-    onChange?: RadioOnChange;
+    onSelect?: boolean;
 
     /**
      * The textual content

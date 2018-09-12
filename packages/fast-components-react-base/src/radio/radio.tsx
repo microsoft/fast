@@ -3,15 +3,98 @@ import * as ReactDOM from "react-dom";
 import Foundation, { HandledProps } from "../foundation";
 import { IRadioHandledProps, IRadioManagedClasses, IRadioUnhandledProps, RadioHTMLTags, RadioProps } from "./radio.props";
 import { IManagedClasses, IRadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { get, isUndefined } from "lodash-es";
+import { get } from "lodash-es";
 
-class Radio extends Foundation<IRadioHandledProps & IRadioManagedClasses, IRadioUnhandledProps, {}> {
+/**
+ * Radio state interface
+ */
+export interface IRadioState {
+    checked: boolean;
+}
+
+class Radio extends Foundation<IRadioHandledProps & IRadioManagedClasses, IRadioUnhandledProps, IRadioState> {
+
+    /**
+     * Handled props instantiation
+     */
+    protected handledProps: HandledProps<IRadioHandledProps & IManagedClasses<IRadioClassNameContract>> = {
+        checked: void 0,
+        disabled: void 0,
+        managedClasses: void 0,
+        onSelect: void 0,
+        tag: void 0,
+        text: void 0
+    };
+
+    /**
+     * Provides reference to input
+     */
+    private inputRef: React.RefObject<HTMLInputElement>;
+
+    /**
+     * Define constructor
+     */
+    constructor(props: RadioProps) {
+        super(props);
+
+        this.state = {
+            checked: this.props.checked || false
+        };
+
+        this.inputRef = React.createRef();
+    }
+
     public render(): React.ReactElement<HTMLElement> {
         return (
-            <div>
-                Hello Radio!!!
-            </div>
+            <this.tag
+                {...this.unhandledProps()}
+                className={this.generateClassNames()}
+            >
+                <input
+                    className={get(this.props, "managedClasses.radio_input")}
+                    type="radio"
+                    ref={this.inputRef}
+                    onSelect={this.handleRadioSelect}
+                    disabled={this.props.disabled || null}
+                    checked={this.state.checked}
+                />
+                <span className={get(this.props, "managedClasses.radio_span")} />
+                <span className={get(this.props, "managedClasses.radio_label")}>
+                    {this.props.text ? this.props.text : null}
+                </span>
+            </this.tag>
         );
+    }
+
+    /**
+     * Generates class names
+     */
+    protected generateClassNames(): string {
+        let classes: string = get(this.props, "managedClasses.radio");
+
+        classes = this.props.disabled ? `${classes} ${get(this.props, "managedClasses.radio_disabled")}` : classes;
+
+        return super.generateClassNames(classes);
+    }
+
+    /**
+     * Stores HTML tag for use in render
+     */
+    private get tag(): string {
+        return RadioHTMLTags[this.props.tag] || RadioHTMLTags.label;
+    }
+
+    /**
+     * Handles onChange as a controlled component
+     */
+    private handleRadioSelect = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        if (typeof this.props.checked !== "boolean") {
+            this.setState({checked: !this.state.checked});
+        }
+
+        if (this.props.onSelect) {
+            this.props.onSelect(e);
+        }
     }
 }
 
