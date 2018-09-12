@@ -1,6 +1,7 @@
 import { IDesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IRadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { applyLocalizedProperty, Direction } from "@microsoft/fast-jss-utilities";
 import {
     disabledContrast,
     ensureNormalContrast,
@@ -13,6 +14,7 @@ const styles: ComponentStyles<IRadioClassNameContract, IDesignSystem> = (config:
     const designSystem: IDesignSystem = withDesignSystemDefaults(config);
     const backgroundColor: string = designSystem.backgroundColor;
     const foregroundColor: string = ensureNormalContrast(config.contrast, designSystem.foregroundColor, designSystem.backgroundColor);
+    const direction: Direction = designSystem.direction;
     const radioColor: string = normalContrast(designSystem.contrast, foregroundColor, backgroundColor);
     const radioHover: string = hoverContrast(designSystem.contrast, foregroundColor, backgroundColor);
     const radioDisabled: string = disabledContrast(
@@ -36,6 +38,7 @@ const styles: ComponentStyles<IRadioClassNameContract, IDesignSystem> = (config:
             boxSizing: "content-box",
             margin: "0",
             zIndex: "1",
+            background: backgroundColor,
             boxShadow: `inset 0 0 0 1px ${radioColor}`,
             "&:hover": {
                 boxShadow: `inset 0 0 0 1px ${radioHover}`,
@@ -46,7 +49,7 @@ const styles: ComponentStyles<IRadioClassNameContract, IDesignSystem> = (config:
             },
             "&:checked": {
                 "& + span": {
-                    "&::after, &::before": {
+                    "&::before": {
                         position: "absolute",
                         zIndex: "1",
                         content: "\"\"",
@@ -63,22 +66,13 @@ const styles: ComponentStyles<IRadioClassNameContract, IDesignSystem> = (config:
             width: "20px",
             height: "20px",
             flexShrink: "0",
-            marginRight: "5px",
-            "&::before, &::after": {
-                width: "2px"
-           },
+            color: radioDisabled,
             "&::before": {
                 top: "4px",
-                left: "11px",
+                left: "4px",
                 height: "12px",
-                transform: "rotate(40deg)"
-            },
-            "&::after": {
-                top: "9px",
-                left: "6px",
-                height: "6px",
-                transform: "rotate(-45deg)"
-            }
+                width: "12px"
+           }
         },
         radio__disabled: {
             cursor: "not-allowed",
@@ -86,10 +80,13 @@ const styles: ComponentStyles<IRadioClassNameContract, IDesignSystem> = (config:
                 boxShadow: `inset 0 0 0 1px ${radioDisabled}`
             },
             "& $radio_label": {
+                cursor: "not-allowed",
                 color: radioDisabled
             }
         },
-        radio_label: {}
+        radio_label: {
+            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "5px"
+        }
     };
 };
 
