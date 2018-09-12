@@ -3,21 +3,21 @@ import { IManagedClasses, ITextFieldClassNameContract } from "@microsoft/fast-co
 
 export enum TextFieldType {
     /**
-     * @deprecated since v2.3.0
+     * @deprecated as of v2.3.0
      * Will be deleted in version 3.0.
      */
     date = "date",
     email = "email",
     hidden = "hidden",
     /**
-     * @deprecated since v2.3.0
+     * @deprecated as of v2.3.0
      * Will be deleted in version 3.0.
      */
     month = "month",
     number = "number",
     password = "password",
     /**
-     * @deprecated since v2.3.0
+     * @deprecated as of v2.3.0
      * Will be deleted in version 3.0.
      */
     range = "range",
@@ -25,13 +25,13 @@ export enum TextFieldType {
     tel = "tel",
     text = "text",
     /**
-     * @deprecated since v2.3.0
+     * @deprecated as of v2.3.0
      * Will be deleted in version 3.0.
      */
     time = "time",
     url = "url",
     /**
-     * @deprecated since v2.3.0
+     * @deprecated as of v2.3.0
      * Will be deleted in version 3.0.
      */
     week = "week"
