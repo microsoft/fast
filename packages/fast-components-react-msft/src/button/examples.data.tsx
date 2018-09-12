@@ -14,17 +14,15 @@ import Documentation from "./.tmp/documentation";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
 const beforeSlotExample: JSX.Element = (
-    <div
-        slot="before"
-        dangerouslySetInnerHTML={{__html: "<"}}
-    />
+    <div slot="before">
+        {"<"}
+    </div>
 );
 
 const afterSlotExample: JSX.Element = (
-    <div
-        slot="after"
-        dangerouslySetInnerHTML={{__html: " >"}}
-    />
+    <div slot="after">
+        {">"}
+    </div>
 );
 
 export default {
@@ -91,6 +89,15 @@ export default {
                 beforeSlotExample,
                 beforeSlotExample,
                 "Mutliple both slots",
+                afterSlotExample,
+                afterSlotExample
+            ]
+        },
+        {
+            href: "#",
+            children: [
+                beforeSlotExample,
+                beforeSlotExample,
                 afterSlotExample,
                 afterSlotExample
             ]

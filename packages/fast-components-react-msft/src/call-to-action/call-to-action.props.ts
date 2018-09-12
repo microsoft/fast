@@ -2,9 +2,15 @@ import * as React from "react";
 import { ICallToActionClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
 import { ButtonAppearance, IButtonHandledProps } from "../button/button.props";
 
-export type CallToActionAppearance = Exclude<ButtonAppearance, "outline">;
+type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
-export interface ICallToActionHandledProps extends IButtonHandledProps {
+export enum CallToActionAppearance {
+    justified= ButtonAppearance.justified,
+    lightweight= ButtonAppearance.lightweight,
+    primary= ButtonAppearance.primary
+}
+
+export interface ICallToActionHandledProps extends Omit<IButtonHandledProps, "appearance"> {
 
     /**
      * The call to action appearance

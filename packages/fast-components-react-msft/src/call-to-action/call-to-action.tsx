@@ -2,7 +2,7 @@ import * as React from "react";
 import { Foundation, HandledProps } from "@microsoft/fast-components-react-base";
 import Button from "../button/index";
 import { ButtonAppearance, IMSFTButtonClassNameContract } from "../button/button";
-import { ICallToActionHandledProps } from "./call-to-action.props";
+import { CallToActionAppearance, ICallToActionHandledProps } from "./call-to-action.props";
 import { ICallToActionClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
 import { get } from "lodash-es";
 import { glyphArrowright } from "@microsoft/fast-glyphs-msft";
@@ -36,7 +36,7 @@ const styles: ComponentStyles<Partial<IMSFTButtonClassNameContract>, IDesignSyst
 // tslint:disable-next-line:max-line-length
 class CallToAction extends Foundation<ICallToActionHandledProps & IManagedClasses<ICallToActionClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
     public static defaultProps: Partial<ICallToActionHandledProps  & IManagedClasses<ICallToActionClassNameContract>> = {
-        appearance: ButtonAppearance.primary
+        appearance: CallToActionAppearance.primary
     };
 
     protected handledProps: HandledProps<ICallToActionHandledProps & IManagedClasses<ICallToActionClassNameContract>> = {
@@ -54,7 +54,9 @@ class CallToAction extends Foundation<ICallToActionHandledProps & IManagedClasse
             <Button
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
-                {...this.props}
+                disabled={this.props.disabled}
+                href={this.props.href}
+                appearance={ButtonAppearance[CallToActionAppearance[this.props.appearance]]}
                 jssStyleSheet={styles}
             >
                 {this.props.children}
@@ -73,7 +75,7 @@ class CallToAction extends Foundation<ICallToActionHandledProps & IManagedClasse
     protected generateClassNames(): string {
         const classNames: string = super.generateClassNames(get(this.props, "managedClasses.callToAction"));
 
-        if (this.props.appearance === ButtonAppearance.primary) {
+        if (this.props.appearance === CallToActionAppearance.primary) {
             return `${classNames} ${get(this.props, "managedClasses.callToAction_backer")}`;
         } else {
             return `${classNames} ${get(this.props, "managedClasses.callToAction_lightweight")}`;

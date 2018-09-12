@@ -73,6 +73,7 @@
     "@microsoft/fast-glyphs-msft": "^2.2.0",
     "@microsoft/fast-jest-snapshots-react": "^2.2.0",
     "@microsoft/fast-jss-manager": "^2.2.0",
+    "@microsoft/fast-jss-utilities": "^2.2.0",
     "@microsoft/fast-sketch-library": "^2.2.0",
     "@microsoft/fast-tslint-rules": "^2.2.0",
     "@types/jest": "^22.2.0",

@@ -7,7 +7,7 @@ exports[`call to action snapshot Call to action: 0 1`] = `
   href="https://www.microsoft.com/en-us/"
 >
   <span
-    className="button_textContainer-0-1-21"
+    className="button_span-0-1-21"
   >
     Primary call to action
   </span>
@@ -34,7 +34,7 @@ exports[`call to action snapshot Call to action: 1 1`] = `
   href="https://www.microsoft.com/en-us/"
 >
   <span
-    className="button_textContainer-0-1-43"
+    className="button_span-0-1-43"
   >
     Lightweight call to action
   </span>
@@ -61,7 +61,7 @@ exports[`call to action snapshot Call to action: 2 1`] = `
   href="https://www.microsoft.com/en-us/"
 >
   <span
-    className="button_textContainer-0-1-65"
+    className="button_span-0-1-65"
   >
     Secondary call to action
   </span>

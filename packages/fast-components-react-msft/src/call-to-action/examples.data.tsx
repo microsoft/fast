@@ -1,12 +1,12 @@
 import * as React from "react";
 import CallToAction from "./index";
 import {
+    CallToActionAppearance,
     CallToActionProps,
     ICallToActionHandledProps,
     ICallToActionManagedClasses,
     ICallToActionUnhandledProps
 } from "./call-to-action.props";
-import { ButtonAppearance } from "../button/button.props";
 import schema from "./call-to-action.schema.json";
 import Documentation from "./.tmp/documentation";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
@@ -21,24 +21,24 @@ export default {
     documentation: <Documentation />,
     detailData: {
         children: testString,
-        appearance: ButtonAppearance.primary,
+        appearance: CallToActionAppearance.primary,
         href: testDestination
     },
     data: [
         {
-            appearance: ButtonAppearance.primary,
+            appearance: CallToActionAppearance.primary,
             children: "Primary call to action",
             href: testDestination,
             "data-sketch-symbol": "Call to action - primary"
         },
         {
-            appearance: ButtonAppearance.lightweight,
+            appearance: CallToActionAppearance.lightweight,
             children: "Lightweight call to action",
             href: testDestination,
             "data-sketch-symbol": "Call to action - lightweight"
         },
         {
-            appearance: ButtonAppearance.justified,
+            appearance: CallToActionAppearance.justified,
             children: "Secondary call to action",
             href: testDestination,
             "data-sketch-symbol": "Call to action - justified"

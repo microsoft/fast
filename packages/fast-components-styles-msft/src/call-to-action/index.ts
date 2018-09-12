@@ -1,26 +1,17 @@
 import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
 import { ICallToActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { applyLocalizedProperty, Direction, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
+import { applyLocalizedProperty, Direction, localizeSpacing } from "@microsoft/fast-jss-utilities";
 import { IDesignSystem, withDesignSystemDefaults } from "../design-system/index";
-import { curry } from "lodash-es";
 import { ensureNormalContrast } from "../utilities/colors";
 
 const styles: ComponentStyles<ICallToActionClassNameContract, IDesignSystem> = (
     config: IDesignSystem
 ): ComponentStyleSheet<ICallToActionClassNameContract, IDesignSystem> => {
-    type ContrastFunction = (operandColor: string, referenceColor: string) => string;
-
     const designSystem: IDesignSystem = withDesignSystemDefaults(config);
-    const contrastScale: number = designSystem.contrast;
-    const backgroundColor: string = designSystem.backgroundColor;
-    const brandColor: string = designSystem.brandColor;
     const direction: Direction = designSystem.direction;
-    const scaledEnsureNormalContrast: ContrastFunction = curry(ensureNormalContrast)(contrastScale);
     const color: string = "white";
-    const primaryRestBackgroundColor: string = scaledEnsureNormalContrast(
-        scaledEnsureNormalContrast(brandColor, backgroundColor),
-        color
-    );
+    const primaryRestBackgroundColor: string = ensureNormalContrast(
+        designSystem.contrast, designSystem.brandColor, designSystem.backgroundColor);
 
     return {
         callToAction: {
