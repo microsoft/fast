@@ -62,7 +62,7 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IMSFTButto
     /**
      * Renders slotted children in the appropriate slot
      */
-    private renderChildrenBySlot(slot: ButtonSlot): JSX.Element {
+    private renderChildrenBySlot(slot: ButtonSlot): JSX.Element[] {
         if (Array.isArray(this.props.children)) {
             return this.props.children.map((child: any, index: number) => {
                 if (child.props && child.props.slot === slot) {
@@ -92,7 +92,7 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IMSFTButto
             content = this.props.children;
         }
 
-        return <span className={get(this.props, "managedClasses.button_textContainer")}>{content}</span>;
+        return <span className={get(this.props, "managedClasses.button_span")}>{content}</span>;
     }
 }
 
