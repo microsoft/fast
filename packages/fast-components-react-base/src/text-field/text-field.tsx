@@ -29,7 +29,7 @@ class TextField extends Foundation<ITextFieldHandledProps & IManagedClasses<ITex
                 className={this.generateClassNames()}
                 disabled={this.props.disabled || null}
                 placeholder={this.props.placeholder || null}
-                type={this.isDeprecatedType(this.props.type)}
+                type={this.isDeprecatedType(this.props.type || TextFieldType.text)}
             />
         );
     }
