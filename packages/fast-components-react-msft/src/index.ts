@@ -25,6 +25,7 @@ export { Label } ;
 
 import Subheading from "./subheading";
 export { Subheading };
+export * from "./subheading";
 
 import TextField from "./text-field";
 export { TextField };
