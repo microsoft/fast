@@ -2,43 +2,13 @@ import * as React from "react";
 import { IManagedClasses, ITextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 
 export enum TextFieldType {
-    /**
-     * @deprecated as of v2.3.0
-     * Will be deleted in version 3.0.
-     */
-    date = "date",
-    email = "email",
-    /**
-     * @deprecated as of v2.3.0
-     * Will be deleted in version 3.0.
-     */
-    hidden = "hidden",
-    /**
-     * @deprecated as of v2.3.0
-     * Will be deleted in version 3.0.
-     */
-    month = "month",
-    number = "number",
-    password = "password",
-    /**
-     * @deprecated as of v2.3.0
-     * Will be deleted in version 3.0.
-     */
-    range = "range",
-    search = "search",
-    tel = "tel",
-    text = "text",
-    /**
-     * @deprecated as of v2.3.0
-     * Will be deleted in version 3.0.
-     */
-    time = "time",
-    url = "url",
-    /**
-     * @deprecated as of v2.3.0
-     * Will be deleted in version 3.0.
-     */
-    week = "week"
+   email = "email",
+   number = "number",
+   password = "password",
+   search = "search",
+   tel = "tel",
+   text = "text",
+   url = "url"
 }
 
 export interface ITextFieldHandledProps {
