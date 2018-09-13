@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`radio snapshots Radio: 0 1`] = `
+<label
+  className="radio-0-1-1"
+>
+  <input
+    checked={false}
+    className="radio_input-0-1-3"
+    disabled={null}
+    onChange={[Function]}
+    type="radio"
+  />
+  <span
+    className="radio_span-0-1-5"
+  />
+  <span
+    className="radio_label-0-1-4"
+  >
+    Default
+  </span>
+</label>
+`;
+
+exports[`radio snapshots Radio: 1 1`] = `
+<div
+  className="radio-0-1-6"
+>
+  <input
+    checked={false}
+    className="radio_input-0-1-8"
+    disabled={null}
+    onChange={[Function]}
+    type="radio"
+  />
+  <span
+    className="radio_span-0-1-10"
+  />
+  <span
+    className="radio_label-0-1-9"
+  >
+    div tag
+  </span>
+</div>
+`;
+
+exports[`radio snapshots Radio: 2 1`] = `
+<label
+  className="radio-0-1-11"
+>
+  <input
+    checked={false}
+    className="radio_input-0-1-13"
+    disabled={null}
+    onChange={[Function]}
+    type="radio"
+  />
+  <span
+    className="radio_span-0-1-15"
+  />
+  <span
+    className="radio_label-0-1-14"
+  >
+    label tag
+  </span>
+</label>
+`;
+
+exports[`radio snapshots Radio: 3 1`] = `
+<label
+  className="radio-0-1-16"
+>
+  <input
+    checked={true}
+    className="radio_input-0-1-18"
+    disabled={null}
+    onChange={[Function]}
+    type="radio"
+  />
+  <span
+    className="radio_span-0-1-20"
+  />
+  <span
+    className="radio_label-0-1-19"
+  >
+    Checked
+  </span>
+</label>
+`;
+
+exports[`radio snapshots Radio: 4 1`] = `
+<label
+  className="radio-0-1-21 radio_disabled-0-1-22"
+>
+  <input
+    checked={false}
+    className="radio_input-0-1-23"
+    disabled={true}
+    onChange={[Function]}
+    type="radio"
+  />
+  <span
+    className="radio_span-0-1-25"
+  />
+  <span
+    className="radio_label-0-1-24"
+  >
+    Disabled
+  </span>
+</label>
+`;

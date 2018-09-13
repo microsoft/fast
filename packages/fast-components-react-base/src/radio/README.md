@@ -1,4 +1,8 @@
 # Radio
-An element that can be turned on and off. *Radio* buttons are almost always listed together in groups. Only one *radio* button within the same radiogroup may be selected at a time. The user can switch which *radio* button is turned on by selecting it with the mouse or keyboard. Other *radio* buttons in the same group are turned off. A label, specified with the label attribute may be added beside the *radio* button.
+An element that can be turned on and off. *Radio* buttons are almost always listed together in groups.
 
-https://developer.mozilla.org/en-US/docs/Mozilla/Tech/XUL/radio
+## Usage
+Only one *radio* within a *radio* group may be selected at a time. Limit the *radio* label to a single line.
+
+## Style guidance
+Should not put two radio groups next to each other. When two radio groups are right next to each other, it’s difficult to determine which radios belong to which group. Use group labels to separate them.

@@ -24,31 +24,50 @@ describe("radio snapshots", (): void => {
 describe("radio", (): void => {
     const Component: React.ComponentClass<IRadioHandledProps & IRadioManagedClasses> = examples.component;
     const managedClasses: IRadioClassNameContract = {
-        radio: "radio",
-        radio_disabled: "radio_disabled",
-        radio_input: "radio_input",
-        radio_label: "radio_label",
-        radio_span: "radio_span"
+        radio_input: "radio_input"
     };
 
     const inputSelector: string = `.${managedClasses.radio_input}`;
 
-    test("should implement unhandledProps", () => {
-        const handledProps: IRadioHandledProps & IRadioManagedClasses = {
-            tag: RadioHTMLTags.div,
-            managedClasses
+    test("should check for text props", () => {
+        const props: IRadioHandledProps = {
+            text: "foo"
         };
-
-        const unHandledProps: IRadioUnhandledProps = {
-            "aria-hidden": true
-        };
-
-        const props: RadioProps = {...handledProps, ...unHandledProps};
 
         const rendered: any = shallow(
             <Component {...props} />
         );
 
-        expect(rendered.first().prop("aria-hidden")).toEqual(true);
+        expect(rendered.instance().props.text).toEqual("foo");
+    });
+
+    test("should allow a change event to update the checked state when no `checked` prop is provided", () => {
+        const rendered: any = shallow(
+            <Component managedClasses={managedClasses} />
+        );
+
+        expect(rendered.state("checked")).toBe(false);
+
+        rendered.find(inputSelector).simulate("change");
+
+        expect(rendered.state("checked")).toBe(true);
+    });
+
+    test("should call a registerd callback after a change event", () => {
+        const onChange: any = jest.fn();
+        const controlled: any = shallow(
+            <Component managedClasses={managedClasses} checked={true} onChange={onChange} />
+        );
+        const uncontrolled: any = shallow(
+            <Component managedClasses={managedClasses} onChange={onChange} />
+        );
+
+        controlled.find(inputSelector).simulate("change");
+
+        expect(onChange).toHaveBeenCalledTimes(1);
+
+        uncontrolled.find(inputSelector).simulate("change");
+
+        expect(onChange).toHaveBeenCalledTimes(2);
     });
 });

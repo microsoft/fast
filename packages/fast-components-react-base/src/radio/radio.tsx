@@ -58,10 +58,8 @@ class Radio extends Foundation<IRadioHandledProps & IRadioManagedClasses, IRadio
                     disabled={this.props.disabled || null}
                     checked={this.state.checked}
                 />
-                <span className={get(this.props, "managedClasses.radio_span")} />
-                <span className={get(this.props, "managedClasses.radio_label")}>
-                    {this.props.text ? this.props.text : null}
-                </span>
+                <span className={get(this.props, "managedClasses.radio_stateIndicator")} />
+                {this.renderedLabel()}
             </this.tag>
         );
     }
@@ -82,6 +80,16 @@ class Radio extends Foundation<IRadioHandledProps & IRadioManagedClasses, IRadio
      */
     private get tag(): string {
         return RadioHTMLTags[this.props.tag] || RadioHTMLTags.label;
+    }
+
+    private renderedLabel(): JSX.Element {
+        if (this.props.text) {
+            return(
+                <span className={get(this.props, "managedClasses.radio_label")}>
+                    {this.props.text}
+                </span>
+            );
+        }
     }
 
     /**
