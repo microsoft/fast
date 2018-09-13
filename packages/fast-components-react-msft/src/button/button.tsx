@@ -37,7 +37,7 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IMSFTButto
      */
     protected generateClassNames(): string {
         if (!this.props.appearance) {
-            return;
+            return super.generateClassNames();
         }
 
         switch (this.props.appearance) {
