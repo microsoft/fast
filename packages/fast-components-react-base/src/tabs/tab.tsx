@@ -15,13 +15,13 @@ class Tab extends Foundation<ITabHandledProps & ITabManagedClasses, ITabUnhandle
      */
     public render(): JSX.Element {
         return (
-            <button
+            <div
                 {...this.unhandledProps()}
                 role="tab"
                 className={this.generateClassNames()}
             >
                 {this.props.children}
-            </button>
+            </div>
         );
     }
 

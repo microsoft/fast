@@ -142,7 +142,7 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
                     "aria-selected": this.state.activeId === tabItem.props.id,
                     onClick: this.handleClick,
                     onKeyDown: this.handleKeyDown,
-                    tabIndex: this.state.activeId !== tabItem.props.id ? -1 : 0
+                    tabIndex: this.state.activeId !== tabItem.props.id ? -1 : 1
                 }
             );
         });
