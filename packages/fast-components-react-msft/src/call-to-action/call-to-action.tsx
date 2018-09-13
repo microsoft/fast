@@ -73,13 +73,25 @@ class CallToAction extends Foundation<ICallToActionHandledProps & IManagedClasse
      * Generates class names
      */
     protected generateClassNames(): string {
-        const classNames: string = super.generateClassNames(get(this.props, "managedClasses.callToAction"));
+        let classNames: string = super.generateClassNames(get(this.props, "managedClasses.callToAction"));
 
-        if (this.props.appearance === CallToActionAppearance.primary) {
-            return `${classNames} ${get(this.props, "managedClasses.callToAction_backer")}`;
-        } else {
-            return `${classNames} ${get(this.props, "managedClasses.callToAction_lightweight")}`;
+        if (this.props.disabled) {
+            classNames += `${classNames} ${get(this.props, "managedClasses.button__disabled")}`;
         }
+
+        switch (this.props.appearance) {
+            case CallToActionAppearance.primary:
+                classNames = `${classNames} ${get(this.props, "managedClasses.callToAction_primary")}`;
+                break;
+            case CallToActionAppearance.lightweight:
+                classNames = `${classNames} ${get(this.props, "managedClasses.callToAction_lightweight")}`;
+                break;
+            case CallToActionAppearance.justified:
+                classNames = `${classNames} ${get(this.props, "managedClasses.callToAction_justified")}`;
+                break;
+        }
+
+        return classNames;
     }
 }
 

@@ -2,7 +2,7 @@ import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast
 import { ICallToActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { applyLocalizedProperty, Direction, localizeSpacing } from "@microsoft/fast-jss-utilities";
 import { IDesignSystem, withDesignSystemDefaults } from "../design-system/index";
-import { ensureNormalContrast } from "../utilities/colors";
+import { disabledContrast, ensureNormalContrast } from "../utilities/colors";
 
 const styles: ComponentStyles<ICallToActionClassNameContract, IDesignSystem> = (
     config: IDesignSystem
@@ -11,7 +11,20 @@ const styles: ComponentStyles<ICallToActionClassNameContract, IDesignSystem> = (
     const direction: Direction = designSystem.direction;
     const color: string = "white";
     const primaryRestBackgroundColor: string = ensureNormalContrast(
-        designSystem.contrast, designSystem.brandColor, designSystem.backgroundColor);
+        designSystem.contrast,
+        designSystem.brandColor,
+        designSystem.backgroundColor
+    );
+    const primaryDisabledBackground: string = disabledContrast(
+            designSystem.contrast,
+            primaryRestBackgroundColor,
+            designSystem.backgroundColor
+    );
+    const primaryDisabledColor: string = disabledContrast(
+        designSystem.contrast,
+        color,
+        primaryDisabledBackground
+    );
 
     return {
         callToAction: {
@@ -46,7 +59,7 @@ const styles: ComponentStyles<ICallToActionClassNameContract, IDesignSystem> = (
             left: "0",
             marginTop: "4px"
         },
-        callToAction_backer: {
+        callToAction_primary: {
             "& $glyph": {
                 fill: color
             }
@@ -54,6 +67,16 @@ const styles: ComponentStyles<ICallToActionClassNameContract, IDesignSystem> = (
         callToAction_lightweight: {
             "& $glyph": {
                 fill: primaryRestBackgroundColor
+            }
+        },
+        callToAction_justified: {
+            "& $glyph": {
+                fill: primaryRestBackgroundColor
+            }
+        },
+        callToAction__disabled: {
+            "& $glyph": {
+                fill: primaryDisabledColor
             }
         }
     };
