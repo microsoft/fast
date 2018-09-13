@@ -36,10 +36,6 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IMSFTButto
      * Generates class names
      */
     protected generateClassNames(): string {
-        if (!this.props.appearance) {
-            return;
-        }
-
         switch (this.props.appearance) {
             case ButtonAppearance.primary:
                 return super.generateClassNames(get(this.props, "managedClasses.button_primary"));
@@ -49,6 +45,8 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IMSFTButto
                 return super.generateClassNames(get(this.props, "managedClasses.button_lightweight"));
             case ButtonAppearance.justified:
                 return super.generateClassNames(get(this.props, "managedClasses.button_justified"));
+            default:
+                return super.generateClassNames();
         }
     }
 
