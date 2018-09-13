@@ -2,11 +2,11 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import { Foundation, HandledProps, TypeLevel, TypographyTag } from "@microsoft/fast-components-react-base";
-import { CaptionLevel, CaptionTag, ICaptionHandledProps } from "./caption.props";
+import { CaptionLevel, CaptionTag, ICaptionHandledProps, ICaptionUnhandledProps } from "./caption.props";
 import { ICaptionClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
 import Typography from "../typography";
 
-class Caption extends Foundation<ICaptionHandledProps & IManagedClasses<ICaptionClassNameContract>, React.HTMLAttributes<HTMLElement>, {}> {
+class Caption extends Foundation<ICaptionHandledProps & IManagedClasses<ICaptionClassNameContract>, ICaptionUnhandledProps, {}> {
     public static defaultProps: Partial<ICaptionHandledProps> = {
         tag: CaptionTag.p,
         level: CaptionLevel._1
@@ -21,7 +21,7 @@ class Caption extends Foundation<ICaptionHandledProps & IManagedClasses<ICaption
     /**
      * Renders the component
      */
-    public render(): React.ReactElement<HTMLHeadElement | HTMLParagraphElement> {
+    public render(): React.ReactElement<HTMLHeadingElement | HTMLParagraphElement | HTMLSpanElement | HTMLElement> {
         return (
             <Typography
                 {...this.unhandledProps()}
