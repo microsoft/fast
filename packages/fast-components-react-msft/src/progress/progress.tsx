@@ -1,33 +1,42 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
-import { Foundation, HandledProps } from "@microsoft/fast-components-react-base";
-import { IProgressManagedClasses, IProgressUnhandledProps, ProgressProps } from "./progress.props";
+import {
+    Foundation,
+    HandledProps,
+    ProgressType
+} from "@microsoft/fast-components-react-base";
+import {
+    IMSFTProgressHandledProps,
+    IMSFTProgressManagedClasses,
+    IMSFTProgressUnhandledProps,
+    MSFTProgressProps
+} from "./progress.props";
 import { IManagedClasses, IMSFTProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { Progress as BaseProgress, ProgressType } from "@microsoft/fast-components-react-base";
+import { Progress as BaseProgress } from "@microsoft/fast-components-react-base";
 
 /* tslint:disable-next-line */
-class Progress extends Foundation<ProgressProps & IManagedClasses<IMSFTProgressClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
+class Progress extends Foundation<IMSFTProgressHandledProps & IManagedClasses<IMSFTProgressClassNameContract>,  IMSFTProgressUnhandledProps, {}> {
 
-    public static defaultProps: Partial<ProgressProps> = {
+    public static defaultProps: Partial<IMSFTProgressHandledProps> = {
         minValue: 0,
         maxValue: 100
     };
 
     private static indicatorDotCount: number = 5;
 
-    protected handledProps: HandledProps<ProgressProps & IManagedClasses<IMSFTProgressClassNameContract>> = {
+    protected handledProps: HandledProps<IMSFTProgressHandledProps & IManagedClasses<IMSFTProgressClassNameContract>> = {
         children: void 0,
         value: void 0,
         minValue: void 0,
         maxValue: void 0,
-        managedClasses: void 0,
+        managedClasses: void 0
     };
 
     /**
      * Renders the component
      */
-    public render(): React.ReactElement<HTMLButtonElement | HTMLAnchorElement> {
+    public render(): React.ReactElement<HTMLDivElement> {
         /* tslint:disable-next-line */
         const className: string = `${this.props.managedClasses.progress_indicator} ${this.props.managedClasses.progress_indicator__determinate}`;
 

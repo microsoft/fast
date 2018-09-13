@@ -23,6 +23,10 @@ export { Image } ;
 import Label from "./label";
 export { Label } ;
 
+import Progress from "./progress";
+export { Progress };
+export * from "./progress";
+
 import Subheading from "./subheading";
 export { Subheading };
 
