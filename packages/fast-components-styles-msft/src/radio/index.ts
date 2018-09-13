@@ -9,7 +9,7 @@ const styles: ComponentStyles<IRadioClassNameContract, IDesignSystem> = {
     radio_disabled: {},
     radio_input: {},
     radio_label: {},
-    radio_span: {}
+    radio_stateIndicator: {}
 };
 
 export default styles;
