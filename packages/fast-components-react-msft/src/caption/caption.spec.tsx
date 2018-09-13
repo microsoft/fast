@@ -9,7 +9,7 @@ import {
     CaptionTag,
     ICaptionHandledProps,
     ICaptionManagedClasses,
-    ICaptionUnHandledProps
+    ICaptionUnhandledProps
 } from "./caption";
 
 /**
@@ -30,11 +30,11 @@ describe("caption", (): void => {
             level: CaptionLevel._1
         };
 
-        const unhandledProps: ICaptionUnHandledProps = {
+        const unhandledProps: ICaptionUnhandledProps = {
             "aria-hidden": true
         };
 
-        const props: ICaptionHandledProps & ICaptionUnHandledProps = {...handledProps, ...unhandledProps};
+        const props: ICaptionHandledProps & ICaptionUnhandledProps = {...handledProps, ...unhandledProps};
 
         const rendered: any = shallow(
             <Component {...props} />

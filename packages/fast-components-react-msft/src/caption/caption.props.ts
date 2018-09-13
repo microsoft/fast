@@ -30,7 +30,7 @@ export interface ICaptionHandledProps {
     tag?: CaptionTag;
 }
 
-export interface ICaptionUnHandledProps extends
-    React.HTMLAttributes<HTMLHeadingElement | HTMLParagraphElement | HTMLSpanElement | HTMLTableCaptionElement> {}
+export interface ICaptionUnhandledProps extends
+    React.HTMLAttributes<HTMLHeadingElement | HTMLParagraphElement | HTMLSpanElement | HTMLElement> {}
 export interface ICaptionManagedClasses extends IManagedClasses<ICaptionClassNameContract> {}
-export type CaptionProps = ICaptionHandledProps & ICaptionUnHandledProps & ICaptionManagedClasses;
+export type CaptionProps = ICaptionHandledProps & ICaptionUnhandledProps & ICaptionManagedClasses;
