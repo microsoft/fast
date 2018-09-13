@@ -11,7 +11,7 @@ export interface ITabsHandledProps {
     /**
      * The tabs content
      */
-    children?: React.ReactNode | React.ReactNode[];
+    children?: React.ReactNode[];
 
     /**
      * The aria-label applied to the tablist for the tab items
@@ -43,6 +43,8 @@ export interface ITabsHandledProps {
      * A string to use for the slot property for tab children
      */
     tabSlot?: string;
+
+    draggable?: boolean;
 }
 
 export interface ITabsUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}

@@ -1,8 +1,10 @@
 import * as React from "react";
 import { get } from "lodash-es";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
-import { IManagedClasses, ITabsClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { arrayMove, SortableContainer, SortableElement, SortableHandle } from "react-sortable-hoc";
+import { IManagedClasses, ITabsClassNameContract, ITabClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "../foundation";
+import Tab from "./tab";
 import { ITabsHandledProps, ITabsManagedClasses, ITabsUnhandledProps, TabsProps } from "./tabs.props";
 
 export enum TabLocation {
@@ -45,7 +47,7 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
         orientation: void 0,
         tabItemSlot: void 0,
         tabPanelSlot: void 0,
-        tabSlot: void 0
+        tabSlot: void 0,
     };
 
     /**
@@ -75,13 +77,29 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
      * Renders the component
      */
     public render(): JSX.Element {
-        const tabElements: JSX.Element[] = this.renderTabElements();
-
         return (
             <div
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
             >
+                {this.generateTabList()}
+                <div className={this.props.managedClasses.tabs_tabItems}>
+                    {this.renderTabPanels()}
+                </div>
+            </div>
+        );
+    }
+
+    private generateTabList(): JSX.Element {
+        const props: any = {
+            onSortEnd: this.handleSort,
+            pressDelay: 50,
+            lockAxis: "x",
+            axis: "x"
+        };
+
+        return React.createElement(SortableContainer((): JSX.Element => {
+            return (
                 <div
                     role="tablist"
                     ref={this.tabListRef}
@@ -89,13 +107,63 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
                     aria-label={this.props.label}
                     aria-orientation={this.props.orientation}
                 >
-                    {tabElements}
+                    {this.renderTabElements()}
                 </div>
-                <div className={this.props.managedClasses.tabs_tabItems}>
-                    {this.renderTabPanels()}
-                </div>
-            </div>
+                );
+            }), 
+            {
+                onSortEnd: this.handleSort,
+                pressDelay: 50,
+                lockAxis: "x",
+                axis: "x"
+            }
         );
+    }
+
+    /**
+     * Renders the tab elements
+     */
+    private renderTabElements(): JSX.Element[] {
+        return this.getChildrenBySlot(
+            this.props.children,
+            this.getSlot(TabsSlot.tabItem)
+        )
+        .map((tabItem: React.ReactElement<any>, index: number) => {
+            const tab = this.getChildrenBySlot(tabItem.props.children, this.getSlot(TabsSlot.tab))[0];
+
+            console.log(tab);
+            return React.createElement(
+                SortableElement((): any => {
+                    return React.cloneElement(
+                        tab,
+                        {
+                            key: tabItem.props.id,
+                            id: tabItem.props.id,
+                            "aria-controls": tabItem.props.id,
+                            "aria-selected": this.state.activeId === tabItem.props.id,
+                            onClick: this.handleClick,
+                            onKeyDown: this.handleKeyDown,
+                            tabIndex: this.state.activeId !== tabItem.props.id ? -1 : 0,
+                            // TODO
+                            // draggable: this.props.draggable || true
+                        }
+                    );
+                }),
+                {
+                    key: tabItem.props.id,
+                    index
+                }
+            );
+        });
+    }
+
+    /**
+     * Callback to call when children sorting has occured
+     */
+    private handleSort = ({oldIndex, newIndex}: any): void => {
+        console.log(this.props.children, oldIndex, newIndex);
+        arrayMove(this.getChildrenBySlot(this.props.children, this.getSlot(TabsSlot.tab)[0]), oldIndex, newIndex);
+        arrayMove(this.getChildrenBySlot(this.props.children, this.getSlot(TabsSlot.tabPanel)[0]), oldIndex, newIndex);
     }
 
     /**
@@ -123,30 +191,15 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
         return super.generateClassNames(get(this.props, "managedClasses.tabs"));
     }
 
-    /**
-     * Renders the tab elements
-     */
-    private renderTabElements(): JSX.Element[] {
-        return this.getChildrenBySlot(
-            this.props.children,
-            this.getSlot(TabsSlot.tabItem)
-        ).map((tabItem: JSX.Element, index: number): JSX.Element => {
-            return React.cloneElement(
-                this.getChildrenBySlot(
-                    tabItem.props.children,
-                    this.getSlot(TabsSlot.tab)
-                )[0],
-                {
-                    key: tabItem.props.id,
-                    "aria-controls": tabItem.props.id,
-                    "aria-selected": this.state.activeId === tabItem.props.id,
-                    onClick: this.handleClick,
-                    onKeyDown: this.handleKeyDown,
-                    tabIndex: this.state.activeId !== tabItem.props.id ? -1 : 0
-                }
-            );
-        });
+    private generateChildItem = (item: any, slot: TabsSlot.tab, index?: number): JSX.Element => {
+        console.log(item)
+        return (
+            // <Tab key={`${index}`} slot={slot} managedClasses={tabManagedClasses}>
+                item
+            // </Tab>
+        );
     }
+    
 
     /**
      * Renders the tab panels

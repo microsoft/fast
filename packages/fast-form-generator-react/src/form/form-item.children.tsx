@@ -481,6 +481,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
      * Callback to call when children sorting has occured
      */
     private handleSort = ({oldIndex, newIndex}: any): void => {
+        console.log("Sorting this list")
         const location: string = isRootLocation(this.props.dataLocation) ? `children` : `${this.props.dataLocation}.children`;
         const childrenData: any = get(this.props.data, location);
 

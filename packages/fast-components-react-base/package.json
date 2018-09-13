@@ -87,6 +87,7 @@
     "raf-throttle": "^2.0.3",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
+    "react-sortable-hoc": "^0.8.3",
     "react-test-renderer": "^16.3.0",
     "regenerator-runtime": "^0.11.1",
     "rimraf": "^2.6.2",
