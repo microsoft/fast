@@ -6,9 +6,9 @@ import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import { IProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
     IMSFTProgressClassNameContract,
-    IProgressHandledProps,
-    IProgressManagedClasses,
-    IProgressUnhandledProps,
+    IMSFTProgressHandledProps,
+    IMSFTProgressManagedClasses,
+    IMSFTProgressUnhandledProps,
 } from "./progress";
 
 /*

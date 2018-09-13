@@ -18,7 +18,6 @@ import {
     TabItem,
     TabPanel
 } from "../src";
-
 import TabSchema from "../src/tabs/tab.schema.json";
 import TabItemSchema from "../src/tabs/tab-item.schema.json";
 import TabPanelSchema from "../src/tabs/tab-panel.schema.json";
