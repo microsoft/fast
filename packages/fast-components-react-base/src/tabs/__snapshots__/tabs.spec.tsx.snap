@@ -10,7 +10,7 @@ exports[`tabs snapshot Tabs: 0 1`] = `
     className="tab_list-class"
     role="tablist"
   >
-    <button
+    <div
       aria-controls="tab02"
       aria-selected={false}
       className="tab-class"
@@ -20,8 +20,8 @@ exports[`tabs snapshot Tabs: 0 1`] = `
       tabIndex={-1}
     >
       tab two
-    </button>
-    <button
+    </div>
+    <div
       aria-controls="tab03"
       aria-selected={false}
       className="tab-class"
@@ -31,18 +31,18 @@ exports[`tabs snapshot Tabs: 0 1`] = `
       tabIndex={-1}
     >
       tab three
-    </button>
-    <button
+    </div>
+    <div
       aria-controls="tab04"
       aria-selected={true}
       className="tab-class tab__active-class"
       onClick={[Function]}
       onKeyDown={[Function]}
       role="tab"
-      tabIndex={0}
+      tabIndex={1}
     >
       tab four
-    </button>
+    </div>
   </div>
   <div
     className="tab_items-class"
@@ -88,7 +88,7 @@ exports[`tabs snapshot Tabs: 1 1`] = `
     className="tab_list-class"
     role="tablist"
   >
-    <button
+    <div
       aria-controls="tab01"
       aria-selected={false}
       className="tab-class"
@@ -98,18 +98,18 @@ exports[`tabs snapshot Tabs: 1 1`] = `
       tabIndex={-1}
     >
       tab one
-    </button>
-    <button
+    </div>
+    <div
       aria-controls="tab03"
       aria-selected={true}
       className="tab-class tab__active-class"
       onClick={[Function]}
       onKeyDown={[Function]}
       role="tab"
-      tabIndex={0}
+      tabIndex={1}
     >
       tab three
-    </button>
+    </div>
   </div>
   <div
     className="tab_items-class"
