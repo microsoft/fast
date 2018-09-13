@@ -10,7 +10,7 @@ const classes: IRadioManagedClasses = {
         radio_disabled: "radio_disabled",
         radio_input: "radio_input",
         radio_label: "radio_label",
-        radio_span: "radio_stateIndicator"
+        radio_stateIndicator: "radio_stateIndicator"
     }
 };
 

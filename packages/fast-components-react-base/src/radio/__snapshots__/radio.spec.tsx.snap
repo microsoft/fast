@@ -12,7 +12,7 @@ exports[`radio snapshots Radio: 0 1`] = `
     type="radio"
   />
   <span
-    className={undefined}
+    className="radio_stateIndicator"
   />
 </div>
 `;
@@ -29,7 +29,7 @@ exports[`radio snapshots Radio: 1 1`] = `
     type="radio"
   />
   <span
-    className={undefined}
+    className="radio_stateIndicator"
   />
 </label>
 `;
@@ -46,7 +46,7 @@ exports[`radio snapshots Radio: 2 1`] = `
     type="radio"
   />
   <span
-    className={undefined}
+    className="radio_stateIndicator"
   />
 </label>
 `;
@@ -63,7 +63,7 @@ exports[`radio snapshots Radio: 3 1`] = `
     type="radio"
   />
   <span
-    className={undefined}
+    className="radio_stateIndicator"
   />
 </label>
 `;

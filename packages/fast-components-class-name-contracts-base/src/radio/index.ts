@@ -6,5 +6,5 @@ export interface IRadioClassNameContract {
     radio_disabled: string;
     radio_input: string;
     radio_label: string;
-    radio_span: string;
+    radio_stateIndicator: string;
 }
