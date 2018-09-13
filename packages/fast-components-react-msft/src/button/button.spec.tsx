@@ -24,7 +24,7 @@ describe("button snapshots", (): void => {
 });
 
 describe("button", (): void => {
-    const Component: React.ComponentClass<IButtonHandledProps> = examples.component;
+    const Component: React.ComponentClass<IButtonHandledProps & IButtonUnhandledProps> = examples.component;
 
     const href: string = "https://www.microsoft.com";
 
@@ -124,13 +124,26 @@ describe("button", (): void => {
         expect(button.prop("className")).toBe(expectedClassName);
     });
 
-    test("should not set a className when appearance prop is not passed", () => {
+    test("should set a custom className when passed", () => {
+        const customClassNameString: string = "customClassName";
         const rendered: any = shallow(
-            <Component />
+            <Component className={customClassNameString} />
         );
 
         const button: any = rendered.first().shallow();
 
-        expect(button.prop("className")).toEqual(undefined);
+        expect(button.prop("className")).toEqual(customClassNameString);
+    });
+
+    test("should set a custom className to be when appearance prop and className are both passed", () => {
+        const customClassNameString: string = "customClassName";
+        const rendered: any = shallow(
+            <Component appearance={ButtonAppearance.justified} className={customClassNameString} />
+        );
+
+        const button: any = rendered.first().shallow();
+        const expectedClassName: string = `${button.instance().props.managedClasses.button_justified} ${customClassNameString}`;
+
+        expect(button.prop("className")).toEqual(expectedClassName);
     });
 });
