@@ -3,17 +3,17 @@
  */
 export interface IDialogClassNameContract {
     /**
-     * The root dialog component
+     * The root of the dialog component
      */
     dialog: string;
 
     /**
-     * The dialog backdrop
+     * The element that overlays the page while the modal is visible
      */
     dialog_modalOverlay: string;
 
     /**
-     * The foregournd dialog content region
+     * The dialog content region
      */
     dialog_contentRegion: string;
 }

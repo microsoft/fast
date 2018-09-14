@@ -3,7 +3,7 @@
  */
 export interface IImageClassNameContract {
     /**
-     * The root image component
+     * The root of the image component
      */
     image?: string;
 

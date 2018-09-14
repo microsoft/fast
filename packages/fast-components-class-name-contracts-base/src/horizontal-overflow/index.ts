@@ -3,14 +3,14 @@
  */
 export interface IHorizontalOverflowClassNameContract {
     /**
-     * The root horizontal overflow component - contains overflow items and previous/next controls
+     * The root of the horizontal overflow component
      */
     horizontalOverflow: string;
 
     /**
      * The overflow items
      */
-    horizontalOverflow_items: string;
+    horizontalOverflow_contentRegion: string;
 
     /**
      * The next scroll control

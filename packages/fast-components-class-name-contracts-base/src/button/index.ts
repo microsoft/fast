@@ -3,7 +3,7 @@
  */
 export interface IButtonClassNameContract {
     /**
-     * The root button component
+     * The root of the button component
      */
     button: string;
 }

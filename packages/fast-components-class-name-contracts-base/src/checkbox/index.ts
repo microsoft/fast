@@ -3,7 +3,7 @@
  */
 export interface ICheckboxClassNameContract {
     /**
-     * The root checkbox component
+     * The root of the checkbox component
      */
     checkbox: string;
 
@@ -23,7 +23,7 @@ export interface ICheckboxClassNameContract {
     checkbox_label: string;
 
     /**
-     * The checkbox state indicator (e.g. checked, inditerminant, or not checked)
+     * The checkbox state indicator
      */
     checkbox_stateIndicator: string;
 }

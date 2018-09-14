@@ -3,7 +3,7 @@
  */
 export interface IDividerClassNameContract {
     /**
-     * The root dialog component
+     * The root of the divider component
      */
     divider: string;
 }

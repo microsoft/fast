@@ -66,7 +66,8 @@ class Image extends Foundation<IImageHandledProps & IManagedClasses<IImageClassN
             return (
                 <picture
                     {...this.unhandledProps()}
-                    className={super.generateClassNames(get(this.props, "managedClasses.image__picture"))}
+                    // tslint:disable-next-line:max-line-length
+                    className={super.generateClassNames(`${get(this.props, "managedClasses.image")} ${get(this.props, "managedClasses.image__picture")}`)}
                 >
                     {this.generateSourceElement(6)}
                     {this.generateSourceElement(5)}

@@ -3,7 +3,7 @@
  */
 export interface IHypertextClassNameContract {
     /**
-     * The root hypertext component
+     * The root of the hypertext component
      */
     hypertext: string;
 }
