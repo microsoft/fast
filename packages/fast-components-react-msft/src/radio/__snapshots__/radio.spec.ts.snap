@@ -12,7 +12,7 @@ exports[`radio snapshots Radio: 0 1`] = `
     type="radio"
   />
   <span
-    className="radio_span-0-1-5"
+    className="radio_stateIndicator-0-1-5"
   />
   <span
     className="radio_label-0-1-4"
@@ -34,7 +34,7 @@ exports[`radio snapshots Radio: 1 1`] = `
     type="radio"
   />
   <span
-    className="radio_span-0-1-10"
+    className="radio_stateIndicator-0-1-10"
   />
   <span
     className="radio_label-0-1-9"
@@ -56,7 +56,7 @@ exports[`radio snapshots Radio: 2 1`] = `
     type="radio"
   />
   <span
-    className="radio_span-0-1-15"
+    className="radio_stateIndicator-0-1-15"
   />
   <span
     className="radio_label-0-1-14"
@@ -78,7 +78,7 @@ exports[`radio snapshots Radio: 3 1`] = `
     type="radio"
   />
   <span
-    className="radio_span-0-1-20"
+    className="radio_stateIndicator-0-1-20"
   />
   <span
     className="radio_label-0-1-19"
@@ -100,7 +100,7 @@ exports[`radio snapshots Radio: 4 1`] = `
     type="radio"
   />
   <span
-    className="radio_span-0-1-25"
+    className="radio_stateIndicator-0-1-25"
   />
   <span
     className="radio_label-0-1-24"
