@@ -211,7 +211,7 @@ describe("tabs", (): void => {
         const tab1: any = rendered.find("Tab").at(0);
         const tab2: any = rendered.find("Tab").at(1);
 
-        expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(1);
+        expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
 
@@ -219,7 +219,7 @@ describe("tabs", (): void => {
 
         expect(onUpdate).toBeCalledWith("tab02");
 
-        expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(1);
+        expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
 
@@ -227,7 +227,7 @@ describe("tabs", (): void => {
 
         expect(onUpdate).toBeCalledWith("tab03");
 
-        expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(1);
+        expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
 
@@ -235,7 +235,7 @@ describe("tabs", (): void => {
 
         expect(onUpdate).toBeCalledWith("tab03");
 
-        expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(1);
+        expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
 
@@ -243,7 +243,7 @@ describe("tabs", (): void => {
 
         expect(onUpdate).toBeCalledWith("tab02");
 
-        expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(1);
+        expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
 
@@ -251,7 +251,7 @@ describe("tabs", (): void => {
 
         expect(onUpdate).toBeCalledWith("tab02");
 
-        expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(1);
+        expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
 
@@ -259,7 +259,7 @@ describe("tabs", (): void => {
 
         expect(onUpdate).toBeCalledWith("tab01");
 
-        expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(1);
+        expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
 
@@ -267,14 +267,14 @@ describe("tabs", (): void => {
 
         expect(onUpdate).toBeCalledWith("tab03");
 
-        expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(1);
+        expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
 
         rendered.setProps({ activeId: "tab02" });
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(-1);
-        expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(1);
+        expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
     });
 
@@ -306,7 +306,7 @@ describe("tabs", (): void => {
         const tab2: any = rendered.find("Tab").at(1);
         const tab3: any = rendered.find("Tab").at(2);
 
-        expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(1);
+        expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
 
@@ -314,35 +314,35 @@ describe("tabs", (): void => {
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
-        expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(1);
+        expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(0);
 
         tab3.simulate("keydown", {keyCode: KeyCodes.arrowUp});
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(-1);
-        expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(1);
+        expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
 
         tab2.simulate("keydown", {keyCode: KeyCodes.arrowLeft});
 
-        expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(1);
+        expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
 
         tab1.simulate("keydown", {keyCode: KeyCodes.arrowRight});
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(-1);
-        expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(1);
+        expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
 
         tab2.simulate("keydown", {keyCode: KeyCodes.arrowDown});
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
-        expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(1);
+        expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(0);
 
         tab3.simulate("keydown", {keyCode: KeyCodes.arrowRight});
 
-        expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(1);
+        expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
 
@@ -350,18 +350,18 @@ describe("tabs", (): void => {
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
-        expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(1);
+        expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(0);
 
         tab1.simulate("keydown", {keyCode: KeyCodes.home});
 
-        expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(1);
+        expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
 
         tab2.simulate("click", { currentTarget: { getAttribute: (): string => "tab02" }});
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(-1);
-        expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(1);
+        expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
     });
 });

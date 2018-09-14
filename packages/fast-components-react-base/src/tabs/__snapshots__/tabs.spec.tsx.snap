@@ -39,7 +39,7 @@ exports[`tabs snapshot Tabs: 0 1`] = `
       onClick={[Function]}
       onKeyDown={[Function]}
       role="tab"
-      tabIndex={1}
+      tabIndex={0}
     >
       tab four
     </div>
@@ -106,7 +106,7 @@ exports[`tabs snapshot Tabs: 1 1`] = `
       onClick={[Function]}
       onKeyDown={[Function]}
       role="tab"
-      tabIndex={1}
+      tabIndex={0}
     >
       tab three
     </div>
