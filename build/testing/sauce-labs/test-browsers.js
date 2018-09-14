@@ -1,44 +1,44 @@
 /**
- * Purpose: 
- * Facilitates cross-browser testing on Sauce Labs for known configurations
- * - alpha
- * - beta
- * - release
+ * @name 
+ * Test Browsers
  * 
- * Execution: 
- * To execute, run 'node .circleci/run-browser-beta-tests.ts' from root directory.
+ * @description 
+ * Cross browser testing with Selenium Webdriver (browser configurations) and Appium (device configurations) for testing on Sauce Labs.
  * 
- * You must create environment variables for 
- * 1. SAUCE_LABS_USER
- * 2. SAUCE_LABS_KEY
+ * @example 
+ * To execute on CLI, run 'node .circleci/run-browser-beta-tests.ts' from root directory.
  * 
- * This can be done by editing your '~/.bashrc' file with additions 
+ * @requires
+ * You must create environment variables if executing this script locally using CLI. This can be done 
+ * by adding to your '~/.bashrc' file.
+ * 
  * export SAUCE_LABS_USER=[some value]
  * export SAUCE_LABS_USER=[some value] 
  *
- * Resources:
+ * CircleCI has these values included as environment variables
+ * 
+ * @see
+ * To understand in detail:
  * Getting Started: https://help.crossbrowsertesting.com/selenium-testing/getting-started/javascript/
  * Scripting docs: https://www.seleniumhq.org/docs/03_webdriver.jsp#chapter03-reference 
  */
 
-let { Configure, Phases } = require("../config.beta.js");
-const { Builder, By, Key, until } = require("selenium-webdriver");
+const { Builder } = require("selenium-webdriver");
 const chalk = require('chalk');
+let { Configure, Phases } = require("../config-browsers.js");
 
-// Values must be stored locally as key/name value pairs
-// 1. export for temporary local usage
-// 2. update .bashrc for permananet local usage
-// 3. circle ci already has values stored as environment variables
+// Retrive user/key from environment variables
 const username = process.env.SAUCE_LABS_USER;
 const accessKey = process.env.SAUCE_LABS_KEY;
-const domain = "https://msft-docs.azurewebsites.net";
+const domain = "https://msft-docs.fast-dna.net";
 
-// Configure Remote access
+// Configure to connect to remote hub
 const remoteHub = "http://" + username + ":" + accessKey + "@ondemand.saucelabs.com:80/wd/hub";
 
 /**
  * Get configuration based on the accepted Phase argument
- * @param {Phases} phases 
+ * @param {Phases} phases
+ * @returns {Configuration based on phases}
  */
 const getConfiguration = (phases) => {
 
@@ -66,6 +66,7 @@ const getConfiguration = (phases) => {
 
 }
 
+// Assign browser configurations to an array
 let browsers = getConfiguration(process.argv[2]);
 
 // Execute Selenium/Appium Web Drivers on Sauce Labs for each browser configuration
@@ -74,7 +75,7 @@ var flows = browsers.map(function (browser) {
     // Setup capabilities
     let caps = {
             name: "FAST-DNA MSFT Documentation",
-            build: "test-build-0021",
+            build: "test-build-0022",
             tags: "msft-docs",
             appiumVersion: browser.appiumVersion,
             platform: browser.platform,
@@ -98,6 +99,7 @@ var flows = browsers.map(function (browser) {
             .usingServer(remoteHub)
             .build();
 
+    // Start session and execute test cases
     driver.getSession().then(async function (session) {
 
             let sessionId = session.id_;

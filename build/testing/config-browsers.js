@@ -1,21 +1,23 @@
 "use strict";
 
 /**
- * Beta - Cross Browser Configuration
+ * Cross Browser Configuration
  *
- * This controls the different subsets of cross browser / device configurations that can be used to test 
+ * Different subsets of cross browser / device configurations are used to test 
  * projects or packages with user interafaces or experiences.
  *
- * As projects move from Alpha to Beta to Release we gradually want to increase testing scenarios 
- * across browsers.
+ * As projects move through the different 'Phases' of development testing 
+ * scenarios increase to become more comprehensive across browsers.
  *
- * This is intended to capture confidence in quality across the core browser rendering engines.
- *
- * These configurations require updating over time as new browser versions are released or
- * known unstable combinations become apparent.
+ * The configurations require updating over time as new browser versions are 
+ * released or as known unstable combinations become apparent.
  *
  */
 
+ /**
+ * Phases of software development
+ * @type Enum
+*/
 var Phases;
 
 (function (Phases) {
@@ -25,7 +27,7 @@ var Phases;
 })(Phases = exports.Phases || (exports.Phases = {}));
 
 /**
- * Provides platform configurations sourced from Selenium and Appium Platform Configurator online tools.  
+ * Platform configurations sourced from Selenium and Appium online Configurators.  
  * 
  * @see 
  * https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/
@@ -87,6 +89,7 @@ var Configure = (function () {
                     }
                 ];
             case Phases.Beta:
+                
                 return [
                     {
                         'platform': 'Windows 10',
@@ -322,6 +325,5 @@ var Configure = (function () {
 
     return _configure;
 })();
-
 
 exports.Configure = Configure;
