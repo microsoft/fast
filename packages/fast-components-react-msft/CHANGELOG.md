@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.2.1"></a>
+## [2.2.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@2.2.0...@microsoft/fast-components-react-msft@2.2.1) (2018-09-14)
+
+
+### Bug Fixes
+
+* **button:** add missing super of generateClassNames method when appearance prop is not set ([#880](https://github.com/Microsoft/fast-dna/issues/880)) ([ee2dda8](https://github.com/Microsoft/fast-dna/commit/ee2dda8))
+* **fast-components-react-msft:** fix missing exports from package ([#887](https://github.com/Microsoft/fast-dna/issues/887)) ([ffe5b11](https://github.com/Microsoft/fast-dna/commit/ffe5b11))
+* **progress:** enusure progress component, and correct typings are exported from MSFT package ([#882](https://github.com/Microsoft/fast-dna/issues/882)) ([adfdbf7](https://github.com/Microsoft/fast-dna/commit/adfdbf7))
+
+
+
+
+
 <a name="2.2.0"></a>
 # 2.2.0 (2018-09-11)
 

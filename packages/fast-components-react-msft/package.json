@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components-react-msft",
   "description": "FAST Microsoft components implemented in React",
   "sideEffects": false,
-  "version": "2.2.0",
+  "version": "2.2.1",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -114,7 +114,7 @@
   "dependencies": {
     "@microsoft/fast-application-utilities": "^2.2.0",
     "@microsoft/fast-components-class-name-contracts-msft": "^2.2.0",
-    "@microsoft/fast-components-react-base": "^2.2.0",
+    "@microsoft/fast-components-react-base": "^2.3.0",
     "@microsoft/fast-components-styles-msft": "^2.2.0",
     "@microsoft/fast-jss-manager-react": "^2.2.0"
   }

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.3.0"></a>
+# [2.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@2.2.0...@microsoft/fast-components-react-base@2.3.0) (2018-09-14)
+
+
+### Bug Fixes
+
+* **progress:** enusure progress component, and correct typings are exported from MSFT package ([#882](https://github.com/Microsoft/fast-dna/issues/882)) ([adfdbf7](https://github.com/Microsoft/fast-dna/commit/adfdbf7))
+
+
+### Features
+
+* **text-field:** deprecates non string or number enum types which are not valid as text field inputs ([#875](https://github.com/Microsoft/fast-dna/issues/875)) ([1a0316e](https://github.com/Microsoft/fast-dna/commit/1a0316e))
+
+
+
+
+
 <a name="2.2.0"></a>
 # 2.2.0 (2018-09-11)
 
