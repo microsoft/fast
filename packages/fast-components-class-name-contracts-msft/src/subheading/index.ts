@@ -3,10 +3,10 @@
  */
 export interface ISubheadingClassNameContract {
     subheading: string;
-    subheading_1: string;
-    subheading_2: string;
-    subheading_3: string;
-    subheading_4: string;
-    subheading_5: string;
-    subheading_6: string;
+    subheading__1: string;
+    subheading__2: string;
+    subheading__3: string;
+    subheading__4: string;
+    subheading__5: string;
+    subheading__6: string;
 }

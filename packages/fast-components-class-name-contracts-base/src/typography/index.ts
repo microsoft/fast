@@ -2,13 +2,14 @@
  * The class name contract for the typography component
  */
 export interface ITypographyClassNameContract {
-    typography_1: string;
-    typography_2: string;
-    typography_3: string;
-    typography_4: string;
-    typography_5: string;
-    typography_6: string;
-    typography_7: string;
-    typography_8: string;
-    typography_9: string;
+    typography: string;
+    typography__1: string;
+    typography__2: string;
+    typography__3: string;
+    typography__4: string;
+    typography__5: string;
+    typography__6: string;
+    typography__7: string;
+    typography__8: string;
+    typography__9: string;
 }

@@ -4,7 +4,7 @@
 export interface IToggleClassNameContract {
     toggle: string;
     toggle_label: string;
-    toggle_wrapper: string;
+    toggle_toggleButton: string;
     toggle_input: string;
-    toggle_button: string;
+    toggle_stateIndicator: string;
 }

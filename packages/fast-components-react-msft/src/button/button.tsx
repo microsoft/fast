@@ -42,19 +42,19 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IMSFTButto
 
         switch (this.props.appearance) {
             case ButtonAppearance.primary:
-                return super.generateClassNames(get(this.props, "managedClasses.button_primary"));
+                return super.generateClassNames(get(this.props, "managedClasses.button__primary"));
             case ButtonAppearance.outline:
-                return super.generateClassNames(get(this.props, "managedClasses.button_outline"));
+                return super.generateClassNames(get(this.props, "managedClasses.button__outline"));
             case ButtonAppearance.lightweight:
-                return super.generateClassNames(get(this.props, "managedClasses.button_lightweight"));
+                return super.generateClassNames(get(this.props, "managedClasses.button__lightweight"));
             case ButtonAppearance.justified:
-                return super.generateClassNames(get(this.props, "managedClasses.button_justified"));
+                return super.generateClassNames(get(this.props, "managedClasses.button__justified"));
         }
     }
 
     private generateInnerContent(): React.ReactElement<HTMLSpanElement> | (React.ReactNode | React.ReactNode[]) {
         if (this.props.appearance === ButtonAppearance.lightweight || this.props.appearance === ButtonAppearance.justified) {
-            return <span className={get(this.props, "managedClasses.button_span")}>{this.props.children}</span>;
+            return <span className={get(this.props, "managedClasses.button_contentRegion")}>{this.props.children}</span>;
         }
 
         return this.props.children;

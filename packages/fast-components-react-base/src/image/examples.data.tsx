@@ -4,28 +4,27 @@ import schema from "./image.schema.json";
 import Documentation from "./.tmp/documentation";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
+const classes: IImageManagedClasses = {
+    managedClasses: {
+        image: "image",
+        image__picture: "picture",
+        image_img: "img"
+    }
+};
+
 const examples: IComponentFactoryExample<IImageHandledProps & IImageManagedClasses> = {
     name: "Image",
     component: Image,
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
-        managedClasses: {
-            picture: "picture",
-            image: "image",
-            image_round: "image-round"
-        },
+        ...classes,
         vp1: "https://placehold.it/539x300/2F2F2F/171717",
         alt: "Placeholder with grey background and dimension watermark without any imagery"
     },
     data: [
         {
-            managedClasses: {
-                picture: "picture",
-                image: "image",
-                image_round: "image-round"
-            },
-            round: true,
+            ...classes,
             vp6: "https://placehold.it/2048x600/2F2F2F/171717",
             vp5: "https://placehold.it/1778x600/2F2F2F/171717",
             vp4: "https://placehold.it/1399x600/2F2F2F/171717",

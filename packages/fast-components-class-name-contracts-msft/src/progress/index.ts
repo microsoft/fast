@@ -4,7 +4,7 @@ import { IProgressClassNameContract } from "@microsoft/fast-components-class-nam
  * The class name contract for the progress component
  */
 export interface IMSFTProgressClassNameContract extends IProgressClassNameContract {
-    progress_determinateValueIndicator: string;
+    progress_valueIndicator: string;
     progress_indicator: string;
     progress_indicator__determinate: string;
     progress_dot: string;

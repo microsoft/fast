@@ -2,10 +2,11 @@
  * The class name contract for the heading component
  */
 export interface IHeadingClassNameContract {
-    heading_1: string;
-    heading_2: string;
-    heading_3: string;
-    heading_4: string;
-    heading_5: string;
-    heading_6: string;
+    heading: string;
+    heading__1: string;
+    heading__2: string;
+    heading__3: string;
+    heading__4: string;
+    heading__5: string;
+    heading__6: string;
 }

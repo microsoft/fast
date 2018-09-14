@@ -25,15 +25,15 @@ describe("typography snapshot", (): void => {
 describe("typography", (): void => {
     const Component: React.ComponentClass<ITypographyHandledProps & ITypographyManagedClasses> = examples.component;
     const managedClasses: ITypographyClassNameContract = {
-        typography_1: "typography-1-class",
-        typography_2: "typography-2-class",
-        typography_3: "typography-3-class",
-        typography_4: "typography-4-class",
-        typography_5: "typography-5-class",
-        typography_6: "typography-6-class",
-        typography_7: "typography-7-class",
-        typography_8: "typography-8-class",
-        typography_9: "typography-9-class"
+        typography__1: "typography-1-class",
+        typography__2: "typography-2-class",
+        typography__3: "typography-3-class",
+        typography__4: "typography-4-class",
+        typography__5: "typography-5-class",
+        typography__6: "typography-6-class",
+        typography__7: "typography-7-class",
+        typography__8: "typography-8-class",
+        typography__9: "typography-9-class"
     };
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {

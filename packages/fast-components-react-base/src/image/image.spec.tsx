@@ -25,8 +25,7 @@ describe("image", (): void => {
     const Component: React.ComponentClass<IImageHandledProps & IImageManagedClasses> = examples.component;
     const managedClasses: IImageClassNameContract = {
         image: "image-class",
-        image_round: "image-round-class",
-        picture: "picture-class"
+        image__picture: "picture-class"
     };
     const alt: string = "Image alt text test string";
 

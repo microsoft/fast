@@ -3,7 +3,7 @@
  */
 export interface IParagraphClassNameContract {
     paragraph: string;
-    paragraph_1: string;
-    paragraph_2: string;
-    paragraph_3: string;
+    paragraph__1: string;
+    paragraph__2: string;
+    paragraph__3: string;
 }
