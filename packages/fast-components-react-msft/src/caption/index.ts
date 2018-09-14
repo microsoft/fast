@@ -3,6 +3,7 @@ import { IFoundationProps } from "@microsoft/fast-components-react-base";
 import Caption, {
     CaptionLevel,
     CaptionTag,
+    ICaptionClassNameContract,
     ICaptionHandledProps,
     ICaptionManagedClasses,
     ICaptionUnhandledProps
