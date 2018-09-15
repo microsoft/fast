@@ -188,7 +188,7 @@ var getBranchName = new Promise(function(resolve, reject) {
 getBranchName.then(function(branchName) {
 
     // slice off '/n' at the end of string
-    branchName = branchName.slice(0, -2);
+    branchName = branchName.slice(0, -1);
 
     // Run Testing
     Test(branchName);
