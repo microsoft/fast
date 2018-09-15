@@ -20,7 +20,6 @@ Teams spend significant time building parts of the design system (colors, variab
 ## Component browser support
 https://saucelabs.com/browser-matrix/awentzel.svg
 
-
 ## Documentation
 This [GitHub Wiki](https://github.com/Microsoft/fast-dna/wiki) includes guidance on getting started, contributing, consumption, quality, testing, help, and community policies.
 
