@@ -71,7 +71,7 @@ const getConfiguration = (phases) => {
 let browsers = getConfiguration(process.argv[2]);
 
 function Test(branchName) {
-    console.log("Testing Git branch: ", branchName);
+    console.log("Testing Git branch:", branchName);
 
     // Execute Selenium/Appium Web Drivers on Sauce Labs for each browser configuration
     var flows = browsers.map(function (browser) {
