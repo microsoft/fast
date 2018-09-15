@@ -21,7 +21,7 @@
   "devDependencies": {
     "@types/node": "^9.4.7",
     "glob": "^7.1.2",
-    "lerna": "^3.0.6",
+    "lerna": "^3.3.0",
     "markdown-it": "^8.4.1",
     "rimraf": "^2.6.2",
     "ts-node": "^5.0.1",
