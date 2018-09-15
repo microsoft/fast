@@ -35,10 +35,6 @@ const styles: ComponentStyles<Partial<IMSFTButtonClassNameContract>, IDesignSyst
 
 // tslint:disable-next-line:max-line-length
 class CallToAction extends Foundation<ICallToActionHandledProps & IManagedClasses<ICallToActionClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
-    public static defaultProps: Partial<ICallToActionHandledProps  & IManagedClasses<ICallToActionClassNameContract>> = {
-        appearance: CallToActionAppearance.primary
-    };
-
     protected handledProps: HandledProps<ICallToActionHandledProps & IManagedClasses<ICallToActionClassNameContract>> = {
         appearance: void 0,
         href: void 0,
@@ -62,7 +58,7 @@ class CallToAction extends Foundation<ICallToActionHandledProps & IManagedClasse
                 {this.props.children}
                 <div
                     slot="after"
-                    className={get(this.props, "managedClasses.glyph")}
+                    className={get(this.props, "managedClasses.callToAction_glyph")}
                     dangerouslySetInnerHTML={{__html: glyphArrowright}}
                 />
             </Button>
@@ -73,25 +69,25 @@ class CallToAction extends Foundation<ICallToActionHandledProps & IManagedClasse
      * Generates class names
      */
     protected generateClassNames(): string {
-        let classNames: string = super.generateClassNames(get(this.props, "managedClasses.callToAction"));
+        let classNames: string = get(this.props, "managedClasses.callToAction");
 
         if (this.props.disabled) {
-            classNames += `${classNames} ${get(this.props, "managedClasses.button__disabled")}`;
+            classNames = `${classNames} ${get(this.props, "managedClasses.callToAction__disabled")}`;
         }
 
         switch (this.props.appearance) {
             case CallToActionAppearance.primary:
-                classNames = `${classNames} ${get(this.props, "managedClasses.callToAction_primary")}`;
+                classNames = `${classNames} ${get(this.props, "managedClasses.callToAction__primary")}`;
                 break;
             case CallToActionAppearance.lightweight:
-                classNames = `${classNames} ${get(this.props, "managedClasses.callToAction_lightweight")}`;
+                classNames = `${classNames} ${get(this.props, "managedClasses.callToAction__lightweight")}`;
                 break;
             case CallToActionAppearance.justified:
-                classNames = `${classNames} ${get(this.props, "managedClasses.callToAction_justified")}`;
+                classNames = `${classNames} ${get(this.props, "managedClasses.callToAction__justified")}`;
                 break;
         }
 
-        return classNames;
+        return super.generateClassNames(classNames);
     }
 }
 

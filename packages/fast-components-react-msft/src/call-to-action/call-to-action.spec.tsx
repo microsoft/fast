@@ -4,15 +4,13 @@ import * as Adapter from "enzyme-adapter-react-16/build";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
-import CallToAction,
-{
+import {
     CallToActionAppearance,
     CallToActionProps,
     ICallToActionHandledProps,
     ICallToActionManagedClasses,
     ICallToActionUnhandledProps
 } from "./call-to-action";
-import { IButtonHandledProps } from "../button/button.props";
 import { ICallToActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 
 /*
@@ -28,9 +26,11 @@ describe("call to action", (): void => {
     const Component: React.ComponentClass<ICallToActionHandledProps & ICallToActionManagedClasses> = examples.component;
     const managedClasses: ICallToActionClassNameContract = {
         callToAction: "call-to-action",
-        callToAction_backer: "call-to-action-backer",
-        callToAction_lightweight: "call-to-action-lightweight",
-        glyph: "glyph"
+        callToAction_glyph: "glyph"
+        callToAction__primary: "call-to-action-primary",
+        callToAction__lightweight: "call-to-action-lightweight",
+        callToAction__justified: "call-to-action-justified",
+        callToAction__disabled: "call-to-action-disabled",
     };
     const href: string = "#";
 
@@ -55,7 +55,7 @@ describe("call to action", (): void => {
     });
 
     // tslint:disable-next-line:max-line-length
-    test("should set a className that matches callToAction_backer managedClass when ButtonAppearance.primary is passed to the appearance prop", () => {
+    test("should set a className that matches callToAction__primary managedClass when CallToActionAppearance.primary is passed to the appearance prop", () => {
         const props: ICallToActionHandledProps = {
             appearance: CallToActionAppearance.primary
         };
@@ -66,7 +66,7 @@ describe("call to action", (): void => {
 
         const callToAction: any = rendered.first().shallow();
         // Get the expected className value from the list of generated managed classes
-        const expectedClassName: string = callToAction.instance().props.managedClasses.callToAction_backer;
+        const expectedClassName: string = callToAction.instance().props.managedClasses.callToAction__primary;
         const rootClassName: string = callToAction.instance().props.managedClasses.callToAction;
 
         expect(callToAction.instance().props.appearance).toEqual(CallToActionAppearance.primary);
@@ -75,7 +75,7 @@ describe("call to action", (): void => {
     });
 
     // tslint:disable-next-line:max-line-length
-    test("should set a className that matches callToAction_lightweight managedClass when ButtonAppearance.lightweight is passed to the appearance prop", () => {
+    test("should set a className that matches callToAction__lightweight managedClass when CallToActionAppearance.lightweight is passed to the appearance prop", () => {
         const props: ICallToActionHandledProps = {
             appearance: CallToActionAppearance.lightweight
         };
@@ -86,7 +86,7 @@ describe("call to action", (): void => {
 
         const callToAction: any = rendered.first().shallow();
         // Get the expected className value from the list of generated managed classes
-        const expectedClassName: string = callToAction.instance().props.managedClasses.callToAction_lightweight;
+        const expectedClassName: string = callToAction.instance().props.managedClasses.callToAction__lightweight;
         const rootClassName: string = callToAction.instance().props.managedClasses.callToAction;
 
         expect(callToAction.instance().props.appearance).toEqual(CallToActionAppearance.lightweight);
@@ -95,7 +95,7 @@ describe("call to action", (): void => {
     });
 
     // tslint:disable-next-line:max-line-length
-    test("should set a className that matches callToAction_lightweight managedClass when ButtonAppearance.justified is passed to the appearance prop", () => {
+    test("should set a className that matches callToAction__justified managedClass when CallToActionAppearance.justified is passed to the appearance prop", () => {
         const props: ICallToActionHandledProps = {
             appearance: CallToActionAppearance.justified
         };
@@ -106,11 +106,67 @@ describe("call to action", (): void => {
 
         const callToAction: any = rendered.first().shallow();
         // Get the expected className value from the list of generated managed classes
-        const expectedClassName: string = callToAction.instance().props.managedClasses.callToAction_lightweight;
+        const expectedClassName: string = callToAction.instance().props.managedClasses.callToAction__justified;
         const rootClassName: string = callToAction.instance().props.managedClasses.callToAction;
 
         expect(callToAction.instance().props.appearance).toEqual(CallToActionAppearance.justified);
         // Generated managedClass should be passed to className
         expect(callToAction.prop("className")).toBe(`${rootClassName} ${expectedClassName}`);
+    });
+
+    // tslint:disable-next-line:max-line-length
+    test("should set a className that matches callToAction__disabled managedClass when disabled prop is passed", () => {
+        const props: ICallToActionHandledProps = {
+            disabled: true
+        };
+
+        const rendered: any = shallow(
+            <Component {...props}/>
+        );
+
+        const callToAction: any = rendered.first().shallow();
+        // Get the expected className value from the list of generated managed classes
+        const expectedClassName: string = callToAction.instance().props.managedClasses.callToAction__disabled;
+        const rootClassName: string = callToAction.instance().props.managedClasses.callToAction;
+
+        // Generated managedClass should be passed to className
+        expect(callToAction.prop("className")).toBe(`${rootClassName} ${expectedClassName}`);
+    });
+
+    // tslint:disable-next-line:max-line-length
+    test("should set a custom class name and appearance class name when a custom class name and CallToActionAppearance.primary appearance prop is passed", () => {
+        const props: ICallToActionHandledProps = {
+            appearance: CallToActionAppearance.primary
+        };
+
+        const rendered: any = shallow(
+            <Component className={"custom-class-name"} {...props}/>
+        );
+
+        const callToAction: any = rendered.first().shallow();
+        // Get the expected className value from the list of generated managed classes
+        const expectedClassName: string = callToAction.instance().props.managedClasses.callToAction__primary;
+        const rootClassName: string = callToAction.instance().props.managedClasses.callToAction;
+        const customClassName: string = "custom-class-name";
+
+        expect(callToAction.instance().props.appearance).toEqual(CallToActionAppearance.primary);
+        // Generated managedClass should be passed to className
+        expect(callToAction.prop("className")).toBe(`${rootClassName} ${expectedClassName} ${customClassName}`);
+    });
+
+    // tslint:disable-next-line:max-line-length
+    test("should set a custom class name and root class name when a custom class name is passed", () => {
+
+        const rendered: any = shallow(
+            <Component className={"custom-class-name"} />
+        );
+
+        const callToAction: any = rendered.first().shallow();
+        // Get the expected className value from the list of generated managed classes
+        const rootClassName: string = callToAction.instance().props.managedClasses.callToAction;
+        const customClassName: string = "custom-class-name";
+
+        // Generated managedClass should be passed to className
+        expect(callToAction.prop("className")).toBe(`${rootClassName} ${customClassName}`);
     });
 });

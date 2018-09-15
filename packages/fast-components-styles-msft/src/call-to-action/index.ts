@@ -42,13 +42,14 @@ const styles: ComponentStyles<ICallToActionClassNameContract, IDesignSystem> = (
             transition: "all 0.2s ease-in-out",
             "&:hover, &:focus": {
                 outline: "none",
-                "& $glyph": {
+                "& $callToAction_glyph": {
                     left: "8px",
                     position: "relative"
                 }
             }
         },
-        glyph: {
+        callToAction_glyph: {
+            fill: color,
             display: "inline-block",
             position: "relative",
             width: "8px",
@@ -59,23 +60,23 @@ const styles: ComponentStyles<ICallToActionClassNameContract, IDesignSystem> = (
             left: "0",
             marginTop: "4px"
         },
-        callToAction_primary: {
-            "& $glyph": {
+        callToAction__primary: {
+            "& $callToAction_glyph": {
                 fill: color
             }
         },
-        callToAction_lightweight: {
-            "& $glyph": {
+        callToAction__lightweight: {
+            "& $callToAction_glyph": {
                 fill: primaryRestBackgroundColor
             }
         },
-        callToAction_justified: {
-            "& $glyph": {
+        callToAction__justified: {
+            "& $callToAction_glyph": {
                 fill: primaryRestBackgroundColor
             }
         },
         callToAction__disabled: {
-            "& $glyph": {
+            "& $callToAction_glyph": {
                 fill: primaryDisabledColor
             }
         }

@@ -5,9 +5,9 @@ import { ButtonAppearance, IButtonHandledProps } from "../button/button.props";
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
 export enum CallToActionAppearance {
-    justified= ButtonAppearance.justified,
-    lightweight= ButtonAppearance.lightweight,
-    primary= ButtonAppearance.primary
+    justified = ButtonAppearance.justified,
+    lightweight = ButtonAppearance.lightweight,
+    primary = ButtonAppearance.primary
 }
 
 export interface ICallToActionHandledProps extends Omit<IButtonHandledProps, "appearance"> {
