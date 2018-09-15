@@ -84,6 +84,6 @@ workflows:
     jobs:
       - build_dependencies
       - test_coverage:
-          requires: 
-            - build_dependencies
+            requires: 
+                - build_dependencies
 
