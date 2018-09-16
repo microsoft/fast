@@ -1,5 +1,5 @@
 import * as React from "react";
-import Radio, { IRadioHandledProps, IRadioManagedClasses, IRadioUnhandledProps, RadioHTMLTags } from "./radio";
+import Radio, { IRadioHandledProps, IRadioManagedClasses, IRadioUnhandledProps, RadioTags } from "./radio";
 import schema from "./radio.schema.json";
 import Documentation from "./.tmp/documentation";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
@@ -7,7 +7,7 @@ import { IComponentFactoryExample } from "@microsoft/fast-development-site-react
 const classes: IRadioManagedClasses = {
     managedClasses: {
         radio: "radio",
-        radio_disabled: "radio_disabled",
+        radio__disabled: "radio__disabled",
         radio_input: "radio_input",
         radio_label: "radio_label",
         radio_stateIndicator: "radio_stateIndicator"
@@ -26,11 +26,11 @@ const examples: IComponentFactoryExample<IRadioHandledProps & IRadioManagedClass
     data: [
         {
             ...classes,
-            tag: RadioHTMLTags.div
+            tag: RadioTags.div
         },
         {
             ...classes,
-            tag: RadioHTMLTags.label
+            tag: RadioTags.label
         },
         {
             ...classes,

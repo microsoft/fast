@@ -53,7 +53,7 @@ exports[`radio snapshots Radio: 2 1`] = `
 
 exports[`radio snapshots Radio: 3 1`] = `
 <label
-  className="radio radio_disabled"
+  className="radio radio__disabled"
 >
   <input
     checked={false}

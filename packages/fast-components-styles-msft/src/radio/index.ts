@@ -6,7 +6,7 @@ import Chroma from "chroma-js";
 
 const styles: ComponentStyles<IRadioClassNameContract, IDesignSystem> = {
     radio: {},
-    radio_disabled: {},
+    radio__disabled: {},
     radio_input: {},
     radio_label: {},
     radio_stateIndicator: {}

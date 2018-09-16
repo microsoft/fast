@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Foundation, { HandledProps } from "../foundation";
-import { IRadioHandledProps, IRadioManagedClasses, IRadioUnhandledProps, RadioHTMLTags, RadioProps } from "./radio.props";
+import { IRadioHandledProps, IRadioManagedClasses, IRadioUnhandledProps, RadioProps, RadioTags } from "./radio.props";
 import { IManagedClasses, IRadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
 
@@ -23,7 +23,7 @@ class Radio extends Foundation<IRadioHandledProps & IRadioManagedClasses, IRadio
         managedClasses: void 0,
         onChange: void 0,
         tag: void 0,
-        text: void 0
+        children: void 0
     };
 
     /**
@@ -70,7 +70,7 @@ class Radio extends Foundation<IRadioHandledProps & IRadioManagedClasses, IRadio
     protected generateClassNames(): string {
         let classes: string = get(this.props, "managedClasses.radio");
 
-        classes = this.props.disabled ? `${classes} ${get(this.props, "managedClasses.radio_disabled")}` : classes;
+        classes = this.props.disabled ? `${classes} ${get(this.props, "managedClasses.radio__disabled")}` : classes;
 
         return super.generateClassNames(classes);
     }
@@ -79,14 +79,14 @@ class Radio extends Foundation<IRadioHandledProps & IRadioManagedClasses, IRadio
      * Stores HTML tag for use in render
      */
     private get tag(): string {
-        return RadioHTMLTags[this.props.tag] || RadioHTMLTags.label;
+        return RadioTags[this.props.tag] || RadioTags.label;
     }
 
     private renderedLabel(): JSX.Element {
-        if (this.props.text) {
+        if (this.props.children) {
             return(
                 <span className={get(this.props, "managedClasses.radio_label")}>
-                    {this.props.text}
+                    {this.props.children}
                 </span>
             );
         }

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { IManagedClasses, IRadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 
-export enum RadioHTMLTags {
+export enum RadioTags {
     div = "div",
     label = "label"
 }
@@ -10,7 +10,7 @@ export interface IRadioHandledProps {
     /**
      * The HTML tag
      */
-    tag?: RadioHTMLTags;
+    tag?: RadioTags;
 
     /**
      * The checked state
@@ -23,14 +23,14 @@ export interface IRadioHandledProps {
     disabled?: boolean;
 
     /**
-     * The selected state
+     * The onChange state
      */
     onChange?: boolean;
 
     /**
-     * The textual content
+     * The caption content
      */
-    text?: string;
+    children?: React.ReactNode | React.ReactNode[];
 }
 
 export interface IRadioUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}

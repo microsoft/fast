@@ -4,6 +4,7 @@
     "description": "A radio component's schema definition",
     "type": "object",
     "id": "radio",
+    "children": true,
     "properties": {
         "tag": {
             "title": "HTML tag",
@@ -22,7 +23,7 @@
             "title": "Disabled",
             "type": "boolean"
         },
-        "text": {
+        "children": {
             "title": "Text",
             "type": "string"
         }

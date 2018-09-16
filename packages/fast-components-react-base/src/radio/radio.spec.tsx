@@ -8,8 +8,8 @@ import {
     IRadioHandledProps,
     IRadioManagedClasses,
     IRadioUnhandledProps,
-    RadioHTMLTags,
-    RadioProps
+    RadioProps,
+    RadioTags
 } from "./radio";
 
 /**
@@ -29,16 +29,16 @@ describe("radio", (): void => {
 
     const inputSelector: string = `.${managedClasses.radio_input}`;
 
-    test("should check for text props", () => {
+    test("should check for children props", () => {
         const props: IRadioHandledProps = {
-            text: "foo"
+            children: "foo"
         };
 
         const rendered: any = shallow(
             <Component {...props} />
         );
 
-        expect(rendered.instance().props.text).toEqual("foo");
+        expect(rendered.instance().props.children).toEqual("foo");
     });
 
     test("should allow a change event to update the checked state when no `checked` prop is provided", () => {

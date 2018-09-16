@@ -3,6 +3,7 @@
 exports[`radio snapshots Radio: 0 1`] = `
 <label
   className="radio-0-1-1"
+  text="Default"
 >
   <input
     checked={false}
@@ -14,17 +15,13 @@ exports[`radio snapshots Radio: 0 1`] = `
   <span
     className="radio_stateIndicator-0-1-5"
   />
-  <span
-    className="radio_label-0-1-4"
-  >
-    Default
-  </span>
 </label>
 `;
 
 exports[`radio snapshots Radio: 1 1`] = `
 <div
   className="radio-0-1-6"
+  text="div tag"
 >
   <input
     checked={false}
@@ -36,17 +33,13 @@ exports[`radio snapshots Radio: 1 1`] = `
   <span
     className="radio_stateIndicator-0-1-10"
   />
-  <span
-    className="radio_label-0-1-9"
-  >
-    div tag
-  </span>
 </div>
 `;
 
 exports[`radio snapshots Radio: 2 1`] = `
 <label
   className="radio-0-1-11"
+  text="label tag"
 >
   <input
     checked={false}
@@ -58,17 +51,13 @@ exports[`radio snapshots Radio: 2 1`] = `
   <span
     className="radio_stateIndicator-0-1-15"
   />
-  <span
-    className="radio_label-0-1-14"
-  >
-    label tag
-  </span>
 </label>
 `;
 
 exports[`radio snapshots Radio: 3 1`] = `
 <label
   className="radio-0-1-16"
+  text="Checked"
 >
   <input
     checked={true}
@@ -80,17 +69,13 @@ exports[`radio snapshots Radio: 3 1`] = `
   <span
     className="radio_stateIndicator-0-1-20"
   />
-  <span
-    className="radio_label-0-1-19"
-  >
-    Checked
-  </span>
 </label>
 `;
 
 exports[`radio snapshots Radio: 4 1`] = `
 <label
-  className="radio-0-1-21 radio_disabled-0-1-22"
+  className="radio-0-1-21 radio__disabled-0-1-22"
+  text="Disabled"
 >
   <input
     checked={false}
@@ -102,10 +87,5 @@ exports[`radio snapshots Radio: 4 1`] = `
   <span
     className="radio_stateIndicator-0-1-25"
   />
-  <span
-    className="radio_label-0-1-24"
-  >
-    Disabled
-  </span>
 </label>
 `;
