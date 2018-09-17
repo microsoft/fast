@@ -5,7 +5,7 @@ import { IDesignSystem, withDesignSystemDefaults } from "../design-system/index"
 import { disabledContrast, ensureNormalContrast } from "../utilities/colors";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
-export const calltToActionButtonOverrides: ComponentStyles<Partial<IMSFTButtonClassNameContract>, IDesignSystem> = {
+export const callToActionButtonOverrides: ComponentStyles<Partial<IMSFTButtonClassNameContract>, IDesignSystem> = {
     button: {
         maxWidth: "100%",
         padding: (config: IDesignSystem): string => {

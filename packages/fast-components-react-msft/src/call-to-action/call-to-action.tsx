@@ -6,7 +6,7 @@ import { CallToActionAppearance, ICallToActionHandledProps } from "./call-to-act
 import { ICallToActionClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
 import { get } from "lodash-es";
 import { glyphArrowright } from "@microsoft/fast-glyphs-msft";
-import { calltToActionButtonOverrides } from "@microsoft/fast-components-styles-msft";
+import { callToActionButtonOverrides } from "@microsoft/fast-components-styles-msft";
 
 // tslint:disable-next-line:max-line-length
 class CallToAction extends Foundation<ICallToActionHandledProps & IManagedClasses<ICallToActionClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
@@ -28,7 +28,7 @@ class CallToAction extends Foundation<ICallToActionHandledProps & IManagedClasse
                 disabled={this.props.disabled}
                 href={this.props.href}
                 appearance={ButtonAppearance[CallToActionAppearance[this.props.appearance]]}
-                jssStyleSheet={calltToActionButtonOverrides}
+                jssStyleSheet={callToActionButtonOverrides}
             >
                 {this.props.children}
                 <div
