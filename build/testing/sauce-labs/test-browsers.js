@@ -76,7 +76,7 @@ function Test(branchName) {
     var flows = browsers.map(function (browser) {
 
         // Setup capabilities
-        let caps = {
+        let capabilities = {
                 name: "FAST-DNA MSFT Documentation",
                 build: branchName,
                 tags: "msft-docs",
@@ -98,7 +98,7 @@ function Test(branchName) {
 
         // Setup WebDriver
         let driver = new Builder()
-                .withCapabilities(caps)
+                .withCapabilities(capabilities)
                 .usingServer(remoteHub)
                 .build();
 
@@ -117,7 +117,7 @@ function Test(branchName) {
 
                         // After browsers matrix is determined we can fine tune and
                         // optimize to use other selectors to see what works. If we're
-                        // t8esting mostly on modern browsers this isn't as much a limitation.
+                        // Testing on modern browsers this isn't as much a limitation.
 
                         // Recommendation, add in data-test attributes to each component,
                         // page, layout, or container we want to capture and select on that.
