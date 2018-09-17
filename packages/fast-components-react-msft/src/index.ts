@@ -2,6 +2,10 @@ import Button from "./button";
 export { Button };
 export * from "./button";
 
+import CallToAction from "./call-to-action";
+export { CallToAction };
+export * from "./call-to-action";
+
 import Caption from "./caption";
 export { Caption };
 export * from "./caption";
