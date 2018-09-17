@@ -28,7 +28,6 @@ const { Builder } = require("selenium-webdriver");
 const chalk = require('chalk');
 const { Configure, Phases } = require("../config-browsers.js");
 const { spawn } = require('child_process');
-const git = spawn('git', ['rev-parse', '--abbrev-ref', 'HEAD']);
 
 // Retrive user/key from environment variables
 const username = process.env.SAUCE_LABS_USER;
@@ -173,6 +172,9 @@ function test(branchName) {
         })
     });
 }
+
+// Initialize git for usage
+const git = spawn('git', ['rev-parse', '--abbrev-ref', 'HEAD']);
 
 /**
  * Get Branch Name using child_process and Git which runs Asynchronously
