@@ -1,11 +1,12 @@
 import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
-import { configure, shallow } from "enzyme";
+import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import { ButtonHTMLTags } from "@microsoft/fast-components-react-base";
 import { IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
+    Button,
     ButtonAppearance,
     ButtonProps,
     IButtonHandledProps,
@@ -28,6 +29,26 @@ describe("button", (): void => {
 
     const href: string = "https://www.microsoft.com";
 
+    const beforeSlotExample: JSX.Element = (
+        <div
+            className={"slotBefore"}
+            key={"Slot"}
+            slot="before"
+        >
+            Before slot
+        </div>
+    );
+
+    const afterSlotExample: JSX.Element = (
+        <div
+            className={"slotAfter"}
+            key={"afterSlot"}
+            slot="after"
+        >
+            After slot
+        </div>
+    );
+
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: IButtonHandledProps = {
             href
@@ -49,7 +70,7 @@ describe("button", (): void => {
     });
 
     /* tslint:disable-next-line */
-    test("should set a className that matches button_primary managedClass when ButtonAppearance.primary is passed to the appearance prop", () => {
+    test("should apply a 'primary' html class when appearance is primary", () => {
         const props: IButtonHandledProps = {
             appearance: ButtonAppearance.primary
         };
@@ -68,7 +89,7 @@ describe("button", (): void => {
     });
 
     /* tslint:disable-next-line */
-    test("should set a className that matches button_outline managedClass when ButtonAppearance.outline is passed to the appearance prop", () => {
+    test("should apply an 'outline' html class when appearance is outline", () => {
         const props: IButtonHandledProps = {
             appearance: ButtonAppearance.outline
         };
@@ -87,7 +108,7 @@ describe("button", (): void => {
     });
 
     /* tslint:disable-next-line */
-    test("should set a className that matches button_lightweight managedClass when ButtonAppearance.lightweight is passed to the appearance prop", () => {
+    test("should apply a 'lightweight' html class when appearance is lightweight", () => {
         const props: IButtonHandledProps = {
             appearance: ButtonAppearance.lightweight
         };
@@ -106,7 +127,7 @@ describe("button", (): void => {
     });
 
     /* tslint:disable-next-line */
-    test("should set a className that matches button_justified managedClass when ButtonAppearance.justified is passed to the appearance prop", () => {
+    test("should apply a 'justified' html class when appearance is justified", () => {
         const props: IButtonHandledProps = {
             appearance: ButtonAppearance.justified
         };
@@ -124,7 +145,7 @@ describe("button", (): void => {
         expect(button.prop("className")).toBe(expectedClassName);
     });
 
-    test("should set a custom className when passed", () => {
+    test("should set a custom class name when passed", () => {
         const customClassNameString: string = "customClassName";
         const rendered: any = shallow(
             <Component className={customClassNameString} />
@@ -135,7 +156,7 @@ describe("button", (): void => {
         expect(button.prop("className")).toEqual(customClassNameString);
     });
 
-    test("should set a custom className to be when appearance prop and className are both passed", () => {
+    test("should set a custom class name and 'justified' class name when appearance is justified and a custom class is passed", () => {
         const customClassNameString: string = "customClassName";
         const rendered: any = shallow(
             <Component appearance={ButtonAppearance.justified} className={customClassNameString} />
@@ -145,5 +166,37 @@ describe("button", (): void => {
         const expectedClassName: string = `${button.instance().props.managedClasses.button_justified} ${customClassNameString}`;
 
         expect(button.prop("className")).toEqual(expectedClassName);
+    });
+
+    /* tslint:disable-next-line */
+    test("should add a child element with the slot prop set to 'before' into the before slot location", () => {
+        const props: IButtonHandledProps = {
+            appearance: ButtonAppearance.lightweight,
+            href: "#",
+            children: ["foo", beforeSlotExample]
+        };
+
+        const rendered: any = mount(
+            <Component {...props} />
+        );
+
+        expect(rendered.instance().props.children[1].props.slot).toBe("before");
+        expect(rendered.find("div.slotBefore").length).toBe(1);
+    });
+
+    /* tslint:disable-next-line */
+    test("should add a child element with the slot prop set to 'after' into the after slot location", () => {
+        const props: IButtonHandledProps = {
+            appearance: ButtonAppearance.lightweight,
+            href: "#",
+            children: ["foo", afterSlotExample]
+        };
+
+        const rendered: any = mount(
+            <Component {...props} />
+        );
+
+        expect(rendered.instance().props.children[1].props.slot).toBe("after");
+        expect(rendered.find("div.slotAfter").length).toBe(1);
     });
 });

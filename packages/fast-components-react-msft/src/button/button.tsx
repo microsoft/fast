@@ -1,10 +1,17 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import { Foundation, HandledProps } from "@microsoft/fast-components-react-base";
 import { ButtonAppearance, IButtonHandledProps, IButtonManagedClasses, IButtonUnhandledProps } from "./button.props";
 import { IManagedClasses, IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { Button as BaseButton } from "@microsoft/fast-components-react-base";
+
+/**
+ * Button slot options
+ */
+export enum ButtonSlot {
+    before = "before",
+    after = "after"
+}
 
 /* tslint:disable-next-line */
 class Button extends Foundation<IButtonHandledProps & IManagedClasses<IMSFTButtonClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
@@ -27,7 +34,9 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IMSFTButto
                 href={this.props.href}
                 disabled={this.props.disabled}
             >
-                {this.generateInnerContent()}
+                {this.renderChildrenBySlot(ButtonSlot.before)}
+                {this.renderContent()}
+                {this.renderChildrenBySlot(ButtonSlot.after)}
             </BaseButton>
         );
     }
@@ -50,12 +59,34 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IMSFTButto
         }
     }
 
-    private generateInnerContent(): React.ReactElement<HTMLSpanElement> | (React.ReactNode | React.ReactNode[]) {
-        if (this.props.appearance === ButtonAppearance.lightweight || this.props.appearance === ButtonAppearance.justified) {
-            return <span className={get(this.props, "managedClasses.button_span")}>{this.props.children}</span>;
-        }
+    /**
+     * Renders slotted children in the appropriate slot
+     */
+    private renderChildrenBySlot(slot: ButtonSlot): React.ReactChild[] {
+        return React.Children.toArray(this.props.children).filter((child: JSX.Element, index: number) => {
+            if (child.props && child.props.slot === slot) {
+                return (
+                    <React.Fragment key={index}>
+                        {child}
+                    </React.Fragment>
+                );
+            }
+        });
+    }
 
-        return this.props.children;
+    /**
+     * Renders the non-slot child content
+     */
+    private renderContent(): JSX.Element {
+        const content: any[] = [];
+
+        React.Children.toArray(this.props.children).filter((child: JSX.Element, index: number) => {
+            if (get(child, "props.slot") !== ButtonSlot.after && get(child, "props.slot") !== ButtonSlot.before) {
+                content.push(child);
+            }
+        });
+
+        return <span className={get(this.props, "managedClasses.button_span")}>{content}</span>;
     }
 }
 

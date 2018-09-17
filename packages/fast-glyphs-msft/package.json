@@ -29,6 +29,7 @@
   "devDependencies": {
     "@microsoft/fast-tslint-rules": "^2.2.0",
     "@types/node": "^9.6.2",
+    "babel-preset-env": "^1.7.0",
     "ts-node": "^5.0.1",
     "tslint": "^5.9.1",
     "typescript": "^3.0.1"
