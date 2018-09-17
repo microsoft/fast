@@ -1,8 +1,30 @@
 import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
-import { ICallToActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { ICallToActionClassNameContract, IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { applyLocalizedProperty, Direction, localizeSpacing } from "@microsoft/fast-jss-utilities";
 import { IDesignSystem, withDesignSystemDefaults } from "../design-system/index";
 import { disabledContrast, ensureNormalContrast } from "../utilities/colors";
+
+// Since MSFT button is already styled, we need to override in this way to alter button classes
+export const calltToActionButtonOverrides: ComponentStyles<Partial<IMSFTButtonClassNameContract>, IDesignSystem> = {
+    button: {
+        maxWidth: "100%",
+        padding: (config: IDesignSystem): string => {
+            const designSystem: IDesignSystem = withDesignSystemDefaults(config);
+            return localizeSpacing(designSystem.direction)("13px 22px 11px 24px");
+        }
+    },
+    button_span: {
+        transition: "all 600ms cubic-bezier(0.19, 1, 0.22, 1)",
+        [applyLocalizedProperty("left", "right", Direction.ltr)]: "0"
+    },
+    button_primary: {
+        "&:hover": {
+            "& $button_span": {
+                [applyLocalizedProperty("left", "right", Direction.ltr)]: "-4px"
+            }
+        }
+    }
+};
 
 const styles: ComponentStyles<ICallToActionClassNameContract, IDesignSystem> = (
     config: IDesignSystem

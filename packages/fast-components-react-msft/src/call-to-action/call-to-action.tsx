@@ -6,32 +6,7 @@ import { CallToActionAppearance, ICallToActionHandledProps } from "./call-to-act
 import { ICallToActionClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
 import { get } from "lodash-es";
 import { glyphArrowright } from "@microsoft/fast-glyphs-msft";
-import { applyLocalizedProperty, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
-import { IDesignSystem, withDesignSystemDefaults } from "@microsoft/fast-components-styles-msft";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import { Direction } from "@microsoft/fast-application-utilities";
-
-// Since MSFT button is already styled, we need to override in this way to alter button classes
-const styles: ComponentStyles<Partial<IMSFTButtonClassNameContract>, IDesignSystem> = {
-    button: {
-        maxWidth: "100%",
-        padding: (config: IDesignSystem): string => {
-            const designSystem: IDesignSystem = withDesignSystemDefaults(config);
-            return localizeSpacing(designSystem.direction)("13px 22px 11px 24px");
-        }
-    },
-    button_span: {
-        transition: "all 600ms cubic-bezier(0.19, 1, 0.22, 1)",
-        [applyLocalizedProperty("left", "right", Direction.ltr)]: "0"
-    },
-    button_primary: {
-        "&:hover": {
-            "& $button_span": {
-                [applyLocalizedProperty("left", "right", Direction.ltr)]: "-4px"
-            }
-        }
-    }
-};
+import { calltToActionButtonOverrides } from "@microsoft/fast-components-styles-msft";
 
 // tslint:disable-next-line:max-line-length
 class CallToAction extends Foundation<ICallToActionHandledProps & IManagedClasses<ICallToActionClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
@@ -53,7 +28,7 @@ class CallToAction extends Foundation<ICallToActionHandledProps & IManagedClasse
                 disabled={this.props.disabled}
                 href={this.props.href}
                 appearance={ButtonAppearance[CallToActionAppearance[this.props.appearance]]}
-                jssStyleSheet={styles}
+                jssStyleSheet={calltToActionButtonOverrides}
             >
                 {this.props.children}
                 <div
