@@ -11,27 +11,27 @@ export default {
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
-        text: "Radio"
+        children: "Radio"
     },
     data: [
         {
-            text: "Default"
+            children: "Default"
         },
         {
             tag: "div",
-            text: "div tag"
+            children: "div tag"
         },
         {
             tag: "label",
-            text: "label tag"
+            children: "label tag"
         },
         {
             checked: true,
-            text: "Checked"
+            children: "Checked"
         },
         {
             disabled: true,
-            text: "Disabled"
+            children: "Disabled"
         }
     ]
 } as IComponentFactoryExample<IRadioHandledProps>;

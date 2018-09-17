@@ -15,6 +15,19 @@ export interface IRadioState {
 class Radio extends Foundation<IRadioHandledProps & IRadioManagedClasses, IRadioUnhandledProps, IRadioState> {
 
     /**
+     * React life-cycle method
+     */
+    public static getDerivedStateFromProps(nextProps: IRadioHandledProps, prevState: IRadioState): null | Partial<IRadioState> {
+        if (typeof nextProps.checked === "boolean" && nextProps.checked !== prevState.checked) {
+            return {
+                checked: nextProps.checked
+            };
+        }
+
+        return null;
+    }
+
+    /**
      * Handled props instantiation
      */
     protected handledProps: HandledProps<IRadioHandledProps & IManagedClasses<IRadioClassNameContract>> = {
