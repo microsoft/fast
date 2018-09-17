@@ -3,10 +3,12 @@
  * Test Browsers
  * 
  * @description 
- * Cross browser testing with Selenium Webdriver (browser configurations) and Appium (device configurations) for testing on Sauce Labs.
+ * Cross browser testing with Selenium Webdriver (browser configurations) and Appium 
+ * (device configurations) for testing on Sauce Labs. The configurations are sourced
+ * from 'build/testing/config-browsers.js'.
  * 
  * @example 
- * To execute on CLI, run 'node .circleci/run-browser-beta-tests.ts' from root directory.
+ * To execute on CLI, run 'node build/testing/sauce-labs/test-browsers.js' from root directory.
  * 
  * @requires
  * You must create environment variables if executing this script locally using CLI. This can be done 
@@ -46,14 +48,14 @@ const getConfiguration = (phases) => {
 
     switch (phases) {
             
-        case "alpha":
-            return new Configure(Phases.Alpha);
+        case Phases.alpha:
+            return new Configure(Phases.alpha);
                 
-        case "beta":
-            return new Configure(Phases.Beta);
+        case Phases.beta:
+            return new Configure(Phases.beta);
                 
-        case "release":
-            return new Configure(Phases.Release);
+        case Phases.release:
+            return new Configure(Phases.release);
                 
         default:
             console.log(chalk.red("Invalid Argument : must be 'alpha', 'beta', or 'release'"));

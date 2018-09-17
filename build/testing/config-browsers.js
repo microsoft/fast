@@ -21,9 +21,9 @@
 var Phases;
 
 (function (Phases) {
-    Phases[Phases["Alpha"] = 0] = "Alpha";
-    Phases[Phases["Beta"] = 1] = "Beta";
-    Phases[Phases["Release"] = 2] = "Release";
+    Phases[Phases["alpha"] = 0] = "alpha";
+    Phases[Phases["beta"] = 1] = "beta";
+    Phases[Phases["release"] = 2] = "release";
 })(Phases = exports.Phases || (exports.Phases = {}));
 
 /**
@@ -37,7 +37,7 @@ var Configure = (function () {
     function _configure(phases) {
 
         switch (phases) {
-            case Phases.Alpha:
+            case Phases.alpha:
                 return [
                     {
                         'platform': 'Windows 10',
@@ -88,7 +88,7 @@ var Configure = (function () {
                         'locale': 'en_US'
                     }
                 ];
-            case Phases.Beta:
+            case Phases.beta:
                 
                 return [
                     {
@@ -148,7 +148,7 @@ var Configure = (function () {
                         'locale': 'en_US'
                     }
                 ];
-            case Phases.Release:
+            case Phases.release:
             default:
                 return [
                     {
