@@ -80,7 +80,7 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IMSFTButto
     private renderContent(): JSX.Element {
         const content: any[] = [];
 
-        React.Children.forEach(this.props.children, (child: JSX.Element, index: number) => {
+        React.Children.toArray(this.props.children).filter((child: JSX.Element, index: number) => {
             if (get(child, "props.slot") !== ButtonSlot.after && get(child, "props.slot") !== ButtonSlot.before) {
                 content.push(child);
             }
