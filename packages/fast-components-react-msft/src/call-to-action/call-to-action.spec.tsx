@@ -55,7 +55,7 @@ describe("call to action", (): void => {
     });
 
     // tslint:disable-next-line:max-line-length
-    test("should set a className that matches callToAction__primary managedClass when CallToActionAppearance.primary is passed to the appearance prop", () => {
+    test("should apply a 'primary' html class when appearance is primary", () => {
         const props: ICallToActionHandledProps = {
             appearance: CallToActionAppearance.primary
         };
@@ -75,7 +75,7 @@ describe("call to action", (): void => {
     });
 
     // tslint:disable-next-line:max-line-length
-    test("should set a className that matches callToAction__lightweight managedClass when CallToActionAppearance.lightweight is passed to the appearance prop", () => {
+    test("should apply a 'lightweight' html class when appearance is lightweight", () => {
         const props: ICallToActionHandledProps = {
             appearance: CallToActionAppearance.lightweight
         };
@@ -95,7 +95,7 @@ describe("call to action", (): void => {
     });
 
     // tslint:disable-next-line:max-line-length
-    test("should set a className that matches callToAction__justified managedClass when CallToActionAppearance.justified is passed to the appearance prop", () => {
+    test("should apply a 'justified' html class when appearance is justified", () => {
         const props: ICallToActionHandledProps = {
             appearance: CallToActionAppearance.justified
         };
@@ -115,7 +115,7 @@ describe("call to action", (): void => {
     });
 
     // tslint:disable-next-line:max-line-length
-    test("should set a className that matches callToAction__disabled managedClass when disabled prop is passed", () => {
+    test("should apply a 'disabled' html class when prop disabled is passed", () => {
         const props: ICallToActionHandledProps = {
             disabled: true
         };
@@ -134,7 +134,7 @@ describe("call to action", (): void => {
     });
 
     // tslint:disable-next-line:max-line-length
-    test("should set a custom class name and appearance class name when a custom class name and CallToActionAppearance.primary appearance prop is passed", () => {
+    test("should set a custom class name and 'primary' class name when appearance is primary and a custom class is passed", () => {
         const props: ICallToActionHandledProps = {
             appearance: CallToActionAppearance.primary
         };

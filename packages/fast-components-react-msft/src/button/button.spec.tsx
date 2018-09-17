@@ -34,8 +34,9 @@ describe("button", (): void => {
             className={"slotBefore"}
             key={"Slot"}
             slot="before"
-            dangerouslySetInnerHTML={{__html: "Before slot"}}
-        />
+        >
+            Before slot
+        </div>
     );
 
     const afterSlotExample: JSX.Element = (
@@ -43,8 +44,9 @@ describe("button", (): void => {
             className={"slotAfter"}
             key={"afterSlot"}
             slot="after"
-            dangerouslySetInnerHTML={{__html: " After slot"}}
-        />
+        >
+            After slot
+        </div>
     );
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
@@ -68,7 +70,7 @@ describe("button", (): void => {
     });
 
     /* tslint:disable-next-line */
-    test("should set a className that matches button_primary managedClass when ButtonAppearance.primary is passed to the appearance prop", () => {
+    test("should apply a 'primary' html class when appearance is primary", () => {
         const props: IButtonHandledProps = {
             appearance: ButtonAppearance.primary
         };
@@ -87,7 +89,7 @@ describe("button", (): void => {
     });
 
     /* tslint:disable-next-line */
-    test("should set a className that matches button_outline managedClass when ButtonAppearance.outline is passed to the appearance prop", () => {
+    test("should apply an 'outline' html class when appearance is outline", () => {
         const props: IButtonHandledProps = {
             appearance: ButtonAppearance.outline
         };
@@ -106,7 +108,7 @@ describe("button", (): void => {
     });
 
     /* tslint:disable-next-line */
-    test("should set a className that matches button_lightweight managedClass when ButtonAppearance.lightweight is passed to the appearance prop", () => {
+    test("should apply a 'lightweight' html class when appearance is lightweight", () => {
         const props: IButtonHandledProps = {
             appearance: ButtonAppearance.lightweight
         };
@@ -125,7 +127,7 @@ describe("button", (): void => {
     });
 
     /* tslint:disable-next-line */
-    test("should set a className that matches button_justified managedClass when ButtonAppearance.justified is passed to the appearance prop", () => {
+    test("should apply a 'justified' html class when appearance is justified", () => {
         const props: IButtonHandledProps = {
             appearance: ButtonAppearance.justified
         };
@@ -143,7 +145,7 @@ describe("button", (): void => {
         expect(button.prop("className")).toBe(expectedClassName);
     });
 
-    test("should set a custom className when passed", () => {
+    test("should set a custom class name when passed", () => {
         const customClassNameString: string = "customClassName";
         const rendered: any = shallow(
             <Component className={customClassNameString} />
@@ -154,7 +156,7 @@ describe("button", (): void => {
         expect(button.prop("className")).toEqual(customClassNameString);
     });
 
-    test("should set a custom className to be when appearance prop and className are both passed", () => {
+    test("should set a custom class name and 'justified' class name when appearance is justified and a custom class is passed", () => {
         const customClassNameString: string = "customClassName";
         const rendered: any = shallow(
             <Component appearance={ButtonAppearance.justified} className={customClassNameString} />

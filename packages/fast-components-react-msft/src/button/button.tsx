@@ -62,8 +62,18 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IMSFTButto
     /**
      * Renders slotted children in the appropriate slot
      */
-    private renderChildrenBySlot(slot: ButtonSlot): JSX.Element[] {
-        return React.Children.map(this.props.children, (child: JSX.Element, index: number) => {
+    private renderChildrenBySlot(slot: ButtonSlot): React.ReactChild[] {
+        // return React.Children.map(this.props.children, (child: JSX.Element, index: number) => {
+        //     if (child.props && child.props.slot === slot) {
+        //         return (
+        //             <React.Fragment key={index}>
+        //                 {child}
+        //             </React.Fragment>
+        //         );
+        //     }
+        // });
+
+        return React.Children.toArray(this.props.children).filter((child: JSX.Element, index: number) => {
             if (child.props && child.props.slot === slot) {
                 return (
                     <React.Fragment key={index}>
