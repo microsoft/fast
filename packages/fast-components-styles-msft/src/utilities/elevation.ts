@@ -68,11 +68,11 @@ export const directionalShadowConfig: IShadowConfig = {
  * Apply elevation
  * Used to apply elevation shadow treatment to a component
  */
-export function applyElevation(elevation: keyof IElevationRamp, color: string): (config: IDesignSystem) => ICSSRules<IDesignSystem> {
+export function elevation(elevationKey: keyof IElevationRamp, color: string): (config: IDesignSystem) => ICSSRules<IDesignSystem> {
     return (config: IDesignSystem): ICSSRules<IDesignSystem> => {
-        const elevationValue: number = elevationRamp[elevation];
-        const ambientShadow: string = generateElevationShadow(elevationValue, color, ambientShadowConfig)(config);
-        const directionalShadow: string = generateElevationShadow(elevationValue, color, directionalShadowConfig)(config);
+        const elevationValue: number = elevationRamp[elevationKey];
+        const ambientShadow: string = elevationShadow(elevationValue, color, ambientShadowConfig)(config);
+        const directionalShadow: string = elevationShadow(elevationValue, color, directionalShadowConfig)(config);
 
         return {
             boxShadow: `${directionalShadow}, ${ambientShadow}`
@@ -84,11 +84,11 @@ export function applyElevation(elevation: keyof IElevationRamp, color: string): 
  * Generate Elevation Shadow
  * Generates a string representing a box shadow value
  */
-export function generateElevationShadow(elevation: number, color: string, shadowConfig: IShadowConfig): (config: IDesignSystem) => string {
+export function elevationShadow(elevationValue: number, color: string, shadowConfig: IShadowConfig): (config: IDesignSystem) => string {
     return (config: IDesignSystem): string => {
-        const xOffset: string = density(shadowConfig.xOffsetMultiplier * elevation)(config);
-        const yOffset: string = density(shadowConfig.yOffsetMultiplier * elevation)(config);
-        const blur: string = density(shadowConfig.blurMultiplier * elevation)(config);
+        const xOffset: string = density(shadowConfig.xOffsetMultiplier * elevationValue)(config);
+        const yOffset: string = density(shadowConfig.yOffsetMultiplier * elevationValue)(config);
+        const blur: string = density(shadowConfig.blurMultiplier * elevationValue)(config);
         const opacity: number = shadowConfig.opacity;
 
         return `${xOffset} ${yOffset} ${blur} ${Chroma(color).alpha(opacity).css()}`;
