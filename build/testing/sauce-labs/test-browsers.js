@@ -69,7 +69,7 @@ let browsers = getConfiguration(process.argv[2]);
  * Run tests on Sauce Labs
  * @param {string} branchName 
  */
-function Test(branchName) {
+function test(branchName) {
     console.log("Testing Git branch:", branchName);
 
     // Execute Selenium/Appium Web Drivers on Sauce Labs for each browser configuration
@@ -190,5 +190,5 @@ getBranchName.then(function(branchName) {
     branchName = branchName.slice(0, -1);
 
     // Run Testing
-    Test(branchName);
+    test(branchName);
 });
