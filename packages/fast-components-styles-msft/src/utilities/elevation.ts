@@ -1,7 +1,7 @@
 import Chroma from "chroma-js";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { ICSSRules } from "@microsoft/fast-jss-manager";
-import { IDesignSystem } from "../design-system";
+import designSystemDefaults, { IDesignSystem } from "../design-system";
 import { density } from "./density";
 
 /**
@@ -68,7 +68,8 @@ export const directionalShadowConfig: IShadowConfig = {
  * Apply elevation
  * Used to apply elevation shadow treatment to a component
  */
-export function elevation(elevationKey: keyof IElevationRamp, color: string): (config: IDesignSystem) => ICSSRules<IDesignSystem> {
+/* tslint:disable-next-line */
+export function elevation(elevationKey: keyof IElevationRamp, color: string = designSystemDefaults.foregroundColor): (config: IDesignSystem) => ICSSRules<IDesignSystem> {
     return (config: IDesignSystem): ICSSRules<IDesignSystem> => {
         const elevationValue: number = elevationRamp[elevationKey];
         const ambientShadow: string = elevationShadow(elevationValue, color, ambientShadowConfig)(config);

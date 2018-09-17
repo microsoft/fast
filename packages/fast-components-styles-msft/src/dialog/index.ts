@@ -5,7 +5,7 @@ import { toPx } from "@microsoft/fast-jss-utilities";
 import { get } from "lodash-es";
 import Chroma from "chroma-js";
 import { applyAcrylicMaterial } from "../utilities/acrylic";
-import { applyElevation, elevationRamp } from "../utilities/elevation";
+import { elevation, elevationRamp } from "../utilities/elevation";
 
 /* tslint:disable-next-line */
 const styles: ComponentStyles<IDialogClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<IDialogClassNameContract, IDesignSystem> => {
@@ -34,7 +34,7 @@ const styles: ComponentStyles<IDialogClassNameContract, IDesignSystem> = (config
             top: "50%",
             transform: "translate(-50%, -50%)",
             background: backgroundColor,
-            ...applyElevation("e14", foregroundColor)(designSystem)
+            ...elevation("e14", foregroundColor)(designSystem)
         }
     };
 };
