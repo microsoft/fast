@@ -44,27 +44,22 @@ const remoteHub = "http://" + username + ":" + accessKey + "@ondemand.saucelabs.
  */
 const getConfiguration = (phases) => {
 
-    // Parse command arguments and return valid configs
-    try {
-        switch (phases) {
+    switch (phases) {
             
-            case "alpha":
-                return new Configure(Phases.Alpha);
+        case "alpha":
+            return new Configure(Phases.Alpha);
                 
-            case "beta":
-                return new Configure(Phases.Beta);
+        case "beta":
+            return new Configure(Phases.Beta);
                 
-            case "release":
-                return new Configure(Phases.Release);
+        case "release":
+            return new Configure(Phases.Release);
                 
-            default:
-                console.log(chalk.red("Invalid Argument : must be 'alpha', 'beta', or 'release'"));
-                return process.exit(1);
-        }
-
-    } catch(err) {
-        console.error(err)
+        default:
+            console.log(chalk.red("Invalid Argument : must be 'alpha', 'beta', or 'release'"));
+            return process.exit(1);
     }
+
 }
 
 // Assign browser configurations to an array
