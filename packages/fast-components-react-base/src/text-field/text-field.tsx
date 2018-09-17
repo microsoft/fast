@@ -11,7 +11,7 @@ import { IManagedClasses, ITextFieldClassNameContract } from "@microsoft/fast-co
 import { get } from "lodash-es";
 
 /* tslint:disable-next-line */
-class TextField extends Foundation<ITextFieldHandledProps & IManagedClasses<ITextFieldClassNameContract>, React.HTMLAttributes<HTMLInputElement>, {}> {
+class TextField extends Foundation<ITextFieldHandledProps & IManagedClasses<ITextFieldClassNameContract>, ITextFieldUnhandledProps, {}> {
     protected handledProps: HandledProps<ITextFieldHandledProps & IManagedClasses<ITextFieldClassNameContract>> = {
         disabled: void 0,
         placeholder: void 0,

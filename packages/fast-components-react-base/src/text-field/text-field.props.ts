@@ -58,6 +58,6 @@ export interface ITextFieldHandledProps {
     type?: TextFieldType;
 }
 
-export interface ITextFieldUnhandledProps extends React.HTMLAttributes<HTMLInputElement> {}
+export interface ITextFieldUnhandledProps extends React.InputHTMLAttributes<HTMLInputElement> {}
 export interface ITextFieldManagedClasses extends IManagedClasses<ITextFieldClassNameContract> {}
 export type TextFieldProps = ITextFieldHandledProps & ITextFieldUnhandledProps & ITextFieldManagedClasses;
