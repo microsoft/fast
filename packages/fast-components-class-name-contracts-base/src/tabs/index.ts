@@ -8,7 +8,7 @@ export interface ITabsClassNameContract {
     tabs: string;
 
     /**
-     * The tab oanels
+     * The tab panels
      */
     tabs_tabPanels: string;
 
