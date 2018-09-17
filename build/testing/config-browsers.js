@@ -18,13 +18,13 @@
  * Phases of software development
  * @type Enum
 */
-var Phases;
+const Phases = Object.freeze({
+    "alpha": "alpha",
+    "beta": "beta",
+    "release": "release"
+})
 
-(function (Phases) {
-    Phases[Phases["alpha"] = 0] = "alpha";
-    Phases[Phases["beta"] = 1] = "beta";
-    Phases[Phases["release"] = 2] = "release";
-})(Phases = exports.Phases || (exports.Phases = {}));
+exports.Phases = Phases;
 
 /**
  * Platform configurations sourced from Selenium and Appium online Configurators.  
@@ -88,6 +88,7 @@ var Configure = (function () {
                         'locale': 'en_US'
                     }
                 ];
+            
             case Phases.beta:
                 
                 return [
@@ -148,6 +149,7 @@ var Configure = (function () {
                         'locale': 'en_US'
                     }
                 ];
+                
             case Phases.release:
             default:
                 return [

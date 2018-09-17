@@ -24,7 +24,6 @@
  * Getting Started: https://help.crossbrowsertesting.com/selenium-testing/getting-started/javascript/
  * Scripting docs: https://www.seleniumhq.org/docs/03_webdriver.jsp#chapter03-reference 
  */
-
 const { Builder } = require("selenium-webdriver");
 const chalk = require('chalk');
 const { Configure, Phases } = require("../config-browsers.js");
@@ -47,10 +46,10 @@ const remoteHub = "http://" + username + ":" + accessKey + "@ondemand.saucelabs.
 const getConfiguration = (phases) => {
 
     switch (phases) {
-            
+           
         case Phases.alpha:
             return new Configure(Phases.alpha);
-                
+       
         case Phases.beta:
             return new Configure(Phases.beta);
                 
@@ -60,6 +59,7 @@ const getConfiguration = (phases) => {
         default:
             console.log(chalk.red("Invalid Argument : must be 'alpha', 'beta', or 'release'"));
             return process.exit(1);
+    
     }
 
 }
