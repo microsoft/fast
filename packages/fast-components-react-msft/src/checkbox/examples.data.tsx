@@ -1,6 +1,6 @@
 import * as React from "react";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import Checkbox from "./index";
+import { Checkbox } from "./index";
 import { ICheckboxHandledProps } from "@microsoft/fast-components-react-base";
 import schema from "@microsoft/fast-components-react-base/dist/checkbox/checkbox.schema.json";
 import Documentation from "./.tmp/documentation";

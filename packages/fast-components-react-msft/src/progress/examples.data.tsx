@@ -1,6 +1,6 @@
 import * as React from "react";
 import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
-import Progress from "./index";
+import { Progress } from "./index";
 import {
     IMSFTProgressHandledProps,
     IMSFTProgressManagedClasses,

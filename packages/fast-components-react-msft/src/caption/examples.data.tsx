@@ -1,6 +1,6 @@
 import * as React from "react";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import Caption from "./index";
+import { Caption } from "./index";
 import {
     CaptionLevel,
     CaptionProps,

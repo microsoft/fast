@@ -1,6 +1,6 @@
 import * as React from "react";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import Heading from "./index";
+import { Heading } from "./index";
 import {
     AlignHeadingBaseline,
     HeadingLevel,

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
-import Button from "./index";
+import { Button } from "./index";
 import { IButtonHandledProps as IBaseButtonHandledProps } from "@microsoft/fast-components-react-base";
 import {
     ButtonAppearance,

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import Typography from "./index";
+import { Typography } from "./index";
 import { ITypographyHandledProps, ITypographyManagedClasses, TypeLevel, TypographyTag } from "@microsoft/fast-components-react-base";
 import schema from "@microsoft/fast-components-react-base/dist/typography/typography.schema.json";
 import Documentation from "./.tmp/documentation";
