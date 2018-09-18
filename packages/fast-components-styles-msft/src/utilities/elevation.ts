@@ -15,34 +15,27 @@ export interface IShadowConfig {
 }
 
 /**
- * The elevation ramp interface
+ * The MSFT elevation values
  */
-export interface IElevationRamp {
-    [elevation: string]: number;
+export enum ElevationMultiplier {
+    e1 = 1,
+    e2 = 2,
+    e3 = 3,
+    e4 = 4,
+    e5 = 6,
+    e6 = 8,
+    e7 = 9,
+    e8 = 12,
+    e9 = 16,
+    e10 = 24,
+    e11 = 32,
+    e12 = 40,
+    e13 = 48,
+    e14 = 64,
+    e15 = 80,
+    e16 = 96,
+    e17 = 192
 }
-
-/**
- * The MSFT elevation ramp
- */
-export const elevationRamp: IElevationRamp = {
-    e1: 1,
-    e2: 2,
-    e3: 3,
-    e4: 4,
-    e5: 6,
-    e6: 8,
-    e7: 9,
-    e8: 12,
-    e9: 16,
-    e10: 24,
-    e11: 32,
-    e12: 40,
-    e13: 48,
-    e14: 64,
-    e15: 80,
-    e16: 96,
-    e17: 192,
-};
 
 /**
  * Ambient shadow config
@@ -69,11 +62,10 @@ export const directionalShadowConfig: IShadowConfig = {
  * Used to apply elevation shadow treatment to a component
  */
 export function elevation(
-    elevationKey: keyof IElevationRamp,
+    elevationValue: ElevationMultiplier | number,
     color: string = designSystemDefaults.foregroundColor
 ): (config: IDesignSystem) => ICSSRules<IDesignSystem> {
     return (config: IDesignSystem): ICSSRules<IDesignSystem> => {
-        const elevationValue: number = elevationRamp[elevationKey];
         const ambientShadow: string = elevationShadow(elevationValue, color, ambientShadowConfig)(config);
         const directionalShadow: string = elevationShadow(elevationValue, color, directionalShadowConfig)(config);
 
