@@ -5,7 +5,7 @@ export interface IImageClassNameContract {
     /**
      * The root of the image component
      */
-    image?: string;
+    image: string;
 
     /**
      * The picture element image modifier
