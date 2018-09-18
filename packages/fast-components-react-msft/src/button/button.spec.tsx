@@ -83,7 +83,7 @@ describe("button", (): void => {
 
         const button: any = rendered.first().shallow();
         // Get the expected className value from the list of generated managed classes
-        const expectedClassName: string = button.instance().props.managedClasses.button_primary;
+        const expectedClassName: string = button.instance().props.managedClasses.button__primary;
 
         expect(button.instance().props.appearance).toEqual(ButtonAppearance.primary);
         // Generated managedClass should be passed to className
@@ -102,7 +102,7 @@ describe("button", (): void => {
 
         const button: any = rendered.first().shallow();
         // Get the expected className value from the list of generated managed classes
-        const expectedClassName: string = button.instance().props.managedClasses.button_outline;
+        const expectedClassName: string = button.instance().props.managedClasses.button__outline;
 
         expect(button.instance().props.appearance).toEqual(ButtonAppearance.outline);
         // Generated managedClass should be passed to className
@@ -121,7 +121,7 @@ describe("button", (): void => {
 
         const button: any = rendered.first().shallow();
         // Get the expected className value from the list of generated managed classes
-        const expectedClassName: string = button.instance().props.managedClasses.button_lightweight;
+        const expectedClassName: string = button.instance().props.managedClasses.button__lightweight;
 
         expect(button.instance().props.appearance).toEqual(ButtonAppearance.lightweight);
         // Generated managedClass should be passed to className
@@ -140,7 +140,7 @@ describe("button", (): void => {
 
         const button: any = rendered.first().shallow();
         // Get the expected className value from the list of generated managed classes
-        const expectedClassName: string = button.instance().props.managedClasses.button_justified;
+        const expectedClassName: string = button.instance().props.managedClasses.button__justified;
 
         expect(button.instance().props.appearance).toEqual(ButtonAppearance.justified);
         // Generated managedClass should be passed to className
@@ -165,7 +165,7 @@ describe("button", (): void => {
         );
 
         const button: any = rendered.first().shallow();
-        const expectedClassName: string = `${button.instance().props.managedClasses.button_justified} ${customClassNameString}`;
+        const expectedClassName: string = `${button.instance().props.managedClasses.button__justified} ${customClassNameString}`;
 
         expect(button.prop("className")).toEqual(expectedClassName);
     });

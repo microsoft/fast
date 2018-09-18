@@ -25,7 +25,7 @@ describe("label snapshot", (): void => {
 describe("label", (): void => {
     const managedClasses: ILabelClassNameContract = {
         label: "label-class",
-        label_hidden: "label-hidden-class"
+        label__hidden: "label-hidden-class"
     };
 
     test("should have a displayName that matches the component name", () => {

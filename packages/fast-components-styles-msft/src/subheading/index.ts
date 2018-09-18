@@ -7,12 +7,12 @@ const styles: ComponentStyles<ISubheadingClassNameContract, IDesignSystem> = {
     subheading: {
         fontWeight: `${fontWeight.normal}`
     },
-    subheading_1: {},
-    subheading_2: {},
-    subheading_3: {},
-    subheading_4: {},
-    subheading_5: {},
-    subheading_6: {}
+    subheading__1: {},
+    subheading__2: {},
+    subheading__3: {},
+    subheading__4: {},
+    subheading__5: {},
+    subheading__6: {}
 };
 
 export default styles;

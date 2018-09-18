@@ -19,7 +19,7 @@ import { Orientation } from "@microsoft/fast-web-utilities";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
 const tabsManagedClasses: ITabsClassNameContract = {
-    tabs_tabItems: "tab_items-class",
+    tabs_tabPanels: "tab_items-class",
     tabs_tabList: "tab_list-class",
     tabs: "tabs-class"
 };

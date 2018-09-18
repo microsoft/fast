@@ -52,7 +52,7 @@ class Label extends Foundation<
      * Generates class names based on props
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(get(this.props, this.props.hidden ? "managedClasses.label_hidden" : "managedClasses.label"));
+        return super.generateClassNames(get(this.props, this.props.hidden ? "managedClasses.label__hidden" : "managedClasses.label"));
     }
 }
 
