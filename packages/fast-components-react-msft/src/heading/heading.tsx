@@ -55,9 +55,9 @@ class Heading extends Foundation<IHeadingHandledProps & IManagedClasses<IHeading
      */
     protected generateClassNames(): string {
         const classes: string = this.props.level ?
-            get(this.props, `managedClasses.heading_${this.props.level}`) : get(this.props, "managedClasses.heading_1");
+            get(this.props, `managedClasses.heading__${this.props.level}`) : get(this.props, "managedClasses.heading__1");
 
-        return super.generateClassNames(classes);
+        return super.generateClassNames(`${get(this.props, "managedClasses.heading")} ${classes}`);
     }
 }
 

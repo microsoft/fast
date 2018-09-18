@@ -13,7 +13,7 @@ import { IComponentFactoryExample } from "@microsoft/fast-development-site-react
 const classes: IHorizontalOverflowManagedClasses = {
     managedClasses: {
         horizontalOverflow: "horizontal-overflow",
-        horizontalOverflow_items: "horizontal-overflow_items",
+        horizontalOverflow_contentRegion: "horizontal-overflow_items",
         horizontalOverflow_next: "horizontal-overflow_next",
         horizontalOverflow_previous: "horizontal-overflow_previous"
     }

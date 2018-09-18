@@ -14,7 +14,7 @@ const styles: ComponentStyles<ILabelClassNameContract, IDesignSystem> = {
         color: ensureForegroundNormal,
         padding: "0"
     },
-    label_hidden: {
+    label__hidden: {
         ...applyScreenReader()
     }
 };

@@ -26,7 +26,7 @@ describe("label", (): void => {
     const Component: React.ComponentClass<ILabelHandledProps & ILabelManagedClasses> = examples.component;
     const managedClasses: ILabelClassNameContract = {
         label: "label-class",
-        label_hidden: "label-hidden-class"
+        label__hidden: "label-hidden-class"
     };
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {

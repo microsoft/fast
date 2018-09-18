@@ -26,7 +26,7 @@ describe("call to action", (): void => {
     const Component: React.ComponentClass<ICallToActionHandledProps & ICallToActionManagedClasses> = examples.component;
     const managedClasses: ICallToActionClassNameContract = {
         callToAction: "call-to-action",
-        callToAction_glyph: "glyph"
+        callToAction_glyph: "glyph",
         callToAction__primary: "call-to-action-primary",
         callToAction__lightweight: "call-to-action-lightweight",
         callToAction__justified: "call-to-action-justified",

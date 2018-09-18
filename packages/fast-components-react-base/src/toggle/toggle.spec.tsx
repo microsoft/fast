@@ -27,9 +27,9 @@ describe("toggle", (): void => {
     const managedClasses: IToggleClassNameContract = {
         toggle: "toggle-class",
         toggle_label: "toggle-label-class",
-        toggle_wrapper: "toggle-wrapper-class",
+        toggle_toggleButton: "toggle-wrapper-class",
         toggle_input: "toggle-input-class",
-        toggle_button: "toggle-button-class"
+        toggle_stateIndicator: "toggle-button-class"
     };
     const handledProps: IToggleHandledProps & IToggleManagedClasses = {
         managedClasses,

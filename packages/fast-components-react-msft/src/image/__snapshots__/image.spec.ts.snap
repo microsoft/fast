@@ -2,7 +2,7 @@
 
 exports[`image snapshots Image: 0 1`] = `
 <picture
-  className="picture-0-1-3"
+  className="image-0-1-1 image__picture-0-1-2"
 >
   <source
     media="(min-width: 1400px)"
@@ -26,7 +26,7 @@ exports[`image snapshots Image: 0 1`] = `
   />
   <img
     alt="Placeholder with grey background and dimension watermark without any imagery"
-    className="image-0-1-1 image_round-0-1-2"
+    className="image_img-0-1-3"
     src="https://placehold.it/300x300/2F2F2F/171717"
   />
 </picture>
@@ -35,7 +35,7 @@ exports[`image snapshots Image: 0 1`] = `
 exports[`image snapshots Image: 1 1`] = `
 <img
   alt="Placeholder with grey background and dimension watermark without any imagery"
-  className="image-0-1-4 image_round-0-1-5"
+  className="image-0-1-4"
   sizes="100vw"
   src="https://placehold.it/300x300/2F2F2F/171717"
   srcSet="https://placehold.it/600x600/2F2F2F/171717 2048w, https://placehold.it/600x600/2F2F2F/171717 1778w, https://placehold.it/1600x600/2F2F2F/171717 1399w, https://placehold.it/500x500/2F2F2F/171717 1083w, https://placehold.it/400x400/2F2F2F/171717 767w, https://placehold.it/300x300/2F2F2F/171717 1w"
@@ -45,7 +45,7 @@ exports[`image snapshots Image: 1 1`] = `
 exports[`image snapshots Image: 2 1`] = `
 <img
   alt="Placeholder with grey background and dimension watermark without any imagery"
-  className="image-0-1-7 image_round-0-1-8"
+  className="image-0-1-7"
   sizes={null}
   src="https://placehold.it/300x300/2F2F2F/171717"
   srcSet={null}
@@ -54,7 +54,7 @@ exports[`image snapshots Image: 2 1`] = `
 
 exports[`image snapshots Image: 3 1`] = `
 <picture
-  className="picture-0-1-12"
+  className="image-0-1-10 image__picture-0-1-11"
 >
   <source
     media="(min-width: 1400px)"
@@ -78,7 +78,7 @@ exports[`image snapshots Image: 3 1`] = `
   />
   <img
     alt="Placeholder with grey background and dimension watermark without any imagery"
-    className="image-0-1-10"
+    className="image_img-0-1-12"
     src="https://placehold.it/300x300/2F2F2F/171717"
   />
 </picture>

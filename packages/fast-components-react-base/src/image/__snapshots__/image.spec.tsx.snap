@@ -2,7 +2,7 @@
 
 exports[`image snapshot Image: 0 1`] = `
 <picture
-  className="picture"
+  className="image picture"
 >
   <source
     media="(min-width: 1779px)"
@@ -30,7 +30,7 @@ exports[`image snapshot Image: 0 1`] = `
   />
   <img
     alt="Placeholder with grey background and dimension watermark without any imagery"
-    className="image image-round"
+    className="img"
     src="https://placehold.it/539x300/2F2F2F/171717"
   />
 </picture>
