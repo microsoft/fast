@@ -31,7 +31,7 @@ class Flipper extends Foundation<
             <Button
                 {...this.unhandledProps()}
                 {...this.coerceButtonProps()}
-                managedClasses={this.props.managedClasses}
+                managedClasses={null}
                 className={this.generateClassNames()}
             >
                 <span className={this.props.managedClasses.flipper_glyph}>{this.props.children}</span>
@@ -43,9 +43,9 @@ class Flipper extends Foundation<
      * Generates class names based on props
      */
     protected generateClassNames(): string {
-        const classes: string = this.props.managedClasses[`flipper_${this.props.direction || FlipperDirection.next}`];
+        const classes: string = this.props.managedClasses[`flipper__${this.props.direction || FlipperDirection.next}`];
 
-        return super.generateClassNames(classes);
+        return super.generateClassNames(`${get(this.props, "managedClasses.flipper")} ${classes}`);
     }
 
     /**

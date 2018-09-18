@@ -24,8 +24,7 @@ describe("image snapshot", (): void => {
 describe("image", (): void => {
     const managedClasses: IImageClassNameContract = {
         image: "image-class",
-        image_round: "image-round-class",
-        picture: "picture-class"
+        image__picture: "picture-class"
     };
     const alt: string = "Image alt text test string";
 

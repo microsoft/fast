@@ -58,7 +58,7 @@ class Progress extends Foundation<
                     slot={ProgressType.determinate}
                 >
                     <div
-                        className={this.props.managedClasses.progress_determinateValueIndicator}
+                        className={this.props.managedClasses.progress_valueIndicator}
                         style={{width: `${this.props.value}%`}}
                     />
                 </div>

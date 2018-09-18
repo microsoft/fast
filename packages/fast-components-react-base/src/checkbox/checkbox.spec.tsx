@@ -25,10 +25,10 @@ describe("checkbox snapshot", (): void => {
 describe("checkbox", (): void => {
     const managedClasses: ICheckboxClassNameContract = {
         checkbox: "checkbox-class",
-        checkbox_disabled: "disabled-class",
+        checkbox__disabled: "disabled-class",
         checkbox_input: "input-class",
         checkbox_label: "label-class",
-        checkbox_span: "span-class",
+        checkbox_stateIndicator: "span-class",
     };
 
     const inputSelector: string = `.${managedClasses.checkbox_input}`;

@@ -80,7 +80,7 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = (conf
                 }
             }
         },
-        checkbox_span: {
+        checkbox_stateIndicator: {
             position: "relative",
             borderRadius: "2px",
             display: "inline-block",
@@ -108,12 +108,12 @@ const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = (conf
             ...applyTypeRampConfig("t7"),
             [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "5px",
         },
-        checkbox_disabled: {
+        checkbox__disabled: {
             cursor: "not-allowed",
             "& $checkbox_input": {
                 boxShadow: `inset 0 0 0 1px ${checkboxDisabled}`,
                 "&:checked, &:indeterminate": {
-                    "& + $checkbox_span": {
+                    "& + $checkbox_stateIndicator": {
                         "&::after, &::before": {
                             backgroundColor: checkboxDisabled
                         }

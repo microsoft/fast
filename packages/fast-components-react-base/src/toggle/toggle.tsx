@@ -68,7 +68,7 @@ class Toggle extends Foundation<
                 aria-disabled={this.props.disabled || null}
             >
                 {this.generateLabel()}
-                <div className={get(this.props, "managedClasses.toggle_wrapper")}>
+                <div className={get(this.props, "managedClasses.toggle_toggleButton")}>
                     <input
                         className={get(this.props, "managedClasses.toggle_input")}
                         type="checkbox"
@@ -79,7 +79,7 @@ class Toggle extends Foundation<
                         onChange={this.handleToggleChange}
                         checked={this.state.selected}
                     />
-                    <span className={get(this.props, "managedClasses.toggle_button")} />
+                    <span className={get(this.props, "managedClasses.toggle_stateIndicator")} />
                 </div>
                 <span
                     id={this.props.statusLabelId}
