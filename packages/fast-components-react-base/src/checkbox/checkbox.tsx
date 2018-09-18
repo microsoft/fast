@@ -94,7 +94,7 @@ class Checkbox extends Foundation<
                     disabled={this.props.disabled || null}
                     checked={this.state.checked}
                 />
-                <span className={get(this.props, "managedClasses.checkbox_span")} />
+                <span className={get(this.props, "managedClasses.checkbox_stateIndicator")} />
                 {this.renderLabel()}
             </this.tag>
         );
@@ -106,7 +106,7 @@ class Checkbox extends Foundation<
     protected generateClassNames(): string {
         let classes: string = get(this.props, "managedClasses.checkbox");
 
-        classes = this.props.disabled ? `${classes} ${get(this.props, "managedClasses.checkbox_disabled")}` : classes;
+        classes = this.props.disabled ? `${classes} ${get(this.props, "managedClasses.checkbox__disabled")}` : classes;
 
         return super.generateClassNames(classes);
     }

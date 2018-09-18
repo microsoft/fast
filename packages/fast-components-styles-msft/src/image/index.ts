@@ -9,12 +9,10 @@ const styles: ComponentStyles<IImageClassNameContract, IDesignSystem> = {
         maxWidth: "100%",
         height: "auto"
     },
-    image_round: {
-        borderRadius: "50%"
-    },
-    picture: {
+    image__picture: {
         display: "block"
-    }
+    },
+    image_img: {}
 };
 
 export default styles;
