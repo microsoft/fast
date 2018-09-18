@@ -54,13 +54,13 @@ class Button extends Foundation<
     protected generateClassNames(): string {
         switch (this.props.appearance) {
             case ButtonAppearance.primary:
-                return super.generateClassNames(get(this.props, "managedClasses.button_primary"));
+                return super.generateClassNames(get(this.props, "managedClasses.button__primary"));
             case ButtonAppearance.outline:
-                return super.generateClassNames(get(this.props, "managedClasses.button_outline"));
+                return super.generateClassNames(get(this.props, "managedClasses.button__outline"));
             case ButtonAppearance.lightweight:
-                return super.generateClassNames(get(this.props, "managedClasses.button_lightweight"));
+                return super.generateClassNames(get(this.props, "managedClasses.button__lightweight"));
             case ButtonAppearance.justified:
-                return super.generateClassNames(get(this.props, "managedClasses.button_justified"));
+                return super.generateClassNames(get(this.props, "managedClasses.button__justified"));
             default:
                 return super.generateClassNames();
         }

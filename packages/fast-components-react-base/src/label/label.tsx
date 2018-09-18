@@ -55,7 +55,7 @@ class Label extends Foundation<
         let className: string = get(this.props, "managedClasses.label");
 
         if (this.props.hidden) {
-            className = `${className} ${get(this.props, "managedClasses.label_hidden")}`;
+            className = `${className} ${get(this.props, "managedClasses.label__hidden")}`;
         }
 
         return super.generateClassNames(className);

@@ -4,8 +4,8 @@ import { ICaptionClassNameContract } from "@microsoft/fast-components-class-name
 
 const styles: ComponentStyles<ICaptionClassNameContract, IDesignSystem> = {
     caption: {},
-    caption_1: {},
-    caption_2: {}
+    caption__1: {},
+    caption__2: {}
 };
 
 export default styles;

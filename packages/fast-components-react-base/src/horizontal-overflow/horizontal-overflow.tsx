@@ -65,7 +65,7 @@ class HorizontalOverflow extends Foundation<
             >
                 <div style={{height: `${this.state.itemsHeight}px`, position: "relative", overflow: "hidden"}}>
                     <ul
-                        className={this.props.managedClasses.horizontalOverflow_items}
+                        className={this.props.managedClasses.horizontalOverflow_contentRegion}
                         style={this.getListStyle()}
                         ref={this.horizontalOverflowItemsRef}
                     >

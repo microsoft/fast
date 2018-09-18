@@ -12,22 +12,23 @@ function applyHeadingStyles(): ICSSRules<IDesignSystem> {
  * TODO #306: Pull font weight styles when we have an API for font/variable font properties
  */
 const styles: ComponentStyles<IHeadingClassNameContract, IDesignSystem> = {
-    heading_1: {
+    heading: {},
+    heading__1: {
         ...applyHeadingStyles()
     },
-    heading_2: {
+    heading__2: {
         ...applyHeadingStyles()
     },
-    heading_3: {
+    heading__3: {
         ...applyHeadingStyles()
     },
-    heading_4: {
+    heading__4: {
         ...applyHeadingStyles()
     },
-    heading_5: {
+    heading__5: {
         ...applyHeadingStyles()
     },
-    heading_6: {
+    heading__6: {
         ...applyHeadingStyles()
     }
 };

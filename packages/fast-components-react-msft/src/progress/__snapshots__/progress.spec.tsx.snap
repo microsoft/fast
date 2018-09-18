@@ -13,7 +13,7 @@ exports[`progress snapshots Progress: 0 1`] = `
     slot="determinate"
   >
     <div
-      className="progress_determinateValueIndicator-0-1-12"
+      className="progress_valueIndicator-0-1-12"
       style={
         Object {
           "width": "50%",
