@@ -8,7 +8,7 @@ import {
     IParagraphUnhandledProps,
     ParagraphLevel
 } from "./paragraph.props";
-import Typography from "../typography";
+import { Typography } from "../typography";
 import { IManagedClasses, IParagraphClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 
 /* tslint:disable-next-line */

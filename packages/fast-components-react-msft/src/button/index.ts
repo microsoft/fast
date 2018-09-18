@@ -8,6 +8,14 @@ import {
 import { IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
 import { ButtonStyles, IDesignSystem } from "@microsoft/fast-components-styles-msft";
-import Button, { IButtonHandledProps } from "./button";
+import MSFTButton, { IButtonHandledProps } from "./button";
 
-export default manageJss(ButtonStyles)(Button);
+/*
+ * The type returned by manageJss type is very complicated so we'll let the
+ * compiler infer the type instead of re-declaring just for the package export
+ */
+/* tslint:disable-next-line:typedef */
+const Button = manageJss(ButtonStyles)(MSFTButton);
+type Button = InstanceType<typeof Button>;
+
+export { Button };

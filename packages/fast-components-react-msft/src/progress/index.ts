@@ -6,12 +6,20 @@ import {
     IFoundationProps,
     IProgressClassNameContract
 } from "@microsoft/fast-components-react-base";
-import Progress, {
+import MSFTProgress, {
     IMSFTProgressHandledProps,
     IMSFTProgressManagedClasses,
     IMSFTProgressUnhandledProps,
     MSFTProgressProps
 } from "./progress";
 
-export default manageJss(ProgressStyles)(Progress);
+/*
+ * The type returned by manageJss type is very complicated so we'll let the
+ * compiler infer the type instead of re-declaring just for the package export
+ */
+/* tslint:disable-next-line:typedef */
+const Progress = manageJss(ProgressStyles)(MSFTProgress);
+type Progress = InstanceType<typeof Progress>;
+
+export { Progress };
 export * from "./progress";

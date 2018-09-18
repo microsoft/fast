@@ -1,6 +1,6 @@
 import * as React from "react";
 import {
-    Dialog,
+    Dialog as BaseDialog,
     IDialogClassNameContract,
     IDialogHandledProps,
     IDialogUnhandledProps,
@@ -9,4 +9,12 @@ import {
 import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
 import { DialogStyles, IDesignSystem } from "@microsoft/fast-components-styles-msft";
 
-export default manageJss(DialogStyles)(Dialog);
+/*
+ * The type returned by manageJss type is very complicated so we'll let the
+ * compiler infer the type instead of re-declaring just for the package export
+ */
+/* tslint:disable-next-line:typedef */
+const Dialog = manageJss(DialogStyles)(BaseDialog);
+type Dialog = InstanceType<typeof Dialog>;
+
+export { Dialog };

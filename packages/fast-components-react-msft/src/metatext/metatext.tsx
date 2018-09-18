@@ -8,7 +8,7 @@ import {
     IMetatextUnhandledProps,
     MetatextTag
 } from "./metatext.props";
-import Typography from "../typography";
+import { Typography } from "../typography";
 import { IManagedClasses, IMetatextClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 
 /* tslint:disable-next-line */

@@ -9,7 +9,7 @@ import {
     SubheadingTag
 } from "./subheading.props";
 
-import Typography from "../typography";
+import { Typography } from "../typography";
 import { IManagedClasses, ISubheadingClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 
 /* tslint:disable-next-line */

@@ -1,6 +1,6 @@
 import * as React from "react";
 import {
-    Checkbox,
+    Checkbox as BaseCheckbox,
     ICheckboxClassNameContract,
     ICheckboxHandledProps,
     ICheckboxUnhandledProps,
@@ -9,4 +9,12 @@ import {
 import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
 import { CheckboxStyles, IDesignSystem } from "@microsoft/fast-components-styles-msft";
 
-export default manageJss(CheckboxStyles)(Checkbox);
+/*
+ * The type returned by manageJss type is very complicated so we'll let the
+ * compiler infer the type instead of re-declaring just for the package export
+ */
+/* tslint:disable-next-line:typedef */
+const Checkbox = manageJss(CheckboxStyles)(BaseCheckbox);
+type Checkbox = InstanceType<typeof Checkbox>;
+
+export { Checkbox };
