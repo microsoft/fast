@@ -44,10 +44,10 @@ const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config
                 }
             }
         },
-        toggle_wrapper: {
+        toggle_toggleButton: {
             position: "relative"
         },
-        toggle_button: {
+        toggle_stateIndicator: {
             position: "absolute",
             pointerEvents: "none",
             top: "5px",

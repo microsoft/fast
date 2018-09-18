@@ -13,9 +13,9 @@ const examples: IComponentFactoryExample<IToggleHandledProps & IToggleManagedCla
         managedClasses: {
             toggle: "toggle",
             toggle_label: "toggle_label",
-            toggle_wrapper: "toggle_wrapper",
+            toggle_toggleButton: "toggle_toggleButton",
             toggle_input: "toggle_input",
-            toggle_button: "toggle_button",
+            toggle_stateIndicator: "toggle_stateIndicator",
         },
         children: "Toggle",
         id: "toggle01",
@@ -29,9 +29,9 @@ const examples: IComponentFactoryExample<IToggleHandledProps & IToggleManagedCla
             managedClasses: {
                 toggle: "toggle",
                 toggle_label: "toggle_label",
-                toggle_wrapper: "toggle_wrapper",
+                toggle_toggleButton: "toggle_toggleButton",
                 toggle_input: "toggle_input",
-                toggle_button: "toggle_button",
+                toggle_stateIndicator: "toggle_stateIndicator",
             },
             children: "Toggle label",
             disabled: false,

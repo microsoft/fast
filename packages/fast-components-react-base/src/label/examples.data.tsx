@@ -17,7 +17,7 @@ const examples: IComponentFactoryExample<ILabelHandledProps & ILabelManagedClass
     detailData: {
         managedClasses: {
             label: "label",
-            label_hidden: "hidden_label"
+            label__hidden: "hidden_label"
         },
         tag: LabelTag.label,
         children: "Label"
@@ -26,7 +26,7 @@ const examples: IComponentFactoryExample<ILabelHandledProps & ILabelManagedClass
         {
             managedClasses: {
                 label: "label",
-                label_hidden: "hidden_label"
+                label__hidden: "hidden_label"
             },
             tag: LabelTag.label,
             children: "Label"
@@ -34,7 +34,7 @@ const examples: IComponentFactoryExample<ILabelHandledProps & ILabelManagedClass
         {
             managedClasses: {
                 label: "label",
-                label_hidden: "hidden_label"
+                label__hidden: "hidden_label"
             },
             tag: LabelTag.legend,
             children: "Legend label"
@@ -42,7 +42,7 @@ const examples: IComponentFactoryExample<ILabelHandledProps & ILabelManagedClass
         {
             managedClasses: {
                 label: "label",
-                label_hidden: "hidden_label"
+                label__hidden: "hidden_label"
             },
             hidden: true,
             tag: LabelTag.label,

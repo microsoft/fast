@@ -91,7 +91,7 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
                 >
                     {tabElements}
                 </div>
-                <div className={this.props.managedClasses.tabs_tabItems}>
+                <div className={this.props.managedClasses.tabs_tabPanels}>
                     {this.renderTabPanels()}
                 </div>
             </div>

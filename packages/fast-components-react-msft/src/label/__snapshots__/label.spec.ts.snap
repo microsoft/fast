@@ -19,7 +19,7 @@ exports[`label snapshots Label: 1 1`] = `
 
 exports[`label snapshots Label: 2 1`] = `
 <label
-  className="label_hidden-0-1-6"
+  className="label__hidden-0-1-6"
 >
   Hidden label
 </label>

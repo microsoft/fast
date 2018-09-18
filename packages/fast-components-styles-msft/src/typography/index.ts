@@ -13,39 +13,40 @@ const paragraphDefaults: ICSSRules<IDesignSystem> = {
 };
 
 const styles: ComponentStyles<ITypographyClassNameContract, IDesignSystem> = {
-    typography_1: {
+    typography: {},
+    typography__1: {
         ...applyTypeRampConfig("t1"),
         ...paragraphDefaults
     },
-    typography_2: {
+    typography__2: {
         ...applyTypeRampConfig("t2"),
         ...paragraphDefaults
     },
-    typography_3: {
+    typography__3: {
         ...applyTypeRampConfig("t3"),
         ...paragraphDefaults
     },
-    typography_4: {
+    typography__4: {
         ...applyTypeRampConfig("t4"),
         ...paragraphDefaults
     },
-    typography_5: {
+    typography__5: {
         ...applyTypeRampConfig("t5"),
         ...paragraphDefaults
     },
-    typography_6: {
+    typography__6: {
         ...applyTypeRampConfig("t6"),
         ...paragraphDefaults
     },
-    typography_7: {
+    typography__7: {
         ...applyTypeRampConfig("t7"),
         ...paragraphDefaults
     },
-    typography_8: {
+    typography__8: {
         ...applyTypeRampConfig("t8"),
         ...paragraphDefaults
     },
-    typography_9: {
+    typography__9: {
         ...applyTypeRampConfig("t9"),
         ...paragraphDefaults
     }

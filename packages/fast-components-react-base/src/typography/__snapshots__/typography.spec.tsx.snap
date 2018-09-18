@@ -2,7 +2,7 @@
 
 exports[`typography snapshot Typography: 0 1`] = `
 <h1
-  className="typography-1"
+  className="typography typography-1"
 >
   Test string
 </h1>
@@ -10,7 +10,7 @@ exports[`typography snapshot Typography: 0 1`] = `
 
 exports[`typography snapshot Typography: 1 1`] = `
 <h2
-  className="typography-2"
+  className="typography typography-2"
 >
   Test string
 </h2>
@@ -18,7 +18,7 @@ exports[`typography snapshot Typography: 1 1`] = `
 
 exports[`typography snapshot Typography: 2 1`] = `
 <h3
-  className="typography-3"
+  className="typography typography-3"
 >
   Test string
 </h3>
@@ -26,7 +26,7 @@ exports[`typography snapshot Typography: 2 1`] = `
 
 exports[`typography snapshot Typography: 3 1`] = `
 <h4
-  className="typography-4"
+  className="typography typography-4"
 >
   Test string
 </h4>
@@ -34,7 +34,7 @@ exports[`typography snapshot Typography: 3 1`] = `
 
 exports[`typography snapshot Typography: 4 1`] = `
 <h5
-  className="typography-5"
+  className="typography typography-5"
 >
   Test string
 </h5>
@@ -42,7 +42,7 @@ exports[`typography snapshot Typography: 4 1`] = `
 
 exports[`typography snapshot Typography: 5 1`] = `
 <h6
-  className="typography-6"
+  className="typography typography-6"
 >
   Test string
 </h6>
@@ -50,7 +50,7 @@ exports[`typography snapshot Typography: 5 1`] = `
 
 exports[`typography snapshot Typography: 6 1`] = `
 <span
-  className="typography-7"
+  className="typography typography-7"
 >
   Test string
 </span>
@@ -58,7 +58,7 @@ exports[`typography snapshot Typography: 6 1`] = `
 
 exports[`typography snapshot Typography: 7 1`] = `
 <caption
-  className="typography-8"
+  className="typography typography-8"
 >
   Test string
 </caption>
@@ -66,7 +66,7 @@ exports[`typography snapshot Typography: 7 1`] = `
 
 exports[`typography snapshot Typography: 8 1`] = `
 <p
-  className="typography-9"
+  className="typography typography-9"
 >
   Test string
 </p>
@@ -74,7 +74,7 @@ exports[`typography snapshot Typography: 8 1`] = `
 
 exports[`typography snapshot Typography: 9 1`] = `
 <figcaption
-  className="typography-9"
+  className="typography typography-9"
 >
   Test string
 </figcaption>

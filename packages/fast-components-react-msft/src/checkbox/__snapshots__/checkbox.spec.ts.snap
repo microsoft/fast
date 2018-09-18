@@ -12,7 +12,7 @@ exports[`checkbox snapshots Checkbox: 0 1`] = `
     type="checkbox"
   />
   <span
-    className="checkbox_span-0-1-8"
+    className="checkbox_stateIndicator-0-1-8"
   />
   <span
     className="checkbox_label-0-1-9"
@@ -34,7 +34,7 @@ exports[`checkbox snapshots Checkbox: 1 1`] = `
     type="checkbox"
   />
   <span
-    className="checkbox_span-0-1-18"
+    className="checkbox_stateIndicator-0-1-18"
   />
   <span
     className="checkbox_label-0-1-19"
@@ -56,7 +56,7 @@ exports[`checkbox snapshots Checkbox: 2 1`] = `
     type="checkbox"
   />
   <span
-    className="checkbox_span-0-1-28"
+    className="checkbox_stateIndicator-0-1-28"
   />
   <span
     className="checkbox_label-0-1-29"
@@ -68,7 +68,7 @@ exports[`checkbox snapshots Checkbox: 2 1`] = `
 
 exports[`checkbox snapshots Checkbox: 3 1`] = `
 <label
-  className="checkbox-0-1-36 checkbox_disabled-0-1-40"
+  className="checkbox-0-1-36 checkbox__disabled-0-1-40"
 >
   <input
     checked={false}
@@ -78,7 +78,7 @@ exports[`checkbox snapshots Checkbox: 3 1`] = `
     type="checkbox"
   />
   <span
-    className="checkbox_span-0-1-38"
+    className="checkbox_stateIndicator-0-1-38"
   />
   <span
     className="checkbox_label-0-1-39"
@@ -100,7 +100,7 @@ exports[`checkbox snapshots Checkbox: 4 1`] = `
     type="checkbox"
   />
   <span
-    className="checkbox_span-0-1-48"
+    className="checkbox_stateIndicator-0-1-48"
   />
   <span
     className="checkbox_label-0-1-49"
@@ -122,7 +122,7 @@ exports[`checkbox snapshots Checkbox: 5 1`] = `
     type="checkbox"
   />
   <span
-    className="checkbox_span-0-1-58"
+    className="checkbox_stateIndicator-0-1-58"
   />
   <span
     className="checkbox_label-0-1-59"

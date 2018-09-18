@@ -2,7 +2,18 @@
  * The class name contract for the image component
  */
 export interface IImageClassNameContract {
-    image?: string;
-    image_round?: string;
-    picture?: string;
+    /**
+     * The root of the image component
+     */
+    image: string;
+
+    /**
+     * The picture element image modifier
+     */
+    image__picture?: string;
+
+    /**
+     * The img element within the picture element
+     */
+    image_img?: string;
 }

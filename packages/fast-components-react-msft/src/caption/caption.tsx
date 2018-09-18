@@ -36,7 +36,7 @@ class Caption extends Foundation<ICaptionHandledProps & IManagedClasses<ICaption
 
     protected generateClassNames(): string {
         const classes: string =
-            `${get(this.props, `managedClasses.caption`)} ${get(this.props, `managedClasses.caption_${this.props.level}`)}`;
+            `${get(this.props, `managedClasses.caption`)} ${get(this.props, `managedClasses.caption__${this.props.level}`)}`;
 
         return super.generateClassNames(classes);
     }

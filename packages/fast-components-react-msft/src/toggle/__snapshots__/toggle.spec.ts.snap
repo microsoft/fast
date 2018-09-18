@@ -14,7 +14,7 @@ exports[`toggle snapshots Toggle: 0 1`] = `
     Toggle label default on
   </label>
   <div
-    className="toggle_wrapper-0-1-8"
+    className="toggle_toggleButton-0-1-8"
   >
     <input
       aria-describedby="span01"
@@ -27,7 +27,7 @@ exports[`toggle snapshots Toggle: 0 1`] = `
       value="On"
     />
     <span
-      className="toggle_button-0-1-9"
+      className="toggle_stateIndicator-0-1-9"
     />
   </div>
   <span
@@ -52,7 +52,7 @@ exports[`toggle snapshots Toggle: 1 1`] = `
     Toggle label default off
   </label>
   <div
-    className="toggle_wrapper-0-1-18"
+    className="toggle_toggleButton-0-1-18"
   >
     <input
       aria-describedby="span02"
@@ -65,7 +65,7 @@ exports[`toggle snapshots Toggle: 1 1`] = `
       value="Off"
     />
     <span
-      className="toggle_button-0-1-19"
+      className="toggle_stateIndicator-0-1-19"
     />
   </div>
   <span
@@ -90,7 +90,7 @@ exports[`toggle snapshots Toggle: 2 1`] = `
     Toggle label disabled on
   </label>
   <div
-    className="toggle_wrapper-0-1-28"
+    className="toggle_toggleButton-0-1-28"
   >
     <input
       aria-describedby="span03"
@@ -103,7 +103,7 @@ exports[`toggle snapshots Toggle: 2 1`] = `
       value="On"
     />
     <span
-      className="toggle_button-0-1-29"
+      className="toggle_stateIndicator-0-1-29"
     />
   </div>
   <span
@@ -128,7 +128,7 @@ exports[`toggle snapshots Toggle: 3 1`] = `
     Toggle label disabled off
   </label>
   <div
-    className="toggle_wrapper-0-1-38"
+    className="toggle_toggleButton-0-1-38"
   >
     <input
       aria-describedby="span04"
@@ -141,7 +141,7 @@ exports[`toggle snapshots Toggle: 3 1`] = `
       value="Off"
     />
     <span
-      className="toggle_button-0-1-39"
+      className="toggle_stateIndicator-0-1-39"
     />
   </div>
   <span

@@ -12,15 +12,16 @@ import { IComponentFactoryExample } from "@microsoft/fast-development-site-react
 
 const testString: string = "Test string";
 const managedClassExamples: any = {
-    typography_1: "typography-1",
-    typography_2: "typography-2",
-    typography_3: "typography-3",
-    typography_4: "typography-4",
-    typography_5: "typography-5",
-    typography_6: "typography-6",
-    typography_7: "typography-7",
-    typography_8: "typography-8",
-    typography_9: "typography-9"
+    typography: "typography",
+    typography__1: "typography-1",
+    typography__2: "typography-2",
+    typography__3: "typography-3",
+    typography__4: "typography-4",
+    typography__5: "typography-5",
+    typography__6: "typography-6",
+    typography__7: "typography-7",
+    typography__8: "typography-8",
+    typography__9: "typography-9"
 };
 
 const examples: IComponentFactoryExample<ITypographyHandledProps & ITypographyManagedClasses> = {
