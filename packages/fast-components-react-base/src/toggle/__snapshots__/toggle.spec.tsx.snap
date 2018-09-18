@@ -13,7 +13,7 @@ exports[`toggle snapshot Toggle: 0 1`] = `
     Toggle label
   </label>
   <div
-    className="toggle_wrapper"
+    className="toggle_toggleButton"
   >
     <input
       aria-describedby="span01"
@@ -26,7 +26,7 @@ exports[`toggle snapshot Toggle: 0 1`] = `
       value="On"
     />
     <span
-      className="toggle_button"
+      className="toggle_stateIndicator"
     />
   </div>
   <span

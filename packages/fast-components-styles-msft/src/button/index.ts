@@ -44,7 +44,7 @@ function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
                 return ensureNormalContrast(designSystem.contrast, designSystem.brandColor, designSystem.backgroundColor);
             }
         },
-        "&$button__disabled $button_span::before, &$button__disabled $button_span::before": {
+        "&$button__disabled $button_contentRegion::before, &$button__disabled $button_contentRegion::before": {
             ...applyTransaprentBackground(),
         },
         "&:disabled, &[aria-disabled]": {
@@ -193,7 +193,7 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (
                 color: secondaryDisabledColor
             }
         },
-        button_primary: {
+        button__primary: {
             color,
             backgroundColor: primaryRestBackgroundColor,
             "&:hover": {
@@ -208,7 +208,7 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (
                 backgroundColor: primaryDisabledBackground
             }
         },
-        button_outline: {
+        button__outline: {
             borderWidth: "1px",
             "&, &:hover": {
                 color: outlineColor,
@@ -226,16 +226,16 @@ const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (
                 borderColor: outlineDisabledBorderColor
             }
         },
-        button_lightweight: {
+        button__lightweight: {
             ...applyTransaprentBackplateStyles()
         },
-        button_justified: {
+        button__justified: {
             ...applyTransaprentBackplateStyles(),
             minWidth: "74px",
             [applyLocalizedProperty("paddingLeft", "paddingRight", direction)]: "0",
             justifyContent: "flex-start"
         },
-        button_span: {
+        button_contentRegion: {
             position: "relative",
             "&::before": {
                 content: "''",

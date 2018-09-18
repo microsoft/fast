@@ -13,13 +13,13 @@ export const callToActionButtonOverrides: ComponentStyles<Partial<IMSFTButtonCla
             return localizeSpacing(designSystem.direction)("13px 22px 11px 24px");
         }
     },
-    button_span: {
+    button_contentRegion: {
         transition: "all 600ms cubic-bezier(0.19, 1, 0.22, 1)",
         [applyLocalizedProperty("left", "right", Direction.ltr)]: "0"
     },
-    button_primary: {
+    button__primary: {
         "&:hover": {
-            "& $button_span": {
+            "& $button_contentRegion": {
                 [applyLocalizedProperty("left", "right", Direction.ltr)]: "-4px"
             }
         }

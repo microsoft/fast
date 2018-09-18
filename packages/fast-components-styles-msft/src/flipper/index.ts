@@ -32,7 +32,7 @@ const styles: ComponentStyles<IFlipperClassNameContract, IDesignSystem> = (confi
     const glyphColorHover: string = hoverContrast(config.contrast, foregroundColor, backgroundColor);
 
     return {
-        button: {
+        flipper: {
             width: "40px",
             height: "40px",
             margin: "0",
@@ -70,12 +70,12 @@ const styles: ComponentStyles<IFlipperClassNameContract, IDesignSystem> = (confi
                 borderTop: `1px solid ${foregroundColor}`
             }
         },
-        flipper_next: {
+        flipper__next: {
             "& $flipper_glyph": {
                 transform: applyLocalizedProperty(eastFlipperTransform, westFlipperTransform, direction)
             }
         },
-        flipper_previous: {
+        flipper__previous: {
             "& $flipper_glyph": {
                 transform: applyLocalizedProperty(westFlipperTransform, eastFlipperTransform, direction)
             }

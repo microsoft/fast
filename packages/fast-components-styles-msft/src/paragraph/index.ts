@@ -5,13 +5,13 @@ import { fontWeight } from "../utilities/fonts";
 
 const styles: ComponentStyles<IParagraphClassNameContract, IDesignSystem> = {
     paragraph: {},
-    paragraph_1: {
+    paragraph__1: {
         fontWeight: `${fontWeight.semilight}`
     },
-    paragraph_2: {
+    paragraph__2: {
         fontWeight: `${fontWeight.normal}`
     },
-    paragraph_3: {
+    paragraph__3: {
         fontWeight: `${fontWeight.normal}`
     }
 };

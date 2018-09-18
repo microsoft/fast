@@ -7,7 +7,7 @@ exports[`button snapshots Button: 0 1`] = `
   href={null}
 >
   <span
-    className="button_span-0-1-13"
+    className="button_contentRegion-0-1-13"
   >
     Secondary button
   </span>
@@ -16,12 +16,12 @@ exports[`button snapshots Button: 0 1`] = `
 
 exports[`button snapshots Button: 1 1`] = `
 <button
-  className="button-0-1-22 button_primary-0-1-23"
+  className="button-0-1-22 button__primary-0-1-23"
   data-sketch-symbol="Button - primary"
   href={null}
 >
   <span
-    className="button_span-0-1-27"
+    className="button_contentRegion-0-1-27"
   >
     Primary button
   </span>
@@ -30,12 +30,12 @@ exports[`button snapshots Button: 1 1`] = `
 
 exports[`button snapshots Button: 2 1`] = `
 <button
-  className="button-0-1-36 button_outline-0-1-38"
+  className="button-0-1-36 button__outline-0-1-38"
   data-sketch-symbol="Button - outline"
   href={null}
 >
   <span
-    className="button_span-0-1-41"
+    className="button_contentRegion-0-1-41"
   >
     Outline button
   </span>
@@ -44,12 +44,12 @@ exports[`button snapshots Button: 2 1`] = `
 
 exports[`button snapshots Button: 3 1`] = `
 <button
-  className="button-0-1-50 button_lightweight-0-1-53"
+  className="button-0-1-50 button__lightweight-0-1-53"
   data-sketch-symbol="Button - lightweight"
   href={null}
 >
   <span
-    className="button_span-0-1-55"
+    className="button_contentRegion-0-1-55"
   >
     Lightweight button
   </span>
@@ -58,11 +58,11 @@ exports[`button snapshots Button: 3 1`] = `
 
 exports[`button snapshots Button: 4 1`] = `
 <button
-  className="button-0-1-64 button_justified-0-1-68"
+  className="button-0-1-64 button__justified-0-1-68"
   href={null}
 >
   <span
-    className="button_span-0-1-69"
+    className="button_contentRegion-0-1-69"
   >
     Justified button
   </span>
@@ -75,7 +75,7 @@ exports[`button snapshots Button: 5 1`] = `
   href="#"
 >
   <span
-    className="button_span-0-1-83"
+    className="button_contentRegion-0-1-83"
   >
     Anchor
   </span>
@@ -93,7 +93,7 @@ exports[`button snapshots Button: 6 1`] = `
     &lt;
   </div>
   <span
-    className="button_span-0-1-97"
+    className="button_contentRegion-0-1-97"
   >
     Before slot only
   </span>
@@ -106,7 +106,7 @@ exports[`button snapshots Button: 7 1`] = `
   href="#"
 >
   <span
-    className="button_span-0-1-111"
+    className="button_contentRegion-0-1-111"
   >
     After slot only
   </span>
@@ -129,7 +129,7 @@ exports[`button snapshots Button: 8 1`] = `
     &lt;
   </div>
   <span
-    className="button_span-0-1-125"
+    className="button_contentRegion-0-1-125"
   >
     Both slots
   </span>
@@ -157,7 +157,7 @@ exports[`button snapshots Button: 9 1`] = `
     &lt;
   </div>
   <span
-    className="button_span-0-1-139"
+    className="button_contentRegion-0-1-139"
   >
     Mutliple both slots
   </span>
@@ -190,7 +190,7 @@ exports[`button snapshots Button: 10 1`] = `
     &lt;
   </div>
   <span
-    className="button_span-0-1-153"
+    className="button_contentRegion-0-1-153"
   />
   <div
     slot="after"
@@ -213,7 +213,7 @@ exports[`button snapshots Button: 11 1`] = `
   href={null}
 >
   <span
-    className="button_span-0-1-167"
+    className="button_contentRegion-0-1-167"
   >
     Secondary button (disabled)
   </span>
@@ -222,13 +222,13 @@ exports[`button snapshots Button: 11 1`] = `
 
 exports[`button snapshots Button: 12 1`] = `
 <button
-  className="button-0-1-176 button__disabled-0-1-182 button_primary-0-1-177"
+  className="button-0-1-176 button__disabled-0-1-182 button__primary-0-1-177"
   data-sketch-symbol="Button - primary disabled"
   disabled={true}
   href={null}
 >
   <span
-    className="button_span-0-1-181"
+    className="button_contentRegion-0-1-181"
   >
     Primary button (disabled)
   </span>
@@ -237,13 +237,13 @@ exports[`button snapshots Button: 12 1`] = `
 
 exports[`button snapshots Button: 13 1`] = `
 <button
-  className="button-0-1-190 button__disabled-0-1-196 button_outline-0-1-192"
+  className="button-0-1-190 button__disabled-0-1-196 button__outline-0-1-192"
   data-sketch-symbol="Button - outline disabled"
   disabled={true}
   href={null}
 >
   <span
-    className="button_span-0-1-195"
+    className="button_contentRegion-0-1-195"
   >
     Outline button (disabled)
   </span>
@@ -252,13 +252,13 @@ exports[`button snapshots Button: 13 1`] = `
 
 exports[`button snapshots Button: 14 1`] = `
 <button
-  className="button-0-1-204 button__disabled-0-1-210 button_lightweight-0-1-207"
+  className="button-0-1-204 button__disabled-0-1-210 button__lightweight-0-1-207"
   data-sketch-symbol="Button - lightweight disabled"
   disabled={true}
   href={null}
 >
   <span
-    className="button_span-0-1-209"
+    className="button_contentRegion-0-1-209"
   >
     Lightweight button (disabled)
   </span>
@@ -267,12 +267,12 @@ exports[`button snapshots Button: 14 1`] = `
 
 exports[`button snapshots Button: 15 1`] = `
 <button
-  className="button-0-1-218 button__disabled-0-1-224 button_justified-0-1-222"
+  className="button-0-1-218 button__disabled-0-1-224 button__justified-0-1-222"
   disabled={true}
   href={null}
 >
   <span
-    className="button_span-0-1-223"
+    className="button_contentRegion-0-1-223"
   >
     Justified button (disabled)
   </span>
@@ -286,7 +286,7 @@ exports[`button snapshots Button: 16 1`] = `
   href="#"
 >
   <span
-    className="button_span-0-1-237"
+    className="button_contentRegion-0-1-237"
   >
     Anchor (disabled)
   </span>

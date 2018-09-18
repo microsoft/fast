@@ -25,7 +25,7 @@ const imageSet1: JSX.Element[] = [
 
 const managedClasses: IHorizontalOverflowClassNameContract = {
     horizontalOverflow: "horizontal-overflow-class",
-    horizontalOverflow_items: "horizontal-overflow-items-class",
+    horizontalOverflow_contentRegion: "horizontal-overflow-items-class",
     horizontalOverflow_next: "horizontal-overflow-next-class",
     horizontalOverflow_previous: "horizontal-overflow-previous-class"
 };
