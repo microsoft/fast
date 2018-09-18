@@ -51,7 +51,7 @@ export const ambientShadowConfig: IShadowConfig = {
     blurMultiplier: 0.225,
     xOffsetMultiplier: 0,
     yOffsetMultiplier: 0.075,
-    opacity: .18
+    opacity: 0.18
 };
 
 /**
@@ -61,15 +61,17 @@ export const directionalShadowConfig: IShadowConfig = {
     blurMultiplier: 0.9,
     xOffsetMultiplier: 0,
     yOffsetMultiplier: 0.4,
-    opacity: .22
+    opacity: 0.22
 };
 
 /**
  * Apply elevation
  * Used to apply elevation shadow treatment to a component
  */
-/* tslint:disable-next-line */
-export function elevation(elevationKey: keyof IElevationRamp, color: string = designSystemDefaults.foregroundColor): (config: IDesignSystem) => ICSSRules<IDesignSystem> {
+export function elevation(
+    elevationKey: keyof IElevationRamp,
+    color: string = designSystemDefaults.foregroundColor
+): (config: IDesignSystem) => ICSSRules<IDesignSystem> {
     return (config: IDesignSystem): ICSSRules<IDesignSystem> => {
         const elevationValue: number = elevationRamp[elevationKey];
         const ambientShadow: string = elevationShadow(elevationValue, color, ambientShadowConfig)(config);
