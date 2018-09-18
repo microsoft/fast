@@ -5,15 +5,13 @@ import { toPx } from "@microsoft/fast-jss-utilities";
 import { get } from "lodash-es";
 import Chroma from "chroma-js";
 import { applyAcrylicMaterial } from "../utilities/acrylic";
+import { elevation, ElevationMultiplier } from "../utilities/elevation";
 
 /* tslint:disable-next-line */
 const styles: ComponentStyles<IDialogClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<IDialogClassNameContract, IDesignSystem> => {
     const designSystem: IDesignSystem = withDesignSystemDefaults(config);
     const backgroundColor: string = designSystem.backgroundColor;
     const foregroundColor: string = designSystem.foregroundColor;
-    const dialogShadow: string =
-        `0 25.6px 57.6px ${Chroma(foregroundColor).alpha(0.22).css()},
-         0 4.8px 14.4px ${Chroma(foregroundColor).alpha(0.18).css()}`;
 
     return {
         dialog: {
@@ -36,7 +34,7 @@ const styles: ComponentStyles<IDialogClassNameContract, IDesignSystem> = (config
             top: "50%",
             transform: "translate(-50%, -50%)",
             background: backgroundColor,
-            boxShadow: dialogShadow
+            ...elevation(ElevationMultiplier.e14, foregroundColor)(designSystem)
         }
     };
 };
