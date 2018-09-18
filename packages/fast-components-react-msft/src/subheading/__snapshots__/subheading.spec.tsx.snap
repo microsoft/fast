@@ -2,7 +2,7 @@
 
 exports[`generate snapshots Subheading: 0 1`] = `
 <h3
-  className="typography_3-0-1-10 subheading-0-1-1 subheading_1-0-1-2"
+  className="typography-0-1-8 typography__3-0-1-11 subheading-0-1-1 subheading__1-0-1-2"
 >
   Subheading test string
 </h3>
@@ -10,7 +10,7 @@ exports[`generate snapshots Subheading: 0 1`] = `
 
 exports[`generate snapshots Subheading: 1 1`] = `
 <h1
-  className="typography_3-0-1-26 subheading-0-1-17 subheading_1-0-1-18"
+  className="typography-0-1-25 typography__3-0-1-28 subheading-0-1-18 subheading__1-0-1-19"
   data-sketch-symbol="Subheading 1"
 >
   Subheading test string
@@ -19,7 +19,7 @@ exports[`generate snapshots Subheading: 1 1`] = `
 
 exports[`generate snapshots Subheading: 2 1`] = `
 <h1
-  className="typography_3-0-1-42 subheading-0-1-33 subheading_1-0-1-34"
+  className="typography-0-1-42 typography__3-0-1-45 subheading-0-1-35 subheading__1-0-1-36"
   data-sketch-symbol="Subheading 1"
 >
   Subheading test string
@@ -28,7 +28,7 @@ exports[`generate snapshots Subheading: 2 1`] = `
 
 exports[`generate snapshots Subheading: 3 1`] = `
 <h2
-  className="typography_4-0-1-59 subheading-0-1-49 subheading_2-0-1-51"
+  className="typography-0-1-59 typography__4-0-1-63 subheading-0-1-52 subheading__2-0-1-54"
   data-sketch-symbol="Subheading 2"
 >
   Subheading test string
@@ -37,7 +37,7 @@ exports[`generate snapshots Subheading: 3 1`] = `
 
 exports[`generate snapshots Subheading: 4 1`] = `
 <h3
-  className="typography_5-0-1-76 subheading-0-1-65 subheading_3-0-1-68"
+  className="typography-0-1-76 typography__5-0-1-81 subheading-0-1-69 subheading__3-0-1-72"
   data-sketch-symbol="Subheading 3"
 >
   Subheading test string
@@ -46,7 +46,7 @@ exports[`generate snapshots Subheading: 4 1`] = `
 
 exports[`generate snapshots Subheading: 5 1`] = `
 <h4
-  className="typography_6-0-1-93 subheading-0-1-81 subheading_4-0-1-85"
+  className="typography-0-1-93 typography__6-0-1-99 subheading-0-1-86 subheading__4-0-1-90"
   data-sketch-symbol="Subheading 4"
 >
   Subheading test string
@@ -55,7 +55,7 @@ exports[`generate snapshots Subheading: 5 1`] = `
 
 exports[`generate snapshots Subheading: 6 1`] = `
 <h5
-  className="typography_7-0-1-110 subheading-0-1-97 subheading_5-0-1-102"
+  className="typography-0-1-110 typography__7-0-1-117 subheading-0-1-103 subheading__5-0-1-108"
   data-sketch-symbol="Subheading 5"
 >
   Subheading test string
@@ -64,7 +64,7 @@ exports[`generate snapshots Subheading: 6 1`] = `
 
 exports[`generate snapshots Subheading: 7 1`] = `
 <h6
-  className="typography_8-0-1-127 subheading-0-1-113 subheading_6-0-1-119"
+  className="typography-0-1-127 typography__8-0-1-135 subheading-0-1-120 subheading__6-0-1-126"
   data-sketch-symbol="Subheading 6"
 >
   Subheading test string

@@ -1,10 +1,24 @@
-import { IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-
 /**
  * The class name contract for the flipper component
  */
-export interface IFlipperClassNameContract extends IButtonClassNameContract {
+export interface IFlipperClassNameContract {
+    /**
+     * The root of the flipper component
+     */
+    flipper: string;
+
+    /**
+     * The flipper glyph
+     */
     flipper_glyph: string;
-    flipper_next: string;
-    flipper_previous: string;
+
+    /**
+     * The next direction flipper modifier
+     */
+    flipper__next: string;
+
+    /**
+     * The previous direction flipper modifier
+     */
+    flipper__previous: string;
 }

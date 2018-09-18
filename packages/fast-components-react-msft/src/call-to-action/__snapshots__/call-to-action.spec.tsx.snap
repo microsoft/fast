@@ -2,12 +2,12 @@
 
 exports[`call to action snapshot Call to action: 0 1`] = `
 <a
-  className="button-0-1-20 button_primary-0-1-21 callToAction-0-1-7 callToAction__primary-0-1-9"
+  className="button-0-1-20 button__primary-0-1-21 callToAction-0-1-7 callToAction__primary-0-1-9"
   data-sketch-symbol="Call to action - primary"
   href="https://www.microsoft.com/en-us/"
 >
   <span
-    className="button_span-0-1-25"
+    className="button_contentRegion-0-1-25"
   >
     Primary call to action
   </span>
@@ -29,12 +29,12 @@ exports[`call to action snapshot Call to action: 0 1`] = `
 
 exports[`call to action snapshot Call to action: 1 1`] = `
 <a
-  className="button-0-1-46 button_lightweight-0-1-49 callToAction-0-1-33 callToAction__lightweight-0-1-36"
+  className="button-0-1-46 button__lightweight-0-1-49 callToAction-0-1-33 callToAction__lightweight-0-1-36"
   data-sketch-symbol="Call to action - lightweight"
   href="https://www.microsoft.com/en-us/"
 >
   <span
-    className="button_span-0-1-51"
+    className="button_contentRegion-0-1-51"
   >
     Lightweight call to action
   </span>
@@ -56,12 +56,12 @@ exports[`call to action snapshot Call to action: 1 1`] = `
 
 exports[`call to action snapshot Call to action: 2 1`] = `
 <a
-  className="button-0-1-72 button_justified-0-1-76 callToAction-0-1-59 callToAction__justified-0-1-63"
+  className="button-0-1-72 button__justified-0-1-76 callToAction-0-1-59 callToAction__justified-0-1-63"
   data-sketch-symbol="Call to action - justified"
   href="https://www.microsoft.com/en-us/"
 >
   <span
-    className="button_span-0-1-77"
+    className="button_contentRegion-0-1-77"
   >
     Secondary call to action
   </span>

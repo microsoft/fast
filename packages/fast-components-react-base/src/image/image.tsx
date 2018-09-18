@@ -37,7 +37,6 @@ class Image extends Foundation<
         managedClasses: void 0,
         alt: void(0),
         itemScope: void(0),
-        round: void(0),
         sizes: void(0),
         src: void(0),
         srcSet: void(0),
@@ -61,7 +60,7 @@ class Image extends Foundation<
             return (
                 <img
                     {...this.unhandledProps()}
-                    className={this.generateClasses()}
+                    className={super.generateClassNames(get(this.props, "managedClasses.image"))}
                     alt={this.props.alt}
                     sizes={this.props.sizes ? this.props.sizes : null}
                     src={this.props.src}
@@ -72,7 +71,8 @@ class Image extends Foundation<
             return (
                 <picture
                     {...this.unhandledProps()}
-                    className={this.generateClasses()}
+                    // tslint:disable-next-line:max-line-length
+                    className={super.generateClassNames(`${get(this.props, "managedClasses.image")} ${get(this.props, "managedClasses.image__picture")}`)}
                 >
                     {this.generateSourceElement(6)}
                     {this.generateSourceElement(5)}
@@ -80,28 +80,14 @@ class Image extends Foundation<
                     {this.generateSourceElement(3)}
                     {this.generateSourceElement(2)}
                     {this.generateSourceElement(1)}
-                    <img src={this.props.vp1} alt={this.props.alt} className={this.generateClasses(true)}/>
+                    <img
+                        src={this.props.vp1}
+                        alt={this.props.alt}
+                        className={super.generateClassNames(get(this.props, "managedClasses.image_img"))}
+                    />
                 </picture>
             );
         }
-    }
-
-    /**
-     * Generates class names using optional props
-     */
-    protected generateClasses(isNestedImage: boolean = false): string {
-        let classNames: string = this.props.src || isNestedImage ?
-            get(this.props, "managedClasses.image") : get(this.props, "managedClasses.picture");
-
-        if (this.props.src || isNestedImage) {
-            classNames = this.props.round ? `${classNames} ${get(this.props, "managedClasses.image_round")}` : classNames;
-        }
-
-        if (isNestedImage) {
-            return classNames;
-        }
-
-        return super.generateClassNames(classNames);
     }
 
     /**

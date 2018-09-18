@@ -20,7 +20,7 @@ const styles: ComponentStyles<IMSFTProgressClassNameContract, IDesignSystem> = (
             height: toPx(designSystem.designUnit),
             textAlign: "left"
         },
-        progress_determinateValueIndicator: {
+        progress_valueIndicator: {
             background: brandColor,
             borderRadius: "2px",
             height: "100%"

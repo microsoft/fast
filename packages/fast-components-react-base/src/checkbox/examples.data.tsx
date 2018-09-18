@@ -9,8 +9,8 @@ const classes: ICheckboxManagedClasses = {
         checkbox: "checkbox",
         checkbox_input: "checkbox_input",
         checkbox_label: "checkbox_label",
-        checkbox_disabled: "checkbox_disabled",
-        checkbox_span: "checkbox_span"
+        checkbox__disabled: "checkbox__disabled",
+        checkbox_stateIndicator: "checkbox_stateIndicator"
     }
 };
 
