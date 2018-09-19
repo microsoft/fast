@@ -54,19 +54,10 @@ class Progress extends Foundation<IProgressHandledProps & IManagedClasses<IProgr
     /**
      * Renders children based on value prop
      */
-    private renderChildren(): JSX.Element[] {
+    private renderChildren(): React.ReactNode {
         return this.props.value !== undefined
-            ? this.renderChildElements(ProgressType.determinate)
-            : this.renderChildElements(ProgressType.indeterminate);
-    }
-
-    /**
-     * Renders children by slot name
-     */
-    private renderChildElements(slot: ProgressType): JSX.Element[] {
-        return this.withSlot(slot).map((childItem: JSX.Element, index: number): JSX.Element => {
-            return React.cloneElement(this.withSlot(slot)[0], {key: index});
-        });
+            ? this.withSlot(ProgressType.determinate)
+            : this.withSlot(ProgressType.indeterminate);
     }
 }
 
