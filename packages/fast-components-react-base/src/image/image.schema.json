@@ -4,90 +4,28 @@
     "description": "An image component's schema definition.",
     "type": "object",
     "id": "image",
-    "oneOf": [
-        {
-            "title": "Image element",
-            "type": "object",
-            "properties": {
-                "alt": {
-                    "title": "HTML alt attribute",
-                    "type": "string",
-                    "example": "HTML alt attribute example text"
-                },
-                "itemScope": {
-                    "title": "HTML itemScope attribute",
-                    "type": "string"
-                },
-                "round": {
-                    "title": "Round",
-                    "type": "boolean"
-                },
-                "sizes": {
-                    "title": "HTML sizes attribute",
-                    "type": "string"
-                },
-                "src": {
-                    "title": "HTML src attribute",
-                    "type": "string",
-                    "example": "https://placehold.it/80x80"
-                },
-                "srcSet": {
-                    "title": "HTML srcSet attribute",
-                    "type": "string"
-                }
-            },
-            "required": [
-                "src",
-                "alt"
-            ]
+    "properties": {
+        "alt": {
+            "title": "HTML alt attribute",
+            "type": "string",
+            "example": "HTML alt attribute example text"
         },
-        {
-            "title": "Picture element",
-            "type": "object",
-            "properties": {
-                "alt": {
-                    "title": "HTML alt attribute",
-                    "type": "string",
-                    "example": "HTML alt attribute example text"
-                },
-                "itemScope": {
-                    "title": "HTML itemScope attribute",
-                    "type": "string"
-                },
-                "round": {
-                    "title": "Round",
-                    "type": "boolean"
-                },
-                "vp1": {
-                    "title": "Viewport 1 image",
-                    "type": "string",
-                    "example": "https://placehold.it/80x80"
-                },
-                "vp2": {
-                    "title": "Viewport 2 image",
-                    "type": "string"
-                },
-                "vp3": {
-                    "title": "Viewport 3 image",
-                    "type": "string"
-                },
-                "vp4": {
-                    "title": "Viewport 4 image",
-                    "type": "string"
-                },
-                "vp5": {
-                    "title": "Viewport 5 image",
-                    "type": "string"
-                },
-                "vp6": {
-                    "title": "Viewport 6 image",
-                    "type": "string"
-                }
-            },
-            "required": [
-                "alt",
-                "vp1"
-            ]
+        "sizes": {
+            "title": "HTML sizes attribute",
+            "type": "string"
+        },
+        "src": {
+            "title": "HTML src attribute",
+            "type": "string",
+            "example": "https://placehold.it/80x80"
+        },
+        "srcSet": {
+            "title": "HTML srcSet attribute",
+            "type": "string"
         }
+    },
+    "required": [
+        "src",
+        "alt"
     ]
 }
