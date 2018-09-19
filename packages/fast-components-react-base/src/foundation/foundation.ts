@@ -121,6 +121,21 @@ class Foundation<H, U, S> extends React.Component<H & U & IFoundationProps, S> {
         return componentClasses.concat(` ${this.props.className || ""}`).trim().replace(/(\s){2,}/g, " ") || null;
     }
 
+    /*
+     * Return an array of all nodes who's slot prop matches the provided slot.
+     * If no nodes are provided, `this.props.children` will be used
+     */
+    protected matchesSlot<T>(
+        slot: T,
+        nodes: React.ReactNode | React.ReactNode[] = this.props.children
+    ): JSX.Element[] {
+        return React.Children.map(nodes, (node: React.ReactNode): JSX.Element | null  => {
+            return get(node, "props.slot") === slot
+                ? node as React.ReactElement<any>
+                : null;
+        });
+    }
+
     /**
      * Generates a string that conforms to object/array accessor syntax that can be used by lodash's get / set,
      * eg. => ["foo", "bar", 0] => "foo[bar][0]"

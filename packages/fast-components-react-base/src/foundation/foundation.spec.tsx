@@ -284,3 +284,63 @@ describe("generateClassNames", () => {
         ).toBe("component-classes custom-class-name");
     });
 });
+
+describe("matchesSlot", () => {
+    class BySlotTestComponent extends Foundation<{}, {}, {}> {
+        public render(): React.ReactNode {
+            return this.props.children || "hello world";
+        }
+    }
+
+    test("should not throw if no props are passed", () => {
+        const Component: BySlotTestComponent = new ReactTestUtils.renderIntoDocument(<BySlotTestComponent />);
+
+        expect(() => {
+            Component["matchesSlot"]("test");
+        }).not.toThrow();
+    });
+
+    test("should return an empty array if slot no matches are found", () => {
+        const Component: BySlotTestComponent = new ReactTestUtils.renderIntoDocument(
+            <BySlotTestComponent>
+               <div slot="foo" />
+               <div slot="bar" />
+            </BySlotTestComponent>
+        );
+
+        expect(Component["matchesSlot"]("test")).toHaveLength(0);
+    });
+
+    test("should return an array of all children that have a slot prop matching the provided slot", () => {
+        const Component: BySlotTestComponent = new ReactTestUtils.renderIntoDocument(
+            <BySlotTestComponent>
+               <div slot="test" />
+               <div slot="foo" />
+               <div slot="bar" />
+               <div slot="test" />
+            </BySlotTestComponent>
+        );
+
+        expect(Component["matchesSlot"]("test")).toHaveLength(2);
+    });
+
+    test("should opperate on input nodes if they are provided", () => {
+        const nodes: React.ReactNode[] = [
+            <span slot="test" key={1} />,
+            <span slot="test" key={2} />,
+            <span slot="test" key={3} />,
+            <span slot="foo" key={4} />
+        ];
+
+        const Component: BySlotTestComponent = new ReactTestUtils.renderIntoDocument(
+            <BySlotTestComponent>
+               <div slot="foo">
+                    {nodes}
+               </div>
+               <div slot="bar" />
+            </BySlotTestComponent>
+        );
+
+        expect(Component["matchesSlot"]("test", nodes)).toHaveLength(3);
+    });
+});
