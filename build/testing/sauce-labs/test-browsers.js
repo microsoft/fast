@@ -173,22 +173,18 @@ function test(branchName) {
     });
 }
 
-// Initialize git for usage
-const git = spawn('git', ['rev-parse', '--abbrev-ref', 'HEAD']);
-
 /**
  * Get Branch Name using child_process and Git which runs Asynchronously
  */
-var getBranchName = new Promise(function(resolve, reject) {
+new Promise(function(resolve, reject) {
+
+    const git = spawn('git', ['rev-parse', '--abbrev-ref', 'HEAD']);
+
     git.stdout.on('data', (data) => {
         resolve(`${data}`);
     });
-});
 
-/**
- * Once Branch name returns start testing
- */
-getBranchName.then(function(branchName) {
+}).then(function(branchName) {
 
     // Remove all white space
     branchName = branchName.trim();
