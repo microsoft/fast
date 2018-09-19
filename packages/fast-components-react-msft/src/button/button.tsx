@@ -35,7 +35,7 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IMSFTButto
                 disabled={this.props.disabled}
             >
                 {this.withSlot(ButtonSlot.before)}
-                <span className={get(this.props, "managedClasses.button_span")}>
+                <span className={get(this.props, "managedClasses.button_contentRegion")}>
                     {this.withoutSlot([ButtonSlot.before, ButtonSlot.after])}
                 </span>
                 {this.withSlot(ButtonSlot.after)}

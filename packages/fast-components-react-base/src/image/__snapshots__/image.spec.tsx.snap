@@ -5,33 +5,34 @@ exports[`image snapshot Image: 0 1`] = `
   className="image picture"
 >
   <source
-    media="(min-width: 1779px)"
-    srcSet="https://placehold.it/2048x600/2F2F2F/171717"
-  />
-  <source
     media="(min-width: 1400px)"
-    srcSet="https://placehold.it/1778x600/2F2F2F/171717"
+    slot="source"
+    srcSet="https://placehold.it/350x350/2F2F2F/171717"
   />
   <source
     media="(min-width: 1084px)"
-    srcSet="https://placehold.it/1399x600/2F2F2F/171717"
+    slot="source"
+    srcSet="https://placehold.it/300x300/2F2F2F/171717"
   />
   <source
     media="(min-width: 768px)"
-    srcSet="https://placehold.it/1083x500/2F2F2F/171717"
+    slot="source"
+    srcSet="https://placehold.it/200x200/2F2F2F/171717"
   />
   <source
     media="(min-width: 540px)"
-    srcSet="https://placehold.it/767x400/2F2F2F/171717"
+    slot="source"
+    srcSet="https://placehold.it/100x100/2F2F2F/171717"
   />
   <source
-    media="(min-width: 0)"
-    srcSet="https://placehold.it/539x300/2F2F2F/171717"
+    media="(min-width: 0px)"
+    slot="source"
+    srcSet="https://placehold.it/75x75/2F2F2F/171717"
   />
   <img
     alt="Placeholder with grey background and dimension watermark without any imagery"
     className="img"
-    src="https://placehold.it/539x300/2F2F2F/171717"
+    src="https://placehold.it/75x75/2F2F2F/171717"
   />
 </picture>
 `;

@@ -5,57 +5,31 @@ import Foundation, { HandledProps } from "../foundation";
 import { IImageHandledProps, IImageManagedClasses, IImageUnhandledProps } from "./image.props";
 import { IImageClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
-/**
- * TODO #239 #240: Hook viewports values into Styles
- */
-export interface IBreakpoints {
-    vp1: number;
-    vp2: number;
-    vp3: number;
-    vp4: number;
-    vp5: number;
-    vp6: number;
+export enum ImageSlot {
+    source = "source"
 }
-
-const breakpoints: IBreakpoints = {
-    vp1: 0,
-    vp2: 540,
-    vp3: 768,
-    vp4: 1084,
-    vp5: 1400,
-    vp6: 1779
-};
 
 /* tslint:disable-next-line */
 class Image extends Foundation<IImageHandledProps & IManagedClasses<IImageClassNameContract>, React.HTMLAttributes<HTMLImageElement | HTMLPictureElement>, {}> {
     protected handledProps: HandledProps<IImageHandledProps & IManagedClasses<IImageClassNameContract>> = {
         managedClasses: void 0,
         alt: void(0),
-        itemScope: void(0),
         sizes: void(0),
         src: void(0),
-        srcSet: void(0),
-        vp1: void(0),
-        vp2: void(0),
-        vp3: void(0),
-        vp4: void(0),
-        vp5: void(0),
-        vp6: void(0)
+        srcSet: void(0)
     };
 
     /**
      * Renders the component
      */
     public render(): React.ReactElement<HTMLImageElement | HTMLPictureElement> {
-        if (!this.props.src && !this.props.vp1) {
-            return;
-        }
+        let className: string = get(this.props, "managedClasses.image");
 
-        if (this.props.src) {
+        if (!this.props.children) {
             return (
                 <img
                     {...this.unhandledProps()}
-                    className={super.generateClassNames(get(this.props, "managedClasses.image"))}
+                    className={super.generateClassNames(className)}
                     alt={this.props.alt}
                     sizes={this.props.sizes ? this.props.sizes : null}
                     src={this.props.src}
@@ -63,22 +37,18 @@ class Image extends Foundation<IImageHandledProps & IManagedClasses<IImageClassN
                 />
             );
         } else {
+            className = `${className} ${get(this.props, "managedClasses.image__picture")}`;
+
             return (
                 <picture
                     {...this.unhandledProps()}
-                    // tslint:disable-next-line:max-line-length
-                    className={super.generateClassNames(`${get(this.props, "managedClasses.image")} ${get(this.props, "managedClasses.image__picture")}`)}
+                    className={super.generateClassNames(className)}
                 >
-                    {this.generateSourceElement(6)}
-                    {this.generateSourceElement(5)}
-                    {this.generateSourceElement(4)}
-                    {this.generateSourceElement(3)}
-                    {this.generateSourceElement(2)}
-                    {this.generateSourceElement(1)}
+                    {this.renderChildrenBySlot(ImageSlot.source)}
                     <img
-                        src={this.props.vp1}
+                        src={this.props.src}
                         alt={this.props.alt}
-                        className={super.generateClassNames(get(this.props, "managedClasses.image_img"))}
+                        className={get(this.props, "managedClasses.image_img")}
                     />
                 </picture>
             );
@@ -86,20 +56,16 @@ class Image extends Foundation<IImageHandledProps & IManagedClasses<IImageClassN
     }
 
     /**
-     * Generate a source element
+     * Render children by slot
      */
-    private generateSourceElement(breakpointsId: number): any {
-        const srcset: string = this.props[`vp${breakpointsId}`];
-        const vp: number = breakpoints[`vp${breakpointsId}`];
-        const minWidth: number = vp;
-
-        if (!srcset) {
-            return null;
-        }
-
-        const minWidthString: string = minWidth === 0 ? "0" : `${minWidth}px`;
-
-        return <source srcSet={srcset} media={`(min-width: ${minWidthString})`} />;
+    private renderChildrenBySlot(slot: ImageSlot): Array<React.ReactElement<HTMLSourceElement>> {
+        return React.Children.map(
+            this.props.children,
+            (child: React.ReactElement<HTMLSourceElement>, index: number): React.ReactElement<HTMLSourceElement> => {
+                if (child.props && child.props.slot === slot) {
+                    return child;
+                }
+            });
     }
 }
 
