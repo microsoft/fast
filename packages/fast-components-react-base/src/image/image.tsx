@@ -61,11 +61,7 @@ class Image extends Foundation<IImageHandledProps & IManagedClasses<IImageClassN
     private renderChildrenBySlot(slot: ImageSlot): Array<React.ReactElement<HTMLSourceElement>> {
         return React.Children.map(this.props.children, (child: React.ReactElement<HTMLSourceElement>, index: number) => {
             if (child.props && child.props.slot === slot) {
-                return (
-                    <React.Fragment key={index}>
-                        {child}
-                    </React.Fragment>
-                );
+                return child;
             }
         });
     }
