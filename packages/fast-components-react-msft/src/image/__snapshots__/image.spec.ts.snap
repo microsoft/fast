@@ -6,23 +6,28 @@ exports[`image snapshots Image: 0 1`] = `
 >
   <source
     media="(min-width: 1400px)"
-    srcSet="https://placehold.it/600x600/2F2F2F/171717"
+    slot="source"
+    srcSet="https://placehold.it/450x450/2F2F2F/171717"
   />
   <source
     media="(min-width: 1084px)"
-    srcSet="https://placehold.it/600x600/2F2F2F/171717"
+    slot="source"
+    srcSet="https://placehold.it/300x300/2F2F2F/171717"
   />
   <source
     media="(min-width: 768px)"
-    srcSet="https://placehold.it/500x500/2F2F2F/171717"
+    slot="source"
+    srcSet="https://placehold.it/200x200/2F2F2F/171717"
   />
   <source
     media="(min-width: 540px)"
-    srcSet="https://placehold.it/400x400/2F2F2F/171717"
+    slot="source"
+    srcSet="https://placehold.it/100x100/2F2F2F/171717"
   />
   <source
-    media="(min-width: 0)"
-    srcSet="https://placehold.it/300x300/2F2F2F/171717"
+    media="(min-width: 0px)"
+    slot="source"
+    srcSet="https://placehold.it/75x75/2F2F2F/171717"
   />
   <img
     alt="Placeholder with grey background and dimension watermark without any imagery"
@@ -36,9 +41,9 @@ exports[`image snapshots Image: 1 1`] = `
 <img
   alt="Placeholder with grey background and dimension watermark without any imagery"
   className="image-0-1-4"
-  sizes="100vw"
-  src="https://placehold.it/300x300/2F2F2F/171717"
-  srcSet="https://placehold.it/600x600/2F2F2F/171717 2048w, https://placehold.it/600x600/2F2F2F/171717 1778w, https://placehold.it/1600x600/2F2F2F/171717 1399w, https://placehold.it/500x500/2F2F2F/171717 1083w, https://placehold.it/400x400/2F2F2F/171717 767w, https://placehold.it/300x300/2F2F2F/171717 1w"
+  sizes={null}
+  src="https://placehold.it/200x150/2F2F2F/171717"
+  srcSet={null}
 />
 `;
 
@@ -48,58 +53,6 @@ exports[`image snapshots Image: 2 1`] = `
   className="image-0-1-7"
   sizes={null}
   src="https://placehold.it/300x300/2F2F2F/171717"
-  srcSet={null}
-/>
-`;
-
-exports[`image snapshots Image: 3 1`] = `
-<picture
-  className="image-0-1-10 image__picture-0-1-11"
->
-  <source
-    media="(min-width: 1400px)"
-    srcSet="https://placehold.it/600x600/2F2F2F/171717"
-  />
-  <source
-    media="(min-width: 1084px)"
-    srcSet="https://placehold.it/600x600/2F2F2F/171717"
-  />
-  <source
-    media="(min-width: 768px)"
-    srcSet="https://placehold.it/500x500/2F2F2F/171717"
-  />
-  <source
-    media="(min-width: 540px)"
-    srcSet="https://placehold.it/400x400/2F2F2F/171717"
-  />
-  <source
-    media="(min-width: 0)"
-    srcSet="https://placehold.it/300x300/2F2F2F/171717"
-  />
-  <img
-    alt="Placeholder with grey background and dimension watermark without any imagery"
-    className="image_img-0-1-12"
-    src="https://placehold.it/300x300/2F2F2F/171717"
-  />
-</picture>
-`;
-
-exports[`image snapshots Image: 4 1`] = `
-<img
-  alt="Placeholder with grey background and dimension watermark without any imagery"
-  className="image-0-1-13"
-  sizes="100vw"
-  src="https://placehold.it/539x300/2F2F2F/171717"
-  srcSet="https://placehold.it/2048x600/2F2F2F/171717 2048w, https://placehold.it/1778x600/2F2F2F/171717 1778w, https://placehold.it/1399x600/2F2F2F/171717 1399w, https://placehold.it/1083x500/2F2F2F/171717 1083w, https://placehold.it/767x400/2F2F2F/171717 767w, https://placehold.it/539x300/2F2F2F/171717 1w"
-/>
-`;
-
-exports[`image snapshots Image: 5 1`] = `
-<img
-  alt="Placeholder with grey background and dimension watermark without any imagery"
-  className="image-0-1-16"
-  sizes={null}
-  src="https://placehold.it/539x300/2F2F2F/171717"
-  srcSet={null}
+  srcSet="https://placehold.it/500x500/2F2F2F/171717 1083w, https://placehold.it/400x400/2F2F2F/171717 767w, https://placehold.it/300x300/2F2F2F/171717 1w"
 />
 `;
