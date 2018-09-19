@@ -26,7 +26,7 @@
  */
 const { Builder } = require("selenium-webdriver");
 const chalk = require("chalk");
-const { Configure, Phases } = require("../config-browsers.js");
+const { Configure, Phase } = require("../config-browsers.js");
 const { spawn } = require("child_process");
 
 // Retrive user/key from environment variables
@@ -39,17 +39,17 @@ const remoteHub = `http://${username}:${accessKey}@ondemand.saucelabs.com:80/wd/
 
 /**
  * Get configuration based on the accepted Phase argument
- * @param {Phases} phases
- * @returns {Configuration based on phases}
+ * @param {Phase} phase
+ * @returns {Configuration based on phase}
  */
-const getConfiguration = (phases) => {
-    switch (phases) {
-        case Phases.alpha:
-            return new Configure(Phases.alpha);
-        case Phases.beta:
-            return new Configure(Phases.beta);
-        case Phases.release:
-            return new Configure(Phases.release);
+const getConfiguration = (phase) => {
+    switch (phase) {
+        case Phase.alpha:
+            return new Configure(Phase.alpha);
+        case Phase.beta:
+            return new Configure(Phase.beta);
+        case Phase.release:
+            return new Configure(Phase.release);
         default:
             console.log(chalk.red("Invalid Argument : must be 'alpha', 'beta', or 'release'"));
             return process.exit(1);
