@@ -13,7 +13,6 @@
     "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
   "scripts": {
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
   },
   "devDependencies": {
     "@types/node": "^9.4.7",
