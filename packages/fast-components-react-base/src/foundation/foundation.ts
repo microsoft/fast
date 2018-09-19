@@ -126,14 +126,36 @@ class Foundation<H, U, S> extends React.Component<H & U & IFoundationProps, S> {
      * If no nodes are provided, `this.props.children` will be used
      */
     protected withSlot<T>(
-        slot: T,
-        nodes: React.ReactNode | React.ReactNode[] = this.props.children
-    ): JSX.Element[] {
-        return React.Children.map(nodes, (node: React.ReactNode): JSX.Element | null  => {
-            return get(node, "props.slot") === slot
-                ? node as React.ReactElement<any>
+        slot: T | T[],
+        nodes: React.ReactNode = this.props.children
+    ): React.ReactNode {
+        return React.Children.map(nodes, (node: React.ReactNode): React.ReactNode | null => {
+            return this.hasSlot(slot, node)
+                ? node
                 : null;
         });
+    }
+
+    protected withoutSlot<T>(
+        slot: T | T[],
+        nodes: React.ReactNode = this.props.children
+    ): React.ReactNode {
+        return React.Children.map(nodes, (node: React.ReactNode): React.ReactNode | null => {
+            return !this.hasSlot(slot, node)
+                ? node
+                : null;
+        });
+    }
+
+    /**
+     * Determine if a single node has a slot property
+     */
+    private hasSlot<T>(slot: T | T[], node: React.ReactNode): boolean {
+        const nodeSlot: T = get(node, "props.slot");
+
+        return Array.isArray(slot)
+            ? slot.indexOf(nodeSlot) !== -1
+            : slot === nodeSlot;
     }
 
     /**
