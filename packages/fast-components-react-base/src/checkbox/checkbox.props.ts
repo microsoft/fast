@@ -38,7 +38,7 @@ export interface ICheckboxHandledProps {
     /**
      * The checkbox content
      */
-    children?: React.ReactNode | React.ReactNode[];
+    children?: React.ReactNode;
 }
 
 export interface ICheckboxUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}

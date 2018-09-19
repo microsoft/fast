@@ -1,8 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
-import { Foundation, HandledProps, Size, TypographyTag } from "@microsoft/fast-components-react-base";
-import { CaptionSize, CaptionTag, ICaptionHandledProps } from "./caption.props";
+import { Foundation, HandledProps, TypographySize, TypographyTag } from "@microsoft/fast-components-react-base";
+import { CaptionSize, CaptionTag, ICaptionHandledProps, ICaptionUnhandledProps } from "./caption.props";
 import { ICaptionClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
 import { Typography } from "../typography";
 
@@ -43,10 +43,10 @@ class Caption extends Foundation<ICaptionHandledProps & IManagedClasses<ICaption
         return super.generateClassNames(classes);
     }
 
-    private size(): Size {
+    private size(): TypographySize {
         return this.props.size === CaptionSize._2
-            ? Size._9
-            : Size._8;
+            ? TypographySize._9
+            : TypographySize._8;
     }
 }
 

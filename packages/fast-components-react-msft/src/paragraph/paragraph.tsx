@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
-import { Foundation, HandledProps, Size, TypographyTag } from "@microsoft/fast-components-react-base";
+import { Foundation, HandledProps, TypographySize, TypographyTag } from "@microsoft/fast-components-react-base";
 import {
     IParagraphHandledProps,
     IParagraphManagedClasses,
@@ -56,14 +56,14 @@ class Paragraph extends Foundation<
     /**
      * Stores size for use in render
      */
-    private get size(): Size {
+    private get size(): TypographySize {
         switch (this.props.size) {
             case ParagraphLevel._1:
-                return Size._5;
+                return TypographySize._5;
             case ParagraphLevel._2:
-                return Size._6;
+                return TypographySize._6;
             default:
-                return Size._7;
+                return TypographySize._7;
         }
     }
 }

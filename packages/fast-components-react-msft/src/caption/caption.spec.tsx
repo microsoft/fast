@@ -35,7 +35,7 @@ describe("caption", (): void => {
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: ICaptionHandledProps = {
             tag: CaptionTag.p,
-            level: CaptionSize._1
+            size: CaptionSize._1
         };
 
         const unhandledProps: ICaptionUnhandledProps = {

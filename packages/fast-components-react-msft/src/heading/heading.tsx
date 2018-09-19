@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
-import { Foundation, HandledProps, Size, TypographyTag } from "@microsoft/fast-components-react-base";
+import { Foundation, HandledProps, TypographySize, TypographyTag } from "@microsoft/fast-components-react-base";
 import {
     AlignHeadingBaseline,
     IHeadingHandledProps,
@@ -34,8 +34,8 @@ class Heading extends Foundation<
     /**
      * Stores size for use in render
      */
-    private get size(): Size {
-        return Size[`_${this.props.size}`];
+    private get size(): TypographySize {
+        return TypographySize[`_${this.props.size}`];
     }
 
     /**

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { get } from "lodash-es";
-import { Foundation, HandledProps, Size, TypographyTag  } from "@microsoft/fast-components-react-base";
+import { Foundation, HandledProps, TypographySize, TypographyTag  } from "@microsoft/fast-components-react-base";
 import {
     ISubheadingHandledProps,
     ISubheadingManagedClasses,
@@ -30,20 +30,20 @@ class Subheading extends Foundation<
         tag: void 0
     };
 
-    private get size(): Size {
+    private get size(): TypographySize {
         switch (this.props.size) {
             case SubheadingLevel._1:
-                return Size._3;
+                return TypographySize._3;
             case SubheadingLevel._2:
-                return Size._4;
+                return TypographySize._4;
             case SubheadingLevel._3:
-                return Size._5;
+                return TypographySize._5;
             case SubheadingLevel._4:
-                return Size._6;
+                return TypographySize._6;
             case SubheadingLevel._5:
-                return Size._7;
+                return TypographySize._7;
             case SubheadingLevel._6:
-                return Size._8;
+                return TypographySize._8;
         }
     }
 

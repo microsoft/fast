@@ -1,7 +1,7 @@
 import * as React from "react";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { Typography } from "./index";
-import { ITypographyHandledProps, ITypographyManagedClasses, Size, TypographyTag } from "@microsoft/fast-components-react-base";
+import { ITypographyHandledProps, ITypographyManagedClasses, TypographySize, TypographyTag } from "@microsoft/fast-components-react-base";
 import schema from "@microsoft/fast-components-react-base/dist/typography/typography.schema.json";
 import Documentation from "./.tmp/documentation";
 
@@ -21,55 +21,55 @@ export default {
         },
         {
             tag: TypographyTag.h1,
-            size: Size._1,
+            size: TypographySize._1,
             children: testString,
             "data-sketch-symbol": "Typographic level 1"
         },
         {
             tag: TypographyTag.h2,
-            size: Size._2,
+            size: TypographySize._2,
             children: testString,
             "data-sketch-symbol": "Typographic level 2"
         },
         {
             tag: TypographyTag.h3,
-            size: Size._3,
+            size: TypographySize._3,
             children: testString,
             "data-sketch-symbol": "Typographic level 3"
         },
         {
             tag: TypographyTag.h4,
-            size: Size._4,
+            size: TypographySize._4,
             children: testString,
             "data-sketch-symbol": "Typographic level 4"
         },
         {
             tag: TypographyTag.h5,
-            size: Size._5,
+            size: TypographySize._5,
             children: testString,
             "data-sketch-symbol": "Typographic level 5"
         },
         {
             tag: TypographyTag.h6,
-            size: Size._6,
+            size: TypographySize._6,
             children: testString,
             "data-sketch-symbol": "Typographic level 6"
         },
         {
             tag: TypographyTag.span,
-            size: Size._7,
+            size: TypographySize._7,
             children: testString,
             "data-sketch-symbol": "Typographic level 7"
         },
         {
             tag: TypographyTag.caption,
-            size: Size._8,
+            size: TypographySize._8,
             children: testString,
             "data-sketch-symbol": "Typographic level 8"
         },
         {
             tag: TypographyTag.p,
-            size: Size._9,
+            size: TypographySize._9,
             children: testString,
             "data-sketch-symbol": "Typographic level 9"
         }

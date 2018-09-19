@@ -6,7 +6,7 @@ import {
     ITypographyHandledProps,
     ITypographyManagedClasses,
     ITypographyUnhandledProps,
-    Size,
+    TypographySize,
     TypographyTag
 } from "./typography.props";
 import { IManagedClasses, ITypographyClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
