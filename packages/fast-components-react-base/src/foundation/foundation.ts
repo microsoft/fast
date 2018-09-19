@@ -125,7 +125,7 @@ class Foundation<H, U, S> extends React.Component<H & U & IFoundationProps, S> {
      * Return an array of all nodes who's slot prop matches the provided slot.
      * If no nodes are provided, `this.props.children` will be used
      */
-    protected matchesSlot<T>(
+    protected withSlot<T>(
         slot: T,
         nodes: React.ReactNode | React.ReactNode[] = this.props.children
     ): JSX.Element[] {

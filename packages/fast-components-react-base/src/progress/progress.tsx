@@ -64,8 +64,8 @@ class Progress extends Foundation<IProgressHandledProps & IManagedClasses<IProgr
      * Renders children by slot name
      */
     private renderChildElements(slot: ProgressType): JSX.Element[] {
-        return this.matchesSlot(slot).map((childItem: JSX.Element, index: number): JSX.Element => {
-            return React.cloneElement(this.matchesSlot(slot)[0], {key: index});
+        return this.withSlot(slot).map((childItem: JSX.Element, index: number): JSX.Element => {
+            return React.cloneElement(this.withSlot(slot)[0], {key: index});
         });
     }
 }

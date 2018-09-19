@@ -285,7 +285,7 @@ describe("generateClassNames", () => {
     });
 });
 
-describe("matchesSlot", () => {
+describe("withSlot", () => {
     class BySlotTestComponent extends Foundation<{}, {}, {}> {
         public render(): React.ReactNode {
             return this.props.children || "hello world";
@@ -296,7 +296,7 @@ describe("matchesSlot", () => {
         const Component: BySlotTestComponent = new ReactTestUtils.renderIntoDocument(<BySlotTestComponent />);
 
         expect(() => {
-            Component["matchesSlot"]("test");
+            Component["withSlot"]("test");
         }).not.toThrow();
     });
 
@@ -308,7 +308,7 @@ describe("matchesSlot", () => {
             </BySlotTestComponent>
         );
 
-        expect(Component["matchesSlot"]("test")).toHaveLength(0);
+        expect(Component["withSlot"]("test")).toHaveLength(0);
     });
 
     test("should return an array of all children that have a slot prop matching the provided slot", () => {
@@ -321,7 +321,7 @@ describe("matchesSlot", () => {
             </BySlotTestComponent>
         );
 
-        expect(Component["matchesSlot"]("test")).toHaveLength(2);
+        expect(Component["withSlot"]("test")).toHaveLength(2);
     });
 
     test("should opperate on input nodes if they are provided", () => {
@@ -341,6 +341,6 @@ describe("matchesSlot", () => {
             </BySlotTestComponent>
         );
 
-        expect(Component["matchesSlot"]("test", nodes)).toHaveLength(3);
+        expect(Component["withSlot"]("test", nodes)).toHaveLength(3);
     });
 });
