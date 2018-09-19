@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.2.1"></a>
+## [2.2.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-react@2.2.0...@microsoft/fast-jss-manager-react@2.2.1) (2018-09-19)
+
+
+### Bug Fixes
+
+* fix error caused by adding a React ref to a JSSManager instance ([#913](https://github.com/Microsoft/fast-dna/issues/913)) ([ff94432](https://github.com/Microsoft/fast-dna/commit/ff94432))
+
+
+
+
+
 <a name="2.2.0"></a>
 # 2.2.0 (2018-09-11)
 

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.3.0"></a>
+# [2.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@2.2.0...@microsoft/fast-components-class-name-contracts-msft@2.3.0) (2018-09-19)
+
+
+### Features
+
+* **call-to-action:** add call to action component ([#851](https://github.com/Microsoft/fast-dna/issues/851)) ([05fe0c2](https://github.com/Microsoft/fast-dna/commit/05fe0c2))
+
+
+
+
+
 <a name="2.2.0"></a>
 # 2.2.0 (2018-09-11)
 

@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.2.1"></a>
+## [2.2.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-form-generator-react@2.2.0...@microsoft/fast-form-generator-react@2.2.1) (2018-09-19)
+
+**Note:** Version bump only for package @microsoft/fast-form-generator-react
+
+
+
+
+
 <a name="2.2.0"></a>
 # 2.2.0 (2018-09-11)
 

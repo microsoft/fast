@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.3.0"></a>
+# [2.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@2.2.1...@microsoft/fast-components-react-msft@2.3.0) (2018-09-19)
+
+
+### Bug Fixes
+
+* **caption:** add missing reference for caption className contract interface ([#899](https://github.com/Microsoft/fast-dna/issues/899)) ([20a6180](https://github.com/Microsoft/fast-dna/commit/20a6180))
+* fix error caused by adding a React ref to a JSSManager instance ([#913](https://github.com/Microsoft/fast-dna/issues/913)) ([ff94432](https://github.com/Microsoft/fast-dna/commit/ff94432))
+
+
+### Features
+
+* **call-to-action:** add call to action component ([#851](https://github.com/Microsoft/fast-dna/issues/851)) ([05fe0c2](https://github.com/Microsoft/fast-dna/commit/05fe0c2))
+
+
+
+
+
 <a name="2.2.1"></a>
 ## [2.2.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@2.2.0...@microsoft/fast-components-react-msft@2.2.1) (2018-09-14)
 
