@@ -165,7 +165,7 @@ function test(branchName) {
 }
 
 /**
- * Run tests from a branch
+ * Run tests on the current branch and use the branch name as the unique identifier on Sauce Labs
  */
 new Promise(function(resolve, reject) {
     const git = spawn('git', ['rev-parse', '--abbrev-ref', 'HEAD']);
