@@ -1,5 +1,5 @@
 import * as React from "react";
-import CallToAction from "./index";
+import { CallToAction } from "./index";
 import {
     CallToActionAppearance,
     CallToActionProps,

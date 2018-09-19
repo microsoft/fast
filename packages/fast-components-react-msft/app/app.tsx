@@ -21,7 +21,7 @@ import { glyphBuildingblocks } from "@microsoft/fast-glyphs-msft";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { Direction } from "@microsoft/fast-application-utilities";
 import * as examples from "./examples";
-import Hypertext from "../src/hypertext";
+import { Hypertext } from "../src/hypertext";
 import ColorPicker, { IColorConfig } from "./color-picker";
 
 /* tslint:disable-next-line */

@@ -9,7 +9,7 @@ import {
     IHeadingManagedClasses,
     IHeadingUnhandledProps
 } from "./heading.props";
-import Typography from "../typography";
+import { Typography } from "../typography";
 import { IHeadingClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
 
 /* tslint:disable-next-line */

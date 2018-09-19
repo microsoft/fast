@@ -1,7 +1,7 @@
 import * as React from "react";
 import { IFoundationProps } from "@microsoft/fast-components-react-base";
 import { ISubheadingClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import Subheading, {
+import MSFTSubheading, {
     ISubheadingHandledProps,
     ISubheadingUnhandledProps,
     SubheadingLevel,
@@ -10,5 +10,13 @@ import Subheading, {
 import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
 import { IDesignSystem, SubheadingStyles } from "@microsoft/fast-components-styles-msft";
 
-export default manageJss(SubheadingStyles)(Subheading);
+/*
+ * The type returned by manageJss type is very complicated so we'll let the
+ * compiler infer the type instead of re-declaring just for the package export
+ */
+/* tslint:disable-next-line:typedef */
+const Subheading = manageJss(SubheadingStyles)(MSFTSubheading);
+type Subheading = InstanceType<typeof MSFTSubheading>;
+
+export { Subheading };
 export * from "./subheading";

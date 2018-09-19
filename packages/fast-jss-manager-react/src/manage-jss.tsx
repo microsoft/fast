@@ -39,8 +39,8 @@ export interface IJSSManagerProps<S, C> {
  * with styles managed
  */
 /* tslint:disable-next-line */
-function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.ComponentType<T & IManagedClasses<S>>) => React.ComponentType<T & IJSSManagerProps<S, C>> {
-    return function<T>(Component: React.ComponentType<T & IManagedClasses<S>>): React.ComponentType<T & IJSSManagerProps<S, C>> {
+function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.ComponentType<T & IManagedClasses<S>>) => React.ComponentClass<T & IJSSManagerProps<S, C>> {
+    return function<T>(Component: React.ComponentType<T & IManagedClasses<S>>): React.ComponentClass<T & IJSSManagerProps<S, C>> {
 
         // Define the manager higher-order component inside of the return method of the higher-order function.
         class JSSManager extends React.Component<T & IJSSManagerProps<S, C>, IJSSManagerState> {

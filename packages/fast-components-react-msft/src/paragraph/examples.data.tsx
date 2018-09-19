@@ -1,6 +1,6 @@
 import * as React from "react";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import Paragraph from "./index";
+import { Paragraph } from "./index";
 import {
     IParagraphHandledProps,
     IParagraphManagedClasses,

@@ -7,6 +7,14 @@ import {
 import { IFlipperClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
 import { FlipperStyles, IDesignSystem } from "@microsoft/fast-components-styles-msft";
-import Flipper, { IFlipperHandledProps } from "./flipper";
+import MSFTFlipper, { IFlipperHandledProps } from "./flipper";
 
-export default manageJss(FlipperStyles)(Flipper);
+/*
+ * The type returned by manageJss type is very complicated so we'll let the
+ * compiler infer the type instead of re-declaring just for the package export
+ */
+/* tslint:disable-next-line:typedef */
+const Flipper = manageJss(FlipperStyles)(MSFTFlipper);
+type Flipper = InstanceType<typeof Flipper>;
+
+export { Flipper };

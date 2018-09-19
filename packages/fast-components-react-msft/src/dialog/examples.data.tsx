@@ -1,6 +1,6 @@
 import * as React from "react";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import Dialog from "./index";
+import { Dialog } from "./index";
 import { IDialogHandledProps, IDialogManagedClasses, IDialogUnhandledProps } from "@microsoft/fast-components-react-base";
 import schema from "@microsoft/fast-components-react-base/dist/dialog/dialog.schema.json";
 import Documentation from "./.tmp/documentation";

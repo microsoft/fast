@@ -1,6 +1,6 @@
 import * as React from "react";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import Flipper from "./index";
+import { Flipper } from "./index";
 import { IButtonHandledProps as IBaseButtonHandledProps } from "@microsoft/fast-components-react-base";
 import {
     FlipperDirection,

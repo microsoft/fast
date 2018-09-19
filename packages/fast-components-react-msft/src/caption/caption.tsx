@@ -4,7 +4,7 @@ import { get } from "lodash-es";
 import { Foundation, HandledProps, TypeLevel, TypographyTag } from "@microsoft/fast-components-react-base";
 import { CaptionLevel, CaptionTag, ICaptionHandledProps, ICaptionUnhandledProps } from "./caption.props";
 import { ICaptionClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
-import Typography from "../typography";
+import { Typography } from "../typography";
 
 class Caption extends Foundation<ICaptionHandledProps & IManagedClasses<ICaptionClassNameContract>, ICaptionUnhandledProps, {}> {
     public static defaultProps: Partial<ICaptionHandledProps> = {

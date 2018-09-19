@@ -1,6 +1,6 @@
 import * as React from "react";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import Image from "./index";
+import { Image } from "./index";
 import { IImageHandledProps } from "@microsoft/fast-components-react-base";
 import schema from "@microsoft/fast-components-react-base/dist/image/image.schema.json";
 import Documentation from "./.tmp/documentation";
