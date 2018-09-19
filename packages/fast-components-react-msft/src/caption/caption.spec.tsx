@@ -3,9 +3,14 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
+<<<<<<< HEAD
 import MSFTCaption, {
     CaptionLevel,
+=======
+import {
+>>>>>>> updates any breaking changes props and subsequent data
     CaptionProps,
+    CaptionSize
     CaptionTag,
     ICaptionHandledProps,
     ICaptionManagedClasses,
@@ -30,7 +35,7 @@ describe("caption", (): void => {
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: ICaptionHandledProps = {
             tag: CaptionTag.p,
-            level: CaptionLevel._1
+            level: CaptionSize._1
         };
 
         const unhandledProps: ICaptionUnhandledProps = {
@@ -59,10 +64,10 @@ describe("caption", (): void => {
 
     test("should render the correct `level` when `level` prop is passed", () => {
         const rendered: any = shallow(
-            <Caption level={CaptionLevel._2} />
+            <Component level={CaptionSize._2} />
         );
         const caption: any = rendered.first().shallow();
 
-        expect(caption.instance().props.level).toEqual(CaptionLevel._2);
+        expect(caption.instance().props.level).toEqual(CaptionSize._2);
     });
 });

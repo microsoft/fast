@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Foundation, { HandledProps } from "../foundation";
-import { CheckboxHTMLTags, CheckboxProps, ICheckboxHandledProps, ICheckboxManagedClasses, ICheckboxUnhandledProps } from "./checkbox.props";
+import { CheckboxTag, CheckboxProps, ICheckboxHandledProps, ICheckboxManagedClasses, ICheckboxUnhandledProps } from "./checkbox.props";
 import { ICheckboxClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
 
@@ -41,8 +41,7 @@ class Checkbox extends Foundation<
         indeterminate: void 0,
         managedClasses: void 0,
         onChange: void 0,
-        tag: void 0,
-        text: void 0
+        tag: void 0
     };
 
     /**
@@ -96,7 +95,7 @@ class Checkbox extends Foundation<
                 />
                 <span className={get(this.props, "managedClasses.checkbox_stateIndicator")} />
                 <span className={get(this.props, "managedClasses.checkbox_label")}>
-                    {this.props.text ? this.props.text : null}
+                    {this.props.children}
                 </span>
             </this.tag>
         );
@@ -117,7 +116,7 @@ class Checkbox extends Foundation<
      * Stores HTML tag for use in render
      */
     private get tag(): string {
-        return CheckboxHTMLTags[this.props.tag] || CheckboxHTMLTags.label;
+        return CheckboxTag[this.props.tag] || CheckboxTag.label;
     }
 
     /**

@@ -19,7 +19,7 @@ class Flipper extends Foundation<
 
     protected handledProps: HandledProps<IFlipperHandledProps & IManagedClasses<IFlipperClassNameContract>> = {
         label: void 0,
-        visible: void 0,
+        visibleToAssistiveTechnologies: void 0,
         managedClasses: void 0
     };
 
@@ -56,7 +56,7 @@ class Flipper extends Foundation<
             href: void 0,
         };
 
-        if (!this.props.visible) {
+        if (!this.props.visibleToAssistiveTechnologies) {
             coercedProps["aria-hidden"] = true;
             coercedProps.tabIndex = -1;
         }

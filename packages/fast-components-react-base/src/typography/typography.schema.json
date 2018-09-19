@@ -22,7 +22,7 @@
                 "figcaption"
             ]
         },
-        "typeLevel": {
+        "size": {
             "title": "Type level",
             "type": "number",
             "enum": [

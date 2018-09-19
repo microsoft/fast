@@ -28,7 +28,7 @@ describe("paragraph", (): void => {
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: IParagraphHandledProps = {
-            level: ParagraphLevel._1
+            size: ParagraphLevel._1
         };
 
         const unhandledProps: IParagraphUnhandledProps = {
@@ -46,21 +46,21 @@ describe("paragraph", (): void => {
         expect(paragraph.prop("aria-hidden")).toEqual(true);
     });
 
-    test("should render the correct `level` when `level` prop is passed", () => {
+    test("should render the correct `size` when `size` prop is passed", () => {
         const rendered: any = shallow(
-            <Paragraph level={ParagraphLevel._2} />
+            <Component size={ParagraphLevel._2} />
         );
         const paragraph: any = rendered.first().shallow();
 
-        expect(paragraph.instance().props.level).toEqual(ParagraphLevel._2);
+        expect(paragraph.instance().props.size).toEqual(ParagraphLevel._2);
     });
 
-    test("should render a default `level` of `ParagraphLevel._3` if no `level` prop is passed", () => {
+    test("should render a default `size` of `ParagraphLevel._3` if no `size` prop is passed", () => {
         const rendered: any = shallow(
             <Paragraph />
         );
         const paragraph: any = rendered.first().shallow();
 
-        expect(paragraph.instance().props.level).toEqual(ParagraphLevel._3);
+        expect(paragraph.instance().props.size).toEqual(ParagraphLevel._3);
     });
 });

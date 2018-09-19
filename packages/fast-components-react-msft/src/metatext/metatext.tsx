@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
-import { Foundation, HandledProps, TypeLevel, TypographyTag } from "@microsoft/fast-components-react-base";
+import { Foundation, HandledProps, Size, TypographyTag } from "@microsoft/fast-components-react-base";
 import {
     IMetatextHandledProps,
     IMetatextManagedClasses,
@@ -35,7 +35,7 @@ class Metatext extends Foundation<
             <Typography
                 {...this.unhandledProps()}
                 tag={TypographyTag[this.props.tag]}
-                typeLevel={TypeLevel._7}
+                size={Size._7}
                 className={this.generateClassNames()}
             >
                 {this.props.children}

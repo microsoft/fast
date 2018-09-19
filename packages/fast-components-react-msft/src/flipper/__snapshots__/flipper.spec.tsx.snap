@@ -30,10 +30,13 @@ exports[`flipper snapshots Flipper: 1 1`] = `
 
 exports[`flipper snapshots Flipper: 2 1`] = `
 <button
+  aria-hidden={true}
   aria-label="See next"
   className="flipper-0-1-21 flipper__next-0-1-23"
   direction="next"
   href={null}
+  tabIndex={-1}
+  visible={true}
 >
   <span
     className="flipper_glyph-0-1-22"
@@ -43,10 +46,13 @@ exports[`flipper snapshots Flipper: 2 1`] = `
 
 exports[`flipper snapshots Flipper: 3 1`] = `
 <button
+  aria-hidden={true}
   aria-label="See previous"
   className="flipper-0-1-29 flipper__previous-0-1-32"
   direction="previous"
   href={null}
+  tabIndex={-1}
+  visible={true}
 >
   <span
     className="flipper_glyph-0-1-30"

@@ -14,7 +14,7 @@ export enum TypographyTag {
     figcaption = "figcaption"
 }
 
-export enum TypeLevel {
+export enum Size {
     _1 = 1,
     _2 = 2,
     _3 = 3,
@@ -38,9 +38,9 @@ export interface ITypographyHandledProps {
     tag?: TypographyTag;
 
     /**
-     * The type level which aligns to a type ramp instance
+     * The visual size 9type level) which aligns to a type ramp instance
      */
-    typeLevel?: TypeLevel;
+    size?: Size;
 }
 
 export interface ITypographyUnhandledProps extends

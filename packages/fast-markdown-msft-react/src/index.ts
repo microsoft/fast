@@ -1,7 +1,7 @@
 import CreateRule from "./rule";
 import { MarkdownIt } from "markdown-it";
-import { TypeLevel } from "@microsoft/fast-components-react-base";
-import { HeadingLevel, HeadingTag } from "@microsoft/fast-components-react-msft";
+import { Size } from "@microsoft/fast-components-react-base";
+import { HeadingSize, HeadingTag } from "@microsoft/fast-components-react-msft";
 
 enum ComponentType {
     heading = "heading",
@@ -28,12 +28,12 @@ class FastMarkdownIt {
     constructor(md: MarkdownIt) {
         md.core.ruler.push("fast", (new CreateRule(md) as any));
         md.renderer.rules.paragraph_open = function(): string {
-            return `<Typography typeLevel={${TypeLevel._7}}>`;
+            return `<Typography size={${Size._7}}>`;
         };
         md.renderer.rules.heading_open = function(tokens: ITokens<IToken>, idx: number): string {
             const id: string = tokens[idx + 1].children[0].content.toLowerCase().replace(/\s/g, "-").replace(/[^a-z\-]/g, "");
             /*tslint:disable-next-line */
-            return `<Heading id="${id}" tag="${HeadingTag[(tokens[idx].tag)]}" level={${HeadingLevel["_" + (parseInt(tokens[idx].tag.charAt(1), 10) + 2).toString()]}}>`;
+            return `<Heading id="${id}" tag="${HeadingTag[(tokens[idx].tag)]}" level={${HeadingSize["_" + (parseInt(tokens[idx].tag.charAt(1), 10) + 2).toString()]}}>`;
         };
         md.renderer.rules.text = (tokens: ITokens<IToken>, idx: number): string => {
             return this.replaceSpecialCharacters(tokens[idx].content);

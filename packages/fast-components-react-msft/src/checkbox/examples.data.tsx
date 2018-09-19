@@ -19,24 +19,24 @@ export default {
         },
         {
             tag: "div",
-            text: "div tag"
+            children: "div tag"
         },
         {
             checked: true,
-            text: "Checked (controlled)"
+            children: "Checked (controlled)"
         },
         {
             disabled: true,
-            text: "Disabled"
+            children: "Disabled"
         },
         {
             indeterminate: true,
-            text: "Indeterminate"
+            children: "Indeterminate"
         },
         {
             indeterminate: true,
             checked: true,
-            text: "Indeterminate checked (controlled)"
+            children: "Indeterminate checked (controlled)"
         }
     ]
 } as IComponentFactoryExample<ICheckboxHandledProps>;

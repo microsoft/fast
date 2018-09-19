@@ -204,7 +204,7 @@ describe("tabs", (): void => {
         const rendered: any = mount(
             <Tabs
                 managedClasses={tabsManagedClasses}
-                onUpdateTab={onUpdate}
+                OnUpdate={onUpdate}
                 children={children}
                 activeId={"tab01"}
                 label={"items"}
@@ -285,7 +285,7 @@ describe("tabs", (): void => {
         const rendered: any = shallow(
             <Tabs
                 managedClasses={tabsManagedClasses}
-                onUpdateTab={("test") as any}
+                OnUpdate={("test") as any}
                 activeId={"tab01"}
                 label={"items"}
             >

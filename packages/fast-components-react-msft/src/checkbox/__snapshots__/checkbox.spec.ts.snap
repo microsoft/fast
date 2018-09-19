@@ -3,6 +3,7 @@
 exports[`checkbox snapshots Checkbox: 0 1`] = `
 <label
   className="checkbox-0-1-6"
+  text="Default"
 >
   <input
     checked={false}
@@ -16,9 +17,7 @@ exports[`checkbox snapshots Checkbox: 0 1`] = `
   />
   <span
     className="checkbox_label-0-1-9"
-  >
-    Default
-  </span>
+  />
 </label>
 `;
 

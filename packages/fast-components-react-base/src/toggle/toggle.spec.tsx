@@ -33,9 +33,9 @@ describe("toggle", (): void => {
     const handledProps: IToggleHandledProps & IToggleManagedClasses = {
         managedClasses,
         id: "id",
-        selectedString: "Selected",
-        statusLabelId: "statusLabelId",
-        unselectedString: "Unselected"
+        selectedMessage: "Selected",
+        statusMessageId: "statusMessageId",
+        unselectedMessage: "Unselected"
     };
     const inputSelector: string = `.${managedClasses.toggle_input}`;
 

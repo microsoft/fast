@@ -16,7 +16,7 @@ export interface IParagraphHandledProps {
     /**
      * The paragraph level
      */
-    level?: ParagraphLevel;
+    size?: ParagraphLevel;
 }
 
 export interface IParagraphUnhandledProps extends React.HTMLAttributes<HTMLParagraphElement> {}

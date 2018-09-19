@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ICaptionClassNameContract, IManagedClasses  } from "@microsoft/fast-components-class-name-contracts-msft";
 
-export enum CaptionLevel {
+export enum CaptionSize {
     _1 = 1,
     _2 = 2
 }
@@ -22,7 +22,7 @@ export interface ICaptionHandledProps {
     /**
      * The caption level maps to the type ramp
      */
-    level?: CaptionLevel;
+    size?: CaptionSize;
 
     /**
      * The caption tag maps to appropriate HTML tag type depending on context

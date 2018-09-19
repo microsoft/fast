@@ -1,10 +1,9 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
-import { Foundation, HandledProps, TypeLevel, TypographyTag } from "@microsoft/fast-components-react-base";
+import { Foundation, HandledProps, Size, TypographyTag } from "@microsoft/fast-components-react-base";
 import {
     AlignHeadingBaseline,
-    HeadingLevel,
     IHeadingHandledProps,
     IHeadingManagedClasses,
     IHeadingUnhandledProps
@@ -20,7 +19,7 @@ class Heading extends Foundation<
     public static displayName: string = "Heading";
 
     protected handledProps: HandledProps<IHeadingHandledProps & IManagedClasses<IHeadingClassNameContract>> = {
-        level: void 0,
+        size: void 0,
         managedClasses: void 0,
         tag: void 0
     };
@@ -33,10 +32,10 @@ class Heading extends Foundation<
     }
 
     /**
-     * Stores level for use in render
+     * Stores size for use in render
      */
-    private get level(): TypeLevel {
-        return TypeLevel[`_${this.props.level}`];
+    private get size(): Size {
+        return Size[`_${this.props.size}`];
     }
 
     /**
@@ -47,7 +46,7 @@ class Heading extends Foundation<
             <Typography
                 {...this.unhandledProps()}
                 tag={this.tag}
-                typeLevel={this.level}
+                size={this.size}
                 className={this.generateClassNames()}
             >
                 {this.props.children}
@@ -59,8 +58,8 @@ class Heading extends Foundation<
      * Generates class names based on props
      */
     protected generateClassNames(): string {
-        const classes: string = this.props.level ?
-            get(this.props, `managedClasses.heading__${this.props.level}`) : get(this.props, "managedClasses.heading__1");
+        const classes: string = this.props.size ?
+            get(this.props, `managedClasses.heading__${this.props.size}`) : get(this.props, "managedClasses.heading__1");
 
         return super.generateClassNames(`${get(this.props, "managedClasses.heading")} ${classes}`);
     }
