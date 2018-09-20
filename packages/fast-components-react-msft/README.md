@@ -7,10 +7,10 @@ A set of React components which implements the Microsoft styling.
 ## Usage
 An example of using one of the components from the `@microsoft/fast-components-react-msft` package:
 
-```
-import React from "react";
-import ReactDOM from "react-dom";
-import { Button } from "@microsoft/fast-components-react-msft";
+```tsx
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import { Button, ButtonAppearance } from "@microsoft/fast-components-react-msft";
 
 const root = document.createElement("div");
 root.setAttribute("id", "root");
@@ -18,7 +18,7 @@ document.body.appendChild(root);
 
 function render(): void {
     ReactDOM.render(
-        <Button appearance="primary">
+        <Button appearance={ButtonAppearance.primary}>
             Click me!
         </Button>,
         root
