@@ -10,8 +10,8 @@ An example of using one of the components from the `@microsoft/fast-components-r
 
 ```tsx
 import * as React from "react";
+import * as ReactDOM from "react-dom";
 import { ClassNames, IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import ReactDOM from "react-dom";
 import { Button } from "@microsoft/fast-components-react-base";
 
 const root = document.createElement("div");
