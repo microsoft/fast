@@ -4,12 +4,8 @@
         "module": "ES6",
         "target": "ES6",
         "baseUrl": ".",
-        "declaration": true,
-        "outDir": "./dist"
+        "declaration": true
     },
-    "include": [
-        "build/**/*"
-    ],
     "exclude": [
         "node_modules",
         "packages"
