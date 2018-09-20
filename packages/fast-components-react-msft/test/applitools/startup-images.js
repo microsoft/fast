@@ -1,7 +1,7 @@
-var https = require('https');
-var Eyes = require('eyes.images').Eyes;
-var ConsoleLogHandler = require('eyes.images').ConsoleLogHandler;
-var RSVP = require('rsvp');
+var https = require("https");
+var Eyes = require("eyes.images").Eyes;
+var ConsoleLogHandler = require("eyes.images").ConsoleLogHandler;
+var RSVP = require("rsvp");
 var dotenv = require("dotenv").config();
 
 // Initialize the eyes SDK and set your private API key.

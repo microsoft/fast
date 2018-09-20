@@ -1,6 +1,6 @@
 function main() {
 
-    var webdriver = require('selenium-webdriver');
+    var webdriver = require("selenium-webdriver");
 
     // Open a Chrome browser.
     var driver = new webdriver.Builder()
@@ -9,8 +9,7 @@ function main() {
 
     // Initialize the eyes SDK and set your private API key.
     var Eyes = require('eyes.selenium').Eyes;
-    var eyes = new Eyes();
-    eyes.setApiKey(process.env.APPLITOOLS_API_KEY);
+    var eyes = new Eyes().setApiKey(process.env.APPLITOOLS_API_KEY);
 
     try {
 
