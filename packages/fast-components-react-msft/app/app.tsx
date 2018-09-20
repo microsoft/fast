@@ -23,6 +23,7 @@ import { Direction } from "@microsoft/fast-application-utilities";
 import * as examples from "./examples";
 import { Hypertext } from "../src/hypertext";
 import ColorPicker, { IColorConfig } from "./color-picker";
+import { Label } from "../src/label";
 
 /* tslint:disable-next-line */
 const sketchDesignKit = require("./fast-dna-msft-design-kit.sketch");
@@ -102,8 +103,12 @@ export default class App extends React.Component<{}, IAppState> {
                     {componentFactory(examples, {...this.generateDesignSystem()})}
                 </SiteCategory>
                 <div slot={ShellSlot.infoBar}>
-                    <span style={{display: "flex", alignItems: "center", height: "100%"}}>
-                        <label style={{marginRight: "8px"}}>density</label>
+                    <div style={{display: "flex", alignItems: "center", height: "100%"}}>
+                        <Label
+                            style={{marginRight: "8px"}}
+                        >
+                            density
+                        </Label>
                         <input
                             type="range"
                             name="density"
@@ -119,7 +124,7 @@ export default class App extends React.Component<{}, IAppState> {
                             accentColor={this.state.accentColor}
                             onColorUpdate={this.handleColorUpdate}
                         />
-                    </span>
+                    </div>
                 </div>
             </Site>
         );
