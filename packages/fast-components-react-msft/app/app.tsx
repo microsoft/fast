@@ -23,6 +23,7 @@ import { Direction } from "@microsoft/fast-application-utilities";
 import * as examples from "./examples";
 import { Hypertext } from "../src/hypertext";
 import ColorPicker, { IColorConfig } from "./color-picker";
+import { Label } from "../src/label";
 
 /* tslint:disable-next-line */
 const sketchDesignKit = require("./fast-dna-msft-design-kit.sketch");
@@ -47,6 +48,7 @@ enum Theme {
 export interface IAppState extends IColorConfig {
     theme: Theme;
     direction: Direction;
+    density: number;
 }
 
 export default class App extends React.Component<{}, IAppState> {
@@ -64,7 +66,8 @@ export default class App extends React.Component<{}, IAppState> {
             foregroundColor: DesignSystemDefaults.foregroundColor,
             backgroundColor: DesignSystemDefaults.backgroundColor,
             accentColor: DesignSystemDefaults.brandColor,
-            theme: Theme.light
+            theme: Theme.light,
+            density: DesignSystemDefaults.density
         };
     }
 
@@ -100,12 +103,28 @@ export default class App extends React.Component<{}, IAppState> {
                     {componentFactory(examples, {...this.generateDesignSystem()})}
                 </SiteCategory>
                 <div slot={ShellSlot.infoBar}>
-                    <ColorPicker
-                        foregroundColor={this.state.foregroundColor}
-                        backgroundColor={this.state.backgroundColor}
-                        accentColor={this.state.accentColor}
-                        onColorUpdate={this.handleColorUpdate}
-                    />
+                    <div style={{display: "flex", alignItems: "center", height: "100%"}}>
+                        <Label
+                            style={{marginRight: "8px"}}
+                        >
+                            density
+                        </Label>
+                        <input
+                            type="range"
+                            name="density"
+                            defaultValue="0"
+                            min="-3"
+                            max="3"
+                            step="0.1"
+                            onChange={this.handleDensityUpdate}
+                        />
+                        <ColorPicker
+                            foregroundColor={this.state.foregroundColor}
+                            backgroundColor={this.state.backgroundColor}
+                            accentColor={this.state.accentColor}
+                            onColorUpdate={this.handleColorUpdate}
+                        />
+                    </div>
                 </div>
             </Site>
         );
@@ -122,7 +141,8 @@ export default class App extends React.Component<{}, IAppState> {
             direction: this.state.direction,
             foregroundColor: this.state.foregroundColor,
             backgroundColor: this.state.backgroundColor,
-            brandColor: this.state.accentColor
+            brandColor: this.state.accentColor,
+            density: this.state.density
         };
 
         return Object.assign({}, DesignSystemDefaults, designSystem);
@@ -163,6 +183,13 @@ export default class App extends React.Component<{}, IAppState> {
             ? { theme: Theme.custom, ...config }
             : config
         );
+    }
+
+    private handleDensityUpdate = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        const value: number = parseInt(e.target.value, 10);
+        this.setState({
+            density: value
+        });
     }
 
     /**
