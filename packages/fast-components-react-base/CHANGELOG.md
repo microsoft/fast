@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.3.2"></a>
+## [2.3.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@2.3.1...@microsoft/fast-components-react-base@2.3.2) (2018-09-21)
+
+**Note:** Version bump only for package @microsoft/fast-components-react-base
+
+
+
+
+
 <a name="2.3.1"></a>
 ## [2.3.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@2.3.0...@microsoft/fast-components-react-base@2.3.1) (2018-09-19)
 

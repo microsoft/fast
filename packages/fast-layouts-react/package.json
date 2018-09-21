@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-layouts-react",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "FAST layout components written in React",
   "sideEffects": false,
   "author": {
@@ -96,6 +96,6 @@
   },
   "dependencies": {
     "@microsoft/fast-jss-manager-react": "^2.2.1",
-    "@microsoft/fast-jss-utilities": "^2.2.0"
+    "@microsoft/fast-jss-utilities": "^2.2.1"
   }
 }

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.3.1"></a>
+## [2.3.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@2.3.0...@microsoft/fast-components-react-msft@2.3.1) (2018-09-21)
+
+
+### Bug Fixes
+
+* **call-to-action:** fix glyph import due to missing package dependency ([#930](https://github.com/Microsoft/fast-dna/issues/930)) ([e987a0a](https://github.com/Microsoft/fast-dna/commit/e987a0a))
+
+
+
+
+
 <a name="2.3.0"></a>
 # [2.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@2.2.1...@microsoft/fast-components-react-msft@2.3.0) (2018-09-19)
 
