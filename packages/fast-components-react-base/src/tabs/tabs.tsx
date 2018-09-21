@@ -134,11 +134,15 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
      */
     private renderTabElements(): JSX.Element[] {
         return React.Children.map(
-            this.getChildrenBySlot(
-                this.props.children,
-                this.getSlot(TabsSlot.tabItem)
-            ),
+            this.tabItems(),
             this.renderTabItem
+        );
+    }
+
+    private tabItems(): React.ReactNode {
+        return this.getChildrenBySlot(
+            this.props.children,
+            this.getSlot(TabsSlot.tabItem)
         );
     }
 
@@ -164,10 +168,7 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
      */
     private renderTabPanels(): JSX.Element[] {
         return React.Children.map(
-            this.getChildrenBySlot(
-                this.props.children,
-                this.getSlot(TabsSlot.tabItem)
-            ),
+            this.tabItems(),
             this.renderTabPanel
         );
     }
@@ -227,10 +228,7 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
      */
     private activateTab(location: TabLocation): void {
         const items: React.ReactNode[] = React.Children.toArray(
-            this.getChildrenBySlot(
-                this.props.children,
-                this.getSlot(TabsSlot.tabItem)
-            )
+            this.tabItems()
         );
 
         const count: number = items.length;
