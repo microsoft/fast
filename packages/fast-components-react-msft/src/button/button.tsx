@@ -34,9 +34,11 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IMSFTButto
                 href={this.props.href}
                 disabled={this.props.disabled}
             >
-                {this.renderChildrenBySlot(ButtonSlot.before)}
-                {this.renderContent()}
-                {this.renderChildrenBySlot(ButtonSlot.after)}
+                {this.withSlot(ButtonSlot.before)}
+                <span className={get(this.props, "managedClasses.button_span")}>
+                    {this.withoutSlot([ButtonSlot.before, ButtonSlot.after])}
+                </span>
+                {this.withSlot(ButtonSlot.after)}
             </BaseButton>
         );
     }
@@ -57,36 +59,6 @@ class Button extends Foundation<IButtonHandledProps & IManagedClasses<IMSFTButto
             default:
                 return super.generateClassNames();
         }
-    }
-
-    /**
-     * Renders slotted children in the appropriate slot
-     */
-    private renderChildrenBySlot(slot: ButtonSlot): React.ReactChild[] {
-        return React.Children.toArray(this.props.children).filter((child: JSX.Element, index: number) => {
-            if (child.props && child.props.slot === slot) {
-                return (
-                    <React.Fragment key={index}>
-                        {child}
-                    </React.Fragment>
-                );
-            }
-        });
-    }
-
-    /**
-     * Renders the non-slot child content
-     */
-    private renderContent(): JSX.Element {
-        const content: any[] = [];
-
-        React.Children.toArray(this.props.children).filter((child: JSX.Element, index: number) => {
-            if (get(child, "props.slot") !== ButtonSlot.after && get(child, "props.slot") !== ButtonSlot.before) {
-                content.push(child);
-            }
-        });
-
-        return <span className={get(this.props, "managedClasses.button_span")}>{content}</span>;
     }
 }
 
