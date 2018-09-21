@@ -56,12 +56,7 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
     constructor(props: TabsProps) {
         super(props);
 
-        const tabItems: React.ReactNode[] = React.Children.toArray(
-            this.getChildrenBySlot(
-                this.props.children,
-                this.getSlot(TabsSlot.tabItem)
-            )
-        );
+        const tabItems: React.ReactNode[] = React.Children.toArray(this.tabItems());
 
         this.tabListRef = React.createRef();
 
@@ -227,10 +222,7 @@ class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnha
      * Activates a tab
      */
     private activateTab(location: TabLocation): void {
-        const items: React.ReactNode[] = React.Children.toArray(
-            this.tabItems()
-        );
-
+        const items: React.ReactNode[] = React.Children.toArray(this.tabItems());
         const count: number = items.length;
         const currentItemIndex: number = React.Children.toArray(items).findIndex(this.getCurrentIndexById);
         let itemIndex: number;
