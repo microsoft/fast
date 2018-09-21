@@ -82,9 +82,15 @@ export function getActiveComponentAndSection(
     return state;
 }
 
-export function getLocationsFromSegments(locations: string[]): string[] {
-    return locations.map((location: string, index: number) => {
-        return locations.slice(0, index + 1).join(".");
+/**
+ * Gets locations from individual location segments
+ * Example:
+ * getLocationsFromSegments(["children[0].props.object"])
+ * output: ["children[0]", "children[0].props", "children[0].props.object"]
+ */
+export function getLocationsFromSegments(segments: string[]): string[] {
+    return segments.map((location: string, index: number) => {
+        return segments.slice(0, index + 1).join(".");
     });
 }
 
@@ -92,54 +98,70 @@ export function getLocationsFromSegments(locations: string[]): string[] {
  * Gets the navigational items
  */
 export function getNavigation(dataLocation: string, data: any, schema: any, childOptions: IChildOptionItem[]): INavigationItem[] {
-    const reactDefaultTextChild: IChildOptionItem = {
-        name: "Text",
-        component: null,
-        schema: reactChildrenStringSchema
-    };
-    const allChildOptions: IChildOptionItem[] = [reactDefaultTextChild].concat(childOptions);
+    const allChildOptions: IChildOptionItem[] = getReactDefaultChildren().concat(childOptions);
     const dataLocationsOfChildren: string[] = getDataLocationsOfChildren(schema, data, allChildOptions);
     const normalizedDataLocation: string = dataLocationsOfChildren.includes(dataLocation)
         ? `${normalizeDataLocation(dataLocation, data)}.props`
         : normalizeDataLocation(dataLocation, data);
-    const dataLocationSegments: string[] = normalizedDataLocation.split(".");
-    const dataLocations: Set<string> = new Set([""].concat(getLocationsFromSegments(dataLocationSegments)));
+    const dataLocations: Set<string> = new Set([""].concat(getLocationsFromSegments(normalizedDataLocation.split("."))));
     const navigationItems: INavigationItem[] = [];
     let currentComponentSchema: any = schema;
-    let lastComponentDataLocationItem: string = "";
+    let lastComponentDataLocation: string = "";
 
     dataLocations.forEach((dataLocationItem: string) => {
         if (dataLocationsOfChildren.includes(dataLocationItem)) {
             currentComponentSchema = getSchemaByDataLocation(schema, data, dataLocationItem, allChildOptions);
-            lastComponentDataLocationItem = `${dataLocationItem}.props`;
+            lastComponentDataLocation = `${dataLocationItem}.props`;
         } else {
-            const dataLocationFromLastComponent: string = dataLocationItem.replace(lastComponentDataLocationItem, "").replace(/^\./, "");
-            const currentData: any = dataLocationItem === "" ? data : get(data, dataLocationItem);
+            const isRootLocation: boolean = lastComponentDataLocation === "";
+            const dataLocationFromLastComponent: string = getCurrentComponentDataLocation(dataLocationItem, lastComponentDataLocation);
             const currentSchemaLocation: string = mapSchemaLocationFromDataLocation(
-                lastComponentDataLocationItem === ""
-                    ? dataLocationItem
-                    : dataLocationItem.replace(lastComponentDataLocationItem, "").replace(/^\./, ""),
-                lastComponentDataLocationItem === ""
-                    ? data
-                    : get(data, dataLocationItem),
+                isRootLocation ? dataLocationItem : dataLocationFromLastComponent,
+                isRootLocation ? data : get(data, dataLocationItem),
                 currentComponentSchema
             );
-
             const currentSchema: any = dataLocationFromLastComponent === ""
                 ? currentComponentSchema
                 : get(currentComponentSchema, currentSchemaLocation);
 
-            navigationItems.push({
-                dataLocation: dataLocationItem,
-                schemaLocation: currentSchemaLocation,
-                title: currentSchema.title || "Untitled",
-                data: currentData,
-                schema: currentSchema
-            });
+            navigationItems.push(getNavigationItem(dataLocationItem, currentSchemaLocation, currentSchema, data));
         }
     });
 
     return navigationItems;
+}
+
+/**
+ * Get a single navigation item
+ */
+export function getNavigationItem(dataLocation: string, schemaLocation: string, schema: any, data: any): INavigationItem {
+    return {
+        dataLocation: dataLocation,
+        schemaLocation: schemaLocation,
+        title: schema.title || "Untitled",
+        data: getPartialData(dataLocation, data),
+        schema: schema
+    };
+}
+
+/**
+ * Get React's default children
+ */
+export function getReactDefaultChildren(): IChildOptionItem[] {
+    return [
+        {
+            name: "Text",
+            component: null,
+            schema: reactChildrenStringSchema
+        }
+    ];
+}
+
+/**
+ * Gets the data location from the current component
+ */
+export function getCurrentComponentDataLocation(dataLocation: string, lastComponentDataLocation: string): string {
+    return dataLocation.replace(lastComponentDataLocation, "").replace(/^\./, "")
 }
 
 /**
@@ -425,8 +447,7 @@ export function getDataLocationsOfChildren(schema: any, data: any, childOptions:
     dataLocationsOfChildren.forEach((dataLocationOfChildren: string) => {
         const dataLocation: string = `${dataLocationOfChildren}.props`;
         const subData: any = get(data, dataLocation);
-        const subSchema: any = getSchemaByDataLocation(schema, subData, "", childOptions);
-        const nestedDataLocationsOfChildren: string[] = getDataLocationsOfChildren(subSchema, subData, childOptions);
+        const nestedDataLocationsOfChildren: string[] = getDataLocationsOfChildren(schema, subData, childOptions);
 
         nestedDataLocationsOfChildren.forEach((nestedDataLocationOfChildren: string) => {
             dataLocationsOfChildren.push(`${dataLocation}.${nestedDataLocationOfChildren}`);
@@ -447,17 +468,12 @@ export function getSchemaByDataLocation(currentSchema: any, data: any, dataLocat
     }
 
     const subData: any = get(data, dataLocation);
-    const id: string = subData ? subData.id : void(0);
-    let schema: any = currentSchema;
-
-    childOptions.forEach((childOption: IChildOptionItem) => {
-        if (childOption.schema.id === id) {
-            schema = childOption.schema;
-            return;
-        }
+    const id: string | undefined = subData ? subData.id : void(0);
+    const childOptionWithMatchingSchemaId: any = childOptions.find((childOption: IChildOptionItem) => {
+        return childOption.schema.id === id;
     });
 
-    return schema;
+    return childOptionWithMatchingSchemaId ? childOptionWithMatchingSchemaId.schema : currentSchema;
 }
 
 /**
@@ -472,34 +488,19 @@ export function getComponentByDataLocation(id: string, childOptions: IChildOptio
 /**
  * Finds the child option using the schema id
  */
-export function getChildOptionBySchemaId(id: string, childOptions: IChildOptionItem[]): IChildOptionItem | null {
-    let childOptionBySchemaId: any = null;
-
-    childOptions.forEach((childOption: IChildOptionItem) => {
-        if (childOption.schema.id === id) {
-            childOptionBySchemaId = childOption;
-        }
+export function getChildOptionBySchemaId(id: string, childOptions: IChildOptionItem[]): IChildOptionItem | undefined {
+    return childOptions.find((childOption: IChildOptionItem) => {
+        return childOption.schema.id === id;
     });
-
-    return childOptionBySchemaId;
 }
 
 /**
  * Finds a subset of locations that are react children
  */
 export function getReactChildrenLocationsFromSchema(schema: any, schemaLocations: any): string[] {
-    const locationsContainingReactProperties: string[] = schemaLocations.filter((schemaLocation: string): boolean => {
-        return !!schemaLocation.match(/reactProperties\..+?\b/);
+    return schemaLocations.filter((schemaLocation: string): boolean => {
+        return !!schemaLocation.match(/reactProperties\..+?\b/) && get(schema, schemaLocation).type === "children";
     });
-    const locationsContainingReactChildren: string[] = [];
-
-    locationsContainingReactProperties.forEach((location: string) => {
-        if (get(schema, location).type === "children") {
-            locationsContainingReactChildren.push(location);
-        }
-    });
-
-    return locationsContainingReactChildren;
 }
 
 /**

@@ -474,11 +474,9 @@ class FormSection extends React.Component<IFormSectionProps & IManagedClasses<IF
      */
     private generateChildrenElement(): JSX.Element[] {
         if (this.props.schema.reactProperties) {
-            const childrenProperties: string[] = Object.keys(this.props.schema.reactProperties).filter(
+            return Object.keys(this.props.schema.reactProperties).filter(
                 (reactProperty: string) => this.props.schema.reactProperties[reactProperty].type === "children"
-            );
-
-            return childrenProperties.map((reactProperty: string) => {
+            ).map((reactProperty: string) => {
                 let childOptions: IChildOptionItem[] = [];
 
                 if (this.props.schema.reactProperties[reactProperty].ids) {

@@ -1,8 +1,12 @@
 import * as React from "react";
 
+export interface IArrayObject {
+    string: string;
+}
+
 export interface IArrayProps {
     strings: string[];
-    objects: any[];
+    objects: IArrayObject[];
 }
 
 /**
@@ -30,7 +34,7 @@ export default class Array extends React.Component<IArrayProps, {}> {
 
     private renderObjects(): JSX.Element[] {
         if (this.props.objects) {
-            return this.props.objects.map((objectItem: any, index: number) => {
+            return this.props.objects.map((objectItem: IArrayObject, index: number) => {
                 return (
                     <span key={index}>{objectItem.string}</span>
                 );

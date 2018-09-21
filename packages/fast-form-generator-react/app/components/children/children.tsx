@@ -1,9 +1,25 @@
 import * as React from "react";
 
+export interface IObjectWithChildren {
+    nestedObjectChildren: JSX.Element;
+}
+
 export interface IChildrenProps {
+    /**
+     * Children which are restricted to a subset of childOptions via the JSON schema
+     */
     restrictedWithChildren: JSX.Element[] | JSX.Element;
+
+    /**
+     * Children which are restricted to a subset of childOptions via the JSON schema
+     * and include the React default children (string)
+     */
     restrictedChildrenWithReactDefaults: JSX.Element[] | JSX.Element;
-    objectContainingNestedChildren: any;
+
+    /**
+     * An object containing a property that are children
+     */
+    objectContainingNestedChildren?: IObjectWithChildren;
 }
 
 /**
