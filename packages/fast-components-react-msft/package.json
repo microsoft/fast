@@ -70,7 +70,6 @@
   "devDependencies": {
     "@microsoft/fast-components-class-name-contracts-base": "^2.2.0",
     "@microsoft/fast-development-site-react": "^2.2.1",
-    "@microsoft/fast-glyphs-msft": "^2.3.0",
     "@microsoft/fast-jest-snapshots-react": "^2.2.0",
     "@microsoft/fast-jss-manager": "^2.2.0",
     "@microsoft/fast-sketch-library": "^2.2.0",
@@ -116,6 +115,7 @@
     "@microsoft/fast-components-class-name-contracts-msft": "^2.3.0",
     "@microsoft/fast-components-react-base": "^2.3.1",
     "@microsoft/fast-components-styles-msft": "^2.3.0",
+    "@microsoft/fast-glyphs-msft": "^2.3.0",
     "@microsoft/fast-jss-manager-react": "^2.2.1"
   }
 }
