@@ -2,6 +2,18 @@ import * as React from "react";
 import * as renderer from "react-test-renderer";
 
 /**
+ * A set of snapshot test cases
+ */
+export type ISnapshotTestCases<T> = Array<ISnapshotTestCase<T>>;
+
+/**
+ * An prop object to supply for snapshots. Optionally, a
+ * an array can be provided where the first key is a string representing
+ * a snapshot description, with the second index being the prop data
+ */
+export type ISnapshotTestCase<T> = T | [string, T];
+
+/**
  * An interface describing component example objects used for snapshots and component testing.
  */
 export interface ISnapshotTestSuite<T> {
@@ -18,7 +30,7 @@ export interface ISnapshotTestSuite<T> {
     /**
      * An array of prop instances for the component
      */
-    data: T[];
+    data: ISnapshotTestCases<T>;
 
     /**
      * The JSON schema for the components data
@@ -55,12 +67,23 @@ export function renderSnapshot<T>(data: T, component: React.ComponentClass<T>, t
  * Generate a set of snapshot tests given a snapshot suite
  */
 export function generateSnapshots<T>(examples: ISnapshotTestSuite<T>): void {
-    const data: T[] = examples.data;
+    const data: ISnapshotTestCases<T> = examples.data;
     const component: React.ComponentClass<T> = examples.component;
 
     if (Array.isArray(data)) {
-        data.forEach((example: T, index: number): void => {
-            renderSnapshot(example, component, `${examples.name}: ${index}`);
+        data.forEach((example: ISnapshotTestCase<T>, index: number): void => {
+            let title: string;
+            let props: T;
+
+            if (Array.isArray(example)) {
+                title = example[0];
+                props = example[1];
+            } else {
+                title = `${examples.name}: ${index}`;
+                props = example;
+            }
+
+            renderSnapshot(props, component, title);
         });
     }
 }
