@@ -300,7 +300,7 @@ describe("withSlot", () => {
         }).not.toThrow();
     });
 
-    test("should return an empty array if slot no matches are found", () => {
+    test("should return an empty array if no slot matches are found", () => {
         const Component: WithSlotTestComponent = new ReactTestUtils.renderIntoDocument(
             <WithSlotTestComponent>
                <div slot="foo" />
@@ -324,7 +324,7 @@ describe("withSlot", () => {
         expect(Component["withSlot"]("test")).toHaveLength(2);
     });
 
-    test("should opperate on input nodes if they are provided", () => {
+    test("should operate on input nodes if they are provided", () => {
         const nodes: React.ReactNode[] = [
             <span slot="test" key={1} />,
             <span slot="test" key={2} />,
@@ -372,7 +372,7 @@ describe("withoutSlot", () => {
         }).not.toThrow();
     });
 
-    test("should return all elements if slot no matches are found", () => {
+    test("should return all elements no slot matches are found", () => {
         const Component: WithoutSlotTestComponent = new ReactTestUtils.renderIntoDocument(
             <WithoutSlotTestComponent>
                <div slot="foo" />
@@ -396,7 +396,7 @@ describe("withoutSlot", () => {
         expect(Component["withoutSlot"]("test")).toHaveLength(2);
     });
 
-    test("should opperate on input nodes if they are provided", () => {
+    test("should operate on input nodes if they are provided", () => {
         const nodes: React.ReactNode[] = [
             <span slot="test" key={1} />,
             <span slot="test" key={2} />,
