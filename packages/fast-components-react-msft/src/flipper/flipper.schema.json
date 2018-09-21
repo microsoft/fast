@@ -4,7 +4,6 @@
     "description": "A flipper component's schema definition.",
     "type": "object",
     "id": "flipper",
-    "children": true,
     "properties": {
         "direction": {
             "title": "Direction",
@@ -23,6 +22,11 @@
             "title": "HTML aria-label attribute",
             "type": "string",
             "example": "See previous"
+        }
+    },
+    "reactProperties": {
+        "children": {
+            "type": "children"
         }
     }
 }
