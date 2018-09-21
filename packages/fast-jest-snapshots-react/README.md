@@ -44,7 +44,7 @@ const testSuite: ISnapshotTestSuite<IMyReactComponentProps> = {
     // ...
     data: [
         [
-            "should render with an id attribute"
+            "should render with an id attribute",
             {
                 id: "test-id",
                 text: "hello world",
