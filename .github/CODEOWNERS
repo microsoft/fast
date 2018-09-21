@@ -11,7 +11,7 @@
 # File type specific owners
 
 # Markdown specific files
-*.md    @awentzel @nalogiudice
+*.md    @awentzel @nalogiudice @chrisdholt
 
 # Package specific owners
 
