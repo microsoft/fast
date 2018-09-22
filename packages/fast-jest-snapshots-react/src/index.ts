@@ -8,7 +8,7 @@ export type ISnapshotTestCases<T> = Array<ISnapshotTestCase<T>>;
 
 /**
  * An prop object to supply for snapshots. Optionally, a
- * an array can be provided where the first key is a string representing
+ * an array can be provided where the first index is a string representing
  * a snapshot description, with the second index being the prop data
  */
 export type ISnapshotTestCase<T> = T | [string, T];
