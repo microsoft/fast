@@ -1,8 +1,33 @@
-var https = require("https");
-var Eyes = require("eyes.images").Eyes;
-var ConsoleLogHandler = require("eyes.images").ConsoleLogHandler;
-var RSVP = require("rsvp");
-var dotenv = require("dotenv").config();
+/**
+ * @name
+ * Test Visual User Interfaces
+ * 
+ * @description
+ * Used to generate baselines and test the difference of those baselines against future changes.
+ * 
+ * @example
+ * To execute on CLI, run 'node build/testing/applitools/startup-image.js' from root directory.
+ * 
+ * @requires
+ * You must create environment variables if executing this script locally using CLI. 
+ * 
+ * This can be done one of two recommended ways.
+ * 1. Update your '~/.bashrc' file.
+ *    export APPLITOOLS_API_KEY=[some value]
+ * 
+ * 2. Create a '.env' file at the root of your project
+ *    APPLITOOLS_API_KEY=[some value]
+ * 
+ * - Cirlce CI has these values included as environment variables. 
+ * - The api key can be found in the portal on Applitools.
+ * 
+ */
+
+const https = require("https");
+const Eyes = require("eyes.images").Eyes;
+const ConsoleLogHandler = require("eyes.images").ConsoleLogHandler;
+const RSVP = require("rsvp");
+const dotenv = require("dotenv").config();
 
 // Initialize the eyes SDK and set your private API key.
 var eyes = new Eyes();
@@ -13,23 +38,25 @@ eyes.setLogHandler(new ConsoleLogHandler(true));
 eyes.setOs("Windows 10");
 
 // Start the test and set the browser's viewport size to 800x600.
-var testPromise = eyes.open("Image test", "Javascript screenshot test!", {width: 800, height: 600})
+var testPromise = eyes.open("Image test", "Javascript screenshot test - 1", {
+        width: 1024,
+        height: 768,
+        name: 'firefox'
+    })
     .then(function () {
 
         // Load page image and validate.
-        return getImage('microsoft.com', '/images/tutorials/microsoft_hero.png').then(function (img) {
+        return getImage("microsoft.com", "/images/tutorials/microsoft_hero.png").then(function (img) {
 
-            // Visual validation.
-            return eyes.checkImage(img, 'Contact-us page');
+            // visual validation
+            return eyes.checkImage(img, 'Microsoft Hero HP');
         });
     })
     .then(function () {
-            // End visual UI testing. Validate visual correctness.
-            return eyes.close(false);
-        }, function () {
-            return eyes.abortIfNotClosed();
-        }
-    );
+        return eyes.close();
+    }, function () {
+        return eyes.abortIfNotClosed();
+    });
 
 // Handle test results.
 testPromise.then(function (results) {
@@ -49,13 +76,13 @@ function getImage(host, path) {
         res.setEncoding('binary');
 
         var data = "";
-        res.on('data', function(chunk) {
+        res.on('data', function (chunk) {
             return data += chunk;
         });
-        res.on('end', function() {
+        res.on('end', function () {
             return deferred.resolve(new Buffer(data, 'binary'));
         });
-        res.on('error', function(err) {
+        res.on('error', function (err) {
             console.log("Error during HTTP request");
             console.log(err.message);
             deferred.reject();
@@ -65,3 +92,26 @@ function getImage(host, path) {
     return deferred.promise;
 }
 
+// cy.eyesOpen({
+//     appName: 'blog app',
+//     testName: 'blog app cypress',
+//     browser: [{
+//             deviceName: 'iPhone X',
+//             screenOrientation: 'portrait'
+//         },
+//         {
+//             deviceName: 'iPhone 6/7/8',
+//             screenOrientation: 'landscape'
+//         },
+//         {
+//             width: 800,
+//             height: 600,
+//             name: 'firefox'
+//         },
+//         {
+//             width: 800,
+//             height: 600,
+//             name: 'chrome'
+//         }
+//     ]
+// })
