@@ -32,7 +32,7 @@ generateSnapshots(testSuite);
 ```
 
 ### Snapshot descriptions
-Descriptions can also optionally be applied to any snapshot. This is useful for providing context to the test and what expectation of the snapshot is.
+Descriptions can optionally be applied to any snapshot for providing context to the test and the expectation of the test.
 To do this, simply put the `prop` object into an array where the first index is the snapshot description and the second index is the `prop` object:
 
 ```ts
