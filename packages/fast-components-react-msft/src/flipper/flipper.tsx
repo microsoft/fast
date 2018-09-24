@@ -10,8 +10,13 @@ import {
 } from "./flipper.props";
 import { IFlipperClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
 
-/* tslint:disable-next-line */
-class Flipper extends Foundation<IFlipperHandledProps & IManagedClasses<IFlipperClassNameContract>, React.HTMLAttributes<HTMLButtonElement>, {}> {
+class Flipper extends Foundation<
+    IFlipperHandledProps & IManagedClasses<IFlipperClassNameContract>,
+    React.HTMLAttributes<HTMLButtonElement>,
+    {}
+> {
+    public static displayName: string = "Flipper";
+
     protected handledProps: HandledProps<IFlipperHandledProps & IManagedClasses<IFlipperClassNameContract>> = {
         label: void 0,
         visible: void 0,

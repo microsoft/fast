@@ -13,8 +13,13 @@ export enum ButtonHTMLTags {
     button = "button"
 }
 
-/* tslint:disable-next-line */
-class Button extends Foundation<IButtonHandledProps & IManagedClasses<IButtonClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
+class Button extends Foundation<
+    IButtonHandledProps & IManagedClasses<IButtonClassNameContract>,
+    React.AllHTMLAttributes<HTMLElement>,
+    {}
+> {
+    public static displayName: string = "Button";
+
     protected handledProps: HandledProps<IButtonHandledProps & IManagedClasses<IButtonClassNameContract>> = {
         disabled: void 0,
         href: void 0,

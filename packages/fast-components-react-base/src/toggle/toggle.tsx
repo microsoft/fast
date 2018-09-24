@@ -15,8 +15,12 @@ export interface IToggleState {
 /**
  * Toggle base component
  */
-/* tslint:disable-next-line */
-class Toggle extends Foundation<IToggleHandledProps & IManagedClasses<IToggleClassNameContract>,  React.HTMLAttributes<HTMLDivElement>, IToggleState> {
+class Toggle extends Foundation<
+    IToggleHandledProps & IManagedClasses<IToggleClassNameContract>,
+    React.HTMLAttributes<HTMLDivElement>,
+    IToggleState
+> {
+    public static displayName: string = "Toggle";
 
     /**
      * React life-cycle method

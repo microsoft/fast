@@ -10,8 +10,13 @@ import {
 import { IManagedClasses, ITextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
 
-/* tslint:disable-next-line */
-class TextField extends Foundation<ITextFieldHandledProps & IManagedClasses<ITextFieldClassNameContract>, ITextFieldUnhandledProps, {}> {
+class TextField extends Foundation<
+    ITextFieldHandledProps & IManagedClasses<ITextFieldClassNameContract>,
+    ITextFieldUnhandledProps,
+    {}
+> {
+    public static displayName: string = "TextField";
+
     protected handledProps: HandledProps<ITextFieldHandledProps & IManagedClasses<ITextFieldClassNameContract>> = {
         disabled: void 0,
         placeholder: void 0,

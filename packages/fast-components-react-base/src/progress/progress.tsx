@@ -10,13 +10,17 @@ export enum ProgressType {
     indeterminate = "indeterminate"
 }
 
-/* tslint:disable-next-line */
-class Progress extends Foundation<IProgressHandledProps & IManagedClasses<IProgressClassNameContract>, React.HTMLAttributes<HTMLDivElement>, {}> {
-
+class Progress extends Foundation<
+    IProgressHandledProps & IManagedClasses<IProgressClassNameContract>,
+    React.HTMLAttributes<HTMLDivElement>,
+    {}
+> {
     public static defaultProps: Partial<IProgressHandledProps> = {
         minValue: 0,
         maxValue: 100
     };
+
+    public static displayName: string = "Progress";
 
     protected handledProps: HandledProps<IProgressHandledProps & IManagedClasses<IProgressClassNameContract>> = {
         children: void 0,

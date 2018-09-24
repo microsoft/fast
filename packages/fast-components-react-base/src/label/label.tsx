@@ -10,8 +10,13 @@ import {
 } from "./label.props";
 import { ILabelClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
-/* tslint:disable-next-line */
-class Label extends Foundation<ILabelHandledProps & IManagedClasses<ILabelClassNameContract>, React.HTMLAttributes<HTMLLabelElement>, {}> {
+class Label extends Foundation<
+    ILabelHandledProps & IManagedClasses<ILabelClassNameContract>,
+    React.HTMLAttributes<HTMLLabelElement>,
+    {}
+> {
+    public static displayName: string = "Label";
+
     public static defaultProps: Partial<ILabelHandledProps> = {
         tag: LabelTag.label
     };

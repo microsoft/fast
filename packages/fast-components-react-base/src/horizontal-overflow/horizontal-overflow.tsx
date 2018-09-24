@@ -19,7 +19,12 @@ export interface IHorizontalOverflowState {
 
 export type AnimateScroll = () => void;
 
-class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllHTMLAttributes<HTMLDivElement>, IHorizontalOverflowState> {
+class HorizontalOverflow extends Foundation<
+    HorizontalOverflowProps,
+    React.AllHTMLAttributes<HTMLDivElement>,
+    IHorizontalOverflowState
+> {
+    public static displayName: string = "HorizontalOverflow";
 
     protected handledProps: HandledProps<IHorizontalOverflowHandledProps & IManagedClasses<IHorizontalOverflowClassNameContract>> = {
         scrollDuration: void 0,

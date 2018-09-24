@@ -7,13 +7,18 @@ import { IDialogClassNameContract, IManagedClasses } from "@microsoft/fast-compo
 import { canUseDOM } from "exenv-es6";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
-/* tslint:disable-next-line */
-class Dialog extends Foundation<IDialogHandledProps & IManagedClasses<IDialogClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
+class Dialog extends Foundation<
+    IDialogHandledProps & IManagedClasses<IDialogClassNameContract>,
+    React.AllHTMLAttributes<HTMLElement>,
+    {}
+> {
     public static defaultProps: Partial<IDialogHandledProps> = {
         contentHeight: "480px",
         contentWidth: "640px",
         visible: false
     };
+
+    public static displayName: string = "Dialog";
 
     protected handledProps: HandledProps<IDialogHandledProps & IManagedClasses<IDialogClassNameContract>> = {
         describedBy: void 0,

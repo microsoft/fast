@@ -26,8 +26,13 @@ const breakpoints: IBreakpoints = {
     vp6: 1779
 };
 
-/* tslint:disable-next-line */
-class Image extends Foundation<IImageHandledProps & IManagedClasses<IImageClassNameContract>, React.HTMLAttributes<HTMLImageElement | HTMLPictureElement>, {}> {
+class Image extends Foundation<
+    IImageHandledProps & IManagedClasses<IImageClassNameContract>,
+    React.HTMLAttributes<HTMLImageElement | HTMLPictureElement>,
+    {}
+> {
+    public static displayName: string = "Image";
+
     protected handledProps: HandledProps<IImageHandledProps & IManagedClasses<IImageClassNameContract>> = {
         managedClasses: void 0,
         alt: void(0),

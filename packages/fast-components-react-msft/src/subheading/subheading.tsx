@@ -12,12 +12,17 @@ import {
 import { Typography } from "../typography";
 import { IManagedClasses, ISubheadingClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 
-/* tslint:disable-next-line */
-class Subheading extends Foundation<ISubheadingHandledProps & IManagedClasses<ISubheadingClassNameContract>, React.HTMLAttributes<HTMLElement>, {}> {
+class Subheading extends Foundation<
+    ISubheadingHandledProps & IManagedClasses<ISubheadingClassNameContract>,
+    React.HTMLAttributes<HTMLElement>,
+    {}
+> {
     public static defaultProps: Partial<ISubheadingHandledProps> = {
         level: SubheadingLevel._1,
         tag: SubheadingTag.h3
     };
+
+    public static displayName: string = "Subheading";
 
     protected handledProps: HandledProps<ISubheadingHandledProps & IManagedClasses<ISubheadingClassNameContract>> = {
         level: void 0,
