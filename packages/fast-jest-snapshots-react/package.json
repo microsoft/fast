@@ -23,12 +23,26 @@
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'",
     "watch": "npm run build -- -w --preserveWatchOutput"
   },
+  "jest": {
+    "testURL": "http://localhost",
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest",
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx"
+    ]
+  },
   "devDependencies": {
     "@microsoft/fast-tslint-rules": "^2.2.0",
     "@types/jest": "^22.2.2",
     "@types/react": "^16.3.6",
     "jest": "^22.4.3",
-    "react": "^16.3.0",
+    "react": "^16.5.2",
     "ts-jest": "^22.4.2",
     "tslint": "^5.9.1",
     "typescript": "^3.0.1"

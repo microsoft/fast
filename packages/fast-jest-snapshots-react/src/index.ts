@@ -76,7 +76,7 @@ export function generateSnapshots<T>(examples: ISnapshotTestSuite<T>): void {
             let props: T;
 
             if (Array.isArray(example)) {
-                title = example[0];
+                title = `${examples.name} ${example[0]}`;
                 props = example[1];
             } else {
                 title = `${examples.name}: ${index}`;
