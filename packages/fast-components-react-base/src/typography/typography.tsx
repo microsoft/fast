@@ -53,8 +53,9 @@ class Typography extends Foundation<
      * Generates class names based on props
      */
     protected generateClassNames(): string {
-        const classes: string = this.props.size ?
-            get(this.props, `managedClasses.typography__${this.props.size}`) : get(this.props, "managedClasses.typography__1");
+        const classes: string = this.props.size
+            ? get(this.props, `managedClasses.typography__${this.props.size}`)
+            : get(this.props, "managedClasses.typography__1");
 
         return super.generateClassNames(`${get(this.props, "managedClasses.typography")} ${classes}`);
     }
