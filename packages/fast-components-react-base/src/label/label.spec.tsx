@@ -4,7 +4,7 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
-import {
+import Label, {
     ILabelClassNameContract,
     ILabelHandledProps,
     ILabelManagedClasses,
@@ -23,11 +23,14 @@ describe("label snapshot", (): void => {
 });
 
 describe("label", (): void => {
-    const Component: React.ComponentClass<ILabelHandledProps & ILabelManagedClasses> = examples.component;
     const managedClasses: ILabelClassNameContract = {
         label: "label-class",
         label_hidden: "label-hidden-class"
     };
+
+    test("should have a displayName that matches the component name", () => {
+        expect((Label as any).name).toBe(Label.displayName);
+    });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: ILabelHandledProps & ILabelManagedClasses = {
@@ -39,7 +42,7 @@ describe("label", (): void => {
         };
         const props: LabelProps = {...handledProps, ...unhandledProps};
         const rendered: any = shallow(
-            <Component {...props} />
+            <Label {...props} />
         );
 
         expect(rendered.prop("aria-hidden")).not.toBe(undefined);
@@ -48,9 +51,9 @@ describe("label", (): void => {
 
     test("should correctly handle children", () => {
         const rendered: any = shallow(
-            <Component managedClasses={managedClasses} tag={LabelTag.label}>
+            <Label managedClasses={managedClasses} tag={LabelTag.label}>
                 Children
-            </Component>
+            </Label>
         );
 
         expect(rendered.prop("children")).not.toBe(undefined);
@@ -59,7 +62,7 @@ describe("label", (): void => {
 
     test("should render with a default tag of `label` if no `tag` prop is passed", () => {
         const rendered: any = shallow(
-            <Component managedClasses={managedClasses} />
+            <Label managedClasses={managedClasses} />
         );
 
         expect(rendered.prop("tag")).toBe(undefined);
@@ -69,7 +72,7 @@ describe("label", (): void => {
 
     test("should render the correct `tag` when `tag` prop is passed", () => {
         const rendered: any = shallow(
-            <Component managedClasses={managedClasses} tag={LabelTag.legend} />
+            <Label managedClasses={managedClasses} tag={LabelTag.legend} />
         );
 
         expect(rendered.instance().props.tag).not.toBe(undefined);

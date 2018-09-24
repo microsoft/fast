@@ -4,7 +4,7 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
-import {
+import Hypertext, {
     HypertextProps,
     IHypertextClassNameContract,
     IHypertextHandledProps,
@@ -22,10 +22,13 @@ describe("hypertext snapshot", (): void => {
 });
 
 describe("hypertext", (): void => {
-    const Component: React.ComponentClass<IHypertextHandledProps & IHypertextManagedClasses> = examples.component;
     const managedClasses: IHypertextClassNameContract = {
         hypertext: "hypertext-class"
     };
+
+    test("should have a displayName that matches the component name", () => {
+        expect((Hypertext as any).name).toBe(Hypertext.displayName);
+    });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: IHypertextHandledProps & IHypertextManagedClasses = {
@@ -39,7 +42,7 @@ describe("hypertext", (): void => {
         const props: HypertextProps = {...handledProps, ...unhandledProps};
 
         const rendered: any = shallow(
-            <Component {...props} />
+            <Hypertext {...props} />
         );
 
         expect(rendered.prop("aria-hidden")).not.toBe(undefined);
@@ -52,9 +55,9 @@ describe("hypertext", (): void => {
             href: "http://www.microsoft.com"
         };
         const rendered: any = shallow(
-            <Component managedClasses={managedClasses}>
+            <Hypertext managedClasses={managedClasses}>
                 Children
-            </Component>
+            </Hypertext>
         );
 
         expect(rendered.prop("children")).not.toBe(undefined);

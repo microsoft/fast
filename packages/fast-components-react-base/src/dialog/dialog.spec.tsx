@@ -5,7 +5,7 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
-import {
+import Dialog, {
     DialogProps,
     IDialogClassNameContract,
     IDialogHandledProps,
@@ -24,12 +24,15 @@ describe("dialog snapshot", (): void => {
 });
 
 describe("dialog", (): void => {
-    const Component: React.ComponentClass<IDialogHandledProps & IDialogManagedClasses> = examples.component;
     const managedClasses: IDialogClassNameContract = {
         dialog: "dialog-class",
         dialog_contentRegion: "dialog-content-region-class",
         dialog_modalOverlay: "dialog-modal-overlay-class",
     };
+
+    test("should have a displayName that matches the component name", () => {
+        expect((Dialog as any).name).toBe(Dialog.displayName);
+    });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: IDialogHandledProps & IDialogManagedClasses = {
@@ -44,7 +47,7 @@ describe("dialog", (): void => {
         const props: DialogProps = {...handledProps, ...unhandledProps};
 
         const rendered: any = shallow(
-            <Component {...props} />
+            <Dialog {...props} />
         );
 
         expect(rendered.prop("data-m")).not.toBe(undefined);
@@ -54,7 +57,7 @@ describe("dialog", (): void => {
     test("should call the `onDismiss` callback after a click event on the modal overlay when `visible` prop is true", () => {
         const onDismiss: any = jest.fn();
         const rendered: any = shallow(
-            <Component
+            <Dialog
                 managedClasses={managedClasses}
                 modal={true}
                 onDismiss={onDismiss}
@@ -82,7 +85,7 @@ describe("dialog", (): void => {
         });
 
         const rendered: any = mount(
-            <Component managedClasses={managedClasses} modal={true} onDismiss={onDismiss} />
+            <Dialog managedClasses={managedClasses} modal={true} onDismiss={onDismiss} />
         );
 
         map.keydown({ keyCode: KeyCodes.escape });
@@ -107,7 +110,7 @@ describe("dialog", (): void => {
         });
 
         const rendered: any = mount(
-            <Component managedClasses={managedClasses} modal={true} onDismiss={onDismiss} visible={true} />
+            <Dialog managedClasses={managedClasses} modal={true} onDismiss={onDismiss} visible={true} />
         );
 
         rendered.unmount();

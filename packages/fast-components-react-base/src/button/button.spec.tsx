@@ -4,7 +4,7 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
-import {
+import Button, {
     ButtonHTMLTags,
     ButtonProps,
     IButtonClassNameContract,
@@ -23,11 +23,14 @@ describe("button snapshot", (): void => {
 });
 
 describe("button", (): void => {
-    const Component: React.ComponentClass<IButtonHandledProps & IButtonManagedClasses> = examples.component;
     const managedClasses: IButtonClassNameContract = {
         button: "test-button"
     };
     const href: string = "https://www.microsoft.com";
+
+    test("should have a displayName that matches the component name", () => {
+        expect((Button as any).name).toBe(Button.displayName);
+    });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: IButtonHandledProps & IButtonManagedClasses = {
@@ -41,7 +44,7 @@ describe("button", (): void => {
         const props: ButtonProps = {...handledProps, ...unhandledProps};
 
         const rendered: any = shallow(
-            <Component {...props} />
+            <Button {...props} />
         );
 
         expect(rendered.prop("aria-hidden")).not.toBe(undefined);
@@ -50,7 +53,7 @@ describe("button", (): void => {
 
     test("should render by default as a `button` element", () => {
         const rendered: any = shallow(
-            <Component managedClasses={managedClasses} />
+            <Button managedClasses={managedClasses} />
         );
 
         expect(rendered.type()).toBe("button");
@@ -58,7 +61,7 @@ describe("button", (): void => {
 
     test("should render as an `anchor` element if the `href` prop is passed", () => {
         const rendered: any = shallow(
-            <Component href={href} managedClasses={managedClasses} />
+            <Button href={href} managedClasses={managedClasses} />
         );
 
         expect(rendered.type()).toBe("a");
@@ -66,7 +69,7 @@ describe("button", (): void => {
 
     test("should render `aria-disabled` if `href` and `disabled` props are passed", () => {
         const rendered: any = shallow(
-            <Component href={href} managedClasses={managedClasses} disabled={true} />
+            <Button href={href} managedClasses={managedClasses} disabled={true} />
         );
 
         expect(rendered.prop("disabled")).toBe(undefined);
@@ -75,7 +78,7 @@ describe("button", (): void => {
 
     test("should render `disabled` if the `disabled` prop is passed and the href prop is not passed", () => {
         const rendered: any = shallow(
-            <Component disabled={true} managedClasses={managedClasses} />
+            <Button disabled={true} managedClasses={managedClasses} />
         );
 
         expect(rendered.prop("aria-disabled")).toBe(undefined);
@@ -84,9 +87,9 @@ describe("button", (): void => {
 
     test("should accept and render children", () => {
         const rendered: any = shallow(
-            <Component managedClasses={managedClasses}>
+            <Button managedClasses={managedClasses}>
                 Children
-            </Component>
+            </Button>
         );
 
         expect(rendered.prop("children")).not.toBe(undefined);
