@@ -284,3 +284,147 @@ describe("generateClassNames", () => {
         ).toBe("component-classes custom-class-name");
     });
 });
+
+describe("withSlot", () => {
+    class WithSlotTestComponent extends Foundation<{}, {}, {}> {
+        public render(): React.ReactNode {
+            return this.props.children || "hello world";
+        }
+    }
+
+    test("should not throw if no props are passed", () => {
+        const Component: WithSlotTestComponent = new ReactTestUtils.renderIntoDocument(<WithSlotTestComponent />);
+
+        expect(() => {
+            Component["withSlot"]("test");
+        }).not.toThrow();
+    });
+
+    test("should return an empty array if no slot matches are found", () => {
+        const Component: WithSlotTestComponent = new ReactTestUtils.renderIntoDocument(
+            <WithSlotTestComponent>
+               <div slot="foo" />
+               <div slot="bar" />
+            </WithSlotTestComponent>
+        );
+
+        expect(Component["withSlot"]("test")).toHaveLength(0);
+    });
+
+    test("should return an array of all children that have a slot prop matching the provided slot", () => {
+        const Component: WithSlotTestComponent = new ReactTestUtils.renderIntoDocument(
+            <WithSlotTestComponent>
+               <div slot="test" />
+               <div slot="foo" />
+               <div slot="bar" />
+               <div slot="test" />
+            </WithSlotTestComponent>
+        );
+
+        expect(Component["withSlot"]("test")).toHaveLength(2);
+    });
+
+    test("should operate on input nodes if they are provided", () => {
+        const nodes: React.ReactNode[] = [
+            <span slot="test" key={1} />,
+            <span slot="test" key={2} />,
+            <span slot="test" key={3} />,
+            <span slot="foo" key={4} />
+        ];
+
+        const Component: WithSlotTestComponent = new ReactTestUtils.renderIntoDocument(
+            <WithSlotTestComponent>
+               <div slot="foo">
+                    {nodes}
+               </div>
+               <div slot="bar" />
+            </WithSlotTestComponent>
+        );
+
+        expect(Component["withSlot"]("test", nodes)).toHaveLength(3);
+    });
+
+    test("should accept an array of slots", () => {
+        const Component: WithSlotTestComponent = new ReactTestUtils.renderIntoDocument(
+            <WithSlotTestComponent>
+               <div slot="foo" />
+               <div slot="bar" />
+               <div slot="bat" />
+            </WithSlotTestComponent>
+        );
+
+        expect(Component["withSlot"](["foo", "bar"])).toHaveLength(2);
+    });
+});
+
+describe("withoutSlot", () => {
+    class WithoutSlotTestComponent extends Foundation<{}, {}, {}> {
+        public render(): React.ReactNode {
+            return this.props.children || "hello world";
+        }
+    }
+
+    test("should not throw if no props are passed", () => {
+        const Component: WithoutSlotTestComponent = new ReactTestUtils.renderIntoDocument(<WithoutSlotTestComponent />);
+
+        expect(() => {
+            Component["withoutSlot"]("test");
+        }).not.toThrow();
+    });
+
+    test("should return all elements no slot matches are found", () => {
+        const Component: WithoutSlotTestComponent = new ReactTestUtils.renderIntoDocument(
+            <WithoutSlotTestComponent>
+               <div slot="foo" />
+               <div slot="bar" />
+            </WithoutSlotTestComponent>
+        );
+
+        expect(Component["withoutSlot"]("test")).toHaveLength(2);
+    });
+
+    test("should return an array of all children that do not have a slot prop matching the provided slot", () => {
+        const Component: WithoutSlotTestComponent = new ReactTestUtils.renderIntoDocument(
+            <WithoutSlotTestComponent>
+               <div slot="test" />
+               <div slot="foo" />
+               <div slot="bar" />
+               <div slot="test" />
+            </WithoutSlotTestComponent>
+        );
+
+        expect(Component["withoutSlot"]("test")).toHaveLength(2);
+    });
+
+    test("should operate on input nodes if they are provided", () => {
+        const nodes: React.ReactNode[] = [
+            <span slot="test" key={1} />,
+            <span slot="test" key={2} />,
+            <span slot="test" key={3} />,
+            <span slot="foo" key={4} />
+        ];
+
+        const Component: WithoutSlotTestComponent = new ReactTestUtils.renderIntoDocument(
+            <WithoutSlotTestComponent>
+               <div slot="foo">
+                    {nodes}
+               </div>
+               <div slot="bar" />
+            </WithoutSlotTestComponent>
+        );
+
+        expect(Component["withoutSlot"]("test", nodes)).toHaveLength(1);
+    });
+
+    test("should accept an array of slots", () => {
+        const Component: WithoutSlotTestComponent = new ReactTestUtils.renderIntoDocument(
+            <WithoutSlotTestComponent>
+               <div slot="foo" />
+               <div slot="bar" />
+               <div slot="bat" />
+            </WithoutSlotTestComponent>
+        );
+
+        expect(Component["withoutSlot"](["foo", "bar"])).toHaveLength(1);
+    });
+});

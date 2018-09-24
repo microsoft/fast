@@ -121,6 +121,43 @@ class Foundation<H, U, S> extends React.Component<H & U & IFoundationProps, S> {
         return componentClasses.concat(` ${this.props.className || ""}`).trim().replace(/(\s){2,}/g, " ") || null;
     }
 
+    /*
+     * Return an array of all nodes who's slot prop matches the provided slot.
+     * If no nodes are provided, `this.props.children` will be used
+     */
+    protected withSlot<T>(
+        slot: T | T[],
+        nodes: React.ReactNode = this.props.children
+    ): React.ReactNode {
+        return React.Children.map(nodes, (node: React.ReactNode): React.ReactNode | null => {
+            return this.hasSlot(slot, node)
+                ? node
+                : null;
+        });
+    }
+
+    protected withoutSlot<T>(
+        slot: T | T[],
+        nodes: React.ReactNode = this.props.children
+    ): React.ReactNode {
+        return React.Children.map(nodes, (node: React.ReactNode): React.ReactNode | null => {
+            return !this.hasSlot(slot, node)
+                ? node
+                : null;
+        });
+    }
+
+    /**
+     * Determine if a single node has a slot property
+     */
+    private hasSlot<T>(slot: T | T[], node: React.ReactNode): boolean {
+        const nodeSlot: T = get(node, "props.slot");
+
+        return Array.isArray(slot)
+            ? slot.indexOf(nodeSlot) !== -1
+            : slot === nodeSlot;
+    }
+
     /**
      * Generates a string that conforms to object/array accessor syntax that can be used by lodash's get / set,
      * eg. => ["foo", "bar", 0] => "foo[bar][0]"

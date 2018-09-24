@@ -68,10 +68,10 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
                     </ul>
                 </div>
                 <div className={this.props.managedClasses.horizontalOverflow_previous} onClick={this.handlePreviousClick}>
-                    {this.getChildBySlot(ButtonDirection.previous)}
+                    {this.withSlot(ButtonDirection.previous)}
                 </div>
                 <div className={this.props.managedClasses.horizontalOverflow_next} onClick={this.handleNextClick}>
-                    {this.getChildBySlot(ButtonDirection.next)}
+                    {this.withSlot(ButtonDirection.next)}
                 </div>
             </div>
         );
@@ -178,35 +178,17 @@ class HorizontalOverflow extends Foundation<HorizontalOverflowProps,  React.AllH
     }
 
     /**
-     * Gets children by slot name
-     */
-    private getChildBySlot(slot: ButtonDirection): JSX.Element {
-        let childBySlot: JSX.Element = null;
-
-        React.Children.forEach(this.props.children, (child: JSX.Element): void => {
-            if (child.props && child.props.slot === slot) {
-                childBySlot = child;
-            }
-        });
-
-        return childBySlot;
-    }
-
-    /**
      * Gets the children displayed as items to be scrolled
      */
-    private getItems(): JSX.Element[] {
-        const previousButton: JSX.Element = this.getChildBySlot(ButtonDirection.previous);
-        const nextButton: JSX.Element = this.getChildBySlot(ButtonDirection.next);
-
-        return React.Children.map(this.props.children, (child: JSX.Element, index: number) => {
-            if (child !== nextButton && child !== previousButton) {
+    private getItems(): React.ReactNode {
+        return React.Children.map(
+            this.withoutSlot([ButtonDirection.previous, ButtonDirection.next]),
+            (child: React.ReactNode): React.ReactElement<HTMLLIElement> => {
                 return (
-                    <li key={index} style={{display: "inline-block"}}>
+                    <li style={{display: "inline-block"}}>
                         {child}
                     </li>
                 );
-            }
         });
     }
 
