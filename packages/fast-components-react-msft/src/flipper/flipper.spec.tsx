@@ -3,12 +3,13 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
-import {
+import MSFTFlipper, {
     FlipperProps,
     IFlipperHandledProps,
     IFlipperManagedClasses,
     IFlipperUnhandledProps
 } from "./flipper";
+import { Flipper } from "./index";
 
 /*
  * Configure Enzyme
@@ -20,7 +21,9 @@ describe("flipper snapshots", (): void => {
 });
 
 describe("flipper", (): void => {
-    const Component: React.ComponentClass<IFlipperHandledProps> = examples.component;
+    test("should have a displayName that matches the component name", () => {
+        expect((MSFTFlipper as any).name).toBe(MSFTFlipper.displayName);
+    });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: IFlipperHandledProps = {
@@ -34,7 +37,7 @@ describe("flipper", (): void => {
         const props: IFlipperHandledProps & IFlipperUnhandledProps = {...handledProps, ...unhandledProps};
 
         const rendered: any = shallow(
-            <Component {...props} />
+            <Flipper {...props} />
         );
 
         const flipper: any = rendered.first().shallow();
@@ -48,7 +51,7 @@ describe("flipper", (): void => {
         };
 
         const rendered: any = shallow(
-            <Component {...props} />
+            <Flipper {...props} />
         );
 
         const flipper: any = rendered.first().shallow();
@@ -62,21 +65,21 @@ describe("flipper", (): void => {
         };
 
         const rendered: any = shallow(
-            <Component {...props} />
+            <Flipper {...props} />
         );
 
         const flipper: any = rendered.first().shallow();
 
         expect(flipper.prop("aria-hidden")).toEqual(true);
     });
-\
+
     test("should not set an attribute of `aria-label` if no label is passed", () => {
         const props: IFlipperHandledProps = {
             visible: false
         };
 
         const rendered: any = shallow(
-            <Component {...props} />
+            <Flipper {...props} />
         );
 
         const flipper: any = rendered.first().shallow();
@@ -91,7 +94,7 @@ describe("flipper", (): void => {
         };
 
         const rendered: any = shallow(
-            <Component {...props} />
+            <Flipper {...props} />
         );
 
         const flipper: any = rendered.first().shallow();
