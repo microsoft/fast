@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TestComponent should render with a snapshot title 1`] = `
+<div>
+  hello pluto
+</div>
+`;
+
+exports[`TestComponent: 0 1`] = `
+<div>
+  hello world
+</div>
+`;
