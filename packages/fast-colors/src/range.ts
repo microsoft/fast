@@ -115,6 +115,8 @@ function adjustThreshold(
  * of the returned color range.
  */
 export function range(color: Color, options: Partial<IColorOptions> = {}): Color[] {
+    color = Chroma(color).hex("rgb");
+
     const defaults: IColorOptions = {
         count: 7,
         paddingLight: 0.185,
