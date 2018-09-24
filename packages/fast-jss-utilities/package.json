@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-jss-utilities",
   "description": "Utilities for use with JSS",
   "sideEffects": false,
-  "version": "2.2.1",
+  "version": "2.2.2",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -61,7 +61,7 @@
     "typescript": "^3.0.1"
   },
   "dependencies": {
-    "@microsoft/fast-colors": "^2.2.0",
+    "@microsoft/fast-colors": "^2.2.1",
     "@microsoft/fast-jss-manager": "^2.2.0",
     "lodash-es": "^4.17.10"
   },

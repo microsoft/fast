@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.4.0"></a>
+# [2.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@2.3.1...@microsoft/fast-components-react-msft@2.4.0) (2018-09-24)
+
+
+### Features
+
+* add slot-selection support to foundation ([#937](https://github.com/Microsoft/fast-dna/issues/937)) ([958a637](https://github.com/Microsoft/fast-dna/commit/958a637))
+
+
+
+
+
 <a name="2.3.1"></a>
 ## [2.3.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@2.3.0...@microsoft/fast-components-react-msft@2.3.1) (2018-09-21)
 
