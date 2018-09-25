@@ -5,8 +5,13 @@ import { IHypertextHandledProps, IHypertextManagedClasses, IHypertextUnhandledPr
 import { IHypertextClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
 
-/* tslint:disable-next-line */
-class Hypertext extends Foundation<IHypertextHandledProps & IManagedClasses<IHypertextClassNameContract>, React.AnchorHTMLAttributes<HTMLAnchorElement>, {}> {
+class Hypertext extends Foundation<
+    IHypertextHandledProps & IManagedClasses<IHypertextClassNameContract>,
+    React.AnchorHTMLAttributes<HTMLAnchorElement>,
+    {}
+> {
+    public static displayName: string = "Hypertext";
+
     protected handledProps: HandledProps<IHypertextHandledProps & IManagedClasses<IHypertextClassNameContract>> = {
         href: void 0,
         managedClasses: void 0

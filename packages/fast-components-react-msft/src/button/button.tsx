@@ -13,8 +13,13 @@ export enum ButtonSlot {
     after = "after"
 }
 
-/* tslint:disable-next-line */
-class Button extends Foundation<IButtonHandledProps & IManagedClasses<IMSFTButtonClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
+class Button extends Foundation<
+    IButtonHandledProps & IManagedClasses<IMSFTButtonClassNameContract>,
+    React.AllHTMLAttributes<HTMLElement>,
+    {}
+> {
+    public static displayName: string = "Button";
+
     protected handledProps: HandledProps<IButtonHandledProps & IManagedClasses<IMSFTButtonClassNameContract>> = {
         appearance: void 0,
         disabled: void 0,

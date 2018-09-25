@@ -3,7 +3,7 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
-import {
+import MSFTCaption, {
     CaptionLevel,
     CaptionProps,
     CaptionTag,
@@ -11,6 +11,7 @@ import {
     ICaptionManagedClasses,
     ICaptionUnhandledProps
 } from "./caption";
+import { Caption } from "./index";
 
 /**
  * Configure Enzyme
@@ -22,7 +23,9 @@ describe("caption snapshots", (): void => {
 });
 
 describe("caption", (): void => {
-    const Component: React.ComponentClass<ICaptionHandledProps> = examples.component;
+    test("should have a displayName that matches the component name", () => {
+        expect((MSFTCaption as any).name).toBe(MSFTCaption.displayName);
+    });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: ICaptionHandledProps = {
@@ -37,7 +40,7 @@ describe("caption", (): void => {
         const props: ICaptionHandledProps & ICaptionUnhandledProps = {...handledProps, ...unhandledProps};
 
         const rendered: any = shallow(
-            <Component {...props} />
+            <Caption {...props} />
         );
 
         const caption: any = rendered.first().shallow();
@@ -47,7 +50,7 @@ describe("caption", (): void => {
 
     test("should render a default `tag` of `CaptionTag.p` if no `tag` prop is passed", () => {
         const rendered: any = shallow(
-            <Component />
+            <Caption />
         );
         const caption: any = rendered.first().shallow();
 
@@ -56,7 +59,7 @@ describe("caption", (): void => {
 
     test("should render the correct `level` when `level` prop is passed", () => {
         const rendered: any = shallow(
-            <Component level={CaptionLevel._2} />
+            <Caption level={CaptionLevel._2} />
         );
         const caption: any = rendered.first().shallow();
 

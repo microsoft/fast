@@ -4,7 +4,7 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
-import {
+import Checkbox, {
     CheckboxProps,
     ICheckboxClassNameContract,
     ICheckboxHandledProps,
@@ -23,7 +23,6 @@ describe("checkbox snapshot", (): void => {
 });
 
 describe("checkbox", (): void => {
-    const Component: React.ComponentClass<ICheckboxHandledProps & ICheckboxManagedClasses> = examples.component;
     const managedClasses: ICheckboxClassNameContract = {
         checkbox: "checkbox-class",
         checkbox_disabled: "disabled-class",
@@ -33,6 +32,10 @@ describe("checkbox", (): void => {
     };
 
     const inputSelector: string = `.${managedClasses.checkbox_input}`;
+
+    test("should have a displayName that matches the component name", () => {
+        expect((Checkbox as any).name).toBe(Checkbox.displayName);
+    });
 
     test("should implement unhandledProps", () => {
         const handledProps: ICheckboxHandledProps & ICheckboxManagedClasses = {
@@ -46,7 +49,7 @@ describe("checkbox", (): void => {
         const props: CheckboxProps = {...handledProps, ...unhandledProps};
 
         const rendered: any = shallow(
-            <Component {...props} />
+            <Checkbox {...props} />
         );
 
         expect(rendered.first().prop("data-my-custom-attribute")).toEqual(true);
@@ -54,7 +57,7 @@ describe("checkbox", (): void => {
 
     test("should add a class and `disabled` attribute to the input element when the disabled prop is true", () => {
         const rendered: any = shallow(
-            <Component managedClasses={managedClasses} disabled={true} />
+            <Checkbox managedClasses={managedClasses} disabled={true} />
         );
 
         expect(rendered.hasClass("disabled-class")).toBe(true);
@@ -64,14 +67,14 @@ describe("checkbox", (): void => {
 
     test("should initialize as unchecked if the `checked` prop is not provided", () => {
         expect(
-            shallow(<Component managedClasses={managedClasses} />)
+            shallow(<Checkbox managedClasses={managedClasses} />)
             .state("checked")
         ).toBe(false);
     });
 
     test("should allow a change event to update the checked state when no `checked` prop is provided", () => {
         const rendered: any = shallow(
-            <Component managedClasses={managedClasses} />
+            <Checkbox managedClasses={managedClasses} />
         );
 
         expect(rendered.state("checked")).toBe(false);
@@ -84,10 +87,10 @@ describe("checkbox", (): void => {
     test("should call a registerd callback after a change event", () => {
         const onChange: any = jest.fn();
         const controlled: any = shallow(
-            <Component managedClasses={managedClasses} checked={true} onChange={onChange} />
+            <Checkbox managedClasses={managedClasses} checked={true} onChange={onChange} />
         );
         const uncontrolled: any = shallow(
-            <Component managedClasses={managedClasses} onChange={onChange} />
+            <Checkbox managedClasses={managedClasses} onChange={onChange} />
         );
 
         controlled.find(inputSelector).simulate("change");
@@ -101,7 +104,7 @@ describe("checkbox", (): void => {
 
     test("should not allow a change event to update the checked state if props.checked is provided", () => {
         const rendered: any = shallow(
-            <Component managedClasses={managedClasses} checked={false} />
+            <Checkbox managedClasses={managedClasses} checked={false} />
         );
 
         expect(rendered.state("checked")).toEqual(false);

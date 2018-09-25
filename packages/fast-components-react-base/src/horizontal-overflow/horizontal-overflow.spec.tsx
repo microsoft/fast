@@ -38,6 +38,10 @@ describe("horizontal overflow snapshot", (): void => {
 
 /* tslint:disable:no-string-literal */
 describe("horizontal overflow", (): void => {
+    test("should have a displayName that matches the component name", () => {
+        expect((HorizontalOverflow as any).name).toBe(HorizontalOverflow.displayName);
+    });
+
     test("should render a previous button if one is passed as a child with the appropriate slot prop", () => {
         const renderedWithImagesAndPrevious: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>

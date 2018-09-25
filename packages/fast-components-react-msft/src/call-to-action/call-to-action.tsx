@@ -8,8 +8,13 @@ import { get } from "lodash-es";
 import { glyphArrowright } from "@microsoft/fast-glyphs-msft";
 import { callToActionButtonOverrides } from "@microsoft/fast-components-styles-msft";
 
-// tslint:disable-next-line:max-line-length
-class CallToAction extends Foundation<ICallToActionHandledProps & IManagedClasses<ICallToActionClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
+class CallToAction extends Foundation<
+    ICallToActionHandledProps & IManagedClasses<ICallToActionClassNameContract>,
+    React.AllHTMLAttributes<HTMLElement>,
+    {}
+> {
+    public static displayName: string = "CallToAction";
+
     protected handledProps: HandledProps<ICallToActionHandledProps & IManagedClasses<ICallToActionClassNameContract>> = {
         appearance: void 0,
         href: void 0,

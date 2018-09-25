@@ -11,11 +11,16 @@ import {
 } from "./typography.props";
 import { IManagedClasses, ITypographyClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 
-/* tslint:disable-next-line */
-class Typography extends Foundation<ITypographyHandledProps & IManagedClasses<ITypographyClassNameContract>, ITypographyUnhandledProps, {}> {
+class Typography extends Foundation<
+    ITypographyHandledProps & IManagedClasses<ITypographyClassNameContract>,
+    ITypographyUnhandledProps,
+    {}
+> {
     public static defaultProps: Partial<ITypographyHandledProps> = {
         tag: TypographyTag.p
     };
+
+    public static displayName: string = "Typography";
 
     protected handledProps: HandledProps<ITypographyHandledProps & IManagedClasses<ITypographyClassNameContract>> = {
         managedClasses: void 0,

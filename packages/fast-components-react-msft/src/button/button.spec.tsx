@@ -5,8 +5,7 @@ import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import { ButtonHTMLTags } from "@microsoft/fast-components-react-base";
 import { IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import {
-    Button,
+import MSFTButton, {
     ButtonAppearance,
     ButtonProps,
     IButtonHandledProps,
@@ -14,6 +13,7 @@ import {
     IButtonUnhandledProps,
     IMSFTButtonClassNameContract
 } from "./button";
+import { Button } from "./index";
 
 /*
  * Configure Enzyme
@@ -25,8 +25,6 @@ describe("button snapshots", (): void => {
 });
 
 describe("button", (): void => {
-    const Component: React.ComponentClass<IButtonHandledProps & IButtonUnhandledProps> = examples.component;
-
     const href: string = "https://www.microsoft.com";
 
     const beforeSlotExample: JSX.Element = (
@@ -49,6 +47,10 @@ describe("button", (): void => {
         </div>
     );
 
+    test("should have a displayName that matches the component name", () => {
+        expect((MSFTButton as any).name).toBe(MSFTButton.displayName);
+    });
+
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: IButtonHandledProps = {
             href
@@ -61,7 +63,7 @@ describe("button", (): void => {
         const props: IButtonHandledProps & IButtonUnhandledProps = {...handledProps, ...unhandledProps};
 
         const rendered: any = shallow(
-            <Component {...props}/>
+            <Button {...props}/>
         );
 
         const button: any = rendered.first().shallow();
@@ -76,7 +78,7 @@ describe("button", (): void => {
         };
 
         const rendered: any = shallow(
-            <Component {...props}/>
+            <Button {...props}/>
         );
 
         const button: any = rendered.first().shallow();
@@ -95,7 +97,7 @@ describe("button", (): void => {
         };
 
         const rendered: any = shallow(
-            <Component {...props}/>
+            <Button {...props}/>
         );
 
         const button: any = rendered.first().shallow();
@@ -114,7 +116,7 @@ describe("button", (): void => {
         };
 
         const rendered: any = shallow(
-            <Component {...props}/>
+            <Button {...props}/>
         );
 
         const button: any = rendered.first().shallow();
@@ -133,7 +135,7 @@ describe("button", (): void => {
         };
 
         const rendered: any = shallow(
-            <Component {...props}/>
+            <Button {...props}/>
         );
 
         const button: any = rendered.first().shallow();
@@ -148,7 +150,7 @@ describe("button", (): void => {
     test("should set a custom class name when passed", () => {
         const customClassNameString: string = "customClassName";
         const rendered: any = shallow(
-            <Component className={customClassNameString} />
+            <Button className={customClassNameString} />
         );
 
         const button: any = rendered.first().shallow();
@@ -159,7 +161,7 @@ describe("button", (): void => {
     test("should set a custom class name and 'justified' class name when appearance is justified and a custom class is passed", () => {
         const customClassNameString: string = "customClassName";
         const rendered: any = shallow(
-            <Component appearance={ButtonAppearance.justified} className={customClassNameString} />
+            <Button appearance={ButtonAppearance.justified} className={customClassNameString} />
         );
 
         const button: any = rendered.first().shallow();
@@ -177,7 +179,7 @@ describe("button", (): void => {
         };
 
         const rendered: any = mount(
-            <Component {...props} />
+            <Button {...props} />
         );
 
         expect(rendered.instance().props.children[1].props.slot).toBe("before");
@@ -193,7 +195,7 @@ describe("button", (): void => {
         };
 
         const rendered: any = mount(
-            <Component {...props} />
+            <Button {...props} />
         );
 
         expect(rendered.instance().props.children[1].props.slot).toBe("after");

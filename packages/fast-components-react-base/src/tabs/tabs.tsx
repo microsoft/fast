@@ -22,7 +22,12 @@ export interface ITabsState {
     activeId: string;
 }
 
-class Tabs extends Foundation<ITabsHandledProps & ITabsManagedClasses, ITabsUnhandledProps, ITabsState> {
+class Tabs extends Foundation<
+    ITabsHandledProps & ITabsManagedClasses,
+    ITabsUnhandledProps,
+    ITabsState
+> {
+    public static displayName: string = "Tabs";
 
     /**
      * React life-cycle method

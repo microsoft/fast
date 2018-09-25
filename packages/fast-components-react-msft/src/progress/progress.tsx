@@ -15,13 +15,17 @@ import {
 import { IManagedClasses, IMSFTProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { Progress as BaseProgress } from "@microsoft/fast-components-react-base";
 
-/* tslint:disable-next-line */
-class Progress extends Foundation<IMSFTProgressHandledProps & IManagedClasses<IMSFTProgressClassNameContract>,  IMSFTProgressUnhandledProps, {}> {
-
+class Progress extends Foundation<
+    IMSFTProgressHandledProps & IManagedClasses<IMSFTProgressClassNameContract>,
+    IMSFTProgressUnhandledProps,
+    {}
+> {
     public static defaultProps: Partial<IMSFTProgressHandledProps> = {
         minValue: 0,
         maxValue: 100
     };
+
+    public static displayName: string = "Progress";
 
     private static indicatorDotCount: number = 5;
 

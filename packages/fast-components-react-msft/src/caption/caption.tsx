@@ -12,6 +12,8 @@ class Caption extends Foundation<ICaptionHandledProps & IManagedClasses<ICaption
         level: CaptionLevel._1
     };
 
+    public static displayName: string = "Caption";
+
     protected handledProps: HandledProps<ICaptionHandledProps & IManagedClasses<ICaptionClassNameContract>> = {
         level: void 0,
         managedClasses: void 0,

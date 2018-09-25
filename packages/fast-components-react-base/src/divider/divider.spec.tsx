@@ -4,7 +4,7 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
-import {
+import Divider, {
     DividerProps,
     DividerRoles,
     IDividerClassNameContract,
@@ -20,10 +20,13 @@ describe("divider snapshot", (): void => {
 configure({adapter: new Adapter()});
 
 describe("divider", (): void => {
-    const Component: React.ComponentClass<IDividerHandledProps & IDividerManagedClasses> = examples.component;
     const managedClasses: IDividerClassNameContract = {
         divider: "divider-class",
     };
+
+    test("should have a displayName that matches the component name", () => {
+        expect((Divider as any).name).toBe(Divider.displayName);
+    });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: IDividerHandledProps & IDividerManagedClasses = {
@@ -34,7 +37,7 @@ describe("divider", (): void => {
         };
         const props: DividerProps = {...handledProps, ...unhandledProps};
         const rendered: any = shallow(
-            <Component {...props} />
+            <Divider {...props} />
         );
 
         expect(rendered.prop("aria-hidden")).not.toBe(undefined);
@@ -43,7 +46,7 @@ describe("divider", (): void => {
 
     test("should pass `role` prop when value is `presentation`", () => {
         const rendered: any = shallow(
-            <Component managedClasses={managedClasses} role={DividerRoles.presentation} />
+            <Divider managedClasses={managedClasses} role={DividerRoles.presentation} />
         );
 
         expect(rendered.prop("role")).toEqual(DividerRoles.presentation);
@@ -51,7 +54,7 @@ describe("divider", (): void => {
 
     test("should NOT have a role attribute when value is `separator`", () => {
         const rendered: any = shallow(
-            <Component managedClasses={managedClasses} role={DividerRoles.separator} />
+            <Divider managedClasses={managedClasses} role={DividerRoles.separator} />
         );
 
         expect(rendered.prop("role")).not.toEqual(DividerRoles.separator);

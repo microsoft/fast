@@ -11,11 +11,16 @@ import {
 import { Typography } from "../typography";
 import { IManagedClasses, IParagraphClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 
-/* tslint:disable-next-line */
-class Paragraph extends Foundation<IParagraphHandledProps & IManagedClasses<IParagraphClassNameContract>, React.HTMLAttributes<HTMLParagraphElement>, {}> {
+class Paragraph extends Foundation<
+    IParagraphHandledProps & IManagedClasses<IParagraphClassNameContract>,
+    React.HTMLAttributes<HTMLParagraphElement>,
+    {}
+> {
     public static defaultProps: Partial<IParagraphHandledProps> = {
         level: ParagraphLevel._3
     };
+
+    public static displayName: string = "Paragraph";
 
     protected handledProps: HandledProps<IParagraphHandledProps & IManagedClasses<IParagraphClassNameContract>> = {
         level: void 0,

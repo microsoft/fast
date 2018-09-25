@@ -4,13 +4,15 @@ import * as Adapter from "enzyme-adapter-react-16/build";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
-import {
+import MSFTCallToAction, {
     CallToActionAppearance,
     CallToActionProps,
     ICallToActionHandledProps,
     ICallToActionManagedClasses,
     ICallToActionUnhandledProps
 } from "./call-to-action";
+import { CallToAction } from "./index";
+
 import { ICallToActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 
 /*
@@ -23,16 +25,19 @@ describe("call to action snapshot", (): void => {
 });
 
 describe("call to action", (): void => {
-    const Component: React.ComponentClass<ICallToActionHandledProps & ICallToActionManagedClasses> = examples.component;
     const managedClasses: ICallToActionClassNameContract = {
         callToAction: "call-to-action",
-        callToAction_glyph: "glyph"
+        callToAction_glyph: "glyph",
         callToAction__primary: "call-to-action-primary",
         callToAction__lightweight: "call-to-action-lightweight",
         callToAction__justified: "call-to-action-justified",
         callToAction__disabled: "call-to-action-disabled",
     };
     const href: string = "#";
+
+    test("should have a displayName that matches the component name", () => {
+        expect((MSFTCallToAction as any).name).toBe(MSFTCallToAction.displayName);
+    });
 
     test("should implement unhandledProps", () => {
         const handledProps: ICallToActionProps & ICallToActionManagedClasses = {
@@ -48,7 +53,7 @@ describe("call to action", (): void => {
         const props: CallToActionProps = {...handledProps, ...unhandledProps};
 
         const rendered: any = shallow(
-            <Component {...props} />
+            <CallToAction {...props} />
         );
 
         expect(rendered.first().prop("data-my-custom-attribute")).toEqual(true);
@@ -61,7 +66,7 @@ describe("call to action", (): void => {
         };
 
         const rendered: any = shallow(
-            <Component {...props}/>
+            <CallToAction {...props}/>
         );
 
         const callToAction: any = rendered.first().shallow();
@@ -81,7 +86,7 @@ describe("call to action", (): void => {
         };
 
         const rendered: any = shallow(
-            <Component {...props}/>
+            <CallToAction {...props}/>
         );
 
         const callToAction: any = rendered.first().shallow();
@@ -101,7 +106,7 @@ describe("call to action", (): void => {
         };
 
         const rendered: any = shallow(
-            <Component {...props}/>
+            <CallToAction {...props}/>
         );
 
         const callToAction: any = rendered.first().shallow();
@@ -121,7 +126,7 @@ describe("call to action", (): void => {
         };
 
         const rendered: any = shallow(
-            <Component {...props}/>
+            <CallToAction {...props}/>
         );
 
         const callToAction: any = rendered.first().shallow();
@@ -140,7 +145,7 @@ describe("call to action", (): void => {
         };
 
         const rendered: any = shallow(
-            <Component className={"custom-class-name"} {...props}/>
+            <CallToAction className={"custom-class-name"} {...props}/>
         );
 
         const callToAction: any = rendered.first().shallow();
@@ -158,7 +163,7 @@ describe("call to action", (): void => {
     test("should set a custom class name and root class name when a custom class name is passed", () => {
 
         const rendered: any = shallow(
-            <Component className={"custom-class-name"} />
+            <CallToAction className={"custom-class-name"} />
         );
 
         const callToAction: any = rendered.first().shallow();

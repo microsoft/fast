@@ -3,7 +3,7 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
-import {
+import MSFTHeading, {
     HeadingLevel,
     HeadingProps,
     HeadingTag,
@@ -12,6 +12,7 @@ import {
     IHeadingUnhandledProps
 } from "./heading";
 import { Typography } from "@microsoft/fast-components-react-base";
+import { Heading } from "./index";
 
 /*
  * Configure Enzyme
@@ -23,7 +24,9 @@ describe("heading snapshots", (): void => {
 });
 
 describe("heading", (): void => {
-    const Component: React.ComponentClass<IHeadingHandledProps> = examples.component;
+    test("should have a displayName that matches the component name", () => {
+        expect((MSFTHeading as any).name).toBe(MSFTHeading.displayName);
+    });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: IHeadingHandledProps = {
@@ -38,7 +41,7 @@ describe("heading", (): void => {
         const props: IHeadingHandledProps & IHeadingUnhandledProps = {...handledProps, ...unhandledProps};
 
         const rendered: any = shallow(
-            <Component {...props} />
+            <Heading {...props} />
         );
 
         const heading: any = rendered.first().shallow();
@@ -48,7 +51,7 @@ describe("heading", (): void => {
 
     test("should render the correct `tag` when `tag` prop is passed", () => {
         const rendered: any = shallow(
-            <Component tag={HeadingTag.h3} />
+            <Heading tag={HeadingTag.h3} />
         );
         const heading: any = rendered.first().shallow();
 

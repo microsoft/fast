@@ -4,7 +4,7 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
-import {
+import Toggle, {
     IToggleClassNameContract,
     IToggleHandledProps,
     IToggleManagedClasses,
@@ -23,7 +23,6 @@ describe("toggle snapshot", (): void => {
 });
 
 describe("toggle", (): void => {
-    const Component: React.ComponentClass<IToggleHandledProps & IToggleManagedClasses> = examples.component;
     const managedClasses: IToggleClassNameContract = {
         toggle: "toggle-class",
         toggle_label: "toggle-label-class",
@@ -40,13 +39,17 @@ describe("toggle", (): void => {
     };
     const inputSelector: string = `.${managedClasses.toggle_input}`;
 
+    test("should have a displayName that matches the component name", () => {
+        expect((Toggle as any).name).toBe(Toggle.displayName);
+    });
+
     test("should implement unhandledProps", () => {
         const unhandledProps: IToggleUnhandledProps = {
             "data-my-custom-attribute": true
         };
         const props: ToggleProps = {...handledProps, ...unhandledProps};
         const rendered: any = shallow(
-            <Component {...props} />
+            <Toggle {...props} />
         );
 
         expect(rendered.first().prop("data-my-custom-attribute")).toBe(true);
@@ -54,7 +57,7 @@ describe("toggle", (): void => {
 
     test("should initalize as unselected if the `selected` prop is not provided", () => {
         const rendered: any = shallow(
-            <Component {...handledProps} />
+            <Toggle {...handledProps} />
         );
 
         expect(rendered.state("selected")).toBe(false);
@@ -62,7 +65,7 @@ describe("toggle", (): void => {
 
     test("should allow a change event to update the selected state when no `selected` prop is provided", () => {
         const rendered: any = shallow(
-            <Component {...handledProps} />
+            <Toggle {...handledProps} />
         );
 
         expect(rendered.state("selected")).toBe(false);
@@ -75,10 +78,10 @@ describe("toggle", (): void => {
     test("should call a registered callback after a change event", () => {
         const onChange: any = jest.fn();
         const uncontrolled: any = shallow(
-            <Component {...handledProps} onChange={onChange} />
+            <Toggle {...handledProps} onChange={onChange} />
         );
         const controlled: any = shallow(
-            <Component {...handledProps} selected={true} onChange={onChange} />
+            <Toggle {...handledProps} selected={true} onChange={onChange} />
         );
 
         uncontrolled
@@ -96,7 +99,7 @@ describe("toggle", (): void => {
 
     test("should not allow a change event to update the selected state when props.selected is provided", () => {
         const rendered: any = shallow(
-            <Component {...handledProps} selected={false} />
+            <Toggle {...handledProps} selected={false} />
         );
 
         expect(rendered.state("selected")).toEqual(false);

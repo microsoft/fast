@@ -12,8 +12,12 @@ export interface ICheckboxState {
     checked: boolean;
 }
 
-/* tslint:disable-next-line */
-class Checkbox extends Foundation<ICheckboxHandledProps & ICheckboxManagedClasses, ICheckboxUnhandledProps, ICheckboxState> {
+class Checkbox extends Foundation<
+    ICheckboxHandledProps & ICheckboxManagedClasses,
+    ICheckboxUnhandledProps,
+    ICheckboxState
+> {
+    public static displayName: string = "Checkbox";
 
     /**
      * React life-cycle method

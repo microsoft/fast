@@ -4,7 +4,7 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
-import {
+import Image, {
     IImageClassNameContract,
     IImageHandledProps,
     IImageManagedClasses,
@@ -22,13 +22,16 @@ describe("image snapshot", (): void => {
 });
 
 describe("image", (): void => {
-    const Component: React.ComponentClass<IImageHandledProps & IImageManagedClasses> = examples.component;
     const managedClasses: IImageClassNameContract = {
         image: "image-class",
         image_round: "image-round-class",
         picture: "picture-class"
     };
     const alt: string = "Image alt text test string";
+
+    test("should have a displayName that matches the component name", () => {
+        expect((Image as any).name).toBe(Image.displayName);
+    });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: IImageHandledProps & IImageManagedClasses = {
@@ -41,7 +44,7 @@ describe("image", (): void => {
         };
         const props: ImageProps = {...handledProps, ...unhandledProps};
         const rendered: any = shallow(
-            <Component {...props} />
+            <Image {...props} />
         );
 
         expect(rendered.prop("aria-hidden")).not.toBe(undefined);
@@ -50,7 +53,7 @@ describe("image", (): void => {
 
     test("should correctly NOT render anything if `src` and `vp1` props are both undefined", () => {
         const rendered: any = shallow(
-            <Component managedClasses={managedClasses} alt={alt} />
+            <Image managedClasses={managedClasses} alt={alt} />
         );
 
         expect(rendered.type()).toEqual(null);
@@ -58,7 +61,7 @@ describe("image", (): void => {
 
     test("should render an `<img />` element if `src` prop is passed", () => {
         const rendered: any = shallow(
-            <Component managedClasses={managedClasses} alt={alt} src={"https://placehold.it/20x20"} />
+            <Image managedClasses={managedClasses} alt={alt} src={"https://placehold.it/20x20"} />
         );
 
         expect(rendered.type()).toBe("img");
@@ -66,7 +69,7 @@ describe("image", (): void => {
 
     test("should render a `<picture>` element if `vp1` and any additional `vp2`, `vp3`, `vp4`, `vp5`, `vp6` props are passed", () => {
         const rendered: any = shallow(
-            <Component managedClasses={managedClasses} alt={alt} vp1={"https://placehold.it/20x20"} />
+            <Image managedClasses={managedClasses} alt={alt} vp1={"https://placehold.it/20x20"} />
         );
 
         expect(rendered.type()).toBe("picture");
@@ -74,7 +77,7 @@ describe("image", (): void => {
 
     test("should NOT render with a srcset value if no `srcSet` prop is passed", () => {
         const rendered: any = shallow(
-            <Component managedClasses={managedClasses} alt={alt} src={"https://placehold.it/20x20"} />
+            <Image managedClasses={managedClasses} alt={alt} src={"https://placehold.it/20x20"} />
         );
 
         expect(rendered.prop("srcSet")).toBe(null);
@@ -82,7 +85,7 @@ describe("image", (): void => {
 
     test("should render with a srcset value when `srcSet` prop is passed", () => {
         const rendered: any = shallow(
-            <Component
+            <Image
                 managedClasses={managedClasses}
                 alt={alt}
                 src={"https://placehold.it/20x20"}
@@ -95,7 +98,7 @@ describe("image", (): void => {
 
     test("should NOT render with a sizes value if no `sizes` prop is passed", () => {
         const rendered: any = shallow(
-            <Component managedClasses={managedClasses} alt={alt} src={"https://placehold.it/20x20"} />
+            <Image managedClasses={managedClasses} alt={alt} src={"https://placehold.it/20x20"} />
         );
 
         expect(rendered.prop("sizes")).toBe(null);
@@ -103,7 +106,7 @@ describe("image", (): void => {
 
     test("should render with a sizes value when `sizes` prop is passed", () => {
         const rendered: any = shallow(
-            <Component
+            <Image
                 managedClasses={managedClasses}
                 alt={alt}
                 src={"https://placehold.it/400x400"}
@@ -122,7 +125,7 @@ describe("image", (): void => {
             vp2: "https://placehold.it/100x100"
         };
         const rendered: any = shallow(
-            <Component {...props}/>
+            <Image {...props}/>
         );
 
         expect(rendered.instance().props.vp1).toEqual(props.vp1);

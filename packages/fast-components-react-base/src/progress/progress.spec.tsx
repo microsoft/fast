@@ -22,6 +22,10 @@ describe("progress snapshot", (): void => {
 });
 
 describe("progress", (): void => {
+    test("should have a displayName that matches the component name", () => {
+        expect((Progress as any).name).toBe(Progress.displayName);
+    });
+
     test("should render a child if one is passed as a child with the appropriate slot prop", () => {
         const progess: any = mount(
             <Progress managedClasses={managedClasses}>

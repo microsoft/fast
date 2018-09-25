@@ -4,7 +4,13 @@ import { IManagedClasses, ITabClassNameContract } from "@microsoft/fast-componen
 import Foundation, { HandledProps } from "../foundation";
 import { ITabHandledProps, ITabManagedClasses, ITabUnhandledProps } from "./tab.props";
 
-class Tab extends Foundation<ITabHandledProps & ITabManagedClasses, ITabUnhandledProps, {}> {
+class Tab extends Foundation<
+    ITabHandledProps & ITabManagedClasses,
+    ITabUnhandledProps,
+    {}
+> {
+    public static displayName: string = "Tab";
+
     protected handledProps: HandledProps<ITabHandledProps & IManagedClasses<ITabClassNameContract>> = {
         managedClasses: void 0,
         slot: void 0

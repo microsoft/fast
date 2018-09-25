@@ -10,7 +10,7 @@ import {
     ITabPanelClassNameContract,
     ITabsClassNameContract
 } from "@microsoft/fast-components-class-name-contracts-base";
-import {
+import Tabs, {
     ITabsHandledProps,
     ITabsManagedClasses,
     ITabsUnhandledProps,
@@ -37,7 +37,6 @@ describe("tabs snapshot", (): void => {
 });
 
 describe("tabs", (): void => {
-    const Component: React.ComponentClass<ITabsHandledProps & ITabsManagedClasses> = examples.component;
     const tabsManagedClasses: ITabsClassNameContract = {
             tabs: "tabs-class",
             tabs_tabList: "tab_list-class",
@@ -140,6 +139,10 @@ describe("tabs", (): void => {
         )
     ];
 
+    test("should have a displayName that matches the component name", () => {
+        expect((Tabs as any).name).toBe(Tabs.displayName);
+    });
+
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: ITabsHandledProps & ITabsManagedClasses = {
             managedClasses: tabsManagedClasses,
@@ -152,7 +155,7 @@ describe("tabs", (): void => {
         const props: TabsProps = {...handledProps, ...unhandledProps};
 
         const rendered: any = shallow(
-            <Component {...props} />
+            <Tabs {...props} />
         );
 
         expect(rendered.prop("aria-hidden")).not.toBe(undefined);
@@ -161,9 +164,9 @@ describe("tabs", (): void => {
 
     test("should correctly handle children", () => {
         const renderedWithChildren: any = shallow(
-            <Component managedClasses={tabsManagedClasses} label={"items"}>
+            <Tabs managedClasses={tabsManagedClasses} label={"items"}>
                 {children}
-            </Component>
+            </Tabs>
         );
 
         expect(renderedWithChildren.prop("children")).not.toBe(undefined);
@@ -172,9 +175,9 @@ describe("tabs", (): void => {
 
     test("should generate an ID if none has been provided", () => {
         const renderedWithChildren: any = shallow(
-            <Component managedClasses={tabsManagedClasses} label={"items"}>
+            <Tabs managedClasses={tabsManagedClasses} label={"items"}>
                 {childrenMissingIds}
-            </Component>
+            </Tabs>
         );
 
         expect(renderedWithChildren.prop("children")).not.toBe(undefined);
@@ -182,7 +185,7 @@ describe("tabs", (): void => {
 
     test("should correctly handle children when given custom slots", () => {
         const renderedWithChildren: any = shallow(
-            <Component
+            <Tabs
                 managedClasses={tabsManagedClasses}
                 label={"items"}
                 tabSlot={"customTab"}
@@ -190,7 +193,7 @@ describe("tabs", (): void => {
                 tabPanelSlot={"customTabPanel"}
             >
                 {childrenWithCustomSlots}
-            </Component>
+            </Tabs>
         );
 
         expect(renderedWithChildren.prop("children")).not.toBe(undefined);
@@ -199,7 +202,7 @@ describe("tabs", (): void => {
     test("should allow a user to control the component from a callback", () => {
         const onUpdate: any = jest.fn();
         const rendered: any = mount(
-            <Component
+            <Tabs
                 managedClasses={tabsManagedClasses}
                 onUpdateTab={onUpdate}
                 children={children}
@@ -280,14 +283,14 @@ describe("tabs", (): void => {
 
     test("should not use the callback if it is not a function", () => {
         const rendered: any = shallow(
-            <Component
+            <Tabs
                 managedClasses={tabsManagedClasses}
                 onUpdateTab={("test") as any}
                 activeId={"tab01"}
                 label={"items"}
             >
                 {children}
-            </Component>
+            </Tabs>
         );
 
         rendered.find("Tab").at(0).simulate("keydown", {keyCode: KeyCodes.end});
@@ -299,7 +302,7 @@ describe("tabs", (): void => {
 
     test("should allow an uncontrolled state where when navigation is available through click or keyboard action", () => {
         const rendered: any = mount(
-            <Component managedClasses={tabsManagedClasses} children={children}  label={"items"} />
+            <Tabs managedClasses={tabsManagedClasses} children={children}  label={"items"} />
         );
 
         const tab1: any = rendered.find("Tab").at(0);
@@ -363,5 +366,23 @@ describe("tabs", (): void => {
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
+    });
+});
+
+describe("Tab", (): void => {
+    test("should have a displayName that matches the component name", () => {
+        expect((Tab as any).name).toBe(Tab.displayName);
+    });
+});
+
+describe("TabItem", (): void => {
+    test("should have a displayName that matches the component name", () => {
+        expect((TabItem as any).name).toBe(TabItem.displayName);
+    });
+});
+
+describe("TabPanel", (): void => {
+    test("should have a displayName that matches the component name", () => {
+        expect((TabPanel as any).name).toBe(TabPanel.displayName);
     });
 });
