@@ -1,111 +1,96 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`radio snapshots Radio: 0 1`] = `
-<label
-  className="radio-0-1-1"
+<div
+  className="radio-0-1-5"
 >
   <input
     checked={false}
-    className="radio_input-0-1-3"
+    className="radio_input-0-1-7"
     disabled={null}
+    id="radio01"
     onChange={[Function]}
     type="radio"
   />
   <span
-    className="radio_stateIndicator-0-1-5"
+    className="radio_stateIndicator-0-1-8"
   />
-  <span
-    className="radio_label-0-1-4"
+  <label
+    className="label-0-1-9"
+    slot="label"
   >
-    Default
-  </span>
-</label>
+    Label
+  </label>
+</div>
 `;
 
 exports[`radio snapshots Radio: 1 1`] = `
 <div
-  className="radio-0-1-6"
+  className="radio-0-1-15"
 >
   <input
-    checked={false}
-    className="radio_input-0-1-8"
+    checked={true}
+    className="radio_input-0-1-17"
     disabled={null}
+    id="checked"
     onChange={[Function]}
     type="radio"
   />
   <span
-    className="radio_stateIndicator-0-1-10"
+    className="radio_stateIndicator-0-1-18"
   />
-  <span
-    className="radio_label-0-1-9"
+  <label
+    className="label-0-1-19"
+    slot="label"
   >
-    div tag
-  </span>
+    Label Controlled (Checked)
+  </label>
 </div>
 `;
 
 exports[`radio snapshots Radio: 2 1`] = `
-<label
-  className="radio-0-1-11"
+<div
+  className="radio-0-1-25 radio__disabled-0-1-26"
 >
   <input
     checked={false}
-    className="radio_input-0-1-13"
-    disabled={null}
+    className="radio_input-0-1-27"
+    disabled={true}
+    id="disabled"
     onChange={[Function]}
     type="radio"
   />
   <span
-    className="radio_stateIndicator-0-1-15"
+    className="radio_stateIndicator-0-1-28"
   />
-  <span
-    className="radio_label-0-1-14"
+  <label
+    className="label-0-1-29"
+    slot="label"
   >
-    label tag
-  </span>
-</label>
+    Label (Disabled)
+  </label>
+</div>
 `;
 
 exports[`radio snapshots Radio: 3 1`] = `
-<label
-  className="radio-0-1-16"
->
-  <input
-    checked={true}
-    className="radio_input-0-1-18"
-    disabled={null}
-    onChange={[Function]}
-    type="radio"
-  />
-  <span
-    className="radio_stateIndicator-0-1-20"
-  />
-  <span
-    className="radio_label-0-1-19"
-  >
-    Checked
-  </span>
-</label>
-`;
-
-exports[`radio snapshots Radio: 4 1`] = `
-<label
-  className="radio-0-1-21 radio__disabled-0-1-22"
+<div
+  className="radio-0-1-35"
 >
   <input
     checked={false}
-    className="radio_input-0-1-23"
-    disabled={true}
+    className="radio_input-0-1-37"
+    disabled={null}
+    id="divLabel"
     onChange={[Function]}
     type="radio"
   />
   <span
-    className="radio_stateIndicator-0-1-25"
+    className="radio_stateIndicator-0-1-38"
   />
-  <span
-    className="radio_label-0-1-24"
+  <div
+    slot="label"
   >
-    Disabled
-  </span>
-</label>
+    div label
+  </div>
+</div>
 `;

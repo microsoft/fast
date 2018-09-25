@@ -1,9 +1,16 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Foundation, { HandledProps } from "../foundation";
-import { IRadioHandledProps, IRadioManagedClasses, IRadioUnhandledProps, RadioProps, RadioTags } from "./radio.props";
+import { IRadioHandledProps, IRadioManagedClasses, IRadioUnhandledProps, RadioProps } from "./radio.props";
 import { IManagedClasses, IRadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
+
+/**
+ * Radio slot options
+ */
+export enum RadioSlot {
+    label = "label"
+}
 
 /**
  * Radio state interface
@@ -31,11 +38,11 @@ class Radio extends Foundation<IRadioHandledProps & IRadioManagedClasses, IRadio
      * Handled props instantiation
      */
     protected handledProps: HandledProps<IRadioHandledProps & IManagedClasses<IRadioClassNameContract>> = {
+        id: void 0,
         checked: void 0,
         disabled: void 0,
         managedClasses: void 0,
         onChange: void 0,
-        tag: void 0,
         children: void 0
     };
 
@@ -59,7 +66,7 @@ class Radio extends Foundation<IRadioHandledProps & IRadioManagedClasses, IRadio
 
     public render(): React.ReactElement<HTMLElement> {
         return (
-            <this.tag
+            <div
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
             >
@@ -67,13 +74,14 @@ class Radio extends Foundation<IRadioHandledProps & IRadioManagedClasses, IRadio
                     className={get(this.props, "managedClasses.radio_input")}
                     type="radio"
                     ref={this.inputRef}
+                    id={this.props.id}
                     onChange={this.handleRadioChange}
                     disabled={this.props.disabled || null}
                     checked={this.state.checked}
                 />
                 <span className={get(this.props, "managedClasses.radio_stateIndicator")} />
-                {this.renderedLabel()}
-            </this.tag>
+                {this.renderChildrenBySlot(RadioSlot.label)}
+            </div>
         );
     }
 
@@ -89,20 +97,18 @@ class Radio extends Foundation<IRadioHandledProps & IRadioManagedClasses, IRadio
     }
 
     /**
-     * Stores HTML tag for use in render
+     * Renders slotted children in the appropriate slot
      */
-    private get tag(): string {
-        return RadioTags[this.props.tag] || RadioTags.label;
-    }
-
-    private renderedLabel(): JSX.Element {
-        if (this.props.children) {
-            return(
-                <span className={get(this.props, "managedClasses.radio_label")}>
-                    {this.props.children}
-                </span>
-            );
-        }
+    private renderChildrenBySlot(slot: RadioSlot): React.ReactChild[] {
+        return React.Children.map(this.props.children, (child: JSX.Element, index: number) => {
+            if (child.props && child.props.slot === slot) {
+                return (
+                    <React.Fragment key={index}>
+                        {child}
+                    </React.Fragment>
+                );
+            }
+        });
     }
 
     /**
