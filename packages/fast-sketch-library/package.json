@@ -31,7 +31,7 @@
     "tslint": "^5.10.0",
     "typescript": "^3.0.1",
     "webpack": "^4.10.2",
-    "webpack-cli": "^2.1.4"
+    "webpack-cli": "^3.1.1"
   },
   "dependencies": {
     "puppeteer": "^1.4.0"
