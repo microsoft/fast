@@ -4,7 +4,7 @@ import { Heading } from "./index";
 import {
     AlignHeadingBaseline,
     HeadingProps,
-    HeadingSize
+    HeadingSize,
     HeadingTag,
     IHeadingHandledProps,
     IHeadingManagedClasses,

@@ -28,7 +28,7 @@ export interface ISubheadingHandledProps {
     children?: React.ReactNode | React.ReactNode[];
 
     /**
-     * The subheading size used to map to typographic level
+     * The visual size (type level) which aligns to a type ramp instance
      */
     size?: SubheadingLevel;
 

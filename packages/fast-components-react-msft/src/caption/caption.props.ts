@@ -20,7 +20,7 @@ export interface ICaptionHandledProps {
     children?: React.ReactNode | React.ReactNode[];
 
     /**
-     * The caption level maps to the type ramp
+     * The visual size (type level) which aligns to a type ramp instance
      */
     size?: CaptionSize;
 

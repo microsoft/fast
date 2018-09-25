@@ -3,7 +3,7 @@ import { IComponentFactoryExample } from "@microsoft/fast-development-site-react
 import { Caption } from "./index";
 import {
     CaptionProps,
-    CaptionSize
+    CaptionSize,
     CaptionTag,
     ICaptionHandledProps
 } from "./caption.props";

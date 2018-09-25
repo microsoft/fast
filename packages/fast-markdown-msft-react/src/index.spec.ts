@@ -60,7 +60,7 @@ describe("Convert markdown to HTML", function(): void {
     test("should convert a markdown heading to a FAST MSFT heading", function(): void {
         const markdown: string = "# Hello world";
         expect(md.render(markdown).replace(newlineRegex, "")).toBe(
-            "<Heading id=\"hello-world\" tag=\"h1\" level={3}>Hello world</Heading>"
+            "<Heading id=\"hello-world\" tag=\"h1\" size={3}>Hello world</Heading>"
         );
     });
 

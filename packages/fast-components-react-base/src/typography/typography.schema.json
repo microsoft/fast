@@ -23,7 +23,7 @@
             ]
         },
         "size": {
-            "title": "Type level",
+            "title": "Type size",
             "type": "number",
             "enum": [
                 1,

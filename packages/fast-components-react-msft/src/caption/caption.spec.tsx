@@ -10,7 +10,7 @@ import MSFTCaption, {
 import {
 >>>>>>> updates any breaking changes props and subsequent data
     CaptionProps,
-    CaptionSize
+    CaptionSize,
     CaptionTag,
     ICaptionHandledProps,
     ICaptionManagedClasses,
@@ -62,12 +62,12 @@ describe("caption", (): void => {
         expect(caption.instance().props.tag).toEqual(CaptionTag.p);
     });
 
-    test("should render the correct `level` when `level` prop is passed", () => {
+    test("should render the correct `size` when `size` prop is passed", () => {
         const rendered: any = shallow(
-            <Component level={CaptionSize._2} />
+            <Component size={CaptionSize._2} />
         );
         const caption: any = rendered.first().shallow();
 
-        expect(caption.instance().props.level).toEqual(CaptionSize._2);
+        expect(caption.instance().props.size).toEqual(CaptionSize._2);
     });
 });
