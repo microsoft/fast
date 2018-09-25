@@ -47,11 +47,6 @@ class Radio extends Foundation<IRadioHandledProps & IRadioManagedClasses, IRadio
     };
 
     /**
-     * Provides reference to input
-     */
-    private inputRef: React.RefObject<HTMLInputElement>;
-
-    /**
      * Define constructor
      */
     constructor(props: RadioProps) {
@@ -60,8 +55,6 @@ class Radio extends Foundation<IRadioHandledProps & IRadioManagedClasses, IRadio
         this.state = {
             checked: this.props.checked || false
         };
-
-        this.inputRef = React.createRef();
     }
 
     public render(): React.ReactElement<HTMLElement> {
@@ -73,7 +66,6 @@ class Radio extends Foundation<IRadioHandledProps & IRadioManagedClasses, IRadio
                 <input
                     className={get(this.props, "managedClasses.radio_input")}
                     type="radio"
-                    ref={this.inputRef}
                     id={this.props.id}
                     onChange={this.handleRadioChange}
                     disabled={this.props.disabled || null}
