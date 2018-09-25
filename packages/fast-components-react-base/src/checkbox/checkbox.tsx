@@ -95,9 +95,7 @@ class Checkbox extends Foundation<
                     checked={this.state.checked}
                 />
                 <span className={get(this.props, "managedClasses.checkbox_span")} />
-                <span className={get(this.props, "managedClasses.checkbox_label")}>
-                    {this.props.text ? this.props.text : null}
-                </span>
+                {this.renderLabel()}
             </this.tag>
         );
     }
@@ -118,6 +116,19 @@ class Checkbox extends Foundation<
      */
     private get tag(): string {
         return CheckboxHTMLTags[this.props.tag] || CheckboxHTMLTags.label;
+    }
+
+    /**
+     * Render label if it exists
+     */
+    private renderLabel(): JSX.Element {
+        if (this.props.text) {
+            return (
+                <span className={get(this.props, "managedClasses.checkbox_label")}>
+                    {this.props.text}
+                </span>
+            );
+        }
     }
 
     /**
