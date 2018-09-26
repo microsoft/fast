@@ -5,7 +5,7 @@ exports[`radio snapshots Radio: 0 1`] = `
   className="radio-0-1-5"
 >
   <input
-    checked={true}
+    checked={null}
     className="radio_input-0-1-7"
     defaultChecked={false}
     disabled={null}
@@ -30,7 +30,7 @@ exports[`radio snapshots Radio: 1 1`] = `
   className="radio-0-1-15"
 >
   <input
-    checked={null}
+    checked={true}
     className="radio_input-0-1-17"
     defaultChecked={false}
     disabled={null}
@@ -55,7 +55,7 @@ exports[`radio snapshots Radio: 2 1`] = `
   className="radio-0-1-25 radio__disabled-0-1-26"
 >
   <input
-    checked={true}
+    checked={null}
     className="radio_input-0-1-27"
     defaultChecked={false}
     disabled={true}
@@ -80,7 +80,7 @@ exports[`radio snapshots Radio: 3 1`] = `
   className="radio-0-1-35"
 >
   <input
-    checked={true}
+    checked={null}
     className="radio_input-0-1-37"
     defaultChecked={false}
     disabled={null}
