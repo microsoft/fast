@@ -8,8 +8,10 @@ import {
     IRadioHandledProps,
     IRadioManagedClasses,
     IRadioUnhandledProps,
-    RadioProps
+    RadioProps,
+    RadioSlot
 } from "./radio";
+import Label from "../label";
 
 /**
  * Configure Enzyme
@@ -28,22 +30,12 @@ describe("radio", (): void => {
 
     const inputSelector: string = `.${managedClasses.radio_input}`;
 
-    test("should allow a change event to update the checked state when no `checked` prop is provided", () => {
-        const rendered: any = shallow(
-            <Component managedClasses={managedClasses} />
-        );
-
-        expect(rendered.state("checked")).toBe(false);
-
-        rendered.find(inputSelector).simulate("change");
-
-        expect(rendered.state("checked")).toBe(true);
-    });
-
     test("should call a registerd callback after a change event", () => {
         const onChange: any = jest.fn();
         const controlled: any = shallow(
-            <Component managedClasses={managedClasses} checked={true} onChange={onChange} />
+            <Component managedClasses={managedClasses} checked={true} onChange={onChange}>
+                <div slot={RadioSlot.label} />
+            </Component>
         );
         const uncontrolled: any = shallow(
             <Component managedClasses={managedClasses} onChange={onChange} />

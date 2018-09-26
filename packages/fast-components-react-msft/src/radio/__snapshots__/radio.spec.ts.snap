@@ -5,8 +5,9 @@ exports[`radio snapshots Radio: 0 1`] = `
   className="radio-0-1-5"
 >
   <input
-    checked={false}
+    checked={true}
     className="radio_input-0-1-7"
+    defaultChecked={false}
     disabled={null}
     id="radio01"
     onChange={[Function]}
@@ -29,8 +30,9 @@ exports[`radio snapshots Radio: 1 1`] = `
   className="radio-0-1-15"
 >
   <input
-    checked={true}
+    checked={null}
     className="radio_input-0-1-17"
+    defaultChecked={false}
     disabled={null}
     id="checked"
     onChange={[Function]}
@@ -53,8 +55,9 @@ exports[`radio snapshots Radio: 2 1`] = `
   className="radio-0-1-25 radio__disabled-0-1-26"
 >
   <input
-    checked={false}
+    checked={true}
     className="radio_input-0-1-27"
+    defaultChecked={false}
     disabled={true}
     id="disabled"
     onChange={[Function]}
@@ -77,8 +80,9 @@ exports[`radio snapshots Radio: 3 1`] = `
   className="radio-0-1-35"
 >
   <input
-    checked={false}
+    checked={true}
     className="radio_input-0-1-37"
+    defaultChecked={false}
     disabled={null}
     id="divLabel"
     onChange={[Function]}

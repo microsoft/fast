@@ -12,27 +12,7 @@ export enum RadioSlot {
     label = "label"
 }
 
-/**
- * Radio state interface
- */
-export interface IRadioState {
-    checked: boolean;
-}
-
-class Radio extends Foundation<IRadioHandledProps & IRadioManagedClasses, IRadioUnhandledProps, IRadioState> {
-
-    /**
-     * React life-cycle method
-     */
-    public static getDerivedStateFromProps(nextProps: IRadioHandledProps, prevState: IRadioState): null | Partial<IRadioState> {
-        if (typeof nextProps.checked === "boolean" && nextProps.checked !== prevState.checked) {
-            return {
-                checked: nextProps.checked
-            };
-        }
-
-        return null;
-    }
+class Radio extends Foundation<IRadioHandledProps & IRadioManagedClasses, IRadioUnhandledProps, {}> {
 
     /**
      * Handled props instantiation
@@ -46,17 +26,6 @@ class Radio extends Foundation<IRadioHandledProps & IRadioManagedClasses, IRadio
         children: void 0
     };
 
-    /**
-     * Define constructor
-     */
-    constructor(props: RadioProps) {
-        super(props);
-
-        this.state = {
-            checked: this.props.checked || false
-        };
-    }
-
     public render(): React.ReactElement<HTMLElement> {
         return (
             <div
@@ -69,7 +38,8 @@ class Radio extends Foundation<IRadioHandledProps & IRadioManagedClasses, IRadio
                     id={this.props.id}
                     onChange={this.handleRadioChange}
                     disabled={this.props.disabled || null}
-                    checked={this.state.checked}
+                    defaultChecked={false}
+                    checked={typeof this.props.checked === "boolean" ? this.props.checked : null}
                 />
                 <span className={get(this.props, "managedClasses.radio_stateIndicator")} />
                 {this.renderChildrenBySlot(RadioSlot.label)}
@@ -107,10 +77,6 @@ class Radio extends Foundation<IRadioHandledProps & IRadioManagedClasses, IRadio
      * Handles onChange as a controlled component
      */
     private handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        if (typeof this.props.checked !== "boolean") {
-            this.setState({checked: !this.state.checked});
-        }
-
         if (this.props.onChange) {
             this.props.onChange(e);
         }

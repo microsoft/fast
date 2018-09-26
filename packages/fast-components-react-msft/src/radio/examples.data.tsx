@@ -36,6 +36,7 @@ export default {
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
+        checked: false,
         children: [slotRadioExample],
         id: "radio01"
     },
