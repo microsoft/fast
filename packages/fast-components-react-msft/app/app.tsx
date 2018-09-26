@@ -189,9 +189,8 @@ export default class App extends React.Component<{}, AppState> {
     }
 
     private handleDensityUpdate = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        const value: number = parseInt(e.target.value, 10);
         this.setState({
-            density: value
+            density: parseInt(e.target.value, 10)
         });
     }
     /**
