@@ -7,6 +7,7 @@ exports[`radio snapshots Radio: 0 1`] = `
   <input
     checked={true}
     className="radio_input"
+    defaultChecked={false}
     disabled={null}
     id="checked_true"
     onChange={undefined}
@@ -23,7 +24,7 @@ exports[`radio snapshots Radio: 1 1`] = `
   className="radio"
 >
   <input
-    checked={false}
+    checked={null}
     className="radio_input"
     disabled={null}
     id="checked_false"
