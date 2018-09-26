@@ -35,6 +35,7 @@
     },
     "reactProperties": {
         "children": {
+            "title": "Building blocks",
             "type": "children"
         }
     }

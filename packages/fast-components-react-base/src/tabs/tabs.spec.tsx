@@ -2,9 +2,7 @@ import * as React from "react";
 import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
-import examples from "./examples.data";
-import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
+import { KeyCodes, Orientation } from "@microsoft/fast-web-utilities";
 import {
     ITabClassNameContract,
     ITabPanelClassNameContract,
@@ -32,10 +30,6 @@ export enum CustomTabsSlot {
  */
 configure({adapter: new Adapter()});
 
-describe("tabs snapshot", (): void => {
-    generateSnapshots(examples);
-});
-
 describe("tabs", (): void => {
     const tabsManagedClasses: ITabsClassNameContract = {
             tabs: "tabs-class",
@@ -52,9 +46,13 @@ describe("tabs", (): void => {
         tab__active: "tab__active-class"
     };
 
+    const id0: string = "tab01";
+    const id1: string = "tab02";
+    const id2: string = "tab03";
+
     const children: JSX.Element[] = [
         (
-            <TabItem key={1} slot={TabsSlot.tabItem} id="tab01">
+            <TabItem key={1} slot={TabsSlot.tabItem} id={id0}>
                 <Tab slot={TabsSlot.tab} managedClasses={tabManagedClasses}>
                     tab 1
                 </Tab>
@@ -64,7 +62,7 @@ describe("tabs", (): void => {
             </TabItem>
         ),
         (
-            <TabItem key={2} slot={TabsSlot.tabItem} id="tab02">
+            <TabItem key={2} slot={TabsSlot.tabItem} id={id1}>
                 <Tab slot={TabsSlot.tab} managedClasses={tabManagedClasses}>
                     tab 2
                 </Tab>
@@ -74,7 +72,7 @@ describe("tabs", (): void => {
             </TabItem>
         ),
         (
-            <TabItem key={3} slot={TabsSlot.tabItem} id="tab03">
+            <TabItem key={3} slot={TabsSlot.tabItem} id={id2}>
                 <Tab slot={TabsSlot.tab} managedClasses={tabManagedClasses}>
                     tab 3
                 </Tab>
@@ -108,7 +106,7 @@ describe("tabs", (): void => {
     ];
     const childrenWithCustomSlots: JSX.Element[] = [
         (
-            <TabItem key={1} slot={CustomTabsSlot.tabItem} id="tab01">
+            <TabItem key={1} slot={CustomTabsSlot.tabItem} id={id0}>
                 <Tab slot={CustomTabsSlot.tab} managedClasses={tabManagedClasses}>
                     tab 1
                 </Tab>
@@ -118,7 +116,7 @@ describe("tabs", (): void => {
             </TabItem>
         ),
         (
-            <TabItem key={2} slot={CustomTabsSlot.tabItem} id="tab02">
+            <TabItem key={2} slot={CustomTabsSlot.tabItem} id={id1}>
                 <Tab slot={CustomTabsSlot.tab} managedClasses={tabManagedClasses}>
                     tab 2
                 </Tab>
@@ -128,7 +126,7 @@ describe("tabs", (): void => {
             </TabItem>
         ),
         (
-            <TabItem key={3} slot={CustomTabsSlot.tabItem} id="tab03">
+            <TabItem key={3} slot={CustomTabsSlot.tabItem} id={id2}>
                 <Tab slot={CustomTabsSlot.tab} managedClasses={tabManagedClasses}>
                     tab 3
                 </Tab>
@@ -141,6 +139,84 @@ describe("tabs", (): void => {
 
     test("should have a displayName that matches the component name", () => {
         expect((Tabs as any).name).toBe(Tabs.displayName);
+    });
+
+    test("should have the role tablist on the element containing the tab elements", () => {
+        const renderedWithChildren: any = shallow(
+            <Tabs managedClasses={tabsManagedClasses} label={"items"}>
+                {children}
+            </Tabs>
+        );
+
+        expect(renderedWithChildren.find("[role=\"tablist\"]")).toHaveLength(1);
+    });
+
+    test("should have the role tab on the tab element", () => {
+        const renderedWithChildren: any = mount(
+            <Tabs managedClasses={tabsManagedClasses} label={"items"}>
+                {children}
+            </Tabs>
+        );
+
+        expect(renderedWithChildren.find("[role=\"tab\"]")).toHaveLength(3);
+    });
+
+    test("should have the role tabpanel on the tab panel", () => {
+        const renderedWithChildren: any = mount(
+            <Tabs managedClasses={tabsManagedClasses} label={"items"}>
+                {children}
+            </Tabs>
+        );
+
+        expect(renderedWithChildren.find("[role=\"tabpanel\"]")).toHaveLength(3);
+    });
+
+    test("should have an aria-label if the label prop is passed", () => {
+        const testLabel: string = "test label";
+        const renderedWithChildren: any = mount(
+            <Tabs managedClasses={tabsManagedClasses} label={testLabel}>
+                {children}
+            </Tabs>
+        );
+
+        expect(renderedWithChildren.find("[aria-label]").props()["aria-label"]).toBe(testLabel);
+    });
+
+    test("should have an aria-orientation if the orientation prop is passed", () => {
+        const renderedWithChildren: any = mount(
+            <Tabs managedClasses={tabsManagedClasses} label={"items"}>
+                {children}
+            </Tabs>
+        );
+        const renderedWithChildrenHorizontal: any = mount(
+            <Tabs managedClasses={tabsManagedClasses} label={"items"} orientation={Orientation.horizontal}>
+                {children}
+            </Tabs>
+        );
+        const renderedWithChildrenVertical: any = mount(
+            <Tabs managedClasses={tabsManagedClasses} label={"items"} orientation={Orientation.vertical}>
+                {children}
+            </Tabs>
+        );
+
+        expect(renderedWithChildren.find("[aria-orientation]")).toHaveLength(0);
+        expect(renderedWithChildrenHorizontal.find("[aria-orientation]").props()["aria-orientation"]).toBe(Orientation.horizontal);
+        expect(renderedWithChildrenVertical.find("[aria-orientation]").props()["aria-orientation"]).toBe(Orientation.vertical);
+    });
+
+    test("should use an id prop passed to a TabItem as aria-controls on the Tab and aria-labelledby on the TabPanel", () => {
+        const renderedWithChildren: any = mount(
+            <Tabs managedClasses={tabsManagedClasses} label={"items"}>
+                {children}
+            </Tabs>
+        );
+
+        expect(renderedWithChildren.find("Tab").get(0).props["aria-controls"]).toBe(id0);
+        expect(renderedWithChildren.find("TabPanel").get(0).props["aria-labelledby"]).toBe(id0);
+        expect(renderedWithChildren.find("Tab").get(1).props["aria-controls"]).toBe(id1);
+        expect(renderedWithChildren.find("TabPanel").get(1).props["aria-labelledby"]).toBe(id1);
+        expect(renderedWithChildren.find("Tab").get(2).props["aria-controls"]).toBe(id2);
+        expect(renderedWithChildren.find("TabPanel").get(2).props["aria-labelledby"]).toBe(id2);
     });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
@@ -206,7 +282,7 @@ describe("tabs", (): void => {
                 managedClasses={tabsManagedClasses}
                 onUpdateTab={onUpdate}
                 children={children}
-                activeId={"tab01"}
+                activeId={id0}
                 label={"items"}
             />
         );
@@ -217,68 +293,95 @@ describe("tabs", (): void => {
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(true);
+        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
 
-        tab2.simulate("click", { currentTarget: { getAttribute: (): string => "tab02" }});
+        tab2.simulate("click", { currentTarget: { getAttribute: (): string => id1 }});
 
-        expect(onUpdate).toBeCalledWith("tab02");
+        expect(onUpdate).toBeCalledWith(id1);
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(true);
+        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
 
         tab1.simulate("keydown", {keyCode: KeyCodes.arrowLeft});
 
-        expect(onUpdate).toBeCalledWith("tab03");
+        expect(onUpdate).toBeCalledWith(id2);
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(true);
+        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
 
         tab1.simulate("keydown", {keyCode: KeyCodes.arrowUp});
 
-        expect(onUpdate).toBeCalledWith("tab03");
+        expect(onUpdate).toBeCalledWith(id2);
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(true);
+        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
 
         tab1.simulate("keydown", {keyCode: KeyCodes.arrowRight});
 
-        expect(onUpdate).toBeCalledWith("tab02");
+        expect(onUpdate).toBeCalledWith(id1);
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(true);
+        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
 
         tab1.simulate("keydown", {keyCode: KeyCodes.arrowDown});
 
-        expect(onUpdate).toBeCalledWith("tab02");
+        expect(onUpdate).toBeCalledWith(id1);
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(true);
+        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
 
         tab1.simulate("keydown", {keyCode: KeyCodes.home});
 
-        expect(onUpdate).toBeCalledWith("tab01");
+        expect(onUpdate).toBeCalledWith(id0);
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(true);
+        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
 
         tab1.simulate("keydown", {keyCode: KeyCodes.end});
 
-        expect(onUpdate).toBeCalledWith("tab03");
+        expect(onUpdate).toBeCalledWith(id2);
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(true);
+        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
 
-        rendered.setProps({ activeId: "tab02" });
+        rendered.setProps({ activeId: id1 });
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(true);
+        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
     });
 
     test("should not use the callback if it is not a function", () => {
@@ -286,7 +389,7 @@ describe("tabs", (): void => {
             <Tabs
                 managedClasses={tabsManagedClasses}
                 onUpdateTab={("test") as any}
-                activeId={"tab01"}
+                activeId={id0}
                 label={"items"}
             >
                 {children}
@@ -297,7 +400,7 @@ describe("tabs", (): void => {
         rendered.find("Tab").at(0).simulate("keydown", {keyCode: KeyCodes.home});
         rendered.find("Tab").at(0).simulate("keydown", {keyCode: KeyCodes.arrowLeft});
         rendered.find("Tab").at(0).simulate("keydown", {keyCode: KeyCodes.arrowRight});
-        rendered.find("Tab").at(0).simulate("click", { currentTarget: { getAttribute: (): string => "tab02" }});
+        rendered.find("Tab").at(0).simulate("click", { currentTarget: { getAttribute: (): string => id1 }});
     });
 
     test("should allow an uncontrolled state where when navigation is available through click or keyboard action", () => {
@@ -312,60 +415,90 @@ describe("tabs", (): void => {
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(true);
+        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
 
         tab1.simulate("keydown", {keyCode: KeyCodes.arrowLeft});
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(0);
+        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(true);
 
         tab3.simulate("keydown", {keyCode: KeyCodes.arrowUp});
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(true);
+        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
 
         tab2.simulate("keydown", {keyCode: KeyCodes.arrowLeft});
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(true);
+        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
 
         tab1.simulate("keydown", {keyCode: KeyCodes.arrowRight});
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(true);
+        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
 
         tab2.simulate("keydown", {keyCode: KeyCodes.arrowDown});
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(0);
+        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(true);
 
         tab3.simulate("keydown", {keyCode: KeyCodes.arrowRight});
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(true);
+        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
 
         tab1.simulate("keydown", {keyCode: KeyCodes.end});
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(0);
+        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(true);
 
         tab1.simulate("keydown", {keyCode: KeyCodes.home});
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(true);
+        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
 
-        tab2.simulate("click", { currentTarget: { getAttribute: (): string => "tab02" }});
+        tab2.simulate("click", { currentTarget: { getAttribute: (): string => id1 }});
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
+        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(true);
+        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
     });
 });
 

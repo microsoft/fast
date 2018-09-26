@@ -14,6 +14,9 @@ import Tabs, {
     TabsSlot
 } from "./index";
 import schema from "./tabs.schema.json";
+import tabItemSchema from "./tab-item.schema.json";
+import tabPanelSchema from "./tab-panel.schema.json";
+import tabSchema from "./tab.schema.json";
 import Documentation from "./.tmp/documentation";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
@@ -37,129 +40,181 @@ const tabPanelManagedClasses: ITabPanelClassNameContract = {
 /**
  * Example tab elements 1
  */
-function getTabElementOne(): JSX.Element {
-    return (
-        <Tab slot={TabsSlot.tab} managedClasses={tabManagedClasses}>
-            tab one
-        </Tab>
-    );
+function getTabElementOne(): any {
+    return {
+        id: tabSchema.id,
+        props: {
+            slot: TabsSlot.tab,
+            managedClasses: tabManagedClasses,
+            children: "tab one"
+        }
+    };
 }
 
-function getTabPanelOne(): JSX.Element {
-    return (
-        <TabPanel slot={TabsSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
-            tab one content
-        </TabPanel>
-    );
+function getTabPanelOne(): any {
+    return {
+        id: tabPanelSchema.id,
+        props: {
+            slot: TabsSlot.tabPanel,
+            managedClasses: tabPanelManagedClasses,
+            children: "tab one content"
+        }
+    };
 }
 
-function getTabItemOne(): JSX.Element {
-    return (
-        <TabItem slot={TabsSlot.tabItem} id={`tab01`}>
-            {getTabElementOne()}
-            {getTabPanelOne()}
-        </TabItem>
-    );
+function getTabItemOne(): any {
+    return {
+        id: tabItemSchema.id,
+        props: {
+            slot: TabsSlot.tabItem,
+            id: "tab01",
+            children: [
+                getTabElementOne(),
+                getTabPanelOne()
+            ]
+        }
+    };
 }
 
 /**
  * Example tab elements 2
  */
-function getTabElementTwo(): JSX.Element {
-    return (
-        <Tab slot={TabsSlot.tab} managedClasses={tabManagedClasses}>
-            tab two
-        </Tab>
-    );
+function getTabElementTwo(): any {
+    return {
+        id: tabSchema.id,
+        props: {
+            slot: TabsSlot.tab,
+            managedClasses: tabManagedClasses,
+            children: "tab two"
+        }
+    };
 }
 
-function getTabPanelTwo(): JSX.Element {
-    return (
-        <TabPanel slot={TabsSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
-            tab two content
-        </TabPanel>
-    );
+function getTabPanelTwo(): any {
+    return {
+        id: tabPanelSchema.id,
+        props: {
+            slot: TabsSlot.tabPanel,
+            managedClasses: tabPanelManagedClasses,
+            children: "tab two content"
+        }
+    };
 }
 
-function getTabItemTwo(): JSX.Element {
-    return (
-        <TabItem slot={TabsSlot.tabItem} id={`tab02`}>
-            {getTabElementTwo()}
-            {getTabPanelTwo()}
-        </TabItem>
-    );
+function getTabItemTwo(): any {
+    return {
+        id: tabItemSchema.id,
+        props: {
+            slot: TabsSlot.tabItem,
+            id: "tab02",
+            children: [
+                getTabElementTwo(),
+                getTabPanelTwo()
+            ]
+        }
+    };
 }
 
 /**
  * Example tab elements 3
  */
-function getTabElementThree(): JSX.Element {
-    return (
-        <Tab slot={TabsSlot.tab} managedClasses={tabManagedClasses}>
-            tab three
-        </Tab>
-    );
+function getTabElementThree(): any {
+    return {
+        id: tabSchema.id,
+        props: {
+            slot: TabsSlot.tab,
+            managedClasses: tabManagedClasses,
+            children: "tab three"
+        }
+    };
 }
 
-function getTabPanelThree(): JSX.Element {
-    return (
-        <TabPanel slot={TabsSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
-            tab three content
-        </TabPanel>
-    );
+function getTabPanelThree(): any {
+    return {
+        id: tabPanelSchema.id,
+        props: {
+            slot: TabsSlot.tabPanel,
+            managedClasses: tabPanelManagedClasses,
+            children: "tab three content"
+        }
+    };
 }
 
-function getTabItemThree(): JSX.Element {
-    return (
-        <TabItem slot={TabsSlot.tabItem} id={`tab03`}>
-            {getTabElementThree()}
-            {getTabPanelThree()}
-        </TabItem>
-    );
+function getTabItemThree(): any {
+    return {
+        id: tabItemSchema.id,
+        props: {
+            slot: TabsSlot.tabItem,
+            id: "tab03",
+            children: [
+                getTabElementThree(),
+                getTabPanelThree()
+            ]
+        }
+    };
 }
 
 /**
  * Example tab elements 4
  */
-function getTabElementFour(): JSX.Element {
-    return (
-        <Tab slot={TabsSlot.tab} managedClasses={tabManagedClasses}>
-            tab four
-        </Tab>
-    );
+function getTabElementFour(): any {
+    return {
+        id: tabSchema.id,
+        props: {
+            slot: TabsSlot.tab,
+            managedClasses: tabManagedClasses,
+            children: "tab four"
+        }
+    };
 }
 
-function getTabPanelFour(): JSX.Element {
-    return (
-        <TabPanel slot={TabsSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
-            tab four content
-        </TabPanel>
-    );
+function getTabPanelFour(): any {
+    return {
+        id: tabPanelSchema.id,
+        props: {
+            slot: TabsSlot.tabPanel,
+            managedClasses: tabPanelManagedClasses,
+            children: "tab four content"
+        }
+    };
 }
 
-function getTabItemFour(): JSX.Element {
-    return (
-        <TabItem slot={TabsSlot.tabItem} id={`tab04`}>
-            {getTabElementFour()}
-            {getTabPanelFour()}
-        </TabItem>
-    );
+function getTabItemFour(): any {
+    return {
+        id: tabItemSchema.id,
+        props: {
+            slot: TabsSlot.tabItem,
+            id: "tab04",
+            children: [
+                getTabElementFour(),
+                getTabPanelFour()
+            ]
+        }
+    };
 }
 
-const detailChildren: JSX.Element[] = [
+const detailChildren: any[] = [
     getTabItemOne(),
     getTabItemTwo(),
     getTabItemThree()
 ];
 
-const exampleChildren1: JSX.Element[] = [
-    (
-        <TabItem slot={TabsSlot.tabItem} id="tab01">
-            <Tab slot={TabsSlot.tab} managedClasses={tabManagedClasses}>
-                tab one - missing panel
-            </Tab>
-        </TabItem>
-    ),
+const exampleChildren1: any[] = [
+    {
+        id: tabItemSchema.id,
+        props: {
+            slot: TabsSlot.tabItem,
+            id: "tab01",
+            children: {
+                id: tabSchema.id,
+                props: {
+                    slot: TabsSlot.tab,
+                    managedClasses: tabManagedClasses,
+                    children: "tab one - missing panel"
+                }
+            }
+        }
+    },
     getTabItemTwo(),
     getTabItemThree(),
     getTabItemFour()
@@ -167,22 +222,34 @@ const exampleChildren1: JSX.Element[] = [
 
 const exampleChildren2: JSX.Element[] = [
     getTabItemOne(),
-    (
-        <TabItem slot={TabsSlot.tabItem} id="tab02">
-            <TabPanel slot={TabsSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
-                tab two missing tab
-            </TabPanel>
-        </TabItem>
-    ),
+    {
+        id: tabItemSchema.id,
+        props: {
+            slot: TabsSlot.tabItem,
+            id: "tab02",
+            children: {
+                id: tabPanelSchema.id,
+                props: {
+                    slot: TabsSlot.tabPanel,
+                    managedClasses: tabPanelManagedClasses,
+                    children: "tab two missing tab"
+                }
+            }
+        }
+    },
     getTabItemThree()
 ];
 
 const exampleChildren3: JSX.Element[] = [];
 
-const exampleChildren4: JSX.Element[] = [
-    (
-        <TabItem slot={TabsSlot.tabItem} id="tab03" />
-    )
+const exampleChildren4: any[] = [
+    {
+        id: tabItemSchema.id,
+        props: {
+            slot: TabsSlot.tabItem,
+            id: "tab03"
+        }
+    }
 ];
 
 const examples: IComponentFactoryExample<ITabsHandledProps & ITabsManagedClasses> = {

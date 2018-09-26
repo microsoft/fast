@@ -437,6 +437,8 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
             ? childOption.name
             : typeof item.props === "string"
             ? item.props
+            : typeof item === "string"
+            ? item
             : "Untitled";
     }
 

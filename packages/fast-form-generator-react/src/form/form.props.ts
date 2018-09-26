@@ -12,8 +12,19 @@ export type BreadcrumbItemEventHandler = (e: React.MouseEvent<HTMLAnchorElement>
 export type FormTag = "form" | "div";
 
 export interface IChildOptionItem {
+    /**
+     * The name of the component
+     */
     name: string;
+
+    /**
+     * The React component
+     */
     component: React.ComponentClass;
+
+    /**
+     * The JSON schema for the component
+     */
     schema: any;
 }
 

@@ -1,13 +1,13 @@
 {
     "$schema": "http://json-schema.org/schema#",
-    "title": "Horizontal overflow",
-    "description": "A horizontal overflow component's schema definition.",
+    "title": "Container",
+    "description": "A test container component's schema definition.",
+    "id": "test-container",
     "type": "object",
-    "id": "horizontal-overflow",
     "properties": {
-        "scrollDuration": {
-            "title": "Scroll duration",
-            "type": "number"
+        "slot": {
+            "title": "Slot",
+            "type": "string"
         }
     },
     "reactProperties": {

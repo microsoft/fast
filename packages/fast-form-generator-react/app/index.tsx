@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import { getExample } from "@microsoft/fast-permutator";
-import Form from "../src";
+import Form, { mapDataToComponent } from "../src";
 import {
     IChildOptionItem,
     IFormAttributeSettingsMappingToPropertyNames,
@@ -11,7 +11,6 @@ import {
     IFormProps
 } from "../src/form/form.props";
 import * as testComponents from "./components";
-import { mapDataToComponent } from "../src/form/form.utilities";
 
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
 
@@ -63,7 +62,11 @@ export default class App extends React.Component<{}, IAppState> {
             currentComponent: testComponents.textField.component,
             currentComponentSchema: testComponents.textField.schema,
             currentComponentData: getExample(testComponents.textField.schema),
-            currentComponentDataMappedToComponent: mapDataToComponent(testComponents.textField.schema, getExample(testComponents.textField.schema), this.childOptions),
+            currentComponentDataMappedToComponent: mapDataToComponent(
+                testComponents.textField.schema,
+                getExample(testComponents.textField.schema),
+                this.childOptions
+            ),
             currentComponentOrderByPropertyNames: void(0),
             currentComponentAttributeAssignment: void(0),
             onChange: this.onChange,

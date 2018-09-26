@@ -2,7 +2,7 @@ import Toc, { TocItem } from "../toc";
 import * as React from "react";
 import manageJss, { ComponentStyles, DesignSystemProvider, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { glyphBuildingblocks, glyphGlobalnavbutton, glyphTransparency } from "@microsoft/fast-glyphs-msft";
-import Form from "@microsoft/fast-form-generator-react";
+import { mapDataToComponent } from "@microsoft/fast-form-generator-react";
 import { uniqueId } from "lodash-es";
 import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
 import Shell, { ShellHeader, ShellInfoBar, ShellPaneCollapse, ShellSlot } from "../shell";
@@ -80,8 +80,11 @@ export interface ISiteState {
     activeComponentIndex: number;
     componentName: string;
     componentData: IComponentData;
+    componentSchema: IComponentData;
+    componentDataMappedToComponent: IComponentData;
     componentStatus: Status;
     detailViewComponentData: IComponentData;
+    detailViewComponentDataMappedToComponent: IComponentData;
     tableOfContentsCollapsed: boolean;
     componentView: ComponentViewTypes;
     componentBackgroundTransparent: boolean;
@@ -323,8 +326,11 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
             componentView: ComponentViewTypes.examples,
             componentName: this.getComponentName(this.initialPath),
             componentData: this.getComponentData(),
+            componentSchema: this.getComponentSchema(),
+            componentDataMappedToComponent: this.getComponentData(true),
             componentStatus: this.getComponentStatus(this.initialPath),
             detailViewComponentData: this.getDetailViewComponentData(),
+            detailViewComponentDataMappedToComponent: this.getDetailViewComponentData(true),
             formView: true,
             devToolsView: false,
             locale: "en",
@@ -383,13 +389,21 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     /**
      * Gets the component data for each of the routes
      */
-    private getComponentData(): IComponentData {
+    private getComponentData(mappedToComponent?: boolean): IComponentData {
         const componentData: IComponentData = {};
 
         this.getRoutes((this.props.children as JSX.Element), "/", SiteSlot.category).forEach((route: IComponentRoute) => {
             componentData[route.route] = [];
             route.exampleView.forEach((routeChild: JSX.Element, index: number) => {
-                componentData[route.route][index] = routeChild.props.data;
+                if (mappedToComponent) {
+                    componentData[route.route][index] = mapDataToComponent(
+                        route.schema,
+                        routeChild.props.data,
+                        this.props.formChildOptions
+                    );
+                } else {
+                    componentData[route.route][index] = routeChild.props.data;
+                }
             });
         });
 
@@ -408,14 +422,18 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         return componentStatus;
     }
 
-    private getDetailViewComponentData(): IComponentData {
+    private getDetailViewComponentData(mappedToComponent?: boolean): IComponentData {
         const componentData: IComponentData = {};
 
         this.getRoutes((this.props.children as JSX.Element), "/", SiteSlot.category).forEach((route: IComponentRoute) => {
             componentData[route.route] = [];
             route.detailView.forEach((routeChild: JSX.Element, index: number) => {
                 if (routeChild && routeChild.props && routeChild.props.slot === ComponentViewSlot.detailExample) {
-                    componentData[route.route] = routeChild.props.data;
+                    if (mappedToComponent) {
+                        componentData[route.route] = mapDataToComponent(route.schema, routeChild.props.data, this.props.formChildOptions);
+                    } else {
+                        componentData[route.route] = routeChild.props.data;
+                    }
                 }
             });
         });
@@ -434,6 +452,18 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         });
 
         return componentName;
+    }
+
+    private getComponentSchema = (): any => {
+        const componentSchema: IComponentData = {};
+
+        this.getRoutes((this.props.children as JSX.Element), "/", SiteSlot.category).forEach((route: IComponentRoute) => {
+            route.exampleView.forEach(() => {
+                componentSchema[route.route] = route.schema;
+            });
+        });
+
+        return componentSchema;
     }
 
     /**
@@ -579,29 +609,43 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
 
     private getCurrentComponentData(): any {
         if (this.state.componentView === ComponentViewTypes.examples) {
-            return this.state.componentData[this.state.currentPath][this.state.activeComponentIndex];
+            return this.state.componentDataMappedToComponent[this.state.currentPath][this.state.activeComponentIndex];
         } else if (this.state.componentView === ComponentViewTypes.detail) {
-            return this.state.detailViewComponentData[this.state.currentPath];
+            return this.state.detailViewComponentDataMappedToComponent[this.state.currentPath];
         }
     }
 
     private handleComponentDataChange = (data: any): void => {
         const currentPath: string = this.getCurrentPath();
+        const dataMappedToComponent: any = mapDataToComponent(
+            this.state.componentSchema[currentPath],
+            data,
+            this.props.formChildOptions
+        );
 
         if (this.state.componentView === ComponentViewTypes.examples) {
             const componentData: IComponentData = Object.assign({}, this.state.componentData);
+            const componentDataMappedToComponent: IComponentData = Object.assign({}, this.state.componentDataMappedToComponent);
             componentData[currentPath][this.state.activeComponentIndex] = data;
+            componentDataMappedToComponent[currentPath][this.state.activeComponentIndex] = dataMappedToComponent;
 
             this.setState({
                 componentData,
+                componentDataMappedToComponent,
                 currentPath
             });
         } else if (this.state.componentView === ComponentViewTypes.detail) {
             const detailViewComponentData: IComponentData = Object.assign({}, this.state.detailViewComponentData);
+            const detailViewComponentDataMappedToComponent: IComponentData = Object.assign(
+                {},
+                this.state.detailViewComponentDataMappedToComponent
+            );
             detailViewComponentData[currentPath] = data;
+            detailViewComponentDataMappedToComponent[currentPath] = dataMappedToComponent;
 
             this.setState({
                 detailViewComponentData,
+                detailViewComponentDataMappedToComponent,
                 currentPath
             });
         }
@@ -660,7 +704,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                             active={index === this.state.activeComponentIndex}
                             view={this.state.componentView}
                         >
-                            <route.componentMapping {...this.state.componentData[route.route][index]} />
+                            <route.componentMapping {...this.state.componentDataMappedToComponent[route.route][index]} />
                         </ComponentWrapper>
                     );
                 }
@@ -692,7 +736,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                     active={true}
                     view={this.state.componentView}
                 >
-                    <route.componentMapping {...this.state.detailViewComponentData[route.route]} />
+                    <route.componentMapping {...this.state.detailViewComponentDataMappedToComponent[route.route]} />
                 </ComponentWrapper>
             );
         }
