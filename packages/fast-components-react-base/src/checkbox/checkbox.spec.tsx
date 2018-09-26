@@ -37,6 +37,15 @@ describe("checkbox", (): void => {
         expect((Checkbox as any).name).toBe(Checkbox.displayName);
     });
 
+    test("should not throw if managedClasses are not provided", () => {
+        expect(
+            () => {
+                shallow(<Checkbox />);
+                shallow(<Checkbox disabled={true} />);
+            }
+        ).not.toThrow();
+    });
+
     test("should implement unhandledProps", () => {
         const handledProps: ICheckboxHandledProps & ICheckboxManagedClasses = {
             managedClasses

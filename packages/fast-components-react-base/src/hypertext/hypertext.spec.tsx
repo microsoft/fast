@@ -30,6 +30,14 @@ describe("hypertext", (): void => {
         expect((Hypertext as any).name).toBe(Hypertext.displayName);
     });
 
+    test("should not throw if managedClasses are not provided", () => {
+        expect(
+            () => {
+                shallow(<Hypertext />);
+            }
+        ).not.toThrow();
+    });
+
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: IHypertextHandledProps & IHypertextManagedClasses = {
             managedClasses
