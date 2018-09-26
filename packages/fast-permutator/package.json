@@ -43,7 +43,8 @@
     "babel-preset-es2015": "^6.24.1",
     "eslint": "^3.19.0",
     "jest": "^22.4.2",
-    "lodash-es": "^4.17.10"
+    "lodash-es": "^4.17.10",
+    "prettier": "1.14.3"
   },
   "peerDependencies": {
     "lodash-es": "^4.17.10"

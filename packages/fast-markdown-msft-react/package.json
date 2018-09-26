@@ -70,6 +70,7 @@
     "babel-preset-react": "^6.24.1",
     "jest": "^22.3.0",
     "lodash-es": "^4.0.0",
+    "prettier": "1.14.3",
     "ts-jest": "^22.0.4",
     "tslint": "^5.9.1",
     "typescript": "^3.0.1",

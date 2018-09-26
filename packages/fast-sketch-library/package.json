@@ -27,6 +27,7 @@
     "@microsoft/fast-tslint-rules": "^2.2.0",
     "@types/node": "^9.4.6",
     "@types/puppeteer": "^1.3.2",
+    "prettier": "1.14.3",
     "ts-loader": "^4.3.0",
     "tslint": "^5.10.0",
     "typescript": "^3.0.1",
