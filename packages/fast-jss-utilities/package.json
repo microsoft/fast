@@ -59,6 +59,7 @@
     "prettier": "1.14.3",
     "ts-jest": "^22.4.6",
     "tslint": "^5.9.1",
+    "tslint-config-prettier": "1.15.0",
     "typescript": "^3.0.1"
   },
   "dependencies": {

@@ -46,6 +46,7 @@
     "react": "^16.5.2",
     "ts-jest": "^22.4.2",
     "tslint": "^5.9.1",
+    "tslint-config-prettier": "1.15.0",
     "typescript": "^3.0.1"
   },
   "dependencies": {
