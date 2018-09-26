@@ -19,7 +19,7 @@ Teams spend significant time building parts of the design system (colors, variab
 [Continue on Wiki...](https://github.com/Microsoft/fast-dna/wiki/Packages)
 
 ## Component browser support
-https://saucelabs.com/browser-matrix/FAST-DNA.svg
+![Browser matrix](https://saucelabs.com/browser-matrix/FAST-DNA.svg)
 
 ## Documentation
 This [GitHub Wiki](https://github.com/Microsoft/fast-dna/wiki) includes guidance on getting started, contributing, consumption, quality, testing, help, and community policies.
