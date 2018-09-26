@@ -5,10 +5,10 @@ export interface ILabelClassNameContract {
     /**
      * The root of the label component
      */
-    label: string;
+    label?: string;
 
     /**
      * The hidden from assistive technologies modifier
      */
-    label__hidden: string;
+    label__hidden?: string;
 }

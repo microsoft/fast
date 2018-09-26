@@ -5,20 +5,20 @@ export interface IHorizontalOverflowClassNameContract {
     /**
      * The root of the horizontal overflow component
      */
-    horizontalOverflow: string;
+    horizontalOverflow?: string;
 
     /**
      * The overflow items
      */
-    horizontalOverflow_contentRegion: string;
+    horizontalOverflow_contentRegion?: string;
 
     /**
      * The next scroll control
      */
-    horizontalOverflow_next: string;
+    horizontalOverflow_next?: string;
 
     /**
      * The previous scroll control
      */
-    horizontalOverflow_previous: string;
+    horizontalOverflow_previous?: string;
 }

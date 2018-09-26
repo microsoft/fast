@@ -5,15 +5,15 @@ export interface IDialogClassNameContract {
     /**
      * The root of the dialog component
      */
-    dialog: string;
+    dialog?: string;
 
     /**
      * The element that overlays the page while the modal is visible
      */
-    dialog_modalOverlay: string;
+    dialog_modalOverlay?: string;
 
     /**
      * The dialog content region
      */
-    dialog_contentRegion: string;
+    dialog_contentRegion?: string;
 }

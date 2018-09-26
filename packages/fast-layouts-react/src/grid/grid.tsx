@@ -7,7 +7,7 @@ import Foundation, { IFoundationProps } from "../foundation";
 import Column from "../column";
 
 export interface IGridClassNamesContract {
-    grid: string;
+    grid?: string;
 }
 
 const styles: ComponentStyles<IGridClassNamesContract, undefined> = {

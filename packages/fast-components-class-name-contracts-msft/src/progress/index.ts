@@ -7,50 +7,50 @@ export interface IMSFTProgressClassNameContract extends IProgressClassNameContra
     /**
      * The progress value indicator
      */
-    progress_valueIndicator: string;
+    progress_valueIndicator?: string;
 
     /**
      * The indeterminate progress indicator
      */
-    progress_indicator: string;
+    progress_indicator?: string;
 
     /**
      * The determinate progress value indicator
      */
-    progress_indicator__determinate: string;
+    progress_indicator__determinate?: string;
 
     /**
      * The indeterminate progress indicator
      */
-    progress_dot: string;
+    progress_dot?: string;
 
     /**
      * The indeterminate progress indicator 1 modifier
      */
-    progress_dot__1: string;
+    progress_dot__1?: string;
 
     /**
      * The indeterminate progress indicator 2 modifier
      */
-    progress_dot__2: string;
+    progress_dot__2?: string;
 
     /**
      * The indeterminate progress indicator 3 modifier
      */
-    progress_dot__3: string;
+    progress_dot__3?: string;
 
     /**
      * The indeterminate progress indicator 4 modifier
      */
-    progress_dot__4: string;
+    progress_dot__4?: string;
 
     /**
      * The indeterminate progress indicator 5 modifier
      */
-    progress_dot__5: string;
+    progress_dot__5?: string;
 
     /**
      * The keyframes for the dots animation
      */
-    "@keyframes dots": string;
+    "@keyframes dots"?: string;
 }

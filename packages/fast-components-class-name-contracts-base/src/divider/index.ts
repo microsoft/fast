@@ -5,5 +5,5 @@ export interface IDividerClassNameContract {
     /**
      * The root of the divider component
      */
-    divider: string;
+    divider?: string;
 }
