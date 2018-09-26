@@ -3,12 +3,7 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
-<<<<<<< HEAD
 import MSFTCaption, {
-    CaptionLevel,
-=======
-import {
->>>>>>> updates any breaking changes props and subsequent data
     CaptionProps,
     CaptionSize,
     CaptionTag,
@@ -64,7 +59,7 @@ describe("caption", (): void => {
 
     test("should render the correct `size` when `size` prop is passed", () => {
         const rendered: any = shallow(
-            <Component size={CaptionSize._2} />
+            <Caption size={CaptionSize._2} />
         );
         const caption: any = rendered.first().shallow();
 

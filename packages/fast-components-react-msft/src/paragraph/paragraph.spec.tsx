@@ -48,7 +48,7 @@ describe("paragraph", (): void => {
 
     test("should render the correct `size` when `size` prop is passed", () => {
         const rendered: any = shallow(
-            <Component size={ParagraphLevel._2} />
+            <Paragraph size={ParagraphLevel._2} />
         );
         const paragraph: any = rendered.first().shallow();
 
