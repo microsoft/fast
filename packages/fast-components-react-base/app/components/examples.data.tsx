@@ -1,8 +1,8 @@
-import schema from "./container.schema.json";
-import Container from "./container";
+import schema from "./react-html-element.schema.json";
+import Container from "./react-html-element";
 
 export default {
-    name: "Test container",
+    name: "HTML Element",
     schema,
     component: Container
 };

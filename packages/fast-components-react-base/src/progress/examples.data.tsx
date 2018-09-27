@@ -8,7 +8,7 @@ import Progress, {
 import schema from "./progress.schema.json";
 import Documentation from "./.tmp/documentation";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import testContainerSchema from "../../app/components/container.schema.json";
+import reactHTMLElementSchema from "../../app/components/react-html-element.schema.json";
 
 const classes: IProgressManagedClasses = {
     managedClasses: {
@@ -26,14 +26,14 @@ const examples: IComponentFactoryExample<IProgressHandledProps & IProgressManage
         value: 0,
         children: [
             {
-                id: testContainerSchema.id,
+                id: reactHTMLElementSchema.id,
                 props: {
                     slot: ProgressType.determinate,
                     children: "determinate"
                 }
             },
             {
-                id: testContainerSchema.id,
+                id: reactHTMLElementSchema.id,
                 props: {
                     slot: ProgressType.determinate,
                     children: "determinate"
@@ -47,14 +47,14 @@ const examples: IComponentFactoryExample<IProgressHandledProps & IProgressManage
             value: 50,
             children: [
                 {
-                    id: testContainerSchema.id,
+                    id: reactHTMLElementSchema.id,
                     props: {
                         slot: ProgressType.indeterminate,
                         children: "indeterminate"
                     }
                 },
                 {
-                    id: testContainerSchema.id,
+                    id: reactHTMLElementSchema.id,
                     props: {
                         slot: ProgressType.determinate,
                         children: "determinate"
@@ -66,14 +66,14 @@ const examples: IComponentFactoryExample<IProgressHandledProps & IProgressManage
             ...classes,
             children: [
                 {
-                    id: testContainerSchema.id,
+                    id: reactHTMLElementSchema.id,
                     props: {
                         slot: ProgressType.indeterminate,
                         children: "indeterminate"
                     }
                 },
                 {
-                    id: testContainerSchema.id,
+                    id: reactHTMLElementSchema.id,
                     props: {
                         slot: ProgressType.indeterminate,
                         children: "indeterminate"
