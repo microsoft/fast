@@ -14,9 +14,6 @@ exports[`checkbox snapshot Checkbox: 0 1`] = `
   <span
     className="checkbox_span"
   />
-  <span
-    className="checkbox_label"
-  />
 </label>
 `;
 
@@ -33,9 +30,6 @@ exports[`checkbox snapshot Checkbox: 1 1`] = `
   />
   <span
     className="checkbox_span"
-  />
-  <span
-    className="checkbox_label"
   />
 </label>
 `;
@@ -54,9 +48,6 @@ exports[`checkbox snapshot Checkbox: 2 1`] = `
   <span
     className="checkbox_span"
   />
-  <span
-    className="checkbox_label"
-  />
 </div>
 `;
 
@@ -73,9 +64,6 @@ exports[`checkbox snapshot Checkbox: 3 1`] = `
   />
   <span
     className="checkbox_span"
-  />
-  <span
-    className="checkbox_label"
   />
 </label>
 `;
@@ -94,9 +82,6 @@ exports[`checkbox snapshot Checkbox: 4 1`] = `
   <span
     className="checkbox_span"
   />
-  <span
-    className="checkbox_label"
-  />
 </label>
 `;
 
@@ -114,9 +99,6 @@ exports[`checkbox snapshot Checkbox: 5 1`] = `
   <span
     className="checkbox_span"
   />
-  <span
-    className="checkbox_label"
-  />
 </label>
 `;
 
@@ -133,9 +115,6 @@ exports[`checkbox snapshot Checkbox: 6 1`] = `
   />
   <span
     className="checkbox_span"
-  />
-  <span
-    className="checkbox_label"
   />
 </label>
 `;
