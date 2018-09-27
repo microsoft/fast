@@ -4,16 +4,16 @@ import { ICheckboxClassNameContract, IManagedClasses } from "@microsoft/fast-com
 /**
  * Button HTML tags
  */
-export enum CheckboxHTMLTags {
+export enum CheckboxTag {
     div = "div",
     label = "label"
 }
 
 export interface ICheckboxHandledProps {
     /**
-     * The HTML tag (defaults to CheckboxHTMLTags.checkbox)
+     * The HTML tag (defaults to CheckboxTag.checkbox)
      */
-    tag?: string;
+    tag?: CheckboxTag;
 
     /**
      * The checked state
@@ -36,9 +36,9 @@ export interface ICheckboxHandledProps {
     onChange?: CheckboxOnChange;
 
     /**
-     * The textual content
+     * The checkbox content
      */
-    text?: string;
+    children?: React.ReactNode;
 }
 
 export interface ICheckboxUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}

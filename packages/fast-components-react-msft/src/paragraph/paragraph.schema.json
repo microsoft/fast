@@ -6,8 +6,8 @@
     "id": "paragraph",
     "children": true,
     "properties": {
-        "level": {
-            "title": "Level",
+        "size": {
+            "title": "Size",
             "type": "number",
             "enum": [
                 1,

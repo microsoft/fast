@@ -27,7 +27,7 @@ describe("flipper", (): void => {
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: IFlipperHandledProps = {
-            visible: false
+            visibleToAssistiveTechnologies: false
         };
 
         const unhandledProps: IFlipperUnhandledProps = {
@@ -47,7 +47,7 @@ describe("flipper", (): void => {
 
     test("should set an attribute of `tabindex` to -1 if `visibility` prop is false", () => {
         const props: IFlipperHandledProps = {
-            visible: false
+            visibleToAssistiveTechnologies: false
         };
 
         const rendered: any = shallow(
@@ -61,7 +61,7 @@ describe("flipper", (): void => {
 
     test("should set an attribute of `aria-hidden` to true if `visibility` prop is false", () => {
         const props: IFlipperHandledProps = {
-            visible: false
+            visibleToAssistiveTechnologies: false
         };
 
         const rendered: any = shallow(
@@ -75,7 +75,7 @@ describe("flipper", (): void => {
 
     test("should not set an attribute of `aria-label` if no label is passed", () => {
         const props: IFlipperHandledProps = {
-            visible: false
+            visibleToAssistiveTechnologies: false
         };
 
         const rendered: any = shallow(
@@ -89,7 +89,7 @@ describe("flipper", (): void => {
 
     test("should set an attribute of `aria-label` if `label` prop is passed", () => {
         const props: IFlipperHandledProps = {
-            visible: true,
+            visibleToAssistiveTechnologies: true,
             label: "Test aria-label"
         };
 

@@ -41,9 +41,9 @@ class Toggle extends Foundation<
         id: void 0,
         labelId: void 0,
         selected: void 0,
-        selectedString: void 0,
-        statusLabelId: void 0,
-        unselectedString: void 0
+        selectedMessage: void 0,
+        statusMessageId: void 0,
+        unselectedMessage: void 0
     };
 
     /**
@@ -73,7 +73,7 @@ class Toggle extends Foundation<
                         className={get(this.props, "managedClasses.toggle_input")}
                         type="checkbox"
                         id={this.props.id}
-                        aria-describedby={this.props.statusLabelId}
+                        aria-describedby={this.props.statusMessageId}
                         disabled={this.props.disabled}
                         value={this.generateToggleStateLabel()}
                         onChange={this.handleToggleChange}
@@ -82,7 +82,7 @@ class Toggle extends Foundation<
                     <span className={get(this.props, "managedClasses.toggle_stateIndicator")} />
                 </div>
                 <span
-                    id={this.props.statusLabelId}
+                    id={this.props.statusMessageId}
                 >
                     {this.generateToggleStateLabel()}
                 </span>
@@ -101,7 +101,7 @@ class Toggle extends Foundation<
      * Creates proper string based on state
      */
     private generateToggleStateLabel(): string {
-        return this.state.selected ? this.props.selectedString : this.props.unselectedString;
+        return this.state.selected ? this.props.selectedMessage : this.props.unselectedMessage;
     }
 
     /**

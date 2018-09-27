@@ -29,7 +29,7 @@ describe("subheading", (): void => {
     test("should return a valid object which includes all props that are not enumerated as handledProps", (): void => {
         const handledProps: ISubheadingHandledProps = {
             tag: SubheadingTag.h1,
-            level: SubheadingLevel._1
+            size: SubheadingLevel._1
         };
 
         const unhandledProps: ISubheadingUnhandledProps = {
@@ -57,13 +57,13 @@ describe("subheading", (): void => {
         expect(subheading.instance().props.tag).toEqual(SubheadingTag.h4);
     });
 
-    test("should render default level if none is specified", (): void => {
+    test("should render default size if none is specified", (): void => {
         const rendered: any = shallow(
             <Subheading />
         );
 
         const subheading: any = rendered.first().shallow();
 
-        expect(subheading.instance().props.level).toEqual(SubheadingLevel._1);
+        expect(subheading.instance().props.size).toEqual(SubheadingLevel._1);
     });
 });

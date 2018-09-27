@@ -3,7 +3,7 @@ import Typography, {
     ITypographyHandledProps,
     ITypographyManagedClasses,
     ITypographyUnhandledProps,
-    TypeLevel,
+    TypographySize,
     TypographyTag
 } from "./typography";
 import schema from "./typography.schema.json";
@@ -32,68 +32,68 @@ const examples: IComponentFactoryExample<ITypographyHandledProps & ITypographyMa
     detailData: {
         managedClasses: managedClassExamples,
         tag: TypographyTag.h1,
-        typeLevel: TypeLevel._1,
+        size: TypographySize._1,
         children: "Typography"
     },
     data: [
         {
             managedClasses: managedClassExamples,
             tag: TypographyTag.h1,
-            typeLevel: TypeLevel._1,
+            size: TypographySize._1,
             children: testString
         },
         {
             managedClasses: managedClassExamples,
             tag: TypographyTag.h2,
-            typeLevel: TypeLevel._2,
+            size: TypographySize._2,
             children: testString
         },
         {
             managedClasses: managedClassExamples,
             tag: TypographyTag.h3,
-            typeLevel: TypeLevel._3,
+            size: TypographySize._3,
             children: testString
         },
         {
             managedClasses: managedClassExamples,
             tag: TypographyTag.h4,
-            typeLevel: TypeLevel._4,
+            size: TypographySize._4,
             children: testString
         },
         {
             managedClasses: managedClassExamples,
             tag: TypographyTag.h5,
-            typeLevel: TypeLevel._5,
+            size: TypographySize._5,
             children: testString
         },
         {
             managedClasses: managedClassExamples,
             tag: TypographyTag.h6,
-            typeLevel: TypeLevel._6,
+            size: TypographySize._6,
             children: testString
         },
         {
             managedClasses: managedClassExamples,
             tag: TypographyTag.span,
-            typeLevel: TypeLevel._7,
+            size: TypographySize._7,
             children: testString
         },
         {
             managedClasses: managedClassExamples,
             tag: TypographyTag.caption,
-            typeLevel: TypeLevel._8,
+            size: TypographySize._8,
             children: testString
         },
         {
             managedClasses: managedClassExamples,
             tag: TypographyTag.p,
-            typeLevel: TypeLevel._9,
+            size: TypographySize._9,
             children: testString
         },
         {
             managedClasses: managedClassExamples,
             tag: TypographyTag.figcaption,
-            typeLevel: TypeLevel._9,
+            size: TypographySize._9,
             children: testString
         }
     ]

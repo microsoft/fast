@@ -6,7 +6,7 @@ export enum AlignHeadingBaseline {
     large = "large"
 }
 
-export enum HeadingLevel {
+export enum HeadingSize {
     _1 = 1,
     _2 = 2,
     _3 = 3,
@@ -32,9 +32,9 @@ export interface IHeadingHandledProps {
     children?: React.ReactNode | React.ReactNode[];
 
     /**
-     * The heading level
+     * The heading size
      */
-    level?: HeadingLevel;
+    size?: HeadingSize;
 
     /**
      * The heading tag

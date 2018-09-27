@@ -22,23 +22,23 @@
             "title": "Selected",
             "type": "boolean"
         },
-        "selectedString": {
+        "selectedMessage": {
             "title": "Selected text",
             "type": "string"
         },
-        "statusLabelId": {
+        "statusMessageId": {
             "title": "HTML status label id attribute",
             "type": "string"
         },
-        "unselectedString": {
+        "unselectedMessage": {
             "title": "Unselected text",
             "type": "string"
         }
     },
     "required": [
         "id",
-        "selectedString",
-        "statusLabelId",
-        "unselectedString"
+        "selectedMessage",
+        "statusMessageId",
+        "unselectedMessage"
     ]
 }
