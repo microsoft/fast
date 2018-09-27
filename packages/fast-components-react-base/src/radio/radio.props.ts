@@ -26,7 +26,7 @@ export interface IRadioHandledProps {
     /**
      * The radio content
      */
-    children?: React.ReactNode | React.ReactNode[];
+    children?: React.ReactNode;
 }
 
 export interface IRadioUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
