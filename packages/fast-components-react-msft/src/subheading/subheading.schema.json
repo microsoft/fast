@@ -19,8 +19,8 @@
             ],
             "default": "h3" 
         },
-        "level": {
-            "title": "Level",
+        "size": {
+            "title": "Size",
             "type": "number",
             "enum": [
                 1,

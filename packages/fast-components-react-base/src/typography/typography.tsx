@@ -6,7 +6,7 @@ import {
     ITypographyHandledProps,
     ITypographyManagedClasses,
     ITypographyUnhandledProps,
-    TypeLevel,
+    TypographySize,
     TypographyTag
 } from "./typography.props";
 import { IManagedClasses, ITypographyClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
@@ -25,7 +25,7 @@ class Typography extends Foundation<
     protected handledProps: HandledProps<ITypographyHandledProps & IManagedClasses<ITypographyClassNameContract>> = {
         managedClasses: void 0,
         tag: void 0,
-        typeLevel: void 0
+        size: void 0
     };
 
     /**
@@ -53,8 +53,9 @@ class Typography extends Foundation<
      * Generates class names based on props
      */
     protected generateClassNames(): string {
-        const classes: string = this.props.typeLevel ?
-            get(this.props, `managedClasses.typography__${this.props.typeLevel}`) : get(this.props, "managedClasses.typography__1");
+        const classes: string = this.props.size
+            ? get(this.props, `managedClasses.typography__${this.props.size}`)
+            : get(this.props, "managedClasses.typography__1");
 
         return super.generateClassNames(`${get(this.props, "managedClasses.typography")} ${classes}`);
     }

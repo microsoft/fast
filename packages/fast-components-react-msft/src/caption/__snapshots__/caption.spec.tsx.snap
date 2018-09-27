@@ -12,7 +12,7 @@ exports[`caption snapshots Caption: 1 1`] = `
 <p
   className="typography-0-1-17 typography__8-0-1-25 caption-0-1-14 caption__1-0-1-15"
 >
-  Caption test string level 1
+  Caption test string size 1
 </p>
 `;
 
@@ -20,7 +20,7 @@ exports[`caption snapshots Caption: 2 1`] = `
 <p
   className="typography-0-1-30 typography__9-0-1-39 caption-0-1-27 caption__2-0-1-29"
 >
-  Caption test string level 2
+  Caption test string size 2
 </p>
 `;
 

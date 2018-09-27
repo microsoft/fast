@@ -1,21 +1,21 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
-import { Foundation, HandledProps, TypeLevel, TypographyTag } from "@microsoft/fast-components-react-base";
-import { CaptionLevel, CaptionTag, ICaptionHandledProps, ICaptionUnhandledProps } from "./caption.props";
+import { Foundation, HandledProps, TypographySize, TypographyTag } from "@microsoft/fast-components-react-base";
+import { CaptionSize, CaptionTag, ICaptionHandledProps, ICaptionUnhandledProps } from "./caption.props";
 import { ICaptionClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
 import { Typography } from "../typography";
 
 class Caption extends Foundation<ICaptionHandledProps & IManagedClasses<ICaptionClassNameContract>, ICaptionUnhandledProps, {}> {
     public static defaultProps: Partial<ICaptionHandledProps> = {
         tag: CaptionTag.p,
-        level: CaptionLevel._1
+        size: CaptionSize._1
     };
 
     public static displayName: string = "Caption";
 
     protected handledProps: HandledProps<ICaptionHandledProps & IManagedClasses<ICaptionClassNameContract>> = {
-        level: void 0,
+        size: void 0,
         managedClasses: void 0,
         tag: void 0
     };
@@ -28,7 +28,7 @@ class Caption extends Foundation<ICaptionHandledProps & IManagedClasses<ICaption
             <Typography
                 {...this.unhandledProps()}
                 tag={TypographyTag[this.props.tag]}
-                typeLevel={this.level()}
+                size={this.size()}
                 className={this.generateClassNames()}
             >
                 {this.props.children}
@@ -38,15 +38,15 @@ class Caption extends Foundation<ICaptionHandledProps & IManagedClasses<ICaption
 
     protected generateClassNames(): string {
         const classes: string =
-            `${get(this.props, `managedClasses.caption`)} ${get(this.props, `managedClasses.caption__${this.props.level}`)}`;
+            `${get(this.props, `managedClasses.caption`)} ${get(this.props, `managedClasses.caption__${this.props.size}`)}`;
 
         return super.generateClassNames(classes);
     }
 
-    private level(): TypeLevel {
-        return this.props.level === CaptionLevel._2
-            ? TypeLevel._9
-            : TypeLevel._8;
+    private size(): TypographySize {
+        return this.props.size === CaptionSize._2
+            ? TypographySize._9
+            : TypographySize._8;
     }
 }
 

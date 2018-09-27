@@ -26,17 +26,17 @@ export default {
             children: testString
         },
         {
-            level: ParagraphLevel._1,
+            size: ParagraphLevel._1,
             children: testString,
             "data-sketch-symbol": "Paragraph 1"
         },
         {
-            level: ParagraphLevel._2,
+            size: ParagraphLevel._2,
             children: testString,
             "data-sketch-symbol": "Paragraph 2"
         },
         {
-            level: ParagraphLevel._3,
+            size: ParagraphLevel._3,
             children: testString,
             "data-sketch-symbol": "Paragraph 3"
         }

@@ -21,8 +21,8 @@
                 "figcaption"
             ]
         },
-        "typeLevel": {
-            "title": "Type level",
+        "size": {
+            "title": "Type size",
             "type": "number",
             "enum": [
                 1,

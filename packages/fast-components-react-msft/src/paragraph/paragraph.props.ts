@@ -14,9 +14,9 @@ export interface IParagraphHandledProps {
     children?: React.ReactNode | React.ReactNode[];
 
     /**
-     * The paragraph level
+     * The visual size (type level) which aligns to a type ramp instance
      */
-    level?: ParagraphLevel;
+    size?: ParagraphLevel;
 }
 
 export interface IParagraphUnhandledProps extends React.HTMLAttributes<HTMLParagraphElement> {}

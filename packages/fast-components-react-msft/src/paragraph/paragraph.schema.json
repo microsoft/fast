@@ -5,8 +5,8 @@
     "type": "object",
     "id": "paragraph",
     "properties": {
-        "level": {
-            "title": "Level",
+        "size": {
+            "title": "Size",
             "type": "number",
             "enum": [
                 1,

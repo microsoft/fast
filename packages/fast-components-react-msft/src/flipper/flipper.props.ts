@@ -16,7 +16,7 @@ export interface IFlipperHandledProps extends IButtonHandledProps {
     /**
      * The flag to expose the flipper to screen readers
      */
-    visible?: boolean;
+    visibleToAssistiveTechnologies?: boolean;
 
     /**
      * The aria label text to be read by screen readers when the flipper visible to screen readers

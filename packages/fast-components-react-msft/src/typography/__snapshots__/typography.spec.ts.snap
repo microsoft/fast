@@ -11,7 +11,7 @@ exports[`typography snapshots Typography: 0 1`] = `
 exports[`typography snapshots Typography: 1 1`] = `
 <h1
   className="typography-0-1-11 typography__1-0-1-12"
-  data-sketch-symbol="Typographic level 1"
+  data-sketch-symbol="Typographic size 1"
 >
   Typography example string
 </h1>
@@ -20,7 +20,7 @@ exports[`typography snapshots Typography: 1 1`] = `
 exports[`typography snapshots Typography: 2 1`] = `
 <h2
   className="typography-0-1-21 typography__2-0-1-23"
-  data-sketch-symbol="Typographic level 2"
+  data-sketch-symbol="Typographic size 2"
 >
   Typography example string
 </h2>
@@ -29,7 +29,7 @@ exports[`typography snapshots Typography: 2 1`] = `
 exports[`typography snapshots Typography: 3 1`] = `
 <h3
   className="typography-0-1-31 typography__3-0-1-34"
-  data-sketch-symbol="Typographic level 3"
+  data-sketch-symbol="Typographic size 3"
 >
   Typography example string
 </h3>
@@ -38,7 +38,7 @@ exports[`typography snapshots Typography: 3 1`] = `
 exports[`typography snapshots Typography: 4 1`] = `
 <h4
   className="typography-0-1-41 typography__4-0-1-45"
-  data-sketch-symbol="Typographic level 4"
+  data-sketch-symbol="Typographic size 4"
 >
   Typography example string
 </h4>
@@ -47,7 +47,7 @@ exports[`typography snapshots Typography: 4 1`] = `
 exports[`typography snapshots Typography: 5 1`] = `
 <h5
   className="typography-0-1-51 typography__5-0-1-56"
-  data-sketch-symbol="Typographic level 5"
+  data-sketch-symbol="Typographic size 5"
 >
   Typography example string
 </h5>
@@ -56,7 +56,7 @@ exports[`typography snapshots Typography: 5 1`] = `
 exports[`typography snapshots Typography: 6 1`] = `
 <h6
   className="typography-0-1-61 typography__6-0-1-67"
-  data-sketch-symbol="Typographic level 6"
+  data-sketch-symbol="Typographic size 6"
 >
   Typography example string
 </h6>
@@ -65,7 +65,7 @@ exports[`typography snapshots Typography: 6 1`] = `
 exports[`typography snapshots Typography: 7 1`] = `
 <span
   className="typography-0-1-71 typography__7-0-1-78"
-  data-sketch-symbol="Typographic level 7"
+  data-sketch-symbol="Typographic size 7"
 >
   Typography example string
 </span>
@@ -74,7 +74,7 @@ exports[`typography snapshots Typography: 7 1`] = `
 exports[`typography snapshots Typography: 8 1`] = `
 <caption
   className="typography-0-1-81 typography__8-0-1-89"
-  data-sketch-symbol="Typographic level 8"
+  data-sketch-symbol="Typographic size 8"
 >
   Typography example string
 </caption>
@@ -83,7 +83,7 @@ exports[`typography snapshots Typography: 8 1`] = `
 exports[`typography snapshots Typography: 9 1`] = `
 <p
   className="typography-0-1-91 typography__9-0-1-100"
-  data-sketch-symbol="Typographic level 9"
+  data-sketch-symbol="Typographic size 9"
 >
   Typography example string
 </p>

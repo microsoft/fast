@@ -1,7 +1,7 @@
 import * as React from "react";
 import { IFoundationProps } from "@microsoft/fast-components-react-base";
 import MSFTCaption, {
-    CaptionLevel,
+    CaptionSize,
     CaptionTag,
     ICaptionClassNameContract,
     ICaptionHandledProps,

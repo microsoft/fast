@@ -14,7 +14,7 @@
             ],
             "default": "next"
         },
-        "visible": {
+        "visibleToAssistiveTechnologies": {
             "title": "Visible to screen readers",
             "type": "boolean"
         },
