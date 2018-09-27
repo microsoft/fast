@@ -26,6 +26,14 @@ describe("metatext", (): void => {
         expect((MSFTMetatext as any).name).toBe(MSFTMetatext.displayName);
     });
 
+    test("should not throw if managedClasses are not provided", () => {
+        expect(
+            () => {
+                shallow(<Metatext />);
+            }
+        ).not.toThrow();
+    });
+
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: IMetatextHandledProps = {
             tag: MetatextTag.p
