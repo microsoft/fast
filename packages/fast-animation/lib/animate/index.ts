@@ -431,7 +431,7 @@ export default abstract class Animate {
      * Consolidates all keyframe arrays into a single keyframe array
      */
     private consolidateKeyframes(keyframeSets: Keyframe[][]): Keyframe[] {
-        const frames: Partial<Keyframe[]> = {};
+        const frames: Partial<Keyframe[]> = [];
 
         // Merge all keyframes into a single frames object where each key is a keyframe offset
         keyframeSets.forEach((keyframeSet: Keyframe[]) => {

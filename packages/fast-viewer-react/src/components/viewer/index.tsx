@@ -174,7 +174,7 @@ export default class Viewer extends React.Component<IViewerProps, IViewerState> 
     public checkIFrameAssetsLoaded(): void {
         if (this.iframe) {
             const iframeImages: HTMLCollection = this.iframe.contentDocument.images;
-            const iframeLinks: NodeListOf<HTMLLinkElement> = this.iframe.contentDocument.getElementsByTagName("link");
+            const iframeLinks: HTMLCollectionOf<HTMLLinkElement> = this.iframe.contentDocument.getElementsByTagName("link");
 
             this.addLoadEventListenerToItems(iframeImages);
             this.addLoadEventListenerToItems(iframeLinks);
