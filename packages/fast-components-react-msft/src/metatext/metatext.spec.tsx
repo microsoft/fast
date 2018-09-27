@@ -29,7 +29,7 @@ describe("metatext", (): void => {
     test("should not throw if managedClasses are not provided", () => {
         expect(
             () => {
-                shallow(<Metatext />);
+                shallow(<MSFTMetatext />);
             }
         ).not.toThrow();
     });
