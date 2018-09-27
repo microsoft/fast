@@ -14,17 +14,23 @@ import { IFormItemChildrenClassNameContract } from "../class-name-contracts/";
 import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface IComponentData {
+export interface IChildComponentData {
+    [T: string]: any;
+}
+
+export interface IChildComponent {
     /**
-     * The component schema id
+     * The JSON schema id for the component
      */
     id: string;
 
     /**
-     * The props to be applied to the component which matches the id
+     * The props for the component
      */
-    props: any;
+    props: IChildComponentData;
 }
+
+export type ChildComponent = IChildComponent | string;
 
 export interface IFormItemChildrenProps {
     /**
@@ -178,40 +184,15 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
         this.setState({hideOptionMenu: true});
     }
 
-    /**
-     * Click event for adding a component
-     */
-    private onAddComponent(item: any): void {
-        const currentChildrenArray: React.ReactNode[] = this.getCurrentChildArray(this.props.data);
-
-        if (typeof item === "object") {
-            this.props.onChange(
-                this.props.dataLocation,
-                this.getReactComponents(currentChildrenArray, item),
-                undefined,
-                undefined,
-                true
-            );
-        } else if (typeof item === "string") {
-            this.props.onChange(
-                this.props.dataLocation,
-                this.getStringComponents(currentChildrenArray, item),
-                undefined,
-                undefined,
-                true
-            );
-        }
-    }
-
-    private getReactComponents(currentChildrenArray: any[], item: any): any[] {
-        const components: any[] = currentChildrenArray;
+    private getReactComponents(currentChildren: ChildComponent[], item: IChildOptionItem): ChildComponent[] {
+        const components: ChildComponent[] = currentChildren;
         components.push(this.getChildComponent(item));
 
         return components;
     }
 
-    private getStringComponents(currentChildrenArray: any[], item: string): React.Component[] | string {
-        const components: any[] = currentChildrenArray;
+    private getStringComponents(currentChildren: ChildComponent[], item: string): ChildComponent[] | ChildComponent {
+        const components: ChildComponent[] = currentChildren;
 
         if (components.length > 0) {
             components.push(item);
@@ -220,7 +201,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
         return components.length > 0 ? components : item;
     }
 
-    private getCurrentChildArray(currentChildren: JSX.Element): React.ReactNode[] {
+    private getCurrentChildArray(currentChildren: ChildComponent): ChildComponent[] {
         return Array.isArray(currentChildren)
             ? currentChildren
             : typeof currentChildren !== "undefined" && currentChildren !== null
@@ -228,14 +209,14 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
             : [];
     }
 
-    private getChildComponent(item: any): IComponentData {
+    private getChildComponent(item: IChildOptionItem): IChildComponent {
         return {
             id: item.schema.id,
             props: generateExampleData(item.schema, "")
         };
     }
 
-    private getDataLocation(component: any, index: number): string {
+    private getDataLocation(component: ChildComponent, index: number): string {
         const propLocation: string = typeof component === "string" ? "" : ".props";
 
         if (typeof index === "number") {
@@ -246,22 +227,47 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
     }
 
     /**
+     * Click event for adding a component
+     */
+    private onAddComponent(item: IChildOptionItem): void {
+        const currentChildren: ChildComponent[] = this.getCurrentChildArray(this.props.data);
+
+        if (typeof item === "object") {
+            this.props.onChange(
+                this.props.dataLocation,
+                this.getReactComponents(currentChildren, item),
+                undefined,
+                undefined,
+                true
+            );
+        } else if (typeof item === "string") {
+            this.props.onChange(
+                this.props.dataLocation,
+                this.getStringComponents(currentChildren, item),
+                undefined,
+                undefined,
+                true
+            );
+        }
+    }
+
+    /**
      * Click handler for editing a component
      */
-    private onEditComponent(componentObj: any, index: number): void {
+    private onEditComponent(component: ChildComponent, index: number): void {
         let childSchema: any;
 
-        if (typeof componentObj.props === "string") {
+        if (typeof component === "string") {
             childSchema = reactChildrenStringSchema;
-        } else if (typeof componentObj.props === "object") {
-            this.props.childOptions.forEach((childOption: any) => {
-                if (childOption.component === componentObj.type) {
+        } else if (typeof component === "object" && typeof (component as IChildComponent).props === "object") {
+            this.props.childOptions.forEach((childOption: IChildOptionItem) => {
+                if (childOption.schema.id === (component as IChildComponent).id) {
                     childSchema = childOption.schema;
                 }
             });
         }
 
-        this.props.onUpdateActiveSection("", `${this.getDataLocation(componentObj, index)}`, childSchema);
+        this.props.onUpdateActiveSection("", `${this.getDataLocation(component, index)}`, childSchema);
     }
 
     /**
@@ -270,44 +276,58 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
     private onDeleteComponent(index?: number): void {
         this.props.onChange(
             this.props.dataLocation,
-            void(0),
-            typeof index !== "undefined",
-            index
+            undefined,
+            typeof index === "number",
+            index,
+            true
         );
     }
 
     /**
-     * Click factory for child items
+     * Click factory for adding a child item
      */
-    private clickComponentFactory = (type: Action, componentObj?: any, index?: number): any => {
-        return (e: React.MouseEvent<MouseEvent>): void => {
+    private clickAddComponentFactory = (
+        component: IChildOptionItem,
+    ): (e: React.MouseEvent<HTMLButtonElement>) => void => {
+        return (e: React.MouseEvent<HTMLButtonElement>): void => {
             e.preventDefault();
 
             if (!this.state.hideOptionMenu) {
                 this.toggleMenu();
             }
 
-            switch (type) {
-                case Action.edit:
-                    this.onEditComponent(componentObj, index);
-                    break;
-                case Action.delete:
-                    this.onDeleteComponent(index);
-                    break;
-                case Action.add:
-                    this.onAddComponent(componentObj);
+            this.onAddComponent(component);
+        };
+    }
 
-                    // If we're searching for components, re-focus the text input
-                    if (this.state.childrenSearchTerm !== "" && this.searchRef instanceof HTMLInputElement) {
-                        this.searchRef.focus();
-                    }
+    /**
+     * Click factory for editing a child item
+     */
+    private clickEditComponentFactory = (
+        component: ChildComponent,
+        index?: number
+    ): (e: React.MouseEvent<HTMLAnchorElement>) => void => {
+        return (e: React.MouseEvent<HTMLAnchorElement>): void => {
+            e.preventDefault();
 
-                    this.setState({
-                        childrenSearchTerm: ""
-                    });
+            this.onEditComponent(component, index);
+        };
+    }
 
-                    break;
+    /**
+     * Click factory for removing a child item
+     */
+    private clickDeleteComponentFactory = (
+        index?: number
+    ): (e: React.MouseEvent<HTMLButtonElement>) => void => {
+        return (e: React.MouseEvent<HTMLButtonElement>): void => {
+            e.preventDefault();
+
+            if (!this.state.hideOptionMenu) {
+                this.toggleMenu();
             }
+
+            this.onDeleteComponent(index);
         };
     }
 
@@ -345,7 +365,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
         return items.map((item: any, index: number) => {
             return (
                 <li key={uniqueId()} className={this.props.managedClasses.formItemChildren_optionMenu__listItem}>
-                    <button onClick={this.clickComponentFactory(Action.delete, void(0), index)}>
+                    <button onClick={this.clickDeleteComponentFactory(Array.isArray(this.props.data) ? index : undefined)}>
                         {item}
                     </button>
                 </li>
@@ -361,7 +381,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
             return null;
         }
 
-        const option: IChildOptionItem = {
+        const stringOption: IChildOptionItem = {
             name: "Text",
             component: null,
             schema: reactChildrenStringSchema
@@ -373,7 +393,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
                     return (
                         <button
                             key={`${defaultChildOption}${index}`}
-                            onClick={this.clickComponentFactory(Action.add, option)}
+                            onClick={this.clickAddComponentFactory(stringOption)}
                             className={this.props.managedClasses.formItemChildren_childOptionsTextButton}
                         >
                             <span>Text</span>
@@ -395,7 +415,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
             return (
                 <li key={uniqueId()}>
                     <button
-                        onClick={this.clickComponentFactory(Action.add, option)}
+                        onClick={this.clickAddComponentFactory(option)}
                     >
                         <span>{option.name}</span>
                     </button>
@@ -412,16 +432,14 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
         }
     }
 
-    private renderChildItem = (item: any, index?: number): JSX.Element => {
+    private renderChildItem = (item: ChildComponent, index?: number): JSX.Element => {
         // The "react-sortable-hoc" library has an issue where a wrapping element
         // must be supplied in order to accurately show drag movement
         // see: https://github.com/clauderic/react-sortable-hoc/issues/305
         return (
             <div>
                 <SortableListItem key={uniqueId()}>
-                    <a
-                        onClick={this.clickComponentFactory(Action.edit, item, index)}
-                    >
+                    <a onClick={this.clickEditComponentFactory(item, index)}>
                         {this.generateChildOptionText(item)}
                         {this.renderChildCaption(item)}
                     </a>
@@ -446,11 +464,11 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
      * Generate all items for the list of existing children
      */
     private generateChildItems(): JSX.Element | JSX.Element[] {
-        const currentChildren: JSX.Element = this.props.data;
-        const currentChildrenArray: JSX.Element[] = Array.isArray(currentChildren) ? currentChildren : [currentChildren];
+        const currentChildren: ChildComponent = this.props.data;
+        const currentChildrenArray: ChildComponent[] = Array.isArray(currentChildren) ? currentChildren : [currentChildren];
 
         if (currentChildren) {
-            return currentChildrenArray.map((item: any, index: number): JSX.Element => {
+            return currentChildrenArray.map((item: ChildComponent, index: number): JSX.Element => {
                 const options: any = {
                     key: `item-${index}`,
                     index,

@@ -16,6 +16,9 @@ import {
     isRootLocation,
 } from "./form.utilities";
 import FormSection from "./form-section";
+import {
+    ChildComponent
+} from "./form-item.children";
 import styles from "./form.style";
 import { IFormClassNameContract } from "../class-name-contracts/";
 import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
@@ -242,7 +245,7 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
         }
 
         if (isChildren) {
-            const children: any = get(obj, location);
+            const children: ChildComponent | ChildComponent[] = get(obj, location);
 
             if (Array.isArray(children) && children.length === 1) {
                 set(obj, location, children[0]);

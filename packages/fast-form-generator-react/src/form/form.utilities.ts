@@ -403,7 +403,7 @@ export function mapDataToComponent(schema: any, data: any, childOptions: IChildO
                 value = Object.assign(
                     { id: subSchemaId },
                     React.createElement(
-                        childOption.component ,
+                        childOption.component,
                         { key: `${subSchemaId}-${index}`, ...subDataNormalized }
                     )
                 );
