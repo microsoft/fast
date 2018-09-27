@@ -3,8 +3,8 @@ import { IComponentFactoryExample } from "@microsoft/fast-development-site-react
 import { Heading } from "./index";
 import {
     AlignHeadingBaseline,
-    HeadingLevel,
     HeadingProps,
+    HeadingSize,
     HeadingTag,
     IHeadingHandledProps,
     IHeadingManagedClasses,
@@ -29,37 +29,37 @@ export default {
         },
         {
             tag: HeadingTag.h1,
-            level: HeadingLevel._1,
+            size: HeadingSize._1,
             children: testString,
             "data-sketch-symbol": "Heading 1"
         },
         {
             tag: HeadingTag.h2,
-            level: HeadingLevel._2,
+            size: HeadingSize._2,
             children: testString,
             "data-sketch-symbol": "Heading 2"
         },
         {
             tag: HeadingTag.h3,
-            level: HeadingLevel._3,
+            size: HeadingSize._3,
             children: testString,
             "data-sketch-symbol": "Heading 3"
         },
         {
             tag: HeadingTag.h4,
-            level: HeadingLevel._4,
+            size: HeadingSize._4,
             children: testString,
             "data-sketch-symbol": "Heading 4"
         },
         {
             tag: HeadingTag.h5,
-            level: HeadingLevel._5,
+            size: HeadingSize._5,
             children: testString,
             "data-sketch-symbol": "Heading 5"
         },
         {
             tag: HeadingTag.h6,
-            level: HeadingLevel._6,
+            size: HeadingSize._6,
             children: testString,
             "data-sketch-symbol": "Heading 6"
         }

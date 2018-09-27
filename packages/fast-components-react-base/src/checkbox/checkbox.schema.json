@@ -4,6 +4,7 @@
     "description": "A checkbox component's schema definition.",
     "type": "object",
     "id": "checkbox",
+    "children": true,
     "properties": {
         "tag": {
             "title": "HTML tag",
@@ -25,10 +26,6 @@
         "indeterminate": {
             "title": "Indeterminate",
             "type": "boolean"
-        },
-        "text": {
-            "title": "Text",
-            "type": "string"
         }
     }
 }

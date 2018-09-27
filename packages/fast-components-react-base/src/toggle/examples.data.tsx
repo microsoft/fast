@@ -20,9 +20,9 @@ const examples: IComponentFactoryExample<IToggleHandledProps & IToggleManagedCla
         children: "Toggle",
         id: "toggle01",
         labelId: "label01",
-        selectedString: "On",
-        statusLabelId: "span01",
-        unselectedString: "Off"
+        selectedMessage: "On",
+        statusMessageId: "span01",
+        unselectedMessage: "Off"
     },
     data: [
         {
@@ -38,9 +38,9 @@ const examples: IComponentFactoryExample<IToggleHandledProps & IToggleManagedCla
             id: "toggle01",
             labelId: "label01",
             selected: true,
-            selectedString: "On",
-            statusLabelId: "span01",
-            unselectedString: "Off"
+            selectedMessage: "On",
+            statusMessageId: "span01",
+            unselectedMessage: "Off"
         }
     ]
 };

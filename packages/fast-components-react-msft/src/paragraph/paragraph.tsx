@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
-import { Foundation, HandledProps, TypeLevel, TypographyTag } from "@microsoft/fast-components-react-base";
+import { Foundation, HandledProps, TypographySize, TypographyTag } from "@microsoft/fast-components-react-base";
 import {
     IParagraphHandledProps,
     IParagraphManagedClasses,
@@ -17,13 +17,13 @@ class Paragraph extends Foundation<
     {}
 > {
     public static defaultProps: Partial<IParagraphHandledProps> = {
-        level: ParagraphLevel._3
+        size: ParagraphLevel._3
     };
 
     public static displayName: string = "Paragraph";
 
     protected handledProps: HandledProps<IParagraphHandledProps & IManagedClasses<IParagraphClassNameContract>> = {
-        level: void 0,
+        size: void 0,
         managedClasses: void 0
     };
 
@@ -35,7 +35,7 @@ class Paragraph extends Foundation<
             <Typography
                 {...this.unhandledProps()}
                 tag={TypographyTag.p}
-                typeLevel={this.getTypeLevel()}
+                size={this.size}
                 className={this.generateClassNames()}
             >
                 {this.props.children}
@@ -48,22 +48,22 @@ class Paragraph extends Foundation<
      */
     protected generateClassNames(): string {
         const classes: string =
-            `${get(this.props, `managedClasses.paragraph`)} ${get(this.props, `managedClasses.paragraph__${this.props.level}`)}`;
+            `${get(this.props, `managedClasses.paragraph`)} ${get(this.props, `managedClasses.paragraph__${this.props.size}`)}`;
 
         return super.generateClassNames(`${get(this.props, "managedClasses.paragraph")} ${classes}`);
     }
 
     /**
-     * Stores level for use in render
+     * Stores size for use in render
      */
-    private getTypeLevel(): TypeLevel {
-        switch (this.props.level) {
+    private get size(): TypographySize {
+        switch (this.props.size) {
             case ParagraphLevel._1:
-                return TypeLevel._5;
+                return TypographySize._5;
             case ParagraphLevel._2:
-                return TypeLevel._6;
+                return TypographySize._6;
             default:
-                return TypeLevel._7;
+                return TypographySize._7;
         }
     }
 }
