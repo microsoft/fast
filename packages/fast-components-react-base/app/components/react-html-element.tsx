@@ -13,7 +13,7 @@ export default class ReactHTMLElement extends React.Component<IContainerProps, {
     public static defaultProps: IContainerProps = {
         tag: "div",
         slot: undefined
-    }
+    };
 
     public render(): JSX.Element {
         return (
