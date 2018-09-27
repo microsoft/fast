@@ -18,8 +18,8 @@
                 "p"
             ]
         },
-        "level": {
-            "title": "Level",
+        "size": {
+            "title": "Size",
             "type": "number",
             "enum": [
                 1,

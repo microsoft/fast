@@ -14,9 +14,9 @@ export default {
         children: "Toggle label default on",
         id: "toggle01",
         labelId: "label01",
-        selectedString: "On",
-        statusLabelId: "span01",
-        unselectedString: "Off"
+        selectedMessage: "On",
+        statusMessageId: "span01",
+        unselectedMessage: "Off"
     },
     data: [
         {
@@ -25,9 +25,9 @@ export default {
             id: "toggle01",
             labelId: "label01",
             selected: true,
-            selectedString: "On",
-            statusLabelId: "span01",
-            unselectedString: "Off",
+            selectedMessage: "On",
+            statusMessageId: "span01",
+            unselectedMessage: "Off",
             "data-sketch-symbol": "Toggle (on)"
         },
         {
@@ -36,9 +36,9 @@ export default {
             id: "toggle02",
             labelId: "label02",
             selected: false,
-            selectedString: "On",
-            statusLabelId: "span02",
-            unselectedString: "Off",
+            selectedMessage: "On",
+            statusMessageId: "span02",
+            unselectedMessage: "Off",
             "data-sketch-symbol": "Toggle (off)"
         },
         {
@@ -47,9 +47,9 @@ export default {
             id: "toggle03",
             labelId: "label03",
             selected: true,
-            selectedString: "On",
-            statusLabelId: "span03",
-            unselectedString: "Off",
+            selectedMessage: "On",
+            statusMessageId: "span03",
+            unselectedMessage: "Off",
             "data-sketch-symbol": "Toggle disabled (on)"
         },
         {
@@ -58,9 +58,9 @@ export default {
             id: "toggle04",
             labelId: "label04",
             selected: false,
-            selectedString: "On",
-            statusLabelId: "span04",
-            unselectedString: "Off",
+            selectedMessage: "On",
+            statusMessageId: "span04",
+            unselectedMessage: "Off",
             "data-sketch-symbol": "Toggle disabled (off)"
         }
     ]

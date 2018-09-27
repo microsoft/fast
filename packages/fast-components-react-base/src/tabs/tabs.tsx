@@ -46,7 +46,7 @@ class Tabs extends Foundation<
         activeId: void 0,
         label: void 0,
         managedClasses: void 0,
-        onUpdateTab: void 0,
+        onUpdate: void 0,
         orientation: void 0,
         tabItemSlot: void 0,
         tabPanelSlot: void 0,
@@ -196,8 +196,8 @@ class Tabs extends Foundation<
             this.setState({
                 activeId: e.currentTarget.getAttribute("aria-controls")
             });
-        } else if (typeof this.props.onUpdateTab === "function") {
-            this.props.onUpdateTab(e.currentTarget.getAttribute("aria-controls"));
+        } else if (typeof this.props.onUpdate === "function") {
+            this.props.onUpdate(e.currentTarget.getAttribute("aria-controls"));
         }
     }
 
@@ -255,8 +255,8 @@ class Tabs extends Foundation<
             });
 
             (Array.from(this.tabListRef.current.children)[itemIndex] as HTMLButtonElement).focus();
-        } else if (typeof this.props.onUpdateTab === "function") {
-            this.props.onUpdateTab(activeId);
+        } else if (typeof this.props.onUpdate === "function") {
+            this.props.onUpdate(activeId);
         }
     }
 
