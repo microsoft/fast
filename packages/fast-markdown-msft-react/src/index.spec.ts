@@ -18,49 +18,49 @@ describe("Convert markdown to HTML", function(): void {
         const markdown: string = "https://test.com";
         expect(md.render(markdown).replace(newlineRegex, "")).toBe(
             /* tslint:disable-next-line */
-            "<Typography typeLevel={7}><Hypertext href=\"https://test.com\" target=\"_blank\">https://test.com</Hypertext></Typography>"
+            "<Typography size={7}><Hypertext href=\"https://test.com\" target=\"_blank\">https://test.com</Hypertext></Typography>"
         );
     });
 
     test("should convert a (c) to a copywrite symbol", function(): void {
         const markdown: string = "(c)";
         expect(md.render(markdown).replace(newlineRegex, "")).toBe(
-            "<Typography typeLevel={7}>©</Typography>"
+            "<Typography size={7}>©</Typography>"
         );
     });
 
     test("should allow HTML to be in markdown", function(): void {
         const markdown: string = "<a href=\"#\">hello world</a>";
         expect(md.render(markdown).replace(newlineRegex, "")).toBe(
-            `<Typography typeLevel={7}><a href="#">hello world</a></Typography>`
+            `<Typography size={7}><a href="#">hello world</a></Typography>`
         );
     });
 
     test("should convert a markdown link to a FAST MSFT hypertext", function(): void {
         const markdown: string = "[Test](/test)";
         expect(md.render(markdown).replace(newlineRegex, "")).toBe(
-            "<Typography typeLevel={7}><Hypertext href=\"/test\">Test</Hypertext></Typography>"
+            "<Typography size={7}><Hypertext href=\"/test\">Test</Hypertext></Typography>"
         );
     });
 
     test("should convert a markdown unordered bullet list to a list", function(): void {
         const markdown: string = "* list item";
         expect(md.render(markdown).replace(newlineRegex, "")).toBe(
-            "<ul><li><Typography typeLevel={7}>list item</Typography></li></ul>"
+            "<ul><li><Typography size={7}>list item</Typography></li></ul>"
         );
     });
 
     test("should convert a markdown ordered list to a list", function(): void {
         const markdown: string = "1. list item";
         expect(md.render(markdown).replace(newlineRegex, "")).toBe(
-            "<ol><li><Typography typeLevel={7}>list item</Typography></li></ol>"
+            "<ol><li><Typography size={7}>list item</Typography></li></ol>"
         );
     });
 
     test("should convert a markdown heading to a FAST MSFT heading", function(): void {
         const markdown: string = "# Hello world";
         expect(md.render(markdown).replace(newlineRegex, "")).toBe(
-            "<Heading id=\"hello-world\" tag=\"h1\" level={3}>Hello world</Heading>"
+            "<Heading id=\"hello-world\" tag=\"h1\" size={3}>Hello world</Heading>"
         );
     });
 
@@ -81,7 +81,7 @@ describe("Convert markdown to HTML", function(): void {
     test("should convert any inline text with {, }, < and > into their HTML codes", function(): void {
         const markdown: string = "some text with { and } and < and >";
         expect(md.render(markdown).replace(newlineRegex, "")).toBe(
-            `<Typography typeLevel={7}>some text with &#123; and &#125; and &#60; and &#62;</Typography>`
+            `<Typography size={7}>some text with &#123; and &#125; and &#60; and &#62;</Typography>`
         );
     });
 

@@ -280,7 +280,7 @@ describe("tabs", (): void => {
         const rendered: any = mount(
             <Tabs
                 managedClasses={tabsManagedClasses}
-                onUpdateTab={onUpdate}
+                onUpdate={onUpdate}
                 children={children}
                 activeId={id0}
                 label={"items"}

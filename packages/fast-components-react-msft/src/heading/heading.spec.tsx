@@ -4,8 +4,8 @@ import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import MSFTHeading, {
-    HeadingLevel,
     HeadingProps,
+    HeadingSize,
     HeadingTag,
     IHeadingHandledProps,
     IHeadingManagedClasses,
@@ -31,7 +31,7 @@ describe("heading", (): void => {
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: IHeadingHandledProps = {
             tag: HeadingTag.h1,
-            level: HeadingLevel._1
+            size: HeadingSize._1
         };
 
         const unhandledProps: IHeadingUnhandledProps = {

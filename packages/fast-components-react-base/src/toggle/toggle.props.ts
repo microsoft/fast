@@ -35,17 +35,17 @@ export interface IToggleHandledProps {
     /**
      * The text to display when selected
      */
-    selectedString: string;
+    selectedMessage: string;
 
     /**
      * The status label HTML id attribute
      */
-    statusLabelId: string;
+    statusMessageId: string;
 
     /**
      * The text to display when unselected
      */
-    unselectedString: string;
+    unselectedMessage: string;
 }
 
 export interface IToggleUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}

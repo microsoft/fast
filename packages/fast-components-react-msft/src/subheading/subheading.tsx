@@ -1,6 +1,6 @@
 import * as React from "react";
 import { get } from "lodash-es";
-import { Foundation, HandledProps, TypeLevel, TypographyTag  } from "@microsoft/fast-components-react-base";
+import { Foundation, HandledProps, TypographySize, TypographyTag  } from "@microsoft/fast-components-react-base";
 import {
     ISubheadingHandledProps,
     ISubheadingManagedClasses,
@@ -18,32 +18,32 @@ class Subheading extends Foundation<
     {}
 > {
     public static defaultProps: Partial<ISubheadingHandledProps> = {
-        level: SubheadingLevel._1,
+        size: SubheadingLevel._1,
         tag: SubheadingTag.h3
     };
 
     public static displayName: string = "Subheading";
 
     protected handledProps: HandledProps<ISubheadingHandledProps & IManagedClasses<ISubheadingClassNameContract>> = {
-        level: void 0,
+        size: void 0,
         managedClasses: void 0,
         tag: void 0
     };
 
-    private get level(): TypeLevel {
-        switch (this.props.level) {
+    private get size(): TypographySize {
+        switch (this.props.size) {
             case SubheadingLevel._1:
-                return TypeLevel._3;
+                return TypographySize._3;
             case SubheadingLevel._2:
-                return TypeLevel._4;
+                return TypographySize._4;
             case SubheadingLevel._3:
-                return TypeLevel._5;
+                return TypographySize._5;
             case SubheadingLevel._4:
-                return TypeLevel._6;
+                return TypographySize._6;
             case SubheadingLevel._5:
-                return TypeLevel._7;
+                return TypographySize._7;
             case SubheadingLevel._6:
-                return TypeLevel._8;
+                return TypographySize._8;
         }
     }
 
@@ -52,7 +52,7 @@ class Subheading extends Foundation<
             <Typography
                 {...this.unhandledProps()}
                 tag={TypographyTag[this.props.tag]}
-                typeLevel={this.level}
+                size={this.size}
                 className={this.generateClassNames()}
             >
                 {this.props.children}
@@ -62,7 +62,7 @@ class Subheading extends Foundation<
 
     protected generateClassNames(): string {
         /* tslint:disable-next-line */
-        return super.generateClassNames(`${get(this.props, "managedClasses.subheading")} ${get(this.props, `managedClasses.subheading__${this.props.level}`)}`);
+        return super.generateClassNames(`${get(this.props, "managedClasses.subheading")} ${get(this.props, `managedClasses.subheading__${this.props.size}`)}`);
     }
 }
 

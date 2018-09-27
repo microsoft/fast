@@ -1,5 +1,5 @@
 import * as React from "react";
-import Checkbox, { CheckboxHTMLTags, ICheckboxHandledProps,  ICheckboxManagedClasses, ICheckboxUnhandledProps  } from "./checkbox";
+import Checkbox, { CheckboxTag, ICheckboxHandledProps,  ICheckboxManagedClasses, ICheckboxUnhandledProps  } from "./checkbox";
 import schema from "./checkbox.schema.json";
 import Documentation from "./.tmp/documentation";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
@@ -33,11 +33,11 @@ const examples: IComponentFactoryExample<ICheckboxHandledProps & ICheckboxManage
         },
         {
             ...classes,
-            tag: CheckboxHTMLTags.div
+            tag: CheckboxTag.div
         },
         {
             ...classes,
-            tag: CheckboxHTMLTags.label
+            tag: CheckboxTag.label
         },
         {
             ...classes,
