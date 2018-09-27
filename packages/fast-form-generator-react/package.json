@@ -91,7 +91,6 @@
     "lodash-es": "^4.0.0",
     "mkdirp": "^0.5.1",
     "path": "^0.12.7",
-    "prettier": "1.14.3",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
     "react-redux": "^5.0.7",

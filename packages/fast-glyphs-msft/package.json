@@ -30,7 +30,6 @@
     "@microsoft/fast-tslint-rules": "^2.2.0",
     "@types/node": "^9.6.2",
     "babel-preset-env": "^1.7.0",
-    "prettier": "1.14.3",
     "ts-node": "^5.0.1",
     "tslint": "^5.9.1",
     "tslint-config-prettier": "1.15.0",
