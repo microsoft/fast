@@ -9,8 +9,8 @@ import Typography, {
     ITypographyHandledProps,
     ITypographyManagedClasses,
     ITypographyUnhandledProps,
-    TypeLevel,
     TypographyProps,
+    TypographySize,
     TypographyTag
 } from "./typography";
 
@@ -44,7 +44,7 @@ describe("typography", (): void => {
         expect(
             () => {
                 shallow(<Typography />);
-                shallow(<Typography typeLevel={TypeLevel._1} />);
+                shallow(<Typography size={TypographySize._1} />);
             }
         ).not.toThrow();
     });

@@ -32,7 +32,7 @@ describe("heading", (): void => {
         expect(
             () => {
                 shallow(<MSFTHeading tag={HeadingTag.h1} />);
-                shallow(<MSFTHeading tag={HeadingTag.h1} level={HeadingLevel._1} />);
+                shallow(<MSFTHeading tag={HeadingTag.h1} size={HeadingSize._1} />);
             }
         ).not.toThrow();
     });
