@@ -20,15 +20,27 @@ const examples: IComponentFactoryExample<IRadioHandledProps & IRadioManagedClass
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
+        id: "radio01",
         ...classes,
         checked: true
     },
     data: [
         {
+            id: "checked_true",
             ...classes,
             checked: true
         },
         {
+            id: "checked_false",
+            ...classes,
+            checked: false
+        },
+        {
+            id: "checked_none",
+            ...classes
+        },
+        {
+            id: "disabled",
             ...classes,
             disabled: true
         }

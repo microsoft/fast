@@ -5,27 +5,28 @@ import { IRadioHandledProps } from "@microsoft/fast-components-react-base";
 import schema from "@microsoft/fast-components-react-base/dist/radio/radio.schema.json";
 import Documentation from "./.tmp/documentation";
 import { Label } from "../label";
+import { noop } from "lodash-es";
 
 const slotRadioExample: JSX.Element = (
-    <Label slot="label">
+    <Label slot="label" htmlFor="radio01">
         Label
     </Label>
 );
 
 const slotCheckedExample: JSX.Element = (
-    <Label slot="label">
+    <Label slot="label" htmlFor="checked">
         Label Controlled (Checked)
     </Label>
 );
 
 const slotDisabledExample: JSX.Element = (
-    <Label slot="label">
+    <Label slot="label" htmlFor="disabled">
         Label (Disabled)
     </Label>
 );
 
 const slotNoLabelExample: JSX.Element = (
-    <div slot="label">
+    <div slot="label" htmlFor="divLabel">
         div label
     </div>
 );
@@ -36,7 +37,6 @@ export default {
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
-        checked: false,
         children: [slotRadioExample],
         id: "radio01"
     },
@@ -47,8 +47,9 @@ export default {
         },
         {
             checked: true,
+            onChange: noop,
             children: [slotCheckedExample],
-            id: "checked"
+            id: "checked",
         },
         {
             disabled: true,

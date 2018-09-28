@@ -36,13 +36,12 @@ class Radio extends Foundation<IRadioHandledProps & IRadioManagedClasses, IRadio
                     className={get(this.props, "managedClasses.radio_input")}
                     type="radio"
                     id={this.props.id}
-                    onChange={this.handleRadioChange}
+                    onChange={this.props.onChange}
                     disabled={this.props.disabled || null}
-                    defaultChecked={false}
-                    checked={typeof this.props.checked === "boolean" ? this.props.checked : null}
+                    {...this.generateChecked()}
                 />
                 <span className={get(this.props, "managedClasses.radio_stateIndicator")} />
-                {this.renderChildrenBySlot(RadioSlot.label)}
+                {this.withSlot(RadioSlot.label)}
             </div>
         );
     }
@@ -58,28 +57,10 @@ class Radio extends Foundation<IRadioHandledProps & IRadioManagedClasses, IRadio
         return super.generateClassNames(classes);
     }
 
-    /**
-     * Renders slotted children in the appropriate slot
-     */
-    private renderChildrenBySlot(slot: RadioSlot): React.ReactChild[] {
-        return React.Children.map(this.props.children, (child: JSX.Element, index: number) => {
-            if (child.props && child.props.slot === slot) {
-                return (
-                    <React.Fragment key={index}>
-                        {child}
-                    </React.Fragment>
-                );
-            }
-        });
-    }
-
-    /**
-     * Handles onChange as a controlled component
-     */
-    private handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        if (this.props.onChange) {
-            this.props.onChange(e);
-        }
+    private generateChecked(): any {
+        return typeof this.props.checked === "boolean"
+            ? {checked: this.props.checked}
+            : {defaultChecked: false};
     }
 }
 

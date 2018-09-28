@@ -6,7 +6,7 @@ export interface IRadioHandledProps {
     /**
      * Unique Id
      */
-    id?: string;
+    id: string;
 
     /**
      * The checked state
