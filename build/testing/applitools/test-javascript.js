@@ -149,15 +149,15 @@ function handleResult(result) {
 
     if (result.isNew) {
     
-        console.log(chalk.yellow("New Baseline Created: '%s' steps \nResults at '%s'"), totalSteps, url);
+        console.log(chalk.yellow("New Baseline Created: %d steps \n View Results at %s"), totalSteps, url);
     
     } else if (result.isPassed) {
     
-        console.log(chalk.green("All Steps Passed: '%s' steps \nResults at '%s'"), totalSteps, url);
+        console.log(chalk.green("All Steps Passed: %d steps \n View Results at %s"), totalSteps, url);
     
     } else {
     
-        console.log(chalk.red("\nTest Failed:\n\t Matches=%d \n\t Missing=%s \n\t MisMatches=%s \nResults at %s"),
+        console.log(chalk.red("\nTest Failed:\n\t Matches=%d \n\t Missing=%s \n\t MisMatches=%s \nView Results at %s"),
             result.matches, 
             result.missing, 
             result.mismatches, 
