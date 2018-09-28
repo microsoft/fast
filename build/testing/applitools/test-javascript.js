@@ -23,10 +23,13 @@
  * 
  */
 
-const { Builder, By, Capabilities } = require("selenium-webdriver");
+"use strict";
+
+const { Builder, Capabilities } = require("selenium-webdriver");
+const chalk = require('chalk');
 const Eyes = require("eyes.selenium").Eyes;
 const { spawn } = require('child_process');
-const chalk = require('chalk');
+const { Run } = require("../run-msft-docs.js");
 
 /**
  * Setup and SDK and batch
@@ -117,41 +120,23 @@ function main(branch) {
  */
 function runTest(eyes, innerDriver, viewportSize) {
     
-    eyes.open(innerDriver, 'Microsoft Docs', 'Documentation Site Test', viewportSize)
+    eyes.open(innerDriver, 'xxx', 'zzz', viewportSize)
         .then(function (driver){ 
-            afterOpen(eyes, driver)
+            
+            try{
+
+                new Run(eyes, driver);
+
+                eyes.close(false).then(function (result){ 
+                    handleResult(result);
+                });
+        
+            } finally {
+                eyes.abortIfNotClosed();
+            }
+
         });
     
-}
-
-/**
- * Test script to run and capture results
- * @param {*} eyes
- * @param {*} driver
- */
-function afterOpen(eyes, driver) {
-
-    try {
-        // Navigate the browser to the "hello world!" web-site.
-        var website = "https://applitools.com/helloworld";
-        driver.get(website);
-  
-        eyes.checkWindow('Before mouse click');  // Visual checkpoint #1.
-  
-        // Click the "Click me!" button.
-        driver.findElement(By.tagName('button')).click();
-  
-        eyes.checkWindow('After mouse click'); // Visual checkpoint #2.
-  
-        // End the test
-        eyes.close(false).then(function (result){ 
-            handleResult(result);
-        });
-
-    } finally {
-        // If the test was aborted before eyes.close was called ends the test as aborted.
-        eyes.abortIfNotClosed(); //could add .then if necessary
-    }
 }
 
 /**
@@ -159,20 +144,21 @@ function afterOpen(eyes, driver) {
  * @param {*} result 
  */
 function handleResult(result) {
+
     const url = result.appUrls.session;
     const totalSteps = result.steps;
 
     if (result.isNew) {
     
-        console.log(chalk.yellow("New Baseline Created: %d steps \nView Results at %s"), totalSteps, url);
+        console.log(chalk.yellow("\nNew Baseline Created: %d steps \nView Results at %s"), totalSteps, url);
     
     } else if (result.isPassed) {
     
-        console.log(chalk.green("All Steps Passed: %d steps \nView Results at %s"), totalSteps, url);
+        console.log(chalk.green("\nAll Steps Passed: %d steps \nView Results at %s"), totalSteps, url);
     
     } else {
     
-        console.log(chalk.red("\nTest Failed:\n\t Matches=%d \n\t Missing=%s \n\t MisMatches=%s \nView Results at %s"),
+        console.log(chalk.red("\nTest Failed:\n\t Matches=%d \n\t Missing=%s \n\t MisMatches=%s \nView Results at %s\n"),
             result.matches, 
             result.missing, 
             result.mismatches, 
