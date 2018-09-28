@@ -32,6 +32,14 @@ describe("button", (): void => {
         expect((Button as any).name).toBe(Button.displayName);
     });
 
+    test("should not throw if managedClasses are not provided", () => {
+        expect(
+            () => {
+                shallow(<Button />);
+            }
+        ).not.toThrow();
+    });
+
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: IButtonHandledProps & IButtonManagedClasses = {
             managedClasses

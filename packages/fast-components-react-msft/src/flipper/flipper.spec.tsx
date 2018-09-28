@@ -25,6 +25,14 @@ describe("flipper", (): void => {
         expect((MSFTFlipper as any).name).toBe(MSFTFlipper.displayName);
     });
 
+    test("should not throw if managedClasses are not provided", () => {
+        expect(
+            () => {
+                shallow(<MSFTFlipper />);
+            }
+        ).not.toThrow();
+    });
+
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: IFlipperHandledProps = {
             visibleToAssistiveTechnologies: false

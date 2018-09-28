@@ -30,12 +30,12 @@ export interface IPaneState {
 }
 
 export interface IPaneClassNamesContract {
-    pane: string;
-    pane_resizeHandle: string;
-    pane__resizeWest: string;
-    pane__resizeEast: string;
-    pane__overlay: string;
-    pane__hidden: string;
+    pane?: string;
+    pane_resizeHandle?: string;
+    pane__resizeWest?: string;
+    pane__resizeEast?: string;
+    pane__overlay?: string;
+    pane__hidden?: string;
 }
 
 const paneStyleSheet: ComponentStyles<IPaneClassNamesContract, undefined> = {

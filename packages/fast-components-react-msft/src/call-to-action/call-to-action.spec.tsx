@@ -39,6 +39,18 @@ describe("call to action", (): void => {
         expect((MSFTCallToAction as any).name).toBe(MSFTCallToAction.displayName);
     });
 
+    test("should not throw if managedClasses are not provided", () => {
+        expect(
+            () => {
+                shallow(<MSFTCallToAction />);
+                shallow(<MSFTCallToAction disabled={true} />);
+                shallow(<MSFTCallToAction appearance={CallToActionAppearance.primary} />);
+                shallow(<MSFTCallToAction appearance={CallToActionAppearance.lightweight} />);
+                shallow(<MSFTCallToAction appearance={CallToActionAppearance.justified} />);
+            }
+        ).not.toThrow();
+    });
+
     test("should implement unhandledProps", () => {
         const handledProps: ICallToActionProps & ICallToActionManagedClasses = {
             managedClasses,

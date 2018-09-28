@@ -35,13 +35,13 @@ export interface IRowState {
 }
 
 export interface IRowClassNamesContract {
-    row: string;
-    row__fill: string;
-    row_resizeHandle: string;
-    row__resizeNorth: string;
-    row__resizeSouth: string;
-    row__overlay: string;
-    row__hidden: string;
+    row?: string;
+    row__fill?: string;
+    row_resizeHandle?: string;
+    row__resizeNorth?: string;
+    row__resizeSouth?: string;
+    row__overlay?: string;
+    row__hidden?: string;
 }
 
 const rowStyleSheet: ComponentStyles<IRowClassNamesContract, undefined> = {

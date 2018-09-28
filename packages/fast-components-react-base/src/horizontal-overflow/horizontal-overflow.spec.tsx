@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
-import { configure, mount } from "enzyme";
+import { configure, mount, shallow } from "enzyme";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import HorizontalOverflow, {
     ButtonDirection,
@@ -42,6 +42,14 @@ const managedClasses: IHorizontalOverflowClassNameContract = {
 describe("horizontal overflow", (): void => {
     test("should have a displayName that matches the component name", () => {
         expect((HorizontalOverflow as any).name).toBe(HorizontalOverflow.displayName);
+    });
+
+    test("should not throw if managedClasses are not provided", () => {
+        expect(
+            () => {
+                shallow(<HorizontalOverflow />);
+            }
+        ).not.toThrow();
     });
 
     test("should be a list of items which contain each item", () => {
