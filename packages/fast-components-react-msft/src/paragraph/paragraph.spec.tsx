@@ -26,6 +26,15 @@ describe("paragraph", (): void => {
         expect((MSFTParagraph as any).name).toBe(MSFTParagraph.displayName);
     });
 
+    test("should not throw if managedClasses are not provided", () => {
+        expect(
+            () => {
+                shallow(<Paragraph />);
+                shallow(<Paragraph level={ParagraphLevel._1} />);
+            }
+        ).not.toThrow();
+    });
+
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: IParagraphHandledProps = {
             size: ParagraphLevel._1

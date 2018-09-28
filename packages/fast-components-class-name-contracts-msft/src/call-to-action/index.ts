@@ -5,30 +5,30 @@ export interface ICallToActionClassNameContract {
     /**
      * The root of the call to action component
      */
-    callToAction: string;
+    callToAction?: string;
 
     /**
      * The call to action glyph
      */
-    callToAction_glyph: string;
+    callToAction_glyph?: string;
 
     /**
      * The primary appearance modifier
      */
-    callToAction__primary: string;
+    callToAction__primary?: string;
 
     /**
      * The lightweight appearance modifier
      */
-    callToAction__lightweight: string;
+    callToAction__lightweight?: string;
 
     /**
      * The justified appearance modifier
      */
-    callToAction__justified: string;
+    callToAction__justified?: string;
 
     /**
      * The disabled modifier
      */
-    callToAction__disabled: string;
+    callToAction__disabled?: string;
 }

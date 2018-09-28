@@ -5,5 +5,5 @@ export interface IMetatextClassNameContract {
     /**
      * The root of the metatext component
      */
-    metatext: string;
+    metatext?: string;
 }

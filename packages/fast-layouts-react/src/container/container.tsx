@@ -4,8 +4,8 @@ import { ContainerProps } from "./container.props";
 import Foundation, { IFoundationProps } from "../foundation";
 
 export interface IContainerClassNamesContract {
-    "@global": string;
-    container: string;
+    "@global"?: string;
+    container?: string;
 }
 
 const styles: ComponentStyles<IContainerClassNamesContract, undefined> = {

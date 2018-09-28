@@ -45,6 +45,18 @@ describe("button", (): void => {
         expect((MSFTButton as any).name).toBe(MSFTButton.displayName);
     });
 
+    test("should not throw if managedClasses are not provided", () => {
+        expect(
+            () => {
+                shallow(<MSFTButton />);
+                shallow(<MSFTButton appearance={ButtonAppearance.justified} />);
+                shallow(<MSFTButton appearance={ButtonAppearance.outline} />);
+                shallow(<MSFTButton appearance={ButtonAppearance.lightweight} />);
+                shallow(<MSFTButton appearance={ButtonAppearance.primary} />);
+            }
+        ).not.toThrow();
+    });
+
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: IButtonHandledProps = {
             href

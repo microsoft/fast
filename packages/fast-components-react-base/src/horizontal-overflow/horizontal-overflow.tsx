@@ -65,17 +65,23 @@ class HorizontalOverflow extends Foundation<
             >
                 <div style={{height: `${this.state.itemsHeight}px`, position: "relative", overflow: "hidden"}}>
                     <ul
-                        className={this.props.managedClasses.horizontalOverflow_contentRegion}
+                        className={get(this.props, "managedClasses.horizontalOverflow_contentRegion")}
                         style={this.getListStyle()}
                         ref={this.horizontalOverflowItemsRef}
                     >
                         {this.getItems()}
                     </ul>
                 </div>
-                <div className={this.props.managedClasses.horizontalOverflow_previous} onClick={this.handlePreviousClick}>
+                <div
+                    className={get(this.props, "managedClasses.horizontalOverflow_previous")}
+                    onClick={this.handlePreviousClick}
+                >
                     {this.withSlot(ButtonDirection.previous)}
                 </div>
-                <div className={this.props.managedClasses.horizontalOverflow_next} onClick={this.handleNextClick}>
+                <div
+                    className={get(this.props, "managedClasses.horizontalOverflow_next")}
+                    onClick={this.handleNextClick}
+                >
                     {this.withSlot(ButtonDirection.next)}
                 </div>
             </div>

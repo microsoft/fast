@@ -43,6 +43,22 @@ describe("toggle", (): void => {
         expect((Toggle as any).name).toBe(Toggle.displayName);
     });
 
+    test("should not throw if managedClasses are not provided", () => {
+        expect(
+            () => {
+                shallow(
+                    <Toggle
+                        id="id"
+                        selectedString="selectedString"
+                        unselectedString="selectedString"
+                        statusLabelId="statusLabelId"
+                        labelId="labelId"
+                    />
+                );
+            }
+        ).not.toThrow();
+    });
+
     test("should implement unhandledProps", () => {
         const unhandledProps: IToggleUnhandledProps = {
             "data-my-custom-attribute": true
