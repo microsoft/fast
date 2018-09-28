@@ -7,30 +7,30 @@ export interface IMSFTButtonClassNameContract extends IButtonClassNameContract {
     /**
      * The primary appearance modifier
      */
-    button__primary: string;
+    button__primary?: string;
 
     /**
      * The outline appearance modifier
      */
-    button__outline: string;
+    button__outline?: string;
 
     /**
      * The lightweight appearance modifier
      */
-    button__lightweight: string;
+    button__lightweight?: string;
 
     /**
      * The justified appearance modifier
      */
-    button__justified: string;
+    button__justified?: string;
 
     /**
      * The button content region
      */
-    button_contentRegion: string;
+    button_contentRegion?: string;
 
     /**
      * The disabled modifier
      */
-    button__disabled: string;
+    button__disabled?: string;
 }

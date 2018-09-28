@@ -27,6 +27,14 @@ describe("caption", (): void => {
         expect((MSFTCaption as any).name).toBe(MSFTCaption.displayName);
     });
 
+    test("should not throw if managedClasses are not provided", () => {
+        expect(
+            () => {
+                shallow(<MSFTCaption />);
+            }
+        ).not.toThrow();
+    });
+
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: ICaptionHandledProps = {
             tag: CaptionTag.p,

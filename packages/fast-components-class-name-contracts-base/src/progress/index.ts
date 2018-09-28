@@ -5,5 +5,5 @@ export interface IProgressClassNameContract {
     /**
      * The root of the progress component
      */
-    progress: string;
+    progress?: string;
 }

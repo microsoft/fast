@@ -20,6 +20,14 @@ describe("progress", (): void => {
         expect((Progress as any).name).toBe(Progress.displayName);
     });
 
+    test("should not throw if managedClasses are not provided", () => {
+        expect(
+            () => {
+                shallow(<Progress />);
+            }
+        ).not.toThrow();
+    });
+
     test("should use the default max value unless the maxValue has been passed", () => {
         const progessWithMaxValue: any = mount(
             <Progress managedClasses={managedClasses} maxValue={50} />

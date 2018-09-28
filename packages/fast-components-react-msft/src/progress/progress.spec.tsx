@@ -4,7 +4,7 @@ import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import { IProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import {
+import MSFTProgress, {
     IMSFTProgressClassNameContract,
     IMSFTProgressHandledProps,
     IMSFTProgressManagedClasses,
@@ -18,4 +18,14 @@ configure({adapter: new Adapter()});
 
 describe("progress snapshots", (): void => {
     generateSnapshots(examples);
+});
+
+describe("progress", (): void => {
+    test("should not throw if managedClasses are not provided", () => {
+        expect(
+            () => {
+                shallow(<MSFTProgress />);
+            }
+        ).not.toThrow();
+    });
 });

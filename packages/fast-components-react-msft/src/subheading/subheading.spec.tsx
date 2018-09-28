@@ -26,6 +26,15 @@ describe("subheading", (): void => {
         expect((MSFTSubheading as any).name).toBe(MSFTSubheading.displayName);
     });
 
+    test("should not throw if managedClasses are not provided", () => {
+        expect(
+            () => {
+                shallow(<MSFTSubheading />);
+                shallow(<MSFTSubheading level={SubheadingLevel._1} />);
+            }
+        ).not.toThrow();
+    });
+
     test("should return a valid object which includes all props that are not enumerated as handledProps", (): void => {
         const handledProps: ISubheadingHandledProps = {
             tag: SubheadingTag.h1,

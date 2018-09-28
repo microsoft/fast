@@ -5,25 +5,25 @@ export interface ICheckboxClassNameContract {
     /**
      * The root of the checkbox component
      */
-    checkbox: string;
+    checkbox?: string;
 
     /**
      * The disabled state modifier
      */
-    checkbox__disabled: string;
+    checkbox__disabled?: string;
 
     /**
      * The checkbox input element
      */
-    checkbox_input: string;
+    checkbox_input?: string;
 
     /**
      * The label associated with the checkbox
      */
-    checkbox_label: string;
+    checkbox_label?: string;
 
     /**
      * The checkbox state indicator
      */
-    checkbox_stateIndicator: string;
+    checkbox_stateIndicator?: string;
 }

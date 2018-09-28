@@ -10,6 +10,7 @@ import Typography, {
     ITypographyManagedClasses,
     ITypographyUnhandledProps,
     TypographyProps,
+    TypographySize,
     TypographyTag
 } from "./typography";
 
@@ -37,6 +38,15 @@ describe("typography", (): void => {
 
     test("should have a displayName that matches the component name", () => {
         expect((Typography as any).name).toBe(Typography.displayName);
+    });
+
+    test("should not throw if managedClasses are not provided", () => {
+        expect(
+            () => {
+                shallow(<Typography />);
+                shallow(<Typography size={TypographySize._1} />);
+            }
+        ).not.toThrow();
     });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {

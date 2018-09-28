@@ -5,5 +5,5 @@ export interface IHypertextClassNameContract {
     /**
      * The root of the hypertext component
      */
-    hypertext: string;
+    hypertext?: string;
 }
