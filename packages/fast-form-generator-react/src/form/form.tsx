@@ -13,7 +13,8 @@ import {
     getDataCache,
     getNavigation,
     IBreadcrumbItem,
-    isRootLocation,
+    INavigationItem,
+    isRootLocation
 } from "./form.utilities";
 import FormSection from "./form-section";
 import {
@@ -128,11 +129,7 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
             activeSchemaLocation: "",
             activeDataLocation: "",
             dataCache: cloneDeep(props.data),
-            navigation: getNavigation(
-                props.location ? props.location.dataLocation : state.activeDataLocation || "",
-                props.data, props.schema,
-                props.childOptions
-            )
+            navigation: this.getUpdatedNavigation(props, state)
         };
 
         return (Object.assign({}, state, schemaState) as Partial<IFormState>);
@@ -151,14 +148,19 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
                 schemaLocation: props.location.schemaLocation,
                 onChange: props.location.onChange
             },
-            navigation: getNavigation(
-                props.location ? props.location.dataLocation : state.activeDataLocation || "",
-                props.data, props.schema,
-                props.childOptions
-            )
+            navigation: this.getUpdatedNavigation(props, state)
         };
 
         return Object.assign({}, state, locationState);
+    }
+
+    private getUpdatedNavigation(props: IFormProps, state: Partial<IFormState>): INavigationItem[] {
+        return getNavigation(
+            props.location ? props.location.dataLocation : state.activeDataLocation || "",
+            props.data,
+            props.schema,
+            props.childOptions
+        );
     }
 
     /**

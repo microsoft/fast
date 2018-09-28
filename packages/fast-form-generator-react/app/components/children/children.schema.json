@@ -7,7 +7,10 @@
     "reactProperties": {
         "children": {
             "title": "Children",
-            "type": "children"
+            "type": "children",
+            "defaults": [
+                "text"
+            ]
         },
         "restrictedWithChildren": {
             "title": "Restricted children with react defaults",

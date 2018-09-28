@@ -1,5 +1,5 @@
 import * as React from "react";
-import { clone, cloneDeep, get, isEqual, mergeWith, set } from "lodash-es";
+import { clone, cloneDeep, get, isEqual, isPlainObject, mergeWith, set } from "lodash-es";
 import * as tv4 from "tv4";
 import {
     BreadcrumbItemEventHandler,
@@ -11,6 +11,11 @@ import { reactChildrenStringSchema } from "./form-item.children.text";
 const squareBracketsRegex: RegExp = /\[(\d+?)\]/g;
 const oneOfAnyOfRegex: RegExp = /(oneOf|anyOf)\[\d+\]/g;
 const propsKeyword: string = "props";
+
+export enum PropertyKeyword {
+    properties = "properties",
+    reactProperties = "reactProperties"
+}
 
 export interface INavigationItem {
     dataLocation: string;
@@ -274,19 +279,11 @@ export function getSchemaLocationSegmentsFromDataLocationSegment(
     const subSchema: any = get(schema, `reactProperties.${normalizedDataLocationForArrayRemoval}`);
     const isChildren: boolean = subSchema && subSchema.type === "children";
 
-    if (typeof data === "object" && data !== null && !Array.isArray(data)) {
-        if (!!subSchema) {
-            schemaLocationSegments.push("reactProperties");
-        } else {
-            schemaLocationSegments.push("properties");
-        }
+    if (isPlainObject(data)) {
+        schemaLocationSegments.push(getObjectPropertyKeyword(subSchema));
     }
 
-    if (isChildren) {
-        schemaLocationSegments.push(normalizedDataLocationForArrayRemoval);
-    } else {
-        schemaLocationSegments.push(dataLocation);
-    }
+    schemaLocationSegments.push(isChildren ? normalizedDataLocationForArrayRemoval : dataLocation);
 
     // In the case that this is an array and not an array of children,
     // add the JSON schema "items" keyword
@@ -295,6 +292,17 @@ export function getSchemaLocationSegmentsFromDataLocationSegment(
     }
 
     return schemaLocationSegments;
+}
+
+/**
+ * Gets the correct property keyword
+ */
+export function getObjectPropertyKeyword(schema: any): PropertyKeyword {
+    if (!!schema) {
+        return PropertyKeyword.reactProperties;
+    } else {
+        return PropertyKeyword.properties;
+    }
 }
 
 /**

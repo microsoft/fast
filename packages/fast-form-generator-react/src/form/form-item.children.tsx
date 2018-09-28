@@ -451,13 +451,17 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
     private generateChildOptionText(item: any): string {
         const childOption: IChildOptionItem = getChildOptionBySchemaId(item.id, this.props.childOptions);
 
-        return typeof childOption === "object" && childOption !== null
-            ? childOption.name
-            : typeof item.props === "string"
-            ? item.props
-            : typeof item === "string"
-            ? item
-            : "Untitled";
+        if (typeof childOption === "object" && childOption !== null) {
+            return childOption.name;
+        } else {
+            return this.getChildOptionTextString(item);
+        }
+    }
+
+    private getChildOptionTextString(item: any): string {
+        const textString: string = typeof item.props === "string" ? item.props : item;
+
+        return textString ? textString : "Untitled";
     }
 
     /**
