@@ -3,8 +3,6 @@ import Radio, { IRadioHandledProps, IRadioManagedClasses, IRadioUnhandledProps }
 import schema from "./radio.schema.json";
 import Documentation from "./.tmp/documentation";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import Label from "../label";
-import labelSchema from "../label/label.schema.json";
 
 const classes: IRadioManagedClasses = {
     managedClasses: {
@@ -12,14 +10,6 @@ const classes: IRadioManagedClasses = {
         radio__disabled: "radio__disabled",
         radio_input: "radio_input",
         radio_stateIndicator: "radio_stateIndicator"
-    }
-};
-
-const slotRadioExample: any = {
-    id: labelSchema.id,
-    props: {
-        slot: "label",
-        htmlFor: "radio01"
     }
 };
 
@@ -31,8 +21,7 @@ const examples: IComponentFactoryExample<IRadioHandledProps & IRadioManagedClass
     detailData: {
         id: "radio01",
         ...classes,
-        checked: true,
-        children: slotRadioExample
+        checked: true
     },
     data: [
         {

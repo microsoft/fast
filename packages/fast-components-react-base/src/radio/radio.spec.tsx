@@ -23,9 +23,11 @@ describe("radio snapshots", (): void => {
 });
 
 describe("radio", (): void => {
-    const Component: React.ComponentClass<IRadioHandledProps & IRadioManagedClasses> = examples.component;
     const managedClasses: IRadioClassNameContract = {
-        radio_input: "radio_input"
+        radio: "radio",
+        radio__disabled: "radio__disabled",
+        radio_input: "radio_input",
+        radio_stateIndicator: "radio_stateIndicator"
     };
 
     const inputSelector: string = `.${managedClasses.radio_input}`;
@@ -37,12 +39,12 @@ describe("radio", (): void => {
     test("should call a registerd callback after a change event", () => {
         const onChange: any = jest.fn();
         const controlled: any = shallow(
-            <Component managedClasses={managedClasses} checked={true} onChange={onChange}>
+            <Radio managedClasses={managedClasses} checked={true} onChange={onChange} id="radio">
                 <div slot={RadioSlot.label} />
-            </Component>
+            </Radio>
         );
         const uncontrolled: any = shallow(
-            <Component managedClasses={managedClasses} onChange={onChange} />
+            <Radio managedClasses={managedClasses} onChange={onChange} id="radio"/>
         );
 
         controlled.find(inputSelector).simulate("change");
