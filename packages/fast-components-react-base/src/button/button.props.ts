@@ -1,11 +1,13 @@
 import * as React from "react";
 import { IButtonClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface IButtonHandledProps {
+export interface IButtonManagedClasses extends IManagedClasses<IButtonClassNameContract> {}
+export interface IButtonUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
+export interface IButtonHandledProps extends IButtonManagedClasses {
     /**
      * The button content
      */
-    children?: React.ReactNode | React.ReactNode[];
+    children?: React.ReactNode;
 
     /**
      * The disabled state
@@ -17,7 +19,3 @@ export interface IButtonHandledProps {
      */
     href?: string;
 }
-
-export interface IButtonUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
-export interface IButtonManagedClasses extends IManagedClasses<IButtonClassNameContract> {}
-export type ButtonProps = IButtonHandledProps & IButtonUnhandledProps & IButtonManagedClasses;
