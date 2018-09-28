@@ -16,8 +16,8 @@ export interface IToggleState {
  * Toggle base component
  */
 class Toggle extends Foundation<
-    IToggleHandledProps & IManagedClasses<IToggleClassNameContract>,
-    React.HTMLAttributes<HTMLDivElement>,
+    IToggleHandledProps,
+    IToggleUnhandledProps,
     IToggleState
 > {
     public static displayName: string = "Toggle";
@@ -25,7 +25,7 @@ class Toggle extends Foundation<
     /**
      * React life-cycle method
      */
-    public static getDerivedStateFromProps(nextProps: IToggleHandledProps, prevState: IToggleState): null | Partial<IToggleState> {
+    public static getDerivedStateFromProps(nextProps: ToggleProps, prevState: IToggleState): null | Partial<IToggleState> {
         if (typeof nextProps.selected === "boolean" && nextProps.selected !== prevState.selected) {
             return {
                 selected: nextProps.selected
@@ -35,7 +35,7 @@ class Toggle extends Foundation<
         return null;
     }
 
-    protected handledProps: HandledProps<IToggleHandledProps & IManagedClasses<IToggleClassNameContract>> = {
+    protected handledProps: HandledProps<IToggleHandledProps> = {
         managedClasses: void 0,
         disabled: void 0,
         id: void 0,

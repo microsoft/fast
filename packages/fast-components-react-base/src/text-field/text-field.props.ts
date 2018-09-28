@@ -11,7 +11,9 @@ export enum TextFieldType {
    url = "url"
 }
 
-export interface ITextFieldHandledProps {
+export interface ITextFieldManagedClasses extends IManagedClasses<ITextFieldClassNameContract> {}
+export interface ITextFieldUnhandledProps extends React.InputHTMLAttributes<HTMLInputElement> {}
+export interface ITextFieldHandledProps extends ITextFieldManagedClasses {
     /**
      * The disabled state
      */
@@ -28,6 +30,4 @@ export interface ITextFieldHandledProps {
     type?: TextFieldType;
 }
 
-export interface ITextFieldUnhandledProps extends React.InputHTMLAttributes<HTMLInputElement> {}
-export interface ITextFieldManagedClasses extends IManagedClasses<ITextFieldClassNameContract> {}
-export type TextFieldProps = ITextFieldHandledProps & ITextFieldUnhandledProps & ITextFieldManagedClasses;
+export type TextFieldProps = ITextFieldHandledProps & ITextFieldUnhandledProps;

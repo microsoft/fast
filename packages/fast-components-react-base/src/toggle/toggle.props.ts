@@ -1,7 +1,9 @@
 import * as React from "react";
 import { IManagedClasses, IToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface IToggleHandledProps {
+export interface IToggleManagedClasses extends IManagedClasses<IToggleClassNameContract> {}
+export interface IToggleUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
+export interface IToggleHandledProps extends IToggleManagedClasses {
     /**
      * The label content
      */
@@ -25,7 +27,7 @@ export interface IToggleHandledProps {
     /**
      * The onChange event handler
      */
-    onChange?: ToggleOnChange;
+    onChange?: (event?: React.ChangeEvent<HTMLElement>) => void;
 
     /**
      * The toggle selected state
@@ -48,7 +50,4 @@ export interface IToggleHandledProps {
     unselectedMessage: string;
 }
 
-export interface IToggleUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
-export type ToggleOnChange = (event?: React.ChangeEvent<HTMLElement>) => void;
-export interface IToggleManagedClasses extends IManagedClasses<IToggleClassNameContract> {}
-export type ToggleProps = IToggleHandledProps & IToggleUnhandledProps & IToggleManagedClasses;
+export type ToggleProps = IToggleHandledProps & IToggleUnhandledProps;

@@ -11,13 +11,13 @@ import { IManagedClasses, ITextFieldClassNameContract } from "@microsoft/fast-co
 import { get } from "lodash-es";
 
 class TextField extends Foundation<
-    ITextFieldHandledProps & IManagedClasses<ITextFieldClassNameContract>,
+    ITextFieldHandledProps,
     ITextFieldUnhandledProps,
     {}
 > {
     public static displayName: string = "TextField";
 
-    protected handledProps: HandledProps<ITextFieldHandledProps & IManagedClasses<ITextFieldClassNameContract>> = {
+    protected handledProps: HandledProps<ITextFieldHandledProps> = {
         disabled: void 0,
         placeholder: void 0,
         managedClasses: void 0,

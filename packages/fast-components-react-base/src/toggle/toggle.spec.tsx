@@ -30,7 +30,7 @@ describe("toggle", (): void => {
         toggle_input: "toggle-input-class",
         toggle_stateIndicator: "toggle-button-class"
     };
-    const handledProps: IToggleHandledProps & IToggleManagedClasses = {
+    const handledProps: IToggleHandledProps = {
         managedClasses,
         id: "id",
         selectedMessage: "selected-message",

@@ -26,11 +26,18 @@ export enum TypographySize {
     _9 = 9
 }
 
-export interface ITypographyHandledProps {
+export interface ITypographyUnhandledProps extends React.HTMLAttributes<
+    HTMLHeadingElement
+    | HTMLParagraphElement
+    | HTMLSpanElement
+    | HTMLTableCaptionElement
+> {}
+export interface ITypographyManagedClasses extends IManagedClasses<ITypographyClassNameContract> {}
+export interface ITypographyHandledProps extends ITypographyManagedClasses {
     /**
      * The typographic content
      */
-    children?: React.ReactNode | React.ReactNode[];
+    children?: React.ReactNode;
 
     /**
      * Use the appropriate HTML tag type depending on context
@@ -43,7 +50,4 @@ export interface ITypographyHandledProps {
     size?: TypographySize;
 }
 
-export interface ITypographyUnhandledProps extends
-    React.HTMLAttributes<HTMLHeadingElement | HTMLParagraphElement | HTMLSpanElement | HTMLTableCaptionElement> {}
-export interface ITypographyManagedClasses extends IManagedClasses<ITypographyClassNameContract> {}
-export type TypographyProps = ITypographyHandledProps & ITypographyUnhandledProps & ITypographyManagedClasses;
+export type TypographyProps = ITypographyHandledProps & ITypographyUnhandledProps;

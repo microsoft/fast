@@ -12,7 +12,7 @@ import {
 import { IManagedClasses, ITypographyClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 
 class Typography extends Foundation<
-    ITypographyHandledProps & IManagedClasses<ITypographyClassNameContract>,
+    ITypographyHandledProps,
     ITypographyUnhandledProps,
     {}
 > {
@@ -22,7 +22,7 @@ class Typography extends Foundation<
 
     public static displayName: string = "Typography";
 
-    protected handledProps: HandledProps<ITypographyHandledProps & IManagedClasses<ITypographyClassNameContract>> = {
+    protected handledProps: HandledProps<ITypographyHandledProps> = {
         managedClasses: void 0,
         tag: void 0,
         size: void 0

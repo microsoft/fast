@@ -41,7 +41,7 @@ describe("button", (): void => {
     });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
-        const handledProps: IButtonHandledProps & IButtonManagedClasses = {
+        const handledProps: IButtonHandledProps = {
             managedClasses
         };
 

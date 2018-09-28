@@ -11,8 +11,8 @@ export enum ProgressType {
 }
 
 class Progress extends Foundation<
-    IProgressHandledProps & IManagedClasses<IProgressClassNameContract>,
-    React.HTMLAttributes<HTMLDivElement>,
+    IProgressHandledProps,
+    IProgressUnhandledProps,
     {}
 > {
     public static defaultProps: Partial<IProgressHandledProps> = {
@@ -22,7 +22,7 @@ class Progress extends Foundation<
 
     public static displayName: string = "Progress";
 
-    protected handledProps: HandledProps<IProgressHandledProps & IManagedClasses<IProgressClassNameContract>> = {
+    protected handledProps: HandledProps<IProgressHandledProps> = {
         children: void 0,
         managedClasses: void 0,
         maxValue: void 0,

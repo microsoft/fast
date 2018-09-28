@@ -6,7 +6,9 @@ export enum LabelTag {
     legend = "legend"
 }
 
-export interface ILabelHandledProps {
+export interface ILabelManagedClasses extends IManagedClasses<ILabelClassNameContract> {}
+export interface ILabelUnhandledProps extends React.HTMLAttributes<HTMLLabelElement> {}
+export interface ILabelHandledProps extends ILabelManagedClasses {
     /**
      * Label content
      */
@@ -23,6 +25,4 @@ export interface ILabelHandledProps {
     tag?: LabelTag;
 }
 
-export interface ILabelUnhandledProps extends React.HTMLAttributes<HTMLLabelElement> {}
-export interface ILabelManagedClasses extends IManagedClasses<ILabelClassNameContract> {}
-export type LabelProps = ILabelHandledProps & ILabelUnhandledProps & ILabelManagedClasses;
+export type LabelProps = ILabelHandledProps & ILabelUnhandledProps;

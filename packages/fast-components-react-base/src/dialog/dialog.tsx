@@ -8,8 +8,8 @@ import { canUseDOM } from "exenv-es6";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 class Dialog extends Foundation<
-    IDialogHandledProps & IManagedClasses<IDialogClassNameContract>,
-    React.AllHTMLAttributes<HTMLElement>,
+    IDialogHandledProps,
+    IDialogUnhandledProps,
     {}
 > {
     public static defaultProps: Partial<IDialogHandledProps> = {
@@ -20,7 +20,7 @@ class Dialog extends Foundation<
 
     public static displayName: string = "Dialog";
 
-    protected handledProps: HandledProps<IDialogHandledProps & IManagedClasses<IDialogClassNameContract>> = {
+    protected handledProps: HandledProps<IDialogHandledProps> = {
         describedBy: void 0,
         label: void 0,
         labelledBy: void 0,

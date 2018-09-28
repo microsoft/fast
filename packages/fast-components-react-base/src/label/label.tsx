@@ -11,8 +11,8 @@ import {
 import { ILabelClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 class Label extends Foundation<
-    ILabelHandledProps & IManagedClasses<ILabelClassNameContract>,
-    React.HTMLAttributes<HTMLLabelElement>,
+    ILabelHandledProps,
+    ILabelUnhandledProps,
     {}
 > {
     public static displayName: string = "Label";
