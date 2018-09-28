@@ -1,17 +1,25 @@
 "use strict";
 
+const Config = (function () {
+    function _config() {
+
+        this.DomainName = "https://msft-docs.fast-dna.net";
+        this.SiteName = "Microsoft Docs";
+        this.TestName = "Site Testing";
+    }
+    return _config;
+})();
+
+exports.Config = Config;
+
+
 /**
  * Testing script that can be used across services  
  */
 var Run = (function () {
-    function _run(eyes, driver) {
+    function _run(eyes, driver, domain) {
 
-        const domain = "https://msft-docs.fast-dna.net";
-
-        eyes.appName = "Microsoft Docs";
-        eyes.testName = "Site Testing";
-
-        console.log("\nStarting script on: %s", domain);
+        console.log("Starting script on: %s", domain);
 
             driver.get(domain);
 

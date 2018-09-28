@@ -29,7 +29,7 @@ const { Builder, Capabilities } = require("selenium-webdriver");
 const chalk = require('chalk');
 const Eyes = require("eyes.selenium").Eyes;
 const { spawn } = require('child_process');
-const { Run } = require("../run-msft-docs.js");
+const { Config, Run } = require("../run-msft-docs.js");
 
 /**
  * Setup and SDK and batch
@@ -120,12 +120,14 @@ function main(branch) {
  */
 function runTest(eyes, innerDriver, viewportSize) {
     
-    eyes.open(innerDriver, 'xxx', 'zzz', viewportSize)
+    let config = new Config();
+
+    eyes.open(innerDriver, config.SiteName, config.TestName, viewportSize)
         .then(function (driver){ 
             
             try{
 
-                new Run(eyes, driver);
+                new Run(eyes, driver, config.DomainName);
 
                 eyes.close(false).then(function (result){ 
                     handleResult(result);
