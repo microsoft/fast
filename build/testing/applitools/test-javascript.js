@@ -36,10 +36,9 @@ const chalk = require('chalk');
 function setup(eyes, branch) {
 
     eyes.setApiKey(process.env.APPLITOOLS_API_KEY);
-    eyes.setBatch(branch);
-
-    //eliminate artifacts caused by a blinking cursor - on by default in latest SDK
+    eyes.setBatch(branch, process.env.APPLITOOLS_BATCH_ID, 0);
     eyes.setIgnoreCaret(true);
+
 }
 
 /**
@@ -75,23 +74,39 @@ function main(branch) {
     // Setup Applitools
     setup(eyes, branch);
 
-    // Setup WebDriver for Chrome Browser
-    const innerDriver = new Builder()
+    // Set viewports
+    const viewportLandscape = {width: 1920, height: 1200};
+    const viewportPortrait  = {width: 600, height: 800};
+    
+    /* Setup WebDriver for Chrome Browser */
+    const chromeDriver = new Builder()
         .withCapabilities(Capabilities.chrome())
         .build();
 
-    // Set viewports
-    const viewportLandscape = {width: 1024, height: 768};
-    const viewportPortrait  = {width: 600, height: 800};
-
-    // Test execution
-    runTest(eyes, innerDriver, viewportLandscape);
-    runTest(eyes, innerDriver, viewportPortrait);
+    chromeDriver.getSession().then(function(session) {
+        runTest(eyes, chromeDriver, viewportLandscape);
+        runTest(eyes, chromeDriver, viewportPortrait);
     
-    // Close the browser
-    if(innerDriver) {
-        innerDriver.quit(); 
-    }
+        if(chromeDriver) {
+            chromeDriver.quit(); 
+        }
+    });
+    
+    /* Setup WebDriver for FireFox Browser */
+    const firefoxDriver = new Builder()
+        .withCapabilities(Capabilities.firefox())
+        .build();
+    
+    firefoxDriver.getSession().then(function(session){
+        runTest(eyes, firefoxDriver, viewportLandscape);
+        runTest(eyes, firefoxDriver, viewportPortrait);
+        
+        // Close the browser
+        if(firefoxDriver) {
+            firefoxDriver.quit(); 
+        }
+    })
+
 }
 
 /**
@@ -149,11 +164,11 @@ function handleResult(result) {
 
     if (result.isNew) {
     
-        console.log(chalk.yellow("New Baseline Created: %d steps \n View Results at %s"), totalSteps, url);
+        console.log(chalk.yellow("New Baseline Created: %d steps \nView Results at %s"), totalSteps, url);
     
     } else if (result.isPassed) {
     
-        console.log(chalk.green("All Steps Passed: %d steps \n View Results at %s"), totalSteps, url);
+        console.log(chalk.green("All Steps Passed: %d steps \nView Results at %s"), totalSteps, url);
     
     } else {
     

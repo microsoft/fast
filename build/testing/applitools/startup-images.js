@@ -37,23 +37,43 @@ eyes.setLogHandler(new ConsoleLogHandler(true));
 // Define the OS.
 eyes.setOs("Windows 10");
 
+// Set batch
+eyes.setBatch("MSFT-Docs");
+
 // Start the test and set the browser's viewport size to 800x600.
-var testPromise = eyes.open("Image test", "Javascript screenshot test - 1", {
+var testPromise = eyes.open("Image test", "Image snapshot test : 1", {
         width: 1024,
         height: 768,
         name: 'firefox'
     })
-    .then(function () {
+    // .then(function () { // Load page image and validate
 
-        // Load page image and validate.
-        return getImage("microsoft.com", "/images/tutorials/microsoft_hero.png").then(function (img) {
+    //     eyes.
+    //     return getImage("applitools.com", "/images/tutorials/applitools_hero.png").then(function (img) {
+    //         return eyes.checkImage(img, 'Microsoft Hero HP');
+    //     });
+    // })
+    .then(function () { // Load page image and validate
 
-            // visual validation
+        return getImage("applitools.com", "/images/tutorials/applitools_hero.png").then(function (img) {
             return eyes.checkImage(img, 'Microsoft Hero HP');
         });
     })
-    .then(function () {
-        return eyes.close();
+    .then(function () { // End visual UI testing
+        
+        var throwtTestCompleteException = false;
+        return eyes.close(throwtTestCompleteException)
+            .then(function(result) {
+                var url = result.appUrls.session;
+                if (result.isNew) {
+                    console.log("New Baseline Created: URL=" + url);
+                } else if (result.isPassed) {
+                    console.log("All steps passed:     URL=" + url);
+                } else {
+                    console.log("Test Failed:          URL=" + url);
+                    }            
+            });
+
     }, function () {
         return eyes.abortIfNotClosed();
     });
