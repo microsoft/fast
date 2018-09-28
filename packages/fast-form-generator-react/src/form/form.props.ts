@@ -3,7 +3,7 @@ import { INavigationItem } from "./form.utilities";
 
 export type PropsOnChange = (data: any) => void;
 
-export type DataOnChange = (location: string, data: any, isArray?: boolean, index?: number) => void;
+export type DataOnChange = (location: string, data: any, isArray?: boolean, index?: number, isChildren?: boolean) => void;
 
 export type LocationOnChange = (schemaLocation: string, dataLocation: string) => void;
 
@@ -12,8 +12,19 @@ export type BreadcrumbItemEventHandler = (e: React.MouseEvent<HTMLAnchorElement>
 export type FormTag = "form" | "div";
 
 export interface IChildOptionItem {
+    /**
+     * The name of the component
+     */
     name: string;
-    component: React.ReactNode;
+
+    /**
+     * The React component
+     */
+    component: React.ComponentClass;
+
+    /**
+     * The JSON schema for the component
+     */
     schema: any;
 }
 

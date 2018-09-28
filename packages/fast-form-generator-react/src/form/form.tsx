@@ -16,6 +16,9 @@ import {
     isRootLocation,
 } from "./form.utilities";
 import FormSection from "./form-section";
+import {
+    ChildComponent
+} from "./form-item.children";
 import styles from "./form.style";
 import { IFormClassNameContract } from "../class-name-contracts/";
 import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
@@ -44,8 +47,8 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
             activeDataLocation: "",
             dataCache: this.props.data,
             navigation: typeof this.props.location !== "undefined" // Location has been passed
-                ? getNavigation(this.props.location.dataLocation, this.props.data, this.props.schema)
-                : getNavigation("", this.props.data, this.props.schema)
+                ? getNavigation(this.props.location.dataLocation, this.props.data, this.props.schema, this.props.childOptions)
+                : getNavigation("", this.props.data, this.props.schema, this.props.childOptions)
         };
     }
 
@@ -127,7 +130,8 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
             dataCache: cloneDeep(props.data),
             navigation: getNavigation(
                 props.location ? props.location.dataLocation : state.activeDataLocation || "",
-                props.data, props.schema
+                props.data, props.schema,
+                props.childOptions
             )
         };
 
@@ -149,7 +153,8 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
             },
             navigation: getNavigation(
                 props.location ? props.location.dataLocation : state.activeDataLocation || "",
-                props.data, props.schema
+                props.data, props.schema,
+                props.childOptions
             )
         };
 
@@ -196,9 +201,7 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
      */
     private generateSection(): JSX.Element {
         const sectionProps: IFormSectionProps = {
-            schema: isRootLocation(this.state.activeSchemaLocation)
-                ? this.state.schema
-                : get(this.state.schema, this.state.activeSchemaLocation) || this.state.schema,
+            schema: this.state.navigation[this.state.navigation.length - 1].schema,
             onChange: this.handleOnChange,
             onUpdateActiveSection: this.handleUpdateActiveSection,
             data: this.getData("data", "props"),
@@ -216,7 +219,7 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
         return <FormSection {...sectionProps} />;
     }
 
-    private handleOnChange = (location: string, data: any, isArray: boolean, index: number): void => {
+    private handleOnChange = (location: string, data: any, isArray: boolean, index: number, isChildren?: boolean): void => {
         let obj: any = cloneDeep(this.props.data);
         const currentData: any = location === "" ? obj : get(obj, location);
 
@@ -241,8 +244,8 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
             }
         }
 
-        if (location.length >= 8 && location.slice(location.length - 8, location.length) === "children") {
-            const children: JSX.Element = get(obj, location);
+        if (isChildren) {
+            const children: ChildComponent | ChildComponent[] = get(obj, location);
 
             if (Array.isArray(children) && children.length === 1) {
                 set(obj, location, children[0]);
@@ -269,7 +272,7 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
             schema
         );
 
-        state.navigation = getNavigation(dataLocation || "", this.props.data, this.props.schema);
+        state.navigation = getNavigation(dataLocation || "", this.props.data, this.props.schema, this.props.childOptions);
 
         this.setState((state as IFormState));
     }

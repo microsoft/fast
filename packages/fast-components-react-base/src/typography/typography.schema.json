@@ -4,7 +4,6 @@
     "description": "A typography component's schema definition.",
     "type": "object",
     "id": "typography",
-    "children": true,
     "properties": {
         "tag": {
             "title": "HTML tag",
@@ -36,6 +35,12 @@
                 8,
                 9
             ]
+        }
+    },
+    "reactProperties": {
+        "children": {
+            "title": "Building blocks",
+            "type": "children"
         }
     }
 }

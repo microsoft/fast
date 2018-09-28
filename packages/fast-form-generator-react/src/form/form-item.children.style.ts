@@ -27,6 +27,7 @@ const styles: ComponentStyles<IFormItemChildrenClassNameContract, {}> = {
     },
     formItemChildren_inputWrapper: {
         display: "flex",
+        marginTop: toPx(12),
         "& input": {
             ...applyInputStyle(),
             flex: "2",

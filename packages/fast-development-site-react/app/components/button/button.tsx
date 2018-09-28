@@ -28,7 +28,6 @@ class Button extends React.Component<IButtonProps & IManagedClasses<ITestButtonC
     public render(): JSX.Element {
         return (
             <button className={this.props.managedClasses.button}>
-                {this.props.text}
                 {this.props.children}
             </button>
         );

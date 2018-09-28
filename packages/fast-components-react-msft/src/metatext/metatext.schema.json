@@ -4,7 +4,6 @@
     "description": "A metatext component's schema definition.",
     "type": "object",
     "id": "metatext",
-    "children": true,
     "properties": {
         "tag": {
             "title": "HTML tag",
@@ -13,6 +12,12 @@
                 "p",
                 "span"
             ]
+        }
+    },
+    "reactProperties": {
+        "children": {
+            "title": "Building blocks",
+            "type": "children"
         }
     }
 }

@@ -4,7 +4,6 @@
     "description": "A tabs component's schema definition.",
     "type": "object",
     "id": "tabs",
-    "children": true,
     "properties": {
         "activeId": {
             "title": "Active tab ID",
@@ -36,6 +35,15 @@
             "title": "Tab slot",
             "type": "string",
             "default": "tab"
+        }
+    },
+    "reactProperties": {
+        "children": {
+            "title": "Building blocks",
+            "type": "children",
+            "ids": [
+                "tab-item"
+            ]
         }
     },
     "required": [

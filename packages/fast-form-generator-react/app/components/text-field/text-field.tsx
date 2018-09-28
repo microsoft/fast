@@ -16,6 +16,8 @@ export interface ITextFieldProps {
  * - a required text-field which should display as a text box
  */
 export default class TextField extends React.Component<ITextFieldProps, {}> {
+    public static displayName: string = "Text field";
+
     public render(): JSX.Element {
         return (
             <this.props.tag>

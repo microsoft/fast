@@ -131,12 +131,12 @@ export default class App extends React.Component<{}, IAppState> {
             component: Button,
             status: Status.released,
         };
-        const componentObj1: any[] = [{text: "foo"}, {text: "bar"}, {text: "bat"}];
+        const componentObj1: any[] = [{children: "foo"}, {children: "bar"}, {children: "bat"}];
         const categoryObj1: Partial<ISiteCategoryProps> = {
             ...categoryBase,
             name: "Button"
         };
-        const componentObj2: any[] = [{text: "lorem"}, {text: "ipsum"}];
+        const componentObj2: any[] = [{children: "lorem"}, {children: "ipsum"}];
         const categoryObj2: Partial<ISiteCategoryProps> = {
             ...categoryBase,
             name: "Other Button"

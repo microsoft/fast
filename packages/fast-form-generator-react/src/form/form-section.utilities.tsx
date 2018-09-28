@@ -312,7 +312,7 @@ function getDataLocation(dataLocation: string, location: string): string {
 }
 
 function checkIsObjectOrOneOfAnyOf(property: any): boolean {
-    return property.properties || property.anyOf || property.oneOf;
+    return property.type === "object" || property.properties || property.anyOf || property.oneOf;
 }
 
 function getSubsectionOneOfAnyOf(oneOfAnyOf: any, objectProperty: any): string {

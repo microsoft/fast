@@ -17,7 +17,7 @@ export default {
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
-        ariaHidden: true
+        "aria-hidden": true
     },
     data: [
         {

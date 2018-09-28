@@ -1,9 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { cloneDeep, get, set, unset } from "lodash-es";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import { getExample } from "@microsoft/fast-permutator";
-import Form from "../src";
+import Form, { mapDataToComponent } from "../src";
 import {
     IChildOptionItem,
     IFormAttributeSettingsMappingToPropertyNames,
@@ -18,6 +17,7 @@ export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => v
 export interface IAppState {
     currentComponentSchema: any;
     currentComponentData: any;
+    currentComponentDataMappedToComponent: any;
     currentComponentConfig?: IFormComponentMappingToPropertyNamesProps;
     currentComponentOrderByPropertyNames?: IFormOrderByPropertyNamesProps;
     currentComponentAttributeAssignment?: IFormAttributeSettingsMappingToPropertyNames;
@@ -52,11 +52,6 @@ export default class App extends React.Component<{}, IAppState> {
      */
     private childOptions: IChildOptionItem[];
 
-    /**
-     * The schema form attribute settings mapping configuration
-     */
-    private attributeSettingsMappingToPropertyNames: IFormAttributeSettingsMappingToPropertyNames;
-
     constructor(props: {}) {
         super(props);
 
@@ -67,6 +62,11 @@ export default class App extends React.Component<{}, IAppState> {
             currentComponent: testComponents.textField.component,
             currentComponentSchema: testComponents.textField.schema,
             currentComponentData: getExample(testComponents.textField.schema),
+            currentComponentDataMappedToComponent: mapDataToComponent(
+                testComponents.textField.schema,
+                getExample(testComponents.textField.schema),
+                this.childOptions
+            ),
             currentComponentOrderByPropertyNames: void(0),
             currentComponentAttributeAssignment: void(0),
             onChange: this.onChange,
@@ -92,7 +92,7 @@ export default class App extends React.Component<{}, IAppState> {
                             </select>
                         </div>
                         <this.state.currentComponent
-                            {...this.state.currentComponentData}
+                            {...this.state.currentComponentDataMappedToComponent}
                         />
                     </div>
                 </div>
@@ -166,35 +166,23 @@ export default class App extends React.Component<{}, IAppState> {
      */
     private onChange = (data: any): void => {
         this.setState({
-            currentComponentData: data
+            currentComponentData: data,
+            currentComponentDataMappedToComponent: mapDataToComponent(this.state.currentComponentSchema, data, this.childOptions)
         });
     }
 
     private handleComponentUpdate = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+        const exampleData: any = getExample(testComponents[e.target.value].schema);
+
         this.setState({
             currentComponent: testComponents[e.target.value].component,
             currentComponentSchema: testComponents[e.target.value].schema,
             currentComponentConfig: testComponents[e.target.value].config,
-            currentComponentData: getExample(testComponents[e.target.value].schema),
+            currentComponentData: exampleData,
+            currentComponentDataMappedToComponent: exampleData,
             currentComponentOrderByPropertyNames: testComponents[e.target.value].weight,
             currentComponentAttributeAssignment: testComponents[e.target.value].attributeAssignment
         });
-    }
-
-    private getComponentById(schema: any): JSX.Element {
-        const schemaIdItems: string[] = schema.id.split("/");
-        const componentNameHyphenated: string = schemaIdItems[schemaIdItems.length - 1];
-        const componentNameUnderscored: string = componentNameHyphenated.replace(/-/g, "_");
-        /* tslint:disable-next-line*/
-        const componentNameCamelCased: string = componentNameHyphenated.replace(/-(.)/g, (letter: string): string => letter.toUpperCase()).replace(/-/g, "");
-
-        const Component: any = testComponents[componentNameCamelCased].component;
-        const ComponentProps: any = {
-            managedClasses: {}
-        };
-        ComponentProps.managedClasses[componentNameUnderscored] = componentNameHyphenated;
-
-        return <Component {...Object.assign({}, ComponentProps, getExample(schema))} />;
     }
 
     private getComponentOptions(): JSX.Element[] {
@@ -202,17 +190,6 @@ export default class App extends React.Component<{}, IAppState> {
             return (
                 <option key={index}>{testComponents[testComponentKey].schema.id}</option>
             );
-        });
-    }
-
-    /**
-     * Handles the change to a different component
-     */
-    private handleChangeComponent = (option: IOption): void => {
-        this.setState({
-            currentComponentSchema: option.currentComponentSchema,
-            currentComponentData: option.currentComponentData,
-            currentComponent: option.currentComponent
         });
     }
 }

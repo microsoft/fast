@@ -6,21 +6,24 @@
     "id": "arrays",
     "properties": {
         "strings": {
-            "title": "Array",
+            "title": "Array of strings",
             "type": "array",
             "items": {
+                "title": "String",
                 "type": "string"
             },
             "minItems": 2,
             "maxItems": 5
         },
         "objects": {
-            "title": "Array",
+            "title": "Array of objects",
             "type": "array",
             "items": {
+                "title": "Object",
                 "type": "object",
                 "properties": {
                     "string": {
+                        "title": "String",
                         "type": "string"
                     }
                 },

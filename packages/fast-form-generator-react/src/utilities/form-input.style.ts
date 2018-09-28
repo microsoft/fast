@@ -165,7 +165,7 @@ export function applyHeaderStyle(): ICSSRules<{}> {
 
 export function applyGlobalStyle(): ICSSRules<{}> {
     return {
-        "body > li[draggable=\"true\"]": {
+        "body > div > li[draggable=\"true\"]": {
             ...listItem,
             ...draggingStyles
         }

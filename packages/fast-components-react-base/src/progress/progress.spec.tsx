@@ -1,12 +1,10 @@
 import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import Progress, {
     IProgressClassNameContract,
     ProgressType
 } from "./";
-import examples from "./examples.data";
 
 /*
  * Configure Enzyme
@@ -17,13 +15,41 @@ const managedClasses: IProgressClassNameContract = {
     progress: "progess"
 };
 
-describe("progress snapshot", (): void => {
-    generateSnapshots(examples);
-});
-
 describe("progress", (): void => {
     test("should have a displayName that matches the component name", () => {
         expect((Progress as any).name).toBe(Progress.displayName);
+    });
+
+    test("should use the default max value unless the maxValue has been passed", () => {
+        const progessWithMaxValue: any = mount(
+            <Progress managedClasses={managedClasses} maxValue={50} />
+        );
+        const progressWithoutMaxValue: any = mount(
+            <Progress managedClasses={managedClasses} />
+        );
+
+        expect(progessWithMaxValue.find("[aria-valuemax]").props()["aria-valuemax"]).toBe(50);
+        expect(progressWithoutMaxValue.find("[aria-valuemax]").props()["aria-valuemax"]).toBe(100);
+    });
+
+    test("should use the default min value unless the minValue has been passed", () => {
+        const progessWithMinValue: any = mount(
+            <Progress managedClasses={managedClasses} minValue={50} />
+        );
+        const progressWithoutMinValue: any = mount(
+            <Progress managedClasses={managedClasses} />
+        );
+
+        expect(progessWithMinValue.find("[aria-valuemin]").props()["aria-valuemin"]).toBe(50);
+        expect(progressWithoutMinValue.find("[aria-valuemin]").props()["aria-valuemin"]).toBe(0);
+    });
+
+    test("should have the role progressbar", () => {
+        const progess: any = mount(
+            <Progress managedClasses={managedClasses} />
+        );
+
+        expect(progess.find("[role=\"progressbar\"]")).toHaveLength(1);
     });
 
     test("should render a child if one is passed as a child with the appropriate slot prop", () => {
