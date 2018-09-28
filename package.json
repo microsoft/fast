@@ -16,8 +16,8 @@
     "integration-tests:alpha": "node build/testing/sauce-labs/test-browsers.js alpha",
     "integration-tests:beta": "node build/testing/sauce-labs/test-browsers.js beta",
     "integration-tests:release": "node build/testing/sauce-labs/test-browsers.js release",
-    "prettier": "prettier --config .prettierrc '**/*.{ts, tsx, js}' --write",
-    "prettier:diff": "prettier --config .prettierrc --list-different '**/*.{ts, tsx, js}'"
+    "prettier": "prettier --config .prettierrc --write '**/*.{ts,tsx,js}'",
+    "prettier:diff": "prettier --config .prettierrc '**/*.{ts,tsx,js}' --list-different"
   },
   "devDependencies": {
     "@types/node": "^9.4.7",
