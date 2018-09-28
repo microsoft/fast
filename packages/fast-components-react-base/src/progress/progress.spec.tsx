@@ -26,6 +26,14 @@ describe("progress", (): void => {
         expect((Progress as any).name).toBe(Progress.displayName);
     });
 
+    test("should not throw if managedClasses are not provided", () => {
+        expect(
+            () => {
+                shallow(<Progress />);
+            }
+        ).not.toThrow();
+    });
+
     test("should render a child if one is passed as a child with the appropriate slot prop", () => {
         const progess: any = mount(
             <Progress managedClasses={managedClasses}>

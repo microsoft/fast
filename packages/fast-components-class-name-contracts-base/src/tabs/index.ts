@@ -5,39 +5,39 @@ export interface ITabsClassNameContract {
     /**
      * The root of the tabs component
      */
-    tabs: string;
+    tabs?: string;
 
     /**
      * The tab panels
      */
-    tabs_tabPanels: string;
+    tabs_tabPanels?: string;
 
     /**
      * The tab list
      */
-    tabs_tabList: string;
+    tabs_tabList?: string;
 }
 
 export interface ITabClassNameContract {
     /**
      * The root of the tab components
      */
-    tab: string;
+    tab?: string;
 
     /**
      * The active tab modifier
      */
-    tab__active: string;
+    tab__active?: string;
 }
 
 export interface ITabPanelClassNameContract {
     /**
      * The root of the tab panel component
      */
-    tabPanel: string;
+    tabPanel?: string;
 
     /**
      * The hidden tab panel modifier
      */
-    tabPanel__hidden: string;
+    tabPanel__hidden?: string;
 }

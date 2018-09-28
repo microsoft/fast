@@ -32,6 +32,15 @@ describe("label", (): void => {
         expect((Label as any).name).toBe(Label.displayName);
     });
 
+    test("should not throw if managedClasses are not provided", () => {
+        expect(
+            () => {
+                shallow(<Label />);
+                shallow(<Label hidden={true} />);
+            }
+        ).not.toThrow();
+    });
+
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: ILabelHandledProps & ILabelManagedClasses = {
             managedClasses,

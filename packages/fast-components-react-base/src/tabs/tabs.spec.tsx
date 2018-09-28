@@ -143,6 +143,14 @@ describe("tabs", (): void => {
         expect((Tabs as any).name).toBe(Tabs.displayName);
     });
 
+    test("should not throw if managedClasses are not provided", () => {
+        expect(
+            () => {
+                shallow(<Tabs label="label" />);
+            }
+        ).not.toThrow();
+    });
+
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: ITabsHandledProps & ITabsManagedClasses = {
             managedClasses: tabsManagedClasses,
@@ -373,6 +381,15 @@ describe("Tab", (): void => {
     test("should have a displayName that matches the component name", () => {
         expect((Tab as any).name).toBe(Tab.displayName);
     });
+
+    test("should not throw if managedClasses are not provided", () => {
+        expect(
+            () => {
+                shallow(<Tab slot={TabsSlot.tab} />);
+                shallow(<Tab slot={TabsSlot.tab} aria-selected={true} />);
+            }
+        ).not.toThrow();
+    });
 });
 
 describe("TabItem", (): void => {
@@ -384,5 +401,14 @@ describe("TabItem", (): void => {
 describe("TabPanel", (): void => {
     test("should have a displayName that matches the component name", () => {
         expect((TabPanel as any).name).toBe(TabPanel.displayName);
+    });
+
+    test("should not throw if managedClasses are not provided", () => {
+        expect(
+            () => {
+                shallow(<TabPanel slot={TabsSlot.tabPanel} />);
+                shallow(<TabPanel slot={TabsSlot.tabPanel} aria-hidden={true} />);
+            }
+        ).not.toThrow();
     });
 });
