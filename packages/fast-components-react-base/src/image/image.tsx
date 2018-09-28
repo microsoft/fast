@@ -49,7 +49,7 @@ class Image extends Foundation<
                     {...this.unhandledProps()}
                     className={super.generateClassNames(className)}
                 >
-                    {this.renderChildrenBySlot(ImageSlot.source)}
+                    {this.withSlot(ImageSlot.source)}
                     <img
                         src={this.props.src}
                         alt={this.props.alt}
@@ -58,19 +58,6 @@ class Image extends Foundation<
                 </picture>
             );
         }
-    }
-
-    /**
-     * Render children by slot
-     */
-    private renderChildrenBySlot(slot: ImageSlot): Array<React.ReactElement<HTMLSourceElement>> {
-        return React.Children.map(
-            this.props.children,
-            (child: React.ReactElement<HTMLSourceElement>, index: number): React.ReactElement<HTMLSourceElement> => {
-                if (child.props && child.props.slot === slot) {
-                    return child;
-                }
-            });
     }
 }
 
