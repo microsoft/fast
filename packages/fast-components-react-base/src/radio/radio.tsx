@@ -14,6 +14,8 @@ export enum RadioSlot {
 
 class Radio extends Foundation<IRadioHandledProps & IRadioManagedClasses, IRadioUnhandledProps, {}> {
 
+    public static displayName: string = "Radio";
+
     /**
      * Handled props instantiation
      */

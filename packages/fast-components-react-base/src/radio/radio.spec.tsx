@@ -3,7 +3,7 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
-import {
+import Radio, {
     IRadioClassNameContract,
     IRadioHandledProps,
     IRadioManagedClasses,
@@ -29,6 +29,10 @@ describe("radio", (): void => {
     };
 
     const inputSelector: string = `.${managedClasses.radio_input}`;
+
+    test("should have a displayName that matches the component name", () => {
+        expect((Radio as any).name).toBe(Radio.displayName);
+    });
 
     test("should call a registerd callback after a change event", () => {
         const onChange: any = jest.fn();
