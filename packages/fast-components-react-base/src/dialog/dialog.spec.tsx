@@ -34,6 +34,15 @@ describe("dialog", (): void => {
         expect((Dialog as any).name).toBe(Dialog.displayName);
     });
 
+    test("should not throw if managedClasses are not provided", () => {
+        expect(
+            () => {
+                shallow(<Dialog />);
+                shallow(<Dialog modal={true} />);
+            }
+        ).not.toThrow();
+    });
+
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: IDialogHandledProps & IDialogManagedClasses = {
             managedClasses,

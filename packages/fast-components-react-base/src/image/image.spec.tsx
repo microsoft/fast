@@ -33,6 +33,19 @@ describe("image", (): void => {
         expect((Image as any).name).toBe(Image.displayName);
     });
 
+    test("should not throw if managedClasses are not provided", () => {
+        expect(
+            () => {
+                shallow(<Image alt="alt" />);
+                shallow(
+                    <Image alt="alt">
+                        <source slot={ImageSlot.source} />
+                    </Image>
+                );
+            }
+        ).not.toThrow();
+    });
+
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: IImageHandledProps & IImageManagedClasses = {
             managedClasses,

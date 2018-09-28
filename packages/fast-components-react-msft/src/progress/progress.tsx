@@ -41,9 +41,6 @@ class Progress extends Foundation<
      * Renders the component
      */
     public render(): React.ReactElement<HTMLDivElement> {
-        /* tslint:disable-next-line */
-        const className: string = `${this.props.managedClasses.progress_indicator} ${this.props.managedClasses.progress_indicator__determinate}`;
-
         return (
             <BaseProgress
                 {...this.unhandledProps()}
@@ -54,17 +51,17 @@ class Progress extends Foundation<
                 maxValue={this.props.maxValue}
             >
                 <div
-                    className={className}
+                    className={this.progressIndicatorClasses()}
                     slot={ProgressType.determinate}
                 >
                     <div
-                        className={this.props.managedClasses.progress_valueIndicator}
+                        className={get(this.props, "managedClasses.progress_valueIndicator")}
                         style={{width: `${this.props.value}%`}}
                     />
                 </div>
                 <div
                     slot={ProgressType.indeterminate}
-                    className={this.props.managedClasses.progress_indicator}
+                    className={get(this.props, "managedClasses.progress_indicator")}
                 >
                     {this.renderIndeterminateItems()}
                 </div>
@@ -72,10 +69,18 @@ class Progress extends Foundation<
         );
     }
 
+    private progressIndicatorClasses(): string {
+        return [
+            get(this.props, "managedClasses.progress_indicator"),
+            get(this.props, "managedClasses.progress_indicator__determinate")
+        ].join(" ");
+    }
+
     private renderIndeterminateItems(): JSX.Element[] {
         return new Array(Progress.indicatorDotCount).fill(undefined).map((item: undefined, index: number) => {
-            let className: string = this.props.managedClasses.progress_dot;
-            className = `${className} ${this.props.managedClasses[`progress_dot__${index + 1}`]}`;
+            let className: string = get(this.props, "managedClasses.progress_dot");
+            className = `${className} ${get(this.props, `managedClasses.progress_dot__${index + 1}`)}`;
+
             return (
                 <span
                     className={className}

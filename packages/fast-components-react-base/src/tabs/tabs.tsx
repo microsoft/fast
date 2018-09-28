@@ -88,13 +88,13 @@ class Tabs extends Foundation<
                 <div
                     role="tablist"
                     ref={this.tabListRef}
-                    className={this.props.managedClasses.tabs_tabList}
+                    className={get(this.props, "managedClasses.tabs_tabList")}
                     aria-label={this.props.label}
                     aria-orientation={this.props.orientation}
                 >
                     {tabElements}
                 </div>
-                <div className={this.props.managedClasses.tabs_tabPanels}>
+                <div className={get(this.props, "managedClasses.tabs_tabPanels")}>
                     {this.renderTabPanels()}
                 </div>
             </div>

@@ -5,5 +5,5 @@ export interface IButtonClassNameContract {
     /**
      * The root of the button component
      */
-    button: string;
+    button?: string;
 }

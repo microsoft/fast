@@ -5,20 +5,20 @@ export interface IFlipperClassNameContract {
     /**
      * The root of the flipper component
      */
-    flipper: string;
+    flipper?: string;
 
     /**
      * The flipper glyph
      */
-    flipper_glyph: string;
+    flipper_glyph?: string;
 
     /**
      * The next direction flipper modifier
      */
-    flipper__next: string;
+    flipper__next?: string;
 
     /**
      * The previous direction flipper modifier
      */
-    flipper__previous: string;
+    flipper__previous?: string;
 }

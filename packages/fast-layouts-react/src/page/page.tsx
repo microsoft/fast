@@ -4,8 +4,8 @@ import { IPageHandledProps, PageProps } from "./page.props";
 import Foundation, { IFoundationProps } from "../foundation";
 
 export interface IPageClassNamesContract {
-    "@global": string;
-    page: string;
+    "@global"?: string;
+    page?: string;
 }
 
 const styles: ComponentStyles<IPageClassNamesContract, undefined> = {

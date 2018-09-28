@@ -5,5 +5,5 @@ export interface ITextFieldClassNameContract {
     /**
      * The root of the text field
      */
-    textField: string;
+    textField?: string;
 }
