@@ -197,7 +197,7 @@ class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasse
                 );
             } else {
                 this.props.onUpdateActiveSection(
-                    coercedSchemaLocation,
+                    schemaLocation,
                     `${this.props.dataLocation}[${index}]`,
                     get(this.props.schema, schemaLocation)
                 );

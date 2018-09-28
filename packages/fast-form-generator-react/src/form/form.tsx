@@ -1,9 +1,7 @@
 import * as React from "react";
 import { cloneDeep, get, set, unset } from "lodash-es";
 import {
-    ComponentTree,
-    IChildOptionItem,
-    IComponentItem,
+    BreadcrumbItemEventHandler,
     IFormProps,
     IFormState,
     LocationOnChange
@@ -11,14 +9,17 @@ import {
 import { IFormSectionProps } from "./form-section.props";
 import {
     getActiveComponentAndSection,
-    getBreadcrumbItems,
-    getComponentTracker,
-    getComponentTrackerByLocation,
+    getBreadcrumbs,
     getDataCache,
+    getNavigation,
     IBreadcrumbItem,
+    INavigationItem,
     isRootLocation
 } from "./form.utilities";
 import FormSection from "./form-section";
+import {
+    ChildComponent
+} from "./form-item.children";
 import styles from "./form.style";
 import { IFormClassNameContract } from "../class-name-contracts/";
 import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
@@ -35,20 +36,10 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
      */
     private untitled: string;
 
-    /**
-     * The root location to start the component tracker on
-     */
-    private rootComponentTrackerLocation: IComponentItem;
-
     constructor(props: IFormProps & IManagedClasses<IFormClassNameContract>) {
         super(props);
 
         this.untitled = "Untitled";
-        this.rootComponentTrackerLocation = {
-            dataLocation: "",
-            schemaLocation: "",
-            schema: this.props.schema
-        };
 
         this.state = {
             titleProps: props.schema && props.schema.title ? props.schema.title : this.untitled,
@@ -56,14 +47,9 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
             activeSchemaLocation: "",
             activeDataLocation: "",
             dataCache: this.props.data,
-            componentTracker: typeof this.props.location !== "undefined" // Location has been passed
-                ? getComponentTracker(
-                    this.props.location.schemaLocation,
-                    this.props.location.dataLocation,
-                    this.props.schema,
-                    [this.rootComponentTrackerLocation]
-                )
-                : [this.rootComponentTrackerLocation]
+            navigation: typeof this.props.location !== "undefined" // Location has been passed
+                ? getNavigation(this.props.location.dataLocation, this.props.data, this.props.schema, this.props.childOptions)
+                : getNavigation("", this.props.data, this.props.schema, this.props.childOptions)
         };
     }
 
@@ -100,22 +86,17 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
     /* tslint:disable-next-line */
     private updateStateForNewProps(props: IFormProps, updateData: boolean, updateSchema: boolean, updateLocation: boolean): Partial<IFormState> {
         let state: Partial<IFormState> = {};
-        this.rootComponentTrackerLocation = {
-            dataLocation: "",
-            schemaLocation: "",
-            schema: props.schema
-        };
 
         if (updateData) {
             state = this.getStateWithUpdatedDataCache(props, state);
         }
 
         if (updateSchema) {
-            state = Object.assign({}, state, this.getStateWithUpdatedFormProps(props, state, this.rootComponentTrackerLocation));
+            state = Object.assign({}, state, this.getStateWithUpdatedFormProps(props, state));
         }
 
         if (updateLocation) {
-            state = Object.assign({}, state, this.getStateWithUpdatedLocation(props, state, this.rootComponentTrackerLocation));
+            state = Object.assign({}, state, this.getStateWithUpdatedLocation(props, state));
         }
 
         if (updateData || updateSchema || updateLocation) {
@@ -141,14 +122,14 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
     /**
      * Gets the state object with updated locations, title and breadcrumbs
      */
-    private getStateWithUpdatedFormProps(props: IFormProps, state: Partial<IFormState>, rootLocation: IComponentItem): Partial<IFormState> {
+    private getStateWithUpdatedFormProps(props: IFormProps, state: Partial<IFormState>): Partial<IFormState> {
         const schemaState: Partial<IFormState> = {
             titleProps: props.schema && props.schema.title ? props.schema.title : this.untitled,
             schema: props.schema,
             activeSchemaLocation: "",
             activeDataLocation: "",
             dataCache: cloneDeep(props.data),
-            componentTracker: getComponentTrackerByLocation(props, rootLocation)
+            navigation: this.getUpdatedNavigation(props, state)
         };
 
         return (Object.assign({}, state, schemaState) as Partial<IFormState>);
@@ -157,7 +138,7 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
     /**
      * Gets the state with updated location
      */
-    private getStateWithUpdatedLocation(props: IFormProps, state: Partial<IFormState>, rootLocation: IComponentItem): Partial<IFormState> {
+    private getStateWithUpdatedLocation(props: IFormProps, state: Partial<IFormState>): Partial<IFormState> {
         const locationState: Partial<IFormState> = {
             activeSchemaLocation: props.location.schemaLocation,
             activeDataLocation: props.location.dataLocation,
@@ -167,47 +148,38 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
                 schemaLocation: props.location.schemaLocation,
                 onChange: props.location.onChange
             },
-            componentTracker: getComponentTrackerByLocation(props, rootLocation)
+            navigation: this.getUpdatedNavigation(props, state)
         };
 
         return Object.assign({}, state, locationState);
     }
 
-    private getUpdateLocationCallback(): LocationOnChange | undefined {
-        return this.props.location && this.props.location.onChange ? this.props.location.onChange : void(0);
+    private getUpdatedNavigation(props: IFormProps, state: Partial<IFormState>): INavigationItem[] {
+        return getNavigation(
+            props.location ? props.location.dataLocation : state.activeDataLocation || "",
+            props.data,
+            props.schema,
+            props.childOptions
+        );
     }
 
     /**
      * Generates the breadcrumb navigation
      */
     private generateBreadcrumbs(): JSX.Element {
-        let breadcrumbs: IBreadcrumbItem[];
-
-        if (typeof this.state.componentTracker !== "undefined") {
-            breadcrumbs = [];
-
-            this.state.componentTracker.forEach((component: IComponentItem) => {
-                breadcrumbs = breadcrumbs.concat(getBreadcrumbItems({
-                    activeSchemaLocation: component.schemaLocation,
-                    activeDataLocation: component.dataLocation,
-                    schema: component.schema,
-                    onUpdateActiveSection: this.handleUpdateActiveSection,
-                    onUpdateLocation: this.getUpdateLocationCallback()
-                }));
-            });
-        } else {
-            breadcrumbs = getBreadcrumbItems({
-                activeSchemaLocation: this.state.activeSchemaLocation,
-                activeDataLocation: this.state.activeDataLocation,
-                schema: this.props.schema,
-                onUpdateActiveSection: this.handleUpdateActiveSection,
-                onUpdateLocation: this.getUpdateLocationCallback()
-            });
-        }
+        const breadcrumbs: IBreadcrumbItem[] = getBreadcrumbs(this.state.navigation, this.handleBreadcrumbClick);
 
         if (breadcrumbs.length > 1) {
             return <ul className={this.props.managedClasses.form_breadcrumbs}>{this.generateBreadcrumbItems(breadcrumbs)}</ul>;
         }
+    }
+
+    private handleBreadcrumbClick = (schemaLocation: string, dataLocation: string, schema: any): BreadcrumbItemEventHandler => {
+        return (e: React.MouseEvent): void => {
+            e.preventDefault();
+
+            this.handleUpdateActiveSection(schemaLocation, dataLocation, schema);
+        };
     }
 
     private generateBreadcrumbItems(items: IBreadcrumbItem[]): JSX.Element[] {
@@ -231,9 +203,7 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
      */
     private generateSection(): JSX.Element {
         const sectionProps: IFormSectionProps = {
-            schema: isRootLocation(this.state.activeSchemaLocation)
-                ? this.state.schema
-                : get(this.state.schema, this.state.activeSchemaLocation) || this.state.schema,
+            schema: this.state.navigation[this.state.navigation.length - 1].schema,
             onChange: this.handleOnChange,
             onUpdateActiveSection: this.handleUpdateActiveSection,
             data: this.getData("data", "props"),
@@ -251,7 +221,7 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
         return <FormSection {...sectionProps} />;
     }
 
-    private handleOnChange = (location: string, data: any, isArray: boolean, index: number): void => {
+    private handleOnChange = (location: string, data: any, isArray: boolean, index: number, isChildren?: boolean): void => {
         let obj: any = cloneDeep(this.props.data);
         const currentData: any = location === "" ? obj : get(obj, location);
 
@@ -276,8 +246,8 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
             }
         }
 
-        if (location.length >= 8 && location.slice(location.length - 8, location.length) === "children") {
-            const children: JSX.Element = get(obj, location);
+        if (isChildren) {
+            const children: ChildComponent | ChildComponent[] = get(obj, location);
 
             if (Array.isArray(children) && children.length === 1) {
                 set(obj, location, children[0]);
@@ -304,12 +274,7 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
             schema
         );
 
-        state.componentTracker = getComponentTracker(
-            schemaLocation,
-            dataLocation,
-            schema,
-            this.state.componentTracker
-        );
+        state.navigation = getNavigation(dataLocation || "", this.props.data, this.props.schema, this.props.childOptions);
 
         this.setState((state as IFormState));
     }

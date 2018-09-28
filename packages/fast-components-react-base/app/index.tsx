@@ -12,6 +12,7 @@ import Site, {
     SiteTitleBrand
 } from "@microsoft/fast-development-site-react";
 import * as examples from "./examples";
+import reactHTMLElementExamples from "./components/examples.data";
 
 import {
     Tab,
@@ -29,7 +30,7 @@ const root: HTMLElement = document.createElement("div");
 root.setAttribute("id", "root");
 document.body.appendChild(root);
 
-let formChildOptions: IFormChildOption[] = formChildFromExamplesFactory(examples);
+let formChildOptions: IFormChildOption[] = [reactHTMLElementExamples].concat(formChildFromExamplesFactory(examples));
 
 formChildOptions = formChildOptions.concat([
     {

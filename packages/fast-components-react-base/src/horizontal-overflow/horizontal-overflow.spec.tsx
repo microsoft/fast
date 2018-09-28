@@ -6,7 +6,6 @@ import HorizontalOverflow, {
     ButtonDirection,
     IHorizontalOverflowClassNameContract
 } from "./";
-import examples from "./examples.data";
 import "raf/polyfill";
 
 /*
@@ -14,13 +13,20 @@ import "raf/polyfill";
  */
 configure({adapter: new Adapter()});
 
+const id1: string = "image1";
+const id2: string = "image2";
+const id3: string = "image3";
+const id4: string = "image4";
+const id5: string = "image5";
+const id6: string = "image6";
+
 const imageSet1: JSX.Element[] = [
-    (<img key="image1" src="https://placehold.it/200x200?text=1" />),
-    (<img key="image2" src="https://placehold.it/200x200?text=2" />),
-    (<img key="image3" src="https://placehold.it/200x200?text=3" />),
-    (<img key="image4" src="https://placehold.it/200x200?text=4" />),
-    (<img key="image5" src="https://placehold.it/200x200?text=5" />),
-    (<img key="image6" src="https://placehold.it/200x200?text=6" />)
+    (<img id={id1} key={id1} src="https://placehold.it/200x200?text=1" />),
+    (<img id={id2} key={id2} src="https://placehold.it/200x200?text=2" />),
+    (<img id={id3} key={id3} src="https://placehold.it/200x200?text=3" />),
+    (<img id={id4} key={id4} src="https://placehold.it/200x200?text=4" />),
+    (<img id={id5} key={id5} src="https://placehold.it/200x200?text=5" />),
+    (<img id={id6} key={id6} src="https://placehold.it/200x200?text=6" />)
 ];
 
 const managedClasses: IHorizontalOverflowClassNameContract = {
@@ -30,16 +36,29 @@ const managedClasses: IHorizontalOverflowClassNameContract = {
     horizontalOverflow_previous: "horizontal-overflow-previous-class"
 };
 
-describe("horizontal overflow snapshot", (): void => {
-    generateSnapshots(examples);
-});
-
 // TODO #746: https://github.com/Microsoft/fast-dna/issues/746
 
 /* tslint:disable:no-string-literal */
 describe("horizontal overflow", (): void => {
     test("should have a displayName that matches the component name", () => {
         expect((HorizontalOverflow as any).name).toBe(HorizontalOverflow.displayName);
+    });
+
+    test("should be a list of items which contain each item", () => {
+        const renderedWithImagesAndPrevious: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        expect(renderedWithImagesAndPrevious.find("ul").length).toBe(1);
+        expect(renderedWithImagesAndPrevious.find("li").length).toBe(6);
+        expect(renderedWithImagesAndPrevious.find("li").at(0).find("img").prop("id")).toBe(id1);
+        expect(renderedWithImagesAndPrevious.find("li").at(1).find("img").prop("id")).toBe(id2);
+        expect(renderedWithImagesAndPrevious.find("li").at(2).find("img").prop("id")).toBe(id3);
+        expect(renderedWithImagesAndPrevious.find("li").at(3).find("img").prop("id")).toBe(id4);
+        expect(renderedWithImagesAndPrevious.find("li").at(4).find("img").prop("id")).toBe(id5);
+        expect(renderedWithImagesAndPrevious.find("li").at(5).find("img").prop("id")).toBe(id6);
     });
 
     test("should render a previous button if one is passed as a child with the appropriate slot prop", () => {

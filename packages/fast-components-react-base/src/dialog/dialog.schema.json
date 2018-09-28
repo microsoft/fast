@@ -4,7 +4,6 @@
     "description": "A dialog component's schema definition.",
     "type": "object",
     "id": "dialog",
-    "children": true,
     "properties": {
         "describedBy": {
             "title": "HTML aria-describedby attribute",
@@ -38,6 +37,12 @@
         "visible": {
             "title": "Visible",
             "type": "boolean"
+        }
+    },
+    "reactProperties": {
+        "children": {
+            "title": "Building blocks",
+            "type": "children"
         }
     }
 }

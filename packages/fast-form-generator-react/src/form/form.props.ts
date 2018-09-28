@@ -1,16 +1,30 @@
 import { updateActiveSection } from "./form-section.props";
+import { INavigationItem } from "./form.utilities";
 
 export type PropsOnChange = (data: any) => void;
 
-export type DataOnChange = (location: string, data: any, isArray?: boolean, index?: number) => void;
+export type DataOnChange = (location: string, data: any, isArray?: boolean, index?: number, isChildren?: boolean) => void;
 
 export type LocationOnChange = (schemaLocation: string, dataLocation: string) => void;
+
+export type BreadcrumbItemEventHandler = (e: React.MouseEvent<HTMLAnchorElement>) => void;
 
 export type FormTag = "form" | "div";
 
 export interface IChildOptionItem {
+    /**
+     * The name of the component
+     */
     name: string;
-    component: React.ReactNode;
+
+    /**
+     * The React component
+     */
+    component: React.ComponentClass;
+
+    /**
+     * The JSON schema for the component
+     */
     schema: any;
 }
 
@@ -94,38 +108,15 @@ export interface IFormState {
     dataCache: any;
 
     /**
-     * The tracking data of any active or previous
-     * component locations
+     * The navigation items used for the breadcrumb links
      */
-    componentTracker?: IComponentItem[];
+    navigation?: INavigationItem[];
 
     /**
      * The location, which can be the root or a sub location,
      * which corresponds to a different section
      */
     location?: any;
-}
-
-/**
- * The tracking data used for components
- * which comes into use when navigating between components
- * eg. children
- */
-export interface IComponentItem {
-    /**
-     * The data location
-     */
-    dataLocation: string;
-
-    /**
-     * The schema location
-     */
-    schemaLocation: string;
-
-    /**
-     * The schema
-     */
-    schema: any;
 }
 
 export interface IFormLocation {
@@ -281,77 +272,4 @@ export interface IFormOrderByPropertyNamesProps {
      * The categories to drop properties into
      */
     categories: IFormOrderByPropertyNamesCategories[];
-}
-
-/**
- * The direction of movement between components
- */
-export enum ComponentTree {
-    up = "up",
-    down = "down"
-}
-
-/**
- * A single breadcrumb items configuration
- */
-export interface IBreadcrumbItemConfig {
-    /**
-     * Subschema to be used to generate the item
-     */
-    subSchema: any;
-
-    /**
-     * The root level schema
-     */
-    schema: any;
-
-    /**
-     * The configuration for the breadcrumbs
-     */
-    config: IBreadcrumbItemsConfig;
-
-    /**
-     * The string to be used if no title is provided
-     */
-    untitled: string;
-
-    /**
-     * The location of the subschema relative to the root schema
-     */
-    schemaLocation: string;
-
-    /**
-     * THe current location of the data
-     */
-    activeDataLocation: string;
-}
-
-/**
- * The breadcrumbs configuration
- */
-export interface IBreadcrumbItemsConfig {
-    /**
-     * The schema location represented by a lodash location string used for get/set
-     */
-    activeSchemaLocation: string;
-
-    /**
-     * The data location represented by a lodash location string used for get/set
-     */
-    activeDataLocation: string;
-
-    /**
-     * The root level schema
-     */
-    schema: any;
-
-    /**
-     * The internal update to an active section callback
-     */
-    onUpdateActiveSection: updateActiveSection;
-
-    /**
-     * The update to an active section via location provided by props
-     */
-    onUpdateLocation?: LocationOnChange;
 }

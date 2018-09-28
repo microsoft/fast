@@ -4,7 +4,6 @@
     "description": "A toggle component's schema definition.",
     "type": "object",
     "id": "toggle",
-    "children": true,
     "properties": {
         "disabled": {
             "title": "Disabled",
@@ -33,6 +32,12 @@
         "unselectedString": {
             "title": "Unselected text",
             "type": "string"
+        }
+    },
+    "reactProperties": {
+        "children": {
+            "title": "Building blocks",
+            "type": "children"
         }
     },
     "required": [

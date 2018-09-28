@@ -4,7 +4,6 @@
     "description": "A button component's schema definition.",
     "type": "object",
     "id": "button",
-    "children": true,
     "properties": {
         "disabled": {
             "title": "Disabled",
@@ -23,6 +22,12 @@
                 "outline",
                 "primary"
             ]
+        }
+    },
+    "reactProperties": {
+        "children": {
+            "title": "Building blocks",
+            "type": "children"
         }
     }
 }

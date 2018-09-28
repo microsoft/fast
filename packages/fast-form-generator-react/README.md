@@ -27,25 +27,49 @@ import Form from "@microsoft/fast-form-generator-react";
 ### onChange
 The onChange is used as a callback, it should take one argument that is the data that should be updated when any data has been changed from within the generated form.
 
-example onChange:
+## Data and data mapping
+Component data passed to the form generator as plain data, there is a `mapDataToComponent` export from the package which converts any children data to executable React components. It is required that any component that would be mapped from data should be supplied in the `childOptions` prop.
+
+Example onChange:
 ```jsx
+import { mapDataToComponent } from "@microsoft/fast-form-generator-react";
+
 /**
  * The app on change event
  */
 onChange = (data) => {
     this.setState({
-        currentComponentData: data
+        currentComponentData: mapDataToComponent(data)
     });
 }
 ```
 
+### Simple data
 Where the component is a button and the data being passed to the `onChange` is:
 
 ```json
 {
-    "disabled": true
+    "disabled": true,
+    "children": "Button text"
 }
 ```
+
+### Data with component children
+Where the component contains a button and the data being passed to the `onChange` is:
+
+Example data:
+```json
+{
+    "children": {
+        "id": "button",
+        "props": {
+            "disabled": true
+        }
+    }
+}
+```
+
+The `id` corresponds to the components' JSON schema id and the `props` corresponds to the data being passed to the component.
 
 ### Advanced usage
 Outside of the basic use case you can provide some additional functionality through optional properties.
@@ -156,7 +180,7 @@ The schema form generator can interpret most [JSON schemas](http://json-schema.o
 Using a title will add a label to the left or top of the corresponding form element. All properties are required to have a title.
 
 Example:
-```
+```json
 {
     "$schema": "http://json-schema.org/schema#",
     "id": "my-component",
@@ -186,7 +210,7 @@ Example:
 Providing an example or default value will replace the placeholder 'example text' or randomly generated number. It is generally better to add this extra information in case the schema form generator needs to create a new set of data.
 
 Example:
-```
+```json
 {
     "$schema": "http://json-schema.org/schema#",
     "id": "my-component",
@@ -225,7 +249,7 @@ Because the style is optional, you can toggle to add it. The schema form generat
 The oneOf and anyOf keywords can be used inside a property and at the root level of a schema. This will create a select dropdown so that the user can switch between them. If data has been provided, it will select the first oneOf/anyOf instance it can validate against. The contents of a 'description' property will be used for the contents of the dropdown.
 
 Example: 
-```
+```json
 {
     "$schema": "http://json-schema.org/schema#",
     "id": "my-component",
@@ -260,7 +284,7 @@ Example:
 ### enums
 Any enums will be converted to a select dropdown.
 
-```
+```json
 {
     "$schema": "http://json-schema.org/schema#",
     "id": "my-component",

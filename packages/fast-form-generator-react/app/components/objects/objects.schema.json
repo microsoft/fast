@@ -52,6 +52,7 @@
             "type": "object",
             "properties": {
                 "nestedObject": {
+                    "title": "Nested object",
                     "type": "object",
                     "properties": {
                         "boolean": {

@@ -41,7 +41,7 @@ exports[`any-of any-of: 0 1`] = `
                 <option
                   value={2}
                 >
-                  Nested anyOf
+                  No description
                 </option>
               </select>
             </span>

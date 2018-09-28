@@ -4,7 +4,6 @@
     "description": "A tab item component's schema definition.",
     "type": "object",
     "id": "tab-item",
-    "children": true,
     "properties": {
         "id": {
             "title": "Unique ID",
@@ -14,6 +13,16 @@
             "title": "Slot",
             "type": "string",
             "default": "tab-item"
+        }
+    },
+    "reactProperties": {
+        "children": {
+            "title": "Building blocks",
+            "type": "children",
+            "ids": [
+                "tab",
+                "tab-panel"
+            ]
         }
     },
     "required": [

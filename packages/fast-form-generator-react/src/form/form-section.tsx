@@ -1,7 +1,6 @@
 import * as React from "react";
-import { get, uniqueId } from "lodash-es";
+import { uniqueId } from "lodash-es";
 import {
-    IAssignedCategoryParams,
     IFormCategories,
     IFormItemParameters,
     IFormItemsWithConfigOptions,
@@ -14,16 +13,13 @@ import IFormItemCommon, { mappingName } from "./form-item";
 import FormCategory from "./form-category";
 import FormItemCheckbox from "./form-item.checkbox";
 import FormItemTextarea from "./form-item.textarea";
-import FormItemTextField from "./form-item.text-field";
 import FormItemNumberField from "./form-item.number-field";
 import FormItemSelect from "./form-item.select";
 import FormItemChildren from "./form-item.children";
 import FormItemArray from "./form-item.array";
 import FormItemMapping from "./form-item.mapping";
-import { isRootLocation } from "./form.utilities";
 import {
-    IFormOrderByPropertyNamesCategories,
-    IFormOrderByPropertyNamesProperties,
+    IChildOptionItem,
     ITextareaAttributeSettingsMappingToPropertyNames
 } from "./form.props";
 import {
@@ -32,12 +28,9 @@ import {
     checkIsDifferentData,
     checkIsDifferentSchema,
     checkIsObject,
-    findAssignedParamsByCategoryProperties,
-    findOrderedByPropertyNames,
     formItemAttributeMapping,
     formItemMapping,
     getArraySchemaLocation,
-    getCategoryIndex,
     getCategoryParams,
     getData,
     getDataLocationRelativeToRoot,
@@ -49,7 +42,6 @@ import {
     getOneOfAnyOfState,
     getOptionalToggles,
     getSchemaSubsections,
-    getWeightedCategoriesAndItems,
     handleToggleClick,
     IOptionalToggle,
     isMapping,
@@ -480,18 +472,35 @@ class FormSection extends React.Component<IFormSectionProps & IManagedClasses<IF
     /**
      * Generates the children form element if the section can have children
      */
-    private generateChildrenElement(): JSX.Element {
-        if (this.props.schema.children) {
-            return (
-                <FormItemChildren
-                    untitled={this.props.untitled}
-                    dataLocation={this.props.dataLocation}
-                    data={this.props.data}
-                    onChange={this.props.onChange}
-                    childOptions={this.props.childOptions}
-                    onUpdateActiveSection={this.props.onUpdateActiveSection}
-                />
-            );
+    private generateChildrenElement(): JSX.Element[] {
+        if (this.props.schema.reactProperties) {
+            return Object.keys(this.props.schema.reactProperties).filter(
+                (reactProperty: string) => this.props.schema.reactProperties[reactProperty].type === "children"
+            ).map((reactProperty: string) => {
+                let childOptions: IChildOptionItem[] = [];
+
+                if (this.props.schema.reactProperties[reactProperty].ids) {
+                    childOptions = this.props.childOptions.filter((childOption: IChildOptionItem) => {
+                        return !!this.props.schema.reactProperties[reactProperty].ids.find((id: string) => childOption.schema.id === id);
+                    });
+                } else {
+                    childOptions = childOptions.concat(this.props.childOptions);
+                }
+
+                return (
+                    <FormItemChildren
+                        key={reactProperty}
+                        title={this.props.schema.reactProperties[reactProperty].title || this.props.untitled}
+                        dataLocation={`${this.props.dataLocation === "" ? "" : `${this.props.dataLocation}.`}${reactProperty}`}
+                        data={this.props.data[reactProperty] ? this.props.data[reactProperty] : null}
+                        schema={this.props.schema}
+                        onChange={this.props.onChange}
+                        defaultChildOptions={this.props.schema.reactProperties[reactProperty].defaults || null}
+                        childOptions={childOptions}
+                        onUpdateActiveSection={this.props.onUpdateActiveSection}
+                    />
+                );
+            });
         }
 
         return null;

@@ -4,12 +4,17 @@
     "description": "A tab panel component's schema definition.",
     "type": "object",
     "id": "tab-panel",
-    "children": true,
     "properties": {
         "slot": {
             "title": "Slot",
             "type": "string",
             "default": "tab-panel"
+        }
+    },
+    "reactProperties": {
+        "children": {
+            "title": "Building blocks",
+            "type": "children"
         }
     },
     "required": [

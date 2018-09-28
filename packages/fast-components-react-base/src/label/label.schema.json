@@ -4,7 +4,6 @@
     "description": "A label component's schema definition.",
     "type": "object",
     "id": "label",
-    "children": true,
     "properties": {
         "tag": {
             "title": "HTML tag",
@@ -18,6 +17,12 @@
         "hidden": {
             "title": "Hidden",
             "type": "boolean"
+        }
+    },
+    "reactProperties": {
+        "children": {
+            "title": "Building blocks",
+            "type": "children"
         }
     }
 }
