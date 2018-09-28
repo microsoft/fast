@@ -1,0 +1,6 @@
+**/packages/**/coverage/*
+**/packages/**/dist/*
+**/packages/**/www/*
+**/package.json
+**/tslint.json
+**/tsconfig.json

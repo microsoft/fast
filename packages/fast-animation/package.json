@@ -79,6 +79,7 @@
     "style-loader": "^0.13.2",
     "ts-jest": "^23.10.4",
     "tslint": "^5.3.2",
+    "tslint-config-prettier": "^1.15.0",
     "tslint-loader": "^3.5.3",
     "tslint-react": "^3.0.0",
     "typescript": "^3.0.1",

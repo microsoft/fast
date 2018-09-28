@@ -15,7 +15,9 @@
   "scripts": {
     "integration-tests:alpha": "node build/testing/sauce-labs/test-browsers.js alpha",
     "integration-tests:beta": "node build/testing/sauce-labs/test-browsers.js beta",
-    "integration-tests:release": "node build/testing/sauce-labs/test-browsers.js release"
+    "integration-tests:release": "node build/testing/sauce-labs/test-browsers.js release",
+    "prettier": "prettier --config .prettierrc '**/*.{ts, tsx, js}' --write",
+    "prettier:diff": "prettier --config .prettierrc --list-different '**/*.{ts, tsx, js}'"
   },
   "devDependencies": {
     "@types/node": "^9.4.7",
@@ -25,6 +27,7 @@
     "lerna": "^3.3.0",
     "markdown-it": "^8.4.1",
     "rimraf": "^2.6.2",
+    "prettier": "1.14.3",
     "ts-node": "^5.0.1",
     "typescript": "^3.0.1",
     "yargs": "^11.0.0"
