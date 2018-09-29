@@ -22,10 +22,13 @@ import Checkbox, {
  */
 configure({ adapter: new Adapter() });
 
+<<<<<<< HEAD
 describe("checkbox snapshot", (): void => {
     generateSnapshots(examples as SnapshotTestSuite<CheckboxProps>);
 });
 
+=======
+>>>>>>> remove checkbox snapshots
 describe("checkbox", (): void => {
     const managedClasses: CheckboxClassNameContract = {
         checkbox: "checkbox-class",
@@ -54,9 +57,15 @@ describe("checkbox", (): void => {
             inputId: "id",
         };
 
+<<<<<<< HEAD
         const unhandledProps: CheckboxUnhandledProps = {
             "aria-label": "label",
         };
+=======
+        const unhandledProps: any = {
+            "data-my-custom-attribute": true
+        } as ICheckboxUnhandledProps;
+>>>>>>> remove checkbox snapshots
 
         const props: CheckboxProps = { ...handledProps, ...unhandledProps };
 
@@ -133,6 +142,7 @@ describe("checkbox", (): void => {
         expect(rendered.state("checked")).toEqual(true);
     });
 
+<<<<<<< HEAD
     test("should accept a slotted label", () => {
         const rendered: any = mount(
             <Checkbox managedClasses={managedClasses} inputId="id">
@@ -146,5 +156,14 @@ describe("checkbox", (): void => {
         expect(rendered.find(".test-class").prop("className")).toContain(
             managedClasses.checkbox_label
         );
+=======
+    test("should create a span with a `checkbox_label` class if `props.text` is provided", () => {
+        const textString: string = "Label";
+        const rendered: any = shallow(
+            <Checkbox managedClasses={managedClasses} text={textString} />
+        );
+
+        expect(rendered.find("span.label-class")).toHaveLength(1);
+>>>>>>> remove checkbox snapshots
     });
 });
