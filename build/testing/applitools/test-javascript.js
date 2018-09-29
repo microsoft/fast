@@ -35,12 +35,19 @@ const { Config, Run } = require("../run-msft-docs.js");
  * @param {*} eyes 
  * @param {*} branch
  */
-function setup(eyes, branch) {
+function setup() {
 
+    // Initialize SDK using API Key from environment variables
+    const domain = "https://eyesapi.applitools.com";
+    const config = new Config();
+    const eyes = new Eyes(domain);
+
+    // Set Applitools Dashboard variables
     eyes.setApiKey(process.env.APPLITOOLS_API_KEY);
-    eyes.setBatch(branch, process.env.APPLITOOLS_BATCH_ID, 0);
+    eyes.setBatch(config.branchName(), process.env.APPLITOOLS_BATCH_ID, 0);
     eyes.setIgnoreCaret(true);
 
+    return eyes;
 }
 
 /**
@@ -48,22 +55,17 @@ function setup(eyes, branch) {
  */
 function main() {
 
-    // Initialize SDK using API Key from environment variables
-    const domain = "https://eyesapi.applitools.com";
-    const eyes = new Eyes(domain);
-
-    const config = new Config();
-
+    
     // Setup Applitools
-    setup(eyes, config.branchName());
+    let eyes = setup();
 
     // Set viewports
     const viewportLandscape = {width: 1920, height: 1200};
     const viewportPortrait  = {width: 600, height: 800};
     
-    chromeDriver(config, eyes, viewportLandscape, viewportPortrait);
+    chromeDriver(eyes, viewportLandscape, viewportPortrait);
     
-    firefoxDriver(config, eyes, viewportLandscape, viewportPortrait);
+    firefoxDriver(eyes, viewportLandscape, viewportPortrait);
     
 }
 
@@ -74,15 +76,15 @@ function main() {
  * @param {*} viewportLandscape 
  * @param {*} viewportPortrait 
  */
-function firefoxDriver(config, eyes, viewportLandscape, viewportPortrait){
+function firefoxDriver(eyes, viewportLandscape, viewportPortrait){
     
     const firefoxDriver = new Builder()
         .withCapabilities(Capabilities.firefox())
         .build();
 
     firefoxDriver.getSession().then(function(session){
-        runTest(config, eyes, firefoxDriver, viewportLandscape);
-        runTest(config, eyes, firefoxDriver, viewportPortrait);
+        runTest(eyes, firefoxDriver, viewportLandscape);
+        runTest(eyes, firefoxDriver, viewportPortrait);
 
         if(firefoxDriver) {
             firefoxDriver.quit(); 
@@ -92,20 +94,19 @@ function firefoxDriver(config, eyes, viewportLandscape, viewportPortrait){
 
 /**
  * Setup Chrome WebDriver and run tests
- * @param {*} config 
  * @param {*} eyes 
  * @param {*} viewportLandscape 
  * @param {*} viewportPortrait 
  */
-function chromeDriver(config, eyes, viewportLandscape, viewportPortrait){
+function chromeDriver(eyes, viewportLandscape, viewportPortrait){
 
     const chromeDriver = new Builder()
         .withCapabilities(Capabilities.chrome())
         .build();
 
     chromeDriver.getSession().then(function(session) {
-        runTest(config, eyes, chromeDriver, viewportLandscape);
-        runTest(config, eyes, chromeDriver, viewportPortrait);
+        runTest(eyes, chromeDriver, viewportLandscape);
+        runTest(eyes, chromeDriver, viewportPortrait);
 
         if(chromeDriver) {
             chromeDriver.quit(); 
@@ -114,13 +115,15 @@ function chromeDriver(config, eyes, viewportLandscape, viewportPortrait){
 }
 /**
  * Execute tests against different drivers (browsers) and viewports
- * @param {*} config
  * @param {*} eyes 
  * @param {*} innerDriver 
  * @param {*} viewportSize 
  */
-function runTest(config, eyes, innerDriver, viewportSize) {
+function runTest(eyes, innerDriver, viewportSize) {
     
+    // Config for AppName, SiteName must be set before opening eyes
+    const config = new Config();
+
     eyes.open(innerDriver, config.AppName, config.SiteName, viewportSize)
         .then(function (driver){ 
             
