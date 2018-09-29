@@ -22,10 +22,6 @@ import { KeyCodes } from "@microsoft/fast-web-utilities";
  */
 configure({ adapter: new Adapter() });
 
-describe("dialog snapshot", (): void => {
-    generateSnapshots(examples as SnapshotTestSuite<DialogProps>);
-});
-
 describe("dialog", (): void => {
     const managedClasses: DialogClassNameContract = {
         dialog: "dialog-class",
@@ -100,6 +96,23 @@ describe("dialog", (): void => {
         rendered.setProps({ visible: true });
 
         map.keydown({ keyCode: KeyCodes.escape });
+
+        expect(onDismiss).toHaveBeenCalledTimes(1);
+    });
+
+    test("should call the `onDismiss` callback when modal overlay is clicked and `visible` prop is true", () => {
+        const onDismiss: any = jest.fn();
+
+        const rendered: any = shallow(
+            <Dialog
+                managedClasses={managedClasses}
+                modal={true}
+                visible={true}
+                onDismiss={onDismiss}
+            />
+        );
+
+        rendered.find(".dialog-modal-overlay-class").simulate("click");
 
         expect(onDismiss).toHaveBeenCalledTimes(1);
     });
