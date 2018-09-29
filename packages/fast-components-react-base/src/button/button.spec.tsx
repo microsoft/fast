@@ -21,10 +21,6 @@ import Button, {
  */
 configure({ adapter: new Adapter() });
 
-describe("button snapshot", (): void => {
-    generateSnapshots(examples as SnapshotTestSuite<ButtonProps>);
-});
-
 describe("button", (): void => {
     const managedClasses: ButtonClassNameContract = {
         button: "test-button",
