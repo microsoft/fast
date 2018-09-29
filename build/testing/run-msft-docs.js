@@ -1,23 +1,33 @@
 "use strict";
 
-const Config = (function () {
-    function _config() {
+let spawn = require('child_process').spawnSync;
 
+/**
+ * Get Branch Name using child_process and Git which runs Asynchronously
+ */
+class Config {
+
+    constructor() {
         this.DomainName = "https://msft-docs.fast-dna.net";
-        this.SiteName = "Microsoft Docs";
-        this.TestName = "Site Testing";
+        this.AppName = "FAST-DNA"; // Should be batch name
+        this.SiteName = "MSFT Doc Site"; // Should be branch name
     }
-    return _config;
-})();
 
+    branchName() {
+
+        return spawn('git', ['rev-parse', '--abbrev-ref', 'HEAD']).output[1].toString().trim();
+    
+    }
+}
 exports.Config = Config;
 
 
 /**
  * Testing script that can be used across services  
  */
-var Run = (function () {
-    function _run(eyes, driver, domain) {
+class Run {
+
+    constructor(eyes, driver, domain) {
 
         console.log("Starting script on: %s", domain);
 
@@ -82,8 +92,6 @@ var Run = (function () {
 
 
     }
-
-    return _run;
-})();
+}
 
 exports.Run = Run;
