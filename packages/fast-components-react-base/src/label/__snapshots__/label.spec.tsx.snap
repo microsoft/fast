@@ -18,7 +18,7 @@ exports[`label snapshot Label: 1 1`] = `
 
 exports[`label snapshot Label: 2 1`] = `
 <label
-  className="hidden_label"
+  className="label hidden_label"
 >
   Hidden label for screen readers
 </label>
