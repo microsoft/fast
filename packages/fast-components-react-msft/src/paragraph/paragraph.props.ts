@@ -7,11 +7,12 @@ export enum ParagraphLevel {
     _3 = 3
 }
 
-export interface IParagraphHandledProps {
+export interface IParagraphManagedClasses extends IManagedClasses<IParagraphClassNameContract> {}
+export interface IParagraphHandledProps extends IParagraphManagedClasses {
     /**
      * The paragraph content
      */
-    children?: React.ReactNode | React.ReactNode[];
+    children?: React.ReactNode;
 
     /**
      * The visual size (type level) which aligns to a type ramp instance
@@ -20,5 +21,4 @@ export interface IParagraphHandledProps {
 }
 
 export interface IParagraphUnhandledProps extends React.HTMLAttributes<HTMLParagraphElement> {}
-export interface IParagraphManagedClasses extends IManagedClasses<IParagraphClassNameContract> {}
-export type ParagraphProps = IParagraphHandledProps & IParagraphUnhandledProps & IParagraphManagedClasses;
+export type ParagraphProps = IParagraphHandledProps & IParagraphUnhandledProps;

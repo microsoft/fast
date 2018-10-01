@@ -30,7 +30,7 @@ describe("paragraph", (): void => {
         expect(
             () => {
                 shallow(<Paragraph />);
-                shallow(<Paragraph level={ParagraphLevel._1} />);
+                shallow(<Paragraph size={ParagraphLevel._1} />);
             }
         ).not.toThrow();
     });

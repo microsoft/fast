@@ -19,3 +19,5 @@ export interface IButtonHandledProps extends IButtonManagedClasses {
      */
     href?: string;
 }
+
+export type ButtonProps = IButtonUnhandledProps & IButtonHandledProps;

@@ -20,12 +20,13 @@ export enum SubheadingTag {
     p = "p"
 }
 
-export interface ISubheadingHandledProps {
+export interface ISubheadingManagedClasses extends IManagedClasses<ISubheadingClassNameContract> {}
+export interface ISubheadingHandledProps extends ISubheadingManagedClasses {
 
     /**
      * The subheading content
      */
-    children?: React.ReactNode | React.ReactNode[];
+    children?: React.ReactNode;
 
     /**
      * The visual size (type level) which aligns to a type ramp instance
@@ -39,5 +40,4 @@ export interface ISubheadingHandledProps {
 }
 
 export interface ISubheadingUnhandledProps extends React.HTMLAttributes<HTMLHeadingElement | HTMLParagraphElement> {}
-export interface ISubheadingManagedClasses extends IManagedClasses<ISubheadingClassNameContract> {}
-export type SubheadingProps = ISubheadingHandledProps & ISubheadingUnhandledProps & ISubheadingManagedClasses;
+export type SubheadingProps = ISubheadingHandledProps & ISubheadingUnhandledProps;

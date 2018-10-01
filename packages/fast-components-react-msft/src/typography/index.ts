@@ -17,4 +17,5 @@ import { IDesignSystem, TypographyStyles } from "@microsoft/fast-components-styl
 const Typography = manageJss(TypographyStyles)(BaseTypography);
 type Typography = InstanceType<typeof Typography>;
 
+export { ITypographyHandledProps, ITypographyUnhandledProps };
 export { Typography };

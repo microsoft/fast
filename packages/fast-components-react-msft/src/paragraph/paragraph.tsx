@@ -7,23 +7,24 @@ import {
     IParagraphHandledProps,
     IParagraphManagedClasses,
     IParagraphUnhandledProps,
-    ParagraphLevel
+    ParagraphLevel,
+    ParagraphProps
 } from "./paragraph.props";
 import { Typography } from "../typography";
 import { IManagedClasses, IParagraphClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 
 class Paragraph extends Foundation<
-    IParagraphHandledProps & IManagedClasses<IParagraphClassNameContract>,
-    React.HTMLAttributes<HTMLParagraphElement>,
+    IParagraphHandledProps,
+    IParagraphUnhandledProps,
     {}
 > {
-    public static defaultProps: Partial<IParagraphHandledProps> = {
+    public static defaultProps: Partial<ParagraphProps> = {
         size: ParagraphLevel._3
     };
 
     public static displayName: string = "Paragraph";
 
-    protected handledProps: HandledProps<IParagraphHandledProps & IManagedClasses<IParagraphClassNameContract>> = {
+    protected handledProps: HandledProps<IParagraphHandledProps> = {
         size: void 0,
         managedClasses: void 0
     };
