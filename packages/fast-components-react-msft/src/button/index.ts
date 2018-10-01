@@ -10,8 +10,11 @@ import MSFTButton, {
     ButtonAppearance,
     ButtonProps as MSFTButtonProps,
     ButtonSlot,
+    IButtonHandledProps as IMSFTButtonHandledProps,
+    IButtonManagedClasses,
     IButtonUnhandledProps
 } from "./button";
+import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -21,8 +24,8 @@ import MSFTButton, {
 const Button = manageJss(ButtonStyles)(MSFTButton);
 type Button = InstanceType<typeof Button>;
 
-interface IButtonHandledProps extends JSSManagerProps<MSFTButtonProps, IButtonClassNameContract, IDesignSystem> {}
-type ButtonProps = IButtonHandledProps & IButtonUnhandledProps;
+interface IButtonHandledProps extends Subtract<IMSFTButtonHandledProps, IButtonManagedClasses> {}
+type ButtonProps = JSSManagerProps<MSFTButtonProps, IButtonClassNameContract, IDesignSystem>;
 
 export {
     Button,

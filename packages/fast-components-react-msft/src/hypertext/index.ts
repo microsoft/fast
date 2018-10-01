@@ -1,13 +1,15 @@
 import * as React from "react";
-import { IFoundationProps } from "@microsoft/fast-components-foundation-react";
 import {
     Hypertext as BaseHypertext,
+    HypertextProps as BaseHypertextProps,
     IHypertextClassNameContract,
-    IHypertextHandledProps,
+    IHypertextHandledProps as IBaseHypertextHandledProps,
+    IHypertextManagedClasses,
     IHypertextUnhandledProps
 } from "@microsoft/fast-components-react-base";
-import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { IJSSManagerProps, JSSManagerProps } from "@microsoft/fast-jss-manager-react";
 import { HypertextStyles, IDesignSystem } from "@microsoft/fast-components-styles-msft";
+import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -17,4 +19,13 @@ import { HypertextStyles, IDesignSystem } from "@microsoft/fast-components-style
 const Hypertext = manageJss(HypertextStyles)(BaseHypertext);
 type Hypertext = InstanceType<typeof Hypertext>;
 
-export { Hypertext };
+interface IHypertextHandledProps extends Subtract<IBaseHypertextHandledProps, IHypertextManagedClasses> {}
+type HypertextProps = JSSManagerProps<BaseHypertextProps, IHypertextClassNameContract, IDesignSystem>;
+
+export {
+    Hypertext,
+    HypertextProps,
+    IHypertextHandledProps,
+    IHypertextUnhandledProps,
+    IHypertextClassNameContract
+};

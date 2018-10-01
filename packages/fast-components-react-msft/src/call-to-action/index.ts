@@ -6,8 +6,10 @@ import MSFTCallToAction, {
     CallToActionAppearance,
     CallToActionProps as MSFTCallToActionProps,
     ICallToActionHandledProps as IMSFTCallToActionHandledProps,
+    ICallToActionManagedClasses,
     ICallToActionUnhandledProps
 } from "./call-to-action";
+import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -17,8 +19,8 @@ import MSFTCallToAction, {
 const CallToAction = manageJss(CallToActionStyles)(MSFTCallToAction);
 type CallToAction = InstanceType<typeof CallToAction>;
 
-interface ICallToActionHandledProps extends JSSManagerProps<MSFTCallToActionProps, ICallToActionClassNameContract, IDesignSystem> {}
-type CallToActionProps = ICallToActionHandledProps & ICallToActionUnhandledProps;
+interface ICallToActionHandledProps extends Subtract<IMSFTCallToActionHandledProps, ICallToActionManagedClasses> {}
+type CallToActionProps = JSSManagerProps<MSFTCallToActionProps, ICallToActionClassNameContract, IDesignSystem>;
 
 export {
     CallToAction,
