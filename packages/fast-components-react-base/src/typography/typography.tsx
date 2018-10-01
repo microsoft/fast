@@ -6,6 +6,7 @@ import {
     ITypographyHandledProps,
     ITypographyManagedClasses,
     ITypographyUnhandledProps,
+    TypographyProps,
     TypographySize,
     TypographyTag
 } from "./typography.props";
@@ -16,7 +17,8 @@ class Typography extends Foundation<
     ITypographyUnhandledProps,
     {}
 > {
-    public static defaultProps: Partial<ITypographyHandledProps> = {
+    public static defaultProps: Partial<TypographyProps> = {
+    //public static defaultProps: Partial<ITypographyHandledProps> = {
         tag: TypographyTag.p
     };
 

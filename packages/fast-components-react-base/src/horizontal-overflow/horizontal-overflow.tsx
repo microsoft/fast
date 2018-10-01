@@ -5,7 +5,12 @@ import { IHorizontalOverflowClassNameContract, IManagedClasses } from "@microsof
 import { getClientRectWithMargin } from "@microsoft/fast-web-utilities";
 import { Direction } from "@microsoft/fast-application-utilities";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { HorizontalOverflowProps, IHorizontalOverflowHandledProps, IHorizontalOverflowUnhandledProps, IScrollChange } from "./horizontal-overflow.props";
+import {
+    HorizontalOverflowProps,
+    IHorizontalOverflowHandledProps,
+    IHorizontalOverflowUnhandledProps,
+    IScrollChange
+} from "./horizontal-overflow.props";
 import throttle from "raf-throttle";
 
 export enum ButtonDirection {
