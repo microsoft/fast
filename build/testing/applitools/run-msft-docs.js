@@ -31,18 +31,10 @@ class Run {
 
         driver.get(website);
 
-        // eyes.checkWindow("Before any action");
-        // Note: There are many ways to navigate/find elements on a page
-        // unfortunately, not all are cross-browser compliant and so
-        // for example, we can't use xpath. As a result, we're using
+        // Note: There are many ways to navigate/find/select elements on a page.
+        // Not all are cross-browser compliant and for example, we can't 
+        // use xpath in all browser drivers. As a result, we're using
         // navigation though not necessarily most performant but effective.
-
-        // After browsers matrix is determined we can fine tune and
-        // optimize to use other selectors to see what works. If we're
-        // Testing on modern browsers this isn't as much a limitation.
-
-        // Recommendation, add in data-test attributes to each component,
-        // page, layout, or container we want to capture and select on that.
 
         // Iterate each components documentation
 
@@ -95,7 +87,7 @@ class Run {
         eyes.checkWindow("typography");
         
         // Turn on Developer tools and iterate each component
-        // xpath selectors do not work across browsers. This in particular breaks in Internet Explorer
+        // Xpath selectors do not work in Internet Explorer
         // driver.findElement(By.xpath("//button[text()='dev tools']")).click();
         // one possible solution would be to inject data attributes for each component we can bind to.
         // For example, data-test="friendly name"
