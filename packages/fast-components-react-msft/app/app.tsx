@@ -97,7 +97,7 @@ export default class App extends React.Component<{}, IAppState> {
                     </SiteCategoryIcon>
                 </SiteCategory>
                 <SiteCategory slot={"category"} name={"Components"}>
-                    {componentFactory(examples, {...this.generateDesignSystem()})}
+                    {this.sortExamples(componentFactory(examples, {...this.generateDesignSystem()}))}
                 </SiteCategory>
                 <div slot={ShellSlot.infoBar}>
                     <ColorPicker
@@ -173,5 +173,14 @@ export default class App extends React.Component<{}, IAppState> {
         this.themes = this.themes.map((theme: ITheme): ITheme => {
             return theme.id !== Theme.custom ? theme : Object.assign({}, theme, { background: value});
         });
+    }
+
+    /**
+     * Sorts an array of examples in alphabetical order
+     */
+    private sortExamples(categoryExamples: JSX.Element[]): JSX.Element[] {
+        return categoryExamples.sort(
+           (a: JSX.Element, b: JSX.Element): number => a.props.name.localeCompare(b.props.name)
+        );
     }
 }
