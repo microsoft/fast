@@ -103,12 +103,12 @@ function runTest(eyes, innerDriver, viewportSize) {
     // Config for AppName, SiteName must be set before opening eyes
     const config = new Config();
 
-    eyes.open(innerDriver, config.AppName, config.SiteName, viewportSize)
+    eyes.open(innerDriver, config.appName, config.siteName, viewportSize)
         .then(function (driver) { 
             
             try{
 
-                new Run(eyes, driver, config.DomainName);
+                new Run(eyes, driver, config.domainName);
 
                 eyes.close(false).then(function (result){ 
                     handleResult(result);

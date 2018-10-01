@@ -8,9 +8,9 @@ let spawn = require('child_process').spawnSync;
 class Config {
 
     constructor() {
-        this.DomainName = "https://msft-docs.fast-dna.net";
-        this.AppName = "FAST-DNA"; // Should be batch name
-        this.SiteName = "MSFT Doc Site"; // Should be branch name
+        this.domainName = "https://msft-docs.fast-dna.net";
+        this.appName = "FAST-DNA";
+        this.siteName = "MSFT Doc Site";
     }
 
     branchName() {
