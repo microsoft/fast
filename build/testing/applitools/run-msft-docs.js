@@ -1,6 +1,6 @@
 "use strict";
 
-let spawn = require('child_process').spawnSync;
+let spawn = require("child_process").spawnSync;
 
 /**
  * Get Branch Name using child_process and Git which runs Asynchronously

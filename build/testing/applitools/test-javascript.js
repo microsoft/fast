@@ -25,7 +25,7 @@
 "use strict";
 
 const { Builder, Capabilities } = require("selenium-webdriver");
-const chalk = require('chalk');
+const chalk = require("chalk");
 const Eyes = require("eyes.selenium").Eyes;
 const { Config, Run } = require("./run-msft-docs.js");
 
