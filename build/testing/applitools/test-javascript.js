@@ -132,22 +132,16 @@ function handleResult(result) {
     const totalSteps = result.steps;
 
     if (result.isNew) {
-    
         console.log(chalk.yellow("\nNew Baseline Created: %d steps \nView Results at %s"), totalSteps, url);
-    
     } else if (result.isPassed) {
-    
         console.log(chalk.green("\nAll Steps Passed: %d steps \nView Results at %s"), totalSteps, url);
-    
     } else {
-    
         console.log(chalk.red("\nTest Failed:\n\t Matches=%d \n\t Missing=%s \n\t MisMatches=%s \nView Results at %s\n"),
             result.matches, 
             result.missing, 
             result.mismatches, 
             url
         );
-    
     } 
 }
 
