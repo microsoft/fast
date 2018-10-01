@@ -306,6 +306,38 @@ Any enums will be converted to a select dropdown.
 }
 ```
 
+### React children
+React children are treated as special objects instead of simple properties and can be defined in an object as `reactProperties`. They can specify `ids` from the given `childOptions` and can be given defaults, currently there is one default `text`. If no `ids` are specified all `childOptions` are considered valid.
+
+Example of an object that includes children with specific ids and the text default:
+```json
+{
+    "$schema": "http://json-schema.org/schema#",
+    "id": "my-component",
+    "title": "My component",
+    "type": "object",
+    "properties": {
+        "color": {
+            "title": "Color",
+            "type": "string"
+        }
+    },
+    "reactProperties": {
+        "children": {
+            "title": "Components",
+            "type": "children",
+            "ids": [
+                "my-component",
+                "my-button-component"
+            ],
+            "defaults": [
+                "text"
+            ]
+        }
+    }
+}
+```
+
 ### type object
 The object type will create its own section which can be navigated to via a link that is created on its parent object. Once it has been navigated to, breadcrumbs will appear above allowing the user to navigate back to the parent object.
 
