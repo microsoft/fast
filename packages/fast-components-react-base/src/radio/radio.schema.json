@@ -16,13 +16,15 @@
         "disabled": {
             "title": "Disabled",
             "type": "boolean"
-            
         }
     },
     "reactProperties": {
         "children": {
             "title": "Building blocks",
-            "type": "children"
+            "type": "children",
+            "defaults": [
+                "text"
+            ]
         }
     }
 }

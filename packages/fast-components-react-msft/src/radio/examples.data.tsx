@@ -57,7 +57,7 @@ export default {
         },
         {
             disabled: true,
-            children: [slotDisabledExample],
+            children: slotDisabledExample,
             id: "disabled"
         }
     ]
