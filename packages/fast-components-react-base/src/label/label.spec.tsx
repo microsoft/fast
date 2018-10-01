@@ -79,4 +79,16 @@ describe("label", (): void => {
         expect(rendered.instance().props.tag).toEqual(LabelTag.legend);
         expect(rendered.type()).toBe(LabelTag.legend);
     });
+
+    test("should rendered the correct className base on hidden prop", () => {
+        const rendered: any = shallow(
+            <Label managedClasses={managedClasses} />
+        );
+        const renderedHidden: any = shallow(
+            <Label managedClasses={managedClasses} hidden={true} />
+        );
+
+        expect(rendered.hasClass("label-class")).toBe(true);
+        expect(renderedHidden.hasClass("label-class label-hidden-class")).toBe(true);
+    });
 });

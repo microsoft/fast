@@ -2,7 +2,7 @@
 
 exports[`label snapshots Label: 0 1`] = `
 <label
-  className={null}
+  className="label-0-1-1"
   data-sketch-symbol="Label"
 >
   Label
@@ -11,7 +11,7 @@ exports[`label snapshots Label: 0 1`] = `
 
 exports[`label snapshots Label: 1 1`] = `
 <legend
-  className={null}
+  className="label-0-1-3"
 >
   Legend label
 </legend>
@@ -19,7 +19,7 @@ exports[`label snapshots Label: 1 1`] = `
 
 exports[`label snapshots Label: 2 1`] = `
 <label
-  className={null}
+  className="label_hidden-0-1-6"
 >
   Hidden label
 </label>
