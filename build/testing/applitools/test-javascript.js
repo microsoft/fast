@@ -55,7 +55,6 @@ function setup() {
  */
 function main() {
 
-    
     // Setup Applitools
     let eyes = setup();
 
@@ -64,56 +63,34 @@ function main() {
     const viewportPortrait  = {width: 600, height: 800};
     
     // Execute Chrome driver tests
-    chromeDriver(eyes, viewportLandscape, viewportPortrait);
+    browserDriver(eyes, Capabilities.chrome(), viewportLandscape, viewportPortrait);
     
     // Execute FireFox driver tests
-    firefoxDriver(eyes, viewportLandscape, viewportPortrait);
+    browserDriver(eyes, Capabilities.firefox(), viewportLandscape, viewportPortrait);
     
 }
 
 /**
  * Setup FireFox WebDriver and run tests
- * @param {*} config 
- * @param {*} eyes 
+ * @param {*} eyes
+ * @param {*} webDriver
  * @param {*} viewportLandscape 
  * @param {*} viewportPortrait 
  */
-function firefoxDriver(eyes, viewportLandscape, viewportPortrait) {
+function browserDriver(eyes, webDriver, viewportLandscape, viewportPortrait) {
     
-    const firefoxDriver = new Builder()
-        .withCapabilities(Capabilities.firefox())
+    const innerDriver = new Builder()
+        .withCapabilities(webDriver)
         .build();
 
-    firefoxDriver.getSession().then(function(session){
-        runTest(eyes, firefoxDriver, viewportLandscape);
-        runTest(eyes, firefoxDriver, viewportPortrait);
+    innerDriver.getSession().then(function(session){
+        runTest(eyes, innerDriver, viewportLandscape);
+        runTest(eyes, innerDriver, viewportPortrait);
 
-        if(firefoxDriver) {
-            firefoxDriver.quit(); 
+        if(innerDriver) {
+            innerDriver.quit(); 
         }
     })
-}
-
-/**
- * Setup Chrome WebDriver and run tests
- * @param {*} eyes 
- * @param {*} viewportLandscape 
- * @param {*} viewportPortrait 
- */
-function chromeDriver(eyes, viewportLandscape, viewportPortrait) {
-
-    const chromeDriver = new Builder()
-        .withCapabilities(Capabilities.chrome())
-        .build();
-
-    chromeDriver.getSession().then(function(session) {
-        runTest(eyes, chromeDriver, viewportLandscape);
-        runTest(eyes, chromeDriver, viewportPortrait);
-
-        if(chromeDriver) {
-            chromeDriver.quit(); 
-        }
-    });
 }
 
 /**
