@@ -32,7 +32,7 @@ class Run {
         driver.get(website);
 
         // eyes.checkWindow("Before any action");
-        // Note: There are many ways to nagivate/find elements on a page
+        // Note: There are many ways to navigate/find elements on a page
         // unfortunately, not all are cross-browser compliant and so
         // for example, we can't use xpath. As a result, we're using
         // navigation though not necessarily most performant but effective.
