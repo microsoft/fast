@@ -18,7 +18,6 @@ class Typography extends Foundation<
     {}
 > {
     public static defaultProps: Partial<TypographyProps> = {
-    //public static defaultProps: Partial<ITypographyHandledProps> = {
         tag: TypographyTag.p
     };
 

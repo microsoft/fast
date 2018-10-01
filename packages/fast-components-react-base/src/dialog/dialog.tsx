@@ -12,7 +12,7 @@ class Dialog extends Foundation<
     IDialogUnhandledProps,
     {}
 > {
-    public static defaultProps: Partial<IDialogHandledProps> = {
+    public static defaultProps: Partial<DialogProps> = {
         contentHeight: "480px",
         contentWidth: "640px",
         visible: false

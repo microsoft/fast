@@ -6,6 +6,7 @@ import {
     ILabelHandledProps,
     ILabelManagedClasses,
     ILabelUnhandledProps,
+    LabelProps,
     LabelTag
 } from "./label.props";
 import { ILabelClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
@@ -17,7 +18,7 @@ class Label extends Foundation<
 > {
     public static displayName: string = "Label";
 
-    public static defaultProps: Partial<ILabelHandledProps> = {
+    public static defaultProps: Partial<LabelProps> = {
         tag: LabelTag.label
     };
 
