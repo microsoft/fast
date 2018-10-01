@@ -6,7 +6,7 @@
  * Used to generate baselines and test the difference of those baselines against future changes.
  * 
  * @example
- * To execute on CLI, run 'node build/testing/applitools/startup-image.js' from root directory.
+ * To execute on CLI, run `node build/testing/applitools/startup-image.js` from root directory.
  * 
  * @requires
  * You must create environment variables if executing this script locally using CLI. 

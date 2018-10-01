@@ -6,21 +6,20 @@
  * Used to generate baselines and test the difference of those baselines against future changes.
  * 
  * @example
- * To execute on CLI, run 'node build/testing/applitools/test-javascript.js' from root directory.
+ * To execute on CLI, run `node build/testing/applitools/test-javascript.js` from root directory.
  * 
  * @requires
  * You must create environment variables if executing this script locally using CLI. 
  * 
  * This can be done one of two recommended ways.
- * 1. Update your '~/.bashrc' file.
+ * 1. Update your `~/.bashrc` file.
  *    export APPLITOOLS_API_KEY=[some value]
  * 
- * 2. Create a '.env' file at the root of your project
+ * 2. Create a `.env` file at the root of your project
  *    APPLITOOLS_API_KEY=[some value]
  * 
  * - Cirlce CI has these values included as environment variables. 
  * - The api key can be found in the portal on Applitools.
- * 
  */
 
 "use strict";
