@@ -2,13 +2,16 @@ import * as React from "react";
 import { IFoundationProps } from "@microsoft/fast-components-foundation-react";
 import {
     IButtonClassNameContract,
-    IButtonHandledProps as IBaseButtonHandledProps,
-    IButtonUnhandledProps
 } from "@microsoft/fast-components-react-base";
 import { IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { IJSSManagerProps, JSSManagerProps } from "@microsoft/fast-jss-manager-react";
 import { ButtonStyles, IDesignSystem } from "@microsoft/fast-components-styles-msft";
-import MSFTButton, { IButtonHandledProps } from "./button";
+import MSFTButton, {
+    ButtonAppearance,
+    ButtonProps as MSFTButtonProps,
+    ButtonSlot,
+    IButtonUnhandledProps
+} from "./button";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -18,4 +21,15 @@ import MSFTButton, { IButtonHandledProps } from "./button";
 const Button = manageJss(ButtonStyles)(MSFTButton);
 type Button = InstanceType<typeof Button>;
 
-export { Button };
+interface IButtonHandledProps extends JSSManagerProps<MSFTButtonProps, IButtonClassNameContract, IDesignSystem> {}
+type ButtonProps = IButtonHandledProps & IButtonUnhandledProps;
+
+export {
+    Button,
+    ButtonAppearance,
+    ButtonSlot,
+    ButtonProps,
+    IButtonClassNameContract,
+    IButtonHandledProps,
+    IButtonUnhandledProps
+};

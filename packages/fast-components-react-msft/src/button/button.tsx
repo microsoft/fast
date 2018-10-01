@@ -7,7 +7,6 @@ import {
     IButtonManagedClasses,
     IButtonUnhandledProps
 } from "./button.props";
-import { IManagedClasses, IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { Button as BaseButton } from "@microsoft/fast-components-react-base";
 
 /**
@@ -74,4 +73,3 @@ class Button extends Foundation<
 
 export default Button;
 export * from "./button.props";
-export { IMSFTButtonClassNameContract };

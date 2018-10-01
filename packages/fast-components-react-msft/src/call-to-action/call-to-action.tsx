@@ -1,7 +1,6 @@
 import * as React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { Button } from "../button/index";
-import { ButtonAppearance, IMSFTButtonClassNameContract } from "../button/button";
+import { Button, ButtonAppearance } from "../button";
 import { CallToActionAppearance, ICallToActionHandledProps, ICallToActionUnhandledProps } from "./call-to-action.props";
 import { ICallToActionClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
 import { get } from "lodash-es";

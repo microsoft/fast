@@ -5,10 +5,10 @@ import { IDesignSystem, ProgressStyles } from "@microsoft/fast-components-styles
 import { IFoundationProps } from "@microsoft/fast-components-foundation-react";
 import { IProgressClassNameContract } from "@microsoft/fast-components-react-base";
 import MSFTProgress, {
-    IMSFTProgressHandledProps,
-    IMSFTProgressManagedClasses,
-    IMSFTProgressUnhandledProps,
-    MSFTProgressProps
+    IProgressHandledProps,
+    IProgressManagedClasses,
+    IProgressUnhandledProps,
+    ProgressProps
 } from "./progress";
 
 /*
