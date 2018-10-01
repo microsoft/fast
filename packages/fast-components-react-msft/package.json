@@ -99,6 +99,7 @@
     "tslint": "^5.9.1",
     "tslint-loader": "^3.6.0",
     "typescript": "^3.0.1",
+    "utility-types": "^2.1.0",
     "webpack": "^4.1.0",
     "webpack-bundle-analyzer": "^2.13.1",
     "webpack-cli": "^3.1.1",
@@ -109,7 +110,8 @@
   "peerDependencies": {
     "lodash-es": "^4.0.0",
     "react": "^16.3.0",
-    "react-dom": "^16.3.0"
+    "react-dom": "^16.3.0",
+    "utility-types": "^2.1.0"
   },
   "dependencies": {
     "@microsoft/fast-application-utilities": "^2.2.0",
