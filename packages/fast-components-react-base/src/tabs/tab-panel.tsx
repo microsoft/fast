@@ -9,10 +9,15 @@ class TabPanel extends Foundation<
     ITabPanelUnhandledProps,
     {}
 > {
+    public static defaultProps: Partial<ITabPanelHandledProps> = {
+        active: false
+    };
+
     public static displayName: string = "TabPanel";
 
     protected handledProps: HandledProps<ITabPanelHandledProps & IManagedClasses<ITabPanelClassNameContract>> = {
         managedClasses: void 0,
+        active: void 0,
         slot: void 0
     };
 
@@ -24,6 +29,7 @@ class TabPanel extends Foundation<
             <div
                 {...this.unhandledProps()}
                 role="tabpanel"
+                aria-hidden={!this.props.active}
                 className={this.generateClassNames()}
             >
                 {this.props.children}
@@ -35,11 +41,11 @@ class TabPanel extends Foundation<
      * Generates class names based on props
      */
     protected generateClassNames(): string {
-        return this.unhandledProps()["aria-hidden"]
-            ? super.generateClassNames(
+        return this.props.active
+            ? super.generateClassNames(get(this.props, "managedClasses.tabPanel"))
+            : super.generateClassNames(
                 `${get(this.props, "managedClasses.tabPanel")} ${get(this.props, "managedClasses.tabPanel__hidden")}`
-              )
-            : super.generateClassNames(get(this.props, "managedClasses.tabPanel"));
+              );
     }
 }
 

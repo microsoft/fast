@@ -9,10 +9,15 @@ class Tab extends Foundation<
     ITabUnhandledProps,
     {}
 > {
+    public static defaultProps: Partial<ITabHandledProps> = {
+        active: false
+    };
+
     public static displayName: string = "Tab";
 
     protected handledProps: HandledProps<ITabHandledProps & IManagedClasses<ITabClassNameContract>> = {
         managedClasses: void 0,
+        active: void 0,
         slot: void 0
     };
 
@@ -24,6 +29,7 @@ class Tab extends Foundation<
             <div
                 {...this.unhandledProps()}
                 role="tab"
+                aria-selected={this.props.active}
                 className={this.generateClassNames()}
             >
                 {this.props.children}
@@ -35,7 +41,7 @@ class Tab extends Foundation<
      * Generates class names based on props
      */
     protected generateClassNames(): string {
-        return this.unhandledProps()["aria-selected"]
+        return this.props.active
             ? super.generateClassNames(`${get(this.props, "managedClasses.tab")} ${get(this.props, "managedClasses.tab__active")}`)
             : super.generateClassNames(get(this.props, "managedClasses.tab"));
     }
