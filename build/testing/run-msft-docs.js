@@ -27,13 +27,13 @@ exports.Config = Config;
  */
 class Run {
 
-    constructor(eyes, driver, domain) {
+    constructor(eyes, driver, website) {
 
-        console.log("Starting script on: %s", domain);
+        console.log("Starting tests on: %s", website);
 
-            driver.get(domain);
+            driver.get(website);
 
-            eyes.checkWindow("Before any action");
+            // eyes.checkWindow("Before any action");
             // Note: There are many ways to nagivate/find elements on a page
             // unfortunately, not all are cross-browser compliant and so
             // for example, we can't use xpath. As a result, we're using
@@ -47,24 +47,55 @@ class Run {
             // page, layout, or container we want to capture and select on that.
 
             // Iterate each components documentation
-                driver.navigate().to(domain + "/components/button/");
-                eyes.checkWindow("After navigation");
-                // driver.navigate().to(domain + "/components/caption/");
-                // driver.navigate().to(domain + "/components/checkbox/");
-                // driver.navigate().to(domain + "/components/dialog/");
-                // driver.navigate().to(domain + "/components/divider/");
-                // driver.navigate().to(domain + "/components/flipper/");
-                // driver.navigate().to(domain + "/components/heading/");
-                // driver.navigate().to(domain + "/components/hypertext/");
-                // driver.navigate().to(domain + "/components/image/");
-                // driver.navigate().to(domain + "/components/label/");
-                // driver.navigate().to(domain + "/components/metatext/");
-                // driver.navigate().to(domain + "/components/paragraph/");
-                // driver.navigate().to(domain + "/components/subheading/");
-                // driver.navigate().to(domain + "/components/text-field/");
-                // driver.navigate().to(domain + "/components/toggle/");
-                // driver.navigate().to(domain + "/components/typography/");
 
+            driver.navigate().to(website + "/components/button/");
+            eyes.checkWindow("button");
+                        
+            driver.navigate().to(website + "/components/caption/");
+            eyes.checkWindow("caption");
+            
+            driver.navigate().to(website + "/components/checkbox/");
+            eyes.checkWindow("checkbox");
+            
+            driver.navigate().to(website + "/components/dialog/");
+            eyes.checkWindow("dialog");
+            
+            driver.navigate().to(website + "/components/divider/");
+            eyes.checkWindow("divider");
+            
+            driver.navigate().to(website + "/components/flipper/");
+            eyes.checkWindow("flipper");
+            
+            driver.navigate().to(website + "/components/heading/");
+            eyes.checkWindow("heading");
+            
+            driver.navigate().to(website + "/components/hypertext/");
+            eyes.checkWindow("hypertext");
+            
+            driver.navigate().to(website + "/components/image/");
+            eyes.checkWindow("image");
+            
+            driver.navigate().to(website + "/components/label/");
+            eyes.checkWindow("label");
+            
+            driver.navigate().to(website + "/components/metatext/");
+            eyes.checkWindow("metatext");
+            
+            driver.navigate().to(website + "/components/paragraph/");
+            eyes.checkWindow("paragraph");
+            
+            driver.navigate().to(website + "/components/subheading/");
+            eyes.checkWindow("subheading");
+            
+            driver.navigate().to(website + "/components/text-field/");
+            eyes.checkWindow("text-field");
+            
+            driver.navigate().to(website + "/components/toggle/");
+            eyes.checkWindow("toggle");
+            
+            driver.navigate().to(website + "/components/typography/");
+            eyes.checkWindow("typography");
+            
             // Turn on Developer tools and iterate each component
             // xpath selectors do not work across browsers. This in particular breaks in Internet Explorer
             // driver.findElement(By.xpath("//button[text()='dev tools']")).click();
@@ -73,24 +104,54 @@ class Run {
             // driver.findElement(By.cssSelector('[data-element="city"]'))
 
             // Navigate to example views for each component
-                // driver.navigate().to(domain + "/components/button/examples");
-                // driver.navigate().to(domain + "/components/caption/examples");
-                // driver.navigate().to(domain + "/components/checkbox/examples");
-                // driver.navigate().to(domain + "/components/dialog/examples");
-                // driver.navigate().to(domain + "/components/divider/examples");
-                // driver.navigate().to(domain + "/components/flipper/examples");
-                // driver.navigate().to(domain + "/components/heading/examples");
-                // driver.navigate().to(domain + "/components/hypertext/examples");
-                // driver.navigate().to(domain + "/components/image/examples");
-                // driver.navigate().to(domain + "/components/label/examples");
-                // driver.navigate().to(domain + "/components/metatext/examples");
-                // driver.navigate().to(domain + "/components/paragraph/examples");
-                // driver.navigate().to(domain + "/components/subheading/examples");
-                // driver.navigate().to(domain + "/components/text-field/examples");
-                // driver.navigate().to(domain + "/components/toggle/examples");
-                // driver.navigate().to(domain + "/components/typography/examples");
+            driver.navigate().to(website + "/components/button/examples");
+            eyes.checkWindow("button example");
+            
+            driver.navigate().to(website + "/components/caption/examples");
+            eyes.checkWindow("caption example");
+            
+            driver.navigate().to(website + "/components/checkbox/examples");
+            eyes.checkWindow("checkbox example");
+            
+            driver.navigate().to(website + "/components/dialog/examples");
+            eyes.checkWindow("dialog example");
+            
+            driver.navigate().to(website + "/components/divider/examples");
+            eyes.checkWindow("divider example");
 
-
+            driver.navigate().to(website + "/components/flipper/examples");
+            eyes.checkWindow("flipper example");
+            
+            driver.navigate().to(website + "/components/heading/examples");
+            eyes.checkWindow("heading example");
+            
+            driver.navigate().to(website + "/components/hypertext/examples");
+            eyes.checkWindow("hypertext example");
+            
+            driver.navigate().to(website + "/components/image/examples");
+            eyes.checkWindow("image example");
+            
+            driver.navigate().to(website + "/components/label/examples");
+            eyes.checkWindow("label example");
+            
+            driver.navigate().to(website + "/components/metatext/examples");
+            eyes.checkWindow("metatext example");
+            
+            driver.navigate().to(website + "/components/paragraph/examples");
+            eyes.checkWindow("paragraph example");
+            
+            driver.navigate().to(website + "/components/subheading/examples");
+            eyes.checkWindow("subheading example");
+            
+            driver.navigate().to(website + "/components/text-field/examples");
+            eyes.checkWindow("text-field example");
+            
+            driver.navigate().to(website + "/components/toggle/examples");
+            eyes.checkWindow("toggle example");
+            
+            driver.navigate().to(website + "/components/typography/examples");
+            eyes.checkWindow("typograph example");
+            
     }
 }
 

@@ -40,7 +40,7 @@ function setup() {
     // Initialize SDK using API Key from environment variables
     const domain = "https://eyesapi.applitools.com";
     const config = new Config();
-    const eyes = new Eyes(domain);
+    let eyes = new Eyes(domain);
 
     // Set Applitools Dashboard variables
     eyes.setApiKey(process.env.APPLITOOLS_API_KEY);
@@ -63,8 +63,10 @@ function main() {
     const viewportLandscape = {width: 1920, height: 1200};
     const viewportPortrait  = {width: 600, height: 800};
     
+    // Execute Chrome driver tests
     chromeDriver(eyes, viewportLandscape, viewportPortrait);
     
+    // Execute FireFox driver tests
     firefoxDriver(eyes, viewportLandscape, viewportPortrait);
     
 }
@@ -76,7 +78,7 @@ function main() {
  * @param {*} viewportLandscape 
  * @param {*} viewportPortrait 
  */
-function firefoxDriver(eyes, viewportLandscape, viewportPortrait){
+function firefoxDriver(eyes, viewportLandscape, viewportPortrait) {
     
     const firefoxDriver = new Builder()
         .withCapabilities(Capabilities.firefox())
@@ -98,7 +100,7 @@ function firefoxDriver(eyes, viewportLandscape, viewportPortrait){
  * @param {*} viewportLandscape 
  * @param {*} viewportPortrait 
  */
-function chromeDriver(eyes, viewportLandscape, viewportPortrait){
+function chromeDriver(eyes, viewportLandscape, viewportPortrait) {
 
     const chromeDriver = new Builder()
         .withCapabilities(Capabilities.chrome())
@@ -113,6 +115,7 @@ function chromeDriver(eyes, viewportLandscape, viewportPortrait){
         }
     });
 }
+
 /**
  * Execute tests against different drivers (browsers) and viewports
  * @param {*} eyes 
@@ -125,7 +128,7 @@ function runTest(eyes, innerDriver, viewportSize) {
     const config = new Config();
 
     eyes.open(innerDriver, config.AppName, config.SiteName, viewportSize)
-        .then(function (driver){ 
+        .then(function (driver) { 
             
             try{
 
