@@ -40,7 +40,7 @@ export type ReferenceResolver = <T>(reference: T) => void;
  * render function as-is. It is advised that these props map to valid HTML attributes - otherwise you will likely have HTML errors.
  * @param S - The state interface of the component.
  */
-class Foundation<H, U, S> extends React.Component<H & U & IFoundationProps, S> {
+abstract class Foundation<H, U, S> extends React.Component<H & U & IFoundationProps, S> {
     /**
      * The props that should never be passed to the root element by unhandled props
      */
