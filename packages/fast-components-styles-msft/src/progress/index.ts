@@ -1,13 +1,13 @@
 import designSystemDefaults, { IDesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
-import { IMSFTProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { IProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { ensureBrandNormal, largeContrast } from "../utilities/colors";
 import { get } from "lodash";
 import { toPx } from "@microsoft/fast-jss-utilities";
 
-const styles: ComponentStyles<IMSFTProgressClassNameContract, IDesignSystem> = (
+const styles: ComponentStyles<IProgressClassNameContract, IDesignSystem> = (
     config: IDesignSystem
-): ComponentStyleSheet<IMSFTProgressClassNameContract, IDesignSystem> => {
+): ComponentStyleSheet<IProgressClassNameContract, IDesignSystem> => {
     const designSystem: IDesignSystem = withDesignSystemDefaults(config);
     const brandColor: string = ensureBrandNormal(config);
     const determinateBackgroundColor: string = largeContrast(designSystem.contrast, designSystem.backgroundColor, brandColor);

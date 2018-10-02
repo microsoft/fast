@@ -5,7 +5,7 @@ import {
     IButtonManagedClasses as IBaseButtonManagedClasses,
     IButtonUnhandledProps as IBaseButtonUnhandledProps
 } from "@microsoft/fast-components-react-base";
-import { IManagedClasses, IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { IManagedClasses, IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 
 export enum ButtonAppearance {
     justified= "justified",
@@ -14,7 +14,7 @@ export enum ButtonAppearance {
     primary= "primary",
 }
 
-export interface IButtonManagedClasses extends IManagedClasses<IMSFTButtonClassNameContract> {}
+export interface IButtonManagedClasses extends IManagedClasses<IButtonClassNameContract> {}
 export interface IButtonHandledProps extends IButtonManagedClasses,
     Subtract<IBaseButtonHandledProps, IBaseButtonManagedClasses> {
 

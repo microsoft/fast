@@ -4,11 +4,11 @@ import {
     IProgressManagedClasses as IBaseProgressManagedClasses,
     IProgressUnhandledProps as IBaseProgressUnhandledProps
 } from "@microsoft/fast-components-react-base";
-import { IManagedClasses, IMSFTProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { IManagedClasses, IProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { Subtract } from "utility-types";
 
 /* tslint:disable:no-empty-interface */
-export interface IProgressManagedClasses extends IManagedClasses<IMSFTProgressClassNameContract> {}
+export interface IProgressManagedClasses extends IManagedClasses<IProgressClassNameContract> {}
 export interface IProgressHandledProps extends Subtract<IBaseProgressHandledProps, IBaseProgressManagedClasses>, IProgressManagedClasses {}
 export interface IProgressUnhandledProps extends IBaseProgressHandledProps {}
 /* tslint:enable:no-empty-interface */

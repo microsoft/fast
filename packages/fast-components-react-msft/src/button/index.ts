@@ -1,9 +1,5 @@
 import * as React from "react";
-import { IFoundationProps } from "@microsoft/fast-components-foundation-react";
-import {
-    IButtonClassNameContract,
-} from "@microsoft/fast-components-react-base";
-import { IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { IJSSManagerProps, JSSManagerProps } from "@microsoft/fast-jss-manager-react";
 import { ButtonStyles, IDesignSystem } from "@microsoft/fast-components-styles-msft";
 import MSFTButton, {

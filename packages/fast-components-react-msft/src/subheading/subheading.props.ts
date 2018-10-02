@@ -1,7 +1,7 @@
 import * as React from "react";
 import { IManagedClasses, ISubheadingClassNameContract  } from "@microsoft/fast-components-class-name-contracts-msft";
 
-export enum SubheadingLevel {
+export enum SubheadingSize {
     _1 = 1,
     _2 = 2,
     _3 = 3,
@@ -31,7 +31,7 @@ export interface ISubheadingHandledProps extends ISubheadingManagedClasses {
     /**
      * The visual size (type level) which aligns to a type ramp instance
      */
-    size?: SubheadingLevel;
+    size?: SubheadingSize;
 
     /**
      * The subheading tag used to create the underlying html element

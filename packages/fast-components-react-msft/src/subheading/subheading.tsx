@@ -6,8 +6,8 @@ import {
     ISubheadingHandledProps,
     ISubheadingManagedClasses,
     ISubheadingUnhandledProps,
-    SubheadingLevel,
     SubheadingProps,
+    SubheadingSize,
     SubheadingTag
 } from "./subheading.props";
 
@@ -20,7 +20,7 @@ class Subheading extends Foundation<
     {}
 > {
     public static defaultProps: Partial<SubheadingProps> = {
-        size: SubheadingLevel._1,
+        size: SubheadingSize._1,
         tag: SubheadingTag.h3
     };
 
@@ -34,17 +34,17 @@ class Subheading extends Foundation<
 
     private get size(): TypographySize {
         switch (this.props.size) {
-            case SubheadingLevel._1:
+            case SubheadingSize._1:
                 return TypographySize._3;
-            case SubheadingLevel._2:
+            case SubheadingSize._2:
                 return TypographySize._4;
-            case SubheadingLevel._3:
+            case SubheadingSize._3:
                 return TypographySize._5;
-            case SubheadingLevel._4:
+            case SubheadingSize._4:
                 return TypographySize._6;
-            case SubheadingLevel._5:
+            case SubheadingSize._5:
                 return TypographySize._7;
-            case SubheadingLevel._6:
+            case SubheadingSize._6:
                 return TypographySize._8;
         }
     }
