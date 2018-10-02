@@ -18,6 +18,7 @@
     "integration-tests:release": "node build/testing/sauce-labs/test-browsers.js release"
   },
   "devDependencies": {
+    "@applitools/eyes.cypress": "^3.0.24",
     "@types/node": "^9.4.7",
     "dotenv": "^6.0.0",
     "eyes.selenium": "0.0.83",
