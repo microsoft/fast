@@ -1,6 +1,6 @@
 import * as React from "react";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { Label, LabelTag, LabelProps } from "./index";
+import { Label, LabelProps, LabelTag } from "./index";
 import schema from "@microsoft/fast-components-react-base/dist/label/label.schema.json";
 import Documentation from "./.tmp/documentation";
 
