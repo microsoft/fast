@@ -20,6 +20,12 @@
  * 
  * - Cirlce CI has these values included as environment variables. 
  * - The api key can be found in the portal on Applitools.
+ * 
+ * Selenium WebDriver Dependencies:
+ * 1. chromedriver.exe is required to be downloaded (https://chromedriver.storage.googleapis.com/index.html) and placed in `./applitools/` folder
+ * 2. geckodriver.exe is required to be downloaded (https://github.com/mozilla/geckodriver/releases/tag/v0.22.0) and placed in `./applitools/` folder
+ * For additional drivers visit: https://www.seleniumhq.org/download/ 
+ * 
  */
 
 "use strict";
