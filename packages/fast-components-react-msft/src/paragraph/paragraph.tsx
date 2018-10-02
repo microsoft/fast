@@ -7,8 +7,8 @@ import {
     IParagraphHandledProps,
     IParagraphManagedClasses,
     IParagraphUnhandledProps,
-    ParagraphLevel,
-    ParagraphProps
+    ParagraphProps,
+    ParagraphSize
 } from "./paragraph.props";
 import { Typography } from "../typography";
 import { IManagedClasses, IParagraphClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
@@ -19,7 +19,7 @@ class Paragraph extends Foundation<
     {}
 > {
     public static defaultProps: Partial<ParagraphProps> = {
-        size: ParagraphLevel._3
+        size: ParagraphSize._3
     };
 
     public static displayName: string = "Paragraph";
@@ -60,9 +60,9 @@ class Paragraph extends Foundation<
      */
     private get size(): TypographySize {
         switch (this.props.size) {
-            case ParagraphLevel._1:
+            case ParagraphSize._1:
                 return TypographySize._5;
-            case ParagraphLevel._2:
+            case ParagraphSize._2:
                 return TypographySize._6;
             default:
                 return TypographySize._7;
