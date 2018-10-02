@@ -4,7 +4,7 @@ import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { TypographySize, TypographyTag } from "@microsoft/fast-components-react-base";
 import {
-    AlignHeadingBaseline,
+    HeadingAlignBaseline,
     IHeadingHandledProps,
     IHeadingManagedClasses,
     IHeadingUnhandledProps

@@ -2,7 +2,7 @@ import * as React from "react";
 import { IManagedClasses, IToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 
 export interface IToggleManagedClasses extends IManagedClasses<IToggleClassNameContract> {}
-export interface IToggleUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
+export interface IToggleUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
 export interface IToggleHandledProps extends IToggleManagedClasses {
     /**
      * The label content

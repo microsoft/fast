@@ -1,15 +1,11 @@
 import * as React from "react";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { Heading } from "./index";
 import {
-    AlignHeadingBaseline,
+    Heading,
     HeadingProps,
     HeadingSize,
-    HeadingTag,
-    IHeadingHandledProps,
-    IHeadingManagedClasses,
-    IHeadingUnhandledProps
-} from "./heading.props";
+    HeadingTag
+} from "./index";
 import schema from "./heading.schema.json";
 import Documentation from "./.tmp/documentation";
 
@@ -64,4 +60,4 @@ export default {
             "data-sketch-symbol": "Heading 6"
         }
     ]
-} as IComponentFactoryExample<IHeadingHandledProps>;
+} as IComponentFactoryExample<HeadingProps>;

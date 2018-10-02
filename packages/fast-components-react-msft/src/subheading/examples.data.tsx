@@ -1,13 +1,7 @@
 import * as React from "react";
 import { IComponentFactoryExample  } from "@microsoft/fast-development-site-react";
-import { Subheading } from "./index";
-import {
-    ISubheadingHandledProps,
-    ISubheadingUnhandledProps,
-    SubheadingSize,
-    SubheadingTag
-} from "./subheading.props";
-import Schema from "./subheading.schema.json";
+import { Subheading, SubheadingProps, SubheadingSize, SubheadingTag } from "./index";
+import schema from "./subheading.schema.json";
 import Documentation from "./.tmp/documentation";
 
 const testString: string = "Subheading test string";
@@ -15,7 +9,7 @@ const testString: string = "Subheading test string";
 export default {
     name: "Subheading",
     component: Subheading,
-    schema: Schema as any,
+    schema: schema as any,
     documentation: <Documentation />,
     detailData: {
         children: "Subheading"
@@ -66,4 +60,4 @@ export default {
             "data-sketch-symbol": "Subheading 6"
         }
     ]
-} as IComponentFactoryExample<ISubheadingHandledProps>;
+} as IComponentFactoryExample<SubheadingProps>;

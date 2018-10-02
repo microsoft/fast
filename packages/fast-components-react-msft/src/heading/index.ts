@@ -2,6 +2,7 @@ import * as React from "react";
 import { IFoundationProps } from "@microsoft/fast-components-foundation-react";
 import { IHeadingClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import MSFTHeading, {
+    HeadingAlignBaseline,
     HeadingProps as MSFTHeadingProps,
     HeadingSize,
     HeadingTag,
@@ -25,6 +26,7 @@ interface IHeadingHandledProps extends Subtract<IMSFTHeadingHandledProps, IHeadi
 type HeadingProps = JSSManagerProps<MSFTHeadingProps, IHeadingClassNameContract, IDesignSystem>;
 
 export {
+    HeadingAlignBaseline,
     Heading,
     HeadingProps,
     HeadingSize,

@@ -1,7 +1,6 @@
 import * as React from "react";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { Typography } from "./index";
-import { ITypographyHandledProps, ITypographyManagedClasses, TypographySize, TypographyTag } from "@microsoft/fast-components-react-base";
+import { Typography, TypographyProps, TypographySize, TypographyTag  } from "./index";
 import schema from "@microsoft/fast-components-react-base/dist/typography/typography.schema.json";
 import Documentation from "./.tmp/documentation";
 
@@ -74,4 +73,4 @@ export default {
             "data-sketch-symbol": "Typographic size 9"
         }
     ]
-} as IComponentFactoryExample<ITypographyHandledProps>;
+} as IComponentFactoryExample<TypographyProps>;

@@ -1,7 +1,6 @@
 import * as React from "react";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { Label } from "./index";
-import { ILabelHandledProps, LabelTag } from "@microsoft/fast-components-react-base";
+import { Label, LabelTag, LabelProps } from "./index";
 import schema from "@microsoft/fast-components-react-base/dist/label/label.schema.json";
 import Documentation from "./.tmp/documentation";
 
@@ -30,4 +29,4 @@ export default {
             children: "Hidden label"
         }
     ]
-} as IComponentFactoryExample<ILabelHandledProps>;
+} as IComponentFactoryExample<LabelProps>;

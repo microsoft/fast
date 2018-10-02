@@ -2,7 +2,7 @@ import * as React from "react";
 import { ITypographyUnhandledProps } from "../typography";
 import { IHeadingClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
 
-export enum AlignHeadingBaseline {
+export enum HeadingAlignBaseline {
     small = "small",
     large = "large"
 }
