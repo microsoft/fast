@@ -155,7 +155,7 @@ class Tabs extends Foundation<
             {
                 key: tabItem.props.id,
                 "aria-controls": tabItem.props.id,
-                "aria-selected": this.state.activeId === tabItem.props.id,
+                active: this.state.activeId === tabItem.props.id,
                 onClick: this.handleClick,
                 onKeyDown: this.handleKeyDown,
                 tabIndex: this.state.activeId !== tabItem.props.id ? -1 : 0
@@ -183,7 +183,7 @@ class Tabs extends Foundation<
                     key: tabItem.props.id,
                     id: tabItem.props.id,
                     "aria-labelledby": tabItem.props.id,
-                    "aria-hidden": this.state.activeId !== tabItem.props.id
+                    active: this.state.activeId === tabItem.props.id
                 }
             );
     }

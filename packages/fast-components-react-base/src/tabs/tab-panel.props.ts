@@ -10,6 +10,11 @@ export interface ITabPanelHandledProps {
     slot: TabsSlot.tabPanel | string;
 
     /**
+     * The tab-panel active state
+     */
+    active?: boolean;
+
+    /**
      * The tab-panel content
      */
     children?: React.ReactNode | React.ReactNode[];
