@@ -1,8 +1,6 @@
 import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import examples from "./examples.data";
-import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import { ButtonHTMLTags } from "@microsoft/fast-components-react-base";
 import { IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import MSFTButton, {
@@ -19,10 +17,6 @@ import { Button } from "./index";
  * Configure Enzyme
  */
 configure({adapter: new Adapter()});
-
-describe("button snapshots", (): void => {
-    generateSnapshots(examples);
-});
 
 describe("button", (): void => {
     const href: string = "https://www.microsoft.com";

@@ -14,7 +14,10 @@
     "reactProperties": {
         "children": {
             "title": "Building blocks",
-            "type": "children"
+            "type": "children",
+            "defaults": [
+                "text"
+            ]
         }
     },
     "required": [

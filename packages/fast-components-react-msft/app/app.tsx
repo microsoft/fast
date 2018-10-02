@@ -23,11 +23,12 @@ import { Direction } from "@microsoft/fast-application-utilities";
 import * as examples from "./examples";
 import { Hypertext } from "../src/hypertext";
 import ColorPicker, { IColorConfig } from "./color-picker";
+import reactHTMLElementExamples from "./components/examples.data";
 
 /* tslint:disable-next-line */
 const sketchDesignKit = require("./fast-dna-msft-design-kit.sketch");
 
-const formChildOptions: IFormChildOption[] = formChildFromExamplesFactory(examples);
+const formChildOptions: IFormChildOption[] = [reactHTMLElementExamples].concat(formChildFromExamplesFactory(examples));
 
 const hypertextStyles: ComponentStyles<IHypertextClassNameContract, undefined> = {
     hypertext: {

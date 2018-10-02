@@ -346,7 +346,10 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
 
                 items.push(this.generateChildOptionText(item));
             }
-        } else if (typeof this.props.data === "object" && this.props.data !== null) {
+        } else if (
+            (typeof this.props.data === "object" && this.props.data !== null)
+            || typeof this.props.data === "string"
+        ) {
             items.push(this.generateChildOptionText(this.props.data));
         }
 

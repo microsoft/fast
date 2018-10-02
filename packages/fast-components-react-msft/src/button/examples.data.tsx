@@ -12,18 +12,24 @@ import {
 import schema from "./button.schema.json";
 import Documentation from "./.tmp/documentation";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
+import ReactHTMLElementSchema from "../../app/components/react-html-element.schema.json";
+import { ButtonSlot } from "./button";
 
-const beforeSlotExample: JSX.Element = (
-    <div slot="before">
-        {"<"}
-    </div>
-);
+const beforeSlotExample: any = {
+    id: ReactHTMLElementSchema.id,
+    props: {
+        slot: ButtonSlot.before,
+        children: "<"
+    }
+};
 
-const afterSlotExample: JSX.Element = (
-    <div slot="after">
-        {">"}
-    </div>
-);
+const afterSlotExample: any = {
+    id: ReactHTMLElementSchema.id,
+    props: {
+        slot: ButtonSlot.after,
+        children: ">"
+    }
+};
 
 export default {
     name: "Button",

@@ -1,12 +1,16 @@
 {
     "$schema": "http://json-schema.org/schema#",
-    "title": "Hypertext",
-    "description": "A hypertext component's schema definition.",
+    "title": "HTML Element",
+    "description": "An arbitrary HTML element component's schema definition.",
+    "id": "react-html-element",
     "type": "object",
-    "id": "hypertext",
     "properties": {
-        "href": {
-            "title": "HTML href attribute",
+        "slot": {
+            "title": "Slot",
+            "type": "string"
+        },
+        "tag": {
+            "title": "HTML Tag",
             "type": "string"
         }
     },
