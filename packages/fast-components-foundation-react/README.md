@@ -1,5 +1,5 @@
 # FAST Components Foundation React
-The foundation for FAST packages with components in React. The default export is an extension from the `React.Component`.
+The foundation component for FAST component packages in React. The default export is an extension from the `React.Component` and includes additional functionality for extension by React component libraries.
 
 ## Installation
 `npm i --save @microsoft/fast-components-foundation-react`
@@ -20,7 +20,9 @@ class MyComponent extends Foundation {
 export default MyComponent;
 ```
 
-### Unhanded props
+### Unhandled props
+A method which allows any property that has not been specified by the component extending `Foundation` to be accessed, eg. `onClick`, `aria` and datasets.
+
 Component example:
 ```jsx
 class MyComponent extends Foundation {
