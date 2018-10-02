@@ -3,7 +3,7 @@ import manageJss, { ComponentStyles, ICSSRules, IJSSManagerProps } from "@micros
 import BreakpointTracker from "../utilities/breakpoint-tracker";
 import { getValueByBreakpoint } from "../utilities/breakpoints";
 import { GridAlignment, GridProps, GridTag, IGridHandledProps } from "./grid.props";
-import Foundation, { IFoundationProps } from "../foundation";
+import Foundation, { HandledProps, IFoundationProps } from "@microsoft/fast-components-foundation-react";
 import Column from "../column";
 
 export interface IGridClassNamesContract {
@@ -17,7 +17,11 @@ const styles: ComponentStyles<IGridClassNamesContract, undefined> = {
     }
 };
 
-class Grid extends Foundation<GridProps, {}> {
+class Grid extends Foundation<
+    GridProps,
+    React.HTMLAttributes<HTMLDivElement>,
+    {}
+> {
     /**
      * Stores HTML tag for use in render
      */
@@ -33,7 +37,7 @@ class Grid extends Foundation<GridProps, {}> {
         horizontalAlign: GridAlignment.stretch
     };
 
-    protected handledProps: GridProps = {
+    protected handledProps: HandledProps<GridProps> = {
         columnCount: void 0,
         gridColumn: void 0,
         gutter: void 0,

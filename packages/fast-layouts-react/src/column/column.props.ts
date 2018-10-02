@@ -30,4 +30,4 @@ export interface IColumnHandledProps {
     gutter?: GridGutter;
 }
 
-export type ColumnProps = IColumnHandledProps & IManagedClasses<IColumnClassNamesContract> & React.HTMLAttributes<HTMLDivElement>;
+export type ColumnProps = IColumnHandledProps & IManagedClasses<IColumnClassNamesContract>;

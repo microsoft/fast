@@ -1,5 +1,5 @@
 import * as React from "react";
-import Foundation, { HandledProps } from "../foundation";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { ITabItemHandledProps, ITabItemUnhandledProps } from "./tab-item.props";
 
 class TabItem extends Foundation<

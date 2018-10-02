@@ -57,6 +57,5 @@ export interface IPaneHandledProps {
     resizeFrom?: PaneResizeDirection;
 }
 
-export interface IPaneUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
 export interface IPaneManagedClasses extends IManagedClasses<IPaneClassNamesContract> {}
-export type PaneProps = IPaneHandledProps & IPaneUnhandledProps & IPaneManagedClasses;
+export type PaneProps = IPaneHandledProps & IPaneManagedClasses;

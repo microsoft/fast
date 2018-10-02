@@ -2,10 +2,8 @@ import * as React from "react";
 import { IMSFTProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
 import { IDesignSystem, ProgressStyles } from "@microsoft/fast-components-styles-msft";
-import {
-    IFoundationProps,
-    IProgressClassNameContract
-} from "@microsoft/fast-components-react-base";
+import { IFoundationProps } from "@microsoft/fast-components-foundation-react";
+import { IProgressClassNameContract } from "@microsoft/fast-components-react-base";
 import MSFTProgress, {
     IMSFTProgressHandledProps,
     IMSFTProgressManagedClasses,

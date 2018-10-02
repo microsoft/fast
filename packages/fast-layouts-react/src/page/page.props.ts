@@ -14,4 +14,4 @@ export interface IPageHandledProps {
     maxWidth?: string;
 }
 
-export type PageProps = IPageHandledProps & IManagedClasses<IPageClassNamesContract> & React.HTMLAttributes<HTMLDivElement>;
+export type PageProps = IPageHandledProps & IManagedClasses<IPageClassNamesContract>;

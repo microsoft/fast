@@ -9,6 +9,5 @@ export interface ICanvasHandledProps {
     minWidth?: number;
 }
 
-export interface ICanvasUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
 export interface ICanvasManagedClasses extends IManagedClasses<ICanvasClassNamesContract> {}
-export type CanvasProps = ICanvasHandledProps & ICanvasUnhandledProps & ICanvasManagedClasses;
+export type CanvasProps = ICanvasHandledProps & ICanvasManagedClasses;
