@@ -15,9 +15,8 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
-      "build": "tsc -p ./tsconfig.json && npm run copy:json-schema",
+      "build": "tsc -p ./tsconfig.json",
       "clean:dist": "node ../../build/clean.js dist",
-      "copy:json-schema": "node ../../build/copy-schemas.js",
       "prepare": "npm run clean:dist && npm run build",
       "test": "npm run tslint && npm run unit-tests",
       "tslint": "tslint -c ./tslint.json 'src/**/*.ts{,x}' '**/*.ts{,x}'",
@@ -74,12 +73,9 @@
       "ts-jest": "^22.4.1",
       "ts-loader": "^4.0.1",
       "tslint": "^5.9.1",
-      "tslint-loader": "^3.6.0",
-      "typescript": "^3.0.1",
-      "yargs": "^11.0.0"
+      "typescript": "^3.0.1"
     },
     "peerDependencies": {
-      "exenv-es6": "^1.0.0",
       "lodash-es": "^4.0.0",
       "react": "^16.3.0",
       "react-dom": "^16.3.0"
