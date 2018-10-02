@@ -34,7 +34,7 @@
       "global": {
         "statements": 71,
         "branches": 66,
-        "functions": 83,
+        "functions": 80,
         "lines": 71
       }
     },
@@ -61,6 +61,7 @@
     ]
   },
   "devDependencies": {
+    "@microsoft/fast-components-foundation-react": "^1.0.0",
     "@microsoft/fast-tslint-rules": "^2.2.0",
     "@types/jest": "^22.2.0",
     "@types/lodash-es": "^4.17.0",
@@ -88,6 +89,7 @@
     "webpack-dev-server": "^3.1.4"
   },
   "peerDependencies": {
+    "@microsoft/fast-components-foundation-react": "^1.0.0",
     "exenv-es6": "^1.0.0",
     "lodash-es": "^4.0.0",
     "raf-throttle": "^2.0.3",

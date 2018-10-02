@@ -1,6 +1,6 @@
 import * as React from "react";
 import { get } from "lodash-es";
-import Foundation, { HandledProps } from "../foundation";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { IManagedClasses, ITabPanelClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { ITabPanelHandledProps, ITabPanelManagedClasses, ITabPanelUnhandledProps, TabPanelProps } from "./tab-panel.props";
 

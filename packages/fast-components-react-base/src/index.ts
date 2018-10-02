@@ -26,10 +26,6 @@ import Hypertext from "./hypertext";
 export { Hypertext };
 export * from "./hypertext";
 
-import Foundation from "./foundation";
-export { Foundation };
-export * from "./foundation";
-
 import Image from "./image";
 export {Image};
 export * from "./image";

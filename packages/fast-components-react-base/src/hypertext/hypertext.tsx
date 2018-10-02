@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import Foundation, { HandledProps } from "../foundation";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { IHypertextHandledProps, IHypertextManagedClasses, IHypertextUnhandledProps } from "./hypertext.props";
 import { IHypertextClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";

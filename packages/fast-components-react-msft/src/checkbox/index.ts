@@ -1,10 +1,10 @@
 import * as React from "react";
+import { IFoundationProps } from "@microsoft/fast-components-foundation-react";
 import {
     Checkbox as BaseCheckbox,
     ICheckboxClassNameContract,
     ICheckboxHandledProps,
-    ICheckboxUnhandledProps,
-    IFoundationProps
+    ICheckboxUnhandledProps
 } from "@microsoft/fast-components-react-base";
 import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
 import { CheckboxStyles, IDesignSystem } from "@microsoft/fast-components-styles-msft";

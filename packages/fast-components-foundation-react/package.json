@@ -1,0 +1,84 @@
+{
+    "name": "@microsoft/fast-components-foundation-react",
+    "description": "FAST component foundation implemented in React.",
+    "sideEffects": false,
+    "version": "1.0.0",
+    "author": {
+      "name": "Microsoft",
+      "url": "https://discord.gg/FcSNfg4"
+    },
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/Microsoft/fast-dna.git"
+    },
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+      "build": "tsc -p ./tsconfig.json",
+      "clean:dist": "node ../../build/clean.js dist",
+      "prepare": "npm run clean:dist && npm run build",
+      "test": "npm run tslint && npm run unit-tests",
+      "tslint": "tslint -c ./tslint.json 'src/**/*.ts{,x}' '**/*.ts{,x}'",
+      "tslint:fix": "tslint -c ./tslint.json --fix 'src/**/*.ts{,x}' '**/*.ts{,x}'",
+      "unit-tests": "jest --maxWorkers=4 --env=jsdom",
+      "unit-tests:watch": "jest --watch",
+      "watch": "tsc -p ./tsconfig -w --preserveWatchOutput"
+    },
+    "jest": {
+      "collectCoverage": true,
+      "coverageThreshold": {
+        "global": {
+          "statements": 80,
+          "branches": 80,
+          "functions": 80,
+          "lines": 80
+        }
+      },
+      "testURL": "http://localhost",
+      "transform": {
+        "^.+\\.tsx?$": "ts-jest",
+        "^.+\\.jsx?$": "babel-jest"
+      },
+      "transformIgnorePatterns": [
+        "!<rootDir>/node_modules/lodash-es"
+      ],
+      "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+      "moduleFileExtensions": [
+        "ts",
+        "tsx",
+        "js",
+        "jsx"
+      ]
+    },
+    "devDependencies": {
+      "@microsoft/fast-tslint-rules": "^2.2.0",
+      "@types/jest": "^22.2.0",
+      "@types/lodash-es": "^4.17.0",
+      "@types/node": "^9.4.6",
+      "@types/react": "^16.3.6",
+      "babel-core": "^6.26.0",
+      "babel-jest": "^22.4.1",
+      "babel-preset-env": "^1.6.1",
+      "babel-preset-react": "^6.24.1",
+      "enzyme": "^3.3.0",
+      "enzyme-adapter-react-16": "^1.1.1",
+      "exenv-es6": "^1.0.0",
+      "jest": "^22.4.2",
+      "jsdom-global": "^3.0.2",
+      "lodash-es": "^4.0.0",
+      "react": "^16.3.0",
+      "react-dom": "^16.3.0",
+      "react-test-renderer": "^16.3.0",
+      "ts-jest": "^22.4.1",
+      "ts-loader": "^4.0.1",
+      "tslint": "^5.9.1",
+      "typescript": "^3.0.1"
+    },
+    "peerDependencies": {
+      "lodash-es": "^4.0.0",
+      "react": "^16.3.0",
+      "react-dom": "^16.3.0"
+    }
+  }
+  

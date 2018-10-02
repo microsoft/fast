@@ -2,7 +2,7 @@ import * as React from "react";
 import { get } from "lodash-es";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 import { IManagedClasses, ITabsClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import Foundation, { HandledProps } from "../foundation";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { ITabsHandledProps, ITabsManagedClasses, ITabsUnhandledProps, TabsProps } from "./tabs.props";
 
 export enum TabLocation {

@@ -1,7 +1,7 @@
 import * as React from "react";
-import { CanvasProps, ICanvasHandledProps, ICanvasUnhandledProps } from "./canvas.props";
+import { CanvasProps, ICanvasHandledProps } from "./canvas.props";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
-import Foundation, { IFoundationProps } from "../foundation";
+import Foundation, { HandledProps, IFoundationProps } from "@microsoft/fast-components-foundation-react";
 
 export interface ICanvasClassNamesContract {
     canvas: string;
@@ -17,7 +17,11 @@ const styles: ComponentStyles<ICanvasClassNamesContract, undefined> = {
 /**
  * Grid Canvas - this is the main content area of the grid.
  */
-class Canvas extends Foundation<CanvasProps, undefined> {
+class Canvas extends Foundation<
+    CanvasProps,
+    React.HTMLAttributes<HTMLDivElement>,
+    undefined
+> {
     /**
      * Default props for the Canvas component
      */
@@ -28,7 +32,7 @@ class Canvas extends Foundation<CanvasProps, undefined> {
     /**
      * Handled prop enumeration
      */
-    protected handledProps: ICanvasHandledProps & IManagedClasses<ICanvasClassNamesContract> = {
+    protected handledProps: HandledProps<CanvasProps> = {
         minWidth: void 0,
         managedClasses: void 0
     };

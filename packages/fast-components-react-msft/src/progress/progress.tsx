@@ -1,11 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
-import {
-    Foundation,
-    HandledProps,
-    ProgressType
-} from "@microsoft/fast-components-react-base";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { ProgressType } from "@microsoft/fast-components-react-base";
 import {
     IMSFTProgressHandledProps,
     IMSFTProgressManagedClasses,
