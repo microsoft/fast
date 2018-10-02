@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IFoundationProps } from "@microsoft/fast-components-react-base";
+import { IFoundationProps } from "@microsoft/fast-components-foundation-react";
 import { ISubheadingClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import MSFTSubheading, {
     ISubheadingHandledProps,

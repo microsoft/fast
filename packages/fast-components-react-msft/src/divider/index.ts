@@ -1,10 +1,10 @@
 import * as React from "react";
+import { IFoundationProps } from "@microsoft/fast-components-foundation-react";
 import {
     Divider as BaseDivider,
     IDividerClassNameContract,
     IDividerHandledProps,
-    IDividerUnhandledProps,
-    IFoundationProps
+    IDividerUnhandledProps
 } from "@microsoft/fast-components-react-base";
 import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
 import { DividerStyles, IDesignSystem } from "@microsoft/fast-components-styles-msft";

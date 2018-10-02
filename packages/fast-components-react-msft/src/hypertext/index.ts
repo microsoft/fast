@@ -1,7 +1,7 @@
 import * as React from "react";
+import { IFoundationProps } from "@microsoft/fast-components-foundation-react";
 import {
     Hypertext as BaseHypertext,
-    IFoundationProps,
     IHypertextClassNameContract,
     IHypertextHandledProps,
     IHypertextUnhandledProps

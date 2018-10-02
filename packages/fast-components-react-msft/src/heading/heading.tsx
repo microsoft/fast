@@ -1,7 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
-import { Foundation, HandledProps, TypographySize, TypographyTag } from "@microsoft/fast-components-react-base";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { TypographySize, TypographyTag } from "@microsoft/fast-components-react-base";
 import {
     AlignHeadingBaseline,
     IHeadingHandledProps,

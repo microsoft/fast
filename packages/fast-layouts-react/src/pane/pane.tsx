@@ -1,11 +1,11 @@
 import * as React from "react";
 import { throttle } from "lodash-es";
-import { IPaneHandledProps, IPaneUnhandledProps, PaneProps, PaneResizeDirection } from "./pane.props";
+import { IPaneHandledProps, PaneProps, PaneResizeDirection } from "./pane.props";
 import { west } from "../row";
 import rafThrottle from "raf-throttle";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
-import Foundation, { IFoundationProps } from "../foundation";
+import Foundation, { HandledProps, IFoundationProps } from "@microsoft/fast-components-foundation-react";
 import { canUseDOM } from "exenv-es6";
 import { joinClasses } from "../utilities";
 
@@ -83,7 +83,11 @@ const paneStyleSheet: ComponentStyles<IPaneClassNamesContract, undefined> = {
     }
 };
 
-class Pane extends Foundation<PaneProps, IPaneState> {
+class Pane extends Foundation<
+    PaneProps,
+    React.HTMLAttributes<HTMLDivElement>,
+    IPaneState
+> {
     /**
      * The default props of the Pane component
      */
@@ -104,7 +108,7 @@ class Pane extends Foundation<PaneProps, IPaneState> {
     /**
      * All handled props
      */
-    protected handledProps: IPaneHandledProps & IManagedClasses<IPaneClassNamesContract> = {
+    protected handledProps: HandledProps<PaneProps> = {
         minWidth: void 0,
         maxWidth: void 0,
         width: void 0,

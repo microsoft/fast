@@ -1,7 +1,7 @@
 import * as React from "react";
 import { get } from "lodash-es";
 import { IManagedClasses, ITabClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import Foundation, { HandledProps } from "../foundation";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { ITabHandledProps, ITabManagedClasses, ITabUnhandledProps, TabProps } from "./tab.props";
 
 class Tab extends Foundation<

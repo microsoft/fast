@@ -68,5 +68,4 @@ export interface IRowHandledProps {
 }
 
 export interface IRowManagedClasses extends IManagedClasses<IRowClassNamesContract> {}
-export interface IRowUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
-export type RowProps = IRowHandledProps & IRowUnhandledProps & IRowManagedClasses;
+export type RowProps = IRowHandledProps & IRowManagedClasses;

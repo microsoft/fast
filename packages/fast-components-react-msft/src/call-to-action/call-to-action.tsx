@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Foundation, HandledProps } from "@microsoft/fast-components-react-base";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { Button } from "../button/index";
 import { ButtonAppearance, IMSFTButtonClassNameContract } from "../button/button";
 import { CallToActionAppearance, ICallToActionHandledProps } from "./call-to-action.props";
