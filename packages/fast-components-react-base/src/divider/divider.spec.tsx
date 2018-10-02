@@ -16,10 +16,6 @@ import Divider, {
     DividerUnhandledProps,
 } from "./divider";
 
-describe("divider snapshot", (): void => {
-    generateSnapshots(examples as SnapshotTestSuite<DividerProps>);
-});
-
 configure({ adapter: new Adapter() });
 
 describe("divider", (): void => {

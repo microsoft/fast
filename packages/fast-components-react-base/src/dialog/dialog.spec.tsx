@@ -100,23 +100,6 @@ describe("dialog", (): void => {
         expect(onDismiss).toHaveBeenCalledTimes(1);
     });
 
-    test("should call the `onDismiss` callback when modal overlay is clicked and `visible` prop is true", () => {
-        const onDismiss: any = jest.fn();
-
-        const rendered: any = shallow(
-            <Dialog
-                managedClasses={managedClasses}
-                modal={true}
-                visible={true}
-                onDismiss={onDismiss}
-            />
-        );
-
-        rendered.find(".dialog-modal-overlay-class").simulate("click");
-
-        expect(onDismiss).toHaveBeenCalledTimes(1);
-    });
-
     test("should remove keydown event listener for the `onDismiss` callback when component unmounts", () => {
         const onDismiss: any = jest.fn();
         const map: any = {};
