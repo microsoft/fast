@@ -42,7 +42,6 @@ plugins:
     config:
       strings:
       - HACK
-      - TODO
   markdownlint:
     enabled: false
 exclude_patterns:
