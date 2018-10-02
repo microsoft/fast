@@ -9,6 +9,7 @@ const classes: IRadioManagedClasses = {
         radio: "radio",
         radio__disabled: "radio__disabled",
         radio_input: "radio_input",
+        radio_label: "radio_label",
         radio_stateIndicator: "radio_stateIndicator"
     }
 };

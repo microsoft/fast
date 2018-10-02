@@ -85,7 +85,11 @@ const styles: ComponentStyles<IRadioClassNameContract, IDesignSystem> = (config:
             "& $radio_input": {
                 boxShadow: `inset 0 0 0 1px ${radioDisabled}`
             },
+            "& $radio_label": {
+                color: radioDisabled
+            }
         },
+        radio_label: {}
     };
 };
 

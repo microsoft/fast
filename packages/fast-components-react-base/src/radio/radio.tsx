@@ -43,7 +43,7 @@ class Radio extends Foundation<IRadioHandledProps & IRadioManagedClasses, IRadio
                     {...this.generateChecked()}
                 />
                 <span className={get(this.props, "managedClasses.radio_stateIndicator")} />
-                {this.withSlot(RadioSlot.label)}
+                {this.renderChildrenWithSlot(RadioSlot.label)}
             </div>
         );
     }
@@ -57,6 +57,26 @@ class Radio extends Foundation<IRadioHandledProps & IRadioManagedClasses, IRadio
         classes = this.props.disabled ? `${classes} ${get(this.props, "managedClasses.radio__disabled")}` : classes;
 
         return super.generateClassNames(classes);
+    }
+
+    private renderChildrenWithSlot(slot: RadioSlot): React.ReactChild[] {
+        const node: React.ReactNode = this.withSlot(RadioSlot.label);
+
+        return React.Children.map(node, (child: JSX.Element, index: number) => {
+            let labelSlotClassName: string = get(this.props, "managedClasses.radio_label");
+            const classNameKey: string = "className";
+
+            if (child.props[classNameKey] !== undefined) {
+                labelSlotClassName = `${child.props[classNameKey]} ${labelSlotClassName}`;
+            }
+
+            const childWithClass: JSX.Element = React.cloneElement(child, {className: labelSlotClassName});
+            return (
+                <React.Fragment key={index}>
+                    {childWithClass}
+                </React.Fragment>
+            );
+        });
     }
 
     private generateChecked(): any {
