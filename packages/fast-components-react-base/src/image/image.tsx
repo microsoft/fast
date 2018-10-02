@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
-import Foundation, { HandledProps } from "../foundation";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { IImageHandledProps, IImageManagedClasses, IImageUnhandledProps } from "./image.props";
 import { IImageClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 

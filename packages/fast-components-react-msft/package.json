@@ -114,6 +114,7 @@
   "dependencies": {
     "@microsoft/fast-application-utilities": "^2.2.0",
     "@microsoft/fast-components-class-name-contracts-msft": "^2.3.0",
+    "@microsoft/fast-components-foundation-react": "^1.0.0",
     "@microsoft/fast-components-react-base": "^2.4.0",
     "@microsoft/fast-components-styles-msft": "^2.3.2",
     "@microsoft/fast-glyphs-msft": "^2.3.0",
