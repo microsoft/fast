@@ -2,14 +2,14 @@ import * as React from "react";
 import { get } from "lodash-es";
 import { IManagedClasses, ITabClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "../foundation";
-import { ITabHandledProps, ITabManagedClasses, ITabUnhandledProps } from "./tab.props";
+import { ITabHandledProps, ITabManagedClasses, ITabUnhandledProps, TabProps } from "./tab.props";
 
 class Tab extends Foundation<
     ITabHandledProps & ITabManagedClasses,
     ITabUnhandledProps,
     {}
 > {
-    public static defaultProps: Partial<ITabHandledProps> = {
+    public static defaultProps: Partial<TabProps> = {
         active: false
     };
 
