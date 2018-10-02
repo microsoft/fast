@@ -1,0 +1,1 @@
+require("@applitools/eyes.cypress")(module);
