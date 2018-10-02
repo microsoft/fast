@@ -19,6 +19,8 @@
   },
   "devDependencies": {
     "@types/node": "^9.4.7",
+    "dotenv": "^6.0.0",
+    "eyes.selenium": "0.0.83",
     "glob": "^7.1.2",
     "lerna": "^3.3.0",
     "markdown-it": "^8.4.1",
@@ -29,6 +31,6 @@
   },
   "dependencies": {
     "saucelabs": "^1.5.0",
-    "selenium-webdriver": "^4.0.0-alpha.1"
+    "selenium-webdriver": "^3.6.0"
   }
 }
