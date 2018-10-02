@@ -5,8 +5,8 @@ import {
     IParagraphHandledProps,
     IParagraphManagedClasses,
     IParagraphUnhandledProps,
-    ParagraphLevel,
-    ParagraphProps
+    ParagraphProps,
+    ParagraphSize
 } from "./paragraph.props";
 import schema from "./paragraph.schema.json";
 import Documentation from "./.tmp/documentation";
@@ -26,17 +26,17 @@ export default {
             children: testString
         },
         {
-            size: ParagraphLevel._1,
+            size: ParagraphSize._1,
             children: testString,
             "data-sketch-symbol": "Paragraph 1"
         },
         {
-            size: ParagraphLevel._2,
+            size: ParagraphSize._2,
             children: testString,
             "data-sketch-symbol": "Paragraph 2"
         },
         {
-            size: ParagraphLevel._3,
+            size: ParagraphSize._3,
             children: testString,
             "data-sketch-symbol": "Paragraph 3"
         }
