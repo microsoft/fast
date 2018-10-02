@@ -301,9 +301,9 @@ describe("tabs", (): void => {
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
-        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(true);
-        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(false);
-        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(0).prop("active")).toBe(true);
+        expect(rendered.find("Tab").at(1).prop("active")).toBe(false);
+        expect(rendered.find("Tab").at(2).prop("active")).toBe(false);
 
         tab2.simulate("click", { currentTarget: { getAttribute: (): string => id1 }});
 
@@ -312,9 +312,9 @@ describe("tabs", (): void => {
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
-        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(true);
-        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(false);
-        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(0).prop("active")).toBe(true);
+        expect(rendered.find("Tab").at(1).prop("active")).toBe(false);
+        expect(rendered.find("Tab").at(2).prop("active")).toBe(false);
 
         tab1.simulate("keydown", {keyCode: KeyCodes.arrowLeft});
 
@@ -323,9 +323,9 @@ describe("tabs", (): void => {
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
-        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(true);
-        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(false);
-        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(0).prop("active")).toBe(true);
+        expect(rendered.find("Tab").at(1).prop("active")).toBe(false);
+        expect(rendered.find("Tab").at(2).prop("active")).toBe(false);
 
         tab1.simulate("keydown", {keyCode: KeyCodes.arrowUp});
 
@@ -334,9 +334,9 @@ describe("tabs", (): void => {
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
-        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(true);
-        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(false);
-        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(0).prop("active")).toBe(true);
+        expect(rendered.find("Tab").at(1).prop("active")).toBe(false);
+        expect(rendered.find("Tab").at(2).prop("active")).toBe(false);
 
         tab1.simulate("keydown", {keyCode: KeyCodes.arrowRight});
 
@@ -345,9 +345,9 @@ describe("tabs", (): void => {
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
-        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(true);
-        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(false);
-        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(0).prop("active")).toBe(true);
+        expect(rendered.find("Tab").at(1).prop("active")).toBe(false);
+        expect(rendered.find("Tab").at(2).prop("active")).toBe(false);
 
         tab1.simulate("keydown", {keyCode: KeyCodes.arrowDown});
 
@@ -356,9 +356,9 @@ describe("tabs", (): void => {
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
-        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(true);
-        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(false);
-        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(0).prop("active")).toBe(true);
+        expect(rendered.find("Tab").at(1).prop("active")).toBe(false);
+        expect(rendered.find("Tab").at(2).prop("active")).toBe(false);
 
         tab1.simulate("keydown", {keyCode: KeyCodes.home});
 
@@ -367,9 +367,9 @@ describe("tabs", (): void => {
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
-        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(true);
-        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(false);
-        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(0).prop("active")).toBe(true);
+        expect(rendered.find("Tab").at(1).prop("active")).toBe(false);
+        expect(rendered.find("Tab").at(2).prop("active")).toBe(false);
 
         tab1.simulate("keydown", {keyCode: KeyCodes.end});
 
@@ -378,18 +378,18 @@ describe("tabs", (): void => {
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
-        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(true);
-        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(false);
-        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(0).prop("active")).toBe(true);
+        expect(rendered.find("Tab").at(1).prop("active")).toBe(false);
+        expect(rendered.find("Tab").at(2).prop("active")).toBe(false);
 
         rendered.setProps({ activeId: id1 });
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
-        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(false);
-        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(true);
-        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(0).prop("active")).toBe(false);
+        expect(rendered.find("Tab").at(1).prop("active")).toBe(true);
+        expect(rendered.find("Tab").at(2).prop("active")).toBe(false);
     });
 
     test("should not use the callback if it is not a function", () => {
@@ -423,90 +423,90 @@ describe("tabs", (): void => {
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
-        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(true);
-        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(false);
-        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(0).prop("active")).toBe(true);
+        expect(rendered.find("Tab").at(1).prop("active")).toBe(false);
+        expect(rendered.find("Tab").at(2).prop("active")).toBe(false);
 
         tab1.simulate("keydown", {keyCode: KeyCodes.arrowLeft});
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(0);
-        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(false);
-        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(false);
-        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(true);
+        expect(rendered.find("Tab").at(0).prop("active")).toBe(false);
+        expect(rendered.find("Tab").at(1).prop("active")).toBe(false);
+        expect(rendered.find("Tab").at(2).prop("active")).toBe(true);
 
         tab3.simulate("keydown", {keyCode: KeyCodes.arrowUp});
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
-        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(false);
-        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(true);
-        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(0).prop("active")).toBe(false);
+        expect(rendered.find("Tab").at(1).prop("active")).toBe(true);
+        expect(rendered.find("Tab").at(2).prop("active")).toBe(false);
 
         tab2.simulate("keydown", {keyCode: KeyCodes.arrowLeft});
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
-        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(true);
-        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(false);
-        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(0).prop("active")).toBe(true);
+        expect(rendered.find("Tab").at(1).prop("active")).toBe(false);
+        expect(rendered.find("Tab").at(2).prop("active")).toBe(false);
 
         tab1.simulate("keydown", {keyCode: KeyCodes.arrowRight});
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
-        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(false);
-        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(true);
-        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(0).prop("active")).toBe(false);
+        expect(rendered.find("Tab").at(1).prop("active")).toBe(true);
+        expect(rendered.find("Tab").at(2).prop("active")).toBe(false);
 
         tab2.simulate("keydown", {keyCode: KeyCodes.arrowDown});
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(0);
-        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(false);
-        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(false);
-        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(true);
+        expect(rendered.find("Tab").at(0).prop("active")).toBe(false);
+        expect(rendered.find("Tab").at(1).prop("active")).toBe(false);
+        expect(rendered.find("Tab").at(2).prop("active")).toBe(true);
 
         tab3.simulate("keydown", {keyCode: KeyCodes.arrowRight});
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
-        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(true);
-        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(false);
-        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(0).prop("active")).toBe(true);
+        expect(rendered.find("Tab").at(1).prop("active")).toBe(false);
+        expect(rendered.find("Tab").at(2).prop("active")).toBe(false);
 
         tab1.simulate("keydown", {keyCode: KeyCodes.end});
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(0);
-        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(false);
-        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(false);
-        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(true);
+        expect(rendered.find("Tab").at(0).prop("active")).toBe(false);
+        expect(rendered.find("Tab").at(1).prop("active")).toBe(false);
+        expect(rendered.find("Tab").at(2).prop("active")).toBe(true);
 
         tab1.simulate("keydown", {keyCode: KeyCodes.home});
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
-        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(true);
-        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(false);
-        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(0).prop("active")).toBe(true);
+        expect(rendered.find("Tab").at(1).prop("active")).toBe(false);
+        expect(rendered.find("Tab").at(2).prop("active")).toBe(false);
 
         tab2.simulate("click", { currentTarget: { getAttribute: (): string => id1 }});
 
         expect(rendered.find("Tab").at(0).prop("tabIndex")).toEqual(-1);
         expect(rendered.find("Tab").at(1).prop("tabIndex")).toEqual(0);
         expect(rendered.find("Tab").at(2).prop("tabIndex")).toEqual(-1);
-        expect(rendered.find("Tab").at(0).prop("aria-selected")).toBe(false);
-        expect(rendered.find("Tab").at(1).prop("aria-selected")).toBe(true);
-        expect(rendered.find("Tab").at(2).prop("aria-selected")).toBe(false);
+        expect(rendered.find("Tab").at(0).prop("active")).toBe(false);
+        expect(rendered.find("Tab").at(1).prop("active")).toBe(true);
+        expect(rendered.find("Tab").at(2).prop("active")).toBe(false);
     });
 });
 
@@ -519,7 +519,7 @@ describe("Tab", (): void => {
         expect(
             () => {
                 shallow(<Tab slot={TabsSlot.tab} />);
-                shallow(<Tab slot={TabsSlot.tab} aria-selected={true} />);
+                shallow(<Tab slot={TabsSlot.tab} selected={true} />);
             }
         ).not.toThrow();
     });
