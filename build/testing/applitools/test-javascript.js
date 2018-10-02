@@ -35,7 +35,6 @@ const { Config, Run } = require("./run-msft-docs.js");
  * @param {*} branch
  */
 function setup() {
-
     // Initialize SDK using API Key from environment variables
     const domain = "https://eyesapi.applitools.com";
     const config = new Config();
@@ -53,7 +52,6 @@ function setup() {
  * Startup function used to connect to Applitools and execute tests
  */
 function main() {
-
     // Setup Applitools
     let eyes = setup();
 
@@ -76,19 +74,18 @@ function main() {
  * @param {*} viewportPortrait 
  */
 function browserDriver(eyes, webDriver, viewportLandscape, viewportPortrait) {
-    
     const innerDriver = new Builder()
         .withCapabilities(webDriver)
         .build();
 
-    innerDriver.getSession().then(function(session){
+    innerDriver.getSession().then(function(session) {
         runTest(eyes, innerDriver, viewportLandscape);
         runTest(eyes, innerDriver, viewportPortrait);
 
-        if(innerDriver) {
+        if (innerDriver) {
             innerDriver.quit(); 
         }
-    })
+    });
 }
 
 /**
@@ -98,25 +95,21 @@ function browserDriver(eyes, webDriver, viewportLandscape, viewportPortrait) {
  * @param {*} viewportSize 
  */
 function runTest(eyes, innerDriver, viewportSize) {
-    
     // Config for AppName, SiteName must be set before opening eyes
     const config = new Config();
 
     eyes.open(innerDriver, config.appName, config.siteName, viewportSize)
-        .then(function (driver) { 
-            
-            try{
-
+        .then(function (driver) {
+            try {
                 new Run(eyes, driver, config.domainName);
 
-                eyes.close(false).then(function (result){ 
+                eyes.close(false).then(function (result) { 
                     handleResult(result);
                 });
         
             } finally {
                 eyes.abortIfNotClosed();
             }
-
         });
 }
 
@@ -125,7 +118,6 @@ function runTest(eyes, innerDriver, viewportSize) {
  * @param {*} result 
  */
 function handleResult(result) {
-
     const url = result.appUrls.session;
     const totalSteps = result.steps;
 
