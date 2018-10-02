@@ -58,8 +58,8 @@ function main() {
     let eyes = setup();
 
     // Set viewports
-    const viewportLandscape = {width: 1920, height: 1200};
-    const viewportPortrait  = {width: 600, height: 800};
+    const viewportLandscape = { width: 1920, height: 1200 };
+    const viewportPortrait  = { width: 600, height: 800 };
     
     // Execute Chrome driver tests
     browserDriver(eyes, Capabilities.chrome(), viewportLandscape, viewportPortrait);
