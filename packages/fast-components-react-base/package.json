@@ -64,6 +64,7 @@
   "devDependencies": {
     "@microsoft/fast-application-utilities": "^2.2.0",
     "@microsoft/fast-development-site-react": "^2.2.3",
+    "@microsoft/fast-components-foundation-react": "^1.0.0",
     "@microsoft/fast-jest-snapshots-react": "^2.3.0",
     "@microsoft/fast-tslint-rules": "^2.2.0",
     "@microsoft/fast-web-utilities": "^2.2.0",
@@ -104,6 +105,7 @@
   },
   "peerDependencies": {
     "@microsoft/fast-application-utilities": "^1.9.2",
+    "@microsoft/fast-components-foundation-react": "^1.0.0",
     "@microsoft/fast-web-utilities": "^2.2.0",
     "exenv-es6": "^1.0.0",
     "lodash-es": "^4.0.0",

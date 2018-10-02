@@ -4,7 +4,7 @@ import { canUseDOM } from "exenv-es6";
 import { IHorizontalOverflowClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { getClientRectWithMargin } from "@microsoft/fast-web-utilities";
 import { Direction } from "@microsoft/fast-application-utilities";
-import Foundation, { HandledProps } from "../foundation";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { HorizontalOverflowProps, IHorizontalOverflowHandledProps, IScrollChange } from "./horizontal-overflow.props";
 import throttle from "raf-throttle";
 

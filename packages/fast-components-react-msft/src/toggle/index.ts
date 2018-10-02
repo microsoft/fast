@@ -1,6 +1,6 @@
 import * as React from "react";
+import { IFoundationProps } from "@microsoft/fast-components-foundation-react";
 import {
-    IFoundationProps,
     IToggleClassNameContract,
     IToggleHandledProps,
     IToggleUnhandledProps,

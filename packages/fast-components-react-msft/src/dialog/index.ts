@@ -1,10 +1,10 @@
 import * as React from "react";
+import { IFoundationProps } from "@microsoft/fast-components-foundation-react";
 import {
     Dialog as BaseDialog,
     IDialogClassNameContract,
     IDialogHandledProps,
-    IDialogUnhandledProps,
-    IFoundationProps
+    IDialogUnhandledProps
 } from "@microsoft/fast-components-react-base";
 import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
 import { DialogStyles, IDesignSystem } from "@microsoft/fast-components-styles-msft";

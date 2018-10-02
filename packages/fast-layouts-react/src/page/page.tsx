@@ -1,7 +1,7 @@
 import * as React from "react";
 import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { IPageHandledProps, PageProps } from "./page.props";
-import Foundation, { IFoundationProps } from "../foundation";
+import Foundation, { HandledProps, IFoundationProps } from "@microsoft/fast-components-foundation-react";
 
 export interface IPageClassNamesContract {
     "@global"?: string;
@@ -20,13 +20,17 @@ const styles: ComponentStyles<IPageClassNamesContract, undefined> = {
     }
 };
 
-class Page extends Foundation<PageProps, undefined> {
+class Page extends Foundation<
+    PageProps,
+    React.HTMLAttributes<HTMLDivElement>,
+    undefined
+> {
     public static defaultProps: Partial<IPageHandledProps> = {
         margin: "minmax(5vw, 1fr)",
         maxWidth: "1600px"
     };
 
-    protected handledProps: IPageHandledProps & IManagedClasses<IPageClassNamesContract> = {
+    protected handledProps: HandledProps<PageProps> = {
         managedClasses: void 0,
         margin: void 0,
         maxWidth: void 0

@@ -69,4 +69,4 @@ export interface IGridHandledProps {
     row?: number;
 }
 
-export type GridProps = IGridHandledProps & IManagedClasses<IGridClassNamesContract> & React.HTMLAttributes<HTMLDivElement>;
+export type GridProps = IGridHandledProps & IManagedClasses<IGridClassNamesContract>;

@@ -3,7 +3,7 @@ import manageJss, { ComponentStyles, ICSSRules, IJSSManagerProps, IManagedClasse
 import BreakpointTracker from "../utilities/breakpoint-tracker";
 import { Breakpoint, getValueByBreakpoint, identifyBreakpoint } from "../utilities/breakpoints";
 import { canUseDOM, canUseViewport } from "exenv-es6";
-import Foundation, { IFoundationProps } from "../foundation";
+import Foundation, { HandledProps, IFoundationProps } from "@microsoft/fast-components-foundation-react";
 import { ColumnProps, IColumnHandledProps } from "./column.props";
 
 export interface IColumnClassNamesContract {
@@ -18,7 +18,11 @@ const styles: ComponentStyles<IColumnClassNamesContract, undefined> = {
     }
 };
 
-class Column extends Foundation<ColumnProps, {}> {
+class Column extends Foundation<
+    ColumnProps,
+    React.HTMLAttributes<HTMLDivElement>,
+    {}
+> {
     /**
      * Define default props
      */
@@ -26,7 +30,7 @@ class Column extends Foundation<ColumnProps, {}> {
         span: 12
     };
 
-    protected handledProps: IColumnHandledProps & IManagedClasses<IColumnClassNamesContract> = {
+    protected handledProps: HandledProps<ColumnProps> = {
         managedClasses: void 0,
         span: void 0,
         position: void 0,
