@@ -34,7 +34,7 @@ bower_components
 build/Release
 
 # Uncompiled binaries
-.exe
+*.exe
 
 # Dependency directories
 node_modules/
