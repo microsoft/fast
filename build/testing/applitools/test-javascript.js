@@ -39,7 +39,7 @@ function setup() {
     // Initialize SDK using API Key from environment variables
     const domain = "https://eyesapi.applitools.com";
     const config = new Config();
-    let eyes = new Eyes(domain);
+    const eyes = new Eyes(domain);
 
     // Set Applitools Dashboard variables
     eyes.setApiKey(process.env.APPLITOOLS_API_KEY);
@@ -66,7 +66,6 @@ function main() {
     
     // Execute FireFox driver tests
     browserDriver(eyes, Capabilities.firefox(), viewportLandscape, viewportPortrait);
-    
 }
 
 /**
@@ -119,7 +118,6 @@ function runTest(eyes, innerDriver, viewportSize) {
             }
 
         });
-    
 }
 
 /**
