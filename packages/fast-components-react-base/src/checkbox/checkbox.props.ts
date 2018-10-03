@@ -9,7 +9,9 @@ export enum CheckboxTag {
     label = "label"
 }
 
-export interface ICheckboxHandledProps {
+export interface ICheckboxManagedClasses extends IManagedClasses<ICheckboxClassNameContract> {}
+export interface ICheckboxUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
+export interface ICheckboxHandledProps extends ICheckboxManagedClasses {
     /**
      * The HTML tag (defaults to CheckboxTag.checkbox)
      */
@@ -33,7 +35,7 @@ export interface ICheckboxHandledProps {
     /**
      * The onChange event handler
      */
-    onChange?: CheckboxOnChange;
+    onChange?: (event?: React.ChangeEvent<HTMLInputElement>) => void;
 
     /**
      * The checkbox content
@@ -41,7 +43,4 @@ export interface ICheckboxHandledProps {
     children?: React.ReactNode;
 }
 
-export interface ICheckboxUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
-export type CheckboxOnChange = (event?: React.ChangeEvent<HTMLElement>) => void;
-export interface ICheckboxManagedClasses extends IManagedClasses<ICheckboxClassNameContract> {}
-export type CheckboxProps = ICheckboxHandledProps & ICheckboxUnhandledProps & ICheckboxManagedClasses;
+export type CheckboxProps = ICheckboxHandledProps & ICheckboxUnhandledProps;

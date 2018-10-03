@@ -4,7 +4,7 @@ import schema from "./hypertext.schema.json";
 import Documentation from "./.tmp/documentation";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
-const examples: IComponentFactoryExample<IHypertextHandledProps & IHypertextManagedClasses> = {
+const examples: IComponentFactoryExample<IHypertextHandledProps> = {
     name: "Hypertext",
     component: Hypertext,
     schema: schema as any,

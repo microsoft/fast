@@ -152,7 +152,7 @@ const images: any[] = [
     }
 ];
 
-const examples: IComponentFactoryExample<IHorizontalOverflowHandledProps & IHorizontalOverflowManagedClasses> = {
+const examples: IComponentFactoryExample<IHorizontalOverflowHandledProps> = {
     name: "Horizontal overflow",
     component: HorizontalOverflow,
     schema: schema as any,

@@ -17,10 +17,10 @@ const sourceElements: JSX.Element[] = [
     (<source srcSet="https://placehold.it/300x300/2F2F2F/171717" media="(min-width: 1084px)" slot={ImageSlot.source}/>),
     (<source srcSet="https://placehold.it/200x200/2F2F2F/171717" media="(min-width: 768px)" slot={ImageSlot.source}/>),
     (<source srcSet="https://placehold.it/100x100/2F2F2F/171717" media="(min-width: 540px)" slot={ImageSlot.source}/>),
-    (<source srcSet="https://placehold.it/75x75/2F2F2F/171717" media="(min-width: 0px)"slot={ImageSlot.source}/>)
+    (<source srcSet="https://placehold.it/75x75/2F2F2F/171717" media="(min-width: 0px)" slot={ImageSlot.source}/>)
 ];
 
-const examples: IComponentFactoryExample<IImageHandledProps & IImageManagedClasses> = {
+const examples: IComponentFactoryExample<IImageHandledProps> = {
     name: "Image",
     component: Image,
     schema: schema as any,

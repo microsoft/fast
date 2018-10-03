@@ -1,5 +1,4 @@
 const path = require("path");
-const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WebpackShellPlugin = require("webpack-shell-plugin");
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -25,10 +24,7 @@ module.exports = (env, args) => {
                     test: /.tsx?$/,
                     use: [
                         {
-                            loader: "ts-loader",
-                            options: {
-                                transpileOnly: true
-                            }
+                            loader: "ts-loader"
                         }
                     ]
                 },
@@ -46,9 +42,6 @@ module.exports = (env, args) => {
             ]
         },
         plugins: [
-            new ForkTsCheckerWebpackPlugin({
-                tslint: path.resolve(__dirname, "../../tslint.json")
-            }),
             new HtmlWebpackPlugin({
                 title: "FAST documentation",
                 contentBase: outDir,

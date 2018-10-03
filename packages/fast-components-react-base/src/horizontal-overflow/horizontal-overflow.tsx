@@ -5,7 +5,12 @@ import { IHorizontalOverflowClassNameContract, IManagedClasses } from "@microsof
 import { getClientRectWithMargin } from "@microsoft/fast-web-utilities";
 import { Direction } from "@microsoft/fast-application-utilities";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { HorizontalOverflowProps, IHorizontalOverflowHandledProps, IScrollChange } from "./horizontal-overflow.props";
+import {
+    HorizontalOverflowProps,
+    IHorizontalOverflowHandledProps,
+    IHorizontalOverflowUnhandledProps,
+    IScrollChange
+} from "./horizontal-overflow.props";
 import throttle from "raf-throttle";
 
 export enum ButtonDirection {
@@ -17,16 +22,14 @@ export interface IHorizontalOverflowState {
     itemsHeight: number;
 }
 
-export type AnimateScroll = () => void;
-
 class HorizontalOverflow extends Foundation<
-    HorizontalOverflowProps,
-    React.AllHTMLAttributes<HTMLDivElement>,
+    IHorizontalOverflowHandledProps,
+    IHorizontalOverflowUnhandledProps,
     IHorizontalOverflowState
 > {
     public static displayName: string = "HorizontalOverflow";
 
-    protected handledProps: HandledProps<IHorizontalOverflowHandledProps & IManagedClasses<IHorizontalOverflowClassNameContract>> = {
+    protected handledProps: HandledProps<IHorizontalOverflowHandledProps> = {
         scrollDuration: void 0,
         managedClasses: void 0,
         onScrollChange: void 0
@@ -394,7 +397,7 @@ class HorizontalOverflow extends Foundation<
         const start: number = element.scrollLeft;
         const change: number = left - start;
         const startDate: number = new Date().getTime();
-        const animateScroll: AnimateScroll = (): void => {
+        const animateScroll: () => void = (): void => {
             const currentDate: number = new Date().getTime();
             const currentTime: number = currentDate - startDate;
             element.scrollLeft = this.easeInOutQuad(currentTime, start, change, duration);

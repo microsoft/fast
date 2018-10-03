@@ -37,7 +37,7 @@ describe("divider", (): void => {
     });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
-        const handledProps: IDividerHandledProps & IDividerManagedClasses = {
+        const handledProps: IDividerHandledProps = {
             managedClasses
         };
         const unhandledProps: IDividerUnhandledProps = {

@@ -6,13 +6,13 @@ import { IHypertextClassNameContract, IManagedClasses } from "@microsoft/fast-co
 import { get } from "lodash-es";
 
 class Hypertext extends Foundation<
-    IHypertextHandledProps & IManagedClasses<IHypertextClassNameContract>,
-    React.AnchorHTMLAttributes<HTMLAnchorElement>,
+    IHypertextHandledProps,
+    IHypertextUnhandledProps,
     {}
 > {
     public static displayName: string = "Hypertext";
 
-    protected handledProps: HandledProps<IHypertextHandledProps & IManagedClasses<IHypertextClassNameContract>> = {
+    protected handledProps: HandledProps<IHypertextHandledProps> = {
         href: void 0,
         managedClasses: void 0
     };

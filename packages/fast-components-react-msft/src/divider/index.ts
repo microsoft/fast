@@ -1,13 +1,16 @@
 import * as React from "react";
-import { IFoundationProps } from "@microsoft/fast-components-foundation-react";
 import {
     Divider as BaseDivider,
+    DividerProps as BaseDividerProps,
+    DividerRoles,
     IDividerClassNameContract,
-    IDividerHandledProps,
+    IDividerHandledProps as IBaseDividerHandledProps,
+    IDividerManagedClasses,
     IDividerUnhandledProps
 } from "@microsoft/fast-components-react-base";
-import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { IJSSManagerProps, JSSManagerProps } from "@microsoft/fast-jss-manager-react";
 import { DividerStyles, IDesignSystem } from "@microsoft/fast-components-styles-msft";
+import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -17,4 +20,14 @@ import { DividerStyles, IDesignSystem } from "@microsoft/fast-components-styles-
 const Divider =  manageJss(DividerStyles)(BaseDivider);
 type Divider = InstanceType<typeof Divider>;
 
-export { Divider };
+interface IDividerHandledProps extends Subtract<IBaseDividerHandledProps, IDividerManagedClasses> {}
+type DividerProps = JSSManagerProps<BaseDividerProps, IDividerClassNameContract, IDesignSystem>;
+
+export {
+    Divider,
+    DividerProps,
+    DividerRoles,
+    IDividerHandledProps,
+    IDividerUnhandledProps,
+    IDividerClassNameContract
+};

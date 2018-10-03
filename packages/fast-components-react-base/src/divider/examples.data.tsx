@@ -5,7 +5,7 @@ import schema from "./divider.schema.json";
 import Documentation from "./.tmp/documentation";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
-const examples: IComponentFactoryExample<IDividerHandledProps & IDividerManagedClasses> = {
+const examples: IComponentFactoryExample<IDividerHandledProps> = {
     name: "Divider",
     component: Divider,
     schema: schema as any,

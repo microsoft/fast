@@ -4,7 +4,7 @@ import schema from "./toggle.schema.json";
 import Documentation from "./.tmp/documentation";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
-const examples: IComponentFactoryExample<IToggleHandledProps & IToggleManagedClasses> = {
+const examples: IComponentFactoryExample<IToggleHandledProps> = {
     name: "Toggle",
     component: Toggle,
     schema: schema as any,

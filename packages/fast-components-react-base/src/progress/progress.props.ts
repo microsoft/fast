@@ -1,11 +1,13 @@
 import * as React from "react";
 import { IManagedClasses, IProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface IProgressHandledProps {
+export interface IProgressManagedClasses extends IManagedClasses<IProgressClassNameContract> {}
+export interface IProgressUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface IProgressHandledProps extends IProgressManagedClasses {
     /**
      * The progress content
      */
-    children?: React.ReactNode | React.ReactNode[];
+    children?: React.ReactNode;
 
     /**
      * The HTML max value attribute
@@ -23,6 +25,4 @@ export interface IProgressHandledProps {
     value?: number;
 }
 
-export interface IProgressUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
-export interface IProgressManagedClasses extends IManagedClasses<IProgressClassNameContract> {}
-export type ProgressProps = IProgressHandledProps & IProgressUnhandledProps & IProgressManagedClasses;
+export type ProgressProps = IProgressHandledProps & IProgressUnhandledProps;

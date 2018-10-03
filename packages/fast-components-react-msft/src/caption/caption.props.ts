@@ -1,5 +1,6 @@
 import * as React from "react";
 import { ICaptionClassNameContract, IManagedClasses  } from "@microsoft/fast-components-class-name-contracts-msft";
+import { Subtract } from "utility-types";
 
 export enum CaptionSize {
     _1 = 1,
@@ -13,11 +14,12 @@ export enum CaptionTag {
     figcaption = "figcaption"
 }
 
-export interface ICaptionHandledProps {
+export interface ICaptionManagedClasses extends IManagedClasses<ICaptionClassNameContract> {}
+export interface ICaptionHandledProps extends ICaptionManagedClasses {
     /**
      * The caption content
      */
-    children?: React.ReactNode | React.ReactNode[];
+    children?: React.ReactNode;
 
     /**
      * The visual size (type level) which aligns to a type ramp instance
@@ -30,7 +32,7 @@ export interface ICaptionHandledProps {
     tag?: CaptionTag;
 }
 
-export interface ICaptionUnhandledProps extends
-    React.HTMLAttributes<HTMLHeadingElement | HTMLParagraphElement | HTMLSpanElement | HTMLElement> {}
-export interface ICaptionManagedClasses extends IManagedClasses<ICaptionClassNameContract> {}
-export type CaptionProps = ICaptionHandledProps & ICaptionUnhandledProps & ICaptionManagedClasses;
+export interface ICaptionUnhandledProps extends React.HTMLAttributes<
+    HTMLHeadingElement | HTMLParagraphElement | HTMLSpanElement | HTMLElement
+> {}
+export type CaptionProps = ICaptionHandledProps & ICaptionUnhandledProps;

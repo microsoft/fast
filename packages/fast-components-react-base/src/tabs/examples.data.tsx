@@ -252,7 +252,7 @@ const exampleChildren4: any[] = [
     }
 ];
 
-const examples: IComponentFactoryExample<ITabsHandledProps & ITabsManagedClasses> = {
+const examples: IComponentFactoryExample<ITabsHandledProps> = {
     name: "Tabs",
     component: Tabs,
     schema: schema as any,

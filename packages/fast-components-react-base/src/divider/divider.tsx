@@ -7,13 +7,13 @@ import { IDividerClassNameContract, IManagedClasses } from "@microsoft/fast-comp
 
 /* tslint:disable-next-line */
 class Divider extends Foundation<
-    IDividerHandledProps & IManagedClasses<IDividerClassNameContract>,
-    React.HTMLAttributes<HTMLHRElement>,
+    IDividerHandledProps,
+    IDividerUnhandledProps,
     {}
 > {
     public static displayName: string = "Divider";
 
-    protected handledProps: HandledProps<IDividerHandledProps & IManagedClasses<IDividerClassNameContract>> = {
+    protected handledProps: HandledProps<IDividerHandledProps> = {
         managedClasses: void 0,
         role: void 0
     };

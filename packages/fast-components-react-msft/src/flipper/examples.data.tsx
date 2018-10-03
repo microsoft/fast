@@ -1,12 +1,7 @@
 import * as React from "react";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { Flipper } from "./index";
-import { IButtonHandledProps as IBaseButtonHandledProps } from "@microsoft/fast-components-react-base";
+import { Flipper, FlipperDirection, FlipperProps } from "./index";
 import {
-    FlipperDirection,
-    IFlipperHandledProps,
-    IFlipperManagedClasses,
-    IFlipperUnhandledProps
 } from "./flipper.props";
 import schema from "./flipper.schema.json";
 import Documentation from "./.tmp/documentation";
@@ -37,4 +32,4 @@ export default {
             label: "See previous"
         }
     ]
-} as IComponentFactoryExample<IFlipperHandledProps>;
+} as IComponentFactoryExample<FlipperProps>;

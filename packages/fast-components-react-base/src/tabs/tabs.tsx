@@ -23,7 +23,7 @@ export interface ITabsState {
 }
 
 class Tabs extends Foundation<
-    ITabsHandledProps & ITabsManagedClasses,
+    ITabsHandledProps,
     ITabsUnhandledProps,
     ITabsState
 > {
@@ -42,7 +42,7 @@ class Tabs extends Foundation<
         return null;
     }
 
-    protected handledProps: HandledProps<ITabsHandledProps & IManagedClasses<ITabsClassNameContract>> = {
+    protected handledProps: HandledProps<ITabsHandledProps> = {
         activeId: void 0,
         label: void 0,
         managedClasses: void 0,

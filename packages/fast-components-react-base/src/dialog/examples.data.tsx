@@ -4,7 +4,7 @@ import schema from "./dialog.schema.json";
 import Documentation from "./.tmp/documentation";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
-const examples: IComponentFactoryExample<IDialogHandledProps & IDialogManagedClasses> = {
+const examples: IComponentFactoryExample<IDialogHandledProps> = {
     name: "Dialog",
     component: Dialog,
     schema: schema as any,

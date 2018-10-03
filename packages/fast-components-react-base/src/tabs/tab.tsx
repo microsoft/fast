@@ -5,7 +5,7 @@ import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-
 import { ITabHandledProps, ITabManagedClasses, ITabUnhandledProps, TabProps } from "./tab.props";
 
 class Tab extends Foundation<
-    ITabHandledProps & ITabManagedClasses,
+    ITabHandledProps,
     ITabUnhandledProps,
     {}
 > {
@@ -15,7 +15,7 @@ class Tab extends Foundation<
 
     public static displayName: string = "Tab";
 
-    protected handledProps: HandledProps<ITabHandledProps & IManagedClasses<ITabClassNameContract>> = {
+    protected handledProps: HandledProps<ITabHandledProps> = {
         managedClasses: void 0,
         active: void 0,
         slot: void 0

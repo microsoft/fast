@@ -1,8 +1,12 @@
 import * as React from "react";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { ButtonAppearance, IButtonHandledProps, IButtonManagedClasses, IButtonUnhandledProps } from "./button.props";
-import { IManagedClasses, IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import {
+    ButtonAppearance,
+    IButtonHandledProps,
+    IButtonManagedClasses,
+    IButtonUnhandledProps
+} from "./button.props";
 import { Button as BaseButton } from "@microsoft/fast-components-react-base";
 
 /**
@@ -14,13 +18,13 @@ export enum ButtonSlot {
 }
 
 class Button extends Foundation<
-    IButtonHandledProps & IManagedClasses<IMSFTButtonClassNameContract>,
-    React.AllHTMLAttributes<HTMLElement>,
+    IButtonHandledProps,
+    IButtonUnhandledProps,
     {}
 > {
     public static displayName: string = "Button";
 
-    protected handledProps: HandledProps<IButtonHandledProps & IManagedClasses<IMSFTButtonClassNameContract>> = {
+    protected handledProps: HandledProps<IButtonHandledProps> = {
         appearance: void 0,
         disabled: void 0,
         href: void 0,
@@ -69,4 +73,3 @@ class Button extends Foundation<
 
 export default Button;
 export * from "./button.props";
-export { IMSFTButtonClassNameContract };

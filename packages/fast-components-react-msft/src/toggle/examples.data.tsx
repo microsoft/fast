@@ -1,7 +1,6 @@
 import * as React from "react";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { Toggle } from "./index";
-import { IToggleHandledProps, IToggleUnhandledProps } from "@microsoft/fast-components-react-base";
+import { Toggle, ToggleProps } from "./index";
 import schema from "@microsoft/fast-components-react-base/dist/toggle/toggle.schema.json";
 import Documentation from "./.tmp/documentation";
 
@@ -62,6 +61,6 @@ export default {
             statusMessageId: "span04",
             unselectedMessage: "Off",
             "data-sketch-symbol": "Toggle disabled (off)"
-        }
+        } as any // TODO github.com/Microsoft/fast-dna/issues/982
     ]
-} as IComponentFactoryExample<IToggleHandledProps>;
+} as IComponentFactoryExample<ToggleProps>;
