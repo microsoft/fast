@@ -11,7 +11,7 @@ export enum CheckboxTag {
 
 export interface ICheckboxManagedClasses extends IManagedClasses<ICheckboxClassNameContract> {}
 export interface ICheckboxUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
-export interface ICheckboxHandledProps extends IManagedClasses<ICheckboxClassNameContract> {
+export interface ICheckboxHandledProps extends ICheckboxManagedClasses {
     /**
      * The HTML tag (defaults to CheckboxTag.checkbox)
      */

@@ -55,4 +55,4 @@ export interface IDialogHandledProps extends IDialogManagedClasses {
     visible?: boolean;
 }
 
-export type DialogProps = IDialogHandledProps & IDialogUnhandledProps & IDialogManagedClasses;
+export type DialogProps = IDialogHandledProps & IDialogUnhandledProps;
