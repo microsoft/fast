@@ -12,7 +12,7 @@ export interface IHypertextHandledProps extends IHypertextManagedClasses {
     /**
      * The hypertext content
      */
-    children?: React.ReactNode | React.ReactNode[];
+    children?: React.ReactNode;
 }
 
 export type HypertextProps = IHypertextHandledProps & IHypertextUnhandledProps;
