@@ -42,12 +42,27 @@ export type ComponentStyles<T, C> = ComponentStyleSheet<T, C> | ComponentStyleSh
 export type ComponentStyleSheetResolver<T, C> = (config: C) => ComponentStyleSheet<T, C>;
 
 /**
+ * Allow any string to be used in addition to class names
+ * intended to support the use of Nested at-rules:
+ * https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule
+ *
+ * Note: If TypeScript updated to use RegExp this can be improved
+ * to more strictly check for Nested at-rules:
+ * https://github.com/Microsoft/TypeScript/issues/6579
+ */
+export interface INestedAtRules<C> {
+    [key: string]: ICSSRules<C>;
+}
+
+/**
  * Describes a JSS style object.
  * @param T - This is the stylesheet contract, which is an enumeration of all keys available on
  * the JSS style object.
  * @param C - This describes the design system configuration values that will be available to all
  * property functions that resolve to a CSS value.
  */
-export type ComponentStyleSheet<T, C> = {
+export type ComponentClassNameStyleSheet<T, C> = {
     [P in keyof T]: ICSSRules<C>;
 };
+
+export type ComponentStyleSheet<T, C> = ComponentClassNameStyleSheet<T, C> & INestedAtRules<C>;
