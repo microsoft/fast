@@ -2,13 +2,15 @@ import * as React from "react";
 import { IFoundationProps } from "@microsoft/fast-components-foundation-react";
 import { IParagraphClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import MSFTParagraph, {
-    IParagraphHandledProps,
+    IParagraphHandledProps as IMSFTParagraphHandledProps,
     IParagraphManagedClasses,
     IParagraphUnhandledProps,
-    ParagraphLevel
+    ParagraphProps as MSFTParagraphProps,
+    ParagraphSize
 } from "./paragraph";
-import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { IJSSManagerProps, JSSManagerProps } from "@microsoft/fast-jss-manager-react";
 import { IDesignSystem, ParagraphStyles } from "@microsoft/fast-components-styles-msft";
+import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -18,5 +20,14 @@ import { IDesignSystem, ParagraphStyles } from "@microsoft/fast-components-style
 const Paragraph = manageJss(ParagraphStyles)(MSFTParagraph);
 type Paragraph = InstanceType<typeof Paragraph>;
 
-export { Paragraph };
-export * from "./paragraph";
+interface IParagraphHandledProps extends Subtract<IMSFTParagraphHandledProps, IParagraphManagedClasses> {}
+type ParagraphProps = JSSManagerProps<MSFTParagraphProps, IParagraphClassNameContract, IDesignSystem>;
+
+export {
+    Paragraph,
+    ParagraphSize,
+    ParagraphProps,
+    IParagraphHandledProps,
+    IParagraphUnhandledProps,
+    IParagraphClassNameContract
+};

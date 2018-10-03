@@ -1,7 +1,6 @@
 import designSystemDefaults, { IDesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
-import { IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
     adjustContrast,
     applyLocalizedProperty,
@@ -69,9 +68,9 @@ function applyTransaprentBackground(): ICSSRules<IDesignSystem> {
     };
 }
 
-const styles: ComponentStyles<IMSFTButtonClassNameContract, IDesignSystem> = (
+const styles: ComponentStyles<IButtonClassNameContract, IDesignSystem> = (
     config: IDesignSystem
-): ComponentStyleSheet<IMSFTButtonClassNameContract, IDesignSystem> => {
+): ComponentStyleSheet<IButtonClassNameContract, IDesignSystem> => {
     type ContrastFunction = (operandColor: string, referenceColor: string) => string;
     const designSystem: IDesignSystem = withDesignSystemDefaults(config);
     const contrastScale: number = designSystem.contrast;

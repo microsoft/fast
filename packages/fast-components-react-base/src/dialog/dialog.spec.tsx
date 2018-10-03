@@ -44,7 +44,7 @@ describe("dialog", (): void => {
     });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
-        const handledProps: IDialogHandledProps & IDialogManagedClasses = {
+        const handledProps: IDialogHandledProps = {
             managedClasses,
             label: "Dialog label"
         };

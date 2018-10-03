@@ -13,7 +13,7 @@ export interface ICheckboxState {
 }
 
 class Checkbox extends Foundation<
-    ICheckboxHandledProps & ICheckboxManagedClasses,
+    ICheckboxHandledProps,
     ICheckboxUnhandledProps,
     ICheckboxState
 > {
@@ -22,7 +22,7 @@ class Checkbox extends Foundation<
     /**
      * React life-cycle method
      */
-    public static getDerivedStateFromProps(nextProps: ICheckboxHandledProps, prevState: ICheckboxState): null | Partial<ICheckboxState> {
+    public static getDerivedStateFromProps(nextProps: CheckboxProps, prevState: ICheckboxState): null | Partial<ICheckboxState> {
         if (typeof nextProps.checked === "boolean" && nextProps.checked !== prevState.checked) {
             return {
                 checked: nextProps.checked
@@ -35,7 +35,7 @@ class Checkbox extends Foundation<
     /**
      * Handled props instantiation
      */
-    protected handledProps: HandledProps<ICheckboxHandledProps & IManagedClasses<ICheckboxClassNameContract>> = {
+    protected handledProps: HandledProps<ICheckboxHandledProps> = {
         checked: void 0,
         disabled: void 0,
         indeterminate: void 0,

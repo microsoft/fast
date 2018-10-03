@@ -1,11 +1,11 @@
 import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
-import { ICallToActionClassNameContract, IMSFTButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { IButtonClassNameContract, ICallToActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { applyLocalizedProperty, Direction, localizeSpacing } from "@microsoft/fast-jss-utilities";
 import { IDesignSystem, withDesignSystemDefaults } from "../design-system/index";
 import { disabledContrast, ensureNormalContrast } from "../utilities/colors";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
-export const callToActionButtonOverrides: ComponentStyles<Partial<IMSFTButtonClassNameContract>, IDesignSystem> = {
+export const callToActionButtonOverrides: ComponentStyles<Partial<IButtonClassNameContract>, IDesignSystem> = {
     button: {
         maxWidth: "100%",
         padding: (config: IDesignSystem): string => {

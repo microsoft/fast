@@ -2,14 +2,17 @@ import * as React from "react";
 import { IFoundationProps } from "@microsoft/fast-components-foundation-react";
 import { IHeadingClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import MSFTHeading, {
+    HeadingAlignBaseline,
+    HeadingProps as MSFTHeadingProps,
     HeadingSize,
     HeadingTag,
-    IHeadingHandledProps,
+    IHeadingHandledProps as IMSFTHeadingHandledProps,
     IHeadingManagedClasses,
     IHeadingUnhandledProps
 } from "./heading";
-import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { IJSSManagerProps, JSSManagerProps } from "@microsoft/fast-jss-manager-react";
 import { HeadingStyles, IDesignSystem } from "@microsoft/fast-components-styles-msft";
+import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -19,5 +22,16 @@ import { HeadingStyles, IDesignSystem } from "@microsoft/fast-components-styles-
 const Heading = manageJss(HeadingStyles)(MSFTHeading);
 type Heading = InstanceType<typeof Heading>;
 
-export { Heading };
-export * from "./heading";
+interface IHeadingHandledProps extends Subtract<IMSFTHeadingHandledProps, IHeadingManagedClasses> {}
+type HeadingProps = JSSManagerProps<MSFTHeadingProps, IHeadingClassNameContract, IDesignSystem>;
+
+export {
+    HeadingAlignBaseline,
+    Heading,
+    HeadingProps,
+    HeadingSize,
+    HeadingTag,
+    IHeadingClassNameContract,
+    IHeadingHandledProps,
+    IHeadingUnhandledProps
+};

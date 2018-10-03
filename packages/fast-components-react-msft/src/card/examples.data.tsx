@@ -1,14 +1,15 @@
 import * as React from "react";
 import { Card } from "./index";
 import {
-    CardHTMLTags,
+    CardProps,
+    CardTag,
     ICardHandledProps,
     ICardUnhandledProps
-} from "@microsoft/fast-components-react-base";
+} from "./index";
 import schema from "@microsoft/fast-components-react-base/dist/card/card.schema.json";
 import ImageSchema from "@microsoft/fast-components-react-base/dist/image/image.schema.json";
 import HeadingSchema from "../heading/heading.schema.json";
-import { HeadingLevel, HeadingTag } from "../heading";
+import { HeadingSize, HeadingTag } from "../heading";
 import Documentation from "./.tmp/documentation";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
@@ -31,16 +32,16 @@ export default {
     },
     data: [
         {
-            tag: CardHTMLTags.section
+            tag: CardTag.section
         },
         {
-            tag: CardHTMLTags.article,
+            tag: CardTag.article,
             children: [
                 {
                     id: HeadingSchema.id,
                     props: {
                         tag: HeadingTag.h3,
-                        level: HeadingLevel._4,
+                        level: HeadingSize._4,
                         children: "Example children"
                     }
                 },
@@ -54,4 +55,4 @@ export default {
             ]
         }
     ]
-}  as IComponentFactoryExample<ICardHandledProps>;
+}  as IComponentFactoryExample<CardProps>;

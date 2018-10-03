@@ -47,7 +47,7 @@ describe("checkbox", (): void => {
     });
 
     test("should implement unhandledProps", () => {
-        const handledProps: ICheckboxHandledProps & ICheckboxManagedClasses = {
+        const handledProps: ICheckboxHandledProps = {
             managedClasses
         };
 

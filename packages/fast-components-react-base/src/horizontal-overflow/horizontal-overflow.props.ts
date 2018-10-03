@@ -11,9 +11,9 @@ export interface IScrollChange {
     end: boolean;
 }
 
-export type OnScrollChange = (scrollObject: IScrollChange) => void;
-
-export interface IHorizontalOverflowHandledProps {
+export interface IHorizontalOverflowUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface IHorizontalOverflowManagedClasses extends IManagedClasses<IHorizontalOverflowClassNameContract> {}
+export interface IHorizontalOverflowHandledProps extends IHorizontalOverflowManagedClasses {
     /**
      * The horizontal overflow content
      */
@@ -27,11 +27,7 @@ export interface IHorizontalOverflowHandledProps {
     /**
      * Callback for on scroll change
      */
-    onScrollChange?: OnScrollChange;
+    onScrollChange?: (scrollObject: IScrollChange) => void;
 }
 
-export interface IHorizontalOverflowUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
-export interface IHorizontalOverflowManagedClasses extends IManagedClasses<IHorizontalOverflowClassNameContract> {}
-export type HorizontalOverflowProps = IHorizontalOverflowHandledProps
-    & IHorizontalOverflowUnhandledProps
-    & IHorizontalOverflowManagedClasses;
+export type HorizontalOverflowProps = IHorizontalOverflowHandledProps & IHorizontalOverflowUnhandledProps;

@@ -47,7 +47,7 @@ describe("image", (): void => {
     });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
-        const handledProps: IImageHandledProps & IImageManagedClasses = {
+        const handledProps: IImageHandledProps = {
             managedClasses,
             alt,
             src: "https://placehold.it/200x200"

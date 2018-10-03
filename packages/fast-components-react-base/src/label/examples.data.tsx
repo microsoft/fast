@@ -9,7 +9,7 @@ import schema from "./label.schema.json";
 import Documentation from "./.tmp/documentation";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
-const examples: IComponentFactoryExample<ILabelHandledProps & ILabelManagedClasses> = {
+const examples: IComponentFactoryExample<ILabelHandledProps> = {
     name: "Label",
     component: Label,
     schema: schema as any,

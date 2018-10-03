@@ -14,7 +14,7 @@ const classes: ICheckboxManagedClasses = {
     }
 };
 
-const examples: IComponentFactoryExample<ICheckboxHandledProps & ICheckboxManagedClasses> = {
+const examples: IComponentFactoryExample<ICheckboxHandledProps> = {
     name: "Checkbox",
     component: Checkbox,
     schema: schema as any,

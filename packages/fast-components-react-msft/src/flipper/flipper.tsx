@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { Button, IButtonHandledProps, IButtonUnhandledProps } from "@microsoft/fast-components-react-base";
+import { Button, ButtonProps } from "@microsoft/fast-components-react-base";
 import {
     FlipperDirection,
     IFlipperHandledProps,
@@ -12,13 +12,13 @@ import {
 import { IFlipperClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
 
 class Flipper extends Foundation<
-    IFlipperHandledProps & IManagedClasses<IFlipperClassNameContract>,
-    React.HTMLAttributes<HTMLButtonElement>,
+    IFlipperHandledProps,
+    IFlipperUnhandledProps,
     {}
 > {
     public static displayName: string = "Flipper";
 
-    protected handledProps: HandledProps<IFlipperHandledProps & IManagedClasses<IFlipperClassNameContract>> = {
+    protected handledProps: HandledProps<IFlipperHandledProps> = {
         label: void 0,
         visibleToAssistiveTechnologies: void 0,
         managedClasses: void 0
@@ -51,8 +51,8 @@ class Flipper extends Foundation<
     /**
      * Generates class names based on props
      */
-    protected coerceButtonProps(): IButtonHandledProps & Partial<IButtonUnhandledProps> {
-        const coercedProps: Partial<IButtonHandledProps> & IButtonUnhandledProps = {
+    protected coerceButtonProps(): Partial<ButtonProps> {
+        const coercedProps: Partial<ButtonProps> = {
             href: void 0,
         };
 

@@ -4,14 +4,15 @@ import { configure, mount, shallow } from "enzyme";
 import { ButtonHTMLTags } from "@microsoft/fast-components-react-base";
 import { IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import MSFTButton, {
+    IMSFTButtonClassNameContract
+} from "./button";
+import {
+    Button,
     ButtonAppearance,
     ButtonProps,
     IButtonHandledProps,
-    IButtonManagedClasses,
-    IButtonUnhandledProps,
-    IMSFTButtonClassNameContract
-} from "./button";
-import { Button } from "./index";
+    IButtonUnhandledProps
+} from "./index";
 
 /*
  * Configure Enzyme
@@ -66,7 +67,7 @@ describe("button", (): void => {
             "aria-hidden": true
         };
 
-        const props: IButtonHandledProps & IButtonUnhandledProps = {...handledProps, ...unhandledProps};
+        const props: ButtonProps = {...handledProps, ...unhandledProps};
 
         const rendered: any = shallow(
             <Button {...props}/>
@@ -79,7 +80,7 @@ describe("button", (): void => {
 
     /* tslint:disable-next-line */
     test("should apply a 'primary' html class when appearance is primary", () => {
-        const props: IButtonHandledProps = {
+        const props: ButtonProps = {
             appearance: ButtonAppearance.primary
         };
 

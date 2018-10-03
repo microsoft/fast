@@ -1,12 +1,5 @@
 import * as React from "react";
-import { CallToAction } from "./index";
-import {
-    CallToActionAppearance,
-    CallToActionProps,
-    ICallToActionHandledProps,
-    ICallToActionManagedClasses,
-    ICallToActionUnhandledProps
-} from "./call-to-action.props";
+import { CallToAction, CallToActionAppearance, CallToActionProps } from "./index";
 import schema from "./call-to-action.schema.json";
 import Documentation from "./.tmp/documentation";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
@@ -30,7 +23,7 @@ export default {
             children: "Primary call to action",
             href: testDestination,
             "data-sketch-symbol": "Call to action - primary"
-        },
+        } as any, // TODO https://github.com/Microsoft/TypeScript/issues/6579
         {
             appearance: CallToActionAppearance.lightweight,
             children: "Lightweight call to action",
@@ -44,4 +37,4 @@ export default {
             "data-sketch-symbol": "Call to action - justified"
         }
     ]
-} as IComponentFactoryExample<ICallToActionHandledProps>;
+} as IComponentFactoryExample<CallToActionProps>;

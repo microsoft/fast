@@ -1,20 +1,23 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
-import Foundation, { HandledProps } from "../foundation";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
-    CardHTMLTags,
+    CardTag,
     ICardHandledProps,
     ICardManagedClasses,
     ICardUnhandledProps
 } from "./card.props";
 import { ICardClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
-/* tslint:disable-next-line */
-class Card extends Foundation<ICardHandledProps & ICardManagedClasses,  ICardUnhandledProps, {}> {
+class Card extends Foundation<
+    ICardHandledProps,
+    ICardUnhandledProps,
+    {}
+> {
     public static displayName: string = "Card";
 
-    protected handledProps: HandledProps<ICardHandledProps & ICardManagedClasses> = {
+    protected handledProps: HandledProps<ICardHandledProps> = {
         children: void 0,
         managedClasses: void 0,
         tag: void 0
@@ -45,7 +48,7 @@ class Card extends Foundation<ICardHandledProps & ICardManagedClasses,  ICardUnh
      * Stores HTML tag for use in render
      */
     private get tag(): string {
-        return CardHTMLTags[this.props.tag] || CardHTMLTags.div;
+        return CardTag[this.props.tag] || CardTag.div;
     }
 }
 

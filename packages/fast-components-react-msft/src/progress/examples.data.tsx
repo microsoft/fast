@@ -1,12 +1,6 @@
 import * as React from "react";
 import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
-import { Progress } from "./index";
-import {
-    IMSFTProgressHandledProps,
-    IMSFTProgressManagedClasses,
-    IMSFTProgressUnhandledProps,
-    MSFTProgressProps
-} from "./progress.props";
+import { Progress, ProgressProps } from "./index";
 import schema from "@microsoft/fast-components-react-base/dist/progress/progress.schema.json";
 import Documentation from "./.tmp/documentation";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
@@ -30,4 +24,4 @@ export default {
         },
         {}
     ]
-} as IComponentFactoryExample<IProgressHandledProps>;
+} as IComponentFactoryExample<ProgressProps>;
