@@ -1,3 +1,5 @@
-export const minHeight: number = 32;
+export const defaultHeight: number = 32;
 
-export const maxHeight: number = 44;
+export const minHeight: number = 20;
+
+export const maxHeight: number = 48;
