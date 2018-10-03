@@ -11,9 +11,7 @@ export interface ISiteMenuState {
     visibility: boolean;
 }
 
-export interface ISiteNavManagedClasses {
-    "@keyframes SiteNavigationOpen": string;
-    "@keyframes SiteNavigationClose": string;
+export interface ISiteNavClassNameContract {
     siteMenu: string;
     siteMenu_nav: string;
     siteMenu_nav__open: string;
@@ -26,7 +24,7 @@ export interface ISiteNavManagedClasses {
     siteMenu_ul: string;
 }
 
-const style: ComponentStyles<ISiteNavManagedClasses, IDevSiteDesignSystem> = {
+const style: ComponentStyles<ISiteNavClassNameContract, IDevSiteDesignSystem> = {
     "@keyframes SiteNavigationOpen": {
         "0%": {
             opacity: 0,
@@ -121,10 +119,10 @@ const style: ComponentStyles<ISiteNavManagedClasses, IDevSiteDesignSystem> = {
 /* tslint:disable-next-line */
 const waffleGlyph: string = "M6.2,10V6h4v4Zm0,8V14h4v4Zm0,8V22h4v4Zm8-16V6h4v4Zm0,8V14h4v4Zm0,8V22h4v4Zm8-20h4v4h-4Zm0,12V14h4v4Zm0,8V22h4v4Z";
 
-class SiteMenu extends React.Component<ISiteMenuProps & IManagedClasses<ISiteNavManagedClasses>, ISiteMenuState> {
+class SiteMenu extends React.Component<ISiteMenuProps & IManagedClasses<ISiteNavClassNameContract>, ISiteMenuState> {
     private navPaneElement: React.RefObject<HTMLElement>;
 
-    constructor(props: ISiteMenuProps & IManagedClasses<ISiteNavManagedClasses>) {
+    constructor(props: ISiteMenuProps & IManagedClasses<ISiteNavClassNameContract>) {
         super(props);
 
         this.state = {

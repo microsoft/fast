@@ -4,7 +4,6 @@ import { ContainerProps } from "./container.props";
 import Foundation, { HandledProps, IFoundationProps } from "@microsoft/fast-components-foundation-react";
 
 export interface IContainerClassNamesContract {
-    "@global"?: string;
     container?: string;
 }
 

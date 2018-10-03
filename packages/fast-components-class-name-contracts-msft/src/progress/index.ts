@@ -50,9 +50,4 @@ export interface IProgressClassNameContract extends IBaseProgressClassNameContra
      * The indeterminate progress indicator 5 modifier
      */
     progress_dot__5?: string;
-
-    /**
-     * The keyframes for the dots animation
-     */
-    "@keyframes dots"?: string;
 }
