@@ -4,7 +4,6 @@
     "description": "A card component's schema definition.",
     "type": "object",
     "id": "card",
-    "children": true,
     "properties": {
         "tag": {
             "title": "HTML tag",
@@ -15,6 +14,15 @@
                 "section"
             ],
             "default": "div"
+        }
+    },
+    "reactProperties": {
+        "children": {
+            "title": "Building blocks",
+            "type": "children",
+            "defaults": [
+                "text"
+            ]
         }
     }
 }

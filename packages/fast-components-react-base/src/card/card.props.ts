@@ -10,11 +10,13 @@ export enum CardHTMLTags {
     section = "section"
 }
 
+export interface ICardUnhandledProps extends React.HTMLAttributes<HTMLDivElement | HTMLElement> {}
+export interface ICardManagedClasses extends IManagedClasses<ICardClassNameContract> {}
 export interface ICardHandledProps {
     /**
      * The card content
      */
-    children?: React.ReactNode | React.ReactNode[];
+    children?: React.ReactNode;
 
     /**
      * Use the appropriate HTML tag type depending on context
@@ -22,6 +24,4 @@ export interface ICardHandledProps {
     tag?: CardHTMLTags;
 }
 
-export interface ICardUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
-export interface ICardManagedClasses extends IManagedClasses<ICardClassNameContract> {}
 export type CardProps = ICardHandledProps & ICardUnhandledProps & ICardManagedClasses;

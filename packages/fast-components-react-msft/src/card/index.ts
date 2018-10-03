@@ -1,6 +1,6 @@
 import * as React from "react";
 import {
-    Card,
+    Card as BaseCard,
     ICardClassNameContract,
     ICardHandledProps,
     ICardUnhandledProps,
@@ -9,4 +9,8 @@ import {
 import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
 import { CardStyles, IDesignSystem } from "@microsoft/fast-components-styles-msft";
 
-export default manageJss(CardStyles)(Card);
+/*tslint:disable-next-line:typedef */
+const Card = manageJss(CardStyles)(BaseCard);
+type Card = InstanceType<typeof Card>;
+
+export { Card };

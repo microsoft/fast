@@ -2,12 +2,19 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "../foundation";
-import { CardHTMLTags, ICardHandledProps, ICardManagedClasses, ICardUnhandledProps } from "./card.props";
+import {
+    CardHTMLTags,
+    ICardHandledProps,
+    ICardManagedClasses,
+    ICardUnhandledProps
+} from "./card.props";
 import { ICardClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 /* tslint:disable-next-line */
-class Card extends Foundation<ICardHandledProps & IManagedClasses<ICardClassNameContract>,  React.AllHTMLAttributes<HTMLElement>, {}> {
-    protected handledProps: HandledProps<ICardHandledProps & IManagedClasses<ICardClassNameContract>> = {
+class Card extends Foundation<ICardHandledProps & ICardManagedClasses,  ICardUnhandledProps, {}> {
+    public static displayName: string = "Card";
+
+    protected handledProps: HandledProps<ICardHandledProps & ICardManagedClasses> = {
         children: void 0,
         managedClasses: void 0,
         tag: void 0
@@ -16,7 +23,7 @@ class Card extends Foundation<ICardHandledProps & IManagedClasses<ICardClassName
     /**
      * Renders the component
      */
-    public render(): React.ReactElement<HTMLDivElement> {
+    public render(): React.ReactElement<HTMLDivElement | HTMLElement> {
         return (
             <this.tag
                 {...this.unhandledProps()}

@@ -1,6 +1,7 @@
 export * from "./button";
 export * from "./call-to-action";
 export * from "./caption";
+export * from "./card";
 export * from "./checkbox";
 export * from "./dialog";
 export * from "./divider";
