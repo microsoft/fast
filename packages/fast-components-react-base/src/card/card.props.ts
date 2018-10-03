@@ -14,7 +14,7 @@ export interface ICardUnhandledProps extends React.HTMLAttributes<HTMLDivElement
 export interface ICardManagedClasses extends IManagedClasses<ICardClassNameContract> {}
 export interface ICardHandledProps {
     /**
-     * The card content
+     * The card children
      */
     children?: React.ReactNode;
 
