@@ -2,13 +2,17 @@ import * as React from "react";
 import { IFoundationProps } from "@microsoft/fast-components-foundation-react";
 import { ISubheadingClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import MSFTSubheading, {
-    ISubheadingHandledProps,
+    ISubheadingHandledProps as IMSFTSubheadingHandledProps,
+    ISubheadingManagedClasses,
     ISubheadingUnhandledProps,
-    SubheadingLevel,
+    SubheadingProps as MSFTSubheadingProps,
+    SubheadingSize,
     SubheadingTag
+
 } from "./subheading";
-import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { IJSSManagerProps, JSSManagerProps } from "@microsoft/fast-jss-manager-react";
 import { IDesignSystem, SubheadingStyles } from "@microsoft/fast-components-styles-msft";
+import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -18,5 +22,15 @@ import { IDesignSystem, SubheadingStyles } from "@microsoft/fast-components-styl
 const Subheading = manageJss(SubheadingStyles)(MSFTSubheading);
 type Subheading = InstanceType<typeof MSFTSubheading>;
 
-export { Subheading };
-export * from "./subheading";
+interface ISubheadingHandledProps extends Subtract<IMSFTSubheadingHandledProps, ISubheadingManagedClasses> {}
+type SubheadingProps = JSSManagerProps<MSFTSubheadingProps, ISubheadingClassNameContract, IDesignSystem>;
+
+export {
+    Subheading,
+    SubheadingSize,
+    SubheadingTag,
+    SubheadingProps,
+    ISubheadingHandledProps,
+    ISubheadingUnhandledProps,
+    ISubheadingClassNameContract
+};

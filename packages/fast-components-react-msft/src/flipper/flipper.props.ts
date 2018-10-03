@@ -1,13 +1,15 @@
 import * as React from "react";
-import { IButtonHandledProps } from "@microsoft/fast-components-react-base";
+import { IButtonHandledProps, IButtonManagedClasses, IButtonUnhandledProps } from "@microsoft/fast-components-react-base";
 import { IFlipperClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
+import { Subtract } from "utility-types";
 
 export enum FlipperDirection {
     next = "next",
     previous = "previous"
 }
 
-export interface IFlipperHandledProps extends IButtonHandledProps {
+export interface IFlipperManagedClasses extends IManagedClasses<IFlipperClassNameContract> {}
+export interface IFlipperHandledProps extends Subtract<IButtonHandledProps, IButtonManagedClasses>, IFlipperManagedClasses {
     /**
      * The flipper direction
      */
@@ -24,6 +26,6 @@ export interface IFlipperHandledProps extends IButtonHandledProps {
     label?: string;
 }
 
-export interface IFlipperUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
-export interface IFlipperManagedClasses extends IManagedClasses<IFlipperClassNameContract> {}
-export type FlipperProps = IFlipperHandledProps & IFlipperUnhandledProps & IFlipperManagedClasses;
+/* tslint:disable-next-line:no-empty-interface */
+export interface IFlipperUnhandledProps extends IButtonUnhandledProps {}
+export type FlipperProps = IFlipperHandledProps & IFlipperUnhandledProps;

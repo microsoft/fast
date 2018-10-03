@@ -3,19 +3,22 @@ import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { TypographySize, TypographyTag } from "@microsoft/fast-components-react-base";
-import { CaptionSize, CaptionTag, ICaptionHandledProps, ICaptionUnhandledProps } from "./caption.props";
-import { ICaptionClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
+import { CaptionProps, CaptionSize, CaptionTag, ICaptionHandledProps, ICaptionUnhandledProps } from "./caption.props";
 import { Typography } from "../typography";
 
-class Caption extends Foundation<ICaptionHandledProps & IManagedClasses<ICaptionClassNameContract>, ICaptionUnhandledProps, {}> {
-    public static defaultProps: Partial<ICaptionHandledProps> = {
+class Caption extends Foundation<
+    ICaptionHandledProps,
+    ICaptionUnhandledProps,
+    {}
+> {
+    public static defaultProps: Partial<CaptionProps> = {
         tag: CaptionTag.p,
         size: CaptionSize._1
     };
 
     public static displayName: string = "Caption";
 
-    protected handledProps: HandledProps<ICaptionHandledProps & IManagedClasses<ICaptionClassNameContract>> = {
+    protected handledProps: HandledProps<ICaptionHandledProps> = {
         size: void 0,
         managedClasses: void 0,
         tag: void 0
@@ -53,4 +56,3 @@ class Caption extends Foundation<ICaptionHandledProps & IManagedClasses<ICaption
 
 export default Caption;
 export * from "./caption.props";
-export { ICaptionClassNameContract };

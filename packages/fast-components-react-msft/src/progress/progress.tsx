@@ -4,20 +4,20 @@ import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { ProgressType } from "@microsoft/fast-components-react-base";
 import {
-    IMSFTProgressHandledProps,
-    IMSFTProgressManagedClasses,
-    IMSFTProgressUnhandledProps,
-    MSFTProgressProps
+    IProgressHandledProps,
+    IProgressManagedClasses,
+    IProgressUnhandledProps,
+    ProgressProps
 } from "./progress.props";
-import { IManagedClasses, IMSFTProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { IManagedClasses, IProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { Progress as BaseProgress } from "@microsoft/fast-components-react-base";
 
 class Progress extends Foundation<
-    IMSFTProgressHandledProps & IManagedClasses<IMSFTProgressClassNameContract>,
-    IMSFTProgressUnhandledProps,
+    IProgressHandledProps,
+    IProgressUnhandledProps,
     {}
 > {
-    public static defaultProps: Partial<IMSFTProgressHandledProps> = {
+    public static defaultProps: Partial<ProgressProps> = {
         minValue: 0,
         maxValue: 100
     };
@@ -26,7 +26,7 @@ class Progress extends Foundation<
 
     private static indicatorDotCount: number = 5;
 
-    protected handledProps: HandledProps<IMSFTProgressHandledProps & IManagedClasses<IMSFTProgressClassNameContract>> = {
+    protected handledProps: HandledProps<IProgressHandledProps> = {
         children: void 0,
         value: void 0,
         minValue: void 0,
@@ -90,4 +90,4 @@ class Progress extends Foundation<
 
 export default Progress;
 export * from "./progress.props";
-export { IMSFTProgressClassNameContract };
+export { IProgressClassNameContract };

@@ -7,7 +7,7 @@ import MSFTSubheading, {
     ISubheadingHandledProps,
     ISubheadingManagedClasses,
     ISubheadingUnhandledProps,
-    SubheadingLevel,
+    SubheadingSize,
     SubheadingTag,
  } from "./subheading";
 import { Subheading } from "./index";
@@ -30,7 +30,7 @@ describe("subheading", (): void => {
         expect(
             () => {
                 shallow(<MSFTSubheading />);
-                shallow(<MSFTSubheading level={SubheadingLevel._1} />);
+                shallow(<MSFTSubheading level={SubheadingSize._1} />);
             }
         ).not.toThrow();
     });
@@ -38,7 +38,7 @@ describe("subheading", (): void => {
     test("should return a valid object which includes all props that are not enumerated as handledProps", (): void => {
         const handledProps: ISubheadingHandledProps = {
             tag: SubheadingTag.h1,
-            size: SubheadingLevel._1
+            size: SubheadingSize._1
         };
 
         const unhandledProps: ISubheadingUnhandledProps = {
@@ -73,6 +73,6 @@ describe("subheading", (): void => {
 
         const subheading: any = rendered.first().shallow();
 
-        expect(subheading.instance().props.size).toEqual(SubheadingLevel._1);
+        expect(subheading.instance().props.size).toEqual(SubheadingSize._1);
     });
 });

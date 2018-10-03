@@ -1,7 +1,9 @@
 import * as React from "react";
 import { IHypertextClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface IHypertextHandledProps {
+export interface IHypertextManagedClasses extends IManagedClasses<IHypertextClassNameContract> {}
+export interface IHypertextUnhandledProps extends React.HTMLAttributes<HTMLAnchorElement> {}
+export interface IHypertextHandledProps extends IHypertextManagedClasses {
     /**
      * The destination address
      */
@@ -10,9 +12,7 @@ export interface IHypertextHandledProps {
     /**
      * The hypertext content
      */
-    children?: React.ReactNode | React.ReactNode[];
+    children?: React.ReactNode;
 }
 
-export interface IHypertextUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
-export interface IHypertextManagedClasses extends IManagedClasses<IHypertextClassNameContract> {}
-export type HypertextProps = IHypertextHandledProps & IHypertextUnhandledProps & IHypertextManagedClasses;
+export type HypertextProps = IHypertextHandledProps & IHypertextUnhandledProps;

@@ -1,21 +1,19 @@
 import * as React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { Button } from "../button/index";
-import { ButtonAppearance, IMSFTButtonClassNameContract } from "../button/button";
-import { CallToActionAppearance, ICallToActionHandledProps } from "./call-to-action.props";
-import { ICallToActionClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
+import { Button, ButtonAppearance } from "../button";
+import { CallToActionAppearance, ICallToActionHandledProps, ICallToActionUnhandledProps } from "./call-to-action.props";
 import { get } from "lodash-es";
 import { glyphArrowright } from "@microsoft/fast-glyphs-msft";
 import { callToActionButtonOverrides } from "@microsoft/fast-components-styles-msft";
 
 class CallToAction extends Foundation<
-    ICallToActionHandledProps & IManagedClasses<ICallToActionClassNameContract>,
-    React.AllHTMLAttributes<HTMLElement>,
+    ICallToActionHandledProps,
+    ICallToActionUnhandledProps,
     {}
 > {
     public static displayName: string = "CallToAction";
 
-    protected handledProps: HandledProps<ICallToActionHandledProps & IManagedClasses<ICallToActionClassNameContract>> = {
+    protected handledProps: HandledProps<ICallToActionHandledProps> = {
         appearance: void 0,
         href: void 0,
         managedClasses: void 0,
@@ -73,4 +71,3 @@ class CallToAction extends Foundation<
 
 export default CallToAction;
 export * from "./call-to-action.props";
-export { ICallToActionClassNameContract };

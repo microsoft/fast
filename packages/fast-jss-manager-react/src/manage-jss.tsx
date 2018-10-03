@@ -34,16 +34,33 @@ export interface IJSSManagerProps<S, C> {
 }
 
 /**
+ * Prop typing for the JSSManager
+ */
+export type JSSManagerProps<T, S, C> =
+Pick<
+    T,
+    Exclude<
+        keyof T,
+        keyof IManagedClasses<C>
+    >
+> & IJSSManagerProps<S, C>;
+
+/**
  * Main entry into the style manager. This function accepts a JSS style object and returns a
  * higher order component. That higher-order component can then be used to compose a component
  * with styles managed
  */
-/* tslint:disable-next-line */
-function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.ComponentType<T & IManagedClasses<S>>) => React.ComponentClass<T & IJSSManagerProps<S, C>> {
-    return function<T>(Component: React.ComponentType<T & IManagedClasses<S>>): React.ComponentClass<T & IJSSManagerProps<S, C>> {
+function manageJss<S, C>(
+    styles?: ComponentStyles<S, C>
+): <T>(
+    Component: React.ComponentType<T & IManagedClasses<S>>
+) => React.ComponentClass<JSSManagerProps<T, S, C>> {
+    return function<T>(
+        Component: React.ComponentType<T & IManagedClasses<S>>
+    ): React.ComponentClass<JSSManagerProps<T, S, C>> {
 
         // Define the manager higher-order component inside of the return method of the higher-order function.
-        class JSSManager extends React.Component<T & IJSSManagerProps<S, C>, IJSSManagerState> {
+        class JSSManager extends React.Component<JSSManagerProps<T, S, C>, IJSSManagerState> {
             // TODO: figure out if there is a better way to type this object
             public static contextTypes: any = {
                 designSystem: propTypes.any
@@ -55,7 +72,7 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
              */
             private static stylesheetManager: SheetsManager = stylesheetManager;
 
-            constructor(props: T) {
+            constructor(props: JSSManagerProps<T, S, C>) {
                 super(props);
 
                 const state: IJSSManagerState = {};
@@ -91,13 +108,13 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
                 }
             }
 
-            public componentWillUpdate(nextProps: T & IJSSManagerProps<S, C>, nextState: IJSSManagerState, nextContext: any): void {
+            public componentWillUpdate(nextProps: JSSManagerProps<T, S, C>, nextState: IJSSManagerState, nextContext: any): void {
                 if (!isEqual(this.context, nextContext)) {
                     this.updateStyleSheet(nextContext);
                 }
             }
 
-            public componentDidUpdate(prevProps: T & IJSSManagerProps<S, C>, prevState: IJSSManagerState): void {
+            public componentDidUpdate(prevProps: JSSManagerProps<T, S, C>, prevState: IJSSManagerState): void {
                 if (this.props.jssStyleSheet !== prevProps.jssStyleSheet) {
                     this.resetStyleSheet();
                 }
@@ -139,7 +156,7 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(Component: React.C
              */
             private resetStyleSheet(): any {
                 this.removeStyleSheet();
-                this.setState((previousState: IJSSManagerState, props: T & IJSSManagerProps<S, C>): Partial<IJSSManagerState> => {
+                this.setState((previousState: IJSSManagerState, props: JSSManagerProps<T, S, C>): Partial<IJSSManagerState> => {
                     return {
                         styleSheet: this.hasStyleSheet() ? this.createStyleSheet() : null
                     };

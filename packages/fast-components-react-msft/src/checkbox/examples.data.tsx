@@ -1,7 +1,6 @@
 import * as React from "react";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { Checkbox } from "./index";
-import { ICheckboxHandledProps } from "@microsoft/fast-components-react-base";
+import { Checkbox, CheckboxProps } from "./index";
 import schema from "@microsoft/fast-components-react-base/dist/checkbox/checkbox.schema.json";
 import Documentation from "./.tmp/documentation";
 
@@ -39,4 +38,4 @@ export default {
             children: "Indeterminate checked (controlled)"
         }
     ]
-} as IComponentFactoryExample<ICheckboxHandledProps>;
+} as IComponentFactoryExample<CheckboxProps>;

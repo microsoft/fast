@@ -16,7 +16,7 @@ const classes: IProgressManagedClasses = {
     }
 };
 
-const examples: IComponentFactoryExample<IProgressHandledProps & IProgressManagedClasses> = {
+const examples: IComponentFactoryExample<IProgressHandledProps> = {
     name: "Progress",
     component: Progress,
     schema: schema as any,

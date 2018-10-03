@@ -1,7 +1,7 @@
 import * as React from "react";
 import { IManagedClasses, ISubheadingClassNameContract  } from "@microsoft/fast-components-class-name-contracts-msft";
 
-export enum SubheadingLevel {
+export enum SubheadingSize {
     _1 = 1,
     _2 = 2,
     _3 = 3,
@@ -20,17 +20,18 @@ export enum SubheadingTag {
     p = "p"
 }
 
-export interface ISubheadingHandledProps {
+export interface ISubheadingManagedClasses extends IManagedClasses<ISubheadingClassNameContract> {}
+export interface ISubheadingHandledProps extends ISubheadingManagedClasses {
 
     /**
      * The subheading content
      */
-    children?: React.ReactNode | React.ReactNode[];
+    children?: React.ReactNode;
 
     /**
      * The visual size (type level) which aligns to a type ramp instance
      */
-    size?: SubheadingLevel;
+    size?: SubheadingSize;
 
     /**
      * The subheading tag used to create the underlying html element
@@ -39,5 +40,4 @@ export interface ISubheadingHandledProps {
 }
 
 export interface ISubheadingUnhandledProps extends React.HTMLAttributes<HTMLHeadingElement | HTMLParagraphElement> {}
-export interface ISubheadingManagedClasses extends IManagedClasses<ISubheadingClassNameContract> {}
-export type SubheadingProps = ISubheadingHandledProps & ISubheadingUnhandledProps & ISubheadingManagedClasses;
+export type SubheadingProps = ISubheadingHandledProps & ISubheadingUnhandledProps;

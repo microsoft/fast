@@ -2,13 +2,15 @@ import * as React from "react";
 import { IFoundationProps } from "@microsoft/fast-components-foundation-react";
 import { IMetatextClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import MSFTMetatext, {
-    IMetatextHandledProps,
+    IMetatextHandledProps as IMSFTMetatextHandledProps,
     IMetatextManagedClasses,
     IMetatextUnhandledProps,
+    MetatextProps as MSFTMetatextProps,
     MetatextTag
 } from "./metatext";
-import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { IJSSManagerProps, JSSManagerProps } from "@microsoft/fast-jss-manager-react";
 import { IDesignSystem, MetatextStyles } from "@microsoft/fast-components-styles-msft";
+import { Subtract } from "utility-types";
 
 /*
  * The type returned by manageJss type is very complicated so we'll let the
@@ -17,5 +19,15 @@ import { IDesignSystem, MetatextStyles } from "@microsoft/fast-components-styles
 /* tslint:disable-next-line:typedef */
 const Metatext = manageJss(MetatextStyles)(MSFTMetatext);
 type Metatext = InstanceType<typeof Metatext>;
-export { Metatext };
-export * from "./metatext";
+
+interface IMetatextHandledProps extends Subtract<IMSFTMetatextHandledProps, IMetatextManagedClasses> {}
+type MetatextProps = JSSManagerProps<MSFTMetatextProps, IMetatextClassNameContract, IDesignSystem>;
+
+export {
+    Metatext,
+    MetatextTag,
+    MetatextProps,
+    IMetatextHandledProps,
+    IMetatextUnhandledProps,
+    IMetatextClassNameContract
+};
