@@ -42,7 +42,7 @@ describe("label", (): void => {
     });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
-        const handledProps: ILabelHandledProps & ILabelManagedClasses = {
+        const handledProps: ILabelHandledProps = {
             managedClasses,
             tag: LabelTag.label
         };

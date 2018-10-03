@@ -1,6 +1,6 @@
 import designSystemDefaults, { IDesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
-import { ICardClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { ICardClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
 import Chroma from "chroma-js";
 import { elevation, ElevationMultiplier } from "../utilities/elevation";

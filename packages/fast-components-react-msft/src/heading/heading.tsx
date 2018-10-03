@@ -4,7 +4,7 @@ import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { TypographySize, TypographyTag } from "@microsoft/fast-components-react-base";
 import {
-    AlignHeadingBaseline,
+    HeadingAlignBaseline,
     IHeadingHandledProps,
     IHeadingManagedClasses,
     IHeadingUnhandledProps
@@ -13,13 +13,13 @@ import { Typography } from "../typography";
 import { IHeadingClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
 
 class Heading extends Foundation<
-    IHeadingHandledProps & IManagedClasses<IHeadingClassNameContract>,
-    React.HTMLAttributes<HTMLElement>,
+    IHeadingHandledProps,
+    IHeadingUnhandledProps,
     {}
 > {
     public static displayName: string = "Heading";
 
-    protected handledProps: HandledProps<IHeadingHandledProps & IManagedClasses<IHeadingClassNameContract>> = {
+    protected handledProps: HandledProps<IHeadingHandledProps> = {
         size: void 0,
         managedClasses: void 0,
         tag: void 0

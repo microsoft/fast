@@ -4,8 +4,8 @@ import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import Card, {
-    CardHTMLTags,
     CardProps,
+    CardTag,
     ICardClassNameContract,
     ICardHandledProps,
     ICardManagedClasses,
@@ -27,7 +27,7 @@ describe("card", (): void => {
     });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
-        const handledProps: ICardHandledProps & ICardManagedClasses = {
+        const handledProps: ICardHandledProps = {
             managedClasses
         };
 
@@ -55,7 +55,7 @@ describe("card", (): void => {
 
     test("should render as a `section` element if the `prop.tag` is equal to `section`", () => {
         const rendered: any = shallow(
-            <Card tag={CardHTMLTags.section} managedClasses={managedClasses} />
+            <Card tag={CardTag.section} managedClasses={managedClasses} />
         );
 
         expect(rendered.type()).toBe("section");
@@ -63,7 +63,7 @@ describe("card", (): void => {
 
     test("should render as a `article` element if the `prop.tag` is equal to `article`", () => {
         const rendered: any = shallow(
-            <Card tag={CardHTMLTags.article} managedClasses={managedClasses} />
+            <Card tag={CardTag.article} managedClasses={managedClasses} />
         );
 
         expect(rendered.type()).toBe("article");

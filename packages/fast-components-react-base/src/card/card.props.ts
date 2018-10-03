@@ -4,15 +4,15 @@ import { ICardClassNameContract, IManagedClasses } from "@microsoft/fast-compone
 /**
  * Card HTML tags
  */
-export enum CardHTMLTags {
+export enum CardTag {
     article = "article",
     div = "div",
     section = "section"
 }
 
-export interface ICardUnhandledProps extends React.HTMLAttributes<HTMLDivElement | HTMLElement> {}
 export interface ICardManagedClasses extends IManagedClasses<ICardClassNameContract> {}
-export interface ICardHandledProps {
+export interface ICardUnhandledProps extends React.HTMLAttributes<HTMLDivElement | HTMLElement> {}
+export interface ICardHandledProps extends ICardManagedClasses {
     /**
      * The card children
      */
@@ -21,7 +21,7 @@ export interface ICardHandledProps {
     /**
      * Use the appropriate HTML tag type depending on context
      */
-    tag?: CardHTMLTags;
+    tag?: CardTag;
 }
 
-export type CardProps = ICardHandledProps & ICardUnhandledProps & ICardManagedClasses;
+export type CardProps = ICardHandledProps & ICardUnhandledProps;

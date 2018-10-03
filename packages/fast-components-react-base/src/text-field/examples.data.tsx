@@ -9,7 +9,7 @@ import * as React from "react";
 import Documentation from "./.tmp/documentation";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
-const examples: IComponentFactoryExample<ITextFieldHandledProps & ITextFieldManagedClasses> = {
+const examples: IComponentFactoryExample<ITextFieldHandledProps> = {
     name: "Text field",
     component: TextField,
     schema: schema as any,

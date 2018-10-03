@@ -1,7 +1,9 @@
 import * as React from "react";
 import { IDialogClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface IDialogHandledProps {
+export interface IDialogUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface IDialogManagedClasses extends IManagedClasses<IDialogClassNameContract> {}
+export interface IDialogHandledProps extends IDialogManagedClasses {
     /**
      * The dialog content
      */
@@ -44,7 +46,7 @@ export interface IDialogHandledProps {
      * The onDismiss callback
      * Callback is registered on click of the modal overlay or when escape key is pressed
      */
-    onDismiss?: DialogOnDismiss;
+    onDismiss?: (e?: React.MouseEvent | KeyboardEvent) => void;
 
     /**
      * Sets the visibility of the dialog to assistive technologies
@@ -53,7 +55,4 @@ export interface IDialogHandledProps {
     visible?: boolean;
 }
 
-export type DialogOnDismiss = (e?: React.MouseEvent | KeyboardEvent) => void;
-export interface IDialogUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
-export interface IDialogManagedClasses extends IManagedClasses<IDialogClassNameContract> {}
-export type DialogProps = IDialogHandledProps & IDialogUnhandledProps & IDialogManagedClasses;
+export type DialogProps = IDialogHandledProps & IDialogUnhandledProps;

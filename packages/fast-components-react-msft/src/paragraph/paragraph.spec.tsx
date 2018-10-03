@@ -7,8 +7,8 @@ import MSFTParagraph, {
     IParagraphHandledProps,
     IParagraphManagedClasses,
     IParagraphUnhandledProps,
-    ParagraphLevel,
     ParagraphProps,
+    ParagraphSize,
 } from "./paragraph";
 import { Paragraph } from "./index";
 
@@ -30,14 +30,14 @@ describe("paragraph", (): void => {
         expect(
             () => {
                 shallow(<Paragraph />);
-                shallow(<Paragraph level={ParagraphLevel._1} />);
+                shallow(<Paragraph size={ParagraphSize._1} />);
             }
         ).not.toThrow();
     });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: IParagraphHandledProps = {
-            size: ParagraphLevel._1
+            size: ParagraphSize._1
         };
 
         const unhandledProps: IParagraphUnhandledProps = {
@@ -57,19 +57,19 @@ describe("paragraph", (): void => {
 
     test("should render the correct `size` when `size` prop is passed", () => {
         const rendered: any = shallow(
-            <Paragraph size={ParagraphLevel._2} />
+            <Paragraph size={ParagraphSize._2} />
         );
         const paragraph: any = rendered.first().shallow();
 
-        expect(paragraph.instance().props.size).toEqual(ParagraphLevel._2);
+        expect(paragraph.instance().props.size).toEqual(ParagraphSize._2);
     });
 
-    test("should render a default `size` of `ParagraphLevel._3` if no `size` prop is passed", () => {
+    test("should render a default `size` of `ParagraphSize._3` if no `size` prop is passed", () => {
         const rendered: any = shallow(
             <Paragraph />
         );
         const paragraph: any = rendered.first().shallow();
 
-        expect(paragraph.instance().props.size).toEqual(ParagraphLevel._3);
+        expect(paragraph.instance().props.size).toEqual(ParagraphSize._3);
     });
 });

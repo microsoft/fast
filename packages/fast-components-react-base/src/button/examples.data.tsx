@@ -4,7 +4,7 @@ import schema from "./button.schema.json";
 import Documentation from "./.tmp/documentation";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
-const examples: IComponentFactoryExample<IButtonHandledProps & IButtonManagedClasses> = {
+const examples: IComponentFactoryExample<IButtonHandledProps> = {
     name: "Button",
     component: Button,
     schema: schema as any,

@@ -6,7 +6,8 @@ import {
     ISubheadingHandledProps,
     ISubheadingManagedClasses,
     ISubheadingUnhandledProps,
-    SubheadingLevel,
+    SubheadingProps,
+    SubheadingSize,
     SubheadingTag
 } from "./subheading.props";
 
@@ -14,18 +15,18 @@ import { Typography } from "../typography";
 import { IManagedClasses, ISubheadingClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 
 class Subheading extends Foundation<
-    ISubheadingHandledProps & IManagedClasses<ISubheadingClassNameContract>,
-    React.HTMLAttributes<HTMLElement>,
+    ISubheadingHandledProps,
+    ISubheadingUnhandledProps,
     {}
 > {
-    public static defaultProps: Partial<ISubheadingHandledProps> = {
-        size: SubheadingLevel._1,
+    public static defaultProps: Partial<SubheadingProps> = {
+        size: SubheadingSize._1,
         tag: SubheadingTag.h3
     };
 
     public static displayName: string = "Subheading";
 
-    protected handledProps: HandledProps<ISubheadingHandledProps & IManagedClasses<ISubheadingClassNameContract>> = {
+    protected handledProps: HandledProps<ISubheadingHandledProps> = {
         size: void 0,
         managedClasses: void 0,
         tag: void 0
@@ -33,17 +34,17 @@ class Subheading extends Foundation<
 
     private get size(): TypographySize {
         switch (this.props.size) {
-            case SubheadingLevel._1:
+            case SubheadingSize._1:
                 return TypographySize._3;
-            case SubheadingLevel._2:
+            case SubheadingSize._2:
                 return TypographySize._4;
-            case SubheadingLevel._3:
+            case SubheadingSize._3:
                 return TypographySize._5;
-            case SubheadingLevel._4:
+            case SubheadingSize._4:
                 return TypographySize._6;
-            case SubheadingLevel._5:
+            case SubheadingSize._5:
                 return TypographySize._7;
-            case SubheadingLevel._6:
+            case SubheadingSize._6:
                 return TypographySize._8;
         }
     }
@@ -62,8 +63,9 @@ class Subheading extends Foundation<
     }
 
     protected generateClassNames(): string {
-        /* tslint:disable-next-line */
-        return super.generateClassNames(`${get(this.props, "managedClasses.subheading")} ${get(this.props, `managedClasses.subheading__${this.props.size}`)}`);
+        return super.generateClassNames(
+            `${get(this.props, "managedClasses.subheading")} ${get(this.props, `managedClasses.subheading__${this.props.size}`)}`
+        );
     }
 }
 

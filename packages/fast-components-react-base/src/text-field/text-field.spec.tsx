@@ -40,7 +40,7 @@ describe("text-field", (): void => {
     });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
-        const handledProps: ITextFieldHandledProps & ITextFieldManagedClasses = {
+        const handledProps: ITextFieldHandledProps = {
             managedClasses,
             type: TextFieldType.email
         };

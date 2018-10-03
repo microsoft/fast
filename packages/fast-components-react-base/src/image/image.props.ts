@@ -1,7 +1,9 @@
 import * as React from "react";
 import { IImageClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface IImageHandledProps {
+export interface IImageUnhandledProps extends React.HTMLAttributes<HTMLImageElement | HTMLPictureElement> {}
+export interface IImageManagedClasses extends IManagedClasses<IImageClassNameContract> {}
+export interface IImageHandledProps extends IImageManagedClasses {
     /**
      * The HTML alt attribute value is important for overall accessibility, providing a textual
      * alternative to non-text content
@@ -29,6 +31,4 @@ export interface IImageHandledProps {
     children?: React.ReactElement<HTMLSourceElement> | Array<React.ReactElement<HTMLSourceElement>>;
 }
 
-export interface IImageUnhandledProps extends React.HTMLAttributes<HTMLImageElement | HTMLPictureElement> {}
-export interface IImageManagedClasses extends IManagedClasses<IImageClassNameContract> {}
-export type ImageProps = IImageHandledProps & IImageUnhandledProps & IImageManagedClasses;
+export type ImageProps = IImageHandledProps & IImageUnhandledProps;

@@ -1,24 +1,24 @@
 import * as React from "react";
 import { IManagedClasses, IParagraphClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 
-export enum ParagraphLevel {
+export enum ParagraphSize {
     _1 = 1,
     _2 = 2,
     _3 = 3
 }
 
-export interface IParagraphHandledProps {
+export interface IParagraphManagedClasses extends IManagedClasses<IParagraphClassNameContract> {}
+export interface IParagraphHandledProps extends IParagraphManagedClasses {
     /**
      * The paragraph content
      */
-    children?: React.ReactNode | React.ReactNode[];
+    children?: React.ReactNode;
 
     /**
      * The visual size (type level) which aligns to a type ramp instance
      */
-    size?: ParagraphLevel;
+    size?: ParagraphSize;
 }
 
 export interface IParagraphUnhandledProps extends React.HTMLAttributes<HTMLParagraphElement> {}
-export interface IParagraphManagedClasses extends IManagedClasses<IParagraphClassNameContract> {}
-export type ParagraphProps = IParagraphHandledProps & IParagraphUnhandledProps & IParagraphManagedClasses;
+export type ParagraphProps = IParagraphHandledProps & IParagraphUnhandledProps;

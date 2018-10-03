@@ -10,13 +10,13 @@ export enum ImageSlot {
 }
 
 class Image extends Foundation<
-    IImageHandledProps & IManagedClasses<IImageClassNameContract>,
-    React.HTMLAttributes<HTMLImageElement | HTMLPictureElement>,
+    IImageHandledProps,
+    IImageUnhandledProps,
     {}
 > {
     public static displayName: string = "Image";
 
-    protected handledProps: HandledProps<IImageHandledProps & IManagedClasses<IImageClassNameContract>> = {
+    protected handledProps: HandledProps<IImageHandledProps> = {
         managedClasses: void 0,
         alt: void(0),
         sizes: void(0),

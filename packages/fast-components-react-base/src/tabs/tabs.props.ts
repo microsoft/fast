@@ -2,7 +2,9 @@ import * as React from "react";
 import { IManagedClasses, ITabsClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { Orientation } from "@microsoft/fast-web-utilities";
 
-export interface ITabsHandledProps {
+export interface ITabsManagedClasses extends IManagedClasses<ITabsClassNameContract> {}
+export interface ITabsUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
+export interface ITabsHandledProps extends ITabsManagedClasses {
     /**
      * The active tab item id
      */
@@ -11,7 +13,7 @@ export interface ITabsHandledProps {
     /**
      * The tabs content
      */
-    children?: React.ReactNode | React.ReactNode[];
+    children?: React.ReactNode;
 
     /**
      * The aria-label applied to the tablist for the tab items
@@ -45,6 +47,4 @@ export interface ITabsHandledProps {
     tabSlot?: string;
 }
 
-export interface ITabsUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
-export interface ITabsManagedClasses extends IManagedClasses<ITabsClassNameContract> {}
-export type TabsProps = ITabsHandledProps & ITabsUnhandledProps & ITabsManagedClasses;
+export type TabsProps = ITabsHandledProps & ITabsUnhandledProps;
