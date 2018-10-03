@@ -11,7 +11,7 @@ export interface IScrollChange {
     end: boolean;
 }
 
-export interface IHorizontalOverflowUnhandledProps extends React.AllHTMLAttributes<HTMLDivElement> {}
+export interface IHorizontalOverflowUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
 export interface IHorizontalOverflowManagedClasses extends IManagedClasses<IHorizontalOverflowClassNameContract> {}
 export interface IHorizontalOverflowHandledProps extends IHorizontalOverflowManagedClasses {
     /**

@@ -7,7 +7,7 @@ export enum LabelTag {
 }
 
 export interface ILabelManagedClasses extends IManagedClasses<ILabelClassNameContract> {}
-export interface ILabelUnhandledProps extends React.HTMLAttributes<HTMLLabelElement> {}
+export interface ILabelUnhandledProps extends React.HTMLAttributes<HTMLLabelElement | HTMLLegendElement> {}
 export interface ILabelHandledProps extends ILabelManagedClasses {
     /**
      * Label content
