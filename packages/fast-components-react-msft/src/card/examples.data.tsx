@@ -31,8 +31,7 @@ export default {
     },
     data: [
         {
-            tag: CardHTMLTags.section,
-            children: []
+            tag: CardHTMLTags.section
         },
         {
             tag: CardHTMLTags.article,
