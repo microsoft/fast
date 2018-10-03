@@ -22,7 +22,7 @@
     "build": "tsc -p ./tsconfig.json",
     "build:watch": "npm run build -- -w",
     "prepare": "npm run clean:dist && npm run build",
-    "watch": "npm run build -- -w --preserveWatchOutput"
+    "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput"
   },
   "devDependencies": {
     "@microsoft/fast-application-utilities": "^3.0.0",
