@@ -106,7 +106,6 @@ export interface ITheme {
 }
 
 export interface ISiteManagedClasses {
-    "@global": string;
     site_canvasContent: string;
     site_headerTitle: string;
     site_infoBarConfiguration: string;

@@ -4,7 +4,6 @@ import { IPageHandledProps, PageProps } from "./page.props";
 import Foundation, { HandledProps, IFoundationProps } from "@microsoft/fast-components-foundation-react";
 
 export interface IPageClassNamesContract {
-    "@global"?: string;
     page?: string;
 }
 

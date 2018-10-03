@@ -5,6 +5,8 @@ import {
     ITabsClassNameContract
 } from "@microsoft/fast-components-class-name-contracts-base";
 import Tabs, {
+    ITabManagedClasses,
+    ITabPanelManagedClasses,
     ITabsHandledProps,
     ITabsManagedClasses,
     ITabsUnhandledProps,
@@ -21,20 +23,26 @@ import Documentation from "./.tmp/documentation";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
-const tabsManagedClasses: ITabsClassNameContract = {
-    tabs_tabPanels: "tab_items-class",
-    tabs_tabList: "tab_list-class",
-    tabs: "tabs-class"
+const tabsManagedClasses: ITabsManagedClasses = {
+    managedClasses: {
+        tabs_tabPanels: "tab_items-class",
+        tabs_tabList: "tab_list-class",
+        tabs: "tabs-class"
+    }
 };
 
-const tabManagedClasses: ITabClassNameContract = {
-    tab: "tab-class",
-    tab__active: "tab__active-class"
+const tabManagedClasses: ITabManagedClasses = {
+    managedClasses: {
+        tab: "tab-class",
+        tab__active: "tab__active-class"
+    }
 };
 
-const tabPanelManagedClasses: ITabPanelClassNameContract = {
-    tabPanel: "tab_panel-class",
-    tabPanel__hidden: "tab_panel__hidden-class"
+const tabPanelManagedClasses: ITabPanelManagedClasses = {
+    managedClasses: {
+        tabPanel: "tab_panel-class",
+        tabPanel__hidden: "tab_panel__hidden-class"
+    }
 };
 
 /**
@@ -45,7 +53,7 @@ function getTabElementOne(): any {
         id: tabSchema.id,
         props: {
             slot: TabsSlot.tab,
-            managedClasses: tabManagedClasses,
+            ...tabManagedClasses,
             children: "tab one"
         }
     };
@@ -56,7 +64,7 @@ function getTabPanelOne(): any {
         id: tabPanelSchema.id,
         props: {
             slot: TabsSlot.tabPanel,
-            managedClasses: tabPanelManagedClasses,
+            ...tabPanelManagedClasses,
             children: "tab one content"
         }
     };
@@ -84,7 +92,7 @@ function getTabElementTwo(): any {
         id: tabSchema.id,
         props: {
             slot: TabsSlot.tab,
-            managedClasses: tabManagedClasses,
+            ...tabManagedClasses,
             children: "tab two"
         }
     };
@@ -95,7 +103,7 @@ function getTabPanelTwo(): any {
         id: tabPanelSchema.id,
         props: {
             slot: TabsSlot.tabPanel,
-            managedClasses: tabPanelManagedClasses,
+            ...tabPanelManagedClasses,
             children: "tab two content"
         }
     };
@@ -123,7 +131,7 @@ function getTabElementThree(): any {
         id: tabSchema.id,
         props: {
             slot: TabsSlot.tab,
-            managedClasses: tabManagedClasses,
+            ...tabManagedClasses,
             children: "tab three"
         }
     };
@@ -134,7 +142,7 @@ function getTabPanelThree(): any {
         id: tabPanelSchema.id,
         props: {
             slot: TabsSlot.tabPanel,
-            managedClasses: tabPanelManagedClasses,
+            ...tabPanelManagedClasses,
             children: "tab three content"
         }
     };
@@ -162,7 +170,7 @@ function getTabElementFour(): any {
         id: tabSchema.id,
         props: {
             slot: TabsSlot.tab,
-            managedClasses: tabManagedClasses,
+            ...tabManagedClasses,
             children: "tab four"
         }
     };
@@ -173,7 +181,7 @@ function getTabPanelFour(): any {
         id: tabPanelSchema.id,
         props: {
             slot: TabsSlot.tabPanel,
-            managedClasses: tabPanelManagedClasses,
+            ...tabPanelManagedClasses,
             children: "tab four content"
         }
     };
@@ -209,7 +217,7 @@ const exampleChildren1: any[] = [
                 id: tabSchema.id,
                 props: {
                     slot: TabsSlot.tab,
-                    managedClasses: tabManagedClasses,
+                    ...tabManagedClasses,
                     children: "tab one - missing panel"
                 }
             }
@@ -231,7 +239,7 @@ const exampleChildren2: JSX.Element[] = [
                 id: tabPanelSchema.id,
                 props: {
                     slot: TabsSlot.tabPanel,
-                    managedClasses: tabPanelManagedClasses,
+                    ...tabPanelManagedClasses,
                     children: "tab two missing tab"
                 }
             }
@@ -258,32 +266,32 @@ const examples: IComponentFactoryExample<ITabsHandledProps> = {
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
-        managedClasses: tabsManagedClasses,
+        ...tabsManagedClasses,
         label: "A set of example text content",
         children: detailChildren,
     },
     data: [
         {
-            managedClasses: tabsManagedClasses,
+            ...tabsManagedClasses,
             activeId: "tab04",
             label: "A set of example text content",
             orientation: Orientation.horizontal,
             children: exampleChildren1
         },
         {
-            managedClasses: tabsManagedClasses,
+            ...tabsManagedClasses,
             activeId: "tab03",
             label: "A set of example text content",
             orientation: Orientation.vertical,
             children: exampleChildren2
         },
         {
-            managedClasses: tabsManagedClasses,
+            ...tabsManagedClasses,
             label: "A set of example text content",
             children: exampleChildren3
         },
         {
-            managedClasses: tabsManagedClasses,
+            ...tabsManagedClasses,
             label: "A set of example text content",
             children: exampleChildren4
         }
