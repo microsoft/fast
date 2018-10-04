@@ -17,7 +17,7 @@ export interface IDesignSystemProviderProps<T> {
     designSystem: IDesignSystem<T>;
 }
 
-class DesignSystemProvider<T> extends React.Component<IDesignSystemProviderProps<T>, {}> {
+export class DesignSystemProvider<T> extends React.Component<IDesignSystemProviderProps<T>, {}> {
     public render(): React.ReactNode {
         return (
             <Consumer>
@@ -34,5 +34,3 @@ class DesignSystemProvider<T> extends React.Component<IDesignSystemProviderProps
         );
     }
 }
-
-export default DesignSystemProvider;
