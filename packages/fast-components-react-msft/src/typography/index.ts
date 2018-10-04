@@ -10,7 +10,7 @@ import {
     TypographySize,
     TypographyTag
 } from "@microsoft/fast-components-react-base";
-import manageJss, { IManagedJSSProps, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { IDesignSystem, TypographyStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 
@@ -20,7 +20,7 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const Typography = manageJss(TypographyStyles)(BaseTypography);
-type Typography = InstanceType<typeof Typography>;
+type Typography = typeof Typography;
 
 interface ITypographyHandledProps extends Subtract<IBaseTypographyHandledProps, ITypographyManagedClasses> {}
 type TypographyProps = ManagedJSSProps<BaseTypographyProps, ITypographyClassNameContract, IDesignSystem>;

@@ -8,7 +8,7 @@ import {
     Toggle as BaseToggle,
     ToggleProps as BaseToggleProps
 } from "@microsoft/fast-components-react-base";
-import manageJss, { IManagedJSSProps, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { IDesignSystem, ToggleStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 
@@ -18,7 +18,7 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const Toggle = manageJss(ToggleStyles)(BaseToggle);
-type Toggle = InstanceType<typeof Toggle>;
+type Toggle = typeof Toggle;
 
 interface IToggleHandledProps extends Subtract<IBaseToggleHandledProps, IToggleManagedClasses> {}
 type ToggleProps = ManagedJSSProps<BaseToggleProps, IToggleClassNameContract, IDesignSystem>;

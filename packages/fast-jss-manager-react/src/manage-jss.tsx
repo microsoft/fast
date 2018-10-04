@@ -83,11 +83,11 @@ function manageJss<S, C>(
     styles?: ComponentStyles<S, C>
 ): <T>(
     Component: React.ComponentType<T & IManagedClasses<S>>
-) => React.SFC<{}> {
+) => React.SFC<ManagedJSSProps<T, S, C>> {
     return function<T>(
         Component: React.ComponentType<T & IManagedClasses<S>>
     ): React.SFC<ManagedJSSProps<T, S, C>> {
-        return (props: ManagedJSSProps<T, S, C>): React.ReactElement<{}> => {
+        return (props: ManagedJSSProps<T, S, C>): React.ReactElement<React.Consumer<unknown>> => {
             /**
              * Define the render prop of the JSSManager. generated class-names are passed into
              * this function and provided to the wrapped component

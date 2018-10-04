@@ -10,7 +10,7 @@ import MSFTSubheading, {
     SubheadingTag
 
 } from "./subheading";
-import manageJss, { IManagedJSSProps, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { IDesignSystem, SubheadingStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 
@@ -20,7 +20,7 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const Subheading = manageJss(SubheadingStyles)(MSFTSubheading);
-type Subheading = InstanceType<typeof MSFTSubheading>;
+type Subheading = typeof MSFTSubheading;
 
 interface ISubheadingHandledProps extends Subtract<IMSFTSubheadingHandledProps, ISubheadingManagedClasses> {}
 type SubheadingProps = ManagedJSSProps<MSFTSubheadingProps, ISubheadingClassNameContract, IDesignSystem>;

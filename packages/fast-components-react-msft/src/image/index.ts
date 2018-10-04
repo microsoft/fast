@@ -9,7 +9,7 @@ import {
     ImageProps as IBaseImageProps,
     ImageSlot
 } from "@microsoft/fast-components-react-base";
-import manageJss, { IManagedJSSProps, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { IDesignSystem, ImageStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 
@@ -19,7 +19,7 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const Image = manageJss(ImageStyles)(BaseImage);
-type Image = InstanceType<typeof Image>;
+type Image = typeof Image;
 
 interface IImageHandledProps extends Subtract<IBaseImageHandledProps, IImageManagedClasses> {}
 type ImageProps = ManagedJSSProps<IBaseImageProps, IImageClassNameContract, IDesignSystem>;

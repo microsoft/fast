@@ -8,7 +8,7 @@ import {
     IDividerManagedClasses,
     IDividerUnhandledProps
 } from "@microsoft/fast-components-react-base";
-import manageJss, { IManagedJSSProps, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DividerStyles, IDesignSystem } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 
@@ -18,7 +18,7 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const Divider =  manageJss(DividerStyles)(BaseDivider);
-type Divider = InstanceType<typeof Divider>;
+type Divider = typeof Divider;
 
 interface IDividerHandledProps extends Subtract<IBaseDividerHandledProps, IDividerManagedClasses> {}
 type DividerProps = ManagedJSSProps<BaseDividerProps, IDividerClassNameContract, IDesignSystem>;
