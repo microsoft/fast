@@ -317,11 +317,11 @@ export class JSSManager<T, S, C> extends React.Component<IJSSManagerProps<S, C>,
             state.styleSheet.attach();
         }
 
-        this.state = state;
-
         // It appears we need to update the stylesheet for any style properties defined as functions
         // to work.
-        this.updateStyleSheet();
+        state.styleSheet.update(props.designSystem);
+
+        this.state = state;
     }
 
     public componentDidUpdate(prevProps: IJSSManagerProps<S, C>, prevState: IJSSManagerState): void {
