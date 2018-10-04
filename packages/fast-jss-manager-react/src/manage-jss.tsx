@@ -29,6 +29,7 @@ export interface IJSSManagerState {
 
 /**
  * JSS Manager props
+ * TODO: Delete this - we should just use ManagedJSSProps
  */
 export interface IManagedJSSProps<S, C> {
     jssStyleSheet?: Partial<ComponentStyles<S, C>>;
@@ -44,7 +45,7 @@ Pick<
         keyof T,
         keyof IManagedClasses<C>
     >
-> & IManagedJSSProps<S, C>;
+> & { jssStyleSheet?: Partial<ComponentStyles<S, C>> };
 
 /**
  * Main entry into the style manager. This function accepts a JSS style object and returns a
