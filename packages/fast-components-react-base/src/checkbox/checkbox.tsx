@@ -136,7 +136,7 @@ class Checkbox extends Foundation<
      * This method should be called after render because it relies on element references.
      */
     private applyIndeterminateState(): void {
-         if (this.props.indeterminate && this.inputRef.current && this.state.checked) {
+         if (this.props.indeterminate && this.inputRef.current) {
             this.inputRef.current.indeterminate = this.props.indeterminate;
         }
     }
