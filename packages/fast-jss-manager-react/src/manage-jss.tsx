@@ -49,6 +49,9 @@ Pick<
  * Main entry into the style manager. This function accepts a JSS style object and returns a
  * higher order component. That higher-order component can then be used to compose a component
  * with styles managed
+ * @param S - The stylesheet class-name contract
+ * @param C - The stylesheet configuration object
+ * @param T - The component prop interface
  */
 function manageJss<S, C>(
     styles?: ComponentStyles<S, C>
