@@ -6,10 +6,10 @@
 import * as React from "react";
 import jss, { stylesheetManager, stylesheetRegistry } from "./jss";
 import { SheetsManager, StyleSheet } from "jss";
-import { IDesignSystemProviderProps } from "./design-system-provider";
+import { IDesignSystem } from "./design-system-provider";
 import * as propTypes from "prop-types";
 import { ClassNames, ComponentStyles, ComponentStyleSheet, IManagedClasses } from "@microsoft/fast-jss-manager";
-import { isEqual, merge, omit } from "lodash-es";
+import { isEqual, merge, omit, pick } from "lodash-es";
 import { Consumer } from "./context";
 
 // hoist-non-react-statics does not seem to be a properly formatted ES6 module, so we need to require it instead
@@ -47,6 +47,49 @@ Pick<
     >
 > & { jssStyleSheet?: Partial<ComponentStyles<S, C>> };
 
+export interface IJSSManagerProps<T, S, C> {
+    /**
+     * The styles for the JSS manager to compile
+     */
+    styles: ComponentStyles<S, C>;
+
+    /**
+     * The design-system to compile the styles with
+     */
+    designSystem: C;
+
+    /**
+     * The JSSManager children
+     * TODO: type the props object
+     */
+    children: (props: any) => React.ReactNode;
+}
+
+class JSSManager<T, S, C> extends React.Component<IJSSManagerProps<T, S, C>, IJSSManagerState> {
+    /**
+     * A list of all props that should not be passed down to children
+     */
+    private static readonly omittedProps: string[] = ["styles", "designSystem", "children"];
+
+    public render(): React.ReactNode {
+        return this.props.children(this.childrenProps());
+    }
+
+    /**
+     * Returns the props to pass to a child element
+     * TODO: correct any type
+     */
+    private childrenProps(): any {
+        return pick(
+            this.props,
+            Object.keys(this.props)
+                .filter((prop: string) => {
+                    return JSSManager.omittedProps.indexOf(prop) !== -1;
+                })
+        );
+    }
+}
+
 /**
  * Main entry into the style manager. This function accepts a JSS style object and returns a
  * higher order component. That higher-order component can then be used to compose a component
@@ -64,8 +107,19 @@ function manageJss<S, C>(
         Component: React.ComponentType<T & IManagedClasses<S>>
     ): React.SFC<ManagedJSSProps<T, S, C>> {
         return (props: ManagedJSSProps<T, S, C>): React.ReactElement<{}> => {
+            /**
+             * React Stateless Functional Component to render the JSSManager
+             * with props from Consumer
+             */
             function render(designSystem: C): React.ReactNode {
-                return "JSSManager goes here";
+                return (
+                    <JSSManager
+                        styles={styles}
+                        designSystem={designSystem}
+                    >
+                        {(managedProps: any): React.ReactNode => <Component {...managedProps} />}
+                    </JSSManager>
+                );
             }
 
             return (
