@@ -1,17 +1,29 @@
 import * as React from "react";
 import { ClassNames, ComponentStyles, IManagedClasses } from "@microsoft/fast-jss-manager";
-import { pick } from "lodash-es";
+import { omit } from "lodash-es";
 import { Consumer } from "./context";
-import { JSSManager, ManagedJSSProps } from "./jss-manager";
+import { IJSSManagedComponentProps, JSSManager, ManagedJSSProps } from "./jss-manager";
+
+/**
+ * The prop name that must be passed to the JSSManager and not the managed component
+ */
+const jssManagerProp: keyof IJSSManagedComponentProps<any, any> = "jssStyleSheet";
+
+/**
+ * Determines if component prop object contains props
+ * that need to be handed to the JSSManager
+ */
+function containsJssManagerProps<T, S, C>(props: T | ManagedJSSProps<T, S, C>): props is ManagedJSSProps<T, S, C> {
+    return props.hasOwnProperty(jssManagerProp);
+}
 
 /**
  * Removes props handled by the JSSManager from a prop object
  */
 export function cleanLowerOrderComponentProps<T, S, C>(props: ManagedJSSProps<T, S, C>): T {
-    // TODO: We can make this more performant, running into type issues so leaving as is for now.
-    return pick(props, Object.keys(props).filter((key: string) => {
-        return key !== "jssStyleSheet" && key !== "managedClasses";
-    })) as T;
+    return containsJssManagerProps(props)
+        ? omit(props, [jssManagerProp] ) as T
+        : props;
 }
 
 /**
