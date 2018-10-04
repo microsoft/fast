@@ -72,11 +72,11 @@ export class JSSManager<T, S, C> extends React.Component<IJSSManagerProps<S, C>,
         if (Boolean(props.styles)) {
             state.styleSheet = this.createStyleSheet();
             state.styleSheet.attach();
-        }
 
-        // It appears we need to update the stylesheet for any style properties defined as functions
-        // to work.
-        state.styleSheet.update(props.designSystem);
+            // It appears we need to update the stylesheet for any style properties defined as functions
+            // to work.
+            state.styleSheet.update(props.designSystem);
+        }
 
         this.state = state;
     }
@@ -89,7 +89,6 @@ export class JSSManager<T, S, C> extends React.Component<IJSSManagerProps<S, C>,
         } else if (!isEqual(this.props.designSystem, prevProps.designSystem)) {
             this.updateStyleSheet();
         }
-
     }
 
     public componentWillUnmount(): void {
