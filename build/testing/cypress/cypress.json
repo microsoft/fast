@@ -1,0 +1,10 @@
+{
+  "projectId": "h61rb3",
+  "env": {},
+  "fixturesFolder": "fixtures",
+  "integrationFolder": "integration",
+  "pluginsFile": "plugins/index.js",
+  "screenshotsFolder": "screenshots",
+  "supportFile": "support/index.js",
+  "videosFolder": "videos"
+}
