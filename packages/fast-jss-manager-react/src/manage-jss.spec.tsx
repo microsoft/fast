@@ -4,10 +4,10 @@ import manageJss, {
     IJSSManagerProps,
     JSSManager
 } from "./manage-jss";
-import { stylesheetRegistry } from "./jss";
+import jss, { stylesheetRegistry } from "./jss";
 import { ComponentStyles, ComponentStyleSheetResolver } from "@microsoft/fast-jss-manager";
 import * as ShallowRenderer from "react-test-renderer/shallow";
-import { configure, mount, render, shallow } from "enzyme";
+import { configure, mount, ReactWrapper, render, shallow } from "enzyme";
 import * as Adapter from "enzyme-adapter-react-16";
 
 /*
@@ -65,7 +65,7 @@ const staticAndDynamicStyles: ComponentStyles<any, any> = {
     staticAndDynamicStylesClass: { ...staticStyles.staticStyleClass, ...dynamicStyles.dynamicStylesClass }
 };
 
-describe("The return value of manageJss", (): void => {
+describe("manageJss", (): void => {
     test("should return a  function", (): void => {
          expect(typeof manageJss()).toBe("function");
     });
@@ -95,14 +95,37 @@ describe("cleanLowerOrderComponentProps", (): void => {
     });
 });
 
-describe("The higher-order component", (): void => {
-    xtest("should return a different component when called twice with the same component", (): void => {
-        expect(manageJss()(SimpleComponent)).not.toBe(manageJss()(SimpleComponent));
+describe("The JSSManager", (): void => {
+    function renderChild(): string {
+        return "children";
+    }
+
+    // JSS doesn't export their StyleSheet class, so we can compile a stylesheet and
+    // access it's constructor to get a reference to the StyleSheet class.
+    const StyleSheet: any = jss.createStyleSheet({}).constructor;
+
+    test("should not throw when no stylesheet is provided", (): void => {
+
+        expect((): void => {
+            mount(
+                <JSSManager render={renderChild} />
+            );
+        }).not.toThrow();
     });
 
-    xtest("should share a stylesheet manager between instances", (): void => {
-        const key: string = "stylesheetManager";
-        expect( manageJss()(SimpleComponent)[key]).toBe(manageJss()(SimpleComponent)[key]);
+    test("should compile a stylesheet when mounting", (): void => {
+        const tree: ReactWrapper = mount(
+            <JSSManager
+                render={renderChild}
+                styles={{ className: { color: "red" } }}
+            />
+        );
+
+        expect(tree.state("styleSheet")).toBeInstanceOf(StyleSheet);
+    });
+
+    xtest("should return a different component when called twice with the same component", (): void => {
+        expect(manageJss()(SimpleComponent)).not.toBe(manageJss()(SimpleComponent));
     });
 
     xtest("should not share static styles across component instances", (): void => {
