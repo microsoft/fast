@@ -31,6 +31,22 @@ describe("manageJss", (): void => {
         // Should expect a single prop argument
         expect(hoc.length).toBe(1);
     });
+
+    test("should render a provided component", (): void => {
+        const Hoc: React.SFC<{}> = manageJss()(SimpleComponent);
+
+        const rendered: ReactWrapper = mount(<Hoc />);
+
+        expect(rendered.exists("SimpleComponent")).toBe(true);
+    });
+
+    test("should render a JSSManager component", (): void => {
+        const Hoc: React.SFC<{}> = manageJss()(SimpleComponent);
+
+        const rendered: ReactWrapper = mount(<Hoc />);
+
+        expect(rendered.exists("JSSManager")).toBe(true);
+    });
 });
 
 describe("cleanLowerOrderComponentProps", (): void => {
