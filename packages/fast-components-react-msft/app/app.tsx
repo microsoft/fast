@@ -113,10 +113,9 @@ export default class App extends React.Component<{}, AppState> {
                         <input
                             type="range"
                             name="density"
-                            defaultValue="1.6"
-                            min="0.4"
-                            max="3"
-                            step="0.1"
+                            defaultValue="1"
+                            min="0"
+                            max="2"
                             onChange={this.handleDensityUpdate}
                         />
                         <ColorPicker

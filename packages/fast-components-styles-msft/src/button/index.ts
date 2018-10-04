@@ -24,7 +24,7 @@ import {
 } from "../utilities/colors";
 import Chroma from "chroma-js";
 import { density } from "../utilities/density";
-import { maxHeight, minHeight } from "../utilities/height";
+import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
 
 function applyTransaprentBackplateStyles(): CSSRules<DesignSystem> {
     return {
@@ -167,7 +167,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             display: "inline-flex",
             justifyContent: "center",
             alignItems: "center",
-            height: density(config.designUnit * 8)(designSystem),
+            height: density(defaultHeight)(designSystem),
             minHeight: toPx(minHeight),
             maxHeight: toPx(maxHeight),
             border: "2px solid",
