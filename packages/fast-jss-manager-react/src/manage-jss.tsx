@@ -28,11 +28,28 @@ export interface IJSSManagerState {
 }
 
 /**
- * JSS Manager props
- * TODO: Delete this - we should just use ManagedJSSProps
+ * Describes an interface for adjusting a styled component
+ * per component instance
  */
-export interface IManagedJSSProps<S, C> {
+export interface IInstanceStyleSheet<S, C> {
     jssStyleSheet?: Partial<ComponentStyles<S, C>>;
+}
+
+export interface IJSSManagerProps<S, C> extends IInstanceStyleSheet<S, C> {
+    /**
+     * The styles for the JSS manager to compile
+     */
+    styles: ComponentStyles<S, C>;
+
+    /**
+     * The design-system to compile the styles with
+     */
+    designSystem: C;
+
+    /**
+     * Render the child component
+     */
+    render: (managedClasses: ClassNames<S> ) => React.ReactNode;
 }
 
 /**
@@ -45,49 +62,23 @@ Pick<
         keyof T,
         keyof IManagedClasses<C>
     >
-> & { jssStyleSheet?: Partial<ComponentStyles<S, C>> };
+> & IInstanceStyleSheet<S, C>;
 
-export interface IJSSManagerProps<T, S, C> {
-    /**
-     * The styles for the JSS manager to compile
-     */
-    styles: ComponentStyles<S, C>;
-
-    /**
-     * The design-system to compile the styles with
-     */
-    designSystem: C;
-
-    /**
-     * The JSSManager children
-     * TODO: type the props object
-     */
-    children: (props: any) => React.ReactNode;
+/**
+ * The JSSManger. This class manages JSSStyleSheet compilation and passes generated class-names
+ * down to child component
+ */
+export class JSSManager<T, S, C> extends React.Component<IJSSManagerProps<S, C>, IJSSManagerState> {
+    public render(): React.ReactNode {
+        return this.props.children;
+    }
 }
 
-class JSSManager<T, S, C> extends React.Component<IJSSManagerProps<T, S, C>, IJSSManagerState> {
-    /**
-     * A list of all props that should not be passed down to children
-     */
-    private static readonly omittedProps: string[] = ["styles", "designSystem", "children"];
-
-    public render(): React.ReactNode {
-        return this.props.children(this.childrenProps());
-    }
-
-    /**
-     * Returns the props to pass to a child element
-     * TODO: correct any type
-     */
-    private childrenProps(): any {
-        return pick(
-            this.props,
-            Object.keys(this.props)
-                .filter((prop: string) => {
-                    return JSSManager.omittedProps.indexOf(prop) !== -1;
-                })
-        );
-    }
+export function cleanLowerOrderComponentProps<T, S, C>(props: ManagedJSSProps<T, S, C>): T {
+    // TODO: We can make this more performant, running into type issues so leaving as is for now.
+    return pick(props, Object.keys(props).filter((key: string) => {
+        return key !== "jssStyleSheet" && key !== "managedClasses";
+    })) as T;
 }
 
 /**
@@ -108,23 +99,38 @@ function manageJss<S, C>(
     ): React.SFC<ManagedJSSProps<T, S, C>> {
         return (props: ManagedJSSProps<T, S, C>): React.ReactElement<{}> => {
             /**
+             * Define the render prop of the JSSManager. generated class-names are passed into
+             * this function and provided to the wrapped component
+             */
+            function renderLowerOrderComponent(
+                managedClasses: ClassNames<S>
+            ): React.ReactNode {
+                return (
+                    <Component
+                        {...cleanLowerOrderComponentProps(props)}
+                        managedClasses={managedClasses}
+                    />
+                );
+            }
+
+            /**
              * React Stateless Functional Component to render the JSSManager
              * with props from Consumer
              */
-            function render(designSystem: C): React.ReactNode {
+            function renderJSSManager(designSystem: C): React.ReactNode {
                 return (
                     <JSSManager
                         styles={styles}
                         designSystem={designSystem}
-                    >
-                        {(managedProps: any): React.ReactNode => <Component {...managedProps} />}
-                    </JSSManager>
+                        jssStyleSheet={props.jssStyleSheet || null}
+                        render={renderLowerOrderComponent}
+                    />
                 );
             }
 
             return (
                 <Consumer>
-                    {render}
+                    {renderJSSManager}
                 </Consumer>
             );
         };
