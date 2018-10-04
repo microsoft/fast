@@ -5,7 +5,7 @@ import {
     IButtonUnhandledProps
 } from "@microsoft/fast-components-react-base";
 import { IFlipperClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import manageJss, { IJSSManagerProps, JSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { IManagedJSSProps, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { FlipperStyles, IDesignSystem } from "@microsoft/fast-components-styles-msft";
 import MSFTFlipper, {
     FlipperDirection,
@@ -25,7 +25,7 @@ const Flipper = manageJss(FlipperStyles)(MSFTFlipper);
 type Flipper = InstanceType<typeof Flipper>;
 
 interface IFlipperHandledProps extends Subtract<IMSFTFlipperHandledProps, IFlipperManagedClasses> {}
-type FlipperProps = JSSManagerProps<MSFTFlipperProps, IFlipperClassNameContract, IDesignSystem>;
+type FlipperProps = ManagedJSSProps<MSFTFlipperProps, IFlipperClassNameContract, IDesignSystem>;
 
 export {
     Flipper,

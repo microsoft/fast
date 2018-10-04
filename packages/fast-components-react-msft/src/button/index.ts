@@ -1,6 +1,6 @@
 import * as React from "react";
 import { IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import manageJss, { IJSSManagerProps, JSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { IManagedJSSProps, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ButtonStyles, IDesignSystem } from "@microsoft/fast-components-styles-msft";
 import MSFTButton, {
     ButtonAppearance,
@@ -21,7 +21,7 @@ const Button = manageJss(ButtonStyles)(MSFTButton);
 type Button = InstanceType<typeof Button>;
 
 interface IButtonHandledProps extends Subtract<IMSFTButtonHandledProps, IButtonManagedClasses> {}
-type ButtonProps = JSSManagerProps<MSFTButtonProps, IButtonClassNameContract, IDesignSystem>;
+type ButtonProps = ManagedJSSProps<MSFTButtonProps, IButtonClassNameContract, IDesignSystem>;
 
 export {
     Button,

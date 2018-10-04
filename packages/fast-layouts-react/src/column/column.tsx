@@ -1,5 +1,5 @@
 import * as React from "react";
-import manageJss, { ComponentStyles, ICSSRules, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, ICSSRules, IManagedJSSProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import BreakpointTracker from "../utilities/breakpoint-tracker";
 import { Breakpoint, getValueByBreakpoint, identifyBreakpoint } from "../utilities/breakpoints";
 import { canUseDOM, canUseViewport } from "exenv-es6";

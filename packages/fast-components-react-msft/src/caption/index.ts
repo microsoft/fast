@@ -8,7 +8,7 @@ import MSFTCaption, {
     ICaptionUnhandledProps
 } from "./caption";
 import { ICaptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import manageJss, { IJSSManagerProps, JSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { IManagedJSSProps, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { CaptionStyles, IDesignSystem } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 
@@ -21,7 +21,7 @@ const Caption = manageJss(CaptionStyles)(MSFTCaption);
 type Caption = InstanceType<typeof Caption>;
 
 interface ICaptionHandledProps extends Subtract<IMSFTCaptionHandledProps, ICaptionManagedClasses> {}
-type CaptionProps = JSSManagerProps<MSFTCaptionProps, ICaptionClassNameContract, IDesignSystem>;
+type CaptionProps = ManagedJSSProps<MSFTCaptionProps, ICaptionClassNameContract, IDesignSystem>;
 
 export {
     Caption,

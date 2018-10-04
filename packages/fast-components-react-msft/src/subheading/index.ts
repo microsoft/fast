@@ -10,7 +10,7 @@ import MSFTSubheading, {
     SubheadingTag
 
 } from "./subheading";
-import manageJss, { IJSSManagerProps, JSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { IManagedJSSProps, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { IDesignSystem, SubheadingStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 
@@ -23,7 +23,7 @@ const Subheading = manageJss(SubheadingStyles)(MSFTSubheading);
 type Subheading = InstanceType<typeof MSFTSubheading>;
 
 interface ISubheadingHandledProps extends Subtract<IMSFTSubheadingHandledProps, ISubheadingManagedClasses> {}
-type SubheadingProps = JSSManagerProps<MSFTSubheadingProps, ISubheadingClassNameContract, IDesignSystem>;
+type SubheadingProps = ManagedJSSProps<MSFTSubheadingProps, ISubheadingClassNameContract, IDesignSystem>;
 
 export {
     Subheading,

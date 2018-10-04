@@ -1,6 +1,6 @@
 import * as React from "react";
 import { CanvasProps, ICanvasHandledProps } from "./canvas.props";
-import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, IManagedJSSProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import Foundation, { HandledProps, IFoundationProps } from "@microsoft/fast-components-foundation-react";
 
 export interface ICanvasClassNamesContract {

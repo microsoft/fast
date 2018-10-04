@@ -1,5 +1,5 @@
 import * as React from "react";
-import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { IManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { IDesignSystem } from "../../design-system";

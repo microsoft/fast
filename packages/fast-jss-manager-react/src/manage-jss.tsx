@@ -30,21 +30,21 @@ export interface IJSSManagerState {
 /**
  * JSS Manager props
  */
-export interface IJSSManagerProps<S, C> {
+export interface IManagedJSSProps<S, C> {
     jssStyleSheet?: Partial<ComponentStyles<S, C>>;
 }
 
 /**
  * Prop typing for the JSSManager
  */
-export type JSSManagerProps<T, S, C> =
+export type ManagedJSSProps<T, S, C> =
 Pick<
     T,
     Exclude<
         keyof T,
         keyof IManagedClasses<C>
     >
-> & IJSSManagerProps<S, C>;
+> & IManagedJSSProps<S, C>;
 
 /**
  * Main entry into the style manager. This function accepts a JSS style object and returns a
@@ -61,8 +61,8 @@ function manageJss<S, C>(
 ) => React.SFC<{}> {
     return function<T>(
         Component: React.ComponentType<T & IManagedClasses<S>>
-    ): React.SFC<JSSManagerProps<T, S, C>> {
-        return (props: JSSManagerProps<T, S, C>): React.ReactElement<{}> => {
+    ): React.SFC<ManagedJSSProps<T, S, C>> {
+        return (props: ManagedJSSProps<T, S, C>): React.ReactElement<{}> => {
             function render(designSystem: C): React.ReactNode {
                 return "JSSManager goes here";
             }
@@ -80,13 +80,13 @@ function manageJss<S, C>(
 //     styles?: ComponentStyles<S, C>
 // ): <T>(
 //     Component: React.ComponentType<T & IManagedClasses<S>>
-// ) => React.ComponentClass<JSSManagerProps<T, S, C>> {
+// ) => React.ComponentClass<ManagedJSSProps<T, S, C>> {
 //     return function<T>(
 //         Component: React.ComponentType<T & IManagedClasses<S>>
-//     ): React.ComponentClass<JSSManagerProps<T, S, C>> {
+//     ): React.ComponentClass<ManagedJSSProps<T, S, C>> {
 
 //         // Define the manager higher-order component inside of the return method of the higher-order function.
-//         class JSSManager extends React.Component<JSSManagerProps<T, S, C>, IJSSManagerState> {
+//         class JSSManager extends React.Component<ManagedJSSProps<T, S, C>, IJSSManagerState> {
 //             // TODO: figure out if there is a better way to type this object
 //             public static contextTypes: any = {
 //                 designSystem: propTypes.any
@@ -98,7 +98,7 @@ function manageJss<S, C>(
 //              */
 //             private static stylesheetManager: SheetsManager = stylesheetManager;
 
-//             constructor(props: JSSManagerProps<T, S, C>) {
+//             constructor(props: ManagedJSSProps<T, S, C>) {
 //                 super(props);
 
 //                 const state: IJSSManagerState = {};
@@ -134,13 +134,13 @@ function manageJss<S, C>(
 //                 }
 //             }
 
-//             public componentWillUpdate(nextProps: JSSManagerProps<T, S, C>, nextState: IJSSManagerState, nextContext: any): void {
+//             public componentWillUpdate(nextProps: ManagedJSSProps<T, S, C>, nextState: IJSSManagerState, nextContext: any): void {
 //                 if (!isEqual(this.context, nextContext)) {
 //                     this.updateStyleSheet(nextContext);
 //                 }
 //             }
 
-//             public componentDidUpdate(prevProps: JSSManagerProps<T, S, C>, prevState: IJSSManagerState): void {
+//             public componentDidUpdate(prevProps: ManagedJSSProps<T, S, C>, prevState: IJSSManagerState): void {
 //                 if (this.props.jssStyleSheet !== prevProps.jssStyleSheet) {
 //                     this.resetStyleSheet();
 //                 }
@@ -182,7 +182,7 @@ function manageJss<S, C>(
 //              */
 //             private resetStyleSheet(): any {
 //                 this.removeStyleSheet();
-//                 this.setState((previousState: IJSSManagerState, props: JSSManagerProps<T, S, C>): Partial<IJSSManagerState> => {
+//                 this.setState((previousState: IJSSManagerState, props: ManagedJSSProps<T, S, C>): Partial<IJSSManagerState> => {
 //                     return {
 //                         styleSheet: this.hasStyleSheet() ? this.createStyleSheet() : null
 //                     };

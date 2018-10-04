@@ -9,7 +9,7 @@ import {
     LabelProps as BaseLabelProps,
     LabelTag
 } from "@microsoft/fast-components-react-base";
-import manageJss, { IJSSManagerProps, JSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { IManagedJSSProps, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { IDesignSystem, LabelStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 
@@ -22,7 +22,7 @@ const Label = manageJss(LabelStyles)(BaseLabel);
 type Label = InstanceType<typeof Label>;
 
 interface ILabelHandledProps extends Subtract<IBaseLabelHandledProps, ILabelManagedClasses> {}
-type LabelProps = JSSManagerProps<BaseLabelProps, ILabelClassNameContract, IDesignSystem>;
+type LabelProps = ManagedJSSProps<BaseLabelProps, ILabelClassNameContract, IDesignSystem>;
 
 export {
     ILabelClassNameContract,

@@ -2,7 +2,7 @@ import * as React from "react";
 import { IFormItemComponentMappingToProperyNamesProps } from "./form-item";
 import styles from "./form-item.align-vertical.style";
 import { IFormItemAlignVerticalClassNameContract } from "../class-name-contracts/";
-import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { IManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**

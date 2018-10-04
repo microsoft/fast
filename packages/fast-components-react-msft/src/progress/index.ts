@@ -1,6 +1,6 @@
 import * as React from "react";
 import { IProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import manageJss, { IJSSManagerProps, JSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { IManagedJSSProps, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { IDesignSystem, ProgressStyles } from "@microsoft/fast-components-styles-msft";
 import MSFTProgress, {
     IProgressHandledProps as IMSFTProgressHandledProps,
@@ -18,7 +18,7 @@ const Progress = manageJss(ProgressStyles)(MSFTProgress);
 type Progress = InstanceType<typeof Progress>;
 
 interface IProgressHandledProps extends Subtract<IMSFTProgressHandledProps, IProgressManagedClasses> {}
-type ProgressProps = JSSManagerProps<MSFTProgressProps, IProgressClassNameContract, IDesignSystem>;
+type ProgressProps = ManagedJSSProps<MSFTProgressProps, IProgressClassNameContract, IDesignSystem>;
 
 export {
     Progress,

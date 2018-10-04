@@ -1,6 +1,6 @@
 import Toc, { TocItem } from "../toc";
 import * as React from "react";
-import manageJss, { ComponentStyles, DesignSystemProvider, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, DesignSystemProvider, IManagedJSSProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { glyphBuildingblocks, glyphGlobalnavbutton, glyphTransparency } from "@microsoft/fast-glyphs-msft";
 import { mapDataToComponent } from "@microsoft/fast-form-generator-react";
 import { uniqueId } from "lodash-es";

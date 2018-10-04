@@ -1,5 +1,5 @@
 import * as React from "react";
-import manageJss, { ComponentStyles, IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, IManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ContainerProps } from "./container.props";
 import Foundation, { HandledProps, IFoundationProps } from "@microsoft/fast-components-foundation-react";
 

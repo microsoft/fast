@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ICallToActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import manageJss, { IJSSManagerProps, JSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { IManagedJSSProps, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { CallToActionStyles, IDesignSystem } from "@microsoft/fast-components-styles-msft";
 import MSFTCallToAction, {
     CallToActionAppearance,
@@ -20,7 +20,7 @@ const CallToAction = manageJss(CallToActionStyles)(MSFTCallToAction);
 type CallToAction = InstanceType<typeof CallToAction>;
 
 interface ICallToActionHandledProps extends Subtract<IMSFTCallToActionHandledProps, ICallToActionManagedClasses> {}
-type CallToActionProps = JSSManagerProps<MSFTCallToActionProps, ICallToActionClassNameContract, IDesignSystem>;
+type CallToActionProps = ManagedJSSProps<MSFTCallToActionProps, ICallToActionClassNameContract, IDesignSystem>;
 
 export {
     CallToAction,
