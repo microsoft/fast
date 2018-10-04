@@ -66,29 +66,23 @@
     "babel-preset-react": "^6.24.1",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
-    "hoist-non-react-statics": "^2.5.0",
     "jest": "^22.3.0",
     "jss": "^9.8.0",
     "jss-preset-default": "^4.3.0",
     "lodash-es": "^4.0.0",
-    "prop-types": "^15.6.1",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
     "react-test-renderer": "^16.2.0",
     "ts-jest": "^22.0.4",
     "tslint": "^5.9.1",
     "typescript": "^3.0.1",
-    "utility-types": "^2.1.0",
     "watch": "^1.0.2"
   },
   "peerDependencies": {
-    "hoist-non-react-statics": "^2.5.0",
     "jss": "^9.8.0",
     "jss-preset-default": "^4.3.0",
     "lodash-es": "^4.0.0",
-    "prop-types": "^15.0.0",
-    "react": "^16.3.0",
-    "utility-types": "^2.1.0"
+    "react": "^16.3.0"
   },
   "dependencies": {
     "@microsoft/fast-jss-manager": "^2.2.0"
