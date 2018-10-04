@@ -13,13 +13,18 @@
     "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
   "scripts": {
+    "ui-tests:verify": "./node_modules/.bin/cypress verify",
+    "ui-tests:open": "./node_modules/.bin/cypress open --project ./build/testing/cypress",
+    "ui-tests:run": "./node_modules/.bin/cypress run --project ./build/testing/cypress",
+    "ui-tests:run-ci": "./node_modules/.bin/cypress run --project ./build/testing/cypress --parallel --group ci-run",
     "integration-tests:alpha": "node build/testing/sauce-labs/test-browsers.js alpha",
     "integration-tests:beta": "node build/testing/sauce-labs/test-browsers.js beta",
     "integration-tests:release": "node build/testing/sauce-labs/test-browsers.js release"
   },
   "devDependencies": {
-    "@applitools/eyes.cypress": "^3.0.24",
+    "@applitools/eyes.cypress": "^3.1.1",
     "@types/node": "^9.4.7",
+    "cypress": "^3.1.0",
     "dotenv": "^6.0.0",
     "eyes.selenium": "0.0.83",
     "glob": "^7.1.2",
