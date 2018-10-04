@@ -1,6 +1,9 @@
 import ButtonExamples from "../src/button/examples.data";
 export { ButtonExamples };
 
+import CardExamples from "../src/card/examples.data";
+export { CardExamples };
+
 import CheckboxExamples from "../src/checkbox/examples.data";
 export { CheckboxExamples };
 

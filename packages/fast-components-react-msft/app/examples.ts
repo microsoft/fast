@@ -7,6 +7,9 @@ export { CallToActionExamples };
 import CaptionExamples from "../src/caption/examples.data";
 export { CaptionExamples };
 
+import CardExamples from "../src/card/examples.data";
+export { CardExamples };
+
 import CheckboxExamples from "../src/checkbox/examples.data";
 export { CheckboxExamples };
 

@@ -11,6 +11,9 @@ export * from "./call-to-action";
 import CaptionStyles from "./caption";
 export { CaptionStyles };
 
+import CardStyles from "./card";
+export { CardStyles };
+
 import CheckboxStyles from "./checkbox";
 export { CheckboxStyles };
 

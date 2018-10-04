@@ -1,0 +1,2 @@
+# Card
+*Cards* are snapshots of content that are typically used in a group to present collections of related information. *Cards* can represent any quickly consumable information.  The *card* component can be either a [div](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/div), [article](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/article), or [section](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/section) element.

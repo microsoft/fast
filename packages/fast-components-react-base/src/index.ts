@@ -2,6 +2,10 @@ import Button from "./button";
 export { Button };
 export * from "./button";
 
+import Card from "./card";
+export { Card };
+export * from "./card";
+
 import Checkbox from "./checkbox";
 export { Checkbox };
 export * from "./checkbox";
