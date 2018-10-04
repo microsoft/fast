@@ -64,7 +64,6 @@ Pick<
     >
 > & IInstanceStyleSheet<S, C>;
 
-
 export function cleanLowerOrderComponentProps<T, S, C>(props: ManagedJSSProps<T, S, C>): T {
     // TODO: We can make this more performant, running into type issues so leaving as is for now.
     return pick(props, Object.keys(props).filter((key: string) => {
@@ -128,172 +127,172 @@ function manageJss<S, C>(
     };
 }
 
-function BLARG<S, C>(
-    styles?: ComponentStyles<S, C>
-): <T>(
-    Component: React.ComponentType<T & IManagedClasses<S>>
-) => React.ComponentClass<ManagedJSSProps<T, S, C>> {
-    return function<T>(
-        Component: React.ComponentType<T & IManagedClasses<S>>
-    ): React.ComponentClass<ManagedJSSProps<T, S, C>> {
+// function BLARG<S, C>(
+//     styles?: ComponentStyles<S, C>
+// ): <T>(
+//     Component: React.ComponentType<T & IManagedClasses<S>>
+// ) => React.ComponentClass<ManagedJSSProps<T, S, C>> {
+//     return function<T>(
+//         Component: React.ComponentType<T & IManagedClasses<S>>
+//     ): React.ComponentClass<ManagedJSSProps<T, S, C>> {
 
-        // Define the manager higher-order component inside of the return method of the higher-order function.
-        class JSSManager extends React.Component<ManagedJSSProps<T, S, C>, IJSSManagerState> {
-            // TODO: figure out if there is a better way to type this object
-            public static contextTypes: any = {
-                designSystem: propTypes.any
-            };
+//         // Define the manager higher-order component inside of the return method of the higher-order function.
+//         class JSSManager extends React.Component<ManagedJSSProps<T, S, C>, IJSSManagerState> {
+//             // TODO: figure out if there is a better way to type this object
+//             public static contextTypes: any = {
+//                 designSystem: propTypes.any
+//             };
 
-            /**
-             * The style manager is responsible for attaching and detaching style elements when
-             * components mount and un-mount
-             */
-            private static stylesheetManager: SheetsManager = stylesheetManager;
+//             /**
+//              * The style manager is responsible for attaching and detaching style elements when
+//              * components mount and un-mount
+//              */
+//             private static stylesheetManager: SheetsManager = stylesheetManager;
 
-            constructor(props: ManagedJSSProps<T, S, C>) {
-                super(props);
+//             constructor(props: ManagedJSSProps<T, S, C>) {
+//                 super(props);
 
-                const state: IJSSManagerState = {};
+//                 const state: IJSSManagerState = {};
 
-                if (Boolean(styles)) {
-                    state.styleSheet = this.createStyleSheet();
-                }
+//                 if (Boolean(styles)) {
+//                     state.styleSheet = this.createStyleSheet();
+//                 }
 
-                this.state = state;
-            }
+//                 this.state = state;
+//             }
 
-            /**
-             * Updates a dynamic stylesheet with context
-             */
-            public updateStyleSheet(nextContext?: any): void {
-                if (!Boolean(this.state.styleSheet)) {
-                    return;
-                }
+//             /**
+//              * Updates a dynamic stylesheet with context
+//              */
+//             public updateStyleSheet(nextContext?: any): void {
+//                 if (!Boolean(this.state.styleSheet)) {
+//                     return;
+//                 }
 
-                if (typeof styles === "function") {
-                    this.resetStyleSheet();
-                } else {
-                    this.state.styleSheet.update(nextContext && nextContext.designSystem ? nextContext.designSystem : this.designSystem);
-                }
-            }
+//                 if (typeof styles === "function") {
+//                     this.resetStyleSheet();
+//                 } else {
+//                     this.state.styleSheet.update(nextContext && nextContext.designSystem ? nextContext.designSystem : this.designSystem);
+//                 }
+//             }
 
-            public componentWillMount(): void {
-                if (Boolean(this.state.styleSheet)) {
-                    // It appears we need to update the stylesheet for any style properties defined as functions
-                    // to work.
-                    this.state.styleSheet.attach();
-                    this.updateStyleSheet();
-                }
-            }
+//             public componentWillMount(): void {
+//                 if (Boolean(this.state.styleSheet)) {
+//                     // It appears we need to update the stylesheet for any style properties defined as functions
+//                     // to work.
+//                     this.state.styleSheet.attach();
+//                     this.updateStyleSheet();
+//                 }
+//             }
 
-            public componentWillUpdate(nextProps: ManagedJSSProps<T, S, C>, nextState: IJSSManagerState, nextContext: any): void {
-                if (!isEqual(this.context, nextContext)) {
-                    this.updateStyleSheet(nextContext);
-                }
-            }
+//             public componentWillUpdate(nextProps: ManagedJSSProps<T, S, C>, nextState: IJSSManagerState, nextContext: any): void {
+//                 if (!isEqual(this.context, nextContext)) {
+//                     this.updateStyleSheet(nextContext);
+//                 }
+//             }
 
-            public componentDidUpdate(prevProps: ManagedJSSProps<T, S, C>, prevState: IJSSManagerState): void {
-                if (this.props.jssStyleSheet !== prevProps.jssStyleSheet) {
-                    this.resetStyleSheet();
-                }
-            }
+//             public componentDidUpdate(prevProps: ManagedJSSProps<T, S, C>, prevState: IJSSManagerState): void {
+//                 if (this.props.jssStyleSheet !== prevProps.jssStyleSheet) {
+//                     this.resetStyleSheet();
+//                 }
+//             }
 
-            public componentWillUnmount(): void {
-                this.removeStyleSheet();
-            }
+//             public componentWillUnmount(): void {
+//                 this.removeStyleSheet();
+//             }
 
-            public render(): React.ReactNode {
-                return (
-                    <Component
-                        {...omit(this.props, ["jssStyleSheet"])}
-                        managedClasses={this.getClassNames()}
-                    />
-                );
-            }
+//             public render(): React.ReactNode {
+//                 return (
+//                     <Component
+//                         {...omit(this.props, ["jssStyleSheet"])}
+//                         managedClasses={this.getClassNames()}
+//                     />
+//                 );
+//             }
 
-            /**
-             * Get the design-system context to update the stylesheet with
-             */
-            private get designSystem(): any {
-                return this.context && this.context.designSystem ? this.context.designSystem : {};
-            }
+//             /**
+//              * Get the design-system context to update the stylesheet with
+//              */
+//             private get designSystem(): any {
+//                 return this.context && this.context.designSystem ? this.context.designSystem : {};
+//             }
 
-            /**
-             * Remove a JSS stylesheet
-             */
-            private removeStyleSheet(): void {
-                if (this.hasStyleSheet()) {
-                    this.state.styleSheet.detach();
-                    stylesheetRegistry.remove(this.state.styleSheet);
-                    jss.removeStyleSheet(this.state.styleSheet);
-                }
-            }
+//             /**
+//              * Remove a JSS stylesheet
+//              */
+//             private removeStyleSheet(): void {
+//                 if (this.hasStyleSheet()) {
+//                     this.state.styleSheet.detach();
+//                     stylesheetRegistry.remove(this.state.styleSheet);
+//                     jss.removeStyleSheet(this.state.styleSheet);
+//                 }
+//             }
 
-            /**
-             * Reset a JSS stylesheet relative to current props
-             */
-            private resetStyleSheet(): any {
-                this.removeStyleSheet();
-                this.setState((previousState: IJSSManagerState, props: ManagedJSSProps<T, S, C>): Partial<IJSSManagerState> => {
-                    return {
-                        styleSheet: this.hasStyleSheet() ? this.createStyleSheet() : null
-                    };
-                }, (): void => {
-                    if (this.hasStyleSheet()) {
-                        this.state.styleSheet.attach().update(this.designSystem);
-                    }
-                });
-            }
+//             /**
+//              * Reset a JSS stylesheet relative to current props
+//              */
+//             private resetStyleSheet(): any {
+//                 this.removeStyleSheet();
+//                 this.setState((previousState: IJSSManagerState, props: ManagedJSSProps<T, S, C>): Partial<IJSSManagerState> => {
+//                     return {
+//                         styleSheet: this.hasStyleSheet() ? this.createStyleSheet() : null
+//                     };
+//                 }, (): void => {
+//                     if (this.hasStyleSheet()) {
+//                         this.state.styleSheet.attach().update(this.designSystem);
+//                     }
+//                 });
+//             }
 
-            /**
-             * Creates a JSS stylesheet from the dynamic portion of an associated style object and any style object passed
-             * as props
-             */
-            private createStyleSheet(): any {
-                const stylesheet: ComponentStyleSheet<S, C> = typeof styles === "function"
-                    ? styles(this.designSystem)
-                    : styles;
+//             /**
+//              * Creates a JSS stylesheet from the dynamic portion of an associated style object and any style object passed
+//              * as props
+//              */
+//             private createStyleSheet(): any {
+//                 const stylesheet: ComponentStyleSheet<S, C> = typeof styles === "function"
+//                     ? styles(this.designSystem)
+//                     : styles;
 
-                const jssSheet: any =  jss.createStyleSheet(
-                    merge({}, stylesheet, this.props.jssStyleSheet),
-                    { link: true }
-                );
+//                 const jssSheet: any =  jss.createStyleSheet(
+//                     merge({}, stylesheet, this.props.jssStyleSheet),
+//                     { link: true }
+//                 );
 
-                stylesheetRegistry.add(jssSheet);
+//                 stylesheetRegistry.add(jssSheet);
 
-                return jssSheet;
-            }
+//                 return jssSheet;
+//             }
 
-            /**
-             * Checks to see if this component has an associated dynamic stylesheet
-             */
-            private hasStyleSheet(): boolean {
-                return Boolean(styles || this.props.jssStyleSheet);
-            }
+//             /**
+//              * Checks to see if this component has an associated dynamic stylesheet
+//              */
+//             private hasStyleSheet(): boolean {
+//                 return Boolean(styles || this.props.jssStyleSheet);
+//             }
 
-            /**
-             * Merges static and dynamic stylesheet classnames into one object
-             */
-            private getClassNames(): ClassNames<S> {
-                const classNames: Partial<ClassNames<S>> = {};
+//             /**
+//              * Merges static and dynamic stylesheet classnames into one object
+//              */
+//             private getClassNames(): ClassNames<S> {
+//                 const classNames: Partial<ClassNames<S>> = {};
 
-                if (this.hasStyleSheet()) {
-                    for (const key in this.state.styleSheet.classes) {
-                        if (this.state.styleSheet.classes.hasOwnProperty(key)) {
-                            classNames[key] = typeof classNames[key] !== "undefined"
-                                ? `${classNames[key]} ${this.state.styleSheet.classes[key]}`
-                                : this.state.styleSheet.classes[key];
-                        }
-                    }
-                }
+//                 if (this.hasStyleSheet()) {
+//                     for (const key in this.state.styleSheet.classes) {
+//                         if (this.state.styleSheet.classes.hasOwnProperty(key)) {
+//                             classNames[key] = typeof classNames[key] !== "undefined"
+//                                 ? `${classNames[key]} ${this.state.styleSheet.classes[key]}`
+//                                 : this.state.styleSheet.classes[key];
+//                         }
+//                     }
+//                 }
 
-                return classNames as ClassNames<S>;
-            }
-        }
+//                 return classNames as ClassNames<S>;
+//             }
+//         }
 
-        return hoistNonReactStatics(JSSManager, Component);
-    };
-}
+//         return hoistNonReactStatics(JSSManager, Component);
+//     };
+// }
 
 /**
  * The JSSManger. This class manages JSSStyleSheet compilation and passes generated class-names

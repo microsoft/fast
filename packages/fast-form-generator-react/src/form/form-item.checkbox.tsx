@@ -2,7 +2,7 @@ import * as React from "react";
 import IFormItemCommon from "./form-item";
 import styles from "./form-item.checkbox.style";
 import { IFormItemCheckboxClassNameContract } from "../class-name-contracts/";
-import manageJss, { IManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
-import manageJss, { ComponentStyles, IManagedJSSProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, ManagedJSSProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import Toc from "./";
 

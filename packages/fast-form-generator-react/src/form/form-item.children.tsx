@@ -11,7 +11,7 @@ import { DataOnChange, IChildOptionItem } from "./form.props";
 import { reactChildrenStringSchema } from "./form-item.children.text";
 import styles from "./form-item.children.style";
 import { IFormItemChildrenClassNameContract } from "../class-name-contracts/";
-import manageJss, { IManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 export interface IChildComponentData {

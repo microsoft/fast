@@ -3,7 +3,7 @@ import manageJss, {
     ComponentStyles,
     DesignSystemProvider,
     ICSSRules,
-    IManagedJSSProps,
+    ManagedJSSProps,
     IManagedClasses
 } from "@microsoft/fast-jss-manager-react";
 import { ErrorBoundary, IErrorBoundaryProps } from "../../utilities";

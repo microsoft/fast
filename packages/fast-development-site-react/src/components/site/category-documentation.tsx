@@ -1,5 +1,5 @@
 import * as React from "react";
-import manageJss, { ComponentStyles, DesignSystemProvider, IManagedJSSProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, DesignSystemProvider, ManagedJSSProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { IDevSiteDesignSystem } from "../design-system";
 

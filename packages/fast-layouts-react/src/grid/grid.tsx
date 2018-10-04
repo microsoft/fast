@@ -1,5 +1,5 @@
 import * as React from "react";
-import manageJss, { ComponentStyles, ICSSRules, IManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, ICSSRules, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import BreakpointTracker from "../utilities/breakpoint-tracker";
 import { getValueByBreakpoint } from "../utilities/breakpoints";
 import { GridAlignment, GridProps, GridTag, IGridHandledProps } from "./grid.props";
