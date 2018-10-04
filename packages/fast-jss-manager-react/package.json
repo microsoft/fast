@@ -78,6 +78,7 @@
     "ts-jest": "^22.0.4",
     "tslint": "^5.9.1",
     "typescript": "^3.0.1",
+    "utility-types": "^2.1.0",
     "watch": "^1.0.2"
   },
   "peerDependencies": {
@@ -86,7 +87,8 @@
     "jss-preset-default": "^4.3.0",
     "lodash-es": "^4.0.0",
     "prop-types": "^15.0.0",
-    "react": "^16.3.0"
+    "react": "^16.3.0",
+    "utility-types": "^2.1.0"
   },
   "dependencies": {
     "@microsoft/fast-jss-manager": "^2.2.0"
