@@ -6,29 +6,29 @@ import * as ReactDOMServer from "react-dom/server";
 import { addressBarControls, windowControls } from "./browserControls";
 import { get } from "lodash-es";
 
-export interface IViewerHeightConfig {
+export interface ViewerHeightConfig {
     min?: number;
     max?: number;
     auto?: number;
 }
 
-export interface IViewerConfig {
+export interface ViewerConfig {
     browser?: boolean;
-    height?: IViewerHeightConfig;
+    height?: ViewerHeightConfig;
 }
 
-export interface IViewerProps {
+export interface ViewerProps {
     component: any;
     styles: string;
     data: any;
-    config?: IViewerConfig;
+    config?: ViewerConfig;
 }
 
-export interface IViewerState {
+export interface ViewerState {
     iframeHeight: string;
 }
 
-export default class Viewer extends React.Component<IViewerProps, IViewerState> {
+export default class Viewer extends React.Component<ViewerProps, ViewerState> {
 
     private rootElement: HTMLElement;
 
@@ -40,7 +40,7 @@ export default class Viewer extends React.Component<IViewerProps, IViewerState> 
 
     private stylesheet: any;
 
-    constructor(props: IViewerProps) {
+    constructor(props: ViewerProps) {
         super(props);
 
         this.state = {
@@ -95,7 +95,7 @@ export default class Viewer extends React.Component<IViewerProps, IViewerState> 
         this.stylesheet = jss.createStyleSheet(this.styles, {link: true}).attach();
     }
 
-    public shouldComponentUpdate(nextProps: IViewerProps, nextState: IViewerState): boolean {
+    public shouldComponentUpdate(nextProps: ViewerProps, nextState: ViewerState): boolean {
         if (
             nextProps.styles !== this.props.styles
             || nextProps.data !== this.props.data

@@ -1,26 +1,26 @@
 import * as React from "react";
 
-export interface IObjectNoRequired {
+export interface ObjectNoRequired {
     number?: number;
 }
 
-export interface IObjectWithRequired {
+export interface ObjectWithRequired {
     boolean: boolean;
 }
 
-export interface IOptionalObjectWithRequired {
+export interface OptionalObjectWithRequired {
     string: string;
 }
 
-export interface IOptionalObjectNoRequired {
+export interface OptionalObjectNoRequired {
     boolean?: boolean;
 }
 
-export interface IObjectsProps {
-    objectNoRequired: IObjectNoRequired;
-    objectWithRequired: IObjectWithRequired;
-    optionalObjectWithRequired: IOptionalObjectWithRequired;
-    optionalObjectNoRequired: IOptionalObjectNoRequired;
+export interface ObjectsProps {
+    objectNoRequired: ObjectNoRequired;
+    objectWithRequired: ObjectWithRequired;
+    optionalObjectWithRequired: OptionalObjectWithRequired;
+    optionalObjectNoRequired: OptionalObjectNoRequired;
 }
 
 /**
@@ -30,7 +30,7 @@ export interface IObjectsProps {
  * - an optional object containing a required attribute which should have an example generated
  * - an optional object containing an optional attribute which should not be generated
  */
-export default class Objects extends React.Component<IObjectsProps, {}> {
+export default class Objects extends React.Component<ObjectsProps, {}> {
 
     public render(): JSX.Element {
         return (

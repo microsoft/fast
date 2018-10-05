@@ -1,16 +1,16 @@
 import * as React from "react";
 import HorizontalOverflow, {
-    IHorizontalOverflowHandledProps,
-    IHorizontalOverflowManagedClasses,
-    IHorizontalOverflowUnhandledProps
+    HorizontalOverflowHandledProps,
+    HorizontalOverflowManagedClasses,
+    HorizontalOverflowUnhandledProps
 } from "./horizontal-overflow";
 import schema from "./horizontal-overflow.schema.json";
 import Documentation from "./.tmp/documentation";
 import ButtonSchema from "../button/button.schema.json";
 import ImageSchema from "../image/image.schema.json";
-import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
+import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
-const classes: IHorizontalOverflowManagedClasses = {
+const classes: HorizontalOverflowManagedClasses = {
     managedClasses: {
         horizontalOverflow: "horizontal-overflow",
         horizontalOverflow_contentRegion: "horizontal-overflow_items",
@@ -152,7 +152,7 @@ const images: any[] = [
     }
 ];
 
-const examples: IComponentFactoryExample<IHorizontalOverflowHandledProps> = {
+const examples: ComponentFactoryExample<HorizontalOverflowHandledProps> = {
     name: "Horizontal overflow",
     component: HorizontalOverflow,
     schema: schema as any,

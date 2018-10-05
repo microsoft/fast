@@ -1,15 +1,15 @@
 import TextField, {
-    ITextFieldHandledProps,
-    ITextFieldManagedClasses,
-    ITextFieldUnhandledProps,
-    TextFieldType
+    TextFieldHandledProps,
+    TextFieldManagedClasses,
+    TextFieldType,
+    TextFieldUnhandledProps
 } from "./text-field";
 import schema from "./text-field.schema.json";
 import * as React from "react";
 import Documentation from "./.tmp/documentation";
-import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
+import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
-const examples: IComponentFactoryExample<ITextFieldHandledProps> = {
+const examples: ComponentFactoryExample<TextFieldHandledProps> = {
     name: "Text field",
     component: TextField,
     schema: schema as any,

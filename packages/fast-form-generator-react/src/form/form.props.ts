@@ -1,5 +1,5 @@
 import { updateActiveSection } from "./form-section.props";
-import { INavigationItem } from "./form.utilities";
+import { NavigationItem } from "./form.utilities";
 
 export type PropsOnChange = (data: any) => void;
 
@@ -11,7 +11,7 @@ export type BreadcrumbItemEventHandler = (e: React.MouseEvent<HTMLAnchorElement>
 
 export type FormTag = "form" | "div";
 
-export interface IChildOptionItem {
+export interface ChildOptionItem {
     /**
      * The name of the component
      */
@@ -31,7 +31,7 @@ export interface IChildOptionItem {
 /**
  * The schema form props
  */
-export interface IFormProps {
+export interface FormProps {
     /**
      * The optional class name
      */
@@ -55,33 +55,33 @@ export interface IFormProps {
     /**
      * The optional components to be added as children
      */
-    childOptions?: IChildOptionItem[];
+    childOptions?: ChildOptionItem[];
 
     /**
      * The custom passed location of a subsection to initially activate
      */
-    location?: IFormLocation;
+    location?: FormLocation;
 
     /**
      * The configuration for mapping form items to layout controls
      */
-    componentMappingToPropertyNames?: IFormComponentMappingToPropertyNamesProps;
+    componentMappingToPropertyNames?: FormComponentMappingToPropertyNamesProps;
 
     /**
      * The configuration for mapping attributes to form items
      */
-    attributeSettingsMappingToPropertyNames?: IFormAttributeSettingsMappingToPropertyNames;
+    attributeSettingsMappingToPropertyNames?: FormAttributeSettingsMappingToPropertyNames;
 
     /**
      * The configuration for ordering properties by their names
      */
-    orderByPropertyNames?: IFormOrderByPropertyNamesProps;
+    orderByPropertyNames?: FormOrderByPropertyNamesProps;
 }
 
 /**
  * The schema form state
  */
-export interface IFormState {
+export interface FormState {
     /**
      * The current title
      */
@@ -110,7 +110,7 @@ export interface IFormState {
     /**
      * The navigation items used for the breadcrumb links
      */
-    navigation?: INavigationItem[];
+    navigation?: NavigationItem[];
 
     /**
      * The location, which can be the root or a sub location,
@@ -119,7 +119,7 @@ export interface IFormState {
     location?: any;
 }
 
-export interface IFormLocation {
+export interface FormLocation {
     /**
      * The data location
      */
@@ -136,43 +136,43 @@ export interface IFormLocation {
     onChange: LocationOnChange;
 }
 
-export interface IAttributeSettingsCommon {
+export interface AttributeSettingsCommon {
     /**
      * The list of property names to change the attribute
      */
     propertyNames: string[];
 }
 
-export interface ITextareaAttributeRows extends IAttributeSettingsCommon {
+export interface TextareaAttributeRows extends AttributeSettingsCommon {
     /**
      * The value to set the attribute to
      */
     value: number;
 }
 
-export interface ITextareaAttributeSettingsMappingToPropertyNames {
+export interface TextareaAttributeSettingsMappingToPropertyNames {
     /**
      * The rows attribute
      */
-    rows: ITextareaAttributeRows[];
+    rows: TextareaAttributeRows[];
 }
 
 /**
  * The configuration for the mapping of attribute settings to property names
  */
-export interface IFormAttributeSettingsMappingToPropertyNames {
+export interface FormAttributeSettingsMappingToPropertyNames {
     /**
      * The textarea component
      */
-    textarea: ITextareaAttributeSettingsMappingToPropertyNames;
+    textarea: TextareaAttributeSettingsMappingToPropertyNames;
 }
 
-export type AttributeSettingsMappingToPropertyNames = ITextareaAttributeSettingsMappingToPropertyNames;
+export type AttributeSettingsMappingToPropertyNames = TextareaAttributeSettingsMappingToPropertyNames;
 
 /**
  * The configuration for the mapping property names to form controls
  */
-export interface IFormComponentMappingToPropertyNamesProps {
+export interface FormComponentMappingToPropertyNamesProps {
     /**
      * A custom color that maps to a CSS color value using a color picker
      * Maps to string values - Text field
@@ -217,7 +217,7 @@ export interface IFormComponentMappingToPropertyNamesProps {
 /**
  * The property order properties within a category
  */
-export interface IFormOrderByPropertyNamesProperties {
+export interface FormOrderByPropertyNamesProperties {
     /**
      * Name of the property
      */
@@ -232,7 +232,7 @@ export interface IFormOrderByPropertyNamesProperties {
 /**
  * The property order categories
  */
-export interface IFormOrderByPropertyNamesCategories {
+export interface FormOrderByPropertyNamesCategories {
     /**
      * The category title
      */
@@ -246,7 +246,7 @@ export interface IFormOrderByPropertyNamesCategories {
     /**
      * The properties belonging to the category
      */
-    properties: IFormOrderByPropertyNamesProperties[];
+    properties: FormOrderByPropertyNamesProperties[];
 
     /**
      * Allows category to be expandable
@@ -257,7 +257,7 @@ export interface IFormOrderByPropertyNamesCategories {
 /**
  * The configuration for the weights of properties as the appear in order
  */
-export interface IFormOrderByPropertyNamesProps {
+export interface FormOrderByPropertyNamesProps {
     /**
      * Shows the categories when there are more than this number
      */
@@ -271,5 +271,5 @@ export interface IFormOrderByPropertyNamesProps {
     /**
      * The categories to drop properties into
      */
-    categories: IFormOrderByPropertyNamesCategories[];
+    categories: FormOrderByPropertyNamesCategories[];
 }

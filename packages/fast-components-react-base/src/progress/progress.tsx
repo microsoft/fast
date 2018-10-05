@@ -3,12 +3,12 @@ import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
-    IProgressHandledProps,
-    IProgressManagedClasses,
-    IProgressUnhandledProps,
-    ProgressProps
+    ProgressHandledProps,
+    ProgressManagedClasses,
+    ProgressProps,
+    ProgressUnhandledProps
 } from "./progress.props";
-import { IManagedClasses, IProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { ManagedClasses, ProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 
 export enum ProgressType {
     determinate = "determinate",
@@ -16,8 +16,8 @@ export enum ProgressType {
 }
 
 class Progress extends Foundation<
-    IProgressHandledProps,
-    IProgressUnhandledProps,
+    ProgressHandledProps,
+    ProgressUnhandledProps,
     {}
 > {
     public static defaultProps: Partial<ProgressProps> = {
@@ -27,7 +27,7 @@ class Progress extends Foundation<
 
     public static displayName: string = "Progress";
 
-    protected handledProps: HandledProps<IProgressHandledProps> = {
+    protected handledProps: HandledProps<ProgressHandledProps> = {
         children: void 0,
         managedClasses: void 0,
         maxValue: void 0,
@@ -72,4 +72,4 @@ class Progress extends Foundation<
 
 export default Progress;
 export * from "./progress.props";
-export { IProgressClassNameContract };
+export { ProgressClassNameContract };

@@ -1,18 +1,18 @@
 import * as React from "react";
-import manageJss, { ComponentStyles, IManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import { IDevSiteDesignSystem } from "../design-system";
+import { DevSiteDesignSystem } from "../design-system";
 
 /* tslint:disable-next-line */
-export interface IShellPaneCollapseProps {
+export interface ShellPaneCollapseProps {
     onUpdate: () => void;
 }
 
-export interface IShellPaneCollapseManagedClasses {
+export interface ShellPaneCollapseManagedClasses {
     shellPaneCollapse: string;
 }
 
-const style: ComponentStyles<IShellPaneCollapseManagedClasses, IDevSiteDesignSystem> = {
+const style: ComponentStyles<ShellPaneCollapseManagedClasses, DevSiteDesignSystem> = {
     shellPaneCollapse: {
         background: "blue",
         height: toPx(48),
@@ -20,7 +20,7 @@ const style: ComponentStyles<IShellPaneCollapseManagedClasses, IDevSiteDesignSys
     }
 };
 
-class ShellPaneCollapse extends React.Component<IShellPaneCollapseProps & IManagedClasses<IShellPaneCollapseManagedClasses>, {}> {
+class ShellPaneCollapse extends React.Component<ShellPaneCollapseProps & ManagedClasses<ShellPaneCollapseManagedClasses>, {}> {
 
     public render(): JSX.Element {
         return (

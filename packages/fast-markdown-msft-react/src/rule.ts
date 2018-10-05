@@ -1,11 +1,11 @@
 import {
-    IToken,
-    ITokens
+    Token,
+    Tokens
 } from "./index";
 import { MarkdownIt } from "markdown-it";
 
-export interface IState {
-    tokens: IToken[];
+export interface State {
+    tokens: Token[];
     Token: (type: string, tag?: string, idx?: number) => void;
 }
 
@@ -15,7 +15,7 @@ export default class CreateRule {
         return (this.replace as any);
     }
 
-    public replace = (state: IState): void => {
+    public replace = (state: State): void => {
         this.renderComponents(state);
     }
 
@@ -23,7 +23,7 @@ export default class CreateRule {
      * Renders custom JSX components in place of HTML
      * generated from the markdown-it package
      */
-    private renderComponents = (state: IState): void => {
+    private renderComponents = (state: State): void => {
 
         for (let i: number = 0, tokenLength: number = state.tokens.length; i < tokenLength; i++) {
 
@@ -33,7 +33,7 @@ export default class CreateRule {
 
             switch (state.tokens[i].type) {
                 case "link_open":
-                    const linkToken: IToken = new state.Token(state.tokens[i].type, "Hypertext", 1);
+                    const linkToken: Token = new state.Token(state.tokens[i].type, "Hypertext", 1);
 
                     linkToken.attrPush(["href", state.tokens[i].attrs[0][1]]);
 

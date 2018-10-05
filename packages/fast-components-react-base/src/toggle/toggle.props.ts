@@ -1,9 +1,9 @@
 import * as React from "react";
-import { IManagedClasses, IToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { ManagedClasses, ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface IToggleManagedClasses extends IManagedClasses<IToggleClassNameContract> {}
-export interface IToggleUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
-export interface IToggleHandledProps extends IToggleManagedClasses {
+export interface ToggleManagedClasses extends ManagedClasses<ToggleClassNameContract> {}
+export interface ToggleUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface ToggleHandledProps extends ToggleManagedClasses {
     /**
      * The label content
      */
@@ -50,4 +50,4 @@ export interface IToggleHandledProps extends IToggleManagedClasses {
     unselectedMessage: string;
 }
 
-export type ToggleProps = IToggleHandledProps & IToggleUnhandledProps;
+export type ToggleProps = ToggleHandledProps & ToggleUnhandledProps;

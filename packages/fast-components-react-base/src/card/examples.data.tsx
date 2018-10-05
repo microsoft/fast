@@ -1,17 +1,17 @@
 import * as React from "react";
-import Card, { CardProps, ICardHandledProps, ICardManagedClasses, ICardUnhandledProps } from "./card";
+import Card, { CardHandledProps, CardManagedClasses, CardProps, CardUnhandledProps } from "./card";
 import schema from "./card.schema.json";
 import ImageSchema from "../image/image.schema.json";
 import Documentation from "./.tmp/documentation";
-import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
+import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
-const managedClasses: ICardManagedClasses = {
+const managedClasses: CardManagedClasses = {
     managedClasses: {
         card: "card"
     },
 };
 
-const examples: IComponentFactoryExample<CardProps> = {
+const examples: ComponentFactoryExample<CardProps> = {
     name: "Card",
     component: Card,
     schema: schema as any,

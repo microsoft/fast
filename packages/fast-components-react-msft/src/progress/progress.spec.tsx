@@ -3,12 +3,12 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
-import { IProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { ProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import MSFTProgress, {
-    IMSFTProgressClassNameContract,
-    IMSFTProgressHandledProps,
-    IMSFTProgressManagedClasses,
-    IMSFTProgressUnhandledProps,
+    MSFTProgressClassNameContract,
+    MSFTProgressHandledProps,
+    MSFTProgressManagedClasses,
+    MSFTProgressUnhandledProps,
 } from "./progress";
 
 /*

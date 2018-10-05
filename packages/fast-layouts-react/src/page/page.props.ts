@@ -1,8 +1,8 @@
 import * as React from "react";
-import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
-import { IPageClassNamesContract } from "./page";
+import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
+import { PageClassNamesContract } from "./page";
 
-export interface IPageHandledProps {
+export interface PageHandledProps {
     /**
      * The left and right page margin values
      */
@@ -14,4 +14,4 @@ export interface IPageHandledProps {
     maxWidth?: string;
 }
 
-export type PageProps = IPageHandledProps & IManagedClasses<IPageClassNamesContract>;
+export type PageProps = PageHandledProps & ManagedClasses<PageClassNamesContract>;

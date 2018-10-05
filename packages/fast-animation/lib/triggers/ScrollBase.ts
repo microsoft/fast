@@ -10,7 +10,7 @@ export type ScrollTriggerCallback = (distance: any) => void;
 /**
  * Export subscription interface
  */
-export interface IScrollTriggerSubscription {
+export interface ScrollTriggerSubscription {
     element: HTMLElement;
     callback: ScrollTriggerCallback;
     inView: boolean;
@@ -20,7 +20,7 @@ export interface IScrollTriggerSubscription {
  * Scroll trigger base-class that handles event binding and element/callback registration.
  */
 export default abstract class ScrollTrigger {
-    protected subscriptions: IScrollTriggerSubscription[] = [];
+    protected subscriptions: ScrollTriggerSubscription[] = [];
     protected scrollDistance: number = 0;
     private openRequestAnimationFrame: boolean = false;
     private useRequestAnimationFrame: boolean = false;
@@ -61,7 +61,7 @@ export default abstract class ScrollTrigger {
      * Unsubscribe an element and callback for scroll triggers
      */
     public unsubscribe(element: HTMLElement, callback: ScrollTriggerCallback): void {
-        this.subscriptions = this.subscriptions.filter((subscription: IScrollTriggerSubscription) => {
+        this.subscriptions = this.subscriptions.filter((subscription: ScrollTriggerSubscription) => {
             return !(element === subscription.element && callback === subscription.callback);
         });
 
@@ -84,7 +84,7 @@ export default abstract class ScrollTrigger {
      * Checks to see if element/callback pairs have been registered so we don't duplicate registration.
      */
     private isSubscribed(element: HTMLElement, callback: ScrollTriggerCallback): boolean {
-        return !!this.subscriptions.filter((subscription: IScrollTriggerSubscription): boolean => {
+        return !!this.subscriptions.filter((subscription: ScrollTriggerSubscription): boolean => {
             return element === subscription.element && callback === subscription.callback;
         }).length;
     }

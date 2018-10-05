@@ -2,21 +2,21 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { IImageHandledProps, IImageManagedClasses, IImageUnhandledProps } from "./image.props";
-import { IImageClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { ImageHandledProps, ImageManagedClasses, ImageUnhandledProps } from "./image.props";
+import { ImageClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 export enum ImageSlot {
     source = "source"
 }
 
 class Image extends Foundation<
-    IImageHandledProps,
-    IImageUnhandledProps,
+    ImageHandledProps,
+    ImageUnhandledProps,
     {}
 > {
     public static displayName: string = "Image";
 
-    protected handledProps: HandledProps<IImageHandledProps> = {
+    protected handledProps: HandledProps<ImageHandledProps> = {
         managedClasses: void 0,
         alt: void(0),
         sizes: void(0),
@@ -63,4 +63,4 @@ class Image extends Foundation<
 
 export default Image;
 export * from "./image.props";
-export {IImageClassNameContract};
+export { ImageClassNameContract };

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IComponentFactoryExample  } from "@microsoft/fast-development-site-react";
+import { ComponentFactoryExample  } from "@microsoft/fast-development-site-react";
 import { Subheading, SubheadingProps, SubheadingSize, SubheadingTag } from "./index";
 import schema from "./subheading.schema.json";
 import Documentation from "./.tmp/documentation";
@@ -60,4 +60,4 @@ export default {
             "data-sketch-symbol": "Subheading 6"
         }
     ]
-} as IComponentFactoryExample<SubheadingProps>;
+} as ComponentFactoryExample<SubheadingProps>;

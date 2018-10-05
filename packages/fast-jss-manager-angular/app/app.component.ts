@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 
-export interface IDesignSystem {
+export interface DesignSystem {
   red: any;
   blue: any;
   purple: any;
@@ -21,7 +21,7 @@ export interface IDesignSystem {
             </div>`
 })
 export class AppComponent {
-  private config: IDesignSystem;
+  private config: DesignSystem;
 
   constructor() {
     this.config = {

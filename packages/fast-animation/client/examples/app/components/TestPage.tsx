@@ -6,7 +6,7 @@ const sass: string = require("../assets/styles/test-page.css");
 import ScrollTrigger from "[lib]/triggers/ScrollTrigger";
 import ViewEnterTrigger from "[lib]/triggers/ViewEnterTrigger";
 import ViewExitTrigger from "[lib]/triggers/ViewExitTrigger";
-import { IAnimateOptions } from "[lib]/animate";
+import { AnimateConfig } from "[lib]/animate";
 import AnimateTo from "[lib]/animateTo";
 import AnimateFrom from "[lib]/animateFrom";
 import { cubicBezier } from "[lib]/curves";
@@ -206,10 +206,10 @@ class TestPage extends React.Component {
         const mediumSquare: HTMLElement = e.currentTarget.querySelector(".medium-square");
         const lightSquare: HTMLElement = e.currentTarget.querySelector(".light-square");
 
-        const fadeOptions: IAnimateOptions = { opacity: 0 };
+        const fadeOptions: AnimateConfig = { opacity: 0 };
         const fadeEffect: EffectTiming = { duration: 100 };
 
-        const slideOptions: IAnimateOptions = { x: 180 };
+        const slideOptions: AnimateConfig = { x: 180 };
         const slideEffect: EffectTiming = {
             duration: 300,
             fill: "backwards" as FillMode,
@@ -268,8 +268,8 @@ class TestPage extends React.Component {
         const row2: HTMLElement = e.currentTarget.querySelector(".row2");
         const row3: HTMLElement = e.currentTarget.querySelector(".row3");
 
-        const fadeInOptions: IAnimateOptions = { opacity: 1 };
-        const fadeOutOptions: IAnimateOptions = { opacity: 0 };
+        const fadeInOptions: AnimateConfig = { opacity: 1 };
+        const fadeOutOptions: AnimateConfig = { opacity: 0 };
         const fadeInEffect: EffectTiming = {
             duration: 350,
             easing: cubicBezier("fastInOut")
@@ -306,7 +306,7 @@ class TestPage extends React.Component {
             { opacity: "1" }
         ];
 
-        const slideOptions: IAnimateOptions = { y: -100 };
+        const slideOptions: AnimateConfig = { y: -100 };
         const slideEffect: EffectTiming = { duration: 750, easing: cubicBezier("fastInOut") };
         const square1Animation: AnimateTo = new AnimateTo(square1, slideOptions, slideEffect);
         const square2Animation: AnimateTo = new AnimateTo(square2, slideOptions, slideEffect);

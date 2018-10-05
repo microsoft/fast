@@ -1,29 +1,29 @@
 import * as React from "react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import { IDesignSystem } from "../../design-system";
+import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
+import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { DesignSystem } from "../../design-system";
 
-export interface IButtonProps {
+export interface ButtonProps {
     text: string;
     object: any;
 }
 
-export interface ITestButtonClassNameContract {
+export interface TestButtonClassNameContract {
     button: string;
 }
 
-const ButtonStyles: ComponentStyles<ITestButtonClassNameContract, IDesignSystem> = {
+const ButtonStyles: ComponentStyles<TestButtonClassNameContract, DesignSystem> = {
     button: {
         width: "50px",
-        textAlign: (config: IDesignSystem): string => {
+        textAlign: (config: DesignSystem): string => {
             return config.ltr === "ltr" ? "left" : "right";
         }
     }
 };
 
 /* tslint:disable-next-line */
-class Button extends React.Component<IButtonProps & IManagedClasses<ITestButtonClassNameContract>, React.HTMLAttributes<HTMLButtonElement>, {}> {
+class Button extends React.Component<ButtonProps & ManagedClasses<TestButtonClassNameContract>, React.HTMLAttributes<HTMLButtonElement>, {}> {
 
     public render(): JSX.Element {
         return (

@@ -5,13 +5,13 @@ import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import Typography, {
-    ITypographyClassNameContract,
-    ITypographyHandledProps,
-    ITypographyManagedClasses,
-    ITypographyUnhandledProps,
+    TypographyClassNameContract,
+    TypographyHandledProps,
+    TypographyManagedClasses,
     TypographyProps,
     TypographySize,
-    TypographyTag
+    TypographyTag,
+    TypographyUnhandledProps
 } from "./typography";
 
 /*
@@ -24,7 +24,7 @@ describe("typography snapshot", (): void => {
 });
 
 describe("typography", (): void => {
-    const managedClasses: ITypographyClassNameContract = {
+    const managedClasses: TypographyClassNameContract = {
         typography__1: "typography-1-class",
         typography__2: "typography-2-class",
         typography__3: "typography-3-class",
@@ -50,10 +50,10 @@ describe("typography", (): void => {
     });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
-        const handledProps: ITypographyHandledProps & ITypographyManagedClasses = {
+        const handledProps: TypographyHandledProps & TypographyManagedClasses = {
             managedClasses
         };
-        const unhandledProps: ITypographyUnhandledProps = {
+        const unhandledProps: TypographyUnhandledProps = {
             "aria-hidden": true
         };
         const props: TypographyProps = {...handledProps, ...unhandledProps};

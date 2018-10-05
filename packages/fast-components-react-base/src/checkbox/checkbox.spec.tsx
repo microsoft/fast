@@ -5,12 +5,12 @@ import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import Checkbox, {
+    CheckboxClassNameContract,
+    CheckboxHandledProps,
+    CheckboxManagedClasses,
     CheckboxProps,
-    ICheckboxClassNameContract,
-    ICheckboxHandledProps,
-    ICheckboxManagedClasses,
-    ICheckboxState,
-    ICheckboxUnhandledProps
+    CheckboxState,
+    CheckboxUnhandledProps
 } from "./checkbox";
 
 /*
@@ -23,7 +23,7 @@ describe("checkbox snapshot", (): void => {
 });
 
 describe("checkbox", (): void => {
-    const managedClasses: ICheckboxClassNameContract = {
+    const managedClasses: CheckboxClassNameContract = {
         checkbox: "checkbox-class",
         checkbox__disabled: "disabled-class",
         checkbox_input: "input-class",
@@ -47,11 +47,11 @@ describe("checkbox", (): void => {
     });
 
     test("should implement unhandledProps", () => {
-        const handledProps: ICheckboxHandledProps = {
+        const handledProps: CheckboxHandledProps = {
             managedClasses
         };
 
-        const unhandledProps: ICheckboxUnhandledProps = {
+        const unhandledProps: CheckboxUnhandledProps = {
             "data-my-custom-attribute": true
         };
 

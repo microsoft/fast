@@ -2,7 +2,7 @@ import * as React from "react";
 import { CallToAction, CallToActionAppearance, CallToActionProps } from "./index";
 import schema from "./call-to-action.schema.json";
 import Documentation from "./.tmp/documentation";
-import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
+import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
 const testString: string = "Call to action";
 const testDestination: string = "https://www.microsoft.com/en-us/";
@@ -37,4 +37,4 @@ export default {
             "data-sketch-symbol": "Call to action - justified"
         }
     ]
-} as IComponentFactoryExample<CallToActionProps>;
+} as ComponentFactoryExample<CallToActionProps>;

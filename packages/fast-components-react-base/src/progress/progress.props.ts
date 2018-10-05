@@ -1,9 +1,9 @@
 import * as React from "react";
-import { IManagedClasses, IProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { ManagedClasses, ProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface IProgressManagedClasses extends IManagedClasses<IProgressClassNameContract> {}
-export interface IProgressUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
-export interface IProgressHandledProps extends IProgressManagedClasses {
+export interface ProgressManagedClasses extends ManagedClasses<ProgressClassNameContract> {}
+export interface ProgressUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface ProgressHandledProps extends ProgressManagedClasses {
     /**
      * The progress content
      */
@@ -25,4 +25,4 @@ export interface IProgressHandledProps extends IProgressManagedClasses {
     value?: number;
 }
 
-export type ProgressProps = IProgressHandledProps & IProgressUnhandledProps;
+export type ProgressProps = ProgressHandledProps & ProgressUnhandledProps;

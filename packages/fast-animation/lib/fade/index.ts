@@ -1,6 +1,6 @@
 import AnimateFrom from "../animateFrom";
 import AnimateTo from "../animateTo";
-import { IAnimateOptions } from "../animate";
+import { AnimateConfig } from "../animate";
 
 /**
  * Key frame object for fade-in animations

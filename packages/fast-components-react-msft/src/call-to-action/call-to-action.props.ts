@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Omit, Subtract } from "utility-types";
-import { ICallToActionClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
-import { ButtonAppearance, IButtonHandledProps, IButtonManagedClasses, IButtonUnhandledProps } from "../button/button.props";
+import { CallToActionClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
+import { ButtonAppearance, ButtonHandledProps, ButtonManagedClasses, ButtonUnhandledProps } from "../button/button.props";
 
 export enum CallToActionAppearance {
     justified = ButtonAppearance.justified,
@@ -9,10 +9,10 @@ export enum CallToActionAppearance {
     primary = ButtonAppearance.primary
 }
 
-export interface ICallToActionManagedClasses extends IManagedClasses<ICallToActionClassNameContract> {}
-export interface ICallToActionHandledProps extends Omit<
-    IButtonHandledProps, "appearance" | keyof IButtonManagedClasses
->, ICallToActionManagedClasses {
+export interface CallToActionManagedClasses extends ManagedClasses<CallToActionClassNameContract> {}
+export interface CallToActionHandledProps extends Omit<
+    ButtonHandledProps, "appearance" | keyof ButtonManagedClasses
+>, CallToActionManagedClasses {
 
     /**
      * The call to action appearance
@@ -21,5 +21,5 @@ export interface ICallToActionHandledProps extends Omit<
 }
 
 /* tslint:disable-next-line:no-empty-interface */
-export interface ICallToActionUnhandledProps extends IButtonUnhandledProps {}
-export type CallToActionProps = ICallToActionHandledProps & ICallToActionUnhandledProps;
+export interface CallToActionUnhandledProps extends ButtonUnhandledProps {}
+export type CallToActionProps = CallToActionHandledProps & CallToActionUnhandledProps;

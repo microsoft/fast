@@ -5,20 +5,20 @@ import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-
 import { Button, ButtonProps } from "@microsoft/fast-components-react-base";
 import {
     FlipperDirection,
-    IFlipperHandledProps,
-    IFlipperManagedClasses,
-    IFlipperUnhandledProps
+    FlipperHandledProps,
+    FlipperManagedClasses,
+    FlipperUnhandledProps
 } from "./flipper.props";
-import { IFlipperClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
+import { FlipperClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
 
 class Flipper extends Foundation<
-    IFlipperHandledProps,
-    IFlipperUnhandledProps,
+    FlipperHandledProps,
+    FlipperUnhandledProps,
     {}
 > {
     public static displayName: string = "Flipper";
 
-    protected handledProps: HandledProps<IFlipperHandledProps> = {
+    protected handledProps: HandledProps<FlipperHandledProps> = {
         label: void 0,
         visibleToAssistiveTechnologies: void 0,
         managedClasses: void 0
@@ -71,4 +71,4 @@ class Flipper extends Foundation<
 
 export default Flipper;
 export * from "./flipper.props";
-export { IFlipperClassNameContract };
+export { FlipperClassNameContract };

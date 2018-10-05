@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
+import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { Metatext, MetatextProps, MetatextTag } from "./index";
 import schema from "./metatext.schema.json";
 import Documentation from "./.tmp/documentation";
@@ -28,4 +28,4 @@ export default {
             children: testString
         }
     ]
-} as IComponentFactoryExample<MetatextProps>;
+} as ComponentFactoryExample<MetatextProps>;

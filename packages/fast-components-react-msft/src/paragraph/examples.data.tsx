@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
+import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { Paragraph, ParagraphProps, ParagraphSize } from "./index";
 import schema from "./paragraph.schema.json";
 import Documentation from "./.tmp/documentation";
@@ -34,4 +34,4 @@ export default {
             "data-sketch-symbol": "Paragraph 3"
         }
     ]
-} as IComponentFactoryExample<ParagraphProps>;
+} as ComponentFactoryExample<ParagraphProps>;

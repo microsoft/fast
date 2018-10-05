@@ -1,28 +1,28 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { CheckboxProps, CheckboxTag, ICheckboxHandledProps, ICheckboxManagedClasses, ICheckboxUnhandledProps } from "./checkbox.props";
-import { ICheckboxClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { CheckboxHandledProps, CheckboxManagedClasses, CheckboxProps, CheckboxTag, CheckboxUnhandledProps } from "./checkbox.props";
+import { CheckboxClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
 
 /**
  * Checkbox state interface
  */
-export interface ICheckboxState {
+export interface CheckboxState {
     checked: boolean;
 }
 
 class Checkbox extends Foundation<
-    ICheckboxHandledProps,
-    ICheckboxUnhandledProps,
-    ICheckboxState
+    CheckboxHandledProps,
+    CheckboxUnhandledProps,
+    CheckboxState
 > {
     public static displayName: string = "Checkbox";
 
     /**
      * React life-cycle method
      */
-    public static getDerivedStateFromProps(nextProps: CheckboxProps, prevState: ICheckboxState): null | Partial<ICheckboxState> {
+    public static getDerivedStateFromProps(nextProps: CheckboxProps, prevState: CheckboxState): null | Partial<CheckboxState> {
         if (typeof nextProps.checked === "boolean" && nextProps.checked !== prevState.checked) {
             return {
                 checked: nextProps.checked
@@ -35,7 +35,7 @@ class Checkbox extends Foundation<
     /**
      * Handled props instantiation
      */
-    protected handledProps: HandledProps<ICheckboxHandledProps> = {
+    protected handledProps: HandledProps<CheckboxHandledProps> = {
         checked: void 0,
         disabled: void 0,
         indeterminate: void 0,
@@ -156,4 +156,4 @@ class Checkbox extends Foundation<
 
 export default Checkbox;
 export * from "./checkbox.props";
-export {ICheckboxClassNameContract};
+export { CheckboxClassNameContract };

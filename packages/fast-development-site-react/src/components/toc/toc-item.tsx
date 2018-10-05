@@ -1,11 +1,11 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import TocMenu from "./toc-menu";
-import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
+import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import manageJss, { ComponentStyles, IManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 
-export interface ITocItemProps {
+export interface TocItemProps {
     to?: string;
     controls?: string;
     onToggleExpand?: () => void;
@@ -20,7 +20,7 @@ export enum itemType {
     link = "link"
 }
 
-export interface ITocItemManagedClasses {
+export interface TocItemManagedClasses {
     tocItem_anchor: string;
     tocItem: string;
     tocItem__active: string;
@@ -28,9 +28,9 @@ export interface ITocItemManagedClasses {
 
 const tocItemActivePipeHeight: number = 20;
 
-const style: ComponentStyles<ITocItemManagedClasses, IDevSiteDesignSystem> = {
+const style: ComponentStyles<TocItemManagedClasses, DevSiteDesignSystem> = {
     tocItem_anchor: {
-        color: (config: IDevSiteDesignSystem): string => {
+        color: (config: DevSiteDesignSystem): string => {
             return config.foregroundColor;
         },
         textDecoration: "none",
@@ -43,7 +43,7 @@ const style: ComponentStyles<ITocItemManagedClasses, IDevSiteDesignSystem> = {
             backgroundColor: "rgba(0, 0, 0, 0.04)"
         },
         "&:focus": {
-            border: (config: IDevSiteDesignSystem): string => {
+            border: (config: DevSiteDesignSystem): string => {
                 return `${toPx(1)} solid ${config.brandColor || devSiteDesignSystemDefaults.brandColor}`;
             }
         }
@@ -51,15 +51,15 @@ const style: ComponentStyles<ITocItemManagedClasses, IDevSiteDesignSystem> = {
     tocItem: {
         display: "block",
         position: "relative",
-        color: (config: IDevSiteDesignSystem): string => {
+        color: (config: DevSiteDesignSystem): string => {
             return config.foregroundColor;
         }
     },
     tocItem__active: {
-        background: (config: IDevSiteDesignSystem): string => {
+        background: (config: DevSiteDesignSystem): string => {
             return config.backgroundColor;
         },
-        color: (config: IDevSiteDesignSystem): string => {
+        color: (config: DevSiteDesignSystem): string => {
             return config.foregroundColor;
         },
         boxShadow: `${toPx(-2)} ${toPx(2)} ${toPx(4)} rgba(0, 0, 0, 0.06)`,
@@ -69,7 +69,7 @@ const style: ComponentStyles<ITocItemManagedClasses, IDevSiteDesignSystem> = {
             height: toPx(tocItemActivePipeHeight),
             borderRadius: toPx(2),
             display: "block",
-            background: (config: IDevSiteDesignSystem): string => {
+            background: (config: DevSiteDesignSystem): string => {
                 return config.brandColor;
             },
             position: "absolute",
@@ -82,7 +82,7 @@ const style: ComponentStyles<ITocItemManagedClasses, IDevSiteDesignSystem> = {
     }
 };
 
-class TocItem extends React.Component<ITocItemProps & IManagedClasses<ITocItemManagedClasses>, {}> {
+class TocItem extends React.Component<TocItemProps & ManagedClasses<TocItemManagedClasses>, {}> {
 
     public render(): JSX.Element {
         const type: itemType = this.getType();

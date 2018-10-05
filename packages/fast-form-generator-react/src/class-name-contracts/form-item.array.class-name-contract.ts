@@ -1,7 +1,7 @@
 /**
  * Array class name contract
  */
-export default interface IFormItemArrayClassNameContract {
+export default interface FormItemArrayClassNameContract {
     formItemArray: string;
     formItemArray_actionMenu: string;
     formItemArray_actionMenuItem__add: string;

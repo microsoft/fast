@@ -1,4 +1,4 @@
-import { ICSSRules } from "@microsoft/fast-jss-manager";
+import { CSSRules } from "@microsoft/fast-jss-manager";
 
 /*
  * - textureImage?: Optionally add a background image to provide texture for the acrylic
@@ -8,7 +8,7 @@ import { ICSSRules } from "@microsoft/fast-jss-manager";
  * - blurRadius?: The option to customize the blur filter. Defaults to 30px
  * - saturation?: The option to customize the saturation filter. Defaults to 125%
  */
-export interface IAcrylicConfig {
+export interface AcrylicConfig {
     textureImage?: string;
     backgroundColor: string;
     fallbackBackgroundColor: string;
@@ -25,17 +25,17 @@ export const backdropFilterSupport: boolean =
 /*
  * Applies a partially transparent "acrylic" background to an element
  */
-export function applyAcrylic<T>(config: IAcrylicConfig): ICSSRules<T> {
-    const backdropFilterStyles: ICSSRules<T> = {
+export function applyAcrylic<T>(config: AcrylicConfig): CSSRules<T> {
+    const backdropFilterStyles: CSSRules<T> = {
         background: config.backgroundColor,
         backdropFilter: `blur(${config.blurRadius || "30px"}) saturate(${config.saturation || "125%"})`
     };
 
-    const fallbackStyles: ICSSRules<T> = {
+    const fallbackStyles: CSSRules<T> = {
         background: config.fallbackBackgroundColor
     };
 
-    const styles: ICSSRules<T> = backdropFilterSupport ? backdropFilterStyles : fallbackStyles;
+    const styles: CSSRules<T> = backdropFilterSupport ? backdropFilterStyles : fallbackStyles;
 
     return {
         ...styles,

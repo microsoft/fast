@@ -3,20 +3,20 @@ import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { TypographySize, TypographyTag  } from "@microsoft/fast-components-react-base";
 import {
-    ISubheadingHandledProps,
-    ISubheadingManagedClasses,
-    ISubheadingUnhandledProps,
+    SubheadingHandledProps,
+    SubheadingManagedClasses,
     SubheadingProps,
     SubheadingSize,
-    SubheadingTag
+    SubheadingTag,
+    SubheadingUnhandledProps
 } from "./subheading.props";
 
 import { Typography } from "../typography";
-import { IManagedClasses, ISubheadingClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { ManagedClasses, SubheadingClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 
 class Subheading extends Foundation<
-    ISubheadingHandledProps,
-    ISubheadingUnhandledProps,
+    SubheadingHandledProps,
+    SubheadingUnhandledProps,
     {}
 > {
     public static defaultProps: Partial<SubheadingProps> = {
@@ -26,7 +26,7 @@ class Subheading extends Foundation<
 
     public static displayName: string = "Subheading";
 
-    protected handledProps: HandledProps<ISubheadingHandledProps> = {
+    protected handledProps: HandledProps<SubheadingHandledProps> = {
         size: void 0,
         managedClasses: void 0,
         tag: void 0
@@ -71,4 +71,4 @@ class Subheading extends Foundation<
 
 export default Subheading;
 export * from "./subheading.props";
-export { ISubheadingClassNameContract };
+export { SubheadingClassNameContract };

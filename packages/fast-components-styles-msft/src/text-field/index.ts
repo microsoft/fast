@@ -1,6 +1,6 @@
-import { IDesignSystem, withDesignSystemDefaults } from "../design-system";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
-import { ITextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { adjustContrast, contrast, toPx } from "@microsoft/fast-jss-utilities";
 import { get } from "lodash-es";
 import { applyType } from "../utilities/typography";
@@ -11,20 +11,20 @@ import { density } from "../utilities/density";
 /**
  * Retrieves the disabled color
  */
-function disabledColor(config: IDesignSystem): string {
-    const designSystem: IDesignSystem = withDesignSystemDefaults(config);
+function disabledColor(config: DesignSystem): string {
+    const designSystem: DesignSystem = withDesignSystemDefaults(config);
     return disabledContrast(designSystem.contrast, foregroundNormal(designSystem), designSystem.backgroundColor);
 }
 
-function hoverColor(config: IDesignSystem): string {
-    const designSystem: IDesignSystem = withDesignSystemDefaults(config);
+function hoverColor(config: DesignSystem): string {
+    const designSystem: DesignSystem = withDesignSystemDefaults(config);
     return hoverContrast(designSystem.contrast, foregroundNormal(designSystem), designSystem.backgroundColor);
 }
 
-const styles: ComponentStyles<ITextFieldClassNameContract, IDesignSystem> = (
-    config: IDesignSystem
-): ComponentStyleSheet<ITextFieldClassNameContract, IDesignSystem> => {
-    const designSystem: IDesignSystem = withDesignSystemDefaults(config);
+const styles: ComponentStyles<TextFieldClassNameContract, DesignSystem> = (
+    config: DesignSystem
+): ComponentStyleSheet<TextFieldClassNameContract, DesignSystem> => {
+    const designSystem: DesignSystem = withDesignSystemDefaults(config);
 
     return {
         textField: {

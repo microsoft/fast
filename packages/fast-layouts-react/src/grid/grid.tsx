@@ -1,16 +1,16 @@
 import * as React from "react";
-import manageJss, { ComponentStyles, ICSSRules, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, CSSRules, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import BreakpointTracker from "../utilities/breakpoint-tracker";
 import { getValueByBreakpoint } from "../utilities/breakpoints";
-import { GridAlignment, GridProps, GridTag, IGridHandledProps } from "./grid.props";
-import Foundation, { HandledProps, IFoundationProps } from "@microsoft/fast-components-foundation-react";
+import { GridAlignment, GridHandledProps, GridProps, GridTag } from "./grid.props";
+import Foundation, { FoundationProps, HandledProps } from "@microsoft/fast-components-foundation-react";
 import Column from "../column";
 
-export interface IGridClassNamesContract {
+export interface GridClassNamesContract {
     grid?: string;
 }
 
-const styles: ComponentStyles<IGridClassNamesContract, undefined> = {
+const styles: ComponentStyles<GridClassNamesContract, undefined> = {
     grid: {
         display: "grid",
         gridAutoRows: "auto"
@@ -29,7 +29,7 @@ class Grid extends Foundation<
         return this.generateHTMLTag();
     }
 
-    public static defaultProps: IGridHandledProps = {
+    public static defaultProps: GridHandledProps = {
         tag: GridTag.div,
         gridColumn: 2,
         gutter: 8,

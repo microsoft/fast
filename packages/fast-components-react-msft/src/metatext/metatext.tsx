@@ -4,18 +4,18 @@ import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { TypographySize, TypographyTag } from "@microsoft/fast-components-react-base";
 import {
-    IMetatextHandledProps,
-    IMetatextManagedClasses,
-    IMetatextUnhandledProps,
+    MetatextHandledProps,
+    MetatextManagedClasses,
     MetatextProps,
-    MetatextTag
+    MetatextTag,
+    MetatextUnhandledProps
 } from "./metatext.props";
 import { Typography } from "../typography";
-import { IManagedClasses, IMetatextClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { ManagedClasses, MetatextClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 
 class Metatext extends Foundation<
-    IMetatextHandledProps,
-    IMetatextUnhandledProps,
+    MetatextHandledProps,
+    MetatextUnhandledProps,
     {}
 > {
     public static defaultProps: Partial<MetatextProps> = {
@@ -24,7 +24,7 @@ class Metatext extends Foundation<
 
     public static displayName: string = "Metatext";
 
-    protected handledProps: HandledProps<IMetatextHandledProps> = {
+    protected handledProps: HandledProps<MetatextHandledProps> = {
         managedClasses: void 0,
         tag: void 0
     };
@@ -55,4 +55,4 @@ class Metatext extends Foundation<
 
 export default Metatext;
 export * from "./metatext.props";
-export { IMetatextClassNameContract };
+export { MetatextClassNameContract };

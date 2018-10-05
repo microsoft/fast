@@ -1,5 +1,5 @@
 /* tslint:disable:no-string-literal */
-import Animate, { IAnimateOptions } from "../lib/animate";
+import Animate, { AnimateConfig } from "../lib/animate";
 class AnimateMock extends Animate {}
 
 describe("Animate initilization", () => {
@@ -223,7 +223,7 @@ describe("consolidateKeyframes", () => {
         {offset: 0, opacity: "", transform: undefined},
         {offset: 1, opacity: "0", transform: "translateX(20px) translateY(20px) rotate(20deg) scale(20)"}
     ];
-    const sourceOne: IAnimateOptions = { scale: 20, opacity: 0, rotate: 20, x: 20, y: 20 };
+    const sourceOne: AnimateConfig = { scale: 20, opacity: 0, rotate: 20, x: 20, y: 20 };
     const customKeyframes: Array<Partial<Keyframe>> = [
         { opacity: "0" },
         { opacity: "0.75", offset: 0.75 },

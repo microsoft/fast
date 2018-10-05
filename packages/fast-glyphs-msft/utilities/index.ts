@@ -2,25 +2,25 @@ import * as fs from "fs";
 
 export type ExportFileType = "ts" | "js";
 
-export interface IGlyph {
+export interface Glyph {
     name: string;
     svg: string;
 }
 
-export interface IConvertGlyphOptions {
+export interface ConvertGlyphConfig {
     glyphFolderPath: string;
     indexFileType?: ExportFileType;
     indexFileDestination?: string;
 }
 
 export default class ConvertGlyphs {
-    private glyphs: IGlyph[];
+    private glyphs: Glyph[];
     private index: string;
     private indexFileType: ExportFileType;
     private indexFileDestination: string;
 
     constructor(
-        options: IConvertGlyphOptions
+        options: ConvertGlyphConfig
     ) {
         this.glyphs = this.getGlyphs(options.glyphFolderPath, "svg");
         this.index = this.getIndexFileContents();
@@ -35,8 +35,8 @@ export default class ConvertGlyphs {
     /**
      * Gets an object containing the glyph names and a string which represents the SVG
      */
-    public getGlyphs(glyphFolderPath: string, glyphFileExtension: string): IGlyph[] {
-        const glyphs: IGlyph[] = [];
+    public getGlyphs(glyphFolderPath: string, glyphFileExtension: string): Glyph[] {
+        const glyphs: Glyph[] = [];
         const files: string[] = fs.readdirSync(glyphFolderPath);
 
         files.forEach((fileName: string): void => {
@@ -57,7 +57,7 @@ export default class ConvertGlyphs {
     public getIndexFileContents(): string {
         let index: string = "";
 
-        this.glyphs.forEach((glyph: IGlyph) => {
+        this.glyphs.forEach((glyph: Glyph) => {
             index += `const ${glyph.name} = \`${glyph.svg}\`;\n`;
             index += `export { ${glyph.name} };\n`;
         });

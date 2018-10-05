@@ -1,14 +1,14 @@
 import * as React from "react";
-import Array, { IArrayProps } from "../arrays/arrays";
-import Objects, { IObjectsProps } from "../objects/objects";
-import Theme, { IThemeProps } from "../theme/theme";
+import Array, { ArrayProps } from "../arrays/arrays";
+import Objects, { ObjectsProps } from "../objects/objects";
+import Theme, { ThemeProps } from "../theme/theme";
 
 export enum GeneralExampleTags {
     button = "button",
     span = "span"
 }
 
-export interface IGeneralExampleProps {
+export interface GeneralExampleProps {
     alignHorizontal: string;
     alignVertical: string;
     level: number;
@@ -19,9 +19,9 @@ export interface IGeneralExampleProps {
     text: string;
     checkbox: boolean;
     checkbox2: boolean;
-    objects: IObjectsProps;
-    array: IArrayProps;
-    theme: IThemeProps;
+    objects: ObjectsProps;
+    array: ArrayProps;
+    theme: ThemeProps;
     children: any;
 }
 
@@ -29,7 +29,7 @@ export interface IGeneralExampleProps {
  * This test components API should have:
  * - a number of required property which maps to a configuration which will organise them by weight
  */
-export default class GeneralExample extends React.Component<IGeneralExampleProps, {}> {
+export default class GeneralExample extends React.Component<GeneralExampleProps, {}> {
     public render(): JSX.Element {
         return (
             <this.props.tag>

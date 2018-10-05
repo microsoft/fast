@@ -30,13 +30,13 @@ export type update = (data: any) => void;
 
 export type styles = (style: string) => void;
 
-export interface IExampleProps {
+export interface ExampleProps {
     textValue: string;
     onChange: any;
     getStyles: styles;
 }
 
-class Example extends React.Component<IExampleProps, {}> {
+class Example extends React.Component<ExampleProps, {}> {
 
     public componentWillMount(): void {
         manager.add("div", stylesheet);
@@ -51,7 +51,7 @@ class Example extends React.Component<IExampleProps, {}> {
         manager.unmanage("div");
     }
 
-    public componentWillReceiveProps(nextProps: IExampleProps): void {
+    public componentWillReceiveProps(nextProps: ExampleProps): void {
         nextProps.getStyles(stylesheet.toString());
     }
 

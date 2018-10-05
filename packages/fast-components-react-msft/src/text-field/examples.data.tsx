@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
+import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { TextField, TextFieldProps, TextFieldType } from "./index";
 import schema from "@microsoft/fast-components-react-base/dist/text-field/text-field.schema.json";
 import Documentation from "./.tmp/documentation";
@@ -40,4 +40,4 @@ export default {
             type: TextFieldType.password
         }
     ]
-} as IComponentFactoryExample<TextFieldProps>;
+} as ComponentFactoryExample<TextFieldProps>;

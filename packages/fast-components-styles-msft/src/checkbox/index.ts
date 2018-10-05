@@ -1,6 +1,6 @@
-import { IDesignSystem, withDesignSystemDefaults } from "../design-system";
-import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
-import { ICheckboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
+import { ComponentStyles, ComponentStyleSheet, CSSRules } from "@microsoft/fast-jss-manager";
+import { CheckboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyTypeRampConfig } from "../utilities/typography";
 import { applyLocalizedProperty, contrast, Direction, toPx } from "@microsoft/fast-jss-utilities";
 import {
@@ -14,8 +14,8 @@ import { get } from "lodash-es";
 import Chroma from "chroma-js";
 
 /* tslint:disable:max-line-length */
-const styles: ComponentStyles<ICheckboxClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<ICheckboxClassNameContract, IDesignSystem> => {
-    const designSystem: IDesignSystem = withDesignSystemDefaults(config);
+const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (config: DesignSystem): ComponentStyleSheet<CheckboxClassNameContract, DesignSystem> => {
+    const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const backgroundColor: string = designSystem.backgroundColor;
     const foregroundColor: string = designSystem.foregroundColor;
     const brandColor: string = designSystem.brandColor;

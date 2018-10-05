@@ -1,7 +1,7 @@
 /**
  * The class name contract for the paragraph component
  */
-export interface IParagraphClassNameContract {
+export interface ParagraphClassNameContract {
     /**
      * The root of the paragraph component
      */

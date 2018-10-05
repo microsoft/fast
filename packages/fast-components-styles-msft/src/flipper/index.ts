@@ -1,6 +1,6 @@
-import { IDesignSystem, withDesignSystemDefaults } from "../design-system";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
-import { IFlipperClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { FlipperClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { applyLocalizedProperty, contrast, Direction, toPx } from "@microsoft/fast-jss-utilities";
 import { applyMixedColor, ensureNormalContrast, hoverContrast, normalContrast } from "../utilities/colors";
 import { get } from "lodash-es";
@@ -10,9 +10,9 @@ const eastFlipperTransform: string = "translateX(-3px) rotate(45deg)";
 const westFlipperTransform: string = "translateX(3px) rotate(-135deg)";
 
 /* tslint:disable:max-line-length */
-const styles: ComponentStyles<IFlipperClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<IFlipperClassNameContract, IDesignSystem> => {
+const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (config: DesignSystem): ComponentStyleSheet<FlipperClassNameContract, DesignSystem> => {
 /* tslint:enable:max-line-length */
-    const designSystem: IDesignSystem = withDesignSystemDefaults(config);
+    const designSystem: DesignSystem = withDesignSystemDefaults(config);
 
     const backgroundColor: string = designSystem.backgroundColor;
     const direction: Direction = designSystem.direction;

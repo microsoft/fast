@@ -3,7 +3,7 @@ import Chroma from "chroma-js";
 /**
  * Interface that describes the configuration options of the color algorithm .
  */
-export interface IColorOptions {
+export interface ColorConfig {
     /**
      * The number of colors to generate
      */
@@ -114,10 +114,10 @@ function adjustThreshold(
  * Algorithm to generate a range of color variants based on a single color, where the input color is the middle
  * of the returned color range.
  */
-export function range(color: Color, options: Partial<IColorOptions> = {}): Color[] {
+export function range(color: Color, options: Partial<ColorConfig> = {}): Color[] {
     color = Chroma(color).hex("rgb");
 
-    const defaults: IColorOptions = {
+    const defaults: ColorConfig = {
         count: 7,
         paddingLight: 0.185,
         paddingDark: 0.16,
@@ -131,7 +131,7 @@ export function range(color: Color, options: Partial<IColorOptions> = {}): Color
         filterMultiplyDark: 0
     };
 
-    const normalizedOptions: IColorOptions = Object.assign({}, defaults, options);
+    const normalizedOptions: ColorConfig = Object.assign({}, defaults, options);
 
     // Create the color-range to derive the color variants from
     const colorRange: Color[] = Chroma

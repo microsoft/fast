@@ -1,24 +1,24 @@
 import * as React from "react";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import { IDevSiteDesignSystem } from "../../src/components/design-system";
-import manageJss, { ComponentStyles, IManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import { DevSiteDesignSystem } from "../../src/components/design-system";
+import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 
 /* tslint:disable:no-empty-interface */
-export interface IErrorBoundaryProps {}
+export interface ErrorBoundaryProps {}
 /* tslint:enable:no-empty-interface */
 
-export interface IErrorBoundaryState {
+export interface ErrorBoundaryState {
     hasError: boolean;
     error: Error | null | undefined;
 }
 
-export interface IErrorBoundaryManagedClasses {
+export interface ErrorBoundaryManagedClasses {
     errorBoundary: string;
     errorBoundary_error: string;
     errorBoundary_notification: string;
 }
 
-const styles: ComponentStyles<IErrorBoundaryManagedClasses, IDevSiteDesignSystem> = {
+const styles: ComponentStyles<ErrorBoundaryManagedClasses, DevSiteDesignSystem> = {
     errorBoundary: {
         display: "flex",
         flexDirection: "column",
@@ -36,8 +36,8 @@ const styles: ComponentStyles<IErrorBoundaryManagedClasses, IDevSiteDesignSystem
     }
 };
 
-class ErrorBoundary extends React.Component<IErrorBoundaryProps & IManagedClasses<IErrorBoundaryManagedClasses>, IErrorBoundaryState> {
-    constructor(props: IErrorBoundaryProps & IManagedClasses<IErrorBoundaryManagedClasses>) {
+class ErrorBoundary extends React.Component<ErrorBoundaryProps & ManagedClasses<ErrorBoundaryManagedClasses>, ErrorBoundaryState> {
+    constructor(props: ErrorBoundaryProps & ManagedClasses<ErrorBoundaryManagedClasses>) {
         super(props);
 
         this.state = {

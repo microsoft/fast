@@ -1,10 +1,10 @@
 import * as React from "react";
-import Image, { IImageHandledProps, IImageManagedClasses, IImageUnhandledProps, ImageSlot } from "./image";
+import Image, { ImageHandledProps, ImageManagedClasses, ImageSlot, ImageUnhandledProps } from "./image";
 import schema from "./image.schema.json";
 import Documentation from "./.tmp/documentation";
-import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
+import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
-const classes: IImageManagedClasses = {
+const classes: ImageManagedClasses = {
     managedClasses: {
         image: "image",
         image__picture: "picture",
@@ -20,7 +20,7 @@ const sourceElements: JSX.Element[] = [
     (<source srcSet="https://placehold.it/75x75/2F2F2F/171717" media="(min-width: 0px)" slot={ImageSlot.source}/>)
 ];
 
-const examples: IComponentFactoryExample<IImageHandledProps> = {
+const examples: ComponentFactoryExample<ImageHandledProps> = {
     name: "Image",
     component: Image,
     schema: schema as any,

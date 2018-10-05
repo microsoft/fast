@@ -1,15 +1,15 @@
-import designSystemDefaults, { IDesignSystem, withDesignSystemDefaults } from "../design-system";
+import designSystemDefaults, { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { normalContrast } from "../utilities/colors";
 import { density } from "../utilities/density";
-import { IDividerClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { DividerClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { contrast, toPx } from "@microsoft/fast-jss-utilities";
 import { get } from "lodash-es";
 
-const styles: ComponentStyles<IDividerClassNameContract, IDesignSystem> = (
-    config: IDesignSystem
-): ComponentStyleSheet<IDividerClassNameContract, IDesignSystem> => {
-    const designSystem: IDesignSystem = withDesignSystemDefaults(config);
+const styles: ComponentStyles<DividerClassNameContract, DesignSystem> = (
+    config: DesignSystem
+): ComponentStyleSheet<DividerClassNameContract, DesignSystem> => {
+    const designSystem: DesignSystem = withDesignSystemDefaults(config);
 
     return {
         divider: {

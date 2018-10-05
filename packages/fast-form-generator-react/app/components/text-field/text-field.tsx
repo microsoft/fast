@@ -5,7 +5,7 @@ export enum TextFieldTags {
     span = "span"
 }
 
-export interface ITextFieldProps {
+export interface TextFieldProps {
     tag: TextFieldTags;
     text: string;
 }
@@ -15,7 +15,7 @@ export interface ITextFieldProps {
  * - a required text-field property which should display as a select dropdown because it is an enum
  * - a required text-field which should display as a text box
  */
-export default class TextField extends React.Component<ITextFieldProps, {}> {
+export default class TextField extends React.Component<TextFieldProps, {}> {
     public static displayName: string = "Text field";
 
     public render(): JSX.Element {

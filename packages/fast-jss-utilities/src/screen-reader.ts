@@ -1,6 +1,6 @@
 import * as CSS from "csstype";
 
-export interface IScreenReaderOnly {
+export interface ScreenReaderOnly {
     position: CSS.PositionProperty;
     overflow: CSS.OverflowProperty;
     clip: CSS.ClipProperty;
@@ -11,7 +11,7 @@ export interface IScreenReaderOnly {
     margin: CSS.MarginProperty<string>;
 }
 
-export function applyScreenReader(): IScreenReaderOnly {
+export function applyScreenReader(): ScreenReaderOnly {
     return {
         position: "absolute",
         overflow: "hidden",

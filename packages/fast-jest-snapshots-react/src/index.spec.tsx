@@ -1,11 +1,11 @@
 import * as React from "react";
-import { generateSnapshots,  ISnapshotTestSuite } from "./index";
+import { generateSnapshots,  SnapshotTestSuite } from "./index";
 
-interface ITestComponentProps {
+interface TestComponentProps {
     name: string;
 }
 
-class TestComponent extends React.Component<ITestComponentProps, {}> {
+class TestComponent extends React.Component<TestComponentProps, {}> {
     public render(): React.ReactNode {
         return (
             <div>{this.props.name}</div>
@@ -13,7 +13,7 @@ class TestComponent extends React.Component<ITestComponentProps, {}> {
     }
 }
 
-const testSuite: ISnapshotTestSuite<ITestComponentProps> = {
+const testSuite: SnapshotTestSuite<TestComponentProps> = {
     name: "TestComponent",
     component: TestComponent,
     data: [

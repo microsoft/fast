@@ -1,9 +1,8 @@
+import ButtonSchema from "./components/button/button.schema.json";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import { glyphBuildingblocks } from "@microsoft/fast-glyphs-msft";
 import Site, {
-    IFormChildOption,
-    ITheme,
+    FormChildOption,
     SiteCategory,
     SiteCategoryDocumentation,
     SiteCategoryIcon,
@@ -11,31 +10,32 @@ import Site, {
     SiteMenu,
     SiteMenuItem,
     SiteTitle,
-    SiteTitleBrand
+    SiteTitleBrand,
+    Theme
 } from "../src";
 import designSystemDefaults, { Direction } from "./design-system";
 import Button from "./components/button/button";
-import ButtonSchema from "./components/button/button.schema.json";
+import * as ReactDOM from "react-dom";
 import Paragraph from "./components/paragraph/paragraph";
 import ParagraphSchema from "./components/paragraph/paragraph.schema.json";
-import { ISiteCategoryProps, Status } from "../src/components/site/category";
+import { SiteCategoryProps, Status } from "../src/components/site/category";
 import ParagraphDocs from "./components/paragraph/.tmp/documentation";
 import ButtonDocs from "./components/button/.tmp/documentation";
 import { Framework } from "../src/components/site/dev-tools";
 
-export interface IAppState {
+export interface AppState {
     direction: Direction;
     theme: string;
 }
 
-const themes: ITheme[] = [
+const themes: Theme[] = [
     {id: "Foo", displayName: "Foo", background: "#000"},
     {id: "Bar", displayName: "Bar", background: "#FFF"},
     {id: "Rumple", displayName: "Rumple", background: "#333"}
 ];
 
-export default class App extends React.Component<{}, IAppState> {
-    private formChildOptions: IFormChildOption[] = [
+export default class App extends React.Component<{}, AppState> {
+    private formChildOptions: FormChildOption[] = [
         {
             name: ParagraphSchema.title,
             component: Paragraph,
@@ -92,7 +92,7 @@ export default class App extends React.Component<{}, IAppState> {
 
     private renderComponents2Nested(): JSX.Element {
         const componentObj: any[] = [{text: "fee"}, {text: "fi"}, {text: "fo"}, {text: "fum"}];
-        const categoryObj: ISiteCategoryProps = {
+        const categoryObj: SiteCategoryProps = {
             slot: "category",
             name: "Paragraph Nested",
             schema: ParagraphSchema,
@@ -108,7 +108,7 @@ export default class App extends React.Component<{}, IAppState> {
 
     private renderComponents2(): JSX.Element {
         const componentObj: any[] = [{text: "itsy"}, {text: "bitsy"}, {text: "spider"}];
-        const categoryObj: ISiteCategoryProps = {
+        const categoryObj: SiteCategoryProps = {
             slot: "category",
             name: "Paragraph",
             schema: ParagraphSchema,
@@ -125,32 +125,32 @@ export default class App extends React.Component<{}, IAppState> {
     }
 
     private renderComponents1(): JSX.Element {
-        const categoryBase: Partial<ISiteCategoryProps> = {
+        const categoryBase: Partial<SiteCategoryProps> = {
             slot: "category",
             schema: ButtonSchema,
             component: Button,
             status: Status.released,
         };
         const componentObj1: any[] = [{children: "foo"}, {children: "bar"}, {children: "bat"}];
-        const categoryObj1: Partial<ISiteCategoryProps> = {
+        const categoryObj1: Partial<SiteCategoryProps> = {
             ...categoryBase,
             name: "Button"
         };
         const componentObj2: any[] = [{children: "lorem"}, {children: "ipsum"}];
-        const categoryObj2: Partial<ISiteCategoryProps> = {
+        const categoryObj2: Partial<SiteCategoryProps> = {
             ...categoryBase,
             name: "Other Button"
         };
 
         return (
             <SiteCategory slot={"category"} name={"Components"}>
-                {this.renderCategory(componentObj1, categoryObj1 as ISiteCategoryProps)}
-                {this.renderCategory(componentObj2, categoryObj2 as ISiteCategoryProps)}
+                {this.renderCategory(componentObj1, categoryObj1 as SiteCategoryProps)}
+                {this.renderCategory(componentObj2, categoryObj2 as SiteCategoryProps)}
             </SiteCategory>
         );
     }
 
-    private renderCategory(componentObj: any[], categoryObj: ISiteCategoryProps): JSX.Element {
+    private renderCategory(componentObj: any[], categoryObj: SiteCategoryProps): JSX.Element {
         return (
             <SiteCategory {...categoryObj}>
                 {this.renderComponentsFactory(componentObj)}
@@ -159,7 +159,7 @@ export default class App extends React.Component<{}, IAppState> {
         );
     }
 
-    private renderDocumentation(categoryObj: ISiteCategoryProps): JSX.Element {
+    private renderDocumentation(categoryObj: SiteCategoryProps): JSX.Element {
         switch (categoryObj.name) {
             case "Paragraph Nested":
             case "Paragraph":

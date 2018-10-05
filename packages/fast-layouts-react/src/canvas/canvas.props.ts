@@ -1,13 +1,13 @@
 import * as React from "react";
-import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
-import { ICanvasClassNamesContract } from "./canvas";
+import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
+import { CanvasClassNamesContract } from "./canvas";
 
-export interface ICanvasHandledProps {
+export interface CanvasHandledProps {
     /**
      * The minimum width of the Canvas
      */
     minWidth?: number;
 }
 
-export interface ICanvasManagedClasses extends IManagedClasses<ICanvasClassNamesContract> {}
-export type CanvasProps = ICanvasHandledProps & ICanvasManagedClasses;
+export interface CanvasManagedClasses extends ManagedClasses<CanvasClassNamesContract> {}
+export type CanvasProps = CanvasHandledProps & CanvasManagedClasses;

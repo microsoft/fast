@@ -1,19 +1,19 @@
 import * as React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { Button, ButtonAppearance } from "../button";
-import { CallToActionAppearance, ICallToActionHandledProps, ICallToActionUnhandledProps } from "./call-to-action.props";
+import { CallToActionAppearance, CallToActionHandledProps, CallToActionUnhandledProps } from "./call-to-action.props";
 import { get } from "lodash-es";
 import { glyphArrowright } from "@microsoft/fast-glyphs-msft";
 import { callToActionButtonOverrides } from "@microsoft/fast-components-styles-msft";
 
 class CallToAction extends Foundation<
-    ICallToActionHandledProps,
-    ICallToActionUnhandledProps,
+    CallToActionHandledProps,
+    CallToActionUnhandledProps,
     {}
 > {
     public static displayName: string = "CallToAction";
 
-    protected handledProps: HandledProps<ICallToActionHandledProps> = {
+    protected handledProps: HandledProps<CallToActionHandledProps> = {
         appearance: void 0,
         href: void 0,
         managedClasses: void 0,
