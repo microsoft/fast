@@ -13,6 +13,7 @@ import {
 const styles: ComponentStyles<IRadioClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<IRadioClassNameContract, IDesignSystem>  => {
     const designSystem: IDesignSystem = withDesignSystemDefaults(config);
     const backgroundColor: string = designSystem.backgroundColor;
+    const direction: Direction = designSystem.direction;
     const foregroundColor: string = ensureNormalContrast(config.contrast, designSystem.foregroundColor, designSystem.backgroundColor);
     const direction: Direction = designSystem.direction;
     const radioColor: string = normalContrast(designSystem.contrast, foregroundColor, backgroundColor);
