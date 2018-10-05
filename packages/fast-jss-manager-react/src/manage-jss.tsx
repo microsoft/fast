@@ -1,13 +1,13 @@
 import * as React from "react";
-import { ClassNames, ComponentStyles, IManagedClasses } from "@microsoft/fast-jss-manager";
+import { ComponentStyles, ManagedClasses } from "@microsoft/fast-jss-manager";
 import { omit } from "lodash-es";
 import { Consumer } from "./context";
-import { IJSSManagedComponentProps, JSSManager, ManagedJSSProps } from "./jss-manager";
+import { JSSManagedComponentProps, JSSManager, ManagedJSSProps } from "./jss-manager";
 
 /**
  * The prop name that must be passed to the JSSManager and not the managed component
  */
-const jssManagerProp: keyof IJSSManagedComponentProps<any, any> = "jssStyleSheet";
+const jssManagerProp: keyof JSSManagedComponentProps<any, any> = "jssStyleSheet";
 
 /**
  * Determines if component prop object contains props
@@ -36,13 +36,13 @@ export function cleanLowerOrderComponentProps<T, S, C>(props: ManagedJSSProps<T,
 function manageJss<S, C>(
     styles?: ComponentStyles<S, C>
 ): <T>(
-    Component: React.ComponentType<T & IManagedClasses<S>>
+    Component: React.ComponentType<T & ManagedClasses<S>>
 ) => React.SFC<ManagedJSSProps<T, S, C>> {
     /*
      * @param T - The component prop interface
      */
     return function<T>(
-        Component: React.ComponentType<T & IManagedClasses<S>>
+        Component: React.ComponentType<T & ManagedClasses<S>>
     ): React.SFC<ManagedJSSProps<T, S, C>> {
         return (props: ManagedJSSProps<T, S, C>): React.ReactElement<React.Consumer<unknown>> => {
             /**
@@ -50,7 +50,7 @@ function manageJss<S, C>(
              * this function and provided to the wrapped component
              */
             function renderLowerOrderComponent(
-                managedClasses: ClassNames<S>
+                managedClasses: {[className in keyof S]?: string}
             ): React.ReactNode {
                 return (
                     <Component

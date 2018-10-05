@@ -1,6 +1,6 @@
-import designSystemDefaults, { IDesignSystem, withDesignSystemDefaults } from "../design-system";
-import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
-import { IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import designSystemDefaults, { DesignSystem, withDesignSystemDefaults } from "../design-system";
+import { ComponentStyles, ComponentStyleSheet, CSSRules } from "@microsoft/fast-jss-manager";
+import { ButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
     adjustContrast,
     applyLocalizedProperty,
@@ -25,10 +25,10 @@ import {
 import Chroma from "chroma-js";
 import { density } from "../utilities/density";
 
-function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
+function applyTransaprentBackplateStyles(): CSSRules<DesignSystem> {
     return {
-        color: (config: IDesignSystem): string => {
-            const designSystem: IDesignSystem = withDesignSystemDefaults(config);
+        color: (config: DesignSystem): string => {
+            const designSystem: DesignSystem = withDesignSystemDefaults(config);
             return ensureNormalContrast(designSystem.contrast, designSystem.brandColor, designSystem.backgroundColor);
         },
         ...applyTransaprentBackground(),
@@ -38,8 +38,8 @@ function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
             ...applyTransaprentBackground()
         },
         "&:focus span::before, &:active span::before, &:hover span::before": {
-            background: (config: IDesignSystem): string => {
-                const designSystem: IDesignSystem = withDesignSystemDefaults(config);
+            background: (config: DesignSystem): string => {
+                const designSystem: DesignSystem = withDesignSystemDefaults(config);
                 return ensureNormalContrast(designSystem.contrast, designSystem.brandColor, designSystem.backgroundColor);
             }
         },
@@ -49,8 +49,8 @@ function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
         "&:disabled, &[aria-disabled]": {
             ...applyTransaprentBackground(),
             borderColor: "transparent",
-            color: (config: IDesignSystem): string => {
-                const designSystem: IDesignSystem = withDesignSystemDefaults(config);
+            color: (config: DesignSystem): string => {
+                const designSystem: DesignSystem = withDesignSystemDefaults(config);
 
                 return disabledContrast(
                     designSystem.contrast,
@@ -62,17 +62,17 @@ function applyTransaprentBackplateStyles(): ICSSRules<IDesignSystem> {
     };
 }
 
-function applyTransaprentBackground(): ICSSRules<IDesignSystem> {
+function applyTransaprentBackground(): CSSRules<DesignSystem> {
     return {
         backgroundColor: "transparent"
     };
 }
 
-const styles: ComponentStyles<IButtonClassNameContract, IDesignSystem> = (
-    config: IDesignSystem
-): ComponentStyleSheet<IButtonClassNameContract, IDesignSystem> => {
+const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
+    config: DesignSystem
+): ComponentStyleSheet<ButtonClassNameContract, DesignSystem> => {
     type ContrastFunction = (operandColor: string, referenceColor: string) => string;
-    const designSystem: IDesignSystem = withDesignSystemDefaults(config);
+    const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const contrastScale: number = designSystem.contrast;
     const foregroundColor: string = designSystem.foregroundColor;
     const backgroundColor: string = designSystem.backgroundColor;

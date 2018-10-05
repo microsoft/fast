@@ -1,9 +1,9 @@
 import {
-    IFormComponentMappingToPropertyNamesProps,
-    IFormOrderByPropertyNamesProps
+    FormComponentMappingToPropertyNamesProps,
+    FormOrderByPropertyNamesProps
 } from "../../../src/form/form.props";
 
-export const weightPropertiesWeight: IFormOrderByPropertyNamesProps = {
+export const weightPropertiesWeight: FormOrderByPropertyNamesProps = {
     showCategoriesAtPropertyCount: 4,
     defaultCategoryWeight: 20,
     categories: [
@@ -36,7 +36,7 @@ export const weightPropertiesWeight: IFormOrderByPropertyNamesProps = {
     ]
 };
 
-export const weightPropertiesConfig: IFormComponentMappingToPropertyNamesProps = {
+export const weightPropertiesConfig: FormComponentMappingToPropertyNamesProps = {
     alignHorizontal: [
         "alignHorizontal"
     ]

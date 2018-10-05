@@ -4,18 +4,18 @@ import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { TypographySize, TypographyTag } from "@microsoft/fast-components-react-base";
 import {
-    IParagraphHandledProps,
-    IParagraphManagedClasses,
-    IParagraphUnhandledProps,
+    ParagraphHandledProps,
+    ParagraphManagedClasses,
     ParagraphProps,
-    ParagraphSize
+    ParagraphSize,
+    ParagraphUnhandledProps
 } from "./paragraph.props";
 import { Typography } from "../typography";
-import { IManagedClasses, IParagraphClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { ManagedClasses, ParagraphClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 
 class Paragraph extends Foundation<
-    IParagraphHandledProps,
-    IParagraphUnhandledProps,
+    ParagraphHandledProps,
+    ParagraphUnhandledProps,
     {}
 > {
     public static defaultProps: Partial<ParagraphProps> = {
@@ -24,7 +24,7 @@ class Paragraph extends Foundation<
 
     public static displayName: string = "Paragraph";
 
-    protected handledProps: HandledProps<IParagraphHandledProps> = {
+    protected handledProps: HandledProps<ParagraphHandledProps> = {
         size: void 0,
         managedClasses: void 0
     };
@@ -72,4 +72,4 @@ class Paragraph extends Foundation<
 
 export default Paragraph;
 export * from "./paragraph.props";
-export { IParagraphClassNameContract };
+export { ParagraphClassNameContract };

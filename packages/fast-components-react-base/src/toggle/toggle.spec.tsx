@@ -5,12 +5,12 @@ import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import Toggle, {
-    IToggleClassNameContract,
-    IToggleHandledProps,
-    IToggleManagedClasses,
-    IToggleState,
-    IToggleUnhandledProps,
+    ToggleClassNameContract,
+    ToggleHandledProps,
+    ToggleManagedClasses,
     ToggleProps,
+    ToggleState,
+    ToggleUnhandledProps,
 } from "./toggle";
 
 /*
@@ -23,14 +23,14 @@ describe("toggle snapshot", (): void => {
 });
 
 describe("toggle", (): void => {
-    const managedClasses: IToggleClassNameContract = {
+    const managedClasses: ToggleClassNameContract = {
         toggle: "toggle-class",
         toggle_label: "toggle-label-class",
         toggle_toggleButton: "toggle-wrapper-class",
         toggle_input: "toggle-input-class",
         toggle_stateIndicator: "toggle-button-class"
     };
-    const handledProps: IToggleHandledProps = {
+    const handledProps: ToggleHandledProps = {
         managedClasses,
         id: "id",
         selectedMessage: "selected-message",
@@ -60,7 +60,7 @@ describe("toggle", (): void => {
     });
 
     test("should implement unhandledProps", () => {
-        const unhandledProps: IToggleUnhandledProps = {
+        const unhandledProps: ToggleUnhandledProps = {
             "data-my-custom-attribute": true
         };
         const props: ToggleProps = {...handledProps, ...unhandledProps};

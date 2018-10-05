@@ -1,7 +1,7 @@
 /**
  * The class name contract for the checkbox component
  */
-export interface ICheckboxClassNameContract {
+export interface CheckboxClassNameContract {
     /**
      * The root of the checkbox component
      */

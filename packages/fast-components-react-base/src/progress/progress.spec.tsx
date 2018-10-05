@@ -2,7 +2,7 @@ import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import Progress, {
-    IProgressClassNameContract,
+    ProgressClassNameContract,
     ProgressType
 } from "./";
 
@@ -11,7 +11,7 @@ import Progress, {
  */
 configure({adapter: new Adapter()});
 
-const managedClasses: IProgressClassNameContract = {
+const managedClasses: ProgressClassNameContract = {
     progress: "progess"
 };
 

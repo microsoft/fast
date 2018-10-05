@@ -1,8 +1,6 @@
 import * as React from "react";
-import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
+import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { Flipper, FlipperDirection, FlipperProps } from "./index";
-import {
-} from "./flipper.props";
 import schema from "./flipper.schema.json";
 import Documentation from "./.tmp/documentation";
 
@@ -32,4 +30,4 @@ export default {
             label: "See previous"
         }
     ]
-} as IComponentFactoryExample<FlipperProps>;
+} as ComponentFactoryExample<FlipperProps>;

@@ -1,4 +1,4 @@
-import { ICSSRules } from "@microsoft/fast-jss-manager";
+import { CSSRules } from "@microsoft/fast-jss-manager";
 import { Direction, ellipsis, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
 
 /**
@@ -14,7 +14,7 @@ export const darkTheme: string = "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0i
 export const trashcan: string = "url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDE2IDE2OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHRpdGxlPnRyYXNoY2FuVVBEQVRFRDwvdGl0bGU+PGc+PHBhdGggZD0iTTE0LjMsMy4yaC0xdjExLjRjMCwwLjgtMC43LDEuNS0xLjUsMS41YzAsMCwwLDAsMCwwSDRjLTAuNCwwLTAuOC0wLjItMS0wLjRjLTAuMy0wLjMtMC40LTAuNy0wLjQtMVYzLjJoLTF2LTFoMy45di0xYzAtMC4xLDAtMC4zLDAuMS0wLjRjMC0wLjEsMC4xLTAuMiwwLjItMC4zQzUuOCwwLjQsNiwwLjMsNi4xLDAuM2MwLjEtMC4xLDAuMy0wLjEsMC40LTAuMWgzYzAuMSwwLDAuMywwLDAuNCwwLjFjMC4xLDAuMSwwLjIsMC4xLDAuMywwLjJjMC4xLDAuMSwwLjIsMC4yLDAuMiwwLjNjMC4xLDAuMSwwLjEsMC4zLDAuMSwwLjR2MWgzLjlMMTQuMywzLjJ6IE0xMi40LDMuMkgzLjV2MTEuNGMwLDAuMSwwLjEsMC4zLDAuMSwwLjNDMy43LDE1LDMuOSwxNSw0LDE1aDcuOWMwLjEsMCwwLjMtMC4xLDAuMy0wLjFjMC4xLTAuMSwwLjEtMC4yLDAuMS0wLjNMMTIuNCwzLjJ6IE02LjUsMTNoLTFWNS4xaDFMNi41LDEzeiBNNi41LDIuMmgzdi0xaC0zVjIuMnogTTguNCwxM2gtMVY1LjFoMVYxM3ogTTEwLjQsMTNoLTFWNS4xaDFMMTAuNCwxM3oiLz48L2c+PC9zdmc+) center no-repeat";
 /* tslint:enable */
 
-export interface IBoxShadowConfig {
+export interface BoxShadowConfig {
     offsetX: number;
     offsetY: number;
     blurRadius: number;
@@ -40,13 +40,13 @@ export const colors: any = {
     menuGray: "#EBEBEB"
 };
 
-export function localizePadding(top: number, right: number, bottom: number, left: number): ICSSRules<{}> {
+export function localizePadding(top: number, right: number, bottom: number, left: number): CSSRules<{}> {
     return {
         padding: localizeSpacing(Direction.ltr)(`${toPx(top)} ${toPx(right)} ${toPx(bottom)} ${toPx(left)}`)
     };
 }
 
-export function boxShadow(config: IBoxShadowConfig): ICSSRules<{}> {
+export function boxShadow(config: BoxShadowConfig): CSSRules<{}> {
     return {
         boxShadow: `${config.inset ? "inset " : ""}
         ${toPx(config.offsetX)} ${toPx(config.offsetY)} ${toPx(config.blurRadius)} ${toPx(config.spreadRadius)} ${config.color}`
@@ -56,8 +56,8 @@ export function boxShadow(config: IBoxShadowConfig): ICSSRules<{}> {
 /**
  * Mimics a border but with boxShadow (strong in the sense of no blur)
  */
-export function insetStrongBoxShadow(color: string): ICSSRules<{}> {
-    const shadow: IBoxShadowConfig = {
+export function insetStrongBoxShadow(color: string): CSSRules<{}> {
+    const shadow: BoxShadowConfig = {
         offsetX: 0,
         offsetY: 0,
         blurRadius: 0,
@@ -71,8 +71,8 @@ export function insetStrongBoxShadow(color: string): ICSSRules<{}> {
     };
 }
 
-export function insetHoverBoxShadow(): ICSSRules<{}> {
-    const shadow: IBoxShadowConfig = {
+export function insetHoverBoxShadow(): CSSRules<{}> {
+    const shadow: BoxShadowConfig = {
         offsetX: 0,
         offsetY: 0,
         blurRadius: 2,
@@ -86,7 +86,7 @@ export function insetHoverBoxShadow(): ICSSRules<{}> {
     };
 }
 
-export function applyLabelStyle(): ICSSRules<{}> {
+export function applyLabelStyle(): CSSRules<{}> {
     return {
         flexGrow: "1",
         lineHeight: toPx(16),
@@ -96,14 +96,14 @@ export function applyLabelStyle(): ICSSRules<{}> {
     };
 }
 
-export function applyInputContainerStyle(): ICSSRules<{}> {
+export function applyInputContainerStyle(): CSSRules<{}> {
     return {
         height: toPx(36),
     };
 }
 
-export function applyInputStyle(): ICSSRules<{}> {
-    const shadow: IBoxShadowConfig = {
+export function applyInputStyle(): CSSRules<{}> {
+    const shadow: BoxShadowConfig = {
         offsetX: 0,
         offsetY: 0,
         blurRadius: 4,
@@ -130,7 +130,7 @@ export function applyInputStyle(): ICSSRules<{}> {
     };
 }
 
-export function applyWrapperStyle(): ICSSRules<{}> {
+export function applyWrapperStyle(): CSSRules<{}> {
     return {
         display: "flex",
         flexDirection: "row",
@@ -142,7 +142,7 @@ export function applyWrapperStyle(): ICSSRules<{}> {
 /**
  * Common wrapper that surrounds a label and an input
  */
-export function applyCleanListStyle(): ICSSRules<{}> {
+export function applyCleanListStyle(): CSSRules<{}> {
     return {
         listStyle: "none",
         margin: "0",
@@ -151,7 +151,7 @@ export function applyCleanListStyle(): ICSSRules<{}> {
     };
 }
 
-export function applyHeaderStyle(): ICSSRules<{}> {
+export function applyHeaderStyle(): CSSRules<{}> {
     return {
         display: "flex",
         alignItems: "center",
@@ -163,7 +163,7 @@ export function applyHeaderStyle(): ICSSRules<{}> {
     };
 }
 
-export function applyGlobalStyle(): ICSSRules<{}> {
+export function applyGlobalStyle(): CSSRules<{}> {
     return {
         "body > div > li[draggable=\"true\"]": {
             ...listItem,
@@ -172,13 +172,13 @@ export function applyGlobalStyle(): ICSSRules<{}> {
     };
 }
 
-export function applyListItemStyle(): ICSSRules<{}> {
+export function applyListItemStyle(): CSSRules<{}> {
     return {
         "& li": listItem
     };
 }
 
-export const draggingStyles: ICSSRules<{}> = {
+export const draggingStyles: CSSRules<{}> = {
     boxShadow: `0 ${toPx(4)} ${toPx(4)} ${toPx(-4)} rgba(0, 0, 0, 0.15)`,
     borderColor: "transparent",
     display: "flex",
@@ -192,7 +192,7 @@ export const draggingStyles: ICSSRules<{}> = {
     }
 };
 
-export const listItem: ICSSRules<{}> = {
+export const listItem: CSSRules<{}> = {
     flex: "1 100%",
     borderBottom: `${toPx(1)} solid ${colors.border}`,
     alignItems: "center",
@@ -241,7 +241,7 @@ export const listItem: ICSSRules<{}> = {
     }
 };
 
-export function applyAriaHiddenStyles(): ICSSRules<{}> {
+export function applyAriaHiddenStyles(): CSSRules<{}> {
     return {
         "&[aria-hidden=\"true\"]": {
             display: "none"
@@ -252,8 +252,8 @@ export function applyAriaHiddenStyles(): ICSSRules<{}> {
     };
 }
 
-export function applyPopupMenuStyles(): ICSSRules<{}> {
-    const shadow: IBoxShadowConfig = {
+export function applyPopupMenuStyles(): CSSRules<{}> {
+    const shadow: BoxShadowConfig = {
         offsetX: 0,
         offsetY: 1,
         blurRadius: 0,
@@ -299,7 +299,7 @@ export function applyPopupMenuStyles(): ICSSRules<{}> {
 /**
  * As opposed to text-decoration: underline
  */
-export const thickLine: ICSSRules<{}> = {
+export const thickLine: CSSRules<{}> = {
     "& > span": {
         position: "relative",
         paddingBottom: toPx(3),
@@ -323,7 +323,7 @@ export const thickLine: ICSSRules<{}> = {
     }
 };
 
-export function applyPopupHeadingStyles(): ICSSRules<{}> {
+export function applyPopupHeadingStyles(): CSSRules<{}> {
     return {
         position: "relative",
         "& > div": {
@@ -366,8 +366,8 @@ export function applyPopupHeadingStyles(): ICSSRules<{}> {
 /**
  * Used for styles radio buttons (vertical and horizontal alignment)
  */
-export function applyInputBackplateStyle(): ICSSRules<{}> {
-    const shadow: IBoxShadowConfig = {
+export function applyInputBackplateStyle(): CSSRules<{}> {
+    const shadow: BoxShadowConfig = {
         offsetX: 0,
         offsetY: 0,
         blurRadius: 0,
@@ -390,8 +390,8 @@ export function applyInputBackplateStyle(): ICSSRules<{}> {
     };
 }
 
-export function applySelectInputStyles(): ICSSRules<{}> {
-    const shadow: IBoxShadowConfig = {
+export function applySelectInputStyles(): CSSRules<{}> {
+    const shadow: BoxShadowConfig = {
         offsetX: 0,
         offsetY: 0,
         blurRadius: 4,
@@ -423,7 +423,7 @@ export function applySelectInputStyles(): ICSSRules<{}> {
     };
 }
 
-export function applySelectSpanStyles(): ICSSRules<{}> {
+export function applySelectSpanStyles(): CSSRules<{}> {
     return {
         position: "relative",
         display: "flex",
@@ -448,7 +448,7 @@ export function applySelectSpanStyles(): ICSSRules<{}> {
     };
 }
 
-export function applyAddItemStyle(): ICSSRules<{}> {
+export function applyAddItemStyle(): CSSRules<{}> {
     return {
         position: "relative",
         color: colors.pink,

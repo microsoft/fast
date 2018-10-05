@@ -1,15 +1,15 @@
 import * as React from "react";
-import IFormItemCommon from "./form-item";
+import FormItemCommon from "./form-item";
 import styles from "./form-item.checkbox.style";
-import { IFormItemCheckboxClassNameContract } from "../class-name-contracts/";
+import { FormItemCheckboxClassNameContract } from "../class-name-contracts/";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
  * Schema form component definition
  * @extends React.Component
  */
-class FormItemCheckbox extends React.Component<IFormItemCommon & IManagedClasses<IFormItemCheckboxClassNameContract>, {}> {
+class FormItemCheckbox extends React.Component<FormItemCommon & ManagedClasses<FormItemCheckboxClassNameContract>, {}> {
 
     public render(): JSX.Element {
         const value: boolean = (typeof this.props.data === "boolean")

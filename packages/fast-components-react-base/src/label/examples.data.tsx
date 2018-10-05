@@ -1,15 +1,15 @@
 import * as React from "react";
 import Label, {
-    ILabelHandledProps,
-    ILabelManagedClasses,
-    ILabelUnhandledProps,
-    LabelTag
+    LabelHandledProps,
+    LabelManagedClasses,
+    LabelTag,
+    LabelUnhandledProps
 } from "./label";
 import schema from "./label.schema.json";
 import Documentation from "./.tmp/documentation";
-import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
+import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
-const examples: IComponentFactoryExample<ILabelHandledProps> = {
+const examples: ComponentFactoryExample<LabelHandledProps> = {
     name: "Label",
     component: Label,
     schema: schema as any,

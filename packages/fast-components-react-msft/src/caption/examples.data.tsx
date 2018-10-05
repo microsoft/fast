@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
+import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { Caption, CaptionProps, CaptionSize, CaptionTag } from "./index";
 import schema from "./caption.schema.json";
 import Documentation from "./.tmp/documentation";
@@ -46,4 +46,4 @@ export default {
             children: testStringFigCaption
         }
     ]
-} as IComponentFactoryExample<CaptionProps>;
+} as ComponentFactoryExample<CaptionProps>;

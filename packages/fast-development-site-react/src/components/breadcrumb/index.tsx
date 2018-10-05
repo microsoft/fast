@@ -1,17 +1,17 @@
 import * as React from "react";
-import { IDevSiteDesignSystem } from "../design-system";
-import manageJss, { ComponentStyles, IManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import { DevSiteDesignSystem } from "../design-system";
+import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import BreadcrumbItem from "./breadcrumb-item";
 
 /* tslint:disable-next-line */
-export interface IBreadcrumbProps { }
+export interface BreadcrumbProps { }
 
-export interface IBreadcrumbManagedClasses {
+export interface BreadcrumbManagedClasses {
     breadcrumb: string;
     breadcrumb_list: string;
 }
 
-const style: ComponentStyles<IBreadcrumbManagedClasses, IDevSiteDesignSystem> = {
+const style: ComponentStyles<BreadcrumbManagedClasses, DevSiteDesignSystem> = {
     breadcrumb: {
     },
     breadcrumb_list: {
@@ -20,7 +20,7 @@ const style: ComponentStyles<IBreadcrumbManagedClasses, IDevSiteDesignSystem> = 
     }
 };
 
-class Breadcrumb extends React.Component<IBreadcrumbProps & IManagedClasses<IBreadcrumbManagedClasses>, {}> {
+class Breadcrumb extends React.Component<BreadcrumbProps & ManagedClasses<BreadcrumbManagedClasses>, {}> {
 
     public render(): JSX.Element {
         return (

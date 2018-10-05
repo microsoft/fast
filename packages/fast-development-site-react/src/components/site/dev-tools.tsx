@@ -1,9 +1,9 @@
 import * as React from "react";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import manageJss, { ComponentStyles, IManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { IDevSiteDesignSystem } from "../design-system";
+import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import { DevSiteDesignSystem } from "../design-system";
 import CodePreview from "./dev-tools-code-preview";
-import { IFormChildOption } from "./";
+import { FormChildOption } from "./";
 
 export enum Framework {
     react = "react",
@@ -16,23 +16,23 @@ export enum TabType {
     schema = "Schema"
 }
 
-export interface IDevToolsProps {
+export interface DevToolsProps {
     onToggleView: () => void;
     activeFormData: any;
     activeSchema: any;
     activeComponentName: string;
     activeFramework: Framework;
-    childOptions: IFormChildOption[];
+    childOptions: FormChildOption[];
     frameworks?: Framework[];
     activeTab?: TabType;
 }
 
-export interface IDevToolsState {
+export interface DevToolsState {
     activeFramework: Framework;
     activeTab: TabType;
 }
 
-export interface IDevToolsManagedClasses {
+export interface DevToolsManagedClasses {
     devTools: string;
     devTools_controls: string;
     devTools_controls_tabs: string;
@@ -47,7 +47,7 @@ export interface IDevToolsManagedClasses {
     devTools_tabPanelContainter: string;
 }
 
-const style: ComponentStyles<IDevToolsManagedClasses, IDevSiteDesignSystem> = {
+const style: ComponentStyles<DevToolsManagedClasses, DevSiteDesignSystem> = {
     devTools: {
         width: "100%"
     },
@@ -166,11 +166,11 @@ const style: ComponentStyles<IDevToolsManagedClasses, IDevSiteDesignSystem> = {
     }
 };
 
-class DevTools extends React.Component<IDevToolsProps & IManagedClasses<IDevToolsManagedClasses>, IDevToolsState> {
+class DevTools extends React.Component<DevToolsProps & ManagedClasses<DevToolsManagedClasses>, DevToolsState> {
 
     private tabs: TabType[];
 
-    constructor(props: IDevToolsProps & IManagedClasses<IDevToolsManagedClasses>) {
+    constructor(props: DevToolsProps & ManagedClasses<DevToolsManagedClasses>) {
         super(props);
 
         this.tabs = [TabType.code, TabType.properties, TabType.schema];

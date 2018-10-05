@@ -1,24 +1,24 @@
+import { generateExampleData } from "./form-section.utilities";
 import * as React from "react";
-import { cloneDeep, uniqueId } from "lodash-es";
 import { canUseDOM } from "exenv-es6";
 import { arrayMove, SortableContainer, SortableElement } from "react-sortable-hoc";
 import { get } from "lodash-es";
 import { SortableListItem, sortingProps } from "./sorting";
 import { getChildOptionBySchemaId } from "./form.utilities";
-import { generateExampleData } from "./form-section.utilities";
+import { cloneDeep, uniqueId } from "lodash-es";
 import { updateActiveSection } from "./form-section.props";
-import { DataOnChange, IChildOptionItem } from "./form.props";
+import { ChildOptionItem, DataOnChange } from "./form.props";
 import { reactChildrenStringSchema } from "./form-item.children.text";
 import styles from "./form-item.children.style";
-import { IFormItemChildrenClassNameContract } from "../class-name-contracts/";
+import { FormItemChildrenClassNameContract } from "../class-name-contracts/";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface IChildComponentData {
+export interface ChildComponentDataMapping {
     [T: string]: any;
 }
 
-export interface IChildComponent {
+export interface ChildComponentConfig {
     /**
      * The JSON schema id for the component
      */
@@ -27,12 +27,12 @@ export interface IChildComponent {
     /**
      * The props for the component
      */
-    props: IChildComponentData;
+    props: ChildComponentDataMapping;
 }
 
-export type ChildComponent = IChildComponent | string;
+export type ChildComponent = ChildComponentConfig | string;
 
-export interface IFormItemChildrenProps {
+export interface FormItemChildrenProps {
     /**
      * The location of the data
      */
@@ -83,7 +83,7 @@ export enum Action {
 /**
  * State object for the FormItemChildren component
  */
-export interface IFormItemChildrenState {
+export interface FormItemChildrenState {
     childrenSearchTerm: string;
     hideOptionMenu: boolean;
 }
@@ -93,7 +93,7 @@ export interface IFormItemChildrenState {
  * @extends React.Component
  */
 /* tslint:disable-next-line */
-class FormItemChildren extends React.Component<IFormItemChildrenProps & IManagedClasses<IFormItemChildrenClassNameContract>, IFormItemChildrenState> {
+class FormItemChildren extends React.Component<FormItemChildrenProps & ManagedClasses<FormItemChildrenClassNameContract>, FormItemChildrenState> {
 
     /**
      * Store a reference to the search input element
@@ -110,7 +110,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
      */
     private optionMenuTriggerRef: React.RefObject<HTMLButtonElement>;
 
-    constructor(props: IFormItemChildrenProps & IManagedClasses<IFormItemChildrenClassNameContract>) {
+    constructor(props: FormItemChildrenProps & ManagedClasses<FormItemChildrenClassNameContract>) {
         super(props);
 
         this.optionMenuRef = React.createRef();
@@ -184,7 +184,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
         this.setState({hideOptionMenu: true});
     }
 
-    private getReactComponents(currentChildren: ChildComponent[], item: IChildOptionItem): ChildComponent[] {
+    private getReactComponents(currentChildren: ChildComponent[], item: ChildOptionItem): ChildComponent[] {
         const components: ChildComponent[] = currentChildren;
         components.push(this.getChildComponent(item));
 
@@ -209,7 +209,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
             : [];
     }
 
-    private getChildComponent(item: IChildOptionItem): IChildComponent {
+    private getChildComponent(item: ChildOptionItem): ChildComponentConfig {
         return {
             id: item.schema.id,
             props: generateExampleData(item.schema, "")
@@ -229,7 +229,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
     /**
      * Click event for adding a component
      */
-    private onAddComponent(item: IChildOptionItem): void {
+    private onAddComponent(item: ChildOptionItem): void {
         const currentChildren: ChildComponent[] = this.getCurrentChildArray(this.props.data);
 
         if (typeof item === "object") {
@@ -259,9 +259,9 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
 
         if (typeof component === "string") {
             childSchema = reactChildrenStringSchema;
-        } else if (typeof component === "object" && typeof (component as IChildComponent).props === "object") {
-            this.props.childOptions.forEach((childOption: IChildOptionItem) => {
-                if (childOption.schema.id === (component as IChildComponent).id) {
+        } else if (typeof component === "object" && typeof (component as ChildComponentConfig).props === "object") {
+            this.props.childOptions.forEach((childOption: ChildOptionItem) => {
+                if (childOption.schema.id === (component as ChildComponentConfig).id) {
                     childSchema = childOption.schema;
                 }
             });
@@ -287,7 +287,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
      * Click factory for adding a child item
      */
     private clickAddComponentFactory = (
-        component: IChildOptionItem,
+        component: ChildOptionItem,
     ): (e: React.MouseEvent<HTMLButtonElement>) => void => {
         return (e: React.MouseEvent<HTMLButtonElement>): void => {
             e.preventDefault();
@@ -384,7 +384,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
             return null;
         }
 
-        const stringOption: IChildOptionItem = {
+        const stringOption: ChildOptionItem = {
             name: "Text",
             component: null,
             schema: reactChildrenStringSchema
@@ -412,7 +412,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
      * Renders the optional children
      */
     private renderChildOptions(): JSX.Element[] {
-        return this.props.childOptions.filter((option: IChildOptionItem): boolean => {
+        return this.props.childOptions.filter((option: ChildOptionItem): boolean => {
             return option.name.toLowerCase().includes(this.state.childrenSearchTerm.toLowerCase());
         }).map((option: any, index: number): JSX.Element => {
             return (
@@ -452,7 +452,7 @@ class FormItemChildren extends React.Component<IFormItemChildrenProps & IManaged
     }
 
     private generateChildOptionText(item: any): string {
-        const childOption: IChildOptionItem = getChildOptionBySchemaId(item.id, this.props.childOptions);
+        const childOption: ChildOptionItem = getChildOptionBySchemaId(item.id, this.props.childOptions);
 
         if (typeof childOption === "object" && childOption !== null) {
             return childOption.name;

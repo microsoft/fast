@@ -4,11 +4,11 @@ import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import MSFTMetatext, {
-    IMetatextHandledProps,
-    IMetatextManagedClasses,
-    IMetatextUnhandledProps,
+    MetatextHandledProps,
+    MetatextManagedClasses,
     MetatextProps,
-    MetatextTag
+    MetatextTag,
+    MetatextUnhandledProps
 } from "./metatext";
 import { Metatext } from "./index";
 
@@ -35,15 +35,15 @@ describe("metatext", (): void => {
     });
 
     test("should accept unhandledProps", () => {
-        const handledProps: IMetatextHandledProps = {
+        const handledProps: MetatextHandledProps = {
             tag: MetatextTag.p
         };
 
-        const unhandledProps: IMetatextUnhandledProps = {
+        const unhandledProps: MetatextUnhandledProps = {
             "aria-hidden": true
         };
 
-        const props: IMetatextHandledProps & IMetatextUnhandledProps = {...handledProps, ...unhandledProps};
+        const props: MetatextHandledProps & MetatextUnhandledProps = {...handledProps, ...unhandledProps};
 
         const rendered: any = mount(
             <Metatext {...props} />

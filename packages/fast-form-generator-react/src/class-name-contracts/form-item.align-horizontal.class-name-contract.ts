@@ -1,7 +1,7 @@
 /**
  * Align horizontal class name contract
  */
-export default interface IFormItemAlignHorizontalClassNameContract {
+export default interface FormItemAlignHorizontalClassNameContract {
     formItemAlignHorizontal: string;
     formItemAlignHorizontal_label: string;
     formItemAlignHorizontal_inputContainer: string;

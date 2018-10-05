@@ -2,8 +2,8 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { IButtonHandledProps, IButtonUnhandledProps } from "./button.props";
-import { IButtonClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { ButtonHandledProps, ButtonUnhandledProps } from "./button.props";
+import { ButtonClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
  * Button HTML tags
@@ -14,13 +14,13 @@ export enum ButtonHTMLTags {
 }
 
 class Button extends Foundation<
-    IButtonHandledProps,
-    IButtonUnhandledProps,
+    ButtonHandledProps,
+    ButtonUnhandledProps,
     {}
 > {
     public static displayName: string = "Button";
 
-    protected handledProps: HandledProps<IButtonHandledProps> = {
+    protected handledProps: HandledProps<ButtonHandledProps> = {
         disabled: void 0,
         href: void 0,
         managedClasses: void 0
@@ -74,4 +74,4 @@ class Button extends Foundation<
 
 export default Button;
 export * from "./button.props";
-export { IButtonClassNameContract };
+export { ButtonClassNameContract };

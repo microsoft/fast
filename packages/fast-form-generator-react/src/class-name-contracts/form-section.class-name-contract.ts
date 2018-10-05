@@ -1,7 +1,7 @@
 /**
  * Section class name contract
  */
-export default interface IFormSectionClassNameContract {
+export default interface FormSectionClassNameContract {
     formSection: string;
     formSection_menu: string;
     formSection_toggle: string;

@@ -1,19 +1,19 @@
 import * as React from "react";
 
-export interface IArrayObject {
+export interface ArrayObject {
     string: string;
 }
 
-export interface IArrayProps {
+export interface ArrayProps {
     strings: string[];
-    objects: IArrayObject[];
+    objects: ArrayObject[];
 }
 
 /**
  * This test components API should have:
  * - a required string array
  */
-export default class Array extends React.Component<IArrayProps, {}> {
+export default class Array extends React.Component<ArrayProps, {}> {
 
     public render(): JSX.Element {
         return (
@@ -34,7 +34,7 @@ export default class Array extends React.Component<IArrayProps, {}> {
 
     private renderObjects(): JSX.Element[] {
         if (this.props.objects) {
-            return this.props.objects.map((objectItem: IArrayObject, index: number) => {
+            return this.props.objects.map((objectItem: ArrayObject, index: number) => {
                 return (
                     <span key={index}>{objectItem.string}</span>
                 );

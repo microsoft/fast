@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
-import { IContainerClassNamesContract } from "./container";
+import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
+import { ContainerClassNamesContract } from "./container";
 
-export type ContainerProps = IManagedClasses<IContainerClassNamesContract>;
+export type ContainerProps = ManagedClasses<ContainerClassNamesContract>;

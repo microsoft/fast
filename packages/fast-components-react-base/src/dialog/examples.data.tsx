@@ -1,10 +1,10 @@
 import * as React from "react";
-import Dialog, { IDialogHandledProps, IDialogManagedClasses, IDialogUnhandledProps } from "./dialog";
+import Dialog, { DialogHandledProps, DialogManagedClasses, DialogUnhandledProps } from "./dialog";
 import schema from "./dialog.schema.json";
 import Documentation from "./.tmp/documentation";
-import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
+import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
-const examples: IComponentFactoryExample<IDialogHandledProps> = {
+const examples: ComponentFactoryExample<DialogHandledProps> = {
     name: "Dialog",
     component: Dialog,
     schema: schema as any,

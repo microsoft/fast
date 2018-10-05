@@ -1,10 +1,10 @@
 import * as React from "react";
-import Toggle, { IToggleHandledProps, IToggleManagedClasses, IToggleUnhandledProps } from "./toggle";
+import Toggle, { ToggleHandledProps, ToggleManagedClasses, ToggleUnhandledProps } from "./toggle";
 import schema from "./toggle.schema.json";
 import Documentation from "./.tmp/documentation";
-import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
+import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
-const examples: IComponentFactoryExample<IToggleHandledProps> = {
+const examples: ComponentFactoryExample<ToggleHandledProps> = {
     name: "Toggle",
     component: Toggle,
     schema: schema as any,

@@ -1,10 +1,10 @@
 import * as React from "react";
 
-export interface ISiteTitleProps {
+export interface SiteTitleProps {
     slot?: string;
 }
 
-class SiteTitle extends React.Component<ISiteTitleProps, {}> {
+class SiteTitle extends React.Component<SiteTitleProps, {}> {
     public render(): JSX.Element {
         return (
             <React.Fragment>

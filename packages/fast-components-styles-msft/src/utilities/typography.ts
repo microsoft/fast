@@ -1,13 +1,13 @@
 import { toPx } from "@microsoft/fast-jss-utilities";
-import { applyBreakpoint, IBreakpoints } from "../utilities/breakpoints";
+import { applyBreakpoint, Breakpoints } from "../utilities/breakpoints";
 import { KeyOfToType } from "./keyof-to-type";
-import { ICSSRules } from "@microsoft/fast-jss-manager";
-import { IDesignSystem } from "../design-system";
+import { CSSRules } from "@microsoft/fast-jss-manager";
+import { DesignSystem } from "../design-system";
 
 /**
  * The type ramp item config
  */
-export interface ITypeRampItemConfig {
+export interface TypeRampItemConfig {
     fontSize: number;
     lineHeight: number;
 }
@@ -15,28 +15,28 @@ export interface ITypeRampItemConfig {
 /**
  * The type ramp item type
  */
-export type ITypeRampItem = Partial<KeyOfToType<IBreakpoints, ITypeRampItemConfig>>;
+export type TypeRampItem = Partial<KeyOfToType<Breakpoints, TypeRampItemConfig>>;
 
 /**
  * The type ramp which covers all type configurations used
  * in typographic elements
  */
-export interface ITypeRamp {
-    t1: ITypeRampItem;
-    t2: ITypeRampItem;
-    t3: ITypeRampItem;
-    t4: ITypeRampItem;
-    t5: ITypeRampItem;
-    t6: ITypeRampItem;
-    t7: ITypeRampItem;
-    t8: ITypeRampItem;
-    t9: ITypeRampItem;
+export interface TypeRamp {
+    t1: TypeRampItem;
+    t2: TypeRampItem;
+    t3: TypeRampItem;
+    t4: TypeRampItem;
+    t5: TypeRampItem;
+    t6: TypeRampItem;
+    t7: TypeRampItem;
+    t8: TypeRampItem;
+    t9: TypeRampItem;
 }
 
 /**
  * The type ramp configuration
  */
-export const typeRamp: ITypeRamp = {
+export const typeRamp: TypeRamp = {
     t1: {
         vp1: {
             fontSize: 46,
@@ -128,7 +128,7 @@ export const typeRamp: ITypeRamp = {
 /**
  * Applies a type ramp config instance based on viewport
  */
-export function applyType(typeConfig: keyof ITypeRamp, viewport: keyof ITypeRampItem): ICSSRules<IDesignSystem> {
+export function applyType(typeConfig: keyof TypeRamp, viewport: keyof TypeRampItem): CSSRules<DesignSystem> {
     return {
         fontSize: toPx(typeRamp[typeConfig][viewport].fontSize),
         lineHeight: toPx(typeRamp[typeConfig][viewport].lineHeight)
@@ -138,10 +138,10 @@ export function applyType(typeConfig: keyof ITypeRamp, viewport: keyof ITypeRamp
 /**
  * Takes a param of type ramp key (string) and returns a type ramp configuration
  */
-export function applyTypeRampConfig(typeConfig: keyof ITypeRamp): ICSSRules<IDesignSystem> {
-    return Object.keys(typeRamp[typeConfig]).map((key: keyof ITypeRampItem): ICSSRules<IDesignSystem> => {
+export function applyTypeRampConfig(typeConfig: keyof TypeRamp): CSSRules<DesignSystem> {
+    return Object.keys(typeRamp[typeConfig]).map((key: keyof TypeRampItem): CSSRules<DesignSystem> => {
         return {
             [applyBreakpoint(key)]: applyType(typeConfig, key)
         };
-    }).reduce((accumulator: ICSSRules<IDesignSystem>, value: ICSSRules<IDesignSystem>) => Object.assign({}, accumulator, value));
+    }).reduce((accumulator: CSSRules<DesignSystem>, value: CSSRules<DesignSystem>) => Object.assign({}, accumulator, value));
 }

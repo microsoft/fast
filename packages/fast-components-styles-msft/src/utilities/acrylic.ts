@@ -1,6 +1,6 @@
-import { applyAcrylic, IAcrylicConfig, toPx } from "@microsoft/fast-jss-utilities";
-import { ICSSRules } from "@microsoft/fast-jss-manager";
-import designSystemDefaults, { IDesignSystem } from "../design-system";
+import { AcrylicConfig, applyAcrylic, toPx } from "@microsoft/fast-jss-utilities";
+import { CSSRules } from "@microsoft/fast-jss-manager";
+import designSystemDefaults, { DesignSystem } from "../design-system";
 import Chroma from "chroma-js";
 
 /* tslint:disable max-line-length */
@@ -20,8 +20,8 @@ export function applyAcrylicMaterial(
     opacity: number,
     fallbackOpacity: number = 0.9,
     topHighlight: boolean = false
-): ICSSRules<IDesignSystem> {
-    const acrylicConfig: IAcrylicConfig = {
+): CSSRules<DesignSystem> {
+    const acrylicConfig: AcrylicConfig = {
         textureImage: acrylicNoise,
         backgroundColor: Chroma(backgroundColor).alpha(opacity).css(),
         fallbackBackgroundColor: Chroma(backgroundColor).alpha(fallbackOpacity).css()
@@ -29,6 +29,6 @@ export function applyAcrylicMaterial(
 
     return {
         borderTop: topHighlight ? `${toPx(1)} solid ${Chroma(backgroundColor).alpha(0.1).css()}` : "",
-        ...applyAcrylic<IDesignSystem>(acrylicConfig)
+        ...applyAcrylic<DesignSystem>(acrylicConfig)
     };
 }

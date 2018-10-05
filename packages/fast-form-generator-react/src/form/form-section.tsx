@@ -1,26 +1,26 @@
+import FormItemChildren from "./form-item.children";
 import * as React from "react";
-import { uniqueId } from "lodash-es";
 import {
-    IFormCategories,
-    IFormItemParameters,
-    IFormItemsWithConfigOptions,
-    IFormSectionProps,
-    IFormSectionState,
-    IOneOfAnyOf,
+    FormCategories,
+    FormItemParameters,
+    FormItemsWithConfigOptions,
+    FormSectionProps,
+    FormSectionState,
+    OneOfAnyOf,
     oneOfAnyOfType
 } from "./form-section.props";
-import IFormItemCommon, { mappingName } from "./form-item";
+import FormItemCommon, { mappingName } from "./form-item";
 import FormCategory from "./form-category";
 import FormItemCheckbox from "./form-item.checkbox";
 import FormItemTextarea from "./form-item.textarea";
 import FormItemNumberField from "./form-item.number-field";
 import FormItemSelect from "./form-item.select";
-import FormItemChildren from "./form-item.children";
+import { uniqueId } from "lodash-es";
 import FormItemArray from "./form-item.array";
 import FormItemMapping from "./form-item.mapping";
 import {
-    IChildOptionItem,
-    ITextareaAttributeSettingsMappingToPropertyNames
+    ChildOptionItem,
+    TextareaAttributeSettingsMappingToPropertyNames
 } from "./form.props";
 import {
     checkCategoryConfigPropertyCount,
@@ -43,27 +43,27 @@ import {
     getOptionalToggles,
     getSchemaSubsections,
     handleToggleClick,
-    IOptionalToggle,
     isMapping,
     isSelect,
+    OptionalToggle,
     resolveExampleDataWithCachedData
 } from "./form-section.utilities";
 import styles from "./form-section.style";
-import { IFormSectionClassNameContract } from "../class-name-contracts/";
+import { FormSectionClassNameContract } from "../class-name-contracts/";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
  * Schema form component definition
  * @extends React.Component
  */
-class FormSection extends React.Component<IFormSectionProps & IManagedClasses<IFormSectionClassNameContract>, IFormSectionState> {
+class FormSection extends React.Component<FormSectionProps & ManagedClasses<FormSectionClassNameContract>, FormSectionState> {
 
-    constructor(props: IFormSectionProps & IManagedClasses<IFormSectionClassNameContract>) {
+    constructor(props: FormSectionProps & ManagedClasses<FormSectionClassNameContract>) {
         super(props);
 
         let oneOfAnyOf: oneOfAnyOfType;
-        let oneOfAnyOfState: IOneOfAnyOf;
+        let oneOfAnyOfState: OneOfAnyOf;
         let activeIndex: number;
         let schemaState: any = this.props.schema;
 
@@ -98,7 +98,7 @@ class FormSection extends React.Component<IFormSectionProps & IManagedClasses<IF
     /**
      * React lifecycle hook
      */
-    public componentWillUpdate(nextProps: IFormSectionProps, nextState: IFormSectionState): void {
+    public componentWillUpdate(nextProps: FormSectionProps, nextState: FormSectionState): void {
         const state: any = {};
 
         if (checkIsDifferentSchema(this.props.schema, nextProps.schema)) {
@@ -159,10 +159,10 @@ class FormSection extends React.Component<IFormSectionProps & IManagedClasses<IF
             : this.handleUpdateSection(schemaLocation, dataLocation);
     }
 
-    private generateFormItemTextarea(location: string, formItemProps: IFormItemCommon): JSX.Element {
+    private generateFormItemTextarea(location: string, formItemProps: FormItemCommon): JSX.Element {
         if (this.props.attributeSettingsMappingToPropertyNames && this.props.attributeSettingsMappingToPropertyNames.textarea) {
             const rowAttribute: number | null = formItemAttributeMapping(
-                (this.props.attributeSettingsMappingToPropertyNames.textarea as ITextareaAttributeSettingsMappingToPropertyNames),
+                (this.props.attributeSettingsMappingToPropertyNames.textarea as TextareaAttributeSettingsMappingToPropertyNames),
                 location
             );
             return <FormItemTextarea rows={rowAttribute} {...formItemProps} />;
@@ -186,7 +186,7 @@ class FormSection extends React.Component<IFormSectionProps & IManagedClasses<IF
      */
     private generateFormElement(property: any, index: number, location: string, required: boolean, label: string): JSX.Element | any {
         const dataLocation: string = getDataLocationRelativeToRoot(location, this.props.dataLocation);
-        const formItemProps: IFormItemCommon = {
+        const formItemProps: FormItemCommon = {
             key: location + index,
             default: property.default || void(0),
             index,
@@ -220,7 +220,7 @@ class FormSection extends React.Component<IFormSectionProps & IManagedClasses<IF
      * Renders one of the standard form item corrensponding to a simple
      * JSON schema type
      */
-    private renderFormItem(property: any, formItemProps: IFormItemCommon, location: string): JSX.Element | JSX.Element[] {
+    private renderFormItem(property: any, formItemProps: FormItemCommon, location: string): JSX.Element | JSX.Element[] {
         switch (property.type) {
             case "boolean":
                 return <FormItemCheckbox {...formItemProps} />;
@@ -269,9 +269,9 @@ class FormSection extends React.Component<IFormSectionProps & IManagedClasses<IF
     /**
      * Gets the categories
      */
-    private getCategories(formItemParameters: IFormItemParameters[]): JSX.Element[] {
+    private getCategories(formItemParameters: FormItemParameters[]): JSX.Element[] {
         const categories: JSX.Element[] = [];
-        const categoryParams: IFormCategories[] = getCategoryParams(formItemParameters, this.props.orderByPropertyNames);
+        const categoryParams: FormCategories[] = getCategoryParams(formItemParameters, this.props.orderByPropertyNames);
 
         for (let i: number = 0, categoryParamLength: number = categoryParams.length; i < categoryParamLength; i++) {
             const categoryFormItems: JSX.Element[] = [];
@@ -307,8 +307,8 @@ class FormSection extends React.Component<IFormSectionProps & IManagedClasses<IF
         return name.toLowerCase().replace(/\s/g, "-");
     }
 
-    private getFormItemsAndConfigurationOptions(property: any, required: string[], not: string[]): IFormItemsWithConfigOptions {
-        const formItems: IFormItemsWithConfigOptions = {
+    private getFormItemsAndConfigurationOptions(property: any, required: string[], not: string[]): FormItemsWithConfigOptions {
+        const formItems: FormItemsWithConfigOptions = {
             items: [],
             parameters: []
         };
@@ -339,7 +339,7 @@ class FormSection extends React.Component<IFormSectionProps & IManagedClasses<IF
         return formItems;
     }
 
-    private getFormObjectItemsOrConfigCategories(formItems: IFormItemsWithConfigOptions): JSX.Element[] {
+    private getFormObjectItemsOrConfigCategories(formItems: FormItemsWithConfigOptions): JSX.Element[] {
         if (this.props.orderByPropertyNames) {
             if (checkCategoryConfigPropertyCount(formItems, this.props.orderByPropertyNames)) {
                 return formItems.items;
@@ -355,7 +355,7 @@ class FormSection extends React.Component<IFormSectionProps & IManagedClasses<IF
      * Pushes a list of elements found inside an object to an array
      */
     private generateFormObject(property: any, location: string, required: string[], not?: string[]): JSX.Element[] {
-        let formItems: IFormItemsWithConfigOptions;
+        let formItems: FormItemsWithConfigOptions;
 
         if (checkIsObject(property, this.state.schema)) {
             // assign items to form elements
@@ -401,7 +401,7 @@ class FormSection extends React.Component<IFormSectionProps & IManagedClasses<IF
      * which includes objects, anyOf/oneOf
      */
     private generateOptionToggles(): JSX.Element[] {
-        const optionToggles: IOptionalToggle[] = getOptionalToggles({
+        const optionToggles: OptionalToggle[] = getOptionalToggles({
             schema: this.state.schema,
             onChange: this.props.onChange,
             dataLocation: this.props.dataLocation,
@@ -477,10 +477,10 @@ class FormSection extends React.Component<IFormSectionProps & IManagedClasses<IF
             return Object.keys(this.props.schema.reactProperties).filter(
                 (reactProperty: string) => this.props.schema.reactProperties[reactProperty].type === "children"
             ).map((reactProperty: string) => {
-                let childOptions: IChildOptionItem[] = [];
+                let childOptions: ChildOptionItem[] = [];
 
                 if (this.props.schema.reactProperties[reactProperty].ids) {
-                    childOptions = this.props.childOptions.filter((childOption: IChildOptionItem) => {
+                    childOptions = this.props.childOptions.filter((childOption: ChildOptionItem) => {
                         return !!this.props.schema.reactProperties[reactProperty].ids.find((id: string) => childOption.schema.id === id);
                     });
                 } else {

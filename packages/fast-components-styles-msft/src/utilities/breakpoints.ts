@@ -1,4 +1,4 @@
-export interface IBreakpoints {
+export interface Breakpoints {
     vp1: number;
     vp2: number;
     vp3: number;
@@ -10,7 +10,7 @@ export interface IBreakpoints {
 /**
  * These are the minimum widths for the breakpoint
  */
-export const breakpoints: IBreakpoints = {
+export const breakpoints: Breakpoints = {
     vp1: 0,
     vp2: 540,
     vp3: 768,
@@ -19,6 +19,6 @@ export const breakpoints: IBreakpoints = {
     vp6: 1779
 };
 
-export function applyBreakpoint(breakpoint: keyof IBreakpoints): string {
+export function applyBreakpoint(breakpoint: keyof Breakpoints): string {
     return `@media only screen and (min-width: ${breakpoints[breakpoint]}px)`;
 }

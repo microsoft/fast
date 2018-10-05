@@ -1,4 +1,4 @@
-export interface IFontWeight {
+export interface FontWeight {
     light: number;
     semilight: number;
     normal: number;
@@ -6,7 +6,7 @@ export interface IFontWeight {
     bold: number;
 }
 
-export const fontWeight: IFontWeight = {
+export const fontWeight: FontWeight = {
     light: 100,
     semilight: 200,
     normal: 400,

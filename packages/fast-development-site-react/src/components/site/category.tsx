@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 
-export interface ISiteCategoryProps {
+export interface SiteCategoryProps {
     slot: string;
     name: string;
     component?: any;
@@ -15,7 +15,7 @@ export enum Status {
     beta = "Beta"
 }
 
-class SiteCategory extends React.Component<ISiteCategoryProps, {}> {
+class SiteCategory extends React.Component<SiteCategoryProps, {}> {
     public render(): JSX.Element {
         return (
             <React.Fragment>

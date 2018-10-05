@@ -1,8 +1,8 @@
 import * as React from "react";
 import { TabsSlot } from "./tabs";
 
-export interface ITabItemUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
-export interface ITabItemHandledProps {
+export interface TabItemUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
+export interface TabItemHandledProps {
     /**
      * The unique id for the tab item
      */
@@ -20,4 +20,4 @@ export interface ITabItemHandledProps {
     children?: React.ReactNode;
 }
 
-export type TabItemProps = ITabItemHandledProps & ITabItemUnhandledProps;
+export type TabItemProps = TabItemHandledProps & TabItemUnhandledProps;

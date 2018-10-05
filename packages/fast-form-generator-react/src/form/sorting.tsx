@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export interface ISortableOptions {
+export interface SortableConfig {
     key: string;
     index: number;
     value: any;
@@ -11,22 +11,22 @@ export enum axis {
     y = "y"
 }
 
-export interface ISortingProps {
+export interface SortingProps {
     pressDelay: number;
     lockAxis: axis;
 }
 
-export const sortingProps: ISortingProps = {
+export const sortingProps: SortingProps = {
     pressDelay: 150,
     lockAxis: axis.y
 };
 
-export interface ISortableListItemProps {
+export interface SortableListItemProps {
     id?: string;
     onClick?: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
-export class SortableListItem extends React.Component<ISortableListItemProps, {}> {
+export class SortableListItem extends React.Component<SortableListItemProps, {}> {
     public render(): JSX.Element {
         return(
             <li draggable={true} id={this.props.id}>

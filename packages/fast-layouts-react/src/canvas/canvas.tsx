@@ -1,13 +1,13 @@
 import * as React from "react";
-import { CanvasProps, ICanvasHandledProps } from "./canvas.props";
-import manageJss, { ComponentStyles, IManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import Foundation, { HandledProps, IFoundationProps } from "@microsoft/fast-components-foundation-react";
+import { CanvasHandledProps, CanvasProps } from "./canvas.props";
+import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import Foundation, { FoundationProps, HandledProps } from "@microsoft/fast-components-foundation-react";
 
-export interface ICanvasClassNamesContract {
+export interface CanvasClassNamesContract {
     canvas: string;
 }
 
-const styles: ComponentStyles<ICanvasClassNamesContract, undefined> = {
+const styles: ComponentStyles<CanvasClassNamesContract, undefined> = {
     canvas: {
         flex: "1",
         overflow: "hidden",
@@ -25,7 +25,7 @@ class Canvas extends Foundation<
     /**
      * Default props for the Canvas component
      */
-    public static defaultProps: ICanvasHandledProps = {
+    public static defaultProps: CanvasHandledProps = {
         minWidth: 300
     };
 

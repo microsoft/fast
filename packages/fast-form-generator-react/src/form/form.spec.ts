@@ -1,6 +1,7 @@
 import "jest";
 import { get } from "lodash-es";
 import {
+    BreadcrumbItem,
     getBreadcrumbs,
     getDataLocationsOfChildren,
     getLocationsFromObject,
@@ -9,15 +10,14 @@ import {
     getSchemaByDataLocation,
     getSchemaLocationSegmentsFromDataLocationSegments,
     HandleBreadcrumbClick,
-    IBreadcrumbItem,
-    INavigationItem,
     mapDataToComponent,
     mapSchemaLocationFromDataLocation,
+    NavigationItem,
     orderChildrenByDataLocation
 } from "./form.utilities";
 import {
     BreadcrumbItemEventHandler,
-    IChildOptionItem
+    ChildOptionItem
 } from "./form.props";
 
 import Children from "../../app/components/children/children";
@@ -134,14 +134,14 @@ describe("mapSchemaLocationFromDataLocation", () => {
  * Gets the navigation
  */
 describe("getNavigation", () => {
-    const childOptions: IChildOptionItem[] = [
+    const childOptions: ChildOptionItem[] = [
         {name: childrenSchema.id, component: Children, schema: childrenSchema},
         {name: textFieldSchema.id, component: TextField, schema: textFieldSchema},
         {name: oneOfSchema.id, component: OneOf, schema: oneOfSchema}
     ];
 
     test("should return a single navigation item when the location is at the root", () => {
-        const navigation: INavigationItem[] = getNavigation(
+        const navigation: NavigationItem[] = getNavigation(
             "",
             {
                 alignHorizontal: "left"
@@ -158,7 +158,7 @@ describe("getNavigation", () => {
         });
     });
     test("should return navigation items for a nested property", () => {
-        const navigation: INavigationItem[] = getNavigation(
+        const navigation: NavigationItem[] = getNavigation(
             "optionalObjectWithNestedObject.nestedObject",
             {
                 optionalObjectWithNestedObject: {
@@ -195,13 +195,13 @@ describe("getNavigation", () => {
         });
     });
     test("should return navigation items for an array", () => {
-        const objectNavigation: INavigationItem[] = getNavigation(
+        const objectNavigation: NavigationItem[] = getNavigation(
             "objects.1",
             {objects: [{ string: "foo" }, { string: "bar" }], strings: ["foo", "bar"]},
             arraysSchema,
             childOptions
         );
-        const stringNavigation: INavigationItem[] = getNavigation(
+        const stringNavigation: NavigationItem[] = getNavigation(
             "strings.1",
             {objects: [{ string: "foo" }, { string: "bar" }], strings: ["foo", "bar"]},
             arraysSchema,
@@ -229,13 +229,13 @@ describe("getNavigation", () => {
         expect(stringNavigation[1].data).toEqual("bar");
     });
     test("should return navigation items for a anyOf/oneOfs", () => {
-        const navigationRoot: INavigationItem[] = getNavigation(
+        const navigationRoot: NavigationItem[] = getNavigation(
             "",
             {nestedAnyOf: {string: "foo"}},
             anyOfSchema,
             childOptions
         );
-        const navigation: INavigationItem[] = getNavigation(
+        const navigation: NavigationItem[] = getNavigation(
             "nestedAnyOf",
             {nestedAnyOf: {string: "foo"}},
             anyOfSchema,
@@ -256,7 +256,7 @@ describe("getNavigation", () => {
         expect(navigation[1].data).toEqual({string: "foo"});
     });
     test("should return navigation items for children", () => {
-        const navigation: INavigationItem[] = getNavigation(
+        const navigation: NavigationItem[] = getNavigation(
             "children",
             {
                 children: {
@@ -277,7 +277,7 @@ describe("getNavigation", () => {
         expect(navigation[1].data).toEqual({});
     });
     test("should return navigation items for nested children", () => {
-        const navigation: INavigationItem[] = getNavigation(
+        const navigation: NavigationItem[] = getNavigation(
             "children.props.children.props",
             {
                 children: {
@@ -321,7 +321,7 @@ describe("getNavigation", () => {
         expect(navigation[2].data).toEqual({});
     });
     test("should return navigation items for a nested array of children", () => {
-        const navigation: INavigationItem[] = getNavigation(
+        const navigation: NavigationItem[] = getNavigation(
             "children[0].props.children.props",
             {
                 children: [
@@ -369,7 +369,7 @@ describe("getNavigation", () => {
         expect(navigation[2].data).toEqual({});
     });
     test("should return navigation items for multiple data root items that can contain children", () => {
-        const navigation: INavigationItem[] = getNavigation(
+        const navigation: NavigationItem[] = getNavigation(
             "restrictedChildrenWithReactDefaults[0].props.children.props",
             {
                 restrictedChildrenWithReactDefaults: [
@@ -417,7 +417,7 @@ describe("getNavigation", () => {
         expect(navigation[2].data).toEqual({});
     });
     test("should return navigation items for text children", () => {
-        const navigation: INavigationItem[] = getNavigation(
+        const navigation: NavigationItem[] = getNavigation(
             "children",
             {
                 children: "example text"
@@ -437,7 +437,7 @@ describe("getNavigation", () => {
         expect(navigation[1].data).toEqual("example text");
     });
     test("should return navigation items for nested children with properties", () => {
-        const navigation: INavigationItem[] = getNavigation(
+        const navigation: NavigationItem[] = getNavigation(
             "children.props.objectContainingNestedChildren.nestedObjectChildren",
             {
                 children: {
@@ -495,7 +495,7 @@ describe("getNavigation", () => {
         expect(navigation[3].data).toEqual({});
     });
     test("should return navigation items for nested children with anyOf/oneOf", () => {
-        const navigation: INavigationItem[] = getNavigation(
+        const navigation: NavigationItem[] = getNavigation(
             "children.props",
             {
                 children: {
@@ -541,14 +541,14 @@ describe("getBreadcrumbs", () => {
             e.preventDefault();
         };
     };
-    const childOptions: IChildOptionItem[] = [
+    const childOptions: ChildOptionItem[] = [
         {name: childrenSchema.id, component: Children, schema: childrenSchema},
         {name: textFieldSchema.id, component: TextField, schema: textFieldSchema},
         {name: generalSchema.id, component: General, schema: generalSchema},
     ];
 
     test("should return a single breadcrumb item", () => {
-        const navigation: INavigationItem[] = getNavigation(
+        const navigation: NavigationItem[] = getNavigation(
             "",
             {
                 alignHorizontal: "left"
@@ -556,14 +556,14 @@ describe("getBreadcrumbs", () => {
             alignHorizontalSchema,
             childOptions
         );
-        const breadcrumbs: IBreadcrumbItem[] = getBreadcrumbs(navigation, handleBreadcrumbClick);
+        const breadcrumbs: BreadcrumbItem[] = getBreadcrumbs(navigation, handleBreadcrumbClick);
 
         expect(breadcrumbs.length).toBe(1);
         expect(breadcrumbs[0].href).toBe("");
         expect(breadcrumbs[0].text).toBe("Component with align horizontal");
     });
     test("should return breadcrumbs for nested property locations", () => {
-        const navigation: INavigationItem[] = getNavigation(
+        const navigation: NavigationItem[] = getNavigation(
             "optionalObjectWithNestedObject.nestedObject",
             {
                 optionalObjectWithNestedObject: {
@@ -575,7 +575,7 @@ describe("getBreadcrumbs", () => {
             objectsSchema,
             childOptions
         );
-        const breadcrumbs: IBreadcrumbItem[] = getBreadcrumbs(navigation, handleBreadcrumbClick);
+        const breadcrumbs: BreadcrumbItem[] = getBreadcrumbs(navigation, handleBreadcrumbClick);
 
         expect(breadcrumbs.length).toBe(3);
         expect(breadcrumbs[0].href).toBe("");
@@ -586,13 +586,13 @@ describe("getBreadcrumbs", () => {
         expect(breadcrumbs[2].text).toBe("Nested object");
     });
     test("should return breadcrumb items for an array location", () => {
-        const navigation: INavigationItem[] = getNavigation(
+        const navigation: NavigationItem[] = getNavigation(
             "objects.1",
             {objects: [{ string: "foo" }, { string: "bar" }]},
             arraysSchema,
             childOptions
         );
-        const breadcrumbs: IBreadcrumbItem[] = getBreadcrumbs(navigation, handleBreadcrumbClick);
+        const breadcrumbs: BreadcrumbItem[] = getBreadcrumbs(navigation, handleBreadcrumbClick);
 
         expect(breadcrumbs.length).toBe(2);
         expect(breadcrumbs[0].href).toBe("");
@@ -601,20 +601,20 @@ describe("getBreadcrumbs", () => {
         expect(breadcrumbs[1].text).toBe("Object");
     });
     test("should return items for an anyOf/oneOf location", () => {
-        const navigationRoot: INavigationItem[] = getNavigation(
+        const navigationRoot: NavigationItem[] = getNavigation(
             "",
             {nestedAnyOf: {string: "foo"}},
             anyOfSchema,
             childOptions
         );
-        const navigation: INavigationItem[] = getNavigation(
+        const navigation: NavigationItem[] = getNavigation(
             "nestedAnyOf",
             {nestedAnyOf: {string: "foo"}},
             anyOfSchema,
             childOptions
         );
-        const breadcrumbsRoot: IBreadcrumbItem[] = getBreadcrumbs(navigationRoot, handleBreadcrumbClick);
-        const breadcrumbs: IBreadcrumbItem[] = getBreadcrumbs(navigation, handleBreadcrumbClick);
+        const breadcrumbsRoot: BreadcrumbItem[] = getBreadcrumbs(navigationRoot, handleBreadcrumbClick);
+        const breadcrumbs: BreadcrumbItem[] = getBreadcrumbs(navigation, handleBreadcrumbClick);
 
         expect(breadcrumbsRoot.length).toBe(1);
         expect(breadcrumbs[0].href).toBe("");
@@ -781,7 +781,7 @@ describe("getSchemaByDataLocation", () => {
 });
 
 describe("getDataLocationsOfChildren", () => {
-    const childOptions: IChildOptionItem[] = [
+    const childOptions: ChildOptionItem[] = [
         {name: childrenSchema.id, component: Children, schema: childrenSchema},
         {name: textFieldSchema.id, component: TextField, schema: textFieldSchema},
         {name: generalSchema.id, component: General, schema: generalSchema},
@@ -973,7 +973,7 @@ describe("getSchemaLocationSegmentsFromDataLocationSegments", () => {
 });
 
 describe("mapDataToComponent", () => {
-    const childOptions: IChildOptionItem[] = [
+    const childOptions: ChildOptionItem[] = [
         {name: "children", component: Children, schema: childrenSchema},
         {name: "textField", component: TextField, schema: textFieldSchema}
     ];

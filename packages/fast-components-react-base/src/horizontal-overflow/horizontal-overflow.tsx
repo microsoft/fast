@@ -1,15 +1,15 @@
 import * as React from "react";
 import { get } from "lodash-es";
 import { canUseDOM } from "exenv-es6";
-import { IHorizontalOverflowClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { HorizontalOverflowClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { getClientRectWithMargin } from "@microsoft/fast-web-utilities";
 import { Direction } from "@microsoft/fast-application-utilities";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
+    HorizontalOverflowHandledProps,
     HorizontalOverflowProps,
-    IHorizontalOverflowHandledProps,
-    IHorizontalOverflowUnhandledProps,
-    IScrollChange
+    HorizontalOverflowUnhandledProps,
+    ScrollChange
 } from "./horizontal-overflow.props";
 import throttle from "raf-throttle";
 
@@ -18,18 +18,18 @@ export enum ButtonDirection {
     next = "next"
 }
 
-export interface IHorizontalOverflowState {
+export interface HorizontalOverflowState {
     itemsHeight: number;
 }
 
 class HorizontalOverflow extends Foundation<
-    IHorizontalOverflowHandledProps,
-    IHorizontalOverflowUnhandledProps,
-    IHorizontalOverflowState
+    HorizontalOverflowHandledProps,
+    HorizontalOverflowUnhandledProps,
+    HorizontalOverflowState
 > {
     public static displayName: string = "HorizontalOverflow";
 
-    protected handledProps: HandledProps<IHorizontalOverflowHandledProps> = {
+    protected handledProps: HandledProps<HorizontalOverflowHandledProps> = {
         scrollDuration: void 0,
         managedClasses: void 0,
         onScrollChange: void 0
@@ -415,4 +415,4 @@ class HorizontalOverflow extends Foundation<
 
 export default HorizontalOverflow;
 export * from "./horizontal-overflow.props";
-export { IHorizontalOverflowClassNameContract };
+export { HorizontalOverflowClassNameContract };

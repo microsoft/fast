@@ -7,9 +7,9 @@ import Row, { RowResizeDirection } from "../src/row";
 import Pane, { PaneResizeDirection } from "../src/pane";
 import Page from "../src/page";
 import Grid from "../src/grid";
-import Column, { IColumnClassNamesContract } from "../src/column";
+import Column, { ColumnClassNamesContract } from "../src/column";
 
-const columnTestStyles: ComponentStyles<IColumnClassNamesContract, undefined> = {
+const columnTestStyles: ComponentStyles<ColumnClassNamesContract, undefined> = {
     column: {
         backgroundColor: `rgba(0, 120, 212, 0.2)`,
         border: `2px solid rgba(0, 120, 212, 0.2)`,

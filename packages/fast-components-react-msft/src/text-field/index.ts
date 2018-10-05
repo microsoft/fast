@@ -1,16 +1,16 @@
 import * as React from "react";
-import { IFoundationProps } from "@microsoft/fast-components-foundation-react";
+import { FoundationProps } from "@microsoft/fast-components-foundation-react";
 import {
-    ITextFieldClassNameContract,
-    ITextFieldHandledProps as IBaseTextFieldHandledProps,
-    ITextFieldManagedClasses,
-    ITextFieldUnhandledProps,
     TextField as BaseTextField,
+    TextFieldClassNameContract,
+    TextFieldHandledProps as BaseTextFieldHandledProps,
+    TextFieldManagedClasses,
     TextFieldProps as BaseTextFieldProps,
-    TextFieldType
+    TextFieldType,
+    TextFieldUnhandledProps
 } from "@microsoft/fast-components-react-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { IDesignSystem, TextFieldStyles } from "@microsoft/fast-components-styles-msft";
+import { DesignSystem, TextFieldStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 
 /*
@@ -21,13 +21,13 @@ import { Subtract } from "utility-types";
 const TextField = manageJss(TextFieldStyles)(BaseTextField);
 type TextField = typeof TextField;
 
-interface ITextFieldHandledProps extends Subtract<IBaseTextFieldHandledProps, ITextFieldManagedClasses> {}
-type TextFieldProps = ManagedJSSProps<BaseTextFieldProps, ITextFieldClassNameContract, IDesignSystem>;
+interface TextFieldHandledProps extends Subtract<BaseTextFieldHandledProps, TextFieldManagedClasses> {}
+type TextFieldProps = ManagedJSSProps<BaseTextFieldProps, TextFieldClassNameContract, DesignSystem>;
 
 export {
-    ITextFieldClassNameContract,
-    ITextFieldHandledProps,
-    ITextFieldUnhandledProps,
+    TextFieldClassNameContract,
+    TextFieldHandledProps,
+    TextFieldUnhandledProps,
     TextField,
     TextFieldProps,
     TextFieldType

@@ -1,9 +1,9 @@
 import { applyInputStyle, applyLabelStyle, applyWrapperStyle } from "../utilities/form-input.style";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import { IFormItemTextareaClassNameContract } from "../class-name-contracts/";
+import { FormItemTextareaClassNameContract } from "../class-name-contracts/";
 
-const styles: ComponentStyles<IFormItemTextareaClassNameContract, {}> = {
+const styles: ComponentStyles<FormItemTextareaClassNameContract, {}> = {
     formItemTextarea: {
         ...applyWrapperStyle(),
         flexDirection: "column",

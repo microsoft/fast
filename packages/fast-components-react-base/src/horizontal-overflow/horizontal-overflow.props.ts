@@ -1,19 +1,19 @@
 import * as React from "react";
-import { IHorizontalOverflowClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { HorizontalOverflowClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
  * Scroll interface for consumers
  * 'start' is when the horizontal overflow scroll is all the way left in LTR (all the way right in RTL)
  * 'end' is when the horizontal overflow scroll is all the right in LTR (all the way left in RTL)
  */
-export interface IScrollChange {
+export interface ScrollChange {
     start: boolean;
     end: boolean;
 }
 
-export interface IHorizontalOverflowUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
-export interface IHorizontalOverflowManagedClasses extends IManagedClasses<IHorizontalOverflowClassNameContract> {}
-export interface IHorizontalOverflowHandledProps extends IHorizontalOverflowManagedClasses {
+export interface HorizontalOverflowUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface HorizontalOverflowManagedClasses extends ManagedClasses<HorizontalOverflowClassNameContract> {}
+export interface HorizontalOverflowHandledProps extends HorizontalOverflowManagedClasses {
     /**
      * The horizontal overflow content
      */
@@ -27,7 +27,7 @@ export interface IHorizontalOverflowHandledProps extends IHorizontalOverflowMana
     /**
      * Callback for on scroll change
      */
-    onScrollChange?: (scrollObject: IScrollChange) => void;
+    onScrollChange?: (scrollObject: ScrollChange) => void;
 }
 
-export type HorizontalOverflowProps = IHorizontalOverflowHandledProps & IHorizontalOverflowUnhandledProps;
+export type HorizontalOverflowProps = HorizontalOverflowHandledProps & HorizontalOverflowUnhandledProps;

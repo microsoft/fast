@@ -8,10 +8,10 @@ import {
     darkTheme,
     lightTheme
 } from "../utilities/form-input.style";
-import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
-import { IFormItemThemeClassNameContract } from "../class-name-contracts/";
+import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
+import { FormItemThemeClassNameContract } from "../class-name-contracts/";
 
-function applyThemeInputBackplateStyle(): ICSSRules<{}> {
+function applyThemeInputBackplateStyle(): CSSRules<{}> {
     return {
         appearance: "none",
         border: `${toPx(2)} solid ${colors.containerBackground}`,
@@ -29,7 +29,7 @@ function applyThemeInputBackplateStyle(): ICSSRules<{}> {
     };
 }
 
-const styles: ComponentStyles<IFormItemThemeClassNameContract, {}> = {
+const styles: ComponentStyles<FormItemThemeClassNameContract, {}> = {
     formItemTheme: {
         ...applyWrapperStyle()
     },

@@ -1,7 +1,7 @@
 /**
  * The class name contract for the flipper component
  */
-export interface IFlipperClassNameContract {
+export interface FlipperClassNameContract {
     /**
      * The root of the flipper component
      */

@@ -1,6 +1,6 @@
 import * as React from "react";
-import { ITypographyUnhandledProps } from "../typography";
-import { IHeadingClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
+import { TypographyUnhandledProps } from "../typography";
+import { HeadingClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
 
 export enum HeadingAlignBaseline {
     small = "small",
@@ -26,8 +26,8 @@ export enum HeadingTag {
     p = "p"
 }
 
-export interface IHeadingManagedClasses extends IManagedClasses<IHeadingClassNameContract> {}
-export interface IHeadingHandledProps extends IHeadingManagedClasses {
+export interface HeadingManagedClasses extends ManagedClasses<HeadingClassNameContract> {}
+export interface HeadingHandledProps extends HeadingManagedClasses {
     /**
      * The heading content
      */
@@ -45,5 +45,5 @@ export interface IHeadingHandledProps extends IHeadingManagedClasses {
 }
 
 /* tslint:disable-next-line:no-empty-interface */
-export interface IHeadingUnhandledProps extends ITypographyUnhandledProps {}
-export type HeadingProps = IHeadingHandledProps & IHeadingUnhandledProps;
+export interface HeadingUnhandledProps extends TypographyUnhandledProps {}
+export type HeadingProps = HeadingHandledProps & HeadingUnhandledProps;

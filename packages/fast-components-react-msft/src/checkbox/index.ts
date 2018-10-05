@@ -1,15 +1,15 @@
 import * as React from "react";
-import { IFoundationProps } from "@microsoft/fast-components-foundation-react";
+import { FoundationProps } from "@microsoft/fast-components-foundation-react";
 import {
     Checkbox as BaseCheckbox,
+    CheckboxClassNameContract,
+    CheckboxHandledProps as MSFTCheckboxHandledProps,
+    CheckboxManagedClasses,
     CheckboxProps as MSFTCheckboxProps,
-    ICheckboxClassNameContract,
-    ICheckboxHandledProps as IMSFTCheckboxHandledProps,
-    ICheckboxManagedClasses,
-    ICheckboxUnhandledProps
+    CheckboxUnhandledProps
 } from "@microsoft/fast-components-react-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { CheckboxStyles, IDesignSystem } from "@microsoft/fast-components-styles-msft";
+import { CheckboxStyles, DesignSystem } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 
 /*
@@ -20,13 +20,13 @@ import { Subtract } from "utility-types";
 const Checkbox = manageJss(CheckboxStyles)(BaseCheckbox);
 type Checkbox = typeof Checkbox;
 
-interface ICheckboxHandledProps extends Subtract<IMSFTCheckboxHandledProps, ICheckboxManagedClasses> {}
-type CheckboxProps = ManagedJSSProps<MSFTCheckboxProps, ICheckboxClassNameContract, IDesignSystem>;
+interface CheckboxHandledProps extends Subtract<MSFTCheckboxHandledProps, CheckboxManagedClasses> {}
+type CheckboxProps = ManagedJSSProps<MSFTCheckboxProps, CheckboxClassNameContract, DesignSystem>;
 
 export {
     Checkbox,
     CheckboxProps,
-    ICheckboxHandledProps,
-    ICheckboxUnhandledProps,
-    ICheckboxClassNameContract
+    CheckboxHandledProps,
+    CheckboxUnhandledProps,
+    CheckboxClassNameContract
 };

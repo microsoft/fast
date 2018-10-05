@@ -2,18 +2,18 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { DividerRoles, IDividerHandledProps, IDividerManagedClasses, IDividerUnhandledProps } from "./divider.props";
-import { IDividerClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { DividerHandledProps, DividerManagedClasses, DividerRoles, DividerUnhandledProps } from "./divider.props";
+import { DividerClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 /* tslint:disable-next-line */
 class Divider extends Foundation<
-    IDividerHandledProps,
-    IDividerUnhandledProps,
+    DividerHandledProps,
+    DividerUnhandledProps,
     {}
 > {
     public static displayName: string = "Divider";
 
-    protected handledProps: HandledProps<IDividerHandledProps> = {
+    protected handledProps: HandledProps<DividerHandledProps> = {
         managedClasses: void 0,
         role: void 0
     };
@@ -52,4 +52,4 @@ class Divider extends Foundation<
 
 export default Divider;
 export * from "./divider.props";
-export { IDividerClassNameContract };
+export { DividerClassNameContract };

@@ -1,13 +1,13 @@
 import { Component, ElementRef, Input, SimpleChanges } from "@angular/core";
 import { SheetsManager, StyleSheet } from "jss";
-import { ClassNames, ComponentStyles } from "@microsoft/fast-jss-manager";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { eventNames } from "./utilities/get-event-names";
 import jss, { stylesheetManager } from "./jss";
 
 /**
  * State interface for JSS manager
  */
-export interface IJSSManagerState {
+export interface JSSManagerState {
     /**
      * Stores a JSS stylesheet containing all style rules for a component
      */
@@ -65,7 +65,7 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(BaseComponent: any
                     super.ngAfterContentInit();
                 }
 
-                const state: IJSSManagerState = {};
+                const state: JSSManagerState = {};
 
                 if (Boolean(styles)) {
                     state.styleSheet = jss.createStyleSheet(
@@ -115,8 +115,8 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(BaseComponent: any
             /**
              * Merges static and dynamic stylesheet classnames into one object
              */
-            private getClassNames(): ClassNames<S> {
-                const classNames: Partial<ClassNames<S>> = {};
+            private getClassNames(): {[className in keyof S]?: string} {
+                const classNames: Partial<{[className in keyof S]?: string}> = {};
 
                 if (this.hasStyleSheet()) {
                     for (const key in this.state.styleSheet.classes) {
@@ -128,7 +128,7 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(BaseComponent: any
                     }
                 }
 
-                return classNames as ClassNames<S>;
+                return classNames as {[className in keyof S]?: string};
             }
         }
 

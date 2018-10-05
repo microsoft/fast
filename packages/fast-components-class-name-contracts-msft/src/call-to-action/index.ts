@@ -1,7 +1,7 @@
 /**
  * The class name contract for the call to action component
  */
-export interface ICallToActionClassNameContract {
+export interface CallToActionClassNameContract {
     /**
      * The root of the call to action component
      */

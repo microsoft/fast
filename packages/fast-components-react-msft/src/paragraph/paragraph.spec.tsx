@@ -4,11 +4,11 @@ import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import MSFTParagraph, {
-    IParagraphHandledProps,
-    IParagraphManagedClasses,
-    IParagraphUnhandledProps,
+    ParagraphHandledProps,
+    ParagraphManagedClasses,
     ParagraphProps,
     ParagraphSize,
+    ParagraphUnhandledProps,
 } from "./paragraph";
 import { Paragraph } from "./index";
 
@@ -36,15 +36,15 @@ describe("paragraph", (): void => {
     });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
-        const handledProps: IParagraphHandledProps = {
+        const handledProps: ParagraphHandledProps = {
             size: ParagraphSize._1
         };
 
-        const unhandledProps: IParagraphUnhandledProps = {
+        const unhandledProps: ParagraphUnhandledProps = {
             "aria-hidden": true
         };
 
-        const props: IParagraphHandledProps & IParagraphUnhandledProps = {...handledProps, ...unhandledProps};
+        const props: ParagraphHandledProps & ParagraphUnhandledProps = {...handledProps, ...unhandledProps};
 
         const rendered: any = mount(
             <Paragraph {...props} />

@@ -5,11 +5,11 @@ import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import Hypertext, {
+    HypertextClassNameContract,
+    HypertextHandledProps,
+    HypertextManagedClasses,
     HypertextProps,
-    IHypertextClassNameContract,
-    IHypertextHandledProps,
-    IHypertextManagedClasses,
-    IHypertextUnhandledProps
+    HypertextUnhandledProps
 } from "./hypertext";
 
 /*
@@ -22,7 +22,7 @@ describe("hypertext snapshot", (): void => {
 });
 
 describe("hypertext", (): void => {
-    const managedClasses: IHypertextClassNameContract = {
+    const managedClasses: HypertextClassNameContract = {
         hypertext: "hypertext-class"
     };
 
@@ -39,11 +39,11 @@ describe("hypertext", (): void => {
     });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
-        const handledProps: IHypertextHandledProps & IHypertextManagedClasses = {
+        const handledProps: HypertextHandledProps & HypertextManagedClasses = {
             managedClasses
         };
 
-        const unhandledProps: IHypertextUnhandledProps = {
+        const unhandledProps: HypertextUnhandledProps = {
             "aria-hidden": true
         };
 
@@ -58,7 +58,7 @@ describe("hypertext", (): void => {
     });
 
     test("should correctly handle children", () => {
-        const handledProps: IHypertextHandledProps & IHypertextManagedClasses = {
+        const handledProps: HypertextHandledProps & HypertextManagedClasses = {
             managedClasses,
             href: "http://www.microsoft.com"
         };

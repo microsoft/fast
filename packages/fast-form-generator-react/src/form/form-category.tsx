@@ -1,14 +1,14 @@
 import * as React from "react";
-import IFormItemCommon from "./form-item";
+import FormItemCommon from "./form-item";
 import styles from "./form-category.style";
-import { IFormCategoryClassNameContract } from "../class-name-contracts/";
+import { FormCategoryClassNameContract } from "../class-name-contracts/";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
  * Select state interface
  */
-export interface IFormCategoryProps {
+export interface FormCategoryProps {
 
     /**
      * Passes the category item
@@ -31,7 +31,7 @@ export interface IFormCategoryProps {
     id?: string;
 }
 
-export interface IFormCategoryState {
+export interface FormCategoryState {
     expanded?: boolean;
 }
 
@@ -40,9 +40,9 @@ export interface IFormCategoryState {
  * @extends React.Component
  */
 /* tslint:disable-next-line */
-class FormCategory extends React.Component<IFormCategoryProps & IManagedClasses<IFormCategoryClassNameContract>, IFormCategoryState> {
+class FormCategory extends React.Component<FormCategoryProps & ManagedClasses<FormCategoryClassNameContract>, FormCategoryState> {
 
-    constructor(props: IFormCategoryProps & IManagedClasses<IFormCategoryClassNameContract>) {
+    constructor(props: FormCategoryProps & ManagedClasses<FormCategoryClassNameContract>) {
         super(props);
 
         if (this.props.expandable) {

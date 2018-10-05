@@ -7,7 +7,7 @@ export enum Levels {
     _4 = 4
 }
 
-export interface INumberFieldProps {
+export interface NumberFieldProps {
     level: Levels;
     quantity: number;
 }
@@ -17,7 +17,7 @@ export interface INumberFieldProps {
  * - a required number-field property which should display as a select dropdown because it is an enum
  * - a required number-field which should display as a text box
  */
-export default class NumberField extends React.Component<INumberFieldProps, {}> {
+export default class NumberField extends React.Component<NumberFieldProps, {}> {
     public render(): JSX.Element {
         return (
             <span>
