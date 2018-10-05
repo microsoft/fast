@@ -2,6 +2,7 @@ import * as React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { Checkbox, CheckboxProps, CheckboxSlot } from "./index";
 import schema from "@microsoft/fast-components-react-base/dist/checkbox/checkbox.schema.json";
+import labelSchema from "@microsoft/fast-components-react-base/dist/label/label.schema.json";
 import Documentation from "./.tmp/documentation";
 import { Label } from "../label";
 
@@ -11,28 +12,64 @@ export default {
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
-        children: [<Label slot={CheckboxSlot.label} key="key">Checkbox</Label>]
+        children: {
+            id: labelSchema.id,
+            props: {
+                slot: CheckboxSlot.label,
+                children: "Checkbox"
+            }
+        }
     },
     data: [
         {
-            children: <Label slot={CheckboxSlot.label}>Default</Label>
+            children: {
+                id: labelSchema.id,
+                props: {
+                    slot: CheckboxSlot.label,
+                    children: "Default"
+                }
+            }
         },
         {
             checked: true,
-            children: <Label slot={CheckboxSlot.label}>Checked (controlled)</Label>
+            children: {
+                id: labelSchema.id,
+                props: {
+                    slot: CheckboxSlot.label,
+                    children: "Checked (controlled)"
+                }
+            }
         },
         {
             disabled: true,
-            children: <Label slot={CheckboxSlot.label}>Disabled</Label>
+            children: {
+                id: labelSchema.id,
+                props: {
+                    slot: CheckboxSlot.label,
+                    children: "Disabled"
+                }
+            }
         },
         {
             indeterminate: true,
-            children: <Label slot={CheckboxSlot.label}>Indeterminate</Label>
+            children: {
+                id: labelSchema.id,
+                props: {
+                    slot: CheckboxSlot.label,
+                    children: "Indeterminate"
+                }
+            }
         },
         {
             indeterminate: true,
             checked: true,
-            children: <Label slot={CheckboxSlot.label}>Indeterminate checked (controlled)</Label>
+            children: {
+                id: labelSchema.id,
+                props: {
+                    slot: CheckboxSlot.label,
+                    children: "Indeterminate checked (controlled)"
+                }
+            }
         }
     ]
 } as ComponentFactoryExample<CheckboxProps>;
