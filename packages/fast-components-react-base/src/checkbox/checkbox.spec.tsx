@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
-import { configure, shallow } from "enzyme";
+import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import Checkbox, {
@@ -9,6 +9,7 @@ import Checkbox, {
     CheckboxHandledProps,
     CheckboxManagedClasses,
     CheckboxProps,
+    CheckboxSlot,
     CheckboxState,
     CheckboxUnhandledProps
 } from "./checkbox";
@@ -124,5 +125,21 @@ describe("checkbox", (): void => {
         expect(rendered.state("checked")).toEqual(true);
         rendered.find(inputSelector).simulate("change");
         expect(rendered.state("checked")).toEqual(true);
+    });
+
+    test("should accept a slotted label", () => {
+        const rendered: any = mount(
+            <Checkbox managedClasses={managedClasses}>
+                <div
+                    slot={CheckboxSlot.label}
+                    className="test-class"
+                >
+                        Hello world
+                </div>
+            </Checkbox>
+        );
+
+        expect(rendered.exists(".test-class"));
+        expect(rendered.find(".test-class").prop("className")).toContain(managedClasses.checkbox_label);
     });
 });
