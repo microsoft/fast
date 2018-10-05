@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
-import { configure, shallow } from "enzyme";
+import { configure, shallow, mount } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import MSFTMetatext, {
@@ -34,7 +34,7 @@ describe("metatext", (): void => {
         ).not.toThrow();
     });
 
-    test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
+    test("should accept unhandledProps", () => {
         const handledProps: IMetatextHandledProps = {
             tag: MetatextTag.p
         };
@@ -45,21 +45,18 @@ describe("metatext", (): void => {
 
         const props: IMetatextHandledProps & IMetatextUnhandledProps = {...handledProps, ...unhandledProps};
 
-        const rendered: any = shallow(
+        const rendered: any = mount(
             <Metatext {...props} />
         );
 
-        const paragraph: any = rendered.first().shallow();
-
-        expect(paragraph.prop("aria-hidden")).toEqual(true);
+        expect(rendered.find(MetatextTag.p).prop("aria-hidden")).toEqual(true);
     });
 
     test("should render the correct `tag` when `tag` prop is passed", () => {
-        const rendered: any = shallow(
+        const rendered: any = mount(
             <Metatext tag={MetatextTag.p} />
         );
-        const paragraph: any = rendered.first().shallow();
 
-        expect(paragraph.instance().props.tag).toEqual(MetatextTag.p);
+        expect(rendered.exists(MetatextTag.p)).toBe(true);
     });
 });
