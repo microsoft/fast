@@ -50,7 +50,7 @@ import {
 } from "./form-section.utilities";
 import styles from "./form-section.style";
 import { IFormSectionClassNameContract } from "../class-name-contracts/";
-import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**

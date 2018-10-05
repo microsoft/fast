@@ -6,7 +6,7 @@ import { RouteComponentProps } from "react-router";
 import { ComponentViewTypes } from "./component-view";
 import { glyphBuildingblocks, glyphExamples, glyphPage } from "@microsoft/fast-glyphs-msft";
 import ComponentViewToggle from "./component-view-toggle";
-import manageJss, { ComponentStyles, ICSSRules, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, ICSSRules, IManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 
 export enum ActionEnum {
     configure = "configure",

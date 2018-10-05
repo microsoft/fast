@@ -11,7 +11,7 @@ import { isRootLocation } from "./form.utilities";
 import { getArrayLinks } from "./form-item.array.utilities";
 import styles from "./form-item.array.style";
 import { IFormItemArrayClassNameContract } from "../class-name-contracts/";
-import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 export enum ItemConstraints {

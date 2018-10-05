@@ -1,6 +1,6 @@
+import SiteTitleBrand from "./title-brand";
 import Toc, { TocItem } from "../toc";
-import * as React from "react";
-import manageJss, { ComponentStyles, DesignSystemProvider, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, DesignSystemProvider, IManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { glyphBuildingblocks, glyphGlobalnavbutton, glyphTransparency } from "@microsoft/fast-glyphs-msft";
 import { mapDataToComponent } from "@microsoft/fast-form-generator-react";
 import { uniqueId } from "lodash-es";
@@ -11,7 +11,7 @@ import { ellipsis, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
 import ComponentWrapper from "./component-wrapper";
 import CategoryList from "./category-list";
 import SiteTitle from "./title";
-import SiteTitleBrand from "./title-brand";
+import * as React from "react";
 import SiteMenu from "./menu";
 import SiteMenuItem from "./menu-item";
 import SiteCategory, { Status } from "./category";

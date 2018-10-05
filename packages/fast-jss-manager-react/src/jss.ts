@@ -5,5 +5,4 @@ const jss: JSS = create(presets());
 const stylesheetManager: SheetsManager = new SheetsManager();
 const stylesheetRegistry: SheetsRegistry = new SheetsRegistry();
 
-export default jss;
-export { stylesheetManager, stylesheetRegistry };
+export { jss, stylesheetManager, stylesheetRegistry };

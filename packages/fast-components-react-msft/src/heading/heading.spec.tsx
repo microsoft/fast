@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
-import { configure, shallow } from "enzyme";
+import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import MSFTHeading, {
@@ -37,7 +37,7 @@ describe("heading", (): void => {
         ).not.toThrow();
     });
 
-    test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
+    test("should accept unhandledProps", () => {
         const handledProps: IHeadingHandledProps = {
             tag: HeadingTag.h1,
             size: HeadingSize._1
@@ -49,21 +49,18 @@ describe("heading", (): void => {
 
         const props: IHeadingHandledProps & IHeadingUnhandledProps = {...handledProps, ...unhandledProps};
 
-        const rendered: any = shallow(
+        const rendered: any = mount(
             <Heading {...props} />
         );
 
-        const heading: any = rendered.first().shallow();
-
-        expect(heading.prop("aria-hidden")).toEqual(true);
+        expect(rendered.find(handledProps.tag).prop("aria-hidden")).toEqual(true);
     });
 
     test("should render the correct `tag` when `tag` prop is passed", () => {
-        const rendered: any = shallow(
-            <Heading tag={HeadingTag.h3} />
+        const rendered: any = mount(
+            <MSFTHeading tag={HeadingTag.h3} />
         );
-        const heading: any = rendered.first().shallow();
 
-        expect(heading.instance().props.tag).toEqual(HeadingTag.h3);
+        expect(rendered.exists(HeadingTag.h3)).toBe(true);
     });
 });
