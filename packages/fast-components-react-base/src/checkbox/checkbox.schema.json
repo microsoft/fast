@@ -6,15 +6,6 @@
     "id": "checkbox",
     "children": true,
     "properties": {
-        "tag": {
-            "title": "HTML tag",
-            "type": "string",
-            "enum": [
-                "div",
-                "label"
-            ],
-            "default": "label"
-        },
         "checked": {
             "title": "Checked",
             "type": "boolean"
