@@ -10,6 +10,11 @@ export interface CheckboxUnhandledProps extends React.AllHTMLAttributes<HTMLElem
 export interface CheckboxHandledProps extends CheckboxManagedClasses {
 
     /**
+     * The id of the checkbox input element
+     */
+    inputId: string;
+
+    /**
      * The checked state
      */
     checked?: boolean;

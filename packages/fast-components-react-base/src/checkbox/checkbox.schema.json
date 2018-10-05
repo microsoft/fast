@@ -16,6 +16,10 @@
         "indeterminate": {
             "title": "Indeterminate",
             "type": "boolean"
+        },
+        "inputId": {
+            "title": "Input element ID",
+            "type": "string"
         }
     },
     "reactProperties": {

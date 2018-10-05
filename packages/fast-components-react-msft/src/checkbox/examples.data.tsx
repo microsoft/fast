@@ -11,6 +11,7 @@ export default {
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
+        inputId: "checkbox",
         children: {
             id: "label",
             props: {
@@ -21,6 +22,7 @@ export default {
     },
     data: [
         {
+            inputId: "checkbox1",
             children: {
                 id: "label",
                 props: {
@@ -30,6 +32,7 @@ export default {
             }
         },
         {
+            inputId: "checkbox2",
             checked: true,
             children: {
                 id: "label",
@@ -40,6 +43,7 @@ export default {
             }
         },
         {
+            inputId: "checkbox3",
             disabled: true,
             children: {
                 id: "label",
@@ -50,6 +54,7 @@ export default {
             }
         },
         {
+            inputId: "checkbox4",
             indeterminate: true,
             children: {
                 id: "label",
@@ -60,6 +65,7 @@ export default {
             }
         },
         {
+            inputId: "checkbox5",
             indeterminate: true,
             checked: true,
             children: {

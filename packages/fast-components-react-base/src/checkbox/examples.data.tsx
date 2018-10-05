@@ -21,23 +21,28 @@ const examples: ComponentFactoryExample<CheckboxHandledProps> = {
     documentation: <Documentation />,
     detailData: {
         ...classes,
-        checked: true
+        checked: true,
+        inputId: "checkbox"
     },
     data: [
         {
-            ...classes
+            ...classes,
+            inputId: "checkbox1"
         },
         {
             ...classes,
-            checked: true
+            checked: true,
+            inputId: "checkbox2"
         },
         {
             ...classes,
-            indeterminate: true
+            indeterminate: true,
+            inputId: "checkbox3"
         },
         {
             ...classes,
-            disabled: true
+            disabled: true,
+            inputId: "checkbox4"
         }
     ]
 };
