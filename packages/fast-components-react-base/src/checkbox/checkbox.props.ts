@@ -9,9 +9,14 @@ export enum CheckboxTag {
     label = "label"
 }
 
+export enum CheckboxSlot {
+    label = "label"
+}
+
 export interface CheckboxManagedClasses extends ManagedClasses<CheckboxClassNameContract> {}
 export interface CheckboxUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
 export interface CheckboxHandledProps extends CheckboxManagedClasses {
+
     /**
      * The HTML tag (defaults to CheckboxTag.checkbox)
      */
