@@ -8,7 +8,7 @@ import MSFTParagraph, {
     ParagraphProps as MSFTParagraphProps,
     ParagraphSize
 } from "./paragraph";
-import manageJss, { IJSSManagerProps, JSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { IDesignSystem, ParagraphStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 
@@ -18,10 +18,10 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const Paragraph = manageJss(ParagraphStyles)(MSFTParagraph);
-type Paragraph = InstanceType<typeof Paragraph>;
+type Paragraph = typeof Paragraph;
 
 interface IParagraphHandledProps extends Subtract<IMSFTParagraphHandledProps, IParagraphManagedClasses> {}
-type ParagraphProps = JSSManagerProps<MSFTParagraphProps, IParagraphClassNameContract, IDesignSystem>;
+type ParagraphProps = ManagedJSSProps<MSFTParagraphProps, IParagraphClassNameContract, IDesignSystem>;
 
 export {
     Paragraph,

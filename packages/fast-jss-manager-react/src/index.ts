@@ -1,7 +1,8 @@
-import manageJss from "./manage-jss";
-import DesignSystemProvider from "./design-system-provider";
+import { manageJss } from "./manage-jss";
 
 export default manageJss;
-export { DesignSystemProvider };
-export * from "./manage-jss";
+export { DesignSystemProvider, IDesignSystemProviderProps } from "./design-system-provider";
+export { stylesheetRegistry, jss } from "./jss";
+export { ManagedJSSProps } from "./jss-manager";
 export * from "./design-system-provider";
+export * from "@microsoft/fast-jss-manager";

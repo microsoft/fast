@@ -1,7 +1,7 @@
 import * as React from "react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { IDevSiteDesignSystem } from "../../src/components/design-system";
-import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, IManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 
 /* tslint:disable:no-empty-interface */
 export interface IErrorBoundaryProps {}
