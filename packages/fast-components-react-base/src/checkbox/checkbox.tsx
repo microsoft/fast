@@ -47,8 +47,7 @@ class Checkbox extends Foundation<
         disabled: void 0,
         indeterminate: void 0,
         managedClasses: void 0,
-        onChange: void 0,
-        tag: void 0
+        onChange: void 0
     };
 
     /**
@@ -88,7 +87,7 @@ class Checkbox extends Foundation<
      */
     public render(): React.ReactElement<HTMLElement> {
         return (
-            <this.tag
+            <div
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
             >
@@ -102,7 +101,7 @@ class Checkbox extends Foundation<
                 />
                 <span className={get(this.props, "managedClasses.checkbox_stateIndicator")} />
                 {this.renderLabel()}
-            </this.tag>
+            </div>
         );
     }
 
@@ -115,13 +114,6 @@ class Checkbox extends Foundation<
         classes = this.props.disabled ? `${classes} ${get(this.props, "managedClasses.checkbox__disabled")}` : classes;
 
         return super.generateClassNames(classes);
-    }
-
-    /**
-     * Stores HTML tag for use in render
-     */
-    private get tag(): string {
-        return CheckboxTag[this.props.tag] || CheckboxTag.label;
     }
 
     /**
