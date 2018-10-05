@@ -101,7 +101,7 @@ describe("flipper", (): void => {
 
         const flipper: any = rendered.first().first();
 
-        expect(flipper.props("label")).toBe("Test aria-label");
+        expect(rendered.prop("label")).toBe("Test aria-label");
         expect(rendered.exists(`[aria-label="${props.label}"]`)).toBe(true);
     });
 });
