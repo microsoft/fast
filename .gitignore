@@ -62,10 +62,10 @@ typings/
 # dotenv environment variables file
 .env
 
-# Ignore distribution directory 
+# Ignore distribution of NPM packages directories
 dist/
 
-# Ignore build www directories
+# Ignore production deployable directories and resources
 www/
 
 #Ignore Mac .DS_Store
@@ -80,3 +80,6 @@ www/
 
 # npm package-locks
 package-lock.json
+
+# Applitools hash files
+.applitools/
