@@ -57,7 +57,7 @@ Pick<
  * The JSSManger. This class manages JSSStyleSheet compilation and passes generated class-names
  * down to child component
  */
-export class JSSManager<T, S, C> extends React.Component<IJSSManagerProps<S, C>, IJSSManagerState> {
+export class JSSManager<S, C> extends React.Component<IJSSManagerProps<S, C>, IJSSManagerState> {
     /**
      * The style manager is responsible for attaching and detaching style elements when
      * components mount and un-mount

@@ -63,20 +63,29 @@ describe("DesignSystemProvider", (): void => {
     });
 
     test("should allow partial updates to context values", (): void => {
+        const renderOne: any = jest.fn();
+        const renderTwo: any = jest.fn();
+
         function render(value: { a: string, b: string }): string {
             return `${value.a}, ${value.b}`;
         }
 
         const tree: ShallowWrapper = mount(
             <DesignSystemProvider designSystem={{a: "a", b: "b"}}>
+                <Consumer>
+                    {renderOne}
+                </Consumer>
                 <DesignSystemProvider designSystem={{a: "A"}}>
                     <Consumer>
-                        {render}
+                        {renderTwo}
                     </Consumer>
                 </DesignSystemProvider>
             </DesignSystemProvider>
         );
 
-        expect(tree.text()).toBe("A, b");
+        expect(renderOne.mock.calls).toHaveLength(1);
+        expect(renderOne.mock.calls[0][0]).toEqual({a: "a", b: "b"});
+        expect(renderTwo.mock.calls).toHaveLength(1);
+        expect(renderTwo.mock.calls[0][0]).toEqual({a: "A", b: "b"});
     });
 });
