@@ -11,11 +11,11 @@ export default {
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
-        text: "Checkbox"
+        children: [<Label slot={CheckboxSlot.label} key="key">Checkbox</Label>]
     },
     data: [
         {
-            children: "Default"
+            children: <Label slot={CheckboxSlot.label}>Default</Label>
         },
         {
             checked: true,
