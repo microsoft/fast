@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
-import { configure, shallow } from "enzyme";
+import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import MSFTFlipper, {
@@ -44,13 +44,11 @@ describe("flipper", (): void => {
 
         const props: IFlipperHandledProps & IFlipperUnhandledProps = {...handledProps, ...unhandledProps};
 
-        const rendered: any = shallow(
+        const rendered: any = mount(
             <Flipper {...props} />
         );
 
-        const flipper: any = rendered.first().shallow();
-
-        expect(flipper.prop("aria-labelledby")).toEqual("foo");
+        expect(rendered.find("button").props()["aria-labelledby"]).toEqual("foo");
     });
 
     test("should set an attribute of `tabindex` to -1 if `visibility` prop is false", () => {
@@ -58,13 +56,11 @@ describe("flipper", (): void => {
             visibleToAssistiveTechnologies: false
         };
 
-        const rendered: any = shallow(
+        const rendered: any = mount(
             <Flipper {...props} />
         );
 
-        const flipper: any = rendered.first().shallow();
-
-        expect(flipper.prop("tabIndex")).toEqual(-1);
+        expect(rendered.find("button").props().tabIndex).toEqual(-1);
     });
 
     test("should set an attribute of `aria-hidden` to true if `visibility` prop is false", () => {
@@ -72,13 +68,11 @@ describe("flipper", (): void => {
             visibleToAssistiveTechnologies: false
         };
 
-        const rendered: any = shallow(
+        const rendered: any = mount(
             <Flipper {...props} />
         );
 
-        const flipper: any = rendered.first().shallow();
-
-        expect(flipper.prop("aria-hidden")).toEqual(true);
+        expect(rendered.find("button").props()["aria-hidden"]).toEqual(true);
     });
 
     test("should not set an attribute of `aria-label` if no label is passed", () => {
@@ -86,11 +80,11 @@ describe("flipper", (): void => {
             visibleToAssistiveTechnologies: false
         };
 
-        const rendered: any = shallow(
+        const rendered: any = mount(
             <Flipper {...props} />
         );
 
-        const flipper: any = rendered.first().shallow();
+        const flipper: any = rendered.first().first();
 
         expect(flipper.prop("aria-label")).toBe(undefined);
     });
@@ -101,13 +95,13 @@ describe("flipper", (): void => {
             label: "Test aria-label"
         };
 
-        const rendered: any = shallow(
+        const rendered: any = mount(
             <Flipper {...props} />
         );
 
-        const flipper: any = rendered.first().shallow();
+        const flipper: any = rendered.first().first();
 
-        expect(flipper.instance().props.label).toBe("Test aria-label");
-        expect(flipper.prop("aria-label")).toBe("Test aria-label");
+        expect(flipper.props("label")).toBe("Test aria-label");
+        expect(rendered.exists(`[aria-label="${props.label}"]`)).toBe(true);
     });
 });
