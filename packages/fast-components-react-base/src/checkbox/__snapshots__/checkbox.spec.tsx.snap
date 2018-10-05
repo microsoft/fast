@@ -1,37 +1,39 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`checkbox snapshot Checkbox: 0 1`] = `
-<label
+<div
   className="checkbox"
 >
   <input
     checked={false}
     className="checkbox_input"
     disabled={null}
+    id="checkbox1"
     onChange={[Function]}
     type="checkbox"
   />
   <span
     className="checkbox_stateIndicator"
   />
-</label>
+</div>
 `;
 
 exports[`checkbox snapshot Checkbox: 1 1`] = `
-<label
+<div
   className="checkbox"
 >
   <input
-    checked={false}
+    checked={true}
     className="checkbox_input"
     disabled={null}
+    id="checkbox2"
     onChange={[Function]}
     type="checkbox"
   />
   <span
     className="checkbox_stateIndicator"
   />
-</label>
+</div>
 `;
 
 exports[`checkbox snapshot Checkbox: 2 1`] = `
@@ -42,6 +44,7 @@ exports[`checkbox snapshot Checkbox: 2 1`] = `
     checked={false}
     className="checkbox_input"
     disabled={null}
+    id="checkbox3"
     onChange={[Function]}
     type="checkbox"
   />
@@ -52,69 +55,19 @@ exports[`checkbox snapshot Checkbox: 2 1`] = `
 `;
 
 exports[`checkbox snapshot Checkbox: 3 1`] = `
-<label
-  className="checkbox"
->
-  <input
-    checked={false}
-    className="checkbox_input"
-    disabled={null}
-    onChange={[Function]}
-    type="checkbox"
-  />
-  <span
-    className="checkbox_stateIndicator"
-  />
-</label>
-`;
-
-exports[`checkbox snapshot Checkbox: 4 1`] = `
-<label
-  className="checkbox"
->
-  <input
-    checked={true}
-    className="checkbox_input"
-    disabled={null}
-    onChange={[Function]}
-    type="checkbox"
-  />
-  <span
-    className="checkbox_stateIndicator"
-  />
-</label>
-`;
-
-exports[`checkbox snapshot Checkbox: 5 1`] = `
-<label
-  className="checkbox"
->
-  <input
-    checked={false}
-    className="checkbox_input"
-    disabled={null}
-    onChange={[Function]}
-    type="checkbox"
-  />
-  <span
-    className="checkbox_stateIndicator"
-  />
-</label>
-`;
-
-exports[`checkbox snapshot Checkbox: 6 1`] = `
-<label
+<div
   className="checkbox checkbox__disabled"
 >
   <input
     checked={false}
     className="checkbox_input"
     disabled={true}
+    id="checkbox4"
     onChange={[Function]}
     type="checkbox"
   />
   <span
     className="checkbox_stateIndicator"
   />
-</label>
+</div>
 `;

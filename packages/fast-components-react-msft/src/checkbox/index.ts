@@ -6,7 +6,8 @@ import {
     CheckboxHandledProps as MSFTCheckboxHandledProps,
     CheckboxManagedClasses,
     CheckboxProps as MSFTCheckboxProps,
-    CheckboxUnhandledProps
+    CheckboxSlot,
+    CheckboxUnhandledProps,
 } from "@microsoft/fast-components-react-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { CheckboxStyles, DesignSystem } from "@microsoft/fast-components-styles-msft";
@@ -28,5 +29,6 @@ export {
     CheckboxProps,
     CheckboxHandledProps,
     CheckboxUnhandledProps,
-    CheckboxClassNameContract
+    CheckboxClassNameContract,
+    CheckboxSlot
 };
