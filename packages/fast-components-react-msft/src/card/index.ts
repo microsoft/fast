@@ -8,16 +8,16 @@ import {
     ICardManagedClasses,
     ICardUnhandledProps
 } from "@microsoft/fast-components-react-base";
-import manageJss, { IJSSManagerProps, JSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { CardStyles, IDesignSystem } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 
 /*tslint:disable-next-line:typedef */
 const Card = manageJss(CardStyles)(BaseCard);
-type Card = InstanceType<typeof Card>;
+type Card = typeof Card;
 
 interface ICardHandledProps extends Subtract<IBaseCardHandledProps, ICardManagedClasses> {}
-type CardProps = JSSManagerProps<BaseCardProps, ICardClassNameContract, IDesignSystem>;
+type CardProps = ManagedJSSProps<BaseCardProps, ICardClassNameContract, IDesignSystem>;
 
 export {
     Card,

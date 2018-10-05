@@ -3,7 +3,7 @@ import IFormItemCommon from "./form-item";
 import { getStringValue } from "./form-item.utilities";
 import styles from "./form-item.number-field.style";
 import { IFormItemNumberFieldClassNameContract } from "../class-name-contracts/";
-import manageJss, { IJSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 export interface IFormItemNumberFieldProps extends IFormItemCommon {

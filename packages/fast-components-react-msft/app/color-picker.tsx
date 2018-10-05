@@ -1,5 +1,5 @@
 import * as React from "react";
-import manageJss, { ComponentStyles, IJSSManagerProps, IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, IManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { IDesignSystem } from "@microsoft/fast-components-styles-msft";
 
 export interface IColorConfig {

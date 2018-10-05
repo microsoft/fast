@@ -8,7 +8,7 @@ import MSFTMetatext, {
     MetatextProps as MSFTMetatextProps,
     MetatextTag
 } from "./metatext";
-import manageJss, { IJSSManagerProps, JSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { IDesignSystem, MetatextStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 
@@ -18,10 +18,10 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const Metatext = manageJss(MetatextStyles)(MSFTMetatext);
-type Metatext = InstanceType<typeof Metatext>;
+type Metatext = typeof Metatext;
 
 interface IMetatextHandledProps extends Subtract<IMSFTMetatextHandledProps, IMetatextManagedClasses> {}
-type MetatextProps = JSSManagerProps<MSFTMetatextProps, IMetatextClassNameContract, IDesignSystem>;
+type MetatextProps = ManagedJSSProps<MSFTMetatextProps, IMetatextClassNameContract, IDesignSystem>;
 
 export {
     Metatext,

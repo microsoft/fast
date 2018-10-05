@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
-import { configure, shallow } from "enzyme";
+import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import MSFTCaption, {
@@ -35,7 +35,7 @@ describe("caption", (): void => {
         ).not.toThrow();
     });
 
-    test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
+    test("should accept unhandledProps", () => {
         const handledProps: ICaptionHandledProps = {
             tag: CaptionTag.p,
             size: CaptionSize._1
@@ -47,30 +47,26 @@ describe("caption", (): void => {
 
         const props: ICaptionHandledProps & ICaptionUnhandledProps = {...handledProps, ...unhandledProps};
 
-        const rendered: any = shallow(
+        const rendered: any = mount(
             <Caption {...props} />
         );
 
-        const caption: any = rendered.first().shallow();
-
-        expect(caption.prop("aria-hidden")).toEqual(true);
+        expect(rendered.find(handledProps.tag).prop("aria-hidden")).toEqual(true);
     });
 
     test("should render a default `tag` of `CaptionTag.p` if no `tag` prop is passed", () => {
-        const rendered: any = shallow(
-            <Caption />
+        const rendered: any = mount(
+            <MSFTCaption />
         );
-        const caption: any = rendered.first().shallow();
 
-        expect(caption.instance().props.tag).toEqual(CaptionTag.p);
+        expect(rendered.prop("tag")).toEqual(CaptionTag.p);
     });
 
     test("should render the correct `size` when `size` prop is passed", () => {
-        const rendered: any = shallow(
+        const rendered: any = mount(
             <Caption size={CaptionSize._2} />
         );
-        const caption: any = rendered.first().shallow();
 
-        expect(caption.instance().props.size).toEqual(CaptionSize._2);
+        expect(rendered.find("p").prop("className")).toContain("caption__2");
     });
 });

@@ -10,7 +10,7 @@ import MSFTHeading, {
     IHeadingManagedClasses,
     IHeadingUnhandledProps
 } from "./heading";
-import manageJss, { IJSSManagerProps, JSSManagerProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { HeadingStyles, IDesignSystem } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 
@@ -20,10 +20,10 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const Heading = manageJss(HeadingStyles)(MSFTHeading);
-type Heading = InstanceType<typeof Heading>;
+type Heading = typeof Heading;
 
 interface IHeadingHandledProps extends Subtract<IMSFTHeadingHandledProps, IHeadingManagedClasses> {}
-type HeadingProps = JSSManagerProps<MSFTHeadingProps, IHeadingClassNameContract, IDesignSystem>;
+type HeadingProps = ManagedJSSProps<MSFTHeadingProps, IHeadingClassNameContract, IDesignSystem>;
 
 export {
     HeadingAlignBaseline,
