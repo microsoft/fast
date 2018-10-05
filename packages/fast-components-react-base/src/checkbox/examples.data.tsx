@@ -1,5 +1,5 @@
 import * as React from "react";
-import Checkbox, { CheckboxHandledProps, CheckboxManagedClasses,  CheckboxTag, CheckboxUnhandledProps  } from "./checkbox";
+import Checkbox, { CheckboxHandledProps, CheckboxManagedClasses, CheckboxUnhandledProps } from "./checkbox";
 import schema from "./checkbox.schema.json";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
@@ -21,35 +21,28 @@ const examples: ComponentFactoryExample<CheckboxHandledProps> = {
     documentation: <Documentation />,
     detailData: {
         ...classes,
-        checked: true
+        checked: true,
+        inputId: "checkbox"
     },
     data: [
         {
-            ...classes
+            ...classes,
+            inputId: "checkbox1"
         },
         {
             ...classes,
-            tag: "foobar" as any
+            checked: true,
+            inputId: "checkbox2"
         },
         {
             ...classes,
-            tag: CheckboxTag.div
+            indeterminate: true,
+            inputId: "checkbox3"
         },
         {
             ...classes,
-            tag: CheckboxTag.label
-        },
-        {
-            ...classes,
-            checked: true
-        },
-        {
-            ...classes,
-            indeterminate: true
-        },
-        {
-            ...classes,
-            disabled: true
+            disabled: true,
+            inputId: "checkbox4"
         }
     ]
 };

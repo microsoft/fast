@@ -1,21 +1,18 @@
 import * as React from "react";
 import { CheckboxClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
-/**
- * Button HTML tags
- */
-export enum CheckboxTag {
-    div = "div",
+export enum CheckboxSlot {
     label = "label"
 }
 
 export interface CheckboxManagedClasses extends ManagedClasses<CheckboxClassNameContract> {}
 export interface CheckboxUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
 export interface CheckboxHandledProps extends CheckboxManagedClasses {
+
     /**
-     * The HTML tag (defaults to CheckboxTag.checkbox)
+     * The id of the checkbox input element
      */
-    tag?: CheckboxTag;
+    inputId: string;
 
     /**
      * The checked state
