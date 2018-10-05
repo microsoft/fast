@@ -1,8 +1,9 @@
 import * as React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { Checkbox, CheckboxProps } from "./index";
+import { Checkbox, CheckboxProps, CheckboxSlot } from "./index";
 import schema from "@microsoft/fast-components-react-base/dist/checkbox/checkbox.schema.json";
 import Documentation from "./.tmp/documentation";
+import { Label } from "../label";
 
 export default {
     name: "Checkbox",
@@ -17,25 +18,21 @@ export default {
             children: "Default"
         },
         {
-            tag: "div",
-            children: "div tag"
-        },
-        {
             checked: true,
-            children: "Checked (controlled)"
+            children: <Label slot={CheckboxSlot.label}>Checked (controlled)</Label>
         },
         {
             disabled: true,
-            children: "Disabled"
+            children: <Label slot={CheckboxSlot.label}>Disabled</Label>
         },
         {
             indeterminate: true,
-            children: "Indeterminate"
+            children: <Label slot={CheckboxSlot.label}>Indeterminate</Label>
         },
         {
             indeterminate: true,
             checked: true,
-            children: "Indeterminate checked (controlled)"
+            children: <Label slot={CheckboxSlot.label}>Indeterminate checked (controlled)</Label>
         }
     ]
 } as ComponentFactoryExample<CheckboxProps>;
