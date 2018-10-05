@@ -1,27 +1,27 @@
 import * as React from "react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import { IDesignSystem } from "../../design-system";
+import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
+import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { DesignSystem } from "../../design-system";
 
-export interface IParagraphProps {
+export interface ParagraphProps {
     text: string;
 }
 
-export interface ITestParagraphClassNameContract {
+export interface TestParagraphClassNameContract {
     paragraph: string;
 }
 
-const ParagraphStyles: ComponentStyles<ITestParagraphClassNameContract, IDesignSystem> = {
+const ParagraphStyles: ComponentStyles<TestParagraphClassNameContract, DesignSystem> = {
     paragraph: {
-        textAlign: (config: IDesignSystem): string => {
+        textAlign: (config: DesignSystem): string => {
             return config.ltr === "ltr" ? "left" : "right";
         }
     }
 };
 
 /* tslint:disable-next-line */
-class Paragraph extends React.Component<IParagraphProps & IManagedClasses<ITestParagraphClassNameContract>, React.HTMLAttributes<HTMLButtonElement>, {}> {
+class Paragraph extends React.Component<ParagraphProps & ManagedClasses<TestParagraphClassNameContract>, React.HTMLAttributes<HTMLButtonElement>, {}> {
 
     public render(): JSX.Element {
         return (

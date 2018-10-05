@@ -3,21 +3,21 @@ import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
+    CardHandledProps,
+    CardManagedClasses,
     CardTag,
-    ICardHandledProps,
-    ICardManagedClasses,
-    ICardUnhandledProps
+    CardUnhandledProps
 } from "./card.props";
-import { ICardClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { CardClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 class Card extends Foundation<
-    ICardHandledProps,
-    ICardUnhandledProps,
+    CardHandledProps,
+    CardUnhandledProps,
     {}
 > {
     public static displayName: string = "Card";
 
-    protected handledProps: HandledProps<ICardHandledProps> = {
+    protected handledProps: HandledProps<CardHandledProps> = {
         children: void 0,
         managedClasses: void 0,
         tag: void 0
@@ -54,4 +54,4 @@ class Card extends Foundation<
 
 export default Card;
 export * from "./card.props";
-export { ICardClassNameContract };
+export { CardClassNameContract };

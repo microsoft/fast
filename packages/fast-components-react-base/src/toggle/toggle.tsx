@@ -2,13 +2,13 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { IToggleHandledProps, IToggleManagedClasses, IToggleUnhandledProps, ToggleProps } from "./toggle.props";
-import { IManagedClasses, IToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { ToggleHandledProps, ToggleManagedClasses, ToggleProps, ToggleUnhandledProps } from "./toggle.props";
+import { ManagedClasses, ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
  * Toggle state interface
  */
-export interface IToggleState {
+export interface ToggleState {
     selected: boolean;
 }
 
@@ -16,16 +16,16 @@ export interface IToggleState {
  * Toggle base component
  */
 class Toggle extends Foundation<
-    IToggleHandledProps,
-    IToggleUnhandledProps,
-    IToggleState
+    ToggleHandledProps,
+    ToggleUnhandledProps,
+    ToggleState
 > {
     public static displayName: string = "Toggle";
 
     /**
      * React life-cycle method
      */
-    public static getDerivedStateFromProps(nextProps: ToggleProps, prevState: IToggleState): null | Partial<IToggleState> {
+    public static getDerivedStateFromProps(nextProps: ToggleProps, prevState: ToggleState): null | Partial<ToggleState> {
         if (typeof nextProps.selected === "boolean" && nextProps.selected !== prevState.selected) {
             return {
                 selected: nextProps.selected
@@ -35,7 +35,7 @@ class Toggle extends Foundation<
         return null;
     }
 
-    protected handledProps: HandledProps<IToggleHandledProps> = {
+    protected handledProps: HandledProps<ToggleHandledProps> = {
         managedClasses: void 0,
         disabled: void 0,
         id: void 0,
@@ -137,4 +137,4 @@ class Toggle extends Foundation<
 
 export default Toggle;
 export * from "./toggle.props";
-export { IToggleClassNameContract };
+export { ToggleClassNameContract };

@@ -3,17 +3,17 @@ import * as ReactDOM from "react-dom";
 import { get, isUndefined } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
-    ILabelHandledProps,
-    ILabelManagedClasses,
-    ILabelUnhandledProps,
+    LabelHandledProps,
+    LabelManagedClasses,
     LabelProps,
-    LabelTag
+    LabelTag,
+    LabelUnhandledProps
 } from "./label.props";
-import { ILabelClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { LabelClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 class Label extends Foundation<
-    ILabelHandledProps,
-    ILabelUnhandledProps,
+    LabelHandledProps,
+    LabelUnhandledProps,
     {}
 > {
     public static displayName: string = "Label";
@@ -22,7 +22,7 @@ class Label extends Foundation<
         tag: LabelTag.label
     };
 
-    protected handledProps: HandledProps<ILabelHandledProps & IManagedClasses<ILabelClassNameContract>> = {
+    protected handledProps: HandledProps<LabelHandledProps & ManagedClasses<LabelClassNameContract>> = {
         hidden: void 0,
         managedClasses: void 0,
         tag: void 0
@@ -65,4 +65,4 @@ class Label extends Foundation<
 
 export default Label;
 export * from "./label.props";
-export {ILabelClassNameContract};
+export { LabelClassNameContract };

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
+import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { Image, ImageProps, ImageSlot } from "./index";
 import schema from "@microsoft/fast-components-react-base/dist/image/image.schema.json";
 import Documentation from "./.tmp/documentation";
@@ -36,4 +36,4 @@ export default {
             alt: "Placeholder with grey background and dimension watermark without any imagery"
         }
     ]
-} as IComponentFactoryExample<ImageProps>;
+} as ComponentFactoryExample<ImageProps>;

@@ -1,4 +1,4 @@
-export interface IAnimateOptions {
+export interface AnimateConfig {
     /**
      * The x position change of the animation
      */
@@ -58,7 +58,7 @@ export interface IAnimateOptions {
 /**
  * Enumerates all properties that can be animated, outside of properties supplied directly via Animate.addKeyframes()
  */
-export interface IAnimationProperties {
+export interface AnimationProperties {
     top?: string;
     right?: string;
     bottom?: string;
@@ -83,7 +83,7 @@ export enum AnimationMode {
 /**
  * Maps css property names to animation options
  */
-export interface IPropertyMap {
+export interface PropertyMap {
     opacity: string[];
     transform: string[];
     top: string[];
@@ -96,7 +96,7 @@ export default abstract class Animate {
     /**
      * A mapping between animation options and the css property names they apply to
      */
-    private static propertyMap: IPropertyMap = {
+    private static propertyMap: PropertyMap = {
         opacity: ["opacity"],
         transform: ["x", "y", "rotate", "scale"],
         top: ["top"],
@@ -108,7 +108,7 @@ export default abstract class Animate {
     /**
      * Stores animation options
      */
-    public options: IAnimateOptions;
+    public options: AnimateConfig;
 
     /**
      * Stores animation timing functions
@@ -161,7 +161,7 @@ export default abstract class Animate {
         }
     }
 
-    constructor(element: HTMLElement, options?: IAnimateOptions, effectTiming?: EffectTiming) {
+    constructor(element: HTMLElement, options?: AnimateConfig, effectTiming?: EffectTiming) {
         this.animationTarget = element;
 
         if (Boolean(effectTiming)) {

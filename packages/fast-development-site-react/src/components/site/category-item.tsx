@@ -1,15 +1,15 @@
 import * as React from "react";
-import manageJss, { ComponentStyles, IManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import { IDevSiteDesignSystem } from "../design-system";
+import { DevSiteDesignSystem } from "../design-system";
 import { ComponentViewSlot } from "../";
 
-export interface ISiteCategoryItemManagedClasses {
+export interface SiteCategoryItemManagedClasses {
     siteCategoryItem: string;
 }
 
-export interface ISiteCategoryItemProps {
+export interface SiteCategoryItemProps {
     slot?: ComponentViewSlot;
     categoryItemComponentMinWidth?: number;
     designSystem?: any;
@@ -17,6 +17,6 @@ export interface ISiteCategoryItemProps {
     type?: string;
 }
 
-class SiteCategoryItem extends React.Component<ISiteCategoryItemProps, {}> {}
+class SiteCategoryItem extends React.Component<SiteCategoryItemProps, {}> {}
 
 export default SiteCategoryItem;

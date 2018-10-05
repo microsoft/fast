@@ -3,12 +3,12 @@ import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { TypographySize, TypographyTag } from "@microsoft/fast-components-react-base";
-import { CaptionProps, CaptionSize, CaptionTag, ICaptionHandledProps, ICaptionUnhandledProps } from "./caption.props";
+import { CaptionHandledProps, CaptionProps, CaptionSize, CaptionTag, CaptionUnhandledProps } from "./caption.props";
 import { Typography } from "../typography";
 
 class Caption extends Foundation<
-    ICaptionHandledProps,
-    ICaptionUnhandledProps,
+    CaptionHandledProps,
+    CaptionUnhandledProps,
     {}
 > {
     public static defaultProps: Partial<CaptionProps> = {
@@ -18,7 +18,7 @@ class Caption extends Foundation<
 
     public static displayName: string = "Caption";
 
-    protected handledProps: HandledProps<ICaptionHandledProps> = {
+    protected handledProps: HandledProps<CaptionHandledProps> = {
         size: void 0,
         managedClasses: void 0,
         tag: void 0

@@ -5,15 +5,15 @@ import { configure, render, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import TextField, {
-    ITextFieldClassNameContract,
-    ITextFieldHandledProps,
-    ITextFieldManagedClasses,
-    ITextFieldUnhandledProps,
+    TextFieldClassNameContract,
+    TextFieldHandledProps,
+    TextFieldManagedClasses,
     TextFieldProps,
-    TextFieldType
+    TextFieldType,
+    TextFieldUnhandledProps
 } from "./text-field";
 
-const managedClasses: ITextFieldClassNameContract = {
+const managedClasses: TextFieldClassNameContract = {
     textField: "text-field-class"
 };
 
@@ -40,12 +40,12 @@ describe("text-field", (): void => {
     });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
-        const handledProps: ITextFieldHandledProps = {
+        const handledProps: TextFieldHandledProps = {
             managedClasses,
             type: TextFieldType.email
         };
 
-        const unhandledProps: ITextFieldUnhandledProps = {
+        const unhandledProps: TextFieldUnhandledProps = {
             "aria-hidden": true
         };
         const props: TextFieldProps = {...handledProps, ...unhandledProps};

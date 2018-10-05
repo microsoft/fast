@@ -1,4 +1,4 @@
-export default interface IFormItemCommon {
+export default interface FormItemCommon {
 
     /**
      * The unique key for React components
@@ -52,7 +52,7 @@ export enum mappingName {
     textarea = "textarea"
 }
 
-export interface IFormItemComponentMappingToProperyNamesProps extends IFormItemCommon {
+export interface FormItemComponentMappingToProperyNamesProps extends FormItemCommon {
     /**
      * The type of layout to map to a layout component
      */

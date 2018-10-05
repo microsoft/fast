@@ -1,10 +1,10 @@
 import * as React from "react";
-import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { Button, ButtonAppearance, ButtonProps } from "./index";
-import { IButtonHandledProps as IBaseButtonHandledProps } from "@microsoft/fast-components-react-base";
+import { ButtonHandledProps as BaseButtonHandledProps } from "@microsoft/fast-components-react-base";
 import schema from "./button.schema.json";
 import Documentation from "./.tmp/documentation";
-import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
+import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import ReactHTMLElementSchema from "../../app/components/react-html-element.schema.json";
 import { ButtonSlot } from "./button";
 
@@ -135,4 +135,4 @@ export default {
             children: "Anchor (disabled)"
         }
     ]
-} as IComponentFactoryExample<ButtonProps>;
+} as ComponentFactoryExample<ButtonProps>;

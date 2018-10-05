@@ -5,21 +5,21 @@ import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-
 import { TypographySize, TypographyTag } from "@microsoft/fast-components-react-base";
 import {
     HeadingAlignBaseline,
-    IHeadingHandledProps,
-    IHeadingManagedClasses,
-    IHeadingUnhandledProps
+    HeadingHandledProps,
+    HeadingManagedClasses,
+    HeadingUnhandledProps
 } from "./heading.props";
 import { Typography } from "../typography";
-import { IHeadingClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
+import { HeadingClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
 
 class Heading extends Foundation<
-    IHeadingHandledProps,
-    IHeadingUnhandledProps,
+    HeadingHandledProps,
+    HeadingUnhandledProps,
     {}
 > {
     public static displayName: string = "Heading";
 
-    protected handledProps: HandledProps<IHeadingHandledProps> = {
+    protected handledProps: HandledProps<HeadingHandledProps> = {
         size: void 0,
         managedClasses: void 0,
         tag: void 0
@@ -68,4 +68,4 @@ class Heading extends Foundation<
 
 export default Heading;
 export * from "./heading.props";
-export { IHeadingClassNameContract };
+export { HeadingClassNameContract };

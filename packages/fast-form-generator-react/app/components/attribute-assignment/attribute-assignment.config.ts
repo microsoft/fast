@@ -1,5 +1,5 @@
 import {
-    IFormAttributeSettingsMappingToPropertyNames
+    FormAttributeSettingsMappingToPropertyNames
 } from "../../../src/form/form.props";
 
 export default {
@@ -11,4 +11,4 @@ export default {
             }
         ]
     }
-} as IFormAttributeSettingsMappingToPropertyNames;
+} as FormAttributeSettingsMappingToPropertyNames;

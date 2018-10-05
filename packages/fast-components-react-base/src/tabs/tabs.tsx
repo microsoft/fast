@@ -1,9 +1,9 @@
 import * as React from "react";
 import { get } from "lodash-es";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
-import { IManagedClasses, ITabsClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { ManagedClasses, TabsClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { ITabsHandledProps, ITabsManagedClasses, ITabsUnhandledProps, TabsProps } from "./tabs.props";
+import { TabsHandledProps, TabsManagedClasses, TabsProps, TabsUnhandledProps } from "./tabs.props";
 
 export enum TabLocation {
     first,
@@ -18,21 +18,21 @@ export enum TabsSlot {
     tabPanel = "tab-panel"
 }
 
-export interface ITabsState {
+export interface TabsState {
     activeId: string;
 }
 
 class Tabs extends Foundation<
-    ITabsHandledProps,
-    ITabsUnhandledProps,
-    ITabsState
+    TabsHandledProps,
+    TabsUnhandledProps,
+    TabsState
 > {
     public static displayName: string = "Tabs";
 
     /**
      * React life-cycle method
      */
-    public static getDerivedStateFromProps(nextProps: TabsProps, prevState: ITabsState): null | ITabsState {
+    public static getDerivedStateFromProps(nextProps: TabsProps, prevState: TabsState): null | TabsState {
         if (nextProps.activeId && nextProps.activeId !== prevState.activeId) {
             return {
                 activeId: nextProps.activeId
@@ -42,7 +42,7 @@ class Tabs extends Foundation<
         return null;
     }
 
-    protected handledProps: HandledProps<ITabsHandledProps> = {
+    protected handledProps: HandledProps<TabsHandledProps> = {
         activeId: void 0,
         label: void 0,
         managedClasses: void 0,

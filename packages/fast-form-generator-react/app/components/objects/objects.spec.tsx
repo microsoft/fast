@@ -1,20 +1,20 @@
 import * as React from "react";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
-import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
+import { SnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { getExample } from "@microsoft/fast-permutator";
-import Form, { IFormProps } from "../../../src/form";
+import Form, { FormProps } from "../../../src/form";
 import * as objectsSchema from "./objects.schema.json";
 
 const name: string = "objects";
 
-const exampleData: IFormProps = {
+const exampleData: FormProps = {
     schema: objectsSchema,
     data: getExample(objectsSchema),
     /* tslint:disable-next-line */
     onChange: (data: any): void => {}
 };
 
-const examples: ISnapshotTestSuite<IFormProps> = {
+const examples: SnapshotTestSuite<FormProps> = {
     name,
     component: Form,
     data: [

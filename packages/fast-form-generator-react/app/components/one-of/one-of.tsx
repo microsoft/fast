@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export interface IOneOfProps {
+export interface OneOfProps {
     number?: number;
     string?: string;
 }
@@ -9,7 +9,7 @@ export interface IOneOfProps {
  * This test components API should have:
  * - two optional properties which in the JSON schema correspond to an oneOf
  */
-export default class OneOf extends React.Component<IOneOfProps, {}> {
+export default class OneOf extends React.Component<OneOfProps, {}> {
     public render(): JSX.Element {
         return (
             <span>

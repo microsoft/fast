@@ -3,8 +3,8 @@ import { clone, cloneDeep, get, isEqual, isPlainObject, mergeWith, set } from "l
 import * as tv4 from "tv4";
 import {
     BreadcrumbItemEventHandler,
-    IChildOptionItem,
-    IFormState
+    ChildOptionItem,
+    FormState
 } from "./form.props";
 import { reactChildrenStringSchema } from "./form-item.children.text";
 
@@ -17,7 +17,7 @@ export enum PropertyKeyword {
     reactProperties = "reactProperties"
 }
 
-export interface INavigationItem {
+export interface NavigationItem {
     dataLocation: string;
     schemaLocation: string;
     title: string;
@@ -25,10 +25,16 @@ export interface INavigationItem {
     schema: any;
 }
 
-export interface INavigationItem {
+export interface NavigationItem {
     dataLocation: string;
     data: any;
     schema: any;
+}
+
+export interface BreadcrumbItem {
+    href: string;
+    text: string;
+    onClick: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
 export type HandleBreadcrumbClick = (schemaLocation: string, dataLocation: string, schema: any) => BreadcrumbItemEventHandler;
@@ -56,12 +62,6 @@ function cachedArrayResolver(objValue: any, srcValue: any): any {
     }
 }
 
-export interface IBreadcrumbItem {
-    href: string;
-    text: string;
-    onClick: (e: React.MouseEvent<HTMLAnchorElement>) => void;
-}
-
 /**
  * Determines the navigation from
  * - section links
@@ -73,7 +73,7 @@ export function getActiveComponentAndSection(
     schemaLocation: string,
     dataLocation: string,
     schema?: any
-): Partial<IFormState> {
+): Partial<FormState> {
     const state: any = {};
 
     state.activeDataLocation = dataLocation;
@@ -103,8 +103,8 @@ export function getLocationsFromSegments(segments: string[]): string[] {
 /**
  * Gets the navigational items
  */
-export function getNavigation(dataLocation: string, data: any, schema: any, childOptions: IChildOptionItem[]): INavigationItem[] {
-    const allChildOptions: IChildOptionItem[] = getReactDefaultChildren().concat(childOptions);
+export function getNavigation(dataLocation: string, data: any, schema: any, childOptions: ChildOptionItem[]): NavigationItem[] {
+    const allChildOptions: ChildOptionItem[] = getReactDefaultChildren().concat(childOptions);
     const dataLocationsOfChildren: string[] = getDataLocationsOfChildren(schema, data, allChildOptions);
     const normalizedDataLocation: string = !dataLocationsOfChildren.includes(dataLocation)
         ? normalizeDataLocation(dataLocation, data)
@@ -112,7 +112,7 @@ export function getNavigation(dataLocation: string, data: any, schema: any, chil
         ? normalizeDataLocation(dataLocation, data)
         : `${normalizeDataLocation(dataLocation, data)}.${propsKeyword}`;
     const dataLocations: Set<string> = new Set([""].concat(getLocationsFromSegments(normalizedDataLocation.split("."))));
-    const navigationItems: INavigationItem[] = [];
+    const navigationItems: NavigationItem[] = [];
     let currentComponentSchema: any = schema;
     let lastComponentDataLocation: string = "";
 
@@ -149,7 +149,7 @@ export function getNavigation(dataLocation: string, data: any, schema: any, chil
 /**
  * Get a single navigation item
  */
-export function getNavigationItem(dataLocation: string, schemaLocation: string, schema: any, data: any): INavigationItem {
+export function getNavigationItem(dataLocation: string, schemaLocation: string, schema: any, data: any): NavigationItem {
     return {
         dataLocation,
         schemaLocation,
@@ -162,7 +162,7 @@ export function getNavigationItem(dataLocation: string, schemaLocation: string, 
 /**
  * Get React's default children
  */
-export function getReactDefaultChildren(): IChildOptionItem[] {
+export function getReactDefaultChildren(): ChildOptionItem[] {
     return [
         {
             name: "Text",
@@ -364,10 +364,10 @@ export function isRootLocation(location: string): boolean {
  * Gets breadcrumbs from navigation items
  */
 export function getBreadcrumbs(
-    navigation: INavigationItem[],
+    navigation: NavigationItem[],
     handleClick: HandleBreadcrumbClick
-): IBreadcrumbItem[] {
-    return navigation.map((navigationItem: INavigationItem): IBreadcrumbItem => {
+): BreadcrumbItem[] {
+    return navigation.map((navigationItem: NavigationItem): BreadcrumbItem => {
         return {
             href: navigationItem.dataLocation,
             text: navigationItem.title,
@@ -379,7 +379,7 @@ export function getBreadcrumbs(
 /**
  * Maps data returned from the form generator to the React components
  */
-export function mapDataToComponent(schema: any, data: any, childOptions: IChildOptionItem[]): any {
+export function mapDataToComponent(schema: any, data: any, childOptions: ChildOptionItem[]): any {
     const mappedData: any = cloneDeep(data);
     // find locations of all items of data that are react children
     const reactChildrenDataLocations: string[] = getDataLocationsOfChildren(schema, mappedData, childOptions);
@@ -393,7 +393,7 @@ export function mapDataToComponent(schema: any, data: any, childOptions: IChildO
         const subData: any = get(mappedData, reactChildrenDataLocation);
         const isChildString: boolean = typeof subData === "string";
         const subDataNormalized: any = isChildString ? subData : get(subData, propsKeyword);
-        const childOption: IChildOptionItem = getChildOptionBySchemaId(subSchemaId, childOptions);
+        const childOption: ChildOptionItem = getChildOptionBySchemaId(subSchemaId, childOptions);
 
         if (!isChildString) {
             let value: any;
@@ -427,7 +427,7 @@ export function mapDataToComponent(schema: any, data: any, childOptions: IChildO
 /**
  * Finds the data locations of children
  */
-export function getDataLocationsOfChildren(schema: any, data: any, childOptions: IChildOptionItem[]): string[] {
+export function getDataLocationsOfChildren(schema: any, data: any, childOptions: ChildOptionItem[]): string[] {
     const dataLocations: string[] = getLocationsFromObject(data);
     const schemaLocations: string[] = getLocationsFromObject(schema);
     // get all schema locations from schema
@@ -480,14 +480,14 @@ export function getDataLocationsOfChildren(schema: any, data: any, childOptions:
 /**
  * Finds the schema using the data location
  */
-export function getSchemaByDataLocation(currentSchema: any, data: any, dataLocation: string, childOptions: IChildOptionItem[]): any {
+export function getSchemaByDataLocation(currentSchema: any, data: any, dataLocation: string, childOptions: ChildOptionItem[]): any {
     if (dataLocation === "") {
         return currentSchema;
     }
 
     const subData: any = get(data, dataLocation);
     const id: string | undefined = subData ? subData.id : void(0);
-    const childOptionWithMatchingSchemaId: any = childOptions.find((childOption: IChildOptionItem) => {
+    const childOptionWithMatchingSchemaId: any = childOptions.find((childOption: ChildOptionItem) => {
         return childOption.schema.id === id;
     });
 
@@ -497,8 +497,8 @@ export function getSchemaByDataLocation(currentSchema: any, data: any, dataLocat
 /**
  * Finds the component using the schema id
  */
-export function getComponentByDataLocation(id: string, childOptions: IChildOptionItem[]): any {
-    const childOption: IChildOptionItem = getChildOptionBySchemaId(id, childOptions);
+export function getComponentByDataLocation(id: string, childOptions: ChildOptionItem[]): any {
+    const childOption: ChildOptionItem = getChildOptionBySchemaId(id, childOptions);
 
     return childOption ? childOption.component : null;
 }
@@ -506,8 +506,8 @@ export function getComponentByDataLocation(id: string, childOptions: IChildOptio
 /**
  * Finds the child option using the schema id
  */
-export function getChildOptionBySchemaId(id: string, childOptions: IChildOptionItem[]): IChildOptionItem | undefined {
-    return childOptions.find((childOption: IChildOptionItem) => {
+export function getChildOptionBySchemaId(id: string, childOptions: ChildOptionItem[]): ChildOptionItem | undefined {
+    return childOptions.find((childOption: ChildOptionItem) => {
         return childOption.schema.id === id;
     });
 }

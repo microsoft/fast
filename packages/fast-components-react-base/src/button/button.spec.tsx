@@ -5,12 +5,12 @@ import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import Button, {
+    ButtonClassNameContract,
+    ButtonHandledProps,
     ButtonHTMLTags,
+    ButtonManagedClasses,
     ButtonProps,
-    IButtonClassNameContract,
-    IButtonHandledProps,
-    IButtonManagedClasses,
-    IButtonUnhandledProps
+    ButtonUnhandledProps
 } from "./button";
 
 /*
@@ -23,7 +23,7 @@ describe("button snapshot", (): void => {
 });
 
 describe("button", (): void => {
-    const managedClasses: IButtonClassNameContract = {
+    const managedClasses: ButtonClassNameContract = {
         button: "test-button"
     };
     const href: string = "https://www.microsoft.com";
@@ -41,11 +41,11 @@ describe("button", (): void => {
     });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
-        const handledProps: IButtonHandledProps = {
+        const handledProps: ButtonHandledProps = {
             managedClasses
         };
 
-        const unhandledProps: IButtonUnhandledProps = {
+        const unhandledProps: ButtonUnhandledProps = {
             "aria-hidden": true
         };
 

@@ -1,11 +1,11 @@
 import * as React from "react";
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import Divider, { IDividerHandledProps, IDividerManagedClasses, IDividerUnhandledProps } from "./divider";
+import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import Divider, { DividerHandledProps, DividerManagedClasses, DividerUnhandledProps } from "./divider";
 import schema from "./divider.schema.json";
 import Documentation from "./.tmp/documentation";
-import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
+import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
-const examples: IComponentFactoryExample<IDividerHandledProps> = {
+const examples: ComponentFactoryExample<DividerHandledProps> = {
     name: "Divider",
     component: Divider,
     schema: schema as any,

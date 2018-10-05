@@ -1,12 +1,12 @@
 import * as CSS from "csstype";
 
-export interface IEllipsis {
+export interface Ellipsis {
     whiteSpace: CSS.WhiteSpaceProperty;
     overflow: CSS.OverflowProperty;
     textOverflow: CSS.TextOverflowProperty;
 }
 
-export function ellipsis(): IEllipsis {
+export function ellipsis(): Ellipsis {
     return {
         whiteSpace: "nowrap",
         overflow: "hidden",

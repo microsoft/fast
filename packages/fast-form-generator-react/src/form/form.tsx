@@ -1,42 +1,42 @@
+import FormSection from "./form-section";
 import * as React from "react";
-import { cloneDeep, get, set, unset } from "lodash-es";
 import {
     BreadcrumbItemEventHandler,
-    IFormProps,
-    IFormState,
+    FormProps,
+    FormState,
     LocationOnChange
 } from "./form.props";
-import { IFormSectionProps } from "./form-section.props";
+import { FormSectionProps } from "./form-section.props";
 import {
+    BreadcrumbItem,
     getActiveComponentAndSection,
     getBreadcrumbs,
     getDataCache,
     getNavigation,
-    IBreadcrumbItem,
-    INavigationItem,
-    isRootLocation
+    isRootLocation,
+    NavigationItem
 } from "./form.utilities";
-import FormSection from "./form-section";
+import { cloneDeep, get, set, unset } from "lodash-es";
 import {
     ChildComponent
 } from "./form-item.children";
 import styles from "./form.style";
-import { IFormClassNameContract } from "../class-name-contracts/";
+import { FormClassNameContract } from "../class-name-contracts/";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
  * Schema form component definition
  * @extends React.Component
  */
-class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameContract>, IFormState> {
+class Form extends React.Component<FormProps & ManagedClasses<FormClassNameContract>, FormState> {
 
     /**
      * The default untitled string
      */
     private untitled: string;
 
-    constructor(props: IFormProps & IManagedClasses<IFormClassNameContract>) {
+    constructor(props: FormProps & ManagedClasses<FormClassNameContract>) {
         super(props);
 
         this.untitled = "Untitled";
@@ -67,8 +67,8 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
     /**
      * React lifecycle hook
      */
-    public componentWillReceiveProps(nextProps: IFormProps): void {
-        const state: Partial<IFormState> = this.updateStateForNewProps(
+    public componentWillReceiveProps(nextProps: FormProps): void {
+        const state: Partial<FormState> = this.updateStateForNewProps(
             nextProps,
             this.props.data !== nextProps.data,
             this.props.schema.id !== nextProps.schema.id,
@@ -76,7 +76,7 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
         );
 
         if (state) {
-            this.setState((state as IFormState));
+            this.setState((state as FormState));
         }
     }
 
@@ -84,8 +84,8 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
      * Update the state when a new schema is given
      */
     /* tslint:disable-next-line */
-    private updateStateForNewProps(props: IFormProps, updateData: boolean, updateSchema: boolean, updateLocation: boolean): Partial<IFormState> {
-        let state: Partial<IFormState> = {};
+    private updateStateForNewProps(props: FormProps, updateData: boolean, updateSchema: boolean, updateLocation: boolean): Partial<FormState> {
+        let state: Partial<FormState> = {};
 
         if (updateData) {
             state = this.getStateWithUpdatedDataCache(props, state);
@@ -107,12 +107,12 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
     /**
      * Gets the state object with an updated data cache
      */
-    private getStateWithUpdatedDataCache(props: IFormProps, state: Partial<IFormState>): Partial<IFormState> {
+    private getStateWithUpdatedDataCache(props: FormProps, state: Partial<FormState>): Partial<FormState> {
         const dataCache: any = typeof this.state !== "undefined" && typeof this.state.dataCache !== "undefined"
             ? this.state.dataCache
             : void(0);
 
-        const schemaState: Partial<IFormState> = {
+        const schemaState: Partial<FormState> = {
             dataCache: getDataCache(dataCache, props.data)
         };
 
@@ -122,8 +122,8 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
     /**
      * Gets the state object with updated locations, title and breadcrumbs
      */
-    private getStateWithUpdatedFormProps(props: IFormProps, state: Partial<IFormState>): Partial<IFormState> {
-        const schemaState: Partial<IFormState> = {
+    private getStateWithUpdatedFormProps(props: FormProps, state: Partial<FormState>): Partial<FormState> {
+        const schemaState: Partial<FormState> = {
             titleProps: props.schema && props.schema.title ? props.schema.title : this.untitled,
             schema: props.schema,
             activeSchemaLocation: "",
@@ -132,14 +132,14 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
             navigation: this.getUpdatedNavigation(props, state)
         };
 
-        return (Object.assign({}, state, schemaState) as Partial<IFormState>);
+        return (Object.assign({}, state, schemaState) as Partial<FormState>);
     }
 
     /**
      * Gets the state with updated location
      */
-    private getStateWithUpdatedLocation(props: IFormProps, state: Partial<IFormState>): Partial<IFormState> {
-        const locationState: Partial<IFormState> = {
+    private getStateWithUpdatedLocation(props: FormProps, state: Partial<FormState>): Partial<FormState> {
+        const locationState: Partial<FormState> = {
             activeSchemaLocation: props.location.schemaLocation,
             activeDataLocation: props.location.dataLocation,
             schema: props.schema,
@@ -154,7 +154,7 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
         return Object.assign({}, state, locationState);
     }
 
-    private getUpdatedNavigation(props: IFormProps, state: Partial<IFormState>): INavigationItem[] {
+    private getUpdatedNavigation(props: FormProps, state: Partial<FormState>): NavigationItem[] {
         return getNavigation(
             props.location ? props.location.dataLocation : state.activeDataLocation || "",
             props.data,
@@ -167,7 +167,7 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
      * Generates the breadcrumb navigation
      */
     private generateBreadcrumbs(): JSX.Element {
-        const breadcrumbs: IBreadcrumbItem[] = getBreadcrumbs(this.state.navigation, this.handleBreadcrumbClick);
+        const breadcrumbs: BreadcrumbItem[] = getBreadcrumbs(this.state.navigation, this.handleBreadcrumbClick);
 
         if (breadcrumbs.length > 1) {
             return <ul className={this.props.managedClasses.form_breadcrumbs}>{this.generateBreadcrumbItems(breadcrumbs)}</ul>;
@@ -182,8 +182,8 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
         };
     }
 
-    private generateBreadcrumbItems(items: IBreadcrumbItem[]): JSX.Element[] {
-        return items.map((item: IBreadcrumbItem, index: number): JSX.Element => {
+    private generateBreadcrumbItems(items: BreadcrumbItem[]): JSX.Element[] {
+        return items.map((item: BreadcrumbItem, index: number): JSX.Element => {
             if (index === items.length - 1) {
                 return <li key={index}><span>{item.text}</span></li>;
             }
@@ -202,7 +202,7 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
      * Generate the section to be shown
      */
     private generateSection(): JSX.Element {
-        const sectionProps: IFormSectionProps = {
+        const sectionProps: FormSectionProps = {
             schema: this.state.navigation[this.state.navigation.length - 1].schema,
             onChange: this.handleOnChange,
             onUpdateActiveSection: this.handleUpdateActiveSection,
@@ -268,7 +268,7 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
      * Handles an update to the active section and component
      */
     private handleUpdateActiveSection = (schemaLocation: string, dataLocation: string, schema: any): void => {
-        const state: Partial<IFormState> = getActiveComponentAndSection(
+        const state: Partial<FormState> = getActiveComponentAndSection(
             schemaLocation,
             dataLocation,
             schema
@@ -276,7 +276,7 @@ class Form extends React.Component<IFormProps & IManagedClasses<IFormClassNameCo
 
         state.navigation = getNavigation(dataLocation || "", this.props.data, this.props.schema, this.props.childOptions);
 
-        this.setState((state as IFormState));
+        this.setState((state as FormState));
     }
 }
 

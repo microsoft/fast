@@ -1,7 +1,7 @@
 import { Direction } from "@microsoft/fast-application-utilities";
 import { memoize } from "lodash-es";
 
-export interface IDesignSystem {
+export interface DesignSystem {
     /**
      * The value typically used for backgrounds of elements
      */
@@ -39,7 +39,7 @@ export interface IDesignSystem {
     foregroundColor: string;
 }
 
-const designSystemDefaults: IDesignSystem = {
+const designSystemDefaults: DesignSystem = {
     backgroundColor: "#FFF",
     brandColor: "#0078D4",
     contrast: 0,
@@ -52,9 +52,9 @@ const designSystemDefaults: IDesignSystem = {
 /**
  * Ensure that all properties of the design system are assigned
  */
-export const withDesignSystemDefaults: (config: Partial<IDesignSystem>) => IDesignSystem =
+export const withDesignSystemDefaults: (config: Partial<DesignSystem>) => DesignSystem =
     memoize(
-        (config: Partial<IDesignSystem>): IDesignSystem => {
+        (config: Partial<DesignSystem>): DesignSystem => {
             return Object.assign({}, designSystemDefaults, config);
         }
     );
@@ -62,8 +62,8 @@ export const withDesignSystemDefaults: (config: Partial<IDesignSystem>) => IDesi
 /**
  * Safely retrieves a single property from a design system
  */
-export function getDesignSystemProperty(key: string): (config: IDesignSystem) => string {
-    return function(config: IDesignSystem): string {
+export function getDesignSystemProperty(key: string): (config: DesignSystem) => string {
+    return function(config: DesignSystem): string {
         return withDesignSystemDefaults(config)[key];
     };
 }

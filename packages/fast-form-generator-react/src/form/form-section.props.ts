@@ -1,11 +1,11 @@
 import {
     DataOnChange,
-    IFormAttributeSettingsMappingToPropertyNames,
-    IFormComponentMappingToPropertyNamesProps,
-    IFormLocation,
-    IFormOrderByPropertyNamesCategories,
-    IFormOrderByPropertyNamesProperties,
-    IFormOrderByPropertyNamesProps
+    FormAttributeSettingsMappingToPropertyNames,
+    FormComponentMappingToPropertyNamesProps,
+    FormLocation,
+    FormOrderByPropertyNamesCategories,
+    FormOrderByPropertyNamesProperties,
+    FormOrderByPropertyNamesProps
 } from "./form.props";
 
 export enum oneOfAnyOfType {
@@ -13,7 +13,7 @@ export enum oneOfAnyOfType {
     oneOf = "oneOf"
 }
 
-export interface IOneOfAnyOf {
+export interface OneOfAnyOf {
     /**
      * The type (oneOf/anyOf)
      */
@@ -31,7 +31,7 @@ export type updateActiveSection = (
     schema?: any
 ) => void;
 
-export interface IFormSectionState {
+export interface FormSectionState {
     /**
      * The current schema
      */
@@ -40,15 +40,15 @@ export interface IFormSectionState {
     /**
      * Whether there is a oneOf/anyOf at the root level
      */
-    oneOfAnyOf?: IOneOfAnyOf;
+    oneOfAnyOf?: OneOfAnyOf;
 
     /**
      * The potential sections inside this schema
      */
-    sections: IFormSectionProps[];
+    sections: FormSectionProps[];
 }
 
-export interface IFormSectionProps {
+export interface FormSectionProps {
     /**
      * The location of the data
      */
@@ -97,25 +97,25 @@ export interface IFormSectionProps {
     /**
      * The custom passed location of a subsection to initially activate
      */
-    location?: IFormLocation;
+    location?: FormLocation;
 
     /**
      * The configuration to map property names to custom controls
      */
-    componentMappingToPropertyNames?: IFormComponentMappingToPropertyNamesProps;
+    componentMappingToPropertyNames?: FormComponentMappingToPropertyNamesProps;
 
     /**
      * The configuration for mapping attributes to form items
      */
-    attributeSettingsMappingToPropertyNames?: IFormAttributeSettingsMappingToPropertyNames;
+    attributeSettingsMappingToPropertyNames?: FormAttributeSettingsMappingToPropertyNames;
 
     /**
      * The configuration for ordering properties by their names
      */
-    orderByPropertyNames?: IFormOrderByPropertyNamesProps;
+    orderByPropertyNames?: FormOrderByPropertyNamesProps;
 }
 
-export interface IFormCategoriesItems {
+export interface FormCategoriesItems {
     /**
      * The items weight
      */
@@ -124,10 +124,10 @@ export interface IFormCategoriesItems {
     /**
      * The parameters to pass to generate the form item
      */
-    params: IFormItemParameters;
+    params: FormItemParameters;
 }
 
-export interface IFormCategories {
+export interface FormCategories {
     /**
      * The category weight
      */
@@ -136,7 +136,7 @@ export interface IFormCategories {
     /**
      * The category form items
      */
-    items: IFormCategoriesItems[];
+    items: FormCategoriesItems[];
 
     /**
      * The category title
@@ -149,7 +149,7 @@ export interface IFormCategories {
     expandable?: boolean;
 }
 
-export interface IFormItemParameters {
+export interface FormItemParameters {
     /**
      * The schema property
      */
@@ -176,7 +176,7 @@ export interface IFormItemParameters {
     title: string;
 }
 
-export interface IAssignedCategoryParams {
+export interface AssignedCategoryParams {
     /**
      * The category name
      */
@@ -200,11 +200,11 @@ export interface IAssignedCategoryParams {
     expandable?: boolean;
 }
 
-export interface IFormItemsWithConfigOptions {
+export interface FormItemsWithConfigOptions {
     /**
      * Parameters such as weight, attribute assignment etc
      */
-    parameters: IFormItemParameters[];
+    parameters: FormItemParameters[];
 
     /**
      * Form items which conform to a section
@@ -212,7 +212,7 @@ export interface IFormItemsWithConfigOptions {
     items: JSX.Element[];
 }
 
-export interface IOptionalToggleConfig {
+export interface OptionalToggleConfig {
     schema: any;
     onChange: (propertyLocation: string, value: any) => void;
     dataLocation: string;
@@ -220,7 +220,7 @@ export interface IOptionalToggleConfig {
     dataCache: any;
 }
 
-export interface ISchemaSubsectionConfig {
+export interface SchemaSubsectionConfig {
     oneOfAnyOf: any;
     objectProperty: string;
     dataLocation: string;
@@ -229,10 +229,10 @@ export interface ISchemaSubsectionConfig {
     props: any;
 }
 
-export interface IAssignedParamsByCategoryConfig {
+export interface AssignedParamsByCategoryConfig {
     categoryProperties: string[];
-    formItemParameter: IFormItemParameters;
-    category: IFormOrderByPropertyNamesCategories;
-    categoryProperty: IFormOrderByPropertyNamesProperties;
+    formItemParameter: FormItemParameters;
+    category: FormOrderByPropertyNamesCategories;
+    categoryProperty: FormOrderByPropertyNamesProperties;
     assignedItemWeight: number;
 }

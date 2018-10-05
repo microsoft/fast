@@ -8,7 +8,7 @@ import { SiteCategory, SiteSlot } from "../";
  * An interface to describe the data required to generate a component example using the componentFactory function
  * @param T - the prop interface for the example component
  */
-export interface IComponentFactoryExample<T> {
+export interface ComponentFactoryExample<T> {
     /**
      * The name of the component example
      */
@@ -40,16 +40,9 @@ export interface IComponentFactoryExample<T> {
     documentation: JSX.Element;
 }
 
-/**
- * An interface to describe the examples object consumed by componentFactor
- */
-export interface IComponentFactoryExamples {
-    [key: string]: IComponentFactoryExample<any>;
-}
-
-export default function componentFactory<P, T>(examples: IComponentFactoryExamples, designSystem?: T): JSX.Element[] {
+export default function componentFactory<P, T>(examples: { [key: string]: ComponentFactoryExample<any> }, designSystem?: T): JSX.Element[] {
     return Object.keys(examples).map((exampleKey: string, index: number) => {
-        const example: IComponentFactoryExample<P> = examples[exampleKey];
+        const example: ComponentFactoryExample<P> = examples[exampleKey];
         return (
             <SiteCategory
                 key={index}

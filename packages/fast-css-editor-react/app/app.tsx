@@ -1,21 +1,21 @@
 import * as React from "react";
 import Site, {
-    ISiteProps,
     SiteCategory,
     SiteCategoryDocumentation,
     SiteCategoryItem,
+    SiteProps,
     SiteTitle,
     SiteTitleBrand
 } from "@microsoft/fast-development-site-react";
-import CSSEditor, { CSSPosition, ICSSEditorProps, ICSSPositionProps, PositionValue } from "../src";
+import CSSEditor, { CSSEditorProps, CSSPosition, CSSPositionProps, PositionValue } from "../src";
 import CSSEditorSchema from "../src/editor.schema.json";
 import CSSPositionSchema from "../src/position/position.schema.json";
 
-export interface IAppState {
-    editorDetail: ICSSEditorProps;
-    editorExample: ICSSEditorProps;
-    positionDetail: ICSSPositionProps;
-    positionExample: ICSSPositionProps;
+export interface AppState {
+    editorDetail: CSSEditorProps;
+    editorExample: CSSEditorProps;
+    positionDetail: CSSPositionProps;
+    positionExample: CSSPositionProps;
 }
 
 export enum EditorView {
@@ -25,8 +25,8 @@ export enum EditorView {
     positionExample = "positionExample"
 }
 
-class App extends React.Component<undefined, IAppState> {
-    public state: IAppState;
+class App extends React.Component<undefined, AppState> {
+    public state: AppState;
 
     constructor(props: undefined) {
         super(props);

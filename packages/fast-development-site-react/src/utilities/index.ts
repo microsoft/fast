@@ -1,8 +1,8 @@
 import componentDocumentationFactory from "./component-documentation-factory";
 export { componentDocumentationFactory };
 
-import componentFactory, { IComponentFactoryExample } from "./component-factory";
-export { componentFactory, IComponentFactoryExample };
+import componentFactory, { ComponentFactoryExample } from "./component-factory";
+export { componentFactory, ComponentFactoryExample };
 
 import componentDetailExampleFactory from "./component-detail-example-factory";
 export { componentDetailExampleFactory };

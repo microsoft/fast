@@ -1,14 +1,14 @@
 import * as React from "react";
 import Typography, {
-    ITypographyHandledProps,
-    ITypographyManagedClasses,
-    ITypographyUnhandledProps,
+    TypographyHandledProps,
+    TypographyManagedClasses,
     TypographySize,
-    TypographyTag
+    TypographyTag,
+    TypographyUnhandledProps
 } from "./typography";
 import schema from "./typography.schema.json";
 import Documentation from "./.tmp/documentation";
-import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
+import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
 const testString: string = "Test string";
 const managedClassExamples: any = {
@@ -24,7 +24,7 @@ const managedClassExamples: any = {
     typography__9: "typography-9"
 };
 
-const examples: IComponentFactoryExample<ITypographyHandledProps & ITypographyManagedClasses> = {
+const examples: ComponentFactoryExample<TypographyHandledProps & TypographyManagedClasses> = {
     name: "Typography",
     component: Typography,
     schema: schema as any,

@@ -1,7 +1,7 @@
 /**
  * The class name contract for the heading component
  */
-export interface IHeadingClassNameContract {
+export interface HeadingClassNameContract {
     /**
      * The root of the heading component
      */

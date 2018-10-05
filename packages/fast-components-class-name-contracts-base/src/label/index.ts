@@ -1,7 +1,7 @@
 /**
  * The class name contract for the label component
  */
-export interface ILabelClassNameContract {
+export interface LabelClassNameContract {
     /**
      * The root of the label component
      */

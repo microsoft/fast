@@ -10,12 +10,12 @@ enum ComponentType {
     paragraph = "paragraph"
 }
 
-export interface ITokens<T> extends Array<T> {
+export interface Tokens<T> extends Array<T> {
     [idx: number]: T;
 }
 
-export interface IToken {
-    children: ITokens<IToken>;
+export interface Token {
+    children: Tokens<Token>;
     tag: string;
     content: string;
     info: string;
@@ -30,15 +30,15 @@ class FastMarkdownIt {
         md.renderer.rules.paragraph_open = function(): string {
             return `<Typography size={${TypographySize._7}}>`;
         };
-        md.renderer.rules.heading_open = function(tokens: ITokens<IToken>, idx: number): string {
+        md.renderer.rules.heading_open = function(tokens: Tokens<Token>, idx: number): string {
             const id: string = tokens[idx + 1].children[0].content.toLowerCase().replace(/\s/g, "-").replace(/[^a-z\-]/g, "");
             /*tslint:disable-next-line */
             return `<Heading id="${id}" tag="${HeadingTag[(tokens[idx].tag)]}" size={${HeadingSize["_" + (parseInt(tokens[idx].tag.charAt(1), 10) + 2).toString()]}}>`;
         };
-        md.renderer.rules.text = (tokens: ITokens<IToken>, idx: number): string => {
+        md.renderer.rules.text = (tokens: Tokens<Token>, idx: number): string => {
             return this.replaceSpecialCharacters(tokens[idx].content);
         };
-        md.renderer.rules.fence = function(tokens: ITokens<IToken>, idx: number): string {
+        md.renderer.rules.fence = function(tokens: Tokens<Token>, idx: number): string {
             let codeSnippet: string = `<pre${tokens[idx].info ? ` className="language-${tokens[idx].info}"` : ""}><code>`;
             codeSnippet += `{${JSON.stringify(tokens[idx].content, null, 2)}}`;
             codeSnippet += `</code></pre>`;

@@ -1,15 +1,15 @@
 import * as React from "react";
 import {
     Divider as BaseDivider,
+    DividerClassNameContract,
+    DividerHandledProps as BaseDividerHandledProps,
+    DividerManagedClasses,
     DividerProps as BaseDividerProps,
     DividerRoles,
-    IDividerClassNameContract,
-    IDividerHandledProps as IBaseDividerHandledProps,
-    IDividerManagedClasses,
-    IDividerUnhandledProps
+    DividerUnhandledProps
 } from "@microsoft/fast-components-react-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { DividerStyles, IDesignSystem } from "@microsoft/fast-components-styles-msft";
+import { DesignSystem, DividerStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 
 /*
@@ -20,14 +20,14 @@ import { Subtract } from "utility-types";
 const Divider =  manageJss(DividerStyles)(BaseDivider);
 type Divider = typeof Divider;
 
-interface IDividerHandledProps extends Subtract<IBaseDividerHandledProps, IDividerManagedClasses> {}
-type DividerProps = ManagedJSSProps<BaseDividerProps, IDividerClassNameContract, IDesignSystem>;
+interface DividerHandledProps extends Subtract<BaseDividerHandledProps, DividerManagedClasses> {}
+type DividerProps = ManagedJSSProps<BaseDividerProps, DividerClassNameContract, DesignSystem>;
 
 export {
     Divider,
     DividerProps,
     DividerRoles,
-    IDividerHandledProps,
-    IDividerUnhandledProps,
-    IDividerClassNameContract
+    DividerHandledProps,
+    DividerUnhandledProps,
+    DividerClassNameContract
 };

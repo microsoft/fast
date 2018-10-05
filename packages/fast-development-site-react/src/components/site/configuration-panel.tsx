@@ -1,14 +1,14 @@
 import * as React from "react";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
+import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
 import Form from "@microsoft/fast-form-generator-react";
-import manageJss, { ComponentStyles, IManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 
 export enum TabType {
     presets = "Presets"
 }
 
-export interface IConfigurationPanelProps {
+export interface ConfigurationPanelProps {
     formChildOptions: any;
     schema: any;
     data: any;
@@ -16,11 +16,11 @@ export interface IConfigurationPanelProps {
     activeTab?: TabType;
 }
 
-export interface IConfigurationPanelState {
+export interface ConfigurationPanelState {
     activeTab: TabType;
 }
 
-export interface IConfigurationPanelManagedClasses {
+export interface ConfigurationPanelManagedClasses {
     configurationPanel: string;
     configurationPanel_controls: string;
     configurationPanel_controlsTabs: string;
@@ -30,7 +30,7 @@ export interface IConfigurationPanelManagedClasses {
     configurationPanel_paneForm: string;
 }
 
-const style: ComponentStyles<IConfigurationPanelManagedClasses, IDevSiteDesignSystem> = {
+const style: ComponentStyles<ConfigurationPanelManagedClasses, DevSiteDesignSystem> = {
     configurationPanel: {
         width: "100%",
         overflowX: "auto"
@@ -59,7 +59,7 @@ const style: ComponentStyles<IConfigurationPanelManagedClasses, IDevSiteDesignSy
             },
             "&:focus": {
                 outline: "none",
-                border: (config: IDevSiteDesignSystem): string => {
+                border: (config: DevSiteDesignSystem): string => {
                     return `${toPx(1)} solid ${config.brandColor || devSiteDesignSystemDefaults.brandColor}`;
                 }
             }
@@ -105,10 +105,10 @@ const style: ComponentStyles<IConfigurationPanelManagedClasses, IDevSiteDesignSy
 };
 
 /* tslint:disable-next-line */
-class ConfigurationPanel extends React.Component<IConfigurationPanelProps & IManagedClasses<IConfigurationPanelManagedClasses>, IConfigurationPanelState> {
+class ConfigurationPanel extends React.Component<ConfigurationPanelProps & ManagedClasses<ConfigurationPanelManagedClasses>, ConfigurationPanelState> {
     private tabs: TabType[];
 
-    constructor(props: IConfigurationPanelProps & IManagedClasses<IConfigurationPanelManagedClasses>) {
+    constructor(props: ConfigurationPanelProps & ManagedClasses<ConfigurationPanelManagedClasses>) {
         super(props);
 
         this.tabs = [TabType.presets];

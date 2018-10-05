@@ -1,15 +1,15 @@
 import * as React from "react";
-import { IFoundationProps } from "@microsoft/fast-components-foundation-react";
-import { IParagraphClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { FoundationProps } from "@microsoft/fast-components-foundation-react";
+import { ParagraphClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import MSFTParagraph, {
-    IParagraphHandledProps as IMSFTParagraphHandledProps,
-    IParagraphManagedClasses,
-    IParagraphUnhandledProps,
+    ParagraphHandledProps as MSFTParagraphHandledProps,
+    ParagraphManagedClasses,
     ParagraphProps as MSFTParagraphProps,
-    ParagraphSize
+    ParagraphSize,
+    ParagraphUnhandledProps
 } from "./paragraph";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { IDesignSystem, ParagraphStyles } from "@microsoft/fast-components-styles-msft";
+import { DesignSystem, ParagraphStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 
 /*
@@ -20,14 +20,14 @@ import { Subtract } from "utility-types";
 const Paragraph = manageJss(ParagraphStyles)(MSFTParagraph);
 type Paragraph = typeof Paragraph;
 
-interface IParagraphHandledProps extends Subtract<IMSFTParagraphHandledProps, IParagraphManagedClasses> {}
-type ParagraphProps = ManagedJSSProps<MSFTParagraphProps, IParagraphClassNameContract, IDesignSystem>;
+interface ParagraphHandledProps extends Subtract<MSFTParagraphHandledProps, ParagraphManagedClasses> {}
+type ParagraphProps = ManagedJSSProps<MSFTParagraphProps, ParagraphClassNameContract, DesignSystem>;
 
 export {
     Paragraph,
     ParagraphSize,
     ParagraphProps,
-    IParagraphHandledProps,
-    IParagraphUnhandledProps,
-    IParagraphClassNameContract
+    ParagraphHandledProps,
+    ParagraphUnhandledProps,
+    ParagraphClassNameContract
 };

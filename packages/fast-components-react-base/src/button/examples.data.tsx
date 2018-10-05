@@ -1,10 +1,10 @@
 import * as React from "react";
-import Button, { IButtonHandledProps, IButtonManagedClasses, IButtonUnhandledProps } from "./button";
+import Button, { ButtonHandledProps, ButtonManagedClasses, ButtonUnhandledProps } from "./button";
 import schema from "./button.schema.json";
 import Documentation from "./.tmp/documentation";
-import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
+import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
-const examples: IComponentFactoryExample<IButtonHandledProps> = {
+const examples: ComponentFactoryExample<ButtonHandledProps> = {
     name: "Button",
     component: Button,
     schema: schema as any,

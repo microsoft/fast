@@ -1,9 +1,9 @@
-import { IDesignSystem } from "../design-system";
-import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
-import { IHeadingClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { DesignSystem } from "../design-system";
+import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
+import { HeadingClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { applyBreakpoint, breakpoints } from "../utilities/breakpoints";
 
-function applyHeadingStyles(): ICSSRules<IDesignSystem> {
+function applyHeadingStyles(): CSSRules<DesignSystem> {
     return {
         fontWeight: "700"
     };
@@ -11,7 +11,7 @@ function applyHeadingStyles(): ICSSRules<IDesignSystem> {
 /**
  * TODO #306: Pull font weight styles when we have an API for font/variable font properties
  */
-const styles: ComponentStyles<IHeadingClassNameContract, IDesignSystem> = {
+const styles: ComponentStyles<HeadingClassNameContract, DesignSystem> = {
     heading: {},
     heading__1: {
         ...applyHeadingStyles()

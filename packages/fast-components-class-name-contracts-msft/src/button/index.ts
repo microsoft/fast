@@ -1,11 +1,11 @@
 import {
-    IButtonClassNameContract as IBaseButtonClassNameContract
+    ButtonClassNameContract as BaseButtonClassNameContract
 } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
  * The class name contract for the button component
  */
-export interface IButtonClassNameContract extends IBaseButtonClassNameContract {
+export interface ButtonClassNameContract extends BaseButtonClassNameContract {
     /**
      * The primary appearance modifier
      */

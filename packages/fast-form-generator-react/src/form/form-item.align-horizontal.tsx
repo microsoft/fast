@@ -1,9 +1,9 @@
 import * as React from "react";
-import { IFormItemComponentMappingToProperyNamesProps } from "./form-item";
+import { FormItemComponentMappingToProperyNamesProps } from "./form-item";
 import styles from "./form-item.align-horizontal.style";
-import { IFormItemAlignHorizontalClassNameContract } from "../class-name-contracts/";
+import { FormItemAlignHorizontalClassNameContract } from "../class-name-contracts/";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { Direction } from "@microsoft/fast-jss-utilities";
 
 /**
@@ -11,7 +11,7 @@ import { Direction } from "@microsoft/fast-jss-utilities";
  * @extends React.Component
  */
 /* tslint:disable-next-line */
-class FormItemAlignHorizontal extends React.Component<IFormItemComponentMappingToProperyNamesProps & IManagedClasses<IFormItemAlignHorizontalClassNameContract>, {}> {
+class FormItemAlignHorizontal extends React.Component<FormItemComponentMappingToProperyNamesProps & ManagedClasses<FormItemAlignHorizontalClassNameContract>, {}> {
     public render(): JSX.Element {
         return (
             <div className={this.props.managedClasses.formItemAlignHorizontal}>

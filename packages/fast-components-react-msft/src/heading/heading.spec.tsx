@@ -4,12 +4,12 @@ import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import MSFTHeading, {
+    HeadingHandledProps,
+    HeadingManagedClasses,
     HeadingProps,
     HeadingSize,
     HeadingTag,
-    IHeadingHandledProps,
-    IHeadingManagedClasses,
-    IHeadingUnhandledProps
+    HeadingUnhandledProps
 } from "./heading";
 import { Typography } from "@microsoft/fast-components-react-base";
 import { Heading } from "./index";
@@ -38,16 +38,16 @@ describe("heading", (): void => {
     });
 
     test("should accept unhandledProps", () => {
-        const handledProps: IHeadingHandledProps = {
+        const handledProps: HeadingHandledProps = {
             tag: HeadingTag.h1,
             size: HeadingSize._1
         };
 
-        const unhandledProps: IHeadingUnhandledProps = {
+        const unhandledProps: HeadingUnhandledProps = {
             "aria-hidden": true
         };
 
-        const props: IHeadingHandledProps & IHeadingUnhandledProps = {...handledProps, ...unhandledProps};
+        const props: HeadingHandledProps & HeadingUnhandledProps = {...handledProps, ...unhandledProps};
 
         const rendered: any = mount(
             <Heading {...props} />

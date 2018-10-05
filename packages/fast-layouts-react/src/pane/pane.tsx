@@ -1,18 +1,18 @@
 import * as React from "react";
 import { throttle } from "lodash-es";
-import { IPaneHandledProps, PaneProps, PaneResizeDirection } from "./pane.props";
+import { PaneHandledProps, PaneProps, PaneResizeDirection } from "./pane.props";
 import { west } from "../row";
 import rafThrottle from "raf-throttle";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import manageJss, { ComponentStyles, IManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import Foundation, { HandledProps, IFoundationProps } from "@microsoft/fast-components-foundation-react";
+import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import Foundation, { FoundationProps, HandledProps } from "@microsoft/fast-components-foundation-react";
 import { canUseDOM } from "exenv-es6";
 import { joinClasses } from "../utilities";
 
 /**
  * The interface for the Pane's state object
  */
-export interface IPaneState {
+export interface PaneState {
     /**
      * Signifies if the pane is currently being resized
      */
@@ -29,7 +29,7 @@ export interface IPaneState {
     width: number;
 }
 
-export interface IPaneClassNamesContract {
+export interface PaneClassNamesContract {
     pane?: string;
     pane_resizeHandle?: string;
     pane__resizeWest?: string;
@@ -38,7 +38,7 @@ export interface IPaneClassNamesContract {
     pane__hidden?: string;
 }
 
-const paneStyleSheet: ComponentStyles<IPaneClassNamesContract, undefined> = {
+const paneStyleSheet: ComponentStyles<PaneClassNamesContract, undefined> = {
     pane: {
         position: "relative",
         flex: "0 1 auto",
@@ -86,12 +86,12 @@ const paneStyleSheet: ComponentStyles<IPaneClassNamesContract, undefined> = {
 class Pane extends Foundation<
     PaneProps,
     React.HTMLAttributes<HTMLDivElement>,
-    IPaneState
+    PaneState
 > {
     /**
      * The default props of the Pane component
      */
-    public static defaultProps: IPaneHandledProps = {
+    public static defaultProps: PaneHandledProps = {
         minWidth: 100,
         maxWidth: 800,
         resizable: false,
@@ -167,7 +167,7 @@ class Pane extends Foundation<
     /**
      * Handle when component updates
      */
-    public componentDidUpdate(prevProps: PaneProps, prevState: IPaneState): void {
+    public componentDidUpdate(prevProps: PaneProps, prevState: PaneState): void {
         if (canUseDOM()) {
             if (this.state.resizing && !prevState.resizing) {
                 document.addEventListener("mouseup", this.onMouseUp);
@@ -316,7 +316,7 @@ class Pane extends Foundation<
             pane__resizeWest,
             pane__overlay,
             pane__hidden
-        }: IPaneClassNamesContract = this.props.managedClasses;
+        }: PaneClassNamesContract = this.props.managedClasses;
         const resizeFrom: PaneResizeDirection = this.props.resizeFrom;
 
         let classes: string = joinClasses(resizeFrom === PaneResizeDirection.east, pane, pane__resizeEast);

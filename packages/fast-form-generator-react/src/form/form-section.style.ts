@@ -10,10 +10,10 @@ import {
     colors,
     rightArrow
 } from "../utilities/form-input.style";
-import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
-import { IFormSectionClassNameContract } from "../class-name-contracts/";
+import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
+import { FormSectionClassNameContract } from "../class-name-contracts/";
 
-const styles: ComponentStyles<IFormSectionClassNameContract, {}> = {
+const styles: ComponentStyles<FormSectionClassNameContract, {}> = {
     formSection: {
         display: "block",
         "& h3": {

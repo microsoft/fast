@@ -1,9 +1,9 @@
 import * as React from "react";
-import { IDialogClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { DialogClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface IDialogUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
-export interface IDialogManagedClasses extends IManagedClasses<IDialogClassNameContract> {}
-export interface IDialogHandledProps extends IDialogManagedClasses {
+export interface DialogUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface DialogManagedClasses extends ManagedClasses<DialogClassNameContract> {}
+export interface DialogHandledProps extends DialogManagedClasses {
     /**
      * The dialog content
      */
@@ -55,4 +55,4 @@ export interface IDialogHandledProps extends IDialogManagedClasses {
     visible?: boolean;
 }
 
-export type DialogProps = IDialogHandledProps & IDialogUnhandledProps;
+export type DialogProps = DialogHandledProps & DialogUnhandledProps;

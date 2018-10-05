@@ -2,10 +2,10 @@ import * as React from "react";
 import { throttle } from "lodash-es";
 import Canvas from "../canvas";
 import rafThrottle from "raf-throttle";
-import { IRowHandledProps, RowProps, RowResizeDirection } from "./row.props";
+import { RowHandledProps, RowProps, RowResizeDirection } from "./row.props";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import manageJss, { ComponentStyles, IManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import Foundation, { HandledProps, IFoundationProps } from "@microsoft/fast-components-foundation-react";
+import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import Foundation, { FoundationProps, HandledProps } from "@microsoft/fast-components-foundation-react";
 import { canUseDOM } from "exenv-es6";
 import { joinClasses } from "../utilities";
 
@@ -17,7 +17,7 @@ export const south: string = "south";
 /**
  * The interface for the Row's state object
  */
-export interface IRowState {
+export interface RowState {
     /**
      * Signifies if the row is currently being resized
      */
@@ -34,7 +34,7 @@ export interface IRowState {
     height: number;
 }
 
-export interface IRowClassNamesContract {
+export interface RowClassNamesContract {
     row?: string;
     row__fill?: string;
     row_resizeHandle?: string;
@@ -44,7 +44,7 @@ export interface IRowClassNamesContract {
     row__hidden?: string;
 }
 
-const rowStyleSheet: ComponentStyles<IRowClassNamesContract, undefined> = {
+const rowStyleSheet: ComponentStyles<RowClassNamesContract, undefined> = {
     row: {
         position: "relative",
         display: "flex",
@@ -99,9 +99,9 @@ const rowStyleSheet: ComponentStyles<IRowClassNamesContract, undefined> = {
 class Row extends Foundation<
     RowProps,
     React.HTMLAttributes<HTMLDivElement>,
-    IRowState
+    RowState
 > {
-    public static defaultProps: IRowHandledProps = {
+    public static defaultProps: RowHandledProps = {
         fill: false,
         minHeight: 40,
         maxHeight: 800,
@@ -158,7 +158,7 @@ class Row extends Foundation<
     /**
      * Handle when component updates
      */
-    public componentDidUpdate(prevProps: RowProps, prevState: IRowState): void {
+    public componentDidUpdate(prevProps: RowProps, prevState: RowState): void {
         if (canUseDOM()) {
             if (this.state.resizing && !prevState.resizing) {
                 document.addEventListener("mouseup", this.onMouseUp);
@@ -304,7 +304,7 @@ class Row extends Foundation<
             row__resizeSouth,
             row__overlay,
             row__hidden
-        }: IRowClassNamesContract = this.props.managedClasses;
+        }: RowClassNamesContract = this.props.managedClasses;
         const resizeFrom: RowResizeDirection = this.props.resizeFrom;
 
         let classes: string = joinClasses(resizeFrom === RowResizeDirection.north, row, row__resizeNorth);

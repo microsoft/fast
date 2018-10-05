@@ -2,14 +2,14 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { DialogProps, IDialogHandledProps, IDialogManagedClasses, IDialogUnhandledProps } from "./dialog.props";
-import { IDialogClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { DialogHandledProps, DialogManagedClasses, DialogProps, DialogUnhandledProps } from "./dialog.props";
+import { DialogClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { canUseDOM } from "exenv-es6";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 class Dialog extends Foundation<
-    IDialogHandledProps,
-    IDialogUnhandledProps,
+    DialogHandledProps,
+    DialogUnhandledProps,
     {}
 > {
     public static defaultProps: Partial<DialogProps> = {
@@ -20,7 +20,7 @@ class Dialog extends Foundation<
 
     public static displayName: string = "Dialog";
 
-    protected handledProps: HandledProps<IDialogHandledProps> = {
+    protected handledProps: HandledProps<DialogHandledProps> = {
         describedBy: void 0,
         label: void 0,
         labelledBy: void 0,
@@ -70,7 +70,7 @@ class Dialog extends Foundation<
     /**
      * React life-cycle method
      */
-    public componentDidUpdate(prevProps: Partial<IDialogHandledProps>): void {
+    public componentDidUpdate(prevProps: Partial<DialogHandledProps>): void {
         if (canUseDOM()) {
             if (!prevProps.onDismiss && this.props.onDismiss) {
                 window.addEventListener("keydown", this.handleWindowKeyDown);
@@ -129,4 +129,4 @@ class Dialog extends Foundation<
 
 export default Dialog;
 export * from "./dialog.props";
-export { IDialogClassNameContract };
+export { DialogClassNameContract };

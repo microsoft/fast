@@ -1,13 +1,13 @@
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { applyHeaderStyle } from "../utilities/form-input.style";
-import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
-import { IFormCategoryClassNameContract } from "../class-name-contracts/";
+import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
+import { FormCategoryClassNameContract } from "../class-name-contracts/";
 import formCategory from "./form-category";
 
 // tslint:disable-next-line
 const dropdownArrow: string = "PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHRpdGxlPmNoZXZyb24tZG93bjwvdGl0bGU+PHBhdGggZD0iTTMwLjUsNy4yOSwzMS45LDguNywxNi4yLDI0LjQuNSw4LjcsMS45LDcuMjlsMTQuMywxNC4zWiIvPjwvc3ZnPg==";
 
-const styles: ComponentStyles<IFormCategoryClassNameContract, {}> = {
+const styles: ComponentStyles<FormCategoryClassNameContract, {}> = {
     formCategory_button: {
         margin: `${toPx(20)} 0 0 0`,
         minHeight: toPx(40),

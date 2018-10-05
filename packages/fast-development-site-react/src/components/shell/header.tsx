@@ -1,15 +1,15 @@
 import * as React from "react";
-import manageJss, { ComponentStyles, IManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import { IDevSiteDesignSystem } from "../design-system";
-import { IRowManagedClasses, Pane, Row } from "@microsoft/fast-layouts-react";
+import { DevSiteDesignSystem } from "../design-system";
+import { Pane, Row, RowManagedClasses } from "@microsoft/fast-layouts-react";
 
 class ShellHeader extends React.Component<{}, {}> {
-    private rowStyles: Partial<ComponentStyles<IRowManagedClasses, IDevSiteDesignSystem>> = {
+    private rowStyles: Partial<ComponentStyles<RowManagedClasses, DevSiteDesignSystem>> = {
         row: {
             background: "#343434",
             alignItems: "center",
-            color: (config: IDevSiteDesignSystem): string => {
+            color: (config: DevSiteDesignSystem): string => {
                 return config.backgroundColor;
             },
             textAlign: "left",

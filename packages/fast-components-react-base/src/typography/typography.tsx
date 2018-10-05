@@ -3,18 +3,18 @@ import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
-    ITypographyHandledProps,
-    ITypographyManagedClasses,
-    ITypographyUnhandledProps,
+    TypographyHandledProps,
+    TypographyManagedClasses,
     TypographyProps,
     TypographySize,
-    TypographyTag
+    TypographyTag,
+    TypographyUnhandledProps
 } from "./typography.props";
-import { IManagedClasses, ITypographyClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { ManagedClasses, TypographyClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 
 class Typography extends Foundation<
-    ITypographyHandledProps,
-    ITypographyUnhandledProps,
+    TypographyHandledProps,
+    TypographyUnhandledProps,
     {}
 > {
     public static defaultProps: Partial<TypographyProps> = {
@@ -23,7 +23,7 @@ class Typography extends Foundation<
 
     public static displayName: string = "Typography";
 
-    protected handledProps: HandledProps<ITypographyHandledProps> = {
+    protected handledProps: HandledProps<TypographyHandledProps> = {
         managedClasses: void 0,
         tag: void 0,
         size: void 0
@@ -71,4 +71,4 @@ class Typography extends Foundation<
 
 export default Typography;
 export * from "./typography.props";
-export { ITypographyClassNameContract };
+export { TypographyClassNameContract };

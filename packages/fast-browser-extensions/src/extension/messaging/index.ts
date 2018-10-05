@@ -1,4 +1,4 @@
-import { IContextMenuItem, IContextMenus } from "../contextMenu";
+import { ContextMenuItemConfig } from "../contextMenu";
 import { extensionId, menuItemClickEvent } from "../config";
 
 export type CREATE_MENUS_MESSAGE = "MESSAGE::CREATE_MENUS";
@@ -7,7 +7,7 @@ export const CREATE_MENUS_MESSAGE: CREATE_MENUS_MESSAGE = "MESSAGE::CREATE_MENUS
 /**
  * Message to create a new menu system
  */
-export interface ICreateMessage {
+export interface CreateMessageConfig {
     /**
      * The type of message
      */
@@ -16,13 +16,13 @@ export interface ICreateMessage {
     /**
      * The message data
      */
-    data: IContextMenus;
+    data: {[key: string]: ContextMenuItemConfig[]};
 }
 
 /**
  * Aggregate all message types into one type
  */
-export type CreateMessage = ICreateMessage;
+export type CreateMessage = CreateMessageConfig;
 
 /**
  * Supported themes
@@ -60,12 +60,12 @@ export function onMenuItemClick(callback: (e: Event) => void): void {
 /**
  * Communicates from a client to the browser extension that a new menu system should be created
  */
-export function createContextMenus(config: IContextMenus): void {
-    const data: ICreateMessage = {
+export function createContextMenus(data: {[key: string]: ContextMenuItemConfig[]}): void {
+    const message: CreateMessageConfig = {
         type: CREATE_MENUS_MESSAGE,
-        data: config
+        data
     };
 
     // TODO #160: create x-browser version of this using extension api
-    chrome.runtime.sendMessage(extensionId, data);
+    chrome.runtime.sendMessage(extensionId, message);
 }

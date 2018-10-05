@@ -1,7 +1,7 @@
 /**
  * The class name contract for the horizontal overflow component
  */
-export interface IHorizontalOverflowClassNameContract {
+export interface HorizontalOverflowClassNameContract {
     /**
      * The root of the horizontal overflow component
      */

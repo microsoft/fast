@@ -1,8 +1,8 @@
 import * as React from "react";
 import { getStringValue } from "./form-item.utilities";
-import IFormItemCommon from "./form-item";
+import FormItemCommon from "./form-item";
 
-export interface IFormItemTextFieldProps extends IFormItemCommon {
+export interface FormItemTextFieldProps extends FormItemCommon {
 
     /**
      * The type of text field
@@ -14,7 +14,7 @@ export interface IFormItemTextFieldProps extends IFormItemCommon {
  * Schema form component definition
  * @extends React.Component
  */
-class FormItemTextField extends React.Component<IFormItemTextFieldProps, {}> {
+class FormItemTextField extends React.Component<FormItemTextFieldProps, {}> {
 
     public render(): JSX.Element {
         const value: string = getStringValue(this.props.data, this.props.default);

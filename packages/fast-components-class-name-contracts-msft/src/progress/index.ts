@@ -1,11 +1,11 @@
 import {
-    IProgressClassNameContract as IBaseProgressClassNameContract
+    ProgressClassNameContract as BaseProgressClassNameContract
 } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
  * The class name contract for the progress component
  */
-export interface IProgressClassNameContract extends IBaseProgressClassNameContract {
+export interface ProgressClassNameContract extends BaseProgressClassNameContract {
     /**
      * The progress value indicator
      */

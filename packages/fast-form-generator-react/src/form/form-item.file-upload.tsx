@@ -1,8 +1,8 @@
 import * as React from "react";
 import { uniqueId } from "lodash-es";
-import { IFormItemComponentMappingToProperyNamesProps } from "./form-item";
+import { FormItemComponentMappingToProperyNamesProps } from "./form-item";
 
-export interface IFormItemFileUploadState {
+export interface FormItemFileUploadState {
     /**
      * If the file-upload is being dragged over
      */
@@ -18,7 +18,7 @@ export interface IFormItemFileUploadState {
  * Schema form component definition
  * @extends React.Component
  */
-class FormItemFileUpload extends React.Component<IFormItemComponentMappingToProperyNamesProps, IFormItemFileUploadState> {
+class FormItemFileUpload extends React.Component<FormItemComponentMappingToProperyNamesProps, FormItemFileUploadState> {
 
     /**
      * The id of the file input
@@ -30,7 +30,7 @@ class FormItemFileUpload extends React.Component<IFormItemComponentMappingToProp
      */
     private reader: FileReader = new FileReader();
 
-    constructor(props: IFormItemComponentMappingToProperyNamesProps) {
+    constructor(props: FormItemComponentMappingToProperyNamesProps) {
         super(props);
 
         this.fileId = uniqueId();

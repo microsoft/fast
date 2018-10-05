@@ -1,10 +1,10 @@
 import * as React from "react";
 
-export interface IObjectWithChildren {
+export interface ObjectWithChildren {
     nestedObjectChildren: JSX.Element;
 }
 
-export interface IChildrenProps {
+export interface ChildrenProps {
     /**
      * Children which are restricted to a subset of childOptions via the JSON schema
      */
@@ -19,14 +19,14 @@ export interface IChildrenProps {
     /**
      * An object containing a property that are children
      */
-    objectContainingNestedChildren?: IObjectWithChildren;
+    objectContainingNestedChildren?: ObjectWithChildren;
 }
 
 /**
  * This test components API should have:
  * - no properties but should pass children
  */
-export default class Children extends React.Component<IChildrenProps, {}> {
+export default class Children extends React.Component<ChildrenProps, {}> {
     public static displayName: string = "Children";
 
     public render(): JSX.Element {

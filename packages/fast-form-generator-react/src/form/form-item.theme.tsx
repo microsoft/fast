@@ -1,16 +1,16 @@
 import * as React from "react";
-import { IFormItemComponentMappingToProperyNamesProps } from "./form-item";
+import { FormItemComponentMappingToProperyNamesProps } from "./form-item";
 import styles from "./form-item.theme.style";
-import { IFormItemThemeClassNameContract } from "../class-name-contracts/";
+import { FormItemThemeClassNameContract } from "../class-name-contracts/";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
  * Schema form component definition
  * @extends React.Component
  */
 /* tslint:disable-next-line */
-class FormItemTheme extends React.Component<IFormItemComponentMappingToProperyNamesProps & IManagedClasses<IFormItemThemeClassNameContract>, {}> {
+class FormItemTheme extends React.Component<FormItemComponentMappingToProperyNamesProps & ManagedClasses<FormItemThemeClassNameContract>, {}> {
 
     public render(): JSX.Element {
         return (
