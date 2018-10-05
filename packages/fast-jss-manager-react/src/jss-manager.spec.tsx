@@ -97,6 +97,19 @@ describe("The JSSManager", (): void => {
         }).not.toThrow();
     });
 
+    test("should not throw when no stylesheet is provided and design system is changed", (): void => {
+        const rendered: ReactWrapper = mount(
+            <JSSManager
+                designSystem={testDesignSystem}
+                render={renderChild}
+            />
+        );
+
+        expect((): void => {
+            rendered.setProps({designSystem: {color: "blue"}});
+        }).not.toThrow();
+    });
+
     test("should compile a stylesheet when mounting", (): void => {
         const objectStylesheetComponent: ReactWrapper = mount(
             <JSSManager
@@ -184,19 +197,20 @@ describe("The JSSManager", (): void => {
         expect(functionSheet.attached).toBe(false);
     });
 
-    xtest("should create a new stylesheet when stylesheet props are changed", () => {
-        const Component: any = manageJss(staticAndDynamicStyles)(SimpleComponent);
+    test("should create a new stylesheet when stylesheet props are changed", () => {
         const rendered: any = shallow(
-            <Component jssStyleSheet={{dynamicStylesClass: { margin: "0" }}} />,
-            { context: {designSystem: true} }
+            <JSSManager
+                styles={stylesheet}
+                designSystem={testDesignSystem}
+                render={renderChild}
+            />
         );
 
-        const styleSheet: any = rendered.state("styleSheet");
+        const sheet: any = rendered.state("styleSheet");
 
-        rendered.setProps({jssStyleSheet: {dynamicStylesClass: { margin: "1px" }}});
+        rendered.setProps({jssStyleSheet: { class: { color: "blue" } }});
 
-        expect(styleSheet.attached).toBe(false);
-        expect(rendered.state("styleSheet").attached).toBe(true);
+        expect(rendered.state("styleSheet")).not.toBe(sheet);
     });
 
     test("should store all stylesheets in the registry", (): void => {
