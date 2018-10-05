@@ -1,17 +1,17 @@
 import * as React from "react";
-import { IFoundationProps } from "@microsoft/fast-components-foundation-react";
+import { FoundationProps } from "@microsoft/fast-components-foundation-react";
 import {
-    ITypographyClassNameContract,
-    ITypographyHandledProps as IBaseTypographyHandledProps,
-    ITypographyManagedClasses,
-    ITypographyUnhandledProps,
     Typography as BaseTypography,
+    TypographyClassNameContract,
+    TypographyHandledProps as BaseTypographyHandledProps,
+    TypographyManagedClasses,
     TypographyProps as BaseTypographyProps,
     TypographySize,
-    TypographyTag
+    TypographyTag,
+    TypographyUnhandledProps
 } from "@microsoft/fast-components-react-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { IDesignSystem, TypographyStyles } from "@microsoft/fast-components-styles-msft";
+import { DesignSystem, TypographyStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 
 /*
@@ -22,13 +22,13 @@ import { Subtract } from "utility-types";
 const Typography = manageJss(TypographyStyles)(BaseTypography);
 type Typography = typeof Typography;
 
-interface ITypographyHandledProps extends Subtract<IBaseTypographyHandledProps, ITypographyManagedClasses> {}
-type TypographyProps = ManagedJSSProps<BaseTypographyProps, ITypographyClassNameContract, IDesignSystem>;
+interface TypographyHandledProps extends Subtract<BaseTypographyHandledProps, TypographyManagedClasses> {}
+type TypographyProps = ManagedJSSProps<BaseTypographyProps, TypographyClassNameContract, DesignSystem>;
 
 export {
-    ITypographyClassNameContract,
-    ITypographyHandledProps,
-    ITypographyUnhandledProps,
+    TypographyClassNameContract,
+    TypographyHandledProps,
+    TypographyUnhandledProps,
     Typography,
     TypographyProps,
     TypographySize,

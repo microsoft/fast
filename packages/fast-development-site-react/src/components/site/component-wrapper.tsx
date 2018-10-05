@@ -1,25 +1,25 @@
 import * as React from "react";
 import manageJss, {
     ComponentStyles,
+    CSSRules,
     DesignSystemProvider,
-    ICSSRules,
-    IManagedClasses,
+    ManagedClasses,
     ManagedJSSProps
 } from "@microsoft/fast-jss-manager-react";
-import { ErrorBoundary, IErrorBoundaryProps } from "../../utilities";
+import { ErrorBoundary, ErrorBoundaryProps } from "../../utilities";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { Direction } from "@microsoft/fast-application-utilities";
-import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
+import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
 import { ComponentViewTypes } from "./component-view";
 
-export interface IComponentWrapperManagedClasses {
+export interface ComponentWrapperManagedClasses {
     componentWrapper: string;
     componentWrapper__transparent: string;
     componentWrapperExamples: string;
     componentWrapper__active: string;
 }
 
-export interface IComponentWrapperProps<T> {
+export interface ComponentWrapperProps<T> {
     active: boolean;
     index: number;
     singleRow?: boolean;
@@ -35,7 +35,7 @@ export interface IComponentWrapperProps<T> {
 const checker: string = "url('data:image/gif;base64,R0lGODlhEAAQAPABANfX1////yH5BAAAAAAALAAAAAAQABAAAAIfhG+hq4jM3IFLJhoswNly/XkcBpIiVaInlLJr9FZWAQAh/wtYTVAgRGF0YVhNUDw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+Cjx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTM4IDc5LjE1OTgyNCwgMjAxNi8wOS8xNC0wMTowOTowMSAgICAgICAgIj4KIDxyZGY6UkRGIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyI+CiAgPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIvPgogPC9yZGY6UkRGPgo8L3g6eG1wbWV0YT4KPD94cGFja2V0IGVuZD0iciI/PgH//v38+/r5+Pf29fTz8vHw7+7t7Ovq6ejn5uXk4+Lh4N/e3dzb2tnY19bV1NPS0dDPzs3My8rJyMfGxcTDwsHAv769vLu6ubi3trW0s7KxsK+urayrqqmop6alpKOioaCfnp2cm5qZmJeWlZSTkpGQj46NjIuKiYiHhoWEg4KBgH9+fXx7enl4d3Z1dHNycXBvbm1sa2ppaGdmZWRjYmFgX15dXFtaWVhXVlVUU1JRUE9OTUxLSklIR0ZFRENCQUA/Pj08Ozo5ODc2NTQzMjEwLy4tLCsqKSgnJiUkIyIhIB8eHRwbGhkYFxYVFBMSERAPDg0MCwoJCAcGBQQDAgEAADs=')";
 
 const componentWrapperBorder: string = `${toPx(1)} solid rgb(204, 204, 204)`;
-const styles: ComponentStyles<IComponentWrapperManagedClasses, IDevSiteDesignSystem> = {
+const styles: ComponentStyles<ComponentWrapperManagedClasses, DevSiteDesignSystem> = {
     componentWrapper: {
         display: "block",
         padding: toPx(24),
@@ -61,7 +61,7 @@ const styles: ComponentStyles<IComponentWrapperManagedClasses, IDevSiteDesignSys
             left: toPx(-10),
             border: `${toPx(10)} solid transparent`,
             opacity: ".5",
-            borderRight: (config: IDevSiteDesignSystem): string => {
+            borderRight: (config: DevSiteDesignSystem): string => {
                 return `${toPx(10)} solid ${config.brandColor}`;
             },
         }
@@ -69,7 +69,7 @@ const styles: ComponentStyles<IComponentWrapperManagedClasses, IDevSiteDesignSys
 };
 
 /* tslint:disable-next-line */
-class ComponentWrapper extends React.Component<IComponentWrapperProps<IDevSiteDesignSystem> & IManagedClasses<IComponentWrapperManagedClasses>, {}> {
+class ComponentWrapper extends React.Component<ComponentWrapperProps<DevSiteDesignSystem> & ManagedClasses<ComponentWrapperManagedClasses>, {}> {
     public render(): JSX.Element {
         return (
             <div className={this.getClassNames()} onClick={this.handleClick} dir={this.props.dir || null} style={this.getInlineStyle()}>

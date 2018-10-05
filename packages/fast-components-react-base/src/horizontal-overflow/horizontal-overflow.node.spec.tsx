@@ -8,8 +8,8 @@ import * as ReactDOMServer from "react-dom/server";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import HorizontalOverflow, {
-    IHorizontalOverflowClassNameContract,
-    IHorizontalOverflowHandledProps,
+    HorizontalOverflowClassNameContract,
+    HorizontalOverflowHandledProps,
 } from "./";
 
 /*
@@ -26,7 +26,7 @@ const imageSet1: JSX.Element[] = [
     (<img key="image6" src="https://placehold.it/200x200?text=6" />)
 ];
 
-const managedClasses: IHorizontalOverflowClassNameContract = {
+const managedClasses: HorizontalOverflowClassNameContract = {
     horizontalOverflow: "horizontal-overflow-class",
     horizontalOverflow_contentRegion: "horizontal-overflow-items-class",
     horizontalOverflow_next: "horizontal-overflow-next-class",

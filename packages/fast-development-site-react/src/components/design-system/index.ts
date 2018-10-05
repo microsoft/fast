@@ -1,4 +1,4 @@
-export interface IDevSiteDesignSystem {
+export interface DevSiteDesignSystem {
     foregroundColor: string;
     backgroundColor: string;
     brandColor: string;
@@ -7,7 +7,7 @@ export interface IDevSiteDesignSystem {
     categoryItemComponentMinWidth: number;
 }
 
-const devSiteDesignSystemDefaults: IDevSiteDesignSystem = {
+const devSiteDesignSystemDefaults: DevSiteDesignSystem = {
     foregroundColor: "#000",
     backgroundColor: "#FFF",
     brandColor: "#FB356D",

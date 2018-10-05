@@ -1,16 +1,16 @@
 import * as React from "react";
-import { IFoundationProps } from "@microsoft/fast-components-foundation-react";
+import { FoundationProps } from "@microsoft/fast-components-foundation-react";
 import {
-    IImageClassNameContract,
-    IImageHandledProps as IBaseImageHandledProps,
-    IImageManagedClasses,
-    IImageUnhandledProps,
     Image as BaseImage,
-    ImageProps as IBaseImageProps,
-    ImageSlot
+    ImageClassNameContract,
+    ImageHandledProps as BaseImageHandledProps,
+    ImageManagedClasses,
+    ImageProps as BaseImageProps,
+    ImageSlot,
+    ImageUnhandledProps
 } from "@microsoft/fast-components-react-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { IDesignSystem, ImageStyles } from "@microsoft/fast-components-styles-msft";
+import { DesignSystem, ImageStyles } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 
 /*
@@ -21,13 +21,13 @@ import { Subtract } from "utility-types";
 const Image = manageJss(ImageStyles)(BaseImage);
 type Image = typeof Image;
 
-interface IImageHandledProps extends Subtract<IBaseImageHandledProps, IImageManagedClasses> {}
-type ImageProps = ManagedJSSProps<IBaseImageProps, IImageClassNameContract, IDesignSystem>;
+interface ImageHandledProps extends Subtract<BaseImageHandledProps, ImageManagedClasses> {}
+type ImageProps = ManagedJSSProps<BaseImageProps, ImageClassNameContract, DesignSystem>;
 
 export {
-    IImageClassNameContract,
-    IImageHandledProps,
-    IImageUnhandledProps,
+    ImageClassNameContract,
+    ImageHandledProps,
+    ImageUnhandledProps,
     Image,
     ImageProps,
     ImageSlot

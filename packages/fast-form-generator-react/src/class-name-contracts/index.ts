@@ -1,35 +1,35 @@
-import IFormCategoryClassNameContract from "./form-category.class-name-contracts";
-export { IFormCategoryClassNameContract };
+import FormCategoryClassNameContract from "./form-category.class-name-contracts";
+export { FormCategoryClassNameContract };
 
-import IFormClassNameContract from "./form.class-name-contract";
-export { IFormClassNameContract };
+import FormClassNameContract from "./form.class-name-contract";
+export { FormClassNameContract };
 
-import IFormItemAlignHorizontalClassNameContract from "./form-item.align-horizontal.class-name-contract";
-export { IFormItemAlignHorizontalClassNameContract };
+import FormItemAlignHorizontalClassNameContract from "./form-item.align-horizontal.class-name-contract";
+export { FormItemAlignHorizontalClassNameContract };
 
-import IFormItemAlignVerticalClassNameContract from "./form-item.align-vertical.class-name-contract";
-export { IFormItemAlignVerticalClassNameContract };
+import FormItemAlignVerticalClassNameContract from "./form-item.align-vertical.class-name-contract";
+export { FormItemAlignVerticalClassNameContract };
 
-import IFormItemArrayClassNameContract from "./form-item.array.class-name-contract";
-export { IFormItemArrayClassNameContract };
+import FormItemArrayClassNameContract from "./form-item.array.class-name-contract";
+export { FormItemArrayClassNameContract };
 
-import IFormItemCheckboxClassNameContract from "./form-item.checkbox.class-name-contract";
-export { IFormItemCheckboxClassNameContract };
+import FormItemCheckboxClassNameContract from "./form-item.checkbox.class-name-contract";
+export { FormItemCheckboxClassNameContract };
 
-import IFormItemChildrenClassNameContract from "./form-item.children.class-name-contract";
-export { IFormItemChildrenClassNameContract };
+import FormItemChildrenClassNameContract from "./form-item.children.class-name-contract";
+export { FormItemChildrenClassNameContract };
 
-import IFormItemNumberFieldClassNameContract from "./form-item.number-field.class-name-contract";
-export { IFormItemNumberFieldClassNameContract };
+import FormItemNumberFieldClassNameContract from "./form-item.number-field.class-name-contract";
+export { FormItemNumberFieldClassNameContract };
 
-import IFormSectionClassNameContract from "./form-section.class-name-contract";
-export { IFormSectionClassNameContract };
+import FormSectionClassNameContract from "./form-section.class-name-contract";
+export { FormSectionClassNameContract };
 
-import IFormItemSelectClassNameContract from "./form-item.select.class-name-contract";
-export { IFormItemSelectClassNameContract };
+import FormItemSelectClassNameContract from "./form-item.select.class-name-contract";
+export { FormItemSelectClassNameContract };
 
-import IFormItemTextareaClassNameContract from "./form-item.textarea.class-name-contract";
-export { IFormItemTextareaClassNameContract };
+import FormItemTextareaClassNameContract from "./form-item.textarea.class-name-contract";
+export { FormItemTextareaClassNameContract };
 
-import IFormItemThemeClassNameContract from "./form-item.theme.class-name-contract";
-export { IFormItemThemeClassNameContract };
+import FormItemThemeClassNameContract from "./form-item.theme.class-name-contract";
+export { FormItemThemeClassNameContract };

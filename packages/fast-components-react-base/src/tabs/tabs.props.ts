@@ -1,10 +1,10 @@
 import * as React from "react";
-import { IManagedClasses, ITabsClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { ManagedClasses, TabsClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { Orientation } from "@microsoft/fast-web-utilities";
 
-export interface ITabsManagedClasses extends IManagedClasses<ITabsClassNameContract> {}
-export interface ITabsUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
-export interface ITabsHandledProps extends ITabsManagedClasses {
+export interface TabsManagedClasses extends ManagedClasses<TabsClassNameContract> {}
+export interface TabsUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
+export interface TabsHandledProps extends TabsManagedClasses {
     /**
      * The active tab item id
      */
@@ -47,4 +47,4 @@ export interface ITabsHandledProps extends ITabsManagedClasses {
     tabSlot?: string;
 }
 
-export type TabsProps = ITabsHandledProps & ITabsUnhandledProps;
+export type TabsProps = TabsHandledProps & TabsUnhandledProps;

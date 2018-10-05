@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cleanLowerOrderComponentProps, manageJss } from "./manage-jss";
-import { IJSSManagerProps, JSSManager } from "./jss-manager";
+import { JSSManager } from "./jss-manager";
 import { jss, stylesheetRegistry } from "./jss";
 import { ComponentStyles, ComponentStyleSheetResolver } from "@microsoft/fast-jss-manager";
 import * as ShallowRenderer from "react-test-renderer/shallow";

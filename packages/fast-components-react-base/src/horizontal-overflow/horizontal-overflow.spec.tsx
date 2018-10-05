@@ -1,10 +1,9 @@
 import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import HorizontalOverflow, {
     ButtonDirection,
-    IHorizontalOverflowClassNameContract
+    HorizontalOverflowClassNameContract
 } from "./";
 import "raf/polyfill";
 
@@ -29,7 +28,7 @@ const imageSet1: JSX.Element[] = [
     (<img id={id6} key={id6} src="https://placehold.it/200x200?text=6" />)
 ];
 
-const managedClasses: IHorizontalOverflowClassNameContract = {
+const managedClasses: HorizontalOverflowClassNameContract = {
     horizontalOverflow: "horizontal-overflow-class",
     horizontalOverflow_contentRegion: "horizontal-overflow-items-class",
     horizontalOverflow_next: "horizontal-overflow-next-class",

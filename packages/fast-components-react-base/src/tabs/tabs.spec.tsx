@@ -4,19 +4,19 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import { KeyCodes, Orientation } from "@microsoft/fast-web-utilities";
 import {
-    ITabClassNameContract,
-    ITabPanelClassNameContract,
-    ITabsClassNameContract
+    TabClassNameContract,
+    TabPanelClassNameContract,
+    TabsClassNameContract
 } from "@microsoft/fast-components-class-name-contracts-base";
 import Tabs, {
-    ITabsHandledProps,
-    ITabsManagedClasses,
-    ITabsUnhandledProps,
     Tab,
     TabItem,
     TabPanel,
+    TabsHandledProps,
+    TabsManagedClasses,
     TabsProps,
-    TabsSlot
+    TabsSlot,
+    TabsUnhandledProps
 } from "./index";
 
 export enum CustomTabsSlot {
@@ -31,17 +31,17 @@ export enum CustomTabsSlot {
 configure({adapter: new Adapter()});
 
 describe("tabs", (): void => {
-    const tabsManagedClasses: ITabsClassNameContract = {
+    const tabsManagedClasses: TabsClassNameContract = {
             tabs: "tabs-class",
             tabs_tabList: "tab_list-class",
     };
 
-    const tabPanelManagedClasses: ITabPanelClassNameContract = {
+    const tabPanelManagedClasses: TabPanelClassNameContract = {
         tabPanel: "tab_panel-class",
         tabPanel__hidden: "tab_panel__hidden-class"
     };
 
-    const tabManagedClasses: ITabClassNameContract = {
+    const tabManagedClasses: TabClassNameContract = {
         tab: "tab-class",
         tab__active: "tab__active-class"
     };

@@ -1,7 +1,7 @@
 /**
  * The class name contract for the toggle component
  */
-export interface IToggleClassNameContract {
+export interface ToggleClassNameContract {
     /**
      * The root of the toggle component
      */

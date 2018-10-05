@@ -1,7 +1,7 @@
 /**
  * The class name contract for the image component
  */
-export interface IImageClassNameContract {
+export interface ImageClassNameContract {
     /**
      * The root of the image component
      */

@@ -1,19 +1,19 @@
-import designSystemDefaults, { IDesignSystem } from "../design-system";
+import designSystemDefaults, { DesignSystem } from "../design-system";
 import { ensureBrandNormal, ensureForegroundNormal } from "../utilities/colors";
-import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
-import { IHypertextClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
+import { HypertextClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
 import { toPx } from "@microsoft/fast-jss-utilities";
 
-function applyHypertextBorder(pixels: number): ICSSRules<IDesignSystem> {
+function applyHypertextBorder(pixels: number): CSSRules<DesignSystem> {
     return {
-        borderBottom: (config: IDesignSystem): string => {
+        borderBottom: (config: DesignSystem): string => {
             return `${toPx(pixels)} solid ${ensureBrandNormal(config)}`;
         }
     };
 }
 
-const styles: ComponentStyles<IHypertextClassNameContract, IDesignSystem> = {
+const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = {
     hypertext: {
         outline: "none",
         textDecoration: "none",

@@ -1,12 +1,12 @@
 import * as React from "react";
-import IFormItemCommon from "./form-item";
+import FormItemCommon from "./form-item";
 import { getStringValue } from "./form-item.utilities";
 import styles from "./form-item.number-field.style";
-import { IFormItemNumberFieldClassNameContract } from "../class-name-contracts/";
+import { FormItemNumberFieldClassNameContract } from "../class-name-contracts/";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface IFormItemNumberFieldProps extends IFormItemCommon {
+export interface FormItemNumberFieldProps extends FormItemCommon {
     /**
      * The minimum value allowed
      */
@@ -27,7 +27,7 @@ export interface IFormItemNumberFieldProps extends IFormItemCommon {
  * Schema form component definition
  * @extends React.Component
  */
-class FormItemNumberField extends React.Component<IFormItemNumberFieldProps & IManagedClasses<IFormItemNumberFieldClassNameContract>, {}> {
+class FormItemNumberField extends React.Component<FormItemNumberFieldProps & ManagedClasses<FormItemNumberFieldClassNameContract>, {}> {
 
     public render(): JSX.Element {
         const value: string = getStringValue(this.props.data, this.props.default);

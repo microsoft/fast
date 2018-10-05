@@ -1,14 +1,14 @@
-import designSystemDefaults, { IDesignSystem, withDesignSystemDefaults } from "../design-system";
+import designSystemDefaults, { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { disabledContrast, ensureNormalContrast } from "../utilities/colors";
-import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
+import { ComponentStyles, ComponentStyleSheet, CSSRules } from "@microsoft/fast-jss-manager";
 import { applyLocalizedProperty, Direction, ensureContrast, toPx } from "@microsoft/fast-jss-utilities";
 import { typeRamp } from "../utilities/typography";
-import { IToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Chroma from "chroma-js";
 
 /* tslint:disable-next-line */
-const styles: ComponentStyles<IToggleClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<IToggleClassNameContract, IDesignSystem> => {
-    const designSystem: IDesignSystem = withDesignSystemDefaults(config);
+const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (config: DesignSystem): ComponentStyleSheet<ToggleClassNameContract, DesignSystem> => {
+    const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const backgroundColor: string = ensureNormalContrast(config.contrast, designSystem.backgroundColor, designSystem.foregroundColor);
     const brandColor: string = ensureNormalContrast(config.contrast, designSystem.brandColor, designSystem.backgroundColor);
     const foregroundColor: string = ensureNormalContrast(config.contrast, designSystem.foregroundColor, designSystem.backgroundColor);

@@ -1,12 +1,12 @@
 import * as React from "react";
-import { IProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { ProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { IDesignSystem, ProgressStyles } from "@microsoft/fast-components-styles-msft";
+import { DesignSystem, ProgressStyles } from "@microsoft/fast-components-styles-msft";
 import MSFTProgress, {
-    IProgressHandledProps as IMSFTProgressHandledProps,
-    IProgressManagedClasses,
-    IProgressUnhandledProps,
-    ProgressProps as MSFTProgressProps
+    ProgressHandledProps as MSFTProgressHandledProps,
+    ProgressManagedClasses,
+    ProgressProps as MSFTProgressProps,
+    ProgressUnhandledProps
 } from "./progress";
 import { Subtract } from "utility-types";
 /*
@@ -17,13 +17,13 @@ import { Subtract } from "utility-types";
 const Progress = manageJss(ProgressStyles)(MSFTProgress);
 type Progress = typeof Progress;
 
-interface IProgressHandledProps extends Subtract<IMSFTProgressHandledProps, IProgressManagedClasses> {}
-type ProgressProps = ManagedJSSProps<MSFTProgressProps, IProgressClassNameContract, IDesignSystem>;
+interface ProgressHandledProps extends Subtract<MSFTProgressHandledProps, ProgressManagedClasses> {}
+type ProgressProps = ManagedJSSProps<MSFTProgressProps, ProgressClassNameContract, DesignSystem>;
 
 export {
     Progress,
     ProgressProps,
-    IProgressUnhandledProps,
-    IProgressHandledProps,
-    IProgressClassNameContract
+    ProgressUnhandledProps,
+    ProgressHandledProps,
+    ProgressClassNameContract
 };

@@ -1,8 +1,8 @@
 import schema from "./react-html-element.schema.json";
-import Container from "./react-html-element";
+import ReactHTMLElement from "./react-html-element";
 
 export default {
-    name: "HTML Element",
+    name: "HTMLElement",
     schema,
-    component: Container
+    component: ReactHTMLElement
 };

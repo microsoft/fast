@@ -1,7 +1,7 @@
 /**
  * The class name contract for the subheading component
  */
-export interface ISubheadingClassNameContract {
+export interface SubheadingClassNameContract {
     /**
      * The root of the subheading component
      */

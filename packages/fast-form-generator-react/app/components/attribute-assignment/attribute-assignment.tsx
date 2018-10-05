@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export interface IAttributeAssignmentProps {
+export interface AttributeAssignmentProps {
     text: string;
 }
 
@@ -8,7 +8,7 @@ export interface IAttributeAssignmentProps {
  * This test components API should have:
  * - a required property and a config that changes the generated form element attributes
  */
-export default class AttributeAssignment extends React.Component<IAttributeAssignmentProps, {}> {
+export default class AttributeAssignment extends React.Component<AttributeAssignmentProps, {}> {
     public render(): JSX.Element {
         return (
             <span>

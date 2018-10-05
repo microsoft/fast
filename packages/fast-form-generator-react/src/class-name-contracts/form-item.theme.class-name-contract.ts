@@ -1,7 +1,7 @@
 /**
  * Theme class name contract
  */
-export default interface IFormItemThemeClassNameContract {
+export default interface FormItemThemeClassNameContract {
     formItemTheme: string;
     formItemTheme_label: string;
     formItemTheme_inputContainer: string;

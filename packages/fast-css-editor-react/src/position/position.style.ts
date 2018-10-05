@@ -1,7 +1,7 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { toPx } from "@microsoft/fast-jss-utilities";
 
-export interface ICSSPositionClassNameContract {
+export interface CSSPositionClassNameContract {
     cssPosition: string;
     cssPosition_selectContainer: string;
     cssPosition_selectContainer_select: string;
@@ -14,7 +14,7 @@ export interface ICSSPositionClassNameContract {
     absoluteInput_row_center__activeRight: string;
 }
 
-const styles: ComponentStyles<ICSSPositionClassNameContract, {}> = {
+const styles: ComponentStyles<CSSPositionClassNameContract, {}> = {
     cssPosition: {
     },
     cssPosition_selectContainer: {

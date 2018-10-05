@@ -1,15 +1,15 @@
-import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
-import { IButtonClassNameContract, ICallToActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { ComponentStyles, ComponentStyleSheet, CSSRules } from "@microsoft/fast-jss-manager";
+import { ButtonClassNameContract, CallToActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { applyLocalizedProperty, Direction, localizeSpacing } from "@microsoft/fast-jss-utilities";
-import { IDesignSystem, withDesignSystemDefaults } from "../design-system/index";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system/index";
 import { disabledContrast, ensureNormalContrast } from "../utilities/colors";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
-export const callToActionButtonOverrides: ComponentStyles<Partial<IButtonClassNameContract>, IDesignSystem> = {
+export const callToActionButtonOverrides: ComponentStyles<Partial<ButtonClassNameContract>, DesignSystem> = {
     button: {
         maxWidth: "100%",
-        padding: (config: IDesignSystem): string => {
-            const designSystem: IDesignSystem = withDesignSystemDefaults(config);
+        padding: (config: DesignSystem): string => {
+            const designSystem: DesignSystem = withDesignSystemDefaults(config);
             return localizeSpacing(designSystem.direction)("13px 22px 11px 24px");
         }
     },
@@ -26,10 +26,10 @@ export const callToActionButtonOverrides: ComponentStyles<Partial<IButtonClassNa
     }
 };
 
-const styles: ComponentStyles<ICallToActionClassNameContract, IDesignSystem> = (
-    config: IDesignSystem
-): ComponentStyleSheet<ICallToActionClassNameContract, IDesignSystem> => {
-    const designSystem: IDesignSystem = withDesignSystemDefaults(config);
+const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
+    config: DesignSystem
+): ComponentStyleSheet<CallToActionClassNameContract, DesignSystem> => {
+    const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const direction: Direction = designSystem.direction;
     const color: string = "white";
     const primaryRestBackgroundColor: string = ensureNormalContrast(

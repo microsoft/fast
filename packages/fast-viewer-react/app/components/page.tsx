@@ -1,7 +1,7 @@
 import * as React from "react";
 import jss from "jss";
 import preset from "jss-preset-default";
-import Viewer, { IViewerConfig, IViewerProps } from "../../src/components/viewer";
+import Viewer, { ViewerConfig, ViewerProps } from "../../src/components/viewer";
 import manager, { theme } from "../utilities/style-manager";
 import Example from "./example";
 
@@ -15,15 +15,14 @@ const styles: any = {
 
 const stylesheet: any = jss.createStyleSheet(styles, {link: true}).update(theme);
 
-export interface IPageState {
+export interface PageState {
     width: number;
     data: any;
     exampleStyles: string;
-    viewerConfig: IViewerConfig;
+    viewerConfig: ViewerConfig;
 }
 
-class Page extends React.Component<{}, IPageState> {
-
+class Page extends React.Component<{}, PageState> {
     constructor(props: {}) {
         super(props);
 

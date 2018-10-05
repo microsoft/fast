@@ -6,11 +6,7 @@ export enum Direction {
     rtl = "rtl"
 }
 
-export interface ILocaleDirectionMapping {
-    [key: string]: Direction;
-}
-
-export const localeDirectionMapping: ILocaleDirectionMapping = {
+export const localeDirectionMapping: {[key: string]: Direction} = {
     "en": Direction.ltr,
     "en-rtl": Direction.rtl
 };

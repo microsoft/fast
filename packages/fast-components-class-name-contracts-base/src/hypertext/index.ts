@@ -1,7 +1,7 @@
 /**
  * The class name contract for the hypertext component
  */
-export interface IHypertextClassNameContract {
+export interface HypertextClassNameContract {
     /**
      * The root of the hypertext component
      */

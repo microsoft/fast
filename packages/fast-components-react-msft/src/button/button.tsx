@@ -3,9 +3,9 @@ import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
     ButtonAppearance,
-    IButtonHandledProps,
-    IButtonManagedClasses,
-    IButtonUnhandledProps
+    ButtonHandledProps,
+    ButtonManagedClasses,
+    ButtonUnhandledProps
 } from "./button.props";
 import { Button as BaseButton } from "@microsoft/fast-components-react-base";
 
@@ -18,13 +18,13 @@ export enum ButtonSlot {
 }
 
 class Button extends Foundation<
-    IButtonHandledProps,
-    IButtonUnhandledProps,
+    ButtonHandledProps,
+    ButtonUnhandledProps,
     {}
 > {
     public static displayName: string = "Button";
 
-    protected handledProps: HandledProps<IButtonHandledProps> = {
+    protected handledProps: HandledProps<ButtonHandledProps> = {
         appearance: void 0,
         disabled: void 0,
         href: void 0,

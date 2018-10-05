@@ -4,25 +4,35 @@ import { getExample } from "@microsoft/fast-permutator";
 import tv4 from "tv4";
 import {
     AttributeSettingsMappingToPropertyNames,
-    IFormComponentMappingToPropertyNamesProps,
-    IFormOrderByPropertyNamesCategories,
-    IFormOrderByPropertyNamesProperties,
-    IFormOrderByPropertyNamesProps
+    FormComponentMappingToPropertyNamesProps,
+    FormOrderByPropertyNamesCategories,
+    FormOrderByPropertyNamesProperties,
+    FormOrderByPropertyNamesProps
 } from "./form.props";
 import { isRootLocation } from "./form.utilities";
 import {
-    IAssignedCategoryParams,
-    IAssignedParamsByCategoryConfig,
-    IFormCategories,
-    IFormItemParameters,
-    IFormItemsWithConfigOptions,
-    IFormSectionProps,
-    IOneOfAnyOf,
-    IOptionalToggleConfig,
-    ISchemaSubsectionConfig,
-    oneOfAnyOfType
+    AssignedCategoryParams,
+    AssignedParamsByCategoryConfig,
+    FormCategories,
+    FormItemParameters,
+    FormItemsWithConfigOptions,
+    FormSectionProps,
+    OneOfAnyOf,
+    oneOfAnyOfType,
+    OptionalToggleConfig,
+    SchemaSubsectionConfig
 } from "./form-section.props";
 import { mappingName } from "./form-item";
+
+export interface OptionalToggle {
+    id: number | string;
+    label: string;
+    selected: boolean;
+    selectedString: string;
+    unselectedString: string;
+    name: string;
+    updateRequested: (value: any, id: string) => void;
+}
 
 /**
  * Validate a schema against a set of data
@@ -210,16 +220,6 @@ export function generateExampleData(schema: any, propertyLocation: string): any 
     return getExample(schemaSection);
 }
 
-export interface IOptionalToggle {
-    id: number | string;
-    label: string;
-    selected: boolean;
-    selectedString: string;
-    unselectedString: string;
-    name: string;
-    updateRequested: (value: any, id: string) => void;
-}
-
 function getPropertyLocation(dataLocation: string, propertyName: string): string {
     return dataLocation === "" ? propertyName : `${dataLocation}.${propertyName}`;
 }
@@ -228,7 +228,7 @@ function getIsNotRequiredList(schema: any): string[] {
     return schema.not && schema.not.required ? schema.not.required : void(0);
 }
 
-function getOptionalToggle(config: IOptionalToggleConfig, key: string, propertyLocation: string): IOptionalToggle {
+function getOptionalToggle(config: OptionalToggleConfig, key: string, propertyLocation: string): OptionalToggle {
     return {
         id: uniqueId(),
         label: config.schema.properties[key].title || "Untitled",
@@ -265,9 +265,9 @@ function getPropertyKeys(schema: any): string[] {
  * Get the optional objects in the schema.
  */
 export function getOptionalToggles(
-    config: IOptionalToggleConfig
-): IOptionalToggle[] {
-    const optionalObjects: IOptionalToggle[] = [];
+    config: OptionalToggleConfig
+): OptionalToggle[] {
+    const optionalObjects: OptionalToggle[] = [];
     const required: string[] = config.schema.required || [];
     const propertyKeys: string[] = getPropertyKeys(config.schema);
     const notRequiredList: string[] = getIsNotRequiredList(config.schema);
@@ -323,15 +323,15 @@ function getSchemaSubsectionText(state: any, objectProperty: string): string {
     return state.schema.properties[objectProperty].title || "Untitled";
 }
 
-function getSchemaSubsectionSchemaLocation(config: ISchemaSubsectionConfig): string {
+function getSchemaSubsectionSchemaLocation(config: SchemaSubsectionConfig): string {
     return `${config.props.location ? config.schemaLocation : ""}${config.oneOfAnyOf}properties.${config.objectProperty}`;
 }
 
-function getSchemaSubsectionDataLocation(config: ISchemaSubsectionConfig): string {
+function getSchemaSubsectionDataLocation(config: SchemaSubsectionConfig): string {
     return config.props.location ? config.dataLocation : `${config.dataLocation}${config.objectProperty}`;
 }
 
-function getSchemaSubsection(schemaSubsectionConfig: ISchemaSubsectionConfig): any {
+function getSchemaSubsection(schemaSubsectionConfig: SchemaSubsectionConfig): any {
     return {
         text: getSchemaSubsectionText(schemaSubsectionConfig.state, schemaSubsectionConfig.objectProperty),
         schemaLocation: getSchemaSubsectionSchemaLocation(schemaSubsectionConfig),
@@ -393,7 +393,7 @@ export function getArraySchemaLocation(schemaLocation: string, propertyName: str
 /**
  * Assigns a schema form item mapping based on property name
  */
-export function formItemMapping(config: IFormComponentMappingToPropertyNamesProps, propertyName: string): null | mappingName {
+export function formItemMapping(config: FormComponentMappingToPropertyNamesProps, propertyName: string): null | mappingName {
     let itemLayout: any = null;
 
     Object.keys(config).forEach((layout: string): void => {
@@ -441,8 +441,8 @@ export function checkIsDifferentData(currentData: any, nextData: any): boolean {
     return currentData !== nextData;
 }
 
-export function getOneOfAnyOfState(oneOfAnyOf: IOneOfAnyOf, nextProps: IFormSectionProps): IOneOfAnyOf {
-    const oneOfAnyOfState: Partial<IOneOfAnyOf> = oneOfAnyOf || {};
+export function getOneOfAnyOfState(oneOfAnyOf: OneOfAnyOf, nextProps: FormSectionProps): OneOfAnyOf {
+    const oneOfAnyOfState: Partial<OneOfAnyOf> = oneOfAnyOf || {};
 
     oneOfAnyOfState.type = nextProps.schema.oneOf ? oneOfAnyOfType.oneOf : oneOfAnyOfType.anyOf;
     oneOfAnyOfState.activeIndex = getOneOfAnyOfActiveIndex(
@@ -451,7 +451,7 @@ export function getOneOfAnyOfState(oneOfAnyOf: IOneOfAnyOf, nextProps: IFormSect
         nextProps.data
     );
 
-    return oneOfAnyOfState as IOneOfAnyOf;
+    return oneOfAnyOfState as OneOfAnyOf;
 }
 
 export function getDataLocationRelativeToRoot(location: string, dataLocation: string): string {
@@ -471,7 +471,7 @@ export function isSelect(property: any): boolean {
 /**
  * Organizes the categories and items by weight
  */
-export function getWeightedCategoriesAndItems(categoryParams: IFormCategories[]): IFormCategories[] {
+export function getWeightedCategoriesAndItems(categoryParams: FormCategories[]): FormCategories[] {
     categoryParams.sort(function(a: any, b: any): number {
         return b.weight - a.weight;
     });
@@ -490,8 +490,8 @@ export function checkIsObject(property: any, schema: any): boolean {
 }
 
 export function findAssignedParamsByCategoryProperties(
-    config: IAssignedParamsByCategoryConfig
-): IAssignedCategoryParams {
+    config: AssignedParamsByCategoryConfig
+): AssignedCategoryParams {
     for (const propertyName of config.categoryProperties) {
         if (propertyName === config.formItemParameter.item) {
             return {
@@ -504,7 +504,7 @@ export function findAssignedParamsByCategoryProperties(
     }
 }
 
-export function getCategoryIndex(assignedCategoryParams: IAssignedCategoryParams, categoryParams: IFormCategories[]): number {
+export function getCategoryIndex(assignedCategoryParams: AssignedCategoryParams, categoryParams: FormCategories[]): number {
     for (let i: number = 0, categoryParamsLength: number = categoryParams.length; i < categoryParamsLength; i++) {
         if (assignedCategoryParams.category === categoryParams[i].title) {
             return i;
@@ -513,24 +513,24 @@ export function getCategoryIndex(assignedCategoryParams: IAssignedCategoryParams
 }
 
 export function checkCategoryConfigPropertyCount(
-    formItems: IFormItemsWithConfigOptions,
-    orderByPropertyNames: IFormOrderByPropertyNamesProps
+    formItems: FormItemsWithConfigOptions,
+    orderByPropertyNames: FormOrderByPropertyNamesProps
 ): boolean {
     return typeof orderByPropertyNames.showCategoriesAtPropertyCount === "number"
         && orderByPropertyNames.showCategoriesAtPropertyCount >= formItems.items.length;
 }
 
 export function findOrderedByPropertyNames(
-    category: IFormOrderByPropertyNamesCategories,
-    formItemParameter: IFormItemParameters,
+    category: FormOrderByPropertyNamesCategories,
+    formItemParameter: FormItemParameters,
     assignedItemWeight: number
-): IAssignedCategoryParams {
+): AssignedCategoryParams {
     for (const categoryProperty of category.properties) {
         const categoryProperties: string[] = Array.isArray(categoryProperty.propertyName)
             ? categoryProperty.propertyName
             : [categoryProperty.propertyName];
 
-        const assignedParamsByCategoryProperties: IAssignedCategoryParams = findAssignedParamsByCategoryProperties({
+        const assignedParamsByCategoryProperties: AssignedCategoryParams = findAssignedParamsByCategoryProperties({
             categoryProperties,
             formItemParameter,
             category,
@@ -545,12 +545,12 @@ export function findOrderedByPropertyNames(
 }
 
 function getAssignedCategoryParams(
-    formItemParameter: IFormItemParameters,
+    formItemParameter: FormItemParameters,
     assignedItemWeight: number,
-    orderByPropertyNames: IFormOrderByPropertyNamesProps
-): IAssignedCategoryParams {
+    orderByPropertyNames: FormOrderByPropertyNamesProps
+): AssignedCategoryParams {
     for (const category of orderByPropertyNames.categories) {
-        const formItemOrderedByPropertyNames: IAssignedCategoryParams = findOrderedByPropertyNames(
+        const formItemOrderedByPropertyNames: AssignedCategoryParams = findOrderedByPropertyNames(
             category,
             formItemParameter,
             assignedItemWeight
@@ -569,13 +569,13 @@ function getAssignedCategoryParams(
 }
 
 export function getCategoryParams(
-    formItemParameters: IFormItemParameters[],
-    orderByPropertyNames: IFormOrderByPropertyNamesProps
-): IFormCategories[] {
-    const categoryParams: IFormCategories[] = [];
+    formItemParameters: FormItemParameters[],
+    orderByPropertyNames: FormOrderByPropertyNamesProps
+): FormCategories[] {
+    const categoryParams: FormCategories[] = [];
 
     for (const formItemParameter of formItemParameters) {
-        const assignedCategoryParams: IAssignedCategoryParams = getAssignedCategoryParams(formItemParameter, 0, orderByPropertyNames);
+        const assignedCategoryParams: AssignedCategoryParams = getAssignedCategoryParams(formItemParameter, 0, orderByPropertyNames);
         const categoryIndex: number = getCategoryIndex(assignedCategoryParams, categoryParams);
 
         if (typeof categoryIndex === "number") {
@@ -607,7 +607,7 @@ export function handleToggleClick(value: any, id: string, updateRequested: any):
     };
 }
 
-export function isMapping(location: string, componentMappingToPropertyNames: IFormComponentMappingToPropertyNamesProps): boolean {
+export function isMapping(location: string, componentMappingToPropertyNames: FormComponentMappingToPropertyNamesProps): boolean {
     return componentMappingToPropertyNames &&
     typeof formItemMapping(componentMappingToPropertyNames, location) === "string";
 }

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
+import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import {
     Heading,
     HeadingProps,
@@ -60,4 +60,4 @@ export default {
             "data-sketch-symbol": "Heading 6"
         }
     ]
-} as IComponentFactoryExample<HeadingProps>;
+} as ComponentFactoryExample<HeadingProps>;

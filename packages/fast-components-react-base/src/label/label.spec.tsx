@@ -5,12 +5,12 @@ import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import Label, {
-    ILabelClassNameContract,
-    ILabelHandledProps,
-    ILabelManagedClasses,
-    ILabelUnhandledProps,
+    LabelClassNameContract,
+    LabelHandledProps,
+    LabelManagedClasses,
     LabelProps,
-    LabelTag
+    LabelTag,
+    LabelUnhandledProps
 } from "./label";
 
 /*
@@ -23,7 +23,7 @@ describe("label snapshot", (): void => {
 });
 
 describe("label", (): void => {
-    const managedClasses: ILabelClassNameContract = {
+    const managedClasses: LabelClassNameContract = {
         label: "label-class",
         label__hidden: "label-hidden-class"
     };
@@ -42,11 +42,11 @@ describe("label", (): void => {
     });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
-        const handledProps: ILabelHandledProps = {
+        const handledProps: LabelHandledProps = {
             managedClasses,
             tag: LabelTag.label
         };
-        const unhandledProps: ILabelUnhandledProps = {
+        const unhandledProps: LabelUnhandledProps = {
             "aria-hidden": true
         };
         const props: LabelProps = {...handledProps, ...unhandledProps};

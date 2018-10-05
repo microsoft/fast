@@ -1,19 +1,19 @@
 import * as React from "react";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
+import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
 import { Link, withRouter } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
 import { ComponentViewTypes } from "./component-view";
 import { glyphBuildingblocks, glyphExamples, glyphPage } from "@microsoft/fast-glyphs-msft";
 import ComponentViewToggle from "./component-view-toggle";
-import manageJss, { ComponentStyles, ICSSRules, IManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, CSSRules, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 
 export enum ActionEnum {
     configure = "configure",
     view = "view"
 }
 
-export interface IActionBarProps extends RouteComponentProps<any> {
+export interface ActionBarProps extends RouteComponentProps<any> {
     /*
      * The current ComponentView of the app
      */
@@ -45,7 +45,7 @@ export interface IActionBarProps extends RouteComponentProps<any> {
     onDevToolsToggle: () => void;
 }
 
-export interface IActionBarClassNameContract {
+export interface ActionBarClassNameContract {
     actionBar: string;
     actionBar_componentViewToggles: string;
     actionBar_menu: string;
@@ -53,7 +53,7 @@ export interface IActionBarClassNameContract {
     actionBar_menu_button__active: string;
 }
 
-function menuButtonBase(): ICSSRules<IDevSiteDesignSystem> {
+function menuButtonBase(): CSSRules<DevSiteDesignSystem> {
     return {
         position: "relative",
         border: `${toPx(1)} solid transparent`,
@@ -77,14 +77,14 @@ function menuButtonBase(): ICSSRules<IDevSiteDesignSystem> {
         },
         "&:focus": {
             outline: "none",
-            border: (config: IDevSiteDesignSystem): string => {
+            border: (config: DevSiteDesignSystem): string => {
                 return `${toPx(1)} solid ${config.brandColor || devSiteDesignSystemDefaults.brandColor}`;
             }
         }
     };
 }
 
-const styles: ComponentStyles<IActionBarClassNameContract, IDevSiteDesignSystem> = {
+const styles: ComponentStyles<ActionBarClassNameContract, DevSiteDesignSystem> = {
     actionBar: {
         display: "flex",
         flexBasis: "100%",
@@ -111,14 +111,14 @@ const styles: ComponentStyles<IActionBarClassNameContract, IDevSiteDesignSystem>
             borderRadius: `${toPx(2)} ${toPx(2)} 0 0`,
             left: toPx(12),
             right: toPx(12),
-            background: (config: IDevSiteDesignSystem): string => {
+            background: (config: DevSiteDesignSystem): string => {
                 return config.brandColor;
             }
         }
     }
 };
 
-class ActionBar extends React.Component<IActionBarProps & IManagedClasses<IActionBarClassNameContract>, {}> {
+class ActionBar extends React.Component<ActionBarProps & ManagedClasses<ActionBarClassNameContract>, {}> {
     public render(): JSX.Element {
         return (
             <div className={this.props.managedClasses.actionBar}>

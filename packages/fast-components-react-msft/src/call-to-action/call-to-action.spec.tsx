@@ -6,14 +6,14 @@ import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import MSFTCallToAction, {
     CallToActionAppearance,
+    CallToActionHandledProps,
+    CallToActionManagedClasses,
     CallToActionProps,
-    ICallToActionHandledProps,
-    ICallToActionManagedClasses,
-    ICallToActionUnhandledProps
+    CallToActionUnhandledProps
 } from "./call-to-action";
 import { CallToAction } from "./index";
 
-import { ICallToActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { CallToActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 
 /*
  * Configure Enzyme
@@ -25,7 +25,7 @@ describe("call to action snapshot", (): void => {
 });
 
 describe("call to action", (): void => {
-    const managedClasses: ICallToActionClassNameContract = {
+    const managedClasses: CallToActionClassNameContract = {
         callToAction: "call-to-action",
         callToAction_glyph: "glyph",
         callToAction__primary: "call-to-action-primary",
@@ -52,13 +52,13 @@ describe("call to action", (): void => {
     });
 
     test("should implement unhandledProps", () => {
-        const handledProps: ICallToActionHandledProps & ICallToActionManagedClasses = {
+        const handledProps: CallToActionProps & CallToActionManagedClasses = {
             managedClasses,
             href,
             children: "text"
         };
 
-        const unhandledProps: ICallToActionUnhandledProps = {
+        const unhandledProps: CallToActionUnhandledProps = {
             "data-my-custom-attribute": true
         };
 
@@ -73,7 +73,7 @@ describe("call to action", (): void => {
 
     // tslint:disable-next-line:max-line-length
     test("should apply a 'primary' html class when appearance is primary", () => {
-        const props: ICallToActionHandledProps = {
+        const props: CallToActionHandledProps = {
             appearance: CallToActionAppearance.primary
         };
 
@@ -86,7 +86,7 @@ describe("call to action", (): void => {
 
     // tslint:disable-next-line:max-line-length
     test("should apply a 'lightweight' html class when appearance is lightweight", () => {
-        const props: ICallToActionHandledProps = {
+        const props: CallToActionHandledProps = {
             appearance: CallToActionAppearance.lightweight
         };
 
@@ -99,7 +99,7 @@ describe("call to action", (): void => {
 
     // tslint:disable-next-line:max-line-length
     test("should apply a 'justified' html class when appearance is justified", () => {
-        const props: ICallToActionHandledProps = {
+        const props: CallToActionHandledProps = {
             appearance: CallToActionAppearance.justified
         };
 
@@ -112,7 +112,7 @@ describe("call to action", (): void => {
 
     // tslint:disable-next-line:max-line-length
     test("should apply a 'disabled' html class when prop disabled is passed", () => {
-        const props: ICallToActionHandledProps = {
+        const props: CallToActionHandledProps = {
             disabled: true
         };
 
@@ -125,7 +125,7 @@ describe("call to action", (): void => {
 
     // tslint:disable-next-line:max-line-length
     test("should set a custom class name and 'primary' class name when appearance is primary and a custom class is passed", () => {
-        const props: ICallToActionHandledProps = {
+        const props: CallToActionHandledProps = {
             appearance: CallToActionAppearance.primary
         };
 

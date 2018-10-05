@@ -26,7 +26,7 @@ export { HypertextStyles };
 /**
  * Export design system defaults and typings
  */
-import DesignSystemDefaults, { IDesignSystem } from "./design-system";
+import DesignSystemDefaults, { DesignSystem } from "./design-system";
 export * from "./design-system";
 export { DesignSystemDefaults };
 

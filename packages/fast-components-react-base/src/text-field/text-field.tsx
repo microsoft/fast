@@ -2,22 +2,22 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
-    ITextFieldHandledProps,
-    ITextFieldManagedClasses,
-    ITextFieldUnhandledProps,
-    TextFieldType
+    TextFieldHandledProps,
+    TextFieldManagedClasses,
+    TextFieldType,
+    TextFieldUnhandledProps
 } from "./text-field.props";
-import { IManagedClasses, ITextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { ManagedClasses, TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
 
 class TextField extends Foundation<
-    ITextFieldHandledProps,
-    ITextFieldUnhandledProps,
+    TextFieldHandledProps,
+    TextFieldUnhandledProps,
     {}
 > {
     public static displayName: string = "TextField";
 
-    protected handledProps: HandledProps<ITextFieldHandledProps> = {
+    protected handledProps: HandledProps<TextFieldHandledProps> = {
         disabled: void 0,
         placeholder: void 0,
         managedClasses: void 0,
@@ -49,4 +49,4 @@ class TextField extends Foundation<
 
 export default TextField;
 export * from "./text-field.props";
-export { ITextFieldClassNameContract };
+export { TextFieldClassNameContract };

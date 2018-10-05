@@ -4,23 +4,23 @@ import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import { getExample } from "@microsoft/fast-permutator";
 import Form, { mapDataToComponent } from "../src";
 import {
-    IChildOptionItem,
-    IFormAttributeSettingsMappingToPropertyNames,
-    IFormComponentMappingToPropertyNamesProps,
-    IFormOrderByPropertyNamesProps,
-    IFormProps
+    ChildOptionItem,
+    FormAttributeSettingsMappingToPropertyNames,
+    FormComponentMappingToPropertyNamesProps,
+    FormOrderByPropertyNamesProps,
+    FormProps
 } from "../src/form/form.props";
 import * as testComponents from "./components";
 
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
 
-export interface IAppState {
+export interface AppState {
     currentComponentSchema: any;
     currentComponentData: any;
     currentComponentDataMappedToComponent: any;
-    currentComponentConfig?: IFormComponentMappingToPropertyNamesProps;
-    currentComponentOrderByPropertyNames?: IFormOrderByPropertyNamesProps;
-    currentComponentAttributeAssignment?: IFormAttributeSettingsMappingToPropertyNames;
+    currentComponentConfig?: FormComponentMappingToPropertyNamesProps;
+    currentComponentOrderByPropertyNames?: FormOrderByPropertyNamesProps;
+    currentComponentAttributeAssignment?: FormAttributeSettingsMappingToPropertyNames;
     currentComponent: any;
     onChange: componentDataOnChange;
     showExtendedControls: boolean;
@@ -28,13 +28,13 @@ export interface IAppState {
     schemaLocation: string;
 }
 
-export interface IOption {
+export interface Option {
     currentComponentSchema: any;
     currentComponentData: any;
     currentComponent: JSX.Element;
 }
 
-export interface IGroupItem {
+export interface GroupItem {
     items: any;
     type: string;
 }
@@ -50,7 +50,7 @@ export default class App extends React.Component<{}, IAppState> {
     /**
      * These are the children that can be added
      */
-    private childOptions: IChildOptionItem[];
+    private childOptions: ChildOptionItem[];
 
     constructor(props: {}) {
         super(props);
@@ -103,9 +103,9 @@ export default class App extends React.Component<{}, IAppState> {
     /**
      * Gets the child options for the schema form
      */
-    private getChildOptions(): IChildOptionItem[] {
-        const childOptions: IChildOptionItem[] = [];
-        const groups: IGroupItem[] = [
+    private getChildOptions(): ChildOptionItem[] {
+        const childOptions: ChildOptionItem[] = [];
+        const groups: GroupItem[] = [
             {
                 items: testComponents,
                 type: "components"
@@ -115,7 +115,7 @@ export default class App extends React.Component<{}, IAppState> {
         for (const group of groups) {
             Object.keys(group.items).map((itemName: any, key: number): void => {
                 if (typeof testComponents[itemName].schema !== "undefined") {
-                    const childObj: IChildOptionItem = {
+                    const childObj: ChildOptionItem = {
                         name: testComponents[itemName].schema.title || "Untitled",
                         component: testComponents[itemName].component,
                         schema: testComponents[itemName].schema
@@ -129,8 +129,8 @@ export default class App extends React.Component<{}, IAppState> {
         return childOptions;
     }
 
-    private coerceFormProps(): IFormProps {
-        const formProps: IFormProps = {
+    private coerceFormProps(): FormProps {
+        const formProps: FormProps = {
             schema: this.state.currentComponentSchema,
             data: this.state.currentComponentData,
             onChange: this.state.onChange,

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ICardClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { CardClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
  * Card HTML tags
@@ -10,9 +10,9 @@ export enum CardTag {
     section = "section"
 }
 
-export interface ICardManagedClasses extends IManagedClasses<ICardClassNameContract> {}
-export interface ICardUnhandledProps extends React.HTMLAttributes<HTMLDivElement | HTMLElement> {}
-export interface ICardHandledProps extends ICardManagedClasses {
+export interface CardManagedClasses extends ManagedClasses<CardClassNameContract> {}
+export interface CardUnhandledProps extends React.HTMLAttributes<HTMLDivElement | HTMLElement> {}
+export interface CardHandledProps extends CardManagedClasses {
     /**
      * The card children
      */
@@ -24,4 +24,4 @@ export interface ICardHandledProps extends ICardManagedClasses {
     tag?: CardTag;
 }
 
-export type CardProps = ICardHandledProps & ICardUnhandledProps;
+export type CardProps = CardHandledProps & CardUnhandledProps;

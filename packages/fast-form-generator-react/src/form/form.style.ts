@@ -1,9 +1,9 @@
 import { toPx } from "@microsoft/fast-jss-utilities";
-import {  applyCleanListStyle, colors } from "../utilities/form-input.style";
+import { applyCleanListStyle, colors } from "../utilities/form-input.style";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import { IFormClassNameContract } from "../class-name-contracts/";
+import { FormClassNameContract } from "../class-name-contracts/";
 
-const styles: ComponentStyles<IFormClassNameContract, {}> = {
+const styles: ComponentStyles<FormClassNameContract, {}> = {
     form_breadcrumbs: {
         display: "flex",
         flexWrap: "wrap",

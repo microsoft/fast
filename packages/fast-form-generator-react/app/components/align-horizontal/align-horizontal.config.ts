@@ -1,9 +1,9 @@
 import {
-    IFormComponentMappingToPropertyNamesProps
+    FormComponentMappingToPropertyNamesProps
 } from "../../../src/form/form.props";
 
 export default {
     alignHorizontal: [
         "alignHorizontal"
     ]
-} as IFormComponentMappingToPropertyNamesProps;
+} as FormComponentMappingToPropertyNamesProps;

@@ -1,17 +1,17 @@
+import * as React from "react";
 import SiteTitleBrand from "./title-brand";
-import Toc, { TocItem } from "../toc";
-import manageJss, { ComponentStyles, DesignSystemProvider, IManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, DesignSystemProvider, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { glyphBuildingblocks, glyphGlobalnavbutton, glyphTransparency } from "@microsoft/fast-glyphs-msft";
 import { mapDataToComponent } from "@microsoft/fast-form-generator-react";
 import { uniqueId } from "lodash-es";
-import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
+import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
 import Shell, { ShellHeader, ShellInfoBar, ShellPaneCollapse, ShellSlot } from "../shell";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { ellipsis, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
 import ComponentWrapper from "./component-wrapper";
 import CategoryList from "./category-list";
 import SiteTitle from "./title";
-import * as React from "react";
+import Toc, { TocItem } from "../toc";
 import SiteMenu from "./menu";
 import SiteMenuItem from "./menu-item";
 import SiteCategory, { Status } from "./category";
@@ -26,9 +26,9 @@ import ComponentView, { ComponentViewTypes } from "./component-view";
 import {
     Canvas,
     Container,
-    IContainerClassNamesContract,
-    IPaneClassNamesContract,
+    ContainerClassNamesContract,
     Pane,
+    PaneClassNamesContract,
     PaneResizeDirection,
     Row,
     RowResizeDirection
@@ -41,13 +41,13 @@ export enum ComponentViewSlot {
     detailDocumentation = "canvas-detail-view-documentation"
 }
 
-export interface ISiteProps {
-    formChildOptions: IFormChildOption[];
+export interface SiteProps {
+    formChildOptions: FormChildOption[];
     onUpdateDirection?: (ltr: Direction) => void;
     onUpdateTheme?: (theme: string) => void;
     locales?: string[];
-    themes?: ITheme[];
-    activeTheme?: ITheme;
+    themes?: Theme[];
+    activeTheme?: Theme;
     frameworks?: Framework | Framework[];
     activeFramework?: Framework;
     collapsed?: boolean;
@@ -56,13 +56,13 @@ export interface ISiteProps {
     showTransparencyToggle?: boolean;
 }
 
-export interface IFormChildOption {
+export interface FormChildOption {
     component: any;
     schema: any;
     name: string;
 }
 
-export interface IComponentRoute {
+export interface ComponentRoute {
     route: string;
     schema: any;
     componentMapping: any;
@@ -71,27 +71,27 @@ export interface IComponentRoute {
     status: Status;
 }
 
-export interface IComponentData {
+export interface ComponentData {
     [T: string]: any[];
 }
 
-export interface ISiteState {
+export interface SiteState {
     currentPath: string;
     activeComponentIndex: number;
     componentName: string;
-    componentData: IComponentData;
-    componentSchema: IComponentData;
-    componentDataMappedToComponent: IComponentData;
+    componentData: ComponentData;
+    componentSchema: ComponentData;
+    componentDataMappedToComponent: ComponentData;
     componentStatus: Status;
-    detailViewComponentData: IComponentData;
-    detailViewComponentDataMappedToComponent: IComponentData;
+    detailViewComponentData: ComponentData;
+    detailViewComponentDataMappedToComponent: ComponentData;
     tableOfContentsCollapsed: boolean;
     componentView: ComponentViewTypes;
     componentBackgroundTransparent: boolean;
     formView: boolean;
     devToolsView: boolean;
     locale: string;
-    theme: ITheme;
+    theme: Theme;
 }
 
 export enum SiteSlot {
@@ -99,13 +99,13 @@ export enum SiteSlot {
     categoryIcon = "category-icon"
 }
 
-export interface ITheme {
+export interface Theme {
     id: string;
     displayName: string;
     background?: string;
 }
 
-export interface ISiteManagedClasses {
+export interface SiteManagedClasses {
     site_canvasContent: string;
     site_headerTitle: string;
     site_infoBarConfiguration: string;
@@ -129,7 +129,7 @@ export interface ISiteManagedClasses {
     site_statusBeta: string;
 }
 
-const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
+const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
     "@global": {
         "body, html": {
             fontFamily: "Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif",
@@ -194,7 +194,7 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
             boxShadow: `inset 0 0 ${toPx(2)} 0 rgba(0,0,0, .3)`
         },
         "&:focus": {
-            boxShadow: (config: IDevSiteDesignSystem): string => {
+            boxShadow: (config: DevSiteDesignSystem): string => {
                 return `inset 0 0 0 1 ${config.brandColor}`;
             }
         }
@@ -292,19 +292,19 @@ const styles: ComponentStyles<ISiteManagedClasses, IDevSiteDesignSystem> = {
     }
 };
 
-class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClasses>, ISiteState> {
+class Site extends React.Component<SiteProps & ManagedClasses<SiteManagedClasses>, SiteState> {
 
-    public static defaultProps: Partial<ISiteProps> = {
+    public static defaultProps: Partial<SiteProps> = {
         locales: ["en", "en-rtl"],
         showComponentStatus: true,
         showTransparencyToggle: true
     };
 
-    public static getDerivedStateFromProps(props: ISiteProps, state: ISiteState): Partial<ISiteState> | null {
-        const updatedTheme: ITheme | null = props.activeTheme
+    public static getDerivedStateFromProps(props: SiteProps, state: SiteState): Partial<SiteState> | null {
+        const updatedTheme: Theme | null = props.activeTheme
             ? props.activeTheme
             : props.themes
-            ? props.themes.find((theme: ITheme) => theme.id === state.theme.id)
+            ? props.themes.find((theme: Theme) => theme.id === state.theme.id)
             : null;
 
         return updatedTheme === null ? null : { theme: updatedTheme };
@@ -312,7 +312,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
 
     private initialPath: string;
 
-    constructor(props: ISiteProps & IManagedClasses<ISiteManagedClasses>) {
+    constructor(props: SiteProps & ManagedClasses<SiteManagedClasses>) {
         super(props);
 
         this.initialPath = this.getInitialPath();
@@ -370,7 +370,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         }
     }
 
-    public componentDidUpdate(prevProps: ISiteProps): void {
+    public componentDidUpdate(prevProps: SiteProps): void {
         if (prevProps !== this.props) {
             this.setState({
                 componentData: this.getComponentData(),
@@ -379,7 +379,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         }
     }
 
-    private getInitialTheme(): ITheme {
+    private getInitialTheme(): Theme {
         if (Array.isArray(this.props.themes) && this.props.themes.length) {
             return this.props.themes[0];
         }
@@ -388,10 +388,10 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     /**
      * Gets the component data for each of the routes
      */
-    private getComponentData(mappedToComponent?: boolean): IComponentData {
-        const componentData: IComponentData = {};
+    private getComponentData(mappedToComponent?: boolean): ComponentData {
+        const componentData: ComponentData = {};
 
-        this.getRoutes((this.props.children as JSX.Element), "/", SiteSlot.category).forEach((route: IComponentRoute) => {
+        this.getRoutes((this.props.children as JSX.Element), "/", SiteSlot.category).forEach((route: ComponentRoute) => {
             componentData[route.route] = [];
             route.exampleView.forEach((routeChild: JSX.Element, index: number) => {
                 if (mappedToComponent) {
@@ -412,7 +412,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     private getComponentStatus(currentPath?: string): Status {
         let componentStatus: Status = Status.beta;
 
-        this.getRoutes((this.props.children as JSX.Element), "/", SiteSlot.category).forEach((route: IComponentRoute) => {
+        this.getRoutes((this.props.children as JSX.Element), "/", SiteSlot.category).forEach((route: ComponentRoute) => {
             if ((currentPath && route.route === currentPath || !currentPath && route.route === this.state.currentPath) && route.status) {
                 componentStatus = route.status;
             }
@@ -421,10 +421,10 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         return componentStatus;
     }
 
-    private getDetailViewComponentData(mappedToComponent?: boolean): IComponentData {
-        const componentData: IComponentData = {};
+    private getDetailViewComponentData(mappedToComponent?: boolean): ComponentData {
+        const componentData: ComponentData = {};
 
-        this.getRoutes((this.props.children as JSX.Element), "/", SiteSlot.category).forEach((route: IComponentRoute) => {
+        this.getRoutes((this.props.children as JSX.Element), "/", SiteSlot.category).forEach((route: ComponentRoute) => {
             componentData[route.route] = [];
             route.detailView.forEach((routeChild: JSX.Element, index: number) => {
                 if (routeChild && routeChild.props && routeChild.props.slot === ComponentViewSlot.detailExample) {
@@ -454,9 +454,9 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     }
 
     private getComponentSchema = (): any => {
-        const componentSchema: IComponentData = {};
+        const componentSchema: ComponentData = {};
 
-        this.getRoutes((this.props.children as JSX.Element), "/", SiteSlot.category).forEach((route: IComponentRoute) => {
+        this.getRoutes((this.props.children as JSX.Element), "/", SiteSlot.category).forEach((route: ComponentRoute) => {
             route.exampleView.forEach(() => {
                 componentSchema[route.route] = route.schema;
             });
@@ -484,7 +484,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     /**
      * Renders a route based on the active component
      */
-    private renderComponentRoute = (route: IComponentRoute | null): JSX.Element | null => {
+    private renderComponentRoute = (route: ComponentRoute | null): JSX.Element | null => {
         const path: string = route.route;
 
         return (
@@ -507,11 +507,11 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         );
     }
 
-    private renderShellRow(route: IComponentRoute): JSX.Element {
+    private renderShellRow(route: ComponentRoute): JSX.Element {
 
-        const paneStyleSheet: Partial<ComponentStyles<IPaneClassNamesContract, IDevSiteDesignSystem>> = {
+        const paneStyleSheet: Partial<ComponentStyles<PaneClassNamesContract, DevSiteDesignSystem>> = {
             pane: {
-                backgroundColor: (config: IDevSiteDesignSystem): string => {
+                backgroundColor: (config: DevSiteDesignSystem): string => {
                     return config.lightGray;
                 }
             }
@@ -623,8 +623,8 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         );
 
         if (this.state.componentView === ComponentViewTypes.examples) {
-            const componentData: IComponentData = Object.assign({}, this.state.componentData);
-            const componentDataMappedToComponent: IComponentData = Object.assign({}, this.state.componentDataMappedToComponent);
+            const componentData: ComponentData = Object.assign({}, this.state.componentData);
+            const componentDataMappedToComponent: ComponentData = Object.assign({}, this.state.componentDataMappedToComponent);
             componentData[currentPath][this.state.activeComponentIndex] = data;
             componentDataMappedToComponent[currentPath][this.state.activeComponentIndex] = dataMappedToComponent;
 
@@ -634,8 +634,8 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
                 currentPath
             });
         } else if (this.state.componentView === ComponentViewTypes.detail) {
-            const detailViewComponentData: IComponentData = Object.assign({}, this.state.detailViewComponentData);
-            const detailViewComponentDataMappedToComponent: IComponentData = Object.assign(
+            const detailViewComponentData: ComponentData = Object.assign({}, this.state.detailViewComponentData);
+            const detailViewComponentDataMappedToComponent: ComponentData = Object.assign(
                 {},
                 this.state.detailViewComponentDataMappedToComponent
             );
@@ -687,7 +687,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         return this.state.theme && this.state.theme.background ? this.state.theme.background : null;
     }
 
-    private renderComponentByRoute(route: IComponentRoute): JSX.Element[] {
+    private renderComponentByRoute(route: ComponentRoute): JSX.Element[] {
         if (route.exampleView && this.state.componentView === ComponentViewTypes.examples) {
             return route.exampleView.map((componentItem: JSX.Element, index: number) => {
                 if (route.componentMapping && componentItem.props && componentItem.props.slot === ComponentViewSlot.example) {
@@ -722,7 +722,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         }
     }
 
-    private renderDetailViewComponent(component: JSX.Element, index: number, route: IComponentRoute): JSX.Element {
+    private renderDetailViewComponent(component: JSX.Element, index: number, route: ComponentRoute): JSX.Element {
         if (component && component.props && component.props.slot === ComponentViewSlot.detailExample) {
             return (
                 <ComponentWrapper
@@ -880,7 +880,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     }
 
     private renderThemes(): JSX.Element[] {
-        return this.props.themes.map((theme: ITheme, index: number): JSX.Element => {
+        return this.props.themes.map((theme: Theme, index: number): JSX.Element => {
             return (
                 <option key={theme.id} value={theme.id}>
                     {theme.displayName}
@@ -905,7 +905,7 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         }
 
         if (!this.props.activeTheme) {
-            const selectedTheme: ITheme = this.props.themes.find((item: ITheme): boolean => {
+            const selectedTheme: Theme = this.props.themes.find((item: Theme): boolean => {
                 return item.id === e.target.value;
             });
 
@@ -918,8 +918,8 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
     /**
      * Gets all of the potential routes as strings to be used to build the shell
      */
-    private getRoutes(items: JSX.Element, baseRoute: string, slot: SiteSlot, routes?: IComponentRoute[]): IComponentRoute[] {
-        let currentRoutes: IComponentRoute[] = routes;
+    private getRoutes(items: JSX.Element, baseRoute: string, slot: SiteSlot, routes?: ComponentRoute[]): ComponentRoute[] {
+        let currentRoutes: ComponentRoute[] = routes;
         const childItems: JSX.Element[] = Array.isArray(items) ? items : [items];
 
         childItems.forEach((item: JSX.Element): void => {
@@ -931,8 +931,8 @@ class Site extends React.Component<ISiteProps & IManagedClasses<ISiteManagedClas
         return currentRoutes;
     }
 
-    private getCurrentRoute(item: JSX.Element, slot: SiteSlot, baseRoute: string, currentRoutes: IComponentRoute[]): IComponentRoute[] {
-        const currentRoute: IComponentRoute[] = currentRoutes;
+    private getCurrentRoute(item: JSX.Element, slot: SiteSlot, baseRoute: string, currentRoutes: ComponentRoute[]): ComponentRoute[] {
+        const currentRoute: ComponentRoute[] = currentRoutes;
         const itemRoute: string = `${baseRoute}${item.props.name}/`;
         const detailDocumentationSlotItems: JSX.Element[] = this.renderChildrenBySlot(item, ComponentViewSlot.detailDocumentation);
         const detailExampleSlotItems: JSX.Element[] = this.renderChildrenBySlot(item, ComponentViewSlot.detailExample);

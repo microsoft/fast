@@ -1,6 +1,6 @@
 import * as React from "react";
-import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
-import { IPaneClassNamesContract } from "./pane";
+import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
+import { PaneClassNamesContract } from "./pane";
 
 /**
  * The resize direction options: 'east' | 'west'
@@ -10,7 +10,7 @@ export enum PaneResizeDirection {
     west = "west"
 }
 
-export interface IPaneHandledProps {
+export interface PaneHandledProps {
     /**
      * The minimum width of the pane
      */
@@ -57,5 +57,5 @@ export interface IPaneHandledProps {
     resizeFrom?: PaneResizeDirection;
 }
 
-export interface IPaneManagedClasses extends IManagedClasses<IPaneClassNamesContract> {}
-export type PaneProps = IPaneHandledProps & IPaneManagedClasses;
+export interface PaneManagedClasses extends ManagedClasses<PaneClassNamesContract> {}
+export type PaneProps = PaneHandledProps & PaneManagedClasses;

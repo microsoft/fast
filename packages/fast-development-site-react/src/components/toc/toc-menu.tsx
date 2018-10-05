@@ -1,20 +1,20 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import devSiteDesignSystemDefaults, { IDevSiteDesignSystem } from "../design-system";
-import manageJss, { ComponentStyles, IManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
+import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import Toc from "./";
 
-export interface ITocMenuProps {
+export interface TocMenuProps {
     controls: string;
     active: boolean;
 }
 
-export interface ITocMenuState {
+export interface TocMenuState {
     active: boolean;
 }
 
-export interface ITocMenuManagedClasses {
+export interface TocMenuManagedClasses {
     tocMenu_button: string;
 }
 
@@ -23,7 +23,7 @@ const dropdownActive: string = "PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAx
 // tslint:disable-next-line
 const dropdownInactive: string = "PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHRpdGxlPmNoZXZyb24tcmlnaHQ8L3RpdGxlPjxwYXRoIGQ9Ik0yMi43OCwxNiw4LjI1LDEuNDUsOS42NSwwbDE2LDE2LTE2LDE2LTEuNC0xLjQxWiIvPjwvc3ZnPg==";
 
-const style: ComponentStyles<ITocMenuManagedClasses, IDevSiteDesignSystem> = {
+const style: ComponentStyles<TocMenuManagedClasses, DevSiteDesignSystem> = {
     tocMenu_button: {
         background: "none",
         outline: "0",
@@ -44,7 +44,7 @@ const style: ComponentStyles<ITocMenuManagedClasses, IDevSiteDesignSystem> = {
             backgroundColor: "rgba(0, 0, 0, 0.04)"
         },
         "&:focus": {
-            border: (config: IDevSiteDesignSystem): string => {
+            border: (config: DevSiteDesignSystem): string => {
                 return `${toPx(1)} solid ${config.brandColor || devSiteDesignSystemDefaults.brandColor}`;
             }
         },
@@ -62,9 +62,9 @@ const style: ComponentStyles<ITocMenuManagedClasses, IDevSiteDesignSystem> = {
     }
 };
 
-class TocMenu extends React.Component<ITocMenuProps & IManagedClasses<ITocMenuManagedClasses>, ITocMenuState> {
+class TocMenu extends React.Component<TocMenuProps & ManagedClasses<TocMenuManagedClasses>, TocMenuState> {
 
-    constructor(props: ITocMenuProps & IManagedClasses<ITocMenuManagedClasses>) {
+    constructor(props: TocMenuProps & ManagedClasses<TocMenuManagedClasses>) {
         super(props);
 
         this.state = {

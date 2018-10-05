@@ -1,13 +1,13 @@
 import * as React from "react";
-import { ICallToActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { CallToActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { CallToActionStyles, IDesignSystem } from "@microsoft/fast-components-styles-msft";
+import { CallToActionStyles, DesignSystem } from "@microsoft/fast-components-styles-msft";
 import MSFTCallToAction, {
     CallToActionAppearance,
+    CallToActionHandledProps as MSFTCallToActionHandledProps,
+    CallToActionManagedClasses,
     CallToActionProps as MSFTCallToActionProps,
-    ICallToActionHandledProps as IMSFTCallToActionHandledProps,
-    ICallToActionManagedClasses,
-    ICallToActionUnhandledProps
+    CallToActionUnhandledProps
 } from "./call-to-action";
 import { Subtract } from "utility-types";
 
@@ -19,14 +19,14 @@ import { Subtract } from "utility-types";
 const CallToAction = manageJss(CallToActionStyles)(MSFTCallToAction);
 type CallToAction = typeof CallToAction;
 
-interface ICallToActionHandledProps extends Subtract<IMSFTCallToActionHandledProps, ICallToActionManagedClasses> {}
-type CallToActionProps = ManagedJSSProps<MSFTCallToActionProps, ICallToActionClassNameContract, IDesignSystem>;
+interface CallToActionHandledProps extends Subtract<MSFTCallToActionHandledProps, CallToActionManagedClasses> {}
+type CallToActionProps = ManagedJSSProps<MSFTCallToActionProps, CallToActionClassNameContract, DesignSystem>;
 
 export {
     CallToAction,
     CallToActionAppearance,
     CallToActionProps,
-    ICallToActionClassNameContract,
-    ICallToActionHandledProps,
-    ICallToActionUnhandledProps
+    CallToActionClassNameContract,
+    CallToActionHandledProps,
+    CallToActionUnhandledProps
 };

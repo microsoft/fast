@@ -1,10 +1,10 @@
 import * as React from "react";
-import Hypertext, { IHypertextHandledProps, IHypertextManagedClasses, IHypertextUnhandledProps } from "./hypertext";
+import Hypertext, { HypertextHandledProps, HypertextManagedClasses, HypertextUnhandledProps } from "./hypertext";
 import schema from "./hypertext.schema.json";
 import Documentation from "./.tmp/documentation";
-import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
+import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
-const examples: IComponentFactoryExample<IHypertextHandledProps> = {
+const examples: ComponentFactoryExample<HypertextHandledProps> = {
     name: "Hypertext",
     component: Hypertext,
     schema: schema as any,

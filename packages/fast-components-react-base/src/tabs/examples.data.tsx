@@ -1,19 +1,19 @@
 import * as React from "react";
 import {
-    ITabClassNameContract,
-    ITabPanelClassNameContract,
-    ITabsClassNameContract
+    TabClassNameContract,
+    TabPanelClassNameContract,
+    TabsClassNameContract
 } from "@microsoft/fast-components-class-name-contracts-base";
 import Tabs, {
-    ITabManagedClasses,
-    ITabPanelManagedClasses,
-    ITabsHandledProps,
-    ITabsManagedClasses,
-    ITabsUnhandledProps,
     Tab,
     TabItem,
+    TabManagedClasses,
     TabPanel,
-    TabsSlot
+    TabPanelManagedClasses,
+    TabsHandledProps,
+    TabsManagedClasses,
+    TabsSlot,
+    TabsUnhandledProps
 } from "./index";
 import schema from "./tabs.schema.json";
 import tabItemSchema from "./tab-item.schema.json";
@@ -21,9 +21,9 @@ import tabPanelSchema from "./tab-panel.schema.json";
 import tabSchema from "./tab.schema.json";
 import Documentation from "./.tmp/documentation";
 import { Orientation } from "@microsoft/fast-web-utilities";
-import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
+import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
-const tabsManagedClasses: ITabsManagedClasses = {
+const tabsManagedClasses: TabsManagedClasses = {
     managedClasses: {
         tabs_tabPanels: "tab_items-class",
         tabs_tabList: "tab_list-class",
@@ -31,14 +31,14 @@ const tabsManagedClasses: ITabsManagedClasses = {
     }
 };
 
-const tabManagedClasses: ITabManagedClasses = {
+const tabManagedClasses: TabManagedClasses = {
     managedClasses: {
         tab: "tab-class",
         tab__active: "tab__active-class"
     }
 };
 
-const tabPanelManagedClasses: ITabPanelManagedClasses = {
+const tabPanelManagedClasses: TabPanelManagedClasses = {
     managedClasses: {
         tabPanel: "tab_panel-class",
         tabPanel__hidden: "tab_panel__hidden-class"
@@ -260,7 +260,7 @@ const exampleChildren4: any[] = [
     }
 ];
 
-const examples: IComponentFactoryExample<ITabsHandledProps> = {
+const examples: ComponentFactoryExample<TabsHandledProps> = {
     name: "Tabs",
     component: Tabs,
     schema: schema as any,

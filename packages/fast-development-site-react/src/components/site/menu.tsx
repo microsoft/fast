@@ -1,17 +1,17 @@
 import * as React from "react";
-import manageJss, { ComponentStyles, IManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import { IDevSiteDesignSystem } from "../design-system";
+import { DevSiteDesignSystem } from "../design-system";
 
-export interface ISiteMenuProps {
+export interface SiteMenuProps {
     slot: string;
 }
 
-export interface ISiteMenuState {
+export interface SiteMenuState {
     visibility: boolean;
 }
 
-export interface ISiteNavClassNameContract {
+export interface SiteNavClassNameContract {
     siteMenu: string;
     siteMenu_nav: string;
     siteMenu_nav__open: string;
@@ -24,7 +24,7 @@ export interface ISiteNavClassNameContract {
     siteMenu_ul: string;
 }
 
-const style: ComponentStyles<ISiteNavClassNameContract, IDevSiteDesignSystem> = {
+const style: ComponentStyles<SiteNavClassNameContract, DevSiteDesignSystem> = {
     "@keyframes SiteNavigationOpen": {
         "0%": {
             opacity: 0,
@@ -82,7 +82,7 @@ const style: ComponentStyles<ISiteNavClassNameContract, IDevSiteDesignSystem> = 
         background: "none",
         transition: "all 0.1s ease-in-out",
         "&:focus": {
-            border: (config: IDevSiteDesignSystem): string => {
+            border: (config: DevSiteDesignSystem): string => {
                 return `${toPx(1)} solid ${config.brandColor}`;
             },
             outline: "none"
@@ -90,7 +90,7 @@ const style: ComponentStyles<ISiteNavClassNameContract, IDevSiteDesignSystem> = 
     },
     siteMenu_button__open: {
         "&:hover": {
-            background: (config: IDevSiteDesignSystem): string => {
+            background: (config: DevSiteDesignSystem): string => {
                 return config.brandColor;
             },
         },
@@ -101,12 +101,12 @@ const style: ComponentStyles<ISiteNavClassNameContract, IDevSiteDesignSystem> = 
         },
     },
     siteMenu_buttonGlyph__open: {
-        fill: (config: IDevSiteDesignSystem): string => {
+        fill: (config: DevSiteDesignSystem): string => {
             return config.backgroundColor;
         },
     },
     siteMenu_buttonGlyph__close: {
-        fill: (config: IDevSiteDesignSystem): string => {
+        fill: (config: DevSiteDesignSystem): string => {
             return config.foregroundColor;
         },
     },
@@ -119,10 +119,10 @@ const style: ComponentStyles<ISiteNavClassNameContract, IDevSiteDesignSystem> = 
 /* tslint:disable-next-line */
 const waffleGlyph: string = "M6.2,10V6h4v4Zm0,8V14h4v4Zm0,8V22h4v4Zm8-16V6h4v4Zm0,8V14h4v4Zm0,8V22h4v4Zm8-20h4v4h-4Zm0,12V14h4v4Zm0,8V22h4v4Z";
 
-class SiteMenu extends React.Component<ISiteMenuProps & IManagedClasses<ISiteNavClassNameContract>, ISiteMenuState> {
+class SiteMenu extends React.Component<SiteMenuProps & ManagedClasses<SiteNavClassNameContract>, SiteMenuState> {
     private navPaneElement: React.RefObject<HTMLElement>;
 
-    constructor(props: ISiteMenuProps & IManagedClasses<ISiteNavClassNameContract>) {
+    constructor(props: SiteMenuProps & ManagedClasses<SiteNavClassNameContract>) {
         super(props);
 
         this.state = {

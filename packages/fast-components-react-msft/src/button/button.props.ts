@@ -1,11 +1,11 @@
 import * as React from "react";
 import { Subtract } from "utility-types";
 import {
-    IButtonHandledProps as IBaseButtonHandledProps,
-    IButtonManagedClasses as IBaseButtonManagedClasses,
-    IButtonUnhandledProps as IBaseButtonUnhandledProps
+    ButtonHandledProps as BaseButtonHandledProps,
+    ButtonManagedClasses as BaseButtonManagedClasses,
+    ButtonUnhandledProps as BaseButtonUnhandledProps
 } from "@microsoft/fast-components-react-base";
-import { IButtonClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
+import { ButtonClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
 
 export enum ButtonAppearance {
     justified= "justified",
@@ -14,9 +14,9 @@ export enum ButtonAppearance {
     primary= "primary",
 }
 
-export interface IButtonManagedClasses extends IManagedClasses<IButtonClassNameContract> {}
-export interface IButtonHandledProps extends IButtonManagedClasses,
-    Subtract<IBaseButtonHandledProps, IBaseButtonManagedClasses> {
+export interface ButtonManagedClasses extends ManagedClasses<ButtonClassNameContract> {}
+export interface ButtonHandledProps extends ButtonManagedClasses,
+    Subtract<BaseButtonHandledProps, BaseButtonManagedClasses> {
 
     /**
      * The Button appearance
@@ -25,5 +25,5 @@ export interface IButtonHandledProps extends IButtonManagedClasses,
 }
 
 /* tslint:disable-next-line:no-empty-interface */
-export interface IButtonUnhandledProps extends IBaseButtonUnhandledProps {}
-export type ButtonProps = IButtonHandledProps & IButtonUnhandledProps;
+export interface ButtonUnhandledProps extends BaseButtonUnhandledProps {}
+export type ButtonProps = ButtonHandledProps & ButtonUnhandledProps;

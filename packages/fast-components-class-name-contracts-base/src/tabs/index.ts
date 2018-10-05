@@ -1,7 +1,7 @@
 /**
  * The class name contract for the tabs component
  */
-export interface ITabsClassNameContract {
+export interface TabsClassNameContract {
     /**
      * The root of the tabs component
      */
@@ -18,7 +18,7 @@ export interface ITabsClassNameContract {
     tabs_tabList?: string;
 }
 
-export interface ITabClassNameContract {
+export interface TabClassNameContract {
     /**
      * The root of the tab components
      */
@@ -30,7 +30,7 @@ export interface ITabClassNameContract {
     tab__active?: string;
 }
 
-export interface ITabPanelClassNameContract {
+export interface TabPanelClassNameContract {
     /**
      * The root of the tab panel component
      */

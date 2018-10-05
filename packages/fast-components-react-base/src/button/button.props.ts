@@ -1,9 +1,9 @@
 import * as React from "react";
-import { IButtonClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { ButtonClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface IButtonManagedClasses extends IManagedClasses<IButtonClassNameContract> {}
-export interface IButtonUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
-export interface IButtonHandledProps extends IButtonManagedClasses {
+export interface ButtonManagedClasses extends ManagedClasses<ButtonClassNameContract> {}
+export interface ButtonUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
+export interface ButtonHandledProps extends ButtonManagedClasses {
     /**
      * The button content
      */
@@ -20,4 +20,4 @@ export interface IButtonHandledProps extends IButtonManagedClasses {
     href?: string;
 }
 
-export type ButtonProps = IButtonUnhandledProps & IButtonHandledProps;
+export type ButtonProps = ButtonUnhandledProps & ButtonHandledProps;

@@ -1,14 +1,14 @@
 import * as React from "react";
-import IFormItemCommon from "./form-item";
+import FormItemCommon from "./form-item";
 import styles from "./form-item.select.style";
-import { IFormItemSelectClassNameContract } from "../class-name-contracts/";
+import { FormItemSelectClassNameContract } from "../class-name-contracts/";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
  * Select state interface
  */
-export interface IFormItemSelectProps extends IFormItemCommon {
+export interface FormItemSelectProps extends FormItemCommon {
 
     /**
      * The select options
@@ -21,7 +21,7 @@ export interface IFormItemSelectProps extends IFormItemCommon {
  * @extends React.Component
  */
 /* tslint:disable-next-line */
-class FormItemSelect extends React.Component<IFormItemSelectProps & IManagedClasses<IFormItemSelectClassNameContract>, {}> {
+class FormItemSelect extends React.Component<FormItemSelectProps & ManagedClasses<FormItemSelectClassNameContract>, {}> {
 
     /**
      * Renders the component

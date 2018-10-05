@@ -1,7 +1,7 @@
 /**
  * The class name contract for the typography component
  */
-export interface ITypographyClassNameContract {
+export interface TypographyClassNameContract {
     /**
      * The root of the typography component
      */

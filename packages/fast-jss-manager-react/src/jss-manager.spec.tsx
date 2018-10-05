@@ -57,7 +57,7 @@ const staticAndDynamicStyles: ComponentStyles<any, any> = {
 };
 
 describe("The JSSManager", (): void => {
-    interface ITestDesignSystem {
+    interface TestDesignSystem {
         color: string;
     }
 
@@ -71,17 +71,17 @@ describe("The JSSManager", (): void => {
 
     const stylesheet: any = {
         class: {
-            color: (config: ITestDesignSystem): string => {
+            color: (config: TestDesignSystem): string => {
                 return config.color;
             }
         }
     };
 
-    const testDesignSystem: ITestDesignSystem = {
+    const testDesignSystem: TestDesignSystem = {
         color: "red"
     };
 
-    function functionStyleSheet(config: ITestDesignSystem): any {
+    function functionStyleSheet(config: TestDesignSystem): any {
         return {
             class: {
                 color: config.color

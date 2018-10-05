@@ -1,17 +1,15 @@
-import { IFormChildOption } from "../components/";
+import { FormChildOption } from "../components/";
 
-export interface IExample {
+export interface Example {
     name: string;
     component: any;
     schema: any;
     data: any[];
 }
 
-export interface IExampleObj {
-    [key: string]: IExample;
-}
-
-export default function formChildFromExamplesFactory(examples: IExampleObj): IFormChildOption[] {
+export default function formChildFromExamplesFactory(examples: {
+    [key: string]: Example;
+}): FormChildOption[] {
     return Object.keys(examples).map((key: string) => {
         return {
             name: examples[key].name,

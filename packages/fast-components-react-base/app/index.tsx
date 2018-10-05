@@ -3,11 +3,11 @@ import * as ReactDOM from "react-dom";
 import Site, {
     componentFactory,
     formChildFromExamplesFactory,
-    IFormChildOption,
-    ISiteProps,
+    FormChildOption,
     SiteCategory,
     SiteCategoryIcon,
     SiteCategoryItem,
+    SiteProps,
     SiteTitle,
     SiteTitleBrand
 } from "@microsoft/fast-development-site-react";
@@ -30,7 +30,7 @@ const root: HTMLElement = document.createElement("div");
 root.setAttribute("id", "root");
 document.body.appendChild(root);
 
-let formChildOptions: IFormChildOption[] = [reactHTMLElementExamples].concat(formChildFromExamplesFactory(examples));
+let formChildOptions: FormChildOption[] = [reactHTMLElementExamples].concat(formChildFromExamplesFactory(examples));
 
 formChildOptions = formChildOptions.concat([
     {

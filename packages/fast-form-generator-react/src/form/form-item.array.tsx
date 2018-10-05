@@ -2,17 +2,17 @@ import * as React from "react";
 import { get } from "lodash-es";
 import { canUseDOM } from "exenv-es6";
 import { arrayMove, SortableContainer, SortableElement } from "react-sortable-hoc";
-import { ISortableOptions, SortableListItem, sortingProps } from "./sorting";
-import IFormItemCommon from "./form-item";
+import { SortableConfig, SortableListItem, sortingProps } from "./sorting";
+import FormItemCommon from "./form-item";
 import { updateActiveSection } from "./form-section.props";
 import { generateExampleData } from "./form-section.utilities";
-import { IFormLocation } from "./form.props";
+import { FormLocation } from "./form.props";
 import { isRootLocation } from "./form.utilities";
 import { getArrayLinks } from "./form-item.array.utilities";
 import styles from "./form-item.array.style";
-import { IFormItemArrayClassNameContract } from "../class-name-contracts/";
+import { FormItemArrayClassNameContract } from "../class-name-contracts/";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 export enum ItemConstraints {
     minItems = "minItems",
@@ -24,13 +24,13 @@ export enum ArrayAction {
     remove = "remove"
 }
 
-export interface IArrayMenuItem {
+export interface ArrayMenuItem {
     type?: ArrayAction;
     text: string;
     onClick?: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
-export interface IFormItemArrayProps extends IFormItemCommon {
+export interface FormItemArrayProps extends FormItemCommon {
     /**
      * The schema
      */
@@ -59,13 +59,13 @@ export interface IFormItemArrayProps extends IFormItemCommon {
     /**
      * The location passed
      */
-    location?: IFormLocation;
+    location?: FormLocation;
 }
 
 /**
  * State object for the FormItemChildren component
  */
-export interface IFormItemArrayState {
+export interface FormItemArrayState {
     hideOptionMenu: boolean;
 }
 
@@ -73,7 +73,7 @@ export interface IFormItemArrayState {
  * Schema form component definition
  * @extends React.Component
  */
-class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasses<IFormItemArrayClassNameContract>, IFormItemArrayState> {
+class FormItemArray extends React.Component<FormItemArrayProps & ManagedClasses<FormItemArrayClassNameContract>, FormItemArrayState> {
 
     /**
      * Store a reference to the option menu
@@ -85,7 +85,7 @@ class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasse
      */
     private optionMenuTriggerRef: React.RefObject<HTMLButtonElement>;
 
-    constructor(props: IFormItemArrayProps & IManagedClasses<IFormItemArrayClassNameContract>) {
+    constructor(props: FormItemArrayProps & ManagedClasses<FormItemArrayClassNameContract>) {
         super(props);
 
         this.optionMenuRef = React.createRef();
@@ -248,7 +248,7 @@ class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasse
      */
     private generateArrayLinkItems(): JSX.Element[] {
         return getArrayLinks(this.props.data).map((value: any, index: number): JSX.Element => {
-            const options: ISortableOptions = {
+            const options: SortableConfig = {
                 key: `item-${index}`,
                 index,
                 value
@@ -299,7 +299,7 @@ class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasse
         return this.props.schemaLocation !== "" ? get(this.props.schema, this.props.schemaLocation) : this.props.schema;
     }
 
-    private getArrayMenuItem(action: ArrayAction, text: string, index?: number): IArrayMenuItem {
+    private getArrayMenuItem(action: ArrayAction, text: string, index?: number): ArrayMenuItem {
         return {
             type: action,
             text,
@@ -325,7 +325,7 @@ class FormItemArray extends React.Component<IFormItemArrayProps & IManagedClasse
         const schema: any = this.getSubschema();
         const lessThanMaxItems: boolean = this.hasItemConstraints(schema, arrayLength, ItemConstraints.maxItems);
         const moreThanMinItems: boolean = this.hasItemConstraints(schema, arrayLength, ItemConstraints.minItems);
-        const items: IArrayMenuItem[] = [];
+        const items: ArrayMenuItem[] = [];
 
         // if we have maxItems and the data is less than max items, allow adding items
         if (lessThanMaxItems) {

@@ -130,7 +130,7 @@ describe("getRef", () => {
 });
 
 describe("unhandledProps", () => {
-    interface IHandledProps {
+    interface TestComponentHandledProps {
         boolean: boolean;
         string: string;
         array: string[];
@@ -140,7 +140,7 @@ describe("unhandledProps", () => {
         null: null;
     }
 
-    interface IUnhandledProps {
+    interface TestComponentUnhandledProps {
         children?: React.ReactNode | React.ReactNode[];
         booleanDirty?: boolean;
         stringDirty?: string;
@@ -151,7 +151,7 @@ describe("unhandledProps", () => {
         nullDirty?: null;
     }
 
-    const cleanProps: IHandledProps = {
+    const cleanProps: TestComponentHandledProps = {
         boolean: true,
         string: "string",
         array: ["array"],
@@ -161,7 +161,7 @@ describe("unhandledProps", () => {
         null: null
     };
 
-    const dirtyProps: IUnhandledProps = {
+    const dirtyProps: TestComponentUnhandledProps = {
         children: "children",
         booleanDirty: true,
         stringDirty: "string",
@@ -172,8 +172,12 @@ describe("unhandledProps", () => {
         nullDirty: null
     };
 
-    class UnhandledPropsTestComponent extends Foundation<IHandledProps, IUnhandledProps, undefined> {
-        public handledProps: HandledProps<IHandledProps> = {
+    class UnhandledPropsTestComponent extends Foundation<
+        TestComponentHandledProps,
+        TestComponentUnhandledProps,
+        undefined
+    > {
+        public handledProps: HandledProps<TestComponentHandledProps> = {
             boolean: void 0,
             string: void 0,
             array: void 0,
@@ -204,14 +208,14 @@ describe("unhandledProps", () => {
     });
 
     test("return object should not include children", () => {
-        const unhandledProps: IUnhandledProps = unhandledPropsTestComponentDirty["unhandledProps"]();
+        const unhandledProps: TestComponentUnhandledProps = unhandledPropsTestComponentDirty["unhandledProps"]();
 
         expect(has(unhandledProps, "children")).toBe(false);
     });
 
     test("return object should contain all property keys passed to props that is not enumerated on handledProps", () => {
 
-        const unhandledProps: IUnhandledProps = unhandledPropsTestComponentDirty["unhandledProps"]();
+        const unhandledProps: TestComponentUnhandledProps = unhandledPropsTestComponentDirty["unhandledProps"]();
 
         expect(has(unhandledProps, "booleanDirty")).toBe(true);
         expect(has(unhandledProps, "stringDirty")).toBe(true);
@@ -223,7 +227,7 @@ describe("unhandledProps", () => {
     });
 
     test("return object should not contain any property keys contained on handledProps", () => {
-        const unhandledProps: IUnhandledProps = unhandledPropsTestComponentClean["unhandledProps"]();
+        const unhandledProps: TestComponentUnhandledProps = unhandledPropsTestComponentClean["unhandledProps"]();
 
         expect(has(unhandledProps, "boolean")).toBe(false);
         expect(has(unhandledProps, "string")).toBe(false);

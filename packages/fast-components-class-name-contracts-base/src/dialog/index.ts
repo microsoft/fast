@@ -1,7 +1,7 @@
 /**
  * The class name contract for the dialog component
  */
-export interface IDialogClassNameContract {
+export interface DialogClassNameContract {
     /**
      * The root of the dialog component
      */

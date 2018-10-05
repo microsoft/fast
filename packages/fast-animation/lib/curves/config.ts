@@ -1,58 +1,58 @@
-import { IBezierCurve } from "./index";
+import { BezierCurve } from "./index";
 
-export const linear: IBezierCurve = [
+export const linear: BezierCurve = [
     [0, 0],
     [1, 1]
 ];
-export const easeOut: IBezierCurve = [
+export const easeOut: BezierCurve = [
     [0, 0],
     [0.58, 1]
 ];
-export const easeOutSmooth: IBezierCurve = [
+export const easeOutSmooth: BezierCurve = [
     [0, 0.35],
     [0.15, 1]
 ];
-export const easeIn: IBezierCurve = [
+export const easeIn: BezierCurve = [
     [0.25, 0.1],
     [0.25, 1]
 ];
-export const drillIn: IBezierCurve = [
+export const drillIn: BezierCurve = [
     [0.17, 0.17],
     [0, 1]
 ];
-export const backToApp: IBezierCurve = [
+export const backToApp: BezierCurve = [
     [0.5, 0],
     [0.6, 1]
 ];
-export const appToApp: IBezierCurve = [
+export const appToApp: BezierCurve = [
     [0.5, 0],
     [1, 0.9]
 ];
-export const fastIn: IBezierCurve = [
+export const fastIn: BezierCurve = [
     [0.1, 0.9],
     [0.2, 1]
 ];
-export const fastOut: IBezierCurve = [
+export const fastOut: BezierCurve = [
     [0.9, 0.1],
     [1, 0.2]
 ];
-export const fastInOut: IBezierCurve = [
+export const fastInOut: BezierCurve = [
     [0.8, 0],
     [0.2, 1]
 ];
-export const exponential: IBezierCurve = [
+export const exponential: BezierCurve = [
     [0.1, 0.25],
     [0.75, 0.9]
 ];
-export const fastInFortySevenPercent: IBezierCurve = [
+export const fastInFortySevenPercent: BezierCurve = [
     [0.11, 0.5],
     [0.24, 0.96]
 ];
-export const exponentialReversed: IBezierCurve = [
+export const exponentialReversed: BezierCurve = [
     [0.25, 0.1],
     [0.9, 0.75]
 ];
-export const navPane: IBezierCurve = [
+export const navPane: BezierCurve = [
     [0.1, 0.7],
     [0.1, 1]
 ];

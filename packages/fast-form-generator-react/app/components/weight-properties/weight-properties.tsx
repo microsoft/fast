@@ -5,7 +5,7 @@ export enum WeightPropertiesTags {
     span = "span"
 }
 
-export interface IWeightPropertiesProps {
+export interface WeightPropertiesProps {
     alignHorizontal: string;
     alignVertical: string;
     level: number;
@@ -19,7 +19,7 @@ export interface IWeightPropertiesProps {
  * This test components API should have:
  * - a number of required property which maps to a configuration which will organise them by weight
  */
-export default class WeightProperties extends React.Component<IWeightPropertiesProps, {}> {
+export default class WeightProperties extends React.Component<WeightPropertiesProps, {}> {
     public render(): JSX.Element {
         return (
             <this.props.tag>

@@ -1,5 +1,5 @@
 import {
-    IFormComponentMappingToPropertyNamesProps
+    FormComponentMappingToPropertyNamesProps
 } from "../../../src/form/form.props";
 
 export default {
@@ -12,4 +12,4 @@ export default {
     theme: [
         "theme"
     ]
-} as IFormComponentMappingToPropertyNamesProps;
+} as FormComponentMappingToPropertyNamesProps;

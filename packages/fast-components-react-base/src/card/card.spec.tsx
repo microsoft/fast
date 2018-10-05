@@ -4,12 +4,12 @@ import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import Card, {
+    CardClassNameContract,
+    CardHandledProps,
+    CardManagedClasses,
     CardProps,
     CardTag,
-    ICardClassNameContract,
-    ICardHandledProps,
-    ICardManagedClasses,
-    ICardUnhandledProps
+    CardUnhandledProps
 } from "./card";
 
 /*
@@ -18,7 +18,7 @@ import Card, {
 configure({adapter: new Adapter()});
 
 describe("card", (): void => {
-    const managedClasses: ICardClassNameContract = {
+    const managedClasses: CardClassNameContract = {
         card: "card"
     };
 
@@ -27,11 +27,11 @@ describe("card", (): void => {
     });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
-        const handledProps: ICardHandledProps = {
+        const handledProps: CardHandledProps = {
             managedClasses
         };
 
-        const unhandledProps: ICardUnhandledProps = {
+        const unhandledProps: CardUnhandledProps = {
             "aria-hidden": true
         };
 

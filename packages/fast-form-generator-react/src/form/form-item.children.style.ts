@@ -14,10 +14,10 @@ import {
     thickLine,
     trashcan
 } from "../utilities/form-input.style";
-import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
-import { IFormItemChildrenClassNameContract } from "../class-name-contracts/";
+import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
+import { FormItemChildrenClassNameContract } from "../class-name-contracts/";
 
-const styles: ComponentStyles<IFormItemChildrenClassNameContract, {}> = {
+const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
     "@global": {
         ...applyGlobalStyle()
     },

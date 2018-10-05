@@ -1,7 +1,7 @@
 /**
  * The class name contract for the caption component
  */
-export interface ICaptionClassNameContract {
+export interface CaptionClassNameContract {
     /**
      * The root of the caption component
      */

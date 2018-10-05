@@ -1,15 +1,15 @@
 import * as React from "react";
 import { jss, stylesheetManager, stylesheetRegistry } from "./jss";
 import { SheetsManager } from "jss";
-import { IDesignSystem } from "./design-system-provider";
-import { ClassNames, ComponentStyles, ComponentStyleSheet, IManagedClasses } from "@microsoft/fast-jss-manager";
+import { DesignSystem } from "./design-system-provider";
+import { ComponentStyles, ComponentStyleSheet, ManagedClasses } from "@microsoft/fast-jss-manager";
 import { isEqual, merge } from "lodash-es";
 import { Consumer } from "./context";
 
 /**
  * State interface for JSS manager
  */
-export interface IJSSManagerState {
+export interface JSSManagerState {
     /**
      * Stores a JSS stylesheet containing all config-driven styles rules for a component
      */
@@ -20,11 +20,11 @@ export interface IJSSManagerState {
  * Describes an interface for adjusting a styled component
  * per component instance
  */
-export interface IJSSManagedComponentProps<S, C> {
+export interface JSSManagedComponentProps<S, C> {
     jssStyleSheet?: Partial<ComponentStyles<S, C>>;
 }
 
-export interface IJSSManagerProps<S, C> extends IJSSManagedComponentProps<S, C> {
+export interface JSSManagerProps<S, C> extends JSSManagedComponentProps<S, C> {
     /**
      * The styles for the JSS manager to compile
      */
@@ -38,7 +38,7 @@ export interface IJSSManagerProps<S, C> extends IJSSManagedComponentProps<S, C> 
     /**
      * Render the child component
      */
-    render: (managedClasses: ClassNames<S> ) => React.ReactNode;
+    render: (managedClasses: {[className in keyof S]?: string} ) => React.ReactNode;
 }
 
 /**
@@ -49,25 +49,25 @@ Pick<
     T,
     Exclude<
         keyof T,
-        keyof IManagedClasses<C>
+        keyof ManagedClasses<C>
     >
-> & IJSSManagedComponentProps<S, C>;
+> & JSSManagedComponentProps<S, C>;
 
 /**
  * The JSSManger. This class manages JSSStyleSheet compilation and passes generated class-names
  * down to child component
  */
-export class JSSManager<S, C> extends React.Component<IJSSManagerProps<S, C>, IJSSManagerState> {
+export class JSSManager<S, C> extends React.Component<JSSManagerProps<S, C>, JSSManagerState> {
     /**
      * The style manager is responsible for attaching and detaching style elements when
      * components mount and un-mount
      */
     private static stylesheetManager: SheetsManager = stylesheetManager;
 
-    constructor(props: IJSSManagerProps<S, C>) {
+    constructor(props: JSSManagerProps<S, C>) {
         super(props);
 
-        const state: IJSSManagerState = {};
+        const state: JSSManagerState = {};
 
         if (Boolean(props.styles)) {
             state.styleSheet = this.createStyleSheet();
@@ -81,7 +81,7 @@ export class JSSManager<S, C> extends React.Component<IJSSManagerProps<S, C>, IJ
         this.state = state;
     }
 
-    public componentDidUpdate(prevProps: IJSSManagerProps<S, C>, prevState: IJSSManagerState): void {
+    public componentDidUpdate(prevProps: JSSManagerProps<S, C>, prevState: JSSManagerState): void {
         // If we have new style assignments, we always need to reset the stylesheet from scratch
         // else, if the designSystem has changed, update the stylesheet with new design system values
         if (this.props.jssStyleSheet !== prevProps.jssStyleSheet) {
@@ -133,7 +133,7 @@ export class JSSManager<S, C> extends React.Component<IJSSManagerProps<S, C>, IJ
     private resetStyleSheet(): void {
         this.removeStyleSheet();
         this.setState(
-            (previousState: IJSSManagerState, props: IJSSManagerProps<S, C>): Partial<IJSSManagerState> => {
+            (previousState: JSSManagerState, props: JSSManagerProps<S, C>): Partial<JSSManagerState> => {
                 return {
                     styleSheet: this.hasStyleSheet() ? this.createStyleSheet() : null
                 };
@@ -173,7 +173,7 @@ export class JSSManager<S, C> extends React.Component<IJSSManagerProps<S, C>, IJ
     /**
      * returns the compiled classes
      */
-    private classNames(): ClassNames<S> {
+    private classNames(): {[className in keyof S]?: string} {
         return this.hasStyleSheet()
         ? this.state.styleSheet.classes
         : {};

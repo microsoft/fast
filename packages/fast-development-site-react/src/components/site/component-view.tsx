@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Route, Switch, withRouter } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
-import { IDevSiteDesignSystem } from "../design-system";
+import { DevSiteDesignSystem } from "../design-system";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import manageJss, { ComponentStyles, IManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 
 /**
  * Describes the possible views for a component
@@ -13,16 +13,16 @@ export enum ComponentViewTypes {
     detail
 }
 
-export interface IComponentViewManagedClasses {
+export interface ComponentViewManagedClasses {
     componentExampleView: string;
     componentDetailView: string;
 }
 
-export interface IComponentViewProps extends RouteComponentProps<{}> {
+export interface ComponentViewProps extends RouteComponentProps<{}> {
     viewType: ComponentViewTypes;
 }
 
-const style: ComponentStyles<IComponentViewManagedClasses, IDevSiteDesignSystem> = {
+const style: ComponentStyles<ComponentViewManagedClasses, DevSiteDesignSystem> = {
     componentExampleView: {
         overflow: "auto",
         flexGrow: "1",
@@ -36,7 +36,7 @@ const style: ComponentStyles<IComponentViewManagedClasses, IDevSiteDesignSystem>
     }
 };
 
-class ComponentView extends React.Component<IComponentViewProps & IManagedClasses<IComponentViewManagedClasses>, {}> {
+class ComponentView extends React.Component<ComponentViewProps & ManagedClasses<ComponentViewManagedClasses>, {}> {
     public render(): React.ReactElement<HTMLDivElement> {
         return (
             <div className={this.getClassName()}>

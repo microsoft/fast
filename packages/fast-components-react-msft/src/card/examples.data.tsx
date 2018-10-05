@@ -1,18 +1,18 @@
 import * as React from "react";
 import { Card } from "./index";
 import {
+    CardHandledProps,
     CardProps,
     CardTag,
-    ICardHandledProps,
-    ICardUnhandledProps
+    CardUnhandledProps
 } from "./index";
 import schema from "@microsoft/fast-components-react-base/dist/card/card.schema.json";
 import ImageSchema from "@microsoft/fast-components-react-base/dist/image/image.schema.json";
 import HeadingSchema from "../heading/heading.schema.json";
 import { HeadingSize, HeadingTag } from "../heading";
 import Documentation from "./.tmp/documentation";
-import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { IManagedClasses } from "@microsoft/fast-jss-manager-react";
+import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
+import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 
 export default {
     name: "Card",
@@ -55,4 +55,4 @@ export default {
             ]
         }
     ]
-}  as IComponentFactoryExample<CardProps>;
+}  as ComponentFactoryExample<CardProps>;

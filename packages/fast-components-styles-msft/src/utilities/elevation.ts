@@ -1,13 +1,13 @@
 import Chroma from "chroma-js";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import { ICSSRules } from "@microsoft/fast-jss-manager";
-import designSystemDefaults, { IDesignSystem } from "../design-system";
+import { CSSRules } from "@microsoft/fast-jss-manager";
+import designSystemDefaults, { DesignSystem } from "../design-system";
 import { density } from "./density";
 
 /**
  * Shadow config
  */
-export interface IShadowConfig {
+export interface ShadowConfig {
     blurMultiplier: number;
     opacity: number;
     xOffsetMultiplier: number;
@@ -40,7 +40,7 @@ export enum ElevationMultiplier {
 /**
  * Ambient shadow config
  */
-export const ambientShadowConfig: IShadowConfig = {
+export const ambientShadowConfig: ShadowConfig = {
     blurMultiplier: 0.225,
     xOffsetMultiplier: 0,
     yOffsetMultiplier: 0.075,
@@ -50,7 +50,7 @@ export const ambientShadowConfig: IShadowConfig = {
 /**
  * Directional shadow config
  */
-export const directionalShadowConfig: IShadowConfig = {
+export const directionalShadowConfig: ShadowConfig = {
     blurMultiplier: 0.9,
     xOffsetMultiplier: 0,
     yOffsetMultiplier: 0.4,
@@ -64,8 +64,8 @@ export const directionalShadowConfig: IShadowConfig = {
 export function elevation(
     elevationValue: ElevationMultiplier | number,
     color: string = designSystemDefaults.foregroundColor
-): (config: IDesignSystem) => ICSSRules<IDesignSystem> {
-    return (config: IDesignSystem): ICSSRules<IDesignSystem> => {
+): (config: DesignSystem) => CSSRules<DesignSystem> {
+    return (config: DesignSystem): CSSRules<DesignSystem> => {
         const ambientShadow: string = elevationShadow(elevationValue, color, ambientShadowConfig)(config);
         const directionalShadow: string = elevationShadow(elevationValue, color, directionalShadowConfig)(config);
 
@@ -79,8 +79,8 @@ export function elevation(
  * Generate Elevation Shadow
  * Generates a string representing a box shadow value
  */
-export function elevationShadow(elevationValue: number, color: string, shadowConfig: IShadowConfig): (config: IDesignSystem) => string {
-    return (config: IDesignSystem): string => {
+export function elevationShadow(elevationValue: number, color: string, shadowConfig: ShadowConfig): (config: DesignSystem) => string {
+    return (config: DesignSystem): string => {
         const xOffset: string = density(shadowConfig.xOffsetMultiplier * elevationValue)(config);
         const yOffset: string = density(shadowConfig.yOffsetMultiplier * elevationValue)(config);
         const blur: string = density(shadowConfig.blurMultiplier * elevationValue)(config);

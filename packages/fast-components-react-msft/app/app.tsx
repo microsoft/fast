@@ -1,36 +1,36 @@
+import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import Site, {
     componentFactory,
     formChildFromExamplesFactory,
-    IFormChildOption,
-    ISiteProps,
-    ITheme,
+    FormChildOption,
     ShellSlot,
     SiteCategory,
     SiteCategoryIcon,
     SiteCategoryItem,
     SiteMenu,
     SiteMenuItem,
+    SiteProps,
     SiteTitle,
-    SiteTitleBrand
+    SiteTitleBrand,
+    Theme
 } from "@microsoft/fast-development-site-react";
-import * as React from "react";
 import manageJss, { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
-import { DesignSystemDefaults, IDesignSystem } from "@microsoft/fast-components-styles-msft";
-import { IHypertextClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { DesignSystem, DesignSystemDefaults } from "@microsoft/fast-components-styles-msft";
+import { HypertextClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { glyphBuildingblocks } from "@microsoft/fast-glyphs-msft";
-import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
+import * as React from "react";
 import { Direction } from "@microsoft/fast-application-utilities";
 import * as examples from "./examples";
 import { Hypertext } from "../src/hypertext";
-import ColorPicker, { IColorConfig } from "./color-picker";
+import ColorPicker, { ColorConfig } from "./color-picker";
 import reactHTMLElementExamples from "./components/examples.data";
 
 /* tslint:disable-next-line */
 const sketchDesignKit = require("./fast-dna-msft-design-kit.sketch");
 
-const formChildOptions: IFormChildOption[] = [reactHTMLElementExamples].concat(formChildFromExamplesFactory(examples));
+const formChildOptions: FormChildOption[] = [reactHTMLElementExamples].concat(formChildFromExamplesFactory(examples));
 
-const hypertextStyles: ComponentStyles<IHypertextClassNameContract, undefined> = {
+const hypertextStyles: ComponentStyles<HypertextClassNameContract, undefined> = {
     hypertext: {
         margin: "0 8px",
         display: "inline-block",
@@ -39,22 +39,22 @@ const hypertextStyles: ComponentStyles<IHypertextClassNameContract, undefined> =
     }
 };
 
-enum Theme {
+enum ThemeName {
     dark = "dark",
     light = "light",
     custom = "custom"
 }
 
-export interface IAppState extends IColorConfig {
-    theme: Theme;
+export interface AppState extends ColorConfig {
+    theme: ThemeName;
     direction: Direction;
 }
 
-export default class App extends React.Component<{}, IAppState> {
-    private themes: ITheme[] = [
-        {id: Theme.light, displayName: Theme.light, background: DesignSystemDefaults.backgroundColor},
-        {id: Theme.dark, displayName: Theme.dark, background: DesignSystemDefaults.foregroundColor},
-        {id: Theme.custom, displayName: Theme.custom}
+export default class App extends React.Component<{}, AppState> {
+    private themes: Theme[] = [
+        {id: ThemeName.light, displayName: ThemeName.light, background: DesignSystemDefaults.backgroundColor},
+        {id: ThemeName.dark, displayName: ThemeName.dark, background: DesignSystemDefaults.foregroundColor},
+        {id: ThemeName.custom, displayName: ThemeName.custom}
     ];
 
     constructor(props: {}) {
@@ -65,7 +65,7 @@ export default class App extends React.Component<{}, IAppState> {
             foregroundColor: DesignSystemDefaults.foregroundColor,
             backgroundColor: DesignSystemDefaults.backgroundColor,
             accentColor: DesignSystemDefaults.brandColor,
-            theme: Theme.light
+            theme: ThemeName.light
         };
     }
 
@@ -112,14 +112,14 @@ export default class App extends React.Component<{}, IAppState> {
         );
     }
 
-    private getThemeById(id: Theme): ITheme {
-        return this.themes.find((theme: ITheme): boolean => {
+    private getThemeById(id: ThemeName): Theme {
+        return this.themes.find((theme: Theme): boolean => {
             return theme.id === id;
         });
     }
 
-    private generateDesignSystem(): IDesignSystem {
-        const designSystem: Partial<IDesignSystem> = {
+    private generateDesignSystem(): DesignSystem {
+        const designSystem: Partial<DesignSystem> = {
             direction: this.state.direction,
             foregroundColor: this.state.foregroundColor,
             backgroundColor: this.state.backgroundColor,
@@ -139,12 +139,12 @@ export default class App extends React.Component<{}, IAppState> {
         });
     }
 
-    private handleUpdateTheme = (theme: Theme): void => {
-        if (theme !== Theme.custom) {
+    private handleUpdateTheme = (theme: ThemeName): void => {
+        if (theme !== ThemeName.custom) {
             this.setState({
                 theme,
-                foregroundColor: theme === Theme.dark ? DesignSystemDefaults.backgroundColor : DesignSystemDefaults.foregroundColor,
-                backgroundColor: theme === Theme.dark ? DesignSystemDefaults.foregroundColor : DesignSystemDefaults.backgroundColor
+                foregroundColor: theme === ThemeName.dark ? DesignSystemDefaults.backgroundColor : DesignSystemDefaults.foregroundColor,
+                backgroundColor: theme === ThemeName.dark ? DesignSystemDefaults.foregroundColor : DesignSystemDefaults.backgroundColor
             });
         } else {
             this.setCustomThemeBackground(this.state.backgroundColor);
@@ -157,15 +157,15 @@ export default class App extends React.Component<{}, IAppState> {
     /**
      * Handles any changes made by the user to the color picker inputs
      */
-    private handleColorUpdate = (config: IColorConfig): void => {
+    private handleColorUpdate = (config: ColorConfig): void => {
         this.setCustomThemeBackground(config.backgroundColor);
-        const updates: Partial<IAppState> = {...config};
+        const updates: Partial<AppState> = {...config};
 
         if (config.backgroundColor !== this.state.backgroundColor || config.foregroundColor !== this.state.foregroundColor) {
-            updates.theme = Theme.custom;
+            updates.theme = ThemeName.custom;
         }
 
-        this.setState(updates as IAppState);
+        this.setState(updates as AppState);
     }
 
     /**
@@ -173,8 +173,8 @@ export default class App extends React.Component<{}, IAppState> {
      * @param value The color to assign
      */
     private setCustomThemeBackground(value: string): void {
-        this.themes = this.themes.map((theme: ITheme): ITheme => {
-            return theme.id !== Theme.custom ? theme : Object.assign({}, theme, { background: value});
+        this.themes = this.themes.map((theme: Theme): Theme => {
+            return theme.id !== ThemeName.custom ? theme : Object.assign({}, theme, { background: value});
         });
     }
 

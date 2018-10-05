@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Framework } from "./dev-tools";
-import { IFormChildOption } from "./";
+import { FormChildOption } from "./";
 import { get, isEmpty, isObject, set, uniqueId } from "lodash-es";
 import SyntaxHighlighter, { registerLanguage } from "react-syntax-highlighter/prism-light";
 import jsx from "react-syntax-highlighter/languages/prism/jsx";
@@ -8,14 +8,14 @@ import vs from "./dev-tools-code-preview-style";
 
 registerLanguage("jsx", jsx);
 
-export interface ICodePreviewProps {
+export interface CodePreviewProps {
     componentName: string;
-    childOptions: IFormChildOption[];
+    childOptions: FormChildOption[];
     framework: Framework;
     data: any;
 }
 
-export interface IReactChildren {
+export interface ReactChildren {
     id: string;
     propertyName: string;
     location: string;
@@ -23,7 +23,7 @@ export interface IReactChildren {
     component?: any;
 }
 
-export interface IReactComponentConfig {
+export interface ReactComponentConfig {
     hasChildren: boolean;
     componentName: string;
     componentData: any;
@@ -32,7 +32,7 @@ export interface IReactComponentConfig {
     location: string;
 }
 
-export default class CodePreview extends React.Component<ICodePreviewProps, {}> {
+export default class CodePreview extends React.Component<CodePreviewProps, {}> {
 
     private variables: string;
 
@@ -83,7 +83,7 @@ export default class CodePreview extends React.Component<ICodePreviewProps, {}> 
     /**
      * Generate the syntax for the react component code preview
      */
-    private generateReactComponent(componentConfig: IReactComponentConfig): string {
+    private generateReactComponent(componentConfig: ReactComponentConfig): string {
         if (componentConfig.hasChildren) {
             return this.generateReactChildren(
                 componentConfig.componentName,
@@ -188,7 +188,7 @@ export default class CodePreview extends React.Component<ICodePreviewProps, {}> 
             ? property
             : location + property.charAt(0).toUpperCase() + property.slice(1);
         const childrenLocations: string[] = this.findChildren(data[property], "", []);
-        const propertyChildren: IReactChildren[] = this.getReactChildrenFromProperties(data, property, propertyName, childrenLocations);
+        const propertyChildren: ReactChildren[] = this.getReactChildrenFromProperties(data, property, propertyName, childrenLocations);
         const attributes: string = `\n${tab}${property}={${propertyName}}`;
 
         this.variables += `const ${propertyName} = `;
@@ -203,8 +203,8 @@ export default class CodePreview extends React.Component<ICodePreviewProps, {}> 
         property: string,
         propertyName: string,
         childrenLocations: string[]
-    ): IReactChildren[] {
-        const propertyChildren: IReactChildren[] = [];
+    ): ReactChildren[] {
+        const propertyChildren: ReactChildren[] = [];
 
         if (childrenLocations.length > 0) {
             for (let i: number = childrenLocations.length - 1; i >= 0; i--) {
@@ -223,7 +223,7 @@ export default class CodePreview extends React.Component<ICodePreviewProps, {}> 
     /**
      * Sets the private variables to children objects
      */
-    private setReactChildrenVariables(childrenLocations: string[], propertyChildren: IReactChildren[], propertyName: string): void {
+    private setReactChildrenVariables(childrenLocations: string[], propertyChildren: ReactChildren[], propertyName: string): void {
         if (childrenLocations.length > 0) {
             for (let i: number = childrenLocations.length - 1; i >= 0; i--) {
                 let stringDataWithReactComponentNames: string = JSON.stringify(propertyChildren[i].data.props, null, 2);
@@ -242,7 +242,7 @@ export default class CodePreview extends React.Component<ICodePreviewProps, {}> 
 
     private replaceReactChildrenVariableIdsWithComponent(
         childrenLocations: string[],
-        propertyChildren: IReactChildren[],
+        propertyChildren: ReactChildren[],
         stringDataWithReactComponentNames: string
     ): string {
         let updatedStringDataWithReactComponentNames: string = stringDataWithReactComponentNames;

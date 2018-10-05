@@ -12,7 +12,7 @@ const aSketchPage: string = fs.readFileSync(path.resolve(__dirname, "./aSketchPa
 /**
  * A configuration object used to extract symbols from a given url
  */
-export interface ISymbolLibrarySource {
+export interface SymbolLibrarySource {
     /**
      * The URL of a symbol source
      */
@@ -27,11 +27,11 @@ export interface ISymbolLibrarySource {
 /**
  * Configuration object for the extractSymbolLibrary function
  */
-export interface IExtractSymbolLibraryConfig {
+export interface ExtractSymbolLibraryConfig {
     /**
      * The sources to extract symbols from
      */
-    sources: ISymbolLibrarySource | ISymbolLibrarySource[];
+    sources: SymbolLibrarySource | SymbolLibrarySource[];
 
     /**
      * The name of the library
@@ -49,7 +49,7 @@ export interface IExtractSymbolLibraryConfig {
     pageHeight: number;
 }
 
-const extractSymbolLibraryConfigDefaults: IExtractSymbolLibraryConfig = {
+const extractSymbolLibraryConfigDefaults: ExtractSymbolLibraryConfig = {
     sources: [],
     name: "Symbol library",
     pageWidth: 1600,
@@ -59,17 +59,17 @@ const extractSymbolLibraryConfigDefaults: IExtractSymbolLibraryConfig = {
 /**
  * Ensure our source object structure is consistent
  */
-function normalizeSources(sources: ISymbolLibrarySource | ISymbolLibrarySource[]): ISymbolLibrarySource[] {
+function normalizeSources(sources: SymbolLibrarySource | SymbolLibrarySource[]): SymbolLibrarySource[] {
     return Array.isArray(sources) ? sources : [sources];
 }
 
 /**
  * Extracts sketch symbol library given a config
  */
-export async function extractSymbolLibrary(config: IExtractSymbolLibraryConfig): Promise<string> {
+export async function extractSymbolLibrary(config: ExtractSymbolLibraryConfig): Promise<string> {
     // Apply defaults to config
     config = Object.assign({}, extractSymbolLibraryConfigDefaults, config);
-    const standardizedSources: ISymbolLibrarySource[] = normalizeSources(config.sources);
+    const standardizedSources: SymbolLibrarySource[] = normalizeSources(config.sources);
     const browser: Browser = await puppeteer.launch();
     const page: Page = await browser.newPage();
     let symbols: string[][] = [];
@@ -113,7 +113,7 @@ export async function extractSymbolLibrary(config: IExtractSymbolLibraryConfig):
 /**
  * Extract symbol data from a single source
  */
-async function getSymbolsFromSource(source: ISymbolLibrarySource, page: Page): Promise<string[]> {
+async function getSymbolsFromSource(source: SymbolLibrarySource, page: Page): Promise<string[]> {
     // Navigate to the source URL
     await page.goto(source.url, {
         waitUntil: "domcontentloaded"

@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export interface ICheckboxProps {
+export interface CheckboxProps {
     toggle: boolean;
     optionalToggle?: boolean;
 }
@@ -10,7 +10,7 @@ export interface ICheckboxProps {
  * - a required property which should display as a checkbox
  * - an optional property which should display as a checkbox
  */
-export default class Checkbox extends React.Component<ICheckboxProps, {}> {
+export default class Checkbox extends React.Component<CheckboxProps, {}> {
     public render(): JSX.Element {
         return (
             <span>

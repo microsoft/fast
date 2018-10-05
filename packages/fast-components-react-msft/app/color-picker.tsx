@@ -1,23 +1,23 @@
 import * as React from "react";
-import manageJss, { ComponentStyles, IManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { IDesignSystem } from "@microsoft/fast-components-styles-msft";
+import manageJss, { ComponentStyles, ManagedClasses } from "@microsoft/fast-jss-manager-react";
+import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 
-export interface IColorConfig {
+export interface ColorConfig {
     foregroundColor: string;
     backgroundColor: string;
     accentColor: string;
 }
 
-export interface IColorPickerProps extends IColorConfig {
-    onColorUpdate: (colors: IColorConfig) => void;
+export interface ColorPickerProps extends ColorConfig {
+    onColorUpdate: (colors: ColorConfig) => void;
 }
 
-export interface IColorPickerManagedClasses {
+export interface ColorPickerManagedClasses {
     colorPicker: string;
     colorPicker_label: string;
 }
 
-const styles: ComponentStyles<IColorPickerManagedClasses, IDesignSystem> = {
+const styles: ComponentStyles<ColorPickerManagedClasses, DesignSystem> = {
     colorPicker: {
         display: "flex",
         height: "100%",
@@ -28,7 +28,7 @@ const styles: ComponentStyles<IColorPickerManagedClasses, IDesignSystem> = {
     }
 };
 
-class ColorPicker extends React.Component<IColorPickerProps & IManagedClasses<IColorPickerManagedClasses>, undefined> {
+class ColorPicker extends React.Component<ColorPickerProps & ManagedClasses<ColorPickerManagedClasses>, undefined> {
     /**
      * Ref object for foreground color input
      */
@@ -44,7 +44,7 @@ class ColorPicker extends React.Component<IColorPickerProps & IManagedClasses<IC
      */
     private accentRef: React.RefObject<HTMLInputElement>;
 
-    constructor(props: IColorPickerProps) {
+    constructor(props: ColorPickerProps) {
         super(props);
 
         this.foregroundRef = React.createRef();
@@ -91,7 +91,7 @@ class ColorPicker extends React.Component<IColorPickerProps & IManagedClasses<IC
      */
     private handleColorPickerChange = (e: React.FormEvent<HTMLInputElement>): void => {
         const value: string = e.currentTarget.value;
-        const updatedColorKey: keyof IColorConfig = e.currentTarget === this.foregroundRef.current
+        const updatedColorKey: keyof ColorConfig = e.currentTarget === this.foregroundRef.current
             ? "foregroundColor"
             : e.currentTarget === this.backgroundRef.current
             ? "backgroundColor"

@@ -5,12 +5,12 @@ import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import Image, {
-    IImageClassNameContract,
-    IImageHandledProps,
-    IImageManagedClasses,
-    IImageUnhandledProps,
+    ImageClassNameContract,
+    ImageHandledProps,
+    ImageManagedClasses,
     ImageProps,
     ImageSlot,
+    ImageUnhandledProps,
 } from "./image";
 
 /*
@@ -23,7 +23,7 @@ describe("image snapshot", (): void => {
 });
 
 describe("image", (): void => {
-    const managedClasses: IImageClassNameContract = {
+    const managedClasses: ImageClassNameContract = {
         image: "image-class",
         image__picture: "picture-class"
     };
@@ -47,12 +47,12 @@ describe("image", (): void => {
     });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
-        const handledProps: IImageHandledProps = {
+        const handledProps: ImageHandledProps = {
             managedClasses,
             alt,
             src: "https://placehold.it/200x200"
         };
-        const unhandledProps: IImageUnhandledProps = {
+        const unhandledProps: ImageUnhandledProps = {
             "aria-hidden": true
         };
         const props: ImageProps = {...handledProps, ...unhandledProps};

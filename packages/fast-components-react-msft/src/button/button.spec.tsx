@@ -2,16 +2,16 @@ import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import { ButtonHTMLTags } from "@microsoft/fast-components-react-base";
-import { IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { ButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import MSFTButton, {
-    IMSFTButtonClassNameContract
+    MSFTButtonClassNameContract
 } from "./button";
 import {
     Button,
     ButtonAppearance,
+    ButtonHandledProps,
     ButtonProps,
-    IButtonHandledProps,
-    IButtonUnhandledProps
+    ButtonUnhandledProps
 } from "./index";
 
 /*
@@ -59,11 +59,11 @@ describe("button", (): void => {
     });
 
     test("should accept unhandledProps", () => {
-        const handledProps: IButtonHandledProps = {
+        const handledProps: ButtonHandledProps = {
             href
         };
 
-        const unhandledProps: IButtonUnhandledProps = {
+        const unhandledProps: ButtonUnhandledProps = {
             "aria-hidden": true
         };
 
@@ -121,7 +121,7 @@ describe("button", (): void => {
     });
 
     test("should add a child element with the slot prop set to 'before' into the before slot location", () => {
-        const props: IButtonHandledProps = {
+        const props: ButtonHandledProps = {
             appearance: ButtonAppearance.lightweight,
             href: "#",
             children: ["foo", beforeSlotExample]
@@ -136,7 +136,7 @@ describe("button", (): void => {
     });
 
     test("should add a child element with the slot prop set to 'after' into the after slot location", () => {
-        const props: IButtonHandledProps = {
+        const props: ButtonHandledProps = {
             appearance: ButtonAppearance.lightweight,
             href: "#",
             children: ["foo", afterSlotExample]

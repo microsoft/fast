@@ -1,8 +1,8 @@
-import { IDesignSystem } from "../design-system";
-import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
-import { IImageClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { DesignSystem } from "../design-system";
+import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
+import { ImageClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 
-function applyImageStyles(): ICSSRules<IDesignSystem> {
+function applyImageStyles(): CSSRules<DesignSystem> {
     return {
         display: "block",
         margin: "0",
@@ -11,7 +11,7 @@ function applyImageStyles(): ICSSRules<IDesignSystem> {
     };
 }
 
-const styles: ComponentStyles<IImageClassNameContract, IDesignSystem> = {
+const styles: ComponentStyles<ImageClassNameContract, DesignSystem> = {
     image: {
         ...applyImageStyles()
     },

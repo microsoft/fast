@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IManagedClasses, ITextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { ManagedClasses, TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 
 export enum TextFieldType {
    email = "email",
@@ -11,9 +11,9 @@ export enum TextFieldType {
    url = "url"
 }
 
-export interface ITextFieldManagedClasses extends IManagedClasses<ITextFieldClassNameContract> {}
-export interface ITextFieldUnhandledProps extends React.InputHTMLAttributes<HTMLInputElement> {}
-export interface ITextFieldHandledProps extends ITextFieldManagedClasses {
+export interface TextFieldManagedClasses extends ManagedClasses<TextFieldClassNameContract> {}
+export interface TextFieldUnhandledProps extends React.InputHTMLAttributes<HTMLInputElement> {}
+export interface TextFieldHandledProps extends TextFieldManagedClasses {
     /**
      * The disabled state
      */
@@ -30,4 +30,4 @@ export interface ITextFieldHandledProps extends ITextFieldManagedClasses {
     type?: TextFieldType;
 }
 
-export type TextFieldProps = ITextFieldHandledProps & ITextFieldUnhandledProps;
+export type TextFieldProps = TextFieldHandledProps & TextFieldUnhandledProps;

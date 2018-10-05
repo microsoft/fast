@@ -5,12 +5,12 @@ import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import Divider, {
+    DividerClassNameContract,
+    DividerHandledProps,
+    DividerManagedClasses,
     DividerProps,
     DividerRoles,
-    IDividerClassNameContract,
-    IDividerHandledProps,
-    IDividerManagedClasses,
-    IDividerUnhandledProps
+    DividerUnhandledProps
 } from "./divider";
 
 describe("divider snapshot", (): void => {
@@ -20,7 +20,7 @@ describe("divider snapshot", (): void => {
 configure({adapter: new Adapter()});
 
 describe("divider", (): void => {
-    const managedClasses: IDividerClassNameContract = {
+    const managedClasses: DividerClassNameContract = {
         divider: "divider-class",
     };
 
@@ -37,10 +37,10 @@ describe("divider", (): void => {
     });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
-        const handledProps: IDividerHandledProps = {
+        const handledProps: DividerHandledProps = {
             managedClasses
         };
-        const unhandledProps: IDividerUnhandledProps = {
+        const unhandledProps: DividerUnhandledProps = {
             "aria-hidden": true
         };
         const props: DividerProps = {...handledProps, ...unhandledProps};

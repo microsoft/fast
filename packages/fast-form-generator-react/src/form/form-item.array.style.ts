@@ -12,10 +12,10 @@ import {
     minus,
     plus
 } from "../utilities/form-input.style";
-import { ComponentStyles, ICSSRules } from "@microsoft/fast-jss-manager";
-import { IFormItemArrayClassNameContract } from "../class-name-contracts/";
+import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
+import { FormItemArrayClassNameContract } from "../class-name-contracts/";
 
-const styles: ComponentStyles<IFormItemArrayClassNameContract, {}> = {
+const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
     "@global": {
         ...applyGlobalStyle()
     },

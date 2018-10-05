@@ -4,11 +4,11 @@ import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import MSFTSubheading, {
-    ISubheadingHandledProps,
-    ISubheadingManagedClasses,
-    ISubheadingUnhandledProps,
+    SubheadingHandledProps,
+    SubheadingManagedClasses,
     SubheadingSize,
     SubheadingTag,
+    SubheadingUnhandledProps,
  } from "./subheading";
 import { Subheading } from "./index";
 
@@ -36,16 +36,16 @@ describe("subheading", (): void => {
     });
 
     test("should accept unhandledProps", (): void => {
-        const handledProps: ISubheadingHandledProps = {
+        const handledProps: SubheadingHandledProps = {
             tag: SubheadingTag.h1,
             size: SubheadingSize._1
         };
 
-        const unhandledProps: ISubheadingUnhandledProps = {
+        const unhandledProps: SubheadingUnhandledProps = {
             "aria-hidden": true
         };
 
-        const props: ISubheadingHandledProps & ISubheadingUnhandledProps = {...handledProps, ...unhandledProps};
+        const props: SubheadingHandledProps & SubheadingUnhandledProps = {...handledProps, ...unhandledProps};
 
         const rendered: any = mount(
             <MSFTSubheading {...props} />

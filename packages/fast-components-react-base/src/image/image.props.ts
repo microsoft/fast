@@ -1,9 +1,9 @@
 import * as React from "react";
-import { IImageClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { ImageClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface IImageUnhandledProps extends React.HTMLAttributes<HTMLImageElement | HTMLPictureElement> {}
-export interface IImageManagedClasses extends IManagedClasses<IImageClassNameContract> {}
-export interface IImageHandledProps extends IImageManagedClasses {
+export interface ImageUnhandledProps extends React.HTMLAttributes<HTMLImageElement | HTMLPictureElement> {}
+export interface ImageManagedClasses extends ManagedClasses<ImageClassNameContract> {}
+export interface ImageHandledProps extends ImageManagedClasses {
     /**
      * The HTML alt attribute value is important for overall accessibility, providing a textual
      * alternative to non-text content
@@ -31,4 +31,4 @@ export interface IImageHandledProps extends IImageManagedClasses {
     children?: React.ReactElement<HTMLSourceElement> | Array<React.ReactElement<HTMLSourceElement>>;
 }
 
-export type ImageProps = IImageHandledProps & IImageUnhandledProps;
+export type ImageProps = ImageHandledProps & ImageUnhandledProps;
