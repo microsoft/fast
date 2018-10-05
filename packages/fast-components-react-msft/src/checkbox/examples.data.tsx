@@ -2,7 +2,6 @@ import * as React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { Checkbox, CheckboxProps, CheckboxSlot } from "./index";
 import schema from "@microsoft/fast-components-react-base/dist/checkbox/checkbox.schema.json";
-import labelSchema from "@microsoft/fast-components-react-base/dist/label/label.schema.json";
 import Documentation from "./.tmp/documentation";
 import { Label } from "../label";
 
@@ -13,7 +12,7 @@ export default {
     documentation: <Documentation />,
     detailData: {
         children: {
-            id: labelSchema.id,
+            id: "label",
             props: {
                 slot: CheckboxSlot.label,
                 children: "Checkbox"
@@ -23,7 +22,7 @@ export default {
     data: [
         {
             children: {
-                id: labelSchema.id,
+                id: "label",
                 props: {
                     slot: CheckboxSlot.label,
                     children: "Default"
@@ -33,7 +32,7 @@ export default {
         {
             checked: true,
             children: {
-                id: labelSchema.id,
+                id: "label",
                 props: {
                     slot: CheckboxSlot.label,
                     children: "Checked (controlled)"
@@ -43,7 +42,7 @@ export default {
         {
             disabled: true,
             children: {
-                id: labelSchema.id,
+                id: "label",
                 props: {
                     slot: CheckboxSlot.label,
                     children: "Disabled"
@@ -53,7 +52,7 @@ export default {
         {
             indeterminate: true,
             children: {
-                id: labelSchema.id,
+                id: "label",
                 props: {
                     slot: CheckboxSlot.label,
                     children: "Indeterminate"
@@ -64,7 +63,7 @@ export default {
             indeterminate: true,
             checked: true,
             children: {
-                id: labelSchema.id,
+                id: "label",
                 props: {
                     slot: CheckboxSlot.label,
                     children: "Indeterminate checked (controlled)"
