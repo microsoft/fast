@@ -63,9 +63,9 @@ describe("paragraph", (): void => {
 
     test("should render a default `size` of `ParagraphSize._3` if no `size` prop is passed", () => {
         const rendered: any = mount(
-            <Paragraph />
+            <MSFTParagraph />
         );
 
-        expect(rendered.find("p").prop("className")).toContain("paragraph__3");
+        expect(rendered.prop("size")).toBe(ParagraphSize._3);
     });
 });
