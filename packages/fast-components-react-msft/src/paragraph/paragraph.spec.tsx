@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
-import { configure, shallow } from "enzyme";
+import { configure, shallow, mount } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import MSFTParagraph, {
@@ -46,30 +46,26 @@ describe("paragraph", (): void => {
 
         const props: IParagraphHandledProps & IParagraphUnhandledProps = {...handledProps, ...unhandledProps};
 
-        const rendered: any = shallow(
+        const rendered: any = mount(
             <Paragraph {...props} />
         );
 
-        const paragraph: any = rendered.first().shallow();
-
-        expect(paragraph.prop("aria-hidden")).toEqual(true);
+        expect(rendered.exists("[aria-hidden]")).toEqual(true);
     });
 
     test("should render the correct `size` when `size` prop is passed", () => {
-        const rendered: any = shallow(
+        const rendered: any = mount(
             <Paragraph size={ParagraphSize._2} />
         );
-        const paragraph: any = rendered.first().shallow();
 
-        expect(paragraph.instance().props.size).toEqual(ParagraphSize._2);
+        expect(rendered.find("p").prop("className")).toContain("paragraph__2");
     });
 
     test("should render a default `size` of `ParagraphSize._3` if no `size` prop is passed", () => {
-        const rendered: any = shallow(
+        const rendered: any = mount(
             <Paragraph />
         );
-        const paragraph: any = rendered.first().shallow();
 
-        expect(paragraph.instance().props.size).toEqual(ParagraphSize._3);
+        expect(rendered.find("p").prop("className")).toContain("paragraph__3");
     });
 });
