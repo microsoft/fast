@@ -6,7 +6,6 @@ import {
     CheckboxManagedClasses,
     CheckboxProps,
     CheckboxSlot,
-    CheckboxTag,
     CheckboxUnhandledProps
 } from "./checkbox.props";
 import { CheckboxClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";

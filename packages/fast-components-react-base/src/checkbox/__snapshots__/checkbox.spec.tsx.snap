@@ -8,6 +8,7 @@ exports[`checkbox snapshot Checkbox: 0 1`] = `
     checked={false}
     className="checkbox_input"
     disabled={null}
+    id="checkbox1"
     onChange={[Function]}
     type="checkbox"
   />
@@ -25,6 +26,7 @@ exports[`checkbox snapshot Checkbox: 1 1`] = `
     checked={true}
     className="checkbox_input"
     disabled={null}
+    id="checkbox2"
     onChange={[Function]}
     type="checkbox"
   />
@@ -42,6 +44,7 @@ exports[`checkbox snapshot Checkbox: 2 1`] = `
     checked={false}
     className="checkbox_input"
     disabled={null}
+    id="checkbox3"
     onChange={[Function]}
     type="checkbox"
   />
@@ -59,6 +62,7 @@ exports[`checkbox snapshot Checkbox: 3 1`] = `
     checked={false}
     className="checkbox_input"
     disabled={true}
+    id="checkbox4"
     onChange={[Function]}
     type="checkbox"
   />
