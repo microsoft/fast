@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@2.3.2...@microsoft/fast-components-styles-msft@3.0.0) (2018-10-06)
+
+
+### Bug Fixes
+
+* correct and standardize component interfaces across react ([#978](https://github.com/Microsoft/fast-dna/issues/978)) ([b1b6ae1](https://github.com/Microsoft/fast-dna/commit/b1b6ae1))
+* export elevation from root of msft styles package ([#964](https://github.com/Microsoft/fast-dna/issues/964)) ([1db405f](https://github.com/Microsoft/fast-dna/commit/1db405f))
+
+
+### chore
+
+* remove the 'I' from interfaces ([#997](https://github.com/Microsoft/fast-dna/issues/997)) ([d924df8](https://github.com/Microsoft/fast-dna/commit/d924df8))
+
+
+### Features
+
+* add card as a new component ([#984](https://github.com/Microsoft/fast-dna/issues/984)) ([9514199](https://github.com/Microsoft/fast-dna/commit/9514199))
+* **class names:** update all class names across base and MSFT to align with naming standards ([#893](https://github.com/Microsoft/fast-dna/issues/893)) ([de974ab](https://github.com/Microsoft/fast-dna/commit/de974ab))
+* **image:** update viewport logic in favor of slots ([#914](https://github.com/Microsoft/fast-dna/issues/914)) ([d489b01](https://github.com/Microsoft/fast-dna/commit/d489b01))
+
+
+### BREAKING CHANGES
+
+* Interfaces have been renamed to remove the "I".
+
+
+
+
+
 <a name="2.3.2"></a>
 ## [2.3.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@2.3.1...@microsoft/fast-components-styles-msft@2.3.2) (2018-09-24)
 

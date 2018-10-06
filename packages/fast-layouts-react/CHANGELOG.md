@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@2.2.3...@microsoft/fast-layouts-react@3.0.0) (2018-10-06)
+
+
+### Bug Fixes
+
+* allow nested at rules in styles without needing to define it in the class name contract ([#985](https://github.com/Microsoft/fast-dna/issues/985)) ([6479d4c](https://github.com/Microsoft/fast-dna/commit/6479d4c))
+* move foundation component into a new package and implement it in component and layout libraries ([#979](https://github.com/Microsoft/fast-dna/issues/979)) ([acae283](https://github.com/Microsoft/fast-dna/commit/acae283))
+
+
+### chore
+
+* remove the 'I' from interfaces ([#997](https://github.com/Microsoft/fast-dna/issues/997)) ([d924df8](https://github.com/Microsoft/fast-dna/commit/d924df8))
+
+
+### Features
+
+* update class-name contracts to be entirely optional ([#959](https://github.com/Microsoft/fast-dna/issues/959)) ([58e0421](https://github.com/Microsoft/fast-dna/commit/58e0421))
+* update JSSManager context API ([#993](https://github.com/Microsoft/fast-dna/issues/993)) ([2114213](https://github.com/Microsoft/fast-dna/commit/2114213))
+
+
+### BREAKING CHANGES
+
+* Interfaces have been renamed to remove the "I".
+
+
+
+
+
 <a name="2.2.3"></a>
 ## [2.2.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@2.2.2...@microsoft/fast-layouts-react@2.2.3) (2018-09-24)
 

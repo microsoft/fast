@@ -3,6 +3,43 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@2.4.0...@microsoft/fast-components-react-msft@3.0.0) (2018-10-06)
+
+
+### Bug Fixes
+
+* correct and standardize component interfaces across react ([#978](https://github.com/Microsoft/fast-dna/issues/978)) ([b1b6ae1](https://github.com/Microsoft/fast-dna/commit/b1b6ae1))
+* move foundation component into a new package and implement it in component and layout libraries ([#979](https://github.com/Microsoft/fast-dna/issues/979)) ([acae283](https://github.com/Microsoft/fast-dna/commit/acae283))
+* update label to always apply label class-name ([#969](https://github.com/Microsoft/fast-dna/issues/969)) ([c42e2bc](https://github.com/Microsoft/fast-dna/commit/c42e2bc))
+
+
+### chore
+
+* remove the 'I' from interfaces ([#997](https://github.com/Microsoft/fast-dna/issues/997)) ([d924df8](https://github.com/Microsoft/fast-dna/commit/d924df8))
+
+
+### Features
+
+* add card as a new component ([#984](https://github.com/Microsoft/fast-dna/issues/984)) ([9514199](https://github.com/Microsoft/fast-dna/commit/9514199))
+* add display names to all components ([#946](https://github.com/Microsoft/fast-dna/issues/946)) ([d5e4e13](https://github.com/Microsoft/fast-dna/commit/d5e4e13))
+* refactor the form generator navigation and children API ([#963](https://github.com/Microsoft/fast-dna/issues/963)) ([8ae3051](https://github.com/Microsoft/fast-dna/commit/8ae3051))
+* **class names:** update all class names across base and MSFT to align with naming standards ([#893](https://github.com/Microsoft/fast-dna/issues/893)) ([de974ab](https://github.com/Microsoft/fast-dna/commit/de974ab))
+* **image:** update viewport logic in favor of slots ([#914](https://github.com/Microsoft/fast-dna/issues/914)) ([d489b01](https://github.com/Microsoft/fast-dna/commit/d489b01))
+* update checkbox to use slots to create label ([#995](https://github.com/Microsoft/fast-dna/issues/995)) ([4ec8c5c](https://github.com/Microsoft/fast-dna/commit/4ec8c5c))
+* update class-name contracts to be entirely optional ([#959](https://github.com/Microsoft/fast-dna/issues/959)) ([58e0421](https://github.com/Microsoft/fast-dna/commit/58e0421))
+* update JSSManager context API ([#993](https://github.com/Microsoft/fast-dna/issues/993)) ([2114213](https://github.com/Microsoft/fast-dna/commit/2114213))
+* update prop names to be more consistent, coherent, and to better align with standards ([#920](https://github.com/Microsoft/fast-dna/issues/920)) ([49031fa](https://github.com/Microsoft/fast-dna/commit/49031fa))
+
+
+### BREAKING CHANGES
+
+* Interfaces have been renamed to remove the "I".
+* This PR has breaking changes for the form generator API and the development site.
+
+
+
+
+
 <a name="2.4.0"></a>
 # [2.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@2.3.1...@microsoft/fast-components-react-msft@2.4.0) (2018-09-24)
 

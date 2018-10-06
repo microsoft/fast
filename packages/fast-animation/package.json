@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-animation",
   "description": "An animation library that simplifies interactions and animations using the Web Animation API.",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -48,7 +48,7 @@
     ]
   },
   "devDependencies": {
-    "@microsoft/fast-tslint-rules": "^2.2.0",
+    "@microsoft/fast-tslint-rules": "^3.0.0",
     "@types/jest": "^21.1.2",
     "@types/node": "^7.0.22",
     "@types/react": "^15.0.24",

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-glyphs-msft@2.3.0...@microsoft/fast-glyphs-msft@3.0.0) (2018-10-06)
+
+
+### chore
+
+* remove the 'I' from interfaces ([#997](https://github.com/Microsoft/fast-dna/issues/997)) ([d924df8](https://github.com/Microsoft/fast-dna/commit/d924df8))
+
+
+### BREAKING CHANGES
+
+* Interfaces have been renamed to remove the "I".
+
+
+
+
+
 <a name="2.3.0"></a>
 # [2.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-glyphs-msft@2.2.0...@microsoft/fast-glyphs-msft@2.3.0) (2018-09-19)
 
