@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-base@2.2.0...@microsoft/fast-components-class-name-contracts-base@3.0.0) (2018-10-06)
+
+
+### Bug Fixes
+
+* allow nested at rules in styles without needing to define it in the class name contract ([#985](https://github.com/Microsoft/fast-dna/issues/985)) ([6479d4c](https://github.com/Microsoft/fast-dna/commit/6479d4c))
+
+
+### chore
+
+* remove the 'I' from interfaces ([#997](https://github.com/Microsoft/fast-dna/issues/997)) ([d924df8](https://github.com/Microsoft/fast-dna/commit/d924df8))
+
+
+### Features
+
+* add card as a new component ([#984](https://github.com/Microsoft/fast-dna/issues/984)) ([9514199](https://github.com/Microsoft/fast-dna/commit/9514199))
+* **class names:** update all class names across base and MSFT to align with naming standards ([#893](https://github.com/Microsoft/fast-dna/issues/893)) ([de974ab](https://github.com/Microsoft/fast-dna/commit/de974ab))
+* update class-name contracts to be entirely optional ([#959](https://github.com/Microsoft/fast-dna/issues/959)) ([58e0421](https://github.com/Microsoft/fast-dna/commit/58e0421))
+
+
+### BREAKING CHANGES
+
+* Interfaces have been renamed to remove the "I".
+
+
+
+
+
 <a name="2.2.0"></a>
 # 2.2.0 (2018-09-11)
 

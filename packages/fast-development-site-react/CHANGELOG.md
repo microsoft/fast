@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@2.2.3...@microsoft/fast-development-site-react@3.0.0) (2018-10-06)
+
+
+### Bug Fixes
+
+* allow nested at rules in styles without needing to define it in the class name contract ([#985](https://github.com/Microsoft/fast-dna/issues/985)) ([6479d4c](https://github.com/Microsoft/fast-dna/commit/6479d4c))
+
+
+### chore
+
+* remove the 'I' from interfaces ([#997](https://github.com/Microsoft/fast-dna/issues/997)) ([d924df8](https://github.com/Microsoft/fast-dna/commit/d924df8))
+
+
+### Features
+
+* refactor the form generator navigation and children API ([#963](https://github.com/Microsoft/fast-dna/issues/963)) ([8ae3051](https://github.com/Microsoft/fast-dna/commit/8ae3051))
+* update JSSManager context API ([#993](https://github.com/Microsoft/fast-dna/issues/993)) ([2114213](https://github.com/Microsoft/fast-dna/commit/2114213))
+
+
+### BREAKING CHANGES
+
+* Interfaces have been renamed to remove the "I".
+* This PR has breaking changes for the form generator API and the development site.
+
+
+
+
+
 <a name="2.2.3"></a>
 ## [2.2.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@2.2.2...@microsoft/fast-development-site-react@2.2.3) (2018-09-24)
 

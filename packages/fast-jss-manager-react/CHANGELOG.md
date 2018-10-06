@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-react@2.2.1...@microsoft/fast-jss-manager-react@3.0.0) (2018-10-06)
+
+
+### Bug Fixes
+
+* correct and standardize component interfaces across react ([#978](https://github.com/Microsoft/fast-dna/issues/978)) ([b1b6ae1](https://github.com/Microsoft/fast-dna/commit/b1b6ae1))
+
+
+### chore
+
+* remove the 'I' from interfaces ([#997](https://github.com/Microsoft/fast-dna/issues/997)) ([d924df8](https://github.com/Microsoft/fast-dna/commit/d924df8))
+
+
+### Features
+
+* update JSSManager context API ([#993](https://github.com/Microsoft/fast-dna/issues/993)) ([2114213](https://github.com/Microsoft/fast-dna/commit/2114213))
+
+
+### BREAKING CHANGES
+
+* Interfaces have been renamed to remove the "I".
+
+
+
+
+
 <a name="2.2.1"></a>
 ## [2.2.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-react@2.2.0...@microsoft/fast-jss-manager-react@2.2.1) (2018-09-19)
 
