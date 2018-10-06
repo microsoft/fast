@@ -1,10 +1,10 @@
 import * as React from "react";
-import Radio, { IRadioHandledProps, IRadioManagedClasses, IRadioUnhandledProps } from "./radio";
+import Radio, { RadioHandledProps, RadioManagedClasses, RadioUnhandledProps } from "./radio";
 import schema from "./radio.schema.json";
 import Documentation from "./.tmp/documentation";
-import { IComponentFactoryExample } from "@microsoft/fast-development-site-react";
+import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 
-const classes: IRadioManagedClasses = {
+const classes: RadioManagedClasses = {
     managedClasses: {
         radio: "radio",
         radio__disabled: "radio__disabled",
@@ -14,7 +14,7 @@ const classes: IRadioManagedClasses = {
     }
 };
 
-const examples: IComponentFactoryExample<IRadioHandledProps & IRadioManagedClasses> = {
+const examples: ComponentFactoryExample<RadioHandledProps & RadioManagedClasses> = {
     name: "Radio",
     component: Radio,
     schema: schema as any,

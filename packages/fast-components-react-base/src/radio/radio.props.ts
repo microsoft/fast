@@ -1,7 +1,7 @@
 import * as React from "react";
-import { IManagedClasses, IRadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { ManagedClasses, RadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface IRadioHandledProps {
+export interface RadioHandledProps {
 
     /**
      * Unique Id
@@ -29,7 +29,7 @@ export interface IRadioHandledProps {
     children?: React.ReactNode;
 }
 
-export interface IRadioUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
+export interface RadioUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
 export type RadioOnChange = (event?: React.ChangeEvent<HTMLElement>) => void;
-export interface IRadioManagedClasses extends IManagedClasses<IRadioClassNameContract> {}
-export type RadioProps = IRadioHandledProps & IRadioUnhandledProps & IRadioManagedClasses;
+export interface RadioManagedClasses extends ManagedClasses<RadioClassNameContract> {}
+export type RadioProps = RadioHandledProps & RadioUnhandledProps & RadioManagedClasses;

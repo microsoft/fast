@@ -1,8 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import Foundation, { HandledProps } from "../foundation";
-import { IRadioHandledProps, IRadioManagedClasses, IRadioUnhandledProps, RadioProps } from "./radio.props";
-import { IManagedClasses, IRadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { RadioHandledProps, RadioManagedClasses, RadioProps, RadioUnhandledProps } from "./radio.props";
+import { ManagedClasses, RadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
 
 /**
@@ -12,14 +12,14 @@ export enum RadioSlot {
     label = "label"
 }
 
-class Radio extends Foundation<IRadioHandledProps & IRadioManagedClasses, IRadioUnhandledProps, {}> {
+class Radio extends Foundation<RadioHandledProps & RadioManagedClasses, RadioUnhandledProps, {}> {
 
     public static displayName: string = "Radio";
 
     /**
      * Handled props instantiation
      */
-    protected handledProps: HandledProps<IRadioHandledProps & IManagedClasses<IRadioClassNameContract>> = {
+    protected handledProps: HandledProps<RadioHandledProps & ManagedClasses<RadioClassNameContract>> = {
         id: void 0,
         checked: void 0,
         disabled: void 0,
@@ -88,4 +88,4 @@ class Radio extends Foundation<IRadioHandledProps & IRadioManagedClasses, IRadio
 
 export default Radio;
 export * from "./radio.props";
-export {IRadioClassNameContract};
+export {RadioClassNameContract};

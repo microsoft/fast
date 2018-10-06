@@ -1,6 +1,6 @@
-import { IDesignSystem, withDesignSystemDefaults } from "../design-system";
-import { ComponentStyles, ComponentStyleSheet, ICSSRules } from "@microsoft/fast-jss-manager";
-import { IRadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
+import { ComponentStyles, ComponentStyleSheet, CSSRules } from "@microsoft/fast-jss-manager";
+import { RadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyLocalizedProperty, Direction } from "@microsoft/fast-jss-utilities";
 import {
     disabledContrast,
@@ -10,8 +10,8 @@ import {
 } from "../utilities/colors";
 
 /* tslint:disable:max-line-length */
-const styles: ComponentStyles<IRadioClassNameContract, IDesignSystem> = (config: IDesignSystem): ComponentStyleSheet<IRadioClassNameContract, IDesignSystem>  => {
-    const designSystem: IDesignSystem = withDesignSystemDefaults(config);
+const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (config: DesignSystem): ComponentStyleSheet<RadioClassNameContract, DesignSystem>  => {
+    const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const backgroundColor: string = designSystem.backgroundColor;
     const foregroundColor: string = ensureNormalContrast(config.contrast, designSystem.foregroundColor, designSystem.backgroundColor);
     const direction: Direction = designSystem.direction;

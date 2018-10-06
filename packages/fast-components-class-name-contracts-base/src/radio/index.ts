@@ -1,7 +1,7 @@
 /**
  * The class name contract for the radio component
  */
-export interface IRadioClassNameContract {
+export interface RadioClassNameContract {
     radio: string;
     radio__disabled: string;
     radio_input: string;
