@@ -19,4 +19,7 @@ describe("hexToRgb", (): void => {
     test("should return rgb(252, 233, 130)", (): void => {
         expect(hexToRgb("#fce982")).toBe("rgb(252, 233, 130)");
     });
+    test("should throw", (): void => {
+        expect(hexToRgb("#fce982938")).toThrow("Not a valid hex value");
+    });
 });
