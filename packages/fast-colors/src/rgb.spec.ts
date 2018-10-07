@@ -1,8 +1,9 @@
 import { hexToRgb } from "./rgb";
 
 describe("Valid 3 digit hexits", (): void => {
-    test("Should return rgb(0, 0, 0)", (): void => {
+    test("Should return a value when all three digits are digits between 0 and 9", (): void => {
         expect(hexToRgb("#000")).toBe("rgb(0, 0, 0)");
+        expect(hexToRgb("#191")).toBe("rgb(17, 153, 17)");
     });
     test("Should return rgb(255, 255, 255)", (): void => {
         expect(hexToRgb("#Fff")).toBe("rgb(255, 255, 255)");
@@ -10,9 +11,11 @@ describe("Valid 3 digit hexits", (): void => {
     test("Should return rgb(221, 238, 204)", (): void => {
         expect(hexToRgb("#dEc")).toBe("rgb(221, 238, 204)");
     });
+    /*
     test("Should return rgb(17, 153, 17)", (): void => {
         expect(hexToRgb("#191")).toBe("rgb(17, 153, 17)");
     });
+    */
     test("Should return rgb(187, 204, 153)", (): void => {
         expect(hexToRgb("#bc9")).toBe("rgb(187, 204, 153)");
     });
