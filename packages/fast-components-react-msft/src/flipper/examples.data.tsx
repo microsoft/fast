@@ -21,12 +21,12 @@ export default {
         },
         {
             direction: FlipperDirection.next,
-            visible: true,
+            visibleToAssistiveTechnologies: true,
             label: "See next"
         },
         {
             direction: FlipperDirection.previous,
-            visible: true,
+            visibleToAssistiveTechnologies: true,
             label: "See previous"
         }
     ]
