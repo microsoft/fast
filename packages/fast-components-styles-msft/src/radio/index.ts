@@ -77,7 +77,12 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (config: D
         radio__disabled: {
             cursor: "not-allowed",
             "& $radio_input": {
-                boxShadow: `inset 0 0 0 1px ${radioDisabled}`
+                boxShadow: `inset 0 0 0 1px ${radioDisabled}`,
+                "&:checked": {
+                    "& + span::before": {
+                        background: radioDisabled
+                    }
+                }
             },
             "& $radio_label": {
                 cursor: "not-allowed",
