@@ -12,14 +12,14 @@ export enum RadioSlot {
     label = "label"
 }
 
-class Radio extends Foundation<RadioHandledProps & RadioManagedClasses, RadioUnhandledProps, {}> {
+class Radio extends Foundation<RadioHandledProps, RadioUnhandledProps, {}> {
 
     public static displayName: string = "Radio";
 
     /**
      * Handled props instantiation
      */
-    protected handledProps: HandledProps<RadioHandledProps & ManagedClasses<RadioClassNameContract>> = {
+    protected handledProps: HandledProps<RadioHandledProps> = {
         id: void 0,
         checked: void 0,
         disabled: void 0,
@@ -70,12 +70,7 @@ class Radio extends Foundation<RadioHandledProps & RadioManagedClasses, RadioUnh
                 labelSlotClassName = `${child.props[classNameKey]} ${labelSlotClassName}`;
             }
 
-            const childWithClass: JSX.Element = React.cloneElement(child, {className: labelSlotClassName});
-            return (
-                <React.Fragment key={index}>
-                    {childWithClass}
-                </React.Fragment>
-            );
+            return React.cloneElement(child, {className: labelSlotClassName});
         });
     }
 

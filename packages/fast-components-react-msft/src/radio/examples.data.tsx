@@ -1,7 +1,6 @@
 import * as React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import Radio from "./index";
-import { RadioHandledProps } from "@microsoft/fast-components-react-base";
+import { Radio, RadioProps } from "./index";
 import schema from "@microsoft/fast-components-react-base/dist/radio/radio.schema.json";
 import Documentation from "./.tmp/documentation";
 import { Label } from "../label";
@@ -61,4 +60,4 @@ export default {
             id: "disabled"
         }
     ]
-} as ComponentFactoryExample<RadioHandledProps>;
+} as ComponentFactoryExample<RadioProps>;

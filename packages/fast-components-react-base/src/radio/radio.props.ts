@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ManagedClasses, RadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface RadioHandledProps {
+export interface RadioHandledProps extends RadioManagedClasses {
 
     /**
      * Unique Id
@@ -32,4 +32,4 @@ export interface RadioHandledProps {
 export interface RadioUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
 export type RadioOnChange = (event?: React.ChangeEvent<HTMLElement>) => void;
 export interface RadioManagedClasses extends ManagedClasses<RadioClassNameContract> {}
-export type RadioProps = RadioHandledProps & RadioUnhandledProps & RadioManagedClasses;
+export type RadioProps = RadioHandledProps & RadioUnhandledProps;
