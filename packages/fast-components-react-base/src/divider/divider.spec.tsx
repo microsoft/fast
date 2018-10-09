@@ -3,7 +3,7 @@ import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
-import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
+import { generateSnapshots, SnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import Divider, {
     DividerClassNameContract,
     DividerHandledProps,
@@ -14,7 +14,7 @@ import Divider, {
 } from "./divider";
 
 describe("divider snapshot", (): void => {
-    generateSnapshots(examples);
+    generateSnapshots(examples as SnapshotTestSuite<DividerProps>);
 });
 
 configure({adapter: new Adapter()});

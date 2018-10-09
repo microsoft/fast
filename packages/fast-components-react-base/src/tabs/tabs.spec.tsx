@@ -3,6 +3,7 @@ import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import { KeyCodes, Orientation } from "@microsoft/fast-web-utilities";
+import { noop } from "lodash-es";
 import {
     TabClassNameContract,
     TabPanelClassNameContract,
@@ -228,12 +229,12 @@ describe("tabs", (): void => {
     });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
-        const handledProps: ITabsHandledProps & ITabsManagedClasses = {
+        const handledProps: TabsHandledProps & TabsManagedClasses = {
             managedClasses: tabsManagedClasses,
             children,
             label: "items"
         };
-        const unhandledProps: ITabsUnhandledProps = {
+        const unhandledProps: TabsUnhandledProps = {
             "aria-hidden": true
         };
         const props: TabsProps = {...handledProps, ...unhandledProps};
@@ -396,7 +397,7 @@ describe("tabs", (): void => {
         const rendered: any = shallow(
             <Tabs
                 managedClasses={tabsManagedClasses}
-                onUpdateTab={("test") as any}
+                onUpdate={noop}
                 activeId={id0}
                 label={"items"}
             >

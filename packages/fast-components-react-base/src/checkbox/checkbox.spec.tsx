@@ -3,7 +3,7 @@ import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
-import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
+import { generateSnapshots, SnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import Checkbox, {
     CheckboxClassNameContract,
     CheckboxHandledProps,
@@ -20,7 +20,7 @@ import Checkbox, {
 configure({adapter: new Adapter()});
 
 describe("checkbox snapshot", (): void => {
-    generateSnapshots(examples);
+    generateSnapshots(examples as SnapshotTestSuite<CheckboxProps>);
 });
 
 describe("checkbox", (): void => {
@@ -41,19 +41,20 @@ describe("checkbox", (): void => {
     test("should not throw if managedClasses are not provided", () => {
         expect(
             () => {
-                shallow(<Checkbox />);
-                shallow(<Checkbox disabled={true} />);
+                shallow(<Checkbox inputId="id" />);
+                shallow(<Checkbox inputId="id" disabled={true} />);
             }
         ).not.toThrow();
     });
 
     test("should implement unhandledProps", () => {
         const handledProps: CheckboxHandledProps = {
-            managedClasses
+            managedClasses,
+            inputId: "id"
         };
 
         const unhandledProps: CheckboxUnhandledProps = {
-            "data-my-custom-attribute": true
+            "aria-label": "label"
         };
 
         const props: CheckboxProps = {...handledProps, ...unhandledProps};
@@ -62,12 +63,16 @@ describe("checkbox", (): void => {
             <Checkbox {...props} />
         );
 
-        expect(rendered.first().prop("data-my-custom-attribute")).toEqual(true);
+        expect(rendered.first().prop("aria-label")).toEqual("label");
     });
 
     test("should add a class and `disabled` attribute to the input element when the disabled prop is true", () => {
         const rendered: any = shallow(
-            <Checkbox managedClasses={managedClasses} disabled={true} />
+            <Checkbox
+                managedClasses={managedClasses}
+                disabled={true}
+                inputId={"id"}
+            />
         );
 
         expect(rendered.hasClass("disabled-class")).toBe(true);
@@ -77,14 +82,22 @@ describe("checkbox", (): void => {
 
     test("should initialize as unchecked if the `checked` prop is not provided", () => {
         expect(
-            shallow(<Checkbox managedClasses={managedClasses} />)
+            shallow(
+                <Checkbox
+                    managedClasses={managedClasses}
+                    inputId="id"
+                />
+            )
             .state("checked")
         ).toBe(false);
     });
 
     test("should allow a change event to update the checked state when no `checked` prop is provided", () => {
         const rendered: any = shallow(
-            <Checkbox managedClasses={managedClasses} />
+            <Checkbox
+                managedClasses={managedClasses}
+                inputId="id"
+            />
         );
 
         expect(rendered.state("checked")).toBe(false);
@@ -97,10 +110,19 @@ describe("checkbox", (): void => {
     test("should call a registerd callback after a change event", () => {
         const onChange: any = jest.fn();
         const controlled: any = shallow(
-            <Checkbox managedClasses={managedClasses} checked={true} onChange={onChange} />
+            <Checkbox
+                managedClasses={managedClasses}
+                checked={true}
+                onChange={onChange}
+                inputId="id"
+            />
         );
         const uncontrolled: any = shallow(
-            <Checkbox managedClasses={managedClasses} onChange={onChange} />
+            <Checkbox
+                managedClasses={managedClasses}
+                onChange={onChange}
+                inputId="id"
+            />
         );
 
         controlled.find(inputSelector).simulate("change");
@@ -114,7 +136,11 @@ describe("checkbox", (): void => {
 
     test("should not allow a change event to update the checked state if props.checked is provided", () => {
         const rendered: any = shallow(
-            <Checkbox managedClasses={managedClasses} checked={false} />
+            <Checkbox
+                managedClasses={managedClasses}
+                checked={false}
+                inputId="id"
+            />
         );
 
         expect(rendered.state("checked")).toEqual(false);
@@ -129,7 +155,10 @@ describe("checkbox", (): void => {
 
     test("should accept a slotted label", () => {
         const rendered: any = mount(
-            <Checkbox managedClasses={managedClasses}>
+            <Checkbox
+                managedClasses={managedClasses}
+                inputId="id"
+            >
                 <div
                     slot={CheckboxSlot.label}
                     className="test-class"

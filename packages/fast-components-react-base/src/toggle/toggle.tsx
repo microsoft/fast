@@ -43,7 +43,8 @@ class Toggle extends Foundation<
         selected: void 0,
         selectedMessage: void 0,
         statusMessageId: void 0,
-        unselectedMessage: void 0
+        unselectedMessage: void 0,
+        onChange: void 0
     };
 
     /**
@@ -60,7 +61,7 @@ class Toggle extends Foundation<
     /**
      * Renders the component
      */
-    public render(): React.ReactElement<HTMLElement> {
+    public render(): React.ReactElement<HTMLDivElement> {
         return (
             <div
                 {...this.unhandledProps()}

@@ -3,7 +3,7 @@ import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
-import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
+import { generateSnapshots, SnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import Typography, {
     TypographyClassNameContract,
     TypographyHandledProps,
@@ -20,7 +20,7 @@ import Typography, {
 configure({adapter: new Adapter()});
 
 describe("typography snapshot", (): void => {
-    generateSnapshots(examples);
+    generateSnapshots(examples as SnapshotTestSuite<TypographyProps>);
 });
 
 describe("typography", (): void => {

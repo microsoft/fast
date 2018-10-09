@@ -7,7 +7,7 @@ export interface ToggleHandledProps extends ToggleManagedClasses {
     /**
      * The label content
      */
-    children?: React.ReactNode | React.ReactNode[];
+    children?: React.ReactNode;
 
     /**
      * The disabled state
@@ -27,7 +27,7 @@ export interface ToggleHandledProps extends ToggleManagedClasses {
     /**
      * The onChange event handler
      */
-    onChange?: (event?: React.ChangeEvent<HTMLElement>) => void;
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 
     /**
      * The toggle selected state

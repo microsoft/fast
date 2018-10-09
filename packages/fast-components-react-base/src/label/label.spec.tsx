@@ -3,7 +3,7 @@ import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
-import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
+import { generateSnapshots, SnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import Label, {
     LabelClassNameContract,
     LabelHandledProps,
@@ -19,7 +19,7 @@ import Label, {
 configure({adapter: new Adapter()});
 
 describe("label snapshot", (): void => {
-    generateSnapshots(examples);
+    generateSnapshots(examples as SnapshotTestSuite<LabelProps>);
 });
 
 describe("label", (): void => {

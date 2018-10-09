@@ -3,7 +3,7 @@ import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
-import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
+import { generateSnapshots, SnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import Toggle, {
     ToggleClassNameContract,
     ToggleHandledProps,
@@ -19,7 +19,7 @@ import Toggle, {
 configure({adapter: new Adapter()});
 
 describe("toggle snapshot", (): void => {
-    generateSnapshots(examples);
+    generateSnapshots(examples as SnapshotTestSuite<ToggleProps>);
 });
 
 describe("toggle", (): void => {
@@ -37,6 +37,7 @@ describe("toggle", (): void => {
         statusMessageId: "status-message-id",
         unselectedMessage: "unselected-message"
     };
+
     const inputSelector: string = `.${managedClasses.toggle_input}`;
 
     test("should have a displayName that matches the component name", () => {
@@ -49,9 +50,9 @@ describe("toggle", (): void => {
                 shallow(
                     <Toggle
                         id="id"
-                        selectedString="selectedString"
-                        unselectedString="selectedString"
-                        statusLabelId="statusLabelId"
+                        selectedMessage="selectedString"
+                        unselectedMessage="selectedString"
+                        statusMessageId="statusLabelId"
                         labelId="labelId"
                     />
                 );
@@ -61,14 +62,15 @@ describe("toggle", (): void => {
 
     test("should implement unhandledProps", () => {
         const unhandledProps: ToggleUnhandledProps = {
-            "data-my-custom-attribute": true
+            "aria-label": "true"
         };
+
         const props: ToggleProps = {...handledProps, ...unhandledProps};
         const rendered: any = shallow(
             <Toggle {...props} />
         );
 
-        expect(rendered.first().prop("data-my-custom-attribute")).toBe(true);
+        expect(rendered.first().prop("aria-label")).toBe("true");
     });
 
     test("should initalize as unselected if the `selected` prop is not provided", () => {
