@@ -4,8 +4,9 @@ import { throttle } from "lodash-es";
 import { Breakpoints, defaultBreakpoints, identifyBreakpoint } from "./breakpoints";
 
 export interface BreakpointTrackerProps {
-    breakpoints?: Breakpoints;
-
+    /**
+     * The render method
+     */
     render: (activeBreakpoint: keyof Breakpoints) => React.ReactNode;
 }
 
@@ -30,29 +31,46 @@ export class BreakpointTracker extends React.Component<BreakpointTrackerProps, B
     constructor(props: BreakpointTrackerProps) {
         super(props);
 
-        if (this.props.breakpoints) {
-            BreakpointTracker.breakpoints = this.props.breakpoints;
-        }
+        this.state = {
+            activeBreakpoint: null
+        };
     }
 
+    /**
+     * React life-cycle method
+     */
     public componentDidMount(): void {
-        if (!canUseDOM()) {
-            return;
+        if (canUseDOM()) {
+            const initialBreakpoint: keyof Breakpoints = identifyBreakpoint(window.innerWidth, BreakpointTracker.breakpoints);
+
+            this.setState({
+                activeBreakpoint: initialBreakpoint
+            });
+
+            window.addEventListener("resize", this.requestFrame);
         }
-
-        const initialBreakpoint: keyof Breakpoints = identifyBreakpoint(window.innerWidth, BreakpointTracker.breakpoints);
-
-        this.setState({
-            activeBreakpoint: initialBreakpoint
-        });
-
-        window.addEventListener("resize", this.requestFrame);
     }
 
-    public componentDidUpdate(prevProps: BreakpointTrackerProps): void {
-        if (prevProps.breakpoints !== this.props.breakpoints) {
+    /**
+     * React life-cycle method
+     */
+    public componentDidUpdate(): void {
+        if (canUseDOM()) {
             this.updateBreakpoint();
         }
+    }
+
+    /**
+     * React life-cycle method
+     */
+    public componentWillUnmount(): void {
+        if (canUseDOM()) {
+            window.removeEventListener("resize", this.requestFrame);
+        }
+    }
+
+    public render(): React.ReactNode {
+        return this.props.render(this.state.activeBreakpoint);
     }
 
     /**
@@ -76,10 +94,8 @@ export class BreakpointTracker extends React.Component<BreakpointTrackerProps, B
      */
     private requestFrame = (): void => {
         if (this.openRequestAnimationFrame) {
-            return;
+            this.openRequestAnimationFrame = true;
+            window.requestAnimationFrame(this.updateBreakpoint);
         }
-
-        this.openRequestAnimationFrame = true;
-        window.requestAnimationFrame(this.updateBreakpoint);
     }
 }

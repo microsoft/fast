@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-breakpoint-tracker-react",
   "description": "React HOC for managing breakpoints",
   "sideEffects": false,
-  "version": "2.2.1",
+  "version": "1.0.0",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -30,10 +30,10 @@
     "collectCoverage": true,
     "coverageThreshold": {
       "global": {
-        "statements": 98,
-        "branches": 66,
-        "functions": 100,
-        "lines": 98
+        "statements": 80,
+        "branches": 50,
+        "functions": 80,
+        "lines": 80
       }
     },
     "testURL": "http://localhost",
@@ -53,7 +53,7 @@
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$"
   },
   "devDependencies": {
-    "@microsoft/fast-tslint-rules": "^2.2.0",
+    "@microsoft/fast-tslint-rules": "^3.0.0",
     "@types/jest": "^22.1.2",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.6",
@@ -65,7 +65,6 @@
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "exenv-es6": "^1.0.0",
-    "hoist-non-react-statics": "^3.0.1",
     "jest": "^22.3.0",
     "lodash-es": "^4.0.0",
     "react": "^16.3.0",
@@ -77,7 +76,6 @@
     "watch": "^1.0.2"
   },
   "peerDependencies": {
-    "hoist-non-react-statics": "^3.0.1",
     "lodash-es": "^4.0.0",
     "react": "^16.3.0"
   }
