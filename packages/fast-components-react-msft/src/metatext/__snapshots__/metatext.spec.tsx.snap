@@ -2,7 +2,7 @@
 
 exports[`metatext snapshots Metatext: 0 1`] = `
 <span
-  className="typography-0-1-2 typography__7-0-1-9 metatext-0-1-1"
+  className="typography-0-1-2 typography__7-0-1-9 metatext-0-1-12"
 >
   Metatext test string
 </span>
@@ -10,7 +10,7 @@ exports[`metatext snapshots Metatext: 0 1`] = `
 
 exports[`metatext snapshots Metatext: 1 1`] = `
 <p
-  className="typography-0-1-13 typography__7-0-1-20 metatext-0-1-12"
+  className="typography-0-1-14 typography__7-0-1-21 metatext-0-1-24"
   data-sketch-symbol="Metatext"
 >
   Metatext test string
@@ -19,7 +19,7 @@ exports[`metatext snapshots Metatext: 1 1`] = `
 
 exports[`metatext snapshots Metatext: 2 1`] = `
 <span
-  className="typography-0-1-24 typography__7-0-1-31 metatext-0-1-23"
+  className="typography-0-1-26 typography__7-0-1-33 metatext-0-1-36"
 >
   Metatext test string
 </span>
