@@ -90,10 +90,10 @@
     "webpack-dev-server": "^3.1.0"
   },
   "peerDependencies": {
-    "@microsoft/fast-application-utilities": "^1.8.0",
-    "@microsoft/fast-components-class-name-contracts-base": "^1.8.0",
-    "@microsoft/fast-jss-manager-react": "^1.8.0",
-    "@microsoft/fast-jss-utilities": "^1.8.0",
+    "@microsoft/fast-application-utilities": "^3.0.0",
+    "@microsoft/fast-components-class-name-contracts-base": "^3.0.0",
+    "@microsoft/fast-jss-manager-react": "^3.0.0",
+    "@microsoft/fast-jss-utilities": "^3.0.0",
     "lodash-es": "^4.0.0",
     "react": "^16.3.0",
     "react-dom": "^16.3.0"

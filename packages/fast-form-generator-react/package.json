@@ -57,10 +57,10 @@
     ]
   },
   "peerDependencies": {
-    "@microsoft/fast-jss-manager": "^1.0.4",
-    "@microsoft/fast-jss-manager-react": "^1.0.4",
-    "@microsoft/fast-jss-utilities": "^1.0.4",
-    "@microsoft/fast-permutator": "^1.0.4",
+    "@microsoft/fast-jss-manager": "^3.0.0",
+    "@microsoft/fast-jss-manager-react": "^3.0.0",
+    "@microsoft/fast-jss-utilities": "^3.0.0",
+    "@microsoft/fast-permutator": "^2.2.0",
     "lodash-es": "^4.0.0",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
