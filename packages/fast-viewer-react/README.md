@@ -3,25 +3,32 @@
 A self contained React component which shows content in an iframe.
 This can be used to as a method for previewing a React component(s) or an entire page.
 
-## Getting started
-- `npm i`
+## Installation
+`npm i --save @microsoft/fast-viewer-msft`
 
-## Running local environment
-- `npm run dev-server`
+## Usage
+An example of using one of the components from the `@microsoft/fast-viewer-msft` package:
 
-## Building the library for production
-- `npm run build`
+```tsx
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import { Button, ButtonAppearance } from "@microsoft/fast-components-react-msft";
+import Viewer from "@microsoft/fast-viewer-msft";
 
-# Contributing
+const root = document.createElement("div");
+root.setAttribute("id", "root");
+document.body.appendChild(root);
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.microsoft.com.
+function render(): void {
+    ReactDOM.render(
+        <Viewer
+            component={Button}
+            data={{children: "Hello world"}}
+            styles={""}
+        />,
+        root
+    );
+}
 
-When you submit a pull request, a CLA-bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
-
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+render();
+```
