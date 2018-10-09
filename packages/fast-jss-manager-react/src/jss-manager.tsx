@@ -72,13 +72,18 @@ export class JSSManager<S, C> extends React.Component<JSSManagerProps<S, C>, JSS
         if (Boolean(props.styles)) {
             state.styleSheet = this.createStyleSheet();
             state.styleSheet.attach();
-
-            // It appears we need to update the stylesheet for any style properties defined as functions
-            // to work.
-            state.styleSheet.update(props.designSystem);
         }
 
         this.state = state;
+    }
+
+    /**
+     * TODO #774: Remove lifecycle event with fix for managing stylesheet registry
+     */
+    public componentDidMount(): void {
+        // It appears we need to update the stylesheet for any style properties defined as functions
+        // to work.
+        this.updateStyleSheet();
     }
 
     public componentDidUpdate(prevProps: JSSManagerProps<S, C>, prevState: JSSManagerState): void {
