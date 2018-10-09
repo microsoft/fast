@@ -11,5 +11,5 @@
  * https://github.com/Microsoft/TypeScript/issues/6579
  */
 export interface ManagedClasses<T> {
-    managedClasses?: {[className in keyof T]?: string} & {[key: string]: string};
+    managedClasses?: {[className in keyof T]?: string};
 }
