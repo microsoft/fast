@@ -77,7 +77,7 @@
   },
   "peerDependencies": {
     "@microsoft/fast-components-react-base": "^3.0.0",
-    "@microsoft/fast-components-react-msft": "^3.0.1",
+    "@microsoft/fast-components-react-msft": "^3.0.0",
     "react": "^16.3.0",
     "react-dom": "^16.3.0"
   },
