@@ -17,9 +17,9 @@ describe("identifyBreakpoint", (): void => {
 
     test("should return the correct breakpoint values when cust breakpoint values are passed", (): void => {
         const customBreakpoints: Breakpoints = {
-            "vp1": 0,
-            "vp3": 1000,
-            "vp2": 600
+            "vp0": 0,
+            "vp2": 1000,
+            "vp1": 600
         };
 
         expect(identifyBreakpoint(0, customBreakpoints)).toBe("vp0");
