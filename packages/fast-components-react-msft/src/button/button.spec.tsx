@@ -3,9 +3,7 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import { ButtonHTMLTags } from "@microsoft/fast-components-react-base";
 import { ButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import MSFTButton, {
-    MSFTButtonClassNameContract
-} from "./button";
+import MSFTButton from "./button";
 import {
     Button,
     ButtonAppearance,

@@ -2,7 +2,7 @@ import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
-import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
+import { generateSnapshots, SnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import MSFTParagraph, {
     ParagraphHandledProps,
     ParagraphManagedClasses,
@@ -18,7 +18,7 @@ import { Paragraph } from "./index";
 configure({adapter: new Adapter()});
 
 describe("paragraph snapshots", (): void => {
-    generateSnapshots(examples);
+    generateSnapshots(examples as SnapshotTestSuite<ParagraphProps>);
 });
 
 describe("paragraph", (): void => {

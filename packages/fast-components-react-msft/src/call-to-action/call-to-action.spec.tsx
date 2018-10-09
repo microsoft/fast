@@ -3,7 +3,7 @@ import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16/build";
 import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
-import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
+import { generateSnapshots, SnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import MSFTCallToAction, {
     CallToActionAppearance,
     CallToActionHandledProps,
@@ -12,7 +12,6 @@ import MSFTCallToAction, {
     CallToActionUnhandledProps
 } from "./call-to-action";
 import { CallToAction } from "./index";
-
 import { CallToActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 
 /*
@@ -21,7 +20,7 @@ import { CallToActionClassNameContract } from "@microsoft/fast-components-class-
 configure({adapter: new Adapter()});
 
 describe("call to action snapshot", (): void => {
-    generateSnapshots(examples);
+    generateSnapshots(examples as SnapshotTestSuite<CallToActionProps>);
 });
 
 describe("call to action", (): void => {
@@ -59,7 +58,7 @@ describe("call to action", (): void => {
         };
 
         const unhandledProps: CallToActionUnhandledProps = {
-            "data-my-custom-attribute": true
+            "aria-label": "label"
         };
 
         const props: CallToActionProps = {...handledProps, ...unhandledProps};
@@ -68,7 +67,7 @@ describe("call to action", (): void => {
             <CallToAction {...props} />
         );
 
-        expect(rendered.first().prop("data-my-custom-attribute")).toEqual(true);
+        expect(rendered.first().prop("aria-label")).toEqual("label");
     });
 
     // tslint:disable-next-line:max-line-length

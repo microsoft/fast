@@ -2,14 +2,12 @@ import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
-import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
+import { generateSnapshots, SnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import MSFTFlipper, {
     FlipperHandledProps,
-    FlipperManagedClasses,
-    FlipperProps,
     FlipperUnhandledProps
 } from "./flipper";
-import { Flipper } from "./index";
+import { Flipper, FlipperProps } from "./index";
 
 /*
  * Configure Enzyme
@@ -17,7 +15,7 @@ import { Flipper } from "./index";
 configure({adapter: new Adapter()});
 
 describe("flipper snapshots", (): void => {
-    generateSnapshots(examples);
+    generateSnapshots(examples as SnapshotTestSuite<FlipperProps>);
 });
 
 describe("flipper", (): void => {
