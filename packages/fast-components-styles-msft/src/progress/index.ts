@@ -2,7 +2,7 @@ import designSystemDefaults, { DesignSystem, withDesignSystemDefaults } from "..
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { ProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { ensureBrandNormal, largeContrast } from "../utilities/colors";
-import { get } from "lodash";
+import { get } from "lodash-es";
 import { toPx } from "@microsoft/fast-jss-utilities";
 
 const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = (
