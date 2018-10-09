@@ -2,20 +2,20 @@
 
 exports[`divider snapshots Divider: 0 1`] = `
 <hr
-  className="divider-0-1-1"
+  className="divider-0-1-2"
   data-sketch-symbol="Divider"
 />
 `;
 
 exports[`divider snapshots Divider: 1 1`] = `
 <hr
-  className="divider-0-1-2"
+  className="divider-0-1-4"
   role="presentation"
 />
 `;
 
 exports[`divider snapshots Divider: 2 1`] = `
 <hr
-  className="divider-0-1-3"
+  className="divider-0-1-6"
 />
 `;

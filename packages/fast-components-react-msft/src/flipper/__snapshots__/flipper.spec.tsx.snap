@@ -3,22 +3,8 @@
 exports[`flipper snapshots Flipper: 0 1`] = `
 <button
   aria-hidden={true}
-  className="flipper-0-1-1 flipper__next-0-1-3"
+  className="flipper-0-1-5 flipper__next-0-1-7"
   data-sketch-symbol="Flipper - default"
-  href={null}
-  tabIndex={-1}
->
-  <span
-    className="flipper_glyph-0-1-2"
-  />
-</button>
-`;
-
-exports[`flipper snapshots Flipper: 1 1`] = `
-<button
-  aria-hidden={true}
-  className="flipper-0-1-5 flipper__previous-0-1-8"
-  direction="previous"
   href={null}
   tabIndex={-1}
 >
@@ -28,15 +14,29 @@ exports[`flipper snapshots Flipper: 1 1`] = `
 </button>
 `;
 
+exports[`flipper snapshots Flipper: 1 1`] = `
+<button
+  aria-hidden={true}
+  className="flipper-0-1-13 flipper__previous-0-1-16"
+  direction="previous"
+  href={null}
+  tabIndex={-1}
+>
+  <span
+    className="flipper_glyph-0-1-14"
+  />
+</button>
+`;
+
 exports[`flipper snapshots Flipper: 2 1`] = `
 <button
   aria-label="See next"
-  className="flipper-0-1-9 flipper__next-0-1-11"
+  className="flipper-0-1-21 flipper__next-0-1-23"
   direction="next"
   href={null}
 >
   <span
-    className="flipper_glyph-0-1-10"
+    className="flipper_glyph-0-1-22"
   />
 </button>
 `;
@@ -44,12 +44,12 @@ exports[`flipper snapshots Flipper: 2 1`] = `
 exports[`flipper snapshots Flipper: 3 1`] = `
 <button
   aria-label="See previous"
-  className="flipper-0-1-13 flipper__previous-0-1-16"
+  className="flipper-0-1-29 flipper__previous-0-1-32"
   direction="previous"
   href={null}
 >
   <span
-    className="flipper_glyph-0-1-14"
+    className="flipper_glyph-0-1-30"
   />
 </button>
 `;
