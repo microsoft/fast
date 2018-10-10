@@ -1,28 +1,19 @@
 {
     "compilerOptions": {
-        "baseUrl": ".",
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "declaration": true,
-        "lib": [
-            "es2015",
-            "es2017",
-            "dom",
-            "scripthost"
-        ],
-        "jsx": "react",
-        "module": "CommonJS",
         "moduleResolution": "node",
-        "outDir": "../dist",
-        "removeComments": true,
-        "rootDir": "./",
-        "sourceMap": true,
-        "target": "es5",
-        "typeRoots": [
-            "node_modules/@types"
-        ]
+        "module": "ES6",
+        "target": "ES6",
+        "baseUrl": ".",
+        "declaration": true,
+        "jsx": "react",
+        "outDir": "./dist"
     },
+    "include": [
+        "src/**/*"
+    ],
     "exclude": [
-        "./**/__tests__"
+        "node_modules",
+        "**/*.spec.ts",
+        "**/*.spec.tsx"
     ]
 }

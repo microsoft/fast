@@ -7,8 +7,7 @@
         "exclude": [
             "node_modules/**",
             "dist/**",
-            "helpers/**",
-            "src/components/*/__tests__/**"
+            "www/**"
         ]
     }
 }

@@ -2,7 +2,7 @@ app/
 src/
 
 #  Tests
-__test__/
+__tests__/
 *.spec.*
 *.test.*
 

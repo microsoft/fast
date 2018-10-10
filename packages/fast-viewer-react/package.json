@@ -45,7 +45,7 @@
         "lines": 66
       }
     },
-    "testRegex": "(/__tests__/.*(test|spec))\\.(ts|tsx)$",
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "testURL": "http://localhost",
     "transform": {
       "^.+\\.tsx?$": "ts-jest",
@@ -58,6 +58,7 @@
     ],
     "moduleFileExtensions": [
       "js",
+      "jsx",
       "ts",
       "tsx"
     ],
@@ -77,6 +78,7 @@
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@microsoft/fast-tslint-rules": "^3.0.1",
+    "@babel/preset-react": "^7.0.0",
     "@types/jest": "^23.3.5",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.6.7",
@@ -86,7 +88,8 @@
     "@types/react-router-dom": "^4.2.3",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
-    "fork-ts-checker-webpack-plugin": "^0.4.0",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "html-webpack-plugin": "^3.0.0",
     "jest": "^23.6.0",
     "jss": "^9.8.1",
@@ -109,5 +112,14 @@
     "webpack": "^4.0.1",
     "webpack-cli": "^3.1.1",
     "webpack-dev-server": "^3.1.0"
+  },
+  "dependencies": {
+    "@microsoft/fast-components-class-name-contracts-base": "^3.0.1",
+    "@microsoft/fast-components-foundation-react": "^2.0.0",
+    "@microsoft/fast-jss-manager": "^3.0.1",
+    "@microsoft/fast-jss-manager-react": "^3.0.1",
+    "@microsoft/fast-jss-utilities": "^3.0.1",
+    "exenv-es6": "^1.0.0",
+    "utility-types": "^2.1.0"
   }
 }
