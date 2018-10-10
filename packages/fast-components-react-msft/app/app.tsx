@@ -24,6 +24,7 @@ import * as examples from "./examples";
 import { Hypertext } from "../src/hypertext";
 import ColorPicker, { ColorConfig } from "./color-picker";
 import reactHTMLElementExamples from "./components/examples.data";
+import { Label } from "../src/label";
 
 /* tslint:disable-next-line */
 const sketchDesignKit = require("./fast-dna-msft-design-kit.sketch");
@@ -48,6 +49,7 @@ enum ThemeName {
 export interface AppState extends ColorConfig {
     theme: ThemeName;
     direction: Direction;
+    density: number;
 }
 
 export default class App extends React.Component<{}, AppState> {
@@ -65,7 +67,8 @@ export default class App extends React.Component<{}, AppState> {
             foregroundColor: DesignSystemDefaults.foregroundColor,
             backgroundColor: DesignSystemDefaults.backgroundColor,
             accentColor: DesignSystemDefaults.brandColor,
-            theme: ThemeName.light
+            theme: ThemeName.light,
+            density: DesignSystemDefaults.density
         };
     }
 
@@ -101,12 +104,27 @@ export default class App extends React.Component<{}, AppState> {
                     {this.sortExamples(componentFactory(examples, {...this.generateDesignSystem()}))}
                 </SiteCategory>
                 <div slot={ShellSlot.infoBar}>
-                    <ColorPicker
-                        foregroundColor={this.state.foregroundColor}
-                        backgroundColor={this.state.backgroundColor}
-                        accentColor={this.state.accentColor}
-                        onColorUpdate={this.handleColorUpdate}
-                    />
+                    <div style={{display: "flex", alignItems: "center", height: "100%"}}>
+                        <Label
+                            style={{marginRight: "8px"}}
+                        >
+                            density
+                        </Label>
+                        <input
+                            type="range"
+                            name="density"
+                            defaultValue="1"
+                            min="0"
+                            max="2"
+                            onChange={this.handleDensityUpdate}
+                        />
+                        <ColorPicker
+                            foregroundColor={this.state.foregroundColor}
+                            backgroundColor={this.state.backgroundColor}
+                            accentColor={this.state.accentColor}
+                            onColorUpdate={this.handleColorUpdate}
+                        />
+                    </div>
                 </div>
             </Site>
         );
@@ -123,7 +141,8 @@ export default class App extends React.Component<{}, AppState> {
             direction: this.state.direction,
             foregroundColor: this.state.foregroundColor,
             backgroundColor: this.state.backgroundColor,
-            brandColor: this.state.accentColor
+            brandColor: this.state.accentColor,
+            density: this.state.density
         };
 
         return Object.assign({}, DesignSystemDefaults, designSystem);
@@ -168,6 +187,11 @@ export default class App extends React.Component<{}, AppState> {
         this.setState(updates as AppState);
     }
 
+    private handleDensityUpdate = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        this.setState({
+            density: parseInt(e.target.value, 10)
+        });
+    }
     /**
      * Assign a background color to the custom theme so that it can be applied to the background of the examples view
      * @param value The color to assign
