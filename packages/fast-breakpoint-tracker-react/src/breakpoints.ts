@@ -14,7 +14,7 @@ export const defaultBreakpoints: Breakpoints = {
 /**
  * Identifies current breakpoint based on window width
  */
-export function identifyBreakpoint(windowWidth: number, breakpoints: Breakpoints): any {
+export function identifyBreakpoint(windowWidth: number, breakpoints: Breakpoints): keyof Breakpoints | void {
     const breakpointArray: any = Object.keys(breakpoints).map(
         (key: keyof Breakpoints, value: number) => ({key, value: breakpoints[key]})
     ).sort((a: any, b: any) => a.value - b.value );
