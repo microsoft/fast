@@ -7,6 +7,7 @@ import { applyType } from "../utilities/typography";
 import { fontWeight } from "../utilities/fonts";
 import { disabledContrast, ensureForegroundNormal, ensuresBackgroundNormal, foregroundNormal, hoverContrast  } from "../utilities/colors";
 import { density } from "../utilities/density";
+import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
 
 /**
  * Retrieves the disabled color
@@ -38,6 +39,9 @@ const styles: ComponentStyles<TextFieldClassNameContract, DesignSystem> = (
             borderRadius: "2px",
             padding: "10px",
             margin: `${density(designSystem.designUnit * 3)(designSystem)} 0`,
+            height: density(defaultHeight)(designSystem),
+            minHeight: toPx(minHeight),
+            maxHeight: toPx(maxHeight),
             "&:hover": {
                 borderColor: hoverColor(designSystem)
             },
