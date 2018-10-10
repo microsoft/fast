@@ -7,11 +7,11 @@ export interface BreakpointTrackerProps {
     /**
      * The render method
      */
-    render: (activeBreakpoint: keyof Breakpoints) => React.ReactNode;
+    render: (activeBreakpoint: keyof Breakpoints | void) => React.ReactNode;
 }
 
 export interface BreakpointTrackerState {
-    activeBreakpoint: keyof Breakpoints;
+    activeBreakpoint: keyof Breakpoints | void;
 }
 
 export class BreakpointTracker extends React.Component<BreakpointTrackerProps, BreakpointTrackerState> {
@@ -41,7 +41,7 @@ export class BreakpointTracker extends React.Component<BreakpointTrackerProps, B
      */
     public componentDidMount(): void {
         if (canUseDOM()) {
-            const initialBreakpoint: keyof Breakpoints = identifyBreakpoint(window.innerWidth, BreakpointTracker.breakpoints);
+            const initialBreakpoint: keyof Breakpoints | void = identifyBreakpoint(window.innerWidth, BreakpointTracker.breakpoints);
 
             this.setState({
                 activeBreakpoint: initialBreakpoint
@@ -78,7 +78,7 @@ export class BreakpointTracker extends React.Component<BreakpointTrackerProps, B
      */
     private updateBreakpoint = (): void => {
         const windowWidth: number = window.innerWidth;
-        const breakpoint: keyof Breakpoints = identifyBreakpoint(windowWidth, BreakpointTracker.breakpoints);
+        const breakpoint: keyof Breakpoints | void = identifyBreakpoint(windowWidth, BreakpointTracker.breakpoints);
 
         if (this.state.activeBreakpoint !== breakpoint) {
             this.setState({
