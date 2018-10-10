@@ -93,7 +93,7 @@ export class BreakpointTracker extends React.Component<BreakpointTrackerProps, B
      * Request's an animation frame if there are currently no open animation frame requests
      */
     private requestFrame = (): void => {
-        if (this.openRequestAnimationFrame) {
+        if (!this.openRequestAnimationFrame) {
             this.openRequestAnimationFrame = true;
             window.requestAnimationFrame(this.updateBreakpoint);
         }
