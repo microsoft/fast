@@ -7,12 +7,6 @@ import { BreakpointTracker } from "./breakpoint-tracker";
 configure({adapter: new Adapter()});
 
 const globalAny: any = global;
-globalAny.window.resizeTo = (width: number, height: number): any => {
-    globalAny.window.innerWidth = width || globalAny.window.innerWidth;
-    globalAny.window.innerHeight = width || globalAny.window.innerHeight;
-    globalAny.window.dispatchEvent(new Event("resize"));
-};
-// globalAny.Promise = require.requireActual("promise");
 
 describe("BreakpointTracker", (): void => {
 
