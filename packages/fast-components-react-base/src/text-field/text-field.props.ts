@@ -1,5 +1,6 @@
 import * as React from "react";
 import { ManagedClasses, TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { Omit } from "utility-types";
 
 export enum TextFieldType {
    email = "email",
@@ -12,7 +13,7 @@ export enum TextFieldType {
 }
 
 export interface TextFieldManagedClasses extends ManagedClasses<TextFieldClassNameContract> {}
-export interface TextFieldUnhandledProps extends React.InputHTMLAttributes<HTMLInputElement> {}
+export interface TextFieldUnhandledProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {}
 export interface TextFieldHandledProps extends TextFieldManagedClasses {
     /**
      * The disabled state
