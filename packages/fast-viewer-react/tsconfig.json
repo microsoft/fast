@@ -1,7 +1,28 @@
 {
     "compilerOptions": {
+        "baseUrl": ".",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "declaration": true,
+        "lib": [
+            "es2015",
+            "es2017",
+            "dom",
+            "scripthost"
+        ],
+        "jsx": "react",
+        "module": "CommonJS",
+        "moduleResolution": "node",
+        "outDir": "../dist",
+        "removeComments": true,
+        "rootDir": "./",
         "sourceMap": true,
         "target": "es5",
-        "jsx": "react"
-    }
+        "typeRoots": [
+            "node_modules/@types"
+        ]
+    },
+    "exclude": [
+        "./**/__tests__"
+    ]
 }
