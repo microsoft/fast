@@ -114,6 +114,7 @@
     "react-dom": "^16.3.0"
   },
   "dependencies": {
-    "@microsoft/fast-components-class-name-contracts-base": "^3.0.1"
+    "@microsoft/fast-components-class-name-contracts-base": "^3.0.1",
+    "utility-types": "^2.1.0"
   }
 }

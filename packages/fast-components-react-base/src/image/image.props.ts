@@ -1,7 +1,8 @@
 import * as React from "react";
 import { ImageClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { Omit } from "utility-types";
 
-export interface ImageUnhandledProps extends React.HTMLAttributes<HTMLImageElement | HTMLPictureElement> {}
+export interface ImageUnhandledProps extends Omit<React.HTMLAttributes<HTMLImageElement | HTMLPictureElement>, "children"> {}
 export interface ImageManagedClasses extends ManagedClasses<ImageClassNameContract> {}
 export interface ImageHandledProps extends ImageManagedClasses {
     /**
