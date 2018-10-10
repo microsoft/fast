@@ -79,6 +79,12 @@ import ProgressStyles from "./progress";
 export { ProgressStyles };
 
 /**
+ * Export radio styles
+ */
+import RadioStyles from "./radio";
+export { RadioStyles };
+
+/**
  * Export subheading styles
  */
 import SubheadingStyles from "./subheading";

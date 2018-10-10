@@ -13,6 +13,7 @@ export * from "./label";
 export * from "./metatext";
 export * from "./paragraph";
 export * from "./progress";
+export * from "./radio";
 export * from "./subheading";
 export * from "./text-field";
 export * from "./toggle";

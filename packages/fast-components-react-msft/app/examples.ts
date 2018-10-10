@@ -43,6 +43,9 @@ export { ParagraphExamples };
 import ProgressExamples from "../src/progress/examples.data";
 export { ProgressExamples };
 
+import RadioExamples from "../src/radio/examples.data";
+export { RadioExamples };
+
 import SubheadingExamples from "../src/subheading/examples.data";
 export { SubheadingExamples };
 

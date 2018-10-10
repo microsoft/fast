@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`radio snapshots Radio: 0 1`] = `
+<div
+  className="radio"
+>
+  <input
+    checked={true}
+    className="radio_input"
+    disabled={null}
+    id="checked_true"
+    onChange={undefined}
+    type="radio"
+  />
+  <span
+    className="radio_stateIndicator"
+  />
+</div>
+`;
+
+exports[`radio snapshots Radio: 1 1`] = `
+<div
+  className="radio"
+>
+  <input
+    checked={false}
+    className="radio_input"
+    disabled={null}
+    id="checked_false"
+    onChange={undefined}
+    type="radio"
+  />
+  <span
+    className="radio_stateIndicator"
+  />
+</div>
+`;
+
+exports[`radio snapshots Radio: 2 1`] = `
+<div
+  className="radio"
+>
+  <input
+    className="radio_input"
+    defaultChecked={false}
+    disabled={null}
+    id="checked_none"
+    onChange={undefined}
+    type="radio"
+  />
+  <span
+    className="radio_stateIndicator"
+  />
+</div>
+`;
+
+exports[`radio snapshots Radio: 3 1`] = `
+<div
+  className="radio radio__disabled"
+>
+  <input
+    className="radio_input"
+    defaultChecked={false}
+    disabled={true}
+    id="disabled"
+    onChange={undefined}
+    type="radio"
+  />
+  <span
+    className="radio_stateIndicator"
+  />
+</div>
+`;
