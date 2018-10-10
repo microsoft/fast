@@ -25,7 +25,7 @@ export interface SnapshotTestSuite<T> {
     /**
      * The component constructor
      */
-    component: React.ComponentClass<T>;
+    component: React.ComponentType<T>;
 
     /**
      * An array of prop instances for the component
@@ -54,7 +54,7 @@ export interface SnapshotTestSuite<T> {
 /**
  * Executes a single snapshot test given a component, component data, and a test title
  */
-export function renderSnapshot<T>(data: T, component: React.ComponentClass<T>, title: string): void {
+export function renderSnapshot<T>(data: T, component: React.ComponentType<T>, title: string): void {
     test(title, (): void => {
         const renderedComponent: any = renderer.create(React.createElement(component, data));
         const componentJson: JSON = renderedComponent.toJSON();
@@ -68,7 +68,7 @@ export function renderSnapshot<T>(data: T, component: React.ComponentClass<T>, t
  */
 export function generateSnapshots<T>(examples: SnapshotTestSuite<T>): void {
     const data: SnapshotTestCases<T> = examples.data;
-    const component: React.ComponentClass<T> = examples.component;
+    const component: React.ComponentType<T> = examples.component;
 
     if (Array.isArray(data)) {
         data.forEach((example: SnapshotTestCase<T>, index: number): void => {
