@@ -40,6 +40,10 @@ export class BreakpointTracker extends React.Component<BreakpointTrackerProps, B
      * React life-cycle method
      */
     public componentDidMount(): void {
+        // We are doing this work in a lifecycle method instead of the constructor to ensure that
+        // server rendered instances with conditional DOM rendering by breakpoint will be re-rendered.
+        // ReactDOM.hydrate() will call the constructor again, but it does not trigger a re-render. It will only bind event handlers.
+        // The only way to ensure the correct DOM is consistently rendered on the client is to perform this work here.
         if (canUseDOM()) {
             const initialBreakpoint: keyof Breakpoints | void = identifyBreakpoint(window.innerWidth, BreakpointTracker.breakpoints);
 
@@ -48,15 +52,6 @@ export class BreakpointTracker extends React.Component<BreakpointTrackerProps, B
             });
 
             window.addEventListener("resize", this.requestFrame);
-        }
-    }
-
-    /**
-     * React life-cycle method
-     */
-    public componentDidUpdate(): void {
-        if (canUseDOM()) {
-            this.updateBreakpoint();
         }
     }
 
