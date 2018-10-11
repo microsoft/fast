@@ -39,6 +39,13 @@ export interface JSSManagerProps<S, C> extends JSSManagedComponentProps<S, C> {
      * Render the child component
      */
     render: (managedClasses: {[className in keyof S]?: string} ) => React.ReactNode;
+
+    /**
+     * The index position to create the stylesheet at
+     */
+    index: number;
+
+    meta: string;
 }
 
 /**
@@ -74,16 +81,9 @@ export class JSSManager<S, C> extends React.Component<JSSManagerProps<S, C>, JSS
             state.styleSheet.attach();
         }
 
-        this.state = state;
-    }
+        state.styleSheet.update(props.designSystem);
 
-    /**
-     * TODO #774: Remove lifecycle event with fix for managing stylesheet registry
-     */
-    public componentDidMount(): void {
-        // It appears we need to update the stylesheet for any style properties defined as functions
-        // to work.
-        this.updateStyleSheet();
+        this.state = state;
     }
 
     public componentDidUpdate(prevProps: JSSManagerProps<S, C>, prevState: JSSManagerState): void {
@@ -160,7 +160,11 @@ export class JSSManager<S, C> extends React.Component<JSSManagerProps<S, C>, JSS
 
         const jssSheet: any =  jss.createStyleSheet(
             merge({}, stylesheet, this.props.jssStyleSheet),
-            { link: true }
+            {
+                link: true,
+                index: this.props.index,
+                meta: `${this.props.index} ${this.props.meta}`.trim()
+            }
         );
 
         stylesheetRegistry.add(jssSheet);
