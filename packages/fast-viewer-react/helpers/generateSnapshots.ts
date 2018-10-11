@@ -14,7 +14,7 @@ export interface Example {
     children?: React.ReactNode;
 }
 
-export interface Exampes {
+export interface Examples {
     data: Example[];
 }
 
@@ -24,7 +24,7 @@ export interface Exampes {
  * @param {Function} reactComponent - The react component to render
  * react component, props for that component, and children for that component
  */
-export default (examples: Exampes, reactComponent: React.ComponentClass<any>): void => {
+export default (examples: Examples, reactComponent: React.ComponentClass<any>): void => {
     if (!reactComponent) {
         console.error("No component param passed to generateSnapshots.");
         return;
