@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-breakpoint-tracker-react",
-  "description": "React HOC for managing breakpoints",
+  "description": "React component for managing breakpoints",
   "sideEffects": false,
   "version": "1.0.0",
   "author": {

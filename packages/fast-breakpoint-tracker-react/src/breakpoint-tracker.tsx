@@ -45,11 +45,7 @@ export class BreakpointTracker extends React.Component<BreakpointTrackerProps, B
         // ReactDOM.hydrate() will call the constructor again, but it does not trigger a re-render. It will only bind event handlers.
         // The only way to ensure the correct DOM is consistently rendered on the client is to perform this work here.
         if (canUseDOM()) {
-            const initialBreakpoint: keyof Breakpoints | void = identifyBreakpoint(window.innerWidth, BreakpointTracker.breakpoints);
-
-            this.setState({
-                activeBreakpoint: initialBreakpoint
-            });
+            this.updateBreakpoint();
 
             window.addEventListener("resize", this.requestFrame);
         }
