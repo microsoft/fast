@@ -39,13 +39,6 @@ export interface JSSManagerProps<S, C> extends JSSManagedComponentProps<S, C> {
      * Render the child component
      */
     render: (managedClasses: {[className in keyof S]?: string} ) => React.ReactNode;
-
-    /**
-     * The index position to create the stylesheet at
-     */
-    index: number;
-
-    meta: string;
 }
 
 /**
@@ -71,10 +64,30 @@ export class JSSManager<S, C> extends React.Component<JSSManagerProps<S, C>, JSS
      */
     private static stylesheetManager: SheetsManager = stylesheetManager;
 
+    /**
+     * JSS allows us to use an index to order the created style elements. The higher the index,
+     * the later in the document the style element will be created.
+     *
+     * This static index allows us to globally track every stylesheet created by the JSSManager. Each
+     * instance assigns itself the static value minus one on instanciation. The effect of this is that
+     * a React parent will always have a higher index than it's children, allowing parents to apply styles
+     * that override child styles given an otherwise identical selector specificity.
+     *
+     * Inspiration for this approach to stylesheet-ordering comes from
+     * https://github.com/cssinjs/react-jss/blob/master/src/injectSheet.js
+     */
+    private static index: number = -1000;
+
+    /**
+     * The stylesheet index for the JSSManager instance
+     */
+    private index: number;
+
     constructor(props: JSSManagerProps<S, C>) {
         super(props);
 
         const state: JSSManagerState = {};
+        this.index = JSSManager.index--;
 
         if (Boolean(props.styles)) {
             state.styleSheet = this.createStyleSheet();
@@ -98,6 +111,11 @@ export class JSSManager<S, C> extends React.Component<JSSManagerProps<S, C>, JSS
 
     public componentWillUnmount(): void {
         this.removeStyleSheet();
+
+        // Increment the global stylesheet index tracker when a component unmounts
+        // so that we can recycle index values and avoid eventually running out of numbers
+        // if an application lives for a long time.
+        JSSManager.index++;
     }
 
     public render(): React.ReactNode {
@@ -162,8 +180,7 @@ export class JSSManager<S, C> extends React.Component<JSSManagerProps<S, C>, JSS
             merge({}, stylesheet, this.props.jssStyleSheet),
             {
                 link: true,
-                index: this.props.index,
-                meta: `${this.props.index} ${this.props.meta}`.trim()
+                index: this.index
             }
         );
 
