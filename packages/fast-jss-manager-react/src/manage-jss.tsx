@@ -74,9 +74,7 @@ function manageJss<S, C>(
                         styles={styles}
                         designSystem={designSystem}
                         jssStyleSheet={props.jssStyleSheet}
-                        index={index}
                         render={renderLowerOrderComponent}
-                        meta={Component.displayName || ""}
                     />
                 );
             }
