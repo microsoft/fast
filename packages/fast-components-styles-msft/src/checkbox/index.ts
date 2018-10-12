@@ -104,8 +104,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (config
             }
         },
         checkbox_label: {
-            // color: ensureNormalContrast(designSystem.contrast, foregroundColor, backgroundColor),
-            color: "red",
+            color: ensureNormalContrast(designSystem.contrast, foregroundColor, backgroundColor),
             ...applyTypeRampConfig("t7"),
             [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "5px",
         },
