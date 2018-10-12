@@ -2,14 +2,10 @@ import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
-import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
+import { generateSnapshots, SnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { ProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import MSFTProgress, {
-    MSFTProgressClassNameContract,
-    MSFTProgressHandledProps,
-    MSFTProgressManagedClasses,
-    MSFTProgressUnhandledProps,
-} from "./progress";
+import MSFTProgress from "./progress";
+import { ProgressProps } from "./index";
 
 /*
  * Configure Enzyme
@@ -17,7 +13,7 @@ import MSFTProgress, {
 configure({adapter: new Adapter()});
 
 describe("progress snapshots", (): void => {
-    generateSnapshots(examples);
+    generateSnapshots(examples as SnapshotTestSuite<ProgressProps>);
 });
 
 describe("progress", (): void => {

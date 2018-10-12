@@ -3,7 +3,7 @@ import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, render, shallow } from "enzyme";
 import examples from "./examples.data";
-import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
+import { generateSnapshots, SnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import TextField, {
     TextFieldClassNameContract,
     TextFieldHandledProps,
@@ -23,7 +23,7 @@ const managedClasses: TextFieldClassNameContract = {
 configure({adapter: new Adapter()});
 
 describe("text-field snapshot", (): void => {
-    generateSnapshots(examples);
+    generateSnapshots(examples as SnapshotTestSuite<TextFieldProps>);
 });
 
 describe("text-field", (): void => {

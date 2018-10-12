@@ -1,8 +1,3 @@
-declare module "*.json" {
-    const value: any;
-    export default value;
-}
-
 /* tslint:disable */
 
 // Type definitions for Tiny Validator tv4 1.2.5

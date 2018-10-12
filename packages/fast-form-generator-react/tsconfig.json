@@ -10,7 +10,8 @@
         "baseUrl": ".",
         "declaration": true,
         "jsx": "react",
-        "outDir": "./dist"
+        "outDir": "./dist",
+        "resolveJsonModule": true
     },
     "include": [
         "src/**/*"

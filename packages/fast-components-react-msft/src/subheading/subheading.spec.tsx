@@ -2,7 +2,7 @@ import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
-import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
+import { generateSnapshots, SnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import MSFTSubheading, {
     SubheadingHandledProps,
     SubheadingManagedClasses,
@@ -10,7 +10,7 @@ import MSFTSubheading, {
     SubheadingTag,
     SubheadingUnhandledProps,
  } from "./subheading";
-import { Subheading } from "./index";
+import { Subheading, SubheadingProps } from "./index";
 
  /**
   * Configure enzyme
@@ -18,7 +18,7 @@ import { Subheading } from "./index";
 configure({adapter: new Adapter()});
 
 describe("generate snapshots", (): void => {
-    generateSnapshots(examples);
+    generateSnapshots(examples as SnapshotTestSuite<SubheadingProps>);
 });
 
 describe("subheading", (): void => {
@@ -30,7 +30,7 @@ describe("subheading", (): void => {
         expect(
             () => {
                 shallow(<MSFTSubheading />);
-                shallow(<MSFTSubheading level={SubheadingSize._1} />);
+                shallow(<MSFTSubheading size={SubheadingSize._1} />);
             }
         ).not.toThrow();
     });

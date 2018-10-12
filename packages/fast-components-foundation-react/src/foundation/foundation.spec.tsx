@@ -5,7 +5,7 @@ import Foundation, { HandledProps, ReferenceResolver } from "./foundation";
 import * as ReactTestUtils from "react-dom/test-utils";
 import { has,  merge } from "lodash-es";
 
-class GetRefTestComponent extends Foundation<undefined, undefined, undefined> {
+class GetRefTestComponent extends Foundation<{}, {}, {}> {
     public render(): JSX.Element {
         return <div ref={this.setRef("foobar")} />;
     }

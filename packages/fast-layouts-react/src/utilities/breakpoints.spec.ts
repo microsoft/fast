@@ -34,17 +34,17 @@ describe("getValueByBreakpoint", (): void => {
         expect(getValueByBreakpoint([10, 8, 6, 4, 2])).toBe(6);
 
         // set innerWidth to 1399
-        window["innerWidth"] = 1399;
+        (window as any)["innerWidth"] = 1399;
 
         expect(getValueByBreakpoint([12, 8, 6, 4, 2])).toBe(4);
 
         // set innerWidth to 1800
-        window["innerWidth"] = 1800;
+        (window as any)["innerWidth"] = 1800;
 
         expect(getValueByBreakpoint([12, 10, 8, 6, 4, 2])).toBe(2);
 
         // set innerWidth to 676
-        window["innerWidth"] = 676;
+        (window as any)["innerWidth"] = 676;
 
         expect(getValueByBreakpoint([12, 10, 8, 6, 4, 2])).toBe(10);
     });
@@ -52,24 +52,24 @@ describe("getValueByBreakpoint", (): void => {
     test("should return the correct breakpoint from an array when custom `breakpoints` are passed", (): void => {
         const customBreakpoints: Breakpoints = [0, 600, 1000];
         // Reset window.innerWidth for Jest to 1024
-        window["innerWidth"] = 1024;
+        (window as any)["innerWidth"] = 1024;
 
         expect(getValueByBreakpoint([12], customBreakpoints)).toBe(12);
         expect(getValueByBreakpoint([5, 3], customBreakpoints)).toBe(3);
         expect(getValueByBreakpoint([10, 6, 2], customBreakpoints)).toBe(2);
 
         // set innerWidth to 500
-        window["innerWidth"] = 500;
+        (window as any)["innerWidth"] = 500;
 
         expect(getValueByBreakpoint([12, 8, 6], customBreakpoints)).toBe(12);
 
         // set innerWidth to 800
-        window["innerWidth"] = 800;
+        (window as any)["innerWidth"] = 800;
 
         expect(getValueByBreakpoint([6, 4, 2], customBreakpoints)).toBe(4);
 
         // set innerWidth to 600
-        window["innerWidth"] = 600;
+        (window as any)["innerWidth"] = 600;
 
         expect(getValueByBreakpoint([12, 10, 8], customBreakpoints)).toBe(10);
     });

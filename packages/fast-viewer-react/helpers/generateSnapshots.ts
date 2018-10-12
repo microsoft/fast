@@ -2,20 +2,20 @@
 import React = require("react");
 import renderer = require("react-test-renderer");
 
-export interface IExampleProps {
+export interface ExampleProps {
     component: React.ReactNode;
     data: any;
     styles: string;
 }
 
-export interface IExample {
+export interface Example {
     title: string;
-    props?: IExampleProps;
+    props?: ExampleProps;
     children?: React.ReactNode;
 }
 
-export interface IExampes {
-    data: IExample[];
+export interface Examples {
+    data: Example[];
 }
 
 /**
@@ -24,7 +24,7 @@ export interface IExampes {
  * @param {Function} reactComponent - The react component to render
  * react component, props for that component, and children for that component
  */
-export default (examples: IExampes, reactComponent: React.ComponentClass<any>): void => {
+export default (examples: Examples, reactComponent: React.ComponentClass<any>): void => {
     if (!reactComponent) {
         console.error("No component param passed to generateSnapshots.");
         return;
