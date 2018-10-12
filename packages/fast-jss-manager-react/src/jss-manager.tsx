@@ -70,8 +70,9 @@ export class JSSManager<S, C> extends React.Component<JSSManagerProps<S, C>, JSS
      *
      * This static index allows us to globally track every stylesheet created by the JSSManager. Each
      * instance decrements this index and assigns itself the decremented value. The effect of this is that
-     * a React parent will always have a higher index than it's children, allowing parents to apply styles
-     * that override child styles given an otherwise identical selector specificity.
+     * a React parent will always have a higher index than it's children because react constructs trees
+     * recursively starting at the root. With a parent always having a higher index then it's children,
+     * we can inform JSS of this order preference and ensure parent stylesheets always come later in the DOM.
      *
      * Inspiration for this approach to style element ordering comes from
      * https://github.com/cssinjs/react-jss/blob/master/src/injectSheet.js
