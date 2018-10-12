@@ -192,11 +192,8 @@ exports[`weight-properties weight-properties: 0 1`] = `
                 <input
                   className="formItemNumberField_input-0-1-38"
                   id="level"
-                  max={undefined}
-                  min={undefined}
                   name="number5"
                   onChange={[Function]}
-                  step={undefined}
                   type="number"
                   value="5"
                 />

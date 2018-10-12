@@ -2,16 +2,14 @@ import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
-import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
+import { generateSnapshots, SnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import MSFTCaption, {
     CaptionHandledProps,
-    CaptionManagedClasses,
-    CaptionProps,
     CaptionSize,
     CaptionTag,
     CaptionUnhandledProps
 } from "./caption";
-import { Caption } from "./index";
+import { Caption, CaptionProps } from "./index";
 
 /**
  * Configure Enzyme
@@ -19,7 +17,7 @@ import { Caption } from "./index";
 configure({adapter: new Adapter()});
 
 describe("caption snapshots", (): void => {
-    generateSnapshots(examples);
+    generateSnapshots(examples as SnapshotTestSuite<CaptionProps>);
 });
 
 describe("caption", (): void => {

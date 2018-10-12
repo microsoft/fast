@@ -2,17 +2,15 @@ import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
-import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
+import { generateSnapshots, SnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import MSFTHeading, {
     HeadingHandledProps,
-    HeadingManagedClasses,
-    HeadingProps,
     HeadingSize,
     HeadingTag,
     HeadingUnhandledProps
 } from "./heading";
 import { Typography } from "@microsoft/fast-components-react-base";
-import { Heading } from "./index";
+import { Heading, HeadingProps } from "./index";
 
 /*
  * Configure Enzyme
@@ -20,7 +18,7 @@ import { Heading } from "./index";
 configure({adapter: new Adapter()});
 
 describe("heading snapshots", (): void => {
-    generateSnapshots(examples);
+    generateSnapshots(examples as SnapshotTestSuite<HeadingProps>);
 });
 
 describe("heading", (): void => {

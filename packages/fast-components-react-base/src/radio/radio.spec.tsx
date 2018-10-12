@@ -4,11 +4,7 @@ import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import Radio, {
-    IRadioClassNameContract,
-    IRadioHandledProps,
-    IRadioManagedClasses,
-    IRadioUnhandledProps,
-    RadioProps,
+    RadioClassNameContract,
     RadioSlot
 } from "./radio";
 import Label from "../label";
@@ -23,7 +19,7 @@ describe("radio snapshots", (): void => {
 });
 
 describe("radio", (): void => {
-    const managedClasses: IRadioClassNameContract = {
+    const managedClasses: RadioClassNameContract = {
         radio: "radio",
         radio__disabled: "radio__disabled",
         radio_input: "radio_input",
