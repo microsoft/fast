@@ -26,8 +26,6 @@ export function cleanLowerOrderComponentProps<T, S, C>(props: ManagedJSSProps<T,
         : props;
 }
 
-let globalIndex: number = -10000000;
-
 /**
  * Main entry into the style manager. This function accepts a JSS style object and returns a
  * higher order component. That higher-order component can then be used to compose a component
@@ -40,8 +38,6 @@ function manageJss<S, C>(
 ): <T>(
     Component: React.ComponentType<T & ManagedClasses<S>>
 ) => React.SFC<ManagedJSSProps<T, S, C>> {
-    const index: number = globalIndex++;
-
     /*
      * @param T - The component prop interface
      */
