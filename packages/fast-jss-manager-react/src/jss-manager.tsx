@@ -92,9 +92,8 @@ export class JSSManager<S, C> extends React.Component<JSSManagerProps<S, C>, JSS
         if (Boolean(props.styles)) {
             state.styleSheet = this.createStyleSheet();
             state.styleSheet.attach();
+            state.styleSheet.update(props.designSystem);
         }
-
-        state.styleSheet.update(props.designSystem);
 
         this.state = state;
     }
