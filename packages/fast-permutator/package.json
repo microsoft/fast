@@ -20,6 +20,7 @@
     "unit-tests": "jest --maxWorkers=4"
   },
   "jest": {
+    "verbose": true,
     "collectCoverage": true,
     "coverageThreshold": {
       "global": {
