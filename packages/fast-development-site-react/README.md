@@ -28,7 +28,7 @@ function render(): void {
                 name={"Components"}
                 schema={ParagraphSchema},
                 component={Paragraph},
-                status={"Released}
+                status={"Released"}
             >
                 <SiteCategoryDocumentation slot={"canvas-detail-view-documentation"}>
                     <div>

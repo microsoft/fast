@@ -1,13 +1,13 @@
 import { format, isNullOrWhiteSpace, pascalCase, startsWith } from "./strings";
 
 describe("format", (): void => {
-    test("should correctly manage undefined correctly by returning an unformatted string", (): void => {
+    test("should correctly manage undefined by returning an unformatted string", (): void => {
         const formatterString: string = "Hello {0} world";
 
         expect(format(formatterString, undefined)).toBe("Hello  world");
     });
 
-    test("should correctly manage null correctly by returning an unformatted string", (): void => {
+    test("should correctly manage null by returning an unformatted string", (): void => {
         const formatterString: string = "Hello {0} world";
 
         expect(format(formatterString, null)).toBe("Hello  world");
@@ -19,19 +19,19 @@ describe("format", (): void => {
         expect(format(formatterString, "page", "five", "now")).toBe("View page five");
     });
 
-    test("should correctly manage a formatter with not enough paramaters", (): void => {
+    test("should correctly manage a formatter with not enough parameters", (): void => {
         const formatterString: string = "View {0} {1}";
 
         expect(format(formatterString, "page")).toBe("View page {1}");
     });
 
-    test("should correctly manage empty strings correctly by returning a formatted string with white space", (): void => {
+    test("should correctly manage empty strings by returning a formatted string with white space", (): void => {
         const formatterString: string = "Hello {0} world";
 
         expect(format(formatterString, "")).toBe("Hello  world");
     });
 
-    test("should correctly manage strings correctly by returning a formatted string", (): void => {
+    test("should correctly manage strings by returning a formatted string", (): void => {
         const formatterString: string = "Hello {0} world";
 
         expect(format(formatterString, "foo")).toBe("Hello foo world");
@@ -94,7 +94,7 @@ describe("startsWith", (): void => {
         expect(startsWith(null, null)).toBe(false);
         expect(startsWith("Hello", null)).toBe(false);
     });
-    test("should correctly manage searching for an emtpy string", () => {
+    test("should correctly manage searching for an empty string", () => {
         expect(startsWith("Helloworld", "")).toBe(false);
     });
     test("should correctly manage a string which includes a match but does not start with it", () => {

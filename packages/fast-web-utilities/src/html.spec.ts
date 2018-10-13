@@ -45,7 +45,7 @@ describe("convertStylePropertyPixelsToNumber", () => {
         expect(() => convertStylePropertyPixelsToNumber(undefined, undefined)).not.toThrow();
     });
 
-    test("should correctly convert a elements computed style property pixel value and return a number", () => {
+    test("should correctly convert an element's computed style property pixel value and return a number", () => {
         document.body.innerHTML = `
             <div id="element" style="margin: 20px 5px 12px 8px;"></div>
         `;
