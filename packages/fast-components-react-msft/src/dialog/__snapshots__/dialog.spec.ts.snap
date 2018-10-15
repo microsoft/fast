@@ -3,10 +3,10 @@
 exports[`dialog snapshots Dialog: 0 1`] = `
 <div
   aria-hidden={true}
-  className="dialog-0-1-4"
+  className="dialog-0-1-1"
 >
   <div
-    className="dialog_contentRegion-0-1-6"
+    className="dialog_contentRegion-0-1-3"
     role="dialog"
     style={
       Object {
@@ -22,16 +22,16 @@ exports[`dialog snapshots Dialog: 0 1`] = `
 exports[`dialog snapshots Dialog: 1 1`] = `
 <div
   aria-hidden={true}
-  className="dialog-0-1-10"
+  className="dialog-0-1-4"
 >
   <div
-    className="dialog_modalOverlay-0-1-11"
+    className="dialog_modalOverlay-0-1-5"
     onClick={[Function]}
     role="presentation"
     tabIndex={-1}
   />
   <div
-    className="dialog_contentRegion-0-1-12"
+    className="dialog_contentRegion-0-1-6"
     role="dialog"
     style={
       Object {

@@ -227,4 +227,26 @@ describe("The JSSManager", (): void => {
 
         expect(stylesheetRegistry.registry.length).toBe(1);
     });
+
+    test("should render a parent with a higher index than a child", (): void => {
+        function renderChildJSSManager(): React.ReactNode {
+            return (
+                <JSSManager
+                    styles={stylesheet}
+                    designSystem={testDesignSystem}
+                    render={renderChild}
+                />
+            );
+        }
+
+        const rendered: any = mount(
+            <JSSManager
+                styles={stylesheet}
+                designSystem={testDesignSystem}
+                render={renderChildJSSManager}
+            />
+        );
+
+        expect(rendered.instance().index).toBeGreaterThan(rendered.children().instance().index);
+    });
 });

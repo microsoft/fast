@@ -64,26 +64,39 @@ export class JSSManager<S, C> extends React.Component<JSSManagerProps<S, C>, JSS
      */
     private static stylesheetManager: SheetsManager = stylesheetManager;
 
+    /**
+     * JSS allows us to use an index to order the created style elements. The higher the index,
+     * the later in the document the style element will be created.
+     *
+     * This static index allows us to globally track every stylesheet created by the JSSManager. Each
+     * instance decrements this index and assigns itself the decremented value. The effect of this is that
+     * a React parent will always have a higher index than it's children because react constructs trees
+     * recursively starting at the root. With a parent always having a higher index then it's children,
+     * we can inform JSS of this order preference and ensure parent stylesheets always come later in the DOM.
+     *
+     * Inspiration for this approach to style element ordering comes from
+     * https://github.com/cssinjs/react-jss/blob/master/src/injectSheet.js
+     */
+    private static index: number = -1000;
+
+    /**
+     * The stylesheet index for the JSSManager instance
+     */
+    private index: number;
+
     constructor(props: JSSManagerProps<S, C>) {
         super(props);
 
         const state: JSSManagerState = {};
+        this.index = JSSManager.index--;
 
         if (Boolean(props.styles)) {
             state.styleSheet = this.createStyleSheet();
             state.styleSheet.attach();
+            state.styleSheet.update(props.designSystem);
         }
 
         this.state = state;
-    }
-
-    /**
-     * TODO #774: Remove lifecycle event with fix for managing stylesheet registry
-     */
-    public componentDidMount(): void {
-        // It appears we need to update the stylesheet for any style properties defined as functions
-        // to work.
-        this.updateStyleSheet();
     }
 
     public componentDidUpdate(prevProps: JSSManagerProps<S, C>, prevState: JSSManagerState): void {
@@ -98,6 +111,11 @@ export class JSSManager<S, C> extends React.Component<JSSManagerProps<S, C>, JSS
 
     public componentWillUnmount(): void {
         this.removeStyleSheet();
+
+        // Increment the global stylesheet index tracker when a component unmounts
+        // so that we can recycle index values and avoid eventually running out of numbers
+        // if an application lives for a long time.
+        JSSManager.index++;
     }
 
     public render(): React.ReactNode {
@@ -160,7 +178,10 @@ export class JSSManager<S, C> extends React.Component<JSSManagerProps<S, C>, JSS
 
         const jssSheet: any =  jss.createStyleSheet(
             merge({}, stylesheet, this.props.jssStyleSheet),
-            { link: true }
+            {
+                link: true,
+                index: this.index
+            }
         );
 
         stylesheetRegistry.add(jssSheet);

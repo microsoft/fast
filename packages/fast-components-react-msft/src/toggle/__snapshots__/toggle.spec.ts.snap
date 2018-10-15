@@ -3,23 +3,23 @@
 exports[`toggle snapshots Toggle: 0 1`] = `
 <div
   aria-disabled={null}
-  className="toggle-0-1-6"
+  className="toggle-0-1-1"
   data-sketch-symbol="Toggle (on)"
 >
   <label
-    className="toggle_label-0-1-7"
+    className="toggle_label-0-1-2"
     htmlFor="toggle01"
     id="label01"
   >
     Toggle label default on
   </label>
   <div
-    className="toggle_toggleButton-0-1-8"
+    className="toggle_toggleButton-0-1-3"
   >
     <input
       aria-describedby="span01"
       checked={true}
-      className="toggle_input-0-1-10"
+      className="toggle_input-0-1-5"
       disabled={false}
       id="toggle01"
       onChange={[Function]}
@@ -27,7 +27,7 @@ exports[`toggle snapshots Toggle: 0 1`] = `
       value="On"
     />
     <span
-      className="toggle_stateIndicator-0-1-9"
+      className="toggle_stateIndicator-0-1-4"
     />
   </div>
   <span
@@ -41,23 +41,23 @@ exports[`toggle snapshots Toggle: 0 1`] = `
 exports[`toggle snapshots Toggle: 1 1`] = `
 <div
   aria-disabled={null}
-  className="toggle-0-1-16"
+  className="toggle-0-1-6"
   data-sketch-symbol="Toggle (off)"
 >
   <label
-    className="toggle_label-0-1-17"
+    className="toggle_label-0-1-7"
     htmlFor="toggle02"
     id="label02"
   >
     Toggle label default off
   </label>
   <div
-    className="toggle_toggleButton-0-1-18"
+    className="toggle_toggleButton-0-1-8"
   >
     <input
       aria-describedby="span02"
       checked={false}
-      className="toggle_input-0-1-20"
+      className="toggle_input-0-1-10"
       disabled={false}
       id="toggle02"
       onChange={[Function]}
@@ -65,7 +65,7 @@ exports[`toggle snapshots Toggle: 1 1`] = `
       value="Off"
     />
     <span
-      className="toggle_stateIndicator-0-1-19"
+      className="toggle_stateIndicator-0-1-9"
     />
   </div>
   <span
@@ -79,23 +79,23 @@ exports[`toggle snapshots Toggle: 1 1`] = `
 exports[`toggle snapshots Toggle: 2 1`] = `
 <div
   aria-disabled={true}
-  className="toggle-0-1-26"
+  className="toggle-0-1-11"
   data-sketch-symbol="Toggle disabled (on)"
 >
   <label
-    className="toggle_label-0-1-27"
+    className="toggle_label-0-1-12"
     htmlFor="toggle03"
     id="label03"
   >
     Toggle label disabled on
   </label>
   <div
-    className="toggle_toggleButton-0-1-28"
+    className="toggle_toggleButton-0-1-13"
   >
     <input
       aria-describedby="span03"
       checked={true}
-      className="toggle_input-0-1-30"
+      className="toggle_input-0-1-15"
       disabled={true}
       id="toggle03"
       onChange={[Function]}
@@ -103,7 +103,7 @@ exports[`toggle snapshots Toggle: 2 1`] = `
       value="On"
     />
     <span
-      className="toggle_stateIndicator-0-1-29"
+      className="toggle_stateIndicator-0-1-14"
     />
   </div>
   <span
@@ -117,23 +117,23 @@ exports[`toggle snapshots Toggle: 2 1`] = `
 exports[`toggle snapshots Toggle: 3 1`] = `
 <div
   aria-disabled={true}
-  className="toggle-0-1-36"
+  className="toggle-0-1-16"
   data-sketch-symbol="Toggle disabled (off)"
 >
   <label
-    className="toggle_label-0-1-37"
+    className="toggle_label-0-1-17"
     htmlFor="toggle04"
     id="label04"
   >
     Toggle label disabled off
   </label>
   <div
-    className="toggle_toggleButton-0-1-38"
+    className="toggle_toggleButton-0-1-18"
   >
     <input
       aria-describedby="span04"
       checked={false}
-      className="toggle_input-0-1-40"
+      className="toggle_input-0-1-20"
       disabled={true}
       id="toggle04"
       onChange={[Function]}
@@ -141,7 +141,7 @@ exports[`toggle snapshots Toggle: 3 1`] = `
       value="Off"
     />
     <span
-      className="toggle_stateIndicator-0-1-39"
+      className="toggle_stateIndicator-0-1-19"
     />
   </div>
   <span
