@@ -14,7 +14,7 @@ export interface BreakpointTrackerState {
     activeBreakpoint: keyof Breakpoints | void;
 }
 
-export class BreakpointTracker extends React.Component<BreakpointTrackerProps, BreakpointTrackerState> {
+export default class BreakpointTracker extends React.Component<BreakpointTrackerProps, BreakpointTrackerState> {
     /**
      * The current breakpoint.
      */
