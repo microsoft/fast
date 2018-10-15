@@ -22,7 +22,7 @@ describe('Reference IDs', function() {
             possibleRefs.push(get(schemaData, `${refLocation}['$ref']`));
         }
     });
-    it('should the correct number schema IDs', function() {
+    it('should generate correct number of schema IDs', function() {
         expect(possibleRefs).toHaveLength(2);
     });
     it('should return the correct schema IDs', function() {
@@ -63,7 +63,7 @@ describe('Deep reference IDs', function() {
             possibleRefs.push(get(schemaData, `${refLocation}['$ref']`));
         }
     });
-    it('should the correct number schema IDs', function() {
+    it('should generate correct number of schema IDs', function() {
         expect(possibleRefs).toHaveLength(5);
     });
 });
@@ -99,7 +99,7 @@ describe('Locations of properties', function() {
         possibleAllOf = permutator.getDeepPropLocations(schemaData, 'allOf');
         possibleRequired = permutator.getDeepPropLocations(schemaData, 'required');
     });
-    it('should the correct number of locations', function() {
+    it('should generate correct number of locations', function() {
         expect(possibleRefs).toHaveLength(5);
         expect(possibleAllOf).toHaveLength(2);
         expect(possibleRequired).toHaveLength(2);
