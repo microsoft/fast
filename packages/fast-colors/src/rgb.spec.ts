@@ -5,33 +5,16 @@ describe("Valid 3 digit hexits", (): void => {
         expect(hexToRgb("#000")).toBe("rgb(0, 0, 0)");
         expect(hexToRgb("#191")).toBe("rgb(17, 153, 17)");
     });
-    test("Should return rgb(255, 255, 255)", (): void => {
+    test("Should return a value when valid uppercase letters and valid lowercase letters are merged", (): void => {
         expect(hexToRgb("#Fff")).toBe("rgb(255, 255, 255)");
-    });
-    test("Should return rgb(221, 238, 204)", (): void => {
         expect(hexToRgb("#dEc")).toBe("rgb(221, 238, 204)");
     });
-    /*
-    test("Should return rgb(17, 153, 17)", (): void => {
-        expect(hexToRgb("#191")).toBe("rgb(17, 153, 17)");
-    });
-    */
-    test("Should return rgb(187, 204, 153)", (): void => {
+    test("Should return a value when letters are mixed with numbers", (): void => {
         expect(hexToRgb("#bc9")).toBe("rgb(187, 204, 153)");
-    });
-    test("Should return rgb(153, 170, 204)", (): void => {
         expect(hexToRgb("#9aC")).toBe("rgb(153, 170, 204)");
-    });
-    test("Should return rgb(238, 187, 68)", (): void => {
         expect(hexToRgb("#eB4")).toBe("rgb(238, 187, 68)");
-    });
-    test("Should return rgb(204, 17, 68)", (): void => {
         expect(hexToRgb("#c14")).toBe("rgb(204, 17, 68)");
-    });
-    test("Should return rgb(238, 0, 255)", (): void => {
         expect(hexToRgb("#E0F")).toBe("rgb(238, 0, 255)");
-    });
-    test("Should return rgb(204, 221, 0)", (): void => {
         expect(hexToRgb("#CD0")).toBe("rgb(204, 221, 0)");
     });
 });
@@ -136,54 +119,38 @@ describe("Valid 8 digit hexits", (): void => {
 });
 
 describe("Invalid hexits", (): void => {
-    test("Should throw an error", (): void => {
+    test("Should throw an error for an invalid length hex string", (): void => {
         expect((): void => {
             hexToRgb("");
         }).toThrow();
-    });
-    test("Should throw an error", (): void => {
         expect((): void => {
-            hexToRgb("#-ffffg");
+            hexToRgb("f");
         }).toThrow();
-    });
-    test("Should throw an error", (): void => {
-        expect((): void => {
-            hexToRgb("#21m20912");
-        }).toThrow();
-    });
-    test("Should throw an error", (): void => {
-        expect((): void => {
-            hexToRgb("~98302910");
-        }).toThrow();
-    });
-    test("Should throw an error", (): void => {
-        expect((): void => {
-            hexToRgb("#00000z");
-        }).toThrow();
-    });
-    test("Should throw an error", (): void => {
         expect((): void => {
             hexToRgb("19999");
         }).toThrow();
-    });
-    test("Should throw an error", (): void => {
         expect((): void => {
             hexToRgb("32");
         }).toThrow();
     });
-    test("Should throw an error", (): void => {
+    test("Should throw an error when an invalid character is present", (): void => {
         expect((): void => {
-            hexToRgb("f");
+            hexToRgb("#21m20912");
         }).toThrow();
-    });
-    test("Should throw an error", (): void => {
         expect((): void => {
-            hexToRgb("zsdgn3i2o1");
+            hexToRgb("~9832910");
         }).toThrow();
-    });
-    test("Should throw an error", (): void => {
+        expect((): void => {
+            hexToRgb("#00000z");
+        }).toThrow();
         expect((): void => {
             hexToRgb("#3.!/.9");
+        }).toThrow();
+        expect((): void => {
+            hexToRgb("zsd3i2o1");
+        }).toThrow();
+        expect((): void => {
+            hexToRgb("#-ffffg");
         }).toThrow();
     });
 });
