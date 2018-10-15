@@ -28,7 +28,6 @@ exports[`progress snapshots Progress: 1 1`] = `
 <div
   aria-valuemax={100}
   aria-valuemin={0}
-  aria-valuenow={undefined}
   className="progress-0-1-11"
   role="progressbar"
 >

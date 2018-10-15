@@ -6,9 +6,6 @@ exports[`dialog snapshots Dialog: 0 1`] = `
   className="dialog-0-1-1"
 >
   <div
-    aria-describedby={undefined}
-    aria-label={undefined}
-    aria-labelledby={undefined}
     className="dialog_contentRegion-0-1-3"
     role="dialog"
     style={
@@ -34,9 +31,6 @@ exports[`dialog snapshots Dialog: 1 1`] = `
     tabIndex={-1}
   />
   <div
-    aria-describedby={undefined}
-    aria-label={undefined}
-    aria-labelledby={undefined}
     className="dialog_contentRegion-0-1-6"
     role="dialog"
     style={
