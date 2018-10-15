@@ -288,7 +288,7 @@ describe('Deep reference primitive', function() {
         const schemaData = require('../schemas/primitive/deepRef.schema.json');
         possibleData = permutator(schemaData, refSchemas);
     });
-    it('should the correct number of permutations', function() {
+    it('should generate correct number of permutations', function() {
         expect(possibleData).toHaveLength(2);
     });
 });
