@@ -1,7 +1,9 @@
 import * as React from "react";
-import { IContextMenuItemRadioClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { ContextMenuItemRadioClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface IContextMenuItemRadioHandledProps {
+export interface ContextMenuItemRadioManagedClasses extends ManagedClasses<ContextMenuItemRadioClassNameContract> {}
+export interface ContextMenuItemRadioUnhandledProps extends React.LiHTMLAttributes<HTMLLIElement> {}
+export interface ContextMenuItemRadioHandledProps extends ContextMenuItemRadioManagedClasses {
     /**
      * The id attribute of the context-menu-item-radio
      */
@@ -24,6 +26,4 @@ export interface IContextMenuItemRadioHandledProps {
     onChange: (component: React.ReactElement<ContextMenuItemRadioProps>) => void;
 }
 
-export interface IContextMenuItemRadioUnhandledProps extends React.LiHTMLAttributes<HTMLLIElement> {}
-export interface IContextMenuItemRadioManagedClasses extends IManagedClasses<IContextMenuItemRadioClassNameContract> {}
-export type ContextMenuItemRadioProps = IContextMenuItemRadioHandledProps & IContextMenuItemRadioUnhandledProps & IContextMenuItemRadioManagedClasses;
+export type ContextMenuItemRadioProps = ContextMenuItemRadioHandledProps & ContextMenuItemRadioUnhandledProps;

@@ -1,13 +1,13 @@
-import { IDesignSystem } from "../design-system";
+import { DesignSystem } from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import { IContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { ContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 
-const styles: ComponentStyles<IContextMenuItemClassNameContract, IDesignSystem> = {
+const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = {
     contextMenuItem: {
-        color: (config: IDesignSystem): string => {
+        color: (config: DesignSystem): string => {
             return config.foregroundColor;
         },
-        backgroundColor: (config: IDesignSystem): string => {
+        backgroundColor: (config: DesignSystem): string => {
             return config.brandColor;
         }
     },

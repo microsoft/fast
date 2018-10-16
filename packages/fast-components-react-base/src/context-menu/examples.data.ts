@@ -1,12 +1,12 @@
 import * as React from "react";
-import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { SnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
+import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import ContextMenu, { IContextMenuHandledProps, IContextMenuManagedClasses } from "./context-menu";
 import ContextMenuItem, { ContextMenuItemProps } from "../context-menu-item";
 import ContextMenuItemRadio, {
     ContextMenuItemRadioProps,
-    IContextMenuItemRadioHandledProps,
-    IContextMenuItemRadioManagedClasses 
+    ContextMenuItemRadioHandledProps,
+    ContextMenuItemRadioManagedClasses 
 } from "../context-menu-item-radio";
 import ContextMenuItemCheckbox, { ContextMenuItemCheckboxProps } from "../context-menu-item-checkbox";
 import { uniqueId } from "lodash-es";
@@ -54,7 +54,7 @@ const managedClasses: IContextMenuManagedClasses = {
     }
 };
 
-const examples: ISnapshotTestSuite<IContextMenuHandledProps & IContextMenuManagedClasses> = {
+const examples: SnapshotTestSuite<IContextMenuHandledProps & IContextMenuManagedClasses> = {
     name: "context-menu",
     component: ContextMenu,
     data: [

@@ -1,25 +1,65 @@
+import { ContextMenuItemProps } from "../context-menu-item";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import Foundation, { HandledProps } from "../foundation";
-import { IContextMenuClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { ContextMenuClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
     ContextMenuProps,
-    IContextMenuHandledProps,
-    IContextMenuManagedClasses,
-    IContextMenuUnhandledProps,
+    ContextMenuHandledProps,
+    ContextMenuManagedClasses,
+    ContextMenuUnhandledProps,
 } from "./context-menu.props";
-import {ContextMenuItemProps} from "../context-menu-item";
-import {ContextMenuItemRadioProps} from "../context-menu-item-radio";
-import {ContextMenuItemCheckboxProps} from "../context-menu-item-checkbox";
+import * as ReactDOM from "react-dom";
+import { ContextMenuItemRadioProps } from "../context-menu-item-radio";
+import { ContextMenuItemCheckboxProps } from "../context-menu-item-checkbox";
 import KeyCodes from "../utilities/keycodes";
-import {get, isFunction, clamp} from "lodash-es";
-import {MenuItemRole} from "../utilities/aria";
+import { clamp, get, isFunction } from "lodash-es";
+import { MenuItemRole } from "../utilities/aria";
 
-export interface IContextMenuState {
+export interface ContextMenuState {
     activeDescendant: string;
 }
 
-class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuManagedClasses, IContextMenuUnhandledProps, IContextMenuState> {
+class ContextMenu extends Foundation<ContextMenuHandledProps, ContextMenuUnhandledProps, ContextMenuState> {
+
+    /**
+     * get the ID props of all child menu items
+     */
+    private get childIds(): string[] {
+        return React.Children.map(this.props.children, (child: React.ReactElement<ContextMenuItemProps>): string => child.props.id) || [];
+    }
+
+    /**
+     * The HTML element associated with the current activedescendent
+     */
+    private get activeDescendantNode(): HTMLElement {
+        return ReactDOM.findDOMNode(this.activeDescendant);
+    }
+
+    /**
+     * Get the activeDescendant react node
+     */
+    private get activeDescendant(): React.ReactNode {
+        return this.getRef(this.state.activeDescendant);
+    }
+
+    /**
+     * Return all children that are radio-items
+     */
+    private get radioDescendants(): Array<React.ReactElement<ContextMenuItemRadioProps>> {
+        return React.Children.toArray(this.props.children)
+            .filter(this.isMenuItemRadioComponent);
+    }
+
+    public static defaultProps: Partial<ContextMenuProps> = {
+        open: false
+    };
+
+    protected handledProps: HandledProps<ContextMenuHandledProps> = {
+        children: void 0,
+        managedClasses: void 0,
+        open: void 0
+    };
+
     constructor(props: ContextMenuProps) {
         super(props);
 
@@ -27,16 +67,6 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
             activeDescendant: ""
         };
     }
-
-    public static defaultProps: IContextMenuHandledProps = {
-        open: false
-    };
-
-    protected handledProps: HandledProps<IContextMenuHandledProps & IContextMenuManagedClasses> = {
-        children: void 0,
-        managedClasses: void 0,
-        open: void 0
-    };
 
     /**
      * Renders the component
@@ -81,35 +111,6 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
     }
 
     /**
-     * get the ID props of all child menu items
-     */
-    private get childIds(): string[] {
-        return React.Children.map(this.props.children, (child: React.ReactElement<ContextMenuItemProps>): string => child.props.id) || [];
-    }
-
-    /**
-     * The HTML element associated with the current activedescendent
-     */
-    private get activeDescendantNode(): HTMLElement {
-        return ReactDOM.findDOMNode(this.activeDescendant);
-    }
-
-    /**
-     * Get the activeDescendant react node
-     */
-    private get activeDescendant(): React.ReactNode {
-        return this.getRef(this.state.activeDescendant);
-    }
-
-    /**
-     * Return all children that are radio-items
-     */
-    private get radioDescendants(): React.ReactElement<ContextMenuItemRadioProps>[] {
-        return React.Children.toArray(this.props.children)
-            .filter(this.isMenuItemRadioComponent);
-    }
-
-    /**
      * Handles the focus event on the root menu
      */
     private handleMenuFocus = (e: React.FocusEvent<HTMLUListElement>): void => {
@@ -122,7 +123,9 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
      * Check if the child can be checkable
      * TODO: add checkbox
      */
-    private isCheckableMenuItem = (child: React.ReactNode): child is React.ReactElement<ContextMenuItemRadioProps | ContextMenuItemCheckboxProps> => {
+    private isCheckableMenuItem = (
+        child: React.ReactNode
+    ): child is React.ReactElement<ContextMenuItemRadioProps | ContextMenuItemCheckboxProps> => {
         return (
             typeof child === "object"
             && get(child, "props")
@@ -160,13 +163,13 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
      * actually on that element
      */
     private clickActiveDescendant(): void {
-        const activeNode = ReactDOM.findDOMNode(this.getRef(this.state.activeDescendant));
+        const activeNode: HTMLElement = ReactDOM.findDOMNode(this.getRef(this.state.activeDescendant));
 
         if (isFunction(get(activeNode, "click"))) {
             activeNode.click();
         }
     }
-    
+
     /**
      * Inform integrations that the menu should be closed
      */
@@ -235,13 +238,13 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
                 break;
 
             case KeyCodes.End:
-                this.shiftActiveDescendant(this.childIds.length - 1 - this.childIds.indexOf(this.state.activeDescendant))
+                this.shiftActiveDescendant(this.childIds.length - 1 - this.childIds.indexOf(this.state.activeDescendant));
                 break;
-              
-            case KeyCodes.Home:  
-                this.shiftActiveDescendant(this.childIds.indexOf(this.state.activeDescendant) * -1)
+
+            case KeyCodes.Home:
+                this.shiftActiveDescendant(this.childIds.indexOf(this.state.activeDescendant) * -1);
                 break;
-                
+
             case KeyCodes.Escape:
                 this.close();
                 break;
@@ -250,7 +253,5 @@ class ContextMenu extends Foundation<IContextMenuHandledProps & IContextMenuMana
 
 }
 
-
 export default ContextMenu;
 export * from "./context-menu.props";
-export {IContextMenuClassNameContract};

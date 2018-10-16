@@ -1,7 +1,7 @@
 /**
  * The class name contract for the context-menu component
  */
-export interface IContextMenuClassNameContract {
+export interface ContextMenuClassNameContract {
     contextMenu: string;
     contextMenu_open: string;
 }

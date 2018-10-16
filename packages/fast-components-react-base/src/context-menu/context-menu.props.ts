@@ -1,7 +1,9 @@
 import * as React from "react";
-import { IContextMenuClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { ContextMenuClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface IContextMenuHandledProps {
+export interface ContextMenuManagedClasses extends ManagedClasses<ContextMenuClassNameContract> {}
+export interface ContextMenuUnhandledProps extends React.HTMLAttributes<HTMLUListElement> {}
+export interface ContextMenuHandledProps extends ContextMenuManagedClasses {
     /**
      * The children of the context-menu-item
      */
@@ -23,6 +25,4 @@ export interface IContextMenuHandledProps {
     onClose?: () => void;
 }
 
-export interface IContextMenuUnhandledProps extends React.HTMLAttributes<HTMLUListElement> {}
-export interface IContextMenuManagedClasses extends IManagedClasses<IContextMenuClassNameContract> {}
-export type ContextMenuProps = IContextMenuHandledProps & IContextMenuUnhandledProps & IContextMenuManagedClasses;
+export type ContextMenuProps = ContextMenuHandledProps & ContextMenuUnhandledProps;
