@@ -110,7 +110,7 @@ The `isNullOrWhiteSpace` function determines if the specified string is undefine
 ```js
 import { isNullOrWhiteSpace } from "@microsoft/fast-web-utilities";
 
-const myAnchor = document.getElementById("#id");
+const myAnchor = document.querySelector("#id");
 const checkWhitespace = isNullOrWhiteSpace(myAnchor.href);
 ```
 

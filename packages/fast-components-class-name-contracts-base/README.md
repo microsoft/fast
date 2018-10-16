@@ -7,7 +7,7 @@ FAST base components are built from the ground-up to work with CSS module implem
 These contracts simply describe - as TypeScript interfaces - the key/value pairs that each component can expect to be able to use when retrieving these dynamic class-names.
 
 ```tsx
-inteface IButtonClassNameContract {
+inteface ButtonClassNameContract {
     button: string;
 }
 
