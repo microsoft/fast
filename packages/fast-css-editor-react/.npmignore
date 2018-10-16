@@ -6,6 +6,9 @@ __test__/
 # Source files
 src/
 app/
+coverage/
 
-# babel config
+# config
 .babelrc
+tsconfig.json
+tslint.json

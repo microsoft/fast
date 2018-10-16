@@ -1,10 +1,5 @@
-app/
+# Source files
 src/
-
-#  Tests
-__test__/
-*.spec.*
-*.test.*
 
 # babel config
 .babelrc

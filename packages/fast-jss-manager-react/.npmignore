@@ -4,7 +4,11 @@ __test__/
 *.test.*
 
 # Source files
+build/
+coverage/
 src/
 
 # babel config
 .babelrc
+tsconfig.json
+tslint.json

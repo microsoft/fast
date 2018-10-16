@@ -1,13 +1,7 @@
-# Tests
-__test__/
-*.spec.*
-*.test.*
-
 # Source files
 app/
-build/
-coverage/
 src/
+www/
 
 # config
 .babelrc

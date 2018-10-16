@@ -9,5 +9,5 @@ src/
 
 # config
 .babelrc
-tsconfig.json
 tslint.json
+tsconfig.json
