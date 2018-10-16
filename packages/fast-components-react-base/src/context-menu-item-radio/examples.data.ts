@@ -1,15 +1,19 @@
-import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import ContextMenuItemRadio, { ContextMenuItemRadioProps, IContextMenuItemRadioHandledProps, IContextMenuItemRadioManagedClasses } from "./context-menu-item-radio";
-import { uniqueId } from "lodash-es";
+import { SnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
+import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import ContextMenuItemRadio, {
+    ContextMenuItemRadioHandledProps,
+    ContextMenuItemRadioManagedClasses,
+    ContextMenuItemRadioProps
+} from "./context-menu-item-radio";
+import { noop, uniqueId } from "lodash-es";
 
-const managedClasses: IContextMenuItemRadioManagedClasses = {
+const managedClasses: ContextMenuItemRadioManagedClasses = {
     managedClasses: {
         contextMenuItemRadio: "context-menu-item-radio"
     }
 };
 
-const examples: ISnapshotTestSuite<IContextMenuItemRadioHandledProps & IContextMenuItemRadioManagedClasses> = {
+const examples: SnapshotTestSuite<ContextMenuItemRadioHandledProps & ContextMenuItemRadioManagedClasses> = {
     name: "context-menu-item-radio",
     component: ContextMenuItemRadio,
     data: [
@@ -18,7 +22,7 @@ const examples: ISnapshotTestSuite<IContextMenuItemRadioHandledProps & IContextM
             children: "child",
             checked: true,
             id: uniqueId(),
-            onChange: (item: React.ReactElement<ContextMenuItemRadioProps>) => { console.log(item) }
+            onChange: noop
         }
     ]
 };

@@ -1,15 +1,15 @@
 import * as React from "react";
 import { SnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import ContextMenu, { IContextMenuHandledProps, IContextMenuManagedClasses } from "./context-menu";
+import ContextMenu, { ContextMenuHandledProps, ContextMenuManagedClasses } from "./context-menu";
 import ContextMenuItem, { ContextMenuItemProps } from "../context-menu-item";
 import ContextMenuItemRadio, {
-    ContextMenuItemRadioProps,
     ContextMenuItemRadioHandledProps,
-    ContextMenuItemRadioManagedClasses 
+    ContextMenuItemRadioManagedClasses,
+    ContextMenuItemRadioProps
 } from "../context-menu-item-radio";
 import ContextMenuItemCheckbox, { ContextMenuItemCheckboxProps } from "../context-menu-item-checkbox";
-import { uniqueId } from "lodash-es";
+import { noop, uniqueId } from "lodash-es";
 
 function contextMenuItemPropFactory(): ContextMenuItemProps {
     return {
@@ -17,10 +17,8 @@ function contextMenuItemPropFactory(): ContextMenuItemProps {
             contextMenuItem: "context-menu-item",
         },
         id: uniqueId(),
-        onClick: (e: any) => {
-            console.log(e);
-        }
-    }
+        onClick: noop
+    };
 }
 
 function contextMenuItemRadioPropFactory(checked: boolean = false): ContextMenuItemRadioProps {
@@ -30,8 +28,8 @@ function contextMenuItemRadioPropFactory(checked: boolean = false): ContextMenuI
         },
         checked,
         id: uniqueId(),
-        onChange: (e: any): void => {}
-    }
+        onChange: noop
+    };
 }
 
 function contextMenuItemCheckboxPropFactory(checked: boolean = false): ContextMenuItemCheckboxProps {
@@ -41,20 +39,18 @@ function contextMenuItemCheckboxPropFactory(checked: boolean = false): ContextMe
         },
         checked,
         id: uniqueId(),
-        onChange: (e: any) => {
-            console.log(e);
-        }
-    }
+        onChange: noop
+    };
 }
 
-const managedClasses: IContextMenuManagedClasses = {
+const managedClasses: ContextMenuManagedClasses = {
     managedClasses: {
         contextMenu: "context-menu",
         contextMenu_open: "open"
     }
 };
 
-const examples: SnapshotTestSuite<IContextMenuHandledProps & IContextMenuManagedClasses> = {
+const examples: SnapshotTestSuite<ContextMenuHandledProps> = {
     name: "context-menu",
     component: ContextMenu,
     data: [

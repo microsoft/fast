@@ -1,21 +1,20 @@
 import * as React from "react";
-import Foundation, { HandledProps } from "../foundation";
-import {get} from "lodash-es";
-import { IContextMenuItemRadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { get } from "lodash-es";
+import { ContextMenuItemRadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
+    ContextMenuItemRadioHandledProps,
+    ContextMenuItemRadioManagedClasses,
     ContextMenuItemRadioProps,
-    IContextMenuItemRadioHandledProps,
-    IContextMenuItemRadioManagedClasses,
-    IContextMenuItemRadioUnhandledProps,
+    ContextMenuItemRadioUnhandledProps,
 } from "./context-menu-item-radio.props";
-import {MenuItemRole} from "../utilities/aria";
-import {isFunction} from "lodash-es";
+import { MenuItemRole } from "../utilities/aria";
+import { isFunction } from "lodash-es";
 
-
-class ContextMenuItemRadio extends Foundation<IContextMenuItemRadioHandledProps & IContextMenuItemRadioManagedClasses, IContextMenuItemRadioUnhandledProps, {}> {
+class ContextMenuItemRadio extends Foundation<ContextMenuItemRadioHandledProps, ContextMenuItemRadioUnhandledProps, {}> {
     public readonly role: string = MenuItemRole.menuitemradio;
 
-    protected handledProps: HandledProps<IContextMenuItemRadioHandledProps & IContextMenuItemRadioManagedClasses> = {
+    protected handledProps: HandledProps<ContextMenuItemRadioHandledProps> = {
         managedClasses: void 0,
         children: void 0,
         id: void 0,
@@ -63,5 +62,4 @@ class ContextMenuItemRadio extends Foundation<IContextMenuItemRadioHandledProps 
 
 export default ContextMenuItemRadio;
 export * from "./context-menu-item-radio.props";
-export {IContextMenuItemRadioClassNameContract};
-
+export {ContextMenuItemRadioClassNameContract};

@@ -1,20 +1,19 @@
 import * as React from "react";
-import Foundation, { HandledProps } from "../foundation";
-import {get} from "lodash-es";
-import { IContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { get } from "lodash-es";
+import { ContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
+    ContextMenuItemHandledProps,
+    ContextMenuItemManagedClasses,
     ContextMenuItemProps,
-    IContextMenuItemHandledProps,
-    IContextMenuItemManagedClasses,
-    IContextMenuItemUnhandledProps,
+    ContextMenuItemUnhandledProps,
 } from "./context-menu-item.props";
-import {MenuItemRole} from "../utilities/aria";
+import { MenuItemRole } from "../utilities/aria";
 
-
-class ContextMenuItem extends Foundation<IContextMenuItemHandledProps & IContextMenuItemManagedClasses, IContextMenuItemUnhandledProps, {}> {
+class ContextMenuItem extends Foundation<ContextMenuItemHandledProps, ContextMenuItemUnhandledProps, {}> {
     public readonly role: string = MenuItemRole.menuitem;
 
-    protected handledProps: HandledProps<IContextMenuItemHandledProps & IContextMenuItemManagedClasses> = {
+    protected handledProps: HandledProps<ContextMenuItemHandledProps> = {
         managedClasses: void 0,
         children: void 0,
         id: void 0
@@ -44,7 +43,6 @@ class ContextMenuItem extends Foundation<IContextMenuItemHandledProps & IContext
     }
 }
 
-
 export default ContextMenuItem;
 export * from "./context-menu-item.props";
-export {IContextMenuItemClassNameContract};
+export {ContextMenuItemClassNameContract};

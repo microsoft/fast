@@ -1,20 +1,18 @@
 import * as React from "react";
-import Foundation, { HandledProps } from "../foundation";
-import {get} from "lodash-es";
-import { IContextMenuItemCheckboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { get } from "lodash-es";
+import { ContextMenuItemCheckboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
+    ContextMenuItemCheckboxHandledProps,
+    ContextMenuItemCheckboxManagedClasses,
     ContextMenuItemCheckboxProps,
-    IContextMenuItemCheckboxHandledProps,
-    IContextMenuItemCheckboxManagedClasses,
-    IContextMenuItemCheckboxUnhandledProps,
+    ContextMenuItemCheckboxUnhandledProps,
 } from "./context-menu-item-checkbox.props";
-import {MenuItemRole} from "../utilities/aria";
-import {isFunction} from "lodash-es";
+import { MenuItemRole } from "../utilities/aria";
+import { isFunction } from "lodash-es";
 
-
-class ContextMenuItemCheckbox extends Foundation<IContextMenuItemCheckboxHandledProps & IContextMenuItemCheckboxManagedClasses, IContextMenuItemCheckboxUnhandledProps, {}> {
-
-    protected handledProps: HandledProps<IContextMenuItemCheckboxHandledProps & IContextMenuItemCheckboxManagedClasses> = {
+class ContextMenuItemCheckbox extends Foundation<ContextMenuItemCheckboxHandledProps, ContextMenuItemCheckboxUnhandledProps, {}> {
+    protected handledProps: HandledProps<ContextMenuItemCheckboxHandledProps> = {
         managedClasses: void 0,
         children: void 0,
         id: void 0,
@@ -62,4 +60,4 @@ class ContextMenuItemCheckbox extends Foundation<IContextMenuItemCheckboxHandled
 
 export default ContextMenuItemCheckbox;
 export * from "./context-menu-item-checkbox.props";
-export {IContextMenuItemCheckboxClassNameContract};
+export { ContextMenuItemCheckboxClassNameContract };

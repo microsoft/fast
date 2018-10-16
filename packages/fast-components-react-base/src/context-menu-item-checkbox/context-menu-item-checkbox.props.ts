@@ -1,7 +1,9 @@
 import * as React from "react";
-import { IContextMenuItemCheckboxClassNameContract, IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { ContextMenuItemCheckboxClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface IContextMenuItemCheckboxHandledProps {
+export interface ContextMenuItemCheckboxUnhandledProps extends React.LiHTMLAttributes<HTMLLIElement> {}
+export interface ContextMenuItemCheckboxManagedClasses extends ManagedClasses<ContextMenuItemCheckboxClassNameContract> {}
+export interface ContextMenuItemCheckboxHandledProps extends ContextMenuItemCheckboxManagedClasses {
     /**
      * The id attribute of the context-menu-item-radio
      */
@@ -24,6 +26,4 @@ export interface IContextMenuItemCheckboxHandledProps {
 
 }
 
-export interface IContextMenuItemCheckboxUnhandledProps extends React.LiHTMLAttributes<HTMLLIElement> {}
-export interface IContextMenuItemCheckboxManagedClasses extends IManagedClasses<IContextMenuItemCheckboxClassNameContract> {}
-export type ContextMenuItemCheckboxProps = IContextMenuItemCheckboxHandledProps & IContextMenuItemCheckboxUnhandledProps & IContextMenuItemCheckboxManagedClasses;
+export type ContextMenuItemCheckboxProps = ContextMenuItemCheckboxHandledProps & ContextMenuItemCheckboxUnhandledProps;

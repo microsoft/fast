@@ -1,15 +1,19 @@
-import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import ContextMenuItemCheckbox, { ContextMenuItemCheckboxProps, IContextMenuItemCheckboxHandledProps, IContextMenuItemCheckboxManagedClasses } from "./context-menu-item-checkbox";
-import { uniqueId } from "lodash-es";
+import { SnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
+import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import ContextMenuItemCheckbox, {
+    ContextMenuItemCheckboxHandledProps,
+    ContextMenuItemCheckboxManagedClasses,
+    ContextMenuItemCheckboxProps
+} from "./context-menu-item-checkbox";
+import { noop, uniqueId } from "lodash-es";
 
-const managedClasses: IContextMenuItemCheckboxManagedClasses = {
+const managedClasses: ContextMenuItemCheckboxManagedClasses = {
     managedClasses: {
         contextMenuItemCheckbox: "context-menu-item-checkbox"
     }
 };
 
-const examples: ISnapshotTestSuite<IContextMenuItemCheckboxHandledProps & IContextMenuItemCheckboxManagedClasses> = {
+const examples: SnapshotTestSuite<ContextMenuItemCheckboxHandledProps & ContextMenuItemCheckboxManagedClasses> = {
     name: "context-menu-item-checkbox",
     component: ContextMenuItemCheckbox,
     data: [
@@ -18,7 +22,7 @@ const examples: ISnapshotTestSuite<IContextMenuItemCheckboxHandledProps & IConte
             children: "child",
             checked: true,
             id: uniqueId(),
-            onChange: (item: React.ReactElement<ContextMenuItemCheckboxProps>) => { console.log(item) }
+            onChange: noop
         }
     ]
 };

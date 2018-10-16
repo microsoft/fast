@@ -1,15 +1,15 @@
-import { ISnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
-import { IManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import ContextMenuItem, { IContextMenuItemHandledProps, IContextMenuItemManagedClasses } from "./context-menu-item";
+import { SnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
+import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import ContextMenuItem, { ContextMenuItemHandledProps, ContextMenuItemManagedClasses } from "./context-menu-item";
 import { uniqueId } from "lodash-es";
 
-const managedClasses: IContextMenuItemManagedClasses = {
+const managedClasses: ContextMenuItemManagedClasses = {
     managedClasses: {
         contextMenuItem: "context-menu-item"
     }
 };
 
-const examples: ISnapshotTestSuite<IContextMenuItemHandledProps & IContextMenuItemManagedClasses> = {
+const examples: SnapshotTestSuite<ContextMenuItemHandledProps> = {
     name: "context-menu-item",
     component: ContextMenuItem,
     data: [
