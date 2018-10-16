@@ -140,7 +140,7 @@ class Run {
         eyes.checkWindow("toggle example");
         
         driver.navigate().to(`${website}/components/typography/examples`);
-        eyes.checkWindow("typograph example");
+        eyes.checkWindow("typography example");
             
     }
 }
