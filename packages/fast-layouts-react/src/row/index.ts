@@ -1,6 +1,8 @@
 import * as React from "react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import {
+    east,
+    north,
     Row as BaseRow,
     RowClassNamesContract,
     RowHandledProps as BaseRowHandledProps,
@@ -8,7 +10,9 @@ import {
     RowProps as BaseRowProps,
     RowResizeDirection,
     rowStyleSheet,
-    RowUnhandledProps
+    RowUnhandledProps,
+    south,
+    west
 } from "./row";
 import { Subtract } from "utility-types";
 
@@ -25,5 +29,9 @@ export {
     RowHandledProps,
     RowUnhandledProps,
     RowClassNamesContract,
-    RowResizeDirection
+    RowResizeDirection,
+    east,
+    west,
+    north,
+    south
 };
