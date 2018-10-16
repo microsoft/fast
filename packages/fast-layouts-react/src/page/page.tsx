@@ -1,13 +1,13 @@
 import * as React from "react";
 import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { PageHandledProps, PageProps } from "./page.props";
+import { PageHandledProps, PageProps, PageUnhandledProps } from "./page.props";
 import Foundation, { FoundationProps, HandledProps } from "@microsoft/fast-components-foundation-react";
 
 export interface PageClassNamesContract {
     page?: string;
 }
 
-const styles: ComponentStyles<PageClassNamesContract, undefined> = {
+export const pageStyleSheet: ComponentStyles<PageClassNamesContract, undefined> = {
     "@global": {
         "html, body": {
             padding: 0,
@@ -19,17 +19,17 @@ const styles: ComponentStyles<PageClassNamesContract, undefined> = {
     }
 };
 
-class Page extends Foundation<
-    PageProps,
-    React.HTMLAttributes<HTMLDivElement>,
-    undefined
+export class Page extends Foundation<
+    PageHandledProps,
+    PageUnhandledProps,
+    {}
 > {
-    public static defaultProps: Partial<PageHandledProps> = {
+    public static defaultProps: Partial<PageProps> = {
         margin: "minmax(5vw, 1fr)",
         maxWidth: "1600px"
     };
 
-    protected handledProps: HandledProps<PageProps> = {
+    protected handledProps: HandledProps<PageHandledProps> = {
         managedClasses: void 0,
         margin: void 0,
         maxWidth: void 0
@@ -65,4 +65,4 @@ class Page extends Foundation<
     }
 }
 
-export default manageJss(styles)(Page);
+export * from "./page.props";
