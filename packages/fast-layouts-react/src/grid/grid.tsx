@@ -2,24 +2,24 @@ import * as React from "react";
 import manageJss, { ComponentStyles, CSSRules, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import BreakpointTracker from "../utilities/breakpoint-tracker";
 import { getValueByBreakpoint } from "../utilities/breakpoints";
-import { GridAlignment, GridHandledProps, GridProps, GridTag } from "./grid.props";
+import { GridAlignment, GridHandledProps, GridProps, GridTag, GridUnhandledProps } from "./grid.props";
 import Foundation, { FoundationProps, HandledProps } from "@microsoft/fast-components-foundation-react";
-import Column from "../column";
+import { Column } from "../column";
 
 export interface GridClassNamesContract {
     grid?: string;
 }
 
-const styles: ComponentStyles<GridClassNamesContract, undefined> = {
+export const gridStyleSheet: ComponentStyles<GridClassNamesContract, undefined> = {
     grid: {
         display: "grid",
         gridAutoRows: "auto"
     }
 };
 
-class Grid extends Foundation<
-    GridProps,
-    React.HTMLAttributes<HTMLDivElement>,
+export class Grid extends Foundation<
+    GridHandledProps,
+    GridUnhandledProps,
     {}
 > {
     /**
@@ -29,7 +29,7 @@ class Grid extends Foundation<
         return this.generateHTMLTag();
     }
 
-    public static defaultProps: GridHandledProps = {
+    public static defaultProps: Partial<GridProps> = {
         tag: GridTag.div,
         gridColumn: 2,
         gutter: 8,
@@ -37,7 +37,7 @@ class Grid extends Foundation<
         horizontalAlign: GridAlignment.stretch
     };
 
-    protected handledProps: HandledProps<GridProps> = {
+    protected handledProps: HandledProps<GridHandledProps> = {
         columnCount: void 0,
         gridColumn: void 0,
         gutter: void 0,
@@ -159,4 +159,4 @@ class Grid extends Foundation<
     }
 }
 
-export default manageJss(styles)(Grid);
+export * from "./grid.props";
