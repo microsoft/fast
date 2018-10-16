@@ -1,10 +1,10 @@
 import * as React from "react";
 import { throttle } from "lodash-es";
-import { PaneHandledProps, PaneProps, PaneResizeDirection } from "./pane.props";
+import { PaneHandledProps, PaneProps, PaneResizeDirection, PaneUnhandledProps } from "./pane.props";
 import { west } from "../row";
 import rafThrottle from "raf-throttle";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import Foundation, { FoundationProps, HandledProps } from "@microsoft/fast-components-foundation-react";
 import { canUseDOM } from "exenv-es6";
 import { joinClasses } from "../utilities";
@@ -38,7 +38,7 @@ export interface PaneClassNamesContract {
     pane__hidden?: string;
 }
 
-const paneStyleSheet: ComponentStyles<PaneClassNamesContract, undefined> = {
+export const paneStyleSheet: ComponentStyles<PaneClassNamesContract, undefined> = {
     pane: {
         position: "relative",
         flex: "0 1 auto",
@@ -83,15 +83,15 @@ const paneStyleSheet: ComponentStyles<PaneClassNamesContract, undefined> = {
     }
 };
 
-class Pane extends Foundation<
-    PaneProps,
-    React.HTMLAttributes<HTMLDivElement>,
+export class Pane extends Foundation<
+    PaneHandledProps,
+    PaneUnhandledProps,
     PaneState
 > {
     /**
      * The default props of the Pane component
      */
-    public static defaultProps: PaneHandledProps = {
+    public static defaultProps: Partial<PaneProps> = {
         minWidth: 100,
         maxWidth: 800,
         resizable: false,
@@ -108,7 +108,7 @@ class Pane extends Foundation<
     /**
      * All handled props
      */
-    protected handledProps: HandledProps<PaneProps> = {
+    protected handledProps: HandledProps<PaneHandledProps> = {
         minWidth: void 0,
         maxWidth: void 0,
         width: void 0,
@@ -328,4 +328,4 @@ class Pane extends Foundation<
     }
 }
 
-export default manageJss(paneStyleSheet)(Pane);
+export * from "./pane.props";
