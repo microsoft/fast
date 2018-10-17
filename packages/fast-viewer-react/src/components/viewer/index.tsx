@@ -3,7 +3,7 @@ import preset from "jss-preset-default";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as ReactDOMServer from "react-dom/server";
-import { addressBarControls, windowControls } from "./browserControls";
+import { addressBarControls, windowControls } from "./browser-controls";
 import { get } from "lodash-es";
 
 export interface ViewerHeightConfig {
