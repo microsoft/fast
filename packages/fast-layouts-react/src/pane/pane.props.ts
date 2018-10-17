@@ -10,7 +10,9 @@ export enum PaneResizeDirection {
     west = "west"
 }
 
-export interface PaneHandledProps {
+export interface PaneManagedClasses extends ManagedClasses<PaneClassNamesContract> {}
+export interface PaneUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface PaneHandledProps extends PaneManagedClasses {
     /**
      * The minimum width of the pane
      */
@@ -57,5 +59,4 @@ export interface PaneHandledProps {
     resizeFrom?: PaneResizeDirection;
 }
 
-export interface PaneManagedClasses extends ManagedClasses<PaneClassNamesContract> {}
-export type PaneProps = PaneHandledProps & PaneManagedClasses;
+export type PaneProps = PaneHandledProps & PaneUnhandledProps;

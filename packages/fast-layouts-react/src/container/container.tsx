@@ -1,13 +1,13 @@
 import * as React from "react";
-import manageJss, { ComponentStyles, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { ContainerProps } from "./container.props";
+import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
+import { ContainerHandledProps, ContainerProps, ContainerUnhandledProps } from "./container.props";
 import Foundation, { FoundationProps, HandledProps } from "@microsoft/fast-components-foundation-react";
 
 export interface ContainerClassNamesContract {
     container?: string;
 }
 
-const styles: ComponentStyles<ContainerClassNamesContract, undefined> = {
+export const containerStyleSheet: ComponentStyles<ContainerClassNamesContract, undefined> = {
     "@global": {
         "html, body": {
             padding: 0,
@@ -25,12 +25,12 @@ const styles: ComponentStyles<ContainerClassNamesContract, undefined> = {
 /**
  * The Grid Container. This element wraps all other grid elements.
  */
-class Container extends Foundation<
-    ContainerProps,
-    React.HTMLAttributes<HTMLDivElement>,
+export class Container extends Foundation<
+    ContainerHandledProps,
+    ContainerUnhandledProps,
     undefined
 > {
-    protected handledProps: HandledProps<ContainerProps> = {
+    protected handledProps: HandledProps<ContainerHandledProps> = {
         managedClasses: void 0
     };
 
@@ -49,4 +49,4 @@ class Container extends Foundation<
     }
 }
 
-export default manageJss(styles)(Container);
+export * from "./container.props";

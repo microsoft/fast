@@ -1,5 +1,5 @@
 import * as React from "react";
-import { CanvasHandledProps, CanvasProps } from "./canvas.props";
+import { CanvasHandledProps, CanvasProps, CanvasUnhandledProps } from "./canvas.props";
 import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import Foundation, { FoundationProps, HandledProps } from "@microsoft/fast-components-foundation-react";
 
@@ -7,7 +7,7 @@ export interface CanvasClassNamesContract {
     canvas: string;
 }
 
-const styles: ComponentStyles<CanvasClassNamesContract, undefined> = {
+export const canvasStyleSheet: ComponentStyles<CanvasClassNamesContract, undefined> = {
     canvas: {
         flex: "1",
         overflow: "hidden",
@@ -17,10 +17,10 @@ const styles: ComponentStyles<CanvasClassNamesContract, undefined> = {
 /**
  * Grid Canvas - this is the main content area of the grid.
  */
-class Canvas extends Foundation<
-    CanvasProps,
-    React.HTMLAttributes<HTMLDivElement>,
-    undefined
+export class Canvas extends Foundation<
+    CanvasHandledProps,
+    CanvasUnhandledProps,
+    {}
 > {
     /**
      * Default props for the Canvas component
@@ -63,4 +63,4 @@ class Canvas extends Foundation<
     }
 }
 
-export default manageJss(styles)(Canvas);
+export * from "./canvas.props";
