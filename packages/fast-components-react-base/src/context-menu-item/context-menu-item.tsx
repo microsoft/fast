@@ -10,8 +10,14 @@ import {
 } from "./context-menu-item.props";
 import { MenuItemRole } from "../utilities/aria";
 
+export enum ContextMenuItemRole {
+    menuitem = "menuitem"
+}
+
 class ContextMenuItem extends Foundation<ContextMenuItemHandledProps, ContextMenuItemUnhandledProps, {}> {
-    public readonly role: string = MenuItemRole.menuitem;
+    public deafultProps: Partial<ContextMenuItemProps> = {
+        role: ContextMenuItemRole.menuitem
+    };
 
     protected handledProps: HandledProps<ContextMenuItemHandledProps> = {
         managedClasses: void 0,
@@ -28,7 +34,7 @@ class ContextMenuItem extends Foundation<ContextMenuItemHandledProps, ContextMen
                 {...this.unhandledProps()}
                 id={this.props.id}
                 className={this.generateClassNames()}
-                role={this.role}
+                role={this.props.role}
             >
                 {this.props.children}
             </li>
