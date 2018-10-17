@@ -1,7 +1,10 @@
-import { SnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
+import * as React from "react";
+import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import ContextMenuItem, { ContextMenuItemHandledProps, ContextMenuItemManagedClasses } from "./context-menu-item";
 import { uniqueId } from "lodash-es";
+import schema from "./context-menu-item.schema.json";
+import Documentation from "./.tmp/documentation";
 
 const managedClasses: ContextMenuItemManagedClasses = {
     managedClasses: {
@@ -9,9 +12,16 @@ const managedClasses: ContextMenuItemManagedClasses = {
     }
 };
 
-const examples: SnapshotTestSuite<ContextMenuItemHandledProps> = {
+const examples: ComponentFactoryExample<ContextMenuItemHandledProps> = {
     name: "context-menu-item",
     component: ContextMenuItem,
+    schema: schema as any,
+    documentation: <Documentation />,
+    detailData: {
+        ...managedClasses,
+        children: "child",
+        id: uniqueId()
+    },
     data: [
         {
             ...managedClasses,

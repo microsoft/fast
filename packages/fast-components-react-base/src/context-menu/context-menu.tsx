@@ -1,14 +1,14 @@
+import * as ReactDOM from "react-dom";
 import { ContextMenuItemProps } from "../context-menu-item";
-import * as React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { ContextMenuClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
-    ContextMenuProps,
     ContextMenuHandledProps,
     ContextMenuManagedClasses,
+    ContextMenuProps,
     ContextMenuUnhandledProps,
 } from "./context-menu.props";
-import * as ReactDOM from "react-dom";
+import * as React from "react";
 import { ContextMenuItemRadioProps } from "../context-menu-item-radio";
 import { ContextMenuItemCheckboxProps } from "../context-menu-item-checkbox";
 import KeyCodes from "../utilities/keycodes";

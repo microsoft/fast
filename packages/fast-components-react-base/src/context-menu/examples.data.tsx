@@ -1,6 +1,7 @@
 import * as React from "react";
-import { SnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
+import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import schema from "./context-menu.schema.json";
 import ContextMenu, { ContextMenuHandledProps, ContextMenuManagedClasses } from "./context-menu";
 import ContextMenuItem, { ContextMenuItemProps } from "../context-menu-item";
 import ContextMenuItemRadio, {
@@ -10,6 +11,7 @@ import ContextMenuItemRadio, {
 } from "../context-menu-item-radio";
 import ContextMenuItemCheckbox, { ContextMenuItemCheckboxProps } from "../context-menu-item-checkbox";
 import { noop, uniqueId } from "lodash-es";
+import Documentation from "./.tmp/documentation";
 
 function contextMenuItemPropFactory(): ContextMenuItemProps {
     return {
@@ -50,26 +52,36 @@ const managedClasses: ContextMenuManagedClasses = {
     }
 };
 
-const examples: SnapshotTestSuite<ContextMenuHandledProps> = {
+const examples: ComponentFactoryExample<ContextMenuHandledProps> = {
     name: "context-menu",
     component: ContextMenu,
+    schema: schema as any,
+    documentation: <Documentation />,
+    detailData: {
+        ...managedClasses,
+        open: true,
+        children: [
+            {
+                id: "context-menu-item",
+                props: {
+                    ...contextMenuItemPropFactory(),
+                    children: "context menu item 1"
+                }
+            }
+        ]
+    },
     data: [
         {
             ...managedClasses,
             open: true,
             children: [
-                React.createElement(ContextMenuItem, contextMenuItemPropFactory(), "context menu item 1"),
-                React.createElement(ContextMenuItem, contextMenuItemPropFactory(), "context menu item 2"),
-                React.createElement(ContextMenuItem, contextMenuItemPropFactory(), "context menu item 3")
-            ]
-        },
-        {
-            ...managedClasses,
-            open: true,
-            children: [
-                React.createElement(ContextMenuItemRadio, contextMenuItemRadioPropFactory(), "context menu item radio 1"),
-                React.createElement(ContextMenuItemRadio, contextMenuItemRadioPropFactory(), "context menu item radio 2"),
-                React.createElement(ContextMenuItemRadio, contextMenuItemRadioPropFactory(), "context menu item radio 3")
+                {
+                    id: "context-menu-item",
+                    props: {
+                        ...contextMenuItemPropFactory(),
+                        children: "context menu item 1"
+                    }
+                }
             ]
         }
     ]
