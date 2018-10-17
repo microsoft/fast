@@ -4,7 +4,13 @@ __test__/
 *.test.*
 
 # Source files
+app/
+build/
+coverage/
 src/
 
-# babel config
+# config
 .babelrc
+tslint.json
+tsconfig.json
+webpack.config.js

@@ -1,11 +1,8 @@
-# Tests
-__test__/
-*.spec.*
-*.test.*
-
 # Source files
 src/
 
 # config
 .babelrc
+tslint.json
+tsconfig.json
 webpack.config.js
