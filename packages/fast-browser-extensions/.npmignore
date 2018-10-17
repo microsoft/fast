@@ -4,3 +4,4 @@ src/
 # Configs
 tsconfig.json
 tslint.json
+webpack.config.js

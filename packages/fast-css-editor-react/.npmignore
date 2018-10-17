@@ -12,3 +12,4 @@ coverage/
 .babelrc
 tsconfig.json
 tslint.json
+webpack.config.js

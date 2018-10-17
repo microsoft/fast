@@ -6,5 +6,6 @@ __test__/
 # Source files
 src/
 
-# babel config
+# config
 .babelrc
+webpack.config.js

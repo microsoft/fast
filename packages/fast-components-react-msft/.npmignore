@@ -13,3 +13,4 @@ src/
 .babelrc
 tslint.json
 tsconfig.json
+webpack.config.js
