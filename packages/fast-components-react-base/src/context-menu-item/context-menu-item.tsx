@@ -22,7 +22,6 @@ class ContextMenuItem extends Foundation<ContextMenuItemHandledProps, ContextMen
     protected handledProps: HandledProps<ContextMenuItemHandledProps> = {
         managedClasses: void 0,
         children: void 0,
-        id: void 0
     };
 
     /**
@@ -32,7 +31,6 @@ class ContextMenuItem extends Foundation<ContextMenuItemHandledProps, ContextMen
         return (
             <li
                 {...this.unhandledProps()}
-                id={this.props.id}
                 className={this.generateClassNames()}
                 role={this.props.role}
             >

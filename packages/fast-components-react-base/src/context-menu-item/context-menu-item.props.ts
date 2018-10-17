@@ -7,11 +7,6 @@ export interface ContextMenuItemManagedClasses extends ManagedClasses<ContextMen
 export interface ContextMenuItemUnhandledProps extends Omit<React.LiHTMLAttributes<HTMLLIElement>, "role"> {}
 export interface ContextMenuItemHandledProps extends ContextMenuItemManagedClasses {
     /**
-     * The id attribute of the context-menu-item
-     */
-    id: string;
-
-    /**
      * The children of the context-menu-item
      */
     children?: React.ReactNode;
