@@ -43,6 +43,7 @@ class ContextMenu extends Foundation<ContextMenuHandledProps, ContextMenuUnhandl
         return (
             <ul
                 {...this.unhandledProps()}
+                ref={this.rootElement}
                 role="menu"
                 className={this.generateClassNames()}
                 onKeyDown={this.handleMenuKeyDown}

@@ -2,7 +2,7 @@ import * as React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import schema from "./context-menu.schema.json";
-import ContextMenu, { ContextMenuHandledProps, ContextMenuManagedClasses } from "./context-menu";
+import ContextMenu, { ContextMenuProps, ContextMenuManagedClasses } from "./context-menu";
 import ContextMenuItem, { ContextMenuItemProps } from "../context-menu-item";
 import { noop, uniqueId } from "lodash-es";
 import Documentation from "./.tmp/documentation";
@@ -23,7 +23,7 @@ const managedClasses: ContextMenuManagedClasses = {
     }
 };
 
-const examples: ComponentFactoryExample<ContextMenuHandledProps> = {
+const examples: ComponentFactoryExample<ContextMenuProps> = {
     name: "context-menu",
     component: ContextMenu,
     schema: schema as any,

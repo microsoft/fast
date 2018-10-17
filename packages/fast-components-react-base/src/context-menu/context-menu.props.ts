@@ -8,7 +8,7 @@ export interface ContextMenuHandledProps extends ContextMenuManagedClasses {
     /**
      * The context-menu-item children
      */
-    children?: React.ReactElement<ContextMenuItemProps>;
+    children?: React.ReactNode;
 }
 
 export type ContextMenuProps = ContextMenuHandledProps & ContextMenuUnhandledProps;
