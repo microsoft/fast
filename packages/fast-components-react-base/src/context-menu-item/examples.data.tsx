@@ -19,14 +19,12 @@ const examples: ComponentFactoryExample<ContextMenuItemHandledProps> = {
     documentation: <Documentation />,
     detailData: {
         ...managedClasses,
-        children: "child",
-        id: uniqueId()
+        children: "child"
     },
     data: [
         {
             ...managedClasses,
-            children: "child",
-            id: uniqueId()
+            children: "child"
         }
     ]
 };
