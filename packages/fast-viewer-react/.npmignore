@@ -8,3 +8,6 @@ __test__/
 
 # babel config
 .babelrc
+tslint.json
+tsconfig.json
+webpack.config.js
