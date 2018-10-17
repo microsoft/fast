@@ -1,3 +1,4 @@
+import * as React from "react";
 import { RowClassNamesContract } from "./row";
 import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 
@@ -14,7 +15,9 @@ export enum RowResizeDirection {
     south = "south"
 }
 
-export interface RowHandledProps {
+export interface RowManagedClasses extends ManagedClasses<RowClassNamesContract> {}
+export interface RowUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface RowHandledProps extends RowManagedClasses {
     /**
      * Causes the row to fill all available vertical space
      */
@@ -67,5 +70,4 @@ export interface RowHandledProps {
 
 }
 
-export interface RowManagedClasses extends ManagedClasses<RowClassNamesContract> {}
-export type RowProps = RowHandledProps & RowManagedClasses;
+export type RowProps = RowHandledProps & RowUnhandledProps;

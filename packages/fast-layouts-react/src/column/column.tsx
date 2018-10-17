@@ -4,13 +4,13 @@ import BreakpointTracker from "../utilities/breakpoint-tracker";
 import { Breakpoint, getValueByBreakpoint, identifyBreakpoint } from "../utilities/breakpoints";
 import { canUseDOM, canUseViewport } from "exenv-es6";
 import Foundation, { FoundationProps, HandledProps } from "@microsoft/fast-components-foundation-react";
-import { ColumnHandledProps, ColumnProps } from "./column.props";
+import { ColumnHandledProps, ColumnProps, ColumnUnhandledProps } from "./column.props";
 
 export interface ColumnClassNamesContract {
     column: string;
 }
 
-const styles: ComponentStyles<ColumnClassNamesContract, undefined> = {
+export const columnStyleSheet: ComponentStyles<ColumnClassNamesContract, undefined> = {
     column: {
         // Fixes issue found in firefox where columns that have overflow
         // or full width content cause scroll bars
@@ -18,19 +18,19 @@ const styles: ComponentStyles<ColumnClassNamesContract, undefined> = {
     }
 };
 
-class Column extends Foundation<
-    ColumnProps,
-    React.HTMLAttributes<HTMLDivElement>,
+export class Column extends Foundation<
+    ColumnHandledProps,
+    ColumnUnhandledProps,
     {}
 > {
     /**
      * Define default props
      */
-    public static defaultProps: Partial<ColumnHandledProps> = {
+    public static defaultProps: Partial<ColumnProps> = {
         span: 12
     };
 
-    protected handledProps: HandledProps<ColumnProps> = {
+    protected handledProps: HandledProps<ColumnHandledProps> = {
         managedClasses: void 0,
         span: void 0,
         position: void 0,
@@ -193,4 +193,4 @@ class Column extends Foundation<
     }
 }
 
-export default manageJss(styles)(Column);
+export * from "./column.props";

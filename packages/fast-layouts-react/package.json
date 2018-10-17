@@ -98,6 +98,7 @@
   },
   "dependencies": {
     "@microsoft/fast-jss-manager-react": "^3.0.1",
-    "@microsoft/fast-jss-utilities": "^3.0.1"
+    "@microsoft/fast-jss-utilities": "^3.0.1",
+    "utility-types": "^2.1.0"
   }
 }

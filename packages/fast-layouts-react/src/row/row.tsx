@@ -1,8 +1,8 @@
 import * as React from "react";
 import { throttle } from "lodash-es";
-import Canvas from "../canvas";
+import { Canvas } from "../canvas";
 import rafThrottle from "raf-throttle";
-import { RowHandledProps, RowProps, RowResizeDirection } from "./row.props";
+import { RowHandledProps, RowProps, RowResizeDirection, RowUnhandledProps } from "./row.props";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import Foundation, { FoundationProps, HandledProps } from "@microsoft/fast-components-foundation-react";
@@ -44,7 +44,7 @@ export interface RowClassNamesContract {
     row__hidden?: string;
 }
 
-const rowStyleSheet: ComponentStyles<RowClassNamesContract, undefined> = {
+export const rowStyleSheet: ComponentStyles<RowClassNamesContract, undefined> = {
     row: {
         position: "relative",
         display: "flex",
@@ -96,12 +96,12 @@ const rowStyleSheet: ComponentStyles<RowClassNamesContract, undefined> = {
 /**
  * Grid Row - use this to create rows of pane/canvas content or other content.
  */
-class Row extends Foundation<
+export class Row extends Foundation<
     RowProps,
     React.HTMLAttributes<HTMLDivElement>,
     RowState
 > {
-    public static defaultProps: RowHandledProps = {
+    public static defaultProps: Partial<RowProps> = {
         fill: false,
         minHeight: 40,
         maxHeight: 800,
@@ -116,7 +116,7 @@ class Row extends Foundation<
      */
     private static collapsedHeight: number = 40;
 
-    protected handledProps: HandledProps<RowProps> = {
+    protected handledProps: HandledProps<RowHandledProps> = {
         fill: void 0,
         minHeight: void 0,
         maxHeight: void 0,
@@ -318,4 +318,4 @@ class Row extends Foundation<
 
 }
 
-export default manageJss(rowStyleSheet)(Row);
+export * from "./row.props";

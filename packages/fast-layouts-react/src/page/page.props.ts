@@ -2,7 +2,9 @@ import * as React from "react";
 import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { PageClassNamesContract } from "./page";
 
-export interface PageHandledProps {
+export interface PageManagedClasses extends ManagedClasses<PageClassNamesContract> {}
+export interface PageUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface PageHandledProps extends PageManagedClasses {
     /**
      * The left and right page margin values
      */
@@ -14,4 +16,4 @@ export interface PageHandledProps {
     maxWidth?: string;
 }
 
-export type PageProps = PageHandledProps & ManagedClasses<PageClassNamesContract>;
+export type PageProps = PageHandledProps & PageUnhandledProps;
