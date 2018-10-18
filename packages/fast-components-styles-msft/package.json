@@ -22,7 +22,7 @@
     "build": "tsc -p ./tsconfig.json",
     "build:watch": "npm run build -- -w",
     "prepare": "npm run clean:dist && npm run build",
-    "prettier": "prettier --config ../../.prettierrc --write '**/*.{ts}'",
+    "prettier": "prettier --config ../../.prettierrc --write '**/*.ts'",
     "watch": "npm run build -- -w --preserveWatchOutput"
   },
   "devDependencies": {

@@ -15,7 +15,7 @@
   "main": "index.js",
   "scripts": {
     "prepare": "babel src --presets babel-preset-es2015 --out-dir dist",
-    "prettier": "prettier --config ../../.prettierrc --write '**/*.{js}'",
+    "prettier": "prettier --config ../../.prettierrc --write '**/*.js'",
     "test": "npm run eslint && npm run unit-tests",
     "eslint": "eslint src/**",
     "unit-tests": "jest --maxWorkers=4"

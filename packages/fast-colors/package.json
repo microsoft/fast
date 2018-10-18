@@ -18,7 +18,7 @@
     "build": "tsc -p ./tsconfig.json",
     "clean:dist": "node ../../build/clean.js dist",
     "prepare": "npm run clean:dist && npm run build",
-    "prettier": "prettier --config ../../.prettierrc --write '**/*.{ts}'",
+    "prettier": "prettier --config ../../.prettierrc --write '**/*.ts'",
     "test": "npm run tslint && npm run unit-tests",
     "tslint": "tslint -c ./tslint.json '**/*.ts'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts'",

@@ -18,7 +18,7 @@
     "build:interface": "tsc -p ./tsconfig.json",
     "dev:chrome": "cross-env TARGET_BROWSER=chrome NODE_ENV=development ts-node ./node_modules/webpack/bin/webpack.js --progress",
     "prepack": "rm -rf ./dist && npm run build:interface",
-    "prettier": "prettier --config ../../.prettierrc --write '**/*.{ts}'",
+    "prettier": "prettier --config ../../.prettierrc --write '**/*.ts'",
     "test": "npm run tslint && npm run build:interface && npm run build:chrome",
     "tslint": "tslint -c tslint.json '**/*.ts'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts'"
