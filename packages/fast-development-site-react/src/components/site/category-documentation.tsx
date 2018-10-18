@@ -1,5 +1,10 @@
 import * as React from "react";
-import manageJss, { ComponentStyles, DesignSystemProvider, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, {
+    ComponentStyles,
+    DesignSystemProvider,
+    ManagedClasses,
+    ManagedJSSProps,
+} from "@microsoft/fast-jss-manager-react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { DevSiteDesignSystem } from "../design-system";
 
@@ -13,13 +18,15 @@ export interface CategoryDocumentationManagedClasses {
 
 const style: ComponentStyles<CategoryDocumentationManagedClasses, DevSiteDesignSystem> = {
     documentationPanel: {
-        maxWidth: toPx(1000)
-    }
+        maxWidth: toPx(1000),
+    },
 };
 
 /* tslint:disable-next-line */
-class CategoryDocumentation extends React.Component<CategoryDocumentationProps & ManagedClasses<CategoryDocumentationManagedClasses>, {}> {
-
+class CategoryDocumentation extends React.Component<
+    CategoryDocumentationProps & ManagedClasses<CategoryDocumentationManagedClasses>,
+    {}
+> {
     public render(): JSX.Element {
         return (
             <div className={this.props.managedClasses.documentationPanel}>

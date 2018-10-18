@@ -9,17 +9,19 @@ import { DesignSystemDirective } from "./design-system.directive";
  */
 @Component({
     selector: "example-with-directive",
-    template: `<design-system config="{color: 'red'}"><span [class]="className || ''">{{ text }}</span></design-system>`
+    template: `<design-system config="{color: 'red'}"><span [class]="className || ''">{{ text }}</span></design-system>`,
 })
 
 /**
  * Class definition
  */
 class SimpleDirectiveComponent {
-    @Input() private className: string;
-    @Input() private text: string;
+    @Input()
+    private className: string;
+    @Input()
+    private text: string;
 
-    constructor(private el: ElementRef) { }
+    constructor(private el: ElementRef) {}
 }
 
 const styles: any = {
@@ -30,8 +32,8 @@ const styles: any = {
         fontWeight: (config: any): string => {
             return config.weight;
         },
-        background: "yellow"
-    }
+        background: "yellow",
+    },
 };
 
 const JSSComponent: any = manageJss(styles)(SimpleDirectiveComponent);
@@ -49,10 +51,7 @@ describe("The return value of manage JSS", (): void => {
 describe("The directive", (): void => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [
-                DesignSystemDirective,
-                JSSComponent
-            ],
+            declarations: [DesignSystemDirective, JSSComponent],
         }).compileComponents();
     }));
 

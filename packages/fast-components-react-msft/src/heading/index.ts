@@ -8,7 +8,7 @@ import MSFTHeading, {
     HeadingProps as MSFTHeadingProps,
     HeadingSize,
     HeadingTag,
-    HeadingUnhandledProps
+    HeadingUnhandledProps,
 } from "./heading";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, HeadingStyles } from "@microsoft/fast-components-styles-msft";
@@ -22,8 +22,13 @@ import { Subtract } from "utility-types";
 const Heading = manageJss(HeadingStyles)(MSFTHeading);
 type Heading = typeof Heading;
 
-interface HeadingHandledProps extends Subtract<MSFTHeadingHandledProps, HeadingManagedClasses> {}
-type HeadingProps = ManagedJSSProps<MSFTHeadingProps, HeadingClassNameContract, DesignSystem>;
+interface HeadingHandledProps
+    extends Subtract<MSFTHeadingHandledProps, HeadingManagedClasses> {}
+type HeadingProps = ManagedJSSProps<
+    MSFTHeadingProps,
+    HeadingClassNameContract,
+    DesignSystem
+>;
 
 export {
     HeadingAlignBaseline,
@@ -33,5 +38,5 @@ export {
     HeadingTag,
     HeadingClassNameContract,
     HeadingHandledProps,
-    HeadingUnhandledProps
+    HeadingUnhandledProps,
 };

@@ -14,14 +14,14 @@ export default {
         children: "Progress",
         value: 50,
         minValue: 0,
-        maxValue: 100
+        maxValue: 100,
     },
     data: [
         {
             minValue: 0,
             maxValue: 100,
-            value: 50
+            value: 50,
         },
-        {}
-    ]
+        {},
+    ],
 } as ComponentFactoryExample<ProgressProps>;

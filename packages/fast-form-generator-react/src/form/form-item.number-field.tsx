@@ -27,8 +27,10 @@ export interface FormItemNumberFieldProps extends FormItemCommon {
  * Schema form component definition
  * @extends React.Component
  */
-class FormItemNumberField extends React.Component<FormItemNumberFieldProps & ManagedClasses<FormItemNumberFieldClassNameContract>, {}> {
-
+class FormItemNumberField extends React.Component<
+    FormItemNumberFieldProps & ManagedClasses<FormItemNumberFieldClassNameContract>,
+    {}
+> {
     public render(): JSX.Element {
         const value: string = getStringValue(this.props.data, this.props.default);
 
@@ -73,7 +75,7 @@ class FormItemNumberField extends React.Component<FormItemNumberFieldProps & Man
     private handleChange = ({ target: { value } }: any): void => {
         const normalizedValue: number = this.getNumberValue(value);
         return this.props.onChange(this.props.dataLocation, normalizedValue);
-    }
+    };
 }
 
 export default manageJss(styles)(FormItemNumberField);

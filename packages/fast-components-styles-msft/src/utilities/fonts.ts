@@ -11,5 +11,5 @@ export const fontWeight: FontWeight = {
     semilight: 200,
     normal: 400,
     semibold: 600,
-    bold: 700
+    bold: 700,
 };

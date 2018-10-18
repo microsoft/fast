@@ -9,7 +9,7 @@ const name: string = "css-position";
 const exampleData: CSSPositionProps = {
     position: PositionValue.static,
     /* tslint:disable-next-line */
-    onChange: (data: any): void => {}
+    onChange: (data: any): void => {},
 };
 
 const detailData: CSSPositionProps = {
@@ -17,7 +17,7 @@ const detailData: CSSPositionProps = {
     top: "5px",
     left: "12px",
     /* tslint:disable-next-line */
-    onChange: (data: any): void => {}
+    onChange: (data: any): void => {},
 };
 
 const examples: SnapshotTestSuite<CSSPositionProps> = {
@@ -25,9 +25,7 @@ const examples: SnapshotTestSuite<CSSPositionProps> = {
     component: CSSPosition,
     schema: CSSPositionSchema,
     detailData,
-    data: [
-        exampleData
-    ]
+    data: [exampleData],
 };
 
 describe(name, () => {

@@ -1,6 +1,10 @@
 import * as React from "react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import Divider, { DividerHandledProps, DividerManagedClasses, DividerUnhandledProps } from "./divider";
+import Divider, {
+    DividerHandledProps,
+    DividerManagedClasses,
+    DividerUnhandledProps,
+} from "./divider";
 import schema from "./divider.schema.json";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
@@ -12,16 +16,16 @@ const examples: ComponentFactoryExample<DividerHandledProps> = {
     documentation: <Documentation />,
     detailData: {
         managedClasses: {
-            divider: "divider"
-        }
+            divider: "divider",
+        },
     },
     data: [
         {
             managedClasses: {
-                divider: "divider"
-            }
-        }
-    ]
+                divider: "divider",
+            },
+        },
+    ],
 };
 
 export default examples;

@@ -21,8 +21,13 @@ import { Subtract } from "utility-types";
 const Checkbox = manageJss(CheckboxStyles)(BaseCheckbox);
 type Checkbox = typeof Checkbox;
 
-interface CheckboxHandledProps extends Subtract<MSFTCheckboxHandledProps, CheckboxManagedClasses> {}
-type CheckboxProps = ManagedJSSProps<MSFTCheckboxProps, CheckboxClassNameContract, DesignSystem>;
+interface CheckboxHandledProps
+    extends Subtract<MSFTCheckboxHandledProps, CheckboxManagedClasses> {}
+type CheckboxProps = ManagedJSSProps<
+    MSFTCheckboxProps,
+    CheckboxClassNameContract,
+    DesignSystem
+>;
 
 export {
     Checkbox,
@@ -30,5 +35,5 @@ export {
     CheckboxHandledProps,
     CheckboxUnhandledProps,
     CheckboxClassNameContract,
-    CheckboxSlot
+    CheckboxSlot,
 };

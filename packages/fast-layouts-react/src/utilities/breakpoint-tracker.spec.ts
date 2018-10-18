@@ -10,7 +10,7 @@ describe("breakpointTracker", (): void => {
         subscriber = {
             onBreakpointChanged: (notification: BreakpointTrackerCallback): void => {
                 return;
-            }
+            },
         };
 
         callback = jest.fn();

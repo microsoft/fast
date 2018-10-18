@@ -7,15 +7,15 @@
  * @param {boolean} example - Return a single example.
  * @return {array | object} - A function that returns an array of strings.
  */
-module.exports = function (schema, propertyName, required, arrayConfig, example) {
+module.exports = function(schema, propertyName, required, arrayConfig, example) {
     let stringArray = [];
-    let exampleText = 'example text';
+    let exampleText = "example text";
 
     if (schema.enum) {
         if (example) {
             let stringObj = {};
             stringObj[propertyName] = schema.enum[0];
-            
+
             return stringObj;
         }
 
@@ -25,7 +25,9 @@ module.exports = function (schema, propertyName, required, arrayConfig, example)
                 stringObjArray[propertyName] = [];
 
                 for (let i = 0; i < arrayConfig.itemNumber; i++) {
-                    stringObjArray[propertyName].push((schema.default) ? schema.default : enumItem);
+                    stringObjArray[propertyName].push(
+                        schema.default ? schema.default : enumItem
+                    );
                 }
 
                 stringArray.push(stringObjArray);
@@ -41,7 +43,9 @@ module.exports = function (schema, propertyName, required, arrayConfig, example)
             stringObjArray[propertyName] = [];
 
             for (let i = 0; i < arrayConfig.itemNumber; i++) {
-                stringObjArray[propertyName].push(schema.default || schema.example || exampleText);
+                stringObjArray[propertyName].push(
+                    schema.default || schema.example || exampleText
+                );
             }
 
             if (example) {

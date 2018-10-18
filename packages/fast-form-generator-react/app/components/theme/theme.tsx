@@ -2,7 +2,7 @@ import * as React from "react";
 
 export enum Themes {
     light = "light",
-    dark = "dark"
+    dark = "dark",
 }
 
 export interface ThemeProps {
@@ -15,10 +15,6 @@ export interface ThemeProps {
  */
 export default class Theme extends React.Component<ThemeProps, {}> {
     public render(): JSX.Element {
-        return (
-            <span>
-                {this.props.theme}
-            </span>
-        );
+        return <span>{this.props.theme}</span>;
     }
 }

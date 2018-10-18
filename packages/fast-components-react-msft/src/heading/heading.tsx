@@ -7,22 +7,21 @@ import {
     HeadingAlignBaseline,
     HeadingHandledProps,
     HeadingManagedClasses,
-    HeadingUnhandledProps
+    HeadingUnhandledProps,
 } from "./heading.props";
 import { Typography } from "../typography";
-import { HeadingClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
+import {
+    HeadingClassNameContract,
+    ManagedClasses,
+} from "@microsoft/fast-components-class-name-contracts-msft";
 
-class Heading extends Foundation<
-    HeadingHandledProps,
-    HeadingUnhandledProps,
-    {}
-> {
+class Heading extends Foundation<HeadingHandledProps, HeadingUnhandledProps, {}> {
     public static displayName: string = "Heading";
 
     protected handledProps: HandledProps<HeadingHandledProps> = {
         size: void 0,
         managedClasses: void 0,
-        tag: void 0
+        tag: void 0,
     };
 
     /**
@@ -59,10 +58,13 @@ class Heading extends Foundation<
      * Generates class names based on props
      */
     protected generateClassNames(): string {
-        const classes: string = this.props.size ?
-            get(this.props, `managedClasses.heading__${this.props.size}`) : get(this.props, "managedClasses.heading__1");
+        const classes: string = this.props.size
+            ? get(this.props, `managedClasses.heading__${this.props.size}`)
+            : get(this.props, "managedClasses.heading__1");
 
-        return super.generateClassNames(`${get(this.props, "managedClasses.heading")} ${classes}`);
+        return super.generateClassNames(
+            `${get(this.props, "managedClasses.heading")} ${classes}`
+        );
     }
 }
 

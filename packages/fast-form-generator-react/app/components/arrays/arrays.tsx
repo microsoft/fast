@@ -14,7 +14,6 @@ export interface ArrayProps {
  * - a required string array
  */
 export default class Array extends React.Component<ArrayProps, {}> {
-
     public render(): JSX.Element {
         return (
             <span>
@@ -26,18 +25,14 @@ export default class Array extends React.Component<ArrayProps, {}> {
 
     private renderStrings(): JSX.Element[] {
         return this.props.strings.map((stringItem: string, index: number) => {
-            return (
-                <span key={index}>{stringItem}</span>
-            );
+            return <span key={index}>{stringItem}</span>;
         });
     }
 
     private renderObjects(): JSX.Element[] {
         if (this.props.objects) {
             return this.props.objects.map((objectItem: ArrayObject, index: number) => {
-                return (
-                    <span key={index}>{objectItem.string}</span>
-                );
+                return <span key={index}>{objectItem.string}</span>;
             });
         }
     }

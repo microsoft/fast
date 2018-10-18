@@ -1,22 +1,40 @@
 import { DesignSystem, withDesignSystemDefaults } from "../design-system";
-import { ComponentStyles, ComponentStyleSheet, CSSRules } from "@microsoft/fast-jss-manager";
+import {
+    ComponentStyles,
+    ComponentStyleSheet,
+    CSSRules,
+} from "@microsoft/fast-jss-manager";
 import { RadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyLocalizedProperty, Direction } from "@microsoft/fast-jss-utilities";
 import {
     disabledContrast,
     ensureNormalContrast,
     hoverContrast,
-    normalContrast
+    normalContrast,
 } from "../utilities/colors";
 
 /* tslint:disable:max-line-length */
-const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (config: DesignSystem): ComponentStyleSheet<RadioClassNameContract, DesignSystem>  => {
+const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
+    config: DesignSystem
+): ComponentStyleSheet<RadioClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const backgroundColor: string = designSystem.backgroundColor;
-    const foregroundColor: string = ensureNormalContrast(config.contrast, designSystem.foregroundColor, designSystem.backgroundColor);
+    const foregroundColor: string = ensureNormalContrast(
+        config.contrast,
+        designSystem.foregroundColor,
+        designSystem.backgroundColor
+    );
     const direction: Direction = designSystem.direction;
-    const radioColor: string = normalContrast(designSystem.contrast, foregroundColor, backgroundColor);
-    const radioHover: string = hoverContrast(designSystem.contrast, foregroundColor, backgroundColor);
+    const radioColor: string = normalContrast(
+        designSystem.contrast,
+        foregroundColor,
+        backgroundColor
+    );
+    const radioHover: string = hoverContrast(
+        designSystem.contrast,
+        foregroundColor,
+        backgroundColor
+    );
     const radioDisabled: string = disabledContrast(
         designSystem.contrast,
         foregroundColor,
@@ -27,7 +45,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (config: D
         radio: {
             display: "inline-flex",
             flexDirection: "row",
-            alignItems: "center"
+            alignItems: "center",
         },
         radio_input: {
             position: "absolute",
@@ -52,11 +70,11 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (config: D
                     "&::before": {
                         position: "absolute",
                         zIndex: "1",
-                        content: "\"\"",
+                        content: '""',
                         borderRadius: "50%",
-                        background: radioColor
-                    }
-                }
+                        background: radioColor,
+                    },
+                },
             },
         },
         radio_stateIndicator: {
@@ -71,8 +89,8 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (config: D
                 top: "4px",
                 left: "4px",
                 height: "12px",
-                width: "12px"
-           }
+                width: "12px",
+            },
         },
         radio__disabled: {
             cursor: "not-allowed",
@@ -80,18 +98,18 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (config: D
                 boxShadow: `inset 0 0 0 1px ${radioDisabled}`,
                 "&:checked": {
                     "& + span::before": {
-                        background: radioDisabled
-                    }
-                }
+                        background: radioDisabled,
+                    },
+                },
             },
             "& $radio_label": {
                 cursor: "not-allowed",
-                color: radioDisabled
-            }
+                color: radioDisabled,
+            },
         },
         radio_label: {
-            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "5px"
-        }
+            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "5px",
+        },
     };
 };
 

@@ -6,7 +6,6 @@ import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 export interface FormItemTextareaProps extends FormItemCommon {
-
     /**
      * The unique index for the section
      */
@@ -22,8 +21,10 @@ export interface FormItemTextareaProps extends FormItemCommon {
  * Schema form component definition
  * @extends React.Component
  */
-class FormItemTextarea extends React.Component<FormItemTextareaProps & ManagedClasses<FormItemTextareaClassNameContract>, {}> {
-
+class FormItemTextarea extends React.Component<
+    FormItemTextareaProps & ManagedClasses<FormItemTextareaClassNameContract>,
+    {}
+> {
     public render(): JSX.Element {
         return (
             <div className={this.props.managedClasses.formItemTextarea}>
@@ -45,9 +46,9 @@ class FormItemTextarea extends React.Component<FormItemTextareaProps & ManagedCl
         );
     }
 
-    private handleChange = ({target: { value }}: any): any => {
+    private handleChange = ({ target: { value } }: any): any => {
         return this.props.onChange(this.props.dataLocation, value);
-    }
+    };
 }
 
 export default manageJss(styles)(FormItemTextarea);

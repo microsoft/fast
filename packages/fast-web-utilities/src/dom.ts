@@ -3,5 +3,5 @@
  * that still use the deprecated keyCode property.
  */
 export function getKeyCode(event: KeyboardEvent): number {
-    return (event === null) ? null : event.which || event.keyCode || event.charCode;
+    return event === null ? null : event.which || event.keyCode || event.charCode;
 }

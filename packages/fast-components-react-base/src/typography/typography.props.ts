@@ -1,5 +1,8 @@
 import * as React from "react";
-import { ManagedClasses, TypographyClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import {
+    ManagedClasses,
+    TypographyClassNameContract,
+} from "@microsoft/fast-components-class-name-contracts-base";
 
 export enum TypographyTag {
     caption = "caption",
@@ -11,7 +14,7 @@ export enum TypographyTag {
     h6 = "h6",
     p = "p",
     span = "span",
-    figcaption = "figcaption"
+    figcaption = "figcaption",
 }
 
 export enum TypographySize {
@@ -23,16 +26,18 @@ export enum TypographySize {
     _6 = 6,
     _7 = 7,
     _8 = 8,
-    _9 = 9
+    _9 = 9,
 }
 
-export interface TypographyUnhandledProps extends React.BaseHTMLAttributes<
-    HTMLHeadingElement
-    | HTMLParagraphElement
-    | HTMLSpanElement
-    | HTMLTableCaptionElement
-> {}
-export interface TypographyManagedClasses extends ManagedClasses<TypographyClassNameContract> {}
+export interface TypographyUnhandledProps
+    extends React.BaseHTMLAttributes<
+            | HTMLHeadingElement
+            | HTMLParagraphElement
+            | HTMLSpanElement
+            | HTMLTableCaptionElement
+        > {}
+export interface TypographyManagedClasses
+    extends ManagedClasses<TypographyClassNameContract> {}
 export interface TypographyHandledProps extends TypographyManagedClasses {
     /**
      * The typographic content

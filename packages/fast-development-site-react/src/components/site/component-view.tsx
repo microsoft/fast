@@ -3,14 +3,18 @@ import { Route, Switch, withRouter } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
 import { DevSiteDesignSystem } from "../design-system";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, {
+    ComponentStyles,
+    ManagedClasses,
+    ManagedJSSProps,
+} from "@microsoft/fast-jss-manager-react";
 
 /**
  * Describes the possible views for a component
  */
 export enum ComponentViewTypes {
     examples,
-    detail
+    detail,
 }
 
 export interface ComponentViewManagedClasses {
@@ -32,11 +36,14 @@ const style: ComponentStyles<ComponentViewManagedClasses, DevSiteDesignSystem> =
     },
     componentDetailView: {
         overflow: "auto",
-        flexGrow: "1"
-    }
+        flexGrow: "1",
+    },
 };
 
-class ComponentView extends React.Component<ComponentViewProps & ManagedClasses<ComponentViewManagedClasses>, {}> {
+class ComponentView extends React.Component<
+    ComponentViewProps & ManagedClasses<ComponentViewManagedClasses>,
+    {}
+> {
     public render(): React.ReactElement<HTMLDivElement> {
         return (
             <div className={this.getClassName()}>
@@ -48,7 +55,9 @@ class ComponentView extends React.Component<ComponentViewProps & ManagedClasses<
                         component={this.renderView}
                     />
                     <Route
-                        path={`${this.props.match.url}/${ComponentViewTypes[ComponentViewTypes.examples]}`}
+                        path={`${this.props.match.url}/${
+                            ComponentViewTypes[ComponentViewTypes.examples]
+                        }`}
                         exact={true}
                         component={this.renderView}
                     />
@@ -64,12 +73,8 @@ class ComponentView extends React.Component<ComponentViewProps & ManagedClasses<
     }
 
     private renderView = (): React.ReactElement<HTMLElement> => {
-        return (
-            <React.Fragment>
-                {this.props.children}
-            </React.Fragment>
-        );
-    }
+        return <React.Fragment>{this.props.children}</React.Fragment>;
+    };
 }
 
 export default manageJss(style)(withRouter(ComponentView));

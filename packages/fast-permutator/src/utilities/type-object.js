@@ -10,7 +10,7 @@ module.exports = function(schema, propertyName, required) {
     let objectArray = [];
     let objectObj = {};
 
-    objectObj[propertyName] = (schema.default) ? schema.default : {};
+    objectObj[propertyName] = schema.default ? schema.default : {};
     objectArray.push(objectObj);
 
     return objectArray;

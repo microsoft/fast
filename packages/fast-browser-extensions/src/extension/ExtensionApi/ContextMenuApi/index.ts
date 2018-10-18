@@ -18,7 +18,10 @@ export default class ContextMenuApi {
     /**
      * Create a context menu item
      */
-    public create(createProperties: chrome.contextMenus.CreateProperties, callback?: () => void): string {
+    public create(
+        createProperties: chrome.contextMenus.CreateProperties,
+        callback?: () => void
+    ): string {
         switch (getApiSupport()) {
             case APIName.chrome:
                 return chrome.contextMenus.create(createProperties, callback) as any;

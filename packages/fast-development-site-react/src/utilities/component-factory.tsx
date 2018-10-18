@@ -40,7 +40,10 @@ export interface ComponentFactoryExample<T> {
     documentation: JSX.Element;
 }
 
-export default function componentFactory<P, T>(examples: { [key: string]: ComponentFactoryExample<any> }, designSystem?: T): JSX.Element[] {
+export default function componentFactory<P, T>(
+    examples: { [key: string]: ComponentFactoryExample<any> },
+    designSystem?: T
+): JSX.Element[] {
     return Object.keys(examples).map((exampleKey: string, index: number) => {
         const example: ComponentFactoryExample<P> = examples[exampleKey];
         return (

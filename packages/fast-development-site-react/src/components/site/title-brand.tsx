@@ -1,5 +1,9 @@
 import * as React from "react";
-import manageJSS, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJSS, {
+    ComponentStyles,
+    ManagedClasses,
+    ManagedJSSProps,
+} from "@microsoft/fast-jss-manager-react";
 import { DevSiteDesignSystem } from "../design-system";
 
 export interface SiteTitleBrandedManagedClasses {
@@ -14,11 +18,14 @@ const titleBrandStyle: ComponentStyles<SiteTitleBrandedManagedClasses, {}> = {
         fontWeight: "bold",
         color: (config: DevSiteDesignSystem): string => {
             return config.brandColor;
-        }
-    }
+        },
+    },
 };
 
-class SiteTitleBranded extends React.Component<SiteTItleBrandedProps & ManagedClasses<SiteTitleBrandedManagedClasses>, {}> {
+class SiteTitleBranded extends React.Component<
+    SiteTItleBrandedProps & ManagedClasses<SiteTitleBrandedManagedClasses>,
+    {}
+> {
     public render(): JSX.Element {
         return (
             <span className={this.props.managedClasses.titleBranded}>

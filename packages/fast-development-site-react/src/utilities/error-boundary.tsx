@@ -1,7 +1,11 @@
 import * as React from "react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { DevSiteDesignSystem } from "../../src/components/design-system";
-import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, {
+    ComponentStyles,
+    ManagedClasses,
+    ManagedJSSProps,
+} from "@microsoft/fast-jss-manager-react";
 
 /* tslint:disable:no-empty-interface */
 export interface ErrorBoundaryProps {}
@@ -23,26 +27,29 @@ const styles: ComponentStyles<ErrorBoundaryManagedClasses, DevSiteDesignSystem> 
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        height: "100%"
+        height: "100%",
     },
     errorBoundary_error: {
         fontSize: toPx(15),
         marginTop: "0",
-        color: "red"
+        color: "red",
     },
     errorBoundary_notification: {
         fontSize: toPx(18),
-        fontWeight: "700"
-    }
+        fontWeight: "700",
+    },
 };
 
-class ErrorBoundary extends React.Component<ErrorBoundaryProps & ManagedClasses<ErrorBoundaryManagedClasses>, ErrorBoundaryState> {
+class ErrorBoundary extends React.Component<
+    ErrorBoundaryProps & ManagedClasses<ErrorBoundaryManagedClasses>,
+    ErrorBoundaryState
+> {
     constructor(props: ErrorBoundaryProps & ManagedClasses<ErrorBoundaryManagedClasses>) {
         super(props);
 
         this.state = {
             hasError: false,
-            error: void 0
+            error: void 0,
         };
     }
 
@@ -51,7 +58,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps & ManagedClasses<
 
         this.setState({
             hasError: true,
-            error: error || new Error(MISSING_ERROR)
+            error: error || new Error(MISSING_ERROR),
         });
     }
 
@@ -59,8 +66,12 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps & ManagedClasses<
         if (this.state.hasError && this.state.error) {
             return (
                 <div className={this.props.managedClasses.errorBoundary}>
-                    <p className={this.props.managedClasses.errorBoundary_notification}>Something went wrong.</p>
-                    <p className={this.props.managedClasses.errorBoundary_error}>{`${this.state.error}`}</p>
+                    <p className={this.props.managedClasses.errorBoundary_notification}>
+                        Something went wrong.
+                    </p>
+                    <p className={this.props.managedClasses.errorBoundary_error}>{`${
+                        this.state.error
+                    }`}</p>
                 </div>
             );
         }

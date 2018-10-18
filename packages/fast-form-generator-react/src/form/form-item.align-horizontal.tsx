@@ -11,7 +11,11 @@ import { Direction } from "@microsoft/fast-jss-utilities";
  * @extends React.Component
  */
 /* tslint:disable-next-line */
-class FormItemAlignHorizontal extends React.Component<FormItemComponentMappingToProperyNamesProps & ManagedClasses<FormItemAlignHorizontalClassNameContract>, {}> {
+class FormItemAlignHorizontal extends React.Component<
+    FormItemComponentMappingToProperyNamesProps &
+        ManagedClasses<FormItemAlignHorizontalClassNameContract>,
+    {}
+> {
     public render(): JSX.Element {
         return (
             <div className={this.props.managedClasses.formItemAlignHorizontal}>
@@ -21,7 +25,11 @@ class FormItemAlignHorizontal extends React.Component<FormItemComponentMappingTo
                 >
                     {this.props.label}
                 </label>
-                <div className={this.props.managedClasses.formItemAlignHorizontal_inputContainer}>
+                <div
+                    className={
+                        this.props.managedClasses.formItemAlignHorizontal_inputContainer
+                    }
+                >
                     {this.renderInput("left", 1)}
                     {this.renderInput("center", 2)}
                     {this.renderInput("right", 3)}
@@ -32,10 +40,13 @@ class FormItemAlignHorizontal extends React.Component<FormItemComponentMappingTo
 
     private onChange = (value: string): void => {
         this.props.onChange(this.props.dataLocation, value);
-    }
+    };
 
     private isChecked(direction: string): boolean {
-        return this.props.data === direction || (typeof this.props.data === "undefined" && this.props.default === direction);
+        return (
+            this.props.data === direction ||
+            (typeof this.props.data === "undefined" && this.props.default === direction)
+        );
     }
 
     private getInputClassName(direction: string): string {

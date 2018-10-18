@@ -21,9 +21,7 @@ export interface ReferenceStore {
  * object includes all props that are in some way consumed or manipulated by component
  * code. These props will not be mapped onto the underlying root DOM node
  */
-export type HandledProps<T> = {
-    [P in keyof T]: void
-};
+export type HandledProps<T> = { [P in keyof T]: void };
 
 /**
  * Describes a function that that resolves a react reference element or component.
@@ -72,9 +70,16 @@ abstract class Foundation<H, U, S> extends React.Component<H & U & FoundationPro
      */
     protected setRef(...args: Array<string | number>): ReferenceResolver {
         const storageKey: string = this.processStorageKey(args);
-        let resolverFunction: ReferenceResolver | ReferenceResolverStore = get(this.referenceResolverStore, storageKey);
+        let resolverFunction: ReferenceResolver | ReferenceResolverStore = get(
+            this.referenceResolverStore,
+            storageKey
+        );
 
-        if (!storageKey || isPlainObject(resolverFunction) || Array.isArray(resolverFunction)) {
+        if (
+            !storageKey ||
+            isPlainObject(resolverFunction) ||
+            Array.isArray(resolverFunction)
+        ) {
             return;
         }
 
@@ -105,9 +110,14 @@ abstract class Foundation<H, U, S> extends React.Component<H & U & FoundationPro
      * Returns an object containing all props that are not enumerated as handledProps
      */
     protected unhandledProps(): U {
-        const unhandledPropKeys: string[] = Object.keys(this.props).filter((key: string) => {
-            return !(Foundation.defaultHandledProps.indexOf(key) > -1) && !this.handledProps.hasOwnProperty(key);
-        });
+        const unhandledPropKeys: string[] = Object.keys(this.props).filter(
+            (key: string) => {
+                return (
+                    !(Foundation.defaultHandledProps.indexOf(key) > -1) &&
+                    !this.handledProps.hasOwnProperty(key)
+                );
+            }
+        );
 
         return pick(this.props, unhandledPropKeys) as U;
     }
@@ -117,7 +127,12 @@ abstract class Foundation<H, U, S> extends React.Component<H & U & FoundationPro
      * element of a component's render function.
      */
     protected generateClassNames(componentClasses: string = ""): string | null {
-        return componentClasses.concat(` ${this.props.className || ""}`).trim().replace(/(\s){2,}/g, " ") || null;
+        return (
+            componentClasses
+                .concat(` ${this.props.className || ""}`)
+                .trim()
+                .replace(/(\s){2,}/g, " ") || null
+        );
     }
 
     /*
@@ -128,22 +143,24 @@ abstract class Foundation<H, U, S> extends React.Component<H & U & FoundationPro
         slot: T | T[],
         nodes: React.ReactNode = this.props.children
     ): React.ReactNode {
-        return React.Children.map(nodes, (node: React.ReactNode): React.ReactNode | null => {
-            return this.hasSlot(slot, node)
-                ? node
-                : null;
-        });
+        return React.Children.map(
+            nodes,
+            (node: React.ReactNode): React.ReactNode | null => {
+                return this.hasSlot(slot, node) ? node : null;
+            }
+        );
     }
 
     protected withoutSlot<T>(
         slot: T | T[],
         nodes: React.ReactNode = this.props.children
     ): React.ReactNode {
-        return React.Children.map(nodes, (node: React.ReactNode): React.ReactNode | null => {
-            return !this.hasSlot(slot, node)
-                ? node
-                : null;
-        });
+        return React.Children.map(
+            nodes,
+            (node: React.ReactNode): React.ReactNode | null => {
+                return !this.hasSlot(slot, node) ? node : null;
+            }
+        );
     }
 
     /**
@@ -152,9 +169,7 @@ abstract class Foundation<H, U, S> extends React.Component<H & U & FoundationPro
     private hasSlot<T>(slot: T | T[], node: React.ReactNode): boolean {
         const nodeSlot: T = get(node, "props.slot");
 
-        return Array.isArray(slot)
-            ? slot.indexOf(nodeSlot) !== -1
-            : slot === nodeSlot;
+        return Array.isArray(slot) ? slot.indexOf(nodeSlot) !== -1 : slot === nodeSlot;
     }
 
     /**
@@ -162,11 +177,14 @@ abstract class Foundation<H, U, S> extends React.Component<H & U & FoundationPro
      * eg. => ["foo", "bar", 0] => "foo[bar][0]"
      */
     private processStorageKey(args: Array<string | number>): string {
-        return args.filter((item: string | number) => {
-            return typeof item === "string" || typeof item === "number";
-        }).map((item: string | number, index: number) => {
+        return args
+            .filter((item: string | number) => {
+                return typeof item === "string" || typeof item === "number";
+            })
+            .map((item: string | number, index: number) => {
                 return index === 0 ? item : `[${item}]`;
-        }).join("");
+            })
+            .join("");
     }
 }
 

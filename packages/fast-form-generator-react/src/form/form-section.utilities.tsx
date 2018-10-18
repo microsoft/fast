@@ -7,7 +7,7 @@ import {
     FormComponentMappingToPropertyNamesProps,
     FormOrderByPropertyNamesCategories,
     FormOrderByPropertyNamesProperties,
-    FormOrderByPropertyNamesProps
+    FormOrderByPropertyNamesProps,
 } from "./form.props";
 import { isRootLocation } from "./form.utilities";
 import {
@@ -20,7 +20,7 @@ import {
     OneOfAnyOf,
     oneOfAnyOfType,
     OptionalToggleConfig,
-    SchemaSubsectionConfig
+    SchemaSubsectionConfig,
 } from "./form-section.props";
 import { mappingName } from "./form-item";
 
@@ -48,11 +48,13 @@ export function getIsRequired(item: any, required: string[]): boolean {
     let isRequired: boolean = false;
 
     if (Array.isArray(required)) {
-        required.forEach((requiredItem: string): void => {
-            if (requiredItem === item) {
-                isRequired = true;
+        required.forEach(
+            (requiredItem: string): void => {
+                if (requiredItem === item) {
+                    isRequired = true;
+                }
             }
-        });
+        );
     }
 
     return isRequired;
@@ -79,20 +81,25 @@ export function getIsNotRequired(item: any, not?: string[]): boolean {
  * Gets the options for a oneOf/anyOf select
  */
 export function getOneOfAnyOfSelectOptions(schema: any, state: any): JSX.Element[] {
-    return schema[state.oneOfAnyOf.type].map((option: any, index: number): JSX.Element => {
-        return (
-            <option key={index} value={index}>
-                {get(option, "description") || get(option, "title") || "No description"}
-            </option>
-        );
-    });
+    return schema[state.oneOfAnyOf.type].map(
+        (option: any, index: number): JSX.Element => {
+            return (
+                <option key={index} value={index}>
+                    {get(option, "description") ||
+                        get(option, "title") ||
+                        "No description"}
+                </option>
+            );
+        }
+    );
 }
 
 function removeUndefinedKeys(data: any): any {
     const clonedData: any = cloneDeep(data);
 
     Object.keys(clonedData).forEach((key: string) => {
-        if (typeof clonedData[key] === "undefined") { // if this is a child we may be getting undefined default props, remove these
+        if (typeof clonedData[key] === "undefined") {
+            // if this is a child we may be getting undefined default props, remove these
             delete clonedData[key];
         }
     });
@@ -134,8 +141,9 @@ export function resolveExampleDataWithCachedData(schema: any, cachedData: any): 
     // removes any cached items which do not match and item in
     // the example data and are not included in the schema properties
     Object.keys(curatedCachedData).forEach((item: string) => {
-        if (typeof exampleData[item] === "undefined"
-            && (schema.properties && !schema.properties[item])
+        if (
+            typeof exampleData[item] === "undefined" &&
+            (schema.properties && !schema.properties[item])
         ) {
             unset(curatedCachedData, item);
         }
@@ -150,9 +158,9 @@ export function resolveExampleDataWithCachedData(schema: any, cachedData: any): 
  */
 function cachedDataResolver(objValue: any, srcValue: any, key: number, object: any): any {
     if (
-        typeof srcValue !== "undefined"
-        && typeof objValue !== "undefined"
-        && typeof srcValue === typeof objValue
+        typeof srcValue !== "undefined" &&
+        typeof objValue !== "undefined" &&
+        typeof srcValue === typeof objValue
     ) {
         const newObj: any = cloneDeep(object);
         set(newObj, key, srcValue);
@@ -163,18 +171,26 @@ function cachedDataResolver(objValue: any, srcValue: any, key: number, object: a
 
         return srcValue;
     } else {
-        return void(0);
+        return void 0;
     }
 }
 
 /**
  * Normalizes a location for getting and setting values
  */
-export function getNormalizedLocation(location: string, property: string, schema: any): string {
+export function getNormalizedLocation(
+    location: string,
+    property: string,
+    schema: any
+): string {
     let normalizedProperty: string = "";
-    let normalizedLocation: string = location === "" || property === "" ? location : `${location}.`;
+    let normalizedLocation: string =
+        location === "" || property === "" ? location : `${location}.`;
     normalizedProperty = property.split(".").join(".properties.");
-    normalizedLocation = typeof property !== "undefined" ? `${normalizedLocation}${normalizedProperty}` : normalizedLocation;
+    normalizedLocation =
+        typeof property !== "undefined"
+            ? `${normalizedLocation}${normalizedProperty}`
+            : normalizedLocation;
 
     return normalizedLocation;
 }
@@ -201,7 +217,8 @@ function checkIsObjectAndSetType(schemaSection: any): any {
  * Generates example data for a newly added optional schema item
  */
 export function generateExampleData(schema: any, propertyLocation: string): any {
-    let schemaSection: any = propertyLocation === "" ? schema : get(schema, propertyLocation);
+    let schemaSection: any =
+        propertyLocation === "" ? schema : get(schema, propertyLocation);
 
     if (schemaSection.oneOf) {
         schemaSection = schemaSection.oneOf[0];
@@ -225,10 +242,14 @@ function getPropertyLocation(dataLocation: string, propertyName: string): string
 }
 
 function getIsNotRequiredList(schema: any): string[] {
-    return schema.not && schema.not.required ? schema.not.required : void(0);
+    return schema.not && schema.not.required ? schema.not.required : void 0;
 }
 
-function getOptionalToggle(config: OptionalToggleConfig, key: string, propertyLocation: string): OptionalToggle {
+function getOptionalToggle(
+    config: OptionalToggleConfig,
+    key: string,
+    propertyLocation: string
+): OptionalToggle {
     return {
         id: uniqueId(),
         label: config.schema.properties[key].title || "Untitled",
@@ -240,10 +261,11 @@ function getOptionalToggle(config: OptionalToggleConfig, key: string, propertyLo
             config.onChange(
                 propertyLocation,
                 value
-                    ? void(0)
-                    : get(config.dataCache, propertyLocation) || generateExampleData(config.schema, `properties.${key}`)
+                    ? void 0
+                    : get(config.dataCache, propertyLocation) ||
+                      generateExampleData(config.schema, `properties.${key}`)
             );
-        }
+        },
     };
 }
 
@@ -264,9 +286,7 @@ function getPropertyKeys(schema: any): string[] {
 /**
  * Get the optional objects in the schema.
  */
-export function getOptionalToggles(
-    config: OptionalToggleConfig
-): OptionalToggle[] {
+export function getOptionalToggles(config: OptionalToggleConfig): OptionalToggle[] {
     const optionalObjects: OptionalToggle[] = [];
     const required: string[] = config.schema.required || [];
     const propertyKeys: string[] = getPropertyKeys(config.schema);
@@ -274,8 +294,11 @@ export function getOptionalToggles(
 
     for (const key of propertyKeys) {
         const isOptional: boolean = checkIsPropertyOptional(required, key);
-        const isObject: boolean = config.schema.properties[key].type === "object" || config.schema.properties[key].properties;
-        const isOneOfAnyOf: boolean = config.schema.properties[key].anyOf || config.schema.properties[key].oneOf;
+        const isObject: boolean =
+            config.schema.properties[key].type === "object" ||
+            config.schema.properties[key].properties;
+        const isOneOfAnyOf: boolean =
+            config.schema.properties[key].anyOf || config.schema.properties[key].oneOf;
         const isNotRequired: boolean = getIsNotRequired(key, notRequiredList);
         const propertyLocation: string = getPropertyLocation(config.dataLocation, key);
 
@@ -312,11 +335,18 @@ function getDataLocation(dataLocation: string, location: string): string {
 }
 
 function checkIsObjectOrOneOfAnyOf(property: any): boolean {
-    return property.type === "object" || property.properties || property.anyOf || property.oneOf;
+    return (
+        property.type === "object" ||
+        property.properties ||
+        property.anyOf ||
+        property.oneOf
+    );
 }
 
 function getSubsectionOneOfAnyOf(oneOfAnyOf: any, objectProperty: any): string {
-    return typeof oneOfAnyOf !== "undefined" ? `${oneOfAnyOf.type}[${oneOfAnyOf.activeIndex}]` : "";
+    return typeof oneOfAnyOf !== "undefined"
+        ? `${oneOfAnyOf.type}[${oneOfAnyOf.activeIndex}]`
+        : "";
 }
 
 function getSchemaSubsectionText(state: any, objectProperty: string): string {
@@ -324,20 +354,33 @@ function getSchemaSubsectionText(state: any, objectProperty: string): string {
 }
 
 function getSchemaSubsectionSchemaLocation(config: SchemaSubsectionConfig): string {
-    return `${config.props.location ? config.schemaLocation : ""}${config.oneOfAnyOf}properties.${config.objectProperty}`;
+    return `${config.props.location ? config.schemaLocation : ""}${
+        config.oneOfAnyOf
+    }properties.${config.objectProperty}`;
 }
 
 function getSchemaSubsectionDataLocation(config: SchemaSubsectionConfig): string {
-    return config.props.location ? config.dataLocation : `${config.dataLocation}${config.objectProperty}`;
+    return config.props.location
+        ? config.dataLocation
+        : `${config.dataLocation}${config.objectProperty}`;
 }
 
 function getSchemaSubsection(schemaSubsectionConfig: SchemaSubsectionConfig): any {
     return {
-        text: getSchemaSubsectionText(schemaSubsectionConfig.state, schemaSubsectionConfig.objectProperty),
+        text: getSchemaSubsectionText(
+            schemaSubsectionConfig.state,
+            schemaSubsectionConfig.objectProperty
+        ),
         schemaLocation: getSchemaSubsectionSchemaLocation(schemaSubsectionConfig),
         dataLocation: getSchemaSubsectionDataLocation(schemaSubsectionConfig),
-        active: get(schemaSubsectionConfig.props.data, schemaSubsectionConfig.objectProperty),
-        required: getIsRequired(schemaSubsectionConfig.objectProperty, schemaSubsectionConfig.state.schema.required)
+        active: get(
+            schemaSubsectionConfig.props.data,
+            schemaSubsectionConfig.objectProperty
+        ),
+        required: getIsRequired(
+            schemaSubsectionConfig.objectProperty,
+            schemaSubsectionConfig.state.schema.required
+        ),
     };
 }
 
@@ -352,21 +395,33 @@ export function getSchemaSubsections(state: any, props: any): any[] {
     }
 
     const objectProperties: string[] = Object.keys(state.schema.properties);
-    const schemaLocationClone: string = getSchemaLocation(props.schemaLocation, state.oneOfAnyOf);
+    const schemaLocationClone: string = getSchemaLocation(
+        props.schemaLocation,
+        state.oneOfAnyOf
+    );
     const dataLocationClone: string = getDataLocation(props.dataLocation, props.location);
 
-    for (let i: number = 0, objectPropertiesLength: number = objectProperties.length; i < objectPropertiesLength; i++) {
+    for (
+        let i: number = 0, objectPropertiesLength: number = objectProperties.length;
+        i < objectPropertiesLength;
+        i++
+    ) {
         if (checkIsObjectOrOneOfAnyOf(state.schema.properties[objectProperties[i]])) {
-            const oneOfAnyOf: string = getSubsectionOneOfAnyOf(state.oneOfAnyOf, objectProperties[i]);
+            const oneOfAnyOf: string = getSubsectionOneOfAnyOf(
+                state.oneOfAnyOf,
+                objectProperties[i]
+            );
 
-            subSections.push(getSchemaSubsection({
-                oneOfAnyOf,
-                objectProperty: objectProperties[i],
-                dataLocation: dataLocationClone,
-                schemaLocation: schemaLocationClone,
-                state,
-                props
-            }));
+            subSections.push(
+                getSchemaSubsection({
+                    oneOfAnyOf,
+                    objectProperty: objectProperties[i],
+                    dataLocation: dataLocationClone,
+                    schemaLocation: schemaLocationClone,
+                    state,
+                    props,
+                })
+            );
         }
     }
 
@@ -376,7 +431,12 @@ export function getSchemaSubsections(state: any, props: any): any[] {
 /**
  * Get the array location
  */
-export function getArraySchemaLocation(schemaLocation: string, propertyName: string, schema: any, oneOfAnyOf: any): string {
+export function getArraySchemaLocation(
+    schemaLocation: string,
+    propertyName: string,
+    schema: any,
+    oneOfAnyOf: any
+): string {
     let arraySchemaLocation: string = "";
 
     if (oneOfAnyOf) {
@@ -384,7 +444,9 @@ export function getArraySchemaLocation(schemaLocation: string, propertyName: str
     }
 
     if (propertyName !== "") {
-        arraySchemaLocation += `${arraySchemaLocation === "" ? "" : "." }properties.${propertyName}`;
+        arraySchemaLocation += `${
+            arraySchemaLocation === "" ? "" : "."
+        }properties.${propertyName}`;
     }
 
     return arraySchemaLocation;
@@ -393,16 +455,21 @@ export function getArraySchemaLocation(schemaLocation: string, propertyName: str
 /**
  * Assigns a schema form item mapping based on property name
  */
-export function formItemMapping(config: FormComponentMappingToPropertyNamesProps, propertyName: string): null | mappingName {
+export function formItemMapping(
+    config: FormComponentMappingToPropertyNamesProps,
+    propertyName: string
+): null | mappingName {
     let itemLayout: any = null;
 
-    Object.keys(config).forEach((layout: string): void => {
-        for (const property of config[layout]) {
-            if (property === propertyName) {
-                itemLayout = layout;
+    Object.keys(config).forEach(
+        (layout: string): void => {
+            for (const property of config[layout]) {
+                if (property === propertyName) {
+                    itemLayout = layout;
+                }
             }
         }
-    });
+    );
 
     return itemLayout;
 }
@@ -416,15 +483,17 @@ export function formItemAttributeMapping(
 ): number | null {
     let itemAttributeValue: any = null;
 
-    Object.keys(config).forEach((attributeName: string): void => {
-        for (const attributeConfig of config[attributeName]) {
-            for (const property of attributeConfig.propertyNames) {
-                if (property === propertyName) {
-                    itemAttributeValue = attributeConfig.value;
+    Object.keys(config).forEach(
+        (attributeName: string): void => {
+            for (const attributeConfig of config[attributeName]) {
+                for (const property of attributeConfig.propertyNames) {
+                    if (property === propertyName) {
+                        itemAttributeValue = attributeConfig.value;
+                    }
                 }
             }
         }
-    });
+    );
 
     return itemAttributeValue;
 }
@@ -441,10 +510,15 @@ export function checkIsDifferentData(currentData: any, nextData: any): boolean {
     return currentData !== nextData;
 }
 
-export function getOneOfAnyOfState(oneOfAnyOf: OneOfAnyOf, nextProps: FormSectionProps): OneOfAnyOf {
+export function getOneOfAnyOfState(
+    oneOfAnyOf: OneOfAnyOf,
+    nextProps: FormSectionProps
+): OneOfAnyOf {
     const oneOfAnyOfState: Partial<OneOfAnyOf> = oneOfAnyOf || {};
 
-    oneOfAnyOfState.type = nextProps.schema.oneOf ? oneOfAnyOfType.oneOf : oneOfAnyOfType.anyOf;
+    oneOfAnyOfState.type = nextProps.schema.oneOf
+        ? oneOfAnyOfType.oneOf
+        : oneOfAnyOfType.anyOf;
     oneOfAnyOfState.activeIndex = getOneOfAnyOfActiveIndex(
         oneOfAnyOfState.type,
         nextProps.schema,
@@ -454,7 +528,10 @@ export function getOneOfAnyOfState(oneOfAnyOf: OneOfAnyOf, nextProps: FormSectio
     return oneOfAnyOfState as OneOfAnyOf;
 }
 
-export function getDataLocationRelativeToRoot(location: string, dataLocation: string): string {
+export function getDataLocationRelativeToRoot(
+    location: string,
+    dataLocation: string
+): string {
     return isRootLocation(dataLocation) || isRootLocation(location)
         ? `${dataLocation}${location}`
         : `${dataLocation}.${location}`;
@@ -471,7 +548,9 @@ export function isSelect(property: any): boolean {
 /**
  * Organizes the categories and items by weight
  */
-export function getWeightedCategoriesAndItems(categoryParams: FormCategories[]): FormCategories[] {
+export function getWeightedCategoriesAndItems(
+    categoryParams: FormCategories[]
+): FormCategories[] {
     categoryParams.sort(function(a: any, b: any): number {
         return b.weight - a.weight;
     });
@@ -498,14 +577,21 @@ export function findAssignedParamsByCategoryProperties(
                 category: config.category.title,
                 expandable: config.category.expandable,
                 categoryWeight: config.category.weight,
-                itemWeight: config.categoryProperty.weight || config.assignedItemWeight
+                itemWeight: config.categoryProperty.weight || config.assignedItemWeight,
             };
         }
     }
 }
 
-export function getCategoryIndex(assignedCategoryParams: AssignedCategoryParams, categoryParams: FormCategories[]): number {
-    for (let i: number = 0, categoryParamsLength: number = categoryParams.length; i < categoryParamsLength; i++) {
+export function getCategoryIndex(
+    assignedCategoryParams: AssignedCategoryParams,
+    categoryParams: FormCategories[]
+): number {
+    for (
+        let i: number = 0, categoryParamsLength: number = categoryParams.length;
+        i < categoryParamsLength;
+        i++
+    ) {
         if (assignedCategoryParams.category === categoryParams[i].title) {
             return i;
         }
@@ -516,8 +602,10 @@ export function checkCategoryConfigPropertyCount(
     formItems: FormItemsWithConfigOptions,
     orderByPropertyNames: FormOrderByPropertyNamesProps
 ): boolean {
-    return typeof orderByPropertyNames.showCategoriesAtPropertyCount === "number"
-        && orderByPropertyNames.showCategoriesAtPropertyCount >= formItems.items.length;
+    return (
+        typeof orderByPropertyNames.showCategoriesAtPropertyCount === "number" &&
+        orderByPropertyNames.showCategoriesAtPropertyCount >= formItems.items.length
+    );
 }
 
 export function findOrderedByPropertyNames(
@@ -530,13 +618,15 @@ export function findOrderedByPropertyNames(
             ? categoryProperty.propertyName
             : [categoryProperty.propertyName];
 
-        const assignedParamsByCategoryProperties: AssignedCategoryParams = findAssignedParamsByCategoryProperties({
-            categoryProperties,
-            formItemParameter,
-            category,
-            categoryProperty,
-            assignedItemWeight
-        });
+        const assignedParamsByCategoryProperties: AssignedCategoryParams = findAssignedParamsByCategoryProperties(
+            {
+                categoryProperties,
+                formItemParameter,
+                category,
+                categoryProperty,
+                assignedItemWeight,
+            }
+        );
 
         if (Boolean(assignedParamsByCategoryProperties)) {
             return assignedParamsByCategoryProperties;
@@ -564,7 +654,7 @@ function getAssignedCategoryParams(
     return {
         category: "Default",
         categoryWeight: orderByPropertyNames.defaultCategoryWeight || 0,
-        itemWeight: 0
+        itemWeight: 0,
     };
 }
 
@@ -575,23 +665,32 @@ export function getCategoryParams(
     const categoryParams: FormCategories[] = [];
 
     for (const formItemParameter of formItemParameters) {
-        const assignedCategoryParams: AssignedCategoryParams = getAssignedCategoryParams(formItemParameter, 0, orderByPropertyNames);
-        const categoryIndex: number = getCategoryIndex(assignedCategoryParams, categoryParams);
+        const assignedCategoryParams: AssignedCategoryParams = getAssignedCategoryParams(
+            formItemParameter,
+            0,
+            orderByPropertyNames
+        );
+        const categoryIndex: number = getCategoryIndex(
+            assignedCategoryParams,
+            categoryParams
+        );
 
         if (typeof categoryIndex === "number") {
             categoryParams[categoryIndex].items.push({
                 weight: assignedCategoryParams.itemWeight,
-                params: formItemParameter
+                params: formItemParameter,
             });
         } else {
             categoryParams.push({
                 title: assignedCategoryParams.category,
                 weight: assignedCategoryParams.categoryWeight,
                 expandable: assignedCategoryParams.expandable,
-                items: [{
-                    weight: assignedCategoryParams.itemWeight,
-                    params: formItemParameter
-                }]
+                items: [
+                    {
+                        weight: assignedCategoryParams.itemWeight,
+                        params: formItemParameter,
+                    },
+                ],
             });
         }
     }
@@ -607,11 +706,16 @@ export function handleToggleClick(value: any, id: string, updateRequested: any):
     };
 }
 
-export function isMapping(location: string, componentMappingToPropertyNames: FormComponentMappingToPropertyNamesProps): boolean {
-    return componentMappingToPropertyNames &&
-    typeof formItemMapping(componentMappingToPropertyNames, location) === "string";
+export function isMapping(
+    location: string,
+    componentMappingToPropertyNames: FormComponentMappingToPropertyNamesProps
+): boolean {
+    return (
+        componentMappingToPropertyNames &&
+        typeof formItemMapping(componentMappingToPropertyNames, location) === "string"
+    );
 }
 
 export function getLabel(label: string, title: string): string {
-    return label === "" && title !== void(0) ? title : label;
+    return label === "" && title !== void 0 ? title : label;
 }

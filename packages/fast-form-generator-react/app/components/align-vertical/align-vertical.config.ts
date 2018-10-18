@@ -1,9 +1,5 @@
-import {
-    FormComponentMappingToPropertyNamesProps
-} from "../../../src/form/form.props";
+import { FormComponentMappingToPropertyNamesProps } from "../../../src/form/form.props";
 
 export default {
-    alignVertical: [
-        "alignVertical"
-    ]
+    alignVertical: ["alignVertical"],
 } as FormComponentMappingToPropertyNamesProps;

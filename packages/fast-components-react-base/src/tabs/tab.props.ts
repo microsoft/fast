@@ -1,5 +1,8 @@
 import * as React from "react";
-import { ManagedClasses, TabClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import {
+    ManagedClasses,
+    TabClassNameContract,
+} from "@microsoft/fast-components-class-name-contracts-base";
 import { TabsSlot } from "./tabs";
 
 export interface TabManagedClasses extends ManagedClasses<TabClassNameContract> {}

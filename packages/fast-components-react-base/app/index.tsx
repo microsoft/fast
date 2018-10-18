@@ -9,16 +9,12 @@ import Site, {
     SiteCategoryItem,
     SiteProps,
     SiteTitle,
-    SiteTitleBrand
+    SiteTitleBrand,
 } from "@microsoft/fast-development-site-react";
 import * as examples from "./examples";
 import reactHTMLElementExamples from "./components/examples.data";
 
-import {
-    Tab,
-    TabItem,
-    TabPanel
-} from "../src";
+import { Tab, TabItem, TabPanel } from "../src";
 import TabSchema from "../src/tabs/tab.schema.json";
 import TabItemSchema from "../src/tabs/tab-item.schema.json";
 import TabPanelSchema from "../src/tabs/tab-panel.schema.json";
@@ -30,24 +26,26 @@ const root: HTMLElement = document.createElement("div");
 root.setAttribute("id", "root");
 document.body.appendChild(root);
 
-let formChildOptions: FormChildOption[] = [reactHTMLElementExamples].concat(formChildFromExamplesFactory(examples));
+let formChildOptions: FormChildOption[] = [reactHTMLElementExamples].concat(
+    formChildFromExamplesFactory(examples)
+);
 
 formChildOptions = formChildOptions.concat([
     {
         name: "Tab",
         component: Tab,
-        schema: TabSchema
+        schema: TabSchema,
     },
     {
         name: "TabItem",
         component: TabItem,
-        schema: TabItemSchema
+        schema: TabItemSchema,
     },
     {
         name: "TabPanel",
         component: TabPanel,
-        schema: TabPanelSchema
-    }
+        schema: TabPanelSchema,
+    },
 ]);
 
 /* tslint:disable */

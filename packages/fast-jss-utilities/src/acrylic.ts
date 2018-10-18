@@ -20,7 +20,8 @@ export interface AcrylicConfig {
  * Check for backdrop-filter support within the current browser
  */
 export const backdropFilterSupport: boolean =
-    "backdrop-filter" in document.documentElement.style || "-webkit-backdrop-filter" in document.documentElement.style;
+    "backdrop-filter" in document.documentElement.style ||
+    "-webkit-backdrop-filter" in document.documentElement.style;
 
 /*
  * Applies a partially transparent "acrylic" background to an element
@@ -28,27 +29,32 @@ export const backdropFilterSupport: boolean =
 export function applyAcrylic<T>(config: AcrylicConfig): CSSRules<T> {
     const backdropFilterStyles: CSSRules<T> = {
         background: config.backgroundColor,
-        backdropFilter: `blur(${config.blurRadius || "30px"}) saturate(${config.saturation || "125%"})`
+        backdropFilter: `blur(${config.blurRadius ||
+            "30px"}) saturate(${config.saturation || "125%"})`,
     };
 
     const fallbackStyles: CSSRules<T> = {
-        background: config.fallbackBackgroundColor
+        background: config.fallbackBackgroundColor,
     };
 
-    const styles: CSSRules<T> = backdropFilterSupport ? backdropFilterStyles : fallbackStyles;
+    const styles: CSSRules<T> = backdropFilterSupport
+        ? backdropFilterStyles
+        : fallbackStyles;
 
     return {
         ...styles,
         "&::before": {
-            content: "\"\"",
-            background: config.textureImage ? `url(${config.textureImage}) repeat` : undefined,
+            content: '""',
+            background: config.textureImage
+                ? `url(${config.textureImage}) repeat`
+                : undefined,
             position: "absolute",
             top: "0",
             bottom: "0",
             left: "0",
             right: "0",
             opacity: ".02",
-            pointerEvents: "none"
-        }
+            pointerEvents: "none",
+        },
     };
 }

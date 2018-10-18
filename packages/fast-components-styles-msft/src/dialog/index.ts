@@ -8,7 +8,9 @@ import { applyAcrylicMaterial } from "../utilities/acrylic";
 import { elevation, ElevationMultiplier } from "../utilities/elevation";
 
 /* tslint:disable-next-line */
-const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = (config: DesignSystem): ComponentStyleSheet<DialogClassNameContract, DesignSystem> => {
+const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = (
+    config: DesignSystem
+): ComponentStyleSheet<DialogClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const backgroundColor: string = designSystem.backgroundColor;
     const foregroundColor: string = designSystem.foregroundColor;
@@ -16,9 +18,9 @@ const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = (config: 
     return {
         dialog: {
             display: "none",
-            "&[aria-hidden=\"false\"]": {
-                display: "block"
-            }
+            '&[aria-hidden="false"]': {
+                display: "block",
+            },
         },
         dialog_modalOverlay: {
             position: "fixed",
@@ -26,7 +28,7 @@ const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = (config: 
             left: "0",
             right: "0",
             bottom: "0",
-            ...applyAcrylicMaterial(backgroundColor, 0.6, 0.9, true)
+            ...applyAcrylicMaterial(backgroundColor, 0.6, 0.9, true),
         },
         dialog_contentRegion: {
             position: "fixed",
@@ -34,8 +36,8 @@ const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = (config: 
             top: "50%",
             transform: "translate(-50%, -50%)",
             background: backgroundColor,
-            ...elevation(ElevationMultiplier.e14, foregroundColor)(designSystem)
-        }
+            ...elevation(ElevationMultiplier.e14, foregroundColor)(designSystem),
+        },
     };
 };
 

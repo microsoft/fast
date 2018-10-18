@@ -6,14 +6,14 @@ import { fontWeight } from "../utilities/fonts";
 const styles: ComponentStyles<ParagraphClassNameContract, DesignSystem> = {
     paragraph: {},
     paragraph__1: {
-        fontWeight: `${fontWeight.semilight}`
+        fontWeight: `${fontWeight.semilight}`,
     },
     paragraph__2: {
-        fontWeight: `${fontWeight.normal}`
+        fontWeight: `${fontWeight.normal}`,
     },
     paragraph__3: {
-        fontWeight: `${fontWeight.normal}`
-    }
+        fontWeight: `${fontWeight.normal}`,
+    },
 };
 
 export default styles;

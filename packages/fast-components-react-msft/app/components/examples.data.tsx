@@ -4,5 +4,5 @@ import ReactHTMLElement from "./react-html-element";
 export default {
     name: "HTML Element",
     schema,
-    component: ReactHTMLElement
+    component: ReactHTMLElement,
 };

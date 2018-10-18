@@ -1,25 +1,35 @@
 import * as React from "react";
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import { ContainerHandledProps, ContainerProps, ContainerUnhandledProps } from "./container.props";
-import Foundation, { FoundationProps, HandledProps } from "@microsoft/fast-components-foundation-react";
+import {
+    ContainerHandledProps,
+    ContainerProps,
+    ContainerUnhandledProps,
+} from "./container.props";
+import Foundation, {
+    FoundationProps,
+    HandledProps,
+} from "@microsoft/fast-components-foundation-react";
 
 export interface ContainerClassNamesContract {
     container?: string;
 }
 
-export const containerStyleSheet: ComponentStyles<ContainerClassNamesContract, undefined> = {
+export const containerStyleSheet: ComponentStyles<
+    ContainerClassNamesContract,
+    undefined
+> = {
     "@global": {
         "html, body": {
             padding: 0,
-            margin: 0
-        }
+            margin: 0,
+        },
     },
     container: {
         display: "flex",
         width: "100vw",
         height: "100vh",
-        flexDirection: "column"
-    }
+        flexDirection: "column",
+    },
 };
 
 /**
@@ -31,7 +41,7 @@ export class Container extends Foundation<
     undefined
 > {
     protected handledProps: HandledProps<ContainerHandledProps> = {
-        managedClasses: void 0
+        managedClasses: void 0,
     };
 
     /**

@@ -10,7 +10,7 @@ import {
     GridProps as BaseGridProps,
     gridStyleSheet,
     GridTag,
-    GridUnhandledProps
+    GridUnhandledProps,
 } from "./grid";
 import { Subtract } from "utility-types";
 
@@ -29,5 +29,5 @@ export {
     GridClassNamesContract,
     GridTag,
     GridAlignment,
-    GridGutter
+    GridGutter,
 };

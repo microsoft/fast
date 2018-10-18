@@ -1,4 +1,4 @@
-const clone = require('lodash-es').cloneDeep;
+const clone = require("lodash-es").cloneDeep;
 
 /**
  * Exports schemas with dependencies accounted for in required
@@ -6,7 +6,7 @@ const clone = require('lodash-es').cloneDeep;
  * @param {object} schemas - The schemas.
  * @return {object} - A function which returns a schema object.
  */
-module.exports = function (schemas) {
+module.exports = function(schemas) {
     let schemasPermutated = [];
 
     for (let schema of schemas) {
@@ -20,7 +20,9 @@ module.exports = function (schemas) {
             for (let dependencyKey of dependencyKeys) {
                 for (let requiredItem of schema.required) {
                     if (dependencyKey === requiredItem) {
-                        schemaBaseClone.required = schemaBaseClone.required.concat(schemaBaseClone.dependencies[dependencyKey]);
+                        schemaBaseClone.required = schemaBaseClone.required.concat(
+                            schemaBaseClone.dependencies[dependencyKey]
+                        );
                     }
                 }
             }
@@ -28,17 +30,21 @@ module.exports = function (schemas) {
 
         // split schemas up based on optional dependencies
         for (let dependencyKey of dependencyKeys) {
-            let isRequired = Array.isArray(schema.required) && schema.required.indexOf(dependencyKey) !== -1;
+            let isRequired =
+                Array.isArray(schema.required) &&
+                schema.required.indexOf(dependencyKey) !== -1;
 
             if (!isRequired) {
                 let optionalSchemaClone = clone(schemaBaseClone);
                 optionalSchemaClone.required.push(dependencyKey);
-                optionalSchemaClone.required = optionalSchemaClone.required.concat(optionalSchemaClone.dependencies[dependencyKey]);
+                optionalSchemaClone.required = optionalSchemaClone.required.concat(
+                    optionalSchemaClone.dependencies[dependencyKey]
+                );
                 schemasPermutated.push(optionalSchemaClone);
                 delete schemaBaseClone.properties[dependencyKey];
             }
         }
-        
+
         // the base schema with no options
         schemasPermutated.push(schemaBaseClone);
     }

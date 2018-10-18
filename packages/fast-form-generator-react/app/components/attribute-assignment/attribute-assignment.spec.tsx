@@ -13,15 +13,13 @@ const exampleData: FormProps = {
     data: getExample(attributeAssignmentSchema),
     /* tslint:disable-next-line */
     onChange: (data: any): void => {},
-    attributeSettingsMappingToPropertyNames: config
+    attributeSettingsMappingToPropertyNames: config,
 };
 
 const examples: SnapshotTestSuite<FormProps> = {
     name,
     component: Form,
-    data: [
-        exampleData
-    ]
+    data: [exampleData],
 };
 
 describe(name, () => {

@@ -11,7 +11,7 @@ import TextFieldSchema from "./text-field/text-field.schema.json";
 
 export const textField: ExampleComponent = {
     component: TextField,
-    schema: TextFieldSchema
+    schema: TextFieldSchema,
 };
 
 import NumberField from "./number-field/number-field";
@@ -19,7 +19,7 @@ import NumberFieldSchema from "./number-field/number-field.schema.json";
 
 export const numberField: ExampleComponent = {
     component: NumberField,
-    schema: NumberFieldSchema
+    schema: NumberFieldSchema,
 };
 
 import Checkbox from "./checkbox/checkbox";
@@ -27,7 +27,7 @@ import CheckboxSchema from "./checkbox/checkbox.schema.json";
 
 export const checkbox: ExampleComponent = {
     component: Checkbox,
-    schema: CheckboxSchema
+    schema: CheckboxSchema,
 };
 
 import AnyOf from "./any-of/any-of";
@@ -35,7 +35,7 @@ import AnyOfSchema from "./any-of/any-of.schema.json";
 
 export const anyOf: ExampleComponent = {
     component: AnyOf,
-    schema: AnyOfSchema
+    schema: AnyOfSchema,
 };
 
 import OneOf from "./one-of/one-of";
@@ -43,7 +43,7 @@ import OneOfSchema from "./one-of/one-of.schema.json";
 
 export const oneOf: ExampleComponent = {
     component: OneOf,
-    schema: OneOfSchema
+    schema: OneOfSchema,
 };
 
 import Objects from "./objects/objects";
@@ -51,7 +51,7 @@ import ObjectsSchema from "./objects/objects.schema.json";
 
 export const objects: ExampleComponent = {
     component: Objects,
-    schema: ObjectsSchema
+    schema: ObjectsSchema,
 };
 
 import Arrays from "./arrays/arrays";
@@ -59,7 +59,7 @@ import ArraysSchema from "./arrays/arrays.schema.json";
 
 export const arrays: ExampleComponent = {
     component: Arrays,
-    schema: ArraysSchema
+    schema: ArraysSchema,
 };
 
 import Children from "./children/children";
@@ -67,7 +67,7 @@ import ChildrenSchema from "./children/children.schema.json";
 
 export const children: ExampleComponent = {
     component: Children,
-    schema: ChildrenSchema
+    schema: ChildrenSchema,
 };
 
 import AlignHorizontal from "./align-horizontal/align-horizontal";
@@ -77,7 +77,7 @@ import AlignHorizontalSchema from "./align-horizontal/align-horizontal.schema.js
 export const alignHorizontal: ExampleComponent = {
     component: AlignHorizontal,
     config: AlignHorizontalConfig,
-    schema: AlignHorizontalSchema
+    schema: AlignHorizontalSchema,
 };
 
 import AlignVertical from "./align-vertical/align-vertical";
@@ -87,18 +87,21 @@ import AlignVerticalSchema from "./align-vertical/align-vertical.schema.json";
 export const alignVertical: ExampleComponent = {
     component: AlignVertical,
     config: AlignVerticalConfig,
-    schema: AlignVerticalSchema
+    schema: AlignVerticalSchema,
 };
 
 import WeightProperties from "./weight-properties/weight-properties";
-import { weightPropertiesConfig, weightPropertiesWeight } from "./weight-properties/weight-properties.config";
+import {
+    weightPropertiesConfig,
+    weightPropertiesWeight,
+} from "./weight-properties/weight-properties.config";
 import WeightPropertiesSchema from "./weight-properties/weight-properties.schema.json";
 
 export const weightProperties: ExampleComponent = {
     component: WeightProperties,
     config: weightPropertiesConfig,
     weight: weightPropertiesWeight,
-    schema: WeightPropertiesSchema
+    schema: WeightPropertiesSchema,
 };
 
 import GeneralExample from "./general-example/general-example";
@@ -108,7 +111,7 @@ import GeneralExampleSchema from "./general-example/general-example.schema.json"
 export const generalExample: ExampleComponent = {
     component: GeneralExample,
     config: GeneralExampleConfig,
-    schema: GeneralExampleSchema
+    schema: GeneralExampleSchema,
 };
 
 import AttributeAssignment from "./attribute-assignment/attribute-assignment";
@@ -118,7 +121,7 @@ import AttributeAssignmentSchema from "./attribute-assignment/attribute-assignme
 export const attributeAssignment: ExampleComponent = {
     component: AttributeAssignment,
     attributeAssignment: AttributeAssignmentConfig,
-    schema: AttributeAssignmentSchema
+    schema: AttributeAssignmentSchema,
 };
 
 import Theme from "./theme/theme";
@@ -128,5 +131,5 @@ import ThemeSchema from "./theme/theme.schema.json";
 export const theme: ExampleComponent = {
     component: Theme,
     config: ThemeConfig,
-    schema: ThemeSchema
+    schema: ThemeSchema,
 };

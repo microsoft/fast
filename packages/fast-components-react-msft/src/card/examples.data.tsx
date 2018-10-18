@@ -1,11 +1,6 @@
 import * as React from "react";
 import { Card } from "./index";
-import {
-    CardHandledProps,
-    CardProps,
-    CardTag,
-    CardUnhandledProps
-} from "./index";
+import { CardHandledProps, CardProps, CardTag, CardUnhandledProps } from "./index";
 import schema from "@microsoft/fast-components-react-base/dist/card/card.schema.json";
 import ImageSchema from "@microsoft/fast-components-react-base/dist/image/image.schema.json";
 import HeadingSchema from "../heading/heading.schema.json";
@@ -25,14 +20,14 @@ export default {
                 id: ImageSchema.id,
                 props: {
                     src: "https://placehold.it/300x300/414141",
-                    alt: "placeholder image"
-                }
-            }
-        ]
+                    alt: "placeholder image",
+                },
+            },
+        ],
     },
     data: [
         {
-            tag: CardTag.section
+            tag: CardTag.section,
         },
         {
             tag: CardTag.article,
@@ -42,17 +37,17 @@ export default {
                     props: {
                         tag: HeadingTag.h3,
                         level: HeadingSize._4,
-                        children: "Example children"
-                    }
+                        children: "Example children",
+                    },
                 },
                 {
                     id: ImageSchema.id,
                     props: {
                         src: "https://placehold.it/300x300/414141",
-                        alt: "placeholder image"
-                    }
-                }
-            ]
-        }
-    ]
-}  as ComponentFactoryExample<CardProps>;
+                        alt: "placeholder image",
+                    },
+                },
+            ],
+        },
+    ],
+} as ComponentFactoryExample<CardProps>;

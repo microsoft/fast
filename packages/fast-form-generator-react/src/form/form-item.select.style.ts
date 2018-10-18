@@ -4,23 +4,23 @@ import {
     applyLabelStyle,
     applySelectInputStyles,
     applySelectSpanStyles,
-    applyWrapperStyle
+    applyWrapperStyle,
 } from "../utilities/form-input.style";
 import { FormItemSelectClassNameContract } from "../class-name-contracts/";
 
 const styles: ComponentStyles<FormItemSelectClassNameContract, {}> = {
     formItemSelect: {
-        ...applyWrapperStyle()
+        ...applyWrapperStyle(),
     },
     formItemSelect_label: {
-        ...applyLabelStyle()
+        ...applyLabelStyle(),
     },
     formItemSelect_span: {
-        ...applySelectSpanStyles()
+        ...applySelectSpanStyles(),
     },
     formItemSelect_input: {
-        ...applySelectInputStyles()
-    }
+        ...applySelectInputStyles(),
+    },
 };
 
 export default styles;

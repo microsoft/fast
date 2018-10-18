@@ -5,7 +5,8 @@ import { FormCategoryClassNameContract } from "../class-name-contracts/";
 import formCategory from "./form-category";
 
 // tslint:disable-next-line
-const dropdownArrow: string = "PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHRpdGxlPmNoZXZyb24tZG93bjwvdGl0bGU+PHBhdGggZD0iTTMwLjUsNy4yOSwzMS45LDguNywxNi4yLDI0LjQuNSw4LjcsMS45LDcuMjlsMTQuMywxNC4zWiIvPjwvc3ZnPg==";
+const dropdownArrow: string =
+    "PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHRpdGxlPmNoZXZyb24tZG93bjwvdGl0bGU+PHBhdGggZD0iTTMwLjUsNy4yOSwzMS45LDguNywxNi4yLDI0LjQuNSw4LjcsMS45LDcuMjlsMTQuMywxNC4zWiIvPjwvc3ZnPg==";
 
 const styles: ComponentStyles<FormCategoryClassNameContract, {}> = {
     formCategory_button: {
@@ -24,10 +25,10 @@ const styles: ComponentStyles<FormCategoryClassNameContract, {}> = {
         "&[aria-expanded='true']": {
             "&::after": {
                 transform: "rotate(180deg)",
-            }
+            },
         },
         "&:hover": {
-            cursor: "pointer"
+            cursor: "pointer",
         },
         "&::after": {
             content: `url('data:image/svg+xml;base64,${dropdownArrow}')`,
@@ -37,16 +38,16 @@ const styles: ComponentStyles<FormCategoryClassNameContract, {}> = {
             top: toPx(16),
             display: "inline-block",
             width: toPx(11),
-            height: toPx(11)
-        }
+            height: toPx(11),
+        },
     },
     formCategory_header: {
         ...applyHeaderStyle(),
         fontSize: toPx(14),
     },
     formCategory__collapsed: {
-        display: "none"
-    }
+        display: "none",
+    },
 };
 
 export default styles;

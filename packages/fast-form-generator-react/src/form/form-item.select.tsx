@@ -9,7 +9,6 @@ import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-
  * Select state interface
  */
 export interface FormItemSelectProps extends FormItemCommon {
-
     /**
      * The select options
      */
@@ -21,8 +20,10 @@ export interface FormItemSelectProps extends FormItemCommon {
  * @extends React.Component
  */
 /* tslint:disable-next-line */
-class FormItemSelect extends React.Component<FormItemSelectProps & ManagedClasses<FormItemSelectClassNameContract>, {}> {
-
+class FormItemSelect extends React.Component<
+    FormItemSelectProps & ManagedClasses<FormItemSelectClassNameContract>,
+    {}
+> {
     /**
      * Renders the component
      */
@@ -31,9 +32,10 @@ class FormItemSelect extends React.Component<FormItemSelectProps & ManagedClasse
             return null;
         }
 
-        const value: any = (typeof this.props.data !== "undefined")
-            ? this.props.data
-            : this.props.default || this.props.options[0];
+        const value: any =
+            typeof this.props.data !== "undefined"
+                ? this.props.data
+                : this.props.default || this.props.options[0];
 
         return (
             <div className={this.props.managedClasses.formItemSelect}>
@@ -57,8 +59,11 @@ class FormItemSelect extends React.Component<FormItemSelectProps & ManagedClasse
      * Handles the onChange of the select element
      */
     private handleChange = (event: React.FormEvent<HTMLSelectElement>): void => {
-        this.props.onChange(this.props.dataLocation, this.parse((event.target as HTMLSelectElement).value));
-    }
+        this.props.onChange(
+            this.props.dataLocation,
+            this.parse((event.target as HTMLSelectElement).value)
+        );
+    };
 
     /**
      * Stringify the select value
@@ -89,11 +94,10 @@ class FormItemSelect extends React.Component<FormItemSelectProps & ManagedClasse
         return this.props.options.map((item: any, index: number) => {
             const stringifiedItem: string = this.stringify(item);
             return (
-                <option
-                    key={index}
-                    value={stringifiedItem}
-                >
-                    {typeof item === "string" || typeof item === "number" ? item : stringifiedItem}
+                <option key={index} value={stringifiedItem}>
+                    {typeof item === "string" || typeof item === "number"
+                        ? item
+                        : stringifiedItem}
                 </option>
             );
         });

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { Typography, TypographyProps, TypographySize, TypographyTag  } from "./index";
+import { Typography, TypographyProps, TypographySize, TypographyTag } from "./index";
 import schema from "@microsoft/fast-components-react-base/dist/typography/typography.schema.json";
 import Documentation from "./.tmp/documentation";
 
@@ -12,65 +12,65 @@ export default {
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
-        children: "Typography"
+        children: "Typography",
     },
     data: [
         {
-            children: testString
+            children: testString,
         },
         {
             tag: TypographyTag.h1,
             size: TypographySize._1,
             children: testString,
-            "data-sketch-symbol": "Typographic size 1"
+            "data-sketch-symbol": "Typographic size 1",
         },
         {
             tag: TypographyTag.h2,
             size: TypographySize._2,
             children: testString,
-            "data-sketch-symbol": "Typographic size 2"
+            "data-sketch-symbol": "Typographic size 2",
         },
         {
             tag: TypographyTag.h3,
             size: TypographySize._3,
             children: testString,
-            "data-sketch-symbol": "Typographic size 3"
+            "data-sketch-symbol": "Typographic size 3",
         },
         {
             tag: TypographyTag.h4,
             size: TypographySize._4,
             children: testString,
-            "data-sketch-symbol": "Typographic size 4"
+            "data-sketch-symbol": "Typographic size 4",
         },
         {
             tag: TypographyTag.h5,
             size: TypographySize._5,
             children: testString,
-            "data-sketch-symbol": "Typographic size 5"
+            "data-sketch-symbol": "Typographic size 5",
         },
         {
             tag: TypographyTag.h6,
             size: TypographySize._6,
             children: testString,
-            "data-sketch-symbol": "Typographic size 6"
+            "data-sketch-symbol": "Typographic size 6",
         },
         {
             tag: TypographyTag.span,
             size: TypographySize._7,
             children: testString,
-            "data-sketch-symbol": "Typographic size 7"
+            "data-sketch-symbol": "Typographic size 7",
         },
         {
             tag: TypographyTag.caption,
             size: TypographySize._8,
             children: testString,
-            "data-sketch-symbol": "Typographic size 8"
+            "data-sketch-symbol": "Typographic size 8",
         },
         {
             tag: TypographyTag.p,
             size: TypographySize._9,
             children: testString,
-            "data-sketch-symbol": "Typographic size 9"
-        }
-    ]
+            "data-sketch-symbol": "Typographic size 9",
+        },
+    ],
 } as ComponentFactoryExample<TypographyProps>;

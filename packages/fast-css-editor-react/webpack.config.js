@@ -1,5 +1,4 @@
 const path = require("path");
-const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const appDir = path.resolve(__dirname, "./app");
@@ -30,9 +29,6 @@ module.exports = {
         ]
     },
     plugins: [
-        new ForkTsCheckerWebpackPlugin({
-            tslint: path.resolve(__dirname, "../../tslint.json")
-        }),
         new HtmlWebpackPlugin({
             contentBase: outDir,
         })

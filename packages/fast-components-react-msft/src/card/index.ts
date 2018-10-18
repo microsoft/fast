@@ -6,7 +6,7 @@ import {
     CardManagedClasses,
     CardProps as BaseCardProps,
     CardTag,
-    CardUnhandledProps
+    CardUnhandledProps,
 } from "@microsoft/fast-components-react-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { CardStyles, DesignSystem } from "@microsoft/fast-components-styles-msft";
@@ -25,5 +25,5 @@ export {
     CardTag,
     CardClassNameContract,
     CardHandledProps,
-    CardUnhandledProps
+    CardUnhandledProps,
 };

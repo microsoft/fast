@@ -16,8 +16,8 @@ export default {
                     onChange: null,
                     getStyles: handleGetStyles,
                 },
-                styles: ".test { color: red; }"
-            }
-        }
-    ]
+                styles: ".test { color: red; }",
+            },
+        },
+    ],
 };

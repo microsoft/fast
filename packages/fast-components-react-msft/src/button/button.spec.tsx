@@ -9,33 +9,25 @@ import {
     ButtonAppearance,
     ButtonHandledProps,
     ButtonProps,
-    ButtonUnhandledProps
+    ButtonUnhandledProps,
 } from "./index";
 
 /*
  * Configure Enzyme
  */
-configure({adapter: new Adapter()});
+configure({ adapter: new Adapter() });
 
 describe("button", (): void => {
     const href: string = "https://www.microsoft.com";
 
     const beforeSlotExample: JSX.Element = (
-        <div
-            className={"slotBefore"}
-            key={"Slot"}
-            slot="before"
-        >
+        <div className={"slotBefore"} key={"Slot"} slot="before">
             Before slot
         </div>
     );
 
     const afterSlotExample: JSX.Element = (
-        <div
-            className={"slotAfter"}
-            key={"afterSlot"}
-            slot="after"
-        >
+        <div className={"slotAfter"} key={"afterSlot"} slot="after">
             After slot
         </div>
     );
@@ -45,89 +37,77 @@ describe("button", (): void => {
     });
 
     test("should not throw if managedClasses are not provided", () => {
-        expect(
-            () => {
-                shallow(<MSFTButton />);
-                shallow(<MSFTButton appearance={ButtonAppearance.justified} />);
-                shallow(<MSFTButton appearance={ButtonAppearance.outline} />);
-                shallow(<MSFTButton appearance={ButtonAppearance.lightweight} />);
-                shallow(<MSFTButton appearance={ButtonAppearance.primary} />);
-            }
-        ).not.toThrow();
+        expect(() => {
+            shallow(<MSFTButton />);
+            shallow(<MSFTButton appearance={ButtonAppearance.justified} />);
+            shallow(<MSFTButton appearance={ButtonAppearance.outline} />);
+            shallow(<MSFTButton appearance={ButtonAppearance.lightweight} />);
+            shallow(<MSFTButton appearance={ButtonAppearance.primary} />);
+        }).not.toThrow();
     });
 
     test("should accept unhandledProps", () => {
         const handledProps: ButtonHandledProps = {
-            href
+            href,
         };
 
         const unhandledProps: ButtonUnhandledProps = {
-            "aria-hidden": true
+            "aria-hidden": true,
         };
 
-        const props: ButtonProps = {...handledProps, ...unhandledProps};
+        const props: ButtonProps = { ...handledProps, ...unhandledProps };
 
-        const rendered: any = mount(
-            <Button {...props}/>
-        );
+        const rendered: any = mount(<Button {...props} />);
 
         expect(rendered.find("a").prop("aria-hidden")).toEqual(true);
     });
 
     /* tslint:disable-next-line */
     test("should apply a 'primary' html class when appearance is primary", () => {
-        const rendered: any = mount(
-            <Button appearance={ButtonAppearance.primary}/>
-        );
+        const rendered: any = mount(<Button appearance={ButtonAppearance.primary} />);
 
         expect(rendered.find("button").prop("className")).toContain("button__primary");
     });
 
     /* tslint:disable-next-line */
     test("should apply an 'outline' html class when appearance is outline", () => {
-        const rendered: any = mount(
-            <Button appearance={ButtonAppearance.outline}/>
-        );
+        const rendered: any = mount(<Button appearance={ButtonAppearance.outline} />);
 
         expect(rendered.find("button").prop("className")).toContain("button__outline");
     });
 
     /* tslint:disable-next-line */
     test("should apply a 'lightweight' html class when appearance is lightweight", () => {
-        const rendered: any = mount(
-            <Button appearance={ButtonAppearance.lightweight}/>
-        );
+        const rendered: any = mount(<Button appearance={ButtonAppearance.lightweight} />);
 
-        expect(rendered.find("button").prop("className")).toContain("button__lightweight");
+        expect(rendered.find("button").prop("className")).toContain(
+            "button__lightweight"
+        );
     });
 
     test("should apply a 'justified' html class when appearance is justified", () => {
-        const rendered: any = mount(
-            <Button appearance={ButtonAppearance.justified}/>
-        );
+        const rendered: any = mount(<Button appearance={ButtonAppearance.justified} />);
 
         expect(rendered.find("button").prop("className")).toContain("button__justified");
     });
 
     test("should set a custom class name when passed", () => {
         const customClassNameString: string = "customClassName";
-        const rendered: any = mount(
-            <Button className={customClassNameString} />
-        );
+        const rendered: any = mount(<Button className={customClassNameString} />);
 
-        expect(rendered.find("button").prop("className")).toContain(customClassNameString);
+        expect(rendered.find("button").prop("className")).toContain(
+            customClassNameString
+        );
     });
 
     test("should add a child element with the slot prop set to 'before' into the before slot location", () => {
         const props: ButtonHandledProps = {
             appearance: ButtonAppearance.lightweight,
             href: "#",
-            children: ["foo", beforeSlotExample]
+            children: ["foo", beforeSlotExample],
         };
 
-        const rendered: any = mount(
-            <MSFTButton {...props} />
-        );
+        const rendered: any = mount(<MSFTButton {...props} />);
 
         expect(rendered.instance().props.children[1].props.slot).toBe("before");
         expect(rendered.find("div.slotBefore").length).toBe(1);
@@ -137,12 +117,10 @@ describe("button", (): void => {
         const props: ButtonHandledProps = {
             appearance: ButtonAppearance.lightweight,
             href: "#",
-            children: ["foo", afterSlotExample]
+            children: ["foo", afterSlotExample],
         };
 
-        const rendered: any = mount(
-            <MSFTButton {...props} />
-        );
+        const rendered: any = mount(<MSFTButton {...props} />);
 
         expect(rendered.instance().props.children[1].props.slot).toBe("after");
         expect(rendered.find("div.slotAfter").length).toBe(1);

@@ -13,7 +13,8 @@ export default class AnyOf extends React.Component<AnyOfProps, {}> {
     public render(): JSX.Element {
         return (
             <span>
-                {this.props.number}{this.props.string}
+                {this.props.number}
+                {this.props.string}
             </span>
         );
     }

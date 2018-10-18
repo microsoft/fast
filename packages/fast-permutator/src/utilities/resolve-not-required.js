@@ -1,8 +1,8 @@
-const clone = require('lodash-es').cloneDeep;
-const get = require('lodash-es').get;
-const unset = require('lodash-es').unset;
+const clone = require("lodash-es").cloneDeep;
+const get = require("lodash-es").get;
+const unset = require("lodash-es").unset;
 
-const getDeepPropLocations = require('./get-deep-prop-locations');
+const getDeepPropLocations = require("./get-deep-prop-locations");
 
 /**
  * Removes any options that are not required
@@ -10,9 +10,9 @@ const getDeepPropLocations = require('./get-deep-prop-locations');
  * @param {object} schema - The schema.
  * @return {array} - A function which returns schema objects.
  */
-module.exports = function (schema) {
+module.exports = function(schema) {
     let schemaClone = clone(schema);
-    const notLocations = getDeepPropLocations(schemaClone, 'not');
+    const notLocations = getDeepPropLocations(schemaClone, "not");
 
     schemaClone = resolveNotRequired(schemaClone, notLocations);
 
