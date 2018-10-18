@@ -22,8 +22,13 @@ import { Subtract } from "utility-types";
 const Typography = manageJss(TypographyStyles)(BaseTypography);
 type Typography = typeof Typography;
 
-interface TypographyHandledProps extends Subtract<BaseTypographyHandledProps, TypographyManagedClasses> {}
-type TypographyProps = ManagedJSSProps<BaseTypographyProps, TypographyClassNameContract, DesignSystem>;
+interface TypographyHandledProps
+    extends Subtract<BaseTypographyHandledProps, TypographyManagedClasses> {}
+type TypographyProps = ManagedJSSProps<
+    BaseTypographyProps,
+    TypographyClassNameContract,
+    DesignSystem
+>;
 
 export {
     TypographyClassNameContract,

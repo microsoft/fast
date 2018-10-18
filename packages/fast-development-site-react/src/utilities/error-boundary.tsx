@@ -1,7 +1,11 @@
 import * as React from "react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { DevSiteDesignSystem } from "../../src/components/design-system";
-import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, {
+    ComponentStyles,
+    ManagedClasses,
+    ManagedJSSProps
+} from "@microsoft/fast-jss-manager-react";
 
 /* tslint:disable:no-empty-interface */
 export interface ErrorBoundaryProps {}
@@ -36,7 +40,10 @@ const styles: ComponentStyles<ErrorBoundaryManagedClasses, DevSiteDesignSystem> 
     }
 };
 
-class ErrorBoundary extends React.Component<ErrorBoundaryProps & ManagedClasses<ErrorBoundaryManagedClasses>, ErrorBoundaryState> {
+class ErrorBoundary extends React.Component<
+    ErrorBoundaryProps & ManagedClasses<ErrorBoundaryManagedClasses>,
+    ErrorBoundaryState
+> {
     constructor(props: ErrorBoundaryProps & ManagedClasses<ErrorBoundaryManagedClasses>) {
         super(props);
 
@@ -59,8 +66,12 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps & ManagedClasses<
         if (this.state.hasError && this.state.error) {
             return (
                 <div className={this.props.managedClasses.errorBoundary}>
-                    <p className={this.props.managedClasses.errorBoundary_notification}>Something went wrong.</p>
-                    <p className={this.props.managedClasses.errorBoundary_error}>{`${this.state.error}`}</p>
+                    <p className={this.props.managedClasses.errorBoundary_notification}>
+                        Something went wrong.
+                    </p>
+                    <p className={this.props.managedClasses.errorBoundary_error}>{`${
+                        this.state.error
+                    }`}</p>
                 </div>
             );
         }

@@ -23,8 +23,11 @@ const ButtonStyles: ComponentStyles<TestButtonClassNameContract, DesignSystem> =
 };
 
 /* tslint:disable-next-line */
-class Button extends React.Component<ButtonProps & ManagedClasses<TestButtonClassNameContract>, React.HTMLAttributes<HTMLButtonElement>, {}> {
-
+class Button extends React.Component<
+    ButtonProps & ManagedClasses<TestButtonClassNameContract>,
+    React.HTMLAttributes<HTMLButtonElement>,
+    {}
+> {
     public render(): JSX.Element {
         return (
             <button className={this.props.managedClasses.button}>

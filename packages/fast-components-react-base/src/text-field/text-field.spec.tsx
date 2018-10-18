@@ -3,7 +3,10 @@ import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, render, shallow } from "enzyme";
 import examples from "./examples.data";
-import { generateSnapshots, SnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
+import {
+    generateSnapshots,
+    SnapshotTestSuite
+} from "@microsoft/fast-jest-snapshots-react";
 import TextField, {
     TextFieldClassNameContract,
     TextFieldHandledProps,
@@ -20,7 +23,7 @@ const managedClasses: TextFieldClassNameContract = {
 /*
  * Configure Enzyme
  */
-configure({adapter: new Adapter()});
+configure({ adapter: new Adapter() });
 
 describe("text-field snapshot", (): void => {
     generateSnapshots(examples as SnapshotTestSuite<TextFieldProps>);
@@ -32,11 +35,9 @@ describe("text-field", (): void => {
     });
 
     test("should not throw if managedClasses are not provided", () => {
-        expect(
-            () => {
-                shallow(<TextField />);
-            }
-        ).not.toThrow();
+        expect(() => {
+            shallow(<TextField />);
+        }).not.toThrow();
     });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
@@ -48,19 +49,15 @@ describe("text-field", (): void => {
         const unhandledProps: TextFieldUnhandledProps = {
             "aria-hidden": true
         };
-        const props: TextFieldProps = {...handledProps, ...unhandledProps};
-        const rendered: any = shallow(
-            <TextField {...props} />
-        );
+        const props: TextFieldProps = { ...handledProps, ...unhandledProps };
+        const rendered: any = shallow(<TextField {...props} />);
 
         expect(rendered.prop("aria-hidden")).not.toBe(undefined);
         expect(rendered.prop("aria-hidden")).toEqual(true);
     });
 
     test("should set a default type of `text` if no `type` prop is passed", () => {
-        const rendered: any = shallow(
-            <TextField managedClasses={managedClasses} />
-        );
+        const rendered: any = shallow(<TextField managedClasses={managedClasses} />);
 
         expect(rendered.prop("type")).not.toBe(undefined);
         expect(rendered.prop("type")).toEqual(TextFieldType.text);
@@ -76,9 +73,7 @@ describe("text-field", (): void => {
     });
 
     test("should NOT render with a disabled value if no `disabled` prop is passed", () => {
-        const rendered: any = shallow(
-            <TextField managedClasses={managedClasses} />
-        );
+        const rendered: any = shallow(<TextField managedClasses={managedClasses} />);
 
         expect(rendered.prop("disabled")).toBe(null);
     });
@@ -92,9 +87,7 @@ describe("text-field", (): void => {
     });
 
     test("should NOT render with a placeholder value if no `placeholder` prop is passed", () => {
-        const rendered: any = shallow(
-            <TextField managedClasses={managedClasses} />
-        );
+        const rendered: any = shallow(<TextField managedClasses={managedClasses} />);
 
         expect(rendered.prop("placeholder")).toBe(null);
     });

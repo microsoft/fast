@@ -161,7 +161,11 @@ export default abstract class Animate {
         }
     }
 
-    constructor(element: HTMLElement, options?: AnimateConfig, effectTiming?: EffectTiming) {
+    constructor(
+        element: HTMLElement,
+        options?: AnimateConfig,
+        effectTiming?: EffectTiming
+    ) {
         this.animationTarget = element;
 
         if (Boolean(effectTiming)) {
@@ -187,7 +191,7 @@ export default abstract class Animate {
     public play = (): void => {
         this.ensureAnimationObjectExists();
         this.animation.play();
-    }
+    };
 
     /**
      * pauses the animation
@@ -195,7 +199,7 @@ export default abstract class Animate {
     public pause = (): void => {
         this.ensureAnimationObjectExists();
         this.animation.pause();
-    }
+    };
 
     /**
      * finishes the animation
@@ -203,7 +207,7 @@ export default abstract class Animate {
     public finish = (): void => {
         this.ensureAnimationObjectExists();
         this.animation.finish();
-    }
+    };
 
     /**
      * cancels the animation
@@ -211,7 +215,7 @@ export default abstract class Animate {
     public cancel = (): void => {
         this.ensureAnimationObjectExists();
         this.animation.cancel();
-    }
+    };
 
     /**
      * reverses an animation
@@ -219,14 +223,14 @@ export default abstract class Animate {
     public reverse = (): void => {
         this.ensureAnimationObjectExists();
         this.animation.reverse();
-    }
+    };
 
     /**
      * adds a set of keyframes to set of animation keyframes the animation should execute
      */
     public addKeyframes = (keyframes: Array<Partial<Keyframe>>): void => {
         this._keyframes.push(keyframes as Keyframe[]);
-    }
+    };
 
     /**
      * Ensure animation object
@@ -257,9 +261,14 @@ export default abstract class Animate {
     private getPropertiesToAnimate(): string[] {
         return Object.keys(Animate.propertyMap).filter((property: string) => {
             // Filter out all properties that don't need to be set based on our options
-            return Animate.propertyMap[property].reduce((hasProperty: boolean, animationProp: string) => {
-                return typeof this.options[animationProp] !== "undefined" || hasProperty;
-            }, false);
+            return Animate.propertyMap[property].reduce(
+                (hasProperty: boolean, animationProp: string) => {
+                    return (
+                        typeof this.options[animationProp] !== "undefined" || hasProperty
+                    );
+                },
+                false
+            );
         });
     }
 
@@ -291,7 +300,9 @@ export default abstract class Animate {
                             }
 
                             // If this is the scaleX index or the scaleY index, return the coerced value
-                            return index === 0 || index === 3 ? coercedReturn : matchedValue;
+                            return index === 0 || index === 3
+                                ? coercedReturn
+                                : matchedValue;
                         });
 
                     return `matrix(${normalizedValues.join(",")})`;
@@ -309,16 +320,24 @@ export default abstract class Animate {
      * Returns the initial values for all properties being animated
      */
     private getInitialKeyframeValues(): Keyframe {
-        if (!(this.animationTarget instanceof HTMLElement) || typeof window === "undefined") {
+        if (
+            !(this.animationTarget instanceof HTMLElement) ||
+            typeof window === "undefined"
+        ) {
             return {} as Keyframe;
         }
 
         const animatedProperties: string[] = this.getPropertiesToAnimate();
-        const computedStyle: CSSStyleDeclaration = window.getComputedStyle(this.animationTarget);
-        const initialKeyframeValues: Partial<Keyframe>  = {};
+        const computedStyle: CSSStyleDeclaration = window.getComputedStyle(
+            this.animationTarget
+        );
+        const initialKeyframeValues: Partial<Keyframe> = {};
 
         animatedProperties.forEach((property: string) => {
-            initialKeyframeValues[property] = this.normalizeInitialValue(property, computedStyle[property]);
+            initialKeyframeValues[property] = this.normalizeInitialValue(
+                property,
+                computedStyle[property]
+            );
         });
 
         return initialKeyframeValues as Keyframe;
@@ -327,7 +346,10 @@ export default abstract class Animate {
     /**
      * Formats a config option into a transform function
      */
-    private formatTransformFunction(functionType: string, value: string | number | number[]): string {
+    private formatTransformFunction(
+        functionType: string,
+        value: string | number | number[]
+    ): string {
         // If `functionType` can't be converted into a transform function, just return empty string
         if (Animate.propertyMap.transform.indexOf(functionType) === -1) {
             return "";
@@ -337,7 +359,8 @@ export default abstract class Animate {
             case "x":
             case "y":
                 functionType = `translate${functionType.toUpperCase()}`;
-                value = typeof value === "number" ? value = this.pixelify(value) : value;
+                value =
+                    typeof value === "number" ? (value = this.pixelify(value)) : value;
                 break;
             case "rotate":
                 value = `${value.toString()}deg`;
@@ -371,27 +394,32 @@ export default abstract class Animate {
         const keyframeValues: Partial<Keyframe> = {};
 
         animateProperties.forEach((property: string) => {
-            keyframeValues[property] = Animate.propertyMap[property].map((option: string): string => {
-                const value: string | number = this.options[option];
+            keyframeValues[property] = Animate.propertyMap[property]
+                .map(
+                    (option: string): string => {
+                        const value: string | number = this.options[option];
 
-                if (typeof value === "undefined") {
-                    return null;
-                }
+                        if (typeof value === "undefined") {
+                            return null;
+                        }
 
-                switch (option) {
-                    case "opacity":
-                        return value.toString();
-                    case "top":
-                    case "right":
-                    case "bottom":
-                    case "left":
-                        return typeof value === "number" ? this.pixelify(value) : value;
-                    default:
-                        return this.formatTransformFunction(option, value);
-                }
-            })
-            .filter((option: string) => Boolean(option))
-            .join(" ");
+                        switch (option) {
+                            case "opacity":
+                                return value.toString();
+                            case "top":
+                            case "right":
+                            case "bottom":
+                            case "left":
+                                return typeof value === "number"
+                                    ? this.pixelify(value)
+                                    : value;
+                            default:
+                                return this.formatTransformFunction(option, value);
+                        }
+                    }
+                )
+                .filter((option: string) => Boolean(option))
+                .join(" ");
         });
 
         return keyframeValues as Keyframe;
@@ -413,18 +441,20 @@ export default abstract class Animate {
      * Sorts an array of offset keys in ascending order
      */
     private sortOffsets(offsets: string[]): string[] {
-        return offsets.sort((a: string, b: string): number => {
-            const A: number = parseFloat(a);
-            const B: number = parseFloat(b);
+        return offsets.sort(
+            (a: string, b: string): number => {
+                const A: number = parseFloat(a);
+                const B: number = parseFloat(b);
 
-            if (A < B) {
-                return -1;
-            } else if (A > B) {
-                return 1;
-            } else {
-                return 0;
+                if (A < B) {
+                    return -1;
+                } else if (A > B) {
+                    return 1;
+                } else {
+                    return 0;
+                }
             }
-        });
+        );
     }
 
     /**
@@ -445,7 +475,10 @@ export default abstract class Animate {
 
                 const offsetKey: string = offset.toString();
 
-                frames[offsetKey] = typeof frames[offsetKey] === "undefined" ? keyframe : Object.assign(frames[offsetKey], keyframe);
+                frames[offsetKey] =
+                    typeof frames[offsetKey] === "undefined"
+                        ? keyframe
+                        : Object.assign(frames[offsetKey], keyframe);
             });
         });
 
@@ -460,13 +493,19 @@ export default abstract class Animate {
     public get keyframes(): Keyframe[] {
         const optionKeyframes: Keyframe[] = this.getOptionKeyframes();
 
-        return this.consolidateKeyframes(this._keyframes.concat([this.getOptionKeyframes()]));
+        return this.consolidateKeyframes(
+            this._keyframes.concat([this.getOptionKeyframes()])
+        );
     }
 
     /**
      * Returns the key frame effect object
      */
     public get keyframeEffect(): KeyframeEffect {
-        return new KeyframeEffect(this.animationTarget, this.keyframes, this.effectTiming);
+        return new KeyframeEffect(
+            this.animationTarget,
+            this.keyframes,
+            this.effectTiming
+        );
     }
 }

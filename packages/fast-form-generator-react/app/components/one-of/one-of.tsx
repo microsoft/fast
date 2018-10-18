@@ -13,7 +13,8 @@ export default class OneOf extends React.Component<OneOfProps, {}> {
     public render(): JSX.Element {
         return (
             <span>
-                {this.props.number}{this.props.string}
+                {this.props.number}
+                {this.props.string}
             </span>
         );
     }

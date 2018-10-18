@@ -1,5 +1,8 @@
 import * as React from "react";
-import { ManagedClasses, ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import {
+    ManagedClasses,
+    ToggleClassNameContract
+} from "@microsoft/fast-components-class-name-contracts-base";
 
 export interface ToggleManagedClasses extends ManagedClasses<ToggleClassNameContract> {}
 export interface ToggleUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}

@@ -1,5 +1,10 @@
 import * as React from "react";
-import Card, { CardHandledProps, CardManagedClasses, CardProps, CardUnhandledProps } from "./card";
+import Card, {
+    CardHandledProps,
+    CardManagedClasses,
+    CardProps,
+    CardUnhandledProps
+} from "./card";
 import schema from "./card.schema.json";
 import ImageSchema from "../image/image.schema.json";
 import Documentation from "./.tmp/documentation";
@@ -8,7 +13,7 @@ import { ComponentFactoryExample } from "@microsoft/fast-development-site-react"
 const managedClasses: CardManagedClasses = {
     managedClasses: {
         card: "card"
-    },
+    }
 };
 
 const examples: ComponentFactoryExample<CardProps> = {

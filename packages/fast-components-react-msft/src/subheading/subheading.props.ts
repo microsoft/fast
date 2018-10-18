@@ -1,5 +1,8 @@
 import * as React from "react";
-import { ManagedClasses, SubheadingClassNameContract  } from "@microsoft/fast-components-class-name-contracts-msft";
+import {
+    ManagedClasses,
+    SubheadingClassNameContract
+} from "@microsoft/fast-components-class-name-contracts-msft";
 
 export enum SubheadingSize {
     _1 = 1,
@@ -20,9 +23,9 @@ export enum SubheadingTag {
     p = "p"
 }
 
-export interface SubheadingManagedClasses extends ManagedClasses<SubheadingClassNameContract> {}
+export interface SubheadingManagedClasses
+    extends ManagedClasses<SubheadingClassNameContract> {}
 export interface SubheadingHandledProps extends SubheadingManagedClasses {
-
     /**
      * The subheading content
      */
@@ -39,5 +42,6 @@ export interface SubheadingHandledProps extends SubheadingManagedClasses {
     tag?: SubheadingTag;
 }
 
-export interface SubheadingUnhandledProps extends React.HTMLAttributes<HTMLHeadingElement | HTMLParagraphElement> {}
+export interface SubheadingUnhandledProps
+    extends React.HTMLAttributes<HTMLHeadingElement | HTMLParagraphElement> {}
 export type SubheadingProps = SubheadingHandledProps & SubheadingUnhandledProps;

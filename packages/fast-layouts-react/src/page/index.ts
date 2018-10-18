@@ -18,10 +18,4 @@ type Page = typeof Page;
 interface PageHandledProps extends Subtract<BasePageHandledProps, PageManagedClasses> {}
 type PageProps = ManagedJSSProps<BasePageProps, PageClassNamesContract, undefined>;
 
-export {
-    Page,
-    PageProps,
-    PageHandledProps,
-    PageUnhandledProps,
-    PageClassNamesContract,
-};
+export { Page, PageProps, PageHandledProps, PageUnhandledProps, PageClassNamesContract };

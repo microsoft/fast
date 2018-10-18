@@ -29,7 +29,6 @@ export interface ViewerState {
 }
 
 export default class Viewer extends React.Component<ViewerProps, ViewerState> {
-
     private rootElement: HTMLElement;
 
     private rootStyleElement: HTMLElement;
@@ -92,16 +91,19 @@ export default class Viewer extends React.Component<ViewerProps, ViewerState> {
 
         jss.setup(preset());
 
-        this.stylesheet = jss.createStyleSheet(this.styles, {link: true}).attach();
+        this.stylesheet = jss.createStyleSheet(this.styles, { link: true }).attach();
     }
 
-    public shouldComponentUpdate(nextProps: ViewerProps, nextState: ViewerState): boolean {
+    public shouldComponentUpdate(
+        nextProps: ViewerProps,
+        nextState: ViewerState
+    ): boolean {
         if (
-            nextProps.styles !== this.props.styles
-            || nextProps.data !== this.props.data
-            || nextProps.component !== this.props.component
-            || nextProps.config !== this.props.config
-            || nextState.iframeHeight !== this.state.iframeHeight
+            nextProps.styles !== this.props.styles ||
+            nextProps.data !== this.props.data ||
+            nextProps.component !== this.props.component ||
+            nextProps.config !== this.props.config ||
+            nextState.iframeHeight !== this.state.iframeHeight
         ) {
             return true;
         }
@@ -137,11 +139,15 @@ export default class Viewer extends React.Component<ViewerProps, ViewerState> {
     }
 
     public getStyleElement(): string {
-        return ReactDOMServer.renderToStaticMarkup(<style type="text/css">{this.props.styles}</style>);
+        return ReactDOMServer.renderToStaticMarkup(
+            <style type="text/css">{this.props.styles}</style>
+        );
     }
 
     public getContentElement(): string {
-        return ReactDOMServer.renderToStaticMarkup(<this.props.component {...this.props.data} />);
+        return ReactDOMServer.renderToStaticMarkup(
+            <this.props.component {...this.props.data} />
+        );
     }
 
     public updateIFrameContents = (): void => {
@@ -155,7 +161,8 @@ export default class Viewer extends React.Component<ViewerProps, ViewerState> {
             );
             ReactDOM.render(
                 <React.Fragment>
-                    {this.props.styles + "html { overflow: hidden } body { overflow: auto }"}
+                    {this.props.styles +
+                        "html { overflow: hidden } body { overflow: auto }"}
                 </React.Fragment>,
                 this.rootStyleElement,
                 () => {
@@ -163,18 +170,22 @@ export default class Viewer extends React.Component<ViewerProps, ViewerState> {
                 }
             );
         }
-    }
+    };
 
     public resetHeight = (): void => {
         this.setState({
-            iframeHeight: `${this.getHeight(this.iframe.contentWindow.document.body.scrollHeight)}px`
+            iframeHeight: `${this.getHeight(
+                this.iframe.contentWindow.document.body.scrollHeight
+            )}px`
         });
-    }
+    };
 
     public checkIFrameAssetsLoaded(): void {
         if (this.iframe) {
             const iframeImages: HTMLCollection = this.iframe.contentDocument.images;
-            const iframeLinks: HTMLCollectionOf<HTMLLinkElement> = this.iframe.contentDocument.getElementsByTagName("link");
+            const iframeLinks: HTMLCollectionOf<
+                HTMLLinkElement
+            > = this.iframe.contentDocument.getElementsByTagName("link");
 
             this.addLoadEventListenerToItems(iframeImages);
             this.addLoadEventListenerToItems(iframeLinks);
@@ -184,14 +195,20 @@ export default class Viewer extends React.Component<ViewerProps, ViewerState> {
     }
 
     public getHeight(totalHeight: number): number {
-        let autoHeight: number = void(0);
+        let autoHeight: number = void 0;
         let minHeight: number = 0;
         let maxHeight: number = Infinity;
 
         if (get(this.props, "config.height")) {
-            autoHeight = this.props.config.height.auto ? this.props.config.height.auto : autoHeight;
-            minHeight = this.props.config.height.min ? this.props.config.height.min : minHeight;
-            maxHeight = this.props.config.height.max ? this.props.config.height.max : maxHeight;
+            autoHeight = this.props.config.height.auto
+                ? this.props.config.height.auto
+                : autoHeight;
+            minHeight = this.props.config.height.min
+                ? this.props.config.height.min
+                : minHeight;
+            maxHeight = this.props.config.height.max
+                ? this.props.config.height.max
+                : maxHeight;
         }
 
         if (typeof autoHeight === "number") {
@@ -234,9 +251,11 @@ export default class Viewer extends React.Component<ViewerProps, ViewerState> {
             <div key={"viewer-main"}>
                 <base target="_blank" />
                 <iframe
-                    ref={(iframe: HTMLIFrameElement): void => { this.iframe = iframe; }}
+                    ref={(iframe: HTMLIFrameElement): void => {
+                        this.iframe = iframe;
+                    }}
                     className={this.stylesheet.classes.iframe}
-                    style={{height: this.state.iframeHeight}}
+                    style={{ height: this.state.iframeHeight }}
                 >
                     Your browser does not support iframes.
                 </iframe>
@@ -252,8 +271,14 @@ export default class Viewer extends React.Component<ViewerProps, ViewerState> {
         }
     }
 
-    private addLoadEventListenerToItems(items: HTMLCollection | NodeListOf<HTMLLinkElement>): void {
-        for (let i: number = 0, itemsLength: number = items.length; i < itemsLength; i++) {
+    private addLoadEventListenerToItems(
+        items: HTMLCollection | NodeListOf<HTMLLinkElement>
+    ): void {
+        for (
+            let i: number = 0, itemsLength: number = items.length;
+            i < itemsLength;
+            i++
+        ) {
             items[i].addEventListener("load", this.resetHeight);
         }
     }

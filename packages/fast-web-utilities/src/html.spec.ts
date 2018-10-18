@@ -9,7 +9,7 @@ describe("getClientRectWithMargin", () => {
         top: 0,
         left: 0,
         bottom: 0,
-        right: 0,
+        right: 0
     };
 
     beforeEach(() => {
@@ -32,7 +32,10 @@ describe("getClientRectWithMargin", () => {
         const expectedWidth: number = mockWidth + 40;
         const expectedHeight: number = mockHeight + 20;
 
-        const expectedRect: ClientRect | DOMRect = Object.assign({}, mockRect, { width: expectedWidth, height: expectedHeight});
+        const expectedRect: ClientRect | DOMRect = Object.assign({}, mockRect, {
+            width: expectedWidth,
+            height: expectedHeight
+        });
 
         expect(getClientRectWithMargin(element)).toEqual(expectedRect);
     });
@@ -42,7 +45,9 @@ describe("convertStylePropertyPixelsToNumber", () => {
     test("should correctly manage undefined and null values", () => {
         expect(() => convertStylePropertyPixelsToNumber(null, null)).not.toThrow();
         expect(() => convertStylePropertyPixelsToNumber(undefined, null)).not.toThrow();
-        expect(() => convertStylePropertyPixelsToNumber(undefined, undefined)).not.toThrow();
+        expect(() =>
+            convertStylePropertyPixelsToNumber(undefined, undefined)
+        ).not.toThrow();
     });
 
     test("should correctly convert an element's computed style property pixel value and return a number", () => {
@@ -52,9 +57,29 @@ describe("convertStylePropertyPixelsToNumber", () => {
 
         const element: HTMLElement = document.getElementById("element");
 
-        expect(convertStylePropertyPixelsToNumber(window.getComputedStyle(element), "margin-top")).toBe(20);
-        expect(convertStylePropertyPixelsToNumber(window.getComputedStyle(element), "margin-bottom")).toBe(12);
-        expect(convertStylePropertyPixelsToNumber(window.getComputedStyle(element), "margin-left")).toBe(8);
-        expect(convertStylePropertyPixelsToNumber(window.getComputedStyle(element), "margin-right")).toBe(5);
+        expect(
+            convertStylePropertyPixelsToNumber(
+                window.getComputedStyle(element),
+                "margin-top"
+            )
+        ).toBe(20);
+        expect(
+            convertStylePropertyPixelsToNumber(
+                window.getComputedStyle(element),
+                "margin-bottom"
+            )
+        ).toBe(12);
+        expect(
+            convertStylePropertyPixelsToNumber(
+                window.getComputedStyle(element),
+                "margin-left"
+            )
+        ).toBe(8);
+        expect(
+            convertStylePropertyPixelsToNumber(
+                window.getComputedStyle(element),
+                "margin-right"
+            )
+        ).toBe(5);
     });
 });

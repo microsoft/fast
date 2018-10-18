@@ -34,10 +34,18 @@ export function getClientRectWithMargin(element: HTMLElement): ClientRectWithMar
     return clone;
 }
 
-export function convertStylePropertyPixelsToNumber(computedStyle: CSSStyleDeclaration, property: string): number {
+export function convertStylePropertyPixelsToNumber(
+    computedStyle: CSSStyleDeclaration,
+    property: string
+): number {
     if (!computedStyle || !property) {
         return;
     }
 
-    return parseInt(computedStyle.getPropertyValue(property).substring(0, computedStyle.getPropertyValue(property).length - 2), 10);
+    return parseInt(
+        computedStyle
+            .getPropertyValue(property)
+            .substring(0, computedStyle.getPropertyValue(property).length - 2),
+        10
+    );
 }

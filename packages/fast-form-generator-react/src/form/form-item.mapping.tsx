@@ -10,13 +10,8 @@ import FormItemTheme from "./form-item.theme";
  * @extends React.Component
  */
 class FormItem extends React.Component<FormItemComponentMappingToProperyNamesProps, {}> {
-
     public render(): JSX.Element {
-        return (
-            <div>
-                {this.renderCustomLayout()}
-            </div>
-        );
+        return <div>{this.renderCustomLayout()}</div>;
     }
 
     private renderCustomLayout(): JSX.Element {

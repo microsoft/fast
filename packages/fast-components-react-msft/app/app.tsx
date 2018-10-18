@@ -15,8 +15,14 @@ import Site, {
     Theme
 } from "@microsoft/fast-development-site-react";
 import manageJss, { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
-import { DesignSystem, DesignSystemDefaults } from "@microsoft/fast-components-styles-msft";
-import { HypertextClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import {
+    DesignSystem,
+    DesignSystemDefaults
+} from "@microsoft/fast-components-styles-msft";
+import {
+    HypertextClassNameContract,
+    ManagedClasses
+} from "@microsoft/fast-components-class-name-contracts-base";
 import { glyphBuildingblocks } from "@microsoft/fast-glyphs-msft";
 import * as React from "react";
 import { Direction } from "@microsoft/fast-application-utilities";
@@ -29,7 +35,9 @@ import { Label } from "../src/label";
 /* tslint:disable-next-line */
 const sketchDesignKit = require("./fast-dna-msft-design-kit.sketch");
 
-const formChildOptions: FormChildOption[] = [reactHTMLElementExamples].concat(formChildFromExamplesFactory(examples));
+const formChildOptions: FormChildOption[] = [reactHTMLElementExamples].concat(
+    formChildFromExamplesFactory(examples)
+);
 
 const hypertextStyles: ComponentStyles<HypertextClassNameContract, undefined> = {
     hypertext: {
@@ -54,9 +62,17 @@ export interface AppState extends ColorConfig {
 
 export default class App extends React.Component<{}, AppState> {
     private themes: Theme[] = [
-        {id: ThemeName.light, displayName: ThemeName.light, background: DesignSystemDefaults.backgroundColor},
-        {id: ThemeName.dark, displayName: ThemeName.dark, background: DesignSystemDefaults.foregroundColor},
-        {id: ThemeName.custom, displayName: ThemeName.custom}
+        {
+            id: ThemeName.light,
+            displayName: ThemeName.light,
+            background: DesignSystemDefaults.backgroundColor
+        },
+        {
+            id: ThemeName.dark,
+            displayName: ThemeName.dark,
+            background: DesignSystemDefaults.foregroundColor
+        },
+        { id: ThemeName.custom, displayName: ThemeName.custom }
     ];
 
     constructor(props: {}) {
@@ -84,10 +100,7 @@ export default class App extends React.Component<{}, AppState> {
             >
                 <SiteMenu slot={"header"}>
                     <SiteMenuItem>
-                        <Hypertext
-                            jssStyleSheet={hypertextStyles}
-                            href={sketchDesignKit}
-                        >
+                        <Hypertext jssStyleSheet={hypertextStyles} href={sketchDesignKit}>
                             Download design kit - sketch
                         </Hypertext>
                     </SiteMenuItem>
@@ -97,19 +110,29 @@ export default class App extends React.Component<{}, AppState> {
                 </SiteTitle>
                 <SiteCategory slot={"category"} name={"Building blocks"}>
                     <SiteCategoryIcon slot="category-icon">
-                        <div dangerouslySetInnerHTML={{__html: glyphBuildingblocks}} />
+                        <div
+                            dangerouslySetInnerHTML={{
+                                __html: glyphBuildingblocks
+                            }}
+                        />
                     </SiteCategoryIcon>
                 </SiteCategory>
                 <SiteCategory slot={"category"} name={"Components"}>
-                    {this.sortExamples(componentFactory(examples, {...this.generateDesignSystem()}))}
+                    {this.sortExamples(
+                        componentFactory(examples, {
+                            ...this.generateDesignSystem()
+                        })
+                    )}
                 </SiteCategory>
                 <div slot={ShellSlot.infoBar}>
-                    <div style={{display: "flex", alignItems: "center", height: "100%"}}>
-                        <Label
-                            style={{marginRight: "8px"}}
-                        >
-                            density
-                        </Label>
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            height: "100%"
+                        }}
+                    >
+                        <Label style={{ marginRight: "8px" }}>density</Label>
                         <input
                             type="range"
                             name="density"
@@ -131,9 +154,11 @@ export default class App extends React.Component<{}, AppState> {
     }
 
     private getThemeById(id: ThemeName): Theme {
-        return this.themes.find((theme: Theme): boolean => {
-            return theme.id === id;
-        });
+        return this.themes.find(
+            (theme: Theme): boolean => {
+                return theme.id === id;
+            }
+        );
     }
 
     private generateDesignSystem(): DesignSystem {
@@ -149,21 +174,30 @@ export default class App extends React.Component<{}, AppState> {
     }
 
     private handleUpdateDirection = (direction: Direction): void => {
-        const newDir: Direction = this.state.direction === Direction.ltr ? Direction.rtl : Direction.ltr;
+        const newDir: Direction =
+            this.state.direction === Direction.ltr ? Direction.rtl : Direction.ltr;
 
-        if (this.state.direction === newDir) { return; }
+        if (this.state.direction === newDir) {
+            return;
+        }
 
         this.setState({
             direction: newDir
         });
-    }
+    };
 
     private handleUpdateTheme = (theme: ThemeName): void => {
         if (theme !== ThemeName.custom) {
             this.setState({
                 theme,
-                foregroundColor: theme === ThemeName.dark ? DesignSystemDefaults.backgroundColor : DesignSystemDefaults.foregroundColor,
-                backgroundColor: theme === ThemeName.dark ? DesignSystemDefaults.foregroundColor : DesignSystemDefaults.backgroundColor
+                foregroundColor:
+                    theme === ThemeName.dark
+                        ? DesignSystemDefaults.backgroundColor
+                        : DesignSystemDefaults.foregroundColor,
+                backgroundColor:
+                    theme === ThemeName.dark
+                        ? DesignSystemDefaults.foregroundColor
+                        : DesignSystemDefaults.backgroundColor
             });
         } else {
             this.setCustomThemeBackground(this.state.backgroundColor);
@@ -171,35 +205,42 @@ export default class App extends React.Component<{}, AppState> {
                 theme
             });
         }
-    }
+    };
 
     /**
      * Handles any changes made by the user to the color picker inputs
      */
     private handleColorUpdate = (config: ColorConfig): void => {
         this.setCustomThemeBackground(config.backgroundColor);
-        const updates: Partial<AppState> = {...config};
+        const updates: Partial<AppState> = { ...config };
 
-        if (config.backgroundColor !== this.state.backgroundColor || config.foregroundColor !== this.state.foregroundColor) {
+        if (
+            config.backgroundColor !== this.state.backgroundColor ||
+            config.foregroundColor !== this.state.foregroundColor
+        ) {
             updates.theme = ThemeName.custom;
         }
 
         this.setState(updates as AppState);
-    }
+    };
 
     private handleDensityUpdate = (e: React.ChangeEvent<HTMLInputElement>): void => {
         this.setState({
             density: parseInt(e.target.value, 10)
         });
-    }
+    };
     /**
      * Assign a background color to the custom theme so that it can be applied to the background of the examples view
      * @param value The color to assign
      */
     private setCustomThemeBackground(value: string): void {
-        this.themes = this.themes.map((theme: Theme): Theme => {
-            return theme.id !== ThemeName.custom ? theme : Object.assign({}, theme, { background: value});
-        });
+        this.themes = this.themes.map(
+            (theme: Theme): Theme => {
+                return theme.id !== ThemeName.custom
+                    ? theme
+                    : Object.assign({}, theme, { background: value });
+            }
+        );
     }
 
     /**
@@ -207,7 +248,8 @@ export default class App extends React.Component<{}, AppState> {
      */
     private sortExamples(categoryExamples: JSX.Element[]): JSX.Element[] {
         return categoryExamples.sort(
-           (a: JSX.Element, b: JSX.Element): number => a.props.name.localeCompare(b.props.name)
+            (a: JSX.Element, b: JSX.Element): number =>
+                a.props.name.localeCompare(b.props.name)
         );
     }
 }

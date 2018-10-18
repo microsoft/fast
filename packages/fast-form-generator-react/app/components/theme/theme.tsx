@@ -15,10 +15,6 @@ export interface ThemeProps {
  */
 export default class Theme extends React.Component<ThemeProps, {}> {
     public render(): JSX.Element {
-        return (
-            <span>
-                {this.props.theme}
-            </span>
-        );
+        return <span>{this.props.theme}</span>;
     }
 }

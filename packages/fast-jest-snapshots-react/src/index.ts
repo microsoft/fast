@@ -54,13 +54,22 @@ export interface SnapshotTestSuite<T> {
 /**
  * Executes a single snapshot test given a component, component data, and a test title
  */
-export function renderSnapshot<T>(data: T, component: React.ComponentType<T>, title: string): void {
-    test(title, (): void => {
-        const renderedComponent: any = renderer.create(React.createElement(component, data));
-        const componentJson: JSON = renderedComponent.toJSON();
+export function renderSnapshot<T>(
+    data: T,
+    component: React.ComponentType<T>,
+    title: string
+): void {
+    test(
+        title,
+        (): void => {
+            const renderedComponent: any = renderer.create(
+                React.createElement(component, data)
+            );
+            const componentJson: JSON = renderedComponent.toJSON();
 
-        expect(componentJson).toMatchSnapshot();
-    });
+            expect(componentJson).toMatchSnapshot();
+        }
+    );
 }
 
 /**
@@ -71,19 +80,21 @@ export function generateSnapshots<T>(examples: SnapshotTestSuite<T>): void {
     const component: React.ComponentType<T> = examples.component;
 
     if (Array.isArray(data)) {
-        data.forEach((example: SnapshotTestCase<T>, index: number): void => {
-            let title: string;
-            let props: T;
+        data.forEach(
+            (example: SnapshotTestCase<T>, index: number): void => {
+                let title: string;
+                let props: T;
 
-            if (Array.isArray(example)) {
-                title = `${examples.name} ${example[0]}`;
-                props = example[1];
-            } else {
-                title = `${examples.name}: ${index}`;
-                props = example;
+                if (Array.isArray(example)) {
+                    title = `${examples.name} ${example[0]}`;
+                    props = example[1];
+                } else {
+                    title = `${examples.name}: ${index}`;
+                    props = example;
+                }
+
+                renderSnapshot(props, component, title);
             }
-
-            renderSnapshot(props, component, title);
-        });
+        );
     }
 }

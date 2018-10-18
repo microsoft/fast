@@ -1,4 +1,7 @@
-import designSystemDefaults, { DesignSystem, withDesignSystemDefaults } from "../design-system";
+import designSystemDefaults, {
+    DesignSystem,
+    withDesignSystemDefaults
+} from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { normalContrast } from "../utilities/colors";
 import { density } from "../utilities/density";
@@ -17,7 +20,11 @@ const styles: ComponentStyles<DividerClassNameContract, DesignSystem> = (
             height: "0",
             margin: `${density(designSystem.designUnit * 3)(designSystem)} 0`,
             border: "none",
-            borderTop: `1px solid ${normalContrast(designSystem.contrast, designSystem.foregroundColor, designSystem.backgroundColor)}`
+            borderTop: `1px solid ${normalContrast(
+                designSystem.contrast,
+                designSystem.foregroundColor,
+                designSystem.backgroundColor
+            )}`
         }
     };
 };

@@ -1,11 +1,6 @@
 import * as React from "react";
 import { Card } from "./index";
-import {
-    CardHandledProps,
-    CardProps,
-    CardTag,
-    CardUnhandledProps
-} from "./index";
+import { CardHandledProps, CardProps, CardTag, CardUnhandledProps } from "./index";
 import schema from "@microsoft/fast-components-react-base/dist/card/card.schema.json";
 import ImageSchema from "@microsoft/fast-components-react-base/dist/image/image.schema.json";
 import HeadingSchema from "../heading/heading.schema.json";
@@ -55,4 +50,4 @@ export default {
             ]
         }
     ]
-}  as ComponentFactoryExample<CardProps>;
+} as ComponentFactoryExample<CardProps>;

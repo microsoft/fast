@@ -24,8 +24,13 @@ import { Subtract } from "utility-types";
 const Flipper = manageJss(FlipperStyles)(MSFTFlipper);
 type Flipper = typeof Flipper;
 
-interface FlipperHandledProps extends Subtract<MSFTFlipperHandledProps, FlipperManagedClasses> {}
-type FlipperProps = ManagedJSSProps<MSFTFlipperProps, FlipperClassNameContract, DesignSystem>;
+interface FlipperHandledProps
+    extends Subtract<MSFTFlipperHandledProps, FlipperManagedClasses> {}
+type FlipperProps = ManagedJSSProps<
+    MSFTFlipperProps,
+    FlipperClassNameContract,
+    DesignSystem
+>;
 
 export {
     Flipper,

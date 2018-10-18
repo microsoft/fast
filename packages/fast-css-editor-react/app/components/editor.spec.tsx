@@ -24,9 +24,7 @@ const examples: SnapshotTestSuite<CSSEditorProps> = {
     component: CSSEditor,
     schema: CSSEditorSchema,
     detailData,
-    data: [
-        exampleData
-    ]
+    data: [exampleData]
 };
 
 describe(name, () => {

@@ -7,14 +7,13 @@ import {
     TextFieldType,
     TextFieldUnhandledProps
 } from "./text-field.props";
-import { ManagedClasses, TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import {
+    ManagedClasses,
+    TextFieldClassNameContract
+} from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
 
-class TextField extends Foundation<
-    TextFieldHandledProps,
-    TextFieldUnhandledProps,
-    {}
-> {
+class TextField extends Foundation<TextFieldHandledProps, TextFieldUnhandledProps, {}> {
     public static displayName: string = "TextField";
 
     protected handledProps: HandledProps<TextFieldHandledProps> = {

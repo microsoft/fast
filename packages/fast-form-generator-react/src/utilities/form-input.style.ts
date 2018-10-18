@@ -1,17 +1,29 @@
 import { CSSRules } from "@microsoft/fast-jss-manager";
-import { Direction, ellipsis, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
+import {
+    Direction,
+    ellipsis,
+    localizeSpacing,
+    toPx
+} from "@microsoft/fast-jss-utilities";
 
 /**
  * Base64 encoded svgs
  */
 /* tslint:disable */
-export const rightArrow: string = "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNyIgaGVpZ2h0PSIxMSIgdmlld0JveD0iMCAwIDcgMTEiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+PGcgaWQ9IkNhbnZhcyIgZmlsbD0ibm9uZSI+PGcgaWQ9IiYjMjM4OyYjMTI4OyYjMTQ1OyI+PHBhdGggZD0iTSA1LjUgNy40MjI4NUwgMTAuNDE0NiAyLjUwODNMIDEwLjg5NzkgMi45OTE3TCA1LjUgOC4zODk2NUwgMC4xMDIwNTEgMi45OTE3TCAwLjU4NTQ0OSAyLjUwODNMIDUuNSA3LjQyMjg1WiIgdHJhbnNmb3JtPSJtYXRyaXgoMCAtMSAxIDAgLTIgMTEpIiBmaWxsPSJibGFjayIvPjwvZz48L2c+PC9zdmc+) center no-repeat";
-export const lines: string = "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iOSIgdmlld0JveD0iMCAwIDE2IDkiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTE2IDVIMFY0SDE2VjVaTTE2IDEzSDBWMTJIMTZWMTNaTTE2IDguOTkyMTlIMFY4SDE2VjguOTkyMTlaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwIC00LjAwMDAzKSIgZmlsbD0iYmxhY2siLz48L3N2Zz4=) center no-repeat";
-export const plus: string = "url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDE2IDE2OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHN0eWxlIHR5cGU9InRleHQvY3NzIj4uc3Qwe2ZpbGw6I0ZCMzU2RDt9PC9zdHlsZT48dGl0bGU+cGx1c1VQREFURUQ8L3RpdGxlPjxnPjxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0xNiw3LjV2MUg4LjVWMTZoLTFWOC41SDB2LTFoNy41VjBoMXY3LjVIMTZ6Ii8+PC9nPjwvc3ZnPg==) center no-repeat";
-export const minus: string = "url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDE2IDE2OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHRpdGxlPm1pbnVzVXBkYXRlZDwvdGl0bGU+PGc+PHBhdGggZD0iTTE2LDguNUgwdi0xaDE2VjguNXoiLz48L2c+PC9zdmc+) center no-repeat";
-export const lightTheme: string = "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTUiIHZpZXdCb3g9IjAgMCAxNCAxNSIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48ZyBpZD0iQ2FudmFzIiBmaWxsPSJub25lIj48ZyBpZD0iQSI+PHBhdGggZD0iTSAxMy45MTYgMjJMIDEwLjQ3ODUgMjJMIDkuNDgyNDIgMTguODg0OEwgNC41MDE5NSAxOC44ODQ4TCAzLjUxNTYyIDIyTCAwLjA5NzY1NjIgMjJMIDUuMTk1MzEgNy45OTYwOUwgOC45MzU1NSA3Ljk5NjA5TCAxMy45MTYgMjJaTSA4Ljc1OTc3IDE2LjQ2MjlMIDcuMjU1ODYgMTEuNzU1OUMgNy4xNDUxOCAxMS40MDQzIDcuMDY3MDYgMTAuOTg0NCA3LjAyMTQ4IDEwLjQ5NjFMIDYuOTQzMzYgMTAuNDk2MUMgNi45MTA4MSAxMC45MDYyIDYuODI5NDMgMTEuMzEzMiA2LjY5OTIyIDExLjcxNjhMIDUuMTc1NzggMTYuNDYyOUwgOC43NTk3NyAxNi40NjI5WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAtNykiIGZpbGw9ImJsYWNrIi8+PC9nPjwvZz48L3N2Zz4=) center no-repeat";
-export const darkTheme: string = "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTUiIHZpZXdCb3g9IjAgMCAxNCAxNSIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48ZyBpZD0iQ2FudmFzIiBmaWxsPSJub25lIj48ZyBpZD0iQSI+PHBhdGggZD0iTSAxMy45MTYgMjJMIDEwLjQ3ODUgMjJMIDkuNDgyNDIgMTguODg0OEwgNC41MDE5NSAxOC44ODQ4TCAzLjUxNTYyIDIyTCAwLjA5NzY1NjIgMjJMIDUuMTk1MzEgNy45OTYwOUwgOC45MzU1NSA3Ljk5NjA5TCAxMy45MTYgMjJaTSA4Ljc1OTc3IDE2LjQ2MjlMIDcuMjU1ODYgMTEuNzU1OUMgNy4xNDUxOCAxMS40MDQzIDcuMDY3MDYgMTAuOTg0NCA3LjAyMTQ4IDEwLjQ5NjFMIDYuOTQzMzYgMTAuNDk2MUMgNi45MTA4MSAxMC45MDYyIDYuODI5NDMgMTEuMzEzMiA2LjY5OTIyIDExLjcxNjhMIDUuMTc1NzggMTYuNDYyOUwgOC43NTk3NyAxNi40NjI5WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAtNykiIGZpbGw9IndoaXRlIi8+PC9nPjwvZz48L3N2Zz4=) center no-repeat";
-export const trashcan: string = "url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDE2IDE2OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHRpdGxlPnRyYXNoY2FuVVBEQVRFRDwvdGl0bGU+PGc+PHBhdGggZD0iTTE0LjMsMy4yaC0xdjExLjRjMCwwLjgtMC43LDEuNS0xLjUsMS41YzAsMCwwLDAsMCwwSDRjLTAuNCwwLTAuOC0wLjItMS0wLjRjLTAuMy0wLjMtMC40LTAuNy0wLjQtMVYzLjJoLTF2LTFoMy45di0xYzAtMC4xLDAtMC4zLDAuMS0wLjRjMC0wLjEsMC4xLTAuMiwwLjItMC4zQzUuOCwwLjQsNiwwLjMsNi4xLDAuM2MwLjEtMC4xLDAuMy0wLjEsMC40LTAuMWgzYzAuMSwwLDAuMywwLDAuNCwwLjFjMC4xLDAuMSwwLjIsMC4xLDAuMywwLjJjMC4xLDAuMSwwLjIsMC4yLDAuMiwwLjNjMC4xLDAuMSwwLjEsMC4zLDAuMSwwLjR2MWgzLjlMMTQuMywzLjJ6IE0xMi40LDMuMkgzLjV2MTEuNGMwLDAuMSwwLjEsMC4zLDAuMSwwLjNDMy43LDE1LDMuOSwxNSw0LDE1aDcuOWMwLjEsMCwwLjMtMC4xLDAuMy0wLjFjMC4xLTAuMSwwLjEtMC4yLDAuMS0wLjNMMTIuNCwzLjJ6IE02LjUsMTNoLTFWNS4xaDFMNi41LDEzeiBNNi41LDIuMmgzdi0xaC0zVjIuMnogTTguNCwxM2gtMVY1LjFoMVYxM3ogTTEwLjQsMTNoLTFWNS4xaDFMMTAuNCwxM3oiLz48L2c+PC9zdmc+) center no-repeat";
+export const rightArrow: string =
+    "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNyIgaGVpZ2h0PSIxMSIgdmlld0JveD0iMCAwIDcgMTEiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+PGcgaWQ9IkNhbnZhcyIgZmlsbD0ibm9uZSI+PGcgaWQ9IiYjMjM4OyYjMTI4OyYjMTQ1OyI+PHBhdGggZD0iTSA1LjUgNy40MjI4NUwgMTAuNDE0NiAyLjUwODNMIDEwLjg5NzkgMi45OTE3TCA1LjUgOC4zODk2NUwgMC4xMDIwNTEgMi45OTE3TCAwLjU4NTQ0OSAyLjUwODNMIDUuNSA3LjQyMjg1WiIgdHJhbnNmb3JtPSJtYXRyaXgoMCAtMSAxIDAgLTIgMTEpIiBmaWxsPSJibGFjayIvPjwvZz48L2c+PC9zdmc+) center no-repeat";
+export const lines: string =
+    "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iOSIgdmlld0JveD0iMCAwIDE2IDkiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTE2IDVIMFY0SDE2VjVaTTE2IDEzSDBWMTJIMTZWMTNaTTE2IDguOTkyMTlIMFY4SDE2VjguOTkyMTlaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwIC00LjAwMDAzKSIgZmlsbD0iYmxhY2siLz48L3N2Zz4=) center no-repeat";
+export const plus: string =
+    "url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDE2IDE2OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHN0eWxlIHR5cGU9InRleHQvY3NzIj4uc3Qwe2ZpbGw6I0ZCMzU2RDt9PC9zdHlsZT48dGl0bGU+cGx1c1VQREFURUQ8L3RpdGxlPjxnPjxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0xNiw3LjV2MUg4LjVWMTZoLTFWOC41SDB2LTFoNy41VjBoMXY3LjVIMTZ6Ii8+PC9nPjwvc3ZnPg==) center no-repeat";
+export const minus: string =
+    "url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDE2IDE2OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHRpdGxlPm1pbnVzVXBkYXRlZDwvdGl0bGU+PGc+PHBhdGggZD0iTTE2LDguNUgwdi0xaDE2VjguNXoiLz48L2c+PC9zdmc+) center no-repeat";
+export const lightTheme: string =
+    "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTUiIHZpZXdCb3g9IjAgMCAxNCAxNSIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48ZyBpZD0iQ2FudmFzIiBmaWxsPSJub25lIj48ZyBpZD0iQSI+PHBhdGggZD0iTSAxMy45MTYgMjJMIDEwLjQ3ODUgMjJMIDkuNDgyNDIgMTguODg0OEwgNC41MDE5NSAxOC44ODQ4TCAzLjUxNTYyIDIyTCAwLjA5NzY1NjIgMjJMIDUuMTk1MzEgNy45OTYwOUwgOC45MzU1NSA3Ljk5NjA5TCAxMy45MTYgMjJaTSA4Ljc1OTc3IDE2LjQ2MjlMIDcuMjU1ODYgMTEuNzU1OUMgNy4xNDUxOCAxMS40MDQzIDcuMDY3MDYgMTAuOTg0NCA3LjAyMTQ4IDEwLjQ5NjFMIDYuOTQzMzYgMTAuNDk2MUMgNi45MTA4MSAxMC45MDYyIDYuODI5NDMgMTEuMzEzMiA2LjY5OTIyIDExLjcxNjhMIDUuMTc1NzggMTYuNDYyOUwgOC43NTk3NyAxNi40NjI5WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAtNykiIGZpbGw9ImJsYWNrIi8+PC9nPjwvZz48L3N2Zz4=) center no-repeat";
+export const darkTheme: string =
+    "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTUiIHZpZXdCb3g9IjAgMCAxNCAxNSIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48ZyBpZD0iQ2FudmFzIiBmaWxsPSJub25lIj48ZyBpZD0iQSI+PHBhdGggZD0iTSAxMy45MTYgMjJMIDEwLjQ3ODUgMjJMIDkuNDgyNDIgMTguODg0OEwgNC41MDE5NSAxOC44ODQ4TCAzLjUxNTYyIDIyTCAwLjA5NzY1NjIgMjJMIDUuMTk1MzEgNy45OTYwOUwgOC45MzU1NSA3Ljk5NjA5TCAxMy45MTYgMjJaTSA4Ljc1OTc3IDE2LjQ2MjlMIDcuMjU1ODYgMTEuNzU1OUMgNy4xNDUxOCAxMS40MDQzIDcuMDY3MDYgMTAuOTg0NCA3LjAyMTQ4IDEwLjQ5NjFMIDYuOTQzMzYgMTAuNDk2MUMgNi45MTA4MSAxMC45MDYyIDYuODI5NDMgMTEuMzEzMiA2LjY5OTIyIDExLjcxNjhMIDUuMTc1NzggMTYuNDYyOUwgOC43NTk3NyAxNi40NjI5WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAtNykiIGZpbGw9IndoaXRlIi8+PC9nPjwvZz48L3N2Zz4=) center no-repeat";
+export const trashcan: string =
+    "url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDE2IDE2OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHRpdGxlPnRyYXNoY2FuVVBEQVRFRDwvdGl0bGU+PGc+PHBhdGggZD0iTTE0LjMsMy4yaC0xdjExLjRjMCwwLjgtMC43LDEuNS0xLjUsMS41YzAsMCwwLDAsMCwwSDRjLTAuNCwwLTAuOC0wLjItMS0wLjRjLTAuMy0wLjMtMC40LTAuNy0wLjQtMVYzLjJoLTF2LTFoMy45di0xYzAtMC4xLDAtMC4zLDAuMS0wLjRjMC0wLjEsMC4xLTAuMiwwLjItMC4zQzUuOCwwLjQsNiwwLjMsNi4xLDAuM2MwLjEtMC4xLDAuMy0wLjEsMC40LTAuMWgzYzAuMSwwLDAuMywwLDAuNCwwLjFjMC4xLDAuMSwwLjIsMC4xLDAuMywwLjJjMC4xLDAuMSwwLjIsMC4yLDAuMiwwLjNjMC4xLDAuMSwwLjEsMC4zLDAuMSwwLjR2MWgzLjlMMTQuMywzLjJ6IE0xMi40LDMuMkgzLjV2MTEuNGMwLDAuMSwwLjEsMC4zLDAuMSwwLjNDMy43LDE1LDMuOSwxNSw0LDE1aDcuOWMwLjEsMCwwLjMtMC4xLDAuMy0wLjFjMC4xLTAuMSwwLjEtMC4yLDAuMS0wLjNMMTIuNCwzLjJ6IE02LjUsMTNoLTFWNS4xaDFMNi41LDEzeiBNNi41LDIuMmgzdi0xaC0zVjIuMnogTTguNCwxM2gtMVY1LjFoMVYxM3ogTTEwLjQsMTNoLTFWNS4xaDFMMTAuNCwxM3oiLz48L2c+PC9zdmc+) center no-repeat";
 /* tslint:enable */
 
 export interface BoxShadowConfig {
@@ -40,16 +52,25 @@ export const colors: any = {
     menuGray: "#EBEBEB"
 };
 
-export function localizePadding(top: number, right: number, bottom: number, left: number): CSSRules<{}> {
+export function localizePadding(
+    top: number,
+    right: number,
+    bottom: number,
+    left: number
+): CSSRules<{}> {
     return {
-        padding: localizeSpacing(Direction.ltr)(`${toPx(top)} ${toPx(right)} ${toPx(bottom)} ${toPx(left)}`)
+        padding: localizeSpacing(Direction.ltr)(
+            `${toPx(top)} ${toPx(right)} ${toPx(bottom)} ${toPx(left)}`
+        )
     };
 }
 
 export function boxShadow(config: BoxShadowConfig): CSSRules<{}> {
     return {
         boxShadow: `${config.inset ? "inset " : ""}
-        ${toPx(config.offsetX)} ${toPx(config.offsetY)} ${toPx(config.blurRadius)} ${toPx(config.spreadRadius)} ${config.color}`
+        ${toPx(config.offsetX)} ${toPx(config.offsetY)} ${toPx(config.blurRadius)} ${toPx(
+            config.spreadRadius
+        )} ${config.color}`
     };
 }
 
@@ -98,7 +119,7 @@ export function applyLabelStyle(): CSSRules<{}> {
 
 export function applyInputContainerStyle(): CSSRules<{}> {
     return {
-        height: toPx(36),
+        height: toPx(36)
     };
 }
 
@@ -165,7 +186,7 @@ export function applyHeaderStyle(): CSSRules<{}> {
 
 export function applyGlobalStyle(): CSSRules<{}> {
     return {
-        "body > div > li[draggable=\"true\"]": {
+        'body > div > li[draggable="true"]': {
             ...listItem,
             ...draggingStyles
         }
@@ -243,10 +264,10 @@ export const listItem: CSSRules<{}> = {
 
 export function applyAriaHiddenStyles(): CSSRules<{}> {
     return {
-        "&[aria-hidden=\"true\"]": {
+        '&[aria-hidden="true"]': {
             display: "none"
         },
-        "&[aria-hidden=\"false\"]": {
+        '&[aria-hidden="false"]': {
             display: "block"
         }
     };
@@ -304,7 +325,7 @@ export const thickLine: CSSRules<{}> = {
         position: "relative",
         paddingBottom: toPx(3),
         display: "block",
-        ...ellipsis(),
+        ...ellipsis()
     },
     "&:hover, &:focus": {
         outline: "none",
@@ -339,9 +360,9 @@ export function applyPopupHeadingStyles(): CSSRules<{}> {
                     color: colors.pink,
                     ...thickLine,
                     "&:hover": {
-                        cursor: "pointer",
+                        cursor: "pointer"
                     },
-                    "&[aria-expanded=\"true\"]": {
+                    '&[aria-expanded="true"]': {
                         background: colors.menuGray,
                         borderLeftColor: colors.lightBorder,
                         borderRadius: `${toPx(2)} ${toPx(2)} 0 0`,

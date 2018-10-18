@@ -1,8 +1,13 @@
 import * as React from "react";
-import { HypertextClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import {
+    HypertextClassNameContract,
+    ManagedClasses
+} from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface HypertextManagedClasses extends ManagedClasses<HypertextClassNameContract> {}
-export interface HypertextUnhandledProps extends React.HTMLAttributes<HTMLAnchorElement> {}
+export interface HypertextManagedClasses
+    extends ManagedClasses<HypertextClassNameContract> {}
+export interface HypertextUnhandledProps
+    extends React.HTMLAttributes<HTMLAnchorElement> {}
 export interface HypertextHandledProps extends HypertextManagedClasses {
     /**
      * The destination address

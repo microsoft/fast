@@ -20,7 +20,8 @@ import { Subtract } from "utility-types";
 const Radio = manageJss(RadioStyles)(BaseRadio);
 type Radio = typeof Radio;
 
-interface RadioHandledProps extends Subtract<BaseRadioHandledProps, RadioManagedClasses> {}
+interface RadioHandledProps
+    extends Subtract<BaseRadioHandledProps, RadioManagedClasses> {}
 type RadioProps = ManagedJSSProps<BaseRadioProps, RadioClassNameContract, DesignSystem>;
 
 export {

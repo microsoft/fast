@@ -17,11 +17,7 @@ export enum Status {
 
 class SiteCategory extends React.Component<SiteCategoryProps, {}> {
     public render(): JSX.Element {
-        return (
-            <React.Fragment>
-                {this.props.children}
-            </React.Fragment>
-        );
+        return <React.Fragment>{this.props.children}</React.Fragment>;
     }
 }
 

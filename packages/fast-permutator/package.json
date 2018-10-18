@@ -16,6 +16,7 @@
   "scripts": {
     "prepare": "babel src --presets babel-preset-es2015 --out-dir dist",
     "prettier": "prettier --config ../../.prettierrc --write '**/*.js'",
+    "prettier:diff": "prettier --config ../../.prettierrc '**/*.js' --list-different",
     "test": "npm run eslint && npm run unit-tests",
     "eslint": "eslint src/**",
     "unit-tests": "jest --maxWorkers=4"
@@ -28,7 +29,7 @@
         "statements": 89,
         "branches": 78,
         "functions": 96,
-        "lines": 90
+        "lines": 85
       }
     },
     "testURL": "http://localhost",

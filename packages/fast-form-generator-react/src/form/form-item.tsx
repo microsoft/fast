@@ -1,5 +1,4 @@
 export default interface FormItemCommon {
-
     /**
      * The unique key for React components
      */
@@ -33,7 +32,12 @@ export default interface FormItemCommon {
     /**
      * The passed onChange function
      */
-    onChange: (dataLocation: string, value: any, isArray?: boolean, index?: number) => void;
+    onChange: (
+        dataLocation: string,
+        value: any,
+        isArray?: boolean,
+        index?: number
+    ) => void;
 
     /**
      * The defaut data (if available)

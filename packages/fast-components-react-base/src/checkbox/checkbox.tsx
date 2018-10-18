@@ -8,7 +8,10 @@ import {
     CheckboxSlot,
     CheckboxUnhandledProps
 } from "./checkbox.props";
-import { CheckboxClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import {
+    CheckboxClassNameContract,
+    ManagedClasses
+} from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
 
 /**
@@ -28,8 +31,14 @@ class Checkbox extends Foundation<
     /**
      * React life-cycle method
      */
-    public static getDerivedStateFromProps(nextProps: CheckboxProps, prevState: CheckboxState): null | Partial<CheckboxState> {
-        if (typeof nextProps.checked === "boolean" && nextProps.checked !== prevState.checked) {
+    public static getDerivedStateFromProps(
+        nextProps: CheckboxProps,
+        prevState: CheckboxState
+    ): null | Partial<CheckboxState> {
+        if (
+            typeof nextProps.checked === "boolean" &&
+            nextProps.checked !== prevState.checked
+        ) {
             return {
                 checked: nextProps.checked
             };
@@ -87,10 +96,7 @@ class Checkbox extends Foundation<
      */
     public render(): React.ReactElement<HTMLElement> {
         return (
-            <div
-                {...this.unhandledProps()}
-                className={this.generateClassNames()}
-            >
+            <div {...this.unhandledProps()} className={this.generateClassNames()}>
                 <input
                     className={get(this.props, "managedClasses.checkbox_input")}
                     id={this.props.inputId}
@@ -100,7 +106,9 @@ class Checkbox extends Foundation<
                     disabled={this.props.disabled || null}
                     checked={this.state.checked}
                 />
-                <span className={get(this.props, "managedClasses.checkbox_stateIndicator")} />
+                <span
+                    className={get(this.props, "managedClasses.checkbox_stateIndicator")}
+                />
                 {this.renderLabel()}
             </div>
         );
@@ -112,7 +120,9 @@ class Checkbox extends Foundation<
     protected generateClassNames(): string {
         let classes: string = get(this.props, "managedClasses.checkbox");
 
-        classes = this.props.disabled ? `${classes} ${get(this.props, "managedClasses.checkbox__disabled")}` : classes;
+        classes = this.props.disabled
+            ? `${classes} ${get(this.props, "managedClasses.checkbox__disabled")}`
+            : classes;
 
         return super.generateClassNames(classes);
     }
@@ -124,7 +134,10 @@ class Checkbox extends Foundation<
         return React.Children.map(
             this.withSlot(CheckboxSlot.label),
             (label: React.ReactElement<any>): React.ReactElement<any> => {
-                let className: string | undefined = get(this.props, "managedClasses.checkbox_label");
+                let className: string | undefined = get(
+                    this.props,
+                    "managedClasses.checkbox_label"
+                );
 
                 if (typeof className !== "string") {
                     return label;
@@ -136,7 +149,7 @@ class Checkbox extends Foundation<
                     className = `${labelClassName} ${className}`;
                 }
 
-                return React.cloneElement(label, {className});
+                return React.cloneElement(label, { className });
             }
         );
     }
@@ -146,7 +159,7 @@ class Checkbox extends Foundation<
      * This method should be called after render because it relies on element references.
      */
     private applyIndeterminateState(): void {
-         if (this.props.indeterminate && this.inputRef.current) {
+        if (this.props.indeterminate && this.inputRef.current) {
             this.inputRef.current.indeterminate = this.props.indeterminate;
         }
     }
@@ -156,13 +169,13 @@ class Checkbox extends Foundation<
      */
     private handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         if (typeof this.props.checked !== "boolean") {
-            this.setState({checked: !this.state.checked});
+            this.setState({ checked: !this.state.checked });
         }
 
         if (this.props.onChange) {
             this.props.onChange(e);
         }
-    }
+    };
 }
 
 export default Checkbox;

@@ -2,15 +2,19 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { DividerHandledProps, DividerManagedClasses, DividerRoles, DividerUnhandledProps } from "./divider.props";
-import { DividerClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import {
+    DividerHandledProps,
+    DividerManagedClasses,
+    DividerRoles,
+    DividerUnhandledProps
+} from "./divider.props";
+import {
+    DividerClassNameContract,
+    ManagedClasses
+} from "@microsoft/fast-components-class-name-contracts-base";
 
 /* tslint:disable-next-line */
-class Divider extends Foundation<
-    DividerHandledProps,
-    DividerUnhandledProps,
-    {}
-> {
+class Divider extends Foundation<DividerHandledProps, DividerUnhandledProps, {}> {
     public static displayName: string = "Divider";
 
     protected handledProps: HandledProps<DividerHandledProps> = {
@@ -35,10 +39,9 @@ class Divider extends Foundation<
      * Generates the attributes
      */
     protected generateAttributes(): React.HTMLAttributes<HTMLHRElement> {
-
         // Do not render role="separator" on page because it's intrinsically set.
         if (this.props.role && this.props.role !== DividerRoles.separator) {
-            return ({role: DividerRoles[this.props.role]});
+            return { role: DividerRoles[this.props.role] };
         }
     }
 

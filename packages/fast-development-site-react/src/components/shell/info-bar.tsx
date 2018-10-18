@@ -1,5 +1,9 @@
 import * as React from "react";
-import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, {
+    ComponentStyles,
+    ManagedClasses,
+    ManagedJSSProps
+} from "@microsoft/fast-jss-manager-react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { DevSiteDesignSystem } from "../design-system";
 
@@ -21,8 +25,10 @@ const style: ComponentStyles<ShellInfoBarManagedClasses, DevSiteDesignSystem> = 
     }
 };
 
-class ShellInfoBar extends React.Component<ShellInfoBarProps & ManagedClasses<ShellInfoBarManagedClasses>, {}> {
-
+class ShellInfoBar extends React.Component<
+    ShellInfoBarProps & ManagedClasses<ShellInfoBarManagedClasses>,
+    {}
+> {
     public render(): JSX.Element {
         return (
             <div className={this.props.managedClasses.shellInfoBar}>

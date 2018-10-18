@@ -24,7 +24,9 @@ const managedClassExamples: any = {
     typography__9: "typography-9"
 };
 
-const examples: ComponentFactoryExample<TypographyHandledProps & TypographyManagedClasses> = {
+const examples: ComponentFactoryExample<
+    TypographyHandledProps & TypographyManagedClasses
+> = {
     name: "Typography",
     component: Typography,
     schema: schema as any,

@@ -1,5 +1,8 @@
 import * as React from "react";
-import { ManagedClasses, TabsClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import {
+    ManagedClasses,
+    TabsClassNameContract
+} from "@microsoft/fast-components-class-name-contracts-base";
 import { Orientation } from "@microsoft/fast-web-utilities";
 
 export interface TabsManagedClasses extends ManagedClasses<TabsClassNameContract> {}

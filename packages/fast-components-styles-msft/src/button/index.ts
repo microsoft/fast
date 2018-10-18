@@ -1,5 +1,12 @@
-import designSystemDefaults, { DesignSystem, withDesignSystemDefaults } from "../design-system";
-import { ComponentStyles, ComponentStyleSheet, CSSRules } from "@microsoft/fast-jss-manager";
+import designSystemDefaults, {
+    DesignSystem,
+    withDesignSystemDefaults
+} from "../design-system";
+import {
+    ComponentStyles,
+    ComponentStyleSheet,
+    CSSRules
+} from "@microsoft/fast-jss-manager";
 import { ButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
     adjustContrast,
@@ -30,7 +37,11 @@ function applyTransaprentBackplateStyles(): CSSRules<DesignSystem> {
     return {
         color: (config: DesignSystem): string => {
             const designSystem: DesignSystem = withDesignSystemDefaults(config);
-            return ensureNormalContrast(designSystem.contrast, designSystem.brandColor, designSystem.backgroundColor);
+            return ensureNormalContrast(
+                designSystem.contrast,
+                designSystem.brandColor,
+                designSystem.backgroundColor
+            );
         },
         ...applyTransaprentBackground(),
         "&:hover, &:focus": {
@@ -41,11 +52,15 @@ function applyTransaprentBackplateStyles(): CSSRules<DesignSystem> {
         "&:focus span::before, &:active span::before, &:hover span::before": {
             background: (config: DesignSystem): string => {
                 const designSystem: DesignSystem = withDesignSystemDefaults(config);
-                return ensureNormalContrast(designSystem.contrast, designSystem.brandColor, designSystem.backgroundColor);
+                return ensureNormalContrast(
+                    designSystem.contrast,
+                    designSystem.brandColor,
+                    designSystem.backgroundColor
+                );
             }
         },
         "&$button__disabled $button_contentRegion::before, &$button__disabled $button_contentRegion::before": {
-            ...applyTransaprentBackground(),
+            ...applyTransaprentBackground()
         },
         "&:disabled, &[aria-disabled]": {
             ...applyTransaprentBackground(),
@@ -80,7 +95,9 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
     const brandColor: string = designSystem.brandColor;
     const direction: Direction = designSystem.direction;
     const scaledNormalContrast: ContrastFunction = curry(normalContrast)(contrastScale);
-    const scaledEnsureNormalContrast: ContrastFunction = curry(ensureNormalContrast)(contrastScale);
+    const scaledEnsureNormalContrast: ContrastFunction = curry(ensureNormalContrast)(
+        contrastScale
+    );
     const focusBoxShadowDefaults: string = "inset 0 0 0 2px";
 
     // Define secondary button colors
@@ -99,12 +116,15 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
         secondaryBackgroundColor
     );
 
-    const secondaryFocusBoxShadow: string = Chroma.contrast(
-        secondaryBackgroundColor,
-        secondaryFocusBorderColor
-    ) < scaleContrastNormal(contrastScale)
-        ? `${focusBoxShadowDefaults} ${ensureNormalContrast(contrastScale, secondaryBackgroundColor, secondaryFocusBorderColor)}`
-        : "none";
+    const secondaryFocusBoxShadow: string =
+        Chroma.contrast(secondaryBackgroundColor, secondaryFocusBorderColor) <
+        scaleContrastNormal(contrastScale)
+            ? `${focusBoxShadowDefaults} ${ensureNormalContrast(
+                  contrastScale,
+                  secondaryBackgroundColor,
+                  secondaryFocusBorderColor
+              )}`
+            : "none";
     const secondaryDisabledBackgroundColor: string = disabledContrast(
         contrastScale,
         secondaryBackgroundColor,
@@ -132,12 +152,15 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
         scaledEnsureNormalContrast(foregroundColor, backgroundColor),
         primaryRestBackgroundColor
     );
-    const primaryFocusBoxShadow: string = Chroma.contrast(
-        primaryRestBackgroundColor,
-        primaryFocusBorderColor
-    ) < scaleContrastNormal(contrastScale)
-        ? `${focusBoxShadowDefaults} ${ensureNormalContrast(contrastScale, primaryRestBackgroundColor, primaryFocusBorderColor)}`
-        : "none";
+    const primaryFocusBoxShadow: string =
+        Chroma.contrast(primaryRestBackgroundColor, primaryFocusBorderColor) <
+        scaleContrastNormal(contrastScale)
+            ? `${focusBoxShadowDefaults} ${ensureNormalContrast(
+                  contrastScale,
+                  primaryRestBackgroundColor,
+                  primaryFocusBorderColor
+              )}`
+            : "none";
     const primaryDisabledBackground: string = disabledContrast(
         contrastScale,
         primaryRestBackgroundColor,
@@ -149,8 +172,14 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
         primaryDisabledBackground
     );
 
-    const outlineColor: string = scaledEnsureNormalContrast(foregroundColor, backgroundColor);
-    const outlineBorderColor: string = scaledNormalContrast(foregroundColor, backgroundColor);
+    const outlineColor: string = scaledEnsureNormalContrast(
+        foregroundColor,
+        backgroundColor
+    );
+    const outlineBorderColor: string = scaledNormalContrast(
+        foregroundColor,
+        backgroundColor
+    );
     const outlineDisabledColor: string = disabledContrast(
         designSystem.contrast,
         outlineColor,
@@ -186,7 +215,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             "&:focus": {
                 outline: "none",
                 borderColor: secondaryFocusBorderColor,
-                boxShadow: secondaryFocusBoxShadow,
+                boxShadow: secondaryFocusBoxShadow
             },
             "&$button__disabled": {
                 cursor: "not-allowed",
@@ -214,7 +243,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             "&, &:hover": {
                 color: outlineColor,
                 borderColor: outlineBorderColor,
-                ...applyTransaprentBackground(),
+                ...applyTransaprentBackground()
             },
             "&:focus": {
                 ...applyTransaprentBackground(),

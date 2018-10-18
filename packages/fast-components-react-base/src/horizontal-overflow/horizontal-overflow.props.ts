@@ -1,5 +1,8 @@
 import * as React from "react";
-import { HorizontalOverflowClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import {
+    HorizontalOverflowClassNameContract,
+    ManagedClasses
+} from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
  * Scroll interface for consumers
@@ -11,8 +14,10 @@ export interface ScrollChange {
     end: boolean;
 }
 
-export interface HorizontalOverflowUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
-export interface HorizontalOverflowManagedClasses extends ManagedClasses<HorizontalOverflowClassNameContract> {}
+export interface HorizontalOverflowUnhandledProps
+    extends React.HTMLAttributes<HTMLDivElement> {}
+export interface HorizontalOverflowManagedClasses
+    extends ManagedClasses<HorizontalOverflowClassNameContract> {}
 export interface HorizontalOverflowHandledProps extends HorizontalOverflowManagedClasses {
     /**
      * The horizontal overflow content
@@ -30,4 +35,5 @@ export interface HorizontalOverflowHandledProps extends HorizontalOverflowManage
     onScrollChange?: (scrollObject: ScrollChange) => void;
 }
 
-export type HorizontalOverflowProps = HorizontalOverflowHandledProps & HorizontalOverflowUnhandledProps;
+export type HorizontalOverflowProps = HorizontalOverflowHandledProps &
+    HorizontalOverflowUnhandledProps;

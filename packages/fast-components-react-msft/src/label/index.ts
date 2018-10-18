@@ -21,7 +21,8 @@ import { Subtract } from "utility-types";
 const Label = manageJss(LabelStyles)(BaseLabel);
 type Label = typeof Label;
 
-interface LabelHandledProps extends Subtract<BaseLabelHandledProps, LabelManagedClasses> {}
+interface LabelHandledProps
+    extends Subtract<BaseLabelHandledProps, LabelManagedClasses> {}
 type LabelProps = ManagedJSSProps<BaseLabelProps, LabelClassNameContract, DesignSystem>;
 
 export {

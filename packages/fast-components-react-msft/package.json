@@ -24,6 +24,7 @@
     "copy:readme": "node ../../build/copy-readme.js",
     "prepare": "npm run clean:dist && npm run build",
     "prettier": "prettier --config ../../.prettierrc --write '**/*.{ts,tsx}'",
+    "prettier:diff": "prettier --config ../../.prettierrc '**/*.{ts,tsx}' --list-different",
     "start": "webpack-dev-server",
     "test": "npm run convert:readme && npm run tslint && npm run unit-tests && npm run build:app",
     "tslint": "tslint -c ./tslint.json '**/*.ts{,x}'",

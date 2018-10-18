@@ -21,8 +21,13 @@ import { Subtract } from "utility-types";
 const TextField = manageJss(TextFieldStyles)(BaseTextField);
 type TextField = typeof TextField;
 
-interface TextFieldHandledProps extends Subtract<BaseTextFieldHandledProps, TextFieldManagedClasses> {}
-type TextFieldProps = ManagedJSSProps<BaseTextFieldProps, TextFieldClassNameContract, DesignSystem>;
+interface TextFieldHandledProps
+    extends Subtract<BaseTextFieldHandledProps, TextFieldManagedClasses> {}
+type TextFieldProps = ManagedJSSProps<
+    BaseTextFieldProps,
+    TextFieldClassNameContract,
+    DesignSystem
+>;
 
 export {
     TextFieldClassNameContract,

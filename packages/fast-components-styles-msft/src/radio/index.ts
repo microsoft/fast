@@ -1,5 +1,9 @@
 import { DesignSystem, withDesignSystemDefaults } from "../design-system";
-import { ComponentStyles, ComponentStyleSheet, CSSRules } from "@microsoft/fast-jss-manager";
+import {
+    ComponentStyles,
+    ComponentStyleSheet,
+    CSSRules
+} from "@microsoft/fast-jss-manager";
 import { RadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyLocalizedProperty, Direction } from "@microsoft/fast-jss-utilities";
 import {
@@ -10,13 +14,27 @@ import {
 } from "../utilities/colors";
 
 /* tslint:disable:max-line-length */
-const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (config: DesignSystem): ComponentStyleSheet<RadioClassNameContract, DesignSystem>  => {
+const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
+    config: DesignSystem
+): ComponentStyleSheet<RadioClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const backgroundColor: string = designSystem.backgroundColor;
-    const foregroundColor: string = ensureNormalContrast(config.contrast, designSystem.foregroundColor, designSystem.backgroundColor);
+    const foregroundColor: string = ensureNormalContrast(
+        config.contrast,
+        designSystem.foregroundColor,
+        designSystem.backgroundColor
+    );
     const direction: Direction = designSystem.direction;
-    const radioColor: string = normalContrast(designSystem.contrast, foregroundColor, backgroundColor);
-    const radioHover: string = hoverContrast(designSystem.contrast, foregroundColor, backgroundColor);
+    const radioColor: string = normalContrast(
+        designSystem.contrast,
+        foregroundColor,
+        backgroundColor
+    );
+    const radioHover: string = hoverContrast(
+        designSystem.contrast,
+        foregroundColor,
+        backgroundColor
+    );
     const radioDisabled: string = disabledContrast(
         designSystem.contrast,
         foregroundColor,
@@ -41,23 +59,23 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (config: D
             background: backgroundColor,
             boxShadow: `inset 0 0 0 1px ${radioColor}`,
             "&:hover": {
-                boxShadow: `inset 0 0 0 1px ${radioHover}`,
+                boxShadow: `inset 0 0 0 1px ${radioHover}`
             },
             "&:focus": {
                 outline: "none",
-                boxShadow: `inset 0 0 0 2px ${radioColor}`,
+                boxShadow: `inset 0 0 0 2px ${radioColor}`
             },
             "&:checked": {
                 "& + span": {
                     "&::before": {
                         position: "absolute",
                         zIndex: "1",
-                        content: "\"\"",
+                        content: '""',
                         borderRadius: "50%",
                         background: radioColor
                     }
                 }
-            },
+            }
         },
         radio_stateIndicator: {
             position: "relative",
@@ -72,7 +90,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (config: D
                 left: "4px",
                 height: "12px",
                 width: "12px"
-           }
+            }
         },
         radio__disabled: {
             cursor: "not-allowed",

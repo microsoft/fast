@@ -16,7 +16,7 @@ export default {
     data: [
         {
             placeholder: "Placeholder",
-            type: TextFieldType.text,
+            type: TextFieldType.text
         },
         {
             type: TextFieldType.email,

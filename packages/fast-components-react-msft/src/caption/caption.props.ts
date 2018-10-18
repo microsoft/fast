@@ -1,5 +1,8 @@
 import * as React from "react";
-import { CaptionClassNameContract, ManagedClasses  } from "@microsoft/fast-components-class-name-contracts-msft";
+import {
+    CaptionClassNameContract,
+    ManagedClasses
+} from "@microsoft/fast-components-class-name-contracts-msft";
 import { Subtract } from "utility-types";
 
 export enum CaptionSize {
@@ -32,7 +35,8 @@ export interface CaptionHandledProps extends CaptionManagedClasses {
     tag?: CaptionTag;
 }
 
-export interface CaptionUnhandledProps extends React.HTMLAttributes<
-    HTMLHeadingElement | HTMLParagraphElement | HTMLSpanElement | HTMLElement
-> {}
+export interface CaptionUnhandledProps
+    extends React.HTMLAttributes<
+            HTMLHeadingElement | HTMLParagraphElement | HTMLSpanElement | HTMLElement
+        > {}
 export type CaptionProps = CaptionHandledProps & CaptionUnhandledProps;

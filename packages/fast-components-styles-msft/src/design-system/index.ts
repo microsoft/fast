@@ -52,12 +52,13 @@ const designSystemDefaults: DesignSystem = {
 /**
  * Ensure that all properties of the design system are assigned
  */
-export const withDesignSystemDefaults: (config: Partial<DesignSystem>) => DesignSystem =
-    memoize(
-        (config: Partial<DesignSystem>): DesignSystem => {
-            return Object.assign({}, designSystemDefaults, config);
-        }
-    );
+export const withDesignSystemDefaults: (
+    config: Partial<DesignSystem>
+) => DesignSystem = memoize(
+    (config: Partial<DesignSystem>): DesignSystem => {
+        return Object.assign({}, designSystemDefaults, config);
+    }
+);
 
 /**
  * Safely retrieves a single property from a design system

@@ -76,10 +76,7 @@ function getTabItemOne(): any {
         props: {
             slot: TabsSlot.tabItem,
             id: "tab01",
-            children: [
-                getTabElementOne(),
-                getTabPanelOne()
-            ]
+            children: [getTabElementOne(), getTabPanelOne()]
         }
     };
 }
@@ -115,10 +112,7 @@ function getTabItemTwo(): any {
         props: {
             slot: TabsSlot.tabItem,
             id: "tab02",
-            children: [
-                getTabElementTwo(),
-                getTabPanelTwo()
-            ]
+            children: [getTabElementTwo(), getTabPanelTwo()]
         }
     };
 }
@@ -154,10 +148,7 @@ function getTabItemThree(): any {
         props: {
             slot: TabsSlot.tabItem,
             id: "tab03",
-            children: [
-                getTabElementThree(),
-                getTabPanelThree()
-            ]
+            children: [getTabElementThree(), getTabPanelThree()]
         }
     };
 }
@@ -193,19 +184,12 @@ function getTabItemFour(): any {
         props: {
             slot: TabsSlot.tabItem,
             id: "tab04",
-            children: [
-                getTabElementFour(),
-                getTabPanelFour()
-            ]
+            children: [getTabElementFour(), getTabPanelFour()]
         }
     };
 }
 
-const detailChildren: any[] = [
-    getTabItemOne(),
-    getTabItemTwo(),
-    getTabItemThree()
-];
+const detailChildren: any[] = [getTabItemOne(), getTabItemTwo(), getTabItemThree()];
 
 const exampleChildren1: any[] = [
     {
@@ -268,7 +252,7 @@ const examples: ComponentFactoryExample<TabsHandledProps> = {
     detailData: {
         ...tabsManagedClasses,
         label: "A set of example text content",
-        children: detailChildren,
+        children: detailChildren
     },
     data: [
         {

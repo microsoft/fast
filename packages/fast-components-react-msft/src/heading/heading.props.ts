@@ -1,6 +1,9 @@
 import * as React from "react";
 import { TypographyUnhandledProps } from "../typography";
-import { HeadingClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
+import {
+    HeadingClassNameContract,
+    ManagedClasses
+} from "@microsoft/fast-components-class-name-contracts-msft";
 
 export enum HeadingAlignBaseline {
     small = "small",

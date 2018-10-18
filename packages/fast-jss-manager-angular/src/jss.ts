@@ -5,4 +5,4 @@ const jss: JSS = create(presets());
 const stylesheetManager: SheetsManager = new SheetsManager();
 
 export default jss;
-export {stylesheetManager};
+export { stylesheetManager };

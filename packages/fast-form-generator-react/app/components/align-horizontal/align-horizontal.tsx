@@ -15,10 +15,6 @@ export interface AlignHorizontalProps {
  */
 export default class AlignHorizontal extends React.Component<AlignHorizontalProps, {}> {
     public render(): JSX.Element {
-        return (
-            <span>
-                {this.props.alignHorizontal}
-            </span>
-        );
+        return <span>{this.props.alignHorizontal}</span>;
     }
 }

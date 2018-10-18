@@ -20,8 +20,13 @@ import { Subtract } from "utility-types";
 const Caption = manageJss(CaptionStyles)(MSFTCaption);
 type Caption = typeof Caption;
 
-interface CaptionHandledProps extends Subtract<MSFTCaptionHandledProps, CaptionManagedClasses> {}
-type CaptionProps = ManagedJSSProps<MSFTCaptionProps, CaptionClassNameContract, DesignSystem>;
+interface CaptionHandledProps
+    extends Subtract<MSFTCaptionHandledProps, CaptionManagedClasses> {}
+type CaptionProps = ManagedJSSProps<
+    MSFTCaptionProps,
+    CaptionClassNameContract,
+    DesignSystem
+>;
 
 export {
     Caption,
@@ -30,5 +35,5 @@ export {
     CaptionTag,
     CaptionClassNameContract,
     CaptionHandledProps,
-    CaptionUnhandledProps,
+    CaptionUnhandledProps
 };

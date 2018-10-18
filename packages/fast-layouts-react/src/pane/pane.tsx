@@ -1,11 +1,19 @@
 import * as React from "react";
 import { throttle } from "lodash-es";
-import { PaneHandledProps, PaneProps, PaneResizeDirection, PaneUnhandledProps } from "./pane.props";
+import {
+    PaneHandledProps,
+    PaneProps,
+    PaneResizeDirection,
+    PaneUnhandledProps
+} from "./pane.props";
 import { west } from "../row";
 import rafThrottle from "raf-throttle";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import Foundation, { FoundationProps, HandledProps } from "@microsoft/fast-components-foundation-react";
+import Foundation, {
+    FoundationProps,
+    HandledProps
+} from "@microsoft/fast-components-foundation-react";
 import { canUseDOM } from "exenv-es6";
 import { joinClasses } from "../utilities";
 
@@ -60,7 +68,8 @@ export const paneStyleSheet: ComponentStyles<PaneClassNamesContract, undefined> 
             cursor: "ew-resize"
         },
         "&:active": {
-            opacity: "1", transform: "scale(1)"
+            opacity: "1",
+            transform: "scale(1)"
         }
     },
     pane__resizeWest: {
@@ -83,11 +92,7 @@ export const paneStyleSheet: ComponentStyles<PaneClassNamesContract, undefined> 
     }
 };
 
-export class Pane extends Foundation<
-    PaneHandledProps,
-    PaneUnhandledProps,
-    PaneState
-> {
+export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneState> {
     /**
      * The default props of the Pane component
      */
@@ -97,7 +102,7 @@ export class Pane extends Foundation<
         resizable: false,
         collapsed: false,
         overlay: false,
-        hidden: false,
+        hidden: false
     };
 
     /**
@@ -134,7 +139,7 @@ export class Pane extends Foundation<
             width: 300
         };
 
-        this.onMouseMove    = throttle(this.onMouseMove, 16);
+        this.onMouseMove = throttle(this.onMouseMove, 16);
         this.onWindowResize = rafThrottle(this.onWindowResize);
         this.rootElement = React.createRef();
     }
@@ -183,11 +188,11 @@ export class Pane extends Foundation<
      * Gets the generated width of the grid pane depending on minWidth, maxWidth, and collapsed state.
      */
     public getWidth(): number {
-        if ( this.props.collapsed) {
+        if (this.props.collapsed) {
             return Pane.collapsedWidth;
-        } else if ( this.width() < this.props.minWidth ) {
+        } else if (this.width() < this.props.minWidth) {
             return this.props.minWidth;
-        } else if ( this.width() > this.props.maxWidth ) {
+        } else if (this.width() > this.props.maxWidth) {
             return this.props.maxWidth;
         } else {
             return this.width();
@@ -201,12 +206,11 @@ export class Pane extends Foundation<
         const width: string = toPx(this.getWidth());
         const styles: React.CSSProperties = {};
 
-        styles.minWidth =
-            this.props.collapsed
+        styles.minWidth = this.props.collapsed
             ? Pane.collapsedWidth
             : this.props.resizable
-            ? toPx(this.props.minWidth)
-            : width;
+                ? toPx(this.props.minWidth)
+                : width;
 
         if (this.props.overlay) {
             styles.width = width;
@@ -239,7 +243,7 @@ export class Pane extends Foundation<
      */
     public onMouseDown = (e: React.MouseEvent<HTMLButtonElement>): void => {
         // only listen for left click
-        if ( e.button !== 0 ) {
+        if (e.button !== 0) {
             return;
         }
 
@@ -247,7 +251,7 @@ export class Pane extends Foundation<
             resizing: true,
             dragReference: e.pageX
         });
-    }
+    };
 
     /**
      * Handle mouseUp
@@ -262,7 +266,7 @@ export class Pane extends Foundation<
             resizing: false,
             dragReference: null
         });
-    }
+    };
 
     public onMouseMove = (e: MouseEvent): void => {
         if (!this.state.resizing) {
@@ -270,7 +274,10 @@ export class Pane extends Foundation<
         }
 
         const offset: number = this.state.dragReference - e.pageX;
-        const updatedWidth: number = this.props.resizeFrom === west ? this.width() + offset : this.width() - offset;
+        const updatedWidth: number =
+            this.props.resizeFrom === west
+                ? this.width() + offset
+                : this.width() - offset;
 
         if (updatedWidth <= this.props.minWidth || updatedWidth >= this.props.maxWidth) {
             return;
@@ -281,11 +288,11 @@ export class Pane extends Foundation<
         });
 
         this.setWidth(updatedWidth);
-    }
+    };
 
     public onWindowResize = (e: UIEvent): void => {
         this.setWidth(this.rootElement.current.clientWidth);
-    }
+    };
 
     public setWidth(width: number): void {
         this.setState({
@@ -319,8 +326,16 @@ export class Pane extends Foundation<
         }: PaneClassNamesContract = this.props.managedClasses;
         const resizeFrom: PaneResizeDirection = this.props.resizeFrom;
 
-        let classes: string = joinClasses(resizeFrom === PaneResizeDirection.east, pane, pane__resizeEast);
-        classes = joinClasses(resizeFrom === PaneResizeDirection.west, classes, pane__resizeWest);
+        let classes: string = joinClasses(
+            resizeFrom === PaneResizeDirection.east,
+            pane,
+            pane__resizeEast
+        );
+        classes = joinClasses(
+            resizeFrom === PaneResizeDirection.west,
+            classes,
+            pane__resizeWest
+        );
         classes = joinClasses(this.props.overlay, classes, pane__overlay);
         classes = joinClasses(this.props.hidden, classes, pane__hidden);
 

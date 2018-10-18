@@ -22,22 +22,21 @@ export const weightPropertiesWeight: FormOrderByPropertyNamesProps = {
             expandable: true,
             weight: 40,
             properties: [
-                { weight: 9, propertyName: ["alignHorizontal", "alignVertical"] },
+                {
+                    weight: 9,
+                    propertyName: ["alignHorizontal", "alignVertical"]
+                },
                 { weight: 7, propertyName: ["level"] }
             ]
         },
         {
             title: "Developer",
             weight: 0,
-            properties: [
-                { weight: 9, propertyName: "tag" }
-            ]
+            properties: [{ weight: 9, propertyName: "tag" }]
         }
     ]
 };
 
 export const weightPropertiesConfig: FormComponentMappingToPropertyNamesProps = {
-    alignHorizontal: [
-        "alignHorizontal"
-    ]
+    alignHorizontal: ["alignHorizontal"]
 };

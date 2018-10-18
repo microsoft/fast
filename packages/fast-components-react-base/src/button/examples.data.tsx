@@ -1,5 +1,9 @@
 import * as React from "react";
-import Button, { ButtonHandledProps, ButtonManagedClasses, ButtonUnhandledProps } from "./button";
+import Button, {
+    ButtonHandledProps,
+    ButtonManagedClasses,
+    ButtonUnhandledProps
+} from "./button";
 import schema from "./button.schema.json";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";

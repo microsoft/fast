@@ -2,40 +2,60 @@
  * This script is injected into the DOM with server-side utilities.
  * This script will fail if exectued outside of a browser context
  */
-import { Base, nodeToSketchLayers, Page, SymbolMaster, Text,  } from "@brainly/html-sketchapp";
+import {
+    Base,
+    nodeToSketchLayers,
+    Page,
+    SymbolMaster,
+    Text
+} from "@brainly/html-sketchapp";
 import { SymbolLibrarySource } from "./index";
 const symbolNameDataAttribute: string = "data-sketch-symbol";
 
 export function getAsketchSymbols(source: SymbolLibrarySource): JSON[] {
-    const selectors: string = Array.isArray(source.selectors) ? source.selectors.join(", ") : source.selectors;
+    const selectors: string = Array.isArray(source.selectors)
+        ? source.selectors.join(", ")
+        : source.selectors;
     const nodes: Element[] = Array.from(document.querySelectorAll(selectors));
 
-    return nodes.map((node: Element) => {
-        const rect: ClientRect = node.getBoundingClientRect();
-        const x: number = rect.left;
-        const y: number = rect.top;
-        const height: number = rect.height;
-        const width: number = rect.width;
-        const symbol: SymbolMaster = new SymbolMaster({ x, y, width, height });
-        const children: Element[] = Array.from(node.querySelectorAll("*"));
-        const allNodes: Element[] = [node].concat(children);
-
-        if (node.hasAttribute(symbolNameDataAttribute)) {
-            symbol.setName(node.getAttribute(symbolNameDataAttribute));
-        } else {
-            symbol.setName("Symbol");
-        }
-
-        allNodes
-            .filter((filtered: Element) => filtered !== null || undefined)
-            .map(convertNodeToSketchLayers)
-            .reduce((accumulator: any[], value: any[]) => accumulator.concat(value), [])
-            .filter((value: any) => value !== null)
-            .forEach((layer: any): void => {
-                symbol.addLayer(layer);
+    return nodes
+        .map((node: Element) => {
+            const rect: ClientRect = node.getBoundingClientRect();
+            const x: number = rect.left;
+            const y: number = rect.top;
+            const height: number = rect.height;
+            const width: number = rect.width;
+            const symbol: SymbolMaster = new SymbolMaster({
+                x,
+                y,
+                width,
+                height
             });
-        return symbol;
-    }).map((symbol: SymbolMaster) => symbol.toJSON());
+            const children: Element[] = Array.from(node.querySelectorAll("*"));
+            const allNodes: Element[] = [node].concat(children);
+
+            if (node.hasAttribute(symbolNameDataAttribute)) {
+                symbol.setName(node.getAttribute(symbolNameDataAttribute));
+            } else {
+                symbol.setName("Symbol");
+            }
+
+            allNodes
+                .filter((filtered: Element) => filtered !== null || undefined)
+                .map(convertNodeToSketchLayers)
+                .reduce(
+                    (accumulator: any[], value: any[]) => accumulator.concat(value),
+                    []
+                )
+                .filter((value: any) => value !== null)
+                .forEach(
+                    (layer: any): void => {
+                        symbol.addLayer(layer);
+                    }
+                );
+            return symbol;
+        })
+        .map((symbol: SymbolMaster) => symbol.toJSON());
 }
 
 function convertNodeToSketchLayers(node: Element): any[] {

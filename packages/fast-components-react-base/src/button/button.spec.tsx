@@ -3,7 +3,10 @@ import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
-import { generateSnapshots, SnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
+import {
+    generateSnapshots,
+    SnapshotTestSuite
+} from "@microsoft/fast-jest-snapshots-react";
 import Button, {
     ButtonClassNameContract,
     ButtonHandledProps,
@@ -16,7 +19,7 @@ import Button, {
 /*
  * Configure Enzyme
  */
-configure({adapter: new Adapter()});
+configure({ adapter: new Adapter() });
 
 describe("button snapshot", (): void => {
     generateSnapshots(examples as SnapshotTestSuite<ButtonProps>);
@@ -33,11 +36,9 @@ describe("button", (): void => {
     });
 
     test("should not throw if managedClasses are not provided", () => {
-        expect(
-            () => {
-                shallow(<Button />);
-            }
-        ).not.toThrow();
+        expect(() => {
+            shallow(<Button />);
+        }).not.toThrow();
     });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
@@ -49,20 +50,16 @@ describe("button", (): void => {
             "aria-hidden": true
         };
 
-        const props: ButtonProps = {...handledProps, ...unhandledProps};
+        const props: ButtonProps = { ...handledProps, ...unhandledProps };
 
-        const rendered: any = shallow(
-            <Button {...props} />
-        );
+        const rendered: any = shallow(<Button {...props} />);
 
         expect(rendered.prop("aria-hidden")).not.toBe(undefined);
         expect(rendered.prop("aria-hidden")).toEqual(true);
     });
 
     test("should render by default as a `button` element", () => {
-        const rendered: any = shallow(
-            <Button managedClasses={managedClasses} />
-        );
+        const rendered: any = shallow(<Button managedClasses={managedClasses} />);
 
         expect(rendered.type()).toBe("button");
     });
@@ -95,9 +92,7 @@ describe("button", (): void => {
 
     test("should accept and render children", () => {
         const rendered: any = shallow(
-            <Button managedClasses={managedClasses}>
-                Children
-            </Button>
+            <Button managedClasses={managedClasses}>Children</Button>
         );
 
         expect(rendered.prop("children")).not.toBe(undefined);

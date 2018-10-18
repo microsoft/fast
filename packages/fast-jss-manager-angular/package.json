@@ -19,6 +19,7 @@
     "clean:dist": "node ../../build/clean.js dist",
     "prepare": "npm run clean:dist && npm run build",
     "prettier": "prettier --config ../../.prettierrc --write '**/*.ts'",
+    "prettier:diff": "prettier --config ../../.prettierrc '**/*.ts' --list-different",
     "start": "webpack-dev-server --progress",
     "test": "npm run tslint && npm run unit-tests",
     "tslint": "tslint -c ./tslint.json '**/*.ts'",

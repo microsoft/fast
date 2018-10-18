@@ -40,7 +40,11 @@ export default abstract class ScrollTrigger {
      * Subscribe an element and callback for scroll triggers
      */
     public subscribe(element: HTMLElement, callback: ScrollTriggerCallback): void {
-        if (!(element instanceof HTMLElement) || typeof callback !== "function" || this.isSubscribed(element, callback)) {
+        if (
+            !(element instanceof HTMLElement) ||
+            typeof callback !== "function" ||
+            this.isSubscribed(element, callback)
+        ) {
             return;
         }
 
@@ -54,19 +58,30 @@ export default abstract class ScrollTrigger {
             }
         }
 
-        this.subscriptions.push({ element, callback, inView: isElementInView(element) });
+        this.subscriptions.push({
+            element,
+            callback,
+            inView: isElementInView(element)
+        });
     }
 
     /**
      * Unsubscribe an element and callback for scroll triggers
      */
     public unsubscribe(element: HTMLElement, callback: ScrollTriggerCallback): void {
-        this.subscriptions = this.subscriptions.filter((subscription: ScrollTriggerSubscription) => {
-            return !(element === subscription.element && callback === subscription.callback);
-        });
+        this.subscriptions = this.subscriptions.filter(
+            (subscription: ScrollTriggerSubscription) => {
+                return !(
+                    element === subscription.element && callback === subscription.callback
+                );
+            }
+        );
 
         if (this.subscriptions.length === 0) {
-            window.removeEventListener("scroll", this.useRequestAnimationFrame ? this.requestFrame : this.update);
+            window.removeEventListener(
+                "scroll",
+                this.useRequestAnimationFrame ? this.requestFrame : this.update
+            );
         }
     }
 
@@ -84,9 +99,13 @@ export default abstract class ScrollTrigger {
      * Checks to see if element/callback pairs have been registered so we don't duplicate registration.
      */
     private isSubscribed(element: HTMLElement, callback: ScrollTriggerCallback): boolean {
-        return !!this.subscriptions.filter((subscription: ScrollTriggerSubscription): boolean => {
-            return element === subscription.element && callback === subscription.callback;
-        }).length;
+        return !!this.subscriptions.filter(
+            (subscription: ScrollTriggerSubscription): boolean => {
+                return (
+                    element === subscription.element && callback === subscription.callback
+                );
+            }
+        ).length;
     }
 
     /**
@@ -99,5 +118,5 @@ export default abstract class ScrollTrigger {
 
         this.openRequestAnimationFrame = true;
         window.requestAnimationFrame(this.update);
-    }
+    };
 }

@@ -2,16 +2,28 @@ import * as React from "react";
 import { throttle } from "lodash-es";
 import { Canvas } from "../canvas";
 import rafThrottle from "raf-throttle";
-import { RowHandledProps, RowProps, RowResizeDirection, RowUnhandledProps } from "./row.props";
+import {
+    RowHandledProps,
+    RowProps,
+    RowResizeDirection,
+    RowUnhandledProps
+} from "./row.props";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import Foundation, { FoundationProps, HandledProps } from "@microsoft/fast-components-foundation-react";
+import manageJss, {
+    ComponentStyles,
+    ManagedClasses,
+    ManagedJSSProps
+} from "@microsoft/fast-jss-manager-react";
+import Foundation, {
+    FoundationProps,
+    HandledProps
+} from "@microsoft/fast-components-foundation-react";
 import { canUseDOM } from "exenv-es6";
 import { joinClasses } from "../utilities";
 
-export const east: string  = "east";
+export const east: string = "east";
 export const west: string = "west";
-export const north: string  = "north";
+export const north: string = "north";
 export const south: string = "south";
 
 /**
@@ -70,7 +82,8 @@ export const rowStyleSheet: ComponentStyles<RowClassNamesContract, undefined> = 
             cursor: "ns-resize"
         },
         "&:active": {
-            opacity: "1", transform: "scale(1)"
+            opacity: "1",
+            transform: "scale(1)"
         }
     },
     row__resizeNorth: {
@@ -108,7 +121,7 @@ export class Row extends Foundation<
         resizable: false,
         collapsed: false,
         overlay: false,
-        hidden: false,
+        hidden: false
     };
 
     /**
@@ -144,7 +157,7 @@ export class Row extends Foundation<
             height: this.props.minHeight || 300
         };
 
-        this.onMouseMove    = throttle(this.onMouseMove, 16);
+        this.onMouseMove = throttle(this.onMouseMove, 16);
         this.rootElement = React.createRef();
     }
 
@@ -192,12 +205,11 @@ export class Row extends Foundation<
         const height: string = toPx(this.getHeight());
         const styles: React.CSSProperties = {};
 
-        styles.minHeight =
-            this.props.collapsed
+        styles.minHeight = this.props.collapsed
             ? Row.collapsedHeight
             : this.props.resizable
-            ? toPx(this.props.minHeight)
-            : height;
+                ? toPx(this.props.minHeight)
+                : height;
 
         if (this.props.overlay) {
             styles.height = height;
@@ -238,7 +250,7 @@ export class Row extends Foundation<
             resizing: true,
             dragReference: e.pageY
         });
-    }
+    };
 
     /**
      * Handle mouseUp
@@ -253,7 +265,7 @@ export class Row extends Foundation<
             resizing: false,
             dragReference: null
         });
-    }
+    };
 
     public onMouseMove = (e: MouseEvent): void => {
         if (!this.state.resizing) {
@@ -261,9 +273,15 @@ export class Row extends Foundation<
         }
 
         const offset: number = this.state.dragReference - e.pageY;
-        const updatedHeight: number = this.props.resizeFrom === north ? this.height() + offset : this.height() - offset;
+        const updatedHeight: number =
+            this.props.resizeFrom === north
+                ? this.height() + offset
+                : this.height() - offset;
 
-        if (updatedHeight <= this.props.minHeight || updatedHeight >= this.props.maxHeight) {
+        if (
+            updatedHeight <= this.props.minHeight ||
+            updatedHeight >= this.props.maxHeight
+        ) {
             return;
         }
 
@@ -272,7 +290,7 @@ export class Row extends Foundation<
         });
 
         this.setHeight(updatedHeight);
-    }
+    };
 
     public setHeight(height: number): void {
         this.setState({
@@ -307,15 +325,22 @@ export class Row extends Foundation<
         }: RowClassNamesContract = this.props.managedClasses;
         const resizeFrom: RowResizeDirection = this.props.resizeFrom;
 
-        let classes: string = joinClasses(resizeFrom === RowResizeDirection.north, row, row__resizeNorth);
-        classes = joinClasses(resizeFrom === RowResizeDirection.south, classes, row__resizeSouth);
+        let classes: string = joinClasses(
+            resizeFrom === RowResizeDirection.north,
+            row,
+            row__resizeNorth
+        );
+        classes = joinClasses(
+            resizeFrom === RowResizeDirection.south,
+            classes,
+            row__resizeSouth
+        );
         classes = joinClasses(this.props.overlay, classes, row__overlay);
         classes = joinClasses(this.props.hidden, classes, row__hidden);
         classes = joinClasses(this.props.fill, classes, row__fill);
 
         return super.generateClassNames(classes);
     }
-
 }
 
 export * from "./row.props";

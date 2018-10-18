@@ -1,5 +1,5 @@
 import * as React from "react";
-import { generateSnapshots,  SnapshotTestSuite } from "./index";
+import { generateSnapshots, SnapshotTestSuite } from "./index";
 
 interface TestComponentProps {
     name: string;
@@ -7,9 +7,7 @@ interface TestComponentProps {
 
 class TestComponent extends React.Component<TestComponentProps, {}> {
     public render(): React.ReactNode {
-        return (
-            <div>{this.props.name}</div>
-        );
+        return <div>{this.props.name}</div>;
     }
 }
 

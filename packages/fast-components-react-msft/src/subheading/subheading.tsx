@@ -1,7 +1,7 @@
 import * as React from "react";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { TypographySize, TypographyTag  } from "@microsoft/fast-components-react-base";
+import { TypographySize, TypographyTag } from "@microsoft/fast-components-react-base";
 import {
     SubheadingHandledProps,
     SubheadingManagedClasses,
@@ -12,7 +12,10 @@ import {
 } from "./subheading.props";
 
 import { Typography } from "../typography";
-import { ManagedClasses, SubheadingClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import {
+    ManagedClasses,
+    SubheadingClassNameContract
+} from "@microsoft/fast-components-class-name-contracts-msft";
 
 class Subheading extends Foundation<
     SubheadingHandledProps,
@@ -64,7 +67,10 @@ class Subheading extends Foundation<
 
     protected generateClassNames(): string {
         return super.generateClassNames(
-            `${get(this.props, "managedClasses.subheading")} ${get(this.props, `managedClasses.subheading__${this.props.size}`)}`
+            `${get(this.props, "managedClasses.subheading")} ${get(
+                this.props,
+                `managedClasses.subheading__${this.props.size}`
+            )}`
         );
     }
 }

@@ -67,7 +67,6 @@ export interface RowHandledProps extends RowManagedClasses {
      * Direction that the row should be resized from
      */
     resizeFrom?: RowResizeDirection;
-
 }
 
 export type RowProps = RowHandledProps & RowUnhandledProps;

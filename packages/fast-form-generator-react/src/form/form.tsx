@@ -17,9 +17,7 @@ import {
     NavigationItem
 } from "./form.utilities";
 import { cloneDeep, get, set, unset } from "lodash-es";
-import {
-    ChildComponent
-} from "./form-item.children";
+import { ChildComponent } from "./form-item.children";
 import styles from "./form.style";
 import { FormClassNameContract } from "../class-name-contracts/";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
@@ -29,8 +27,10 @@ import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-
  * Schema form component definition
  * @extends React.Component
  */
-class Form extends React.Component<FormProps & ManagedClasses<FormClassNameContract>, FormState> {
-
+class Form extends React.Component<
+    FormProps & ManagedClasses<FormClassNameContract>,
+    FormState
+> {
     /**
      * The default untitled string
      */
@@ -42,14 +42,26 @@ class Form extends React.Component<FormProps & ManagedClasses<FormClassNameContr
         this.untitled = "Untitled";
 
         this.state = {
-            titleProps: props.schema && props.schema.title ? props.schema.title : this.untitled,
+            titleProps:
+                props.schema && props.schema.title ? props.schema.title : this.untitled,
             schema: this.props.schema,
             activeSchemaLocation: "",
             activeDataLocation: "",
             dataCache: this.props.data,
-            navigation: typeof this.props.location !== "undefined" // Location has been passed
-                ? getNavigation(this.props.location.dataLocation, this.props.data, this.props.schema, this.props.childOptions)
-                : getNavigation("", this.props.data, this.props.schema, this.props.childOptions)
+            navigation:
+                typeof this.props.location !== "undefined" // Location has been passed
+                    ? getNavigation(
+                          this.props.location.dataLocation,
+                          this.props.data,
+                          this.props.schema,
+                          this.props.childOptions
+                      )
+                    : getNavigation(
+                          "",
+                          this.props.data,
+                          this.props.schema,
+                          this.props.childOptions
+                      )
         };
     }
 
@@ -76,7 +88,7 @@ class Form extends React.Component<FormProps & ManagedClasses<FormClassNameContr
         );
 
         if (state) {
-            this.setState((state as FormState));
+            this.setState(state as FormState);
         }
     }
 
@@ -84,7 +96,12 @@ class Form extends React.Component<FormProps & ManagedClasses<FormClassNameContr
      * Update the state when a new schema is given
      */
     /* tslint:disable-next-line */
-    private updateStateForNewProps(props: FormProps, updateData: boolean, updateSchema: boolean, updateLocation: boolean): Partial<FormState> {
+    private updateStateForNewProps(
+        props: FormProps,
+        updateData: boolean,
+        updateSchema: boolean,
+        updateLocation: boolean
+    ): Partial<FormState> {
         let state: Partial<FormState> = {};
 
         if (updateData) {
@@ -92,11 +109,19 @@ class Form extends React.Component<FormProps & ManagedClasses<FormClassNameContr
         }
 
         if (updateSchema) {
-            state = Object.assign({}, state, this.getStateWithUpdatedFormProps(props, state));
+            state = Object.assign(
+                {},
+                state,
+                this.getStateWithUpdatedFormProps(props, state)
+            );
         }
 
         if (updateLocation) {
-            state = Object.assign({}, state, this.getStateWithUpdatedLocation(props, state));
+            state = Object.assign(
+                {},
+                state,
+                this.getStateWithUpdatedLocation(props, state)
+            );
         }
 
         if (updateData || updateSchema || updateLocation) {
@@ -107,10 +132,15 @@ class Form extends React.Component<FormProps & ManagedClasses<FormClassNameContr
     /**
      * Gets the state object with an updated data cache
      */
-    private getStateWithUpdatedDataCache(props: FormProps, state: Partial<FormState>): Partial<FormState> {
-        const dataCache: any = typeof this.state !== "undefined" && typeof this.state.dataCache !== "undefined"
-            ? this.state.dataCache
-            : void(0);
+    private getStateWithUpdatedDataCache(
+        props: FormProps,
+        state: Partial<FormState>
+    ): Partial<FormState> {
+        const dataCache: any =
+            typeof this.state !== "undefined" &&
+            typeof this.state.dataCache !== "undefined"
+                ? this.state.dataCache
+                : void 0;
 
         const schemaState: Partial<FormState> = {
             dataCache: getDataCache(dataCache, props.data)
@@ -122,9 +152,13 @@ class Form extends React.Component<FormProps & ManagedClasses<FormClassNameContr
     /**
      * Gets the state object with updated locations, title and breadcrumbs
      */
-    private getStateWithUpdatedFormProps(props: FormProps, state: Partial<FormState>): Partial<FormState> {
+    private getStateWithUpdatedFormProps(
+        props: FormProps,
+        state: Partial<FormState>
+    ): Partial<FormState> {
         const schemaState: Partial<FormState> = {
-            titleProps: props.schema && props.schema.title ? props.schema.title : this.untitled,
+            titleProps:
+                props.schema && props.schema.title ? props.schema.title : this.untitled,
             schema: props.schema,
             activeSchemaLocation: "",
             activeDataLocation: "",
@@ -132,13 +166,16 @@ class Form extends React.Component<FormProps & ManagedClasses<FormClassNameContr
             navigation: this.getUpdatedNavigation(props, state)
         };
 
-        return (Object.assign({}, state, schemaState) as Partial<FormState>);
+        return Object.assign({}, state, schemaState) as Partial<FormState>;
     }
 
     /**
      * Gets the state with updated location
      */
-    private getStateWithUpdatedLocation(props: FormProps, state: Partial<FormState>): Partial<FormState> {
+    private getStateWithUpdatedLocation(
+        props: FormProps,
+        state: Partial<FormState>
+    ): Partial<FormState> {
         const locationState: Partial<FormState> = {
             activeSchemaLocation: props.location.schemaLocation,
             activeDataLocation: props.location.dataLocation,
@@ -154,7 +191,10 @@ class Form extends React.Component<FormProps & ManagedClasses<FormClassNameContr
         return Object.assign({}, state, locationState);
     }
 
-    private getUpdatedNavigation(props: FormProps, state: Partial<FormState>): NavigationItem[] {
+    private getUpdatedNavigation(
+        props: FormProps,
+        state: Partial<FormState>
+    ): NavigationItem[] {
         return getNavigation(
             props.location ? props.location.dataLocation : state.activeDataLocation || "",
             props.data,
@@ -167,29 +207,52 @@ class Form extends React.Component<FormProps & ManagedClasses<FormClassNameContr
      * Generates the breadcrumb navigation
      */
     private generateBreadcrumbs(): JSX.Element {
-        const breadcrumbs: BreadcrumbItem[] = getBreadcrumbs(this.state.navigation, this.handleBreadcrumbClick);
+        const breadcrumbs: BreadcrumbItem[] = getBreadcrumbs(
+            this.state.navigation,
+            this.handleBreadcrumbClick
+        );
 
         if (breadcrumbs.length > 1) {
-            return <ul className={this.props.managedClasses.form_breadcrumbs}>{this.generateBreadcrumbItems(breadcrumbs)}</ul>;
+            return (
+                <ul className={this.props.managedClasses.form_breadcrumbs}>
+                    {this.generateBreadcrumbItems(breadcrumbs)}
+                </ul>
+            );
         }
     }
 
-    private handleBreadcrumbClick = (schemaLocation: string, dataLocation: string, schema: any): BreadcrumbItemEventHandler => {
+    private handleBreadcrumbClick = (
+        schemaLocation: string,
+        dataLocation: string,
+        schema: any
+    ): BreadcrumbItemEventHandler => {
         return (e: React.MouseEvent): void => {
             e.preventDefault();
 
             this.handleUpdateActiveSection(schemaLocation, dataLocation, schema);
         };
-    }
+    };
 
     private generateBreadcrumbItems(items: BreadcrumbItem[]): JSX.Element[] {
-        return items.map((item: BreadcrumbItem, index: number): JSX.Element => {
-            if (index === items.length - 1) {
-                return <li key={index}><span>{item.text}</span></li>;
-            }
+        return items.map(
+            (item: BreadcrumbItem, index: number): JSX.Element => {
+                if (index === items.length - 1) {
+                    return (
+                        <li key={index}>
+                            <span>{item.text}</span>
+                        </li>
+                    );
+                }
 
-            return <li key={index}><a href={item.href} onClick={item.onClick}>{item.text}</a></li>;
-        });
+                return (
+                    <li key={index}>
+                        <a href={item.href} onClick={item.onClick}>
+                            {item.text}
+                        </a>
+                    </li>
+                );
+            }
+        );
     }
 
     private getData(propKey: string, location: string): any {
@@ -214,14 +277,21 @@ class Form extends React.Component<FormProps & ManagedClasses<FormClassNameContr
             childOptions: this.props.childOptions,
             location: this.props.location,
             componentMappingToPropertyNames: this.props.componentMappingToPropertyNames,
-            attributeSettingsMappingToPropertyNames: this.props.attributeSettingsMappingToPropertyNames,
+            attributeSettingsMappingToPropertyNames: this.props
+                .attributeSettingsMappingToPropertyNames,
             orderByPropertyNames: this.props.orderByPropertyNames
         };
 
         return <FormSection {...sectionProps} />;
     }
 
-    private handleOnChange = (location: string, data: any, isArray: boolean, index: number, isChildren?: boolean): void => {
+    private handleOnChange = (
+        location: string,
+        data: any,
+        isArray: boolean,
+        index: number,
+        isChildren?: boolean
+    ): void => {
         let obj: any = cloneDeep(this.props.data);
         const currentData: any = location === "" ? obj : get(obj, location);
 
@@ -237,12 +307,12 @@ class Form extends React.Component<FormProps & ManagedClasses<FormClassNameContr
                 newArray.push(data);
             }
 
-            location === "" ? obj = newArray : set(obj, location, newArray);
+            location === "" ? (obj = newArray) : set(obj, location, newArray);
         } else {
             if (typeof data === "undefined") {
-                location === "" ? obj = void(0) : unset(obj, location);
+                location === "" ? (obj = void 0) : unset(obj, location);
             } else {
-                location === "" ? obj = data : set(obj, location, data);
+                location === "" ? (obj = data) : set(obj, location, data);
             }
         }
 
@@ -255,29 +325,38 @@ class Form extends React.Component<FormProps & ManagedClasses<FormClassNameContr
         }
 
         this.props.onChange(obj);
-    }
+    };
 
     /**
      * Handles the form submit
      */
     private handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
-    }
+    };
 
     /**
      * Handles an update to the active section and component
      */
-    private handleUpdateActiveSection = (schemaLocation: string, dataLocation: string, schema: any): void => {
+    private handleUpdateActiveSection = (
+        schemaLocation: string,
+        dataLocation: string,
+        schema: any
+    ): void => {
         const state: Partial<FormState> = getActiveComponentAndSection(
             schemaLocation,
             dataLocation,
             schema
         );
 
-        state.navigation = getNavigation(dataLocation || "", this.props.data, this.props.schema, this.props.childOptions);
+        state.navigation = getNavigation(
+            dataLocation || "",
+            this.props.data,
+            this.props.schema,
+            this.props.childOptions
+        );
 
-        this.setState((state as FormState));
-    }
+        this.setState(state as FormState);
+    };
 }
 
 export default manageJss(styles)(Form);

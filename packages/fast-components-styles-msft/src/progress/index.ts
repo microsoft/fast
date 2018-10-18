@@ -1,4 +1,7 @@
-import designSystemDefaults, { DesignSystem, withDesignSystemDefaults } from "../design-system";
+import designSystemDefaults, {
+    DesignSystem,
+    withDesignSystemDefaults
+} from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { ProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { ensureBrandNormal, largeContrast } from "../utilities/colors";
@@ -10,7 +13,11 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = (
 ): ComponentStyleSheet<ProgressClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const brandColor: string = ensureBrandNormal(config);
-    const determinateBackgroundColor: string = largeContrast(designSystem.contrast, designSystem.backgroundColor, brandColor);
+    const determinateBackgroundColor: string = largeContrast(
+        designSystem.contrast,
+        designSystem.backgroundColor,
+        brandColor
+    );
 
     return {
         progress: {
@@ -34,7 +41,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = (
         progress_indicator__determinate: {
             background: determinateBackgroundColor,
             height: toPx(designSystem.designUnit),
-            borderRadius: "2px",
+            borderRadius: "2px"
         },
         progress_dot: {
             position: "absolute",
@@ -78,25 +85,25 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = (
             "20%": {
                 transform: "translateX(0)",
                 animationTimingFunction: "ease-out",
-                opacity: "0",
+                opacity: "0"
             },
             "25%": {
-                opacity: "1",
+                opacity: "1"
             },
             "35%": {
                 transform: "translateX(45%)",
-                animationTimingFunction: "linear",
+                animationTimingFunction: "linear"
             },
             "65%": {
                 transform: "translateX(55%)",
                 animationTimingFunction: "ease-out"
             },
             "75%": {
-                opacity: "1",
+                opacity: "1"
             },
             "80%": {
                 transform: "translateX(100%)",
-                opacity: "0",
+                opacity: "0"
             },
             "100%": {}
         }

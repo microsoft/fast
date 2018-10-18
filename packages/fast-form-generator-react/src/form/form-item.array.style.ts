@@ -38,24 +38,24 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
         ...applyAriaHiddenStyles(),
         ...applyPopupMenuStyles(),
         "& $formItemArray_actionMenuItem__add, & $formItemArray_actionMenuItem__remove": {
-                ...localizePadding(12, 12, 12, 36),
-                width: "100%",
-                ...ellipsis(),
-                textAlign: "left",
-                color: colors.black,
-                "&::before": {
-                    position: "absolute",
-                    content: "''",
-                    opacity: ".6",
-                    pointerEvents: "none",
-                    width: toPx(16),
-                    height: toPx(16),
-                    left: toPx(10)
-                },
-                "&:hover": {
-                    backgroundColor: colors.grayBackground
-                }
+            ...localizePadding(12, 12, 12, 36),
+            width: "100%",
+            ...ellipsis(),
+            textAlign: "left",
+            color: colors.black,
+            "&::before": {
+                position: "absolute",
+                content: "''",
+                opacity: ".6",
+                pointerEvents: "none",
+                width: toPx(16),
+                height: toPx(16),
+                left: toPx(10)
+            },
+            "&:hover": {
+                backgroundColor: colors.grayBackground
             }
+        }
     },
     formItemArray_actionMenuItem__add: {
         "&::before": {

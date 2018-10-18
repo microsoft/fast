@@ -11,13 +11,12 @@ import {
     ParagraphUnhandledProps
 } from "./paragraph.props";
 import { Typography } from "../typography";
-import { ManagedClasses, ParagraphClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import {
+    ManagedClasses,
+    ParagraphClassNameContract
+} from "@microsoft/fast-components-class-name-contracts-msft";
 
-class Paragraph extends Foundation<
-    ParagraphHandledProps,
-    ParagraphUnhandledProps,
-    {}
-> {
+class Paragraph extends Foundation<ParagraphHandledProps, ParagraphUnhandledProps, {}> {
     public static defaultProps: Partial<ParagraphProps> = {
         size: ParagraphSize._3
     };
@@ -49,10 +48,14 @@ class Paragraph extends Foundation<
      * Generates class names based on props
      */
     protected generateClassNames(): string {
-        const classes: string =
-            `${get(this.props, `managedClasses.paragraph`)} ${get(this.props, `managedClasses.paragraph__${this.props.size}`)}`;
+        const classes: string = `${get(this.props, `managedClasses.paragraph`)} ${get(
+            this.props,
+            `managedClasses.paragraph__${this.props.size}`
+        )}`;
 
-        return super.generateClassNames(`${get(this.props, "managedClasses.paragraph")} ${classes}`);
+        return super.generateClassNames(
+            `${get(this.props, "managedClasses.paragraph")} ${classes}`
+        );
     }
 
     /**

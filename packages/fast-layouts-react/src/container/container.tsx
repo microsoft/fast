@@ -1,13 +1,23 @@
 import * as React from "react";
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import { ContainerHandledProps, ContainerProps, ContainerUnhandledProps } from "./container.props";
-import Foundation, { FoundationProps, HandledProps } from "@microsoft/fast-components-foundation-react";
+import {
+    ContainerHandledProps,
+    ContainerProps,
+    ContainerUnhandledProps
+} from "./container.props";
+import Foundation, {
+    FoundationProps,
+    HandledProps
+} from "@microsoft/fast-components-foundation-react";
 
 export interface ContainerClassNamesContract {
     container?: string;
 }
 
-export const containerStyleSheet: ComponentStyles<ContainerClassNamesContract, undefined> = {
+export const containerStyleSheet: ComponentStyles<
+    ContainerClassNamesContract,
+    undefined
+> = {
     "@global": {
         "html, body": {
             padding: 0,

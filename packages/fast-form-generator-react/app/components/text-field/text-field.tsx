@@ -19,10 +19,6 @@ export default class TextField extends React.Component<TextFieldProps, {}> {
     public static displayName: string = "Text field";
 
     public render(): JSX.Element {
-        return (
-            <this.props.tag>
-                {this.props.text}
-            </this.props.tag>
-        );
+        return <this.props.tag>{this.props.text}</this.props.tag>;
     }
 }

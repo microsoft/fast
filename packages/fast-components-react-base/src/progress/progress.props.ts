@@ -1,7 +1,11 @@
 import * as React from "react";
-import { ManagedClasses, ProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import {
+    ManagedClasses,
+    ProgressClassNameContract
+} from "@microsoft/fast-components-class-name-contracts-base";
 
-export interface ProgressManagedClasses extends ManagedClasses<ProgressClassNameContract> {}
+export interface ProgressManagedClasses
+    extends ManagedClasses<ProgressClassNameContract> {}
 export interface ProgressUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
 export interface ProgressHandledProps extends ProgressManagedClasses {
     /**

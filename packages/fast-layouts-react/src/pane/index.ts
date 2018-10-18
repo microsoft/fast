@@ -25,5 +25,5 @@ export {
     PaneHandledProps,
     PaneUnhandledProps,
     PaneClassNamesContract,
-    PaneResizeDirection,
+    PaneResizeDirection
 };

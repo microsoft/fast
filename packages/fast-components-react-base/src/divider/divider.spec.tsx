@@ -3,7 +3,10 @@ import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
-import { generateSnapshots, SnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
+import {
+    generateSnapshots,
+    SnapshotTestSuite
+} from "@microsoft/fast-jest-snapshots-react";
 import Divider, {
     DividerClassNameContract,
     DividerHandledProps,
@@ -17,11 +20,11 @@ describe("divider snapshot", (): void => {
     generateSnapshots(examples as SnapshotTestSuite<DividerProps>);
 });
 
-configure({adapter: new Adapter()});
+configure({ adapter: new Adapter() });
 
 describe("divider", (): void => {
     const managedClasses: DividerClassNameContract = {
-        divider: "divider-class",
+        divider: "divider-class"
     };
 
     test("should have a displayName that matches the component name", () => {
@@ -29,11 +32,9 @@ describe("divider", (): void => {
     });
 
     test("should not throw if managedClasses are not provided", () => {
-        expect(
-            () => {
-                shallow(<Divider />);
-            }
-        ).not.toThrow();
+        expect(() => {
+            shallow(<Divider />);
+        }).not.toThrow();
     });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
@@ -43,10 +44,8 @@ describe("divider", (): void => {
         const unhandledProps: DividerUnhandledProps = {
             "aria-hidden": true
         };
-        const props: DividerProps = {...handledProps, ...unhandledProps};
-        const rendered: any = shallow(
-            <Divider {...props} />
-        );
+        const props: DividerProps = { ...handledProps, ...unhandledProps };
+        const rendered: any = shallow(<Divider {...props} />);
 
         expect(rendered.prop("aria-hidden")).not.toBe(undefined);
         expect(rendered.prop("aria-hidden")).toEqual(true);

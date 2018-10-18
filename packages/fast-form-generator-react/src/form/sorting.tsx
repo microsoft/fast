@@ -28,7 +28,7 @@ export interface SortableListItemProps {
 
 export class SortableListItem extends React.Component<SortableListItemProps, {}> {
     public render(): JSX.Element {
-        return(
+        return (
             <li draggable={true} id={this.props.id}>
                 {this.props.children}
             </li>

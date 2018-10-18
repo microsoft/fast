@@ -11,7 +11,7 @@ const render: any = (): void => {
                 <Route path="/" exact={true} component={Page} />
             </Switch>
         </BrowserRouter>,
-        document.getElementById("root"),
+        document.getElementById("root")
     );
 };
 

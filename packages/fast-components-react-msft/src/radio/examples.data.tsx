@@ -52,7 +52,7 @@ export default {
             checked: true,
             onChange: noop,
             children: slotCheckedExample,
-            id: "checked",
+            id: "checked"
         },
         {
             disabled: true,

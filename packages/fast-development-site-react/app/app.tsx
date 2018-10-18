@@ -29,9 +29,9 @@ export interface AppState {
 }
 
 const themes: Theme[] = [
-    {id: "Foo", displayName: "Foo", background: "#000"},
-    {id: "Bar", displayName: "Bar", background: "#FFF"},
-    {id: "Rumple", displayName: "Rumple", background: "#333"}
+    { id: "Foo", displayName: "Foo", background: "#000" },
+    { id: "Bar", displayName: "Bar", background: "#FFF" },
+    { id: "Rumple", displayName: "Rumple", background: "#333" }
 ];
 
 export default class App extends React.Component<{}, AppState> {
@@ -62,7 +62,6 @@ export default class App extends React.Component<{}, AppState> {
     }
 
     public render(): JSX.Element {
-
         return (
             <Site
                 formChildOptions={this.formChildOptions}
@@ -91,7 +90,12 @@ export default class App extends React.Component<{}, AppState> {
     }
 
     private renderComponents2Nested(): JSX.Element {
-        const componentObj: any[] = [{text: "fee"}, {text: "fi"}, {text: "fo"}, {text: "fum"}];
+        const componentObj: any[] = [
+            { text: "fee" },
+            { text: "fi" },
+            { text: "fo" },
+            { text: "fum" }
+        ];
         const categoryObj: SiteCategoryProps = {
             slot: "category",
             name: "Paragraph Nested",
@@ -107,7 +111,11 @@ export default class App extends React.Component<{}, AppState> {
     }
 
     private renderComponents2(): JSX.Element {
-        const componentObj: any[] = [{text: "itsy"}, {text: "bitsy"}, {text: "spider"}];
+        const componentObj: any[] = [
+            { text: "itsy" },
+            { text: "bitsy" },
+            { text: "spider" }
+        ];
         const categoryObj: SiteCategoryProps = {
             slot: "category",
             name: "Paragraph",
@@ -129,14 +137,18 @@ export default class App extends React.Component<{}, AppState> {
             slot: "category",
             schema: ButtonSchema,
             component: Button,
-            status: Status.released,
+            status: Status.released
         };
-        const componentObj1: any[] = [{children: "foo"}, {children: "bar"}, {children: "bat"}];
+        const componentObj1: any[] = [
+            { children: "foo" },
+            { children: "bar" },
+            { children: "bat" }
+        ];
         const categoryObj1: Partial<SiteCategoryProps> = {
             ...categoryBase,
             name: "Button"
         };
-        const componentObj2: any[] = [{children: "lorem"}, {children: "ipsum"}];
+        const componentObj2: any[] = [{ children: "lorem" }, { children: "ipsum" }];
         const categoryObj2: Partial<SiteCategoryProps> = {
             ...categoryBase,
             name: "Other Button"
@@ -150,7 +162,10 @@ export default class App extends React.Component<{}, AppState> {
         );
     }
 
-    private renderCategory(componentObj: any[], categoryObj: SiteCategoryProps): JSX.Element {
+    private renderCategory(
+        componentObj: any[],
+        categoryObj: SiteCategoryProps
+    ): JSX.Element {
         return (
             <SiteCategory {...categoryObj}>
                 {this.renderComponentsFactory(componentObj)}
@@ -184,10 +199,12 @@ export default class App extends React.Component<{}, AppState> {
         return componentData.map((componentDataItem: any, index: number) => {
             return (
                 <SiteCategoryItem
-                    slot={index === 0 ? "canvas-detail-view-example" : "canvas-example-view"}
+                    slot={
+                        index === 0 ? "canvas-detail-view-example" : "canvas-example-view"
+                    }
                     key={index}
                     data={componentDataItem}
-                    designSystem={{ltr: this.state.direction}}
+                    designSystem={{ ltr: this.state.direction }}
                 />
             );
         });
@@ -197,7 +214,11 @@ export default class App extends React.Component<{}, AppState> {
         return (
             <SiteCategory slot={"category"} name={"Building blocks"}>
                 <SiteCategoryIcon slot="category-icon">
-                    <div dangerouslySetInnerHTML={{__html: glyphBuildingblocks}} />
+                    <div
+                        dangerouslySetInnerHTML={{
+                            __html: glyphBuildingblocks
+                        }}
+                    />
                 </SiteCategoryIcon>
             </SiteCategory>
         );
@@ -216,11 +237,11 @@ export default class App extends React.Component<{}, AppState> {
         this.setState({
             direction
         });
-    }
+    };
 
     private handleUpdateTheme = (theme: string): void => {
         this.setState({
             theme
         });
-    }
+    };
 }

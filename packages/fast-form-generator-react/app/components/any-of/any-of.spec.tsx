@@ -17,9 +17,7 @@ const exampleData: FormProps = {
 const examples: SnapshotTestSuite<FormProps> = {
     name,
     component: Form,
-    data: [
-        exampleData
-    ]
+    data: [exampleData]
 };
 
 describe(name, () => {

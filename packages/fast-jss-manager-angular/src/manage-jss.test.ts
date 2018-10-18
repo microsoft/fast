@@ -16,10 +16,12 @@ import { DesignSystemDirective } from "./design-system.directive";
  * Class definition
  */
 class SimpleDirectiveComponent {
-    @Input() private className: string;
-    @Input() private text: string;
+    @Input()
+    private className: string;
+    @Input()
+    private text: string;
 
-    constructor(private el: ElementRef) { }
+    constructor(private el: ElementRef) {}
 }
 
 const styles: any = {
@@ -49,10 +51,7 @@ describe("The return value of manage JSS", (): void => {
 describe("The directive", (): void => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [
-                DesignSystemDirective,
-                JSSComponent
-            ],
+            declarations: [DesignSystemDirective, JSSComponent]
         }).compileComponents();
     }));
 

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ComponentFactoryExample  } from "@microsoft/fast-development-site-react";
+import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { Subheading, SubheadingProps, SubheadingSize, SubheadingTag } from "./index";
 import schema from "./subheading.schema.json";
 import Documentation from "./.tmp/documentation";
@@ -33,7 +33,7 @@ export default {
             tag: SubheadingTag.h2,
             size: SubheadingSize._2,
             children: testString,
-            "data-sketch-symbol" : "Subheading 2"
+            "data-sketch-symbol": "Subheading 2"
         },
         {
             tag: SubheadingTag.h3,

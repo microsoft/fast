@@ -1,8 +1,17 @@
 import { DesignSystem, withDesignSystemDefaults } from "../design-system";
-import { ComponentStyles, ComponentStyleSheet, CSSRules } from "@microsoft/fast-jss-manager";
+import {
+    ComponentStyles,
+    ComponentStyleSheet,
+    CSSRules
+} from "@microsoft/fast-jss-manager";
 import { CheckboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyTypeRampConfig } from "../utilities/typography";
-import { applyLocalizedProperty, contrast, Direction, toPx } from "@microsoft/fast-jss-utilities";
+import {
+    applyLocalizedProperty,
+    contrast,
+    Direction,
+    toPx
+} from "@microsoft/fast-jss-utilities";
 import {
     disabledContrast,
     ensureForegroundNormal,
@@ -14,14 +23,24 @@ import { get } from "lodash-es";
 import Chroma from "chroma-js";
 
 /* tslint:disable:max-line-length */
-const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (config: DesignSystem): ComponentStyleSheet<CheckboxClassNameContract, DesignSystem> => {
+const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
+    config: DesignSystem
+): ComponentStyleSheet<CheckboxClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const backgroundColor: string = designSystem.backgroundColor;
     const foregroundColor: string = designSystem.foregroundColor;
     const brandColor: string = designSystem.brandColor;
     const direction: Direction = designSystem.direction;
-    const checkboxColor: string = normalContrast(designSystem.contrast, foregroundColor, backgroundColor);
-    const checkboxHover: string = hoverContrast(designSystem.contrast, foregroundColor, backgroundColor);
+    const checkboxColor: string = normalContrast(
+        designSystem.contrast,
+        foregroundColor,
+        backgroundColor
+    );
+    const checkboxHover: string = hoverContrast(
+        designSystem.contrast,
+        foregroundColor,
+        backgroundColor
+    );
     const checkboxDisabled: string = disabledContrast(
         designSystem.contrast,
         foregroundColor,
@@ -32,7 +51,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (config
         checkbox: {
             display: "inline-flex",
             flexDirection: "row",
-            alignItems: "center",
+            alignItems: "center"
         },
         checkbox_input: {
             position: "absolute",
@@ -46,18 +65,18 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (config
             background: backgroundColor,
             boxShadow: `inset 0 0 0 1px ${checkboxColor}`,
             "&:hover": {
-                boxShadow: `inset 0 0 0 1px ${checkboxHover}`,
+                boxShadow: `inset 0 0 0 1px ${checkboxHover}`
             },
             "&:focus": {
                 outline: "none",
-                boxShadow: `inset 0 0 0 2px ${checkboxColor}`,
+                boxShadow: `inset 0 0 0 2px ${checkboxColor}`
             },
             "&:checked": {
                 "& + span": {
                     "&::after, &::before": {
                         position: "absolute",
                         zIndex: "1",
-                        content: "\"\"",
+                        content: '""',
                         borderRadius: "2px",
                         background: checkboxColor
                     }
@@ -68,7 +87,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (config
                     "&::before": {
                         position: "absolute",
                         zIndex: "1",
-                        content: "\"\"",
+                        content: '""',
                         borderRadius: "2px",
                         transform: "none",
                         [applyLocalizedProperty("left", "right", direction)]: "5px",
@@ -89,7 +108,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (config
             flexShrink: "0",
             "&::before, &::after": {
                 width: "2px"
-           },
+            },
             "&::before": {
                 top: "4px",
                 left: "11px",
@@ -104,9 +123,13 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (config
             }
         },
         checkbox_label: {
-            color: ensureNormalContrast(designSystem.contrast, foregroundColor, backgroundColor),
+            color: ensureNormalContrast(
+                designSystem.contrast,
+                foregroundColor,
+                backgroundColor
+            ),
             ...applyTypeRampConfig("t7"),
-            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "5px",
+            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "5px"
         },
         checkbox__disabled: {
             cursor: "not-allowed",
@@ -122,7 +145,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (config
             },
             "& $checkbox_label": {
                 color: checkboxDisabled
-            },
+            }
         }
     };
 };

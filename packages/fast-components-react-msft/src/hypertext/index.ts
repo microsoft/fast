@@ -19,8 +19,13 @@ import { Subtract } from "utility-types";
 const Hypertext = manageJss(HypertextStyles)(BaseHypertext);
 type Hypertext = typeof Hypertext;
 
-interface HypertextHandledProps extends Subtract<BaseHypertextHandledProps, HypertextManagedClasses> {}
-type HypertextProps = ManagedJSSProps<BaseHypertextProps, HypertextClassNameContract, DesignSystem>;
+interface HypertextHandledProps
+    extends Subtract<BaseHypertextHandledProps, HypertextManagedClasses> {}
+type HypertextProps = ManagedJSSProps<
+    BaseHypertextProps,
+    HypertextClassNameContract,
+    DesignSystem
+>;
 
 export {
     Hypertext,

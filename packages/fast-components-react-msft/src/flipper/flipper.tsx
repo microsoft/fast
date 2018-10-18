@@ -9,13 +9,12 @@ import {
     FlipperManagedClasses,
     FlipperUnhandledProps
 } from "./flipper.props";
-import { FlipperClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
+import {
+    FlipperClassNameContract,
+    ManagedClasses
+} from "@microsoft/fast-components-class-name-contracts-msft";
 
-class Flipper extends Foundation<
-    FlipperHandledProps,
-    FlipperUnhandledProps,
-    {}
-> {
+class Flipper extends Foundation<FlipperHandledProps, FlipperUnhandledProps, {}> {
     public static displayName: string = "Flipper";
 
     protected handledProps: HandledProps<FlipperHandledProps> = {
@@ -34,7 +33,9 @@ class Flipper extends Foundation<
                 {...this.coerceButtonProps()}
                 className={this.generateClassNames()}
             >
-                <span className={get(this.props, "managedClasses.flipper_glyph")}>{this.props.children}</span>
+                <span className={get(this.props, "managedClasses.flipper_glyph")}>
+                    {this.props.children}
+                </span>
             </Button>
         );
     }
@@ -43,9 +44,14 @@ class Flipper extends Foundation<
      * Generates class names based on props
      */
     protected generateClassNames(): string {
-        const classes: string = get(this.props, `managedClasses.flipper__${this.props.direction || FlipperDirection.next}`);
+        const classes: string = get(
+            this.props,
+            `managedClasses.flipper__${this.props.direction || FlipperDirection.next}`
+        );
 
-        return super.generateClassNames(`${get(this.props, "managedClasses.flipper")} ${classes}`);
+        return super.generateClassNames(
+            `${get(this.props, "managedClasses.flipper")} ${classes}`
+        );
     }
 
     /**
@@ -53,7 +59,7 @@ class Flipper extends Foundation<
      */
     protected coerceButtonProps(): Partial<ButtonProps> {
         const coercedProps: Partial<ButtonProps> = {
-            href: void 0,
+            href: void 0
         };
 
         if (!this.props.visibleToAssistiveTechnologies) {

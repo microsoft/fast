@@ -11,17 +11,19 @@ export default class ViewEnterTrigger extends ScrollBase {
     protected update(): void {
         super.update();
 
-        this.subscriptions.forEach((subscription: ScrollTriggerSubscription, index: number) => {
-            const inView: boolean = isElementInView(subscription.element);
+        this.subscriptions.forEach(
+            (subscription: ScrollTriggerSubscription, index: number) => {
+                const inView: boolean = isElementInView(subscription.element);
 
-            // If the element is in view but previously wasn't
-            if (inView && !subscription.inView) {
-               subscription.callback(this.scrollDistance);
-            }
+                // If the element is in view but previously wasn't
+                if (inView && !subscription.inView) {
+                    subscription.callback(this.scrollDistance);
+                }
 
-            if (inView !== subscription.inView) {
-                subscription.inView = inView;
+                if (inView !== subscription.inView) {
+                    subscription.inView = inView;
+                }
             }
-        });
+        );
     }
 }

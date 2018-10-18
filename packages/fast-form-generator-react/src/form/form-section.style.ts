@@ -48,14 +48,14 @@ const styles: ComponentStyles<FormSectionClassNameContract, {}> = {
         }
     },
     formSection_header: {
-        ...applyHeaderStyle(),
+        ...applyHeaderStyle()
     },
     formSection_toggleWrapper: {
         display: "flex",
         minHeight: toPx(40),
         alignItems: "center",
         "& label": {
-            flexGrow: "1",
+            flexGrow: "1"
         }
     },
     formSection_toggle: {
@@ -81,7 +81,7 @@ const styles: ComponentStyles<FormSectionClassNameContract, {}> = {
             transition: "all .1s ease",
             width: toPx(10)
         },
-        "&[aria-pressed=\"true\"]": {
+        '&[aria-pressed="true"]': {
             backgroundColor: colors.pink,
             borderColor: colors.pink,
             "& > span": {

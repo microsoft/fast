@@ -19,9 +19,7 @@ export default class ConvertGlyphs {
     private indexFileType: ExportFileType;
     private indexFileDestination: string;
 
-    constructor(
-        options: ConvertGlyphConfig
-    ) {
+    constructor(options: ConvertGlyphConfig) {
         this.glyphs = this.getGlyphs(options.glyphFolderPath, "svg");
         this.index = this.getIndexFileContents();
         this.indexFileType = options.indexFileType || "js";
@@ -39,14 +37,21 @@ export default class ConvertGlyphs {
         const glyphs: Glyph[] = [];
         const files: string[] = fs.readdirSync(glyphFolderPath);
 
-        files.forEach((fileName: string): void => {
-            if (fileName.slice(fileName.length - glyphFileExtension.length, fileName.length) === glyphFileExtension) {
-                glyphs.push({
-                    name: this.normalizeName(fileName),
-                    svg: fs.readFileSync(`${glyphFolderPath}/${fileName}`, "UTF-8")
-                });
+        files.forEach(
+            (fileName: string): void => {
+                if (
+                    fileName.slice(
+                        fileName.length - glyphFileExtension.length,
+                        fileName.length
+                    ) === glyphFileExtension
+                ) {
+                    glyphs.push({
+                        name: this.normalizeName(fileName),
+                        svg: fs.readFileSync(`${glyphFolderPath}/${fileName}`, "UTF-8")
+                    });
+                }
             }
-        });
+        );
 
         return glyphs;
     }
@@ -77,6 +82,8 @@ export default class ConvertGlyphs {
      * that JavaScript cannot use in a variable name
      */
     private normalizeName(glyphName: string): string {
-        return `glyph${glyphName.charAt(0).toUpperCase()}${glyphName.slice(1, glyphName.length - 4).replace(/[^0-9a-zA-Z]/g, "")}`;
+        return `glyph${glyphName.charAt(0).toUpperCase()}${glyphName
+            .slice(1, glyphName.length - 4)
+            .replace(/[^0-9a-zA-Z]/g, "")}`;
     }
 }

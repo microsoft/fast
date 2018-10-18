@@ -1,15 +1,12 @@
 import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import Progress, {
-    ProgressClassNameContract,
-    ProgressType
-} from "./";
+import Progress, { ProgressClassNameContract, ProgressType } from "./";
 
 /*
  * Configure Enzyme
  */
-configure({adapter: new Adapter()});
+configure({ adapter: new Adapter() });
 
 const managedClasses: ProgressClassNameContract = {
     progress: "progess"
@@ -21,11 +18,9 @@ describe("progress", (): void => {
     });
 
     test("should not throw if managedClasses are not provided", () => {
-        expect(
-            () => {
-                shallow(<Progress />);
-            }
-        ).not.toThrow();
+        expect(() => {
+            shallow(<Progress />);
+        }).not.toThrow();
     });
 
     test("should use the default max value unless the maxValue has been passed", () => {
@@ -36,8 +31,12 @@ describe("progress", (): void => {
             <Progress managedClasses={managedClasses} />
         );
 
-        expect(progessWithMaxValue.find("[aria-valuemax]").props()["aria-valuemax"]).toBe(50);
-        expect(progressWithoutMaxValue.find("[aria-valuemax]").props()["aria-valuemax"]).toBe(100);
+        expect(progessWithMaxValue.find("[aria-valuemax]").props()["aria-valuemax"]).toBe(
+            50
+        );
+        expect(
+            progressWithoutMaxValue.find("[aria-valuemax]").props()["aria-valuemax"]
+        ).toBe(100);
     });
 
     test("should use the default min value unless the minValue has been passed", () => {
@@ -48,22 +47,26 @@ describe("progress", (): void => {
             <Progress managedClasses={managedClasses} />
         );
 
-        expect(progessWithMinValue.find("[aria-valuemin]").props()["aria-valuemin"]).toBe(50);
-        expect(progressWithoutMinValue.find("[aria-valuemin]").props()["aria-valuemin"]).toBe(0);
+        expect(progessWithMinValue.find("[aria-valuemin]").props()["aria-valuemin"]).toBe(
+            50
+        );
+        expect(
+            progressWithoutMinValue.find("[aria-valuemin]").props()["aria-valuemin"]
+        ).toBe(0);
     });
 
     test("should have the role progressbar", () => {
-        const progess: any = mount(
-            <Progress managedClasses={managedClasses} />
-        );
+        const progess: any = mount(<Progress managedClasses={managedClasses} />);
 
-        expect(progess.find("[role=\"progressbar\"]")).toHaveLength(1);
+        expect(progess.find('[role="progressbar"]')).toHaveLength(1);
     });
 
     test("should render a child if one is passed as a child with the appropriate slot prop", () => {
         const progess: any = mount(
             <Progress managedClasses={managedClasses}>
-                <div id="testDivIndeterminate" slot={ProgressType.indeterminate}>indeterminate</div>
+                <div id="testDivIndeterminate" slot={ProgressType.indeterminate}>
+                    indeterminate
+                </div>
             </Progress>
         );
 
@@ -73,10 +76,18 @@ describe("progress", (): void => {
     test("should not render Indeterminate slot when value prop is passed", () => {
         const progess: any = mount(
             <Progress managedClasses={managedClasses} value={50}>
-                <div className="progressDeterminate" slot={ProgressType.determinate}>determinate</div>
-                <div className="progressDeterminate" slot={ProgressType.determinate}>determinate</div>
-                <div className="progressDeterminate" slot={ProgressType.determinate}>determinate</div>
-                <div className="progressIndeterminate" slot={ProgressType.indeterminate}>indeterminate</div>
+                <div className="progressDeterminate" slot={ProgressType.determinate}>
+                    determinate
+                </div>
+                <div className="progressDeterminate" slot={ProgressType.determinate}>
+                    determinate
+                </div>
+                <div className="progressDeterminate" slot={ProgressType.determinate}>
+                    determinate
+                </div>
+                <div className="progressIndeterminate" slot={ProgressType.indeterminate}>
+                    indeterminate
+                </div>
             </Progress>
         );
 
@@ -86,10 +97,18 @@ describe("progress", (): void => {
     test("should render Determinate slot when value prop is passed", () => {
         const progess: any = mount(
             <Progress managedClasses={managedClasses} value={50}>
-                <div className="progressDeterminate" slot={ProgressType.determinate}>determinate</div>
-                <div className="progressDeterminate" slot={ProgressType.determinate}>determinate</div>
-                <div className="progressDeterminate" slot={ProgressType.determinate}>determinate</div>
-                <div className="progressIndeterminate" slot={ProgressType.indeterminate}>indeterminate</div>
+                <div className="progressDeterminate" slot={ProgressType.determinate}>
+                    determinate
+                </div>
+                <div className="progressDeterminate" slot={ProgressType.determinate}>
+                    determinate
+                </div>
+                <div className="progressDeterminate" slot={ProgressType.determinate}>
+                    determinate
+                </div>
+                <div className="progressIndeterminate" slot={ProgressType.indeterminate}>
+                    indeterminate
+                </div>
             </Progress>
         );
 
@@ -99,10 +118,18 @@ describe("progress", (): void => {
     test("should not render Determinate slot when value prop is not passed", () => {
         const progess: any = mount(
             <Progress managedClasses={managedClasses}>
-                <div className="progressDeterminate" slot={ProgressType.determinate}>determinate</div>
-                <div className="progressDeterminate" slot={ProgressType.determinate}>determinate</div>
-                <div className="progressDeterminate" slot={ProgressType.determinate}>determinate</div>
-                <div className="progressIndeterminate" slot={ProgressType.indeterminate}>indeterminate</div>
+                <div className="progressDeterminate" slot={ProgressType.determinate}>
+                    determinate
+                </div>
+                <div className="progressDeterminate" slot={ProgressType.determinate}>
+                    determinate
+                </div>
+                <div className="progressDeterminate" slot={ProgressType.determinate}>
+                    determinate
+                </div>
+                <div className="progressIndeterminate" slot={ProgressType.indeterminate}>
+                    indeterminate
+                </div>
             </Progress>
         );
 
@@ -112,10 +139,18 @@ describe("progress", (): void => {
     test("should render Indeterminate slot when value prop is not passed", () => {
         const progess: any = mount(
             <Progress managedClasses={managedClasses}>
-                <div className="progressDeterminate" slot={ProgressType.determinate}>determinate</div>
-                <div className="progressDeterminate" slot={ProgressType.determinate}>determinate</div>
-                <div className="progressDeterminate" slot={ProgressType.determinate}>determinate</div>
-                <div className="progressIndeterminate" slot={ProgressType.indeterminate}>indeterminate</div>
+                <div className="progressDeterminate" slot={ProgressType.determinate}>
+                    determinate
+                </div>
+                <div className="progressDeterminate" slot={ProgressType.determinate}>
+                    determinate
+                </div>
+                <div className="progressDeterminate" slot={ProgressType.determinate}>
+                    determinate
+                </div>
+                <div className="progressIndeterminate" slot={ProgressType.indeterminate}>
+                    indeterminate
+                </div>
             </Progress>
         );
 

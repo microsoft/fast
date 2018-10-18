@@ -128,7 +128,10 @@ export const typeRamp: TypeRamp = {
 /**
  * Applies a type ramp config instance based on viewport
  */
-export function applyType(typeConfig: keyof TypeRamp, viewport: keyof TypeRampItem): CSSRules<DesignSystem> {
+export function applyType(
+    typeConfig: keyof TypeRamp,
+    viewport: keyof TypeRampItem
+): CSSRules<DesignSystem> {
     return {
         fontSize: toPx(typeRamp[typeConfig][viewport].fontSize),
         lineHeight: toPx(typeRamp[typeConfig][viewport].lineHeight)
@@ -139,9 +142,15 @@ export function applyType(typeConfig: keyof TypeRamp, viewport: keyof TypeRampIt
  * Takes a param of type ramp key (string) and returns a type ramp configuration
  */
 export function applyTypeRampConfig(typeConfig: keyof TypeRamp): CSSRules<DesignSystem> {
-    return Object.keys(typeRamp[typeConfig]).map((key: keyof TypeRampItem): CSSRules<DesignSystem> => {
-        return {
-            [applyBreakpoint(key)]: applyType(typeConfig, key)
-        };
-    }).reduce((accumulator: CSSRules<DesignSystem>, value: CSSRules<DesignSystem>) => Object.assign({}, accumulator, value));
+    return Object.keys(typeRamp[typeConfig])
+        .map(
+            (key: keyof TypeRampItem): CSSRules<DesignSystem> => {
+                return {
+                    [applyBreakpoint(key)]: applyType(typeConfig, key)
+                };
+            }
+        )
+        .reduce((accumulator: CSSRules<DesignSystem>, value: CSSRules<DesignSystem>) =>
+            Object.assign({}, accumulator, value)
+        );
 }

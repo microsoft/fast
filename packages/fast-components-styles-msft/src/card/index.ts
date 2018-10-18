@@ -1,5 +1,12 @@
-import designSystemDefaults, { DesignSystem, withDesignSystemDefaults } from "../design-system";
-import { ComponentStyles, ComponentStyleSheet, CSSRules } from "@microsoft/fast-jss-manager";
+import designSystemDefaults, {
+    DesignSystem,
+    withDesignSystemDefaults
+} from "../design-system";
+import {
+    ComponentStyles,
+    ComponentStyleSheet,
+    CSSRules
+} from "@microsoft/fast-jss-manager";
 import { CardClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
 import Chroma from "chroma-js";
@@ -15,7 +22,9 @@ const styles: ComponentStyles<CardClassNameContract, DesignSystem> = (
             width: "100%",
             height: "100%",
             background: designSystem.backgroundColor,
-            ...elevation(ElevationMultiplier.e4, designSystem.foregroundColor)(designSystem)
+            ...elevation(ElevationMultiplier.e4, designSystem.foregroundColor)(
+                designSystem
+            )
         }
     };
 };

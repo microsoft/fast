@@ -1,5 +1,9 @@
 import * as React from "react";
-import Dialog, { DialogHandledProps, DialogManagedClasses, DialogUnhandledProps } from "./dialog";
+import Dialog, {
+    DialogHandledProps,
+    DialogManagedClasses,
+    DialogUnhandledProps
+} from "./dialog";
 import schema from "./dialog.schema.json";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";

@@ -3,16 +3,13 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
-import Radio, {
-    RadioClassNameContract,
-    RadioSlot
-} from "./radio";
+import Radio, { RadioClassNameContract, RadioSlot } from "./radio";
 import Label from "../label";
 
 /**
  * Configure Enzyme
  */
-configure({adapter: new Adapter()});
+configure({ adapter: new Adapter() });
 
 describe("radio snapshots", (): void => {
     generateSnapshots(examples);
@@ -36,12 +33,17 @@ describe("radio", (): void => {
     test("should call a registerd callback after a change event", () => {
         const onChange: any = jest.fn();
         const controlled: any = shallow(
-            <Radio managedClasses={managedClasses} checked={true} onChange={onChange} id="radio">
+            <Radio
+                managedClasses={managedClasses}
+                checked={true}
+                onChange={onChange}
+                id="radio"
+            >
                 <div slot={RadioSlot.label} />
             </Radio>
         );
         const uncontrolled: any = shallow(
-            <Radio managedClasses={managedClasses} onChange={onChange} id="radio"/>
+            <Radio managedClasses={managedClasses} onChange={onChange} id="radio" />
         );
 
         controlled.find(inputSelector).simulate("change");

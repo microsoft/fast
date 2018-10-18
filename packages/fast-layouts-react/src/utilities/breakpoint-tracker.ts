@@ -1,11 +1,15 @@
 import { canUseDOM } from "exenv-es6";
 import { throttle } from "lodash-es";
-import { Breakpoint, Breakpoints, defaultBreakpoints, identifyBreakpoint } from "./breakpoints";
+import {
+    Breakpoint,
+    Breakpoints,
+    defaultBreakpoints,
+    identifyBreakpoint
+} from "./breakpoints";
 
 export type BreakpointTrackerCallback = (breakpoint: Breakpoint) => void;
 
 export class BreakpointTracker {
-
     /**
      * The current breakpoint.
      */
@@ -43,7 +47,10 @@ export class BreakpointTracker {
     /**
      * Subscribes a callback to be called when breakpoints change
      */
-    public subscribe(callback: BreakpointTrackerCallback, breakpointConfig?: Breakpoints): void {
+    public subscribe(
+        callback: BreakpointTrackerCallback,
+        breakpointConfig?: Breakpoints
+    ): void {
         if (breakpointConfig) {
             this.breakpointConfig = breakpointConfig;
         }
@@ -57,7 +64,9 @@ export class BreakpointTracker {
      * Unsubscribes a callback from the breakpoint tracker
      */
     public unsubscribe(callback: BreakpointTrackerCallback): void {
-        this.subscriptions = this.subscriptions.filter((subscription: BreakpointTrackerCallback) => callback !== subscription);
+        this.subscriptions = this.subscriptions.filter(
+            (subscription: BreakpointTrackerCallback) => callback !== subscription
+        );
     }
 
     /**
@@ -65,7 +74,10 @@ export class BreakpointTracker {
      */
     public update = (): void => {
         const windowWidth: number = window.innerWidth;
-        const breakpoint: Breakpoint = identifyBreakpoint(windowWidth, this.breakpointConfig);
+        const breakpoint: Breakpoint = identifyBreakpoint(
+            windowWidth,
+            this.breakpointConfig
+        );
 
         if (this.breakpoint !== breakpoint) {
             this.breakpoint = breakpoint;
@@ -73,7 +85,7 @@ export class BreakpointTracker {
         }
 
         this.openRequestAnimationFrame = false;
-    }
+    };
 
     /**
      * Call all subscribed callbacks
@@ -94,7 +106,7 @@ export class BreakpointTracker {
 
         this.openRequestAnimationFrame = true;
         window.requestAnimationFrame(this.update);
-    }
+    };
 }
 
 export default new BreakpointTracker();

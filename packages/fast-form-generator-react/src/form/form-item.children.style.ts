@@ -77,7 +77,7 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
         width: "fit-content"
     },
     formItemChildren_header: {
-        ...applyHeaderStyle(),
+        ...applyHeaderStyle()
     },
     formItemChildren_existingChildren: {
         ...applyPopupHeadingStyles(),
@@ -87,7 +87,7 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
     },
     formItemChildren_addedChildren: {
         ...applyCleanListStyle(),
-        ...applyListItemStyle(),
+        ...applyListItemStyle()
     },
     formItemChildren_optionMenu: {
         ...applyCleanListStyle(),

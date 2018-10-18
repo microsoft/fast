@@ -36,11 +36,18 @@ export function fadeIn(element: HTMLElement, effectTiming: EffectTiming = {}): A
 /**
  * Creates an animation to fade an element out of view
  */
-export function fadeOut(element: HTMLElement, effectTiming: EffectTiming = {}): AnimateTo {
+export function fadeOut(
+    element: HTMLElement,
+    effectTiming: EffectTiming = {}
+): AnimateTo {
     return applyFade(element, fadeOutKeyframes, effectTiming);
 }
 
-export function applyFade(element: HTMLElement, keyframes: Array<Partial<Keyframe>>, timing: EffectTiming = {}): AnimateTo {
+export function applyFade(
+    element: HTMLElement,
+    keyframes: Array<Partial<Keyframe>>,
+    timing: EffectTiming = {}
+): AnimateTo {
     const fadeAnimationTiming: EffectTiming = Object.assign({}, fadeEffectTiming, timing);
     const fadeAnimation: AnimateTo = new AnimateTo(element, null, fadeAnimationTiming);
 

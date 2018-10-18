@@ -3,7 +3,11 @@ import { Link } from "react-router-dom";
 import TocMenu from "./toc-menu";
 import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, {
+    ComponentStyles,
+    ManagedClasses,
+    ManagedJSSProps
+} from "@microsoft/fast-jss-manager-react";
 
 export interface TocItemProps {
     to?: string;
@@ -44,7 +48,8 @@ const style: ComponentStyles<TocItemManagedClasses, DevSiteDesignSystem> = {
         },
         "&:focus": {
             border: (config: DevSiteDesignSystem): string => {
-                return `${toPx(1)} solid ${config.brandColor || devSiteDesignSystemDefaults.brandColor}`;
+                return `${toPx(1)} solid ${config.brandColor ||
+                    devSiteDesignSystemDefaults.brandColor}`;
             }
         }
     },
@@ -78,25 +83,27 @@ const style: ComponentStyles<TocItemManagedClasses, DevSiteDesignSystem> = {
         },
         "&:hover": {
             backgroundColor: "rgba(0, 0, 0, 0.1)"
-        },
+        }
     }
 };
 
-class TocItem extends React.Component<TocItemProps & ManagedClasses<TocItemManagedClasses>, {}> {
-
+class TocItem extends React.Component<
+    TocItemProps & ManagedClasses<TocItemManagedClasses>,
+    {}
+> {
     public render(): JSX.Element {
         const type: itemType = this.getType();
 
-        return (
-            <li className={this.getClassNames()}>
-                {this.renderType(type)}
-            </li>
-        );
+        return <li className={this.getClassNames()}>{this.renderType(type)}</li>;
     }
 
     private renderLink(): JSX.Element {
         return (
-            <Link to={this.props.to} className={this.props.managedClasses.tocItem_anchor} onClick={this.props.onClick}>
+            <Link
+                to={this.props.to}
+                className={this.props.managedClasses.tocItem_anchor}
+                onClick={this.props.onClick}
+            >
                 {this.props.children}
             </Link>
         );
@@ -127,16 +134,14 @@ class TocItem extends React.Component<TocItemProps & ManagedClasses<TocItemManag
     }
 
     private getType(): itemType {
-        return this.props.to
-            ? itemType.link
-            : itemType.tocMenu;
+        return this.props.to ? itemType.link : itemType.tocMenu;
     }
 
     private handleButtonClick = (): void => {
         if (this.props.onToggleExpand) {
             this.props.onToggleExpand();
         }
-    }
+    };
 
     private getClassNames(): string {
         const classNames: string = this.props.managedClasses.tocItem;

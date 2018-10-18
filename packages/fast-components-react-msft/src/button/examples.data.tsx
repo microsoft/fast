@@ -62,25 +62,15 @@ export default {
         },
         {
             href: "#",
-            children: [
-                "Before slot only",
-                beforeSlotExample
-            ]
+            children: ["Before slot only", beforeSlotExample]
         },
         {
             href: "#",
-            children: [
-                "After slot only",
-                afterSlotExample
-            ]
+            children: ["After slot only", afterSlotExample]
         },
         {
             href: "#",
-            children: [
-                beforeSlotExample,
-                "Both slots",
-                afterSlotExample
-            ]
+            children: [beforeSlotExample, "Both slots", afterSlotExample]
         },
         {
             href: "#",

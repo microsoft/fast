@@ -1,5 +1,8 @@
 import * as React from "react";
-import { CardClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import {
+    CardClassNameContract,
+    ManagedClasses
+} from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
  * Card HTML tags
@@ -11,7 +14,8 @@ export enum CardTag {
 }
 
 export interface CardManagedClasses extends ManagedClasses<CardClassNameContract> {}
-export interface CardUnhandledProps extends React.HTMLAttributes<HTMLDivElement | HTMLElement> {}
+export interface CardUnhandledProps
+    extends React.HTMLAttributes<HTMLDivElement | HTMLElement> {}
 export interface CardHandledProps extends CardManagedClasses {
     /**
      * The card children

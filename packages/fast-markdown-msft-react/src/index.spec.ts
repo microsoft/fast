@@ -13,12 +13,11 @@ md.use(FASTMarkdownIt);
 const newlineRegex: RegExp = /\r\n|\n/g;
 
 describe("Convert markdown to HTML", function(): void {
-
     test("should convert a link to a hyperlink with a blank target", function(): void {
         const markdown: string = "https://test.com";
         expect(md.render(markdown).replace(newlineRegex, "")).toBe(
             /* tslint:disable-next-line */
-            "<Typography size={7}><Hypertext href=\"https://test.com\" target=\"_blank\">https://test.com</Hypertext></Typography>"
+            '<Typography size={7}><Hypertext href="https://test.com" target="_blank">https://test.com</Hypertext></Typography>'
         );
     });
 
@@ -30,7 +29,7 @@ describe("Convert markdown to HTML", function(): void {
     });
 
     test("should allow HTML to be in markdown", function(): void {
-        const markdown: string = "<a href=\"#\">hello world</a>";
+        const markdown: string = '<a href="#">hello world</a>';
         expect(md.render(markdown).replace(newlineRegex, "")).toBe(
             `<Typography size={7}><a href="#">hello world</a></Typography>`
         );
@@ -39,7 +38,7 @@ describe("Convert markdown to HTML", function(): void {
     test("should convert a markdown link to a FAST MSFT hypertext", function(): void {
         const markdown: string = "[Test](/test)";
         expect(md.render(markdown).replace(newlineRegex, "")).toBe(
-            "<Typography size={7}><Hypertext href=\"/test\">Test</Hypertext></Typography>"
+            '<Typography size={7}><Hypertext href="/test">Test</Hypertext></Typography>'
         );
     });
 
@@ -60,7 +59,7 @@ describe("Convert markdown to HTML", function(): void {
     test("should convert a markdown heading to a FAST MSFT heading", function(): void {
         const markdown: string = "# Hello world";
         expect(md.render(markdown).replace(newlineRegex, "")).toBe(
-            "<Heading id=\"hello-world\" tag=\"h1\" size={3}>Hello world</Heading>"
+            '<Heading id="hello-world" tag="h1" size={3}>Hello world</Heading>'
         );
     });
 
@@ -87,8 +86,6 @@ describe("Convert markdown to HTML", function(): void {
 
     test("should convert dividers", function(): void {
         const markdown: string = "---";
-        expect(md.render(markdown).replace(newlineRegex, "")).toBe(
-            "<Divider />"
-        );
+        expect(md.render(markdown).replace(newlineRegex, "")).toBe("<Divider />");
     });
 });

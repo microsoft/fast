@@ -1,8 +1,12 @@
 import * as React from "react";
-import { ManagedClasses, TabPanelClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import {
+    ManagedClasses,
+    TabPanelClassNameContract
+} from "@microsoft/fast-components-class-name-contracts-base";
 import { TabsSlot } from "./tabs";
 
-export interface TabPanelManagedClasses extends ManagedClasses<TabPanelClassNameContract> {}
+export interface TabPanelManagedClasses
+    extends ManagedClasses<TabPanelClassNameContract> {}
 export interface TabPanelUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
 export interface TabPanelHandledProps extends TabPanelManagedClasses {
     /**

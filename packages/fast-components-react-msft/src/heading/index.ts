@@ -22,8 +22,13 @@ import { Subtract } from "utility-types";
 const Heading = manageJss(HeadingStyles)(MSFTHeading);
 type Heading = typeof Heading;
 
-interface HeadingHandledProps extends Subtract<MSFTHeadingHandledProps, HeadingManagedClasses> {}
-type HeadingProps = ManagedJSSProps<MSFTHeadingProps, HeadingClassNameContract, DesignSystem>;
+interface HeadingHandledProps
+    extends Subtract<MSFTHeadingHandledProps, HeadingManagedClasses> {}
+type HeadingProps = ManagedJSSProps<
+    MSFTHeadingProps,
+    HeadingClassNameContract,
+    DesignSystem
+>;
 
 export {
     HeadingAlignBaseline,

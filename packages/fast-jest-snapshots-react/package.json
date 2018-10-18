@@ -18,6 +18,7 @@
     "build": "tsc -p ./tsconfig.json",
     "prepare": "npm run build",
     "prettier": "prettier --config ../../.prettierrc --write '**/*.{ts,tsx}'",
+    "prettier:diff": "prettier --config ../../.prettierrc '**/*.{ts,tsx}' --list-different",
     "start": "webpack-dev-server",
     "test": "npm run tslint",
     "tslint": "tslint -c ./tslint.json '**/*.ts{,x}'",

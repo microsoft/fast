@@ -20,8 +20,13 @@ import { Subtract } from "utility-types";
 const Metatext = manageJss(MetatextStyles)(MSFTMetatext);
 type Metatext = typeof Metatext;
 
-interface MetatextHandledProps extends Subtract<MSFTMetatextHandledProps, MetatextManagedClasses> {}
-type MetatextProps = ManagedJSSProps<MSFTMetatextProps, MetatextClassNameContract, DesignSystem>;
+interface MetatextHandledProps
+    extends Subtract<MSFTMetatextHandledProps, MetatextManagedClasses> {}
+type MetatextProps = ManagedJSSProps<
+    MSFTMetatextProps,
+    MetatextClassNameContract,
+    DesignSystem
+>;
 
 export {
     Metatext,

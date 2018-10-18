@@ -20,8 +20,13 @@ import { Subtract } from "utility-types";
 const Paragraph = manageJss(ParagraphStyles)(MSFTParagraph);
 type Paragraph = typeof Paragraph;
 
-interface ParagraphHandledProps extends Subtract<MSFTParagraphHandledProps, ParagraphManagedClasses> {}
-type ParagraphProps = ManagedJSSProps<MSFTParagraphProps, ParagraphClassNameContract, DesignSystem>;
+interface ParagraphHandledProps
+    extends Subtract<MSFTParagraphHandledProps, ParagraphManagedClasses> {}
+type ParagraphProps = ManagedJSSProps<
+    MSFTParagraphProps,
+    ParagraphClassNameContract,
+    DesignSystem
+>;
 
 export {
     Paragraph,

@@ -1,6 +1,4 @@
-import {
-    ButtonClassNameContract as BaseButtonClassNameContract
-} from "@microsoft/fast-components-class-name-contracts-base";
+import { ButtonClassNameContract as BaseButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
  * The class name contract for the button component

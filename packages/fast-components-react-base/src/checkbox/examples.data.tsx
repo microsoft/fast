@@ -1,5 +1,9 @@
 import * as React from "react";
-import Checkbox, { CheckboxHandledProps, CheckboxManagedClasses, CheckboxUnhandledProps } from "./checkbox";
+import Checkbox, {
+    CheckboxHandledProps,
+    CheckboxManagedClasses,
+    CheckboxUnhandledProps
+} from "./checkbox";
 import schema from "./checkbox.schema.json";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";

@@ -20,8 +20,13 @@ import { Subtract } from "utility-types";
 const Button = manageJss(ButtonStyles)(MSFTButton);
 type Button = typeof Button;
 
-interface ButtonHandledProps extends Subtract<MSFTButtonHandledProps, ButtonManagedClasses> {}
-type ButtonProps = ManagedJSSProps<MSFTButtonProps, ButtonClassNameContract, DesignSystem>;
+interface ButtonHandledProps
+    extends Subtract<MSFTButtonHandledProps, ButtonManagedClasses> {}
+type ButtonProps = ManagedJSSProps<
+    MSFTButtonProps,
+    ButtonClassNameContract,
+    DesignSystem
+>;
 
 export {
     Button,

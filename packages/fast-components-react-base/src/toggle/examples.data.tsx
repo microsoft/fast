@@ -1,5 +1,9 @@
 import * as React from "react";
-import Toggle, { ToggleHandledProps, ToggleManagedClasses, ToggleUnhandledProps } from "./toggle";
+import Toggle, {
+    ToggleHandledProps,
+    ToggleManagedClasses,
+    ToggleUnhandledProps
+} from "./toggle";
 import schema from "./toggle.schema.json";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
@@ -15,7 +19,7 @@ const examples: ComponentFactoryExample<ToggleHandledProps> = {
             toggle_label: "toggle_label",
             toggle_toggleButton: "toggle_toggleButton",
             toggle_input: "toggle_input",
-            toggle_stateIndicator: "toggle_stateIndicator",
+            toggle_stateIndicator: "toggle_stateIndicator"
         },
         children: "Toggle",
         id: "toggle01",
@@ -31,7 +35,7 @@ const examples: ComponentFactoryExample<ToggleHandledProps> = {
                 toggle_label: "toggle_label",
                 toggle_toggleButton: "toggle_toggleButton",
                 toggle_input: "toggle_input",
-                toggle_stateIndicator: "toggle_stateIndicator",
+                toggle_stateIndicator: "toggle_stateIndicator"
             },
             children: "Toggle label",
             disabled: false,

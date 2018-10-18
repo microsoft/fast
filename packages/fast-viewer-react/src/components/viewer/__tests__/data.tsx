@@ -14,7 +14,7 @@ export default {
                 data: {
                     textValue: "Hello World",
                     onChange: null,
-                    getStyles: handleGetStyles,
+                    getStyles: handleGetStyles
                 },
                 styles: ".test { color: red; }"
             }

@@ -8,13 +8,12 @@ import {
     CardTag,
     CardUnhandledProps
 } from "./card.props";
-import { CardClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import {
+    CardClassNameContract,
+    ManagedClasses
+} from "@microsoft/fast-components-class-name-contracts-base";
 
-class Card extends Foundation<
-    CardHandledProps,
-    CardUnhandledProps,
-    {}
-> {
+class Card extends Foundation<CardHandledProps, CardUnhandledProps, {}> {
     public static displayName: string = "Card";
 
     protected handledProps: HandledProps<CardHandledProps> = {
@@ -28,10 +27,7 @@ class Card extends Foundation<
      */
     public render(): React.ReactElement<HTMLDivElement | HTMLElement> {
         return (
-            <this.tag
-                {...this.unhandledProps()}
-                className={this.generateClassNames()}
-            >
+            <this.tag {...this.unhandledProps()} className={this.generateClassNames()}>
                 {this.props.children}
             </this.tag>
         );

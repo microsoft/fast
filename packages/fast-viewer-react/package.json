@@ -23,6 +23,7 @@
     "build:app": "webpack --progress",
     "prepare": "npm run build",
     "prettier": "prettier --config ../../.prettierrc --write '**/*.{ts,tsx}'",
+    "prettier:diff": "prettier --config ../../.prettierrc '**/*.{ts, tsx}' --list-different",
     "start": "webpack-dev-server --progress",
     "test": "npm run tslint && npm run unit-tests && npm run build:app",
     "tslint": "tslint -c tslint.json '**/*.ts{,x}'",

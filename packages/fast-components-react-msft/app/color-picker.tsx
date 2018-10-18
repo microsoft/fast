@@ -1,5 +1,8 @@
 import * as React from "react";
-import manageJss, { ComponentStyles, ManagedClasses } from "@microsoft/fast-jss-manager-react";
+import manageJss, {
+    ComponentStyles,
+    ManagedClasses
+} from "@microsoft/fast-jss-manager-react";
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 
 export interface ColorConfig {
@@ -28,7 +31,10 @@ const styles: ComponentStyles<ColorPickerManagedClasses, DesignSystem> = {
     }
 };
 
-class ColorPicker extends React.Component<ColorPickerProps & ManagedClasses<ColorPickerManagedClasses>, undefined> {
+class ColorPicker extends React.Component<
+    ColorPickerProps & ManagedClasses<ColorPickerManagedClasses>,
+    undefined
+> {
     /**
      * Ref object for foreground color input
      */
@@ -55,9 +61,24 @@ class ColorPicker extends React.Component<ColorPickerProps & ManagedClasses<Colo
     public render(): JSX.Element {
         return (
             <div className={this.props.managedClasses.colorPicker}>
-                {this.createColorInput("foreground", this.props.foregroundColor, "foregroundInput", this.foregroundRef)}
-                {this.createColorInput("background", this.props.backgroundColor, "backgroundInput", this.backgroundRef)}
-                {this.createColorInput("accent", this.props.accentColor, "accentInput", this.accentRef)}
+                {this.createColorInput(
+                    "foreground",
+                    this.props.foregroundColor,
+                    "foregroundInput",
+                    this.foregroundRef
+                )}
+                {this.createColorInput(
+                    "background",
+                    this.props.backgroundColor,
+                    "backgroundInput",
+                    this.backgroundRef
+                )}
+                {this.createColorInput(
+                    "accent",
+                    this.props.accentColor,
+                    "accentInput",
+                    this.accentRef
+                )}
             </div>
         );
     }
@@ -65,7 +86,12 @@ class ColorPicker extends React.Component<ColorPickerProps & ManagedClasses<Colo
     /**
      * Creates individual label/input elements
      */
-    private createColorInput(name: string, value: string, id: string, ref: React.RefObject<HTMLInputElement>): JSX.Element {
+    private createColorInput(
+        name: string,
+        value: string,
+        id: string,
+        ref: React.RefObject<HTMLInputElement>
+    ): JSX.Element {
         return (
             <React.Fragment>
                 <label
@@ -91,16 +117,19 @@ class ColorPicker extends React.Component<ColorPickerProps & ManagedClasses<Colo
      */
     private handleColorPickerChange = (e: React.FormEvent<HTMLInputElement>): void => {
         const value: string = e.currentTarget.value;
-        const updatedColorKey: keyof ColorConfig = e.currentTarget === this.foregroundRef.current
-            ? "foregroundColor"
-            : e.currentTarget === this.backgroundRef.current
-            ? "backgroundColor"
-            : "accentColor";
+        const updatedColorKey: keyof ColorConfig =
+            e.currentTarget === this.foregroundRef.current
+                ? "foregroundColor"
+                : e.currentTarget === this.backgroundRef.current
+                    ? "backgroundColor"
+                    : "accentColor";
 
         if (typeof this.props.onColorUpdate === "function") {
-            this.props.onColorUpdate(Object.assign({}, this.props, { [updatedColorKey]: value}));
+            this.props.onColorUpdate(
+                Object.assign({}, this.props, { [updatedColorKey]: value })
+            );
         }
-    }
+    };
 
     /**
      * Ensures that colors are properly formatted
@@ -111,7 +140,10 @@ class ColorPicker extends React.Component<ColorPickerProps & ManagedClasses<Colo
         const match: string[] | null = threeDigitHex.exec(color);
 
         return Array.isArray(match)
-            ? `#${match[1].split("").map((character: string) => character + character).join("")}`
+            ? `#${match[1]
+                  .split("")
+                  .map((character: string) => character + character)
+                  .join("")}`
             : color;
     }
 }

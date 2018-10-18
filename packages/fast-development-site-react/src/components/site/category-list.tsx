@@ -5,13 +5,10 @@ import { SiteCategoryProps } from "./category";
 import { SiteProps } from "./";
 
 class SiteCategoryList extends React.Component<SiteProps, {}> {
-
     public render(): JSX.Element {
         return (
             <nav>
-                <ul>
-                    {this.renderCategoryLinks()}
-                </ul>
+                <ul>{this.renderCategoryLinks()}</ul>
             </nav>
         );
     }

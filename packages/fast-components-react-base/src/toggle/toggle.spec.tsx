@@ -3,20 +3,23 @@ import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
-import { generateSnapshots, SnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
+import {
+    generateSnapshots,
+    SnapshotTestSuite
+} from "@microsoft/fast-jest-snapshots-react";
 import Toggle, {
     ToggleClassNameContract,
     ToggleHandledProps,
     ToggleManagedClasses,
     ToggleProps,
     ToggleState,
-    ToggleUnhandledProps,
+    ToggleUnhandledProps
 } from "./toggle";
 
 /*
  * Configure Enzyme
  */
-configure({adapter: new Adapter()});
+configure({ adapter: new Adapter() });
 
 describe("toggle snapshot", (): void => {
     generateSnapshots(examples as SnapshotTestSuite<ToggleProps>);
@@ -45,19 +48,17 @@ describe("toggle", (): void => {
     });
 
     test("should not throw if managedClasses are not provided", () => {
-        expect(
-            () => {
-                shallow(
-                    <Toggle
-                        id="id"
-                        selectedMessage="selectedString"
-                        unselectedMessage="selectedString"
-                        statusMessageId="statusLabelId"
-                        labelId="labelId"
-                    />
-                );
-            }
-        ).not.toThrow();
+        expect(() => {
+            shallow(
+                <Toggle
+                    id="id"
+                    selectedMessage="selectedString"
+                    unselectedMessage="selectedString"
+                    statusMessageId="statusLabelId"
+                    labelId="labelId"
+                />
+            );
+        }).not.toThrow();
     });
 
     test("should implement unhandledProps", () => {
@@ -65,26 +66,20 @@ describe("toggle", (): void => {
             "aria-label": "true"
         };
 
-        const props: ToggleProps = {...handledProps, ...unhandledProps};
-        const rendered: any = shallow(
-            <Toggle {...props} />
-        );
+        const props: ToggleProps = { ...handledProps, ...unhandledProps };
+        const rendered: any = shallow(<Toggle {...props} />);
 
         expect(rendered.first().prop("aria-label")).toBe("true");
     });
 
     test("should initalize as unselected if the `selected` prop is not provided", () => {
-        const rendered: any = shallow(
-            <Toggle {...handledProps} />
-        );
+        const rendered: any = shallow(<Toggle {...handledProps} />);
 
         expect(rendered.state("selected")).toBe(false);
     });
 
     test("should allow a change event to update the selected state when no `selected` prop is provided", () => {
-        const rendered: any = shallow(
-            <Toggle {...handledProps} />
-        );
+        const rendered: any = shallow(<Toggle {...handledProps} />);
 
         expect(rendered.state("selected")).toBe(false);
 
@@ -102,37 +97,27 @@ describe("toggle", (): void => {
             <Toggle {...handledProps} selected={true} onChange={onChange} />
         );
 
-        uncontrolled
-            .find(inputSelector)
-            .simulate("change");
+        uncontrolled.find(inputSelector).simulate("change");
 
         expect(onChange).toHaveBeenCalledTimes(1);
 
-        controlled
-            .find(inputSelector)
-            .simulate("change");
+        controlled.find(inputSelector).simulate("change");
 
         expect(onChange).toHaveBeenCalledTimes(2);
     });
 
     test("should not allow a change event to update the selected state when props.selected is provided", () => {
-        const rendered: any = shallow(
-            <Toggle {...handledProps} selected={false} />
-        );
+        const rendered: any = shallow(<Toggle {...handledProps} selected={false} />);
 
         expect(rendered.state("selected")).toEqual(false);
-        rendered
-            .find(inputSelector)
-            .simulate("change");
+        rendered.find(inputSelector).simulate("change");
 
         expect(rendered.state("selected")).toEqual(false);
 
-        rendered.setProps({selected: true});
+        rendered.setProps({ selected: true });
 
         expect(rendered.state("selected")).toEqual(true);
-        rendered
-            .find(inputSelector)
-            .simulate("change");
+        rendered.find(inputSelector).simulate("change");
         expect(rendered.state("selected")).toEqual(true);
     });
 });

@@ -18,8 +18,10 @@ export interface FormItemFileUploadState {
  * Schema form component definition
  * @extends React.Component
  */
-class FormItemFileUpload extends React.Component<FormItemComponentMappingToProperyNamesProps, FormItemFileUploadState> {
-
+class FormItemFileUpload extends React.Component<
+    FormItemComponentMappingToProperyNamesProps,
+    FormItemFileUploadState
+> {
     /**
      * The id of the file input
      */
@@ -53,7 +55,9 @@ class FormItemFileUpload extends React.Component<FormItemComponentMappingToPrope
                     onDragLeave={this.dragLeave}
                     onDrop={this.onDrop}
                 >
-                    {this.state.processing ? this.generateProcessingUI() : this.generateStaticUI()}
+                    {this.state.processing
+                        ? this.generateProcessingUI()
+                        : this.generateStaticUI()}
                 </div>
             </div>
         );
@@ -70,7 +74,7 @@ class FormItemFileUpload extends React.Component<FormItemComponentMappingToPrope
      * React lifecycle hook
      */
     public componentWillUnMount(): void {
-       this.reader.removeEventListener("load", this.handleReaderLoad);
+        this.reader.removeEventListener("load", this.handleReaderLoad);
     }
 
     /**
@@ -79,14 +83,14 @@ class FormItemFileUpload extends React.Component<FormItemComponentMappingToPrope
     private handleReaderLoad = (): void => {
         this.setState({ processing: false });
         this.props.onChange(this.props.dataLocation, this.reader.result);
-    }
+    };
 
     /**
      * Event handler that effectively cancels the event
      */
     private cancelEvent = (e: React.DragEvent<HTMLDivElement>): void => {
         e.preventDefault();
-    }
+    };
 
     /**
      * Updates the component with new file data
@@ -110,7 +114,7 @@ class FormItemFileUpload extends React.Component<FormItemComponentMappingToPrope
         if (!this.state.dragging) {
             this.setState({ dragging: true });
         }
-    }
+    };
 
     /**
      * Event handler for drag-area drag-leave event
@@ -118,7 +122,7 @@ class FormItemFileUpload extends React.Component<FormItemComponentMappingToPrope
     private dragLeave = (e: React.DragEvent<HTMLDivElement>): void => {
         this.cancelEvent(e);
         this.setState({ dragging: false });
-    }
+    };
 
     /**
      * Callback for drop event
@@ -127,20 +131,30 @@ class FormItemFileUpload extends React.Component<FormItemComponentMappingToPrope
         this.cancelEvent(e);
         this.setState({ dragging: false });
         this.updateWithFile(e.dataTransfer.files[0]);
-    }
+    };
 
     /**
      * Callback for input change
      */
     private handleInputOnChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         this.updateWithFile(e.target.files[0]);
-    }
+    };
 
     private generateStaticUI(): JSX.Element[] {
         return [
-            typeof this.props.data === "string" ?  <img key="thumbnail" src={this.props.data} alt="Image upload thumbnail" /> : null,
-            <input key="input" type="file" id={this.fileId} onChange={this.handleInputOnChange} />,
-            <p key="info">Drag your asset here or <label htmlFor={this.fileId}>browse your files.</label></p>
+            typeof this.props.data === "string" ? (
+                <img key="thumbnail" src={this.props.data} alt="Image upload thumbnail" />
+            ) : null,
+            <input
+                key="input"
+                type="file"
+                id={this.fileId}
+                onChange={this.handleInputOnChange}
+            />,
+            <p key="info">
+                Drag your asset here or{" "}
+                <label htmlFor={this.fileId}>browse your files.</label>
+            </p>
         ];
     }
 

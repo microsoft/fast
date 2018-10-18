@@ -21,7 +21,7 @@ export interface ContextMenuItemConfig {
 }
 
 // Store menu ids for later reference
-let menuIdStore: {[key: string]: ContextMenuItemConfig} = {};
+let menuIdStore: { [key: string]: ContextMenuItemConfig } = {};
 const rootId: string = createContextMenu();
 
 /**
@@ -40,7 +40,7 @@ function createContextMenu(): string {
  * Create submenu items for a root menu
  */
 function createSubmenuItems(
-    config: {[key: string]: ContextMenuItemConfig[]},
+    config: { [key: string]: ContextMenuItemConfig[] },
     id: string
 ): void {
     Object.keys(config).map((key: string, index: number) => {
@@ -48,7 +48,9 @@ function createSubmenuItems(
 
         if (index !== 0) {
             // Add a separator before all groups
-            const separator: ContextMenuItemConfig = { type: ContextMenuType.separator };
+            const separator: ContextMenuItemConfig = {
+                type: ContextMenuType.separator
+            };
             menuConfigs.unshift(separator);
         }
 
@@ -70,7 +72,7 @@ function createSubmenuItems(
  * Handles menu item click events
  */
 function handleContextMenuItemClick(info: any): void {
-    ExtensionApi.tabs.query({active: true, currentWindow: true}, (tabs: any[]) => {
+    ExtensionApi.tabs.query({ active: true, currentWindow: true }, (tabs: any[]) => {
         if (!Array.isArray(tabs) || !tabs.length) {
             return;
         }
@@ -94,7 +96,11 @@ function removeAllContextMenuItems(): void {
     menuIdStore = {};
 }
 
-function handleExternalMessages(message: CreateMessage, sender: any, sendResponse: any): void {
+function handleExternalMessages(
+    message: CreateMessage,
+    sender: any,
+    sendResponse: any
+): void {
     switch (message.type) {
         case CREATE_MENUS_MESSAGE:
             removeAllContextMenuItems();

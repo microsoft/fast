@@ -1,14 +1,14 @@
 import { Component } from "@angular/core";
 
 export interface DesignSystem {
-  red: any;
-  blue: any;
-  purple: any;
+    red: any;
+    blue: any;
+    purple: any;
 }
 
 @Component({
-  selector: "app-root",
-  template: `<div>
+    selector: "app-root",
+    template: `<div>
                 <design-system [config]="config.red">
                   <example>red</example>
                 </design-system>
@@ -21,19 +21,19 @@ export interface DesignSystem {
             </div>`
 })
 export class AppComponent {
-  private config: DesignSystem;
+    private config: DesignSystem;
 
-  constructor() {
-    this.config = {
-      red: {
-        color: "red"
-      },
-      blue: {
-        color: "blue"
-      },
-      purple: {
-        color: "purple"
-      }
-    };
-  }
+    constructor() {
+        this.config = {
+            red: {
+                color: "red"
+            },
+            blue: {
+                color: "blue"
+            },
+            purple: {
+                color: "purple"
+            }
+        };
+    }
 }

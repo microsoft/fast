@@ -1,6 +1,10 @@
 import * as React from "react";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, {
+    ComponentStyles,
+    ManagedClasses,
+    ManagedJSSProps
+} from "@microsoft/fast-jss-manager-react";
 import { DevSiteDesignSystem } from "../design-system";
 import CodePreview from "./dev-tools-code-preview";
 import { FormChildOption } from "./";
@@ -92,13 +96,15 @@ const style: ComponentStyles<DevToolsManagedClasses, DevSiteDesignSystem> = {
         backgroundSize: "80% 80%",
         backgroundColor: "transparent",
         /* tslint:disable-next-line */
-        backgroundImage: "url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMjUwIDI1MCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMjUwIDI1MDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+LnN0MHtmaWxsOiNERDAwMzE7fS5zdDF7ZmlsbDojQzMwMDJGO30uc3Qye2ZpbGw6I0ZGRkZGRjt9PC9zdHlsZT48Zz48cG9seWdvbiBjbGFzcz0ic3QwIiBwb2ludHM9IjEyNSwzMCAxMjUsMzAgMTI1LDMwIDMxLjksNjMuMiA0Ni4xLDE4Ni4zIDEyNSwyMzAgMTI1LDIzMCAxMjUsMjMwIDIwMy45LDE4Ni4zIDIxOC4xLDYzLjIgIi8+PHBvbHlnb24gY2xhc3M9InN0MSIgcG9pbnRzPSIxMjUsMzAgMTI1LDUyLjIgMTI1LDUyLjEgMTI1LDE1My40IDEyNSwxNTMuNCAxMjUsMjMwIDEyNSwyMzAgMjAzLjksMTg2LjMgMjE4LjEsNjMuMiAxMjUsMzAgIi8+PHBhdGggY2xhc3M9InN0MiIgZD0iTTEyNSw1Mi4xTDY2LjgsMTgyLjZoMGgyMS43aDBsMTEuNy0yOS4yaDQ5LjRsMTEuNywyOS4yaDBoMjEuN2gwTDEyNSw1Mi4xTDEyNSw1Mi4xTDEyNSw1Mi4xTDEyNSw1Mi4xTDEyNSw1Mi4xeiBNMTQyLDEzNS40SDEwOGwxNy00MC45TDE0MiwxMzUuNHoiLz48L2c+PC9zdmc+)"
+        backgroundImage:
+            "url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMjUwIDI1MCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMjUwIDI1MDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+LnN0MHtmaWxsOiNERDAwMzE7fS5zdDF7ZmlsbDojQzMwMDJGO30uc3Qye2ZpbGw6I0ZGRkZGRjt9PC9zdHlsZT48Zz48cG9seWdvbiBjbGFzcz0ic3QwIiBwb2ludHM9IjEyNSwzMCAxMjUsMzAgMTI1LDMwIDMxLjksNjMuMiA0Ni4xLDE4Ni4zIDEyNSwyMzAgMTI1LDIzMCAxMjUsMjMwIDIwMy45LDE4Ni4zIDIxOC4xLDYzLjIgIi8+PHBvbHlnb24gY2xhc3M9InN0MSIgcG9pbnRzPSIxMjUsMzAgMTI1LDUyLjIgMTI1LDUyLjEgMTI1LDE1My40IDEyNSwxNTMuNCAxMjUsMjMwIDEyNSwyMzAgMjAzLjksMTg2LjMgMjE4LjEsNjMuMiAxMjUsMzAgIi8+PHBhdGggY2xhc3M9InN0MiIgZD0iTTEyNSw1Mi4xTDY2LjgsMTgyLjZoMGgyMS43aDBsMTEuNy0yOS4yaDQ5LjRsMTEuNywyOS4yaDBoMjEuN2gwTDEyNSw1Mi4xTDEyNSw1Mi4xTDEyNSw1Mi4xTDEyNSw1Mi4xTDEyNSw1Mi4xeiBNMTQyLDEzNS40SDEwOGwxNy00MC45TDE0MiwxMzUuNHoiLz48L2c+PC9zdmc+)"
     },
     devTools_controls_framework_react: {
         backgroundSize: "70% 70%",
         backgroundColor: "transparent",
         /* tslint:disable-next-line */
-        backgroundImage: "url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzJfMV8iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNTYxLjggNDk5LjgiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDU2MS44IDQ5OS44OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHN0eWxlIHR5cGU9InRleHQvY3NzIj4uc3Qwe2ZpbGw6IzYxREFGQjt9LnN0MXtmaWxsOm5vbmU7c3Ryb2tlOiM2MURBRkI7c3Ryb2tlLXdpZHRoOjE1O3N0cm9rZS1taXRlcmxpbWl0OjEwO308L3N0eWxlPjx0aXRsZT5sb2dvLXJlYWN0PC90aXRsZT48ZWxsaXBzZSB0cmFuc2Zvcm09Im1hdHJpeCg4LjI0ODA1MWUtMDIgLTAuOTk2NiAwLjk5NjYgOC4yNDgwNTFlLTAyIDkuMTUxMSA1MDguNzk5OCkiIGNsYXNzPSJzdDAiIGN4PSIyODAuOSIgY3k9IjI0OS40IiByeD0iNTAuMiIgcnk9IjUwLjIiLz48cGF0aCBjbGFzcz0ic3QxIiBkPSJNMjgwLjksMTQ3LjRjNjcuNCwwLDEyOS45LDkuNywxNzcuMSwyNS45YzU2LjgsMTkuNiw5MS44LDQ5LjIsOTEuOCw3Ni4xYzAsMjgtMzcsNTkuNS05OC4xLDc5LjdjLTQ2LjEsMTUuMy0xMDYuOSwyMy4zLTE3MC44LDIzLjNjLTY1LjYsMC0xMjcuNi03LjUtMTc0LjMtMjMuNGMtNTktMjAuMi05NC42LTUyLjEtOTQuNi03OS42YzAtMjYuNiwzMy40LTU2LjEsODkuNC03NS42QzE0OC44LDE1Ny4zLDIxMi45LDE0Ny40LDI4MC45LDE0Ny40eiIvPjxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0xOTIuMSwxOTguN0MyMjUuOCwxNDAuNCwyNjUuNCw5MSwzMDMsNTguMmM0NS4zLTM5LjQsODguNS01NC45LDExMS44LTQxLjVjMjQuMiwxNCwzMyw2MS44LDIwLjEsMTI0LjhjLTkuOCw0Ny42LTMzLjIsMTA0LjItNjUuMiwxNTkuNmMtMzIuOCw1Ni44LTcwLjIsMTA2LjgtMTA3LjQsMTM5LjNjLTQ3LDQxLjEtOTIuNCw1NS45LTExNi4yLDQyLjJjLTIzLjEtMTMuMy0zMS45LTU2LjktMjAuOC0xMTUuMkMxMzQuNiwzMTguMSwxNTguMSwyNTcuNiwxOTIuMSwxOTguN3oiLz48cGF0aCBjbGFzcz0ic3QxIiBkPSJNMTkyLjIsMzAxLjNDMTU4LjQsMjQzLDEzNS41LDE4NCwxMjUuOSwxMzVjLTExLjUtNTktMy40LTEwNC4xLDE5LjktMTE3LjZjMjQuMi0xNCw3MC4xLDIuMiwxMTguMSw0NC45YzM2LjQsMzIuMyw3My43LDgwLjgsMTA1LjcsMTM2LjJjMzIuOCw1Ni43LDU3LjUsMTE0LjIsNjcsMTYyLjZjMTIuMSw2MS4yLDIuMywxMDgtMjEuNSwxMjEuN2MtMjMuMSwxMy4zLTY1LjItMC44LTExMC4yLTM5LjVDMjY2LjksNDEwLjcsMjI2LjMsMzYwLjEsMTkyLjIsMzAxLjN6Ii8+PC9zdmc+)"
+        backgroundImage:
+            "url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzJfMV8iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNTYxLjggNDk5LjgiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDU2MS44IDQ5OS44OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHN0eWxlIHR5cGU9InRleHQvY3NzIj4uc3Qwe2ZpbGw6IzYxREFGQjt9LnN0MXtmaWxsOm5vbmU7c3Ryb2tlOiM2MURBRkI7c3Ryb2tlLXdpZHRoOjE1O3N0cm9rZS1taXRlcmxpbWl0OjEwO308L3N0eWxlPjx0aXRsZT5sb2dvLXJlYWN0PC90aXRsZT48ZWxsaXBzZSB0cmFuc2Zvcm09Im1hdHJpeCg4LjI0ODA1MWUtMDIgLTAuOTk2NiAwLjk5NjYgOC4yNDgwNTFlLTAyIDkuMTUxMSA1MDguNzk5OCkiIGNsYXNzPSJzdDAiIGN4PSIyODAuOSIgY3k9IjI0OS40IiByeD0iNTAuMiIgcnk9IjUwLjIiLz48cGF0aCBjbGFzcz0ic3QxIiBkPSJNMjgwLjksMTQ3LjRjNjcuNCwwLDEyOS45LDkuNywxNzcuMSwyNS45YzU2LjgsMTkuNiw5MS44LDQ5LjIsOTEuOCw3Ni4xYzAsMjgtMzcsNTkuNS05OC4xLDc5LjdjLTQ2LjEsMTUuMy0xMDYuOSwyMy4zLTE3MC44LDIzLjNjLTY1LjYsMC0xMjcuNi03LjUtMTc0LjMtMjMuNGMtNTktMjAuMi05NC42LTUyLjEtOTQuNi03OS42YzAtMjYuNiwzMy40LTU2LjEsODkuNC03NS42QzE0OC44LDE1Ny4zLDIxMi45LDE0Ny40LDI4MC45LDE0Ny40eiIvPjxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0xOTIuMSwxOTguN0MyMjUuOCwxNDAuNCwyNjUuNCw5MSwzMDMsNTguMmM0NS4zLTM5LjQsODguNS01NC45LDExMS44LTQxLjVjMjQuMiwxNCwzMyw2MS44LDIwLjEsMTI0LjhjLTkuOCw0Ny42LTMzLjIsMTA0LjItNjUuMiwxNTkuNmMtMzIuOCw1Ni44LTcwLjIsMTA2LjgtMTA3LjQsMTM5LjNjLTQ3LDQxLjEtOTIuNCw1NS45LTExNi4yLDQyLjJjLTIzLjEtMTMuMy0zMS45LTU2LjktMjAuOC0xMTUuMkMxMzQuNiwzMTguMSwxNTguMSwyNTcuNiwxOTIuMSwxOTguN3oiLz48cGF0aCBjbGFzcz0ic3QxIiBkPSJNMTkyLjIsMzAxLjNDMTU4LjQsMjQzLDEzNS41LDE4NCwxMjUuOSwxMzVjLTExLjUtNTktMy40LTEwNC4xLDE5LjktMTE3LjZjMjQuMi0xNCw3MC4xLDIuMiwxMTguMSw0NC45YzM2LjQsMzIuMyw3My43LDgwLjgsMTA1LjcsMTM2LjJjMzIuOCw1Ni43LDU3LjUsMTE0LjIsNjcsMTYyLjZjMTIuMSw2MS4yLDIuMywxMDgtMjEuNSwxMjEuN2MtMjMuMSwxMy4zLTY1LjItMC44LTExMC4yLTM5LjVDMjY2LjksNDEwLjcsMjI2LjMsMzYwLjEsMTkyLjIsMzAxLjN6Ii8+PC9zdmc+)"
     },
     devTools_controls_closeButton: {
         position: "relative",
@@ -156,7 +162,7 @@ const style: ComponentStyles<DevToolsManagedClasses, DevSiteDesignSystem> = {
     },
     devTools_tabPanel: {
         display: "inline-flex",
-        "&[aria-hidden=\"true\"]": {
+        '&[aria-hidden="true"]': {
             display: "none"
         }
     },
@@ -166,8 +172,10 @@ const style: ComponentStyles<DevToolsManagedClasses, DevSiteDesignSystem> = {
     }
 };
 
-class DevTools extends React.Component<DevToolsProps & ManagedClasses<DevToolsManagedClasses>, DevToolsState> {
-
+class DevTools extends React.Component<
+    DevToolsProps & ManagedClasses<DevToolsManagedClasses>,
+    DevToolsState
+> {
     private tabs: TabType[];
 
     constructor(props: DevToolsProps & ManagedClasses<DevToolsManagedClasses>) {
@@ -190,7 +198,9 @@ class DevTools extends React.Component<DevToolsProps & ManagedClasses<DevToolsMa
                     <button
                         onClick={this.props.onToggleView}
                         aria-label="close development tools"
-                        className={this.props.managedClasses.devTools_controls_closeButton}
+                        className={
+                            this.props.managedClasses.devTools_controls_closeButton
+                        }
                     />
                 </div>
                 {this.renderTabPanels()}
@@ -212,9 +222,7 @@ class DevTools extends React.Component<DevToolsProps & ManagedClasses<DevToolsMa
             if (tabItem === TabType.code || tabItem === TabType.schema) {
                 return (
                     <li key={index} className={this.getTabClassNames(tabItem)}>
-                        <button onClick={this.handleChangeTab(tabItem)}>
-                            {tabItem}
-                        </button>
+                        <button onClick={this.handleChangeTab(tabItem)}>{tabItem}</button>
                     </li>
                 );
             }
@@ -272,7 +280,13 @@ class DevTools extends React.Component<DevToolsProps & ManagedClasses<DevToolsMa
     }
 
     private renderSchema(): JSX.Element {
-        return <pre dangerouslySetInnerHTML={{__html: JSON.stringify(this.props.activeSchema, null, 2)}} />;
+        return (
+            <pre
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify(this.props.activeSchema, null, 2)
+                }}
+            />
+        );
     }
 
     private renderComponentFrameworkType(): JSX.Element {
@@ -290,10 +304,7 @@ class DevTools extends React.Component<DevToolsProps & ManagedClasses<DevToolsMa
     private renderComponentFrameworkTypeToggle(): JSX.Element[] {
         return this.props.frameworks.map((framework: Framework, index: number) => {
             return (
-                <li
-                    key={index}
-                    className={this.getFrameworkActiveClassName(framework)}
-                >
+                <li key={index} className={this.getFrameworkActiveClassName(framework)}>
                     <button
                         onClick={this.handleChangeFramework(framework)}
                         className={this.getFrameworkClassName(framework)}
@@ -317,13 +328,17 @@ class DevTools extends React.Component<DevToolsProps & ManagedClasses<DevToolsMa
 
     private getTabClassNames(tabItem: TabType): string {
         if (tabItem === this.state.activeTab) {
-            return `${this.props.managedClasses.devTools_tab} ${this.props.managedClasses.devTools_tab__active}`;
+            return `${this.props.managedClasses.devTools_tab} ${
+                this.props.managedClasses.devTools_tab__active
+            }`;
         }
 
         return this.props.managedClasses.devTools_tab;
     }
 
-    private handleChangeFramework(framework: Framework): (e: React.MouseEvent<HTMLButtonElement>) => void {
+    private handleChangeFramework(
+        framework: Framework
+    ): (e: React.MouseEvent<HTMLButtonElement>) => void {
         return (e: React.MouseEvent<HTMLButtonElement>): void => {
             this.setState({
                 activeFramework: framework
@@ -331,7 +346,9 @@ class DevTools extends React.Component<DevToolsProps & ManagedClasses<DevToolsMa
         };
     }
 
-    private handleChangeTab(tab: TabType): (e: React.MouseEvent<HTMLButtonElement>) => void {
+    private handleChangeTab(
+        tab: TabType
+    ): (e: React.MouseEvent<HTMLButtonElement>) => void {
         return (e: React.MouseEvent<HTMLButtonElement>): void => {
             this.setState({
                 activeTab: tab

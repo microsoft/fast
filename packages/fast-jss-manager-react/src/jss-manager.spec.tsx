@@ -7,7 +7,7 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { jss, stylesheetRegistry } from "./jss";
 import { DesignSystemProvider } from "./design-system-provider";
 
-configure({adapter: new Adapter()});
+configure({ adapter: new Adapter() });
 
 class SimpleComponent extends React.Component<any, any> {
     public render(): boolean {
@@ -53,7 +53,10 @@ const stylesheetResolver: ComponentStyles<any, any> = (config: any): any => {
  * JSS stylesheet with static and dynamic values for CSS properties
  */
 const staticAndDynamicStyles: ComponentStyles<any, any> = {
-    staticAndDynamicStylesClass: { ...staticStyles.staticStyleClass, ...dynamicStyles.dynamicStylesClass }
+    staticAndDynamicStylesClass: {
+        ...staticStyles.staticStyleClass,
+        ...dynamicStyles.dynamicStylesClass
+    }
 };
 
 describe("The JSSManager", (): void => {
@@ -90,24 +93,23 @@ describe("The JSSManager", (): void => {
     }
 
     test("should not throw when no stylesheet is provided", (): void => {
-        expect((): void => {
-            mount(
-                <JSSManager render={renderChild} />
-            );
-        }).not.toThrow();
+        expect(
+            (): void => {
+                mount(<JSSManager render={renderChild} />);
+            }
+        ).not.toThrow();
     });
 
     test("should not throw when no stylesheet is provided and design system is changed", (): void => {
         const rendered: ReactWrapper = mount(
-            <JSSManager
-                designSystem={testDesignSystem}
-                render={renderChild}
-            />
+            <JSSManager designSystem={testDesignSystem} render={renderChild} />
         );
 
-        expect((): void => {
-            rendered.setProps({designSystem: {color: "blue"}});
-        }).not.toThrow();
+        expect(
+            (): void => {
+                rendered.setProps({ designSystem: { color: "blue" } });
+            }
+        ).not.toThrow();
     });
 
     test("should compile a stylesheet when mounting", (): void => {
@@ -130,14 +132,16 @@ describe("The JSSManager", (): void => {
         expect(objectStylesheetComponent.state("styleSheet")).toBeInstanceOf(StyleSheet);
         expect(objectStylesheetComponent.state("styleSheet").attached).toBe(true);
 
-        expect(functionStylesheetComponent.state("styleSheet")).toBeInstanceOf(StyleSheet);
+        expect(functionStylesheetComponent.state("styleSheet")).toBeInstanceOf(
+            StyleSheet
+        );
         expect(functionStylesheetComponent.state("styleSheet").attached).toBe(true);
     });
 
     test("should update an object stylesheet when the design-system changes", (): void => {
         const objectStylesheetComponent: ReactWrapper = mount(
             <JSSManager
-                designSystem={{color: "blue"}}
+                designSystem={{ color: "blue" }}
                 styles={stylesheet}
                 render={renderChild}
             />
@@ -145,7 +149,7 @@ describe("The JSSManager", (): void => {
 
         const functionStylesheetComponent: ReactWrapper = mount(
             <JSSManager
-                designSystem={{color: "blue"}}
+                designSystem={{ color: "blue" }}
                 styles={functionStyleSheet}
                 render={renderChild}
             />
@@ -154,23 +158,25 @@ describe("The JSSManager", (): void => {
         const mock: any = jest.fn();
 
         objectStylesheetComponent.state("styleSheet").update = mock;
-        objectStylesheetComponent.setProps({designSystem: testDesignSystem});
+        objectStylesheetComponent.setProps({ designSystem: testDesignSystem });
 
         expect(mock.mock.calls).toHaveLength(1);
         expect(mock.mock.calls[0][0]).toEqual(testDesignSystem);
 
         const functionSheet: any = functionStylesheetComponent.state("styleSheet");
-        functionStylesheetComponent.setProps({designSystem: testDesignSystem});
+        functionStylesheetComponent.setProps({
+            designSystem: testDesignSystem
+        });
 
         // Function stylesheets must be completely re-generated when the design-system changes,
         // so check identity
         expect(functionStylesheetComponent.state("styleSheet")).not.toBe(functionSheet);
     });
 
-    test("should remove stylesheets when unmounting" , (): void => {
+    test("should remove stylesheets when unmounting", (): void => {
         const objectStylesheetComponent: ReactWrapper = mount(
             <JSSManager
-                designSystem={{color: "red"}}
+                designSystem={{ color: "red" }}
                 styles={stylesheet}
                 render={renderChild}
             />
@@ -178,7 +184,7 @@ describe("The JSSManager", (): void => {
 
         const functionStylesheetComponent: ReactWrapper = mount(
             <JSSManager
-                designSystem={{color: "red"}}
+                designSystem={{ color: "red" }}
                 styles={stylesheet}
                 render={renderChild}
             />
@@ -208,7 +214,7 @@ describe("The JSSManager", (): void => {
 
         const sheet: any = rendered.state("styleSheet");
 
-        rendered.setProps({jssStyleSheet: { class: { color: "blue" } }});
+        rendered.setProps({ jssStyleSheet: { class: { color: "blue" } } });
 
         expect(rendered.state("styleSheet")).not.toBe(sheet);
     });
@@ -247,6 +253,8 @@ describe("The JSSManager", (): void => {
             />
         );
 
-        expect(rendered.instance().index).toBeGreaterThan(rendered.children().instance().index);
+        expect(rendered.instance().index).toBeGreaterThan(
+            rendered.children().instance().index
+        );
     });
 });

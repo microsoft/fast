@@ -1,10 +1,14 @@
 import * as React from "react";
 import { DevSiteDesignSystem } from "../design-system";
-import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, {
+    ComponentStyles,
+    ManagedClasses,
+    ManagedJSSProps
+} from "@microsoft/fast-jss-manager-react";
 import BreadcrumbItem from "./breadcrumb-item";
 
 /* tslint:disable-next-line */
-export interface BreadcrumbProps { }
+export interface BreadcrumbProps {}
 
 export interface BreadcrumbManagedClasses {
     breadcrumb: string;
@@ -12,16 +16,17 @@ export interface BreadcrumbManagedClasses {
 }
 
 const style: ComponentStyles<BreadcrumbManagedClasses, DevSiteDesignSystem> = {
-    breadcrumb: {
-    },
+    breadcrumb: {},
     breadcrumb_list: {
         margin: "0",
         padding: "0"
     }
 };
 
-class Breadcrumb extends React.Component<BreadcrumbProps & ManagedClasses<BreadcrumbManagedClasses>, {}> {
-
+class Breadcrumb extends React.Component<
+    BreadcrumbProps & ManagedClasses<BreadcrumbManagedClasses>,
+    {}
+> {
     public render(): JSX.Element {
         return (
             <nav className={this.props.managedClasses.breadcrumb}>

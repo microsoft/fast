@@ -6,8 +6,8 @@ export enum Direction {
     rtl = "rtl"
 }
 
-export const localeDirectionMapping: {[key: string]: Direction} = {
-    "en": Direction.ltr,
+export const localeDirectionMapping: { [key: string]: Direction } = {
+    en: Direction.ltr,
     "en-rtl": Direction.rtl
 };
 

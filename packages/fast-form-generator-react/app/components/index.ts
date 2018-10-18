@@ -91,7 +91,10 @@ export const alignVertical: ExampleComponent = {
 };
 
 import WeightProperties from "./weight-properties/weight-properties";
-import { weightPropertiesConfig, weightPropertiesWeight } from "./weight-properties/weight-properties.config";
+import {
+    weightPropertiesConfig,
+    weightPropertiesWeight
+} from "./weight-properties/weight-properties.config";
 import WeightPropertiesSchema from "./weight-properties/weight-properties.schema.json";
 
 export const weightProperties: ExampleComponent = {

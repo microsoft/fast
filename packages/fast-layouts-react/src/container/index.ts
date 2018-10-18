@@ -15,8 +15,13 @@ import { Subtract } from "utility-types";
 const Container = manageJss(containerStyleSheet)(BaseContainer);
 type Container = typeof Container;
 
-interface ContainerHandledProps extends Subtract<BaseContainerHandledProps, ContainerManagedClasses> {}
-type ContainerProps = ManagedJSSProps<BaseContainerProps, ContainerClassNamesContract, undefined>;
+interface ContainerHandledProps
+    extends Subtract<BaseContainerHandledProps, ContainerManagedClasses> {}
+type ContainerProps = ManagedJSSProps<
+    BaseContainerProps,
+    ContainerClassNamesContract,
+    undefined
+>;
 
 export {
     Container,

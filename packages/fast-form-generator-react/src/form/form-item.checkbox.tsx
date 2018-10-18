@@ -9,16 +9,22 @@ import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-
  * Schema form component definition
  * @extends React.Component
  */
-class FormItemCheckbox extends React.Component<FormItemCommon & ManagedClasses<FormItemCheckboxClassNameContract>, {}> {
-
+class FormItemCheckbox extends React.Component<
+    FormItemCommon & ManagedClasses<FormItemCheckboxClassNameContract>,
+    {}
+> {
     public render(): JSX.Element {
-        const value: boolean = (typeof this.props.data === "boolean")
-            ? this.props.data
-            : this.props.default || false;
+        const value: boolean =
+            typeof this.props.data === "boolean"
+                ? this.props.data
+                : this.props.default || false;
 
         return (
             <div className={this.props.managedClasses.formItemCheckbox}>
-                <label className={this.props.managedClasses.formItemCheckbox_label} htmlFor={this.props.dataLocation}>
+                <label
+                    className={this.props.managedClasses.formItemCheckbox_label}
+                    htmlFor={this.props.dataLocation}
+                >
                     {this.props.label}
                 </label>
                 <input
@@ -39,7 +45,7 @@ class FormItemCheckbox extends React.Component<FormItemCommon & ManagedClasses<F
      */
     private handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         return this.props.onChange(this.props.dataLocation, event.target.checked);
-    }
+    };
 }
 
 export default manageJss(styles)(FormItemCheckbox);

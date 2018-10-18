@@ -57,8 +57,10 @@ import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-
  * Schema form component definition
  * @extends React.Component
  */
-class FormSection extends React.Component<FormSectionProps & ManagedClasses<FormSectionClassNameContract>, FormSectionState> {
-
+class FormSection extends React.Component<
+    FormSectionProps & ManagedClasses<FormSectionClassNameContract>,
+    FormSectionState
+> {
     constructor(props: FormSectionProps & ManagedClasses<FormSectionClassNameContract>) {
         super(props);
 
@@ -68,11 +70,15 @@ class FormSection extends React.Component<FormSectionProps & ManagedClasses<Form
         let schemaState: any = this.props.schema;
 
         if (this.props.schema.oneOf || this.props.schema.anyOf) {
-            oneOfAnyOf = this.props.schema.oneOf ? oneOfAnyOfType.oneOf : oneOfAnyOfType.anyOf;
-            activeIndex = getOneOfAnyOfActiveIndex(oneOfAnyOf, this.props.schema, this.props.data);
-            schemaState = this.props.schema[oneOfAnyOf][
-                activeIndex
-            ];
+            oneOfAnyOf = this.props.schema.oneOf
+                ? oneOfAnyOfType.oneOf
+                : oneOfAnyOfType.anyOf;
+            activeIndex = getOneOfAnyOfActiveIndex(
+                oneOfAnyOf,
+                this.props.schema,
+                this.props.data
+            );
+            schemaState = this.props.schema[oneOfAnyOf][activeIndex];
             oneOfAnyOfState = {
                 type: oneOfAnyOf,
                 activeIndex
@@ -82,7 +88,10 @@ class FormSection extends React.Component<FormSectionProps & ManagedClasses<Form
         this.state = {
             schema: schemaState,
             oneOfAnyOf: oneOfAnyOfState,
-            sections: getSchemaSubsections({schema: schemaState, oneOfAnyOf: oneOfAnyOfState}, this.props)
+            sections: getSchemaSubsections(
+                { schema: schemaState, oneOfAnyOf: oneOfAnyOfState },
+                this.props
+            )
         };
     }
 
@@ -98,15 +107,19 @@ class FormSection extends React.Component<FormSectionProps & ManagedClasses<Form
     /**
      * React lifecycle hook
      */
-    public componentWillUpdate(nextProps: FormSectionProps, nextState: FormSectionState): void {
+    public componentWillUpdate(
+        nextProps: FormSectionProps,
+        nextState: FormSectionState
+    ): void {
         const state: any = {};
 
         if (checkIsDifferentSchema(this.props.schema, nextProps.schema)) {
             if (checkHasOneOfAnyOf(nextProps.schema.oneOf, nextProps.schema.anyOf)) {
                 state.oneOfAnyOf = getOneOfAnyOfState(state.oneOfAnyOf, nextProps);
-                state.schema = nextProps.schema[state.oneOfAnyOf.type][state.oneOfAnyOf.activeIndex];
+                state.schema =
+                    nextProps.schema[state.oneOfAnyOf.type][state.oneOfAnyOf.activeIndex];
             } else {
-                state.oneOfAnyOf = void(0);
+                state.oneOfAnyOf = void 0;
                 state.schema = nextProps.schema;
             }
 
@@ -141,7 +154,7 @@ class FormSection extends React.Component<FormSectionProps & ManagedClasses<Form
                 activeIndex: event.target.value
             }
         });
-    }
+    };
 
     /**
      * Handles updating to another active section
@@ -153,16 +166,26 @@ class FormSection extends React.Component<FormSectionProps & ManagedClasses<Form
     /**
      * Handles the onClick of the section link, changes from controlled to uncontrolled if location is passed
      */
-    private handleSectionLinkClick = (schemaLocation: string, dataLocation: string): any => {
+    private handleSectionLinkClick = (
+        schemaLocation: string,
+        dataLocation: string
+    ): any => {
         return this.props.location && this.props.location.onChange
             ? this.props.location.onChange(schemaLocation, dataLocation)
             : this.handleUpdateSection(schemaLocation, dataLocation);
-    }
+    };
 
-    private generateFormItemTextarea(location: string, formItemProps: FormItemCommon): JSX.Element {
-        if (this.props.attributeSettingsMappingToPropertyNames && this.props.attributeSettingsMappingToPropertyNames.textarea) {
+    private generateFormItemTextarea(
+        location: string,
+        formItemProps: FormItemCommon
+    ): JSX.Element {
+        if (
+            this.props.attributeSettingsMappingToPropertyNames &&
+            this.props.attributeSettingsMappingToPropertyNames.textarea
+        ) {
             const rowAttribute: number | null = formItemAttributeMapping(
-                (this.props.attributeSettingsMappingToPropertyNames.textarea as TextareaAttributeSettingsMappingToPropertyNames),
+                this.props.attributeSettingsMappingToPropertyNames
+                    .textarea as TextareaAttributeSettingsMappingToPropertyNames,
                 location
             );
             return <FormItemTextarea rows={rowAttribute} {...formItemProps} />;
@@ -171,11 +194,15 @@ class FormSection extends React.Component<FormSectionProps & ManagedClasses<Form
         return <FormItemTextarea {...formItemProps} />;
     }
 
-    private renderFormItemSelect(property: any, required: boolean, formItemProps: any): JSX.Element {
+    private renderFormItemSelect(
+        property: any,
+        required: boolean,
+        formItemProps: any
+    ): JSX.Element {
         const options: any[] = property.enum;
 
         if (!required && typeof options[0] !== "undefined") {
-            options.unshift(void(0));
+            options.unshift(void 0);
         }
 
         return <FormItemSelect options={options} {...formItemProps} />;
@@ -184,11 +211,20 @@ class FormSection extends React.Component<FormSectionProps & ManagedClasses<Form
     /**
      * Generates form elements based on field type
      */
-    private generateFormElement(property: any, index: number, location: string, required: boolean, label: string): JSX.Element | any {
-        const dataLocation: string = getDataLocationRelativeToRoot(location, this.props.dataLocation);
+    private generateFormElement(
+        property: any,
+        index: number,
+        location: string,
+        required: boolean,
+        label: string
+    ): JSX.Element | any {
+        const dataLocation: string = getDataLocationRelativeToRoot(
+            location,
+            this.props.dataLocation
+        );
         const formItemProps: FormItemCommon = {
             key: location + index,
-            default: property.default || void(0),
+            default: property.default || void 0,
             index,
             dataLocation,
             data: getData(location, this.props.data),
@@ -198,14 +234,13 @@ class FormSection extends React.Component<FormSectionProps & ManagedClasses<Form
         };
 
         if (isMapping(location, this.props.componentMappingToPropertyNames)) {
-            const name: mappingName = formItemMapping(this.props.componentMappingToPropertyNames, location);
+            const name: mappingName = formItemMapping(
+                this.props.componentMappingToPropertyNames,
+                location
+            );
 
             return (
-                <FormItemMapping
-                    name={name}
-                    options={property.enum}
-                    {...formItemProps}
-                />
+                <FormItemMapping name={name} options={property.enum} {...formItemProps} />
             );
         }
 
@@ -220,7 +255,11 @@ class FormSection extends React.Component<FormSectionProps & ManagedClasses<Form
      * Renders one of the standard form item corrensponding to a simple
      * JSON schema type
      */
-    private renderFormItem(property: any, formItemProps: FormItemCommon, location: string): JSX.Element | JSX.Element[] {
+    private renderFormItem(
+        property: any,
+        formItemProps: FormItemCommon,
+        location: string
+    ): JSX.Element | JSX.Element[] {
         switch (property.type) {
             case "boolean":
                 return <FormItemCheckbox {...formItemProps} />;
@@ -271,11 +310,20 @@ class FormSection extends React.Component<FormSectionProps & ManagedClasses<Form
      */
     private getCategories(formItemParameters: FormItemParameters[]): JSX.Element[] {
         const categories: JSX.Element[] = [];
-        const categoryParams: FormCategories[] = getCategoryParams(formItemParameters, this.props.orderByPropertyNames);
+        const categoryParams: FormCategories[] = getCategoryParams(
+            formItemParameters,
+            this.props.orderByPropertyNames
+        );
 
-        for (let i: number = 0, categoryParamLength: number = categoryParams.length; i < categoryParamLength; i++) {
+        for (
+            let i: number = 0, categoryParamLength: number = categoryParams.length;
+            i < categoryParamLength;
+            i++
+        ) {
             const categoryFormItems: JSX.Element[] = [];
-            const contentId: string = uniqueId(this.convertToHyphenated(categoryParams[i].title));
+            const contentId: string = uniqueId(
+                this.convertToHyphenated(categoryParams[i].title)
+            );
 
             for (const item of categoryParams[i].items) {
                 categoryFormItems.push(
@@ -307,7 +355,11 @@ class FormSection extends React.Component<FormSectionProps & ManagedClasses<Form
         return name.toLowerCase().replace(/\s/g, "-");
     }
 
-    private getFormItemsAndConfigurationOptions(property: any, required: string[], not: string[]): FormItemsWithConfigOptions {
+    private getFormItemsAndConfigurationOptions(
+        property: any,
+        required: string[],
+        not: string[]
+    ): FormItemsWithConfigOptions {
         const formItems: FormItemsWithConfigOptions = {
             items: [],
             parameters: []
@@ -327,10 +379,19 @@ class FormSection extends React.Component<FormSectionProps & ManagedClasses<Form
                 };
 
                 formItems.items.push(
-                    this.generateFormElement(params.property, params.index, params.item, params.isRequired, params.title)
+                    this.generateFormElement(
+                        params.property,
+                        params.index,
+                        params.item,
+                        params.isRequired,
+                        params.title
+                    )
                 );
 
-                if (params.property.type !== "object" && typeof params.property.properties === "undefined") {
+                if (
+                    params.property.type !== "object" &&
+                    typeof params.property.properties === "undefined"
+                ) {
                     formItems.parameters.push(params);
                 }
             }
@@ -339,9 +400,16 @@ class FormSection extends React.Component<FormSectionProps & ManagedClasses<Form
         return formItems;
     }
 
-    private getFormObjectItemsOrConfigCategories(formItems: FormItemsWithConfigOptions): JSX.Element[] {
+    private getFormObjectItemsOrConfigCategories(
+        formItems: FormItemsWithConfigOptions
+    ): JSX.Element[] {
         if (this.props.orderByPropertyNames) {
-            if (checkCategoryConfigPropertyCount(formItems, this.props.orderByPropertyNames)) {
+            if (
+                checkCategoryConfigPropertyCount(
+                    formItems,
+                    this.props.orderByPropertyNames
+                )
+            ) {
                 return formItems.items;
             }
 
@@ -354,7 +422,12 @@ class FormSection extends React.Component<FormSectionProps & ManagedClasses<Form
     /**
      * Pushes a list of elements found inside an object to an array
      */
-    private generateFormObject(property: any, location: string, required: string[], not?: string[]): JSX.Element[] {
+    private generateFormObject(
+        property: any,
+        location: string,
+        required: string[],
+        not?: string[]
+    ): JSX.Element[] {
         let formItems: FormItemsWithConfigOptions;
 
         if (checkIsObject(property, this.state.schema)) {
@@ -370,15 +443,23 @@ class FormSection extends React.Component<FormSectionProps & ManagedClasses<Form
      */
     private generateAnyOfOneOfSelect(): JSX.Element {
         if (
-            typeof this.state.oneOfAnyOf !== "undefined"
-            && this.props.schema[this.state.oneOfAnyOf.type]
+            typeof this.state.oneOfAnyOf !== "undefined" &&
+            this.props.schema[this.state.oneOfAnyOf.type]
         ) {
             const id: string = uniqueId();
-            const options: JSX.Element[] = getOneOfAnyOfSelectOptions(this.props.schema, this.state);
+            const options: JSX.Element[] = getOneOfAnyOfSelectOptions(
+                this.props.schema,
+                this.state
+            );
 
             return (
                 <div className={this.props.managedClasses.formSection_selectWrapper}>
-                    <label htmlFor={id} className={this.props.managedClasses.formSection_selectLabel}>Configuration</label>
+                    <label
+                        htmlFor={id}
+                        className={this.props.managedClasses.formSection_selectLabel}
+                    >
+                        Configuration
+                    </label>
                     <span className={this.props.managedClasses.formSection_selectSpan}>
                         <select
                             className={this.props.managedClasses.formSection_selectInput}
@@ -409,30 +490,47 @@ class FormSection extends React.Component<FormSectionProps & ManagedClasses<Form
             dataCache: this.props.dataCache
         });
 
-        return optionToggles.map((property: any, index: number): JSX.Element => {
-            return (
-                <div className={this.props.managedClasses.formSection_toggleWrapper} key={index}>
-                    <label htmlFor={property.id}>
-                        {property.label || this.props.untitled}
-                        <button
-                            className={this.props.managedClasses.formSection_toggle}
-                            role="switch"
-                            aria-pressed={property.selected}
-                            onClick={handleToggleClick(property.selected, property.id, property.updateRequested)}
-                        >
-                            <span />
-                        </button>
-                        <span>{property.selected ? property.selectedString : property.unselectedString}</span>
-                    </label>
-                    <input
-                        id={property.id}
-                        type="hidden"
-                        aria-hidden="true"
-                        value={property.selected ? property.selectedString : property.unselectedString}
-                    />
-                </div>
-            );
-        });
+        return optionToggles.map(
+            (property: any, index: number): JSX.Element => {
+                return (
+                    <div
+                        className={this.props.managedClasses.formSection_toggleWrapper}
+                        key={index}
+                    >
+                        <label htmlFor={property.id}>
+                            {property.label || this.props.untitled}
+                            <button
+                                className={this.props.managedClasses.formSection_toggle}
+                                role="switch"
+                                aria-pressed={property.selected}
+                                onClick={handleToggleClick(
+                                    property.selected,
+                                    property.id,
+                                    property.updateRequested
+                                )}
+                            >
+                                <span />
+                            </button>
+                            <span>
+                                {property.selected
+                                    ? property.selectedString
+                                    : property.unselectedString}
+                            </span>
+                        </label>
+                        <input
+                            id={property.id}
+                            type="hidden"
+                            aria-hidden="true"
+                            value={
+                                property.selected
+                                    ? property.selectedString
+                                    : property.unselectedString
+                            }
+                        />
+                    </div>
+                );
+            }
+        );
     }
 
     /**
@@ -444,9 +542,20 @@ class FormSection extends React.Component<FormSectionProps & ManagedClasses<Form
         this.state.sections.map((property: any, index: number) => {
             if (typeof property.active !== "undefined" || property.required) {
                 sections.push(
-                    <li onClick={this.handleSectionLinkClick.bind(this, property.schemaLocation, property.dataLocation)} key={uniqueId()}>
+                    <li
+                        onClick={this.handleSectionLinkClick.bind(
+                            this,
+                            property.schemaLocation,
+                            property.dataLocation
+                        )}
+                        key={uniqueId()}
+                    >
                         <a
-                            onClick={this.handleSectionLinkClick.bind(this, property.schemaLocation, property.dataLocation)}
+                            onClick={this.handleSectionLinkClick.bind(
+                                this,
+                                property.schemaLocation,
+                                property.dataLocation
+                            )}
                         >
                             {property.text}
                         </a>
@@ -462,9 +571,7 @@ class FormSection extends React.Component<FormSectionProps & ManagedClasses<Form
         return (
             <div className={this.props.managedClasses.formSection}>
                 <h3 className={this.props.managedClasses.formSection_header}>Sections</h3>
-                <ul className={this.props.managedClasses.formSection_menu}>
-                    {sections}
-                </ul>
+                <ul className={this.props.managedClasses.formSection_menu}>{sections}</ul>
             </div>
         );
     }
@@ -474,33 +581,55 @@ class FormSection extends React.Component<FormSectionProps & ManagedClasses<Form
      */
     private generateChildrenElement(): JSX.Element[] {
         if (this.props.schema.reactProperties) {
-            return Object.keys(this.props.schema.reactProperties).filter(
-                (reactProperty: string) => this.props.schema.reactProperties[reactProperty].type === "children"
-            ).map((reactProperty: string) => {
-                let childOptions: ChildOptionItem[] = [];
+            return Object.keys(this.props.schema.reactProperties)
+                .filter(
+                    (reactProperty: string) =>
+                        this.props.schema.reactProperties[reactProperty].type ===
+                        "children"
+                )
+                .map((reactProperty: string) => {
+                    let childOptions: ChildOptionItem[] = [];
 
-                if (this.props.schema.reactProperties[reactProperty].ids) {
-                    childOptions = this.props.childOptions.filter((childOption: ChildOptionItem) => {
-                        return !!this.props.schema.reactProperties[reactProperty].ids.find((id: string) => childOption.schema.id === id);
-                    });
-                } else {
-                    childOptions = childOptions.concat(this.props.childOptions);
-                }
+                    if (this.props.schema.reactProperties[reactProperty].ids) {
+                        childOptions = this.props.childOptions.filter(
+                            (childOption: ChildOptionItem) => {
+                                return !!this.props.schema.reactProperties[
+                                    reactProperty
+                                ].ids.find((id: string) => childOption.schema.id === id);
+                            }
+                        );
+                    } else {
+                        childOptions = childOptions.concat(this.props.childOptions);
+                    }
 
-                return (
-                    <FormItemChildren
-                        key={reactProperty}
-                        title={this.props.schema.reactProperties[reactProperty].title || this.props.untitled}
-                        dataLocation={`${this.props.dataLocation === "" ? "" : `${this.props.dataLocation}.`}${reactProperty}`}
-                        data={this.props.data[reactProperty] ? this.props.data[reactProperty] : null}
-                        schema={this.props.schema}
-                        onChange={this.props.onChange}
-                        defaultChildOptions={this.props.schema.reactProperties[reactProperty].defaults || null}
-                        childOptions={childOptions}
-                        onUpdateActiveSection={this.props.onUpdateActiveSection}
-                    />
-                );
-            });
+                    return (
+                        <FormItemChildren
+                            key={reactProperty}
+                            title={
+                                this.props.schema.reactProperties[reactProperty].title ||
+                                this.props.untitled
+                            }
+                            dataLocation={`${
+                                this.props.dataLocation === ""
+                                    ? ""
+                                    : `${this.props.dataLocation}.`
+                            }${reactProperty}`}
+                            data={
+                                this.props.data[reactProperty]
+                                    ? this.props.data[reactProperty]
+                                    : null
+                            }
+                            schema={this.props.schema}
+                            onChange={this.props.onChange}
+                            defaultChildOptions={
+                                this.props.schema.reactProperties[reactProperty]
+                                    .defaults || null
+                            }
+                            childOptions={childOptions}
+                            onUpdateActiveSection={this.props.onUpdateActiveSection}
+                        />
+                    );
+                });
         }
 
         return null;

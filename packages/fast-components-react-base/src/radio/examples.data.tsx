@@ -1,5 +1,9 @@
 import * as React from "react";
-import Radio, { RadioHandledProps, RadioManagedClasses, RadioUnhandledProps } from "./radio";
+import Radio, {
+    RadioHandledProps,
+    RadioManagedClasses,
+    RadioUnhandledProps
+} from "./radio";
 import schema from "./radio.schema.json";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";

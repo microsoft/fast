@@ -14,8 +14,12 @@ describe("contrast", (): void => {
     test("should return a color that excedes the contrast ratio of the target contrast ratio", (): void => {
         const targetRatio: number = 4.5;
 
-        expect(Chroma.contrast(contrast(targetRatio, white, black), black)).toBeGreaterThan(targetRatio);
-        expect(Chroma.contrast(contrast(targetRatio, black, white), white)).toBeGreaterThan(targetRatio);
+        expect(
+            Chroma.contrast(contrast(targetRatio, white, black), black)
+        ).toBeGreaterThan(targetRatio);
+        expect(
+            Chroma.contrast(contrast(targetRatio, black, white), white)
+        ).toBeGreaterThan(targetRatio);
     });
 });
 
@@ -59,10 +63,11 @@ describe("adjustContrast", (): void => {
         const background: string = "#000";
         const adjustment: number = 4;
         const actualContrast: number = Chroma.contrast(
-                adjustContrast(adjustment, foreground, background),
-                background
-            );
-        const targetContrast: number = Chroma.contrast(foreground, background) + adjustment;
+            adjustContrast(adjustment, foreground, background),
+            background
+        );
+        const targetContrast: number =
+            Chroma.contrast(foreground, background) + adjustment;
 
         expect(actualContrast).toBeGreaterThanOrEqual(
             // Due to rounding the contrast usually does not align perfectly so we should just ensure that it is greater

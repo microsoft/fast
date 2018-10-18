@@ -20,5 +20,5 @@ export {
     fadeOut,
     ScrollTrigger,
     ViewEnterTrigger,
-    ViewExitTrigger,
+    ViewExitTrigger
 };

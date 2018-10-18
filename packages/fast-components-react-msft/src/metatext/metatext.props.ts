@@ -1,5 +1,8 @@
 import * as React from "react";
-import { ManagedClasses, MetatextClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import {
+    ManagedClasses,
+    MetatextClassNameContract
+} from "@microsoft/fast-components-class-name-contracts-msft";
 import { TypographyUnhandledProps } from "../typography";
 
 export enum MetatextTag {
@@ -7,7 +10,8 @@ export enum MetatextTag {
     span = "span"
 }
 
-export interface MetatextManagedClasses extends ManagedClasses<MetatextClassNameContract> {}
+export interface MetatextManagedClasses
+    extends ManagedClasses<MetatextClassNameContract> {}
 export interface MetatextHandledProps extends MetatextManagedClasses {
     /**
      * The metatext content

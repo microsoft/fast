@@ -20,8 +20,13 @@ import { Subtract } from "utility-types";
 const Toggle = manageJss(ToggleStyles)(BaseToggle);
 type Toggle = typeof Toggle;
 
-interface ToggleHandledProps extends Subtract<BaseToggleHandledProps, ToggleManagedClasses> {}
-type ToggleProps = ManagedJSSProps<BaseToggleProps, ToggleClassNameContract, DesignSystem>;
+interface ToggleHandledProps
+    extends Subtract<BaseToggleHandledProps, ToggleManagedClasses> {}
+type ToggleProps = ManagedJSSProps<
+    BaseToggleProps,
+    ToggleClassNameContract,
+    DesignSystem
+>;
 
 export {
     Toggle,

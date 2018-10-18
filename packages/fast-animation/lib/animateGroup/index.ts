@@ -46,32 +46,41 @@ class AnimateGroup {
      */
     public pause = (): void => {
         invokeFunctionForEach(this.animations, "pause");
-    }
+    };
 
     /**
      * Finishes all animations in the group
      */
     public finish = (): void => {
         invokeFunctionForEach(this.animations, "finish");
-    }
+    };
 
     /**
      * Cancels all animations in the group
      */
     public cancel = (): void => {
         invokeFunctionForEach(this.animations, "cancel");
-    }
+    };
 
     /**
      * Returns the longest running animation in the group
      */
     private getLongestAnimation(): AnimateTo | AnimateFrom {
-        return this.animations.reduce((previousValue: AnimateTo | AnimateFrom, currentValue: AnimateTo | AnimateFrom) => {
-            const previousDuration: number = this.getAnimationDuration(previousValue.effectTiming);
-            const currentDuration: number = this.getAnimationDuration(currentValue.effectTiming);
+        return this.animations.reduce(
+            (
+                previousValue: AnimateTo | AnimateFrom,
+                currentValue: AnimateTo | AnimateFrom
+            ) => {
+                const previousDuration: number = this.getAnimationDuration(
+                    previousValue.effectTiming
+                );
+                const currentDuration: number = this.getAnimationDuration(
+                    currentValue.effectTiming
+                );
 
-            return currentDuration > previousDuration ? currentValue : previousValue;
-        });
+                return currentDuration > previousDuration ? currentValue : previousValue;
+            }
+        );
     }
 
     /**
@@ -79,9 +88,8 @@ class AnimateGroup {
      */
     private getAnimationDuration(effectTiming: EffectTiming): number {
         const duration: string | number = effectTiming.duration;
-        const sanitizedDuration: number = typeof duration === "string"
-            ? parseFloat(duration)
-            : duration;
+        const sanitizedDuration: number =
+            typeof duration === "string" ? parseFloat(duration) : duration;
 
         return (effectTiming.delay || 0) + (sanitizedDuration || 0);
     }

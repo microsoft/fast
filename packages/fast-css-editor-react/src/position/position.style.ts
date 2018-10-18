@@ -15,8 +15,7 @@ export interface CSSPositionClassNameContract {
 }
 
 const styles: ComponentStyles<CSSPositionClassNameContract, {}> = {
-    cssPosition: {
-    },
+    cssPosition: {},
     cssPosition_selectContainer: {
         display: "flex",
         position: "relative",

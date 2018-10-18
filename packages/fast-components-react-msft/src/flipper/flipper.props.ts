@@ -1,6 +1,13 @@
 import * as React from "react";
-import { ButtonHandledProps, ButtonManagedClasses, ButtonUnhandledProps } from "@microsoft/fast-components-react-base";
-import { FlipperClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
+import {
+    ButtonHandledProps,
+    ButtonManagedClasses,
+    ButtonUnhandledProps
+} from "@microsoft/fast-components-react-base";
+import {
+    FlipperClassNameContract,
+    ManagedClasses
+} from "@microsoft/fast-components-class-name-contracts-msft";
 import { Subtract } from "utility-types";
 
 export enum FlipperDirection {
@@ -9,7 +16,9 @@ export enum FlipperDirection {
 }
 
 export interface FlipperManagedClasses extends ManagedClasses<FlipperClassNameContract> {}
-export interface FlipperHandledProps extends Subtract<ButtonHandledProps, ButtonManagedClasses>, FlipperManagedClasses {
+export interface FlipperHandledProps
+    extends Subtract<ButtonHandledProps, ButtonManagedClasses>,
+        FlipperManagedClasses {
     /**
      * The flipper direction
      */

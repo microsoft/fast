@@ -1,11 +1,25 @@
-import { ComponentStyles, ComponentStyleSheet, CSSRules } from "@microsoft/fast-jss-manager";
-import { ButtonClassNameContract, CallToActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { applyLocalizedProperty, Direction, localizeSpacing } from "@microsoft/fast-jss-utilities";
+import {
+    ComponentStyles,
+    ComponentStyleSheet,
+    CSSRules
+} from "@microsoft/fast-jss-manager";
+import {
+    ButtonClassNameContract,
+    CallToActionClassNameContract
+} from "@microsoft/fast-components-class-name-contracts-msft";
+import {
+    applyLocalizedProperty,
+    Direction,
+    localizeSpacing
+} from "@microsoft/fast-jss-utilities";
 import { DesignSystem, withDesignSystemDefaults } from "../design-system/index";
 import { disabledContrast, ensureNormalContrast } from "../utilities/colors";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
-export const callToActionButtonOverrides: ComponentStyles<Partial<ButtonClassNameContract>, DesignSystem> = {
+export const callToActionButtonOverrides: ComponentStyles<
+    Partial<ButtonClassNameContract>,
+    DesignSystem
+> = {
     button: {
         maxWidth: "100%",
         padding: (config: DesignSystem): string => {
@@ -38,9 +52,9 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
         designSystem.backgroundColor
     );
     const primaryDisabledBackground: string = disabledContrast(
-            designSystem.contrast,
-            primaryRestBackgroundColor,
-            designSystem.backgroundColor
+        designSystem.contrast,
+        primaryRestBackgroundColor,
+        designSystem.backgroundColor
     );
     const primaryDisabledColor: string = disabledContrast(
         designSystem.contrast,

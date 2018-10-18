@@ -23,6 +23,7 @@
     "build:watch": "npm run build -- -w",
     "prepare": "npm run clean:dist && npm run build",
     "prettier": "prettier --config ../../.prettierrc --write '**/*.ts'",
+    "prettier:diff": "prettier --config ../../.prettierrc '**/*.ts' --list-different",
     "watch": "npm run build -- -w --preserveWatchOutput"
   },
   "devDependencies": {

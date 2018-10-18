@@ -1,4 +1,8 @@
-import { applyInputStyle, applyLabelStyle, applyWrapperStyle } from "../utilities/form-input.style";
+import {
+    applyInputStyle,
+    applyLabelStyle,
+    applyWrapperStyle
+} from "../utilities/form-input.style";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { FormItemTextareaClassNameContract } from "../class-name-contracts/";

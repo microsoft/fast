@@ -3,7 +3,11 @@ import { Route, Switch, withRouter } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
 import { DevSiteDesignSystem } from "../design-system";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, {
+    ComponentStyles,
+    ManagedClasses,
+    ManagedJSSProps
+} from "@microsoft/fast-jss-manager-react";
 
 /**
  * Describes the possible views for a component
@@ -28,7 +32,7 @@ const style: ComponentStyles<ComponentViewManagedClasses, DevSiteDesignSystem> =
         flexGrow: "1",
         width: "100%",
         display: "grid",
-        gridTemplateColumns: "1fr 1fr 1fr",
+        gridTemplateColumns: "1fr 1fr 1fr"
     },
     componentDetailView: {
         overflow: "auto",
@@ -36,7 +40,10 @@ const style: ComponentStyles<ComponentViewManagedClasses, DevSiteDesignSystem> =
     }
 };
 
-class ComponentView extends React.Component<ComponentViewProps & ManagedClasses<ComponentViewManagedClasses>, {}> {
+class ComponentView extends React.Component<
+    ComponentViewProps & ManagedClasses<ComponentViewManagedClasses>,
+    {}
+> {
     public render(): React.ReactElement<HTMLDivElement> {
         return (
             <div className={this.getClassName()}>
@@ -48,7 +55,9 @@ class ComponentView extends React.Component<ComponentViewProps & ManagedClasses<
                         component={this.renderView}
                     />
                     <Route
-                        path={`${this.props.match.url}/${ComponentViewTypes[ComponentViewTypes.examples]}`}
+                        path={`${this.props.match.url}/${
+                            ComponentViewTypes[ComponentViewTypes.examples]
+                        }`}
                         exact={true}
                         component={this.renderView}
                     />
@@ -64,12 +73,8 @@ class ComponentView extends React.Component<ComponentViewProps & ManagedClasses<
     }
 
     private renderView = (): React.ReactElement<HTMLElement> => {
-        return (
-            <React.Fragment>
-                {this.props.children}
-            </React.Fragment>
-        );
-    }
+        return <React.Fragment>{this.props.children}</React.Fragment>;
+    };
 }
 
 export default manageJss(style)(withRouter(ComponentView));

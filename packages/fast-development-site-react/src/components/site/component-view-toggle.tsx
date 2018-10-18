@@ -1,13 +1,20 @@
 import * as React from "react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { Link, withRouter } from "react-router-dom";
-import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, {
+    ComponentStyles,
+    ManagedClasses,
+    ManagedJSSProps
+} from "@microsoft/fast-jss-manager-react";
 import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
 
 export interface ComponentViewToggleClassNameContract {
     componentViewToggle: string;
 }
-const styles: ComponentStyles<ComponentViewToggleClassNameContract, DevSiteDesignSystem> = {
+const styles: ComponentStyles<
+    ComponentViewToggleClassNameContract,
+    DevSiteDesignSystem
+> = {
     componentViewToggle: {
         width: toPx(40),
         height: toPx(38),
@@ -18,7 +25,7 @@ const styles: ComponentStyles<ComponentViewToggleClassNameContract, DevSiteDesig
         justifyContent: "center",
         borderRadius: toPx(2),
         margin: toPx(2),
-        "&[aria-current=\"page\"]": {
+        '&[aria-current="page"]': {
             "&::before": {
                 content: "''",
                 position: "absolute",
@@ -38,7 +45,8 @@ const styles: ComponentStyles<ComponentViewToggleClassNameContract, DevSiteDesig
         "&:focus": {
             outline: "none",
             border: (config: DevSiteDesignSystem): string => {
-                return `${toPx(1)} solid ${config.brandColor || devSiteDesignSystemDefaults.brandColor}`;
+                return `${toPx(1)} solid ${config.brandColor ||
+                    devSiteDesignSystemDefaults.brandColor}`;
             }
         }
     }
@@ -71,8 +79,10 @@ export interface ComponentViewToggleProps {
     glyph: string;
 }
 
-class ComponentViewToggle extends React.Component<ComponentViewToggleProps & ManagedClasses<ComponentViewToggleClassNameContract>, {}> {
-
+class ComponentViewToggle extends React.Component<
+    ComponentViewToggleProps & ManagedClasses<ComponentViewToggleClassNameContract>,
+    {}
+> {
     public render(): JSX.Element {
         return (
             <Link
@@ -82,7 +92,7 @@ class ComponentViewToggle extends React.Component<ComponentViewToggleProps & Man
                 aria-label={this.props.label}
                 aria-current={this.props.current ? "page" : null}
             >
-                <span dangerouslySetInnerHTML={{__html: this.props.glyph}} />
+                <span dangerouslySetInnerHTML={{ __html: this.props.glyph }} />
             </Link>
         );
     }

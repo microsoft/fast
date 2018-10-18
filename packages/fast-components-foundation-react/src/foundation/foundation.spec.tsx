@@ -3,7 +3,7 @@
 import * as React from "react";
 import Foundation, { HandledProps, ReferenceResolver } from "./foundation";
 import * as ReactTestUtils from "react-dom/test-utils";
-import { has,  merge } from "lodash-es";
+import { has, merge } from "lodash-es";
 
 class GetRefTestComponent extends Foundation<{}, {}, {}> {
     public render(): JSX.Element {
@@ -15,12 +15,18 @@ describe("setRef", () => {
     let getRefTestComponent: any;
 
     beforeEach(() => {
-        getRefTestComponent = new ReactTestUtils.renderIntoDocument(<GetRefTestComponent />);
+        getRefTestComponent = new ReactTestUtils.renderIntoDocument(
+            <GetRefTestComponent />
+        );
     });
 
     test("should not throw if all parameters are null", () => {
-        expect(() => { getRefTestComponent.setRef(null); }).not.toThrow();
-        expect(() => { getRefTestComponent.setRef(null, null); }).not.toThrow();
+        expect(() => {
+            getRefTestComponent.setRef(null);
+        }).not.toThrow();
+        expect(() => {
+            getRefTestComponent.setRef(null, null);
+        }).not.toThrow();
     });
 
     test("should return undefined is a reference resolves to an object", () => {
@@ -78,23 +84,42 @@ describe("setRef", () => {
     test("should store the returned method under the path determined by args", () => {
         const stringCallback: ReferenceResolver = getRefTestComponent.setRef("string");
         const numberCallback: ReferenceResolver = getRefTestComponent.setRef(0);
-        const stringAndNumberCallback: ReferenceResolver = getRefTestComponent.setRef("stringAndNumber", 0);
+        const stringAndNumberCallback: ReferenceResolver = getRefTestComponent.setRef(
+            "stringAndNumber",
+            0
+        );
 
         expect(stringCallback).toBe(getRefTestComponent.referenceResolverStore.string);
         expect(numberCallback).toBe(getRefTestComponent.referenceResolverStore[0]);
-        expect(stringAndNumberCallback).toBe(getRefTestComponent.referenceResolverStore.stringAndNumber[0]);
+        expect(stringAndNumberCallback).toBe(
+            getRefTestComponent.referenceResolverStore.stringAndNumber[0]
+        );
     });
 
     test("should not factor booleans into the referenceResolvers object structure", () => {
-        const stringCallback: ReferenceResolver = getRefTestComponent.setRef("string", true);
+        const stringCallback: ReferenceResolver = getRefTestComponent.setRef(
+            "string",
+            true
+        );
         const numberCallback: ReferenceResolver = getRefTestComponent.setRef(0, true);
-        const stringAndNumberCallback: ReferenceResolver = getRefTestComponent.setRef("stringAndNumber", 0, true);
-        const stringAndNumberCallback1: ReferenceResolver = getRefTestComponent.setRef("stringAndNumber[1]", true);
+        const stringAndNumberCallback: ReferenceResolver = getRefTestComponent.setRef(
+            "stringAndNumber",
+            0,
+            true
+        );
+        const stringAndNumberCallback1: ReferenceResolver = getRefTestComponent.setRef(
+            "stringAndNumber[1]",
+            true
+        );
 
         expect(stringCallback).toBe(getRefTestComponent.referenceResolverStore.string);
         expect(numberCallback).toBe(getRefTestComponent.referenceResolverStore[0]);
-        expect(stringAndNumberCallback).toBe(getRefTestComponent.referenceResolverStore.stringAndNumber[0]);
-        expect(stringAndNumberCallback1).toBe(getRefTestComponent.referenceResolverStore.stringAndNumber[1]);
+        expect(stringAndNumberCallback).toBe(
+            getRefTestComponent.referenceResolverStore.stringAndNumber[0]
+        );
+        expect(stringAndNumberCallback1).toBe(
+            getRefTestComponent.referenceResolverStore.stringAndNumber[1]
+        );
     });
 });
 
@@ -102,12 +127,18 @@ describe("getRef", () => {
     let getRefTestComponent: any;
 
     beforeEach(() => {
-        getRefTestComponent = new ReactTestUtils.renderIntoDocument(<GetRefTestComponent />);
+        getRefTestComponent = new ReactTestUtils.renderIntoDocument(
+            <GetRefTestComponent />
+        );
     });
 
     test("should not throw if all parameters are null", () => {
-        expect(() => { getRefTestComponent.getRef(null); }).not.toThrow();
-        expect(() => { getRefTestComponent.getRef(null, null); }).not.toThrow();
+        expect(() => {
+            getRefTestComponent.getRef(null);
+        }).not.toThrow();
+        expect(() => {
+            getRefTestComponent.getRef(null, null);
+        }).not.toThrow();
     });
 
     test("should return undefined if all parameters are null", () => {
@@ -157,7 +188,7 @@ describe("unhandledProps", () => {
         array: ["array"],
         object: {},
         number: 1,
-        undefined: void(0),
+        undefined: void 0,
         null: null
     };
 
@@ -168,7 +199,7 @@ describe("unhandledProps", () => {
         arrayDirty: ["array"],
         objectDirty: {},
         numberDirty: 1,
-        undefinedDirty: void(0),
+        undefinedDirty: void 0,
         nullDirty: null
     };
 
@@ -196,26 +227,33 @@ describe("unhandledProps", () => {
     let unhandledPropsTestComponentDirty: UnhandledPropsTestComponent;
 
     beforeEach(() => {
-        unhandledPropsTestComponentClean = new ReactTestUtils.renderIntoDocument(<UnhandledPropsTestComponent {...cleanProps}/>);
+        unhandledPropsTestComponentClean = new ReactTestUtils.renderIntoDocument(
+            <UnhandledPropsTestComponent {...cleanProps} />
+        );
         unhandledPropsTestComponentDirty = new ReactTestUtils.renderIntoDocument(
-            <UnhandledPropsTestComponent {...merge(cleanProps, dirtyProps)}/>
+            <UnhandledPropsTestComponent {...merge(cleanProps, dirtyProps)} />
         );
     });
 
     test("should return an object", () => {
-        expect(typeof unhandledPropsTestComponentClean["unhandledProps"]()).toBe("object");
+        expect(typeof unhandledPropsTestComponentClean["unhandledProps"]()).toBe(
+            "object"
+        );
         expect(unhandledPropsTestComponentClean["unhandledProps"]()).not.toBe(null);
     });
 
     test("return object should not include children", () => {
-        const unhandledProps: TestComponentUnhandledProps = unhandledPropsTestComponentDirty["unhandledProps"]();
+        const unhandledProps: TestComponentUnhandledProps = unhandledPropsTestComponentDirty[
+            "unhandledProps"
+        ]();
 
         expect(has(unhandledProps, "children")).toBe(false);
     });
 
     test("return object should contain all property keys passed to props that is not enumerated on handledProps", () => {
-
-        const unhandledProps: TestComponentUnhandledProps = unhandledPropsTestComponentDirty["unhandledProps"]();
+        const unhandledProps: TestComponentUnhandledProps = unhandledPropsTestComponentDirty[
+            "unhandledProps"
+        ]();
 
         expect(has(unhandledProps, "booleanDirty")).toBe(true);
         expect(has(unhandledProps, "stringDirty")).toBe(true);
@@ -227,7 +265,9 @@ describe("unhandledProps", () => {
     });
 
     test("return object should not contain any property keys contained on handledProps", () => {
-        const unhandledProps: TestComponentUnhandledProps = unhandledPropsTestComponentClean["unhandledProps"]();
+        const unhandledProps: TestComponentUnhandledProps = unhandledPropsTestComponentClean[
+            "unhandledProps"
+        ]();
 
         expect(has(unhandledProps, "boolean")).toBe(false);
         expect(has(unhandledProps, "string")).toBe(false);
@@ -251,15 +291,21 @@ describe("generateClassNames", () => {
     let applyClassNameWithComponentClasses: ApplyClassNameComponent;
 
     beforeEach((): void => {
-        applyClassNameWithEmptyComponentClasses = new ReactTestUtils.renderIntoDocument(<ApplyClassNameComponent />);
-        applyClassNameWithProps = new ReactTestUtils.renderIntoDocument(<ApplyClassNameComponent foo="bar" />);
+        applyClassNameWithEmptyComponentClasses = new ReactTestUtils.renderIntoDocument(
+            <ApplyClassNameComponent />
+        );
+        applyClassNameWithProps = new ReactTestUtils.renderIntoDocument(
+            <ApplyClassNameComponent foo="bar" />
+        );
         applyClassNameWithComponentClasses = new ReactTestUtils.renderIntoDocument(
-            <ApplyClassNameComponent className="custom-class-name"/>
+            <ApplyClassNameComponent className="custom-class-name" />
         );
     });
 
     test("should return null if props are undefined and componentClasses is not a string", () => {
-        expect(applyClassNameWithEmptyComponentClasses["generateClassNames"]()).toBe(null);
+        expect(applyClassNameWithEmptyComponentClasses["generateClassNames"]()).toBe(
+            null
+        );
     });
 
     test("should return null if componentClasses are not a string and no className prop is passed", () => {
@@ -267,23 +313,39 @@ describe("generateClassNames", () => {
     });
 
     test("should return componentClasses if componentClasses is a string and no props are passed", () => {
-        expect(applyClassNameWithEmptyComponentClasses["generateClassNames"]("component-classes")).toBe("component-classes");
+        expect(
+            applyClassNameWithEmptyComponentClasses["generateClassNames"](
+                "component-classes"
+            )
+        ).toBe("component-classes");
     });
 
     test("should return componentClasses if componentClasses is a string and no className prop is passed", () => {
-        expect(applyClassNameWithProps["generateClassNames"]("component-classes")).toBe("component-classes");
+        expect(applyClassNameWithProps["generateClassNames"]("component-classes")).toBe(
+            "component-classes"
+        );
     });
 
     test("should combine component classes and className props if both are passed", () => {
-        expect(applyClassNameWithComponentClasses["generateClassNames"]("component-classes")).toBe("component-classes custom-class-name");
-        expect(applyClassNameWithComponentClasses["generateClassNames"](" component-classes")).toBe("component-classes custom-class-name");
-        expect(applyClassNameWithComponentClasses["generateClassNames"](" component-classes ")).toBe("component-classes custom-class-name");
         expect(
-            applyClassNameWithComponentClasses["generateClassNames"](" component-classes       ")
+            applyClassNameWithComponentClasses["generateClassNames"]("component-classes")
+        ).toBe("component-classes custom-class-name");
+        expect(
+            applyClassNameWithComponentClasses["generateClassNames"](" component-classes")
+        ).toBe("component-classes custom-class-name");
+        expect(
+            applyClassNameWithComponentClasses["generateClassNames"](
+                " component-classes "
+            )
+        ).toBe("component-classes custom-class-name");
+        expect(
+            applyClassNameWithComponentClasses["generateClassNames"](
+                " component-classes       "
+            )
         ).toBe("component-classes custom-class-name");
         expect(
             new ReactTestUtils.renderIntoDocument(
-                <ApplyClassNameComponent className="   custom-class-name   "/>
+                <ApplyClassNameComponent className="   custom-class-name   " />
             )["generateClassNames"](" component-classes     ")
         ).toBe("component-classes custom-class-name");
     });
@@ -297,7 +359,9 @@ describe("withSlot", () => {
     }
 
     test("should not throw if no props are passed", () => {
-        const Component: WithSlotTestComponent = new ReactTestUtils.renderIntoDocument(<WithSlotTestComponent />);
+        const Component: WithSlotTestComponent = new ReactTestUtils.renderIntoDocument(
+            <WithSlotTestComponent />
+        );
 
         expect(() => {
             Component["withSlot"]("test");
@@ -306,10 +370,12 @@ describe("withSlot", () => {
 
     test("should return an empty array if no slot matches are found", () => {
         const Component: WithSlotTestComponent = new ReactTestUtils.renderIntoDocument(
-            <WithSlotTestComponent>
-               <div slot="foo" />
-               <div slot="bar" />
-            </WithSlotTestComponent>
+            (
+                <WithSlotTestComponent>
+                    <div slot="foo" />
+                    <div slot="bar" />
+                </WithSlotTestComponent>
+            )
         );
 
         expect(Component["withSlot"]("test")).toHaveLength(0);
@@ -317,12 +383,14 @@ describe("withSlot", () => {
 
     test("should return an array of all children that have a slot prop matching the provided slot", () => {
         const Component: WithSlotTestComponent = new ReactTestUtils.renderIntoDocument(
-            <WithSlotTestComponent>
-               <div slot="test" />
-               <div slot="foo" />
-               <div slot="bar" />
-               <div slot="test" />
-            </WithSlotTestComponent>
+            (
+                <WithSlotTestComponent>
+                    <div slot="test" />
+                    <div slot="foo" />
+                    <div slot="bar" />
+                    <div slot="test" />
+                </WithSlotTestComponent>
+            )
         );
 
         expect(Component["withSlot"]("test")).toHaveLength(2);
@@ -337,12 +405,12 @@ describe("withSlot", () => {
         ];
 
         const Component: WithSlotTestComponent = new ReactTestUtils.renderIntoDocument(
-            <WithSlotTestComponent>
-               <div slot="foo">
-                    {nodes}
-               </div>
-               <div slot="bar" />
-            </WithSlotTestComponent>
+            (
+                <WithSlotTestComponent>
+                    <div slot="foo">{nodes}</div>
+                    <div slot="bar" />
+                </WithSlotTestComponent>
+            )
         );
 
         expect(Component["withSlot"]("test", nodes)).toHaveLength(3);
@@ -350,11 +418,13 @@ describe("withSlot", () => {
 
     test("should accept an array of slots", () => {
         const Component: WithSlotTestComponent = new ReactTestUtils.renderIntoDocument(
-            <WithSlotTestComponent>
-               <div slot="foo" />
-               <div slot="bar" />
-               <div slot="bat" />
-            </WithSlotTestComponent>
+            (
+                <WithSlotTestComponent>
+                    <div slot="foo" />
+                    <div slot="bar" />
+                    <div slot="bat" />
+                </WithSlotTestComponent>
+            )
         );
 
         expect(Component["withSlot"](["foo", "bar"])).toHaveLength(2);
@@ -369,7 +439,9 @@ describe("withoutSlot", () => {
     }
 
     test("should not throw if no props are passed", () => {
-        const Component: WithoutSlotTestComponent = new ReactTestUtils.renderIntoDocument(<WithoutSlotTestComponent />);
+        const Component: WithoutSlotTestComponent = new ReactTestUtils.renderIntoDocument(
+            <WithoutSlotTestComponent />
+        );
 
         expect(() => {
             Component["withoutSlot"]("test");
@@ -378,10 +450,12 @@ describe("withoutSlot", () => {
 
     test("should return all elements no slot matches are found", () => {
         const Component: WithoutSlotTestComponent = new ReactTestUtils.renderIntoDocument(
-            <WithoutSlotTestComponent>
-               <div slot="foo" />
-               <div slot="bar" />
-            </WithoutSlotTestComponent>
+            (
+                <WithoutSlotTestComponent>
+                    <div slot="foo" />
+                    <div slot="bar" />
+                </WithoutSlotTestComponent>
+            )
         );
 
         expect(Component["withoutSlot"]("test")).toHaveLength(2);
@@ -389,12 +463,14 @@ describe("withoutSlot", () => {
 
     test("should return an array of all children that do not have a slot prop matching the provided slot", () => {
         const Component: WithoutSlotTestComponent = new ReactTestUtils.renderIntoDocument(
-            <WithoutSlotTestComponent>
-               <div slot="test" />
-               <div slot="foo" />
-               <div slot="bar" />
-               <div slot="test" />
-            </WithoutSlotTestComponent>
+            (
+                <WithoutSlotTestComponent>
+                    <div slot="test" />
+                    <div slot="foo" />
+                    <div slot="bar" />
+                    <div slot="test" />
+                </WithoutSlotTestComponent>
+            )
         );
 
         expect(Component["withoutSlot"]("test")).toHaveLength(2);
@@ -409,12 +485,12 @@ describe("withoutSlot", () => {
         ];
 
         const Component: WithoutSlotTestComponent = new ReactTestUtils.renderIntoDocument(
-            <WithoutSlotTestComponent>
-               <div slot="foo">
-                    {nodes}
-               </div>
-               <div slot="bar" />
-            </WithoutSlotTestComponent>
+            (
+                <WithoutSlotTestComponent>
+                    <div slot="foo">{nodes}</div>
+                    <div slot="bar" />
+                </WithoutSlotTestComponent>
+            )
         );
 
         expect(Component["withoutSlot"]("test", nodes)).toHaveLength(1);
@@ -422,11 +498,13 @@ describe("withoutSlot", () => {
 
     test("should accept an array of slots", () => {
         const Component: WithoutSlotTestComponent = new ReactTestUtils.renderIntoDocument(
-            <WithoutSlotTestComponent>
-               <div slot="foo" />
-               <div slot="bar" />
-               <div slot="bat" />
-            </WithoutSlotTestComponent>
+            (
+                <WithoutSlotTestComponent>
+                    <div slot="foo" />
+                    <div slot="bar" />
+                    <div slot="bat" />
+                </WithoutSlotTestComponent>
+            )
         );
 
         expect(Component["withoutSlot"](["foo", "bar"])).toHaveLength(1);

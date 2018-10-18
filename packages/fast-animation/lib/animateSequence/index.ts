@@ -19,40 +19,43 @@ class AnimateSequence {
      */
     public play = (): void => {
         this.applySequencedCallback(this.animations, "play");
-    }
+    };
 
     /**
      * Play the sequence in reverse
      */
     public reverse = (): void => {
         this.applySequencedCallback(this.animations.reverse(), "reverse");
-    }
+    };
 
     /**
      * Pauses all animations in the sequence
      */
     public pause = (): void => {
         invokeFunctionForEach(this.animations, "pause");
-    }
+    };
 
     /**
      * Finishes all animations in the sequence
      */
     public finish = (): void => {
         invokeFunctionForEach(this.animations, "finish");
-    }
+    };
 
     /**
      * Cancels all animations in the sequence
      */
     public cancel = (): void => {
         invokeFunctionForEach(this.animations, "cancel");
-    }
+    };
 
     /**
      * Sequences a set of animations and calls the specified method
      */
-    private applySequencedCallback(animations: Array<AnimateTo | AnimateFrom>, method: string): void {
+    private applySequencedCallback(
+        animations: Array<AnimateTo | AnimateFrom>,
+        method: string
+    ): void {
         const animationCount: number = animations.length;
 
         if (animationCount <= 0) {
@@ -65,7 +68,7 @@ class AnimateSequence {
                 animation.onFinish = this.animations[index + 1][method];
             } else {
                 // Else attach onFinish or nullify any existing onFinish on the animation
-                animation.onFinish = this.onFinish || void(0);
+                animation.onFinish = this.onFinish || void 0;
             }
         });
 

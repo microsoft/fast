@@ -2,7 +2,9 @@ import * as React from "react";
 import { Framework } from "./dev-tools";
 import { FormChildOption } from "./";
 import { get, isEmpty, isObject, set, uniqueId } from "lodash-es";
-import SyntaxHighlighter, { registerLanguage } from "react-syntax-highlighter/prism-light";
+import SyntaxHighlighter, {
+    registerLanguage
+} from "react-syntax-highlighter/prism-light";
 import jsx from "react-syntax-highlighter/languages/prism/jsx";
 import vs from "./dev-tools-code-preview-style";
 
@@ -33,7 +35,6 @@ export interface ReactComponentConfig {
 }
 
 export default class CodePreview extends React.Component<CodePreviewProps, {}> {
-
     private variables: string;
 
     public render(): JSX.Element {
@@ -50,7 +51,12 @@ export default class CodePreview extends React.Component<CodePreviewProps, {}> {
 
         switch (this.props.framework) {
             case Framework.react:
-                codePreview = this.generateReactCodePreview(this.props.componentName, this.props.data, "", "");
+                codePreview = this.generateReactCodePreview(
+                    this.props.componentName,
+                    this.props.data,
+                    "",
+                    ""
+                );
                 break;
         }
 
@@ -60,14 +66,23 @@ export default class CodePreview extends React.Component<CodePreviewProps, {}> {
     /**
      * Generates the react code preview as a string
      */
-    private generateReactCodePreview(componentName: string, componentData: any, tab: string, location: string): string {
+    private generateReactCodePreview(
+        componentName: string,
+        componentData: any,
+        tab: string,
+        location: string
+    ): string {
         let renderedComponent: string = "";
         const currentTab: string = `${tab === "" ? "" : "\n"}${tab}`;
         const newTab: string = `    ${tab}`;
         const hasChildren: boolean = componentData && componentData.children;
 
         renderedComponent += `${currentTab}<${componentName}`;
-        renderedComponent += this.generateReactAttributes(componentData, newTab, location);
+        renderedComponent += this.generateReactAttributes(
+            componentData,
+            newTab,
+            location
+        );
         renderedComponent += this.generateReactComponent({
             hasChildren,
             componentName,
@@ -95,21 +110,46 @@ export default class CodePreview extends React.Component<CodePreviewProps, {}> {
         }
 
         return isObject(componentConfig.componentData)
-            ? `${this.hasOnlyChildrenOrNoProps(Object.keys(componentConfig.componentData), componentConfig.componentData)
-                    ? " "
-                    : componentConfig.tab}/>`
+            ? `${
+                  this.hasOnlyChildrenOrNoProps(
+                      Object.keys(componentConfig.componentData),
+                      componentConfig.componentData
+                  )
+                      ? " "
+                      : componentConfig.tab
+              }/>`
             : ` />`;
     }
 
     /**
      * Generates the string if the component contains children
      */
-    private generateReactChildren(componentName: string, componentData: any, tab: string, newTab: string, location: string): string {
-        let renderedComponentWithChild: string = `${Object.keys(componentData).length < 2 ? "" : tab}>`;
-        const componentChildren: any[] = Array.isArray(componentData.children) ? componentData.children : [componentData.children];
+    private generateReactChildren(
+        componentName: string,
+        componentData: any,
+        tab: string,
+        newTab: string,
+        location: string
+    ): string {
+        let renderedComponentWithChild: string = `${
+            Object.keys(componentData).length < 2 ? "" : tab
+        }>`;
+        const componentChildren: any[] = Array.isArray(componentData.children)
+            ? componentData.children
+            : [componentData.children];
 
-        for (let i: number = 0, childrenLength: number = componentChildren.length; i < childrenLength; i++) {
-            renderedComponentWithChild += this.getReactChildAsComponentOrString(componentChildren, i, componentName, location, newTab);
+        for (
+            let i: number = 0, childrenLength: number = componentChildren.length;
+            i < childrenLength;
+            i++
+        ) {
+            renderedComponentWithChild += this.getReactChildAsComponentOrString(
+                componentChildren,
+                i,
+                componentName,
+                location,
+                newTab
+            );
         }
 
         renderedComponentWithChild += `\n${tab}</${componentName}>`;
@@ -130,7 +170,9 @@ export default class CodePreview extends React.Component<CodePreviewProps, {}> {
                 componentChildren[index].props,
                 newTab,
                 location === ""
-                    ? componentName.charAt(0).toLowerCase() + componentName.slice(1) + index
+                    ? componentName.charAt(0).toLowerCase() +
+                      componentName.slice(1) +
+                      index
                     : location + componentName + index
             );
         } else if (typeof componentChildren[index] === "string") {
@@ -151,12 +193,15 @@ export default class CodePreview extends React.Component<CodePreviewProps, {}> {
             const propertyKeys: string[] = Object.keys(data);
 
             for (const property of propertyKeys) {
-                attributes += this.getReactAttributesFromProperties(property, data, tab, location);
+                attributes += this.getReactAttributesFromProperties(
+                    property,
+                    data,
+                    tab,
+                    location
+                );
             }
 
-            attributes += this.hasOnlyChildrenOrNoProps(propertyKeys, data)
-                ? ``
-                : `\n`;
+            attributes += this.hasOnlyChildrenOrNoProps(propertyKeys, data) ? `` : `\n`;
         }
 
         return attributes;
@@ -166,7 +211,12 @@ export default class CodePreview extends React.Component<CodePreviewProps, {}> {
         return (propertyKeys.length === 1 && data.children) || propertyKeys.length === 0;
     }
 
-    private getReactAttributesFromProperties(property: string, data: any, tab: string, location: string): string {
+    private getReactAttributesFromProperties(
+        property: string,
+        data: any,
+        tab: string,
+        location: string
+    ): string {
         if (property !== "children") {
             if (isObject(data[property])) {
                 return this.getReactAttributeObject(location, property, data, tab);
@@ -183,16 +233,30 @@ export default class CodePreview extends React.Component<CodePreviewProps, {}> {
     /**
      * Gets the attributes as a string
      */
-    private getReactAttributeObject(location: string, property: string, data: any, tab: string): string {
-        const propertyName: string = location === ""
-            ? property
-            : location + property.charAt(0).toUpperCase() + property.slice(1);
+    private getReactAttributeObject(
+        location: string,
+        property: string,
+        data: any,
+        tab: string
+    ): string {
+        const propertyName: string =
+            location === ""
+                ? property
+                : location + property.charAt(0).toUpperCase() + property.slice(1);
         const childrenLocations: string[] = this.findChildren(data[property], "", []);
-        const propertyChildren: ReactChildren[] = this.getReactChildrenFromProperties(data, property, propertyName, childrenLocations);
+        const propertyChildren: ReactChildren[] = this.getReactChildrenFromProperties(
+            data,
+            property,
+            propertyName,
+            childrenLocations
+        );
         const attributes: string = `\n${tab}${property}={${propertyName}}`;
 
         this.variables += `const ${propertyName} = `;
-        this.variables += `${this.replaceReactPropertyChildren(data[property], propertyChildren)};\n\n`;
+        this.variables += `${this.replaceReactPropertyChildren(
+            data[property],
+            propertyChildren
+        )};\n\n`;
         this.setReactChildrenVariables(childrenLocations, propertyChildren, propertyName);
 
         return attributes;
@@ -223,10 +287,18 @@ export default class CodePreview extends React.Component<CodePreviewProps, {}> {
     /**
      * Sets the private variables to children objects
      */
-    private setReactChildrenVariables(childrenLocations: string[], propertyChildren: ReactChildren[], propertyName: string): void {
+    private setReactChildrenVariables(
+        childrenLocations: string[],
+        propertyChildren: ReactChildren[],
+        propertyName: string
+    ): void {
         if (childrenLocations.length > 0) {
             for (let i: number = childrenLocations.length - 1; i >= 0; i--) {
-                let stringDataWithReactComponentNames: string = JSON.stringify(propertyChildren[i].data.props, null, 2);
+                let stringDataWithReactComponentNames: string = JSON.stringify(
+                    propertyChildren[i].data.props,
+                    null,
+                    2
+                );
 
                 stringDataWithReactComponentNames = this.replaceReactChildrenVariableIdsWithComponent(
                     childrenLocations,
@@ -234,7 +306,9 @@ export default class CodePreview extends React.Component<CodePreviewProps, {}> {
                     stringDataWithReactComponentNames
                 );
 
-                this.variables += `const ${propertyName}${propertyChildren[i].location.replace(/children|props|\./g, "")} = `;
+                this.variables += `const ${propertyName}${propertyChildren[
+                    i
+                ].location.replace(/children|props|\./g, "")} = `;
                 this.variables += `${stringDataWithReactComponentNames};\n\n`;
             }
         }
@@ -265,15 +339,22 @@ export default class CodePreview extends React.Component<CodePreviewProps, {}> {
         const propertyDataWithIds: any = propertyData;
 
         for (const child of children) {
-            const componentName: string = this.getComponentName(get(propertyData, child.location).children);
-            child.component = `<${componentName} {...${child.propertyName}${child.location.replace(/children|props|\./g, "")}} />`;
+            const componentName: string = this.getComponentName(
+                get(propertyData, child.location).children
+            );
+            child.component = `<${componentName} {...${
+                child.propertyName
+            }${child.location.replace(/children|props|\./g, "")}} />`;
             set(propertyDataWithIds, `${child.location}.children`, child.id);
         }
 
         JSONStringWithReactChildComponents = JSON.stringify(propertyDataWithIds, null, 2);
 
         for (const child of children) {
-            JSONStringWithReactChildComponents = JSONStringWithReactChildComponents.replace(`"${child.id}"`, child.component);
+            JSONStringWithReactChildComponents = JSONStringWithReactChildComponents.replace(
+                `"${child.id}"`,
+                child.component
+            );
         }
 
         return JSONStringWithReactChildComponents;
@@ -285,11 +366,13 @@ export default class CodePreview extends React.Component<CodePreviewProps, {}> {
     private getComponentName(component: any): string {
         let name: string = "Undefined";
 
-        this.props.childOptions.forEach((item: any): void => {
-            if (item.component === component.type) {
-                name = item.name;
+        this.props.childOptions.forEach(
+            (item: any): void => {
+                if (item.component === component.type) {
+                    name = item.name;
+                }
             }
-        });
+        );
 
         return name;
     }
@@ -297,7 +380,11 @@ export default class CodePreview extends React.Component<CodePreviewProps, {}> {
     /**
      * Find children in data
      */
-    private findChildren(data: any, location: string, childLocations: string[]): string[] {
+    private findChildren(
+        data: any,
+        location: string,
+        childLocations: string[]
+    ): string[] {
         const locations: string[] = childLocations;
 
         if (Array.isArray(data)) {
@@ -312,16 +399,28 @@ export default class CodePreview extends React.Component<CodePreviewProps, {}> {
     /**
      * Find children in an array
      */
-    private findChildrenFromArray(data: any, location: string, childLocations: string[]): string[] {
+    private findChildrenFromArray(
+        data: any,
+        location: string,
+        childLocations: string[]
+    ): string[] {
         for (let i: number = 0, dataLength: number = data.length; i < dataLength; i++) {
-            return this.findChildren(data[i], `${location === "" ? "" : `${location}.`}${i}`, childLocations);
+            return this.findChildren(
+                data[i],
+                `${location === "" ? "" : `${location}.`}${i}`,
+                childLocations
+            );
         }
     }
 
     /**
      * Find children in an object
      */
-    private findChildrenFromObject(data: any, location: string, childLocations: string[]): string[] {
+    private findChildrenFromObject(
+        data: any,
+        location: string,
+        childLocations: string[]
+    ): string[] {
         const locations: string[] = [];
 
         Object.keys(data).forEach((item: string) => {
@@ -330,7 +429,13 @@ export default class CodePreview extends React.Component<CodePreviewProps, {}> {
             }
 
             if (typeof data[item] === "object") {
-                locations.concat(this.findChildren(data[item], `${location === "" ? "" : `${location}.`}${item}`, childLocations));
+                locations.concat(
+                    this.findChildren(
+                        data[item],
+                        `${location === "" ? "" : `${location}.`}${item}`,
+                        childLocations
+                    )
+                );
             }
         });
 

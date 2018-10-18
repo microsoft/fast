@@ -21,7 +21,8 @@ import { Subtract } from "utility-types";
 const Image = manageJss(ImageStyles)(BaseImage);
 type Image = typeof Image;
 
-interface ImageHandledProps extends Subtract<BaseImageHandledProps, ImageManagedClasses> {}
+interface ImageHandledProps
+    extends Subtract<BaseImageHandledProps, ImageManagedClasses> {}
 type ImageProps = ManagedJSSProps<BaseImageProps, ImageClassNameContract, DesignSystem>;
 
 export {

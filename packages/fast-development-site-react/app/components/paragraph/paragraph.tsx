@@ -21,14 +21,13 @@ const ParagraphStyles: ComponentStyles<TestParagraphClassNameContract, DesignSys
 };
 
 /* tslint:disable-next-line */
-class Paragraph extends React.Component<ParagraphProps & ManagedClasses<TestParagraphClassNameContract>, React.HTMLAttributes<HTMLButtonElement>, {}> {
-
+class Paragraph extends React.Component<
+    ParagraphProps & ManagedClasses<TestParagraphClassNameContract>,
+    React.HTMLAttributes<HTMLButtonElement>,
+    {}
+> {
     public render(): JSX.Element {
-        return (
-            <p className={this.props.managedClasses.paragraph}>
-                {this.props.text}
-            </p>
-        );
+        return <p className={this.props.managedClasses.paragraph}>{this.props.text}</p>;
     }
 }
 

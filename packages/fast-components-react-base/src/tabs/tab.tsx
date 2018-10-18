@@ -1,14 +1,18 @@
 import * as React from "react";
 import { get } from "lodash-es";
-import { ManagedClasses, TabClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import {
+    ManagedClasses,
+    TabClassNameContract
+} from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { TabHandledProps, TabManagedClasses, TabProps, TabUnhandledProps } from "./tab.props";
-
-class Tab extends Foundation<
+import {
     TabHandledProps,
-    TabUnhandledProps,
-    {}
-> {
+    TabManagedClasses,
+    TabProps,
+    TabUnhandledProps
+} from "./tab.props";
+
+class Tab extends Foundation<TabHandledProps, TabUnhandledProps, {}> {
     public static defaultProps: Partial<TabProps> = {
         active: false
     };
@@ -42,7 +46,12 @@ class Tab extends Foundation<
      */
     protected generateClassNames(): string {
         return this.props.active
-            ? super.generateClassNames(`${get(this.props, "managedClasses.tab")} ${get(this.props, "managedClasses.tab__active")}`)
+            ? super.generateClassNames(
+                  `${get(this.props, "managedClasses.tab")} ${get(
+                      this.props,
+                      "managedClasses.tab__active"
+                  )}`
+              )
             : super.generateClassNames(get(this.props, "managedClasses.tab"));
     }
 }

@@ -19,8 +19,13 @@ import { Subtract } from "utility-types";
 const Dialog = manageJss(DialogStyles)(BaseDialog);
 type Dialog = typeof Dialog;
 
-interface DialogHandledProps extends Subtract<BaseDialogHandledProps, DialogManagedClasses> {}
-type DialogProps = ManagedJSSProps<BaseDialogProps, DialogClassNameContract, DesignSystem>;
+interface DialogHandledProps
+    extends Subtract<BaseDialogHandledProps, DialogManagedClasses> {}
+type DialogProps = ManagedJSSProps<
+    BaseDialogProps,
+    DialogClassNameContract,
+    DesignSystem
+>;
 
 export {
     Dialog,

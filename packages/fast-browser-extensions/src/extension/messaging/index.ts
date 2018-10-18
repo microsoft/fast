@@ -16,7 +16,7 @@ export interface CreateMessageConfig {
     /**
      * The message data
      */
-    data: {[key: string]: ContextMenuItemConfig[]};
+    data: { [key: string]: ContextMenuItemConfig[] };
 }
 
 /**
@@ -60,7 +60,9 @@ export function onMenuItemClick(callback: (e: Event) => void): void {
 /**
  * Communicates from a client to the browser extension that a new menu system should be created
  */
-export function createContextMenus(data: {[key: string]: ContextMenuItemConfig[]}): void {
+export function createContextMenus(data: {
+    [key: string]: ContextMenuItemConfig[];
+}): void {
     const message: CreateMessageConfig = {
         type: CREATE_MENUS_MESSAGE,
         data

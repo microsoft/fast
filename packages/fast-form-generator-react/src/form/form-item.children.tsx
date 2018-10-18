@@ -93,8 +93,10 @@ export interface FormItemChildrenState {
  * @extends React.Component
  */
 /* tslint:disable-next-line */
-class FormItemChildren extends React.Component<FormItemChildrenProps & ManagedClasses<FormItemChildrenClassNameContract>, FormItemChildrenState> {
-
+class FormItemChildren extends React.Component<
+    FormItemChildrenProps & ManagedClasses<FormItemChildrenClassNameContract>,
+    FormItemChildrenState
+> {
     /**
      * Store a reference to the search input element
      */
@@ -110,7 +112,9 @@ class FormItemChildren extends React.Component<FormItemChildrenProps & ManagedCl
      */
     private optionMenuTriggerRef: React.RefObject<HTMLButtonElement>;
 
-    constructor(props: FormItemChildrenProps & ManagedClasses<FormItemChildrenClassNameContract>) {
+    constructor(
+        props: FormItemChildrenProps & ManagedClasses<FormItemChildrenClassNameContract>
+    ) {
         super(props);
 
         this.optionMenuRef = React.createRef();
@@ -129,7 +133,11 @@ class FormItemChildren extends React.Component<FormItemChildrenProps & ManagedCl
                 {this.renderHeader()}
                 {this.renderExistingChildren()}
                 <div>
-                    <div className={this.props.managedClasses.formItemChildren_inputWrapper}>
+                    <div
+                        className={
+                            this.props.managedClasses.formItemChildren_inputWrapper
+                        }
+                    >
                         <input
                             aria-label="Enter your search"
                             type="search"
@@ -144,7 +152,11 @@ class FormItemChildren extends React.Component<FormItemChildrenProps & ManagedCl
                             <span>Search</span>
                         </button>
                     </div>
-                    <ul className={this.props.managedClasses.formItemChildren_childOptionsMenu}>
+                    <ul
+                        className={
+                            this.props.managedClasses.formItemChildren_childOptionsMenu
+                        }
+                    >
                         {this.renderDefaultChildOptions()}
                         {this.renderChildOptions()}
                     </ul>
@@ -167,31 +179,37 @@ class FormItemChildren extends React.Component<FormItemChildrenProps & ManagedCl
 
     private handleWindowClick = (e: MouseEvent): void => {
         if (
-            e.target instanceof Element
-            && !this.optionMenuRef.current.contains(e.target)
-            && !this.optionMenuTriggerRef.current.contains(e.target)
-            && this.optionMenuTriggerRef.current !== e.target
+            e.target instanceof Element &&
+            !this.optionMenuRef.current.contains(e.target) &&
+            !this.optionMenuTriggerRef.current.contains(e.target) &&
+            this.optionMenuTriggerRef.current !== e.target
         ) {
             this.closeMenu();
         }
-    }
+    };
 
     private toggleMenu = (): void => {
-        this.setState({hideOptionMenu: !this.state.hideOptionMenu});
-    }
+        this.setState({ hideOptionMenu: !this.state.hideOptionMenu });
+    };
 
     private closeMenu = (): void => {
-        this.setState({hideOptionMenu: true});
-    }
+        this.setState({ hideOptionMenu: true });
+    };
 
-    private getReactComponents(currentChildren: ChildComponent[], item: ChildOptionItem): ChildComponent[] {
+    private getReactComponents(
+        currentChildren: ChildComponent[],
+        item: ChildOptionItem
+    ): ChildComponent[] {
         const components: ChildComponent[] = currentChildren;
         components.push(this.getChildComponent(item));
 
         return components;
     }
 
-    private getStringComponents(currentChildren: ChildComponent[], item: string): ChildComponent[] | ChildComponent {
+    private getStringComponents(
+        currentChildren: ChildComponent[],
+        item: string
+    ): ChildComponent[] | ChildComponent {
         const components: ChildComponent[] = currentChildren;
 
         if (components.length > 0) {
@@ -205,8 +223,8 @@ class FormItemChildren extends React.Component<FormItemChildrenProps & ManagedCl
         return Array.isArray(currentChildren)
             ? currentChildren
             : typeof currentChildren !== "undefined" && currentChildren !== null
-            ? [currentChildren]
-            : [];
+                ? [currentChildren]
+                : [];
     }
 
     private getChildComponent(item: ChildOptionItem): ChildComponentConfig {
@@ -230,7 +248,9 @@ class FormItemChildren extends React.Component<FormItemChildrenProps & ManagedCl
      * Click event for adding a component
      */
     private onAddComponent(item: ChildOptionItem): void {
-        const currentChildren: ChildComponent[] = this.getCurrentChildArray(this.props.data);
+        const currentChildren: ChildComponent[] = this.getCurrentChildArray(
+            this.props.data
+        );
 
         if (typeof item === "object") {
             this.props.onChange(
@@ -259,7 +279,10 @@ class FormItemChildren extends React.Component<FormItemChildrenProps & ManagedCl
 
         if (typeof component === "string") {
             childSchema = reactChildrenStringSchema;
-        } else if (typeof component === "object" && typeof (component as ChildComponentConfig).props === "object") {
+        } else if (
+            typeof component === "object" &&
+            typeof (component as ChildComponentConfig).props === "object"
+        ) {
             this.props.childOptions.forEach((childOption: ChildOptionItem) => {
                 if (childOption.schema.id === (component as ChildComponentConfig).id) {
                     childSchema = childOption.schema;
@@ -267,7 +290,11 @@ class FormItemChildren extends React.Component<FormItemChildrenProps & ManagedCl
             });
         }
 
-        this.props.onUpdateActiveSection("", `${this.getDataLocation(component, index)}`, childSchema);
+        this.props.onUpdateActiveSection(
+            "",
+            `${this.getDataLocation(component, index)}`,
+            childSchema
+        );
     }
 
     /**
@@ -287,8 +314,8 @@ class FormItemChildren extends React.Component<FormItemChildrenProps & ManagedCl
      * Click factory for adding a child item
      */
     private clickAddComponentFactory = (
-        component: ChildOptionItem,
-    ): (e: React.MouseEvent<HTMLButtonElement>) => void => {
+        component: ChildOptionItem
+    ): ((e: React.MouseEvent<HTMLButtonElement>) => void) => {
         return (e: React.MouseEvent<HTMLButtonElement>): void => {
             e.preventDefault();
 
@@ -298,7 +325,7 @@ class FormItemChildren extends React.Component<FormItemChildrenProps & ManagedCl
 
             this.onAddComponent(component);
         };
-    }
+    };
 
     /**
      * Click factory for editing a child item
@@ -306,20 +333,20 @@ class FormItemChildren extends React.Component<FormItemChildrenProps & ManagedCl
     private clickEditComponentFactory = (
         component: ChildComponent,
         index?: number
-    ): (e: React.MouseEvent<HTMLAnchorElement>) => void => {
+    ): ((e: React.MouseEvent<HTMLAnchorElement>) => void) => {
         return (e: React.MouseEvent<HTMLAnchorElement>): void => {
             e.preventDefault();
 
             this.onEditComponent(component, index);
         };
-    }
+    };
 
     /**
      * Click factory for removing a child item
      */
     private clickDeleteComponentFactory = (
         index?: number
-    ): (e: React.MouseEvent<HTMLButtonElement>) => void => {
+    ): ((e: React.MouseEvent<HTMLButtonElement>) => void) => {
         return (e: React.MouseEvent<HTMLButtonElement>): void => {
             e.preventDefault();
 
@@ -329,7 +356,7 @@ class FormItemChildren extends React.Component<FormItemChildrenProps & ManagedCl
 
             this.onDeleteComponent(index);
         };
-    }
+    };
 
     /**
      * Gets the items for the component action menu
@@ -338,7 +365,9 @@ class FormItemChildren extends React.Component<FormItemChildrenProps & ManagedCl
         const items: string[] = [];
 
         if (Array.isArray(this.props.data)) {
-            for (let index: number = 0, currentChildrenLength: number = this.props.data.length;
+            for (
+                let index: number = 0,
+                    currentChildrenLength: number = this.props.data.length;
                 index < currentChildrenLength;
                 index++
             ) {
@@ -347,28 +376,39 @@ class FormItemChildren extends React.Component<FormItemChildrenProps & ManagedCl
                 items.push(this.generateChildOptionText(item));
             }
         } else if (
-            (typeof this.props.data === "object" && this.props.data !== null)
-            || typeof this.props.data === "string"
+            (typeof this.props.data === "object" && this.props.data !== null) ||
+            typeof this.props.data === "string"
         ) {
             items.push(this.generateChildOptionText(this.props.data));
         }
 
         // we have nothing to add or delete
         if (items.length === 0) {
-            return [(
+            return [
                 <li
                     key={0}
-                    className={this.props.managedClasses.formItemChildren_optionMenu__listItem}
+                    className={
+                        this.props.managedClasses.formItemChildren_optionMenu__listItem
+                    }
                 >
                     <span>No actions available</span>
-                </li>)
+                </li>
             ];
         }
 
         return items.map((item: any, index: number) => {
             return (
-                <li key={uniqueId()} className={this.props.managedClasses.formItemChildren_optionMenu__listItem}>
-                    <button onClick={this.clickDeleteComponentFactory(Array.isArray(this.props.data) ? index : undefined)}>
+                <li
+                    key={uniqueId()}
+                    className={
+                        this.props.managedClasses.formItemChildren_optionMenu__listItem
+                    }
+                >
+                    <button
+                        onClick={this.clickDeleteComponentFactory(
+                            Array.isArray(this.props.data) ? index : undefined
+                        )}
+                    >
                         {item}
                     </button>
                 </li>
@@ -390,41 +430,52 @@ class FormItemChildren extends React.Component<FormItemChildrenProps & ManagedCl
             schema: reactChildrenStringSchema
         };
 
-        return this.props.defaultChildOptions.map((defaultChildOption: string, index: number) => {
-            switch (defaultChildOption) {
-                case "text":
-                    return (
-                        <button
-                            key={`${defaultChildOption}${index}`}
-                            onClick={this.clickAddComponentFactory(stringOption)}
-                            className={this.props.managedClasses.formItemChildren_childOptionsTextButton}
-                        >
-                            <span>Text</span>
-                        </button>
-                    );
-                default:
-                    return null;
+        return this.props.defaultChildOptions.map(
+            (defaultChildOption: string, index: number) => {
+                switch (defaultChildOption) {
+                    case "text":
+                        return (
+                            <button
+                                key={`${defaultChildOption}${index}`}
+                                onClick={this.clickAddComponentFactory(stringOption)}
+                                className={
+                                    this.props.managedClasses
+                                        .formItemChildren_childOptionsTextButton
+                                }
+                            >
+                                <span>Text</span>
+                            </button>
+                        );
+                    default:
+                        return null;
+                }
             }
-        });
+        );
     }
 
     /**
      * Renders the optional children
      */
     private renderChildOptions(): JSX.Element[] {
-        return this.props.childOptions.filter((option: ChildOptionItem): boolean => {
-            return option.name.toLowerCase().includes(this.state.childrenSearchTerm.toLowerCase());
-        }).map((option: any, index: number): JSX.Element => {
-            return (
-                <li key={uniqueId()}>
-                    <button
-                        onClick={this.clickAddComponentFactory(option)}
-                    >
-                        <span>{option.name}</span>
-                    </button>
-                </li>
+        return this.props.childOptions
+            .filter(
+                (option: ChildOptionItem): boolean => {
+                    return option.name
+                        .toLowerCase()
+                        .includes(this.state.childrenSearchTerm.toLowerCase());
+                }
+            )
+            .map(
+                (option: any, index: number): JSX.Element => {
+                    return (
+                        <li key={uniqueId()}>
+                            <button onClick={this.clickAddComponentFactory(option)}>
+                                <span>{option.name}</span>
+                            </button>
+                        </li>
+                    );
+                }
             );
-        });
     }
 
     private renderChildCaption(instance: any): JSX.Element {
@@ -449,10 +500,13 @@ class FormItemChildren extends React.Component<FormItemChildrenProps & ManagedCl
                 </SortableListItem>
             </div>
         );
-    }
+    };
 
     private generateChildOptionText(item: any): string {
-        const childOption: ChildOptionItem = getChildOptionBySchemaId(item.id, this.props.childOptions);
+        const childOption: ChildOptionItem = getChildOptionBySchemaId(
+            item.id,
+            this.props.childOptions
+        );
 
         if (typeof childOption === "object" && childOption !== null) {
             return childOption.name;
@@ -472,29 +526,34 @@ class FormItemChildren extends React.Component<FormItemChildrenProps & ManagedCl
      */
     private generateChildItems(): JSX.Element | JSX.Element[] {
         const currentChildren: ChildComponent = this.props.data;
-        const currentChildrenArray: ChildComponent[] = Array.isArray(currentChildren) ? currentChildren : [currentChildren];
+        const currentChildrenArray: ChildComponent[] = Array.isArray(currentChildren)
+            ? currentChildren
+            : [currentChildren];
 
         if (currentChildren) {
-            return currentChildrenArray.map((item: ChildComponent, index: number): JSX.Element => {
-                const options: any = {
-                    key: `item-${index}`,
-                    index,
-                    value: typeof item === "object" ? this.generateChildOptionText(item) : item
-                };
+            return currentChildrenArray.map(
+                (item: ChildComponent, index: number): JSX.Element => {
+                    const options: any = {
+                        key: `item-${index}`,
+                        index,
+                        value:
+                            typeof item === "object"
+                                ? this.generateChildOptionText(item)
+                                : item
+                    };
 
-                return React.createElement(
-                    SortableElement(
-                        this.renderChildItem.bind(
-                            this,
-                            item,
-                            currentChildrenArray.length > 1
-                                ? index
-                                : undefined
-                        )
-                    ),
-                    options
-                );
-            });
+                    return React.createElement(
+                        SortableElement(
+                            this.renderChildItem.bind(
+                                this,
+                                item,
+                                currentChildrenArray.length > 1 ? index : undefined
+                            )
+                        ),
+                        options
+                    );
+                }
+            );
         }
 
         return null;
@@ -539,13 +598,23 @@ class FormItemChildren extends React.Component<FormItemChildrenProps & ManagedCl
         const childItems: JSX.Element | JSX.Element[] = this.generateChildItems();
 
         if (childItems) {
-            return React.createElement(SortableContainer((): JSX.Element => {
-                return (
-                    <ul className={this.props.managedClasses.formItemChildren_addedChildren}>
-                        {childItems}
-                    </ul>
-                );
-            }), props);
+            return React.createElement(
+                SortableContainer(
+                    (): JSX.Element => {
+                        return (
+                            <ul
+                                className={
+                                    this.props.managedClasses
+                                        .formItemChildren_addedChildren
+                                }
+                            >
+                                {childItems}
+                            </ul>
+                        );
+                    }
+                ),
+                props
+            );
         }
 
         return <div>Nothing here</div>;
@@ -554,19 +623,22 @@ class FormItemChildren extends React.Component<FormItemChildrenProps & ManagedCl
     /**
      * Callback to call when children sorting has occured
      */
-    private handleSort = ({oldIndex, newIndex}: any): void => {
+    private handleSort = ({ oldIndex, newIndex }: any): void => {
         const childrenData: any = cloneDeep(this.props.data);
 
         if (Boolean(childrenData)) {
-            this.props.onChange(this.props.dataLocation, arrayMove(childrenData, oldIndex, newIndex));
+            this.props.onChange(
+                this.props.dataLocation,
+                arrayMove(childrenData, oldIndex, newIndex)
+            );
         }
-    }
+    };
 
     private handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         this.setState({
             childrenSearchTerm: e.target.value
         });
-    }
+    };
 
     /**
      * Store search input ref
@@ -575,7 +647,7 @@ class FormItemChildren extends React.Component<FormItemChildrenProps & ManagedCl
         if (ref) {
             this.searchRef = ref;
         }
-    }
+    };
 }
 
 export default manageJss(styles)(FormItemChildren);

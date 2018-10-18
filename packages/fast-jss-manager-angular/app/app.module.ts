@@ -5,15 +5,9 @@ import ExampleComponent from "./components/example.component";
 import { DesignSystemModule } from "../src/design-system.module";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    ExampleComponent
-  ],
-  imports: [
-    BrowserModule,
-    DesignSystemModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    declarations: [AppComponent, ExampleComponent],
+    imports: [BrowserModule, DesignSystemModule],
+    providers: [],
+    bootstrap: [AppComponent]
 })
 export class AppModule {}

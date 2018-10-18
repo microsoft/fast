@@ -8,7 +8,9 @@ import { applyAcrylicMaterial } from "../utilities/acrylic";
 import { elevation, ElevationMultiplier } from "../utilities/elevation";
 
 /* tslint:disable-next-line */
-const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = (config: DesignSystem): ComponentStyleSheet<DialogClassNameContract, DesignSystem> => {
+const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = (
+    config: DesignSystem
+): ComponentStyleSheet<DialogClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const backgroundColor: string = designSystem.backgroundColor;
     const foregroundColor: string = designSystem.foregroundColor;
@@ -16,7 +18,7 @@ const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = (config: 
     return {
         dialog: {
             display: "none",
-            "&[aria-hidden=\"false\"]": {
+            '&[aria-hidden="false"]': {
                 display: "block"
             }
         },

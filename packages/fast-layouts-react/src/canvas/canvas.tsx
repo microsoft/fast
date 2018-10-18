@@ -1,7 +1,14 @@
 import * as React from "react";
 import { CanvasHandledProps, CanvasProps, CanvasUnhandledProps } from "./canvas.props";
-import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import Foundation, { FoundationProps, HandledProps } from "@microsoft/fast-components-foundation-react";
+import manageJss, {
+    ComponentStyles,
+    ManagedClasses,
+    ManagedJSSProps
+} from "@microsoft/fast-jss-manager-react";
+import Foundation, {
+    FoundationProps,
+    HandledProps
+} from "@microsoft/fast-components-foundation-react";
 
 export interface CanvasClassNamesContract {
     canvas: string;
@@ -10,18 +17,14 @@ export interface CanvasClassNamesContract {
 export const canvasStyleSheet: ComponentStyles<CanvasClassNamesContract, undefined> = {
     canvas: {
         flex: "1",
-        overflow: "hidden",
+        overflow: "hidden"
     }
 };
 
 /**
  * Grid Canvas - this is the main content area of the grid.
  */
-export class Canvas extends Foundation<
-    CanvasHandledProps,
-    CanvasUnhandledProps,
-    {}
-> {
+export class Canvas extends Foundation<CanvasHandledProps, CanvasUnhandledProps, {}> {
     /**
      * Default props for the Canvas component
      */

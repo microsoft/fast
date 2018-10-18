@@ -1,6 +1,10 @@
 import * as React from "react";
 import { DevSiteDesignSystem } from "../design-system";
-import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, {
+    ComponentStyles,
+    ManagedClasses,
+    ManagedJSSProps
+} from "@microsoft/fast-jss-manager-react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import TocItem from "./toc-item";
 import TocMenu from "./toc-menu";
@@ -26,10 +30,13 @@ const style: ComponentStyles<TocManagedClasses, DevSiteDesignSystem> = {
 };
 
 class Toc extends React.Component<TocProps & ManagedClasses<TocManagedClasses>, {}> {
-
     public render(): JSX.Element {
         return (
-            <ul id={this.props.id} className={this.props.managedClasses.toc} aria-hidden={this.props.ariaHidden}>
+            <ul
+                id={this.props.id}
+                className={this.props.managedClasses.toc}
+                aria-hidden={this.props.ariaHidden}
+            >
                 {this.props.children}
             </ul>
         );

@@ -25,9 +25,7 @@ const examples: SnapshotTestSuite<CSSPositionProps> = {
     component: CSSPosition,
     schema: CSSPositionSchema,
     detailData,
-    data: [
-        exampleData
-    ]
+    data: [exampleData]
 };
 
 describe(name, () => {

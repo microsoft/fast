@@ -42,14 +42,17 @@ export default (examples: Examples, reactComponent: React.ComponentClass<any>): 
     }
 
     for (const example of examples.data) {
-        test(example.title, (): void => {
-            const component: any = renderer.create(
-                React.createElement(reactComponent, example.props, example.children)
-            );
+        test(
+            example.title,
+            (): void => {
+                const component: any = renderer.create(
+                    React.createElement(reactComponent, example.props, example.children)
+                );
 
-            const json: any = component.toJSON();
+                const json: any = component.toJSON();
 
-            expect(json).toMatchSnapshot();
-        });
+                expect(json).toMatchSnapshot();
+            }
+        );
     }
 };

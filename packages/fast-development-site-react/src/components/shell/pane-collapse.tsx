@@ -1,5 +1,9 @@
 import * as React from "react";
-import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, {
+    ComponentStyles,
+    ManagedClasses,
+    ManagedJSSProps
+} from "@microsoft/fast-jss-manager-react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { DevSiteDesignSystem } from "../design-system";
 
@@ -20,11 +24,16 @@ const style: ComponentStyles<ShellPaneCollapseManagedClasses, DevSiteDesignSyste
     }
 };
 
-class ShellPaneCollapse extends React.Component<ShellPaneCollapseProps & ManagedClasses<ShellPaneCollapseManagedClasses>, {}> {
-
+class ShellPaneCollapse extends React.Component<
+    ShellPaneCollapseProps & ManagedClasses<ShellPaneCollapseManagedClasses>,
+    {}
+> {
     public render(): JSX.Element {
         return (
-            <button className={this.props.managedClasses.shellPaneCollapse} onClick={this.handleUpdateCollapse}>
+            <button
+                className={this.props.managedClasses.shellPaneCollapse}
+                onClick={this.handleUpdateCollapse}
+            >
                 {this.props.children}
             </button>
         );
@@ -34,7 +43,7 @@ class ShellPaneCollapse extends React.Component<ShellPaneCollapseProps & Managed
         if (this.props.onUpdate) {
             this.props.onUpdate();
         }
-    }
+    };
 }
 
 export default manageJss(style)(ShellPaneCollapse);

@@ -19,8 +19,13 @@ import { Subtract } from "utility-types";
 const CallToAction = manageJss(CallToActionStyles)(MSFTCallToAction);
 type CallToAction = typeof CallToAction;
 
-interface CallToActionHandledProps extends Subtract<MSFTCallToActionHandledProps, CallToActionManagedClasses> {}
-type CallToActionProps = ManagedJSSProps<MSFTCallToActionProps, CallToActionClassNameContract, DesignSystem>;
+interface CallToActionHandledProps
+    extends Subtract<MSFTCallToActionHandledProps, CallToActionManagedClasses> {}
+type CallToActionProps = ManagedJSSProps<
+    MSFTCallToActionProps,
+    CallToActionClassNameContract,
+    DesignSystem
+>;
 
 export {
     CallToAction,
