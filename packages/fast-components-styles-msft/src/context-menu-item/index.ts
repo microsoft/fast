@@ -1,14 +1,24 @@
-import { DesignSystem } from "../design-system";
+import designSystemDefaults, {
+    DesignSystem,
+    withDesignSystemDefaults,
+} from "../design-system";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { ContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { density } from "../utilities/density";
+import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
+import { ensureForegroundNormal } from "../utilities/colors";
 
 const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = {
     contextMenuItem: {
-        color: (config: DesignSystem): string => {
-            return config.foregroundColor;
-        },
-        backgroundColor: (config: DesignSystem): string => {
-            return config.brandColor;
+        listStyleType: "none",
+        height: density(defaultHeight),
+        display: "flex",
+        alignItems: "center",
+        color: ensureForegroundNormal,
+        padding: "0 12px",
+        background: "red",
+        "&:focus": {
+            background: "blue",
         },
     },
 };
