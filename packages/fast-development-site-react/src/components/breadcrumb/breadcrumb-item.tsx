@@ -5,7 +5,7 @@ import { toPx } from "@microsoft/fast-jss-utilities";
 import manageJss, {
     ComponentStyles,
     ManagedClasses,
-    ManagedJSSProps
+    ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
 
 export interface BreadcrumbItemProps {
@@ -23,14 +23,14 @@ const style: ComponentStyles<BreadcrumbItemManagedClasses, DevSiteDesignSystem> 
         "&::after": {
             content: "'\\002F'",
             padding: `0 0 0 ${toPx(10)}`,
-            color: (config: DevSiteDesignSystem): string => config.foregroundColor
+            color: (config: DevSiteDesignSystem): string => config.foregroundColor,
         },
         "&:last-child": {
             "&::after": {
-                content: "''"
-            }
-        }
-    }
+                content: "''",
+            },
+        },
+    },
 };
 
 class BreadcrumbItem extends React.Component<

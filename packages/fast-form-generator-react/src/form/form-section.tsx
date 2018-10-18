@@ -7,7 +7,7 @@ import {
     FormSectionProps,
     FormSectionState,
     OneOfAnyOf,
-    oneOfAnyOfType
+    oneOfAnyOfType,
 } from "./form-section.props";
 import FormItemCommon, { mappingName } from "./form-item";
 import FormCategory from "./form-category";
@@ -20,7 +20,7 @@ import FormItemArray from "./form-item.array";
 import FormItemMapping from "./form-item.mapping";
 import {
     ChildOptionItem,
-    TextareaAttributeSettingsMappingToPropertyNames
+    TextareaAttributeSettingsMappingToPropertyNames,
 } from "./form.props";
 import {
     checkCategoryConfigPropertyCount,
@@ -46,7 +46,7 @@ import {
     isMapping,
     isSelect,
     OptionalToggle,
-    resolveExampleDataWithCachedData
+    resolveExampleDataWithCachedData,
 } from "./form-section.utilities";
 import styles from "./form-section.style";
 import { FormSectionClassNameContract } from "../class-name-contracts/";
@@ -81,7 +81,7 @@ class FormSection extends React.Component<
             schemaState = this.props.schema[oneOfAnyOf][activeIndex];
             oneOfAnyOfState = {
                 type: oneOfAnyOf,
-                activeIndex
+                activeIndex,
             };
         }
 
@@ -91,7 +91,7 @@ class FormSection extends React.Component<
             sections: getSchemaSubsections(
                 { schema: schemaState, oneOfAnyOf: oneOfAnyOfState },
                 this.props
-            )
+            ),
         };
     }
 
@@ -151,8 +151,8 @@ class FormSection extends React.Component<
                 : [],
             oneOfAnyOf: {
                 type: this.state.oneOfAnyOf.type,
-                activeIndex: event.target.value
-            }
+                activeIndex: event.target.value,
+            },
         });
     };
 
@@ -230,7 +230,7 @@ class FormSection extends React.Component<
             data: getData(location, this.props.data),
             required,
             label: getLabel(label, this.state.schema.title),
-            onChange: this.props.onChange
+            onChange: this.props.onChange,
         };
 
         if (isMapping(location, this.props.componentMappingToPropertyNames)) {
@@ -362,7 +362,7 @@ class FormSection extends React.Component<
     ): FormItemsWithConfigOptions {
         const formItems: FormItemsWithConfigOptions = {
             items: [],
-            parameters: []
+            parameters: [],
         };
 
         Object.keys(property.properties).forEach((item: any, index: number) => {
@@ -375,7 +375,7 @@ class FormSection extends React.Component<
                     index,
                     item,
                     isRequired,
-                    title: property.properties[item].title || this.props.untitled
+                    title: property.properties[item].title || this.props.untitled,
                 };
 
                 formItems.items.push(
@@ -487,7 +487,7 @@ class FormSection extends React.Component<
             onChange: this.props.onChange,
             dataLocation: this.props.dataLocation,
             data: this.props.data,
-            dataCache: this.props.dataCache
+            dataCache: this.props.dataCache,
         });
 
         return optionToggles.map(

@@ -4,7 +4,7 @@ import {
     BreadcrumbItemEventHandler,
     FormProps,
     FormState,
-    LocationOnChange
+    LocationOnChange,
 } from "./form.props";
 import { FormSectionProps } from "./form-section.props";
 import {
@@ -14,7 +14,7 @@ import {
     getDataCache,
     getNavigation,
     isRootLocation,
-    NavigationItem
+    NavigationItem,
 } from "./form.utilities";
 import { cloneDeep, get, set, unset } from "lodash-es";
 import { ChildComponent } from "./form-item.children";
@@ -61,7 +61,7 @@ class Form extends React.Component<
                           this.props.data,
                           this.props.schema,
                           this.props.childOptions
-                      )
+                      ),
         };
     }
 
@@ -143,7 +143,7 @@ class Form extends React.Component<
                 : void 0;
 
         const schemaState: Partial<FormState> = {
-            dataCache: getDataCache(dataCache, props.data)
+            dataCache: getDataCache(dataCache, props.data),
         };
 
         return Object.assign({}, state, schemaState);
@@ -163,7 +163,7 @@ class Form extends React.Component<
             activeSchemaLocation: "",
             activeDataLocation: "",
             dataCache: cloneDeep(props.data),
-            navigation: this.getUpdatedNavigation(props, state)
+            navigation: this.getUpdatedNavigation(props, state),
         };
 
         return Object.assign({}, state, schemaState) as Partial<FormState>;
@@ -183,9 +183,9 @@ class Form extends React.Component<
             location: {
                 dataLocation: props.location.dataLocation,
                 schemaLocation: props.location.schemaLocation,
-                onChange: props.location.onChange
+                onChange: props.location.onChange,
             },
-            navigation: this.getUpdatedNavigation(props, state)
+            navigation: this.getUpdatedNavigation(props, state),
         };
 
         return Object.assign({}, state, locationState);
@@ -279,7 +279,7 @@ class Form extends React.Component<
             componentMappingToPropertyNames: this.props.componentMappingToPropertyNames,
             attributeSettingsMappingToPropertyNames: this.props
                 .attributeSettingsMappingToPropertyNames,
-            orderByPropertyNames: this.props.orderByPropertyNames
+            orderByPropertyNames: this.props.orderByPropertyNames,
         };
 
         return <FormSection {...sectionProps} />;

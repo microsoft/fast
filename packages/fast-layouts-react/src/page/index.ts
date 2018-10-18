@@ -7,7 +7,7 @@ import {
     PageManagedClasses,
     PageProps as BasePageProps,
     pageStyleSheet,
-    PageUnhandledProps
+    PageUnhandledProps,
 } from "./page";
 import { Subtract } from "utility-types";
 

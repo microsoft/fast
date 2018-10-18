@@ -6,11 +6,11 @@ import {
     DialogHandledProps,
     DialogManagedClasses,
     DialogProps,
-    DialogUnhandledProps
+    DialogUnhandledProps,
 } from "./dialog.props";
 import {
     DialogClassNameContract,
-    ManagedClasses
+    ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { canUseDOM } from "exenv-es6";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
@@ -19,7 +19,7 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
     public static defaultProps: Partial<DialogProps> = {
         contentHeight: "480px",
         contentWidth: "640px",
-        visible: false
+        visible: false,
     };
 
     public static displayName: string = "Dialog";
@@ -33,7 +33,7 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
         modal: void 0,
         managedClasses: void 0,
         onDismiss: void 0,
-        visible: void 0
+        visible: void 0,
     };
 
     /**
@@ -53,7 +53,7 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
                     className={get(this.props, "managedClasses.dialog_contentRegion")}
                     style={{
                         height: this.props.contentHeight,
-                        width: this.props.contentWidth
+                        width: this.props.contentWidth,
                     }}
                     aria-describedby={this.props.describedBy}
                     aria-labelledby={this.props.labelledBy}

@@ -47,7 +47,7 @@ export default class ConvertGlyphs {
                 ) {
                     glyphs.push({
                         name: this.normalizeName(fileName),
-                        svg: fs.readFileSync(`${glyphFolderPath}/${fileName}`, "UTF-8")
+                        svg: fs.readFileSync(`${glyphFolderPath}/${fileName}`, "UTF-8"),
                     });
                 }
             }

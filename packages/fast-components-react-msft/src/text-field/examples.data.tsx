@@ -11,33 +11,33 @@ export default {
     documentation: <Documentation />,
     detailData: {
         type: TextFieldType.email,
-        placeholder: "name@email.com"
+        placeholder: "name@email.com",
     },
     data: [
         {
             placeholder: "Placeholder",
-            type: TextFieldType.text
+            type: TextFieldType.text,
         },
         {
             type: TextFieldType.email,
-            defaultValue: "name@email.com"
+            defaultValue: "name@email.com",
         },
         {
             type: TextFieldType.number,
-            defaultValue: "12345"
+            defaultValue: "12345",
         },
         {
             type: TextFieldType.tel,
-            defaultValue: "(201) 867-5309"
+            defaultValue: "(201) 867-5309",
         },
         {
             disabled: true,
             type: TextFieldType.text,
-            defaultValue: "Disabled"
+            defaultValue: "Disabled",
         },
         {
             placeholder: "Enter Password",
-            type: TextFieldType.password
-        }
-    ]
+            type: TextFieldType.password,
+        },
+    ],
 } as ComponentFactoryExample<TextFieldProps>;

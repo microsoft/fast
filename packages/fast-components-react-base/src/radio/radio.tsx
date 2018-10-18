@@ -5,11 +5,11 @@ import {
     RadioHandledProps,
     RadioManagedClasses,
     RadioProps,
-    RadioUnhandledProps
+    RadioUnhandledProps,
 } from "./radio.props";
 import {
     ManagedClasses,
-    RadioClassNameContract
+    RadioClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
 
@@ -17,7 +17,7 @@ import { get } from "lodash-es";
  * Radio slot options
  */
 export enum RadioSlot {
-    label = "label"
+    label = "label",
 }
 
 class Radio extends Foundation<RadioHandledProps, RadioUnhandledProps, {}> {
@@ -32,7 +32,7 @@ class Radio extends Foundation<RadioHandledProps, RadioUnhandledProps, {}> {
         disabled: void 0,
         managedClasses: void 0,
         onChange: void 0,
-        children: void 0
+        children: void 0,
     };
 
     public render(): React.ReactElement<HTMLElement> {

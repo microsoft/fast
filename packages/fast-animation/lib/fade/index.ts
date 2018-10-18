@@ -7,7 +7,7 @@ import { AnimateConfig } from "../animate";
  */
 export const fadeInKeyframes: Array<Partial<Keyframe>> = [
     { opacity: "0.01" }, // Start at 0.01 due to a bug animating from 0
-    { opacity: "1" }
+    { opacity: "1" },
 ];
 
 /**
@@ -15,7 +15,7 @@ export const fadeInKeyframes: Array<Partial<Keyframe>> = [
  */
 export const fadeOutKeyframes: Array<Partial<Keyframe>> = [
     { opacity: "1" },
-    { opacity: "0" }
+    { opacity: "0" },
 ];
 
 /**
@@ -23,7 +23,7 @@ export const fadeOutKeyframes: Array<Partial<Keyframe>> = [
  */
 export const fadeEffectTiming: EffectTiming = {
     easing: "linear",
-    duration: 500
+    duration: 500,
 };
 
 /**

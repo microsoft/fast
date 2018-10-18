@@ -77,7 +77,7 @@ export interface FormItemChildrenProps {
 export enum Action {
     add = "add",
     edit = "edit",
-    delete = "delete"
+    delete = "delete",
 }
 
 /**
@@ -122,7 +122,7 @@ class FormItemChildren extends React.Component<
 
         this.state = {
             childrenSearchTerm: "",
-            hideOptionMenu: true
+            hideOptionMenu: true,
         };
     }
 
@@ -230,7 +230,7 @@ class FormItemChildren extends React.Component<
     private getChildComponent(item: ChildOptionItem): ChildComponentConfig {
         return {
             id: item.schema.id,
-            props: generateExampleData(item.schema, "")
+            props: generateExampleData(item.schema, ""),
         };
     }
 
@@ -392,7 +392,7 @@ class FormItemChildren extends React.Component<
                     }
                 >
                     <span>No actions available</span>
-                </li>
+                </li>,
             ];
         }
 
@@ -427,7 +427,7 @@ class FormItemChildren extends React.Component<
         const stringOption: ChildOptionItem = {
             name: "Text",
             component: null,
-            schema: reactChildrenStringSchema
+            schema: reactChildrenStringSchema,
         };
 
         return this.props.defaultChildOptions.map(
@@ -539,7 +539,7 @@ class FormItemChildren extends React.Component<
                         value:
                             typeof item === "object"
                                 ? this.generateChildOptionText(item)
-                                : item
+                                : item,
                     };
 
                     return React.createElement(
@@ -592,7 +592,7 @@ class FormItemChildren extends React.Component<
      */
     private renderExistingChildren(): JSX.Element {
         const props: any = Object.assign({}, sortingProps, {
-            onSortEnd: this.handleSort
+            onSortEnd: this.handleSort,
         });
 
         const childItems: JSX.Element | JSX.Element[] = this.generateChildItems();
@@ -636,7 +636,7 @@ class FormItemChildren extends React.Component<
 
     private handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         this.setState({
-            childrenSearchTerm: e.target.value
+            childrenSearchTerm: e.target.value,
         });
     };
 

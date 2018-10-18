@@ -5,14 +5,14 @@ import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import {
     generateSnapshots,
-    SnapshotTestSuite
+    SnapshotTestSuite,
 } from "@microsoft/fast-jest-snapshots-react";
 import Hypertext, {
     HypertextClassNameContract,
     HypertextHandledProps,
     HypertextManagedClasses,
     HypertextProps,
-    HypertextUnhandledProps
+    HypertextUnhandledProps,
 } from "./hypertext";
 
 /*
@@ -26,7 +26,7 @@ describe("hypertext snapshot", (): void => {
 
 describe("hypertext", (): void => {
     const managedClasses: HypertextClassNameContract = {
-        hypertext: "hypertext-class"
+        hypertext: "hypertext-class",
     };
 
     test("should have a displayName that matches the component name", () => {
@@ -41,11 +41,11 @@ describe("hypertext", (): void => {
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: HypertextHandledProps & HypertextManagedClasses = {
-            managedClasses
+            managedClasses,
         };
 
         const unhandledProps: HypertextUnhandledProps = {
-            "aria-hidden": true
+            "aria-hidden": true,
         };
 
         const props: HypertextProps = { ...handledProps, ...unhandledProps };
@@ -59,7 +59,7 @@ describe("hypertext", (): void => {
     test("should correctly handle children", () => {
         const handledProps: HypertextHandledProps & HypertextManagedClasses = {
             managedClasses,
-            href: "http://www.microsoft.com"
+            href: "http://www.microsoft.com",
         };
         const rendered: any = shallow(
             <Hypertext managedClasses={managedClasses}>Children</Hypertext>

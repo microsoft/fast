@@ -7,18 +7,18 @@ import {
     ProgressHandledProps,
     ProgressManagedClasses,
     ProgressProps,
-    ProgressUnhandledProps
+    ProgressUnhandledProps,
 } from "./progress.props";
 import {
     ManagedClasses,
-    ProgressClassNameContract
+    ProgressClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 import { Progress as BaseProgress } from "@microsoft/fast-components-react-base";
 
 class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, {}> {
     public static defaultProps: Partial<ProgressProps> = {
         minValue: 0,
-        maxValue: 100
+        maxValue: 100,
     };
 
     public static displayName: string = "Progress";
@@ -30,7 +30,7 @@ class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, 
         value: void 0,
         minValue: void 0,
         maxValue: void 0,
-        managedClasses: void 0
+        managedClasses: void 0,
     };
 
     /**
@@ -71,7 +71,7 @@ class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, 
     private progressIndicatorClasses(): string {
         return [
             get(this.props, "managedClasses.progress_indicator"),
-            get(this.props, "managedClasses.progress_indicator__determinate")
+            get(this.props, "managedClasses.progress_indicator__determinate"),
         ].join(" ");
     }
 

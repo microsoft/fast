@@ -4,7 +4,7 @@ import manageJss, {
     CSSRules,
     DesignSystemProvider,
     ManagedClasses,
-    ManagedJSSProps
+    ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
 import { ErrorBoundary, ErrorBoundaryProps } from "../../utilities";
 import { toPx } from "@microsoft/fast-jss-utilities";
@@ -40,15 +40,15 @@ const styles: ComponentStyles<ComponentWrapperManagedClasses, DevSiteDesignSyste
     componentWrapper: {
         display: "block",
         padding: toPx(24),
-        borderBottom: componentWrapperBorder
+        borderBottom: componentWrapperBorder,
     },
     componentWrapper__transparent: {
-        background: checker
+        background: checker,
     },
     componentWrapperExamples: {
         "&:nth-child(3n + 1), &:nth-child(3n + 2)": {
-            borderRight: componentWrapperBorder
-        }
+            borderRight: componentWrapperBorder,
+        },
     },
     componentWrapper__active: {
         position: "relative",
@@ -64,9 +64,9 @@ const styles: ComponentStyles<ComponentWrapperManagedClasses, DevSiteDesignSyste
             opacity: ".5",
             borderRight: (config: DevSiteDesignSystem): string => {
                 return `${toPx(10)} solid ${config.brandColor}`;
-            }
-        }
-    }
+            },
+        },
+    },
 };
 
 /* tslint:disable-next-line */

@@ -7,7 +7,7 @@ import {
     ColumnManagedClasses,
     ColumnProps as BaseColumnProps,
     columnStyleSheet,
-    ColumnUnhandledProps
+    ColumnUnhandledProps,
 } from "./column";
 import { Subtract } from "utility-types";
 
@@ -24,5 +24,5 @@ export {
     ColumnProps,
     ColumnHandledProps,
     ColumnUnhandledProps,
-    ColumnClassNamesContract
+    ColumnClassNamesContract,
 };

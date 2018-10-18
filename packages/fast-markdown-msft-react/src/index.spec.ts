@@ -5,7 +5,7 @@ const md: any = new MarkdownIt({
     html: true,
     linkify: true,
     typographer: true,
-    xhtmlOut: true
+    xhtmlOut: true,
 });
 
 md.use(FASTMarkdownIt);

@@ -4,14 +4,14 @@ import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
 import {
     generateSnapshots,
-    SnapshotTestSuite
+    SnapshotTestSuite,
 } from "@microsoft/fast-jest-snapshots-react";
 import MSFTParagraph, {
     ParagraphHandledProps,
     ParagraphManagedClasses,
     ParagraphProps,
     ParagraphSize,
-    ParagraphUnhandledProps
+    ParagraphUnhandledProps,
 } from "./paragraph";
 import { Paragraph } from "./index";
 
@@ -38,16 +38,16 @@ describe("paragraph", (): void => {
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: ParagraphHandledProps = {
-            size: ParagraphSize._1
+            size: ParagraphSize._1,
         };
 
         const unhandledProps: ParagraphUnhandledProps = {
-            "aria-hidden": true
+            "aria-hidden": true,
         };
 
         const props: ParagraphHandledProps & ParagraphUnhandledProps = {
             ...handledProps,
-            ...unhandledProps
+            ...unhandledProps,
         };
 
         const rendered: any = mount(<Paragraph {...props} />);

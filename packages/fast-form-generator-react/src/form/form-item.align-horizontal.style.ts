@@ -3,7 +3,7 @@ import {
     applyInputContainerStyle,
     applyLabelStyle,
     applyWrapperStyle,
-    colors
+    colors,
 } from "../utilities/form-input.style";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormItemAlignHorizontalClassNameContract } from "../class-name-contracts/";
@@ -25,38 +25,38 @@ const rightLight: string =
 
 const styles: ComponentStyles<FormItemAlignHorizontalClassNameContract, {}> = {
     formItemAlignHorizontal: {
-        ...applyWrapperStyle()
+        ...applyWrapperStyle(),
     },
     formItemAlignHorizontal_label: {
-        ...applyLabelStyle()
+        ...applyLabelStyle(),
     },
     formItemAlignHorizontal_inputContainer: {
-        ...applyInputContainerStyle()
+        ...applyInputContainerStyle(),
     },
     formItemAlignHorizontal_input__left: {
         ...applyInputBackplateStyle(),
         background: leftDark,
         "&:checked": {
             background: leftLight,
-            backgroundColor: colors.pink
-        }
+            backgroundColor: colors.pink,
+        },
     },
     formItemAlignHorizontal_input__center: {
         ...applyInputBackplateStyle(),
         background: centerDark,
         "&:checked": {
             background: centerLight,
-            backgroundColor: colors.pink
-        }
+            backgroundColor: colors.pink,
+        },
     },
     formItemAlignHorizontal_input__right: {
         ...applyInputBackplateStyle(),
         background: rightDark,
         "&:checked": {
             background: rightLight,
-            backgroundColor: colors.pink
-        }
-    }
+            backgroundColor: colors.pink,
+        },
+    },
 };
 
 export default styles;

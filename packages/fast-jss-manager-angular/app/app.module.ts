@@ -8,6 +8,6 @@ import { DesignSystemModule } from "../src/design-system.module";
     declarations: [AppComponent, ExampleComponent],
     imports: [BrowserModule, DesignSystemModule],
     providers: [],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
 })
 export class AppModule {}

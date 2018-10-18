@@ -7,7 +7,7 @@ import { menuItemClickEvent } from "./config";
 chrome.runtime.onMessage.addListener(
     (menuItem: ContextMenuItemConfig, sender: any, sendResponse: any) => {
         const e: CustomEvent = new CustomEvent(menuItemClickEvent, {
-            detail: menuItem
+            detail: menuItem,
         });
         window.dispatchEvent(e);
     }

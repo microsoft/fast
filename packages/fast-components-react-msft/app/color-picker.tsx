@@ -1,7 +1,7 @@
 import * as React from "react";
 import manageJss, {
     ComponentStyles,
-    ManagedClasses
+    ManagedClasses,
 } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 
@@ -24,11 +24,11 @@ const styles: ComponentStyles<ColorPickerManagedClasses, DesignSystem> = {
     colorPicker: {
         display: "flex",
         height: "100%",
-        alignItems: "center"
+        alignItems: "center",
     },
     colorPicker_label: {
-        margin: "0 12px"
-    }
+        margin: "0 12px",
+    },
 };
 
 class ColorPicker extends React.Component<

@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
     ManagedClasses,
-    TabsClassNameContract
+    TabsClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { Orientation } from "@microsoft/fast-web-utilities";
 

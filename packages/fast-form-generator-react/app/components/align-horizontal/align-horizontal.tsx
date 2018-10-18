@@ -2,7 +2,7 @@ import * as React from "react";
 
 export enum AlignHorizontalPositions {
     left = "left",
-    right = "right"
+    right = "right",
 }
 
 export interface AlignHorizontalProps {

@@ -10,14 +10,14 @@ import {
     colors,
     localizePadding,
     minus,
-    plus
+    plus,
 } from "../utilities/form-input.style";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormItemArrayClassNameContract } from "../class-name-contracts/";
 
 const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
     "@global": {
-        ...applyGlobalStyle()
+        ...applyGlobalStyle(),
     },
     formItemArray: {
         ...applyPopupHeadingStyles(),
@@ -29,9 +29,9 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
             border: "none",
             padding: `${toPx(4)}`,
             "&:focus": {
-                outline: "none"
-            }
-        }
+                outline: "none",
+            },
+        },
     },
     formItemArray_actionMenu: {
         ...applyCleanListStyle(),
@@ -50,30 +50,30 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
                 pointerEvents: "none",
                 width: toPx(16),
                 height: toPx(16),
-                left: toPx(10)
+                left: toPx(10),
             },
             "&:hover": {
-                backgroundColor: colors.grayBackground
-            }
-        }
+                backgroundColor: colors.grayBackground,
+            },
+        },
     },
     formItemArray_actionMenuItem__add: {
         "&::before": {
-            background: plus
-        }
+            background: plus,
+        },
     },
     formItemArray_actionMenuItem__remove: {
         "&::before": {
-            background: minus
-        }
+            background: minus,
+        },
     },
     formItemArray_header: {
-        ...applyHeaderStyle()
+        ...applyHeaderStyle(),
     },
     formItemArray_linkMenu: {
         ...applyCleanListStyle(),
-        ...applyListItemStyle()
-    }
+        ...applyListItemStyle(),
+    },
 };
 
 export default styles;

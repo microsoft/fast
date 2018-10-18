@@ -4,7 +4,7 @@ import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-syst
 import manageJss, {
     ComponentStyles,
     ManagedClasses,
-    ManagedJSSProps
+    ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import Toc from "./";
@@ -42,18 +42,18 @@ const style: ComponentStyles<TocMenuManagedClasses, DevSiteDesignSystem> = {
         textAlign: "left",
         "&[aria-expanded='true']": {
             "&::after": {
-                content: `url('data:image/svg+xml;base64,${dropdownActive}')`
-            }
+                content: `url('data:image/svg+xml;base64,${dropdownActive}')`,
+            },
         },
         "&:hover": {
             cursor: "pointer",
-            backgroundColor: "rgba(0, 0, 0, 0.04)"
+            backgroundColor: "rgba(0, 0, 0, 0.04)",
         },
         "&:focus": {
             border: (config: DevSiteDesignSystem): string => {
                 return `${toPx(1)} solid ${config.brandColor ||
                     devSiteDesignSystemDefaults.brandColor}`;
-            }
+            },
         },
         "&::after": {
             content: `url('data:image/svg+xml;base64,${dropdownInactive}')`,
@@ -64,9 +64,9 @@ const style: ComponentStyles<TocMenuManagedClasses, DevSiteDesignSystem> = {
             verticalAlign: "middle",
             display: "inline-block",
             width: toPx(11),
-            height: toPx(11)
-        }
-    }
+            height: toPx(11),
+        },
+    },
 };
 
 class TocMenu extends React.Component<
@@ -77,7 +77,7 @@ class TocMenu extends React.Component<
         super(props);
 
         this.state = {
-            active: this.props.active
+            active: this.props.active,
         };
     }
 
@@ -101,7 +101,7 @@ class TocMenu extends React.Component<
 
     private handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
         this.setState({
-            active: !this.state.active
+            active: !this.state.active,
         });
     };
 }

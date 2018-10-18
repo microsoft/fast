@@ -12,7 +12,7 @@ export enum GridTag {
     section = "section",
     form = "form",
     article = "article",
-    main = "main"
+    main = "main",
 }
 
 /**
@@ -22,7 +22,7 @@ export enum GridAlignment {
     start = "start",
     center = "center",
     end = "end",
-    stretch = "stretch"
+    stretch = "stretch",
 }
 
 /**

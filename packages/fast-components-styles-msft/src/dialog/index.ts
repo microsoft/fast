@@ -19,8 +19,8 @@ const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = (
         dialog: {
             display: "none",
             '&[aria-hidden="false"]': {
-                display: "block"
-            }
+                display: "block",
+            },
         },
         dialog_modalOverlay: {
             position: "fixed",
@@ -28,7 +28,7 @@ const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = (
             left: "0",
             right: "0",
             bottom: "0",
-            ...applyAcrylicMaterial(backgroundColor, 0.6, 0.9, true)
+            ...applyAcrylicMaterial(backgroundColor, 0.6, 0.9, true),
         },
         dialog_contentRegion: {
             position: "fixed",
@@ -36,8 +36,8 @@ const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = (
             top: "50%",
             transform: "translate(-50%, -50%)",
             background: backgroundColor,
-            ...elevation(ElevationMultiplier.e14, foregroundColor)(designSystem)
-        }
+            ...elevation(ElevationMultiplier.e14, foregroundColor)(designSystem),
+        },
     };
 };
 

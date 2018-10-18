@@ -60,7 +60,7 @@ describe("getPropertiesToAnimate", () => {
     test('should return an array with both "transform" and "opacity" when opacity and x are set', () => {
         const properties: string[] = new AnimateMock(fakeElement, {
             x: 20,
-            opacity: 0
+            opacity: 0,
         })["getPropertiesToAnimate"]();
 
         expect(properties.includes("opacity")).toBe(true);
@@ -70,7 +70,7 @@ describe("getPropertiesToAnimate", () => {
     test('should return an array with both "transform" and "opacity" when opacity and y are set', () => {
         const properties: string[] = new AnimateMock(fakeElement, {
             y: 20,
-            opacity: 0
+            opacity: 0,
         })["getPropertiesToAnimate"]();
 
         expect(properties.includes("opacity")).toBe(true);
@@ -80,7 +80,7 @@ describe("getPropertiesToAnimate", () => {
     test('should return an array with both "transform" and "opacity" when opacity and rotate are set', () => {
         const properties: string[] = new AnimateMock(fakeElement, {
             rotate: 20,
-            opacity: 0
+            opacity: 0,
         })["getPropertiesToAnimate"]();
 
         expect(properties.includes("opacity")).toBe(true);
@@ -90,7 +90,7 @@ describe("getPropertiesToAnimate", () => {
     test('should return an array with both "transform" and "opacity" when opacity and scale are set', () => {
         const properties: string[] = new AnimateMock(fakeElement, {
             scale: 20,
-            opacity: 0
+            opacity: 0,
         })["getPropertiesToAnimate"]();
 
         expect(properties.includes("opacity")).toBe(true);
@@ -102,7 +102,7 @@ describe("getPropertiesToAnimate", () => {
             scale: 20,
             rotate: 20,
             x: 20,
-            y: 20
+            y: 20,
         })["getPropertiesToAnimate"]();
 
         expect(properties).toEqual(["transform"]);
@@ -147,7 +147,7 @@ describe("getOptionKeyframeValues", () => {
         expect(
             new AnimateMock(fakeElement, { opacity: 0 })["getOptionKeyframeValues"]()
         ).toEqual({
-            opacity: "0"
+            opacity: "0",
         });
     });
 
@@ -155,7 +155,7 @@ describe("getOptionKeyframeValues", () => {
         expect(
             new AnimateMock(fakeElement, { x: 20 })["getOptionKeyframeValues"]()
         ).toEqual({
-            transform: "translateX(20px)"
+            transform: "translateX(20px)",
         });
     });
 
@@ -163,7 +163,7 @@ describe("getOptionKeyframeValues", () => {
         expect(
             new AnimateMock(fakeElement, { y: 20 })["getOptionKeyframeValues"]()
         ).toEqual({
-            transform: "translateY(20px)"
+            transform: "translateY(20px)",
         });
     });
 
@@ -171,7 +171,7 @@ describe("getOptionKeyframeValues", () => {
         expect(
             new AnimateMock(fakeElement, { x: "20%" })["getOptionKeyframeValues"]()
         ).toEqual({
-            transform: "translateX(20%)"
+            transform: "translateX(20%)",
         });
     });
 
@@ -179,7 +179,7 @@ describe("getOptionKeyframeValues", () => {
         expect(
             new AnimateMock(fakeElement, { y: "20%" })["getOptionKeyframeValues"]()
         ).toEqual({
-            transform: "translateY(20%)"
+            transform: "translateY(20%)",
         });
     });
 
@@ -187,7 +187,7 @@ describe("getOptionKeyframeValues", () => {
         expect(
             new AnimateMock(fakeElement, { scale: 20 })["getOptionKeyframeValues"]()
         ).toEqual({
-            transform: "scale(20)"
+            transform: "scale(20)",
         });
     });
 
@@ -195,7 +195,7 @@ describe("getOptionKeyframeValues", () => {
         expect(
             new AnimateMock(fakeElement, { scale: [20, 10] })["getOptionKeyframeValues"]()
         ).toEqual({
-            transform: "scale(20,10)"
+            transform: "scale(20,10)",
         });
     });
 
@@ -203,7 +203,7 @@ describe("getOptionKeyframeValues", () => {
         expect(
             new AnimateMock(fakeElement, { rotate: 20 })["getOptionKeyframeValues"]()
         ).toEqual({
-            transform: "rotate(20deg)"
+            transform: "rotate(20deg)",
         });
     });
 });
@@ -216,14 +216,14 @@ describe("getOptionKeyframes", () => {
     test("should correctly return keyframes with the x option", () => {
         expect(new AnimateMock(fakeElement, { x: 20 })["getOptionKeyframes"]()).toEqual([
             { transform: "" },
-            { transform: "translateX(20px)" }
+            { transform: "translateX(20px)" },
         ]);
     });
 
     test("should correctly return keyframes with the y option", () => {
         expect(new AnimateMock(fakeElement, { y: 20 })["getOptionKeyframes"]()).toEqual([
             { transform: "" },
-            { transform: "translateY(20px)" }
+            { transform: "translateY(20px)" },
         ]);
     });
 
@@ -256,7 +256,7 @@ describe("getOptionKeyframes", () => {
             new AnimateMock(fakeElement, { opacity: 1, scale: 2 })["getOptionKeyframes"]()
         ).toEqual([
             { opacity: "", transform: "" },
-            { opacity: "1", transform: "scale(2)" }
+            { opacity: "1", transform: "scale(2)" },
         ]);
     });
 
@@ -289,20 +289,20 @@ describe("consolidateKeyframes", () => {
         {
             offset: 1,
             opacity: "0",
-            transform: "translateX(20px) translateY(20px) rotate(20deg) scale(20)"
-        }
+            transform: "translateX(20px) translateY(20px) rotate(20deg) scale(20)",
+        },
     ];
     const sourceOne: AnimateConfig = {
         scale: 20,
         opacity: 0,
         rotate: 20,
         x: 20,
-        y: 20
+        y: 20,
     };
     const customKeyframes: Array<Partial<Keyframe>> = [
         { opacity: "0" },
         { opacity: "0.75", offset: 0.75 },
-        { opacity: "1" }
+        { opacity: "1" },
     ];
     test("should correctly consolidate and sort keyframes created by options", () => {
         expect(new AnimateMock(fakeElement, sourceOne).keyframes).toEqual(expectedOne);
@@ -315,7 +315,7 @@ describe("consolidateKeyframes", () => {
         expect(mock.keyframes).toEqual([
             { opacity: "0", offset: 0 },
             { opacity: "0.75", offset: 0.75 },
-            { opacity: "1", offset: 1 }
+            { opacity: "1", offset: 1 },
         ]);
     });
 
@@ -326,7 +326,7 @@ describe("consolidateKeyframes", () => {
         expect(mock.keyframes).toEqual([
             { offset: 0, opacity: "0", transform: "" },
             { offset: 0.75, opacity: "0.75" },
-            { offset: 1, opacity: "1", transform: "scale(20)" }
+            { offset: 1, opacity: "1", transform: "scale(20)" },
         ]);
     });
 });

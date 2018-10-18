@@ -13,7 +13,7 @@ import {
     mapDataToComponent,
     mapSchemaLocationFromDataLocation,
     NavigationItem,
-    orderChildrenByDataLocation
+    orderChildrenByDataLocation,
 } from "./form.utilities";
 import { BreadcrumbItemEventHandler, ChildOptionItem } from "./form.props";
 
@@ -153,21 +153,21 @@ describe("getNavigation", () => {
         {
             name: childrenSchema.id,
             component: Children,
-            schema: childrenSchema
+            schema: childrenSchema,
         },
         {
             name: textFieldSchema.id,
             component: TextField,
-            schema: textFieldSchema
+            schema: textFieldSchema,
         },
-        { name: oneOfSchema.id, component: OneOf, schema: oneOfSchema }
+        { name: oneOfSchema.id, component: OneOf, schema: oneOfSchema },
     ];
 
     test("should return a single navigation item when the location is at the root", () => {
         const navigation: NavigationItem[] = getNavigation(
             "",
             {
-                alignHorizontal: "left"
+                alignHorizontal: "left",
             },
             alignHorizontalSchema,
             childOptions
@@ -177,7 +177,7 @@ describe("getNavigation", () => {
         expect(navigation[0].dataLocation).toBe("");
         expect(navigation[0].schema).toEqual(alignHorizontalSchema);
         expect(navigation[0].data).toEqual({
-            alignHorizontal: "left"
+            alignHorizontal: "left",
         });
     });
     test("should return navigation items for a nested property", () => {
@@ -186,9 +186,9 @@ describe("getNavigation", () => {
             {
                 optionalObjectWithNestedObject: {
                     nestedObject: {
-                        boolean: true
-                    }
-                }
+                        boolean: true,
+                    },
+                },
             },
             objectsSchema,
             childOptions
@@ -200,9 +200,9 @@ describe("getNavigation", () => {
         expect(navigation[0].data).toEqual({
             optionalObjectWithNestedObject: {
                 nestedObject: {
-                    boolean: true
-                }
-            }
+                    boolean: true,
+                },
+            },
         });
         expect(navigation[1].dataLocation).toBe("optionalObjectWithNestedObject");
         expect(navigation[1].schema).toEqual(
@@ -210,8 +210,8 @@ describe("getNavigation", () => {
         );
         expect(navigation[1].data).toEqual({
             nestedObject: {
-                boolean: true
-            }
+                boolean: true,
+            },
         });
         expect(navigation[2].dataLocation).toBe(
             "optionalObjectWithNestedObject.nestedObject"
@@ -221,7 +221,7 @@ describe("getNavigation", () => {
                 .nestedObject
         );
         expect(navigation[2].data).toEqual({
-            boolean: true
+            boolean: true,
         });
     });
     test("should return navigation items for an array", () => {
@@ -229,7 +229,7 @@ describe("getNavigation", () => {
             "objects.1",
             {
                 objects: [{ string: "foo" }, { string: "bar" }],
-                strings: ["foo", "bar"]
+                strings: ["foo", "bar"],
             },
             arraysSchema,
             childOptions
@@ -238,7 +238,7 @@ describe("getNavigation", () => {
             "strings.1",
             {
                 objects: [{ string: "foo" }, { string: "bar" }],
-                strings: ["foo", "bar"]
+                strings: ["foo", "bar"],
             },
             arraysSchema,
             childOptions
@@ -249,7 +249,7 @@ describe("getNavigation", () => {
         expect(objectNavigation[0].schema).toEqual(arraysSchema);
         expect(objectNavigation[0].data).toEqual({
             objects: [{ string: "foo" }, { string: "bar" }],
-            strings: ["foo", "bar"]
+            strings: ["foo", "bar"],
         });
         expect(objectNavigation[1].dataLocation).toBe("objects[1]");
         expect(objectNavigation[1].schema).toEqual(arraysSchema.properties.objects.items);
@@ -260,7 +260,7 @@ describe("getNavigation", () => {
         expect(stringNavigation[0].schema).toEqual(arraysSchema);
         expect(stringNavigation[0].data).toEqual({
             objects: [{ string: "foo" }, { string: "bar" }],
-            strings: ["foo", "bar"]
+            strings: ["foo", "bar"],
         });
         expect(stringNavigation[1].dataLocation).toBe("strings[1]");
         expect(stringNavigation[1].schema).toEqual(arraysSchema.properties.strings.items);
@@ -299,8 +299,8 @@ describe("getNavigation", () => {
             {
                 children: {
                     id: textFieldSchema.id,
-                    props: {}
-                }
+                    props: {},
+                },
             },
             childrenSchema,
             childOptions
@@ -310,7 +310,7 @@ describe("getNavigation", () => {
         expect(navigation[0].dataLocation).toBe("");
         expect(navigation[0].schema).toEqual(childrenSchema);
         expect(navigation[0].data).toEqual({
-            children: { id: textFieldSchema.id, props: {} }
+            children: { id: textFieldSchema.id, props: {} },
         });
         expect(navigation[1].dataLocation).toBe("children.props");
         expect(navigation[1].schema).toEqual(textFieldSchema);
@@ -325,10 +325,10 @@ describe("getNavigation", () => {
                     props: {
                         children: {
                             id: textFieldSchema.id,
-                            props: {}
-                        }
-                    }
-                }
+                            props: {},
+                        },
+                    },
+                },
             },
             childrenSchema,
             childOptions
@@ -343,18 +343,18 @@ describe("getNavigation", () => {
                 props: {
                     children: {
                         id: textFieldSchema.id,
-                        props: {}
-                    }
-                }
-            }
+                        props: {},
+                    },
+                },
+            },
         });
         expect(navigation[1].dataLocation).toBe("children.props");
         expect(navigation[1].schema).toEqual(childrenSchema);
         expect(navigation[1].data).toEqual({
             children: {
                 id: textFieldSchema.id,
-                props: {}
-            }
+                props: {},
+            },
         });
         expect(navigation[2].dataLocation).toBe("children.props.children.props");
         expect(navigation[2].schema).toEqual(textFieldSchema);
@@ -370,11 +370,11 @@ describe("getNavigation", () => {
                         props: {
                             children: {
                                 id: textFieldSchema.id,
-                                props: {}
-                            }
-                        }
-                    }
-                ]
+                                props: {},
+                            },
+                        },
+                    },
+                ],
             },
             childrenSchema,
             childOptions
@@ -390,19 +390,19 @@ describe("getNavigation", () => {
                     props: {
                         children: {
                             id: textFieldSchema.id,
-                            props: {}
-                        }
-                    }
-                }
-            ]
+                            props: {},
+                        },
+                    },
+                },
+            ],
         });
         expect(navigation[1].dataLocation).toBe("children[0].props");
         expect(navigation[1].schema).toEqual(childrenSchema);
         expect(navigation[1].data).toEqual({
             children: {
                 id: textFieldSchema.id,
-                props: {}
-            }
+                props: {},
+            },
         });
         expect(navigation[2].dataLocation).toBe("children[0].props.children.props");
         expect(navigation[2].schema).toEqual(textFieldSchema);
@@ -418,11 +418,11 @@ describe("getNavigation", () => {
                         props: {
                             children: {
                                 id: textFieldSchema.id,
-                                props: {}
-                            }
-                        }
-                    }
-                ]
+                                props: {},
+                            },
+                        },
+                    },
+                ],
             },
             childrenSchema,
             childOptions
@@ -438,11 +438,11 @@ describe("getNavigation", () => {
                     props: {
                         children: {
                             id: textFieldSchema.id,
-                            props: {}
-                        }
-                    }
-                }
-            ]
+                            props: {},
+                        },
+                    },
+                },
+            ],
         });
         expect(navigation[1].dataLocation).toBe(
             "restrictedChildrenWithReactDefaults[0].props"
@@ -451,8 +451,8 @@ describe("getNavigation", () => {
         expect(navigation[1].data).toEqual({
             children: {
                 id: textFieldSchema.id,
-                props: {}
-            }
+                props: {},
+            },
         });
         expect(navigation[2].dataLocation).toBe(
             "restrictedChildrenWithReactDefaults[0].props.children.props"
@@ -464,7 +464,7 @@ describe("getNavigation", () => {
         const navigation: NavigationItem[] = getNavigation(
             "children",
             {
-                children: "example text"
+                children: "example text",
             },
             childrenSchema,
             childOptions
@@ -474,7 +474,7 @@ describe("getNavigation", () => {
         expect(navigation[0].dataLocation).toBe("");
         expect(navigation[0].schema).toEqual(childrenSchema);
         expect(navigation[0].data).toEqual({
-            children: "example text"
+            children: "example text",
         });
         expect(navigation[1].dataLocation).toBe("children");
         expect(navigation[1].schema).toEqual(reactChildrenStringSchema);
@@ -490,11 +490,11 @@ describe("getNavigation", () => {
                         objectContainingNestedChildren: {
                             nestedObjectChildren: {
                                 id: childrenSchema.id,
-                                props: {}
-                            }
-                        }
-                    }
-                }
+                                props: {},
+                            },
+                        },
+                    },
+                },
             },
             childrenSchema,
             childOptions
@@ -510,11 +510,11 @@ describe("getNavigation", () => {
                     objectContainingNestedChildren: {
                         nestedObjectChildren: {
                             id: childrenSchema.id,
-                            props: {}
-                        }
-                    }
-                }
-            }
+                            props: {},
+                        },
+                    },
+                },
+            },
         });
         expect(navigation[1].dataLocation).toBe("children.props");
         expect(navigation[1].schema).toEqual(childrenSchema);
@@ -522,9 +522,9 @@ describe("getNavigation", () => {
             objectContainingNestedChildren: {
                 nestedObjectChildren: {
                     id: childrenSchema.id,
-                    props: {}
-                }
-            }
+                    props: {},
+                },
+            },
         });
         expect(navigation[2].dataLocation).toBe(
             "children.props.objectContainingNestedChildren"
@@ -535,8 +535,8 @@ describe("getNavigation", () => {
         expect(navigation[2].data).toEqual({
             nestedObjectChildren: {
                 id: childrenSchema.id,
-                props: {}
-            }
+                props: {},
+            },
         });
         expect(navigation[3].dataLocation).toBe(
             "children.props.objectContainingNestedChildren.nestedObjectChildren.props"
@@ -551,9 +551,9 @@ describe("getNavigation", () => {
                 children: {
                     id: oneOfSchema.id,
                     props: {
-                        string: "Foo"
-                    }
-                }
+                        string: "Foo",
+                    },
+                },
             },
             childrenSchema,
             childOptions
@@ -566,14 +566,14 @@ describe("getNavigation", () => {
             children: {
                 id: oneOfSchema.id,
                 props: {
-                    string: "Foo"
-                }
-            }
+                    string: "Foo",
+                },
+            },
         });
         expect(navigation[1].dataLocation).toBe("children.props");
         expect(navigation[1].schema).toEqual(oneOfSchema);
         expect(navigation[1].data).toEqual({
-            string: "Foo"
+            string: "Foo",
         });
     });
 });
@@ -595,21 +595,21 @@ describe("getBreadcrumbs", () => {
         {
             name: childrenSchema.id,
             component: Children,
-            schema: childrenSchema
+            schema: childrenSchema,
         },
         {
             name: textFieldSchema.id,
             component: TextField,
-            schema: textFieldSchema
+            schema: textFieldSchema,
         },
-        { name: generalSchema.id, component: General, schema: generalSchema }
+        { name: generalSchema.id, component: General, schema: generalSchema },
     ];
 
     test("should return a single breadcrumb item", () => {
         const navigation: NavigationItem[] = getNavigation(
             "",
             {
-                alignHorizontal: "left"
+                alignHorizontal: "left",
             },
             alignHorizontalSchema,
             childOptions
@@ -629,9 +629,9 @@ describe("getBreadcrumbs", () => {
             {
                 optionalObjectWithNestedObject: {
                     nestedObject: {
-                        boolean: true
-                    }
-                }
+                        boolean: true,
+                    },
+                },
             },
             objectsSchema,
             childOptions
@@ -710,7 +710,7 @@ describe("orderChildrenByDataLocation", () => {
             "foo.bar",
             "foo.bar.bat",
             "hello.world",
-            "hello"
+            "hello",
         ];
 
         testStrings.sort(orderChildrenByDataLocation);
@@ -730,7 +730,7 @@ describe("getLocationsFromObject", () => {
         const data: any = {
             a: "foo",
             b: "bar",
-            c: "bat"
+            c: "bat",
         };
 
         const locations: string[] = getLocationsFromObject(data);
@@ -743,14 +743,14 @@ describe("getLocationsFromObject", () => {
     test("should get all locations from a deep object", () => {
         const data: any = {
             a: {
-                nestedA: "foo"
+                nestedA: "foo",
             },
             b: {
-                nestedB: "bar"
+                nestedB: "bar",
             },
             c: {
-                nestedC: "bat"
-            }
+                nestedC: "bat",
+            },
         };
 
         const locations: string[] = getLocationsFromObject(data);
@@ -766,10 +766,10 @@ describe("getLocationsFromObject", () => {
         const data: any = {
             a: [
                 {
-                    nestedA: "foo"
+                    nestedA: "foo",
                 },
-                "bar"
-            ]
+                "bar",
+            ],
         };
 
         const locations: string[] = getLocationsFromObject(data);
@@ -787,17 +787,17 @@ describe("getReactChildrenLocationsFromSchema", () => {
             type: "object",
             properties: {
                 a: {
-                    type: "string"
-                }
+                    type: "string",
+                },
             },
             reactProperties: {
                 b: {
-                    type: "children"
+                    type: "children",
                 },
                 c: {
-                    type: "children"
-                }
-            }
+                    type: "children",
+                },
+            },
         };
         const locations: string[] = getLocationsFromObject(schema);
         const reactChildrenLocations: string[] = getReactChildrenLocationsFromSchema(
@@ -815,14 +815,14 @@ describe("getSchemaByDataLocation", () => {
     test("should return the schema given from data requiring no children", () => {
         const data: any = {
             tag: "span",
-            text: "test"
+            text: "test",
         };
         const schema: any = getSchemaByDataLocation(textFieldSchema, data, "", [
             {
                 name: "text-field",
                 component: TextField,
-                schema: textFieldSchema
-            }
+                schema: textFieldSchema,
+            },
         ]);
 
         expect(schema.id).toBe(textFieldSchema.id);
@@ -835,18 +835,18 @@ describe("getSchemaByDataLocation", () => {
                     children: [
                         {
                             id: childrenSchema.id,
-                            props: {}
+                            props: {},
                         },
                         {
                             id: textFieldSchema.id,
                             props: {
                                 tag: "span",
-                                text: "test"
-                            }
-                        }
-                    ]
-                }
-            }
+                                text: "test",
+                            },
+                        },
+                    ],
+                },
+            },
         };
         const schema1: any = getSchemaByDataLocation(
             childrenSchema,
@@ -856,8 +856,8 @@ describe("getSchemaByDataLocation", () => {
                 {
                     name: "text-field",
                     component: TextField,
-                    schema: textFieldSchema
-                }
+                    schema: textFieldSchema,
+                },
             ]
         );
         expect(schema1.id).toBe(childrenSchema.id);
@@ -870,8 +870,8 @@ describe("getSchemaByDataLocation", () => {
                 {
                     name: "text-field",
                     component: TextField,
-                    schema: textFieldSchema
-                }
+                    schema: textFieldSchema,
+                },
             ]
         );
         expect(schema2.id).toBe(textFieldSchema.id);
@@ -883,22 +883,22 @@ describe("getDataLocationsOfChildren", () => {
         {
             name: childrenSchema.id,
             component: Children,
-            schema: childrenSchema
+            schema: childrenSchema,
         },
         {
             name: textFieldSchema.id,
             component: TextField,
-            schema: textFieldSchema
+            schema: textFieldSchema,
         },
-        { name: generalSchema.id, component: General, schema: generalSchema }
+        { name: generalSchema.id, component: General, schema: generalSchema },
     ];
 
     test("should return the data location of a single react child", () => {
         const data: any = {
             children: {
                 id: childrenSchema.id,
-                props: {}
-            }
+                props: {},
+            },
         };
 
         const dataLocationsOfReactChildren: string[] = getDataLocationsOfChildren(
@@ -920,12 +920,12 @@ describe("getDataLocationsOfChildren", () => {
                         props: {
                             children: {
                                 id: textFieldSchema.id,
-                                props: {}
-                            }
-                        }
-                    }
-                }
-            }
+                                props: {},
+                            },
+                        },
+                    },
+                },
+            },
         };
 
         const dataLocationsOfReactChildren: string[] = getDataLocationsOfChildren(
@@ -952,17 +952,17 @@ describe("getDataLocationsOfChildren", () => {
                             props: {
                                 children: {
                                     id: childrenSchema.id,
-                                    props: {}
-                                }
-                            }
-                        }
-                    }
+                                    props: {},
+                                },
+                            },
+                        },
+                    },
                 },
                 {
                     id: childrenSchema.id,
-                    props: {}
-                }
-            ]
+                    props: {},
+                },
+            ],
         };
 
         const dataLocationsOfReactChildren: string[] = getDataLocationsOfChildren(
@@ -990,17 +990,17 @@ describe("getDataLocationsOfChildren", () => {
                             children: [
                                 {
                                     id: childrenSchema.id,
-                                    props: {}
+                                    props: {},
                                 },
                                 {
                                     id: childrenSchema.id,
-                                    props: {}
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
+                                    props: {},
+                                },
+                            ],
+                        },
+                    },
+                },
+            },
         };
 
         const dataLocationsOfReactChildren: string[] = getDataLocationsOfChildren(
@@ -1031,18 +1031,18 @@ describe("getDataLocationsOfChildren", () => {
                                 children: [
                                     {
                                         id: childrenSchema.id,
-                                        props: {}
+                                        props: {},
                                     },
                                     {
                                         id: childrenSchema.id,
-                                        props: {}
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                }
-            ]
+                                        props: {},
+                                    },
+                                ],
+                            },
+                        },
+                    },
+                },
+            ],
         };
 
         const dataLocationsOfReactChildren: string[] = getDataLocationsOfChildren(
@@ -1071,10 +1071,10 @@ describe("getSchemaLocationSegmentsFromDataLocationSegments", () => {
                 props: {
                     children: {
                         id: textFieldSchema.id,
-                        props: {}
-                    }
-                }
-            }
+                        props: {},
+                    },
+                },
+            },
         };
 
         const schemaLocationSegments: string[] = getSchemaLocationSegmentsFromDataLocationSegments(
@@ -1095,15 +1095,15 @@ describe("getSchemaLocationSegmentsFromDataLocationSegments", () => {
                     props: {
                         children: {
                             id: textFieldSchema.id,
-                            props: {}
-                        }
-                    }
+                            props: {},
+                        },
+                    },
                 },
                 {
                     id: textFieldSchema.id,
-                    props: {}
-                }
-            ]
+                    props: {},
+                },
+            ],
         };
 
         const schemaLocationSegments: string[] = getSchemaLocationSegmentsFromDataLocationSegments(
@@ -1121,7 +1121,7 @@ describe("getSchemaLocationSegmentsFromDataLocationSegments", () => {
 describe("mapDataToComponent", () => {
     const childOptions: ChildOptionItem[] = [
         { name: "children", component: Children, schema: childrenSchema },
-        { name: "textField", component: TextField, schema: textFieldSchema }
+        { name: "textField", component: TextField, schema: textFieldSchema },
     ];
 
     test("should map data to a child", () => {
@@ -1129,11 +1129,11 @@ describe("mapDataToComponent", () => {
         const data: any = {
             children: {
                 id: childrenSchema.id,
-                props: {}
-            }
+                props: {},
+            },
         };
         const dataWithChildString: any = {
-            children: textString
+            children: textString,
         };
 
         const mappedData: any = mapDataToComponent(childrenSchema, data, childOptions);
@@ -1153,10 +1153,10 @@ describe("mapDataToComponent", () => {
             children: [
                 {
                     id: childrenSchema.id,
-                    props: {}
+                    props: {},
                 },
-                "Hello pluto"
-            ]
+                "Hello pluto",
+            ],
         };
 
         const mappedData: any = mapDataToComponent(childrenSchema, data, childOptions);
@@ -1174,15 +1174,15 @@ describe("mapDataToComponent", () => {
                     props: {
                         children: {
                             id: textFieldSchema.id,
-                            props: {}
-                        }
-                    }
+                            props: {},
+                        },
+                    },
                 },
                 {
                     id: textFieldSchema.id,
-                    props: {}
-                }
-            ]
+                    props: {},
+                },
+            ],
         };
 
         const mappedData: any = mapDataToComponent(childrenSchema, data, childOptions);

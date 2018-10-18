@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
     ManagedClasses,
-    TypographyClassNameContract
+    TypographyClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 
 export enum TypographyTag {
@@ -14,7 +14,7 @@ export enum TypographyTag {
     h6 = "h6",
     p = "p",
     span = "span",
-    figcaption = "figcaption"
+    figcaption = "figcaption",
 }
 
 export enum TypographySize {
@@ -26,7 +26,7 @@ export enum TypographySize {
     _6 = 6,
     _7 = 7,
     _8 = 8,
-    _9 = 9
+    _9 = 9,
 }
 
 export interface TypographyUnhandledProps

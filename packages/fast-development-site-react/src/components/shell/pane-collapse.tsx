@@ -2,7 +2,7 @@ import * as React from "react";
 import manageJss, {
     ComponentStyles,
     ManagedClasses,
-    ManagedJSSProps
+    ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { DevSiteDesignSystem } from "../design-system";
@@ -20,8 +20,8 @@ const style: ComponentStyles<ShellPaneCollapseManagedClasses, DevSiteDesignSyste
     shellPaneCollapse: {
         background: "blue",
         height: toPx(48),
-        width: toPx(48)
-    }
+        width: toPx(48),
+    },
 };
 
 class ShellPaneCollapse extends React.Component<

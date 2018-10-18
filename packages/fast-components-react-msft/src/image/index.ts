@@ -7,7 +7,7 @@ import {
     ImageManagedClasses,
     ImageProps as BaseImageProps,
     ImageSlot,
-    ImageUnhandledProps
+    ImageUnhandledProps,
 } from "@microsoft/fast-components-react-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, ImageStyles } from "@microsoft/fast-components-styles-msft";
@@ -31,5 +31,5 @@ export {
     ImageUnhandledProps,
     Image,
     ImageProps,
-    ImageSlot
+    ImageSlot,
 };

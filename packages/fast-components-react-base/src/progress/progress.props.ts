@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
     ManagedClasses,
-    ProgressClassNameContract
+    ProgressClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 
 export interface ProgressManagedClasses

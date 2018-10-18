@@ -20,6 +20,6 @@ export function applyScreenReader(): ScreenReaderOnly {
         height: "1px",
         border: "0",
         padding: "0",
-        margin: "0"
+        margin: "0",
     };
 }

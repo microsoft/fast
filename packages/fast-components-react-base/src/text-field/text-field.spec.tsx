@@ -5,7 +5,7 @@ import { configure, render, shallow } from "enzyme";
 import examples from "./examples.data";
 import {
     generateSnapshots,
-    SnapshotTestSuite
+    SnapshotTestSuite,
 } from "@microsoft/fast-jest-snapshots-react";
 import TextField, {
     TextFieldClassNameContract,
@@ -13,11 +13,11 @@ import TextField, {
     TextFieldManagedClasses,
     TextFieldProps,
     TextFieldType,
-    TextFieldUnhandledProps
+    TextFieldUnhandledProps,
 } from "./text-field";
 
 const managedClasses: TextFieldClassNameContract = {
-    textField: "text-field-class"
+    textField: "text-field-class",
 };
 
 /*
@@ -43,11 +43,11 @@ describe("text-field", (): void => {
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: TextFieldHandledProps = {
             managedClasses,
-            type: TextFieldType.email
+            type: TextFieldType.email,
         };
 
         const unhandledProps: TextFieldUnhandledProps = {
-            "aria-hidden": true
+            "aria-hidden": true,
         };
         const props: TextFieldProps = { ...handledProps, ...unhandledProps };
         const rendered: any = shallow(<TextField {...props} />);

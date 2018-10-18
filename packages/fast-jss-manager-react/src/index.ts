@@ -3,7 +3,7 @@ import { manageJss } from "./manage-jss";
 export default manageJss;
 export {
     DesignSystemProvider,
-    DesignSystemProviderProps
+    DesignSystemProviderProps,
 } from "./design-system-provider";
 export { stylesheetRegistry, jss } from "./jss";
 export { ManagedJSSProps } from "./jss-manager";

@@ -7,7 +7,7 @@ import { noop } from "lodash-es";
 import {
     TabClassNameContract,
     TabPanelClassNameContract,
-    TabsClassNameContract
+    TabsClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import Tabs, {
     Tab,
@@ -17,13 +17,13 @@ import Tabs, {
     TabsManagedClasses,
     TabsProps,
     TabsSlot,
-    TabsUnhandledProps
+    TabsUnhandledProps,
 } from "./index";
 
 export enum CustomTabsSlot {
     tab = "customTab",
     tabItem = "customTabItem",
-    tabPanel = "customTabPanel"
+    tabPanel = "customTabPanel",
 }
 
 /*
@@ -34,17 +34,17 @@ configure({ adapter: new Adapter() });
 describe("tabs", (): void => {
     const tabsManagedClasses: TabsClassNameContract = {
         tabs: "tabs-class",
-        tabs_tabList: "tab_list-class"
+        tabs_tabList: "tab_list-class",
     };
 
     const tabPanelManagedClasses: TabPanelClassNameContract = {
         tabPanel: "tab_panel-class",
-        tabPanel__hidden: "tab_panel__hidden-class"
+        tabPanel__hidden: "tab_panel__hidden-class",
     };
 
     const tabManagedClasses: TabClassNameContract = {
         tab: "tab-class",
-        tab__active: "tab__active-class"
+        tab__active: "tab__active-class",
     };
 
     const id0: string = "tab01";
@@ -75,7 +75,7 @@ describe("tabs", (): void => {
             <TabPanel slot={TabsSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
                 tab 3 content
             </TabPanel>
-        </TabItem>
+        </TabItem>,
     ];
     const childrenMissingIds: JSX.Element[] = [
         <TabItem key={1} slot={TabsSlot.tabItem} id={null}>
@@ -93,7 +93,7 @@ describe("tabs", (): void => {
             <TabPanel slot={TabsSlot.tabPanel} managedClasses={tabPanelManagedClasses}>
                 tab 2 content
             </TabPanel>
-        </TabItem>
+        </TabItem>,
     ];
     const childrenWithCustomSlots: JSX.Element[] = [
         <TabItem key={1} slot={CustomTabsSlot.tabItem} id={id0}>
@@ -128,7 +128,7 @@ describe("tabs", (): void => {
             >
                 tab 3 content
             </TabPanel>
-        </TabItem>
+        </TabItem>,
     ];
 
     test("should have a displayName that matches the component name", () => {
@@ -247,10 +247,10 @@ describe("tabs", (): void => {
         const handledProps: TabsHandledProps & TabsManagedClasses = {
             managedClasses: tabsManagedClasses,
             children,
-            label: "items"
+            label: "items",
         };
         const unhandledProps: TabsUnhandledProps = {
-            "aria-hidden": true
+            "aria-hidden": true,
         };
         const props: TabsProps = { ...handledProps, ...unhandledProps };
 
@@ -350,7 +350,7 @@ describe("tabs", (): void => {
         ).toBe(false);
 
         tab2.simulate("click", {
-            currentTarget: { getAttribute: (): string => id1 }
+            currentTarget: { getAttribute: (): string => id1 },
         });
 
         expect(onUpdate).toBeCalledWith(id1);
@@ -710,7 +710,7 @@ describe("tabs", (): void => {
             .find("Tab")
             .at(0)
             .simulate("click", {
-                currentTarget: { getAttribute: (): string => id1 }
+                currentTarget: { getAttribute: (): string => id1 },
             });
     });
 
@@ -1077,7 +1077,7 @@ describe("tabs", (): void => {
         ).toBe(false);
 
         tab2.simulate("click", {
-            currentTarget: { getAttribute: (): string => id1 }
+            currentTarget: { getAttribute: (): string => id1 },
         });
 
         expect(

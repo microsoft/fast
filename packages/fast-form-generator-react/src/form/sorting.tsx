@@ -8,7 +8,7 @@ export interface SortableConfig {
 
 export enum axis {
     x = "x",
-    y = "y"
+    y = "y",
 }
 
 export interface SortingProps {
@@ -18,7 +18,7 @@ export interface SortingProps {
 
 export const sortingProps: SortingProps = {
     pressDelay: 150,
-    lockAxis: axis.y
+    lockAxis: axis.y,
 };
 
 export interface SortableListItemProps {

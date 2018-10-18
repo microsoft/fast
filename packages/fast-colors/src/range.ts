@@ -140,7 +140,7 @@ export function range(color: Color, options: Partial<ColorConfig> = {}): Color[]
         filterOverlayLight: 0,
         filterOverlayDark: 0.25,
         filterMultiplyLight: 0,
-        filterMultiplyDark: 0
+        filterMultiplyDark: 0,
     };
 
     const normalizedOptions: ColorConfig = Object.assign({}, defaults, options);

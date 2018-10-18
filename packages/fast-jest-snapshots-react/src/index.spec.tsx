@@ -19,10 +19,10 @@ const testSuite: SnapshotTestSuite<TestComponentProps> = {
         [
             "should render with a snapshot title",
             {
-                name: "hello pluto"
-            }
-        ]
-    ]
+                name: "hello pluto",
+            },
+        ],
+    ],
 };
 
 /*

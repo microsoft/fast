@@ -4,13 +4,13 @@ import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
 import {
     generateSnapshots,
-    SnapshotTestSuite
+    SnapshotTestSuite,
 } from "@microsoft/fast-jest-snapshots-react";
 import MSFTCaption, {
     CaptionHandledProps,
     CaptionSize,
     CaptionTag,
-    CaptionUnhandledProps
+    CaptionUnhandledProps,
 } from "./caption";
 import { Caption, CaptionProps } from "./index";
 
@@ -37,16 +37,16 @@ describe("caption", (): void => {
     test("should accept unhandledProps", () => {
         const handledProps: CaptionHandledProps = {
             tag: CaptionTag.p,
-            size: CaptionSize._1
+            size: CaptionSize._1,
         };
 
         const unhandledProps: CaptionUnhandledProps = {
-            "aria-hidden": true
+            "aria-hidden": true,
         };
 
         const props: CaptionHandledProps & CaptionUnhandledProps = {
             ...handledProps,
-            ...unhandledProps
+            ...unhandledProps,
         };
 
         const rendered: any = mount(<Caption {...props} />);

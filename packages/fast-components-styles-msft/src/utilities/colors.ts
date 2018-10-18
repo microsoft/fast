@@ -5,7 +5,7 @@ import {
     contrast,
     ensureContrast,
     scaleContrast,
-    WCAGElementContrastRatios
+    WCAGElementContrastRatios,
 } from "@microsoft/fast-jss-utilities";
 import { curry } from "lodash-es";
 

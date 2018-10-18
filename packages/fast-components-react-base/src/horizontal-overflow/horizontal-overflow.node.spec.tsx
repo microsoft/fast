@@ -9,7 +9,7 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import HorizontalOverflow, {
     HorizontalOverflowClassNameContract,
-    HorizontalOverflowHandledProps
+    HorizontalOverflowHandledProps,
 } from "./";
 
 /*
@@ -23,14 +23,14 @@ const imageSet1: JSX.Element[] = [
     <img key="image3" src="https://placehold.it/200x200?text=3" />,
     <img key="image4" src="https://placehold.it/200x200?text=4" />,
     <img key="image5" src="https://placehold.it/200x200?text=5" />,
-    <img key="image6" src="https://placehold.it/200x200?text=6" />
+    <img key="image6" src="https://placehold.it/200x200?text=6" />,
 ];
 
 const managedClasses: HorizontalOverflowClassNameContract = {
     horizontalOverflow: "horizontal-overflow-class",
     horizontalOverflow_contentRegion: "horizontal-overflow-items-class",
     horizontalOverflow_next: "horizontal-overflow-next-class",
-    horizontalOverflow_previous: "horizontal-overflow-previous-class"
+    horizontalOverflow_previous: "horizontal-overflow-previous-class",
 };
 
 describe("horizontal overflow server-side", (): void => {

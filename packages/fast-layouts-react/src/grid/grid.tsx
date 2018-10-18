@@ -2,7 +2,7 @@ import * as React from "react";
 import manageJss, {
     ComponentStyles,
     CSSRules,
-    ManagedJSSProps
+    ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
 import BreakpointTracker from "../utilities/breakpoint-tracker";
 import { getValueByBreakpoint } from "../utilities/breakpoints";
@@ -11,11 +11,11 @@ import {
     GridHandledProps,
     GridProps,
     GridTag,
-    GridUnhandledProps
+    GridUnhandledProps,
 } from "./grid.props";
 import Foundation, {
     FoundationProps,
-    HandledProps
+    HandledProps,
 } from "@microsoft/fast-components-foundation-react";
 import { Column } from "../column";
 
@@ -26,8 +26,8 @@ export interface GridClassNamesContract {
 export const gridStyleSheet: ComponentStyles<GridClassNamesContract, undefined> = {
     grid: {
         display: "grid",
-        gridAutoRows: "auto"
-    }
+        gridAutoRows: "auto",
+    },
 };
 
 export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
@@ -43,7 +43,7 @@ export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
         gridColumn: 2,
         gutter: 8,
         verticalAlign: GridAlignment.stretch,
-        horizontalAlign: GridAlignment.stretch
+        horizontalAlign: GridAlignment.stretch,
     };
 
     protected handledProps: HandledProps<GridHandledProps> = {
@@ -53,7 +53,7 @@ export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
         horizontalAlign: void 0,
         managedClasses: void 0,
         tag: void 0,
-        verticalAlign: void 0
+        verticalAlign: void 0,
     };
 
     /**
@@ -153,7 +153,7 @@ export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
             alignItems: this.generateAlignment(this.props.verticalAlign),
             msGridColumns: `1fr (${this.generateGutter()})[${this.props.columnCount -
                 1}]`,
-            ["msGridRow" as any]: this.props.row
+            ["msGridRow" as any]: this.props.row,
         });
     }
 

@@ -5,13 +5,13 @@ import {
     applyLocalizedProperty,
     contrast,
     Direction,
-    toPx
+    toPx,
 } from "@microsoft/fast-jss-utilities";
 import {
     applyMixedColor,
     ensureNormalContrast,
     hoverContrast,
-    normalContrast
+    normalContrast,
 } from "../utilities/colors";
 import { get } from "lodash-es";
 import Chroma from "chroma-js";
@@ -66,14 +66,14 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
                 "& $flipper_glyph": {
                     "&::before": {
                         borderRightColor: glyphColorHover,
-                        borderTopColor: glyphColorHover
-                    }
-                }
+                        borderTopColor: glyphColorHover,
+                    },
+                },
             },
             "&:focus": {
                 boxShadow: `0 0 0 1px inset ${borderColor}`,
-                outline: "none"
-            }
+                outline: "none",
+            },
         },
         flipper_glyph: {
             display: "inline-flex",
@@ -87,8 +87,8 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
                 width: "12px",
                 content: '""',
                 borderRight: `1px solid ${foregroundColor}`,
-                borderTop: `1px solid ${foregroundColor}`
-            }
+                borderTop: `1px solid ${foregroundColor}`,
+            },
         },
         flipper__next: {
             "& $flipper_glyph": {
@@ -96,8 +96,8 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
                     eastFlipperTransform,
                     westFlipperTransform,
                     direction
-                )
-            }
+                ),
+            },
         },
         flipper__previous: {
             "& $flipper_glyph": {
@@ -105,9 +105,9 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
                     westFlipperTransform,
                     eastFlipperTransform,
                     direction
-                )
-            }
-        }
+                ),
+            },
+        },
     };
 };
 

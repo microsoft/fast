@@ -29,7 +29,7 @@ export function applyAcrylicMaterial(
             .css(),
         fallbackBackgroundColor: Chroma(backgroundColor)
             .alpha(fallbackOpacity)
-            .css()
+            .css(),
     };
 
     return {
@@ -38,6 +38,6 @@ export function applyAcrylicMaterial(
                   .alpha(0.1)
                   .css()}`
             : "",
-        ...applyAcrylic<DesignSystem>(acrylicConfig)
+        ...applyAcrylic<DesignSystem>(acrylicConfig),
     };
 }

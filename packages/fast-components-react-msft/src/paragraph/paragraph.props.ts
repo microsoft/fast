@@ -1,13 +1,13 @@
 import * as React from "react";
 import {
     ManagedClasses,
-    ParagraphClassNameContract
+    ParagraphClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 
 export enum ParagraphSize {
     _1 = 1,
     _2 = 2,
-    _3 = 3
+    _3 = 3,
 }
 
 export interface ParagraphManagedClasses

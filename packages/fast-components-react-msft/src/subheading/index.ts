@@ -7,7 +7,7 @@ import MSFTSubheading, {
     SubheadingProps as MSFTSubheadingProps,
     SubheadingSize,
     SubheadingTag,
-    SubheadingUnhandledProps
+    SubheadingUnhandledProps,
 } from "./subheading";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, SubheadingStyles } from "@microsoft/fast-components-styles-msft";
@@ -36,5 +36,5 @@ export {
     SubheadingProps,
     SubheadingHandledProps,
     SubheadingUnhandledProps,
-    SubheadingClassNameContract
+    SubheadingClassNameContract,
 };

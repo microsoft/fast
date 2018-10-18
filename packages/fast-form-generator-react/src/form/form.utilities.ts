@@ -10,7 +10,7 @@ const propsKeyword: string = "props";
 
 export enum PropertyKeyword {
     properties = "properties",
-    reactProperties = "reactProperties"
+    reactProperties = "reactProperties",
 }
 
 export interface NavigationItem {
@@ -198,7 +198,7 @@ export function getNavigationItem(
         schemaLocation,
         title: schema.title || "Untitled",
         data: getPartialData(dataLocation, data),
-        schema
+        schema,
     };
 }
 
@@ -210,8 +210,8 @@ export function getReactDefaultChildren(): ChildOptionItem[] {
         {
             name: "Text",
             component: null,
-            schema: reactChildrenStringSchema
-        }
+            schema: reactChildrenStringSchema,
+        },
     ];
 }
 
@@ -461,7 +461,7 @@ export function getBreadcrumbs(
                     navigationItem.schemaLocation,
                     navigationItem.dataLocation,
                     navigationItem.schema
-                )
+                ),
             };
         }
     );
@@ -520,7 +520,7 @@ export function mapDataToComponent(
                         { id: subSchemaId },
                         React.createElement(childOption.component, {
                             key: `${subSchemaId}-${index}`,
-                            ...subDataNormalized
+                            ...subDataNormalized,
                         })
                     );
                 }

@@ -6,7 +6,7 @@ import MSFTParagraph, {
     ParagraphManagedClasses,
     ParagraphProps as MSFTParagraphProps,
     ParagraphSize,
-    ParagraphUnhandledProps
+    ParagraphUnhandledProps,
 } from "./paragraph";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, ParagraphStyles } from "@microsoft/fast-components-styles-msft";
@@ -34,5 +34,5 @@ export {
     ParagraphProps,
     ParagraphHandledProps,
     ParagraphUnhandledProps,
-    ParagraphClassNameContract
+    ParagraphClassNameContract,
 };

@@ -2,12 +2,12 @@ import * as React from "react";
 import manageJss, {
     ComponentStyles,
     ManagedClasses,
-    ManagedJSSProps
+    ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
 import { PageHandledProps, PageProps, PageUnhandledProps } from "./page.props";
 import Foundation, {
     FoundationProps,
-    HandledProps
+    HandledProps,
 } from "@microsoft/fast-components-foundation-react";
 
 export interface PageClassNamesContract {
@@ -18,24 +18,24 @@ export const pageStyleSheet: ComponentStyles<PageClassNamesContract, undefined> 
     "@global": {
         "html, body": {
             padding: 0,
-            margin: 0
-        }
+            margin: 0,
+        },
     },
     page: {
-        display: "grid"
-    }
+        display: "grid",
+    },
 };
 
 export class Page extends Foundation<PageHandledProps, PageUnhandledProps, {}> {
     public static defaultProps: Partial<PageProps> = {
         margin: "minmax(5vw, 1fr)",
-        maxWidth: "1600px"
+        maxWidth: "1600px",
     };
 
     protected handledProps: HandledProps<PageHandledProps> = {
         managedClasses: void 0,
         margin: void 0,
-        maxWidth: void 0
+        maxWidth: void 0,
     };
 
     /**
@@ -50,7 +50,7 @@ export class Page extends Foundation<PageHandledProps, PageUnhandledProps, {}> {
             {},
             this.unhandledProps(),
             {
-                className: super.generateClassNames(this.props.managedClasses.page)
+                className: super.generateClassNames(this.props.managedClasses.page),
             }
         );
         const columns: string = `${this.props.margin} minmax(0, ${this.props.maxWidth}) ${
@@ -63,7 +63,7 @@ export class Page extends Foundation<PageHandledProps, PageUnhandledProps, {}> {
 
         attributes.style = {
             gridTemplateColumns: columns,
-            msGridColumns: columns
+            msGridColumns: columns,
         };
 
         return attributes;

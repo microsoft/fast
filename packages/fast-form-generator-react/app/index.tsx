@@ -8,7 +8,7 @@ import {
     FormAttributeSettingsMappingToPropertyNames,
     FormComponentMappingToPropertyNamesProps,
     FormOrderByPropertyNamesProps,
-    FormProps
+    FormProps,
 } from "../src/form/form.props";
 import * as testComponents from "./components";
 
@@ -42,7 +42,7 @@ export interface GroupItem {
 const designSystemDefaults: any = {
     foregroundColor: "#000",
     backgroundColor: "#FFF",
-    brandColor: "#0078D4"
+    brandColor: "#0078D4",
 };
 
 export default class App extends React.Component<{}, IAppState> {
@@ -71,7 +71,7 @@ export default class App extends React.Component<{}, IAppState> {
             onChange: this.onChange,
             showExtendedControls: false,
             schemaLocation: void 0,
-            dataLocation: void 0
+            dataLocation: void 0,
         };
     }
 
@@ -85,7 +85,7 @@ export default class App extends React.Component<{}, IAppState> {
                             minHeight: "100vh",
                             padding: "0 8px",
                             background: "rgb(244, 245, 246)",
-                            float: "left"
+                            float: "left",
                         }}
                     >
                         <Form {...this.coerceFormProps()} />
@@ -113,8 +113,8 @@ export default class App extends React.Component<{}, IAppState> {
         const groups: GroupItem[] = [
             {
                 items: testComponents,
-                type: "components"
-            }
+                type: "components",
+            },
         ];
 
         for (const group of groups) {
@@ -124,7 +124,7 @@ export default class App extends React.Component<{}, IAppState> {
                         const childObj: ChildOptionItem = {
                             name: testComponents[itemName].schema.title || "Untitled",
                             component: testComponents[itemName].component,
-                            schema: testComponents[itemName].schema
+                            schema: testComponents[itemName].schema,
                         };
 
                         childOptions.push(childObj);
@@ -145,7 +145,7 @@ export default class App extends React.Component<{}, IAppState> {
             componentMappingToPropertyNames: this.state.currentComponentConfig,
             attributeSettingsMappingToPropertyNames: this.state
                 .currentComponentAttributeAssignment,
-            orderByPropertyNames: this.state.currentComponentOrderByPropertyNames
+            orderByPropertyNames: this.state.currentComponentOrderByPropertyNames,
         };
 
         if (
@@ -155,7 +155,7 @@ export default class App extends React.Component<{}, IAppState> {
             formProps.location = {
                 dataLocation: this.state.dataLocation,
                 schemaLocation: this.state.schemaLocation,
-                onChange: this.handleLocationOnChange
+                onChange: this.handleLocationOnChange,
             };
         }
 
@@ -171,7 +171,7 @@ export default class App extends React.Component<{}, IAppState> {
     ): void => {
         this.setState({
             schemaLocation,
-            dataLocation
+            dataLocation,
         });
     };
 
@@ -185,7 +185,7 @@ export default class App extends React.Component<{}, IAppState> {
                 this.state.currentComponentSchema,
                 data,
                 this.childOptions
-            )
+            ),
         });
     };
 
@@ -200,7 +200,7 @@ export default class App extends React.Component<{}, IAppState> {
             currentComponentDataMappedToComponent: exampleData,
             currentComponentOrderByPropertyNames: testComponents[e.target.value].weight,
             currentComponentAttributeAssignment:
-                testComponents[e.target.value].attributeAssignment
+                testComponents[e.target.value].attributeAssignment,
         });
     };
 

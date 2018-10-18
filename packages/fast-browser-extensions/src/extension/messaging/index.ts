@@ -47,7 +47,7 @@ export const regions: string[] = [
     "Korean",
     "Thai",
     "Vietnamese",
-    "West-european"
+    "West-european",
 ];
 
 /**
@@ -65,7 +65,7 @@ export function createContextMenus(data: {
 }): void {
     const message: CreateMessageConfig = {
         type: CREATE_MENUS_MESSAGE,
-        data
+        data,
     };
 
     // TODO #160: create x-browser version of this using extension api

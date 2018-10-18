@@ -7,11 +7,11 @@ import {
     FlipperDirection,
     FlipperHandledProps,
     FlipperManagedClasses,
-    FlipperUnhandledProps
+    FlipperUnhandledProps,
 } from "./flipper.props";
 import {
     FlipperClassNameContract,
-    ManagedClasses
+    ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 
 class Flipper extends Foundation<FlipperHandledProps, FlipperUnhandledProps, {}> {
@@ -20,7 +20,7 @@ class Flipper extends Foundation<FlipperHandledProps, FlipperUnhandledProps, {}>
     protected handledProps: HandledProps<FlipperHandledProps> = {
         label: void 0,
         visibleToAssistiveTechnologies: void 0,
-        managedClasses: void 0
+        managedClasses: void 0,
     };
 
     /**
@@ -59,7 +59,7 @@ class Flipper extends Foundation<FlipperHandledProps, FlipperUnhandledProps, {}>
      */
     protected coerceButtonProps(): Partial<ButtonProps> {
         const coercedProps: Partial<ButtonProps> = {
-            href: void 0
+            href: void 0,
         };
 
         if (!this.props.visibleToAssistiveTechnologies) {

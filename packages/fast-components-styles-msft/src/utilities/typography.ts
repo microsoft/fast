@@ -40,89 +40,89 @@ export const typeRamp: TypeRamp = {
     t1: {
         vp1: {
             fontSize: 46,
-            lineHeight: 60
+            lineHeight: 60,
         },
         vp3: {
             fontSize: 62,
-            lineHeight: 72
-        }
+            lineHeight: 72,
+        },
     },
     t2: {
         vp1: {
             fontSize: 34,
-            lineHeight: 48
+            lineHeight: 48,
         },
         vp3: {
             fontSize: 46,
-            lineHeight: 56
-        }
+            lineHeight: 56,
+        },
     },
     t3: {
         vp1: {
             fontSize: 26,
-            lineHeight: 40
+            lineHeight: 40,
         },
         vp3: {
             fontSize: 34,
-            lineHeight: 48
-        }
+            lineHeight: 48,
+        },
     },
     t4: {
         vp1: {
             fontSize: 20,
-            lineHeight: 32
+            lineHeight: 32,
         },
         vp3: {
             fontSize: 24,
-            lineHeight: 36
-        }
+            lineHeight: 36,
+        },
     },
     t5: {
         vp1: {
             fontSize: 18,
-            lineHeight: 28
+            lineHeight: 28,
         },
         vp3: {
             fontSize: 20,
-            lineHeight: 28
-        }
+            lineHeight: 28,
+        },
     },
     t6: {
         vp1: {
             fontSize: 16,
-            lineHeight: 28
+            lineHeight: 28,
         },
         vp3: {
             fontSize: 18,
-            lineHeight: 28
-        }
+            lineHeight: 28,
+        },
     },
     t7: {
         vp1: {
             fontSize: 15,
-            lineHeight: 24
-        }
+            lineHeight: 24,
+        },
     },
     t8: {
         vp1: {
             fontSize: 12,
-            lineHeight: 20
+            lineHeight: 20,
         },
         vp3: {
             fontSize: 13,
-            lineHeight: 20
-        }
+            lineHeight: 20,
+        },
     },
     t9: {
         vp1: {
             fontSize: 10,
-            lineHeight: 20
+            lineHeight: 20,
         },
         vp3: {
             fontSize: 11,
-            lineHeight: 20
-        }
-    }
+            lineHeight: 20,
+        },
+    },
 };
 
 /**
@@ -134,7 +134,7 @@ export function applyType(
 ): CSSRules<DesignSystem> {
     return {
         fontSize: toPx(typeRamp[typeConfig][viewport].fontSize),
-        lineHeight: toPx(typeRamp[typeConfig][viewport].lineHeight)
+        lineHeight: toPx(typeRamp[typeConfig][viewport].lineHeight),
     };
 }
 
@@ -146,7 +146,7 @@ export function applyTypeRampConfig(typeConfig: keyof TypeRamp): CSSRules<Design
         .map(
             (key: keyof TypeRampItem): CSSRules<DesignSystem> => {
                 return {
-                    [applyBreakpoint(key)]: applyType(typeConfig, key)
+                    [applyBreakpoint(key)]: applyType(typeConfig, key),
                 };
             }
         )

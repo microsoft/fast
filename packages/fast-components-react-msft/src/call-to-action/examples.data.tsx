@@ -15,26 +15,26 @@ export default {
     detailData: {
         children: testString,
         appearance: CallToActionAppearance.primary,
-        href: testDestination
+        href: testDestination,
     },
     data: [
         {
             appearance: CallToActionAppearance.primary,
             children: "Primary call to action",
             href: testDestination,
-            "data-sketch-symbol": "Call to action - primary"
+            "data-sketch-symbol": "Call to action - primary",
         } as any, // TODO https://github.com/Microsoft/TypeScript/issues/6579
         {
             appearance: CallToActionAppearance.lightweight,
             children: "Lightweight call to action",
             href: testDestination,
-            "data-sketch-symbol": "Call to action - lightweight"
+            "data-sketch-symbol": "Call to action - lightweight",
         },
         {
             appearance: CallToActionAppearance.justified,
             children: "Secondary call to action",
             href: testDestination,
-            "data-sketch-symbol": "Call to action - justified"
-        }
-    ]
+            "data-sketch-symbol": "Call to action - justified",
+        },
+    ],
 } as ComponentFactoryExample<CallToActionProps>;

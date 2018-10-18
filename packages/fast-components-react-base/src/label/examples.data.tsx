@@ -3,7 +3,7 @@ import Label, {
     LabelHandledProps,
     LabelManagedClasses,
     LabelTag,
-    LabelUnhandledProps
+    LabelUnhandledProps,
 } from "./label";
 import schema from "./label.schema.json";
 import Documentation from "./.tmp/documentation";
@@ -17,38 +17,38 @@ const examples: ComponentFactoryExample<LabelHandledProps> = {
     detailData: {
         managedClasses: {
             label: "label",
-            label__hidden: "hidden_label"
+            label__hidden: "hidden_label",
         },
         tag: LabelTag.label,
-        children: "Label"
+        children: "Label",
     },
     data: [
         {
             managedClasses: {
                 label: "label",
-                label__hidden: "hidden_label"
+                label__hidden: "hidden_label",
             },
             tag: LabelTag.label,
-            children: "Label"
+            children: "Label",
         },
         {
             managedClasses: {
                 label: "label",
-                label__hidden: "hidden_label"
+                label__hidden: "hidden_label",
             },
             tag: LabelTag.legend,
-            children: "Legend label"
+            children: "Legend label",
         },
         {
             managedClasses: {
                 label: "label",
-                label__hidden: "hidden_label"
+                label__hidden: "hidden_label",
             },
             hidden: true,
             tag: LabelTag.label,
-            children: "Hidden label for screen readers"
-        }
-    ]
+            children: "Hidden label for screen readers",
+        },
+    ],
 };
 
 export default examples;

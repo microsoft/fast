@@ -6,22 +6,22 @@ import {
     ProgressHandledProps,
     ProgressManagedClasses,
     ProgressProps,
-    ProgressUnhandledProps
+    ProgressUnhandledProps,
 } from "./progress.props";
 import {
     ManagedClasses,
-    ProgressClassNameContract
+    ProgressClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 
 export enum ProgressType {
     determinate = "determinate",
-    indeterminate = "indeterminate"
+    indeterminate = "indeterminate",
 }
 
 class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, {}> {
     public static defaultProps: Partial<ProgressProps> = {
         minValue: 0,
-        maxValue: 100
+        maxValue: 100,
     };
 
     public static displayName: string = "Progress";
@@ -31,7 +31,7 @@ class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, 
         managedClasses: void 0,
         maxValue: void 0,
         minValue: void 0,
-        value: void 0
+        value: void 0,
     };
 
     /**

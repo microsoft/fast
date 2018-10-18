@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
     CardClassNameContract,
-    ManagedClasses
+    ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
@@ -10,7 +10,7 @@ import {
 export enum CardTag {
     article = "article",
     div = "div",
-    section = "section"
+    section = "section",
 }
 
 export interface CardManagedClasses extends ManagedClasses<CardClassNameContract> {}

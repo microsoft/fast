@@ -53,7 +53,7 @@ export enum mappingName {
     fileUpload = "fileUpload",
     theme = "theme",
     glyphPicker = "glyphPicker",
-    textarea = "textarea"
+    textarea = "textarea",
 }
 
 export interface FormItemComponentMappingToProperyNamesProps extends FormItemCommon {

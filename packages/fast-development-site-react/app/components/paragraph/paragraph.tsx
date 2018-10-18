@@ -16,8 +16,8 @@ const ParagraphStyles: ComponentStyles<TestParagraphClassNameContract, DesignSys
     paragraph: {
         textAlign: (config: DesignSystem): string => {
             return config.ltr === "ltr" ? "left" : "right";
-        }
-    }
+        },
+    },
 };
 
 /* tslint:disable-next-line */

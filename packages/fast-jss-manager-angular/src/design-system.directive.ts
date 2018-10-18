@@ -5,7 +5,7 @@ import { eventNames } from "./utilities/get-event-names";
  * This directive stores and manages custom events requesting the design system configuration
  */
 @Directive({
-    selector: "design-system"
+    selector: "design-system",
 })
 export class DesignSystemDirective {
     @Input()

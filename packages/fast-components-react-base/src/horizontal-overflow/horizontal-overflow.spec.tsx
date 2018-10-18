@@ -3,7 +3,7 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import HorizontalOverflow, {
     ButtonDirection,
-    HorizontalOverflowClassNameContract
+    HorizontalOverflowClassNameContract,
 } from "./";
 import "raf/polyfill";
 
@@ -25,14 +25,14 @@ const imageSet1: JSX.Element[] = [
     <img id={id3} key={id3} src="https://placehold.it/200x200?text=3" />,
     <img id={id4} key={id4} src="https://placehold.it/200x200?text=4" />,
     <img id={id5} key={id5} src="https://placehold.it/200x200?text=5" />,
-    <img id={id6} key={id6} src="https://placehold.it/200x200?text=6" />
+    <img id={id6} key={id6} src="https://placehold.it/200x200?text=6" />,
 ];
 
 const managedClasses: HorizontalOverflowClassNameContract = {
     horizontalOverflow: "horizontal-overflow-class",
     horizontalOverflow_contentRegion: "horizontal-overflow-items-class",
     horizontalOverflow_next: "horizontal-overflow-next-class",
-    horizontalOverflow_previous: "horizontal-overflow-previous-class"
+    horizontalOverflow_previous: "horizontal-overflow-previous-class",
 };
 
 // TODO #746: https://github.com/Microsoft/fast-dna/issues/746
@@ -156,8 +156,8 @@ describe("horizontal overflow", (): void => {
         renderedWithImages.setProps({
             children: [
                 <img key="image1" src="https://placehold.it/200x200?text=1" />,
-                <img key="image2" src="https://placehold.it/200x200?text=2" />
-            ]
+                <img key="image2" src="https://placehold.it/200x200?text=2" />,
+            ],
         });
 
         expect(renderedWithImages.find("img").length).toBe(2);

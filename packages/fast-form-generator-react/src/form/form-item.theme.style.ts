@@ -6,7 +6,7 @@ import {
     applyWrapperStyle,
     colors,
     darkTheme,
-    lightTheme
+    lightTheme,
 } from "../utilities/form-input.style";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormItemThemeClassNameContract } from "../class-name-contracts/";
@@ -21,34 +21,34 @@ function applyThemeInputBackplateStyle(): CSSRules<{}> {
         borderRadius: toPx(2),
         "&:checked, &:focus": {
             outline: "none",
-            borderColor: colors.pink
+            borderColor: colors.pink,
         },
         "&:hover": {
-            borderColor: colors.black
-        }
+            borderColor: colors.black,
+        },
     };
 }
 
 const styles: ComponentStyles<FormItemThemeClassNameContract, {}> = {
     formItemTheme: {
-        ...applyWrapperStyle()
+        ...applyWrapperStyle(),
     },
     formItemTheme_label: {
-        ...applyLabelStyle()
+        ...applyLabelStyle(),
     },
     formItemTheme_inputContainer: {
-        ...applyInputContainerStyle()
+        ...applyInputContainerStyle(),
     },
     formItemTheme_input__light: {
         ...applyThemeInputBackplateStyle(),
         background: lightTheme,
-        backgroundColor: colors.white
+        backgroundColor: colors.white,
     },
     formItemTheme_input__dark: {
         ...applyThemeInputBackplateStyle(),
         background: darkTheme,
-        backgroundColor: colors.black
-    }
+        backgroundColor: colors.black,
+    },
 };
 
 export default styles;

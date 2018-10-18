@@ -6,7 +6,7 @@ import MSFTProgress, {
     ProgressHandledProps as MSFTProgressHandledProps,
     ProgressManagedClasses,
     ProgressProps as MSFTProgressProps,
-    ProgressUnhandledProps
+    ProgressUnhandledProps,
 } from "./progress";
 import { Subtract } from "utility-types";
 /*
@@ -30,5 +30,5 @@ export {
     ProgressProps,
     ProgressUnhandledProps,
     ProgressHandledProps,
-    ProgressClassNameContract
+    ProgressClassNameContract,
 };

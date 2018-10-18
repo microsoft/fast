@@ -2,19 +2,19 @@ import * as React from "react";
 import { Omit, Subtract } from "utility-types";
 import {
     CallToActionClassNameContract,
-    ManagedClasses
+    ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
     ButtonAppearance,
     ButtonHandledProps,
     ButtonManagedClasses,
-    ButtonUnhandledProps
+    ButtonUnhandledProps,
 } from "../button/button.props";
 
 export enum CallToActionAppearance {
     justified = ButtonAppearance.justified,
     lightweight = ButtonAppearance.lightweight,
-    primary = ButtonAppearance.primary
+    primary = ButtonAppearance.primary,
 }
 
 export interface CallToActionManagedClasses

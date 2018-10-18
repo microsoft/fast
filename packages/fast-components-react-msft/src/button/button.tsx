@@ -5,7 +5,7 @@ import {
     ButtonAppearance,
     ButtonHandledProps,
     ButtonManagedClasses,
-    ButtonUnhandledProps
+    ButtonUnhandledProps,
 } from "./button.props";
 import { Button as BaseButton } from "@microsoft/fast-components-react-base";
 
@@ -14,7 +14,7 @@ import { Button as BaseButton } from "@microsoft/fast-components-react-base";
  */
 export enum ButtonSlot {
     before = "before",
-    after = "after"
+    after = "after",
 }
 
 class Button extends Foundation<ButtonHandledProps, ButtonUnhandledProps, {}> {
@@ -24,7 +24,7 @@ class Button extends Foundation<ButtonHandledProps, ButtonUnhandledProps, {}> {
         appearance: void 0,
         disabled: void 0,
         href: void 0,
-        managedClasses: void 0
+        managedClasses: void 0,
     };
 
     /**

@@ -4,7 +4,7 @@ import { DevSiteDesignSystem } from "../../src/components/design-system";
 import manageJss, {
     ComponentStyles,
     ManagedClasses,
-    ManagedJSSProps
+    ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
 
 /* tslint:disable:no-empty-interface */
@@ -27,17 +27,17 @@ const styles: ComponentStyles<ErrorBoundaryManagedClasses, DevSiteDesignSystem> 
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        height: "100%"
+        height: "100%",
     },
     errorBoundary_error: {
         fontSize: toPx(15),
         marginTop: "0",
-        color: "red"
+        color: "red",
     },
     errorBoundary_notification: {
         fontSize: toPx(18),
-        fontWeight: "700"
-    }
+        fontWeight: "700",
+    },
 };
 
 class ErrorBoundary extends React.Component<
@@ -49,7 +49,7 @@ class ErrorBoundary extends React.Component<
 
         this.state = {
             hasError: false,
-            error: void 0
+            error: void 0,
         };
     }
 
@@ -58,7 +58,7 @@ class ErrorBoundary extends React.Component<
 
         this.setState({
             hasError: true,
-            error: error || new Error(MISSING_ERROR)
+            error: error || new Error(MISSING_ERROR),
         });
     }
 

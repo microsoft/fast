@@ -20,14 +20,14 @@ export default {
                 id: ImageSchema.id,
                 props: {
                     src: "https://placehold.it/300x300/414141",
-                    alt: "placeholder image"
-                }
-            }
-        ]
+                    alt: "placeholder image",
+                },
+            },
+        ],
     },
     data: [
         {
-            tag: CardTag.section
+            tag: CardTag.section,
         },
         {
             tag: CardTag.article,
@@ -37,17 +37,17 @@ export default {
                     props: {
                         tag: HeadingTag.h3,
                         level: HeadingSize._4,
-                        children: "Example children"
-                    }
+                        children: "Example children",
+                    },
                 },
                 {
                     id: ImageSchema.id,
                     props: {
                         src: "https://placehold.it/300x300/414141",
-                        alt: "placeholder image"
-                    }
-                }
-            ]
-        }
-    ]
+                        alt: "placeholder image",
+                    },
+                },
+            ],
+        },
+    ],
 } as ComponentFactoryExample<CardProps>;

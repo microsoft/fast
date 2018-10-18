@@ -18,7 +18,7 @@ export interface DesignSystem {
                     <example>purple</example>
                   </design-system>
                 </design-system>
-            </div>`
+            </div>`,
 })
 export class AppComponent {
     private config: DesignSystem;
@@ -26,14 +26,14 @@ export class AppComponent {
     constructor() {
         this.config = {
             red: {
-                color: "red"
+                color: "red",
             },
             blue: {
-                color: "blue"
+                color: "blue",
             },
             purple: {
-                color: "purple"
-            }
+                color: "purple",
+            },
         };
     }
 }

@@ -38,7 +38,7 @@ class FormItemFileUpload extends React.Component<
         this.fileId = uniqueId();
         this.state = {
             dragging: false,
-            processing: false
+            processing: false,
         };
     }
 
@@ -154,7 +154,7 @@ class FormItemFileUpload extends React.Component<
             <p key="info">
                 Drag your asset here or{" "}
                 <label htmlFor={this.fileId}>browse your files.</label>
-            </p>
+            </p>,
         ];
     }
 

@@ -3,18 +3,18 @@ import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
     ManagedClasses,
-    TabPanelClassNameContract
+    TabPanelClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import {
     TabPanelHandledProps,
     TabPanelManagedClasses,
     TabPanelProps,
-    TabPanelUnhandledProps
+    TabPanelUnhandledProps,
 } from "./tab-panel.props";
 
 class TabPanel extends Foundation<TabPanelHandledProps, TabPanelUnhandledProps, {}> {
     public static defaultProps: Partial<TabPanelProps> = {
-        active: false
+        active: false,
     };
 
     public static displayName: string = "TabPanel";
@@ -22,7 +22,7 @@ class TabPanel extends Foundation<TabPanelHandledProps, TabPanelUnhandledProps, 
     protected handledProps: HandledProps<TabPanelHandledProps> = {
         managedClasses: void 0,
         active: void 0,
-        slot: void 0
+        slot: void 0,
     };
 
     /**

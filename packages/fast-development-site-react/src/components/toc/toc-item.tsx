@@ -6,7 +6,7 @@ import { toPx } from "@microsoft/fast-jss-utilities";
 import manageJss, {
     ComponentStyles,
     ManagedClasses,
-    ManagedJSSProps
+    ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
 
 export interface TocItemProps {
@@ -21,7 +21,7 @@ export interface TocItemProps {
 export enum itemType {
     a = "a",
     tocMenu = "tocMenu",
-    link = "link"
+    link = "link",
 }
 
 export interface TocItemManagedClasses {
@@ -44,21 +44,21 @@ const style: ComponentStyles<TocItemManagedClasses, DevSiteDesignSystem> = {
         border: `${toPx(1)} solid transparent`,
         outline: "0",
         "&:hover": {
-            backgroundColor: "rgba(0, 0, 0, 0.04)"
+            backgroundColor: "rgba(0, 0, 0, 0.04)",
         },
         "&:focus": {
             border: (config: DevSiteDesignSystem): string => {
                 return `${toPx(1)} solid ${config.brandColor ||
                     devSiteDesignSystemDefaults.brandColor}`;
-            }
-        }
+            },
+        },
     },
     tocItem: {
         display: "block",
         position: "relative",
         color: (config: DevSiteDesignSystem): string => {
             return config.foregroundColor;
-        }
+        },
     },
     tocItem__active: {
         background: (config: DevSiteDesignSystem): string => {
@@ -79,12 +79,12 @@ const style: ComponentStyles<TocItemManagedClasses, DevSiteDesignSystem> = {
             },
             position: "absolute",
             left: "0",
-            top: `calc((100% / 2) - ${toPx(tocItemActivePipeHeight / 2)})`
+            top: `calc((100% / 2) - ${toPx(tocItemActivePipeHeight / 2)})`,
         },
         "&:hover": {
-            backgroundColor: "rgba(0, 0, 0, 0.1)"
-        }
-    }
+            backgroundColor: "rgba(0, 0, 0, 0.1)",
+        },
+    },
 };
 
 class TocItem extends React.Component<

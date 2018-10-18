@@ -2,7 +2,7 @@ import * as React from "react";
 import Toggle, {
     ToggleHandledProps,
     ToggleManagedClasses,
-    ToggleUnhandledProps
+    ToggleUnhandledProps,
 } from "./toggle";
 import schema from "./toggle.schema.json";
 import Documentation from "./.tmp/documentation";
@@ -19,14 +19,14 @@ const examples: ComponentFactoryExample<ToggleHandledProps> = {
             toggle_label: "toggle_label",
             toggle_toggleButton: "toggle_toggleButton",
             toggle_input: "toggle_input",
-            toggle_stateIndicator: "toggle_stateIndicator"
+            toggle_stateIndicator: "toggle_stateIndicator",
         },
         children: "Toggle",
         id: "toggle01",
         labelId: "label01",
         selectedMessage: "On",
         statusMessageId: "span01",
-        unselectedMessage: "Off"
+        unselectedMessage: "Off",
     },
     data: [
         {
@@ -35,7 +35,7 @@ const examples: ComponentFactoryExample<ToggleHandledProps> = {
                 toggle_label: "toggle_label",
                 toggle_toggleButton: "toggle_toggleButton",
                 toggle_input: "toggle_input",
-                toggle_stateIndicator: "toggle_stateIndicator"
+                toggle_stateIndicator: "toggle_stateIndicator",
             },
             children: "Toggle label",
             disabled: false,
@@ -44,9 +44,9 @@ const examples: ComponentFactoryExample<ToggleHandledProps> = {
             selected: true,
             selectedMessage: "On",
             statusMessageId: "span01",
-            unselectedMessage: "Off"
-        }
-    ]
+            unselectedMessage: "Off",
+        },
+    ],
 };
 
 export default examples;

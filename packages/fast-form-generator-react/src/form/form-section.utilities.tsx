@@ -7,7 +7,7 @@ import {
     FormComponentMappingToPropertyNamesProps,
     FormOrderByPropertyNamesCategories,
     FormOrderByPropertyNamesProperties,
-    FormOrderByPropertyNamesProps
+    FormOrderByPropertyNamesProps,
 } from "./form.props";
 import { isRootLocation } from "./form.utilities";
 import {
@@ -20,7 +20,7 @@ import {
     OneOfAnyOf,
     oneOfAnyOfType,
     OptionalToggleConfig,
-    SchemaSubsectionConfig
+    SchemaSubsectionConfig,
 } from "./form-section.props";
 import { mappingName } from "./form-item";
 
@@ -265,7 +265,7 @@ function getOptionalToggle(
                     : get(config.dataCache, propertyLocation) ||
                       generateExampleData(config.schema, `properties.${key}`)
             );
-        }
+        },
     };
 }
 
@@ -380,7 +380,7 @@ function getSchemaSubsection(schemaSubsectionConfig: SchemaSubsectionConfig): an
         required: getIsRequired(
             schemaSubsectionConfig.objectProperty,
             schemaSubsectionConfig.state.schema.required
-        )
+        ),
     };
 }
 
@@ -419,7 +419,7 @@ export function getSchemaSubsections(state: any, props: any): any[] {
                     dataLocation: dataLocationClone,
                     schemaLocation: schemaLocationClone,
                     state,
-                    props
+                    props,
                 })
             );
         }
@@ -577,7 +577,7 @@ export function findAssignedParamsByCategoryProperties(
                 category: config.category.title,
                 expandable: config.category.expandable,
                 categoryWeight: config.category.weight,
-                itemWeight: config.categoryProperty.weight || config.assignedItemWeight
+                itemWeight: config.categoryProperty.weight || config.assignedItemWeight,
             };
         }
     }
@@ -624,7 +624,7 @@ export function findOrderedByPropertyNames(
                 formItemParameter,
                 category,
                 categoryProperty,
-                assignedItemWeight
+                assignedItemWeight,
             }
         );
 
@@ -654,7 +654,7 @@ function getAssignedCategoryParams(
     return {
         category: "Default",
         categoryWeight: orderByPropertyNames.defaultCategoryWeight || 0,
-        itemWeight: 0
+        itemWeight: 0,
     };
 }
 
@@ -678,7 +678,7 @@ export function getCategoryParams(
         if (typeof categoryIndex === "number") {
             categoryParams[categoryIndex].items.push({
                 weight: assignedCategoryParams.itemWeight,
-                params: formItemParameter
+                params: formItemParameter,
             });
         } else {
             categoryParams.push({
@@ -688,9 +688,9 @@ export function getCategoryParams(
                 items: [
                     {
                         weight: assignedCategoryParams.itemWeight,
-                        params: formItemParameter
-                    }
-                ]
+                        params: formItemParameter,
+                    },
+                ],
             });
         }
     }

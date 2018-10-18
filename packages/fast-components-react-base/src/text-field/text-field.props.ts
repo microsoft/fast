@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
     ManagedClasses,
-    TextFieldClassNameContract
+    TextFieldClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { Omit } from "utility-types";
 
@@ -12,7 +12,7 @@ export enum TextFieldType {
     search = "search",
     tel = "tel",
     text = "text",
-    url = "url"
+    url = "url",
 }
 
 export interface TextFieldManagedClasses

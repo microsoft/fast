@@ -2,7 +2,7 @@ import * as React from "react";
 import Hypertext, {
     HypertextHandledProps,
     HypertextManagedClasses,
-    HypertextUnhandledProps
+    HypertextUnhandledProps,
 } from "./hypertext";
 import schema from "./hypertext.schema.json";
 import Documentation from "./.tmp/documentation";
@@ -15,20 +15,20 @@ const examples: ComponentFactoryExample<HypertextHandledProps> = {
     documentation: <Documentation />,
     detailData: {
         managedClasses: {
-            hypertext: "hypertext"
+            hypertext: "hypertext",
         },
         href: "https://www.microsoft.com/en-us/",
-        children: "Microsoft"
+        children: "Microsoft",
     },
     data: [
         {
             managedClasses: {
-                hypertext: "hypertext"
+                hypertext: "hypertext",
             },
             href: "https://msdn.microsoft.com/en-us/",
-            children: "MSDN"
-        }
-    ]
+            children: "MSDN",
+        },
+    ],
 };
 
 export default examples;

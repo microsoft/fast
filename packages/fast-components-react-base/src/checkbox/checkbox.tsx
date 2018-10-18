@@ -6,11 +6,11 @@ import {
     CheckboxManagedClasses,
     CheckboxProps,
     CheckboxSlot,
-    CheckboxUnhandledProps
+    CheckboxUnhandledProps,
 } from "./checkbox.props";
 import {
     CheckboxClassNameContract,
-    ManagedClasses
+    ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
 
@@ -40,7 +40,7 @@ class Checkbox extends Foundation<
             nextProps.checked !== prevState.checked
         ) {
             return {
-                checked: nextProps.checked
+                checked: nextProps.checked,
             };
         }
 
@@ -56,7 +56,7 @@ class Checkbox extends Foundation<
         inputId: void 0,
         indeterminate: void 0,
         managedClasses: void 0,
-        onChange: void 0
+        onChange: void 0,
     };
 
     /**
@@ -71,7 +71,7 @@ class Checkbox extends Foundation<
         super(props);
 
         this.state = {
-            checked: this.props.checked || false
+            checked: this.props.checked || false,
         };
 
         this.inputRef = React.createRef();

@@ -6,7 +6,7 @@ import {
     DividerManagedClasses,
     DividerProps as BaseDividerProps,
     DividerRoles,
-    DividerUnhandledProps
+    DividerUnhandledProps,
 } from "@microsoft/fast-components-react-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, DividerStyles } from "@microsoft/fast-components-styles-msft";
@@ -34,5 +34,5 @@ export {
     DividerRoles,
     DividerHandledProps,
     DividerUnhandledProps,
-    DividerClassNameContract
+    DividerClassNameContract,
 };

@@ -5,7 +5,7 @@ import MSFTCaption, {
     CaptionProps as MSFTCaptionProps,
     CaptionSize,
     CaptionTag,
-    CaptionUnhandledProps
+    CaptionUnhandledProps,
 } from "./caption";
 import { CaptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
@@ -35,5 +35,5 @@ export {
     CaptionTag,
     CaptionClassNameContract,
     CaptionHandledProps,
-    CaptionUnhandledProps
+    CaptionUnhandledProps,
 };

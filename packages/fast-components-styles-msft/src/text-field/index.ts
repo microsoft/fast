@@ -10,7 +10,7 @@ import {
     ensureForegroundNormal,
     ensuresBackgroundNormal,
     foregroundNormal,
-    hoverContrast
+    hoverContrast,
 } from "../utilities/colors";
 import { density } from "../utilities/density";
 import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
@@ -56,18 +56,18 @@ const styles: ComponentStyles<TextFieldClassNameContract, DesignSystem> = (
             minHeight: toPx(minHeight),
             maxHeight: toPx(maxHeight),
             "&:hover": {
-                borderColor: hoverColor(designSystem)
+                borderColor: hoverColor(designSystem),
             },
             "&:focus": {
                 outline: "none",
-                boxShadow: `0 0 0 1px inset ${foregroundNormal(designSystem)}`
+                boxShadow: `0 0 0 1px inset ${foregroundNormal(designSystem)}`,
             },
             "&:disabled": {
                 borderColor: disabledColor(designSystem),
                 color: disabledColor(designSystem),
-                cursor: "not-allowed"
-            }
-        }
+                cursor: "not-allowed",
+            },
+        },
     };
 };
 

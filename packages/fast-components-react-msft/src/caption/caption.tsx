@@ -8,14 +8,14 @@ import {
     CaptionProps,
     CaptionSize,
     CaptionTag,
-    CaptionUnhandledProps
+    CaptionUnhandledProps,
 } from "./caption.props";
 import { Typography } from "../typography";
 
 class Caption extends Foundation<CaptionHandledProps, CaptionUnhandledProps, {}> {
     public static defaultProps: Partial<CaptionProps> = {
         tag: CaptionTag.p,
-        size: CaptionSize._1
+        size: CaptionSize._1,
     };
 
     public static displayName: string = "Caption";
@@ -23,7 +23,7 @@ class Caption extends Foundation<CaptionHandledProps, CaptionUnhandledProps, {}>
     protected handledProps: HandledProps<CaptionHandledProps> = {
         size: void 0,
         managedClasses: void 0,
-        tag: void 0
+        tag: void 0,
     };
 
     /**

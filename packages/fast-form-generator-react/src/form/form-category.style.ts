@@ -24,11 +24,11 @@ const styles: ComponentStyles<FormCategoryClassNameContract, {}> = {
         textAlign: "left",
         "&[aria-expanded='true']": {
             "&::after": {
-                transform: "rotate(180deg)"
-            }
+                transform: "rotate(180deg)",
+            },
         },
         "&:hover": {
-            cursor: "pointer"
+            cursor: "pointer",
         },
         "&::after": {
             content: `url('data:image/svg+xml;base64,${dropdownArrow}')`,
@@ -38,16 +38,16 @@ const styles: ComponentStyles<FormCategoryClassNameContract, {}> = {
             top: toPx(16),
             display: "inline-block",
             width: toPx(11),
-            height: toPx(11)
-        }
+            height: toPx(11),
+        },
     },
     formCategory_header: {
         ...applyHeaderStyle(),
-        fontSize: toPx(14)
+        fontSize: toPx(14),
     },
     formCategory__collapsed: {
-        display: "none"
-    }
+        display: "none",
+    },
 };
 
 export default styles;

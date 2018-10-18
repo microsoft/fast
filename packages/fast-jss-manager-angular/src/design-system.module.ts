@@ -5,6 +5,6 @@ import { DesignSystemDirective } from "./design-system.directive";
 @NgModule({
     declarations: [DesignSystemDirective],
     imports: [CommonModule],
-    exports: [DesignSystemDirective]
+    exports: [DesignSystemDirective],
 })
 export class DesignSystemModule {}

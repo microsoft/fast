@@ -2,7 +2,7 @@ import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import {
     ComponentStyles,
     ComponentStyleSheet,
-    CSSRules
+    CSSRules,
 } from "@microsoft/fast-jss-manager";
 import { RadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyLocalizedProperty, Direction } from "@microsoft/fast-jss-utilities";
@@ -10,7 +10,7 @@ import {
     disabledContrast,
     ensureNormalContrast,
     hoverContrast,
-    normalContrast
+    normalContrast,
 } from "../utilities/colors";
 
 /* tslint:disable:max-line-length */
@@ -45,7 +45,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
         radio: {
             display: "inline-flex",
             flexDirection: "row",
-            alignItems: "center"
+            alignItems: "center",
         },
         radio_input: {
             position: "absolute",
@@ -59,11 +59,11 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
             background: backgroundColor,
             boxShadow: `inset 0 0 0 1px ${radioColor}`,
             "&:hover": {
-                boxShadow: `inset 0 0 0 1px ${radioHover}`
+                boxShadow: `inset 0 0 0 1px ${radioHover}`,
             },
             "&:focus": {
                 outline: "none",
-                boxShadow: `inset 0 0 0 2px ${radioColor}`
+                boxShadow: `inset 0 0 0 2px ${radioColor}`,
             },
             "&:checked": {
                 "& + span": {
@@ -72,10 +72,10 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
                         zIndex: "1",
                         content: '""',
                         borderRadius: "50%",
-                        background: radioColor
-                    }
-                }
-            }
+                        background: radioColor,
+                    },
+                },
+            },
         },
         radio_stateIndicator: {
             position: "relative",
@@ -89,8 +89,8 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
                 top: "4px",
                 left: "4px",
                 height: "12px",
-                width: "12px"
-            }
+                width: "12px",
+            },
         },
         radio__disabled: {
             cursor: "not-allowed",
@@ -98,18 +98,18 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
                 boxShadow: `inset 0 0 0 1px ${radioDisabled}`,
                 "&:checked": {
                     "& + span::before": {
-                        background: radioDisabled
-                    }
-                }
+                        background: radioDisabled,
+                    },
+                },
             },
             "& $radio_label": {
                 cursor: "not-allowed",
-                color: radioDisabled
-            }
+                color: radioDisabled,
+            },
         },
         radio_label: {
-            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "5px"
-        }
+            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "5px",
+        },
     };
 };
 

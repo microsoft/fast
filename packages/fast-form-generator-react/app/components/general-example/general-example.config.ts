@@ -3,5 +3,5 @@ import { FormComponentMappingToPropertyNamesProps } from "../../../src/form/form
 export default {
     alignHorizontal: ["alignHorizontal"],
     alignVertical: ["alignVertical"],
-    theme: ["theme"]
+    theme: ["theme"],
 } as FormComponentMappingToPropertyNamesProps;

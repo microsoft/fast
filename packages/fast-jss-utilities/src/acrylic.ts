@@ -30,11 +30,11 @@ export function applyAcrylic<T>(config: AcrylicConfig): CSSRules<T> {
     const backdropFilterStyles: CSSRules<T> = {
         background: config.backgroundColor,
         backdropFilter: `blur(${config.blurRadius ||
-            "30px"}) saturate(${config.saturation || "125%"})`
+            "30px"}) saturate(${config.saturation || "125%"})`,
     };
 
     const fallbackStyles: CSSRules<T> = {
-        background: config.fallbackBackgroundColor
+        background: config.fallbackBackgroundColor,
     };
 
     const styles: CSSRules<T> = backdropFilterSupport
@@ -54,7 +54,7 @@ export function applyAcrylic<T>(config: AcrylicConfig): CSSRules<T> {
             left: "0",
             right: "0",
             opacity: ".02",
-            pointerEvents: "none"
-        }
+            pointerEvents: "none",
+        },
     };
 }

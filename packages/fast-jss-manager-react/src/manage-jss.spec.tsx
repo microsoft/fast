@@ -4,7 +4,7 @@ import { JSSManager } from "./jss-manager";
 import { jss, stylesheetRegistry } from "./jss";
 import {
     ComponentStyles,
-    ComponentStyleSheetResolver
+    ComponentStyleSheetResolver,
 } from "@microsoft/fast-jss-manager";
 import * as ShallowRenderer from "react-test-renderer/shallow";
 import { configure, mount, ReactWrapper, render, shallow } from "enzyme";
@@ -57,7 +57,7 @@ describe("cleanLowerOrderComponentProps", (): void => {
         const props: any = {
             managedClasses: {},
             jssStyleSheet: {},
-            foobar: "success"
+            foobar: "success",
         };
 
         const result: any = cleanLowerOrderComponentProps(props);

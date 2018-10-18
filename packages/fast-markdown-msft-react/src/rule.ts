@@ -28,7 +28,7 @@ export default class CreateRule {
             if (state.tokens[i].children) {
                 this.renderComponents({
                     Token: state.Token,
-                    tokens: state.tokens[i].children
+                    tokens: state.tokens[i].children,
                 });
             }
 

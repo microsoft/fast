@@ -7,7 +7,7 @@ enum ComponentType {
     heading = "heading",
     hyperlink = "hyperlink",
     list = "list",
-    paragraph = "paragraph"
+    paragraph = "paragraph",
 }
 
 export interface Tokens<T> extends Array<T> {

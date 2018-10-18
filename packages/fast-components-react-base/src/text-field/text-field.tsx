@@ -5,11 +5,11 @@ import {
     TextFieldHandledProps,
     TextFieldManagedClasses,
     TextFieldType,
-    TextFieldUnhandledProps
+    TextFieldUnhandledProps,
 } from "./text-field.props";
 import {
     ManagedClasses,
-    TextFieldClassNameContract
+    TextFieldClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
 
@@ -20,7 +20,7 @@ class TextField extends Foundation<TextFieldHandledProps, TextFieldUnhandledProp
         disabled: void 0,
         placeholder: void 0,
         managedClasses: void 0,
-        type: void 0
+        type: void 0,
     };
 
     /**

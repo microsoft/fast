@@ -4,13 +4,13 @@ import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
 import {
     generateSnapshots,
-    SnapshotTestSuite
+    SnapshotTestSuite,
 } from "@microsoft/fast-jest-snapshots-react";
 import MSFTHeading, {
     HeadingHandledProps,
     HeadingSize,
     HeadingTag,
-    HeadingUnhandledProps
+    HeadingUnhandledProps,
 } from "./heading";
 import { Typography } from "@microsoft/fast-components-react-base";
 import { Heading, HeadingProps } from "./index";
@@ -39,16 +39,16 @@ describe("heading", (): void => {
     test("should accept unhandledProps", () => {
         const handledProps: HeadingHandledProps = {
             tag: HeadingTag.h1,
-            size: HeadingSize._1
+            size: HeadingSize._1,
         };
 
         const unhandledProps: HeadingUnhandledProps = {
-            "aria-hidden": true
+            "aria-hidden": true,
         };
 
         const props: HeadingHandledProps & HeadingUnhandledProps = {
             ...handledProps,
-            ...unhandledProps
+            ...unhandledProps,
         };
 
         const rendered: any = mount(<Heading {...props} />);

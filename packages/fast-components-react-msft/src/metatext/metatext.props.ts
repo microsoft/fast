@@ -1,13 +1,13 @@
 import * as React from "react";
 import {
     ManagedClasses,
-    MetatextClassNameContract
+    MetatextClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 import { TypographyUnhandledProps } from "../typography";
 
 export enum MetatextTag {
     p = "p",
-    span = "span"
+    span = "span",
 }
 
 export interface MetatextManagedClasses

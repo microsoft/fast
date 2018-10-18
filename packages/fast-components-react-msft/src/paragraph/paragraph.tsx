@@ -8,24 +8,24 @@ import {
     ParagraphManagedClasses,
     ParagraphProps,
     ParagraphSize,
-    ParagraphUnhandledProps
+    ParagraphUnhandledProps,
 } from "./paragraph.props";
 import { Typography } from "../typography";
 import {
     ManagedClasses,
-    ParagraphClassNameContract
+    ParagraphClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 
 class Paragraph extends Foundation<ParagraphHandledProps, ParagraphUnhandledProps, {}> {
     public static defaultProps: Partial<ParagraphProps> = {
-        size: ParagraphSize._3
+        size: ParagraphSize._3,
     };
 
     public static displayName: string = "Paragraph";
 
     protected handledProps: HandledProps<ParagraphHandledProps> = {
         size: void 0,
-        managedClasses: void 0
+        managedClasses: void 0,
     };
 
     /**

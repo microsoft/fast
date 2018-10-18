@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
     HypertextClassNameContract,
-    ManagedClasses
+    ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 
 export interface HypertextManagedClasses

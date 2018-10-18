@@ -16,12 +16,12 @@ import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-
 
 export enum ItemConstraints {
     minItems = "minItems",
-    maxItems = "maxItems"
+    maxItems = "maxItems",
 }
 
 export enum ArrayAction {
     add = "add",
-    remove = "remove"
+    remove = "remove",
 }
 
 export interface ArrayMenuItem {
@@ -96,7 +96,7 @@ class FormItemArray extends React.Component<
         this.optionMenuTriggerRef = React.createRef();
 
         this.state = {
-            hideOptionMenu: true
+            hideOptionMenu: true,
         };
     }
 
@@ -230,7 +230,7 @@ class FormItemArray extends React.Component<
                 generateExampleData(
                     this.props.schema,
                     `${this.props.schemaLocation}.items`
-                )
+                ),
             ]);
         } else {
             this.props.onChange(
@@ -271,7 +271,7 @@ class FormItemArray extends React.Component<
                 const options: SortableConfig = {
                     key: `item-${index}`,
                     index,
-                    value
+                    value,
                 };
 
                 return React.createElement(
@@ -298,7 +298,7 @@ class FormItemArray extends React.Component<
     private generateArrayLinks(): JSX.Element {
         const arraySections: string[] = getArrayLinks(this.props.data);
         const props: any = Object.assign({}, sortingProps, {
-            onSortEnd: this.handleSort
+            onSortEnd: this.handleSort,
         });
 
         if (arraySections.length > 0) {
@@ -344,7 +344,7 @@ class FormItemArray extends React.Component<
                 this.props.schema,
                 action,
                 index
-            )
+            ),
         };
     }
 

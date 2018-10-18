@@ -2,7 +2,7 @@ import * as React from "react";
 
 export enum Themes {
     light = "light",
-    dark = "dark"
+    dark = "dark",
 }
 
 export interface ThemeProps {

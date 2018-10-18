@@ -12,7 +12,7 @@ describe("Glyph string conversion", () => {
     it("should generate a file in a default location", () => {
         glyphFolderPath = path.resolve(__dirname, "./__tests__/");
         const glyphConverter: ConvertGlyphs = new ConvertGlyphs({
-            glyphFolderPath
+            glyphFolderPath,
         } as IConvertGlyphOptions);
 
         // This will throw an error if the file does not exist
@@ -30,13 +30,13 @@ describe("Glyph string conversion", () => {
         );
         const glyphConverter: ConvertGlyphs = new ConvertGlyphs({
             glyphFolderPath,
-            indexFileDestination
+            indexFileDestination,
         } as IConvertGlyphOptions);
     });
     it("should have declared variables and exported strings", () => {
         glyphFolderPath = path.resolve(__dirname, "./__tests__/");
         const glyphConverter: ConvertGlyphs = new ConvertGlyphs({
-            glyphFolderPath
+            glyphFolderPath,
         } as IConvertGlyphOptions);
 
         expect(glyphConverter.getIndexFileContents().match(/const/g).length).toEqual(6);
@@ -45,7 +45,7 @@ describe("Glyph string conversion", () => {
     it("should generate strings in a specified format", () => {
         glyphFolderPath = path.resolve(__dirname, "./__tests__/");
         const glyphConverter: ConvertGlyphs = new ConvertGlyphs({
-            glyphFolderPath
+            glyphFolderPath,
         } as IConvertGlyphOptions);
 
         expect(
@@ -58,7 +58,7 @@ describe("Glyph string conversion", () => {
         glyphFolderPath = path.resolve(__dirname, "./__tests__/");
         const glyphConverter: ConvertGlyphs = new ConvertGlyphs({
             glyphFolderPath,
-            indexFileType: "ts"
+            indexFileType: "ts",
         } as IConvertGlyphOptions);
     });
 });

@@ -3,18 +3,18 @@ import { Subtract } from "utility-types";
 import {
     ButtonHandledProps as BaseButtonHandledProps,
     ButtonManagedClasses as BaseButtonManagedClasses,
-    ButtonUnhandledProps as BaseButtonUnhandledProps
+    ButtonUnhandledProps as BaseButtonUnhandledProps,
 } from "@microsoft/fast-components-react-base";
 import {
     ButtonClassNameContract,
-    ManagedClasses
+    ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 
 export enum ButtonAppearance {
     justified = "justified",
     lightweight = "lightweight",
     outline = "outline",
-    primary = "primary"
+    primary = "primary",
 }
 
 export interface ButtonManagedClasses extends ManagedClasses<ButtonClassNameContract> {}

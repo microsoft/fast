@@ -4,7 +4,7 @@ import {
     PaneHandledProps,
     PaneProps,
     PaneResizeDirection,
-    PaneUnhandledProps
+    PaneUnhandledProps,
 } from "./pane.props";
 import { west } from "../row";
 import rafThrottle from "raf-throttle";
@@ -12,7 +12,7 @@ import { toPx } from "@microsoft/fast-jss-utilities";
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import Foundation, {
     FoundationProps,
-    HandledProps
+    HandledProps,
 } from "@microsoft/fast-components-foundation-react";
 import { canUseDOM } from "exenv-es6";
 import { joinClasses } from "../utilities";
@@ -51,7 +51,7 @@ export const paneStyleSheet: ComponentStyles<PaneClassNamesContract, undefined> 
         position: "relative",
         flex: "0 1 auto",
         display: "flex",
-        flexDirection: "column"
+        flexDirection: "column",
     },
     pane_resizeHandle: {
         position: "absolute",
@@ -65,31 +65,31 @@ export const paneStyleSheet: ComponentStyles<PaneClassNamesContract, undefined> 
         outline: "none",
         transform: "scale(.5, 1)",
         "&:hover": {
-            cursor: "ew-resize"
+            cursor: "ew-resize",
         },
         "&:active": {
             opacity: "1",
-            transform: "scale(1)"
-        }
+            transform: "scale(1)",
+        },
     },
     pane__resizeWest: {
         "& $pane_resizeHandle": {
-            left: "-4px"
-        }
+            left: "-4px",
+        },
     },
     pane__resizeEast: {
         "& $pane_resizeHandle": {
-            right: "-4px"
-        }
+            right: "-4px",
+        },
     },
     pane__overlay: {
         position: "absolute",
         height: "100%",
-        zIndex: "2"
+        zIndex: "2",
     },
     pane__hidden: {
-        display: "none"
-    }
+        display: "none",
+    },
 };
 
 export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneState> {
@@ -102,7 +102,7 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
         resizable: false,
         collapsed: false,
         overlay: false,
-        hidden: false
+        hidden: false,
     };
 
     /**
@@ -123,7 +123,7 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
         overlay: void 0,
         hidden: void 0,
         resizeFrom: void 0,
-        managedClasses: void 0
+        managedClasses: void 0,
     };
     /**
      * Stores a reference to the pane HTML element
@@ -136,7 +136,7 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
         this.state = {
             resizing: false,
             dragReference: null,
-            width: 300
+            width: 300,
         };
 
         this.onMouseMove = throttle(this.onMouseMove, 16);
@@ -249,7 +249,7 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
 
         this.setState({
             resizing: true,
-            dragReference: e.pageX
+            dragReference: e.pageX,
         });
     };
 
@@ -264,7 +264,7 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
 
         this.setState({
             resizing: false,
-            dragReference: null
+            dragReference: null,
         });
     };
 
@@ -284,7 +284,7 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
         }
 
         this.setState({
-            dragReference: e.pageX
+            dragReference: e.pageX,
         });
 
         this.setWidth(updatedWidth);
@@ -296,7 +296,7 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
 
     public setWidth(width: number): void {
         this.setState({
-            width
+            width,
         });
     }
 
@@ -322,7 +322,7 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
             pane__resizeEast,
             pane__resizeWest,
             pane__overlay,
-            pane__hidden
+            pane__hidden,
         }: PaneClassNamesContract = this.props.managedClasses;
         const resizeFrom: PaneResizeDirection = this.props.resizeFrom;
 

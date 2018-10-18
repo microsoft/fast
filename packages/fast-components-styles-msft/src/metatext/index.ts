@@ -2,7 +2,7 @@ import designSystemDefaults, { DesignSystem } from "../design-system";
 import {
     ComponentStyles,
     ComponentStyleSheet,
-    CSSRules
+    CSSRules,
 } from "@microsoft/fast-jss-manager";
 import { MetatextClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { get } from "lodash-es";
@@ -21,8 +21,8 @@ const styles: ComponentStyles<MetatextClassNameContract, DesignSystem> = (
     return {
         metatext: {
             ...applyTypeRampConfig("t7"),
-            color: Chroma.mix(backgroundColor, foregroundColor, 0.6).css()
-        }
+            color: Chroma.mix(backgroundColor, foregroundColor, 0.6).css(),
+        },
     };
 };
 

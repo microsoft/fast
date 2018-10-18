@@ -3,7 +3,7 @@ import { get } from "lodash-es";
 import { canUseDOM } from "exenv-es6";
 import {
     HorizontalOverflowClassNameContract,
-    ManagedClasses
+    ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { getClientRectWithMargin } from "@microsoft/fast-web-utilities";
 import { Direction } from "@microsoft/fast-application-utilities";
@@ -12,13 +12,13 @@ import {
     HorizontalOverflowHandledProps,
     HorizontalOverflowProps,
     HorizontalOverflowUnhandledProps,
-    ScrollChange
+    ScrollChange,
 } from "./horizontal-overflow.props";
 import throttle from "raf-throttle";
 
 export enum ButtonDirection {
     previous = "previous",
-    next = "next"
+    next = "next",
 }
 
 export interface HorizontalOverflowState {
@@ -35,7 +35,7 @@ class HorizontalOverflow extends Foundation<
     protected handledProps: HandledProps<HorizontalOverflowHandledProps> = {
         scrollDuration: void 0,
         managedClasses: void 0,
-        onScrollChange: void 0
+        onScrollChange: void 0,
     };
 
     private horizontalOverflowItemsRef: React.RefObject<HTMLUListElement>;
@@ -55,7 +55,7 @@ class HorizontalOverflow extends Foundation<
         this.throttled = throttle(this.onScrollChange);
 
         this.state = {
-            itemsHeight: 0
+            itemsHeight: 0,
         };
     }
 
@@ -73,7 +73,7 @@ class HorizontalOverflow extends Foundation<
                     style={{
                         height: `${this.state.itemsHeight}px`,
                         position: "relative",
-                        overflow: "hidden"
+                        overflow: "hidden",
                     }}
                 >
                     <ul
@@ -117,7 +117,7 @@ class HorizontalOverflow extends Foundation<
         const itemsHeight: number = this.getItemMaxHeight();
 
         this.setState({
-            itemsHeight
+            itemsHeight,
         });
 
         if (canUseDOM() && this.horizontalOverflowItemsRef.current) {
@@ -182,7 +182,7 @@ class HorizontalOverflow extends Foundation<
             whiteSpace: "nowrap",
             overflowX: "scroll",
             padding: 0,
-            margin: 0
+            margin: 0,
         };
     }
 
@@ -194,7 +194,7 @@ class HorizontalOverflow extends Foundation<
 
         if (itemsHeight !== this.state.itemsHeight) {
             this.setState({
-                itemsHeight
+                itemsHeight,
             });
         }
     };

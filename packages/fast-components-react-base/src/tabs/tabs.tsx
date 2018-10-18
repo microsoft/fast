@@ -3,27 +3,27 @@ import { get } from "lodash-es";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 import {
     ManagedClasses,
-    TabsClassNameContract
+    TabsClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
     TabsHandledProps,
     TabsManagedClasses,
     TabsProps,
-    TabsUnhandledProps
+    TabsUnhandledProps,
 } from "./tabs.props";
 
 export enum TabLocation {
     first,
     last,
     previous,
-    next
+    next,
 }
 
 export enum TabsSlot {
     tab = "tab",
     tabItem = "tab-item",
-    tabPanel = "tab-panel"
+    tabPanel = "tab-panel",
 }
 
 export interface TabsState {
@@ -42,7 +42,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
     ): null | TabsState {
         if (nextProps.activeId && nextProps.activeId !== prevState.activeId) {
             return {
-                activeId: nextProps.activeId
+                activeId: nextProps.activeId,
             };
         }
 
@@ -57,7 +57,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
         orientation: void 0,
         tabItemSlot: void 0,
         tabPanelSlot: void 0,
-        tabSlot: void 0
+        tabSlot: void 0,
     };
 
     /**
@@ -77,7 +77,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
                 ? this.props.activeId
                 : tabItems.length > 0
                     ? get(tabItems[0], "props.id")
-                    : ""
+                    : "",
         };
     }
 
@@ -158,7 +158,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
                 active: this.state.activeId === tabItem.props.id,
                 onClick: this.handleClick,
                 onKeyDown: this.handleKeyDown,
-                tabIndex: this.state.activeId !== tabItem.props.id ? -1 : 0
+                tabIndex: this.state.activeId !== tabItem.props.id ? -1 : 0,
             }
         );
     };
@@ -180,7 +180,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
                 key: tabItem.props.id,
                 id: tabItem.props.id,
                 "aria-labelledby": tabItem.props.id,
-                active: this.state.activeId === tabItem.props.id
+                active: this.state.activeId === tabItem.props.id,
             }
         );
     };
@@ -191,7 +191,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
     private handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
         if (!this.props.activeId) {
             this.setState({
-                activeId: e.currentTarget.getAttribute("aria-controls")
+                activeId: e.currentTarget.getAttribute("aria-controls"),
             });
         } else if (typeof this.props.onUpdate === "function") {
             this.props.onUpdate(e.currentTarget.getAttribute("aria-controls"));
@@ -250,7 +250,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
 
         if (!this.props.activeId) {
             this.setState({
-                activeId
+                activeId,
             });
 
             (Array.from(this.tabListRef.current.children)[

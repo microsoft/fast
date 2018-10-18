@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
     ManagedClasses,
-    SubheadingClassNameContract
+    SubheadingClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 
 export enum SubheadingSize {
@@ -10,7 +10,7 @@ export enum SubheadingSize {
     _3 = 3,
     _4 = 4,
     _5 = 5,
-    _6 = 6
+    _6 = 6,
 }
 
 export enum SubheadingTag {
@@ -20,7 +20,7 @@ export enum SubheadingTag {
     h4 = "h4",
     h5 = "h5",
     h6 = "h6",
-    p = "p"
+    p = "p",
 }
 
 export interface SubheadingManagedClasses

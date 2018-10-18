@@ -81,7 +81,7 @@ function manageJss<S, C>(styles?: ComponentStyles<S, C>): <T>(BaseComponent: any
 
                 if (Boolean(styles)) {
                     state.styleSheet = jss.createStyleSheet(styles, {
-                        link: true
+                        link: true,
                     });
                 }
 

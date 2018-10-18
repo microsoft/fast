@@ -8,7 +8,7 @@ import MSFTHeading, {
     HeadingProps as MSFTHeadingProps,
     HeadingSize,
     HeadingTag,
-    HeadingUnhandledProps
+    HeadingUnhandledProps,
 } from "./heading";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, HeadingStyles } from "@microsoft/fast-components-styles-msft";
@@ -38,5 +38,5 @@ export {
     HeadingTag,
     HeadingClassNameContract,
     HeadingHandledProps,
-    HeadingUnhandledProps
+    HeadingUnhandledProps,
 };

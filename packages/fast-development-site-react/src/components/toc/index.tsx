@@ -3,7 +3,7 @@ import { DevSiteDesignSystem } from "../design-system";
 import manageJss, {
     ComponentStyles,
     ManagedClasses,
-    ManagedJSSProps
+    ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import TocItem from "./toc-item";
@@ -24,9 +24,9 @@ const style: ComponentStyles<TocManagedClasses, DevSiteDesignSystem> = {
         padding: "0",
         fontSize: toPx(14),
         "&[aria-hidden='true']": {
-            display: "none"
-        }
-    }
+            display: "none",
+        },
+    },
 };
 
 class Toc extends React.Component<TocProps & ManagedClasses<TocManagedClasses>, {}> {

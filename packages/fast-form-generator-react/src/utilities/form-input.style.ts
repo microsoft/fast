@@ -3,7 +3,7 @@ import {
     Direction,
     ellipsis,
     localizeSpacing,
-    toPx
+    toPx,
 } from "@microsoft/fast-jss-utilities";
 
 /**
@@ -49,7 +49,7 @@ export const colors: any = {
     hover: "rgba(0,0,0, .3)",
     border: "rgba(0,0,0, .2)",
     lightBorder: "rgba(0,0,0, .1)",
-    menuGray: "#EBEBEB"
+    menuGray: "#EBEBEB",
 };
 
 export function localizePadding(
@@ -61,7 +61,7 @@ export function localizePadding(
     return {
         padding: localizeSpacing(Direction.ltr)(
             `${toPx(top)} ${toPx(right)} ${toPx(bottom)} ${toPx(left)}`
-        )
+        ),
     };
 }
 
@@ -70,7 +70,7 @@ export function boxShadow(config: BoxShadowConfig): CSSRules<{}> {
         boxShadow: `${config.inset ? "inset " : ""}
         ${toPx(config.offsetX)} ${toPx(config.offsetY)} ${toPx(config.blurRadius)} ${toPx(
             config.spreadRadius
-        )} ${config.color}`
+        )} ${config.color}`,
     };
 }
 
@@ -84,11 +84,11 @@ export function insetStrongBoxShadow(color: string): CSSRules<{}> {
         blurRadius: 0,
         spreadRadius: 1,
         color,
-        inset: true
+        inset: true,
     };
 
     return {
-        ...boxShadow(shadow)
+        ...boxShadow(shadow),
     };
 }
 
@@ -99,11 +99,11 @@ export function insetHoverBoxShadow(): CSSRules<{}> {
         blurRadius: 2,
         spreadRadius: 0,
         color: colors.hover,
-        inset: true
+        inset: true,
     };
 
     return {
-        ...boxShadow(shadow)
+        ...boxShadow(shadow),
     };
 }
 
@@ -113,13 +113,13 @@ export function applyLabelStyle(): CSSRules<{}> {
         lineHeight: toPx(16),
         fontSize: toPx(14),
         marginRight: toPx(16),
-        ...ellipsis()
+        ...ellipsis(),
     };
 }
 
 export function applyInputContainerStyle(): CSSRules<{}> {
     return {
-        height: toPx(36)
+        height: toPx(36),
     };
 }
 
@@ -130,7 +130,7 @@ export function applyInputStyle(): CSSRules<{}> {
         blurRadius: 4,
         spreadRadius: 0,
         color: colors.boxShadow,
-        inset: true
+        inset: true,
     };
 
     return {
@@ -143,11 +143,11 @@ export function applyInputStyle(): CSSRules<{}> {
         border: "none",
         outline: "none",
         "&:hover": {
-            ...insetHoverBoxShadow()
+            ...insetHoverBoxShadow(),
         },
         "&:focus": {
-            ...insetStrongBoxShadow(colors.pink)
-        }
+            ...insetStrongBoxShadow(colors.pink),
+        },
     };
 }
 
@@ -156,7 +156,7 @@ export function applyWrapperStyle(): CSSRules<{}> {
         display: "flex",
         flexDirection: "row",
         minHeight: toPx(40),
-        alignItems: "center"
+        alignItems: "center",
     };
 }
 
@@ -168,7 +168,7 @@ export function applyCleanListStyle(): CSSRules<{}> {
         listStyle: "none",
         margin: "0",
         padding: "0",
-        listStylePosition: "outside"
+        listStylePosition: "outside",
     };
 }
 
@@ -179,8 +179,8 @@ export function applyHeaderStyle(): CSSRules<{}> {
         padding: `${toPx(20)} 0 0 0`,
         minHeight: toPx(40),
         "& h3": {
-            margin: toPx(0)
-        }
+            margin: toPx(0),
+        },
     };
 }
 
@@ -188,14 +188,14 @@ export function applyGlobalStyle(): CSSRules<{}> {
     return {
         'body > div > li[draggable="true"]': {
             ...listItem,
-            ...draggingStyles
-        }
+            ...draggingStyles,
+        },
     };
 }
 
 export function applyListItemStyle(): CSSRules<{}> {
     return {
-        "& li": listItem
+        "& li": listItem,
     };
 }
 
@@ -205,12 +205,12 @@ export const draggingStyles: CSSRules<{}> = {
     display: "flex",
     "&::after": {
         background: rightArrow,
-        right: toPx(0)
+        right: toPx(0),
     },
     "&::before": {
         background: lines,
-        left: toPx(0)
-    }
+        left: toPx(0),
+    },
 };
 
 export const listItem: CSSRules<{}> = {
@@ -229,15 +229,15 @@ export const listItem: CSSRules<{}> = {
         pointerEvents: "none",
         top: toPx(13),
         width: toPx(16),
-        height: toPx(16)
+        height: toPx(16),
     },
     "&::after": {
         background: rightArrow,
-        right: "0"
+        right: "0",
     },
     "&::before": {
         background: lines,
-        left: "0"
+        left: "0",
     },
     "& button": {
         fontSize: toPx(14),
@@ -245,7 +245,7 @@ export const listItem: CSSRules<{}> = {
         background: "transparent",
         textAlign: "left",
         marginLeft: toPx(25),
-        ...localizePadding(12, 18, 12, 1)
+        ...localizePadding(12, 18, 12, 1),
     },
     "& a": {
         textAlign: "left",
@@ -257,19 +257,19 @@ export const listItem: CSSRules<{}> = {
             display: "block",
             fontStyle: "italic",
             fontSize: toPx(13),
-            paddingTop: toPx(4)
-        }
-    }
+            paddingTop: toPx(4),
+        },
+    },
 };
 
 export function applyAriaHiddenStyles(): CSSRules<{}> {
     return {
         '&[aria-hidden="true"]': {
-            display: "none"
+            display: "none",
         },
         '&[aria-hidden="false"]': {
-            display: "block"
-        }
+            display: "block",
+        },
     };
 }
 
@@ -279,7 +279,7 @@ export function applyPopupMenuStyles(): CSSRules<{}> {
         offsetY: 1,
         blurRadius: 0,
         spreadRadius: 0,
-        color: colors.border
+        color: colors.border,
     };
 
     return {
@@ -303,17 +303,17 @@ export function applyPopupMenuStyles(): CSSRules<{}> {
                 ...ellipsis(),
                 lineHeight: toPx(16),
                 "&:focus": {
-                    outline: "none"
+                    outline: "none",
                 },
                 "&:hover": {
-                    backgroundColor: colors.grayBackground
-                }
+                    backgroundColor: colors.grayBackground,
+                },
             },
             "& > span": {
                 display: "block",
-                padding: toPx(12)
-            }
-        }
+                padding: toPx(12),
+            },
+        },
     };
 }
 
@@ -325,7 +325,7 @@ export const thickLine: CSSRules<{}> = {
         position: "relative",
         paddingBottom: toPx(3),
         display: "block",
-        ...ellipsis()
+        ...ellipsis(),
     },
     "&:hover, &:focus": {
         outline: "none",
@@ -338,10 +338,10 @@ export const thickLine: CSSRules<{}> = {
                 background: colors.pink,
                 width: "100%",
                 height: toPx(2),
-                bottom: "0"
-            }
-        }
-    }
+                bottom: "0",
+            },
+        },
+    },
 };
 
 export function applyPopupHeadingStyles(): CSSRules<{}> {
@@ -360,7 +360,7 @@ export function applyPopupHeadingStyles(): CSSRules<{}> {
                     color: colors.pink,
                     ...thickLine,
                     "&:hover": {
-                        cursor: "pointer"
+                        cursor: "pointer",
                     },
                     '&[aria-expanded="true"]': {
                         background: colors.menuGray,
@@ -371,16 +371,16 @@ export function applyPopupHeadingStyles(): CSSRules<{}> {
                         color: colors.black,
                         "&:hover, &:focus": {
                             "& > span::after": {
-                                display: "none"
-                            }
+                                display: "none",
+                            },
                         },
                         "& > span::after": {
-                            display: "none"
-                        }
-                    }
-                }
-            }
-        }
+                            display: "none",
+                        },
+                    },
+                },
+            },
+        },
     };
 }
 
@@ -394,7 +394,7 @@ export function applyInputBackplateStyle(): CSSRules<{}> {
         blurRadius: 0,
         spreadRadius: 2,
         color: colors.black,
-        inset: true
+        inset: true,
     };
 
     return {
@@ -406,8 +406,8 @@ export function applyInputBackplateStyle(): CSSRules<{}> {
         backgroundColor: "transparent",
         "&:focus, &:hover": {
             outline: "none",
-            ...boxShadow(shadow)
-        }
+            ...boxShadow(shadow),
+        },
     };
 }
 
@@ -418,7 +418,7 @@ export function applySelectInputStyles(): CSSRules<{}> {
         blurRadius: 4,
         spreadRadius: 0,
         color: colors.boxShadow,
-        inset: true
+        inset: true,
     };
 
     return {
@@ -433,14 +433,14 @@ export function applySelectInputStyles(): CSSRules<{}> {
         border: "none",
         outline: "none",
         "&:-ms-expand": {
-            display: "none"
+            display: "none",
         },
         "&:hover": {
-            ...insetHoverBoxShadow()
+            ...insetHoverBoxShadow(),
         },
         "&:focus": {
-            ...insetStrongBoxShadow(colors.pink)
-        }
+            ...insetStrongBoxShadow(colors.pink),
+        },
     };
 }
 
@@ -456,16 +456,16 @@ export function applySelectSpanStyles(): CSSRules<{}> {
             borderRadius: toPx(2),
             width: toPx(1),
             height: toPx(10),
-            background: colors.black
+            background: colors.black,
         },
         "&::before": {
             right: toPx(15),
-            transform: "rotate(45deg)"
+            transform: "rotate(45deg)",
         },
         "&::after": {
             right: toPx(22),
-            transform: "rotate(-45deg)"
-        }
+            transform: "rotate(-45deg)",
+        },
     };
 }
 
@@ -489,7 +489,7 @@ export function applyAddItemStyle(): CSSRules<{}> {
             height: toPx(16),
             left: "0",
             top: "50%",
-            transform: "translateY(-50%)"
-        }
+            transform: "translateY(-50%)",
+        },
     };
 }

@@ -5,7 +5,7 @@ import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-
 import { ButtonHandledProps, ButtonUnhandledProps } from "./button.props";
 import {
     ButtonClassNameContract,
-    ManagedClasses
+    ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
@@ -13,7 +13,7 @@ import {
  */
 export enum ButtonHTMLTags {
     a = "a",
-    button = "button"
+    button = "button",
 }
 
 class Button extends Foundation<ButtonHandledProps, ButtonUnhandledProps, {}> {
@@ -22,7 +22,7 @@ class Button extends Foundation<ButtonHandledProps, ButtonUnhandledProps, {}> {
     protected handledProps: HandledProps<ButtonHandledProps> = {
         disabled: void 0,
         href: void 0,
-        managedClasses: void 0
+        managedClasses: void 0,
     };
 
     /**

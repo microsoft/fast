@@ -6,11 +6,11 @@ import {
     ToggleHandledProps,
     ToggleManagedClasses,
     ToggleProps,
-    ToggleUnhandledProps
+    ToggleUnhandledProps,
 } from "./toggle.props";
 import {
     ManagedClasses,
-    ToggleClassNameContract
+    ToggleClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
@@ -38,7 +38,7 @@ class Toggle extends Foundation<ToggleHandledProps, ToggleUnhandledProps, Toggle
             nextProps.selected !== prevState.selected
         ) {
             return {
-                selected: nextProps.selected
+                selected: nextProps.selected,
             };
         }
 
@@ -54,7 +54,7 @@ class Toggle extends Foundation<ToggleHandledProps, ToggleUnhandledProps, Toggle
         selectedMessage: void 0,
         statusMessageId: void 0,
         unselectedMessage: void 0,
-        onChange: void 0
+        onChange: void 0,
     };
 
     /**
@@ -64,7 +64,7 @@ class Toggle extends Foundation<ToggleHandledProps, ToggleUnhandledProps, Toggle
         super(props);
 
         this.state = {
-            selected: this.props.selected || false
+            selected: this.props.selected || false,
         };
     }
 

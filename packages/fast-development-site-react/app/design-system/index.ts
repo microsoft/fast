@@ -5,7 +5,7 @@ export interface DesignSystem {
 }
 
 const designSystemDefaults: DesignSystem = {
-    ltr: Direction.ltr
+    ltr: Direction.ltr,
 };
 
 export default designSystemDefaults;

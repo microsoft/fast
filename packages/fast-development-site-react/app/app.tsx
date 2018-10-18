@@ -11,7 +11,7 @@ import Site, {
     SiteMenuItem,
     SiteTitle,
     SiteTitleBrand,
-    Theme
+    Theme,
 } from "../src";
 import designSystemDefaults, { Direction } from "./design-system";
 import Button from "./components/button/button";
@@ -31,7 +31,7 @@ export interface AppState {
 const themes: Theme[] = [
     { id: "Foo", displayName: "Foo", background: "#000" },
     { id: "Bar", displayName: "Bar", background: "#FFF" },
-    { id: "Rumple", displayName: "Rumple", background: "#333" }
+    { id: "Rumple", displayName: "Rumple", background: "#333" },
 ];
 
 export default class App extends React.Component<{}, AppState> {
@@ -39,13 +39,13 @@ export default class App extends React.Component<{}, AppState> {
         {
             name: ParagraphSchema.title,
             component: Paragraph,
-            schema: ParagraphSchema
+            schema: ParagraphSchema,
         },
         {
             name: ButtonSchema.title,
             component: Button,
-            schema: ButtonSchema
-        }
+            schema: ButtonSchema,
+        },
     ];
 
     private frameworks: Framework[];
@@ -57,7 +57,7 @@ export default class App extends React.Component<{}, AppState> {
 
         this.state = {
             direction: Direction.ltr,
-            theme: "Foo"
+            theme: "Foo",
         };
     }
 
@@ -94,13 +94,13 @@ export default class App extends React.Component<{}, AppState> {
             { text: "fee" },
             { text: "fi" },
             { text: "fo" },
-            { text: "fum" }
+            { text: "fum" },
         ];
         const categoryObj: SiteCategoryProps = {
             slot: "category",
             name: "Paragraph Nested",
             schema: ParagraphSchema,
-            component: Paragraph
+            component: Paragraph,
         };
 
         return (
@@ -114,14 +114,14 @@ export default class App extends React.Component<{}, AppState> {
         const componentObj: any[] = [
             { text: "itsy" },
             { text: "bitsy" },
-            { text: "spider" }
+            { text: "spider" },
         ];
         const categoryObj: SiteCategoryProps = {
             slot: "category",
             name: "Paragraph",
             schema: ParagraphSchema,
             component: Paragraph,
-            status: Status.alpha
+            status: Status.alpha,
         };
 
         return (
@@ -137,21 +137,21 @@ export default class App extends React.Component<{}, AppState> {
             slot: "category",
             schema: ButtonSchema,
             component: Button,
-            status: Status.released
+            status: Status.released,
         };
         const componentObj1: any[] = [
             { children: "foo" },
             { children: "bar" },
-            { children: "bat" }
+            { children: "bat" },
         ];
         const categoryObj1: Partial<SiteCategoryProps> = {
             ...categoryBase,
-            name: "Button"
+            name: "Button",
         };
         const componentObj2: any[] = [{ children: "lorem" }, { children: "ipsum" }];
         const categoryObj2: Partial<SiteCategoryProps> = {
             ...categoryBase,
-            name: "Other Button"
+            name: "Other Button",
         };
 
         return (
@@ -216,7 +216,7 @@ export default class App extends React.Component<{}, AppState> {
                 <SiteCategoryIcon slot="category-icon">
                     <div
                         dangerouslySetInnerHTML={{
-                            __html: glyphBuildingblocks
+                            __html: glyphBuildingblocks,
                         }}
                     />
                 </SiteCategoryIcon>
@@ -235,13 +235,13 @@ export default class App extends React.Component<{}, AppState> {
 
     private handleUpdateDirection = (direction: Direction): void => {
         this.setState({
-            direction
+            direction,
         });
     };
 
     private handleUpdateTheme = (theme: string): void => {
         this.setState({
-            theme
+            theme,
         });
     };
 }

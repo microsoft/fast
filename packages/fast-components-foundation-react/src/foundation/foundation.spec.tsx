@@ -150,7 +150,7 @@ describe("getRef", () => {
         getRefTestComponent.referenceStore = {
             string: true,
             0: true,
-            stringAndNumber: [true]
+            stringAndNumber: [true],
         };
 
         expect(getRefTestComponent.getRef("string")).toBe(true);
@@ -189,7 +189,7 @@ describe("unhandledProps", () => {
         object: {},
         number: 1,
         undefined: void 0,
-        null: null
+        null: null,
     };
 
     const dirtyProps: TestComponentUnhandledProps = {
@@ -200,7 +200,7 @@ describe("unhandledProps", () => {
         objectDirty: {},
         numberDirty: 1,
         undefinedDirty: void 0,
-        nullDirty: null
+        nullDirty: null,
     };
 
     class UnhandledPropsTestComponent extends Foundation<
@@ -215,7 +215,7 @@ describe("unhandledProps", () => {
             object: void 0,
             number: void 0,
             undefined: void 0,
-            null: void 0
+            null: void 0,
         };
 
         public render(): JSX.Element {
@@ -401,7 +401,7 @@ describe("withSlot", () => {
             <span slot="test" key={1} />,
             <span slot="test" key={2} />,
             <span slot="test" key={3} />,
-            <span slot="foo" key={4} />
+            <span slot="foo" key={4} />,
         ];
 
         const Component: WithSlotTestComponent = new ReactTestUtils.renderIntoDocument(
@@ -481,7 +481,7 @@ describe("withoutSlot", () => {
             <span slot="test" key={1} />,
             <span slot="test" key={2} />,
             <span slot="test" key={3} />,
-            <span slot="foo" key={4} />
+            <span slot="foo" key={4} />,
         ];
 
         const Component: WithoutSlotTestComponent = new ReactTestUtils.renderIntoDocument(

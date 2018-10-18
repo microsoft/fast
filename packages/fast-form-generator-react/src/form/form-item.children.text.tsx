@@ -6,5 +6,5 @@ export const reactChildrenStringSchema: any = {
     title: "Text",
     description: "A string React child's schema definition.",
     id: "react-child-string",
-    type: "string"
+    type: "string",
 };

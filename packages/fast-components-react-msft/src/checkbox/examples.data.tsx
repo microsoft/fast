@@ -16,9 +16,9 @@ export default {
             id: "label",
             props: {
                 slot: CheckboxSlot.label,
-                children: "Checkbox"
-            }
-        }
+                children: "Checkbox",
+            },
+        },
     },
     data: [
         {
@@ -27,9 +27,9 @@ export default {
                 id: "label",
                 props: {
                     slot: CheckboxSlot.label,
-                    children: "Default"
-                }
-            }
+                    children: "Default",
+                },
+            },
         },
         {
             inputId: "checkbox2",
@@ -38,9 +38,9 @@ export default {
                 id: "label",
                 props: {
                     slot: CheckboxSlot.label,
-                    children: "Checked (controlled)"
-                }
-            }
+                    children: "Checked (controlled)",
+                },
+            },
         },
         {
             inputId: "checkbox3",
@@ -49,9 +49,9 @@ export default {
                 id: "label",
                 props: {
                     slot: CheckboxSlot.label,
-                    children: "Disabled"
-                }
-            }
+                    children: "Disabled",
+                },
+            },
         },
         {
             inputId: "checkbox4",
@@ -60,9 +60,9 @@ export default {
                 id: "label",
                 props: {
                     slot: CheckboxSlot.label,
-                    children: "Indeterminate"
-                }
-            }
+                    children: "Indeterminate",
+                },
+            },
         },
         {
             inputId: "checkbox5",
@@ -72,9 +72,9 @@ export default {
                 id: "label",
                 props: {
                     slot: CheckboxSlot.label,
-                    children: "Indeterminate checked (controlled)"
-                }
-            }
-        }
-    ]
+                    children: "Indeterminate checked (controlled)",
+                },
+            },
+        },
+    ],
 } as ComponentFactoryExample<CheckboxProps>;

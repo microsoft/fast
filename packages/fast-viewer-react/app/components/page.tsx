@@ -9,8 +9,8 @@ jss.setup(preset());
 
 const styles: any = {
     wrapper: {
-        width: (themeStyle: any): string => themeStyle.width
-    }
+        width: (themeStyle: any): string => themeStyle.width,
+    },
 };
 
 const stylesheet: any = jss.createStyleSheet(styles, { link: true }).update(theme);
@@ -30,16 +30,16 @@ class Page extends React.Component<{}, PageState> {
             data: {
                 getStyles: this.onGetStyles,
                 onChange: this.handleTextUpdate,
-                textValue: ""
+                textValue: "",
             },
             exampleStyles: "",
             viewerConfig: {
                 browser: true,
                 height: {
-                    min: 200
-                }
+                    min: 200,
+                },
             },
-            width: 100
+            width: 100,
         };
     }
 
@@ -63,16 +63,16 @@ class Page extends React.Component<{}, PageState> {
                 data: {
                     getStyles: this.onGetStyles,
                     onChange: this.handleTextUpdate,
-                    textValue: value.target.value
-                }
+                    textValue: value.target.value,
+                },
             });
         } else {
             this.setState({
                 data: {
                     getStyles: this.onGetStyles,
                     onChange: this.handleTextUpdate,
-                    textValue: value
-                }
+                    textValue: value,
+                },
             });
         }
     };
@@ -82,8 +82,8 @@ class Page extends React.Component<{}, PageState> {
             data: {
                 getStyles: this.onGetStyles,
                 onChange: this.handleTextUpdate,
-                textValue: value
-            }
+                textValue: value,
+            },
         });
     };
 

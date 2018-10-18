@@ -2,7 +2,7 @@ import {
     adjustContrast,
     contrast,
     ContrastFunction,
-    ensureContrast
+    ensureContrast,
 } from "@microsoft/fast-colors";
 import { clamp, memoize } from "lodash-es";
 
@@ -43,7 +43,7 @@ export enum WCAGElementContrastRatios {
     /**
      * The contrast ratio for large size text elements and UI elements 3px or greater
      */
-    large = 3
+    large = 3,
 }
 
 /**

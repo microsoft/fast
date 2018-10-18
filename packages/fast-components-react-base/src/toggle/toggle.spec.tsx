@@ -5,7 +5,7 @@ import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import {
     generateSnapshots,
-    SnapshotTestSuite
+    SnapshotTestSuite,
 } from "@microsoft/fast-jest-snapshots-react";
 import Toggle, {
     ToggleClassNameContract,
@@ -13,7 +13,7 @@ import Toggle, {
     ToggleManagedClasses,
     ToggleProps,
     ToggleState,
-    ToggleUnhandledProps
+    ToggleUnhandledProps,
 } from "./toggle";
 
 /*
@@ -31,14 +31,14 @@ describe("toggle", (): void => {
         toggle_label: "toggle-label-class",
         toggle_toggleButton: "toggle-wrapper-class",
         toggle_input: "toggle-input-class",
-        toggle_stateIndicator: "toggle-button-class"
+        toggle_stateIndicator: "toggle-button-class",
     };
     const handledProps: ToggleHandledProps = {
         managedClasses,
         id: "id",
         selectedMessage: "selected-message",
         statusMessageId: "status-message-id",
-        unselectedMessage: "unselected-message"
+        unselectedMessage: "unselected-message",
     };
 
     const inputSelector: string = `.${managedClasses.toggle_input}`;
@@ -63,7 +63,7 @@ describe("toggle", (): void => {
 
     test("should implement unhandledProps", () => {
         const unhandledProps: ToggleUnhandledProps = {
-            "aria-label": "true"
+            "aria-label": "true",
         };
 
         const props: ToggleProps = { ...handledProps, ...unhandledProps };

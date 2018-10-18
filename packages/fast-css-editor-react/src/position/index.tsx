@@ -5,14 +5,14 @@ import style, { CSSPositionClassNameContract } from "./position.style";
 
 export enum PositionValue {
     static = "static",
-    absolute = "absolute"
+    absolute = "absolute",
 }
 
 export enum Location {
     top = "top",
     left = "left",
     right = "right",
-    bottom = "bottom"
+    bottom = "bottom",
 }
 
 export interface LocationsMappedToClassNames {
@@ -102,21 +102,22 @@ class CSSPosition extends React.Component<
         [
             {
                 location: Location.top,
-                className: this.props.managedClasses.absoluteInput_row_center__activeTop
+                className: this.props.managedClasses.absoluteInput_row_center__activeTop,
             },
             {
                 location: Location.bottom,
                 className: this.props.managedClasses
-                    .absoluteInput_row_center__activeBottom
+                    .absoluteInput_row_center__activeBottom,
             },
             {
                 location: Location.left,
-                className: this.props.managedClasses.absoluteInput_row_center__activeLeft
+                className: this.props.managedClasses.absoluteInput_row_center__activeLeft,
             },
             {
                 location: Location.right,
-                className: this.props.managedClasses.absoluteInput_row_center__activeRight
-            }
+                className: this.props.managedClasses
+                    .absoluteInput_row_center__activeRight,
+            },
         ].forEach(
             (locationsMappedToClassNames: LocationsMappedToClassNames): void => {
                 classNames = this.props[locationsMappedToClassNames.location]
@@ -137,7 +138,7 @@ class CSSPosition extends React.Component<
                 Location.top,
                 Location.left,
                 Location.right,
-                Location.bottom
+                Location.bottom,
             ],
             e.target.dataset.location,
             e.target.value

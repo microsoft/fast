@@ -1,20 +1,20 @@
 import * as React from "react";
 import {
     CaptionClassNameContract,
-    ManagedClasses
+    ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 import { Subtract } from "utility-types";
 
 export enum CaptionSize {
     _1 = 1,
-    _2 = 2
+    _2 = 2,
 }
 
 export enum CaptionTag {
     p = "p",
     span = "span",
     caption = "caption",
-    figcaption = "figcaption"
+    figcaption = "figcaption",
 }
 
 export interface CaptionManagedClasses extends ManagedClasses<CaptionClassNameContract> {}

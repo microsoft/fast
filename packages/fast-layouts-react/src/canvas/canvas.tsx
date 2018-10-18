@@ -3,11 +3,11 @@ import { CanvasHandledProps, CanvasProps, CanvasUnhandledProps } from "./canvas.
 import manageJss, {
     ComponentStyles,
     ManagedClasses,
-    ManagedJSSProps
+    ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
 import Foundation, {
     FoundationProps,
-    HandledProps
+    HandledProps,
 } from "@microsoft/fast-components-foundation-react";
 
 export interface CanvasClassNamesContract {
@@ -17,8 +17,8 @@ export interface CanvasClassNamesContract {
 export const canvasStyleSheet: ComponentStyles<CanvasClassNamesContract, undefined> = {
     canvas: {
         flex: "1",
-        overflow: "hidden"
-    }
+        overflow: "hidden",
+    },
 };
 
 /**
@@ -29,7 +29,7 @@ export class Canvas extends Foundation<CanvasHandledProps, CanvasUnhandledProps,
      * Default props for the Canvas component
      */
     public static defaultProps: CanvasHandledProps = {
-        minWidth: 300
+        minWidth: 300,
     };
 
     /**
@@ -37,7 +37,7 @@ export class Canvas extends Foundation<CanvasHandledProps, CanvasUnhandledProps,
      */
     protected handledProps: HandledProps<CanvasProps> = {
         minWidth: void 0,
-        managedClasses: void 0
+        managedClasses: void 0,
     };
 
     /**
@@ -45,7 +45,7 @@ export class Canvas extends Foundation<CanvasHandledProps, CanvasUnhandledProps,
      */
     public renderStyleAttribute(): object {
         return {
-            minWidth: `${this.props.minWidth}px`
+            minWidth: `${this.props.minWidth}px`,
         };
     }
 

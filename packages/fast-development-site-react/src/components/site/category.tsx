@@ -12,7 +12,7 @@ export interface SiteCategoryProps {
 export enum Status {
     released = "Released",
     alpha = "Alpha",
-    beta = "Beta"
+    beta = "Beta",
 }
 
 class SiteCategory extends React.Component<SiteCategoryProps, {}> {

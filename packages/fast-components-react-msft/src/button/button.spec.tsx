@@ -9,7 +9,7 @@ import {
     ButtonAppearance,
     ButtonHandledProps,
     ButtonProps,
-    ButtonUnhandledProps
+    ButtonUnhandledProps,
 } from "./index";
 
 /*
@@ -48,11 +48,11 @@ describe("button", (): void => {
 
     test("should accept unhandledProps", () => {
         const handledProps: ButtonHandledProps = {
-            href
+            href,
         };
 
         const unhandledProps: ButtonUnhandledProps = {
-            "aria-hidden": true
+            "aria-hidden": true,
         };
 
         const props: ButtonProps = { ...handledProps, ...unhandledProps };
@@ -104,7 +104,7 @@ describe("button", (): void => {
         const props: ButtonHandledProps = {
             appearance: ButtonAppearance.lightweight,
             href: "#",
-            children: ["foo", beforeSlotExample]
+            children: ["foo", beforeSlotExample],
         };
 
         const rendered: any = mount(<MSFTButton {...props} />);
@@ -117,7 +117,7 @@ describe("button", (): void => {
         const props: ButtonHandledProps = {
             appearance: ButtonAppearance.lightweight,
             href: "#",
-            children: ["foo", afterSlotExample]
+            children: ["foo", afterSlotExample],
         };
 
         const rendered: any = mount(<MSFTButton {...props} />);

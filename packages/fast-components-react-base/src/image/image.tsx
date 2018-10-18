@@ -5,15 +5,15 @@ import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-
 import {
     ImageHandledProps,
     ImageManagedClasses,
-    ImageUnhandledProps
+    ImageUnhandledProps,
 } from "./image.props";
 import {
     ImageClassNameContract,
-    ManagedClasses
+    ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 
 export enum ImageSlot {
-    source = "source"
+    source = "source",
 }
 
 class Image extends Foundation<ImageHandledProps, ImageUnhandledProps, {}> {
@@ -24,7 +24,7 @@ class Image extends Foundation<ImageHandledProps, ImageUnhandledProps, {}> {
         alt: void 0,
         sizes: void 0,
         src: void 0,
-        srcSet: void 0
+        srcSet: void 0,
     };
 
     /**

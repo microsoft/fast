@@ -14,8 +14,8 @@ const columnTestStyles: ComponentStyles<ColumnClassNamesContract, undefined> = {
         backgroundColor: `rgba(0, 120, 212, 0.2)`,
         border: `2px solid rgba(0, 120, 212, 0.2)`,
         minHeight: "30px",
-        margin: "4px 0"
-    }
+        margin: "4px 0",
+    },
 };
 
 /**

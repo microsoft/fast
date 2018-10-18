@@ -23,7 +23,7 @@ export function getClientRectWithMargin(element: HTMLElement): ClientRectWithMar
         top: rect.top,
         bottom: rect.bottom,
         left: rect.left,
-        right: rect.right
+        right: rect.right,
     };
 
     clone.width += convertStylePropertyPixelsToNumber(style, "margin-left");

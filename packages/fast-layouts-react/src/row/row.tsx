@@ -6,17 +6,17 @@ import {
     RowHandledProps,
     RowProps,
     RowResizeDirection,
-    RowUnhandledProps
+    RowUnhandledProps,
 } from "./row.props";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import manageJss, {
     ComponentStyles,
     ManagedClasses,
-    ManagedJSSProps
+    ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
 import Foundation, {
     FoundationProps,
-    HandledProps
+    HandledProps,
 } from "@microsoft/fast-components-foundation-react";
 import { canUseDOM } from "exenv-es6";
 import { joinClasses } from "../utilities";
@@ -61,11 +61,11 @@ export const rowStyleSheet: ComponentStyles<RowClassNamesContract, undefined> = 
         position: "relative",
         display: "flex",
         flexDirection: "row",
-        flexBasis: "auto"
+        flexBasis: "auto",
     },
     row__fill: {
         flex: "1",
-        overflow: "hidden"
+        overflow: "hidden",
     },
     row_resizeHandle: {
         position: "absolute",
@@ -79,31 +79,31 @@ export const rowStyleSheet: ComponentStyles<RowClassNamesContract, undefined> = 
         outline: "none",
         transform: "scale(1, .5)",
         "&:hover": {
-            cursor: "ns-resize"
+            cursor: "ns-resize",
         },
         "&:active": {
             opacity: "1",
-            transform: "scale(1)"
-        }
+            transform: "scale(1)",
+        },
     },
     row__resizeNorth: {
         "& $row_resizeHandle": {
-            top: "-4px"
-        }
+            top: "-4px",
+        },
     },
     row__resizeSouth: {
         "& $row_resizeHandle": {
-            bottom: "-4px"
-        }
+            bottom: "-4px",
+        },
     },
     row__overlay: {
         position: "absolute",
         width: "100%",
-        zIndex: "2"
+        zIndex: "2",
     },
     row__hidden: {
-        display: "none"
-    }
+        display: "none",
+    },
 };
 
 /**
@@ -121,7 +121,7 @@ export class Row extends Foundation<
         resizable: false,
         collapsed: false,
         overlay: false,
-        hidden: false
+        hidden: false,
     };
 
     /**
@@ -140,7 +140,7 @@ export class Row extends Foundation<
         overlay: void 0,
         hidden: void 0,
         resizeFrom: void 0,
-        managedClasses: void 0
+        managedClasses: void 0,
     };
 
     /**
@@ -154,7 +154,7 @@ export class Row extends Foundation<
         this.state = {
             resizing: false,
             dragReference: null,
-            height: this.props.minHeight || 300
+            height: this.props.minHeight || 300,
         };
 
         this.onMouseMove = throttle(this.onMouseMove, 16);
@@ -248,7 +248,7 @@ export class Row extends Foundation<
 
         this.setState({
             resizing: true,
-            dragReference: e.pageY
+            dragReference: e.pageY,
         });
     };
 
@@ -263,7 +263,7 @@ export class Row extends Foundation<
 
         this.setState({
             resizing: false,
-            dragReference: null
+            dragReference: null,
         });
     };
 
@@ -286,7 +286,7 @@ export class Row extends Foundation<
         }
 
         this.setState({
-            dragReference: e.pageY
+            dragReference: e.pageY,
         });
 
         this.setHeight(updatedHeight);
@@ -294,7 +294,7 @@ export class Row extends Foundation<
 
     public setHeight(height: number): void {
         this.setState({
-            height
+            height,
         });
     }
 
@@ -321,7 +321,7 @@ export class Row extends Foundation<
             row__resizeNorth,
             row__resizeSouth,
             row__overlay,
-            row__hidden
+            row__hidden,
         }: RowClassNamesContract = this.props.managedClasses;
         const resizeFrom: RowResizeDirection = this.props.resizeFrom;
 

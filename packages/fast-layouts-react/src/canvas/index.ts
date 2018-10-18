@@ -7,7 +7,7 @@ import {
     CanvasManagedClasses,
     CanvasProps as BaseCanvasProps,
     canvasStyleSheet,
-    CanvasUnhandledProps
+    CanvasUnhandledProps,
 } from "./canvas";
 import { Subtract } from "utility-types";
 
@@ -24,5 +24,5 @@ export {
     CanvasProps,
     CanvasHandledProps,
     CanvasUnhandledProps,
-    CanvasClassNamesContract
+    CanvasClassNamesContract,
 };

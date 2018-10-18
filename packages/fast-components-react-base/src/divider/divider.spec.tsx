@@ -5,7 +5,7 @@ import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import {
     generateSnapshots,
-    SnapshotTestSuite
+    SnapshotTestSuite,
 } from "@microsoft/fast-jest-snapshots-react";
 import Divider, {
     DividerClassNameContract,
@@ -13,7 +13,7 @@ import Divider, {
     DividerManagedClasses,
     DividerProps,
     DividerRoles,
-    DividerUnhandledProps
+    DividerUnhandledProps,
 } from "./divider";
 
 describe("divider snapshot", (): void => {
@@ -24,7 +24,7 @@ configure({ adapter: new Adapter() });
 
 describe("divider", (): void => {
     const managedClasses: DividerClassNameContract = {
-        divider: "divider-class"
+        divider: "divider-class",
     };
 
     test("should have a displayName that matches the component name", () => {
@@ -39,10 +39,10 @@ describe("divider", (): void => {
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: DividerHandledProps = {
-            managedClasses
+            managedClasses,
         };
         const unhandledProps: DividerUnhandledProps = {
-            "aria-hidden": true
+            "aria-hidden": true,
         };
         const props: DividerProps = { ...handledProps, ...unhandledProps };
         const rendered: any = shallow(<Divider {...props} />);

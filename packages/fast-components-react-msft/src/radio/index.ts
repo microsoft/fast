@@ -6,7 +6,7 @@ import {
     RadioManagedClasses,
     RadioProps as BaseRadioProps,
     RadioSlot,
-    RadioUnhandledProps
+    RadioUnhandledProps,
 } from "@microsoft/fast-components-react-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, RadioStyles } from "@microsoft/fast-components-styles-msft";
@@ -30,5 +30,5 @@ export {
     RadioHandledProps,
     RadioUnhandledProps,
     RadioProps,
-    RadioSlot
+    RadioSlot,
 };

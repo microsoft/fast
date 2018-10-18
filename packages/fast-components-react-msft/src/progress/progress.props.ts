@@ -2,11 +2,11 @@ import * as React from "react";
 import {
     ProgressHandledProps as BaseProgressHandledProps,
     ProgressManagedClasses as BaseProgressManagedClasses,
-    ProgressUnhandledProps as BaseProgressUnhandledProps
+    ProgressUnhandledProps as BaseProgressUnhandledProps,
 } from "@microsoft/fast-components-react-base";
 import {
     ManagedClasses,
-    ProgressClassNameContract
+    ProgressClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 import { Subtract } from "utility-types";
 

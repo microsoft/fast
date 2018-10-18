@@ -12,16 +12,16 @@ import Site, {
     SiteProps,
     SiteTitle,
     SiteTitleBrand,
-    Theme
+    Theme,
 } from "@microsoft/fast-development-site-react";
 import manageJss, { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import {
     DesignSystem,
-    DesignSystemDefaults
+    DesignSystemDefaults,
 } from "@microsoft/fast-components-styles-msft";
 import {
     HypertextClassNameContract,
-    ManagedClasses
+    ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { glyphBuildingblocks } from "@microsoft/fast-glyphs-msft";
 import * as React from "react";
@@ -44,14 +44,14 @@ const hypertextStyles: ComponentStyles<HypertextClassNameContract, undefined> = 
         margin: "0 8px",
         display: "inline-block",
         lineHeight: "1",
-        whiteSpace: "nowrap"
-    }
+        whiteSpace: "nowrap",
+    },
 };
 
 enum ThemeName {
     dark = "dark",
     light = "light",
-    custom = "custom"
+    custom = "custom",
 }
 
 export interface AppState extends ColorConfig {
@@ -65,14 +65,14 @@ export default class App extends React.Component<{}, AppState> {
         {
             id: ThemeName.light,
             displayName: ThemeName.light,
-            background: DesignSystemDefaults.backgroundColor
+            background: DesignSystemDefaults.backgroundColor,
         },
         {
             id: ThemeName.dark,
             displayName: ThemeName.dark,
-            background: DesignSystemDefaults.foregroundColor
+            background: DesignSystemDefaults.foregroundColor,
         },
-        { id: ThemeName.custom, displayName: ThemeName.custom }
+        { id: ThemeName.custom, displayName: ThemeName.custom },
     ];
 
     constructor(props: {}) {
@@ -84,7 +84,7 @@ export default class App extends React.Component<{}, AppState> {
             backgroundColor: DesignSystemDefaults.backgroundColor,
             accentColor: DesignSystemDefaults.brandColor,
             theme: ThemeName.light,
-            density: DesignSystemDefaults.density
+            density: DesignSystemDefaults.density,
         };
     }
 
@@ -112,7 +112,7 @@ export default class App extends React.Component<{}, AppState> {
                     <SiteCategoryIcon slot="category-icon">
                         <div
                             dangerouslySetInnerHTML={{
-                                __html: glyphBuildingblocks
+                                __html: glyphBuildingblocks,
                             }}
                         />
                     </SiteCategoryIcon>
@@ -120,7 +120,7 @@ export default class App extends React.Component<{}, AppState> {
                 <SiteCategory slot={"category"} name={"Components"}>
                     {this.sortExamples(
                         componentFactory(examples, {
-                            ...this.generateDesignSystem()
+                            ...this.generateDesignSystem(),
                         })
                     )}
                 </SiteCategory>
@@ -129,7 +129,7 @@ export default class App extends React.Component<{}, AppState> {
                         style={{
                             display: "flex",
                             alignItems: "center",
-                            height: "100%"
+                            height: "100%",
                         }}
                     >
                         <Label style={{ marginRight: "8px" }}>density</Label>
@@ -167,7 +167,7 @@ export default class App extends React.Component<{}, AppState> {
             foregroundColor: this.state.foregroundColor,
             backgroundColor: this.state.backgroundColor,
             brandColor: this.state.accentColor,
-            density: this.state.density
+            density: this.state.density,
         };
 
         return Object.assign({}, DesignSystemDefaults, designSystem);
@@ -182,7 +182,7 @@ export default class App extends React.Component<{}, AppState> {
         }
 
         this.setState({
-            direction: newDir
+            direction: newDir,
         });
     };
 
@@ -197,12 +197,12 @@ export default class App extends React.Component<{}, AppState> {
                 backgroundColor:
                     theme === ThemeName.dark
                         ? DesignSystemDefaults.foregroundColor
-                        : DesignSystemDefaults.backgroundColor
+                        : DesignSystemDefaults.backgroundColor,
             });
         } else {
             this.setCustomThemeBackground(this.state.backgroundColor);
             this.setState({
-                theme
+                theme,
             });
         }
     };
@@ -226,7 +226,7 @@ export default class App extends React.Component<{}, AppState> {
 
     private handleDensityUpdate = (e: React.ChangeEvent<HTMLInputElement>): void => {
         this.setState({
-            density: parseInt(e.target.value, 10)
+            density: parseInt(e.target.value, 10),
         });
     };
     /**

@@ -8,6 +8,6 @@ const indexFileDestination: string = path.resolve(__dirname, "../dist/");
 fs.mkdir(indexFileDestination, () => {
     const glyphConverter: ConvertGlyphs = new ConvertGlyphs({
         glyphFolderPath,
-        indexFileDestination
+        indexFileDestination,
     } as ConvertGlyphConfig);
 });

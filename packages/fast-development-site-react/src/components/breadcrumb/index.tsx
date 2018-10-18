@@ -3,7 +3,7 @@ import { DevSiteDesignSystem } from "../design-system";
 import manageJss, {
     ComponentStyles,
     ManagedClasses,
-    ManagedJSSProps
+    ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
 import BreadcrumbItem from "./breadcrumb-item";
 
@@ -19,8 +19,8 @@ const style: ComponentStyles<BreadcrumbManagedClasses, DevSiteDesignSystem> = {
     breadcrumb: {},
     breadcrumb_list: {
         margin: "0",
-        padding: "0"
-    }
+        padding: "0",
+    },
 };
 
 class Breadcrumb extends React.Component<

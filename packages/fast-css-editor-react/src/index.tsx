@@ -33,7 +33,7 @@ class CSSEditor extends React.Component<CSSEditorProps, {}> {
                     Location.top,
                     Location.bottom,
                     Location.left,
-                    Location.right
+                    Location.right,
                 ]),
                 { ...position }
             )

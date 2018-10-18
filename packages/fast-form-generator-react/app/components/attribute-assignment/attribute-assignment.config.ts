@@ -5,8 +5,8 @@ export default {
         rows: [
             {
                 propertyNames: ["text"],
-                value: 1
-            }
-        ]
-    }
+                value: 1,
+            },
+        ],
+    },
 } as FormAttributeSettingsMappingToPropertyNames;

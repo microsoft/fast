@@ -8,13 +8,13 @@ import {
     SubheadingProps,
     SubheadingSize,
     SubheadingTag,
-    SubheadingUnhandledProps
+    SubheadingUnhandledProps,
 } from "./subheading.props";
 
 import { Typography } from "../typography";
 import {
     ManagedClasses,
-    SubheadingClassNameContract
+    SubheadingClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 
 class Subheading extends Foundation<
@@ -24,7 +24,7 @@ class Subheading extends Foundation<
 > {
     public static defaultProps: Partial<SubheadingProps> = {
         size: SubheadingSize._1,
-        tag: SubheadingTag.h3
+        tag: SubheadingTag.h3,
     };
 
     public static displayName: string = "Subheading";
@@ -32,7 +32,7 @@ class Subheading extends Foundation<
     protected handledProps: HandledProps<SubheadingHandledProps> = {
         size: void 0,
         managedClasses: void 0,
-        tag: void 0
+        tag: void 0,
     };
 
     private get size(): TypographySize {

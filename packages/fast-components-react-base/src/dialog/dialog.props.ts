@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
     DialogClassNameContract,
-    ManagedClasses
+    ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 
 export interface DialogUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}

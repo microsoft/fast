@@ -4,7 +4,7 @@ import { Link, withRouter } from "react-router-dom";
 import manageJss, {
     ComponentStyles,
     ManagedClasses,
-    ManagedJSSProps
+    ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
 import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
 
@@ -35,21 +35,21 @@ const styles: ComponentStyles<
                 bottom: toPx(-1),
                 borderRadius: `${toPx(2)} ${toPx(2)} 0 0`,
                 height: toPx(2),
-                background: (config: DevSiteDesignSystem): string => config.brandColor
-            }
+                background: (config: DevSiteDesignSystem): string => config.brandColor,
+            },
         },
         "&:hover": {
             cursor: "pointer",
-            background: "rgba(0, 0, 0, 0.04)"
+            background: "rgba(0, 0, 0, 0.04)",
         },
         "&:focus": {
             outline: "none",
             border: (config: DevSiteDesignSystem): string => {
                 return `${toPx(1)} solid ${config.brandColor ||
                     devSiteDesignSystemDefaults.brandColor}`;
-            }
-        }
-    }
+            },
+        },
+    },
 };
 
 export interface ComponentViewToggleProps {

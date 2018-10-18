@@ -18,8 +18,8 @@ const ButtonStyles: ComponentStyles<TestButtonClassNameContract, DesignSystem> =
         width: "50px",
         textAlign: (config: DesignSystem): string => {
             return config.ltr === "ltr" ? "left" : "right";
-        }
-    }
+        },
+    },
 };
 
 /* tslint:disable-next-line */

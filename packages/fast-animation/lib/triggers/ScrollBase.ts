@@ -61,7 +61,7 @@ export default abstract class ScrollTrigger {
         this.subscriptions.push({
             element,
             callback,
-            inView: isElementInView(element)
+            inView: isElementInView(element),
         });
     }
 

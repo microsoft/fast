@@ -12,18 +12,18 @@ import {
     colors,
     localizePadding,
     thickLine,
-    trashcan
+    trashcan,
 } from "../utilities/form-input.style";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormItemChildrenClassNameContract } from "../class-name-contracts/";
 
 const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
     "@global": {
-        ...applyGlobalStyle()
+        ...applyGlobalStyle(),
     },
     formItemChildren: {
         display: "flex",
-        flexDirection: "column"
+        flexDirection: "column",
     },
     formItemChildren_inputWrapper: {
         display: "flex",
@@ -31,7 +31,7 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
         "& input": {
             ...applyInputStyle(),
             flex: "2",
-            marginRight: toPx(8)
+            marginRight: toPx(8),
         },
         "& button": {
             fontSize: toPx(15),
@@ -51,13 +51,13 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
             color: colors.white,
             background: colors.pink,
             "&:hover": {
-                background: colors.lightPink
+                background: colors.lightPink,
             },
             "&:focus": {
                 outline: "none",
-                background: colors.darkPink
-            }
-        }
+                background: colors.darkPink,
+            },
+        },
     },
     formItemChildren_childOptionsMenu: {
         ...applyCleanListStyle(),
@@ -65,33 +65,33 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
             "& button": {
                 ...applyAddItemStyle(),
                 ...localizePadding(12, 8, 8, 24),
-                ...thickLine
-            }
-        }
+                ...thickLine,
+            },
+        },
     },
     formItemChildren_childOptionsTextButton: {
         ...applyAddItemStyle(),
         ...localizePadding(12, 8, 8, 24),
         ...thickLine,
         display: "flex",
-        width: "fit-content"
+        width: "fit-content",
     },
     formItemChildren_header: {
-        ...applyHeaderStyle()
+        ...applyHeaderStyle(),
     },
     formItemChildren_existingChildren: {
         ...applyPopupHeadingStyles(),
         "& ul": {
-            ...applyAriaHiddenStyles()
-        }
+            ...applyAriaHiddenStyles(),
+        },
     },
     formItemChildren_addedChildren: {
         ...applyCleanListStyle(),
-        ...applyListItemStyle()
+        ...applyListItemStyle(),
     },
     formItemChildren_optionMenu: {
         ...applyCleanListStyle(),
-        ...applyPopupMenuStyles()
+        ...applyPopupMenuStyles(),
     },
     formItemChildren_optionMenu__listItem: {
         "& button": {
@@ -105,10 +105,10 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
                 height: toPx(16),
                 left: toPx(12),
                 /* tslint:disable-next-line */
-                background: trashcan
-            }
-        }
-    }
+                background: trashcan,
+            },
+        },
+    },
 };
 
 export default styles;

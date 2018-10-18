@@ -2,7 +2,7 @@ import * as React from "react";
 import Radio, {
     RadioHandledProps,
     RadioManagedClasses,
-    RadioUnhandledProps
+    RadioUnhandledProps,
 } from "./radio";
 import schema from "./radio.schema.json";
 import Documentation from "./.tmp/documentation";
@@ -14,8 +14,8 @@ const classes: RadioManagedClasses = {
         radio__disabled: "radio__disabled",
         radio_input: "radio_input",
         radio_label: "radio_label",
-        radio_stateIndicator: "radio_stateIndicator"
-    }
+        radio_stateIndicator: "radio_stateIndicator",
+    },
 };
 
 const examples: ComponentFactoryExample<RadioHandledProps & RadioManagedClasses> = {
@@ -26,29 +26,29 @@ const examples: ComponentFactoryExample<RadioHandledProps & RadioManagedClasses>
     detailData: {
         id: "radio01",
         ...classes,
-        checked: true
+        checked: true,
     },
     data: [
         {
             id: "checked_true",
             ...classes,
-            checked: true
+            checked: true,
         },
         {
             id: "checked_false",
             ...classes,
-            checked: false
+            checked: false,
         },
         {
             id: "checked_none",
-            ...classes
+            ...classes,
         },
         {
             id: "disabled",
             ...classes,
-            disabled: true
-        }
-    ]
+            disabled: true,
+        },
+    ],
 };
 
 export default examples;

@@ -50,7 +50,7 @@ class FormCategory extends React.Component<
 
         if (this.props.expandable) {
             this.state = {
-                expanded: true
+                expanded: true,
             };
         }
     }
@@ -84,7 +84,7 @@ class FormCategory extends React.Component<
 
     private generateContainerAttributes(): React.HtmlHTMLAttributes<HTMLDivElement> {
         const attributes: Partial<React.HtmlHTMLAttributes<HTMLDivElement>> = {
-            id: this.props.id
+            id: this.props.id,
         };
 
         if (this.props.expandable) {
@@ -96,7 +96,7 @@ class FormCategory extends React.Component<
 
     private handleCategoryCollapse = (): void => {
         this.setState({
-            expanded: !this.state.expanded
+            expanded: !this.state.expanded,
         });
     };
 

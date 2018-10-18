@@ -7,7 +7,7 @@ import MSFTCallToAction, {
     CallToActionHandledProps as MSFTCallToActionHandledProps,
     CallToActionManagedClasses,
     CallToActionProps as MSFTCallToActionProps,
-    CallToActionUnhandledProps
+    CallToActionUnhandledProps,
 } from "./call-to-action";
 import { Subtract } from "utility-types";
 
@@ -33,5 +33,5 @@ export {
     CallToActionProps,
     CallToActionClassNameContract,
     CallToActionHandledProps,
-    CallToActionUnhandledProps
+    CallToActionUnhandledProps,
 };

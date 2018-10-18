@@ -77,7 +77,7 @@ export type ScaleFactor = number | [number, number];
  */
 export enum AnimationMode {
     animateTo,
-    animateFrom
+    animateFrom,
 }
 
 /**
@@ -102,7 +102,7 @@ export default abstract class Animate {
         top: ["top"],
         left: ["left"],
         bottom: ["bottom"],
-        right: ["right"]
+        right: ["right"],
     };
 
     /**
@@ -116,7 +116,7 @@ export default abstract class Animate {
     public effectTiming: EffectTiming = {
         fill: "forwards",
         iterations: 1,
-        duration: 500
+        duration: 500,
     };
 
     /**
@@ -431,7 +431,7 @@ export default abstract class Animate {
     private getOptionKeyframes(): Keyframe[] {
         const keyframes: Keyframe[] = [
             this.getInitialKeyframeValues(),
-            this.getOptionKeyframeValues()
+            this.getOptionKeyframeValues(),
         ];
 
         return this.mode === AnimationMode.animateFrom ? keyframes.reverse() : keyframes;

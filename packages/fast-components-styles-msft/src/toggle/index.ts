@@ -1,18 +1,18 @@
 import designSystemDefaults, {
     DesignSystem,
-    withDesignSystemDefaults
+    withDesignSystemDefaults,
 } from "../design-system";
 import { disabledContrast, ensureNormalContrast } from "../utilities/colors";
 import {
     ComponentStyles,
     ComponentStyleSheet,
-    CSSRules
+    CSSRules,
 } from "@microsoft/fast-jss-manager";
 import {
     applyLocalizedProperty,
     Direction,
     ensureContrast,
-    toPx
+    toPx,
 } from "@microsoft/fast-jss-utilities";
 import { typeRamp } from "../utilities/typography";
 import { ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
@@ -47,15 +47,15 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             "& span": {
                 userSelect: "none",
                 marginTop: "0",
-                paddingBottom: "0"
+                paddingBottom: "0",
             },
             '&[aria-disabled="true"]': {
                 color: disabledContrast(
                     designSystem.contrast,
                     foregroundColor,
                     backgroundColor
-                )
-            }
+                ),
+            },
         },
         toggle_label: {
             display: "inline-block",
@@ -75,12 +75,12 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
                         "margin-left",
                         "margin-right",
                         direction
-                    )]: "5px"
-                }
-            }
+                    )]: "5px",
+                },
+            },
         },
         toggle_toggleButton: {
-            position: "relative"
+            position: "relative",
         },
         toggle_stateIndicator: {
             position: "absolute",
@@ -91,7 +91,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             backgroundColor,
             borderRadius: "10px",
             width: "10px",
-            height: "10px"
+            height: "10px",
         },
         toggle_input: {
             position: "relative",
@@ -105,23 +105,23 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             appearance: "none",
             "@media screen and (-ms-high-contrast:active)": {
                 "&::after, &:checked + span": {
-                    background: backgroundColor
-                }
+                    background: backgroundColor,
+                },
             },
             "@media screen and (-ms-high-contrast:black-on-white)": {
                 "&::after, &:checked + span": {
-                    background: foregroundColor
-                }
+                    background: foregroundColor,
+                },
             },
             "&:checked": {
                 backgroundColor: brandColor,
                 borderColor: brandColor,
                 "&:focus": {
-                    borderColor: brandColor
+                    borderColor: brandColor,
                 },
                 "& + span": {
                     left: "28px",
-                    backgroundColor
+                    backgroundColor,
                 },
                 "&:disabled": {
                     cursor: "not-allowed",
@@ -132,17 +132,17 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
                     ),
                     borderColor: "transparent",
                     "& + span": {
-                        background: backgroundColor
+                        background: backgroundColor,
                     },
                     "&:hover": {
-                        borderColor: "transparent"
-                    }
-                }
+                        borderColor: "transparent",
+                    },
+                },
             },
             "&:not(:checked)": {
                 borderColor: foregroundColor,
                 "& + span": {
-                    backgroundColor: foregroundColor
+                    backgroundColor: foregroundColor,
                 },
                 "&:disabled": {
                     cursor: "not-allowed",
@@ -156,14 +156,14 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
                             designSystem.contrast,
                             foregroundColor,
                             backgroundColor
-                        )
-                    }
-                }
+                        ),
+                    },
+                },
             },
             "&:focus": {
-                outline: "0"
-            }
-        }
+                outline: "0",
+            },
+        },
     };
 };
 

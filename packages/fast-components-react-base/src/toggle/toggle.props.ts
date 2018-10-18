@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
     ManagedClasses,
-    ToggleClassNameContract
+    ToggleClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 
 export interface ToggleManagedClasses extends ManagedClasses<ToggleClassNameContract> {}

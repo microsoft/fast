@@ -7,7 +7,7 @@ import {
     TextFieldManagedClasses,
     TextFieldProps as BaseTextFieldProps,
     TextFieldType,
-    TextFieldUnhandledProps
+    TextFieldUnhandledProps,
 } from "@microsoft/fast-components-react-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, TextFieldStyles } from "@microsoft/fast-components-styles-msft";
@@ -35,5 +35,5 @@ export {
     TextFieldUnhandledProps,
     TextField,
     TextFieldProps,
-    TextFieldType
+    TextFieldType,
 };

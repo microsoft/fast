@@ -5,7 +5,7 @@ import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import {
     generateSnapshots,
-    SnapshotTestSuite
+    SnapshotTestSuite,
 } from "@microsoft/fast-jest-snapshots-react";
 import Image, {
     ImageClassNameContract,
@@ -13,7 +13,7 @@ import Image, {
     ImageManagedClasses,
     ImageProps,
     ImageSlot,
-    ImageUnhandledProps
+    ImageUnhandledProps,
 } from "./image";
 
 /*
@@ -28,7 +28,7 @@ describe("image snapshot", (): void => {
 describe("image", (): void => {
     const managedClasses: ImageClassNameContract = {
         image: "image-class",
-        image__picture: "picture-class"
+        image__picture: "picture-class",
     };
     const alt: string = "Image alt text test string";
 
@@ -51,10 +51,10 @@ describe("image", (): void => {
         const handledProps: ImageHandledProps = {
             managedClasses,
             alt,
-            src: "https://placehold.it/200x200"
+            src: "https://placehold.it/200x200",
         };
         const unhandledProps: ImageUnhandledProps = {
-            "aria-hidden": true
+            "aria-hidden": true,
         };
         const props: ImageProps = { ...handledProps, ...unhandledProps };
         const rendered: any = shallow(<Image {...props} />);

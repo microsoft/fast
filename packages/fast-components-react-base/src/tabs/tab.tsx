@@ -2,19 +2,19 @@ import * as React from "react";
 import { get } from "lodash-es";
 import {
     ManagedClasses,
-    TabClassNameContract
+    TabClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
     TabHandledProps,
     TabManagedClasses,
     TabProps,
-    TabUnhandledProps
+    TabUnhandledProps,
 } from "./tab.props";
 
 class Tab extends Foundation<TabHandledProps, TabUnhandledProps, {}> {
     public static defaultProps: Partial<TabProps> = {
-        active: false
+        active: false,
     };
 
     public static displayName: string = "Tab";
@@ -22,7 +22,7 @@ class Tab extends Foundation<TabHandledProps, TabUnhandledProps, {}> {
     protected handledProps: HandledProps<TabHandledProps> = {
         managedClasses: void 0,
         active: void 0,
-        slot: void 0
+        slot: void 0,
     };
 
     /**

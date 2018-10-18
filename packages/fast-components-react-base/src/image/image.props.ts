@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
     ImageClassNameContract,
-    ManagedClasses
+    ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { Omit } from "utility-types";
 

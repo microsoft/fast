@@ -9,14 +9,14 @@ const name: string = "css-editor";
 
 const exampleData: CSSEditorProps = {
     position: PositionValue.static,
-    onChange: noop
+    onChange: noop,
 };
 
 const detailData: CSSEditorProps = {
     position: PositionValue.absolute,
     bottom: "8",
     right: "8",
-    onChange: noop
+    onChange: noop,
 };
 
 const examples: SnapshotTestSuite<CSSEditorProps> = {
@@ -24,7 +24,7 @@ const examples: SnapshotTestSuite<CSSEditorProps> = {
     component: CSSEditor,
     schema: CSSEditorSchema,
     detailData,
-    data: [exampleData]
+    data: [exampleData],
 };
 
 describe(name, () => {

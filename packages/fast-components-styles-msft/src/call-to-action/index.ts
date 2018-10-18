@@ -1,16 +1,16 @@
 import {
     ComponentStyles,
     ComponentStyleSheet,
-    CSSRules
+    CSSRules,
 } from "@microsoft/fast-jss-manager";
 import {
     ButtonClassNameContract,
-    CallToActionClassNameContract
+    CallToActionClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
     applyLocalizedProperty,
     Direction,
-    localizeSpacing
+    localizeSpacing,
 } from "@microsoft/fast-jss-utilities";
 import { DesignSystem, withDesignSystemDefaults } from "../design-system/index";
 import { disabledContrast, ensureNormalContrast } from "../utilities/colors";
@@ -25,19 +25,19 @@ export const callToActionButtonOverrides: ComponentStyles<
         padding: (config: DesignSystem): string => {
             const designSystem: DesignSystem = withDesignSystemDefaults(config);
             return localizeSpacing(designSystem.direction)("13px 22px 11px 24px");
-        }
+        },
     },
     button_contentRegion: {
         transition: "all 600ms cubic-bezier(0.19, 1, 0.22, 1)",
-        [applyLocalizedProperty("left", "right", Direction.ltr)]: "0"
+        [applyLocalizedProperty("left", "right", Direction.ltr)]: "0",
     },
     button__primary: {
         "&:hover": {
             "& $button_contentRegion": {
-                [applyLocalizedProperty("left", "right", Direction.ltr)]: "-4px"
-            }
-        }
-    }
+                [applyLocalizedProperty("left", "right", Direction.ltr)]: "-4px",
+            },
+        },
+    },
 };
 
 const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
@@ -80,9 +80,9 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
                 outline: "none",
                 "& $callToAction_glyph": {
                     left: "8px",
-                    position: "relative"
-                }
-            }
+                    position: "relative",
+                },
+            },
         },
         callToAction_glyph: {
             fill: color,
@@ -94,28 +94,28 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
             verticalAlign: "top",
             transition: "all 600ms cubic-bezier(0.19, 1, 0.22, 1)",
             left: "0",
-            marginTop: "4px"
+            marginTop: "4px",
         },
         callToAction__primary: {
             "& $callToAction_glyph": {
-                fill: color
-            }
+                fill: color,
+            },
         },
         callToAction__lightweight: {
             "& $callToAction_glyph": {
-                fill: primaryRestBackgroundColor
-            }
+                fill: primaryRestBackgroundColor,
+            },
         },
         callToAction__justified: {
             "& $callToAction_glyph": {
-                fill: primaryRestBackgroundColor
-            }
+                fill: primaryRestBackgroundColor,
+            },
         },
         callToAction__disabled: {
             "& $callToAction_glyph": {
-                fill: primaryDisabledColor
-            }
-        }
+                fill: primaryDisabledColor,
+            },
+        },
     };
 };
 

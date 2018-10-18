@@ -8,19 +8,19 @@ jss.setup(preset());
 const styles: any = {
     "@media only screen and (min-width: 100px)": {
         div: {
-            backgroundColor: "orange"
-        }
+            backgroundColor: "orange",
+        },
     },
     "@media only screen and (min-width: 200px)": {
         div: {
-            backgroundColor: "red"
-        }
+            backgroundColor: "red",
+        },
     },
     "@media only screen and (min-width: 300px)": {
         div: {
-            backgroundColor: "purple"
-        }
-    }
+            backgroundColor: "purple",
+        },
+    },
 };
 
 const stylesheet: any = jss.createStyleSheet(styles, { link: true }).update(theme);

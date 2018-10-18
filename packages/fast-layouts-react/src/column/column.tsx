@@ -3,18 +3,18 @@ import manageJss, {
     ComponentStyles,
     CSSRules,
     ManagedClasses,
-    ManagedJSSProps
+    ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
 import BreakpointTracker from "../utilities/breakpoint-tracker";
 import {
     Breakpoint,
     getValueByBreakpoint,
-    identifyBreakpoint
+    identifyBreakpoint,
 } from "../utilities/breakpoints";
 import { canUseDOM, canUseViewport } from "exenv-es6";
 import Foundation, {
     FoundationProps,
-    HandledProps
+    HandledProps,
 } from "@microsoft/fast-components-foundation-react";
 import { ColumnHandledProps, ColumnProps, ColumnUnhandledProps } from "./column.props";
 
@@ -26,8 +26,8 @@ export const columnStyleSheet: ComponentStyles<ColumnClassNamesContract, undefin
     column: {
         // Fixes issue found in firefox where columns that have overflow
         // or full width content cause scroll bars
-        minWidth: "0"
-    }
+        minWidth: "0",
+    },
 };
 
 export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps, {}> {
@@ -35,7 +35,7 @@ export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps,
      * Define default props
      */
     public static defaultProps: Partial<ColumnProps> = {
-        span: 12
+        span: 12,
     };
 
     protected handledProps: HandledProps<ColumnHandledProps> = {
@@ -44,7 +44,7 @@ export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps,
         position: void 0,
         row: void 0,
         order: void 0,
-        gutter: void 0
+        gutter: void 0,
     };
 
     /**
@@ -194,7 +194,7 @@ export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps,
             msGridColumn: this.augmentMsGrid(position),
             msGridColumnSpan: this.augmentMsGrid(span),
             msGridRow: row,
-            order: typeof order === "number" ? order : null
+            order: typeof order === "number" ? order : null,
         });
     }
 

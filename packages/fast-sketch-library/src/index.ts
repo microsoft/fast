@@ -55,7 +55,7 @@ const extractSymbolLibraryConfigDefaults: ExtractSymbolLibraryConfig = {
     sources: [],
     name: "Symbol library",
     pageWidth: 1600,
-    pageHeight: 1600
+    pageHeight: 1600,
 };
 
 /**
@@ -82,7 +82,7 @@ export async function extractSymbolLibrary(
 
     await page.setViewport({
         width: config.pageWidth,
-        height: config.pageHeight
+        height: config.pageHeight,
     });
 
     page.on("console", (message: any) => {
@@ -100,7 +100,7 @@ export async function extractSymbolLibrary(
         (resolve: (result: string) => void, reject: (error: Error) => void): void => {
             const sketchPage: SketchPage = new SketchPage({
                 width: config.pageWidth,
-                height: config.pageHeight
+                height: config.pageHeight,
             });
 
             sketchPage.setName(config.name);
@@ -130,12 +130,12 @@ async function getSymbolsFromSource(
 ): Promise<string[]> {
     // Navigate to the source URL
     await page.goto(source.url, {
-        waitUntil: "domcontentloaded"
+        waitUntil: "domcontentloaded",
     });
 
     // Load the script into the browser that will allow generating sketch symbols
     await page.addScriptTag({
-        content: aSketchPage
+        content: aSketchPage,
     });
 
     const symbols: string[] = await page.evaluate(

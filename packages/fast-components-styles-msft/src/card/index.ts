@@ -1,11 +1,11 @@
 import designSystemDefaults, {
     DesignSystem,
-    withDesignSystemDefaults
+    withDesignSystemDefaults,
 } from "../design-system";
 import {
     ComponentStyles,
     ComponentStyleSheet,
-    CSSRules
+    CSSRules,
 } from "@microsoft/fast-jss-manager";
 import { CardClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
@@ -24,8 +24,8 @@ const styles: ComponentStyles<CardClassNameContract, DesignSystem> = (
             background: designSystem.backgroundColor,
             ...elevation(ElevationMultiplier.e4, designSystem.foregroundColor)(
                 designSystem
-            )
-        }
+            ),
+        },
     };
 };
 

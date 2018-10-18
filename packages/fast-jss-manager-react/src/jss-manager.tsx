@@ -5,7 +5,7 @@ import { DesignSystem } from "./design-system-provider";
 import {
     ComponentStyles,
     ComponentStyleSheet,
-    ManagedClasses
+    ManagedClasses,
 } from "@microsoft/fast-jss-manager";
 import { isEqual, merge } from "lodash-es";
 import { Consumer } from "./context";
@@ -166,7 +166,7 @@ export class JSSManager<S, C> extends React.Component<
                 props: JSSManagerProps<S, C>
             ): Partial<JSSManagerState> => {
                 return {
-                    styleSheet: this.hasStyleSheet() ? this.createStyleSheet() : null
+                    styleSheet: this.hasStyleSheet() ? this.createStyleSheet() : null,
                 };
             },
             (): void => {
@@ -191,7 +191,7 @@ export class JSSManager<S, C> extends React.Component<
             merge({}, stylesheet, this.props.jssStyleSheet),
             {
                 link: true,
-                index: this.index
+                index: this.index,
             }
         );
 

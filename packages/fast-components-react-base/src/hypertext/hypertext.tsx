@@ -4,11 +4,11 @@ import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-
 import {
     HypertextHandledProps,
     HypertextManagedClasses,
-    HypertextUnhandledProps
+    HypertextUnhandledProps,
 } from "./hypertext.props";
 import {
     HypertextClassNameContract,
-    ManagedClasses
+    ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
 
@@ -17,7 +17,7 @@ class Hypertext extends Foundation<HypertextHandledProps, HypertextUnhandledProp
 
     protected handledProps: HandledProps<HypertextHandledProps> = {
         href: void 0,
-        managedClasses: void 0
+        managedClasses: void 0,
     };
 
     /**

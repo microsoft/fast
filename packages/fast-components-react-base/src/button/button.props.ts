@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
     ButtonClassNameContract,
-    ManagedClasses
+    ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 
 export interface ButtonManagedClasses extends ManagedClasses<ButtonClassNameContract> {}

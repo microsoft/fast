@@ -3,7 +3,7 @@ import manageJss from "../../src";
 
 @Component({
     selector: "example",
-    template: `<span [class]="className"><ng-content></ng-content></span>`
+    template: `<span [class]="className"><ng-content></ng-content></span>`,
 })
 class ExampleComponent {
     @Input()
@@ -17,8 +17,8 @@ const styles: any = {
         color: (config: any): string => {
             return config.color;
         },
-        background: "yellow"
-    }
+        background: "yellow",
+    },
 };
 
 const JSSComponent: any = manageJss(styles)(ExampleComponent);

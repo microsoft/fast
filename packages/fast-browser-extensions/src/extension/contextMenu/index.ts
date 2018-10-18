@@ -9,7 +9,7 @@ export enum ContextMenuType {
     radio = "radio",
     checkbox = "checkbox",
     normal = "normal",
-    separator = "separator"
+    separator = "separator",
 }
 
 /**
@@ -32,7 +32,7 @@ function createContextMenu(): string {
     return ExtensionApi.contextMenus.create({
         title: "FAST DNA",
         contexts: ["all"],
-        documentUrlPatterns: validDomains
+        documentUrlPatterns: validDomains,
     });
 }
 
@@ -49,7 +49,7 @@ function createSubmenuItems(
         if (index !== 0) {
             // Add a separator before all groups
             const separator: ContextMenuItemConfig = {
-                type: ContextMenuType.separator
+                type: ContextMenuType.separator,
             };
             menuConfigs.unshift(separator);
         }
@@ -58,7 +58,7 @@ function createSubmenuItems(
             .map((menuConfig: any) => {
                 return Object.assign({}, menuConfig, {
                     parentId: id,
-                    onclick: handleContextMenuItemClick
+                    onclick: handleContextMenuItemClick,
                 });
             })
             .forEach((menuConfig: any) => {

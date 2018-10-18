@@ -2,7 +2,7 @@ import * as React from "react";
 import manageJSS, {
     ComponentStyles,
     ManagedClasses,
-    ManagedJSSProps
+    ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
 import { DevSiteDesignSystem } from "../design-system";
 
@@ -18,8 +18,8 @@ const titleBrandStyle: ComponentStyles<SiteTitleBrandedManagedClasses, {}> = {
         fontWeight: "bold",
         color: (config: DevSiteDesignSystem): string => {
             return config.brandColor;
-        }
-    }
+        },
+    },
 };
 
 class SiteTitleBranded extends React.Component<

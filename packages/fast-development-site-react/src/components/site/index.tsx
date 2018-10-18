@@ -4,12 +4,12 @@ import manageJss, {
     ComponentStyles,
     DesignSystemProvider,
     ManagedClasses,
-    ManagedJSSProps
+    ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
 import {
     glyphBuildingblocks,
     glyphGlobalnavbutton,
-    glyphTransparency
+    glyphTransparency,
 } from "@microsoft/fast-glyphs-msft";
 import { mapDataToComponent } from "@microsoft/fast-form-generator-react";
 import { uniqueId } from "lodash-es";
@@ -40,14 +40,14 @@ import {
     PaneClassNamesContract,
     PaneResizeDirection,
     Row,
-    RowResizeDirection
+    RowResizeDirection,
 } from "@microsoft/fast-layouts-react";
 import { Direction, isRTL } from "@microsoft/fast-application-utilities";
 
 export enum ComponentViewSlot {
     example = "canvas-example-view",
     detailExample = "canvas-detail-view-example",
-    detailDocumentation = "canvas-detail-view-documentation"
+    detailDocumentation = "canvas-detail-view-documentation",
 }
 
 export interface SiteProps {
@@ -105,7 +105,7 @@ export interface SiteState {
 
 export enum SiteSlot {
     category = "category",
-    categoryIcon = "category-icon"
+    categoryIcon = "category-icon",
 }
 
 export interface Theme {
@@ -144,23 +144,23 @@ const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
             fontFamily: "Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif",
             fontSize: toPx(14),
             padding: toPx(0),
-            margin: toPx(0)
-        }
+            margin: toPx(0),
+        },
     },
     site_canvasContent: {
         height: `calc(100% - ${toPx(40)})`,
         display: "flex",
-        flexDirection: "column"
+        flexDirection: "column",
     },
     site_headerTitle: {
         fontSize: toPx(15),
         marginLeft: toPx(8),
-        cursor: "default"
+        cursor: "default",
     },
     site_infoBarConfiguration: {
         display: "flex",
         alignItems: "center",
-        padding: toPx(4)
+        padding: toPx(4),
     },
     site_infoBarConfiguration_base: {
         position: "relative",
@@ -172,19 +172,19 @@ const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
             borderRadius: toPx(2),
             width: toPx(1),
             height: toPx(10),
-            background: "#000000"
+            background: "#000000",
         },
         "&::before": {
             right: toPx(15),
-            transform: "rotate(45deg)"
+            transform: "rotate(45deg)",
         },
         "&::after": {
             right: toPx(22),
-            transform: "rotate(-45deg)"
-        }
+            transform: "rotate(-45deg)",
+        },
     },
     site_infoBarConfiguration_theme: {
-        marginRight: toPx(4)
+        marginRight: toPx(4),
     },
     site_infoBarConfiguration_input: {
         lineHeight: toPx(16),
@@ -199,27 +199,27 @@ const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
         border: "none",
         outline: "none",
         "&:-ms-expand": {
-            display: "none"
+            display: "none",
         },
         "&:hover": {
-            boxShadow: `inset 0 0 ${toPx(2)} 0 rgba(0,0,0, .3)`
+            boxShadow: `inset 0 0 ${toPx(2)} 0 rgba(0,0,0, .3)`,
         },
         "&:focus": {
             boxShadow: (config: DevSiteDesignSystem): string => {
                 return `inset 0 0 0 1 ${config.brandColor}`;
-            }
-        }
+            },
+        },
     },
     site_paneForm: {
-        padding: toPx(12)
+        padding: toPx(12),
     },
     site_paneToc: {
-        padding: "0"
+        padding: "0",
     },
     site_paneTocRow: {
         display: "flex",
         flexWrap: "nowrap",
-        alignItems: "center"
+        alignItems: "center",
     },
     site_paneTocTitle: {
         fontWeight: "bold",
@@ -227,13 +227,13 @@ const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
         textOverflow: ellipsis().textOverflow,
         whiteSpace: "nowrap",
         overflow: "hidden",
-        cursor: "default"
+        cursor: "default",
     },
     site_paneToggleButton: {
         border: "none",
         background: "none",
         padding: toPx(12),
-        outline: "0"
+        outline: "0",
     },
     site_paneToggleButtonIcon: {
         height: toPx(16),
@@ -241,14 +241,14 @@ const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
         justifyContent: "center",
         fontSize: toPx(16),
         paddingTop: toPx(2),
-        display: "inline-block"
+        display: "inline-block",
     },
     site_paneToggleButtonIconLayout: {
         height: toPx(40),
         width: toPx(40),
         display: "flex",
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
     },
     site_transparencyToggleButton: {
         border: "none",
@@ -262,27 +262,27 @@ const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
         opacity: ".85",
         paddingTop: toPx(4),
         "&:hover": {
-            opacity: "1"
+            opacity: "1",
         },
         '&[aria-pressed="true"]': {
             background: "#FFFFFF",
-            opacity: "1"
-        }
+            opacity: "1",
+        },
     },
     site_transparencyToggleButtonIcon: {
         position: "relative",
-        top: toPx(1)
+        top: toPx(1),
     },
     site_statusBar: {
         display: "flex",
         alignItems: "center",
         lineHeight: "1",
         textAlign: "left",
-        flex: "1"
+        flex: "1",
     },
     site_statusComponentName: {
         marginLeft: toPx(12),
-        marginRight: toPx(15)
+        marginRight: toPx(15),
     },
     site_statusIndicator: {
         borderRadius: "50%",
@@ -290,17 +290,17 @@ const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
         width: toPx(16),
         marginRight: toPx(4),
         boxSizing: "border-box",
-        border: `${toPx(1)} solid #FFFFFF`
+        border: `${toPx(1)} solid #FFFFFF`,
     },
     site_statusReleased: {
-        backgroundColor: "#3EC28F"
+        backgroundColor: "#3EC28F",
     },
     site_statusAlpha: {
-        backgroundColor: "#824ED2"
+        backgroundColor: "#824ED2",
     },
     site_statusBeta: {
-        backgroundColor: "#950811"
-    }
+        backgroundColor: "#950811",
+    },
 };
 
 class Site extends React.Component<
@@ -310,7 +310,7 @@ class Site extends React.Component<
     public static defaultProps: Partial<SiteProps> = {
         locales: ["en", "en-rtl"],
         showComponentStatus: true,
-        showTransparencyToggle: true
+        showTransparencyToggle: true,
     };
 
     public static getDerivedStateFromProps(
@@ -352,7 +352,7 @@ class Site extends React.Component<
             formView: true,
             devToolsView: false,
             locale: "en",
-            theme: this.props.activeTheme || this.getInitialTheme()
+            theme: this.props.activeTheme || this.getInitialTheme(),
         };
     }
 
@@ -381,7 +381,7 @@ class Site extends React.Component<
         // to match the path
         if (this.getComponentViewTypesByLocation() !== this.state.componentView) {
             this.setState({
-                componentView: this.getComponentViewTypesByLocation()
+                componentView: this.getComponentViewTypesByLocation(),
             });
         }
     }
@@ -390,7 +390,7 @@ class Site extends React.Component<
         if (prevProps !== this.props) {
             this.setState({
                 componentData: this.getComponentData(),
-                detailViewComponentData: this.getDetailViewComponentData()
+                detailViewComponentData: this.getDetailViewComponentData(),
             });
         }
     }
@@ -562,8 +562,8 @@ class Site extends React.Component<
             pane: {
                 backgroundColor: (config: DevSiteDesignSystem): string => {
                     return config.lightGray;
-                }
-            }
+                },
+            },
         };
 
         return (
@@ -703,7 +703,7 @@ class Site extends React.Component<
             this.setState({
                 componentData,
                 componentDataMappedToComponent,
-                currentPath
+                currentPath,
             });
         } else if (this.state.componentView === ComponentViewTypes.detail) {
             const detailViewComponentData: ComponentData = Object.assign(
@@ -720,14 +720,14 @@ class Site extends React.Component<
             this.setState({
                 detailViewComponentData,
                 detailViewComponentDataMappedToComponent,
-                currentPath
+                currentPath,
             });
         }
     };
 
     private handleToggleDevToolsView = (): void => {
         this.setState({
-            devToolsView: !this.state.devToolsView
+            devToolsView: !this.state.devToolsView,
         });
     };
 
@@ -870,25 +870,25 @@ class Site extends React.Component<
 
     private handleComponentClick = (activeIndex: number): void => {
         this.setState({
-            activeComponentIndex: activeIndex
+            activeComponentIndex: activeIndex,
         });
     };
 
     private onComponentViewChange = (type: ComponentViewTypes): void => {
         this.setState({
-            componentView: type
+            componentView: type,
         });
     };
 
     private onFormToggle = (): void => {
         this.setState({
-            formView: !this.state.formView
+            formView: !this.state.formView,
         });
     };
 
     private onDevToolsToggle = (): void => {
         this.setState({
-            devToolsView: !this.state.devToolsView
+            devToolsView: !this.state.devToolsView,
         });
     };
 
@@ -1024,7 +1024,7 @@ class Site extends React.Component<
         }
 
         this.setState({
-            locale: e.target.value
+            locale: e.target.value,
         });
     };
 
@@ -1041,7 +1041,7 @@ class Site extends React.Component<
             );
 
             this.setState({
-                theme: selectedTheme
+                theme: selectedTheme,
             });
         }
     };
@@ -1105,7 +1105,7 @@ class Site extends React.Component<
                 detailView: detailSlotItems,
                 schema: item.props.schema,
                 componentMapping: item.props.component,
-                status: item.props.status
+                status: item.props.status,
             });
         }
 
@@ -1118,7 +1118,7 @@ class Site extends React.Component<
 
     private handlePaneCollapse = (): void => {
         this.setState({
-            tableOfContentsCollapsed: !this.state.tableOfContentsCollapsed
+            tableOfContentsCollapsed: !this.state.tableOfContentsCollapsed,
         });
     };
 
@@ -1126,7 +1126,7 @@ class Site extends React.Component<
         e: React.MouseEvent<HTMLButtonElement>
     ): void => {
         this.setState({
-            componentBackgroundTransparent: !this.state.componentBackgroundTransparent
+            componentBackgroundTransparent: !this.state.componentBackgroundTransparent,
         });
     };
 
@@ -1245,9 +1245,9 @@ class Site extends React.Component<
                     activeComponentIndex: 0,
                     componentName: this.getComponentName(tocItemPath),
                     componentStatus: this.getComponentStatus(tocItemPath),
-                    currentPath: tocItemPath
+                    currentPath: tocItemPath,
                 });
-            }
+            },
         };
 
         if (this.hasCanvasContent(items)) {
@@ -1382,5 +1382,5 @@ export {
     SiteCategory,
     SiteCategoryDocumentation,
     SiteCategoryIcon,
-    SiteCategoryItem
+    SiteCategoryItem,
 };

@@ -7,7 +7,7 @@ import { PaneClassNamesContract } from "./pane";
  */
 export enum PaneResizeDirection {
     east = "east",
-    west = "west"
+    west = "west",
 }
 
 export interface PaneManagedClasses extends ManagedClasses<PaneClassNamesContract> {}

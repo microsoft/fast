@@ -6,7 +6,7 @@ import { toPx } from "@microsoft/fast-jss-utilities";
 import manageJss, {
     ComponentStyles,
     ManagedClasses,
-    ManagedJSSProps
+    ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
 
 /**
@@ -14,7 +14,7 @@ import manageJss, {
  */
 export enum ComponentViewTypes {
     examples,
-    detail
+    detail,
 }
 
 export interface ComponentViewManagedClasses {
@@ -32,12 +32,12 @@ const style: ComponentStyles<ComponentViewManagedClasses, DevSiteDesignSystem> =
         flexGrow: "1",
         width: "100%",
         display: "grid",
-        gridTemplateColumns: "1fr 1fr 1fr"
+        gridTemplateColumns: "1fr 1fr 1fr",
     },
     componentDetailView: {
         overflow: "auto",
-        flexGrow: "1"
-    }
+        flexGrow: "1",
+    },
 };
 
 class ComponentView extends React.Component<

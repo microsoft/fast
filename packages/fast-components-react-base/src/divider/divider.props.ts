@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
     DividerClassNameContract,
-    ManagedClasses
+    ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { Omit } from "utility-types";
 
@@ -10,7 +10,7 @@ import { Omit } from "utility-types";
  */
 export enum DividerRoles {
     presentation = "presentation",
-    separator = "separator"
+    separator = "separator",
 }
 
 export interface DividerManagedClasses extends ManagedClasses<DividerClassNameContract> {}

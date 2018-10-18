@@ -9,7 +9,7 @@ describe("getClientRectWithMargin", () => {
         top: 0,
         left: 0,
         bottom: 0,
-        right: 0
+        right: 0,
     };
 
     beforeEach(() => {
@@ -34,7 +34,7 @@ describe("getClientRectWithMargin", () => {
 
         const expectedRect: ClientRect | DOMRect = Object.assign({}, mockRect, {
             width: expectedWidth,
-            height: expectedHeight
+            height: expectedHeight,
         });
 
         expect(getClientRectWithMargin(element)).toEqual(expectedRect);

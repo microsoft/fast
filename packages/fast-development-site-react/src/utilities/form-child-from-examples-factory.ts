@@ -14,7 +14,7 @@ export default function formChildFromExamplesFactory(examples: {
         return {
             name: examples[key].name,
             component: examples[key].component,
-            schema: examples[key].schema
+            schema: examples[key].schema,
         };
     });
 }

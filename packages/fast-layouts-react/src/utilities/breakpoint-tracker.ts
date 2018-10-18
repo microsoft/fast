@@ -4,7 +4,7 @@ import {
     Breakpoint,
     Breakpoints,
     defaultBreakpoints,
-    identifyBreakpoint
+    identifyBreakpoint,
 } from "./breakpoints";
 
 export type BreakpointTrackerCallback = (breakpoint: Breakpoint) => void;

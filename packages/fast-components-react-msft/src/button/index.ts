@@ -8,7 +8,7 @@ import MSFTButton, {
     ButtonManagedClasses,
     ButtonProps as MSFTButtonProps,
     ButtonSlot,
-    ButtonUnhandledProps
+    ButtonUnhandledProps,
 } from "./button";
 import { Subtract } from "utility-types";
 
@@ -35,5 +35,5 @@ export {
     ButtonProps,
     ButtonClassNameContract,
     ButtonHandledProps,
-    ButtonUnhandledProps
+    ButtonUnhandledProps,
 };

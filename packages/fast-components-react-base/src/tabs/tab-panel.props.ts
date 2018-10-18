@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
     ManagedClasses,
-    TabPanelClassNameContract
+    TabPanelClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { TabsSlot } from "./tabs";
 

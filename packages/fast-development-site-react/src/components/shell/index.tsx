@@ -13,7 +13,7 @@ export enum ShellSlot {
     canvas = "canvas",
     infoBar = "info-bar",
     pane = "pane",
-    row = "row"
+    row = "row",
 }
 
 class Shell extends React.Component<{}, {}> {
@@ -23,8 +23,8 @@ class Shell extends React.Component<{}, {}> {
         container: {
             fontFamily: "Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif",
             fontSize: toPx(14),
-            height: "100vh"
-        }
+            height: "100vh",
+        },
     };
 
     public render(): JSX.Element {

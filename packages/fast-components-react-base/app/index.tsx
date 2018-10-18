@@ -9,7 +9,7 @@ import Site, {
     SiteCategoryItem,
     SiteProps,
     SiteTitle,
-    SiteTitleBrand
+    SiteTitleBrand,
 } from "@microsoft/fast-development-site-react";
 import * as examples from "./examples";
 import reactHTMLElementExamples from "./components/examples.data";
@@ -34,18 +34,18 @@ formChildOptions = formChildOptions.concat([
     {
         name: "Tab",
         component: Tab,
-        schema: TabSchema
+        schema: TabSchema,
     },
     {
         name: "TabItem",
         component: TabItem,
-        schema: TabItemSchema
+        schema: TabItemSchema,
     },
     {
         name: "TabPanel",
         component: TabPanel,
-        schema: TabPanelSchema
-    }
+        schema: TabPanelSchema,
+    },
 ]);
 
 /* tslint:disable */

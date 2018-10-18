@@ -20,8 +20,8 @@ class SimpleComponent extends React.Component<any, any> {
  */
 const staticStyles: ComponentStyles<any, any> = {
     staticStyleClass: {
-        color: "red"
-    }
+        color: "red",
+    },
 };
 
 /**
@@ -31,8 +31,8 @@ const dynamicStyles: ComponentStyles<any, any> = {
     dynamicStylesClass: {
         background: (): string => {
             return "blue";
-        }
-    }
+        },
+    },
 };
 
 /**
@@ -44,8 +44,8 @@ const stylesheetResolver: ComponentStyles<any, any> = (config: any): any => {
             background: "green",
             color: (): string => {
                 return "yellow";
-            }
-        }
+            },
+        },
     };
 };
 
@@ -55,8 +55,8 @@ const stylesheetResolver: ComponentStyles<any, any> = (config: any): any => {
 const staticAndDynamicStyles: ComponentStyles<any, any> = {
     staticAndDynamicStylesClass: {
         ...staticStyles.staticStyleClass,
-        ...dynamicStyles.dynamicStylesClass
-    }
+        ...dynamicStyles.dynamicStylesClass,
+    },
 };
 
 describe("The JSSManager", (): void => {
@@ -76,19 +76,19 @@ describe("The JSSManager", (): void => {
         class: {
             color: (config: TestDesignSystem): string => {
                 return config.color;
-            }
-        }
+            },
+        },
     };
 
     const testDesignSystem: TestDesignSystem = {
-        color: "red"
+        color: "red",
     };
 
     function functionStyleSheet(config: TestDesignSystem): any {
         return {
             class: {
-                color: config.color
-            }
+                color: config.color,
+            },
         };
     }
 
@@ -165,7 +165,7 @@ describe("The JSSManager", (): void => {
 
         const functionSheet: any = functionStylesheetComponent.state("styleSheet");
         functionStylesheetComponent.setProps({
-            designSystem: testDesignSystem
+            designSystem: testDesignSystem,
         });
 
         // Function stylesheets must be completely re-generated when the design-system changes,

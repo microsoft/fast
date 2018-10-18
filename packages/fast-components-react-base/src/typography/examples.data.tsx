@@ -4,7 +4,7 @@ import Typography, {
     TypographyManagedClasses,
     TypographySize,
     TypographyTag,
-    TypographyUnhandledProps
+    TypographyUnhandledProps,
 } from "./typography";
 import schema from "./typography.schema.json";
 import Documentation from "./.tmp/documentation";
@@ -21,7 +21,7 @@ const managedClassExamples: any = {
     typography__6: "typography-6",
     typography__7: "typography-7",
     typography__8: "typography-8",
-    typography__9: "typography-9"
+    typography__9: "typography-9",
 };
 
 const examples: ComponentFactoryExample<
@@ -35,70 +35,70 @@ const examples: ComponentFactoryExample<
         managedClasses: managedClassExamples,
         tag: TypographyTag.h1,
         size: TypographySize._1,
-        children: "Typography"
+        children: "Typography",
     },
     data: [
         {
             managedClasses: managedClassExamples,
             tag: TypographyTag.h1,
             size: TypographySize._1,
-            children: testString
+            children: testString,
         },
         {
             managedClasses: managedClassExamples,
             tag: TypographyTag.h2,
             size: TypographySize._2,
-            children: testString
+            children: testString,
         },
         {
             managedClasses: managedClassExamples,
             tag: TypographyTag.h3,
             size: TypographySize._3,
-            children: testString
+            children: testString,
         },
         {
             managedClasses: managedClassExamples,
             tag: TypographyTag.h4,
             size: TypographySize._4,
-            children: testString
+            children: testString,
         },
         {
             managedClasses: managedClassExamples,
             tag: TypographyTag.h5,
             size: TypographySize._5,
-            children: testString
+            children: testString,
         },
         {
             managedClasses: managedClassExamples,
             tag: TypographyTag.h6,
             size: TypographySize._6,
-            children: testString
+            children: testString,
         },
         {
             managedClasses: managedClassExamples,
             tag: TypographyTag.span,
             size: TypographySize._7,
-            children: testString
+            children: testString,
         },
         {
             managedClasses: managedClassExamples,
             tag: TypographyTag.caption,
             size: TypographySize._8,
-            children: testString
+            children: testString,
         },
         {
             managedClasses: managedClassExamples,
             tag: TypographyTag.p,
             size: TypographySize._9,
-            children: testString
+            children: testString,
         },
         {
             managedClasses: managedClassExamples,
             tag: TypographyTag.figcaption,
             size: TypographySize._9,
-            children: testString
-        }
-    ]
+            children: testString,
+        },
+    ],
 };
 
 export default examples;

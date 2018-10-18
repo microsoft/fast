@@ -11,16 +11,16 @@ export default {
     documentation: <Documentation />,
     detailData: {
         href: "https://www.microsoft.com/en-us/",
-        children: "Microsoft"
+        children: "Microsoft",
     },
     data: [
         {
             href: "https://msdn.microsoft.com",
             children: "Hypertext",
-            "data-sketch-symbol": "Hypertext"
+            "data-sketch-symbol": "Hypertext",
         },
         {
-            children: "Hypertext"
-        }
-    ]
+            children: "Hypertext",
+        },
+    ],
 } as ComponentFactoryExample<HypertextProps>;

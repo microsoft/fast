@@ -5,7 +5,7 @@ import Theme, { ThemeProps } from "../theme/theme";
 
 export enum GeneralExampleTags {
     button = "button",
-    span = "span"
+    span = "span",
 }
 
 export interface GeneralExampleProps {

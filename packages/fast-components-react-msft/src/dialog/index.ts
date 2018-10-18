@@ -5,7 +5,7 @@ import {
     DialogHandledProps as BaseDialogHandledProps,
     DialogManagedClasses,
     DialogProps as BaseDialogProps,
-    DialogUnhandledProps
+    DialogUnhandledProps,
 } from "@microsoft/fast-components-react-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, DialogStyles } from "@microsoft/fast-components-styles-msft";
@@ -32,5 +32,5 @@ export {
     DialogProps,
     DialogHandledProps,
     DialogUnhandledProps,
-    DialogClassNameContract
+    DialogClassNameContract,
 };

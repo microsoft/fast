@@ -9,7 +9,7 @@ import Card, {
     CardManagedClasses,
     CardProps,
     CardTag,
-    CardUnhandledProps
+    CardUnhandledProps,
 } from "./card";
 
 /*
@@ -19,7 +19,7 @@ configure({ adapter: new Adapter() });
 
 describe("card", (): void => {
     const managedClasses: CardClassNameContract = {
-        card: "card"
+        card: "card",
     };
 
     test("should have a displayName that matches the component name", () => {
@@ -28,11 +28,11 @@ describe("card", (): void => {
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: CardHandledProps = {
-            managedClasses
+            managedClasses,
         };
 
         const unhandledProps: CardUnhandledProps = {
-            "aria-hidden": true
+            "aria-hidden": true,
         };
 
         const props: CardProps = { ...handledProps, ...unhandledProps };

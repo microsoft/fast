@@ -8,7 +8,7 @@ import {
     PaneProps as BasePaneProps,
     PaneResizeDirection,
     paneStyleSheet,
-    PaneUnhandledProps
+    PaneUnhandledProps,
 } from "./pane";
 import { Subtract } from "utility-types";
 
@@ -25,5 +25,5 @@ export {
     PaneHandledProps,
     PaneUnhandledProps,
     PaneClassNamesContract,
-    PaneResizeDirection
+    PaneResizeDirection,
 };

@@ -1,11 +1,11 @@
 import designSystemDefaults, {
     DesignSystem,
-    withDesignSystemDefaults
+    withDesignSystemDefaults,
 } from "../design-system";
 import {
     ComponentStyles,
     ComponentStyleSheet,
-    CSSRules
+    CSSRules,
 } from "@microsoft/fast-jss-manager";
 import { ButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
@@ -15,7 +15,7 @@ import {
     Direction,
     ensureContrast,
     localizeSpacing,
-    toPx
+    toPx,
 } from "@microsoft/fast-jss-utilities";
 import { curry, get } from "lodash-es";
 import { applyType } from "../utilities/typography";
@@ -27,7 +27,7 @@ import {
     hoverContrast,
     largeContrast,
     normalContrast,
-    scaleContrastNormal
+    scaleContrastNormal,
 } from "../utilities/colors";
 import Chroma from "chroma-js";
 import { density } from "../utilities/density";
@@ -47,7 +47,7 @@ function applyTransaprentBackplateStyles(): CSSRules<DesignSystem> {
         "&:hover, &:focus": {
             borderColor: "transparent",
             boxShadow: "none",
-            ...applyTransaprentBackground()
+            ...applyTransaprentBackground(),
         },
         "&:focus span::before, &:active span::before, &:hover span::before": {
             background: (config: DesignSystem): string => {
@@ -57,10 +57,10 @@ function applyTransaprentBackplateStyles(): CSSRules<DesignSystem> {
                     designSystem.brandColor,
                     designSystem.backgroundColor
                 );
-            }
+            },
         },
         "&$button__disabled $button_contentRegion::before, &$button__disabled $button_contentRegion::before": {
-            ...applyTransaprentBackground()
+            ...applyTransaprentBackground(),
         },
         "&:disabled, &[aria-disabled]": {
             ...applyTransaprentBackground(),
@@ -73,14 +73,14 @@ function applyTransaprentBackplateStyles(): CSSRules<DesignSystem> {
                     designSystem.foregroundColor,
                     designSystem.brandColor
                 );
-            }
-        }
+            },
+        },
     };
 }
 
 function applyTransaprentBackground(): CSSRules<DesignSystem> {
     return {
-        backgroundColor: "transparent"
+        backgroundColor: "transparent",
     };
 }
 
@@ -210,60 +210,60 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             color,
             backgroundColor: secondaryBackgroundColor,
             "&:hover": {
-                backgroundColor: secondaryHoverBackgroundColor
+                backgroundColor: secondaryHoverBackgroundColor,
             },
             "&:focus": {
                 outline: "none",
                 borderColor: secondaryFocusBorderColor,
-                boxShadow: secondaryFocusBoxShadow
+                boxShadow: secondaryFocusBoxShadow,
             },
             "&$button__disabled": {
                 cursor: "not-allowed",
                 backgroundColor: secondaryDisabledBackgroundColor,
-                color: secondaryDisabledColor
-            }
+                color: secondaryDisabledColor,
+            },
         },
         button__primary: {
             color,
             backgroundColor: primaryRestBackgroundColor,
             "&:hover": {
-                backgroundColor: primaryHoverBackground
+                backgroundColor: primaryHoverBackground,
             },
             "&:focus": {
                 borderColor: primaryFocusBorderColor,
-                boxShadow: primaryFocusBoxShadow
+                boxShadow: primaryFocusBoxShadow,
             },
             "&$button__disabled": {
                 color: primaryDisabledColor,
-                backgroundColor: primaryDisabledBackground
-            }
+                backgroundColor: primaryDisabledBackground,
+            },
         },
         button__outline: {
             borderWidth: "1px",
             "&, &:hover": {
                 color: outlineColor,
                 borderColor: outlineBorderColor,
-                ...applyTransaprentBackground()
+                ...applyTransaprentBackground(),
             },
             "&:focus": {
                 ...applyTransaprentBackground(),
                 borderColor: outlineBorderColor,
-                boxShadow: `inset 0 0 0 1px ${outlineBorderColor}`
+                boxShadow: `inset 0 0 0 1px ${outlineBorderColor}`,
             },
             "&$button__disabled": {
                 ...applyTransaprentBackground(),
                 color: outlineDisabledColor,
-                borderColor: outlineDisabledBorderColor
-            }
+                borderColor: outlineDisabledBorderColor,
+            },
         },
         button__lightweight: {
-            ...applyTransaprentBackplateStyles()
+            ...applyTransaprentBackplateStyles(),
         },
         button__justified: {
             ...applyTransaprentBackplateStyles(),
             minWidth: "74px",
             [applyLocalizedProperty("paddingLeft", "paddingRight", direction)]: "0",
-            justifyContent: "flex-start"
+            justifyContent: "flex-start",
         },
         button_contentRegion: {
             position: "relative",
@@ -274,10 +274,10 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
                 position: "absolute",
                 bottom: "-1px",
                 width: "100%",
-                [applyLocalizedProperty("left", "right", direction)]: "0"
-            }
+                [applyLocalizedProperty("left", "right", direction)]: "0",
+            },
         },
-        button__disabled: {}
+        button__disabled: {},
     };
 };
 

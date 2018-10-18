@@ -5,7 +5,7 @@ import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
 import {
     generateSnapshots,
-    SnapshotTestSuite
+    SnapshotTestSuite,
 } from "@microsoft/fast-jest-snapshots-react";
 import Checkbox, {
     CheckboxClassNameContract,
@@ -14,7 +14,7 @@ import Checkbox, {
     CheckboxProps,
     CheckboxSlot,
     CheckboxState,
-    CheckboxUnhandledProps
+    CheckboxUnhandledProps,
 } from "./checkbox";
 
 /*
@@ -32,7 +32,7 @@ describe("checkbox", (): void => {
         checkbox__disabled: "disabled-class",
         checkbox_input: "input-class",
         checkbox_label: "label-class",
-        checkbox_stateIndicator: "span-class"
+        checkbox_stateIndicator: "span-class",
     };
 
     const inputSelector: string = `.${managedClasses.checkbox_input}`;
@@ -51,11 +51,11 @@ describe("checkbox", (): void => {
     test("should implement unhandledProps", () => {
         const handledProps: CheckboxHandledProps = {
             managedClasses,
-            inputId: "id"
+            inputId: "id",
         };
 
         const unhandledProps: CheckboxUnhandledProps = {
-            "aria-label": "label"
+            "aria-label": "label",
         };
 
         const props: CheckboxProps = { ...handledProps, ...unhandledProps };

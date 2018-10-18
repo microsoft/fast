@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
     ManagedClasses,
-    RadioClassNameContract
+    RadioClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 
 export interface RadioHandledProps extends RadioManagedClasses {

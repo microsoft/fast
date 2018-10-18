@@ -6,11 +6,11 @@ import {
     CardHandledProps,
     CardManagedClasses,
     CardTag,
-    CardUnhandledProps
+    CardUnhandledProps,
 } from "./card.props";
 import {
     CardClassNameContract,
-    ManagedClasses
+    ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 
 class Card extends Foundation<CardHandledProps, CardUnhandledProps, {}> {
@@ -19,7 +19,7 @@ class Card extends Foundation<CardHandledProps, CardUnhandledProps, {}> {
     protected handledProps: HandledProps<CardHandledProps> = {
         children: void 0,
         managedClasses: void 0,
-        tag: void 0
+        tag: void 0,
     };
 
     /**

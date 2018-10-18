@@ -11,13 +11,13 @@ const name: string = "objects";
 const exampleData: FormProps = {
     schema: objectsSchema,
     data: getExample(objectsSchema),
-    onChange: noop
+    onChange: noop,
 };
 
 const examples: SnapshotTestSuite<FormProps> = {
     name,
     component: Form,
-    data: [exampleData]
+    data: [exampleData],
 };
 
 describe(name, () => {

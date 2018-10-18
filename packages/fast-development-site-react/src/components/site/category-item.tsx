@@ -2,7 +2,7 @@ import * as React from "react";
 import manageJss, {
     ComponentStyles,
     ManagedClasses,
-    ManagedJSSProps
+    ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import { toPx } from "@microsoft/fast-jss-utilities";

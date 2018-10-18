@@ -6,7 +6,7 @@ import {
     ToggleHandledProps as BaseToggleHandledProps,
     ToggleManagedClasses,
     ToggleProps as BaseToggleProps,
-    ToggleUnhandledProps
+    ToggleUnhandledProps,
 } from "@microsoft/fast-components-react-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, ToggleStyles } from "@microsoft/fast-components-styles-msft";
@@ -33,5 +33,5 @@ export {
     ToggleProps,
     ToggleHandledProps,
     ToggleUnhandledProps,
-    ToggleClassNameContract
+    ToggleClassNameContract,
 };

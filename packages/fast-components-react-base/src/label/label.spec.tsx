@@ -5,7 +5,7 @@ import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import {
     generateSnapshots,
-    SnapshotTestSuite
+    SnapshotTestSuite,
 } from "@microsoft/fast-jest-snapshots-react";
 import Label, {
     LabelClassNameContract,
@@ -13,7 +13,7 @@ import Label, {
     LabelManagedClasses,
     LabelProps,
     LabelTag,
-    LabelUnhandledProps
+    LabelUnhandledProps,
 } from "./label";
 
 /*
@@ -28,7 +28,7 @@ describe("label snapshot", (): void => {
 describe("label", (): void => {
     const managedClasses: LabelClassNameContract = {
         label: "label-class",
-        label__hidden: "label-hidden-class"
+        label__hidden: "label-hidden-class",
     };
 
     test("should have a displayName that matches the component name", () => {
@@ -45,10 +45,10 @@ describe("label", (): void => {
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: LabelHandledProps = {
             managedClasses,
-            tag: LabelTag.label
+            tag: LabelTag.label,
         };
         const unhandledProps: LabelUnhandledProps = {
-            "aria-hidden": true
+            "aria-hidden": true,
         };
         const props: LabelProps = { ...handledProps, ...unhandledProps };
         const rendered: any = shallow(<Label {...props} />);

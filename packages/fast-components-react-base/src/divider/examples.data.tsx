@@ -3,7 +3,7 @@ import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-
 import Divider, {
     DividerHandledProps,
     DividerManagedClasses,
-    DividerUnhandledProps
+    DividerUnhandledProps,
 } from "./divider";
 import schema from "./divider.schema.json";
 import Documentation from "./.tmp/documentation";
@@ -16,16 +16,16 @@ const examples: ComponentFactoryExample<DividerHandledProps> = {
     documentation: <Documentation />,
     detailData: {
         managedClasses: {
-            divider: "divider"
-        }
+            divider: "divider",
+        },
     },
     data: [
         {
             managedClasses: {
-                divider: "divider"
-            }
-        }
-    ]
+                divider: "divider",
+            },
+        },
+    ],
 };
 
 export default examples;

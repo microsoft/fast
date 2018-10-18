@@ -6,14 +6,14 @@ import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
 import {
     generateSnapshots,
-    SnapshotTestSuite
+    SnapshotTestSuite,
 } from "@microsoft/fast-jest-snapshots-react";
 import Dialog, {
     DialogClassNameContract,
     DialogHandledProps,
     DialogManagedClasses,
     DialogProps,
-    DialogUnhandledProps
+    DialogUnhandledProps,
 } from "./dialog";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
@@ -30,7 +30,7 @@ describe("dialog", (): void => {
     const managedClasses: DialogClassNameContract = {
         dialog: "dialog-class",
         dialog_contentRegion: "dialog-content-region-class",
-        dialog_modalOverlay: "dialog-modal-overlay-class"
+        dialog_modalOverlay: "dialog-modal-overlay-class",
     };
 
     test("should have a displayName that matches the component name", () => {
@@ -47,11 +47,11 @@ describe("dialog", (): void => {
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: DialogHandledProps = {
             managedClasses,
-            label: "Dialog label"
+            label: "Dialog label",
         };
 
         const unhandledProps: any = {
-            "data-m": "foo"
+            "data-m": "foo",
         } as DialogUnhandledProps;
 
         const props: DialogProps = { ...handledProps, ...unhandledProps };

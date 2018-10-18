@@ -5,7 +5,7 @@ import {
     HypertextHandledProps as BaseHypertextHandledProps,
     HypertextManagedClasses,
     HypertextProps as BaseHypertextProps,
-    HypertextUnhandledProps
+    HypertextUnhandledProps,
 } from "@microsoft/fast-components-react-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, HypertextStyles } from "@microsoft/fast-components-styles-msft";
@@ -32,5 +32,5 @@ export {
     HypertextProps,
     HypertextHandledProps,
     HypertextUnhandledProps,
-    HypertextClassNameContract
+    HypertextClassNameContract,
 };

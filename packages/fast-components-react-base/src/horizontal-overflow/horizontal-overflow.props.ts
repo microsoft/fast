@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
     HorizontalOverflowClassNameContract,
-    ManagedClasses
+    ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**

@@ -8,7 +8,7 @@ import {
     applySelectSpanStyles,
     applyWrapperStyle,
     colors,
-    rightArrow
+    rightArrow,
 } from "../utilities/form-input.style";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormSectionClassNameContract } from "../class-name-contracts/";
@@ -19,8 +19,8 @@ const styles: ComponentStyles<FormSectionClassNameContract, {}> = {
         "& h3": {
             borderBottom: `${toPx(1)} solid ${colors.border}`,
             paddingBottom: toPx(12),
-            marginBottom: "0"
-        }
+            marginBottom: "0",
+        },
     },
     formSection_menu: {
         ...applyCleanListStyle(),
@@ -40,23 +40,23 @@ const styles: ComponentStyles<FormSectionClassNameContract, {}> = {
                 width: toPx(16),
                 height: toPx(16),
                 background: rightArrow,
-                right: "0"
+                right: "0",
             },
             "& a": {
-                display: "block"
-            }
-        }
+                display: "block",
+            },
+        },
     },
     formSection_header: {
-        ...applyHeaderStyle()
+        ...applyHeaderStyle(),
     },
     formSection_toggleWrapper: {
         display: "flex",
         minHeight: toPx(40),
         alignItems: "center",
         "& label": {
-            flexGrow: "1"
-        }
+            flexGrow: "1",
+        },
     },
     formSection_toggle: {
         borderRadius: toPx(20),
@@ -79,42 +79,42 @@ const styles: ComponentStyles<FormSectionClassNameContract, {}> = {
             pointerEvents: "none",
             top: toPx(4),
             transition: "all .1s ease",
-            width: toPx(10)
+            width: toPx(10),
         },
         '&[aria-pressed="true"]': {
             backgroundColor: colors.pink,
             borderColor: colors.pink,
             "& > span": {
                 left: toPx(28),
-                backgroundColor: colors.white
+                backgroundColor: colors.white,
             },
             "&:hover": {
-                backgroundColor: colors.lightPink
-            }
+                backgroundColor: colors.lightPink,
+            },
         },
         "&:focus": {
             outline: "none",
-            borderColor: colors.pink
+            borderColor: colors.pink,
         },
         "& + span": {
-            float: "right"
-        }
+            float: "right",
+        },
     },
     formSection_selectWrapper: {
         ...applyWrapperStyle(),
         borderBottom: `${toPx(1)} solid ${colors.border}`,
         paddingBottom: toPx(12),
-        marginBottom: toPx(4)
+        marginBottom: toPx(4),
     },
     formSection_selectSpan: {
-        ...applySelectSpanStyles()
+        ...applySelectSpanStyles(),
     },
     formSection_selectInput: {
-        ...applySelectInputStyles()
+        ...applySelectInputStyles(),
     },
     formSection_selectLabel: {
-        ...applyLabelStyle()
-    }
+        ...applyLabelStyle(),
+    },
 };
 
 export default styles;

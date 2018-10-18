@@ -7,20 +7,20 @@ function applyImageStyles(): CSSRules<DesignSystem> {
         display: "block",
         margin: "0",
         maxWidth: "100%",
-        height: "auto"
+        height: "auto",
     };
 }
 
 const styles: ComponentStyles<ImageClassNameContract, DesignSystem> = {
     image: {
-        ...applyImageStyles()
+        ...applyImageStyles(),
     },
     image__picture: {
-        display: "block"
+        display: "block",
     },
     image_img: {
-        ...applyImageStyles()
-    }
+        ...applyImageStyles(),
+    },
 };
 
 export default styles;

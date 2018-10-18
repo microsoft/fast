@@ -8,11 +8,11 @@ import {
     TypographyProps,
     TypographySize,
     TypographyTag,
-    TypographyUnhandledProps
+    TypographyUnhandledProps,
 } from "./typography.props";
 import {
     ManagedClasses,
-    TypographyClassNameContract
+    TypographyClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 
 class Typography extends Foundation<
@@ -21,7 +21,7 @@ class Typography extends Foundation<
     {}
 > {
     public static defaultProps: Partial<TypographyProps> = {
-        tag: TypographyTag.p
+        tag: TypographyTag.p,
     };
 
     public static displayName: string = "Typography";
@@ -29,7 +29,7 @@ class Typography extends Foundation<
     protected handledProps: HandledProps<TypographyHandledProps> = {
         managedClasses: void 0,
         tag: void 0,
-        size: void 0
+        size: void 0,
     };
 
     /**

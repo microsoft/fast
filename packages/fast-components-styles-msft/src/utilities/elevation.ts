@@ -34,7 +34,7 @@ export enum ElevationMultiplier {
     e14 = 64,
     e15 = 80,
     e16 = 96,
-    e17 = 192
+    e17 = 192,
 }
 
 /**
@@ -44,7 +44,7 @@ export const ambientShadowConfig: ShadowConfig = {
     blurMultiplier: 0.225,
     xOffsetMultiplier: 0,
     yOffsetMultiplier: 0.075,
-    opacity: 0.18
+    opacity: 0.18,
 };
 
 /**
@@ -54,7 +54,7 @@ export const directionalShadowConfig: ShadowConfig = {
     blurMultiplier: 0.9,
     xOffsetMultiplier: 0,
     yOffsetMultiplier: 0.4,
-    opacity: 0.22
+    opacity: 0.22,
 };
 
 /**
@@ -78,7 +78,7 @@ export function elevation(
         )(config);
 
         return {
-            boxShadow: `${directionalShadow}, ${ambientShadow}`
+            boxShadow: `${directionalShadow}, ${ambientShadow}`,
         };
     };
 }

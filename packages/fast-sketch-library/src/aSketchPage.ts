@@ -7,7 +7,7 @@ import {
     nodeToSketchLayers,
     Page,
     SymbolMaster,
-    Text
+    Text,
 } from "@brainly/html-sketchapp";
 import { SymbolLibrarySource } from "./index";
 const symbolNameDataAttribute: string = "data-sketch-symbol";
@@ -29,7 +29,7 @@ export function getAsketchSymbols(source: SymbolLibrarySource): JSON[] {
                 x,
                 y,
                 width,
-                height
+                height,
             });
             const children: Element[] = Array.from(node.querySelectorAll("*"));
             const allNodes: Element[] = [node].concat(children);

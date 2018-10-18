@@ -3,7 +3,7 @@ import { Framework } from "./dev-tools";
 import { FormChildOption } from "./";
 import { get, isEmpty, isObject, set, uniqueId } from "lodash-es";
 import SyntaxHighlighter, {
-    registerLanguage
+    registerLanguage,
 } from "react-syntax-highlighter/prism-light";
 import jsx from "react-syntax-highlighter/languages/prism/jsx";
 import vs from "./dev-tools-code-preview-style";
@@ -89,7 +89,7 @@ export default class CodePreview extends React.Component<CodePreviewProps, {}> {
             componentData,
             tab,
             newTab,
-            location
+            location,
         });
 
         return renderedComponent;
@@ -276,7 +276,7 @@ export default class CodePreview extends React.Component<CodePreviewProps, {}> {
                     id: uniqueId(),
                     propertyName,
                     location: childrenLocations[i],
-                    data: get(data, `${property}.${childrenLocations[i]}.children`)
+                    data: get(data, `${property}.${childrenLocations[i]}.children`),
                 });
             }
         }

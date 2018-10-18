@@ -5,5 +5,5 @@ export {
     regions,
     themes,
     onMenuItemClick,
-    createContextMenus
+    createContextMenus,
 } from "./extension/messaging";

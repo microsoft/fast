@@ -2,7 +2,7 @@ import * as React from "react";
 import manageJss, {
     ComponentStyles,
     ManagedClasses,
-    ManagedJSSProps
+    ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { DevSiteDesignSystem } from "../design-system";
@@ -19,8 +19,8 @@ class ShellHeader extends React.Component<{}, {}> {
                 return config.backgroundColor;
             },
             textAlign: "left",
-            minHeight: toPx(34)
-        }
+            minHeight: toPx(34),
+        },
     };
 
     public render(): JSX.Element {

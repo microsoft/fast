@@ -9,7 +9,7 @@ import Progress, { ProgressClassNameContract, ProgressType } from "./";
 configure({ adapter: new Adapter() });
 
 const managedClasses: ProgressClassNameContract = {
-    progress: "progess"
+    progress: "progess",
 };
 
 describe("progress", (): void => {

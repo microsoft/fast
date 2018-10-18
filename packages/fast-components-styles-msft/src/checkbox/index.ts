@@ -2,7 +2,7 @@ import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import {
     ComponentStyles,
     ComponentStyleSheet,
-    CSSRules
+    CSSRules,
 } from "@microsoft/fast-jss-manager";
 import { CheckboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyTypeRampConfig } from "../utilities/typography";
@@ -10,14 +10,14 @@ import {
     applyLocalizedProperty,
     contrast,
     Direction,
-    toPx
+    toPx,
 } from "@microsoft/fast-jss-utilities";
 import {
     disabledContrast,
     ensureForegroundNormal,
     ensureNormalContrast,
     hoverContrast,
-    normalContrast
+    normalContrast,
 } from "../utilities/colors";
 import { get } from "lodash-es";
 import Chroma from "chroma-js";
@@ -51,7 +51,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
         checkbox: {
             display: "inline-flex",
             flexDirection: "row",
-            alignItems: "center"
+            alignItems: "center",
         },
         checkbox_input: {
             position: "absolute",
@@ -65,11 +65,11 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
             background: backgroundColor,
             boxShadow: `inset 0 0 0 1px ${checkboxColor}`,
             "&:hover": {
-                boxShadow: `inset 0 0 0 1px ${checkboxHover}`
+                boxShadow: `inset 0 0 0 1px ${checkboxHover}`,
             },
             "&:focus": {
                 outline: "none",
-                boxShadow: `inset 0 0 0 2px ${checkboxColor}`
+                boxShadow: `inset 0 0 0 2px ${checkboxColor}`,
             },
             "&:checked": {
                 "& + span": {
@@ -78,9 +78,9 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
                         zIndex: "1",
                         content: '""',
                         borderRadius: "2px",
-                        background: checkboxColor
-                    }
-                }
+                        background: checkboxColor,
+                    },
+                },
             },
             "&:indeterminate": {
                 "& + span": {
@@ -94,10 +94,10 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
                         top: "5px",
                         height: "10px",
                         width: "10px",
-                        background: checkboxColor
-                    }
-                }
-            }
+                        background: checkboxColor,
+                    },
+                },
+            },
         },
         checkbox_stateIndicator: {
             position: "relative",
@@ -107,20 +107,20 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
             height: "20px",
             flexShrink: "0",
             "&::before, &::after": {
-                width: "2px"
+                width: "2px",
             },
             "&::before": {
                 top: "4px",
                 left: "11px",
                 height: "12px",
-                transform: "rotate(40deg)"
+                transform: "rotate(40deg)",
             },
             "&::after": {
                 top: "9px",
                 left: "6px",
                 height: "6px",
-                transform: "rotate(-45deg)"
-            }
+                transform: "rotate(-45deg)",
+            },
         },
         checkbox_label: {
             color: ensureNormalContrast(
@@ -129,7 +129,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
                 backgroundColor
             ),
             ...applyTypeRampConfig("t7"),
-            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "5px"
+            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "5px",
         },
         checkbox__disabled: {
             cursor: "not-allowed",
@@ -138,15 +138,15 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
                 "&:checked, &:indeterminate": {
                     "& + $checkbox_stateIndicator": {
                         "&::after, &::before": {
-                            backgroundColor: checkboxDisabled
-                        }
-                    }
-                }
+                            backgroundColor: checkboxDisabled,
+                        },
+                    },
+                },
             },
             "& $checkbox_label": {
-                color: checkboxDisabled
-            }
-        }
+                color: checkboxDisabled,
+            },
+        },
     };
 };
 

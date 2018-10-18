@@ -29,14 +29,14 @@ class TestPage extends React.Component {
             duration: 750,
             iterations: Infinity,
             direction: "alternate",
-            easing: cubicBezier("fastInOut")
+            easing: cubicBezier("fastInOut"),
         };
 
         new AnimateTo(
             lightSquare as HTMLElement,
             {
                 scale: 2.27,
-                transformOrigin: "0 50%"
+                transformOrigin: "0 50%",
             },
             effects
         ).play();
@@ -45,7 +45,7 @@ class TestPage extends React.Component {
             mediumSquare as HTMLElement,
             {
                 scale: 2.27,
-                transformOrigin: "100% 50%"
+                transformOrigin: "100% 50%",
             },
             Object.assign({}, effects, { delay: 750 })
         ).play();
@@ -181,7 +181,7 @@ class TestPage extends React.Component {
             { transform: "scale(2.2)", offset: 0.35 },
             { transform: "scale(2)", offset: 0.55 },
             { transform: "scale(0.9)", offset: 0.93 },
-            { transform: "scale(1)" }
+            { transform: "scale(1)" },
         ];
 
         const circleAnimation: AnimateTo = new AnimateTo(
@@ -206,13 +206,13 @@ class TestPage extends React.Component {
             { transform: "scale(1.05)", offset: 0.81 },
             { transform: "scale(0.97)", offset: 0.83 },
             { transform: "scale(1)", offset: 0.85 },
-            { transform: "scale(1)" }
+            { transform: "scale(1)" },
         ];
 
         const doSvgFrames: Array<Partial<Keyframe>> = [
             { transform: "scale(0)" },
             { transform: "scale(1.1)", offset: 0.9 },
-            { transform: "scale(1)" }
+            { transform: "scale(1)" },
         ];
 
         const barAnimation: AnimateTo = new AnimateTo(
@@ -249,7 +249,7 @@ class TestPage extends React.Component {
         const slideEffect: EffectTiming = {
             duration: 300,
             fill: "backwards" as FillMode,
-            easing: cubicBezier("easeOut")
+            easing: cubicBezier("easeOut"),
         };
 
         new AnimateGroup([
@@ -266,7 +266,7 @@ class TestPage extends React.Component {
                 lightSquare,
                 slideOptions,
                 Object.assign({}, slideEffect, { delay: 80 })
-            )
+            ),
         ]).play();
     };
 
@@ -311,7 +311,7 @@ class TestPage extends React.Component {
                 bigcircle,
                 { y: -200 },
                 { duration: 3000, easing: cubicBezier("fastInOut") }
-            )
+            ),
         ]).play();
     };
 
@@ -333,17 +333,17 @@ class TestPage extends React.Component {
         const fadeOutOptions: AnimateConfig = { opacity: 0 };
         const fadeInEffect: EffectTiming = {
             duration: 350,
-            easing: cubicBezier("fastInOut")
+            easing: cubicBezier("fastInOut"),
         };
         const fadeOutEffect: EffectTiming = {
             delay: 4000,
-            easing: cubicBezier("easeOut")
+            easing: cubicBezier("easeOut"),
         };
 
         const sequence: AnimateSequence = new AnimateSequence([
             new AnimateTo(row1, fadeInOptions, fadeInEffect),
             new AnimateTo(row2, fadeInOptions, fadeInEffect),
-            new AnimateTo(row3, fadeInOptions, fadeInEffect)
+            new AnimateTo(row3, fadeInOptions, fadeInEffect),
         ]);
 
         sequence.onFinish = (): void => {
@@ -364,13 +364,13 @@ class TestPage extends React.Component {
             { opacity: "1" },
             { opacity: "0", offset: 0.4 },
             { opacity: "0", offset: 0.8 },
-            { opacity: "1" }
+            { opacity: "1" },
         ];
 
         const slideOptions: AnimateConfig = { y: -100 };
         const slideEffect: EffectTiming = {
             duration: 750,
-            easing: cubicBezier("fastInOut")
+            easing: cubicBezier("fastInOut"),
         };
         const square1Animation: AnimateTo = new AnimateTo(
             square1,
@@ -405,7 +405,7 @@ class TestPage extends React.Component {
             square1Animation,
             square2Animation,
             square3Animation,
-            square4Animation
+            square4Animation,
         ]);
 
         group.play();

@@ -7,7 +7,7 @@ import {
     LabelManagedClasses,
     LabelProps as BaseLabelProps,
     LabelTag,
-    LabelUnhandledProps
+    LabelUnhandledProps,
 } from "@microsoft/fast-components-react-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, LabelStyles } from "@microsoft/fast-components-styles-msft";
@@ -31,5 +31,5 @@ export {
     LabelUnhandledProps,
     Label,
     LabelProps,
-    LabelTag
+    LabelTag,
 };

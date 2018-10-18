@@ -5,11 +5,11 @@ import Form from "@microsoft/fast-form-generator-react";
 import manageJss, {
     ComponentStyles,
     ManagedClasses,
-    ManagedJSSProps
+    ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
 
 export enum TabType {
-    presets = "Presets"
+    presets = "Presets",
 }
 
 export interface ConfigurationPanelProps {
@@ -37,7 +37,7 @@ export interface ConfigurationPanelManagedClasses {
 const style: ComponentStyles<ConfigurationPanelManagedClasses, DevSiteDesignSystem> = {
     configurationPanel: {
         width: "100%",
-        overflowX: "auto"
+        overflowX: "auto",
     },
     configurationPanel_controls: {
         display: "flex",
@@ -47,8 +47,8 @@ const style: ComponentStyles<ConfigurationPanelManagedClasses, DevSiteDesignSyst
             padding: "0",
             listStyleType: "none",
             "& li": {
-                display: "inline-block"
-            }
+                display: "inline-block",
+            },
         },
         "& button": {
             border: `${toPx(1)} solid transparent`,
@@ -59,19 +59,19 @@ const style: ComponentStyles<ConfigurationPanelManagedClasses, DevSiteDesignSyst
             backgroundPosition: "center",
             "&:hover": {
                 cursor: "pointer",
-                background: "rgba(0, 0, 0, 0.04)"
+                background: "rgba(0, 0, 0, 0.04)",
             },
             "&:focus": {
                 outline: "none",
                 border: (config: DevSiteDesignSystem): string => {
                     return `${toPx(1)} solid ${config.brandColor ||
                         devSiteDesignSystemDefaults.brandColor}`;
-                }
-            }
-        }
+                },
+            },
+        },
     },
     configurationPanel_controlsTabs: {
-        flexGrow: "1"
+        flexGrow: "1",
     },
     configurationPanel_tab: {
         "& button": {
@@ -79,9 +79,9 @@ const style: ComponentStyles<ConfigurationPanelManagedClasses, DevSiteDesignSyst
             borderRadius: toPx(2),
             position: "relative",
             "&:focus": {
-                outline: "none"
-            }
-        }
+                outline: "none",
+            },
+        },
     },
     configurationPanel_tab__active: {
         "& button": {
@@ -95,18 +95,18 @@ const style: ComponentStyles<ConfigurationPanelManagedClasses, DevSiteDesignSyst
                 content: "''",
                 height: toPx(2),
                 borderRadius: `${toPx(2)} ${toPx(2)} 0 0`,
-                background: "#FB356D"
-            }
-        }
+                background: "#FB356D",
+            },
+        },
     },
     configurationPanel_tabPanel: {
         '&[aria-hidden="true"]': {
-            display: "none"
-        }
+            display: "none",
+        },
     },
     configurationPanel_paneForm: {
-        padding: toPx(12)
-    }
+        padding: toPx(12),
+    },
 };
 
 /* tslint:disable-next-line */
@@ -124,7 +124,7 @@ class ConfigurationPanel extends React.Component<
         this.tabs = [TabType.presets];
 
         this.state = {
-            activeTab: this.props.activeTab || TabType.presets
+            activeTab: this.props.activeTab || TabType.presets,
         };
     }
 
@@ -213,7 +213,7 @@ class ConfigurationPanel extends React.Component<
     ): (e: React.MouseEvent<HTMLButtonElement>) => void {
         return (e: React.MouseEvent<HTMLButtonElement>): void => {
             this.setState({
-                activeTab: tab
+                activeTab: tab,
             });
         };
     }

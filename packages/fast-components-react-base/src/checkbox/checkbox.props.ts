@@ -1,11 +1,11 @@
 import * as React from "react";
 import {
     CheckboxClassNameContract,
-    ManagedClasses
+    ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 
 export enum CheckboxSlot {
-    label = "label"
+    label = "label",
 }
 
 export interface CheckboxManagedClasses

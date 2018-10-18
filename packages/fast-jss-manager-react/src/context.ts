@@ -6,7 +6,7 @@ import * as React from "react";
  */
 const {
     Provider,
-    Consumer
+    Consumer,
 }: {
     Provider: React.Provider<unknown>;
     Consumer: React.Consumer<unknown>;

@@ -12,7 +12,7 @@ import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
  */
 export enum RowResizeDirection {
     north = "north",
-    south = "south"
+    south = "south",
 }
 
 export interface RowManagedClasses extends ManagedClasses<RowClassNamesContract> {}

@@ -5,7 +5,7 @@ import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
 import {
     generateSnapshots,
-    SnapshotTestSuite
+    SnapshotTestSuite,
 } from "@microsoft/fast-jest-snapshots-react";
 import Typography, {
     TypographyClassNameContract,
@@ -14,7 +14,7 @@ import Typography, {
     TypographyProps,
     TypographySize,
     TypographyTag,
-    TypographyUnhandledProps
+    TypographyUnhandledProps,
 } from "./typography";
 
 /*
@@ -36,7 +36,7 @@ describe("typography", (): void => {
         typography__6: "typography-6-class",
         typography__7: "typography-7-class",
         typography__8: "typography-8-class",
-        typography__9: "typography-9-class"
+        typography__9: "typography-9-class",
     };
 
     test("should have a displayName that matches the component name", () => {
@@ -52,10 +52,10 @@ describe("typography", (): void => {
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: TypographyHandledProps & TypographyManagedClasses = {
-            managedClasses
+            managedClasses,
         };
         const unhandledProps: TypographyUnhandledProps = {
-            "aria-hidden": true
+            "aria-hidden": true,
         };
         const props: TypographyProps = { ...handledProps, ...unhandledProps };
         const rendered: any = shallow(<Typography {...props} />);

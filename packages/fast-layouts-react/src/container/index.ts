@@ -7,7 +7,7 @@ import {
     ContainerManagedClasses,
     ContainerProps as BaseContainerProps,
     containerStyleSheet,
-    ContainerUnhandledProps
+    ContainerUnhandledProps,
 } from "./container";
 import { Subtract } from "utility-types";
 
@@ -28,5 +28,5 @@ export {
     ContainerProps,
     ContainerHandledProps,
     ContainerUnhandledProps,
-    ContainerClassNamesContract
+    ContainerClassNamesContract,
 };

@@ -43,41 +43,41 @@ export default class Viewer extends React.Component<ViewerProps, ViewerState> {
         super(props);
 
         this.state = {
-            iframeHeight: "0px"
+            iframeHeight: "0px",
         };
 
         this.styles = {
             browser: {
-                boxShadow: "0 0 30px rgba(0,0,0,.1)"
+                boxShadow: "0 0 30px rgba(0,0,0,.1)",
             },
             iframe: {
                 border: "none",
                 display: "block",
-                width: "100%"
+                width: "100%",
             },
             tabBar: {
                 backgroundColor: "#d2d2d2",
                 display: "flex",
-                fontFamily: "Segoe UI, Arial, Helvetica"
+                fontFamily: "Segoe UI, Arial, Helvetica",
             },
             windowControls: {
                 flexGrow: 1,
                 padding: "10px 20px",
-                textAlign: "right"
+                textAlign: "right",
             },
             tab: {
                 backgroundColor: "#f4f4f4",
                 minWidth: "100px",
-                padding: "10px 20px"
+                padding: "10px 20px",
             },
             addressBar: {
                 backgroundColor: "#f4f4f4",
                 display: "flex",
                 fontFamily: "Segoe UI, arial, helvetica",
-                padding: "10px 0"
+                padding: "10px 0",
             },
             addressControls: {
-                padding: "10px 20px 5px 20px"
+                padding: "10px 20px 5px 20px",
             },
             addressText: {
                 backgroundColor: "#ffffff",
@@ -85,8 +85,8 @@ export default class Viewer extends React.Component<ViewerProps, ViewerState> {
                 marginRight: "15px",
                 overflow: "hidden",
                 padding: "10px 20px 5px 20px",
-                textOverflow: "ellipsis"
-            }
+                textOverflow: "ellipsis",
+            },
         };
 
         jss.setup(preset());
@@ -176,7 +176,7 @@ export default class Viewer extends React.Component<ViewerProps, ViewerState> {
         this.setState({
             iframeHeight: `${this.getHeight(
                 this.iframe.contentWindow.document.body.scrollHeight
-            )}px`
+            )}px`,
         });
     };
 

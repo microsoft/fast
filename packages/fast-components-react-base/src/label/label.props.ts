@@ -1,12 +1,12 @@
 import * as React from "react";
 import {
     LabelClassNameContract,
-    ManagedClasses
+    ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 
 export enum LabelTag {
     label = "label",
-    legend = "legend"
+    legend = "legend",
 }
 
 export interface LabelManagedClasses extends ManagedClasses<LabelClassNameContract> {}

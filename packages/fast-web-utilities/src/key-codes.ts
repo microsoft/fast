@@ -70,5 +70,5 @@ export enum KeyCodes {
     tilde = 192,
     windowsLeft = 91,
     windowsOpera = 219, // Opera
-    windowsRight = 92
+    windowsRight = 92,
 }

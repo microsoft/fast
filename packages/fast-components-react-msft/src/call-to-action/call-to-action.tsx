@@ -4,7 +4,7 @@ import { Button, ButtonAppearance } from "../button";
 import {
     CallToActionAppearance,
     CallToActionHandledProps,
-    CallToActionUnhandledProps
+    CallToActionUnhandledProps,
 } from "./call-to-action.props";
 import { get } from "lodash-es";
 import { glyphArrowright } from "@microsoft/fast-glyphs-msft";
@@ -21,7 +21,7 @@ class CallToAction extends Foundation<
         appearance: void 0,
         href: void 0,
         managedClasses: void 0,
-        disabled: void 0
+        disabled: void 0,
     };
 
     /**

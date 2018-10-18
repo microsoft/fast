@@ -6,11 +6,11 @@ import {
     DividerHandledProps,
     DividerManagedClasses,
     DividerRoles,
-    DividerUnhandledProps
+    DividerUnhandledProps,
 } from "./divider.props";
 import {
     DividerClassNameContract,
-    ManagedClasses
+    ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 
 /* tslint:disable-next-line */
@@ -19,7 +19,7 @@ class Divider extends Foundation<DividerHandledProps, DividerUnhandledProps, {}>
 
     protected handledProps: HandledProps<DividerHandledProps> = {
         managedClasses: void 0,
-        role: void 0
+        role: void 0,
     };
 
     /**

@@ -1,6 +1,6 @@
 import designSystemDefaults, {
     DesignSystem,
-    withDesignSystemDefaults
+    withDesignSystemDefaults,
 } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { normalContrast } from "../utilities/colors";
@@ -24,8 +24,8 @@ const styles: ComponentStyles<DividerClassNameContract, DesignSystem> = (
                 designSystem.contrast,
                 designSystem.foregroundColor,
                 designSystem.backgroundColor
-            )}`
-        }
+            )}`,
+        },
     };
 };
 
