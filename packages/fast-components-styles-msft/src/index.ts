@@ -23,6 +23,9 @@ export { HeadingStyles };
 import HypertextStyles from "./hypertext";
 export { HypertextStyles };
 
+import ContextMenuStyles from "./context-menu";
+export { ContextMenuStyles };
+
 import ContextMenuItemStyles from "./context-menu-item";
 export { ContextMenuItemStyles };
 

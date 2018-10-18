@@ -166,3 +166,4 @@ class ContextMenu extends Foundation<
 
 export default ContextMenu;
 export * from "./context-menu.props";
+export { ContextMenuClassNameContract };

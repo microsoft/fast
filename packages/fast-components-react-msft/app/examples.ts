@@ -7,6 +7,9 @@ export { CallToActionExamples };
 import CaptionExamples from "../src/caption/examples.data";
 export { CaptionExamples };
 
+import ContextMenu from "../src/context-menu/examples.data";
+export { ContextMenu };
+
 import ContextMenuItem from "../src/context-menu-item/examples.data";
 export { ContextMenuItem };
 
