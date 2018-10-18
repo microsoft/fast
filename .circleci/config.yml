@@ -33,6 +33,10 @@ jobs:
                 command: |
                     lerna bootstrap --no-ci
             - run: 
+                name: Ensure prettier formatting
+                command: |
+                    lerna run prettier:diff
+            - run: 
                 name: Run unit tests
                 command: |
                     lerna run test --stream
