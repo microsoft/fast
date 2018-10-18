@@ -16,19 +16,7 @@
     "integration-tests:alpha": "node build/testing/sauce-labs/test-browsers.js alpha",
     "integration-tests:beta": "node build/testing/sauce-labs/test-browsers.js beta",
     "integration-tests:release": "node build/testing/sauce-labs/test-browsers.js release",
-    "prettier": "prettier --config .prettierrc --write '**/*.{ts,tsx,js}'",
     "prettier:diff": "prettier --config .prettierrc '**/*.{ts,tsx,js}' --list-different"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{ts,tsx,js}": [
-      "npm run prettier",
-      "git add"
-    ]
   },
   "devDependencies": {
     "@types/node": "^9.4.7",

@@ -17,6 +17,7 @@
   "scripts": {
     "clean:dist": "node ../../build/clean.js dist",
     "prepare": "npm run clean:dist && ts-node ./src/index.ts",
+    "prettier": "prettier --config ../../.prettierrc --write '**/*.{ts,ts}'",
     "test": "npm run tslint",
     "tslint": "tslint -c ./tslint.json '**/*.ts'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts'"
@@ -30,6 +31,7 @@
     "@microsoft/fast-tslint-rules": "^3.0.0",
     "@types/node": "^9.6.2",
     "babel-preset-env": "^1.7.0",
+    "prettier": "1.14.3",
     "ts-node": "^5.0.1",
     "tslint": "^5.9.1",
     "tslint-config-prettier": "^1.15.0",
