@@ -7,7 +7,7 @@
  * @param {boolean} example - Return a single example.
  * @return {array | object} - A function which returns an array of null.
  */
-module.exports = function (schema, propertyName, required, example) {
+module.exports = function(schema, propertyName, required, example) {
     let nullArray = [];
     let nullObj = {};
 

@@ -1,10 +1,13 @@
 import * as React from "react";
 import { TypographyUnhandledProps } from "../typography";
-import { HeadingClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-msft";
+import {
+    HeadingClassNameContract,
+    ManagedClasses,
+} from "@microsoft/fast-components-class-name-contracts-msft";
 
 export enum HeadingAlignBaseline {
     small = "small",
-    large = "large"
+    large = "large",
 }
 
 export enum HeadingSize {
@@ -13,7 +16,7 @@ export enum HeadingSize {
     _3 = 3,
     _4 = 4,
     _5 = 5,
-    _6 = 6
+    _6 = 6,
 }
 
 export enum HeadingTag {
@@ -23,7 +26,7 @@ export enum HeadingTag {
     h4 = "h4",
     h5 = "h5",
     h6 = "h6",
-    p = "p"
+    p = "p",
 }
 
 export interface HeadingManagedClasses extends ManagedClasses<HeadingClassNameContract> {}

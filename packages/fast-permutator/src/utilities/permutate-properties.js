@@ -5,7 +5,7 @@
  * @param {array} dataToBeAdded - The data to be added as a permutation.
  * @return {array} - Permutations of properties.
  */
-module.exports = function (index, dataArray, dataToBeAdded) {
+module.exports = function(index, dataArray, dataToBeAdded) {
     return permutateProperties(index, dataArray, dataToBeAdded);
 };
 
@@ -16,7 +16,7 @@ module.exports = function (index, dataArray, dataToBeAdded) {
  * @param {array} dataToBeAdded - The data to be added as a permutation.
  * @return {array} - Permutations of properties.
  */
-let permutateProperties = function (index, dataArray, dataToBeAdded) {
+let permutateProperties = function(index, dataArray, dataToBeAdded) {
     let newDataToBeAdded = [];
 
     if (!dataArray[index]) {

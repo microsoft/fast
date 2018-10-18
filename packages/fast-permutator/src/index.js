@@ -1,26 +1,26 @@
 // re-usable utilities
-const setDeepObject = require('./utilities/set-deep-object');
-const removeEmptyObjects = require('./utilities/remove-empty-objects');
-const getDeepPropLocations = require('./utilities/get-deep-prop-locations');
-const resolveReferences = require('./utilities/resolve-references');
-const convertRefsToIds = require('./utilities/convert-refs-to-ids');
-const resolveSchemaProps = require('./utilities/resolve-schema-props');
-const resolveRecursiveReferences = require('./utilities/resolve-recursive-references');
+const setDeepObject = require("./utilities/set-deep-object");
+const removeEmptyObjects = require("./utilities/remove-empty-objects");
+const getDeepPropLocations = require("./utilities/get-deep-prop-locations");
+const resolveReferences = require("./utilities/resolve-references");
+const convertRefsToIds = require("./utilities/convert-refs-to-ids");
+const resolveSchemaProps = require("./utilities/resolve-schema-props");
+const resolveRecursiveReferences = require("./utilities/resolve-recursive-references");
 
 // property type utilities
-const typeBoolean = require('./utilities/type-boolean');
-const typeString = require('./utilities/type-string');
-const typeNumber = require('./utilities/type-number');
-const typeObject = require('./utilities/type-object');
-const typeNull = require('./utilities/type-null');
-const typelessEnum = require('./utilities/typeless-enum');
+const typeBoolean = require("./utilities/type-boolean");
+const typeString = require("./utilities/type-string");
+const typeNumber = require("./utilities/type-number");
+const typeObject = require("./utilities/type-object");
+const typeNull = require("./utilities/type-null");
+const typelessEnum = require("./utilities/typeless-enum");
 
 // permutate utilities
-const permutateSchemas = require('./utilities/permutate-schemas');
-const permutateProperties = require('./utilities/permutate-properties');
+const permutateSchemas = require("./utilities/permutate-schemas");
+const permutateProperties = require("./utilities/permutate-properties");
 
 // single use utilities
-const getExample = require('./utilities/get-example');
+const getExample = require("./utilities/get-example");
 
 let permutator = {};
 let optionalData;
@@ -42,7 +42,7 @@ let handleRequiredData = function(isRequired, array) {
  * @param {array} refs - The references for the given schema.
  * @return {object} - An array of permutated data objects.
  */
-permutator.generator = function (schema, refs) {
+permutator.generator = function(schema, refs) {
     let schemaAll = permutateSchemas(schema, refs);
     let uniqueAll = new Set();
     let dataAll = []; // flat structure
@@ -54,19 +54,33 @@ permutator.generator = function (schema, refs) {
 
         // traverse the structure of the schema and generate data
         switch (schemaItem.type) {
-            case 'object': permutator.typeObject(schemaItem); break;
-            case 'array': permutator.typeArray(schemaItem); break;
-            case 'boolean': permutator.typeBoolean(schemaItem); break;
-            case 'null': permutator.typeNull(schemaItem); break;
-            case 'string': permutator.typeString(schemaItem); break;
-            case 'number': permutator.typeNumber(schemaItem); break;
+            case "object":
+                permutator.typeObject(schemaItem);
+                break;
+            case "array":
+                permutator.typeArray(schemaItem);
+                break;
+            case "boolean":
+                permutator.typeBoolean(schemaItem);
+                break;
+            case "null":
+                permutator.typeNull(schemaItem);
+                break;
+            case "string":
+                permutator.typeString(schemaItem);
+                break;
+            case "number":
+                permutator.typeNumber(schemaItem);
+                break;
             default:
                 if (schemaItem.enum) {
                     permutator.typelessEnum(schemaItem);
                 } else if (schemaItem.properties) {
                     permutator.typeObject(schemaItem);
                 } else {
-                    console.log('Schema does not contain a type or has a type that is not allowed on the root level.');
+                    console.log(
+                        "Schema does not contain a type or has a type that is not allowed on the root level."
+                    );
                 }
                 break;
         }
@@ -98,7 +112,7 @@ permutator.generator = function (schema, refs) {
  * @param {string} propertyName - The name of the property currently being evaluated.
  * @param {boolean} required - Whether this property is required.
  */
-permutator.generateByType = function (schema, propertyName, required, arrayConfig) {
+permutator.generateByType = function(schema, propertyName, required, arrayConfig) {
     /**
      * items marked as whitelisted are ignored
      * use to avoid too many permutations
@@ -108,19 +122,33 @@ permutator.generateByType = function (schema, propertyName, required, arrayConfi
     }
 
     switch (schema.type) {
-        case 'object': permutator.typeObject(schema, propertyName, required, arrayConfig); break;
-        case 'array': permutator.typeArray(schema, propertyName, required, arrayConfig); break;
-        case 'boolean': permutator.typeBoolean(schema, propertyName, required, arrayConfig); break;
-        case 'null': permutator.typeNull(schema, propertyName, required, arrayConfig); break;
-        case 'string': permutator.typeString(schema, propertyName, required, arrayConfig); break;
-        case 'number': permutator.typeNumber(schema, propertyName, required, arrayConfig); break;
+        case "object":
+            permutator.typeObject(schema, propertyName, required, arrayConfig);
+            break;
+        case "array":
+            permutator.typeArray(schema, propertyName, required, arrayConfig);
+            break;
+        case "boolean":
+            permutator.typeBoolean(schema, propertyName, required, arrayConfig);
+            break;
+        case "null":
+            permutator.typeNull(schema, propertyName, required, arrayConfig);
+            break;
+        case "string":
+            permutator.typeString(schema, propertyName, required, arrayConfig);
+            break;
+        case "number":
+            permutator.typeNumber(schema, propertyName, required, arrayConfig);
+            break;
         default:
             if (schema.enum) {
                 permutator.typelessEnum(schema, propertyName, required, arrayConfig);
             } else if (schema.properties) {
                 permutator.typeObject(schema, propertyName, required, arrayConfig);
             } else if (!schema.oneOf && !schema.anyOf) {
-                console.log('Schema does not contain a type or has a type that is not allowed on the root level.');
+                console.log(
+                    "Schema does not contain a type or has a type that is not allowed on the root level."
+                );
             }
             break;
     }
@@ -132,11 +160,11 @@ permutator.generateByType = function (schema, propertyName, required, arrayConfi
  * @param {string} propertyName - The name of the property currently being evaluated.
  * @param {boolean} required - Whether this property is required.
  */
-permutator.typeObject = function (schema, propertyName, required, arrayConfig) {
+permutator.typeObject = function(schema, propertyName, required, arrayConfig) {
     let objectProperties;
     let compositePropertyName;
 
-    if (typeof propertyName !== 'undefined') {
+    if (typeof propertyName !== "undefined") {
         let objectArray = typeObject(schema, propertyName, required, arrayConfig);
 
         if (!required) {
@@ -164,16 +192,35 @@ permutator.typeObject = function (schema, propertyName, required, arrayConfig) {
 
         if (arrayConfig && arrayConfig.itemNumber) {
             for (let i = 0; i < arrayConfig.itemNumber; i++) {
-                if (typeof propertyName !== 'undefined' && typeof property !== 'undefined') {
-                    compositePropertyName = (typeof propertyName !== 'undefined') ? `${propertyName}[${i}].${property}` : property;
+                if (
+                    typeof propertyName !== "undefined" &&
+                    typeof property !== "undefined"
+                ) {
+                    compositePropertyName =
+                        typeof propertyName !== "undefined"
+                            ? `${propertyName}[${i}].${property}`
+                            : property;
 
-                    permutator.generateByType(schema.properties[property], compositePropertyName, required);
+                    permutator.generateByType(
+                        schema.properties[property],
+                        compositePropertyName,
+                        required
+                    );
                 }
             }
-        } else if (typeof schema.properties[property].type !== 'undefined' ||
-            typeof schema.properties[property].enum !== 'undefined') {
-            compositePropertyName = (typeof propertyName !== 'undefined') ? `${propertyName}.${property}` : property;
-            permutator.generateByType(schema.properties[property], compositePropertyName, required);
+        } else if (
+            typeof schema.properties[property].type !== "undefined" ||
+            typeof schema.properties[property].enum !== "undefined"
+        ) {
+            compositePropertyName =
+                typeof propertyName !== "undefined"
+                    ? `${propertyName}.${property}`
+                    : property;
+            permutator.generateByType(
+                schema.properties[property],
+                compositePropertyName,
+                required
+            );
         }
     }
 };
@@ -184,13 +231,15 @@ permutator.typeObject = function (schema, propertyName, required, arrayConfig) {
  * @param {string} propertyName - The name of the property currently being evaluated.
  * @param {boolean} required - Whether this property is required.
  */
-permutator.typeArray = function (schema, propertyName, required, arrayConfig) {
+permutator.typeArray = function(schema, propertyName, required, arrayConfig) {
     let arrayArray = [];
     let arrayArrayLength;
     let config = {};
 
     if (schema.minItems && schema.maxItems) {
-        config.itemNumber = Math.floor(Math.random() * (schema.maxItems - schema.minItems + 1)) + schema.minItems;
+        config.itemNumber =
+            Math.floor(Math.random() * (schema.maxItems - schema.minItems + 1)) +
+            schema.minItems;
     } else if (schema.minItems) {
         config.itemNumber = schema.minItems;
     } else if (schema.maxItems) {
@@ -213,7 +262,7 @@ permutator.typeArray = function (schema, propertyName, required, arrayConfig) {
  * @param {string} propertyName - The name of the property currently being evaluated.
  * @param {boolean} required - Whether this property is required.
  */
-permutator.typeBoolean = function (schema, propertyName, required, arrayConfig) {
+permutator.typeBoolean = function(schema, propertyName, required, arrayConfig) {
     const boolArray = typeBoolean(schema, propertyName, required, arrayConfig);
 
     handleRequiredData(required, boolArray);
@@ -225,7 +274,7 @@ permutator.typeBoolean = function (schema, propertyName, required, arrayConfig) 
  * @param {string} propertyName - The name of the property currently being evaluated.
  * @param {boolean} required - Whether this property is required.
  */
-permutator.typeString = function (schema, propertyName, required, arrayConfig) {
+permutator.typeString = function(schema, propertyName, required, arrayConfig) {
     const stringArray = typeString(schema, propertyName, required, arrayConfig);
 
     handleRequiredData(required, stringArray);
@@ -237,7 +286,7 @@ permutator.typeString = function (schema, propertyName, required, arrayConfig) {
  * @param {string} propertyName - The name of the property currently being evaluated.
  * @param {boolean} required - Whether this property is required.
  */
-permutator.typeNumber = function (schema, propertyName, required, arrayConfig) {
+permutator.typeNumber = function(schema, propertyName, required, arrayConfig) {
     const numberArray = typeNumber(schema, propertyName, required, arrayConfig);
 
     handleRequiredData(required, numberArray);
@@ -249,7 +298,7 @@ permutator.typeNumber = function (schema, propertyName, required, arrayConfig) {
  * @param {string} propertyName - The name of the property currently being evaluated.
  * @param {boolean} required - Whether this property is required.
  */
-permutator.typeNull = function (schema, propertyName, required, arrayConfig) {
+permutator.typeNull = function(schema, propertyName, required, arrayConfig) {
     const nullArray = typeNull(schema, propertyName, required, arrayConfig);
 
     handleRequiredData(required, nullArray);
@@ -261,7 +310,7 @@ permutator.typeNull = function (schema, propertyName, required, arrayConfig) {
  * @param {string} propertyName - The name of the property currently being evaluated.
  * @param {boolean} required - Whether this property is required.
  */
-permutator.typelessEnum = function (schema, propertyName, required, arrayConfig) {
+permutator.typelessEnum = function(schema, propertyName, required, arrayConfig) {
     const enumArray = typelessEnum(schema, propertyName, required, arrayConfig);
 
     handleRequiredData(required, enumArray);

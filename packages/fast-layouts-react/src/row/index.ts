@@ -12,7 +12,7 @@ import {
     rowStyleSheet,
     RowUnhandledProps,
     south,
-    west
+    west,
 } from "./row";
 import { Subtract } from "utility-types";
 
@@ -33,5 +33,5 @@ export {
     east,
     west,
     north,
-    south
+    south,
 };

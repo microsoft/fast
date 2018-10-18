@@ -9,8 +9,11 @@ function getStringFromData(data: string | number): string {
     return data || "";
 }
 
-export function getStringValue(data: string | number, defaultData: string | number): string {
-    return (typeof data === "string" || typeof data === "number")
+export function getStringValue(
+    data: string | number,
+    defaultData: string | number
+): string {
+    return typeof data === "string" || typeof data === "number"
         ? getStringFromData(data)
         : getStringFromData(defaultData);
 }

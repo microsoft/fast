@@ -13,7 +13,7 @@ const styles: any = {
     },
 };
 
-const stylesheet: any = jss.createStyleSheet(styles, {link: true}).update(theme);
+const stylesheet: any = jss.createStyleSheet(styles, { link: true }).update(theme);
 
 export interface PageState {
     width: number;
@@ -36,10 +36,10 @@ class Page extends React.Component<{}, PageState> {
             viewerConfig: {
                 browser: true,
                 height: {
-                    min: 200
-                }
+                    min: 200,
+                },
             },
-            width: 100
+            width: 100,
         };
     }
 
@@ -52,50 +52,44 @@ class Page extends React.Component<{}, PageState> {
         manager.unmanage("wrapper");
     }
 
-    public handleRangeUpdate = ({ target: { value }}: any): void => {
+    public handleRangeUpdate = ({ target: { value } }: any): void => {
         theme.width = `${value}%`;
         this.setState({ width: value });
-    }
+    };
 
     public handleTextUpdate = (value: any): void => {
         if (typeof value === "object" && value.target) {
-            this.setState(
-                {
-                    data: {
-                        getStyles: this.onGetStyles,
-                        onChange: this.handleTextUpdate,
-                        textValue: value.target.value,
-                    },
+            this.setState({
+                data: {
+                    getStyles: this.onGetStyles,
+                    onChange: this.handleTextUpdate,
+                    textValue: value.target.value,
                 },
-            );
+            });
         } else {
-            this.setState(
-                {
-                    data: {
-                        getStyles: this.onGetStyles,
-                        onChange: this.handleTextUpdate,
-                        textValue: value,
-                    },
-                },
-            );
-        }
-    }
-
-    public onUpdate = (value: any): void => {
-        this.setState(
-            {
+            this.setState({
                 data: {
                     getStyles: this.onGetStyles,
                     onChange: this.handleTextUpdate,
                     textValue: value,
                 },
+            });
+        }
+    };
+
+    public onUpdate = (value: any): void => {
+        this.setState({
+            data: {
+                getStyles: this.onGetStyles,
+                onChange: this.handleTextUpdate,
+                textValue: value,
             },
-        );
-    }
+        });
+    };
 
     public onGetStyles = (style: string): void => {
-        this.setState({exampleStyles: style});
-    }
+        this.setState({ exampleStyles: style });
+    };
 
     public render(): JSX.Element {
         return (
@@ -103,8 +97,18 @@ class Page extends React.Component<{}, PageState> {
                 {this.state.data.textValue}
                 <div>
                     {`width: ${this.state.width}%`}
-                    <input type="range" min={0} max={100} value={this.state.width} onChange={this.handleRangeUpdate} />
-                    <input type="text" onChange={this.handleTextUpdate} value={this.state.data.textValue} />
+                    <input
+                        type="range"
+                        min={0}
+                        max={100}
+                        value={this.state.width}
+                        onChange={this.handleRangeUpdate}
+                    />
+                    <input
+                        type="text"
+                        onChange={this.handleTextUpdate}
+                        value={this.state.data.textValue}
+                    />
                 </div>
                 <Viewer
                     component={Example}

@@ -1,7 +1,14 @@
 import * as React from "react";
 import { CanvasHandledProps, CanvasProps, CanvasUnhandledProps } from "./canvas.props";
-import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import Foundation, { FoundationProps, HandledProps } from "@microsoft/fast-components-foundation-react";
+import manageJss, {
+    ComponentStyles,
+    ManagedClasses,
+    ManagedJSSProps,
+} from "@microsoft/fast-jss-manager-react";
+import Foundation, {
+    FoundationProps,
+    HandledProps,
+} from "@microsoft/fast-components-foundation-react";
 
 export interface CanvasClassNamesContract {
     canvas: string;
@@ -11,22 +18,18 @@ export const canvasStyleSheet: ComponentStyles<CanvasClassNamesContract, undefin
     canvas: {
         flex: "1",
         overflow: "hidden",
-    }
+    },
 };
 
 /**
  * Grid Canvas - this is the main content area of the grid.
  */
-export class Canvas extends Foundation<
-    CanvasHandledProps,
-    CanvasUnhandledProps,
-    {}
-> {
+export class Canvas extends Foundation<CanvasHandledProps, CanvasUnhandledProps, {}> {
     /**
      * Default props for the Canvas component
      */
     public static defaultProps: CanvasHandledProps = {
-        minWidth: 300
+        minWidth: 300,
     };
 
     /**
@@ -34,7 +37,7 @@ export class Canvas extends Foundation<
      */
     protected handledProps: HandledProps<CanvasProps> = {
         minWidth: void 0,
-        managedClasses: void 0
+        managedClasses: void 0,
     };
 
     /**
@@ -42,7 +45,7 @@ export class Canvas extends Foundation<
      */
     public renderStyleAttribute(): object {
         return {
-            minWidth: `${this.props.minWidth}px`
+            minWidth: `${this.props.minWidth}px`,
         };
     }
 

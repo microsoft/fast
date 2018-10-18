@@ -1,7 +1,7 @@
 /**
  * Define configuration values
  */
-const validDomains: string[] = [ "*://*.fluentweb.com/*" ];
+const validDomains: string[] = ["*://*.fluentweb.com/*"];
 const extensionId: string = "jhhigejkemaekdcempcigaapebobmimg";
 
 /**

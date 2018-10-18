@@ -3,14 +3,14 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import HorizontalOverflow, {
     ButtonDirection,
-    HorizontalOverflowClassNameContract
+    HorizontalOverflowClassNameContract,
 } from "./";
 import "raf/polyfill";
 
 /*
  * Configure Enzyme
  */
-configure({adapter: new Adapter()});
+configure({ adapter: new Adapter() });
 
 const id1: string = "image1";
 const id2: string = "image2";
@@ -20,19 +20,19 @@ const id5: string = "image5";
 const id6: string = "image6";
 
 const imageSet1: JSX.Element[] = [
-    (<img id={id1} key={id1} src="https://placehold.it/200x200?text=1" />),
-    (<img id={id2} key={id2} src="https://placehold.it/200x200?text=2" />),
-    (<img id={id3} key={id3} src="https://placehold.it/200x200?text=3" />),
-    (<img id={id4} key={id4} src="https://placehold.it/200x200?text=4" />),
-    (<img id={id5} key={id5} src="https://placehold.it/200x200?text=5" />),
-    (<img id={id6} key={id6} src="https://placehold.it/200x200?text=6" />)
+    <img id={id1} key={id1} src="https://placehold.it/200x200?text=1" />,
+    <img id={id2} key={id2} src="https://placehold.it/200x200?text=2" />,
+    <img id={id3} key={id3} src="https://placehold.it/200x200?text=3" />,
+    <img id={id4} key={id4} src="https://placehold.it/200x200?text=4" />,
+    <img id={id5} key={id5} src="https://placehold.it/200x200?text=5" />,
+    <img id={id6} key={id6} src="https://placehold.it/200x200?text=6" />,
 ];
 
 const managedClasses: HorizontalOverflowClassNameContract = {
     horizontalOverflow: "horizontal-overflow-class",
     horizontalOverflow_contentRegion: "horizontal-overflow-items-class",
     horizontalOverflow_next: "horizontal-overflow-next-class",
-    horizontalOverflow_previous: "horizontal-overflow-previous-class"
+    horizontalOverflow_previous: "horizontal-overflow-previous-class",
 };
 
 // TODO #746: https://github.com/Microsoft/fast-dna/issues/746
@@ -44,11 +44,9 @@ describe("horizontal overflow", (): void => {
     });
 
     test("should not throw if managedClasses are not provided", () => {
-        expect(
-            () => {
-                shallow(<HorizontalOverflow />);
-            }
-        ).not.toThrow();
+        expect(() => {
+            shallow(<HorizontalOverflow />);
+        }).not.toThrow();
     });
 
     test("should be a list of items which contain each item", () => {
@@ -60,28 +58,70 @@ describe("horizontal overflow", (): void => {
 
         expect(renderedWithImagesAndPrevious.find("ul").length).toBe(1);
         expect(renderedWithImagesAndPrevious.find("li").length).toBe(6);
-        expect(renderedWithImagesAndPrevious.find("li").at(0).find("img").prop("id")).toBe(id1);
-        expect(renderedWithImagesAndPrevious.find("li").at(1).find("img").prop("id")).toBe(id2);
-        expect(renderedWithImagesAndPrevious.find("li").at(2).find("img").prop("id")).toBe(id3);
-        expect(renderedWithImagesAndPrevious.find("li").at(3).find("img").prop("id")).toBe(id4);
-        expect(renderedWithImagesAndPrevious.find("li").at(4).find("img").prop("id")).toBe(id5);
-        expect(renderedWithImagesAndPrevious.find("li").at(5).find("img").prop("id")).toBe(id6);
+        expect(
+            renderedWithImagesAndPrevious
+                .find("li")
+                .at(0)
+                .find("img")
+                .prop("id")
+        ).toBe(id1);
+        expect(
+            renderedWithImagesAndPrevious
+                .find("li")
+                .at(1)
+                .find("img")
+                .prop("id")
+        ).toBe(id2);
+        expect(
+            renderedWithImagesAndPrevious
+                .find("li")
+                .at(2)
+                .find("img")
+                .prop("id")
+        ).toBe(id3);
+        expect(
+            renderedWithImagesAndPrevious
+                .find("li")
+                .at(3)
+                .find("img")
+                .prop("id")
+        ).toBe(id4);
+        expect(
+            renderedWithImagesAndPrevious
+                .find("li")
+                .at(4)
+                .find("img")
+                .prop("id")
+        ).toBe(id5);
+        expect(
+            renderedWithImagesAndPrevious
+                .find("li")
+                .at(5)
+                .find("img")
+                .prop("id")
+        ).toBe(id6);
     });
 
     test("should render a previous button if one is passed as a child with the appropriate slot prop", () => {
         const renderedWithImagesAndPrevious: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
-                <button id="testButtonPrevious" slot="previous">previous</button>
+                <button id="testButtonPrevious" slot="previous">
+                    previous
+                </button>
                 {imageSet1}
             </HorizontalOverflow>
         );
 
-        expect(renderedWithImagesAndPrevious.find("#testButtonPrevious")).not.toBe(undefined);
+        expect(renderedWithImagesAndPrevious.find("#testButtonPrevious")).not.toBe(
+            undefined
+        );
     });
     test("should render a next button if one is passed as a child with the appropriate slot prop", () => {
         const renderedWithImagesAndNext: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
-                <button id="testButtonNext" slot="next">next</button>
+                <button id="testButtonNext" slot="next">
+                    next
+                </button>
                 {imageSet1}
             </HorizontalOverflow>
         );
@@ -113,10 +153,12 @@ describe("horizontal overflow", (): void => {
 
         expect(renderedWithImages.find("img").length).toBe(6);
 
-        renderedWithImages.setProps({ children: [
-            (<img key="image1" src="https://placehold.it/200x200?text=1" />),
-            (<img key="image2" src="https://placehold.it/200x200?text=2" />)
-        ]});
+        renderedWithImages.setProps({
+            children: [
+                <img key="image1" src="https://placehold.it/200x200?text=1" />,
+                <img key="image2" src="https://placehold.it/200x200?text=2" />,
+            ],
+        });
 
         expect(renderedWithImages.find("img").length).toBe(2);
     });
@@ -128,48 +170,48 @@ describe("horizontal overflow", (): void => {
         );
 
         expect(
-            renderedWithImages.instance()[
-                "getScrollDistanceFromDirection"
-            ](
-                ButtonDirection.next,
-                50,
-                [10, 20, 20, 50, 20],
-                0
-            )
+            renderedWithImages
+                .instance()
+                ["getScrollDistanceFromDirection"](
+                    ButtonDirection.next,
+                    50,
+                    [10, 20, 20, 50, 20],
+                    0
+                )
         ).toBe(50);
 
         // reaches the max distance and uses that instead
         expect(
-            renderedWithImages.instance()[
-                "getScrollDistanceFromDirection"
-            ](
-                ButtonDirection.next,
-                40,
-                [10, 20, 10, 30, 20, 10],
-                30
-            )
+            renderedWithImages
+                .instance()
+                ["getScrollDistanceFromDirection"](
+                    ButtonDirection.next,
+                    40,
+                    [10, 20, 10, 30, 20, 10],
+                    30
+                )
         ).toBe(60);
 
         expect(
-            renderedWithImages.instance()[
-                "getScrollDistanceFromDirection"
-            ](
-                ButtonDirection.next,
-                40,
-                [10, 20, 10, 30, 20, 10, 20, 10],
-                30
-            )
+            renderedWithImages
+                .instance()
+                ["getScrollDistanceFromDirection"](
+                    ButtonDirection.next,
+                    40,
+                    [10, 20, 10, 30, 20, 10, 20, 10],
+                    30
+                )
         ).toBe(70);
 
         expect(
-            renderedWithImages.instance()[
-                "getScrollDistanceFromDirection"
-            ](
-                ButtonDirection.next,
-                40,
-                [10, 20, 10, 30, 20, 10, 20, 10],
-                40
-            )
+            renderedWithImages
+                .instance()
+                ["getScrollDistanceFromDirection"](
+                    ButtonDirection.next,
+                    40,
+                    [10, 20, 10, 30, 20, 10, 20, 10],
+                    40
+                )
         ).toBe(70);
     });
     test("should update the scrolled distance when moving previous to include the previous number of items that can be in view", () => {
@@ -180,25 +222,25 @@ describe("horizontal overflow", (): void => {
         );
 
         expect(
-            renderedWithImages.instance()[
-                "getScrollDistanceFromDirection"
-            ](
-                ButtonDirection.previous,
-                50,
-                [10, 20, 20, 50, 20],
-                10
-            )
+            renderedWithImages
+                .instance()
+                ["getScrollDistanceFromDirection"](
+                    ButtonDirection.previous,
+                    50,
+                    [10, 20, 20, 50, 20],
+                    10
+                )
         ).toBe(0);
 
         expect(
-            renderedWithImages.instance()[
-                "getScrollDistanceFromDirection"
-            ](
-                ButtonDirection.previous,
-                50,
-                [50, 50, 50, 50],
-                100
-            )
+            renderedWithImages
+                .instance()
+                ["getScrollDistanceFromDirection"](
+                    ButtonDirection.previous,
+                    50,
+                    [50, 50, 50, 50],
+                    100
+                )
         ).toBe(50);
     });
     test("should an state property `itemsHeight`", () => {
@@ -209,11 +251,7 @@ describe("horizontal overflow", (): void => {
         );
 
         expect(renderedWithImages.state("itemsHeight")).toBe(0);
-        expect(
-            renderedWithImages.instance()[
-                "getItemMaxHeight"
-            ]()
-        ).toBe(0);
+        expect(renderedWithImages.instance()["getItemMaxHeight"]()).toBe(0);
     });
     test("should ease the animation correctly when moving the scroll position", () => {
         const renderedWithImages: any = mount(
@@ -222,75 +260,92 @@ describe("horizontal overflow", (): void => {
             </HorizontalOverflow>
         );
 
-        expect(
-            renderedWithImages.instance()[
-                "easeInOutQuad"
-            ](
-                1,
-                0,
-                0.5,
-                50
-            )
-        ).toBe(0.0004);
+        expect(renderedWithImages.instance()["easeInOutQuad"](1, 0, 0.5, 50)).toBe(
+            0.0004
+        );
     });
     test("should get the distance when moving next/previous", () => {
         const renderedWithImagesAndNextAndPrevious: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
-                <button id="testButtonNext" slot="next">next</button>
-                <button id="testButtonPrevious" slot="previous">previous</button>
+                <button id="testButtonNext" slot="next">
+                    next
+                </button>
+                <button id="testButtonPrevious" slot="previous">
+                    previous
+                </button>
                 {imageSet1}
             </HorizontalOverflow>
         );
 
         expect(
-            renderedWithImagesAndNextAndPrevious.instance()[
-                "getNextDistance"
-            ](500, [120, 140, 80, 220, 210, 100, 90, 200, 190, 170, 180, 210, 190], 0)
+            renderedWithImagesAndNextAndPrevious
+                .instance()
+                ["getNextDistance"](
+                    500,
+                    [120, 140, 80, 220, 210, 100, 90, 200, 190, 170, 180, 210, 190],
+                    0
+                )
         ).toBe(340);
 
         expect(
-            renderedWithImagesAndNextAndPrevious.instance()[
-                "getNextDistance"
-            ](500, [120, 140, 80, 220, 210, 100, 90, 200, 190, 170, 180, 210, 190], 2100)
+            renderedWithImagesAndNextAndPrevious
+                .instance()
+                ["getNextDistance"](
+                    500,
+                    [120, 140, 80, 220, 210, 100, 90, 200, 190, 170, 180, 210, 190],
+                    2100
+                )
         ).toBe(2100);
 
         expect(
-            renderedWithImagesAndNextAndPrevious.instance()[
-                "getPreviousDistance"
-            ](500, [120, 140, 80, 220, 210, 100, 90, 200, 190, 170, 180, 210, 190], 560)
+            renderedWithImagesAndNextAndPrevious
+                .instance()
+                ["getPreviousDistance"](
+                    500,
+                    [120, 140, 80, 220, 210, 100, 90, 200, 190, 170, 180, 210, 190],
+                    560
+                )
         ).toBe(120);
 
         expect(
-            renderedWithImagesAndNextAndPrevious.instance()[
-                "getPreviousDistance"
-            ](500, [120, 140, 80, 220, 210, 100, 90, 200, 190, 170, 180, 210, 190], 0)
+            renderedWithImagesAndNextAndPrevious
+                .instance()
+                ["getPreviousDistance"](
+                    500,
+                    [120, 140, 80, 220, 210, 100, 90, 200, 190, 170, 180, 210, 190],
+                    0
+                )
         ).toBe(0);
 
         expect(
-            renderedWithImagesAndNextAndPrevious.instance()[
-                "getScrollDistanceFromDirection"
-            ]("next", 500, [], 0)
+            renderedWithImagesAndNextAndPrevious
+                .instance()
+                ["getScrollDistanceFromDirection"]("next", 500, [], 0)
         ).toBe(0);
     });
     test("should set a max/min distance without additional calculations", () => {
         const renderedWithImagesAndNextAndPrevious: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
-                <button id="testButtonNext" slot="next">next</button>
-                <button id="testButtonPrevious" slot="previous">previous</button>
+                <button id="testButtonNext" slot="next">
+                    next
+                </button>
+                <button id="testButtonPrevious" slot="previous">
+                    previous
+                </button>
                 {imageSet1}
             </HorizontalOverflow>
         );
 
         expect(
-            renderedWithImagesAndNextAndPrevious.instance()[
-                "getWithinMaxDistance"
-            ](400, 500, [], 400)
+            renderedWithImagesAndNextAndPrevious
+                .instance()
+                ["getWithinMaxDistance"](400, 500, [], 400)
         ).toBe(400);
 
         expect(
-            renderedWithImagesAndNextAndPrevious.instance()[
-                "getWithinMinDistance"
-            ](0, 500, [])
+            renderedWithImagesAndNextAndPrevious
+                .instance()
+                ["getWithinMinDistance"](0, 500, [])
         ).toBe(0);
     });
     test("should have an `onLoad` method", () => {
@@ -300,15 +355,11 @@ describe("horizontal overflow", (): void => {
             </HorizontalOverflow>
         );
 
-        expect(
-            renderedWithImages.instance()[
-                "itemsOnLoad"
-            ]()
-        ).toBe(undefined);
+        expect(renderedWithImages.instance()["itemsOnLoad"]()).toBe(undefined);
 
         expect(renderedWithImages.instance().state.itemsHeight).toBe(0);
 
-        renderedWithImages.setState({ itemsHeight: 50});
+        renderedWithImages.setState({ itemsHeight: 50 });
 
         expect(renderedWithImages.instance().state.itemsHeight).toBe(50);
 
@@ -323,37 +374,33 @@ describe("horizontal overflow", (): void => {
             </HorizontalOverflow>
         );
 
-        const itemsElement: HTMLDivElement = renderedWithImages.find(".horizontal-overflow-items-class");
+        const itemsElement: HTMLDivElement = renderedWithImages.find(
+            ".horizontal-overflow-items-class"
+        );
 
-        expect(
-            renderedWithImages.instance()[
-                "scrollLeft"
-            ](
-                itemsElement,
-                50,
-                0
-            )
-        ).toBe(undefined);
+        expect(renderedWithImages.instance()["scrollLeft"](itemsElement, 50, 0)).toBe(
+            undefined
+        );
     });
     test("should allow clicks on previous and next buttons", () => {
         const renderedWithImagesAndNextAndPrevious: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
-                <button id="testButtonNext" slot="next">next</button>
-                <button id="testButtonPrevious" slot="previous">previous</button>
+                <button id="testButtonNext" slot="next">
+                    next
+                </button>
+                <button id="testButtonPrevious" slot="previous">
+                    previous
+                </button>
                 {imageSet1}
             </HorizontalOverflow>
         );
 
-        expect(
-            renderedWithImagesAndNextAndPrevious.instance()[
-                "handleNextClick"
-            ]()
-        ).toBe(undefined);
+        expect(renderedWithImagesAndNextAndPrevious.instance()["handleNextClick"]()).toBe(
+            undefined
+        );
 
         expect(
-            renderedWithImagesAndNextAndPrevious.instance()[
-                "handlePreviousClick"
-            ]()
+            renderedWithImagesAndNextAndPrevious.instance()["handlePreviousClick"]()
         ).toBe(undefined);
     });
 });

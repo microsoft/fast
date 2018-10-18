@@ -1,4 +1,4 @@
-const clone = require('lodash-es').cloneDeep;
+const clone = require("lodash-es").cloneDeep;
 
 /**
  * Remove any undefined keys in an object
@@ -10,12 +10,12 @@ module.exports = function(obj) {
     let objKeys = Object.keys(newObj);
 
     for (let key of objKeys) {
-        if (typeof key === 'undefined') {
+        if (typeof key === "undefined") {
             delete newObj[key];
         }
         if (Array.isArray(newObj[key])) {
             for (let i = 0, keyLength = newObj[key].length; i < keyLength; i++) {
-                if (typeof newObj[key][i] === 'undefined') {
+                if (typeof newObj[key][i] === "undefined") {
                     newObj[key].splice(i, 1);
                 }
             }

@@ -3,7 +3,7 @@ import * as React from "react";
 export enum AlignVerticalPositions {
     top = "top",
     bottom = "bottom",
-    center = "center"
+    center = "center",
 }
 
 export interface AlignVerticalProps {
@@ -16,10 +16,6 @@ export interface AlignVerticalProps {
  */
 export default class AlignVertical extends React.Component<AlignVerticalProps, {}> {
     public render(): JSX.Element {
-        return (
-            <span>
-                {this.props.alignVertical}
-            </span>
-        );
+        return <span>{this.props.alignVertical}</span>;
     }
 }

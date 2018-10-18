@@ -12,26 +12,26 @@ export default {
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
-        children: "Paragraph"
+        children: "Paragraph",
     },
     data: [
         {
-            children: testString
+            children: testString,
         },
         {
             size: ParagraphSize._1,
             children: testString,
-            "data-sketch-symbol": "Paragraph 1"
+            "data-sketch-symbol": "Paragraph 1",
         },
         {
             size: ParagraphSize._2,
             children: testString,
-            "data-sketch-symbol": "Paragraph 2"
+            "data-sketch-symbol": "Paragraph 2",
         },
         {
             size: ParagraphSize._3,
             children: testString,
-            "data-sketch-symbol": "Paragraph 3"
-        }
-    ]
+            "data-sketch-symbol": "Paragraph 3",
+        },
+    ],
 } as ComponentFactoryExample<ParagraphProps>;

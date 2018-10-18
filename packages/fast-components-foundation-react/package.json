@@ -18,6 +18,8 @@
     "build": "tsc -p ./tsconfig.json",
     "clean:dist": "node ../../build/clean.js dist",
     "prepare": "npm run clean:dist && npm run build",
+    "prettier": "prettier --config ../../.prettierrc --write '**/*.{ts,tsx}'",
+    "prettier:diff": "prettier --config ../../.prettierrc '**/*.{ts,tsx}' --list-different",
     "test": "npm run tslint && npm run unit-tests",
     "tslint": "tslint -c ./tslint.json 'src/**/*.ts{,x}' '**/*.ts{,x}'",
     "tslint:fix": "tslint -c ./tslint.json --fix 'src/**/*.ts{,x}' '**/*.ts{,x}'",
@@ -67,12 +69,14 @@
     "jest": "^23.6.0",
     "jsdom-global": "^3.0.2",
     "lodash-es": "^4.0.0",
+    "prettier": "1.14.3",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
     "react-test-renderer": "^16.3.0",
     "ts-jest": "^23.10.4",
     "ts-loader": "^4.0.1",
     "tslint": "^5.9.1",
+    "tslint-config-prettier": "^1.15.0",
     "typescript": "^3.0.1"
   },
   "peerDependencies": {

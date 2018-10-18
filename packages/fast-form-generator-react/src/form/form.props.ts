@@ -3,7 +3,13 @@ import { NavigationItem } from "./form.utilities";
 
 export type PropsOnChange = (data: any) => void;
 
-export type DataOnChange = (location: string, data: any, isArray?: boolean, index?: number, isChildren?: boolean) => void;
+export type DataOnChange = (
+    location: string,
+    data: any,
+    isArray?: boolean,
+    index?: number,
+    isChildren?: boolean
+) => void;
 
 export type LocationOnChange = (schemaLocation: string, dataLocation: string) => void;
 

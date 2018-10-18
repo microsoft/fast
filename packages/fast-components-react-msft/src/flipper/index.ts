@@ -2,7 +2,7 @@ import * as React from "react";
 import { FoundationProps } from "@microsoft/fast-components-foundation-react";
 import {
     ButtonHandledProps as BaseButtonHandledProps,
-    ButtonUnhandledProps
+    ButtonUnhandledProps,
 } from "@microsoft/fast-components-react-base";
 import { FlipperClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
@@ -12,7 +12,7 @@ import MSFTFlipper, {
     FlipperHandledProps as MSFTFlipperHandledProps,
     FlipperManagedClasses,
     FlipperProps as MSFTFlipperProps,
-    FlipperUnhandledProps
+    FlipperUnhandledProps,
 } from "./flipper";
 import { Subtract } from "utility-types";
 
@@ -24,8 +24,13 @@ import { Subtract } from "utility-types";
 const Flipper = manageJss(FlipperStyles)(MSFTFlipper);
 type Flipper = typeof Flipper;
 
-interface FlipperHandledProps extends Subtract<MSFTFlipperHandledProps, FlipperManagedClasses> {}
-type FlipperProps = ManagedJSSProps<MSFTFlipperProps, FlipperClassNameContract, DesignSystem>;
+interface FlipperHandledProps
+    extends Subtract<MSFTFlipperHandledProps, FlipperManagedClasses> {}
+type FlipperProps = ManagedJSSProps<
+    MSFTFlipperProps,
+    FlipperClassNameContract,
+    DesignSystem
+>;
 
 export {
     Flipper,
@@ -33,5 +38,5 @@ export {
     FlipperDirection,
     FlipperHandledProps,
     FlipperUnhandledProps,
-    FlipperClassNameContract
+    FlipperClassNameContract,
 };

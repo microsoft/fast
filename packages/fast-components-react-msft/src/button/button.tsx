@@ -5,7 +5,7 @@ import {
     ButtonAppearance,
     ButtonHandledProps,
     ButtonManagedClasses,
-    ButtonUnhandledProps
+    ButtonUnhandledProps,
 } from "./button.props";
 import { Button as BaseButton } from "@microsoft/fast-components-react-base";
 
@@ -14,14 +14,10 @@ import { Button as BaseButton } from "@microsoft/fast-components-react-base";
  */
 export enum ButtonSlot {
     before = "before",
-    after = "after"
+    after = "after",
 }
 
-class Button extends Foundation<
-    ButtonHandledProps,
-    ButtonUnhandledProps,
-    {}
-> {
+class Button extends Foundation<ButtonHandledProps, ButtonUnhandledProps, {}> {
     public static displayName: string = "Button";
 
     protected handledProps: HandledProps<ButtonHandledProps> = {
@@ -58,13 +54,21 @@ class Button extends Foundation<
     protected generateClassNames(): string {
         switch (this.props.appearance) {
             case ButtonAppearance.primary:
-                return super.generateClassNames(get(this.props, "managedClasses.button__primary"));
+                return super.generateClassNames(
+                    get(this.props, "managedClasses.button__primary")
+                );
             case ButtonAppearance.outline:
-                return super.generateClassNames(get(this.props, "managedClasses.button__outline"));
+                return super.generateClassNames(
+                    get(this.props, "managedClasses.button__outline")
+                );
             case ButtonAppearance.lightweight:
-                return super.generateClassNames(get(this.props, "managedClasses.button__lightweight"));
+                return super.generateClassNames(
+                    get(this.props, "managedClasses.button__lightweight")
+                );
             case ButtonAppearance.justified:
-                return super.generateClassNames(get(this.props, "managedClasses.button__justified"));
+                return super.generateClassNames(
+                    get(this.props, "managedClasses.button__justified")
+                );
             default:
                 return super.generateClassNames();
         }

@@ -16,7 +16,7 @@ export const breakpoints: Breakpoints = {
     vp3: 768,
     vp4: 1084,
     vp5: 1400,
-    vp6: 1779
+    vp6: 1779,
 };
 
 export function applyBreakpoint(breakpoint: keyof Breakpoints): string {

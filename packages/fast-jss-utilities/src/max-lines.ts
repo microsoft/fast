@@ -13,6 +13,6 @@ export function applyMaxLines(lines: number, lineHeight: number): MaxLines {
         overflow: "hidden",
         boxSizing: "content-box",
         maxHeight: toPx(lines * lineHeight),
-        whiteSpace: lines === 1 ? "nowrap" : null
+        whiteSpace: lines === 1 ? "nowrap" : null,
     };
 }

@@ -7,7 +7,7 @@ import {
     CanvasManagedClasses,
     CanvasProps as BaseCanvasProps,
     canvasStyleSheet,
-    CanvasUnhandledProps
+    CanvasUnhandledProps,
 } from "./canvas";
 import { Subtract } from "utility-types";
 
@@ -15,7 +15,8 @@ import { Subtract } from "utility-types";
 const Canvas = manageJss(canvasStyleSheet)(BaseCanvas);
 type Canvas = typeof Canvas;
 
-interface CanvasHandledProps extends Subtract<BaseCanvasHandledProps, CanvasManagedClasses> {}
+interface CanvasHandledProps
+    extends Subtract<BaseCanvasHandledProps, CanvasManagedClasses> {}
 type CanvasProps = ManagedJSSProps<BaseCanvasProps, CanvasClassNamesContract, undefined>;
 
 export {
@@ -23,5 +24,5 @@ export {
     CanvasProps,
     CanvasHandledProps,
     CanvasUnhandledProps,
-    CanvasClassNamesContract
+    CanvasClassNamesContract,
 };

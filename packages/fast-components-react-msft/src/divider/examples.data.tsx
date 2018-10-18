@@ -10,18 +10,18 @@ export default {
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
-        role: void 0
+        role: void 0,
     },
     data: [
         {
             role: void 0,
-            "data-sketch-symbol": "Divider"
+            "data-sketch-symbol": "Divider",
         },
         {
-            role: DividerRoles.presentation
+            role: DividerRoles.presentation,
         },
         {
-            role: DividerRoles.separator
-        }
-    ]
+            role: DividerRoles.separator,
+        },
+    ],
 } as ComponentFactoryExample<DividerProps>;

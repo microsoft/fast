@@ -11,22 +11,22 @@ export default {
     documentation: <Documentation />,
     detailData: {
         tag: LabelTag.label,
-        children: "Label"
+        children: "Label",
     },
     data: [
         {
             tag: LabelTag.label,
             children: "Label",
-            "data-sketch-symbol": "Label"
+            "data-sketch-symbol": "Label",
         },
         {
             tag: LabelTag.legend,
-            children: "Legend label"
+            children: "Legend label",
         },
         {
             hidden: true,
             tag: LabelTag.label,
-            children: "Hidden label"
-        }
-    ]
+            children: "Hidden label",
+        },
+    ],
 } as ComponentFactoryExample<LabelProps>;

@@ -2,7 +2,7 @@ import * as React from "react";
 
 export enum WeightPropertiesTags {
     button = "button",
-    span = "span"
+    span = "span",
 }
 
 export interface WeightPropertiesProps {

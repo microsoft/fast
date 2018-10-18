@@ -7,7 +7,7 @@ import {
     ColumnManagedClasses,
     ColumnProps as BaseColumnProps,
     columnStyleSheet,
-    ColumnUnhandledProps
+    ColumnUnhandledProps,
 } from "./column";
 import { Subtract } from "utility-types";
 
@@ -15,7 +15,8 @@ import { Subtract } from "utility-types";
 const Column = manageJss(columnStyleSheet)(BaseColumn);
 type Column = typeof Column;
 
-interface ColumnHandledProps extends Subtract<BaseColumnHandledProps, ColumnManagedClasses> {}
+interface ColumnHandledProps
+    extends Subtract<BaseColumnHandledProps, ColumnManagedClasses> {}
 type ColumnProps = ManagedJSSProps<BaseColumnProps, ColumnClassNamesContract, undefined>;
 
 export {
@@ -23,5 +24,5 @@ export {
     ColumnProps,
     ColumnHandledProps,
     ColumnUnhandledProps,
-    ColumnClassNamesContract
+    ColumnClassNamesContract,
 };

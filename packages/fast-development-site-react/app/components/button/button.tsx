@@ -18,13 +18,16 @@ const ButtonStyles: ComponentStyles<TestButtonClassNameContract, DesignSystem> =
         width: "50px",
         textAlign: (config: DesignSystem): string => {
             return config.ltr === "ltr" ? "left" : "right";
-        }
-    }
+        },
+    },
 };
 
 /* tslint:disable-next-line */
-class Button extends React.Component<ButtonProps & ManagedClasses<TestButtonClassNameContract>, React.HTMLAttributes<HTMLButtonElement>, {}> {
-
+class Button extends React.Component<
+    ButtonProps & ManagedClasses<TestButtonClassNameContract>,
+    React.HTMLAttributes<HTMLButtonElement>,
+    {}
+> {
     public render(): JSX.Element {
         return (
             <button className={this.props.managedClasses.button}>

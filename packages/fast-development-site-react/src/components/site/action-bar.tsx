@@ -4,13 +4,22 @@ import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-syst
 import { Link, withRouter } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
 import { ComponentViewTypes } from "./component-view";
-import { glyphBuildingblocks, glyphExamples, glyphPage } from "@microsoft/fast-glyphs-msft";
+import {
+    glyphBuildingblocks,
+    glyphExamples,
+    glyphPage,
+} from "@microsoft/fast-glyphs-msft";
 import ComponentViewToggle from "./component-view-toggle";
-import manageJss, { ComponentStyles, CSSRules, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, {
+    ComponentStyles,
+    CSSRules,
+    ManagedClasses,
+    ManagedJSSProps,
+} from "@microsoft/fast-jss-manager-react";
 
 export enum ActionEnum {
     configure = "configure",
-    view = "view"
+    view = "view",
 }
 
 export interface ActionBarProps extends RouteComponentProps<any> {
@@ -69,18 +78,19 @@ function menuButtonBase(): CSSRules<DevSiteDesignSystem> {
             marginRight: toPx(5),
             display: "inline-block",
             fontSize: toPx(16),
-            verticalAlign: "text-bottom"
+            verticalAlign: "text-bottom",
         },
         "&:hover": {
             cursor: "pointer",
-            background: "rgba(0, 0, 0, 0.04)"
+            background: "rgba(0, 0, 0, 0.04)",
         },
         "&:focus": {
             outline: "none",
             border: (config: DevSiteDesignSystem): string => {
-                return `${toPx(1)} solid ${config.brandColor || devSiteDesignSystemDefaults.brandColor}`;
-            }
-        }
+                return `${toPx(1)} solid ${config.brandColor ||
+                    devSiteDesignSystemDefaults.brandColor}`;
+            },
+        },
     };
 }
 
@@ -88,18 +98,18 @@ const styles: ComponentStyles<ActionBarClassNameContract, DevSiteDesignSystem> =
     actionBar: {
         display: "flex",
         flexBasis: "100%",
-        borderBottom: `${toPx(1)} solid #CCCCCC`
+        borderBottom: `${toPx(1)} solid #CCCCCC`,
     },
     actionBar_componentViewToggles: {
         display: "flex",
         justifyContent: "flex-end",
-        flexGrow: "1"
+        flexGrow: "1",
     },
     actionBar_menu: {
-        flexGrow: "1"
+        flexGrow: "1",
     },
     actionBar_menu_button: {
-        ...menuButtonBase()
+        ...menuButtonBase(),
     },
     actionBar_menu_button__active: {
         ...menuButtonBase(),
@@ -113,35 +123,56 @@ const styles: ComponentStyles<ActionBarClassNameContract, DevSiteDesignSystem> =
             right: toPx(12),
             background: (config: DevSiteDesignSystem): string => {
                 return config.brandColor;
-            }
-        }
-    }
+            },
+        },
+    },
 };
 
-class ActionBar extends React.Component<ActionBarProps & ManagedClasses<ActionBarClassNameContract>, {}> {
+class ActionBar extends React.Component<
+    ActionBarProps & ManagedClasses<ActionBarClassNameContract>,
+    {}
+> {
     public render(): JSX.Element {
         return (
             <div className={this.props.managedClasses.actionBar}>
                 <div className={this.props.managedClasses.actionBar_menu}>
-                    <button className={this.getActionBarMenuButtonClassNames(ActionEnum.configure)} onClick={this.props.onFormToggle}>
-                        <span dangerouslySetInnerHTML={{__html: glyphBuildingblocks}} />
+                    <button
+                        className={this.getActionBarMenuButtonClassNames(
+                            ActionEnum.configure
+                        )}
+                        onClick={this.props.onFormToggle}
+                    >
+                        <span
+                            dangerouslySetInnerHTML={{
+                                __html: glyphBuildingblocks,
+                            }}
+                        />
                         Configure
                     </button>
-                    <button className={this.getActionBarMenuButtonClassNames(ActionEnum.view)} onClick={this.props.onDevToolsToggle}>
+                    <button
+                        className={this.getActionBarMenuButtonClassNames(ActionEnum.view)}
+                        onClick={this.props.onDevToolsToggle}
+                    >
                         Dev Tools
                     </button>
                 </div>
                 <div className={this.props.managedClasses.actionBar_componentViewToggles}>
                     <ComponentViewToggle
                         to={this.normalizePath()}
-                        onClick={this.onComponentViewChangeCallback(ComponentViewTypes.detail)}
+                        onClick={this.onComponentViewChangeCallback(
+                            ComponentViewTypes.detail
+                        )}
                         label="View detail"
                         current={this.isAriaCurrent(ComponentViewTypes.detail)}
                         glyph={glyphPage}
                     />
                     <ComponentViewToggle
-                        to={`${this.normalizePath()}${ComponentViewTypes[ComponentViewTypes.examples]}/`}
-                        onClick={this.onComponentViewChangeCallback(ComponentViewTypes.examples)}
+                        to={`${this.normalizePath()}${
+                            ComponentViewTypes[ComponentViewTypes.examples]
+                        }/`}
+                        onClick={this.onComponentViewChangeCallback(
+                            ComponentViewTypes.examples
+                        )}
                         label="View examples"
                         current={this.isAriaCurrent(ComponentViewTypes.examples)}
                         glyph={glyphExamples}
@@ -177,7 +208,9 @@ class ActionBar extends React.Component<ActionBarProps & ManagedClasses<ActionBa
     /**
      * Get a function to call callback with a passed param
      */
-    private onComponentViewChangeCallback(type: ComponentViewTypes): (e: React.MouseEvent<HTMLAnchorElement>) => void {
+    private onComponentViewChangeCallback(
+        type: ComponentViewTypes
+    ): (e: React.MouseEvent<HTMLAnchorElement>) => void {
         return (e: React.MouseEvent<HTMLAnchorElement>): void => {
             if (typeof this.props.onComponentViewChange === "function") {
                 this.props.onComponentViewChange(type);

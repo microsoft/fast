@@ -3,7 +3,10 @@ import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
-import { generateSnapshots, SnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
+import {
+    generateSnapshots,
+    SnapshotTestSuite,
+} from "@microsoft/fast-jest-snapshots-react";
 import Typography, {
     TypographyClassNameContract,
     TypographyHandledProps,
@@ -11,13 +14,13 @@ import Typography, {
     TypographyProps,
     TypographySize,
     TypographyTag,
-    TypographyUnhandledProps
+    TypographyUnhandledProps,
 } from "./typography";
 
 /*
  * Configure Enzyme
  */
-configure({adapter: new Adapter()});
+configure({ adapter: new Adapter() });
 
 describe("typography snapshot", (): void => {
     generateSnapshots(examples as SnapshotTestSuite<TypographyProps>);
@@ -33,7 +36,7 @@ describe("typography", (): void => {
         typography__6: "typography-6-class",
         typography__7: "typography-7-class",
         typography__8: "typography-8-class",
-        typography__9: "typography-9-class"
+        typography__9: "typography-9-class",
     };
 
     test("should have a displayName that matches the component name", () => {
@@ -41,34 +44,28 @@ describe("typography", (): void => {
     });
 
     test("should not throw if managedClasses are not provided", () => {
-        expect(
-            () => {
-                shallow(<Typography />);
-                shallow(<Typography size={TypographySize._1} />);
-            }
-        ).not.toThrow();
+        expect(() => {
+            shallow(<Typography />);
+            shallow(<Typography size={TypographySize._1} />);
+        }).not.toThrow();
     });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: TypographyHandledProps & TypographyManagedClasses = {
-            managedClasses
+            managedClasses,
         };
         const unhandledProps: TypographyUnhandledProps = {
-            "aria-hidden": true
+            "aria-hidden": true,
         };
-        const props: TypographyProps = {...handledProps, ...unhandledProps};
-        const rendered: any = shallow(
-            <Typography {...props} />
-        );
+        const props: TypographyProps = { ...handledProps, ...unhandledProps };
+        const rendered: any = shallow(<Typography {...props} />);
 
         expect(rendered.prop("aria-hidden")).not.toBe(undefined);
         expect(rendered.prop("aria-hidden")).toEqual(true);
     });
 
     test("should render with a default tag of `p` if no `tag` prop is passed", () => {
-        const rendered: any = shallow(
-            <Typography managedClasses={managedClasses} />
-        );
+        const rendered: any = shallow(<Typography managedClasses={managedClasses} />);
 
         expect(rendered.prop("tag")).toBe(undefined);
         expect(rendered.instance().props.tag).toEqual(TypographyTag.p);
@@ -87,9 +84,7 @@ describe("typography", (): void => {
 
     test("should accept and render children", () => {
         const rendered: any = shallow(
-            <Typography managedClasses={managedClasses}>
-                Children
-            </Typography>
+            <Typography managedClasses={managedClasses}>Children</Typography>
         );
 
         expect(rendered.prop("children")).not.toBe(undefined);

@@ -6,7 +6,7 @@ import {
     RadioManagedClasses,
     RadioProps as BaseRadioProps,
     RadioSlot,
-    RadioUnhandledProps
+    RadioUnhandledProps,
 } from "@microsoft/fast-components-react-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, RadioStyles } from "@microsoft/fast-components-styles-msft";
@@ -20,7 +20,8 @@ import { Subtract } from "utility-types";
 const Radio = manageJss(RadioStyles)(BaseRadio);
 type Radio = typeof Radio;
 
-interface RadioHandledProps extends Subtract<BaseRadioHandledProps, RadioManagedClasses> {}
+interface RadioHandledProps
+    extends Subtract<BaseRadioHandledProps, RadioManagedClasses> {}
 type RadioProps = ManagedJSSProps<BaseRadioProps, RadioClassNameContract, DesignSystem>;
 
 export {
@@ -29,5 +30,5 @@ export {
     RadioHandledProps,
     RadioUnhandledProps,
     RadioProps,
-    RadioSlot
+    RadioSlot,
 };

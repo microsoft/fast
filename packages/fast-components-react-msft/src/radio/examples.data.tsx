@@ -12,8 +12,8 @@ const slotRadioExample: any = {
     props: {
         slot: "label",
         htmlFor: "radio01",
-        children: "Label"
-    }
+        children: "Label",
+    },
 };
 
 const slotCheckedExample: any = {
@@ -21,8 +21,8 @@ const slotCheckedExample: any = {
     props: {
         slot: "label",
         htmlFor: "checked",
-        children: "Label Controlled (Checked)"
-    }
+        children: "Label Controlled (Checked)",
+    },
 };
 
 const slotDisabledExample: any = {
@@ -30,8 +30,8 @@ const slotDisabledExample: any = {
     props: {
         slot: "label",
         htmlFor: "disabled",
-        children: "Label (Disabled)"
-    }
+        children: "Label (Disabled)",
+    },
 };
 
 export default {
@@ -41,12 +41,12 @@ export default {
     documentation: <Documentation />,
     detailData: {
         children: slotRadioExample,
-        id: "radio01"
+        id: "radio01",
     },
     data: [
         {
             children: slotRadioExample,
-            id: "radio01"
+            id: "radio01",
         },
         {
             checked: true,
@@ -57,7 +57,7 @@ export default {
         {
             disabled: true,
             children: slotDisabledExample,
-            id: "disabled"
-        }
-    ]
+            id: "disabled",
+        },
+    ],
 } as ComponentFactoryExample<RadioProps>;

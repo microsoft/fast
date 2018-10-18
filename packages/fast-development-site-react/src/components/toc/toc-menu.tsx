@@ -1,7 +1,11 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
-import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, {
+    ComponentStyles,
+    ManagedClasses,
+    ManagedJSSProps,
+} from "@microsoft/fast-jss-manager-react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import Toc from "./";
 
@@ -19,9 +23,11 @@ export interface TocMenuManagedClasses {
 }
 
 // tslint:disable-next-line
-const dropdownActive: string = "PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHRpdGxlPmNoZXZyb24tZG93bjwvdGl0bGU+PHBhdGggZD0iTTMwLjUsNy4yOSwzMS45LDguNywxNi4yLDI0LjQuNSw4LjcsMS45LDcuMjlsMTQuMywxNC4zWiIvPjwvc3ZnPg==";
+const dropdownActive: string =
+    "PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHRpdGxlPmNoZXZyb24tZG93bjwvdGl0bGU+PHBhdGggZD0iTTMwLjUsNy4yOSwzMS45LDguNywxNi4yLDI0LjQuNSw4LjcsMS45LDcuMjlsMTQuMywxNC4zWiIvPjwvc3ZnPg==";
 // tslint:disable-next-line
-const dropdownInactive: string = "PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHRpdGxlPmNoZXZyb24tcmlnaHQ8L3RpdGxlPjxwYXRoIGQ9Ik0yMi43OCwxNiw4LjI1LDEuNDUsOS42NSwwbDE2LDE2LTE2LDE2LTEuNC0xLjQxWiIvPjwvc3ZnPg==";
+const dropdownInactive: string =
+    "PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHRpdGxlPmNoZXZyb24tcmlnaHQ8L3RpdGxlPjxwYXRoIGQ9Ik0yMi43OCwxNiw4LjI1LDEuNDUsOS42NSwwbDE2LDE2LTE2LDE2LTEuNC0xLjQxWiIvPjwvc3ZnPg==";
 
 const style: ComponentStyles<TocMenuManagedClasses, DevSiteDesignSystem> = {
     tocMenu_button: {
@@ -36,17 +42,18 @@ const style: ComponentStyles<TocMenuManagedClasses, DevSiteDesignSystem> = {
         textAlign: "left",
         "&[aria-expanded='true']": {
             "&::after": {
-                content: `url('data:image/svg+xml;base64,${dropdownActive}')`
-            }
+                content: `url('data:image/svg+xml;base64,${dropdownActive}')`,
+            },
         },
         "&:hover": {
             cursor: "pointer",
-            backgroundColor: "rgba(0, 0, 0, 0.04)"
+            backgroundColor: "rgba(0, 0, 0, 0.04)",
         },
         "&:focus": {
             border: (config: DevSiteDesignSystem): string => {
-                return `${toPx(1)} solid ${config.brandColor || devSiteDesignSystemDefaults.brandColor}`;
-            }
+                return `${toPx(1)} solid ${config.brandColor ||
+                    devSiteDesignSystemDefaults.brandColor}`;
+            },
         },
         "&::after": {
             content: `url('data:image/svg+xml;base64,${dropdownInactive}')`,
@@ -57,18 +64,20 @@ const style: ComponentStyles<TocMenuManagedClasses, DevSiteDesignSystem> = {
             verticalAlign: "middle",
             display: "inline-block",
             width: toPx(11),
-            height: toPx(11)
-        }
-    }
+            height: toPx(11),
+        },
+    },
 };
 
-class TocMenu extends React.Component<TocMenuProps & ManagedClasses<TocMenuManagedClasses>, TocMenuState> {
-
+class TocMenu extends React.Component<
+    TocMenuProps & ManagedClasses<TocMenuManagedClasses>,
+    TocMenuState
+> {
     constructor(props: TocMenuProps & ManagedClasses<TocMenuManagedClasses>) {
         super(props);
 
         this.state = {
-            active: this.props.active
+            active: this.props.active,
         };
     }
 
@@ -92,9 +101,9 @@ class TocMenu extends React.Component<TocMenuProps & ManagedClasses<TocMenuManag
 
     private handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
         this.setState({
-            active: !this.state.active
+            active: !this.state.active,
         });
-    }
+    };
 }
 
 export default manageJss(style)(TocMenu);

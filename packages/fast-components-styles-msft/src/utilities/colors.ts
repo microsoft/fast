@@ -1,14 +1,31 @@
 import Chroma from "chroma-js";
 import { DesignSystem, withDesignSystemDefaults } from "../design-system";
-import { adjustContrast, contrast, ensureContrast, scaleContrast, WCAGElementContrastRatios } from "@microsoft/fast-jss-utilities";
+import {
+    adjustContrast,
+    contrast,
+    ensureContrast,
+    scaleContrast,
+    WCAGElementContrastRatios,
+} from "@microsoft/fast-jss-utilities";
 import { curry } from "lodash-es";
 
-export function applyMixedColor(color1: string, color2: string, mixValue: number, alpha: number = 1): string {
-    return Chroma.mix(color1, color2, mixValue).alpha(alpha).css();
+export function applyMixedColor(
+    color1: string,
+    color2: string,
+    mixValue: number,
+    alpha: number = 1
+): string {
+    return Chroma.mix(color1, color2, mixValue)
+        .alpha(alpha)
+        .css();
 }
 
-const scaleContrastNormal: (contrast: number) => number = curry(scaleContrast)(WCAGElementContrastRatios.normal);
-const scaleContrastLarge: (contrast: number) => number = curry(scaleContrast)(WCAGElementContrastRatios.large);
+const scaleContrastNormal: (contrast: number) => number = curry(scaleContrast)(
+    WCAGElementContrastRatios.normal
+);
+const scaleContrastLarge: (contrast: number) => number = curry(scaleContrast)(
+    WCAGElementContrastRatios.large
+);
 
 export { scaleContrastNormal, scaleContrastLarge };
 
@@ -22,43 +39,79 @@ export { scaleContrastNormal, scaleContrastLarge };
 /**
  * Adjusts contrast for normal elements by a contrast scale value
  */
-export function normalContrast(contrastScale: number, operandColor: string, referenceColor: string): string {
+export function normalContrast(
+    contrastScale: number,
+    operandColor: string,
+    referenceColor: string
+): string {
     return contrast(scaleContrastNormal(contrastScale), operandColor, referenceColor);
 }
 
 /**
  * Ensures a color contrast for normal elements where contrast is scaled
  */
-export function ensureNormalContrast(contrastScale: number, operandColor: string, referenceColor: string): string {
-    return ensureContrast(scaleContrastNormal(contrastScale), operandColor, referenceColor);
+export function ensureNormalContrast(
+    contrastScale: number,
+    operandColor: string,
+    referenceColor: string
+): string {
+    return ensureContrast(
+        scaleContrastNormal(contrastScale),
+        operandColor,
+        referenceColor
+    );
 }
 
 /**
  * Adjusts contrast for large elements by a contrast scale value
  */
-export function largeContrast(contrastScale: number, operandColor: string, referenceColor: string): string {
+export function largeContrast(
+    contrastScale: number,
+    operandColor: string,
+    referenceColor: string
+): string {
     return contrast(scaleContrastLarge(contrastScale), operandColor, referenceColor);
 }
 
 /**
  * Ensures a color contrast for large elements where contrast is scaled
  */
-export function ensureLargeContrast(contrastScale: number, operandColor: string, referenceColor: string): string {
-    return ensureContrast(scaleContrastLarge(contrastScale), operandColor, referenceColor);
+export function ensureLargeContrast(
+    contrastScale: number,
+    operandColor: string,
+    referenceColor: string
+): string {
+    return ensureContrast(
+        scaleContrastLarge(contrastScale),
+        operandColor,
+        referenceColor
+    );
 }
 
 /**
  * Returns a low-contrast disabled color
  */
-export function disabledContrast(contrastScale: number, operandColor: string, referenceColor: string): string {
+export function disabledContrast(
+    contrastScale: number,
+    operandColor: string,
+    referenceColor: string
+): string {
     return contrast(scaleContrast(1.75, contrastScale), operandColor, referenceColor);
 }
 
 /**
  * Apply a hover treatment to a color
  */
-export function hoverContrast(contrastScale: number, operandColor: string, referenceColor: string): string {
-    return adjustContrast(scaleContrast(1, contrastScale) * -1, operandColor, referenceColor);
+export function hoverContrast(
+    contrastScale: number,
+    operandColor: string,
+    referenceColor: string
+): string {
+    return adjustContrast(
+        scaleContrast(1, contrastScale) * -1,
+        operandColor,
+        referenceColor
+    );
 }
 
 /**
@@ -66,7 +119,11 @@ export function hoverContrast(contrastScale: number, operandColor: string, refer
  */
 export function ensureForegroundNormal(config: DesignSystem): string {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    return ensureNormalContrast(designSystem.contrast, designSystem.foregroundColor, designSystem.backgroundColor);
+    return ensureNormalContrast(
+        designSystem.contrast,
+        designSystem.foregroundColor,
+        designSystem.backgroundColor
+    );
 }
 
 /**
@@ -74,7 +131,11 @@ export function ensureForegroundNormal(config: DesignSystem): string {
  */
 export function foregroundNormal(config: DesignSystem): string {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    return normalContrast(designSystem.contrast, designSystem.foregroundColor, designSystem.backgroundColor);
+    return normalContrast(
+        designSystem.contrast,
+        designSystem.foregroundColor,
+        designSystem.backgroundColor
+    );
 }
 
 /**
@@ -82,7 +143,11 @@ export function foregroundNormal(config: DesignSystem): string {
  */
 export function ensureBrandNormal(config: DesignSystem): string {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    return ensureNormalContrast(designSystem.contrast, designSystem.brandColor, designSystem.backgroundColor);
+    return ensureNormalContrast(
+        designSystem.contrast,
+        designSystem.brandColor,
+        designSystem.backgroundColor
+    );
 }
 
 /**
@@ -90,5 +155,9 @@ export function ensureBrandNormal(config: DesignSystem): string {
  */
 export function ensuresBackgroundNormal(config: DesignSystem): string {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    return ensureNormalContrast(designSystem.contrast, designSystem.backgroundColor, designSystem.foregroundColor);
+    return ensureNormalContrast(
+        designSystem.contrast,
+        designSystem.backgroundColor,
+        designSystem.foregroundColor
+    );
 }

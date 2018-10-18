@@ -12,17 +12,17 @@ export default {
     detailData: {
         contentHeight: "300px",
         contentWidth: "500px",
-        modal: true
+        modal: true,
     },
     data: [
         {
             contentHeight: "300px",
-            contentWidth: "500px"
+            contentWidth: "500px",
         },
         {
             contentHeight: "350px",
             contentWidth: "500px",
-            modal: true
-        }
-    ]
+            modal: true,
+        },
+    ],
 } as ComponentFactoryExample<DialogProps>;

@@ -10,10 +10,7 @@ root.setAttribute("id", "root");
 document.body.appendChild(root);
 
 function render(): void {
-    ReactDOM.render(
-        <App />,
-        root
-    );
+    ReactDOM.render(<App />, root);
 }
 
 render();

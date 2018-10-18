@@ -2,17 +2,17 @@ import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
-import { generateSnapshots, SnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
-import MSFTFlipper, {
-    FlipperHandledProps,
-    FlipperUnhandledProps
-} from "./flipper";
+import {
+    generateSnapshots,
+    SnapshotTestSuite,
+} from "@microsoft/fast-jest-snapshots-react";
+import MSFTFlipper, { FlipperHandledProps, FlipperUnhandledProps } from "./flipper";
 import { Flipper, FlipperProps } from "./index";
 
 /*
  * Configure Enzyme
  */
-configure({adapter: new Adapter()});
+configure({ adapter: new Adapter() });
 
 describe("flipper snapshots", (): void => {
     generateSnapshots(examples as SnapshotTestSuite<FlipperProps>);
@@ -24,63 +24,56 @@ describe("flipper", (): void => {
     });
 
     test("should not throw if managedClasses are not provided", () => {
-        expect(
-            () => {
-                shallow(<MSFTFlipper />);
-            }
-        ).not.toThrow();
+        expect(() => {
+            shallow(<MSFTFlipper />);
+        }).not.toThrow();
     });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: FlipperHandledProps = {
-            visibleToAssistiveTechnologies: false
+            visibleToAssistiveTechnologies: false,
         };
 
         const unhandledProps: FlipperUnhandledProps = {
-            "aria-labelledby": "foo"
+            "aria-labelledby": "foo",
         };
 
-        const props: FlipperHandledProps & FlipperUnhandledProps = {...handledProps, ...unhandledProps};
+        const props: FlipperHandledProps & FlipperUnhandledProps = {
+            ...handledProps,
+            ...unhandledProps,
+        };
 
-        const rendered: any = mount(
-            <Flipper {...props} />
-        );
+        const rendered: any = mount(<Flipper {...props} />);
 
         expect(rendered.find("button").props()["aria-labelledby"]).toEqual("foo");
     });
 
     test("should set an attribute of `tabindex` to -1 if `visibility` prop is false", () => {
         const props: FlipperHandledProps = {
-            visibleToAssistiveTechnologies: false
+            visibleToAssistiveTechnologies: false,
         };
 
-        const rendered: any = mount(
-            <Flipper {...props} />
-        );
+        const rendered: any = mount(<Flipper {...props} />);
 
         expect(rendered.find("button").props().tabIndex).toEqual(-1);
     });
 
     test("should set an attribute of `aria-hidden` to true if `visibility` prop is false", () => {
         const props: FlipperHandledProps = {
-            visibleToAssistiveTechnologies: false
+            visibleToAssistiveTechnologies: false,
         };
 
-        const rendered: any = mount(
-            <Flipper {...props} />
-        );
+        const rendered: any = mount(<Flipper {...props} />);
 
         expect(rendered.find("button").props()["aria-hidden"]).toEqual(true);
     });
 
     test("should not set an attribute of `aria-label` if no label is passed", () => {
         const props: FlipperHandledProps = {
-            visibleToAssistiveTechnologies: false
+            visibleToAssistiveTechnologies: false,
         };
 
-        const rendered: any = mount(
-            <Flipper {...props} />
-        );
+        const rendered: any = mount(<Flipper {...props} />);
 
         const flipper: any = rendered.first().first();
 
@@ -90,12 +83,10 @@ describe("flipper", (): void => {
     test("should set an attribute of `aria-label` if `label` prop is passed", () => {
         const props: FlipperHandledProps = {
             visibleToAssistiveTechnologies: true,
-            label: "Test aria-label"
+            label: "Test aria-label",
         };
 
-        const rendered: any = mount(
-            <Flipper {...props} />
-        );
+        const rendered: any = mount(<Flipper {...props} />);
 
         const flipper: any = rendered.first().first();
 

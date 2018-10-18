@@ -5,12 +5,12 @@ import {
     FormLocation,
     FormOrderByPropertyNamesCategories,
     FormOrderByPropertyNamesProperties,
-    FormOrderByPropertyNamesProps
+    FormOrderByPropertyNamesProps,
 } from "./form.props";
 
 export enum oneOfAnyOfType {
     anyOf = "anyOf",
-    oneOf = "oneOf"
+    oneOf = "oneOf",
 }
 
 export interface OneOfAnyOf {

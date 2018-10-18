@@ -12,7 +12,7 @@ import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
  */
 export enum RowResizeDirection {
     north = "north",
-    south = "south"
+    south = "south",
 }
 
 export interface RowManagedClasses extends ManagedClasses<RowClassNamesContract> {}
@@ -67,7 +67,6 @@ export interface RowHandledProps extends RowManagedClasses {
      * Direction that the row should be resized from
      */
     resizeFrom?: RowResizeDirection;
-
 }
 
 export type RowProps = RowHandledProps & RowUnhandledProps;

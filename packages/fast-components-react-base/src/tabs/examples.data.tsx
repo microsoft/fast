@@ -2,7 +2,7 @@ import * as React from "react";
 import {
     TabClassNameContract,
     TabPanelClassNameContract,
-    TabsClassNameContract
+    TabsClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import Tabs, {
     Tab,
@@ -13,7 +13,7 @@ import Tabs, {
     TabsHandledProps,
     TabsManagedClasses,
     TabsSlot,
-    TabsUnhandledProps
+    TabsUnhandledProps,
 } from "./index";
 import schema from "./tabs.schema.json";
 import tabItemSchema from "./tab-item.schema.json";
@@ -27,22 +27,22 @@ const tabsManagedClasses: TabsManagedClasses = {
     managedClasses: {
         tabs_tabPanels: "tab_items-class",
         tabs_tabList: "tab_list-class",
-        tabs: "tabs-class"
-    }
+        tabs: "tabs-class",
+    },
 };
 
 const tabManagedClasses: TabManagedClasses = {
     managedClasses: {
         tab: "tab-class",
-        tab__active: "tab__active-class"
-    }
+        tab__active: "tab__active-class",
+    },
 };
 
 const tabPanelManagedClasses: TabPanelManagedClasses = {
     managedClasses: {
         tabPanel: "tab_panel-class",
-        tabPanel__hidden: "tab_panel__hidden-class"
-    }
+        tabPanel__hidden: "tab_panel__hidden-class",
+    },
 };
 
 /**
@@ -54,8 +54,8 @@ function getTabElementOne(): any {
         props: {
             slot: TabsSlot.tab,
             ...tabManagedClasses,
-            children: "tab one"
-        }
+            children: "tab one",
+        },
     };
 }
 
@@ -65,8 +65,8 @@ function getTabPanelOne(): any {
         props: {
             slot: TabsSlot.tabPanel,
             ...tabPanelManagedClasses,
-            children: "tab one content"
-        }
+            children: "tab one content",
+        },
     };
 }
 
@@ -76,11 +76,8 @@ function getTabItemOne(): any {
         props: {
             slot: TabsSlot.tabItem,
             id: "tab01",
-            children: [
-                getTabElementOne(),
-                getTabPanelOne()
-            ]
-        }
+            children: [getTabElementOne(), getTabPanelOne()],
+        },
     };
 }
 
@@ -93,8 +90,8 @@ function getTabElementTwo(): any {
         props: {
             slot: TabsSlot.tab,
             ...tabManagedClasses,
-            children: "tab two"
-        }
+            children: "tab two",
+        },
     };
 }
 
@@ -104,8 +101,8 @@ function getTabPanelTwo(): any {
         props: {
             slot: TabsSlot.tabPanel,
             ...tabPanelManagedClasses,
-            children: "tab two content"
-        }
+            children: "tab two content",
+        },
     };
 }
 
@@ -115,11 +112,8 @@ function getTabItemTwo(): any {
         props: {
             slot: TabsSlot.tabItem,
             id: "tab02",
-            children: [
-                getTabElementTwo(),
-                getTabPanelTwo()
-            ]
-        }
+            children: [getTabElementTwo(), getTabPanelTwo()],
+        },
     };
 }
 
@@ -132,8 +126,8 @@ function getTabElementThree(): any {
         props: {
             slot: TabsSlot.tab,
             ...tabManagedClasses,
-            children: "tab three"
-        }
+            children: "tab three",
+        },
     };
 }
 
@@ -143,8 +137,8 @@ function getTabPanelThree(): any {
         props: {
             slot: TabsSlot.tabPanel,
             ...tabPanelManagedClasses,
-            children: "tab three content"
-        }
+            children: "tab three content",
+        },
     };
 }
 
@@ -154,11 +148,8 @@ function getTabItemThree(): any {
         props: {
             slot: TabsSlot.tabItem,
             id: "tab03",
-            children: [
-                getTabElementThree(),
-                getTabPanelThree()
-            ]
-        }
+            children: [getTabElementThree(), getTabPanelThree()],
+        },
     };
 }
 
@@ -171,8 +162,8 @@ function getTabElementFour(): any {
         props: {
             slot: TabsSlot.tab,
             ...tabManagedClasses,
-            children: "tab four"
-        }
+            children: "tab four",
+        },
     };
 }
 
@@ -182,8 +173,8 @@ function getTabPanelFour(): any {
         props: {
             slot: TabsSlot.tabPanel,
             ...tabPanelManagedClasses,
-            children: "tab four content"
-        }
+            children: "tab four content",
+        },
     };
 }
 
@@ -193,19 +184,12 @@ function getTabItemFour(): any {
         props: {
             slot: TabsSlot.tabItem,
             id: "tab04",
-            children: [
-                getTabElementFour(),
-                getTabPanelFour()
-            ]
-        }
+            children: [getTabElementFour(), getTabPanelFour()],
+        },
     };
 }
 
-const detailChildren: any[] = [
-    getTabItemOne(),
-    getTabItemTwo(),
-    getTabItemThree()
-];
+const detailChildren: any[] = [getTabItemOne(), getTabItemTwo(), getTabItemThree()];
 
 const exampleChildren1: any[] = [
     {
@@ -218,14 +202,14 @@ const exampleChildren1: any[] = [
                 props: {
                     slot: TabsSlot.tab,
                     ...tabManagedClasses,
-                    children: "tab one - missing panel"
-                }
-            }
-        }
+                    children: "tab one - missing panel",
+                },
+            },
+        },
     },
     getTabItemTwo(),
     getTabItemThree(),
-    getTabItemFour()
+    getTabItemFour(),
 ];
 
 const exampleChildren2: JSX.Element[] = [
@@ -240,12 +224,12 @@ const exampleChildren2: JSX.Element[] = [
                 props: {
                     slot: TabsSlot.tabPanel,
                     ...tabPanelManagedClasses,
-                    children: "tab two missing tab"
-                }
-            }
-        }
+                    children: "tab two missing tab",
+                },
+            },
+        },
     },
-    getTabItemThree()
+    getTabItemThree(),
 ];
 
 const exampleChildren3: JSX.Element[] = [];
@@ -255,9 +239,9 @@ const exampleChildren4: any[] = [
         id: tabItemSchema.id,
         props: {
             slot: TabsSlot.tabItem,
-            id: "tab03"
-        }
-    }
+            id: "tab03",
+        },
+    },
 ];
 
 const examples: ComponentFactoryExample<TabsHandledProps> = {
@@ -276,26 +260,26 @@ const examples: ComponentFactoryExample<TabsHandledProps> = {
             activeId: "tab04",
             label: "A set of example text content",
             orientation: Orientation.horizontal,
-            children: exampleChildren1
+            children: exampleChildren1,
         },
         {
             ...tabsManagedClasses,
             activeId: "tab03",
             label: "A set of example text content",
             orientation: Orientation.vertical,
-            children: exampleChildren2
+            children: exampleChildren2,
         },
         {
             ...tabsManagedClasses,
             label: "A set of example text content",
-            children: exampleChildren3
+            children: exampleChildren3,
         },
         {
             ...tabsManagedClasses,
             label: "A set of example text content",
-            children: exampleChildren4
-        }
-    ]
+            children: exampleChildren4,
+        },
+    ],
 };
 
 export default examples;

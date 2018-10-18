@@ -10,24 +10,24 @@ export default {
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
-        "aria-hidden": true
+        "aria-hidden": true,
     },
     data: [
         {
-            "data-sketch-symbol": "Flipper - default"
+            "data-sketch-symbol": "Flipper - default",
         },
         {
-            direction: FlipperDirection.previous
+            direction: FlipperDirection.previous,
         },
         {
             direction: FlipperDirection.next,
             visibleToAssistiveTechnologies: true,
-            label: "See next"
+            label: "See next",
         },
         {
             direction: FlipperDirection.previous,
             visibleToAssistiveTechnologies: true,
-            label: "See previous"
-        }
-    ]
+            label: "See previous",
+        },
+    ],
 } as ComponentFactoryExample<FlipperProps>;

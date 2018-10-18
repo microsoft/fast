@@ -12,11 +12,11 @@ const styles: ComponentStyles<LabelClassNameContract, DesignSystem> = {
         ...applyType("t8", "vp3"),
         display: "inline-block",
         color: ensureForegroundNormal,
-        padding: "0"
+        padding: "0",
     },
     label__hidden: {
-        ...applyScreenReader()
-    }
+        ...applyScreenReader(),
+    },
 };
 
 export default styles;

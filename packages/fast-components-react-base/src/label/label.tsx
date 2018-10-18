@@ -7,32 +7,35 @@ import {
     LabelManagedClasses,
     LabelProps,
     LabelTag,
-    LabelUnhandledProps
-} from "./label.props";
-import { LabelClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-
-class Label extends Foundation<
-    LabelHandledProps,
     LabelUnhandledProps,
-    {}
-> {
+} from "./label.props";
+import {
+    LabelClassNameContract,
+    ManagedClasses,
+} from "@microsoft/fast-components-class-name-contracts-base";
+
+class Label extends Foundation<LabelHandledProps, LabelUnhandledProps, {}> {
     public static displayName: string = "Label";
 
     public static defaultProps: Partial<LabelProps> = {
-        tag: LabelTag.label
+        tag: LabelTag.label,
     };
 
-    protected handledProps: HandledProps<LabelHandledProps & ManagedClasses<LabelClassNameContract>> = {
+    protected handledProps: HandledProps<
+        LabelHandledProps & ManagedClasses<LabelClassNameContract>
+    > = {
         hidden: void 0,
         managedClasses: void 0,
-        tag: void 0
+        tag: void 0,
     };
 
     /**
      * Stores HTML tag for use in render
      */
     private get tag(): string {
-        return isUndefined(LabelTag[this.props.tag]) ? LabelTag.label : LabelTag[this.props.tag];
+        return isUndefined(LabelTag[this.props.tag])
+            ? LabelTag.label
+            : LabelTag[this.props.tag];
     }
 
     /**
@@ -40,10 +43,7 @@ class Label extends Foundation<
      */
     public render(): React.ReactElement<HTMLLabelElement | HTMLFieldSetElement> {
         return (
-            <this.tag
-                {...this.unhandledProps()}
-                className={this.generateClassNames()}
-            >
+            <this.tag {...this.unhandledProps()} className={this.generateClassNames()}>
                 {this.props.children}
             </this.tag>
         );

@@ -1,41 +1,48 @@
 import * as React from "react";
 import { get } from "lodash-es";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
-import { ManagedClasses, TabsClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import {
+    ManagedClasses,
+    TabsClassNameContract,
+} from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { TabsHandledProps, TabsManagedClasses, TabsProps, TabsUnhandledProps } from "./tabs.props";
+import {
+    TabsHandledProps,
+    TabsManagedClasses,
+    TabsProps,
+    TabsUnhandledProps,
+} from "./tabs.props";
 
 export enum TabLocation {
     first,
     last,
     previous,
-    next
+    next,
 }
 
 export enum TabsSlot {
     tab = "tab",
     tabItem = "tab-item",
-    tabPanel = "tab-panel"
+    tabPanel = "tab-panel",
 }
 
 export interface TabsState {
     activeId: string;
 }
 
-class Tabs extends Foundation<
-    TabsHandledProps,
-    TabsUnhandledProps,
-    TabsState
-> {
+class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
     public static displayName: string = "Tabs";
 
     /**
      * React life-cycle method
      */
-    public static getDerivedStateFromProps(nextProps: TabsProps, prevState: TabsState): null | TabsState {
+    public static getDerivedStateFromProps(
+        nextProps: TabsProps,
+        prevState: TabsState
+    ): null | TabsState {
         if (nextProps.activeId && nextProps.activeId !== prevState.activeId) {
             return {
-                activeId: nextProps.activeId
+                activeId: nextProps.activeId,
             };
         }
 
@@ -50,7 +57,7 @@ class Tabs extends Foundation<
         orientation: void 0,
         tabItemSlot: void 0,
         tabPanelSlot: void 0,
-        tabSlot: void 0
+        tabSlot: void 0,
     };
 
     /**
@@ -69,8 +76,8 @@ class Tabs extends Foundation<
             activeId: this.props.activeId
                 ? this.props.activeId
                 : tabItems.length > 0
-                ? get(tabItems[0], "props.id")
-                : ""
+                    ? get(tabItems[0], "props.id")
+                    : "",
         };
     }
 
@@ -81,10 +88,7 @@ class Tabs extends Foundation<
         const tabElements: JSX.Element[] = this.renderTabElements();
 
         return (
-            <div
-                {...this.unhandledProps()}
-                className={this.generateClassNames()}
-            >
+            <div {...this.unhandledProps()} className={this.generateClassNames()}>
                 <div
                     role="tablist"
                     ref={this.tabListRef}
@@ -106,8 +110,8 @@ class Tabs extends Foundation<
      */
     public componentDidUpdate(prevProps: TabsProps): void {
         if (
-            typeof this.props.activeId === "string"
-            && this.props.activeId !== prevProps.activeId
+            typeof this.props.activeId === "string" &&
+            this.props.activeId !== prevProps.activeId
         ) {
             const items: React.ReactNode[] = React.Children.toArray(
                 this.getChildrenBySlot(
@@ -118,7 +122,9 @@ class Tabs extends Foundation<
 
             const currentItemIndex: number = items.findIndex(this.getCurrentIndexById);
 
-            (Array.from(this.tabListRef.current.children)[currentItemIndex] as HTMLButtonElement).focus();
+            (Array.from(this.tabListRef.current.children)[
+                currentItemIndex
+            ] as HTMLButtonElement).focus();
         }
     }
 
@@ -133,10 +139,7 @@ class Tabs extends Foundation<
      * Renders the tab elements
      */
     private renderTabElements(): JSX.Element[] {
-        return React.Children.map(
-            this.tabItems(),
-            this.renderTabItem
-        );
+        return React.Children.map(this.tabItems(), this.renderTabItem);
     }
 
     private tabItems(): React.ReactNode {
@@ -148,45 +151,39 @@ class Tabs extends Foundation<
 
     private renderTabItem = (tabItem: JSX.Element, index: number): JSX.Element => {
         return React.cloneElement(
-            this.getChildrenBySlot(
-                tabItem.props.children,
-                this.getSlot(TabsSlot.tab)
-            )[0],
+            this.getChildrenBySlot(tabItem.props.children, this.getSlot(TabsSlot.tab))[0],
             {
                 key: tabItem.props.id,
                 "aria-controls": tabItem.props.id,
                 active: this.state.activeId === tabItem.props.id,
                 onClick: this.handleClick,
                 onKeyDown: this.handleKeyDown,
-                tabIndex: this.state.activeId !== tabItem.props.id ? -1 : 0
+                tabIndex: this.state.activeId !== tabItem.props.id ? -1 : 0,
             }
         );
-    }
+    };
 
     /**
      * Renders the tab panels
      */
     private renderTabPanels(): JSX.Element[] {
-        return React.Children.map(
-            this.tabItems(),
-            this.renderTabPanel
-        );
+        return React.Children.map(this.tabItems(), this.renderTabPanel);
     }
 
     private renderTabPanel = (tabItem: JSX.Element, index: number): JSX.Element => {
         return React.cloneElement(
-                this.getChildrenBySlot(
-                    tabItem.props.children,
-                    this.getSlot(TabsSlot.tabPanel)
-                )[0],
-                {
-                    key: tabItem.props.id,
-                    id: tabItem.props.id,
-                    "aria-labelledby": tabItem.props.id,
-                    active: this.state.activeId === tabItem.props.id
-                }
-            );
-    }
+            this.getChildrenBySlot(
+                tabItem.props.children,
+                this.getSlot(TabsSlot.tabPanel)
+            )[0],
+            {
+                key: tabItem.props.id,
+                id: tabItem.props.id,
+                "aria-labelledby": tabItem.props.id,
+                active: this.state.activeId === tabItem.props.id,
+            }
+        );
+    };
 
     /**
      * Handles the click event on the tab element
@@ -194,12 +191,12 @@ class Tabs extends Foundation<
     private handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
         if (!this.props.activeId) {
             this.setState({
-                activeId: e.currentTarget.getAttribute("aria-controls")
+                activeId: e.currentTarget.getAttribute("aria-controls"),
             });
         } else if (typeof this.props.onUpdate === "function") {
             this.props.onUpdate(e.currentTarget.getAttribute("aria-controls"));
         }
-    }
+    };
 
     /**
      * Handles the keydown event on the tab element
@@ -221,7 +218,7 @@ class Tabs extends Foundation<
                 this.activateTab(TabLocation.last);
                 break;
         }
-    }
+    };
 
     /**
      * Activates a tab
@@ -229,7 +226,9 @@ class Tabs extends Foundation<
     private activateTab(location: TabLocation): void {
         const items: React.ReactNode[] = React.Children.toArray(this.tabItems());
         const count: number = items.length;
-        const currentItemIndex: number = React.Children.toArray(items).findIndex(this.getCurrentIndexById);
+        const currentItemIndex: number = React.Children.toArray(items).findIndex(
+            this.getCurrentIndexById
+        );
         let itemIndex: number;
 
         switch (location) {
@@ -251,10 +250,12 @@ class Tabs extends Foundation<
 
         if (!this.props.activeId) {
             this.setState({
-                activeId
+                activeId,
             });
 
-            (Array.from(this.tabListRef.current.children)[itemIndex] as HTMLButtonElement).focus();
+            (Array.from(this.tabListRef.current.children)[
+                itemIndex
+            ] as HTMLButtonElement).focus();
         } else if (typeof this.props.onUpdate === "function") {
             this.props.onUpdate(activeId);
         }
@@ -265,7 +266,7 @@ class Tabs extends Foundation<
      */
     private getCurrentIndexById = (item: JSX.Element): boolean => {
         return item.props.id === this.state.activeId;
-    }
+    };
 
     /**
      * Gets the slot to use for tab children
@@ -273,27 +274,37 @@ class Tabs extends Foundation<
     private getSlot(slot: TabsSlot): TabsSlot | string {
         switch (slot) {
             case TabsSlot.tab:
-                return typeof this.props.tabSlot === "string" ? this.props.tabSlot : TabsSlot.tab;
+                return typeof this.props.tabSlot === "string"
+                    ? this.props.tabSlot
+                    : TabsSlot.tab;
             case TabsSlot.tabItem:
-                return typeof this.props.tabItemSlot === "string" ? this.props.tabItemSlot : TabsSlot.tabItem;
+                return typeof this.props.tabItemSlot === "string"
+                    ? this.props.tabItemSlot
+                    : TabsSlot.tabItem;
             case TabsSlot.tabPanel:
-                return typeof this.props.tabPanelSlot === "string" ? this.props.tabPanelSlot : TabsSlot.tabPanel;
+                return typeof this.props.tabPanelSlot === "string"
+                    ? this.props.tabPanelSlot
+                    : TabsSlot.tabPanel;
         }
     }
 
     /**
      * Gets the child by the slot property
      */
-    private getChildrenBySlot(children: React.ReactNode, slot: TabsSlot | string): React.ReactNode {
+    private getChildrenBySlot(
+        children: React.ReactNode,
+        slot: TabsSlot | string
+    ): React.ReactNode {
         const childBySlot: React.ReactNode = this.withSlot(slot, children);
 
         return slot !== this.getSlot(TabsSlot.tabItem)
             ? childBySlot
-            : React.Children.map(childBySlot, (node: React.ReactNode): React.ReactNode | null => {
-                return this.isValidTabItem(node)
-                    ? node
-                    : null;
-            });
+            : React.Children.map(
+                  childBySlot,
+                  (node: React.ReactNode): React.ReactNode | null => {
+                      return this.isValidTabItem(node) ? node : null;
+                  }
+              );
     }
 
     /**
@@ -301,8 +312,10 @@ class Tabs extends Foundation<
      */
     private isValidTabItem(child: React.ReactNode): boolean {
         const children: React.ReactNode = get(child, "props.children");
-        return !!this.getChildrenBySlot(children, this.getSlot(TabsSlot.tab))[0]
-            && !!this.getChildrenBySlot(children, this.getSlot(TabsSlot.tabPanel))[0];
+        return (
+            !!this.getChildrenBySlot(children, this.getSlot(TabsSlot.tab))[0] &&
+            !!this.getChildrenBySlot(children, this.getSlot(TabsSlot.tabPanel))[0]
+        );
     }
 }
 

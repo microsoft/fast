@@ -7,7 +7,7 @@
  * @param {boolean} example - Return a single example.
  * @return {array | object} - A function that returns an array of numbers.
  */
-module.exports = function (schema, propertyName, required, arrayConfig, example) {
+module.exports = function(schema, propertyName, required, arrayConfig, example) {
     let numberArray = [];
     let exampleNumber = Math.round(Math.random() * 100);
 
@@ -15,7 +15,7 @@ module.exports = function (schema, propertyName, required, arrayConfig, example)
         if (example) {
             let numberObj = {};
             numberObj[propertyName] = schema.enum[0];
-            
+
             return numberObj;
         }
 
@@ -25,7 +25,9 @@ module.exports = function (schema, propertyName, required, arrayConfig, example)
                 numberObjArray[propertyName] = [];
 
                 for (let i = 0; i < arrayConfig.itemNumber; i++) {
-                    numberObjArray[propertyName].push((schema.default) ? schema.default : enumItem);
+                    numberObjArray[propertyName].push(
+                        schema.default ? schema.default : enumItem
+                    );
                 }
 
                 numberArray.push(numberObjArray);
@@ -41,7 +43,9 @@ module.exports = function (schema, propertyName, required, arrayConfig, example)
             numberObjArray[propertyName] = [];
 
             for (let i = 0; i < arrayConfig.itemNumber; i++) {
-                numberObjArray[propertyName].push(schema.default || schema.example || exampleNumber);
+                numberObjArray[propertyName].push(
+                    schema.default || schema.example || exampleNumber
+                );
             }
 
             if (example) {

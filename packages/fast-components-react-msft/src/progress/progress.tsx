@@ -7,19 +7,18 @@ import {
     ProgressHandledProps,
     ProgressManagedClasses,
     ProgressProps,
-    ProgressUnhandledProps
+    ProgressUnhandledProps,
 } from "./progress.props";
-import { ManagedClasses, ProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import {
+    ManagedClasses,
+    ProgressClassNameContract,
+} from "@microsoft/fast-components-class-name-contracts-msft";
 import { Progress as BaseProgress } from "@microsoft/fast-components-react-base";
 
-class Progress extends Foundation<
-    ProgressHandledProps,
-    ProgressUnhandledProps,
-    {}
-> {
+class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, {}> {
     public static defaultProps: Partial<ProgressProps> = {
         minValue: 0,
-        maxValue: 100
+        maxValue: 100,
     };
 
     public static displayName: string = "Progress";
@@ -31,7 +30,7 @@ class Progress extends Foundation<
         value: void 0,
         minValue: void 0,
         maxValue: void 0,
-        managedClasses: void 0
+        managedClasses: void 0,
     };
 
     /**
@@ -52,8 +51,11 @@ class Progress extends Foundation<
                     slot={ProgressType.determinate}
                 >
                     <div
-                        className={get(this.props, "managedClasses.progress_valueIndicator")}
-                        style={{width: `${this.props.value}%`}}
+                        className={get(
+                            this.props,
+                            "managedClasses.progress_valueIndicator"
+                        )}
+                        style={{ width: `${this.props.value}%` }}
                     />
                 </div>
                 <div
@@ -69,22 +71,22 @@ class Progress extends Foundation<
     private progressIndicatorClasses(): string {
         return [
             get(this.props, "managedClasses.progress_indicator"),
-            get(this.props, "managedClasses.progress_indicator__determinate")
+            get(this.props, "managedClasses.progress_indicator__determinate"),
         ].join(" ");
     }
 
     private renderIndeterminateItems(): JSX.Element[] {
-        return new Array(Progress.indicatorDotCount).fill(undefined).map((item: undefined, index: number) => {
-            let className: string = get(this.props, "managedClasses.progress_dot");
-            className = `${className} ${get(this.props, `managedClasses.progress_dot__${index + 1}`)}`;
+        return new Array(Progress.indicatorDotCount)
+            .fill(undefined)
+            .map((item: undefined, index: number) => {
+                let className: string = get(this.props, "managedClasses.progress_dot");
+                className = `${className} ${get(
+                    this.props,
+                    `managedClasses.progress_dot__${index + 1}`
+                )}`;
 
-            return (
-                <span
-                    className={className}
-                    key={index}
-                />
-            );
-        });
+                return <span className={className} key={index} />;
+            });
     }
 }
 

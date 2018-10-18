@@ -1,4 +1,4 @@
-const clone = require('lodash-es').cloneDeep;
+const clone = require("lodash-es").cloneDeep;
 
 /**
  * Removes empty objects from data
@@ -8,14 +8,14 @@ const clone = require('lodash-es').cloneDeep;
 module.exports = function(data) {
     let dataClone = clone(data);
 
-    // identify all objects, any found should be removed with 
+    // identify all objects, any found should be removed with
     // their contents
     for (let dataItem of dataClone) {
         let emptyObjects = [];
         let objKeys = Object.keys(dataItem);
 
         for (let key of objKeys) {
-            if (typeof dataItem[key] === 'object' && !Array.isArray(dataItem[key])) {
+            if (typeof dataItem[key] === "object" && !Array.isArray(dataItem[key])) {
                 emptyObjects.push(key);
             }
         }

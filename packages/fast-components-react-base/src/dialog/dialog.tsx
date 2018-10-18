@@ -2,20 +2,24 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { DialogHandledProps, DialogManagedClasses, DialogProps, DialogUnhandledProps } from "./dialog.props";
-import { DialogClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import {
+    DialogHandledProps,
+    DialogManagedClasses,
+    DialogProps,
+    DialogUnhandledProps,
+} from "./dialog.props";
+import {
+    DialogClassNameContract,
+    ManagedClasses,
+} from "@microsoft/fast-components-class-name-contracts-base";
 import { canUseDOM } from "exenv-es6";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
-class Dialog extends Foundation<
-    DialogHandledProps,
-    DialogUnhandledProps,
-    {}
-> {
+class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
     public static defaultProps: Partial<DialogProps> = {
         contentHeight: "480px",
         contentWidth: "640px",
-        visible: false
+        visible: false,
     };
 
     public static displayName: string = "Dialog";
@@ -29,7 +33,7 @@ class Dialog extends Foundation<
         modal: void 0,
         managedClasses: void 0,
         onDismiss: void 0,
-        visible: void 0
+        visible: void 0,
     };
 
     /**
@@ -47,7 +51,10 @@ class Dialog extends Foundation<
                     role="dialog"
                     tabIndex={-1}
                     className={get(this.props, "managedClasses.dialog_contentRegion")}
-                    style={{height: this.props.contentHeight, width: this.props.contentWidth}}
+                    style={{
+                        height: this.props.contentHeight,
+                        width: this.props.contentWidth,
+                    }}
                     aria-describedby={this.props.describedBy}
                     aria-labelledby={this.props.labelledBy}
                     aria-label={this.props.label}
@@ -115,16 +122,25 @@ class Dialog extends Foundation<
     }
 
     private handleOverlayClick = (event: React.MouseEvent): void => {
-        if (this.props.onDismiss && typeof this.props.onDismiss === "function" && this.props.visible) {
+        if (
+            this.props.onDismiss &&
+            typeof this.props.onDismiss === "function" &&
+            this.props.visible
+        ) {
             this.props.onDismiss(event);
         }
-    }
+    };
 
     private handleWindowKeyDown = (event: KeyboardEvent): void => {
-        if (this.props.onDismiss && typeof this.props.onDismiss === "function" && this.props.visible && event.keyCode === KeyCodes.escape) {
+        if (
+            this.props.onDismiss &&
+            typeof this.props.onDismiss === "function" &&
+            this.props.visible &&
+            event.keyCode === KeyCodes.escape
+        ) {
             this.props.onDismiss(event);
         }
-    }
+    };
 }
 
 export default Dialog;

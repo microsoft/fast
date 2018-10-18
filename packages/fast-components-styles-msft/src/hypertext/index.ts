@@ -9,7 +9,7 @@ function applyHypertextBorder(pixels: number): CSSRules<DesignSystem> {
     return {
         borderBottom: (config: DesignSystem): string => {
             return `${toPx(pixels)} solid ${ensureBrandNormal(config)}`;
-        }
+        },
     };
 }
 
@@ -22,10 +22,10 @@ const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = {
             ...applyHypertextBorder(1),
             color: ensureBrandNormal,
             "&:hover, &:focus": {
-                ...applyHypertextBorder(2)
-            }
-        }
-    }
+                ...applyHypertextBorder(2),
+            },
+        },
+    },
 };
 
 export default styles;

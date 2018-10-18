@@ -11,10 +11,7 @@ document.body.appendChild(root);
 
 /* tslint:disable */
 function render(): void {
-    ReactDOM.render(
-        <App />,
-        root
-    );
+    ReactDOM.render(<App />, root);
 }
 
 render();

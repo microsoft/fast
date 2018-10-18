@@ -2,10 +2,14 @@ import * as React from "react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
 import Form from "@microsoft/fast-form-generator-react";
-import manageJss, { ComponentStyles, ManagedClasses, ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss, {
+    ComponentStyles,
+    ManagedClasses,
+    ManagedJSSProps,
+} from "@microsoft/fast-jss-manager-react";
 
 export enum TabType {
-    presets = "Presets"
+    presets = "Presets",
 }
 
 export interface ConfigurationPanelProps {
@@ -33,7 +37,7 @@ export interface ConfigurationPanelManagedClasses {
 const style: ComponentStyles<ConfigurationPanelManagedClasses, DevSiteDesignSystem> = {
     configurationPanel: {
         width: "100%",
-        overflowX: "auto"
+        overflowX: "auto",
     },
     configurationPanel_controls: {
         display: "flex",
@@ -43,8 +47,8 @@ const style: ComponentStyles<ConfigurationPanelManagedClasses, DevSiteDesignSyst
             padding: "0",
             listStyleType: "none",
             "& li": {
-                display: "inline-block"
-            }
+                display: "inline-block",
+            },
         },
         "& button": {
             border: `${toPx(1)} solid transparent`,
@@ -55,18 +59,19 @@ const style: ComponentStyles<ConfigurationPanelManagedClasses, DevSiteDesignSyst
             backgroundPosition: "center",
             "&:hover": {
                 cursor: "pointer",
-                background: "rgba(0, 0, 0, 0.04)"
+                background: "rgba(0, 0, 0, 0.04)",
             },
             "&:focus": {
                 outline: "none",
                 border: (config: DevSiteDesignSystem): string => {
-                    return `${toPx(1)} solid ${config.brandColor || devSiteDesignSystemDefaults.brandColor}`;
-                }
-            }
-        }
+                    return `${toPx(1)} solid ${config.brandColor ||
+                        devSiteDesignSystemDefaults.brandColor}`;
+                },
+            },
+        },
     },
     configurationPanel_controlsTabs: {
-        flexGrow: "1"
+        flexGrow: "1",
     },
     configurationPanel_tab: {
         "& button": {
@@ -74,9 +79,9 @@ const style: ComponentStyles<ConfigurationPanelManagedClasses, DevSiteDesignSyst
             borderRadius: toPx(2),
             position: "relative",
             "&:focus": {
-                outline: "none"
-            }
-        }
+                outline: "none",
+            },
+        },
     },
     configurationPanel_tab__active: {
         "& button": {
@@ -90,31 +95,36 @@ const style: ComponentStyles<ConfigurationPanelManagedClasses, DevSiteDesignSyst
                 content: "''",
                 height: toPx(2),
                 borderRadius: `${toPx(2)} ${toPx(2)} 0 0`,
-                background: "#FB356D"
-            }
-        }
+                background: "#FB356D",
+            },
+        },
     },
     configurationPanel_tabPanel: {
-        "&[aria-hidden=\"true\"]": {
-            display: "none"
-        }
+        '&[aria-hidden="true"]': {
+            display: "none",
+        },
     },
     configurationPanel_paneForm: {
-        padding: toPx(12)
+        padding: toPx(12),
     },
 };
 
 /* tslint:disable-next-line */
-class ConfigurationPanel extends React.Component<ConfigurationPanelProps & ManagedClasses<ConfigurationPanelManagedClasses>, ConfigurationPanelState> {
+class ConfigurationPanel extends React.Component<
+    ConfigurationPanelProps & ManagedClasses<ConfigurationPanelManagedClasses>,
+    ConfigurationPanelState
+> {
     private tabs: TabType[];
 
-    constructor(props: ConfigurationPanelProps & ManagedClasses<ConfigurationPanelManagedClasses>) {
+    constructor(
+        props: ConfigurationPanelProps & ManagedClasses<ConfigurationPanelManagedClasses>
+    ) {
         super(props);
 
         this.tabs = [TabType.presets];
 
         this.state = {
-            activeTab: this.props.activeTab || TabType.presets
+            activeTab: this.props.activeTab || TabType.presets,
         };
     }
 
@@ -142,9 +152,7 @@ class ConfigurationPanel extends React.Component<ConfigurationPanelProps & Manag
             if (tabItem === TabType.presets) {
                 return (
                     <li key={index} className={this.getTabClassNames(tabItem)}>
-                        <button onClick={this.handleChangeTab(tabItem)}>
-                            {tabItem}
-                        </button>
+                        <button onClick={this.handleChangeTab(tabItem)}>{tabItem}</button>
                     </li>
                 );
             }
@@ -152,11 +160,7 @@ class ConfigurationPanel extends React.Component<ConfigurationPanelProps & Manag
     }
 
     private renderTabPanels(): JSX.Element {
-        return (
-            <div>
-                {this.renderTabPanelItems()}
-            </div>
-        );
+        return <div>{this.renderTabPanelItems()}</div>;
     }
 
     private renderTabPanelItems(): JSX.Element[] {
@@ -196,16 +200,20 @@ class ConfigurationPanel extends React.Component<ConfigurationPanelProps & Manag
 
     private getTabClassNames(tabItem: TabType): string {
         if (tabItem === this.state.activeTab) {
-            return `${this.props.managedClasses.configurationPanel_tab} ${this.props.managedClasses.configurationPanel_tab__active}`;
+            return `${this.props.managedClasses.configurationPanel_tab} ${
+                this.props.managedClasses.configurationPanel_tab__active
+            }`;
         }
 
         return this.props.managedClasses.configurationPanel_tab;
     }
 
-    private handleChangeTab(tab: TabType): (e: React.MouseEvent<HTMLButtonElement>) => void {
+    private handleChangeTab(
+        tab: TabType
+    ): (e: React.MouseEvent<HTMLButtonElement>) => void {
         return (e: React.MouseEvent<HTMLButtonElement>): void => {
             this.setState({
-                activeTab: tab
+                activeTab: tab,
             });
         };
     }

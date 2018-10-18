@@ -1,11 +1,11 @@
-const clone = require('lodash-es').cloneDeep;
-const mergeWith = require('lodash-es').mergeWith;
-const get = require('lodash-es').get;
-const set = require('lodash-es').set;
-const unset = require('lodash-es').unset;
-const isObject = require('lodash-es').isObject;
+const clone = require("lodash-es").cloneDeep;
+const mergeWith = require("lodash-es").mergeWith;
+const get = require("lodash-es").get;
+const set = require("lodash-es").set;
+const unset = require("lodash-es").unset;
+const isObject = require("lodash-es").isObject;
 
-const getDeepPropLocations = require('./get-deep-prop-locations');
+const getDeepPropLocations = require("./get-deep-prop-locations");
 
 /**
  * Exports a schema with allOf items merged
@@ -13,7 +13,7 @@ const getDeepPropLocations = require('./get-deep-prop-locations');
  * @param {object} schema - The schema.
  * @return {object} - A function which returns a schema object.
  */
-module.exports = function (schema) {
+module.exports = function(schema) {
     return resolveAllOf(schema);
 };
 
@@ -23,15 +23,15 @@ module.exports = function (schema) {
  * @param {array} locations - The locations of the allOf properties.
  * @return {object}
  */
-const resolveAllOf = function (schema) {
+const resolveAllOf = function(schema) {
     let schemaClone = clone(schema);
-    let locations = getDeepPropLocations(schemaClone, 'allOf');
+    let locations = getDeepPropLocations(schemaClone, "allOf");
 
     if (locations.length > 0) {
         let resolvedAllOf = mergeAllOf(get(schemaClone, locations[0]));
         set(schemaClone, locations[0], resolvedAllOf);
 
-        if (locations[0] !== '') {
+        if (locations[0] !== "") {
             unset(schemaClone, `${locations[0]}.allOf`);
         } else {
             unset(schemaClone, `allOf`);
@@ -48,17 +48,16 @@ const resolveAllOf = function (schema) {
  * @param {object} schema - The schema.
  * @return {object} - A schema object.
  */
-let mergeAllOf = function (schema) {
+let mergeAllOf = function(schema) {
     let schemaClone = clone(schema);
 
     if (isObject(schemaClone) && schemaClone.allOf) {
         for (let allOfItem of schemaClone.allOf) {
-
             if (allOfItem.properties && allOfItem.required) {
                 let objKeys = Object.keys(allOfItem.properties);
 
                 for (let key of objKeys) {
-                    schemaClone.required = allOfItem.required.filter((requiredItem) => {
+                    schemaClone.required = allOfItem.required.filter(requiredItem => {
                         if (requiredItem === key) {
                             return key;
                         }
@@ -66,7 +65,7 @@ let mergeAllOf = function (schema) {
                 }
             }
 
-            const enumLocations = getDeepPropLocations(schemaClone, 'enum');
+            const enumLocations = getDeepPropLocations(schemaClone, "enum");
 
             schemaClone = restrictedPropertyByEnums(schemaClone, enumLocations);
         }
@@ -88,15 +87,20 @@ let mergeAllOf = function (schema) {
                 schemaClone.properties[key] = mergeAllOf(schema.properties[key]);
 
                 if (schemaClone.properties[key].properties) {
-                    schemaClone.properties[key].type = 'object';
+                    schemaClone.properties[key].type = "object";
                 }
             }
 
-            if (schemaClone.properties[key].items && schemaClone.properties[key].items.allOf) {
-                schemaClone.properties[key].items = mergeAllOf(schema.properties[key].items);
+            if (
+                schemaClone.properties[key].items &&
+                schemaClone.properties[key].items.allOf
+            ) {
+                schemaClone.properties[key].items = mergeAllOf(
+                    schema.properties[key].items
+                );
 
                 if (schemaClone.properties[key].items.properties) {
-                    schemaClone.properties[key].items.type = 'object';
+                    schemaClone.properties[key].items.type = "object";
                 }
             }
         }
@@ -107,10 +111,10 @@ let mergeAllOf = function (schema) {
 
 /**
  * Concatenates any array during a merge
- * @param {object | array} objValue 
- * @param {object | array} srcValue 
+ * @param {object | array} objValue
+ * @param {object | array} srcValue
  */
-let arrayMerge = function (objValue, srcValue) {
+let arrayMerge = function(objValue, srcValue) {
     if (Array.isArray(objValue)) {
         return objValue.concat(srcValue);
     }
@@ -122,19 +126,22 @@ let arrayMerge = function (objValue, srcValue) {
  * @param {array} enumLocations - An array of enum locations.
  * @return {object}
  */
-let restrictedPropertyByEnums = function (schema, enumLocations) {
+let restrictedPropertyByEnums = function(schema, enumLocations) {
     let schemaClone = clone(schema);
     let directLocations = [];
 
     if (enumLocations.length > 0) {
         // identify same properties
         for (let enumLocation of enumLocations) {
-            directLocations.push(enumLocation.replace(/allOf\[\d+\]./g, ''));
+            directLocations.push(enumLocation.replace(/allOf\[\d+\]./g, ""));
         }
 
         // make sure the enum is not inside a oneOf/anyOf since these are unique
-        directLocations = directLocations.filter((directLocation) => {
-            if (directLocation.match(/oneOf/g) === null && directLocation.match(/anyOf/g) === null) {
+        directLocations = directLocations.filter(directLocation => {
+            if (
+                directLocation.match(/oneOf/g) === null &&
+                directLocation.match(/anyOf/g) === null
+            ) {
                 return directLocation;
             }
         });
@@ -148,12 +155,10 @@ let restrictedPropertyByEnums = function (schema, enumLocations) {
                 let allOfItemEnums = get(allOfItem, `${uniqueLocation}.enum`);
 
                 if (allOfItemEnums) {
-                    if (typeof restrictedEnums !== 'undefined') {
-                        restrictedEnums = restrictedEnums.filter((enumItem) => {
-
+                    if (typeof restrictedEnums !== "undefined") {
+                        restrictedEnums = restrictedEnums.filter(enumItem => {
                             for (let allOfItemEnum of allOfItemEnums) {
                                 if (enumItem === allOfItemEnum) {
-
                                     return enumItem;
                                 }
                             }

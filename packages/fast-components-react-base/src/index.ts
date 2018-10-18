@@ -27,7 +27,7 @@ export { Hypertext };
 export * from "./hypertext";
 
 import Image from "./image";
-export {Image};
+export { Image };
 export * from "./image";
 
 import Label from "./label";

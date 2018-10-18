@@ -1,8 +1,15 @@
 import * as React from "react";
-import { ImageClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import {
+    ImageClassNameContract,
+    ManagedClasses,
+} from "@microsoft/fast-components-class-name-contracts-base";
 import { Omit } from "utility-types";
 
-export interface ImageUnhandledProps extends Omit<React.HTMLAttributes<HTMLImageElement | HTMLPictureElement>, "children"> {}
+export interface ImageUnhandledProps
+    extends Omit<
+            React.HTMLAttributes<HTMLImageElement | HTMLPictureElement>,
+            "children"
+        > {}
 export interface ImageManagedClasses extends ManagedClasses<ImageClassNameContract> {}
 export interface ImageHandledProps extends ImageManagedClasses {
     /**
@@ -29,7 +36,9 @@ export interface ImageHandledProps extends ImageManagedClasses {
     /**
      * The image children
      */
-    children?: React.ReactElement<HTMLSourceElement> | Array<React.ReactElement<HTMLSourceElement>>;
+    children?:
+        | React.ReactElement<HTMLSourceElement>
+        | Array<React.ReactElement<HTMLSourceElement>>;
 }
 
 export type ImageProps = ImageHandledProps & ImageUnhandledProps;

@@ -14,15 +14,13 @@ const exampleData: FormProps = {
     data: getExample(alignHorizontalSchema),
     /* tslint:disable-next-line */
     onChange: (data: any): void => {},
-    componentMappingToPropertyNames: config
+    componentMappingToPropertyNames: config,
 };
 
 const examples: SnapshotTestSuite<FormProps> = {
     name,
     component: Form,
-    data: [
-        exampleData
-    ]
+    data: [exampleData],
 };
 
 describe(name, () => {

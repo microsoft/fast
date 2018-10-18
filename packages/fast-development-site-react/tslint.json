@@ -1,6 +1,7 @@
 {
     "extends": [
-        "@microsoft/fast-tslint-rules"
+        "@microsoft/fast-tslint-rules",
+        "tslint-config-prettier"
     ],
     "linterOptions": {
         "exclude": [

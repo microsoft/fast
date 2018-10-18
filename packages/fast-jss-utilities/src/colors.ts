@@ -1,13 +1,20 @@
-import { adjustContrast, contrast, ContrastFunction, ensureContrast } from "@microsoft/fast-colors";
+import {
+    adjustContrast,
+    contrast,
+    ContrastFunction,
+    ensureContrast,
+} from "@microsoft/fast-colors";
 import { clamp, memoize } from "lodash-es";
 
 /**
  * Hashing function for contrast memoization
  */
 export function contrastHasher(...args: Array<string | number>): string {
-    return args.map((value: string | number) => {
-        return typeof value === "string" ? value.toLowerCase() : value;
-    }).join("");
+    return args
+        .map((value: string | number) => {
+            return typeof value === "string" ? value.toLowerCase() : value;
+        })
+        .join("");
 }
 
 const memoizedContrast: ContrastFunction = memoize(contrast, contrastHasher);
@@ -36,7 +43,7 @@ export enum WCAGElementContrastRatios {
     /**
      * The contrast ratio for large size text elements and UI elements 3px or greater
      */
-    large = 3
+    large = 3,
 }
 
 /**
