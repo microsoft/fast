@@ -18,6 +18,14 @@
     "integration-tests:release": "node build/testing/sauce-labs/test-browsers.js release",
     "prettier:diff": "prettier --config .prettierrc '**/*.{ts,tsx,js}' --list-different"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js}": ["lerna run prettier", "git add ."]
+  },
   "devDependencies": {
     "@types/node": "^9.4.7",
     "dotenv": "^6.0.0",
