@@ -3,5 +3,4 @@
  */
 export interface ContextMenuClassNameContract {
     contextMenu: string;
-    contextMenu_open: string;
 }

@@ -15,7 +15,7 @@ export enum ContextMenuItemRole {
 }
 
 class ContextMenuItem extends Foundation<ContextMenuItemHandledProps, ContextMenuItemUnhandledProps, {}> {
-    public static deafultProps: Partial<ContextMenuItemProps> = {
+    public static defaultProps: Partial<ContextMenuItemProps> = {
         role: ContextMenuItemRole.menuitem
     };
 

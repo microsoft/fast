@@ -82,15 +82,36 @@ class ContextMenu extends Foundation<ContextMenuHandledProps, ContextMenuUnhandl
     /**
      * Determines if a given element should be focusable by the menu
      */
-    private isFocusableElement(element: Element): boolean {
+    private isFocusableElement(element: Element): element is HTMLElement {
         return (
             element instanceof HTMLElement
             && ContextMenuItemRole.hasOwnProperty(element.getAttribute("role"))
         );
     }
 
-    private shiftFocus(delta: number): void {
+    /**
+     * Return an array of all focusabled elements that are children
+     * of the context-menu
+     */
+    private focusableChildren(): HTMLElement[] {
+        return Array
+            .from(this.rootElement.current.children)
+            .filter(this.isFocusableElement);
+    }
 
+    /**
+     * Applies focus to an index of focusable children
+     */
+    private setFocus(index: number): void {
+        const element: Element = this.focusableChildren()[index];
+
+        if (this.isFocusableElement(element)) {
+            element.focus();
+
+            this.setState({
+                focusIndex: index
+            });
+        }
     }
 
     /**
@@ -106,54 +127,27 @@ class ContextMenu extends Foundation<ContextMenuHandledProps, ContextMenuUnhandl
         switch (e.keyCode) {
             case KeyCodes.ArrowDown:
             case KeyCodes.ArrowRight:
-                this.shiftFocus(1);
-                // if (focused.nextElementSibling instanceof HTMLElement) {
-                //     focused.nextElementSibling.focus();
-
-                //     this.setState({
-                //         focusIndex: this.state.focusIndex + 1
-                //     });
-                // }
+                e.preventDefault();
+                this.setFocus(this.state.focusIndex + 1);
 
                 break;
 
             case KeyCodes.ArrowUp:
             case KeyCodes.ArrowLeft:
-                this.shiftFocus(-1);
-                // if (focused.previousElementSibling instanceof HTMLElement) {
-                //     focused.previousElementSibling.focus();
+                e.preventDefault();
+                this.setFocus(this.state.focusIndex - 1);
 
-                //     this.setState({
-                //         focusIndex: this.state.focusIndex - 1
-                //     });
-                // }
-
-                // break;
+                break;
 
             case KeyCodes.End:
-                if (
-                    this.rootElement.current instanceof HTMLElement
-                    && this.rootElement.current.lastElementChild instanceof HTMLElement
-                ) {
-                    this.rootElement.current.lastElementChild.focus();
-
-                    this.setState({
-                        focusIndex: React.Children.count(this.props.children) - 1
-                    });
-                }
+                e.preventDefault();
+                this.setFocus(this.focusableChildren().length - 1);
 
                 break;
 
             case KeyCodes.Home:
-                if (
-                    this.rootElement.current instanceof HTMLElement
-                    && this.rootElement.current.firstElementChild instanceof HTMLElement
-                ) {
-                    this.rootElement.current.firstElementChild.focus();
-                    this.setState({
-                        focusIndex: 0
-                    });
-                }
+                e.preventDefault();
+                this.setFocus(0);
 
                 break;
         }
