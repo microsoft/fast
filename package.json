@@ -24,7 +24,10 @@
     }
   },
   "lint-staged": {
-    "*.{ts,tsx,js}": ["lerna run prettier", "git add ."]
+    "*.{ts,tsx,js}": [
+      "lerna run prettier",
+      "git add ."
+    ]
   },
   "devDependencies": {
     "@types/node": "^9.4.7",
