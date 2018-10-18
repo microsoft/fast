@@ -11,7 +11,7 @@ import {
 import * as React from "react";
 import KeyCodes from "../utilities/keycodes";
 import { clamp, get, isFunction } from "lodash-es";
-import { MenuItemRole } from "../utilities/aria";
+import { canUseDOM } from "exenv-es6";
 
 export interface ContextMenuState {
     /**
@@ -94,23 +94,31 @@ class ContextMenu extends Foundation<ContextMenuHandledProps, ContextMenuUnhandl
      * of the context-menu
      */
     private focusableChildren(): HTMLElement[] {
-        return Array
-            .from(this.rootElement.current.children)
-            .filter(this.isFocusableElement);
+        if (!canUseDOM()) {
+            return [];
+        }
+
+        const root: HTMLUListElement | null = this.rootElement.current;
+
+        return root instanceof HTMLElement
+            ? Array.from(this.rootElement.current.children).filter(this.isFocusableElement)
+            : [];
     }
 
     /**
      * Applies focus to an index of focusable children
      */
     private setFocus(index: number): void {
-        const element: Element = this.focusableChildren()[index];
+        if (canUseDOM()) {
+            const element: Element = this.focusableChildren()[index];
 
-        if (this.isFocusableElement(element)) {
-            element.focus();
+            if (this.isFocusableElement(element)) {
+                element.focus();
 
-            this.setState({
-                focusIndex: index
-            });
+                this.setState({
+                    focusIndex: index
+                });
+            }
         }
     }
 
@@ -118,12 +126,6 @@ class ContextMenu extends Foundation<ContextMenuHandledProps, ContextMenuUnhandl
      * Handle the keydown event of the root menu
      */
     private handleMenuKeyDown = (e: React.KeyboardEvent<HTMLUListElement>): void => {
-        const focused: Element = document.activeElement;
-
-        if (!Boolean(focused instanceof HTMLElement)) {
-            return;
-        }
-
         switch (e.keyCode) {
             case KeyCodes.ArrowDown:
             case KeyCodes.ArrowRight:

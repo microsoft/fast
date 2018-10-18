@@ -11,7 +11,9 @@ import {
 import { MenuItemRole } from "../utilities/aria";
 
 export enum ContextMenuItemRole {
-    menuitem = "menuitem"
+    menuitem = "menuitem",
+    menuitemradio = "menuitemradio",
+    menuitemcheckbox = "menuitemcheckbox"
 }
 
 class ContextMenuItem extends Foundation<ContextMenuItemHandledProps, ContextMenuItemUnhandledProps, {}> {
