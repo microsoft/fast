@@ -1,15 +1,18 @@
 import * as React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import ContextMenuItem, { ContextMenuItemHandledProps, ContextMenuItemManagedClasses } from "./context-menu-item";
+import ContextMenuItem, {
+    ContextMenuItemHandledProps,
+    ContextMenuItemManagedClasses,
+} from "./context-menu-item";
 import { uniqueId } from "lodash-es";
 import schema from "./context-menu-item.schema.json";
 import Documentation from "./.tmp/documentation";
 
 const managedClasses: ContextMenuItemManagedClasses = {
     managedClasses: {
-        contextMenuItem: "context-menu-item"
-    }
+        contextMenuItem: "context-menu-item",
+    },
 };
 
 const examples: ComponentFactoryExample<ContextMenuItemHandledProps> = {
@@ -19,14 +22,14 @@ const examples: ComponentFactoryExample<ContextMenuItemHandledProps> = {
     documentation: <Documentation />,
     detailData: {
         ...managedClasses,
-        children: "child"
+        children: "child",
     },
     data: [
         {
             ...managedClasses,
-            children: "child"
-        }
-    ]
+            children: "child",
+        },
+    ],
 };
 
 export default examples;

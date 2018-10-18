@@ -9,7 +9,7 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         },
         backgroundColor: (config: DesignSystem): string => {
             return config.brandColor;
-        }
+        },
     },
 };
 

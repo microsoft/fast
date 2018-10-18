@@ -20,19 +20,25 @@ export interface ContextMenuState {
     focusIndex: number;
 }
 
-class ContextMenu extends Foundation<ContextMenuHandledProps, ContextMenuUnhandledProps, ContextMenuState> {
+class ContextMenu extends Foundation<
+    ContextMenuHandledProps,
+    ContextMenuUnhandledProps,
+    ContextMenuState
+> {
     protected handledProps: HandledProps<ContextMenuHandledProps> = {
         children: void 0,
         managedClasses: void 0,
     };
 
-    private rootElement: React.RefObject<HTMLUListElement> = React.createRef<HTMLUListElement>();
+    private rootElement: React.RefObject<HTMLUListElement> = React.createRef<
+        HTMLUListElement
+    >();
 
     constructor(props: ContextMenuProps) {
         super(props);
 
         this.state = {
-            focusIndex: 0
+            focusIndex: 0,
         };
     }
 
@@ -70,22 +76,22 @@ class ContextMenu extends Foundation<ContextMenuHandledProps, ContextMenuUnhandl
     /**
      * Render a single child
      */
-    private renderChild = (child: React.ReactElement<ContextMenuItemProps>, index: number): React.ReactChild => {
-        return React.cloneElement(
-            child,
-            {
-                tabIndex: index === this.state.focusIndex ? 0 : -1,
-            }
-        );
-    }
+    private renderChild = (
+        child: React.ReactElement<ContextMenuItemProps>,
+        index: number
+    ): React.ReactChild => {
+        return React.cloneElement(child, {
+            tabIndex: index === this.state.focusIndex ? 0 : -1,
+        });
+    };
 
     /**
      * Determines if a given element should be focusable by the menu
      */
     private isFocusableElement(element: Element): element is HTMLElement {
         return (
-            element instanceof HTMLElement
-            && ContextMenuItemRole.hasOwnProperty(element.getAttribute("role"))
+            element instanceof HTMLElement &&
+            ContextMenuItemRole.hasOwnProperty(element.getAttribute("role"))
         );
     }
 
@@ -101,7 +107,9 @@ class ContextMenu extends Foundation<ContextMenuHandledProps, ContextMenuUnhandl
         const root: HTMLUListElement | null = this.rootElement.current;
 
         return root instanceof HTMLElement
-            ? Array.from(this.rootElement.current.children).filter(this.isFocusableElement)
+            ? Array.from(this.rootElement.current.children).filter(
+                  this.isFocusableElement
+              )
             : [];
     }
 
@@ -116,7 +124,7 @@ class ContextMenu extends Foundation<ContextMenuHandledProps, ContextMenuUnhandl
                 element.focus();
 
                 this.setState({
-                    focusIndex: index
+                    focusIndex: index,
                 });
             }
         }
@@ -153,8 +161,7 @@ class ContextMenu extends Foundation<ContextMenuHandledProps, ContextMenuUnhandl
 
                 break;
         }
-    }
-
+    };
 }
 
 export default ContextMenu;

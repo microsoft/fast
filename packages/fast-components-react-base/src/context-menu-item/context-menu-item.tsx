@@ -13,12 +13,16 @@ import { MenuItemRole } from "../utilities/aria";
 export enum ContextMenuItemRole {
     menuitem = "menuitem",
     menuitemradio = "menuitemradio",
-    menuitemcheckbox = "menuitemcheckbox"
+    menuitemcheckbox = "menuitemcheckbox",
 }
 
-class ContextMenuItem extends Foundation<ContextMenuItemHandledProps, ContextMenuItemUnhandledProps, {}> {
+class ContextMenuItem extends Foundation<
+    ContextMenuItemHandledProps,
+    ContextMenuItemUnhandledProps,
+    {}
+> {
     public static defaultProps: Partial<ContextMenuItemProps> = {
-        role: ContextMenuItemRole.menuitem
+        role: ContextMenuItemRole.menuitem,
     };
 
     protected handledProps: HandledProps<ContextMenuItemHandledProps> = {
@@ -45,10 +49,12 @@ class ContextMenuItem extends Foundation<ContextMenuItemHandledProps, ContextMen
      * Create class-names
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(get(this.props.managedClasses, "contextMenuItem"));
+        return super.generateClassNames(
+            get(this.props.managedClasses, "contextMenuItem")
+        );
     }
 }
 
 export default ContextMenuItem;
 export * from "./context-menu-item.props";
-export {ContextMenuItemClassNameContract};
+export { ContextMenuItemClassNameContract };

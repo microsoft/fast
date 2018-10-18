@@ -7,7 +7,7 @@ export default {
     component: ContextMenuItem,
     data: [
         {
-            children: "context-menu-item"
-        }
-    ]
+            children: "context-menu-item",
+        },
+    ],
 } as ComponentFactoryExample<ContextMenuItemHandledProps>;

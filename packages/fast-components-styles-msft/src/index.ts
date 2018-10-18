@@ -24,7 +24,7 @@ import HypertextStyles from "./hypertext";
 export { HypertextStyles };
 
 import ContextMenuItemStyles from "./context-menu-item";
-export {ContextMenuItemStyles};
+export { ContextMenuItemStyles };
 
 /**
  * Export design system defaults and typings

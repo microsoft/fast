@@ -13,14 +13,14 @@ function contextMenuItemPropFactory(): ContextMenuItemProps {
         managedClasses: {
             contextMenuItem: "context-menu-item",
         },
-        onClick: noop
+        onClick: noop,
     };
 }
 
 const managedClasses: ContextMenuManagedClasses = {
     managedClasses: {
-        contextMenu: "context-menu"
-    }
+        contextMenu: "context-menu",
+    },
 };
 
 const examples: ComponentFactoryExample<ContextMenuProps> = {
@@ -35,24 +35,24 @@ const examples: ComponentFactoryExample<ContextMenuProps> = {
                 id: "context-menu-item",
                 props: {
                     ...contextMenuItemPropFactory(),
-                    children: "context menu item 1"
-                }
+                    children: "context menu item 1",
+                },
             },
             {
                 id: "context-menu-item",
                 props: {
                     ...contextMenuItemPropFactory(),
-                    children: "context menu item 2"
-                }
+                    children: "context menu item 2",
+                },
             },
             {
                 id: "context-menu-item",
                 props: {
                     ...contextMenuItemPropFactory(),
-                    children: "context menu item 3"
-                }
-            }
-        ]
+                    children: "context menu item 3",
+                },
+            },
+        ],
     },
     data: [
         {
@@ -62,29 +62,29 @@ const examples: ComponentFactoryExample<ContextMenuProps> = {
                     id: "context-menu-item",
                     props: {
                         ...contextMenuItemPropFactory(),
-                        children: "context menu item 1"
-                    }
+                        children: "context menu item 1",
+                    },
                 },
                 {
-                    id: "divider"
-                },
-                {
-                    id: "context-menu-item",
-                    props: {
-                        ...contextMenuItemPropFactory(),
-                        children: "context menu item 2"
-                    }
+                    id: "divider",
                 },
                 {
                     id: "context-menu-item",
                     props: {
                         ...contextMenuItemPropFactory(),
-                        children: "context menu item 3"
-                    }
+                        children: "context menu item 2",
+                    },
                 },
-            ]
-        }
-    ]
+                {
+                    id: "context-menu-item",
+                    props: {
+                        ...contextMenuItemPropFactory(),
+                        children: "context menu item 3",
+                    },
+                },
+            ],
+        },
+    ],
 };
 
 export default examples;
