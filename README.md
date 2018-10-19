@@ -12,6 +12,7 @@ Teams spend significant time building parts of the design system (colors, variab
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
 [![Discord](https://img.shields.io/badge/support%20with-discord-cc00ff.svg)](https://discord.gg/FcSNfg4)
 ![license](https://img.shields.io/github/license/mashape/apistatus.svg)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
 ## Packages
 [Lerna](https://github.com/lerna/lerna#independent-mode---independent) is used to organize and manage this mono repository. Most of these packages are published to NPM. Users can choose à la carte which utility service to use in their development efforts.
