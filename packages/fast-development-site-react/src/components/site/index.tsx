@@ -212,13 +212,17 @@ const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
         },
     },
     site_pane: {
-        overflowX: "auto",
+        display: "flex",
+        flexDirection: "column",
+        flexGrow: "1",
+        height: "100%",
     },
     site_paneForm: {
         padding: toPx(12),
     },
     site_paneToc: {
         padding: "0",
+        overflow: "scroll",
     },
     site_paneTocRow: {
         display: "flex",
@@ -238,6 +242,7 @@ const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
         background: "none",
         padding: toPx(12),
         outline: "0",
+        alignSelf: "flex-start",
     },
     site_paneToggleButtonIcon: {
         height: toPx(16),
