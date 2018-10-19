@@ -31,9 +31,11 @@ export const callToActionButtonOverrides: ComponentStyles<
     button__primary: {
         "&:hover": {
             "& $button_contentRegion": {
-                left: (config: DesignSystem): string => {
+                transform: (config: DesignSystem): string => {
                     const designSystem: DesignSystem = withDesignSystemDefaults(config);
-                    return designSystem.direction === Direction.ltr ? "-4px" : "4px";
+                    return designSystem.direction === Direction.ltr
+                        ? "translateX(-4px)"
+                        : "translateX(4px)";
                 },
             },
         },
@@ -76,7 +78,10 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
             "&:hover, &:focus": {
                 outline: "none",
                 "& $callToAction_glyph": {
-                    left: direction === Direction.ltr ? "4px" : "-4px",
+                    transform:
+                        direction === Direction.ltr
+                            ? "translateX(4px)"
+                            : "rotate(180deg) translateX(4px)",
                     position: "relative",
                 },
             },
@@ -89,7 +94,6 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
             [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "6px",
             transform: direction === Direction.ltr ? "none" : "rotate(180deg)",
             transition: "all 600ms cubic-bezier(0.19, 1, 0.22, 1)",
-            left: "0",
             marginTop: direction === Direction.ltr ? "4px" : "0",
         },
         callToAction__primary: {
