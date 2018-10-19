@@ -121,6 +121,7 @@ export interface SiteManagedClasses {
     site_infoBarConfiguration_base: string;
     site_infoBarConfiguration_input: string;
     site_infoBarConfiguration_theme: string;
+    site_pane: string;
     site_paneForm: string;
     site_paneToc: string;
     site_paneTocRow: string;
@@ -209,6 +210,9 @@ const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
                 return `inset 0 0 0 1 ${config.brandColor}`;
             },
         },
+    },
+    site_pane: {
+        overflowX: "auto",
     },
     site_paneForm: {
         padding: toPx(12),
@@ -575,7 +579,7 @@ class Site extends React.Component<
                     jssStyleSheet={paneStyleSheet}
                     minWidth={200}
                 >
-                    <div>
+                    <div className={this.props.managedClasses.site_pane}>
                         {this.renderPaneCollapseToggle()}
                         {this.renderChildrenBySlot(this, ShellSlot.pane)}
                         <ul className={this.props.managedClasses.site_paneToc}>
