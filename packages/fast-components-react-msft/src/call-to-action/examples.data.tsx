@@ -32,7 +32,7 @@ export default {
         },
         {
             appearance: CallToActionAppearance.justified,
-            children: "Secondary call to action",
+            children: "Justified call to action",
             href: testDestination,
             "data-sketch-symbol": "Call to action - justified",
         },
