@@ -22,10 +22,7 @@ export const callToActionButtonOverrides: ComponentStyles<
 > = {
     button: {
         maxWidth: "100%",
-        padding: (config: DesignSystem): string => {
-            const designSystem: DesignSystem = withDesignSystemDefaults(config);
-            return localizeSpacing(designSystem.direction)("13px 22px 11px 24px");
-        },
+        padding: "0 12px",
     },
     button_contentRegion: {
         transition: "all 600ms cubic-bezier(0.19, 1, 0.22, 1)",
@@ -34,7 +31,10 @@ export const callToActionButtonOverrides: ComponentStyles<
     button__primary: {
         "&:hover": {
             "& $button_contentRegion": {
-                [applyLocalizedProperty("left", "right", Direction.ltr)]: "-4px",
+                left: (config: DesignSystem): string => {
+                    const designSystem: DesignSystem = withDesignSystemDefaults(config);
+                    return designSystem.direction === Direction.ltr ? "-4px" : "4px";
+                },
             },
         },
     },
@@ -65,21 +65,18 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
     return {
         callToAction: {
             fontSize: "15px",
-            display: "inline-block",
+            display: "inline-flex",
             maxWidth: "100%",
             border: "2px solid transparent",
-            padding: localizeSpacing(direction)("13px 22px 11px 24px"),
-            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "-10px",
+            padding: "0 12px",
             lineHeight: "1",
             textDecoration: "none",
             whiteSpace: "nowrap",
-            verticalAlign: "bottom",
-            marginTop: "16px",
             transition: "all 0.2s ease-in-out",
             "&:hover, &:focus": {
                 outline: "none",
                 "& $callToAction_glyph": {
-                    left: "8px",
+                    left: direction === Direction.ltr ? "4px" : "-4px",
                     position: "relative",
                 },
             },
@@ -91,10 +88,9 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
             width: "8px",
             [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "6px",
             transform: direction === Direction.ltr ? "none" : "rotate(180deg)",
-            verticalAlign: "top",
             transition: "all 600ms cubic-bezier(0.19, 1, 0.22, 1)",
             left: "0",
-            marginTop: "4px",
+            marginTop: direction === Direction.ltr ? "4px" : "0",
         },
         callToAction__primary: {
             "& $callToAction_glyph": {
@@ -107,6 +103,7 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
             },
         },
         callToAction__justified: {
+            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "-10px",
             "& $callToAction_glyph": {
                 fill: primaryRestBackgroundColor,
             },

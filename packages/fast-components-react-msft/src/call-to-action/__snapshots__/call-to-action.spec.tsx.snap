@@ -63,7 +63,7 @@ exports[`call to action snapshot Call to action: 2 1`] = `
   <span
     className="button_contentRegion-0-1-38"
   >
-    Secondary call to action
+    Justified call to action
   </span>
   <div
     className="callToAction_glyph-0-1-28"
