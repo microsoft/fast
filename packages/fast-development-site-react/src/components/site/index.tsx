@@ -121,6 +121,7 @@ export interface SiteManagedClasses {
     site_infoBarConfiguration_base: string;
     site_infoBarConfiguration_input: string;
     site_infoBarConfiguration_theme: string;
+    site_pane: string;
     site_paneForm: string;
     site_paneToc: string;
     site_paneTocRow: string;
@@ -210,11 +211,18 @@ const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
             },
         },
     },
+    site_pane: {
+        display: "flex",
+        flexDirection: "column",
+        flexGrow: "1",
+        height: "100%",
+    },
     site_paneForm: {
         padding: toPx(12),
     },
     site_paneToc: {
         padding: "0",
+        overflow: "scroll",
     },
     site_paneTocRow: {
         display: "flex",
@@ -234,6 +242,7 @@ const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
         background: "none",
         padding: toPx(12),
         outline: "0",
+        alignSelf: "flex-start",
     },
     site_paneToggleButtonIcon: {
         height: toPx(16),
@@ -575,7 +584,7 @@ class Site extends React.Component<
                     jssStyleSheet={paneStyleSheet}
                     minWidth={200}
                 >
-                    <div>
+                    <div className={this.props.managedClasses.site_pane}>
                         {this.renderPaneCollapseToggle()}
                         {this.renderChildrenBySlot(this, ShellSlot.pane)}
                         <ul className={this.props.managedClasses.site_paneToc}>
