@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
-import { configure, shallow } from "enzyme";
+import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
 import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import Radio, { RadioClassNameContract, RadioSlot } from "./radio";
@@ -10,10 +10,6 @@ import Label from "../label";
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
-
-describe("radio snapshots", (): void => {
-    generateSnapshots(examples);
-});
 
 describe("radio", (): void => {
     const managedClasses: RadioClassNameContract = {
@@ -30,7 +26,44 @@ describe("radio", (): void => {
         expect((Radio as any).name).toBe(Radio.displayName);
     });
 
-    test("should call a registerd callback after a change event", () => {
+    test("should render an input with an `id` attribute when an `id` prop is passed", () => {
+        const testId: string = "radio01";
+        const rendered: any = shallow(
+            <Radio managedClasses={managedClasses} id={testId} />
+        );
+
+        expect(rendered.find(inputSelector).prop("id")).toBe(testId);
+    });
+
+    test("should render a child if one is passed as a child with the `label` slot prop", () => {
+        const rendered: any = mount(
+            <Radio managedClasses={managedClasses} id="radio03">
+                <div id="testLabel" slot={RadioSlot.label}>
+                    Label
+                </div>
+            </Radio>
+        );
+
+        expect(rendered.find("#testLabel")).not.toBe(undefined);
+    });
+
+    test("should NOT render a child if one is passed as a child without the `label` slot prop", () => {
+        const rendered: any = shallow(
+            <Radio id="radio03">
+                <div>Label</div>
+            </Radio>
+        );
+
+        const unexpected: string =
+            '<div><input type="radio" id="radio03"/><span></span><div slot="label">Label</div></div>';
+        const expected: string =
+            '<div><input type="radio" id="radio03"/><span></span></div>';
+
+        expect(rendered.html()).not.toBe(unexpected);
+        expect(rendered.html()).toBe(expected);
+    });
+
+    test("should call a registered callback after a change event", () => {
         const onChange: any = jest.fn();
         const controlled: any = shallow(
             <Radio
