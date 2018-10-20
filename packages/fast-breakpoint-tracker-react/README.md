@@ -5,57 +5,39 @@
 `npm i --save @microsoft/fast-breakpoint-tracker-react`
 
 ## Breakpoints
-Six default breakpoint values are provided for convenience:
+`Breakpoints` are expected as an array. Six default breakpoint values are provided for convenience:
 
 ```jsx
-const defaultBreakpoints = {
-    vp1: 0,
-    vp2: 540,
-    vp3: 768,
-    vp4: 1084,
-    vp5: 1400,
-    vp6: 1779
-};
+const defaultBreakpoints = [0, 540, 768, 1084, 1400, 1779];
 ```
 
 ### Set custom breakpoint values
 Custom breakpoint values can be set by setting the `breakpoints` value on the BreakpointTracker class with new key:value pairs. Custom keys are supported, but the values must be numbers.
 
 ```jsx
-const customBreakpoints = {
-    mobile: 0,
-    tablet: 800,
-    desktop: 1024
-};
+const customBreakpoints = [0, 800, 1024, 1559];
 
 // Set the public static value to your custom breakpoints
 BreakpointTracker.breakpoints = customBreakpoints;
 ```
 
 ## Usage
-<!-- 
 ```jsx
 // button.jsx
 import React from "react";
 import BreakpointTracker from "@microsoft/fast-breakpoint-tracker-react";
 
-export interface AppProps {
-    activeBreakpoint: string;
-}
+export interface AppProps {}
 
 class App extends React.Component<AppProps, {}> {
-    generateApplication() {
-        if (this.props.activeBreakpoint) {
-            
-        }
-    }
-
     render() {
         return (
             <BreakpointTracker
-                render={this.generateApplication()}
+                render={breakpoint => (
+                    <p>The current breakpoint is {breakpoint}</p>
+                )}
             />
         );
     }
 }
-``` -->
+```
