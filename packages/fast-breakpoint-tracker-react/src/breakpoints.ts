@@ -1,27 +1,23 @@
-export interface Breakpoints {
-    [key: string]: number;
-}
+export type Breakpoint = number;
 
-export const defaultBreakpoints: Breakpoints = {
-    vp1: 0,
-    vp2: 540,
-    vp3: 768,
-    vp4: 1084,
-    vp5: 1400,
-    vp6: 1779
-};
+export type Breakpoints = Breakpoint[];
+
+export const defaultBreakpoints: Breakpoints = [0, 540, 768, 1084, 1400, 1779];
 
 /**
  * Identifies current breakpoint based on window width
  */
-export function identifyBreakpoint(windowWidth: number, breakpoints: Breakpoints): keyof Breakpoints | void {
-    const breakpointArray: any = Object.keys(breakpoints).map(
-        (key: keyof Breakpoints, value: number) => ({key, value: breakpoints[key]})
-    ).sort((a: any, b: any) => a.value - b.value );
-
-    for (let i: number = breakpointArray.length - 1; i >= 0; i--) {
-        if (windowWidth >= breakpointArray[i].value) {
-            return breakpointArray[i].key;
+export function identifyBreakpoint(
+    windowWidth: number,
+    breakpoints: Breakpoints
+): number {
+    for (
+        let breakpoint: Breakpoint = breakpoints.length - 1;
+        breakpoint >= 0;
+        breakpoint--
+    ) {
+        if (windowWidth >= breakpoints[breakpoint]) {
+            return breakpoint;
         }
     }
 }

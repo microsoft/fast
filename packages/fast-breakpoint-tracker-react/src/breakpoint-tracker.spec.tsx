@@ -2,7 +2,7 @@ import * as React from "react";
 import { configure, mount } from "enzyme";
 import * as Adapter from "enzyme-adapter-react-16";
 import { Breakpoints, defaultBreakpoints } from "./breakpoints";
-import { BreakpointTracker } from "./breakpoint-tracker";
+import BreakpointTracker from "./breakpoint-tracker";
 
 configure({adapter: new Adapter()});
 
@@ -10,8 +10,10 @@ const globalAny: any = global;
 
 describe("BreakpointTracker", (): void => {
 
-    function renderChild(breakpoint: string): JSX.Element {
-        return <p>{breakpoint}</p>;
+    function renderChild(breakpoint: number): JSX.Element {
+        return (
+            <p>{breakpoint}</p>
+        );
     }
 
     test("should pass active breakpoint value in the render prop", (): void => {
@@ -24,12 +26,12 @@ describe("BreakpointTracker", (): void => {
             />
         );
 
-        expect(rendered.state("activeBreakpoint")).toBe("vp4");
-        expect(rendered.find("p").text()).toEqual("vp4");
+        expect(rendered.state("activeBreakpoint")).toBe(3);
+        expect(rendered.find("p").text()).toEqual("3");
     });
 
     test("should provide default breakpoint values", (): void => {
-        // reset window.innerWidth to 1024 ("vp3")
+        // reset window.innerWidth to 1024 (2)
         globalAny.window.innerWidth = 1024;
 
         const rendered: any = mount(
@@ -39,18 +41,13 @@ describe("BreakpointTracker", (): void => {
         );
 
         expect(BreakpointTracker.breakpoints).toEqual(defaultBreakpoints);
-        expect(rendered.state("activeBreakpoint")).toEqual("vp3");
+        expect(rendered.state("activeBreakpoint")).toEqual(2);
     });
 
     test("should allow custom breakpoints to be set", (): void => {
-        const customBreakpoints: Breakpoints = {
-            viewport0: 0,
-            viewport1: 800,
-            viewport2: 1000,
-            viewport3: 1500
-        };
+        const customBreakpoints: Breakpoints = [0, 800, 1000, 1500];
 
-        // window.innerWidth is 1024 ("viewport2")
+        // window.innerWidth is 1024 (3)
         BreakpointTracker.breakpoints = customBreakpoints;
 
         const rendered: any = mount(
@@ -59,7 +56,7 @@ describe("BreakpointTracker", (): void => {
             />
         );
 
-        expect(rendered.state("activeBreakpoint")).toEqual("viewport2");
+        expect(rendered.state("activeBreakpoint")).toEqual(2);
     });
 
     test("should add resize event listener to the window", (): void => {
