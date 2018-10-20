@@ -21,10 +21,6 @@ import Label, {
  */
 configure({ adapter: new Adapter() });
 
-describe("label snapshot", (): void => {
-    generateSnapshots(examples as SnapshotTestSuite<LabelProps>);
-});
-
 describe("label", (): void => {
     const managedClasses: LabelClassNameContract = {
         label: "label-class",
