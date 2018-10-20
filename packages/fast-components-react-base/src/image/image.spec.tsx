@@ -21,10 +21,6 @@ import Image, {
  */
 configure({ adapter: new Adapter() });
 
-describe("image snapshot", (): void => {
-    generateSnapshots(examples as SnapshotTestSuite<ImageProps>);
-});
-
 describe("image", (): void => {
     const managedClasses: ImageClassNameContract = {
         image: "image-class",
