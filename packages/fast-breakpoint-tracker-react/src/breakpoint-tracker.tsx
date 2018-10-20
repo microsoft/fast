@@ -1,7 +1,12 @@
 import * as React from "react";
 import { canUseDOM } from "exenv-es6";
 import { throttle } from "lodash-es";
-import { Breakpoint, Breakpoints, defaultBreakpoints, identifyBreakpoint } from "./breakpoints";
+import {
+    Breakpoint,
+    Breakpoints,
+    defaultBreakpoints,
+    identifyBreakpoint,
+} from "./breakpoints";
 
 export interface BreakpointTrackerProps {
     /**
@@ -17,7 +22,10 @@ export interface BreakpointTrackerState {
     activeBreakpoint: Breakpoint | void;
 }
 
-export default class BreakpointTracker extends React.Component<BreakpointTrackerProps, BreakpointTrackerState> {
+export default class BreakpointTracker extends React.Component<
+    BreakpointTrackerProps,
+    BreakpointTrackerState
+> {
     /**
      * The current breakpoint.
      */
@@ -35,7 +43,7 @@ export default class BreakpointTracker extends React.Component<BreakpointTracker
         super(props);
 
         this.state = {
-            activeBreakpoint: null
+            activeBreakpoint: null,
         };
     }
 
@@ -72,16 +80,19 @@ export default class BreakpointTracker extends React.Component<BreakpointTracker
      */
     private updateBreakpoint = (): void => {
         const windowWidth: number = window.innerWidth;
-        const breakpoint: Breakpoint | void = identifyBreakpoint(windowWidth, BreakpointTracker.breakpoints);
+        const breakpoint: Breakpoint | void = identifyBreakpoint(
+            windowWidth,
+            BreakpointTracker.breakpoints
+        );
 
         if (this.state.activeBreakpoint !== breakpoint) {
             this.setState({
-                activeBreakpoint: breakpoint
+                activeBreakpoint: breakpoint,
             });
         }
 
         this.openRequestAnimationFrame = false;
-    }
+    };
 
     /**
      * Request's an animation frame if there are currently no open animation frame requests
@@ -91,5 +102,5 @@ export default class BreakpointTracker extends React.Component<BreakpointTracker
             this.openRequestAnimationFrame = true;
             window.requestAnimationFrame(this.updateBreakpoint);
         }
-    }
+    };
 }
