@@ -139,6 +139,18 @@ export function foregroundNormal(config: DesignSystem): string {
 }
 
 /**
+ * Set the foreground color to meet normal contrast ratios against a background color
+ */
+export function foregroundLarge(config: DesignSystem): string {
+    const designSystem: DesignSystem = withDesignSystemDefaults(config);
+    return largeContrast(
+        designSystem.contrast,
+        designSystem.foregroundColor,
+        designSystem.backgroundColor
+    );
+}
+
+/**
  * Ensure the brand color meets normal contrast ratios against a background color
  */
 export function ensureBrandNormal(config: DesignSystem): string {
@@ -153,9 +165,26 @@ export function ensureBrandNormal(config: DesignSystem): string {
 /**
  * Ensure the background color meets normal contrast ratios against a background color
  */
-export function ensuresBackgroundNormal(config: DesignSystem): string {
+function ensureBackgroundNormal(config: DesignSystem): string {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     return ensureNormalContrast(
+        designSystem.contrast,
+        designSystem.backgroundColor,
+        designSystem.foregroundColor
+    );
+}
+
+/**
+ * Deprecated 3.1.0
+ */
+const ensuresBackgroundNormal:(config: DesignSystem) => string = ensureBackgroundNormal;
+
+export { ensureBackgroundNormal, ensuresBackgroundNormal }
+
+
+export function ensureBackgroundLarge(config: DesignSystem): string {
+    const designSystem: DesignSystem = withDesignSystemDefaults(config);
+    return ensureLargeContrast(
         designSystem.contrast,
         designSystem.backgroundColor,
         designSystem.foregroundColor
