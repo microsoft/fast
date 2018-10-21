@@ -61,4 +61,19 @@ describe("heading", (): void => {
 
         expect(rendered.exists(HeadingTag.h3)).toBe(true);
     });
+
+    test("should render the correct `size` when `size` prop is passed", () => {
+        const rendered: any = mount(<Heading tag={HeadingTag.p} size={HeadingSize._2} />);
+
+        expect(rendered.find("p").prop("className")).toContain("heading__2");
+    });
+
+    test("should accept and render children", () => {
+        const rendered: any = shallow(
+            <MSFTHeading tag={HeadingTag.p}>Children</MSFTHeading>
+        );
+
+        expect(rendered.prop("children")).not.toBe(undefined);
+        expect(rendered.prop("children")).toEqual("Children");
+    });
 });
