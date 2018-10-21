@@ -2,7 +2,6 @@ import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
-import { generateSnapshots } from "@microsoft/fast-jest-snapshots-react";
 import Radio, { RadioClassNameContract, RadioSlot } from "./radio";
 import Label from "../label";
 
