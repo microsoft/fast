@@ -63,7 +63,7 @@ describe("metatext", (): void => {
     });
 
     test("should accept and render children", () => {
-        const rendered: any = shallow(<Metatext>Children</Metatext>);
+        const rendered: any = shallow(<MSFTMetatext>Children</MSFTMetatext>);
 
         expect(rendered.prop("children")).not.toBe(undefined);
         expect(rendered.prop("children")).toEqual("Children");

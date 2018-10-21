@@ -20,10 +20,6 @@ import { Paragraph } from "./index";
  */
 configure({ adapter: new Adapter() });
 
-describe("paragraph snapshots", (): void => {
-    generateSnapshots(examples as SnapshotTestSuite<ParagraphProps>);
-});
-
 describe("paragraph", (): void => {
     test("should have a displayName that matches the component name", () => {
         expect((MSFTParagraph as any).name).toBe(MSFTParagraph.displayName);
