@@ -71,6 +71,8 @@
     "react-dom": "^16.3.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
     "@microsoft/fast-tslint-rules": "^3.0.0",
     "@types/jest": "^23.3.5",
     "@types/lodash-es": "^4.17.0",
@@ -79,9 +81,7 @@
     "@types/react-redux": "^5.0.14",
     "@types/react-router": "^4.0.21",
     "@types/react-router-dom": "^4.2.3",
-    "babel-core": "^6.26.0",
     "babel-jest": "^23.6.0",
-    "babel-preset-env": "^1.6.1",
     "fork-ts-checker-webpack-plugin": "^0.4.0",
     "html-webpack-plugin": "^3.0.0",
     "jest": "^23.6.0",
