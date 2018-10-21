@@ -61,4 +61,11 @@ describe("metatext", (): void => {
 
         expect(rendered.exists(MetatextTag.p)).toBe(true);
     });
+
+    test("should accept and render children", () => {
+        const rendered: any = shallow(<Metatext>Children</Metatext>);
+
+        expect(rendered.prop("children")).not.toBe(undefined);
+        expect(rendered.prop("children")).toEqual("Children");
+    });
 });
