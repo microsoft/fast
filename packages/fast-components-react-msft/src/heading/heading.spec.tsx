@@ -20,10 +20,6 @@ import { Heading, HeadingProps } from "./index";
  */
 configure({ adapter: new Adapter() });
 
-describe("heading snapshots", (): void => {
-    generateSnapshots(examples as SnapshotTestSuite<HeadingProps>);
-});
-
 describe("heading", (): void => {
     test("should have a displayName that matches the component name", () => {
         expect((MSFTHeading as any).name).toBe(MSFTHeading.displayName);

@@ -54,7 +54,7 @@ describe("caption", (): void => {
     test("should render a default `tag` of `CaptionTag.p` if no `tag` prop is passed", () => {
         const rendered: any = mount(<MSFTCaption />);
 
-        expect(rendsered.prop("tag")).toEqual(CaptionTag.p);
+        expect(rendered.prop("tag")).toEqual(CaptionTag.p);
     });
 
     test("should render the correct `tag` when `tag` prop is passed", () => {

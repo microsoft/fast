@@ -20,10 +20,6 @@ import { Metatext } from "./index";
  */
 configure({ adapter: new Adapter() });
 
-describe("metatext snapshots", (): void => {
-    generateSnapshots(examples as SnapshotTestSuite<MetatextProps>);
-});
-
 describe("metatext", (): void => {
     test("should have a displayName that matches the component name", () => {
         expect((MSFTMetatext as any).name).toBe(MSFTMetatext.displayName);
@@ -52,6 +48,12 @@ describe("metatext", (): void => {
         const rendered: any = mount(<Metatext {...props} />);
 
         expect(rendered.find(MetatextTag.p).prop("aria-hidden")).toEqual(true);
+    });
+
+    test("should render a default `tag` of `MetatextTag.span` when no `tag` prop is passed", () => {
+        const rendered: any = mount(<Metatext />);
+
+        expect(rendered.exists(MetatextTag.span)).toBe(true);
     });
 
     test("should render the correct `tag` when `tag` prop is passed", () => {
