@@ -25,10 +25,6 @@ const managedClasses: TextFieldClassNameContract = {
  */
 configure({ adapter: new Adapter() });
 
-describe("text-field snapshot", (): void => {
-    generateSnapshots(examples as SnapshotTestSuite<TextFieldProps>);
-});
-
 describe("text-field", (): void => {
     test("should have a displayName that matches the component name", () => {
         expect((TextField as any).name).toBe(TextField.displayName);
