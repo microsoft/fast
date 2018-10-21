@@ -65,20 +65,24 @@ describe("subheading", (): void => {
         expect(rendered.prop("tag")).toBe(SubheadingTag.h3);
     });
 
-    test("should render the correct `size` when `size` prop is passed in", (): void => {
-        const managedClasses: Partial<SubheadingManagedClasses> = {
-            subheading: "subheading",
-            subheading__6: "subheading__6",
-        };
+    test("should render the correct `size` when `size` prop is passed", () => {
+        const rendered: any = mount(
+            <Subheading tag={SubheadingTag.h1} size={SubheadingSize._2} />
+        );
 
-        const rendered: any = shallow(<MSFTSubheading size={SubheadingSize._4} />);
-
-        expect(rendered.prop("className")).toInclude();
+        expect(rendered.find("h1").prop("className")).toContain("subheading__2");
     });
 
     test("should render default size if none is specified", (): void => {
         const rendered: any = mount(<MSFTSubheading />);
 
         expect(rendered.prop("size")).toBe(SubheadingSize._1);
+    });
+
+    test("should accept and render children", () => {
+        const rendered: any = shallow(<MSFTSubheading>Children</MSFTSubheading>);
+
+        expect(rendered.prop("children")).not.toBe(undefined);
+        expect(rendered.prop("children")).toEqual("Children");
     });
 });
