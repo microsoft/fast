@@ -8,7 +8,7 @@ import { ContextMenuItemProps } from "../context-menu-item";
 export interface ContextMenuManagedClasses
     extends ManagedClasses<ContextMenuClassNameContract> {}
 export interface ContextMenuUnhandledProps
-    extends React.HTMLAttributes<HTMLUListElement> {}
+    extends React.HTMLAttributes<HTMLDivElement> {}
 export interface ContextMenuHandledProps extends ContextMenuManagedClasses {
     /**
      * The context-menu-item children

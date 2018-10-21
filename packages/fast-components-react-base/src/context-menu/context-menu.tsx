@@ -30,8 +30,8 @@ class ContextMenu extends Foundation<
         managedClasses: void 0,
     };
 
-    private rootElement: React.RefObject<HTMLUListElement> = React.createRef<
-        HTMLUListElement
+    private rootElement: React.RefObject<HTMLDivElement> = React.createRef<
+        HTMLDivElement
     >();
 
     constructor(props: ContextMenuProps) {
@@ -45,9 +45,9 @@ class ContextMenu extends Foundation<
     /**
      * Renders the component
      */
-    public render(): React.ReactElement<HTMLUListElement> {
+    public render(): React.ReactElement<HTMLDivElement> {
         return (
-            <ul
+            <div
                 {...this.unhandledProps()}
                 ref={this.rootElement}
                 role="menu"
@@ -55,7 +55,7 @@ class ContextMenu extends Foundation<
                 onKeyDown={this.handleMenuKeyDown}
             >
                 {this.renderChildren()}
-            </ul>
+            </div>
         );
     }
 
@@ -104,7 +104,7 @@ class ContextMenu extends Foundation<
             return [];
         }
 
-        const root: HTMLUListElement | null = this.rootElement.current;
+        const root: HTMLDivElement | null = this.rootElement.current;
 
         return root instanceof HTMLElement
             ? Array.from(this.rootElement.current.children).filter(
@@ -133,7 +133,7 @@ class ContextMenu extends Foundation<
     /**
      * Handle the keydown event of the root menu
      */
-    private handleMenuKeyDown = (e: React.KeyboardEvent<HTMLUListElement>): void => {
+    private handleMenuKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
         switch (e.keyCode) {
             case KeyCodes.ArrowDown:
             case KeyCodes.ArrowRight:

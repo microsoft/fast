@@ -33,15 +33,15 @@ class ContextMenuItem extends Foundation<
     /**
      * Renders the component
      */
-    public render(): React.ReactElement<HTMLLIElement> {
+    public render(): React.ReactElement<HTMLDivElement> {
         return (
-            <li
+            <div
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
                 role={this.props.role}
             >
                 {this.props.children}
-            </li>
+            </div>
         );
     }
 
