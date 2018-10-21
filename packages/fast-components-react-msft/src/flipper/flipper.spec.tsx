@@ -14,10 +14,6 @@ import { Flipper, FlipperProps } from "./index";
  */
 configure({ adapter: new Adapter() });
 
-describe("flipper snapshots", (): void => {
-    generateSnapshots(examples as SnapshotTestSuite<FlipperProps>);
-});
-
 describe("flipper", (): void => {
     test("should have a displayName that matches the component name", () => {
         expect((MSFTFlipper as any).name).toBe(MSFTFlipper.displayName);
