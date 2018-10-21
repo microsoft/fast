@@ -49,9 +49,24 @@ class ContextMenuItem extends Foundation<
      * Create class-names
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(
-            get(this.props.managedClasses, "contextMenuItem")
-        );
+        let className: string = get(this.props.managedClasses, "contextMenuItem");
+
+        switch (this.props.role) {
+            case ContextMenuItemRole.menuitemcheckbox:
+                className = className.concat(
+                    " ",
+                    get(this.props.managedClasses, "contextMenuItem__checkbox")
+                );
+                break;
+            case ContextMenuItemRole.menuitemradio:
+                className = className.concat(
+                    " ",
+                    get(this.props.managedClasses, "contextMenuItem__radio")
+                );
+                break;
+        }
+
+        return super.generateClassNames(className);
     }
 }
 
