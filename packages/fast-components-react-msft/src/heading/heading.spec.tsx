@@ -52,6 +52,12 @@ describe("heading", (): void => {
         expect(rendered.find(handledProps.tag).prop("aria-hidden")).toEqual(true);
     });
 
+    test("should render a default `tag` when no `tag` prop is passed", () => {
+        const rendered: any = mount(<MSFTHeading />);
+
+        expect(rendered.exists(HeadingTag.h1)).toBe(true);
+    });
+
     test("should render the correct `tag` when `tag` prop is passed", () => {
         const rendered: any = mount(<MSFTHeading tag={HeadingTag.h3} />);
 
