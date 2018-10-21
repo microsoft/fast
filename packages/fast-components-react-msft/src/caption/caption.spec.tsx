@@ -8,6 +8,7 @@ import {
 } from "@microsoft/fast-jest-snapshots-react";
 import MSFTCaption, {
     CaptionHandledProps,
+    CaptionManagedClasses,
     CaptionSize,
     CaptionTag,
     CaptionUnhandledProps,
@@ -18,10 +19,6 @@ import { Caption, CaptionProps } from "./index";
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
-
-describe("caption snapshots", (): void => {
-    generateSnapshots(examples as SnapshotTestSuite<CaptionProps>);
-});
 
 describe("caption", (): void => {
     test("should have a displayName that matches the component name", () => {
@@ -57,12 +54,26 @@ describe("caption", (): void => {
     test("should render a default `tag` of `CaptionTag.p` if no `tag` prop is passed", () => {
         const rendered: any = mount(<MSFTCaption />);
 
-        expect(rendered.prop("tag")).toEqual(CaptionTag.p);
+        expect(rendsered.prop("tag")).toEqual(CaptionTag.p);
+    });
+
+    test("should render the correct `tag` when `tag` prop is passed", () => {
+        const rendered: any = mount(<MSFTCaption id={"caption"} tag={CaptionTag.span} />);
+
+        expect(rendered.prop("tag")).toEqual(CaptionTag.span);
+        expect(rendered.exists(CaptionTag.span)).toBe(true);
     });
 
     test("should render the correct `size` when `size` prop is passed", () => {
         const rendered: any = mount(<Caption size={CaptionSize._2} />);
 
         expect(rendered.find("p").prop("className")).toContain("caption__2");
+    });
+
+    test("should accept and render children", () => {
+        const rendered: any = shallow(<MSFTCaption>Children</MSFTCaption>);
+
+        expect(rendered.prop("children")).not.toBe(undefined);
+        expect(rendered.prop("children")).toEqual("Children");
     });
 });
