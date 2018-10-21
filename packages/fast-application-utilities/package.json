@@ -37,10 +37,7 @@
       }
     },
     "testURL": "http://localhost",
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest",
-      "^.+\\.jsx?$": "babel-jest"
-    },
+    "transform": {},
     "transformIgnorePatterns": [
       "!<rootDir>/node_modules/lodash-es",
       "node_modules/jss-*",
