@@ -66,4 +66,11 @@ describe("paragraph", (): void => {
 
         expect(rendered.prop("size")).toBe(ParagraphSize._3);
     });
+
+    test("should accept and render children", () => {
+        const rendered: any = shallow(<MSFTParagraph>Children</MSFTParagraph>);
+
+        expect(rendered.prop("children")).not.toBe(undefined);
+        expect(rendered.prop("children")).toEqual("Children");
+    });
 });
