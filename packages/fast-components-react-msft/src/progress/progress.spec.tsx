@@ -15,10 +15,6 @@ import { ProgressProps } from "./index";
  */
 configure({ adapter: new Adapter() });
 
-describe("progress snapshots", (): void => {
-    generateSnapshots(examples as SnapshotTestSuite<ProgressProps>);
-});
-
 describe("progress", (): void => {
     test("should not throw if managedClasses are not provided", () => {
         expect(() => {
