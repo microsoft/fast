@@ -5,15 +5,6 @@
     ],
     "plugins": [
         "transform-runtime",
-        "transform-react-jsx",
-        [
-            "module-alias",
-            [
-                {
-                    "src": "./lib/",
-                    "expose": "[lib]"
-                }
-            ]
-        ]
+        "transform-react-jsx"
     ]
 }
