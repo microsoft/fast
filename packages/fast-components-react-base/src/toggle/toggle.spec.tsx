@@ -21,10 +21,6 @@ import Toggle, {
  */
 configure({ adapter: new Adapter() });
 
-describe("toggle snapshot", (): void => {
-    generateSnapshots(examples as SnapshotTestSuite<ToggleProps>);
-});
-
 describe("toggle", (): void => {
     const managedClasses: ToggleClassNameContract = {
         toggle: "toggle-class",
@@ -76,6 +72,12 @@ describe("toggle", (): void => {
         const rendered: any = shallow(<Toggle {...handledProps} />);
 
         expect(rendered.state("selected")).toBe(false);
+    });
+
+    test("should render with an `aria-disabled` prop when `disabled` prop is passed as true", () => {
+        const rendered: any = shallow(<Toggle {...handledProps} disabled={true} />);
+
+        expect(rendered.prop("aria-disabled")).toBe(true);
     });
 
     test("should allow a change event to update the selected state when no `selected` prop is provided", () => {
