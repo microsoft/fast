@@ -82,6 +82,7 @@ class ContextMenu extends Foundation<
     ): React.ReactChild => {
         return React.cloneElement(child, {
             tabIndex: index === this.state.focusIndex ? 0 : -1,
+            onFocus: this.handleMenuItemFocus,
         });
     };
 
@@ -104,6 +105,18 @@ class ContextMenu extends Foundation<
             ? Array.from(this.rootElement.current.children)
             : [];
     }
+
+    /**
+     * Ensure we always validate our internal state on item focus events, otherwise
+     * the component can get out of sync from click events
+     */
+    private handleMenuItemFocus = (e: React.FocusEvent<HTMLElement>): void => {
+        const focusIndex: number = this.domChildren().indexOf(e.currentTarget);
+
+        if (focusIndex !== this.state.focusIndex && focusIndex !== -1) {
+            this.setFocus(focusIndex, focusIndex > this.state.focusIndex ? 1 : -1);
+        }
+    };
 
     /**
      * Sets focus to the nearest focusable element to the supplied focusIndex.
