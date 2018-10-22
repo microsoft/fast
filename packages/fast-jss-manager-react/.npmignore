@@ -9,6 +9,6 @@ coverage/
 src/
 
 # babel config
-.babelrc
+babel.config.js
 tsconfig.json
 tslint.json

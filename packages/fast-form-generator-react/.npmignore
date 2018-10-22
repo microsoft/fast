@@ -1,7 +1,7 @@
 tslint.json
 tsconfig.json
 webpack.config.js
-.babelrc
+babel.config.js
 .tmp/
 app/
 coverage/

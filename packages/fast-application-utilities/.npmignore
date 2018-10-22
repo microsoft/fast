@@ -3,5 +3,6 @@ coverage/
 src/
 
 # Configs
+babel.config.js
 tsconfig.json
 tslint.json

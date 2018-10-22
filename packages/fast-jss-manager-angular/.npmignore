@@ -7,5 +7,5 @@ __test__/
 src/
 
 # config
-.babelrc
+babel.config.js
 webpack.config.js

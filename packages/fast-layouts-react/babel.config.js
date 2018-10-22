@@ -1,5 +1,5 @@
-{
-    "presets": [
+module.exports = {
+    presets: [
         [
             "@babel/preset-env", {
                 "targets": {
@@ -7,6 +7,6 @@
                 }
             }
         ],
-        "react"
+        "@babel/react"
     ]
 }

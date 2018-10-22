@@ -37,7 +37,10 @@
       }
     },
     "testURL": "http://localhost",
-    "transform": {},
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest",
+      "^.+\\.jsx?$": "babel-jest"
+    },
     "transformIgnorePatterns": [
       "!<rootDir>/node_modules/lodash-es",
       "node_modules/jss-*",
@@ -55,10 +58,11 @@
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-env": "^7.1.0",
     "@microsoft/fast-tslint-rules": "^3.0.0",
     "@types/jest": "^23.3.5",
     "@types/lodash-es": "^4.17.0",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
     "jest": "^23.6.0",
     "lodash-es": "^4.0.0",

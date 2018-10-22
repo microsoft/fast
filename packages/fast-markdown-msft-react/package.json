@@ -59,7 +59,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
     "@microsoft/fast-components-react-base": "^3.0.1",
     "@microsoft/fast-components-react-msft": "^3.0.1",
@@ -69,6 +69,7 @@
     "@types/markdown-it": "0.0.4",
     "@types/node": "^9.4.6",
     "@types/react": "^16.3.6",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
     "jest": "^23.6.0",
     "lodash-es": "^4.0.0",
