@@ -8,6 +8,7 @@ import { density } from "../utilities/density";
 import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
 import { ensureForegroundNormal } from "../utilities/colors";
 import { contrast, scaleContrast } from "@microsoft/fast-jss-utilities";
+import { applyType, TypeRamp } from "../utilities/typography";
 
 const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = {
     contextMenuItem: {
@@ -17,7 +18,10 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         alignItems: "center",
         padding: "0 12px",
         color: ensureForegroundNormal,
+        whiteSpace: "nowrap",
+        overflow: "hidden",
         cursor: "default",
+        ...applyType("t7", "vp1"),
         background: (config: DesignSystem): string => {
             const designSystem: DesignSystem = withDesignSystemDefaults(config);
 
