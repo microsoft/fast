@@ -8,7 +8,6 @@ import {
     ContextMenuItemProps,
     ContextMenuItemUnhandledProps,
 } from "./context-menu-item.props";
-import { MenuItemRole } from "../utilities/aria";
 
 export enum ContextMenuItemRole {
     menuitem = "menuitem",
@@ -21,6 +20,8 @@ class ContextMenuItem extends Foundation<
     ContextMenuItemUnhandledProps,
     {}
 > {
+    public static displayName: string = "ContextMenuItem";
+
     public static defaultProps: Partial<ContextMenuItemProps> = {
         role: ContextMenuItemRole.menuitem,
         disabled: false,
@@ -51,7 +52,7 @@ class ContextMenuItem extends Foundation<
      * Create class-names
      */
     protected generateClassNames(): string {
-        let className: string = get(this.props.managedClasses, "contextMenuItem");
+        let className: string = get(this.props.managedClasses, "contextMenuItem") || "";
 
         switch (this.props.role) {
             case ContextMenuItemRole.menuitemcheckbox:
