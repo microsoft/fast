@@ -23,6 +23,7 @@ class ContextMenuItem extends Foundation<
 > {
     public static defaultProps: Partial<ContextMenuItemProps> = {
         role: ContextMenuItemRole.menuitem,
+        disabled: false,
     };
 
     protected handledProps: HandledProps<ContextMenuItemHandledProps> = {
@@ -39,6 +40,7 @@ class ContextMenuItem extends Foundation<
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
                 role={this.props.role}
+                aria-disabled={this.props.disabled || undefined}
             >
                 {this.props.children}
             </div>
@@ -64,6 +66,13 @@ class ContextMenuItem extends Foundation<
                     get(this.props.managedClasses, "contextMenuItem__radio")
                 );
                 break;
+        }
+
+        if (this.props.disabled) {
+            className = className.concat(
+                " ",
+                get(this.props.managedClasses, "contextMenuItem__disabled")
+            );
         }
 
         return super.generateClassNames(className);

@@ -20,6 +20,11 @@ export interface ContextMenuItemHandledProps extends ContextMenuItemManagedClass
      * The item's role
      */
     role?: ContextMenuItemRole;
+
+    /**
+     * If the menu item is disabled
+     */
+    disabled?: boolean;
 }
 
 export type ContextMenuItemProps = ContextMenuItemHandledProps &
