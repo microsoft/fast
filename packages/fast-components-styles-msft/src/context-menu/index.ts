@@ -15,7 +15,7 @@ const styles: ComponentStyles<ContextMenuClassNameContract, DesignSystem> = {
         padding: "0",
         maxWidth: "369px", // Should really be 368, however chrome draws the border incorrectly at even numbers
         minWidth: "64px",
-        borderRadius: "2px",
+        borderRadius: "4px",
     },
 };
 
