@@ -10,7 +10,7 @@ import {
 } from "./context-menu.props";
 import * as React from "react";
 import KeyCodes from "../utilities/keycodes";
-import { clamp, get, isFunction } from "lodash-es";
+import { clamp, get, inRange, isFunction } from "lodash-es";
 import { canUseDOM } from "exenv-es6";
 
 export interface ContextMenuState {
@@ -99,34 +99,36 @@ class ContextMenu extends Foundation<
      * Return an array of all focusabled elements that are children
      * of the context-menu
      */
-    private focusableChildren(): HTMLElement[] {
-        if (!canUseDOM()) {
-            return [];
-        }
-
-        const root: HTMLDivElement | null = this.rootElement.current;
-
-        return root instanceof HTMLElement
-            ? Array.from(this.rootElement.current.children).filter(
-                  this.isFocusableElement
-              )
+    private domChildren(): Element[] {
+        return canUseDOM() && this.rootElement.current instanceof HTMLElement
+            ? Array.from(this.rootElement.current.children)
             : [];
     }
 
     /**
-     * Applies focus to an index of focusable children
+     * Sets focus to the nearest focusable element to the supplied focusIndex.
+     * The adjustment controls how the function searches for other focusable elements
+     * if the element at the focusIndex is not focusable. A positive number will search
+     * towards the end of the children array, whereas a negative number will search towards
+     * the beginning of the children array.
      */
-    private setFocus(index: number): void {
-        if (canUseDOM()) {
-            const element: Element = this.focusableChildren()[index];
+    private setFocus(focusIndex: number, adjustment: number): void {
+        const children: Element[] = this.domChildren();
 
-            if (this.isFocusableElement(element)) {
-                element.focus();
+        while (inRange(focusIndex, children.length)) {
+            const child: Element = children[focusIndex];
+
+            if (this.isFocusableElement(child)) {
+                child.focus();
 
                 this.setState({
-                    focusIndex: index,
+                    focusIndex,
                 });
+
+                break;
             }
+
+            focusIndex += adjustment;
         }
     }
 
@@ -138,26 +140,26 @@ class ContextMenu extends Foundation<
             case KeyCodes.ArrowDown:
             case KeyCodes.ArrowRight:
                 e.preventDefault();
-                this.setFocus(this.state.focusIndex + 1);
+                this.setFocus(this.state.focusIndex + 1, 1);
 
                 break;
 
             case KeyCodes.ArrowUp:
             case KeyCodes.ArrowLeft:
                 e.preventDefault();
-                this.setFocus(this.state.focusIndex - 1);
+                this.setFocus(this.state.focusIndex - 1, -1);
 
                 break;
 
             case KeyCodes.End:
                 e.preventDefault();
-                this.setFocus(this.focusableChildren().length - 1);
+                this.setFocus(this.domChildren().length - 1, -1);
 
                 break;
 
             case KeyCodes.Home:
                 e.preventDefault();
-                this.setFocus(0);
+                this.setFocus(0, 1);
 
                 break;
         }

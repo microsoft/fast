@@ -4,6 +4,16 @@ import { ComponentFactoryExample } from "@microsoft/fast-development-site-react"
 import schema from "@microsoft/fast-components-react-base/dist/context-menu/context-menu.schema.json";
 import Documentation from "./.tmp/documentation";
 
+const divider: any = {
+    id: "divider",
+    props: {
+        jssStyleSheet: {
+            divider: {
+                margin: "0",
+            },
+        },
+    },
+};
 export default {
     name: "Context menu",
     component: ContextMenu,
@@ -17,9 +27,7 @@ export default {
                     children: "context menu item 1",
                 },
             },
-            {
-                id: "divider",
-            },
+            { ...divider },
             {
                 id: "context-menu-item",
                 props: {
@@ -43,9 +51,7 @@ export default {
                         children: "context menu item 1",
                     },
                 },
-                {
-                    id: "divider",
-                },
+                { ...divider },
                 {
                     id: "context-menu-item",
                     props: {

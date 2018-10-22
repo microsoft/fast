@@ -21,14 +21,24 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
             const designSystem: DesignSystem = withDesignSystemDefaults(config);
 
             return contrast(
-                1.1,
-                // designSystem.contrast * 3,
+                1.1 + designSystem.contrast,
                 designSystem.foregroundColor,
                 designSystem.backgroundColor
             );
         },
         "&:focus": {
-            background: "blue",
+            outline: "none",
+        },
+        "&:focus, &:hover": {
+            background: (config: DesignSystem): string => {
+                const designSystem: DesignSystem = withDesignSystemDefaults(config);
+
+                return contrast(
+                    1.3 + designSystem.contrast,
+                    designSystem.foregroundColor,
+                    designSystem.backgroundColor
+                );
+            },
         },
     },
 };

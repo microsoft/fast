@@ -177,10 +177,9 @@ function ensureBackgroundNormal(config: DesignSystem): string {
 /**
  * Deprecated 3.1.0
  */
-const ensuresBackgroundNormal:(config: DesignSystem) => string = ensureBackgroundNormal;
+const ensuresBackgroundNormal: (config: DesignSystem) => string = ensureBackgroundNormal;
 
-export { ensureBackgroundNormal, ensuresBackgroundNormal }
-
+export { ensureBackgroundNormal, ensuresBackgroundNormal };
 
 export function ensureBackgroundLarge(config: DesignSystem): string {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
