@@ -10,7 +10,7 @@ import {
 } from "./context-menu.props";
 import * as React from "react";
 import KeyCodes from "../utilities/keycodes";
-import { clamp, get, inRange, isFunction } from "lodash-es";
+import { get, inRange } from "lodash-es";
 import { canUseDOM } from "exenv-es6";
 
 export interface ContextMenuState {
@@ -25,6 +25,8 @@ class ContextMenu extends Foundation<
     ContextMenuUnhandledProps,
     ContextMenuState
 > {
+    public static displayName: string = "ContextMenu";
+
     protected handledProps: HandledProps<ContextMenuHandledProps> = {
         children: void 0,
         managedClasses: void 0,
@@ -38,7 +40,7 @@ class ContextMenu extends Foundation<
         super(props);
 
         this.state = {
-            focusIndex: 0,
+            focusIndex: -1,
         };
     }
 
@@ -59,11 +61,22 @@ class ContextMenu extends Foundation<
         );
     }
 
+    public componentDidMount(): void {
+        const children: Element[] = this.domChildren();
+        const focusIndex: number = children.findIndex(this.isFocusableElement);
+
+        if (focusIndex !== -1) {
+            this.setState({
+                focusIndex,
+            });
+        }
+    }
+
     /**
      * Create class-names
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(this.props.managedClasses.contextMenu);
+        return super.generateClassNames(get(this.props.managedClasses, "contextMenu"));
     }
 
     /**
