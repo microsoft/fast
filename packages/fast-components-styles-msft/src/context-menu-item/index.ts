@@ -6,7 +6,7 @@ import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { ContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { density } from "../utilities/density";
 import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
-import { ensureForegroundNormal, foregroundLarge } from "../utilities/colors";
+import { ensureForegroundNormal } from "../utilities/colors";
 import { contrast, scaleContrast } from "@microsoft/fast-jss-utilities";
 
 const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = {
@@ -17,11 +17,12 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         alignItems: "center",
         padding: "0 12px",
         color: ensureForegroundNormal,
+        cursor: "default",
         background: (config: DesignSystem): string => {
             const designSystem: DesignSystem = withDesignSystemDefaults(config);
 
             return contrast(
-                1.1 + designSystem.contrast,
+                scaleContrast(1.1, designSystem.contrast),
                 designSystem.foregroundColor,
                 designSystem.backgroundColor
             );
@@ -34,7 +35,7 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
                 const designSystem: DesignSystem = withDesignSystemDefaults(config);
 
                 return contrast(
-                    1.3 + designSystem.contrast,
+                    scaleContrast(1.3, designSystem.contrast),
                     designSystem.foregroundColor,
                     designSystem.backgroundColor
                 );
