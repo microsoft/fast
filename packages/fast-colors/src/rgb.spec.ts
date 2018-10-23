@@ -201,5 +201,8 @@ describe("Invalid hexits", (): void => {
         expect((): void => {
             hexToRgb("#-ffffg");
         }).toThrow();
+        expect((): void => {
+            hexToRgb("#fffffh");
+        }).toThrow();
     });
 });
