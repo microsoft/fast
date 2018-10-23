@@ -99,15 +99,29 @@ class ContextMenu extends Foundation<
         });
     };
 
-    /**
-     * Determines if a given element should be focusable by the menu
-     */
-    private isFocusableElement(element: Element): element is HTMLElement {
+    private isMenuItemElement(element: Element): element is HTMLElement {
         return (
             element instanceof HTMLElement &&
             ContextMenuItemRole.hasOwnProperty(element.getAttribute("role"))
         );
     }
+
+    /**
+     * Determines if a given element should be focusable by the menu
+     */
+    private isFocusableElement = (element: Element): element is HTMLElement => {
+        return (
+            this.isMenuItemElement(element) &&
+            element.getAttribute("aria-disabled") !== "true"
+        );
+    };
+
+    private isDisabledElement = (element: Element): element is HTMLElement => {
+        return (
+            this.isMenuItemElement(element) &&
+            element.getAttribute("aria-disabled") === "true"
+        );
+    };
 
     /**
      * Return an array of all focusabled elements that are children
@@ -124,7 +138,14 @@ class ContextMenu extends Foundation<
      * the component can get out of sync from click events
      */
     private handleMenuItemFocus = (e: React.FocusEvent<HTMLElement>): void => {
-        const focusIndex: number = this.domChildren().indexOf(e.currentTarget);
+        const target: Element = e.currentTarget;
+        const focusIndex: number = this.domChildren().indexOf(target);
+
+        if (this.isDisabledElement(target)) {
+            target.blur();
+
+            return;
+        }
 
         if (focusIndex !== this.state.focusIndex && focusIndex !== -1) {
             this.setFocus(focusIndex, focusIndex > this.state.focusIndex ? 1 : -1);

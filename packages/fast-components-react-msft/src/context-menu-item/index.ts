@@ -1,13 +1,13 @@
 import * as React from "react";
-import {
-    ContextMenuItem as BaseContextMenuItem,
-    ContextMenuItemClassNameContract,
-    ContextMenuItemHandledProps as BaseContextMenuItemHandledProps,
+import { ContextMenuItemRole } from "@microsoft/fast-components-react-base";
+import MSFTContextMenuItem, {
+    ContextMenuItemHandledProps as MSFTContextMenuItemHandledProps,
     ContextMenuItemManagedClasses,
-    ContextMenuItemProps as BaseContextMenuItemProps,
+    ContextMenuItemProps as MSFTContextMenuItemProps,
     ContextMenuItemUnhandledProps,
-} from "@microsoft/fast-components-react-base";
+} from "./context-menu-item";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import { ContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
     ContextMenuItemStyles,
     DesignSystem,
@@ -15,19 +15,20 @@ import {
 import { Subtract } from "utility-types";
 
 /* tslint:disable-next-line:typedef */
-const ContextMenuItem = manageJss(ContextMenuItemStyles)(BaseContextMenuItem);
+const ContextMenuItem = manageJss(ContextMenuItemStyles)(MSFTContextMenuItem);
 type ContextMenuItem = typeof ContextMenuItem;
 
 interface ContextMenuItemHandledProps
-    extends Subtract<BaseContextMenuItemHandledProps, ContextMenuItemManagedClasses> {}
+    extends Subtract<MSFTContextMenuItemHandledProps, ContextMenuItemManagedClasses> {}
 type ContextMenuItemProps = ManagedJSSProps<
-    BaseContextMenuItemProps,
+    MSFTContextMenuItemProps,
     ContextMenuItemClassNameContract,
     DesignSystem
 >;
 
 export {
     ContextMenuItem,
+    ContextMenuItemRole,
     ContextMenuItemProps,
     ContextMenuItemClassNameContract,
     ContextMenuItemHandledProps,

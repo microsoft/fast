@@ -9,7 +9,8 @@ const divider: any = {
     props: {
         jssStyleSheet: {
             divider: {
-                margin: "0",
+                margin: "0 4px",
+                opacity: ".5",
             },
         },
     },
@@ -56,6 +57,13 @@ export default {
                     id: "context-menu-item",
                     props: {
                         children: "context menu item 2",
+                    },
+                },
+                {
+                    id: "context-menu-item",
+                    props: {
+                        children: "context menu item 2",
+                        disabled: true,
                     },
                 },
                 {

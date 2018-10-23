@@ -79,6 +79,14 @@ const examples: ComponentFactoryExample<ContextMenuProps> = {
                     id: "context-menu-item",
                     props: {
                         ...contextMenuItemPropFactory(),
+                        children: "context menu item 2",
+                        disabled: true,
+                    },
+                },
+                {
+                    id: "context-menu-item",
+                    props: {
+                        ...contextMenuItemPropFactory(),
                         children: "context menu item 3",
                     },
                 },
