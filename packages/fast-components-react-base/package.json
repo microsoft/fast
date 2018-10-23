@@ -47,13 +47,6 @@
         "lines": 80
       }
     },
-    "globals": {
-      "ts-jest": {
-        "diagnostics": {
-          "ignoreCodes": [151001]
-        }
-      }
-    },
     "coveragePathIgnorePatterns": [
       "/.tmp/*"
     ],
