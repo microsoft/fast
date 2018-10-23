@@ -222,7 +222,7 @@ const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
     },
     site_paneToc: {
         padding: "0",
-        overflow: "scroll",
+        overflow: "auto",
     },
     site_paneTocRow: {
         display: "flex",
