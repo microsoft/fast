@@ -6,7 +6,7 @@ import { includesAllSubdirectoriesAsNamedExports } from "../../../build/helpers/
 configure({ adapter: new Adapter() });
 
 describe("index.ts", (): void => {
-    test("Should export all components in the src directory", () => {
+    test("should export all components in the src directory", () => {
         expect(
             includesAllSubdirectoriesAsNamedExports(path.resolve(__dirname, "index.ts"))
         ).toEqual([]);
