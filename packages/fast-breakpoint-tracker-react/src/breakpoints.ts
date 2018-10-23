@@ -1,6 +1,4 @@
-export type Breakpoint = number;
-
-export type Breakpoints = Breakpoint[];
+export type Breakpoints = number[];
 
 export const defaultBreakpoints: Breakpoints = [0, 540, 768, 1084, 1400, 1779];
 
@@ -11,11 +9,7 @@ export function identifyBreakpoint(
     windowWidth: number,
     breakpoints: Breakpoints
 ): number {
-    for (
-        let breakpoint: Breakpoint = breakpoints.length - 1;
-        breakpoint >= 0;
-        breakpoint--
-    ) {
+    for (let breakpoint: number = breakpoints.length - 1; breakpoint >= 0; breakpoint--) {
         if (windowWidth >= breakpoints[breakpoint]) {
             return breakpoint;
         }

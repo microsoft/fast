@@ -15,15 +15,12 @@ const defaultBreakpoints = [0, 540, 768, 1084, 1400, 1779];
 Custom breakpoint values can be set by setting the `breakpoints` value on the BreakpointTracker class with new key:value pairs. Custom keys are supported, but the values must be numbers.
 
 ```jsx
-const customBreakpoints = [0, 800, 1024, 1559];
-
 // Set the public static value to your custom breakpoints
-BreakpointTracker.breakpoints = customBreakpoints;
+BreakpointTracker.breakpoints = [0, 800, 1024, 1559];
 ```
 
 ## Usage
 ```jsx
-// button.jsx
 import React from "react";
 import BreakpointTracker from "@microsoft/fast-breakpoint-tracker-react";
 

@@ -1,25 +1,20 @@
 import * as React from "react";
 import { canUseDOM } from "exenv-es6";
 import { throttle } from "lodash-es";
-import {
-    Breakpoint,
-    Breakpoints,
-    defaultBreakpoints,
-    identifyBreakpoint,
-} from "./breakpoints";
+import { Breakpoints, defaultBreakpoints, identifyBreakpoint } from "./breakpoints";
 
 export interface BreakpointTrackerProps {
     /**
      * The render method
      */
-    render: (activeBreakpoint: Breakpoint | void) => React.ReactNode;
+    render: (activeBreakpoint: number | void) => React.ReactNode;
 }
 
 export interface BreakpointTrackerState {
     /**
      * The active breakpoint as an index of the Breakpoints array
      */
-    activeBreakpoint: Breakpoint | void;
+    activeBreakpoint: number | void;
 }
 
 export default class BreakpointTracker extends React.Component<
@@ -27,7 +22,7 @@ export default class BreakpointTracker extends React.Component<
     BreakpointTrackerState
 > {
     /**
-     * The current breakpoint.
+     * The array of breakpoint values
      */
     public static breakpoints: Breakpoints = defaultBreakpoints;
 
@@ -71,6 +66,9 @@ export default class BreakpointTracker extends React.Component<
         }
     }
 
+    /**
+     * React render method
+     */
     public render(): React.ReactNode {
         return this.props.render(this.state.activeBreakpoint);
     }
@@ -80,7 +78,7 @@ export default class BreakpointTracker extends React.Component<
      */
     private updateBreakpoint = (): void => {
         const windowWidth: number = window.innerWidth;
-        const breakpoint: Breakpoint | void = identifyBreakpoint(
+        const breakpoint: number | void = identifyBreakpoint(
             windowWidth,
             BreakpointTracker.breakpoints
         );
