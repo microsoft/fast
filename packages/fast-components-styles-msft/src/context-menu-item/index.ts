@@ -6,7 +6,11 @@ import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { ContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { density } from "../utilities/density";
 import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
-import { ensureForegroundNormal } from "../utilities/colors";
+import {
+    backgroundColor,
+    ensureForegroundNormal,
+    hoverContrast,
+} from "../utilities/colors";
 import { contrast, scaleContrast } from "@microsoft/fast-jss-utilities";
 import { applyType, TypeRamp } from "../utilities/typography";
 
@@ -22,15 +26,7 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         overflow: "hidden",
         cursor: "default",
         ...applyType("t7", "vp1"),
-        background: (config: DesignSystem): string => {
-            const designSystem: DesignSystem = withDesignSystemDefaults(config);
-
-            return contrast(
-                scaleContrast(1.1, designSystem.contrast),
-                designSystem.foregroundColor,
-                designSystem.backgroundColor
-            );
-        },
+        background: backgroundColor,
         "&:focus": {
             outline: "none",
         },
@@ -38,18 +34,18 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
             background: (config: DesignSystem): string => {
                 const designSystem: DesignSystem = withDesignSystemDefaults(config);
 
-                return contrast(
-                    scaleContrast(1.3, designSystem.contrast),
-                    designSystem.foregroundColor,
-                    designSystem.backgroundColor
+                return hoverContrast(
+                    designSystem.contrast,
+                    designSystem.backgroundColor,
+                    designSystem.foregroundColor
                 );
             },
         },
         "&:first-child": {
-            borderRadius: "4px 4px 0 0",
+            borderRadius: "2px 2px 0 0",
         },
         "&:last-child": {
-            borderRadius: "0 0 4px 4px",
+            borderRadius: "0 0 2px 2px",
         },
     },
 };

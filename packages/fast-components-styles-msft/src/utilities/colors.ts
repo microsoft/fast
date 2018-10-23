@@ -29,6 +29,18 @@ const scaleContrastLarge: (contrast: number) => number = curry(scaleContrast)(
 
 export { scaleContrastNormal, scaleContrastLarge };
 
+export function backgroundColor(config: DesignSystem): string {
+    return withDesignSystemDefaults(config).backgroundColor;
+}
+
+export function foregroundColor(config: DesignSystem): string {
+    return withDesignSystemDefaults(config).foregroundColor;
+}
+
+export function brandColor(config: DesignSystem): string {
+    return withDesignSystemDefaults(config).brandColor;
+}
+
 /**
  * The following functions use a "normal" and "large" naming convention. These names are intended
  * to map directly to the concepts proposed by www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html

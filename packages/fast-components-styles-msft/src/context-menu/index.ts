@@ -14,15 +14,14 @@ const styles: ComponentStyles<ContextMenuClassNameContract, DesignSystem> = (
 
     return {
         contextMenu: {
-            border: `1px solid ${foregroundLarge(designSystem)}`,
-            ...elevation(ElevationMultiplier.e4, designSystem.foregroundColor)(
+            ...elevation(ElevationMultiplier.e11, designSystem.foregroundColor)(
                 designSystem
             ),
             margin: "0",
-            padding: "0",
-            maxWidth: "369px", // Should really be 368, however chrome draws the border incorrectly at even numbers
+            padding: "4px 0",
+            maxWidth: "368px",
             minWidth: "64px",
-            borderRadius: "4px",
+            borderRadius: "2px",
         },
     };
 };
