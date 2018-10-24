@@ -4,7 +4,6 @@ import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-
 import { ContextMenuClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
     ContextMenuHandledProps,
-    ContextMenuManagedClasses,
     ContextMenuProps,
     ContextMenuUnhandledProps,
 } from "./context-menu.props";

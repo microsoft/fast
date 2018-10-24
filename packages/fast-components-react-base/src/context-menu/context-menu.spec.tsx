@@ -1,15 +1,7 @@
 import * as React from "react";
-import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import examples from "./examples.data";
-import ContextMenu, {
-    ContextMenuClassNameContract,
-    ContextMenuHandledProps,
-    ContextMenuManagedClasses,
-    ContextMenuProps,
-    ContextMenuUnhandledProps,
-} from "./context-menu";
+import ContextMenu, { ContextMenuUnhandledProps } from "./context-menu";
 import KeyCodes from "../utilities/keycodes";
 import { ContextMenuItemRole } from "../context-menu-item";
 

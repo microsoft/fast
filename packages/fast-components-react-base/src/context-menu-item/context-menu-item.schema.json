@@ -5,15 +5,26 @@
     "type": "object",
     "id": "context-menu-item",
     "properties": {
-        "id": {
-            "title": "Id",
-            "type": "string"
+        "disabled": {
+            "title": "Disabled",
+            "type": "boolean"
+        },
+        "role": {
+            "title": "Role",
+            "type": "string",
+            "default": "menuitem",
+            "enum": [
+                "menuitem",
+                "menuitemradio",
+                "menuitemcheckbox"
+            ]
         }
     },
     "reactProperties": {
         "children": {
             "title": "Building blocks",
             "type": "children",
+            "ids": ["text", "metatext"],
             "defaults": [
                 "text"
             ]
