@@ -109,10 +109,7 @@ class ContextMenu extends Foundation<
      * Determines if a given element should be focusable by the menu
      */
     private isFocusableElement = (element: Element): element is HTMLElement => {
-        return (
-            this.isMenuItemElement(element) &&
-            element.getAttribute("aria-disabled") !== "true"
-        );
+        return this.isMenuItemElement(element) && !this.isDisabledElement(element);
     };
 
     private isDisabledElement = (element: Element): element is HTMLElement => {
