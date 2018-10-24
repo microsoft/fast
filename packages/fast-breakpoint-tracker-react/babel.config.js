@@ -1,12 +1,12 @@
-{
-    "presets": [
+module.exports = {
+    presets: [
         [
-            "env", {
+            "@babel/preset-env", {
                 "targets": {
                     "node": "current"
                 }
             }
         ],
-        "react"
+        "@babel/react"
     ]
 }
