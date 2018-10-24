@@ -14,7 +14,7 @@ import {
     ensureContrast,
     toPx,
 } from "@microsoft/fast-jss-utilities";
-import { typeRamp, applyType, applyTypeRampConfig } from "../utilities/typography";
+import { applyTypeRampConfig, typeRamp } from "../utilities/typography";
 import { ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Chroma from "chroma-js";
 

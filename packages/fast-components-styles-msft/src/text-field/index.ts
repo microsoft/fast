@@ -3,7 +3,7 @@ import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manage
 import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { adjustContrast, contrast, toPx } from "@microsoft/fast-jss-utilities";
 import { get } from "lodash-es";
-import { applyType, applyTypeRampConfig } from "../utilities/typography";
+import { applyTypeRampConfig } from "../utilities/typography";
 import { fontWeight } from "../utilities/fonts";
 import {
     disabledContrast,

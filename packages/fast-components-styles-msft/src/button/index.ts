@@ -18,7 +18,7 @@ import {
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import { curry, get } from "lodash-es";
-import { applyType, applyTypeRampConfig } from "../utilities/typography";
+import { applyTypeRampConfig } from "../utilities/typography";
 import {
     applyMixedColor,
     disabledContrast,

@@ -3,7 +3,7 @@ import { ensureForegroundNormal, ensureNormalContrast } from "../utilities/color
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { LabelClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import { applyType, applyTypeRampConfig } from "../utilities/typography";
+import { applyTypeRampConfig } from "../utilities/typography";
 import { applyScreenReader } from "@microsoft/fast-jss-utilities";
 import { get } from "lodash-es";
 
