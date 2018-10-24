@@ -14,6 +14,8 @@ class ContextMenuItem extends Foundation<
     ContextMenuItemUnhandledProps,
     {}
 > {
+    public static displayName: string = "ContextMenuItem";
+
     protected handledProps: HandledProps<ContextMenuItemHandledProps> = {
         before: void 0,
     };
