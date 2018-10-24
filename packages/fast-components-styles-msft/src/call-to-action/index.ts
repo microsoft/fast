@@ -66,7 +66,6 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
 
     return {
         callToAction: {
-            fontSize: "15px",
             display: "inline-flex",
             maxWidth: "100%",
             border: "2px solid transparent",

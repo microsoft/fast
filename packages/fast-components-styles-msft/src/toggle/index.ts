@@ -14,7 +14,7 @@ import {
     ensureContrast,
     toPx,
 } from "@microsoft/fast-jss-utilities";
-import { typeRamp } from "../utilities/typography";
+import { typeRamp, applyType, applyTypeRampConfig } from "../utilities/typography";
 import { ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Chroma from "chroma-js";
 
@@ -58,9 +58,8 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             },
         },
         toggle_label: {
+            ...applyTypeRampConfig("t8"),
             display: "inline-block",
-            fontSize: toPx(typeRamp.t8.vp3.fontSize),
-            lineHeight: toPx(typeRamp.t8.vp3.lineHeight),
             foreground: foregroundColor,
             paddingBottom: "7px",
             float: applyLocalizedProperty("left", "right", direction),

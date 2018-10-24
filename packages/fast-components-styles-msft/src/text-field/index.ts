@@ -3,7 +3,7 @@ import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manage
 import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { adjustContrast, contrast, toPx } from "@microsoft/fast-jss-utilities";
 import { get } from "lodash-es";
-import { applyType } from "../utilities/typography";
+import { applyType, applyTypeRampConfig } from "../utilities/typography";
 import { fontWeight } from "../utilities/fonts";
 import {
     disabledContrast,
@@ -43,7 +43,7 @@ const styles: ComponentStyles<TextFieldClassNameContract, DesignSystem> = (
 
     return {
         textField: {
-            ...applyType("t7", "vp1"),
+            ...applyTypeRampConfig("t7"),
             color: ensureForegroundNormal,
             background: ensuresBackgroundNormal,
             fontWeight: fontWeight.light.toString(),
