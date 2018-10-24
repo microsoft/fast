@@ -163,46 +163,72 @@ describe("Valid 8 digit hexits", (): void => {
 
 describe("Invalid hexits", (): void => {
     test("Should throw an error for an invalid length hex string", (): void => {
-        expect((): void => {
-            hexToRgb("");
-        }).toThrow();
-        expect((): void => {
-            hexToRgb("f");
-        }).toThrow();
-        expect((): void => {
-            hexToRgb("19999");
-        }).toThrow();
-        expect((): void => {
-            hexToRgb("32");
-        }).toThrow();
-        expect((): void => {
-            hexToRgb("ffeeddccbbaa");
-        }).toThrow();
-        expect((): void => {
-            hexToRgb("f999999");
-        }).toThrow();
+        expect(
+            (): void => {
+                hexToRgb("");
+            }
+        ).toThrow();
+        expect(
+            (): void => {
+                hexToRgb("f");
+            }
+        ).toThrow();
+        expect(
+            (): void => {
+                hexToRgb("19999");
+            }
+        ).toThrow();
+        expect(
+            (): void => {
+                hexToRgb("32");
+            }
+        ).toThrow();
+        expect(
+            (): void => {
+                hexToRgb("ffeeddccbbaa");
+            }
+        ).toThrow();
+        expect(
+            (): void => {
+                hexToRgb("f999999");
+            }
+        ).toThrow();
     });
     test("Should throw an error when an invalid character is present", (): void => {
-        expect((): void => {
-            hexToRgb("#21m20912");
-        }).toThrow();
-        expect((): void => {
-            hexToRgb("~9832910");
-        }).toThrow();
-        expect((): void => {
-            hexToRgb("#00000z");
-        }).toThrow();
-        expect((): void => {
-            hexToRgb("#3.!/.9");
-        }).toThrow();
-        expect((): void => {
-            hexToRgb("zsd3i2o1");
-        }).toThrow();
-        expect((): void => {
-            hexToRgb("#-ffffg");
-        }).toThrow();
-        expect((): void => {
-            hexToRgb("#fffffh");
-        }).toThrow();
+        expect(
+            (): void => {
+                hexToRgb("#21m20912");
+            }
+        ).toThrow();
+        expect(
+            (): void => {
+                hexToRgb("~9832910");
+            }
+        ).toThrow();
+        expect(
+            (): void => {
+                hexToRgb("#00000z");
+            }
+        ).toThrow();
+        expect(
+            (): void => {
+                hexToRgb("#3.!/.9");
+            }
+        ).toThrow();
+        expect(
+            (): void => {
+                hexToRgb("zsd3i2o1");
+            }
+        ).toThrow();
+        expect(
+            (): void => {
+                hexToRgb("#-ffffg");
+            }
+        ).toThrow();
+        expect(
+            (): void => {
+                hexToRgb("#fffffh");
+            }
+        ).toThrow();
     });
 });
