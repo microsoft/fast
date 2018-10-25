@@ -12,6 +12,9 @@
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
+  "bugs": {
+    "url": "https://github.com/Microsoft/fast-dna/issues/new/choose"
+  },
   "main": "dist/index.js",
   "type": "dist/index.d.ts",
   "scripts": {

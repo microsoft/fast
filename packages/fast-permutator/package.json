@@ -12,6 +12,9 @@
     "type": "git",
     "url": "https://github.com/Microsoft/fast-dna.git"
   },
+  "bugs": {
+    "url": "https://github.com/Microsoft/fast-dna/issues/new/choose"
+  },
   "main": "index.js",
   "scripts": {
     "prepare": "babel src --presets babel-preset-es2015 --out-dir dist",
