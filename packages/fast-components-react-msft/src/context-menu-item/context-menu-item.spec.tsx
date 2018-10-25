@@ -15,7 +15,7 @@ import {
  */
 configure({ adapter: new Adapter() });
 
-describe("button", (): void => {
+describe("context menu item", (): void => {
     const beforeExample: JSX.Element = <div className={"before"}>before</div>;
 
     test("should have a displayName that matches the component name", () => {

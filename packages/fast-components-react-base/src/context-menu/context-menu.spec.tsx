@@ -10,7 +10,7 @@ import { ContextMenuItemRole } from "../context-menu-item";
  */
 configure({ adapter: new Adapter() });
 
-describe("context-menu-item", (): void => {
+describe("context menu", (): void => {
     test("should have a displayName that matches the component name", () => {
         expect((ContextMenu as any).name).toBe(ContextMenu.displayName);
     });

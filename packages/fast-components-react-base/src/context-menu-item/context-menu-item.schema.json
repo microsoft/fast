@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/schema#",
-    "title": "Context-menu item",
-    "description": "A checkbox component's schema definition.",
+    "title": "Context menu item",
+    "description": "A context menu item component's schema definition.",
     "type": "object",
     "id": "context-menu-item",
     "properties": {
@@ -10,7 +10,7 @@
             "type": "boolean"
         },
         "role": {
-            "title": "Role",
+            "title": "HTML role attribute",
             "type": "string",
             "default": "menuitem",
             "enum": [
@@ -24,7 +24,7 @@
         "children": {
             "title": "Building blocks",
             "type": "children",
-            "ids": ["text", "metatext"],
+            "ids": ["metatext"],
             "defaults": [
                 "text"
             ]

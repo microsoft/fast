@@ -5,8 +5,7 @@
         "target": "ES6",
         "baseUrl": ".",
         "declaration": true,
-        "outDir": "./dist",
-        "noErrorTruncation": true
+        "outDir": "./dist"
 
     },
     "include": [

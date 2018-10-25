@@ -10,18 +10,18 @@ export default {
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
-        children: "wee",
+        children: "context menu item",
     },
     data: [
         {
-            children: "context-menu-item",
+            children: "context menu item",
         },
         {
-            children: "context-menu-item",
+            children: "context menu item",
             before: "<",
         },
         {
-            children: "context-menu-item",
+            children: "context menu item",
             disabled: true,
         },
     ],

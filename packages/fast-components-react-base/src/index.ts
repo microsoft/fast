@@ -67,4 +67,3 @@ export { Typography };
 export * from "./typography";
 
 export * from "./utilities/keycodes";
-export * from "./utilities/aria";
