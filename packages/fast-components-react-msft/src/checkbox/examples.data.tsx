@@ -16,6 +16,7 @@ export default {
             id: "label",
             props: {
                 slot: CheckboxSlot.label,
+                htmlFor: "checkbox",
                 children: "Checkbox",
             },
         },
@@ -27,6 +28,7 @@ export default {
                 id: "label",
                 props: {
                     slot: CheckboxSlot.label,
+                    htmlFor: "checkbox1",
                     children: "Default",
                 },
             },
@@ -38,6 +40,7 @@ export default {
                 id: "label",
                 props: {
                     slot: CheckboxSlot.label,
+                    htmlFor: "checkbox2",
                     children: "Checked (controlled)",
                 },
             },
@@ -49,6 +52,7 @@ export default {
                 id: "label",
                 props: {
                     slot: CheckboxSlot.label,
+                    htmlFor: "checkbox3",
                     children: "Disabled",
                 },
             },
@@ -60,6 +64,7 @@ export default {
                 id: "label",
                 props: {
                     slot: CheckboxSlot.label,
+                    htmlFor: "checkbox4",
                     children: "Indeterminate",
                 },
             },
@@ -72,6 +77,7 @@ export default {
                 id: "label",
                 props: {
                     slot: CheckboxSlot.label,
+                    htmlFor: "checkbox5",
                     children: "Indeterminate checked (controlled)",
                 },
             },
