@@ -1,7 +1,14 @@
 {
-    "extends": "./packages/fast-tslint-rules/tslint.json",
+    "extends": [
+        "@microsoft/fast-tslint-rules",
+        "tslint-config-prettier"
+    ],
     "linterOptions": {
-        "exclude": ["node_modules/**/*.*", "**/*/node_modules/**/*.*", "**/*.d.ts"]
+        "exclude": [
+            "node_modules/**/*.*",
+            "**/*/node_modules/**/*.*",
+            "**/*.d.ts"
+        ]
     }
 }
 

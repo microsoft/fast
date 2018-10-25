@@ -1,0 +1,11 @@
+# Tests
+*.spec.*
+
+# Source files
+coverage/
+
+# babel config
+.babelrc
+tsconfig.json
+tslint.json
+webpack.config.js
