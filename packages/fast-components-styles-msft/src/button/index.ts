@@ -18,7 +18,7 @@ import {
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import { curry, get } from "lodash-es";
-import { applyType } from "../utilities/typography";
+import { applyTypeRampConfig } from "../utilities/typography";
 import {
     applyMixedColor,
     disabledContrast,
@@ -189,7 +189,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
 
     return {
         button: {
-            ...applyType("t7", "vp1"),
+            ...applyTypeRampConfig("t7"),
             boxSizing: "border-box",
             maxWidth: "374px",
             minWidth: "120px",
