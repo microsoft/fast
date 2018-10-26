@@ -108,7 +108,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
             },
         },
         radio_label: {
-            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "5px",
+            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "8px",
         },
     };
 };

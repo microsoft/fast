@@ -129,7 +129,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
                 backgroundColor
             ),
             ...applyTypeRampConfig("t7"),
-            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "5px",
+            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "8px",
         },
         checkbox__disabled: {
             cursor: "not-allowed",
