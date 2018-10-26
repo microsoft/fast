@@ -3,15 +3,15 @@ import * as React from "react";
 const doSvg1: string = require("../assets/images/do-check.svg");
 const easingCurve: string = require("../assets/images/easing-curve.svg");
 const sass: string = require("../assets/styles/test-page.css");
-import ScrollTrigger from "[lib]/triggers/ScrollTrigger";
-import ViewEnterTrigger from "[lib]/triggers/ViewEnterTrigger";
-import ViewExitTrigger from "[lib]/triggers/ViewExitTrigger";
-import { AnimateConfig } from "[lib]/animate";
-import AnimateTo from "[lib]/animateTo";
-import AnimateFrom from "[lib]/animateFrom";
-import { cubicBezier } from "[lib]/curves";
-import AnimateGroup from "[lib]/animateGroup";
-import AnimateSequence from "[lib]/animateSequence";
+import ScrollTrigger from "../../../../lib/triggers/ScrollTrigger";
+import ViewEnterTrigger from "../../../../lib/triggers/ViewEnterTrigger";
+import ViewExitTrigger from "../../../../lib/triggers/ViewExitTrigger";
+import { AnimateConfig } from "../../../../lib/animate";
+import AnimateTo from "../../../../lib/animateTo";
+import AnimateFrom from "../../../../lib/animateFrom";
+import { cubicBezier } from "../../../../lib/curves";
+import AnimateGroup from "../../../../lib/animateGroup";
+import AnimateSequence from "../../../../lib/animateSequence";
 
 class TestPage extends React.Component {
     private scrollElement: HTMLElement;

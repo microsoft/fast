@@ -2,7 +2,6 @@
 src/
 
 # config
-.babelrc
 tslint.json
 tsconfig.json
 webpack.config.js

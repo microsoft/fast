@@ -14,7 +14,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "prepare": "babel src --presets babel-preset-es2015 --out-dir dist",
+    "prepare": "babel src --out-dir dist",
     "prettier": "prettier --config ../../.prettierrc --write '**/*.js'",
     "prettier:diff": "prettier --config ../../.prettierrc '**/*.js' --list-different",
     "test": "npm run eslint && npm run unit-tests",
@@ -42,8 +42,10 @@
     "testRegex": "(/__tests__/.*|(\\.|/))\\.(js?)$"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-preset-es2015": "^6.24.1",
+    "@babel/cli": "^7.0.07",
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.1.0",
+    "babel-core": "^7.0.0-bridge.0",
     "eslint": "^3.19.0",
     "jest": "^23.6.0",
     "lodash-es": "^4.17.10",

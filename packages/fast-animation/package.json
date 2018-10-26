@@ -37,7 +37,7 @@
     },
     "rootDir": "./",
     "transform": {
-      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+      ".(ts|tsx)": "ts-jest"
     },
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
     "moduleFileExtensions": [
@@ -50,6 +50,10 @@
     ]
   },
   "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
     "@microsoft/fast-tslint-rules": "^3.0.0",
     "@types/jest": "^23.3.5",
     "@types/node": "^7.0.22",
@@ -57,14 +61,8 @@
     "@types/react-dom": "^15.5.0",
     "@types/react-redux": "^4.4.47",
     "awesome-typescript-loader": "^3.1.3",
-    "babel-cli": "^6.24.1",
-    "babel-core": "^6.24.1",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-loader": "^7.0.0",
-    "babel-plugin-module-alias": "^1.6.0",
-    "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
     "css-loader": "^0.27.1",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.11.1",
