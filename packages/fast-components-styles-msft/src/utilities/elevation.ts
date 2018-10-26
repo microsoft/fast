@@ -93,12 +93,15 @@ export function elevationShadow(
     shadowConfig: ShadowConfig
 ): (config: DesignSystem) => string {
     return (config: DesignSystem): string => {
-        const xOffset: string = density(shadowConfig.xOffsetMultiplier * elevationValue)(
-            config
+        const xValue: number = parseFloat(
+            (shadowConfig.xOffsetMultiplier * elevationValue).toFixed(1)
         );
-        const yOffset: string = density(shadowConfig.yOffsetMultiplier * elevationValue)(
-            config
+        const yValue: number = parseFloat(
+            (shadowConfig.yOffsetMultiplier * elevationValue).toFixed(1)
         );
+
+        const xOffset: string = density(xValue)(config);
+        const yOffset: string = density(yValue)(config);
         const blur: string = density(shadowConfig.blurMultiplier * elevationValue)(
             config
         );
