@@ -1,0 +1,11 @@
+# Tests
+__test__/
+*.spec.*
+*.test.*
+
+# Source files
+src/
+build/
+
+# babel config
+.babelrc
