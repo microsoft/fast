@@ -5,30 +5,39 @@ import * as fs from "fs";
  * Verifies all components in source directory are exported
  */
 export function includesAllSubdirectoriesAsNamedExports(indexFile: string): any {
-    const onlyPath: string = path.dirname(indexFile);
+    /**
+     * Get the folders in the indexFile directory to compare to export listing
+     */
+    const directoryPath: string = path.dirname(indexFile);
     const components: string[] = [];
-    const componentExportFile: string = path.resolve(__dirname, indexFile);
-    const srcSubdirectories: string[] = fs.readdirSync(onlyPath).map(
-        (name: string) => path.join("src", name)).filter(
+    const sourceDirectories: string[] = fs.readdirSync(directoryPath).map(
+        (name: string) => path.join(directoryPath, name)).filter(
             (source: string) => fs.statSync(source).isDirectory());
     
-    console.log("srcSubdirectories: ", srcSubdirectories);
-    srcSubdirectories.forEach((entry: string) => {
-        components.push(entry.slice(4));
+    sourceDirectories.forEach((entry: string) => {
+        components.push(path.basename(entry));
     });
 
-    console.log("Components: ", components);
-
+    /**
+     * Get the index.ts exports in common
+     * Cannot use require(foo) because export syntax varies
+     */
+    const componentExportFile: string = path.resolve(__dirname, indexFile);
     const data: any = fs.readFileSync(componentExportFile, "UTF-8");
     const found: any = [];
-    // Common regEx between core and MSFT exports
     const regEx: RegExp = /\* from "(.*?)"/g;
-    let currentMatch: any;
+    let currentMatch: RegExpExecArray;
 
     // tslint:disable-next-line:no-conditional-assignment
     while (currentMatch = regEx.exec(data.split("\n"))) {
         found.push(currentMatch[1].replace(/\.\//g, ""));
     }
 
-    return components.filter((component: string) => !found.includes(component));
+    const missingExports: string[] = components.filter((component: string) => !found.includes(component));
+
+    if (missingExports.length === 0) {
+        return true;
+    } else {
+        throw new Error(`Missing exports: ${missingExports}`);
+    }
 }
