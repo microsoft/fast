@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@3.0.1...@microsoft/fast-development-site-react@3.0.2) (2018-10-27)
+
+
+### Bug Fixes
+
+* add overflow behavior to dev site pane to ensure all TOC items can be accessed ([#1066](https://github.com/Microsoft/fast-dna/issues/1066)) ([2600809](https://github.com/Microsoft/fast-dna/commit/2600809))
+* corrects typings and exports for all of fast-layouts-react ([#1043](https://github.com/Microsoft/fast-dna/issues/1043)) ([a92ed4c](https://github.com/Microsoft/fast-dna/commit/a92ed4c))
+
+
+
+
+
 ## [3.0.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@3.0.0...@microsoft/fast-development-site-react@3.0.1) (2018-10-09)
 
 **Note:** Version bump only for package @microsoft/fast-development-site-react

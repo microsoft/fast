@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.0.1...@microsoft/fast-components-react-msft@3.1.0) (2018-10-27)
+
+
+### Bug Fixes
+
+* align checkbox and radio spacing and ensure examples are aligned ([#1092](https://github.com/Microsoft/fast-dna/issues/1092)) ([92bd613](https://github.com/Microsoft/fast-dna/commit/92bd613))
+* parent style elements should be ordered after child style elements ([#1018](https://github.com/Microsoft/fast-dna/issues/1018)) ([9039317](https://github.com/Microsoft/fast-dna/commit/9039317))
+* remove external margin, padding, and fix RTL micro-interaction on MSFT call to action ([#1064](https://github.com/Microsoft/fast-dna/issues/1064)) ([da5eee7](https://github.com/Microsoft/fast-dna/commit/da5eee7))
+
+
+### Features
+
+* add radio component ([#884](https://github.com/Microsoft/fast-dna/issues/884)) ([f3cf735](https://github.com/Microsoft/fast-dna/commit/f3cf735))
+
+
+
+
+
 ## [3.0.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.0.0...@microsoft/fast-components-react-msft@3.0.1) (2018-10-09)
 
 

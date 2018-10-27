@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components-react-base",
   "description": "FAST base components implemented in React.",
   "sideEffects": false,
-  "version": "3.0.1",
+  "version": "3.1.0",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -67,12 +67,12 @@
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
-    "@microsoft/fast-application-utilities": "^3.0.0",
-    "@microsoft/fast-components-foundation-react": "^2.0.0",
-    "@microsoft/fast-development-site-react": "^3.0.1",
-    "@microsoft/fast-jest-snapshots-react": "^3.0.0",
+    "@microsoft/fast-application-utilities": "^3.0.1",
+    "@microsoft/fast-components-foundation-react": "^2.0.1",
+    "@microsoft/fast-development-site-react": "^3.0.2",
+    "@microsoft/fast-jest-snapshots-react": "^3.0.1",
     "@microsoft/fast-tslint-rules": "^3.0.0",
-    "@microsoft/fast-web-utilities": "^3.0.0",
+    "@microsoft/fast-web-utilities": "^3.0.1",
     "@types/jest": "^23.3.5",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.6",
@@ -120,7 +120,7 @@
     "react-dom": "^16.3.0"
   },
   "dependencies": {
-    "@microsoft/fast-components-class-name-contracts-base": "^3.0.1",
+    "@microsoft/fast-components-class-name-contracts-base": "^3.1.0",
     "utility-types": "^2.1.0"
   }
 }
