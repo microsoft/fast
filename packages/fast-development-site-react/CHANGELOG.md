@@ -3,49 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [3.0.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@3.0.1...@microsoft/fast-development-site-react@3.0.2) (2018-10-27)
+<a name="3.0.3"></a>
+## [3.0.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@3.0.2...@microsoft/fast-development-site-react@3.0.3) (2018-10-27)
 
 
 ### Bug Fixes
 
-* add overflow behavior to dev site pane to ensure all TOC items can be accessed ([#1066](https://github.com/Microsoft/fast-dna/issues/1066)) ([2600809](https://github.com/Microsoft/fast-dna/commit/2600809))
-* corrects typings and exports for all of fast-layouts-react ([#1043](https://github.com/Microsoft/fast-dna/issues/1043)) ([a92ed4c](https://github.com/Microsoft/fast-dna/commit/a92ed4c))
-
-
-
-
-
-## [3.0.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@3.0.0...@microsoft/fast-development-site-react@3.0.1) (2018-10-09)
-
-**Note:** Version bump only for package @microsoft/fast-development-site-react
-
-
-
-
-
-# [3.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@2.2.3...@microsoft/fast-development-site-react@3.0.0) (2018-10-06)
-
-
-### Bug Fixes
-
-* allow nested at rules in styles without needing to define it in the class name contract ([#985](https://github.com/Microsoft/fast-dna/issues/985)) ([6479d4c](https://github.com/Microsoft/fast-dna/commit/6479d4c))
-
-
-### chore
-
-* remove the 'I' from interfaces ([#997](https://github.com/Microsoft/fast-dna/issues/997)) ([d924df8](https://github.com/Microsoft/fast-dna/commit/d924df8))
-
-
-### Features
-
-* refactor the form generator navigation and children API ([#963](https://github.com/Microsoft/fast-dna/issues/963)) ([8ae3051](https://github.com/Microsoft/fast-dna/commit/8ae3051))
-* update JSSManager context API ([#993](https://github.com/Microsoft/fast-dna/issues/993)) ([2114213](https://github.com/Microsoft/fast-dna/commit/2114213))
-
-
-### BREAKING CHANGES
-
-* Interfaces have been renamed to remove the "I".
-* This PR has breaking changes for the form generator API and the development site.
+* correct error boundary relative path mistake ([#1095](https://github.com/Microsoft/fast-dna/issues/1095)) ([a984a21](https://github.com/Microsoft/fast-dna/commit/a984a21))
 
 
 

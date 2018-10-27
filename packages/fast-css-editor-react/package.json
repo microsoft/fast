@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-css-editor-react",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "A set of React components that allows the user to edit CSS properties",
   "sideEffects": false,
   "author": {
@@ -63,7 +63,7 @@
     "@babel/preset-react": "^7.0.0",
     "@microsoft/fast-application-utilities": "^3.0.1",
     "@microsoft/fast-components-class-name-contracts-base": "^3.1.0",
-    "@microsoft/fast-development-site-react": "^3.0.2",
+    "@microsoft/fast-development-site-react": "^3.0.3",
     "@microsoft/fast-glyphs-msft": "^3.0.1",
     "@microsoft/fast-jest-snapshots-react": "^3.0.1",
     "@microsoft/fast-jss-manager": "^3.0.2",
