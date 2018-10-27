@@ -1,6 +1,6 @@
 import * as React from "react";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import { DevSiteDesignSystem } from "../../src/components/design-system";
+import { DevSiteDesignSystem } from "../components/design-system";
 import manageJss, {
     ComponentStyles,
     ManagedClasses,
