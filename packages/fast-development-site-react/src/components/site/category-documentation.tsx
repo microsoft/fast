@@ -28,11 +28,21 @@ class CategoryDocumentation extends React.Component<
     {}
 > {
     public render(): JSX.Element {
-        return (
-            <div className={this.props.managedClasses.documentationPanel}>
-                {this.props.children}
-            </div>
-        );
+        if (this.props.children !== undefined) {
+            return (
+                <div className={this.props.managedClasses.documentationPanel}>
+                    {this.props.children}
+                </div>
+            );
+        } else {
+            return (
+                <div className={this.props.managedClasses.documentationPanel}>
+                    <div style={{ padding: "14px" }}>
+                        <p>No documentation provided.</p>
+                    </div>
+                </div>
+            );
+        }
     }
 }
 export default manageJss(style)(CategoryDocumentation);

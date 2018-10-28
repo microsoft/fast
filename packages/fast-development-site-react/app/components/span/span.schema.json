@@ -1,0 +1,14 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Span",
+    "description": "A span component's schema definition.",
+    "type": "object",
+    "id": "span",
+    "properties": {
+        "text": {
+            "title": "Text",
+            "type": "string",
+            "example": "Text"
+        }
+    }
+}

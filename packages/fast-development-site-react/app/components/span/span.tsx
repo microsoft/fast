@@ -3,19 +3,16 @@ import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { DesignSystem } from "../../design-system";
 
-export interface ParagraphProps {
+export interface SpanProps {
     text: string;
 }
 
-export interface TestParagraphClassNameContract {
-    paragraph: string;
+export interface TestSpanClassNameContract {
+    span: string;
 }
 
-export const ParagraphStyles: ComponentStyles<
-    TestParagraphClassNameContract,
-    DesignSystem
-> = {
-    paragraph: {
+export const SpanStyles: ComponentStyles<TestSpanClassNameContract, DesignSystem> = {
+    span: {
         textAlign: (config: DesignSystem): string => {
             return config.ltr === "ltr" ? "left" : "right";
         },
@@ -24,13 +21,13 @@ export const ParagraphStyles: ComponentStyles<
 };
 
 /* tslint:disable-next-line */
-class Paragraph extends React.Component<
-    ParagraphProps & ManagedClasses<TestParagraphClassNameContract>,
-    React.HTMLAttributes<HTMLButtonElement>,
+class Span extends React.Component<
+    SpanProps & ManagedClasses<TestSpanClassNameContract>,
+    React.HTMLAttributes<HTMLSpanElement>,
     {}
 > {
     public render(): JSX.Element {
-        return <p className={this.props.managedClasses.paragraph}>{this.props.text}</p>;
+        return <span className={this.props.managedClasses.span}>{this.props.text}</span>;
     }
 }
-export default Paragraph;
+export default Span;

@@ -1,5 +1,5 @@
-import ButtonSchema from "./components/button/button.schema.json";
 import * as React from "react";
+import * as ReactDOM from "react-dom";
 import { glyphBuildingblocks } from "@microsoft/fast-glyphs-msft";
 import Site, {
     FormChildOption,
@@ -14,10 +14,10 @@ import Site, {
     Theme,
 } from "../src";
 import designSystemDefaults, { Direction } from "./design-system";
-import Button from "./components/button/button";
-import * as ReactDOM from "react-dom";
-import Paragraph from "./components/paragraph/paragraph";
+import { Button, Paragraph, Span } from "./components/index";
+import ButtonSchema from "./components/button/button.schema.json";
 import ParagraphSchema from "./components/paragraph/paragraph.schema.json";
+import SpanSchema from "./components/paragraph/paragraph.schema.json";
 import { SiteCategoryProps, Status } from "../src/components/site/category";
 import ParagraphDocs from "./components/paragraph/.tmp/documentation";
 import ButtonDocs from "./components/button/.tmp/documentation";
@@ -31,7 +31,7 @@ export interface AppState {
 const themes: Theme[] = [
     { id: "Foo", displayName: "Foo", background: "#000" },
     { id: "Bar", displayName: "Bar", background: "#FFF" },
-    { id: "Rumple", displayName: "Rumple", background: "#333" },
+    { id: "Rumple", displayName: "Rumple", background: "#222" },
 ];
 
 export default class App extends React.Component<{}, AppState> {
@@ -45,6 +45,11 @@ export default class App extends React.Component<{}, AppState> {
             name: ButtonSchema.title,
             component: Button,
             schema: ButtonSchema,
+        },
+        {
+            name: SpanSchema.title,
+            component: Span,
+            schema: SpanSchema,
         },
     ];
 
@@ -123,10 +128,19 @@ export default class App extends React.Component<{}, AppState> {
             component: Paragraph,
             status: Status.alpha,
         };
+        const componentObj2: any[] = [{ text: "uno" }, { text: "due" }, { text: "tre" }];
+        const categoryObj2: SiteCategoryProps = {
+            slot: "category",
+            name: "Span",
+            schema: SpanSchema,
+            component: Span,
+            status: Status.alpha,
+        };
 
         return (
             <SiteCategory slot={"category"} name={"Components 2"}>
                 {this.renderCategory(componentObj, categoryObj)}
+                {this.renderCategory(componentObj2, categoryObj2)}
                 {this.renderComponents2Nested()}
             </SiteCategory>
         );
@@ -189,6 +203,12 @@ export default class App extends React.Component<{}, AppState> {
                     <SiteCategoryDocumentation slot={"canvas-detail-view-documentation"}>
                         <ButtonDocs />
                     </SiteCategoryDocumentation>
+                );
+            case "Span":
+                return (
+                    <SiteCategoryDocumentation
+                        slot={"canvas-detail-view-documentation"}
+                    />
                 );
             default:
                 return null;
