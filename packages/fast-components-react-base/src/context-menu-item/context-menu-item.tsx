@@ -9,9 +9,9 @@ import {
 } from "./context-menu-item.props";
 
 export enum ContextMenuItemRole {
-    menuitem = "menuitem",
-    menuitemradio = "menuitemradio",
-    menuitemcheckbox = "menuitemcheckbox",
+    menuItem = "menuitem",
+    menuItemRadio = "menuitemradio",
+    menuItemCheckbox = "menuitemcheckbox",
 }
 
 class ContextMenuItem extends Foundation<
@@ -22,7 +22,7 @@ class ContextMenuItem extends Foundation<
     public static displayName: string = "ContextMenuItem";
 
     public static defaultProps: Partial<ContextMenuItemProps> = {
-        role: ContextMenuItemRole.menuitem,
+        role: ContextMenuItemRole.menuItem,
         disabled: false,
     };
 
@@ -54,13 +54,13 @@ class ContextMenuItem extends Foundation<
         let className: string = get(this.props.managedClasses, "contextMenuItem") || "";
 
         switch (this.props.role) {
-            case ContextMenuItemRole.menuitemcheckbox:
+            case ContextMenuItemRole.menuItemCheckbox:
                 className = className.concat(
                     " ",
                     get(this.props.managedClasses, "contextMenuItem__checkbox")
                 );
                 break;
-            case ContextMenuItemRole.menuitemradio:
+            case ContextMenuItemRole.menuItemRadio:
                 className = className.concat(
                     " ",
                     get(this.props.managedClasses, "contextMenuItem__radio")

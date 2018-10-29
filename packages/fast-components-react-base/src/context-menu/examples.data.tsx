@@ -30,18 +30,21 @@ const examples: ComponentFactoryExample<ContextMenuProps> = {
         ...managedClasses,
         children: [
             {
+                id: "context-menu-item",
                 props: {
                     ...contextMenuItemPropFactory(),
                     children: "context menu item 1",
                 },
             },
             {
+                id: "context-menu-item",
                 props: {
                     ...contextMenuItemPropFactory(),
                     children: "context menu item 2",
                 },
             },
             {
+                id: "context-menu-item",
                 props: {
                     ...contextMenuItemPropFactory(),
                     children: "context menu item 3",

@@ -8,7 +8,8 @@ import {
     ContextMenuUnhandledProps,
 } from "./context-menu.props";
 import * as React from "react";
-import KeyCodes from "../utilities/keycodes";
+// import KeyCodes from "../utilities/keycodes";
+import { KeyCodes } from "@microsoft/fast-web-utilities";
 import { get, inRange, invert } from "lodash-es";
 import { canUseDOM } from "exenv-es6";
 
@@ -86,6 +87,7 @@ class ContextMenu extends Foundation<
      * Render all child elements
      */
     private renderChildren(): React.ReactChild[] {
+        console.log(this.props.children);
         return React.Children.map(this.props.children, this.renderChild);
     }
 
@@ -184,27 +186,27 @@ class ContextMenu extends Foundation<
      */
     private handleMenuKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
         switch (e.keyCode) {
-            case KeyCodes.ArrowDown:
-            case KeyCodes.ArrowRight:
+            case KeyCodes.arrowDown:
+            case KeyCodes.arrowRight:
                 e.preventDefault();
                 this.setFocus(this.state.focusIndex + 1, 1);
 
                 break;
 
-            case KeyCodes.ArrowUp:
-            case KeyCodes.ArrowLeft:
+            case KeyCodes.arrowUp:
+            case KeyCodes.arrowLeft:
                 e.preventDefault();
                 this.setFocus(this.state.focusIndex - 1, -1);
 
                 break;
 
-            case KeyCodes.End:
+            case KeyCodes.end:
                 e.preventDefault();
                 this.setFocus(this.domChildren().length - 1, -1);
 
                 break;
 
-            case KeyCodes.Home:
+            case KeyCodes.home:
                 e.preventDefault();
                 this.setFocus(0, 1);
 
