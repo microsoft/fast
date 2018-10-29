@@ -17,14 +17,14 @@ export { CardStyles };
 import CheckboxStyles from "./checkbox";
 export { CheckboxStyles };
 
+import ContextMenuStyles from "./context-menu";
+export { ContextMenuStyles };
+
 import HeadingStyles from "./heading";
 export { HeadingStyles };
 
 import HypertextStyles from "./hypertext";
 export { HypertextStyles };
-
-import ContextMenuStyles from "./context-menu";
-export { ContextMenuStyles };
 
 import ContextMenuItemStyles from "./context-menu-item";
 export { ContextMenuItemStyles };

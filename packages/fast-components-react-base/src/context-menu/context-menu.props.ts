@@ -3,7 +3,6 @@ import {
     ContextMenuClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
-import { ContextMenuItemProps } from "../context-menu-item";
 
 export interface ContextMenuManagedClasses
     extends ManagedClasses<ContextMenuClassNameContract> {}
