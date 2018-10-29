@@ -40,16 +40,16 @@ describe("context-menu-item", (): void => {
 
     test("should apply a custom role when provided", (): void => {
         const checkbox: any = shallow(
-            <ContextMenuItem role={ContextMenuItemRole.menuitemcheckbox} />
+            <ContextMenuItem role={ContextMenuItemRole.menuItemCheckbox} />
         );
         const radio: any = shallow(
-            <ContextMenuItem role={ContextMenuItemRole.menuitemradio} />
+            <ContextMenuItem role={ContextMenuItemRole.menuItemRadio} />
         );
 
         expect(checkbox.first().prop("role")).toEqual(
-            ContextMenuItemRole.menuitemcheckbox
+            ContextMenuItemRole.menuItemCheckbox
         );
-        expect(radio.first().prop("role")).toEqual(ContextMenuItemRole.menuitemradio);
+        expect(radio.first().prop("role")).toEqual(ContextMenuItemRole.menuItemRadio);
     });
 
     test("should apply aria-disabled when disabled", (): void => {

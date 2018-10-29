@@ -9,7 +9,7 @@ import {
 } from "./context-menu.props";
 import * as React from "react";
 import KeyCodes from "../utilities/keycodes";
-import { get, inRange } from "lodash-es";
+import { get, inRange, invert } from "lodash-es";
 import { canUseDOM } from "exenv-es6";
 
 export interface ContextMenuState {
@@ -25,6 +25,10 @@ class ContextMenu extends Foundation<
     ContextMenuState
 > {
     public static displayName: string = "ContextMenu";
+
+    private static focusableElementRoles: { [key: string]: string } = invert(
+        ContextMenuItemRole
+    );
 
     protected handledProps: HandledProps<ContextMenuHandledProps> = {
         children: void 0,
@@ -101,7 +105,7 @@ class ContextMenu extends Foundation<
     private isMenuItemElement(element: Element): element is HTMLElement {
         return (
             element instanceof HTMLElement &&
-            ContextMenuItemRole.hasOwnProperty(element.getAttribute("role"))
+            ContextMenu.focusableElementRoles.hasOwnProperty(element.getAttribute("role"))
         );
     }
 

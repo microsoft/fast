@@ -144,7 +144,7 @@ describe("context menu", (): void => {
         const children: React.ReactNode[] = Object.keys(ContextMenuItemRole).map(
             (key: string): React.ReactNode => {
                 return (
-                    <div role={key} key={key}>
+                    <div key={key} role={ContextMenuItemRole[key]}>
                         {key}
                     </div>
                 );
