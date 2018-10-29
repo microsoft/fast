@@ -4,15 +4,14 @@ import { get } from "lodash-es";
 import { ContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
     ContextMenuItemHandledProps,
-    ContextMenuItemManagedClasses,
     ContextMenuItemProps,
     ContextMenuItemUnhandledProps,
 } from "./context-menu-item.props";
 
 export enum ContextMenuItemRole {
-    menuItem = "menuitem",
-    menuItemRadio = "menuitemradio",
-    menuItemCheckbox = "menuitemcheckbox",
+    menuitem = "menuitem",
+    menuitemradio = "menuitemradio",
+    menuitemcheckbox = "menuitemcheckbox",
 }
 
 class ContextMenuItem extends Foundation<
@@ -23,7 +22,7 @@ class ContextMenuItem extends Foundation<
     public static displayName: string = "ContextMenuItem";
 
     public static defaultProps: Partial<ContextMenuItemProps> = {
-        role: ContextMenuItemRole.menuItem,
+        role: ContextMenuItemRole.menuitem,
         disabled: false,
     };
 
@@ -55,13 +54,13 @@ class ContextMenuItem extends Foundation<
         let className: string = get(this.props.managedClasses, "contextMenuItem") || "";
 
         switch (this.props.role) {
-            case ContextMenuItemRole.menuItemCheckbox:
+            case ContextMenuItemRole.menuitemcheckbox:
                 className = className.concat(
                     " ",
                     get(this.props.managedClasses, "contextMenuItem__checkbox")
                 );
                 break;
-            case ContextMenuItemRole.menuItemRadio:
+            case ContextMenuItemRole.menuitemradio:
                 className = className.concat(
                     " ",
                     get(this.props.managedClasses, "contextMenuItem__radio")
