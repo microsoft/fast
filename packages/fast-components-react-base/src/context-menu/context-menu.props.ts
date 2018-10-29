@@ -10,7 +10,7 @@ export interface ContextMenuManagedClasses
 export interface ContextMenuUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
 export interface ContextMenuHandledProps extends ContextMenuManagedClasses {
     /**
-     * The context-menu-item children
+     * The context menu item children
      */
     children?: React.ReactNode;
 }
