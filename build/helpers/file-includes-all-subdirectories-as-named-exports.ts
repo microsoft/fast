@@ -5,23 +5,15 @@ import { pascalCase } from "../../packages/fast-web-utilities";
 /**
  * Verifies all components in source directory are exported
  */
-export function includesAllSubdirectoriesAsNamedExports(indexFile: string): boolean | Error {
-    /**
-     * Get the folders in the indexFile directory to compare to export listing
-     */
+export function includesAllSubdirectoriesAsNamedExports(indexFile: string): boolean {
+    // Get the folders in the indexFile directory to compare to export listing
     const directoryPath: string = path.dirname(indexFile);
-    const components: string[] = [];
-    const sourceDirectories: string[] = fs.readdirSync(directoryPath).map(
-        (name: string) => path.join(directoryPath, name)).filter(
-            (source: string) => fs.statSync(source).isDirectory());
+    const components: string[] = fs.readdirSync(directoryPath)
+        .map((name: string) => path.join(directoryPath, name))
+        .filter((source: string) => fs.statSync(source).isDirectory())
+        .map((entry: string) => pascalCase(path.basename(entry)));
 
-    sourceDirectories.forEach((entry: string) => {
-        components.push(pascalCase(path.basename(entry)));
-    });
-
-    /**
-     * Get the index.ts exports in common
-     */
+    // Get listing of all exports and compare against folder listings
     const foundExports: any = Object.keys(require(path.resolve(__dirname, indexFile)));
     const missingExports: string[] = components.filter((component: string) => !foundExports.includes(component));
 
