@@ -51,9 +51,7 @@
       "^.+\\.jsx?$": "babel-jest"
     },
     "transformIgnorePatterns": [
-      "!<rootDir>/node_modules/lodash-es",
-      "node_modules/jss-*",
-      "node_modules/css-vendor"
+      "!<rootDir>/node_modules/lodash-es"
     ],
     "testPathIgnorePatterns": [
       "packages/",
