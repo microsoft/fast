@@ -8,7 +8,7 @@ configure({ adapter: new Adapter() });
 describe("file-includes-all-subdirectories-as-named-exports.ts", (): void => {
     test("should export all components in the __tests__ directory index.ts", () => {
         expect(() => {
-            includesAllSubdirectoriesAsNamedExports(path.resolve(__dirname, "__tests__/src/index.ts"))
+            includesAllSubdirectoriesAsNamedExports(path.resolve(__dirname, "__tests__/src/index.ts"));
         }).not.toThrow();
     });
 
