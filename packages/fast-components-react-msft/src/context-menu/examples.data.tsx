@@ -23,20 +23,17 @@ export default {
     detailData: {
         children: [
             {
-                id: "context-menu-item",
                 props: {
                     children: "context menu item 1",
                 },
             },
             { ...divider },
             {
-                id: "context-menu-item",
                 props: {
                     children: "context menu item 2",
                 },
             },
             {
-                id: "context-menu-item",
                 props: {
                     children: "context menu item 3",
                 },

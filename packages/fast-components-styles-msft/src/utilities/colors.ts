@@ -187,7 +187,7 @@ function ensureBackgroundNormal(config: DesignSystem): string {
 }
 
 /**
- * Deprecated 3.1.0
+ * @Deprecated 3.1.0
  */
 const ensuresBackgroundNormal: (config: DesignSystem) => string = ensureBackgroundNormal;
 
