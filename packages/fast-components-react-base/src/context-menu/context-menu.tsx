@@ -87,7 +87,6 @@ class ContextMenu extends Foundation<
      * Render all child elements
      */
     private renderChildren(): React.ReactChild[] {
-        console.log(this.props.children);
         return React.Children.map(this.props.children, this.renderChild);
     }
 
