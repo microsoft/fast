@@ -34,7 +34,7 @@ export enum ElevationMultiplier {
     e14 = 64,
     e15 = 80,
     e16 = 96,
-    e17 = 192
+    e17 = 192,
 }
 
 /**
@@ -44,7 +44,7 @@ export const ambientShadowConfig: ShadowConfig = {
     blurMultiplier: 0.225,
     xOffsetMultiplier: 0,
     yOffsetMultiplier: 0.075,
-    opacity: 0.18
+    opacity: 0.18,
 };
 
 /**
@@ -54,7 +54,7 @@ export const directionalShadowConfig: ShadowConfig = {
     blurMultiplier: 0.9,
     xOffsetMultiplier: 0,
     yOffsetMultiplier: 0.4,
-    opacity: 0.22
+    opacity: 0.22,
 };
 
 /**
@@ -66,11 +66,19 @@ export function elevation(
     color: string = designSystemDefaults.foregroundColor
 ): (config: DesignSystem) => CSSRules<DesignSystem> {
     return (config: DesignSystem): CSSRules<DesignSystem> => {
-        const ambientShadow: string = elevationShadow(elevationValue, color, ambientShadowConfig)(config);
-        const directionalShadow: string = elevationShadow(elevationValue, color, directionalShadowConfig)(config);
+        const ambientShadow: string = elevationShadow(
+            elevationValue,
+            color,
+            ambientShadowConfig
+        )(config);
+        const directionalShadow: string = elevationShadow(
+            elevationValue,
+            color,
+            directionalShadowConfig
+        )(config);
 
         return {
-            boxShadow: `${directionalShadow}, ${ambientShadow}`
+            boxShadow: `${directionalShadow}, ${ambientShadow}`,
         };
     };
 }
@@ -79,13 +87,28 @@ export function elevation(
  * Generate Elevation Shadow
  * Generates a string representing a box shadow value
  */
-export function elevationShadow(elevationValue: number, color: string, shadowConfig: ShadowConfig): (config: DesignSystem) => string {
+export function elevationShadow(
+    elevationValue: number,
+    color: string,
+    shadowConfig: ShadowConfig
+): (config: DesignSystem) => string {
     return (config: DesignSystem): string => {
-        const xOffset: string = density(shadowConfig.xOffsetMultiplier * elevationValue)(config);
-        const yOffset: string = density(shadowConfig.yOffsetMultiplier * elevationValue)(config);
-        const blur: string = density(shadowConfig.blurMultiplier * elevationValue)(config);
+        const xValue: number = parseFloat(
+            (shadowConfig.xOffsetMultiplier * elevationValue).toFixed(1)
+        );
+        const yValue: number = parseFloat(
+            (shadowConfig.yOffsetMultiplier * elevationValue).toFixed(1)
+        );
+
+        const xOffset: string = density(xValue)(config);
+        const yOffset: string = density(yValue)(config);
+        const blur: string = density(shadowConfig.blurMultiplier * elevationValue)(
+            config
+        );
         const opacity: number = shadowConfig.opacity;
 
-        return `${xOffset} ${yOffset} ${blur} ${Chroma(color).alpha(opacity).css()}`;
+        return `${xOffset} ${yOffset} ${blur} ${Chroma(color)
+            .alpha(opacity)
+            .css()}`;
     };
 }

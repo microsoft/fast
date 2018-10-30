@@ -9,47 +9,47 @@ import { get } from "lodash-es";
 const paragraphDefaults: CSSRules<DesignSystem> = {
     color: ensureForegroundNormal,
     marginTop: "0",
-    marginBottom: "0"
+    marginBottom: "0",
 };
 
 const styles: ComponentStyles<TypographyClassNameContract, DesignSystem> = {
     typography: {},
     typography__1: {
         ...applyTypeRampConfig("t1"),
-        ...paragraphDefaults
+        ...paragraphDefaults,
     },
     typography__2: {
         ...applyTypeRampConfig("t2"),
-        ...paragraphDefaults
+        ...paragraphDefaults,
     },
     typography__3: {
         ...applyTypeRampConfig("t3"),
-        ...paragraphDefaults
+        ...paragraphDefaults,
     },
     typography__4: {
         ...applyTypeRampConfig("t4"),
-        ...paragraphDefaults
+        ...paragraphDefaults,
     },
     typography__5: {
         ...applyTypeRampConfig("t5"),
-        ...paragraphDefaults
+        ...paragraphDefaults,
     },
     typography__6: {
         ...applyTypeRampConfig("t6"),
-        ...paragraphDefaults
+        ...paragraphDefaults,
     },
     typography__7: {
         ...applyTypeRampConfig("t7"),
-        ...paragraphDefaults
+        ...paragraphDefaults,
     },
     typography__8: {
         ...applyTypeRampConfig("t8"),
-        ...paragraphDefaults
+        ...paragraphDefaults,
     },
     typography__9: {
         ...applyTypeRampConfig("t9"),
-        ...paragraphDefaults
-    }
+        ...paragraphDefaults,
+    },
 };
 
 export default styles;

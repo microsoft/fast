@@ -4,7 +4,11 @@ import { luminance, luminanceSwitch, LuminositySwitch } from "./luminosity";
 /**
  * A function to manipulate contrast of two colors.
  */
-export type ContrastFunction = (targetRatio: number, operandColor: string, referenceColor: string) => string;
+export type ContrastFunction = (
+    targetRatio: number,
+    operandColor: string,
+    referenceColor: string
+) => string;
 
 /**
  * Adjust the darkness/lightness of a foreground color so that it matches a target contrast ratio against a background color
@@ -12,16 +16,25 @@ export type ContrastFunction = (targetRatio: number, operandColor: string, refer
  * @param operand - The color value to manipulate
  * @param referenceColor - The color value to evaluate contrast against
  */
-export function contrast(targetRatio: number, operandColor: string, referenceColor: string): string {
+export function contrast(
+    targetRatio: number,
+    operandColor: string,
+    referenceColor: string
+): string {
     const operand: Chroma = Chroma(operandColor);
     const backgroundLuminance: number = Chroma(referenceColor).luminance();
-    const luminositySwitch: LuminositySwitch = luminanceSwitch(operand.luminance(), backgroundLuminance);
+    const luminositySwitch: LuminositySwitch = luminanceSwitch(
+        operand.luminance(),
+        backgroundLuminance
+    );
 
-    return Chroma(luminance(
-        luminositySwitch(L1, L2)(targetRatio, backgroundLuminance),
-        operand,
-        luminositySwitch(Math.ceil, Math.floor)
-    )).hex();
+    return Chroma(
+        luminance(
+            luminositySwitch(L1, L2)(targetRatio, backgroundLuminance),
+            operand,
+            luminositySwitch(Math.ceil, Math.floor)
+        )
+    ).hex();
 }
 
 /**
@@ -38,7 +51,7 @@ export function contrast(targetRatio: number, operandColor: string, referenceCol
  * Solve for L1 when L2 and contrast ratio are known
  */
 function L1(contrastRatio: number, l2: number): number {
-    return (contrastRatio * l2) + (0.05 * contrastRatio) - 0.05;
+    return contrastRatio * l2 + 0.05 * contrastRatio - 0.05;
 }
 
 /**
@@ -52,8 +65,16 @@ function L2(contrastRatio: number, l1: number): number {
  * Ensures that two colors achieve a target contrast ratio. If they don't reach the target contrast ratio, the operandColor will
  * be adjusted to meet the target contrast ratio.
  */
-export function ensureContrast(targetRatio: number, operandColor: string, referenceColor: string): string {
-    if (typeof targetRatio !== "number" || typeof operandColor !== "string" || typeof referenceColor !== "string") {
+export function ensureContrast(
+    targetRatio: number,
+    operandColor: string,
+    referenceColor: string
+): string {
+    if (
+        typeof targetRatio !== "number" ||
+        typeof operandColor !== "string" ||
+        typeof referenceColor !== "string"
+    ) {
         return operandColor;
     }
 
@@ -65,6 +86,14 @@ export function ensureContrast(targetRatio: number, operandColor: string, refere
 /**
  * Adjusts the contrast between two colors by a given ratio adjustment
  */
-export function adjustContrast(adjustment: number, operandColor: string, referenceColor: string): string {
-    return contrast(Chroma.contrast(operandColor, referenceColor) + adjustment, operandColor, referenceColor);
+export function adjustContrast(
+    adjustment: number,
+    operandColor: string,
+    referenceColor: string
+): string {
+    return contrast(
+        Chroma.contrast(operandColor, referenceColor) + adjustment,
+        operandColor,
+        referenceColor
+    );
 }

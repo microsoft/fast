@@ -17,33 +17,33 @@ export default {
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
-        children: "Caption"
+        children: "Caption",
     },
     data: [
         {
-            children: testString
+            children: testString,
         },
         {
             tag: CaptionTag.p,
             size: CaptionSize._1,
-            children: testStringLevel1
+            children: testStringLevel1,
         },
         {
             tag: CaptionTag.p,
             size: CaptionSize._2,
-            children: testStringLevel2
+            children: testStringLevel2,
         },
         {
             tag: CaptionTag.span,
-            children: testStringSpan
+            children: testStringSpan,
         },
         {
             tag: CaptionTag.caption,
-            children: testStringCaption
+            children: testStringCaption,
         },
         {
             tag: CaptionTag.figcaption,
-            children: testStringFigCaption
-        }
-    ]
+            children: testStringFigCaption,
+        },
+    ],
 } as ComponentFactoryExample<CaptionProps>;

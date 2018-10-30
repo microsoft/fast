@@ -1,7 +1,10 @@
 import * as React from "react";
 import { get } from "lodash-es";
 import { canUseDOM } from "exenv-es6";
-import { HorizontalOverflowClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import {
+    HorizontalOverflowClassNameContract,
+    ManagedClasses,
+} from "@microsoft/fast-components-class-name-contracts-base";
 import { getClientRectWithMargin } from "@microsoft/fast-web-utilities";
 import { Direction } from "@microsoft/fast-application-utilities";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
@@ -9,13 +12,13 @@ import {
     HorizontalOverflowHandledProps,
     HorizontalOverflowProps,
     HorizontalOverflowUnhandledProps,
-    ScrollChange
+    ScrollChange,
 } from "./horizontal-overflow.props";
 import throttle from "raf-throttle";
 
 export enum ButtonDirection {
     previous = "previous",
-    next = "next"
+    next = "next",
 }
 
 export interface HorizontalOverflowState {
@@ -32,7 +35,7 @@ class HorizontalOverflow extends Foundation<
     protected handledProps: HandledProps<HorizontalOverflowHandledProps> = {
         scrollDuration: void 0,
         managedClasses: void 0,
-        onScrollChange: void 0
+        onScrollChange: void 0,
     };
 
     private horizontalOverflowItemsRef: React.RefObject<HTMLUListElement>;
@@ -52,7 +55,7 @@ class HorizontalOverflow extends Foundation<
         this.throttled = throttle(this.onScrollChange);
 
         this.state = {
-            itemsHeight: 0
+            itemsHeight: 0,
         };
     }
 
@@ -66,9 +69,18 @@ class HorizontalOverflow extends Foundation<
                 className={this.generateClassNames()}
                 onLoad={this.itemsOnLoad}
             >
-                <div style={{height: `${this.state.itemsHeight}px`, position: "relative", overflow: "hidden"}}>
+                <div
+                    style={{
+                        height: `${this.state.itemsHeight}px`,
+                        position: "relative",
+                        overflow: "hidden",
+                    }}
+                >
                     <ul
-                        className={get(this.props, "managedClasses.horizontalOverflow_contentRegion")}
+                        className={get(
+                            this.props,
+                            "managedClasses.horizontalOverflow_contentRegion"
+                        )}
                         style={this.getListStyle()}
                         ref={this.horizontalOverflowItemsRef}
                     >
@@ -76,7 +88,10 @@ class HorizontalOverflow extends Foundation<
                     </ul>
                 </div>
                 <div
-                    className={get(this.props, "managedClasses.horizontalOverflow_previous")}
+                    className={get(
+                        this.props,
+                        "managedClasses.horizontalOverflow_previous"
+                    )}
                     onClick={this.handlePreviousClick}
                 >
                     {this.withSlot(ButtonDirection.previous)}
@@ -102,11 +117,14 @@ class HorizontalOverflow extends Foundation<
         const itemsHeight: number = this.getItemMaxHeight();
 
         this.setState({
-            itemsHeight
+            itemsHeight,
         });
 
         if (canUseDOM() && this.horizontalOverflowItemsRef.current) {
-            this.horizontalOverflowItemsRef.current.addEventListener("scroll", this.throttled);
+            this.horizontalOverflowItemsRef.current.addEventListener(
+                "scroll",
+                this.throttled
+            );
         }
     }
 
@@ -115,7 +133,10 @@ class HorizontalOverflow extends Foundation<
      */
     public componentWillUnmount(): void {
         if (canUseDOM() && this.horizontalOverflowItemsRef.current) {
-            this.horizontalOverflowItemsRef.current.removeEventListener("scroll", this.throttled);
+            this.horizontalOverflowItemsRef.current.removeEventListener(
+                "scroll",
+                this.throttled
+            );
         }
     }
 
@@ -123,7 +144,9 @@ class HorizontalOverflow extends Foundation<
      * Generates class names
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(get(this.props, "managedClasses.horizontalOverflow"));
+        return super.generateClassNames(
+            get(this.props, "managedClasses.horizontalOverflow")
+        );
     }
 
     /**
@@ -136,22 +159,31 @@ class HorizontalOverflow extends Foundation<
 
         const isLtr: boolean = this.getLTR() === Direction.ltr;
         const distanceRemaining: number =
-            this.horizontalOverflowItemsRef.current.scrollWidth - this.horizontalOverflowItemsRef.current.scrollLeft;
+            this.horizontalOverflowItemsRef.current.scrollWidth -
+            this.horizontalOverflowItemsRef.current.scrollLeft;
 
         if (this.horizontalOverflowItemsRef.current.scrollLeft === 0) {
             this.props.onScrollChange({ start: isLtr, end: !isLtr });
-        } else if (distanceRemaining === this.horizontalOverflowItemsRef.current.clientWidth) {
+        } else if (
+            distanceRemaining === this.horizontalOverflowItemsRef.current.clientWidth
+        ) {
             this.props.onScrollChange({ start: !isLtr, end: isLtr });
         } else {
             this.props.onScrollChange({ start: false, end: false });
         }
-    }
+    };
 
     /**
      * Gets the style for the `ul` element containing the items
      */
     private getListStyle(): React.CSSProperties {
-        return {position: "relative", whiteSpace: "nowrap", overflowX: "scroll", padding: 0, margin: 0};
+        return {
+            position: "relative",
+            whiteSpace: "nowrap",
+            overflowX: "scroll",
+            padding: 0,
+            margin: 0,
+        };
     }
 
     /**
@@ -162,17 +194,20 @@ class HorizontalOverflow extends Foundation<
 
         if (itemsHeight !== this.state.itemsHeight) {
             this.setState({
-                itemsHeight
+                itemsHeight,
             });
         }
-    }
+    };
 
     /**
      * Identifies and returns the tallest child height
      */
     private getItemMaxHeight(): number {
         let itemMaxHeight: number = 0;
-        const children: HTMLElement = get(this.horizontalOverflowItemsRef, "current.childNodes");
+        const children: HTMLElement = get(
+            this.horizontalOverflowItemsRef,
+            "current.childNodes"
+        );
 
         if (!canUseDOM() || !children) {
             return itemMaxHeight;
@@ -198,12 +233,9 @@ class HorizontalOverflow extends Foundation<
         return React.Children.map(
             this.withoutSlot([ButtonDirection.previous, ButtonDirection.next]),
             (child: React.ReactNode): React.ReactElement<HTMLLIElement> => {
-                return (
-                    <li style={{display: "inline-block"}}>
-                        {child}
-                    </li>
-                );
-        });
+                return <li style={{ display: "inline-block" }}>{child}</li>;
+            }
+        );
     }
 
     /**
@@ -212,14 +244,17 @@ class HorizontalOverflow extends Foundation<
     private getLTR(): Direction {
         return !this.horizontalOverflowItemsRef.current
             ? Direction.ltr
-            : getComputedStyle(this.horizontalOverflowItemsRef.current).direction === Direction.rtl
-            ? Direction.rtl
-            : Direction.ltr;
+            : getComputedStyle(this.horizontalOverflowItemsRef.current).direction ===
+              Direction.rtl
+                ? Direction.rtl
+                : Direction.ltr;
     }
 
     private isMovingNext(direction: ButtonDirection, ltr: Direction): boolean {
-        return (direction === ButtonDirection.next && ltr === Direction.ltr)
-            || (direction === ButtonDirection.previous && ltr === Direction.rtl);
+        return (
+            (direction === ButtonDirection.next && ltr === Direction.ltr) ||
+            (direction === ButtonDirection.previous && ltr === Direction.rtl)
+        );
     }
 
     /**
@@ -240,9 +275,18 @@ class HorizontalOverflow extends Foundation<
         const ltr: Direction = this.getLTR();
 
         if (this.isMovingNext(direction, ltr)) {
-            distance = this.getWithinMaxDistance(distanceFromBeginning, availableWidth, itemWidths, maxDistance);
+            distance = this.getWithinMaxDistance(
+                distanceFromBeginning,
+                availableWidth,
+                itemWidths,
+                maxDistance
+            );
         } else {
-            distance = this.getWithinMinDistance(distanceFromBeginning, availableWidth, itemWidths);
+            distance = this.getWithinMinDistance(
+                distanceFromBeginning,
+                availableWidth,
+                itemWidths
+            );
         }
 
         return distance;
@@ -261,7 +305,11 @@ class HorizontalOverflow extends Foundation<
             return maxDistance;
         }
 
-        const distance: number = this.getNextDistance(availableWidth, itemWidths, distanceFromBeginning);
+        const distance: number = this.getNextDistance(
+            availableWidth,
+            itemWidths,
+            distanceFromBeginning
+        );
 
         return distance >= maxDistance ? maxDistance : distance;
     }
@@ -269,12 +317,20 @@ class HorizontalOverflow extends Foundation<
     /**
      * Gets the distance unless it is under the minimum distance, then use minimum distance instead
      */
-    private getWithinMinDistance(distanceFromBeginning: number, availableWidth: number, itemWidths: number[]): number {
+    private getWithinMinDistance(
+        distanceFromBeginning: number,
+        availableWidth: number,
+        itemWidths: number[]
+    ): number {
         if (distanceFromBeginning === 0) {
             return 0;
         }
 
-        const distance: number = this.getPreviousDistance(availableWidth, itemWidths, distanceFromBeginning);
+        const distance: number = this.getPreviousDistance(
+            availableWidth,
+            itemWidths,
+            distanceFromBeginning
+        );
 
         return distance <= 0 ? 0 : distance;
     }
@@ -282,10 +338,18 @@ class HorizontalOverflow extends Foundation<
     /**
      * Gets the distance to scroll if the next button has been clicked
      */
-    private getNextDistance(availableWidth: number, itemWidths: number[], distanceFromBeginning: number): number {
+    private getNextDistance(
+        availableWidth: number,
+        itemWidths: number[],
+        distanceFromBeginning: number
+    ): number {
         let distance: number = 0;
 
-        for (let i: number = 0, itemWidthsLength: number = itemWidths.length; i < itemWidthsLength; i++) {
+        for (
+            let i: number = 0, itemWidthsLength: number = itemWidths.length;
+            i < itemWidthsLength;
+            i++
+        ) {
             if (distance + itemWidths[i] > distanceFromBeginning + availableWidth) {
                 return distance;
             }
@@ -299,8 +363,13 @@ class HorizontalOverflow extends Foundation<
     /**
      * Gets the distance to scroll if the previous button has been clicked
      */
-    private getPreviousDistance(availableWidth: number, itemWidths: number[], distanceFromBeginning: number): number {
-        let distance: number = this.getMaxScrollDistance(availableWidth, itemWidths) + availableWidth;
+    private getPreviousDistance(
+        availableWidth: number,
+        itemWidths: number[],
+        distanceFromBeginning: number
+    ): number {
+        let distance: number =
+            this.getMaxScrollDistance(availableWidth, itemWidths) + availableWidth;
 
         for (let i: number = itemWidths.length - 1; i >= 0; i--) {
             if (distance - itemWidths[i] < distanceFromBeginning - availableWidth) {
@@ -327,21 +396,25 @@ class HorizontalOverflow extends Foundation<
      */
     private handlePreviousClick = (): void => {
         this.handleClick(ButtonDirection.previous);
-    }
+    };
 
     /**
      * Handler for the next click event
      */
     private handleNextClick = (): void => {
         this.handleClick(ButtonDirection.next);
-    }
+    };
 
     /**
      * Handler for the click event fired after next or previous has been clicked
      */
     private handleClick(direction: ButtonDirection): void {
-        const availableWidth: number = getClientRectWithMargin(this.horizontalOverflowItemsRef.current).width;
-        const items: HTMLElement[] = Array.prototype.slice.call(this.horizontalOverflowItemsRef.current.childNodes);
+        const availableWidth: number = getClientRectWithMargin(
+            this.horizontalOverflowItemsRef.current
+        ).width;
+        const items: HTMLElement[] = Array.prototype.slice.call(
+            this.horizontalOverflowItemsRef.current.childNodes
+        );
         const itemWidths: number[] = [];
 
         for (const item of items) {
@@ -382,12 +455,12 @@ class HorizontalOverflow extends Foundation<
         currentTime /= duration / 2;
 
         if (currentTime < 1) {
-            return changeInValue / 2 * currentTime * currentTime + startValue;
+            return (changeInValue / 2) * currentTime * currentTime + startValue;
         }
 
         currentTime--;
 
-        return -changeInValue / 2 * (currentTime * (currentTime - 2) - 1) + startValue;
+        return (-changeInValue / 2) * (currentTime * (currentTime - 2) - 1) + startValue;
     }
 
     /**

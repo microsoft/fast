@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-base@3.0.1...@microsoft/fast-components-class-name-contracts-base@3.1.0) (2018-10-27)
+
+
+### Features
+
+* add radio component ([#884](https://github.com/Microsoft/fast-dna/issues/884)) ([f3cf735](https://github.com/Microsoft/fast-dna/commit/f3cf735))
+
+
+
+
+
 ## [3.0.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-base@3.0.0...@microsoft/fast-components-class-name-contracts-base@3.0.1) (2018-10-09)
 
 **Note:** Version bump only for package @microsoft/fast-components-class-name-contracts-base

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-react@3.0.1...@microsoft/fast-jss-manager-react@3.0.2) (2018-10-27)
+
+
+### Bug Fixes
+
+* parent style elements should be ordered after child style elements ([#1018](https://github.com/Microsoft/fast-dna/issues/1018)) ([9039317](https://github.com/Microsoft/fast-dna/commit/9039317))
+
+
+
+
+
 ## [3.0.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-react@3.0.0...@microsoft/fast-jss-manager-react@3.0.1) (2018-10-09)
 
 

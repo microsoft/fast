@@ -1,7 +1,7 @@
-const set = require('lodash-es').set;
-const get = require('lodash-es').get;
+const set = require("lodash-es").set;
+const get = require("lodash-es").get;
 
-const removeUndefined = require('./remove-undefined');
+const removeUndefined = require("./remove-undefined");
 
 /**
  * Adds properties to an object with a flat structure

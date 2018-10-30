@@ -1,7 +1,11 @@
 import * as React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { Button, ButtonAppearance } from "../button";
-import { CallToActionAppearance, CallToActionHandledProps, CallToActionUnhandledProps } from "./call-to-action.props";
+import {
+    CallToActionAppearance,
+    CallToActionHandledProps,
+    CallToActionUnhandledProps,
+} from "./call-to-action.props";
 import { get } from "lodash-es";
 import { glyphArrowright } from "@microsoft/fast-glyphs-msft";
 import { callToActionButtonOverrides } from "@microsoft/fast-components-styles-msft";
@@ -17,7 +21,7 @@ class CallToAction extends Foundation<
         appearance: void 0,
         href: void 0,
         managedClasses: void 0,
-        disabled: void 0
+        disabled: void 0,
     };
 
     /**
@@ -30,14 +34,16 @@ class CallToAction extends Foundation<
                 className={this.generateClassNames()}
                 disabled={this.props.disabled}
                 href={this.props.href}
-                appearance={ButtonAppearance[CallToActionAppearance[this.props.appearance]]}
+                appearance={
+                    ButtonAppearance[CallToActionAppearance[this.props.appearance]]
+                }
                 jssStyleSheet={callToActionButtonOverrides}
             >
                 {this.props.children}
                 <div
                     slot="after"
                     className={get(this.props, "managedClasses.callToAction_glyph")}
-                    dangerouslySetInnerHTML={{__html: glyphArrowright}}
+                    dangerouslySetInnerHTML={{ __html: glyphArrowright }}
                 />
             </Button>
         );
@@ -50,18 +56,30 @@ class CallToAction extends Foundation<
         let classNames: string = get(this.props, "managedClasses.callToAction");
 
         if (this.props.disabled) {
-            classNames = `${classNames} ${get(this.props, "managedClasses.callToAction__disabled")}`;
+            classNames = `${classNames} ${get(
+                this.props,
+                "managedClasses.callToAction__disabled"
+            )}`;
         }
 
         switch (this.props.appearance) {
             case CallToActionAppearance.primary:
-                classNames = `${classNames} ${get(this.props, "managedClasses.callToAction__primary")}`;
+                classNames = `${classNames} ${get(
+                    this.props,
+                    "managedClasses.callToAction__primary"
+                )}`;
                 break;
             case CallToActionAppearance.lightweight:
-                classNames = `${classNames} ${get(this.props, "managedClasses.callToAction__lightweight")}`;
+                classNames = `${classNames} ${get(
+                    this.props,
+                    "managedClasses.callToAction__lightweight"
+                )}`;
                 break;
             case CallToActionAppearance.justified:
-                classNames = `${classNames} ${get(this.props, "managedClasses.callToAction__justified")}`;
+                classNames = `${classNames} ${get(
+                    this.props,
+                    "managedClasses.callToAction__justified"
+                )}`;
                 break;
         }
 

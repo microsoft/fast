@@ -2,4 +2,4 @@
 src/
 
 # babel config
-.babelrc
+babel.config.js

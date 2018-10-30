@@ -1,7 +1,7 @@
-const clone = require('lodash-es').cloneDeep;
-const resolveReferences = require('./resolve-references');
-const resolveAllOf = require('./resolve-all-of');
-const resolveOneOfAnyOf = require('./resolve-one-of-any-of');
+const clone = require("lodash-es").cloneDeep;
+const resolveReferences = require("./resolve-references");
+const resolveAllOf = require("./resolve-all-of");
+const resolveOneOfAnyOf = require("./resolve-one-of-any-of");
 
 /**
  * Resolves the given props for a schema
@@ -18,17 +18,17 @@ module.exports = function(schema, refs, props) {
         props.sort();
 
         for (let prop of props) {
-            switch(prop) {
-                case '$ref':
+            switch (prop) {
+                case "$ref":
                     schemaClone = resolveReferences(schemaClone, refs);
-                break;
-                case 'allOf':
+                    break;
+                case "allOf":
                     schemaClone = resolveAllOf(schemaClone);
-                break;
-                case 'oneOf':
-                case 'anyOf':
+                    break;
+                case "oneOf":
+                case "anyOf":
                     schemaClone = resolveOneOfAnyOf(schemaClone);
-                break;
+                    break;
             }
         }
     }

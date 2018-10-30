@@ -5,7 +5,7 @@ import {
     HypertextHandledProps as BaseHypertextHandledProps,
     HypertextManagedClasses,
     HypertextProps as BaseHypertextProps,
-    HypertextUnhandledProps
+    HypertextUnhandledProps,
 } from "@microsoft/fast-components-react-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, HypertextStyles } from "@microsoft/fast-components-styles-msft";
@@ -19,13 +19,18 @@ import { Subtract } from "utility-types";
 const Hypertext = manageJss(HypertextStyles)(BaseHypertext);
 type Hypertext = typeof Hypertext;
 
-interface HypertextHandledProps extends Subtract<BaseHypertextHandledProps, HypertextManagedClasses> {}
-type HypertextProps = ManagedJSSProps<BaseHypertextProps, HypertextClassNameContract, DesignSystem>;
+interface HypertextHandledProps
+    extends Subtract<BaseHypertextHandledProps, HypertextManagedClasses> {}
+type HypertextProps = ManagedJSSProps<
+    BaseHypertextProps,
+    HypertextClassNameContract,
+    DesignSystem
+>;
 
 export {
     Hypertext,
     HypertextProps,
     HypertextHandledProps,
     HypertextUnhandledProps,
-    HypertextClassNameContract
+    HypertextClassNameContract,
 };

@@ -8,9 +8,12 @@ import {
     TypographyProps,
     TypographySize,
     TypographyTag,
-    TypographyUnhandledProps
+    TypographyUnhandledProps,
 } from "./typography.props";
-import { ManagedClasses, TypographyClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import {
+    ManagedClasses,
+    TypographyClassNameContract,
+} from "@microsoft/fast-components-class-name-contracts-base";
 
 class Typography extends Foundation<
     TypographyHandledProps,
@@ -18,7 +21,7 @@ class Typography extends Foundation<
     {}
 > {
     public static defaultProps: Partial<TypographyProps> = {
-        tag: TypographyTag.p
+        tag: TypographyTag.p,
     };
 
     public static displayName: string = "Typography";
@@ -26,7 +29,7 @@ class Typography extends Foundation<
     protected handledProps: HandledProps<TypographyHandledProps> = {
         managedClasses: void 0,
         tag: void 0,
-        size: void 0
+        size: void 0,
     };
 
     /**
@@ -39,12 +42,14 @@ class Typography extends Foundation<
     /**
      * Renders the component
      */
-    public render(): React.ReactElement<HTMLHeadingElement | HTMLParagraphElement | HTMLSpanElement | HTMLTableCaptionElement> {
+    public render(): React.ReactElement<
+        | HTMLHeadingElement
+        | HTMLParagraphElement
+        | HTMLSpanElement
+        | HTMLTableCaptionElement
+    > {
         return (
-            <this.tag
-                {...this.unhandledProps()}
-                className={this.generateClassNames()}
-            >
+            <this.tag {...this.unhandledProps()} className={this.generateClassNames()}>
                 {this.props.children}
             </this.tag>
         );
@@ -58,7 +63,9 @@ class Typography extends Foundation<
             ? get(this.props, `managedClasses.typography__${this.props.size}`)
             : get(this.props, "managedClasses.typography__1");
 
-        return super.generateClassNames(`${get(this.props, "managedClasses.typography")} ${classes}`);
+        return super.generateClassNames(
+            `${get(this.props, "managedClasses.typography")} ${classes}`
+        );
     }
 
     /**

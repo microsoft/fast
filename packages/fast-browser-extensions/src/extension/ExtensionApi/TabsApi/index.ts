@@ -7,7 +7,10 @@ export default class TabsApi {
     /**
      * Tab query wrapper
      */
-    public query(queryInfo: chrome.tabs.QueryInfo, callback?: (results: chrome.tabs.Tab[]) => void): void {
+    public query(
+        queryInfo: chrome.tabs.QueryInfo,
+        callback?: (results: chrome.tabs.Tab[]) => void
+    ): void {
         switch (getApiSupport()) {
             case APIName.chrome:
                 chrome.tabs.query(queryInfo, callback);
@@ -17,7 +20,6 @@ export default class TabsApi {
                     throw error;
                 });
                 break;
-
         }
     }
 

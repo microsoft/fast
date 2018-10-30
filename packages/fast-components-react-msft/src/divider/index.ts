@@ -6,7 +6,7 @@ import {
     DividerManagedClasses,
     DividerProps as BaseDividerProps,
     DividerRoles,
-    DividerUnhandledProps
+    DividerUnhandledProps,
 } from "@microsoft/fast-components-react-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, DividerStyles } from "@microsoft/fast-components-styles-msft";
@@ -17,11 +17,16 @@ import { Subtract } from "utility-types";
  * compiler infer the type instead of re-declaring just for the package export
  */
 /* tslint:disable-next-line:typedef */
-const Divider =  manageJss(DividerStyles)(BaseDivider);
+const Divider = manageJss(DividerStyles)(BaseDivider);
 type Divider = typeof Divider;
 
-interface DividerHandledProps extends Subtract<BaseDividerHandledProps, DividerManagedClasses> {}
-type DividerProps = ManagedJSSProps<BaseDividerProps, DividerClassNameContract, DesignSystem>;
+interface DividerHandledProps
+    extends Subtract<BaseDividerHandledProps, DividerManagedClasses> {}
+type DividerProps = ManagedJSSProps<
+    BaseDividerProps,
+    DividerClassNameContract,
+    DesignSystem
+>;
 
 export {
     Divider,
@@ -29,5 +34,5 @@ export {
     DividerRoles,
     DividerHandledProps,
     DividerUnhandledProps,
-    DividerClassNameContract
+    DividerClassNameContract,
 };

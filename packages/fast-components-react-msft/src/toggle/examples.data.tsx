@@ -15,7 +15,7 @@ export default {
         labelId: "label01",
         selectedMessage: "On",
         statusMessageId: "span01",
-        unselectedMessage: "Off"
+        unselectedMessage: "Off",
     },
     data: [
         {
@@ -27,7 +27,7 @@ export default {
             selectedMessage: "On",
             statusMessageId: "span01",
             unselectedMessage: "Off",
-            "data-sketch-symbol": "Toggle (on)"
+            "data-sketch-symbol": "Toggle (on)",
         },
         {
             children: "Toggle label default off",
@@ -38,7 +38,7 @@ export default {
             selectedMessage: "On",
             statusMessageId: "span02",
             unselectedMessage: "Off",
-            "data-sketch-symbol": "Toggle (off)"
+            "data-sketch-symbol": "Toggle (off)",
         },
         {
             children: "Toggle label disabled on",
@@ -49,7 +49,7 @@ export default {
             selectedMessage: "On",
             statusMessageId: "span03",
             unselectedMessage: "Off",
-            "data-sketch-symbol": "Toggle disabled (on)"
+            "data-sketch-symbol": "Toggle disabled (on)",
         },
         {
             children: "Toggle label disabled off",
@@ -60,7 +60,7 @@ export default {
             selectedMessage: "On",
             statusMessageId: "span04",
             unselectedMessage: "Off",
-            "data-sketch-symbol": "Toggle disabled (off)"
-        } as any // TODO github.com/Microsoft/fast-dna/issues/982
-    ]
+            "data-sketch-symbol": "Toggle disabled (off)",
+        } as any, // TODO github.com/Microsoft/fast-dna/issues/982
+    ],
 } as ComponentFactoryExample<ToggleProps>;

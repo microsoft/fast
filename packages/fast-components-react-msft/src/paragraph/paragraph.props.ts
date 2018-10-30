@@ -1,13 +1,17 @@
 import * as React from "react";
-import { ManagedClasses, ParagraphClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import {
+    ManagedClasses,
+    ParagraphClassNameContract,
+} from "@microsoft/fast-components-class-name-contracts-msft";
 
 export enum ParagraphSize {
     _1 = 1,
     _2 = 2,
-    _3 = 3
+    _3 = 3,
 }
 
-export interface ParagraphManagedClasses extends ManagedClasses<ParagraphClassNameContract> {}
+export interface ParagraphManagedClasses
+    extends ManagedClasses<ParagraphClassNameContract> {}
 export interface ParagraphHandledProps extends ParagraphManagedClasses {
     /**
      * The paragraph content
@@ -20,5 +24,6 @@ export interface ParagraphHandledProps extends ParagraphManagedClasses {
     size?: ParagraphSize;
 }
 
-export interface ParagraphUnhandledProps extends React.HTMLAttributes<HTMLParagraphElement> {}
+export interface ParagraphUnhandledProps
+    extends React.HTMLAttributes<HTMLParagraphElement> {}
 export type ParagraphProps = ParagraphHandledProps & ParagraphUnhandledProps;

@@ -16,7 +16,9 @@ export default class Checkbox extends React.Component<CheckboxProps, {}> {
             <span>
                 {this.props.toggle.toString()}
                 <br />
-                {typeof this.props.optionalToggle !== "undefined" ? this.props.optionalToggle.toString() : "undefined"}
+                {typeof this.props.optionalToggle !== "undefined"
+                    ? this.props.optionalToggle.toString()
+                    : "undefined"}
             </span>
         );
     }

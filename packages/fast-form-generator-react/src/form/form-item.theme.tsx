@@ -10,8 +10,11 @@ import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-
  * @extends React.Component
  */
 /* tslint:disable-next-line */
-class FormItemTheme extends React.Component<FormItemComponentMappingToProperyNamesProps & ManagedClasses<FormItemThemeClassNameContract>, {}> {
-
+class FormItemTheme extends React.Component<
+    FormItemComponentMappingToProperyNamesProps &
+        ManagedClasses<FormItemThemeClassNameContract>,
+    {}
+> {
     public render(): JSX.Element {
         return (
             <div className={this.props.managedClasses.formItemTheme}>
@@ -31,10 +34,13 @@ class FormItemTheme extends React.Component<FormItemComponentMappingToProperyNam
 
     private onChange = (value: string): void => {
         this.props.onChange(this.props.dataLocation, value);
-    }
+    };
 
     private isChecked(theme: string): boolean {
-        return this.props.data === theme || (typeof this.props.data === "undefined" && this.props.default === theme);
+        return (
+            this.props.data === theme ||
+            (typeof this.props.data === "undefined" && this.props.default === theme)
+        );
     }
 
     private getInputClassName(theme: string): string {
@@ -45,9 +51,11 @@ class FormItemTheme extends React.Component<FormItemComponentMappingToProperyNam
 
     private renderInput(theme: string, index: number): JSX.Element {
         if (this.props.options && Array.isArray(this.props.options)) {
-            const option: any = this.props.options.find((item: string): any => {
-                return item === theme;
-            });
+            const option: any = this.props.options.find(
+                (item: string): any => {
+                    return item === theme;
+                }
+            );
 
             if (typeof option !== "undefined") {
                 const className: string = this.getInputClassName(theme);

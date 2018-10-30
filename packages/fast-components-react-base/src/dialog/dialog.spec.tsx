@@ -4,20 +4,23 @@ import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
-import { generateSnapshots, SnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
+import {
+    generateSnapshots,
+    SnapshotTestSuite,
+} from "@microsoft/fast-jest-snapshots-react";
 import Dialog, {
     DialogClassNameContract,
     DialogHandledProps,
     DialogManagedClasses,
     DialogProps,
-    DialogUnhandledProps
+    DialogUnhandledProps,
 } from "./dialog";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 /*
  * Configure Enzyme
  */
-configure({adapter: new Adapter()});
+configure({ adapter: new Adapter() });
 
 describe("dialog snapshot", (): void => {
     generateSnapshots(examples as SnapshotTestSuite<DialogProps>);
@@ -35,29 +38,25 @@ describe("dialog", (): void => {
     });
 
     test("should not throw if managedClasses are not provided", () => {
-        expect(
-            () => {
-                shallow(<Dialog />);
-                shallow(<Dialog modal={true} />);
-            }
-        ).not.toThrow();
+        expect(() => {
+            shallow(<Dialog />);
+            shallow(<Dialog modal={true} />);
+        }).not.toThrow();
     });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {
         const handledProps: DialogHandledProps = {
             managedClasses,
-            label: "Dialog label"
+            label: "Dialog label",
         };
 
         const unhandledProps: any = {
-            "data-m": "foo"
+            "data-m": "foo",
         } as DialogUnhandledProps;
 
-        const props: DialogProps = {...handledProps, ...unhandledProps};
+        const props: DialogProps = { ...handledProps, ...unhandledProps };
 
-        const rendered: any = shallow(
-            <Dialog {...props} />
-        );
+        const rendered: any = shallow(<Dialog {...props} />);
 
         expect(rendered.prop("data-m")).not.toBe(undefined);
         expect(rendered.prop("data-m")).toEqual("foo");
@@ -66,18 +65,14 @@ describe("dialog", (): void => {
     test("should call the `onDismiss` callback after a click event on the modal overlay when `visible` prop is true", () => {
         const onDismiss: any = jest.fn();
         const rendered: any = shallow(
-            <Dialog
-                managedClasses={managedClasses}
-                modal={true}
-                onDismiss={onDismiss}
-            />
+            <Dialog managedClasses={managedClasses} modal={true} onDismiss={onDismiss} />
         );
 
         rendered.find(`.${managedClasses.dialog_modalOverlay}`).simulate("click");
 
         expect(onDismiss).toHaveBeenCalledTimes(0);
 
-        rendered.setProps({visible: true});
+        rendered.setProps({ visible: true });
 
         rendered.find(`.${managedClasses.dialog_modalOverlay}`).simulate("click");
 
@@ -102,7 +97,7 @@ describe("dialog", (): void => {
         expect(onDismiss).toHaveBeenCalledTimes(0);
 
         // set visible prop
-        rendered.setProps({visible: true});
+        rendered.setProps({ visible: true });
 
         map.keydown({ keyCode: KeyCodes.escape });
 
@@ -119,7 +114,12 @@ describe("dialog", (): void => {
         });
 
         const rendered: any = mount(
-            <Dialog managedClasses={managedClasses} modal={true} onDismiss={onDismiss} visible={true} />
+            <Dialog
+                managedClasses={managedClasses}
+                modal={true}
+                onDismiss={onDismiss}
+                visible={true}
+            />
         );
 
         rendered.unmount();

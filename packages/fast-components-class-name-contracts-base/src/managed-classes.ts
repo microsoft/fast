@@ -1,4 +1,3 @@
-
 /**
  * The interface for class names passed as props
  *
@@ -11,5 +10,5 @@
  * https://github.com/Microsoft/TypeScript/issues/6579
  */
 export interface ManagedClasses<T> {
-    managedClasses?: {[className in keyof T]?: string};
+    managedClasses?: { [className in keyof T]?: string };
 }

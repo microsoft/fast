@@ -1,16 +1,20 @@
 import * as React from "react";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { ManagedClasses, TabPanelClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { TabPanelHandledProps, TabPanelManagedClasses, TabPanelProps, TabPanelUnhandledProps } from "./tab-panel.props";
-
-class TabPanel extends Foundation<
+import {
+    ManagedClasses,
+    TabPanelClassNameContract,
+} from "@microsoft/fast-components-class-name-contracts-base";
+import {
     TabPanelHandledProps,
+    TabPanelManagedClasses,
+    TabPanelProps,
     TabPanelUnhandledProps,
-    {}
-> {
+} from "./tab-panel.props";
+
+class TabPanel extends Foundation<TabPanelHandledProps, TabPanelUnhandledProps, {}> {
     public static defaultProps: Partial<TabPanelProps> = {
-        active: false
+        active: false,
     };
 
     public static displayName: string = "TabPanel";
@@ -18,7 +22,7 @@ class TabPanel extends Foundation<
     protected handledProps: HandledProps<TabPanelHandledProps> = {
         managedClasses: void 0,
         active: void 0,
-        slot: void 0
+        slot: void 0,
     };
 
     /**
@@ -44,7 +48,10 @@ class TabPanel extends Foundation<
         return this.props.active
             ? super.generateClassNames(get(this.props, "managedClasses.tabPanel"))
             : super.generateClassNames(
-                `${get(this.props, "managedClasses.tabPanel")} ${get(this.props, "managedClasses.tabPanel__hidden")}`
+                  `${get(this.props, "managedClasses.tabPanel")} ${get(
+                      this.props,
+                      "managedClasses.tabPanel__hidden"
+                  )}`
               );
     }
 }

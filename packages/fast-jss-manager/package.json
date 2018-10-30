@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-jss-manager",
   "description": "Provides common code to all JSS manager implementations.",
   "sideEffects": false,
-  "version": "3.0.1",
+  "version": "3.0.2",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -21,6 +21,8 @@
     "build": "tsc -p ./tsconfig.json",
     "clean:dist": "node ../../build/clean.js dist",
     "prepare": "npm run clean:dist && npm run build",
+    "prettier": "prettier --config ../../.prettierrc --write '**/*.ts'",
+    "prettier:diff": "prettier --config ../../.prettierrc '**/*.ts' --list-different",
     "test": "npm run tslint",
     "tslint": "tslint -c ./tslint.json '**/*.ts{,x}'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'",
@@ -29,11 +31,13 @@
   "devDependencies": {
     "@microsoft/fast-tslint-rules": "^3.0.0",
     "csstype": "^2.3.0",
+    "prettier": "1.14.3",
     "tslint": "^5.9.1",
+    "tslint-config-prettier": "^1.15.0",
     "typescript": "^3.0.1"
   },
   "dependencies": {
-    "@microsoft/fast-components-class-name-contracts-base": "^3.0.1"
+    "@microsoft/fast-components-class-name-contracts-base": "^3.1.0"
   },
   "peerDependencies": {
     "csstype": "^2.3.0"

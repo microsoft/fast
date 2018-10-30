@@ -18,7 +18,7 @@ module.exports = function(schema, propertyName, required, example) {
         if (example) {
             let boolObj = {};
             boolObj[propertyName] = true;
-            
+
             return boolObj;
         }
 
@@ -28,7 +28,6 @@ module.exports = function(schema, propertyName, required, example) {
             boolArray.push(boolObj);
         }
     } else {
-
         if (example) {
             return boolObjTrue;
         }

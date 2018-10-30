@@ -16,9 +16,10 @@ export default {
             id: "label",
             props: {
                 slot: CheckboxSlot.label,
-                children: "Checkbox"
-            }
-        }
+                htmlFor: "checkbox",
+                children: "Checkbox",
+            },
+        },
     },
     data: [
         {
@@ -27,9 +28,10 @@ export default {
                 id: "label",
                 props: {
                     slot: CheckboxSlot.label,
-                    children: "Default"
-                }
-            }
+                    htmlFor: "checkbox1",
+                    children: "Default",
+                },
+            },
         },
         {
             inputId: "checkbox2",
@@ -38,9 +40,10 @@ export default {
                 id: "label",
                 props: {
                     slot: CheckboxSlot.label,
-                    children: "Checked (controlled)"
-                }
-            }
+                    htmlFor: "checkbox2",
+                    children: "Checked (controlled)",
+                },
+            },
         },
         {
             inputId: "checkbox3",
@@ -49,9 +52,10 @@ export default {
                 id: "label",
                 props: {
                     slot: CheckboxSlot.label,
-                    children: "Disabled"
-                }
-            }
+                    htmlFor: "checkbox3",
+                    children: "Disabled",
+                },
+            },
         },
         {
             inputId: "checkbox4",
@@ -60,9 +64,10 @@ export default {
                 id: "label",
                 props: {
                     slot: CheckboxSlot.label,
-                    children: "Indeterminate"
-                }
-            }
+                    htmlFor: "checkbox4",
+                    children: "Indeterminate",
+                },
+            },
         },
         {
             inputId: "checkbox5",
@@ -72,9 +77,10 @@ export default {
                 id: "label",
                 props: {
                     slot: CheckboxSlot.label,
-                    children: "Indeterminate checked (controlled)"
-                }
-            }
-        }
-    ]
+                    htmlFor: "checkbox5",
+                    children: "Indeterminate checked (controlled)",
+                },
+            },
+        },
+    ],
 } as ComponentFactoryExample<CheckboxProps>;

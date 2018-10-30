@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-glyphs-msft",
   "description": "Microsoft SVG Glyphs",
   "sideEffects": false,
-  "version": "3.0.0",
+  "version": "3.0.1",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -17,6 +17,8 @@
   "scripts": {
     "clean:dist": "node ../../build/clean.js dist",
     "prepare": "npm run clean:dist && ts-node ./src/index.ts",
+    "prettier": "prettier --config ../../.prettierrc --write '**/*.ts'",
+    "prettier:diff": "prettier --config ../../.prettierrc '**/*.ts' --list-different",
     "test": "npm run tslint",
     "tslint": "tslint -c ./tslint.json '**/*.ts'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts'"
@@ -30,11 +32,13 @@
   },
   "homepage": "https://github.com/Microsoft/fast-tslint-rules#readme",
   "devDependencies": {
+    "@babel/preset-env": "^7.1.0",
     "@microsoft/fast-tslint-rules": "^3.0.0",
     "@types/node": "^9.6.2",
-    "babel-preset-env": "^1.7.0",
+    "prettier": "1.14.3",
     "ts-node": "^5.0.1",
     "tslint": "^5.9.1",
+    "tslint-config-prettier": "^1.15.0",
     "typescript": "^3.0.1"
   }
 }

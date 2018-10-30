@@ -1,5 +1,9 @@
 import * as React from "react";
-import Button, { ButtonHandledProps, ButtonManagedClasses, ButtonUnhandledProps } from "./button";
+import Button, {
+    ButtonHandledProps,
+    ButtonManagedClasses,
+    ButtonUnhandledProps,
+} from "./button";
 import schema from "./button.schema.json";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
@@ -11,18 +15,18 @@ const examples: ComponentFactoryExample<ButtonHandledProps> = {
     documentation: <Documentation />,
     detailData: {
         managedClasses: {
-            button: "button"
+            button: "button",
         },
-        children: "Button"
+        children: "Button",
     },
     data: [
         {
             managedClasses: {
-                button: "button"
+                button: "button",
             },
-            children: "Button text"
-        }
-    ]
+            children: "Button text",
+        },
+    ],
 };
 
 export default examples;

@@ -5,7 +5,7 @@ import { applyBreakpoint, breakpoints } from "../utilities/breakpoints";
 
 function applyHeadingStyles(): CSSRules<DesignSystem> {
     return {
-        fontWeight: "700"
+        fontWeight: "700",
     };
 }
 /**
@@ -14,23 +14,23 @@ function applyHeadingStyles(): CSSRules<DesignSystem> {
 const styles: ComponentStyles<HeadingClassNameContract, DesignSystem> = {
     heading: {},
     heading__1: {
-        ...applyHeadingStyles()
+        ...applyHeadingStyles(),
     },
     heading__2: {
-        ...applyHeadingStyles()
+        ...applyHeadingStyles(),
     },
     heading__3: {
-        ...applyHeadingStyles()
+        ...applyHeadingStyles(),
     },
     heading__4: {
-        ...applyHeadingStyles()
+        ...applyHeadingStyles(),
     },
     heading__5: {
-        ...applyHeadingStyles()
+        ...applyHeadingStyles(),
     },
     heading__6: {
-        ...applyHeadingStyles()
-    }
+        ...applyHeadingStyles(),
+    },
 };
 
 export default styles;

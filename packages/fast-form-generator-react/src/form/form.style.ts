@@ -15,17 +15,17 @@ const styles: ComponentStyles<FormClassNameContract, {}> = {
             paddingRight: toPx(8),
             "&::after": {
                 content: "'/'",
-                paddingLeft: toPx(8)
+                paddingLeft: toPx(8),
             },
             "&:last-child::after": {
                 content: "''",
-                paddingLeft: "0"
+                paddingLeft: "0",
             },
             "& a": {
-                color: colors.pink
-            }
-        }
-    }
+                color: colors.pink,
+            },
+        },
+    },
 };
 
 export default styles;

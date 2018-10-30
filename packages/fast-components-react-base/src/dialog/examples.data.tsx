@@ -1,5 +1,9 @@
 import * as React from "react";
-import Dialog, { DialogHandledProps, DialogManagedClasses, DialogUnhandledProps } from "./dialog";
+import Dialog, {
+    DialogHandledProps,
+    DialogManagedClasses,
+    DialogUnhandledProps,
+} from "./dialog";
 import schema from "./dialog.schema.json";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
@@ -14,8 +18,8 @@ const examples: ComponentFactoryExample<DialogHandledProps> = {
         managedClasses: {
             dialog: "dialog",
             dialog_modalOverlay: "dialog-modal-overlay",
-            dialog_contentRegion: "dialog-content-region"
-        }
+            dialog_contentRegion: "dialog-content-region",
+        },
     },
     data: [
         {
@@ -24,8 +28,8 @@ const examples: ComponentFactoryExample<DialogHandledProps> = {
             managedClasses: {
                 dialog: "dialog",
                 dialog_modalOverlay: "dialog-modal-overlay",
-                dialog_contentRegion: "dialog-content-region"
-            }
+                dialog_contentRegion: "dialog-content-region",
+            },
         },
         {
             contentHeight: "350px",
@@ -34,10 +38,10 @@ const examples: ComponentFactoryExample<DialogHandledProps> = {
             managedClasses: {
                 dialog: "dialog",
                 dialog_modalOverlay: "dialog-modal-overlay",
-                dialog_contentRegion: "dialog-content-region"
-            }
-        }
-    ]
+                dialog_contentRegion: "dialog-content-region",
+            },
+        },
+    ],
 };
 
 export default examples;

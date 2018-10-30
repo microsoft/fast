@@ -1,6 +1,4 @@
-import {
-    ProgressClassNameContract as BaseProgressClassNameContract
-} from "@microsoft/fast-components-class-name-contracts-base";
+import { ProgressClassNameContract as BaseProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
  * The class name contract for the progress component

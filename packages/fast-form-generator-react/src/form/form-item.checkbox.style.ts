@@ -1,15 +1,20 @@
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormItemCheckboxClassNameContract } from "../class-name-contracts/";
-import { applyLabelStyle, applyWrapperStyle, colors, insetStrongBoxShadow } from "../utilities/form-input.style";
+import {
+    applyLabelStyle,
+    applyWrapperStyle,
+    colors,
+    insetStrongBoxShadow,
+} from "../utilities/form-input.style";
 
 const styles: ComponentStyles<FormItemCheckboxClassNameContract, {}> = {
     formItemCheckbox: {
         ...applyWrapperStyle(),
-        position: "relative"
+        position: "relative",
     },
     formItemCheckbox_label: {
-        ...applyLabelStyle()
+        ...applyLabelStyle(),
     },
     formItemCheckbox_input: {
         appearance: "none",
@@ -22,11 +27,11 @@ const styles: ComponentStyles<FormItemCheckboxClassNameContract, {}> = {
         zIndex: "1",
         margin: "0",
         "&:hover": {
-            ...insetStrongBoxShadow(colors.hover)
+            ...insetStrongBoxShadow(colors.hover),
         },
         "&:focus": {
             outline: "none",
-            ...insetStrongBoxShadow(colors.pink)
+            ...insetStrongBoxShadow(colors.pink),
         },
         "& + span": {
             position: "absolute",
@@ -38,8 +43,8 @@ const styles: ComponentStyles<FormItemCheckboxClassNameContract, {}> = {
                 display: "block",
                 content: "''",
                 width: toPx(1),
-                background: colors.pink
-            }
+                background: colors.pink,
+            },
         },
         "&:checked": {
             "& + span": {
@@ -47,17 +52,17 @@ const styles: ComponentStyles<FormItemCheckboxClassNameContract, {}> = {
                     height: toPx(5),
                     left: toPx(6),
                     top: toPx(10),
-                    transform: "rotate(-45deg)"
+                    transform: "rotate(-45deg)",
                 },
                 "&::after": {
                     height: toPx(12),
                     left: toPx(12),
                     top: toPx(4),
-                    transform: "rotate(45deg)"
-                }
-            }
-        }
-    }
+                    transform: "rotate(45deg)",
+                },
+            },
+        },
+    },
 };
 
 export default styles;

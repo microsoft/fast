@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-permutator",
   "description": "Creates all possible permutations of a component based on its JSON Schema.",
   "sideEffects": false,
-  "version": "2.2.0",
+  "version": "2.2.1",
   "author": {
     "name": "Fluent Web",
     "url": "https://discord.gg/FcSNfg4"
@@ -17,7 +17,9 @@
   },
   "main": "index.js",
   "scripts": {
-    "prepare": "babel src --presets babel-preset-es2015 --out-dir dist",
+    "prepare": "babel src --out-dir dist",
+    "prettier": "prettier --config ../../.prettierrc --write '**/*.js'",
+    "prettier:diff": "prettier --config ../../.prettierrc '**/*.js' --list-different",
     "test": "npm run eslint && npm run unit-tests",
     "eslint": "eslint src/**",
     "unit-tests": "jest --maxWorkers=4"
@@ -30,7 +32,7 @@
         "statements": 89,
         "branches": 78,
         "functions": 96,
-        "lines": 90
+        "lines": 85
       }
     },
     "testURL": "http://localhost",
@@ -43,11 +45,14 @@
     "testRegex": "(/__tests__/.*|(\\.|/))\\.(js?)$"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-preset-es2015": "^6.24.1",
+    "@babel/cli": "^7.0.07",
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.1.0",
+    "babel-core": "^7.0.0-bridge.0",
     "eslint": "^3.19.0",
     "jest": "^23.6.0",
-    "lodash-es": "^4.17.10"
+    "lodash-es": "^4.17.10",
+    "prettier": "1.14.3"
   },
   "peerDependencies": {
     "lodash-es": "^4.17.10"

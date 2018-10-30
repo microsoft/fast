@@ -8,7 +8,7 @@ import {
     TypographyProps as BaseTypographyProps,
     TypographySize,
     TypographyTag,
-    TypographyUnhandledProps
+    TypographyUnhandledProps,
 } from "@microsoft/fast-components-react-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, TypographyStyles } from "@microsoft/fast-components-styles-msft";
@@ -22,8 +22,13 @@ import { Subtract } from "utility-types";
 const Typography = manageJss(TypographyStyles)(BaseTypography);
 type Typography = typeof Typography;
 
-interface TypographyHandledProps extends Subtract<BaseTypographyHandledProps, TypographyManagedClasses> {}
-type TypographyProps = ManagedJSSProps<BaseTypographyProps, TypographyClassNameContract, DesignSystem>;
+interface TypographyHandledProps
+    extends Subtract<BaseTypographyHandledProps, TypographyManagedClasses> {}
+type TypographyProps = ManagedJSSProps<
+    BaseTypographyProps,
+    TypographyClassNameContract,
+    DesignSystem
+>;
 
 export {
     TypographyClassNameContract,
@@ -32,5 +37,5 @@ export {
     Typography,
     TypographyProps,
     TypographySize,
-    TypographyTag
+    TypographyTag,
 };

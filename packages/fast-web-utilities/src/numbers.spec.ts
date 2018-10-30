@@ -2,11 +2,21 @@ import { limit, wrapInBounds } from "./numbers";
 
 describe("wrapInBounds", () => {
     test("should not throw if any parameters are null", () => {
-        expect(() => { wrapInBounds(null, null, null); }).not.toThrow();
-        expect(() => { wrapInBounds(1, null, null); }).not.toThrow();
-        expect(() => { wrapInBounds(1, 2, 3); }).not.toThrow();
-        expect(() => { wrapInBounds(1, null, 3); }).not.toThrow();
-        expect(() => { wrapInBounds(1, 2, null); }).not.toThrow();
+        expect(() => {
+            wrapInBounds(null, null, null);
+        }).not.toThrow();
+        expect(() => {
+            wrapInBounds(1, null, null);
+        }).not.toThrow();
+        expect(() => {
+            wrapInBounds(1, 2, 3);
+        }).not.toThrow();
+        expect(() => {
+            wrapInBounds(1, null, 3);
+        }).not.toThrow();
+        expect(() => {
+            wrapInBounds(1, 2, null);
+        }).not.toThrow();
     });
 
     test("should return `min` if `value` is greater than `max`", () => {
@@ -31,10 +41,18 @@ describe("wrapInBounds", () => {
 
 describe("limit", () => {
     test("should not throw if any parameters are null", () => {
-        expect(() => { limit(null, null, null); }).not.toThrow();
-        expect(() => { limit(0, null, null); }).not.toThrow();
-        expect(() => { limit(0, null, 1); }).not.toThrow();
-        expect(() => { limit(0, 10, null); }).not.toThrow();
+        expect(() => {
+            limit(null, null, null);
+        }).not.toThrow();
+        expect(() => {
+            limit(0, null, null);
+        }).not.toThrow();
+        expect(() => {
+            limit(0, null, 1);
+        }).not.toThrow();
+        expect(() => {
+            limit(0, 10, null);
+        }).not.toThrow();
     });
 
     test("should return `min` if `value` is equal to `min`", () => {

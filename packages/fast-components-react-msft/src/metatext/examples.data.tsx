@@ -12,20 +12,20 @@ export default {
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
-        children: "Metatext"
+        children: "Metatext",
     },
     data: [
         {
-            children: testString
+            children: testString,
         },
         {
             tag: MetatextTag.p,
             children: testString,
-            "data-sketch-symbol": "Metatext"
+            "data-sketch-symbol": "Metatext",
         },
         {
             tag: MetatextTag.span,
-            children: testString
-        }
-    ]
+            children: testString,
+        },
+    ],
 } as ComponentFactoryExample<MetatextProps>;

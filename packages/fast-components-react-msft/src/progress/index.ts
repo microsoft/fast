@@ -6,7 +6,7 @@ import MSFTProgress, {
     ProgressHandledProps as MSFTProgressHandledProps,
     ProgressManagedClasses,
     ProgressProps as MSFTProgressProps,
-    ProgressUnhandledProps
+    ProgressUnhandledProps,
 } from "./progress";
 import { Subtract } from "utility-types";
 /*
@@ -17,13 +17,18 @@ import { Subtract } from "utility-types";
 const Progress = manageJss(ProgressStyles)(MSFTProgress);
 type Progress = typeof Progress;
 
-interface ProgressHandledProps extends Subtract<MSFTProgressHandledProps, ProgressManagedClasses> {}
-type ProgressProps = ManagedJSSProps<MSFTProgressProps, ProgressClassNameContract, DesignSystem>;
+interface ProgressHandledProps
+    extends Subtract<MSFTProgressHandledProps, ProgressManagedClasses> {}
+type ProgressProps = ManagedJSSProps<
+    MSFTProgressProps,
+    ProgressClassNameContract,
+    DesignSystem
+>;
 
 export {
     Progress,
     ProgressProps,
     ProgressUnhandledProps,
     ProgressHandledProps,
-    ProgressClassNameContract
+    ProgressClassNameContract,
 };

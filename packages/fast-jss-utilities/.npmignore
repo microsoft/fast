@@ -8,6 +8,6 @@ coverage/
 src/
 
 # config
-.babelrc
+babel.config.js
 tslint.json
 tsconfig.json

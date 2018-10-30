@@ -2,8 +2,16 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { ToggleHandledProps, ToggleManagedClasses, ToggleProps, ToggleUnhandledProps } from "./toggle.props";
-import { ManagedClasses, ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import {
+    ToggleHandledProps,
+    ToggleManagedClasses,
+    ToggleProps,
+    ToggleUnhandledProps,
+} from "./toggle.props";
+import {
+    ManagedClasses,
+    ToggleClassNameContract,
+} from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
  * Toggle state interface
@@ -15,20 +23,22 @@ export interface ToggleState {
 /**
  * Toggle base component
  */
-class Toggle extends Foundation<
-    ToggleHandledProps,
-    ToggleUnhandledProps,
-    ToggleState
-> {
+class Toggle extends Foundation<ToggleHandledProps, ToggleUnhandledProps, ToggleState> {
     public static displayName: string = "Toggle";
 
     /**
      * React life-cycle method
      */
-    public static getDerivedStateFromProps(nextProps: ToggleProps, prevState: ToggleState): null | Partial<ToggleState> {
-        if (typeof nextProps.selected === "boolean" && nextProps.selected !== prevState.selected) {
+    public static getDerivedStateFromProps(
+        nextProps: ToggleProps,
+        prevState: ToggleState
+    ): null | Partial<ToggleState> {
+        if (
+            typeof nextProps.selected === "boolean" &&
+            nextProps.selected !== prevState.selected
+        ) {
             return {
-                selected: nextProps.selected
+                selected: nextProps.selected,
             };
         }
 
@@ -44,7 +54,7 @@ class Toggle extends Foundation<
         selectedMessage: void 0,
         statusMessageId: void 0,
         unselectedMessage: void 0,
-        onChange: void 0
+        onChange: void 0,
     };
 
     /**
@@ -54,7 +64,7 @@ class Toggle extends Foundation<
         super(props);
 
         this.state = {
-            selected: this.props.selected || false
+            selected: this.props.selected || false,
         };
     }
 
@@ -80,11 +90,14 @@ class Toggle extends Foundation<
                         onChange={this.handleToggleChange}
                         checked={this.state.selected}
                     />
-                    <span className={get(this.props, "managedClasses.toggle_stateIndicator")} />
+                    <span
+                        className={get(
+                            this.props,
+                            "managedClasses.toggle_stateIndicator"
+                        )}
+                    />
                 </div>
-                <span
-                    id={this.props.statusMessageId}
-                >
+                <span id={this.props.statusMessageId}>
                     {this.generateToggleStateLabel()}
                 </span>
             </div>
@@ -102,7 +115,9 @@ class Toggle extends Foundation<
      * Creates proper string based on state
      */
     private generateToggleStateLabel(): string {
-        return this.state.selected ? this.props.selectedMessage : this.props.unselectedMessage;
+        return this.state.selected
+            ? this.props.selectedMessage
+            : this.props.unselectedMessage;
     }
 
     /**
@@ -110,20 +125,20 @@ class Toggle extends Foundation<
      */
     private handleToggleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         if (typeof this.props.selected !== "boolean") {
-            this.setState({selected: !this.state.selected});
+            this.setState({ selected: !this.state.selected });
         }
 
         if (this.props.onChange) {
             this.props.onChange(e);
         }
-    }
+    };
 
     /**
      * Generates label if it exists
      */
     private generateLabel(): React.ReactElement<HTMLElement> {
         if (this.props.labelId || this.props.children) {
-            return(
+            return (
                 <label
                     className={get(this.props, "managedClasses.toggle_label")}
                     id={this.props.labelId}

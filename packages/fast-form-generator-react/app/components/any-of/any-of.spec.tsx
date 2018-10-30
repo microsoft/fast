@@ -11,15 +11,13 @@ const exampleData: FormProps = {
     schema: anyOfSchema,
     data: getExample(anyOfSchema),
     /* tslint:disable-next-line */
-    onChange: (data: any): void => {}
+    onChange: (data: any): void => {},
 };
 
 const examples: SnapshotTestSuite<FormProps> = {
     name,
     component: Form,
-    data: [
-        exampleData
-    ]
+    data: [exampleData],
 };
 
 describe(name, () => {

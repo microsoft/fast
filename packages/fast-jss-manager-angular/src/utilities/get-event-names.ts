@@ -9,5 +9,5 @@ export const eventNames: EventNames = {
     getConfig: "design-system-get-config",
     update: "design-system-update",
     registerComponent: "design-system-register-component",
-    deregisterComponent: "design-system-deregister-component"
+    deregisterComponent: "design-system-deregister-component",
 };

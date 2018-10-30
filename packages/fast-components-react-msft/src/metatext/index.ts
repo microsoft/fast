@@ -6,7 +6,7 @@ import MSFTMetatext, {
     MetatextManagedClasses,
     MetatextProps as MSFTMetatextProps,
     MetatextTag,
-    MetatextUnhandledProps
+    MetatextUnhandledProps,
 } from "./metatext";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { DesignSystem, MetatextStyles } from "@microsoft/fast-components-styles-msft";
@@ -20,8 +20,13 @@ import { Subtract } from "utility-types";
 const Metatext = manageJss(MetatextStyles)(MSFTMetatext);
 type Metatext = typeof Metatext;
 
-interface MetatextHandledProps extends Subtract<MSFTMetatextHandledProps, MetatextManagedClasses> {}
-type MetatextProps = ManagedJSSProps<MSFTMetatextProps, MetatextClassNameContract, DesignSystem>;
+interface MetatextHandledProps
+    extends Subtract<MSFTMetatextHandledProps, MetatextManagedClasses> {}
+type MetatextProps = ManagedJSSProps<
+    MSFTMetatextProps,
+    MetatextClassNameContract,
+    DesignSystem
+>;
 
 export {
     Metatext,
@@ -29,5 +34,5 @@ export {
     MetatextProps,
     MetatextHandledProps,
     MetatextUnhandledProps,
-    MetatextClassNameContract
+    MetatextClassNameContract,
 };

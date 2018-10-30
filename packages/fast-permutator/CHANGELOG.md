@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-permutator@2.2.0...@microsoft/fast-permutator@2.2.1) (2018-10-27)
+
+**Note:** Version bump only for package @microsoft/fast-permutator
+
+
+
+
+
 <a name="2.2.0"></a>
 # 2.2.0 (2018-09-11)
 

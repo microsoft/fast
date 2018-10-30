@@ -7,7 +7,7 @@ import { AnimateConfig } from "../animate";
  */
 export const fadeInKeyframes: Array<Partial<Keyframe>> = [
     { opacity: "0.01" }, // Start at 0.01 due to a bug animating from 0
-    { opacity: "1" }
+    { opacity: "1" },
 ];
 
 /**
@@ -15,7 +15,7 @@ export const fadeInKeyframes: Array<Partial<Keyframe>> = [
  */
 export const fadeOutKeyframes: Array<Partial<Keyframe>> = [
     { opacity: "1" },
-    { opacity: "0" }
+    { opacity: "0" },
 ];
 
 /**
@@ -23,7 +23,7 @@ export const fadeOutKeyframes: Array<Partial<Keyframe>> = [
  */
 export const fadeEffectTiming: EffectTiming = {
     easing: "linear",
-    duration: 500
+    duration: 500,
 };
 
 /**
@@ -36,11 +36,18 @@ export function fadeIn(element: HTMLElement, effectTiming: EffectTiming = {}): A
 /**
  * Creates an animation to fade an element out of view
  */
-export function fadeOut(element: HTMLElement, effectTiming: EffectTiming = {}): AnimateTo {
+export function fadeOut(
+    element: HTMLElement,
+    effectTiming: EffectTiming = {}
+): AnimateTo {
     return applyFade(element, fadeOutKeyframes, effectTiming);
 }
 
-export function applyFade(element: HTMLElement, keyframes: Array<Partial<Keyframe>>, timing: EffectTiming = {}): AnimateTo {
+export function applyFade(
+    element: HTMLElement,
+    keyframes: Array<Partial<Keyframe>>,
+    timing: EffectTiming = {}
+): AnimateTo {
     const fadeAnimationTiming: EffectTiming = Object.assign({}, fadeEffectTiming, timing);
     const fadeAnimation: AnimateTo = new AnimateTo(element, null, fadeAnimationTiming);
 

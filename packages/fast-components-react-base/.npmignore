@@ -10,7 +10,7 @@ src/
 www/
 
 # babel config
-.babelrc
+babel.config.js
 tsconfig.json
 tslint.json
 webpack.config.js

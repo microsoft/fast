@@ -8,7 +8,7 @@ webpack/
 www/
 
 # Configs
-.babelrc
+babel.config.js
 tsconfig.json
 postcss.config.js
 tslint.json

@@ -1,5 +1,8 @@
 import * as React from "react";
-import { ButtonClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import {
+    ButtonClassNameContract,
+    ManagedClasses,
+} from "@microsoft/fast-components-class-name-contracts-base";
 
 export interface ButtonManagedClasses extends ManagedClasses<ButtonClassNameContract> {}
 export interface ButtonUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}

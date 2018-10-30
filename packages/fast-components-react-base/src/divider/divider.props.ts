@@ -1,5 +1,8 @@
 import * as React from "react";
-import { DividerClassNameContract, ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import {
+    DividerClassNameContract,
+    ManagedClasses,
+} from "@microsoft/fast-components-class-name-contracts-base";
 import { Omit } from "utility-types";
 
 /**
@@ -7,11 +10,12 @@ import { Omit } from "utility-types";
  */
 export enum DividerRoles {
     presentation = "presentation",
-    separator = "separator"
+    separator = "separator",
 }
 
 export interface DividerManagedClasses extends ManagedClasses<DividerClassNameContract> {}
-export interface DividerUnhandledProps extends Omit<React.HTMLAttributes<HTMLHRElement>, "role"> {}
+export interface DividerUnhandledProps
+    extends Omit<React.HTMLAttributes<HTMLHRElement>, "role"> {}
 export interface DividerHandledProps extends DividerManagedClasses {
     /**
      * The HTML role attribute

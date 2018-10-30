@@ -16,12 +16,12 @@ import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-
 
 export enum ItemConstraints {
     minItems = "minItems",
-    maxItems = "maxItems"
+    maxItems = "maxItems",
 }
 
 export enum ArrayAction {
     add = "add",
-    remove = "remove"
+    remove = "remove",
 }
 
 export interface ArrayMenuItem {
@@ -73,8 +73,10 @@ export interface FormItemArrayState {
  * Schema form component definition
  * @extends React.Component
  */
-class FormItemArray extends React.Component<FormItemArrayProps & ManagedClasses<FormItemArrayClassNameContract>, FormItemArrayState> {
-
+class FormItemArray extends React.Component<
+    FormItemArrayProps & ManagedClasses<FormItemArrayClassNameContract>,
+    FormItemArrayState
+> {
     /**
      * Store a reference to the option menu
      */
@@ -85,14 +87,16 @@ class FormItemArray extends React.Component<FormItemArrayProps & ManagedClasses<
      */
     private optionMenuTriggerRef: React.RefObject<HTMLButtonElement>;
 
-    constructor(props: FormItemArrayProps & ManagedClasses<FormItemArrayClassNameContract>) {
+    constructor(
+        props: FormItemArrayProps & ManagedClasses<FormItemArrayClassNameContract>
+    ) {
         super(props);
 
         this.optionMenuRef = React.createRef();
         this.optionMenuTriggerRef = React.createRef();
 
         this.state = {
-            hideOptionMenu: true
+            hideOptionMenu: true,
         };
     }
 
@@ -136,22 +140,22 @@ class FormItemArray extends React.Component<FormItemArrayProps & ManagedClasses<
 
     private handleWindowClick = (e: MouseEvent): void => {
         if (
-            e.target instanceof Element
-            && !this.optionMenuRef.current.contains(e.target)
-            && !this.optionMenuTriggerRef.current.contains(e.target)
-            && this.optionMenuTriggerRef.current !== e.target
+            e.target instanceof Element &&
+            !this.optionMenuRef.current.contains(e.target) &&
+            !this.optionMenuTriggerRef.current.contains(e.target) &&
+            this.optionMenuTriggerRef.current !== e.target
         ) {
             this.closeMenu();
         }
-    }
+    };
 
     private closeMenu = (): void => {
-        this.setState({hideOptionMenu: true});
-    }
+        this.setState({ hideOptionMenu: true });
+    };
 
     private toggleMenu = (): void => {
-        this.setState({hideOptionMenu: !this.state.hideOptionMenu});
-    }
+        this.setState({ hideOptionMenu: !this.state.hideOptionMenu });
+    };
 
     /**
      * Array add/remove item click handler factory
@@ -169,30 +173,42 @@ class FormItemArray extends React.Component<FormItemArrayProps & ManagedClasses<
                 this.toggleMenu();
             }
 
-            type === ArrayAction.add ? this.handleAddArrayItem(dataLocation, schema) : this.handleRemoveArrayItem(dataLocation, index);
+            type === ArrayAction.add
+                ? this.handleAddArrayItem(dataLocation, schema)
+                : this.handleRemoveArrayItem(dataLocation, index);
         };
     }
 
     /**
      * Array section link click handler factory
      */
-    private arrayClickHandlerFactory = (item: any, index: number): (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => void => {
+    private arrayClickHandlerFactory = (
+        item: any,
+        index: number
+    ): ((e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => void) => {
         return (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>): void => {
             e.preventDefault();
 
             const oneOfAnyOfRegex: RegExp = /(oneOf|anyOf)\[\d+\]/;
-            const schemaLocation: string = isRootLocation(this.props.schemaLocation) ? "items" : `${this.props.schemaLocation}.items`;
+            const schemaLocation: string = isRootLocation(this.props.schemaLocation)
+                ? "items"
+                : `${this.props.schemaLocation}.items`;
             let coercedSchemaLocation: string = this.props.schemaLocation;
 
             if (this.props.schemaLocation.replace(oneOfAnyOfRegex, "") === "") {
-                coercedSchemaLocation = this.props.schemaLocation.replace(oneOfAnyOfRegex, "");
+                coercedSchemaLocation = this.props.schemaLocation.replace(
+                    oneOfAnyOfRegex,
+                    ""
+                );
             }
 
             if (this.props.location && this.props.location.onChange) {
                 this.props.location.onChange(
                     this.props.location.schemaLocation === ""
                         ? `${coercedSchemaLocation}.items`
-                        : `${this.props.location.schemaLocation}.${coercedSchemaLocation}.items`,
+                        : `${
+                              this.props.location.schemaLocation
+                          }.${coercedSchemaLocation}.items`,
                     `${this.props.dataLocation}[${index}]`
                 );
             } else {
@@ -203,21 +219,26 @@ class FormItemArray extends React.Component<FormItemArrayProps & ManagedClasses<
                 );
             }
         };
-    }
+    };
 
     /**
      * Handles adding an array item
      */
     private handleAddArrayItem(dataLocation: string, schema: any): void {
         if (typeof this.props.data === "undefined") {
-            this.props.onChange(
-                dataLocation,
-                [generateExampleData(this.props.schema, `${this.props.schemaLocation}.items`)]
-            );
+            this.props.onChange(dataLocation, [
+                generateExampleData(
+                    this.props.schema,
+                    `${this.props.schemaLocation}.items`
+                ),
+            ]);
         } else {
             this.props.onChange(
                 dataLocation,
-                generateExampleData(this.props.schema, `${this.props.schemaLocation}.items`),
+                generateExampleData(
+                    this.props.schema,
+                    `${this.props.schemaLocation}.items`
+                ),
                 true
             );
         }
@@ -227,7 +248,7 @@ class FormItemArray extends React.Component<FormItemArrayProps & ManagedClasses<
      * Handles removing an array item
      */
     private handleRemoveArrayItem(dataLocation: string, index: number): void {
-        this.props.onChange(dataLocation, void(0), true, index);
+        this.props.onChange(dataLocation, void 0, true, index);
     }
 
     /**
@@ -236,34 +257,40 @@ class FormItemArray extends React.Component<FormItemArrayProps & ManagedClasses<
     private generateArrayLinkItem = (value: any, index: number): JSX.Element => {
         return (
             <SortableListItem key={`item-${index}`} id={index.toString()}>
-                <a onClick={this.arrayClickHandlerFactory(value, index)}>
-                    {value}
-                </a>
+                <a onClick={this.arrayClickHandlerFactory(value, index)}>{value}</a>
             </SortableListItem>
-         );
-    }
+        );
+    };
 
     /**
      * Generates UI for all items in an array
      */
     private generateArrayLinkItems(): JSX.Element[] {
-        return getArrayLinks(this.props.data).map((value: any, index: number): JSX.Element => {
-            const options: SortableConfig = {
-                key: `item-${index}`,
-                index,
-                value
-            };
+        return getArrayLinks(this.props.data).map(
+            (value: any, index: number): JSX.Element => {
+                const options: SortableConfig = {
+                    key: `item-${index}`,
+                    index,
+                    value,
+                };
 
-            return React.createElement(SortableElement(this.generateArrayLinkItem.bind(this, value, index)), options);
-        });
+                return React.createElement(
+                    SortableElement(this.generateArrayLinkItem.bind(this, value, index)),
+                    options
+                );
+            }
+        );
     }
 
     /**
      * Handle user drag and drop interactions
      */
-    private handleSort = ({oldIndex, newIndex}: any): void => {
-        this.props.onChange(this.props.dataLocation, arrayMove(this.props.data, oldIndex, newIndex));
-    }
+    private handleSort = ({ oldIndex, newIndex }: any): void => {
+        this.props.onChange(
+            this.props.dataLocation,
+            arrayMove(this.props.data, oldIndex, newIndex)
+        );
+    };
 
     /**
      * Generates the links to an array section to be activated
@@ -271,17 +298,20 @@ class FormItemArray extends React.Component<FormItemArrayProps & ManagedClasses<
     private generateArrayLinks(): JSX.Element {
         const arraySections: string[] = getArrayLinks(this.props.data);
         const props: any = Object.assign({}, sortingProps, {
-            onSortEnd: this.handleSort
+            onSortEnd: this.handleSort,
         });
 
         if (arraySections.length > 0) {
-            return React.createElement(SortableContainer(() => {
-                return (
-                    <ul className={this.props.managedClasses.formItemArray_linkMenu}>
-                        {this.generateArrayLinkItems()}
-                    </ul>
-                );
-            }), props);
+            return React.createElement(
+                SortableContainer(() => {
+                    return (
+                        <ul className={this.props.managedClasses.formItemArray_linkMenu}>
+                            {this.generateArrayLinkItems()}
+                        </ul>
+                    );
+                }),
+                props
+            );
         }
     }
 
@@ -295,36 +325,65 @@ class FormItemArray extends React.Component<FormItemArrayProps & ManagedClasses<
         return Array.isArray(this.props.data) ? this.props.data.length : 0;
     }
 
-    private getSubschema(): any  {
-        return this.props.schemaLocation !== "" ? get(this.props.schema, this.props.schemaLocation) : this.props.schema;
+    private getSubschema(): any {
+        return this.props.schemaLocation !== ""
+            ? get(this.props.schema, this.props.schemaLocation)
+            : this.props.schema;
     }
 
-    private getArrayMenuItem(action: ArrayAction, text: string, index?: number): ArrayMenuItem {
+    private getArrayMenuItem(
+        action: ArrayAction,
+        text: string,
+        index?: number
+    ): ArrayMenuItem {
         return {
             type: action,
             text,
             onClick: this.arrayItemClickHandlerFactory(
-                this.props.dataLocation, this.props.schema, action, index
-            )
+                this.props.dataLocation,
+                this.props.schema,
+                action,
+                index
+            ),
         };
     }
 
-    private hasItemConstraints(schema: any, arrayLength: number, constraints: ItemConstraints): boolean {
+    private hasItemConstraints(
+        schema: any,
+        arrayLength: number,
+        constraints: ItemConstraints
+    ): boolean {
         const constrainedItems: boolean = Boolean(schema) && Boolean(schema[constraints]);
 
         switch (constraints) {
             case ItemConstraints.minItems:
-                return schema && ((constrainedItems && arrayLength > schema.minItems) || !constrainedItems);
+                return (
+                    schema &&
+                    ((constrainedItems && arrayLength > schema.minItems) ||
+                        !constrainedItems)
+                );
             case ItemConstraints.maxItems:
-                return schema && ((constrainedItems && arrayLength < schema.maxItems) || !constrainedItems);
+                return (
+                    schema &&
+                    ((constrainedItems && arrayLength < schema.maxItems) ||
+                        !constrainedItems)
+                );
         }
     }
 
     private renderArrayMenuItems(): JSX.Element[] {
         const arrayLength: number = this.getArrayLength();
         const schema: any = this.getSubschema();
-        const lessThanMaxItems: boolean = this.hasItemConstraints(schema, arrayLength, ItemConstraints.maxItems);
-        const moreThanMinItems: boolean = this.hasItemConstraints(schema, arrayLength, ItemConstraints.minItems);
+        const lessThanMaxItems: boolean = this.hasItemConstraints(
+            schema,
+            arrayLength,
+            ItemConstraints.maxItems
+        );
+        const moreThanMinItems: boolean = this.hasItemConstraints(
+            schema,
+            arrayLength,
+            ItemConstraints.minItems
+        );
         const items: ArrayMenuItem[] = [];
 
         // if we have maxItems and the data is less than max items, allow adding items
@@ -332,29 +391,33 @@ class FormItemArray extends React.Component<FormItemArrayProps & ManagedClasses<
             items.push(this.getArrayMenuItem(ArrayAction.add, "Add item"));
         }
 
-         // if we have minItems and the data is more than min items, allow removal of the items
+        // if we have minItems and the data is more than min items, allow removal of the items
         if (moreThanMinItems) {
             for (let index: number = 0; index < arrayLength; index++) {
-                items.push(this.getArrayMenuItem(ArrayAction.remove, this.props.data[index].text || `Item ${index + 1}`, index));
+                items.push(
+                    this.getArrayMenuItem(
+                        ArrayAction.remove,
+                        this.props.data[index].text || `Item ${index + 1}`,
+                        index
+                    )
+                );
             }
         }
 
         // we have nothing to add or delete
         if (items.length === 0) {
-            items.push({text: "No actions available"});
+            items.push({ text: "No actions available" });
         }
 
         return items.map((item: any, index: number) => {
-            const className: string = item.type === ArrayAction.remove
-                ? this.props.managedClasses.formItemArray_actionMenuItem__remove
-                : this.props.managedClasses.formItemArray_actionMenuItem__add;
+            const className: string =
+                item.type === ArrayAction.remove
+                    ? this.props.managedClasses.formItemArray_actionMenuItem__remove
+                    : this.props.managedClasses.formItemArray_actionMenuItem__add;
 
             return (
                 <li key={index}>
-                    <button
-                        className={className}
-                        onClick={item.onClick}
-                    >
+                    <button className={className} onClick={item.onClick}>
                         {item.text}
                     </button>
                 </li>

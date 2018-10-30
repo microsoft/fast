@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-browser-extensions",
   "description": "An extension for testing real-world localization, theming, and other production type scenarios in web development.",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -21,6 +21,8 @@
     "build:interface": "tsc -p ./tsconfig.json",
     "dev:chrome": "cross-env TARGET_BROWSER=chrome NODE_ENV=development ts-node ./node_modules/webpack/bin/webpack.js --progress",
     "prepack": "rm -rf ./dist && npm run build:interface",
+    "prettier": "prettier --config ../../.prettierrc --write '**/*.ts'",
+    "prettier:diff": "prettier --config ../../.prettierrc '**/*.ts' --list-different",
     "test": "npm run tslint && npm run build:interface && npm run build:chrome",
     "tslint": "tslint -c tslint.json '**/*.ts'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts'"
@@ -33,9 +35,11 @@
     "cross-env": "^5.1.1",
     "fork-ts-checker-webpack-plugin": "^0.4.0",
     "generate-json-webpack-plugin": "^0.2.2",
+    "prettier": "1.14.3",
     "ts-loader": "^4.0.1",
     "ts-node": "^4.0.2",
     "tslint": "^5.9.1",
+    "tslint-config-prettier": "^1.15.0",
     "tslint-loader": "^3.6.0",
     "tslint-react": "^3.3.3",
     "typescript": "^3.0.1",

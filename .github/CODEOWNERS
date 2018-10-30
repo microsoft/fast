@@ -21,6 +21,9 @@
 # fast-application-utils
 /packages/fast-application-utils/ @janechu @chrisdholt
 
+# fast-breakpoint-tracker-react
+/packages/fast-breakpoint-tracker-react/ @nicholasrice @chrisdholt
+
 # fast-browser-extension
 /packages/fast-browser-extension/ @nicholasrice @janechu
 

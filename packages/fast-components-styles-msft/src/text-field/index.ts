@@ -3,9 +3,15 @@ import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manage
 import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { adjustContrast, contrast, toPx } from "@microsoft/fast-jss-utilities";
 import { get } from "lodash-es";
-import { applyType } from "../utilities/typography";
+import { applyTypeRampConfig } from "../utilities/typography";
 import { fontWeight } from "../utilities/fonts";
-import { disabledContrast, ensureForegroundNormal, ensuresBackgroundNormal, foregroundNormal, hoverContrast  } from "../utilities/colors";
+import {
+    disabledContrast,
+    ensureForegroundNormal,
+    ensuresBackgroundNormal,
+    foregroundNormal,
+    hoverContrast,
+} from "../utilities/colors";
 import { density } from "../utilities/density";
 import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
 
@@ -14,12 +20,20 @@ import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
  */
 function disabledColor(config: DesignSystem): string {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    return disabledContrast(designSystem.contrast, foregroundNormal(designSystem), designSystem.backgroundColor);
+    return disabledContrast(
+        designSystem.contrast,
+        foregroundNormal(designSystem),
+        designSystem.backgroundColor
+    );
 }
 
 function hoverColor(config: DesignSystem): string {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    return hoverContrast(designSystem.contrast, foregroundNormal(designSystem), designSystem.backgroundColor);
+    return hoverContrast(
+        designSystem.contrast,
+        foregroundNormal(designSystem),
+        designSystem.backgroundColor
+    );
 }
 
 const styles: ComponentStyles<TextFieldClassNameContract, DesignSystem> = (
@@ -29,7 +43,7 @@ const styles: ComponentStyles<TextFieldClassNameContract, DesignSystem> = (
 
     return {
         textField: {
-            ...applyType("t7", "vp1"),
+            ...applyTypeRampConfig("t7"),
             color: ensureForegroundNormal,
             background: ensuresBackgroundNormal,
             fontWeight: fontWeight.light.toString(),
@@ -42,18 +56,18 @@ const styles: ComponentStyles<TextFieldClassNameContract, DesignSystem> = (
             minHeight: toPx(minHeight),
             maxHeight: toPx(maxHeight),
             "&:hover": {
-                borderColor: hoverColor(designSystem)
+                borderColor: hoverColor(designSystem),
             },
             "&:focus": {
                 outline: "none",
-                boxShadow: `0 0 0 1px inset ${foregroundNormal(designSystem)}`
+                boxShadow: `0 0 0 1px inset ${foregroundNormal(designSystem)}`,
             },
             "&:disabled": {
                 borderColor: disabledColor(designSystem),
                 color: disabledColor(designSystem),
-                cursor: "not-allowed"
-            }
-        }
+                cursor: "not-allowed",
+            },
+        },
     };
 };
 

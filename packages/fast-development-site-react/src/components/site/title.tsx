@@ -6,11 +6,7 @@ export interface SiteTitleProps {
 
 class SiteTitle extends React.Component<SiteTitleProps, {}> {
     public render(): JSX.Element {
-        return (
-            <React.Fragment>
-                {this.props.children}
-            </React.Fragment>
-        );
+        return <React.Fragment>{this.props.children}</React.Fragment>;
     }
 }
 

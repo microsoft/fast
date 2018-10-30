@@ -7,14 +7,14 @@
  * @param {boolean} example - Return a single example.
  * @return {array | object} - A function that returns an array of enums.
  */
-module.exports = function (schema, propertyName, required, arrayConfig, example) {
+module.exports = function(schema, propertyName, required, arrayConfig, example) {
     let enumArray = [];
 
     if (schema.enum) {
         if (example) {
             let enumObj = {};
             enumObj[propertyName] = schema.enum[0];
-            
+
             return enumObj;
         }
 
@@ -24,7 +24,9 @@ module.exports = function (schema, propertyName, required, arrayConfig, example)
                 enumObjArray[propertyName] = [];
 
                 for (let i = 0; i < arrayConfig.itemNumber; i++) {
-                    enumObjArray[propertyName].push((schema.default) ? schema.default : enumItem);
+                    enumObjArray[propertyName].push(
+                        schema.default ? schema.default : enumItem
+                    );
                 }
 
                 enumArray.push(enumObjArray);

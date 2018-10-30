@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@3.0.1...@microsoft/fast-layouts-react@3.0.2) (2018-10-27)
+
+
+### Bug Fixes
+
+* corrects typings and exports for all of fast-layouts-react ([#1043](https://github.com/Microsoft/fast-dna/issues/1043)) ([a92ed4c](https://github.com/Microsoft/fast-dna/commit/a92ed4c))
+
+
+
+
+
 ## [3.0.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@3.0.0...@microsoft/fast-layouts-react@3.0.1) (2018-10-09)
 
 

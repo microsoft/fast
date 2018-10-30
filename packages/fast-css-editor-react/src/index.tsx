@@ -7,11 +7,7 @@ export interface CSSEditorProps extends CSSPositionProps {}
 
 class CSSEditor extends React.Component<CSSEditorProps, {}> {
     public render(): JSX.Element {
-        return (
-            <div>
-                {this.renderPosition()}
-            </div>
-        );
+        return <div>{this.renderPosition()}</div>;
     }
 
     private renderPosition(): JSX.Element {
@@ -31,11 +27,18 @@ class CSSEditor extends React.Component<CSSEditorProps, {}> {
         this.props.onChange(
             Object.assign(
                 {},
-                omit(this.props, ["position", "onChange", Location.top, Location.bottom, Location.left, Location.right]),
+                omit(this.props, [
+                    "position",
+                    "onChange",
+                    Location.top,
+                    Location.bottom,
+                    Location.left,
+                    Location.right,
+                ]),
                 { ...position }
             )
         );
-    }
+    };
 }
 
 export default CSSEditor;

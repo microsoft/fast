@@ -7,7 +7,7 @@ import MSFTCallToAction, {
     CallToActionHandledProps as MSFTCallToActionHandledProps,
     CallToActionManagedClasses,
     CallToActionProps as MSFTCallToActionProps,
-    CallToActionUnhandledProps
+    CallToActionUnhandledProps,
 } from "./call-to-action";
 import { Subtract } from "utility-types";
 
@@ -19,8 +19,13 @@ import { Subtract } from "utility-types";
 const CallToAction = manageJss(CallToActionStyles)(MSFTCallToAction);
 type CallToAction = typeof CallToAction;
 
-interface CallToActionHandledProps extends Subtract<MSFTCallToActionHandledProps, CallToActionManagedClasses> {}
-type CallToActionProps = ManagedJSSProps<MSFTCallToActionProps, CallToActionClassNameContract, DesignSystem>;
+interface CallToActionHandledProps
+    extends Subtract<MSFTCallToActionHandledProps, CallToActionManagedClasses> {}
+type CallToActionProps = ManagedJSSProps<
+    MSFTCallToActionProps,
+    CallToActionClassNameContract,
+    DesignSystem
+>;
 
 export {
     CallToAction,
@@ -28,5 +33,5 @@ export {
     CallToActionProps,
     CallToActionClassNameContract,
     CallToActionHandledProps,
-    CallToActionUnhandledProps
+    CallToActionUnhandledProps,
 };

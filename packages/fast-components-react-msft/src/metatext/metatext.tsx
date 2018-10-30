@@ -8,25 +8,24 @@ import {
     MetatextManagedClasses,
     MetatextProps,
     MetatextTag,
-    MetatextUnhandledProps
+    MetatextUnhandledProps,
 } from "./metatext.props";
 import { Typography } from "../typography";
-import { ManagedClasses, MetatextClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import {
+    ManagedClasses,
+    MetatextClassNameContract,
+} from "@microsoft/fast-components-class-name-contracts-msft";
 
-class Metatext extends Foundation<
-    MetatextHandledProps,
-    MetatextUnhandledProps,
-    {}
-> {
+class Metatext extends Foundation<MetatextHandledProps, MetatextUnhandledProps, {}> {
     public static defaultProps: Partial<MetatextProps> = {
-        tag: MetatextTag.span
+        tag: MetatextTag.span,
     };
 
     public static displayName: string = "Metatext";
 
     protected handledProps: HandledProps<MetatextHandledProps> = {
         managedClasses: void 0,
-        tag: void 0
+        tag: void 0,
     };
 
     /**

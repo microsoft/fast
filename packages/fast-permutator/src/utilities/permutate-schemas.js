@@ -1,10 +1,10 @@
-const clone = require('lodash-es').cloneDeep;
+const clone = require("lodash-es").cloneDeep;
 
-const resolveOneOfAnyOf = require('./resolve-one-of-any-of');
-const resolveAllOf = require('./resolve-all-of');
-const resolveNotRequired = require('./resolve-not-required');
-const resolveReferences = require('./resolve-references');
-const resolveDependencies = require('./resolve-dependencies');
+const resolveOneOfAnyOf = require("./resolve-one-of-any-of");
+const resolveAllOf = require("./resolve-all-of");
+const resolveNotRequired = require("./resolve-not-required");
+const resolveReferences = require("./resolve-references");
+const resolveDependencies = require("./resolve-dependencies");
 
 /**
  * Return an array of schemas with strict required rules generated
@@ -13,7 +13,7 @@ const resolveDependencies = require('./resolve-dependencies');
  * @param {array} refs - An array of reference schemas.
  * @return {array} - An array of schemas.
  */
-module.exports = function (schema, refs) {
+module.exports = function(schema, refs) {
     let allSchemas = [];
 
     // resolve references

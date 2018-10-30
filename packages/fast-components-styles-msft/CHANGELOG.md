@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.0.1...@microsoft/fast-components-styles-msft@3.1.0) (2018-10-27)
+
+
+### Bug Fixes
+
+* align checkbox and radio spacing and ensure examples are aligned ([#1092](https://github.com/Microsoft/fast-dna/issues/1092)) ([92bd613](https://github.com/Microsoft/fast-dna/commit/92bd613))
+* ensure that elevation shadow values which are not whole numbers are rounded to the nearest tenth ([#1094](https://github.com/Microsoft/fast-dna/issues/1094)) ([d9483b4](https://github.com/Microsoft/fast-dna/commit/d9483b4))
+* remove external margin, padding, and fix RTL micro-interaction on MSFT call to action ([#1064](https://github.com/Microsoft/fast-dna/issues/1064)) ([da5eee7](https://github.com/Microsoft/fast-dna/commit/da5eee7))
+
+
+### Features
+
+* add radio component ([#884](https://github.com/Microsoft/fast-dna/issues/884)) ([f3cf735](https://github.com/Microsoft/fast-dna/commit/f3cf735))
+* deprecate responsive type ramp and update ramp to even values ([#1084](https://github.com/Microsoft/fast-dna/issues/1084)) ([c6b2f4e](https://github.com/Microsoft/fast-dna/commit/c6b2f4e))
+
+
+
+
+
 ## [3.0.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.0.0...@microsoft/fast-components-styles-msft@3.0.1) (2018-10-09)
 
 

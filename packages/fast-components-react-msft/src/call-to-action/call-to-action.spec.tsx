@@ -3,13 +3,16 @@ import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16/build";
 import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
-import { generateSnapshots, SnapshotTestSuite } from "@microsoft/fast-jest-snapshots-react";
+import {
+    generateSnapshots,
+    SnapshotTestSuite,
+} from "@microsoft/fast-jest-snapshots-react";
 import MSFTCallToAction, {
     CallToActionAppearance,
     CallToActionHandledProps,
     CallToActionManagedClasses,
     CallToActionProps,
-    CallToActionUnhandledProps
+    CallToActionUnhandledProps,
 } from "./call-to-action";
 import { CallToAction } from "./index";
 import { CallToActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
@@ -17,7 +20,7 @@ import { CallToActionClassNameContract } from "@microsoft/fast-components-class-
 /*
  * Configure Enzyme
  */
-configure({adapter: new Adapter()});
+configure({ adapter: new Adapter() });
 
 describe("call to action snapshot", (): void => {
     generateSnapshots(examples as SnapshotTestSuite<CallToActionProps>);
@@ -39,33 +42,29 @@ describe("call to action", (): void => {
     });
 
     test("should not throw if managedClasses are not provided", () => {
-        expect(
-            () => {
-                shallow(<MSFTCallToAction />);
-                shallow(<MSFTCallToAction disabled={true} />);
-                shallow(<MSFTCallToAction appearance={CallToActionAppearance.primary} />);
-                shallow(<MSFTCallToAction appearance={CallToActionAppearance.lightweight} />);
-                shallow(<MSFTCallToAction appearance={CallToActionAppearance.justified} />);
-            }
-        ).not.toThrow();
+        expect(() => {
+            shallow(<MSFTCallToAction />);
+            shallow(<MSFTCallToAction disabled={true} />);
+            shallow(<MSFTCallToAction appearance={CallToActionAppearance.primary} />);
+            shallow(<MSFTCallToAction appearance={CallToActionAppearance.lightweight} />);
+            shallow(<MSFTCallToAction appearance={CallToActionAppearance.justified} />);
+        }).not.toThrow();
     });
 
     test("should implement unhandledProps", () => {
         const handledProps: CallToActionProps & CallToActionManagedClasses = {
             managedClasses,
             href,
-            children: "text"
+            children: "text",
         };
 
         const unhandledProps: CallToActionUnhandledProps = {
-            "aria-label": "label"
+            "aria-label": "label",
         };
 
-        const props: CallToActionProps = {...handledProps, ...unhandledProps};
+        const props: CallToActionProps = { ...handledProps, ...unhandledProps };
 
-        const rendered: any = mount(
-            <CallToAction {...props} />
-        );
+        const rendered: any = mount(<CallToAction {...props} />);
 
         expect(rendered.first().prop("aria-label")).toEqual("label");
     });
@@ -73,74 +72,74 @@ describe("call to action", (): void => {
     // tslint:disable-next-line:max-line-length
     test("should apply a 'primary' html class when appearance is primary", () => {
         const props: CallToActionHandledProps = {
-            appearance: CallToActionAppearance.primary
+            appearance: CallToActionAppearance.primary,
         };
 
-        const rendered: any = mount(
-            <CallToAction {...props}/>
-        );
+        const rendered: any = mount(<CallToAction {...props} />);
 
-        expect(rendered.find("button").prop("className")).toContain("callToAction__primary");
+        expect(rendered.find("button").prop("className")).toContain(
+            "callToAction__primary"
+        );
     });
 
     // tslint:disable-next-line:max-line-length
     test("should apply a 'lightweight' html class when appearance is lightweight", () => {
         const props: CallToActionHandledProps = {
-            appearance: CallToActionAppearance.lightweight
+            appearance: CallToActionAppearance.lightweight,
         };
 
-        const rendered: any = mount(
-            <CallToAction {...props}/>
-        );
+        const rendered: any = mount(<CallToAction {...props} />);
 
-        expect(rendered.find("button").prop("className")).toContain("callToAction__lightweight");
+        expect(rendered.find("button").prop("className")).toContain(
+            "callToAction__lightweight"
+        );
     });
 
     // tslint:disable-next-line:max-line-length
     test("should apply a 'justified' html class when appearance is justified", () => {
         const props: CallToActionHandledProps = {
-            appearance: CallToActionAppearance.justified
+            appearance: CallToActionAppearance.justified,
         };
 
-        const rendered: any = mount(
-            <CallToAction {...props}/>
-        );
+        const rendered: any = mount(<CallToAction {...props} />);
 
-        expect(rendered.find("button").prop("className")).toContain("callToAction__justified");
+        expect(rendered.find("button").prop("className")).toContain(
+            "callToAction__justified"
+        );
     });
 
     // tslint:disable-next-line:max-line-length
     test("should apply a 'disabled' html class when prop disabled is passed", () => {
         const props: CallToActionHandledProps = {
-            disabled: true
+            disabled: true,
         };
 
-        const rendered: any = mount(
-            <CallToAction {...props}/>
-        );
+        const rendered: any = mount(<CallToAction {...props} />);
 
-        expect(rendered.find("button").prop("className")).toContain("callToAction__disabled");
+        expect(rendered.find("button").prop("className")).toContain(
+            "callToAction__disabled"
+        );
     });
 
     // tslint:disable-next-line:max-line-length
     test("should set a custom class name and 'primary' class name when appearance is primary and a custom class is passed", () => {
         const props: CallToActionHandledProps = {
-            appearance: CallToActionAppearance.primary
+            appearance: CallToActionAppearance.primary,
         };
 
         const rendered: any = mount(
-            <CallToAction className={"custom-class-name"} {...props}/>
+            <CallToAction className={"custom-class-name"} {...props} />
         );
 
         expect(rendered.find("button").prop("className")).toContain("custom-class-name");
-        expect(rendered.find("button").prop("className")).toContain("callToAction__primary");
+        expect(rendered.find("button").prop("className")).toContain(
+            "callToAction__primary"
+        );
     });
 
     // tslint:disable-next-line:max-line-length
     test("should apply a custom class-name", () => {
-        const rendered: any = mount(
-            <CallToAction className={"custom-class-name"} />
-        );
+        const rendered: any = mount(<CallToAction className={"custom-class-name"} />);
 
         expect(rendered.find("button").prop("className")).toContain("custom-class-name");
     });

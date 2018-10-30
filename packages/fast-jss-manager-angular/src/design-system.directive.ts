@@ -8,7 +8,8 @@ import { eventNames } from "./utilities/get-event-names";
     selector: "design-system",
 })
 export class DesignSystemDirective {
-    @Input() private config: any;
+    @Input()
+    private config: any;
 
     private el: HTMLElement;
     private children: EventTarget[];
@@ -18,8 +19,16 @@ export class DesignSystemDirective {
         this.children = [];
 
         this.el.addEventListener(eventNames.getConfig, this.handleGetConfig, true);
-        this.el.addEventListener(eventNames.registerComponent, this.handleRegisterComponent, true);
-        this.el.addEventListener(eventNames.deregisterComponent, this.handleDeregisterComponent, true);
+        this.el.addEventListener(
+            eventNames.registerComponent,
+            this.handleRegisterComponent,
+            true
+        );
+        this.el.addEventListener(
+            eventNames.deregisterComponent,
+            this.handleDeregisterComponent,
+            true
+        );
     }
 
     public ngOnChanges(changes: SimpleChanges): void {
@@ -34,8 +43,16 @@ export class DesignSystemDirective {
 
     public ngOnDestroy(): void {
         this.el.removeEventListener(eventNames.getConfig, this.handleGetConfig, true);
-        this.el.removeEventListener(eventNames.registerComponent, this.handleRegisterComponent, true);
-        this.el.removeEventListener(eventNames.deregisterComponent, this.handleDeregisterComponent, true);
+        this.el.removeEventListener(
+            eventNames.registerComponent,
+            this.handleRegisterComponent,
+            true
+        );
+        this.el.removeEventListener(
+            eventNames.deregisterComponent,
+            this.handleDeregisterComponent,
+            true
+        );
     }
 
     /**
@@ -43,19 +60,19 @@ export class DesignSystemDirective {
      */
     private handleGetConfig = (e: CustomEvent): void => {
         Object.assign(e.detail, this.config);
-    }
+    };
 
     /**
      * Handles registering the component with the design system directive
      */
     private handleRegisterComponent = (e: CustomEvent): void => {
         this.children.push(e.target);
-    }
+    };
 
     /**
      * Handles de-registering the component with the design system directive
      */
     private handleDeregisterComponent = (e: CustomEvent): void => {
         this.children.filter((child: EventTarget) => child !== e.target);
-    }
+    };
 }

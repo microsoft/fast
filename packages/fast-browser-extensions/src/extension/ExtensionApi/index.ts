@@ -15,7 +15,7 @@ export default new ExtensionApi();
  */
 export enum APIName {
     chrome = "chrome",
-    browser = "browser"
+    browser = "browser",
 }
 
 export function getApiSupport(): APIName {
