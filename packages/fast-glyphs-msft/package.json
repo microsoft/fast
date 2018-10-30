@@ -27,6 +27,9 @@
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
+  "bugs": {
+    "url": "https://github.com/Microsoft/fast-dna/issues/new/choose"
+  },
   "homepage": "https://github.com/Microsoft/fast-tslint-rules#readme",
   "devDependencies": {
     "@babel/preset-env": "^7.1.0",

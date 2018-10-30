@@ -12,6 +12,9 @@
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast-dna.git"
   },
+  "bugs": {
+    "url": "https://github.com/Microsoft/fast-dna/issues/new/choose"
+  },
   "scripts": {
     "integration-tests:alpha": "node build/testing/sauce-labs/test-browsers.js alpha",
     "integration-tests:beta": "node build/testing/sauce-labs/test-browsers.js beta",
