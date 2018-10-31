@@ -8,6 +8,7 @@ coverage/
 node_modules/
 scripts/
 src/
+www/
 
 # Tests
 __tests__/
