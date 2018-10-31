@@ -21,8 +21,8 @@
     "integration-tests:release": "node build/testing/sauce-labs/test-browsers.js release",
     "prettier:diff": "prettier --config .prettierrc '**/*.{ts,tsx,js}' --list-different",
     "test": "npm run tslint && npm run unit-tests",
-    "tslint": "tslint -c ./tslint.json '*.{ts,tsx,js}'",
-    "tslint:fix": "tslint -c ./tslint.json --fix '*.{ts,tsx,js}'",
+    "tslint": "tslint -c ./tslint.json 'build/**/*.ts'",
+    "tslint:fix": "tslint -c ./tslint.json --fix 'build/**/*.ts'",
     "unit-tests": "jest --maxWorkers=4",
     "unit-tests:watch": "jest --watch",
     "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput"
