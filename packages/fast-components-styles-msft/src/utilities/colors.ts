@@ -29,6 +29,18 @@ const scaleContrastLarge: (contrast: number) => number = curry(scaleContrast)(
 
 export { scaleContrastNormal, scaleContrastLarge };
 
+export function backgroundColor(config: DesignSystem): string {
+    return withDesignSystemDefaults(config).backgroundColor;
+}
+
+export function foregroundColor(config: DesignSystem): string {
+    return withDesignSystemDefaults(config).foregroundColor;
+}
+
+export function brandColor(config: DesignSystem): string {
+    return withDesignSystemDefaults(config).brandColor;
+}
+
 /**
  * The following functions use a "normal" and "large" naming convention. These names are intended
  * to map directly to the concepts proposed by www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html
@@ -139,6 +151,18 @@ export function foregroundNormal(config: DesignSystem): string {
 }
 
 /**
+ * Set the foreground color to meet normal contrast ratios against a background color
+ */
+export function foregroundLarge(config: DesignSystem): string {
+    const designSystem: DesignSystem = withDesignSystemDefaults(config);
+    return largeContrast(
+        designSystem.contrast,
+        designSystem.foregroundColor,
+        designSystem.backgroundColor
+    );
+}
+
+/**
  * Ensure the brand color meets normal contrast ratios against a background color
  */
 export function ensureBrandNormal(config: DesignSystem): string {
@@ -153,9 +177,25 @@ export function ensureBrandNormal(config: DesignSystem): string {
 /**
  * Ensure the background color meets normal contrast ratios against a background color
  */
-export function ensuresBackgroundNormal(config: DesignSystem): string {
+function ensureBackgroundNormal(config: DesignSystem): string {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     return ensureNormalContrast(
+        designSystem.contrast,
+        designSystem.backgroundColor,
+        designSystem.foregroundColor
+    );
+}
+
+/**
+ * @Deprecated 3.1.0
+ */
+const ensuresBackgroundNormal: (config: DesignSystem) => string = ensureBackgroundNormal;
+
+export { ensureBackgroundNormal, ensuresBackgroundNormal };
+
+export function ensureBackgroundLarge(config: DesignSystem): string {
+    const designSystem: DesignSystem = withDesignSystemDefaults(config);
+    return ensureLargeContrast(
         designSystem.contrast,
         designSystem.backgroundColor,
         designSystem.foregroundColor

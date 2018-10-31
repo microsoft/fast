@@ -7,6 +7,12 @@ export { CardExamples };
 import CheckboxExamples from "../src/checkbox/examples.data";
 export { CheckboxExamples };
 
+import ContextMenu from "../src/context-menu/examples.data";
+export { ContextMenu };
+
+import ContextMenuItem from "../src/context-menu-item/examples.data";
+export { ContextMenuItem };
+
 import DialogExamples from "../src/dialog/examples.data";
 export { DialogExamples };
 

@@ -1,6 +1,7 @@
 export * from "./button";
 export * from "./call-to-action";
 export * from "./caption";
+export * from "./context-menu-item";
 export * from "./flipper";
 export * from "./heading";
 export * from "./managed-classes";

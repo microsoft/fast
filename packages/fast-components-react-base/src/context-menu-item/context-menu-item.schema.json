@@ -1,0 +1,33 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Context menu item",
+    "description": "A context menu item component's schema definition.",
+    "type": "object",
+    "id": "context-menu-item",
+    "properties": {
+        "disabled": {
+            "title": "Disabled",
+            "type": "boolean"
+        },
+        "role": {
+            "title": "HTML role attribute",
+            "type": "string",
+            "default": "menuitem",
+            "enum": [
+                "menuitem",
+                "menuitemradio",
+                "menuitemcheckbox"
+            ]
+        }
+    },
+    "reactProperties": {
+        "children": {
+            "title": "Building blocks",
+            "type": "children",
+            "ids": ["metatext"],
+            "defaults": [
+                "text"
+            ]
+        }
+    }
+}
