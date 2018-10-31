@@ -22,7 +22,6 @@ export const callToActionButtonOverrides: ComponentStyles<
 > = {
     button: {
         maxWidth: "100%",
-        padding: "0 12px",
     },
     button_contentRegion: {
         transition: "all 600ms cubic-bezier(0.19, 1, 0.22, 1)",
@@ -69,7 +68,6 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
             display: "inline-flex",
             maxWidth: "100%",
             border: "2px solid transparent",
-            padding: "0 12px",
             lineHeight: "1",
             textDecoration: "none",
             whiteSpace: "nowrap",

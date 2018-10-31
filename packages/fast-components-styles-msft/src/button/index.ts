@@ -49,7 +49,7 @@ function applyTransaprentBackplateStyles(): CSSRules<DesignSystem> {
             boxShadow: "none",
             ...applyTransaprentBackground(),
         },
-        "&:focus span::before, &:active span::before, &:hover span::before": {
+        "&:focus $button_contentRegion::before, &:active $button_contentRegion::before, &:hover $button_contentRegion::before": {
             background: (config: DesignSystem): string => {
                 const designSystem: DesignSystem = withDesignSystemDefaults(config);
                 return ensureNormalContrast(
@@ -59,11 +59,10 @@ function applyTransaprentBackplateStyles(): CSSRules<DesignSystem> {
                 );
             },
         },
-        "&$button__disabled $button_contentRegion::before, &$button__disabled $button_contentRegion::before": {
+        "&$button__disabled, &$button__disabled $button_contentRegion::before": {
             ...applyTransaprentBackground(),
         },
-        "&:disabled, &[aria-disabled]": {
-            ...applyTransaprentBackground(),
+        "&$button__disabled": {
             borderColor: "transparent",
             color: (config: DesignSystem): string => {
                 const designSystem: DesignSystem = withDesignSystemDefaults(config);
@@ -193,6 +192,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             boxSizing: "border-box",
             maxWidth: "374px",
             minWidth: "120px",
+            padding: "0 16px",
             display: "inline-flex",
             justifyContent: "center",
             alignItems: "center",
@@ -272,7 +272,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
                 display: "block",
                 height: "2px",
                 position: "absolute",
-                bottom: "-1px",
+                bottom: "-3px",
                 width: "100%",
                 [applyLocalizedProperty("left", "right", direction)]: "0",
             },
