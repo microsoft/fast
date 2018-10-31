@@ -35,7 +35,7 @@
   "jest": {
     "collectCoverage": true,
     "collectCoverageFrom": [
-      "build/helpers/*.{tsx|ts}"
+      "build/helpers/*.ts"
     ],
     "coverageThreshold": {
       "global": {
@@ -47,29 +47,29 @@
     },
     "testURL": "http://localhost",
     "transform": {
-      "^.+\\.tsx?$": "ts-jest",
-      "^.+\\.jsx?$": "babel-jest"
+      "^.+\\.ts?$": "ts-jest",
+      "^.+\\.js?$": "babel-jest"
     },
     "transformIgnorePatterns": [
-      "!<rootDir>/node_modules/lodash-es"
+      "!<rootDir>/node_modules/lodash-es",
+      "node_modules/jss-*",
+      "node_modules/css-vendor"
     ],
     "testPathIgnorePatterns": [
       "packages/",
       "build/helpers/__tests__/*"
     ],
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(js?|ts?)$",
     "moduleFileExtensions": [
       "ts",
-      "tsx",
-      "js",
-      "jsx"
+      "js"
     ],
     "moduleDirectories": [
       "node_modules"
     ]
   },
   "lint-staged": {
-    "*.{ts,tsx,js}": [
+    "*.{ts,js}": [
       "lerna run prettier",
       "git add ."
     ]
@@ -79,7 +79,6 @@
     "@types/jest": "^23.3.5",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.7",
-    "@types/react": "^16.3.6",
     "babel-core": "^6.26.0",
     "babel-jest": "^23.6.0",
     "babel-preset-env": "^1.6.1",
