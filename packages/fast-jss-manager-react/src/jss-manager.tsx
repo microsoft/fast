@@ -53,6 +53,7 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
     private managedComponentProps(): T & ManagedClasses<S> {
         return {
             ...pickBy(this.props, this.pickManagedComponentProps),
+            managedClasses: {},
         } as T & ManagedClasses<S>;
     }
 

@@ -44,9 +44,9 @@ const stylesheetResolver: ComponentStyles<any, any> = (config: any): any => {
     };
 };
 
-class SimpleComponent extends React.Component<{}, {}> {
+class SimpleComponent extends React.Component<any, {}> {
     public render(): JSX.Element {
-        return <div {...this.props} />;
+        return <div id={this.props.id} />;
     }
 }
 
@@ -61,7 +61,7 @@ const staticAndDynamicStyles: ComponentStyles<any, any> = {
 };
 
 describe("The JSSManager", (): void => {
-    class NoPropsManager extends JSSManager<any, void, void> {
+    class NoPropsManager extends JSSManager<any, any, any> {
         protected styles: void = undefined;
         protected managedComponent: React.ComponentType<any> = SimpleComponent;
     }
@@ -88,9 +88,18 @@ describe("The JSSManager", (): void => {
     });
 
     test("should not pass the managedClasses prop through to managed component", (): void => {
-        const rendered: any = mount(<NoPropsManager managedClasses={{ foo: "foo" }} />);
+        const managedClasses: any = { foo: "foo" };
+        const rendered: any = mount(<NoPropsManager managedClasses={managedClasses} />);
 
-        expect(rendered.find("SimpleComponent").prop("managedClasses")).toBeUndefined();
+        expect(rendered.find("SimpleComponent").prop("managedClasses")).not.toEqual(
+            managedClasses
+        );
+    });
+
+    test("should provide an empty object to the managedClasses prop if no styles are provided", (): void => {
+        const rendered: any = mount(<NoPropsManager />);
+
+        expect(rendered.find("SimpleComponent").prop("managedClasses")).toEqual({});
     });
 
     test("should have a default context if no context is provided", (): void => {
