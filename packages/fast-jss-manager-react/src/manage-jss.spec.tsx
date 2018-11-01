@@ -23,7 +23,7 @@ class SimpleComponent extends React.Component<any, any> {
 }
 
 describe("manageJss", (): void => {
-    test("should return a  function", (): void => {
+    test("should return a function", (): void => {
         expect(typeof manageJss()).toBe("function");
     });
 

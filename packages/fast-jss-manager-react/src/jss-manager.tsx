@@ -31,7 +31,7 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
     /**
      * The source style object that should be compiled into a StyleSheet
      */
-    protected abstract styles: ComponentStyles<S, C>;
+    protected abstract styles: ComponentStyles<S, C> | void;
 
     /**
      * The component that should have styles and classes managed by the JSSManager
