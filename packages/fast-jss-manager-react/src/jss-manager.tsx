@@ -43,8 +43,32 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
      */
     protected abstract managedComponent: React.ComponentType<T & ManagedClasses<S>>;
 
+    /**
+     * Store the design-system as an instance property because
+     * react does not give us first-class support for detecting changes
+     * to context values
+     */
+    private designSystem: C;
+
+    constructor(props: ManagedJSSProps<T, S, C>, context: C) {
+        super(props, context);
+
+        this.designSystem = context;
+    }
+
     public render(): JSX.Element {
         return React.createElement(this.managedComponent, this.managedComponentProps());
+    }
+
+    public componentDidUpdate(): void {
+        if (this.designSystem !== this.context) {
+            // TODO
+            // We will need to re-associate the stylesheet with  the new designSystem,
+            // then update the designSystem
+            this.designSystem = this.context;
+            this.forceUpdate();
+            return;
+        }
     }
 
     /**
