@@ -46,6 +46,9 @@ function manageJss<S, C>(
     ): React.ComponentClass<ManagedJSSProps<T, S, C>> {
         class JSSManagedComponent extends JSSManager<T, S, C> {
             protected styles: ComponentStyles<S, C> = styles;
+            protected managedComponent: React.ComponentType<
+                T & ManagedClasses<S>
+            > = Component;
         }
 
         return hoistNonReactStatics(JSSManagedComponent, Component);

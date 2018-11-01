@@ -7,7 +7,7 @@ import {
     ComponentStyleSheet,
     ManagedClasses,
 } from "@microsoft/fast-jss-manager";
-import { isEqual, merge } from "lodash-es";
+import { pickBy } from "lodash-es";
 import { Consumer } from "./context";
 
 /**
@@ -27,13 +27,35 @@ export type ManagedJSSProps<T, S, C> = Pick<
 > &
     JSSManagedComponentProps<S, C>;
 
-abstract class JSSManager<T, S, C> extends React.Component<
-    ManagedJSSProps<T, S, C>,
-    any
-> {
+abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S, C>, {}> {
+    /**
+     * The source style object that should be compiled into a StyleSheet
+     */
     protected abstract styles: ComponentStyles<S, C>;
-    public render(): string {
-        return "wee";
+
+    /**
+     * The component that should have styles and classes managed by the JSSManager
+     */
+    protected abstract managedComponent: React.ComponentType<T & ManagedClasses<S>>;
+
+    public render(): JSX.Element {
+        return React.createElement(this.managedComponent, this.managedComponentProps());
+    }
+
+    /**
+     * Generate a prop object to give to the managed component
+     */
+    private managedComponentProps(): T & ManagedClasses<S> {
+        return {
+            ...pickBy(this.props, this.pickManagedComponentProps),
+        } as T & ManagedClasses<S>;
+    }
+
+    /**
+     * pickBy callback to determine if props should be used
+     */
+    private pickManagedComponentProps(value: unknown, key: string): boolean {
+        return key !== "managedClasses" && key !== "jssStyleSheet";
     }
 }
 
