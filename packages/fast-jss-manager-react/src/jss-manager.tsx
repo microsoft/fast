@@ -8,7 +8,7 @@ import {
     ManagedClasses,
 } from "@microsoft/fast-jss-manager";
 import { pickBy } from "lodash-es";
-import { Consumer } from "./context";
+import { designSystemContext } from "./context";
 
 /**
  * Describes an interface for adjusting a styled component
@@ -28,6 +28,11 @@ export type ManagedJSSProps<T, S, C> = Pick<
     JSSManagedComponentProps<S, C>;
 
 abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S, C>, {}> {
+    /**
+     * Define the contextType for the manager to be the design system context
+     */
+    private static contextType: React.Context<unknown> = designSystemContext;
+
     /**
      * The source style object that should be compiled into a StyleSheet
      */

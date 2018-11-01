@@ -93,6 +93,46 @@ describe("The JSSManager", (): void => {
         expect(rendered.find("SimpleComponent").prop("managedClasses")).toBeUndefined();
     });
 
+    test("should have a default context if no context is provided", (): void => {
+        const rendered: any = mount(<NoPropsManager managedClasses={{ foo: "foo" }} />);
+
+        expect(rendered.instance().context).toEqual({});
+    });
+
+    test("the default context should share identity between component instances", (): void => {
+        const renderedOne: any = mount(
+            <NoPropsManager managedClasses={{ foo: "foo" }} />
+        );
+        const renderedTwo: any = mount(
+            <NoPropsManager managedClasses={{ foo: "bar" }} />
+        );
+
+        expect(renderedOne.instance().context).toBe(renderedTwo.instance().context);
+    });
+
+    test("the default context should share identity between component instances", (): void => {
+        const context: any = { foreground: "blue" };
+
+        const rendered: any = mount(
+            <DesignSystemProvider designSystem={context}>
+                <NoPropsManager managedClasses={{ foo: "bar" }} />;
+                <NoPropsManager managedClasses={{ foo: "foo" }} />;
+            </DesignSystemProvider>
+        );
+
+        expect(
+            rendered
+                .find("NoPropsManager")
+                .at(0)
+                .instance().context
+        ).toBe(
+            rendered
+                .find("NoPropsManager")
+                .at(1)
+                .instance().context
+        );
+    });
+
     xtest("should apply managedClasses when rendered with styles", (): void => {});
     xtest("should apply managedClasses when rendered with jssStyleSheet", (): void => {});
     xtest("should combine managedClasses when rendered with styles and jssStyleSheet", (): void => {});
