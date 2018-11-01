@@ -3,6 +3,7 @@ import { ComponentStyles, ManagedClasses } from "@microsoft/fast-jss-manager";
 import { omit } from "lodash-es";
 import { Consumer } from "./context";
 import { JSSManagedComponentProps, JSSManager, ManagedJSSProps } from "./jss-manager";
+import * as hoistNonReactStatics from "hoist-non-react-statics";
 
 /**
  * The prop name that must be passed to the JSSManager and not the managed component
@@ -39,48 +40,15 @@ function manageJss<S, C>(
     styles?: ComponentStyles<S, C>
 ): <T>(
     Component: React.ComponentType<T & ManagedClasses<S>>
-) => React.SFC<ManagedJSSProps<T, S, C>> {
-    /*
-     * @param T - The component prop interface
-     */
+) => React.ComponentClass<ManagedJSSProps<T, S, C>> {
     return function<T>(
         Component: React.ComponentType<T & ManagedClasses<S>>
-    ): React.SFC<ManagedJSSProps<T, S, C>> {
-        return (
-            props: ManagedJSSProps<T, S, C>
-        ): React.ReactElement<React.Consumer<unknown>> => {
-            /**
-             * Define the render prop of the JSSManager. Generated class-names are passed into
-             * this function and provided to the wrapped component
-             */
-            function renderLowerOrderComponent(
-                managedClasses: { [className in keyof S]?: string }
-            ): React.ReactNode {
-                return (
-                    <Component
-                        {...cleanLowerOrderComponentProps(props)}
-                        managedClasses={managedClasses}
-                    />
-                );
-            }
+    ): React.ComponentClass<ManagedJSSProps<T, S, C>> {
+        class JSSManagedComponent extends JSSManager<T, S, C> {
+            protected styles: ComponentStyles<S, C> = styles;
+        }
 
-            /**
-             * React Stateless Functional Component to render the JSSManager
-             * with props from Consumer
-             */
-            function renderJSSManager(designSystem: C): React.ReactNode {
-                return (
-                    <JSSManager
-                        styles={styles}
-                        designSystem={designSystem}
-                        jssStyleSheet={props.jssStyleSheet}
-                        render={renderLowerOrderComponent}
-                    />
-                );
-            }
-
-            return <Consumer>{renderJSSManager}</Consumer>;
-        };
+        return hoistNonReactStatics(JSSManagedComponent, Component);
     };
 }
 
