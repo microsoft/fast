@@ -1,5 +1,5 @@
 import * as React from "react";
-import { jss, stylesheetManager } from "./jss";
+import { jss, stylesheetManager, stylesheetRegistry } from "./jss";
 import { SheetsManager } from "jss";
 import { DesignSystem } from "./design-system-provider";
 import {
@@ -103,7 +103,7 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
          * If we don't, we need to go create the stylesheet
          */
         if (!!this.styles && !this.hasPrimaryStyleSheet()) {
-            // We need to create our stylesheet
+            this.registerTracker(this.createStyleSheet());
         }
     }
 
@@ -127,21 +127,47 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
     }
 
     /**
+     * Creates a JSS stylesheet from the dynamic portion of an associated style object and any style object passed
+     * as props
+     */
+    private createStyleSheet(): SheetTracker {
+        if (!this.styles) {
+            return;
+        }
+
+        const stylesheet: ComponentStyleSheet<S, C> =
+            typeof this.styles === "function"
+                ? this.styles(this.designSystem)
+                : this.styles;
+
+        const jssSheet: any = jss.createStyleSheet(stylesheet, {
+            link: true,
+            index: this.index,
+        });
+
+        stylesheetRegistry.add(jssSheet);
+
+        jssSheet.attach().update(this.designSystem);
+
+        return new SheetTracker(jssSheet);
+    }
+
+    /**
      * Checks to see if the style/design-system combination has an
      * associated stylesheet
      */
     private hasPrimaryStyleSheet(): boolean {
         if (this.styles) {
-            const stylesheetRegistry: WeakMap<
+            const sheetRegistry: WeakMap<
                 object,
                 SheetTracker
             > = JSSManager.sheetRegistry.get(this.styles);
 
             if (
-                stylesheetRegistry instanceof WeakMap &&
-                stylesheetRegistry.has(this.designSystem as any)
+                sheetRegistry instanceof WeakMap &&
+                sheetRegistry.has(this.designSystem as any)
             ) {
-                return Boolean(stylesheetRegistry.get(this.designSystem as any).sheet);
+                return Boolean(sheetRegistry.get(this.designSystem as any).sheet);
             }
         }
 
@@ -155,6 +181,28 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
         return JSSManager.sheetRegistry
             .get(this.styles as any)
             .get(this.designSystem as any).sheet;
+    }
+
+    /**
+     * Register's a SheetTracker with the current style and designSystem
+     */
+    private registerTracker(tracker: SheetTracker): void {
+        let sheetRegistry: WeakMap<
+            object,
+            SheetTracker
+        > | void = JSSManager.sheetRegistry.get(this.styles as any);
+
+        if (!(sheetRegistry instanceof WeakMap)) {
+            sheetRegistry = new WeakMap();
+            JSSManager.sheetRegistry.set(this.styles as any, sheetRegistry);
+        }
+
+        const designSystemRegistry: SheetTracker | void = sheetRegistry.get(this
+            .designSystem as any);
+
+        if (!(designSystemRegistry instanceof SheetTracker)) {
+            sheetRegistry.set(this.designSystem as any, tracker);
+        }
     }
 
     /**
