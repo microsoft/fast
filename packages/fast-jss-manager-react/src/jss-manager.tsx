@@ -1,5 +1,5 @@
 import * as React from "react";
-import { jss, stylesheetManager, stylesheetRegistry } from "./jss";
+import { jss, stylesheetManager } from "./jss";
 import { SheetsManager } from "jss";
 import { DesignSystem } from "./design-system-provider";
 import {
@@ -9,6 +9,7 @@ import {
 } from "@microsoft/fast-jss-manager";
 import { pickBy } from "lodash-es";
 import { designSystemContext } from "./context";
+import { SheetTracker } from "./tracker";
 
 /**
  * Describes an interface for adjusting a styled component
@@ -23,6 +24,7 @@ export interface JSSManagedComponentProps<S, C> {
  */
 export interface JSSStyleSheet {
     attached: boolean;
+    classes: { [key: string]: string };
     attach(): StyleSheet;
     update(config: unknown): StyleSheet;
 }
@@ -57,14 +59,25 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
     private static contextType: React.Context<unknown> = designSystemContext;
 
     /**
+     * A registry of all managed style instances. The registry is a WeakMap where each key is a
+     * ComponentStyles object and the value is another WeakMap, where the key is the designSystem and
+     * the value is a SheetTracker. This allows us to prevent duplicating stylesheets and only write a
+     * ComponentStyle/design-system combination once
+     */
+    private static sheetRegistry: WeakMap<
+        ComponentStyles<unknown, unknown>,
+        WeakMap<object, SheetTracker>
+    > = new WeakMap();
+
+    /**
      * The source style object that should be compiled into a StyleSheet
      */
-    protected abstract styles: ComponentStyles<S, C> | void;
+    protected styles: ComponentStyles<S, C> | void;
 
     /**
      * The component that should have styles and classes managed by the JSSManager
      */
-    protected abstract managedComponent: React.ComponentType<T & ManagedClasses<S>>;
+    protected managedComponent: React.ComponentType<T & ManagedClasses<S>>;
 
     /**
      * The stylesheet index for the JSSManager instance
@@ -83,6 +96,15 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
 
         this.index = JSSManager.index--;
         this.designSystem = context;
+
+        /*
+         * We need to check here if we have a stylesheet compiled with our
+         * designSystem and style object. If we do, then don't do anything.
+         * If we don't, we need to go create the stylesheet
+         */
+        if (!!this.styles && !this.hasCompiledJSSStyleSheet()) {
+            // We need to create our stylesheet
+        }
     }
 
     public render(): JSX.Element {
@@ -105,12 +127,59 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
     }
 
     /**
+     * Checks to see if the style/design-system combination has an
+     * associated stylesheet
+     */
+    private hasCompiledJSSStyleSheet(): boolean {
+        if (this.styles) {
+            const stylesheetRegistry: WeakMap<
+                object,
+                SheetTracker
+            > = JSSManager.sheetRegistry.get(this.styles);
+
+            if (
+                stylesheetRegistry instanceof WeakMap &&
+                stylesheetRegistry.has(this.designSystem as any)
+            ) {
+                return Boolean(stylesheetRegistry.get(this.designSystem as any).sheet);
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Return the JSSStyleSheet associated with the current designSystem and style
+     */
+    private getJSSStyleSheet(): JSSStyleSheet {
+        return JSSManager.sheetRegistry
+            .get(this.styles as any)
+            .get(this.designSystem as any).sheet;
+    }
+
+    /**
+     * Registers a new registry for the component's style property.
+     * If styles don't exist or the stylesheet has already been registered,
+     * this function does nothing
+     */
+    private registerStyles(): void {
+        const registry: WeakMap<
+            ComponentStyles<unknown, unknown>,
+            WeakMap<object, SheetTracker>
+        > = JSSManager.sheetRegistry;
+
+        if (this.styles && !(registry.get(this.styles) instanceof WeakMap)) {
+            registry.set(this.styles, new WeakMap());
+        }
+    }
+
+    /**
      * Generate a prop object to give to the managed component
      */
     private managedComponentProps(): T & ManagedClasses<S> {
         return {
             ...pickBy(this.props, this.pickManagedComponentProps),
-            managedClasses: {},
+            managedClasses: this.getManagedClassNames(),
         } as T & ManagedClasses<S>;
     }
 
@@ -119,6 +188,19 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
      */
     private pickManagedComponentProps(value: unknown, key: string): boolean {
         return key !== "managedClasses" && key !== "jssStyleSheet";
+    }
+
+    /**
+     * Returns the classes to pass down to the managed component
+     */
+    private getManagedClassNames(): ManagedClasses<S> {
+        let primaryClasses: ManagedClasses<S> | void;
+
+        if (this.hasCompiledJSSStyleSheet()) {
+            primaryClasses = this.getJSSStyleSheet().classes;
+        }
+
+        return primaryClasses || {};
     }
 }
 
