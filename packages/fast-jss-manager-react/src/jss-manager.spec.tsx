@@ -46,7 +46,7 @@ const stylesheetResolver: ComponentStyles<any, any> = (config: any): any => {
 
 class SimpleComponent extends React.Component<any, {}> {
     public render(): JSX.Element {
-        return <div id={this.props.id} />;
+        return <div id={this.props.id} children={this.props.children} />;
     }
 }
 
@@ -139,6 +139,21 @@ describe("The JSSManager", (): void => {
                 .find("NoPropsManager")
                 .at(1)
                 .instance().context
+        );
+    });
+
+    test("should render a parent with a higher index than a child", (): void => {
+        const rendered: any = mount(
+            <NoPropsManager>
+                <NoPropsManager />
+            </NoPropsManager>
+        );
+
+        expect(rendered.instance().index).toBeGreaterThan(
+            rendered
+                .children()
+                .find("NoPropsManager")
+                .instance().index
         );
     });
 

@@ -18,6 +18,15 @@ export interface JSSManagedComponentProps<S, C> {
     jssStyleSheet?: Partial<ComponentStyles<S, C>>;
 }
 
+/** Describes the JSS StyleSheet object
+ * that is returned form jss.createStyleSheet
+ */
+export interface JSSStyleSheet {
+    attached: boolean;
+    attach(): StyleSheet;
+    update(config: unknown): StyleSheet;
+}
+
 /**
  * Prop typing for the JSSManager
  */
@@ -28,6 +37,20 @@ export type ManagedJSSProps<T, S, C> = Pick<
     JSSManagedComponentProps<S, C>;
 
 abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S, C>, {}> {
+    /**
+     * JSS allows us to use an index to order the created style elements. The higher the index,
+     * the later in the document the style element will be created.
+     *
+     * This static index allows us to globally track every stylesheet created by the JSSManager. Each
+     * instance decrements this index and assigns itself the decremented value. The effect of this is that
+     * a React parent will always have a higher index than it's children because react constructs trees
+     * recursively starting at the root. With a parent always having a higher index then it's children,
+     * we can inform JSS of this order preference and ensure parent stylesheets always come later in the DOM.
+     *
+     * Inspiration for this approach to style element ordering comes from
+     * https://github.com/cssinjs/react-jss/blob/master/src/injectSheet.js
+     */
+    private static index: number = -1000;
     /**
      * Define the contextType for the manager to be the design system context
      */
@@ -44,6 +67,11 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
     protected abstract managedComponent: React.ComponentType<T & ManagedClasses<S>>;
 
     /**
+     * The stylesheet index for the JSSManager instance
+     */
+    private index: number;
+
+    /**
      * Store the design-system as an instance property because
      * react does not give us first-class support for detecting changes
      * to context values
@@ -53,6 +81,7 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
     constructor(props: ManagedJSSProps<T, S, C>, context: C) {
         super(props, context);
 
+        this.index = JSSManager.index--;
         this.designSystem = context;
     }
 
@@ -69,6 +98,10 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
             this.forceUpdate();
             return;
         }
+    }
+
+    public componentWillUnmount(): void {
+        JSSManager.index++;
     }
 
     /**
