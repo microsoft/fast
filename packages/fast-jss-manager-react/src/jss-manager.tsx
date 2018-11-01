@@ -102,7 +102,7 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
          * designSystem and style object. If we do, then don't do anything.
          * If we don't, we need to go create the stylesheet
          */
-        if (!!this.styles && !this.hasCompiledJSSStyleSheet()) {
+        if (!!this.styles && !this.hasPrimaryStyleSheet()) {
             // We need to create our stylesheet
         }
     }
@@ -130,7 +130,7 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
      * Checks to see if the style/design-system combination has an
      * associated stylesheet
      */
-    private hasCompiledJSSStyleSheet(): boolean {
+    private hasPrimaryStyleSheet(): boolean {
         if (this.styles) {
             const stylesheetRegistry: WeakMap<
                 object,
@@ -151,7 +151,7 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
     /**
      * Return the JSSStyleSheet associated with the current designSystem and style
      */
-    private getJSSStyleSheet(): JSSStyleSheet {
+    private primaryStyleSheet(): JSSStyleSheet {
         return JSSManager.sheetRegistry
             .get(this.styles as any)
             .get(this.designSystem as any).sheet;
@@ -196,8 +196,8 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
     private getManagedClassNames(): ManagedClasses<S> {
         let primaryClasses: ManagedClasses<S> | void;
 
-        if (this.hasCompiledJSSStyleSheet()) {
-            primaryClasses = this.getJSSStyleSheet().classes;
+        if (this.hasPrimaryStyleSheet()) {
+            primaryClasses = this.primaryStyleSheet().classes;
         }
 
         return primaryClasses || {};
