@@ -19,12 +19,53 @@
     "integration-tests:alpha": "node build/testing/sauce-labs/test-browsers.js alpha",
     "integration-tests:beta": "node build/testing/sauce-labs/test-browsers.js beta",
     "integration-tests:release": "node build/testing/sauce-labs/test-browsers.js release",
-    "prettier:diff": "prettier --config .prettierrc '**/*.{ts,tsx,js}' --list-different"
+    "test": "npm run tslint && npm run unit-tests",
+    "tslint": "tslint -c ./tslint.json 'build/**/*.ts'",
+    "tslint:fix": "tslint -c ./tslint.json --fix 'build/**/*.ts'",
+    "unit-tests": "jest --maxWorkers=4",
+    "unit-tests:watch": "jest --watch",
+    "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput"
   },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
     }
+  },
+  "jest": {
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "build/helpers/*.ts"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "statements": 100,
+        "branches": 100,
+        "functions": 100,
+        "lines": 100
+      }
+    },
+    "testURL": "http://localhost",
+    "transform": {
+      "^.+\\.ts?$": "ts-jest",
+      "^.+\\.js?$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "!<rootDir>/node_modules/lodash-es",
+      "node_modules/jss-*",
+      "node_modules/css-vendor"
+    ],
+    "testPathIgnorePatterns": [
+      "packages/",
+      "build/helpers/__tests__/*"
+    ],
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(js?|ts?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "moduleDirectories": [
+      "node_modules"
+    ]
   },
   "lint-staged": {
     "*.{ts,tsx,js}": [
@@ -33,17 +74,26 @@
     ]
   },
   "devDependencies": {
+    "@microsoft/fast-tslint-rules": "^3.0.0",
+    "@types/jest": "^23.3.5",
+    "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.7",
+    "babel-core": "^6.26.0",
+    "babel-jest": "^23.6.0",
+    "babel-preset-env": "^1.6.1",
     "dotenv": "^6.0.0",
     "eyes.selenium": "0.0.83",
     "glob": "^7.1.2",
     "husky": "^1.1.2",
+    "jest": "^23.6.0",
     "lerna": "^3.3.0",
     "lint-staged": "^7.3.0",
     "markdown-it": "^8.4.1",
     "rimraf": "^2.6.2",
     "prettier": "1.14.3",
+    "ts-jest": "^23.10.4",
     "ts-node": "^5.0.1",
+    "tslint": "^5.9.1",
     "typescript": "^3.0.1",
     "yargs": "^11.0.0"
   },
