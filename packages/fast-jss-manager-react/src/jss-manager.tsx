@@ -135,17 +135,26 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
         return React.createElement(this.managedComponent, this.managedComponentProps());
     }
 
-    public componentDidUpdate(): void {
-        if (this.designSystem !== this.context && !!this.styles) {
-            JSSManager.sheetManager.update(
-                this.styles,
-                this.designSystem as any,
-                this.context
-            );
-            this.designSystem = this.context;
-            this.forceUpdate();
+    public componentDidUpdate(prevProps: ManagedJSSProps<T, S, C>): void {
+        let shouldUpdate: boolean = false;
 
-            return;
+        if (this.designSystem !== this.context) {
+            if (!!this.styles) {
+                JSSManager.sheetManager.update(
+                    this.styles,
+                    this.designSystem as any,
+                    this.context
+                );
+
+                shouldUpdate = true;
+            }
+
+            this.designSystem = this.context;
+        }
+
+        // TODO we need to make updates if jssStyleSheet changes
+        if (shouldUpdate) {
+            this.forceUpdate();
         }
     }
 
