@@ -111,11 +111,7 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
         this.designSystem = context;
 
         if (this.props.jssStyleSheet) {
-            JSSManager.sheetManager.add(
-                this.props.jssStyleSheet,
-                this.designSystem,
-                this.index + 1
-            );
+            this.createPropStyleSheet();
         }
     }
 
@@ -158,11 +154,7 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
             ) {
                 JSSManager.sheetManager.remove(prevProps.jssStyleSheet, this
                     .designSystem as any);
-                JSSManager.sheetManager.add(
-                    this.props.jssStyleSheet,
-                    this.context as any,
-                    this.index + 1
-                );
+                this.createPropStyleSheet();
                 shouldUpdate = true;
             } else if (
                 hadSheetProps &&
@@ -179,11 +171,7 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
                 JSSManager.sheetManager.remove(prevProps.jssStyleSheet, this
                     .designSystem as any);
             } else if (!hadSheetProps && hasSheetProps) {
-                JSSManager.sheetManager.add(
-                    this.props.jssStyleSheet,
-                    this.designSystem,
-                    this.index + 1
-                );
+                this.createPropStyleSheet();
                 shouldUpdate = true;
             }
 
@@ -195,22 +183,15 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
         ) {
             JSSManager.sheetManager.remove(prevProps.jssStyleSheet, this
                 .designSystem as any);
-            JSSManager.sheetManager.add(
-                this.props.jssStyleSheet,
-                this.designSystem as any,
-                this.index + 1
-            );
+
+            this.createPropStyleSheet();
         }
 
         if (hadSheetProps && !hasSheetProps) {
             JSSManager.sheetManager.remove(prevProps.jssStyleSheet, this
                 .designSystem as any);
         } else if (!hadSheetProps && hasSheetProps) {
-            JSSManager.sheetManager.add(
-                this.props.jssStyleSheet,
-                this.designSystem,
-                this.index + 1
-            );
+            this.createPropStyleSheet();
         }
 
         // TODO we need to make updates if jssStyleSheet changes
@@ -222,6 +203,10 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
     public componentWillUnmount(): void {
         if (this.styles) {
             JSSManager.sheetManager.remove(this.styles, this.designSystem as any);
+        }
+
+        if (this.props.jssStyleSheet) {
+            JSSManager.sheetManager.remove(this.props.jssStyleSheet, this.designSystem as any);
         }
     }
 
@@ -314,6 +299,14 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
         } else if (typeof b === "string") {
             return b;
         }
+    }
+
+    private createPropStyleSheet(): void {
+        JSSManager.sheetManager.add(
+            this.props.jssStyleSheet,
+            this.designSystem,
+            this.index + 1
+        );
     }
 }
 
