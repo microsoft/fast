@@ -12,6 +12,24 @@ import { designSystemContext } from "./context";
 import { SheetTracker } from "./tracker";
 
 /**
+ * Registry class would expose simple API for associating design systems, use counts, and style objects
+ * @method create(styles, designSystem)
+ * @description creates a new association if one doesn't exit. If one does exist, it simply increments the
+ * count.
+ *
+ * @method read(styles, designSystem)
+ * @description retrieves the JSS sheet mapping to both styles and designSystem
+ *
+ *
+ * @method update(styles, previousDesignSystem, nextDesignSystem)
+ * @description Associates the stylesheet with a different design system
+ *
+ * @method delete(styles, designSystem)
+ * @description decrements a count for a set of stylesheets. If the count becomes 0,
+ * the sheet is removed from the DOM
+ */
+
+/**
  * Describes an interface for adjusting a styled component
  * per component instance
  */
@@ -25,8 +43,8 @@ export interface JSSManagedComponentProps<S, C> {
 export interface JSSStyleSheet {
     attached: boolean;
     classes: { [key: string]: string };
-    attach(): StyleSheet;
-    update(config: unknown): StyleSheet;
+    attach(): JSSStyleSheet;
+    update(config: unknown): JSSStyleSheet;
 }
 
 /**
@@ -72,12 +90,12 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
     /**
      * The source style object that should be compiled into a StyleSheet
      */
-    protected styles: ComponentStyles<S, C> | void;
+    protected abstract styles: ComponentStyles<S, C> | void;
 
     /**
      * The component that should have styles and classes managed by the JSSManager
      */
-    protected managedComponent: React.ComponentType<T & ManagedClasses<S>>;
+    protected abstract managedComponent: React.ComponentType<T & ManagedClasses<S>>;
 
     /**
      * The stylesheet index for the JSSManager instance
@@ -96,7 +114,9 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
 
         this.index = JSSManager.index--;
         this.designSystem = context;
+    }
 
+    public componentDidMount(): void {
         /*
          * We need to check here if we have a stylesheet compiled with our
          * designSystem and style object. If we do, then don't do anything.
@@ -104,6 +124,9 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
          */
         if (!!this.styles && !this.hasPrimaryStyleSheet()) {
             this.registerTracker(this.createStyleSheet());
+            this.forceUpdate();
+        } else if (this.hasPrimaryStyleSheet()) {
+            this.primarySheetTracker().increment();
         }
     }
 
@@ -113,6 +136,10 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
 
     public componentDidUpdate(): void {
         if (this.designSystem !== this.context) {
+            if (this.hasPrimaryStyleSheet()) {
+                this.primarySheetTracker().decrement();
+            }
+
             // TODO
             // We will need to re-associate the stylesheet with  the new designSystem,
             // then update the designSystem
@@ -174,13 +201,17 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
         return false;
     }
 
+    private primarySheetTracker(): SheetTracker {
+        return JSSManager.sheetRegistry
+            .get(this.styles as any)
+            .get(this.designSystem as any);
+    }
+
     /**
      * Return the JSSStyleSheet associated with the current designSystem and style
      */
     private primaryStyleSheet(): JSSStyleSheet {
-        return JSSManager.sheetRegistry
-            .get(this.styles as any)
-            .get(this.designSystem as any).sheet;
+        return this.primarySheetTracker().sheet;
     }
 
     /**

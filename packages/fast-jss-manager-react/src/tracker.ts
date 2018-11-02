@@ -5,7 +5,7 @@ import { JSSStyleSheet } from "./jss-manager";
  */
 class SheetTracker {
     public sheet: JSSStyleSheet;
-    private _count: number;
+    private _count: number = 0;
 
     constructor(sheet: JSSStyleSheet) {
         this.sheet = sheet;
