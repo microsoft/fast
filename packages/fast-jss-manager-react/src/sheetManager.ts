@@ -34,7 +34,11 @@ export default class SheetManager {
      * Adds a stylesheet and design system. If this combination does not exist, it will create and
      * attach the sheet. Otherwise, it will increment the internal count
      */
-    public add(styles: ComponentStyles<unknown, unknown>, designSystem: object): void {
+    public add(
+        styles: ComponentStyles<unknown, unknown>,
+        designSystem: object | any,
+        index: number
+    ): void {
         const existingTracker: SheetTracker | void = this.getTracker(
             styles,
             designSystem
@@ -59,7 +63,7 @@ export default class SheetManager {
             .get(styles)
             .set(
                 designSystem,
-                new SheetTracker(this.createStyleSheet(styles, designSystem))
+                new SheetTracker(this.createStyleSheet(styles, designSystem, index))
             );
     }
 
@@ -89,8 +93,12 @@ export default class SheetManager {
         previousDesignSystem: object,
         nextDesignSystem: object
     ): void {
-        this.remove(styles, previousDesignSystem);
-        this.add(styles, nextDesignSystem);
+        const sheet: JSSStyleSheet | void = this.get(styles, previousDesignSystem);
+
+        if (!!sheet) {
+            this.remove(styles, previousDesignSystem);
+            this.add(styles, nextDesignSystem, sheet.options.index);
+        }
     }
 
     /**
@@ -160,7 +168,8 @@ export default class SheetManager {
      */
     private createStyleSheet(
         styles: ComponentStyles<unknown, unknown>,
-        designSystem: object
+        designSystem: object,
+        index: number
     ): JSSStyleSheet {
         const stylesheet: ComponentStyleSheet<unknown, unknown> =
             typeof styles === "function" ? styles(designSystem) : styles;
@@ -168,7 +177,7 @@ export default class SheetManager {
         // Create the stylesheet and
         const sheet: JSSStyleSheet = jss.createStyleSheet(styles, {
             link: true,
-            index: 0, // TODO how do we get index?
+            index,
         });
 
         sheet.attach().update(designSystem);

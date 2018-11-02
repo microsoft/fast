@@ -1,13 +1,13 @@
 import * as React from "react";
 import { jss, stylesheetManager, stylesheetRegistry } from "./jss";
-import { SheetsManager } from "jss";
+import SheetManager from "./sheetManager";
 import { DesignSystem } from "./design-system-provider";
 import {
     ComponentStyles,
     ComponentStyleSheet,
     ManagedClasses,
 } from "@microsoft/fast-jss-manager";
-import { pickBy } from "lodash-es";
+import { isEqual, pickBy } from "lodash-es";
 import { designSystemContext } from "./context";
 import { SheetTracker } from "./tracker";
 
@@ -43,6 +43,7 @@ export interface JSSManagedComponentProps<S, C> {
 export interface JSSStyleSheet {
     attached: boolean;
     classes: { [key: string]: string };
+    options: { index: number };
     attach(): JSSStyleSheet;
     update(config: unknown): JSSStyleSheet;
 }
@@ -77,15 +78,9 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
     private static contextType: React.Context<unknown> = designSystemContext;
 
     /**
-     * A registry of all managed style instances. The registry is a WeakMap where each key is a
-     * ComponentStyles object and the value is another WeakMap, where the key is the designSystem and
-     * the value is a SheetTracker. This allows us to prevent duplicating stylesheets and only write a
-     * ComponentStyle/design-system combination once
+     * Manages stylesheets
      */
-    private static sheetRegistry: WeakMap<
-        ComponentStyles<unknown, unknown>,
-        WeakMap<object, SheetTracker>
-    > = new WeakMap();
+    private static sheetManager: SheetManager = new SheetManager();
 
     /**
      * The source style object that should be compiled into a StyleSheet
@@ -122,11 +117,9 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
          * designSystem and style object. If we do, then don't do anything.
          * If we don't, we need to go create the stylesheet
          */
-        if (!!this.styles && !this.hasPrimaryStyleSheet()) {
-            this.registerTracker(this.createStyleSheet());
+        if (!!this.styles) {
+            JSSManager.sheetManager.add(this.styles, this.designSystem, this.index);
             this.forceUpdate();
-        } else if (this.hasPrimaryStyleSheet()) {
-            this.primarySheetTracker().increment();
         }
     }
 
@@ -135,22 +128,23 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
     }
 
     public componentDidUpdate(): void {
-        if (this.designSystem !== this.context) {
-            if (this.hasPrimaryStyleSheet()) {
-                this.primarySheetTracker().decrement();
-            }
-
-            // TODO
-            // We will need to re-associate the stylesheet with  the new designSystem,
-            // then update the designSystem
+        if (this.designSystem !== this.context && !!this.styles) {
+            JSSManager.sheetManager.update(
+                this.styles,
+                this.designSystem as any,
+                this.context
+            );
             this.designSystem = this.context;
             this.forceUpdate();
+
             return;
         }
     }
 
     public componentWillUnmount(): void {
-        JSSManager.index++;
+        if (this.styles) {
+            JSSManager.sheetManager.remove(this.styles, this.designSystem as any);
+        }
     }
 
     /**
@@ -180,76 +174,10 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
     }
 
     /**
-     * Checks to see if the style/design-system combination has an
-     * associated stylesheet
-     */
-    private hasPrimaryStyleSheet(): boolean {
-        if (this.styles) {
-            const sheetRegistry: WeakMap<
-                object,
-                SheetTracker
-            > = JSSManager.sheetRegistry.get(this.styles);
-
-            if (
-                sheetRegistry instanceof WeakMap &&
-                sheetRegistry.has(this.designSystem as any)
-            ) {
-                return Boolean(sheetRegistry.get(this.designSystem as any).sheet);
-            }
-        }
-
-        return false;
-    }
-
-    private primarySheetTracker(): SheetTracker {
-        return JSSManager.sheetRegistry
-            .get(this.styles as any)
-            .get(this.designSystem as any);
-    }
-
-    /**
      * Return the JSSStyleSheet associated with the current designSystem and style
      */
-    private primaryStyleSheet(): JSSStyleSheet {
-        return this.primarySheetTracker().sheet;
-    }
-
-    /**
-     * Register's a SheetTracker with the current style and designSystem
-     */
-    private registerTracker(tracker: SheetTracker): void {
-        let sheetRegistry: WeakMap<
-            object,
-            SheetTracker
-        > | void = JSSManager.sheetRegistry.get(this.styles as any);
-
-        if (!(sheetRegistry instanceof WeakMap)) {
-            sheetRegistry = new WeakMap();
-            JSSManager.sheetRegistry.set(this.styles as any, sheetRegistry);
-        }
-
-        const designSystemRegistry: SheetTracker | void = sheetRegistry.get(this
-            .designSystem as any);
-
-        if (!(designSystemRegistry instanceof SheetTracker)) {
-            sheetRegistry.set(this.designSystem as any, tracker);
-        }
-    }
-
-    /**
-     * Registers a new registry for the component's style property.
-     * If styles don't exist or the stylesheet has already been registered,
-     * this function does nothing
-     */
-    private registerStyles(): void {
-        const registry: WeakMap<
-            ComponentStyles<unknown, unknown>,
-            WeakMap<object, SheetTracker>
-        > = JSSManager.sheetRegistry;
-
-        if (this.styles && !(registry.get(this.styles) instanceof WeakMap)) {
-            registry.set(this.styles, new WeakMap());
-        }
+    private primaryStyleSheet(): JSSStyleSheet | void {
+        return JSSManager.sheetManager.get(this.styles as any, this.designSystem as any);
     }
 
     /**
@@ -275,8 +203,10 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
     private getManagedClassNames(): ManagedClasses<S> {
         let primaryClasses: ManagedClasses<S> | void;
 
-        if (this.hasPrimaryStyleSheet()) {
-            primaryClasses = this.primaryStyleSheet().classes;
+        const primarySheet: JSSStyleSheet | void = this.primaryStyleSheet();
+
+        if (!!primarySheet && primarySheet.hasOwnProperty("classes")) {
+            primaryClasses = primarySheet.classes;
         }
 
         return primaryClasses || {};
