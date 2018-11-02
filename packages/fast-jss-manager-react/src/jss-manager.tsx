@@ -1,6 +1,6 @@
 import * as React from "react";
 import { jss, stylesheetManager, stylesheetRegistry } from "./jss";
-import SheetManager from "./sheetManager";
+import SheetManager from "./sheet-manager";
 import { DesignSystem } from "./design-system-provider";
 import {
     ComponentStyles,

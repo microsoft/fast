@@ -37,7 +37,7 @@ export default class SheetManager {
     public add(
         styles: ComponentStyles<unknown, unknown>,
         designSystem: object | any,
-        index: number
+        index?: number
     ): void {
         const existingTracker: SheetTracker | void = this.getTracker(
             styles,

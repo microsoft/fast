@@ -1,4 +1,4 @@
-import SheetManager from "./sheetManager";
+import SheetManager from "./sheet-manager";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 
 describe("The SheetManager", (): void => {
@@ -39,5 +39,25 @@ describe("The SheetManager", (): void => {
         manager.remove(stylesheet, designSystem);
 
         expect(manager.get(stylesheet, designSystem)).toBeUndefined();
+    });
+
+    test("should remove a sheet when it is only added once and is then updated", (): void => {
+        const nextDesignSystem: any = { foregroundColor: "red" };
+
+        manager.add(stylesheet, designSystem);
+        manager.update(stylesheet, designSystem, nextDesignSystem);
+
+        expect(manager.get(stylesheet, designSystem)).toBeUndefined();
+    });
+
+    test("should not remove a sheet on update when it has been added multiple times", (): void => {
+        const nextDesignSystem: any = { foregroundColor: "red" };
+
+        manager.add(stylesheet, designSystem);
+        manager.add(stylesheet, designSystem);
+
+        manager.update(stylesheet, designSystem, nextDesignSystem);
+
+        expect(manager.get(stylesheet, designSystem)).not.toBeUndefined();
     });
 });
