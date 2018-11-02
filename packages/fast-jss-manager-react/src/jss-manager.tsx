@@ -7,7 +7,7 @@ import {
     ComponentStyleSheet,
     ManagedClasses,
 } from "@microsoft/fast-jss-manager";
-import { isEqual, pickBy } from "lodash-es";
+import { isEqual, pickBy, mergeWith } from "lodash-es";
 import { designSystemContext } from "./context";
 import { SheetTracker } from "./tracker";
 
@@ -109,6 +109,14 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
 
         this.index = JSSManager.index--;
         this.designSystem = context;
+
+        if (this.props.jssStyleSheet) {
+            JSSManager.sheetManager.add(
+                this.props.jssStyleSheet,
+                this.designSystem,
+                this.index + 1
+            );
+        }
     }
 
     public componentDidMount(): void {
@@ -181,6 +189,16 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
     }
 
     /**
+     * Return the JSSStylesheet associated with the jssStyleSheet prop
+     */
+    private secondaryStyleSheet(): JSSStyleSheet | void {
+        if (!!this.props.jssStyleSheet) {
+            return JSSManager.sheetManager.get(this.props.jssStyleSheet, this
+                .designSystem as any);
+        }
+    }
+
+    /**
      * Generate a prop object to give to the managed component
      */
     private managedComponentProps(): T & ManagedClasses<S> {
@@ -201,15 +219,31 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
      * Returns the classes to pass down to the managed component
      */
     private getManagedClassNames(): ManagedClasses<S> {
-        let primaryClasses: ManagedClasses<S> | void;
+        let primaryClasses: ManagedClasses<S> = {};
+        let secondaryClasses: ManagedClasses<S> = {};
 
         const primarySheet: JSSStyleSheet | void = this.primaryStyleSheet();
+        const secondarySheet: JSSStyleSheet | void = this.secondaryStyleSheet();
 
         if (!!primarySheet && primarySheet.hasOwnProperty("classes")) {
             primaryClasses = primarySheet.classes;
         }
 
-        return primaryClasses || {};
+        if (!!secondarySheet && secondarySheet.hasOwnProperty("classes")) {
+            secondaryClasses = secondarySheet.classes;
+        }
+
+        return mergeWith(primaryClasses, secondaryClasses, this.mergeClassNames);
+    }
+
+    private mergeClassNames(a: string, b: string): string {
+        if (typeof a === "string" && typeof b === "string") {
+            return a.concat(" ", b);
+        } else if (typeof a === "string") {
+            return a;
+        } else if (typeof b === "string") {
+            return b;
+        }
     }
 }
 
