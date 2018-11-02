@@ -175,7 +175,7 @@ export default class SheetManager {
             typeof styles === "function" ? styles(designSystem) : styles;
 
         // Create the stylesheet and
-        const sheet: JSSStyleSheet = jss.createStyleSheet(styles, {
+        const sheet: JSSStyleSheet = jss.createStyleSheet(stylesheet, {
             link: true,
             index,
         });
