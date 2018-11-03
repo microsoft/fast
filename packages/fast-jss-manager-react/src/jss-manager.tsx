@@ -206,7 +206,8 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
         }
 
         if (this.props.jssStyleSheet) {
-            JSSManager.sheetManager.remove(this.props.jssStyleSheet, this.designSystem as any);
+            JSSManager.sheetManager.remove(this.props.jssStyleSheet, this
+                .designSystem as any);
         }
     }
 

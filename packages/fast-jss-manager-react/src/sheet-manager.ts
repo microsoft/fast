@@ -93,11 +93,32 @@ export default class SheetManager {
         previousDesignSystem: object,
         nextDesignSystem: object
     ): void {
-        const sheet: JSSStyleSheet | void = this.get(styles, previousDesignSystem);
+        const tracker: SheetTracker | void = this.getTracker(
+            styles,
+            previousDesignSystem
+        );
 
-        if (!!sheet) {
+        if (!tracker) {
+            return;
+        }
+
+        /**
+         * If we only have one sheet and this sheet isn't associated with the next design system, *and* it's an object,
+         * we can simply update the sheet and move it's reference instead of completely tearing down the sheet and
+         * re-creating a style element
+         */
+        if (
+            tracker.count === 1 &&
+            !this.get(styles, nextDesignSystem) &&
+            !!styles &&
+            typeof styles === "object"
+        ) {
+            tracker.sheet.update(nextDesignSystem);
+            this.registry.get(styles).delete(previousDesignSystem);
+            this.registry.get(styles).set(nextDesignSystem, tracker);
+        } else {
             this.remove(styles, previousDesignSystem);
-            this.add(styles, nextDesignSystem, sheet.options.index);
+            this.add(styles, nextDesignSystem, tracker.sheet.options.index);
         }
     }
 
