@@ -12,24 +12,6 @@ import { designSystemContext } from "./context";
 import { SheetTracker } from "./tracker";
 
 /**
- * Registry class would expose simple API for associating design systems, use counts, and style objects
- * @method create(styles, designSystem)
- * @description creates a new association if one doesn't exit. If one does exist, it simply increments the
- * count.
- *
- * @method read(styles, designSystem)
- * @description retrieves the JSS sheet mapping to both styles and designSystem
- *
- *
- * @method update(styles, previousDesignSystem, nextDesignSystem)
- * @description Associates the stylesheet with a different design system
- *
- * @method delete(styles, designSystem)
- * @description decrements a count for a set of stylesheets. If the count becomes 0,
- * the sheet is removed from the DOM
- */
-
-/**
  * Describes an interface for adjusting a styled component
  * per component instance
  */
@@ -140,7 +122,7 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
             if (!!this.styles) {
                 JSSManager.sheetManager.update(
                     this.styles,
-                    this.designSystem as any,
+                    this.designSystem,
                     this.context
                 );
 
@@ -152,8 +134,10 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
                 hasSheetProps &&
                 prevProps.jssStyleSheet !== this.props.jssStyleSheet
             ) {
-                JSSManager.sheetManager.remove(prevProps.jssStyleSheet, this
-                    .designSystem as any);
+                JSSManager.sheetManager.remove(
+                    prevProps.jssStyleSheet,
+                    this.designSystem
+                );
                 this.createPropStyleSheet();
                 shouldUpdate = true;
             } else if (
@@ -163,13 +147,15 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
             ) {
                 JSSManager.sheetManager.update(
                     this.props.jssStyleSheet,
-                    this.designSystem as any,
+                    this.designSystem,
                     this.context
                 );
                 shouldUpdate = true;
             } else if (hadSheetProps && !hasSheetProps) {
-                JSSManager.sheetManager.remove(prevProps.jssStyleSheet, this
-                    .designSystem as any);
+                JSSManager.sheetManager.remove(
+                    prevProps.jssStyleSheet,
+                    this.designSystem
+                );
             } else if (!hadSheetProps && hasSheetProps) {
                 this.createPropStyleSheet();
                 shouldUpdate = true;
@@ -181,15 +167,13 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
             hasSheetProps &&
             prevProps.jssStyleSheet !== this.props.jssStyleSheet
         ) {
-            JSSManager.sheetManager.remove(prevProps.jssStyleSheet, this
-                .designSystem as any);
+            JSSManager.sheetManager.remove(prevProps.jssStyleSheet, this.designSystem);
 
             this.createPropStyleSheet();
         }
 
         if (hadSheetProps && !hasSheetProps) {
-            JSSManager.sheetManager.remove(prevProps.jssStyleSheet, this
-                .designSystem as any);
+            JSSManager.sheetManager.remove(prevProps.jssStyleSheet, this.designSystem);
         } else if (!hadSheetProps && hasSheetProps) {
             this.createPropStyleSheet();
         }
@@ -202,12 +186,11 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
 
     public componentWillUnmount(): void {
         if (this.styles) {
-            JSSManager.sheetManager.remove(this.styles, this.designSystem as any);
+            JSSManager.sheetManager.remove(this.styles, this.designSystem);
         }
 
         if (this.props.jssStyleSheet) {
-            JSSManager.sheetManager.remove(this.props.jssStyleSheet, this
-                .designSystem as any);
+            JSSManager.sheetManager.remove(this.props.jssStyleSheet, this.designSystem);
         }
     }
 
@@ -241,7 +224,9 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
      * Return the JSSStyleSheet associated with the current designSystem and style
      */
     private primaryStyleSheet(): JSSStyleSheet | void {
-        return JSSManager.sheetManager.get(this.styles as any, this.designSystem as any);
+        if (!!this.styles) {
+            return JSSManager.sheetManager.get(this.styles, this.designSystem);
+        }
     }
 
     /**
@@ -249,8 +234,10 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
      */
     private secondaryStyleSheet(): JSSStyleSheet | void {
         if (!!this.props.jssStyleSheet) {
-            return JSSManager.sheetManager.get(this.props.jssStyleSheet, this
-                .designSystem as any);
+            return JSSManager.sheetManager.get(
+                this.props.jssStyleSheet,
+                this.designSystem
+            );
         }
     }
 

@@ -1,26 +1,8 @@
 import { JSSStyleSheet } from "./jss-manager";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
-import { SheetTracker } from "./tracker";
 import { jss, stylesheetRegistry } from "./jss";
 
-/**
- * Registry class would expose simple API for associating design systems, use counts, and style objects
- * @method create(styles, designSystem)
- * @description creates a new association if one doesn't exit. If one does exist, it simply increments the
- * count.
- *
- * @method read(styles, designSystem)
- * @description retrieves the JSS sheet mapping to both styles and designSystem
- *
- *
- * @method update(styles, previousDesignSystem, nextDesignSystem)
- * @description Associates the stylesheet with a different design system
- *
- * @method delete(styles, designSystem)
- * @description decrements a count for a set of stylesheets. If the count becomes 0,
- * the sheet is removed from the DOM
- */
-
+export type SheetTracker = [JSSStyleSheet, number];
 export type DesignSystemRegistry = WeakMap<object, SheetTracker>;
 export type SheetRegistry = WeakMap<
     ComponentStyles<unknown, unknown>,
@@ -31,21 +13,19 @@ export default class SheetManager {
     private registry: SheetRegistry = new WeakMap();
 
     /**
-     * Adds a stylesheet and design system. If this combination does not exist, it will create and
-     * attach the sheet. Otherwise, it will increment the internal count
+     * Creates a new JSS stylesheet from a stylesheet and design-system.
+     * If a JSS style sheet has been created with this stylesheet and design system already,
+     * then simply track that another instance has been added
      */
     public add(
         styles: ComponentStyles<unknown, unknown>,
-        designSystem: object | any,
+        designSystem: any,
         index?: number
     ): void {
-        const existingTracker: SheetTracker | void = this.getTracker(
-            styles,
-            designSystem
-        );
+        const tracker: SheetTracker | void = this.getTracker(styles, designSystem);
 
-        if (existingTracker instanceof SheetTracker) {
-            existingTracker.increment();
+        if (Array.isArray(tracker)) {
+            tracker[1]++;
 
             return;
         }
@@ -61,10 +41,7 @@ export default class SheetManager {
 
         this.registry
             .get(styles)
-            .set(
-                designSystem,
-                new SheetTracker(this.createStyleSheet(styles, designSystem, index))
-            );
+            .set(designSystem, [this.createStyleSheet(styles, designSystem, index), 1]);
     }
 
     /**
@@ -72,12 +49,12 @@ export default class SheetManager {
      */
     public get(
         styles: ComponentStyles<unknown, unknown>,
-        designSystem: object
+        designSystem: any
     ): JSSStyleSheet | void {
         const tracker: SheetTracker | void = this.getTracker(styles, designSystem);
 
-        if (tracker instanceof SheetTracker && !!tracker.sheet) {
-            return tracker.sheet;
+        if (Array.isArray(tracker) && !!tracker[0]) {
+            return tracker[0];
         }
 
         return;
@@ -90,8 +67,8 @@ export default class SheetManager {
      */
     public update(
         styles: ComponentStyles<unknown, unknown>,
-        previousDesignSystem: object,
-        nextDesignSystem: object
+        previousDesignSystem: any,
+        nextDesignSystem: any
     ): void {
         const tracker: SheetTracker | void = this.getTracker(
             styles,
@@ -108,17 +85,17 @@ export default class SheetManager {
          * re-creating a style element
          */
         if (
-            tracker.count === 1 &&
+            tracker[1] === 1 &&
             !this.get(styles, nextDesignSystem) &&
             !!styles &&
             typeof styles === "object"
         ) {
-            tracker.sheet.update(nextDesignSystem);
+            tracker[0].update(nextDesignSystem);
             this.registry.get(styles).delete(previousDesignSystem);
             this.registry.get(styles).set(nextDesignSystem, tracker);
         } else {
             this.remove(styles, previousDesignSystem);
-            this.add(styles, nextDesignSystem, tracker.sheet.options.index);
+            this.add(styles, nextDesignSystem, tracker[0].options.index);
         }
     }
 
@@ -126,15 +103,16 @@ export default class SheetManager {
      * Reduces the internal count for a stylesheet and designsystem. If the count becomes zero,
      * the sheet will be detached
      */
-    public remove(styles: ComponentStyles<unknown, unknown>, designSystem: object): void {
+    public remove(styles: ComponentStyles<unknown, unknown>, designSystem: any): void {
         const tracker: SheetTracker | void = this.getTracker(styles, designSystem);
 
-        if (tracker instanceof SheetTracker) {
-            tracker.decrement();
+        if (Array.isArray(tracker)) {
+            tracker[1]--;
 
-            if (tracker.count === 0) {
-                jss.removeStyleSheet(tracker.sheet);
-                stylesheetRegistry.remove(tracker.sheet);
+            if (tracker[1] === 0) {
+                const sheet: JSSStyleSheet = tracker[0];
+                jss.removeStyleSheet(sheet);
+                stylesheetRegistry.remove(sheet);
 
                 this.registry.get(styles).delete(designSystem);
             }
@@ -150,8 +128,8 @@ export default class SheetManager {
     ): number {
         const tracker: SheetTracker | void = this.getTracker(styles, designSystem);
 
-        if (tracker instanceof SheetTracker) {
-            return tracker.count;
+        if (Array.isArray(tracker)) {
+            return tracker[1];
         }
 
         return -1;
@@ -178,7 +156,7 @@ export default class SheetManager {
         if (designSystemRegistry instanceof WeakMap) {
             const tracker: SheetTracker | void = designSystemRegistry.get(designSystem);
 
-            if (tracker instanceof SheetTracker) {
+            if (Array.isArray(tracker)) {
                 return tracker;
             }
         }
@@ -189,7 +167,7 @@ export default class SheetManager {
      */
     private createStyleSheet(
         styles: ComponentStyles<unknown, unknown>,
-        designSystem: object,
+        designSystem: any,
         index: number
     ): JSSStyleSheet {
         const stylesheet: ComponentStyleSheet<unknown, unknown> =
