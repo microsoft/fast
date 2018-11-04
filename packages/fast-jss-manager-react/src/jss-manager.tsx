@@ -7,9 +7,8 @@ import {
     ComponentStyleSheet,
     ManagedClasses,
 } from "@microsoft/fast-jss-manager";
-import { isEqual, mergeWith, pickBy } from "lodash-es";
+import { isEqual, mergeWith } from "lodash-es";
 import { designSystemContext } from "./context";
-import { SheetTracker } from "./tracker";
 
 /**
  * Describes an interface for adjusting a styled component
@@ -178,7 +177,6 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
             this.createPropStyleSheet();
         }
 
-        // TODO we need to make updates if jssStyleSheet changes
         if (shouldUpdate) {
             this.forceUpdate();
         }
@@ -192,32 +190,6 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
         if (this.props.jssStyleSheet) {
             JSSManager.sheetManager.remove(this.props.jssStyleSheet, this.designSystem);
         }
-    }
-
-    /**
-     * Creates a JSS stylesheet from the dynamic portion of an associated style object and any style object passed
-     * as props
-     */
-    private createStyleSheet(): SheetTracker {
-        if (!this.styles) {
-            return;
-        }
-
-        const stylesheet: ComponentStyleSheet<S, C> =
-            typeof this.styles === "function"
-                ? this.styles(this.designSystem)
-                : this.styles;
-
-        const jssSheet: any = jss.createStyleSheet(stylesheet, {
-            link: true,
-            index: this.index,
-        });
-
-        stylesheetRegistry.add(jssSheet);
-
-        jssSheet.attach().update(this.designSystem);
-
-        return new SheetTracker(jssSheet);
     }
 
     /**
@@ -245,17 +217,14 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
      * Generate a prop object to give to the managed component
      */
     private managedComponentProps(): T & ManagedClasses<S> {
-        return {
-            ...pickBy(this.props, this.pickManagedComponentProps),
+        const props: ManagedJSSProps<T, S, C> = {
+            ...(this.props as any),
             managedClasses: this.getManagedClassNames(),
-        } as T & ManagedClasses<S>;
-    }
+        };
 
-    /**
-     * pickBy callback to determine if props should be used
-     */
-    private pickManagedComponentProps(value: unknown, key: string): boolean {
-        return key !== "managedClasses" && key !== "jssStyleSheet";
+        delete props.jssStyleSheet;
+
+        return props as T & ManagedClasses<S>;
     }
 
     /**

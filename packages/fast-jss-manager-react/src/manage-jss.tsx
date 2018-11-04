@@ -45,6 +45,8 @@ function manageJss<S, C>(
         Component: React.ComponentType<T & ManagedClasses<S>>
     ): React.ComponentClass<ManagedJSSProps<T, S, C>> {
         class JSSManagedComponent extends JSSManager<T, S, C> {
+            public static displayName: string = `withJSS(${Component.displayName ||
+                Component.name})`;
             protected styles: ComponentStyles<S, C> = styles;
             protected managedComponent: React.ComponentType<
                 T & ManagedClasses<S>
