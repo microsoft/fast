@@ -3,13 +3,21 @@ import {
     ComponentStyleSheet,
     CSSRules,
 } from "@microsoft/fast-jss-manager";
-import { ellipsis } from "@microsoft/fast-jss-utilities";
+import {
+    applyLocalizedProperty,
+    ellipsis,
+    Direction,
+} from "@microsoft/fast-jss-utilities";
 import { SelectDeviceClassNameContract } from "./select-device.class-name-contract";
+import { DesignSystem, withDesignSystemDefaults } from "../utilities/design-system";
 
 const styles: ComponentStyles<
     SelectDeviceClassNameContract,
     {}
-> = (config: {}): ComponentStyleSheet<SelectDeviceClassNameContract, {}> => {
+> = (config: {}): ComponentStyleSheet<SelectDeviceClassNameContract, DesignSystem> => {
+    const designSystem: DesignSystem = withDesignSystemDefaults(config);
+    const direction: Direction = designSystem.direction;
+
     return {
         selectDevice: {
             display: "inline-block",
@@ -33,17 +41,20 @@ const styles: ComponentStyles<
                 background: "#000000",
             },
             "&::before": {
-                right: "15px",
-                transform: "rotate(45deg)",
+                [applyLocalizedProperty("right", "left", direction)]: "15px",
+                transform:
+                    direction === Direction.ltr ? "rotate(45deg)" : "rotate(-45deg)",
             },
             "&::after": {
-                right: "22px",
-                transform: "rotate(-45deg)",
+                [applyLocalizedProperty("right", "left", direction)]: "22px",
+                transform:
+                    direction === Direction.ltr ? "rotate(-45deg)" : "rotate(45deg)",
             },
         },
         selectDevice_contentRegion_select: {
             border: "none",
-            padding: "10px 36px 10px 10px",
+            padding: "10px",
+            [applyLocalizedProperty("paddingRight", "paddingLeft", direction)]: "36px",
             verticalAlign: "middle",
             outline: "none",
             fontSize: "14px",

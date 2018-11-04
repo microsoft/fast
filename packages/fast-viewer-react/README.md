@@ -9,7 +9,7 @@ This can be used to as a method for previewing a React component(s) or an entire
 ## Basic usage
 An example of using one of the components from the `@microsoft/fast-viewer-msft` package:
 
-```tsx
+```jsx
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Viewer from "@microsoft/fast-viewer-msft";
@@ -18,7 +18,7 @@ const root = document.createElement("div");
 root.setAttribute("id", "root");
 document.body.appendChild(root);
 
-function render(): void {
+function render() {
     ReactDOM.render(
         <Viewer iframeSrc={"/example-content"} />,
         root
@@ -31,7 +31,7 @@ render();
 ## Advanced usage
 There are other components in this package which when used in conjunction with the `Viewer` will allow for setting height and width for devices and the control of components and their data.
 
-### Using fixed sizes and devices
+### `SelectDevice`
 Use the `SelectDevice` component to select from provided default devices or provide your own custom device configurations. This component accepts a list of configured devices via the `devices` prop, some default devices are included with the package as a secondary export. It also accepts an `activeIndex` prop which maps to the current index of the provided devices. In addition there is a callback `onUpdateDevice` which will fire a provided function with the new index selected.
 
 Example:
@@ -48,10 +48,46 @@ import {
 />
 ```
 
+#### `devices`
+A device can be either "responsive" or "fixed", if it is responsive it does not take a width and height, if it is fixed it does. When the `Viewer` has been set to use a responsive display, it will show resize handles on the left, right, bottom and bottom corners.
+
+Example of custom devices passed to the `devices` prop:
+```json
+[
+    {
+        "displayName": "Responsive display",
+        "display": "responsive"
+    },
+    {
+        "displayName": "Phone device",
+        "display": "fixed",
+        "height": 800,
+        "width": 320
+    }
+]
+```
+
+#### `onUpdateDevice`
+This callback will fire when an option has been selected from the dropdown and give back the clicked items `activeIndex`.
+
+Example of a callback passed to `onUpdateDevice` prop:
+```jsx
+handleDeviceUpdate(activeIndex) {
+    this.setState({
+        activeIndex: activeIndex
+    });
+}
+```
+
+#### `activeIndex`
+This is the active index as indicated by the `devices` array. This should exist on the state of the parent component.
+
+### `Rotate`
+
 Use the `Rotate` component to switch between landscape and portrait view. This component accepts an `orientation` prop which can be either "landscape" or "portrait". It also accepts an `onUpdateOrientation` callback which will fire a provided function with the new orientation selected.
 
 Example:
-```tsx
+```jsx
 import {
     Rotate,
 } from "@microsoft/fast-viewer-msft";
@@ -61,6 +97,23 @@ import {
     onUpdateOrientation={this.handleOrientationUpdate}
 />
 ```
+
+#### `orientation`
+This is can be set to "landscape" or "portrait".
+
+#### `onUpdateOrientation`
+This callback will fire when one of the buttons is clicked to change to "landscape" or "portrait" to indicate which one should be activated.
+
+Example:
+```jsx
+handleOrientationUpdate(orientation) {
+    this.setState({
+        orientation: orientation
+    });
+}
+```
+
+### Putting it all together for the `Viewer`
 
 After including any combination of the `SelectDevice` and `Rotate` components, the viewer should have added props tied to your state which will update.
 

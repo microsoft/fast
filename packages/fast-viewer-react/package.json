@@ -114,6 +114,7 @@
     "webpack-dev-server": "^3.1.0"
   },
   "dependencies": {
+    "@microsoft/fast-application-utilities": "^3.0.1",
     "@microsoft/fast-components-class-name-contracts-base": "^3.0.1",
     "@microsoft/fast-components-foundation-react": "^2.0.0",
     "@microsoft/fast-jss-manager": "^3.0.1",
