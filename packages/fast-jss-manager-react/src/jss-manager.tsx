@@ -238,7 +238,7 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
         return mergeWith(primaryClasses, secondaryClasses, this.mergeClassNames);
     }
 
-    private mergeClassNames(a: string, b: string): string {
+    private mergeClassNames(a: string | void, b: string | void): string {
         if (typeof a === "string" && typeof b === "string") {
             return a.concat(" ", b);
         } else if (typeof a === "string") {
