@@ -90,10 +90,6 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
 
         this.index = JSSManager.index--;
         this.designSystem = context;
-
-        if (this.props.jssStyleSheet) {
-            this.createPropStyleSheet();
-        }
     }
 
     public componentDidMount(): void {
@@ -103,8 +99,15 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
          * If we don't, we need to go create the stylesheet
          */
         if (!!this.styles) {
-            JSSManager.sheetManager.add(this.styles, this.designSystem, this.index);
+            JSSManager.sheetManager.add(this.styles, this.designSystem, {
+                meta: this.managedComponent.displayName || this.managedComponent.name,
+                index: this.index,
+            });
             this.forceUpdate();
+        }
+
+        if (this.props.jssStyleSheet) {
+            this.createPropStyleSheet();
         }
     }
 
@@ -259,11 +262,11 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
     }
 
     private createPropStyleSheet(designSystem: C = this.designSystem): void {
-        JSSManager.sheetManager.add(
-            this.props.jssStyleSheet,
-            designSystem,
-            this.index + 1
-        );
+        JSSManager.sheetManager.add(this.props.jssStyleSheet, designSystem, {
+            meta: `${this.managedComponent.displayName ||
+                this.managedComponent.name} - jssStyleSheet`,
+            index: this.index + 1,
+        });
     }
 }
 

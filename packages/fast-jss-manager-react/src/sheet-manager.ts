@@ -9,6 +9,11 @@ export type SheetRegistry = WeakMap<
     DesignSystemRegistry
 >;
 
+export interface JSSSheetOptions {
+    meta?: string;
+    index?: number;
+}
+
 export default class SheetManager {
     private registry: SheetRegistry = new WeakMap();
 
@@ -20,7 +25,7 @@ export default class SheetManager {
     public add(
         styles: ComponentStyles<unknown, unknown>,
         designSystem: any,
-        index?: number
+        options?: JSSSheetOptions
     ): void {
         const tracker: SheetTracker | void = this.getTracker(styles, designSystem);
 
@@ -41,7 +46,7 @@ export default class SheetManager {
 
         this.registry
             .get(styles)
-            .set(designSystem, [this.createStyleSheet(styles, designSystem, index), 1]);
+            .set(designSystem, [this.createStyleSheet(styles, designSystem, options), 1]);
     }
 
     /**
@@ -95,7 +100,7 @@ export default class SheetManager {
             this.registry.get(styles).set(nextDesignSystem, tracker);
         } else {
             this.remove(styles, previousDesignSystem);
-            this.add(styles, nextDesignSystem, tracker[0].options.index);
+            this.add(styles, nextDesignSystem, tracker[0].options);
         }
     }
 
@@ -168,7 +173,7 @@ export default class SheetManager {
     private createStyleSheet(
         styles: ComponentStyles<unknown, unknown>,
         designSystem: any,
-        index: number
+        options: JSSSheetOptions = {}
     ): JSSStyleSheet {
         const stylesheet: ComponentStyleSheet<unknown, unknown> =
             typeof styles === "function" ? styles(designSystem) : styles;
@@ -176,7 +181,7 @@ export default class SheetManager {
         // Create the stylesheet and
         const sheet: JSSStyleSheet = jss.createStyleSheet(stylesheet, {
             link: true,
-            index,
+            ...options,
         });
 
         sheet.attach().update(designSystem);
