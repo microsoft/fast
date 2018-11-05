@@ -40,7 +40,7 @@ exports[`image snapshots Image: 0 1`] = `
 exports[`image snapshots Image: 1 1`] = `
 <img
   alt="Placeholder with grey background and dimension watermark without any imagery"
-  className="image-0-1-4"
+  className="image-0-1-1"
   sizes={null}
   src="https://placehold.it/200x150/2F2F2F/171717"
   srcSet={null}
@@ -50,7 +50,7 @@ exports[`image snapshots Image: 1 1`] = `
 exports[`image snapshots Image: 2 1`] = `
 <img
   alt="Placeholder with grey background and dimension watermark without any imagery"
-  className="image-0-1-7"
+  className="image-0-1-1"
   sizes={null}
   src="https://placehold.it/300x300/2F2F2F/171717"
   srcSet="https://placehold.it/500x500/2F2F2F/171717 1083w, https://placehold.it/400x400/2F2F2F/171717 767w, https://placehold.it/300x300/2F2F2F/171717 1w"

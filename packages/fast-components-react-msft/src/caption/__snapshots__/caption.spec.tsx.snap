@@ -2,7 +2,7 @@
 
 exports[`caption snapshots Caption: 0 1`] = `
 <p
-  className="typography-0-1-4 typography__8-0-1-12 caption-0-1-1 caption__1-0-1-2"
+  className="typography-0-1-1 typography__8-0-1-9 caption-0-1-11 caption__1-0-1-12"
 >
   Caption test string default
 </p>
@@ -10,7 +10,7 @@ exports[`caption snapshots Caption: 0 1`] = `
 
 exports[`caption snapshots Caption: 1 1`] = `
 <p
-  className="typography-0-1-17 typography__8-0-1-25 caption-0-1-14 caption__1-0-1-15"
+  className="typography-0-1-1 typography__8-0-1-9 caption-0-1-11 caption__1-0-1-12"
 >
   Caption test string size 1
 </p>
@@ -18,7 +18,7 @@ exports[`caption snapshots Caption: 1 1`] = `
 
 exports[`caption snapshots Caption: 2 1`] = `
 <p
-  className="typography-0-1-30 typography__9-0-1-39 caption-0-1-27 caption__2-0-1-29"
+  className="typography-0-1-1 typography__9-0-1-10 caption-0-1-11 caption__2-0-1-13"
 >
   Caption test string size 2
 </p>
@@ -26,7 +26,7 @@ exports[`caption snapshots Caption: 2 1`] = `
 
 exports[`caption snapshots Caption: 3 1`] = `
 <span
-  className="typography-0-1-43 typography__8-0-1-51 caption-0-1-40 caption__1-0-1-41"
+  className="typography-0-1-1 typography__8-0-1-9 caption-0-1-11 caption__1-0-1-12"
 >
   span tag test string
 </span>
@@ -34,7 +34,7 @@ exports[`caption snapshots Caption: 3 1`] = `
 
 exports[`caption snapshots Caption: 4 1`] = `
 <caption
-  className="typography-0-1-56 typography__8-0-1-64 caption-0-1-53 caption__1-0-1-54"
+  className="typography-0-1-1 typography__8-0-1-9 caption-0-1-11 caption__1-0-1-12"
 >
   caption tag test string
 </caption>
@@ -42,7 +42,7 @@ exports[`caption snapshots Caption: 4 1`] = `
 
 exports[`caption snapshots Caption: 5 1`] = `
 <figcaption
-  className="typography-0-1-69 typography__8-0-1-77 caption-0-1-66 caption__1-0-1-67"
+  className="typography-0-1-1 typography__8-0-1-9 caption-0-1-11 caption__1-0-1-12"
 >
   figcaption tag test string
 </figcaption>

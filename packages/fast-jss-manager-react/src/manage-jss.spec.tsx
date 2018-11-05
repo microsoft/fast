@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cleanLowerOrderComponentProps, manageJss } from "./manage-jss";
+import { manageJss } from "./manage-jss";
 import { JSSManager } from "./jss-manager";
 import { jss, stylesheetRegistry } from "./jss";
 import {
@@ -16,52 +16,33 @@ import * as Adapter from "enzyme-adapter-react-16";
 configure({ adapter: new Adapter() });
 
 class SimpleComponent extends React.Component<any, any> {
+    public static staticValue: string = "staticValue";
     public render(): boolean {
         return true;
     }
 }
 
 describe("manageJss", (): void => {
-    test("should return a  function", (): void => {
+    test("should return a function", (): void => {
         expect(typeof manageJss()).toBe("function");
     });
 
-    test("should return a function that returns react stateless component", (): void => {
-        const hoc: React.SFC<{}> = manageJss()(SimpleComponent);
+    test("should return a function that returns an implementation of the JSSManager", (): void => {
+        const hoc: React.ComponentClass<{}> = manageJss()(SimpleComponent);
 
-        expect(typeof hoc).toEqual("function");
-
-        // Should expect a single prop argument
-        expect(hoc.length).toBe(1);
+        expect(hoc.prototype instanceof JSSManager).toBe(true);
     });
 
-    test("should render a provided component", (): void => {
-        const Hoc: React.SFC<{}> = manageJss()(SimpleComponent);
+    test("should return a component class that hoists non-react static values", (): void => {
+        const hoc: React.ComponentClass<{}> = manageJss()(SimpleComponent);
 
-        const rendered: ReactWrapper = mount(<Hoc />);
-
-        expect(rendered.exists("SimpleComponent")).toBe(true);
+        expect((hoc as any).staticValue).toBe(SimpleComponent.staticValue);
     });
 
-    test("should render a JSSManager component", (): void => {
-        const Hoc: React.SFC<{}> = manageJss()(SimpleComponent);
-
-        const rendered: ReactWrapper = mount(<Hoc />);
-
-        expect(rendered.exists("JSSManager")).toBe(true);
-    });
-});
-
-describe("cleanLowerOrderComponentProps", (): void => {
-    test("should filter out jssStyleSheet and managedClasses", (): void => {
-        const props: any = {
-            managedClasses: {},
-            jssStyleSheet: {},
-            foobar: "success",
-        };
-
-        const result: any = cleanLowerOrderComponentProps(props);
-        expect(result.jssStyleSheet).toBe(undefined);
-        expect(result.foobar).toBe("success");
+    test("should return a renderable react component", (): void => {
+        expect(() => {
+            const Hoc: React.ComponentClass<{}> = manageJss()(SimpleComponent);
+            mount(<Hoc>hello world</Hoc>);
+        }).not.toThrow();
     });
 });

@@ -19,7 +19,7 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const TextField = manageJss(TextFieldStyles)(BaseTextField);
-type TextField = typeof TextField;
+type TextField = InstanceType<typeof TextField>;
 
 interface TextFieldHandledProps
     extends Subtract<BaseTextFieldHandledProps, TextFieldManagedClasses> {}

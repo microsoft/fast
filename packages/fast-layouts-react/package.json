@@ -74,7 +74,7 @@
     "@types/jest": "^23.3.5",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.6",
-    "@types/react": "^16.3.6",
+    "@types/react": "^16.4.18",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
     "exenv-es6": "^1.0.0",
@@ -84,8 +84,8 @@
     "lodash-es": "^4.0.0",
     "prettier": "1.14.3",
     "raf-throttle": "^2.0.3",
-    "react": "^16.3.0",
-    "react-dom": "^16.3.0",
+    "react": "^16.6.0",
+    "react-dom": "^16.6.0",
     "ts-jest": "^23.10.4",
     "ts-loader": "^4.0.1",
     "tslint": "^5.9.1",
@@ -101,8 +101,8 @@
     "exenv-es6": "^1.0.0",
     "lodash-es": "^4.0.0",
     "raf-throttle": "^2.0.3",
-    "react": "^16.3.0",
-    "react-dom": "^16.3.0"
+    "react": "^16.6.0",
+    "react-dom": "^16.6.0"
   },
   "dependencies": {
     "@microsoft/fast-jss-manager-react": "^3.0.2",

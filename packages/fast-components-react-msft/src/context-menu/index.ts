@@ -13,7 +13,7 @@ import { Subtract } from "utility-types";
 
 /* tslint:disable-next-line:typedef */
 const ContextMenu = manageJss(ContextMenuStyles)(BaseContextMenu);
-type ContextMenu = typeof ContextMenu;
+type ContextMenu = InstanceType<typeof ContextMenu>;
 
 interface ContextMenuHandledProps
     extends Subtract<BaseContextMenuHandledProps, ContextMenuManagedClasses> {}

@@ -18,7 +18,7 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const Radio = manageJss(RadioStyles)(BaseRadio);
-type Radio = typeof Radio;
+type Radio = InstanceType<typeof Radio>;
 
 interface RadioHandledProps
     extends Subtract<BaseRadioHandledProps, RadioManagedClasses> {}

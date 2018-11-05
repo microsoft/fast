@@ -17,7 +17,7 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const Hypertext = manageJss(HypertextStyles)(BaseHypertext);
-type Hypertext = typeof Hypertext;
+type Hypertext = InstanceType<typeof Hypertext>;
 
 interface HypertextHandledProps
     extends Subtract<BaseHypertextHandledProps, HypertextManagedClasses> {}

@@ -35,10 +35,10 @@
     "collectCoverage": true,
     "coverageThreshold": {
       "global": {
-        "statements": 98,
-        "branches": 66,
-        "functions": 100,
-        "lines": 98
+        "statements": 81,
+        "branches": 65,
+        "functions": 95,
+        "lines": 81
       }
     },
     "testURL": "http://localhost",
@@ -67,7 +67,7 @@
     "@types/jest": "^23.3.5",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.6",
-    "@types/react": "^16.3.6",
+    "@types/react": "^16.4.18",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
     "enzyme": "^3.3.0",
@@ -77,8 +77,8 @@
     "jss-preset-default": "^4.3.0",
     "lodash-es": "^4.0.0",
     "prettier": "1.14.3",
-    "react": "^16.3.0",
-    "react-dom": "^16.3.0",
+    "react": "^16.6.0",
+    "react-dom": "^16.6.0",
     "react-test-renderer": "^16.2.0",
     "ts-jest": "^23.10.4",
     "tslint": "^5.9.1",
@@ -90,9 +90,10 @@
     "jss": "^9.8.0",
     "jss-preset-default": "^4.3.0",
     "lodash-es": "^4.0.0",
-    "react": "^16.3.0"
+    "react": "^16.6.0"
   },
   "dependencies": {
-    "@microsoft/fast-jss-manager": "^3.0.2"
+    "@microsoft/fast-jss-manager": "^3.0.2",
+    "hoist-non-react-statics": "^3.1.0"
   }
 }

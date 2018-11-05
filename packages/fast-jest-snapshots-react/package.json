@@ -45,20 +45,21 @@
   "devDependencies": {
     "@microsoft/fast-tslint-rules": "^3.0.0",
     "@types/jest": "^23.3.5",
-    "@types/react": "^16.3.6",
+    "@types/react": "^16.4.18",
     "jest": "^23.6.0",
     "prettier": "1.14.3",
-    "react": "^16.5.2",
+    "react": "^16.6.0",
     "ts-jest": "^23.10.4",
     "tslint": "^5.9.1",
     "tslint-config-prettier": "^1.15.0",
     "typescript": "^3.0.1"
   },
   "dependencies": {
+    "react-dom": "^16.6.0",
     "react-test-renderer": "^16.3.0"
   },
   "peerDependencies": {
     "jest": "^22.0.0 || ^23.0.0",
-    "react": "^16.3.0"
+    "react": "^16.6.0"
   }
 }

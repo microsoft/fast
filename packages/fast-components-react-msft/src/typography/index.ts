@@ -20,7 +20,7 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const Typography = manageJss(TypographyStyles)(BaseTypography);
-type Typography = typeof Typography;
+type Typography = InstanceType<typeof Typography>;
 
 interface TypographyHandledProps
     extends Subtract<BaseTypographyHandledProps, TypographyManagedClasses> {}

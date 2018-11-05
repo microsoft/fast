@@ -2,7 +2,7 @@
 
 exports[`heading snapshots Heading: 0 1`] = `
 <h1
-  className="typography-0-1-8 typography__1-0-1-9 heading-0-1-1 heading__1-0-1-2"
+  className="typography-0-1-1 typography__1-0-1-2 heading-0-1-11 heading__1-0-1-12"
 >
   Heading test string
 </h1>
@@ -10,7 +10,7 @@ exports[`heading snapshots Heading: 0 1`] = `
 
 exports[`heading snapshots Heading: 1 1`] = `
 <h1
-  className="typography-0-1-25 typography__1-0-1-26 heading-0-1-18 heading__1-0-1-19"
+  className="typography-0-1-1 typography__1-0-1-2 heading-0-1-11 heading__1-0-1-12"
   data-sketch-symbol="Heading 1"
 >
   Heading test string
@@ -19,7 +19,7 @@ exports[`heading snapshots Heading: 1 1`] = `
 
 exports[`heading snapshots Heading: 2 1`] = `
 <h2
-  className="typography-0-1-42 typography__2-0-1-44 heading-0-1-35 heading__2-0-1-37"
+  className="typography-0-1-1 typography__2-0-1-3 heading-0-1-11 heading__2-0-1-13"
   data-sketch-symbol="Heading 2"
 >
   Heading test string
@@ -28,7 +28,7 @@ exports[`heading snapshots Heading: 2 1`] = `
 
 exports[`heading snapshots Heading: 3 1`] = `
 <h3
-  className="typography-0-1-59 typography__3-0-1-62 heading-0-1-52 heading__3-0-1-55"
+  className="typography-0-1-1 typography__3-0-1-4 heading-0-1-11 heading__3-0-1-14"
   data-sketch-symbol="Heading 3"
 >
   Heading test string
@@ -37,7 +37,7 @@ exports[`heading snapshots Heading: 3 1`] = `
 
 exports[`heading snapshots Heading: 4 1`] = `
 <h4
-  className="typography-0-1-76 typography__4-0-1-80 heading-0-1-69 heading__4-0-1-73"
+  className="typography-0-1-1 typography__4-0-1-5 heading-0-1-11 heading__4-0-1-15"
   data-sketch-symbol="Heading 4"
 >
   Heading test string
@@ -46,7 +46,7 @@ exports[`heading snapshots Heading: 4 1`] = `
 
 exports[`heading snapshots Heading: 5 1`] = `
 <h5
-  className="typography-0-1-93 typography__5-0-1-98 heading-0-1-86 heading__5-0-1-91"
+  className="typography-0-1-1 typography__5-0-1-6 heading-0-1-11 heading__5-0-1-16"
   data-sketch-symbol="Heading 5"
 >
   Heading test string
@@ -55,7 +55,7 @@ exports[`heading snapshots Heading: 5 1`] = `
 
 exports[`heading snapshots Heading: 6 1`] = `
 <h6
-  className="typography-0-1-110 typography__6-0-1-116 heading-0-1-103 heading__6-0-1-109"
+  className="typography-0-1-1 typography__6-0-1-7 heading-0-1-11 heading__6-0-1-17"
   data-sketch-symbol="Heading 6"
 >
   Heading test string

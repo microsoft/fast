@@ -22,7 +22,7 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const Flipper = manageJss(FlipperStyles)(MSFTFlipper);
-type Flipper = typeof Flipper;
+type Flipper = InstanceType<typeof Flipper>;
 
 interface FlipperHandledProps
     extends Subtract<MSFTFlipperHandledProps, FlipperManagedClasses> {}

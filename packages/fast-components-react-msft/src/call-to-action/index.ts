@@ -17,7 +17,7 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const CallToAction = manageJss(CallToActionStyles)(MSFTCallToAction);
-type CallToAction = typeof CallToAction;
+type CallToAction = InstanceType<typeof CallToAction>;
 
 interface CallToActionHandledProps
     extends Subtract<MSFTCallToActionHandledProps, CallToActionManagedClasses> {}

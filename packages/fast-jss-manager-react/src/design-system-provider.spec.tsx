@@ -78,4 +78,21 @@ describe("DesignSystemProvider", (): void => {
         expect(renderTwo.mock.calls).toHaveLength(1);
         expect(renderTwo.mock.calls[0][0]).toEqual({ a: "A", b: "b" });
     });
+
+    test("should not update the designSystem if its props are unchanged", (): void => {
+        const render: any = jest.fn();
+        const designSystem: any = { a: "a", b: "b" };
+
+        const tree: ShallowWrapper = mount(
+            <div>
+                <DesignSystemProvider designSystem={designSystem}>
+                    <Consumer>{render}</Consumer>
+                </DesignSystemProvider>
+            </div>
+        );
+
+        tree.setProps({ id: "id" });
+
+        expect(render).toHaveBeenCalledTimes(1);
+    });
 });

@@ -18,7 +18,7 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const Button = manageJss(ButtonStyles)(MSFTButton);
-type Button = typeof Button;
+type Button = InstanceType<typeof Button>;
 
 interface ButtonHandledProps
     extends Subtract<MSFTButtonHandledProps, ButtonManagedClasses> {}
