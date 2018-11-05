@@ -14,6 +14,13 @@ export interface JSSSheetOptions {
     index?: number;
 }
 
+/**
+ * A class for managing instance of stylesheets. The SheetManager
+ * tracks and associates compiled stylesheets with their style/design-system inputs,
+ * as well as tracking number of times a style/design-system combination has been used.
+ * Tracking this allows us to memoize compiled stylesheets and only compile a new sheet
+ * when one does not already exist.
+ */
 export default class SheetManager {
     private registry: SheetRegistry = new WeakMap();
 
