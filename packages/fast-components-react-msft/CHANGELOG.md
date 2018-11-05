@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.1.1...@microsoft/fast-components-react-msft@3.2.0) (2018-11-05)
+
+
+### Features
+
+* add context menu ([#1080](https://github.com/Microsoft/fast-dna/issues/1080)) ([e0106c4](https://github.com/Microsoft/fast-dna/commit/e0106c4))
+* add tests to ensure all components are exported in base and MSFT ([#1061](https://github.com/Microsoft/fast-dna/issues/1061)) ([fbebbad](https://github.com/Microsoft/fast-dna/commit/fbebbad))
+* performance updates to JSS Manager ([#1110](https://github.com/Microsoft/fast-dna/issues/1110)) ([db4b753](https://github.com/Microsoft/fast-dna/commit/db4b753))
+
+
+
+
+
 <a name="3.1.1"></a>
 ## [3.1.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.1.0...@microsoft/fast-components-react-msft@3.1.1) (2018-10-27)
 

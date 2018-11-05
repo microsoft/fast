@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-css-editor-react@3.0.3...@microsoft/fast-css-editor-react@3.1.0) (2018-11-05)
+
+
+### Features
+
+* performance updates to JSS Manager ([#1110](https://github.com/Microsoft/fast-dna/issues/1110)) ([db4b753](https://github.com/Microsoft/fast-dna/commit/db4b753))
+
+
+
+
+
 <a name="3.0.3"></a>
 ## [3.0.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-css-editor-react@3.0.2...@microsoft/fast-css-editor-react@3.0.3) (2018-10-27)
 
