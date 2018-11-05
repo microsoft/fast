@@ -3,7 +3,8 @@ import { ComponentStyles, ManagedClasses } from "@microsoft/fast-jss-manager";
 import { omit } from "lodash-es";
 import { Consumer } from "./context";
 import { JSSManagedComponentProps, JSSManager, ManagedJSSProps } from "./jss-manager";
-import * as hoistNonReactStatics from "hoist-non-react-statics";
+/* tslint:disable-next-line */
+const hoistNonReactStatics = require("hoist-non-react-statics");
 
 /**
  * Main entry into the style manager. This function accepts a JSS style object and returns a
