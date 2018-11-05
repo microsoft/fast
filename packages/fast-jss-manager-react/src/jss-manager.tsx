@@ -137,7 +137,7 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
                     prevProps.jssStyleSheet,
                     this.designSystem
                 );
-                this.createPropStyleSheet();
+                this.createPropStyleSheet(this.context);
                 shouldUpdate = true;
             } else if (
                 hadSheetProps &&
@@ -156,7 +156,7 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
                     this.designSystem
                 );
             } else if (!hadSheetProps && hasSheetProps) {
-                this.createPropStyleSheet();
+                this.createPropStyleSheet(this.context);
                 shouldUpdate = true;
             }
 
@@ -258,10 +258,10 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
         }
     }
 
-    private createPropStyleSheet(): void {
+    private createPropStyleSheet(designSystem: C = this.designSystem): void {
         JSSManager.sheetManager.add(
             this.props.jssStyleSheet,
-            this.designSystem,
+            designSystem,
             this.index + 1
         );
     }
