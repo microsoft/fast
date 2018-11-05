@@ -34,11 +34,21 @@ describe("The SheetManager", (): void => {
         expect(manager.count(stylesheet, designSystem)).toBe(2);
     });
 
+    test("should return -1 from count if no instances exist", () => {
+        expect(manager.count(stylesheet, designSystem)).toBe(-1);
+    });
+
     test("should not be able to retrieve a stylesheet after it has been removed", (): void => {
         manager.add(stylesheet, designSystem);
         manager.remove(stylesheet, designSystem);
 
         expect(manager.get(stylesheet, designSystem)).toBeUndefined();
+    });
+
+    test("should not throw if updated with data that has not been previously added", () => {
+        expect(() => {
+            manager.update(stylesheet, designSystem, {});
+        }).not.toThrow();
     });
 
     test("should remove a sheet when it is only added once and is then updated", (): void => {

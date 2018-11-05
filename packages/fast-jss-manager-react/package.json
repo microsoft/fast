@@ -35,10 +35,10 @@
     "collectCoverage": true,
     "coverageThreshold": {
       "global": {
-        "statements": 98,
-        "branches": 66,
-        "functions": 100,
-        "lines": 98
+        "statements": 81,
+        "branches": 65,
+        "functions": 95,
+        "lines": 81
       }
     },
     "testURL": "http://localhost",

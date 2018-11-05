@@ -6,30 +6,6 @@ import { JSSManagedComponentProps, JSSManager, ManagedJSSProps } from "./jss-man
 import * as hoistNonReactStatics from "hoist-non-react-statics";
 
 /**
- * The prop name that must be passed to the JSSManager and not the managed component
- */
-const jssManagerProp: keyof JSSManagedComponentProps<any, any> = "jssStyleSheet";
-
-/**
- * Determines if component prop object contains props
- * that need to be handed to the JSSManager
- */
-function containsJssManagerProps<T, S, C>(
-    props: T | ManagedJSSProps<T, S, C>
-): props is ManagedJSSProps<T, S, C> {
-    return props.hasOwnProperty(jssManagerProp);
-}
-
-/**
- * Removes props handled by the JSSManager from a prop object
- */
-export function cleanLowerOrderComponentProps<T, S, C>(
-    props: ManagedJSSProps<T, S, C>
-): T {
-    return containsJssManagerProps(props) ? (omit(props, [jssManagerProp]) as T) : props;
-}
-
-/**
  * Main entry into the style manager. This function accepts a JSS style object and returns a
  * higher order component. That higher-order component can then be used to compose a component
  * with styles managed

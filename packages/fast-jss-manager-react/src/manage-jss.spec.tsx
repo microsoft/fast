@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cleanLowerOrderComponentProps, manageJss } from "./manage-jss";
+import { manageJss } from "./manage-jss";
 import { JSSManager } from "./jss-manager";
 import { jss, stylesheetRegistry } from "./jss";
 import {
@@ -37,5 +37,12 @@ describe("manageJss", (): void => {
         const hoc: React.ComponentClass<{}> = manageJss()(SimpleComponent);
 
         expect((hoc as any).staticValue).toBe(SimpleComponent.staticValue);
+    });
+
+    test("should return a renderable react component", (): void => {
+        expect(() => {
+            const Hoc: React.ComponentClass<{}> = manageJss()(SimpleComponent);
+            mount(<Hoc>hello world</Hoc>);
+        }).not.toThrow();
     });
 });
