@@ -79,7 +79,7 @@ describe("DesignSystemProvider", (): void => {
         expect(renderTwo.mock.calls[0][0]).toEqual({ a: "A", b: "b" });
     });
 
-    test("should not update the designSystem if it's props are unchanged", (): void => {
+    test("should not update the designSystem if its props are unchanged", (): void => {
         const render: any = jest.fn();
         const designSystem: any = { a: "a", b: "b" };
 

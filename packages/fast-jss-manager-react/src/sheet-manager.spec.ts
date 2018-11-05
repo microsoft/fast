@@ -51,10 +51,32 @@ describe("The SheetManager", (): void => {
         }).not.toThrow();
     });
 
-    test("should remove a sheet when it is only added once and is then updated", (): void => {
+    test("should remove a sheet when it has been updated with a different design system", (): void => {
         const nextDesignSystem: any = { foregroundColor: "red" };
 
         manager.add(stylesheet, designSystem);
+        manager.update(stylesheet, designSystem, nextDesignSystem);
+
+        expect(manager.get(stylesheet, designSystem)).toBeUndefined();
+    });
+
+    test("should add a sheet after it has been updated with a different design system", (): void => {
+        const nextDesignSystem: any = { foregroundColor: "red" };
+
+        manager.add(stylesheet, designSystem);
+        manager.add(stylesheet, designSystem);
+        manager.update(stylesheet, designSystem, nextDesignSystem);
+
+        expect(manager.get(stylesheet, designSystem)).toBeDefined();
+    });
+
+    test("should remove a sheet when it has been updated as many times as it has been added", (): void => {
+        const nextDesignSystem: any = { foregroundColor: "red" };
+
+        manager.add(stylesheet, designSystem);
+        manager.add(stylesheet, designSystem);
+
+        manager.update(stylesheet, designSystem, nextDesignSystem);
         manager.update(stylesheet, designSystem, nextDesignSystem);
 
         expect(manager.get(stylesheet, designSystem)).toBeUndefined();

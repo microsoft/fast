@@ -72,7 +72,7 @@ const staticAndDynamicStyles: ComponentStyles<any, any> = {
 };
 
 describe("The JSSManager", (): void => {
-    class NoPropsManager extends JSSManager<any, any, any> {
+    class NoStylesManager extends JSSManager<any, any, any> {
         protected styles: void = undefined;
         protected managedComponent: React.ComponentType<any> = SimpleComponent;
     }
@@ -83,21 +83,21 @@ describe("The JSSManager", (): void => {
     }
 
     test("should render the managedComponent", () => {
-        const rendered: any = mount(<NoPropsManager />);
+        const rendered: any = mount(<NoStylesManager />);
 
         expect(rendered.find("div")).toHaveLength(1);
         expect(rendered.find("SimpleComponent")).toHaveLength(1);
     });
 
     test("should pass props to managed component", (): void => {
-        const rendered: any = mount(<NoPropsManager id="id" />);
+        const rendered: any = mount(<NoStylesManager id="id" />);
 
         expect(rendered.find("SimpleComponent").prop("id")).toBe("id");
     });
 
     test("should not pass the jssStyleSheet prop to managed component", (): void => {
         const rendered: any = mount(
-            <NoPropsManager jssStyleSheet={{ foo: { color: "red" } }} />
+            <NoStylesManager jssStyleSheet={{ foo: { color: "red" } }} />
         );
 
         expect(rendered.find("SimpleComponent").prop("jssStyleSheet")).toBeUndefined();
@@ -105,7 +105,7 @@ describe("The JSSManager", (): void => {
 
     test("should not pass the managedClasses prop through to managed component", (): void => {
         const managedClasses: any = { foo: "foo" };
-        const rendered: any = mount(<NoPropsManager managedClasses={managedClasses} />);
+        const rendered: any = mount(<NoStylesManager managedClasses={managedClasses} />);
 
         expect(rendered.find("SimpleComponent").prop("managedClasses")).not.toEqual(
             managedClasses
@@ -113,46 +113,46 @@ describe("The JSSManager", (): void => {
     });
 
     test("should provide an empty object to the managedClasses prop if no styles are provided", (): void => {
-        const rendered: any = mount(<NoPropsManager />);
+        const rendered: any = mount(<NoStylesManager />);
 
         expect(rendered.find("SimpleComponent").prop("managedClasses")).toEqual({});
     });
 
     test("should have a default context if no context is provided", (): void => {
-        const rendered: any = mount(<NoPropsManager managedClasses={{ foo: "foo" }} />);
+        const rendered: any = mount(<NoStylesManager managedClasses={{ foo: "foo" }} />);
 
         expect(rendered.instance().context).toEqual({});
     });
 
-    test("the default context should share identity between component instances", (): void => {
+    test("should have a default context that shares identity between component instances", (): void => {
         const renderedOne: any = mount(
-            <NoPropsManager managedClasses={{ foo: "foo" }} />
+            <NoStylesManager managedClasses={{ foo: "foo" }} />
         );
         const renderedTwo: any = mount(
-            <NoPropsManager managedClasses={{ foo: "bar" }} />
+            <NoStylesManager managedClasses={{ foo: "bar" }} />
         );
 
         expect(renderedOne.instance().context).toBe(renderedTwo.instance().context);
     });
 
-    test("the default context should share identity between component instances", (): void => {
+    test("should have a default context that increments between component instances", (): void => {
         const context: any = { foreground: "blue" };
 
         const rendered: any = mount(
             <DesignSystemProvider designSystem={context}>
-                <NoPropsManager managedClasses={{ foo: "bar" }} />;
-                <NoPropsManager managedClasses={{ foo: "foo" }} />;
+                <NoStylesManager managedClasses={{ foo: "bar" }} />;
+                <NoStylesManager managedClasses={{ foo: "foo" }} />;
             </DesignSystemProvider>
         );
 
         expect(
             rendered
-                .find("NoPropsManager")
+                .find("NoStylesManager")
                 .at(0)
                 .instance().context
         ).toBe(
             rendered
-                .find("NoPropsManager")
+                .find("NoStylesManager")
                 .at(1)
                 .instance().context
         );
@@ -160,15 +160,15 @@ describe("The JSSManager", (): void => {
 
     test("should render a parent with a higher index than a child", (): void => {
         const rendered: any = mount(
-            <NoPropsManager>
-                <NoPropsManager />
-            </NoPropsManager>
+            <NoStylesManager>
+                <NoStylesManager />
+            </NoStylesManager>
         );
 
         expect(rendered.instance().index).toBeGreaterThan(
             rendered
                 .children()
-                .find("NoPropsManager")
+                .find("NoStylesManager")
                 .instance().index
         );
     });
