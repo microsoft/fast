@@ -11,18 +11,18 @@ exports[`number-field number-field: 0 1`] = `
       <div>
         <div>
           <div
-            className="formItemSelect-0-1-11"
+            className="formItemSelect-0-1-1"
           >
             <label
-              className="formItemSelect_label-0-1-12"
+              className="formItemSelect_label-0-1-2"
             >
               Level
             </label>
             <span
-              className="formItemSelect_span-0-1-13"
+              className="formItemSelect_span-0-1-3"
             >
               <select
-                className="formItemSelect_input-0-1-14"
+                className="formItemSelect_input-0-1-4"
                 onChange={[Function]}
                 value="1"
               >
@@ -50,16 +50,16 @@ exports[`number-field number-field: 0 1`] = `
             </span>
           </div>
           <div
-            className="formItemNumberField-0-1-15"
+            className="formItemNumberField-0-1-5"
           >
             <label
-              className="formItemNumberField_label-0-1-16"
+              className="formItemNumberField_label-0-1-6"
               htmlFor="quantity"
             >
               Quantity
             </label>
             <input
-              className="formItemNumberField_input-0-1-17"
+              className="formItemNumberField_input-0-1-7"
               id="quantity"
               max={50}
               min={0}
