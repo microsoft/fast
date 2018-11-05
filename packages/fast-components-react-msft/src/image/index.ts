@@ -19,7 +19,7 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const Image = manageJss(ImageStyles)(BaseImage);
-type Image = typeof Image;
+type Image = InstanceType<typeof Image>;
 
 interface ImageHandledProps
     extends Subtract<BaseImageHandledProps, ImageManagedClasses> {}

@@ -15,7 +15,7 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const Progress = manageJss(ProgressStyles)(MSFTProgress);
-type Progress = typeof Progress;
+type Progress = InstanceType<typeof Progress>;
 
 interface ProgressHandledProps
     extends Subtract<MSFTProgressHandledProps, ProgressManagedClasses> {}

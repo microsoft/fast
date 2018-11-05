@@ -19,7 +19,7 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const Label = manageJss(LabelStyles)(BaseLabel);
-type Label = typeof Label;
+type Label = InstanceType<typeof Label>;
 
 interface LabelHandledProps
     extends Subtract<BaseLabelHandledProps, LabelManagedClasses> {}

@@ -17,7 +17,7 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const Dialog = manageJss(DialogStyles)(BaseDialog);
-type Dialog = typeof Dialog;
+type Dialog = InstanceType<typeof Dialog>;
 
 interface DialogHandledProps
     extends Subtract<BaseDialogHandledProps, DialogManagedClasses> {}

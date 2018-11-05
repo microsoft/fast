@@ -19,7 +19,7 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const Subheading = manageJss(SubheadingStyles)(MSFTSubheading);
-type Subheading = typeof MSFTSubheading;
+type Subheading = InstanceType<typeof MSFTSubheading>;
 
 interface SubheadingHandledProps
     extends Subtract<MSFTSubheadingHandledProps, SubheadingManagedClasses> {}

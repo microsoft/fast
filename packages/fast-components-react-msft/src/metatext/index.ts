@@ -18,7 +18,7 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const Metatext = manageJss(MetatextStyles)(MSFTMetatext);
-type Metatext = typeof Metatext;
+type Metatext = InstanceType<typeof Metatext>;
 
 interface MetatextHandledProps
     extends Subtract<MSFTMetatextHandledProps, MetatextManagedClasses> {}

@@ -16,7 +16,7 @@ import { Subtract } from "utility-types";
 
 /* tslint:disable-next-line:typedef */
 const ContextMenuItem = manageJss(ContextMenuItemStyles)(MSFTContextMenuItem);
-type ContextMenuItem = typeof ContextMenuItem;
+type ContextMenuItem = InstanceType<typeof ContextMenuItem>;
 
 interface ContextMenuItemHandledProps
     extends Subtract<MSFTContextMenuItemHandledProps, ContextMenuItemManagedClasses> {}

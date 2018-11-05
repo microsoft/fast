@@ -14,7 +14,7 @@ import { Subtract } from "utility-types";
 
 /*tslint:disable-next-line:typedef */
 const Card = manageJss(CardStyles)(BaseCard);
-type Card = typeof Card;
+type Card = InstanceType<typeof Card>;
 
 interface CardHandledProps extends Subtract<BaseCardHandledProps, CardManagedClasses> {}
 type CardProps = ManagedJSSProps<BaseCardProps, CardClassNameContract, DesignSystem>;

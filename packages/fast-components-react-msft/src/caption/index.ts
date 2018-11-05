@@ -18,7 +18,7 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const Caption = manageJss(CaptionStyles)(MSFTCaption);
-type Caption = typeof Caption;
+type Caption = InstanceType<typeof Caption>;
 
 interface CaptionHandledProps
     extends Subtract<MSFTCaptionHandledProps, CaptionManagedClasses> {}

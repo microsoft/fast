@@ -18,7 +18,7 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const Toggle = manageJss(ToggleStyles)(BaseToggle);
-type Toggle = typeof Toggle;
+type Toggle = InstanceType<typeof Toggle>;
 
 interface ToggleHandledProps
     extends Subtract<BaseToggleHandledProps, ToggleManagedClasses> {}

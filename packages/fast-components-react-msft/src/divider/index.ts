@@ -18,7 +18,7 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const Divider = manageJss(DividerStyles)(BaseDivider);
-type Divider = typeof Divider;
+type Divider = InstanceType<typeof Divider>;
 
 interface DividerHandledProps
     extends Subtract<BaseDividerHandledProps, DividerManagedClasses> {}

@@ -18,7 +18,7 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const Paragraph = manageJss(ParagraphStyles)(MSFTParagraph);
-type Paragraph = typeof Paragraph;
+type Paragraph = InstanceType<typeof Paragraph>;
 
 interface ParagraphHandledProps
     extends Subtract<MSFTParagraphHandledProps, ParagraphManagedClasses> {}

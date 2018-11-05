@@ -19,7 +19,7 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const Checkbox = manageJss(CheckboxStyles)(BaseCheckbox);
-type Checkbox = typeof Checkbox;
+type Checkbox = InstanceType<typeof Checkbox>;
 
 interface CheckboxHandledProps
     extends Subtract<MSFTCheckboxHandledProps, CheckboxManagedClasses> {}

@@ -20,7 +20,7 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const Heading = manageJss(HeadingStyles)(MSFTHeading);
-type Heading = typeof Heading;
+type Heading = InstanceType<typeof Heading>;
 
 interface HeadingHandledProps
     extends Subtract<MSFTHeadingHandledProps, HeadingManagedClasses> {}
