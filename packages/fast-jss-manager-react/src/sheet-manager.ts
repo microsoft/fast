@@ -185,7 +185,6 @@ export default class SheetManager {
         const stylesheet: ComponentStyleSheet<unknown, unknown> =
             typeof styles === "function" ? styles(designSystem) : styles;
 
-        // Create the stylesheet and
         const sheet: JSSStyleSheet = jss.createStyleSheet(stylesheet, {
             link: true,
             ...options,
