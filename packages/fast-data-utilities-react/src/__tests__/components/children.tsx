@@ -6,7 +6,7 @@ export interface ObjectWithChildren {
 
 export interface ChildrenProps {
     /**
-     * Children which are restricted to a subset of childOptions via the JSON schema
+     * React children which are restricted to selected components via the JSON schema
      */
     restrictedWithChildren: JSX.Element[] | JSX.Element;
 

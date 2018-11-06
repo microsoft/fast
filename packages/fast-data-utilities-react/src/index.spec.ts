@@ -3,12 +3,8 @@ import { get } from "lodash-es";
 import {
     ChildOptionItem,
     getDataLocationsOfChildren,
-    getLocationsFromObject,
-    getReactChildrenLocationsFromSchema,
-    getSchemaLocationSegmentsFromDataLocationSegments,
     mapDataToComponent,
     mapSchemaLocationFromDataLocation,
-    orderChildrenByDataLocation,
 } from "./";
 
 import Children from "./__tests__/components/children";
@@ -132,116 +128,6 @@ describe("mapSchemaLocationFromDataLocation", () => {
 
         expect(schemaLocationComponent).toBe("reactProperties.children");
         expect(schemaLocationString).toBe("reactProperties.children");
-    });
-});
-
-describe("orderChildrenByDataLocation", () => {
-    test("should sort in descending order", () => {
-        const testStrings: string[] = [
-            "one",
-            "one.two",
-            "foo",
-            "foo.bar",
-            "foo.bar.bat",
-            "hello.world",
-            "hello",
-        ];
-
-        testStrings.sort(orderChildrenByDataLocation);
-
-        expect(testStrings[0].split(".").length).toBe(3);
-        expect(testStrings[1].split(".").length).toBe(2);
-        expect(testStrings[2].split(".").length).toBe(2);
-        expect(testStrings[3].split(".").length).toBe(2);
-        expect(testStrings[4].split(".").length).toBe(1);
-        expect(testStrings[5].split(".").length).toBe(1);
-        expect(testStrings[6].split(".").length).toBe(1);
-    });
-});
-
-describe("getLocationsFromObject", () => {
-    test("should get all locations from a shallow object", () => {
-        const data: any = {
-            a: "foo",
-            b: "bar",
-            c: "bat",
-        };
-
-        const locations: string[] = getLocationsFromObject(data);
-
-        expect(locations.length).toBe(3);
-        expect(locations[0]).toBe("a");
-        expect(locations[1]).toBe("b");
-        expect(locations[2]).toBe("c");
-    });
-    test("should get all locations from a deep object", () => {
-        const data: any = {
-            a: {
-                nestedA: "foo",
-            },
-            b: {
-                nestedB: "bar",
-            },
-            c: {
-                nestedC: "bat",
-            },
-        };
-
-        const locations: string[] = getLocationsFromObject(data);
-        expect(locations.length).toBe(6);
-        expect(locations[0]).toBe("a");
-        expect(locations[1]).toBe("a.nestedA");
-        expect(locations[2]).toBe("b");
-        expect(locations[3]).toBe("b.nestedB");
-        expect(locations[4]).toBe("c");
-        expect(locations[5]).toBe("c.nestedC");
-    });
-    test("should get locations from an object containing an array", () => {
-        const data: any = {
-            a: [
-                {
-                    nestedA: "foo",
-                },
-                "bar",
-            ],
-        };
-
-        const locations: string[] = getLocationsFromObject(data);
-        expect(locations.length).toBe(4);
-        expect(locations[0]).toBe("a");
-        expect(locations[1]).toBe("a.0");
-        expect(locations[2]).toBe("a.0.nestedA");
-        expect(locations[3]).toBe("a.1");
-    });
-});
-
-describe("getReactChildrenLocationsFromSchema", () => {
-    test("should identify React children from a set of schema locations", () => {
-        const schema: any = {
-            type: "object",
-            properties: {
-                a: {
-                    type: "string",
-                },
-            },
-            reactProperties: {
-                b: {
-                    type: "children",
-                },
-                c: {
-                    type: "children",
-                },
-            },
-        };
-        const locations: string[] = getLocationsFromObject(schema);
-        const reactChildrenLocations: string[] = getReactChildrenLocationsFromSchema(
-            schema,
-            locations
-        );
-
-        expect(reactChildrenLocations.length).toBe(2);
-        expect(reactChildrenLocations[0]).toBe("reactProperties.b");
-        expect(reactChildrenLocations[1]).toBe("reactProperties.c");
     });
 });
 
@@ -425,61 +311,6 @@ describe("getDataLocationsOfChildren", () => {
         expect(dataLocationsOfReactChildren[3]).toBe(
             "children[0].props.children.props.children[1]"
         );
-    });
-});
-
-describe("getSchemaLocationSegmentsFromDataLocationSegments", () => {
-    test("should get a list of schema locations from children", () => {
-        const data: any = {
-            children: {
-                id: childrenSchema.id,
-                props: {
-                    children: {
-                        id: textFieldSchema.id,
-                        props: {},
-                    },
-                },
-            },
-        };
-
-        const schemaLocationSegments: string[] = getSchemaLocationSegmentsFromDataLocationSegments(
-            ["children"],
-            childrenSchema,
-            data
-        );
-
-        expect(schemaLocationSegments.length).toBe(2);
-        expect(schemaLocationSegments[0]).toBe("reactProperties");
-        expect(schemaLocationSegments[1]).toBe("children");
-    });
-    test("should get a list of schema locations from an array of children", () => {
-        const data: any = {
-            children: [
-                {
-                    id: childrenSchema.id,
-                    props: {
-                        children: {
-                            id: textFieldSchema.id,
-                            props: {},
-                        },
-                    },
-                },
-                {
-                    id: textFieldSchema.id,
-                    props: {},
-                },
-            ],
-        };
-
-        const schemaLocationSegments: string[] = getSchemaLocationSegmentsFromDataLocationSegments(
-            ["children[1]"],
-            childrenSchema,
-            data
-        );
-
-        expect(schemaLocationSegments.length).toBe(2);
-        expect(schemaLocationSegments[0]).toBe("reactProperties");
-        expect(schemaLocationSegments[1]).toBe("children");
     });
 });
 

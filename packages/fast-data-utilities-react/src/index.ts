@@ -11,7 +11,7 @@ export interface ChildOptionItem {
     /**
      * The React component
      */
-    component: React.ComponentClass;
+    component: React.ComponentType;
 
     /**
      * The JSON schema for the component
