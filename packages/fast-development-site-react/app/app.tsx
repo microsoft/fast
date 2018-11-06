@@ -14,7 +14,7 @@ import Site, {
     Theme,
 } from "../src";
 import designSystemDefaults, { Direction } from "./design-system";
-import { Button, Paragraph, Span } from "./components/index";
+import { Button, Paragraph, Span } from "./components";
 import ButtonSchema from "./components/button/button.schema.json";
 import ParagraphSchema from "./components/paragraph/paragraph.schema.json";
 import SpanSchema from "./components/paragraph/paragraph.schema.json";
@@ -31,7 +31,7 @@ export interface AppState {
 const themes: Theme[] = [
     { id: "Foo", displayName: "Foo", background: "#000" },
     { id: "Bar", displayName: "Bar", background: "#FFF" },
-    { id: "Rumple", displayName: "Rumple", background: "#222" },
+    { id: "Bat", displayName: "Bat", background: "#222" },
 ];
 
 export default class App extends React.Component<{}, AppState> {
@@ -116,20 +116,24 @@ export default class App extends React.Component<{}, AppState> {
     }
 
     private renderComponents2(): JSX.Element {
-        const componentObj: any[] = [
+        const paragraphTestComponents: any[] = [
             { text: "itsy" },
             { text: "bitsy" },
             { text: "spider" },
         ];
-        const categoryObj: SiteCategoryProps = {
+        const paragraphTestCategory: SiteCategoryProps = {
             slot: "category",
             name: "Paragraph",
             schema: ParagraphSchema,
             component: Paragraph,
             status: Status.alpha,
         };
-        const componentObj2: any[] = [{ text: "uno" }, { text: "due" }, { text: "tre" }];
-        const categoryObj2: SiteCategoryProps = {
+        const spanTestComponents: any[] = [
+            { text: "uno" },
+            { text: "due" },
+            { text: "tre" },
+        ];
+        const spanTestCategory: SiteCategoryProps = {
             slot: "category",
             name: "Span",
             schema: SpanSchema,
@@ -139,39 +143,48 @@ export default class App extends React.Component<{}, AppState> {
 
         return (
             <SiteCategory slot={"category"} name={"Components 2"}>
-                {this.renderCategory(componentObj, categoryObj)}
-                {this.renderCategory(componentObj2, categoryObj2)}
+                {this.renderCategory(paragraphTestComponents, paragraphTestCategory)}
+                {this.renderCategory(spanTestComponents, spanTestCategory)}
                 {this.renderComponents2Nested()}
             </SiteCategory>
         );
     }
 
     private renderComponents1(): JSX.Element {
-        const categoryBase: Partial<SiteCategoryProps> = {
+        const buttonTestCategoryBase: Partial<SiteCategoryProps> = {
             slot: "category",
             schema: ButtonSchema,
             component: Button,
             status: Status.released,
         };
-        const componentObj1: any[] = [
+        const buttonTestComponents: any[] = [
             { children: "foo" },
             { children: "bar" },
             { children: "bat" },
         ];
-        const categoryObj1: Partial<SiteCategoryProps> = {
-            ...categoryBase,
+        const buttonTestCategory: Partial<SiteCategoryProps> = {
+            ...buttonTestCategoryBase,
             name: "Button",
         };
-        const componentObj2: any[] = [{ children: "lorem" }, { children: "ipsum" }];
-        const categoryObj2: Partial<SiteCategoryProps> = {
-            ...categoryBase,
+        const otherButtonTestComponents: any[] = [
+            { children: "lorem" },
+            { children: "ipsum" },
+        ];
+        const otherButtonTestCategory: Partial<SiteCategoryProps> = {
+            ...buttonTestCategoryBase,
             name: "Other Button",
         };
 
         return (
             <SiteCategory slot={"category"} name={"Components"}>
-                {this.renderCategory(componentObj1, categoryObj1 as SiteCategoryProps)}
-                {this.renderCategory(componentObj2, categoryObj2 as SiteCategoryProps)}
+                {this.renderCategory(
+                    buttonTestComponents,
+                    buttonTestCategory as SiteCategoryProps
+                )}
+                {this.renderCategory(
+                    otherButtonTestComponents,
+                    otherButtonTestCategory as SiteCategoryProps
+                )}
             </SiteCategory>
         );
     }
