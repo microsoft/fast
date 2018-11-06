@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/schema#",
-    "title": "Component with anyOf",
+    "title": "Component with the JSON schema anyOf keyword for multiple interface options",
     "description": "A test component's schema definition.",
     "type": "object",
     "id": "anyOf",

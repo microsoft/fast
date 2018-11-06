@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/schema#",
-    "title": "Component with array",
+    "title": "Component with arrays",
     "description": "A test component's schema definition.",
     "type": "object",
     "id": "arrays",

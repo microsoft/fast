@@ -1,12 +1,12 @@
 # FAST React data utilities
-React data utilities are used to map data to components and perform other actions that may be necessary to pass data to other FAST-DNA libraries for manipulation, data validation or storage.
+React data utilities are used to map data to components and perform other actions that may be necessary to pass data to other FAST-DNA libraries for manipulation, data validation, or storage. It relies on the creation of relevant JSON schemas for components, JSON schemas for the purposes of React use additional keyword of `reactProperties` for React children with the "type" of "children".
 
 ## Installation
 `npm i --save @microsoft/fast-data-utilities-react`
 
 ## Usage
 ### `mapDataToComponent`
-The `mapDataToComponent` function can be used to map data to a React component. It uses JSON Schema, ids and data to create components from plain data.
+The `mapDataToComponent` function can be used to map data to a React component. It uses JSON Schema, IDs, as well as data to create components from plain data.
 
 An example of mapping data to a component from the `@microsoft/fast-data-utilities-react` package:
 
@@ -54,4 +54,97 @@ function render() {
 }
 
 render();
+```
+
+### `getChildOptionBySchemaId`
+The `getChildOptionBySchemaId` accepts a list of child options and returns the one that matches the schema ID.
+
+```js
+import { getChildOptionBySchemaId } from "@microsoft/fast-data-utilities-react";
+import * as headingSchema from "@microsoft/fast-components-react-msft/dist/heading/heading.schema.json";
+import * as paragraphSchema from "@microsoft/fast-components-react-msft/dist/paragraph/paragraph.schema.json";
+
+const childOptions = [
+    { component: Heading, schema: headingSchema },
+    { component: Paragraph, schema: paragraphSchema },
+];
+
+const headingChildOption = getChildOptionBySchemaId(headingSchema.id, childOptions); // should be { component: Heading, schema: headingSchema }
+```
+
+### `getDataLocationsOfChildren`
+The `getDataLocationsOfChildren` returns any data locations of react children. This assumes that the 
+
+
+```js
+import { getDataLocationsOfChildren } from "@microsoft/fast-data-utilities-react";
+import * as headingSchema from "@microsoft/fast-components-react-msft/dist/heading/heading.schema.json";
+
+const headingData = {
+    children: "Hello world"
+};
+
+const dataLocationsOfChildren = getDataLocationsOfChildren(headingSchema, headingData, []); // should be ["children"]
+```
+
+### `getPartialData`
+The `getPartialData` function returns partial data based on a location path using the `lodash` path syntax.
+
+```js
+import { getPartialData } from "@microsoft/fast-data-utilities-react";
+
+const data = {
+    foo: {
+        bar: [
+            {
+                bat: "Hello world"
+            }
+        ]
+    }
+}
+
+const location = "foo.bar.0";
+
+const partialData = getPartialData(location, data); // should be { bat: "Hello world" }
+```
+
+### `mapSchemaLocationFromDataLocation`
+The `mapSchemaLocationFromDataLocation` takes a `lodash` path to data, the data and the corresponding schema to determine the schemas path to that data.
+
+```js
+import { mapSchemaLocationFromDataLocation } from "@microsoft/fast-data-utilities-react";
+
+const dataLocation = "children";
+const data = {
+    children: "Hello world"
+};
+const schema = {
+    type: "object",
+    reactProperties: {
+        children: {
+            type: "children"
+        }
+    }
+}
+
+const schemaLocation = mapSchemaLocationFromDataLocation(dataLocation, data, schema); // should be "reactProperties.children"
+```
+
+### `normalizeDataLocation`
+The `normalizeDataLocation` converts all property locations to `lodash` path dot notation and all array item references to bracket notation
+
+```js
+import { normalizeDataLocation } from "@microsoft/fast-data-utilities-react";
+
+const dataLocation = "foo.bar[0].bat";
+const data = {
+    foo: {
+        bar: [
+            {
+                bat: "Hello world"
+            }
+        ]
+    }
+}
+const normalizedDataLocation = normalizeDataLocation(dataLocation, data); // should be "foo.bar.0.bat"
 ```

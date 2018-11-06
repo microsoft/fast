@@ -48,7 +48,7 @@ export function normalizeDataLocation(dataLocation: string, data: any): string {
 /**
  * Converts a data location strings array items into bracket notation
  */
-export function arrayItemsToBracketNotation(dataLocation: string, data: any): string {
+function arrayItemsToBracketNotation(dataLocation: string, data: any): string {
     const normalizedDataLocation: string[] = [];
     const dataLocations: string[] = dataLocation.split(".");
 
@@ -71,18 +71,14 @@ export function arrayItemsToBracketNotation(dataLocation: string, data: any): st
 /**
  * Gets the index from a JSON schemas oneOf/anyOf array that validates against the data
  */
-export function getValidAnyOfOneOfIndex(
-    oneOfAnyOf: string,
-    data: any,
-    schema: any
-): number {
+function getValidAnyOfOneOfIndex(oneOfAnyOf: string, data: any, schema: any): number {
     return schema[oneOfAnyOf].findIndex((item: any): number => tv4.validate(data, item));
 }
 
 /**
  * Gets an array of oneOf/anyOf with a valid index from a schema and data
  */
-export function getSchemaOneOfAnyOfLocationSegments(schema: any, data: any): string[] {
+function getSchemaOneOfAnyOfLocationSegments(schema: any, data: any): string[] {
     const schemaLocationSegments: string[] = [];
 
     if (typeof schema === "undefined") {
@@ -107,7 +103,7 @@ export function getSchemaOneOfAnyOfLocationSegments(schema: any, data: any): str
 /**
  * Gets the correct property keyword
  */
-export function getObjectPropertyKeyword(schema: any): PropertyKeyword {
+function getObjectPropertyKeyword(schema: any): PropertyKeyword {
     if (!!schema) {
         return PropertyKeyword.reactProperties;
     } else {
@@ -118,14 +114,14 @@ export function getObjectPropertyKeyword(schema: any): PropertyKeyword {
 /**
  * Removes any references to array index
  */
-export function normalizeSchemaLocation(schemaLocation: string): string {
+function normalizeSchemaLocation(schemaLocation: string): string {
     return schemaLocation.replace(squareBracketsRegex, "");
 }
 
 /**
  * Checks to see if the data location item is an array item
  */
-export function isDataLocationArrayItem(dataLocationItem: string): boolean {
+function isDataLocationArrayItem(dataLocationItem: string): boolean {
     const squareBracketRegex: RegExp = squareBracketsRegex;
     const match: boolean = false;
 
@@ -145,7 +141,7 @@ export function isDataLocationArrayItem(dataLocationItem: string): boolean {
 /**
  * Get an array of schema location strings from a single data location item
  */
-export function getSchemaLocationSegmentsFromDataLocationSegment(
+function getSchemaLocationSegmentsFromDataLocationSegment(
     dataLocation: string,
     schema: any,
     data: any
@@ -181,7 +177,7 @@ export function getSchemaLocationSegmentsFromDataLocationSegment(
 /**
  * Get an array of schema location strings from an array of data location strings
  */
-export function getSchemaLocationSegmentsFromDataLocationSegments(
+function getSchemaLocationSegmentsFromDataLocationSegments(
     dataLocationSegments: string[],
     schema: any,
     data: any
@@ -243,7 +239,7 @@ export function mapSchemaLocationFromDataLocation(
 /**
  * Finds a subset of locations that are react children
  */
-export function getReactChildrenLocationsFromSchema(
+function getReactChildrenLocationsFromSchema(
     schema: any,
     schemaLocations: any
 ): string[] {
@@ -260,7 +256,7 @@ export function getReactChildrenLocationsFromSchema(
 /**
  * Finds the locations throughout an object
  */
-export function getLocationsFromObject(data: any, location: string = ""): string[] {
+function getLocationsFromObject(data: any, location: string = ""): string[] {
     let updatedLocations: string[] = [];
 
     if (typeof data === "string" || data === null || data === undefined) {
@@ -440,7 +436,7 @@ export function getChildOptionBySchemaId(
  * Used as a sort compare function
  * see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
  */
-export function orderChildrenByDataLocation(
+function orderChildrenByDataLocation(
     firstLocation: string,
     secondLocation: string
 ): number {
