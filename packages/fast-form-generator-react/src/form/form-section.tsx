@@ -1,5 +1,6 @@
 import FormItemChildren from "./form-item.children";
 import * as React from "react";
+import { ChildOptionItem } from "@microsoft/fast-data-utilities-react";
 import {
     FormCategories,
     FormItemParameters,
@@ -18,10 +19,7 @@ import FormItemSelect from "./form-item.select";
 import { uniqueId } from "lodash-es";
 import FormItemArray from "./form-item.array";
 import FormItemMapping from "./form-item.mapping";
-import {
-    ChildOptionItem,
-    TextareaAttributeSettingsMappingToPropertyNames,
-} from "./form.props";
+import { TextareaAttributeSettingsMappingToPropertyNames } from "./form.props";
 import {
     checkCategoryConfigPropertyCount,
     checkHasOneOfAnyOf,

@@ -1,5 +1,6 @@
 import { updateActiveSection } from "./form-section.props";
 import { NavigationItem } from "./form.utilities";
+import { ChildOptionItem } from "@microsoft/fast-data-utilities-react";
 
 export type PropsOnChange = (data: any) => void;
 
@@ -16,23 +17,6 @@ export type LocationOnChange = (schemaLocation: string, dataLocation: string) =>
 export type BreadcrumbItemEventHandler = (e: React.MouseEvent<HTMLAnchorElement>) => void;
 
 export type FormTag = "form" | "div";
-
-export interface ChildOptionItem {
-    /**
-     * The name of the component
-     */
-    name: string;
-
-    /**
-     * The React component
-     */
-    component: React.ComponentClass;
-
-    /**
-     * The JSON schema for the component
-     */
-    schema: any;
-}
 
 /**
  * The schema form props
