@@ -3,11 +3,14 @@ import * as React from "react";
 import { canUseDOM } from "exenv-es6";
 import { arrayMove, SortableContainer, SortableElement } from "react-sortable-hoc";
 import { get } from "lodash-es";
+import {
+    ChildOptionItem,
+    getChildOptionBySchemaId,
+} from "@microsoft/fast-data-utilities-react";
 import { SortableListItem, sortingProps } from "./sorting";
-import { getChildOptionBySchemaId } from "./form.utilities";
 import { cloneDeep, uniqueId } from "lodash-es";
 import { updateActiveSection } from "./form-section.props";
-import { ChildOptionItem, DataOnChange } from "./form.props";
+import { DataOnChange } from "./form.props";
 import { reactChildrenStringSchema } from "./form-item.children.text";
 import styles from "./form-item.children.style";
 import { FormItemChildrenClassNameContract } from "../class-name-contracts/";

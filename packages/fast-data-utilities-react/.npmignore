@@ -1,0 +1,14 @@
+# Source files
+src/
+
+#  Tests
+__tests__/
+*.spec.*
+*.test.*
+
+# babel config
+babel.config.js
+
+# config
+tslint.json
+babel.config.js

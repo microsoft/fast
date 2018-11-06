@@ -1,0 +1,21 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Component with align horizontal",
+    "description": "A test component's schema definition.",
+    "type": "object",
+    "id": "alignHorizontal",
+    "properties": {
+        "alignHorizontal": {
+            "title": "Align horizontal",
+            "type": "string",
+            "enum": [
+                "left",
+                "center",
+                "right"
+            ]
+        }
+    },
+    "required": [
+        "alignHorizontal"
+    ]
+}
