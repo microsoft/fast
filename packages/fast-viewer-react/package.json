@@ -4,7 +4,7 @@
   "sideEffects": false,
   "version": "3.1.1",
   "author": {
-    "name": "Fluent Web",
+    "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
   },
   "license": "MIT",
@@ -24,7 +24,8 @@
   "scripts": {
     "build": "tsc -p ./tsconfig.json",
     "build:app": "webpack --progress",
-    "prepare": "npm run build",
+    "clean:dist": "node ../../build/clean.js dist",
+    "prepare": "npm run clean:dist && npm run build",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts, tsx}\" --list-different",
     "start": "webpack-dev-server --progress",
