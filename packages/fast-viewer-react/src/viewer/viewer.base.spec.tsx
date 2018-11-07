@@ -94,7 +94,7 @@ describe("Viewer", (): void => {
     });
     test("should fire the `onUpdateHeight` callback if the responsive buttons are dragged", () => {
         jest.spyOn(window, "requestAnimationFrame").mockImplementation(
-            (callback): void => {
+            (callback: () => void): void => {
                 callback();
             }
         );
@@ -128,7 +128,7 @@ describe("Viewer", (): void => {
     });
     test("should fire the `onUpdateWidth` callback if the responsive buttons are dragged", () => {
         jest.spyOn(window, "requestAnimationFrame").mockImplementation(
-            (callback): void => {
+            (callback: () => void): void => {
                 callback();
             }
         );
