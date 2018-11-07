@@ -83,13 +83,7 @@ export default class Viewer extends Foundation<
                 document.removeEventListener("mousemove", this.handleMouseMove);
             }
 
-            const updateMessage: ViewerMessage = {
-                type: ViewerMessageType.updateComponentData,
-                target: ViewerMessageTarget.viewerContent,
-                componentData: this.props.viewerContentProps,
-            };
-
-            this.postMessage(updateMessage);
+            this.updateMessage();
         }
     }
 
@@ -184,6 +178,16 @@ export default class Viewer extends Foundation<
                 </React.Fragment>
             );
         }
+    }
+
+    private updateMessage(): void {
+        const updateMessage: ViewerMessage = {
+            type: ViewerMessageType.updateComponentData,
+            target: ViewerMessageTarget.viewerContent,
+            componentData: this.props.viewerContentProps,
+        };
+
+        this.postMessage(updateMessage);
     }
 
     private getHeight(): any {
