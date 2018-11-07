@@ -3,6 +3,7 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount } from "enzyme";
 import { ViewerHandledProps } from "./";
 import ViewerBase from "./viewer.base";
+import { ResizeHandleLocation } from "./viewer.props";
 import { ViewerClassNameContract } from "./viewer.class-name-contract";
 import {
     ViewerMessage,
@@ -92,6 +93,11 @@ describe("Viewer", (): void => {
         expect(renderedWithoutResponsive.find("button").length).toBe(0);
     });
     test("should fire the `onUpdateHeight` callback if the responsive buttons are dragged", () => {
+        jest.spyOn(window, "requestAnimationFrame").mockImplementation(
+            (callback): void => {
+                callback();
+            }
+        );
         const updateHeightCallback: (height: number) => void = jest.fn(function(
             height: number
         ): void {
@@ -116,11 +122,16 @@ describe("Viewer", (): void => {
             pageX: 200,
             pageY: 200,
         };
-        rendered.instance().handleBottomMouseDown(mouseDownEvent);
-        rendered.instance().onMouseMove(mouseMoveEvent);
+        rendered.instance().handleMouseDown(ResizeHandleLocation.bottom)(mouseDownEvent);
+        rendered.instance().handleMouseMove(mouseMoveEvent);
         expect(updateHeightCallback).toHaveBeenCalled();
     });
     test("should fire the `onUpdateWidth` callback if the responsive buttons are dragged", () => {
+        jest.spyOn(window, "requestAnimationFrame").mockImplementation(
+            (callback): void => {
+                callback();
+            }
+        );
         const updateWidthCallback: (width: number) => void = jest.fn(function(
             width: number
         ): void {
@@ -145,8 +156,8 @@ describe("Viewer", (): void => {
             pageX: 200,
             pageY: 200,
         };
-        rendered.instance().handleLeftMouseDown(mouseDownEvent);
-        rendered.instance().onMouseMove(mouseMoveEvent);
+        rendered.instance().handleMouseDown(ResizeHandleLocation.left)(mouseDownEvent);
+        rendered.instance().handleMouseMove(mouseMoveEvent);
         expect(updateWidthCallback).toHaveBeenCalled();
     });
 });

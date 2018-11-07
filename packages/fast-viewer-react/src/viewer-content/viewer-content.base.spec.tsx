@@ -9,6 +9,7 @@ import {
     ViewerMessageType,
 } from "../utilities/message-system";
 import Example from "../../app/components/example";
+import * as exampleSchema from "../../app/components/example.schema.json";
 
 /*
  * Configure Enzyme
@@ -38,7 +39,7 @@ describe("ViewerContent", (): void => {
         const props: ViewerContentHandledProps = {
             components: [
                 {
-                    id: "example",
+                    schema: exampleSchema,
                     component: Example,
                 },
             ],
@@ -70,7 +71,7 @@ describe("ViewerContent", (): void => {
         const props: ViewerContentHandledProps = {
             components: [
                 {
-                    id: "example",
+                    schema: exampleSchema,
                     component: Example,
                 },
             ],

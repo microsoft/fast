@@ -65,6 +65,7 @@ export default class Viewer extends Foundation<
 
         this.iframeRef = React.createRef();
         this.handleMouseMove = rafThrottle(this.handleMouseMove);
+        // this.handleMouseMove = throttle(this.handleMouseMove, 16);
     }
 
     /**
