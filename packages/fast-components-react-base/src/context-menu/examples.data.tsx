@@ -22,7 +22,7 @@ const managedClasses: ContextMenuManagedClasses = {
 };
 
 const examples: ComponentFactoryExample<ContextMenuProps> = {
-    name: "context-menu",
+    name: "Context menu",
     component: ContextMenu,
     schema: schema as any,
     documentation: <Documentation />,

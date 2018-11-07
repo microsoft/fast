@@ -14,7 +14,7 @@ const managedClasses: ContextMenuItemManagedClasses = {
 };
 
 const examples: ComponentFactoryExample<ContextMenuItemHandledProps> = {
-    name: "context-menu-item",
+    name: "Context menu item",
     component: ContextMenuItem,
     schema: schema as any,
     documentation: <Documentation />,
