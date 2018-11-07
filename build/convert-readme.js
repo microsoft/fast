@@ -19,12 +19,14 @@ import * as React from "react";
 export default class Documentation extends React.Component<{}, {}> {
     public render(): JSX.Element {
         return (
-            <div style={{padding: "14px"}}>\n                `;
+            <React.Fragment>\n                `;
 
-const endFile = `\n           </div>
+const endFile = `\n           </React.Fragment>
         );
     }
 }\n`;
+
+const emptyFile = `<p>No documentation provided.</p>`;
 
 const md = new MarkdownIt({
     html: true,
@@ -49,9 +51,15 @@ function exportReadme(readmePath) {
             let documentation = startFile;
             const markdown = fs.readFileSync(filePath, "utf8");
             const exportPath = filePath.replace(/README\.md/, readmePath);
-            documentation += md.render(markdown);
-            documentation += endFile;
 
+            if (markdown.length !== 0) {
+                documentation += md.render(markdown);
+            } else {
+                documentation += emptyFile;
+            }
+
+            documentation += endFile;
+            
             if (!fs.existsSync(exportPath)){
                 fs.mkdirSync(exportPath);
             }

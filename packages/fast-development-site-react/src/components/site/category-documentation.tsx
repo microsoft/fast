@@ -18,7 +18,8 @@ export interface CategoryDocumentationManagedClasses {
 
 const style: ComponentStyles<CategoryDocumentationManagedClasses, DevSiteDesignSystem> = {
     documentationPanel: {
-        maxWidth: toPx(1000),
+        maxWidth: "1000px",
+        padding: "14px",
     },
 };
 
@@ -28,21 +29,11 @@ class CategoryDocumentation extends React.Component<
     {}
 > {
     public render(): JSX.Element {
-        if (this.props.children !== undefined) {
-            return (
-                <div className={this.props.managedClasses.documentationPanel}>
-                    {this.props.children}
-                </div>
-            );
-        } else {
-            return (
-                <div className={this.props.managedClasses.documentationPanel}>
-                    <div style={{ padding: "14px" }}>
-                        <p>No documentation provided.</p>
-                    </div>
-                </div>
-            );
-        }
+        return (
+            <div className={this.props.managedClasses.documentationPanel}>
+                {this.props.children}
+            </div>
+        );
     }
 }
 export default manageJss(style)(CategoryDocumentation);
