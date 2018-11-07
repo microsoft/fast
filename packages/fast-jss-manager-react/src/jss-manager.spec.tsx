@@ -104,7 +104,6 @@ describe("The JSSManager", (): void => {
     });
 
     test("should create jssStyleSheet with more specificity than the composed stylesheet", (): void => {
-        const context: any = { color: "red" };
         const rendered: any = mount(
             <StyledManager jssStyleSheet={{ foo: { color: "green" } }} />
         );
@@ -116,7 +115,6 @@ describe("The JSSManager", (): void => {
     });
 
     test("should create subsequent jssStyleSheet sheets with more specificity than a composed stylesheet", (): void => {
-        const context: any = { color: "red" };
         const rendered: any = mount(
             <React.Fragment>
                 <StyledManager jssStyleSheet={{ foo: { color: "green" } }} />
@@ -157,7 +155,7 @@ describe("The JSSManager", (): void => {
         );
     });
 
-    test("should decrease a counter tracking global stylesheet order on mount", (): void => {
+    test("should decrease a counter tracking global stylesheet order during mounting", (): void => {
         const preMountIndex: number = (StyledManager as any).index;
         const rendered: any = mount(<StyledManager />);
         const manager: any = rendered.find("StyledManager").instance();
