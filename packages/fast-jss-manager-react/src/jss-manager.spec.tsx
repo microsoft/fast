@@ -103,6 +103,60 @@ describe("The JSSManager", (): void => {
         expect(rendered.find("SimpleComponent").prop("jssStyleSheet")).toBeUndefined();
     });
 
+    test("should create jssStyleSheet with more specificity than the composed stylesheet", (): void => {
+        const context: any = { color: "red" };
+        const rendered: any = mount(
+            <StyledManager jssStyleSheet={{ foo: { color: "green" } }} />
+        );
+        const manager: any = rendered.find("StyledManager").instance();
+
+        expect(manager.secondaryStyleSheet().options.index).toBeGreaterThan(
+            manager.primaryStyleSheet().options.index
+        );
+    });
+
+    test("should create subsequent jssStyleSheet sheets with more specificity than a composed stylesheet", (): void => {
+        const context: any = { color: "red" };
+        const rendered: any = mount(
+            <React.Fragment>
+                <StyledManager jssStyleSheet={{ foo: { color: "green" } }} />
+                <StyledManager jssStyleSheet={{ foo: { color: "green" } }} />
+                <StyledManager jssStyleSheet={{ foo: { color: "green" } }} />
+            </React.Fragment>
+        );
+
+        const manager: any = rendered
+            .find("StyledManager")
+            .at(0)
+            .instance();
+        const managerTwo: any = rendered
+            .find("StyledManager")
+            .at(1)
+            .instance();
+        const managerThree: any = rendered
+            .find("StyledManager")
+            .at(2)
+            .instance();
+
+        expect(managerTwo.primaryStyleSheet().options.index).toBe(
+            manager.primaryStyleSheet().options.index
+        );
+        expect(managerThree.primaryStyleSheet().options.index).toBe(
+            manager.primaryStyleSheet().options.index
+        );
+
+        expect(manager.secondaryStyleSheet().options.index).toBeGreaterThan(
+            manager.primaryStyleSheet().options.index
+        );
+
+        expect(managerTwo.secondaryStyleSheet().options.index).toBe(
+            manager.secondaryStyleSheet().options.index
+        );
+        expect(managerThree.secondaryStyleSheet().options.index).toBe(
+            managerTwo.secondaryStyleSheet().options.index
+        );
+    });
+
     test("should not pass the managedClasses prop through to managed component", (): void => {
         const managedClasses: any = { foo: "foo" };
         const rendered: any = mount(<NoStylesManager managedClasses={managedClasses} />);

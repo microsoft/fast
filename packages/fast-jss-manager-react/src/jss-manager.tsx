@@ -88,7 +88,7 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
     constructor(props: ManagedJSSProps<T, S, C>, context: C) {
         super(props, context);
 
-        this.index = JSSManager.index--;
+        this.index = JSSManager.index -= 1;
         this.designSystem = context;
     }
 
