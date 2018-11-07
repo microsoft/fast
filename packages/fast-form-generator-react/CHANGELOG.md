@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-form-generator-react@3.1.0...@microsoft/fast-form-generator-react@3.2.0) (2018-11-07)
+
+
+### Features
+
+* add new package for react data utilities ([#1115](https://github.com/Microsoft/fast-dna/issues/1115)) ([dedaec6](https://github.com/Microsoft/fast-dna/commit/dedaec6))
+
+
+
+
+
 # [3.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-form-generator-react@3.0.2...@microsoft/fast-form-generator-react@3.1.0) (2018-11-05)
 
 

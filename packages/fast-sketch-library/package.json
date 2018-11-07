@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-sketch-library",
   "description": "A Node.js utility for quickly extracting Sketch symbol libraries from a website",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "private": true,
   "sideEffects": false,
   "author": {

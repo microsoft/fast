@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-react@3.1.0...@microsoft/fast-jss-manager-react@3.1.1) (2018-11-07)
+
+
+### Bug Fixes
+
+* correct jssStyleSheet style element ordering ([#1120](https://github.com/Microsoft/fast-dna/issues/1120)) ([fdfce2d](https://github.com/Microsoft/fast-dna/commit/fdfce2d))
+
+
+
+
+
 # [3.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-react@3.0.2...@microsoft/fast-jss-manager-react@3.1.0) (2018-11-05)
 
 

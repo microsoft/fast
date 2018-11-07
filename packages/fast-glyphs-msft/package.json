@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-glyphs-msft",
   "description": "Microsoft SVG Glyphs",
   "sideEffects": false,
-  "version": "3.0.2",
+  "version": "3.0.3",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"

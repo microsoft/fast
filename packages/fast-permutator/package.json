@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-permutator",
   "description": "Creates all possible permutations of a component based on its JSON Schema.",
   "sideEffects": false,
-  "version": "2.2.2",
+  "version": "2.2.3",
   "author": {
     "name": "Fluent Web",
     "url": "https://discord.gg/FcSNfg4"

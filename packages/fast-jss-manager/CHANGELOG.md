@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager@3.0.3...@microsoft/fast-jss-manager@3.0.4) (2018-11-07)
+
+**Note:** Version bump only for package @microsoft/fast-jss-manager
+
+
+
+
+
 ## [3.0.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager@3.0.2...@microsoft/fast-jss-manager@3.0.3) (2018-11-05)
 
 **Note:** Version bump only for package @microsoft/fast-jss-manager

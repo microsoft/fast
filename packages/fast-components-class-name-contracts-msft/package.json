@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components-class-name-contracts-msft",
   "description": "Type descriptions for the classnames that any given component can expect as props.",
   "sideEffects": false,
-  "version": "3.1.0",
+  "version": "3.1.1",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -36,6 +36,6 @@
     "typescript": "^3.0.1"
   },
   "dependencies": {
-    "@microsoft/fast-components-class-name-contracts-base": "^3.2.0"
+    "@microsoft/fast-components-class-name-contracts-base": "^3.2.1"
   }
 }
