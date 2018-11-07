@@ -88,7 +88,7 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
     constructor(props: ManagedJSSProps<T, S, C>, context: C) {
         super(props, context);
 
-        this.index = JSSManager.index--;
+        this.index = JSSManager.index -= 1;
         this.designSystem = context;
     }
 
@@ -180,6 +180,8 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
         if (this.props.jssStyleSheet) {
             JSSManager.sheetManager.remove(this.props.jssStyleSheet, this.designSystem);
         }
+
+        JSSManager.index++;
     }
 
     /**
@@ -249,10 +251,12 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
     }
 
     private createPropStyleSheet(designSystem: C = this.designSystem): void {
+        const stylesheet: any = this.primaryStyleSheet();
+
         JSSManager.sheetManager.add(this.props.jssStyleSheet, designSystem, {
             meta: `${this.managedComponent.displayName ||
                 this.managedComponent.name} - jssStyleSheet`,
-            index: this.index + 1,
+            index: stylesheet ? stylesheet.options.index + 1 : this.index + 1,
         });
     }
 }
