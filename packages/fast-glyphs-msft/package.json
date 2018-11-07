@@ -17,8 +17,8 @@
   "scripts": {
     "clean:dist": "node ../../build/clean.js dist",
     "prepare": "npm run clean:dist && ts-node ./src/index.ts",
-    "prettier": "prettier --config ../../.prettierrc --write '**/*.ts'",
-    "prettier:diff": "prettier --config ../../.prettierrc '**/*.ts' --list-different",
+    "prettier": "prettier --config ../../.prettierrc --write \"**/*.ts\"",
+    "prettier:diff": "prettier --config ../../.prettierrc \"**/*.ts\" --list-different",
     "test": "npm run tslint",
     "tslint": "tslint -c ./tslint.json '**/*.ts'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts'"
