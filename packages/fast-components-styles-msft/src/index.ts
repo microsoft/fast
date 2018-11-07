@@ -1,6 +1,10 @@
 /**
  * Export button styles
  */
+import ActionTriggerStyles from "./action-trigger";
+export { ActionTriggerStyles };
+export * from "./action-trigger";
+
 import BreadcrumbStyles from "./breadcrumb";
 export { BreadcrumbStyles };
 
