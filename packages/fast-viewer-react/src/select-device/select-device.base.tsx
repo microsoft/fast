@@ -8,7 +8,7 @@ class SelectDevice extends Foundation<SelectDeviceProps, {}, {}> {
 
     protected handledProps: HandledProps<SelectDeviceProps> = {
         devices: void 0,
-        activeIndex: void 0,
+        activeDeviceId: void 0,
         onUpdateDevice: void 0,
     };
 
@@ -26,7 +26,7 @@ class SelectDevice extends Foundation<SelectDeviceProps, {}, {}> {
                                     .selectDevice_contentRegion_select
                             }
                             onChange={this.handleOnChange}
-                            value={JSON.stringify(this.props.activeIndex)}
+                            value={this.props.activeDeviceId}
                             disabled={this.props.disabled}
                         >
                             {this.renderOptions()}
@@ -53,7 +53,7 @@ class SelectDevice extends Foundation<SelectDeviceProps, {}, {}> {
         return this.props.devices.map(
             (device: Device, index: number): React.ReactNode => {
                 return (
-                    <option value={index} key={index}>
+                    <option value={device.id} key={device.id + index}>
                         {device.displayName}
                     </option>
                 );
@@ -62,9 +62,7 @@ class SelectDevice extends Foundation<SelectDeviceProps, {}, {}> {
     }
 
     private handleOnChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-        const index: number = parseInt(e.target.value, 10);
-
-        this.props.onUpdateDevice(index);
+        this.props.onUpdateDevice(e.target.value || "");
     };
 }
 

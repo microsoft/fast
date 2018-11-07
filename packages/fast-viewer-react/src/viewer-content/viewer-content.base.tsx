@@ -38,7 +38,9 @@ export default class ViewerContent extends Foundation<
             componentData: [],
         };
 
-        window.addEventListener("message", this.handleMessage);
+        if (window) {
+            window.addEventListener("message", this.handleMessage);
+        }
     }
 
     public render(): JSX.Element {
@@ -51,7 +53,9 @@ export default class ViewerContent extends Foundation<
             type: ViewerMessageType.initializeComponent,
         };
 
-        window.postMessage(JSON.stringify(initMessage), "*");
+        if (window) {
+            window.postMessage(JSON.stringify(initMessage), "*");
+        }
     }
 
     private renderComponents(): React.ReactNode {

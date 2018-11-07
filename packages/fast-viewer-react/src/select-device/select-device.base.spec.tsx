@@ -19,7 +19,7 @@ describe("SelectDevice", (): void => {
     test("should create an HTML select element", () => {
         const props: SelectDeviceHandledProps = {
             devices: [],
-            activeIndex: 0,
+            activeDeviceId: void 0,
             onUpdateDevice: jest.fn(),
         };
         const rendered: any = mount(
@@ -32,7 +32,7 @@ describe("SelectDevice", (): void => {
         const propsWithLabel: SelectDeviceHandledProps = {
             label: "label",
             devices: [],
-            activeIndex: 0,
+            activeDeviceId: void 0,
             onUpdateDevice: jest.fn(),
         };
         const renderedWithLabel: any = mount(
@@ -40,7 +40,7 @@ describe("SelectDevice", (): void => {
         );
         const propsWithoutLabel: SelectDeviceHandledProps = {
             devices: [],
-            activeIndex: 0,
+            activeDeviceId: void 0,
             onUpdateDevice: jest.fn(),
         };
         const renderedWithoutLabel: any = mount(
@@ -54,17 +54,19 @@ describe("SelectDevice", (): void => {
         const props: SelectDeviceHandledProps = {
             devices: [
                 {
+                    id: "testDevice1",
                     displayName: "test-device-1",
                     display: Display.responsive,
                 },
                 {
+                    id: "testDevice2",
                     displayName: "test-device-2",
                     display: Display.fixed,
                     height: 200,
                     width: 400,
                 },
             ],
-            activeIndex: 0,
+            activeDeviceId: "testDevice1",
             onUpdateDevice: jest.fn(),
         };
         const rendered: any = mount(
@@ -73,44 +75,46 @@ describe("SelectDevice", (): void => {
 
         expect(rendered.find("option").length).toBe(2);
     });
-    test("should set the value of the select element to match the `activeIndex` prop", () => {
+    test("should set the value of the select element to match the `activeDeviceId` prop", () => {
         const props: SelectDeviceHandledProps = {
             devices: [],
-            activeIndex: 0,
+            activeDeviceId: void 0,
             onUpdateDevice: jest.fn(),
         };
         const rendered: any = mount(
             <SelectDeviceBase managedClasses={managedClasses} {...props} />
         );
 
-        expect(rendered.find("select").prop("value")).toEqual("0");
+        expect(rendered.find("select").prop("value")).toEqual(undefined);
     });
     test("should fire the `onUpdateDevice` callback when an option has been selected and return the updated device index", () => {
-        const updateDeviceCallback: (activeIndex: number) => void = jest.fn(function(
-            activeIndex: number
+        const updateDeviceCallback: (activeDeviceId: string) => void = jest.fn(function(
+            activeDeviceId: string
         ): void {
-            expect(activeIndex).toEqual(1);
+            expect(activeDeviceId).toEqual("testDevice2");
         });
         const props: SelectDeviceHandledProps = {
             devices: [
                 {
+                    id: "testDevice1",
                     displayName: "test-device-1",
                     display: Display.responsive,
                 },
                 {
+                    id: "testDevice2",
                     displayName: "test-device-2",
                     display: Display.fixed,
                     height: 200,
                     width: 400,
                 },
             ],
-            activeIndex: 0,
+            activeDeviceId: "testDevice1",
             onUpdateDevice: updateDeviceCallback,
         };
         const rendered: any = mount(
             <SelectDeviceBase managedClasses={managedClasses} {...props} />
         );
-        rendered.find("select").simulate("change", { target: { value: "1" } });
+        rendered.find("select").simulate("change", { target: { value: "testDevice2" } });
 
         expect(updateDeviceCallback).toHaveBeenCalled();
     });

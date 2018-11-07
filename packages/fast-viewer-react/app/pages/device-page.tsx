@@ -1,6 +1,7 @@
 import * as React from "react";
 import Viewer, {
     defaultDevices,
+    Device,
     Display,
     Orientation,
     Rotate,
@@ -11,7 +12,7 @@ import Links from "../components/links";
 export interface PageState {
     height: number;
     width: number;
-    activeDeviceIndex: number;
+    activeDevice: Device;
     orientation: Orientation;
 }
 
@@ -22,7 +23,7 @@ class BasicPage extends React.Component<{}, PageState> {
         this.state = {
             height: 800,
             width: 800,
-            activeDeviceIndex: 0,
+            activeDevice: defaultDevices[0],
             orientation: Orientation.portrait,
         };
     }
@@ -35,7 +36,7 @@ class BasicPage extends React.Component<{}, PageState> {
                     <SelectDevice
                         devices={defaultDevices}
                         onUpdateDevice={this.handleDeviceUpdate}
-                        activeIndex={this.state.activeDeviceIndex}
+                        activeDeviceId={this.state.activeDevice.id}
                         jssStyleSheet={{
                             selectDevice: {
                                 paddingRight: "10px",
@@ -53,10 +54,7 @@ class BasicPage extends React.Component<{}, PageState> {
                     height={this.state.height}
                     width={this.state.width}
                     iframeSrc={"/device-content"}
-                    responsive={
-                        defaultDevices[this.state.activeDeviceIndex].display ===
-                        Display.responsive
-                    }
+                    responsive={this.state.activeDevice.display === Display.responsive}
                     onUpdateHeight={this.handleUpdatedHeight}
                     onUpdateWidth={this.handleUpdatedWidth}
                 />
@@ -65,10 +63,7 @@ class BasicPage extends React.Component<{}, PageState> {
     }
 
     private isRotateDisabled(): boolean {
-        return (
-            !!!defaultDevices[this.state.activeDeviceIndex].width &&
-            !!!defaultDevices[this.state.activeDeviceIndex].height
-        );
+        return !!!this.state.activeDevice.width && !!!this.state.activeDevice.height;
     }
 
     private handleOrientationUpdate = (orientation: Orientation): void => {
@@ -77,26 +72,26 @@ class BasicPage extends React.Component<{}, PageState> {
                 orientation,
                 width:
                     orientation === Orientation.portrait
-                        ? defaultDevices[this.state.activeDeviceIndex].width
-                        : defaultDevices[this.state.activeDeviceIndex].height,
+                        ? this.state.activeDevice.width
+                        : this.state.activeDevice.height,
                 height:
                     orientation === Orientation.portrait
-                        ? defaultDevices[this.state.activeDeviceIndex].height
-                        : defaultDevices[this.state.activeDeviceIndex].width,
+                        ? this.state.activeDevice.height
+                        : this.state.activeDevice.width,
             });
         }
     };
 
-    private handleDeviceUpdate = (index: number): void => {
+    private handleDeviceUpdate = (deviceId: string): void => {
+        const activeDevice: Device = defaultDevices.find((device: Device) => {
+            return deviceId === device.id;
+        });
+
         this.setState({
-            activeDeviceIndex: index,
+            activeDevice,
             orientation: Orientation.portrait,
-            height: defaultDevices[index].height
-                ? defaultDevices[index].height
-                : this.state.height,
-            width: defaultDevices[index].width
-                ? defaultDevices[index].width
-                : this.state.width,
+            height: activeDevice.height ? activeDevice.height : this.state.height,
+            width: activeDevice.width ? activeDevice.width : this.state.width,
         });
     };
 

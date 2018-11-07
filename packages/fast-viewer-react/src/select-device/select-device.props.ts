@@ -23,14 +23,14 @@ export interface SelectDeviceHandledProps extends SelectDeviceManagedClasses {
     devices: Device[];
 
     /**
-     * The active index of the devices array
+     * The active device
      */
-    activeIndex: number;
+    activeDeviceId: string;
 
     /**
      * The update device event handler
      */
-    onUpdateDevice: (index: number) => void;
+    onUpdateDevice: (id: string) => void;
 }
 
 export type SelectDeviceProps = SelectDeviceUnhandledProps & SelectDeviceHandledProps;
