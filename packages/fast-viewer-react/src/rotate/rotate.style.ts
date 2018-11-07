@@ -37,8 +37,19 @@ const styles: ComponentStyles<
             textAlign: "center",
             lineHeight: "40px",
             borderRadius: "2px",
-            boxShadow: "inset 0px 0px 4px rgba(0, 0, 0, 0.08)",
+            boxShadow: "inset 0px 0px 4px rgba(0, 0, 0, 0.3)",
             backgroundColor: "#FFFFFF",
+            "&:hover": {
+                boxShadow: "inset 0px 0px 2px 0px rgba(0,0,0, .9)",
+            },
+        },
+        rotate_stateIndicator__disabled: {
+            fill: "#999999",
+            backgroundColor: "rgba(0, 0, 0, 0.04)",
+            boxShadow: "inset 0px 0px 4px rgba(0, 0, 0, 0.08)",
+            "&:hover": {
+                boxShadow: "inset 0px 0px 4px rgba(0, 0, 0, 0.08)",
+            },
         },
         rotate_stateIndicator__landscape: {
             borderTopRightRadius: "0 0",

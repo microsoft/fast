@@ -1,7 +1,8 @@
 import * as React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { get, throttle } from "lodash-es";
+import { get } from "lodash-es";
 import { canUseDOM } from "exenv-es6";
+import rafThrottle from "raf-throttle";
 import {
     ResizeHandleLocation,
     ViewerHandledProps,
@@ -63,7 +64,7 @@ export default class Viewer extends Foundation<
         };
 
         this.iframeRef = React.createRef();
-        this.onMouseMove = throttle(this.onMouseMove, 16);
+        this.handleMouseMove = rafThrottle(this.handleMouseMove);
     }
 
     /**
@@ -75,11 +76,11 @@ export default class Viewer extends Foundation<
     ): void {
         if (canUseDOM()) {
             if (this.state.resizing && !prevState.resizing) {
-                document.addEventListener("mouseup", this.onMouseUp);
-                document.addEventListener("mousemove", this.onMouseMove);
+                document.addEventListener("mouseup", this.handleMouseUp);
+                document.addEventListener("mousemove", this.handleMouseMove);
             } else if (!this.state.resizing && prevState.resizing) {
-                document.removeEventListener("mouseup", this.onMouseUp);
-                document.removeEventListener("mousemove", this.onMouseMove);
+                document.removeEventListener("mouseup", this.handleMouseUp);
+                document.removeEventListener("mousemove", this.handleMouseMove);
             }
 
             const updateMessage: ViewerMessage = {
@@ -127,10 +128,122 @@ export default class Viewer extends Foundation<
         );
     }
 
+    private renderResponsiveLeftHandle(): JSX.Element {
+        if (this.props.responsive) {
+            return (
+                <button
+                    className={`${this.props.managedClasses.handle} ${
+                        this.props.managedClasses.handle__left
+                    }`}
+                    onMouseDown={this.handleMouseDown(ResizeHandleLocation.left)}
+                />
+            );
+        }
+    }
+
+    private renderResponsiveRightHandle(): JSX.Element {
+        if (this.props.responsive) {
+            return (
+                <button
+                    className={`${this.props.managedClasses.handle} ${
+                        this.props.managedClasses.handle__right
+                    }`}
+                    onMouseDown={this.handleMouseDown(ResizeHandleLocation.right)}
+                />
+            );
+        }
+    }
+
+    private renderResponsiveBottomRow(): JSX.Element {
+        if (this.props.responsive) {
+            return (
+                <React.Fragment>
+                    <button
+                        className={`${this.props.managedClasses.handle} ${
+                            this.props.managedClasses.handle__bottomLeft
+                        }`}
+                        onMouseDown={this.handleMouseDown(
+                            ResizeHandleLocation.bottomLeft
+                        )}
+                    />
+                    <button
+                        className={`${this.props.managedClasses.handle} ${
+                            this.props.managedClasses.handle__bottom
+                        }`}
+                        aria-hidden={true}
+                        onMouseDown={this.handleMouseDown(ResizeHandleLocation.bottom)}
+                    />
+                    <button
+                        className={`${this.props.managedClasses.handle} ${
+                            this.props.managedClasses.handle__bottomRight
+                        }`}
+                        onMouseDown={this.handleMouseDown(
+                            ResizeHandleLocation.bottomRight
+                        )}
+                    />
+                </React.Fragment>
+            );
+        }
+    }
+
+    private getHeight(): any {
+        if (this.props.height) {
+            return {
+                height: `${this.props.height}px`,
+            };
+        }
+    }
+
+    private getWidth(): any {
+        if (this.props.width) {
+            return {
+                width: `${this.props.width}px`,
+            };
+        }
+    }
+
+    private generateContentRegionClassNames(): string {
+        let classes: string = this.props.managedClasses.viewer_contentRegion;
+
+        if (this.state.resizing) {
+            classes += ` ${this.props.managedClasses.viewer_contentRegion__disabled}`;
+        }
+
+        return classes;
+    }
+
+    private postMessage(message: ViewerMessage): void {
+        if (canUseDOM() && get(this.iframeRef, "current.contentWindow")) {
+            this.iframeRef.current.contentWindow.postMessage(
+                JSON.stringify(message),
+                "*"
+            );
+        }
+    }
+
+    private handleMessage = (e: MessageEvent): void => {
+        const message: ViewerMessage =
+            typeof e.data === "string" ? JSON.parse(e.data) : undefined;
+
+        if (message && message.target === ViewerMessageTarget.viewer) {
+            switch (message.type) {
+                case ViewerMessageType.initializeComponent:
+                    const initMessage: ViewerMessage = {
+                        type: ViewerMessageType.initializeComponent,
+                        target: ViewerMessageTarget.viewerContent,
+                        componentData: this.props.viewerContentProps,
+                    };
+
+                    this.postMessage(initMessage);
+                    break;
+            }
+        }
+    };
+
     /**
      * Handle mouseUp
      */
-    public onMouseUp = (e: MouseEvent): void => {
+    private handleMouseUp = (e: MouseEvent): void => {
         // only listen for left click
         if (e.button !== 0) {
             return;
@@ -144,7 +257,7 @@ export default class Viewer extends Foundation<
         });
     };
 
-    public onMouseMove = (e: MouseEvent): void => {
+    private handleMouseMove = (e: MouseEvent): void => {
         if (!this.state.resizing) {
             return;
         }
@@ -198,120 +311,36 @@ export default class Viewer extends Foundation<
         }
     };
 
-    private renderResponsiveLeftHandle(): JSX.Element {
-        if (this.props.responsive) {
-            return (
-                <button
-                    className={`${this.props.managedClasses.handle} ${
-                        this.props.managedClasses.handle__left
-                    }`}
-                    onMouseDown={this.handleLeftMouseDown}
-                />
-            );
-        }
-    }
+    private handleMouseDown = (
+        handleLocation: ResizeHandleLocation
+    ): ((e: React.MouseEvent<HTMLButtonElement>) => void) => {
+        return (e: React.MouseEvent<HTMLButtonElement>): void => {
+            // only listen for left click
+            if (e.button !== 0) {
+                return;
+            }
 
-    private renderResponsiveRightHandle(): JSX.Element {
-        if (this.props.responsive) {
-            return (
-                <button
-                    className={`${this.props.managedClasses.handle} ${
-                        this.props.managedClasses.handle__right
-                    }`}
-                    onMouseDown={this.handleRightMouseDown}
-                />
-            );
-        }
-    }
-
-    private renderResponsiveBottomRow(): JSX.Element {
-        if (this.props.responsive) {
-            return (
-                <React.Fragment>
-                    <button
-                        className={`${this.props.managedClasses.handle} ${
-                            this.props.managedClasses.handle__bottomLeft
-                        }`}
-                        onMouseDown={this.handleBottomLeftMouseDown}
-                    />
-                    <button
-                        className={`${this.props.managedClasses.handle} ${
-                            this.props.managedClasses.handle__bottom
-                        }`}
-                        aria-hidden={true}
-                        onMouseDown={this.handleBottomMouseDown}
-                    />
-                    <button
-                        className={`${this.props.managedClasses.handle} ${
-                            this.props.managedClasses.handle__bottomRight
-                        }`}
-                        onMouseDown={this.handleBottomRightMouseDown}
-                    />
-                </React.Fragment>
-            );
-        }
-    }
-
-    private getHeight(): any {
-        if (this.props.height) {
-            return {
-                height: `${this.props.height}px`,
-            };
-        }
-    }
-
-    private getWidth(): any {
-        if (this.props.width) {
-            return {
-                width: `${this.props.width}px`,
-            };
-        }
-    }
-
-    private generateContentRegionClassNames(): string {
-        let classes: string = this.props.managedClasses.viewer_contentRegion;
-
-        if (this.state.resizing) {
-            classes += ` ${this.props.managedClasses.viewer_contentRegion__disabled}`;
-        }
-
-        return classes;
-    }
-
-    private handleMessage = (e: MessageEvent): void => {
-        const message: ViewerMessage =
-            typeof e.data === "string" ? JSON.parse(e.data) : undefined;
-
-        if (message && message.target === ViewerMessageTarget.viewer) {
-            switch (message.type) {
-                case ViewerMessageType.initializeComponent:
-                    const initMessage: ViewerMessage = {
-                        type: ViewerMessageType.initializeComponent,
-                        target: ViewerMessageTarget.viewerContent,
-                        componentData: this.props.viewerContentProps,
-                    };
-
-                    this.postMessage(initMessage);
+            switch (handleLocation) {
+                case ResizeHandleLocation.bottom:
+                    this.handleBottomMouseDown(e);
+                    break;
+                case ResizeHandleLocation.bottomRight:
+                    this.handleBottomRightMouseDown(e);
+                    break;
+                case ResizeHandleLocation.bottomLeft:
+                    this.handleBottomLeftMouseDown(e);
+                    break;
+                case ResizeHandleLocation.left:
+                    this.handleLeftMouseDown(e);
+                    break;
+                case ResizeHandleLocation.right:
+                    this.handleRightMouseDown(e);
                     break;
             }
-        }
+        };
     };
 
-    private postMessage(message: ViewerMessage): void {
-        if (canUseDOM() && get(this.iframeRef, "current.contentWindow")) {
-            this.iframeRef.current.contentWindow.postMessage(
-                JSON.stringify(message),
-                "*"
-            );
-        }
-    }
-
     private handleBottomMouseDown = (e: React.MouseEvent<HTMLButtonElement>): void => {
-        // only listen for left click
-        if (e.button !== 0) {
-            return;
-        }
-
         this.setState({
             resizing: true,
             dragReferenceY: e.pageY,
@@ -322,11 +351,6 @@ export default class Viewer extends Foundation<
     private handleBottomRightMouseDown = (
         e: React.MouseEvent<HTMLButtonElement>
     ): void => {
-        // only listen for left click
-        if (e.button !== 0) {
-            return;
-        }
-
         this.setState({
             resizing: true,
             dragReferenceY: e.pageY,
@@ -338,11 +362,6 @@ export default class Viewer extends Foundation<
     private handleBottomLeftMouseDown = (
         e: React.MouseEvent<HTMLButtonElement>
     ): void => {
-        // only listen for left click
-        if (e.button !== 0) {
-            return;
-        }
-
         this.setState({
             resizing: true,
             dragReferenceY: e.pageY,
@@ -352,11 +371,6 @@ export default class Viewer extends Foundation<
     };
 
     private handleLeftMouseDown = (e: React.MouseEvent<HTMLButtonElement>): void => {
-        // only listen for left click
-        if (e.button !== 0) {
-            return;
-        }
-
         this.setState({
             resizing: true,
             dragReferenceX: e.pageX,
@@ -365,11 +379,6 @@ export default class Viewer extends Foundation<
     };
 
     private handleRightMouseDown = (e: React.MouseEvent<HTMLButtonElement>): void => {
-        // only listen for left click
-        if (e.button !== 0) {
-            return;
-        }
-
         this.setState({
             resizing: true,
             dragReferenceX: e.pageX,

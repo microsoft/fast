@@ -17,7 +17,7 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const Rotate = manageJss(RotateStyles)(BaseRotate);
-type Rotate = typeof Rotate;
+type Rotate = InstanceType<typeof Rotate>;
 
 interface RotateHandledProps
     extends Subtract<BaseRotateHandledProps, RotateManagedClasses> {}

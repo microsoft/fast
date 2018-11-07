@@ -27,6 +27,7 @@ class SelectDevice extends Foundation<SelectDeviceProps, {}, {}> {
                             }
                             onChange={this.handleOnChange}
                             value={JSON.stringify(this.props.activeIndex)}
+                            disabled={this.props.disabled}
                         >
                             {this.renderOptions()}
                         </select>

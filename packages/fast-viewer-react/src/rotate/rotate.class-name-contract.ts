@@ -18,6 +18,11 @@ export interface RotateClassNameContract {
     rotate_stateIndicator?: string;
 
     /**
+     * The disabled state indicator
+     */
+    rotate_stateIndicator__disabled?: string;
+
+    /**
      * The state indicator for the portrait radio element
      */
     rotate_stateIndicator__portrait?: string;

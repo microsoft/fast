@@ -13,6 +13,11 @@ export interface SelectDeviceHandledProps extends SelectDeviceManagedClasses {
     label?: string;
 
     /**
+     * The disabled state for the select
+     */
+    disabled?: boolean;
+
+    /**
      * The list of devices to use as options
      */
     devices: Device[];

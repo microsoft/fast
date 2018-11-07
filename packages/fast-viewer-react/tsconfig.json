@@ -8,6 +8,9 @@
         "jsx": "react",
         "outDir": "./dist"
     },
+    "files": [
+        "typings.d.ts"
+    ],
     "include": [
         "src/**/*"
     ],

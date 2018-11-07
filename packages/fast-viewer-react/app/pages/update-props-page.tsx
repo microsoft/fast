@@ -15,8 +15,13 @@ class UpdatePropsPage extends React.Component<{}, PageState> {
 
         this.state = {
             componentProps: {
-                onChange: this.handleTextUpdate,
-                textValue: "",
+                textValue: "Hello",
+                children: {
+                    id: "example",
+                    props: {
+                        textValue: "Hello",
+                    },
+                },
             },
             height: 800,
             width: 800,
@@ -49,21 +54,17 @@ class UpdatePropsPage extends React.Component<{}, PageState> {
     }
 
     private handleTextUpdate = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        if (typeof e === "object" && e.target) {
-            this.setState({
-                componentProps: {
-                    onChange: this.handleTextUpdate,
-                    textValue: e.target.value,
+        this.setState({
+            componentProps: {
+                textValue: e.target.value,
+                children: {
+                    id: "example",
+                    props: {
+                        textValue: e.target.value,
+                    },
                 },
-            });
-        } else {
-            this.setState({
-                componentProps: {
-                    onChange: this.handleTextUpdate,
-                    textValue: e.target.value,
-                },
-            });
-        }
+            },
+        });
     };
 
     private handleUpdatedHeight = (height: number): void => {
@@ -81,7 +82,7 @@ class UpdatePropsPage extends React.Component<{}, PageState> {
     private getContentProps(): any {
         return [
             {
-                id: components[0].id,
+                id: components[0].schema.id,
                 props: this.state.componentProps,
             },
         ];

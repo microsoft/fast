@@ -45,6 +45,8 @@ class BasicPage extends React.Component<{}, PageState> {
                     <Rotate
                         orientation={this.state.orientation}
                         onUpdateOrientation={this.handleOrientationUpdate}
+                        landscapeDisabled={this.isRotateDisabled()}
+                        portraitDisabled={this.isRotateDisabled()}
                     />
                 </div>
                 <Viewer
@@ -62,18 +64,27 @@ class BasicPage extends React.Component<{}, PageState> {
         );
     }
 
+    private isRotateDisabled(): boolean {
+        return (
+            !!!defaultDevices[this.state.activeDeviceIndex].width &&
+            !!!defaultDevices[this.state.activeDeviceIndex].height
+        );
+    }
+
     private handleOrientationUpdate = (orientation: Orientation): void => {
-        this.setState({
-            orientation,
-            width:
-                orientation === Orientation.portrait
-                    ? defaultDevices[this.state.activeDeviceIndex].width
-                    : defaultDevices[this.state.activeDeviceIndex].height,
-            height:
-                orientation === Orientation.portrait
-                    ? defaultDevices[this.state.activeDeviceIndex].height
-                    : defaultDevices[this.state.activeDeviceIndex].width,
-        });
+        if (!this.isRotateDisabled()) {
+            this.setState({
+                orientation,
+                width:
+                    orientation === Orientation.portrait
+                        ? defaultDevices[this.state.activeDeviceIndex].width
+                        : defaultDevices[this.state.activeDeviceIndex].height,
+                height:
+                    orientation === Orientation.portrait
+                        ? defaultDevices[this.state.activeDeviceIndex].height
+                        : defaultDevices[this.state.activeDeviceIndex].width,
+            });
+        }
     };
 
     private handleDeviceUpdate = (index: number): void => {

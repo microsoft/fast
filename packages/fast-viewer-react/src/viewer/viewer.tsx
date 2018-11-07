@@ -16,7 +16,7 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const Viewer = manageJss(ViewerStyles)(BaseViewer);
-type Viewer = typeof Viewer;
+type Viewer = InstanceType<typeof Viewer>;
 
 interface ViewerHandledProps
     extends Subtract<BaseViewerHandledProps, ViewerManagedClasses> {}

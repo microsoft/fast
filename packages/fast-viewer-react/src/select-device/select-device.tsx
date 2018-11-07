@@ -16,7 +16,7 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const SelectDevice = manageJss(SelectDeviceStyles)(BaseSelectDevice);
-type SelectDevice = typeof SelectDevice;
+type SelectDevice = InstanceType<typeof SelectDevice>;
 
 interface SelectDeviceHandledProps
     extends Subtract<BaseSelectDeviceHandledProps, SelectDeviceManagedClasses> {}

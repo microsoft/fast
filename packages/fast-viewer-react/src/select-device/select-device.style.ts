@@ -5,8 +5,8 @@ import {
 } from "@microsoft/fast-jss-manager";
 import {
     applyLocalizedProperty,
-    ellipsis,
     Direction,
+    ellipsis,
 } from "@microsoft/fast-jss-utilities";
 import { SelectDeviceClassNameContract } from "./select-device.class-name-contract";
 import { DesignSystem, withDesignSystemDefaults } from "../utilities/design-system";
@@ -58,16 +58,23 @@ const styles: ComponentStyles<
             verticalAlign: "middle",
             outline: "none",
             fontSize: "14px",
-            boxShadow: "inset 0px 0px 4px 0px rgba(0, 0, 0, 0.08)",
+            boxShadow: "inset 0px 0px 4px 0px rgba(0, 0, 0, 0.3)",
             lineHeight: "16px",
             borderRadius: "2px",
-            backgroundColor: "rgba(0, 0, 0, 0.04)",
+            backgroundColor: "#FFFFFF",
             appearance: "none",
+            "&:focus": {
+                boxShadow: "inset 0px 0px 0px 1px #FB356D",
+            },
             "&:-ms-expand": {
                 display: "none",
             },
             "&:hover": {
-                boxShadow: "inset 0px 0px 2px 0px rgba(0,0,0, .3)",
+                boxShadow: "inset 0px 0px 2px 0px rgba(0,0,0, .9)",
+            },
+            "&:disabled": {
+                color: "#999999",
+                backgroundColor: "rgba(0, 0, 0, 0.04)",
             },
         },
     };

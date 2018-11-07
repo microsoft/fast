@@ -1,6 +1,10 @@
 import * as React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
+    ChildOptionItem,
+    mapDataToComponent,
+} from "@microsoft/fast-data-utilities-react";
+import {
     ViewerContentHandledProps,
     ViewerContentUnhandledProps,
 } from "./viewer-content.props";
@@ -56,17 +60,21 @@ export default class ViewerContent extends Foundation<
         }
 
         return this.state.componentData.map(
-            (componentData: ComponentData, index: number) => {
+            (componentDataItem: ComponentData, index: number) => {
                 const mappedComponent: any = this.props.components.find(
-                    (component: any) => {
-                        return componentData.id === component.id;
+                    (component: ChildOptionItem) => {
+                        return componentDataItem.id === component.schema.id;
                     }
                 );
 
                 return (
                     <mappedComponent.component
-                        key={`${componentData.id}${index}`}
-                        {...componentData.props}
+                        key={`${mappedComponent.schema.id}${index}`}
+                        {...mapDataToComponent(
+                            mappedComponent.schema,
+                            componentDataItem.props,
+                            this.props.components
+                        )}
                     />
                 );
             }

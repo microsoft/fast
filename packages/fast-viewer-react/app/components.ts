@@ -1,8 +1,12 @@
+import { ChildOptionItem } from "@microsoft/fast-data-utilities-react";
 import Example from "./components/example";
+import exampleSchema from "./components/example.schema.json";
 
-export default [
+const componentOptions: ChildOptionItem[] = [
     {
-        id: "example",
+        schema: exampleSchema,
         component: Example,
     },
 ];
+
+export default componentOptions;

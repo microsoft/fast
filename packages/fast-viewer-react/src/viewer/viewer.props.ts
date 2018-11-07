@@ -9,19 +9,6 @@ export enum ResizeHandleLocation {
     bottomRight,
 }
 
-export interface ComponentMappedToId {
-    /**
-     * The React component
-     */
-    component: any;
-
-    /**
-     * The id that will be used as an identifier
-     * for the React component
-     */
-    id: string;
-}
-
 export interface ViewerManagedClasses extends ManagedClasses<ViewerClassNameContract> {}
 export interface ViewerUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
 export interface ViewerHandledProps extends ViewerManagedClasses {

@@ -53,6 +53,7 @@ class Example extends Foundation<
                     onChange={this.handleLabelUpdate}
                 />
                 <img src="https://placehold.it/300x300" />
+                {this.props.children}
             </div>
         );
     }

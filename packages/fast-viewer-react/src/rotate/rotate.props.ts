@@ -20,14 +20,24 @@ export interface RotateHandledProps extends RotateManagedClasses {
     orientation: Orientation;
 
     /**
-     * Landscape orientation button disabled
+     * Landscape orientation input disabled
      */
     landscapeDisabled?: boolean;
 
     /**
-     * Portrait orientation button disabled
+     * Portrait orientation input disabled
      */
     portraitDisabled?: boolean;
+
+    /**
+     * The label for the landscape input
+     */
+    landscapeLabel?: string;
+
+    /**
+     * The label for the portrait input
+     */
+    portraitLabel?: string;
 }
 
 export type RotateProps = RotateUnhandledProps & RotateHandledProps;

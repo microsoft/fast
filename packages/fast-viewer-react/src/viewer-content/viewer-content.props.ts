@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ComponentMappedToId } from "../viewer/viewer.props";
+import { ChildOptionItem } from "@microsoft/fast-data-utilities-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
 export interface ViewerContentManagedClasses extends ManagedClasses<{}> {}
@@ -9,7 +9,7 @@ export interface ViewerContentHandledProps extends ViewerContentManagedClasses {
     /**
      * The components available to the viewer content component for rendering
      */
-    components: ComponentMappedToId[];
+    components: ChildOptionItem[];
 }
 
 export type ViewerContentProps = ViewerContentUnhandledProps & ViewerContentHandledProps;
