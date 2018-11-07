@@ -18,8 +18,8 @@
   "main": "index.js",
   "scripts": {
     "prepare": "babel src --out-dir dist",
-    "prettier": "prettier --config ../../.prettierrc --write '**/*.js'",
-    "prettier:diff": "prettier --config ../../.prettierrc '**/*.js' --list-different",
+    "prettier": "prettier --config ../../.prettierrc --write \"**/*.js\"",
+    "prettier:diff": "prettier --config ../../.prettierrc \"**/*.js\" --list-different",
     "test": "npm run eslint && npm run unit-tests",
     "eslint": "eslint src/**",
     "unit-tests": "jest --maxWorkers=4"
