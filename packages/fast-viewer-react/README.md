@@ -32,7 +32,7 @@ render();
 There are other components in this package which when used in conjunction with the `Viewer` will allow for setting height and width for devices and the control of components and their data.
 
 ### `SelectDevice`
-Use the `SelectDevice` component to select from provided default devices or provide your own custom device configurations. This component accepts a list of configured devices via the `devices` prop, some default devices are included with the package as a secondary export. It also accepts an `activeIndex` prop which maps to the current index of the provided devices. In addition there is a callback `onUpdateDevice` which will fire a provided function with the new index selected.
+Use the `SelectDevice` component to select from provided default devices or provide your own custom device configurations. This component accepts a list of configured devices via the `devices` prop, some default devices are included with the package as a secondary export. It also accepts an `activeDeviceId` prop which maps to the current device id of the provided devices. In addition there is a callback `onUpdateDevice` which will fire a provided function with the new device id selected.
 
 Example:
 ```tsx
@@ -44,7 +44,7 @@ import {
 <SelectDevice
     devices={defaultDevices}
     onUpdateDevice={this.handleDeviceUpdate}
-    activeIndex={this.state.activeDeviceIndex}
+    activeDeviceId={this.state.activeDevice.id}
 />
 ```
 
@@ -55,10 +55,12 @@ Example of custom devices passed to the `devices` prop:
 ```json
 [
     {
+        "id": "responsive",
         "displayName": "Responsive display",
         "display": "responsive"
     },
     {
+        "id": "phoneDevice",
         "displayName": "Phone device",
         "display": "fixed",
         "height": 800,
@@ -68,19 +70,19 @@ Example of custom devices passed to the `devices` prop:
 ```
 
 #### `onUpdateDevice`
-This callback will fire when an option has been selected from the dropdown and give back the clicked items `activeIndex`.
+This callback will fire when an option has been selected from the dropdown and give back the clicked items `activeDeviceId`.
 
 Example of a callback passed to `onUpdateDevice` prop:
 ```jsx
-handleDeviceUpdate(activeIndex) {
+handleDeviceUpdate(activeDeviceId) {
     this.setState({
-        activeIndex: activeIndex
+        activeDeviceId: activeDeviceId
     });
 }
 ```
 
-#### `activeIndex`
-This is the active index as indicated by the `devices` array. This should exist on the state of the parent component.
+#### `activeDeviceId`
+This is the active device id as indicated by the `devices` array. This should exist on the state of the parent component.
 
 ### `Rotate`
 
@@ -123,7 +125,7 @@ Example:
     height={this.state.height}
     width={this.state.width}
     iframeSrc={"/example-content"}
-    responsive={defaultDevices[this.state.activeDeviceIndex].display === Display.responsive}
+    responsive={this.state.activeDevice.display === Display.responsive}
     onUpdateHeight={this.handleUpdatedHeight}
     onUpdateWidth={this.handleUpdatedWidth}
 />
