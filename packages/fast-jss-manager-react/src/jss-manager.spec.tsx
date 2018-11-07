@@ -157,6 +157,27 @@ describe("The JSSManager", (): void => {
         );
     });
 
+    test("should decrease a counter tracking global stylesheet order on mount", (): void => {
+        const preMountIndex: number = (StyledManager as any).index;
+        const rendered: any = mount(<StyledManager />);
+        const manager: any = rendered.find("StyledManager").instance();
+
+        expect(manager.index).toBe(preMountIndex - 1);
+        expect((StyledManager as any).index).toBe(manager.index);
+    });
+
+    test("should increase a counter tracking global stylesheet order on unmount", (): void => {
+        const rendered: any = mount(<StyledManager />);
+        const manager: any = rendered.find("StyledManager").instance();
+        const preUnmountIndex: number = (StyledManager as any).index;
+
+        expect(manager.index).toBe(preUnmountIndex);
+
+        rendered.unmount();
+
+        expect((StyledManager as any).index).toBe(preUnmountIndex + 1);
+    });
+
     test("should not pass the managedClasses prop through to managed component", (): void => {
         const managedClasses: any = { foo: "foo" };
         const rendered: any = mount(<NoStylesManager managedClasses={managedClasses} />);
