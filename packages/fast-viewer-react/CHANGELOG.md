@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-viewer-react@3.1.1...@microsoft/fast-viewer-react@4.0.0) (2018-11-08)
+
+
+### Features
+
+* update fast-viewer-react API ([#1109](https://github.com/Microsoft/fast-dna/issues/1109)) ([9b6638b](https://github.com/Microsoft/fast-dna/commit/9b6638b))
+
+
+### BREAKING CHANGES
+
+* Significant updates to the props and functionality of the viewer component
+
+
+
+
+
 ## [3.1.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-viewer-react@3.1.0...@microsoft/fast-viewer-react@3.1.1) (2018-11-07)
 
 **Note:** Version bump only for package @microsoft/fast-viewer-react
