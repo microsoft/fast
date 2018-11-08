@@ -1,3 +1,5 @@
+export * from "./breadcrumb";
+export * from "./breadcrumb-item";
 export * from "./button";
 export * from "./call-to-action";
 export * from "./caption";
