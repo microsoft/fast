@@ -5,11 +5,6 @@ import { ViewerHandledProps } from "./";
 import ViewerBase from "./viewer.base";
 import { ResizeHandleLocation } from "./viewer.props";
 import { ViewerClassNameContract } from "./viewer.class-name-contract";
-import {
-    ViewerMessage,
-    ViewerMessageTarget,
-    ViewerMessageType,
-} from "../utilities/message-system";
 
 /*
  * Configure Enzyme
