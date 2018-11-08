@@ -6,7 +6,6 @@ module.exports = {
                     "node": "current"
                 }
             }
-        ],
-        "react"
+        ]
     ]
 }
