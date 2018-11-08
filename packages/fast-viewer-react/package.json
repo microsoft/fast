@@ -4,7 +4,7 @@
   "sideEffects": false,
   "version": "3.1.1",
   "author": {
-    "name": "Fluent Web",
+    "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
   },
   "license": "MIT",
@@ -24,14 +24,15 @@
   "scripts": {
     "build": "tsc -p ./tsconfig.json",
     "build:app": "webpack --progress",
-    "prepare": "npm run build",
+    "clean:dist": "node ../../build/clean.js dist",
+    "prepare": "npm run clean:dist && npm run build",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts, tsx}\" --list-different",
     "start": "webpack-dev-server --progress",
     "test": "npm run tslint && npm run unit-tests && npm run build:app",
     "tslint": "tslint -c tslint.json '**/*.ts{,x}'",
     "tslint:fix": "tslint -c tslint.json '**/*.ts{,x}' --fix",
-    "unit-tests": "jest --maxWorkers=4",
+    "unit-tests": "jest --maxWorkers=2",
     "unit-tests:update": "jest -u",
     "watch": "npm run build -- -w --preserveWatchOutput"
   },
@@ -45,7 +46,7 @@
         "lines": 66
       }
     },
-    "testRegex": "(/__tests__/.*(test|spec))\\.(ts|tsx)$",
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "testURL": "http://localhost",
     "transform": {
       "^.+\\.tsx?$": "ts-jest",
@@ -58,6 +59,7 @@
     ],
     "moduleFileExtensions": [
       "js",
+      "jsx",
       "ts",
       "tsx"
     ],
@@ -70,12 +72,15 @@
     "jss": "^9.8.0",
     "jss-preset-default": "^4.3.0",
     "lodash-es": "^4.0.0",
-    "react": "^16.3.0",
-    "react-dom": "^16.3.0"
+    "raf-polyfill": "^1.0.0",
+    "raf-throttle": "^2.0.3",
+    "react": "^16.6.0",
+    "react-dom": "^16.6.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
     "@microsoft/fast-tslint-rules": "^3.0.1",
     "@types/jest": "^23.3.5",
     "@types/lodash-es": "^4.17.0",
@@ -86,15 +91,18 @@
     "@types/react-router-dom": "^4.2.3",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
-    "fork-ts-checker-webpack-plugin": "^0.4.0",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "html-webpack-plugin": "^3.0.0",
     "jest": "^23.6.0",
     "jss": "^9.8.1",
     "jss-preset-default": "^4.3.0",
     "lodash-es": "^4.0.0",
     "prettier": "1.14.3",
-    "react": "^16.3.0",
-    "react-dom": "^16.3.0",
+    "raf-polyfill": "^1.0.0",
+    "raf-throttle": "^2.0.3",
+    "react": "^16.6.0",
+    "react-dom": "^16.6.0",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "react-test-renderer": "^16.2.0",
@@ -104,10 +112,21 @@
     "tslint": "^5.9.1",
     "tslint-config-prettier": "^1.15.0",
     "tslint-loader": "^3.6.0",
-    "tslint-react": "^3.3.3",
+    "tslint-react": "^3.5.1",
     "typescript": "^3.0.1",
     "webpack": "^4.0.1",
     "webpack-cli": "^3.1.1",
     "webpack-dev-server": "^3.1.0"
+  },
+  "dependencies": {
+    "@microsoft/fast-application-utilities": "^3.0.1",
+    "@microsoft/fast-components-class-name-contracts-base": "^3.0.1",
+    "@microsoft/fast-components-foundation-react": "^2.0.0",
+    "@microsoft/fast-data-utilities-react": "^1.0.0",
+    "@microsoft/fast-jss-manager": "^3.0.1",
+    "@microsoft/fast-jss-manager-react": "^3.0.1",
+    "@microsoft/fast-jss-utilities": "^3.0.1",
+    "exenv-es6": "^1.0.0",
+    "utility-types": "^2.1.0"
   }
 }

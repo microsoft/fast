@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Component example",
+    "description": "An example component's schema definition.",
+    "type": "object",
+    "id": "example",
+    "reactProperties": {
+        "children": {
+            "title": "Children",
+            "type": "children",
+            "defaults": [
+                "text"
+            ]
+        }
+    },
+    "properties": {
+        "textValue": {
+            "title": "Text value",
+            "type": "string"
+        }
+    }
+}

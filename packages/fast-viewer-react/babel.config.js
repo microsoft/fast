@@ -6,6 +6,7 @@ module.exports = {
                     "node": "current"
                 }
             }
-        ]
+        ],
+        "@babel/react"
     ]
 }
