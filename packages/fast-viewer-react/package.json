@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-viewer-react",
   "description": "An implementation of a React iframe that is self-contained.",
   "sideEffects": false,
-  "version": "4.0.0",
+  "version": "4.0.1",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"

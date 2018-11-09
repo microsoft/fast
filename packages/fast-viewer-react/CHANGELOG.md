@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-viewer-react@4.0.0...@microsoft/fast-viewer-react@4.0.1) (2018-11-09)
+
+
+### Bug Fixes
+
+* address an issue where react was referenced but not found for typescript types ([#1127](https://github.com/Microsoft/fast-dna/issues/1127)) ([b99aa23](https://github.com/Microsoft/fast-dna/commit/b99aa23))
+
+
+
+
+
 # [4.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-viewer-react@3.1.1...@microsoft/fast-viewer-react@4.0.0) (2018-11-08)
 
 
