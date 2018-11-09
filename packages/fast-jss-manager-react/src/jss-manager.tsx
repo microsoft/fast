@@ -40,6 +40,11 @@ export type ManagedJSSProps<T, S, C> = Pick<
 
 abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S, C>, {}> {
     /**
+     * Define the contextType for the manager to be the design system context
+     */
+
+    public static contextType: React.Context<unknown> = designSystemContext;
+    /**
      * JSS allows us to use an index to order the created style elements. The higher the index,
      * the later in the document the style element will be created.
      *
@@ -53,10 +58,6 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
      * https://github.com/cssinjs/react-jss/blob/master/src/injectSheet.js
      */
     private static index: number = -1000;
-    /**
-     * Define the contextType for the manager to be the design system context
-     */
-    private static contextType: React.Context<unknown> = designSystemContext;
 
     /**
      * Manages stylesheets
@@ -77,6 +78,11 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
      * The stylesheet index for the JSSManager instance
      */
     private index: number;
+
+    /**
+     * React context instance data
+     */
+    private context: C;
 
     /**
      * Store the design-system as an instance property because
