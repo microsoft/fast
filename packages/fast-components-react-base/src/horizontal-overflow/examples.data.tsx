@@ -252,6 +252,9 @@ const examples: ComponentFactoryExample<HorizontalOverflowHandledProps> = {
             ...classes,
             children: [...images],
         },
+        {
+            ...classes,
+        },
     ],
 };
 
