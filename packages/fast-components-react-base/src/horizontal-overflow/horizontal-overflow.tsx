@@ -9,6 +9,7 @@ import { getClientRectWithMargin } from "@microsoft/fast-web-utilities";
 import { Direction } from "@microsoft/fast-application-utilities";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
+    HorizontalOverflowChange,
     HorizontalOverflowHandledProps,
     HorizontalOverflowProps,
     HorizontalOverflowUnhandledProps,
@@ -50,11 +51,6 @@ class HorizontalOverflow extends Foundation<
      * Throttle resize request animation frame usage
      */
     private throttledResize: throttle;
-
-    /**
-     * The scroll change object (so it can be accessed in other callbacks)
-     */
-    private scrollChangeObject: ScrollChange = {} as ScrollChange;
 
     /**
      * Constructor
@@ -164,36 +160,33 @@ class HorizontalOverflow extends Foundation<
     }
 
     /**
-     * Callback on scroll change
+     * Callback for on scroll change
      */
     private onScrollChange = (): void => {
-        if (this.props.onScrollChange) {
-            this.getScrollChangeData();
+        if (typeof this.props.onScrollChange === "function") {
+            this.props.onScrollChange(this.getScrollChangeData());
         }
     };
 
     /**
      * Get the scroll change data
-     * In separate function to allow access for other callbacks
      */
-    private getScrollChangeData(): void {
+    private getScrollChangeData = (): ScrollChange => {
         const isLtr: boolean = this.getLTR() === Direction.ltr;
         const distanceRemaining: number =
             this.horizontalOverflowItemsRef.current.scrollWidth -
             this.horizontalOverflowItemsRef.current.scrollLeft;
 
         if (this.horizontalOverflowItemsRef.current.scrollLeft === 0) {
-            this.scrollChangeObject = { start: isLtr, end: !isLtr };
+            return { start: isLtr, end: !isLtr };
         } else if (
             distanceRemaining === this.horizontalOverflowItemsRef.current.clientWidth
         ) {
-            this.scrollChangeObject = { start: !isLtr, end: isLtr };
+            return { start: !isLtr, end: isLtr };
         } else {
-            this.scrollChangeObject = { start: false, end: false };
+            return { start: false, end: false };
         }
-
-        this.props.onScrollChange(this.scrollChangeObject);
-    }
+    };
 
     /**
      * Gets the style for the `ul` element containing the items
@@ -221,43 +214,49 @@ class HorizontalOverflow extends Foundation<
         }
 
         if (this.props.onHorizontalOverflowChange) {
-            // We want to return the scroll positions even though scroll may have
-            // not occured, so we must do this manually
-            this.getScrollChangeData();
-            this.getCallbackData();
+            this.onHorizontalOverflowChange();
         }
     };
 
     /**
-     * Handles the resize event and gets callback data
+     * Handles the resize event
      */
     private onWindowResize = (): void => {
-        this.getCallbackData();
+        this.onHorizontalOverflowChange();
     };
 
     /**
-     * Gets all callback data that consumer may want to access
+     * Checks if overflow is occuring
      */
-    private getCallbackData(): void {
+    private checkOverflow(): boolean {
         const regionWidthInformation: any = this.getItemsWidthAndTotalWidth();
         const availableWidth: number = regionWidthInformation.availableWidth;
         const itemWidths: number[] = regionWidthInformation.itemWidths;
         const totalItemWidth: number = itemWidths.reduce((a: number, b: number) => a + b);
 
-        if (totalItemWidth < availableWidth) {
-            if (typeof this.props.onHorizontalOverflowChange === "function") {
-                this.props.onHorizontalOverflowChange(
-                    Object.assign({}, this.scrollChangeObject, { overflow: false })
-                );
-            }
-        } else {
-            if (typeof this.props.onHorizontalOverflowChange === "function") {
-                this.props.onHorizontalOverflowChange(
-                    Object.assign({}, this.scrollChangeObject, { overflow: true })
-                );
-            }
-        }
+        return totalItemWidth < availableWidth ? false : true;
     }
+
+    /**
+     * Gets the overflow change data
+     */
+    private getOnHorizontalOverflowChangeData = (): HorizontalOverflowChange => {
+        return {
+            ...this.getScrollChangeData(),
+            overflow: this.checkOverflow(),
+        };
+    };
+
+    /**
+     * Callback for the horizontal overflow change
+     */
+    private onHorizontalOverflowChange = (): void => {
+        if (typeof this.props.onHorizontalOverflowChange === "function") {
+            this.props.onHorizontalOverflowChange(
+                this.getOnHorizontalOverflowChangeData()
+            );
+        }
+    };
 
     /**
      * Identifies and returns the tallest child height
@@ -310,6 +309,9 @@ class HorizontalOverflow extends Foundation<
                 : Direction.ltr;
     }
 
+    /**
+     * Checks if moving to next direction
+     */
     private isMovingNext(direction: ButtonDirection, ltr: Direction): boolean {
         return (
             (direction === ButtonDirection.next && ltr === Direction.ltr) ||
@@ -468,7 +470,10 @@ class HorizontalOverflow extends Foundation<
     /**
      * Returns the items width and total width of the scroll region
      */
-    private getItemsWidthAndTotalWidth(): any {
+    private getItemsWidthAndTotalWidth(): {
+        availableWidth: number;
+        itemWidths: number[];
+    } {
         const availableWidth: number = getClientRectWithMargin(
             this.horizontalOverflowItemsRef.current
         ).width;
