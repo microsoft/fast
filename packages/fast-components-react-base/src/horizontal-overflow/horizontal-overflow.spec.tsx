@@ -403,5 +403,55 @@ describe("horizontal overflow", (): void => {
             renderedWithImagesAndNextAndPrevious.instance()["handlePreviousClick"]()
         ).toBe(undefined);
     });
+    test("should add resize event listener to the window", (): void => {
+        const map: any = {};
+        const resizeCallback: any = jest.fn();
+
+        // Mock window.removeEventListener
+        window.addEventListener = jest.fn((event: string, callback: any) => {
+            // if an event is added for resize, add a callback to mock
+            if (event === "resize") {
+                callback = resizeCallback;
+            }
+
+            map[event] = callback;
+        });
+
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        map.resize();
+
+        expect(resizeCallback).toHaveBeenCalledTimes(1);
+    });
+    test("should remove resize event listener from the window when component unmounts", (): void => {
+        const map: any = {};
+        const resizeCallback: any = jest.fn();
+
+        // Mock window.removeEventListener
+        window.removeEventListener = jest.fn((event: string, callback: any) => {
+            // if an event is added for resize, add a callback to mock
+            if (event === "resize") {
+                callback = resizeCallback;
+            }
+
+            map[event] = callback;
+        });
+
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        rendered.unmount();
+
+        map.resize();
+
+        expect(resizeCallback).toHaveBeenCalledTimes(1);
+    });
 });
 /* tslint:enable:no-string-literal */
