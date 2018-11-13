@@ -234,27 +234,18 @@ class HorizontalOverflow extends Foundation<
         const itemWidths: number[] = regionWidthInformation.itemWidths;
         const totalItemWidth: number = itemWidths.reduce((a: number, b: number) => a + b);
 
-        return totalItemWidth < availableWidth ? false : true;
+        return totalItemWidth > availableWidth;
     }
-
-    /**
-     * Gets the overflow change data
-     */
-    private getOnHorizontalOverflowChangeData = (): HorizontalOverflowChange => {
-        return {
-            ...this.getScrollChangeData(),
-            overflow: this.checkOverflow(),
-        };
-    };
 
     /**
      * Callback for the horizontal overflow change
      */
     private onHorizontalOverflowChange = (): void => {
         if (typeof this.props.onHorizontalOverflowChange === "function") {
-            this.props.onHorizontalOverflowChange(
-                this.getOnHorizontalOverflowChangeData()
-            );
+            this.props.onHorizontalOverflowChange({
+                ...this.getScrollChangeData(),
+                overflow: this.checkOverflow(),
+            });
         }
     };
 
