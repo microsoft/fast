@@ -82,7 +82,7 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
     /**
      * React context instance data
      */
-    private context: C;
+    public context: C;
 
     /**
      * Store the design-system as an instance property because
