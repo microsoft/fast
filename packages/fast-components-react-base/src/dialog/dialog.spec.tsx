@@ -54,6 +54,63 @@ describe("dialog", (): void => {
         expect(rendered.prop("data-m")).toEqual("foo");
     });
 
+    test("should add an `aria-label` attribute to the `dialog` element when the `label` prop is provided", () => {
+        const label: string = "Dialog";
+        const rendered: any = shallow(
+            <Dialog managedClasses={managedClasses} label={label} />
+        );
+
+        expect(
+            rendered.find(`.${managedClasses.dialog_contentRegion}`).prop("aria-label")
+        ).toEqual(label);
+    });
+
+    test("should add an `aria-labelledby` attribute to the `dialog` element when the `labelledby` prop is provided", () => {
+        const labelledby: string = "Dialog";
+        const rendered: any = shallow(
+            <Dialog managedClasses={managedClasses} labelledBy={labelledby} />
+        );
+
+        expect(
+            rendered
+                .find(`.${managedClasses.dialog_contentRegion}`)
+                .prop("aria-labelledby")
+        ).toEqual(labelledby);
+    });
+
+    test("should add an `aria-describedBy` attribute to the `dialog` element when the `describedBy` prop is provided", () => {
+        const describedby: string = "Dialog";
+        const rendered: any = shallow(
+            <Dialog managedClasses={managedClasses} describedBy={describedby} />
+        );
+
+        expect(
+            rendered
+                .find(`.${managedClasses.dialog_contentRegion}`)
+                .prop("aria-describedby")
+        ).toEqual(describedby);
+    });
+
+    test('should have an attribute of `aria-hidden="true"` when the `visible` prop is false', () => {
+        const rendered: any = shallow(
+            <Dialog managedClasses={managedClasses} visible={false} />
+        );
+
+        expect(rendered.find(`.${managedClasses.dialog}`).prop("aria-hidden")).toEqual(
+            true
+        );
+    });
+
+    test('should have an attribute of `aria-hidden="false"` when the `visible` prop is true', () => {
+        const rendered: any = shallow(
+            <Dialog managedClasses={managedClasses} visible={true} />
+        );
+
+        expect(rendered.find(`.${managedClasses.dialog}`).prop("aria-hidden")).toEqual(
+            false
+        );
+    });
+
     test("should call the `onDismiss` callback after a click event on the modal overlay when `visible` prop is true", () => {
         const onDismiss: any = jest.fn();
         const rendered: any = shallow(

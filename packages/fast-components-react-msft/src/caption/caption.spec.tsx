@@ -53,11 +53,33 @@ describe("caption", (): void => {
         expect(rendered.prop("tag")).toEqual(CaptionTag.p);
     });
 
-    test("should render the correct `tag` when `tag` prop is passed", () => {
-        const rendered: any = mount(<MSFTCaption id={"caption"} tag={CaptionTag.span} />);
+    test("should render as a `p` element when `CaptionTag.p` is passed to the `tag` prop", () => {
+        const rendered: any = mount(<MSFTCaption tag={CaptionTag.p} />);
 
-        expect(rendered.prop("tag")).toEqual(CaptionTag.span);
+        expect(rendered.exists(CaptionTag.p)).toBe(true);
+    });
+
+    test("should render as a `span` element when `CaptionTag.span` is passed to the `tag` prop", () => {
+        const rendered: any = mount(<MSFTCaption tag={CaptionTag.span} />);
+
         expect(rendered.exists(CaptionTag.span)).toBe(true);
+    });
+
+    test("should render as a `caption` element when `CaptionTag.caption` is passed to the `tag` prop", () => {
+        // include <table> element to validate DOM nesting and prevent warning during tests
+        const rendered: any = mount(
+            <table>
+                <MSFTCaption tag={CaptionTag.caption} />
+            </table>
+        );
+
+        expect(rendered.exists(CaptionTag.caption)).toBe(true);
+    });
+
+    test("should render as a `figcaption` element when `CaptionTag.figcaption` is passed to the `tag` prop", () => {
+        const rendered: any = mount(<MSFTCaption tag={CaptionTag.figcaption} />);
+
+        expect(rendered.exists(CaptionTag.figcaption)).toBe(true);
     });
 
     test("should render the correct `size` when `size` prop is passed", () => {

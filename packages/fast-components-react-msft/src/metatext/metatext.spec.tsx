@@ -52,10 +52,16 @@ describe("metatext", (): void => {
         expect(rendered.exists(MetatextTag.span)).toBe(true);
     });
 
-    test("should render the correct `tag` when `tag` prop is passed", () => {
+    test("should render as a `p` element when `SubheadingTag.p` is passed to the `tag` prop", () => {
         const rendered: any = mount(<Metatext tag={MetatextTag.p} />);
 
         expect(rendered.exists(MetatextTag.p)).toBe(true);
+    });
+
+    test("should render as a `spanp` element when `SubheadingTag.span` is passed to the `tag` prop", () => {
+        const rendered: any = mount(<Metatext tag={MetatextTag.span} />);
+
+        expect(rendered.exists(MetatextTag.span)).toBe(true);
     });
 
     test("should accept and render children", () => {

@@ -54,10 +54,46 @@ describe("heading", (): void => {
         expect(rendered.exists(HeadingTag.h1)).toBe(true);
     });
 
-    test("should render the correct `tag` when `tag` prop is passed", () => {
+    test("should render as an `h1` element when `HeadingTag.h1` is passed to the `tag` prop", () => {
+        const rendered: any = mount(<MSFTHeading tag={HeadingTag.h1} />);
+
+        expect(rendered.exists(HeadingTag.h1)).toBe(true);
+    });
+
+    test("should render as an `h2` element when `HeadingTag.h2` is passed to the `tag` prop", () => {
+        const rendered: any = mount(<MSFTHeading tag={HeadingTag.h2} />);
+
+        expect(rendered.exists(HeadingTag.h2)).toBe(true);
+    });
+
+    test("should render as an `h3` element when `HeadingTag.h3` is passed to the `tag` prop", () => {
         const rendered: any = mount(<MSFTHeading tag={HeadingTag.h3} />);
 
         expect(rendered.exists(HeadingTag.h3)).toBe(true);
+    });
+
+    test("should render as an `h4` element when `HeadingTag.h4` is passed to the `tag` prop", () => {
+        const rendered: any = mount(<MSFTHeading tag={HeadingTag.h4} />);
+
+        expect(rendered.exists(HeadingTag.h4)).toBe(true);
+    });
+
+    test("should render as an `h5` element when `HeadingTag.h5` is passed to the `tag` prop", () => {
+        const rendered: any = mount(<MSFTHeading tag={HeadingTag.h5} />);
+
+        expect(rendered.exists(HeadingTag.h5)).toBe(true);
+    });
+
+    test("should render as an `h6` element when `HeadingTag.h6` is passed to the `tag` prop", () => {
+        const rendered: any = mount(<MSFTHeading tag={HeadingTag.h6} />);
+
+        expect(rendered.exists(HeadingTag.h6)).toBe(true);
+    });
+
+    test("should render as a `p` element when `HeadingTag.p` is passed to the `tag` prop", () => {
+        const rendered: any = mount(<MSFTHeading tag={HeadingTag.p} />);
+
+        expect(rendered.exists(HeadingTag.p)).toBe(true);
     });
 
     test("should render the correct `size` when `size` prop is passed", () => {

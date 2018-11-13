@@ -68,14 +68,20 @@ describe("label", (): void => {
         expect(rendered.type()).toBe(LabelTag.label);
     });
 
-    test("should render the correct `tag` when `tag` prop is passed", () => {
+    test("should render as a `label` element when `LabelTag.label` is passed to the `tag` prop", () => {
+        const rendered: any = shallow(
+            <Label managedClasses={managedClasses} tag={LabelTag.label} />
+        );
+
+        expect(rendered.exists(LabelTag.label)).toBe(true);
+    });
+
+    test("should render as a `legend` element when `LabelTag.legend` is passed to the `tag` prop", () => {
         const rendered: any = shallow(
             <Label managedClasses={managedClasses} tag={LabelTag.legend} />
         );
 
-        expect(rendered.instance().props.tag).not.toBe(undefined);
-        expect(rendered.instance().props.tag).toEqual(LabelTag.legend);
-        expect(rendered.type()).toBe(LabelTag.legend);
+        expect(rendered.exists(LabelTag.legend)).toBe(true);
     });
 
     test("should add the base className", () => {
