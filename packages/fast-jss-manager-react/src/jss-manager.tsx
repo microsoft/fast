@@ -65,6 +65,11 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
     private static sheetManager: SheetManager = new SheetManager();
 
     /**
+     * React context instance data
+     */
+    public context: C;
+
+    /**
      * The source style object that should be compiled into a StyleSheet
      */
     protected abstract styles: ComponentStyles<S, C> | void;
@@ -78,11 +83,6 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
      * The stylesheet index for the JSSManager instance
      */
     private index: number;
-
-    /**
-     * React context instance data
-     */
-    public context: C;
 
     /**
      * Store the design-system as an instance property because
