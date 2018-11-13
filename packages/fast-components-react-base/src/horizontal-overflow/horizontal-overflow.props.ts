@@ -14,6 +14,15 @@ export interface ScrollChange {
     end: boolean;
 }
 
+/**
+ * Horizontal overflow interface for consumers
+ * Included all properties found in ScrollChange
+ * 'overflow' is true when there are enough items to cause overflow
+ */
+export interface HorizontalOverflowChange extends ScrollChange {
+    overflow: boolean;
+}
+
 export interface HorizontalOverflowUnhandledProps
     extends React.HTMLAttributes<HTMLDivElement> {}
 export interface HorizontalOverflowManagedClasses
@@ -28,6 +37,11 @@ export interface HorizontalOverflowHandledProps extends HorizontalOverflowManage
      * The duration the scroll movement should last
      */
     scrollDuration?: number;
+
+    /**
+     * Callback for on horizontal overflow change
+     */
+    onHorizontalOverflowChange?: (changeObject: HorizontalOverflowChange) => void;
 
     /**
      * Callback for on scroll change

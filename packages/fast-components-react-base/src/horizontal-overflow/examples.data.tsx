@@ -1,8 +1,10 @@
 import * as React from "react";
 import HorizontalOverflow, {
+    HorizontalOverflowChange,
     HorizontalOverflowHandledProps,
     HorizontalOverflowManagedClasses,
     HorizontalOverflowUnhandledProps,
+    ScrollChange,
 } from "./horizontal-overflow";
 import schema from "./horizontal-overflow.schema.json";
 import Documentation from "./.tmp/documentation";
@@ -159,6 +161,8 @@ const examples: ComponentFactoryExample<HorizontalOverflowHandledProps> = {
     documentation: <Documentation />,
     detailData: {
         ...classes,
+        // Example of onScrollChange usage
+        // onScrollChange: (obj: ScrollChange): any => (console.log("onScrollChange: ", obj)),
         children: [
             {
                 id: ButtonSchema.id,
@@ -182,6 +186,9 @@ const examples: ComponentFactoryExample<HorizontalOverflowHandledProps> = {
             },
             ...images,
         ],
+        ...classes,
+        // Example of onHorizontalOverflowChange usage
+        // onHorizontalOverflowChange: (obj: HorizontalOverflowChange): any => (console.log("onHorizontalOverflowChange: ", obj)),
     },
     data: [
         {
@@ -245,9 +252,6 @@ const examples: ComponentFactoryExample<HorizontalOverflowHandledProps> = {
         {
             ...classes,
             children: [...images],
-        },
-        {
-            ...classes,
         },
     ],
 };
