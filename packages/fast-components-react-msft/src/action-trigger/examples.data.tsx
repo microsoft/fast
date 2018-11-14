@@ -3,7 +3,6 @@ import { ActionTrigger, ActionTriggerAppearance, ActionTriggerProps } from "./in
 import schema from "./action-trigger.schema.json";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { glyphArrowright } from "@microsoft/fast-glyphs-msft";
 import ReactSVGElementSchema from "../../app/components/react-svg-element.schema.json";
 
 const testDestination: string = "https://www.microsoft.com/en-us/";

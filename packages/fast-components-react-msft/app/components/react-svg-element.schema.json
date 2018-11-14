@@ -5,5 +5,7 @@
     "id": "react-svg-element",
     "type": "object",
     "properties": {
+    },
+    "reactProperties": {
     }
 }
