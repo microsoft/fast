@@ -3,10 +3,6 @@ import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
-import {
-    generateSnapshots,
-    SnapshotTestSuite,
-} from "@microsoft/fast-jest-snapshots-react";
 import Checkbox, {
     CheckboxClassNameContract,
     CheckboxHandledProps,
@@ -21,10 +17,6 @@ import Checkbox, {
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
-
-describe("checkbox snapshot", (): void => {
-    generateSnapshots(examples as SnapshotTestSuite<CheckboxProps>);
-});
 
 describe("checkbox", (): void => {
     const managedClasses: CheckboxClassNameContract = {

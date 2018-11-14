@@ -2,10 +2,6 @@ import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
-import {
-    generateSnapshots,
-    SnapshotTestSuite,
-} from "@microsoft/fast-jest-snapshots-react";
 import MSFTParagraph, {
     ParagraphHandledProps,
     ParagraphManagedClasses,
@@ -19,10 +15,6 @@ import { Paragraph } from "./index";
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
-
-describe("paragraph snapshots", (): void => {
-    generateSnapshots(examples as SnapshotTestSuite<ParagraphProps>);
-});
 
 describe("paragraph", (): void => {
     test("should have a displayName that matches the component name", () => {
@@ -65,5 +57,12 @@ describe("paragraph", (): void => {
         const rendered: any = mount(<MSFTParagraph />);
 
         expect(rendered.prop("size")).toBe(ParagraphSize._3);
+    });
+
+    test("should accept and render children", () => {
+        const rendered: any = shallow(<MSFTParagraph>Children</MSFTParagraph>);
+
+        expect(rendered.prop("children")).not.toBe(undefined);
+        expect(rendered.prop("children")).toEqual("Children");
     });
 });

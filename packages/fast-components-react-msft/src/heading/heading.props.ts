@@ -44,7 +44,7 @@ export interface HeadingHandledProps extends HeadingManagedClasses {
     /**
      * The heading tag
      */
-    tag: HeadingTag;
+    tag?: HeadingTag;
 }
 
 /* tslint:disable-next-line:no-empty-interface */

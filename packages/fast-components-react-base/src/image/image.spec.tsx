@@ -3,10 +3,6 @@ import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
-import {
-    generateSnapshots,
-    SnapshotTestSuite,
-} from "@microsoft/fast-jest-snapshots-react";
 import Image, {
     ImageClassNameContract,
     ImageHandledProps,
@@ -20,10 +16,6 @@ import Image, {
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
-
-describe("image snapshot", (): void => {
-    generateSnapshots(examples as SnapshotTestSuite<ImageProps>);
-});
 
 describe("image", (): void => {
     const managedClasses: ImageClassNameContract = {

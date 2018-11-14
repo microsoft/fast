@@ -2,10 +2,6 @@ import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
-import {
-    generateSnapshots,
-    SnapshotTestSuite,
-} from "@microsoft/fast-jest-snapshots-react";
 import MSFTFlipper, { FlipperHandledProps, FlipperUnhandledProps } from "./flipper";
 import { Flipper, FlipperProps } from "./index";
 
@@ -13,10 +9,6 @@ import { Flipper, FlipperProps } from "./index";
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
-
-describe("flipper snapshots", (): void => {
-    generateSnapshots(examples as SnapshotTestSuite<FlipperProps>);
-});
 
 describe("flipper", (): void => {
     test("should have a displayName that matches the component name", () => {

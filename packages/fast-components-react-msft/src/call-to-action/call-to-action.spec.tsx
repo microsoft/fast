@@ -3,10 +3,6 @@ import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16/build";
 import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
-import {
-    generateSnapshots,
-    SnapshotTestSuite,
-} from "@microsoft/fast-jest-snapshots-react";
 import MSFTCallToAction, {
     CallToActionAppearance,
     CallToActionHandledProps,
@@ -21,10 +17,6 @@ import { CallToActionClassNameContract } from "@microsoft/fast-components-class-
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
-
-describe("call to action snapshot", (): void => {
-    generateSnapshots(examples as SnapshotTestSuite<CallToActionProps>);
-});
 
 describe("call to action", (): void => {
     const managedClasses: CallToActionClassNameContract = {
@@ -138,7 +130,7 @@ describe("call to action", (): void => {
     });
 
     // tslint:disable-next-line:max-line-length
-    test("should apply a custom class-name", () => {
+    test("should apply a custom class-name when passed", () => {
         const rendered: any = mount(<CallToAction className={"custom-class-name"} />);
 
         expect(rendered.find("button").prop("className")).toContain("custom-class-name");

@@ -2,10 +2,6 @@ import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
-import {
-    generateSnapshots,
-    SnapshotTestSuite,
-} from "@microsoft/fast-jest-snapshots-react";
 import MSFTMetatext, {
     MetatextHandledProps,
     MetatextManagedClasses,
@@ -19,10 +15,6 @@ import { Metatext } from "./index";
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
-
-describe("metatext snapshots", (): void => {
-    generateSnapshots(examples as SnapshotTestSuite<MetatextProps>);
-});
 
 describe("metatext", (): void => {
     test("should have a displayName that matches the component name", () => {
@@ -54,9 +46,28 @@ describe("metatext", (): void => {
         expect(rendered.find(MetatextTag.p).prop("aria-hidden")).toEqual(true);
     });
 
-    test("should render the correct `tag` when `tag` prop is passed", () => {
+    test("should render a default `tag` of `MetatextTag.span` when no `tag` prop is passed", () => {
+        const rendered: any = mount(<Metatext />);
+
+        expect(rendered.exists(MetatextTag.span)).toBe(true);
+    });
+
+    test("should render as a `p` element when `SubheadingTag.p` is passed to the `tag` prop", () => {
         const rendered: any = mount(<Metatext tag={MetatextTag.p} />);
 
         expect(rendered.exists(MetatextTag.p)).toBe(true);
+    });
+
+    test("should render as a `spanp` element when `SubheadingTag.span` is passed to the `tag` prop", () => {
+        const rendered: any = mount(<Metatext tag={MetatextTag.span} />);
+
+        expect(rendered.exists(MetatextTag.span)).toBe(true);
+    });
+
+    test("should accept and render children", () => {
+        const rendered: any = shallow(<MSFTMetatext>Children</MSFTMetatext>);
+
+        expect(rendered.prop("children")).not.toBe(undefined);
+        expect(rendered.prop("children")).toEqual("Children");
     });
 });

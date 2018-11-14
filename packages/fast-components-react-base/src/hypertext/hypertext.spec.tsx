@@ -3,10 +3,6 @@ import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import examples from "./examples.data";
-import {
-    generateSnapshots,
-    SnapshotTestSuite,
-} from "@microsoft/fast-jest-snapshots-react";
 import Hypertext, {
     HypertextClassNameContract,
     HypertextHandledProps,
@@ -19,10 +15,6 @@ import Hypertext, {
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
-
-describe("hypertext snapshot", (): void => {
-    generateSnapshots(examples as SnapshotTestSuite<HypertextProps>);
-});
 
 describe("hypertext", (): void => {
     const managedClasses: HypertextClassNameContract = {
@@ -54,6 +46,21 @@ describe("hypertext", (): void => {
 
         expect(rendered.prop("aria-hidden")).not.toBe(undefined);
         expect(rendered.prop("aria-hidden")).toEqual(true);
+    });
+
+    test("should render with an attribute of `href` if `href` prop is passed", () => {
+        const testHref: string = "http://www.microsoft.com";
+        const rendered: any = shallow(
+            <Hypertext href={testHref} managedClasses={managedClasses} />
+        );
+
+        expect(rendered.prop("href")).toBe(testHref);
+    });
+
+    test("should NOT render with an attribute of `href` if no `href` prop is passed", () => {
+        const rendered: any = shallow(<Hypertext managedClasses={managedClasses} />);
+
+        expect(rendered.prop("href")).toBe(null);
     });
 
     test("should correctly handle children", () => {
