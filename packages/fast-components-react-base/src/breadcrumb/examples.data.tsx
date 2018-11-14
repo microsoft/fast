@@ -11,7 +11,7 @@ function breadcrumbItemPropFactory(): BreadcrumbItemProps {
         managedClasses: {
             breadcrumbItem: "breadcrumb-item",
             breadcrumbItem__current: "breadcrumb-item-current",
-            breadcrumbItem__hypertext: "breadcrumb-item-hypertext",
+            breadcrumbItem_hypertext: "breadcrumb-item-hypertext",
         },
         onClick: noop,
     };
@@ -20,7 +20,8 @@ function breadcrumbItemPropFactory(): BreadcrumbItemProps {
 const managedClasses: BreadcrumbManagedClasses = {
     managedClasses: {
         breadcrumb: "breadcrumb",
-        breadcrumb__seperator: "breadcrumb-seperator",
+        breadcrumb_ol: "breadcrumb-ol",
+        breadcrumb_seperator: "breadcrumb-seperator",
     },
 };
 
@@ -31,7 +32,11 @@ const examples: ComponentFactoryExample<BreadcrumbProps> = {
     documentation: <Documentation />,
     detailData: {
         ...managedClasses,
-        seperator: <div>\</div>,
+        label: "breadcrumb",
+        /* tslint:disable-next-line */
+        seperator: (className?: string): React.ReactNode => {
+            return <div className={className}>\</div>;
+        },
         children: [
             {
                 id: "breadcrumb-item",
@@ -62,7 +67,11 @@ const examples: ComponentFactoryExample<BreadcrumbProps> = {
     data: [
         {
             ...managedClasses,
-            seperator: <div>\</div>,
+            label: "breadcrumb",
+            /* tslint:disable-next-line */
+            seperator: (className?: string): React.ReactNode => {
+                return <div className={className}>\</div>;
+            },
             children: [
                 {
                     id: "breadcrumb-item",
@@ -100,6 +109,7 @@ const examples: ComponentFactoryExample<BreadcrumbProps> = {
         },
         {
             ...managedClasses,
+            label: "breadcrumb",
             children: [
                 {
                     id: "breadcrumb-item",

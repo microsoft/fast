@@ -16,7 +16,7 @@ class BreadcrumbItem extends Foundation<
 > {
     public static displayName: string = "BreadcrumbItem";
 
-    public static defaultProps: Partial<BreadcrumbItemHandledProps> = {
+    public static defaultProps: Partial<BreadcrumbItemProps> = {
         current: false,
     };
 
@@ -44,16 +44,16 @@ class BreadcrumbItem extends Foundation<
     }
 
     /**
-     * Create class-names
+     * Create class names
      */
     protected generateClassNames(): string {
         let className: string = get(this.props.managedClasses, "breadcrumbItem") || "";
 
         if (this.props.current) {
-            className = className.concat(
-                " ",
-                get(this.props.managedClasses, "breadcrumbItem__current")
-            );
+            className = `${className} ${get(
+                this.props.managedClasses,
+                "breadcrumbItem__current"
+            )}`;
         }
 
         return super.generateClassNames(className);
@@ -64,7 +64,7 @@ class BreadcrumbItem extends Foundation<
      */
     private mapHypertextClasses(): HypertextClassNameContract {
         return {
-            hypertext: get(this.props.managedClasses, "breadcrumbItem__hypertext"),
+            hypertext: get(this.props.managedClasses, "breadcrumbItem_hypertext"),
         };
     }
 }

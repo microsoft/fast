@@ -3,5 +3,6 @@
  */
 export interface BreadcrumbClassNameContract {
     breadcrumb?: string;
-    breadcrumb__seperator?: string;
+    breadcrumb_ol?: string;
+    breadcrumb_seperator?: string;
 }

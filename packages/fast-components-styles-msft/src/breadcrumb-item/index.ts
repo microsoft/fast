@@ -29,10 +29,11 @@ const styles: ComponentStyles<BreadcrumbItemClassNameContract, DesignSystem> = (
     return {
         breadcrumbItem: {
             fontWeight: `${fontWeight.bold}`,
+            display: "inline",
             ...applyTypeRampConfig("t7"),
         },
         breadcrumbItem__current: {},
-        breadcrumbItem__hypertext: {
+        breadcrumbItem_hypertext: {
             outline: "none",
             textDecoration: "none",
             color: ensureForegroundNormal,

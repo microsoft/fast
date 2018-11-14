@@ -10,7 +10,11 @@ export default {
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
-        seperator: <div>\</div>,
+        label: "breadcrumb",
+        /* tslint:disable-next-line */
+        seperator: (className?: string): React.ReactNode => {
+            return <div className={className}>\</div>;
+        },
         children: [
             {
                 id: "breadcrumb-item",
@@ -37,7 +41,11 @@ export default {
     },
     data: [
         {
-            seperator: <div>\</div>,
+            label: "breadcrumb",
+            /* tslint:disable-next-line */
+            seperator: (className?: string): React.ReactNode => {
+                return <div className={className}>\</div>;
+            },
             children: [
                 {
                     id: "breadcrumb-item",
@@ -70,6 +78,7 @@ export default {
             ],
         },
         {
+            label: "breadcrumb",
             children: [
                 {
                     id: "breadcrumb-item",

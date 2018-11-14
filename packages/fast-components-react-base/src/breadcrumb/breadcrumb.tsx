@@ -19,6 +19,7 @@ class Breadcrumb extends Foundation<
 
     protected handledProps: HandledProps<BreadcrumbHandledProps> = {
         children: void 0,
+        label: void 0,
         seperator: void 0,
         managedClasses: void 0,
     };
@@ -30,19 +31,26 @@ class Breadcrumb extends Foundation<
         return (
             <nav
                 {...this.unhandledProps()}
-                aria-label="Breadcrumb"
+                aria-label={this.props.label}
                 className={this.generateClassNames()}
             >
-                <ol>{this.renderChildren()}</ol>
+                <ol className={this.generateOlClassNames()}>{this.renderChildren()}</ol>
             </nav>
         );
     }
 
     /**
-     * Create class-names
+     * Create class names
      */
     protected generateClassNames(): string {
         return super.generateClassNames(get(this.props.managedClasses, "breadcrumb"));
+    }
+
+    /**
+     * Create class names
+     */
+    protected generateOlClassNames(): string {
+        return super.generateClassNames(get(this.props.managedClasses, "breadcrumb_ol"));
     }
 
     /**
@@ -68,24 +76,13 @@ class Breadcrumb extends Foundation<
         }
         return (
             <React.Fragment>
-                {React.cloneElement(child, {})}
-                {this.renderSeperator()}
+                {child}
+                {typeof this.props.seperator === "function"
+                    ? this.props.seperator(this.props.managedClasses.breadcrumb_seperator)
+                    : null}
             </React.Fragment>
         );
     };
-
-    private renderSeperator(): JSX.Element {
-        if (this.props.seperator) {
-            return (
-                <span
-                    aria-hidden="true"
-                    className={this.props.managedClasses.breadcrumb__seperator}
-                >
-                    {this.props.seperator}
-                </span>
-            );
-        }
-    }
 }
 
 export default Breadcrumb;

@@ -10,7 +10,7 @@ import Breadcrumb from "../breadcrumb/breadcrumb";
  */
 configure({ adapter: new Adapter() });
 
-describe("breadcrumb-item", (): void => {
+describe("breadcrumb item", (): void => {
     test("should have a displayName that matches the component name", () => {
         expect((BreadcrumbItem as any).name).toBe(BreadcrumbItem.displayName);
     });
@@ -47,7 +47,7 @@ describe("breadcrumb-item", (): void => {
         const managedClasses: BreadcrumbItemClassNameContract = {
             breadcrumbItem: "breadcrumb-item-class",
             breadcrumbItem__current: "breadcrumb-item-current-class",
-            breadcrumbItem__hypertext: "breadcrumb-item-hypertext-class",
+            breadcrumbItem_hypertext: "breadcrumb-item-hypertext-class",
         };
 
         const rendered: any = shallow(

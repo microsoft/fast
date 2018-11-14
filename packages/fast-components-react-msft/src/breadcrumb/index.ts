@@ -13,7 +13,7 @@ import { Subtract } from "utility-types";
 
 /* tslint:disable-next-line:typedef */
 const Breadcrumb = manageJss(BreadcrumbStyles)(BaseBreadcrumb);
-type Breadcrumb = typeof Breadcrumb;
+type Breadcrumb = InstanceType<typeof Breadcrumb>;
 
 interface BreadcrumbHandledProps
     extends Subtract<BaseBreadcrumbHandledProps, BreadcrumbManagedClasses> {}

@@ -11,7 +11,7 @@ const managedClasses: BreadcrumbItemManagedClasses = {
     managedClasses: {
         breadcrumbItem: "breadcrumb-item",
         breadcrumbItem__current: "breadcrumb-item-current",
-        breadcrumbItem__hypertext: "breadcrumb-item-hypertext",
+        breadcrumbItem_hypertext: "breadcrumb-item-hypertext",
     },
 };
 

@@ -10,7 +10,7 @@ export interface BreadcrumbItemUnhandledProps
     extends React.HTMLAttributes<HTMLLIElement> {}
 export interface BreadcrumbItemHandledProps extends BreadcrumbItemManagedClasses {
     /**
-     * The children of the breadcrumb-item
+     * The children of the breadcrumb item
      */
     children?: React.ReactNode;
 

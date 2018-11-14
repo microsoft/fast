@@ -14,9 +14,14 @@ export interface BreadcrumbHandledProps extends BreadcrumbManagedClasses {
     children?: React.ReactNode;
 
     /**
+     * The aria-label to provide an accessible name for the breadcrumb
+     */
+    label?: string;
+
+    /**
      * The breadcrumb seprator
      */
-    seperator?: JSX.Element;
+    seperator?: (className: string) => React.ReactNode;
 }
 
 export type BreadcrumbProps = BreadcrumbHandledProps & BreadcrumbUnhandledProps;
