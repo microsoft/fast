@@ -6,7 +6,6 @@ export interface ActionTriggerClassNameContract {
      * The root of the action trigger component
      */
     actionTrigger?: string;
-
     /**
      * The action trigger glyph
      */
@@ -31,11 +30,6 @@ export interface ActionTriggerClassNameContract {
      * The justified appearance modifier
      */
     actionTrigger__justified?: string;
-
-    /**
-     * The button content region
-     */
-    actionTrigger_contentRegion?: string;
 
     /**
      * The disabled modifier

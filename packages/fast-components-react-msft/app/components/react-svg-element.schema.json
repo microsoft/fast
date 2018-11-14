@@ -1,0 +1,9 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "SVG Element",
+    "description": "An arbitrary SVG element component's schema definition.",
+    "id": "react-svg-element",
+    "type": "object",
+    "properties": {
+    }
+}

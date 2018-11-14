@@ -31,6 +31,7 @@ describe("action trigger", (): void => {
         actionTrigger: "action-trigger",
         actionTrigger_glyph: "glyph",
         actionTrigger__primary: "action-trigger-primary",
+        actionTrigger__outline: "action-trigger-outline",
         actionTrigger__lightweight: "action-trigger-lightweight",
         actionTrigger__justified: "action-trigger-justified",
         actionTrigger__disabled: "action-trigger-disabled",
@@ -43,13 +44,32 @@ describe("action trigger", (): void => {
 
     test("should not throw if managedClasses are not provided", () => {
         expect(() => {
-            shallow(<MSFTActionTrigger />);
-            shallow(<MSFTActionTrigger disabled={true} />);
-            shallow(<MSFTActionTrigger appearance={ActionTriggerAppearance.primary} />);
+            shallow(<MSFTActionTrigger glyph={null} />);
+            shallow(<MSFTActionTrigger glyph={null} disabled={true} />);
             shallow(
-                <MSFTActionTrigger appearance={ActionTriggerAppearance.lightweight} />
+                <MSFTActionTrigger
+                    glyph={null}
+                    appearance={ActionTriggerAppearance.primary}
+                />
             );
-            shallow(<MSFTActionTrigger appearance={ActionTriggerAppearance.justified} />);
+            shallow(
+                <MSFTActionTrigger
+                    glyph={null}
+                    appearance={ActionTriggerAppearance.lightweight}
+                />
+            );
+            shallow(
+                <MSFTActionTrigger
+                    glyph={null}
+                    appearance={ActionTriggerAppearance.justified}
+                />
+            );
+            shallow(
+                <MSFTActionTrigger
+                    glyph={null}
+                    appearance={ActionTriggerAppearance.outline}
+                />
+            );
         }).not.toThrow();
     });
 
@@ -57,6 +77,7 @@ describe("action trigger", (): void => {
         const handledProps: ActionTriggerProps & ActionTriggerManagedClasses = {
             managedClasses,
             href,
+            glyph: null,
             children: "text",
         };
 
@@ -74,6 +95,7 @@ describe("action trigger", (): void => {
     // tslint:disable-next-line:max-line-length
     test("should apply a 'primary' html class when appearance is primary", () => {
         const props: ActionTriggerHandledProps = {
+            glyph: null,
             appearance: ActionTriggerAppearance.primary,
         };
 
@@ -87,6 +109,7 @@ describe("action trigger", (): void => {
     // tslint:disable-next-line:max-line-length
     test("should apply a 'lightweight' html class when appearance is lightweight", () => {
         const props: ActionTriggerHandledProps = {
+            glyph: null,
             appearance: ActionTriggerAppearance.lightweight,
         };
 
@@ -100,6 +123,7 @@ describe("action trigger", (): void => {
     // tslint:disable-next-line:max-line-length
     test("should apply a 'justified' html class when appearance is justified", () => {
         const props: ActionTriggerHandledProps = {
+            glyph: null,
             appearance: ActionTriggerAppearance.justified,
         };
 
@@ -111,8 +135,23 @@ describe("action trigger", (): void => {
     });
 
     // tslint:disable-next-line:max-line-length
+    test("should apply a 'outline' html class when appearance is outline", () => {
+        const props: ActionTriggerHandledProps = {
+            glyph: null,
+            appearance: ActionTriggerAppearance.outline,
+        };
+
+        const rendered: any = mount(<ActionTrigger {...props} />);
+
+        expect(rendered.find("button").prop("className")).toContain(
+            "actionTrigger__outline"
+        );
+    });
+
+    // tslint:disable-next-line:max-line-length
     test("should apply a 'disabled' html class when prop disabled is passed", () => {
         const props: ActionTriggerHandledProps = {
+            glyph: null,
             disabled: true,
         };
 
@@ -126,6 +165,7 @@ describe("action trigger", (): void => {
     // tslint:disable-next-line:max-line-length
     test("should set a custom class name and 'primary' class name when appearance is primary and a custom class is passed", () => {
         const props: ActionTriggerHandledProps = {
+            glyph: null,
             appearance: ActionTriggerAppearance.primary,
         };
 
@@ -141,7 +181,9 @@ describe("action trigger", (): void => {
 
     // tslint:disable-next-line:max-line-length
     test("should apply a custom class-name", () => {
-        const rendered: any = mount(<ActionTrigger className={"custom-class-name"} />);
+        const rendered: any = mount(
+            <ActionTrigger className={"custom-class-name"} glyph={null} />
+        );
 
         expect(rendered.find("button").prop("className")).toContain("custom-class-name");
     });

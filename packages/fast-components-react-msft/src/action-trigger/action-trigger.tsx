@@ -1,4 +1,5 @@
 import * as React from "react";
+import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { Button, ButtonAppearance } from "../button";
 import {
@@ -6,8 +7,6 @@ import {
     ActionTriggerHandledProps,
     ActionTriggerUnhandledProps,
 } from "./action-trigger.props";
-import { get } from "lodash-es";
-import { glyphArrowright } from "@microsoft/fast-glyphs-msft";
 import { actionTriggerButtonOverrides } from "@microsoft/fast-components-styles-msft";
 
 class ActionTrigger extends Foundation<
@@ -22,12 +21,13 @@ class ActionTrigger extends Foundation<
         href: void 0,
         managedClasses: void 0,
         disabled: void 0,
+        glyph: void 0,
     };
 
     /**
      * Renders the component
      */
-    public render(): JSX.Element {
+    public render(): React.ReactElement<HTMLButtonElement | HTMLAnchorElement> {
         return (
             <Button
                 {...this.unhandledProps()}
@@ -39,12 +39,13 @@ class ActionTrigger extends Foundation<
                 }
                 jssStyleSheet={actionTriggerButtonOverrides}
             >
-                {this.props.children}
                 <div
-                    slot="after"
+                    slot="before"
                     className={get(this.props, "managedClasses.actionTrigger_glyph")}
-                    dangerouslySetInnerHTML={{ __html: glyphArrowright }}
-                />
+                >
+                    {this.props.glyph}
+                </div>
+                {this.props.children}
             </Button>
         );
     }
@@ -79,6 +80,12 @@ class ActionTrigger extends Foundation<
                 classNames = `${classNames} ${get(
                     this.props,
                     "managedClasses.actionTrigger__justified"
+                )}`;
+                break;
+            case ActionTriggerAppearance.outline:
+                classNames = `${classNames} ${get(
+                    this.props,
+                    "managedClasses.actionTrigger__outline"
                 )}`;
                 break;
         }

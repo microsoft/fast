@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Omit, Subtract } from "utility-types";
+import { Omit } from "utility-types";
 import {
     ActionTriggerClassNameContract,
     ManagedClasses,
@@ -14,6 +14,7 @@ import {
 export enum ActionTriggerAppearance {
     justified = ButtonAppearance.justified,
     lightweight = ButtonAppearance.lightweight,
+    outline = ButtonAppearance.outline,
     primary = ButtonAppearance.primary,
 }
 
@@ -23,9 +24,12 @@ export interface ActionTriggerHandledProps
     extends Omit<ButtonHandledProps, "appearance" | keyof ButtonManagedClasses>,
         ActionTriggerManagedClasses {
     /**
-     * The call to action appearance
+     * The action trigger appearance
      */
     appearance?: ActionTriggerAppearance;
+    glyph: React.ReactNode;
+    href?: string;
+    disabled?: boolean;
 }
 
 /* tslint:disable-next-line:no-empty-interface */

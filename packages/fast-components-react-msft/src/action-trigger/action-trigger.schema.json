@@ -3,8 +3,12 @@
     "title": "Action trigger",
     "description": "A call to action component's schema definition.",
     "type": "object",
-    "id": "call-to-action",
+    "id": "action-trigger",
     "properties": {
+        "disabled": {
+            "title": "Disabled",
+            "type": "boolean"
+        },
         "href": {
             "title": "HTML href attribute",
             "type": "string"
@@ -16,7 +20,8 @@
             "enum": [
                 "primary",
                 "justified",
-                "lightweight"
+                "lightweight",
+                "outline"
             ]
         }
     },
@@ -27,6 +32,10 @@
             "defaults": [
                 "text"
             ]
+        },
+        "glyph": {
+            "title": "Glyph",
+            "type": "children"
         }
     }
 }
