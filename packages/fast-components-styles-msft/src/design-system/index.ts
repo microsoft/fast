@@ -46,7 +46,7 @@ const designSystemDefaults: DesignSystem = {
     density: 1,
     designUnit: 4,
     direction: Direction.ltr,
-    foregroundColor: "#000",
+    foregroundColor: "#111",
 };
 
 /**
