@@ -5,13 +5,20 @@ import Breadcrumb, {
     BreadcrumbClassNameContract,
     BreadcrumbUnhandledProps,
 } from "./breadcrumb";
-import BreadcrumbItem from "../breadcrumb-item";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 /*
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
+
+const managedClasses: BreadcrumbClassNameContract = {
+    breadcrumb: "breadcrumb-class",
+    breadcrumb_item: "breadcrumb-item-class",
+    breadcrumb_item__current: "breadcrumb-item-current-class",
+    breadcrumb_ol: "breadcrumb-ol-class",
+    breadcrumb_seperator: "breadcrumb-seperator-class",
+};
 
 describe("breadcrumb", (): void => {
     test("should have a displayName that matches the component name", () => {
@@ -35,37 +42,32 @@ describe("breadcrumb", (): void => {
     });
 
     test("should set current value on last rendered", (): void => {
-        const rendered: any = mount(
-            <Breadcrumb>
-                <BreadcrumbItem />
-                <BreadcrumbItem />
-                <BreadcrumbItem />
-                <BreadcrumbItem />
+        const rendered: any = shallow(
+            <Breadcrumb managedClasses={managedClasses}>
+                <a />
+                <a />
+                <a />
+                <a />
             </Breadcrumb>
         );
 
-        expect(rendered.find("BreadcrumbItem").get(3).props.current).toBe(true);
+        expect(rendered.exists("a.breadcrumb-item-current-class")).toBe(true);
     });
 
     test("should render a `div` element as second child if the `seperator` prop is passed", () => {
-        const managedClasses: BreadcrumbClassNameContract = {
-            breadcrumb: "breadcrumb-class",
-            breadcrumb_seperator: "breadcrumb-seperator-class",
-        };
-
         const rendered: any = shallow(
-            /* tslint:disable-next-line */
             <Breadcrumb
                 managedClasses={managedClasses}
+                /* tslint:disable-next-line */
                 seperator={(className?: string): React.ReactNode => {
                     return <div className={className}>\</div>;
                 }}
             >
-                <BreadcrumbItem />
-                <BreadcrumbItem />
+                <a />
+                <a />
             </Breadcrumb>
         );
 
-        expect(rendered.find("div").hasClass("breadcrumb-seperator-class")).toBe(true);
+        expect(rendered.exists("div.breadcrumb-seperator-class")).toBe(true);
     });
 });

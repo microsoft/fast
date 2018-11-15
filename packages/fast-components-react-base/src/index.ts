@@ -2,10 +2,6 @@ import Breadcrumb from "./breadcrumb";
 export { Breadcrumb };
 export * from "./breadcrumb";
 
-import BreadcrumbItem from "./breadcrumb-item";
-export { BreadcrumbItem };
-export * from "./breadcrumb-item";
-
 import Button from "./button";
 export { Button };
 export * from "./button";

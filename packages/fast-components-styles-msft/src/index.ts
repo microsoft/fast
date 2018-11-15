@@ -4,9 +4,6 @@
 import BreadcrumbStyles from "./breadcrumb";
 export { BreadcrumbStyles };
 
-import BreadcrumbItemStyles from "./breadcrumb-item";
-export { BreadcrumbItemStyles };
-
 import ButtonStyles from "./button";
 export { ButtonStyles };
 

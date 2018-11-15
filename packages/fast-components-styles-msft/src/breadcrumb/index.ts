@@ -19,6 +19,12 @@ const styles: ComponentStyles<BreadcrumbClassNameContract, DesignSystem> = (
         breadcrumb: {
             padding: "4px",
         },
+        breadcrumb_item: {
+            fontWeight: `${fontWeight.bold}`,
+            display: "inline",
+            ...applyTypeRampConfig("t7"),
+        },
+        breadcrumb_item__current: {},
         breadcrumb_ol: {
             listStyle: "none",
             [applyLocalizedProperty("paddingLeft", "paddingRight", direction)]: "0",

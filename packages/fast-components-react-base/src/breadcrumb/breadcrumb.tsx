@@ -1,5 +1,4 @@
 import * as ReactDOM from "react-dom";
-import { BreadcrumbItemProps } from "../breadcrumb-item";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { BreadcrumbClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
@@ -9,6 +8,7 @@ import {
 } from "./breadcrumb.props";
 import { get } from "lodash-es";
 import * as React from "react";
+import { string } from "prop-types";
 
 class Breadcrumb extends Foundation<
     BreadcrumbHandledProps,
@@ -27,7 +27,7 @@ class Breadcrumb extends Foundation<
     /**
      * Renders the component
      */
-    public render(): React.ReactElement<HTMLDivElement> {
+    public render(): React.ReactElement<HTMLElement> {
         return (
             <nav
                 {...this.unhandledProps()}
@@ -60,27 +60,46 @@ class Breadcrumb extends Foundation<
         return React.Children.map(this.props.children, this.renderChild);
     }
 
+    private isClonableElement(node: React.ReactNode): node is React.ReactElement<any> {
+        return React.isValidElement(node);
+    }
     /**
      * Render a single child
      */
     private renderChild = (
-        child: React.ReactElement<BreadcrumbItemProps>,
+        child: React.ReactNode,
         index: number
     ): React.ReactFragment => {
         const childCount: number = React.Children.count(this.props.children);
-        if (childCount - 1 === index) {
-            return React.cloneElement(child, {
-                current: true,
-                href: undefined,
-            });
+        let augmentedChild: React.ReactNode = child;
+        let notLastItem: boolean = true;
+        if (this.isClonableElement(child)) {
+            const props: any = {
+                className:
+                    child.props && typeof child.props.className === "string"
+                        ? `${child.props.className} ${
+                              this.props.managedClasses.breadcrumb_item
+                          }`
+                        : this.props.managedClasses.breadcrumb_item,
+            };
+
+            if (childCount - 1 === index) {
+                props.className = `${props.className} ${
+                    this.props.managedClasses.breadcrumb_item__current
+                }`;
+                props["aria-current"] = "page";
+                notLastItem = false;
+            }
+
+            augmentedChild = React.cloneElement(child, props);
         }
         return (
-            <React.Fragment>
-                {child}
-                {typeof this.props.seperator === "function"
+            <li>
+                {augmentedChild}
+                {typeof this.props.seperator === "function" && notLastItem
                     ? this.props.seperator(this.props.managedClasses.breadcrumb_seperator)
                     : null}
-            </React.Fragment>
+            </li>
         );
     };
 }

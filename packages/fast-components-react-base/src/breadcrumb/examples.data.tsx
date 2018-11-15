@@ -2,24 +2,14 @@ import * as React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import schema from "./breadcrumb.schema.json";
 import Breadcrumb, { BreadcrumbManagedClasses, BreadcrumbProps } from "./breadcrumb";
-import { BreadcrumbItemProps } from "../breadcrumb-item";
-import { noop } from "lodash-es";
 import Documentation from "./.tmp/documentation";
-
-function breadcrumbItemPropFactory(): BreadcrumbItemProps {
-    return {
-        managedClasses: {
-            breadcrumbItem: "breadcrumb-item",
-            breadcrumbItem__current: "breadcrumb-item-current",
-            breadcrumbItem_hypertext: "breadcrumb-item-hypertext",
-        },
-        onClick: noop,
-    };
-}
+import reactHTMLElementSchema from "../../app/components/react-html-element.schema.json";
 
 const managedClasses: BreadcrumbManagedClasses = {
     managedClasses: {
         breadcrumb: "breadcrumb",
+        breadcrumb_item: "breadcrumb-item",
+        breadcrumb_item__current: "breadcrumb-item-current",
         breadcrumb_ol: "breadcrumb-ol",
         breadcrumb_seperator: "breadcrumb-seperator",
     },
@@ -39,26 +29,22 @@ const examples: ComponentFactoryExample<BreadcrumbProps> = {
         },
         children: [
             {
-                id: "breadcrumb-item",
+                id: "hypertext",
                 props: {
-                    ...breadcrumbItemPropFactory(),
                     href: "https://www.microsoft.com/en-us/",
                     children: "breadcrumb item 1",
                 },
             },
             {
-                id: "breadcrumb-item",
+                id: "hypertext",
                 props: {
-                    ...breadcrumbItemPropFactory(),
                     href: "https://www.microsoft.com/en-us/",
                     children: "breadcrumb item 2",
                 },
             },
             {
-                id: "breadcrumb-item",
+                id: "hypertext",
                 props: {
-                    ...breadcrumbItemPropFactory(),
-                    href: "https://www.microsoft.com/en-us/",
                     children: "breadcrumb item 3",
                 },
             },
@@ -70,38 +56,57 @@ const examples: ComponentFactoryExample<BreadcrumbProps> = {
             label: "breadcrumb",
             /* tslint:disable-next-line */
             seperator: (className?: string): React.ReactNode => {
-                return <div className={className}>\</div>;
+                return <div className={className}>/</div>;
             },
             children: [
                 {
-                    id: "breadcrumb-item",
+                    id: "hypertext",
                     props: {
-                        ...breadcrumbItemPropFactory(),
                         href: "https://www.microsoft.com/en-us/",
                         children: "breadcrumb item 1",
                     },
                 },
                 {
-                    id: "breadcrumb-item",
+                    id: "hypertext",
                     props: {
-                        ...breadcrumbItemPropFactory(),
                         href: "https://www.microsoft.com/en-us/",
                         children: "breadcrumb item 2",
                     },
                 },
                 {
-                    id: "breadcrumb-item",
+                    id: "hypertext",
                     props: {
-                        ...breadcrumbItemPropFactory(),
-                        href: "https://www.microsoft.com/en-us/",
+                        children: "breadcrumb item 3",
+                    },
+                },
+            ],
+        },
+        {
+            ...managedClasses,
+            label: "breadcrumb",
+            /* tslint:disable-next-line */
+            seperator: (className?: string): React.ReactNode => {
+                return <div className={className}>\</div>;
+            },
+            children: [
+                {
+                    id: reactHTMLElementSchema.id,
+                    props: {
+                        tag: "a",
+                        children: "breadcrumb item 1",
+                    },
+                },
+                {
+                    id: reactHTMLElementSchema.id,
+                    props: {
+                        tag: "a",
                         children: "breadcrumb item 2",
                     },
                 },
                 {
-                    id: "breadcrumb-item",
+                    id: reactHTMLElementSchema.id,
                     props: {
-                        ...breadcrumbItemPropFactory(),
-                        href: "https://www.microsoft.com/en-us/",
+                        tag: "a",
                         children: "breadcrumb item 3",
                     },
                 },
@@ -112,34 +117,20 @@ const examples: ComponentFactoryExample<BreadcrumbProps> = {
             label: "breadcrumb",
             children: [
                 {
-                    id: "breadcrumb-item",
+                    id: reactHTMLElementSchema.id,
                     props: {
-                        ...breadcrumbItemPropFactory(),
-                        href: "https://www.microsoft.com/en-us/",
                         children: "breadcrumb item 1",
                     },
                 },
                 {
-                    id: "breadcrumb-item",
+                    id: reactHTMLElementSchema.id,
                     props: {
-                        ...breadcrumbItemPropFactory(),
-                        href: "https://www.microsoft.com/en-us/",
                         children: "breadcrumb item 2",
                     },
                 },
                 {
-                    id: "breadcrumb-item",
+                    id: reactHTMLElementSchema.id,
                     props: {
-                        ...breadcrumbItemPropFactory(),
-                        href: "https://www.microsoft.com/en-us/",
-                        children: "breadcrumb item 2",
-                    },
-                },
-                {
-                    id: "breadcrumb-item",
-                    props: {
-                        ...breadcrumbItemPropFactory(),
-                        href: "https://www.microsoft.com/en-us/",
                         children: "breadcrumb item 3",
                     },
                 },

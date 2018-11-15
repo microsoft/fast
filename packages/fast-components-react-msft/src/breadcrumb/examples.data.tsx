@@ -3,6 +3,7 @@ import { Breadcrumb, BreadcrumbHandledProps } from "./index";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import schema from "@microsoft/fast-components-react-base/dist/breadcrumb/breadcrumb.schema.json";
 import Documentation from "./.tmp/documentation";
+import ReactHTMLElementSchema from "../../app/components/react-html-element.schema.json";
 
 export default {
     name: "Breadcrumb",
@@ -17,23 +18,22 @@ export default {
         },
         children: [
             {
-                id: "breadcrumb-item",
+                id: "hypertext",
                 props: {
                     href: "https://www.microsoft.com/en-us/",
                     children: "breadcrumb item 1",
                 },
             },
             {
-                id: "breadcrumb-item",
+                id: "hypertext",
                 props: {
                     href: "https://www.microsoft.com/en-us/",
                     children: "breadcrumb item 2",
                 },
             },
             {
-                id: "breadcrumb-item",
+                id: "hypertext",
                 props: {
-                    href: "https://www.microsoft.com/en-us/",
                     children: "breadcrumb item 3",
                 },
             },
@@ -48,30 +48,52 @@ export default {
             },
             children: [
                 {
-                    id: "breadcrumb-item",
+                    id: "hypertext",
                     props: {
                         href: "https://www.microsoft.com/en-us/",
                         children: "breadcrumb item 1",
                     },
                 },
                 {
-                    id: "breadcrumb-item",
+                    id: "hypertext",
                     props: {
                         href: "https://www.microsoft.com/en-us/",
                         children: "breadcrumb item 2",
                     },
                 },
                 {
-                    id: "breadcrumb-item",
+                    id: "hypertext",
                     props: {
-                        href: "https://www.microsoft.com/en-us/",
+                        children: "breadcrumb item 3",
+                    },
+                },
+            ],
+        },
+        {
+            label: "breadcrumb",
+            /* tslint:disable-next-line */
+            seperator: (className?: string): React.ReactNode => {
+                return <div className={className}>\</div>;
+            },
+            children: [
+                {
+                    id: ReactHTMLElementSchema.id,
+                    props: {
+                        tag: "a",
+                        children: "breadcrumb item 1",
+                    },
+                },
+                {
+                    id: ReactHTMLElementSchema.id,
+                    props: {
+                        tag: "a",
                         children: "breadcrumb item 2",
                     },
                 },
                 {
-                    id: "breadcrumb-item",
+                    id: ReactHTMLElementSchema.id,
                     props: {
-                        href: "https://www.microsoft.com/en-us/",
+                        tag: "a",
                         children: "breadcrumb item 3",
                     },
                 },
@@ -81,30 +103,20 @@ export default {
             label: "breadcrumb",
             children: [
                 {
-                    id: "breadcrumb-item",
+                    id: ReactHTMLElementSchema.id,
                     props: {
-                        href: "https://www.microsoft.com/en-us/",
                         children: "breadcrumb item 1",
                     },
                 },
                 {
-                    id: "breadcrumb-item",
+                    id: ReactHTMLElementSchema.id,
                     props: {
-                        href: "https://www.microsoft.com/en-us/",
                         children: "breadcrumb item 2",
                     },
                 },
                 {
-                    id: "breadcrumb-item",
+                    id: ReactHTMLElementSchema.id,
                     props: {
-                        href: "https://www.microsoft.com/en-us/",
-                        children: "breadcrumb item 2",
-                    },
-                },
-                {
-                    id: "breadcrumb-item",
-                    props: {
-                        href: "https://www.microsoft.com/en-us/",
                         children: "breadcrumb item 3",
                     },
                 },

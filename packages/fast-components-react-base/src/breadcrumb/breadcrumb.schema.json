@@ -11,7 +11,7 @@
             "title": "Building blocks",
             "type": "children",
             "ids": [
-                "breadcrumb-item"
+                "hypertext"
             ]
         }
     }

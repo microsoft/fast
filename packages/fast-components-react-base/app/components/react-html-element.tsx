@@ -15,6 +15,11 @@ export default class ReactHTMLElement extends React.Component<ReactHTMLElementPr
     };
 
     public render(): JSX.Element {
-        return <this.props.tag>{this.props.children}</this.props.tag>;
+        const props: any = Object.assign({}, this.props);
+
+        delete props.tag;
+        delete props.slot;
+        delete props.children;
+        return <this.props.tag {...props}>{this.props.children}</this.props.tag>;
     }
 }

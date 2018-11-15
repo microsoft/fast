@@ -1,9 +1,6 @@
 import BreadcrumbExamples from "../src/breadcrumb/examples.data";
 export { BreadcrumbExamples };
 
-import BreadcrumbItemExamples from "../src/breadcrumb-item/examples.data";
-export { BreadcrumbItemExamples };
-
 import ButtonExamples from "../src/button/examples.data";
 export { ButtonExamples };
 
