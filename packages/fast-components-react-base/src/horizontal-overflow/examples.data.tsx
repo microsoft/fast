@@ -184,10 +184,6 @@ const examples: ComponentFactoryExample<HorizontalOverflowHandledProps> = {
             },
             ...images,
         ],
-        // Example of onHorizontalOverflowChange usage
-        // onHorizontalOverflowChange: (obj: HorizontalOverflowChange): any => (console.log("onHorizontalOverflowChange: ", obj)),
-        // Example of onScrollChange usage
-        // onScrollChange: (obj: ScrollChange): any => (console.log("onScrollChange: ", obj)),
     },
     data: [
         {

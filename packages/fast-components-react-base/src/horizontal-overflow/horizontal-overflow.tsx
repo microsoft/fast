@@ -26,6 +26,11 @@ export interface HorizontalOverflowState {
     itemsHeight: number;
 }
 
+export interface ItemsWidthAndTotalWidth {
+    availableWidth: number;
+    itemWidths: number[];
+}
+
 class HorizontalOverflow extends Foundation<
     HorizontalOverflowHandledProps,
     HorizontalOverflowUnhandledProps,
@@ -214,7 +219,7 @@ class HorizontalOverflow extends Foundation<
         }
 
         if (this.props.onHorizontalOverflowChange) {
-            this.onHorizontalOverflowChange();
+            this.handleHorizontalOverflowChange();
         }
     };
 
@@ -222,7 +227,7 @@ class HorizontalOverflow extends Foundation<
      * Handles the resize event
      */
     private onWindowResize = (): void => {
-        this.onHorizontalOverflowChange();
+        this.handleHorizontalOverflowChange();
     };
 
     /**
@@ -240,7 +245,7 @@ class HorizontalOverflow extends Foundation<
     /**
      * Callback for the horizontal overflow change
      */
-    private onHorizontalOverflowChange = (): void => {
+    private handleHorizontalOverflowChange = (): void => {
         if (typeof this.props.onHorizontalOverflowChange === "function") {
             this.props.onHorizontalOverflowChange({
                 ...this.getScrollChangeData(),
@@ -461,10 +466,7 @@ class HorizontalOverflow extends Foundation<
     /**
      * Returns the items width and total width of the scroll region
      */
-    private getItemsWidthAndTotalWidth(): {
-        availableWidth: number;
-        itemWidths: number[];
-    } {
+    private getItemsWidthAndTotalWidth(): ItemsWidthAndTotalWidth {
         const availableWidth: number = getClientRectWithMargin(
             this.horizontalOverflowItemsRef.current
         ).width;
@@ -483,7 +485,7 @@ class HorizontalOverflow extends Foundation<
      * Handler for the click event fired after next or previous has been clicked
      */
     private handleClick(direction: ButtonDirection): void {
-        const regionWidthInformation: any = this.getItemsWidthAndTotalWidth();
+        const regionWidthInformation: ItemsWidthAndTotalWidth = this.getItemsWidthAndTotalWidth();
         const availableWidth: number = regionWidthInformation.availableWidth;
         const itemWidths: number[] = regionWidthInformation.itemWidths;
 
