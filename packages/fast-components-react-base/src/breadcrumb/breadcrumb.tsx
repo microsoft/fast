@@ -1,5 +1,6 @@
 import * as ReactDOM from "react-dom";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import * as React from "react";
 import { BreadcrumbClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
     BreadcrumbHandledProps,
@@ -7,8 +8,6 @@ import {
     BreadcrumbUnhandledProps,
 } from "./breadcrumb.props";
 import { get } from "lodash-es";
-import * as React from "react";
-import { string } from "prop-types";
 
 class Breadcrumb extends Foundation<
     BreadcrumbHandledProps,
@@ -27,7 +26,7 @@ class Breadcrumb extends Foundation<
     /**
      * Renders the component
      */
-    public render(): React.ReactElement<HTMLElement> {
+    public render(): any {
         return (
             <nav
                 {...this.unhandledProps()}
