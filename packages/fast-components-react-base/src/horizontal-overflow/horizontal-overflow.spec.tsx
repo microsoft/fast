@@ -379,6 +379,8 @@ describe("horizontal overflow", (): void => {
             </HorizontalOverflow>
         );
 
+        renderedWithImages.find("div.foo").simulate("load", {});
+
         expect(onHorizontalOverflowChangeFunction).toHaveBeenCalledTimes(1);
     });
     test("should execute a scroll animation on the element", () => {
