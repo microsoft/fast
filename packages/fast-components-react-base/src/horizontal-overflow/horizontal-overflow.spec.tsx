@@ -367,7 +367,7 @@ describe("horizontal overflow", (): void => {
 
         expect(renderedWithImages.instance().state.itemsHeight).toBe(0);
     });
-    test("should call `onHorizontalOverflowChange` in the `onLoad` method if prop exists", () => {
+    test("should call `onHorizontalOverflowChange` on render if prop exists", () => {
         const onHorizontalOverflowChangeFunction: any = jest.fn();
         const renderedWithImages: any = mount(
             <HorizontalOverflow
@@ -378,8 +378,6 @@ describe("horizontal overflow", (): void => {
                 {imageSet1}
             </HorizontalOverflow>
         );
-
-        renderedWithImages.find("div.foo").simulate("load", {});
 
         expect(onHorizontalOverflowChangeFunction).toHaveBeenCalledTimes(1);
     });
