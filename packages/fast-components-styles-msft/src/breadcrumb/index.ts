@@ -32,7 +32,7 @@ const styles: ComponentStyles<BreadcrumbClassNameContract, DesignSystem> = (
             display: "flex",
             flexWrap: "wrap",
         },
-        breadcrumb_seperator: {
+        breadcrumb_separator: {
             fontWeight: `${fontWeight.normal}`,
             display: "inline-block",
             ...applyTypeRampConfig("t7"),

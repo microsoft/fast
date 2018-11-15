@@ -19,7 +19,7 @@ class Breadcrumb extends Foundation<
     protected handledProps: HandledProps<BreadcrumbHandledProps> = {
         children: void 0,
         label: void 0,
-        seperator: void 0,
+        separator: void 0,
         managedClasses: void 0,
     };
 
@@ -95,8 +95,8 @@ class Breadcrumb extends Foundation<
         return (
             <li>
                 {augmentedChild}
-                {typeof this.props.seperator === "function" && notLastItem
-                    ? this.props.seperator(this.props.managedClasses.breadcrumb_seperator)
+                {typeof this.props.separator === "function" && notLastItem
+                    ? this.props.separator(this.props.managedClasses.breadcrumb_separator)
                     : null}
             </li>
         );

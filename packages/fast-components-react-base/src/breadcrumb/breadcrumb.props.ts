@@ -21,7 +21,7 @@ export interface BreadcrumbHandledProps extends BreadcrumbManagedClasses {
     /**
      * The breadcrumb seprator
      */
-    seperator?: (className: string) => React.ReactNode;
+    separator?: (className: string) => React.ReactNode;
 }
 
 export type BreadcrumbProps = BreadcrumbHandledProps & BreadcrumbUnhandledProps;

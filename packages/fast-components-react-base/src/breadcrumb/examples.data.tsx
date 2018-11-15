@@ -11,7 +11,7 @@ const managedClasses: BreadcrumbManagedClasses = {
         breadcrumb_item: "breadcrumb-item",
         breadcrumb_item__current: "breadcrumb-item-current",
         breadcrumb_ol: "breadcrumb-ol",
-        breadcrumb_seperator: "breadcrumb-seperator",
+        breadcrumb_separator: "breadcrumb-separator",
     },
 };
 
@@ -24,7 +24,7 @@ const examples: ComponentFactoryExample<BreadcrumbProps> = {
         ...managedClasses,
         label: "breadcrumb",
         /* tslint:disable-next-line */
-        seperator: (className?: string): React.ReactNode => {
+        separator: (className?: string): React.ReactNode => {
             return <div className={className}>\</div>;
         },
         children: [
@@ -55,7 +55,7 @@ const examples: ComponentFactoryExample<BreadcrumbProps> = {
             ...managedClasses,
             label: "breadcrumb",
             /* tslint:disable-next-line */
-            seperator: (className?: string): React.ReactNode => {
+            separator: (className?: string): React.ReactNode => {
                 return <div className={className}>/</div>;
             },
             children: [
@@ -85,7 +85,7 @@ const examples: ComponentFactoryExample<BreadcrumbProps> = {
             ...managedClasses,
             label: "breadcrumb",
             /* tslint:disable-next-line */
-            seperator: (className?: string): React.ReactNode => {
+            separator: (className?: string): React.ReactNode => {
                 return <div className={className}>\</div>;
             },
             children: [

@@ -6,5 +6,5 @@ export interface BreadcrumbClassNameContract {
     breadcrumb_item?: string;
     breadcrumb_item__current?: string;
     breadcrumb_ol?: string;
-    breadcrumb_seperator?: string;
+    breadcrumb_separator?: string;
 }

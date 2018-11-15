@@ -13,7 +13,7 @@ export default {
     detailData: {
         label: "breadcrumb",
         /* tslint:disable-next-line */
-        seperator: (className?: string): React.ReactNode => {
+        separator: (className?: string): React.ReactNode => {
             return <div className={className}>\</div>;
         },
         children: [
@@ -43,7 +43,7 @@ export default {
         {
             label: "breadcrumb",
             /* tslint:disable-next-line */
-            seperator: (className?: string): React.ReactNode => {
+            separator: (className?: string): React.ReactNode => {
                 return <div className={className}>\</div>;
             },
             children: [
@@ -72,7 +72,7 @@ export default {
         {
             label: "breadcrumb",
             /* tslint:disable-next-line */
-            seperator: (className?: string): React.ReactNode => {
+            separator: (className?: string): React.ReactNode => {
                 return <div className={className}>\</div>;
             },
             children: [

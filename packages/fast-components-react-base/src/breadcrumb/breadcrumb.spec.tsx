@@ -17,7 +17,7 @@ const managedClasses: BreadcrumbClassNameContract = {
     breadcrumb_item: "breadcrumb-item-class",
     breadcrumb_item__current: "breadcrumb-item-current-class",
     breadcrumb_ol: "breadcrumb-ol-class",
-    breadcrumb_seperator: "breadcrumb-seperator-class",
+    breadcrumb_separator: "breadcrumb-separator-class",
 };
 
 describe("breadcrumb", (): void => {
@@ -54,12 +54,12 @@ describe("breadcrumb", (): void => {
         expect(rendered.exists("a.breadcrumb-item-current-class")).toBe(true);
     });
 
-    test("should render a `div` element as second child if the `seperator` prop is passed", () => {
+    test("should render a `div` element as second child if the `separator` prop is passed", () => {
         const rendered: any = shallow(
             <Breadcrumb
                 managedClasses={managedClasses}
                 /* tslint:disable-next-line */
-                seperator={(className?: string): React.ReactNode => {
+                separator={(className?: string): React.ReactNode => {
                     return <div className={className}>\</div>;
                 }}
             >
@@ -68,6 +68,6 @@ describe("breadcrumb", (): void => {
             </Breadcrumb>
         );
 
-        expect(rendered.exists("div.breadcrumb-seperator-class")).toBe(true);
+        expect(rendered.exists("div.breadcrumb-separator-class")).toBe(true);
     });
 });
