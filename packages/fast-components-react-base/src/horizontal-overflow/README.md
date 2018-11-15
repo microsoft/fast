@@ -5,7 +5,7 @@ The *horizontal overflow* component accepts items as children. A child can have 
 The *horizontal overflow* component always initializes at the start of the overflow content &mdash; left side in LTR and right side in RTL. 
 
 ### Callbacks
-Several callbacks are supplied to aid the consumer. Use `onScrollChange` to receive if scroll is at the start or end of the overflow set. Use `onHorizontalOverflowChange` to know if there are enough items to cause overflow (this callback also supplied the `onScrollChange` data.)
+Several callbacks are supplied to aid the consumer. Use `onScrollChange` to receive if scroll is at the start or end of the overflow set. Use `onHorizontalOverflowChange` to know if there are enough items to cause overflow (this callback also supplies the `onScrollChange` data.)
 
 Usage example:
 
