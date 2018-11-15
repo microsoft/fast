@@ -5,14 +5,15 @@
     "type": "object",
     "id": "breadcrumb",
     "properties": {
+        "label": {
+            "title": "aria-label",
+            "type": "string"
+        }
     },
     "reactProperties": {
         "children": {
             "title": "Building blocks",
-            "type": "children",
-            "ids": [
-                "hypertext"
-            ]
+            "type": "children"
         }
     }
 }

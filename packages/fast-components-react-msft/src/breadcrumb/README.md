@@ -1,8 +1,8 @@
 ## Breadcrumb
-A generic breadcrumb component following the w3.org [breadcrumb](https://www.w3.org/TR/2017/NOTE-wai-aria-practices-1.1-20171214/examples/breadcrumb/index.html) pattern. The *breadcrumb* will accept any child elements but is built to work with *breadcrumb-item* component.
+A generic breadcrumb component following the w3.org [breadcrumb](https://www.w3.org/TR/2017/NOTE-wai-aria-practices-1.1-20171214/examples/breadcrumb/index.html) pattern. The *breadcrumb* will accept any child elements but is built to work with `a` elements.
 
 ### Usage
-The *breadcrumb* automatically sets the last *breadcrumb-item* `href` to "undefined" and `current` prop to "true". Addtionally *breadcrumb* accepts an optional `seperator` prop as a JSX.element that will render a JSX element between navigation elements.
+To denote the current page the *breadcrumb* automatically sets the last child `aria-current` prop to "page". Addtionally *breadcrumb* accepts an optional `seperator` prop that will render a ReactNode between navigation elements. To support `rtl` in jss you need to target the `breadcrumb_ol` class for *breadcrumb* and set it to `display: "flex", flexWrap: "wrap"`
 
-## Style guidance
-guidance goes here
+### Accessibility
+The *breadcrumb* component consists of a `nav` element with `aria-label` set to a `label` prop. One should set the `label` prop to "Breadcrumb" to identify the structure as a breadcrumb trail and make it a navigation landmark so that it is easy to locate. The last child element `aria-current` prop is marked "page" to indicate that it reprents the current page.
