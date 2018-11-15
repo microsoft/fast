@@ -110,7 +110,13 @@ import ToggleStyles from "./toggle";
 export { ToggleStyles };
 
 /**
- * Export toggle styles
+ * Export text action styles
+ */
+import TextActionStyles from "./text-action";
+export { TextActionStyles };
+
+/**
+ * Export text field styles
  */
 import TextFieldStyles from "./text-field";
 export { TextFieldStyles };
