@@ -2,7 +2,11 @@ import designSystemDefaults, {
     DesignSystem,
     withDesignSystemDefaults,
 } from "../design-system";
-import { disabledContrast, ensureNormalContrast } from "../utilities/colors";
+import {
+    disabledContrast,
+    ensureNormalContrast,
+    normalContrast,
+} from "../utilities/colors";
 import {
     ComponentStyles,
     ComponentStyleSheet,
@@ -34,6 +38,11 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
         designSystem.backgroundColor
     );
     const foregroundColor: string = ensureNormalContrast(
+        config.contrast,
+        designSystem.foregroundColor,
+        designSystem.backgroundColor
+    );
+    const checkedBackplateColor: string = normalContrast(
         config.contrast,
         designSystem.foregroundColor,
         designSystem.backgroundColor
@@ -113,10 +122,10 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
                 },
             },
             "&:checked": {
-                backgroundColor: brandColor,
-                borderColor: brandColor,
+                backgroundColor: checkedBackplateColor,
+                borderColor: checkedBackplateColor,
                 "&:focus": {
-                    borderColor: brandColor,
+                    borderColor: checkedBackplateColor,
                 },
                 "& + span": {
                     left: "28px",
@@ -161,6 +170,9 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             },
             "&:focus": {
                 outline: "0",
+                "& + $toggle_stateIndicator": {
+                    transform: "scale(1.2)",
+                },
             },
         },
     };
