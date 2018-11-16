@@ -39,13 +39,11 @@ class ActionTrigger extends Foundation<
                 }
                 jssStyleSheet={actionTriggerButtonOverrides}
             >
-                <span slot="before">
-                    {typeof this.props.glyph === "function"
-                        ? this.props.glyph(
-                              get(this.props, "managedClasses.actionTrigger_glyph")
-                          )
-                        : null}
-                </span>
+                {typeof this.props.glyph === "function"
+                    ? this.props.glyph(
+                          get(this.props, "managedClasses.actionTrigger_glyph")
+                      )
+                    : null}
                 {this.props.children}
             </Button>
         );

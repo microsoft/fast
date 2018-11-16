@@ -30,6 +30,8 @@ export const actionTriggerButtonOverrides: ComponentStyles<
     },
     button_contentRegion: {
         transition: "all 600ms cubic-bezier(0.19, 1, 0.22, 1)",
+        display: "flex",
+        alignItems: "center",
         [applyLocalizedProperty("left", "right", Direction.ltr)]: "0",
     },
 };
@@ -113,7 +115,6 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = (
             position: "relative",
             width: "8px",
             [applyLocalizedProperty("marginRight", "marginLeft", direction)]: "6px",
-            marginTop: direction === Direction.ltr ? "4px" : "0",
         },
         actionTrigger__primary: {
             "& $actionTrigger_glyph": {
