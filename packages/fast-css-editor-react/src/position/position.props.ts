@@ -20,14 +20,18 @@ export interface LocationsMappedToClassNames {
 
 export interface CSSPositionUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export interface CSSPositionHandledProps
-    extends ManagedClasses<CSSPositionClassNameContract> {
+export interface CSSPositionValues {
     position?: PositionValue;
     left?: string;
     right?: string;
     top?: string;
     bottom?: string;
-    onChange?: (positionValues: any) => void;
+}
+
+export interface CSSPositionHandledProps
+    extends ManagedClasses<CSSPositionClassNameContract>,
+        CSSPositionValues {
+    onPositionUpdate?: (position: CSSPositionValues) => void;
 }
 
 export type CSSPositionProps = CSSPositionHandledProps & CSSPositionUnhandledProps;

@@ -125,10 +125,10 @@ class App extends React.Component<undefined, AppState> {
     };
 
     private handleExampleUpdate = (updateExample: any, stateKey: EditorView): void => {
-        const stateUpdate: Partial<IAppState> = {};
+        const stateUpdate: Partial<AppState> = {};
         stateUpdate[stateKey] = updateExample;
 
-        this.setState(stateUpdate as IAppState);
+        this.setState(stateUpdate as AppState);
     };
 
     private handlePositionDetailUpdate = (updatePositionDetail: any): void => {

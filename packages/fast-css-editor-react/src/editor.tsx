@@ -1,10 +1,17 @@
 import * as React from "react";
 import { omit } from "lodash-es";
-import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import Foundation, {
+    FoundationProps,
+    HandledProps,
+} from "@microsoft/fast-components-foundation-react";
 import { CSSEditorHandledProps, CSSEditorUnhandledProps } from "./editor.props";
-import CSSPosition, { Location } from "./position";
+import { CSSPosition, CSSPositionValues, Location } from "./position";
 
-class CSSEditor extends Foundation<CSSEditorHandledProps, CSSEditorUnhandledProps, {}> {
+export default class CSSEditor extends Foundation<
+    CSSEditorHandledProps,
+    CSSEditorUnhandledProps,
+    {}
+> {
     public static displayName: string = "CSSEditor";
 
     protected handledProps: HandledProps<CSSEditorHandledProps> = {
@@ -13,7 +20,7 @@ class CSSEditor extends Foundation<CSSEditorHandledProps, CSSEditorUnhandledProp
         bottom: void 0,
         left: void 0,
         right: void 0,
-        onChange: void 0,
+        onPositionUpdate: void 0,
         managedClasses: void 0,
     };
 
@@ -33,18 +40,18 @@ class CSSEditor extends Foundation<CSSEditorHandledProps, CSSEditorUnhandledProp
                 bottom={this.props.bottom}
                 left={this.props.left}
                 right={this.props.right}
-                onChange={this.handlePositionUpdate}
+                onPositionUpdate={this.handlePositionUpdate}
             />
         );
     }
 
-    private handlePositionUpdate = (position: Partial<CSSEditorHandledProps>): void => {
-        this.props.onChange(
+    private handlePositionUpdate = (position: CSSPositionValues): void => {
+        this.props.onPositionUpdate(
             Object.assign(
                 {},
                 omit(this.props, [
                     "position",
-                    "onChange",
+                    "onPositionUpdate",
                     Location.top,
                     Location.bottom,
                     Location.left,
@@ -55,7 +62,3 @@ class CSSEditor extends Foundation<CSSEditorHandledProps, CSSEditorUnhandledProp
         );
     };
 }
-
-export default CSSEditor;
-export { CSSPosition };
-export * from "./position";

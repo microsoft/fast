@@ -1,16 +1,18 @@
 import * as React from "react";
-import manageJss from "@microsoft/fast-jss-manager-react";
-import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import style from "./position.style";
+import Foundation, {
+    FoundationProps,
+    HandledProps,
+} from "@microsoft/fast-components-foundation-react";
 import {
     CSSPositionHandledProps,
     CSSPositionUnhandledProps,
+    CSSPositionValues,
     Location,
     LocationsMappedToClassNames,
     PositionValue,
 } from "./position.props";
 
-class CSSPosition extends Foundation<
+export default class CSSPosition extends Foundation<
     CSSPositionHandledProps,
     CSSPositionUnhandledProps,
     {}
@@ -23,13 +25,11 @@ class CSSPosition extends Foundation<
         bottom: void 0,
         left: void 0,
         right: void 0,
-        onChange: void 0,
+        onPositionUpdate: void 0,
         managedClasses: void 0,
     };
 
-    private positionKey: string = "position";
-
-    public render(): JSX.Element {
+    public render(): React.ReactElement<HTMLDivElement> {
         return (
             <div className={this.props.managedClasses.cssPosition}>
                 <span className={this.props.managedClasses.cssPosition_selectContainer}>
@@ -37,8 +37,7 @@ class CSSPosition extends Foundation<
                         className={
                             this.props.managedClasses.cssPosition_selectContainer_select
                         }
-                        data-location={this.positionKey}
-                        onChange={this.handleOnChange}
+                        onChange={this.handlePositionOnChange}
                         value={
                             this.props.position
                                 ? this.props.position
@@ -83,8 +82,7 @@ class CSSPosition extends Foundation<
             <input
                 type="text"
                 className={this.props.managedClasses.cssPosition_input}
-                data-location={location}
-                onChange={this.handleOnChange}
+                onChange={this.handleLocationInputOnChange(location)}
                 value={this.props[location] || ""}
             />
         );
@@ -123,30 +121,36 @@ class CSSPosition extends Foundation<
         return classNames;
     }
 
-    private handleOnChange = (
-        e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
-    ): void => {
-        const updatedProps: Partial<CSSPositionHandledProps> = this.assignUpdatedProps(
-            [
-                this.positionKey,
-                Location.top,
-                Location.left,
-                Location.right,
-                Location.bottom,
-            ],
-            e.target.dataset.location,
-            e.target.value
+    private handlePositionOnChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+        this.handleOnChange(e.target.value, "position");
+    };
+
+    private handleLocationInputOnChange = (
+        location: Location
+    ): ((e: React.ChangeEvent<HTMLInputElement>) => void) => {
+        return (e: React.ChangeEvent<HTMLInputElement>): void => {
+            this.handleOnChange(e.target.value, location);
+        };
+    };
+
+    private handleOnChange = (value: string, cssKey: Location | "position"): void => {
+        const updatedProps: CSSPositionValues = this.assignUpdatedProps(
+            ["position", Location.top, Location.left, Location.right, Location.bottom],
+            cssKey,
+            value
         );
 
-        this.props.onChange(updatedProps);
+        if (this.props.onPositionUpdate) {
+            this.props.onPositionUpdate(updatedProps);
+        }
     };
 
     private assignUpdatedProps(
         props: string[],
         updatedPropKey: string,
         updatedPropValue: string
-    ): Partial<CSSPositionHandledProps> {
-        let updatedProps: Partial<CSSPositionHandledProps> = {};
+    ): CSSPositionValues {
+        let updatedProps: Partial<CSSPositionValues> = {};
 
         switch (updatedPropKey) {
             case "position":
@@ -201,6 +205,3 @@ class CSSPosition extends Foundation<
                     : Location.top;
     }
 }
-
-export default manageJss(style)(CSSPosition);
-export * from "./position.props";
