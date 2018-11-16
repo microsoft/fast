@@ -27,8 +27,20 @@ export interface ActionTriggerHandledProps
      * The action trigger appearance
      */
     appearance?: ActionTriggerAppearance;
-    glyph: React.ReactNode;
+
+    /**
+     * The action trigger glyph render prop
+     */
+    glyph?: (className: string) => React.ReactNode;
+
+    /**
+     * The action trigger link address
+     */
     href?: string;
+
+    /**
+     * The action trigger disabled property
+     */
     disabled?: boolean;
 }
 

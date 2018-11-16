@@ -4,10 +4,8 @@ Action trigger performs an operation that is positioned inline on the page. Use 
 ## Usage
 Use action trigger to take an action in the middle of a workflow. For example, to play an album before buying it. Use a glyph and/or text label so the user can visually identify the action trigger. When using a glyph label only, add a tooltip to the action trigger so that there is a secondary means for identifying the function of the action trigger.
 
-Use *call to action* to urge a user to take action on what the page is converying or promoting. Always make sure to use unique text strings for each call to action. This leads to better accessibility and assists in quicker voice navigation. Always keep the text as concise as possible and use sentence casing (as opposed to all caps).
-
 ## Style guidance
-Position the action trigger so that it is in close proximity to the item it will be acting upon, and where it is easy for the user to identify this association. If you need to navigate to another page or experience, use a hyperlink or call-to-action instead.
+Position the action trigger so that it is in close proximity to the item it will be acting upon, and where it is easy for the user to identify this association. 
 
 ## Accessibility
-An aria-label is populated with the content from the text property. This gives context to non-sighted users when using the glyph-only configuration.
+If more verbose language is needed to fully capture the *action trigger* meaning for assistive technologies, an unhandled prop `aria-label` may be used to provide more context.

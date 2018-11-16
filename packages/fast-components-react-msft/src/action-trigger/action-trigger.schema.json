@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/schema#",
     "title": "Action trigger",
-    "description": "A call to action component's schema definition.",
+    "description": "An action trigger component's schema definition.",
     "type": "object",
     "id": "action-trigger",
     "properties": {
@@ -32,10 +32,6 @@
             "defaults": [
                 "text"
             ]
-        },
-        "glyph": {
-            "title": "Glyph",
-            "type": "children"
         }
     }
 }

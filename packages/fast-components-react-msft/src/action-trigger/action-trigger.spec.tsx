@@ -3,10 +3,6 @@ import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16/build";
 import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
-import {
-    generateSnapshots,
-    SnapshotTestSuite,
-} from "@microsoft/fast-jest-snapshots-react";
 import MSFTActionTrigger, {
     ActionTriggerAppearance,
     ActionTriggerHandledProps,
@@ -21,10 +17,6 @@ import { ActionTriggerClassNameContract } from "@microsoft/fast-components-class
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
-
-describe("action trigger snapshot", (): void => {
-    generateSnapshots(examples as SnapshotTestSuite<ActionTriggerProps>);
-});
 
 describe("action trigger", (): void => {
     const managedClasses: ActionTriggerClassNameContract = {
@@ -52,29 +44,11 @@ describe("action trigger", (): void => {
                     appearance={ActionTriggerAppearance.primary}
                 />
             );
-            shallow(
-                <MSFTActionTrigger
-                    glyph={null}
-                    appearance={ActionTriggerAppearance.lightweight}
-                />
-            );
-            shallow(
-                <MSFTActionTrigger
-                    glyph={null}
-                    appearance={ActionTriggerAppearance.justified}
-                />
-            );
-            shallow(
-                <MSFTActionTrigger
-                    glyph={null}
-                    appearance={ActionTriggerAppearance.outline}
-                />
-            );
         }).not.toThrow();
     });
 
     test("should implement unhandledProps", () => {
-        const handledProps: ActionTriggerProps & ActionTriggerManagedClasses = {
+        const handledProps: ActionTriggerProps = {
             managedClasses,
             href,
             glyph: null,
