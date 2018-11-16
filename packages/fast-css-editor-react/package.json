@@ -104,5 +104,8 @@
     "lodash-es": "^4.0.0",
     "react": "^16.6.0",
     "react-dom": "^16.6.0"
+  },
+  "dependencies": {
+    "@microsoft/fast-components-foundation-react": "^2.1.1"
   }
 }

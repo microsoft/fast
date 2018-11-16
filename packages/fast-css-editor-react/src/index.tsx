@@ -1,16 +1,31 @@
 import * as React from "react";
 import { omit } from "lodash-es";
-import CSSPosition, { CSSPositionProps, Location } from "./position";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { CSSEditorHandledProps, CSSEditorUnhandledProps } from "./editor.props";
+import CSSPosition, { Location } from "./position";
 
-/*tslint:disable-next-line*/
-export interface CSSEditorProps extends CSSPositionProps {}
+class CSSEditor extends Foundation<CSSEditorHandledProps, CSSEditorUnhandledProps, {}> {
+    public static displayName: string = "CSSEditor";
 
-class CSSEditor extends React.Component<CSSEditorProps, {}> {
-    public render(): JSX.Element {
-        return <div>{this.renderPosition()}</div>;
+    protected handledProps: HandledProps<CSSEditorHandledProps> = {
+        position: void 0,
+        top: void 0,
+        bottom: void 0,
+        left: void 0,
+        right: void 0,
+        onChange: void 0,
+        managedClasses: void 0,
+    };
+
+    public render(): React.ReactNode {
+        return (
+            <div className={this.props.managedClasses.cssEditor}>
+                {this.renderPosition()}
+            </div>
+        );
     }
 
-    private renderPosition(): JSX.Element {
+    private renderPosition(): React.ReactNode {
         return (
             <CSSPosition
                 position={this.props.position}
@@ -23,7 +38,7 @@ class CSSEditor extends React.Component<CSSEditorProps, {}> {
         );
     }
 
-    private handlePositionUpdate = (position: Partial<CSSEditorProps>): void => {
+    private handlePositionUpdate = (position: Partial<CSSEditorHandledProps>): void => {
         this.props.onChange(
             Object.assign(
                 {},
