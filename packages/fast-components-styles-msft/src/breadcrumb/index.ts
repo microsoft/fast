@@ -30,7 +30,7 @@ const styles: ComponentStyles<BreadcrumbClassNameContract, DesignSystem> = (
                 color: ensureBrandNormal,
                 borderBottom: "0px",
                 "&:hover, &:focus": {
-                    borderBottom: (config: DesignSystem): string => {
+                    borderBottom: (): string => {
                         return `2px solid ${ensureBrandNormal(config)}`;
                     },
                 },

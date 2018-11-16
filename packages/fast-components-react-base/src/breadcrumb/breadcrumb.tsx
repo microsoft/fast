@@ -26,7 +26,7 @@ class Breadcrumb extends Foundation<
     /**
      * Renders the component
      */
-    public render(): any {
+    public render(): React.ReactElement<HTMLElement> {
         return (
             <nav
                 {...this.unhandledProps()}
