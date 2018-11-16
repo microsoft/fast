@@ -30,10 +30,12 @@ class Breadcrumb extends Foundation<
         return (
             <nav
                 {...this.unhandledProps()}
-                aria-label={this.props.label}
+                aria-label={this.props.label || null}
                 className={this.generateClassNames()}
             >
-                <ol className={this.generateOlClassNames()}>{this.renderChildren()}</ol>
+                <ol className={this.props.managedClasses.breadcrumb_ol}>
+                    {this.renderChildren()}
+                </ol>
             </nav>
         );
     }
@@ -43,13 +45,6 @@ class Breadcrumb extends Foundation<
      */
     protected generateClassNames(): string {
         return super.generateClassNames(get(this.props.managedClasses, "breadcrumb"));
-    }
-
-    /**
-     * Create class names
-     */
-    protected generateOlClassNames(): string {
-        return super.generateClassNames(get(this.props.managedClasses, "breadcrumb_ol"));
     }
 
     /**

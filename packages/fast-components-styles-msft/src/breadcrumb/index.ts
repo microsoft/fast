@@ -4,7 +4,7 @@ import designSystemDefaults, {
 } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { applyLocalizedProperty, Direction } from "@microsoft/fast-jss-utilities";
-import { ensureForegroundNormal } from "../utilities/colors";
+import { ensureBrandNormal, ensureForegroundNormal } from "../utilities/colors";
 import { BreadcrumbClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyTypeRampConfig } from "../utilities/typography";
 import { fontWeight } from "../utilities/fonts";
@@ -22,9 +22,20 @@ const styles: ComponentStyles<BreadcrumbClassNameContract, DesignSystem> = (
         breadcrumb_item: {
             fontWeight: `${fontWeight.bold}`,
             display: "inline",
+            outline: "none",
+            textDecoration: "none",
+            color: ensureForegroundNormal,
             ...applyTypeRampConfig("t7"),
+            "&[href]": {
+                color: ensureBrandNormal,
+                borderBottom: "0px",
+                "&:hover, &:focus": {
+                    borderBottom: (config: DesignSystem): string => {
+                        return `2px solid ${ensureBrandNormal(config)}`;
+                    },
+                },
+            },
         },
-        breadcrumb_item__current: {},
         breadcrumb_ol: {
             listStyle: "none",
             [applyLocalizedProperty("paddingLeft", "paddingRight", direction)]: "0",
