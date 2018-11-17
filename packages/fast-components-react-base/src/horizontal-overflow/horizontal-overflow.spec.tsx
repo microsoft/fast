@@ -7,6 +7,10 @@ import HorizontalOverflow, {
 } from "./";
 import "raf/polyfill";
 
+window.requestAnimationFrame = (callback: FrameRequestCallback): any => {
+    setTimeout(callback, 0);
+};
+
 /*
  * Configure Enzyme
  */
@@ -419,19 +423,20 @@ describe("horizontal overflow", (): void => {
             renderedWithImagesAndNextAndPrevious.instance()["handlePreviousClick"]()
         ).toBe(undefined);
     });
-    test("should add resize event listener to the window", (): void => {
-        const map: any = {};
-        const resizeCallback: any = jest.fn();
+    test("should add a resize event listener to the window", (): void => {
+        let addResizeListenerCount: number = 0;
 
-        // Mock window.removeEventListener
+        /**
+         * Mock window.addEventListener to count the number of times
+         * a resize event has been added
+         */
         window.addEventListener = jest.fn((event: string, callback: any) => {
-            // if an event is added for resize, add a callback to mock
             if (event === "resize") {
-                callback = resizeCallback;
+                addResizeListenerCount += 1;
             }
-
-            map[event] = callback;
         });
+
+        expect(addResizeListenerCount).toBe(0);
 
         const rendered: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
@@ -439,23 +444,22 @@ describe("horizontal overflow", (): void => {
             </HorizontalOverflow>
         );
 
-        map.resize();
-
-        expect(resizeCallback).toHaveBeenCalledTimes(1);
+        expect(addResizeListenerCount).toBe(1);
     });
-    test("should remove resize event listener from the window when component unmounts", (): void => {
-        const map: any = {};
-        const resizeCallback: any = jest.fn();
+    test("should remove a resize event listener from the window when component unmounts", (): void => {
+        let removeResizeListenerCount: number = 0;
 
-        // Mock window.removeEventListener
+        /**
+         * Mock window.removeEventListener to count the number of times
+         * a resize event has been removed
+         */
         window.removeEventListener = jest.fn((event: string, callback: any) => {
-            // if an event is added for resize, add a callback to mock
             if (event === "resize") {
-                callback = resizeCallback;
+                removeResizeListenerCount += 1;
             }
-
-            map[event] = callback;
         });
+
+        expect(removeResizeListenerCount).toBe(0);
 
         const rendered: any = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
@@ -465,9 +469,7 @@ describe("horizontal overflow", (): void => {
 
         rendered.unmount();
 
-        map.resize();
-
-        expect(resizeCallback).toHaveBeenCalledTimes(1);
+        expect(removeResizeListenerCount).toBe(1);
     });
 });
 /* tslint:enable:no-string-literal */

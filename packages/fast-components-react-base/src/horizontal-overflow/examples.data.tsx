@@ -182,8 +182,15 @@ const examples: ComponentFactoryExample<HorizontalOverflowHandledProps> = {
                     children: "next",
                 },
             },
-            ...images,
+            // ...images,
+            images[0],
+            images[0],
+            images[0],
+            images[0],
+            images[0],
+            images[0],
         ],
+        // onHorizontalOverflowChange: (obj: HorizontalOverflowChange): any => (console.log("onHorizontalOverflowChange data: ", obj))
     },
     data: [
         {

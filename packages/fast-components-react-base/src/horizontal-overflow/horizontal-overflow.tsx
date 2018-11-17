@@ -16,8 +16,8 @@ import {
     ScrollChange,
 } from "./horizontal-overflow.props";
 import throttle from "raf-throttle";
-import { ResizeObserver } from "resize-observer";
-import { ResizeObserverEntry } from "resize-observer/lib/ResizeObserverEntry";
+// import { ResizeObserver } from "resize-observer";
+// import { ResizeObserverEntry } from "resize-observer/lib/ResizeObserverEntry";
 
 export enum ButtonDirection {
     previous = "previous",
@@ -141,20 +141,7 @@ class HorizontalOverflow extends Foundation<
                 this.throttledScroll
             );
             window.addEventListener("resize", this.throttledResize);
-
-            // TODO #1142 https://github.com/Microsoft/fast-dna/issues/1142
-            // Revisit onHorizontalOverflowChange ResizeObserver usage once
-            // Safari and Firefox adapt
-            // https://bugzilla.mozilla.org/show_bug.cgi?id=1272409
-            // https://bugs.webkit.org/show_bug.cgi?id=157743
-            if (ResizeObserver) {
-                const resizeObserver: ResizeObserver = new ResizeObserver(
-                    (entries: ResizeObserverEntry[]): void => {
-                        this.handleHorizontalOverflowChange();
-                    }
-                );
-                resizeObserver.observe(this.horizontalOverflowItemsRef.current);
-            }
+            this.onResizeObserver();
         }
     }
 
@@ -186,6 +173,25 @@ class HorizontalOverflow extends Foundation<
     private onScrollChange = (): void => {
         if (typeof this.props.onScrollChange === "function") {
             this.props.onScrollChange(this.getScrollChangeData());
+        }
+    };
+
+    /**
+     * Observe resize of parent element
+     */
+    private onResizeObserver = (): void => {
+        // TODO #1142 https://github.com/Microsoft/fast-dna/issues/1142
+        // Revisit onHorizontalOverflowChange ResizeObserver usage once
+        // Safari and Firefox adapt
+        // https://bugzilla.mozilla.org/show_bug.cgi?id=1272409
+        // https://bugs.webkit.org/show_bug.cgi?id=157743
+        if (ResizeObserver) {
+            const resizeObserver: ResizeObserver = new ResizeObserver(
+                (entries: ResizeObserverEntry[]): void => {
+                    this.handleHorizontalOverflowChange();
+                }
+            );
+            resizeObserver.observe(this.horizontalOverflowItemsRef.current);
         }
     };
 
