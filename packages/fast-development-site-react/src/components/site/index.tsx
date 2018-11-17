@@ -609,10 +609,18 @@ class Site extends React.Component<
                         />
                     </Row>
                     <div className={this.props.managedClasses.site_canvasContent}>
-                        <ComponentView {...{ viewType: this.state.componentView }}>
-                            {this.renderChildrenBySlot(this, ShellSlot.canvas)}
-                            {this.renderComponentByRoute(route)}
-                        </ComponentView>
+                        <DesignSystemProvider
+                            designSystem={
+                                this.state.componentView === ComponentViewTypes.examples
+                                    ? { backgroundColor: this.state.theme.background }
+                                    : {}
+                            }
+                        >
+                            <ComponentView {...{ viewType: this.state.componentView }}>
+                                {this.renderChildrenBySlot(this, ShellSlot.canvas)}
+                                {this.renderComponentByRoute(route)}
+                            </ComponentView>
+                        </DesignSystemProvider>
                         <Row
                             resizable={true}
                             hidden={!this.state.devToolsView}
