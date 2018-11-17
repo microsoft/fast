@@ -17,7 +17,7 @@
             "title": "Appearance",
             "type": "string",
             "enum": [
-                "justfied",
+                "justified",
                 "lightweight",
                 "outline",
                 "primary"
