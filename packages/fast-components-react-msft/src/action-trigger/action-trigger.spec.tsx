@@ -36,12 +36,13 @@ describe("action trigger", (): void => {
 
     test("should not throw if managedClasses are not provided", () => {
         expect(() => {
-            shallow(<MSFTActionTrigger glyph={null} />);
-            shallow(<MSFTActionTrigger glyph={null} disabled={true} />);
             shallow(
                 <MSFTActionTrigger
-                    glyph={null}
-                    appearance={ActionTriggerAppearance.primary}
+                    /* tslint:disable-next-line */
+
+                    glyph={(className?: string): React.ReactNode => {
+                        return <div>X</div>;
+                    }}
                 />
             );
         }).not.toThrow();
@@ -51,7 +52,9 @@ describe("action trigger", (): void => {
         const handledProps: ActionTriggerProps = {
             managedClasses,
             href,
-            glyph: null,
+            glyph: (className?: string): React.ReactNode => {
+                return <div>X</div>;
+            },
             children: "text",
         };
 
@@ -69,7 +72,9 @@ describe("action trigger", (): void => {
     // tslint:disable-next-line:max-line-length
     test("should apply a 'primary' html class when appearance is primary", () => {
         const props: ActionTriggerHandledProps = {
-            glyph: null,
+            glyph: (className?: string): React.ReactNode => {
+                return <div>X</div>;
+            },
             appearance: ActionTriggerAppearance.primary,
         };
 
@@ -83,7 +88,9 @@ describe("action trigger", (): void => {
     // tslint:disable-next-line:max-line-length
     test("should apply a 'lightweight' html class when appearance is lightweight", () => {
         const props: ActionTriggerHandledProps = {
-            glyph: null,
+            glyph: (className?: string): React.ReactNode => {
+                return <div>X</div>;
+            },
             appearance: ActionTriggerAppearance.lightweight,
         };
 
@@ -97,7 +104,9 @@ describe("action trigger", (): void => {
     // tslint:disable-next-line:max-line-length
     test("should apply a 'justified' html class when appearance is justified", () => {
         const props: ActionTriggerHandledProps = {
-            glyph: null,
+            glyph: (className?: string): React.ReactNode => {
+                return <div>X</div>;
+            },
             appearance: ActionTriggerAppearance.justified,
         };
 
@@ -111,7 +120,9 @@ describe("action trigger", (): void => {
     // tslint:disable-next-line:max-line-length
     test("should apply a 'outline' html class when appearance is outline", () => {
         const props: ActionTriggerHandledProps = {
-            glyph: null,
+            glyph: (className?: string): React.ReactNode => {
+                return <div>X</div>;
+            },
             appearance: ActionTriggerAppearance.outline,
         };
 
@@ -125,7 +136,9 @@ describe("action trigger", (): void => {
     // tslint:disable-next-line:max-line-length
     test("should apply a 'disabled' html class when prop disabled is passed", () => {
         const props: ActionTriggerHandledProps = {
-            glyph: null,
+            glyph: (className?: string): React.ReactNode => {
+                return <div>X</div>;
+            },
             disabled: true,
         };
 
@@ -139,7 +152,9 @@ describe("action trigger", (): void => {
     // tslint:disable-next-line:max-line-length
     test("should set a custom class name and 'primary' class name when appearance is primary and a custom class is passed", () => {
         const props: ActionTriggerHandledProps = {
-            glyph: null,
+            glyph: (className?: string): React.ReactNode => {
+                return <div>X</div>;
+            },
             appearance: ActionTriggerAppearance.primary,
         };
 
@@ -155,8 +170,14 @@ describe("action trigger", (): void => {
 
     // tslint:disable-next-line:max-line-length
     test("should apply a custom class-name", () => {
+        const props: ActionTriggerHandledProps = {
+            glyph: (className?: string): React.ReactNode => {
+                return <div>X</div>;
+            },
+        };
+
         const rendered: any = mount(
-            <ActionTrigger className={"custom-class-name"} glyph={null} />
+            <ActionTrigger className={"custom-class-name"} {...props} />
         );
 
         expect(rendered.find("button").prop("className")).toContain("custom-class-name");
