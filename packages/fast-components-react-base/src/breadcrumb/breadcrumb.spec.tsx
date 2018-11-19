@@ -41,20 +41,25 @@ describe("breadcrumb", (): void => {
         expect(rendered.first().prop("aria-controls")).toEqual("controls");
     });
 
-    test("should set current value on last rendered", (): void => {
+    test("should set current class name on last rendered", (): void => {
         const rendered: any = shallow(
             <Breadcrumb managedClasses={managedClasses}>
                 <a />
                 <a />
                 <a />
-                <a />
+                <a key="blah" />
             </Breadcrumb>
         );
 
-        expect(rendered.exists("a.breadcrumb-item-current-class")).toBe(true);
+        /* tslint:disable-next-line */
+        console.log(rendered.instance().props.children[3].props.class);
+
+        expect(rendered.instance().props.children[3].prop("class")).toContain(
+            "breadcrumb-item-current-class"
+        );
     });
 
-    test("should render a `div` element as second child if the `separator` prop is passed", () => {
+    test("should set seprator class name on seperator if the `separator` prop is passed", () => {
         const rendered: any = shallow(
             <Breadcrumb
                 managedClasses={managedClasses}
