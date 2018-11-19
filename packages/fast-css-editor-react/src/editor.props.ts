@@ -4,6 +4,8 @@ import { Subtract } from "utility-types";
 import { CSSPositionHandledProps } from "./";
 import { CSSPositionClassNameContract } from "./position/position.style";
 
+export type CSSOnChange = (CSS: any) => void;
+
 export interface CSSEditorUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export interface CSSEditorHandledProps
@@ -11,6 +13,11 @@ export interface CSSEditorHandledProps
             CSSPositionHandledProps,
             ManagedClasses<CSSPositionClassNameContract>
         >,
-        ManagedClasses<CSSEditorClassNameContract> {}
+        ManagedClasses<CSSEditorClassNameContract> {
+    /**
+     * The onChange event for updating the data
+     */
+    onChange?: CSSOnChange;
+}
 
 export type CSSEditorProps = CSSEditorHandledProps & CSSEditorUnhandledProps;

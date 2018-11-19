@@ -30,7 +30,6 @@ describe("CSSEditor", () => {
         const bottomValue: string = "3";
         const rightValue: string = "4";
         const callback: any = jest.fn();
-
         const rendered: any = mount(
             <CSSEditor
                 position={positionValue}
@@ -38,7 +37,7 @@ describe("CSSEditor", () => {
                 left={leftValue}
                 bottom={bottomValue}
                 right={rightValue}
-                onPositionUpdate={callback}
+                onChange={callback}
             />
         );
 
@@ -50,5 +49,34 @@ describe("CSSEditor", () => {
         expect(cssPosition.prop("bottom")).toBe(bottomValue);
         expect(cssPosition.prop("right")).toBe(rightValue);
         expect(typeof cssPosition.prop("onPositionUpdate")).toEqual(typeof Function);
+    });
+    test("should execute the `onChange` callback to recieve the correct CSSPosition props", () => {
+        const updatedPositionValue: string = "5";
+        const positionValue: PositionValue = PositionValue.absolute;
+        const topValue: string = "1";
+        const leftValue: string = "2";
+        const callbackPosition: any = jest.fn(
+            (args: any): void => {
+                expect(args.top).toBe(updatedPositionValue);
+                expect(args.position).toBe(positionValue);
+                expect(args.left).toBe(leftValue);
+            }
+        );
+        const rendered: any = mount(
+            <CSSEditor
+                position={positionValue}
+                top={topValue}
+                left={leftValue}
+                onChange={callbackPosition}
+            />
+        );
+
+        const renderedCSSPosition: any = rendered.find("CSSPosition");
+        const topPositionInput: any = renderedCSSPosition.find("input").at(0);
+        topPositionInput.simulate("change", {
+            target: { value: updatedPositionValue },
+        });
+
+        expect(callbackPosition).toHaveBeenCalled();
     });
 });

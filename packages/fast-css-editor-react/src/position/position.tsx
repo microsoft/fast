@@ -29,7 +29,7 @@ export default class CSSPosition extends Foundation<
         managedClasses: void 0,
     };
 
-    public render(): React.ReactElement<HTMLDivElement> {
+    public render(): React.ReactNode {
         return (
             <div className={this.props.managedClasses.cssPosition}>
                 <span className={this.props.managedClasses.cssPosition_selectContainer}>

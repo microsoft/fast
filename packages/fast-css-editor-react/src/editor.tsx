@@ -46,18 +46,20 @@ export default class CSSEditor extends Foundation<
     }
 
     private handlePositionUpdate = (position: CSSPositionValues): void => {
-        this.props.onPositionUpdate(
+        this.props.onChange(
             Object.assign(
                 {},
                 omit(this.props, [
-                    "position",
+                    "managedClasses",
+                    "onChange",
                     "onPositionUpdate",
+                    "position",
                     Location.top,
-                    Location.bottom,
                     Location.left,
+                    Location.bottom,
                     Location.right,
                 ]),
-                { ...position }
+                position
             )
         );
     };
