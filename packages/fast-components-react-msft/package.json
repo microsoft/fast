@@ -104,6 +104,7 @@
     "tslint-config-prettier": "^1.15.0",
     "tslint-loader": "^3.6.0",
     "typescript": "^3.0.1",
+    "uglifyjs-webpack-plugin": "^2.0.1",
     "utility-types": "^2.1.0",
     "webpack": "^4.1.0",
     "webpack-bundle-analyzer": "^2.13.1",
