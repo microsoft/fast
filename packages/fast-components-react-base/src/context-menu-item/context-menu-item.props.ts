@@ -12,7 +12,7 @@ export interface ContextMenuItemUnhandledProps
     extends Omit<React.HTMLAttributes<HTMLDivElement>, "role"> {}
 export interface ContextMenuItemHandledProps extends ContextMenuItemManagedClasses {
     /**
-     * The children of the context-menu-item
+     * The children of the context menu item
      */
     children?: React.ReactNode;
 

@@ -8,7 +8,6 @@ import {
     ContextMenuUnhandledProps,
 } from "./context-menu.props";
 import * as React from "react";
-// import KeyCodes from "../utilities/keycodes";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 import { get, inRange, invert } from "lodash-es";
 import { canUseDOM } from "exenv-es6";
@@ -77,7 +76,7 @@ class ContextMenu extends Foundation<
     }
 
     /**
-     * Create class-names
+     * Create class names
      */
     protected generateClassNames(): string {
         return super.generateClassNames(get(this.props.managedClasses, "contextMenu"));
@@ -126,7 +125,7 @@ class ContextMenu extends Foundation<
 
     /**
      * Return an array of all focusabled elements that are children
-     * of the context-menu
+     * of the context menu
      */
     private domChildren(): Element[] {
         return canUseDOM() && this.rootElement.current instanceof HTMLElement
