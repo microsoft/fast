@@ -6,7 +6,7 @@ import {
 
 export interface BreadcrumbManagedClasses
     extends ManagedClasses<BreadcrumbClassNameContract> {}
-export interface BreadcrumbUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface BreadcrumbUnhandledProps extends React.HTMLAttributes<HTMLElement> {}
 export interface BreadcrumbHandledProps extends BreadcrumbManagedClasses {
     /**
      * The breadcrumb children

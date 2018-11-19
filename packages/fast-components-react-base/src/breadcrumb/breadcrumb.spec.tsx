@@ -5,7 +5,6 @@ import Breadcrumb, {
     BreadcrumbClassNameContract,
     BreadcrumbUnhandledProps,
 } from "./breadcrumb";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 /*
  * Configure Enzyme
@@ -42,21 +41,41 @@ describe("breadcrumb", (): void => {
     });
 
     test("should set current class name on last rendered", (): void => {
-        const rendered: any = shallow(
+        const rendered: any = mount(
             <Breadcrumb managedClasses={managedClasses}>
                 <a />
                 <a />
                 <a />
-                <a key="blah" />
+                <a />
             </Breadcrumb>
         );
 
+        const lastItem: any = rendered.findWhere((element: any) => {
+            return element.props()["aria-current"] !== undefined;
+        });
         /* tslint:disable-next-line */
-        console.log(rendered.instance().props.children[3].props.class);
+        expect(lastItem.props()["className"]).toContain("breadcrumb-item-current-class");
+    });
 
-        expect(rendered.instance().props.children[3].prop("class")).toContain(
-            "breadcrumb-item-current-class"
+    test("should not clobber custom class name on last rendered", (): void => {
+        const rendered: any = mount(
+            <Breadcrumb managedClasses={managedClasses}>
+                <a />
+                <a />
+                <a />
+                <a className="Test" />
+            </Breadcrumb>
         );
+
+        const lastItem: any = rendered.findWhere((element: any) => {
+            return element.props()["aria-current"] !== undefined;
+        });
+        /* tslint:disable-next-line */
+        const className: string = lastItem.props()["className"];
+        expect(className).toContain("breadcrumb-item-current-class");
+        expect(className).toContain("Test");
+        expect(className).not.toContain("Testbreadcrumb-item-current-class");
+        expect(className).not.toContain("breadcrumb-item-current-classTest");
     });
 
     test("should set seprator class name on seperator if the `separator` prop is passed", () => {

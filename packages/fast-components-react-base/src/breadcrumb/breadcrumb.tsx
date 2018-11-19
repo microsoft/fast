@@ -33,9 +33,7 @@ class Breadcrumb extends Foundation<
                 aria-label={this.props.label || null}
                 className={this.generateClassNames()}
             >
-                <ol className={this.props.managedClasses.breadcrumb_ol}>
-                    {this.renderChildren()}
-                </ol>
+                <ol className={this.generateOlClassNames()}>{this.renderChildren()}</ol>
             </nav>
         );
     }
@@ -45,6 +43,13 @@ class Breadcrumb extends Foundation<
      */
     protected generateClassNames(): string {
         return super.generateClassNames(get(this.props.managedClasses, "breadcrumb"));
+    }
+
+    /**
+     * Create class Ol names
+     */
+    protected generateOlClassNames(): string {
+        return get(this.props.managedClasses, "breadcrumb_ol");
     }
 
     /**
