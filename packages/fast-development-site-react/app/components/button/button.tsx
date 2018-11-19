@@ -1,6 +1,5 @@
 import * as React from "react";
-import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { DesignSystem } from "../../design-system";
 
@@ -13,7 +12,7 @@ export interface TestButtonClassNameContract {
     button: string;
 }
 
-const ButtonStyles: ComponentStyles<TestButtonClassNameContract, DesignSystem> = {
+export const ButtonStyles: ComponentStyles<TestButtonClassNameContract, DesignSystem> = {
     button: {
         width: "50px",
         textAlign: (config: DesignSystem): string => {
@@ -37,4 +36,4 @@ class Button extends React.Component<
     }
 }
 
-export default manageJss(ButtonStyles)(Button);
+export default Button;

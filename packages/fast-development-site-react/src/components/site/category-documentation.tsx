@@ -18,7 +18,8 @@ export interface CategoryDocumentationManagedClasses {
 
 const style: ComponentStyles<CategoryDocumentationManagedClasses, DevSiteDesignSystem> = {
     documentationPanel: {
-        maxWidth: toPx(1000),
+        maxWidth: "1000px",
+        padding: "14px",
     },
 };
 
