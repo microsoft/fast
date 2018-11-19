@@ -39,13 +39,23 @@ describe("action trigger", (): void => {
             shallow(
                 <MSFTActionTrigger
                     /* tslint:disable-next-line */
-
                     glyph={(className?: string): React.ReactNode => {
                         return <div>X</div>;
                     }}
                 />
             );
         }).not.toThrow();
+    });
+
+    test("should throw if glyph prop is not provided", () => {
+        expect(() => {
+            shallow(
+                <MSFTActionTrigger
+                    /* tslint:disable-next-line */
+                    glyph={null}
+                />
+            );
+        }).toThrow();
     });
 
     test("should implement unhandledProps", () => {
