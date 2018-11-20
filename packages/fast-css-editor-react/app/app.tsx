@@ -11,16 +11,21 @@ import CSSEditor, {
     CSSEditorProps,
     CSSPosition,
     CSSPositionProps,
+    CSSSpacing,
+    CSSSpacingProps,
     PositionValue,
 } from "../src";
 import CSSEditorSchema from "../src/editor.schema.json";
 import CSSPositionSchema from "../src/position/position.schema.json";
+import CSSSpacingSchema from "../src/spacing/spacing.schema.json";
 
 export interface AppState {
     editorDetail: CSSEditorProps;
     editorExample: CSSEditorProps;
     positionDetail: CSSPositionProps;
     positionExample: CSSPositionProps;
+    spacingDetail: CSSSpacingProps;
+    spacingExample: CSSSpacingProps;
 }
 
 export enum EditorView {
@@ -28,6 +33,8 @@ export enum EditorView {
     example = "editorExample",
     positionDetail = "positionDetail",
     positionExample = "positionExample",
+    spacingDetail = "spacingDetail",
+    spacingExample = "spacingExample",
 }
 
 class App extends React.Component<undefined, AppState> {
@@ -53,6 +60,8 @@ class App extends React.Component<undefined, AppState> {
                 left: "1px",
                 top: "5px",
             },
+            spacingDetail: {},
+            spacingExample: {},
         };
     }
 
@@ -101,13 +110,37 @@ class App extends React.Component<undefined, AppState> {
                         <SiteCategoryItem
                             slot={"canvas-example-view"}
                             data={Object.assign({}, this.state.positionExample, {
-                                onChange: this.handlePositionExampleUpdate,
+                                onPositionUpdate: this.handlePositionExampleUpdate,
                             })}
                         />
                         <SiteCategoryItem
                             slot={"canvas-detail-view-example"}
                             data={Object.assign({}, this.state.positionDetail, {
-                                onChange: this.handlePositionDetailUpdate,
+                                onPositionUpdate: this.handlePositionDetailUpdate,
+                            })}
+                        />
+                    </SiteCategory>
+                    <SiteCategory
+                        slot={"category"}
+                        name={"CSS Spacing"}
+                        schema={CSSSpacingSchema}
+                        component={CSSSpacing}
+                    >
+                        <SiteCategoryDocumentation
+                            slot={"canvas-detail-view-documentation"}
+                        >
+                            <div>CSS Spacing</div>
+                        </SiteCategoryDocumentation>
+                        <SiteCategoryItem
+                            slot={"canvas-example-view"}
+                            data={Object.assign({}, this.state.spacingExample, {
+                                onSpacingUpdate: this.handleSpacingExampleUpdate,
+                            })}
+                        />
+                        <SiteCategoryItem
+                            slot={"canvas-detail-view-example"}
+                            data={Object.assign({}, this.state.spacingDetail, {
+                                onSpacingUpdate: this.handleSpacingDetailUpdate,
                             })}
                         />
                     </SiteCategory>
@@ -135,7 +168,7 @@ class App extends React.Component<undefined, AppState> {
         this.handleExampleUpdate(
             Object.assign(
                 {},
-                { onChange: this.state.positionDetail.onChange },
+                { onPositionUpdate: this.state.positionDetail.onPositionUpdate },
                 updatePositionDetail
             ),
             EditorView.positionDetail
@@ -146,10 +179,32 @@ class App extends React.Component<undefined, AppState> {
         this.handleExampleUpdate(
             Object.assign(
                 {},
-                { onChange: this.state.positionExample.onChange },
+                { onPositionUpdate: this.state.positionExample.onPositionUpdate },
                 updatePositionExample
             ),
             EditorView.positionExample
+        );
+    };
+
+    private handleSpacingDetailUpdate = (updateSpacingDetail: any): void => {
+        this.handleExampleUpdate(
+            Object.assign(
+                {},
+                { onSpacingUpdate: this.state.spacingDetail.onSpacingUpdate },
+                updateSpacingDetail
+            ),
+            EditorView.spacingDetail
+        );
+    };
+
+    private handleSpacingExampleUpdate = (updateSpacingExample: any): void => {
+        this.handleExampleUpdate(
+            Object.assign(
+                {},
+                { onSpacingUpdate: this.state.spacingExample.onSpacingUpdate },
+                updateSpacingExample
+            ),
+            EditorView.spacingExample
         );
     };
 }

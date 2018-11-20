@@ -1,0 +1,49 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "CSS Spacing",
+    "description": "A CSS spacing component's schema definition.",
+    "id": "css-spacing",
+    "type": "object",
+    "properties": {
+        "type": {
+            "title": "Spacing type",
+            "type": "string",
+            "enum": [
+                "margin",
+                "padding"
+            ]
+        },
+        "marginTop": {
+            "title": "Margin top",
+            "type": "string"
+        },
+        "marginBottom": {
+            "title": "Margin bottom",
+            "type": "string"
+        },
+        "marginLeft": {
+            "title": "Margin left",
+            "type": "string"
+        },
+        "marginRight": {
+            "title": "Margin right",
+            "type": "string"
+        },
+        "paddingTop": {
+            "title": "Padding top",
+            "type": "string"
+        },
+        "paddingBottom": {
+            "title": "Padding bottom",
+            "type": "string"
+        },
+        "paddingLeft": {
+            "title": "Padding left",
+            "type": "string"
+        },
+        "paddingRight": {
+            "title": "Padding right",
+            "type": "string"
+        }
+    }
+}
