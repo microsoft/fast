@@ -38,7 +38,7 @@ export type ManagedJSSProps<T, S, C> = Pick<
 > &
     JSSManagedComponentProps<S, C>;
 
-export function mergeClassNames(a: string | void, b: string | void): string {
+export function mergeClassNames(a: string | void, b: string | void): string | void {
     if (typeof a === "string" && typeof b === "string") {
         return a.concat(" ", b);
     } else if (typeof a === "string") {
