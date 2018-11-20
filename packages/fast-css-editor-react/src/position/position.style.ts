@@ -2,16 +2,16 @@ import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { toPx } from "@microsoft/fast-jss-utilities";
 
 export interface CSSPositionClassNameContract {
-    cssPosition: string;
-    cssPosition_selectContainer: string;
-    cssPosition_selectContainer_select: string;
-    cssPosition_input: string;
-    absoluteInput_row: string;
-    absoluteInput_row_center: string;
-    absoluteInput_row_center__activeTop: string;
-    absoluteInput_row_center__activeBottom: string;
-    absoluteInput_row_center__activeLeft: string;
-    absoluteInput_row_center__activeRight: string;
+    cssPosition?: string;
+    cssPosition_selectContainer?: string;
+    cssPosition_selectContainer_select?: string;
+    cssPosition_input?: string;
+    absoluteInput_row?: string;
+    absoluteInput_row_center?: string;
+    absoluteInput_row_center__activeTop?: string;
+    absoluteInput_row_center__activeBottom?: string;
+    absoluteInput_row_center__activeLeft?: string;
+    absoluteInput_row_center__activeRight?: string;
 }
 
 const styles: ComponentStyles<CSSPositionClassNameContract, {}> = {

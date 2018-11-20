@@ -22,7 +22,7 @@ export class Example extends React.Component {
         return (
             <CSSPosition
                 {...this.state.positionValues}
-                onChange={this.handlePositionValueUpdate}
+                onPositionUpdate={this.handlePositionValueUpdate}
             />
         );
     }

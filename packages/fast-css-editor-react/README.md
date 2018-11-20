@@ -28,7 +28,7 @@ export class Example extends React.Component {
         return (
             <CSSEditor
                 {...this.state.CSSValues}
-                onChange={this.handleCssValueUpdate}
+                onPositionUpdate={this.handleCssValueUpdate}
             />
         );
     }

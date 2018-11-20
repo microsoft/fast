@@ -1,41 +1,35 @@
 import * as React from "react";
-import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
-import style, { CSSPositionClassNameContract } from "./position.style";
+import Foundation, {
+    FoundationProps,
+    HandledProps,
+} from "@microsoft/fast-components-foundation-react";
+import {
+    CSSPositionHandledProps,
+    CSSPositionUnhandledProps,
+    CSSPositionValues,
+    Location,
+    LocationsMappedToClassNames,
+    PositionValue,
+} from "./position.props";
 
-export enum PositionValue {
-    static = "static",
-    absolute = "absolute",
-}
-
-export enum Location {
-    top = "top",
-    left = "left",
-    right = "right",
-    bottom = "bottom",
-}
-
-export interface LocationsMappedToClassNames {
-    location: Location;
-    className: string;
-}
-
-export interface CSSPositionProps {
-    position?: PositionValue;
-    left?: string;
-    right?: string;
-    top?: string;
-    bottom?: string;
-    onChange?: (positionValues: any) => void;
-}
-
-class CSSPosition extends React.Component<
-    CSSPositionProps & ManagedClasses<CSSPositionClassNameContract>,
+export default class CSSPosition extends Foundation<
+    CSSPositionHandledProps,
+    CSSPositionUnhandledProps,
     {}
 > {
-    private positionKey: string = "position";
+    public static displayName: string = "CSSPosition";
 
-    public render(): JSX.Element {
+    protected handledProps: HandledProps<CSSPositionHandledProps> = {
+        position: void 0,
+        top: void 0,
+        bottom: void 0,
+        left: void 0,
+        right: void 0,
+        onPositionUpdate: void 0,
+        managedClasses: void 0,
+    };
+
+    public render(): React.ReactNode {
         return (
             <div className={this.props.managedClasses.cssPosition}>
                 <span className={this.props.managedClasses.cssPosition_selectContainer}>
@@ -43,8 +37,7 @@ class CSSPosition extends React.Component<
                         className={
                             this.props.managedClasses.cssPosition_selectContainer_select
                         }
-                        data-location={this.positionKey}
-                        onChange={this.handleOnChange}
+                        onChange={this.handlePositionOnChange}
                         value={
                             this.props.position
                                 ? this.props.position
@@ -89,8 +82,7 @@ class CSSPosition extends React.Component<
             <input
                 type="text"
                 className={this.props.managedClasses.cssPosition_input}
-                data-location={location}
-                onChange={this.handleOnChange}
+                onChange={this.handleLocationInputOnChange(location)}
                 value={this.props[location] || ""}
             />
         );
@@ -129,30 +121,36 @@ class CSSPosition extends React.Component<
         return classNames;
     }
 
-    private handleOnChange = (
-        e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
-    ): void => {
-        const updatedProps: Partial<CSSPositionProps> = this.assignUpdatedProps(
-            [
-                this.positionKey,
-                Location.top,
-                Location.left,
-                Location.right,
-                Location.bottom,
-            ],
-            e.target.dataset.location,
-            e.target.value
+    private handlePositionOnChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+        this.handleOnChange(e.target.value, "position");
+    };
+
+    private handleLocationInputOnChange = (
+        location: Location
+    ): ((e: React.ChangeEvent<HTMLInputElement>) => void) => {
+        return (e: React.ChangeEvent<HTMLInputElement>): void => {
+            this.handleOnChange(e.target.value, location);
+        };
+    };
+
+    private handleOnChange = (value: string, cssKey: Location | "position"): void => {
+        const updatedProps: CSSPositionValues = this.assignUpdatedProps(
+            ["position", Location.top, Location.left, Location.right, Location.bottom],
+            cssKey,
+            value
         );
 
-        this.props.onChange(updatedProps);
+        if (this.props.onPositionUpdate) {
+            this.props.onPositionUpdate(updatedProps);
+        }
     };
 
     private assignUpdatedProps(
         props: string[],
         updatedPropKey: string,
         updatedPropValue: string
-    ): Partial<CSSPositionProps> {
-        let updatedProps: Partial<CSSPositionProps> = {};
+    ): CSSPositionValues {
+        let updatedProps: Partial<CSSPositionValues> = {};
 
         switch (updatedPropKey) {
             case "position":
@@ -177,8 +175,8 @@ class CSSPosition extends React.Component<
         props: string[],
         updatedPropKey: Location,
         updatedPropValue: string
-    ): Partial<CSSPositionProps> {
-        const updatedProps: Partial<CSSPositionProps> = {};
+    ): Partial<CSSPositionHandledProps> {
+        const updatedProps: Partial<CSSPositionHandledProps> = {};
         const excludedProp: Location = this.getExcludedLocation(updatedPropKey);
 
         props.forEach(
@@ -207,5 +205,3 @@ class CSSPosition extends React.Component<
                     : Location.top;
     }
 }
-
-export default manageJss(style)(CSSPosition);
