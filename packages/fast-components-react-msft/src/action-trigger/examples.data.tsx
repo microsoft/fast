@@ -38,7 +38,7 @@ export default {
             children: "Primary action trigger",
             href: testDestination,
             "data-sketch-symbol": "Action trigger - primary",
-        } as any, // TODO https://github.com/Microsoft/TypeScript/issues/6579
+        } as any,
         {
             appearance: ActionTriggerAppearance.lightweight,
             children: "Lightweight action trigger",
