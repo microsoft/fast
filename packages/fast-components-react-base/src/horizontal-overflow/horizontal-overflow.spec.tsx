@@ -7,10 +7,6 @@ import HorizontalOverflow, {
 } from "./";
 import "raf/polyfill";
 
-window.requestAnimationFrame = (callback: FrameRequestCallback): any => {
-    setTimeout(callback, 0);
-};
-
 /*
  * Configure Enzyme
  */
