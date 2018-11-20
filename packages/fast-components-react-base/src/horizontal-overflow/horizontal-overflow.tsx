@@ -16,8 +16,8 @@ import {
     ScrollChange,
 } from "./horizontal-overflow.props";
 import throttle from "raf-throttle";
-// import { ResizeObserver } from "resize-observer";
-// import { ResizeObserverEntry } from "resize-observer/lib/ResizeObserverEntry";
+import { ResizeObserver } from "./resize-observer";
+import { ResizeObserverEntry } from "./resize-observer-entry";
 
 export enum ButtonDirection {
     previous = "previous",
@@ -181,8 +181,8 @@ class HorizontalOverflow extends Foundation<
      */
     private onResizeObserver = (): void => {
         // TODO #1142 https://github.com/Microsoft/fast-dna/issues/1142
-        // Revisit onHorizontalOverflowChange ResizeObserver usage once
-        // Safari and Firefox adapt
+        // Full browser support imminent
+        // Revisit usage once Safari and Firefox adapt
         // https://bugzilla.mozilla.org/show_bug.cgi?id=1272409
         // https://bugs.webkit.org/show_bug.cgi?id=157743
         if (ResizeObserver) {
