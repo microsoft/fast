@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.2.3...@microsoft/fast-components-react-msft@3.2.4) (2018-11-20)
+
+
+### Bug Fixes
+
+* correct misspelled button enum value ([#1148](https://github.com/Microsoft/fast-dna/issues/1148)) ([d117d27](https://github.com/Microsoft/fast-dna/commit/d117d27))
+
+
+
+
+
 ## [3.2.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.2.2...@microsoft/fast-components-react-msft@3.2.3) (2018-11-14)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-msft

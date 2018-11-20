@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-react@3.1.3...@microsoft/fast-jss-manager-react@3.1.4) (2018-11-20)
+
+
+### Bug Fixes
+
+* JSSManager should create stylesheets prior to initial render ([#1153](https://github.com/Microsoft/fast-dna/issues/1153)) ([25b5b68](https://github.com/Microsoft/fast-dna/commit/25b5b68))
+
+
+
+
+
 ## [3.1.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-react@3.1.2...@microsoft/fast-jss-manager-react@3.1.3) (2018-11-14)
 
 

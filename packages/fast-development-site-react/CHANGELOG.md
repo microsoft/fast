@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@3.1.3...@microsoft/fast-development-site-react@3.2.0) (2018-11-20)
+
+
+### Bug Fixes
+
+* add a check for a theme, if it is not available use an empty object ([#1151](https://github.com/Microsoft/fast-dna/issues/1151)) ([ded9c7c](https://github.com/Microsoft/fast-dna/commit/ded9c7c))
+
+
+### Features
+
+* add default message when no documentation is provided in development site ([#1096](https://github.com/Microsoft/fast-dna/issues/1096)) ([0e159d4](https://github.com/Microsoft/fast-dna/commit/0e159d4))
+* apply theme background color to examples view ([c67fedc](https://github.com/Microsoft/fast-dna/commit/c67fedc))
+
+
+
+
+
 ## [3.1.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@3.1.2...@microsoft/fast-development-site-react@3.1.3) (2018-11-14)
 
 **Note:** Version bump only for package @microsoft/fast-development-site-react

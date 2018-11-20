@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-form-generator-react@3.2.2...@microsoft/fast-form-generator-react@3.2.3) (2018-11-20)
+
+
+### Bug Fixes
+
+* JSSManager should create stylesheets prior to initial render ([#1153](https://github.com/Microsoft/fast-dna/issues/1153)) ([25b5b68](https://github.com/Microsoft/fast-dna/commit/25b5b68))
+
+
+
+
+
 ## [3.2.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-form-generator-react@3.2.1...@microsoft/fast-form-generator-react@3.2.2) (2018-11-14)
 
 **Note:** Version bump only for package @microsoft/fast-form-generator-react
