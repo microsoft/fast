@@ -97,21 +97,28 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
     const scaledEnsureNormalContrast: ContrastFunction = curry(ensureNormalContrast)(
         contrastScale
     );
+    const scaledEnsureLargeContrast: ContrastFunction = curry(ensureLargeContrast)(
+        contrastScale
+    );
     const scaledLargeContrast: ContrastFunction = curry(largeContrast)(contrastScale);
     const focusBoxShadowDefaults: string = "inset 0 0 0 2px";
 
     // Define secondary button colors
     const color: string = "white";
-    const secondaryForegroundColor: string = "black";
-    const secondaryBackgroundColor: string = scaledLargeContrast(
-        designSystem.foregroundColor,
-        designSystem.backgroundColor
+    const secondaryForegroundColor: string = designSystem.foregroundColor;
+    const secondaryBackgroundColor: string = scaledEnsureNormalContrast(
+        contrast(
+            1.32, // Scale this
+            designSystem.foregroundColor,
+            designSystem.backgroundColor
+        ),
+        secondaryForegroundColor
     );
 
     const secondaryHoverBackgroundColor: string = hoverContrast(
         designSystem.contrast,
         secondaryBackgroundColor,
-        color
+        secondaryForegroundColor
     );
     const secondaryFocusBorderColor: string = scaledEnsureNormalContrast(
         scaledEnsureNormalContrast(foregroundColor, backgroundColor),
@@ -135,12 +142,12 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
 
     const secondaryDisabledColor: string = disabledContrast(
         contrastScale,
-        color,
+        secondaryForegroundColor,
         secondaryDisabledBackgroundColor
     );
 
     // Define primary button colors
-    const primaryRestBackgroundColor: string = scaledEnsureNormalContrast(
+    const primaryRestBackgroundColor: string = scaledEnsureLargeContrast(
         scaledEnsureNormalContrast(brandColor, backgroundColor),
         color
     );
