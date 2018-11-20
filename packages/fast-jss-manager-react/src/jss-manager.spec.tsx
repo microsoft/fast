@@ -304,7 +304,7 @@ describe("mergeClassNames", (): void => {
         expect(mergeClassNames(undefined, "bar")).toBe("bar");
     });
 
-    test("should return a space-seperated string containing both arguments if both arguments are strings", (): void => {
+    test("should return a space-separated string containing both arguments if both arguments are strings", (): void => {
         expect(mergeClassNames("foo", "bar")).toBe("foo bar");
     });
 });
