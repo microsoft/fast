@@ -15,6 +15,7 @@ import {
     Direction,
     ensureContrast,
     localizeSpacing,
+    scaleContrast,
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import { curry, get } from "lodash-es";
@@ -108,7 +109,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
     const secondaryForegroundColor: string = designSystem.foregroundColor;
     const secondaryBackgroundColor: string = scaledEnsureNormalContrast(
         contrast(
-            1.32, // Scale this
+            scaleContrast(1.32, contrastScale),
             designSystem.foregroundColor,
             designSystem.backgroundColor
         ),
