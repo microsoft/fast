@@ -12,9 +12,9 @@ exports[`weight-properties weight-properties: 0 1`] = `
         <div>
           <div>
             <button
-              aria-controls="content4"
+              aria-controls="content1"
               aria-expanded={true}
-              className="formCategory_button-0-1-4"
+              className="formCategory_button-0-1-11"
               onClick={[Function]}
             >
               Content
@@ -22,19 +22,19 @@ exports[`weight-properties weight-properties: 0 1`] = `
             <div
               aria-hidden={false}
               className={null}
-              id="content4"
+              id="content1"
             >
               <div
-                className="formItemTextarea-0-1-30"
+                className="formItemTextarea-0-1-14"
               >
                 <label
-                  className="formItemTextarea_label-0-1-31"
+                  className="formItemTextarea_label-0-1-15"
                   htmlFor="title"
                 >
                   Title
                 </label>
                 <textarea
-                  className="formItemTextarea_textarea-0-1-32"
+                  className="formItemTextarea_textarea-0-1-16"
                   id="title"
                   name="title"
                   onChange={[Function]}
@@ -43,16 +43,16 @@ exports[`weight-properties weight-properties: 0 1`] = `
                 />
               </div>
               <div
-                className="formItemTextarea-0-1-30"
+                className="formItemTextarea-0-1-14"
               >
                 <label
-                  className="formItemTextarea_label-0-1-31"
+                  className="formItemTextarea_label-0-1-15"
                   htmlFor="text"
                 >
                   Text
                 </label>
                 <textarea
-                  className="formItemTextarea_textarea-0-1-32"
+                  className="formItemTextarea_textarea-0-1-16"
                   id="text"
                   name="text"
                   onChange={[Function]}
@@ -61,16 +61,16 @@ exports[`weight-properties weight-properties: 0 1`] = `
                 />
               </div>
               <div
-                className="formItemTextarea-0-1-30"
+                className="formItemTextarea-0-1-14"
               >
                 <label
-                  className="formItemTextarea_label-0-1-31"
+                  className="formItemTextarea_label-0-1-15"
                   htmlFor="details"
                 >
                   Details
                 </label>
                 <textarea
-                  className="formItemTextarea_textarea-0-1-32"
+                  className="formItemTextarea_textarea-0-1-16"
                   id="details"
                   name="details"
                   onChange={[Function]}
@@ -82,9 +82,9 @@ exports[`weight-properties weight-properties: 0 1`] = `
           </div>
           <div>
             <button
-              aria-controls="formatting5"
+              aria-controls="formatting2"
               aria-expanded={true}
-              className="formCategory_button-0-1-4"
+              className="formCategory_button-0-1-11"
               onClick={[Function]}
             >
               Formatting
@@ -92,26 +92,26 @@ exports[`weight-properties weight-properties: 0 1`] = `
             <div
               aria-hidden={false}
               className={null}
-              id="formatting5"
+              id="formatting2"
             >
               <div>
                 <div
-                  className="formItemAlignHorizontal-0-1-33"
+                  className="formItemAlignHorizontal-0-1-17"
                 >
                   <label
-                    className="formItemAlignHorizontal_label-0-1-34"
+                    className="formItemAlignHorizontal_label-0-1-18"
                     htmlFor="alignHorizontal"
                   >
                     Align horizontal
                   </label>
                   <div
-                    className="formItemAlignHorizontal_inputContainer-0-1-35"
+                    className="formItemAlignHorizontal_inputContainer-0-1-19"
                   >
                     <span>
                       <input
                         aria-label="left align"
                         checked={true}
-                        className="formItemAlignHorizontal_input__left-0-1-36"
+                        className="formItemAlignHorizontal_input__left-0-1-20"
                         id="alignHorizontal"
                         name="alignHorizontal"
                         onChange={[Function]}
@@ -123,7 +123,7 @@ exports[`weight-properties weight-properties: 0 1`] = `
                       <input
                         aria-label="center align"
                         checked={false}
-                        className="formItemAlignHorizontal_input__center-0-1-37"
+                        className="formItemAlignHorizontal_input__center-0-1-21"
                         id="alignHorizontal"
                         name="alignHorizontal"
                         onChange={[Function]}
@@ -135,7 +135,7 @@ exports[`weight-properties weight-properties: 0 1`] = `
                       <input
                         aria-label="right align"
                         checked={false}
-                        className="formItemAlignHorizontal_input__right-0-1-38"
+                        className="formItemAlignHorizontal_input__right-0-1-22"
                         id="alignHorizontal"
                         name="alignHorizontal"
                         onChange={[Function]}
@@ -147,18 +147,18 @@ exports[`weight-properties weight-properties: 0 1`] = `
                 </div>
               </div>
               <div
-                className="formItemSelect-0-1-39"
+                className="formItemSelect-0-1-23"
               >
                 <label
-                  className="formItemSelect_label-0-1-40"
+                  className="formItemSelect_label-0-1-24"
                 >
                   Align vertical
                 </label>
                 <span
-                  className="formItemSelect_span-0-1-41"
+                  className="formItemSelect_span-0-1-25"
                 >
                   <select
-                    className="formItemSelect_input-0-1-42"
+                    className="formItemSelect_input-0-1-26"
                     onChange={[Function]}
                     value="\\"top\\""
                   >
@@ -181,16 +181,16 @@ exports[`weight-properties weight-properties: 0 1`] = `
                 </span>
               </div>
               <div
-                className="formItemNumberField-0-1-43"
+                className="formItemNumberField-0-1-27"
               >
                 <label
-                  className="formItemNumberField_label-0-1-44"
+                  className="formItemNumberField_label-0-1-28"
                   htmlFor="level"
                 >
                   Level
                 </label>
                 <input
-                  className="formItemNumberField_input-0-1-45"
+                  className="formItemNumberField_input-0-1-29"
                   id="level"
                   name="number5"
                   onChange={[Function]}
@@ -202,27 +202,27 @@ exports[`weight-properties weight-properties: 0 1`] = `
           </div>
           <div>
             <h3
-              className="formCategory_header-0-1-5"
+              className="formCategory_header-0-1-12"
             >
               Developer
             </h3>
             <div
               className={null}
-              id="developer6"
+              id="developer3"
             >
               <div
-                className="formItemSelect-0-1-39"
+                className="formItemSelect-0-1-23"
               >
                 <label
-                  className="formItemSelect_label-0-1-40"
+                  className="formItemSelect_label-0-1-24"
                 >
                   HTML tag
                 </label>
                 <span
-                  className="formItemSelect_span-0-1-41"
+                  className="formItemSelect_span-0-1-25"
                 >
                   <select
-                    className="formItemSelect_input-0-1-42"
+                    className="formItemSelect_input-0-1-26"
                     onChange={[Function]}
                     value="\\"span\\""
                   >

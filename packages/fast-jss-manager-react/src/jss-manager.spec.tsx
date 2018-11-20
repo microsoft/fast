@@ -1,5 +1,5 @@
 import * as React from "react";
-import { JSSManager } from "./jss-manager";
+import { JSSManager, mergeClassNames } from "./jss-manager";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import * as ShallowRenderer from "react-test-renderer/shallow";
 import { configure, mount, ReactWrapper, render, shallow } from "enzyme";
@@ -10,6 +10,7 @@ import { values } from "lodash-es";
 
 configure({ adapter: new Adapter() });
 /* tslint:disable:max-classes-per-file */
+/* tslint:disable:no-string-literal */
 
 /**
  * JSS stylesheet with only static values for CSS properties
@@ -165,7 +166,9 @@ describe("The JSSManager", (): void => {
     });
 
     test("should increase a counter tracking global stylesheet order on unmount", (): void => {
-        const rendered: any = mount(<StyledManager />);
+        const rendered: any = mount(
+            <StyledManager jssStyleSheet={{ foo: { color: "red" } }} />
+        );
         const manager: any = rendered.find("StyledManager").instance();
         const preUnmountIndex: number = (StyledManager as any).index;
 
@@ -265,7 +268,45 @@ describe("The JSSManager", (): void => {
     });
 
     test("should remove the stylesheet on unmount", (): void => {
+        const rendered: any = mount(
+            <StyledManager jssStyleSheet={{ foo: { color: "red" } }} />
+        );
+        const sheetManager: any = JSSManager["sheetManager"];
+        JSSManager["sheetManager"] = {
+            remove: jest.fn(),
+        } as any;
+
+        rendered.unmount();
+
+        expect(JSSManager["sheetManager"].remove).toHaveBeenCalledTimes(2);
+
+        // Reset manager
+        JSSManager["sheetManager"] = sheetManager;
+    });
+
+    test("should create prop styles when jssStyleSheet is added after mounting", (): void => {
         const rendered: any = mount(<StyledManager />);
+        rendered.instance().createPropStyleSheet = jest.fn();
+
+        rendered.setProps({ jssStyleSheet: { foo: { color: "red" } } });
+
+        expect(rendered.instance().createPropStyleSheet).toHaveBeenCalledTimes(1);
+    });
+});
+
+describe("mergeClassNames", (): void => {
+    test("should return undefined if neither param is a string", (): void => {
+        expect(mergeClassNames(undefined, undefined)).toBe(undefined);
+    });
+
+    test("should return a string if either argument is a string", (): void => {
+        expect(mergeClassNames("foo", undefined)).toBe("foo");
+        expect(mergeClassNames(undefined, "bar")).toBe("bar");
+    });
+
+    test("should return a space-separated string containing both arguments if both arguments are strings", (): void => {
+        expect(mergeClassNames("foo", "bar")).toBe("foo bar");
     });
 });
 /* tslint:enable:max-classes-per-file */
+/* tslint:enable:no-string-literal */
