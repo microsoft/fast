@@ -5,17 +5,22 @@ import schema from "@microsoft/fast-components-react-base/dist/breadcrumb/breadc
 import Documentation from "./.tmp/documentation";
 import ReactHTMLElementSchema from "../../app/components/react-html-element.schema.json";
 
+const label: any = {
+    label: "breadcrumb",
+};
+
+function renderSeparator(): (className?: string) => React.ReactNode {
+    return (className?: string): React.ReactNode => <div className={className}>\</div>;
+}
+
 export default {
     name: "Breadcrumb",
     component: Breadcrumb,
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
-        label: "breadcrumb",
-        /* tslint:disable-next-line */
-        separator: (className?: string): React.ReactNode => {
-            return <div className={className}>\</div>;
-        },
+        ...label,
+        separator: renderSeparator(),
         children: [
             {
                 id: "hypertext",
@@ -41,11 +46,8 @@ export default {
     },
     data: [
         {
-            label: "breadcrumb",
-            /* tslint:disable-next-line */
-            separator: (className?: string): React.ReactNode => {
-                return <div className={className}>\</div>;
-            },
+            ...label,
+            separator: renderSeparator(),
             children: [
                 {
                     id: "hypertext",
@@ -70,11 +72,8 @@ export default {
             ],
         },
         {
-            label: "breadcrumb",
-            /* tslint:disable-next-line */
-            separator: (className?: string): React.ReactNode => {
-                return <div className={className}>\</div>;
-            },
+            ...label,
+            separator: renderSeparator(),
             children: [
                 {
                     id: ReactHTMLElementSchema.id,
@@ -100,7 +99,7 @@ export default {
             ],
         },
         {
-            label: "breadcrumb",
+            ...label,
             children: [
                 {
                     id: ReactHTMLElementSchema.id,

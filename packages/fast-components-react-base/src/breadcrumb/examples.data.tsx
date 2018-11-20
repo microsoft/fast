@@ -8,12 +8,20 @@ import reactHTMLElementSchema from "../../app/components/react-html-element.sche
 const managedClasses: BreadcrumbManagedClasses = {
     managedClasses: {
         breadcrumb: "breadcrumb",
+        breadcrumb_contentRegion: "breadcrumb-content-region",
         breadcrumb_item: "breadcrumb-item",
         breadcrumb_item__current: "breadcrumb-item-current",
-        breadcrumb_ol: "breadcrumb-ol",
         breadcrumb_separator: "breadcrumb-separator",
     },
 };
+
+const label: any = {
+    label: "breadcrumb",
+};
+
+function renderSeparator(): (className?: string) => React.ReactNode {
+    return (className?: string): React.ReactNode => <div className={className}>\</div>;
+}
 
 const examples: ComponentFactoryExample<BreadcrumbProps> = {
     name: "Breadcrumb",
@@ -22,11 +30,8 @@ const examples: ComponentFactoryExample<BreadcrumbProps> = {
     documentation: <Documentation />,
     detailData: {
         ...managedClasses,
-        label: "breadcrumb",
-        /* tslint:disable-next-line */
-        separator: (className?: string): React.ReactNode => {
-            return <div className={className}>\</div>;
-        },
+        ...label,
+        separator: renderSeparator(),
         children: [
             {
                 id: "hypertext",
@@ -53,11 +58,8 @@ const examples: ComponentFactoryExample<BreadcrumbProps> = {
     data: [
         {
             ...managedClasses,
-            label: "breadcrumb",
-            /* tslint:disable-next-line */
-            separator: (className?: string): React.ReactNode => {
-                return <div className={className}>/</div>;
-            },
+            ...label,
+            separator: renderSeparator(),
             children: [
                 {
                     id: "hypertext",
@@ -83,11 +85,8 @@ const examples: ComponentFactoryExample<BreadcrumbProps> = {
         },
         {
             ...managedClasses,
-            label: "breadcrumb",
-            /* tslint:disable-next-line */
-            separator: (className?: string): React.ReactNode => {
-                return <div className={className}>\</div>;
-            },
+            ...label,
+            separator: renderSeparator(),
             children: [
                 {
                     id: reactHTMLElementSchema.id,
@@ -114,7 +113,7 @@ const examples: ComponentFactoryExample<BreadcrumbProps> = {
         },
         {
             ...managedClasses,
-            label: "breadcrumb",
+            ...label,
             children: [
                 {
                     id: reactHTMLElementSchema.id,

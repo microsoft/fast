@@ -49,7 +49,7 @@ class Breadcrumb extends Foundation<
      * Create class Ol names
      */
     protected generateOlClassNames(): string {
-        return get(this.props.managedClasses, "breadcrumb_ol");
+        return get(this.props.managedClasses, "breadcrumb_contentRegion");
     }
 
     /**
