@@ -13,12 +13,28 @@ function applyHypertextBorder(pixels: number): CSSRules<DesignSystem> {
     };
 }
 
+// const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = {
+//     hypertext: {
+//         outline: "none",
+//         textDecoration: "none",
+//         color: ensureForegroundNormal,
+//         "&[href]": {
+//             ...applyHypertextBorder(1),
+//             color: ensureBrandNormal,
+//             "&:hover, &:focus": {
+//                 ...applyHypertextBorder(2),
+//             },
+//         },
+//     },
+// };
+
 const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = {
     hypertext: {
         outline: "none",
         textDecoration: "none",
         color: ensureForegroundNormal,
-        "&[href]": {
+        // remove [href] attribute in favor of link and visited <======
+        "&:link, &:visited": {
             ...applyHypertextBorder(1),
             color: ensureBrandNormal,
             "&:hover, &:focus": {
