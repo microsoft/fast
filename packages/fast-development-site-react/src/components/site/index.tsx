@@ -12,7 +12,7 @@ import {
     glyphTransparency,
 } from "@microsoft/fast-glyphs-msft";
 import { mapDataToComponent } from "@microsoft/fast-form-generator-react";
-import { uniqueId } from "lodash-es";
+import { get, uniqueId } from "lodash-es";
 import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
 import Shell, { ShellHeader, ShellInfoBar, ShellPaneCollapse, ShellSlot } from "../shell";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
@@ -612,7 +612,10 @@ class Site extends React.Component<
                         <DesignSystemProvider
                             designSystem={
                                 this.state.componentView === ComponentViewTypes.examples
-                                    ? { backgroundColor: this.state.theme.background }
+                                    ? {
+                                          backgroundColor:
+                                              get(this.state, "theme.background") || {},
+                                      }
                                     : {}
                             }
                         >
