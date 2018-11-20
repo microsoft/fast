@@ -5,5 +5,10 @@ export interface TextActionClassNameContract {
     /**
      * The root of the text action component
      */
-    textAction?: string;
+    textAction: string;
+
+    /**
+     * The button
+     */
+    textAction_button?: string;
 }

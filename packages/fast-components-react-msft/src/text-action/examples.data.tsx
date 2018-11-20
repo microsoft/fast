@@ -3,6 +3,11 @@ import { TextAction, TextActionProps } from "./index";
 import schema from "./text-action.schema.json";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
+import { Button } from "../button";
+
+function renderButton(): (className?: string) => React.ReactNode {
+    return (className?: string): React.ReactNode => <Button className={className} />;
+}
 
 export default {
     name: "Text action",
@@ -11,11 +16,12 @@ export default {
     documentation: <Documentation />,
     detailData: {
         children: "foo",
+        button: renderButton(),
     },
     data: [
         {
             children: "Text action",
-            "data-sketch-symbol": "Text action",
-        } as any, // TODO https://github.com/Microsoft/TypeScript/issues/6579
+            button: renderButton(),
+        },
     ],
 } as ComponentFactoryExample<TextActionProps>;

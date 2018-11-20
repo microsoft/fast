@@ -29,7 +29,9 @@ class TextAction extends Foundation<
                 jssStyleSheet={callToActionButtonOverrides}
             >
                 {this.props.children}
-                {/* {this.props.button(this.props.managedClasses.textAction_button)} */}
+                {typeof this.props.button === "function"
+                    ? this.props.button(this.props.managedClasses.textAction_button)
+                    : null}
             </TextField>
         );
     }
