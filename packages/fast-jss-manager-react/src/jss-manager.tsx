@@ -38,6 +38,16 @@ export type ManagedJSSProps<T, S, C> = Pick<
 > &
     JSSManagedComponentProps<S, C>;
 
+export function mergeClassNames(a: string | void, b: string | void): string {
+    if (typeof a === "string" && typeof b === "string") {
+        return a.concat(" ", b);
+    } else if (typeof a === "string") {
+        return a;
+    } else if (typeof b === "string") {
+        return b;
+    }
+}
+
 abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S, C>, {}> {
     /**
      * Define the contextType for the manager to be the design system context
@@ -254,17 +264,7 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
             secondaryClasses = Object.assign({}, secondarySheet.classes);
         }
 
-        return mergeWith(primaryClasses, secondaryClasses, this.mergeClassNames);
-    }
-
-    private mergeClassNames(a: string | void, b: string | void): string {
-        if (typeof a === "string" && typeof b === "string") {
-            return a.concat(" ", b);
-        } else if (typeof a === "string") {
-            return a;
-        } else if (typeof b === "string") {
-            return b;
-        }
+        return mergeWith(primaryClasses, secondaryClasses, mergeClassNames);
     }
 
     private createPropStyleSheet(designSystem: C = this.designSystem): void {
