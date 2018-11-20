@@ -18,7 +18,6 @@ const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = {
         outline: "none",
         textDecoration: "none",
         color: ensureForegroundNormal,
-        // remove [href] attribute in favor of link and visited <======
         "&:link, &:visited": {
             ...applyHypertextBorder(1),
             color: ensureBrandNormal,
