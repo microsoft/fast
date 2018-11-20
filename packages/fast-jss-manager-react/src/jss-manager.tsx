@@ -85,6 +85,14 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
     private index: number;
 
     /**
+     * Simple switch to track the initial creation of styles.
+     * Because the "styles" property is abstract and abstract properties
+     * are not accessible in the constructor,  we need to compile styles
+     * inside the first call of the render function
+     */
+    private hasCreatedIntialStyleSheets: boolean = false;
+
+    /**
      * Store the design-system as an instance property because
      * react does not give us first-class support for detecting changes
      * to context values
@@ -98,22 +106,22 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
         this.designSystem = context;
     }
 
-    public componentDidMount(): void {
-        if (!!this.styles) {
-            JSSManager.sheetManager.add(this.styles, this.designSystem, {
-                meta: this.managedComponent.displayName || this.managedComponent.name,
-                index: this.index,
-            });
-            this.forceUpdate();
-        }
-
-        if (this.props.jssStyleSheet) {
-            this.createPropStyleSheet();
-            this.forceUpdate();
-        }
-    }
-
     public render(): JSX.Element {
+        if (!this.hasCreatedIntialStyleSheets) {
+            if (!!this.styles) {
+                JSSManager.sheetManager.add(this.styles, this.designSystem, {
+                    meta: this.managedComponent.displayName || this.managedComponent.name,
+                    index: this.index,
+                });
+            }
+
+            if (this.props.jssStyleSheet) {
+                this.createPropStyleSheet();
+            }
+
+            this.hasCreatedIntialStyleSheets = true;
+        }
+
         return React.createElement(this.managedComponent, this.managedComponentProps());
     }
 
@@ -188,6 +196,9 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
         }
 
         JSSManager.index++;
+
+        // reset style creation tracker in case the instance is re-used
+        this.hasCreatedIntialStyleSheets = false;
     }
 
     /**
