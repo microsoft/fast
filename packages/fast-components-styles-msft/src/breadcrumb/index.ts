@@ -26,13 +26,11 @@ const styles: ComponentStyles<BreadcrumbClassNameContract, DesignSystem> = (
             textDecoration: "none",
             color: ensureForegroundNormal,
             ...applyTypeRampConfig("t7"),
-            "&[href]": {
+            "&:link, &:visited": {
                 color: ensureBrandNormal,
                 borderBottom: "0px",
                 "&:hover, &:focus": {
-                    borderBottom: (): string => {
-                        return `2px solid ${ensureBrandNormal(config)}`;
-                    },
+                    borderBottom: `2px solid ${ensureBrandNormal(config)}`,
                 },
             },
         },
