@@ -33,7 +33,9 @@ class Breadcrumb extends Foundation<
                 aria-label={this.props.label || null}
                 className={this.generateClassNames()}
             >
-                <ol className={this.generateOlClassNames()}>{this.renderChildren()}</ol>
+                <ol className={this.generateItemsContainerClassNames()}>
+                    {this.renderChildren()}
+                </ol>
             </nav>
         );
     }
@@ -42,14 +44,37 @@ class Breadcrumb extends Foundation<
      * Create class names
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(get(this.props.managedClasses, "breadcrumb"));
+        return super.generateClassNames(
+            get(this.props.managedClasses, "breadcrumb") || ""
+        );
     }
 
     /**
-     * Create class Ol names
+     * Create items container class names
      */
-    protected generateOlClassNames(): string {
-        return get(this.props.managedClasses, "breadcrumb_itemsContainer");
+    protected generateItemsContainerClassNames(): string {
+        return get(this.props.managedClasses, "breadcrumb_itemsContainer") || "";
+    }
+
+    /**
+     * Create item class names
+     */
+    protected generateItemClassNames(): string {
+        return get(this.props.managedClasses, "breadcrumb_item") || "";
+    }
+
+    /**
+     * Create current item class names
+     */
+    protected generateCurrentItemClassNames(): string {
+        return get(this.props.managedClasses, "breadcrumb_item__current") || "";
+    }
+
+    /**
+     * Create separator class names
+     */
+    protected generateSeparatorClassNames(): string {
+        return get(this.props.managedClasses, "breadcrumb_separator") || "";
     }
 
     /**
@@ -63,10 +88,6 @@ class Breadcrumb extends Foundation<
         return React.isValidElement(node);
     }
 
-    private generateCurrentClassName(): string {
-        const className: string = this.props.managedClasses.breadcrumb_item__current;
-        return className !== undefined ? className : "";
-    }
     /**
      * Render a single child
      */
@@ -81,14 +102,14 @@ class Breadcrumb extends Foundation<
             const props: any = {
                 className:
                     child.props && typeof child.props.className === "string"
-                        ? `${child.props.className} ${
-                              this.props.managedClasses.breadcrumb_item
-                          }`
-                        : this.props.managedClasses.breadcrumb_item,
+                        ? `${child.props.className} ${this.generateItemClassNames()}`
+                        : this.generateItemClassNames(),
             };
 
             if (childCount - 1 === index) {
-                props.className = `${props.className} ${this.generateCurrentClassName()}`;
+                props.className = `${
+                    props.className
+                } ${this.generateCurrentItemClassNames()}`;
                 props["aria-current"] = "page";
                 notLastItem = false;
             }
@@ -99,7 +120,7 @@ class Breadcrumb extends Foundation<
             <li>
                 {augmentedChild}
                 {typeof this.props.separator === "function" && notLastItem
-                    ? this.props.separator(this.props.managedClasses.breadcrumb_separator)
+                    ? this.props.separator(this.generateSeparatorClassNames())
                     : null}
             </li>
         );
