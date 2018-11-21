@@ -513,10 +513,6 @@ class HorizontalOverflow extends Foundation<
      * Handler for the click event fired after next or previous has been clicked
      */
     private handleClick(direction: ButtonDirection): void {
-        // const regionWidthInformation: ItemsWidthAndTotalWidth = this.getItemsWidthAndTotalWidth();
-        // const availableWidth: number = regionWidthInformation.availableWidth;
-        // const itemWidths: number[] = regionWidthInformation.itemWidths;
-
         const availableWidth: number = this.getAvailableWidth();
         const itemWidths: number[] = this.getItemWidths();
 
