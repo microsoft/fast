@@ -1,3 +1,6 @@
+import BreadcrumbExamples from "../src/breadcrumb/examples.data";
+export { BreadcrumbExamples };
+
 import ButtonExamples from "../src/button/examples.data";
 export { ButtonExamples };
 

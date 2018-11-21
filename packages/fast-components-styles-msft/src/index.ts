@@ -1,6 +1,9 @@
 /**
  * Export button styles
  */
+import BreadcrumbStyles from "./breadcrumb";
+export { BreadcrumbStyles };
+
 import ButtonStyles from "./button";
 export { ButtonStyles };
 

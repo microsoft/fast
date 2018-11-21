@@ -1,3 +1,7 @@
+import Breadcrumb from "./breadcrumb";
+export { Breadcrumb };
+export * from "./breadcrumb";
+
 import Button from "./button";
 export { Button };
 export * from "./button";
