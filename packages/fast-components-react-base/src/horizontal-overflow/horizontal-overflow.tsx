@@ -28,6 +28,12 @@ export interface HorizontalOverflowState {
     itemsHeight: number;
 }
 
+declare global {
+    interface Window {
+        ResizeObserver: ResizeObserver;
+    }
+}
+
 class HorizontalOverflow extends Foundation<
     HorizontalOverflowHandledProps,
     HorizontalOverflowUnhandledProps,
@@ -187,12 +193,14 @@ class HorizontalOverflow extends Foundation<
         // Revisit usage once Safari and Firefox adapt
         // https://bugzilla.mozilla.org/show_bug.cgi?id=1272409
         // https://bugs.webkit.org/show_bug.cgi?id=157743
-        const resizeObserver: ResizeObserver = new ResizeObserver(
-            (entries: ResizeObserverEntry[]): void => {
-                this.handleOverflowChange();
-            }
-        );
-        resizeObserver.observe(this.horizontalOverflowItemsRef.current);
+        if (window.ResizeObserver) {
+            const resizeObserver: ResizeObserver = new ResizeObserver(
+                (entries: ResizeObserverEntry[]): void => {
+                    this.handleOverflowChange();
+                }
+            );
+            resizeObserver.observe(this.horizontalOverflowItemsRef.current);
+        }
     };
 
     /**

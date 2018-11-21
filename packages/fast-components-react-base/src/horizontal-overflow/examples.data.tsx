@@ -182,17 +182,11 @@ const examples: ComponentFactoryExample<HorizontalOverflowHandledProps> = {
                     children: "next",
                 },
             },
-            // ...images,
-            images[0],
-            images[0],
-            images[0],
-            images[0],
-            images[0],
-            images[0],
+            ...images,
         ],
         // Example onOverflowChange callback usage
-        onOverflowChange: (obj: OverflowChange): any =>
-            console.log("onOverflowChange data: ", obj),
+        // onOverflowChange: (obj: OverflowChange): any =>
+        //     console.log("onOverflowChange data: ", obj),
         // Example onScrollChange callabck usage
         // onScrollChange: (obj: ScrollChange): any => (console.log("onScrollChange data: ", obj))
     },
