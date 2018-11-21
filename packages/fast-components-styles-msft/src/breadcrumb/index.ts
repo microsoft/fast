@@ -16,9 +16,6 @@ const styles: ComponentStyles<BreadcrumbClassNameContract, DesignSystem> = (
     const direction: Direction = designSystem.direction;
 
     return {
-        breadcrumb: {
-            padding: "4px",
-        },
         breadcrumb_item: {
             fontWeight: `${fontWeight.bold}`,
             display: "inline",
