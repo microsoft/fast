@@ -256,7 +256,7 @@ class HorizontalOverflow extends Foundation<
      * Checks if overflow is occuring
      */
     private isOverflow(): boolean {
-        const availableWidth: number = this.getAvailableWidths();
+        const availableWidth: number = this.getAvailableWidth();
         const itemWidths: number[] = this.getItemWidths();
         const totalItemWidth: number = itemWidths.reduce((a: number, b: number) => a + b);
 
@@ -487,27 +487,15 @@ class HorizontalOverflow extends Foundation<
     };
 
     /**
-     * Returns the items width and total width of the scroll region
+     * Returns the available content region width
      */
-    // private getItemsWidthAndTotalWidth(): ItemsWidthAndTotalWidth {
-    //     const availableWidth: number = getClientRectWithMargin(
-    //         this.horizontalOverflowItemsRef.current
-    //     ).width;
-    //     const items: HTMLElement[] = Array.prototype.slice.call(
-    //         this.horizontalOverflowItemsRef.current.childNodes
-    //     );
-    //     const itemWidths: number[] = [];
-
-    //     for (const item of items) {
-    //         itemWidths.push(getClientRectWithMargin(item).width);
-    //     }
-    //     return { availableWidth, itemWidths };
-    // }
-
-    private getAvailableWidths(): number {
+    private getAvailableWidth(): number {
         return getClientRectWithMargin(this.horizontalOverflowItemsRef.current).width;
     }
 
+    /**
+     * Returns the items widths
+     */
     private getItemWidths(): number[] {
         const items: HTMLElement[] = Array.prototype.slice.call(
             this.horizontalOverflowItemsRef.current.childNodes
@@ -529,7 +517,7 @@ class HorizontalOverflow extends Foundation<
         // const availableWidth: number = regionWidthInformation.availableWidth;
         // const itemWidths: number[] = regionWidthInformation.itemWidths;
 
-        const availableWidth: number = this.getAvailableWidths();
+        const availableWidth: number = this.getAvailableWidth();
         const itemWidths: number[] = this.getItemWidths();
 
         this.setScrollDistance(
