@@ -36,7 +36,7 @@ const styles: ComponentStyles<BreadcrumbClassNameContract, DesignSystem> = (
                 },
             },
         },
-        breadcrumb_contentRegion: {
+        breadcrumb_itemsContainer: {
             listStyle: "none",
             [applyLocalizedProperty("paddingLeft", "paddingRight", direction)]: "0",
             margin: "0",

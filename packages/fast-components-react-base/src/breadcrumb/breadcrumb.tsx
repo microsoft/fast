@@ -49,7 +49,7 @@ class Breadcrumb extends Foundation<
      * Create class Ol names
      */
     protected generateOlClassNames(): string {
-        return get(this.props.managedClasses, "breadcrumb_contentRegion");
+        return get(this.props.managedClasses, "breadcrumb_itemsContainer");
     }
 
     /**
@@ -61,6 +61,11 @@ class Breadcrumb extends Foundation<
 
     private isClonableElement(node: React.ReactNode): node is React.ReactElement<any> {
         return React.isValidElement(node);
+    }
+
+    private generateCurrentClassName(): string {
+        const className: string = this.props.managedClasses.breadcrumb_item__current;
+        return className !== undefined ? className : "";
     }
     /**
      * Render a single child
@@ -83,9 +88,7 @@ class Breadcrumb extends Foundation<
             };
 
             if (childCount - 1 === index) {
-                props.className = `${props.className} ${
-                    this.props.managedClasses.breadcrumb_item__current
-                }`;
+                props.className = `${props.className} ${this.generateCurrentClassName()}`;
                 props["aria-current"] = "page";
                 notLastItem = false;
             }

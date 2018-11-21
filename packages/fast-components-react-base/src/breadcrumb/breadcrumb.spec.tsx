@@ -13,9 +13,9 @@ configure({ adapter: new Adapter() });
 
 const managedClasses: BreadcrumbClassNameContract = {
     breadcrumb: "breadcrumb-class",
-    breadcrumb_contentRegion: "breadcrumb-content-regon-class",
     breadcrumb_item: "breadcrumb-item-class",
     breadcrumb_item__current: "breadcrumb-item-current-class",
+    breadcrumb_itemsContainer: "breadcrumb-items-container-class",
     breadcrumb_separator: "breadcrumb-separator-class",
 };
 

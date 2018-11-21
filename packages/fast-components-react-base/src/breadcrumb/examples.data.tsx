@@ -8,9 +8,9 @@ import reactHTMLElementSchema from "../../app/components/react-html-element.sche
 const managedClasses: BreadcrumbManagedClasses = {
     managedClasses: {
         breadcrumb: "breadcrumb",
-        breadcrumb_contentRegion: "breadcrumb-content-region",
         breadcrumb_item: "breadcrumb-item",
         breadcrumb_item__current: "breadcrumb-item-current",
+        breadcrumb_itemsContainer: "breadcrumb-items-container-class",
         breadcrumb_separator: "breadcrumb-separator",
     },
 };
