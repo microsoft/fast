@@ -105,10 +105,6 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = (
             display: "inline-flex",
             maxWidth: "100%",
             minWidth: "14px",
-            border: "2px solid transparent",
-            lineHeight: "1",
-            textDecoration: "none",
-            whiteSpace: "nowrap",
         },
         actionTrigger_glyph: {
             display: "inline-block",

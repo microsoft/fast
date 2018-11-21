@@ -31,7 +31,7 @@ export interface ActionTriggerHandledProps
     /**
      * The action trigger glyph render prop
      */
-    glyph?: (className: string) => React.ReactNode;
+    glyph: (className: string) => React.ReactNode;
 
     /**
      * The action trigger link address
