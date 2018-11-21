@@ -58,6 +58,20 @@ describe("action trigger", (): void => {
         }).toThrow();
     });
 
+    // tslint:disable-next-line:max-line-length
+    test("should create glyph element passed in", () => {
+        const props: ActionTriggerHandledProps = {
+            glyph: (className?: string): React.ReactNode => {
+                return <div>X</div>;
+            },
+            appearance: ActionTriggerAppearance.primary,
+        };
+
+        const rendered: any = mount(<ActionTrigger {...props} />);
+
+        expect(rendered.contains(<div>X</div>)).toEqual(true);
+    });
+
     test("should implement unhandledProps", () => {
         const handledProps: ActionTriggerProps = {
             managedClasses,

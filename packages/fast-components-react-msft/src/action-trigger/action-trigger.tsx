@@ -49,7 +49,7 @@ class ActionTrigger extends Foundation<
      * Generates class names
      */
     protected generateClassNames(): string {
-        let classNames: string = get(this.props, "managedClasses.actionTrigger");
+        let classNames: string = get(this.props, "managedClasses.actionTrigger") || "";
 
         if (this.props.disabled) {
             classNames = `${classNames} ${get(

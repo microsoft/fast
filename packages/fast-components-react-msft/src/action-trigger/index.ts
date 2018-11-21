@@ -20,7 +20,7 @@ import { Subtract } from "utility-types";
  */
 /* tslint:disable-next-line:typedef */
 const ActionTrigger = manageJss(ActionTriggerStyles)(MSFTActionTrigger);
-type ActionTrigger = typeof ActionTrigger;
+type ActionTrigger = InstanceType<typeof ActionTrigger>;
 
 interface ActionTriggerHandledProps
     extends Subtract<MSFTActionTriggerHandledProps, ActionTriggerManagedClasses> {}
