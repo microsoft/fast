@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-react@3.1.4...@microsoft/fast-jss-manager-react@3.1.5) (2018-11-21)
+
+
+### Bug Fixes
+
+* explicitly define JSS types in the JSS manager ([ff6a2eb](https://github.com/Microsoft/fast-dna/commit/ff6a2eb))
+
+
+
+
+
 ## [3.1.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-react@3.1.3...@microsoft/fast-jss-manager-react@3.1.4) (2018-11-20)
 
 

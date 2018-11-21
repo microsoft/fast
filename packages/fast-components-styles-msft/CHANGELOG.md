@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.2.2...@microsoft/fast-components-styles-msft@3.2.3) (2018-11-21)
+
+
+### Bug Fixes
+
+* style change targeting :link and :visited rather than href to work in… ([#1154](https://github.com/Microsoft/fast-dna/issues/1154)) ([8129d52](https://github.com/Microsoft/fast-dna/commit/8129d52))
+
+
+
+
+
 ## [3.2.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.2.1...@microsoft/fast-components-styles-msft@3.2.2) (2018-11-20)
 
 **Note:** Version bump only for package @microsoft/fast-components-styles-msft

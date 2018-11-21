@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-viewer-react@4.0.4...@microsoft/fast-viewer-react@4.0.5) (2018-11-21)
+
+**Note:** Version bump only for package @microsoft/fast-viewer-react
+
+
+
+
+
 ## [4.0.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-viewer-react@4.0.3...@microsoft/fast-viewer-react@4.0.4) (2018-11-20)
 
 **Note:** Version bump only for package @microsoft/fast-viewer-react
