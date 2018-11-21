@@ -1,31 +1,29 @@
 import designSystemDefaults, { DesignSystem } from "../design-system";
 import { ensureBrandNormal, ensureForegroundNormal } from "../utilities/colors";
-import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
+import {
+    ComponentStyles,
+    ComponentStyleSheet,
+    CSSRules,
+} from "@microsoft/fast-jss-manager";
 import { HypertextClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { get } from "lodash-es";
-import { toPx } from "@microsoft/fast-jss-utilities";
 
-function applyHypertextBorder(pixels: number): CSSRules<DesignSystem> {
+const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = (
+    config: DesignSystem
+): ComponentStyleSheet<HypertextClassNameContract, DesignSystem> => {
     return {
-        borderBottom: (config: DesignSystem): string => {
-            return `${toPx(pixels)} solid ${ensureBrandNormal(config)}`;
-        },
-    };
-}
-
-const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = {
-    hypertext: {
-        outline: "none",
-        textDecoration: "none",
-        color: ensureForegroundNormal,
-        "&:link, &:visited": {
-            ...applyHypertextBorder(1),
-            color: ensureBrandNormal,
-            "&:hover, &:focus": {
-                ...applyHypertextBorder(2),
+        hypertext: {
+            outline: "none",
+            textDecoration: "none",
+            color: ensureForegroundNormal,
+            "&:link, &:visited": {
+                borderBottom: `1px solid ${ensureBrandNormal(config)}`,
+                color: ensureBrandNormal,
+                "&:hover, &:focus": {
+                    borderBottom: `2px solid ${ensureBrandNormal(config)}`,
+                },
             },
         },
-    },
+    };
 };
 
 export default styles;
