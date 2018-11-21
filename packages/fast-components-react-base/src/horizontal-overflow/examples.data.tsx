@@ -1,9 +1,9 @@
 import * as React from "react";
 import HorizontalOverflow, {
-    HorizontalOverflowChange,
     HorizontalOverflowHandledProps,
     HorizontalOverflowManagedClasses,
     HorizontalOverflowUnhandledProps,
+    OverflowChange,
     ScrollChange,
 } from "./horizontal-overflow";
 import schema from "./horizontal-overflow.schema.json";
@@ -182,8 +182,19 @@ const examples: ComponentFactoryExample<HorizontalOverflowHandledProps> = {
                     children: "next",
                 },
             },
-            ...images,
+            // ...images,
+            images[0],
+            images[0],
+            images[0],
+            images[0],
+            images[0],
+            images[0],
         ],
+        // Example onOverflowChange callback usage
+        onOverflowChange: (obj: OverflowChange): any =>
+            console.log("onOverflowChange data: ", obj),
+        // Example onScrollChange callabck usage
+        // onScrollChange: (obj: ScrollChange): any => (console.log("onScrollChange data: ", obj))
     },
     data: [
         {

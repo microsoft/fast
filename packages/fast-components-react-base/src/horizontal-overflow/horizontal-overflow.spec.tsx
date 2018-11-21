@@ -367,11 +367,11 @@ describe("horizontal overflow", (): void => {
 
         expect(renderedWithImages.instance().state.itemsHeight).toBe(0);
     });
-    test("should call `onHorizontalOverflowChange` on render if prop exists", () => {
-        const onHorizontalOverflowChangeFunction: any = jest.fn();
+    test("should call `onOverflowChange` on render if prop exists", () => {
+        const onOverflowChangeFunction: any = jest.fn();
         const renderedWithImages: any = mount(
             <HorizontalOverflow
-                onHorizontalOverflowChange={onHorizontalOverflowChangeFunction}
+                onOverflowChange={onOverflowChangeFunction}
                 className="foo"
                 managedClasses={managedClasses}
             >
@@ -381,7 +381,7 @@ describe("horizontal overflow", (): void => {
 
         renderedWithImages.find("div.foo").simulate("load", {});
 
-        expect(onHorizontalOverflowChangeFunction).toHaveBeenCalledTimes(1);
+        expect(onOverflowChangeFunction).toHaveBeenCalledTimes(1);
     });
     test("should execute a scroll animation on the element", () => {
         const renderedWithImages: any = mount(

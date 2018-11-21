@@ -19,7 +19,7 @@ export interface ScrollChange {
  * Includes all properties found in ScrollChange
  * 'overflow' is true when there are enough items to cause overflow
  */
-export interface HorizontalOverflowChange extends ScrollChange {
+export interface OverflowChange extends ScrollChange {
     overflow: boolean;
 }
 
@@ -39,12 +39,15 @@ export interface HorizontalOverflowHandledProps extends HorizontalOverflowManage
     scrollDuration?: number;
 
     /**
-     * Callback for on horizontal overflow change
+     * Callback for on overflow change
+     * Use `onOverflowChange` to know if there are enough items to cause overflow
+     *
      */
-    onHorizontalOverflowChange?: (changeObject: HorizontalOverflowChange) => void;
+    onOverflowChange?: (changeObject: OverflowChange) => void;
 
     /**
      * Callback for on scroll change
+     * Use `onScrollChange` to receive if scroll is at the start or end of the overflow set
      */
     onScrollChange?: (scrollObject: ScrollChange) => void;
 }
