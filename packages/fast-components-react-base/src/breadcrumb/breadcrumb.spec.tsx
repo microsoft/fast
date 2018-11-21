@@ -26,7 +26,18 @@ describe("breadcrumb", (): void => {
 
     test("should not throw if managedClasses are not provided", () => {
         expect(() => {
-            shallow(<Breadcrumb />);
+            shallow(
+                <Breadcrumb
+                    managedClasses={managedClasses}
+                    /* tslint:disable-next-line */
+                    separator={(className?: string): React.ReactNode => {
+                        return <div className={className}>\</div>;
+                    }}
+                >
+                    <a />
+                    <a />
+                </Breadcrumb>
+            );
         }).not.toThrow();
     });
 
@@ -93,5 +104,27 @@ describe("breadcrumb", (): void => {
         );
 
         expect(rendered.exists("div.breadcrumb-separator-class")).toBe(true);
+    });
+
+    test("should not set undefined if classes are not defined", () => {
+        const missingManagedClasses: BreadcrumbClassNameContract = {
+            breadcrumb: "breadcrumb-class",
+            breadcrumb_itemsContainer: "breadcrumb-items-container-class",
+        };
+        const rendered: any = shallow(
+            <Breadcrumb
+                managedClasses={missingManagedClasses}
+                /* tslint:disable-next-line */
+                separator={(className?: string): React.ReactNode => {
+                    return <div className={className}>\</div>;
+                }}
+            >
+                <a />
+                <a />
+            </Breadcrumb>
+        );
+
+        expect(rendered.exists("a.undefined")).toBe(false);
+        expect(rendered.exists("div.undefined")).toBe(false);
     });
 });

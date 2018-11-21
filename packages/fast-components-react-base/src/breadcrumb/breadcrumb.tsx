@@ -44,16 +44,14 @@ class Breadcrumb extends Foundation<
      * Create class names
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(
-            get(this.props.managedClasses, "breadcrumb") || ""
-        );
+        return super.generateClassNames(get(this.props.managedClasses, "breadcrumb"));
     }
 
     /**
      * Create items container class names
      */
     protected generateItemsContainerClassNames(): string {
-        return get(this.props.managedClasses, "breadcrumb_itemsContainer") || "";
+        return get(this.props.managedClasses, "breadcrumb_itemsContainer");
     }
 
     /**
