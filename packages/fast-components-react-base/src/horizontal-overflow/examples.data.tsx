@@ -188,7 +188,8 @@ const examples: ComponentFactoryExample<HorizontalOverflowHandledProps> = {
         // onOverflowChange: (obj: OverflowChange): any =>
         //     console.log("onOverflowChange data: ", obj),
         // Example onScrollChange callabck usage
-        // onScrollChange: (obj: ScrollChange): any => (console.log("onScrollChange data: ", obj))
+        // onScrollChange: (obj: ScrollChange): any =>
+        //    console.log("onScrollChange data: ", obj)
     },
     data: [
         {

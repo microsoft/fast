@@ -12,7 +12,6 @@ import {
     HorizontalOverflowHandledProps,
     HorizontalOverflowProps,
     HorizontalOverflowUnhandledProps,
-    OverflowChange,
     ScrollChange,
 } from "./horizontal-overflow.props";
 import throttle from "raf-throttle";
@@ -29,7 +28,7 @@ export interface HorizontalOverflowState {
 }
 
 declare global {
-    interface Window {
+    interface WindowWithResizeObserver extends Window {
         ResizeObserver: ResizeObserver;
     }
 }
@@ -74,6 +73,7 @@ class HorizontalOverflow extends Foundation<
         this.horizontalOverflowItemsRef = React.createRef();
         this.throttledScroll = throttle(this.onScrollChange);
         this.throttledResize = throttle(this.onWindowResize);
+        this.overflow = false;
 
         this.state = {
             itemsHeight: 0,
@@ -147,8 +147,19 @@ class HorizontalOverflow extends Foundation<
                 this.throttledScroll
             );
             window.addEventListener("resize", this.throttledResize);
-            if (this.overflow !== this.isOverflow()) {
-                this.onResizeObserver();
+
+            // TODO #1142 https://github.com/Microsoft/fast-dna/issues/1142
+            // Full browser support imminent
+            // Revisit usage once Safari and Firefox adapt
+            // https://bugzilla.mozilla.org/show_bug.cgi?id=1272409
+            // https://bugs.webkit.org/show_bug.cgi?id=157743
+            if ((window as WindowWithResizeObserver).ResizeObserver) {
+                const resizeObserver: ResizeObserver = new ResizeObserver(
+                    (entries: ResizeObserverEntry[]): void => {
+                        this.handleOverflowChange();
+                    }
+                );
+                resizeObserver.observe(this.horizontalOverflowItemsRef.current);
             }
         }
     }
@@ -181,25 +192,6 @@ class HorizontalOverflow extends Foundation<
     private onScrollChange = (): void => {
         if (typeof this.props.onScrollChange === "function") {
             this.props.onScrollChange(this.getScrollChangeData());
-        }
-    };
-
-    /**
-     * Observe resize of parent element
-     */
-    private onResizeObserver = (): void => {
-        // TODO #1142 https://github.com/Microsoft/fast-dna/issues/1142
-        // Full browser support imminent
-        // Revisit usage once Safari and Firefox adapt
-        // https://bugzilla.mozilla.org/show_bug.cgi?id=1272409
-        // https://bugs.webkit.org/show_bug.cgi?id=157743
-        if (window.ResizeObserver) {
-            const resizeObserver: ResizeObserver = new ResizeObserver(
-                (entries: ResizeObserverEntry[]): void => {
-                    this.handleOverflowChange();
-                }
-            );
-            resizeObserver.observe(this.horizontalOverflowItemsRef.current);
         }
     };
 
@@ -248,7 +240,9 @@ class HorizontalOverflow extends Foundation<
             });
         }
 
-        this.handleOverflowChange();
+        if (this.overflow !== this.isOverflow()) {
+            this.handleOverflowChange();
+        }
     };
 
     /**
@@ -280,7 +274,7 @@ class HorizontalOverflow extends Foundation<
         if (typeof this.props.onOverflowChange === "function") {
             this.props.onOverflowChange({
                 ...this.getScrollChangeData(),
-                overflow: this.isOverflow(),
+                overflow: this.overflow,
             });
         }
     };

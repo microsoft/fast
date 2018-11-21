@@ -41,9 +41,8 @@ export interface HorizontalOverflowHandledProps extends HorizontalOverflowManage
     /**
      * Callback for on overflow change
      * Use `onOverflowChange` to know if there are enough items to cause overflow
-     *
      */
-    onOverflowChange?: (changeObject: OverflowChange) => void;
+    onOverflowChange?: (overflowObject: OverflowChange) => void;
 
     /**
      * Callback for on scroll change
