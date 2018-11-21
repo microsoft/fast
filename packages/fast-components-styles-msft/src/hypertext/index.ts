@@ -18,7 +18,7 @@ const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = {
         outline: "none",
         textDecoration: "none",
         color: ensureForegroundNormal,
-        "&[href]": {
+        "&:link, &:visited": {
             ...applyHypertextBorder(1),
             color: ensureBrandNormal,
             "&:hover, &:focus": {
