@@ -161,6 +161,9 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             },
             "&:focus": {
                 outline: "0",
+                "& + $toggle_stateIndicator": {
+                    transform: "scale(1.2)",
+                },
             },
         },
     };
