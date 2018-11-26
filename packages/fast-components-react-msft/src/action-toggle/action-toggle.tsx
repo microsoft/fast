@@ -106,23 +106,21 @@ class ActionToggle extends Foundation<
     }
 
     public renderGlyph(): React.ReactNode {
-        let toReturn: React.ReactNode = null;
         if (this.props.selected) {
-            toReturn =
-                typeof this.props.selectedGlyph === "function"
-                    ? this.props.selectedGlyph(
-                          get(this.props, "managedClasses.actionToggle_selectedGlyph")
-                      )
-                    : null;
+            if (typeof this.props.selectedGlyph === "function") {
+                return this.props.selectedGlyph(
+                    get(this.props, "managedClasses.actionToggle_selectedGlyph")
+                );
+            }
+            return null;
         } else {
-            toReturn =
-                typeof this.props.unselectedGlyph === "function"
-                    ? this.props.unselectedGlyph(
-                          get(this.props, "managedClasses.actionToggle_unselectedGlyph")
-                      )
-                    : null;
+            if (typeof this.props.unselectedGlyph === "function") {
+                return this.props.unselectedGlyph(
+                    get(this.props, "managedClasses.actionToggle_unselectedGlyph")
+                );
+            }
+            return null;
         }
-        return toReturn;
     }
 
     /**
@@ -143,29 +141,18 @@ class ActionToggle extends Foundation<
                 this.props,
                 "managedClasses.actionToggle__selected"
             )}`;
-            if (
-                isNullOrWhiteSpace(this.props.selectedText) ||
-                isNullOrUndefined(this.props.selectedGlyph)
-            ) {
-                classNames = `${classNames} ${get(
-                    this.props,
-                    "managedClasses.actionToggle__singleElement"
-                )}`;
-            }
         } else {
             classNames = `${classNames} ${get(
                 this.props,
                 "managedClasses.actionToggle__unselected"
             )}`;
-            if (
-                isNullOrWhiteSpace(this.props.unselectedText) ||
-                isNullOrUndefined(this.props.unselectedGlyph)
-            ) {
-                classNames = `${classNames} ${get(
-                    this.props,
-                    "managedClasses.actionToggle__singleElement"
-                )}`;
-            }
+        }
+
+        if (this.isSingleElement()) {
+            classNames = `${classNames} ${get(
+                this.props,
+                "managedClasses.actionToggle__singleElement"
+            )}`;
         }
 
         switch (this.props.appearance) {
@@ -196,6 +183,28 @@ class ActionToggle extends Foundation<
         }
 
         return super.generateClassNames(classNames);
+    }
+
+    /**
+     * Checks to see if the toggle is displaying both glyph and text or not
+     */
+    private isSingleElement(): boolean {
+        if (this.props.selected) {
+            if (
+                isNullOrWhiteSpace(this.props.selectedText) ||
+                isNullOrUndefined(this.props.selectedGlyph)
+            ) {
+                return true;
+            }
+        } else {
+            if (
+                isNullOrWhiteSpace(this.props.unselectedText) ||
+                isNullOrUndefined(this.props.unselectedGlyph)
+            ) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
