@@ -46,7 +46,7 @@ export interface ActionToggleClassNameContract {
     actionToggle__disabled?: string;
 
     /**
-     * The sngle element modifier
+     * The single element modifier
      */
     actionToggle__singleElement?: string;
 }
