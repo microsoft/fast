@@ -31,17 +31,27 @@ export interface ActionToggleHandledProps
     /**
      * The action toggle selected glyph render prop
      */
-    selectedGlyph: (className: string) => React.ReactNode;
+    selectedGlyph?: (className: string) => React.ReactNode;
 
     /**
      * The action toggle usselected glyph render prop
      */
-    unselectedGlyph: (className: string) => React.ReactNode;
+    unselectedGlyph?: (className: string) => React.ReactNode;
 
     /**
      * The action toggle selected text
      */
     selectedText?: string;
+
+    /**
+     * The action toggle unselected ARIA text
+     */
+    unselectedARIALabel: string;
+
+    /**
+     * The action toggle selected ARIA text
+     */
+    selectedARIALabel: string;
 
     /**
      * The action toggle unselected text

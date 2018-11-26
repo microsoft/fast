@@ -41,35 +41,18 @@ describe("action toggle", (): void => {
         expect(() => {
             shallow(
                 <MSFTActionToggle
-                    /* tslint:disable-next-line */
-                    selectedGlyph={(className?: string): React.ReactNode => {
-                        return <div>X</div>;
-                    }}
-                    /* tslint:disable-next-line */
-                    unselectedGlyph={(className?: string): React.ReactNode => {
-                        return <div>X</div>;
-                    }}
+                    selectedARIALabel="selected"
+                    unselectedARIALabel="unselected"
                 />
             );
         }).not.toThrow();
     });
 
-    test("should throw if glyph props are not provided", () => {
-        expect(() => {
-            shallow(
-                <MSFTActionToggle
-                    /* tslint:disable-next-line */
-                    selectedGlyph={null}
-                    /* tslint:disable-next-line */
-                    unselectedGlyph={null}
-                />
-            );
-        }).toThrow();
-    });
-
     // tslint:disable-next-line:max-line-length
     test("should create unselectedglyph element passed in", () => {
         const props: ActionToggleHandledProps = {
+            selectedARIALabel: "selected",
+            unselectedARIALabel: "unselected",
             selectedGlyph: (className?: string): React.ReactNode => {
                 return <div>X</div>;
             },
@@ -87,6 +70,8 @@ describe("action toggle", (): void => {
     // tslint:disable-next-line:max-line-length
     test("should create selectedglyph element passed in", () => {
         const props: ActionToggleHandledProps = {
+            selectedARIALabel: "selected",
+            unselectedARIALabel: "unselected",
             selectedGlyph: (className?: string): React.ReactNode => {
                 return <div>X</div>;
             },
@@ -106,12 +91,8 @@ describe("action toggle", (): void => {
         const handledProps: ActionToggleProps = {
             managedClasses,
             href,
-            selectedGlyph: (className?: string): React.ReactNode => {
-                return <div>X</div>;
-            },
-            unselectedGlyph: (className?: string): React.ReactNode => {
-                return <div>X</div>;
-            },
+            selectedARIALabel: "selected",
+            unselectedARIALabel: "unselected",
             children: "text",
         };
 
@@ -129,12 +110,8 @@ describe("action toggle", (): void => {
     // tslint:disable-next-line:max-line-length
     test("should apply a 'primary' html class when appearance is primary", () => {
         const props: ActionToggleHandledProps = {
-            selectedGlyph: (className?: string): React.ReactNode => {
-                return <div>X</div>;
-            },
-            unselectedGlyph: (className?: string): React.ReactNode => {
-                return <div>X</div>;
-            },
+            selectedARIALabel: "selected",
+            unselectedARIALabel: "unselected",
             appearance: ActionToggleAppearance.primary,
         };
 
@@ -148,12 +125,8 @@ describe("action toggle", (): void => {
     // tslint:disable-next-line:max-line-length
     test("should apply a 'lightweight' html class when appearance is lightweight", () => {
         const props: ActionToggleHandledProps = {
-            selectedGlyph: (className?: string): React.ReactNode => {
-                return <div>X</div>;
-            },
-            unselectedGlyph: (className?: string): React.ReactNode => {
-                return <div>X</div>;
-            },
+            selectedARIALabel: "selected",
+            unselectedARIALabel: "unselected",
             appearance: ActionToggleAppearance.lightweight,
         };
 
@@ -167,12 +140,8 @@ describe("action toggle", (): void => {
     // tslint:disable-next-line:max-line-length
     test("should apply a 'justified' html class when appearance is justified", () => {
         const props: ActionToggleHandledProps = {
-            selectedGlyph: (className?: string): React.ReactNode => {
-                return <div>X</div>;
-            },
-            unselectedGlyph: (className?: string): React.ReactNode => {
-                return <div>X</div>;
-            },
+            selectedARIALabel: "selected",
+            unselectedARIALabel: "unselected",
             appearance: ActionToggleAppearance.justified,
         };
 
@@ -186,12 +155,8 @@ describe("action toggle", (): void => {
     // tslint:disable-next-line:max-line-length
     test("should apply a 'outline' html class when appearance is outline", () => {
         const props: ActionToggleHandledProps = {
-            selectedGlyph: (className?: string): React.ReactNode => {
-                return <div>X</div>;
-            },
-            unselectedGlyph: (className?: string): React.ReactNode => {
-                return <div>X</div>;
-            },
+            selectedARIALabel: "selected",
+            unselectedARIALabel: "unselected",
             appearance: ActionToggleAppearance.outline,
         };
 
@@ -205,12 +170,8 @@ describe("action toggle", (): void => {
     // tslint:disable-next-line:max-line-length
     test("should apply a 'disabled' html class when prop disabled is passed", () => {
         const props: ActionToggleHandledProps = {
-            selectedGlyph: (className?: string): React.ReactNode => {
-                return <div>X</div>;
-            },
-            unselectedGlyph: (className?: string): React.ReactNode => {
-                return <div>X</div>;
-            },
+            selectedARIALabel: "selected",
+            unselectedARIALabel: "unselected",
             disabled: true,
         };
 
@@ -224,12 +185,8 @@ describe("action toggle", (): void => {
     // tslint:disable-next-line:max-line-length
     test("should set a custom class name and 'primary' class name when appearance is primary and a custom class is passed", () => {
         const props: ActionToggleHandledProps = {
-            selectedGlyph: (className?: string): React.ReactNode => {
-                return <div>X</div>;
-            },
-            unselectedGlyph: (className?: string): React.ReactNode => {
-                return <div>X</div>;
-            },
+            selectedARIALabel: "selected",
+            unselectedARIALabel: "unselected",
             appearance: ActionToggleAppearance.primary,
         };
 
@@ -246,12 +203,8 @@ describe("action toggle", (): void => {
     // tslint:disable-next-line:max-line-length
     test("should apply a custom class-name", () => {
         const props: ActionToggleHandledProps = {
-            selectedGlyph: (className?: string): React.ReactNode => {
-                return <div>X</div>;
-            },
-            unselectedGlyph: (className?: string): React.ReactNode => {
-                return <div>X</div>;
-            },
+            selectedARIALabel: "selected",
+            unselectedARIALabel: "unselected",
         };
 
         const rendered: any = mount(
@@ -259,5 +212,35 @@ describe("action toggle", (): void => {
         );
 
         expect(rendered.find("button").prop("className")).toContain("custom-class-name");
+    });
+
+    // tslint:disable-next-line:max-line-length
+    test("should apply the custom selected ARIA label", () => {
+        const props: ActionToggleHandledProps = {
+            selectedARIALabel: "selected",
+            unselectedARIALabel: "unselected",
+            selected: true,
+        };
+
+        const rendered: any = mount(
+            <ActionToggle className={"custom-class-name"} {...props} />
+        );
+
+        expect(rendered.find("button").prop("aria-label")).toEqual("selected");
+    });
+
+    // tslint:disable-next-line:max-line-length
+    test("should apply the custom unselected ARIA label", () => {
+        const props: ActionToggleHandledProps = {
+            selectedARIALabel: "selected",
+            unselectedARIALabel: "unselected",
+            selected: false,
+        };
+
+        const rendered: any = mount(
+            <ActionToggle className={"custom-class-name"} {...props} />
+        );
+
+        expect(rendered.find("button").prop("aria-label")).toEqual("unselected");
     });
 });

@@ -15,6 +15,8 @@ export default {
         appearance: ActionToggleAppearance.primary,
         selectedText: "Pause",
         unselectedText: "Play",
+        selectedARIALabel: "Pause",
+        unselectedARIALabel: "Play",
         selectedGlyph: (classname?: string): React.ReactNode => {
             return (
                 <svg
