@@ -1,6 +1,10 @@
 import { ResizeObserverEntry } from "./resize-observer-entry";
 
-export declare class ResizeObserver {
+export interface ConstructableResizeObserver {
+    new (callback: ResizeObserverCallback): ResizeObserverClassDefinition;
+}
+
+export declare class ResizeObserverClassDefinition {
     constructor(callback: ResizeObserverCallback);
     public observe(target: Element): void;
     public unobserve(target: Element): void;
@@ -9,5 +13,5 @@ export declare class ResizeObserver {
 
 export declare type ResizeObserverCallback = (
     entries: ResizeObserverEntry[],
-    observer: ResizeObserver
+    observer: ResizeObserverClassDefinition
 ) => void;

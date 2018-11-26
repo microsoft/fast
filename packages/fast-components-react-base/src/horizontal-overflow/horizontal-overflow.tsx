@@ -15,7 +15,10 @@ import {
     ScrollChange,
 } from "./horizontal-overflow.props";
 import throttle from "raf-throttle";
-import { ResizeObserver } from "./resize-observer";
+import {
+    ConstructableResizeObserver,
+    ResizeObserverClassDefinition,
+} from "./resize-observer";
 import { ResizeObserverEntry } from "./resize-observer-entry";
 
 export enum ButtonDirection {
@@ -29,7 +32,7 @@ export interface HorizontalOverflowState {
 
 declare global {
     interface WindowWithResizeObserver extends Window {
-        ResizeObserver: ResizeObserver;
+        ResizeObserver: ConstructableResizeObserver;
     }
 }
 
@@ -154,9 +157,11 @@ class HorizontalOverflow extends Foundation<
             // https://bugzilla.mozilla.org/show_bug.cgi?id=1272409
             // https://bugs.webkit.org/show_bug.cgi?id=157743
             if ((window as WindowWithResizeObserver).ResizeObserver) {
-                const resizeObserver: ResizeObserver = new ResizeObserver(
+                const resizeObserver: ResizeObserverClassDefinition = new (window as WindowWithResizeObserver).ResizeObserver(
                     (entries: ResizeObserverEntry[]): void => {
-                        this.handleOverflowChange();
+                        if (this.overflow !== this.isOverflow()) {
+                            this.handleOverflowChange();
+                        }
                     }
                 );
                 resizeObserver.observe(this.horizontalOverflowItemsRef.current);
