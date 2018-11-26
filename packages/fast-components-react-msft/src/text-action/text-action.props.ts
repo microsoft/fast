@@ -17,7 +17,7 @@ export interface TextActionHandledProps
     /**
      * The text action button
      */
-    button?: (className?: string) => React.ReactNode;
+    button?: (classname?: string) => React.ReactNode;
 }
 
 export type TextActionProps = TextActionHandledProps & TextActionUnhandledProps;

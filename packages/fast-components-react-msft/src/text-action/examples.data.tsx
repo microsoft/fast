@@ -5,10 +5,6 @@ import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { Button } from "../button";
 
-function renderButton(): (className?: string) => React.ReactNode {
-    return (className?: string): React.ReactNode => <Button className={className} />;
-}
-
 export default {
     name: "Text action",
     component: TextAction,
@@ -16,12 +12,16 @@ export default {
     documentation: <Documentation />,
     detailData: {
         children: "foo",
-        button: renderButton(),
+        button: (classname?: string): React.ReactNode => {
+            return <Button className={classname}>{"foo"}</Button>;
+        },
     },
     data: [
         {
             children: "Text action",
-            button: renderButton(),
+            button: (classname?: string): React.ReactNode => {
+                return <Button className={classname} />;
+            },
         },
     ],
 } as ComponentFactoryExample<TextActionProps>;
