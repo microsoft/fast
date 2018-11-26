@@ -31,6 +31,14 @@
         "unselectedText": {
             "title": "Unselected text",
             "type": "string"
+        },
+        "selectedARIALabel": {
+            "title": "Selected ARIA text",
+            "type": "string"
+        },
+        "unselectedARIALabel": {
+            "title": "Unselected ARIA text",
+            "type": "string"
         }
     },
     "reactProperties": {

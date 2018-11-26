@@ -51,6 +51,8 @@ class ActionToggle extends Foundation<
         unselectedGlyph: void 0,
         selectedText: void 0,
         unselectedText: void 0,
+        selectedARIALabel: void 0,
+        unselectedARIALabel: void 0,
     };
 
     /**
@@ -74,7 +76,7 @@ class ActionToggle extends Foundation<
                 className={this.generateClassNames()}
                 disabled={this.props.disabled}
                 onClick={this.handleToggleChange}
-                aria-label={this.renderLabel()}
+                aria-label={this.renderARIALabel()}
                 appearance={
                     ButtonAppearance[ActionToggleAppearance[this.props.appearance]]
                 }
@@ -87,6 +89,14 @@ class ActionToggle extends Foundation<
         );
     }
 
+    public renderARIALabel(): string {
+        if (this.props.selected) {
+            return this.props.selectedARIALabel;
+        } else {
+            return this.props.unselectedARIALabel;
+        }
+    }
+
     public renderLabel(): string {
         if (this.props.selected) {
             return this.props.selectedText;
@@ -96,15 +106,23 @@ class ActionToggle extends Foundation<
     }
 
     public renderGlyph(): React.ReactNode {
+        let toReturn: React.ReactNode = null;
         if (this.props.selected) {
-            return this.props.selectedGlyph(
-                get(this.props, "managedClasses.actionToggle_selectedGlyph")
-            );
+            toReturn =
+                typeof this.props.selectedGlyph === "function"
+                    ? this.props.selectedGlyph(
+                          get(this.props, "managedClasses.actionToggle_selectedGlyph")
+                      )
+                    : null;
         } else {
-            return this.props.unselectedGlyph(
-                get(this.props, "managedClasses.actionToggle_unselectedGlyph")
-            );
+            toReturn =
+                typeof this.props.unselectedGlyph === "function"
+                    ? this.props.unselectedGlyph(
+                          get(this.props, "managedClasses.actionToggle_unselectedGlyph")
+                      )
+                    : null;
         }
+        return toReturn;
     }
 
     /**
