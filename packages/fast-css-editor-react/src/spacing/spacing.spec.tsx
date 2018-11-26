@@ -34,22 +34,22 @@ describe("CSSSpacing", () => {
             shallow(<CSSSpacing />);
         }).not.toThrow();
     });
-    test("should display the `type` as margin when it the `type` prop is not passed", () => {
+    test("should display the `spacingType` as margin when it the `spacingType` prop is not passed", () => {
         const rendered: any = mount(<CSSSpacing />);
 
         expect(rendered.find("span").text()).toEqual("MARGIN");
     });
-    test("should display the `type` as margin when margin is passed as the `type` prop", () => {
-        const rendered: any = mount(<CSSSpacing type={SpacingType.margin} />);
+    test("should display the `spacingType` as margin when margin is passed as the `spacingType` prop", () => {
+        const rendered: any = mount(<CSSSpacing spacingType={SpacingType.margin} />);
 
         expect(rendered.find("span").text()).toEqual("MARGIN");
     });
-    test("should display the `type` as padding when padding is passed as the `type` prop", () => {
-        const rendered: any = mount(<CSSSpacing type={SpacingType.padding} />);
+    test("should display the `spacingType` as padding when padding is passed as the `spacingType` prop", () => {
+        const rendered: any = mount(<CSSSpacing spacingType={SpacingType.padding} />);
 
         expect(rendered.find("span").text()).toEqual("PADDING");
     });
-    test("should add an active class to margin `type` region when the `type` prop is not passed", () => {
+    test("should add an active class to margin `spacingType` region when the `spacingType` prop is not passed", () => {
         const rendered: any = mount(<Spacing managedClasses={managedClasses} />);
         const classes: string[] = rendered
             .find(`.${managedClasses.cssSpacing_type__margin}`)
@@ -63,9 +63,9 @@ describe("CSSSpacing", () => {
             )
         ).not.toBe(undefined);
     });
-    test("should add an active class to the margin `type` region when margin is passed to the `type` prop", () => {
+    test("should add an active class to the margin `spacingType` region when margin is passed to the `spacingType` prop", () => {
         const rendered: any = mount(
-            <Spacing type={SpacingType.margin} managedClasses={managedClasses} />
+            <Spacing spacingType={SpacingType.margin} managedClasses={managedClasses} />
         );
         const classes: string[] = rendered
             .find(`.${managedClasses.cssSpacing_type__margin}`)
@@ -79,9 +79,9 @@ describe("CSSSpacing", () => {
             )
         ).not.toBe(undefined);
     });
-    test("should add an active class to the padding `type` region when padding is passed to the `type` prop", () => {
+    test("should add an active class to the padding `spacingType` region when padding is passed to the `spacingType` prop", () => {
         const rendered: any = mount(
-            <Spacing type={SpacingType.padding} managedClasses={managedClasses} />
+            <Spacing spacingType={SpacingType.padding} managedClasses={managedClasses} />
         );
         const classes: string[] = rendered
             .find(`.${managedClasses.cssSpacing_type__padding}`)
@@ -95,7 +95,7 @@ describe("CSSSpacing", () => {
             )
         ).not.toBe(undefined);
     });
-    test("should add a class to the hovered margin `type` region when the region is hovered", () => {
+    test("should add a class to the hovered margin `spacingType` region when the region is hovered", () => {
         const rendered: any = shallow(<Spacing managedClasses={managedClasses} />);
         rendered
             .find(`.${managedClasses.cssSpacing_type__margin}`)
@@ -113,7 +113,7 @@ describe("CSSSpacing", () => {
             )
         ).not.toBe(undefined);
     });
-    test("should add a class to the hovered padding `type` region when the region is hovered", () => {
+    test("should add a class to the hovered padding `spacingType` region when the region is hovered", () => {
         const rendered: any = shallow(<Spacing managedClasses={managedClasses} />);
         rendered
             .find(`.${managedClasses.cssSpacing_type__padding}`)
@@ -131,7 +131,7 @@ describe("CSSSpacing", () => {
             )
         ).not.toBe(undefined);
     });
-    test("should remove the hover active class when mouseout of the `type` regions", () => {
+    test("should remove the hover active class when mouseout of the `spacingType` regions", () => {
         const rendered: any = shallow(<Spacing managedClasses={managedClasses} />);
         rendered
             .find(`.${managedClasses.cssSpacing_type__padding}`)
@@ -181,7 +181,7 @@ describe("CSSSpacing", () => {
             )
         ).toBe(undefined);
     });
-    test("should fire the `onSpacingTypeUpdate` callback when the regions for `type` are clicked", () => {
+    test("should fire the `onSpacingTypeUpdate` callback when the regions for `spacingType` are clicked", () => {
         const onSpacingTypeUpdateCallback: any = jest.fn();
         const rendered: any = shallow(
             <Spacing
@@ -297,7 +297,7 @@ describe("CSSSpacing", () => {
         const onSpacingUpdateCallback: any = jest.fn();
         const rendered: any = mount(
             <Spacing
-                type={SpacingType.padding}
+                spacingType={SpacingType.padding}
                 onSpacingUpdate={onSpacingUpdateCallback}
                 managedClasses={managedClasses}
             />
@@ -316,7 +316,7 @@ describe("CSSSpacing", () => {
         const onSpacingUpdateCallback: any = jest.fn();
         const rendered: any = mount(
             <Spacing
-                type={SpacingType.padding}
+                spacingType={SpacingType.padding}
                 onSpacingUpdate={onSpacingUpdateCallback}
                 managedClasses={managedClasses}
             />
@@ -337,7 +337,7 @@ describe("CSSSpacing", () => {
         const onSpacingUpdateCallback: any = jest.fn();
         const rendered: any = mount(
             <Spacing
-                type={SpacingType.padding}
+                spacingType={SpacingType.padding}
                 onSpacingUpdate={onSpacingUpdateCallback}
                 managedClasses={managedClasses}
             />
@@ -356,7 +356,7 @@ describe("CSSSpacing", () => {
         const onSpacingUpdateCallback: any = jest.fn();
         const rendered: any = mount(
             <Spacing
-                type={SpacingType.padding}
+                spacingType={SpacingType.padding}
                 onSpacingUpdate={onSpacingUpdateCallback}
                 managedClasses={managedClasses}
             />
@@ -376,7 +376,7 @@ describe("CSSSpacing", () => {
         const onSpacingUpdateCallback: any = jest.fn();
         const rendered: any = mount(
             <Spacing
-                type={SpacingType.padding}
+                spacingType={SpacingType.padding}
                 onSpacingUpdate={onSpacingUpdateCallback}
                 managedClasses={managedClasses}
                 paddingRight={rightValue}
@@ -401,7 +401,7 @@ describe("CSSSpacing", () => {
         const onSpacingUpdateCallback: any = jest.fn();
         const rendered: any = mount(
             <Spacing
-                type={SpacingType.padding}
+                spacingType={SpacingType.padding}
                 onSpacingUpdate={onSpacingUpdateCallback}
                 managedClasses={managedClasses}
                 paddingRight={rightValue}
@@ -421,13 +421,37 @@ describe("CSSSpacing", () => {
             marginTop: topValue,
         });
     });
-    test("should", () => {
+    test("should update the `activeType` state if the `spacingType` is updated", () => {
         const rendered: any = mount(
-            <Spacing type={SpacingType.margin} managedClasses={managedClasses} />
+            <Spacing spacingType={SpacingType.margin} managedClasses={managedClasses} />
         );
 
         expect(rendered.state("activeType")).toBe(SpacingType.margin);
-        rendered.setProps({ type: SpacingType.padding });
+        rendered.setProps({ spacingType: SpacingType.padding });
         expect(rendered.state("activeType")).toBe(SpacingType.padding);
+    });
+    test("should update the `activeType` state if the `spacingType` is not set", () => {
+        const rendered: any = shallow(<Spacing managedClasses={managedClasses} />);
+
+        expect(rendered.state("activeType")).toBe(SpacingType.margin);
+
+        rendered
+            .find(`.${managedClasses.cssSpacing_type__padding}`)
+            .simulate("click", { currentTarget: true, target: true });
+
+        expect(rendered.state("activeType")).toBe(SpacingType.padding);
+    });
+    test("should not update the `activeType` state if the `spacingType` is set", () => {
+        const rendered: any = mount(
+            <Spacing spacingType={SpacingType.margin} managedClasses={managedClasses} />
+        );
+
+        expect(rendered.state("activeType")).toBe(SpacingType.margin);
+
+        rendered
+            .find(`.${managedClasses.cssSpacing_type__padding}`)
+            .simulate("click", { currentTarget: true, target: true });
+
+        expect(rendered.state("activeType")).toBe(SpacingType.margin);
     });
 });

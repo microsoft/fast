@@ -42,7 +42,7 @@ export interface CSSSpacingHandledProps
     /**
      * The type of spacing margin/padding
      */
-    type?: SpacingType;
+    spacingType?: SpacingType;
 
     /**
      * The spacing update callback
@@ -52,7 +52,7 @@ export interface CSSSpacingHandledProps
     /**
      * The spacing type update callback
      */
-    onSpacingTypeUpdate?: (type: SpacingType) => void;
+    onSpacingTypeUpdate?: (spacingType: SpacingType) => void;
 }
 
 export type CSSSpacingProps = CSSSpacingHandledProps & CSSSpacingUnhandledProps;

@@ -21,7 +21,7 @@ export default class CSSSpacing extends Foundation<
     public static displayName: string = "CSSSpacing";
 
     protected handledProps: HandledProps<CSSSpacingHandledProps> = {
-        type: void 0,
+        spacingType: void 0,
         marginTop: void 0,
         marginBottom: void 0,
         marginLeft: void 0,
@@ -39,7 +39,9 @@ export default class CSSSpacing extends Foundation<
         super(props);
 
         this.state = {
-            activeType: this.props.type ? this.props.type : SpacingType.margin,
+            activeType: this.props.spacingType
+                ? this.props.spacingType
+                : SpacingType.margin,
             hoverType: void 0,
         };
     }
@@ -53,9 +55,9 @@ export default class CSSSpacing extends Foundation<
     }
 
     public componentWillReceiveProps(nextProps: CSSSpacingHandledProps): void {
-        if (nextProps.type !== this.props.type) {
+        if (nextProps.spacingType !== this.props.spacingType) {
             this.setState({
-                activeType: nextProps.type,
+                activeType: nextProps.spacingType,
             });
         }
     }
@@ -128,22 +130,25 @@ export default class CSSSpacing extends Foundation<
         );
     }
 
-    private getTypeClassNames(type: SpacingType): string {
+    private getTypeClassNames(spacingType: SpacingType): string {
         let classes: string = get(this.props, "managedClasses.cssSpacing_type");
 
-        classes += ` ${get(this.props, `managedClasses.cssSpacing_type__${type}`)}`;
+        classes += ` ${get(
+            this.props,
+            `managedClasses.cssSpacing_type__${spacingType}`
+        )}`;
 
-        if (type === this.state.activeType) {
+        if (spacingType === this.state.activeType) {
             classes += ` ${get(
                 this.props,
-                `managedClasses.cssSpacing_type__${type}__active`
+                `managedClasses.cssSpacing_type__${spacingType}__active`
             )}`;
         }
 
-        if (type === this.state.hoverType) {
+        if (spacingType === this.state.hoverType) {
             classes += ` ${get(
                 this.props,
-                `managedClasses.cssSpacing_type__${type}__hover`
+                `managedClasses.cssSpacing_type__${spacingType}__hover`
             )}`;
         }
 
@@ -151,27 +156,30 @@ export default class CSSSpacing extends Foundation<
     }
 
     private handleTypeClick(
-        type: SpacingType
+        spacingType: SpacingType
     ): (e: React.MouseEvent<HTMLDivElement>) => void {
         return (e: React.MouseEvent<HTMLDivElement>): void => {
-            if (
-                e.currentTarget === e.target &&
-                typeof this.props.onSpacingTypeUpdate === "function"
-            ) {
-                this.props.onSpacingTypeUpdate(type);
+            if (e.currentTarget === e.target) {
+                if (typeof this.props.onSpacingTypeUpdate === "function") {
+                    this.props.onSpacingTypeUpdate(spacingType);
+                } else if (this.props.spacingType === undefined) {
+                    this.setState({
+                        activeType: spacingType,
+                    });
+                }
             }
         };
     }
 
     private handleMouseOver(
-        type?: SpacingType
+        spacingType?: SpacingType
     ): (e: React.MouseEvent<HTMLDivElement>) => void {
         return (e: React.MouseEvent<HTMLDivElement>): void => {
-            if (type && e.currentTarget === e.target) {
+            if (spacingType && e.currentTarget === e.target) {
                 this.setState({
-                    hoverType: type,
+                    hoverType: spacingType,
                 });
-            } else if (type === undefined) {
+            } else if (spacingType === undefined) {
                 this.setState({
                     hoverType: void 0,
                 });
@@ -197,7 +205,7 @@ export default class CSSSpacing extends Foundation<
                 (key: string): void => {
                     if (
                         this.props[key] &&
-                        key !== "type" &&
+                        key !== "spacingType" &&
                         key !== "managedClasses" &&
                         typeof this.props[key] !== "function"
                     ) {

@@ -20,8 +20,10 @@ function styles(): ComponentStyles<CSSSpacingClassNameContract, {}> {
     const locationIndicatorHight: number = typeThickness - 4;
     const marginTypeColor: string = "1, 209, 199";
     const paddingTypeColor: string = "118, 108, 255";
-    const leftRightPosition: number = typeThickness - 1;
-    const topBottomPosition: number = 2 * locationIndicatorHight + 4;
+    const leftRightPositionActiveMargin: number = typeThickness - 1;
+    const topBottomPositionActiveMargin: number = 2 * locationIndicatorHight + 4;
+    const leftRightPositionActivePadding: number = 1;
+    const topBottomPositionActivePadding: number = typeThickness / 2 + 1;
 
     return {
         cssSpacing: {},
@@ -57,10 +59,18 @@ function styles(): ComponentStyles<CSSSpacingClassNameContract, {}> {
                 top: `calc(50% - ${1}px)`,
             },
             "&::before": {
-                left: `-${leftRightPosition}px`,
+                left: `${leftRightPositionActivePadding}px`,
             },
             "&::after": {
-                right: `-${leftRightPosition}px`,
+                right: `${leftRightPositionActivePadding}px`,
+            },
+            "&$cssSpacing_type__margin__active": {
+                "&::before": {
+                    left: `-${leftRightPositionActiveMargin}px`,
+                },
+                "&::after": {
+                    right: `-${leftRightPositionActiveMargin}px`,
+                },
             },
         },
         cssSpacing_type__padding: {
@@ -74,10 +84,18 @@ function styles(): ComponentStyles<CSSSpacingClassNameContract, {}> {
                 transform: "rotate(90deg)",
             },
             "&::before": {
-                top: `-${topBottomPosition}px`,
+                top: `-${topBottomPositionActiveMargin}px`,
             },
             "&::after": {
-                bottom: `-${topBottomPosition}px`,
+                bottom: `-${topBottomPositionActiveMargin}px`,
+            },
+            "&$cssSpacing_type__padding__active": {
+                "&::before": {
+                    top: `-${topBottomPositionActivePadding}px`,
+                },
+                "&::after": {
+                    bottom: `-${topBottomPositionActivePadding}px`,
+                },
             },
         },
         cssSpacing_type__margin__active: {
@@ -95,7 +113,7 @@ function styles(): ComponentStyles<CSSSpacingClassNameContract, {}> {
             borderColor: `rgba(${paddingTypeColor}, 1)`,
         },
         cssSpacing_input: {
-            width: "72px",
+            width: "46px",
             alignSelf: "center",
             border: "none",
             padding: "10px",

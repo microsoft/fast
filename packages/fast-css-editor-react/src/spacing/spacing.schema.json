@@ -5,7 +5,7 @@
     "id": "css-spacing",
     "type": "object",
     "properties": {
-        "type": {
+        "spacingType": {
             "title": "Spacing type",
             "type": "string",
             "enum": [
