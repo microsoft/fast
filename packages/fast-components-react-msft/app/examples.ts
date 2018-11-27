@@ -1,68 +1,74 @@
+const Foundation: any = {};
+const Pattern: any = {};
+
 import BreadcrumbExamples from "../src/breadcrumb/examples.data";
-export { BreadcrumbExamples };
+Foundation.BreadcrumbExamples = BreadcrumbExamples;
 
 import ButtonExamples from "../src/button/examples.data";
-export { ButtonExamples };
+Foundation.ButtonExamples = ButtonExamples;
 
 import CallToActionExamples from "../src/call-to-action/examples.data";
-export { CallToActionExamples };
+Pattern.CallToActionExamples = CallToActionExamples;
 
 import CaptionExamples from "../src/caption/examples.data";
-export { CaptionExamples };
+Pattern.CaptionExamples = CaptionExamples;
 
 import ContextMenu from "../src/context-menu/examples.data";
-export { ContextMenu };
+Foundation.ContextMenu = ContextMenu;
 
 import ContextMenuItem from "../src/context-menu-item/examples.data";
-export { ContextMenuItem };
+Foundation.ContextMenuItem = ContextMenuItem;
 
 import CardExamples from "../src/card/examples.data";
-export { CardExamples };
+Foundation.CardExamples = CardExamples;
 
 import CheckboxExamples from "../src/checkbox/examples.data";
-export { CheckboxExamples };
+Foundation.CheckboxExamples = CheckboxExamples;
 
 import Dialog from "../src/dialog/examples.data";
-export { Dialog };
+Foundation.Dialog = Dialog;
 
 import DividerExample from "../src/divider/examples.data";
-export { DividerExample };
+Foundation.DividerExample = DividerExample;
 
 import FlipperExample from "../src/flipper/examples.data";
-export { FlipperExample };
+Pattern.FlipperExample = FlipperExample;
 
 import HeadingExample from "../src/heading/examples.data";
-export { HeadingExample };
+Pattern.HeadingExample = HeadingExample;
 
 import HypertextExamples from "../src/hypertext/examples.data";
-export { HypertextExamples };
+Foundation.HypertextExamples = HypertextExamples;
 
 import ImageExamples from "../src/image/examples.data";
-export { ImageExamples };
+Foundation.ImageExamples = ImageExamples;
 
 import LabelExamples from "../src/label/examples.data";
-export { LabelExamples };
+Foundation.LabelExamples = LabelExamples;
 
 import MetatextExamples from "../src/metatext/examples.data";
-export { MetatextExamples };
+Pattern.MetatextExamples = MetatextExamples;
 
 import ParagraphExamples from "../src/paragraph/examples.data";
-export { ParagraphExamples };
+Pattern.ParagraphExamples = ParagraphExamples;
 
 import ProgressExamples from "../src/progress/examples.data";
-export { ProgressExamples };
+Foundation.ProgressExamples = ProgressExamples;
 
 import RadioExamples from "../src/radio/examples.data";
-export { RadioExamples };
+Foundation.RadioExamples = RadioExamples;
 
 import SubheadingExamples from "../src/subheading/examples.data";
-export { SubheadingExamples };
+Pattern.SubheadingExamples = SubheadingExamples;
 
 import ToggleExamples from "../src/toggle/examples.data";
-export { ToggleExamples };
+Foundation.ToggleExamples = ToggleExamples;
 
 import TextFieldExamples from "../src/text-field/examples.data";
-export { TextFieldExamples };
+Foundation.TextFieldExamples = TextFieldExamples;
 
 import TypographyExamples from "../src/typography/examples.data";
-export { TypographyExamples };
+Foundation.TypographyExamples = TypographyExamples;
+
+export { Foundation };
+export { Pattern };
