@@ -2,10 +2,6 @@
 
 FAST-DNA is an accelerator for anyone using the distributed NPM packages.
 
-## Table of contents
-
-* [Developer documentation](developer/readme.md)
-
 ## Standardized practices
 
 * [Microsoft Accessibility Standards](https://github.com/Microsoft/fast-dna/wiki/accessibility) and compliance with WCAG 2.0 AA
