@@ -24,9 +24,14 @@ export interface ActionToggleHandledProps
     extends Omit<ButtonHandledProps, "appearance" | keyof ButtonManagedClasses>,
         ActionToggleManagedClasses {
     /**
-     * The action toggle appearance
+     * The action toggle selected appearance
      */
-    appearance?: ActionToggleAppearance;
+    selectedAppearance?: ActionToggleAppearance;
+
+    /**
+     * The action toggle unselected appearance
+     */
+    unselectedAppearance?: ActionToggleAppearance;
 
     /**
      * The action toggle selected glyph render prop

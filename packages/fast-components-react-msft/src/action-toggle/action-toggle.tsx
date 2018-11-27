@@ -9,7 +9,7 @@ import {
     ActionToggleUnhandledProps,
 } from "./action-toggle.props";
 import { actionToggleButtonOverrides } from "@microsoft/fast-components-styles-msft";
-import { isNullOrWhiteSpace } from "../../../fast-web-utilities/dist";
+import { isNullOrWhiteSpace } from "@microsoft/fast-web-utilities";
 import { isNullOrUndefined } from "util";
 
 export interface ActionToggleState {
@@ -43,7 +43,8 @@ class ActionToggle extends Foundation<
     }
 
     protected handledProps: HandledProps<ActionToggleHandledProps> = {
-        appearance: void 0,
+        selectedAppearance: void 0,
+        unselectedAppearance: void 0,
         managedClasses: void 0,
         disabled: void 0,
         selected: void 0,
@@ -78,7 +79,7 @@ class ActionToggle extends Foundation<
                 onClick={this.handleToggleChange}
                 aria-label={this.renderARIALabel()}
                 appearance={
-                    ButtonAppearance[ActionToggleAppearance[this.props.appearance]]
+                    ButtonAppearance[ActionToggleAppearance[this.getAppearance()]]
                 }
                 jssStyleSheet={actionToggleButtonOverrides}
             >
@@ -87,6 +88,14 @@ class ActionToggle extends Foundation<
                 {this.props.children}
             </Button>
         );
+    }
+
+    public getAppearance(): ActionToggleAppearance {
+        if (this.state.selected) {
+            return this.props.selectedAppearance;
+        } else {
+            return this.props.unselectedAppearance;
+        }
     }
 
     /**
@@ -158,6 +167,9 @@ class ActionToggle extends Foundation<
                 this.props,
                 "managedClasses.actionToggle__selected"
             )}`;
+            classNames = `${classNames} ${this.getAppearanceString(this.props.selectedAppearance)}`;
+        } else {
+            classNames = `${classNames} ${this.getAppearanceString(this.props.unselectedAppearance)}`;
         }
 
         if (this.isSingleElement()) {
@@ -167,59 +179,60 @@ class ActionToggle extends Foundation<
             )}`;
         }
 
-        switch (this.props.appearance) {
+        return super.generateClassNames(classNames);
+    }
+
+    private getAppearanceString(appearance: ActionToggleAppearance): string {
+        switch (appearance) {
             case ActionToggleAppearance.primary:
-                classNames = `${classNames} ${get(
+                return get(
                     this.props,
                     "managedClasses.actionToggle__primary"
-                )}`;
-                break;
+                );
             case ActionToggleAppearance.lightweight:
-                classNames = `${classNames} ${get(
+                return get(
                     this.props,
                     "managedClasses.actionToggle__lightweight"
-                )}`;
-                break;
+                );
             case ActionToggleAppearance.justified:
-                classNames = `${classNames} ${get(
+                return get(
                     this.props,
                     "managedClasses.actionToggle__justified"
-                )}`;
-                break;
+                );
             case ActionToggleAppearance.outline:
-                classNames = `${classNames} ${get(
+                return get(
                     this.props,
                     "managedClasses.actionToggle__outline"
-                )}`;
-                break;
+                );
         }
-
-        return super.generateClassNames(classNames);
     }
 
     /**
      * Checks to see if the toggle is displaying both glyph and text or not
      */
     private isSingleElement(): boolean {
-        if (this.state.selected) {
-            if (
-                isNullOrWhiteSpace(this.props.selectedText) ||
-                isNullOrUndefined(this.props.selectedGlyph)
-            ) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            if (
-                isNullOrWhiteSpace(this.props.unselectedText) ||
-                isNullOrUndefined(this.props.unselectedGlyph)
-            ) {
-                return true;
-            } else {
-                return false;
-            }
-        }
+        return this.state.selected ?  
+        isNullOrUndefined(this.props.selectedGlyph) || isNullOrWhiteSpace(this.props.selectedText) 
+        : isNullOrUndefined(this.props.unselectedGlyph) || isNullOrWhiteSpace(this.props.unselectedText)
+        // if (this.state.selected) {
+        //     if (
+        //         isNullOrWhiteSpace(this.props.selectedText) ||
+        //         isNullOrUndefined(this.props.selectedGlyph)
+        //     ) {
+        //         return true;
+        //     } else {
+        //         return false;
+        //     }
+        // } else {
+        //     if (
+        //         isNullOrWhiteSpace(this.props.unselectedText) ||
+        //         isNullOrUndefined(this.props.unselectedGlyph)
+        //     ) {
+        //         return true;
+        //     } else {
+        //         return false;
+        //     }
+        // }
     }
 
     /**
