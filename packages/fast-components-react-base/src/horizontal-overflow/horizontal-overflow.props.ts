@@ -15,7 +15,7 @@ export interface ScrollChange {
 }
 
 /**
- * Horizontal overflow interface for consumers
+ * Overflow interface for consumers
  * Includes all properties found in ScrollChange
  * 'overflow' is true when there are enough items to cause overflow
  */
