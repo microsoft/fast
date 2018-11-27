@@ -279,6 +279,30 @@ describe("action toggle", (): void => {
         );
     });
 
+    test("should not apply selected class after click event when props specify selected = false", () => {
+        const props: ActionToggleHandledProps = {
+            selectedARIALabel: "selected",
+            unselectedARIALabel: "unselected",
+            selected: false,
+        };
+        const onChange: any = jest.fn();
+        const rendered: any = mount(
+            <ActionToggle
+                className={"custom-class-name"}
+                {...props}
+                onChange={onChange}
+            />
+        );
+
+        expect(rendered.find("button").prop("className")).not.toContain(
+            "actionToggle__selected"
+        );
+        rendered.find("button").simulate("click");
+        expect(rendered.find("button").prop("className")).not.toContain(
+            "actionToggle__selected"
+        );
+    });
+
     test("should apply a single element class when display is text only", () => {
         const props: ActionToggleHandledProps = {
             selectedARIALabel: "selected",

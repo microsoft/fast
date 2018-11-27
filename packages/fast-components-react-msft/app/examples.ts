@@ -1,5 +1,5 @@
 import ActionToggleExamples from "../src/action-toggle/examples.data";
-export { ActionToggleExamples };
+Pattern.ActionToggleExamples = ActionToggleExamples;
 
 import ActionTriggerExamples from "../src/action-trigger/examples.data";
 export { ActionTriggerExamples };
