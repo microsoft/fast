@@ -16,6 +16,8 @@
     "url": "https://github.com/Microsoft/fast-dna/issues/new/choose"
   },
   "scripts": {
+    "gb:build": "gitbook build ./docs --log=debug --debug",
+    "gb:serve": "gitbook serve ./docs",
     "integration-tests:alpha": "node build/testing/sauce-labs/test-browsers.js alpha",
     "integration-tests:beta": "node build/testing/sauce-labs/test-browsers.js beta",
     "integration-tests:release": "node build/testing/sauce-labs/test-browsers.js release",

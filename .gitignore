@@ -68,6 +68,9 @@ dist/
 # Ignore build www directories
 www/
 
+# Ignore build documentation directories
+_book/
+
 #Ignore Mac .DS_Store
 .DS_Store
 
