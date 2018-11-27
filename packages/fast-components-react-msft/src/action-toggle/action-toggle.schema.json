@@ -9,17 +9,6 @@
             "title": "Disabled",
             "type": "boolean"
         },
-        "appearance": {
-            "title": "Appearance",
-            "type": "string",
-            "default": "primary",
-            "enum": [
-                "primary",
-                "justified",
-                "lightweight",
-                "outline"
-            ]
-        },
         "selected": {
             "title": "Selected",
             "type": "boolean"
@@ -39,6 +28,26 @@
         "unselectedARIALabel": {
             "title": "Unselected ARIA text",
             "type": "string"
+        },
+        "selectedAppearance": {
+            "title": "Selected Appearance",
+            "type": "string",
+            "default": "primary",
+            "enum": [
+                "primary",
+                "lightweight",
+                "outline"
+            ]
+        },
+        "unselectedAppearance": {
+            "title": "Unselected Appearance",
+            "type": "string",
+            "default": "outline",
+            "enum": [
+                "primary",
+                "lightweight",
+                "outline"
+            ]
         }
     },
     "reactProperties": {

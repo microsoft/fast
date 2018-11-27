@@ -12,7 +12,8 @@ export default {
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
-        appearance: ActionToggleAppearance.primary,
+        selectedAppearance: ActionToggleAppearance.primary,
+        unselectedAppearance: ActionToggleAppearance.outline,
         selectedText: "Pause",
         unselectedText: "Play",
         selectedARIALabel: "Pause",
@@ -52,10 +53,6 @@ export default {
         {
             appearance: ActionToggleAppearance.lightweight,
             "data-sketch-symbol": "Action toggle - lightweight",
-        },
-        {
-            appearance: ActionToggleAppearance.justified,
-            "data-sketch-symbol": "Action toggle - justified",
         },
         {
             appearance: ActionToggleAppearance.outline,
