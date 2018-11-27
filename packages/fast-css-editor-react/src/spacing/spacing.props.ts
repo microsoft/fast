@@ -1,12 +1,20 @@
 import { ManagedClasses } from "@microsoft/fast-jss-manager";
 import { CSSSpacingClassNameContract } from "./spacing.style";
 
+/**
+ * Spacing can be either "margin" or "padding"
+ * this component should be able to control both
+ * for a more efficient UI
+ */
 export enum SpacingType {
     margin = "margin",
     padding = "padding",
 }
 
-export enum SpacingKey {
+/**
+ * The CSS property keys
+ */
+export enum SpacingProperty {
     marginTop = "marginTop",
     marginLeft = "marginLeft",
     marginRight = "marginRight",
@@ -27,13 +35,13 @@ export interface CSSSpacingUnhandledProps extends React.HTMLAttributes<HTMLDivEl
 
 export interface CSSSpacingValues {
     marginTop?: string;
-    marginLeft?: string;
-    marginBottom?: string;
     marginRight?: string;
+    marginBottom?: string;
+    marginLeft?: string;
     paddingTop?: string;
+    paddingRight?: string;
     paddingBottom?: string;
     paddingLeft?: string;
-    paddingRight?: string;
 }
 
 export interface CSSSpacingHandledProps

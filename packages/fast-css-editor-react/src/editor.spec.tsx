@@ -3,7 +3,7 @@ import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import Editor from "./editor";
 import CSSEditor, { PositionValue, SpacingType } from "./";
-import { SpacingKey } from "./spacing";
+import { SpacingProperty } from "./spacing";
 
 /**
  * Configure Enzyme
@@ -106,17 +106,17 @@ describe("CSSEditor", () => {
         const cssPosition: any = rendered.find("CSSSpacing");
 
         expect(cssPosition.prop("spacingType")).toBe(SpacingType.padding);
-        expect(cssPosition.prop(SpacingKey.marginTop)).toBe(topValue);
-        expect(cssPosition.prop(SpacingKey.marginLeft)).toBe(leftValue);
-        expect(cssPosition.prop(SpacingKey.marginBottom)).toBe(bottomValue);
-        expect(cssPosition.prop(SpacingKey.marginRight)).toBe(rightValue);
-        expect(cssPosition.prop(SpacingKey.paddingTop)).toBe(topValue);
-        expect(cssPosition.prop(SpacingKey.paddingLeft)).toBe(leftValue);
-        expect(cssPosition.prop(SpacingKey.paddingBottom)).toBe(bottomValue);
-        expect(cssPosition.prop(SpacingKey.paddingRight)).toBe(rightValue);
+        expect(cssPosition.prop(SpacingProperty.marginTop)).toBe(topValue);
+        expect(cssPosition.prop(SpacingProperty.marginLeft)).toBe(leftValue);
+        expect(cssPosition.prop(SpacingProperty.marginBottom)).toBe(bottomValue);
+        expect(cssPosition.prop(SpacingProperty.marginRight)).toBe(rightValue);
+        expect(cssPosition.prop(SpacingProperty.paddingTop)).toBe(topValue);
+        expect(cssPosition.prop(SpacingProperty.paddingLeft)).toBe(leftValue);
+        expect(cssPosition.prop(SpacingProperty.paddingBottom)).toBe(bottomValue);
+        expect(cssPosition.prop(SpacingProperty.paddingRight)).toBe(rightValue);
         expect(typeof cssPosition.prop("onSpacingUpdate")).toEqual(typeof Function);
     });
-    test("should execute the `onChange` callback to recieve the correct CSSSpacing props", () => {
+    test("should execute the `onChange` callback to receive the correct CSSSpacing props", () => {
         const updatedSpacingValue: string = "5";
         const topValue: string = "1";
         const leftValue: string = "2";

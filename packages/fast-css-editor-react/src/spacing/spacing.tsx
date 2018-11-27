@@ -3,13 +3,13 @@ import Foundation, {
     FoundationProps,
     HandledProps,
 } from "@microsoft/fast-components-foundation-react";
-import { get } from "lodash-es";
+import { get, pick } from "lodash-es";
 import {
     CSSSpacingHandledProps,
     CSSSpacingState,
     CSSSpacingUnhandledProps,
     CSSSpacingValues,
-    SpacingKey,
+    SpacingProperty,
     SpacingType,
 } from "./spacing.props";
 
@@ -23,13 +23,13 @@ export default class CSSSpacing extends Foundation<
     protected handledProps: HandledProps<CSSSpacingHandledProps> = {
         spacingType: void 0,
         marginTop: void 0,
+        marginRight: void 0,
         marginBottom: void 0,
         marginLeft: void 0,
-        marginRight: void 0,
         paddingTop: void 0,
+        paddingRight: void 0,
         paddingBottom: void 0,
         paddingLeft: void 0,
-        paddingRight: void 0,
         onSpacingTypeUpdate: void 0,
         onSpacingUpdate: void 0,
         managedClasses: void 0,
@@ -98,28 +98,34 @@ export default class CSSSpacing extends Foundation<
             <React.Fragment>
                 <div className={this.props.managedClasses.cssSpacing_row}>
                     {this.renderInput(
-                        isMargin ? SpacingKey.marginTop : SpacingKey.paddingTop
+                        isMargin ? SpacingProperty.marginTop : SpacingProperty.paddingTop
                     )}
                 </div>
                 <div className={this.props.managedClasses.cssSpacing_row}>
                     {this.renderInput(
-                        isMargin ? SpacingKey.marginLeft : SpacingKey.paddingLeft
+                        isMargin
+                            ? SpacingProperty.marginLeft
+                            : SpacingProperty.paddingLeft
                     )}
                     {this.renderBase(isMargin ? SpacingType.margin : SpacingType.padding)}
                     {this.renderInput(
-                        isMargin ? SpacingKey.marginRight : SpacingKey.paddingRight
+                        isMargin
+                            ? SpacingProperty.marginRight
+                            : SpacingProperty.paddingRight
                     )}
                 </div>
                 <div className={this.props.managedClasses.cssSpacing_row}>
                     {this.renderInput(
-                        isMargin ? SpacingKey.marginBottom : SpacingKey.paddingBottom
+                        isMargin
+                            ? SpacingProperty.marginBottom
+                            : SpacingProperty.paddingBottom
                     )}
                 </div>
             </React.Fragment>
         );
     }
 
-    private renderInput(spacingKey: SpacingKey): React.ReactNode {
+    private renderInput(spacingKey: SpacingProperty): React.ReactNode {
         return (
             <input
                 type="text"
@@ -141,14 +147,14 @@ export default class CSSSpacing extends Foundation<
         if (spacingType === this.state.activeType) {
             classes += ` ${get(
                 this.props,
-                `managedClasses.cssSpacing_type__${spacingType}__active`
+                `managedClasses.cssSpacing_type__${spacingType}Active`
             )}`;
         }
 
         if (spacingType === this.state.hoverType) {
             classes += ` ${get(
                 this.props,
-                `managedClasses.cssSpacing_type__${spacingType}__hover`
+                `managedClasses.cssSpacing_type__${spacingType}Hover`
             )}`;
         }
 
@@ -196,23 +202,19 @@ export default class CSSSpacing extends Foundation<
     };
 
     private handleInputOnChange(
-        cssKey: SpacingKey
+        cssKey: SpacingProperty
     ): (e: React.ChangeEvent<HTMLInputElement>) => void {
         return (e: React.ChangeEvent<HTMLInputElement>): void => {
-            const spacing: CSSSpacingValues = {};
-
-            Object.keys(this.props).forEach(
-                (key: string): void => {
-                    if (
-                        this.props[key] &&
-                        key !== "spacingType" &&
-                        key !== "managedClasses" &&
-                        typeof this.props[key] !== "function"
-                    ) {
-                        spacing[key] = this.props[key];
-                    }
-                }
-            );
+            const spacing: CSSSpacingValues = pick(this.props, [
+                SpacingProperty.marginBottom,
+                SpacingProperty.marginTop,
+                SpacingProperty.marginLeft,
+                SpacingProperty.marginRight,
+                SpacingProperty.paddingBottom,
+                SpacingProperty.paddingTop,
+                SpacingProperty.paddingLeft,
+                SpacingProperty.paddingRight,
+            ]);
 
             spacing[cssKey] = e.target.value;
 

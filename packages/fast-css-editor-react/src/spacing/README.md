@@ -1,5 +1,5 @@
 # CSSSpacing
-The `CSSSpacing` component shows the CSS spacing (margin & padding) value as four input elements, it will also provide a callback for updating this values. When the `spacingType` is set to "margin" the inputs will adjust the top/bottom/left/right margins and when `spacingType` is set to "padding" it will adjust the top/bottom/left/right padding. The components `spacingType` will default to "margin" if not set.
+The `CSSSpacing` component shows the CSS spacing (margin and padding) value as four input elements, it will also provide a callback for updating this values. When the `spacingType` is set to "margin" the inputs will adjust the top/bottom/left/right margins and when `spacingType` is set to "padding" it will adjust the top/bottom/left/right padding. The components `spacingType` will default to "margin" if not set.
 
 ## Usage
 ```jsx

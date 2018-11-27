@@ -18,10 +18,10 @@ describe("CSSSpacing", () => {
         cssSpacing_type_contentRegion: "cssSpacing_type_contentRegion",
         cssSpacing_type__margin: "cssSpacing_type__margin",
         cssSpacing_type__padding: "cssSpacing_type__padding",
-        cssSpacing_type__margin__active: "cssSpacing_type__margin__active",
-        cssSpacing_type__padding__active: "cssSpacing_type__padding__active",
-        cssSpacing_type__margin__hover: "cssSpacing_type__margin__hover",
-        cssSpacing_type__padding__hover: "cssSpacing_type__padding__hover",
+        cssSpacing_type__marginActive: "cssSpacing_type__marginActive",
+        cssSpacing_type__paddingActive: "cssSpacing_type__paddingActive",
+        cssSpacing_type__marginHover: "cssSpacing_type__marginHover",
+        cssSpacing_type__paddingHover: "cssSpacing_type__paddingHover",
         cssSpacing_input: "cssSpacing_input",
     };
     const top: number = 0;
@@ -59,7 +59,7 @@ describe("CSSSpacing", () => {
         expect(
             classes.find(
                 (className: string) =>
-                    className === managedClasses.cssSpacing_type__margin__active
+                    className === managedClasses.cssSpacing_type__marginActive
             )
         ).not.toBe(undefined);
     });
@@ -75,7 +75,7 @@ describe("CSSSpacing", () => {
         expect(
             classes.find(
                 (className: string) =>
-                    className === managedClasses.cssSpacing_type__margin__active
+                    className === managedClasses.cssSpacing_type__marginActive
             )
         ).not.toBe(undefined);
     });
@@ -91,7 +91,7 @@ describe("CSSSpacing", () => {
         expect(
             classes.find(
                 (className: string) =>
-                    className === managedClasses.cssSpacing_type__padding__active
+                    className === managedClasses.cssSpacing_type__paddingActive
             )
         ).not.toBe(undefined);
     });
@@ -109,7 +109,7 @@ describe("CSSSpacing", () => {
         expect(
             classes.find(
                 (className: string) =>
-                    className === managedClasses.cssSpacing_type__margin__hover
+                    className === managedClasses.cssSpacing_type__marginHover
             )
         ).not.toBe(undefined);
     });
@@ -127,7 +127,7 @@ describe("CSSSpacing", () => {
         expect(
             classes.find(
                 (className: string) =>
-                    className === managedClasses.cssSpacing_type__padding__hover
+                    className === managedClasses.cssSpacing_type__paddingHover
             )
         ).not.toBe(undefined);
     });
@@ -145,7 +145,7 @@ describe("CSSSpacing", () => {
         expect(
             classes.find(
                 (className: string) =>
-                    className === managedClasses.cssSpacing_type__padding__hover
+                    className === managedClasses.cssSpacing_type__paddingHover
             )
         ).toBe(undefined);
     });
@@ -163,7 +163,7 @@ describe("CSSSpacing", () => {
         expect(
             classesBefore.find(
                 (className: string) =>
-                    className === managedClasses.cssSpacing_type__padding__hover
+                    className === managedClasses.cssSpacing_type__paddingHover
             )
         ).not.toBe(undefined);
 
@@ -177,7 +177,7 @@ describe("CSSSpacing", () => {
         expect(
             classesAfter.find(
                 (className: string) =>
-                    className === managedClasses.cssSpacing_type__padding__hover
+                    className === managedClasses.cssSpacing_type__paddingHover
             )
         ).toBe(undefined);
     });

@@ -6,7 +6,7 @@ import Foundation, {
 } from "@microsoft/fast-components-foundation-react";
 import { CSSEditorHandledProps, CSSEditorUnhandledProps } from "./editor.props";
 import { CSSPosition, CSSPositionValues, Location } from "./position";
-import { CSSSpacing, CSSSpacingValues, SpacingKey } from "./spacing";
+import { CSSSpacing, CSSSpacingValues, SpacingProperty } from "./spacing";
 
 export default class CSSEditor extends Foundation<
     CSSEditorHandledProps,
@@ -97,14 +97,14 @@ export default class CSSEditor extends Foundation<
                 {},
                 omit(this.props, [
                     ...this.getOmittedProps(),
-                    SpacingKey.marginBottom,
-                    SpacingKey.marginTop,
-                    SpacingKey.marginLeft,
-                    SpacingKey.marginRight,
-                    SpacingKey.paddingBottom,
-                    SpacingKey.paddingTop,
-                    SpacingKey.paddingLeft,
-                    SpacingKey.paddingRight,
+                    SpacingProperty.marginBottom,
+                    SpacingProperty.marginTop,
+                    SpacingProperty.marginLeft,
+                    SpacingProperty.marginRight,
+                    SpacingProperty.paddingBottom,
+                    SpacingProperty.paddingTop,
+                    SpacingProperty.paddingLeft,
+                    SpacingProperty.paddingRight,
                 ]),
                 spacing
             )
