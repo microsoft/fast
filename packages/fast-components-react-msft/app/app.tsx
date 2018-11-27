@@ -26,7 +26,7 @@ import {
 import { glyphBuildingblocks } from "@microsoft/fast-glyphs-msft";
 import * as React from "react";
 import { Direction } from "@microsoft/fast-application-utilities";
-import * as examples from "./examples";
+import { Foundation, Pattern } from "./examples";
 import { Hypertext } from "../src/hypertext";
 import ColorPicker, { ColorConfig } from "./color-picker";
 import reactHTMLElementExamples from "./components/examples.data";
@@ -36,7 +36,7 @@ import { Label } from "../src/label";
 const sketchDesignKit = require("./fast-dna-msft-design-kit.sketch");
 
 const formChildOptions: FormChildOption[] = [reactHTMLElementExamples].concat(
-    formChildFromExamplesFactory(examples)
+    formChildFromExamplesFactory(Object.assign({}, Foundation, Pattern))
 );
 
 const hypertextStyles: ComponentStyles<HypertextClassNameContract, undefined> = {
@@ -117,9 +117,16 @@ export default class App extends React.Component<{}, AppState> {
                         />
                     </SiteCategoryIcon>
                 </SiteCategory>
-                <SiteCategory slot={"category"} name={"Components"}>
+                <SiteCategory slot={"category"} name={"Foundation"}>
                     {this.sortExamples(
-                        componentFactory(examples, {
+                        componentFactory(Foundation, {
+                            ...this.generateDesignSystem(),
+                        })
+                    )}
+                </SiteCategory>
+                <SiteCategory slot={"category"} name={"Pattern"}>
+                    {this.sortExamples(
+                        componentFactory(Pattern, {
                             ...this.generateDesignSystem(),
                         })
                     )}
