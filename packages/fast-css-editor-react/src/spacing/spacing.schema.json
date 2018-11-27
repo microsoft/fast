@@ -1,34 +1,10 @@
 {
     "$schema": "http://json-schema.org/schema#",
-    "title": "CSS Editor",
-    "description": "A CSS editor component's schema definition.",
+    "title": "CSS Spacing",
+    "description": "A CSS spacing component's schema definition.",
+    "id": "css-spacing",
     "type": "object",
-    "id": "css-editor",
     "properties": {
-        "position": {
-            "title": "Position",
-            "type": "string",
-            "enum": [
-                "absolute",
-                "static"
-            ]
-        },
-        "left": {
-            "title": "Left",
-            "type": "string"
-        },
-        "right": {
-            "title": "Right",
-            "type": "string"
-        },
-        "top": {
-            "title": "Top",
-            "type": "string"
-        },
-        "bottom": {
-            "title": "Bottom",
-            "type": "string"
-        },
         "spacingType": {
             "title": "Spacing type",
             "type": "string",
