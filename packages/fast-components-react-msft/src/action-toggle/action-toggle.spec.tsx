@@ -48,7 +48,6 @@ describe("action toggle", (): void => {
         }).not.toThrow();
     });
 
-    // tslint:disable-next-line:max-line-length
     test("should create unselectedglyph element passed in", () => {
         const props: ActionToggleHandledProps = {
             selectedARIALabel: "selected",
@@ -67,7 +66,6 @@ describe("action toggle", (): void => {
         expect(rendered.contains(<div>Y</div>)).toEqual(true);
     });
 
-    // tslint:disable-next-line:max-line-length
     test("should create selectedglyph element passed in", () => {
         const props: ActionToggleHandledProps = {
             selectedARIALabel: "selected",
@@ -107,7 +105,6 @@ describe("action toggle", (): void => {
         expect(rendered.first().prop("aria-label")).toEqual("label");
     });
 
-    // tslint:disable-next-line:max-line-length
     test("should apply a 'primary' html class when appearance is primary", () => {
         const props: ActionToggleHandledProps = {
             selectedARIALabel: "selected",
@@ -122,7 +119,6 @@ describe("action toggle", (): void => {
         );
     });
 
-    // tslint:disable-next-line:max-line-length
     test("should apply a 'lightweight' html class when appearance is lightweight", () => {
         const props: ActionToggleHandledProps = {
             selectedARIALabel: "selected",
@@ -137,7 +133,6 @@ describe("action toggle", (): void => {
         );
     });
 
-    // tslint:disable-next-line:max-line-length
     test("should apply a 'justified' html class when appearance is justified", () => {
         const props: ActionToggleHandledProps = {
             selectedARIALabel: "selected",
@@ -152,7 +147,6 @@ describe("action toggle", (): void => {
         );
     });
 
-    // tslint:disable-next-line:max-line-length
     test("should apply a 'outline' html class when appearance is outline", () => {
         const props: ActionToggleHandledProps = {
             selectedARIALabel: "selected",
@@ -167,7 +161,6 @@ describe("action toggle", (): void => {
         );
     });
 
-    // tslint:disable-next-line:max-line-length
     test("should apply a 'disabled' html class when prop disabled is passed", () => {
         const props: ActionToggleHandledProps = {
             selectedARIALabel: "selected",
@@ -182,7 +175,6 @@ describe("action toggle", (): void => {
         );
     });
 
-    // tslint:disable-next-line:max-line-length
     test("should set a custom class name and 'primary' class name when appearance is primary and a custom class is passed", () => {
         const props: ActionToggleHandledProps = {
             selectedARIALabel: "selected",
@@ -200,7 +192,6 @@ describe("action toggle", (): void => {
         );
     });
 
-    // tslint:disable-next-line:max-line-length
     test("should apply a custom class-name", () => {
         const props: ActionToggleHandledProps = {
             selectedARIALabel: "selected",
@@ -214,7 +205,6 @@ describe("action toggle", (): void => {
         expect(rendered.find("button").prop("className")).toContain("custom-class-name");
     });
 
-    // tslint:disable-next-line:max-line-length
     test("should apply the custom selected ARIA label", () => {
         const props: ActionToggleHandledProps = {
             selectedARIALabel: "selected",
@@ -229,7 +219,6 @@ describe("action toggle", (): void => {
         expect(rendered.find("button").prop("aria-label")).toEqual("selected");
     });
 
-    // tslint:disable-next-line:max-line-length
     test("should apply the custom unselected ARIA label", () => {
         const props: ActionToggleHandledProps = {
             selectedARIALabel: "selected",
@@ -242,5 +231,118 @@ describe("action toggle", (): void => {
         );
 
         expect(rendered.find("button").prop("aria-label")).toEqual("unselected");
+    });
+
+    test("should call a registered callback after a change event", () => {
+        const props: ActionToggleHandledProps = {
+            selectedARIALabel: "selected",
+            unselectedARIALabel: "unselected",
+        };
+        const onChange: any = jest.fn();
+        const rendered: any = mount(
+            <ActionToggle
+                className={"custom-class-name"}
+                {...props}
+                onChange={onChange}
+            />
+        );
+
+        rendered.find("button").simulate("click");
+
+        expect(onChange).toHaveBeenCalledTimes(1);
+
+        rendered.find("button").simulate("click");
+
+        expect(onChange).toHaveBeenCalledTimes(2);
+    });
+
+    test("should apply selected class after click event", () => {
+        const props: ActionToggleHandledProps = {
+            selectedARIALabel: "selected",
+            unselectedARIALabel: "unselected",
+        };
+        const onChange: any = jest.fn();
+        const rendered: any = mount(
+            <ActionToggle
+                className={"custom-class-name"}
+                {...props}
+                onChange={onChange}
+            />
+        );
+
+        expect(rendered.find("button").prop("className")).not.toContain(
+            "actionToggle__selected"
+        );
+        rendered.find("button").simulate("click");
+        expect(rendered.find("button").prop("className")).toContain(
+            "actionToggle__selected"
+        );
+    });
+
+    test("should apply a single element class when display is text only", () => {
+        const props: ActionToggleHandledProps = {
+            selectedARIALabel: "selected",
+            unselectedARIALabel: "unselected",
+            selectedText: "selected",
+            unselectedText: "unselected",
+        };
+
+        const rendered: any = mount(<ActionToggle {...props} />);
+        expect(rendered.find("button").prop("className")).toContain(
+            "actionToggle__singleElement"
+        );
+
+        rendered.find("button").simulate("click");
+        expect(rendered.find("button").prop("className")).toContain(
+            "actionToggle__singleElement"
+        );
+    });
+
+    test("should apply a single element class when display is glyph only", () => {
+        const props: ActionToggleHandledProps = {
+            selectedARIALabel: "selected",
+            unselectedARIALabel: "unselected",
+            selectedGlyph: (className?: string): React.ReactNode => {
+                return <div>X</div>;
+            },
+            unselectedGlyph: (className?: string): React.ReactNode => {
+                return <div>Y</div>;
+            },
+        };
+
+        const rendered: any = mount(<ActionToggle {...props} />);
+        expect(rendered.find("button").prop("className")).toContain(
+            "actionToggle__singleElement"
+        );
+
+        rendered.find("button").simulate("click");
+        expect(rendered.find("button").prop("className")).toContain(
+            "actionToggle__singleElement"
+        );
+    });
+
+    test("should not apply a single element class when display includes text and glyph", () => {
+        const props: ActionToggleHandledProps = {
+            selectedARIALabel: "selected",
+            unselectedARIALabel: "unselected",
+            selectedText: "selected",
+            unselectedText: "unselected",
+            selectedGlyph: (className?: string): React.ReactNode => {
+                return <div>X</div>;
+            },
+            unselectedGlyph: (className?: string): React.ReactNode => {
+                return <div>Y</div>;
+            },
+        };
+
+        const rendered: any = mount(<ActionToggle {...props} />);
+        expect(rendered.find("button").prop("className")).not.toContain(
+            "actionToggle__singleElement"
+        );
+
+        rendered.find("button").simulate("click");
+        expect(rendered.find("button").prop("className")).not.toContain(
+            "actionToggle__singleElement"
+        );
     });
 });

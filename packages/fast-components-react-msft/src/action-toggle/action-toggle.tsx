@@ -89,38 +89,55 @@ class ActionToggle extends Foundation<
         );
     }
 
+    /**
+     * Returns the appropriate ARIA label
+     */
     public renderARIALabel(): string {
-        if (this.props.selected) {
+        if (this.state.selected) {
             return this.props.selectedARIALabel;
         } else {
             return this.props.unselectedARIALabel;
         }
     }
 
+    /**
+     * Returns the appropriate text label
+     */
     public renderLabel(): string {
-        if (this.props.selected) {
+        if (this.state.selected) {
             return this.props.selectedText;
         } else {
             return this.props.unselectedText;
         }
     }
 
+    /**
+     * Render Glyphs
+     */
     public renderGlyph(): React.ReactNode {
-        if (this.props.selected) {
-            if (typeof this.props.selectedGlyph === "function") {
-                return this.props.selectedGlyph(
-                    get(this.props, "managedClasses.actionToggle_selectedGlyph")
-                );
-            }
-            return null;
+        if (this.state.selected) {
+            return this.renderSelectedGlyph();
         } else {
-            if (typeof this.props.unselectedGlyph === "function") {
-                return this.props.unselectedGlyph(
-                    get(this.props, "managedClasses.actionToggle_unselectedGlyph")
-                );
-            }
-            return null;
+            return this.renderUnselectedGlyph();
         }
+    }
+
+    public renderSelectedGlyph(): React.ReactNode {
+        if (typeof this.props.selectedGlyph === "function") {
+            return this.props.selectedGlyph(
+                get(this.props, "managedClasses.actionToggle_selectedGlyph")
+            );
+        }
+        return null;
+    }
+
+    public renderUnselectedGlyph(): React.ReactNode {
+        if (typeof this.props.unselectedGlyph === "function") {
+            return this.props.unselectedGlyph(
+                get(this.props, "managedClasses.actionToggle_unselectedGlyph")
+            );
+        }
+        return null;
     }
 
     /**
@@ -136,15 +153,10 @@ class ActionToggle extends Foundation<
             )}`;
         }
 
-        if (this.props.selected) {
+        if (this.state.selected) {
             classNames = `${classNames} ${get(
                 this.props,
                 "managedClasses.actionToggle__selected"
-            )}`;
-        } else {
-            classNames = `${classNames} ${get(
-                this.props,
-                "managedClasses.actionToggle__unselected"
             )}`;
         }
 
@@ -189,12 +201,14 @@ class ActionToggle extends Foundation<
      * Checks to see if the toggle is displaying both glyph and text or not
      */
     private isSingleElement(): boolean {
-        if (this.props.selected) {
+        if (this.state.selected) {
             if (
                 isNullOrWhiteSpace(this.props.selectedText) ||
                 isNullOrUndefined(this.props.selectedGlyph)
             ) {
                 return true;
+            } else {
+                return false;
             }
         } else {
             if (
@@ -202,9 +216,10 @@ class ActionToggle extends Foundation<
                 isNullOrUndefined(this.props.unselectedGlyph)
             ) {
                 return true;
+            } else {
+                return false;
             }
         }
-        return false;
     }
 
     /**
@@ -214,7 +229,6 @@ class ActionToggle extends Foundation<
         if (typeof this.props.selected !== "boolean") {
             this.setState({ selected: !this.state.selected });
         }
-
         if (this.props.onChange) {
             this.props.onChange(e);
         }
