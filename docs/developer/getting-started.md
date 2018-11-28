@@ -6,7 +6,7 @@
 
 1. Install the latest stable versions of [Git](https://git-scm.com/download).
 1. Configure git user credentials for [every respository](https://help.github.com/articles/setting-your-username-in-git/#setting-your-git-username-for-every-repository-on-your-computer) or [single repository](https://help.github.com/articles/setting-your-username-in-git/#setting-your-git-username-for-a-single-repository)
-1. Install the LTS - Long Term Support version of [Node](https://nodejs.org/en).
+1. Install the LTS (Long Term Support) version of [Node](https://nodejs.org/en).
 
 ### Setup the source repository
 
