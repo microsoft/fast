@@ -21,6 +21,8 @@ export interface ScrollChange {
  */
 export interface OverflowChange extends ScrollChange {
     overflow: boolean;
+    // overflowStart: boolean;
+    // overflowEnd: boolean;
 }
 
 export interface HorizontalOverflowUnhandledProps
