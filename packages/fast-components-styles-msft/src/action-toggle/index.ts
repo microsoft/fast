@@ -111,13 +111,11 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = (
             display: "inline-block",
             position: "relative",
             width: "8px",
-            [applyLocalizedProperty("marginRight", "marginLeft", direction)]: "6px",
         },
         actionToggle_unselectedGlyph: {
             display: "inline-block",
             position: "relative",
             width: "8px",
-            [applyLocalizedProperty("marginRight", "marginLeft", direction)]: "6px",
         },
         actionToggle__primary: {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
@@ -153,9 +151,9 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = (
             },
         },
         actionToggle__disabled: {},
-        actionToggle__singleElement: {
+        actionToggle__hasGlyphAndContent: {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph,": {
-                [applyLocalizedProperty("marginRight", "marginLeft", direction)]: "0",
+                [applyLocalizedProperty("marginRight", "marginLeft", direction)]: "6px",
             },
         },
     };

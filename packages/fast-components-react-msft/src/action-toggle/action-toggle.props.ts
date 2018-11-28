@@ -12,9 +12,7 @@ import {
 } from "../button/button.props";
 
 export enum ActionToggleAppearance {
-    justified = ButtonAppearance.justified,
     lightweight = ButtonAppearance.lightweight,
-    outline = ButtonAppearance.outline,
     primary = ButtonAppearance.primary,
 }
 
@@ -23,16 +21,6 @@ export interface ActionToggleManagedClasses
 export interface ActionToggleHandledProps
     extends Omit<ButtonHandledProps, "appearance" | keyof ButtonManagedClasses>,
         ActionToggleManagedClasses {
-    /**
-     * The action toggle selected appearance
-     */
-    selectedAppearance?: ActionToggleAppearance;
-
-    /**
-     * The action toggle unselected appearance
-     */
-    unselectedAppearance?: ActionToggleAppearance;
-
     /**
      * The action toggle selected glyph render prop
      */
@@ -44,24 +32,24 @@ export interface ActionToggleHandledProps
     unselectedGlyph?: (className: string) => React.ReactNode;
 
     /**
-     * The action toggle selected text
+     * The action toggle selected content
      */
-    selectedText?: string;
+    selectedContent?: React.ReactNode;
+
+    /**
+     * The action toggle unselected content
+     */
+    unselectedContent?: React.ReactNode;
 
     /**
      * The action toggle unselected ARIA text
      */
-    unselectedARIALabel: string;
+    unselectedLabel: string;
 
     /**
      * The action toggle selected ARIA text
      */
-    selectedARIALabel: string;
-
-    /**
-     * The action toggle unselected text
-     */
-    unselectedText?: string;
+    selectedLabel: string;
 
     /**
      * The onChange event handler

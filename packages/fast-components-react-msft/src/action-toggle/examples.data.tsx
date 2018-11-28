@@ -12,12 +12,10 @@ export default {
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
-        selectedAppearance: ActionToggleAppearance.primary,
-        unselectedAppearance: ActionToggleAppearance.outline,
-        selectedText: "Pause",
-        unselectedText: "Play",
-        selectedARIALabel: "Pause",
-        unselectedARIALabel: "Play",
+        selectedContent: "Pause",
+        unselectedContent: "Play",
+        selectedLabel: "Pause",
+        unselectedLabel: "Play",
         selectedGlyph: (classname?: string): React.ReactNode => {
             return (
                 <svg
@@ -53,10 +51,6 @@ export default {
         {
             appearance: ActionToggleAppearance.lightweight,
             "data-sketch-symbol": "Action toggle - lightweight",
-        },
-        {
-            appearance: ActionToggleAppearance.outline,
-            "data-sketch-symbol": "Action toggle - outlined",
         },
     ],
 } as ComponentFactoryExample<ActionToggleProps>;

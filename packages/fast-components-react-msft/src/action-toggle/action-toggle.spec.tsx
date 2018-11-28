@@ -24,12 +24,10 @@ describe("action toggle", (): void => {
         actionToggle_selectedGlyph: "selectedGlyph",
         actionToggle_unselectedGlyph: "unselectedGlyph",
         actionToggle__primary: "action-toggle-primary",
-        actionToggle__outline: "action-toggle-outline",
         actionToggle__lightweight: "action-toggle-lightweight",
-        actionToggle__justified: "action-toggle-justified",
         actionToggle__disabled: "action-toggle-disabled",
         actionToggle__selected: "action-toggle-selected",
-        actionToggle__singleElement: "action-toggle-singleElement",
+        actionToggle__hasGlyphAndContent: "action-toggle-hasGlyphAndContent",
     };
     const href: string = "#";
 
@@ -40,25 +38,21 @@ describe("action toggle", (): void => {
     test("should not throw if managedClasses are not provided", () => {
         expect(() => {
             shallow(
-                <MSFTActionToggle
-                    selectedARIALabel="selected"
-                    unselectedARIALabel="unselected"
-                />
+                <MSFTActionToggle selectedLabel="selected" unselectedLabel="unselected" />
             );
         }).not.toThrow();
     });
 
     test("should create unselectedglyph element passed in", () => {
         const props: ActionToggleHandledProps = {
-            selectedARIALabel: "selected",
-            unselectedARIALabel: "unselected",
+            selectedLabel: "selected",
+            unselectedLabel: "unselected",
             selectedGlyph: (className?: string): React.ReactNode => {
                 return <div>X</div>;
             },
             unselectedGlyph: (className?: string): React.ReactNode => {
                 return <div>Y</div>;
             },
-            appearance: ActionToggleAppearance.primary,
         };
 
         const rendered: any = mount(<ActionToggle {...props} />);
@@ -68,8 +62,8 @@ describe("action toggle", (): void => {
 
     test("should create selectedglyph element passed in", () => {
         const props: ActionToggleHandledProps = {
-            selectedARIALabel: "selected",
-            unselectedARIALabel: "unselected",
+            selectedLabel: "selected",
+            unselectedLabel: "unselected",
             selectedGlyph: (className?: string): React.ReactNode => {
                 return <div>X</div>;
             },
@@ -77,7 +71,6 @@ describe("action toggle", (): void => {
                 return <div>Y</div>;
             },
             selected: true,
-            appearance: ActionToggleAppearance.primary,
         };
 
         const rendered: any = mount(<ActionToggle {...props} />);
@@ -89,9 +82,8 @@ describe("action toggle", (): void => {
         const handledProps: ActionToggleProps = {
             managedClasses,
             href,
-            selectedARIALabel: "selected",
-            unselectedARIALabel: "unselected",
-            children: "text",
+            selectedLabel: "selected",
+            unselectedLabel: "unselected",
         };
 
         const unhandledProps: ActionToggleUnhandledProps = {
@@ -105,66 +97,10 @@ describe("action toggle", (): void => {
         expect(rendered.first().prop("aria-label")).toEqual("label");
     });
 
-    test("should apply a 'primary' html class when appearance is primary", () => {
-        const props: ActionToggleHandledProps = {
-            selectedARIALabel: "selected",
-            unselectedARIALabel: "unselected",
-            appearance: ActionToggleAppearance.primary,
-        };
-
-        const rendered: any = mount(<ActionToggle {...props} />);
-
-        expect(rendered.find("button").prop("className")).toContain(
-            "actionToggle__primary"
-        );
-    });
-
-    test("should apply a 'lightweight' html class when appearance is lightweight", () => {
-        const props: ActionToggleHandledProps = {
-            selectedARIALabel: "selected",
-            unselectedARIALabel: "unselected",
-            appearance: ActionToggleAppearance.lightweight,
-        };
-
-        const rendered: any = mount(<ActionToggle {...props} />);
-
-        expect(rendered.find("button").prop("className")).toContain(
-            "actionToggle__lightweight"
-        );
-    });
-
-    test("should apply a 'justified' html class when appearance is justified", () => {
-        const props: ActionToggleHandledProps = {
-            selectedARIALabel: "selected",
-            unselectedARIALabel: "unselected",
-            appearance: ActionToggleAppearance.justified,
-        };
-
-        const rendered: any = mount(<ActionToggle {...props} />);
-
-        expect(rendered.find("button").prop("className")).toContain(
-            "actionToggle__justified"
-        );
-    });
-
-    test("should apply a 'outline' html class when appearance is outline", () => {
-        const props: ActionToggleHandledProps = {
-            selectedARIALabel: "selected",
-            unselectedARIALabel: "unselected",
-            appearance: ActionToggleAppearance.outline,
-        };
-
-        const rendered: any = mount(<ActionToggle {...props} />);
-
-        expect(rendered.find("button").prop("className")).toContain(
-            "actionToggle__outline"
-        );
-    });
-
     test("should apply a 'disabled' html class when prop disabled is passed", () => {
         const props: ActionToggleHandledProps = {
-            selectedARIALabel: "selected",
-            unselectedARIALabel: "unselected",
+            selectedLabel: "selected",
+            unselectedLabel: "unselected",
             disabled: true,
         };
 
@@ -175,27 +111,10 @@ describe("action toggle", (): void => {
         );
     });
 
-    test("should set a custom class name and 'primary' class name when appearance is primary and a custom class is passed", () => {
-        const props: ActionToggleHandledProps = {
-            selectedARIALabel: "selected",
-            unselectedARIALabel: "unselected",
-            appearance: ActionToggleAppearance.primary,
-        };
-
-        const rendered: any = mount(
-            <ActionToggle className={"custom-class-name"} {...props} />
-        );
-
-        expect(rendered.find("button").prop("className")).toContain("custom-class-name");
-        expect(rendered.find("button").prop("className")).toContain(
-            "actionToggle__primary"
-        );
-    });
-
     test("should apply a custom class-name", () => {
         const props: ActionToggleHandledProps = {
-            selectedARIALabel: "selected",
-            unselectedARIALabel: "unselected",
+            selectedLabel: "selected",
+            unselectedLabel: "unselected",
         };
 
         const rendered: any = mount(
@@ -207,8 +126,8 @@ describe("action toggle", (): void => {
 
     test("should apply the custom selected ARIA label", () => {
         const props: ActionToggleHandledProps = {
-            selectedARIALabel: "selected",
-            unselectedARIALabel: "unselected",
+            selectedLabel: "selected",
+            unselectedLabel: "unselected",
             selected: true,
         };
 
@@ -221,8 +140,8 @@ describe("action toggle", (): void => {
 
     test("should apply the custom unselected ARIA label", () => {
         const props: ActionToggleHandledProps = {
-            selectedARIALabel: "selected",
-            unselectedARIALabel: "unselected",
+            selectedLabel: "selected",
+            unselectedLabel: "unselected",
             selected: false,
         };
 
@@ -235,8 +154,8 @@ describe("action toggle", (): void => {
 
     test("should call a registered callback after a change event", () => {
         const props: ActionToggleHandledProps = {
-            selectedARIALabel: "selected",
-            unselectedARIALabel: "unselected",
+            selectedLabel: "selected",
+            unselectedLabel: "unselected",
         };
         const onChange: any = jest.fn();
         const rendered: any = mount(
@@ -258,8 +177,8 @@ describe("action toggle", (): void => {
 
     test("should apply selected class after click event", () => {
         const props: ActionToggleHandledProps = {
-            selectedARIALabel: "selected",
-            unselectedARIALabel: "unselected",
+            selectedLabel: "selected",
+            unselectedLabel: "unselected",
         };
         const onChange: any = jest.fn();
         const rendered: any = mount(
@@ -281,8 +200,8 @@ describe("action toggle", (): void => {
 
     test("should not apply selected class after click event when props specify selected = false", () => {
         const props: ActionToggleHandledProps = {
-            selectedARIALabel: "selected",
-            unselectedARIALabel: "unselected",
+            selectedLabel: "selected",
+            unselectedLabel: "unselected",
             selected: false,
         };
         const onChange: any = jest.fn();
@@ -303,54 +222,29 @@ describe("action toggle", (): void => {
         );
     });
 
-    test("should apply a single element class when display is text only", () => {
+    test("should apply a hasGlyphAndContent class when display is content only", () => {
         const props: ActionToggleHandledProps = {
-            selectedARIALabel: "selected",
-            unselectedARIALabel: "unselected",
-            selectedText: "selected",
-            unselectedText: "unselected",
+            selectedLabel: "selected",
+            unselectedLabel: "unselected",
+            selectedContent: "selected",
+            unselectedContent: "unselected",
         };
 
         const rendered: any = mount(<ActionToggle {...props} />);
-        expect(rendered.find("button").prop("className")).toContain(
-            "actionToggle__singleElement"
+        expect(rendered.find("button").prop("className")).not.toContain(
+            "actionToggle__hasGlyphAndContent"
         );
 
         rendered.find("button").simulate("click");
-        expect(rendered.find("button").prop("className")).toContain(
-            "actionToggle__singleElement"
+        expect(rendered.find("button").prop("className")).not.toContain(
+            "actionToggle__hasGlyphAndContent"
         );
     });
 
-    test("should apply a single element class when display is glyph only", () => {
+    test("should not apply a hasGlyphandContent  class when display is glyph only", () => {
         const props: ActionToggleHandledProps = {
-            selectedARIALabel: "selected",
-            unselectedARIALabel: "unselected",
-            selectedGlyph: (className?: string): React.ReactNode => {
-                return <div>X</div>;
-            },
-            unselectedGlyph: (className?: string): React.ReactNode => {
-                return <div>Y</div>;
-            },
-        };
-
-        const rendered: any = mount(<ActionToggle {...props} />);
-        expect(rendered.find("button").prop("className")).toContain(
-            "actionToggle__singleElement"
-        );
-
-        rendered.find("button").simulate("click");
-        expect(rendered.find("button").prop("className")).toContain(
-            "actionToggle__singleElement"
-        );
-    });
-
-    test("should not apply a single element class when display includes text and glyph", () => {
-        const props: ActionToggleHandledProps = {
-            selectedARIALabel: "selected",
-            unselectedARIALabel: "unselected",
-            selectedText: "selected",
-            unselectedText: "unselected",
+            selectedLabel: "selected",
+            unselectedLabel: "unselected",
             selectedGlyph: (className?: string): React.ReactNode => {
                 return <div>X</div>;
             },
@@ -361,12 +255,37 @@ describe("action toggle", (): void => {
 
         const rendered: any = mount(<ActionToggle {...props} />);
         expect(rendered.find("button").prop("className")).not.toContain(
-            "actionToggle__singleElement"
+            "actionToggle__hasGlyphandContent"
         );
 
         rendered.find("button").simulate("click");
         expect(rendered.find("button").prop("className")).not.toContain(
-            "actionToggle__singleElement"
+            "actionToggle__hasGlyphandContent"
+        );
+    });
+
+    test("should apply a hasGlyphandContent class when display includes content and glyph", () => {
+        const props: ActionToggleHandledProps = {
+            selectedLabel: "selected",
+            unselectedLabel: "unselected",
+            selectedContent: "selected",
+            unselectedContent: "unselected",
+            selectedGlyph: (className?: string): React.ReactNode => {
+                return <div>X</div>;
+            },
+            unselectedGlyph: (className?: string): React.ReactNode => {
+                return <div>Y</div>;
+            },
+        };
+
+        const rendered: any = mount(<ActionToggle {...props} />);
+        expect(rendered.find("button").prop("className")).toContain(
+            "actionToggle__hasGlyphAndContent"
+        );
+
+        rendered.find("button").simulate("click");
+        expect(rendered.find("button").prop("className")).toContain(
+            "actionToggle__hasGlyphAndContent"
         );
     });
 });
