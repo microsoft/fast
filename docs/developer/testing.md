@@ -1,6 +1,6 @@
 # Testing guidance
 
-Prior to reviewing with key stakeholders, it's recommended to perform this series of tests to build the confidence that you've met your customers' expectations.
+When building Web sites and apps on FAST-DNA it's recommended to perform exhaustive testing to instill the confidence that you've met your customers' expectations.
 
 ## Quality checklist
 
