@@ -122,7 +122,10 @@ export { TypographyStyles };
  */
 export * from "./utilities/acrylic";
 export * from "./utilities/breakpoints";
+export * from "./utilities/colors";
+export * from "./utilities/density";
 export * from "./utilities/elevation";
 export * from "./utilities/fonts";
+export * from "./utilities/height";
 export * from "./utilities/keyof-to-type";
 export * from "./utilities/typography";
