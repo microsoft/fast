@@ -13,7 +13,7 @@ import {
     hoverContrast,
 } from "../utilities/colors";
 import { contrast, scaleContrast } from "@microsoft/fast-jss-utilities";
-import { applyType, TypeRamp } from "../utilities/typography";
+import { applyTypeRampConfig } from "../utilities/typography";
 
 const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = {
     contextMenuItem: {
@@ -28,7 +28,7 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         whiteSpace: "nowrap",
         overflow: "hidden",
         cursor: "default",
-        ...applyType("t7", "vp1"),
+        ...applyTypeRampConfig("t7"),
         background: backgroundColor,
         "&:focus": {
             outline: "none",
