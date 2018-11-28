@@ -35,12 +35,6 @@ JSS class-name contracts follow a [BEM-like](http://getbem.com/naming/) conventi
 
 BEM for FAST-DNA is slightly modified because dashes (the character used to delimit *modifiers*) cannot be used as JavaScript object keys without using string literals. So, underscores are used instead. A single underscore separates an element from a block while two underscores separate a modifier from a block or element.
 
-BEM example
-
-```html
-block__element--modifier
-```
-
 FAST-DNA example
 
 ```html
