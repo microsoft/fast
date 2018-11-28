@@ -6,7 +6,7 @@ Well crafted issues improve the speed that work can be triaged, understood, and 
 
 Here's a good resource for [Do's and Don'ts](https://hackernoon.com/45-github-issues-dos-and-donts-dfec9ab4b612) when working with bugs, issues, and requests.
 
-[GitHub Labels](https://developer.github.com/v3/issues/labels/) are used to manage issues broadly considered work items. Some are categorized and grouped color and prefixed label name.
+[GitHub Labels](https://developer.github.com/v3/issues/labels/) are used to manage issues broadly considered work items grouped by color and prefixed by label name.
 
 ## Pull requests
 
