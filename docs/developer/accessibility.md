@@ -1,6 +1,6 @@
 # Accessibility
 
-FAST-DNA has worked diligently from the ground up to enable accessibility in collaboration with legal, accessibility, and marketing teams at Microsoft. As an ecosystem to accelerate the build of Web sites and apps we ensure you have the tools to build accessible user exerpiences.
+FAST-DNA has worked diligently from the ground up to enable accessibility in collaboration with legal, accessibility, and marketing teams at Microsoft. As an ecosystem to accelerate the building of Web sites and apps we ensure you have the tools to build accessible user exerpiences.
 
 To learn more about Microsoft's commitment visit their [accessibility](https://www.microsoft.com/en-us/accessibility) website.
 
