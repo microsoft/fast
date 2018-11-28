@@ -2,7 +2,7 @@
 
 ## Issues
 
-Well crafted issues improve the speed that work can be triaged, understood, and completed. To help guide this process [issue templates](https://github.com/Microsoft/fast-dna/tree/master/.github/ISSUE_TEMPLATE) exist to allow users to choose an appropriate bug, issue, or custom template.
+Well crafted issues improve the speed that work can be triaged, understood, and completed. To help guide this process [issue templates](https://github.com/Microsoft/fast-dna/tree/master/.github/ISSUE_TEMPLATE) exists to allow users to choose an appropriate bug, issue, or custom template.
 
 Here's a good resource for [Do's and Don'ts](https://hackernoon.com/45-github-issues-dos-and-donts-dfec9ab4b612) when working with bugs, issues, and requests.
 
@@ -34,13 +34,13 @@ Each PR, analyzes changing code to automatically assign [Code Owners](https://gi
 
 Accepted title format
 
-``` comment
+```comment
 <type>: <description>
 ```
 
 Example titles
 
-``` comment
+```comment
 feat: add a border radius to MSFT button
 chore: add unit-tests for all components
 fix: update MSFT design system to use 3px border radius
@@ -56,7 +56,7 @@ Optionally, include more detail in the message.
 
 Accepted message format
 
-``` comment
+```comment
 <body>
 
 <footer>
@@ -64,7 +64,7 @@ Accepted message format
 
 Example message
 
-``` comment
+```comment
 Sequence indicators markup is now located after the slider markup to at the top for improved accessibility because the screen reader can read all of the slide options individually before interacting with the slider.
 
 closes #213
