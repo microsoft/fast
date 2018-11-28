@@ -43,17 +43,15 @@ class ActionToggle extends Foundation<
     }
 
     protected handledProps: HandledProps<ActionToggleHandledProps> = {
-        selectedAppearance: void 0,
-        unselectedAppearance: void 0,
         managedClasses: void 0,
         disabled: void 0,
         selected: void 0,
         selectedGlyph: void 0,
         unselectedGlyph: void 0,
-        selectedText: void 0,
-        unselectedText: void 0,
-        selectedARIALabel: void 0,
-        unselectedARIALabel: void 0,
+        selectedContent: void 0,
+        unselectedContent: void 0,
+        selectedLabel: void 0,
+        unselectedLabel: void 0,
     };
 
     /**
@@ -85,16 +83,15 @@ class ActionToggle extends Foundation<
             >
                 {this.renderGlyph()}
                 {this.renderLabel()}
-                {this.props.children}
             </Button>
         );
     }
 
     public getAppearance(): ActionToggleAppearance {
         if (this.state.selected) {
-            return this.props.selectedAppearance;
+            return ActionToggleAppearance.primary;
         } else {
-            return this.props.unselectedAppearance;
+            return ActionToggleAppearance.lightweight;
         }
     }
 
@@ -103,20 +100,20 @@ class ActionToggle extends Foundation<
      */
     public renderARIALabel(): string {
         if (this.state.selected) {
-            return this.props.selectedARIALabel;
+            return this.props.selectedLabel;
         } else {
-            return this.props.unselectedARIALabel;
+            return this.props.unselectedLabel;
         }
     }
 
     /**
      * Returns the appropriate text label
      */
-    public renderLabel(): string {
+    public renderLabel(): React.ReactNode {
         if (this.state.selected) {
-            return this.props.selectedText;
+            return this.props.selectedContent;
         } else {
-            return this.props.unselectedText;
+            return this.props.unselectedContent;
         }
     }
 
@@ -167,15 +164,19 @@ class ActionToggle extends Foundation<
                 this.props,
                 "managedClasses.actionToggle__selected"
             )}`;
-            classNames = `${classNames} ${this.getAppearanceString(this.props.selectedAppearance)}`;
+            classNames = `${classNames} ${this.getAppearanceString(
+                ActionToggleAppearance.primary
+            )}`;
         } else {
-            classNames = `${classNames} ${this.getAppearanceString(this.props.unselectedAppearance)}`;
+            classNames = `${classNames} ${this.getAppearanceString(
+                ActionToggleAppearance.lightweight
+            )}`;
         }
 
-        if (this.isSingleElement()) {
+        if (this.hasGlyphAndContent()) {
             classNames = `${classNames} ${get(
                 this.props,
-                "managedClasses.actionToggle__singleElement"
+                "managedClasses.actionToggle__hasGlyphAndContent"
             )}`;
         }
 
@@ -185,54 +186,21 @@ class ActionToggle extends Foundation<
     private getAppearanceString(appearance: ActionToggleAppearance): string {
         switch (appearance) {
             case ActionToggleAppearance.primary:
-                return get(
-                    this.props,
-                    "managedClasses.actionToggle__primary"
-                );
+                return get(this.props, "managedClasses.actionToggle__primary");
             case ActionToggleAppearance.lightweight:
-                return get(
-                    this.props,
-                    "managedClasses.actionToggle__lightweight"
-                );
-            case ActionToggleAppearance.justified:
-                return get(
-                    this.props,
-                    "managedClasses.actionToggle__justified"
-                );
-            case ActionToggleAppearance.outline:
-                return get(
-                    this.props,
-                    "managedClasses.actionToggle__outline"
-                );
+                return get(this.props, "managedClasses.actionToggle__lightweight");
         }
     }
 
     /**
-     * Checks to see if the toggle is displaying both glyph and text or not
+     * Checks to see if the toggle is displaying both glyph and content or not
      */
-    private isSingleElement(): boolean {
-        return this.state.selected ?  
-        isNullOrUndefined(this.props.selectedGlyph) || isNullOrWhiteSpace(this.props.selectedText) 
-        : isNullOrUndefined(this.props.unselectedGlyph) || isNullOrWhiteSpace(this.props.unselectedText)
-        // if (this.state.selected) {
-        //     if (
-        //         isNullOrWhiteSpace(this.props.selectedText) ||
-        //         isNullOrUndefined(this.props.selectedGlyph)
-        //     ) {
-        //         return true;
-        //     } else {
-        //         return false;
-        //     }
-        // } else {
-        //     if (
-        //         isNullOrWhiteSpace(this.props.unselectedText) ||
-        //         isNullOrUndefined(this.props.unselectedGlyph)
-        //     ) {
-        //         return true;
-        //     } else {
-        //         return false;
-        //     }
-        // }
+    private hasGlyphAndContent(): boolean {
+        return this.state.selected
+            ? !isNullOrUndefined(this.props.selectedGlyph) &&
+                  !isNullOrUndefined(this.props.selectedContent)
+            : !isNullOrUndefined(this.props.unselectedGlyph) &&
+                  !isNullOrUndefined(this.props.unselectedContent);
     }
 
     /**

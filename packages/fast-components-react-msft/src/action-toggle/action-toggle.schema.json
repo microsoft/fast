@@ -13,50 +13,23 @@
             "title": "Selected",
             "type": "boolean"
         },
-        "selectedText": {
+        "selectedContent": {
             "title": "Selected text",
-            "type": "string"
+            "type": "object"
         },
-        "unselectedText": {
+        "unselectedContent": {
             "title": "Unselected text",
+            "type": "object"
+        },
+        "selectedLabel": {
+            "title": "Selected label",
             "type": "string"
         },
-        "selectedARIALabel": {
-            "title": "Selected ARIA text",
+        "unselectedLabel": {
+            "title": "Unselected label",
             "type": "string"
-        },
-        "unselectedARIALabel": {
-            "title": "Unselected ARIA text",
-            "type": "string"
-        },
-        "selectedAppearance": {
-            "title": "Selected Appearance",
-            "type": "string",
-            "default": "primary",
-            "enum": [
-                "primary",
-                "lightweight",
-                "outline"
-            ]
-        },
-        "unselectedAppearance": {
-            "title": "Unselected Appearance",
-            "type": "string",
-            "default": "outline",
-            "enum": [
-                "primary",
-                "lightweight",
-                "outline"
-            ]
         }
     },
     "reactProperties": {
-        "children": {
-            "title": "Building blocks",
-            "type": "children",
-            "defaults": [
-                "text"
-            ]
-        }
     }
 }

@@ -26,19 +26,9 @@ export interface ActionToggleClassNameContract {
     actionToggle__primary?: string;
 
     /**
-     * The outline appearance modifier
-     */
-    actionToggle__outline?: string;
-
-    /**
      * The lightweight appearance modifier
      */
     actionToggle__lightweight?: string;
-
-    /**
-     * The justified appearance modifier
-     */
-    actionToggle__justified?: string;
 
     /**
      * The disabled modifier
@@ -48,5 +38,5 @@ export interface ActionToggleClassNameContract {
     /**
      * The single element modifier
      */
-    actionToggle__singleElement?: string;
+    actionToggle__hasGlyphAndContent?: string;
 }
