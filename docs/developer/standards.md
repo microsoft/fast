@@ -14,16 +14,9 @@ The following standards are used by FAST-DNA contributors for consistency across
 * Use names that are clear and intuitive
 * Use semantic names instead of presentational
 
-## Spacing
-
-* Use 4 spaces for tabs
-* Use { open and close } brackets on new lines
-* Use blank lines before and after conditions
-* Use blank lines before the start of a new comment
-
 ## Code commenting
 
-* For work to commplete later use `// TODO <issue number>: <title>` and file new issue
+* For work to complete later use `// TODO <issue number>: <title>` and file new issue
 * For work considered a hack use `// HACK <issue number>: <title>` and file new issue
 * Be verbose and do explain what you're doing and why you're doing it
 * Use `//` for single line comment blocks
