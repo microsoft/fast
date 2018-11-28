@@ -20,7 +20,7 @@ The following standards are used by FAST-DNA contributors for consistency across
 * For work considered a hack use `// HACK <issue number>: <title>` and file new issue
 * Be verbose and do explain what you're doing and why you're doing it
 * Use `//` for single line comment blocks
-* Use ` /* */` for multiple line comment blocks
+* Use `/* */` for multiple line comment blocks
 
 ## HTML
 
