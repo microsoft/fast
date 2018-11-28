@@ -63,9 +63,19 @@ class HorizontalOverflow extends Foundation<
     private throttledResize: throttle;
 
     /**
-     * Stores the overflow status
+     * Stores the overall overflow status
      */
     private overflow: boolean;
+
+    /**
+     * Stores the overallStart status
+     */
+    private overflowStart: boolean;
+
+    /**
+     * Stores the overallEnd status
+     */
+    private overflowEnd: boolean;
 
     /**
      * Constructor
@@ -198,6 +208,19 @@ class HorizontalOverflow extends Foundation<
         if (typeof this.props.onScrollChange === "function") {
             this.props.onScrollChange(this.getScrollChangeData());
         }
+
+        // If the onOverflowChange callback exist, we want to update overflow
+        // based on scroll change
+        if (typeof this.props.onOverflowChange === "function") {
+            const positionData: ScrollChange = this.getScrollChangeData();
+
+            if (
+                this.overflowStart === positionData.start ||
+                this.overflowEnd === positionData.end
+            ) {
+                this.handleOverflowChange();
+            }
+        }
     };
 
     /**
@@ -276,10 +299,19 @@ class HorizontalOverflow extends Foundation<
     private handleOverflowChange = (): void => {
         this.overflow = this.isOverflow();
 
+        if (this.overflow) {
+            const positionData: ScrollChange = this.getScrollChangeData();
+            this.overflowStart = !positionData.start;
+            this.overflowEnd = !positionData.end;
+        } else {
+            this.overflowStart = false;
+            this.overflowEnd = false;
+        }
+
         if (typeof this.props.onOverflowChange === "function") {
             this.props.onOverflowChange({
-                ...this.getScrollChangeData(),
-                overflow: this.overflow,
+                overflowStart: this.overflowStart,
+                overflowEnd: this.overflowEnd,
             });
         }
     };

@@ -16,13 +16,14 @@ export interface ScrollChange {
 
 /**
  * Overflow interface for consumers
- * Includes all properties found in ScrollChange
- * 'overflow' is true when there are enough items to cause overflow
+ * When both are false, there is no overflow
+ * When both are true, there is overflow on either side
+ * 'overflowStart' is true when there are items to the left in LTR (right in RTL)
+ * 'overflowEnd' is true when there are items to the right in LTR (left in RTL)
  */
-export interface OverflowChange extends ScrollChange {
-    overflow: boolean;
-    // overflowStart: boolean;
-    // overflowEnd: boolean;
+export interface OverflowChange {
+    overflowStart: boolean;
+    overflowEnd: boolean;
 }
 
 export interface HorizontalOverflowUnhandledProps
@@ -42,7 +43,7 @@ export interface HorizontalOverflowHandledProps extends HorizontalOverflowManage
 
     /**
      * Callback for on overflow change
-     * Use `onOverflowChange` to know if there are enough items to cause overflow
+     * Use `onOverflowChange` to know if there are enough items to cause overflow, and where the overflow occurs
      */
     onOverflowChange?: (overflowObject: OverflowChange) => void;
 
