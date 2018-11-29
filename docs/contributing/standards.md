@@ -8,25 +8,11 @@ sidebar_label: Standards
 
 The following standards are used by FAST-DNA contributors for consistency across this repository.
 
-## Core principles
-
-* Build for maintainability
-* Build for scalability
-* Build for performance
-
 ## Naming Conventions
 
 * Avoid all abbreviations, except where common industry acronyms
 * Use names that are clear and intuitive
 * Use semantic names instead of presentational
-
-## Code commenting
-
-* For work to complete later use `// TODO <issue number>: <title>` and file new issue
-* For work considered a hack use `// HACK <issue number>: <title>` and file new issue
-* Be verbose and do explain what you're doing and why you're doing it
-* Use `//` for single line comment blocks
-* Use `/* */` for multiple line comment blocks
 
 ## Accessibility
 
@@ -34,7 +20,7 @@ FAST-DNA has worked diligently from the ground up to enable accessibility in col
 
 To learn more about Microsoft's commitment visit their [accessibility](https://www.microsoft.com/en-us/accessibility) website.
 
-## Animation
+### Animation
 
 * End users should have a mechanism to reduce or remove animations from their experience. The Safari devs have proposed a media query for reduced animation. ("prefers-reduced-motion")
 * Some users with vestibular disorders or other cognitive disabilities have problems with movement. A safe fallback for nearly all users is fade animations.
