@@ -12,7 +12,7 @@ import {
     HorizontalOverflowHandledProps,
     HorizontalOverflowProps,
     HorizontalOverflowUnhandledProps,
-    ScrollChange,
+    PositionChange,
 } from "./horizontal-overflow.props";
 import throttle from "raf-throttle";
 import {
@@ -206,13 +206,13 @@ class HorizontalOverflow extends Foundation<
      */
     private onScrollChange = (): void => {
         if (typeof this.props.onScrollChange === "function") {
-            this.props.onScrollChange(this.getScrollChangeData());
+            this.props.onScrollChange(this.getPositionData());
         }
 
         // If the onOverflowChange callback exist, we want to update overflow
         // based on scroll change
         if (typeof this.props.onOverflowChange === "function") {
-            const positionData: ScrollChange = this.getScrollChangeData();
+            const positionData: PositionChange = this.getPositionData();
 
             if (
                 this.overflowStart === positionData.start ||
@@ -226,7 +226,7 @@ class HorizontalOverflow extends Foundation<
     /**
      * Get the scroll change data
      */
-    private getScrollChangeData = (): ScrollChange => {
+    private getPositionData = (): PositionChange => {
         const isLtr: boolean = this.getLTR() === Direction.ltr;
         const distanceRemaining: number =
             this.horizontalOverflowItemsRef.current.scrollWidth -
@@ -300,7 +300,7 @@ class HorizontalOverflow extends Foundation<
         this.overflow = this.isOverflow();
 
         if (this.overflow) {
-            const positionData: ScrollChange = this.getScrollChangeData();
+            const positionData: PositionChange = this.getPositionData();
             this.overflowStart = !positionData.start;
             this.overflowEnd = !positionData.end;
         } else {

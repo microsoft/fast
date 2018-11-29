@@ -8,8 +8,9 @@ import {
  * Scroll interface for consumers
  * 'start' is when the horizontal overflow scroll is all the way left in LTR (all the way right in RTL)
  * 'end' is when the horizontal overflow scroll is all the right in LTR (all the way left in RTL)
+ * TODO #1177: Change interface property names to be more meaningful
  */
-export interface ScrollChange {
+export interface PositionChange {
     start: boolean;
     end: boolean;
 }
@@ -51,7 +52,7 @@ export interface HorizontalOverflowHandledProps extends HorizontalOverflowManage
      * Callback for on scroll change
      * Use `onScrollChange` to receive if scroll is at the start or end of the overflow set
      */
-    onScrollChange?: (scrollObject: ScrollChange) => void;
+    onScrollChange?: (scrollObject: PositionChange) => void;
 }
 
 export type HorizontalOverflowProps = HorizontalOverflowHandledProps &
