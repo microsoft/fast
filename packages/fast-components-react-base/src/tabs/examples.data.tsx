@@ -6,6 +6,7 @@ import {
 } from "@microsoft/fast-components-class-name-contracts-base";
 import Tabs, {
     Tab,
+    TabItemData,
     TabItem,
     TabManagedClasses,
     TabPanel,
@@ -13,6 +14,7 @@ import Tabs, {
     TabsHandledProps,
     TabsManagedClasses,
     TabsSlot,
+    TabConfig,
     TabsUnhandledProps,
 } from "./index";
 import schema from "./tabs.schema.json";
@@ -244,6 +246,32 @@ const exampleChildren4: any[] = [
     },
 ];
 
+function renderTab(): (className?: string) => React.ReactNode {
+    return (className?: string): React.ReactNode => <div>Tab One sdsadnjkas</div>;
+}
+
+function renderTabContent(): (className?: string) => React.ReactNode {
+    return (className?: string): React.ReactNode => <div>Tab One Content</div>;
+}
+
+const myTabData: TabItemData[] = [
+    {
+        tab: renderTab(),
+        content: renderTabContent(),
+        id: "tab01",
+    },
+    {
+        tab: renderTab(),
+        content: renderTabContent(),
+        id: "tab02",
+    },
+    {
+        tab: renderTab(),
+        content: renderTabContent(),
+        id: "tab03",
+    },
+];
+
 const examples: ComponentFactoryExample<TabsHandledProps> = {
     name: "Tabs",
     component: Tabs,
@@ -252,7 +280,8 @@ const examples: ComponentFactoryExample<TabsHandledProps> = {
     detailData: {
         ...tabsManagedClasses,
         label: "A set of example text content",
-        children: detailChildren,
+        tabItemData: myTabData,
+        activeId: "tab01",
     },
     data: [
         {

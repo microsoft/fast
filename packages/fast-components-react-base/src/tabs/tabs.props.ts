@@ -5,6 +5,22 @@ import {
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { Orientation } from "@microsoft/fast-web-utilities";
 
+export interface TabConfig {
+    className: string;
+    key: string;
+    "aria-controls": string;
+    active: boolean;
+    onClick: (e: React.MouseEvent) => void;
+    onKeyDown: (e: React.KeyboardEvent) => void;
+    tabIndex: number;
+}
+
+export interface TabItemData {
+    tab: (className: string) => React.ReactNode;
+    content: (className: string) => React.ReactNode;
+    id: string;
+}
+
 export interface TabsManagedClasses extends ManagedClasses<TabsClassNameContract> {}
 export interface TabsUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
 export interface TabsHandledProps extends TabsManagedClasses {
@@ -48,6 +64,11 @@ export interface TabsHandledProps extends TabsManagedClasses {
      * A string to use for the slot property for tab children
      */
     tabSlot?: string;
+
+    /**
+     * The tabs' tab item
+     */
+    tabItemData?: TabItemData[];
 }
 
 export type TabsProps = TabsHandledProps & TabsUnhandledProps;

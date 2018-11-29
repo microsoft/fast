@@ -9,9 +9,28 @@ import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-
 import {
     TabsHandledProps,
     TabsManagedClasses,
+    TabConfig,
+    TabItemData,
     TabsProps,
     TabsUnhandledProps,
 } from "./tabs.props";
+import Tab, { TabManagedClasses } from "./tab";
+import TabItem from "./tab-item";
+import TabPanel, { TabPanelManagedClasses } from "./tab-panel";
+
+const tabManagedClasses: TabManagedClasses = {
+    managedClasses: {
+        tab: "tab-class",
+        tab__active: "tab__active-class",
+    },
+};
+
+const tabPanelManagedClasses: TabPanelManagedClasses = {
+    managedClasses: {
+        tabPanel: "tab_panel-class",
+        tabPanel__hidden: "tab_panel__hidden-class",
+    },
+};
 
 export enum TabLocation {
     first,
@@ -33,22 +52,6 @@ export interface TabsState {
 class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
     public static displayName: string = "Tabs";
 
-    /**
-     * React life-cycle method
-     */
-    public static getDerivedStateFromProps(
-        nextProps: TabsProps,
-        prevState: TabsState
-    ): null | TabsState {
-        if (nextProps.activeId && nextProps.activeId !== prevState.activeId) {
-            return {
-                activeId: nextProps.activeId,
-            };
-        }
-
-        return null;
-    }
-
     protected handledProps: HandledProps<TabsHandledProps> = {
         activeId: void 0,
         label: void 0,
@@ -58,6 +61,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
         tabItemSlot: void 0,
         tabPanelSlot: void 0,
         tabSlot: void 0,
+        tabItemData: void 0,
     };
 
     /**
@@ -68,7 +72,13 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
     constructor(props: TabsProps) {
         super(props);
 
-        const tabItems: React.ReactNode[] = React.Children.toArray(this.tabItems());
+        let tabItems: React.ReactNode[];
+
+        if (this.props.tabItemData) {
+            tabItems = this.props.tabItemData;
+        } else {
+            tabItems = React.Children.toArray(this.tabItems());
+        }
 
         this.tabListRef = React.createRef();
 
@@ -143,24 +153,66 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
     }
 
     private tabItems(): React.ReactNode {
-        return this.getChildrenBySlot(
-            this.props.children,
-            this.getSlot(TabsSlot.tabItem)
-        );
+        let array;
+        if (this.props.tabItemData) {
+            array = this.props.tabItemData.map((tabItem: TabItemData) => {
+                return (
+                    <TabItem id={this.props.id} slot={TabsSlot.tabItem}>
+                        <Tab
+                            {...tabManagedClasses}
+                            slot={TabsSlot.tab}
+                            key={tabItem.id}
+                            aria-controls={tabItem.id}
+                            active={this.state.activeId === tabItem.id}
+                            onClick={this.handleClick}
+                            onKeyDown={this.handleKeyDown}
+                            tabIndex={this.state.activeId !== tabItem.id ? -1 : 0}
+                        >
+                            {tabItem.tab("")}
+                        </Tab>
+                        <TabPanel
+                            {...tabPanelManagedClasses}
+                            slot={TabsSlot.tabPanel}
+                            key={tabItem.id}
+                            id={tabItem.id}
+                            aria-labelledby={tabItem.id}
+                            active={this.state.activeId === tabItem.id}
+                        >
+                            {tabItem.content("")}
+                        </TabPanel>
+                    </TabItem>
+                );
+            });
+        } else {
+            array = this.getChildrenBySlot(
+                this.props.children,
+                this.getSlot(TabsSlot.tabItem)
+            );
+        }
+        return array;
     }
 
     private renderTabItem = (tabItem: JSX.Element, index: number): JSX.Element => {
-        return React.cloneElement(
-            this.getChildrenBySlot(tabItem.props.children, this.getSlot(TabsSlot.tab))[0],
-            {
-                key: tabItem.props.id,
-                "aria-controls": tabItem.props.id,
-                active: this.state.activeId === tabItem.props.id,
-                onClick: this.handleClick,
-                onKeyDown: this.handleKeyDown,
-                tabIndex: this.state.activeId !== tabItem.props.id ? -1 : 0,
-            }
-        );
+        if (!this.props.tabItemData) {
+            return React.cloneElement(
+                this.getChildrenBySlot(
+                    tabItem.props.children,
+                    this.getSlot(TabsSlot.tab)
+                )[0],
+                {
+                    key: tabItem.props.id,
+                    "aria-controls": tabItem.props.id,
+                    active: this.state.activeId === tabItem.props.id,
+                    onClick: this.handleClick,
+                    onKeyDown: this.handleKeyDown,
+                    tabIndex: this.state.activeId !== tabItem.props.id ? -1 : 0,
+                }
+            );
+        }
+        return this.getChildrenBySlot(
+            tabItem.props.children,
+            this.getSlot(TabsSlot.tab)
+        )[0];
     };
 
     /**
@@ -171,31 +223,48 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
     }
 
     private renderTabPanel = (tabItem: JSX.Element, index: number): JSX.Element => {
-        return React.cloneElement(
-            this.getChildrenBySlot(
-                tabItem.props.children,
-                this.getSlot(TabsSlot.tabPanel)
-            )[0],
-            {
-                key: tabItem.props.id,
-                id: tabItem.props.id,
-                "aria-labelledby": tabItem.props.id,
-                active: this.state.activeId === tabItem.props.id,
-            }
-        );
+        if (!this.props.tabItemData) {
+            return React.cloneElement(
+                this.getChildrenBySlot(
+                    tabItem.props.children,
+                    this.getSlot(TabsSlot.tabPanel)
+                )[0],
+                {
+                    key: tabItem.props.id,
+                    id: tabItem.props.id,
+                    "aria-labelledby": tabItem.props.id,
+                    active: this.state.activeId === tabItem.props.id,
+                }
+            );
+        }
+        return this.getChildrenBySlot(
+            tabItem.props.children,
+            this.getSlot(TabsSlot.tabPanel)
+        )[0];
     };
 
     /**
      * Handles the click event on the tab element
      */
     private handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
-        if (!this.props.activeId) {
-            this.setState({
-                activeId: e.currentTarget.getAttribute("aria-controls"),
-            });
-        } else if (typeof this.props.onUpdate === "function") {
-            this.props.onUpdate(e.currentTarget.getAttribute("aria-controls"));
-        }
+        console.log(
+            "Click Active?",
+            this.state.activeId,
+            this.props.activeId,
+            e.currentTarget.getAttribute("aria-controls")
+        );
+        this.setState({
+            activeId: e.currentTarget.getAttribute("aria-controls"),
+        });
+        // if (!this.props.activeId) {
+        //     console.log("Should set State")
+        //     this.setState({
+        //         activeId: e.currentTarget.getAttribute("aria-controls"),
+        //     });
+        // } else if (typeof this.props.onUpdate === "function") {
+        //     console.log("not set State")
+        //     this.props.onUpdate(e.currentTarget.getAttribute("aria-controls"));
+        // }
     };
 
     /**
