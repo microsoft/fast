@@ -35,7 +35,7 @@ import { Label } from "../src/label";
 /* tslint:disable-next-line */
 const sketchDesignKit = require("./fast-dna-msft-design-kit.sketch");
 
-const formChildOptions: FormChildOption[] = [reactHTMLElementExamples].concat(
+const formChildOptions: FormChildOption[] = reactHTMLElementExamples.concat(
     formChildFromExamplesFactory(Object.assign({}, Foundation, Pattern))
 );
 

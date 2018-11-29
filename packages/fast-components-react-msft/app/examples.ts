@@ -1,6 +1,9 @@
 const Foundation: any = {};
 const Pattern: any = {};
 
+import ActionTriggerExamples from "../src/action-trigger/examples.data";
+Pattern.ActionTriggerExamples = ActionTriggerExamples;
+
 import BreadcrumbExamples from "../src/breadcrumb/examples.data";
 Foundation.BreadcrumbExamples = BreadcrumbExamples;
 
