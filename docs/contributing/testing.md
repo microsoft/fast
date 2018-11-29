@@ -137,3 +137,11 @@ _When running as CLI, the results can be viewed as printed out to the command sc
 ## Cross browser testing
 
 You can read more from [Mozilla](https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Introduction) on cross browser testing and processes.
+
+Click on the links below to report browser bugs.
+
++ [Edge](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/)
++ [Firefox](https://bugzilla.mozilla.org/)
++ [Safari](https://bugs.webkit.org/)
++ [Chrome](https://bugs.chromium.org/p/chromium/issues/list)
++ [Opera](https://bugs.opera.com/wizard/desktop)

@@ -34,16 +34,6 @@ FAST-DNA has worked diligently from the ground up to enable accessibility in col
 
 To learn more about Microsoft's commitment visit their [accessibility](https://www.microsoft.com/en-us/accessibility) website.
 
-## Browsers
-
-Component packages support IE11+ and all modern browsers. Click on the links below to report browser bugs.
-
-* [Edge](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/)
-* [Firefox](https://bugzilla.mozilla.org/)
-* [Safari](https://bugs.webkit.org/)
-* [Chrome](https://bugs.chromium.org/p/chromium/issues/list)
-* [Opera](https://bugs.opera.com/wizard/desktop)
-
 ## Animation
 
 * End users should have a mechanism to reduce or remove animations from their experience. The Safari devs have proposed a media query for reduced animation. ("prefers-reduced-motion")
