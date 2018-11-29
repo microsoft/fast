@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.2.3...@microsoft/fast-components-styles-msft@3.3.0) (2018-11-29)
+
+
+### Bug Fixes
+
+* update context-menu-item to use applyTypeRampConfig function instead of deprecated applyType ([#1170](https://github.com/Microsoft/fast-dna/issues/1170)) ([51c57b4](https://github.com/Microsoft/fast-dna/commit/51c57b4))
+
+
+### Features
+
+* create breadcrumb as a new component ([#1125](https://github.com/Microsoft/fast-dna/issues/1125)) ([7882bf7](https://github.com/Microsoft/fast-dna/commit/7882bf7))
+* update button colors and toggle focus state ([#1152](https://github.com/Microsoft/fast-dna/issues/1152)) ([f6147a1](https://github.com/Microsoft/fast-dna/commit/f6147a1))
+
+
+
+
+
 ## [3.2.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.2.2...@microsoft/fast-components-styles-msft@3.2.3) (2018-11-21)
 
 

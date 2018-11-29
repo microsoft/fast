@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-jss-manager-angular",
   "description": "Angular directive and component for managing component JSS stylesheets",
   "sideEffects": false,
-  "version": "3.0.4",
+  "version": "3.0.5",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -105,6 +105,6 @@
     "zone.js": "^0.8.19"
   },
   "dependencies": {
-    "@microsoft/fast-jss-manager": "^3.0.4"
+    "@microsoft/fast-jss-manager": "^3.0.5"
   }
 }

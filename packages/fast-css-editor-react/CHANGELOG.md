@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-css-editor-react@4.0.1...@microsoft/fast-css-editor-react@4.1.0) (2018-11-29)
+
+
+### Features
+
+* add CSS spacing component ([#1161](https://github.com/Microsoft/fast-dna/issues/1161)) ([5755856](https://github.com/Microsoft/fast-dna/commit/5755856))
+
+
+
+
+
 ## [4.0.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-css-editor-react@4.0.0...@microsoft/fast-css-editor-react@4.0.1) (2018-11-21)
 
 **Note:** Version bump only for package @microsoft/fast-css-editor-react

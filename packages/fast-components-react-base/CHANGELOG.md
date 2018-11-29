@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@3.2.5...@microsoft/fast-components-react-base@3.3.0) (2018-11-29)
+
+
+### Features
+
+* create breadcrumb as a new component ([#1125](https://github.com/Microsoft/fast-dna/issues/1125)) ([7882bf7](https://github.com/Microsoft/fast-dna/commit/7882bf7))
+
+
+
+
+
 ## [3.2.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@3.2.4...@microsoft/fast-components-react-base@3.2.5) (2018-11-21)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-base

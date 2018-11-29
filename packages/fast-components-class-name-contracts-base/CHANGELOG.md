@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-base@3.2.1...@microsoft/fast-components-class-name-contracts-base@3.3.0) (2018-11-29)
+
+
+### Features
+
+* create breadcrumb as a new component ([#1125](https://github.com/Microsoft/fast-dna/issues/1125)) ([7882bf7](https://github.com/Microsoft/fast-dna/commit/7882bf7))
+
+
+
+
+
 ## [3.2.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-base@3.2.0...@microsoft/fast-components-class-name-contracts-base@3.2.1) (2018-11-07)
 
 **Note:** Version bump only for package @microsoft/fast-components-class-name-contracts-base
