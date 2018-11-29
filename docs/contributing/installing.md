@@ -31,8 +31,6 @@ Install all Lerna dependencies:
 lerna bootstrap
 ```
 
-Each package in FAST-DNA has its own unique requirements and commands, but the following commands are relatively standard across all packages:
-
 - `npm run tslint` or `npm run tslint:fix` runs tslint on all typescript in the project.
 - `npm run unit-tests` runs all unit-tests.
 - `npm run test` runs all processes required to pass prior to check-in. Generally includes building, linting, and unit-testing.
