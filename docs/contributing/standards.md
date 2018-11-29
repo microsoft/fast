@@ -40,7 +40,7 @@ To learn more about Microsoft's commitment visit their [accessibility](https://w
 * Some users with vestibular disorders or other cognitive disabilities have problems with movement. A safe fallback for nearly all users is fade animations.
 * Flashing animations can cause seizures and should be avoided. Good data on the accessibility of animation is scarce.
 
-### JSS (JavaScript Style Sheets) usage
+## JSS (JavaScript Style Sheets) usage
 
 JSS class-name contracts follow a [BEM-like](http://getbem.com/naming/) convention.
 
