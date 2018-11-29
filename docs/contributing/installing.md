@@ -10,13 +10,13 @@ sidebar_label: Install
 
 ### Setup a development environment
 
-1. Install the latest stable versions of [Git](https://git-scm.com/download).
-1. Configure git user credentials for [every respository](https://help.github.com/articles/setting-your-username-in-git/#setting-your-git-username-for-every-repository-on-your-computer) or [single repository](https://help.github.com/articles/setting-your-username-in-git/#setting-your-git-username-for-a-single-repository)
+1. Install the latest stable versions of [git](https://git-scm.com/download).
+1. Configure git user credentials.
 1. Install the LTS (Long Term Support) version of [Node](https://nodejs.org/en).
 
 ### Setup the source repository
 
-Clone the repository, `cd` into the project, install [Lerna](https://github.com/lerna/lerna) and install dependencies:
+Clone the repository, `cd` into the project, install [Lerna](https://github.com/lerna/lerna) and install dependencies.
 
 ``` shell
 git clone https://github.com/Microsoft/fast-dna.git
@@ -43,7 +43,7 @@ lerna run test
 
 ## Understanding packages
 
-All packages can be found [here](https://github.com/Microsoft/fast-dna/tree/master/packages). Each package includes a `readme.md` file at the root that describes how the package can be used.
+All packages can be found [here](https://github.com/Microsoft/fast-dna/tree/master/packages). Each package includes a `README.md` file at the root that describes how the package can be used.
 
 ## Dependencies
 

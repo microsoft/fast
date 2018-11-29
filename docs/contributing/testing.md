@@ -100,11 +100,11 @@ node build/testing/sauce-labs/test-browsers.js release
 
 Prior to beginning to make UI changes on a new branch it's recommended to run initially to create a baseline set of images.
 
-1. The first time the test is executed on a new branch, screenshots are created as 'undefined' status. 
+1. The first time the test is executed on a new branch, screenshots are created as 'undefined' status.
 2. After the tests finish users should select all checkbox's and choose to save to generate the baseline image.
-3. Next perform UI code changes
-4. Rerun the first set of tests and for all snapshots that match the baseline they will turn green and show as 'passed' status. Any 'undefined' status would be additional UI changes added. Though to get into this scenario new test cases would be required in the `./run-msft-docs.js` file.  Any anomalies will be marked red as 'failed' status.
-5. Manually review all UI changes and if the changes are desired select and choose to save the new baseline. Anything, else should be changed and retested.
+3. Next perform UI code changes.
+4. Rerun the first set of tests and for all snapshots that match the baseline - they will turn green and show as 'passed' status. Any 'undefined' status would be additional UI changes added. Though to get into this scenario new test cases would be required in the `./run-msft-docs.js` file.  Any anomalies will be marked red as 'failed' status.
+5. Manually review all UI changes and if the changes are desired, select and choose to save the new baseline. Anything else should be changed and retested.
 
 ```bash
 node build/testing/applitools/test-javascript.js
@@ -112,7 +112,7 @@ node build/testing/applitools/test-javascript.js
 
 #### Visual Regression testing with Cypress SDK
 
-Contributors can perform functional user interface and experience testing using [Cypress](https://www.cypress.io/). Cypress is not based on Selenium WebDriver and instead is built on JavaScript enabling significant performance advantages.
+Contributors can perform functional user interface and experience testing using [Cypress](https://www.cypress.io/).
 
 To validate Cypress is configured correctly.
 
@@ -133,19 +133,6 @@ npm run ui-tests:run
 ```
 
 _When running as CLI, the results can be viewed as printed out to the command screen or in the cloud dashboard._
-
-## Setup reviews
-
-After development is complete it's a good idea to meet with key stakeholders for buy-in and acceptance. The following reviews can ensure everyone has time to evaluate and provide feedback prior to delivery.
-
-+ Perform a design review
-+ Perform a content review
-+ Perform a functional review
-+ Perform a performance review
-+ Perform code reviews
-
-Use [ngrok](https://ngrok.com/) to securely tunnel your localhost to send test links, test on virtual machines, or test on other physical devices. When tunneling react pages, use the following format (replacing 7001 with your port):
-`ngrok http -host-header=localhost 7001`
 
 ## Cross browser testing
 

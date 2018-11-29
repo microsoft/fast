@@ -56,25 +56,7 @@ Optionally, include more detail in the message.
 
 `<body>` is used to provide clarity and context to the description.
 
-`<footer>` is used to provide additional metadata about the pull request such as issue fixing (fix #19, close #19, resolve #19). Additionally, is used to denote breaking changes.
-
-Accepted message format
-
-```comment
-<body>
-
-<footer>
-```
-
-Example message
-
-```comment
-Sequence indicators markup is now located after the slider markup to at the top for improved accessibility because the screen reader can read all of the slide options individually before interacting with the slider.
-
-closes #213
-
-BREAKING CHANGE : Describe [what and why](https://www.conventionalcommits.org/en/v1.0.0-beta.2/#specification) this change was required.
-```
+`<footer>` is used to provide additional metadata about the pull request such as issue fixing (fix #19, close #19, resolve #19). Additionally, is used to denote [breaking changes](https://www.conventionalcommits.org/en/v1.0.0-beta.2/#specification).
 
 ### Interim commits
 
