@@ -71,7 +71,7 @@ class Button extends Foundation<ButtonHandledProps, ButtonUnhandledProps, {}> {
     /**
      * Stores HTML tag for use in render
      */
-    private get tag(): string {
+    private get tag(): any {
         return typeof this.props.href === "string"
             ? ButtonHTMLTags.a
             : ButtonHTMLTags.button;

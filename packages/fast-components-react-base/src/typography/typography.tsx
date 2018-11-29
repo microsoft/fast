@@ -35,7 +35,7 @@ class Typography extends Foundation<
     /**
      * Stores HTML tag for use in render
      */
-    private get tag(): string {
+    private get tag(): any {
         return this.generateHTMLTag();
     }
 

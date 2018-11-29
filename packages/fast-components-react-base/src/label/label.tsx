@@ -32,7 +32,7 @@ class Label extends Foundation<LabelHandledProps, LabelUnhandledProps, {}> {
     /**
      * Stores HTML tag for use in render
      */
-    private get tag(): string {
+    private get tag(): any {
         return isUndefined(LabelTag[this.props.tag])
             ? LabelTag.label
             : LabelTag[this.props.tag];

@@ -43,7 +43,7 @@ class Card extends Foundation<CardHandledProps, CardUnhandledProps, {}> {
     /**
      * Stores HTML tag for use in render
      */
-    private get tag(): string {
+    private get tag(): any {
         return CardTag[this.props.tag] || CardTag.div;
     }
 }
