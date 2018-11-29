@@ -44,7 +44,7 @@ Component packages support IE11+ and all modern browsers. Click on the links bel
 * [Chrome](https://bugs.chromium.org/p/chromium/issues/list)
 * [Opera](https://bugs.opera.com/wizard/desktop)
 
-## Animation accessibility
+## Animation
 
 * End users should have a mechanism to reduce or remove animations from their experience. The Safari devs have proposed a media query for reduced animation. ("prefers-reduced-motion")
 * Some users with vestibular disorders or other cognitive disabilities have problems with movement. A safe fallback for nearly all users is fade animations.

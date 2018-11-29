@@ -37,11 +37,6 @@ When building Web sites and apps on FAST-DNA it's recommended to perform exhaust
     5. Test without images
     6. Test for text only
     7. Test with a screen reader
-    8. Test with VoiceOver
-5. Add component to a realistic page
-    1. Import and initialize component as an outside user would
-    2. Pass typical data to the component, including handled and unhandled props
-    3. Ensure component works in typical real-world cases
 
 ## Manual testing
 
@@ -51,7 +46,7 @@ Additionally, there are services included in FAST-DNA under `./build/testing` th
 
 For those interested in using these services contact the project maintainers on discord to gain access.
 
-### On physical devices
+### Testing on physical devices
 
 Testing local development code on physical devices in hand.
 
@@ -75,7 +70,7 @@ lt --port 8000
 
 + You will receive a URL, for example https://gqgh.localtunnel.me, that you can share with anyone for as long as your local instance remains active. Any requests will be routed to your local service at the specified port.
 
-### With Sauce Labs
+### Testing with Sauce Labs
 
 [Sauce Labs](https://saucelabs.com/beta/dashboard/builds) allows collaborators and contributors to execute automated tests against Selenium WebDriver on pre-configured browser matrix's.
 
@@ -83,23 +78,23 @@ The cross browser testing strategy focuses on the differences between browser re
 
 [Alpha](https://github.com/Microsoft/fast-dna/blob/master/build/testing/config-browsers.alpha.js) Immature feature development
 
-```javascript
+```bash
 node build/testing/sauce-labs/test-browsers.js alpha
 ```
 
 [Beta](https://github.com/Microsoft/fast-dna/blob/master/build/testing/config-browsers.beta.js) Stable feature development
 
-```javascript
+```bash
 node build/testing/sauce-labs/test-browsers.js beta
 ```
 
 [Release](https://github.com/Microsoft/fast-dna/blob/master/build/testing/config-browsers.release.js) Mature feature development
 
-```javascript
+```bash
 node build/testing/sauce-labs/test-browsers.js release
 ```
 
-### With Applitools
+### Testing with Applitools
 
 [Applitools](https://eyes.applitools.com/) can be used to visual regression test UI changes on your own branches allow  to execute automated tests against Selenium WebDriver. Currently, ChromeDriver and FirefoxDriver are supported.
 
@@ -111,29 +106,29 @@ Prior to beginning to make UI changes on a new branch it's recommended to run in
 4. Rerun the first set of tests and for all snapshots that match the baseline they will turn green and show as 'passed' status. Any 'undefined' status would be additional UI changes added. Though to get into this scenario new test cases would be required in the `./run-msft-docs.js` file.  Any anomalies will be marked red as 'failed' status.
 5. Manually review all UI changes and if the changes are desired select and choose to save the new baseline. Anything, else should be changed and retested.
 
-```javascript
+```bash
 node build/testing/applitools/test-javascript.js
 ```
 
 #### Visual Regression testing with Cypress SDK
 
-Contributors can perform functional user interface and experience testing using [Cypress](https://www.cypress.io/). This does currently include visual regression testing, though, a feature that has been requested. Cypress is not based on Selenium WebDriver and instead is built completely on JavaScript enabling significant performance advantages.
+Contributors can perform functional user interface and experience testing using [Cypress](https://www.cypress.io/). Cypress is not based on Selenium WebDriver and instead is built on JavaScript enabling significant performance advantages.
 
 To validate Cypress is configured correctly.
 
-```node
+```bash
 npm run ui-tests:verify
 ```
 
 Execute through Electron for real-time user interaction and debugging.
 
-```node
+```bash
 npm run ui-tests:open
 ```
 
 Execute using the CLI.
 
-```node
+```bash
 npm run ui-tests:run
 ```
 
