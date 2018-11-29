@@ -5,7 +5,7 @@ export interface ActionToggleClassNameContract {
     /**
      * The root of the action toggle component
      */
-    actionToggle?: string;
+    actionToggle: string;
     /**
      * The selected modifier
      */
