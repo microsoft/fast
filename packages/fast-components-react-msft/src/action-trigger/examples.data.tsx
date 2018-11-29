@@ -15,7 +15,7 @@ export default {
         children: "Action Trigger",
         appearance: ActionTriggerAppearance.primary,
         href: testDestination,
-        glyph: (classname?: string): React.ReactNode => {
+        glyph: (classname: string): React.ReactNode => {
             return (
                 <svg
                     xmlns="http://www.w3.org/2000/svg"

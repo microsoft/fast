@@ -49,16 +49,10 @@ describe("action trigger", (): void => {
 
     test("should throw if glyph prop is not provided", () => {
         expect(() => {
-            shallow(
-                <MSFTActionTrigger
-                    /* tslint:disable-next-line */
-                    glyph={null}
-                />
-            );
+            shallow(<MSFTActionTrigger glyph={null} />);
         }).toThrow();
     });
 
-    // tslint:disable-next-line:max-line-length
     test("should create glyph element passed in", () => {
         const props: ActionTriggerHandledProps = {
             glyph: (className?: string): React.ReactNode => {
@@ -93,7 +87,6 @@ describe("action trigger", (): void => {
         expect(rendered.first().prop("aria-label")).toEqual("label");
     });
 
-    // tslint:disable-next-line:max-line-length
     test("should apply a 'primary' html class when appearance is primary", () => {
         const props: ActionTriggerHandledProps = {
             glyph: (className?: string): React.ReactNode => {
@@ -109,7 +102,6 @@ describe("action trigger", (): void => {
         );
     });
 
-    // tslint:disable-next-line:max-line-length
     test("should apply a 'lightweight' html class when appearance is lightweight", () => {
         const props: ActionTriggerHandledProps = {
             glyph: (className?: string): React.ReactNode => {
@@ -125,7 +117,6 @@ describe("action trigger", (): void => {
         );
     });
 
-    // tslint:disable-next-line:max-line-length
     test("should apply a 'justified' html class when appearance is justified", () => {
         const props: ActionTriggerHandledProps = {
             glyph: (className?: string): React.ReactNode => {
@@ -141,7 +132,6 @@ describe("action trigger", (): void => {
         );
     });
 
-    // tslint:disable-next-line:max-line-length
     test("should apply a 'outline' html class when appearance is outline", () => {
         const props: ActionTriggerHandledProps = {
             glyph: (className?: string): React.ReactNode => {
@@ -157,7 +147,6 @@ describe("action trigger", (): void => {
         );
     });
 
-    // tslint:disable-next-line:max-line-length
     test("should apply a 'disabled' html class when prop disabled is passed", () => {
         const props: ActionTriggerHandledProps = {
             glyph: (className?: string): React.ReactNode => {
@@ -173,7 +162,6 @@ describe("action trigger", (): void => {
         );
     });
 
-    // tslint:disable-next-line:max-line-length
     test("should set a custom class name and 'primary' class name when appearance is primary and a custom class is passed", () => {
         const props: ActionTriggerHandledProps = {
             glyph: (className?: string): React.ReactNode => {
@@ -192,7 +180,6 @@ describe("action trigger", (): void => {
         );
     });
 
-    // tslint:disable-next-line:max-line-length
     test("should apply a custom class-name", () => {
         const props: ActionTriggerHandledProps = {
             glyph: (className?: string): React.ReactNode => {
