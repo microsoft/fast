@@ -23,16 +23,16 @@ const users = [
 const siteConfig = {
   title: 'FAST-DNA', // Title for your website.
   tagline: 'Accelerate building Web sites and applications',
-  url: 'https://docs.fastdna.net', // Your website URL
-  baseUrl: '/', 
+  url: 'https://microsoft.github.io', // Your website URL
+  baseUrl: '/fast-dna/', 
   // Base URL for your project */
   // For github.io type URLs, you would set the url and baseUrl like:
   //   url: 'https://facebook.github.io',
   //   baseUrl: '/test-site/',
 
   // Used for publishing and more
-  projectName: 'fast-dna-documentation',
-  organizationName: 'microsoft',
+  projectName: 'fast-dna',
+  organizationName: 'Microsoft',
   // For top-level user or org sites, the organization is still the same.
   // e.g., for the https://JoelMarcey.github.io site, it would be set like...
   //   organizationName: 'JoelMarcey'
