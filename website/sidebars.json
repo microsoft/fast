@@ -3,7 +3,7 @@
     "Getting started": ["readme"],
     "Contributing": [
       "contributing/install",
-      "contributing/doing",
+      "contributing/working",
       "contributing/standards",
       "contributing/testing",
       "contributing/policies"

@@ -1,5 +1,5 @@
 ---
-id: doing
+id: working
 title: Contributing
 sidebar_label: Working
 ---

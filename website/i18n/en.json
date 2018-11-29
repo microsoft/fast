@@ -5,10 +5,6 @@
     "previous": "Previous",
     "tagline": "Accelerate building Web sites and applications",
     "docs": {
-      "contributing/doing": {
-        "title": "Contributing",
-        "sidebar_label": "Working"
-      },
       "contributing/install": {
         "title": "Contributing",
         "sidebar_label": "Install"
@@ -24,6 +20,10 @@
       "contributing/testing": {
         "title": "Contributing",
         "sidebar_label": "Testing"
+      },
+      "contributing/working": {
+        "title": "Contributing",
+        "sidebar_label": "Working"
       },
       "readme": {
         "title": "Welcome to FAST-DNA",
