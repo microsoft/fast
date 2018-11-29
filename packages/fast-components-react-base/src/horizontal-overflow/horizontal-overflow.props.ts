@@ -16,6 +16,14 @@ export interface PositionChange {
 }
 
 /**
+ * ScrollChange
+ * @deprecated
+ * TODO #1178: Remove deprecated interface on next major bump
+ */
+// tslint:disable-next-line:no-empty-interface
+export interface ScrollChange extends PositionChange {}
+
+/**
  * Overflow interface for consumers
  * When both are false, there is no overflow
  * When both are true, there is overflow on either side
