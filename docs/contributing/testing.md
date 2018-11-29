@@ -20,15 +20,9 @@ When building Web sites and apps on FAST-DNA it's recommended to perform exhaust
         2. Test largest amount of text
         3. Case sensitivity
 2. Test for localization (RTL, LTR)
-    1. English
-    2. Arabic
-    3. Russian
-    4. French
-    5. Japanese
-    6. Korean
 3. Test for progressive enhancement
     1. Test complete browser matrix
-    2. Test for zooming browser from 200% and 25% 
+    2. Test for zooming browser from 200% and 25%
 4. Test each component and pages for accessibility issues
     1. Test for keyboard accessibility
     2. Test for Mouse only interaction
