@@ -18,6 +18,16 @@ export interface TextActionHandledProps
      * The text action button
      */
     button?: (classname?: string) => React.ReactNode;
+
+    /**
+     * The preceding glyph
+     */
+    beforeGlyph?: (classname?: string) => React.ReactNode;
+
+    /**
+     * The trailing glyph
+     */
+    afterGlyph?: (classname?: string) => React.ReactNode;
 }
 
 export type TextActionProps = TextActionHandledProps & TextActionUnhandledProps;

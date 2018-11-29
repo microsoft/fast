@@ -114,6 +114,7 @@ export { ToggleStyles };
  */
 import TextActionStyles from "./text-action";
 export { TextActionStyles };
+export * from "./text-action";
 
 /**
  * Export text field styles

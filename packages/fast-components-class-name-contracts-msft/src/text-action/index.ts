@@ -11,4 +11,14 @@ export interface TextActionClassNameContract {
      * The button
      */
     textAction_button?: string;
+
+    /**
+     * The preceding glyph
+     */
+    textAction_beforeGlyph?: string;
+
+    /**
+     * The trailing glyph
+     */
+    textAction_afterGlyph?: string;
 }
