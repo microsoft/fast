@@ -6,15 +6,7 @@ sidebar_label: Install
 
 # Install
 
-## Prerequisits
-
-### Setup a development environment
-
-1. Install the latest stable versions of [git](https://git-scm.com/download).
-1. Configure git user credentials.
-1. Install the LTS (Long Term Support) version of [Node](https://nodejs.org/en).
-
-### Setup the source repository
+## Setup the source repository
 
 Clone the repository, `cd` into the project, install [Lerna](https://github.com/lerna/lerna) and install dependencies.
 
