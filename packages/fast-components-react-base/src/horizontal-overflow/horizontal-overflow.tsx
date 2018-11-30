@@ -12,9 +12,14 @@ import {
     HorizontalOverflowHandledProps,
     HorizontalOverflowProps,
     HorizontalOverflowUnhandledProps,
-    ScrollChange,
+    PositionChange,
 } from "./horizontal-overflow.props";
 import throttle from "raf-throttle";
+import {
+    ConstructableResizeObserver,
+    ResizeObserverClassDefinition,
+} from "./resize-observer";
+import { ResizeObserverEntry } from "./resize-observer-entry";
 
 export enum ButtonDirection {
     previous = "previous",
@@ -23,6 +28,12 @@ export enum ButtonDirection {
 
 export interface HorizontalOverflowState {
     itemsHeight: number;
+}
+
+declare global {
+    interface WindowWithResizeObserver extends Window {
+        ResizeObserver: ConstructableResizeObserver;
+    }
 }
 
 class HorizontalOverflow extends Foundation<
@@ -36,14 +47,35 @@ class HorizontalOverflow extends Foundation<
         scrollDuration: void 0,
         managedClasses: void 0,
         onScrollChange: void 0,
+        onOverflowChange: void 0,
     };
 
     private horizontalOverflowItemsRef: React.RefObject<HTMLUListElement>;
 
     /**
-     * Throttle request animation frame usage
+     * Throttle scroll request animation frame usage
      */
-    private throttled: any;
+    private throttledScroll: throttle;
+
+    /**
+     * Throttle resize request animation frame usage
+     */
+    private throttledResize: throttle;
+
+    /**
+     * Stores the overall overflow status
+     */
+    private overflow: boolean;
+
+    /**
+     * Stores the overallStart status
+     */
+    private overflowStart: boolean;
+
+    /**
+     * Stores the overallEnd status
+     */
+    private overflowEnd: boolean;
 
     /**
      * Constructor
@@ -52,7 +84,9 @@ class HorizontalOverflow extends Foundation<
         super(props);
 
         this.horizontalOverflowItemsRef = React.createRef();
-        this.throttled = throttle(this.onScrollChange);
+        this.throttledScroll = throttle(this.onScrollChange);
+        this.throttledResize = throttle(this.onWindowResize);
+        this.overflow = false;
 
         this.state = {
             itemsHeight: 0,
@@ -123,8 +157,25 @@ class HorizontalOverflow extends Foundation<
         if (canUseDOM() && this.horizontalOverflowItemsRef.current) {
             this.horizontalOverflowItemsRef.current.addEventListener(
                 "scroll",
-                this.throttled
+                this.throttledScroll
             );
+            window.addEventListener("resize", this.throttledResize);
+
+            // TODO #1142 https://github.com/Microsoft/fast-dna/issues/1142
+            // Full browser support imminent
+            // Revisit usage once Safari and Firefox adapt
+            // https://bugzilla.mozilla.org/show_bug.cgi?id=1272409
+            // https://bugs.webkit.org/show_bug.cgi?id=157743
+            if ((window as WindowWithResizeObserver).ResizeObserver) {
+                const resizeObserver: ResizeObserverClassDefinition = new (window as WindowWithResizeObserver).ResizeObserver(
+                    (entries: ResizeObserverEntry[]): void => {
+                        if (this.overflow !== this.isOverflow()) {
+                            this.handleOverflowChange();
+                        }
+                    }
+                );
+                resizeObserver.observe(this.horizontalOverflowItemsRef.current);
+            }
         }
     }
 
@@ -135,8 +186,9 @@ class HorizontalOverflow extends Foundation<
         if (canUseDOM() && this.horizontalOverflowItemsRef.current) {
             this.horizontalOverflowItemsRef.current.removeEventListener(
                 "scroll",
-                this.throttled
+                this.throttledScroll
             );
+            window.removeEventListener("resize", this.throttledResize);
         }
     }
 
@@ -150,26 +202,44 @@ class HorizontalOverflow extends Foundation<
     }
 
     /**
-     * Callback on scroll change
+     * Callback for on scroll change
      */
     private onScrollChange = (): void => {
-        if (!this.props.onScrollChange) {
-            return;
+        if (typeof this.props.onScrollChange === "function") {
+            this.props.onScrollChange(this.getPositionData());
         }
 
+        // If the onOverflowChange callback exist, we want to update overflow
+        // based on scroll change
+        if (typeof this.props.onOverflowChange === "function") {
+            const positionData: PositionChange = this.getPositionData();
+
+            if (
+                this.overflowStart === positionData.start ||
+                this.overflowEnd === positionData.end
+            ) {
+                this.handleOverflowChange();
+            }
+        }
+    };
+
+    /**
+     * Get the scroll change data
+     */
+    private getPositionData = (): PositionChange => {
         const isLtr: boolean = this.getLTR() === Direction.ltr;
         const distanceRemaining: number =
             this.horizontalOverflowItemsRef.current.scrollWidth -
             this.horizontalOverflowItemsRef.current.scrollLeft;
 
         if (this.horizontalOverflowItemsRef.current.scrollLeft === 0) {
-            this.props.onScrollChange({ start: isLtr, end: !isLtr });
+            return { start: isLtr, end: !isLtr };
         } else if (
             distanceRemaining === this.horizontalOverflowItemsRef.current.clientWidth
         ) {
-            this.props.onScrollChange({ start: !isLtr, end: isLtr });
+            return { start: !isLtr, end: isLtr };
         } else {
-            this.props.onScrollChange({ start: false, end: false });
+            return { start: false, end: false };
         }
     };
 
@@ -195,6 +265,53 @@ class HorizontalOverflow extends Foundation<
         if (itemsHeight !== this.state.itemsHeight) {
             this.setState({
                 itemsHeight,
+            });
+        }
+
+        if (this.overflow !== this.isOverflow()) {
+            this.handleOverflowChange();
+        }
+    };
+
+    /**
+     * Handles the resize event
+     */
+    private onWindowResize = (): void => {
+        if (this.overflow !== this.isOverflow()) {
+            this.handleOverflowChange();
+        }
+    };
+
+    /**
+     * Checks if overflow is occuring
+     */
+    private isOverflow(): boolean {
+        const availableWidth: number = this.getAvailableWidth();
+        const itemWidths: number[] = this.getItemWidths();
+        const totalItemWidth: number = itemWidths.reduce((a: number, b: number) => a + b);
+
+        return totalItemWidth > availableWidth;
+    }
+
+    /**
+     * Callback for the horizontal overflow change
+     */
+    private handleOverflowChange = (): void => {
+        this.overflow = this.isOverflow();
+
+        if (this.overflow) {
+            const positionData: PositionChange = this.getPositionData();
+            this.overflowStart = !positionData.start;
+            this.overflowEnd = !positionData.end;
+        } else {
+            this.overflowStart = false;
+            this.overflowEnd = false;
+        }
+
+        if (typeof this.props.onOverflowChange === "function") {
+            this.props.onOverflowChange({
+                overflowStart: this.overflowStart,
+                overflowEnd: this.overflowEnd,
             });
         }
     };
@@ -250,6 +367,9 @@ class HorizontalOverflow extends Foundation<
                 : Direction.ltr;
     }
 
+    /**
+     * Checks if moving to next direction
+     */
     private isMovingNext(direction: ButtonDirection, ltr: Direction): boolean {
         return (
             (direction === ButtonDirection.next && ltr === Direction.ltr) ||
@@ -406,12 +526,16 @@ class HorizontalOverflow extends Foundation<
     };
 
     /**
-     * Handler for the click event fired after next or previous has been clicked
+     * Returns the available content region width
      */
-    private handleClick(direction: ButtonDirection): void {
-        const availableWidth: number = getClientRectWithMargin(
-            this.horizontalOverflowItemsRef.current
-        ).width;
+    private getAvailableWidth(): number {
+        return getClientRectWithMargin(this.horizontalOverflowItemsRef.current).width;
+    }
+
+    /**
+     * Returns the items widths
+     */
+    private getItemWidths(): number[] {
         const items: HTMLElement[] = Array.prototype.slice.call(
             this.horizontalOverflowItemsRef.current.childNodes
         );
@@ -420,6 +544,16 @@ class HorizontalOverflow extends Foundation<
         for (const item of items) {
             itemWidths.push(getClientRectWithMargin(item).width);
         }
+
+        return itemWidths;
+    }
+
+    /**
+     * Handler for the click event fired after next or previous has been clicked
+     */
+    private handleClick(direction: ButtonDirection): void {
+        const availableWidth: number = this.getAvailableWidth();
+        const itemWidths: number[] = this.getItemWidths();
 
         this.setScrollDistance(
             this.getScrollDistanceFromDirection(

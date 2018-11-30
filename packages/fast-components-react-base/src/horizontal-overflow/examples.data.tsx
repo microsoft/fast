@@ -2,7 +2,6 @@ import * as React from "react";
 import HorizontalOverflow, {
     HorizontalOverflowHandledProps,
     HorizontalOverflowManagedClasses,
-    HorizontalOverflowUnhandledProps,
 } from "./horizontal-overflow";
 import schema from "./horizontal-overflow.schema.json";
 import Documentation from "./.tmp/documentation";

@@ -8,10 +8,31 @@ import {
  * Scroll interface for consumers
  * 'start' is when the horizontal overflow scroll is all the way left in LTR (all the way right in RTL)
  * 'end' is when the horizontal overflow scroll is all the right in LTR (all the way left in RTL)
+ * TODO #1177: Change interface property names to be more meaningful
  */
-export interface ScrollChange {
+export interface PositionChange {
     start: boolean;
     end: boolean;
+}
+
+/**
+ * ScrollChange
+ * @deprecated
+ * TODO #1178: Remove deprecated interface on next major bump
+ */
+// tslint:disable-next-line:no-empty-interface
+export interface ScrollChange extends PositionChange {}
+
+/**
+ * Overflow interface for consumers
+ * When both are false, there is no overflow
+ * When both are true, there is overflow on either side
+ * 'overflowStart' is true when there are items to the left in LTR (right in RTL)
+ * 'overflowEnd' is true when there are items to the right in LTR (left in RTL)
+ */
+export interface OverflowChange {
+    overflowStart: boolean;
+    overflowEnd: boolean;
 }
 
 export interface HorizontalOverflowUnhandledProps
@@ -30,9 +51,16 @@ export interface HorizontalOverflowHandledProps extends HorizontalOverflowManage
     scrollDuration?: number;
 
     /**
-     * Callback for on scroll change
+     * Callback for on overflow change
+     * Use `onOverflowChange` to know if there are enough items to cause overflow, and where the overflow occurs
      */
-    onScrollChange?: (scrollObject: ScrollChange) => void;
+    onOverflowChange?: (overflowObject: OverflowChange) => void;
+
+    /**
+     * Callback for on scroll change
+     * Use `onScrollChange` to receive if scroll is at the start or end of the overflow set
+     */
+    onScrollChange?: (scrollObject: PositionChange) => void;
 }
 
 export type HorizontalOverflowProps = HorizontalOverflowHandledProps &
