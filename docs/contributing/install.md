@@ -10,7 +10,7 @@ sidebar_label: Install
 
 Clone the repository, `cd` into the project, install [Lerna](https://github.com/lerna/lerna) and install dependencies.
 
-``` shell
+```shell
 git clone https://github.com/Microsoft/fast-dna.git
 cd fast-dna
 npm i --global lerna@3.3.0
@@ -19,7 +19,7 @@ npm i
 
 Install all Lerna dependencies:
 
-``` shell
+```shell
 lerna bootstrap
 ```
 

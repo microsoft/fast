@@ -36,7 +36,7 @@ When building Web sites and apps on FAST-DNA it's recommended to perform exhaust
 
 There is a [FAST-DNA documentation site for MSFT Components](https://msft-docs.fast-dna.net) that includes built in developer and testing tools to manually test.
 
-Additionally, there are services included in FAST-DNA under `./build/testing` that can be used to assist in comprehensive testing. The configuration and tests are included as a starting point and as functional and UI testing matures these may become part of the CI/CD pipeline.  As of now, these can be ran manually and the cloud services dashboard can be used to evaluate your code changes prior to submitting for code review.
+Additionally, there are services included in FAST-DNA under `./build/testing` that can be used to assist in comprehensive testing. The configuration and tests are included as a starting point and as functional and UI testing matures these may become part of the CI/CD pipeline.  As of now, these can be run manually and the cloud services dashboard can be used to evaluate your code changes prior to submitting for code review.
 
 For those interested in using these services contact the project maintainers on discord to gain access.
 
@@ -90,9 +90,9 @@ node build/testing/sauce-labs/test-browsers.js release
 
 ### Testing with Applitools
 
-[Applitools](https://eyes.applitools.com/) can be used to visual regression test UI changes on your own branches allow  to execute automated tests against Selenium WebDriver. Currently, ChromeDriver and FirefoxDriver are supported.
+[Applitools](https://eyes.applitools.com/) can be used to visual regression test UI changes on your own branches allow to execute automated tests against Selenium WebDriver. Currently, ChromeDriver and FirefoxDriver are supported.
 
-Prior to beginning to make UI changes on a new branch it's recommended to run initially to create a baseline set of images.
+Prior to making any UI changes on a new branch, it's recommended to initially run Applitools to create a baseline set of images.
 
 1. The first time the test is executed on a new branch, screenshots are created as 'undefined' status.
 2. After the tests finish users should select all checkbox's and choose to save to generate the baseline image.
