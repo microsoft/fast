@@ -246,28 +246,28 @@ const exampleChildren4: any[] = [
     },
 ];
 
-function renderTab(): (className?: string) => React.ReactNode {
-    return (className?: string): React.ReactNode => <div>Tab One sdsadnjkas</div>;
+function renderTab(tabTitle: string): () => React.ReactNode {
+    return (className?: string): React.ReactNode => <div>{tabTitle}</div>;
 }
 
-function renderTabContent(): (className?: string) => React.ReactNode {
-    return (className?: string): React.ReactNode => <div>Tab One Content</div>;
+function renderTabContent(tabContent: string): () => React.ReactNode {
+    return (className?: string): React.ReactNode => <div>{tabContent}</div>;
 }
 
-const myTabData: TabItemData[] = [
+const tabData: TabItemData[] = [
     {
-        tab: renderTab(),
-        content: renderTabContent(),
+        tab: renderTab("Tab One"),
+        content: renderTabContent("Tab One Content"),
         id: "tab01",
     },
     {
-        tab: renderTab(),
-        content: renderTabContent(),
+        tab: renderTab("Tab Two"),
+        content: renderTabContent("Tab Two Content"),
         id: "tab02",
     },
     {
-        tab: renderTab(),
-        content: renderTabContent(),
+        tab: renderTab("Tab Three"),
+        content: renderTabContent("Tab Three Content"),
         id: "tab03",
     },
 ];
@@ -280,7 +280,7 @@ const examples: ComponentFactoryExample<TabsHandledProps> = {
     detailData: {
         ...tabsManagedClasses,
         label: "A set of example text content",
-        tabItemData: myTabData,
+        tabItemData: tabData,
         activeId: "tab01",
     },
     data: [

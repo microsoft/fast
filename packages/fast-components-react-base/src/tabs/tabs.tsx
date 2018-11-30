@@ -74,21 +74,26 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
 
         let tabItems: React.ReactNode[];
 
-        if (this.props.tabItemData) {
-            tabItems = this.props.tabItemData;
-        } else {
+        if (!this.props.tabItemData) {
             tabItems = React.Children.toArray(this.tabItems());
         }
 
         this.tabListRef = React.createRef();
 
-        this.state = {
-            activeId: this.props.activeId
-                ? this.props.activeId
-                : tabItems.length > 0
-                    ? get(tabItems[0], "props.id")
-                    : "",
-        };
+        if (!this.props.tabItemData) {
+            this.state = {
+                activeId: this.props.activeId
+                    ? this.props.activeId
+                    : tabItems.length > 0
+                        ? get(tabItems[0], "props.id")
+                        : "",
+            };
+        } else {
+            this.state = {
+                activeId: "",
+            };
+        }
+        console.log(tabItems);
     }
 
     /**
@@ -152,21 +157,29 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
         return React.Children.map(this.tabItems(), this.renderTabItem);
     }
 
-    private tabItems(): React.ReactNode {
+    private setActive(tabItem: TabItemData, index: Number): boolean {
+        if (this.state.activeId) {
+            return this.state.activeId === tabItem.id;
+        } else {
+            return index === 0;
+        }
+    }
+
+    private tabItems(): React.ReactNode[] {
         let array;
         if (this.props.tabItemData) {
-            array = this.props.tabItemData.map((tabItem: TabItemData) => {
+            array = this.props.tabItemData.map((tabItem: TabItemData, index: Number) => {
                 return (
-                    <TabItem id={this.props.id} slot={TabsSlot.tabItem}>
+                    <TabItem id={tabItem.id} slot={TabsSlot.tabItem}>
                         <Tab
                             {...tabManagedClasses}
                             slot={TabsSlot.tab}
                             key={tabItem.id}
                             aria-controls={tabItem.id}
-                            active={this.state.activeId === tabItem.id}
+                            active={this.setActive(tabItem, index)}
                             onClick={this.handleClick}
                             onKeyDown={this.handleKeyDown}
-                            tabIndex={this.state.activeId !== tabItem.id ? -1 : 0}
+                            tabIndex={this.setActive(tabItem, index) ? 0 : -1}
                         >
                             {tabItem.tab("")}
                         </Tab>
@@ -176,7 +189,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
                             key={tabItem.id}
                             id={tabItem.id}
                             aria-labelledby={tabItem.id}
-                            active={this.state.activeId === tabItem.id}
+                            active={this.setActive(tabItem, index)}
                         >
                             {tabItem.content("")}
                         </TabPanel>
@@ -247,24 +260,21 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
      * Handles the click event on the tab element
      */
     private handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
-        console.log(
-            "Click Active?",
-            this.state.activeId,
-            this.props.activeId,
-            e.currentTarget.getAttribute("aria-controls")
-        );
-        this.setState({
-            activeId: e.currentTarget.getAttribute("aria-controls"),
-        });
-        // if (!this.props.activeId) {
-        //     console.log("Should set State")
-        //     this.setState({
-        //         activeId: e.currentTarget.getAttribute("aria-controls"),
-        //     });
-        // } else if (typeof this.props.onUpdate === "function") {
-        //     console.log("not set State")
-        //     this.props.onUpdate(e.currentTarget.getAttribute("aria-controls"));
-        // }
+        // console.log(
+        //     "Click Active?",
+        //     this.state.activeId,
+        //     this.props.activeId,
+        //     e.currentTarget.getAttribute("aria-controls")
+        // );
+        if (!this.props.activeId) {
+            console.log(e.currentTarget.getAttribute("aria-controls"));
+            this.setState({
+                activeId: e.currentTarget.getAttribute("aria-controls"),
+            });
+        } else if (typeof this.props.onUpdate === "function") {
+            console.log("not set State");
+            this.props.onUpdate(e.currentTarget.getAttribute("aria-controls"));
+        }
     };
 
     /**
@@ -295,9 +305,11 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
     private activateTab(location: TabLocation): void {
         const items: React.ReactNode[] = React.Children.toArray(this.tabItems());
         const count: number = items.length;
-        const currentItemIndex: number = React.Children.toArray(items).findIndex(
+
+        let currentItemIndex: number = React.Children.toArray(items).findIndex(
             this.getCurrentIndexById
         );
+
         let itemIndex: number;
 
         switch (location) {
@@ -317,11 +329,12 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
 
         const activeId: string | undefined = get(items[itemIndex], "props.id");
 
+        console.log(items[itemIndex]);
         if (!this.props.activeId) {
             this.setState({
                 activeId,
             });
-
+            console.log("State", this.state.activeId);
             (Array.from(this.tabListRef.current.children)[
                 itemIndex
             ] as HTMLButtonElement).focus();
@@ -334,6 +347,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
      * Gets the current index by tab item ID
      */
     private getCurrentIndexById = (item: JSX.Element): boolean => {
+        console.log("Get Current", item.props.id, this.state.activeId);
         return item.props.id === this.state.activeId;
     };
 
