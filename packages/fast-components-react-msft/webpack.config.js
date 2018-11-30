@@ -23,9 +23,14 @@ module.exports = (env, args) => {
                     test: /.tsx?$/,
                     use: [
                         {
-                            loader: "ts-loader"
+                            loader: "ts-loader",
+                            options: {
+                                compilerOptions: {
+                                    declaration: false,
+                                }
+                            }
                         }
-                    ]
+                    ],
                 },
                 {
                     test: /.sketch$/,
