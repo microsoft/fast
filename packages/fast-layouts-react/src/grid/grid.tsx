@@ -34,7 +34,7 @@ export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
     /**
      * Stores HTML tag for use in render
      */
-    private get tag(): string {
+    private get tag(): any {
         return this.generateHTMLTag();
     }
 
