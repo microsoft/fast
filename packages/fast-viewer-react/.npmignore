@@ -1,5 +1,6 @@
 app/
 src/
+www/
 
 #  Tests
 __tests__/
