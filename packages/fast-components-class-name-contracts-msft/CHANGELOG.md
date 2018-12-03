@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@3.1.2...@microsoft/fast-components-class-name-contracts-msft@3.2.0) (2018-12-03)
+
+
+### Features
+
+* add action trigger component ([#1138](https://github.com/Microsoft/fast-dna/issues/1138)) ([4d21c42](https://github.com/Microsoft/fast-dna/commit/4d21c42))
+
+
+
+
+
 ## [3.1.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@3.1.1...@microsoft/fast-components-class-name-contracts-msft@3.1.2) (2018-11-29)
 
 **Note:** Version bump only for package @microsoft/fast-components-class-name-contracts-msft

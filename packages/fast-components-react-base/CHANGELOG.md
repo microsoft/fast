@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@3.3.0...@microsoft/fast-components-react-base@3.4.0) (2018-12-03)
+
+
+### Bug Fixes
+
+* updating typings to fix errors caused by [@types](https://github.com/types)/react update and TypeScript ([#1179](https://github.com/Microsoft/fast-dna/issues/1179)) ([230e03a](https://github.com/Microsoft/fast-dna/commit/230e03a))
+
+
+### Features
+
+* add optional callback for overflow to horizontal overflow ([#1134](https://github.com/Microsoft/fast-dna/issues/1134)) ([cd3d661](https://github.com/Microsoft/fast-dna/commit/cd3d661))
+
+
+
+
+
 # [3.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@3.2.5...@microsoft/fast-components-react-base@3.3.0) (2018-11-29)
 
 

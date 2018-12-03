@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.7](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@3.1.6...@microsoft/fast-layouts-react@3.1.7) (2018-12-03)
+
+
+### Bug Fixes
+
+* updating typings to fix errors caused by [@types](https://github.com/types)/react update and TypeScript ([#1179](https://github.com/Microsoft/fast-dna/issues/1179)) ([230e03a](https://github.com/Microsoft/fast-dna/commit/230e03a))
+
+
+
+
+
 ## [3.1.6](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@3.1.5...@microsoft/fast-layouts-react@3.1.6) (2018-11-29)
 
 **Note:** Version bump only for package @microsoft/fast-layouts-react
