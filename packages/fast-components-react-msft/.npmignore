@@ -5,6 +5,7 @@ __test__/
 
 # Source files
 app/
+www/
 build/
 coverage/
 src/
