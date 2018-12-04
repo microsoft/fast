@@ -49,6 +49,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
 
     return {
         checkbox: {
+            position: "relative",
             display: "inline-flex",
             flexDirection: "row",
             alignItems: "center",
