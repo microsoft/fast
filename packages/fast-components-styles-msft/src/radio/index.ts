@@ -43,6 +43,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
 
     return {
         radio: {
+            position: "relative",
             display: "inline-flex",
             flexDirection: "row",
             alignItems: "center",
