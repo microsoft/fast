@@ -1,0 +1,14 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Component with a callback",
+    "description": "A test component's schema definition.",
+    "type": "object",
+    "id": "callback",
+    "properties": {
+    },
+    "reactProperties": {
+        "renderPropChildren": {
+            "type": "mappedValue"
+        }
+    }
+}

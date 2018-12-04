@@ -19,6 +19,24 @@ export interface ChildOptionItem {
     schema: any;
 }
 
+export interface MappedValueToComponentInstance {
+    /**
+     * The name of the property
+     * Can use the string location from lodash
+     */
+    propertyName: string;
+
+    /**
+     * The function to be used for that property
+     */
+    value: any;
+}
+
+export enum ReactPropertyType {
+    mappedValue = "mappedValue",
+    children = "children",
+}
+
 export enum PropertyKeyword {
     properties = "properties",
     reactProperties = "reactProperties",
@@ -247,7 +265,7 @@ function getReactChildrenLocationsFromSchema(
         (schemaLocation: string): boolean => {
             return (
                 !!schemaLocation.match(/reactProperties\..+?\b/) &&
-                get(schema, schemaLocation).type === "children"
+                get(schema, schemaLocation).type === ReactPropertyType.children
             );
         }
     );
@@ -284,12 +302,12 @@ function getLocationsFromObject(data: any, location: string = ""): string[] {
 export function getDataLocationsOfChildren(
     schema: any,
     data: any,
-    childOptions: ChildOptionItem[]
+    options: ChildOptionItem[] | MappedValueToComponentInstance[]
 ): string[] {
     const dataLocations: string[] = getLocationsFromObject(data);
     const schemaLocations: string[] = getLocationsFromObject(schema);
     // get all schema locations from schema
-    const schemaReactChildrenLocations: string[] = getReactChildrenLocationsFromSchema(
+    const schemaReactPropertyLocations: string[] = getReactChildrenLocationsFromSchema(
         schema,
         schemaLocations
     );
@@ -301,55 +319,57 @@ export function getDataLocationsOfChildren(
     );
 
     // get all child locations as schema locations
-    const reactChildrenLocationsAsSchemaLocations: string[] = schemaReactChildrenLocations.filter(
-        (schemaReactChildrenLocation: string) => {
+    const reactPropertyLocationsAsSchemaLocations: string[] = schemaReactPropertyLocations.filter(
+        (schemaReactPropertyLocation: string) => {
             return !!schemaLocationsFromDataLocations.find(
                 (schemaLocationsFromDataLocation: string): boolean => {
                     return (
-                        schemaReactChildrenLocation === schemaLocationsFromDataLocation
+                        schemaReactPropertyLocation === schemaLocationsFromDataLocation
                     );
                 }
             );
         }
     );
 
-    const dataLocationsOfChildren: string[] = [];
+    const dataLocationsOfProperties: string[] = [];
 
     // get all child locations as data locations
     dataLocations.forEach((dataLocation: string) => {
         if (
-            !!reactChildrenLocationsAsSchemaLocations.find(
-                (reactChildrenLocationsAsSchemaLocation: string) => {
+            !!reactPropertyLocationsAsSchemaLocations.find(
+                (reactPropertyLocationsAsSchemaLocation: string) => {
                     return (
                         mapSchemaLocationFromDataLocation(dataLocation, data, schema) ===
-                        reactChildrenLocationsAsSchemaLocation
+                        reactPropertyLocationsAsSchemaLocation
                     );
                 }
             ) &&
             !Array.isArray(get(data, dataLocation))
         ) {
-            dataLocationsOfChildren.push(dataLocation);
+            dataLocationsOfProperties.push(dataLocation);
         }
     });
 
     // for every child location get nested data locations of children
-    dataLocationsOfChildren.forEach((dataLocationOfChildren: string) => {
-        const dataLocation: string = `${dataLocationOfChildren}.${propsKeyword}`;
+    dataLocationsOfProperties.forEach((dataLocationOfProperty: string) => {
+        const dataLocation: string = `${dataLocationOfProperty}.${propsKeyword}`;
         const subData: any = get(data, dataLocation);
-        const nestedDataLocationsOfChildren: string[] = getDataLocationsOfChildren(
+        let nestedDataLocationsOfProperties: string[] = getDataLocationsOfChildren(
             schema,
             subData,
-            childOptions
+            options as ChildOptionItem[]
         );
 
-        nestedDataLocationsOfChildren.forEach((nestedDataLocationOfChildren: string) => {
-            dataLocationsOfChildren.push(
-                `${dataLocation}.${nestedDataLocationOfChildren}`
-            );
-        });
+        nestedDataLocationsOfProperties.forEach(
+            (nestedDataLocationOfChildren: string) => {
+                dataLocationsOfProperties.push(
+                    `${dataLocation}.${nestedDataLocationOfChildren}`
+                );
+            }
+        );
     });
 
-    return dataLocationsOfChildren.map((dataLocationOfChildren: string) => {
+    return dataLocationsOfProperties.map((dataLocationOfChildren: string) => {
         return arrayItemsToBracketNotation(dataLocationOfChildren, data);
     });
 }
@@ -360,9 +380,35 @@ export function getDataLocationsOfChildren(
 export function mapDataToComponent(
     schema: any,
     data: any,
-    childOptions: ChildOptionItem[]
+    childOptions: ChildOptionItem[],
+    valueOptions?: MappedValueToComponentInstance[]
 ): any {
     const mappedData: any = cloneDeep(data);
+
+    if (valueOptions) {
+        const reactMappedValuesDataLocations: string[] = valueOptions.map(
+            (valueOption: MappedValueToComponentInstance) => {
+                return valueOption.propertyName;
+            }
+        );
+
+        // organize by length using split "."
+        reactMappedValuesDataLocations.sort(orderDataLocationByObjectDepth);
+
+        // going from longest length to shortest, resolve the data with the new value options
+        reactMappedValuesDataLocations.forEach(
+            (reactMappedValuesDataLocation: string) => {
+                const value: any = valueOptions.find(
+                    (valueOption: MappedValueToComponentInstance) => {
+                        return valueOption.propertyName === reactMappedValuesDataLocation;
+                    }
+                ).value;
+
+                set(mappedData, reactMappedValuesDataLocation, value);
+            }
+        );
+    }
+
     // find locations of all items of data that are react children
     const reactChildrenDataLocations: string[] = getDataLocationsOfChildren(
         schema,
@@ -371,7 +417,7 @@ export function mapDataToComponent(
     );
 
     // organize by length using split "."
-    reactChildrenDataLocations.sort(orderChildrenByDataLocation);
+    reactChildrenDataLocations.sort(orderDataLocationByObjectDepth);
 
     // going from the longest length to shortest, resolve the data with the new child options as createElement
     reactChildrenDataLocations.forEach(
@@ -436,7 +482,7 @@ export function getChildOptionBySchemaId(
  * Used as a sort compare function
  * see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
  */
-function orderChildrenByDataLocation(
+function orderDataLocationByObjectDepth(
     firstLocation: string,
     secondLocation: string
 ): number {

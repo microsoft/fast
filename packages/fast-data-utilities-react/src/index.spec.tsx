@@ -1,15 +1,18 @@
+import * as React from "react";
 import "jest";
 import { get } from "lodash-es";
 import {
     ChildOptionItem,
     getDataLocationsOfChildren,
     mapDataToComponent,
+    MappedValueToComponentInstance,
     mapSchemaLocationFromDataLocation,
 } from "./";
 
 import Children from "./__tests__/components/children";
 import General from "./__tests__/components/general-example";
 import TextField from "./__tests__/components/text-field";
+import Callback from "./__tests__/components/callback";
 
 import * as alignHorizontalSchema from "./__tests__/schemas/align-horizontal.schema.json";
 import * as arraysSchema from "./__tests__/schemas/arrays.schema.json";
@@ -17,6 +20,7 @@ import * as generalSchema from "./__tests__/schemas/general-example.schema.json"
 import * as anyOfSchema from "./__tests__/schemas/any-of.schema.json";
 import * as childrenSchema from "./__tests__/schemas/children.schema.json";
 import * as textFieldSchema from "./__tests__/schemas/text-field.schema.json";
+import * as callbackSchema from "./__tests__/schemas/callback.schema.json";
 
 /**
  * Map schema location from data location
@@ -393,5 +397,30 @@ describe("mapDataToComponent", () => {
         );
         expect(typeof get(mappedData, "children[1].type")).toBe("function");
         expect(get(mappedData, "children[1].type.displayName")).toBe("Text field");
+    });
+    test("should map data to a component with a custom values", () => {
+        const callbackProp: any = (id: string): React.ReactNode => {
+            return <div id={id}>Hello</div>;
+        };
+        const data: any = {
+            renderPropChildren: {},
+        };
+        const mappedValues: MappedValueToComponentInstance = {
+            propertyName: "renderPropChildren",
+            value: callbackProp,
+        };
+
+        const componentWithMappedData: any = mapDataToComponent(
+            callbackSchema,
+            data,
+            childOptions,
+            [mappedValues]
+        );
+        const callbackPropId: string = "foo";
+
+        expect(typeof componentWithMappedData.renderPropChildren).toBe("function");
+        expect(
+            componentWithMappedData.renderPropChildren(callbackPropId).props.id
+        ).toEqual(callbackPropId);
     });
 });
