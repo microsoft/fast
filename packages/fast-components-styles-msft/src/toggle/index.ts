@@ -18,7 +18,7 @@ import { applyTypeRampConfig } from "../utilities/typography";
 import { ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Chroma from "chroma-js";
 import outlinePattern from "../patterns/outline";
-// import Pattern from "../patterns/outline";
+import toggleFieldPattern from "../patterns/toggle-field";
 
 const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -53,27 +53,18 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
         },
         toggle_label: {
             ...applyTypeRampConfig("t8"),
-            display: "inline-block",
-            foreground: foregroundColor,
+            display: "block",
             paddingBottom: "7px",
-            float: applyLocalizedProperty("left", "right", direction),
-            clear: applyLocalizedProperty("left", "right", direction),
-            "& + div": {
-                marginTop: "0",
-                float: applyLocalizedProperty("left", "right", direction),
-                clear: applyLocalizedProperty("left", "right", direction),
-                "& + span": {
-                    float: applyLocalizedProperty("left", "right", direction),
-                    [applyLocalizedProperty(
-                        "margin-left",
-                        "margin-right",
-                        direction
-                    )]: "5px",
-                },
-            },
+            clear: "both",
         },
         toggle_toggleButton: {
             position: "relative",
+            marginTop: "0",
+            float: applyLocalizedProperty("left", "right", direction),
+            "& + span": {
+                float: applyLocalizedProperty("left", "right", direction),
+                [applyLocalizedProperty("margin-left", "margin-right", direction)]: "5px",
+            },
         },
         toggle_stateIndicator: {
             position: "absolute",
@@ -84,7 +75,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             borderRadius: "10px",
             width: "10px",
             height: "10px",
-            backgroundColor: foregroundColor,
+            ...toggleFieldPattern.rest.stateIndicator.checked,
         },
         toggle_input: {
             position: "relative",
@@ -121,38 +112,26 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
                     borderColor: brandColor,
                     boxShadow: "none",
                 },
-                "& + span": {
+                "& + $toggle_stateIndicator": {
                     left: "28px",
                     backgroundColor,
                 },
             },
         },
         toggle__disabled: {
-            color: disabledContrast(
-                designSystem.contrast,
-                foregroundColor,
-                backgroundColor
-            ),
+            color: toggleFieldPattern.disabled.text.color,
 
             "& $toggle_input": {
                 cursor: "not-allowed",
                 ...outlinePattern.disabled,
-                "& + span": {
-                    backgroundColor: disabledContrast(
-                        designSystem.contrast,
-                        foregroundColor,
-                        backgroundColor
-                    ),
+                "& + $toggle_stateIndicator": {
+                    ...toggleFieldPattern.disabled.stateIndicator.checked,
                 },
                 "&:checked": {
                     cursor: "not-allowed",
-                    background: disabledContrast(
-                        designSystem.contrast,
-                        foregroundColor,
-                        backgroundColor
-                    ),
                     borderColor: "transparent",
-                    "& + span": {
+                    ...toggleFieldPattern.disabled.stateIndicator.checked,
+                    "& + $toggle_stateIndicator": {
                         background: backgroundColor,
                     },
                     "&:hover": {

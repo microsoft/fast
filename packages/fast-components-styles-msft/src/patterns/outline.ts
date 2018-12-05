@@ -4,6 +4,13 @@ import { ensureBackgroundNormal, foregroundNormal } from "../utilities/colors";
 import { CSSRules } from "@microsoft/fast-jss-manager";
 import { disabledContrast, hoverContrast } from "../utilities/colors";
 
+/**
+ * Describes the outline pattern for components. The default export includes all css values specific
+ * to the outline pattern. Depending on the component structure aligning to the outline pattern,
+ * these values can either be integrated wholesale into a css selector (eg. {...outlinePattern.rest})
+ * or assigned by property (eg. {backgroundColor: outlinePattern.rest.border})
+ */
+
 function outline(width: number, color: string): string {
     return `${toPx(width)} solid ${color}`;
 }

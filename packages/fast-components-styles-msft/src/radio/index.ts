@@ -13,8 +13,8 @@ import {
     normalContrast,
 } from "../utilities/colors";
 import outlinePattern from "../patterns/outline";
+import toggleFieldPattern from "../patterns/toggle-field";
 
-/* tslint:disable:max-line-length */
 const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<RadioClassNameContract, DesignSystem> => {
@@ -66,13 +66,9 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
                 ...outlinePattern.focus,
             },
             "&:checked": {
-                "& + span": {
+                "& + $radio_stateIndicator": {
                     "&::before": {
-                        position: "absolute",
-                        zIndex: "1",
-                        content: '""',
-                        borderRadius: "50%",
-                        background: radioColor,
+                        ...toggleFieldPattern.rest.stateIndicator.checked,
                     },
                 },
             },
@@ -84,30 +80,35 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
             width: "20px",
             height: "20px",
             flexShrink: "0",
-            color: radioDisabled,
             "&::before": {
+                position: "absolute",
+                zIndex: "1",
+                content: '""',
+                borderRadius: "50%",
                 top: "4px",
                 left: "4px",
                 height: "12px",
                 width: "12px",
+                ...toggleFieldPattern.rest.stateIndicator.unchecked,
             },
         },
         radio__disabled: {
             cursor: "not-allowed",
             "& $radio_input": {
-                ...outlinePattern.focus,
+                ...outlinePattern.disabled,
                 "&:checked": {
-                    "& + span::before": {
-                        background: radioDisabled,
+                    "& + $radio_stateIndicator::before": {
+                        ...toggleFieldPattern.disabled.stateIndicator.checked,
                     },
                 },
             },
             "& $radio_label": {
                 cursor: "not-allowed",
-                color: radioDisabled,
+                ...toggleFieldPattern.disabled.text,
             },
         },
         radio_label: {
+            ...toggleFieldPattern.rest.text,
             [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "8px",
         },
     };

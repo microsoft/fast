@@ -10,6 +10,7 @@ import {
     applyLocalizedProperty,
     contrast,
     Direction,
+    toPx,
 } from "@microsoft/fast-jss-utilities";
 import {
     disabledContrast,
@@ -17,6 +18,7 @@ import {
     normalContrast,
 } from "../utilities/colors";
 import outlinePattern from "../patterns/outline";
+import toggleFieldPattern from "../patterns/toggle-field";
 
 const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -62,18 +64,19 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
                 ...outlinePattern.focus,
             },
             "&:checked": {
-                "& + span": {
+                "& + $checkbox_stateIndicator": {
                     "&::after, &::before": {
                         position: "absolute",
                         zIndex: "1",
                         content: '""',
-                        borderRadius: "2px",
-                        background: checkboxColor,
+                        borderRadius: toPx(designSystem.cornerRadius),
+                        ...toggleFieldPattern.rest.stateIndicator.checked,
+                        // background: checkboxColor,
                     },
                 },
             },
             "&:indeterminate": {
-                "& + span": {
+                "& + $checkbox_stateIndicator": {
                     "&::before": {
                         position: "absolute",
                         zIndex: "1",
@@ -84,7 +87,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
                         top: "5px",
                         height: "10px",
                         width: "10px",
-                        background: checkboxColor,
+                        ...toggleFieldPattern.rest.stateIndicator.checked,
                     },
                 },
             },
@@ -96,6 +99,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
             width: "20px",
             height: "20px",
             flexShrink: "0",
+            ...toggleFieldPattern.rest.stateIndicator.unchecked,
             "&::before, &::after": {
                 width: "2px",
             },
@@ -128,7 +132,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
                 "&:checked, &:indeterminate": {
                     "& + $checkbox_stateIndicator": {
                         "&::after, &::before": {
-                            backgroundColor: checkboxDisabled,
+                            ...toggleFieldPattern.disabled.stateIndicator.checked,
                         },
                     },
                 },
