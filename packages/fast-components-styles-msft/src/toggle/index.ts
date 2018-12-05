@@ -17,8 +17,9 @@ import {
 import { applyTypeRampConfig } from "../utilities/typography";
 import { ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Chroma from "chroma-js";
+import outlinePattern from "../patterns/outline";
+// import Pattern from "../patterns/outline";
 
-/* tslint:disable-next-line */
 const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<ToggleClassNameContract, DesignSystem> => {
@@ -48,13 +49,6 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
                 userSelect: "none",
                 marginTop: "0",
                 paddingBottom: "0",
-            },
-            '&[aria-disabled="true"]': {
-                color: disabledContrast(
-                    designSystem.contrast,
-                    foregroundColor,
-                    backgroundColor
-                ),
             },
         },
         toggle_label: {
@@ -87,19 +81,17 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             top: "5px",
             left: "5px",
             transition: "all .1s ease",
-            backgroundColor,
             borderRadius: "10px",
             width: "10px",
             height: "10px",
+            backgroundColor: foregroundColor,
         },
         toggle_input: {
             position: "relative",
             margin: "0",
             width: "44px",
             height: "20px",
-            background: backgroundColor,
-            border: "1px solid",
-            borderColor: foregroundColor,
+            ...outlinePattern.rest,
             borderRadius: "20px",
             appearance: "none",
             "@media screen and (-ms-high-contrast:active)": {
@@ -112,17 +104,47 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
                     background: foregroundColor,
                 },
             },
+            "&:hover": {
+                ...outlinePattern.hover,
+            },
+            "&:focus": {
+                outline: "0",
+                ...outlinePattern.focus,
+                "& + $toggle_stateIndicator": {
+                    transform: "scale(1.2)",
+                },
+            },
             "&:checked": {
                 backgroundColor: brandColor,
                 borderColor: brandColor,
                 "&:focus": {
                     borderColor: brandColor,
+                    boxShadow: "none",
                 },
                 "& + span": {
                     left: "28px",
                     backgroundColor,
                 },
-                "&:disabled": {
+            },
+        },
+        toggle__disabled: {
+            color: disabledContrast(
+                designSystem.contrast,
+                foregroundColor,
+                backgroundColor
+            ),
+
+            "& $toggle_input": {
+                cursor: "not-allowed",
+                ...outlinePattern.disabled,
+                "& + span": {
+                    backgroundColor: disabledContrast(
+                        designSystem.contrast,
+                        foregroundColor,
+                        backgroundColor
+                    ),
+                },
+                "&:checked": {
                     cursor: "not-allowed",
                     background: disabledContrast(
                         designSystem.contrast,
@@ -136,33 +158,6 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
                     "&:hover": {
                         borderColor: "transparent",
                     },
-                },
-            },
-            "&:not(:checked)": {
-                borderColor: foregroundColor,
-                "& + span": {
-                    backgroundColor: foregroundColor,
-                },
-                "&:disabled": {
-                    cursor: "not-allowed",
-                    borderColor: disabledContrast(
-                        designSystem.contrast,
-                        foregroundColor,
-                        backgroundColor
-                    ),
-                    "& + span": {
-                        backgroundColor: disabledContrast(
-                            designSystem.contrast,
-                            foregroundColor,
-                            backgroundColor
-                        ),
-                    },
-                },
-            },
-            "&:focus": {
-                outline: "0",
-                "& + $toggle_stateIndicator": {
-                    transform: "scale(1.2)",
                 },
             },
         },

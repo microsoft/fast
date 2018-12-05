@@ -13,7 +13,7 @@ import {
 } from "../utilities/colors";
 import { density } from "../utilities/density";
 import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
-import * as outlinePattern from "../patterns/outline";
+import outlinePattern from "../patterns/outline";
 
 /**
  * Retrieves the disabled color

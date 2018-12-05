@@ -16,9 +16,8 @@ import {
     ensureNormalContrast,
     normalContrast,
 } from "../utilities/colors";
-import * as outlinePattern from "../patterns/outline";
+import outlinePattern from "../patterns/outline";
 
-/* tslint:disable:max-line-length */
 const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<CheckboxClassNameContract, DesignSystem> => {

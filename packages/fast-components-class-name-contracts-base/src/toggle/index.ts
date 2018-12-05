@@ -26,4 +26,9 @@ export interface ToggleClassNameContract {
      * The toggle state indicator
      */
     toggle_stateIndicator?: string;
+
+    /**
+     * Applied when the toggle is disabled
+     */
+    toggle__disabled?: string;
 }

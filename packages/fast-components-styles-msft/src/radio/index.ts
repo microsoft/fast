@@ -12,6 +12,7 @@ import {
     hoverContrast,
     normalContrast,
 } from "../utilities/colors";
+import outlinePattern from "../patterns/outline";
 
 /* tslint:disable:max-line-length */
 const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
@@ -54,17 +55,15 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
             height: "20px",
             appearance: "none",
             borderRadius: "50%",
-            boxSizing: "content-box",
             margin: "0",
             zIndex: "1",
-            background: backgroundColor,
-            boxShadow: `inset 0 0 0 1px ${radioColor}`,
+            ...outlinePattern.rest,
             "&:hover": {
-                boxShadow: `inset 0 0 0 1px ${radioHover}`,
+                ...outlinePattern.hover,
             },
             "&:focus": {
                 outline: "none",
-                boxShadow: `inset 0 0 0 2px ${radioColor}`,
+                ...outlinePattern.focus,
             },
             "&:checked": {
                 "& + span": {
@@ -96,7 +95,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
         radio__disabled: {
             cursor: "not-allowed",
             "& $radio_input": {
-                boxShadow: `inset 0 0 0 1px ${radioDisabled}`,
+                ...outlinePattern.focus,
                 "&:checked": {
                     "& + span::before": {
                         background: radioDisabled,

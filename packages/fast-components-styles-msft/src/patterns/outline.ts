@@ -4,51 +4,67 @@ import { ensureBackgroundNormal, foregroundNormal } from "../utilities/colors";
 import { CSSRules } from "@microsoft/fast-jss-manager";
 import { disabledContrast, hoverContrast } from "../utilities/colors";
 
-/**
- * Define the static outline for outline components. The result can be applied to a CSS border or outline property
- */
-export const rest: CSSRules<DesignSystem> = {
-    border: (config: DesignSystem): string => {
-        const designSystem: DesignSystem = withDesignSystemDefaults(config);
+function outline(width: number, color: string): string {
+    return `${toPx(width)} solid ${color}`;
+}
 
-        return `${toPx(designSystem.outlinePatternOutlineWidth)} solid ${foregroundNormal(
-            designSystem
-        )}`;
+export default {
+    rest: {
+        /** The border of an outline component in rest state
+         */
+        border: (config: DesignSystem): string => {
+            const designSystem: DesignSystem = withDesignSystemDefaults(config);
+
+            return outline(
+                designSystem.outlinePatternOutlineWidth,
+                foregroundNormal(designSystem)
+            );
+        },
+        /**
+         * The background of an outline component in rest state
+         */
+        background: ensureBackgroundNormal,
     },
-    background: ensureBackgroundNormal,
-};
+    hover: {
+        /**
+         * The border of an outline component in hover state
+         */
+        border: (config: DesignSystem): string => {
+            const designSystem: DesignSystem = withDesignSystemDefaults(config);
 
-/**
- * Define the hover outline for outline components. The result can be applied to a CSS border or outline property
- */
-export const hover: CSSRules<DesignSystem> = {
-    border: (config: DesignSystem): string => {
-        const designSystem: DesignSystem = withDesignSystemDefaults(config);
-
-        const outlineColor: string = hoverContrast(
-            designSystem.contrast,
-            foregroundNormal(designSystem),
-            designSystem.backgroundColor
-        );
-        return `${toPx(designSystem.outlinePatternOutlineWidth)} solid ${outlineColor}`;
+            return outline(
+                designSystem.outlinePatternOutlineWidth,
+                hoverContrast(
+                    designSystem.contrast,
+                    foregroundNormal(designSystem),
+                    designSystem.backgroundColor
+                )
+            );
+        },
     },
-};
-
-export const focus: CSSRules<DesignSystem> = {
-    boxShadow: (config: DesignSystem): string => {
-        return `0 0 0 1px inset ${foregroundNormal(config)}`;
+    focus: {
+        /**
+         * The inner border of an outline component in focus state
+         */
+        boxShadow: (config: DesignSystem): string => {
+            return `0 0 0 1px inset ${foregroundNormal(config)}`;
+        },
     },
-};
+    disabled: {
+        /**
+         * The border of an outline component in disabled state
+         */
+        border: (config: DesignSystem): string => {
+            const designSystem: DesignSystem = withDesignSystemDefaults(config);
 
-export const disabled: CSSRules<DesignSystem> = {
-    border: (config: DesignSystem): string => {
-        const designSystem: DesignSystem = withDesignSystemDefaults(config);
-
-        const outlineColor: string = disabledContrast(
-            designSystem.contrast,
-            foregroundNormal(designSystem),
-            designSystem.backgroundColor
-        );
-        return `${toPx(designSystem.outlinePatternOutlineWidth)} solid ${outlineColor}`;
+            return outline(
+                designSystem.outlinePatternOutlineWidth,
+                disabledContrast(
+                    designSystem.contrast,
+                    foregroundNormal(designSystem),
+                    designSystem.backgroundColor
+                )
+            );
+        },
     },
 };
