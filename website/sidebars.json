@@ -1,0 +1,12 @@
+{
+  "docs": {
+    "Getting started": ["readme"],
+    "Contributing": [
+      "contributing/install",
+      "contributing/working",
+      "contributing/standards",
+      "contributing/testing",
+      "contributing/policies"
+    ]
+  }
+}

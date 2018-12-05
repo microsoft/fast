@@ -80,3 +80,13 @@ www/
 
 # npm package-locks
 package-lock.json
+
+# Docusaurus dependencies
+lib/core/metadata.js
+lib/core/MetadataBlog.js
+
+website/translated_docs
+website/build/
+website/yarn.lock
+website/node_modules
+website/i18n/*
