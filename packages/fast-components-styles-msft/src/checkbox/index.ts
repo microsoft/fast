@@ -10,17 +10,13 @@ import {
     applyLocalizedProperty,
     contrast,
     Direction,
-    toPx,
 } from "@microsoft/fast-jss-utilities";
 import {
     disabledContrast,
-    ensureForegroundNormal,
     ensureNormalContrast,
-    hoverContrast,
     normalContrast,
 } from "../utilities/colors";
-import { get } from "lodash-es";
-import Chroma from "chroma-js";
+import * as outlinePattern from "../patterns/outline";
 
 /* tslint:disable:max-line-length */
 const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
@@ -29,14 +25,8 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const backgroundColor: string = designSystem.backgroundColor;
     const foregroundColor: string = designSystem.foregroundColor;
-    const brandColor: string = designSystem.brandColor;
     const direction: Direction = designSystem.direction;
     const checkboxColor: string = normalContrast(
-        designSystem.contrast,
-        foregroundColor,
-        backgroundColor
-    );
-    const checkboxHover: string = hoverContrast(
         designSystem.contrast,
         foregroundColor,
         backgroundColor
@@ -60,17 +50,17 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
             height: "20px",
             appearance: "none",
             borderRadius: "2px",
-            boxSizing: "content-box",
+            boxSizing: "border-box",
             margin: "0",
             zIndex: "1",
             background: backgroundColor,
-            boxShadow: `inset 0 0 0 1px ${checkboxColor}`,
+            ...outlinePattern.rest,
             "&:hover": {
-                boxShadow: `inset 0 0 0 1px ${checkboxHover}`,
+                ...outlinePattern.hover,
             },
             "&:focus": {
                 outline: "none",
-                boxShadow: `inset 0 0 0 2px ${checkboxColor}`,
+                ...outlinePattern.focus,
             },
             "&:checked": {
                 "& + span": {
@@ -135,7 +125,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
         checkbox__disabled: {
             cursor: "not-allowed",
             "& $checkbox_input": {
-                boxShadow: `inset 0 0 0 1px ${checkboxDisabled}`,
+                ...outlinePattern.disabled,
                 "&:checked, &:indeterminate": {
                     "& + $checkbox_stateIndicator": {
                         "&::after, &::before": {

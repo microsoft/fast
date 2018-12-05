@@ -33,6 +33,7 @@ import {
 import Chroma from "chroma-js";
 import { density } from "../utilities/density";
 import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
+import * as outlinePattern from "../patterns/outline";
 
 function applyTransaprentBackplateStyles(): CSSRules<DesignSystem> {
     return {
@@ -250,21 +251,22 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             },
         },
         button__outline: {
-            borderWidth: "1px",
+            ...outlinePattern.rest,
             "&, &:hover": {
                 color: outlineColor,
-                borderColor: outlineBorderColor,
                 ...applyTransparentBackground(),
+            },
+            "&:hover": {
+                ...outlinePattern.hover,
             },
             "&:focus": {
                 ...applyTransparentBackground(),
-                borderColor: outlineBorderColor,
-                boxShadow: `inset 0 0 0 1px ${outlineBorderColor}`,
+                ...outlinePattern.focus,
             },
             "&$button__disabled": {
                 ...applyTransparentBackground(),
+                ...outlinePattern.disabled,
                 color: outlineDisabledColor,
-                borderColor: outlineDisabledBorderColor,
             },
         },
         button__lightweight: {

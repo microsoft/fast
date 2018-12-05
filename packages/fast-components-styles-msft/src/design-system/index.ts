@@ -37,6 +37,16 @@ export interface DesignSystem {
      * The value typically used for foreground elements, such as text
      */
     foregroundColor: string;
+
+    /**
+     * The corner default radius applied to controls
+     */
+    cornerRadius?: number;
+
+    /*
+     * The width of the outline in pixels applied to outline components
+     */
+    outlinePatternOutlineWidth?: number;
 }
 
 const designSystemDefaults: DesignSystem = {
@@ -47,6 +57,8 @@ const designSystemDefaults: DesignSystem = {
     designUnit: 4,
     direction: Direction.ltr,
     foregroundColor: "#111",
+    cornerRadius: 2,
+    outlinePatternOutlineWidth: 1,
 };
 
 /**
