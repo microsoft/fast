@@ -192,7 +192,7 @@ class Checkbox extends Foundation<
             this.setState({ checked: !this.state.checked });
         }
 
-        if (this.props.onChange) {
+        if (typeof this.props.onChange === "function") {
             this.props.onChange(e);
         }
     };
