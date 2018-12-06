@@ -77,7 +77,11 @@ class HomeSplash extends React.Component {
     const language = this.props.language || '';
     return (
       <SplashContainer>
-        {/* <Logo img_src={imgUrl('docusaurus.svg')} /> */}
+        {/* 
+        If deleted, it would be more work later to update when the visual designs are in hand. 
+        For the interim, opting to keep the next line in as a comment.
+        <Logo img_src={imgUrl('docusaurus.svg')} /> 
+        */}
         <div className="inner">
           <ProjectTitle />
           <PromoSection>
