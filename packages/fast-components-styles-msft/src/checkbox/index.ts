@@ -30,11 +30,6 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
     const checkboxColor: any = toggleFieldPattern.rest.stateIndicator.checked.background(
         designSystem
     );
-    // const checkboxColor: string = normalContrast(
-    //     designSystem.contrast,
-    //     foregroundColor,
-    //     backgroundColor
-    // );
     const checkboxDisabled: string = disabledContrast(
         designSystem.contrast,
         foregroundColor,
@@ -76,6 +71,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
             flexShrink: "0",
             "&::before, &::after": {
                 content: "''",
+                pointerEvents: "none",
                 width: "2px",
                 position: "absolute",
                 zIndex: "1",
@@ -116,7 +112,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
         checkbox__indeterminate: {
             "& $checkbox_stateIndicator": {
                 "&::before": {
-                    borderRadius: "2px",
+                    borderRadius: toPx(designSystem.cornerRadius),
                     transform: "none",
                     [applyLocalizedProperty("left", "right", direction)]: "5px",
                     top: "5px",

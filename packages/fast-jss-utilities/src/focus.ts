@@ -1,17 +1,11 @@
 import { canUseDOM } from "exenv-es6";
-/**
- * Gets the numeric key code associated with a keyboard event. This method is for use with DOM level 3 events
- * that still use the deprecated keyCode property.
- */
-export function getKeyCode(event: KeyboardEvent): number {
-    return event === null ? null : event.which || event.keyCode || event.charCode;
-}
 
 /**
- * Test if the document supports :focus-visible
+ * Returns ':focus-visible' if the browser supports it and `:focus` if focus-visible is not supported
  */
 let _canUseFocusVisible: boolean = false;
-export function canUseFocusVisible(): boolean {
+
+export function focusVisible(): ":focus" | ":focus-visible" {
     if (typeof _canUseFocusVisible === "boolean") {
         return _canUseFocusVisible;
     }
@@ -29,8 +23,6 @@ export function canUseFocusVisible(): boolean {
         _canUseFocusVisible = true;
     } catch (e) {
         _canUseFocusVisible = false;
-    } finally {
-        document.head.removeChild(styleElement);
     }
 
     return _canUseFocusVisible as boolean;

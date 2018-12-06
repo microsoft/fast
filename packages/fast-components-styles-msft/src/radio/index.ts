@@ -65,13 +65,6 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
                 outline: "none",
                 ...outlinePattern.focus,
             },
-            "&:checked": {
-                "& + $radio_stateIndicator": {
-                    "&::before": {
-                        ...toggleFieldPattern.rest.stateIndicator.checked,
-                    },
-                },
-            },
         },
         radio_stateIndicator: {
             position: "relative",
@@ -81,6 +74,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
             height: "20px",
             flexShrink: "0",
             "&::before": {
+                pointerEvents: "none",
                 position: "absolute",
                 zIndex: "1",
                 content: '""',
@@ -96,20 +90,28 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
             ...toggleFieldPattern.rest.text,
             [applyLocalizedProperty("paddingLeft", "paddingRight", direction)]: "8px",
         },
+        radio__checked: {
+            "& $radio_stateIndicator": {
+                "&::before": {
+                    ...toggleFieldPattern.rest.stateIndicator.checked,
+                },
+            },
+        },
         radio__disabled: {
             "& $radio_label, & $radio_stateIndicator, & $radio_input": {
                 cursor: "not-allowed",
             },
             "& $radio_input": {
                 ...outlinePattern.disabled,
-                "&:checked": {
-                    "& + $radio_stateIndicator::before": {
-                        ...toggleFieldPattern.disabled.stateIndicator.checked,
-                    },
-                },
+                "&:checked": {},
             },
             "& $radio_label": {
                 ...toggleFieldPattern.disabled.text,
+            },
+            "&$radio__checked": {
+                "& $radio_stateIndicator::before": {
+                    ...toggleFieldPattern.disabled.stateIndicator.checked,
+                },
             },
         },
     };
