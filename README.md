@@ -26,7 +26,7 @@ Cross browser testing based on web browser rendering engines.
 [![Build Status](https://saucelabs.com/buildstatus/FAST-DNA)](https://saucelabs.com/beta/builds/33e17283a9fb447ab220a8e00abe8f26)
 
 ## Documentation
-[GitHub Pages](https://microsoft.github.io/fast-dna/docs/readme) is used to host our documentation and includes guidance on getting started, contributing, consumption, quality, testing, help, and community policies.
+Checkout the [developer documentation](https://microsoft.github.io/fast-dna/docs/readme) for guidance on getting started, contributing, consumption, quality, testing, help, and community policies.
 
 ## Contact
 * Join the community [on Discord](https://discord.gg/FcSNfg4)
