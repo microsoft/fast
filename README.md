@@ -19,7 +19,7 @@ Teams spend significant time building parts of the design system (colors, variab
 [Continue on Wiki...](https://github.com/Microsoft/fast-dna/wiki/Packages)
 
 ## Browser support
-Cross browser testing based on web browser rendering enginers.
+Cross browser testing based on web browser rendering engines.
 
 ![Browser matrix](https://saucelabs.com/browser-matrix/FAST-DNA.svg)
 
