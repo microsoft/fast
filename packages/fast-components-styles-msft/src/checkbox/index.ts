@@ -27,11 +27,14 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
     const backgroundColor: string = designSystem.backgroundColor;
     const foregroundColor: string = designSystem.foregroundColor;
     const direction: Direction = designSystem.direction;
-    const checkboxColor: string = normalContrast(
-        designSystem.contrast,
-        foregroundColor,
-        backgroundColor
+    const checkboxColor: any = toggleFieldPattern.rest.stateIndicator.checked.background(
+        designSystem
     );
+    // const checkboxColor: string = normalContrast(
+    //     designSystem.contrast,
+    //     foregroundColor,
+    //     backgroundColor
+    // );
     const checkboxDisabled: string = disabledContrast(
         designSystem.contrast,
         foregroundColor,
@@ -63,34 +66,6 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
                 outline: "none",
                 ...outlinePattern.focus,
             },
-            "&:checked": {
-                "& + $checkbox_stateIndicator": {
-                    "&::after, &::before": {
-                        position: "absolute",
-                        zIndex: "1",
-                        content: '""',
-                        borderRadius: toPx(designSystem.cornerRadius),
-                        ...toggleFieldPattern.rest.stateIndicator.checked,
-                        // background: checkboxColor,
-                    },
-                },
-            },
-            "&:indeterminate": {
-                "& + $checkbox_stateIndicator": {
-                    "&::before": {
-                        position: "absolute",
-                        zIndex: "1",
-                        content: '""',
-                        borderRadius: "2px",
-                        transform: "none",
-                        [applyLocalizedProperty("left", "right", direction)]: "5px",
-                        top: "5px",
-                        height: "10px",
-                        width: "10px",
-                        ...toggleFieldPattern.rest.stateIndicator.checked,
-                    },
-                },
-            },
         },
         checkbox_stateIndicator: {
             position: "relative",
@@ -99,9 +74,11 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
             width: "20px",
             height: "20px",
             flexShrink: "0",
-            ...toggleFieldPattern.rest.stateIndicator.unchecked,
             "&::before, &::after": {
+                content: "''",
                 width: "2px",
+                position: "absolute",
+                zIndex: "1",
             },
             "&::before": {
                 top: "4px",
@@ -125,16 +102,41 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
             ...applyTypeRampConfig("t7"),
             [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "8px",
         },
+        checkbox__checked: {
+            "& $checkbox_stateIndicator": {
+                "&::after, &::before": {
+                    position: "absolute",
+                    zIndex: "1",
+                    content: '""',
+                    borderRadius: toPx(designSystem.cornerRadius),
+                    ...toggleFieldPattern.rest.stateIndicator.checked,
+                },
+            },
+        },
+        checkbox__indeterminate: {
+            "& $checkbox_stateIndicator": {
+                "&::before": {
+                    borderRadius: "2px",
+                    transform: "none",
+                    [applyLocalizedProperty("left", "right", direction)]: "5px",
+                    top: "5px",
+                    height: "10px",
+                    width: "10px",
+                    ...toggleFieldPattern.rest.stateIndicator.checked,
+                },
+                "&::after": {
+                    content: "none",
+                },
+            },
+        },
         checkbox__disabled: {
             cursor: "not-allowed",
             "& $checkbox_input": {
                 ...outlinePattern.disabled,
-                "&:checked, &:indeterminate": {
-                    "& + $checkbox_stateIndicator": {
-                        "&::after, &::before": {
-                            ...toggleFieldPattern.disabled.stateIndicator.checked,
-                        },
-                    },
+            },
+            "& $checkbox_stateIndicator": {
+                "&::after, &::before": {
+                    ...toggleFieldPattern.disabled.stateIndicator.checked,
                 },
             },
             "& $checkbox_label": {
