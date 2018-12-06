@@ -26,10 +26,10 @@ Cross browser testing based on web browser rendering enginers.
 [![Build Status](https://saucelabs.com/buildstatus/FAST-DNA)](https://saucelabs.com/beta/builds/33e17283a9fb447ab220a8e00abe8f26)
 
 ## Documentation
-This [GitHub Wiki](https://github.com/Microsoft/fast-dna/wiki) includes guidance on getting started, contributing, consumption, quality, testing, help, and community policies.
+[GitHub Pages](https://microsoft.github.io/fast-dna/docs/readme) is used to host our documentation and includes guidance on getting started, contributing, consumption, quality, testing, help, and community policies.
 
 ## Contact
-* Ask for help [on Stack Overflow](https://stackoverflow.com/questions/tagged/fast-dna)
 * Join the community [on Discord](https://discord.gg/FcSNfg4)
+* Ask for help [on Stack Overflow](https://stackoverflow.com/questions/tagged/fast-dna)
 * Submit [requests / issues](https://github.com/Microsoft/fast-dna/issues/new/choose)
 * Contributors [find issues to work on](https://github.com/Microsoft/fast-dna/labels/good%20first%20issue)
