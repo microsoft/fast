@@ -85,9 +85,9 @@ class HomeSplash extends React.Component {
         <div className="inner">
           <ProjectTitle />
           <PromoSection>
-            <Button href="https://msft-docs.fast-dna.net">Try It Out</Button>
-            {/* <Button href={docUrl('doc1.html', language)}>Example Link</Button>
-            <Button href={docUrl('doc2.html', language)}>Example Link 2</Button> */}
+            <Button target="_blank" href="https://github.com/microsoft/fast-dna">GitHub</Button>
+            <Button target="_blank" href="https://msft-docs.fast-dna.net">Components</Button>
+            <Button href={docUrl('readme.html', language)}>Documentation</Button>
           </PromoSection>
         </div>
       </SplashContainer>
@@ -196,6 +196,7 @@ const Showcase = props => {
   );
 };
 
+ 
 class Index extends React.Component {
   render() {
     const language = this.props.language || '';
