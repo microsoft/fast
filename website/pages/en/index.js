@@ -77,13 +77,17 @@ class HomeSplash extends React.Component {
     const language = this.props.language || '';
     return (
       <SplashContainer>
-        <Logo img_src={imgUrl('docusaurus.svg')} />
+        {/* 
+        If deleted, it would be more work later to update when the visual designs are in hand. 
+        For the interim, opting to keep the next line in as a comment.
+        <Logo img_src={imgUrl('logo.svg')} /> 
+        */}
         <div className="inner">
           <ProjectTitle />
           <PromoSection>
-            <Button href="https://msft-docs.fast-dna.net">Try It Out</Button>
-            {/* <Button href={docUrl('doc1.html', language)}>Example Link</Button>
-            <Button href={docUrl('doc2.html', language)}>Example Link 2</Button> */}
+            <Button target="_blank" href="https://github.com/microsoft/fast-dna">GitHub</Button>
+            <Button target="_blank" href="https://msft-docs.fast-dna.net">Components</Button>
+            <Button href={docUrl('readme.html', language)}>Documentation</Button>
           </PromoSection>
         </div>
       </SplashContainer>
@@ -105,13 +109,13 @@ const Features = () => (
     {[
       {
         content: 'This is the content of my feature',
-        image: imgUrl('docusaurus.svg'),
+        image: imgUrl('logo.svg'),
         imageAlign: 'top',
         title: 'Feature One',
       },
       {
         content: 'The content of my second feature',
-        image: imgUrl('docusaurus.svg'),
+        image: imgUrl('logo.svg'),
         imageAlign: 'top',
         title: 'Feature Two',
       },
@@ -133,7 +137,7 @@ const LearnHow = () => (
     {[
       {
         content: 'Talk about learning how to use this',
-        image: imgUrl('docusaurus.svg'),
+        image: imgUrl('logo.svg'),
         imageAlign: 'right',
         title: 'Learn How',
       },
@@ -146,7 +150,7 @@ const TryOut = () => (
     {[
       {
         content: 'Talk about trying this out',
-        image: imgUrl('docusaurus.svg'),
+        image: imgUrl('logo.svg'),
         imageAlign: 'left',
         title: 'Try it Out',
       },
@@ -159,7 +163,7 @@ const Description = () => (
     {[
       {
         content: 'This is another description of how this project is useful',
-        image: imgUrl('docusaurus.svg'),
+        image: imgUrl('logo.svg'),
         imageAlign: 'right',
         title: 'Description',
       },
@@ -191,7 +195,7 @@ const Showcase = props => {
     </div>
   );
 };
-
+ 
 class Index extends React.Component {
   render() {
     const language = this.props.language || '';
