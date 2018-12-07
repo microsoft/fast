@@ -19,18 +19,7 @@ import {
 import { density } from "../utilities/density";
 import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
 import outlinePattern from "../patterns/outline";
-
-/**
- * Retrieves the disabled color
- */
-function disabledColor(config: DesignSystem): string {
-    const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    return disabledContrast(
-        designSystem.contrast,
-        foregroundNormal(designSystem),
-        designSystem.backgroundColor
-    );
-}
+import typographyPattern from "../patterns/typography";
 
 function hoverColor(config: DesignSystem): string {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
@@ -50,7 +39,7 @@ const styles: ComponentStyles<TextFieldClassNameContract, DesignSystem> = (
         textField: {
             ...applyTypeRampConfig("t7"),
             ...outlinePattern.rest,
-            color: ensureForegroundNormal,
+            ...typographyPattern.rest,
             fontWeight: fontWeight.light.toString(),
             boxSizing: "border-box",
             borderRadius: toPx(designSystem.cornerRadius),
@@ -66,11 +55,12 @@ const styles: ComponentStyles<TextFieldClassNameContract, DesignSystem> = (
                 outline: "none",
             },
             [`&${focusVisible()}`]: {
+                outline: "none",
                 ...outlinePattern.focus,
             },
             "&:disabled": {
                 ...outlinePattern.disabled,
-                color: disabledColor(designSystem),
+                ...typographyPattern.disabled,
                 cursor: "not-allowed",
             },
         },

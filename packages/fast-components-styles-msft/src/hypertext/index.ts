@@ -7,6 +7,7 @@ import {
 } from "@microsoft/fast-jss-manager";
 import { HypertextClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { focusVisible } from "@microsoft/fast-jss-utilities";
+import typographyPattern from "../patterns/typography";
 
 const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -15,7 +16,7 @@ const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = (
         hypertext: {
             outline: "none",
             textDecoration: "none",
-            color: ensureForegroundNormal,
+            ...typographyPattern.rest,
             "&:link, &:visited": {
                 borderBottom: `1px solid ${ensureBrandNormal(config)}`,
                 color: ensureBrandNormal,

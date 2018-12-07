@@ -14,6 +14,7 @@ import {
 } from "../utilities/colors";
 import { contrast, focusVisible, scaleContrast } from "@microsoft/fast-jss-utilities";
 import { applyTypeRampConfig } from "../utilities/typography";
+import typographyPattern from "../patterns/typography";
 
 const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = {
     contextMenuItem: {
@@ -24,7 +25,7 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         gridTemplateRows: "auto",
         alignItems: "center",
         padding: "0",
-        color: ensureForegroundNormal,
+        ...typographyPattern.rest,
         whiteSpace: "nowrap",
         overflow: "hidden",
         cursor: "default",
@@ -52,16 +53,8 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
     },
     contextMenuItem__disabled: {
         cursor: "not-allowed",
-        color: (config: DesignSystem): string => {
-            const designSystem: DesignSystem = withDesignSystemDefaults(config);
-
-            return disabledContrast(
-                designSystem.contrast,
-                designSystem.foregroundColor,
-                designSystem.backgroundColor
-            );
-        },
-        "&:hover, &:focus": {
+        ...typographyPattern.disabled,
+        [`&:hover, &${focusVisible()}`]: {
             background: backgroundColor,
         },
     },

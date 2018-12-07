@@ -19,7 +19,8 @@ import { applyTypeRampConfig } from "../utilities/typography";
 import { ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Chroma from "chroma-js";
 import outlinePattern from "../patterns/outline";
-import toggleFieldPattern from "../patterns/toggle-field";
+import switchFieldPattern from "../patterns/switch-field";
+import typographyPattern from "../patterns/typography";
 
 const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -45,7 +46,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
     return {
         toggle: {
             display: "inline-block",
-            color: foregroundColor,
+            ...typographyPattern.rest,
             "& span": {
                 userSelect: "none",
                 marginTop: "0",
@@ -76,7 +77,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             borderRadius: "10px",
             width: "10px",
             height: "10px",
-            ...toggleFieldPattern.rest.stateIndicator.checked,
+            ...switchFieldPattern.rest.stateIndicator,
         },
         toggle_input: {
             position: "relative",
@@ -117,18 +118,17 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             },
         },
         toggle__disabled: {
-            color: toggleFieldPattern.disabled.text.color,
-
+            ...typographyPattern.disabled,
             "& $toggle_input": {
                 cursor: "not-allowed",
                 ...outlinePattern.disabled,
                 "& + $toggle_stateIndicator": {
-                    ...toggleFieldPattern.disabled.stateIndicator.checked,
+                    ...switchFieldPattern.disabled.stateIndicator,
                 },
                 "&:checked": {
                     cursor: "not-allowed",
                     borderColor: "transparent",
-                    ...toggleFieldPattern.disabled.stateIndicator.checked,
+                    ...switchFieldPattern.disabled.stateIndicator,
                     "& + $toggle_stateIndicator": {
                         background: backgroundColor,
                     },

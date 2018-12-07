@@ -17,7 +17,8 @@ import {
     normalContrast,
 } from "../utilities/colors";
 import outlinePattern from "../patterns/outline";
-import toggleFieldPattern from "../patterns/toggle-field";
+import switchFieldPattern from "../patterns/switch-field";
+import typographyPattern from "../patterns/typography";
 
 const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -89,17 +90,17 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
                 left: "4px",
                 height: "12px",
                 width: "12px",
-                ...toggleFieldPattern.rest.stateIndicator.unchecked,
+                ...switchFieldPattern.rest.stateIndicator,
             },
         },
         radio_label: {
-            ...toggleFieldPattern.rest.text,
+            ...typographyPattern.rest,
             [applyLocalizedProperty("paddingLeft", "paddingRight", direction)]: "8px",
         },
         radio__checked: {
             "& $radio_stateIndicator": {
                 "&::before": {
-                    ...toggleFieldPattern.rest.stateIndicator.checked,
+                    ...switchFieldPattern.rest.stateIndicator,
                 },
             },
         },
@@ -112,11 +113,11 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
                 "&:checked": {},
             },
             "& $radio_label": {
-                ...toggleFieldPattern.disabled.text,
+                ...typographyPattern.disabled,
             },
             "&$radio__checked": {
                 "& $radio_stateIndicator::before": {
-                    ...toggleFieldPattern.disabled.stateIndicator.checked,
+                    ...switchFieldPattern.disabled.stateIndicator,
                 },
             },
         },
