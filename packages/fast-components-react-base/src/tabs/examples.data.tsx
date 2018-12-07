@@ -191,7 +191,7 @@ function getTabItemFour(): any {
     };
 }
 
-const detailChildren: any[] = [getTabItemOne(), getTabItemTwo(), getTabItemThree()];
+//const detailChildren: any[] = [getTabItemOne(), getTabItemTwo(), getTabItemThree()];
 
 const exampleChildren1: any[] = [
     {
@@ -246,30 +246,49 @@ const exampleChildren4: any[] = [
     },
 ];
 
-function renderTab(tabTitle: string): () => React.ReactNode {
-    return (className?: string): React.ReactNode => <div>{tabTitle}</div>;
+function renderTab(tabTitle: string, className?: string): () => React.ReactNode {
+    return (): React.ReactNode => <div className={className}>{tabTitle}</div>;
 }
 
-function renderTabContent(tabContent: string): () => React.ReactNode {
-    return (className?: string): React.ReactNode => <div>{tabContent}</div>;
+function renderTabContent(tabContent: string, className?: string): () => React.ReactNode {
+    return (): React.ReactNode => <div className={className}>{tabContent}</div>;
 }
 
-const tabData: TabItemData[] = [
+const tabItem1: TabItemData = {
+    tab: renderTab("tab one"),
+    content: renderTabContent("tab one content"),
+    id: "tab01",
+};
+
+const tabItem2: TabItemData = {
+    tab: renderTab("tab two"),
+    content: renderTabContent("tab two content"),
+    id: "tab02",
+};
+
+const tabItem3: TabItemData = {
+    tab: renderTab("tab three"),
+    content: renderTabContent("tab three content"),
+    id: "tab03",
+};
+
+const tabItem4: TabItemData = {
+    tab: renderTab("tab four"),
+    content: renderTabContent("tab four content"),
+    id: "tab04",
+};
+
+const detailTabItemData: TabItemData[] = [tabItem1, tabItem2, tabItem3];
+
+const exampleTabItemData1: TabItemData[] = [
     {
-        tab: renderTab("Tab One"),
-        content: renderTabContent("Tab One Content"),
+        tab: renderTab(""),
+        content: renderTabContent(""),
         id: "tab01",
     },
-    {
-        tab: renderTab("Tab Two"),
-        content: renderTabContent("Tab Two Content"),
-        id: "tab02",
-    },
-    {
-        tab: renderTab("Tab Three"),
-        content: renderTabContent("Tab Three Content"),
-        id: "tab03",
-    },
+    tabItem2,
+    tabItem3,
+    tabItem4,
 ];
 
 const examples: ComponentFactoryExample<TabsHandledProps> = {
@@ -280,20 +299,17 @@ const examples: ComponentFactoryExample<TabsHandledProps> = {
     detailData: {
         ...tabsManagedClasses,
         label: "A set of example text content",
-        tabItemData: tabData,
-        activeId: "tab01",
+        tabItemData: detailTabItemData,
     },
     data: [
         {
             ...tabsManagedClasses,
-            activeId: "tab04",
             label: "A set of example text content",
             orientation: Orientation.horizontal,
-            children: exampleChildren1,
+            tabItemData: exampleTabItemData1,
         },
         {
             ...tabsManagedClasses,
-            activeId: "tab03",
             label: "A set of example text content",
             orientation: Orientation.vertical,
             children: exampleChildren2,

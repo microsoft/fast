@@ -72,15 +72,10 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
     constructor(props: TabsProps) {
         super(props);
 
-        let tabItems: React.ReactNode[];
-
-        if (!this.props.tabItemData) {
-            tabItems = React.Children.toArray(this.tabItems());
-        }
-
         this.tabListRef = React.createRef();
 
         if (!this.props.tabItemData) {
+            let tabItems: React.ReactNode[] = React.Children.toArray(this.tabItems());
             this.state = {
                 activeId: this.props.activeId
                     ? this.props.activeId
@@ -93,7 +88,6 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
                 activeId: "",
             };
         }
-        console.log(tabItems);
     }
 
     /**
@@ -165,10 +159,9 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
         }
     }
 
-    private tabItems(): React.ReactNode[] {
-        let array;
+    private tabItems(): React.ReactNode {
         if (this.props.tabItemData) {
-            array = this.props.tabItemData.map((tabItem: TabItemData, index: Number) => {
+            return this.props.tabItemData.map((tabItem: TabItemData, index: Number) => {
                 return (
                     <TabItem id={tabItem.id} slot={TabsSlot.tabItem}>
                         <Tab
@@ -197,35 +190,31 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
                 );
             });
         } else {
-            array = this.getChildrenBySlot(
+            return this.getChildrenBySlot(
                 this.props.children,
                 this.getSlot(TabsSlot.tabItem)
             );
         }
-        return array;
     }
 
     private renderTabItem = (tabItem: JSX.Element, index: number): JSX.Element => {
-        if (!this.props.tabItemData) {
-            return React.cloneElement(
-                this.getChildrenBySlot(
-                    tabItem.props.children,
-                    this.getSlot(TabsSlot.tab)
-                )[0],
-                {
-                    key: tabItem.props.id,
-                    "aria-controls": tabItem.props.id,
-                    active: this.state.activeId === tabItem.props.id,
-                    onClick: this.handleClick,
-                    onKeyDown: this.handleKeyDown,
-                    tabIndex: this.state.activeId !== tabItem.props.id ? -1 : 0,
-                }
-            );
+        if (this.props.tabItemData) {
+            return this.getChildrenBySlot(
+                tabItem.props.children,
+                this.getSlot(TabsSlot.tab)
+            )[0];
         }
-        return this.getChildrenBySlot(
-            tabItem.props.children,
-            this.getSlot(TabsSlot.tab)
-        )[0];
+        return React.cloneElement(
+            this.getChildrenBySlot(tabItem.props.children, this.getSlot(TabsSlot.tab))[0],
+            {
+                key: tabItem.props.id,
+                "aria-controls": tabItem.props.id,
+                active: this.state.activeId === tabItem.props.id,
+                onClick: this.handleClick,
+                onKeyDown: this.handleKeyDown,
+                tabIndex: this.state.activeId !== tabItem.props.id ? -1 : 0,
+            }
+        );
     };
 
     /**
@@ -236,43 +225,36 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
     }
 
     private renderTabPanel = (tabItem: JSX.Element, index: number): JSX.Element => {
-        if (!this.props.tabItemData) {
-            return React.cloneElement(
-                this.getChildrenBySlot(
-                    tabItem.props.children,
-                    this.getSlot(TabsSlot.tabPanel)
-                )[0],
-                {
-                    key: tabItem.props.id,
-                    id: tabItem.props.id,
-                    "aria-labelledby": tabItem.props.id,
-                    active: this.state.activeId === tabItem.props.id,
-                }
-            );
+        if (this.props.tabItemData) {
+            return this.getChildrenBySlot(
+                tabItem.props.children,
+                this.getSlot(TabsSlot.tabPanel)
+            )[0];
         }
-        return this.getChildrenBySlot(
-            tabItem.props.children,
-            this.getSlot(TabsSlot.tabPanel)
-        )[0];
+        return React.cloneElement(
+            this.getChildrenBySlot(
+                tabItem.props.children,
+                this.getSlot(TabsSlot.tabPanel)
+            )[0],
+            {
+                key: tabItem.props.id,
+                id: tabItem.props.id,
+                "aria-labelledby": tabItem.props.id,
+                active: this.state.activeId === tabItem.props.id,
+            }
+        );
     };
 
     /**
      * Handles the click event on the tab element
      */
     private handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
-        // console.log(
-        //     "Click Active?",
-        //     this.state.activeId,
-        //     this.props.activeId,
-        //     e.currentTarget.getAttribute("aria-controls")
-        // );
+        console.log("Click!");
         if (!this.props.activeId) {
-            console.log(e.currentTarget.getAttribute("aria-controls"));
             this.setState({
                 activeId: e.currentTarget.getAttribute("aria-controls"),
             });
         } else if (typeof this.props.onUpdate === "function") {
-            console.log("not set State");
             this.props.onUpdate(e.currentTarget.getAttribute("aria-controls"));
         }
     };
@@ -329,12 +311,11 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
 
         const activeId: string | undefined = get(items[itemIndex], "props.id");
 
-        console.log(items[itemIndex]);
         if (!this.props.activeId) {
             this.setState({
                 activeId,
             });
-            console.log("State", this.state.activeId);
+
             (Array.from(this.tabListRef.current.children)[
                 itemIndex
             ] as HTMLButtonElement).focus();
@@ -347,7 +328,6 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
      * Gets the current index by tab item ID
      */
     private getCurrentIndexById = (item: JSX.Element): boolean => {
-        console.log("Get Current", item.props.id, this.state.activeId);
         return item.props.id === this.state.activeId;
     };
 
