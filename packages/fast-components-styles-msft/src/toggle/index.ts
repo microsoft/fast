@@ -12,6 +12,7 @@ import {
     applyLocalizedProperty,
     Direction,
     ensureContrast,
+    focusVisible,
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import { applyTypeRampConfig } from "../utilities/typography";
@@ -85,6 +86,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             ...outlinePattern.rest,
             borderRadius: "20px",
             appearance: "none",
+            outline: "none",
             "@media screen and (-ms-high-contrast:active)": {
                 "&::after, &:checked + span": {
                     background: backgroundColor,
@@ -98,17 +100,13 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             "&:hover": {
                 ...outlinePattern.hover,
             },
-            "&:focus": {
-                outline: "0",
+            [`&${focusVisible()}`]: {
                 ...outlinePattern.focus,
-                "& + $toggle_stateIndicator": {
-                    transform: "scale(1.2)",
-                },
             },
             "&:checked": {
                 backgroundColor: brandColor,
                 borderColor: brandColor,
-                "&:focus": {
+                [`&${focusVisible()}`]: {
                     borderColor: brandColor,
                     boxShadow: "none",
                 },

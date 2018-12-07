@@ -6,6 +6,7 @@ import {
     CSSRules,
 } from "@microsoft/fast-jss-manager";
 import { HypertextClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { focusVisible } from "@microsoft/fast-jss-utilities";
 
 const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -18,7 +19,7 @@ const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = (
             "&:link, &:visited": {
                 borderBottom: `1px solid ${ensureBrandNormal(config)}`,
                 color: ensureBrandNormal,
-                "&:hover, &:focus": {
+                [`&:hover, &${focusVisible()}`]: {
                     borderBottom: `2px solid ${ensureBrandNormal(config)}`,
                 },
             },

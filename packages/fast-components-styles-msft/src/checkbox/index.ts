@@ -10,6 +10,7 @@ import {
     applyLocalizedProperty,
     contrast,
     Direction,
+    focusVisible,
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import {
@@ -58,6 +59,9 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
                 ...outlinePattern.hover,
             },
             "&:focus": {
+                outline: "none",
+            },
+            [`&${focusVisible()}`]: {
                 outline: "none",
                 ...outlinePattern.focus,
             },

@@ -1,12 +1,8 @@
+import { applyTypeRampConfig } from "../utilities/typography";
 import designSystemDefaults, {
     DesignSystem,
     withDesignSystemDefaults,
 } from "../design-system";
-import {
-    ComponentStyles,
-    ComponentStyleSheet,
-    CSSRules,
-} from "@microsoft/fast-jss-manager";
 import { ButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
     adjustContrast,
@@ -14,12 +10,17 @@ import {
     contrast,
     Direction,
     ensureContrast,
+    focusVisible,
     localizeSpacing,
     scaleContrast,
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import { curry, get } from "lodash-es";
-import { applyTypeRampConfig } from "../utilities/typography";
+import {
+    ComponentStyles,
+    ComponentStyleSheet,
+    CSSRules,
+} from "@microsoft/fast-jss-manager";
 import {
     applyMixedColor,
     disabledContrast,
@@ -46,12 +47,12 @@ function applyTransaprentBackplateStyles(): CSSRules<DesignSystem> {
             );
         },
         ...applyTransparentBackground(),
-        "&:hover, &:focus": {
+        [`&:hover, &${focusVisible()}`]: {
             borderColor: "transparent",
             boxShadow: "none",
             ...applyTransparentBackground(),
         },
-        "&:focus $button_contentRegion::before, &:active $button_contentRegion::before, &:hover $button_contentRegion::before": {
+        [`&${focusVisible()} $button_contentRegion::before, &:active $button_contentRegion::before, &:hover $button_contentRegion::before`]: {
             background: (config: DesignSystem): string => {
                 const designSystem: DesignSystem = withDesignSystemDefaults(config);
                 return ensureNormalContrast(
@@ -226,6 +227,9 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             },
             "&:focus": {
                 outline: "none",
+            },
+            [`&${focusVisible()}`]: {
+                outline: "none",
                 borderColor: secondaryFocusBorderColor,
                 boxShadow: secondaryFocusBoxShadow,
             },
@@ -241,7 +245,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             "&:hover": {
                 backgroundColor: primaryHoverBackground,
             },
-            "&:focus": {
+            [`&${focusVisible()}`]: {
                 borderColor: primaryFocusBorderColor,
                 boxShadow: primaryFocusBoxShadow,
             },
@@ -259,7 +263,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             "&:hover": {
                 ...outlinePattern.hover,
             },
-            "&:focus": {
+            [`&${focusVisible()}`]: {
                 ...applyTransparentBackground(),
                 ...outlinePattern.focus,
             },

@@ -10,7 +10,7 @@ export function getKeyCode(event: KeyboardEvent): number {
 /**
  * Test if the document supports :focus-visible
  */
-let _canUseFocusVisible: boolean = false;
+let _canUseFocusVisible: boolean;
 export function canUseFocusVisible(): boolean {
     if (typeof _canUseFocusVisible === "boolean") {
         return _canUseFocusVisible;

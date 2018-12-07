@@ -5,7 +5,11 @@ import {
     CSSRules,
 } from "@microsoft/fast-jss-manager";
 import { RadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { applyLocalizedProperty, Direction } from "@microsoft/fast-jss-utilities";
+import {
+    applyLocalizedProperty,
+    Direction,
+    focusVisible,
+} from "@microsoft/fast-jss-utilities";
 import {
     disabledContrast,
     ensureNormalContrast,
@@ -63,6 +67,8 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
             },
             "&:focus": {
                 outline: "none",
+            },
+            [`&${focusVisible()}`]: {
                 ...outlinePattern.focus,
             },
         },

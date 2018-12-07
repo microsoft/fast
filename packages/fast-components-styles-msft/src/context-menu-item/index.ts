@@ -12,7 +12,7 @@ import {
     ensureForegroundNormal,
     hoverContrast,
 } from "../utilities/colors";
-import { contrast, scaleContrast } from "@microsoft/fast-jss-utilities";
+import { contrast, focusVisible, scaleContrast } from "@microsoft/fast-jss-utilities";
 import { applyTypeRampConfig } from "../utilities/typography";
 
 const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = {
@@ -33,7 +33,7 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         "&:focus": {
             outline: "none",
         },
-        "&:focus, &:hover": {
+        [`&${focusVisible()}, &:hover`]: {
             background: (config: DesignSystem): string => {
                 const designSystem: DesignSystem = withDesignSystemDefaults(config);
 

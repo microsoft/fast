@@ -1,7 +1,12 @@
 import { applyTypeRampConfig } from "../utilities/typography";
 import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { adjustContrast, contrast, toPx } from "@microsoft/fast-jss-utilities";
+import {
+    adjustContrast,
+    contrast,
+    focusVisible,
+    toPx,
+} from "@microsoft/fast-jss-utilities";
 import { get } from "lodash-es";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { fontWeight } from "../utilities/fonts";
@@ -59,6 +64,8 @@ const styles: ComponentStyles<TextFieldClassNameContract, DesignSystem> = (
             },
             "&:focus": {
                 outline: "none",
+            },
+            [`&${focusVisible()}`]: {
                 ...outlinePattern.focus,
             },
             "&:disabled": {
