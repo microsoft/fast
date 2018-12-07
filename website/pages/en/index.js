@@ -80,7 +80,7 @@ class HomeSplash extends React.Component {
         {/* 
         If deleted, it would be more work later to update when the visual designs are in hand. 
         For the interim, opting to keep the next line in as a comment.
-        <Logo img_src={imgUrl('docusaurus.svg')} /> 
+        <Logo img_src={imgUrl('logo.svg')} /> 
         */}
         <div className="inner">
           <ProjectTitle />
@@ -109,13 +109,13 @@ const Features = () => (
     {[
       {
         content: 'This is the content of my feature',
-        image: imgUrl('docusaurus.svg'),
+        image: imgUrl('logo.svg'),
         imageAlign: 'top',
         title: 'Feature One',
       },
       {
         content: 'The content of my second feature',
-        image: imgUrl('docusaurus.svg'),
+        image: imgUrl('logo.svg'),
         imageAlign: 'top',
         title: 'Feature Two',
       },
@@ -137,7 +137,7 @@ const LearnHow = () => (
     {[
       {
         content: 'Talk about learning how to use this',
-        image: imgUrl('docusaurus.svg'),
+        image: imgUrl('logo.svg'),
         imageAlign: 'right',
         title: 'Learn How',
       },
@@ -150,7 +150,7 @@ const TryOut = () => (
     {[
       {
         content: 'Talk about trying this out',
-        image: imgUrl('docusaurus.svg'),
+        image: imgUrl('logo.svg'),
         imageAlign: 'left',
         title: 'Try it Out',
       },
@@ -163,7 +163,7 @@ const Description = () => (
     {[
       {
         content: 'This is another description of how this project is useful',
-        image: imgUrl('docusaurus.svg'),
+        image: imgUrl('logo.svg'),
         imageAlign: 'right',
         title: 'Description',
       },
@@ -195,7 +195,6 @@ const Showcase = props => {
     </div>
   );
 };
-
  
 class Index extends React.Component {
   render() {
