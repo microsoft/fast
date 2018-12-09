@@ -139,4 +139,86 @@ describe("checkbox", (): void => {
             managedClasses.checkbox_label
         );
     });
+
+    // parametrized checkbox class name tests
+    [
+        {
+            name: "should correctly assign className from input props",
+            checkboxHandledProps: {} as CheckboxHandledProps,
+            className: "class-name",
+            expectedClassName: "class-name",
+        },
+        {
+            name:
+                "should correctly assign className when is disabled and root class name is empty",
+            checkboxHandledProps: { disabled: true } as CheckboxHandledProps,
+            className: "",
+            expectedClassName: null,
+        },
+        {
+            name: "should correctly assign className when is disabled",
+            checkboxHandledProps: { disabled: true } as CheckboxHandledProps,
+            className: "class-name",
+            expectedClassName: "class-name",
+        },
+        {
+            name:
+                "should correctly assign className when is disabled (name not present) and managed class given",
+            checkboxHandledProps: {
+                disabled: true,
+                managedClasses: {
+                    checkbox: "checkbox-class",
+                },
+            } as CheckboxHandledProps,
+            className: "",
+            expectedClassName: "checkbox-class",
+        },
+        {
+            name:
+                "should correctly assign className when is disabled (name present) and managed class given",
+            checkboxHandledProps: {
+                disabled: true,
+                managedClasses: {
+                    checkbox: "checkbox-class",
+                    checkbox__disabled: "disabled",
+                },
+            } as CheckboxHandledProps,
+            className: "",
+            expectedClassName: "checkbox-class disabled",
+        },
+        {
+            name:
+                "should correctly assign className when is disabled (name present), managed and root class name present",
+            checkboxHandledProps: {
+                disabled: true,
+                managedClasses: {
+                    checkbox: "checkbox-name",
+                    checkbox__disabled: "disabled",
+                },
+            } as CheckboxHandledProps,
+            className: "root-name",
+            expectedClassName: "checkbox-name disabled root-name",
+        },
+        {
+            name:
+                "should correctly assign className when is indeterminate (name present), managed and root class name present",
+            checkboxHandledProps: {
+                indeterminate: true,
+                managedClasses: {
+                    checkbox: "checkbox-name",
+                    checkbox__indeterminate: "indeterminate",
+                },
+            } as CheckboxHandledProps,
+            className: "root-name",
+            expectedClassName: "checkbox-name indeterminate root-name",
+        },
+    ].forEach(({ name, checkboxHandledProps, className, expectedClassName }: any) => {
+        test(name, () => {
+            const props: CheckboxProps = { ...checkboxHandledProps };
+
+            const rendered: any = shallow(<Checkbox {...props} className={className} />);
+
+            expect(rendered.prop("className")).toEqual(expectedClassName);
+        });
+    });
 });

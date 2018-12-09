@@ -31,7 +31,7 @@ class Image extends Foundation<ImageHandledProps, ImageUnhandledProps, {}> {
      * Renders the component
      */
     public render(): React.ReactElement<HTMLImageElement | HTMLPictureElement> {
-        let className: string = get(this.props, "managedClasses.image");
+        let className: string = get(this.props, "managedClasses.image", "");
 
         if (!this.props.children) {
             return (
@@ -47,7 +47,8 @@ class Image extends Foundation<ImageHandledProps, ImageUnhandledProps, {}> {
         } else {
             className = `${className} ${get(
                 this.props,
-                "managedClasses.image__picture"
+                "managedClasses.image__picture",
+                ""
             )}`;
 
             return (
@@ -59,7 +60,7 @@ class Image extends Foundation<ImageHandledProps, ImageUnhandledProps, {}> {
                     <img
                         src={this.props.src}
                         alt={this.props.alt}
-                        className={get(this.props, "managedClasses.image_img")}
+                        className={get(this.props, "managedClasses.image_img", "")}
                     />
                 </picture>
             );

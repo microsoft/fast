@@ -86,7 +86,7 @@ class Radio extends Foundation<RadioHandledProps, RadioUnhandledProps, RadioStat
      * Generates class names
      */
     protected generateClassNames(): string {
-        let classes: string = get(this.props, "managedClasses.radio");
+        let classes: string = get(this.props, "managedClasses.radio", "");
 
         if (this.props.disabled) {
             classes = `${classes} ${get(

@@ -162,4 +162,75 @@ describe("typography", (): void => {
         expect(rendered.prop("children")).not.toBe(undefined);
         expect(rendered.prop("children")).toEqual("Children");
     });
+
+    // parametrized typography class name tests
+    [
+        {
+            name: "should correctly assign className from input props",
+            typographyHandledProps: {} as TypographyHandledProps,
+            className: "class-name",
+            expectedClassName: "class-name",
+        },
+        {
+            name:
+                "should correctly assign className when is disabled and root class name is empty",
+            typographyHandledProps: {} as TypographyHandledProps,
+            className: "",
+            expectedClassName: null,
+        },
+        {
+            name: "should correctly assign className when is disabled",
+            typographyHandledProps: {} as TypographyHandledProps,
+            className: "class-name",
+            expectedClassName: "class-name",
+        },
+        {
+            name:
+                "should correctly assign className when is disabled (name not present) and managed class given",
+            typographyHandledProps: {
+                size: 1,
+                managedClasses: {
+                    typography: "typography-class",
+                },
+            } as TypographyHandledProps,
+            className: "",
+            expectedClassName: "typography-class",
+        },
+        {
+            name:
+                "should correctly assign className when is disabled (name present) and managed class given",
+            typographyHandledProps: {
+                size: 1,
+                managedClasses: {
+                    typography: "typography-class",
+                    typography__1: "disabled",
+                },
+            } as TypographyHandledProps,
+            className: "",
+            expectedClassName: "typography-class disabled",
+        },
+        {
+            name:
+                "should correctly assign className when is disabled (name present), managed and root class name present",
+            typographyHandledProps: {
+                size: 1,
+                managedClasses: {
+                    typography: "typography-name",
+                    typography__1: "disabled",
+                },
+            } as TypographyHandledProps,
+            className: "root-name",
+            expectedClassName: "typography-name disabled root-name",
+        },
+    ].forEach(({ name, typographyHandledProps, className, expectedClassName }: any) => {
+        test(name, () => {
+            const props: TypographyProps = { ...typographyHandledProps };
+
+            const rendered: any = shallow(
+                <Typography {...props} className={className} />
+            );
+
+            expect(rendered.prop("className")).toEqual(expectedClassName);
+        });
+    });
 });

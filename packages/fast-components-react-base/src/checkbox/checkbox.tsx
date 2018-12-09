@@ -118,7 +118,7 @@ class Checkbox extends Foundation<
      * Generates class names
      */
     protected generateClassNames(): string {
-        let classes: string = get(this.props, "managedClasses.checkbox");
+        let classes: string = get(this.props, "managedClasses.checkbox", "");
 
         if (this.props.disabled) {
             classes = `${classes} ${get(

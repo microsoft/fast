@@ -46,11 +46,12 @@ class Flipper extends Foundation<FlipperHandledProps, FlipperUnhandledProps, {}>
     protected generateClassNames(): string {
         const classes: string = get(
             this.props,
-            `managedClasses.flipper__${this.props.direction || FlipperDirection.next}`
+            `managedClasses.flipper__${this.props.direction || FlipperDirection.next}`,
+            ""
         );
 
         return super.generateClassNames(
-            `${get(this.props, "managedClasses.flipper")} ${classes}`
+            `${get(this.props, "managedClasses.flipper", "")} ${classes}`
         );
     }
 

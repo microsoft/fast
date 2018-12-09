@@ -67,9 +67,10 @@ class Subheading extends Foundation<
 
     protected generateClassNames(): string {
         return super.generateClassNames(
-            `${get(this.props, "managedClasses.subheading")} ${get(
+            `${get(this.props, "managedClasses.subheading", "")} ${get(
                 this.props,
-                `managedClasses.subheading__${this.props.size}`
+                `managedClasses.subheading__${this.props.size}`,
+                ""
             )}`
         );
     }

@@ -48,9 +48,10 @@ class TabPanel extends Foundation<TabPanelHandledProps, TabPanelUnhandledProps, 
         return this.props.active
             ? super.generateClassNames(get(this.props, "managedClasses.tabPanel"))
             : super.generateClassNames(
-                  `${get(this.props, "managedClasses.tabPanel")} ${get(
+                  `${get(this.props, "managedClasses.tabPanel", "")} ${get(
                       this.props,
-                      "managedClasses.tabPanel__hidden"
+                      "managedClasses.tabPanel__hidden",
+                      ""
                   )}`
               );
     }

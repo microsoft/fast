@@ -2,6 +2,8 @@ import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, shallow } from "enzyme";
 import ContextMenuItem, {
+    ContextMenuItemHandledProps,
+    ContextMenuItemProps,
     ContextMenuItemRole,
     ContextMenuItemUnhandledProps,
 } from "./context-menu-item";
@@ -68,6 +70,17 @@ describe("context menu item", (): void => {
         expect(onInvoke).toHaveBeenCalledTimes(1);
     });
 
+    test("should not call a registered callback after a click event because it is disabled", (): void => {
+        const onInvoke: any = jest.fn();
+        const rendered: any = shallow(
+            <ContextMenuItem onInvoke={onInvoke} disabled={true} />
+        );
+
+        rendered.simulate("click");
+
+        expect(onInvoke).toHaveBeenCalledTimes(0);
+    });
+
     test("should call a registered callback after spacebar is pressed", (): void => {
         const onInvoke: any = jest.fn();
         const rendered: any = shallow(<ContextMenuItem onInvoke={onInvoke} />);
@@ -85,4 +98,135 @@ describe("context menu item", (): void => {
 
         expect(onInvoke).toHaveBeenCalledTimes(1);
     });
+
+    test("should not call a registered callback after enter key is pressed because it is disabled", (): void => {
+        const onInvoke: any = jest.fn();
+        const rendered: any = shallow(
+            <ContextMenuItem onInvoke={onInvoke} disabled={true} />
+        );
+
+        rendered.simulate("keydown", { keyCode: KeyCodes.enter });
+
+        expect(onInvoke).toHaveBeenCalledTimes(0);
+    });
+
+    // parametrized contex-menu-item class name tests
+    [
+        {
+            name: "should correctly assign className from input props",
+            contextMenuItemHandledProps: {} as ContextMenuItemHandledProps,
+            className: "class-name",
+            expectedClassName: "class-name",
+        },
+        {
+            name:
+                "should correctly assign className when is disabled and root class name is empty",
+            contextMenuItemHandledProps: {
+                disabled: true,
+            } as ContextMenuItemHandledProps,
+            className: "",
+            expectedClassName: null,
+        },
+        {
+            name: "should correctly assign className when is disabled",
+            contextMenuItemHandledProps: {
+                disabled: true,
+            } as ContextMenuItemHandledProps,
+            className: "class-name",
+            expectedClassName: "class-name",
+        },
+        {
+            name:
+                "should correctly assign className when is disabled (name not present) and managed class given",
+            contextMenuItemHandledProps: {
+                disabled: true,
+                managedClasses: {
+                    contextMenuItem: "context-menu-item-class",
+                },
+            } as ContextMenuItemHandledProps,
+            className: "",
+            expectedClassName: "context-menu-item-class",
+        },
+        {
+            name:
+                "should correctly assign className when is disabled (name present) and managed class given",
+            contextMenuItemHandledProps: {
+                disabled: true,
+                managedClasses: {
+                    contextMenuItem: "context-menu-item-class",
+                    contextMenuItem__disabled: "disabled",
+                },
+            } as ContextMenuItemHandledProps,
+            className: "",
+            expectedClassName: "context-menu-item-class disabled",
+        },
+        {
+            name:
+                "should correctly assign className when is disabled (name present), managed and root class name present",
+            contextMenuItemHandledProps: {
+                disabled: true,
+                managedClasses: {
+                    contextMenuItem: "context-menu-item-name",
+                    contextMenuItem__disabled: "disabled",
+                },
+            } as ContextMenuItemHandledProps,
+            className: "root-name",
+            expectedClassName: "context-menu-item-name disabled root-name",
+        },
+        {
+            name:
+                "should correctly assign className when is disabled (name present), managed, root class name present, role not",
+            contextMenuItemHandledProps: {
+                disabled: true,
+                role: ContextMenuItemRole.menuItemCheckbox,
+                managedClasses: {
+                    contextMenuItem: "context-menu-item-name",
+                    contextMenuItem__disabled: "disabled",
+                },
+            } as ContextMenuItemHandledProps,
+            className: "root-name",
+            expectedClassName: "context-menu-item-name disabled root-name",
+        },
+        {
+            name:
+                "should correctly assign className when is disabled (name present), managed, root class name present, role not",
+            contextMenuItemHandledProps: {
+                disabled: true,
+                role: ContextMenuItemRole.menuItemRadio,
+                managedClasses: {
+                    contextMenuItem: "context-menu-item-name",
+                },
+            } as ContextMenuItemHandledProps,
+            className: "root-name",
+            expectedClassName: "context-menu-item-name root-name",
+        },
+        {
+            name:
+                "should correctly assign className when is disabled (name present), managed, root, role class name present",
+            contextMenuItemHandledProps: {
+                disabled: true,
+                role: ContextMenuItemRole.menuItemCheckbox,
+                managedClasses: {
+                    contextMenuItem: "context-menu-item-name",
+                    contextMenuItem__disabled: "disabled",
+                    contextMenuItem__checkbox: "context-menu-item-checkbox",
+                },
+            } as ContextMenuItemHandledProps,
+            className: "root-name",
+            expectedClassName:
+                "context-menu-item-name context-menu-item-checkbox disabled root-name",
+        },
+    ].forEach(
+        ({ name, contextMenuItemHandledProps, className, expectedClassName }: any) => {
+            test(name, () => {
+                const props: ContextMenuItemProps = { ...contextMenuItemHandledProps };
+
+                const rendered: any = shallow(
+                    <ContextMenuItem {...props} className={className} />
+                );
+
+                expect(rendered.prop("className")).toEqual(expectedClassName);
+            });
+        }
+    );
 });

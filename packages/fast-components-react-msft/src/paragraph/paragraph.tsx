@@ -48,9 +48,10 @@ class Paragraph extends Foundation<ParagraphHandledProps, ParagraphUnhandledProp
      * Generates class names based on props
      */
     protected generateClassNames(): string {
-        const classes: string = `${get(this.props, `managedClasses.paragraph`)} ${get(
+        const classes: string = `${get(this.props, `managedClasses.paragraph`, "")} ${get(
             this.props,
-            `managedClasses.paragraph__${this.props.size}`
+            `managedClasses.paragraph__${this.props.size}`,
+            ""
         )}`;
 
         return super.generateClassNames(
