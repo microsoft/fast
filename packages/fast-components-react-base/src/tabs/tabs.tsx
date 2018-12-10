@@ -64,6 +64,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
                 activeId: nextProps.activeId,
             };
         }
+
         return null;
     }
 
