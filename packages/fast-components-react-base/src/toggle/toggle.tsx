@@ -97,7 +97,10 @@ class Toggle extends Foundation<ToggleHandledProps, ToggleUnhandledProps, Toggle
                         )}
                     />
                 </div>
-                <span id={this.props.statusMessageId}>
+                <span
+                    id={this.props.statusMessageId}
+                    className={get(this.props, "managedClasses.toggle_statusMessage")}
+                >
                     {this.generateToggleStateLabel()}
                 </span>
             </div>
@@ -114,6 +117,14 @@ class Toggle extends Foundation<ToggleHandledProps, ToggleUnhandledProps, Toggle
             className = `${className} ${get(
                 this.props,
                 "managedClasses.toggle__disabled",
+                ""
+            )}`;
+        }
+
+        if (this.state.selected) {
+            className = `${className} ${get(
+                this.props,
+                "managedClasses.toggle__checked",
                 ""
             )}`;
         }

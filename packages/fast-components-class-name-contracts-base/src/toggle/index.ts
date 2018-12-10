@@ -28,7 +28,17 @@ export interface ToggleClassNameContract {
     toggle_stateIndicator?: string;
 
     /**
+     * The label indicating state
+     */
+    toggle_statusMessage?: string;
+
+    /**
      * Applied when the toggle is disabled
      */
     toggle__disabled?: string;
+
+    /**
+     * Applied when the toggle is checked
+     */
+    toggle__checked?: string;
 }
