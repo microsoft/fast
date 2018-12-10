@@ -36,6 +36,7 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
             outline: "none",
         },
         [`&${focusVisible()}`]: {
+            outline: "none",
             borderColor: ensureForegroundNormal,
         },
         "&:hover": {

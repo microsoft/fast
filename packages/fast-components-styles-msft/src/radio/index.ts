@@ -70,6 +70,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
                 outline: "none",
             },
             [`&${focusVisible()}`]: {
+                outline: "none",
                 ...outlinePattern.focus,
             },
         },

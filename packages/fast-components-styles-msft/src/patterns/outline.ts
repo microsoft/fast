@@ -58,7 +58,7 @@ export default {
          * The inner border of an outline component in focus state
          */
         boxShadow: (config: DesignSystem): string => {
-            return `0 0 0 1px inset ${ensureForegroundNormal(config)}`;
+            return `0 0 0 1px ${ensureForegroundNormal(config)} inset`;
         },
         border: (config: DesignSystem): string => {
             const designSystem: DesignSystem = withDesignSystemDefaults(config);

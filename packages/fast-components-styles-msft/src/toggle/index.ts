@@ -47,11 +47,6 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
         toggle: {
             display: "inline-block",
             ...typographyPattern.rest,
-            "& span": {
-                userSelect: "none",
-                marginTop: "0",
-                paddingBottom: "0",
-            },
         },
         toggle_label: {
             ...applyTypeRampConfig("t8"),
@@ -117,9 +112,6 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
                     ...outlinePattern.disabled,
                     borderColor: "transparent",
                     ...switchFieldPattern.disabled.stateIndicator,
-                    "&:hover": {
-                        borderColor: "transparent",
-                    },
                 },
                 "& $toggle_stateIndicator": {
                     background: backgroundColor,
@@ -131,8 +123,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
                 backgroundColor: brandColor,
                 borderColor: brandColor,
                 [`&${focusVisible()}`]: {
-                    borderColor: brandColor,
-                    boxShadow: "none",
+                    ...outlinePattern.focus,
                 },
                 "& + $toggle_stateIndicator": {
                     left: "28px",
@@ -143,6 +134,9 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
         toggle_statusMessage: {
             float: applyLocalizedProperty("left", "right", direction),
             [applyLocalizedProperty("padding-left", "padding-right", direction)]: "5px",
+            userSelect: "none",
+            marginTop: "0",
+            paddingBottom: "0",
         },
     };
 };
