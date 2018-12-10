@@ -1,8 +1,9 @@
+import {
+    ComponentStyles,
+    ComponentStyleSheet,
+    CSSRules,
+} from "@microsoft/fast-jss-manager";
 import { applyTypeRampConfig } from "../utilities/typography";
-import designSystemDefaults, {
-    DesignSystem,
-    withDesignSystemDefaults,
-} from "../design-system";
 import { ButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
     adjustContrast,
@@ -16,14 +17,14 @@ import {
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import { curry, get } from "lodash-es";
-import {
-    ComponentStyles,
-    ComponentStyleSheet,
-    CSSRules,
-} from "@microsoft/fast-jss-manager";
+import designSystemDefaults, {
+    DesignSystem,
+    withDesignSystemDefaults,
+} from "../design-system";
 import {
     applyMixedColor,
     disabledContrast,
+    ensureForegroundNormal,
     ensureLargeContrast,
     ensureNormalContrast,
     hoverContrast,
@@ -52,7 +53,7 @@ function applyTransaprentBackplateStyles(): CSSRules<DesignSystem> {
             boxShadow: "none",
             ...applyTransparentBackground(),
         },
-        [`&${focusVisible()} $button_contentRegion::before, &:active $button_contentRegion::before, &:hover $button_contentRegion::before`]: {
+        "&:active $button_contentRegion::before, &:hover $button_contentRegion::before": {
             background: (config: DesignSystem): string => {
                 const designSystem: DesignSystem = withDesignSystemDefaults(config);
                 return ensureNormalContrast(
@@ -61,6 +62,9 @@ function applyTransaprentBackplateStyles(): CSSRules<DesignSystem> {
                     designSystem.backgroundColor
                 );
             },
+        },
+        [`&${focusVisible()} $button_contentRegion::before`]: {
+            background: ensureForegroundNormal,
         },
         "&$button__disabled, &$button__disabled $button_contentRegion::before": {
             ...applyTransparentBackground(),

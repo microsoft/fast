@@ -90,7 +90,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
                 left: "4px",
                 height: "12px",
                 width: "12px",
-                ...switchFieldPattern.rest.stateIndicator,
+                background: "transparent",
             },
         },
         radio_label: {

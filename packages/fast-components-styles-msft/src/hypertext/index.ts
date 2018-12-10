@@ -20,8 +20,11 @@ const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = (
             "&:link, &:visited": {
                 borderBottom: `1px solid ${ensureBrandNormal(config)}`,
                 color: ensureBrandNormal,
-                [`&:hover, &${focusVisible()}`]: {
+                "&:hover": {
                     borderBottom: `2px solid ${ensureBrandNormal(config)}`,
+                },
+                [`&${focusVisible()}`]: {
+                    borderBottom: `2px solid ${ensureForegroundNormal(config)}`,
                 },
             },
         },

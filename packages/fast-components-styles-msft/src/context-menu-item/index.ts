@@ -21,7 +21,7 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         listStyleType: "none",
         height: density(40),
         display: "grid",
-        gridTemplateColumns: "40px auto 40px",
+        gridTemplateColumns: "38px auto 38px",
         gridTemplateRows: "auto",
         alignItems: "center",
         padding: "0",
@@ -31,10 +31,14 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         cursor: "default",
         ...applyTypeRampConfig("t7"),
         background: backgroundColor,
+        border: "2px solid transparent",
         "&:focus": {
             outline: "none",
         },
-        [`&${focusVisible()}, &:hover`]: {
+        [`&${focusVisible()}`]: {
+            borderColor: ensureForegroundNormal,
+        },
+        "&:hover": {
             background: (config: DesignSystem): string => {
                 const designSystem: DesignSystem = withDesignSystemDefaults(config);
 

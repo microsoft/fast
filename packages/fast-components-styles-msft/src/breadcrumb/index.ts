@@ -3,7 +3,11 @@ import designSystemDefaults, {
     withDesignSystemDefaults,
 } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
-import { applyLocalizedProperty, Direction } from "@microsoft/fast-jss-utilities";
+import {
+    applyLocalizedProperty,
+    Direction,
+    focusVisible,
+} from "@microsoft/fast-jss-utilities";
 import { ensureBrandNormal, ensureForegroundNormal } from "../utilities/colors";
 import { BreadcrumbClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyTypeRampConfig } from "../utilities/typography";
@@ -27,9 +31,6 @@ const styles: ComponentStyles<BreadcrumbClassNameContract, DesignSystem> = (
             "&:link, &:visited": {
                 color: ensureBrandNormal,
                 borderBottom: "0px",
-                "&:hover, &:focus": {
-                    borderBottom: `2px solid ${ensureBrandNormal(config)}`,
-                },
             },
         },
         breadcrumb_itemsContainer: {
