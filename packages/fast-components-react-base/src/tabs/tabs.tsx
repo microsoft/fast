@@ -296,11 +296,9 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
     private activateTab(location: TabLocation): void {
         const items: React.ReactNode[] = React.Children.toArray(this.tabItems());
         const count: number = items.length;
-
         const currentItemIndex: number = React.Children.toArray(items).findIndex(
             this.getCurrentIndexById
         );
-
         let itemIndex: number;
 
         switch (location) {

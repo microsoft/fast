@@ -191,29 +191,6 @@ function getTabItemFour(): any {
     };
 }
 
-// const detailChildren: any[] = [getTabItemOne(), getTabItemTwo(), getTabItemThree()];
-
-const exampleChildren1: any[] = [
-    {
-        id: tabItemSchema.id,
-        props: {
-            slot: TabsSlot.tabItem,
-            id: "tab01",
-            children: {
-                id: tabSchema.id,
-                props: {
-                    slot: TabsSlot.tab,
-                    ...tabManagedClasses,
-                    children: "tab one - missing panel",
-                },
-            },
-        },
-    },
-    getTabItemTwo(),
-    getTabItemThree(),
-    getTabItemFour(),
-];
-
 const exampleChildren2: JSX.Element[] = [
     getTabItemOne(),
     {
