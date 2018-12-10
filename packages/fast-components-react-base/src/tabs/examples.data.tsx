@@ -8,7 +8,7 @@ import Tabs, {
     Tab,
     TabConfig,
     TabItem,
-    TabItemData,
+    TabItems,
     TabManagedClasses,
     TabPanel,
     TabPanelManagedClasses,
@@ -254,33 +254,33 @@ function renderTabContent(tabContent: string, className?: string): () => React.R
     return (): React.ReactNode => <div className={className}>{tabContent}</div>;
 }
 
-const tabItem1: TabItemData = {
+const tabItem1: TabItems = {
     tab: renderTab("tab one"),
     content: renderTabContent("tab one content"),
     id: "tab01",
 };
 
-const tabItem2: TabItemData = {
+const tabItem2: TabItems = {
     tab: renderTab("tab two"),
     content: renderTabContent("tab two content"),
     id: "tab02",
 };
 
-const tabItem3: TabItemData = {
+const tabItem3: TabItems = {
     tab: renderTab("tab three"),
     content: renderTabContent("tab three content"),
     id: "tab03",
 };
 
-const tabItem4: TabItemData = {
+const tabItem4: TabItems = {
     tab: renderTab("tab four"),
     content: renderTabContent("tab four content"),
     id: "tab04",
 };
 
-const detailTabItemData: TabItemData[] = [tabItem1, tabItem2, tabItem3];
+const detailTabItemData: TabItems[] = [tabItem1, tabItem2, tabItem3];
 
-const exampleTabItemData1: TabItemData[] = [
+const exampleTabItemData1: TabItems[] = [
     {
         tab: renderTab(""),
         content: renderTabContent(""),
@@ -299,21 +299,21 @@ const examples: ComponentFactoryExample<TabsHandledProps> = {
     detailData: {
         ...tabsManagedClasses,
         label: "A set of example text content",
-        tabItemData: detailTabItemData,
+        tabItems: detailTabItemData,
         children: ["child 1", "child 2"],
     },
     data: [
         {
             ...tabsManagedClasses,
             label: "A set of example text content",
-            tabItemData: detailTabItemData,
+            tabItems: detailTabItemData,
             children: ["child 1", "child 2"],
         },
         {
             ...tabsManagedClasses,
             label: "A set of example text content",
             orientation: Orientation.horizontal,
-            tabItemData: exampleTabItemData1,
+            tabItems: exampleTabItemData1,
         },
         {
             /**

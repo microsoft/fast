@@ -8,7 +8,7 @@ import {
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
     TabConfig,
-    TabItemData,
+    TabItems,
     TabsHandledProps,
     TabsManagedClasses,
     TabsProps,
@@ -52,6 +52,21 @@ export interface TabsState {
 class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
     public static displayName: string = "Tabs";
 
+    /**
+     * React life-cycle method
+     */
+    public static getDerivedStateFromProps(
+        nextProps: TabsProps,
+        prevState: TabsState
+    ): null | TabsState {
+        if (nextProps.activeId && nextProps.activeId !== prevState.activeId) {
+            return {
+                activeId: nextProps.activeId,
+            };
+        }
+        return null;
+    }
+
     protected handledProps: HandledProps<TabsHandledProps> = {
         activeId: void 0,
         label: void 0,
@@ -61,7 +76,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
         tabItemSlot: void 0,
         tabPanelSlot: void 0,
         tabSlot: void 0,
-        tabItemData: void 0,
+        tabItems: void 0,
     };
 
     /**
@@ -74,7 +89,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
 
         this.tabListRef = React.createRef();
 
-        if (!this.props.tabItemData) {
+        if (!this.props.tabItems) {
             const tabItems: React.ReactNode[] = React.Children.toArray(this.tabItems());
             this.state = {
                 activeId: this.props.activeId
@@ -146,7 +161,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
         return React.Children.map(this.tabItems(), this.renderTabItem);
     }
 
-    private setActive(tabItem: TabItemData, index: number): boolean {
+    private setActive(tabItem: TabItems, index: number): boolean {
         if (this.state.activeId) {
             return this.state.activeId === tabItem.id;
         } else {
@@ -155,8 +170,8 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
     }
 
     private tabItems(): React.ReactNode {
-        if (this.props.tabItemData) {
-            return this.props.tabItemData.map((tabItem: TabItemData, index: number) => {
+        if (this.props.tabItems) {
+            return this.props.tabItems.map((tabItem: TabItems, index: number) => {
                 return (
                     <TabItem key={tabItem.id} id={tabItem.id} slot={TabsSlot.tabItem}>
                         <Tab
@@ -193,7 +208,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
     }
 
     private renderTabItem = (tabItem: JSX.Element, index: number): JSX.Element => {
-        if (this.props.tabItemData) {
+        if (this.props.tabItems) {
             return this.getChildrenBySlot(
                 tabItem.props.children,
                 this.getSlot(TabsSlot.tab)
@@ -220,7 +235,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
     }
 
     private renderTabPanel = (tabItem: JSX.Element, index: number): JSX.Element => {
-        if (this.props.tabItemData) {
+        if (this.props.tabItems) {
             return this.getChildrenBySlot(
                 tabItem.props.children,
                 this.getSlot(TabsSlot.tabPanel)
