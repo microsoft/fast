@@ -6,15 +6,15 @@ import {
 } from "@microsoft/fast-components-class-name-contracts-base";
 import Tabs, {
     Tab,
-    TabItemData,
+    TabConfig,
     TabItem,
+    TabItemData,
     TabManagedClasses,
     TabPanel,
     TabPanelManagedClasses,
     TabsHandledProps,
     TabsManagedClasses,
     TabsSlot,
-    TabConfig,
     TabsUnhandledProps,
 } from "./index";
 import schema from "./tabs.schema.json";
@@ -191,7 +191,7 @@ function getTabItemFour(): any {
     };
 }
 
-//const detailChildren: any[] = [getTabItemOne(), getTabItemTwo(), getTabItemThree()];
+// const detailChildren: any[] = [getTabItemOne(), getTabItemTwo(), getTabItemThree()];
 
 const exampleChildren1: any[] = [
     {
@@ -300,8 +300,15 @@ const examples: ComponentFactoryExample<TabsHandledProps> = {
         ...tabsManagedClasses,
         label: "A set of example text content",
         tabItemData: detailTabItemData,
+        children: ["child 1", "child 2"],
     },
     data: [
+        {
+            ...tabsManagedClasses,
+            label: "A set of example text content",
+            tabItemData: detailTabItemData,
+            children: ["child 1", "child 2"],
+        },
         {
             ...tabsManagedClasses,
             label: "A set of example text content",
@@ -309,17 +316,26 @@ const examples: ComponentFactoryExample<TabsHandledProps> = {
             tabItemData: exampleTabItemData1,
         },
         {
+            /**
+             * @Deprecated 3.4.0
+             */
             ...tabsManagedClasses,
             label: "A set of example text content",
             orientation: Orientation.vertical,
             children: exampleChildren2,
         },
         {
+            /**
+             * @Deprecated 3.4.0
+             */
             ...tabsManagedClasses,
             label: "A set of example text content",
             children: exampleChildren3,
         },
         {
+            /**
+             * @Deprecated 3.4.0
+             */
             ...tabsManagedClasses,
             label: "A set of example text content",
             children: exampleChildren4,

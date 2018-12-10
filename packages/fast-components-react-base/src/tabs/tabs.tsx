@@ -7,10 +7,10 @@ import {
 } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
-    TabsHandledProps,
-    TabsManagedClasses,
     TabConfig,
     TabItemData,
+    TabsHandledProps,
+    TabsManagedClasses,
     TabsProps,
     TabsUnhandledProps,
 } from "./tabs.props";
@@ -75,7 +75,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
         this.tabListRef = React.createRef();
 
         if (!this.props.tabItemData) {
-            let tabItems: React.ReactNode[] = React.Children.toArray(this.tabItems());
+            const tabItems: React.ReactNode[] = React.Children.toArray(this.tabItems());
             this.state = {
                 activeId: this.props.activeId
                     ? this.props.activeId
@@ -110,6 +110,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
                 <div className={get(this.props, "managedClasses.tabs_tabPanels")}>
                     {this.renderTabPanels()}
                 </div>
+                {this.withoutSlot(TabsSlot.tabItem, this.props.children)}
             </div>
         );
     }
@@ -122,13 +123,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
             typeof this.props.activeId === "string" &&
             this.props.activeId !== prevProps.activeId
         ) {
-            const items: React.ReactNode[] = React.Children.toArray(
-                this.getChildrenBySlot(
-                    this.props.children,
-                    this.getSlot(TabsSlot.tabItem)
-                )
-            );
-
+            const items: React.ReactNode[] = React.Children.toArray(this.tabItems());
             const currentItemIndex: number = items.findIndex(this.getCurrentIndexById);
 
             (Array.from(this.tabListRef.current.children)[
@@ -151,7 +146,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
         return React.Children.map(this.tabItems(), this.renderTabItem);
     }
 
-    private setActive(tabItem: TabItemData, index: Number): boolean {
+    private setActive(tabItem: TabItemData, index: number): boolean {
         if (this.state.activeId) {
             return this.state.activeId === tabItem.id;
         } else {
@@ -161,9 +156,9 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
 
     private tabItems(): React.ReactNode {
         if (this.props.tabItemData) {
-            return this.props.tabItemData.map((tabItem: TabItemData, index: Number) => {
+            return this.props.tabItemData.map((tabItem: TabItemData, index: number) => {
                 return (
-                    <TabItem id={tabItem.id} slot={TabsSlot.tabItem}>
+                    <TabItem key={tabItem.id} id={tabItem.id} slot={TabsSlot.tabItem}>
                         <Tab
                             {...tabManagedClasses}
                             slot={TabsSlot.tab}
@@ -249,7 +244,6 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
      * Handles the click event on the tab element
      */
     private handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
-        console.log("Click!");
         if (!this.props.activeId) {
             this.setState({
                 activeId: e.currentTarget.getAttribute("aria-controls"),
@@ -288,7 +282,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
         const items: React.ReactNode[] = React.Children.toArray(this.tabItems());
         const count: number = items.length;
 
-        let currentItemIndex: number = React.Children.toArray(items).findIndex(
+        const currentItemIndex: number = React.Children.toArray(items).findIndex(
             this.getCurrentIndexById
         );
 
