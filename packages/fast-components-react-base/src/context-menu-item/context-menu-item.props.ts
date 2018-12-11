@@ -25,6 +25,12 @@ export interface ContextMenuItemHandledProps extends ContextMenuItemManagedClass
      * If the menu item is disabled
      */
     disabled?: boolean;
+
+    /**
+     * Callback for when an item is invoked
+     * Returns the prop contract for the invoked context menu item
+     */
+    onInvoke?: (props: ContextMenuItemProps) => void;
 }
 
 export type ContextMenuItemProps = ContextMenuItemHandledProps &

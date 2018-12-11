@@ -2,6 +2,7 @@ import * as React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { get } from "lodash-es";
 import { ContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { KeyCodes } from "@microsoft/fast-web-utilities";
 import {
     ContextMenuItemHandledProps,
     ContextMenuItemProps,
@@ -27,8 +28,10 @@ class ContextMenuItem extends Foundation<
     };
 
     protected handledProps: HandledProps<ContextMenuItemHandledProps> = {
+        disabled: void 0,
         managedClasses: void 0,
-        children: void 0,
+        onInvoke: void 0,
+        role: void 0,
     };
 
     /**
@@ -41,6 +44,8 @@ class ContextMenuItem extends Foundation<
                 className={this.generateClassNames()}
                 role={this.props.role}
                 aria-disabled={this.props.disabled || undefined}
+                onKeyDown={this.handleMenuItemKeyDown}
+                onClick={this.handleMenuItemClick}
             >
                 {this.props.children}
             </div>
@@ -77,6 +82,38 @@ class ContextMenuItem extends Foundation<
 
         return super.generateClassNames(className);
     }
+
+    /**
+     * Handle the keydown event of the item
+     */
+    private handleMenuItemKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
+        if (this.props.disabled) {
+            return;
+        }
+
+        if (typeof this.props.onInvoke === "function") {
+            switch (e.keyCode) {
+                case KeyCodes.enter:
+                case KeyCodes.space:
+                    this.props.onInvoke(this.props);
+
+                    break;
+            }
+        }
+    };
+
+    /**
+     * Handle the keydown event of the item
+     */
+    private handleMenuItemClick = (e: React.MouseEvent<HTMLDivElement>): void => {
+        if (this.props.disabled) {
+            return;
+        }
+
+        if (typeof this.props.onInvoke === "function") {
+            this.props.onInvoke(this.props);
+        }
+    };
 }
 
 export default ContextMenuItem;
