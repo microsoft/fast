@@ -112,8 +112,7 @@ describe("radio", (): void => {
             <Radio managedClasses={managedClasses} id="radioId" />
         );
 
-        expect(rendered.find(inputSelector).prop("checked")).toBe(undefined);
-        expect(rendered.find(inputSelector).prop("defaultChecked")).toBe(false);
+        expect(rendered.find(inputSelector).prop("checked")).toBe(false);
     });
 
     test("should call a registered callback after a change event", () => {
