@@ -2,26 +2,24 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import { getExample } from "@microsoft/fast-permutator";
+import { ChildOptionItem } from "@microsoft/fast-data-utilities-react";
 import Form, { mapDataToComponent } from "../src";
 import {
-    ChildOptionItem,
     FormAttributeSettingsMappingToPropertyNames,
     FormComponentMappingToPropertyNamesProps,
     FormOrderByPropertyNamesProps,
     FormProps,
 } from "../src/form/form.props";
-import * as testComponents from "./components";
+import * as testConfigs from "./configs";
 
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
 
 export interface AppState {
-    currentComponentSchema: any;
-    currentComponentData: any;
-    currentComponentDataMappedToComponent: any;
-    currentComponentConfig?: FormComponentMappingToPropertyNamesProps;
-    currentComponentOrderByPropertyNames?: FormOrderByPropertyNamesProps;
-    currentComponentAttributeAssignment?: FormAttributeSettingsMappingToPropertyNames;
-    currentComponent: any;
+    schema: any;
+    data: any;
+    config?: FormComponentMappingToPropertyNamesProps;
+    orderByPropertyNames?: FormOrderByPropertyNamesProps;
+    attributeAssignment?: FormAttributeSettingsMappingToPropertyNames;
     onChange: componentDataOnChange;
     showExtendedControls: boolean;
     dataLocation: string;
@@ -29,9 +27,8 @@ export interface AppState {
 }
 
 export interface Option {
-    currentComponentSchema: any;
-    currentComponentData: any;
-    currentComponent: JSX.Element;
+    Schema: any;
+    Data: any;
 }
 
 export interface GroupItem {
@@ -45,7 +42,7 @@ const designSystemDefaults: any = {
     brandColor: "#0078D4",
 };
 
-export default class App extends React.Component<{}, IAppState> {
+export default class App extends React.Component<{}, AppState> {
     /**
      * These are the children that can be added
      */
@@ -58,16 +55,10 @@ export default class App extends React.Component<{}, IAppState> {
         this.onChange = this.onChange.bind(this);
 
         this.state = {
-            currentComponent: testComponents.textField.component,
-            currentComponentSchema: testComponents.textField.schema,
-            currentComponentData: getExample(testComponents.textField.schema),
-            currentComponentDataMappedToComponent: mapDataToComponent(
-                testComponents.textField.schema,
-                getExample(testComponents.textField.schema),
-                this.childOptions
-            ),
-            currentComponentOrderByPropertyNames: void 0,
-            currentComponentAttributeAssignment: void 0,
+            schema: testConfigs.textField.schema,
+            data: getExample(testConfigs.textField.schema),
+            orderByPropertyNames: void 0,
+            attributeAssignment: void 0,
             onChange: this.onChange,
             showExtendedControls: false,
             schemaLocation: void 0,
@@ -90,15 +81,26 @@ export default class App extends React.Component<{}, IAppState> {
                     >
                         <Form {...this.coerceFormProps()} />
                     </div>
-                    <div>
+                    <div
+                        style={{
+                            float: "left",
+                            marginLeft: "8px",
+                        }}
+                    >
                         <div>
                             <select onChange={this.handleComponentUpdate}>
                                 {this.getComponentOptions()}
                             </select>
                         </div>
-                        <this.state.currentComponent
-                            {...this.state.currentComponentDataMappedToComponent}
-                        />
+                        <pre
+                            style={{
+                                padding: "12px",
+                                background: "rgb(244, 245, 246)",
+                                borderRadius: "4px",
+                            }}
+                        >
+                            {JSON.stringify(this.state.data, null, 2)}
+                        </pre>
                     </div>
                 </div>
             </DesignSystemProvider>
@@ -112,7 +114,7 @@ export default class App extends React.Component<{}, IAppState> {
         const childOptions: ChildOptionItem[] = [];
         const groups: GroupItem[] = [
             {
-                items: testComponents,
+                items: testConfigs,
                 type: "components",
             },
         ];
@@ -120,11 +122,11 @@ export default class App extends React.Component<{}, IAppState> {
         for (const group of groups) {
             Object.keys(group.items).map(
                 (itemName: any, key: number): void => {
-                    if (typeof testComponents[itemName].schema !== "undefined") {
+                    if (typeof testConfigs[itemName].schema !== "undefined") {
                         const childObj: ChildOptionItem = {
-                            name: testComponents[itemName].schema.title || "Untitled",
-                            component: testComponents[itemName].component,
-                            schema: testComponents[itemName].schema,
+                            name: testConfigs[itemName].schema.title || "Untitled",
+                            component: testConfigs[itemName].component,
+                            schema: testConfigs[itemName].schema,
                         };
 
                         childOptions.push(childObj);
@@ -138,14 +140,13 @@ export default class App extends React.Component<{}, IAppState> {
 
     private coerceFormProps(): FormProps {
         const formProps: FormProps = {
-            schema: this.state.currentComponentSchema,
-            data: this.state.currentComponentData,
+            schema: this.state.schema,
+            data: this.state.data,
             onChange: this.state.onChange,
             childOptions: this.childOptions,
-            componentMappingToPropertyNames: this.state.currentComponentConfig,
-            attributeSettingsMappingToPropertyNames: this.state
-                .currentComponentAttributeAssignment,
-            orderByPropertyNames: this.state.currentComponentOrderByPropertyNames,
+            componentMappingToPropertyNames: this.state.config,
+            attributeSettingsMappingToPropertyNames: this.state.attributeAssignment,
+            orderByPropertyNames: this.state.orderByPropertyNames,
         };
 
         if (
@@ -180,35 +181,25 @@ export default class App extends React.Component<{}, IAppState> {
      */
     private onChange = (data: any): void => {
         this.setState({
-            currentComponentData: data,
-            currentComponentDataMappedToComponent: mapDataToComponent(
-                this.state.currentComponentSchema,
-                data,
-                this.childOptions
-            ),
+            data,
         });
     };
 
     private handleComponentUpdate = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-        const exampleData: any = getExample(testComponents[e.target.value].schema);
+        const exampleData: any = getExample(testConfigs[e.target.value].schema);
 
         this.setState({
-            currentComponent: testComponents[e.target.value].component,
-            currentComponentSchema: testComponents[e.target.value].schema,
-            currentComponentConfig: testComponents[e.target.value].config,
-            currentComponentData: exampleData,
-            currentComponentDataMappedToComponent: exampleData,
-            currentComponentOrderByPropertyNames: testComponents[e.target.value].weight,
-            currentComponentAttributeAssignment:
-                testComponents[e.target.value].attributeAssignment,
+            schema: testConfigs[e.target.value].schema,
+            config: testConfigs[e.target.value].config,
+            data: exampleData,
+            orderByPropertyNames: testConfigs[e.target.value].weight,
+            attributeAssignment: testConfigs[e.target.value].attributeAssignment,
         });
     };
 
     private getComponentOptions(): JSX.Element[] {
-        return Object.keys(testComponents).map((testComponentKey: any, index: number) => {
-            return (
-                <option key={index}>{testComponents[testComponentKey].schema.id}</option>
-            );
+        return Object.keys(testConfigs).map((testComponentKey: any, index: number) => {
+            return <option key={index}>{testConfigs[testComponentKey].schema.id}</option>;
         });
     }
 }
@@ -219,6 +210,7 @@ export default class App extends React.Component<{}, IAppState> {
 const root: HTMLElement = document.createElement("div");
 root.setAttribute("id", "root");
 document.body.appendChild(root);
+document.body.setAttribute("style", "margin: 0");
 
 /**
  * Primary render function for app. Called on store updates
