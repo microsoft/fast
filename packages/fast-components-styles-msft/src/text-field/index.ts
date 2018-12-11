@@ -63,6 +63,9 @@ const styles: ComponentStyles<TextFieldClassNameContract, DesignSystem> = (
                 ...typographyPattern.disabled,
                 cursor: "not-allowed",
             },
+            "&::placeholder": {
+                color: foregroundNormal,
+            },
         },
     };
 };
