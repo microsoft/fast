@@ -88,4 +88,41 @@ describe("Select", () => {
         expect(handleChange.mock.calls[0][0]).toEqual("");
         expect(handleChange.mock.calls[0][1]).toEqual(2);
     });
+    test("should remove the data if the soft remove is triggered", () => {
+        const handleChange: any = jest.fn();
+        const rendered: any = mount(
+            <Select
+                {...selectProps}
+                data={"foo"}
+                options={["foo", "bar"]}
+                onChange={handleChange}
+            />
+        );
+
+        rendered.find("input").simulate("change");
+
+        expect(handleChange).toHaveBeenCalled();
+        expect(handleChange.mock.calls[0][1]).toEqual(undefined);
+    });
+    test("should add the previous data that was removed if the soft remove is triggered", () => {
+        const handleChange: any = jest.fn();
+        const data: string = "foo";
+        const rendered: any = mount(
+            <Select
+                {...selectProps}
+                data={data}
+                options={["foo", "bar"]}
+                onChange={handleChange}
+            />
+        );
+
+        rendered.find("input").simulate("change");
+
+        rendered.setProps({ data: handleChange.mock.calls[0][1] });
+
+        rendered.find("input").simulate("change");
+
+        expect(handleChange).toHaveBeenCalledTimes(2);
+        expect(handleChange.mock.calls[1][1]).toBe(data);
+    });
 });

@@ -30,7 +30,7 @@ describe("Theme", () => {
     test("should generate HTML input elements", () => {
         const rendered: any = mount(<Theme {...themeProps} />);
 
-        expect(rendered.find("input")).toHaveLength(2);
+        expect(rendered.find("input")).toHaveLength(3);
     });
     test("should generate an HTML label element", () => {
         const rendered: any = mount(<Theme {...themeProps} />);
@@ -56,5 +56,41 @@ describe("Theme", () => {
 
         expect(handleChange).toHaveBeenCalled();
         expect(handleChange.mock.calls[0][1]).toEqual("light");
+    });
+    test("should remove the data if the soft remove is triggered", () => {
+        const handleChange: any = jest.fn();
+        const rendered: any = mount(
+            <Theme {...themeProps} data={"light"} onChange={handleChange} />
+        );
+
+        rendered
+            .find("input")
+            .at(2)
+            .simulate("change");
+
+        expect(handleChange).toHaveBeenCalled();
+        expect(handleChange.mock.calls[0][1]).toEqual(undefined);
+    });
+    test("should add the previous data that was removed if the soft remove is triggered", () => {
+        const handleChange: any = jest.fn();
+        const data: string = "light";
+        const rendered: any = mount(
+            <Theme {...themeProps} data={data} onChange={handleChange} />
+        );
+
+        rendered
+            .find("input")
+            .at(2)
+            .simulate("change");
+
+        rendered.setProps({ data: handleChange.mock.calls[0][1] });
+
+        rendered
+            .find("input")
+            .at(2)
+            .simulate("change");
+
+        expect(handleChange).toHaveBeenCalledTimes(2);
+        expect(handleChange.mock.calls[1][1]).toBe(data);
     });
 });

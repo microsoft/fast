@@ -3,6 +3,9 @@
  */
 export default interface FormItemTextareaClassNameContract {
     formItemTextarea: string;
-    formItemTextarea_label: string;
-    formItemTextarea_textarea: string;
+    formItemTextarea_control: string;
+    formItemTextarea_control_label: string;
+    formItemTextarea_control_textarea: string;
+    formItemTextarea_softRemove: string;
+    formItemTextarea_softRemove_input: string;
 }

@@ -4,13 +4,14 @@ import styles from "./form-item.align-vertical.style";
 import { FormItemAlignVerticalClassNameContract } from "../class-name-contracts/";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import FormItemBase from "./form-item.base";
 
 /**
  * Schema form component definition
  * @extends React.Component
  */
 /* tslint:disable-next-line */
-class FormItemAlignVertical extends React.Component<
+class FormItemAlignVertical extends FormItemBase<
     FormItemComponentMappingToProperyNamesProps &
         ManagedClasses<FormItemAlignVerticalClassNameContract>,
     {}
@@ -18,20 +19,32 @@ class FormItemAlignVertical extends React.Component<
     public render(): JSX.Element {
         return (
             <div className={this.props.managedClasses.formItemAlignVertical}>
-                <label
-                    className={this.props.managedClasses.formItemAlignVertical_label}
-                    htmlFor={this.props.dataLocation}
-                >
-                    {this.props.label}
-                </label>
+                <div className={this.props.managedClasses.formItemAlignVertical_control}>
+                    <label
+                        className={
+                            this.props.managedClasses.formItemAlignVertical_control_label
+                        }
+                        htmlFor={this.props.dataLocation}
+                    >
+                        {this.props.label}
+                    </label>
+                    <div
+                        className={
+                            this.props.managedClasses
+                                .formItemAlignVertical_control_inputContainer
+                        }
+                    >
+                        {this.renderInput("top", 1)}
+                        {this.renderInput("center", 2)}
+                        {this.renderInput("bottom", 3)}
+                    </div>
+                </div>
                 <div
-                    className={
-                        this.props.managedClasses.formItemAlignVertical_inputContainer
-                    }
+                    className={this.props.managedClasses.formItemAlignVertical_softRemove}
                 >
-                    {this.renderInput("top", 1)}
-                    {this.renderInput("center", 2)}
-                    {this.renderInput("bottom", 3)}
+                    {this.renderSoftRemove(
+                        this.props.managedClasses.formItemAlignVertical_softRemove_input
+                    )}
                 </div>
             </div>
         );
@@ -51,11 +64,13 @@ class FormItemAlignVertical extends React.Component<
     private getInputClassName(direction: string): string {
         switch (direction) {
             case "top":
-                return this.props.managedClasses.formItemAlignVertical_input__top;
+                return this.props.managedClasses.formItemAlignVertical_control_input__top;
             case "center":
-                return this.props.managedClasses.formItemAlignVertical_input__center;
+                return this.props.managedClasses
+                    .formItemAlignVertical_control_input__center;
             case "bottom":
-                return this.props.managedClasses.formItemAlignVertical_input__bottom;
+                return this.props.managedClasses
+                    .formItemAlignVertical_control_input__bottom;
         }
     }
 

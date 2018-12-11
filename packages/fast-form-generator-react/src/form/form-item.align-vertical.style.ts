@@ -1,8 +1,10 @@
 import {
+    applyControl,
     applyInputBackplateStyle,
     applyInputContainerStyle,
     applyLabelStyle,
-    applyWrapperStyle,
+    applySoftRemove,
+    applySoftRemoveInput,
     colors,
 } from "../utilities/form-input.style";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
@@ -25,15 +27,21 @@ const bottomLight: string =
 
 const styles: ComponentStyles<FormItemAlignVerticalClassNameContract, {}> = {
     formItemAlignVertical: {
-        ...applyWrapperStyle(),
+        display: "block",
+        position: "relative",
     },
-    formItemAlignVertical_label: {
+    formItemAlignVertical_control: {
+        ...applyControl(),
+    },
+    formItemAlignVertical_control_label: {
         ...applyLabelStyle(),
+        display: "block",
+        marginTop: "12px",
     },
-    formItemAlignVertical_inputContainer: {
+    formItemAlignVertical_control_inputContainer: {
         ...applyInputContainerStyle(),
     },
-    formItemAlignVertical_input__top: {
+    formItemAlignVertical_control_input__top: {
         ...applyInputBackplateStyle(),
         background: topDark,
         "&:checked": {
@@ -41,7 +49,7 @@ const styles: ComponentStyles<FormItemAlignVerticalClassNameContract, {}> = {
             backgroundColor: colors.pink,
         },
     },
-    formItemAlignVertical_input__center: {
+    formItemAlignVertical_control_input__center: {
         ...applyInputBackplateStyle(),
         background: centerDark,
         "&:checked": {
@@ -49,13 +57,19 @@ const styles: ComponentStyles<FormItemAlignVerticalClassNameContract, {}> = {
             backgroundColor: colors.pink,
         },
     },
-    formItemAlignVertical_input__bottom: {
+    formItemAlignVertical_control_input__bottom: {
         ...applyInputBackplateStyle(),
         background: bottomDark,
         "&:checked": {
             background: bottomLight,
             backgroundColor: colors.pink,
         },
+    },
+    formItemAlignVertical_softRemove: {
+        ...applySoftRemove(),
+    },
+    formItemAlignVertical_softRemove_input: {
+        ...applySoftRemoveInput(),
     },
 };
 

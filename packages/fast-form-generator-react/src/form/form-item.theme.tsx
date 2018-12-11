@@ -4,13 +4,14 @@ import styles from "./form-item.theme.style";
 import { FormItemThemeClassNameContract } from "../class-name-contracts/";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import FormItemBase from "./form-item.base";
 
 /**
  * Schema form component definition
  * @extends React.Component
  */
 /* tslint:disable-next-line */
-class FormItemTheme extends React.Component<
+class FormItemTheme extends FormItemBase<
     FormItemComponentMappingToProperyNamesProps &
         ManagedClasses<FormItemThemeClassNameContract>,
     {}
@@ -18,15 +19,26 @@ class FormItemTheme extends React.Component<
     public render(): JSX.Element {
         return (
             <div className={this.props.managedClasses.formItemTheme}>
-                <label
-                    className={this.props.managedClasses.formItemTheme_label}
-                    htmlFor={this.props.dataLocation}
-                >
-                    {this.props.label}
-                </label>
-                <div className={this.props.managedClasses.formItemTheme_inputContainer}>
-                    {this.renderInput("light", 1)}
-                    {this.renderInput("dark", 2)}
+                <div className={this.props.managedClasses.formItemTheme_control}>
+                    <label
+                        className={this.props.managedClasses.formItemTheme_control_label}
+                        htmlFor={this.props.dataLocation}
+                    >
+                        {this.props.label}
+                    </label>
+                    <div
+                        className={
+                            this.props.managedClasses.formItemTheme_control_inputContainer
+                        }
+                    >
+                        {this.renderInput("light", 1)}
+                        {this.renderInput("dark", 2)}
+                    </div>
+                </div>
+                <div className={this.props.managedClasses.formItemTheme_softRemove}>
+                    {this.renderSoftRemove(
+                        this.props.managedClasses.formItemTheme_softRemove_input
+                    )}
                 </div>
             </div>
         );
@@ -45,8 +57,8 @@ class FormItemTheme extends React.Component<
 
     private getInputClassName(theme: string): string {
         return theme === "dark"
-            ? this.props.managedClasses.formItemTheme_input__dark
-            : this.props.managedClasses.formItemTheme_input__light;
+            ? this.props.managedClasses.formItemTheme_control_input__dark
+            : this.props.managedClasses.formItemTheme_control_input__light;
     }
 
     private renderInput(theme: string, index: number): JSX.Element {

@@ -1,8 +1,11 @@
 import { toPx } from "@microsoft/fast-jss-utilities";
 import {
+    applyControl,
     applyInputContainerStyle,
     applyInputStyle,
     applyLabelStyle,
+    applySoftRemove,
+    applySoftRemoveInput,
     applyWrapperStyle,
     colors,
     darkTheme,
@@ -31,23 +34,33 @@ function applyThemeInputBackplateStyle(): CSSRules<{}> {
 
 const styles: ComponentStyles<FormItemThemeClassNameContract, {}> = {
     formItemTheme: {
-        ...applyWrapperStyle(),
+        display: "block",
+        position: "relative",
     },
-    formItemTheme_label: {
+    formItemTheme_control: {
+        ...applyControl(),
+    },
+    formItemTheme_control_label: {
         ...applyLabelStyle(),
     },
-    formItemTheme_inputContainer: {
+    formItemTheme_control_inputContainer: {
         ...applyInputContainerStyle(),
     },
-    formItemTheme_input__light: {
+    formItemTheme_control_input__light: {
         ...applyThemeInputBackplateStyle(),
         background: lightTheme,
         backgroundColor: colors.white,
     },
-    formItemTheme_input__dark: {
+    formItemTheme_control_input__dark: {
         ...applyThemeInputBackplateStyle(),
         background: darkTheme,
         backgroundColor: colors.black,
+    },
+    formItemTheme_softRemove: {
+        ...applySoftRemove(),
+    },
+    formItemTheme_softRemove_input: {
+        ...applySoftRemoveInput(),
     },
 };
 

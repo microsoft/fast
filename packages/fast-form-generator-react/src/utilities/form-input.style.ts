@@ -112,7 +112,6 @@ export function applyLabelStyle(): CSSRules<{}> {
         flexGrow: "1",
         lineHeight: toPx(16),
         fontSize: toPx(14),
-        marginRight: toPx(16),
         ...ellipsis(),
     };
 }
@@ -120,6 +119,7 @@ export function applyLabelStyle(): CSSRules<{}> {
 export function applyInputContainerStyle(): CSSRules<{}> {
     return {
         height: toPx(36),
+        marginTop: toPx(8),
     };
 }
 
@@ -142,6 +142,7 @@ export function applyInputStyle(): CSSRules<{}> {
         padding: `${toPx(10)} ${toPx(8)} ${toPx(10)}`,
         border: "none",
         outline: "none",
+        boxSizing: "border-box",
         "&:hover": {
             ...insetHoverBoxShadow(),
         },
@@ -155,7 +156,7 @@ export function applyWrapperStyle(): CSSRules<{}> {
     return {
         display: "flex",
         flexDirection: "row",
-        minHeight: toPx(40),
+        minHeight: toPx(34),
         alignItems: "center",
     };
 }
@@ -490,6 +491,52 @@ export function applyAddItemStyle(): CSSRules<{}> {
             left: "0",
             top: "50%",
             transform: "translateY(-50%)",
+        },
+    };
+}
+
+export function applyControl(): CSSRules<{}> {
+    return {
+        display: "inline-block",
+        width: `calc(100% - 40px)`,
+    };
+}
+
+export function applySoftRemove(): CSSRules<{}> {
+    return {
+        display: "inline-block",
+        height: "36px",
+        width: "40px",
+        textAlign: "right",
+    };
+}
+
+export function applySoftRemoveInput(): CSSRules<{}> {
+    return {
+        position: "absolute",
+        right: "0",
+        top: "0",
+        appearance: "none",
+        background: "none",
+        border: "none",
+        margin: "8px",
+        width: "20px",
+        height: "16px",
+        zIndex: "1",
+        borderRadius: "2px",
+        "&:focus": {
+            ...insetStrongBoxShadow(colors.pink),
+            outline: "none",
+        },
+        "&:checked + svg": {
+            fill: "#000000",
+        },
+        "& + svg": {
+            position: "absolute",
+            top: "0",
+            right: "0",
+            padding: "12px",
+            fill: "#AAAAAA",
         },
     };
 }

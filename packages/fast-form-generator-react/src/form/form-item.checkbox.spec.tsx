@@ -28,7 +28,7 @@ describe("Checkbox", () => {
     test("should generate an input HTML element", () => {
         const rendered: any = mount(<Checkbox {...checkboxProps} />);
 
-        expect(rendered.find("input")).toHaveLength(1);
+        expect(rendered.find("input")).toHaveLength(2);
     });
     test("should generate a label HTML element", () => {
         const rendered: any = mount(<Checkbox {...checkboxProps} />);
@@ -37,7 +37,7 @@ describe("Checkbox", () => {
     });
     test("should have an `id` attribute on the HTML input element and a corresponding `for` attribute on the HTML label element", () => {
         const rendered: any = mount(<Checkbox {...checkboxProps} />);
-        const input: any = rendered.find("input");
+        const input: any = rendered.find("input").at(0);
         const label: any = rendered.find("label");
 
         expect(label.prop("htmlFor")).toMatch(input.prop("id"));
@@ -48,9 +48,48 @@ describe("Checkbox", () => {
             <Checkbox {...checkboxProps} onChange={handleChange} />
         );
 
-        rendered.find("input").simulate("change", { target: { checked: true } });
+        rendered
+            .find("input")
+            .at(0)
+            .simulate("change", { target: { checked: true } });
 
         expect(handleChange).toHaveBeenCalled();
         expect(handleChange.mock.calls[0][1]).toEqual(true);
+    });
+    test("should remove the data if the soft remove is triggered", () => {
+        const handleChange: any = jest.fn();
+        const rendered: any = mount(
+            <Checkbox {...checkboxProps} data={true} onChange={handleChange} />
+        );
+
+        rendered
+            .find("input")
+            .at(1)
+            .simulate("change");
+
+        expect(handleChange).toHaveBeenCalled();
+        expect(handleChange.mock.calls[0][1]).toEqual(undefined);
+    });
+    test("should add the previous data that was removed if the soft remove is triggered", () => {
+        const handleChange: any = jest.fn();
+        const data: boolean = true;
+        const rendered: any = mount(
+            <Checkbox {...checkboxProps} data={data} onChange={handleChange} />
+        );
+
+        rendered
+            .find("input")
+            .at(1)
+            .simulate("change");
+
+        rendered.setProps({ data: handleChange.mock.calls[0][1] });
+
+        rendered
+            .find("input")
+            .at(1)
+            .simulate("change");
+
+        expect(handleChange).toHaveBeenCalledTimes(2);
+        expect(handleChange.mock.calls[1][1]).toBe(data);
     });
 });
