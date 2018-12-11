@@ -1,4 +1,4 @@
-import { getKeyCode } from "./dom";
+import { canUseFocusVisible, getKeyCode } from "./dom";
 import { KeyCodes } from "./key-codes";
 
 describe("getKeyCode", () => {
@@ -156,5 +156,16 @@ describe("getKeyCode", () => {
                 } as KeyboardEventInit)
             )
         ).toBe(KeyCodes.tab);
+    });
+});
+
+describe("canUseFocusVisible", () => {
+    test("should not throw", () => {
+        expect(() => {
+            canUseFocusVisible();
+        }).not.toThrow();
+    });
+    test("should return true if the environment supports focus-visible selectors", () => {
+        expect(canUseFocusVisible()).toBe(true);
     });
 });
