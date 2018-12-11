@@ -44,6 +44,7 @@ export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
         gutter: 8,
         verticalAlign: GridAlignment.stretch,
         horizontalAlign: GridAlignment.stretch,
+        columnCount: 12,
     };
 
     protected handledProps: HandledProps<GridHandledProps> = {
@@ -146,7 +147,7 @@ export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
     private generateStyleAttributes(): React.HTMLAttributes<HTMLDivElement> {
         return Object.assign({}, this.unhandledProps().style, {
             gridColumn: this.props.gridColumn,
-            gridTemplateColumns: `repeat(${this.props.columnCount} 1fr)`,
+            gridTemplateColumns: `repeat(${this.props.columnCount}, 1fr)`,
             gridColumnGap: `${this.generateGutter()}px`,
             gridRow: this.props.row,
             justifyItems: this.generateAlignment(this.props.horizontalAlign),
