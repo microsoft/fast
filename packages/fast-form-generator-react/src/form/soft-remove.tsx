@@ -18,7 +18,9 @@ export interface SoftRemoveProps {
 }
 
 /**
- * Schema form component definition
+ * A component that allows:
+ * - deletion of data which is intended to be cached
+ * - addition of the removed data via a cache
  * @extends React.Component
  */
 class SoftRemove extends React.Component<SoftRemoveProps, {}> {

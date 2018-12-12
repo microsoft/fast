@@ -4,6 +4,7 @@ import FormItemCommon from "./form-item";
 
 /**
  * Schema form component definition
+ * This is the base component for form item components.
  * @extends React.Component
  */
 abstract class FormItemBase<P, S> extends React.Component<P & FormItemCommon, S> {
