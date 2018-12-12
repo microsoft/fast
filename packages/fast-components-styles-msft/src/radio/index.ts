@@ -5,15 +5,21 @@ import {
     CSSRules,
 } from "@microsoft/fast-jss-manager";
 import { RadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { applyLocalizedProperty, Direction } from "@microsoft/fast-jss-utilities";
+import {
+    applyLocalizedProperty,
+    Direction,
+    focusVisible,
+} from "@microsoft/fast-jss-utilities";
 import {
     disabledContrast,
     ensureNormalContrast,
     hoverContrast,
     normalContrast,
 } from "../utilities/colors";
+import outlinePattern from "../patterns/outline";
+import switchFieldPattern from "../patterns/switch-field";
+import typographyPattern from "../patterns/typography";
 
-/* tslint:disable:max-line-length */
 const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<RadioClassNameContract, DesignSystem> => {
@@ -54,28 +60,18 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
             height: "20px",
             appearance: "none",
             borderRadius: "50%",
-            boxSizing: "content-box",
             margin: "0",
             zIndex: "1",
-            background: backgroundColor,
-            boxShadow: `inset 0 0 0 1px ${radioColor}`,
+            ...outlinePattern.rest,
             "&:hover": {
-                boxShadow: `inset 0 0 0 1px ${radioHover}`,
+                ...outlinePattern.hover,
             },
             "&:focus": {
                 outline: "none",
-                boxShadow: `inset 0 0 0 2px ${radioColor}`,
             },
-            "&:checked": {
-                "& + span": {
-                    "&::before": {
-                        position: "absolute",
-                        zIndex: "1",
-                        content: '""',
-                        borderRadius: "50%",
-                        background: radioColor,
-                    },
-                },
+            [`&${focusVisible()}`]: {
+                outline: "none",
+                ...outlinePattern.focus,
             },
         },
         radio_stateIndicator: {
@@ -85,31 +81,46 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
             width: "20px",
             height: "20px",
             flexShrink: "0",
-            color: radioDisabled,
             "&::before": {
+                pointerEvents: "none",
+                position: "absolute",
+                zIndex: "1",
+                content: '""',
+                borderRadius: "50%",
                 top: "4px",
                 left: "4px",
                 height: "12px",
                 width: "12px",
-            },
-        },
-        radio__disabled: {
-            cursor: "not-allowed",
-            "& $radio_input": {
-                boxShadow: `inset 0 0 0 1px ${radioDisabled}`,
-                "&:checked": {
-                    "& + span::before": {
-                        background: radioDisabled,
-                    },
-                },
-            },
-            "& $radio_label": {
-                cursor: "not-allowed",
-                color: radioDisabled,
+                background: "transparent",
             },
         },
         radio_label: {
-            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "8px",
+            ...typographyPattern.rest,
+            [applyLocalizedProperty("paddingLeft", "paddingRight", direction)]: "8px",
+        },
+        radio__checked: {
+            "& $radio_stateIndicator": {
+                "&::before": {
+                    ...switchFieldPattern.rest.stateIndicator,
+                },
+            },
+        },
+        radio__disabled: {
+            "& $radio_label, & $radio_stateIndicator, & $radio_input": {
+                cursor: "not-allowed",
+            },
+            "& $radio_input": {
+                ...outlinePattern.disabled,
+                "&:checked": {},
+            },
+            "& $radio_label": {
+                ...typographyPattern.disabled,
+            },
+            "&$radio__checked": {
+                "& $radio_stateIndicator::before": {
+                    ...switchFieldPattern.disabled.stateIndicator,
+                },
+            },
         },
     };
 };

@@ -120,9 +120,29 @@ class Checkbox extends Foundation<
     protected generateClassNames(): string {
         let classes: string = get(this.props, "managedClasses.checkbox");
 
-        classes = this.props.disabled
-            ? `${classes} ${get(this.props, "managedClasses.checkbox__disabled")}`
-            : classes;
+        if (this.props.disabled) {
+            classes = `${classes} ${get(
+                this.props,
+                "managedClasses.checkbox__disabled",
+                ""
+            )}`;
+        }
+
+        if (this.state.checked) {
+            classes = `${classes} ${get(
+                this.props,
+                "managedClasses.checkbox__checked",
+                ""
+            )}`;
+        }
+
+        if (this.props.indeterminate) {
+            classes = `${classes} ${get(
+                this.props,
+                "managedClasses.checkbox__indeterminate",
+                ""
+            )}`;
+        }
 
         return super.generateClassNames(classes);
     }
@@ -172,7 +192,7 @@ class Checkbox extends Foundation<
             this.setState({ checked: !this.state.checked });
         }
 
-        if (this.props.onChange) {
+        if (typeof this.props.onChange === "function") {
             this.props.onChange(e);
         }
     };

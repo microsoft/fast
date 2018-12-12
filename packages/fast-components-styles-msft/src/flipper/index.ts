@@ -14,16 +14,14 @@ import {
     normalContrast,
 } from "../utilities/colors";
 import { get } from "lodash-es";
-import Chroma from "chroma-js";
+import outlinePattern from "../patterns/outline";
 
 const eastFlipperTransform: string = "translateX(-3px) rotate(45deg)";
 const westFlipperTransform: string = "translateX(3px) rotate(-135deg)";
 
-/* tslint:disable:max-line-length */
 const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<FlipperClassNameContract, DesignSystem> => {
-    /* tslint:enable:max-line-length */
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
 
     const backgroundColor: string = designSystem.backgroundColor;
@@ -34,17 +32,6 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
         designSystem.backgroundColor
     );
 
-    const borderColor: string = normalContrast(
-        designSystem.contrast,
-        foregroundColor,
-        designSystem.backgroundColor
-    );
-
-    const borderColorHover: string = hoverContrast(
-        config.contrast,
-        borderColor,
-        backgroundColor
-    );
     const glyphColorHover: string = hoverContrast(
         config.contrast,
         foregroundColor,
@@ -57,12 +44,11 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
             height: "40px",
             margin: "0",
             color: foregroundColor,
-            border: `1px solid ${borderColor}`,
+            ...outlinePattern.rest,
             borderRadius: "50%",
-            background: backgroundColor,
             padding: "0",
             "&:hover": {
-                borderColor: borderColorHover,
+                ...outlinePattern.hover,
                 "& $flipper_glyph": {
                     "&::before": {
                         borderRightColor: glyphColorHover,
@@ -71,8 +57,8 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
                 },
             },
             "&:focus": {
-                boxShadow: `0 0 0 1px inset ${borderColor}`,
                 outline: "none",
+                ...outlinePattern.disabled,
             },
         },
         flipper_glyph: {

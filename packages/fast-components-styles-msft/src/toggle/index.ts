@@ -12,13 +12,16 @@ import {
     applyLocalizedProperty,
     Direction,
     ensureContrast,
+    focusVisible,
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import { applyTypeRampConfig } from "../utilities/typography";
 import { ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import Chroma from "chroma-js";
+import outlinePattern from "../patterns/outline";
+import switchFieldPattern from "../patterns/switch-field";
+import typographyPattern from "../patterns/typography";
 
-/* tslint:disable-next-line */
 const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<ToggleClassNameContract, DesignSystem> => {
@@ -43,43 +46,18 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
     return {
         toggle: {
             display: "inline-block",
-            color: foregroundColor,
-            "& span": {
-                userSelect: "none",
-                marginTop: "0",
-                paddingBottom: "0",
-            },
-            '&[aria-disabled="true"]': {
-                color: disabledContrast(
-                    designSystem.contrast,
-                    foregroundColor,
-                    backgroundColor
-                ),
-            },
+            ...typographyPattern.rest,
         },
         toggle_label: {
             ...applyTypeRampConfig("t8"),
-            display: "inline-block",
-            foreground: foregroundColor,
+            display: "block",
             paddingBottom: "7px",
-            float: applyLocalizedProperty("left", "right", direction),
-            clear: applyLocalizedProperty("left", "right", direction),
-            "& + div": {
-                marginTop: "0",
-                float: applyLocalizedProperty("left", "right", direction),
-                clear: applyLocalizedProperty("left", "right", direction),
-                "& + span": {
-                    float: applyLocalizedProperty("left", "right", direction),
-                    [applyLocalizedProperty(
-                        "margin-left",
-                        "margin-right",
-                        direction
-                    )]: "5px",
-                },
-            },
+            clear: "both",
         },
         toggle_toggleButton: {
             position: "relative",
+            marginTop: "0",
+            float: applyLocalizedProperty("left", "right", direction),
         },
         toggle_stateIndicator: {
             position: "absolute",
@@ -87,21 +65,20 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             top: "5px",
             left: "5px",
             transition: "all .1s ease",
-            backgroundColor,
             borderRadius: "10px",
             width: "10px",
             height: "10px",
+            ...switchFieldPattern.rest.stateIndicator,
         },
         toggle_input: {
             position: "relative",
             margin: "0",
             width: "44px",
             height: "20px",
-            background: backgroundColor,
-            border: "1px solid",
-            borderColor: foregroundColor,
+            ...outlinePattern.rest,
             borderRadius: "20px",
             appearance: "none",
+            outline: "none",
             "@media screen and (-ms-high-contrast:active)": {
                 "&::after, &:checked + span": {
                     background: backgroundColor,
@@ -112,59 +89,54 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
                     background: foregroundColor,
                 },
             },
-            "&:checked": {
+            "&:hover": {
+                ...outlinePattern.hover,
+            },
+            [`&${focusVisible()}`]: {
+                ...outlinePattern.focus,
+            },
+        },
+        toggle__disabled: {
+            ...typographyPattern.disabled,
+            "& $toggle_input, & $toggle_label, & $toggle_statusMessage": {
+                cursor: "not-allowed",
+            },
+            "& $toggle_input": {
+                ...outlinePattern.disabled,
+            },
+            "& $toggle_stateIndicator": {
+                ...switchFieldPattern.disabled.stateIndicator,
+            },
+            "&$toggle__checked": {
+                "& $toggle_input": {
+                    ...outlinePattern.disabled,
+                    borderColor: "transparent",
+                    ...switchFieldPattern.disabled.stateIndicator,
+                },
+                "& $toggle_stateIndicator": {
+                    background: backgroundColor,
+                },
+            },
+        },
+        toggle__checked: {
+            "& $toggle_input": {
                 backgroundColor: brandColor,
                 borderColor: brandColor,
-                "&:focus": {
-                    borderColor: brandColor,
+                [`&${focusVisible()}`]: {
+                    ...outlinePattern.focus,
                 },
-                "& + span": {
+                "& + $toggle_stateIndicator": {
                     left: "28px",
                     backgroundColor,
                 },
-                "&:disabled": {
-                    cursor: "not-allowed",
-                    background: disabledContrast(
-                        designSystem.contrast,
-                        foregroundColor,
-                        backgroundColor
-                    ),
-                    borderColor: "transparent",
-                    "& + span": {
-                        background: backgroundColor,
-                    },
-                    "&:hover": {
-                        borderColor: "transparent",
-                    },
-                },
             },
-            "&:not(:checked)": {
-                borderColor: foregroundColor,
-                "& + span": {
-                    backgroundColor: foregroundColor,
-                },
-                "&:disabled": {
-                    cursor: "not-allowed",
-                    borderColor: disabledContrast(
-                        designSystem.contrast,
-                        foregroundColor,
-                        backgroundColor
-                    ),
-                    "& + span": {
-                        backgroundColor: disabledContrast(
-                            designSystem.contrast,
-                            foregroundColor,
-                            backgroundColor
-                        ),
-                    },
-                },
-            },
-            "&:focus": {
-                outline: "0",
-                "& + $toggle_stateIndicator": {
-                    transform: "scale(1.2)",
-                },
-            },
+        },
+        toggle_statusMessage: {
+            float: applyLocalizedProperty("left", "right", direction),
+            [applyLocalizedProperty("padding-left", "padding-right", direction)]: "5px",
+            userSelect: "none",
+            marginTop: "0",
+            paddingBottom: "0",
         },
     };
 };

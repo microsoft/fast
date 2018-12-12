@@ -3,11 +3,16 @@ import designSystemDefaults, {
     withDesignSystemDefaults,
 } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
-import { applyLocalizedProperty, Direction } from "@microsoft/fast-jss-utilities";
+import {
+    applyLocalizedProperty,
+    Direction,
+    focusVisible,
+} from "@microsoft/fast-jss-utilities";
 import { ensureBrandNormal, ensureForegroundNormal } from "../utilities/colors";
 import { BreadcrumbClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyTypeRampConfig } from "../utilities/typography";
 import { fontWeight } from "../utilities/fonts";
+import typographyPattern from "../patterns/typography";
 
 const styles: ComponentStyles<BreadcrumbClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -21,14 +26,11 @@ const styles: ComponentStyles<BreadcrumbClassNameContract, DesignSystem> = (
             display: "inline",
             outline: "none",
             textDecoration: "none",
-            color: ensureForegroundNormal,
+            ...typographyPattern.rest,
             ...applyTypeRampConfig("t7"),
             "&:link, &:visited": {
                 color: ensureBrandNormal,
                 borderBottom: "0px",
-                "&:hover, &:focus": {
-                    borderBottom: `2px solid ${ensureBrandNormal(config)}`,
-                },
             },
         },
         breadcrumb_itemsContainer: {
@@ -42,7 +44,7 @@ const styles: ComponentStyles<BreadcrumbClassNameContract, DesignSystem> = (
             fontWeight: `${fontWeight.normal}`,
             display: "inline-block",
             ...applyTypeRampConfig("t7"),
-            color: ensureForegroundNormal,
+            ...typographyPattern.rest,
             margin: "0 6px",
         },
     };

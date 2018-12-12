@@ -1,12 +1,9 @@
-import designSystemDefaults, {
-    DesignSystem,
-    withDesignSystemDefaults,
-} from "../design-system";
 import {
     ComponentStyles,
     ComponentStyleSheet,
     CSSRules,
 } from "@microsoft/fast-jss-manager";
+import { applyTypeRampConfig } from "../utilities/typography";
 import { ButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
     adjustContrast,
@@ -14,15 +11,20 @@ import {
     contrast,
     Direction,
     ensureContrast,
+    focusVisible,
     localizeSpacing,
     scaleContrast,
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import { curry, get } from "lodash-es";
-import { applyTypeRampConfig } from "../utilities/typography";
+import designSystemDefaults, {
+    DesignSystem,
+    withDesignSystemDefaults,
+} from "../design-system";
 import {
     applyMixedColor,
     disabledContrast,
+    ensureForegroundNormal,
     ensureLargeContrast,
     ensureNormalContrast,
     hoverContrast,
@@ -33,6 +35,7 @@ import {
 import Chroma from "chroma-js";
 import { density } from "../utilities/density";
 import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
+import outlinePattern from "../patterns/outline";
 
 function applyTransaprentBackplateStyles(): CSSRules<DesignSystem> {
     return {
@@ -45,12 +48,12 @@ function applyTransaprentBackplateStyles(): CSSRules<DesignSystem> {
             );
         },
         ...applyTransparentBackground(),
-        "&:hover, &:focus": {
+        [`&:hover, &${focusVisible()}`]: {
             borderColor: "transparent",
             boxShadow: "none",
             ...applyTransparentBackground(),
         },
-        "&:focus $button_contentRegion::before, &:active $button_contentRegion::before, &:hover $button_contentRegion::before": {
+        "&:active $button_contentRegion::before, &:hover $button_contentRegion::before": {
             background: (config: DesignSystem): string => {
                 const designSystem: DesignSystem = withDesignSystemDefaults(config);
                 return ensureNormalContrast(
@@ -59,6 +62,9 @@ function applyTransaprentBackplateStyles(): CSSRules<DesignSystem> {
                     designSystem.backgroundColor
                 );
             },
+        },
+        [`&${focusVisible()} $button_contentRegion::before`]: {
+            background: ensureForegroundNormal,
         },
         "&$button__disabled, &$button__disabled $button_contentRegion::before": {
             ...applyTransparentBackground(),
@@ -225,6 +231,9 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             },
             "&:focus": {
                 outline: "none",
+            },
+            [`&${focusVisible()}`]: {
+                outline: "none",
                 borderColor: secondaryFocusBorderColor,
                 boxShadow: secondaryFocusBoxShadow,
             },
@@ -240,7 +249,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             "&:hover": {
                 backgroundColor: primaryHoverBackground,
             },
-            "&:focus": {
+            [`&${focusVisible()}`]: {
                 borderColor: primaryFocusBorderColor,
                 boxShadow: primaryFocusBoxShadow,
             },
@@ -250,21 +259,22 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             },
         },
         button__outline: {
-            borderWidth: "1px",
+            ...outlinePattern.rest,
             "&, &:hover": {
                 color: outlineColor,
-                borderColor: outlineBorderColor,
                 ...applyTransparentBackground(),
             },
-            "&:focus": {
+            "&:hover": {
+                ...outlinePattern.hover,
+            },
+            [`&${focusVisible()}`]: {
                 ...applyTransparentBackground(),
-                borderColor: outlineBorderColor,
-                boxShadow: `inset 0 0 0 1px ${outlineBorderColor}`,
+                ...outlinePattern.focus,
             },
             "&$button__disabled": {
                 ...applyTransparentBackground(),
+                ...outlinePattern.disabled,
                 color: outlineDisabledColor,
-                borderColor: outlineDisabledBorderColor,
             },
         },
         button__lightweight: {

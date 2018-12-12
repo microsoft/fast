@@ -61,6 +61,7 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
     "csstype": "^2.3.0",
+    "exenv-es6": "^1.0.0",
     "jest": "^23.6.0",
     "lodash-es": "^4.17.10",
     "prettier": "1.14.3",
@@ -72,10 +73,12 @@
   "dependencies": {
     "@microsoft/fast-colors": "^3.1.2",
     "@microsoft/fast-jss-manager": "^3.0.5",
+    "@microsoft/fast-web-utilities": "^3.0.3",
     "lodash-es": "^4.17.10"
   },
   "peerDependencies": {
     "csstype": "^2.3.0",
+    "exenv-es6": "^1.0.0",
     "lodash-es": "^4.17.10"
   }
 }

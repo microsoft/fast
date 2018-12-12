@@ -8,11 +8,6 @@ export interface CheckboxClassNameContract {
     checkbox?: string;
 
     /**
-     * The disabled state modifier
-     */
-    checkbox__disabled?: string;
-
-    /**
      * The checkbox input element
      */
     checkbox_input?: string;
@@ -26,4 +21,19 @@ export interface CheckboxClassNameContract {
      * The checkbox state indicator
      */
     checkbox_stateIndicator?: string;
+
+    /**
+     * The disabled state modifier
+     */
+    checkbox__disabled?: string;
+
+    /**
+     * The checked state modifier
+     */
+    checkbox__checked?: string;
+
+    /**
+     * The indeterminate state modifer
+     */
+    checkbox__indeterminate?: string;
 }

@@ -12,28 +12,34 @@ import {
     ensureForegroundNormal,
     hoverContrast,
 } from "../utilities/colors";
-import { contrast, scaleContrast } from "@microsoft/fast-jss-utilities";
+import { contrast, focusVisible, scaleContrast } from "@microsoft/fast-jss-utilities";
 import { applyTypeRampConfig } from "../utilities/typography";
+import typographyPattern from "../patterns/typography";
 
 const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = {
     contextMenuItem: {
         listStyleType: "none",
         height: density(40),
         display: "grid",
-        gridTemplateColumns: "40px auto 40px",
+        gridTemplateColumns: "38px auto 38px",
         gridTemplateRows: "auto",
         alignItems: "center",
         padding: "0",
-        color: ensureForegroundNormal,
+        ...typographyPattern.rest,
         whiteSpace: "nowrap",
         overflow: "hidden",
         cursor: "default",
         ...applyTypeRampConfig("t7"),
         background: backgroundColor,
+        border: "2px solid transparent",
         "&:focus": {
             outline: "none",
         },
-        "&:focus, &:hover": {
+        [`&${focusVisible()}`]: {
+            outline: "none",
+            borderColor: ensureForegroundNormal,
+        },
+        "&:hover": {
             background: (config: DesignSystem): string => {
                 const designSystem: DesignSystem = withDesignSystemDefaults(config);
 
@@ -52,16 +58,8 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
     },
     contextMenuItem__disabled: {
         cursor: "not-allowed",
-        color: (config: DesignSystem): string => {
-            const designSystem: DesignSystem = withDesignSystemDefaults(config);
-
-            return disabledContrast(
-                designSystem.contrast,
-                designSystem.foregroundColor,
-                designSystem.backgroundColor
-            );
-        },
-        "&:hover, &:focus": {
+        ...typographyPattern.disabled,
+        [`&:hover, &${focusVisible()}`]: {
             background: backgroundColor,
         },
     },
