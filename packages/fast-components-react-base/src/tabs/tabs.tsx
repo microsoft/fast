@@ -7,8 +7,8 @@ import {
 } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
+    Item,
     TabConfig,
-    TabItems,
     TabsHandledProps,
     TabsManagedClasses,
     TabsProps,
@@ -77,7 +77,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
         tabItemSlot: void 0,
         tabPanelSlot: void 0,
         tabSlot: void 0,
-        tabItems: void 0,
+        items: void 0,
     };
 
     /**
@@ -90,13 +90,13 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
 
         this.tabListRef = React.createRef();
 
-        if (!this.props.tabItems) {
-            const tabItems: React.ReactNode[] = React.Children.toArray(this.tabItems());
+        if (!this.props.items) {
+            const items: React.ReactNode[] = React.Children.toArray(this.tabItems());
             this.state = {
                 activeId: this.props.activeId
                     ? this.props.activeId
-                    : tabItems.length > 0
-                        ? get(tabItems[0], "props.id")
+                    : items.length > 0
+                        ? get(items[0], "props.id")
                         : "",
             };
         } else {
@@ -156,13 +156,27 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
     }
 
     /**
+     * Create tab content class names
+     */
+    protected generateTabContentClassNames(): string {
+        return get(this.props, "managedClasses.tabs_tabContent") || "";
+    }
+
+    /**
+     * Create tab panel content class names
+     */
+    protected generateTabPanelContentClassNames(): string {
+        return get(this.props, "managedClasses.tabs_tabPanelContent") || "";
+    }
+
+    /**
      * Renders the tab elements
      */
     private renderTabElements(): JSX.Element[] {
         return React.Children.map(this.tabItems(), this.renderTabItem);
     }
 
-    private setActive(tabItem: TabItems, index: number): boolean {
+    private setActive(tabItem: Item, index: number): boolean {
         if (this.state.activeId) {
             return this.state.activeId === tabItem.id;
         } else {
@@ -171,8 +185,8 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
     }
 
     private tabItems(): React.ReactNode {
-        if (this.props.tabItems) {
-            return this.props.tabItems.map((tabItem: TabItems, index: number) => {
+        if (this.props.items) {
+            return this.props.items.map((tabItem: Item, index: number) => {
                 return (
                     <TabItem key={tabItem.id} id={tabItem.id} slot={TabsSlot.tabItem}>
                         <Tab
@@ -185,7 +199,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
                             onKeyDown={this.handleKeyDown}
                             tabIndex={this.setActive(tabItem, index) ? 0 : -1}
                         >
-                            {tabItem.tab("")}
+                            {tabItem.tab(this.generateTabContentClassNames())}
                         </Tab>
                         <TabPanel
                             {...tabPanelManagedClasses}
@@ -195,7 +209,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
                             aria-labelledby={tabItem.id}
                             active={this.setActive(tabItem, index)}
                         >
-                            {tabItem.content("")}
+                            {tabItem.content(this.generateTabPanelContentClassNames())}
                         </TabPanel>
                     </TabItem>
                 );
@@ -209,7 +223,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
     }
 
     private renderTabItem = (tabItem: JSX.Element, index: number): JSX.Element => {
-        if (this.props.tabItems) {
+        if (this.props.items) {
             return this.getChildrenBySlot(
                 tabItem.props.children,
                 this.getSlot(TabsSlot.tab)
@@ -236,7 +250,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
     }
 
     private renderTabPanel = (tabItem: JSX.Element, index: number): JSX.Element => {
-        if (this.props.tabItems) {
+        if (this.props.items) {
             return this.getChildrenBySlot(
                 tabItem.props.children,
                 this.getSlot(TabsSlot.tabPanel)

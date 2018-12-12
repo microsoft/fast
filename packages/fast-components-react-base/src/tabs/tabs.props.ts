@@ -15,7 +15,7 @@ export interface TabConfig {
     tabIndex: number;
 }
 
-export interface TabItems {
+export interface Item {
     tab: (className: string) => React.ReactNode;
     content: (className: string) => React.ReactNode;
     id: string;
@@ -68,7 +68,7 @@ export interface TabsHandledProps extends TabsManagedClasses {
     /**
      * The tabs' tab item
      */
-    tabItems?: TabItems[];
+    items?: Item[];
 }
 
 export type TabsProps = TabsHandledProps & TabsUnhandledProps;

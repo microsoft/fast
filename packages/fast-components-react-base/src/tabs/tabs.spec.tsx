@@ -10,9 +10,9 @@ import {
     TabsClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import Tabs, {
+    Item,
     Tab,
     TabItem,
-    TabItems,
     TabPanel,
     TabsHandledProps,
     TabsManagedClasses,
@@ -1129,31 +1129,31 @@ describe("tabs", (): void => {
     ): () => React.ReactNode {
         return (): React.ReactNode => <div className={className}>{tabContent}</div>;
     }
-    const tabItem1: TabItems = {
+    const tabItem1: Item = {
         tab: renderTab("tab one"),
         content: renderTabContent("tab one content"),
         id: id0,
     };
 
-    const tabItem2: TabItems = {
+    const tabItem2: Item = {
         tab: renderTab("tab two"),
         content: renderTabContent("tab two content"),
         id: id1,
     };
 
-    const tabItem3: TabItems = {
+    const tabItem3: Item = {
         tab: renderTab("tab three"),
         content: renderTabContent("tab three content"),
         id: id2,
     };
-    const detailTabItemData: TabItems[] = [tabItem1, tabItem2, tabItem3];
+    const detailTabItemData: Item[] = [tabItem1, tabItem2, tabItem3];
 
-    test("should correctly render tabitems when given tabItems", () => {
+    test("should correctly render tabitems when given items", () => {
         const renderedWithChildren: any = shallow(
             <Tabs
                 managedClasses={tabsManagedClasses}
                 label={"items"}
-                tabItems={detailTabItemData}
+                items={detailTabItemData}
             />
         );
 
@@ -1166,7 +1166,7 @@ describe("tabs", (): void => {
                 managedClasses={tabsManagedClasses}
                 label={"items"}
                 activeId={id1}
-                tabItems={detailTabItemData}
+                items={detailTabItemData}
             />
         );
 

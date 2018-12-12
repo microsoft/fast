@@ -5,10 +5,10 @@ import {
     TabsClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import Tabs, {
+    Item,
     Tab,
     TabConfig,
-    TabItem,
-    TabItems,
+    TabItemProps,
     TabManagedClasses,
     TabPanel,
     TabPanelManagedClasses,
@@ -30,6 +30,8 @@ const tabsManagedClasses: TabsManagedClasses = {
         tabs_tabPanels: "tab_items-class",
         tabs_tabList: "tab_list-class",
         tabs: "tabs-class",
+        tabs_tabContent: "tabs_tab_content-class",
+        tabs_tabPanelContent: "tabs_tabPanel_content-class",
     },
 };
 
@@ -223,41 +225,45 @@ const exampleChildren4: any[] = [
     },
 ];
 
-function renderTab(tabTitle: string, className?: string): () => React.ReactNode {
-    return (): React.ReactNode => <div className={className}>{tabTitle}</div>;
+function renderTab(tabTitle: string): (className?: string) => React.ReactNode {
+    return (className?: string): React.ReactNode => (
+        <div className={className}>{tabTitle}</div>
+    );
 }
 
-function renderTabContent(tabContent: string, className?: string): () => React.ReactNode {
-    return (): React.ReactNode => <div className={className}>{tabContent}</div>;
+function renderTabContent(tabContent: string): (className?: string) => React.ReactNode {
+    return (className?: string): React.ReactNode => (
+        <div className={className}>{tabContent}</div>
+    );
 }
 
-const tabItem1: TabItems = {
+const tabItem1: Item = {
     tab: renderTab("tab one"),
     content: renderTabContent("tab one content"),
     id: "tab01",
 };
 
-const tabItem2: TabItems = {
+const tabItem2: Item = {
     tab: renderTab("tab two"),
     content: renderTabContent("tab two content"),
     id: "tab02",
 };
 
-const tabItem3: TabItems = {
+const tabItem3: Item = {
     tab: renderTab("tab three"),
     content: renderTabContent("tab three content"),
     id: "tab03",
 };
 
-const tabItem4: TabItems = {
+const tabItem4: Item = {
     tab: renderTab("tab four"),
     content: renderTabContent("tab four content"),
     id: "tab04",
 };
 
-const detailTabItemData: TabItems[] = [tabItem1, tabItem2, tabItem3];
+const detailTabItem: Item[] = [tabItem1, tabItem2, tabItem3];
 
-const exampleTabItemData1: TabItems[] = [
+const exampleTabItem1: Item[] = [
     {
         tab: renderTab(""),
         content: renderTabContent(""),
@@ -276,21 +282,22 @@ const examples: ComponentFactoryExample<TabsHandledProps> = {
     detailData: {
         ...tabsManagedClasses,
         label: "A set of example text content",
-        tabItems: detailTabItemData,
+        activeId: "tab03",
+        items: detailTabItem,
         children: ["child 1", "child 2"],
     },
     data: [
         {
             ...tabsManagedClasses,
             label: "A set of example text content",
-            tabItems: detailTabItemData,
+            items: detailTabItem,
             children: ["child 1", "child 2"],
         },
         {
             ...tabsManagedClasses,
             label: "A set of example text content",
             orientation: Orientation.horizontal,
-            tabItems: exampleTabItemData1,
+            items: exampleTabItem1,
         },
         {
             /**
