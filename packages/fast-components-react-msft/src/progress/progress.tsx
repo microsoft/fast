@@ -23,7 +23,7 @@ class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, 
 
     public static displayName: string = "Progress";
 
-    private static indicatorDotCount: number = 5;
+    private static indicatorCount: number = 2;
 
     protected handledProps: HandledProps<ProgressHandledProps> = {
         children: void 0,
@@ -76,13 +76,16 @@ class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, 
     }
 
     private renderIndeterminateItems(): JSX.Element[] {
-        return new Array(Progress.indicatorDotCount)
+        return new Array(Progress.indicatorCount)
             .fill(undefined)
             .map((item: undefined, index: number) => {
-                let className: string = get(this.props, "managedClasses.progress_dot");
+                let className: string = get(
+                    this.props,
+                    "managedClasses.progress_indicator__indeterminate"
+                );
                 className = `${className} ${get(
                     this.props,
-                    `managedClasses.progress_dot__${index + 1}`
+                    `managedClasses.progress_indicator__indeterminate__${index + 1}`
                 )}`;
 
                 return <span className={className} key={index} />;

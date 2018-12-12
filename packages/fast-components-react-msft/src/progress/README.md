@@ -6,3 +6,5 @@ The *progress* component should be used for an element that displays the progres
 
 ## Style guidance
 The determinate visuals should indicate to the user how much is remaining of a given task. The indeterminate should be a repeating animation to indicate to the user that their request is being processed and the application is responsive.
+
+Known Issue: The indeterminate animation relies on percentage based values. In Edge there is a bug where the percantage values do not get recalculated when the contianer is resized. If properly rendering in Edge is a top priority we recommend hardcoding the width of the progress bar to prevent glitchy animations.
