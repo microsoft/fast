@@ -33,15 +33,15 @@ const styles: ComponentStyles<FormItemAlignVerticalClassNameContract, {}> = {
     formItemAlignVertical_control: {
         ...applyControl(),
     },
-    formItemAlignVertical_control_label: {
+    formItemAlignVertical_controlLabel: {
         ...applyLabelStyle(),
         display: "block",
         marginTop: "12px",
     },
-    formItemAlignVertical_control_inputContainer: {
+    formItemAlignVertical_controlInputContainer: {
         ...applyInputContainerStyle(),
     },
-    formItemAlignVertical_control_input__top: {
+    formItemAlignVertical_controlInput__top: {
         ...applyInputBackplateStyle(),
         background: topDark,
         "&:checked": {
@@ -49,7 +49,7 @@ const styles: ComponentStyles<FormItemAlignVerticalClassNameContract, {}> = {
             backgroundColor: colors.pink,
         },
     },
-    formItemAlignVertical_control_input__center: {
+    formItemAlignVertical_controlInput__center: {
         ...applyInputBackplateStyle(),
         background: centerDark,
         "&:checked": {
@@ -57,7 +57,7 @@ const styles: ComponentStyles<FormItemAlignVerticalClassNameContract, {}> = {
             backgroundColor: colors.pink,
         },
     },
-    formItemAlignVertical_control_input__bottom: {
+    formItemAlignVertical_controlInput__bottom: {
         ...applyInputBackplateStyle(),
         background: bottomDark,
         "&:checked": {
@@ -68,7 +68,7 @@ const styles: ComponentStyles<FormItemAlignVerticalClassNameContract, {}> = {
     formItemAlignVertical_softRemove: {
         ...applySoftRemove(),
     },
-    formItemAlignVertical_softRemove_input: {
+    formItemAlignVertical_softRemoveInput: {
         ...applySoftRemoveInput(),
     },
 };

@@ -33,15 +33,15 @@ const styles: ComponentStyles<FormItemAlignHorizontalClassNameContract, {}> = {
     formItemAlignHorizontal_control: {
         ...applyControl(),
     },
-    formItemAlignHorizontal_control_label: {
+    formItemAlignHorizontal_controlLabel: {
         ...applyLabelStyle(),
         display: "block",
         marginTop: "12px",
     },
-    formItemAlignHorizontal_control_inputContainer: {
+    formItemAlignHorizontal_controlInputContainer: {
         ...applyInputContainerStyle(),
     },
-    formItemAlignHorizontal_control_input__left: {
+    formItemAlignHorizontal_controlInput__left: {
         ...applyInputBackplateStyle(),
         background: leftDark,
         "&:checked": {
@@ -49,7 +49,7 @@ const styles: ComponentStyles<FormItemAlignHorizontalClassNameContract, {}> = {
             backgroundColor: colors.pink,
         },
     },
-    formItemAlignHorizontal_control_input__center: {
+    formItemAlignHorizontal_controlInput__center: {
         ...applyInputBackplateStyle(),
         background: centerDark,
         "&:checked": {
@@ -57,7 +57,7 @@ const styles: ComponentStyles<FormItemAlignHorizontalClassNameContract, {}> = {
             backgroundColor: colors.pink,
         },
     },
-    formItemAlignHorizontal_control_input__right: {
+    formItemAlignHorizontal_controlInput__right: {
         ...applyInputBackplateStyle(),
         background: rightDark,
         "&:checked": {
@@ -68,7 +68,7 @@ const styles: ComponentStyles<FormItemAlignHorizontalClassNameContract, {}> = {
     formItemAlignHorizontal_softRemove: {
         ...applySoftRemove(),
     },
-    formItemAlignHorizontal_softRemove_input: {
+    formItemAlignHorizontal_softRemoveInput: {
         ...applySoftRemoveInput(),
     },
 };

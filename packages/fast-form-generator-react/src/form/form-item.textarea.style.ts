@@ -20,12 +20,12 @@ const styles: ComponentStyles<FormItemTextareaClassNameContract, {}> = {
     formItemTextarea_control: {
         ...applyControl(),
     },
-    formItemTextarea_control_label: {
+    formItemTextarea_controlLabel: {
         ...applyLabelStyle(),
         display: "block",
         marginTop: toPx(12),
     },
-    formItemTextarea_control_textarea: {
+    formItemTextarea_controlTextarea: {
         ...applyInputStyle(),
         width: "100%",
         marginTop: toPx(8),
@@ -36,7 +36,7 @@ const styles: ComponentStyles<FormItemTextareaClassNameContract, {}> = {
     formItemTextarea_softRemove: {
         ...applySoftRemove(),
     },
-    formItemTextarea_softRemove_input: {
+    formItemTextarea_softRemoveInput: {
         ...applySoftRemoveInput(),
     },
 };

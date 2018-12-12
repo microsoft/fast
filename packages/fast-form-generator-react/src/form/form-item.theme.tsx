@@ -21,14 +21,14 @@ class FormItemTheme extends FormItemBase<
             <div className={this.props.managedClasses.formItemTheme}>
                 <div className={this.props.managedClasses.formItemTheme_control}>
                     <label
-                        className={this.props.managedClasses.formItemTheme_control_label}
+                        className={this.props.managedClasses.formItemTheme_controlLabel}
                         htmlFor={this.props.dataLocation}
                     >
                         {this.props.label}
                     </label>
                     <div
                         className={
-                            this.props.managedClasses.formItemTheme_control_inputContainer
+                            this.props.managedClasses.formItemTheme_controlInputContainer
                         }
                     >
                         {this.renderInput("light", 1)}
@@ -37,7 +37,7 @@ class FormItemTheme extends FormItemBase<
                 </div>
                 <div className={this.props.managedClasses.formItemTheme_softRemove}>
                     {this.renderSoftRemove(
-                        this.props.managedClasses.formItemTheme_softRemove_input
+                        this.props.managedClasses.formItemTheme_softRemoveInput
                     )}
                 </div>
             </div>
@@ -57,8 +57,8 @@ class FormItemTheme extends FormItemBase<
 
     private getInputClassName(theme: string): string {
         return theme === "dark"
-            ? this.props.managedClasses.formItemTheme_control_input__dark
-            : this.props.managedClasses.formItemTheme_control_input__light;
+            ? this.props.managedClasses.formItemTheme_controlInput__dark
+            : this.props.managedClasses.formItemTheme_controlInput__light;
     }
 
     private renderInput(theme: string, index: number): JSX.Element {

@@ -42,16 +42,16 @@ class FormItemSelect extends FormItemBase<
             <div className={this.props.managedClasses.formItemSelect}>
                 <div className={this.props.managedClasses.formItemSelect_control}>
                     <label
-                        className={this.props.managedClasses.formItemSelect_control_label}
+                        className={this.props.managedClasses.formItemSelect_controlLabel}
                     >
                         {this.props.label}
                     </label>
                     <span
-                        className={this.props.managedClasses.formItemSelect_control_span}
+                        className={this.props.managedClasses.formItemSelect_controlSpan}
                     >
                         <select
                             className={
-                                this.props.managedClasses.formItemSelect_control_input
+                                this.props.managedClasses.formItemSelect_controlInput
                             }
                             onChange={this.handleChange}
                             value={JSON.stringify(value)}
@@ -62,7 +62,7 @@ class FormItemSelect extends FormItemBase<
                 </div>
                 <div className={this.props.managedClasses.formItemSelect_softRemove}>
                     {this.renderSoftRemove(
-                        this.props.managedClasses.formItemSelect_softRemove_input
+                        this.props.managedClasses.formItemSelect_softRemoveInput
                     )}
                 </div>
             </div>

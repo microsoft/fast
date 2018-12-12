@@ -22,7 +22,7 @@ class FormItemAlignVertical extends FormItemBase<
                 <div className={this.props.managedClasses.formItemAlignVertical_control}>
                     <label
                         className={
-                            this.props.managedClasses.formItemAlignVertical_control_label
+                            this.props.managedClasses.formItemAlignVertical_controlLabel
                         }
                         htmlFor={this.props.dataLocation}
                     >
@@ -31,7 +31,7 @@ class FormItemAlignVertical extends FormItemBase<
                     <div
                         className={
                             this.props.managedClasses
-                                .formItemAlignVertical_control_inputContainer
+                                .formItemAlignVertical_controlInputContainer
                         }
                     >
                         {this.renderInput("top", 1)}
@@ -43,7 +43,7 @@ class FormItemAlignVertical extends FormItemBase<
                     className={this.props.managedClasses.formItemAlignVertical_softRemove}
                 >
                     {this.renderSoftRemove(
-                        this.props.managedClasses.formItemAlignVertical_softRemove_input
+                        this.props.managedClasses.formItemAlignVertical_softRemoveInput
                     )}
                 </div>
             </div>
@@ -64,13 +64,13 @@ class FormItemAlignVertical extends FormItemBase<
     private getInputClassName(direction: string): string {
         switch (direction) {
             case "top":
-                return this.props.managedClasses.formItemAlignVertical_control_input__top;
+                return this.props.managedClasses.formItemAlignVertical_controlInput__top;
             case "center":
                 return this.props.managedClasses
-                    .formItemAlignVertical_control_input__center;
+                    .formItemAlignVertical_controlInput__center;
             case "bottom":
                 return this.props.managedClasses
-                    .formItemAlignVertical_control_input__bottom;
+                    .formItemAlignVertical_controlInput__bottom;
         }
     }
 

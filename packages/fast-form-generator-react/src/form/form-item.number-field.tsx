@@ -40,7 +40,7 @@ class FormItemNumberField extends FormItemBase<
                 <div className={this.props.managedClasses.formItemNumberField_control}>
                     <label
                         className={
-                            this.props.managedClasses.formItemNumberField_control_label
+                            this.props.managedClasses.formItemNumberField_controlLabel
                         }
                         htmlFor={this.props.dataLocation}
                     >
@@ -48,7 +48,7 @@ class FormItemNumberField extends FormItemBase<
                     </label>
                     <input
                         className={
-                            this.props.managedClasses.formItemNumberField_control_input
+                            this.props.managedClasses.formItemNumberField_controlInput
                         }
                         id={this.props.dataLocation}
                         type="number"
@@ -62,7 +62,7 @@ class FormItemNumberField extends FormItemBase<
                 </div>
                 <div className={this.props.managedClasses.formItemNumberField_softRemove}>
                     {this.renderSoftRemove(
-                        this.props.managedClasses.formItemNumberField_softRemove_input
+                        this.props.managedClasses.formItemNumberField_softRemoveInput
                     )}
                 </div>
             </div>

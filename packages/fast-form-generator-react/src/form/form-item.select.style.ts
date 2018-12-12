@@ -19,22 +19,22 @@ const styles: ComponentStyles<FormItemSelectClassNameContract, {}> = {
     formItemSelect_control: {
         ...applyControl(),
     },
-    formItemSelect_control_label: {
+    formItemSelect_controlLabel: {
         ...applyLabelStyle(),
         display: "block",
         marginTop: "12px",
     },
-    formItemSelect_control_span: {
+    formItemSelect_controlSpan: {
         ...applySelectSpanStyles(),
         marginTop: "8px",
     },
-    formItemSelect_control_input: {
+    formItemSelect_controlInput: {
         ...applySelectInputStyles(),
     },
     formItemSelect_softRemove: {
         ...applySoftRemove(),
     },
-    formItemSelect_softRemove_input: {
+    formItemSelect_softRemoveInput: {
         ...applySoftRemoveInput(),
     },
 };

@@ -34,14 +34,14 @@ class FormItemTextarea extends FormItemBase<
                     <label
                         htmlFor={this.props.dataLocation}
                         className={
-                            this.props.managedClasses.formItemTextarea_control_label
+                            this.props.managedClasses.formItemTextarea_controlLabel
                         }
                     >
                         {this.props.label}
                     </label>
                     <textarea
                         className={
-                            this.props.managedClasses.formItemTextarea_control_textarea
+                            this.props.managedClasses.formItemTextarea_controlTextarea
                         }
                         id={this.props.dataLocation}
                         name={this.props.dataLocation}
@@ -52,7 +52,7 @@ class FormItemTextarea extends FormItemBase<
                 </div>
                 <div className={this.props.managedClasses.formItemTextarea_softRemove}>
                     {this.renderSoftRemove(
-                        this.props.managedClasses.formItemTextarea_softRemove_input
+                        this.props.managedClasses.formItemTextarea_softRemoveInput
                     )}
                 </div>
             </div>

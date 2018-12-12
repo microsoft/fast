@@ -25,8 +25,7 @@ class FormItemAlignHorizontal extends FormItemBase<
                 >
                     <label
                         className={
-                            this.props.managedClasses
-                                .formItemAlignHorizontal_control_label
+                            this.props.managedClasses.formItemAlignHorizontal_controlLabel
                         }
                         htmlFor={this.props.dataLocation}
                     >
@@ -35,7 +34,7 @@ class FormItemAlignHorizontal extends FormItemBase<
                     <div
                         className={
                             this.props.managedClasses
-                                .formItemAlignHorizontal_control_inputContainer
+                                .formItemAlignHorizontal_controlInputContainer
                         }
                     >
                         {this.renderInput("left", 1)}
@@ -49,7 +48,7 @@ class FormItemAlignHorizontal extends FormItemBase<
                     }
                 >
                     {this.renderSoftRemove(
-                        this.props.managedClasses.formItemAlignHorizontal_softRemove_input
+                        this.props.managedClasses.formItemAlignHorizontal_softRemoveInput
                     )}
                 </div>
             </div>
@@ -71,13 +70,13 @@ class FormItemAlignHorizontal extends FormItemBase<
         switch (direction) {
             case "left":
                 return this.props.managedClasses
-                    .formItemAlignHorizontal_control_input__left;
+                    .formItemAlignHorizontal_controlInput__left;
             case "center":
                 return this.props.managedClasses
-                    .formItemAlignHorizontal_control_input__center;
+                    .formItemAlignHorizontal_controlInput__center;
             case "right":
                 return this.props.managedClasses
-                    .formItemAlignHorizontal_control_input__right;
+                    .formItemAlignHorizontal_controlInput__right;
         }
     }
 

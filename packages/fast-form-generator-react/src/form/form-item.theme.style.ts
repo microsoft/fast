@@ -40,18 +40,18 @@ const styles: ComponentStyles<FormItemThemeClassNameContract, {}> = {
     formItemTheme_control: {
         ...applyControl(),
     },
-    formItemTheme_control_label: {
+    formItemTheme_controlLabel: {
         ...applyLabelStyle(),
     },
-    formItemTheme_control_inputContainer: {
+    formItemTheme_controlInputContainer: {
         ...applyInputContainerStyle(),
     },
-    formItemTheme_control_input__light: {
+    formItemTheme_controlInput__light: {
         ...applyThemeInputBackplateStyle(),
         background: lightTheme,
         backgroundColor: colors.white,
     },
-    formItemTheme_control_input__dark: {
+    formItemTheme_controlInput__dark: {
         ...applyThemeInputBackplateStyle(),
         background: darkTheme,
         backgroundColor: colors.black,
@@ -59,7 +59,7 @@ const styles: ComponentStyles<FormItemThemeClassNameContract, {}> = {
     formItemTheme_softRemove: {
         ...applySoftRemove(),
     },
-    formItemTheme_softRemove_input: {
+    formItemTheme_softRemoveInput: {
         ...applySoftRemoveInput(),
     },
 };

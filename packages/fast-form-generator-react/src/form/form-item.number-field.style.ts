@@ -17,12 +17,12 @@ const styles: ComponentStyles<FormItemNumberFieldClassNameContract, {}> = {
     formItemNumberField_control: {
         ...applyControl(),
     },
-    formItemNumberField_control_label: {
+    formItemNumberField_controlLabel: {
         ...applyLabelStyle(),
         display: "block",
         marginTop: toPx(12),
     },
-    formItemNumberField_control_input: {
+    formItemNumberField_controlInput: {
         ...applyInputStyle(),
         marginTop: toPx(8),
         width: "100%",
@@ -30,7 +30,7 @@ const styles: ComponentStyles<FormItemNumberFieldClassNameContract, {}> = {
     formItemNumberField_softRemove: {
         ...applySoftRemove(),
     },
-    formItemNumberField_softRemove_input: {
+    formItemNumberField_softRemoveInput: {
         ...applySoftRemoveInput(),
     },
 };
