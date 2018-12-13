@@ -1,0 +1,28 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Component with theme",
+    "description": "A test component's schema definition.",
+    "type": "object",
+    "id": "theme",
+    "properties": {
+        "theme": {
+            "title": "Theme",
+            "type": "string",
+            "enum": [
+                "light",
+                "dark"
+            ]
+        },
+        "optionalTheme": {
+            "title": "Optional theme",
+            "type": "string",
+            "enum": [
+                "light",
+                "dark"
+            ]
+        }
+    },
+    "required": [
+        "theme"
+    ]
+}

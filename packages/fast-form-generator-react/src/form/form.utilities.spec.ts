@@ -10,19 +10,19 @@ import {
     NavigationItem,
 } from "./form.utilities";
 import { BreadcrumbItemEventHandler } from "./form.props";
-import Children from "../../app/components/children/children";
-import General from "../../app/components/general-example/general-example";
-import TextField from "../../app/components/text-field/text-field";
-import OneOf from "../../app/components/one-of/one-of";
+import Children from "../../app/configs/children";
+import General from "../../app/configs/general";
+import Textarea from "../../app/configs/textarea";
+import OneOf from "../../app/configs/one-of";
 
-import * as alignHorizontalSchema from "../../app/components/align-horizontal/align-horizontal.schema.json";
-import * as arraysSchema from "../../app/components/arrays/arrays.schema.json";
-import * as generalSchema from "../../app/components/general-example/general-example.schema.json";
-import * as objectsSchema from "../../app/components/objects/objects.schema.json";
-import * as oneOfSchema from "../../app/components/one-of/one-of.schema.json";
-import * as anyOfSchema from "../../app/components/any-of/any-of.schema.json";
-import * as childrenSchema from "../../app/components/children/children.schema.json";
-import * as textFieldSchema from "../../app/components/text-field/text-field.schema.json";
+import * as alignHorizontalSchema from "../../app/configs/align-horizontal/align-horizontal.schema.json";
+import * as arraysSchema from "../../app/configs/arrays/arrays.schema.json";
+import * as generalSchema from "../../app/configs/general/general.schema.json";
+import * as objectsSchema from "../../app/configs/objects/objects.schema.json";
+import * as oneOfSchema from "../../app/configs/one-of/one-of.schema.json";
+import * as anyOfSchema from "../../app/configs/any-of/any-of.schema.json";
+import * as childrenSchema from "../../app/configs/children/children.schema.json";
+import * as textFieldSchema from "../../app/configs/textarea/textarea.schema.json";
 import { reactChildrenStringSchema } from "./form-item.children.text";
 
 /**
@@ -37,7 +37,7 @@ describe("getNavigation", () => {
         },
         {
             name: textFieldSchema.id,
-            component: TextField,
+            component: Textarea,
             schema: textFieldSchema,
         },
         { name: oneOfSchema.id, component: OneOf, schema: oneOfSchema },
@@ -479,7 +479,7 @@ describe("getBreadcrumbs", () => {
         },
         {
             name: textFieldSchema.id,
-            component: TextField,
+            component: Textarea,
             schema: textFieldSchema,
         },
         { name: generalSchema.id, component: General, schema: generalSchema },
@@ -589,8 +589,8 @@ describe("getSchemaByDataLocation", () => {
         };
         const schema: any = getSchemaByDataLocation(textFieldSchema, data, "", [
             {
-                name: "text-field",
-                component: TextField,
+                name: "textarea",
+                component: Textarea,
                 schema: textFieldSchema,
             },
         ]);
@@ -624,8 +624,8 @@ describe("getSchemaByDataLocation", () => {
             "children.props.children[0]",
             [
                 {
-                    name: "text-field",
-                    component: TextField,
+                    name: "textarea",
+                    component: Textarea,
                     schema: textFieldSchema,
                 },
             ]
@@ -638,8 +638,8 @@ describe("getSchemaByDataLocation", () => {
             "children.props.children[1]",
             [
                 {
-                    name: "text-field",
-                    component: TextField,
+                    name: "textarea",
+                    component: Textarea,
                     schema: textFieldSchema,
                 },
             ]
