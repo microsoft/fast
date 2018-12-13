@@ -8,15 +8,27 @@ const appDir = path.resolve(__dirname, "./app");
 const outDir = path.resolve(__dirname, "./www");
 
 module.exports = (env, args) => {
+    const isProduction = args.mode === "production";
+
     return {
-        devtool: "inline-source-map",
+        devtool: isProduction ? "none" : "inline-source-map",
         entry: path.resolve(appDir, "index.tsx"),
         output: {
             path: outDir,
             publicPath: "/",
-            filename: "[name].js"
+            filename: isProduction ? "[name]-[contenthash].js" : "[name].js"
         },
         mode: args.mode || "development",
+        optimization: {
+            splitChunks: {
+                chunks: "all",
+                cacheGroups: {
+                    vendor: {
+                        test: /[\\/]node_modules[\\/]/,
+                    },
+                },
+            }
+        },
         module: {
             rules: [
                 {
