@@ -31,6 +31,9 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = (
             background: brandColor,
             borderRadius: "2px",
             height: "100%",
+            "@media (-ms-high-contrast:active)": {
+                background: "ButtonText",
+            },
         },
         progress_indicator: {
             position: "relative",
@@ -42,6 +45,10 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = (
             background: determinateBackgroundColor,
             height: toPx(designSystem.designUnit),
             borderRadius: "2px",
+
+            "@media (-ms-high-contrast:active)": {
+                background: "ButtonShadow",
+            },
         },
         progress_dot: {
             position: "absolute",
@@ -58,6 +65,11 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = (
                 width: toPx(designSystem.designUnit),
                 height: toPx(designSystem.designUnit),
                 borderRadius: "50%",
+
+                "@media (-ms-high-contrast:active)": {
+                    background: "ButtonShadow",
+                    opacity: "1 !important",
+                },
             },
         },
         progress_dot__1: {
