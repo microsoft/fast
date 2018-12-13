@@ -4,6 +4,7 @@ import styles from "./form-item.align-horizontal.style";
 import { FormItemAlignHorizontalClassNameContract } from "../class-name-contracts/";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import FormItemBase from "./form-item.base";
 import { Direction } from "@microsoft/fast-jss-utilities";
 
 /**
@@ -11,7 +12,7 @@ import { Direction } from "@microsoft/fast-jss-utilities";
  * @extends React.Component
  */
 /* tslint:disable-next-line */
-class FormItemAlignHorizontal extends React.Component<
+class FormItemAlignHorizontal extends FormItemBase<
     FormItemComponentMappingToProperyNamesProps &
         ManagedClasses<FormItemAlignHorizontalClassNameContract>,
     {}
@@ -19,20 +20,36 @@ class FormItemAlignHorizontal extends React.Component<
     public render(): JSX.Element {
         return (
             <div className={this.props.managedClasses.formItemAlignHorizontal}>
-                <label
-                    className={this.props.managedClasses.formItemAlignHorizontal_label}
-                    htmlFor={this.props.dataLocation}
+                <div
+                    className={this.props.managedClasses.formItemAlignHorizontal_control}
                 >
-                    {this.props.label}
-                </label>
+                    <label
+                        className={
+                            this.props.managedClasses.formItemAlignHorizontal_controlLabel
+                        }
+                        htmlFor={this.props.dataLocation}
+                    >
+                        {this.props.label}
+                    </label>
+                    <div
+                        className={
+                            this.props.managedClasses
+                                .formItemAlignHorizontal_controlInputContainer
+                        }
+                    >
+                        {this.renderInput("left", 1)}
+                        {this.renderInput("center", 2)}
+                        {this.renderInput("right", 3)}
+                    </div>
+                </div>
                 <div
                     className={
-                        this.props.managedClasses.formItemAlignHorizontal_inputContainer
+                        this.props.managedClasses.formItemAlignHorizontal_softRemove
                     }
                 >
-                    {this.renderInput("left", 1)}
-                    {this.renderInput("center", 2)}
-                    {this.renderInput("right", 3)}
+                    {this.renderSoftRemove(
+                        this.props.managedClasses.formItemAlignHorizontal_softRemoveInput
+                    )}
                 </div>
             </div>
         );
@@ -52,11 +69,14 @@ class FormItemAlignHorizontal extends React.Component<
     private getInputClassName(direction: string): string {
         switch (direction) {
             case "left":
-                return this.props.managedClasses.formItemAlignHorizontal_input__left;
+                return this.props.managedClasses
+                    .formItemAlignHorizontal_controlInput__left;
             case "center":
-                return this.props.managedClasses.formItemAlignHorizontal_input__center;
+                return this.props.managedClasses
+                    .formItemAlignHorizontal_controlInput__center;
             case "right":
-                return this.props.managedClasses.formItemAlignHorizontal_input__right;
+                return this.props.managedClasses
+                    .formItemAlignHorizontal_controlInput__right;
         }
     }
 

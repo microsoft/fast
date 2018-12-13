@@ -3,7 +3,10 @@
  */
 export default interface FormItemSelectClassNameContract {
     formItemSelect: string;
-    formItemSelect_label: string;
-    formItemSelect_span: string;
-    formItemSelect_input: string;
+    formItemSelect_control: string;
+    formItemSelect_controlLabel: string;
+    formItemSelect_controlSpan: string;
+    formItemSelect_controlInput: string;
+    formItemSelect_softRemove: string;
+    formItemSelect_softRemoveInput: string;
 }

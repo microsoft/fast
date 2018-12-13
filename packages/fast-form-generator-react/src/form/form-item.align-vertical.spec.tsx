@@ -30,7 +30,7 @@ describe("AlignVertical", () => {
     test("should generate HTML input elements", () => {
         const rendered: any = mount(<AlignVertical {...alignVerticalProps} />);
 
-        expect(rendered.find("input")).toHaveLength(3);
+        expect(rendered.find("input")).toHaveLength(4);
     });
     test("should generate an HTML label element", () => {
         const rendered: any = mount(<AlignVertical {...alignVerticalProps} />);
@@ -59,5 +59,41 @@ describe("AlignVertical", () => {
 
         expect(handleChange).toHaveBeenCalled();
         expect(handleChange.mock.calls[0][1]).toEqual("top");
+    });
+    test("should remove the data if the soft remove is triggered", () => {
+        const handleChange: any = jest.fn();
+        const rendered: any = mount(
+            <AlignVertical {...alignVerticalProps} data={"top"} onChange={handleChange} />
+        );
+
+        rendered
+            .find("input")
+            .at(3)
+            .simulate("change");
+
+        expect(handleChange).toHaveBeenCalled();
+        expect(handleChange.mock.calls[0][1]).toEqual(undefined);
+    });
+    test("should add the previous data that was removed if the soft remove is triggered", () => {
+        const handleChange: any = jest.fn();
+        const data: string = "top";
+        const rendered: any = mount(
+            <AlignVertical {...alignVerticalProps} data={data} onChange={handleChange} />
+        );
+
+        rendered
+            .find("input")
+            .at(3)
+            .simulate("change");
+
+        rendered.setProps({ data: handleChange.mock.calls[0][1] });
+
+        rendered
+            .find("input")
+            .at(3)
+            .simulate("change");
+
+        expect(handleChange).toHaveBeenCalledTimes(2);
+        expect(handleChange.mock.calls[1][1]).toBe(data);
     });
 });

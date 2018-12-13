@@ -4,12 +4,13 @@ import styles from "./form-item.checkbox.style";
 import { FormItemCheckboxClassNameContract } from "../class-name-contracts/";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import FormItemBase from "./form-item.base";
 
 /**
  * Schema form component definition
  * @extends React.Component
  */
-class FormItemCheckbox extends React.Component<
+class FormItemCheckbox extends FormItemBase<
     FormItemCommon & ManagedClasses<FormItemCheckboxClassNameContract>,
     {}
 > {
@@ -21,12 +22,6 @@ class FormItemCheckbox extends React.Component<
 
         return (
             <div className={this.props.managedClasses.formItemCheckbox}>
-                <label
-                    className={this.props.managedClasses.formItemCheckbox_label}
-                    htmlFor={this.props.dataLocation}
-                >
-                    {this.props.label}
-                </label>
                 <input
                     className={this.props.managedClasses.formItemCheckbox_input}
                     id={this.props.dataLocation}
@@ -36,6 +31,15 @@ class FormItemCheckbox extends React.Component<
                     checked={value}
                 />
                 <span />
+                <label
+                    className={this.props.managedClasses.formItemCheckbox_label}
+                    htmlFor={this.props.dataLocation}
+                >
+                    {this.props.label}
+                </label>
+                {this.renderSoftRemove(
+                    this.props.managedClasses.formItemCheckbox_softRemove
+                )}
             </div>
         );
     }

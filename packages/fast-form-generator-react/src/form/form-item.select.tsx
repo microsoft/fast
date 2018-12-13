@@ -4,6 +4,7 @@ import styles from "./form-item.select.style";
 import { FormItemSelectClassNameContract } from "../class-name-contracts/";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import FormItemBase from "./form-item.base";
 
 /**
  * Select state interface
@@ -20,7 +21,7 @@ export interface FormItemSelectProps extends FormItemCommon {
  * @extends React.Component
  */
 /* tslint:disable-next-line */
-class FormItemSelect extends React.Component<
+class FormItemSelect extends FormItemBase<
     FormItemSelectProps & ManagedClasses<FormItemSelectClassNameContract>,
     {}
 > {
@@ -39,18 +40,31 @@ class FormItemSelect extends React.Component<
 
         return (
             <div className={this.props.managedClasses.formItemSelect}>
-                <label className={this.props.managedClasses.formItemSelect_label}>
-                    {this.props.label}
-                </label>
-                <span className={this.props.managedClasses.formItemSelect_span}>
-                    <select
-                        className={this.props.managedClasses.formItemSelect_input}
-                        onChange={this.handleChange}
-                        value={JSON.stringify(value)}
+                <div className={this.props.managedClasses.formItemSelect_control}>
+                    <label
+                        className={this.props.managedClasses.formItemSelect_controlLabel}
                     >
-                        {this.renderOptions()}
-                    </select>
-                </span>
+                        {this.props.label}
+                    </label>
+                    <span
+                        className={this.props.managedClasses.formItemSelect_controlSpan}
+                    >
+                        <select
+                            className={
+                                this.props.managedClasses.formItemSelect_controlInput
+                            }
+                            onChange={this.handleChange}
+                            value={JSON.stringify(value)}
+                        >
+                            {this.renderOptions()}
+                        </select>
+                    </span>
+                </div>
+                <div className={this.props.managedClasses.formItemSelect_softRemove}>
+                    {this.renderSoftRemove(
+                        this.props.managedClasses.formItemSelect_softRemoveInput
+                    )}
+                </div>
             </div>
         );
     }

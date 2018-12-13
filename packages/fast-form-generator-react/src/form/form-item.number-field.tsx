@@ -5,6 +5,7 @@ import styles from "./form-item.number-field.style";
 import { FormItemNumberFieldClassNameContract } from "../class-name-contracts/";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import FormItemBase from "./form-item.base";
 
 export interface FormItemNumberFieldProps extends FormItemCommon {
     /**
@@ -27,7 +28,7 @@ export interface FormItemNumberFieldProps extends FormItemCommon {
  * Schema form component definition
  * @extends React.Component
  */
-class FormItemNumberField extends React.Component<
+class FormItemNumberField extends FormItemBase<
     FormItemNumberFieldProps & ManagedClasses<FormItemNumberFieldClassNameContract>,
     {}
 > {
@@ -36,23 +37,34 @@ class FormItemNumberField extends React.Component<
 
         return (
             <div className={this.props.managedClasses.formItemNumberField}>
-                <label
-                    className={this.props.managedClasses.formItemNumberField_label}
-                    htmlFor={this.props.dataLocation}
-                >
-                    {this.props.label}
-                </label>
-                <input
-                    className={this.props.managedClasses.formItemNumberField_input}
-                    id={this.props.dataLocation}
-                    type="number"
-                    value={value}
-                    name={`number${value}`}
-                    onChange={this.handleChange}
-                    min={this.props.min}
-                    max={this.props.max}
-                    step={this.props.step}
-                />
+                <div className={this.props.managedClasses.formItemNumberField_control}>
+                    <label
+                        className={
+                            this.props.managedClasses.formItemNumberField_controlLabel
+                        }
+                        htmlFor={this.props.dataLocation}
+                    >
+                        {this.props.label}
+                    </label>
+                    <input
+                        className={
+                            this.props.managedClasses.formItemNumberField_controlInput
+                        }
+                        id={this.props.dataLocation}
+                        type="number"
+                        value={value}
+                        name={`number${value}`}
+                        onChange={this.handleChange}
+                        min={this.props.min}
+                        max={this.props.max}
+                        step={this.props.step}
+                    />
+                </div>
+                <div className={this.props.managedClasses.formItemNumberField_softRemove}>
+                    {this.renderSoftRemove(
+                        this.props.managedClasses.formItemNumberField_softRemoveInput
+                    )}
+                </div>
             </div>
         );
     }

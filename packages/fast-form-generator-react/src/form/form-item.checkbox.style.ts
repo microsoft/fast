@@ -3,6 +3,7 @@ import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormItemCheckboxClassNameContract } from "../class-name-contracts/";
 import {
     applyLabelStyle,
+    applySoftRemoveInput,
     applyWrapperStyle,
     colors,
     insetStrongBoxShadow,
@@ -15,6 +16,7 @@ const styles: ComponentStyles<FormItemCheckboxClassNameContract, {}> = {
     },
     formItemCheckbox_label: {
         ...applyLabelStyle(),
+        marginLeft: "16px",
     },
     formItemCheckbox_input: {
         appearance: "none",
@@ -35,7 +37,7 @@ const styles: ComponentStyles<FormItemCheckboxClassNameContract, {}> = {
         },
         "& + span": {
             position: "absolute",
-            right: "0",
+            left: "0",
             width: toPx(20),
             height: toPx(20),
             "&::after, &::before": {
@@ -62,6 +64,9 @@ const styles: ComponentStyles<FormItemCheckboxClassNameContract, {}> = {
                 },
             },
         },
+    },
+    formItemCheckbox_softRemove: {
+        ...applySoftRemoveInput(),
     },
 };
 
