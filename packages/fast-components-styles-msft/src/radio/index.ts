@@ -13,7 +13,6 @@ import {
 import {
     disabledContrast,
     ensureNormalContrast,
-    hoverContrast,
     normalContrast,
 } from "../utilities/colors";
 import outlinePattern from "../patterns/outline";
@@ -32,11 +31,6 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
     );
     const direction: Direction = designSystem.direction;
     const radioColor: string = normalContrast(
-        designSystem.contrast,
-        foregroundColor,
-        backgroundColor
-    );
-    const radioHover: string = hoverContrast(
         designSystem.contrast,
         foregroundColor,
         backgroundColor

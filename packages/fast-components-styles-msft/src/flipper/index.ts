@@ -32,11 +32,7 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
         designSystem.backgroundColor
     );
 
-    const glyphColorHover: string = hoverContrast(
-        config.contrast,
-        foregroundColor,
-        backgroundColor
-    );
+    const glyphColorHover: string = hoverContrast(config.contrast, foregroundColor);
 
     return {
         flipper: {

@@ -14,21 +14,11 @@ import {
     disabledContrast,
     ensureForegroundNormal,
     foregroundNormal,
-    hoverContrast,
 } from "../utilities/colors";
 import { density } from "../utilities/density";
 import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
 import outlinePattern from "../patterns/outline";
 import typographyPattern from "../patterns/typography";
-
-function hoverColor(config: DesignSystem): string {
-    const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    return hoverContrast(
-        designSystem.contrast,
-        foregroundNormal(designSystem),
-        designSystem.backgroundColor
-    );
-}
 
 const styles: ComponentStyles<TextFieldClassNameContract, DesignSystem> = (
     config: DesignSystem
