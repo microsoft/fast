@@ -96,6 +96,7 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
             borderRadius: "2px",
             display: "flex",
             flexDirection: "row",
+            transition: "all 0.2s ease-in-out",
             "&:hover": {
                 borderColor: hoverColor(designSystem),
             },
@@ -125,7 +126,7 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
             padding: "0 16px",
             [applyLocalizedProperty("right", "left", direction)]: "0",
             top: "0",
-            transition: "color .1s, background-color .1s",
+            transition: "color .1s, background-color .1s, border-color 0.2s ease-in-out",
             flex: "0 0 auto",
             cursor: "pointer",
             "&:focus-visible": {
