@@ -191,7 +191,7 @@ describe("text-action", (): void => {
         ).toEqual("svg");
     });
 
-    test("should render a button only if a glyph and button are passed in the same (after) position", () => {
+    test("should render only a button if a glyph and button are passed in the same (after) position", () => {
         const handledProps: TextActionHandledProps = {
             managedClasses,
             button: (classname?: string, disabled?: boolean): React.ReactNode => {
@@ -234,7 +234,7 @@ describe("text-action", (): void => {
         ).toBe(true);
     });
 
-    test("should render a button only if a glyph and button are passed in the same (before) position", () => {
+    test("should render only a button if a glyph and button are passed in the same (before) position", () => {
         const handledProps: TextActionHandledProps = {
             managedClasses,
             buttonPosition: ButtonPosition.before,
