@@ -8,17 +8,22 @@ export interface TextActionClassNameContract {
     textAction: string;
 
     /**
+     * The disabled state
+     */
+    textAction__disabled: string;
+
+    /**
      * The button
      */
-    textAction_button?: string;
+    textAction_button: string;
 
     /**
      * The preceding glyph
      */
-    textAction_beforeGlyph?: string;
+    textAction_beforeGlyph: string;
 
     /**
      * The trailing glyph
      */
-    textAction_afterGlyph?: string;
+    textAction_afterGlyph: string;
 }
