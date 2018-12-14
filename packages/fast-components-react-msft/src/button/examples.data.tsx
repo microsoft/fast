@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { Button, ButtonAppearance, ButtonProps } from "./index";
 import { ButtonHandledProps as BaseButtonHandledProps } from "@microsoft/fast-components-react-base";

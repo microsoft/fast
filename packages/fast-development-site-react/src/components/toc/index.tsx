@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { DevSiteDesignSystem } from "../design-system";
 import manageJss, {
     ComponentStyles,

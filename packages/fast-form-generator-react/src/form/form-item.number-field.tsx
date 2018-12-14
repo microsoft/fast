@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import FormItemCommon from "./form-item";
 import { getStringValue } from "./form-item.utilities";
 import styles from "./form-item.number-field.style";

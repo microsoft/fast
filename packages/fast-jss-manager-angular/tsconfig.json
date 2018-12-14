@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "emitDecoratorMetadata": true,
+        "esModuleInterop": true,
         "experimentalDecorators": true,
         "moduleResolution": "node",
         "module": "ES6",

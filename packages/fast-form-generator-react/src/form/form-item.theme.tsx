@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { FormItemComponentMappingToProperyNamesProps } from "./form-item";
 import styles from "./form-item.theme.style";
 import { FormItemThemeClassNameContract } from "../class-name-contracts/";

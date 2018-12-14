@@ -1,5 +1,5 @@
 import { adjustContrast, contrast, ensureContrast } from "./contrast";
-import * as Chroma from "chroma-js";
+import Chroma from "chroma-js";
 
 const white: string = "#FFF";
 const black: string = "#000";

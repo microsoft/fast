@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as Adapter from "enzyme-adapter-react-16";
+import React from "react";
+import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import { ButtonHTMLTags } from "@microsoft/fast-components-react-base";
 import { ButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";

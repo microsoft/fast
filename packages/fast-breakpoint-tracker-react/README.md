@@ -21,7 +21,7 @@ BreakpointTracker.breakpoints = [0, 800, 1024, 1559];
 
 ## Usage
 ```jsx
-import * as React from "react";
+import React from "react";
 import BreakpointTracker from "@microsoft/fast-breakpoint-tracker-react";
 
 export interface AppProps {}

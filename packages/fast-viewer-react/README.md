@@ -10,8 +10,8 @@ This can be used to as a method for previewing a React component(s) or an entire
 An example of using one of the components from the `@microsoft/fast-viewer-msft` package:
 
 ```jsx
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import Viewer from "@microsoft/fast-viewer-msft";
 
 const root = document.createElement("div");
@@ -146,7 +146,7 @@ Using the `ViewerContent` on the route provided to the `Viewer` will allow for t
 
 Example component provided in the "/example-content" route for the `Viewer` impplementation example:
 ```tsx
-import * as React from "react";
+import React from "react";
 import { ViewerContent } from "@microsoft/fast-viewer-msft";
 import MyComponent from "./my-component";
 

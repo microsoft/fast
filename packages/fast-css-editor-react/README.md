@@ -9,7 +9,7 @@ A set of React components that allows the user to edit CSS properties.
 The default export implements all of the individual components to create a set of form elements that allow for editing of CSS values.
 
 ```jsx
-import * as React from "react";
+import React from "react";
 import CSSEditor from "@microsoft/fast-css-editor-react";
 
 export class Example extends React.Component {

@@ -9,7 +9,7 @@
 `manageJss` is a HOC that passes as props the generated classes from a given stylesheet. The generated classes are made available on the `managedClasses` prop of the rendered component.
 ```jsx
 // button.jsx
-import * as React from "react";
+import React from "react";
 
 class Button extends React.Component {
     render() {

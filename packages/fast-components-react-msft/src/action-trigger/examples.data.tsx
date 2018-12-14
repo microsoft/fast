@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ActionTrigger, ActionTriggerAppearance, ActionTriggerProps } from "./index";
 import schema from "./action-trigger.schema.json";
 import Documentation from "./.tmp/documentation";

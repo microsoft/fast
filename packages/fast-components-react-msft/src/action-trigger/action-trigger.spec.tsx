@@ -1,6 +1,6 @@
-import * as React from "react";
+import React from "react";
 import * as ShallowRenderer from "react-test-renderer/shallow";
-import * as Adapter from "enzyme-adapter-react-16/build";
+import Adapter from "enzyme-adapter-react-16/build";
 import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
 import MSFTActionTrigger, {
