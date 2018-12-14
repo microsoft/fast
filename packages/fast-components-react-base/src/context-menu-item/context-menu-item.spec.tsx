@@ -5,6 +5,7 @@ import ContextMenuItem, {
     ContextMenuItemRole,
     ContextMenuItemUnhandledProps,
 } from "./context-menu-item";
+import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 /*
  * Configure Enzyme
@@ -56,5 +57,32 @@ describe("context menu item", (): void => {
         const rendered: any = shallow(<ContextMenuItem disabled={true} />);
 
         expect(rendered.first().prop("aria-disabled")).toEqual(true);
+    });
+
+    test("should call a registered callback after a click event", (): void => {
+        const onInvoke: any = jest.fn();
+        const rendered: any = shallow(<ContextMenuItem onInvoke={onInvoke} />);
+
+        rendered.simulate("click");
+
+        expect(onInvoke).toHaveBeenCalledTimes(1);
+    });
+
+    test("should call a registered callback after spacebar is pressed", (): void => {
+        const onInvoke: any = jest.fn();
+        const rendered: any = shallow(<ContextMenuItem onInvoke={onInvoke} />);
+
+        rendered.simulate("keydown", { keyCode: KeyCodes.space });
+
+        expect(onInvoke).toHaveBeenCalledTimes(1);
+    });
+
+    test("should call a registered callback after enter key is pressed", (): void => {
+        const onInvoke: any = jest.fn();
+        const rendered: any = shallow(<ContextMenuItem onInvoke={onInvoke} />);
+
+        rendered.simulate("keydown", { keyCode: KeyCodes.enter });
+
+        expect(onInvoke).toHaveBeenCalledTimes(1);
     });
 });
