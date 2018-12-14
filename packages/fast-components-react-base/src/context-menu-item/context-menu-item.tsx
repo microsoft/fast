@@ -95,8 +95,7 @@ class ContextMenuItem extends Foundation<
             switch (e.keyCode) {
                 case KeyCodes.enter:
                 case KeyCodes.space:
-                    this.props.onInvoke(this.props);
-
+                    this.props.onInvoke(e, this.props);
                     break;
             }
         }
@@ -111,7 +110,7 @@ class ContextMenuItem extends Foundation<
         }
 
         if (typeof this.props.onInvoke === "function") {
-            this.props.onInvoke(this.props);
+            this.props.onInvoke(e, this.props);
         }
     };
 }

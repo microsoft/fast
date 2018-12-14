@@ -30,7 +30,10 @@ export interface ContextMenuItemHandledProps extends ContextMenuItemManagedClass
      * Callback for when an item is invoked
      * Returns the prop contract for the invoked context menu item
      */
-    onInvoke?: (props: ContextMenuItemProps) => void;
+    onInvoke?: (
+        e: React.SyntheticEvent<HTMLDivElement>,
+        props?: ContextMenuItemProps
+    ) => void;
 }
 
 export type ContextMenuItemProps = ContextMenuItemHandledProps &
