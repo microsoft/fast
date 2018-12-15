@@ -36,10 +36,7 @@ class TextAction extends Foundation<
         return (
             <div className={this.generateClassNames()}>
                 {this.getButton() && this.props.buttonPosition === ButtonPosition.before
-                    ? this.props.button(
-                          get(this.props, "managedClasses.textAction_button"),
-                          this.props.disabled
-                      )
+                    ? this.generateButton()
                     : null}
                 {this.generateBeforeGlyph()}
                 <TextField
@@ -50,10 +47,7 @@ class TextAction extends Foundation<
                 />
                 {this.generateAfterGlyph()}
                 {this.getButton() && this.props.buttonPosition === ButtonPosition.after
-                    ? this.props.button(
-                          get(this.props, "managedClasses.textAction_button"),
-                          this.props.disabled
-                      )
+                    ? this.generateButton()
                     : null}
             </div>
         );
@@ -80,6 +74,16 @@ class TextAction extends Foundation<
      */
     private getButton(): boolean {
         return typeof this.props.button === "function";
+    }
+
+    /**
+     * Generate button
+     */
+    private generateButton(): React.ReactNode {
+        return this.props.button(
+            get(this.props, "managedClasses.textAction_button"),
+            this.props.disabled
+        );
     }
 
     /**
