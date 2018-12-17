@@ -105,7 +105,6 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
             },
             "& $radio_input": {
                 ...outlinePattern.disabled,
-                "&:checked": {},
             },
             "& $radio_label": {
                 ...typographyPattern.disabled,

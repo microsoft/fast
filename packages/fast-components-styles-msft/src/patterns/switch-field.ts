@@ -17,6 +17,9 @@ export default {
                     designSystem.backgroundColor
                 );
             },
+            "@media (-ms-high-contrast:active)": {
+                backgroundColor: "ButtonHighlight",
+            },
         },
     },
     disabled: {
@@ -29,6 +32,9 @@ export default {
                     designSystem.foregroundColor,
                     designSystem.backgroundColor
                 );
+            },
+            "@media (-ms-high-contrast:active)": {
+                backgroundColor: "InactiveBorder",
             },
         },
     },

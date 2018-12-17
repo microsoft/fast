@@ -79,16 +79,6 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             borderRadius: "20px",
             appearance: "none",
             outline: "none",
-            "@media screen and (-ms-high-contrast:active)": {
-                "&::after, &:checked + span": {
-                    background: backgroundColor,
-                },
-            },
-            "@media screen and (-ms-high-contrast:black-on-white)": {
-                "&::after, &:checked + span": {
-                    background: foregroundColor,
-                },
-            },
             "&:hover": {
                 ...outlinePattern.hover,
             },
@@ -106,6 +96,9 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             },
             "& $toggle_stateIndicator": {
                 ...switchFieldPattern.disabled.stateIndicator,
+                "@media screen and (-ms-high-contrast:active)": {
+                    background: "ButtonText",
+                },
             },
             "&$toggle__checked": {
                 "& $toggle_input": {
