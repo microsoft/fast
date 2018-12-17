@@ -43,11 +43,7 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
             background: (config: DesignSystem): string => {
                 const designSystem: DesignSystem = withDesignSystemDefaults(config);
 
-                return hoverContrast(
-                    designSystem.contrast,
-                    designSystem.backgroundColor,
-                    designSystem.foregroundColor
-                );
+                return hoverContrast(designSystem.contrast, designSystem.backgroundColor);
             },
         },
     },

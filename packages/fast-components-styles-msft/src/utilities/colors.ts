@@ -117,13 +117,13 @@ export function disabledContrast(
 export function hoverContrast(
     contrastScale: number,
     operandColor: string,
-    referenceColor: string
+    /**
+     * @deprecated 3.4.0
+     * We only need one color to generate a hover-version of the color
+     */
+    referenceColor?: string
 ): string {
-    return adjustContrast(
-        scaleContrast(1, contrastScale) * -1,
-        operandColor,
-        referenceColor
-    );
+    return contrast(scaleContrast(1.32, contrastScale), operandColor, operandColor);
 }
 
 /**

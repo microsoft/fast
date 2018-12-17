@@ -124,8 +124,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
 
     const secondaryHoverBackgroundColor: string = hoverContrast(
         designSystem.contrast,
-        secondaryBackgroundColor,
-        secondaryForegroundColor
+        secondaryBackgroundColor
     );
     const secondaryFocusBorderColor: string = scaledEnsureNormalContrast(
         scaledEnsureNormalContrast(foregroundColor, backgroundColor),
@@ -161,8 +160,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
 
     const primaryHoverBackground: string = hoverContrast(
         designSystem.contrast,
-        primaryRestBackgroundColor,
-        color
+        primaryRestBackgroundColor
     );
     const primaryFocusBorderColor: string = scaledEnsureNormalContrast(
         scaledEnsureNormalContrast(foregroundColor, backgroundColor),
