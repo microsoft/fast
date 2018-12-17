@@ -8,7 +8,6 @@ import {
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
     Item,
-    TabConfig,
     TabsHandledProps,
     TabsManagedClasses,
     TabsProps,

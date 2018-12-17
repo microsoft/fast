@@ -5,16 +5,6 @@ import {
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { Orientation } from "@microsoft/fast-web-utilities";
 
-export interface TabConfig {
-    className: string;
-    key: string;
-    "aria-controls": string;
-    active: boolean;
-    onClick: (e: React.MouseEvent) => void;
-    onKeyDown: (e: React.KeyboardEvent) => void;
-    tabIndex: number;
-}
-
 export interface Item {
     tab: (className: string) => React.ReactNode;
     content: (className: string) => React.ReactNode;

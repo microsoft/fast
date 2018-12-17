@@ -7,7 +7,6 @@ import {
 import Tabs, {
     Item,
     Tab,
-    TabConfig,
     TabItemProps,
     TabManagedClasses,
     TabPanel,
