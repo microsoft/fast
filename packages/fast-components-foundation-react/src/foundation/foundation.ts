@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { get, isPlainObject, pick, set } from "lodash-es";
 import { FoundationProps } from "./foundation.props";
 

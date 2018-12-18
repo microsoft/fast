@@ -14,7 +14,7 @@
 
 ```jsx
 // button.jsx
-import * as React from "react";
+import React from "react";
 
 class Button extends React.Component {
     render() {

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import schema from "./listbox.schema.json";
 import Listbox, { ListboxManagedClasses, ListboxProps } from "./listbox";

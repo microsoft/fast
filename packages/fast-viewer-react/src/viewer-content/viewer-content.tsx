@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import BaseViewerContent from "./viewer-content.base";
 import {
     ViewerContentHandledProps as BaseViewerContentHandledProps,

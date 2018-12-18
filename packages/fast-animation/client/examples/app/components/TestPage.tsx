@@ -1,5 +1,5 @@
 /* tslint:disable:no-var-requires */
-import * as React from "react";
+import React from "react";
 const doSvg1: string = require("../assets/images/do-check.svg");
 const easingCurve: string = require("../assets/images/easing-curve.svg");
 const sass: string = require("../assets/styles/test-page.css");

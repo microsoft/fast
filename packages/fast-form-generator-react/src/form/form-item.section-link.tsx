@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import FormItemCommon from "./form-item";
 import styles from "./form-item.section-link.style";
 import { FormItemSectionLinkClassNameContract } from "../class-name-contracts";

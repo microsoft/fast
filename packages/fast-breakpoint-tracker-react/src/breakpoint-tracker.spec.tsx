@@ -1,6 +1,6 @@
-import * as React from "react";
+import React from "react";
 import { configure, mount } from "enzyme";
-import * as Adapter from "enzyme-adapter-react-16";
+import Adapter from "enzyme-adapter-react-16";
 import { Breakpoints, defaultBreakpoints } from "./breakpoints";
 import BreakpointTracker from "./breakpoint-tracker";
 
