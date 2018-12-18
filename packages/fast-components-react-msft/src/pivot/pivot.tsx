@@ -1,6 +1,6 @@
-import * as React from "react";
+import React from "react";
 import { get } from "lodash-es";
-import * as ReactDOM from "react-dom";
+import ReactDOM from "react-dom";
 import { canUseDOM } from "exenv-es6";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {

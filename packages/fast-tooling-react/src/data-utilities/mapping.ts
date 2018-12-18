@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { cloneDeep, get, set, uniqueId } from "lodash-es";
 import { Plugin, PluginProps } from "./plugin";
 import {

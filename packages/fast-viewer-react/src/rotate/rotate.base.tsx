@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { get } from "lodash-es";
 import { Orientation, RotateHandledProps, RotateUnhandledProps } from "./rotate.props";

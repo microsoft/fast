@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import schema from "./auto-suggest.schema.json";
 import { AutoSuggest, AutoSuggestProps } from "./index";

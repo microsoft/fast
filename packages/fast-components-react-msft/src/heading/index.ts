@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { FoundationProps } from "@microsoft/fast-components-foundation-react";
 import { HeadingClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import MSFTHeading, {

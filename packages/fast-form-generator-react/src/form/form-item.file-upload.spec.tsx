@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as Adapter from "enzyme-adapter-react-16";
+import React from "react";
+import Adapter from "enzyme-adapter-react-16";
 import { configure, mount } from "enzyme";
 import FileUpload from "./form-item.file-upload";
 import { FormItemComponentMappingToProperyNamesProps, mappingName } from "./form-item";
