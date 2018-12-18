@@ -23,7 +23,7 @@ abstract class FormItemBase<P, S> extends React.Component<P & FormItemCommon, S>
     }
 
     public handleSoftRemove = (): void => {
-        if (this.props.data) {
+        if (typeof this.props.data !== "undefined") {
             this.cache = this.props.data;
 
             return this.props.onChange(this.props.dataLocation, undefined);
