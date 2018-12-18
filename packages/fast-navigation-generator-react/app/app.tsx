@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Navigation from "../src";
 import childrenSchema from "./configs/children.schema.json";
 import { childOptions, children } from "./configs/example.data";

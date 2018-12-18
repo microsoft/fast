@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { Paragraph, ParagraphProps, ParagraphSize } from "./index";
 import schema from "./paragraph.schema.json";

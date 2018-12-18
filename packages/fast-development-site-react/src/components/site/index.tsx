@@ -1,5 +1,5 @@
+import React from "react";
 import SiteTitle from "./title";
-import * as React from "react";
 import manageJss, {
     ComponentStyles,
     DesignSystemProvider,

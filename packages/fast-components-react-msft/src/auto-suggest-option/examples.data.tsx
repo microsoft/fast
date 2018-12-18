@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { AutoSuggestOption, AutoSuggestOptionProps } from "./index";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import schema from "./auto-suggest-option.schema.json";

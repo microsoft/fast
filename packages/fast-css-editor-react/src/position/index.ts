@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { FoundationProps } from "@microsoft/fast-components-foundation-react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import Position from "./position";
