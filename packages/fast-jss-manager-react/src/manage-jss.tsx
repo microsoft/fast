@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ComponentStyles, ManagedClasses } from "@microsoft/fast-jss-manager";
 import { omit } from "lodash-es";
 import { Consumer } from "./context";

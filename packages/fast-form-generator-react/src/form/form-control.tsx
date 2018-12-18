@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import FormItemSectionLink from "./form-item.section-link";
 import FormItemNumberField from "./form-item.number-field";
 import FormItemArray from "./form-item.array";

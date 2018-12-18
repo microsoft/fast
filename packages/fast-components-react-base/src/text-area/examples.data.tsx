@@ -4,7 +4,7 @@ import TextArea, {
     TextAreaUnhandledProps,
 } from "./text-area";
 import schema from "./text-area.schema.json";
-import * as React from "react";
+import React from "react";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import BaseSelectDevice from "./select-device.base";
 import {
     SelectDeviceHandledProps as BaseSelectDeviceHandledProps,

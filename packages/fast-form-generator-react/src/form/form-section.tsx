@@ -1,5 +1,5 @@
 import styles from "./form-section.style";
-import * as React from "react";
+import React from "react";
 import FormCategory from "./form-category";
 import { get, uniqueId } from "lodash-es";
 import {

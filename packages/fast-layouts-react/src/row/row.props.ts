@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { RowClassNamesContract } from "./row";
 import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 
