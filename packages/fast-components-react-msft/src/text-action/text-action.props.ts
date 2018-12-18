@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {

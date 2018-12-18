@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import { Canvas } from "../src/canvas";
 import { Container } from "../src/container";

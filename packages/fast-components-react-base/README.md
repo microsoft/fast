@@ -13,8 +13,8 @@ Base components are the structural, semantic, and interactive core of a piece of
 An example of using one of the components from the `@microsoft/fast-components-react-base` package:
 
 ```tsx
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import { ClassNames, IButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { Button } from "@microsoft/fast-components-react-base";
 

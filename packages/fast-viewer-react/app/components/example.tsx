@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Foundation from "@microsoft/fast-components-foundation-react";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import manageJss, { ManagedClasses } from "@microsoft/fast-jss-manager-react";

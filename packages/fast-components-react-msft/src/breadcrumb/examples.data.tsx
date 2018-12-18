@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Breadcrumb, BreadcrumbHandledProps } from "./index";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import schema from "@microsoft/fast-components-react-base/dist/breadcrumb/breadcrumb.schema.json";

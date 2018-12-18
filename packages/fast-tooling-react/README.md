@@ -91,8 +91,8 @@ The `mapDataToComponent` function can be used to map data to a React component. 
 An example of mapping data to a component from the `@microsoft/fast-tooling-react` package:
 
 ```jsx
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import { Heading } from "@microsoft/fast-components-react-msft";
 import * as headingSchema from "@microsoft/fast-components-react-msft/dist/heading/heading.schema.json";
 import { mapDataToComponent } from "@microsoft/fast-tooling-react";
@@ -116,8 +116,8 @@ render();
 Using the `childOptions` argument allows the `mapDataToComponent` function to create nested structures. Child components will be identified by the provided `id` and the props will be applied to the appropriate component.
 
 ```jsx
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import { Dialog } from "@microsoft/fast-components-react-msft";
 import * as dialogSchema from "@microsoft/fast-components-react-base/dist/dialog/dialog.schema.json";
 import * as headingSchema from "@microsoft/fast-components-react-msft/dist/heading/heading.schema.json";
@@ -309,7 +309,7 @@ export class Example extends React.Component {
 Both the `dataLocation` and `onLocationUpdate` props are optional, including both of them will allow the component to be fully controlled.
 
 ```jsx
-import * as React from "react";
+import React from "react";
 import { Navigation } from "@microsoft/fast-tooling-react";
 import noChildrenSchema from "./no-children.schema.json";
 import childrenSchema from "./children.schema.json";

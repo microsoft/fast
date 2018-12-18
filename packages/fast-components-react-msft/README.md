@@ -11,8 +11,8 @@ A set of React components which implements the Microsoft styling.
 An example of using one of the components from the `@microsoft/fast-components-react-msft` package:
 
 ```tsx
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import { Button, ButtonAppearance } from "@microsoft/fast-components-react-msft";
 
 const root = document.createElement("div");

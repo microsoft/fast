@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { SelectOption, SelectOptionProps } from "./index";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import schema from "./select-option.schema.json";
