@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import componentDetailExampleFactory from "./component-detail-example-factory";
 import componentExampleFactory from "./component-example-factory";
 import componentDocumentationFactory from "./component-documentation-factory";

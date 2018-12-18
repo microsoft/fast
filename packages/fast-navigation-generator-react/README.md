@@ -15,7 +15,7 @@ The default export is the navigation component.
 Uncontrolled example:
 
 ```jsx
-import * as React from "react";
+import React from "react";
 import CSSEditor from "@microsoft/fast-navigation-generator-react";
 import noChildrenSchema from "./no-children.schema.json";
 import childrenSchema from "./children.schema.json";
@@ -66,7 +66,7 @@ Controlled example:
 Both the `dataLocation` and `onLocationUpdate` props are optional, including both of them will allow the component to be fully controlled.
 
 ```jsx
-import * as React from "react";
+import React from "react";
 import CSSEditor from "@microsoft/fast-navigation-generator-react";
 import noChildrenSchema from "./no-children.schema.json";
 import childrenSchema from "./children.schema.json";

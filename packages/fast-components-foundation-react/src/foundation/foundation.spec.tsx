@@ -1,8 +1,8 @@
 /* tslint:disable:max-classes-per-file */
 /* tslint:disable:no-string-literal */
-import * as React from "react";
+import React from "react";
 import Foundation, { HandledProps, ReferenceResolver } from "./foundation";
-import * as ReactTestUtils from "react-dom/test-utils";
+import ReactTestUtils from "react-dom/test-utils";
 import { has, merge } from "lodash-es";
 
 class GetRefTestComponent extends Foundation<{}, {}, {}> {

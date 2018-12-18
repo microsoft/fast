@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as Adapter from "enzyme-adapter-react-16";
+import React from "react";
+import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, render, shallow } from "enzyme";
 import Listbox, { ListboxUnhandledProps } from "./listbox";
 import ListboxItem from "../listbox-item";

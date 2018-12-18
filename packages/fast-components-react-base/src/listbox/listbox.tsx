@@ -1,4 +1,4 @@
-import * as ReactDOM from "react-dom";
+import ReactDOM from "react-dom";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { ListboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
@@ -6,7 +6,7 @@ import {
     ListboxProps,
     ListboxUnhandledProps,
 } from "./listbox.props";
-import * as React from "react";
+import React from "react";
 import { KeyCodes, startsWith } from "@microsoft/fast-web-utilities";
 import { get, inRange, isEqual } from "lodash-es";
 import { canUseDOM } from "exenv-es6";
