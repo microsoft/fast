@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { Radio, RadioProps } from "./index";
 import schema from "@microsoft/fast-components-react-base/dist/radio/radio.schema.json";

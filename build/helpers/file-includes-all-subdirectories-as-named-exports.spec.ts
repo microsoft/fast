@@ -1,4 +1,4 @@
-import * as path from "path";
+import path from "path";
 import { includesAllSubdirectoriesAsNamedExports } from "./file-includes-all-subdirectories-as-named-exports";
 
 describe("file-includes-all-subdirectories-as-named-exports.ts", (): void => {

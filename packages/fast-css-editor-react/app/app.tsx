@@ -1,6 +1,5 @@
-import * as React from "react";
+import React from "react";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
-
 import { editorComponents, updateCallbacks } from "./exports.constants";
 
 export interface AppState {

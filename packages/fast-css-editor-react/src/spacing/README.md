@@ -3,7 +3,7 @@ The `CSSSpacing` component shows the CSS spacing (margin and padding) value as f
 
 ## Usage
 ```jsx
-import * as React from "react";
+import React from "react";
 import { CSSSpacing } from "@microsoft/fast-css-editor-react";
 
 export class Example extends React.Component {

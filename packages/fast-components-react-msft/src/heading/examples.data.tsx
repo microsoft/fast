@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { Heading, HeadingProps, HeadingSize, HeadingTag } from "./index";
 import schema from "./heading.schema.json";

@@ -4,7 +4,7 @@
  * react contexts. If given a design-language, the JSSManager will make the design-language object available
  * to all JSS rules defined as a function
  */
-import * as React from "react";
+import React from "react";
 import * as propTypes from "prop-types";
 import { Consumer, Provider } from "./context";
 
