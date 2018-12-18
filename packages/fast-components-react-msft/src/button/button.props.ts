@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Subtract } from "utility-types";
 import {
     ButtonHandledProps as BaseButtonHandledProps,

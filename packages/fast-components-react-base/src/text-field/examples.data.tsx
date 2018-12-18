@@ -5,7 +5,7 @@ import TextField, {
     TextFieldUnhandledProps,
 } from "./text-field";
 import schema from "./text-field.schema.json";
-import * as React from "react";
+import React from "react";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 

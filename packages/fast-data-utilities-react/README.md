@@ -15,8 +15,8 @@ The `mapDataToComponent` function can be used to map data to a React component. 
 An example of mapping data to a component from the `@microsoft/fast-data-utilities-react` package:
 
 ```jsx
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import { Dialog } from "@microsoft/fast-components-react-msft";
 import * as dialogSchema from "@microsoft/fast-components-react-base/dist/dialog/dialog.schema.json";
 import * as headingSchema from "@microsoft/fast-components-react-msft/dist/heading/heading.schema.json";

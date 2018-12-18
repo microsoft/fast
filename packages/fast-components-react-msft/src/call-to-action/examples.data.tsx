@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { CallToAction, CallToActionAppearance, CallToActionProps } from "./index";
 import schema from "./call-to-action.schema.json";
 import Documentation from "./.tmp/documentation";

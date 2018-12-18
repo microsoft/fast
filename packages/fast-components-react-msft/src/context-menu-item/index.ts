@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ContextMenuItemRole } from "@microsoft/fast-components-react-base";
 import MSFTContextMenuItem, {
     ContextMenuItemHandledProps as MSFTContextMenuItemHandledProps,

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import BaseRotate from "./rotate.base";
 import {
     Orientation,

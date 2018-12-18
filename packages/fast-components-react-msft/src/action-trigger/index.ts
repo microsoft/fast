@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ActionTriggerClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import {

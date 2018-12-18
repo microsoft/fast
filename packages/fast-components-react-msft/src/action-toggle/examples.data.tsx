@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ActionToggle, ActionToggleAppearance, ActionToggleProps } from "./index";
 import schema from "./action-toggle.schema.json";
 import Documentation from "./.tmp/documentation";

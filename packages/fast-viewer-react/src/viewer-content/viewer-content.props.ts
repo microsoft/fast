@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ChildOptionItem } from "@microsoft/fast-data-utilities-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import styles from "./form-one-of-any-of.style";

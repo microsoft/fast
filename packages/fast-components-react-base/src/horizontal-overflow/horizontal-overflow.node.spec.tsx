@@ -3,9 +3,9 @@
  */
 import "jsdom-global/register";
 
-import * as React from "react";
-import * as ReactDOMServer from "react-dom/server";
-import * as Adapter from "enzyme-adapter-react-16";
+import React from "react";
+import ReactDOMServer from "react-dom/server";
+import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, ReactWrapper, shallow } from "enzyme";
 import HorizontalOverflow, {
     HorizontalOverflowClassNameContract,
