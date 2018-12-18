@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { throttle } from "lodash-es";
 import { Canvas } from "../canvas";
 import rafThrottle from "raf-throttle";

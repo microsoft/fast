@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { get, uniqueId } from "lodash-es";
 import { arrayMove, SortableContainer, SortableElement } from "react-sortable-hoc";
 import { SortableConfig, SortableListItem, sortingProps } from "./sorting";

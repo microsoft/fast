@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Card } from "./index";
 import { CardHandledProps, CardProps, CardTag, CardUnhandledProps } from "./index";
 import schema from "@microsoft/fast-components-react-base/dist/card/card.schema.json";
