@@ -9,7 +9,7 @@ This is a plugin for [markdown-it](https://github.com/markdown-it/markdown-it) a
 ## Usage
 
 ```js
-import * as MarkdownIt from "markdown-it";
+import MarkdownIt from "markdown-it";
 import FASTMarkdownIt from "@microsoft/fast-markdown-msft-react";
 
 const md = new MarkdownIt({

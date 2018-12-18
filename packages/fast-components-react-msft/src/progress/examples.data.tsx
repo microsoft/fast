@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 import { Progress, ProgressProps } from "./index";
 import schema from "@microsoft/fast-components-react-base/dist/progress/progress.schema.json";

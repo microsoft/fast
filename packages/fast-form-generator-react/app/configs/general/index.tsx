@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Array, { ArrayProps } from "../arrays";
 import Objects, { ObjectsProps } from "../objects";
 import Theme, { ThemeProps } from "../theme";

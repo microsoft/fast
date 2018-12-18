@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { omit } from "lodash-es";
 import Foundation, {
     FoundationProps,

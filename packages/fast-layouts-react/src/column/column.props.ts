@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { GridGutter } from "../grid/grid.props";
 import { ColumnClassNamesContract } from "./column";
 import { ManagedClasses } from "@microsoft/fast-jss-manager-react";

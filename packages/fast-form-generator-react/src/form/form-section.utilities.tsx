@@ -1,5 +1,5 @@
-import * as React from "react";
-import { cloneDeep, get, mergeWith, set, unset } from "lodash-es";
+import React from "react";
+import { cloneDeep, get, isEqual, mergeWith, set, uniqueId, unset } from "lodash-es";
 import { getExample } from "@microsoft/fast-permutator";
 import tv4 from "tv4";
 import {

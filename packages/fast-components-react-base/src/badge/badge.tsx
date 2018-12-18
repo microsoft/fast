@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { BadgeClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { BadgeHandledProps, BadgeUnhandledProps } from "./badge.props";

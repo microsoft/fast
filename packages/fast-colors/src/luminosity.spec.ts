@@ -1,5 +1,5 @@
 import { luminance, luminanceSwitch } from "./luminosity";
-import * as Chroma from "chroma-js";
+import Chroma from "chroma-js";
 
 describe("luminance", (): void => {
     test("should adjust a color to an approximate luminance value", (): void => {

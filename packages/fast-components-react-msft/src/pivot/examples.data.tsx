@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { Pivot, PivotHandledProps, PivotProps } from "./index";
 import Documentation from "./.tmp/documentation";

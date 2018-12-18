@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Badge, BadgeAppearance, BadgeProps, BadgeSize } from "./index";
 import schema from "./badge.schema.json";
 import Documentation from "./.tmp/documentation";
