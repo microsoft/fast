@@ -35,7 +35,8 @@ class TextAction extends Foundation<
     public render(): JSX.Element {
         return (
             <div className={this.generateClassNames()}>
-                {this.getButton() && this.props.buttonPosition === ButtonPosition.before
+                {this.buttonExists() &&
+                this.props.buttonPosition === ButtonPosition.before
                     ? this.generateButton()
                     : null}
                 {this.generateBeforeGlyph()}
@@ -46,7 +47,7 @@ class TextAction extends Foundation<
                     jssStyleSheet={textFieldOverrides}
                 />
                 {this.generateAfterGlyph()}
-                {this.getButton() && this.props.buttonPosition === ButtonPosition.after
+                {this.buttonExists() && this.props.buttonPosition === ButtonPosition.after
                     ? this.generateButton()
                     : null}
             </div>
@@ -72,7 +73,7 @@ class TextAction extends Foundation<
     /**
      * Returns truthy if button exist
      */
-    private getButton(): boolean {
+    private buttonExists(): boolean {
         return typeof this.props.button === "function";
     }
 
@@ -92,9 +93,9 @@ class TextAction extends Foundation<
     private generateAfterGlyph(): React.ReactNode {
         if (typeof this.props.afterGlyph === "function") {
             if (
-                (this.getButton() &&
+                (this.buttonExists() &&
                     this.props.buttonPosition !== ButtonPosition.after) ||
-                !this.getButton()
+                !this.buttonExists()
             ) {
                 return this.props.afterGlyph(
                     get(this.props, "managedClasses.textAction_afterGlyph")
@@ -109,9 +110,9 @@ class TextAction extends Foundation<
     private generateBeforeGlyph(): React.ReactNode {
         if (typeof this.props.beforeGlyph === "function") {
             if (
-                (this.getButton() &&
+                (this.buttonExists() &&
                     this.props.buttonPosition !== ButtonPosition.before) ||
-                !this.getButton()
+                !this.buttonExists()
             ) {
                 return this.props.beforeGlyph(
                     get(this.props, "managedClasses.textAction_beforeGlyph")

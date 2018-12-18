@@ -10,6 +10,7 @@ import {
     applyLocalizedProperty,
     contrast,
     Direction,
+    focusVisible,
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import {
@@ -23,6 +24,7 @@ import {
 } from "../utilities/colors";
 import { density } from "../utilities/density";
 import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
+import outlinePattern from "../patterns/outline";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
 export const textFieldOverrides: ComponentStyles<
@@ -36,7 +38,7 @@ export const textFieldOverrides: ComponentStyles<
         flex: "1 0 0",
         background: "transparent",
         "&:hover, &:focus, &:disabled": {
-            borderColor: "transparent",
+            border: "none",
             boxShadow: "none",
         },
     },
@@ -68,14 +70,7 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<TextActionClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    const backgroundColor: string = designSystem.backgroundColor;
     const direction: Direction = designSystem.direction;
-    const foregroundColor: string = ensureNormalContrast(
-        designSystem.contrast,
-        designSystem.foregroundColor,
-        designSystem.backgroundColor
-    );
-
     const glyphStyles: CSSRules<{}> = {
         height: "16px",
         width: "auto",
@@ -91,18 +86,18 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
             maxHeight: toPx(maxHeight),
             margin: `${density(designSystem.designUnit * 3)(designSystem)} 0`,
             minWidth: "92px",
-            border: `1px solid ${foregroundNormal(designSystem)}`,
+            ...outlinePattern.rest,
             background: ensuresBackgroundNormal,
-            borderRadius: "2px",
+            borderRadius: toPx(designSystem.cornerRadius),
             display: "flex",
             flexDirection: "row",
             transition: "all 0.2s ease-in-out",
             "&:hover": {
-                borderColor: hoverColor(designSystem),
+                ...outlinePattern.hover,
             },
             "&:focus-within": {
                 outline: "none",
-                boxShadow: `0 0 0 1px inset ${foregroundNormal(designSystem)}`,
+                ...outlinePattern.focus,
             },
         },
         textAction__disabled: {
@@ -129,9 +124,6 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
             transition: "color .1s, background-color .1s, border-color 0.2s ease-in-out",
             flex: "0 0 auto",
             cursor: "pointer",
-            "&:focus-visible": {
-                borderColor: "transparent",
-            },
         },
         textAction_beforeGlyph: {
             ...glyphStyles,
