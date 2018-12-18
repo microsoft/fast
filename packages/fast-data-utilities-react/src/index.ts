@@ -1,5 +1,9 @@
 import React from "react";
+<<<<<<< HEAD
 import { cloneDeep, get, isPlainObject, set, uniqueId } from "lodash-es";
+=======
+import { cloneDeep, get, isPlainObject, set } from "lodash-es";
+>>>>>>> fix: update to use esModuleInterop in the TypeScript configuration files (#1211)
 import * as tv4 from "tv4";
 import Plugin, { PluginProps } from "./plugin";
 
