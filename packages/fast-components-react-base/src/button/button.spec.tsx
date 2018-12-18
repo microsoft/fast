@@ -90,4 +90,75 @@ describe("button", (): void => {
         expect(rendered.prop("children")).not.toBe(undefined);
         expect(rendered.prop("children")).toEqual("Children");
     });
+
+    // parametrized button class name tests
+    [
+        {
+            name: "should correctly assign className from input props",
+            buttonHandledProps: {} as ButtonHandledProps,
+            className: "class-name",
+            expectedClassName: "class-name",
+        },
+        {
+            name:
+                "should correctly assign className when is disabled and root class name is empty",
+            buttonHandledProps: { disabled: true } as ButtonHandledProps,
+            className: "",
+            expectedClassName: null,
+        },
+        {
+            name: "should correctly assign className when is disabled",
+            buttonHandledProps: { disabled: true } as ButtonHandledProps,
+            className: "class-name",
+            expectedClassName: "class-name",
+        },
+        {
+            name:
+                "should correctly assign className when is disabled (name not present) and managed class given",
+            buttonHandledProps: {
+                disabled: true,
+                managedClasses: {
+                    button: "button-class",
+                },
+            } as ButtonHandledProps,
+            className: "",
+            expectedClassName: "button-class",
+        },
+        {
+            name:
+                "should correctly assign className when is disabled (name present) and managed class given",
+            buttonHandledProps: {
+                disabled: true,
+                managedClasses: {
+                    button: "button-class",
+                    button__disabled: "disabled",
+                },
+            } as ButtonHandledProps,
+            className: "",
+            expectedClassName: "button-class disabled",
+        },
+        {
+            name:
+                "should correctly assign className when is disabled (name present), managed and root class name present",
+            buttonHandledProps: {
+                disabled: true,
+                managedClasses: {
+                    button: "button-name",
+                    button__disabled: "disabled",
+                },
+            } as ButtonHandledProps,
+            className: "root-name",
+            expectedClassName: "button-name disabled root-name",
+        },
+    ].forEach(({ name, buttonHandledProps, className, expectedClassName }: any) => {
+        test(name, () => {
+            const buttonProps: ButtonProps = { ...buttonHandledProps };
+
+            const rendered: any = shallow(
+                <Button {...buttonProps} className={className} />
+            );
+
+            expect(rendered.prop("className")).toEqual(expectedClassName);
+        });
+    });
 });

@@ -47,12 +47,13 @@ class Tab extends Foundation<TabHandledProps, TabUnhandledProps, {}> {
     protected generateClassNames(): string {
         return this.props.active
             ? super.generateClassNames(
-                  `${get(this.props, "managedClasses.tab")} ${get(
+                  `${get(this.props, "managedClasses.tab", "")} ${get(
                       this.props,
-                      "managedClasses.tab__active"
+                      "managedClasses.tab__active",
+                      ""
                   )}`
               )
-            : super.generateClassNames(get(this.props, "managedClasses.tab"));
+            : super.generateClassNames(get(this.props, "managedClasses.tab", ""));
     }
 }
 

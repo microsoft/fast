@@ -53,12 +53,13 @@ class CallToAction extends Foundation<
      * Generates class names
      */
     protected generateClassNames(): string {
-        let classNames: string = get(this.props, "managedClasses.callToAction");
+        let classNames: string = get(this.props, "managedClasses.callToAction", "");
 
         if (this.props.disabled) {
             classNames = `${classNames} ${get(
                 this.props,
-                "managedClasses.callToAction__disabled"
+                "managedClasses.callToAction__disabled",
+                ""
             )}`;
         }
 
@@ -66,19 +67,22 @@ class CallToAction extends Foundation<
             case CallToActionAppearance.primary:
                 classNames = `${classNames} ${get(
                     this.props,
-                    "managedClasses.callToAction__primary"
+                    "managedClasses.callToAction__primary",
+                    ""
                 )}`;
                 break;
             case CallToActionAppearance.lightweight:
                 classNames = `${classNames} ${get(
                     this.props,
-                    "managedClasses.callToAction__lightweight"
+                    "managedClasses.callToAction__lightweight",
+                    ""
                 )}`;
                 break;
             case CallToActionAppearance.justified:
                 classNames = `${classNames} ${get(
                     this.props,
-                    "managedClasses.callToAction__justified"
+                    "managedClasses.callToAction__justified",
+                    ""
                 )}`;
                 break;
         }

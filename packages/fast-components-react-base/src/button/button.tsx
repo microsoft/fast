@@ -45,12 +45,13 @@ class Button extends Foundation<ButtonHandledProps, ButtonUnhandledProps, {}> {
      * Generates class names
      */
     protected generateClassNames(): string {
-        let classNames: string = get(this.props, "managedClasses.button");
+        let classNames: string = get(this.props, "managedClasses.button", "");
 
         if (this.props.disabled) {
             classNames = `${classNames} ${get(
                 this.props,
-                "managedClasses.button__disabled"
+                "managedClasses.button__disabled",
+                ""
             )}`;
         }
 

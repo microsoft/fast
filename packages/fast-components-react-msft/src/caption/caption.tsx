@@ -45,9 +45,10 @@ class Caption extends Foundation<CaptionHandledProps, CaptionUnhandledProps, {}>
     }
 
     protected generateClassNames(): string {
-        const classes: string = `${get(this.props, `managedClasses.caption`)} ${get(
+        const classes: string = `${get(this.props, `managedClasses.caption`, "")} ${get(
             this.props,
-            `managedClasses.caption__${this.props.size}`
+            `managedClasses.caption__${this.props.size}`,
+            ""
         )}`;
 
         return super.generateClassNames(classes);

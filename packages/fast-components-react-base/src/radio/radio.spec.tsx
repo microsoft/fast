@@ -2,7 +2,12 @@ import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import examples from "./examples.data";
-import Radio, { RadioClassNameContract, RadioSlot } from "./radio";
+import Radio, {
+    RadioClassNameContract,
+    RadioHandledProps,
+    RadioProps,
+    RadioSlot,
+} from "./radio";
 import Label from "../label";
 
 /**
@@ -138,5 +143,74 @@ describe("radio", (): void => {
         uncontrolled.find(inputSelector).simulate("change");
 
         expect(onChange).toHaveBeenCalledTimes(2);
+    });
+
+    // parametrized radio class name tests
+    [
+        {
+            name: "should correctly assign className from input props",
+            radioHandledProps: {} as RadioHandledProps,
+            className: "class-name",
+            expectedClassName: "class-name",
+        },
+        {
+            name:
+                "should correctly assign className when is disabled and root class name is empty",
+            radioHandledProps: { disabled: true } as RadioHandledProps,
+            className: "",
+            expectedClassName: null,
+        },
+        {
+            name: "should correctly assign className when is disabled",
+            radioHandledProps: { disabled: true } as RadioHandledProps,
+            className: "class-name",
+            expectedClassName: "class-name",
+        },
+        {
+            name:
+                "should correctly assign className when is disabled (name not present) and managed class given",
+            radioHandledProps: {
+                disabled: true,
+                managedClasses: {
+                    radio: "radio-class",
+                },
+            } as RadioHandledProps,
+            className: "",
+            expectedClassName: "radio-class",
+        },
+        {
+            name:
+                "should correctly assign className when is disabled (name present) and managed class given",
+            radioHandledProps: {
+                disabled: true,
+                managedClasses: {
+                    radio: "radio-class",
+                    radio__disabled: "disabled",
+                },
+            } as RadioHandledProps,
+            className: "",
+            expectedClassName: "radio-class disabled",
+        },
+        {
+            name:
+                "should correctly assign className when is disabled (name present), managed and root class name present",
+            radioHandledProps: {
+                disabled: true,
+                managedClasses: {
+                    radio: "radio-name",
+                    radio__disabled: "disabled",
+                },
+            } as RadioHandledProps,
+            className: "root-name",
+            expectedClassName: "radio-name disabled root-name",
+        },
+    ].forEach(({ name, radioHandledProps, className, expectedClassName }: any) => {
+        test(name, () => {
+            const props: RadioProps = { ...radioHandledProps };
+
+            const rendered: any = shallow(<Radio {...props} className={className} />);
+
+            expect(rendered.prop("className")).toEqual(expectedClassName);
+        });
     });
 });

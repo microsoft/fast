@@ -130,4 +130,42 @@ describe("image", (): void => {
 
         expect(rendered.prop("sizes")).toBe("100vw");
     });
+
+    // parametrized image class name tests
+    [
+        {
+            name: "should correctly assign empty className",
+            imageHandledProps: {} as ImageHandledProps,
+            className: "",
+            expectedClassName: null,
+        },
+        {
+            name: "should correctly assign className with root className",
+            imageHandledProps: {} as ImageHandledProps,
+            className: "class-name",
+            expectedClassName: "class-name",
+        },
+        {
+            name: "should correctly assign className with root className and input props",
+            imageHandledProps: {
+                managedClasses: {
+                    image: "image-class",
+                    image__picture: "picture-class",
+                },
+            } as ImageHandledProps,
+            className: "class-name",
+            expectedClassName: "image-class picture-class class-name",
+        },
+    ].forEach(({ name, imageHandledProps, className, expectedClassName }: any) => {
+        test(name, () => {
+            const props: ImageProps = { ...imageHandledProps };
+            const rendered: any = shallow(
+                <Image {...props} className={className}>
+                    <source slot={ImageSlot.source} />
+                </Image>
+            );
+
+            expect(rendered.prop("className")).toEqual(expectedClassName);
+        });
+    });
 });

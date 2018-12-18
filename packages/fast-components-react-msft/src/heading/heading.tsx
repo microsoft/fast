@@ -59,11 +59,11 @@ class Heading extends Foundation<HeadingHandledProps, HeadingUnhandledProps, {}>
      */
     protected generateClassNames(): string {
         const classes: string = this.props.size
-            ? get(this.props, `managedClasses.heading__${this.props.size}`)
-            : get(this.props, "managedClasses.heading__1");
+            ? get(this.props, `managedClasses.heading__${this.props.size}`, "")
+            : get(this.props, "managedClasses.heading__1", "");
 
         return super.generateClassNames(
-            `${get(this.props, "managedClasses.heading")} ${classes}`
+            `${get(this.props, "managedClasses.heading", "")} ${classes}`
         );
     }
 }

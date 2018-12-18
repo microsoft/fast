@@ -49,12 +49,13 @@ class ActionTrigger extends Foundation<
      * Generates class names
      */
     protected generateClassNames(): string {
-        let classNames: string = get(this.props, "managedClasses.actionTrigger") || "";
+        let classNames: string = get(this.props, "managedClasses.actionTrigger", "");
 
         if (this.props.disabled) {
             classNames = `${classNames} ${get(
                 this.props,
-                "managedClasses.actionTrigger__disabled"
+                "managedClasses.actionTrigger__disabled",
+                ""
             )}`;
         }
 
@@ -62,25 +63,29 @@ class ActionTrigger extends Foundation<
             case ActionTriggerAppearance.primary:
                 classNames = `${classNames} ${get(
                     this.props,
-                    "managedClasses.actionTrigger__primary"
+                    "managedClasses.actionTrigger__primary",
+                    ""
                 )}`;
                 break;
             case ActionTriggerAppearance.lightweight:
                 classNames = `${classNames} ${get(
                     this.props,
-                    "managedClasses.actionTrigger__lightweight"
+                    "managedClasses.actionTrigger__lightweight",
+                    ""
                 )}`;
                 break;
             case ActionTriggerAppearance.justified:
                 classNames = `${classNames} ${get(
                     this.props,
-                    "managedClasses.actionTrigger__justified"
+                    "managedClasses.actionTrigger__justified",
+                    ""
                 )}`;
                 break;
             case ActionTriggerAppearance.outline:
                 classNames = `${classNames} ${get(
                     this.props,
-                    "managedClasses.actionTrigger__outline"
+                    "managedClasses.actionTrigger__outline",
+                    ""
                 )}`;
                 break;
         }

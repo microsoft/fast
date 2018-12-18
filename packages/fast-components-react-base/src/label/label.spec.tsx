@@ -97,4 +97,73 @@ describe("label", (): void => {
 
         expect(renderedHidden.hasClass("label-class label-hidden-class")).toBe(true);
     });
+
+    // parametrized label class name tests
+    [
+        {
+            name: "should correctly assign className from input props",
+            labelHandledProps: {} as LabelHandledProps,
+            className: "class-name",
+            expectedClassName: "class-name",
+        },
+        {
+            name:
+                "should correctly assign className when is hidden and root class name is empty",
+            labelHandledProps: { hidden: true } as LabelHandledProps,
+            className: "",
+            expectedClassName: null,
+        },
+        {
+            name: "should correctly assign className when is hidden",
+            labelHandledProps: { hidden: true } as LabelHandledProps,
+            className: "class-name",
+            expectedClassName: "class-name",
+        },
+        {
+            name:
+                "should correctly assign className when is hidden (name not present) and managed class given",
+            labelHandledProps: {
+                hidden: true,
+                managedClasses: {
+                    label: "label-class",
+                },
+            } as LabelHandledProps,
+            className: "",
+            expectedClassName: "label-class",
+        },
+        {
+            name:
+                "should correctly assign className when is hidden (name present) and managed class given",
+            labelHandledProps: {
+                hidden: true,
+                managedClasses: {
+                    label: "label-class",
+                    label__hidden: "hidden",
+                },
+            } as LabelHandledProps,
+            className: "",
+            expectedClassName: "label-class hidden",
+        },
+        {
+            name:
+                "should correctly assign className when is hidden (name present), managed and root class name present",
+            labelHandledProps: {
+                hidden: true,
+                managedClasses: {
+                    label: "label-name",
+                    label__hidden: "hidden",
+                },
+            } as LabelHandledProps,
+            className: "root-name",
+            expectedClassName: "label-name hidden root-name",
+        },
+    ].forEach(({ name, labelHandledProps, className, expectedClassName }: any) => {
+        test(name, () => {
+            const props: LabelProps = { ...labelHandledProps };
+
+            const rendered: any = shallow(<Label {...props} className={className} />);
+
+            expect(rendered.prop("className")).toEqual(expectedClassName);
+        });
+    });
 });

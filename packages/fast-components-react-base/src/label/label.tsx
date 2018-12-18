@@ -53,10 +53,14 @@ class Label extends Foundation<LabelHandledProps, LabelUnhandledProps, {}> {
      * Generates class names based on props
      */
     protected generateClassNames(): string {
-        let className: string = get(this.props, "managedClasses.label");
+        let className: string = get(this.props, "managedClasses.label", "");
 
         if (this.props.hidden) {
-            className = `${className} ${get(this.props, "managedClasses.label__hidden")}`;
+            className = `${className} ${get(
+                this.props,
+                "managedClasses.label__hidden",
+                ""
+            )}`;
         }
 
         return super.generateClassNames(className);
