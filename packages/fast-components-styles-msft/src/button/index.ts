@@ -204,6 +204,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
     return {
         button: {
             ...applyTypeRampConfig("t7"),
+            fontFamily: "inherit",
             boxSizing: "border-box",
             maxWidth: "374px",
             minWidth: "120px",
