@@ -1,5 +1,5 @@
 import FormItemChildren from "./form-item.children";
-import * as React from "react";
+import React from "react";
 import { ChildOptionItem } from "@microsoft/fast-data-utilities-react";
 import {
     FormCategories,

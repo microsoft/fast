@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { FormItemComponentMappingToProperyNamesProps, mappingName } from "./form-item";
 import FormItemAlignHorizontal from "./form-item.align-horizontal";
 import FormItemAlignVertical from "./form-item.align-vertical";

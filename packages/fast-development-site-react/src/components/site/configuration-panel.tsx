@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
 import { applyScrollbarStyle } from "../../utilities";

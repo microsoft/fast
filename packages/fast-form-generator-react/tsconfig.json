@@ -9,6 +9,7 @@
         "target": "ES6",
         "baseUrl": ".",
         "declaration": true,
+        "esModuleInterop": true,
         "jsx": "react",
         "outDir": "./dist",
         "resolveJsonModule": true

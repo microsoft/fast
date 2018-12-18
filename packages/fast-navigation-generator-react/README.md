@@ -12,7 +12,7 @@ The default export is the navigation component.
 Example:
 
 ```jsx
-import * as React from "react";
+import React from "react";
 import CSSEditor from "@microsoft/fast-navigation-generator-react";
 import noChildrenSchema from "./no-children.schema.json";
 import childrenSchema from "./children.schema.json";

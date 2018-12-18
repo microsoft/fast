@@ -15,14 +15,14 @@ import General from "../../app/configs/general";
 import Textarea from "../../app/configs/textarea";
 import OneOf from "../../app/configs/one-of";
 
-import * as alignHorizontalSchema from "../../app/configs/align-horizontal/align-horizontal.schema.json";
-import * as arraysSchema from "../../app/configs/arrays/arrays.schema.json";
-import * as generalSchema from "../../app/configs/general/general.schema.json";
-import * as objectsSchema from "../../app/configs/objects/objects.schema.json";
-import * as oneOfSchema from "../../app/configs/one-of/one-of.schema.json";
-import * as anyOfSchema from "../../app/configs/any-of/any-of.schema.json";
-import * as childrenSchema from "../../app/configs/children/children.schema.json";
-import * as textFieldSchema from "../../app/configs/textarea/textarea.schema.json";
+import alignHorizontalSchema from "../../app/configs/align-horizontal/align-horizontal.schema.json";
+import arraysSchema from "../../app/configs/arrays/arrays.schema.json";
+import generalSchema from "../../app/configs/general/general.schema.json";
+import objectsSchema from "../../app/configs/objects/objects.schema.json";
+import oneOfSchema from "../../app/configs/one-of/one-of.schema.json";
+import anyOfSchema from "../../app/configs/any-of/any-of.schema.json";
+import childrenSchema from "../../app/configs/children/children.schema.json";
+import textFieldSchema from "../../app/configs/textarea/textarea.schema.json";
 import { reactChildrenStringSchema } from "./form-item.children.text";
 
 /**

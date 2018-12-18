@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import { Route, Switch } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 import BasicPage from "./pages/basic-page";

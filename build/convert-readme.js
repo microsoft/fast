@@ -15,7 +15,7 @@ const srcDir = argv.src || "./src/**/README.md";
  */
 const startFile = `// Generated file from ../../build
 /* tslint:disable */
-import * as React from "react";
+import React from "react";
 export default class Documentation extends React.Component<{}, {}> {
     public render(): JSX.Element {
         return (

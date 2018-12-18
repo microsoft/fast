@@ -1,5 +1,5 @@
 import FormSection from "./form-section";
-import * as React from "react";
+import React from "react";
 import {
     BreadcrumbItemEventHandler,
     FormProps,

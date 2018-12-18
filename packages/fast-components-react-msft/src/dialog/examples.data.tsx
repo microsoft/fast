@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { Dialog, DialogProps } from "./index";
 import schema from "@microsoft/fast-components-react-base/dist/dialog/dialog.schema.json";

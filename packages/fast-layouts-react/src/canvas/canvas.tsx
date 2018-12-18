@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { CanvasHandledProps, CanvasProps, CanvasUnhandledProps } from "./canvas.props";
 import manageJss, {
     ComponentStyles,

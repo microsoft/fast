@@ -1,5 +1,5 @@
 import { generateExampleData } from "./form-section.utilities";
-import * as React from "react";
+import React from "react";
 import { canUseDOM } from "exenv-es6";
 import { arrayMove, SortableContainer, SortableElement } from "react-sortable-hoc";
 import { get } from "lodash-es";

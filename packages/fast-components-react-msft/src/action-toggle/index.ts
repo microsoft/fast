@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ActionToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ActionToggleStyles, DesignSystem } from "@microsoft/fast-components-styles-msft";

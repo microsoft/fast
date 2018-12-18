@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ViewerContent } from "../../src";
 import components from "../components";
 
