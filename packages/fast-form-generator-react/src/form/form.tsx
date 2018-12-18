@@ -1,5 +1,6 @@
 import { ChildComponent } from "./form-item.children";
 import FormSection from "./form-section";
+import React from "react";
 import {
     BreadcrumbItemEventHandler,
     FormLocation,
@@ -16,7 +17,6 @@ import {
     NavigationItem,
 } from "./form.utilities";
 import { cloneDeep, get, set, unset } from "lodash-es";
-import * as React from "react";
 import styles from "./form.style";
 import { FormClassNameContract } from "../class-name-contracts/";
 import { mapSchemaLocationFromDataLocation } from "@microsoft/fast-data-utilities-react";

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Framework } from "./dev-tools";
 import { FormChildOption } from "./";
 import { get, isEmpty, isObject, set, uniqueId } from "lodash-es";

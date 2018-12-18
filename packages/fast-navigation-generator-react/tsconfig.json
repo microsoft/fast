@@ -7,7 +7,8 @@
         "declaration": true,
         "jsx": "react",
         "outDir": "./dist",
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
     },
     "include": [
         "src/**/*"

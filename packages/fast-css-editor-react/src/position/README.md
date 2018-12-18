@@ -3,7 +3,7 @@ The `CSSPosition` component shows the CSS position value as a select, it will al
 
 ## Usage
 ```jsx
-import * as React from "react";
+import React from "react";
 import { CSSPosition } from "@microsoft/fast-css-editor-react";
 
 export class Example extends React.Component {

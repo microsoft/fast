@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { cloneDeep, get, isPlainObject, set } from "lodash-es";
 import * as tv4 from "tv4";
 import Plugin, { PluginProps } from "./plugin";

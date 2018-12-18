@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { jss, stylesheetManager, stylesheetRegistry } from "./jss";
 import SheetManager from "./sheet-manager";
 import { DesignSystem } from "./design-system-provider";

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { TextAction, TextActionProps } from "./index";
 import schema from "./text-action.schema.json";
 import Documentation from "./.tmp/documentation";

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import SiteTitleBrand from "./title-brand";
 import manageJss, {
     ComponentStyles,

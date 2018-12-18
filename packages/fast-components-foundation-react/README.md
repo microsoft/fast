@@ -11,8 +11,8 @@ The foundation component for FAST component packages in React. The default expor
 ### Basic implementation
 
 ```jsx
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import Foundation from "@microsoft/fast-components-foundation-react";
 
 class MyComponent extends Foundation {

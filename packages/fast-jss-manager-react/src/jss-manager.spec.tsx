@@ -1,9 +1,9 @@
-import * as React from "react";
+import React from "react";
 import { JSSManager, mergeClassNames } from "./jss-manager";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import * as ShallowRenderer from "react-test-renderer/shallow";
 import { configure, mount, ReactWrapper, render, shallow } from "enzyme";
-import * as Adapter from "enzyme-adapter-react-16";
+import Adapter from "enzyme-adapter-react-16";
 import { jss, stylesheetRegistry } from "./jss";
 import { DesignSystemProvider } from "./design-system-provider";
 import { values } from "lodash-es";

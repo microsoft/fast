@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ComponentViewSlot, SiteCategoryItem } from "../";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 

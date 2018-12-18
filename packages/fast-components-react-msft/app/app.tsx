@@ -25,7 +25,7 @@ import {
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { glyphBuildingblocks } from "@microsoft/fast-glyphs-msft";
-import * as React from "react";
+import React from "react";
 import { Direction } from "@microsoft/fast-application-utilities";
 import AdditionalPropsPlugin from "./utilities/additional-props.plugin";
 import * as examples from "./examples";
