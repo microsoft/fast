@@ -182,7 +182,7 @@ class FormSection extends React.Component<
         location: string,
         property: any,
         formItemProps: FormItemCommon
-    ): any {
+    ): JSX.Element | JSX.Element[] {
         // check to see if this is a root level object
         // if so, use it to generate the form and do not generate a link
         if (location === "") {
