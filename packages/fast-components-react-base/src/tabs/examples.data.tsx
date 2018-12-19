@@ -365,6 +365,17 @@ const examples: ComponentFactoryExample<TabsHandledProps> = {
              * @Deprecated 3.4.0
              */
             ...tabsManagedClasses,
+            activeId: "tab04",
+            label: "A set of example text content",
+            orientation: Orientation.horizontal,
+            children: exampleChildren1,
+        },
+        {
+            /**
+             * @Deprecated 3.4.0
+             */
+            ...tabsManagedClasses,
+            activeId: "tab03",
             label: "A set of example text content",
             orientation: Orientation.vertical,
             children: exampleChildren2,
