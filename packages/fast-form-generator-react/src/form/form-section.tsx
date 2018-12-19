@@ -13,6 +13,7 @@ import {
 import FormItemCommon, { mappingName } from "./form-item";
 import FormCategory from "./form-category";
 import FormItemCheckbox from "./form-item.checkbox";
+import FormItemSectionLink from "./form-item.section-link";
 import FormItemTextarea from "./form-item.textarea";
 import FormItemNumberField from "./form-item.number-field";
 import FormItemSelect from "./form-item.select";
@@ -168,11 +169,42 @@ class FormSection extends React.Component<
         schemaLocation: string,
         dataLocation: string
     ): any => {
-        return this.props.location && this.props.location.onChange
+        this.props.location && this.props.location.onChange
             ? this.props.location.onChange(schemaLocation, dataLocation)
             : this.handleUpdateSection(schemaLocation, dataLocation);
     };
 
+    /**
+     * Generates a section link for properties
+     * that are objects
+     */
+    private generateFormItemSectionLink(
+        location: string,
+        property: any,
+        formItemProps: FormItemCommon
+    ): any {
+        // check to see if this is a root level object
+        // if so, use it to generate the form and do not generate a link
+        if (location === "") {
+            return this.generateFormObject(
+                property,
+                property.required || undefined,
+                property.not ? property.not.required : undefined
+            );
+        }
+
+        return (
+            <FormItemSectionLink
+                {...formItemProps}
+                onUpdateSection={this.handleSectionLinkClick}
+                schemaLocation={location}
+            />
+        );
+    }
+
+    /**
+     * Generate a textarea
+     */
     private generateFormItemTextarea(
         location: string,
         formItemProps: FormItemCommon
@@ -292,13 +324,10 @@ class FormSection extends React.Component<
                     />
                 );
             default:
-                // check to see if this is a root level object
-                // if so, use it to generate the form
-                return this.generateFormObject(
-                    property,
+                return this.generateFormItemSectionLink(
                     location,
-                    property.required || undefined,
-                    property.not ? property.not.required : undefined
+                    property,
+                    formItemProps
                 );
         }
     }
@@ -422,7 +451,6 @@ class FormSection extends React.Component<
      */
     private generateFormObject(
         property: any,
-        location: string,
         required: string[],
         not?: string[]
     ): JSX.Element[] {
@@ -473,105 +501,6 @@ class FormSection extends React.Component<
         }
 
         return null;
-    }
-
-    /**
-     * Generates toggles for each optional complex item
-     * which includes objects, anyOf/oneOf
-     */
-    private generateOptionToggles(): JSX.Element[] {
-        const optionToggles: OptionalToggle[] = getOptionalToggles({
-            schema: this.state.schema,
-            onChange: this.props.onChange,
-            dataLocation: this.props.dataLocation,
-            data: this.props.data,
-            dataCache: this.props.dataCache,
-        });
-
-        return optionToggles.map(
-            (property: any, index: number): JSX.Element => {
-                return (
-                    <div
-                        className={this.props.managedClasses.formSection_toggleWrapper}
-                        key={index}
-                    >
-                        <label htmlFor={property.id}>
-                            {property.label || this.props.untitled}
-                            <button
-                                className={this.props.managedClasses.formSection_toggle}
-                                role="switch"
-                                aria-pressed={property.selected}
-                                onClick={handleToggleClick(
-                                    property.selected,
-                                    property.id,
-                                    property.updateRequested
-                                )}
-                            >
-                                <span />
-                            </button>
-                            <span>
-                                {property.selected
-                                    ? property.selectedString
-                                    : property.unselectedString}
-                            </span>
-                        </label>
-                        <input
-                            id={property.id}
-                            type="hidden"
-                            aria-hidden="true"
-                            value={
-                                property.selected
-                                    ? property.selectedString
-                                    : property.unselectedString
-                            }
-                        />
-                    </div>
-                );
-            }
-        );
-    }
-
-    /**
-     * Generates the links to a new section to be activated
-     */
-    private generateSectionLinks(): JSX.Element {
-        const sections: any[] = [];
-
-        this.state.sections.map((property: any, index: number) => {
-            if (typeof property.active !== "undefined" || property.required) {
-                sections.push(
-                    <li
-                        onClick={this.handleSectionLinkClick.bind(
-                            this,
-                            property.schemaLocation,
-                            property.dataLocation
-                        )}
-                        key={uniqueId()}
-                    >
-                        <a
-                            onClick={this.handleSectionLinkClick.bind(
-                                this,
-                                property.schemaLocation,
-                                property.dataLocation
-                            )}
-                        >
-                            {property.text}
-                        </a>
-                    </li>
-                );
-            }
-        });
-
-        if (sections.length < 1) {
-            return;
-        }
-
-        return (
-            <div className={this.props.managedClasses.formSection}>
-                <h3 className={this.props.managedClasses.formSection_header}>Sections</h3>
-                <ul className={this.props.managedClasses.formSection_menu}>{sections}</ul>
-            </div>
-        );
     }
 
     /**
@@ -640,8 +569,6 @@ class FormSection extends React.Component<
                     {this.generateAnyOfOneOfSelect()}
                     {this.generateFormElement(this.state.schema, 0, "", true, "")}
                 </div>
-                {this.generateOptionToggles()}
-                {this.generateSectionLinks()}
             </div>
         );
     }
