@@ -495,6 +495,42 @@ export function applyAddItemStyle(): CSSRules<{}> {
     };
 }
 
+export function applyRemoveItemStyle(): CSSRules<{}> {
+    return {
+        position: "absolute",
+        right: "0",
+        top: "0",
+        appearance: "none",
+        background: "none",
+        border: "none",
+        margin: "8px",
+        padding: "0",
+        width: "20px",
+        height: "20px",
+        zIndex: "1",
+        borderRadius: "2px",
+        "&:focus": {
+            ...insetStrongBoxShadow(colors.pink),
+            outline: "none",
+        },
+        "&::before, &::after": {
+            position: "absolute",
+            content: "''",
+            top: "5px",
+            left: "9px",
+            width: "1px",
+            height: "10px",
+            background: "#000000",
+        },
+        "&::before": {
+            transform: "rotate(45deg)",
+        },
+        "&::after": {
+            transform: "rotate(-45deg)",
+        },
+    };
+}
+
 export function applyControl(): CSSRules<{}> {
     return {
         display: "inline-block",

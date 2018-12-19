@@ -514,7 +514,7 @@ class FormSection extends React.Component<
                         this.props.schema.reactProperties[reactProperty].type ===
                         "children"
                 )
-                .map((reactProperty: string) => {
+                .map((reactProperty: string, index: number) => {
                     let childOptions: ChildOptionItem[] = [];
 
                     if (this.props.schema.reactProperties[reactProperty].ids) {
@@ -532,7 +532,9 @@ class FormSection extends React.Component<
                     return (
                         <FormItemChildren
                             key={reactProperty}
-                            title={
+                            required={false}
+                            index={index}
+                            label={
                                 this.props.schema.reactProperties[reactProperty].title ||
                                 this.props.untitled
                             }
