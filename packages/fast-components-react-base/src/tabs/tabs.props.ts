@@ -5,7 +5,7 @@ import {
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { Orientation } from "@microsoft/fast-web-utilities";
 
-export interface Item {
+export interface TabsItem {
     tab: (className: string) => React.ReactNode;
     content: (className: string) => React.ReactNode;
     id: string;
@@ -58,7 +58,7 @@ export interface TabsHandledProps extends TabsManagedClasses {
     /**
      * The tabs' tab item
      */
-    items?: Item[];
+    items?: TabsItem[];
 }
 
 export type TabsProps = TabsHandledProps & TabsUnhandledProps;

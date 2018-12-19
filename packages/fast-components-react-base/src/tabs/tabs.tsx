@@ -7,8 +7,8 @@ import {
 } from "@microsoft/fast-components-class-name-contracts-base";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
-    Item,
     TabsHandledProps,
+    TabsItem,
     TabsManagedClasses,
     TabsProps,
     TabsUnhandledProps,
@@ -175,7 +175,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
         return React.Children.map(this.tabItems(), this.renderTabItem);
     }
 
-    private setActive(tabItem: Item, index: number): boolean {
+    private setActive(tabItem: TabsItem, index: number): boolean {
         if (this.state.activeId) {
             return this.state.activeId === tabItem.id;
         } else {
@@ -185,7 +185,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
 
     private tabItems(): React.ReactNode {
         if (this.props.items) {
-            return this.props.items.map((tabItem: Item, index: number) => {
+            return this.props.items.map((tabItem: TabsItem, index: number) => {
                 return (
                     <TabItem key={tabItem.id} id={tabItem.id} slot={TabsSlot.tabItem}>
                         <Tab

@@ -5,13 +5,13 @@ import {
     TabsClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import Tabs, {
-    Item,
     Tab,
     TabItemProps,
     TabManagedClasses,
     TabPanel,
     TabPanelManagedClasses,
     TabsHandledProps,
+    TabsItem,
     TabsManagedClasses,
     TabsSlot,
     TabsUnhandledProps,
@@ -49,7 +49,7 @@ const tabPanelManagedClasses: TabPanelManagedClasses = {
 };
 
 /**
- * Example tab elements 1
+ * @Deprecated 3.4.0
  */
 function getTabElementOne(): any {
     return {
@@ -62,6 +62,9 @@ function getTabElementOne(): any {
     };
 }
 
+/**
+ * @Deprecated 3.4.0
+ */
 function getTabPanelOne(): any {
     return {
         id: tabPanelSchema.id,
@@ -73,6 +76,9 @@ function getTabPanelOne(): any {
     };
 }
 
+/**
+ * @Deprecated 3.4.0
+ */
 function getTabItemOne(): any {
     return {
         id: tabItemSchema.id,
@@ -85,7 +91,7 @@ function getTabItemOne(): any {
 }
 
 /**
- * Example tab elements 2
+ * @Deprecated 3.4.0
  */
 function getTabElementTwo(): any {
     return {
@@ -98,6 +104,9 @@ function getTabElementTwo(): any {
     };
 }
 
+/**
+ * @Deprecated 3.4.0
+ */
 function getTabPanelTwo(): any {
     return {
         id: tabPanelSchema.id,
@@ -109,6 +118,9 @@ function getTabPanelTwo(): any {
     };
 }
 
+/**
+ * @Deprecated 3.4.0
+ */
 function getTabItemTwo(): any {
     return {
         id: tabItemSchema.id,
@@ -121,7 +133,7 @@ function getTabItemTwo(): any {
 }
 
 /**
- * Example tab elements 3
+ * @Deprecated 3.4.0
  */
 function getTabElementThree(): any {
     return {
@@ -134,6 +146,9 @@ function getTabElementThree(): any {
     };
 }
 
+/**
+ * @Deprecated 3.4.0
+ */
 function getTabPanelThree(): any {
     return {
         id: tabPanelSchema.id,
@@ -145,6 +160,9 @@ function getTabPanelThree(): any {
     };
 }
 
+/**
+ * @Deprecated 3.4.0
+ */
 function getTabItemThree(): any {
     return {
         id: tabItemSchema.id,
@@ -157,7 +175,7 @@ function getTabItemThree(): any {
 }
 
 /**
- * Example tab elements 4
+ * @Deprecated 3.4.0
  */
 function getTabElementFour(): any {
     return {
@@ -170,6 +188,9 @@ function getTabElementFour(): any {
     };
 }
 
+/**
+ * @Deprecated 3.4.0
+ */
 function getTabPanelFour(): any {
     return {
         id: tabPanelSchema.id,
@@ -181,6 +202,9 @@ function getTabPanelFour(): any {
     };
 }
 
+/**
+ * @Deprecated 3.4.0
+ */
 function getTabItemFour(): any {
     return {
         id: tabItemSchema.id,
@@ -192,6 +216,38 @@ function getTabItemFour(): any {
     };
 }
 
+/**
+ * @Deprecated 3.4.0
+ */
+const detailChildren: any[] = [getTabItemOne(), getTabItemTwo(), getTabItemThree()];
+
+/**
+ * @Deprecated 3.4.0
+ */
+const exampleChildren1: any[] = [
+    {
+        id: tabItemSchema.id,
+        props: {
+            slot: TabsSlot.tabItem,
+            id: "tab01",
+            children: {
+                id: tabSchema.id,
+                props: {
+                    slot: TabsSlot.tab,
+                    ...tabManagedClasses,
+                    children: "tab one - missing panel",
+                },
+            },
+        },
+    },
+    getTabItemTwo(),
+    getTabItemThree(),
+    getTabItemFour(),
+];
+
+/**
+ * @Deprecated 3.4.0
+ */
 const exampleChildren2: JSX.Element[] = [
     getTabItemOne(),
     {
@@ -212,8 +268,14 @@ const exampleChildren2: JSX.Element[] = [
     getTabItemThree(),
 ];
 
+/**
+ * @Deprecated 3.4.0
+ */
 const exampleChildren3: JSX.Element[] = [];
 
+/**
+ * @Deprecated 3.4.0
+ */
 const exampleChildren4: any[] = [
     {
         id: tabItemSchema.id,
@@ -236,41 +298,41 @@ function renderTabContent(tabContent: string): (className?: string) => React.Rea
     );
 }
 
-const tabItem1: Item = {
+const tabsItem1: TabsItem = {
     tab: renderTab("tab one"),
     content: renderTabContent("tab one content"),
     id: "tab01",
 };
 
-const tabItem2: Item = {
+const tabsItem2: TabsItem = {
     tab: renderTab("tab two"),
     content: renderTabContent("tab two content"),
     id: "tab02",
 };
 
-const tabItem3: Item = {
+const tabsItem3: TabsItem = {
     tab: renderTab("tab three"),
     content: renderTabContent("tab three content"),
     id: "tab03",
 };
 
-const tabItem4: Item = {
+const tabsItem4: TabsItem = {
     tab: renderTab("tab four"),
     content: renderTabContent("tab four content"),
     id: "tab04",
 };
 
-const detailTabItem: Item[] = [tabItem1, tabItem2, tabItem3];
+const detailTabItem: TabsItem[] = [tabsItem1, tabsItem2, tabsItem3];
 
-const exampleTabItem1: Item[] = [
+const exampleTabItem1: TabsItem[] = [
     {
         tab: renderTab(""),
         content: renderTabContent(""),
         id: "tab01",
     },
-    tabItem2,
-    tabItem3,
-    tabItem4,
+    tabsItem2,
+    tabsItem3,
+    tabsItem4,
 ];
 
 const examples: ComponentFactoryExample<TabsHandledProps> = {

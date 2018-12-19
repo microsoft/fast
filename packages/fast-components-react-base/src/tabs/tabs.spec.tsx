@@ -10,11 +10,11 @@ import {
     TabsClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import Tabs, {
-    Item,
     Tab,
     TabItem,
     TabPanel,
     TabsHandledProps,
+    TabsItem,
     TabsManagedClasses,
     TabsProps,
     TabsSlot,
@@ -1129,24 +1129,24 @@ describe("tabs", (): void => {
     ): () => React.ReactNode {
         return (): React.ReactNode => <div className={className}>{tabContent}</div>;
     }
-    const tabItem1: Item = {
+    const tabItem1: TabsItem = {
         tab: renderTab("tab one"),
         content: renderTabContent("tab one content"),
         id: id0,
     };
 
-    const tabItem2: Item = {
+    const tabItem2: TabsItem = {
         tab: renderTab("tab two"),
         content: renderTabContent("tab two content"),
         id: id1,
     };
 
-    const tabItem3: Item = {
+    const tabItem3: TabsItem = {
         tab: renderTab("tab three"),
         content: renderTabContent("tab three content"),
         id: id2,
     };
-    const detailTabItemData: Item[] = [tabItem1, tabItem2, tabItem3];
+    const detailTabItemData: TabsItem[] = [tabItem1, tabItem2, tabItem3];
 
     test("should correctly render tabitems when given items", () => {
         const renderedWithChildren: any = shallow(
