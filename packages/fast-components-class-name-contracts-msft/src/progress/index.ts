@@ -35,17 +35,17 @@ export interface ProgressClassNameContract extends BaseProgressClassNameContract
     progress_dot__2?: string;
 
     /**
-     * The indeterminate progress indicator 3 modifier
+     * @Deprecated 3.4.0
      */
     progress_dot__3?: string;
 
     /**
-     * The indeterminate progress indicator 4 modifier
+     * @Deprecated 3.4.0
      */
     progress_dot__4?: string;
 
     /**
-     * The indeterminate progress indicator 5 modifier
+     * @Deprecated 3.4.0
      */
     progress_dot__5?: string;
 }

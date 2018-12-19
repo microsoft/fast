@@ -13,7 +13,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = (
 ): ComponentStyleSheet<ProgressClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const brandColor: string = ensureBrandNormal(config);
-    const determinateBackgroundColor: string = largeContrast(
+    const backgroundColor: string = largeContrast(
         designSystem.contrast,
         designSystem.backgroundColor,
         brandColor
@@ -29,7 +29,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = (
         },
         progress_valueIndicator: {
             background: brandColor,
-            borderRadius: "2px",
+            borderRadius: "100px",
             height: "100%",
             "@media (-ms-high-contrast:active)": {
                 background: "ButtonText",
@@ -40,12 +40,15 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = (
             display: "flex",
             alignItems: "center",
             width: "100%",
+            overflow: "hidden",
+            borderRadius: "100px",
+            height: toPx(designSystem.designUnit),
+            background: backgroundColor,
+            maskImage: "-webkit-radial-gradient(white, black)",
         },
         progress_indicator__determinate: {
-            background: determinateBackgroundColor,
             height: toPx(designSystem.designUnit),
             borderRadius: "2px",
-
             "@media (-ms-high-contrast:active)": {
                 background: "ButtonShadow",
             },
@@ -53,71 +56,58 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = (
         progress_dot: {
             position: "absolute",
             opacity: "0",
-            width: "100%",
-            height: "5px",
-            borderRadius: "50%",
-            animation: "dots 4s infinite",
-            "&::after": {
-                content: "''",
-                position: "absolute",
-                display: "inline-block",
-                background: brandColor,
-                width: toPx(designSystem.designUnit),
-                height: toPx(designSystem.designUnit),
-                borderRadius: "50%",
-
-                "@media (-ms-high-contrast:active)": {
-                    background: "ButtonShadow",
-                    opacity: "1 !important",
-                },
+            height: "100%",
+            backgroundColor: brandColor,
+            borderRadius: "100px",
+            animationTimingFunction: "cubic-bezier(0.4, 0.0, 0.6, 1.0)",
+            "@media (-ms-high-contrast:active)": {
+                background: "ButtonShadow",
+                opacity: "1 !important",
             },
         },
         progress_dot__1: {
-            animationDelay: "0.25s",
-            left: "-20px",
+            width: "40%",
+            transform: "translateX(-100%)",
+            animation: "indeterminate-1 2s infinite",
         },
         progress_dot__2: {
-            animationDelay: "0.2s",
-            left: "-10px",
+            width: "60%",
+            transform: "translateX(-150%)",
+            animation: "indeterminate-2 2s infinite",
         },
-        progress_dot__3: {
-            animationDelay: "0.15s",
-            left: "0px",
-        },
-        progress_dot__4: {
-            animationDelay: "0.1s",
-            left: "10px",
-        },
-        progress_dot__5: {
-            animationDelay: " 0.05s",
-            left: "20px",
-        },
-        "@keyframes dots": {
-            "0%": {},
-            "20%": {
-                transform: "translateX(0)",
-                animationTimingFunction: "ease-out",
+        "@keyframes indeterminate-1": {
+            "0%": {
+                opacity: "1",
+                transform: "translateX(-100%)",
+            },
+            "70%": {
+                opacity: "1",
+                transform: "translateX(300%)",
+            },
+            "70.01%": {
                 opacity: "0",
             },
-            "25%": {
-                opacity: "1",
+            "100%": {
+                opacity: "0",
+                transform: "translateX(300%)",
             },
-            "35%": {
-                transform: "translateX(45%)",
-                animationTimingFunction: "linear",
+        },
+        "@keyframes indeterminate-2": {
+            "0%": {
+                opacity: "0",
+                transform: "translateX(-150%)",
             },
-            "65%": {
-                transform: "translateX(55%)",
-                animationTimingFunction: "ease-out",
-            },
-            "75%": {
-                opacity: "1",
-            },
-            "80%": {
-                transform: "translateX(100%)",
+            "29.99%": {
                 opacity: "0",
             },
-            "100%": {},
+            "30%": {
+                opacity: "1",
+                transform: "translateX(-150%)",
+            },
+            "100%": {
+                transform: "translateX(166.66%)",
+                opacity: "1",
+            },
         },
     };
 };
