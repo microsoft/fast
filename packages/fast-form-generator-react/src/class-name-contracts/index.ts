@@ -25,6 +25,9 @@ export { FormItemNumberFieldClassNameContract };
 import FormSectionClassNameContract from "./form-section.class-name-contract";
 export { FormSectionClassNameContract };
 
+import FormItemSectionLinkClassNameContract from "./form-item.section-link.class-name-contract";
+export { FormItemSectionLinkClassNameContract };
+
 import FormItemSelectClassNameContract from "./form-item.select.class-name-contract";
 export { FormItemSelectClassNameContract };
 
