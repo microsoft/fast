@@ -16,8 +16,6 @@ Teams spend significant time building parts of the design system (colors, variab
 ## Packages
 [Lerna](https://github.com/lerna/lerna#independent-mode---independent) is used to organize and manage this mono repository. Most of these packages are published to NPM. Users can choose à la carte which utility service to use in their development efforts.
 
-[Continue on Wiki...](https://github.com/Microsoft/fast-dna/wiki/Packages)
-
 ## Browser support
 Cross browser testing based on web browser rendering engines.
 
@@ -26,7 +24,7 @@ Cross browser testing based on web browser rendering engines.
 [![Build Status](https://saucelabs.com/buildstatus/FAST-DNA)](https://saucelabs.com/beta/builds/33e17283a9fb447ab220a8e00abe8f26)
 
 ## Documentation
-Checkout the [developer documentation](https://microsoft.github.io/fast-dna) for guidance on getting started, contributing, consumption, quality, testing, help, and community policies.
+Checkout the [developer documentation](https://microsoft.github.io/fast-dna/docs/readme) for guidance on getting started, contributing, consumption, quality, testing, help, and community policies.
 
 ## Contact
 * Join the community [on Discord](https://discord.gg/FcSNfg4)
