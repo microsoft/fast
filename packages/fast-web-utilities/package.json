@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-web-utilities",
   "description": "FAST web utilities",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -77,7 +77,7 @@
     "typescript": "^3.0.1"
   },
   "peerDependencies": {
-    "lodash-es": "^4.17.10",
-    "exenv-es6": "^1.0.0"
+    "exenv-es6": "^1.0.0",
+    "lodash-es": "^4.17.10"
   }
 }

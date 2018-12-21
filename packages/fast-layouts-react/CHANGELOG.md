@@ -3,121 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [3.1.7](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@3.1.6...@microsoft/fast-layouts-react@3.1.7) (2018-12-03)
+<a name="3.1.8"></a>
+## [3.1.8](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@3.1.7...@microsoft/fast-layouts-react@3.1.8) (2018-12-21)
 
 
 ### Bug Fixes
 
-* updating typings to fix errors caused by [@types](https://github.com/types)/react update and TypeScript ([#1179](https://github.com/Microsoft/fast-dna/issues/1179)) ([230e03a](https://github.com/Microsoft/fast-dna/commit/230e03a))
-
-
-
-
-
-## [3.1.6](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@3.1.5...@microsoft/fast-layouts-react@3.1.6) (2018-11-29)
-
-**Note:** Version bump only for package @microsoft/fast-layouts-react
-
-
-
-
-
-## [3.1.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@3.1.4...@microsoft/fast-layouts-react@3.1.5) (2018-11-21)
-
-**Note:** Version bump only for package @microsoft/fast-layouts-react
-
-
-
-
-
-## [3.1.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@3.1.3...@microsoft/fast-layouts-react@3.1.4) (2018-11-20)
-
-**Note:** Version bump only for package @microsoft/fast-layouts-react
-
-
-
-
-
-## [3.1.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@3.1.2...@microsoft/fast-layouts-react@3.1.3) (2018-11-14)
-
-**Note:** Version bump only for package @microsoft/fast-layouts-react
-
-
-
-
-
-## [3.1.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@3.1.1...@microsoft/fast-layouts-react@3.1.2) (2018-11-09)
-
-**Note:** Version bump only for package @microsoft/fast-layouts-react
-
-
-
-
-
-## [3.1.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@3.1.0...@microsoft/fast-layouts-react@3.1.1) (2018-11-07)
-
-**Note:** Version bump only for package @microsoft/fast-layouts-react
-
-
-
-
-
-# [3.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@3.0.2...@microsoft/fast-layouts-react@3.1.0) (2018-11-05)
-
-
-### Features
-
-* performance updates to JSS Manager ([#1110](https://github.com/Microsoft/fast-dna/issues/1110)) ([db4b753](https://github.com/Microsoft/fast-dna/commit/db4b753))
-
-
-
-
-
-## [3.0.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@3.0.1...@microsoft/fast-layouts-react@3.0.2) (2018-10-27)
-
-
-### Bug Fixes
-
-* corrects typings and exports for all of fast-layouts-react ([#1043](https://github.com/Microsoft/fast-dna/issues/1043)) ([a92ed4c](https://github.com/Microsoft/fast-dna/commit/a92ed4c))
-
-
-
-
-
-## [3.0.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@3.0.0...@microsoft/fast-layouts-react@3.0.1) (2018-10-09)
-
-
-### Bug Fixes
-
-* update peer dependencies to match expected versions ([#1009](https://github.com/Microsoft/fast-dna/issues/1009)) ([23997a3](https://github.com/Microsoft/fast-dna/commit/23997a3))
-
-
-
-
-
-# [3.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@2.2.3...@microsoft/fast-layouts-react@3.0.0) (2018-10-06)
-
-
-### Bug Fixes
-
-* allow nested at rules in styles without needing to define it in the class name contract ([#985](https://github.com/Microsoft/fast-dna/issues/985)) ([6479d4c](https://github.com/Microsoft/fast-dna/commit/6479d4c))
-* move foundation component into a new package and implement it in component and layout libraries ([#979](https://github.com/Microsoft/fast-dna/issues/979)) ([acae283](https://github.com/Microsoft/fast-dna/commit/acae283))
-
-
-### chore
-
-* remove the 'I' from interfaces ([#997](https://github.com/Microsoft/fast-dna/issues/997)) ([d924df8](https://github.com/Microsoft/fast-dna/commit/d924df8))
-
-
-### Features
-
-* update class-name contracts to be entirely optional ([#959](https://github.com/Microsoft/fast-dna/issues/959)) ([58e0421](https://github.com/Microsoft/fast-dna/commit/58e0421))
-* update JSSManager context API ([#993](https://github.com/Microsoft/fast-dna/issues/993)) ([2114213](https://github.com/Microsoft/fast-dna/commit/2114213))
-
-
-### BREAKING CHANGES
-
-* Interfaces have been renamed to remove the "I".
+* add comma so style deceleration is correct and add default columnCount ([#1200](https://github.com/Microsoft/fast-dna/issues/1200)) ([7b78937](https://github.com/Microsoft/fast-dna/commit/7b78937))
 
 
 

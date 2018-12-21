@@ -3,83 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [3.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@3.1.2...@microsoft/fast-components-class-name-contracts-msft@3.2.0) (2018-12-03)
-
-
-### Features
-
-* add action trigger component ([#1138](https://github.com/Microsoft/fast-dna/issues/1138)) ([4d21c42](https://github.com/Microsoft/fast-dna/commit/4d21c42))
-
-
-
-
-
-## [3.1.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@3.1.1...@microsoft/fast-components-class-name-contracts-msft@3.1.2) (2018-11-29)
+<a name="3.2.1"></a>
+## [3.2.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@3.2.0...@microsoft/fast-components-class-name-contracts-msft@3.2.1) (2018-12-21)
 
 **Note:** Version bump only for package @microsoft/fast-components-class-name-contracts-msft
-
-
-
-
-
-## [3.1.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@3.1.0...@microsoft/fast-components-class-name-contracts-msft@3.1.1) (2018-11-07)
-
-**Note:** Version bump only for package @microsoft/fast-components-class-name-contracts-msft
-
-
-
-
-
-# [3.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@3.0.2...@microsoft/fast-components-class-name-contracts-msft@3.1.0) (2018-11-05)
-
-
-### Features
-
-* add context menu ([#1080](https://github.com/Microsoft/fast-dna/issues/1080)) ([e0106c4](https://github.com/Microsoft/fast-dna/commit/e0106c4))
-
-
-
-
-
-## [3.0.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@3.0.1...@microsoft/fast-components-class-name-contracts-msft@3.0.2) (2018-10-27)
-
-**Note:** Version bump only for package @microsoft/fast-components-class-name-contracts-msft
-
-
-
-
-
-## [3.0.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@3.0.0...@microsoft/fast-components-class-name-contracts-msft@3.0.1) (2018-10-09)
-
-**Note:** Version bump only for package @microsoft/fast-components-class-name-contracts-msft
-
-
-
-
-
-# [3.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@2.3.0...@microsoft/fast-components-class-name-contracts-msft@3.0.0) (2018-10-06)
-
-
-### Bug Fixes
-
-* allow nested at rules in styles without needing to define it in the class name contract ([#985](https://github.com/Microsoft/fast-dna/issues/985)) ([6479d4c](https://github.com/Microsoft/fast-dna/commit/6479d4c))
-* correct and standardize component interfaces across react ([#978](https://github.com/Microsoft/fast-dna/issues/978)) ([b1b6ae1](https://github.com/Microsoft/fast-dna/commit/b1b6ae1))
-
-
-### chore
-
-* remove the 'I' from interfaces ([#997](https://github.com/Microsoft/fast-dna/issues/997)) ([d924df8](https://github.com/Microsoft/fast-dna/commit/d924df8))
-
-
-### Features
-
-* **class names:** update all class names across base and MSFT to align with naming standards ([#893](https://github.com/Microsoft/fast-dna/issues/893)) ([de974ab](https://github.com/Microsoft/fast-dna/commit/de974ab))
-* update class-name contracts to be entirely optional ([#959](https://github.com/Microsoft/fast-dna/issues/959)) ([58e0421](https://github.com/Microsoft/fast-dna/commit/58e0421))
-
-
-### BREAKING CHANGES
-
-* Interfaces have been renamed to remove the "I".
 
 
 

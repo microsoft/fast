@@ -3,126 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [3.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.3.0...@microsoft/fast-components-styles-msft@3.4.0) (2018-12-03)
-
-
-### Features
-
-* add action trigger component ([#1138](https://github.com/Microsoft/fast-dna/issues/1138)) ([4d21c42](https://github.com/Microsoft/fast-dna/commit/4d21c42))
-
-
-
-
-
-# [3.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.2.3...@microsoft/fast-components-styles-msft@3.3.0) (2018-11-29)
+<a name="3.4.1"></a>
+## [3.4.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.4.0...@microsoft/fast-components-styles-msft@3.4.1) (2018-12-21)
 
 
 ### Bug Fixes
 
-* update context-menu-item to use applyTypeRampConfig function instead of deprecated applyType ([#1170](https://github.com/Microsoft/fast-dna/issues/1170)) ([51c57b4](https://github.com/Microsoft/fast-dna/commit/51c57b4))
-
-
-### Features
-
-* create breadcrumb as a new component ([#1125](https://github.com/Microsoft/fast-dna/issues/1125)) ([7882bf7](https://github.com/Microsoft/fast-dna/commit/7882bf7))
-* update button colors and toggle focus state ([#1152](https://github.com/Microsoft/fast-dna/issues/1152)) ([f6147a1](https://github.com/Microsoft/fast-dna/commit/f6147a1))
-
-
-
-
-
-## [3.2.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.2.2...@microsoft/fast-components-styles-msft@3.2.3) (2018-11-21)
-
-
-### Bug Fixes
-
-* style change targeting :link and :visited rather than href to work in… ([#1154](https://github.com/Microsoft/fast-dna/issues/1154)) ([8129d52](https://github.com/Microsoft/fast-dna/commit/8129d52))
-
-
-
-
-
-## [3.2.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.2.1...@microsoft/fast-components-styles-msft@3.2.2) (2018-11-20)
-
-**Note:** Version bump only for package @microsoft/fast-components-styles-msft
-
-
-
-
-
-## [3.2.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.2.0...@microsoft/fast-components-styles-msft@3.2.1) (2018-11-07)
-
-**Note:** Version bump only for package @microsoft/fast-components-styles-msft
-
-
-
-
-
-# [3.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.1.0...@microsoft/fast-components-styles-msft@3.2.0) (2018-11-05)
-
-
-### Features
-
-* add context menu ([#1080](https://github.com/Microsoft/fast-dna/issues/1080)) ([e0106c4](https://github.com/Microsoft/fast-dna/commit/e0106c4))
-
-
-
-
-
-# [3.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.0.1...@microsoft/fast-components-styles-msft@3.1.0) (2018-10-27)
-
-
-### Bug Fixes
-
-* align checkbox and radio spacing and ensure examples are aligned ([#1092](https://github.com/Microsoft/fast-dna/issues/1092)) ([92bd613](https://github.com/Microsoft/fast-dna/commit/92bd613))
-* ensure that elevation shadow values which are not whole numbers are rounded to the nearest tenth ([#1094](https://github.com/Microsoft/fast-dna/issues/1094)) ([d9483b4](https://github.com/Microsoft/fast-dna/commit/d9483b4))
-* remove external margin, padding, and fix RTL micro-interaction on MSFT call to action ([#1064](https://github.com/Microsoft/fast-dna/issues/1064)) ([da5eee7](https://github.com/Microsoft/fast-dna/commit/da5eee7))
-
-
-### Features
-
-* add radio component ([#884](https://github.com/Microsoft/fast-dna/issues/884)) ([f3cf735](https://github.com/Microsoft/fast-dna/commit/f3cf735))
-* deprecate responsive type ramp and update ramp to even values ([#1084](https://github.com/Microsoft/fast-dna/issues/1084)) ([c6b2f4e](https://github.com/Microsoft/fast-dna/commit/c6b2f4e))
-
-
-
-
-
-## [3.0.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.0.0...@microsoft/fast-components-styles-msft@3.0.1) (2018-10-09)
-
-
-### Bug Fixes
-
-* update peer dependencies to match expected versions ([#1009](https://github.com/Microsoft/fast-dna/issues/1009)) ([23997a3](https://github.com/Microsoft/fast-dna/commit/23997a3))
-
-
-
-
-
-# [3.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@2.3.2...@microsoft/fast-components-styles-msft@3.0.0) (2018-10-06)
-
-
-### Bug Fixes
-
-* correct and standardize component interfaces across react ([#978](https://github.com/Microsoft/fast-dna/issues/978)) ([b1b6ae1](https://github.com/Microsoft/fast-dna/commit/b1b6ae1))
-* export elevation from root of msft styles package ([#964](https://github.com/Microsoft/fast-dna/issues/964)) ([1db405f](https://github.com/Microsoft/fast-dna/commit/1db405f))
-
-
-### chore
-
-* remove the 'I' from interfaces ([#997](https://github.com/Microsoft/fast-dna/issues/997)) ([d924df8](https://github.com/Microsoft/fast-dna/commit/d924df8))
-
-
-### Features
-
-* add card as a new component ([#984](https://github.com/Microsoft/fast-dna/issues/984)) ([9514199](https://github.com/Microsoft/fast-dna/commit/9514199))
-* **class names:** update all class names across base and MSFT to align with naming standards ([#893](https://github.com/Microsoft/fast-dna/issues/893)) ([de974ab](https://github.com/Microsoft/fast-dna/commit/de974ab))
-* **image:** update viewport logic in favor of slots ([#914](https://github.com/Microsoft/fast-dna/issues/914)) ([d489b01](https://github.com/Microsoft/fast-dna/commit/d489b01))
-
-
-### BREAKING CHANGES
-
-* Interfaces have been renamed to remove the "I".
+* add missing position value to root node of checkbox ([#1183](https://github.com/Microsoft/fast-dna/issues/1183)) ([b08b269](https://github.com/Microsoft/fast-dna/commit/b08b269))
+* add missing position value to root node of radio ([#1184](https://github.com/Microsoft/fast-dna/issues/1184)) ([6e993b2](https://github.com/Microsoft/fast-dna/commit/6e993b2))
+* fixes high-contrast of components ([#1207](https://github.com/Microsoft/fast-dna/issues/1207)) ([7f56ec1](https://github.com/Microsoft/fast-dna/commit/7f56ec1))
+* style cleanup and consolidation ([#1198](https://github.com/Microsoft/fast-dna/issues/1198)) ([4151f39](https://github.com/Microsoft/fast-dna/commit/4151f39))
 
 
 

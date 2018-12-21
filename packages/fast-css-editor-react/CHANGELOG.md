@@ -3,79 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [4.1.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-css-editor-react@4.1.0...@microsoft/fast-css-editor-react@4.1.1) (2018-12-03)
+<a name="4.1.2"></a>
+## [4.1.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-css-editor-react@4.1.1...@microsoft/fast-css-editor-react@4.1.2) (2018-12-21)
 
 **Note:** Version bump only for package @microsoft/fast-css-editor-react
-
-
-
-
-
-# [4.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-css-editor-react@4.0.1...@microsoft/fast-css-editor-react@4.1.0) (2018-11-29)
-
-
-### Features
-
-* add CSS spacing component ([#1161](https://github.com/Microsoft/fast-dna/issues/1161)) ([5755856](https://github.com/Microsoft/fast-dna/commit/5755856))
-
-
-
-
-
-## [4.0.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-css-editor-react@4.0.0...@microsoft/fast-css-editor-react@4.0.1) (2018-11-21)
-
-**Note:** Version bump only for package @microsoft/fast-css-editor-react
-
-
-
-
-
-# [4.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-css-editor-react@3.1.3...@microsoft/fast-css-editor-react@4.0.0) (2018-11-20)
-
-
-### Bug Fixes
-
-* update CSS editor components to extend the Foundation component ([#1145](https://github.com/Microsoft/fast-dna/issues/1145)) ([09a3b60](https://github.com/Microsoft/fast-dna/commit/09a3b60))
-
-
-### BREAKING CHANGES
-
-* Changes the onChange on the position component to be onPositionUpdate
-
-
-
-
-
-## [3.1.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-css-editor-react@3.1.2...@microsoft/fast-css-editor-react@3.1.3) (2018-11-14)
-
-**Note:** Version bump only for package @microsoft/fast-css-editor-react
-
-
-
-
-
-## [3.1.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-css-editor-react@3.1.1...@microsoft/fast-css-editor-react@3.1.2) (2018-11-09)
-
-**Note:** Version bump only for package @microsoft/fast-css-editor-react
-
-
-
-
-
-## [3.1.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-css-editor-react@3.1.0...@microsoft/fast-css-editor-react@3.1.1) (2018-11-07)
-
-**Note:** Version bump only for package @microsoft/fast-css-editor-react
-
-
-
-
-
-# [3.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-css-editor-react@3.0.3...@microsoft/fast-css-editor-react@3.1.0) (2018-11-05)
-
-
-### Features
-
-* performance updates to JSS Manager ([#1110](https://github.com/Microsoft/fast-dna/issues/1110)) ([db4b753](https://github.com/Microsoft/fast-dna/commit/db4b753))
 
 
 
