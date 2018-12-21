@@ -31,6 +31,8 @@ export const columnStyleSheet: ComponentStyles<ColumnClassNamesContract, undefin
 };
 
 export class Column extends Foundation<ColumnHandledProps, ColumnUnhandledProps, {}> {
+    public static displayName: string = "Column";
+
     /**
      * Define default props
      */

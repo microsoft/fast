@@ -114,6 +114,8 @@ export class Row extends Foundation<
     React.HTMLAttributes<HTMLDivElement>,
     RowState
 > {
+    public static displayName: string = "Row";
+
     public static defaultProps: Partial<RowProps> = {
         fill: false,
         minHeight: 40,
