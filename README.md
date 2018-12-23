@@ -59,7 +59,7 @@ This principle of being unopinionated manifests in several important ways includ
 * The ability to replace almost any FAST-DNA package with your package of choice. Get started with our animation or layout package and add more as you need them. Alternatively, use our suite of packages to build your next project from the ground up; it's your call.
 
 ### UI development and style guide tools
-When developing components and views, excellent development tooling can make all the difference. FAST-DNA offers development and style guide tools that are with FAST components, components from other frameworks or your components. 
+When developing components and views, excellent development tooling can make all the difference. FAST-DNA offers development and style guide tools that work with FAST components, components from other frameworks or your components. 
 
 Try out component properties with an auto-generated props UI, get a live preview of the code based on any property’s configuration, preview RTL and themes, and preview component compositing with a transparency grid.
 
