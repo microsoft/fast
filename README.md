@@ -1,12 +1,18 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> Update README.md
 
 ![github_readme_logo.svg](https://images.zenhubusercontent.com/5a85d50c4b5806bc2bc7186b/408ec7e2-a641-4802-a6de-b3b3ada0445d)
 
 # FAST-DNA
 An unopinionated system of components, development tools, and utilities used à la carte or as a suite to build enterprise-grade websites and applications.
 
+<<<<<<< HEAD
 =======
 >>>>>>> Updated content for README.MD
+=======
+>>>>>>> Update README.md
 [![Maintainability](https://api.codeclimate.com/v1/badges/8a74621e634a6e9b9561/maintainability)](https://codeclimate.com/github/Microsoft/fast-dna/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/8a74621e634a6e9b9561/test_coverage)](https://codeclimate.com/github/Microsoft/fast-dna/test_coverage)
 [![CircleCI](https://circleci.com/gh/Microsoft/fast-dna/tree/master.svg?style=shield&circle-token=d159a8b24ccb8046e07138c98717c32cb92589d6)](https://circleci.com/gh/Microsoft/fast-dna/tree/master)
@@ -15,6 +21,7 @@ An unopinionated system of components, development tools, and utilities used à 
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 ![license](https://img.shields.io/github/license/mashape/apistatus.svg)
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 :star: We appreciate your star, it helps!
 
@@ -37,6 +44,8 @@ Try out component properties with an auto-generated props UI, get a live preview
 
 An unopinionated system of components, development tools, and utilities used à la carte or as a suite to build enterprise-grade websites and applications.
 
+=======
+>>>>>>> Update README.md
 :star: We appreciate your star, it helps!
 
 ## Key features & benefits
