@@ -1,4 +1,4 @@
-import { ellipsis, toPx } from "@microsoft/fast-jss-utilities";
+import { ellipsis, focusVisible, toPx } from "@microsoft/fast-jss-utilities";
 import {
     applyAriaHiddenStyles,
     applyCleanListStyle,
@@ -86,7 +86,7 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
         background: rightArrow,
         transform: "rotate(90deg)",
         border: "0",
-        "&:focus": {
+        [`&${focusVisible()}`]: {
             ...insetStrongBoxShadow(colors.pink),
             outline: "none",
         },

@@ -93,22 +93,22 @@ class FormItemChildren extends FormItemBase<
     /**
      * Store a reference to the children list
      */
-    private filteredChildrenListRef: React.RefObject<HTMLUListElement>;
+    private filteredChildrenList: React.RefObject<HTMLUListElement>;
 
     /**
      * Store a reference to the children list trigger
      */
-    private filteredChildrenListTriggerRef: React.RefObject<HTMLButtonElement>;
+    private filteredChildrenListTrigger: React.RefObject<HTMLButtonElement>;
 
     /**
      * Store a reference to the combobox input
      */
-    private filteredChildrenInputRef: React.RefObject<HTMLInputElement>;
+    private filteredChildrenInput: React.RefObject<HTMLInputElement>;
 
     /**
      * Store a reference to the selected child option
      */
-    private selectedChildOptionRef: React.RefObject<HTMLLIElement>;
+    private selectedChildOption: React.RefObject<HTMLLIElement>;
 
     /**
      * The child options available to be filtered
@@ -120,10 +120,10 @@ class FormItemChildren extends FormItemBase<
     ) {
         super(props);
 
-        this.filteredChildrenListRef = React.createRef();
-        this.filteredChildrenListTriggerRef = React.createRef();
-        this.filteredChildrenInputRef = React.createRef();
-        this.selectedChildOptionRef = React.createRef();
+        this.filteredChildrenList = React.createRef();
+        this.filteredChildrenListTrigger = React.createRef();
+        this.filteredChildrenInput = React.createRef();
+        this.selectedChildOption = React.createRef();
 
         const defaultOptions: ChildOptionItem[] = [];
 
@@ -157,7 +157,7 @@ class FormItemChildren extends FormItemBase<
                         className={
                             this.props.managedClasses.formItemChildren_controlLabel
                         }
-                        id={`${this.props.dataLocation}-label`}
+                        id={this.getLabelId()}
                     >
                         {this.props.label}
                     </label>
@@ -198,13 +198,13 @@ class FormItemChildren extends FormItemBase<
                         }
                         type={"text"}
                         aria-autocomplete={"list"}
-                        aria-controls={`${this.props.dataLocation}-controls`}
-                        aria-labelledby={`${this.props.dataLocation}-label`}
+                        aria-controls={this.getFilteredChildrenInputId()}
+                        aria-labelledby={this.getLabelId()}
                         value={this.state.childrenSearchTerm}
                         placeholder="Add"
                         onChange={this.handleChildOptionFilterInputChange}
                         onKeyDown={this.handleChildrenListInputKeydown}
-                        ref={this.filteredChildrenInputRef}
+                        ref={this.filteredChildrenInput}
                     />
                     <button
                         className={
@@ -213,16 +213,16 @@ class FormItemChildren extends FormItemBase<
                         tabIndex={-1}
                         aria-label={"Show children options"}
                         onClick={this.handleChildrenListTriggerClick}
-                        ref={this.filteredChildrenListTriggerRef}
+                        ref={this.filteredChildrenListTrigger}
                     />
                 </div>
                 <ul
-                    id={`${this.props.dataLocation}-controls`}
-                    aria-labelledby={`${this.props.dataLocation}-label`}
+                    id={this.getFilteredChildrenInputId()}
+                    aria-labelledby={this.getLabelId()}
                     aria-hidden={this.state.hideChildrenList}
                     className={this.props.managedClasses.formItemChildren_childrenList}
                     role={"listbox"}
-                    ref={this.filteredChildrenListRef}
+                    ref={this.filteredChildrenList}
                 >
                     {this.renderFilteredChildOptions()}
                 </ul>
@@ -235,7 +235,7 @@ class FormItemChildren extends FormItemBase<
      */
     private renderFilteredChildOptions(): JSX.Element[] {
         return this.state.filteredChildOptions.map(
-            (option: any, index: number): JSX.Element => {
+            (option: ChildOptionItem, index: number): JSX.Element => {
                 const selected: boolean =
                     this.state.filteredChildOptions[
                         this.state.indexOfSelectedFilteredChildOption
@@ -247,7 +247,7 @@ class FormItemChildren extends FormItemBase<
                         role={"option"}
                         aria-selected={selected}
                         onClick={this.clickAddComponentFactory(option)}
-                        ref={selected ? this.selectedChildOptionRef : null}
+                        ref={selected ? this.selectedChildOption : null}
                     >
                         <span>{option.name}</span>
                     </li>
@@ -259,12 +259,16 @@ class FormItemChildren extends FormItemBase<
     /**
      * Renders a caption for an existing child item
      */
-    private renderExistingChildCaption(instance: any): JSX.Element {
-        if (instance && instance.props && instance.props.text) {
+    private renderExistingChildCaption(instance: ChildComponent): JSX.Element {
+        if (
+            instance &&
+            (instance as ChildComponentConfig).props &&
+            (instance as ChildComponentConfig).props.text
+        ) {
             return (
                 <React.Fragment>
                     <br />
-                    <i>{instance.props.text}</i>
+                    <i>{(instance as ChildComponentConfig).props.text}</i>
                 </React.Fragment>
             );
         } else {
@@ -425,6 +429,7 @@ class FormItemChildren extends FormItemBase<
                 break;
             case KeyCodes.arrowDown:
                 this.selectNextFilteredChildOption();
+                break;
         }
     };
 
@@ -436,7 +441,9 @@ class FormItemChildren extends FormItemBase<
     ): void => {
         this.handleToggleChildrenListVisibility(e);
 
-        this.filteredChildrenInputRef.current.focus();
+        if (this.filteredChildrenInput.current instanceof HTMLElement) {
+            this.filteredChildrenInput.current.focus();
+        }
     };
 
     /**
@@ -449,7 +456,9 @@ class FormItemChildren extends FormItemBase<
             hideChildrenList: !this.state.hideChildrenList,
         });
 
-        this.filteredChildrenListRef.current.scrollTop = 0;
+        if (this.filteredChildrenList.current instanceof HTMLElement) {
+            this.filteredChildrenList.current.scrollTop = 0;
+        }
     };
 
     /**
@@ -538,14 +547,14 @@ class FormItemChildren extends FormItemBase<
      * Click event for adding a component
      */
     private onAddComponent(item: ChildOptionItem): void {
-        const currentChildren: ChildComponent[] = this.getCurrentChildArray(
+        const currentChildren: ChildComponent[] = this.getCurrentChildren(
             this.props.data
         );
 
-        if (typeof item === "object") {
+        if (typeof item === "object" && item !== null) {
             this.props.onChange(
                 this.props.dataLocation,
-                this.getReactComponents(currentChildren, item),
+                this.getChildComponents(currentChildren, item),
                 undefined,
                 undefined,
                 true
@@ -553,7 +562,7 @@ class FormItemChildren extends FormItemBase<
         } else if (typeof item === "string") {
             this.props.onChange(
                 this.props.dataLocation,
-                this.getStringComponents(currentChildren, item),
+                this.getChildStrings(currentChildren, item),
                 undefined,
                 undefined,
                 true
@@ -617,16 +626,15 @@ class FormItemChildren extends FormItemBase<
                     indexOfSelectedFilteredChildOption: 0,
                 });
 
-                this.filteredChildrenListRef.current.scrollTop = 0;
+                this.filteredChildrenList.current.scrollTop = 0;
             } else {
                 this.setState({
                     indexOfSelectedFilteredChildOption:
                         this.state.indexOfSelectedFilteredChildOption + 1,
                 });
 
-                this.filteredChildrenListRef.current.scrollTop = (this
-                    .selectedChildOptionRef.current
-                    .nextSibling as HTMLLIElement).offsetTop;
+                this.filteredChildrenList.current.scrollTop = (this.selectedChildOption
+                    .current.nextSibling as HTMLLIElement).offsetTop;
             }
         }
     }
@@ -642,16 +650,15 @@ class FormItemChildren extends FormItemBase<
                         this.state.filteredChildOptions.length - 1,
                 });
 
-                this.filteredChildrenListRef.current.scrollTop = this.filteredChildrenListRef.current.scrollHeight;
+                this.filteredChildrenList.current.scrollTop = this.filteredChildrenList.current.scrollHeight;
             } else {
                 this.setState({
                     indexOfSelectedFilteredChildOption:
                         this.state.indexOfSelectedFilteredChildOption - 1,
                 });
 
-                this.filteredChildrenListRef.current.scrollTop = (this
-                    .selectedChildOptionRef.current
-                    .previousSibling as HTMLLIElement).offsetTop;
+                this.filteredChildrenList.current.scrollTop = (this.selectedChildOption
+                    .current.previousSibling as HTMLLIElement).offsetTop;
             }
         }
     }
@@ -659,15 +666,23 @@ class FormItemChildren extends FormItemBase<
     private isTargetingChildrenList(e: MouseEvent): boolean {
         return (
             e.target instanceof Element &&
-            get(this.filteredChildrenListRef, "current") &&
-            get(this.filteredChildrenListTriggerRef, "current") &&
-            !this.filteredChildrenListRef.current.contains(e.target) &&
-            !this.filteredChildrenListTriggerRef.current.contains(e.target) &&
-            this.filteredChildrenListTriggerRef.current !== e.target
+            get(this.filteredChildrenList, "current") &&
+            get(this.filteredChildrenListTrigger, "current") &&
+            !this.filteredChildrenList.current.contains(e.target) &&
+            !this.filteredChildrenListTrigger.current.contains(e.target) &&
+            this.filteredChildrenListTrigger.current !== e.target
         );
     }
 
-    private getReactComponents(
+    private getLabelId(): string {
+        return `${this.props.dataLocation}-label`;
+    }
+
+    private getFilteredChildrenInputId(): string {
+        return `${this.props.dataLocation}-input`;
+    }
+
+    private getChildComponents(
         currentChildren: ChildComponent[],
         item: ChildOptionItem
     ): ChildComponent[] {
@@ -677,7 +692,7 @@ class FormItemChildren extends FormItemBase<
         return components;
     }
 
-    private getStringComponents(
+    private getChildStrings(
         currentChildren: ChildComponent[],
         item: string
     ): ChildComponent[] | ChildComponent {
@@ -690,7 +705,7 @@ class FormItemChildren extends FormItemBase<
         return components.length > 0 ? components : item;
     }
 
-    private getCurrentChildArray(currentChildren: ChildComponent): ChildComponent[] {
+    private getCurrentChildren(currentChildren: ChildComponent): ChildComponent[] {
         return Array.isArray(currentChildren)
             ? currentChildren
             : typeof currentChildren !== "undefined" && currentChildren !== null
