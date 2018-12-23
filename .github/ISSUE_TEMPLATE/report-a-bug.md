@@ -8,7 +8,6 @@ assignees: ''
 ---
 
 **Describe the bug; what happened?**
-A clear and concise description of what the bug is.
 
 **What are the steps to reproduce the issue?**
 Example:
