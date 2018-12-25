@@ -1,25 +1,22 @@
 import * as React from "react";
-import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
-import { configure, mount, render, shallow } from "enzyme";
-import examples from "./examples.data";
+import { configure, mount, shallow } from "enzyme";
 import TextAction, {
-    ButtonPosition,
+    TextActionButtonPosition,
     TextActionHandledProps,
-    TextActionManagedClasses,
     TextActionProps,
     TextActionUnhandledProps,
 } from "./text-action";
 import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { Button } from "../button";
-import { ButtonAppearance } from "../button/button.props";
 
 const managedClasses: TextActionClassNameContract = {
     textAction: "text-action",
-    textAction__disabled: "text-action",
-    textAction_button: "text-action",
-    textAction_beforeGlyph: "text-action",
-    textAction_afterGlyph: "text-action",
+    textAction__disabled: "text-action--disabled",
+    textAction__focus: "text-action--focus",
+    textAction_button: "text-action-button",
+    textAction_beforeGlyph: "text-action-before-glyph",
+    textAction_afterGlyph: "text-action-after-glyph",
 };
 
 /*
@@ -88,6 +85,24 @@ describe("text-action", (): void => {
         expect(rendered.find("input").prop("placeholder")).toEqual("Test");
     });
 
+    test("should render with focus class if focus is true", () => {
+        const rendered: any = mount(
+            <TextAction managedClasses={managedClasses} placeholder={"Test"} />
+        );
+
+        expect(rendered.state("focused")).toBe(false);
+
+        rendered.setState({ focused: true });
+
+        expect(rendered.state("focused")).toBe(true);
+        expect(
+            rendered
+                .find("div")
+                .first()
+                .prop("className")
+        ).toContain(`${managedClasses.textAction} ${managedClasses.textAction__focus}`);
+    });
+
     test("should render a button in the after position by default if a button is passed as a prop", () => {
         const handledProps: TextActionHandledProps = {
             managedClasses,
@@ -104,13 +119,13 @@ describe("text-action", (): void => {
         const rendered: any = mount(<TextAction {...props} />);
 
         expect(rendered.find("button")).not.toBe(undefined);
-        expect(rendered.prop("buttonPosition")).toEqual(ButtonPosition.after);
+        expect(rendered.prop("buttonPosition")).toEqual(TextActionButtonPosition.after);
     });
 
     test("should render a button in the before position if correct props are passed", () => {
         const handledProps: TextActionHandledProps = {
             managedClasses,
-            buttonPosition: ButtonPosition.before,
+            buttonPosition: TextActionButtonPosition.before,
             button: (classname?: string, disabled?: boolean): React.ReactNode => {
                 return (
                     <Button type={"submit"} className={classname} disabled={disabled}>
@@ -124,7 +139,7 @@ describe("text-action", (): void => {
         const rendered: any = mount(<TextAction {...props} />);
 
         expect(rendered.find("button")).not.toBe(undefined);
-        expect(rendered.prop("buttonPosition")).toEqual(ButtonPosition.before);
+        expect(rendered.prop("buttonPosition")).toEqual(TextActionButtonPosition.before);
     });
 
     test("should render a glyph in the before position if passed as a prop", () => {
@@ -237,7 +252,7 @@ describe("text-action", (): void => {
     test("should render only a button if a glyph and button are passed in the same (before) position", () => {
         const handledProps: TextActionHandledProps = {
             managedClasses,
-            buttonPosition: ButtonPosition.before,
+            buttonPosition: TextActionButtonPosition.before,
             button: (classname?: string, disabled?: boolean): React.ReactNode => {
                 return (
                     <Button type={"submit"} className={classname} disabled={disabled}>

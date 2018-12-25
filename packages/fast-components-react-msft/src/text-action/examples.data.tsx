@@ -5,7 +5,7 @@ import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { Button } from "../button";
 import { ButtonAppearance } from "../button/button.props";
-import { ButtonPosition } from "./text-action.props";
+import { TextActionButtonPosition } from "./text-action.props";
 
 export default {
     name: "Text action",
@@ -142,7 +142,7 @@ export default {
             },
         },
         {
-            buttonPosition: ButtonPosition.before,
+            buttonPosition: TextActionButtonPosition.before,
             button: (classname?: string, disabled?: boolean): React.ReactNode => {
                 return (
                     <Button className={classname} disabled={disabled}>
@@ -227,7 +227,7 @@ export default {
             },
         },
         {
-            buttonPosition: ButtonPosition.before,
+            buttonPosition: TextActionButtonPosition.before,
             button: (
                 classname?: string,
                 disabled?: boolean,

@@ -12,6 +12,8 @@ export interface TextActionClassNameContract {
      */
     textAction__disabled: string;
 
+    textAction__focus: string;
+
     /**
      * The button
      */

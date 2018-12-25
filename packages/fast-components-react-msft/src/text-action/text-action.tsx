@@ -1,7 +1,7 @@
 import * as React from "react";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
-    ButtonPosition,
+    TextActionButtonPosition,
     TextActionHandledProps,
     TextActionProps,
     TextActionUnhandledProps,
@@ -10,15 +10,21 @@ import { textFieldOverrides } from "@microsoft/fast-components-styles-msft";
 import { TextField } from "../text-field";
 import { get } from "lodash-es";
 
+/**
+ * Text action state interface
+ */
+export interface TextActionState {
+    focused: boolean;
+}
 class TextAction extends Foundation<
     TextActionHandledProps,
     TextActionUnhandledProps,
-    {}
+    TextActionState
 > {
     public static displayName: string = "TextAction";
 
     public static defaultProps: Partial<TextActionProps> = {
-        buttonPosition: ButtonPosition.after,
+        buttonPosition: TextActionButtonPosition.after,
     };
 
     protected handledProps: HandledProps<TextActionHandledProps> = {
@@ -29,6 +35,14 @@ class TextAction extends Foundation<
         managedClasses: void 0,
     };
 
+    constructor(props: TextActionProps) {
+        super(props);
+
+        this.state = {
+            focused: false,
+        };
+    }
+
     /**
      * Renders the component
      */
@@ -36,7 +50,7 @@ class TextAction extends Foundation<
         return (
             <div className={this.generateClassNames()}>
                 {this.buttonExists() &&
-                this.props.buttonPosition === ButtonPosition.before
+                this.props.buttonPosition === TextActionButtonPosition.before
                     ? this.generateButton()
                     : null}
                 {this.generateBeforeGlyph()}
@@ -45,9 +59,12 @@ class TextAction extends Foundation<
                     disabled={this.props.disabled}
                     placeholder={this.props.placeholder}
                     jssStyleSheet={textFieldOverrides}
+                    onBlur={this.handleOnBlur}
+                    onFocus={this.handleOnFocus}
                 />
                 {this.generateAfterGlyph()}
-                {this.buttonExists() && this.props.buttonPosition === ButtonPosition.after
+                {this.buttonExists() &&
+                this.props.buttonPosition === TextActionButtonPosition.after
                     ? this.generateButton()
                     : null}
             </div>
@@ -67,8 +84,32 @@ class TextAction extends Foundation<
             )}`;
         }
 
+        if (this.state.focused) {
+            classNames = `${classNames} ${get(
+                this.props,
+                "managedClasses.textAction__focus"
+            )}`;
+        }
+
         return super.generateClassNames(classNames);
     }
+
+    /**
+     * Adds focus state to outer wrapper
+     * In order to correctly focus the input and then the
+     * possible button, a class must be added instead of using
+     * focus-within via style
+     */
+    private handleOnFocus = (): void => {
+        this.setState({ focused: true });
+    };
+
+    /**
+     * Removes focus state
+     */
+    private handleOnBlur = (): void => {
+        this.setState({ focused: false });
+    };
 
     /**
      * Returns truthy if button exist
@@ -94,7 +135,7 @@ class TextAction extends Foundation<
         if (typeof this.props.afterGlyph === "function") {
             if (
                 (this.buttonExists() &&
-                    this.props.buttonPosition !== ButtonPosition.after) ||
+                    this.props.buttonPosition !== TextActionButtonPosition.after) ||
                 !this.buttonExists()
             ) {
                 return this.props.afterGlyph(
@@ -111,7 +152,7 @@ class TextAction extends Foundation<
         if (typeof this.props.beforeGlyph === "function") {
             if (
                 (this.buttonExists() &&
-                    this.props.buttonPosition !== ButtonPosition.before) ||
+                    this.props.buttonPosition !== TextActionButtonPosition.before) ||
                 !this.buttonExists()
             ) {
                 return this.props.beforeGlyph(

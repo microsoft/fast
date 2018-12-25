@@ -88,6 +88,7 @@
     "babel-jest": "^23.6.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
+    "exenv-es6": "^1.0.0",
     "eyes.images": "0.0.52",
     "favicons-webpack-plugin": "0.0.9",
     "file-loader": "^1.1.11",

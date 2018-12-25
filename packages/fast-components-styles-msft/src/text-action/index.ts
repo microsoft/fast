@@ -95,10 +95,10 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
             "&:hover": {
                 ...outlinePattern.hover,
             },
-            "&:focus-within": {
-                outline: "none",
-                ...outlinePattern.focus,
-            },
+        },
+        textAction__focus: {
+            outline: "none",
+            ...outlinePattern.focus,
         },
         textAction__disabled: {
             borderColor: disabledColor(designSystem),

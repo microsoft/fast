@@ -8,7 +8,7 @@ import {
 import { Omit, Subtract } from "utility-types";
 import { ButtonAppearance } from "../button/button.props";
 
-export enum ButtonPosition {
+export enum TextActionButtonPosition {
     before = "before",
     after = "after",
 }
@@ -30,11 +30,11 @@ export interface TextActionHandledProps
     ) => React.ReactNode;
 
     /**
-     * Button position
+     * Text action button position
      * We can only have one button at a time, so rather than allowing a
      * before and after like glyph, we need to specify through an enum
      */
-    buttonPosition?: ButtonPosition;
+    buttonPosition?: TextActionButtonPosition;
 
     /**
      * The preceding glyph

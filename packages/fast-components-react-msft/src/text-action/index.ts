@@ -1,8 +1,7 @@
-import * as React from "react";
-import { FoundationProps } from "@microsoft/fast-components-foundation-react";
 import MSFTTextAction from "./text-action";
 import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
+    TextActionButtonPosition,
     TextActionHandledProps as MSFTTextActionHandledProps,
     TextActionManagedClasses,
     TextActionProps as MSFTTextActionProps,
@@ -30,6 +29,7 @@ type TextActionProps = ManagedJSSProps<
 
 export {
     TextAction,
+    TextActionButtonPosition,
     TextActionHandledProps,
     TextActionManagedClasses,
     TextActionProps,
