@@ -1,12 +1,12 @@
 {
   "docs": {
-    "Getting started": ["readme"],
+    "Getting started": ["en/readme"],
     "Contributing": [
-      "contributing/install",
-      "contributing/working",
-      "contributing/standards",
-      "contributing/testing",
-      "contributing/policies"
+      "en/contributing/install",
+      "en/contributing/working",
+      "en/contributing/standards",
+      "en/contributing/testing",
+      "en/contributing/policies"
     ]
   }
 }

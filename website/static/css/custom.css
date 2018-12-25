@@ -1,9 +1,678 @@
-/* your custom css */
+/**
+ * Custom CSS styles that overwrite the defaults provided by Docusaurus.
+ */
+
+/*------------------------------------*\
+  HTML elements
+\*------------------------------------*/
+
+body,
+html {
+    margin: 0px;
+    padding: 0px;
+    font-size: 14px;
+    font-family: Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif;
+    color: #eee;
+    background-color: #212121;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 600;
+    margin: 0;
+}
+
+a {
+    color: #fb356d;
+    outline: none;
+}
+
+a:hover {
+    border-bottom: 1px solid #fb356d;
+    color: #fb356d;
+}
+
+a:focus {
+    border-bottom: 2px solid #eee;
+    color: #fb356d;
+}
+
+/*------------------------------------*\
+  Header:
+  Header on each page of the site.
+\*------------------------------------*/
+
+.fixedHeaderContainer {
+    min-height: 64px;
+    padding: 0;
+}
+
+.fixedHeaderContainer header .headerTitleWithLogo {
+    display: none;
+}
+
+.fixedHeaderContainer header {
+    line-height: 64px;
+    height: 64px;
+}
+
+.fixedHeaderContainer a {
+    height: 64px;
+    margin: 0 auto;
+    outline: none;
+    padding: 0 8px;
+    transition: all 0.15s ease-in-out;
+}
+
+.fixedHeaderContainer a:hover {
+    background-color: #313131;
+}
+
+.fixedHeaderContainer a:focus {
+    box-shadow: inset 0 0 0 2px #eee;
+}
+
+.fixedHeaderContainer header img {
+    height: 40px;
+}
+
+.navigationSlider .slidingNav ul {
+    margin-right: 8px;
+}
+
+.navigationSlider .slidingNav ul li {
+    flex: 1 1 0;
+}
+
+.navigationSlider .slidingNav ul li a {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    height: 64px;
+    font-weight: 600;
+    margin-right: 0;
+    line-height: 64px;
+    padding: 0 8px 0 8px;
+    position: relative;
+    transition: all 0.15s ease-in-out;
+    border: 0;
+}
+
+.navigationSlider .slidingNav ul li.siteNavGroupActive a {
+    cursor: default;
+}
+
+.navigationSlider .slidingNav ul li.siteNavGroupActive a::after {
+    content: "";
+    display: block;
+    height: 2px;
+    width: 100%;
+    background-color: #fb356d;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    border-radius: 2px;
+}
+
+.navigationSlider .slidingNav ul li a:hover {
+    background-color: #313131;
+}
+
+.navigationSlider .slidingNav ul {
+    background-color: #1e1e1e;
+    margin-top: 64px;
+}
+
+.docsNavContainer .toc .navBreadcrumb {
+    background-color: #212121;
+    border-bottom: 1px solid #313131;
+}
+
+.navBreadcrumb a,
+.navBreadcrumb span {
+    color: #eee;
+}
+
+.icon-toc,
+.icon-toc:before,
+.icon-toc:after {
+    background-color: #eee;
+    border: 1px solid #eee;
+}
+
+.toc .toggleNav .navToggle i:before,
+.toc .toggleNav .navToggle i:after {
+    border-color: transparent #eee;
+}
+
+.toc .toggleNav .navToggle:before,
+.toc .toggleNav .navToggle:after {
+    border: 5px solid #eee;
+    border-width: 5px 0;
+}
+
+.toggleNav h2 i {
+    color: white;
+    font-style: normal;
+}
+
+/*------------------------------------*\
+  Previous and Next Buttons:
+  Buttons at bottom of each docs page.
+\*------------------------------------*/
+
+.docs-prevnext .button {
+    color: #eee;
+    background-color: transparent;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(130, 130, 130);
+    border-image: initial;
+    background: transparent;
+    text-transform: capitalize;
+    height: 32px;
+    padding: 0 16px;
+    display: inline-flex;
+    overflow: hidden;
+    font-size: 14px;
+    max-width: 374px;
+    min-width: 120px;
+    box-sizing: border-box;
+    min-height: 20px;
+    max-height: 48px;
+    transition: all 0.15s ease-in-out;
+    line-height: 1;
+    font-family: inherit;
+    align-items: center;
+    white-space: nowrap;
+    border-radius: 2px;
+    justify-content: center;
+    text-decoration: none;
+    cursor: default;
+}
+
+.docs-prevnext .button:hover {
+    background-color: #313131;
+}
+
+.docs-prevnext .button:focus {
+    border-color: #eee;
+    box-shadow: inset 0px 0px 0px 1px #eee;
+    outline: none;
+}
+
+.docs-prevnext .button .arrow-prev {
+    color: transparent;
+}
+
+.docs-prevnext .button .arrow-prev::before {
+    content: "";
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxNSAxMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTUgNlY3SDIuNzEwOTRMNy4zNTE1NiAxMS42NDg0TDYuNjQ4NDQgMTIuMzUxNkwwLjc5Njg3NSA2LjVMNi42NDg0NCAwLjY0ODQzOEw3LjM1MTU2IDEuMzUxNTZMMi43MTA5NCA2SDE1WiIgZmlsbD0id2hpdGUiLz48L3N2Zz4=);
+    display: inline-block;
+    color: transparent;
+    height: 11.7px;
+    width: 14.2px;
+    color: transparent;
+    margin-left: -4px;
+    margin-top: 2px;
+}
+
+.docs-prevnext .button .arrow-next {
+    color: transparent;
+}
+
+.docs-prevnext .button .arrow-next::after {
+    content: "";
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxNSAxMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNOC4zNTE1NiAwLjY0ODQzOEwxNC4yMDMxIDYuNUw4LjM1MTU2IDEyLjM1MTZMNy42NDg0NCAxMS42NDg0TDEyLjI4OTEgN0gwVjYuNTE1NjJWNkgxMi4yODkxTDcuNjQ4NDQgMS4zNTE1Nkw4LjM1MTU2IDAuNjQ4NDM4WiIgZmlsbD0id2hpdGUiLz48L3N2Zz4=);
+    display: inline-block;
+    color: transparent;
+    height: 11.7px;
+    width: 14.2px;
+    margin-right: -4px;
+    margin-top: 2px;
+}
+
+/*------------------------------------*\
+  Post header title: 
+  Title that at top of each doc page.
+\*------------------------------------*/
+
+.mainContainer .wrapper .post .postHeaderTitle {
+    font-size: 34px;
+    line-height: 44px;
+    padding-bottom: 12px;
+}
+
+/*------------------------------------*\
+  Left navigation: 
+  Nav list on the left (ltr) of doc pages.
+\*------------------------------------*/
+
+.toc .toggleNav .navGroup .navGroupCategoryTitle {
+    color: #eee;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 32px;
+    text-transform: uppercase;
+    height: 32px;
+    letter-spacing: 1px;
+    margin: 0;
+    cursor: default;
+}
+
+.toc .toggleNav ul {
+    padding: 0;
+}
+
+.toc .toggleNav ul li {
+    color: #eee;
+    padding: 0;
+    border-radius: 2px;
+}
+
+.toc .toggleNav ul li a {
+    color: #eee;
+    padding: 0;
+    line-height: 32px;
+    padding: 0 0 0 16px;
+    outline: none;
+    border-radius: 2px;
+    cursor: default;
+}
+
+.toc .toggleNav ul li a:hover {
+    color: #eee;
+    background-color: #313131;
+}
+
+.toc .toggleNav ul li a:focus {
+    color: #eee;
+    box-shadow: inset 0 0 0 2px #fff;
+}
+
+.toc .toggleNav ul li.navListItemActive a {
+    color: #eee;
+    position: relative;
+}
+
+.toc .toggleNav ul li.navListItemActive a::before {
+    content: "";
+    display: block;
+    height: 32px;
+    width: 2px;
+    background-color: #fb356d;
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: 2px;
+}
+
+/*------------------------------------*\
+  Article HTML elements:
+  The markdown area of each docs page.
+\*------------------------------------*/
+
+.hash-link {
+    fill: #fff;
+    transition: all 0.15s ease-in-out;
+}
+
+.hash-link:hover {
+    fill: #fb356d;
+    border: 0;
+}
+
+.navPusher {
+    padding-top: 128px;
+}
+
+article h1 {
+    font-size: 34px;
+    line-height: 44px;
+}
+
+article h1::after {
+    content: ' - No H1 should be included in .md body; H1 is provided from CMS "title:" property at the top of the .md file.';
+    color: red;
+    font-size: 11px;
+    line-height: 20px;
+}
+
+article h2 {
+    font-size: 24px;
+    line-height: 32px;
+    margin: 24px 0 4px 0;
+}
+
+article h3 {
+    font-size: 20px;
+    line-height: 28px;
+    margin: 24px 0 4px 0;
+}
+
+article h4 {
+    font-size: 16px;
+    line-height: 24px;
+    margin: 24px 0 4px 0;
+}
+
+article h5 {
+    font-size: 14px;
+    line-height: 20px;
+    margin: 24px 0 4px 0;
+}
+
+article h6 {
+    font-size: 14px;
+    line-height: 20px;
+    margin: 24px 0 0 0;
+    font-style: italic;
+}
+
+article p {
+    font-weight: 400;
+    font-size: 14px;
+    margin-top: 12px;
+    line-height: 20px;
+    margin-bottom: 0;
+    color: #eee;
+}
+
+article code {
+    border-radius: 4px;
+    color: #ddd;
+    background: #2c2c2c;
+}
+
+article pre code {
+    margin-top: 12px;
+    box-shadow: 0px 1.6px 3.6px rgba(17, 17, 17, 0.22),
+        0px 0.3px 0.9px rgba(17, 17, 17, 0.18);
+    margin-bottom: 4px;
+    line-height: 20px;
+}
+
+article ul,
+article ol {
+    font-weight: 400;
+    font-size: 14px;
+    margin-top: 8px;
+    line-height: 20px;
+    margin-bottom: 8px;
+    color: #eee;
+}
+
+article ul li {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/*------------------------------------*\
+  Table of contents 
+  Navigation area on Right pane (LTR).
+\*------------------------------------*/
+
+ul.toc-headings {
+    list-style-type: none;
+    list-style-position: inside;
+    margin: 0;
+    padding: 0;
+}
+
+ul.toc-headings ul {
+    list-style-type: none;
+    list-style-position: inside;
+    margin: 0;
+    padding: 0;
+}
+
+ul.toc-headings li {
+    line-height: 32px;
+    font-size: 14px;
+    padding: 0;
+    margin: 0;
+}
+
+ul.toc-headings li ul li {
+    padding: 0;
+    margin: 0;
+}
+
+ul.toc-headings li ul li a {
+    padding-left: 32px;
+}
+
+ul.toc-headings li ul li ul li a {
+    padding-left: 48px;
+}
+
+ul.toc-headings li a {
+    height: 32px;
+    display: block;
+    line-height: 32px;
+    color: #eee;
+    padding: 0 16px;
+    margin: 0;
+    outline: none;
+    cursor: default;
+    border: 0;
+}
+
+ul.toc-headings li a:hover {
+    border-radius: 2px;
+    background-color: #313131;
+}
+
+ul.toc-headings li a:focus {
+    box-shadow: inset 0 0 0 2px #eee;
+}
+
+/*------------------------------------*\
+  Splash page
+  Intro page of site.
+\*------------------------------------*/
+
+.projectTitle {
+    color: #eee;
+    font-size: 24px;
+    line-height: 32px;
+    margin: 24px 0 4px 0;
+}
+
+.projectTitle > small {
+    display: block;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    margin: 8px 0 0 0;
+}
+
+.promoSection {
+    color: #eee;
+    display: flex;
+    flex-flow: column wrap;
+    font-size: 14px;
+    line-height: 20px;
+    position: relative;
+}
+
+.promoSection .promoRow .pluginRowBlock .pluginWrapper {
+    padding: 0 4px;
+}
+
+.button {
+    color: #eee;
+    background-color: transparent;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(130, 130, 130);
+    border-image: initial;
+    background: transparent;
+    text-transform: capitalize;
+    height: 32px;
+    padding: 0 16px;
+    display: inline-flex;
+    overflow: hidden;
+    font-size: 14px;
+    max-width: 374px;
+    min-width: 120px;
+    box-sizing: border-box;
+    min-height: 20px;
+    max-height: 48px;
+    transition: all 0.15s ease-in-out;
+    align-items: center;
+    white-space: nowrap;
+    border-radius: 2px;
+    justify-content: center;
+    text-decoration: none;
+    outline: none;
+    margin-top: 8px;
+}
+
+.button:focus {
+    border-color: #eee;
+    box-shadow: inset 0px 0px 0px 1px #eee;
+    outline: none;
+}
+
+.button:hover {
+    background-color: #313131;
+}
+
+/*------------------------------------*\
+  Footer
+  Footer area at bottom of all pages.
+\*------------------------------------*/
+.nav-footer .sitemap {
+    margin: 0 auto 3em;
+    max-width: 1100px;
+    padding: 0 20px;
+}
+
+.nav-footer {
+    background-color: #1a1a1a;
+}
+
+.nav-footer .sitemap h5 {
+    color: #fb356d;
+    text-transform: uppercase;
+    font-size: 14px;
+    cursor: default;
+    letter-spacing: 1px;
+}
+
+.nav-footer .sitemap a {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    line-height: 32px;
+    display: block;
+    margin: 0 48px 0 -8px;
+    border-radius: 2px;
+    font-weight: 600;
+    outline: 0;
+    padding: 0 8px;
+    height: 32px;
+    transition: all 0.18s ease-in-out;
+    border: 0;
+}
+
+.nav-footer .sitemap a:hover {
+    background-color: #313131;
+}
+
+.nav-footer .sitemap a:focus {
+    box-shadow: inset 0px 0px 0px 2px #eee;
+}
+
+.nav-footer .copyright {
+    margin: 0 auto;
+    max-width: 1100px;
+    padding: 0 20px;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 11px;
+    display: flex;
+    justify-content: space-between;
+}
+
+/*------------------------------------*\
+  Code
+  Inline and block code styles.
+\*------------------------------------*/
+
+.hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 24px;
+    color: #ddd;
+    background: #2c2c2c;
+}
+
+/*------------------------------------*\
+  Media queries
+\*------------------------------------*/
 
 @media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
 }
 
+@media only screen and (max-width: 735px) {
+    .nav-footer .sitemap {
+        width: auto;
+    }
+}
+
 @media only screen and (min-width: 1024px) {
+    .fixedHeaderContainer a {
+        margin: 0 0 0 -8px;
+        padding: 0 8px;
+        outline: none;
+        position: relative;
+    }
+
+    .fixedHeaderContainer a:focus {
+        box-shadow: inset 0 0 0 2px #eee;
+    }
+
+    .fixedHeaderContainer header img {
+        margin: 0;
+    }
+
+    .navigationSlider {
+        height: 64px;
+    }
+
+    .navigationSlider .slidingNav ul li {
+        flex: 1 1 auto;
+    }
+
+    .fixedHeaderContainer a {
+        margin: 0;
+    }
+
+    .onPageNav > .toc-headings {
+        border-left: 1px solid transparent;
+        padding: 12px 0 2px 24px;
+        height: 100%;
+    }
+
+    .navigationSlider .slidingNav ul {
+        background-color: transparent;
+        margin: 0 0 0 -8px;
+    }
+
+    .navPusher {
+        padding-top: 64px;
+    }
+
+    .onPageNav {
+        top: 115px;
+    }
+
+    .toc {
+        padding: 55px 0 0 0;
+    }
 }
 
 @media only screen and (max-width: 1023px) {
@@ -13,4 +682,11 @@
 }
 
 @media only screen and (min-width: 1500px) {
+    .nav-footer .sitemap {
+        max-width: 1400px;
+    }
+
+    .nav-footer .copyright {
+        max-width: 1400px;
+    }
 }
