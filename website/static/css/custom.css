@@ -74,6 +74,7 @@ a:focus {
 
 .fixedHeaderContainer a:focus {
     box-shadow: inset 0 0 0 2px #eee;
+    border: 0;
 }
 
 .fixedHeaderContainer header img {
@@ -325,6 +326,11 @@ a:focus {
     border: 0;
 }
 
+.hash-link:focus {
+    opacity: 1;
+    fill: #fb356d;
+}
+
 .navPusher {
     padding-top: 128px;
 }
@@ -536,6 +542,9 @@ ul.toc-headings li a:focus {
     border-color: #eee;
     box-shadow: inset 0px 0px 0px 1px #eee;
     outline: none;
+    border: 1px solid #eee;
+    color: #eee;
+
 }
 
 .button:hover {
