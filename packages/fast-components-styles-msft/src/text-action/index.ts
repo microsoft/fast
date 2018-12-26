@@ -126,11 +126,6 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
             transition: "color .1s, background-color .1s, border-color 0.2s ease-in-out",
             flex: "0 0 auto",
             cursor: "pointer",
-            // Because button is passed as a rendered prop, there is no way to access internal
-            // selectors and pass style via jssStyleSheet prop
-            "& svg": {
-                fill: designSystem.foregroundColor,
-            },
         },
         textAction_beforeGlyph: {
             ...glyphStyles,
