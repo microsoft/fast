@@ -1,6 +1,6 @@
 /**
  * Custom CSS styles that overwrite the defaults provided by Docusaurus.
- */
+ ***********************************************************************/
 
 /*------------------------------------*\
   HTML elements
@@ -16,6 +16,10 @@ html {
     background-color: #212121;
 }
 
+/* 
+ * Headers
+ *********/
+
 h1,
 h2,
 h3,
@@ -25,6 +29,10 @@ h6 {
     font-weight: 600;
     margin: 0;
 }
+
+/* 
+ * Anchors
+ *********/
 
 a {
     color: #fb356d;
@@ -46,10 +54,16 @@ a:focus {
   Header on each page of the site.
 \*------------------------------------*/
 
+/* 
+ * Fixed header Container
+ ************************/
+
 .fixedHeaderContainer {
     min-height: 64px;
     padding: 0;
 }
+
+/*  Fixed header container: header */
 
 .fixedHeaderContainer header .headerTitleWithLogo {
     display: none;
@@ -59,6 +73,12 @@ a:focus {
     line-height: 64px;
     height: 64px;
 }
+
+.fixedHeaderContainer header img {
+    height: 40px;
+}
+
+/*  Fixed header container: header a */
 
 .fixedHeaderContainer a {
     height: 64px;
@@ -77,12 +97,14 @@ a:focus {
     border: 0;
 }
 
-.fixedHeaderContainer header img {
-    height: 40px;
-}
+/* 
+ * Sliding Nav: UL
+ *************/
 
 .navigationSlider .slidingNav ul {
     margin-right: 8px;
+    background-color: #1e1e1e;
+    margin-top: 64px;
 }
 
 .navigationSlider .slidingNav ul li {
@@ -102,6 +124,10 @@ a:focus {
     border: 0;
 }
 
+.navigationSlider .slidingNav ul li a:hover {
+    background-color: #313131;
+}
+
 .navigationSlider .slidingNav ul li.siteNavGroupActive a {
     cursor: default;
 }
@@ -118,14 +144,9 @@ a:focus {
     border-radius: 2px;
 }
 
-.navigationSlider .slidingNav ul li a:hover {
-    background-color: #313131;
-}
-
-.navigationSlider .slidingNav ul {
-    background-color: #1e1e1e;
-    margin-top: 64px;
-}
+/* 
+ * Navigation Breadcrumb
+ ***********************/
 
 .docsNavContainer .toc .navBreadcrumb {
     background-color: #212121;
@@ -137,12 +158,20 @@ a:focus {
     color: #eee;
 }
 
+/* 
+ * Icon for Table of contents
+ ****************************/
+
 .icon-toc,
 .icon-toc:before,
 .icon-toc:after {
     background-color: #eee;
     border: 1px solid #eee;
 }
+
+/* 
+ * Nav toggle
+ ****************************/
 
 .toc .toggleNav .navToggle i:before,
 .toc .toggleNav .navToggle i:after {
@@ -155,6 +184,10 @@ a:focus {
     border-width: 5px 0;
 }
 
+/* 
+ * Breadcrumb sheveron
+ ****************************/
+
 .toggleNav h2 i {
     color: white;
     font-style: normal;
@@ -164,6 +197,10 @@ a:focus {
   Previous and Next Buttons:
   Buttons at bottom of each docs page.
 \*------------------------------------*/
+
+/* 
+ * Next / Previous buttons
+ ****************************/
 
 .docs-prevnext .button {
     color: #eee;
@@ -252,7 +289,11 @@ a:focus {
   Nav list on the left (ltr) of doc pages.
 \*------------------------------------*/
 
-.toc .toggleNav .navGroup .navGroupCategoryTitle {
+/* 
+ * Article navigation title
+ ****************************/
+
+ .toc .toggleNav .navGroup .navGroupCategoryTitle {
     color: #eee;
     font-size: 14px;
     font-weight: 500;
@@ -264,7 +305,11 @@ a:focus {
     cursor: default;
 }
 
-.toc .toggleNav ul {
+/* 
+ * Article navigation
+ ****************************/
+
+ .toc .toggleNav ul {
     padding: 0;
 }
 
@@ -316,7 +361,11 @@ a:focus {
   The markdown area of each docs page.
 \*------------------------------------*/
 
-.hash-link {
+/* 
+ * Hash link
+ ****************************/
+
+ .hash-link {
     fill: #fff;
     transition: all 0.15s ease-in-out;
 }
@@ -331,11 +380,19 @@ a:focus {
     fill: #fb356d;
 }
 
-.navPusher {
+/* 
+ * Nav pusher (pushes body down below header)
+ ****************************/
+
+ .navPusher {
     padding-top: 128px;
 }
 
-article h1 {
+/* 
+ * Elements in article
+ ****************************/
+
+ article h1 {
     font-size: 34px;
     line-height: 44px;
 }
@@ -421,7 +478,11 @@ article ul li {
   Navigation area on Right pane (LTR).
 \*------------------------------------*/
 
-ul.toc-headings {
+/* 
+ * Table of contents
+ ****************************/
+
+ ul.toc-headings {
     list-style-type: none;
     list-style-position: inside;
     margin: 0;
@@ -481,7 +542,11 @@ ul.toc-headings li a:focus {
   Intro page of site.
 \*------------------------------------*/
 
-.projectTitle {
+/* 
+ * Project title
+ ****************************/
+
+ .projectTitle {
     color: #eee;
     font-size: 24px;
     line-height: 32px;
@@ -496,7 +561,11 @@ ul.toc-headings li a:focus {
     margin: 8px 0 0 0;
 }
 
-.promoSection {
+/* 
+ * Promo section
+ ****************************/
+
+ .promoSection {
     color: #eee;
     display: flex;
     flex-flow: column wrap;
@@ -509,7 +578,11 @@ ul.toc-headings li a:focus {
     padding: 0 4px;
 }
 
-.button {
+/* 
+ * Promo section buttons
+ ****************************/
+
+ .button {
     color: #eee;
     background-color: transparent;
     border-width: 1px;
@@ -544,7 +617,6 @@ ul.toc-headings li a:focus {
     outline: none;
     border: 1px solid #eee;
     color: #eee;
-
 }
 
 .button:hover {
