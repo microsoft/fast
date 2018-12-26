@@ -19,20 +19,9 @@ import {
     FormSectionProps,
     OneOfAnyOf,
     oneOfAnyOfType,
-    OptionalToggleConfig,
     SchemaSubsectionConfig,
 } from "./form-section.props";
 import { mappingName } from "./form-item";
-
-export interface OptionalToggle {
-    id: number | string;
-    label: string;
-    selected: boolean;
-    selectedString: string;
-    unselectedString: string;
-    name: string;
-    updateRequested: (value: any, id: string) => void;
-}
 
 /**
  * Validate a schema against a set of data
@@ -235,92 +224,6 @@ export function generateExampleData(schema: any, propertyLocation: string): any 
     }
 
     return getExample(schemaSection);
-}
-
-function getPropertyLocation(dataLocation: string, propertyName: string): string {
-    return dataLocation === "" ? propertyName : `${dataLocation}.${propertyName}`;
-}
-
-function getIsNotRequiredList(schema: any): string[] {
-    return schema.not && schema.not.required ? schema.not.required : void 0;
-}
-
-function getOptionalToggle(
-    config: OptionalToggleConfig,
-    key: string,
-    propertyLocation: string
-): OptionalToggle {
-    return {
-        id: uniqueId(),
-        label: config.schema.properties[key].title || "Untitled",
-        selected: isSelected(key, config.data),
-        selectedString: "On",
-        unselectedString: "Off",
-        name: "defaultSelected",
-        updateRequested: (value: any, id: string): void => {
-            config.onChange(
-                propertyLocation,
-                value
-                    ? void 0
-                    : get(config.dataCache, propertyLocation) ||
-                      generateExampleData(config.schema, `properties.${key}`)
-            );
-        },
-    };
-}
-
-function checkIsPropertyOptional(required: string[], key: string): boolean {
-    for (const requiredItem of required) {
-        if (requiredItem === key) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-function getPropertyKeys(schema: any): string[] {
-    return schema.properties ? Object.keys(schema.properties) : [];
-}
-
-/**
- * Get the optional objects in the schema.
- */
-export function getOptionalToggles(config: OptionalToggleConfig): OptionalToggle[] {
-    const optionalObjects: OptionalToggle[] = [];
-    const required: string[] = config.schema.required || [];
-    const propertyKeys: string[] = getPropertyKeys(config.schema);
-    const notRequiredList: string[] = getIsNotRequiredList(config.schema);
-
-    for (const key of propertyKeys) {
-        const isOptional: boolean = checkIsPropertyOptional(required, key);
-        const isObject: boolean =
-            config.schema.properties[key].type === "object" ||
-            config.schema.properties[key].properties;
-        const isOneOfAnyOf: boolean =
-            config.schema.properties[key].anyOf || config.schema.properties[key].oneOf;
-        const isNotRequired: boolean = getIsNotRequired(key, notRequiredList);
-        const propertyLocation: string = getPropertyLocation(config.dataLocation, key);
-
-        if (!isNotRequired && isOptional && (isObject || isOneOfAnyOf)) {
-            optionalObjects.push(getOptionalToggle(config, key, propertyLocation));
-        }
-    }
-
-    return optionalObjects;
-}
-
-/**
- * Determines if this property has been selected
- */
-function isSelected(propertyKey: string, data: any): boolean {
-    let selected: boolean = false;
-
-    if (data && data[propertyKey]) {
-        selected = true;
-    }
-
-    return selected;
 }
 
 function getSchemaLocation(schemaLocation: string, oneOfAnyOf: any): string {

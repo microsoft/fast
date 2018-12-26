@@ -187,9 +187,12 @@ export function applyHeaderStyle(): CSSRules<{}> {
 
 export function applyGlobalStyle(): CSSRules<{}> {
     return {
-        'body > div > li[draggable="true"]': {
-            ...listItem,
-            ...draggingStyles,
+        'body > li[draggable="true"]': {
+            boxShadow: `0 ${toPx(4)} ${toPx(4)} ${toPx(-4)} rgba(0, 0, 0, 0.15)`,
+            borderColor: "transparent",
+            listStyleType: "none",
+            listStyle: "none",
+            background: colors.containerBackground,
         },
     };
 }
@@ -199,20 +202,6 @@ export function applyListItemStyle(): CSSRules<{}> {
         "& li": listItem,
     };
 }
-
-export const draggingStyles: CSSRules<{}> = {
-    boxShadow: `0 ${toPx(4)} ${toPx(4)} ${toPx(-4)} rgba(0, 0, 0, 0.15)`,
-    borderColor: "transparent",
-    display: "flex",
-    "&::after": {
-        background: rightArrow,
-        right: toPx(0),
-    },
-    "&::before": {
-        background: lines,
-        left: toPx(0),
-    },
-};
 
 export const listItem: CSSRules<{}> = {
     flex: "1 100%",
