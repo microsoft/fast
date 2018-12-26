@@ -37,6 +37,7 @@ export const textFieldOverrides: ComponentStyles<
         border: "none",
         flex: "1 0 0",
         background: "transparent",
+        minWidth: "inherit",
         "&:hover, &:focus, &:disabled": {
             border: "none",
             boxShadow: "none",
@@ -76,6 +77,7 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
         width: "auto",
         marginTop: "8px",
         margin: "auto",
+        fill: designSystem.foregroundColor,
     };
 
     return {
@@ -124,6 +126,11 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
             transition: "color .1s, background-color .1s, border-color 0.2s ease-in-out",
             flex: "0 0 auto",
             cursor: "pointer",
+            // Because button is passed as a rendered prop, there is no way to access internal
+            // selectors and pass style via jssStyleSheet prop
+            "& svg": {
+                fill: designSystem.foregroundColor,
+            },
         },
         textAction_beforeGlyph: {
             ...glyphStyles,
