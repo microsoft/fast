@@ -11,7 +11,7 @@ class Footer extends React.Component {
   docUrl(doc, language) {
     const baseUrl = this.props.config.baseUrl;
     return `${baseUrl}docs/${language ? `${language}/` : ''}${doc}`;
-  }
+}
 
   pageUrl(doc, language) {
     const baseUrl = this.props.config.baseUrl;
@@ -21,43 +21,40 @@ class Footer extends React.Component {
   render() {
     return (
       <footer className="nav-footer" id="footer">
-        {/* <section className="sitemap">
-          <a href={this.props.config.baseUrl} className="nav-home">
+        { <section className="sitemap">
+           {/* <a href={this.props.config.baseUrl} className="nav-home"> 
             {this.props.config.footerIcon && (
               <img
+                className="footer-logo"
                 src={this.props.config.baseUrl + this.props.config.footerIcon}
                 alt={this.props.config.title}
                 width="66"
                 height="58"
               />
             )}
-          </a>
+          </a> */}
           <div>
-            <h5>Docs</h5>
-            <a href={this.docUrl('doc1.html', this.props.language)}>
-              Getting Started (or other categories)
-            </a>
-            <a href={this.docUrl('doc2.html', this.props.language)}>
-              Guides (or other categories)
-            </a>
-            <a href={this.docUrl('doc3.html', this.props.language)}>
-              API Reference (or other categories)
+            <h5>Documentation</h5>
+            <a href={this.docUrl('contributing/install', this.props.language)}>
+              Install
             </a>
           </div>
           <div>
             <h5>Community</h5>
-            <a href={this.pageUrl('users.html', this.props.language)}>
-              User Showcase
-            </a>
             <a
-              href="http://stackoverflow.com/questions/tagged/"
+              href="http://stackoverflow.com/questions/tagged/fast-dna"
               target="_blank"
               rel="noreferrer noopener">
               Stack Overflow
             </a>
-            <a href="https://discordapp.com/">Project Chat</a>
             <a
-              href="https://twitter.com/"
+              href="https://discord.gg/FcSNfg4"
+              target="_blank"
+              rel="noreferrer noopener">
+              Discord
+            </a>
+            <a
+              href="https://twitter.com/FAST_DNA"
               target="_blank"
               rel="noreferrer noopener">
               Twitter
@@ -65,33 +62,32 @@ class Footer extends React.Component {
           </div>
           <div>
             <h5>More</h5>
-            <a href={`${this.props.config.baseUrl}blog`}>Blog</a>
-            <a href="https://github.com/">GitHub</a>
+            <a
+              href="https://medium.com/fast-dna"
+              target="_blank"
+              rel="noreferrer noopener">
+              Blog
+            </a>
+            <a 
+              href="https://github.com/Microsoft/fast-dna"
+              target="_blank">
+              GitHub
+            </a>
             <a
               className="github-button"
-              href={this.props.config.repoUrl}
+              href="https://github.com/microsoft/fast-dna"
               data-icon="octicon-star"
               data-count-href="/facebook/docusaurus/stargazers"
               data-show-count="true"
               data-count-aria-label="# stargazers on GitHub"
-              aria-label="Star this project on GitHub">
+              aria-label="Star microsoft/fast-dna on GitHub">
               Star
             </a>
           </div>
         </section>
 
-        <a
-          href="https://code.facebook.com/projects/"
-          target="_blank"
-          rel="noreferrer noopener"
-          className="fbOpenSource">
-          <img
-            src={`${this.props.config.baseUrl}img/oss_logo.png`}
-            alt="Facebook Open Source"
-            width="170"
-            height="45"
-          />
-        </a> */}
+
+      }
         <section className="copyright">{this.props.config.copyright}</section>
       </footer>
     );

@@ -22,7 +22,7 @@ const users = [
 
 const siteConfig = {
   title: 'FAST-DNA', // Title for your website.
-  tagline: 'Accelerate building Web sites and applications',
+  tagline: 'An unopinionated system of components, development tools, and utilities used à la carte or as a suite to build enterprise-grade websites and applications.',
   url: 'https://microsoft.github.io', // Your website URL
   baseUrl: '/fast-dna/', 
   // Base URL for your project */
@@ -39,9 +39,9 @@ const siteConfig = {
 
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
-    {doc: 'readme', label: 'Docs'},
+    {doc: 'en/contributing/install', label: 'Documentation'},
     {href: "https://github.com/microsoft/fast-dna", label: "GitHub"},
-    {href: "https://msft-docs.fast-dna.net", label: "Microsoft components"}
+    {href: "https://msft-docs.fast-dna.net", label: "Components"}
     // {doc: 'doc4', label: 'API'},
     // {page: 'help', label: 'Help'},
     // {blog: true, label: 'Blog'},
@@ -57,7 +57,7 @@ const siteConfig = {
 
   /* Colors for website */
   colors: {
-    primaryColor: '#343434',
+    primaryColor: '#1A1A1A',
     secondaryColor: '#FB356D',
   },
 
@@ -76,11 +76,11 @@ const siteConfig = {
   */
 
   // This copyright info is used in /core/Footer.js and blog RSS/Atom feeds.
-  copyright: `Copyright © ${new Date().getFullYear()} FAST-DNA`,
+  copyright: `© Microsoft ${new Date().getFullYear()}`,
 
   highlight: {
     // Highlight.js theme to use for syntax highlighting in code blocks.
-    theme: 'default',
+    theme: 'atom-one-dark',
   },
 
   // Add custom scripts here that would be placed in <script> tags.
@@ -96,10 +96,10 @@ const siteConfig = {
   twitterImage: 'img/logo.png',
 
   // Show documentation's last contributor's name.
-  // enableUpdateBy: true,
+   enableUpdateBy: true,
 
   // Show documentation's last update time.
-  // enableUpdateTime: true,
+   enableUpdateTime: true,
 
   // You may provide arbitrary config keys to be used as needed by your
   // template. For example, if you need your repo's URL...

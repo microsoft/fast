@@ -3,25 +3,25 @@
   "localized-strings": {
     "next": "Next",
     "previous": "Previous",
-    "tagline": "Accelerate building Web sites and applications",
+    "tagline": "An unopinionated system of components, development tools, and utilities used à la carte or as a suite to build enterprise-grade websites and applications.",
     "docs": {
-      "contributing/install": {
+      "en/contributing/install": {
         "title": "Contributing",
         "sidebar_label": "Install"
       },
-      "contributing/policies": {
+      "en/contributing/policies": {
         "title": "Contributing",
         "sidebar_label": "Policies"
       },
-      "contributing/standards": {
+      "en/contributing/standards": {
         "title": "Contributing",
         "sidebar_label": "Standards"
       },
-      "contributing/testing": {
+      "en/contributing/testing": {
         "title": "Contributing",
         "sidebar_label": "Testing"
       },
-      "contributing/working": {
+      "en/contributing/working": {
         "title": "Contributing",
         "sidebar_label": "Working"
       },
@@ -31,9 +31,9 @@
       }
     },
     "links": {
-      "Docs": "Docs",
+      "Documentation": "Documentation",
       "GitHub": "GitHub",
-      "Microsoft components": "Microsoft components"
+      "Components": "Components"
     },
     "categories": {
       "Getting started": "Getting started",
