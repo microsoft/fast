@@ -5,7 +5,8 @@ export default interface FormItemChildrenClassNameContract {
     formItemChildren: string;
     formItemChildren_control: string;
     formItemChildren_controlLabel: string;
-    formItemChildren_addedChildren: string;
+    formItemChildren_existingChildren: string;
+    formItemChildren_existingChildrenItem: string;
     formItemChildren_childrenList: string;
     formItemChildren_childrenListControl: string;
     formItemChildren_childrenListInput: string;

@@ -10,6 +10,7 @@ import {
     applySoftRemove,
     colors,
     insetStrongBoxShadow,
+    lines,
     rightArrow,
 } from "../utilities/form-input.style";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
@@ -18,9 +19,6 @@ import { FormItemChildrenClassNameContract } from "../class-name-contracts/";
 const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
     "@global": {
         ...applyGlobalStyle(),
-        'body > div > li[draggable="true"] button': {
-            display: "none",
-        },
     },
     formItemChildren: {
         position: "relative",
@@ -38,6 +36,7 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
                 ...ellipsis(),
                 width: "100%",
                 display: "inline-block",
+                verticalAlign: "bottom",
             },
         },
     },
@@ -46,8 +45,35 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
         display: "block",
         marginTop: toPx(12),
     },
-    formItemChildren_addedChildren: {
+    formItemChildren_existingChildren: {
         ...applyCleanListStyle(),
+    },
+    formItemChildren_existingChildrenItem: {
+        position: "relative",
+        height: "48px",
+        paddingLeft: "26px",
+        display: "flex",
+        alignItems: "center",
+        "&::before": {
+            position: "absolute",
+            content: "''",
+            opacity: ".6",
+            pointerEvents: "none",
+            top: "calc(50% - 8px)",
+            width: toPx(16),
+            height: toPx(16),
+            background: lines,
+            left: "0",
+        },
+        "& a": {
+            width: "calc(100% - 36px)",
+            "& span, i": {
+                ...ellipsis(),
+                width: "100%",
+                display: "inline-block",
+                verticalAlign: "bottom",
+            },
+        },
     },
     formItemChildren_childrenList: {
         ...applyCleanListStyle(),
@@ -100,6 +126,7 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
     formItemChildren_deleteButton: {
         ...applyRemoveItemStyle(),
         cursor: "pointer",
+        top: "calc(50% - 18px)",
     },
 };
 

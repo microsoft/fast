@@ -39,12 +39,9 @@ import {
     getOneOfAnyOfActiveIndex,
     getOneOfAnyOfSelectOptions,
     getOneOfAnyOfState,
-    getOptionalToggles,
     getSchemaSubsections,
-    handleToggleClick,
     isMapping,
     isSelect,
-    OptionalToggle,
     resolveExampleDataWithCachedData,
 } from "./form-section.utilities";
 import styles from "./form-section.style";

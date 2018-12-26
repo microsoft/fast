@@ -271,9 +271,9 @@ class FormItemChildren extends FormItemBase<
                     <i>{(instance as ChildComponentConfig).props.text}</i>
                 </React.Fragment>
             );
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**
@@ -284,22 +284,22 @@ class FormItemChildren extends FormItemBase<
         // must be supplied in order to accurately show drag movement
         // see: https://github.com/clauderic/react-sortable-hoc/issues/305
         return (
-            <div>
-                <SortableListItem key={uniqueId()}>
-                    <div className={this.props.managedClasses.formItemChildren_control}>
-                        <a
-                            aria-label={"Select to edit"}
-                            onClick={this.clickEditComponentFactory(item, index)}
-                        >
-                            <span>{this.generateChildOptionText(item)}</span>
-                            {this.renderExistingChildCaption(item)}
-                        </a>
-                    </div>
-                    <div className={this.props.managedClasses.formItemChildren_delete}>
-                        {this.renderExistingChildDelete(index)}
-                    </div>
-                </SortableListItem>
-            </div>
+            <SortableListItem
+                className={
+                    this.props.managedClasses.formItemChildren_existingChildrenItem
+                }
+                key={`item-${index}`}
+                id={uniqueId(index ? index.toString() : "")}
+            >
+                <a
+                    aria-label={"Select to edit"}
+                    onClick={this.clickEditComponentFactory(item, index)}
+                >
+                    <span>{this.generateChildOptionText(item)}</span>
+                    {this.renderExistingChildCaption(item)}
+                </a>
+                {this.renderExistingChildDelete(index)}
+            </SortableListItem>
         );
     };
 
@@ -388,7 +388,7 @@ class FormItemChildren extends FormItemBase<
                             <ul
                                 className={
                                     this.props.managedClasses
-                                        .formItemChildren_addedChildren
+                                        .formItemChildren_existingChildren
                                 }
                             >
                                 {childItems}
@@ -410,8 +410,9 @@ class FormItemChildren extends FormItemBase<
         e: React.KeyboardEvent<HTMLButtonElement>
     ): void => {
         switch (e.keyCode) {
-            case KeyCodes.tab:
             case KeyCodes.enter:
+                e.preventDefault();
+            case KeyCodes.tab:
                 if (this.state.childrenSearchTerm !== "") {
                     this.onAddComponent(
                         this.state.filteredChildOptions[

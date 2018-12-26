@@ -3,9 +3,10 @@
  */
 export default interface FormItemArrayClassNameContract {
     formItemArray: string;
-    formItemArray_actionMenu: string;
-    formItemArray_actionMenuItem__add: string;
-    formItemArray_actionMenuItem__remove: string;
-    formItemArray_header: string;
-    formItemArray_linkMenu: string;
+    formItemArray_control: string;
+    formItemArray_controlAddButton: string;
+    formItemArray_controlLabel: string;
+    formItemArray_existingItemList: string;
+    formItemArray_existingItemListItem: string;
+    formItemArray_existingItemRemoveButton: string;
 }
