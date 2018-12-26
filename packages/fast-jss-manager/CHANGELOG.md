@@ -3,62 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [3.0.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager@3.0.4...@microsoft/fast-jss-manager@3.0.5) (2018-11-29)
+<a name="3.0.6"></a>
+## [3.0.6](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager@3.0.5...@microsoft/fast-jss-manager@3.0.6) (2018-12-21)
 
 **Note:** Version bump only for package @microsoft/fast-jss-manager
-
-
-
-
-
-## [3.0.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager@3.0.3...@microsoft/fast-jss-manager@3.0.4) (2018-11-07)
-
-**Note:** Version bump only for package @microsoft/fast-jss-manager
-
-
-
-
-
-## [3.0.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager@3.0.2...@microsoft/fast-jss-manager@3.0.3) (2018-11-05)
-
-**Note:** Version bump only for package @microsoft/fast-jss-manager
-
-
-
-
-
-## [3.0.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager@3.0.1...@microsoft/fast-jss-manager@3.0.2) (2018-10-27)
-
-**Note:** Version bump only for package @microsoft/fast-jss-manager
-
-
-
-
-
-## [3.0.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager@3.0.0...@microsoft/fast-jss-manager@3.0.1) (2018-10-09)
-
-**Note:** Version bump only for package @microsoft/fast-jss-manager
-
-
-
-
-
-# [3.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager@2.2.0...@microsoft/fast-jss-manager@3.0.0) (2018-10-06)
-
-
-### Bug Fixes
-
-* allow nested at rules in styles without needing to define it in the class name contract ([#985](https://github.com/Microsoft/fast-dna/issues/985)) ([6479d4c](https://github.com/Microsoft/fast-dna/commit/6479d4c))
-
-
-### chore
-
-* remove the 'I' from interfaces ([#997](https://github.com/Microsoft/fast-dna/issues/997)) ([d924df8](https://github.com/Microsoft/fast-dna/commit/d924df8))
-
-
-### BREAKING CHANGES
-
-* Interfaces have been renamed to remove the "I".
 
 
 

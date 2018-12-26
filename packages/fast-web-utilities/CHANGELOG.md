@@ -3,41 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [3.0.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-web-utilities@3.0.2...@microsoft/fast-web-utilities@3.0.3) (2018-11-07)
-
-**Note:** Version bump only for package @microsoft/fast-web-utilities
-
+<a name="3.0.4"></a>
+## [3.0.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-web-utilities@3.0.3...@microsoft/fast-web-utilities@3.0.4) (2018-12-21)
 
 
+### Bug Fixes
 
-
-## [3.0.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-web-utilities@3.0.1...@microsoft/fast-web-utilities@3.0.2) (2018-11-05)
-
-**Note:** Version bump only for package @microsoft/fast-web-utilities
-
-
-
-
-
-## [3.0.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-web-utilities@3.0.0...@microsoft/fast-web-utilities@3.0.1) (2018-10-27)
-
-**Note:** Version bump only for package @microsoft/fast-web-utilities
-
-
-
-
-
-# [3.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-web-utilities@2.2.0...@microsoft/fast-web-utilities@3.0.0) (2018-10-06)
-
-
-### chore
-
-* remove the 'I' from interfaces ([#997](https://github.com/Microsoft/fast-dna/issues/997)) ([d924df8](https://github.com/Microsoft/fast-dna/commit/d924df8))
-
-
-### BREAKING CHANGES
-
-* Interfaces have been renamed to remove the "I".
+* style cleanup and consolidation ([#1198](https://github.com/Microsoft/fast-dna/issues/1198)) ([4151f39](https://github.com/Microsoft/fast-dna/commit/4151f39))
 
 
 

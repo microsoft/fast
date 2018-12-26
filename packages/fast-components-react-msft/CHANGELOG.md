@@ -3,84 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [3.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.3.0...@microsoft/fast-components-react-msft@3.4.0) (2018-12-03)
+<a name="3.4.1"></a>
+## [3.4.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.4.0...@microsoft/fast-components-react-msft@3.4.1) (2018-12-21)
 
 
 ### Bug Fixes
 
-* updating typings to fix errors caused by [@types](https://github.com/types)/react update and TypeScript ([#1179](https://github.com/Microsoft/fast-dna/issues/1179)) ([230e03a](https://github.com/Microsoft/fast-dna/commit/230e03a))
-
-
-### Features
-
-* add action trigger component ([#1138](https://github.com/Microsoft/fast-dna/issues/1138)) ([4d21c42](https://github.com/Microsoft/fast-dna/commit/4d21c42))
-
-
-
-
-
-# [3.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.2.5...@microsoft/fast-components-react-msft@3.3.0) (2018-11-29)
-
-
-### Features
-
-* create breadcrumb as a new component ([#1125](https://github.com/Microsoft/fast-dna/issues/1125)) ([7882bf7](https://github.com/Microsoft/fast-dna/commit/7882bf7))
-
-
-
-
-
-## [3.2.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.2.4...@microsoft/fast-components-react-msft@3.2.5) (2018-11-21)
-
-**Note:** Version bump only for package @microsoft/fast-components-react-msft
-
-
-
-
-
-## [3.2.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.2.3...@microsoft/fast-components-react-msft@3.2.4) (2018-11-20)
-
-
-### Bug Fixes
-
-* correct misspelled button enum value ([#1148](https://github.com/Microsoft/fast-dna/issues/1148)) ([d117d27](https://github.com/Microsoft/fast-dna/commit/d117d27))
-
-
-
-
-
-## [3.2.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.2.2...@microsoft/fast-components-react-msft@3.2.3) (2018-11-14)
-
-**Note:** Version bump only for package @microsoft/fast-components-react-msft
-
-
-
-
-
-## [3.2.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.2.1...@microsoft/fast-components-react-msft@3.2.2) (2018-11-09)
-
-**Note:** Version bump only for package @microsoft/fast-components-react-msft
-
-
-
-
-
-## [3.2.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.2.0...@microsoft/fast-components-react-msft@3.2.1) (2018-11-07)
-
-**Note:** Version bump only for package @microsoft/fast-components-react-msft
-
-
-
-
-
-# [3.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.1.1...@microsoft/fast-components-react-msft@3.2.0) (2018-11-05)
-
-
-### Features
-
-* add context menu ([#1080](https://github.com/Microsoft/fast-dna/issues/1080)) ([e0106c4](https://github.com/Microsoft/fast-dna/commit/e0106c4))
-* add tests to ensure all components are exported in base and MSFT ([#1061](https://github.com/Microsoft/fast-dna/issues/1061)) ([fbebbad](https://github.com/Microsoft/fast-dna/commit/fbebbad))
-* performance updates to JSS Manager ([#1110](https://github.com/Microsoft/fast-dna/issues/1110)) ([db4b753](https://github.com/Microsoft/fast-dna/commit/db4b753))
+* style cleanup and consolidation ([#1198](https://github.com/Microsoft/fast-dna/issues/1198)) ([4151f39](https://github.com/Microsoft/fast-dna/commit/4151f39))
+* update components to handle undefined className ([#1197](https://github.com/Microsoft/fast-dna/issues/1197)) ([2505d24](https://github.com/Microsoft/fast-dna/commit/2505d24))
 
 
 

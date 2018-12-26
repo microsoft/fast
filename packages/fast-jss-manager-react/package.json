@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-jss-manager-react",
   "description": "React HOC for managing component JSS stylesheets",
   "sideEffects": false,
-  "version": "3.1.6",
+  "version": "3.1.7",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -93,7 +93,7 @@
     "react": "^16.6.0"
   },
   "dependencies": {
-    "@microsoft/fast-jss-manager": "^3.0.5",
+    "@microsoft/fast-jss-manager": "^3.0.6",
     "hoist-non-react-statics": "^3.1.0"
   }
 }

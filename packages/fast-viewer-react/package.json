@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-viewer-react",
   "description": "An implementation of a React iframe that is self-contained.",
   "sideEffects": false,
-  "version": "4.0.7",
+  "version": "4.0.8",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -120,12 +120,12 @@
   },
   "dependencies": {
     "@microsoft/fast-application-utilities": "^3.0.1",
-    "@microsoft/fast-components-class-name-contracts-base": "^3.3.0",
+    "@microsoft/fast-components-class-name-contracts-base": "^3.3.1",
     "@microsoft/fast-components-foundation-react": "^2.0.0",
     "@microsoft/fast-data-utilities-react": "^1.0.0",
-    "@microsoft/fast-jss-manager": "^3.0.5",
-    "@microsoft/fast-jss-manager-react": "^3.1.6",
-    "@microsoft/fast-jss-utilities": "^3.0.5",
+    "@microsoft/fast-jss-manager": "^3.0.6",
+    "@microsoft/fast-jss-manager-react": "^3.1.7",
+    "@microsoft/fast-jss-utilities": "^3.0.6",
     "exenv-es6": "^1.0.0",
     "utility-types": "^2.1.0"
   }

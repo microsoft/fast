@@ -3,77 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [3.2.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@3.2.2...@microsoft/fast-development-site-react@3.2.3) (2018-12-03)
+<a name="3.2.4"></a>
+## [3.2.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@3.2.3...@microsoft/fast-development-site-react@3.2.4) (2018-12-21)
 
 **Note:** Version bump only for package @microsoft/fast-development-site-react
-
-
-
-
-
-## [3.2.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@3.2.1...@microsoft/fast-development-site-react@3.2.2) (2018-11-29)
-
-**Note:** Version bump only for package @microsoft/fast-development-site-react
-
-
-
-
-
-## [3.2.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@3.2.0...@microsoft/fast-development-site-react@3.2.1) (2018-11-21)
-
-**Note:** Version bump only for package @microsoft/fast-development-site-react
-
-
-
-
-
-# [3.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@3.1.3...@microsoft/fast-development-site-react@3.2.0) (2018-11-20)
-
-
-### Bug Fixes
-
-* add a check for a theme, if it is not available use an empty object ([#1151](https://github.com/Microsoft/fast-dna/issues/1151)) ([ded9c7c](https://github.com/Microsoft/fast-dna/commit/ded9c7c))
-
-
-### Features
-
-* add default message when no documentation is provided in development site ([#1096](https://github.com/Microsoft/fast-dna/issues/1096)) ([0e159d4](https://github.com/Microsoft/fast-dna/commit/0e159d4))
-* apply theme background color to examples view ([c67fedc](https://github.com/Microsoft/fast-dna/commit/c67fedc))
-
-
-
-
-
-## [3.1.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@3.1.2...@microsoft/fast-development-site-react@3.1.3) (2018-11-14)
-
-**Note:** Version bump only for package @microsoft/fast-development-site-react
-
-
-
-
-
-## [3.1.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@3.1.1...@microsoft/fast-development-site-react@3.1.2) (2018-11-09)
-
-**Note:** Version bump only for package @microsoft/fast-development-site-react
-
-
-
-
-
-## [3.1.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@3.1.0...@microsoft/fast-development-site-react@3.1.1) (2018-11-07)
-
-**Note:** Version bump only for package @microsoft/fast-development-site-react
-
-
-
-
-
-# [3.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@3.0.3...@microsoft/fast-development-site-react@3.1.0) (2018-11-05)
-
-
-### Features
-
-* performance updates to JSS Manager ([#1110](https://github.com/Microsoft/fast-dna/issues/1110)) ([db4b753](https://github.com/Microsoft/fast-dna/commit/db4b753))
 
 
 

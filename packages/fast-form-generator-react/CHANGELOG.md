@@ -3,121 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [3.2.6](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-form-generator-react@3.2.5...@microsoft/fast-form-generator-react@3.2.6) (2018-12-03)
-
-**Note:** Version bump only for package @microsoft/fast-form-generator-react
-
-
-
-
-
-## [3.2.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-form-generator-react@3.2.4...@microsoft/fast-form-generator-react@3.2.5) (2018-11-29)
-
-**Note:** Version bump only for package @microsoft/fast-form-generator-react
-
-
-
-
-
-## [3.2.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-form-generator-react@3.2.3...@microsoft/fast-form-generator-react@3.2.4) (2018-11-21)
-
-**Note:** Version bump only for package @microsoft/fast-form-generator-react
-
-
-
-
-
-## [3.2.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-form-generator-react@3.2.2...@microsoft/fast-form-generator-react@3.2.3) (2018-11-20)
+<a name="3.3.0"></a>
+# [3.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-form-generator-react@3.2.6...@microsoft/fast-form-generator-react@3.3.0) (2018-12-21)
 
 
 ### Bug Fixes
 
-* JSSManager should create stylesheets prior to initial render ([#1153](https://github.com/Microsoft/fast-dna/issues/1153)) ([25b5b68](https://github.com/Microsoft/fast-dna/commit/25b5b68))
-
-
-
-
-
-## [3.2.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-form-generator-react@3.2.1...@microsoft/fast-form-generator-react@3.2.2) (2018-11-14)
-
-**Note:** Version bump only for package @microsoft/fast-form-generator-react
-
-
-
-
-
-## [3.2.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-form-generator-react@3.2.0...@microsoft/fast-form-generator-react@3.2.1) (2018-11-09)
-
-**Note:** Version bump only for package @microsoft/fast-form-generator-react
-
-
-
-
-
-# [3.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-form-generator-react@3.1.0...@microsoft/fast-form-generator-react@3.2.0) (2018-11-07)
+* check for undefined rather than a falsey value when setting soft remove ([#1213](https://github.com/Microsoft/fast-dna/issues/1213)) ([b2abaef](https://github.com/Microsoft/fast-dna/commit/b2abaef))
 
 
 ### Features
 
-* add new package for react data utilities ([#1115](https://github.com/Microsoft/fast-dna/issues/1115)) ([dedaec6](https://github.com/Microsoft/fast-dna/commit/dedaec6))
-
-
-
-
-
-# [3.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-form-generator-react@3.0.2...@microsoft/fast-form-generator-react@3.1.0) (2018-11-05)
-
-
-### Features
-
-* performance updates to JSS Manager ([#1110](https://github.com/Microsoft/fast-dna/issues/1110)) ([db4b753](https://github.com/Microsoft/fast-dna/commit/db4b753))
-
-
-
-
-
-## [3.0.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-form-generator-react@3.0.1...@microsoft/fast-form-generator-react@3.0.2) (2018-10-27)
-
-**Note:** Version bump only for package @microsoft/fast-form-generator-react
-
-
-
-
-
-## [3.0.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-form-generator-react@3.0.0...@microsoft/fast-form-generator-react@3.0.1) (2018-10-09)
-
-
-### Bug Fixes
-
-* update peer dependencies to match expected versions ([#1009](https://github.com/Microsoft/fast-dna/issues/1009)) ([23997a3](https://github.com/Microsoft/fast-dna/commit/23997a3))
-
-
-
-
-
-# [3.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-form-generator-react@2.2.3...@microsoft/fast-form-generator-react@3.0.0) (2018-10-06)
-
-
-### Bug Fixes
-
-* allow nested at rules in styles without needing to define it in the class name contract ([#985](https://github.com/Microsoft/fast-dna/issues/985)) ([6479d4c](https://github.com/Microsoft/fast-dna/commit/6479d4c))
-
-
-### chore
-
-* remove the 'I' from interfaces ([#997](https://github.com/Microsoft/fast-dna/issues/997)) ([d924df8](https://github.com/Microsoft/fast-dna/commit/d924df8))
-
-
-### Features
-
-* refactor the form generator navigation and children API ([#963](https://github.com/Microsoft/fast-dna/issues/963)) ([8ae3051](https://github.com/Microsoft/fast-dna/commit/8ae3051))
-* update JSSManager context API ([#993](https://github.com/Microsoft/fast-dna/issues/993)) ([2114213](https://github.com/Microsoft/fast-dna/commit/2114213))
-
-
-### BREAKING CHANGES
-
-* Interfaces have been renamed to remove the "I".
-* This PR has breaking changes for the form generator API and the development site.
+* add ability to remove data from optional properties ([#1203](https://github.com/Microsoft/fast-dna/issues/1203)) ([f4d0f40](https://github.com/Microsoft/fast-dna/commit/f4d0f40))
+* update the form objects to use the same eye for soft removing them ([#1217](https://github.com/Microsoft/fast-dna/issues/1217)) ([a1cc1fd](https://github.com/Microsoft/fast-dna/commit/a1cc1fd))
 
 
 
