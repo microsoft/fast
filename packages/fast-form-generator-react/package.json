@@ -116,6 +116,7 @@
     "yargs": "^11.0.0"
   },
   "dependencies": {
-    "@microsoft/fast-data-utilities-react": "^1.1.0"
+    "@microsoft/fast-data-utilities-react": "^1.1.0",
+    "@microsoft/fast-web-utilities": "^3.0.3"
   }
 }
