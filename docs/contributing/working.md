@@ -6,7 +6,7 @@ sidebar_label: Working
 
 ## Managing Issues
 
-Well crafted issues improve the speed that work can be triaged, understood, and completed. To help guide this process [issue templates](https://github.com/Microsoft/fast-dna/tree/master/.github/ISSUE_TEMPLATE) exist to allow users to choose an appropriate [bug report](https://github.com/Microsoft/fast-dna/blob/master/.github/ISSUE_TEMPLATE/Bug_report.md), [feature request](https://github.com/Microsoft/fast-dna/blob/master/.github/ISSUE_TEMPLATE/Feature_request.md), or [custom template](https://github.com/Microsoft/fast-dna/blob/master/.github/ISSUE_TEMPLATE/Custom.md).
+Well crafted issues improve the speed that work can be triaged, understood, and completed. To help guide this process [issue templates](https://github.com/Microsoft/fast-dna/tree/master/.github/ISSUE_TEMPLATE) exist to allow users to choose an appropriate [bug report](https://github.com/Microsoft/fast-dna/blob/master/.github/ISSUE_TEMPLATE/report-a-bug.md) or [feature request](https://github.com/Microsoft/fast-dna/blob/master/.github/ISSUE_TEMPLATE/request-a-feature.md).
 
 Here's an excellent resource for [do's and don'ts](https://hackernoon.com/45-github-issues-dos-and-donts-dfec9ab4b612) when working with bugs, issues, and requests.
 
@@ -48,34 +48,11 @@ chore: add unit-tests for all components
 fix: update MSFT design system to use 3px border radius
 ```
 
-### Pull reqest template
+### Pull request template
 
 In addition to providing a properly formatted title for your pull request, we offer a template that will help guide you toward appropriate best practices and processes as well as provide additional information which will give those reviewing your request the context they need.
 
-``` Markdown
-<!--- Provide a summary of your changes in the title field above. -->
-
-## Description
-<!--- Describe your changes. -->
-
-## Motivation & context
-<!--- What problem does this change solve? -->
-<!--- Provide a link if you are addressing an open issue. -->
-
-## Issue type checklist
-<!--- What type of change are you submitting? Check the boxes that apply: -->
-- [ ] **Bug fix**: non-breaking change which fixes an issue, link to the issue above.
-- [ ] **New feature**: non-breaking change that adds functionality.
-- [ ] **Breaking change**: fix or feature that will cause current functionality to change.
-
-## Process & policy checklist
-<!--- Review the list and check the boxes that apply. -->
-- [ ] I have added tests for my changes.
-- [ ] I have tested my changes.
-- [ ] I have updated the project documentation to reflect my changes.
-- [ ] I have read the CONTRIBUTING documentation and followed the standards set for this project.
-
-```
+Open the [pull request template](https://github.com/Microsoft/fast-dna/blob/master/.github/pull_request_template.md).
 
 ### Interim commits
 
