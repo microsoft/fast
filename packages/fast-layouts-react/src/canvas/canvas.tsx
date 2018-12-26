@@ -25,6 +25,8 @@ export const canvasStyleSheet: ComponentStyles<CanvasClassNamesContract, undefin
  * Grid Canvas - this is the main content area of the grid.
  */
 export class Canvas extends Foundation<CanvasHandledProps, CanvasUnhandledProps, {}> {
+    public static displayName: string = "Canvas";
+
     /**
      * Default props for the Canvas component
      */

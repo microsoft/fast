@@ -93,6 +93,8 @@ export const paneStyleSheet: ComponentStyles<PaneClassNamesContract, undefined> 
 };
 
 export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneState> {
+    public static displayName: string = "Pane";
+
     /**
      * The default props of the Pane component
      */
