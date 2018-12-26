@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-dna",
-  "description": "Fast, adaptive, secure, and timeless design network architecture.",
+  "description": "An unopinionated system of components, development tools, and utilities used à la carte or as a suite to build enterprise-grade websites and applications.",
   "version": "1.8.0",
   "author": {
     "name": "Microsoft",
