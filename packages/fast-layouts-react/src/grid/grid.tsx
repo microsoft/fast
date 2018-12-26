@@ -31,6 +31,8 @@ export const gridStyleSheet: ComponentStyles<GridClassNamesContract, undefined> 
 };
 
 export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
+    public static displayName: string = "Grid";
+
     /**
      * Stores HTML tag for use in render
      */

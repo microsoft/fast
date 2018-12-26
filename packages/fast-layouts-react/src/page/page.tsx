@@ -27,6 +27,8 @@ export const pageStyleSheet: ComponentStyles<PageClassNamesContract, undefined> 
 };
 
 export class Page extends Foundation<PageHandledProps, PageUnhandledProps, {}> {
+    public static displayName: string = "Page";
+
     public static defaultProps: Partial<PageProps> = {
         margin: "minmax(5vw, 1fr)",
         maxWidth: "1600px",
