@@ -10,7 +10,9 @@ assignees: ''
 **Describe the bug; what happened?**
 
 **What are the steps to reproduce the issue?**
+
 Example:
+
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
@@ -21,8 +23,9 @@ Example:
 **If applicable, provide screenshots:**
 
 **In what environment did you see the issue?**
- - OS & Device: [e.g. MacOS, iOS, Windows, Linux] on [iPhone 7, PC]
- - Browser [e.g. Edge, Chrome, Safari, FireFox]
- - Version [e.g. 1.8.0]
+
+* OS & Device: [e.g. MacOS, iOS, Windows, Linux] on [iPhone 7, PC]
+* Browser [e.g. Edge, Chrome, Safari, FireFox]
+* Version [e.g. 1.8.0]
 
 **Is there any additional context?**
