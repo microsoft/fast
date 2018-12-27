@@ -80,14 +80,16 @@ class TextAction extends Foundation<
         if (this.props.disabled) {
             classNames = `${classNames} ${get(
                 this.props,
-                "managedClasses.textAction__disabled"
+                "managedClasses.textAction__disabled",
+                ""
             )}`;
         }
 
         if (this.state.focused) {
             classNames = `${classNames} ${get(
                 this.props,
-                "managedClasses.textAction__focus"
+                "managedClasses.textAction__focus",
+                ""
             )}`;
         }
 
@@ -123,7 +125,7 @@ class TextAction extends Foundation<
      */
     private generateButton(): React.ReactNode {
         return this.props.button(
-            get(this.props, "managedClasses.textAction_button"),
+            get(this.props, "managedClasses.textAction_button", ""),
             this.props.disabled
         );
     }
