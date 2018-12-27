@@ -621,6 +621,7 @@ ul.toc-headings li a:focus {
 
 .button:hover {
     background-color: #313131;
+    border-color: rgb(130, 130, 130);
 }
 
 /*------------------------------------*\
