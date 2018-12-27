@@ -34,7 +34,7 @@ const styles: ComponentStyles<TextFieldClassNameContract, DesignSystem> = (
             boxSizing: "border-box",
             borderRadius: toPx(designSystem.cornerRadius),
             padding: "10px",
-            margin: `0`,
+            margin: "0",
             height: density(defaultHeight)(designSystem),
             minHeight: toPx(minHeight),
             maxHeight: toPx(maxHeight),

@@ -18,7 +18,7 @@ const styles: ComponentStyles<DividerClassNameContract, DesignSystem> = (
         divider: {
             boxSizing: "content-box",
             height: "0",
-            margin: `0`,
+            margin: "0",
             border: "none",
             borderTop: `1px solid ${normalContrast(
                 designSystem.contrast,
