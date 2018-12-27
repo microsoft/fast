@@ -61,14 +61,13 @@ The above outlines the format for the **final** commit, but contributors have ma
 Typical interim commits may look like the following:
 
 ```terminal
-5ba3db6 Update toggle markup for accessibility
-84564a0 Add MSFT styles
-e142fd1 Rebase with master
-887815f Remove toggle underline on hover
-ac8326d Fix ts-lint errors
+5ba3db6 update toggle markup for accessibility
+84564a0 add MSFT styles
+887815f remove toggle underline on hover
+ac8326d update to resolve ts-lint errors
 ```
 
-As a core philosophy, we prefer [rebasing over merging](https://www.atlassian.com/git/tutorials/merging-vs-rebasing).
+Before submitting a pull request, [rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) your branch from master. Do not use ``git merge``, the *merge* button, or the *update* button provided by Github."
 
 ## Common commands
 
@@ -106,29 +105,14 @@ npm run watch
 ```
 
 ## Troubleshooting
-If you run into any errors and they seem unrelated to your work try the following procedure.
 
-1. Clean out old node_modules from all packages with Lerna.
+If you run into any errors and they seem unrelated to your work try the following procedure:
+
+Delete root node_modules (`fast-dna/node_modules`) then clean and reinstall all packages.
 
 ```bash
 lerna clean
-```
-
-1. Delete root node_modules (`fast-dna/node_modules`).
-
-```bash
-rm -rf
-```
-
-1. Reinstall all modules on root and modules across all packages using Lerna.
-
-```bash
 npm i
 lerna bootstrap
-```
-
-1. Fully test the project with Lerna.
-
-```bash
 lerna run test
 ```
