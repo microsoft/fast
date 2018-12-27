@@ -33,7 +33,6 @@ export const textFieldOverrides: ComponentStyles<
 > = {
     textField: {
         height: "100%",
-        marginTop: "0",
         border: "none",
         flex: "1 0 0",
         background: "transparent",
@@ -86,7 +85,7 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
             height: density(defaultHeight)(designSystem),
             minHeight: toPx(minHeight),
             maxHeight: toPx(maxHeight),
-            margin: `${density(designSystem.designUnit * 3)(designSystem)} 0`,
+            margin: "0",
             minWidth: "92px",
             ...outlinePattern.rest,
             background: ensuresBackgroundNormal,
@@ -126,11 +125,6 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
             transition: "color .1s, background-color .1s, border-color 0.2s ease-in-out",
             flex: "0 0 auto",
             cursor: "pointer",
-            // Because button is passed as a rendered prop, there is no way to access internal
-            // selectors and pass style via jssStyleSheet prop
-            "& svg": {
-                fill: designSystem.foregroundColor,
-            },
         },
         textAction_beforeGlyph: {
             ...glyphStyles,

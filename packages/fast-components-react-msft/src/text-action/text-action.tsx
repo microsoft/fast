@@ -75,7 +75,7 @@ class TextAction extends Foundation<
      * Generates class names
      */
     protected generateClassNames(): string {
-        let classNames: string = get(this.props, "managedClasses.textAction");
+        let classNames: string = get(this.props, "managedClasses.textAction", "");
 
         if (this.props.disabled) {
             classNames = `${classNames} ${get(
@@ -134,12 +134,11 @@ class TextAction extends Foundation<
     private generateAfterGlyph(): React.ReactNode {
         if (typeof this.props.afterGlyph === "function") {
             if (
-                (this.buttonExists() &&
-                    this.props.buttonPosition !== TextActionButtonPosition.after) ||
-                !this.buttonExists()
+                !this.buttonExists() ||
+                this.props.buttonPosition !== TextActionButtonPosition.after
             ) {
                 return this.props.afterGlyph(
-                    get(this.props, "managedClasses.textAction_afterGlyph")
+                    get(this.props, "managedClasses.textAction_afterGlyph", "")
                 );
             }
         }
@@ -151,12 +150,11 @@ class TextAction extends Foundation<
     private generateBeforeGlyph(): React.ReactNode {
         if (typeof this.props.beforeGlyph === "function") {
             if (
-                (this.buttonExists() &&
-                    this.props.buttonPosition !== TextActionButtonPosition.before) ||
-                !this.buttonExists()
+                !this.buttonExists() ||
+                this.props.buttonPosition !== TextActionButtonPosition.before
             ) {
                 return this.props.beforeGlyph(
-                    get(this.props, "managedClasses.textAction_beforeGlyph")
+                    get(this.props, "managedClasses.textAction_beforeGlyph", "")
                 );
             }
         }
