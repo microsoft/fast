@@ -43,7 +43,6 @@ Widely available design systems from companies like Microsoft (Fluent), Google (
 Because FAST-DNA has abstracted base components from their style, you get a head start on your design system by building on top of tried and true base components and style libraries like our offerings for color, animation, and elevation.
 
 ## Packages
-
 FAST-DNA is a mono repository managed with [Lerna](https://github.com/lerna/lerna). Users choose à la carte which package to use in their project.
 
 ## Documentation
