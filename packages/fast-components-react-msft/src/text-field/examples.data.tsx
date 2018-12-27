@@ -36,6 +36,11 @@ export default {
             defaultValue: "Disabled",
         },
         {
+            disabled: true,
+            type: TextFieldType.text,
+            placeholder: "Disabled placeholder",
+        },
+        {
             placeholder: "Enter Password",
             type: TextFieldType.password,
         },

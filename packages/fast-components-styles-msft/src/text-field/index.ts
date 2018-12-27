@@ -34,7 +34,7 @@ const styles: ComponentStyles<TextFieldClassNameContract, DesignSystem> = (
             boxSizing: "border-box",
             borderRadius: toPx(designSystem.cornerRadius),
             padding: "10px",
-            margin: `${density(designSystem.designUnit * 3)(designSystem)} 0`,
+            margin: `0`,
             height: density(defaultHeight)(designSystem),
             minHeight: toPx(minHeight),
             maxHeight: toPx(maxHeight),
@@ -52,6 +52,9 @@ const styles: ComponentStyles<TextFieldClassNameContract, DesignSystem> = (
                 ...outlinePattern.disabled,
                 ...typographyPattern.disabled,
                 cursor: "not-allowed",
+                "&::placeholder": {
+                    ...typographyPattern.disabled,
+                },
             },
             "&::placeholder": {
                 color: foregroundNormal,
