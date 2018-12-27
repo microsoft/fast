@@ -87,7 +87,7 @@ class HomeSplash extends React.Component {
           <PromoSection>
             <Button target="_blank" href="https://github.com/microsoft/fast-dna">GitHub</Button>
             <Button target="_blank" href="https://msft-docs.fast-dna.net">Components</Button>
-            <Button href={docUrl('contributing/install', language)}>Documentation</Button>
+            <Button href={docUrl('en/contributing/install', language)}>Documentation</Button>
           </PromoSection>
         </div>
       </SplashContainer>
