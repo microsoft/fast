@@ -1,6 +1,6 @@
-This website was created with [Docusaurus](https://docusaurus.io/).
-
 # What's In This Document
+
+This website was created with [Docusaurus](https://docusaurus.io/).
 
 * [Get Started in 5 Minutes](#get-started-in-5-minutes)
 * [Directory Structure](#directory-structure)
@@ -8,20 +8,18 @@ This website was created with [Docusaurus](https://docusaurus.io/).
 * [Adding Content](#adding-content)
 * [Full Documentation](#full-documentation)
 
-# Get Started in 5 Minutes
+## Get Started in 5 Minutes
 
 1. Make sure all the dependencies for the website are installed:
 
 ```sh
-# Install dependencies
-$ npm install
+npm install
 ```
 
 2. Run your dev server:
 
 ```sh
-# Start the site
-$ npm start
+npm start
 ```
 
 ## Directory Structure
@@ -29,15 +27,12 @@ $ npm start
 Your project file structure should look something like this
 
 ```text
-my-docusaurus/
+fast-dna/
   docs/
     doc-1.md
     doc-2.md
     doc-3.md
   website/
-    blog/
-      2016-3-11-oldest-post.md
-      2017-10-24-newest-post.md
     core/
     node_modules/
     pages/
@@ -49,9 +44,9 @@ my-docusaurus/
     siteConfig.js
 ```
 
-# Editing Content
+## Editing Content
 
-## Editing an existing docs page
+### Editing an existing docs page
 
 Edit docs by navigating to `docs/` and editing the corresponding document:
 
@@ -68,11 +63,12 @@ Edit me...
 
 For more information about docs, click [here](https://docusaurus.io/docs/en/navigation)
 
-## Editing an existing blog post
+### Editing an existing blog post
 
 Edit blog posts by navigating to `website/blog` and editing the corresponding post:
 
 `website/blog/post-to-be-edited.md`
+
 ```markdown
 ---
 id: post-needs-edit
@@ -84,9 +80,9 @@ Edit me...
 
 For more information about blog posts, click [here](https://docusaurus.io/docs/en/adding-blog)
 
-# Adding Content
+## Adding Content
 
-## Adding a new docs page to an existing sidebar
+### Adding a new docs page to an existing sidebar
 
 1. Create the doc as a new markdown file in `/docs`, example `docs/newly-created-doc.md`:
 
@@ -102,7 +98,6 @@ My new content here..
 1. Refer to that doc's ID in an existing sidebar in `website/sidebar.json`:
 
 ```javascript
-// Add newly-created-doc to the Getting Started category of docs
 {
   "docs": {
     "Getting Started": [
@@ -116,37 +111,6 @@ My new content here..
 ```
 
 For more information about adding new docs, click [here](https://docusaurus.io/docs/en/navigation)
-
-## Adding a new blog post
-
-1. Make sure there is a header link to your blog in `website/siteConfig.js`:
-
-`website/siteConfig.js`
-
-```javascript
-headerLinks: [
-    ...
-    { blog: true, label: 'Blog' },
-    ...
-]
-```
-
-2. Create the blog post with the format `YYYY-MM-DD-My-Blog-Post-Title.md` in `website/blog`:
-
-`website/blog/2018-05-21-New-Blog-Post.md`
-
-```markdown
----
-author: Frank Li
-authorURL: https://twitter.com/foobarbaz
-authorFBID: 503283835
-title: New Blog Post
----
-
-Lorem Ipsum...
-```
-
-For more information about blog posts, click [here](https://docusaurus.io/docs/en/adding-blog)
 
 ## Adding items to your site's top navigation bar
 
@@ -192,6 +156,6 @@ For more information about the navigation bar, click [here](https://docusaurus.i
 
 For more information about custom pages, click [here](https://docusaurus.io/docs/en/custom-pages).
 
-# Full Documentation
+## Full Documentation
 
 Full documentation can be found on the [website](https://docusaurus.io/).
