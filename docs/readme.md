@@ -8,7 +8,7 @@ An unopinionated system of components, development tools, and utilities used à 
 
 ## Key features & benefits
 
-### unopinionated
+### Unopinionated
 
 These days, there are a million and one great ways to build your next Web site or application. So, we have made being unopinionated the center of every decision made in FAST-DNA.
 

@@ -80,10 +80,6 @@ Membership for Collaborators, having 'write' access, have major impact on the pr
 
 Collaborators can become a Code Owner for a specific package(s). They have the ability to approve a pull request that has made changes in those package(s) and at least one Code Owner will be required for any package.
 
-### Collaborators
-
-*Collaborators* have write access and have an active and sustained impact on the project and participate in triaging issues, reviewing code, mentoring, and working to improve the architectural quality.
-
 ### Contributors
 
 Membership for Contributors, having 'read' access, can be any individual who have shown interest by contributing a pull request to the project.

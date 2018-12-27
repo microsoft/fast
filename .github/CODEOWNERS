@@ -10,11 +10,13 @@
 # File type specific owners
 # Markdown specific files
 *.md    @awentzel @nalogiudice @chrisdholt @falkicon
+/docs/ @awentzel @nalogiudice @chrisdholt @falkicon
+/website/ @awentzel @nalogiudice @chrisdholt @falkicon
 
 # Package specific owners
 
 # fast-animation
-/packages/fast-animation/  @nicholasrice @chrisdholt
+/packages/fast-animation/ @nicholasrice @chrisdholt
 
 # fast-application-utils
 /packages/fast-application-utils/ @janechu @chrisdholt
@@ -80,6 +82,6 @@
 # Circle Ci
 .circleci/ @awentzel @janechu @nicholasrice @chrisdholt
 
-# DevOps
+# Build scripts
 *.yml @awentzel @janechu @nicholasrice @chrisdholt
-build/ @janechu @nicholasrice @chrisdholt
+build/ @janechu @nicholasrice @chrisdholt @awentzel

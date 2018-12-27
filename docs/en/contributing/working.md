@@ -22,9 +22,9 @@ One or more collaborators are automatically assigned to review each PR based on 
 
 **`<type>`** is required to be at least one of the following:
 
-- chore: A change that does not impact distributed packages
-- feat: Adding, updating, or removing a feature
-- fix: A bug fix.
+- **chore**: A change that does not impact distributed packages.
+- **fix**: A change which fixes an issue.
+- **feat**: A change that adds functionality.
 
 **`<description>`** is required and speaks to what the user gets from this PR:
 
