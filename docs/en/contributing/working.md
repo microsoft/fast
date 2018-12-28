@@ -20,40 +20,6 @@ PR commit messages should include the issue number per the [github closing issue
 
 One or more collaborators are automatically assigned to review each PR based on areas of [ownership](https://github.com/Microsoft/fast-dna/blob/master/.github/CODEOWNERS).
 
-**`<type>`** is required to be one of the following:
-
-- **chore**: A change that does not impact distributed packages.
-- **fix**: A change which fixes an issue.
-- **feat**: A change that adds functionality.
-
-**`<description>`** is required and speaks to what the user gets from this PR:
-
-- Be concise
-- Use lowercase
-- Use imperative, present tense (e.g. `add` not `adds`)
-- Do not end with a period. Period.
-- Avoid redundant words
-
-Accepted title format:
-
-```comment
-<type>: <description>
-```
-
-Example titles:
-
-```comment
-feat: add a border radius to MSFT button
-chore: add unit-tests for all components
-fix: update MSFT design system to use 3px border radius
-```
-
-### Pull request template
-
-In addition to providing a properly formatted title for your pull request, we offer a template that will help guide you toward appropriate best practices and processes as well as provide additional information which will give those reviewing your request the context they need.
-
-Open the [pull request template](https://github.com/Microsoft/fast-dna/blob/master/.github/pull_request_template.md).
-
 When a peer review is created, a [template](https://github.com/Microsoft/fast-dna/blob/master/.github/pull_request_template.md) is provided that includes the best practices and processes for a review message.
 
 ### Interim commits
@@ -110,7 +76,7 @@ npm run watch
 
 If you run into any errors and they seem unrelated to your work try the following procedure:
 
-Delete root node_modules (`fast-dna/node_modules`) then clean and reinstall all packages.
+Delete root node_modules (`fast-dna/node_modules`) then:
 
 ```bash
 lerna clean
@@ -118,3 +84,5 @@ npm i
 lerna bootstrap
 lerna run test
 ```
+
+See if your issue reproduces.
