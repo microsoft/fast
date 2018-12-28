@@ -63,4 +63,5 @@ Example titles:
 For additional information regarding working on FAST-DNA, check out our documentation site:
 https://microsoft.github.io/fast-dna/docs/en/contributing/working
 
+For additional information regarding working on FAST-DNA, check out our documentation site: https://microsoft.github.io/fast-dna/docs/en/contributing/working
 -->
