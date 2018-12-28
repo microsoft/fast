@@ -22,7 +22,37 @@
 
 ## Process & policy checklist
 
+<<<<<<< HEAD
 <!--- Review the list and check the boxes that apply. -->
+=======
+- break: update that changes the current functionality
+- chore: update that does not impact distributed packages
+- feat: add, update, or remove a feature
+- fix: remove property to resolve style issue
+
+**`<description>`** is required and speaks to what the user gets from this PR:
+
+- Be concise
+- Use lowercase
+- Use imperative, present tense (e.g. `add` not `adds`)
+- Do not end with a period
+- Avoid redundant words
+- Start your description with `add`, `update`, `remove`, or `break`
+
+Accepted title format
+
+```comment
+<type>: <description>
+```
+
+Example titles
+
+```comment
+chore: add unit tests for all components
+feat: add a border radius to button
+fix: update design system to use 3px border radius
+```
+>>>>>>> update to remove period statements
 
 - [ ] I have added tests for my changes.
 - [ ] I have tested my changes.
