@@ -12,6 +12,9 @@ export interface TextActionClassNameContract {
      */
     textAction__disabled: string;
 
+    /**
+     * The focused state
+     */
     textAction__focus: string;
 
     /**
