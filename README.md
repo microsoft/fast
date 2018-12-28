@@ -30,7 +30,7 @@ This principle of being unopinionated manifests in several important ways includ
 
 ### UI development and style guide tools
 
-When developing components and views, excellent development tooling can make all the difference. FAST-DNA offers development and style guide tools that work with FAST components, components from other frameworks, or your components. 
+When developing components and views, excellent development tooling can make all the difference. FAST-DNA offers development and style guide tools that work with FAST components, components from other frameworks, or your components.
 
 Try out component properties with an auto-generated props UI, get a live preview of the code based on any property’s configuration, preview localization (RTL/LTR) and themes, and preview component compositing with a transparency grid.
 
@@ -41,6 +41,48 @@ Also, we built FAST development tools from re-usable packages so, if you have sp
 Widely available design systems from companies like Microsoft (Fluent), Google (Material), or Salesforce (Lightning) are useful when it is essential to align with a platform or take advantage of a polished system at low cost, but many companies have their design system of their own, and some may have multiple design systems or variations.
 
 Because FAST-DNA has abstracted base components from their style, you get a head start on your design system by building on top of tried and true base components and style libraries like our offerings for color, animation, and elevation.
+
+## Getting started
+
+[//]: # (Test comment...)
+
+### Installing
+
+Once the repo has been cloned, install Lerna:
+
+```bash
+npm install -g lerna
+```
+
+Install dependencies in the root directory:
+
+```bash
+npm install
+```
+
+Install dependencies for packages within the project:
+
+```bash
+lerna bootstrap
+```
+
+Learn more about [installing](https://microsoft.github.io/fast-dna/docs/en/contributing/install).
+
+### Testing
+
+Run all tests for all packages:
+
+```bash
+lerna run test
+```
+
+Learn more about [testing](https://microsoft.github.io/fast-dna/docs/en/contributing/working).
+
+### Submitting a pull request
+
+Before submitting a pull request, [rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) your branch from master. Do not use ``git merge`` or the *merge* button provided by Github.
+
+Learn more about [submitting pull requests](https://microsoft.github.io/fast-dna/docs/en/contributing/working).
 
 ## Packages
 
