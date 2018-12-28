@@ -13,17 +13,17 @@
 
 <!--- What type of change are you submitting? Put an x in boxes that apply: -->
 
-[] **Chore**: A change that does not impact distributed packages.
-[] **Bug fix**: A change which fixes an issue, link to the issue above.
-[] **New feature**: A change that adds functionality.
+[ ] **Chore**: A change that does not impact distributed packages.
+[ ] **Bug fix**: A change which fixes an issue, link to the issue above.
+[ ] **New feature**: A change that adds functionality.
 
 **Is this a breaking change?**
 
 <!--- Is this a change that will cause current functionality to break? If yes, put an x in the "yes" box: -->
 
-[] Yes
+[ ] Yes
 
-<!--- If yes, describe the impact to FAST-DNA in detail. -->
+<!--- If yes, describe the impact. -->
 
 ## Process & policy checklist
 
