@@ -16,7 +16,7 @@ const defaultBreakpoints = [0, 540, 768, 1084, 1400, 1779];
 
 ### Setting custom breakpoint values
 
-Custom breakpoint values are defined by setting the `breakpoints` value on the BreakpointTracker class with new key:value pairs. Custom keys are supported, but the values must be numbers:
+Custom breakpoint values are defined by setting the `breakpoints` value on the BreakpointTracker class with new key:value pairs. Custom breakpoint values are defined by setting the breakpoints value on the BreakpointTracker class with a new array of number values:
 
 ```jsx
 // Set the public static value to your custom breakpoints
