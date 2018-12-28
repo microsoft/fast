@@ -104,3 +104,31 @@ Most packages have a *watch* command that rebuilds the package's distribution wh
 ```bash
 npm run watch
 ```
+
+## Troubleshooting
+If you run into any errors and they seem unrelated to your work try the following procedure.
+
+1. Clean out old node_modules from all packages with Lerna.
+
+```bash
+lerna clean
+```
+
+1. Delete root node_modules (`fast-dna/node_modules`).
+
+```bash
+rm -rf
+```
+
+1. Reinstall all modules on root and modules across all packages using Lerna.
+
+```bash
+npm i
+lerna bootstrap
+```
+
+1. Fully test the project with Lerna.
+
+```bash
+lerna run test
+```
