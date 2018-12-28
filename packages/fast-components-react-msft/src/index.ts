@@ -19,6 +19,7 @@ export * from "./paragraph";
 export * from "./progress";
 export * from "./radio";
 export * from "./subheading";
+export * from "./text-action";
 export * from "./text-field";
 export * from "./toggle";
 export * from "./typography";

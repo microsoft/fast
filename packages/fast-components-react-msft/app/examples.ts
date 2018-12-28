@@ -65,7 +65,10 @@ import SubheadingExamples from "../src/subheading/examples.data";
 Pattern.SubheadingExamples = SubheadingExamples;
 
 import ToggleExamples from "../src/toggle/examples.data";
-Foundation.ToggleExamples = ToggleExamples;
+Pattern.ToggleExamples = ToggleExamples;
+
+import TextActionExamples from "../src/text-action/examples.data";
+Pattern.TextActionExamples = TextActionExamples;
 
 import TextFieldExamples from "../src/text-field/examples.data";
 Foundation.TextFieldExamples = TextFieldExamples;
