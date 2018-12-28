@@ -1,22 +1,22 @@
-# Code owners have the ability to approve a pull request that has made changes in the below files or package(s).
-# At least one Code Owner will be required for any package.
+# Approval for at least one *code owner* is required all packages.
 
 # Lines starting with '#' are comments.
-# Each line is a file pattern followed by one or more owners
-# the last matching pattern has the most precendence.
+# Each line is a file pattern followed by one or more *code owners*.
+# The last matching pattern has the most precendence.
 
-# These owners will be the default owners for everything in the repo.
+# These *code owners* will be the default owners for everything in the repository.
 *       @chrisdholt @janechu @nicholasrice
 
 # File type specific owners
-
 # Markdown specific files
-*.md    @awentzel @nalogiudice @chrisdholt
+*.md    @awentzel @nalogiudice @chrisdholt @falkicon
+/docs/ @awentzel @nalogiudice @chrisdholt @falkicon
+/website/ @awentzel @nalogiudice @chrisdholt @falkicon
 
 # Package specific owners
 
 # fast-animation
-/packages/fast-animation/  @nicholasrice @chrisdholt
+/packages/fast-animation/ @nicholasrice @chrisdholt
 
 # fast-application-utils
 /packages/fast-application-utils/ @janechu @chrisdholt
@@ -82,6 +82,6 @@
 # Circle Ci
 .circleci/ @awentzel @janechu @nicholasrice @chrisdholt
 
-# DevOps
+# Build scripts
 *.yml @awentzel @janechu @nicholasrice @chrisdholt
-build/ @janechu @nicholasrice @chrisdholt
+build/ @janechu @nicholasrice @chrisdholt @awentzel

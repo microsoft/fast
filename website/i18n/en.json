@@ -6,27 +6,27 @@
     "tagline": "An unopinionated system of components, development tools, and utilities used à la carte or as a suite to build enterprise-grade websites and applications.",
     "docs": {
       "en/contributing/install": {
-        "title": "Contributing",
+        "title": "Install",
         "sidebar_label": "Install"
       },
       "en/contributing/policies": {
-        "title": "Contributing",
+        "title": "Policies",
         "sidebar_label": "Policies"
       },
       "en/contributing/standards": {
-        "title": "Contributing",
+        "title": "Standards",
         "sidebar_label": "Standards"
       },
       "en/contributing/testing": {
-        "title": "Contributing",
+        "title": "Testing",
         "sidebar_label": "Testing"
       },
       "en/contributing/working": {
-        "title": "Contributing",
+        "title": "Working",
         "sidebar_label": "Working"
       },
       "readme": {
-        "title": "Welcome to FAST-DNA",
+        "title": "FAST-DNA",
         "sidebar_label": "What is FAST-DNA"
       }
     },

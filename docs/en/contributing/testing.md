@@ -1,23 +1,21 @@
 ---
 id: testing
-title: Contributing
+title: Testing
 sidebar_label: Testing
 ---
 
-# Testing
-
-When building Web sites and apps on FAST-DNA it's recommended to perform exhaustive testing to instill the confidence that you've met your customers' expectations. The checklist below was compiled over the last few years and is a good starting point for manual testing Web applications.
-
 ## Checklist
+
+This testing checklist is a good starting point for manual testing web applications.
 
 1. Test each page for design and content issues
     1. Test screen sizes from viewport 1 to 6
     2. Test screen orientations
-       1. Portrait
-       2. Landscape
+        1. Portrait
+        2. Landscape
     3. Test word length and case
-        1. Test smallest amount of text
-        2. Test largest amount of text
+        1. Test the smallest amount of text
+        2. Test the largest amount of text
         3. Case sensitivity
 2. Test for localization (RTL, LTR)
 3. Test for progressive enhancement
@@ -34,55 +32,51 @@ When building Web sites and apps on FAST-DNA it's recommended to perform exhaust
 
 ## Manual testing
 
-There is a [FAST-DNA documentation site for MSFT Components](https://msft-docs.fast-dna.net) that includes built in developer and testing tools to manually test.
+FAST UI development tools offer a solution for manually testing components during development. Easily test with features such as viewport, localized direction (RTL or LTR), background transparency, color themes, and interactive properties.
 
-Additionally, there are services included in FAST-DNA under `./build/testing` that can be used to assist in comprehensive testing. The configuration and tests are included as a starting point and as functional and UI testing matures these may become part of the CI/CD pipeline.  As of now, these can be run manually and the cloud services dashboard can be used to evaluate your code changes prior to submitting for code review.
-
-For those interested in using these services contact the project maintainers on discord to gain access.
+Additionally, we offer testing services under `./build/testing` that can be used to assist in comprehensive testing. We have included these configurations and tests as a starting point. Run the tests manually, and the cloud services dashboard can be used to evaluate your code changes before submitting for code review.
 
 ### Testing on physical devices
 
-Testing local development code on physical devices in hand.
+When testing local code on physical devices, Localtunnel allows you to easily share a web service on your local machine without managing DNS and firewall settings.
 
-Localtunnel allows you to easily share a web service on your local development machine without messing with DNS and firewall settings.
+Localtunnel assigns a unique publicly accessible URL that proxies all requests to your local web server.
 
-Localtunnel will assign you a unique publicly accessible URL that will proxy all requests to your locally running web server.
+#### Quickstart
 
-Quickstart
-
-+ Install Localtunnel globally (requires NodeJS).
+Install Localtunnel globally (requires NodeJS):
 
 ```bash
 npm install -g localtunnel
 ```
 
-+ Start a web server on a local port (eg: http://localhost:8000) and use the command line interface to request a tunnel to the local server.
+* Start a web server on a local port (eg, [http://localhost:8000](http://localhost:8000)) and use the command line interface to request a tunnel to the local server:
 
 ```bash
 lt --port 8000
 ```
 
-+ You will receive a URL, for example https://gqgh.localtunnel.me, that you can share with anyone for as long as your local instance remains active. Any requests will be routed to your local service at the specified port.
+* You receive a URL to share as long as your local instance remains active. Requests route to your local service at the specified port.
 
 ### Testing with Sauce Labs
 
-[Sauce Labs](https://saucelabs.com/beta/dashboard/builds) allows collaborators and contributors to execute automated tests against Selenium WebDriver on pre-configured browser matrix's.
+[Sauce Labs](https://saucelabs.com/beta/dashboard/builds) lets collaborators and contributors execute automated tests against Selenium WebDriver on pre-configured browser matrix's.
 
-The cross browser testing strategy focuses on the differences between browser rendering engines. There are three different [configuration files](https://github.com/Microsoft/fast-dna/tree/master/build/testing) based on feature maturity of ongoing work.
+The cross-browser testing strategy focuses on the differences between browser rendering engines. There are three different [configuration files](https://github.com/Microsoft/fast-dna/tree/master/build/testing) based on feature maturity of ongoing work.
 
-[Alpha](https://github.com/Microsoft/fast-dna/blob/master/build/testing/config-browsers.alpha.js) Immature feature development
+[Alpha](https://github.com/Microsoft/fast-dna/blob/master/build/testing/config-browsers.alpha.js) - immature feature development:
 
 ```bash
 node build/testing/sauce-labs/test-browsers.js alpha
 ```
 
-[Beta](https://github.com/Microsoft/fast-dna/blob/master/build/testing/config-browsers.beta.js) Stable feature development
+[Beta](https://github.com/Microsoft/fast-dna/blob/master/build/testing/config-browsers.beta.js) - stable feature development:
 
 ```bash
 node build/testing/sauce-labs/test-browsers.js beta
 ```
 
-[Release](https://github.com/Microsoft/fast-dna/blob/master/build/testing/config-browsers.release.js) Mature feature development
+[Release](https://github.com/Microsoft/fast-dna/blob/master/build/testing/config-browsers.release.js) - mature feature development:
 
 ```bash
 node build/testing/sauce-labs/test-browsers.js release
@@ -90,15 +84,17 @@ node build/testing/sauce-labs/test-browsers.js release
 
 ### Testing with Applitools
 
-[Applitools](https://eyes.applitools.com/) can be used to visual regression test UI changes on your own branches allow to execute automated tests against Selenium WebDriver. Currently, ChromeDriver and FirefoxDriver are supported.
+[Applitools](https://eyes.applitools.com/) can be used to run visual regression tests on UI changes for your branches and allows you to execute automated tests against Selenium WebDriver with ChromeDriver and FirefoxDriver.
 
-Prior to making any UI changes on a new branch, it's recommended to initially run Applitools to create a baseline set of images.
+Before making any UI changes on a new branch, run Applitools to create a baseline set of images.
 
-1. The first time the test is executed on a new branch, screenshots are created as 'undefined' status.
-2. After the tests finish users should select all checkbox's and choose to save to generate the baseline image.
-3. Next perform UI code changes.
-4. Rerun the first set of tests and for all snapshots that match the baseline - they will turn green and show as 'passed' status. Any 'undefined' status would be additional UI changes added. Though to get into this scenario new test cases would be required in the `./run-msft-docs.js` file.  Any anomalies will be marked red as 'failed' status.
-5. Manually review all UI changes and if the changes are desired, select and choose to save the new baseline. Anything else should be changed and retested.
+1. When executing a test for the first time on a new branch, Applitools generates screenshots with an 'undefined' status.
+2. Once the tests finish, users should select all checkboxes and click **save** to generate the baseline image.
+3. Make changes to your UI code.
+4. Rerun the first set of tests and for all snapshots that match the baseline - the images turn green and show as 'passed' status. Any images with 'undefined' status would be caused by additional UI changes. Getting into this state requires new test cases in the `./run-msft-docs.js` file. Anomalies marked red have a 'failed' status.
+5. Manually verify all the UI changes and save the new baseline.
+
+Once undesired changes are fixed, retest:
 
 ```bash
 node build/testing/applitools/test-javascript.js
@@ -108,34 +104,34 @@ node build/testing/applitools/test-javascript.js
 
 Contributors can perform functional user interface and experience testing using [Cypress](https://www.cypress.io/).
 
-To validate Cypress is configured correctly.
+To validate Cypress is configured correctly:
 
 ```bash
 npm run ui-tests:verify
 ```
 
-Execute through Electron for real-time user interaction and debugging.
+Execute through Electron for real-time user interaction and debugging:
 
 ```bash
 npm run ui-tests:open
 ```
 
-Execute using the CLI.
+Execute using the CLI:
 
 ```bash
 npm run ui-tests:run
 ```
 
-_When running as CLI, the results can be viewed as printed out to the command screen or in the cloud dashboard._
+When running as CLI, the results can be viewed printing to the command screen or in the cloud dashboard.
 
 ## Cross browser testing
 
-You can read more from [Mozilla](https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Introduction) on cross browser testing and processes.
+You can read more from [Mozilla](https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Introduction) on cross-browser testing and processes.
 
-Click on the links below to report browser bugs.
+Report browser bugs by following these links:
 
-+ [Edge](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/)
-+ [Firefox](https://bugzilla.mozilla.org/)
-+ [Safari](https://bugs.webkit.org/)
-+ [Chrome](https://bugs.chromium.org/p/chromium/issues/list)
-+ [Opera](https://bugs.opera.com/wizard/desktop)
+* [Edge](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/)
+* [Firefox](https://bugzilla.mozilla.org/)
+* [Safari](https://bugs.webkit.org/)
+* [Chrome](https://bugs.chromium.org/p/chromium/issues/list)
+* [Opera](https://bugs.opera.com/wizard/desktop)
