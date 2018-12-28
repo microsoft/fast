@@ -1,23 +1,23 @@
 #!/usr/bin/env bash
-# To debug code coverage run with bash and debug (-x) from the directory root
+# To debug code coverage run with bash and debug (-x) from the directory root.
 # $ bash -x .circleci/run-coverage-locally.sh
 
-# Prebuilt Binaries
+# Prebuilt binaries
 # Choose a binary below that matches your build environment.
 # Linux : https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64gi
 # MacOS : https://codeclimate.com/downloads/test-reporter/test-reporter-latest-darwin-amd64 
 
-# Setup Code Climate test-reporter
-# If the package is not found then download from internet and set appropriate permissions
+# Setup the Code Climate test-reporter.
+# If the package is not found then download the package from code climate and set the appropriate permissions.
 if [ ! -f ./coverage/cc-test-reporter ]; then
     mkdir -p coverage/
     curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-darwin-amd64 > ./coverage/cc-test-reporter
     chmod +x ./coverage/cc-test-reporter
 fi
 
-# Code Coverage
-# Notify Code Climate that a build is about to start
-# Add --debug to cc-test-reporter when necessary
+# Code coverage
+# Notify Code Climate that a build is about to start.
+# Add --debug to cc-test-reporter when necessary.
 ./coverage/cc-test-reporter before-build
 
 for f in packages/*; do
