@@ -1,4 +1,4 @@
-# What's In This Document
+# What's in this document
 
 This website was created with [Docusaurus](https://docusaurus.io/).
 
@@ -8,7 +8,7 @@ This website was created with [Docusaurus](https://docusaurus.io/).
 * [Adding Content](#adding-content)
 * [Full Documentation](#full-documentation)
 
-## Get Started in 5 Minutes
+## Get started in 5 minutes
 
 1. Make sure all the dependencies for the website are installed:
 
@@ -22,7 +22,7 @@ npm install
 npm start
 ```
 
-## Directory Structure
+## Directory structure
 
 Your project file structure should look something like this
 
@@ -44,7 +44,7 @@ fast-dna/
     siteConfig.js
 ```
 
-## Editing Content
+## Editing content
 
 ### Editing an existing docs page
 
@@ -80,7 +80,7 @@ Edit me...
 
 For more information about blog posts, click [here](https://docusaurus.io/docs/en/adding-blog)
 
-## Adding Content
+## Adding content
 
 ### Adding a new docs page to an existing sidebar
 
@@ -156,6 +156,6 @@ For more information about the navigation bar, click [here](https://docusaurus.i
 
 For more information about custom pages, click [here](https://docusaurus.io/docs/en/custom-pages).
 
-## Full Documentation
+## Full documentation
 
 Full documentation can be found on the [website](https://docusaurus.io/).
