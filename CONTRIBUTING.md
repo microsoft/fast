@@ -2,8 +2,6 @@
 
 ## Getting started
 
-[//]: # (Test comment...)
-
 ### Installing
 
 Once the repo has been cloned, install Lerna:
@@ -34,7 +32,7 @@ Run all tests for all packages:
 lerna run test
 ```
 
-Learn more about [testing](https://microsoft.github.io/fast-dna/docs/en/contributing/working).
+Learn more about [testing](https://microsoft.github.io/fast-dna/docs/en/contributing/testing).
 
 ### Submitting a pull request
 
