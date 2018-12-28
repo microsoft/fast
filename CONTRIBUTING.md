@@ -1,4 +1,48 @@
-# Contribution policy
+# Contributing to FAST-DNA
+
+## Getting started
+
+[//]: # (Test comment...)
+
+### Installing
+
+Once the repo has been cloned, install Lerna:
+
+```bash
+npm install -g lerna
+```
+
+Install dependencies in the root directory:
+
+```bash
+npm install
+```
+
+Install dependencies for packages within the project:
+
+```bash
+lerna bootstrap
+```
+
+Learn more about [installing](https://microsoft.github.io/fast-dna/docs/en/contributing/install).
+
+### Testing
+
+Run all tests for all packages:
+
+```bash
+lerna run test
+```
+
+Learn more about [testing](https://microsoft.github.io/fast-dna/docs/en/contributing/working).
+
+### Submitting a pull request
+
+Before submitting a pull request, [rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) your branch from master. Do not use ``git merge`` or the *merge* button provided by Github.
+
+Learn more about [submitting pull requests](https://microsoft.github.io/fast-dna/docs/en/contributing/working).
+
+## Contribution policy
 A “Contribution” is any work that is voluntarily submitted to a project. This work may be code, documentation, design, answering questions, or even triaging issues.
 
 Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
