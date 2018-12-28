@@ -1,18 +1,22 @@
 # React Breakpoint Tracker
-`fast-breakpoint-tracker-react` is a React component for managing viewport breakpoints. Given a set of breakpoints, this component will monitor the width of the browser window and track the current active breakpoint.
+
+A library for managing viewport breakpoints. Given a set of breakpoints, this component will monitor the width of the browser window and track the current active breakpoint.
 
 ## Installation
+
 `npm i --save @microsoft/fast-breakpoint-tracker-react`
 
 ## Breakpoints
+
 `Breakpoints` are expected as an array. Six default breakpoint values are provided for convenience:
 
 ```jsx
 const defaultBreakpoints = [0, 540, 768, 1084, 1400, 1779];
 ```
 
-### Set custom breakpoint values
-Custom breakpoint values can be set by setting the `breakpoints` value on the BreakpointTracker class with new key:value pairs. Custom keys are supported, but the values must be numbers.
+### Setting custom breakpoint values
+
+Custom breakpoint values are defined by setting the `breakpoints` value on the BreakpointTracker class with new key:value pairs. Custom breakpoint values are defined by setting the breakpoints value on the BreakpointTracker class with a new array of number values:
 
 ```jsx
 // Set the public static value to your custom breakpoints
@@ -20,6 +24,7 @@ BreakpointTracker.breakpoints = [0, 800, 1024, 1559];
 ```
 
 ## Usage
+
 ```jsx
 import * as React from "react";
 import BreakpointTracker from "@microsoft/fast-breakpoint-tracker-react";
