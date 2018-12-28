@@ -20,17 +20,11 @@ PR commit messages should include the issue number per the [github closing issue
 
 One or more collaborators are automatically assigned to review each PR based on areas of [ownership](https://github.com/Microsoft/fast-dna/blob/master/.github/CODEOWNERS).
 
-**`<type>`** is required to be at least one of the following:
+**`<type>`** is required to be one of the following:
 
-<<<<<<< HEAD
 - **chore**: A change that does not impact distributed packages.
 - **fix**: A change which fixes an issue.
 - **feat**: A change that adds functionality.
-=======
-- chore: A change that does not impact distributed packages
-- feat: Adding, updating, or removing a feature
-- fix: A bug fix.
->>>>>>> update to add troubleshooting section
 
 **`<description>`** is required and speaks to what the user gets from this PR:
 
@@ -40,21 +34,13 @@ One or more collaborators are automatically assigned to review each PR based on 
 - Do not end with a period. Period.
 - Avoid redundant words
 
-<<<<<<< HEAD
 Accepted title format:
-=======
-Accepted title format
->>>>>>> update to add troubleshooting section
 
 ```comment
 <type>: <description>
 ```
 
-<<<<<<< HEAD
 Example titles:
-=======
-Example titles
->>>>>>> update to add troubleshooting section
 
 ```comment
 feat: add a border radius to MSFT button
@@ -68,6 +54,8 @@ In addition to providing a properly formatted title for your pull request, we of
 
 Open the [pull request template](https://github.com/Microsoft/fast-dna/blob/master/.github/pull_request_template.md).
 
+When a peer review is created, a [template](https://github.com/Microsoft/fast-dna/blob/master/.github/pull_request_template.md) is provided that includes the best practices and processes for a review message.
+
 ### Interim commits
 
 The above outlines the format for the **final** commit, but contributors have many interim commits while working on their branch. These commits should be succinct, concise, and consistent for best readability. Always remember, a diff tells you _what_ changed in a commit, but only the commit message can adequately tell you _why_.
@@ -75,11 +63,10 @@ The above outlines the format for the **final** commit, but contributors have ma
 Typical interim commits may look like the following:
 
 ```terminal
-5ba3db6 Update toggle markup for accessibility
-84564a0 Add MSFT styles
-e142fd1 Rebase with master
-887815f Remove toggle underline on hover
-ac8326d Fix ts-lint errors
+5ba3db6 update toggle markup for accessibility
+84564a0 add border styles
+e142fd1 rebase with master
+887815f remove toggle underline on hover
 ```
 
 Before submitting a pull request, [rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) your branch from master. Do not use ``git merge``, the *merge* button, or the *update* button provided by Github."
