@@ -1,4 +1,4 @@
-<!--- Provide a summary of your changes in the title field above. For guidance on formatting, see the comment the bottom of this template. -->
+<!--- Provide a summary of your changes in the title field above. For guidance on formatting, see the comment at the bottom of this template. -->
 
 # Description
 
@@ -11,17 +11,14 @@
 
 ## Issue type checklist
 
-<!--- What type of change are you submitting? Put an x in boxes that apply: -->
+<!--- What type of change are you submitting? Put an x in the box that applies: -->
 
 [ ] **Chore**: A change that does not impact distributed packages.
-[ ] **Bug fix**: A change which fixes an issue, link to the issue above.
+[ ] **Bug fix**: A change that fixes an issue, link to the issue above.
 [ ] **New feature**: A change that adds functionality.
 
 **Is this a breaking change?**
-
-<!--- Is this a change that will cause current functionality to break? If yes, put an x in the "yes" box: -->
-
-[ ] Yes
+[ ] This change causes current functionality to break.
 
 <!--- If yes, describe the impact. -->
 

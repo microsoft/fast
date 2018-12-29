@@ -31,7 +31,6 @@ Typical interim commits may look like the following:
 ```terminal
 5ba3db6 update toggle markup for accessibility
 84564a0 add border styles
-e142fd1 rebase with master
 887815f remove toggle underline on hover
 ```
 
