@@ -5,13 +5,18 @@ A Chrome extension for testing real-world localization, theming, and other produ
 
 ## Getting started
 
-1. Obtain a _chrome.pem_ key and save it in a convenient and secure location, you will need it later.
-2. Run `npm run dev:chrome`.
-3. Navigate to [chrome://extensions](chrome://extensions) in the Chrome browser.
-4. Click the **Load unpacked** button and select `dist/chrome` (relative to project root.)
-5. Click the 'Pack extension' button where:
-    * The **Extension root directory** is `dist/chrome` (relative to project root.)
-    * The **Private key file** is the _chrome.pem_ file you obtained.
+Obtain a _chrome.pem_ key and save it in a convenient and secure location, you will need it later.
+
+Run `npm run dev:chrome`.
+
+Navigate to [chrome://extensions](chrome://extensions) in the Chrome browser.
+
+Click the **Load unpacked** button and select `dist/chrome` (relative to project root.)
+
+Click the 'Pack extension' button where:
+
+* The **Extension root directory** is `dist/chrome` (relative to project root.)
+* The **Private key file** is the _chrome.pem_ file you obtained.
 
 ## Resources
 
