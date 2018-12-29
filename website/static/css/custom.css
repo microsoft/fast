@@ -526,6 +526,9 @@ ul.toc-headings li a {
     outline: none;
     cursor: default;
     border: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 ul.toc-headings li a:hover {
