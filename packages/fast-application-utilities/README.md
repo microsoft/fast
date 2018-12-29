@@ -14,7 +14,7 @@ isRTL("en");
 
 ### Typescript enum
 
-The Direction enum contains the ``ltr`` and ``rtl`` enum for use in a Typescript project.
+The Direction enum contains the `ltr` and `rtl` enum for use in a Typescript project.
 
 ```typescript
 import { Direction } from "@microsoft/fast-application-utilities";
