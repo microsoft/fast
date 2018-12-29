@@ -30,6 +30,11 @@ export default interface FormItemCommon {
     label: string;
 
     /**
+     * Whether this item is disabled
+     */
+    disabled?: boolean;
+
+    /**
      * The passed onChange function
      */
     onChange: (

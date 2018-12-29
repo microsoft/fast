@@ -63,6 +63,15 @@ describe("Textarea", () => {
         expect(handleChange).toHaveBeenCalled();
         expect(handleChange.mock.calls[0][1]).toEqual(undefined);
     });
+    test("should be disabled when disabled props is passed", () => {
+        const rendered: any = mount(
+            <Textarea {...textareaProps} data={"foo"} disabled={true} />
+        );
+        const wrapper: any = rendered.find("textarea");
+
+        expect(wrapper).toHaveLength(1);
+        expect(wrapper.prop("disabled")).toBeTruthy();
+    });
     test("should add the previous data that was removed if the soft remove is triggered", () => {
         const handleChange: any = jest.fn();
         const data: string = "foo";

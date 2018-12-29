@@ -29,6 +29,7 @@ class FormItemCheckbox extends FormItemBase<
                     value={value.toString()}
                     onChange={this.handleChange}
                     checked={value}
+                    disabled={this.props.disabled}
                 />
                 <span />
                 <label

@@ -55,6 +55,7 @@ class FormItemSelect extends FormItemBase<
                             }
                             onChange={this.handleChange}
                             value={JSON.stringify(value)}
+                            disabled={this.props.disabled}
                         >
                             {this.renderOptions()}
                         </select>

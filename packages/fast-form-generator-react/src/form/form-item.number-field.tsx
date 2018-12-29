@@ -58,6 +58,7 @@ class FormItemNumberField extends FormItemBase<
                         min={this.props.min}
                         max={this.props.max}
                         step={this.props.step}
+                        disabled={this.props.disabled}
                     />
                 </div>
                 <div className={this.props.managedClasses.formItemNumberField_softRemove}>

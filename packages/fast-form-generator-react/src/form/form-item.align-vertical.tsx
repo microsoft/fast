@@ -94,6 +94,7 @@ class FormItemAlignVertical extends FormItemBase<
                             aria-label={`${direction} align`}
                             onChange={this.onChange.bind(this, direction)}
                             checked={this.isChecked(direction)}
+                            disabled={this.props.disabled}
                         />
                     </span>
                 );

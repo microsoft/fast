@@ -35,6 +35,18 @@ describe("NumberField", () => {
 
         expect(rendered.find("label")).toHaveLength(1);
     });
+    test("should be disabled when disabled props is passed", () => {
+        const rendered: any = mount(
+            <NumberField {...numberFieldProps} disabled={true} />
+        );
+        expect(rendered.find("input")).toHaveLength(2);
+        expect(
+            rendered
+                .find("input")
+                .first()
+                .prop("disabled")
+        ).toBeTruthy();
+    });
     test("should have an `id` attribute on the HTML input element and a corresponding `for` attribute on the HTML label element", () => {
         const rendered: any = mount(<NumberField {...numberFieldProps} />);
         const input: any = rendered.find("input").at(0);

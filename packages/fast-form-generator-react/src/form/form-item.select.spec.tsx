@@ -88,6 +88,14 @@ describe("Select", () => {
         expect(handleChange.mock.calls[0][0]).toEqual("");
         expect(handleChange.mock.calls[0][1]).toEqual(2);
     });
+    test("should be disabled when disabled props is passed", () => {
+        const rendered: any = mount(
+            <Select {...selectProps} disabled={true} options={[1, 2]} />
+        );
+
+        expect(rendered.find("select")).toHaveLength(1);
+        expect(rendered.find("select").prop("disabled")).toBeTruthy();
+    });
     test("should remove the data if the soft remove is triggered", () => {
         const handleChange: any = jest.fn();
         const rendered: any = mount(
