@@ -13,12 +13,12 @@
 
 <!--- What type of change are you submitting? Put an x in the box that applies: -->
 
-[ ] **Chore**: A change that does not impact distributed packages.
-[ ] **Bug fix**: A change that fixes an issue, link to the issue above.
-[ ] **New feature**: A change that adds functionality.
+- [ ] **Chore**: A change that does not impact distributed packages.
+- [ ] **Bug fix**: A change that fixes an issue, link to the issue above.
+- [ ] **New feature**: A change that adds functionality.
 
 **Is this a breaking change?**
-[ ] This change causes current functionality to break.
+- [ ] This change causes current functionality to break.
 
 <!--- If yes, describe the impact. -->
 
@@ -26,10 +26,10 @@
 
 <!--- Review the list and check the boxes that apply. -->
 
-[ ] I have added tests for my changes.
-[ ] I have tested my changes.
-[ ] I have updated the project documentation to reflect my changes.
-[ ] I have read the [CONTRIBUTING](https://github.com/Microsoft/fast-dna/blob/master/CONTRIBUTING.md) documentation and followed the [standards](https://microsoft.github.io/fast-dna/docs/en/contributing/standards) for this project.
+- [ ] I have added tests for my changes.
+- [ ] I have tested my changes.
+- [ ] I have updated the project documentation to reflect my changes.
+- [ ] I have read the [CONTRIBUTING](https://github.com/Microsoft/fast-dna/blob/master/CONTRIBUTING.md) documentation and followed the [standards](https://microsoft.github.io/fast-dna/docs/en/contributing/standards) for this project.
 
 <!---
 Formatting guidelines:
