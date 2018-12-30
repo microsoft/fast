@@ -28,17 +28,6 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
     formItemChildren_control: {
         ...applyControl(),
         verticalAlign: "middle",
-        "& a": {
-            cursor: "pointer",
-            width: "100%",
-            display: "inline-block",
-            "& span, i": {
-                ...ellipsis(),
-                width: "100%",
-                display: "inline-block",
-                verticalAlign: "bottom",
-            },
-        },
     },
     formItemChildren_controlLabel: {
         ...applyLabelStyle(),
@@ -65,16 +54,18 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
             background: lines,
             left: "0",
         },
-        "& a": {
-            width: "calc(100% - 36px)",
-            "& span, i": {
-                ...ellipsis(),
-                width: "100%",
-                display: "inline-block",
-                verticalAlign: "bottom",
-            },
+    },
+    formItemChildren_existingChildrenItemAnchor: {
+        width: "calc(100% - 36px)",
+        "&$formItemChildren_existingChildrenItemSpan, &$formItemChildren_existingChildrenItemItalic": {
+            ...ellipsis(),
+            width: "100%",
+            display: "inline-block",
+            verticalAlign: "bottom",
         },
     },
+    formItemChildren_existingChildrenItemSpan: {},
+    formItemChildren_existingChildrenItemItalic: {},
     formItemChildren_childrenList: {
         ...applyCleanListStyle(),
         ...applyAriaHiddenStyles(),
@@ -85,13 +76,13 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
         right: "0",
         left: "0",
         zIndex: "1",
-        "& li": {
-            padding: "10px 8px 10px",
-            fontSize: "14px",
-            textAlign: "left",
-            '&[aria-selected="true"]': {
-                background: colors.pink,
-            },
+    },
+    formItemChildren_childrenListItem: {
+        padding: "10px 8px 10px",
+        fontSize: "14px",
+        textAlign: "left",
+        '&[aria-selected="true"]': {
+            background: colors.pink,
         },
     },
     formItemChildren_childrenListControl: {

@@ -1,4 +1,4 @@
-import { ellipsis, toPx } from "@microsoft/fast-jss-utilities";
+import { ellipsis, focusVisible, toPx } from "@microsoft/fast-jss-utilities";
 import {
     applyCleanListStyle,
     applyControl,
@@ -39,7 +39,7 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
         height: "16px",
         zIndex: "1",
         borderRadius: "2px",
-        "&:focus": {
+        [`&${focusVisible()}`]: {
             ...insetStrongBoxShadow(colors.pink),
             outline: "none",
         },
@@ -63,7 +63,6 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
     },
     formItemArray_existingItemList: {
         ...applyCleanListStyle(),
-        "& li": {},
     },
     formItemArray_existingItemListItem: {
         position: "relative",
@@ -81,14 +80,14 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
             background: lines,
             left: "0",
         },
-        "& a": {
-            ...ellipsis(),
-            cursor: "pointer",
-            display: "block",
-            height: "36px",
-            lineHeight: "36px",
-            width: "calc(100% - 36px)",
-        },
+    },
+    formItemArray_existingItemListItemAnchor: {
+        ...ellipsis(),
+        cursor: "pointer",
+        display: "block",
+        height: "36px",
+        lineHeight: "36px",
+        width: "calc(100% - 36px)",
     },
     formItemArray_existingItemRemoveButton: {
         ...applyRemoveItemStyle(),

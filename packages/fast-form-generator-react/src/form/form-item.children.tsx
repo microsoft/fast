@@ -243,6 +243,9 @@ class FormItemChildren extends FormItemBase<
 
                 return (
                     <li
+                        className={
+                            this.props.managedClasses.formItemChildren_childrenListItem
+                        }
                         key={uniqueId()}
                         role={"option"}
                         aria-selected={selected}
@@ -268,7 +271,14 @@ class FormItemChildren extends FormItemBase<
             return (
                 <React.Fragment>
                     <br />
-                    <i>{(instance as ChildComponentConfig).props.text}</i>
+                    <i
+                        className={
+                            this.props.managedClasses
+                                .formItemChildren_existingChildrenItemItalic
+                        }
+                    >
+                        {(instance as ChildComponentConfig).props.text}
+                    </i>
                 </React.Fragment>
             );
         }
@@ -293,9 +303,20 @@ class FormItemChildren extends FormItemBase<
             >
                 <a
                     aria-label={"Select to edit"}
+                    className={
+                        this.props.managedClasses
+                            .formItemChildren_existingChildrenItemAnchor
+                    }
                     onClick={this.clickEditComponentFactory(item, index)}
                 >
-                    <span>{this.generateChildOptionText(item)}</span>
+                    <span
+                        className={
+                            this.props.managedClasses
+                                .formItemChildren_existingChildrenItemSpan
+                        }
+                    >
+                        {this.generateChildOptionText(item)}
+                    </span>
                     {this.renderExistingChildCaption(item)}
                 </a>
                 {this.renderExistingChildDelete(index)}
