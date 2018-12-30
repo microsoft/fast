@@ -262,7 +262,14 @@ class FormItemArray extends FormItemBase<
                 key={`item-${index}`}
                 id={uniqueId(index.toString())}
             >
-                <a onClick={this.arrayClickHandlerFactory(value, index)}>{value}</a>
+                <a
+                    className={
+                        this.props.managedClasses.formItemArray_existingItemListItemAnchor
+                    }
+                    onClick={this.arrayClickHandlerFactory(value, index)}
+                >
+                    {value}
+                </a>
                 {this.renderDeleteArrayItemTrigger(index)}
             </SortableListItem>
         );
