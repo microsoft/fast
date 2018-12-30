@@ -274,7 +274,7 @@ class FormItemChildren extends FormItemBase<
                     <i
                         className={
                             this.props.managedClasses
-                                .formItemChildren_existingChildrenItemItalic
+                                .formItemChildren_existingChildrenItemContent
                         }
                     >
                         {(instance as ChildComponentConfig).props.text}
@@ -305,14 +305,14 @@ class FormItemChildren extends FormItemBase<
                     aria-label={"Select to edit"}
                     className={
                         this.props.managedClasses
-                            .formItemChildren_existingChildrenItemAnchor
+                            .formItemChildren_existingChildrenItemLink
                     }
                     onClick={this.clickEditComponentFactory(item, index)}
                 >
                     <span
                         className={
                             this.props.managedClasses
-                                .formItemChildren_existingChildrenItemSpan
+                                .formItemChildren_existingChildrenItemName
                         }
                     >
                         {this.generateChildOptionText(item)}

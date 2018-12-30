@@ -264,7 +264,7 @@ class FormItemArray extends FormItemBase<
             >
                 <a
                     className={
-                        this.props.managedClasses.formItemArray_existingItemListItemAnchor
+                        this.props.managedClasses.formItemArray_existingItemListItemLink
                     }
                     onClick={this.arrayClickHandlerFactory(value, index)}
                 >

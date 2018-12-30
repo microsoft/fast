@@ -30,8 +30,8 @@ const managedClasses: FormItemArrayClassNameContract = {
     formItemArray_controlLabel: "formItemArray_controlLabel-class",
     formItemArray_existingItemList: "formItemArray_existingItemList-class",
     formItemArray_existingItemListItem: "formItemArray_existingItemListItem-class",
-    formItemArray_existingItemListItemAnchor:
-        "formItemArray_existingItemListItemAnchor-class",
+    formItemArray_existingItemListItemLink:
+        "formItemArray_existingItemListItemLink-class",
     formItemArray_existingItemRemoveButton:
         "formItemArray_existingItemRemoveButton-class",
 };

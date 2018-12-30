@@ -55,17 +55,17 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
             left: "0",
         },
     },
-    formItemChildren_existingChildrenItemAnchor: {
+    formItemChildren_existingChildrenItemLink: {
         width: "calc(100% - 36px)",
-        "&$formItemChildren_existingChildrenItemSpan, &$formItemChildren_existingChildrenItemItalic": {
+        "&$formItemChildren_existingChildrenItemName, &$formItemChildren_existingChildrenItemContent": {
             ...ellipsis(),
             width: "100%",
             display: "inline-block",
             verticalAlign: "bottom",
         },
     },
-    formItemChildren_existingChildrenItemSpan: {},
-    formItemChildren_existingChildrenItemItalic: {},
+    formItemChildren_existingChildrenItemName: {},
+    formItemChildren_existingChildrenItemContent: {},
     formItemChildren_childrenList: {
         ...applyCleanListStyle(),
         ...applyAriaHiddenStyles(),
