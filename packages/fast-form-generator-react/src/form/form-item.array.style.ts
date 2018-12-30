@@ -81,7 +81,7 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
             left: "0",
         },
     },
-    formItemArray_existingItemListItemAnchor: {
+    formItemArray_existingItemListItemLink: {
         ...ellipsis(),
         cursor: "pointer",
         display: "block",
