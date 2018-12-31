@@ -14,6 +14,7 @@ import Tabs, {
     TabItem,
     TabPanel,
     TabsHandledProps,
+    TabsItem,
     TabsManagedClasses,
     TabsProps,
     TabsSlot,
@@ -1116,6 +1117,65 @@ describe("tabs", (): void => {
                 .at(2)
                 .prop("active")
         ).toBe(false);
+    });
+
+    function renderTab(tabTitle: string, className?: string): () => React.ReactNode {
+        return (): React.ReactNode => <div className={className}>{tabTitle}</div>;
+    }
+
+    function renderTabContent(
+        tabContent: string,
+        className?: string
+    ): () => React.ReactNode {
+        return (): React.ReactNode => <div className={className}>{tabContent}</div>;
+    }
+    const tabItem1: TabsItem = {
+        tab: renderTab("tab one"),
+        content: renderTabContent("tab one content"),
+        id: id0,
+    };
+
+    const tabItem2: TabsItem = {
+        tab: renderTab("tab two"),
+        content: renderTabContent("tab two content"),
+        id: id1,
+    };
+
+    const tabItem3: TabsItem = {
+        tab: renderTab("tab three"),
+        content: renderTabContent("tab three content"),
+        id: id2,
+    };
+    const detailTabItemData: TabsItem[] = [tabItem1, tabItem2, tabItem3];
+
+    test("should correctly render tabitems when given items", () => {
+        const renderedWithChildren: any = shallow(
+            <Tabs
+                managedClasses={tabsManagedClasses}
+                label={"items"}
+                items={detailTabItemData}
+            />
+        );
+
+        expect(renderedWithChildren.prop("children")).not.toBe(undefined);
+    });
+
+    test("should correctly set active ID", () => {
+        const renderedWithChildren: any = shallow(
+            <Tabs
+                managedClasses={tabsManagedClasses}
+                label={"items"}
+                activeId={id1}
+                items={detailTabItemData}
+            />
+        );
+
+        expect(
+            renderedWithChildren
+                .find("Tab")
+                .at(1)
+                .prop("tabIndex")
+        ).toEqual(0);
     });
 });
 

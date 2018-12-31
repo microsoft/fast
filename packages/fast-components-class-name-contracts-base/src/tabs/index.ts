@@ -16,6 +16,16 @@ export interface TabsClassNameContract {
      * The tab list
      */
     tabs_tabList?: string;
+
+    /**
+     * The content that renders in the tab
+     */
+    tabs_tabContent?: string;
+
+    /**
+     * The content that renders in the tab panel
+     */
+    tabs_tabPanelContent?: string;
 }
 
 export interface TabClassNameContract {
