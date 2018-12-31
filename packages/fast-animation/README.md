@@ -120,5 +120,5 @@ The public methods exposed by the ``AnimateGroup`` and ``AnimateSequence`` class
 
 ## Running the localhost testing environment
 
-* Run `npm run dev*server:react` to view the react examples (localhost:9005).
+* Run `npm run dev-server:react` to view the react examples (localhost:9005).
 * Run `npm run build` to compile files to the build folder.
