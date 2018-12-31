@@ -5,6 +5,10 @@
     "previous": "Previous",
     "tagline": "An unopinionated system of components, development tools, and utilities used à la carte or as a suite to build enterprise-grade websites and applications.",
     "docs": {
+      "en/contributing/creating-packages": {
+        "title": "Creating packages",
+        "sidebar_label": "Creating packages"
+      },
       "en/contributing/install": {
         "title": "Install",
         "sidebar_label": "Install"
@@ -36,7 +40,6 @@
       "Components": "Components"
     },
     "categories": {
-      "Getting started": "Getting started",
       "Contributing": "Contributing"
     }
   },
