@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.5.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.4.1...@microsoft/fast-components-react-msft@3.5.0) (2018-12-31)
+
+
+### Bug Fixes
+
+* remove margins from components and fix text-field placeholder color in disabled state ([#1240](https://github.com/Microsoft/fast-dna/issues/1240)) ([2871d66](https://github.com/Microsoft/fast-dna/commit/2871d66))
+* updated component readme.md files to be more consistent  ([#1232](https://github.com/Microsoft/fast-dna/issues/1232)) ([55f5eec](https://github.com/Microsoft/fast-dna/commit/55f5eec))
+
+
+### Features
+
+* add text action as a component ([#1208](https://github.com/Microsoft/fast-dna/issues/1208)) ([d7a7686](https://github.com/Microsoft/fast-dna/commit/d7a7686))
+
+
+
+
+
 <a name="3.4.1"></a>
 ## [3.4.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.4.0...@microsoft/fast-components-react-msft@3.4.1) (2018-12-21)
 

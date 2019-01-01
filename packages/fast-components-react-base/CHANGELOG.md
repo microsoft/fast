@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.5.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@3.4.1...@microsoft/fast-components-react-base@3.5.0) (2018-12-31)
+
+
+### Features
+
+* add support for render props to tabs  ([#1199](https://github.com/Microsoft/fast-dna/issues/1199)) ([19f482e](https://github.com/Microsoft/fast-dna/commit/19f482e))
+
+
+
+
+
 <a name="3.4.1"></a>
 ## [3.4.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@3.4.0...@microsoft/fast-components-react-base@3.4.1) (2018-12-21)
 
