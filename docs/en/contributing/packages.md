@@ -1,7 +1,7 @@
 ---
-id: creating-packages
-title: Creating packages
-sidebar_label: Creating packages
+id: packages
+title: Packages
+sidebar_label: Packages
 ---
 
 Before contributing a new package, it will go through a proposal process to be accepted by the Steering Committee.
