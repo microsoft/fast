@@ -9,6 +9,10 @@
         "title": "Install",
         "sidebar_label": "Install"
       },
+      "en/contributing/packages": {
+        "title": "Packages",
+        "sidebar_label": "Packages"
+      },
       "en/contributing/policies": {
         "title": "Policies",
         "sidebar_label": "Policies"
@@ -36,7 +40,6 @@
       "Components": "Components"
     },
     "categories": {
-      "Getting started": "Getting started",
       "Contributing": "Contributing"
     }
   },
