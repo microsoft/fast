@@ -28,7 +28,7 @@ The above outlines the format for the **final** commit, but contributors have ma
 
 Typical interim commits may look like the following:
 
-```terminal
+```bash
 5ba3db6 update toggle markup for accessibility
 84564a0 add border styles
 887815f remove toggle underline on hover

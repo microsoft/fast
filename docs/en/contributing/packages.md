@@ -36,7 +36,7 @@ These may include:
 
 All packages use npm and are published to the [npm registry](https://www.npmjs.com/).
 
-### "sideEffects": false
+### Side effects
 
 All packages are expected to be side-effect free. Adding a `"sideEffects": false` flag to the package.json indicates to tools like webpack that the package's modules have no side effects (on evaluation) and only expose exports. This allows these tools to optimize re-exports through tree-shaking and dead code removal.
 
