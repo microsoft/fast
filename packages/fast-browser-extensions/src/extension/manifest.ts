@@ -5,9 +5,9 @@ import { validDomains } from "./config";
  */
 const manifest: any = {
     manifest_version: 2,
-    name: "Fluent Web",
+    name: "FAST-DNA",
     version: "1.0",
-    description: "Configure Fluent Web content and domains",
+    description: "Configure FAST-DNA content and domains",
     externally_connectable: {
         // '<all_urls>' is not valid in this property
         matches: validDomains.filter((domain: string) => domain !== "<all_urls>"),
