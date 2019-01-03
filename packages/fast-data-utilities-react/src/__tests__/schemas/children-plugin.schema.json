@@ -1,0 +1,33 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Component with custom properties ",
+    "description": "A test component's schema definition.",
+    "type": "object",
+    "id": "children-with-react-props",
+    "properties": {
+        "boolean": {
+            "title": "Boolean",
+            "type": "boolean",
+            "pluginResolverId": "boolean-plugin-resolver"
+        },
+        "array": {
+            "title": "Array of strings",
+            "type": "array",
+            "pluginResolverId": "array-plugin-resolver",
+            "items": {
+                "title": "String",
+                "type": "string"
+            }
+        }
+    },
+    "reactProperties": {
+        "children": {
+            "title": "Children",
+            "type": "children",
+            "pluginResolverId": "children-plugin-resolver",
+            "defaults": [
+                "text"
+            ]
+        }
+    }
+}
