@@ -48,7 +48,7 @@ FAST-DNA is a mono repository managed with [Lerna](https://github.com/lerna/lern
 
 ## Documentation
 
-Check out our [developer documentation](https://microsoft.github.io/fast-dna/docs/readme) to get started.
+Check out our [developer documentation](https://microsoft.github.io/fast-dna/docs/en/contributing/install) to get started.
 
 ## Contact
 
