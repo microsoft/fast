@@ -1,3 +1,9 @@
+---
+id: fast-animation
+title: FAST Animation
+sidebar_label: Fast Animation
+---
+
 # FAST Animation
 
 Fast Animation is a library for simplifying the creation of animations and interactions using the Web Animation API.

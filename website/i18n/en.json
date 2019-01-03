@@ -29,6 +29,14 @@
         "title": "Working",
         "sidebar_label": "Working"
       },
+      "en/contributing/writing-style-guide": {
+        "title": "Writing style guide",
+        "sidebar_label": "Writing style guide"
+      },
+      "en/packages/fast-animation": {
+        "title": "FAST Animation",
+        "sidebar_label": "Fast Animation"
+      },
       "readme": {
         "title": "FAST-DNA",
         "sidebar_label": "What is FAST-DNA"
@@ -40,7 +48,8 @@
       "Components": "Components"
     },
     "categories": {
-      "Contributing": "Contributing"
+      "Contributing": "Contributing",
+      "Packagese": "Packagese"
     }
   },
   "pages-strings": {

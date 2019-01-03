@@ -4,6 +4,8 @@ title: Packages
 sidebar_label: Packages
 ---
 
+# Packages
+
 Before contributing a new package, it will go through a proposal process to be accepted by the Steering Committee.
 
 ## Folder structure
