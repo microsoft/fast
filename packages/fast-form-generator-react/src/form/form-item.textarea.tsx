@@ -48,6 +48,7 @@ class FormItemTextarea extends FormItemBase<
                         rows={typeof this.props.rows === "number" ? this.props.rows : 3}
                         value={this.props.data || ""}
                         onChange={this.handleChange}
+                        disabled={this.props.disabled}
                     />
                 </div>
                 <div className={this.props.managedClasses.formItemTextarea_softRemove}>

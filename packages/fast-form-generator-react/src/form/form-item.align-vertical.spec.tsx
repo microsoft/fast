@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
-import { configure, mount, shallow } from "enzyme";
+import { configure, mount, shallow, ShallowWrapper } from "enzyme";
 import AlignVertical from "./form-item.align-vertical";
 import { FormItemComponentMappingToProperyNamesProps, mappingName } from "./form-item";
 
@@ -59,6 +59,17 @@ describe("AlignVertical", () => {
 
         expect(handleChange).toHaveBeenCalled();
         expect(handleChange.mock.calls[0][1]).toEqual("top");
+    });
+    test("should be disabled if disabled props is passed", () => {
+        const rendered: any = mount(
+            <AlignVertical {...alignVerticalProps} disabled={true} />
+        );
+        const inputs: ShallowWrapper = rendered.find("input");
+
+        expect(inputs).toHaveLength(4);
+        expect(inputs.at(0).prop("disabled")).toBeTruthy();
+        expect(inputs.at(1).prop("disabled")).toBeTruthy();
+        expect(inputs.at(2).prop("disabled")).toBeTruthy();
     });
     test("should remove the data if the soft remove is triggered", () => {
         const handleChange: any = jest.fn();

@@ -32,10 +32,27 @@
                 "button"
             ],
             "default": "button"
+        },
+        "disabledTag": {
+            "title": "Disabled tag",
+            "type": "string",
+            "enum": [
+                "span",
+                "button"
+            ],
+            "default": "button",
+            "disabled": true
+        },
+        "disabledText": {
+            "title": "Disabled text area",
+            "type": "string",
+            "example": "Example text",
+            "disabled": true
         }
     },
     "required": [
         "tag",
-        "text"
+        "text",
+        "disabledText"
     ]
 }

@@ -56,6 +56,14 @@ describe("Checkbox", () => {
         expect(handleChange).toHaveBeenCalled();
         expect(handleChange.mock.calls[0][1]).toEqual(true);
     });
+    test("should be disabled when disabled props is passed", () => {
+        const rendered: any = mount(<Checkbox {...checkboxProps} disabled={true} />);
+
+        const input: any = rendered.find("input");
+
+        expect(rendered).toHaveLength(1);
+        expect(rendered.prop("disabled")).toBeTruthy();
+    });
     test("should remove the data if the soft remove is triggered", () => {
         const handleChange: any = jest.fn();
         const rendered: any = mount(

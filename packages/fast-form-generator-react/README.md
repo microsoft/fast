@@ -206,6 +206,30 @@ Example:
 }
 ```
 
+### disabled
+Disabled flag is optional and item will be disabled if flag is set to true.
+
+Example:
+```json
+{
+    "$schema": "http://json-schema.org/schema#",
+    "id": "my-component",
+    "title": "My component",
+    "type": "object",
+    "properties": {
+        "text": {
+            "title": "Text",
+            "type": "string",
+            "example": "Hello world",
+            "disabled": true
+        }
+    },
+    "required": [
+        "text"
+    ]
+}
+```
+
 ### examples & default
 Providing an example or default value will replace the placeholder 'example text' or randomly generated number. It is generally better to add this extra information in case the schema form generator needs to create a new set of data.
 

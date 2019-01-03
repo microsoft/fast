@@ -27,6 +27,11 @@
         "optionalNumber": {
             "title": "Optional number field",
             "type": "number"
+        },
+        "disabledNumber": {
+            "title": "Disabled number field",
+            "type": "number",
+            "disabled": true
         }
     },
     "required": [

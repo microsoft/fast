@@ -260,6 +260,7 @@ class FormSection extends React.Component<
             data: getData(location, this.props.data),
             required,
             label: getLabel(label, this.state.schema.title),
+            disabled: property.disabled,
             onChange: this.props.onChange,
         };
 
