@@ -3,12 +3,18 @@
  */
 export default interface FormItemChildrenClassNameContract {
     formItemChildren: string;
-    formItemChildren_inputWrapper: string;
-    formItemChildren_childOptionsMenu: string;
-    formItemChildren_childOptionsTextButton: string;
-    formItemChildren_header: string;
+    formItemChildren_control: string;
+    formItemChildren_controlLabel: string;
     formItemChildren_existingChildren: string;
-    formItemChildren_addedChildren: string;
-    formItemChildren_optionMenu: string;
-    formItemChildren_optionMenu__listItem: string;
+    formItemChildren_existingChildrenItem: string;
+    formItemChildren_existingChildrenItemLink: string;
+    formItemChildren_existingChildrenItemContent: string;
+    formItemChildren_existingChildrenItemName: string;
+    formItemChildren_childrenList: string;
+    formItemChildren_childrenListControl: string;
+    formItemChildren_childrenListInput: string;
+    formItemChildren_childrenListItem: string;
+    formItemChildren_childrenListTrigger: string;
+    formItemChildren_delete: string;
+    formItemChildren_deleteButton: string;
 }

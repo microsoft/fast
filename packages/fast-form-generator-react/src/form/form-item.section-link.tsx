@@ -52,6 +52,10 @@ class FormItemSectionLink extends FormItemBase<
     }
 
     private handleUpdateSection = (e: React.MouseEvent<HTMLAnchorElement>): void => {
+        if (this.props.data === undefined) {
+            this.props.onChange(this.props.dataLocation, {});
+        }
+
         this.props.onUpdateSection(this.props.schemaLocation, this.props.dataLocation);
     };
 }

@@ -22,6 +22,7 @@ export const sortingProps: SortingProps = {
 };
 
 export interface SortableListItemProps {
+    className?: string;
     id?: string;
     onClick?: (e: React.MouseEvent<HTMLElement>) => void;
 }
@@ -29,7 +30,7 @@ export interface SortableListItemProps {
 export class SortableListItem extends React.Component<SortableListItemProps, {}> {
     public render(): JSX.Element {
         return (
-            <li draggable={true} id={this.props.id}>
+            <li draggable={true} id={this.props.id} className={this.props.className}>
                 {this.props.children}
             </li>
         );

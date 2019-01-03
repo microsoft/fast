@@ -1,15 +1,13 @@
-import { ellipsis, toPx } from "@microsoft/fast-jss-utilities";
+import { ellipsis, focusVisible, toPx } from "@microsoft/fast-jss-utilities";
 import {
-    applyAriaHiddenStyles,
     applyCleanListStyle,
+    applyControl,
     applyGlobalStyle,
-    applyHeaderStyle,
-    applyListItemStyle,
-    applyPopupHeadingStyles,
-    applyPopupMenuStyles,
+    applyLabelStyle,
+    applyRemoveItemStyle,
     colors,
-    localizePadding,
-    minus,
+    insetStrongBoxShadow,
+    lines,
     plus,
 } from "../utilities/form-input.style";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
@@ -20,59 +18,80 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
         ...applyGlobalStyle(),
     },
     formItemArray: {
-        ...applyPopupHeadingStyles(),
-        "& button": {
-            lineHeight: "1",
-            fontSize: toPx(14),
-            cursor: "pointer",
-            background: "transparent",
-            border: "none",
-            padding: `${toPx(4)}`,
-            "&:focus": {
-                outline: "none",
-            },
-        },
+        position: "relative",
+        display: "flex",
+        flexDirection: "column",
     },
-    formItemArray_actionMenu: {
-        ...applyCleanListStyle(),
-        ...applyAriaHiddenStyles(),
-        ...applyPopupMenuStyles(),
-        "& $formItemArray_actionMenuItem__add, & $formItemArray_actionMenuItem__remove": {
-            ...localizePadding(12, 12, 12, 36),
-            width: "100%",
-            ...ellipsis(),
-            textAlign: "left",
-            color: colors.black,
-            "&::before": {
-                position: "absolute",
-                content: "''",
-                opacity: ".6",
-                pointerEvents: "none",
-                width: toPx(16),
-                height: toPx(16),
-                left: toPx(10),
-            },
-            "&:hover": {
-                backgroundColor: colors.grayBackground,
-            },
-        },
+    formItemArray_control: {
+        width: "100%",
+        verticalAlign: "middle",
+        marginTop: toPx(12),
     },
-    formItemArray_actionMenuItem__add: {
+    formItemArray_controlAddButton: {
+        position: "absolute",
+        right: "0",
+        top: "12px",
+        appearance: "none",
+        background: "none",
+        border: "none",
+        margin: "8px",
+        width: "20px",
+        height: "16px",
+        zIndex: "1",
+        borderRadius: "2px",
+        [`&${focusVisible()}`]: {
+            ...insetStrongBoxShadow(colors.pink),
+            outline: "none",
+        },
         "&::before": {
+            position: "absolute",
+            content: "''",
+            opacity: ".6",
+            pointerEvents: "none",
+            width: toPx(16),
+            height: toPx(16),
+            left: toPx(2),
+            top: "0",
             background: plus,
         },
     },
-    formItemArray_actionMenuItem__remove: {
+    formItemArray_controlLabel: {
+        ...applyLabelStyle(),
+        ...applyControl(),
+        verticalAlign: "middle",
+        lineHeight: "32px",
+    },
+    formItemArray_existingItemList: {
+        ...applyCleanListStyle(),
+    },
+    formItemArray_existingItemListItem: {
+        position: "relative",
+        height: "36px",
+        lineHeight: "36px",
+        paddingLeft: "26px",
         "&::before": {
-            background: minus,
+            position: "absolute",
+            content: "''",
+            opacity: ".6",
+            pointerEvents: "none",
+            top: toPx(11),
+            width: toPx(16),
+            height: toPx(16),
+            background: lines,
+            left: "0",
         },
     },
-    formItemArray_header: {
-        ...applyHeaderStyle(),
+    formItemArray_existingItemListItemLink: {
+        ...ellipsis(),
+        cursor: "pointer",
+        display: "block",
+        height: "36px",
+        lineHeight: "36px",
+        width: "calc(100% - 36px)",
     },
-    formItemArray_linkMenu: {
-        ...applyCleanListStyle(),
-        ...applyListItemStyle(),
+    formItemArray_existingItemRemoveButton: {
+        ...applyRemoveItemStyle(),
+        cursor: "pointer",
     },
 };
 
