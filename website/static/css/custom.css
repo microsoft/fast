@@ -362,6 +362,20 @@ a:focus {
 \*------------------------------------*/
 
 /* 
+ * Image and caption
+ ****************************/
+
+ article p img, article iframe {
+    margin-left: 0;
+}
+
+article p img + em {
+    opacity: .6;
+    margin-top: 4px;
+    display: inline-block;
+}
+
+/* 
  * Hash link
  ****************************/
 

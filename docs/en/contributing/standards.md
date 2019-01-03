@@ -22,9 +22,9 @@ Accessibility is acknowledged from the start of each new feature and must be add
 * Some users with vestibular disorders or other cognitive disabilities have problems with movement. A safe fallback for nearly all users is fade animations.
 * Avoid flashing animations can cause seizures or discomfort.
 
-## JSS (JavaScript Style Sheets) usage
+## JSS usage
 
-JSS class names interfaces follow a [BEM-like](http://getbem.com/naming/) convention but our implementation of BEM is slightly modified because dashes — the character used to delimit *modifiers* — cannot be used as JavaScript object keys without using string literals; we use underscores instead. A single underscore separates an element from a block while two underscores separate a modifier from a block or element.
+JSS (JavaScript Style Sheets) class names interfaces follow a [BEM-like](http://getbem.com/naming/) convention but our implementation of BEM is slightly modified because dashes — the character used to delimit *modifiers* — cannot be used as JavaScript object keys without using string literals; we use underscores instead. A single underscore separates an element from a block while two underscores separate a modifier from a block or element.
 
 Example:
 
