@@ -24,6 +24,22 @@ const afterSlotExample: any = {
     },
 };
 
+const svgProperties: any = {
+    width: "16",
+    height: "16",
+    viewBox: "0 0 16 16",
+    fill: "none",
+    xmlns: "http://www.w3.org/2000/svg",
+};
+
+const testGlyph: React.ReactNode = (classname?: string): React.ReactNode => {
+    return (
+        <svg {...svgProperties} className={classname}>
+            <path d="M5.85547 13.8535L5.14648 13.1445L10.291 8L5.14648 2.85547L5.85547 2.14648L11.709 8L5.85547 13.8535Z" />
+        </svg>
+    );
+};
+
 export default {
     name: "Button",
     component: Button,
@@ -71,6 +87,11 @@ export default {
         {
             href: "#",
             children: [beforeSlotExample, "Both slots", afterSlotExample],
+        },
+        {
+            beforeGlyph: testGlyph,
+            children: "Mutliple both render props slots",
+            afterGlyph: testGlyph,
         },
         {
             href: "#",
