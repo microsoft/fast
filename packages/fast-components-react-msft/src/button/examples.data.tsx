@@ -90,23 +90,23 @@ export default {
             children: [beforeSlotExample, "Both slots", afterSlotExample],
         },
         {
-            beforeSlot: testGlyph,
+            beforeContent: testGlyph,
             children: "Mutliple both render props slots",
-            afterSlot: testGlyph,
+            afterContent: testGlyph,
         },
         {
-            beforeSlot: testGlyph,
+            beforeContent: testGlyph,
             children: "Before render props slots",
         },
         {
             children: "After render props slots",
-            afterSlot: testGlyph,
+            afterContent: testGlyph,
         },
         {
-            beforeSlot: testGlyph,
+            beforeContent: testGlyph,
         },
         {
-            afterSlot: testGlyph,
+            afterContent: testGlyph,
         },
         {
             href: "#",

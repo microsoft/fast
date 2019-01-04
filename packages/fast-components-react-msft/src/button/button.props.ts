@@ -27,14 +27,14 @@ export interface ButtonHandledProps
     appearance?: ButtonAppearance;
 
     /**
-     * The preceding slot
+     * The preceding content
      */
-    beforeSlot?: (classname?: string) => React.ReactNode;
+    beforeContent?: (classname?: string) => React.ReactNode;
 
     /**
-     * The trailing slot
+     * The trailing content
      */
-    afterSlot?: (classname?: string) => React.ReactNode;
+    afterContent?: (classname?: string) => React.ReactNode;
 }
 
 /* tslint:disable-next-line:no-empty-interface */

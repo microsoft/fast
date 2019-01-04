@@ -113,10 +113,10 @@ describe("button", (): void => {
         expect(rendered.find("div.slotBefore").length).toBe(1);
     });
 
-    test("should render prop into the before slot location if prop exist", () => {
+    test("should render prop into the before content location if prop exist", () => {
         const props: ButtonHandledProps = {
             children: "Foo",
-            beforeSlot: (classname?: string): React.ReactNode => {
+            beforeContent: (classname?: string): React.ReactNode => {
                 return (
                     <svg
                         width="16"
@@ -155,10 +155,10 @@ describe("button", (): void => {
         expect(rendered.find("div.slotAfter").length).toBe(1);
     });
 
-    test("should render prop into the after slot location if prop exist", () => {
+    test("should render prop into the after content location if prop exist", () => {
         const props: ButtonHandledProps = {
             children: "Foo",
-            afterSlot: (classname?: string): React.ReactNode => {
+            afterContent: (classname?: string): React.ReactNode => {
                 return (
                     <svg
                         width="16"

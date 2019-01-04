@@ -298,8 +298,8 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             },
         },
         button__disabled: {},
-        button_beforeSlot: {},
-        button_afterSlot: {},
+        button_beforeContent: {},
+        button_afterContent: {},
     };
 };
 

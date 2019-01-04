@@ -37,10 +37,10 @@ export interface ButtonClassNameContract extends BaseButtonClassNameContract {
     /**
      * The before slot
      */
-    button_beforeSlot?: string;
+    button_beforeContent?: string;
 
     /**
      * The after slot
      */
-    button_afterSlot?: string;
+    button_afterContent?: string;
 }
