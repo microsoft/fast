@@ -89,7 +89,7 @@ class CallToAction extends Foundation<
     private renderAfterContent(): any {
         return (): React.ReactNode => {
             return (
-                <div
+                <span
                     className={get(this.props, "managedClasses.callToAction_glyph")}
                     dangerouslySetInnerHTML={{ __html: glyphArrowright }}
                 />
