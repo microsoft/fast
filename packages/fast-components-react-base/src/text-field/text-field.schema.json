@@ -26,14 +26,5 @@
             "title": "Placeholder",
             "type": "string"
         }
-    },
-    "reactProperties": {
-        "children": {
-            "title": "Building blocks",
-            "type": "children",
-            "defaults": [
-                "text"
-            ]
-        }
     }
 }
