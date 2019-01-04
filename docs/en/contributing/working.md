@@ -4,7 +4,9 @@ title: Working
 sidebar_label: Working
 ---
 
-## Managing Issues
+# Working
+
+## Managing issues
 
 Well crafted issues improve the speed that work can be triaged, understood, and completed. To help guide this process [issue templates](https://github.com/Microsoft/fast-dna/tree/master/.github/ISSUE_TEMPLATE) exist to allow users to choose an appropriate [bug report](https://github.com/Microsoft/fast-dna/blob/master/.github/ISSUE_TEMPLATE/report-a-bug.md) or [feature request](https://github.com/Microsoft/fast-dna/blob/master/.github/ISSUE_TEMPLATE/request-a-feature.md).
 
@@ -34,7 +36,7 @@ Typical interim commits may look like the following:
 887815f remove toggle underline on hover
 ```
 
-Before submitting a pull request, [rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) your branch from master. Do not use ``git merge``, the *merge* button, or the *update* button provided by Github."
+Before submitting a pull request, [rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) your branch from master. Do not use `git merge`, the *merge* button, or the *update* button provided by Github.
 
 ## Common commands
 
@@ -65,7 +67,7 @@ cd packages/package-name
 npm run test
 ```
 
-Most packages have a *watch* command that rebuilds the package's distribution when a file changes. This process can be useful when doing development across multiple packages:
+Most packages have a _watch_ command that rebuilds the package's distribution when a file changes. This process can be useful when doing development across multiple packages:
 
 ```bash
 npm run watch

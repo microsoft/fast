@@ -4,9 +4,13 @@
       "en/contributing/install",
       "en/contributing/working",
       "en/contributing/standards",
+      "en/contributing/writing-style-guide",
       "en/contributing/testing",
       "en/contributing/packages",
       "en/contributing/policies"
+    ],
+    "Packages": [
+      "en/packages/fast-animation"
     ]
   }
 }

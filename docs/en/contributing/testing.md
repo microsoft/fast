@@ -4,6 +4,8 @@ title: Testing
 sidebar_label: Testing
 ---
 
+# Testing
+
 ## Checklist
 
 This testing checklist is a good starting point for manual testing web applications.

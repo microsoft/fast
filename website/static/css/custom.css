@@ -34,13 +34,13 @@ h6 {
  * Anchors
  *********/
 
-a {
+p a {
     color: #fb356d;
     outline: none;
 }
 
 a:hover {
-    border-bottom: 1px solid #fb356d;
+    border-bottom: 2px solid #fb356d;
     color: #fb356d;
 }
 
@@ -278,10 +278,14 @@ a:focus {
   Title that at top of each doc page.
 \*------------------------------------*/
 
+
+.mainContainer {
+    padding-top: 48px;
+}
+
+
 .mainContainer .wrapper .post .postHeaderTitle {
-    font-size: 34px;
-    line-height: 44px;
-    padding-bottom: 12px;
+    display: none;
 }
 
 /*------------------------------------*\
@@ -361,6 +365,10 @@ a:focus {
   The markdown area of each docs page.
 \*------------------------------------*/
 
+p a {
+    border-bottom: 1px solid #fb356d;
+}
+
 /* 
  * Image and caption
  ****************************/
@@ -372,7 +380,7 @@ a:focus {
 article p img + em {
     opacity: .6;
     margin-top: 4px;
-    display: inline-block;
+    display: block;
 }
 
 /* 
@@ -382,9 +390,10 @@ article p img + em {
  .hash-link {
     fill: #fff;
     transition: all 0.15s ease-in-out;
+    outline: 0;
 }
 
-.hash-link:hover {
+a.hash-link:hover {
     fill: #fb356d;
     border: 0;
 }
@@ -405,17 +414,38 @@ article p img + em {
 /* 
  * Elements in article
  ****************************/
-
- article h1 {
-    font-size: 34px;
-    line-height: 44px;
+ article blockquote {
+    background: transparent;
+    border-left: 2px solid transparent;
+    margin-top: 16px;
+    background: rgba(255, 255, 255, 0.01);
+    border-radius: 4px;
+    position: relative;
 }
 
-article h1::after {
-    content: ' - No H1 should be included in .md body; H1 is provided from CMS "title:" property at the top of the .md file.';
-    color: red;
-    font-size: 11px;
-    line-height: 20px;
+article blockquote {
+    color: #eee;
+}
+
+article blockquote::before {
+    content: "";
+    display: block;
+    height: 100%;
+    width: 2px;
+    background-color: #fb356d;
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: 2px;
+}
+
+ article p img {
+    display: inline-block;
+}
+
+article h1 {
+    font-size: 34px;
+    line-height: 44px;
 }
 
 article h2 {
@@ -722,6 +752,11 @@ ul.toc-headings li a:focus {
 }
 
 @media only screen and (min-width: 1024px) {
+
+    .mainContainer {
+        padding-top: 32px;
+    }
+
     .fixedHeaderContainer a {
         margin: 0 0 0 -8px;
         padding: 0 8px;
@@ -774,6 +809,18 @@ ul.toc-headings li a:focus {
 }
 
 @media only screen and (max-width: 1023px) {
+    .tocActive .onPageNav {
+        background: #202020;
+        top: 196px;
+    }
+
+    .docsSliderActive .toc section .navGroups {
+        top: 196px;
+    }
+
+    .docsNavContainer {
+        background: #202020;
+    }
 }
 
 @media only screen and (min-width: 1400px) {
