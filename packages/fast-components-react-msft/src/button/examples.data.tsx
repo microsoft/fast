@@ -28,7 +28,6 @@ const svgProperties: any = {
     width: "16",
     height: "16",
     viewBox: "0 0 16 16",
-    fill: "none",
     xmlns: "http://www.w3.org/2000/svg",
 };
 
@@ -89,9 +88,23 @@ export default {
             children: [beforeSlotExample, "Both slots", afterSlotExample],
         },
         {
-            beforeGlyph: testGlyph,
+            beforeSlot: testGlyph,
             children: "Mutliple both render props slots",
-            afterGlyph: testGlyph,
+            afterSlot: testGlyph,
+        },
+        {
+            beforeSlot: testGlyph,
+            children: "Before render props slots",
+        },
+        {
+            children: "After render props slots",
+            afterSlot: testGlyph,
+        },
+        {
+            beforeSlot: testGlyph,
+        },
+        {
+            afterSlot: testGlyph,
         },
         {
             href: "#",

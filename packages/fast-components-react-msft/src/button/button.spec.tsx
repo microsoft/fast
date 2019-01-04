@@ -113,6 +113,35 @@ describe("button", (): void => {
         expect(rendered.find("div.slotBefore").length).toBe(1);
     });
 
+    test("should render prop into the before slot location if prop exist", () => {
+        const props: ButtonHandledProps = {
+            children: "Foo",
+            beforeSlot: (classname?: string): React.ReactNode => {
+                return (
+                    <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className={classname}
+                    >
+                        <path d="M10.3906 9.39844C11.099 9.64323" fill="black" />
+                    </svg>
+                );
+            },
+        };
+
+        const rendered: any = mount(<MSFTButton {...props} />);
+
+        expect(rendered.find("svg")).not.toBe(undefined);
+        expect(
+            rendered
+                .find("button")
+                .childAt(0)
+                .type()
+        ).toEqual("svg");
+    });
+
     test("should add a child element with the slot prop set to 'after' into the after slot location", () => {
         const props: ButtonHandledProps = {
             appearance: ButtonAppearance.lightweight,
@@ -124,5 +153,34 @@ describe("button", (): void => {
 
         expect(rendered.instance().props.children[1].props.slot).toBe("after");
         expect(rendered.find("div.slotAfter").length).toBe(1);
+    });
+
+    test("should render prop into the after slot location if prop exist", () => {
+        const props: ButtonHandledProps = {
+            children: "Foo",
+            afterSlot: (classname?: string): React.ReactNode => {
+                return (
+                    <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className={classname}
+                    >
+                        <path d="M10.3906 9.39844C11.099 9.64323" fill="black" />
+                    </svg>
+                );
+            },
+        };
+
+        const rendered: any = mount(<MSFTButton {...props} />);
+
+        expect(rendered.find("svg")).not.toBe(undefined);
+        expect(
+            rendered
+                .find("button")
+                .childAt(1)
+                .type()
+        ).toEqual("svg");
     });
 });

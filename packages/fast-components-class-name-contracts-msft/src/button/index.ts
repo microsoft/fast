@@ -33,4 +33,14 @@ export interface ButtonClassNameContract extends BaseButtonClassNameContract {
      * The disabled modifier
      */
     button__disabled?: string;
+
+    /**
+     * The before slot
+     */
+    button_beforeSlot?: string;
+
+    /**
+     * The after slot
+     */
+    button_afterSlot?: string;
 }
