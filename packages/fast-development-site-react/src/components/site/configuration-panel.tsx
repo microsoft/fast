@@ -37,6 +37,7 @@ export interface ConfigurationPanelManagedClasses {
 const style: ComponentStyles<ConfigurationPanelManagedClasses, DevSiteDesignSystem> = {
     configurationPanel: {
         width: "100%",
+        height: "100%",
         overflowX: "auto",
     },
     configurationPanel_controls: {
