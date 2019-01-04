@@ -113,7 +113,7 @@ describe("button", (): void => {
         expect(rendered.find("div.slotBefore").length).toBe(1);
     });
 
-    test("should render prop into the before content location if prop exist", () => {
+    test("should render prop into the before content location if prop exists", () => {
         const props: ButtonHandledProps = {
             children: "Foo",
             beforeContent: (classname?: string): React.ReactNode => {
@@ -155,7 +155,7 @@ describe("button", (): void => {
         expect(rendered.find("div.slotAfter").length).toBe(1);
     });
 
-    test("should render prop into the after content location if prop exist", () => {
+    test("should render prop into the after content location if prop exists", () => {
         const props: ButtonHandledProps = {
             children: "Foo",
             afterContent: (classname?: string): React.ReactNode => {
