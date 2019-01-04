@@ -36,7 +36,7 @@ Typical interim commits may look like the following:
 887815f remove toggle underline on hover
 ```
 
-Before submitting a pull request, [rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) your branch from master. Do not use `git merge`, the _merge_ button, or the _update_ button provided by Github."
+Before submitting a pull request, [rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) your branch from master. Do not use `git merge`, the *merge* button, or the *update* button provided by Github.
 
 ## Common commands
 

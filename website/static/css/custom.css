@@ -34,13 +34,13 @@ h6 {
  * Anchors
  *********/
 
-a {
+p a {
     color: #fb356d;
     outline: none;
 }
 
 a:hover {
-    border-bottom: 1px solid #fb356d;
+    border-bottom: 2px solid #fb356d;
     color: #fb356d;
 }
 
@@ -365,6 +365,10 @@ a:focus {
   The markdown area of each docs page.
 \*------------------------------------*/
 
+p a {
+    border-bottom: 1px solid #fb356d;
+}
+
 /* 
  * Image and caption
  ****************************/
@@ -386,9 +390,10 @@ article p img + em {
  .hash-link {
     fill: #fff;
     transition: all 0.15s ease-in-out;
+    outline: 0;
 }
 
-.hash-link:hover {
+a.hash-link:hover {
     fill: #fb356d;
     border: 0;
 }
