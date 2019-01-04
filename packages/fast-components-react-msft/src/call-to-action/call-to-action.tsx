@@ -86,7 +86,7 @@ class CallToAction extends Foundation<
         return super.generateClassNames(classNames);
     }
 
-    private renderAfterContent(): any {
+    private renderAfterContent(): (classname?: string) => React.ReactNode {
         return (): React.ReactNode => {
             return (
                 <span
