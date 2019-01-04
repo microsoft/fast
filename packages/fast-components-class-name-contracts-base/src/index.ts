@@ -14,6 +14,7 @@ export * from "./managed-classes";
 export * from "./progress";
 export * from "./radio";
 export * from "./tabs";
+export * from "./text-area";
 export * from "./text-field";
 export * from "./toggle";
 export * from "./typography";

@@ -70,6 +70,9 @@ Pattern.ToggleExamples = ToggleExamples;
 import TextActionExamples from "../src/text-action/examples.data";
 Pattern.TextActionExamples = TextActionExamples;
 
+import TextAreaExamples from "../src/text-area/examples.data";
+Foundation.TextAreaExamples = TextAreaExamples;
+
 import TextFieldExamples from "../src/text-field/examples.data";
 Foundation.TextFieldExamples = TextFieldExamples;
 
