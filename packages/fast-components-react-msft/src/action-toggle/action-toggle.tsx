@@ -9,7 +9,6 @@ import {
     ActionToggleUnhandledProps,
 } from "./action-toggle.props";
 import { actionToggleButtonOverrides } from "@microsoft/fast-components-styles-msft";
-import { isNullOrWhiteSpace } from "@microsoft/fast-web-utilities";
 import { isNullOrUndefined } from "util";
 
 export interface ActionToggleState {
@@ -96,9 +95,53 @@ class ActionToggle extends Foundation<
     }
 
     /**
+     * Generates class names
+     */
+    protected generateClassNames(): string {
+        let classNames: string = get(this.props, "managedClasses.actionToggle", "");
+
+        if (this.props.disabled) {
+            classNames = `${classNames} ${get(
+                this.props,
+                "managedClasses.actionToggle__disabled",
+                ""
+            )}`;
+        }
+
+        if (this.state.selected) {
+            classNames = `${classNames} ${get(
+                this.props,
+                "managedClasses.actionToggle__selected",
+                ""
+            )}`;
+            classNames = `${classNames} ${get(
+                this.props,
+                "managedClasses.actionToggle__primary",
+                ""
+            )}`;
+        } else {
+            classNames = `${classNames} ${get(
+                this.props,
+                "managedClasses.actionToggle__lightweight",
+                ""
+            )}`;
+        }
+
+        if (this.hasGlyphAndContent()) {
+            classNames = `${classNames} ${get(
+                this.props,
+                "managedClasses.actionToggle__hasGlyphAndContent",
+                ""
+            )}`;
+        }
+
+        return super.generateClassNames(classNames);
+    }
+
+    /**
      * Returns the appropriate ARIA label
      */
-    public renderARIALabel(): string {
+    private renderARIALabel(): string {
         if (this.state.selected) {
             return this.props.selectedLabel;
         } else {
@@ -109,7 +152,7 @@ class ActionToggle extends Foundation<
     /**
      * Returns the appropriate text label
      */
-    public renderLabel(): React.ReactNode {
+    private renderLabel(): React.ReactNode {
         if (this.state.selected) {
             return this.props.selectedContent;
         } else {
@@ -120,7 +163,7 @@ class ActionToggle extends Foundation<
     /**
      * Render Glyphs
      */
-    public renderGlyph(): React.ReactNode {
+    private renderGlyph(): React.ReactNode {
         if (this.state.selected) {
             return this.renderSelectedGlyph();
         } else {
@@ -128,68 +171,22 @@ class ActionToggle extends Foundation<
         }
     }
 
-    public renderSelectedGlyph(): React.ReactNode {
+    private renderSelectedGlyph(): React.ReactNode {
         if (typeof this.props.selectedGlyph === "function") {
             return this.props.selectedGlyph(
-                get(this.props, "managedClasses.actionToggle_selectedGlyph")
+                get(this.props, "managedClasses.actionToggle_selectedGlyph", "")
             );
         }
         return null;
     }
 
-    public renderUnselectedGlyph(): React.ReactNode {
+    private renderUnselectedGlyph(): React.ReactNode {
         if (typeof this.props.unselectedGlyph === "function") {
             return this.props.unselectedGlyph(
-                get(this.props, "managedClasses.actionToggle_unselectedGlyph")
+                get(this.props, "managedClasses.actionToggle_unselectedGlyph", "")
             );
         }
         return null;
-    }
-
-    /**
-     * Generates class names
-     */
-    protected generateClassNames(): string {
-        let classNames: string = get(this.props, "managedClasses.actionToggle") || "";
-
-        if (this.props.disabled) {
-            classNames = `${classNames} ${get(
-                this.props,
-                "managedClasses.actionToggle__disabled"
-            )}`;
-        }
-
-        if (this.state.selected) {
-            classNames = `${classNames} ${get(
-                this.props,
-                "managedClasses.actionToggle__selected"
-            )}`;
-            classNames = `${classNames} ${this.getAppearanceString(
-                ActionToggleAppearance.primary
-            )}`;
-        } else {
-            classNames = `${classNames} ${this.getAppearanceString(
-                ActionToggleAppearance.lightweight
-            )}`;
-        }
-
-        if (this.hasGlyphAndContent()) {
-            classNames = `${classNames} ${get(
-                this.props,
-                "managedClasses.actionToggle__hasGlyphAndContent"
-            )}`;
-        }
-
-        return super.generateClassNames(classNames);
-    }
-
-    private getAppearanceString(appearance: ActionToggleAppearance): string {
-        switch (appearance) {
-            case ActionToggleAppearance.primary:
-                return get(this.props, "managedClasses.actionToggle__primary");
-            case ActionToggleAppearance.lightweight:
-                return get(this.props, "managedClasses.actionToggle__lightweight");
-        }
     }
 
     /**
@@ -207,9 +204,15 @@ class ActionToggle extends Foundation<
      * Handles onClick
      */
     private handleToggleChange = (e: React.MouseEvent<HTMLElement>): void => {
-        if (typeof this.props.selected !== "boolean") {
-            this.setState({ selected: !this.state.selected });
+        if (
+            typeof this.props.selected !== "boolean" &&
+            typeof this.props.selected !== "function"
+        ) {
+            this.setState({
+                selected: !this.state.selected,
+            });
         }
+
         if (this.props.onChange) {
             this.props.onChange(e);
         }

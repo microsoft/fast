@@ -13,23 +13,23 @@
             "title": "Selected",
             "type": "boolean"
         },
-        "selectedContent": {
-            "title": "Selected text",
-            "type": "object"
-        },
-        "unselectedContent": {
-            "title": "Unselected text",
-            "type": "object"
-        },
         "selectedLabel": {
-            "title": "Selected label",
+            "title": "Selected HTML aria-label attribute",
             "type": "string"
         },
         "unselectedLabel": {
-            "title": "Unselected label",
+            "title": "Unselected HTML aria-label attribute",
             "type": "string"
         }
     },
     "reactProperties": {
+        "selectedContent": {
+            "title": "Selected content",
+            "type": "children"
+        },
+        "unselectedContent": {
+            "title": "Unselected content",
+            "type": "children"
+        }
     }
 }

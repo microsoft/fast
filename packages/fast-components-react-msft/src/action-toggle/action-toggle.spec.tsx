@@ -19,16 +19,6 @@ import { ActionToggleClassNameContract } from "@microsoft/fast-components-class-
 configure({ adapter: new Adapter() });
 
 describe("action toggle", (): void => {
-    const managedClasses: ActionToggleClassNameContract = {
-        actionToggle: "action-toggle",
-        actionToggle_selectedGlyph: "selectedGlyph",
-        actionToggle_unselectedGlyph: "unselectedGlyph",
-        actionToggle__primary: "action-toggle-primary",
-        actionToggle__lightweight: "action-toggle-lightweight",
-        actionToggle__disabled: "action-toggle-disabled",
-        actionToggle__selected: "action-toggle-selected",
-        actionToggle__hasGlyphAndContent: "action-toggle-hasGlyphAndContent",
-    };
     const href: string = "#";
 
     test("should have a displayName that matches the component name", () => {
@@ -43,7 +33,7 @@ describe("action toggle", (): void => {
         }).not.toThrow();
     });
 
-    test("should create unselectedglyph element passed in", () => {
+    test("should create unselectedglyph if element passed in", () => {
         const props: ActionToggleHandledProps = {
             selectedLabel: "selected",
             unselectedLabel: "unselected",
@@ -60,7 +50,7 @@ describe("action toggle", (): void => {
         expect(rendered.contains(<div>Y</div>)).toEqual(true);
     });
 
-    test("should create selectedglyph element passed in", () => {
+    test("should create selectedglyph if element passed in", () => {
         const props: ActionToggleHandledProps = {
             selectedLabel: "selected",
             unselectedLabel: "unselected",
@@ -80,7 +70,6 @@ describe("action toggle", (): void => {
 
     test("should implement unhandledProps", () => {
         const handledProps: ActionToggleProps = {
-            managedClasses,
             href,
             selectedLabel: "selected",
             unselectedLabel: "unselected",
@@ -111,7 +100,7 @@ describe("action toggle", (): void => {
         );
     });
 
-    test("should apply a custom class-name", () => {
+    test("should add a custom class name if a class name has been provided", () => {
         const props: ActionToggleHandledProps = {
             selectedLabel: "selected",
             unselectedLabel: "unselected",
@@ -124,30 +113,26 @@ describe("action toggle", (): void => {
         expect(rendered.find("button").prop("className")).toContain("custom-class-name");
     });
 
-    test("should apply the custom selected ARIA label", () => {
+    test("should apply selected ARIA label if prop is set", () => {
         const props: ActionToggleHandledProps = {
             selectedLabel: "selected",
             unselectedLabel: "unselected",
             selected: true,
         };
 
-        const rendered: any = mount(
-            <ActionToggle className={"custom-class-name"} {...props} />
-        );
+        const rendered: any = mount(<ActionToggle {...props} />);
 
         expect(rendered.find("button").prop("aria-label")).toEqual("selected");
     });
 
-    test("should apply the custom unselected ARIA label", () => {
+    test("should apply the unselected ARIA label if prop is set", () => {
         const props: ActionToggleHandledProps = {
             selectedLabel: "selected",
             unselectedLabel: "unselected",
             selected: false,
         };
 
-        const rendered: any = mount(
-            <ActionToggle className={"custom-class-name"} {...props} />
-        );
+        const rendered: any = mount(<ActionToggle {...props} />);
 
         expect(rendered.find("button").prop("aria-label")).toEqual("unselected");
     });
@@ -158,13 +143,7 @@ describe("action toggle", (): void => {
             unselectedLabel: "unselected",
         };
         const onChange: any = jest.fn();
-        const rendered: any = mount(
-            <ActionToggle
-                className={"custom-class-name"}
-                {...props}
-                onChange={onChange}
-            />
-        );
+        const rendered: any = mount(<ActionToggle {...props} onChange={onChange} />);
 
         rendered.find("button").simulate("click");
 
@@ -181,13 +160,7 @@ describe("action toggle", (): void => {
             unselectedLabel: "unselected",
         };
         const onChange: any = jest.fn();
-        const rendered: any = mount(
-            <ActionToggle
-                className={"custom-class-name"}
-                {...props}
-                onChange={onChange}
-            />
-        );
+        const rendered: any = mount(<ActionToggle {...props} onChange={onChange} />);
 
         expect(rendered.find("button").prop("className")).not.toContain(
             "actionToggle__selected"
@@ -205,13 +178,7 @@ describe("action toggle", (): void => {
             selected: false,
         };
         const onChange: any = jest.fn();
-        const rendered: any = mount(
-            <ActionToggle
-                className={"custom-class-name"}
-                {...props}
-                onChange={onChange}
-            />
-        );
+        const rendered: any = mount(<ActionToggle {...props} onChange={onChange} />);
 
         expect(rendered.find("button").prop("className")).not.toContain(
             "actionToggle__selected"
@@ -241,7 +208,7 @@ describe("action toggle", (): void => {
         );
     });
 
-    test("should not apply a hasGlyphandContent  class when display is glyph only", () => {
+    test("should not apply a hasGlyphandContent class when display is glyph only", () => {
         const props: ActionToggleHandledProps = {
             selectedLabel: "selected",
             unselectedLabel: "unselected",

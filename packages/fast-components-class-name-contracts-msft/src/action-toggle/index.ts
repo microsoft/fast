@@ -5,11 +5,13 @@ export interface ActionToggleClassNameContract {
     /**
      * The root of the action toggle component
      */
-    actionToggle: string;
+    actionToggle?: string;
+
     /**
      * The selected modifier
      */
     actionToggle__selected?: string;
+
     /**
      * The action toggle selected glyph
      */

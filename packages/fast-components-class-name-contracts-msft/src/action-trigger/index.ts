@@ -5,7 +5,7 @@ export interface ActionTriggerClassNameContract {
     /**
      * The root of the action trigger component
      */
-    actionTrigger: string;
+    actionTrigger?: string;
     /**
      * The action trigger glyph
      */

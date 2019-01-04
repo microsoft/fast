@@ -22,12 +22,12 @@ export interface ActionToggleHandledProps
     extends Omit<ButtonHandledProps, "appearance" | keyof ButtonManagedClasses>,
         ActionToggleManagedClasses {
     /**
-     * The action toggle selected glyph render prop
+     * The action toggle selected state glyph
      */
     selectedGlyph?: (className: string) => React.ReactNode;
 
     /**
-     * The action toggle usselected glyph render prop
+     * The action toggle unselected state glyph
      */
     unselectedGlyph?: (className: string) => React.ReactNode;
 
