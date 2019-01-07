@@ -11,7 +11,6 @@ const svgProperties: any = {
     width: "16",
     height: "16",
     viewBox: "0 0 16 16",
-    fill: "none",
     xmlns: "http://www.w3.org/2000/svg",
 };
 
@@ -38,10 +37,7 @@ const arrowDark: React.ReactNode = (
     return (
         <Button className={classname} disabled={disabled}>
             <svg {...svgProperties}>
-                <path
-                    d="M5.85547 13.8535L5.14648 13.1445L10.291 8L5.14648 2.85547L5.85547 2.14648L11.709 8L5.85547 13.8535Z"
-                    fill="black"
-                />
+                <path d="M5.85547 13.8535L5.14648 13.1445L10.291 8L5.14648 2.85547L5.85547 2.14648L11.709 8L5.85547 13.8535Z" />
             </svg>
         </Button>
     );
@@ -49,10 +45,7 @@ const arrowDark: React.ReactNode = (
 
 const arrowLight: React.ReactNode = (
     <svg {...svgProperties}>
-        <path
-            d="M5.85547 13.8535L5.14648 13.1445L10.291 8L5.14648 2.85547L5.85547 2.14648L11.709 8L5.85547 13.8535Z"
-            fill="white"
-        />
+        <path d="M5.85547 13.8535L5.14648 13.1445L10.291 8L5.14648 2.85547L5.85547 2.14648L11.709 8L5.85547 13.8535Z" />
     </svg>
 );
 

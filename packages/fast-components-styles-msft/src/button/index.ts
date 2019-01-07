@@ -47,6 +47,14 @@ function applyTransaprentBackplateStyles(): CSSRules<DesignSystem> {
                 designSystem.backgroundColor
             );
         },
+        fill: (config: DesignSystem): string => {
+            const designSystem: DesignSystem = withDesignSystemDefaults(config);
+            return ensureNormalContrast(
+                designSystem.contrast,
+                designSystem.brandColor,
+                designSystem.backgroundColor
+            );
+        },
         ...applyTransparentBackground(),
         [`&:hover, &${focusVisible()}`]: {
             borderColor: "transparent",
@@ -77,7 +85,37 @@ function applyTransaprentBackplateStyles(): CSSRules<DesignSystem> {
                 return disabledContrast(
                     designSystem.contrast,
                     designSystem.foregroundColor,
-                    designSystem.brandColor
+                    designSystem.backgroundColor
+                );
+            },
+            fill: (config: DesignSystem): string => {
+                const designSystem: DesignSystem = withDesignSystemDefaults(config);
+
+                return disabledContrast(
+                    designSystem.contrast,
+                    designSystem.foregroundColor,
+                    designSystem.backgroundColor
+                );
+            },
+            "& $button_beforeContent, & $button_afterContent": {
+                fill: (config: DesignSystem): string => {
+                    const designSystem: DesignSystem = withDesignSystemDefaults(config);
+
+                    return disabledContrast(
+                        designSystem.contrast,
+                        designSystem.foregroundColor,
+                        designSystem.backgroundColor
+                    );
+                },
+            },
+        },
+        "& $button_beforeContent, & $button_afterContent": {
+            fill: (config: DesignSystem): string => {
+                const designSystem: DesignSystem = withDesignSystemDefaults(config);
+                return ensureNormalContrast(
+                    designSystem.contrast,
+                    designSystem.brandColor,
+                    designSystem.backgroundColor
                 );
             },
         },
@@ -224,6 +262,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             whiteSpace: "nowrap",
             transition: "all 0.2s ease-in-out",
             color: secondaryForegroundColor,
+            fill: secondaryForegroundColor,
             backgroundColor: secondaryBackgroundColor,
             "&:hover": {
                 backgroundColor: secondaryHoverBackgroundColor,
@@ -240,6 +279,10 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
                 cursor: "not-allowed",
                 backgroundColor: secondaryDisabledBackgroundColor,
                 color: secondaryDisabledColor,
+                fill: secondaryDisabledColor,
+                "& $button_beforeContent, & $button_afterContent": {
+                    fill: secondaryDisabledColor,
+                },
             },
             "&::-moz-focus-inner": {
                 border: "0",
@@ -247,6 +290,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
         },
         button__primary: {
             color,
+            fill: color,
             backgroundColor: primaryRestBackgroundColor,
             "&:hover": {
                 backgroundColor: primaryHoverBackground,
@@ -257,7 +301,14 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             },
             "&$button__disabled": {
                 color: primaryDisabledColor,
+                fill: primaryDisabledColor,
                 backgroundColor: primaryDisabledBackground,
+                "& $button_beforeContent, & $button_afterContent": {
+                    fill: primaryDisabledColor,
+                },
+            },
+            "& $button_beforeContent, & $button_afterContent": {
+                fill: color,
             },
         },
         button__outline: {
@@ -277,6 +328,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
                 ...applyTransparentBackground(),
                 ...outlinePattern.disabled,
                 color: outlineDisabledColor,
+                fill: outlineDisabledColor,
             },
         },
         button__lightweight: {
