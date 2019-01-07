@@ -4,9 +4,9 @@
 
 ## Usage
 
-Use *action toggle* for specific control around a functional state. Labeling can be done using a glyph and text, but could also contain just a glyph or just text. Make sure the text and glyph represent the expected function. When only a glyph is used to label the button, include a tooltip in a span element following the button element.
+Use *action toggle* for specific control around a functional state. Labeling can be done using a glyph and text, but could also contain just a glyph or just text. Make sure the text and glyph represent the expected function. When only a glyph is used to label the button other elements, such as a tooltip, may be required to make the toggle's function clear.
 
-The "selectedGlyph" and "unselectedGlyph" props take a function that returns a ReactNode to render the glyph (ie. a [render prop](https://reactjs.org/docs/render-props.html)).  Note that the function should accept a string parameter that is applied as a class name to the top level element of the resulting node.  This class name  will be populated by the *action toggle* component to use an internally generated class ("actionToggle_selectedGlyph" & "actionToggle_unselectedGlyph") to apply to the glyphs for styling. 
+The "selectedGlyph" and "unselectedGlyph" props take a function that returns a ReactNode to render the glyph (ie. a [render prop](https://reactjs.org/docs/render-props.html)).  Note that the function should accept a string parameter that is applied as a class name to the top level element of the resulting node.  This class name will be populated by the *action toggle* component to use an internally generated class ("actionToggle_selectedGlyph" & "actionToggle_unselectedGlyph") to apply to the glyphs for styling. 
 
 ## Style guidance
 
