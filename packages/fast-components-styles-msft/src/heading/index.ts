@@ -1,13 +1,14 @@
 import { DesignSystem } from "../design-system";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { HeadingClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { applyBreakpoint, breakpoints } from "../utilities/breakpoints";
+import { fontWeight } from "../utilities/fonts";
 
 function applyHeadingStyles(): CSSRules<DesignSystem> {
     return {
-        fontWeight: "700",
+        fontWeight: `${fontWeight.semibold}`,
     };
 }
+
 /**
  * TODO #306: Pull font weight styles when we have an API for font/variable font properties
  */
