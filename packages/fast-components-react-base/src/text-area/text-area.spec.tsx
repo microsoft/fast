@@ -47,6 +47,12 @@ describe("text-area", (): void => {
         expect(rendered.prop("aria-hidden")).toEqual(true);
     });
 
+    test("should return an HTML `textarea` element", () => {
+        const rendered: any = shallow(<TextArea managedClasses={managedClasses} />);
+
+        expect(rendered.find("textarea").length).toBe(1);
+    });
+
     test("should NOT render with a disabled value if no `disabled` prop is passed", () => {
         const rendered: any = shallow(<TextArea managedClasses={managedClasses} />);
 

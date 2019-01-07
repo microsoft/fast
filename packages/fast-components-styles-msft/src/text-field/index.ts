@@ -1,20 +1,11 @@
 import { applyTypeRampConfig } from "../utilities/typography";
 import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import {
-    adjustContrast,
-    contrast,
-    focusVisible,
-    toPx,
-} from "@microsoft/fast-jss-utilities";
+import { focusVisible, toPx } from "@microsoft/fast-jss-utilities";
 import { get } from "lodash-es";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { fontWeight } from "../utilities/fonts";
-import {
-    disabledContrast,
-    ensureForegroundNormal,
-    foregroundNormal,
-} from "../utilities/colors";
+import { foregroundNormal } from "../utilities/colors";
 import { density } from "../utilities/density";
 import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
 import outlinePattern from "../patterns/outline";
