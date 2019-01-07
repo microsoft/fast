@@ -9,10 +9,6 @@
             "title": "Disabled",
             "type": "boolean"
         },
-        "readOnly": {
-            "title": "Read only",
-            "type": "boolean"
-        },
         "placeholder": {
             "title": "Placeholder",
             "type": "string"

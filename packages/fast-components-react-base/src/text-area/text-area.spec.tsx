@@ -20,7 +20,7 @@ const managedClasses: TextAreaClassNameContract = {
  */
 configure({ adapter: new Adapter() });
 
-describe("text-field", (): void => {
+describe("text-area", (): void => {
     test("should have a displayName that matches the component name", () => {
         expect((TextArea as any).name).toBe(TextArea.displayName);
     });
