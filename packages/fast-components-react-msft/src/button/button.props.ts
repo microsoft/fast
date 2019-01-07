@@ -25,6 +25,16 @@ export interface ButtonHandledProps
      * The Button appearance
      */
     appearance?: ButtonAppearance;
+
+    /**
+     * The preceding content
+     */
+    beforeContent?: (classname?: string) => React.ReactNode;
+
+    /**
+     * The trailing content
+     */
+    afterContent?: (classname?: string) => React.ReactNode;
 }
 
 /* tslint:disable-next-line:no-empty-interface */

@@ -38,13 +38,9 @@ class CallToAction extends Foundation<
                     ButtonAppearance[CallToActionAppearance[this.props.appearance]]
                 }
                 jssStyleSheet={callToActionButtonOverrides}
+                afterContent={this.renderAfterContent()}
             >
                 {this.props.children}
-                <div
-                    slot="after"
-                    className={get(this.props, "managedClasses.callToAction_glyph")}
-                    dangerouslySetInnerHTML={{ __html: glyphArrowright }}
-                />
             </Button>
         );
     }
@@ -88,6 +84,17 @@ class CallToAction extends Foundation<
         }
 
         return super.generateClassNames(classNames);
+    }
+
+    private renderAfterContent(): (classname?: string) => React.ReactNode {
+        return (): React.ReactNode => {
+            return (
+                <span
+                    className={get(this.props, "managedClasses.callToAction_glyph")}
+                    dangerouslySetInnerHTML={{ __html: glyphArrowright }}
+                />
+            );
+        };
     }
 }
 

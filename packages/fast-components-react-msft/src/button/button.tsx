@@ -22,6 +22,8 @@ class Button extends Foundation<ButtonHandledProps, ButtonUnhandledProps, {}> {
 
     protected handledProps: HandledProps<ButtonHandledProps> = {
         appearance: void 0,
+        beforeContent: void 0,
+        afterContent: void 0,
         disabled: void 0,
         href: void 0,
         managedClasses: void 0,
@@ -40,10 +42,12 @@ class Button extends Foundation<ButtonHandledProps, ButtonUnhandledProps, {}> {
                 disabled={this.props.disabled}
             >
                 {this.withSlot(ButtonSlot.before)}
+                {this.generateBeforeContent()}
                 <span className={get(this.props, "managedClasses.button_contentRegion")}>
                     {this.withoutSlot([ButtonSlot.before, ButtonSlot.after])}
                 </span>
                 {this.withSlot(ButtonSlot.after)}
+                {this.generateAfterContent()}
             </BaseButton>
         );
     }
@@ -71,6 +75,22 @@ class Button extends Foundation<ButtonHandledProps, ButtonUnhandledProps, {}> {
                 );
             default:
                 return super.generateClassNames();
+        }
+    }
+
+    private generateBeforeContent(): React.ReactNode {
+        if (typeof this.props.beforeContent === "function") {
+            return this.props.beforeContent(
+                get(this.props, "managedClasses.managedClasses.button_beforeContent", "")
+            );
+        }
+    }
+
+    private generateAfterContent(): React.ReactNode {
+        if (typeof this.props.afterContent === "function") {
+            return this.props.afterContent(
+                get(this.props, "managedClasses.managedClasses.button_afterContent", "")
+            );
         }
     }
 }
