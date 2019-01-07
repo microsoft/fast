@@ -117,6 +117,12 @@ export { TextActionStyles };
 export * from "./text-action";
 
 /**
+ * Export text area styles
+ */
+import TextAreaStyles from "./text-area";
+export { TextAreaStyles };
+
+/**
  * Export text field styles
  */
 import TextFieldStyles from "./text-field";

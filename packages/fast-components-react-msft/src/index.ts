@@ -20,6 +20,7 @@ export * from "./progress";
 export * from "./radio";
 export * from "./subheading";
 export * from "./text-action";
+export * from "./text-area";
 export * from "./text-field";
 export * from "./toggle";
 export * from "./typography";

@@ -1,23 +1,32 @@
 import { applyTypeRampConfig } from "../utilities/typography";
 import { DesignSystem, withDesignSystemDefaults } from "../design-system";
-import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { focusVisible, toPx } from "@microsoft/fast-jss-utilities";
+import { TextAreaClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import {
+    adjustContrast,
+    contrast,
+    focusVisible,
+    toPx,
+} from "@microsoft/fast-jss-utilities";
 import { get } from "lodash-es";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { fontWeight } from "../utilities/fonts";
-import { foregroundNormal } from "../utilities/colors";
+import {
+    disabledContrast,
+    ensureForegroundNormal,
+    foregroundNormal,
+} from "../utilities/colors";
 import { density } from "../utilities/density";
 import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
 import outlinePattern from "../patterns/outline";
 import typographyPattern from "../patterns/typography";
 
-const styles: ComponentStyles<TextFieldClassNameContract, DesignSystem> = (
+const styles: ComponentStyles<TextAreaClassNameContract, DesignSystem> = (
     config: DesignSystem
-): ComponentStyleSheet<TextFieldClassNameContract, DesignSystem> => {
+): ComponentStyleSheet<TextAreaClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
 
     return {
-        textField: {
+        textArea: {
             ...applyTypeRampConfig("t7"),
             ...outlinePattern.rest,
             ...typographyPattern.rest,
@@ -26,9 +35,10 @@ const styles: ComponentStyles<TextFieldClassNameContract, DesignSystem> = (
             borderRadius: toPx(designSystem.cornerRadius),
             padding: "10px",
             margin: "0",
-            height: density(defaultHeight)(designSystem),
-            minHeight: toPx(minHeight),
-            maxHeight: toPx(maxHeight),
+            height: density(defaultHeight * 2)(designSystem),
+            minHeight: toPx(minHeight * 2),
+            maxHeight: toPx(maxHeight * 2),
+            maxWidth: "100%",
             "&:hover": {
                 ...outlinePattern.hover,
             },

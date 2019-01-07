@@ -58,6 +58,10 @@ import Tabs from "./tabs";
 export { Tabs };
 export * from "./tabs";
 
+import TextArea from "./text-area";
+export { TextArea };
+export * from "./text-area";
+
 import TextField from "./text-field";
 export { TextField };
 export * from "./text-field";
