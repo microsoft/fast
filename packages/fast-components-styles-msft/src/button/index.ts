@@ -6,30 +6,21 @@ import {
 import { applyTypeRampConfig } from "../utilities/typography";
 import { ButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
-    adjustContrast,
     applyLocalizedProperty,
     contrast,
     Direction,
-    ensureContrast,
     focusVisible,
-    localizeSpacing,
     scaleContrast,
     toPx,
 } from "@microsoft/fast-jss-utilities";
-import { curry, get } from "lodash-es";
-import designSystemDefaults, {
-    DesignSystem,
-    withDesignSystemDefaults,
-} from "../design-system";
+import { curry } from "lodash-es";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import {
-    applyMixedColor,
     disabledContrast,
     ensureForegroundNormal,
     ensureLargeContrast,
     ensureNormalContrast,
     hoverContrast,
-    largeContrast,
-    normalContrast,
     scaleContrastNormal,
 } from "../utilities/colors";
 import Chroma from "chroma-js";
@@ -37,24 +28,12 @@ import { density } from "../utilities/density";
 import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
 import outlinePattern from "../patterns/outline";
 
-function applyTransaprentBackplateStyles(): CSSRules<DesignSystem> {
+function applyTransaprentBackplateStyles(
+    designSystem: DesignSystem
+): CSSRules<DesignSystem> {
     return {
-        color: (config: DesignSystem): string => {
-            const designSystem: DesignSystem = withDesignSystemDefaults(config);
-            return ensureNormalContrast(
-                designSystem.contrast,
-                designSystem.brandColor,
-                designSystem.backgroundColor
-            );
-        },
-        fill: (config: DesignSystem): string => {
-            const designSystem: DesignSystem = withDesignSystemDefaults(config);
-            return ensureNormalContrast(
-                designSystem.contrast,
-                designSystem.brandColor,
-                designSystem.backgroundColor
-            );
-        },
+        color: ensureNormalBrandContrast(designSystem),
+        fill: ensureNormalBrandContrast(designSystem),
         ...applyTransparentBackground(),
         [`&:hover, &${focusVisible()}`]: {
             borderColor: "transparent",
@@ -62,14 +41,7 @@ function applyTransaprentBackplateStyles(): CSSRules<DesignSystem> {
             ...applyTransparentBackground(),
         },
         "&:active $button_contentRegion::before, &:hover $button_contentRegion::before": {
-            background: (config: DesignSystem): string => {
-                const designSystem: DesignSystem = withDesignSystemDefaults(config);
-                return ensureNormalContrast(
-                    designSystem.contrast,
-                    designSystem.brandColor,
-                    designSystem.backgroundColor
-                );
-            },
+            background: ensureNormalBrandContrast(designSystem),
         },
         [`&${focusVisible()} $button_contentRegion::before`]: {
             background: ensureForegroundNormal,
@@ -79,47 +51,32 @@ function applyTransaprentBackplateStyles(): CSSRules<DesignSystem> {
         },
         "&$button__disabled": {
             borderColor: "transparent",
-            color: (config: DesignSystem): string => {
-                const designSystem: DesignSystem = withDesignSystemDefaults(config);
-
-                return disabledContrast(
-                    designSystem.contrast,
-                    designSystem.foregroundColor,
-                    designSystem.backgroundColor
-                );
-            },
-            fill: (config: DesignSystem): string => {
-                const designSystem: DesignSystem = withDesignSystemDefaults(config);
-
-                return disabledContrast(
-                    designSystem.contrast,
-                    designSystem.foregroundColor,
-                    designSystem.backgroundColor
-                );
-            },
+            color: disabledForegroundContrast(designSystem),
+            fill: disabledForegroundContrast(designSystem),
             "& $button_beforeContent, & $button_afterContent": {
-                fill: (config: DesignSystem): string => {
-                    const designSystem: DesignSystem = withDesignSystemDefaults(config);
-
-                    return disabledContrast(
-                        designSystem.contrast,
-                        designSystem.foregroundColor,
-                        designSystem.backgroundColor
-                    );
-                },
+                fill: disabledForegroundContrast(designSystem),
             },
         },
         "& $button_beforeContent, & $button_afterContent": {
-            fill: (config: DesignSystem): string => {
-                const designSystem: DesignSystem = withDesignSystemDefaults(config);
-                return ensureNormalContrast(
-                    designSystem.contrast,
-                    designSystem.brandColor,
-                    designSystem.backgroundColor
-                );
-            },
+            fill: ensureNormalBrandContrast(designSystem),
         },
     };
+}
+
+function ensureNormalBrandContrast(designSystem: DesignSystem): string {
+    return ensureNormalContrast(
+        designSystem.contrast,
+        designSystem.brandColor,
+        designSystem.backgroundColor
+    );
+}
+
+function disabledForegroundContrast(designSystem: DesignSystem): string {
+    return disabledContrast(
+        designSystem.contrast,
+        designSystem.foregroundColor,
+        designSystem.backgroundColor
+    );
 }
 
 function applyTransparentBackground(): CSSRules<DesignSystem> {
@@ -138,14 +95,12 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
     const backgroundColor: string = designSystem.backgroundColor;
     const brandColor: string = designSystem.brandColor;
     const direction: Direction = designSystem.direction;
-    const scaledNormalContrast: ContrastFunction = curry(normalContrast)(contrastScale);
     const scaledEnsureNormalContrast: ContrastFunction = curry(ensureNormalContrast)(
         contrastScale
     );
     const scaledEnsureLargeContrast: ContrastFunction = curry(ensureLargeContrast)(
         contrastScale
     );
-    const scaledLargeContrast: ContrastFunction = curry(largeContrast)(contrastScale);
     const focusBoxShadowDefaults: string = "inset 0 0 0 2px";
 
     // Define secondary button colors
@@ -159,7 +114,6 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
         ),
         secondaryForegroundColor
     );
-
     const secondaryHoverBackgroundColor: string = hoverContrast(
         designSystem.contrast,
         secondaryBackgroundColor
@@ -168,7 +122,6 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
         scaledEnsureNormalContrast(foregroundColor, backgroundColor),
         secondaryBackgroundColor
     );
-
     const secondaryFocusBoxShadow: string =
         Chroma.contrast(secondaryBackgroundColor, secondaryFocusBorderColor) <
         scaleContrastNormal(contrastScale)
@@ -183,7 +136,6 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
         secondaryBackgroundColor,
         backgroundColor
     );
-
     const secondaryDisabledColor: string = disabledContrast(
         contrastScale,
         secondaryForegroundColor,
@@ -195,7 +147,6 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
         scaledEnsureNormalContrast(brandColor, backgroundColor),
         color
     );
-
     const primaryHoverBackground: string = hoverContrast(
         designSystem.contrast,
         primaryRestBackgroundColor
@@ -228,16 +179,11 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
         foregroundColor,
         backgroundColor
     );
-    const outlineBorderColor: string = scaledNormalContrast(
-        foregroundColor,
-        backgroundColor
-    );
     const outlineDisabledColor: string = disabledContrast(
         designSystem.contrast,
         outlineColor,
         backgroundColor
     );
-    const outlineDisabledBorderColor: string = outlineDisabledColor;
 
     return {
         button: {
@@ -332,10 +278,10 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             },
         },
         button__lightweight: {
-            ...applyTransaprentBackplateStyles(),
+            ...applyTransaprentBackplateStyles(designSystem),
         },
         button__justified: {
-            ...applyTransaprentBackplateStyles(),
+            ...applyTransaprentBackplateStyles(designSystem),
             minWidth: "74px",
             [applyLocalizedProperty("paddingLeft", "paddingRight", direction)]: "0",
             justifyContent: "flex-start",
