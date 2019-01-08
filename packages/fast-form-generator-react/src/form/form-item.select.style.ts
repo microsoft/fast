@@ -13,16 +13,15 @@ import { FormItemSelectClassNameContract } from "../class-name-contracts/";
 
 const styles: ComponentStyles<FormItemSelectClassNameContract, {}> = {
     formItemSelect: {
-        display: "block",
-        position: "relative",
+        display: "flex",
+        marginBottom: "12px",
     },
     formItemSelect_control: {
         ...applyControl(),
     },
     formItemSelect_controlLabel: {
         ...applyLabelStyle(),
-        display: "block",
-        marginTop: "12px",
+        marginTop: "7px",
     },
     formItemSelect_controlSpan: {
         ...applySelectSpanStyles(),

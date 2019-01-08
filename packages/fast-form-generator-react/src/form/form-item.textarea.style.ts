@@ -14,8 +14,8 @@ import { FormItemTextareaClassNameContract } from "../class-name-contracts/";
 
 const styles: ComponentStyles<FormItemTextareaClassNameContract, {}> = {
     formItemTextarea: {
-        display: "block",
-        position: "relative",
+        display: "flex",
+        marginBottom: "12px",
     },
     formItemTextarea_control: {
         ...applyControl(),
@@ -23,14 +23,13 @@ const styles: ComponentStyles<FormItemTextareaClassNameContract, {}> = {
     formItemTextarea_controlLabel: {
         ...applyLabelStyle(),
         display: "block",
-        marginTop: toPx(12),
+        marginTop: "7px",
     },
     formItemTextarea_controlTextarea: {
         ...applyInputStyle(),
         width: "100%",
-        marginTop: toPx(8),
-        marginBottom: toPx(2),
-        resize: "vertical",
+        marginTop: "8px",
+        resize: "none",
         fontFamily: "inherit",
     },
     formItemTextarea_softRemove: {

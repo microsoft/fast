@@ -5,6 +5,7 @@ import {
     localizeSpacing,
     toPx,
 } from "@microsoft/fast-jss-utilities";
+import { relative } from "path";
 
 /**
  * Base64 encoded svgs
@@ -15,7 +16,7 @@ export const rightArrow: string =
 export const lines: string =
     "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iOSIgdmlld0JveD0iMCAwIDE2IDkiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTE2IDVIMFY0SDE2VjVaTTE2IDEzSDBWMTJIMTZWMTNaTTE2IDguOTkyMTlIMFY4SDE2VjguOTkyMTlaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwIC00LjAwMDAzKSIgZmlsbD0iYmxhY2siLz48L3N2Zz4=) center no-repeat";
 export const plus: string =
-    "url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDE2IDE2OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHN0eWxlIHR5cGU9InRleHQvY3NzIj4uc3Qwe2ZpbGw6I0ZCMzU2RDt9PC9zdHlsZT48dGl0bGU+cGx1c1VQREFURUQ8L3RpdGxlPjxnPjxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0xNiw3LjV2MUg4LjVWMTZoLTFWOC41SDB2LTFoNy41VjBoMXY3LjVIMTZ6Ii8+PC9nPjwvc3ZnPg==) center no-repeat";
+    "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHZpZXdCb3g9IjAgMCAxMCAxMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTYgNFYwSDRWNEgwVjZINFYxMEg2VjZIMTBWNEg2WiIgZmlsbD0iI0YyRjJGMiIvPgo8cGF0aCBkPSJNNiA0VjBINFY0SDBWNkg0VjEwSDZWNkgxMFY0SDZaIiBmaWxsPSIjRjJGMkYyIi8+CjxwYXRoIGQ9Ik02IDRWMEg0VjRIMFY2SDRWMTBINlY2SDEwVjRINloiIGZpbGw9IiNGMkYyRjIiLz4KPC9zdmc+Cg==) center no-repeat";
 export const minus: string =
     "url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDE2IDE2OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHRpdGxlPm1pbnVzVXBkYXRlZDwvdGl0bGU+PGc+PHBhdGggZD0iTTE2LDguNUgwdi0xaDE2VjguNXoiLz48L2c+PC9zdmc+) center no-repeat";
 export const lightTheme: string =
@@ -37,17 +38,17 @@ export interface BoxShadowConfig {
 
 export const colors: any = {
     black: "#000",
-    white: "#FFF",
+    white: "#F2F2F2",
     blue: "#0078D4",
     pink: "#FB356D",
     lightPink: "#FB4E7F",
     darkPink: "#FB1C5B",
     gray: "#8A8A8A",
-    grayBackground: "rgba(0, 0, 0, 0.04)",
+    grayBackground: "rgba(255, 255, 255, 0.1)",
     containerBackground: "rgb(244, 245, 246)",
     boxShadow: "rgba(0, 0, 0, 0.08)",
     hover: "rgba(0,0,0, .3)",
-    border: "rgba(0,0,0, .2)",
+    border: "rgba(255,255,255, .2)",
     lightBorder: "rgba(0,0,0, .1)",
     menuGray: "#EBEBEB",
 };
@@ -110,8 +111,8 @@ export function insetHoverBoxShadow(): CSSRules<{}> {
 export function applyLabelStyle(): CSSRules<{}> {
     return {
         flexGrow: "1",
-        lineHeight: toPx(16),
-        fontSize: toPx(14),
+        lineHeight: "15px",
+        fontSize: "11px",
         ...ellipsis(),
     };
 }
@@ -124,27 +125,19 @@ export function applyInputContainerStyle(): CSSRules<{}> {
 }
 
 export function applyInputStyle(): CSSRules<{}> {
-    const shadow: BoxShadowConfig = {
-        offsetX: 0,
-        offsetY: 0,
-        blurRadius: 4,
-        spreadRadius: 0,
-        color: colors.boxShadow,
-        inset: true,
-    };
-
     return {
-        lineHeight: toPx(16),
-        fontSize: toPx(14),
+        lineHeight: "15px",
+        fontSize: "11px",
         backgroundColor: colors.grayBackground,
-        borderRadius: toPx(2),
-        ...boxShadow(shadow),
-        padding: `${toPx(10)} ${toPx(8)} ${toPx(10)}`,
+        borderRadius: "2px",
+        ...localizePadding(2, 5, 3, 5),
         border: "none",
         outline: "none",
         boxSizing: "border-box",
-        "&:hover": {
-            ...insetHoverBoxShadow(),
+        color: "#F2F2F2",
+        "&:disabled": {
+            color: "rgba(255, 255, 255, 0.7)",
+            cursor: "not-allowed",
         },
         "&:focus": {
             ...insetStrongBoxShadow(colors.pink),
@@ -156,7 +149,7 @@ export function applyWrapperStyle(): CSSRules<{}> {
     return {
         display: "flex",
         flexDirection: "row",
-        minHeight: toPx(34),
+        minHeight: "30px",
         alignItems: "center",
     };
 }
@@ -402,31 +395,26 @@ export function applyInputBackplateStyle(): CSSRules<{}> {
 }
 
 export function applySelectInputStyles(): CSSRules<{}> {
-    const shadow: BoxShadowConfig = {
-        offsetX: 0,
-        offsetY: 0,
-        blurRadius: 4,
-        spreadRadius: 0,
-        color: colors.boxShadow,
-        inset: true,
-    };
-
     return {
         width: "100%",
-        lineHeight: toPx(16),
-        fontSize: toPx(14),
+        lineHeight: "15px",
+        fontSize: "11px",
         backgroundColor: colors.grayBackground,
-        borderRadius: toPx(2),
-        ...boxShadow(shadow),
+        borderRadius: "2px",
         appearance: "none",
-        ...localizePadding(10, 36, 10, 10),
-        border: "none",
         outline: "none",
+        ...localizePadding(2, 5, 3, 5),
+        border: "none",
+        color: "#F2F2F2",
         "&:-ms-expand": {
             display: "none",
         },
-        "&:hover": {
-            ...insetHoverBoxShadow(),
+        "& option": {
+            background: "#212121",
+        },
+        "&:disabled": {
+            color: "rgba(255, 255, 255, 0.7)",
+            cursor: "not-allowed",
         },
         "&:focus": {
             ...insetStrongBoxShadow(colors.pink),
@@ -438,23 +426,15 @@ export function applySelectSpanStyles(): CSSRules<{}> {
     return {
         position: "relative",
         display: "flex",
-        "&::before, &::after": {
+        "&::before": {
             content: "''",
             position: "absolute",
-            top: toPx(12),
+            top: "9px",
+            right: "4px",
             zIndex: "1",
-            borderRadius: toPx(2),
-            width: toPx(1),
-            height: toPx(10),
-            background: colors.black,
-        },
-        "&::before": {
-            right: toPx(15),
-            transform: "rotate(45deg)",
-        },
-        "&::after": {
-            right: toPx(22),
-            transform: "rotate(-45deg)",
+            borderLeft: "3px solid transparent",
+            borderRight: "3px solid transparent",
+            borderTop: "3px solid #F2F2F2",
         },
     };
 }
@@ -487,12 +467,11 @@ export function applyAddItemStyle(): CSSRules<{}> {
 export function applyRemoveItemStyle(): CSSRules<{}> {
     return {
         position: "absolute",
-        right: "0",
-        top: "0",
+        right: "5px",
+        top: "5px",
         appearance: "none",
         background: "none",
         border: "none",
-        margin: "8px",
         padding: "0",
         width: "20px",
         height: "20px",
@@ -502,51 +481,47 @@ export function applyRemoveItemStyle(): CSSRules<{}> {
             ...insetStrongBoxShadow(colors.pink),
             outline: "none",
         },
-        "&::before, &::after": {
+        "&::before": {
             position: "absolute",
             content: "''",
-            top: "5px",
-            left: "9px",
-            width: "1px",
-            height: "10px",
-            background: "#000000",
-        },
-        "&::before": {
-            transform: "rotate(45deg)",
-        },
-        "&::after": {
-            transform: "rotate(-45deg)",
+            pointerEvents: "none",
+            width: "9px",
+            height: "1px",
+            left: "5.5px",
+            top: "9.5px",
+            background: "#F2F2F2",
         },
     };
 }
 
 export function applyControl(): CSSRules<{}> {
     return {
-        display: "inline-block",
-        width: `calc(100% - 40px)`,
+        display: "grid",
+        width: `calc(100% - 30px)`,
     };
 }
 
 export function applySoftRemove(): CSSRules<{}> {
     return {
-        display: "inline-block",
-        height: "36px",
-        width: "40px",
-        textAlign: "right",
+        display: "flex",
+        height: "30px",
+        width: "30px",
+        position: "relative",
+        justifyContent: "center",
+        alignItems: "center",
     };
 }
 
 export function applySoftRemoveInput(): CSSRules<{}> {
     return {
-        position: "absolute",
-        right: "0",
-        top: "0",
         appearance: "none",
         background: "none",
+        position: "absolute",
+        right: "5px",
         border: "none",
-        margin: "8px",
         width: "20px",
-        height: "16px",
+        margin: "0",
+        height: "20px",
         zIndex: "1",
         borderRadius: "2px",
         "&:focus": {
@@ -554,13 +529,9 @@ export function applySoftRemoveInput(): CSSRules<{}> {
             outline: "none",
         },
         "&:checked + svg": {
-            fill: "#000000",
+            fill: "#FFFFFF",
         },
         "& + svg": {
-            position: "absolute",
-            top: "0",
-            right: "0",
-            padding: "12px",
             fill: "#AAAAAA",
         },
     };

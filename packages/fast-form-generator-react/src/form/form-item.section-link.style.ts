@@ -9,32 +9,19 @@ import { FormItemSectionLinkClassNameContract } from "../class-name-contracts";
 
 const styles: ComponentStyles<FormItemSectionLinkClassNameContract, {}> = {
     formItemSectionLink: {
-        position: "relative",
+        display: "flex",
     },
     formItemSectionLink_anchor: {
         ...ellipsis(),
+        width: "calc(100% - 30px)",
         cursor: "pointer",
         display: "block",
-        height: "40px",
-        lineHeight: "40px",
-        paddingRight: "56px",
-        "&::after": {
-            position: "absolute",
-            content: "''",
-            opacity: ".6",
-            pointerEvents: "none",
-            top: "11px",
-            width: "16px",
-            height: "16px",
-            background: rightArrow,
-            right: "36px",
-        },
+        fontSize: "11px",
+        height: "30px",
+        lineHeight: "30px",
     },
     formItemSectionLink_softRemove: {
         ...applySoftRemove(),
-        position: "absolute",
-        right: "0",
-        top: "4px",
     },
     formItemSectionLink_softRemoveInput: {
         ...applySoftRemoveInput(),

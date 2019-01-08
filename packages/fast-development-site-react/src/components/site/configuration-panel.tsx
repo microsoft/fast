@@ -39,6 +39,7 @@ const style: ComponentStyles<ConfigurationPanelManagedClasses, DevSiteDesignSyst
         width: "100%",
         height: "100%",
         overflowX: "auto",
+        color: "white",
     },
     configurationPanel_controls: {
         display: "flex",
@@ -57,10 +58,11 @@ const style: ComponentStyles<ConfigurationPanelManagedClasses, DevSiteDesignSyst
             padding: `${toPx(6)} ${toPx(8)}`,
             margin: toPx(2),
             minWidth: toPx(25),
+            color: "white",
             backgroundPosition: "center",
             "&:hover": {
                 cursor: "pointer",
-                background: "rgba(0, 0, 0, 0.04)",
+                background: "rgba(255, 255, 255, 0.04)",
             },
             "&:focus": {
                 outline: "none",

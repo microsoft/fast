@@ -12,7 +12,8 @@ import { FormItemNumberFieldClassNameContract } from "../class-name-contracts/";
 
 const styles: ComponentStyles<FormItemNumberFieldClassNameContract, {}> = {
     formItemNumberField: {
-        position: "relative",
+        display: "flex",
+        marginBottom: "12px",
     },
     formItemNumberField_control: {
         ...applyControl(),
@@ -20,7 +21,7 @@ const styles: ComponentStyles<FormItemNumberFieldClassNameContract, {}> = {
     formItemNumberField_controlLabel: {
         ...applyLabelStyle(),
         display: "block",
-        marginTop: toPx(12),
+        marginTop: "7px",
     },
     formItemNumberField_controlInput: {
         ...applyInputStyle(),

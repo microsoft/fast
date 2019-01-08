@@ -7,8 +7,10 @@ const styles: ComponentStyles<FormClassNameContract, {}> = {
     form_breadcrumbs: {
         display: "flex",
         flexWrap: "wrap",
-        marginTop: toPx(4),
-        paddingBottom: toPx(24),
+        marginTop: "4px",
+        fontSize: "11px",
+        lineHeight: "15px",
+        paddingBottom: "12px",
         ...applyCleanListStyle(),
         "& li": {
             display: "inline-block",

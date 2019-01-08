@@ -11,7 +11,8 @@ const devSiteDesignSystemDefaults: DevSiteDesignSystem = {
     foregroundColor: "#000",
     backgroundColor: "#FFF",
     brandColor: "#FB356D",
-    lightGray: "#F4F5F6",
+    // TODO: Rename?
+    lightGray: "#212121",
     navigationBarHeight: 48,
     categoryItemComponentMinWidth: 80,
 };

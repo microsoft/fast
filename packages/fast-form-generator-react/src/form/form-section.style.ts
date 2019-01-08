@@ -1,6 +1,7 @@
 import { toPx } from "@microsoft/fast-jss-utilities";
 import {
     applyCleanListStyle,
+    applyControl,
     applyHeaderStyle,
     applyLabelStyle,
     applyListItemStyle,
@@ -23,19 +24,19 @@ const styles: ComponentStyles<FormSectionClassNameContract, {}> = {
         },
     },
     formSection_selectWrapper: {
-        ...applyWrapperStyle(),
-        borderBottom: `${toPx(1)} solid ${colors.border}`,
-        paddingBottom: toPx(12),
-        marginBottom: toPx(4),
+        ...applyControl(),
+        marginBottom: "12px",
     },
     formSection_selectSpan: {
         ...applySelectSpanStyles(),
+        marginTop: "8px",
     },
     formSection_selectInput: {
         ...applySelectInputStyles(),
     },
     formSection_selectLabel: {
         ...applyLabelStyle(),
+        marginTop: "7px",
     },
 };
 

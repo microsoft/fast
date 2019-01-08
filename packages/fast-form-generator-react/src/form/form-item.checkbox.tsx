@@ -21,7 +21,7 @@ class FormItemCheckbox extends FormItemBase<
                 : this.props.default || false;
 
         return (
-            <div className={this.props.managedClasses.formItemCheckbox}>
+            <div className={this.generateClassNames()}>
                 <input
                     className={this.props.managedClasses.formItemCheckbox_input}
                     id={this.props.dataLocation}
@@ -38,11 +38,28 @@ class FormItemCheckbox extends FormItemBase<
                 >
                     {this.props.label}
                 </label>
-                {this.renderSoftRemove(
-                    this.props.managedClasses.formItemCheckbox_softRemove
-                )}
+                <div className={this.props.managedClasses.formItemCheckbox_softRemove}>
+                    {this.renderSoftRemove(
+                        this.props.managedClasses.formItemCheckbox_softRemoveInput
+                    )}
+                </div>
             </div>
         );
+    }
+
+    /**
+     * Generates class names
+     */
+    protected generateClassNames(): string {
+        let classNames: string = this.props.managedClasses.formItemCheckbox;
+
+        if (this.props.disabled) {
+            classNames = `${classNames} ${
+                this.props.managedClasses.formItemCheckbox__disabled
+            }`;
+        }
+
+        return classNames;
     }
 
     /**
