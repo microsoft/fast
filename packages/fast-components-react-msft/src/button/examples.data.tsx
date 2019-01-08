@@ -100,7 +100,7 @@ export default {
             afterContent: testGlyph,
         },
         {
-            children: "Disabled fter render props",
+            children: "Disabled after render props",
             afterContent: testGlyph,
             disabled: true,
         },
