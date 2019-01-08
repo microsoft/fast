@@ -213,8 +213,8 @@ class ActionToggle extends Foundation<
             });
         }
 
-        if (this.props.onChange) {
-            this.props.onChange(e);
+        if (this.props.onToggle) {
+            this.props.onToggle(e, this.props);
         }
     };
 }

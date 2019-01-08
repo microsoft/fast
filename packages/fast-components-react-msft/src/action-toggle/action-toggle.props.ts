@@ -52,9 +52,9 @@ export interface ActionToggleHandledProps
     selectedLabel: string;
 
     /**
-     * The onChange event handler
+     * The onToggle event handler
      */
-    onChange?: (event: React.MouseEvent<HTMLElement>) => void;
+    onToggle?: (event: React.MouseEvent<HTMLElement>, props: ActionToggleProps) => void;
 
     /**
      * The action toggle disabled property
