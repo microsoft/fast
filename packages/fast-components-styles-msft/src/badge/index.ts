@@ -8,19 +8,20 @@ import {
     applyLocalizedProperty,
     Direction,
     ellipsis,
+    localizeSpacing,
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import { DesignSystem, withDesignSystemDefaults } from "../design-system/index";
+import { applyTypeRampConfig } from "../utilities/typography";
 import { ensureNormalContrast } from "../utilities/colors";
 import { fontWeight } from "../utilities/fonts";
 
 function smallBadgeStyle(direction: Direction): CSSRules<DesignSystem> {
     return {
-        padding: direction === Direction.ltr ? "0 7px 2px 0" : "0 0 2px 7px",
-        height: "14px",
-        lineHeight: "16px",
+        padding: localizeSpacing(Direction.ltr)(`0 ${toPx(7)} ${toPx(5)} 0`),
+        height: "13px",
         "&$badge__highlight, &$badge__lowlight, &$badge__accent": {
-            padding: "0 7px 4px",
+            padding: "0 7px 7px",
         },
     };
 }
@@ -30,7 +31,7 @@ function largeBadgeStyle(direction: Direction): CSSRules<DesignSystem> {
         [applyLocalizedProperty("paddingRight", "paddingLeft", direction)]: "14px",
         height: "20px",
         "&$badge__highlight, &$badge__lowlight, &$badge__accent": {
-            padding: "2px 14px 4px",
+            padding: "3px 14px 3px",
         },
     };
 }
@@ -71,8 +72,7 @@ const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
 
     return {
         badge: {
-            fontSize: "13px",
-            lineHeight: "20px",
+            ...applyTypeRampConfig("t7"),
             ...ellipsis(),
             overflow: "hidden",
             fontWeight: `${fontWeight.semibold}`,

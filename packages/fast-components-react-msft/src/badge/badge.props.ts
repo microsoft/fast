@@ -17,8 +17,7 @@ export enum BadgeSize {
 }
 
 export interface BadgeManagedClasses extends ManagedClasses<BadgeClassNameContract> {}
-/* tslint:disable-next-line:no-empty-interface */
-export interface BadgeUnhandledProps {}
+export interface BadgeUnhandledProps extends React.HTMLAttributes<HTMLSpanElement> {}
 export interface BadgeHandledProps extends BadgeManagedClasses {
     /**
      * The badge appearance

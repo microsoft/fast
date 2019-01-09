@@ -11,7 +11,6 @@ export * from "./action-trigger";
 
 import BadgeStyles from "./badge";
 export { BadgeStyles };
-export * from "./badge";
 
 import BreadcrumbStyles from "./breadcrumb";
 export { BreadcrumbStyles };
