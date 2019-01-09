@@ -86,14 +86,6 @@ class ActionToggle extends Foundation<
         );
     }
 
-    public getAppearance(): ActionToggleAppearance {
-        if (this.state.selected) {
-            return ActionToggleAppearance.primary;
-        } else {
-            return ActionToggleAppearance.lightweight;
-        }
-    }
-
     /**
      * Generates class names
      */
@@ -139,14 +131,25 @@ class ActionToggle extends Foundation<
     }
 
     /**
+     * Returns the appearance enum value to use based on current select state
+     */
+    private getAppearance(): ActionToggleAppearance {
+        if (this.state.selected) {
+            return ActionToggleAppearance.primary;
+        }
+
+        return ActionToggleAppearance.lightweight;
+    }
+
+    /**
      * Returns the appropriate ARIA label
      */
     private renderARIALabel(): string {
         if (this.state.selected) {
             return this.props.selectedLabel;
-        } else {
-            return this.props.unselectedLabel;
         }
+
+        return this.props.unselectedLabel;
     }
 
     /**
@@ -155,9 +158,9 @@ class ActionToggle extends Foundation<
     private renderLabel(): React.ReactNode {
         if (this.state.selected) {
             return this.props.selectedContent;
-        } else {
-            return this.props.unselectedContent;
         }
+
+        return this.props.unselectedContent;
     }
 
     /**
@@ -166,9 +169,9 @@ class ActionToggle extends Foundation<
     private renderGlyph(): React.ReactNode {
         if (this.state.selected) {
             return this.renderSelectedGlyph();
-        } else {
-            return this.renderUnselectedGlyph();
         }
+
+        return this.renderUnselectedGlyph();
     }
 
     private renderSelectedGlyph(): React.ReactNode {
