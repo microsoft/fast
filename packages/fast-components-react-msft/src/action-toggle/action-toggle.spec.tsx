@@ -142,16 +142,16 @@ describe("action toggle", (): void => {
             selectedLabel: "selected",
             unselectedLabel: "unselected",
         };
-        const onChange: any = jest.fn();
-        const rendered: any = mount(<ActionToggle {...props} onChange={onChange} />);
+        const onToggle: any = jest.fn();
+        const rendered: any = mount(<ActionToggle {...props} onToggle={onToggle} />);
 
         rendered.find("button").simulate("click");
 
-        expect(onChange).toHaveBeenCalledTimes(1);
+        expect(onToggle).toHaveBeenCalledTimes(1);
 
         rendered.find("button").simulate("click");
 
-        expect(onChange).toHaveBeenCalledTimes(2);
+        expect(onToggle).toHaveBeenCalledTimes(2);
     });
 
     test("should apply selected class after click event", () => {
@@ -159,8 +159,8 @@ describe("action toggle", (): void => {
             selectedLabel: "selected",
             unselectedLabel: "unselected",
         };
-        const onChange: any = jest.fn();
-        const rendered: any = mount(<ActionToggle {...props} onChange={onChange} />);
+        const onToggle: any = jest.fn();
+        const rendered: any = mount(<ActionToggle {...props} onToggle={onToggle} />);
 
         expect(rendered.find("button").prop("className")).not.toContain(
             "actionToggle__selected"
@@ -177,8 +177,8 @@ describe("action toggle", (): void => {
             unselectedLabel: "unselected",
             selected: false,
         };
-        const onChange: any = jest.fn();
-        const rendered: any = mount(<ActionToggle {...props} onChange={onChange} />);
+        const onToggle: any = jest.fn();
+        const rendered: any = mount(<ActionToggle {...props} onToggle={onToggle} />);
 
         expect(rendered.find("button").prop("className")).not.toContain(
             "actionToggle__selected"
