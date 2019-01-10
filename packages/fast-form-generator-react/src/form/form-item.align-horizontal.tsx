@@ -90,17 +90,19 @@ class FormItemAlignHorizontal extends FormItemBase<
                 const className: string = this.getInputClassName(direction);
 
                 return (
-                    <input
-                        className={className}
-                        id={this.props.dataLocation}
-                        type="radio"
-                        value={direction}
-                        name={this.props.dataLocation}
-                        aria-label={`${direction} align`}
-                        onChange={this.onChange.bind(this, direction)}
-                        checked={this.isChecked(direction)}
-                        disabled={this.props.disabled}
-                    />
+                    <span>
+                        <input
+                            className={className}
+                            id={this.props.dataLocation}
+                            type="radio"
+                            value={direction}
+                            name={this.props.dataLocation}
+                            aria-label={`${direction} align`}
+                            onChange={this.onChange.bind(this, direction)}
+                            checked={this.isChecked(direction)}
+                            disabled={this.props.disabled}
+                        />
+                    </span>
                 );
             }
         }
