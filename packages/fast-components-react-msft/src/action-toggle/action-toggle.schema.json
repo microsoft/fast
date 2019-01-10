@@ -1,0 +1,35 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Action toggle",
+    "description": "An action toggle component's schema definition.",
+    "type": "object",
+    "id": "action-toggle",
+    "properties": {
+        "disabled": {
+            "title": "Disabled",
+            "type": "boolean"
+        },
+        "selected": {
+            "title": "Selected",
+            "type": "boolean"
+        },
+        "selectedLabel": {
+            "title": "Selected HTML aria-label attribute",
+            "type": "string"
+        },
+        "unselectedLabel": {
+            "title": "Unselected HTML aria-label attribute",
+            "type": "string"
+        }
+    },
+    "reactProperties": {
+        "selectedContent": {
+            "title": "Selected content",
+            "type": "children"
+        },
+        "unselectedContent": {
+            "title": "Unselected content",
+            "type": "children"
+        }
+    }
+}

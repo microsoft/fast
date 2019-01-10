@@ -1,6 +1,10 @@
 /**
  * Export button styles
  */
+import ActionToggleStyles from "./action-toggle";
+export { ActionToggleStyles };
+export * from "./action-toggle";
+
 import ActionTriggerStyles from "./action-trigger";
 export { ActionTriggerStyles };
 export * from "./action-trigger";
