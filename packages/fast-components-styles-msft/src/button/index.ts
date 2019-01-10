@@ -28,7 +28,7 @@ import { density } from "../utilities/density";
 import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
 import outlinePattern from "../patterns/outline";
 
-function applyTransaprentBackplateStyles(
+function applyTransparentBackplateStyles(
     designSystem: DesignSystem
 ): CSSRules<DesignSystem> {
     return {
@@ -278,10 +278,10 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             },
         },
         button__lightweight: {
-            ...applyTransaprentBackplateStyles(designSystem),
+            ...applyTransparentBackplateStyles(designSystem),
         },
         button__justified: {
-            ...applyTransaprentBackplateStyles(designSystem),
+            ...applyTransparentBackplateStyles(designSystem),
             minWidth: "74px",
             [applyLocalizedProperty("paddingLeft", "paddingRight", direction)]: "0",
             justifyContent: "flex-start",
