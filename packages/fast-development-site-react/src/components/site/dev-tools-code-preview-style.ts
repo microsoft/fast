@@ -1,6 +1,6 @@
 export default {
     'code[class*="language-"]': {
-        color: "#464646",
+        color: "#F2F2F2",
         fontFamily:
             '"Consolas", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace',
         direction: "ltr",
@@ -19,7 +19,7 @@ export default {
         hyphens: "none",
     },
     'pre[class*="language-"]': {
-        color: "#464646",
+        color: "#F2F2F2",
         fontFamily:
             '"Consolas", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace',
         direction: "ltr",
@@ -39,7 +39,7 @@ export default {
         padding: "12px",
         margin: "6px 0",
         overflow: "auto",
-        backgroundColor: "white",
+        backgroundColor: "#1A1A1A",
     },
     'pre[class*="language-"]::-moz-selection': {
         background: "#C1DEF1",
@@ -61,7 +61,7 @@ export default {
         border: "1px solid #DDDDDD",
     },
     comment: {
-        color: "#008000",
+        color: "#6A9955",
         fontStyle: "italic",
     },
     prolog: {
@@ -80,13 +80,13 @@ export default {
         opacity: ".7",
     },
     string: {
-        color: "#A31515",
+        color: "#ce9178",
     },
     punctuation: {
-        color: "#464646",
+        color: "#569CD6",
     },
     operator: {
-        color: "#464646",
+        color: "#F2F2F2",
     },
     url: {
         color: "#36ACAA",
@@ -110,28 +110,28 @@ export default {
         color: "#36ACAA",
     },
     atrule: {
-        color: "#2F80ED",
+        color: "#ce9178",
     },
     keyword: {
-        color: "#2F80ED",
+        color: "#ce9178",
     },
     "attr-value": {
-        color: "#2F80ED",
+        color: "#ce9178",
     },
     ".language-autohotkey .token.selector": {
-        color: "#2F80ED",
+        color: "#ce9178",
     },
     ".language-json .token.boolean": {
-        color: "#2F80ED",
+        color: "#ce9178",
     },
     ".language-json .token.number": {
-        color: "#2F80ED",
+        color: "#ce9178",
     },
     'code[class*="language-css"]': {
-        color: "#2F80ED",
+        color: "#ce9178",
     },
     function: {
-        color: "#464646",
+        color: "#F2F2F2",
     },
     deleted: {
         color: "#9A050F",
@@ -140,7 +140,7 @@ export default {
         color: "#9A050F",
     },
     selector: {
-        color: "#2D9CDB",
+        color: "#569cd6",
     },
     ".language-autohotkey .token.keyword": {
         color: "#00009F",
@@ -161,23 +161,23 @@ export default {
         color: "#2B91AF",
     },
     tag: {
-        color: "#2D9CDB",
+        color: "#569cd6",
     },
     "attr-name": {
-        color: "#BB6BD9",
+        color: "#9cdcfe",
     },
     property: {
-        color: "#BB6BD9",
+        color: "#ce9178",
     },
     regex: {
-        color: "#BB6BD9",
+        color: "#ce9178",
     },
     entity: {
-        color: "#BB6BD9",
+        color: "#ce9178",
     },
     "directive.tag  .tag": {
         background: "#FFFF00",
-        color: "#464646",
+        color: "#569CD6",
     },
     ".line-numbers .line-numbers-rows": {
         borderRightColor: "#A5A5A5",

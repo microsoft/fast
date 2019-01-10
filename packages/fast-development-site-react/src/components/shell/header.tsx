@@ -16,7 +16,7 @@ class ShellHeader extends React.Component<{}, {}> {
             background: "#343434",
             alignItems: "center",
             color: (config: DevSiteDesignSystem): string => {
-                return config.backgroundColor;
+                return config.foreground300;
             },
             textAlign: "left",
             minHeight: toPx(34),

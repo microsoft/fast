@@ -17,7 +17,10 @@ export interface ShellInfoBarManagedClasses {
 const style: ComponentStyles<ShellInfoBarManagedClasses, DevSiteDesignSystem> = {
     shellInfoBar: {
         display: "flex",
-        background: "#E9ECEC",
+        color: (config: DevSiteDesignSystem): string => {
+            return config.foreground300;
+        },
+        background: "#111",
         cursor: "default",
         minHeight: (config: DevSiteDesignSystem): string => {
             return toPx(config.navigationBarHeight / 2);

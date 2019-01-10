@@ -20,6 +20,9 @@ const style: ComponentStyles<CategoryDocumentationManagedClasses, DevSiteDesignS
     documentationPanel: {
         maxWidth: "1000px",
         padding: "14px",
+        "& a": {
+            color: (config: DevSiteDesignSystem): string => config.brandColor,
+        },
     },
 };
 

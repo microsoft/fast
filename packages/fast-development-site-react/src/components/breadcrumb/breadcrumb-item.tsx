@@ -23,7 +23,7 @@ const style: ComponentStyles<BreadcrumbItemManagedClasses, DevSiteDesignSystem> 
         "&::after": {
             content: "'\\002F'",
             padding: `0 0 0 ${toPx(10)}`,
-            color: (config: DevSiteDesignSystem): string => config.foregroundColor,
+            color: (config: DevSiteDesignSystem): string => config.foreground300,
         },
         "&:last-child": {
             "&::after": {

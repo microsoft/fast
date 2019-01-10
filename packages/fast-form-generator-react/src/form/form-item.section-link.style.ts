@@ -1,24 +1,22 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { ellipsis } from "@microsoft/fast-jss-utilities";
 import {
+    applyControlSingleLineWrapper,
     applySoftRemove,
     applySoftRemoveInput,
-    rightArrow,
 } from "../utilities/form-input.style";
 import { FormItemSectionLinkClassNameContract } from "../class-name-contracts";
 
 const styles: ComponentStyles<FormItemSectionLinkClassNameContract, {}> = {
     formItemSectionLink: {
-        display: "flex",
+        ...applyControlSingleLineWrapper(),
     },
     formItemSectionLink_anchor: {
         ...ellipsis(),
         width: "calc(100% - 30px)",
         cursor: "pointer",
-        display: "block",
         fontSize: "11px",
-        height: "30px",
-        lineHeight: "30px",
+        lineHeight: "15px",
     },
     formItemSectionLink_softRemove: {
         ...applySoftRemove(),

@@ -29,7 +29,7 @@ export interface AppState {
 }
 
 const themes: Theme[] = [
-    { id: "Foo", displayName: "Foo", background: "#000" },
+    { id: "Foo", displayName: "Foo", background: "#111" },
     { id: "Bar", displayName: "Bar", background: "#FFF" },
     { id: "Bat", displayName: "Bat", background: "#222" },
 ];

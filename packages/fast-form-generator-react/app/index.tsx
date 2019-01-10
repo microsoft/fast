@@ -11,6 +11,7 @@ import {
     FormProps,
 } from "../src/form/form.props";
 import * as testConfigs from "./configs";
+import { colors } from "../src/utilities/";
 
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
 
@@ -69,15 +70,20 @@ export default class App extends React.Component<{}, AppState> {
     public render(): JSX.Element {
         return (
             <DesignSystemProvider designSystem={designSystemDefaults}>
-                <div>
+                <div
+                    style={{
+                        fontFamily:
+                            "Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif",
+                    }}
+                >
                     <div
                         style={{
                             width: "250px",
                             minHeight: "100vh",
                             padding: "0 0 0 10px",
                             boxSizing: "border-box",
-                            color: "#F2F2F2",
-                            background: "#212121",
+                            color: colors.foreground300,
+                            background: colors.background300,
                             float: "left",
                         }}
                     >

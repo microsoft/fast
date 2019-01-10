@@ -312,6 +312,8 @@ class FormItemArray extends FormItemBase<
         const arraySections: string[] = getArrayLinks(this.props.data);
         const props: any = Object.assign({}, sortingProps, {
             onSortEnd: this.handleSort,
+            helperClass: this.props.managedClasses
+                .formItemArray_existingItemList__sorting,
         });
 
         if (arraySections.length > 0) {

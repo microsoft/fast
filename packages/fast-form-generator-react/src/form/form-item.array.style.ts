@@ -1,15 +1,14 @@
-import { ellipsis, focusVisible, toPx } from "@microsoft/fast-jss-utilities";
+import { ellipsis, focusVisible } from "@microsoft/fast-jss-utilities";
 import {
     applyCleanListStyle,
     applyControl,
+    applyControlWrapper,
     applyGlobalStyle,
     applyLabelStyle,
     applyRemoveItemStyle,
     colors,
     insetStrongBoxShadow,
-    lines,
-    plus,
-} from "../utilities/form-input.style";
+} from "../utilities/";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormItemArrayClassNameContract } from "../class-name-contracts/";
 
@@ -19,7 +18,7 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
     },
     formItemArray: {
         display: "grid",
-        marginBottom: "12px",
+        ...applyControlWrapper(),
     },
     formItemArray_control: {
         width: "100%",
@@ -49,7 +48,7 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
             height: "1px",
             left: "5.5px",
             top: "9.5px",
-            background: "#F2F2F2",
+            background: colors.foreground300,
         },
         "&::after": {
             position: "absolute",
@@ -59,21 +58,26 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
             height: "9px",
             left: "9.5px",
             top: "5.5px",
-            background: "#F2F2F2",
+            background: colors.foreground300,
         },
     },
     formItemArray_controlLabel: {
         ...applyLabelStyle(),
         ...applyControl(),
-        verticalAlign: "middle",
-        lineHeight: "30px",
     },
     formItemArray_existingItemList: {
         ...applyCleanListStyle(),
         fontSize: "11px",
     },
+    formItemArray_existingItemList__sorting: {
+        fontSize: "11px",
+        color: colors.foreground300,
+        backgroundColor: `${colors.background100} !important`,
+    },
     formItemArray_existingItemListItem: {
         position: "relative",
+        paddingLeft: "10px",
+        marginLeft: "-10px",
         height: "30px",
         lineHeight: "30px",
     },

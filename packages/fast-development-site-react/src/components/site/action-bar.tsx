@@ -72,6 +72,12 @@ function menuButtonBase(): CSSRules<DevSiteDesignSystem> {
         padding: `0 ${toPx(12)}`,
         margin: toPx(2),
         fontSize: toPx(14),
+        fill: (config: DevSiteDesignSystem): string => {
+            return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
+        },
+        color: (config: DevSiteDesignSystem): string => {
+            return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
+        },
         "& span": {
             width: toPx(16),
             height: toPx(16),
@@ -98,7 +104,13 @@ const styles: ComponentStyles<ActionBarClassNameContract, DevSiteDesignSystem> =
     actionBar: {
         display: "flex",
         flexBasis: "100%",
-        borderBottom: `${toPx(1)} solid #CCCCCC`,
+        borderBottom: (config: DevSiteDesignSystem): string => {
+            return `${toPx(1)} solid ${config.background300 ||
+                devSiteDesignSystemDefaults.background300}`;
+        },
+        background: (config: DevSiteDesignSystem): string => {
+            return config.background100 || devSiteDesignSystemDefaults.background100;
+        },
     },
     actionBar_componentViewToggles: {
         display: "flex",

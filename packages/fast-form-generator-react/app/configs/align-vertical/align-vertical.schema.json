@@ -12,8 +12,7 @@
                 "top",
                 "bottom",
                 "center"
-            ],
-            "disabled": true
+            ]
         },
         "optionalAlignVertical": {
             "title": "Optional align vertical",

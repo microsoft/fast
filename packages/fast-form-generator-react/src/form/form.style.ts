@@ -1,5 +1,4 @@
-import { toPx } from "@microsoft/fast-jss-utilities";
-import { applyCleanListStyle, colors } from "../utilities/form-input.style";
+import { applyCleanListStyle, colors } from "../utilities/";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { FormClassNameContract } from "../class-name-contracts/";
 
@@ -14,10 +13,10 @@ const styles: ComponentStyles<FormClassNameContract, {}> = {
         ...applyCleanListStyle(),
         "& li": {
             display: "inline-block",
-            paddingRight: toPx(8),
+            paddingRight: "8px",
             "&::after": {
                 content: "'/'",
-                paddingLeft: toPx(8),
+                paddingLeft: "8px",
             },
             "&:last-child::after": {
                 content: "''",

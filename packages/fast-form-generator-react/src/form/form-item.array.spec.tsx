@@ -29,6 +29,8 @@ const managedClasses: FormItemArrayClassNameContract = {
     formItemArray_controlAddButton: "formItemArray_controlAddButton-class",
     formItemArray_controlLabel: "formItemArray_controlLabel-class",
     formItemArray_existingItemList: "formItemArray_existingItemList-class",
+    formItemArray_existingItemList__sorting:
+        "formItemArray_existingItemList__sorting-class",
     formItemArray_existingItemListItem: "formItemArray_existingItemListItem-class",
     formItemArray_existingItemListItemLink:
         "formItemArray_existingItemListItemLink-class",

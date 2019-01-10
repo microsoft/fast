@@ -34,10 +34,36 @@ const style: ComponentStyles<ComponentViewManagedClasses, DevSiteDesignSystem> =
         display: "grid",
         gridTemplateColumns: "1fr 1fr 1fr",
         backgroundColor: (config: DevSiteDesignSystem): string => config.backgroundColor,
+        "&::-webkit-scrollbar": {
+            width: "6px",
+            height: "6px",
+            overflow: "auto",
+            float: "left",
+            background: (config: DevSiteDesignSystem): string => config.background300,
+        },
+        "&::-webkit-scrollbar-thumb": {
+            background: (config: DevSiteDesignSystem): string => config.background800,
+            borderRadius: "2px",
+        },
     },
     componentDetailView: {
         overflow: "auto",
         flexGrow: "1",
+        background: (config: DevSiteDesignSystem): string => config.background100,
+        color: (config: DevSiteDesignSystem): string => config.foreground300,
+        "&::-webkit-scrollbar": {
+            width: "6px",
+            height: "6px",
+            overflow: "auto",
+            float: "left",
+            background: (config: DevSiteDesignSystem): string => config.background300,
+        },
+        "&::-webkit-scrollbar-thumb": {
+            width: "6px",
+            height: "6px",
+            background: (config: DevSiteDesignSystem): string => config.background800,
+            borderRadius: "2px",
+        },
     },
 };
 

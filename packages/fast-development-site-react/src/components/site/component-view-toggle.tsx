@@ -25,6 +25,9 @@ const styles: ComponentStyles<
         justifyContent: "center",
         borderRadius: toPx(2),
         margin: toPx(2),
+        fill: (config: DevSiteDesignSystem): string => {
+            return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
+        },
         '&[aria-current="page"]': {
             "&::before": {
                 content: "''",

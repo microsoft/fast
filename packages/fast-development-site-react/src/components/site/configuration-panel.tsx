@@ -40,6 +40,16 @@ const style: ComponentStyles<ConfigurationPanelManagedClasses, DevSiteDesignSyst
         height: "100%",
         overflowX: "auto",
         color: "white",
+        "&::-webkit-scrollbar": {
+            width: "6px",
+            height: "6px",
+            overflow: "auto",
+            float: "left",
+        },
+        "&::-webkit-scrollbar-thumb": {
+            background: "#303030",
+            borderRadius: "2px",
+        },
     },
     configurationPanel_controls: {
         display: "flex",
@@ -108,7 +118,7 @@ const style: ComponentStyles<ConfigurationPanelManagedClasses, DevSiteDesignSyst
         },
     },
     configurationPanel_paneForm: {
-        padding: toPx(12),
+        paddingLeft: "10px",
     },
 };
 

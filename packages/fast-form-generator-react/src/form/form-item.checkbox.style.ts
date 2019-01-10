@@ -1,22 +1,22 @@
-import { toPx } from "@microsoft/fast-jss-utilities";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormItemCheckboxClassNameContract } from "../class-name-contracts/";
 import {
+    applyControlSingleLineWrapper,
     applyLabelStyle,
     applySoftRemove,
     applySoftRemoveInput,
-    applyWrapperStyle,
     colors,
+    DISABLED_OPACITY,
     insetStrongBoxShadow,
-} from "../utilities/form-input.style";
+} from "../utilities/";
 
 const styles: ComponentStyles<FormItemCheckboxClassNameContract, {}> = {
     formItemCheckbox: {
-        ...applyWrapperStyle(),
+        ...applyControlSingleLineWrapper(),
         position: "relative",
     },
     formItemCheckbox__disabled: {
-        color: "rgba(255, 255, 255, 0.7)",
+        opacity: `${DISABLED_OPACITY}`,
         cursor: "not-allowed",
         "& $formItemCheckbox_label": {
             cursor: "not-allowed",
@@ -24,7 +24,7 @@ const styles: ComponentStyles<FormItemCheckboxClassNameContract, {}> = {
     },
     formItemCheckbox_label: {
         ...applyLabelStyle(),
-        marginLeft: "16px",
+        marginLeft: "8px",
     },
     formItemCheckbox_input: {
         appearance: "none",
@@ -32,27 +32,19 @@ const styles: ComponentStyles<FormItemCheckboxClassNameContract, {}> = {
         height: "14px",
         boxSizing: "border-box",
         borderRadius: "2px",
-        border: "1px solid #909090",
+        border: `1px solid ${colors.foreground800}`,
         float: "right",
         zIndex: "1",
         margin: "0",
         "&:disabled": {
-            border: "1px solid #909090",
-            color: "rgba(255, 255, 255, 0.7)",
             cursor: "not-allowed",
-            "&::after, &::before": {
-                background: "rgba(255, 255, 255, 0.7)",
-            },
-            "&:hover": {
-                border: "1px solid #909090",
-            },
         },
         "&:hover": {
-            border: "1px solid #F2F2F2",
+            border: `1px solid ${colors.foreground300}`,
         },
         "&:focus": {
             outline: "none",
-            ...insetStrongBoxShadow("#F2F2F2"),
+            ...insetStrongBoxShadow(colors.foreground300),
         },
         "& + span": {
             position: "absolute",
@@ -64,7 +56,7 @@ const styles: ComponentStyles<FormItemCheckboxClassNameContract, {}> = {
                 display: "block",
                 content: "''",
                 width: "1px",
-                background: colors.white,
+                background: colors.foreground300,
             },
         },
         "&:checked": {

@@ -5,7 +5,7 @@ import manageJss, {
     ManagedClasses,
     ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
-import { DevSiteDesignSystem } from "../design-system";
+import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
 import CodePreview from "./dev-tools-code-preview";
 import { FormChildOption } from "./";
 
@@ -57,7 +57,9 @@ const style: ComponentStyles<DevToolsManagedClasses, DevSiteDesignSystem> = {
     },
     devTools_controls: {
         display: "flex",
-        background: "#EBEBEB",
+        background: (config: DevSiteDesignSystem): string => {
+            return config.background200 || devSiteDesignSystemDefaults.background200;
+        },
         height: toPx(28),
         padding: `${toPx(2)} ${toPx(4)}`,
         "& ul": {
@@ -85,11 +87,16 @@ const style: ComponentStyles<DevToolsManagedClasses, DevSiteDesignSystem> = {
             backgroundRepeat: "no-repeat",
             marginRight: toPx(2),
             borderRadius: toPx(2),
+            "&:focus": {
+                outline: "none",
+            },
         },
     },
     devTools_controls_framework__active: {
         "& button": {
-            backgroundColor: "#FFF",
+            backgroundColor: (config: DevSiteDesignSystem): string => {
+                return config.background800 || devSiteDesignSystemDefaults.background800;
+            },
         },
     },
     devTools_controls_framework_angular: {
@@ -112,7 +119,7 @@ const style: ComponentStyles<DevToolsManagedClasses, DevSiteDesignSystem> = {
         border: "none",
         "&:after": {
             position: "absolute",
-            background: "#000000",
+            background: "#F2F2F2",
             content: "''",
             left: toPx(6),
             top: toPx(12),
@@ -122,7 +129,7 @@ const style: ComponentStyles<DevToolsManagedClasses, DevSiteDesignSystem> = {
         },
         "&:before": {
             position: "absolute",
-            background: "#000000",
+            background: "#F2F2F2",
             content: "''",
             left: toPx(6),
             top: toPx(12),
@@ -134,6 +141,9 @@ const style: ComponentStyles<DevToolsManagedClasses, DevSiteDesignSystem> = {
     devTools_tab: {
         "& button": {
             background: "none",
+            color: (config: DevSiteDesignSystem): string => {
+                return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
+            },
             "&:focus": {
                 outline: "none",
             },
@@ -141,7 +151,9 @@ const style: ComponentStyles<DevToolsManagedClasses, DevSiteDesignSystem> = {
     },
     devTools_tab__active: {
         "& button": {
-            background: "#FFFFFF",
+            background: (config: DevSiteDesignSystem): string => {
+                return config.background800 || devSiteDesignSystemDefaults.background800;
+            },
             borderRadius: toPx(3),
             position: "relative",
             "&:after": {
@@ -162,6 +174,9 @@ const style: ComponentStyles<DevToolsManagedClasses, DevSiteDesignSystem> = {
     },
     devTools_tabPanel: {
         display: "inline-flex",
+        color: (config: DevSiteDesignSystem): string => {
+            return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
+        },
         '&[aria-hidden="true"]': {
             display: "none",
         },
@@ -169,6 +184,19 @@ const style: ComponentStyles<DevToolsManagedClasses, DevSiteDesignSystem> = {
     devTools_tabPanelContainter: {
         overflow: "auto",
         height: `calc(100% - ${toPx(32)})`,
+        background: (config: DevSiteDesignSystem): string => {
+            return config.background100 || devSiteDesignSystemDefaults.background100;
+        },
+        "&::-webkit-scrollbar": {
+            width: "6px",
+            height: "6px",
+            overflow: "auto",
+            float: "left",
+        },
+        "&::-webkit-scrollbar-thumb": {
+            background: "#303030",
+            borderRadius: "2px",
+        },
     },
 };
 
