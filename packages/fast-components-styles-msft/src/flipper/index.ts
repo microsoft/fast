@@ -56,6 +56,9 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
                 outline: "none",
                 ...outlinePattern.disabled,
             },
+            "&::-moz-focus-inner": {
+                border: "0",
+            },
         },
         flipper_glyph: {
             display: "inline-flex",

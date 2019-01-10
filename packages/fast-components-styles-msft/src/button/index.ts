@@ -241,6 +241,9 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
                 backgroundColor: secondaryDisabledBackgroundColor,
                 color: secondaryDisabledColor,
             },
+            "&::-moz-focus-inner": {
+                border: "0",
+            },
         },
         button__primary: {
             color,
