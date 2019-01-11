@@ -90,7 +90,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
         },
         radio_label: {
             ...typographyPattern.rest,
-            [applyLocalizedProperty("paddingLeft", "paddingRight", direction)]: "8px",
+            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "8px",
         },
         radio__checked: {
             "& $radio_stateIndicator": {
