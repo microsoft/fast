@@ -17,6 +17,7 @@ import { curry } from "lodash-es";
 import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import {
     disabledContrast,
+    ensureBrandNormal,
     ensureForegroundNormal,
     ensureLargeContrast,
     ensureNormalContrast,
@@ -32,8 +33,8 @@ function applyTransparentBackplateStyles(
     designSystem: DesignSystem
 ): CSSRules<DesignSystem> {
     return {
-        color: ensureNormalBrandContrast(designSystem),
-        fill: ensureNormalBrandContrast(designSystem),
+        color: ensureBrandNormal(designSystem),
+        fill: ensureBrandNormal(designSystem),
         ...applyTransparentBackground(),
         [`&:hover, &${focusVisible()}`]: {
             borderColor: "transparent",
@@ -41,7 +42,7 @@ function applyTransparentBackplateStyles(
             ...applyTransparentBackground(),
         },
         "&:active $button_contentRegion::before, &:hover $button_contentRegion::before": {
-            background: ensureNormalBrandContrast(designSystem),
+            background: ensureBrandNormal(designSystem),
         },
         [`&${focusVisible()} $button_contentRegion::before`]: {
             background: ensureForegroundNormal,
@@ -58,17 +59,9 @@ function applyTransparentBackplateStyles(
             },
         },
         "& $button_beforeContent, & $button_afterContent": {
-            fill: ensureNormalBrandContrast(designSystem),
+            fill: ensureBrandNormal(designSystem),
         },
     };
-}
-
-function ensureNormalBrandContrast(designSystem: DesignSystem): string {
-    return ensureNormalContrast(
-        designSystem.contrast,
-        designSystem.brandColor,
-        designSystem.backgroundColor
-    );
 }
 
 function disabledForegroundContrast(designSystem: DesignSystem): string {
