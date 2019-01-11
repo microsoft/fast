@@ -115,7 +115,7 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = (
         actionToggle_unselectedGlyph: {
             display: "inline-block",
             position: "relative",
-            width: "8px",
+            maxWidth: "16px",
         },
         actionToggle__primary: {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
