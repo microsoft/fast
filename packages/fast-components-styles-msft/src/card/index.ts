@@ -11,6 +11,7 @@ import { CardClassNameContract } from "@microsoft/fast-components-class-name-con
 import { get } from "lodash-es";
 import Chroma from "chroma-js";
 import { elevation, ElevationMultiplier } from "../utilities/elevation";
+import { toPx } from "@microsoft/fast-jss-utilities";
 
 const styles: ComponentStyles<CardClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -22,6 +23,7 @@ const styles: ComponentStyles<CardClassNameContract, DesignSystem> = (
             width: "100%",
             height: "100%",
             background: designSystem.backgroundColor,
+            borderRadius: toPx(designSystem.cornerRadius),
             ...elevation(ElevationMultiplier.e4, designSystem.foregroundColor)(
                 designSystem
             ),
