@@ -36,6 +36,7 @@ const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = (
             top: "50%",
             transform: "translate(-50%, -50%)",
             background: backgroundColor,
+            borderRadius: toPx(designSystem.cornerRadius * 2),
             ...elevation(ElevationMultiplier.e14, foregroundColor)(designSystem),
         },
     };
