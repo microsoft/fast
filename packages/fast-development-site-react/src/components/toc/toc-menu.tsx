@@ -50,7 +50,7 @@ const style: ComponentStyles<TocMenuManagedClasses, DevSiteDesignSystem> = {
         },
         "&:hover": {
             cursor: "pointer",
-            backgroundColor: "rgba(0, 0, 0, 0.04)",
+            backgroundColor: "rgba(255, 255, 255, 0.04)",
         },
         "&:focus": {
             border: (config: DevSiteDesignSystem): string => {

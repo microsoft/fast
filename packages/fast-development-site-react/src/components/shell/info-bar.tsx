@@ -5,7 +5,7 @@ import manageJss, {
     ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import { DevSiteDesignSystem } from "../design-system";
+import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
 
 /* tslint:disable-next-line */
 export interface ShellInfoBarProps {}
@@ -18,7 +18,7 @@ const style: ComponentStyles<ShellInfoBarManagedClasses, DevSiteDesignSystem> = 
     shellInfoBar: {
         display: "flex",
         color: (config: DevSiteDesignSystem): string => {
-            return config.foreground300;
+            return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
         },
         background: "#111",
         cursor: "default",

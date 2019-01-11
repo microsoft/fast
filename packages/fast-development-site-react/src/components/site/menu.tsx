@@ -62,7 +62,12 @@ const style: ComponentStyles<SiteNavClassNameContract, DevSiteDesignSystem> = {
     },
     siteMenu_nav: {
         position: "absolute",
-        background: "#FFFFFF",
+        background: (config: DevSiteDesignSystem): string => {
+            return config.background200 || devSiteDesignSystemDefaults.background200;
+        },
+        color: (config: DevSiteDesignSystem): string => {
+            return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
+        },
         zIndex: "5",
         height: "100vh",
         top: "0",
@@ -114,7 +119,7 @@ const style: ComponentStyles<SiteNavClassNameContract, DevSiteDesignSystem> = {
     },
     siteMenu_buttonGlyph__close: {
         fill: (config: DevSiteDesignSystem): string => {
-            return config.background300;
+            return config.foreground300;
         },
     },
     siteMenu_ul: {

@@ -35,7 +35,7 @@ const tocItemActivePipeHeight: number = 20;
 const style: ComponentStyles<TocItemManagedClasses, DevSiteDesignSystem> = {
     tocItem_anchor: {
         color: (config: DevSiteDesignSystem): string => {
-            return config.foreground300;
+            return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
         },
         textDecoration: "none",
         display: "block",
@@ -44,7 +44,7 @@ const style: ComponentStyles<TocItemManagedClasses, DevSiteDesignSystem> = {
         border: `${toPx(1)} solid transparent`,
         outline: "0",
         "&:hover": {
-            backgroundColor: "rgba(0, 0, 0, 0.04)",
+            backgroundColor: "rgba(255, 255, 255, 0.04)",
         },
         "&:focus": {
             border: (config: DevSiteDesignSystem): string => {

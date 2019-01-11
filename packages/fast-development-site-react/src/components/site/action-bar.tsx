@@ -105,7 +105,7 @@ const styles: ComponentStyles<ActionBarClassNameContract, DevSiteDesignSystem> =
         display: "flex",
         flexBasis: "100%",
         borderBottom: (config: DevSiteDesignSystem): string => {
-            return `${toPx(1)} solid ${config.background300 ||
+            return `1px solid ${config.background300 ||
                 devSiteDesignSystemDefaults.background300}`;
         },
         background: (config: DevSiteDesignSystem): string => {
@@ -134,7 +134,7 @@ const styles: ComponentStyles<ActionBarClassNameContract, DevSiteDesignSystem> =
             left: toPx(12),
             right: toPx(12),
             background: (config: DevSiteDesignSystem): string => {
-                return config.brandColor;
+                return config.brandColor || devSiteDesignSystemDefaults.brandColor;
             },
         },
     },

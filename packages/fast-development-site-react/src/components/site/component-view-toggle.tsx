@@ -48,7 +48,7 @@ const styles: ComponentStyles<
         "&:focus": {
             outline: "none",
             border: (config: DevSiteDesignSystem): string => {
-                return `${toPx(1)} solid ${config.brandColor ||
+                return `1px solid ${config.brandColor ||
                     devSiteDesignSystemDefaults.brandColor}`;
             },
         },

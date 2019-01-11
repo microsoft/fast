@@ -1,6 +1,7 @@
 import * as React from "react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
+import { applyScrollbarStyle } from "../../utilities";
 import Form from "@microsoft/fast-form-generator-react";
 import manageJss, {
     ComponentStyles,
@@ -39,17 +40,10 @@ const style: ComponentStyles<ConfigurationPanelManagedClasses, DevSiteDesignSyst
         width: "100%",
         height: "100%",
         overflowX: "auto",
-        color: "white",
-        "&::-webkit-scrollbar": {
-            width: "6px",
-            height: "6px",
-            overflow: "auto",
-            float: "left",
+        color: (config: DevSiteDesignSystem): string => {
+            return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
         },
-        "&::-webkit-scrollbar-thumb": {
-            background: "#303030",
-            borderRadius: "2px",
-        },
+        ...applyScrollbarStyle(),
     },
     configurationPanel_controls: {
         display: "flex",
@@ -68,7 +62,9 @@ const style: ComponentStyles<ConfigurationPanelManagedClasses, DevSiteDesignSyst
             padding: `${toPx(6)} ${toPx(8)}`,
             margin: toPx(2),
             minWidth: toPx(25),
-            color: "white",
+            color: (config: DevSiteDesignSystem): string => {
+                return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
+            },
             backgroundPosition: "center",
             "&:hover": {
                 cursor: "pointer",
@@ -77,7 +73,7 @@ const style: ComponentStyles<ConfigurationPanelManagedClasses, DevSiteDesignSyst
             "&:focus": {
                 outline: "none",
                 border: (config: DevSiteDesignSystem): string => {
-                    return `${toPx(1)} solid ${config.brandColor ||
+                    return `1px solid ${config.brandColor ||
                         devSiteDesignSystemDefaults.brandColor}`;
                 },
             },

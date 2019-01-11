@@ -12,6 +12,7 @@ import {
     glyphTransparency,
 } from "@microsoft/fast-glyphs-msft";
 import { mapDataToComponent } from "@microsoft/fast-form-generator-react";
+import { applyScrollbarStyle } from "../../utilities";
 import { get, uniqueId } from "lodash-es";
 import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
 import Shell, { ShellHeader, ShellInfoBar, ShellPaneCollapse, ShellSlot } from "../shell";
@@ -173,7 +174,9 @@ const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
             borderRadius: toPx(2),
             width: toPx(1),
             height: toPx(10),
-            background: "#F2F2F2",
+            background: (config: DevSiteDesignSystem): string => {
+                return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
+            },
         },
         "&::before": {
             right: toPx(15),
@@ -190,8 +193,12 @@ const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
     site_infoBarConfiguration_input: {
         lineHeight: toPx(16),
         fontSize: toPx(14),
-        backgroundColor: "#2E2E2E",
-        color: "#F2F2F2",
+        backgroundColor: (config: DevSiteDesignSystem): string => {
+            return config.background350 || devSiteDesignSystemDefaults.background350;
+        },
+        color: (config: DevSiteDesignSystem): string => {
+            return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
+        },
         borderRadius: toPx(2),
         appearance: "none",
         padding: localizeSpacing(Direction.ltr)(
@@ -202,6 +209,7 @@ const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
         "&:-ms-expand": {
             display: "none",
         },
+        // TODO: Issue #309 https://github.com/Microsoft/fast-dna/issues/309
         "&:focus": {
             boxShadow: "inset 0 0 0 1px #FB356D",
         },
@@ -218,16 +226,7 @@ const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
     site_paneToc: {
         padding: "0",
         overflow: "auto",
-        "&::-webkit-scrollbar": {
-            width: "6px",
-            height: "6px",
-            overflow: "auto",
-            float: "left",
-        },
-        "&::-webkit-scrollbar-thumb": {
-            background: "#303030",
-            borderRadius: "2px",
-        },
+        ...applyScrollbarStyle(),
     },
     site_paneTocRow: {
         display: "flex",
@@ -250,8 +249,8 @@ const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
         alignSelf: "flex-start",
     },
     site_paneToggleButtonIcon: {
-        "& svg": {
-            fill: "#F2F2F2",
+        fill: (config: DevSiteDesignSystem): string => {
+            return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
         },
         height: toPx(16),
         width: toPx(16),
@@ -268,7 +267,9 @@ const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
         justifyContent: "center",
     },
     site_transparencyToggleButton: {
-        fill: "#F2F2F2",
+        fill: (config: DevSiteDesignSystem): string => {
+            return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
+        },
         border: "none",
         borderRadius: toPx(2),
         background: "none",
@@ -283,7 +284,9 @@ const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
             opacity: "1",
         },
         '&[aria-pressed="true"]': {
-            background: "#2E2E2E",
+            background: (config: DevSiteDesignSystem): string => {
+                return config.background350 || devSiteDesignSystemDefaults.background350;
+            },
             opacity: "1",
         },
     },
@@ -308,6 +311,7 @@ const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
         width: toPx(16),
         marginRight: toPx(4),
         boxSizing: "border-box",
+        // TODO: Issue #309 https://github.com/Microsoft/fast-dna/issues/309
         border: "1px solid #D5D5D5",
     },
     site_statusReleased: {

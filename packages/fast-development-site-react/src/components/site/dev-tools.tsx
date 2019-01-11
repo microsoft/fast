@@ -6,6 +6,7 @@ import manageJss, {
     ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
 import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
+import { applyScrollbarStyle } from "../../utilities";
 import CodePreview from "./dev-tools-code-preview";
 import { FormChildOption } from "./";
 
@@ -117,24 +118,21 @@ const style: ComponentStyles<DevToolsManagedClasses, DevSiteDesignSystem> = {
         position: "relative",
         background: "none",
         border: "none",
-        "&:after": {
-            position: "absolute",
-            background: "#F2F2F2",
+        "&::before, &::after": {
+            background: (config: DevSiteDesignSystem): string => {
+                return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
+            },
             content: "''",
+            position: "absolute",
             left: toPx(6),
             top: toPx(12),
             height: toPx(1),
             width: toPx(12),
+        },
+        "&::after": {
             transform: "rotate(-45deg)",
         },
-        "&:before": {
-            position: "absolute",
-            background: "#F2F2F2",
-            content: "''",
-            left: toPx(6),
-            top: toPx(12),
-            height: toPx(1),
-            width: toPx(12),
+        "&::before": {
             transform: "rotate(45deg)",
         },
     },
@@ -187,16 +185,7 @@ const style: ComponentStyles<DevToolsManagedClasses, DevSiteDesignSystem> = {
         background: (config: DevSiteDesignSystem): string => {
             return config.background100 || devSiteDesignSystemDefaults.background100;
         },
-        "&::-webkit-scrollbar": {
-            width: "6px",
-            height: "6px",
-            overflow: "auto",
-            float: "left",
-        },
-        "&::-webkit-scrollbar-thumb": {
-            background: "#303030",
-            borderRadius: "2px",
-        },
+        ...applyScrollbarStyle(),
     },
 };
 
