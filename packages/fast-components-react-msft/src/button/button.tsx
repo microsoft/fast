@@ -81,7 +81,7 @@ class Button extends Foundation<ButtonHandledProps, ButtonUnhandledProps, {}> {
     private generateBeforeContent(): React.ReactNode {
         if (typeof this.props.beforeContent === "function") {
             return this.props.beforeContent(
-                get(this.props, "managedClasses.managedClasses.button_beforeContent", "")
+                get(this.props, "managedClasses.button_beforeContent", "")
             );
         }
     }
@@ -89,7 +89,7 @@ class Button extends Foundation<ButtonHandledProps, ButtonUnhandledProps, {}> {
     private generateAfterContent(): React.ReactNode {
         if (typeof this.props.afterContent === "function") {
             return this.props.afterContent(
-                get(this.props, "managedClasses.managedClasses.button_afterContent", "")
+                get(this.props, "managedClasses.button_afterContent", "")
             );
         }
     }
