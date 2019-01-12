@@ -675,7 +675,7 @@ ul.toc-headings li a:focus {
 }
 
 .homeContainer .buttonWrapper a:hover {
-    border-bottom: 1px solid rgba(130,130,130,1);
+    border-bottom: 1px solid #828282;
 }
 
 /*------------------------------------*\
