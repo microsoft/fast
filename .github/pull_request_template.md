@@ -53,7 +53,7 @@ Example titles:
         - Be concise.
         - Use all lowercase characters. 
         - Use imperative, present tense (e.g. `add` not `adds`.)
-        - Do not end your discription with a period.
+        - Do not end your description with a period.
         - Avoid redundant words.
         - Start your description with `add`, `update`, or `remove.`
 
