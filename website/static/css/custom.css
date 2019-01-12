@@ -34,7 +34,7 @@ h6 {
  * Anchors
  *********/
 
-p a {
+p a, li a {
     color: #fb356d;
     outline: none;
 }
@@ -408,7 +408,7 @@ a.hash-link:hover {
  ****************************/
 
  .navPusher {
-    padding-top: 128px;
+    padding-top: 127px;
 }
 
 /* 
@@ -525,6 +525,10 @@ article ul li {
 /* 
  * Table of contents
  ****************************/
+
+ .docsSliderActive.docsNavContainer {
+     background-color: #202020;
+ }
 
  ul.toc-headings {
     list-style-type: none;
@@ -670,6 +674,10 @@ ul.toc-headings li a:focus {
     background-color: #313131;
 }
 
+.homeContainer .buttonWrapper a:hover {
+    border-bottom: 1px solid rgba(130,130,130,1);
+}
+
 /*------------------------------------*\
   Footer
   Footer area at bottom of all pages.
@@ -753,6 +761,11 @@ ul.toc-headings li a:focus {
 
 @media only screen and (min-width: 1024px) {
 
+    
+    .docsNavContainer {
+        top: 64px;
+    }
+
     .mainContainer {
         padding-top: 32px;
     }
@@ -812,6 +825,7 @@ ul.toc-headings li a:focus {
     .tocActive .onPageNav {
         background: #202020;
         top: 196px;
+        margin-top: -21px;
     }
 
     .docsSliderActive .toc section .navGroups {
