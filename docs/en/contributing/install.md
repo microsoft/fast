@@ -6,6 +6,13 @@ sidebar_label: Install
 
 # Install
 
+## Prerequisites
+
+Before setting up FAST-DNA, install Git and npm:
+
+* [Download Git](https://git-scm.com/downloads)
+* [Download npm](https://www.npmjs.com/get-npm)
+
 ## Setup the source repository
 
 Clone the repository, `cd` into the project, install [Lerna](https://github.com/lerna/lerna) and install dependencies:
