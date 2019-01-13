@@ -1,12 +1,12 @@
-# Action Toggle
+# Action toggle
 
-*Action toggle* should be used as a control on or around an interactive region of the page that affects the region or items within the region. It usually represents a switch between one of two states.
+Use *action toggle* to switch between two on screen binary states.
 
 ## Usage
 
 Use *action toggle* for specific control around a functional state. Labeling can be done using a glyph and text, but could also contain just a glyph or just text. Make sure the text and glyph represent the expected function. When only a glyph is used to label the button other elements, such as a tooltip, may be required to make the toggle's function clear.
 
-The "selectedGlyph" and "unselectedGlyph" props take a function that returns a ReactNode to render the glyph (ie. a [render prop](https://reactjs.org/docs/render-props.html)).  Note that the function should accept a string parameter that is applied as a class name to the top level element of the resulting node.  This class name will be populated by the *action toggle* component to use an internally generated class ("actionToggle_selectedGlyph" & "actionToggle_unselectedGlyph") to apply to the glyphs for styling. 
+The "selectedGlyph" and "unselectedGlyph" props take a function that returns a ReactNode to render the glyph (ie. a [render prop](https://reactjs.org/docs/render-props.html)).  Note that the function should accept a string parameter that is applied as a class name to the top level element of the resulting node.  This class name will be populated by the *action toggle* component to use an internally generated class ("actionToggle_selectedGlyph" & "actionToggle_unselectedGlyph") to apply to the glyphs for styling.
 
 ## Style guidance
 
