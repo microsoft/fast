@@ -8,10 +8,7 @@ sidebar_label: Install
 
 ## Prerequisites
 
-Before setting up FAST-DNA, install Git and npm:
-
-* [Download Git](https://git-scm.com/downloads)
-* [Download npm](https://www.npmjs.com/get-npm)
+Before setting up FAST-DNA, install [npm](https://www.npmjs.com/get-npm).
 
 ## Setup the source repository
 
