@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
-import { configure, mount, shallow } from "enzyme";
+import { configure, mount, shallow, ShallowWrapper } from "enzyme";
 import Breadcrumb, {
     BreadcrumbClassNameContract,
     BreadcrumbUnhandledProps,
@@ -22,6 +22,11 @@ const managedClasses: BreadcrumbClassNameContract = {
 describe("breadcrumb", (): void => {
     test("should have a displayName that matches the component name", () => {
         expect((Breadcrumb as any).name).toBe(Breadcrumb.displayName);
+    });
+
+    test("should have correct root element type 'nav'", () => {
+        const rendered: ShallowWrapper = shallow(<Breadcrumb />);
+        expect(rendered.type()).toBe("nav");
     });
 
     test("should not throw if managedClasses are not provided", () => {

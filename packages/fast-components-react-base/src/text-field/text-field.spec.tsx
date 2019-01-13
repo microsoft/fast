@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
-import { configure, render, shallow } from "enzyme";
+import { configure, render, shallow, ShallowWrapper } from "enzyme";
 import examples from "./examples.data";
 import TextField, {
     TextFieldClassNameContract,
@@ -24,6 +24,11 @@ configure({ adapter: new Adapter() });
 describe("text-field", (): void => {
     test("should have a displayName that matches the component name", () => {
         expect((TextField as any).name).toBe(TextField.displayName);
+    });
+
+    test("should have correct root element type 'input'", () => {
+        const rendered: ShallowWrapper = shallow(<TextField />);
+        expect(rendered.type()).toBe("input");
     });
 
     test("should not throw if managedClasses are not provided", () => {

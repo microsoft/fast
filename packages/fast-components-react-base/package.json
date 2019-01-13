@@ -74,6 +74,7 @@
     "@microsoft/fast-development-site-react": "^3.2.5",
     "@microsoft/fast-tslint-rules": "^3.0.1",
     "@microsoft/fast-web-utilities": "^3.0.4",
+    "@types/enzyme": "^3.1.15",
     "@types/jest": "^23.3.5",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.6",

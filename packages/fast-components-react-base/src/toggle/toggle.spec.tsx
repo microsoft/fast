@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
-import { configure, shallow } from "enzyme";
+import { configure, shallow, ShallowWrapper } from "enzyme";
 import examples from "./examples.data";
 import Toggle, {
     ToggleClassNameContract,
@@ -37,6 +37,11 @@ describe("toggle", (): void => {
 
     test("should have a displayName that matches the component name", () => {
         expect((Toggle as any).name).toBe(Toggle.displayName);
+    });
+
+    test("should have correct input type attribute 'checkbox'", () => {
+        const rendered: ShallowWrapper = shallow(<Toggle {...handledProps} />);
+        expect(rendered.find("#id").prop("type")).toBe("checkbox");
     });
 
     test("should not throw if managedClasses are not provided", () => {
