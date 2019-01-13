@@ -15,7 +15,7 @@ const managedClasses: TextAreaManagedClasses = {
 };
 
 const examples: ComponentFactoryExample<TextAreaHandledProps> = {
-    name: "Text Area",
+    name: "Text area",
     component: TextArea,
     schema: schema as any,
     documentation: <Documentation />,

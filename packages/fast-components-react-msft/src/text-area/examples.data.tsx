@@ -5,12 +5,12 @@ import schema from "@microsoft/fast-components-react-base/dist/text-area/text-ar
 import Documentation from "./.tmp/documentation";
 
 export default {
-    name: "Text Area",
+    name: "Text area",
     component: TextArea,
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
-        placeholder: "Textarea placeholder text",
+        placeholder: "Text area placeholder text",
     },
     data: [
         {
