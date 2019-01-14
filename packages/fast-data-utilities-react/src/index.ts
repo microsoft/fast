@@ -18,6 +18,12 @@ export enum PropertyKeyword {
     reactProperties = "reactProperties",
 }
 
+export enum CombiningKeyword {
+    anyOf = "anyOf",
+    oneOf = "oneOf",
+    allOf = "allOf",
+}
+
 export interface ChildOptionItem {
     /**
      * The name of the component
@@ -118,15 +124,23 @@ function getSchemaOneOfAnyOfLocationSegments(schema: any, data: any): string[] {
         return schemaLocationSegments;
     }
 
-    if (!!schema.anyOf) {
+    if (!!schema[CombiningKeyword.anyOf]) {
         schemaLocationSegments.push(
-            `anyOf.${getValidAnyOfOneOfIndex("anyOf", data, schema)}`
+            `${CombiningKeyword.anyOf}.${getValidAnyOfOneOfIndex(
+                CombiningKeyword.anyOf,
+                data,
+                schema
+            )}`
         );
     }
 
-    if (!!schema.oneOf) {
+    if (!!schema[CombiningKeyword.oneOf]) {
         schemaLocationSegments.push(
-            `oneOf.${getValidAnyOfOneOfIndex("oneOf", data, schema)}`
+            `${CombiningKeyword.oneOf}.${getValidAnyOfOneOfIndex(
+                CombiningKeyword.oneOf,
+                data,
+                schema
+            )}`
         );
     }
 
