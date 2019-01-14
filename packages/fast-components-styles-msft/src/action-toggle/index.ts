@@ -130,7 +130,7 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = (
                 fill: primaryRestBackgroundColor,
             },
             "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
-                fill: secondaryDisabledColor,
+                fill: outlineDisabledColor,
             },
         },
         actionToggle__justified: {
