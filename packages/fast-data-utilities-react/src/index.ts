@@ -270,6 +270,23 @@ export function mapSchemaLocationFromDataLocation(
 }
 
 /**
+ * Finds a subset of locations that are react children
+ */
+function getReactChildrenLocationsFromSchema(
+    schema: any,
+    schemaLocations: any
+): string[] {
+    return schemaLocations.filter(
+        (schemaLocation: string): boolean => {
+            return (
+                !!schemaLocation.match(/reactProperties\..+?\b/) &&
+                get(schema, schemaLocation).type === "children"
+            );
+        }
+    );
+}
+
+/**
  * Finds the locations throughout an object
  */
 function getLocationsFromObject(data: any, location: string = ""): string[] {
@@ -392,10 +409,16 @@ export function getDataLocationsOfChildren(
     childOptions: ChildOptionItem[]
 ): string[] {
     // get all schema locations from the schema
-    const schemaReactChildrenLocations: string[] = getLocationsFromObject(schema);
+    const schemaLocations: string[] = getLocationsFromObject(schema);
 
     // get all data locations from the data
     const dataLocations: string[] = getLocationsFromObject(data);
+
+    // get all schema locations from schema
+    const schemaReactChildrenLocations: string[] = getReactChildrenLocationsFromSchema(
+        schema,
+        schemaLocations
+    );
 
     // get all schema locations from data locations
     const schemaLocationsFromDataLocations: string[] = dataLocations.map(
