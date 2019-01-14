@@ -125,7 +125,7 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = (
                 fill: primaryRestBackgroundColor,
             },
             "&$actionTrigger__disabled $actionTrigger_glyph": {
-                fill: secondaryDisabledColor,
+                fill: outlineDisabledColor,
             },
         },
         actionTrigger__justified: {
