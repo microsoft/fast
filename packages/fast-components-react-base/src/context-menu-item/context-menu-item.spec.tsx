@@ -110,6 +110,22 @@ describe("context menu item", (): void => {
         expect(onInvoke).toHaveBeenCalledTimes(0);
     });
 
+    test("should ensure onClick and onKeyDown props are called when triggered", (): void => {
+        // These props are used internally, so we should test that handlers provided as props are still called
+        const onClick: any = jest.fn();
+        const onKeyDown: any = jest.fn();
+
+        const rendered: any = shallow(
+            <ContextMenuItem onClick={onClick} onKeyDown={onKeyDown} />
+        );
+
+        rendered.simulate("keydown");
+        rendered.simulate("click");
+
+        expect(onClick).toBeCalledTimes(1);
+        expect(onKeyDown).toBeCalledTimes(1);
+    });
+
     // parametrized contex-menu-item class name tests
     [
         {

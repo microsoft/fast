@@ -109,7 +109,7 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = (
         actionTrigger_glyph: {
             display: "inline-block",
             position: "relative",
-            width: "8px",
+            maxWidth: "16px",
             [applyLocalizedProperty("marginRight", "marginLeft", direction)]: "6px",
         },
         actionTrigger__primary: {
@@ -125,7 +125,7 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = (
                 fill: primaryRestBackgroundColor,
             },
             "&$actionTrigger__disabled $actionTrigger_glyph": {
-                fill: secondaryDisabledColor,
+                fill: outlineDisabledColor,
             },
         },
         actionTrigger__justified: {

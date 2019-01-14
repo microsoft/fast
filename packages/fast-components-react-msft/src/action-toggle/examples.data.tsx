@@ -22,12 +22,12 @@ const unselectedTestGlyph: any = (classname: string): React.ReactNode => {
     return (
         <svg
             className={classname}
-            width="7"
-            height="12"
-            viewBox="0 0 7 12"
+            width="10"
+            height="14"
+            viewBox="0 0 10 14"
             xmlns="http://www.w3.org/2000/svg"
         >
-            <path d="M0.0175781 11.4551L5.4668 6L0.0175781 0.544922L0.544922 0.0175781L6.5332 6L0.544922 11.9824L0.0175781 11.4551Z" />
+            <path d="M10 7L0 14V0L10 7ZM1 12.0781L8.25781 7L1 1.92188V12.0781Z" />
         </svg>
     );
 };
