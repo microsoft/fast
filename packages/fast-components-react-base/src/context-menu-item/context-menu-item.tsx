@@ -87,11 +87,7 @@ class ContextMenuItem extends Foundation<
      * Handle the keydown event of the item
      */
     private handleMenuItemKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
-        if (this.props.disabled) {
-            return;
-        }
-
-        if (typeof this.props.onInvoke === "function") {
+        if (typeof this.props.onInvoke === "function" && !this.props.disabled) {
             switch (e.keyCode) {
                 case KeyCodes.enter:
                 case KeyCodes.space:
@@ -99,18 +95,22 @@ class ContextMenuItem extends Foundation<
                     break;
             }
         }
+
+        if (typeof this.props.onKeyDown === "function") {
+            this.props.onKeyDown(e);
+        }
     };
 
     /**
      * Handle the keydown event of the item
      */
     private handleMenuItemClick = (e: React.MouseEvent<HTMLDivElement>): void => {
-        if (this.props.disabled) {
-            return;
+        if (typeof this.props.onInvoke === "function" && !this.props.disabled) {
+            this.props.onInvoke(e, this.props);
         }
 
-        if (typeof this.props.onInvoke === "function") {
-            this.props.onInvoke(e, this.props);
+        if (typeof this.props.onClick === "function") {
+            this.props.onClick(e);
         }
     };
 }
