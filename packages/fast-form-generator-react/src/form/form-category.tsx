@@ -48,11 +48,9 @@ class FormCategory extends React.Component<
     ) {
         super(props);
 
-        if (this.props.expandable) {
-            this.state = {
-                expanded: true,
-            };
-        }
+        this.state = {
+            expanded: this.props.expandable || false,
+        };
     }
     /**
      * Renders the component
