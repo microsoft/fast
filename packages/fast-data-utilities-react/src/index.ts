@@ -392,7 +392,7 @@ export function getDataLocationsOfChildren(
     childOptions: ChildOptionItem[]
 ): string[] {
     // get all schema locations from the schema
-    const schemaLocations: string[] = getLocationsFromObject(schema);
+    const schemaReactChildrenLocations: string[] = getLocationsFromObject(schema);
 
     // get all data locations from the data
     const dataLocations: string[] = getLocationsFromObject(data);
@@ -404,55 +404,57 @@ export function getDataLocationsOfChildren(
         }
     );
 
-    // get all data type locations as schema locations
-    const dataTypeLocationsAsSchemaLocations: string[] = schemaLocations.filter(
-        (dataTypeLocation: string) => {
+    // get all child locations as schema locations
+    const reactChildrenLocationsAsSchemaLocations: string[] = schemaReactChildrenLocations.filter(
+        (schemaReactChildrenLocation: string) => {
             return !!schemaLocationsFromDataLocations.find(
                 (schemaLocationsFromDataLocation: string): boolean => {
-                    return dataTypeLocation === schemaLocationsFromDataLocation;
+                    return (
+                        schemaReactChildrenLocation === schemaLocationsFromDataLocation
+                    );
                 }
             );
         }
     );
 
-    const dataLocationsOfDataType: string[] = [];
+    const dataLocationsOfChildren: string[] = [];
 
-    // get all data type locations as data locations
+    // get all child locations as data locations
     dataLocations.forEach((dataLocation: string) => {
         if (
-            !!dataTypeLocationsAsSchemaLocations.find(
-                (dataTypeLocationsAsSchemaLocation: string) => {
+            !!reactChildrenLocationsAsSchemaLocations.find(
+                (reactChildrenLocationsAsSchemaLocation: string) => {
                     return (
                         mapSchemaLocationFromDataLocation(dataLocation, data, schema) ===
-                        dataTypeLocationsAsSchemaLocation
+                        reactChildrenLocationsAsSchemaLocation
                     );
                 }
             ) &&
             !Array.isArray(get(data, dataLocation))
         ) {
-            dataLocationsOfDataType.push(dataLocation);
+            dataLocationsOfChildren.push(dataLocation);
         }
     });
 
-    // for every location get nested data locations of data type
-    dataLocationsOfDataType.forEach((dataLocationOfDataType: string) => {
-        const dataLocation: string = `${dataLocationOfDataType}.${propsKeyword}`;
+    // for every child location get nested data locations of children
+    dataLocationsOfChildren.forEach((dataLocationOfChildren: string) => {
+        const dataLocation: string = `${dataLocationOfChildren}.${propsKeyword}`;
         const subData: any = get(data, dataLocation);
-        const nestedDataLocationsOfDataType: string[] = getDataLocationsOfChildren(
+        const nestedDataLocationsOfChildren: string[] = getDataLocationsOfChildren(
             schema,
             subData,
             childOptions
         );
 
-        nestedDataLocationsOfDataType.forEach((nestedDataLocationOfDataType: string) => {
-            dataLocationsOfDataType.push(
-                `${dataLocation}.${nestedDataLocationOfDataType}`
+        nestedDataLocationsOfChildren.forEach((nestedDataLocationOfChildren: string) => {
+            dataLocationsOfChildren.push(
+                `${dataLocation}.${nestedDataLocationOfChildren}`
             );
         });
     });
 
-    return dataLocationsOfDataType.map((dataLocationOfDataType: string) => {
-        return arrayItemsToBracketNotation(dataLocationOfDataType, data);
+    return dataLocationsOfChildren.map((dataLocationOfChildren: string) => {
+        return arrayItemsToBracketNotation(dataLocationOfChildren, data);
     });
 }
 
