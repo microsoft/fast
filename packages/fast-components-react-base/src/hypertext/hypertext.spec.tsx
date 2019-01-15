@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
-import { configure, shallow } from "enzyme";
+import { configure, shallow, ShallowWrapper } from "enzyme";
 import examples from "./examples.data";
 import Hypertext, {
     HypertextClassNameContract,
@@ -23,6 +23,11 @@ describe("hypertext", (): void => {
 
     test("should have a displayName that matches the component name", () => {
         expect((Hypertext as any).name).toBe(Hypertext.displayName);
+    });
+
+    test("should have correct root element type 'a'", () => {
+        const rendered: ShallowWrapper = shallow(<Hypertext />);
+        expect(rendered.type()).toBe("a");
     });
 
     test("should not throw if managedClasses are not provided", () => {

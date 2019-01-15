@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
-import { configure, render, shallow } from "enzyme";
+import { configure, render, shallow, ShallowWrapper } from "enzyme";
 import examples from "./examples.data";
 import TextArea, {
     TextAreaClassNameContract,
@@ -23,6 +23,11 @@ configure({ adapter: new Adapter() });
 describe("text-area", (): void => {
     test("should have a displayName that matches the component name", () => {
         expect((TextArea as any).name).toBe(TextArea.displayName);
+    });
+
+    test("should have correct root element type 'textarea'", () => {
+        const rendered: ShallowWrapper = shallow(<TextArea />);
+        expect(rendered.type()).toBe("textarea");
     });
 
     test("should not throw if managedClasses are not provided", () => {

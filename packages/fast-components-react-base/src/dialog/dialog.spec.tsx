@@ -29,6 +29,13 @@ describe("dialog", (): void => {
         expect((Dialog as any).name).toBe(Dialog.displayName);
     });
 
+    test("should have correct element attribute role 'dialog'", () => {
+        const rendered: any = shallow(<Dialog managedClasses={managedClasses} />);
+        expect(
+            rendered.find(`.${managedClasses.dialog_contentRegion}`).prop("role")
+        ).toBe("dialog");
+    });
+
     test("should not throw if managedClasses are not provided", () => {
         expect(() => {
             shallow(<Dialog />);

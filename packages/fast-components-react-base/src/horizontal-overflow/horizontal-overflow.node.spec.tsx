@@ -6,7 +6,7 @@ import "jsdom-global/register";
 import * as React from "react";
 import * as ReactDOMServer from "react-dom/server";
 import * as Adapter from "enzyme-adapter-react-16";
-import { configure, mount, shallow } from "enzyme";
+import { configure, mount, ReactWrapper, shallow } from "enzyme";
 import HorizontalOverflow, {
     HorizontalOverflowClassNameContract,
     HorizontalOverflowHandledProps,
@@ -35,7 +35,7 @@ const managedClasses: HorizontalOverflowClassNameContract = {
 
 describe("horizontal overflow server-side", (): void => {
     test("should render in a node environment without throwing an error", () => {
-        const renderedWithImagesAndNextAndPrevious: string = mount(
+        const renderedWithImagesAndNextAndPrevious: ReactWrapper = mount(
             <HorizontalOverflow managedClasses={managedClasses}>
                 <button id="testButtonNext" slot="next">
                     next

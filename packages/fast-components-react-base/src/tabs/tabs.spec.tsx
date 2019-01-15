@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
-import { configure, mount, shallow } from "enzyme";
+import { configure, mount, shallow, ShallowWrapper } from "enzyme";
 import { KeyCodes, Orientation } from "@microsoft/fast-web-utilities";
 import { noop } from "lodash-es";
 import {
@@ -131,6 +131,18 @@ describe("tabs", (): void => {
             </TabPanel>
         </TabItem>,
     ];
+
+    test("should have correct element role attribute 'tablist'", () => {
+        const rendered: ShallowWrapper = shallow(
+            <Tabs managedClasses={tabsManagedClasses} label="label" />
+        );
+        expect(
+            rendered
+                .find(`.${tabsManagedClasses.tabs_tabList}`)
+                .first()
+                .prop("role")
+        ).toBe("tablist");
+    });
 
     test("should have a displayName that matches the component name", () => {
         expect((Tabs as any).name).toBe(Tabs.displayName);

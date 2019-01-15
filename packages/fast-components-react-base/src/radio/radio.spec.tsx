@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
-import { configure, mount, shallow } from "enzyme";
+import { configure, mount, shallow, ShallowWrapper } from "enzyme";
 import examples from "./examples.data";
 import Radio, {
     RadioClassNameContract,
@@ -28,6 +28,11 @@ describe("radio", (): void => {
 
     test("should have a displayName that matches the component name", () => {
         expect((Radio as any).name).toBe(Radio.displayName);
+    });
+
+    test("should have correct input type attribute 'radio'", () => {
+        const rendered: ShallowWrapper = shallow(<Radio id="radio" />);
+        expect(rendered.find("#radio").prop("type")).toBe("radio");
     });
 
     test("should render with a `radio_disabled` class when an `disabled` prop is passed", () => {

@@ -2,7 +2,7 @@ import * as Adapter from "enzyme-adapter-react-16";
 import * as React from "react";
 
 import { TabHandledProps, TabProps } from "./tab.props";
-import { configure, shallow } from "enzyme";
+import { configure, shallow, ShallowWrapper } from "enzyme";
 
 import Tab from "./tab";
 
@@ -11,7 +11,12 @@ import Tab from "./tab";
  */
 configure({ adapter: new Adapter() });
 
-describe("tab-panel", (): void => {
+describe("tab", (): void => {
+    test("should have correct element attribute role 'tab'", () => {
+        const rendered: ShallowWrapper = shallow(<Tab />);
+        expect(rendered.first().prop("role")).toBe("tab");
+    });
+
     // parametrized tab class name tests
     [
         {

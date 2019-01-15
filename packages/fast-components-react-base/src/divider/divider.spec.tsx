@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
-import { configure, shallow } from "enzyme";
+import { configure, shallow, ShallowWrapper } from "enzyme";
 import examples from "./examples.data";
 import Divider, {
     DividerClassNameContract,
@@ -21,6 +21,11 @@ describe("divider", (): void => {
 
     test("should have a displayName that matches the component name", () => {
         expect((Divider as any).name).toBe(Divider.displayName);
+    });
+
+    test("should have correct root element type 'hr'", () => {
+        const rendered: ShallowWrapper = shallow(<Divider />);
+        expect(rendered.type()).toBe("hr");
     });
 
     test("should not throw if managedClasses are not provided", () => {

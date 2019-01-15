@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
-import { configure, mount, shallow } from "enzyme";
+import { configure, mount, shallow, ShallowWrapper } from "enzyme";
 import examples from "./examples.data";
 import Checkbox, {
     CheckboxClassNameContract,
@@ -31,6 +31,11 @@ describe("checkbox", (): void => {
 
     test("should have a displayName that matches the component name", () => {
         expect((Checkbox as any).name).toBe(Checkbox.displayName);
+    });
+
+    test("should have correct input attribute type 'checkbox'", () => {
+        const rendered: ShallowWrapper = shallow(<Checkbox inputId="id" />);
+        expect(rendered.find("#id").prop("type")).toBe("checkbox");
     });
 
     test("should not throw if managedClasses are not provided", () => {

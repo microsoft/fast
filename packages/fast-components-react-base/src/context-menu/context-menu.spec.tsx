@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
-import { configure, mount, shallow } from "enzyme";
+import { configure, mount, shallow, ShallowWrapper } from "enzyme";
 import ContextMenu, { ContextMenuUnhandledProps } from "./context-menu";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 import { ContextMenuItemRole } from "../context-menu-item";
@@ -13,6 +13,11 @@ configure({ adapter: new Adapter() });
 describe("context menu", (): void => {
     test("should have a displayName that matches the component name", () => {
         expect((ContextMenu as any).name).toBe(ContextMenu.displayName);
+    });
+
+    test("should have correct role attribute 'menu'", () => {
+        const rendered: ShallowWrapper = shallow(<ContextMenu />);
+        expect(rendered.first().prop("role")).toBe("menu");
     });
 
     test("should not throw if managedClasses are not provided", () => {
