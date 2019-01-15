@@ -1,4 +1,4 @@
-# Text area 
+# Text area
 
 A *text area* is a form component which allows users to input and edit multi-line textual data.
 
