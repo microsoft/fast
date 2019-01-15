@@ -4,27 +4,30 @@ import {
     applyLabelStyle,
     applySoftRemove,
     applySoftRemoveInput,
-    colors,
+    background000,
     darkTheme,
+    foreground200,
+    foreground300,
     lightTheme,
-} from "../utilities/";
+    pink,
+} from "./";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormItemThemeClassNameContract } from "../class-name-contracts/";
 
 function applyThemeInputBackplateStyle(): CSSRules<{}> {
     return {
         appearance: "none",
-        border: `2px solid ${colors.foreground200}`,
+        border: `2px solid ${foreground200}`,
         height: "20px",
         width: "20px",
         margin: "0",
         borderRadius: "2px",
         "&:checked, &:focus": {
             outline: "none",
-            borderColor: colors.pink,
+            borderColor: pink,
         },
         "&:hover": {
-            borderColor: colors.background000,
+            borderColor: background000,
         },
     };
 }
@@ -44,12 +47,12 @@ const styles: ComponentStyles<FormItemThemeClassNameContract, {}> = {
     formItemTheme_controlInput__light: {
         ...applyThemeInputBackplateStyle(),
         background: lightTheme,
-        backgroundColor: colors.foreground300,
+        backgroundColor: foreground300,
     },
     formItemTheme_controlInput__dark: {
         ...applyThemeInputBackplateStyle(),
         background: darkTheme,
-        backgroundColor: colors.background000,
+        backgroundColor: background000,
     },
     formItemTheme_softRemove: {
         ...applySoftRemove(),

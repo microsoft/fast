@@ -5,7 +5,15 @@ import {
     localizeSpacing,
     toPx,
 } from "@microsoft/fast-jss-utilities";
-import { colors } from "./";
+import {
+    background300,
+    background800,
+    foreground000,
+    foreground200,
+    foreground300,
+    foreground800,
+    pink,
+} from "./";
 
 /**
  * Base64 encoded svgs
@@ -85,19 +93,19 @@ export function applyInputStyle(): CSSRules<{}> {
     return {
         lineHeight: "15px",
         fontSize: "11px",
-        backgroundColor: colors.background800,
+        backgroundColor: background800,
         borderRadius: "2px",
         ...localizePadding(3, 5, 2, 5),
         border: "none",
         outline: "none",
         boxSizing: "border-box",
-        color: colors.foreground300,
+        color: foreground300,
         "&:disabled": {
             opacity: `${DISABLED_OPACITY}`,
             cursor: "not-allowed",
         },
         "&:focus": {
-            ...insetStrongBoxShadow(colors.pink),
+            ...insetStrongBoxShadow(pink),
         },
     };
 }
@@ -121,7 +129,7 @@ export function applyGlobalStyle(): CSSRules<{}> {
             borderColor: "transparent",
             listStyleType: "none",
             listStyle: "none",
-            background: colors.foreground200,
+            background: foreground200,
         },
     };
 }
@@ -146,7 +154,7 @@ export function applyInputBackplateStyle(): CSSRules<{}> {
         height: "20px",
         width: "20px",
         margin: "0",
-        backgroundColor: colors.background800,
+        backgroundColor: background800,
         "&:focus, &:hover": {
             outline: "none",
         },
@@ -158,24 +166,24 @@ export function applySelectInputStyles(): CSSRules<{}> {
         width: "100%",
         lineHeight: "15px",
         fontSize: "11px",
-        backgroundColor: colors.background800,
+        backgroundColor: background800,
         borderRadius: "2px",
         appearance: "none",
         outline: "none",
         ...localizePadding(3, 5, 2, 5),
         border: "none",
-        color: colors.foreground300,
+        color: foreground300,
         "&:-ms-expand": {
             display: "none",
         },
         "& option": {
-            background: colors.background300,
+            background: background300,
         },
         "&:disabled": {
             cursor: "not-allowed",
         },
         "&:focus": {
-            ...insetStrongBoxShadow(colors.pink),
+            ...insetStrongBoxShadow(pink),
         },
     };
 }
@@ -192,7 +200,7 @@ export function applySelectSpanStyles(): CSSRules<{}> {
             zIndex: "1",
             borderLeft: "3px solid transparent",
             borderRight: "3px solid transparent",
-            borderTop: `3px solid ${colors.foreground300}`,
+            borderTop: `3px solid ${foreground300}`,
         },
     };
 }
@@ -211,7 +219,7 @@ export function applyRemoveItemStyle(): CSSRules<{}> {
         zIndex: "1",
         borderRadius: "2px",
         "&:focus": {
-            ...insetStrongBoxShadow(colors.pink),
+            ...insetStrongBoxShadow(pink),
             outline: "none",
         },
         "&::before": {
@@ -222,7 +230,7 @@ export function applyRemoveItemStyle(): CSSRules<{}> {
             height: "1px",
             left: "5.5px",
             top: "9.5px",
-            background: colors.foreground300,
+            background: foreground300,
         },
     };
 }
@@ -272,14 +280,14 @@ export function applySoftRemoveInput(): CSSRules<{}> {
         zIndex: "1",
         borderRadius: "2px",
         "&:focus": {
-            ...insetStrongBoxShadow(colors.pink),
+            ...insetStrongBoxShadow(pink),
             outline: "none",
         },
         "&:checked + svg": {
-            fill: colors.foreground000,
+            fill: foreground000,
         },
         "& + svg": {
-            fill: colors.foreground800,
+            fill: foreground800,
         },
     };
 }

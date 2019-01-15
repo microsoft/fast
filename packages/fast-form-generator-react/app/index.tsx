@@ -11,7 +11,7 @@ import {
     FormProps,
 } from "../src/form/form.props";
 import * as testConfigs from "./configs";
-import { colors } from "../src/utilities/";
+import { background300, foreground300 } from "../src/form";
 
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
 
@@ -82,8 +82,8 @@ export default class App extends React.Component<{}, AppState> {
                             minHeight: "100vh",
                             padding: "0 0 0 10px",
                             boxSizing: "border-box",
-                            color: colors.foreground300,
-                            background: colors.background300,
+                            color: foreground300,
+                            background: background300,
                             float: "left",
                         }}
                     >

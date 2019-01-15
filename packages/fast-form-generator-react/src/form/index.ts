@@ -4,3 +4,6 @@ import { mapDataToComponent } from "@microsoft/fast-data-utilities-react";
 export default Form;
 export { mapDataToComponent };
 export * from "./form.props";
+
+export * from "./form.utilities.style";
+export * from "./form.constants.style";

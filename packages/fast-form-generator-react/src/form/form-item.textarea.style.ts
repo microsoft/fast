@@ -5,7 +5,7 @@ import {
     applyLabelStyle,
     applySoftRemove,
     applySoftRemoveInput,
-} from "../utilities/form-input.style";
+} from "./";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { FormItemTextareaClassNameContract } from "../class-name-contracts/";
 

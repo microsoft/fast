@@ -36,7 +36,8 @@ const checker: string =
     "url('data:image/gif;base64,R0lGODlhEAAQAPABANfX1////yH5BAAAAAAALAAAAAAQABAAAAIfhG+hq4jM3IFLJhoswNly/XkcBpIiVaInlLJr9FZWAQAh/wtYTVAgRGF0YVhNUDw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+Cjx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTM4IDc5LjE1OTgyNCwgMjAxNi8wOS8xNC0wMTowOTowMSAgICAgICAgIj4KIDxyZGY6UkRGIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyI+CiAgPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIvPgogPC9yZGY6UkRGPgo8L3g6eG1wbWV0YT4KPD94cGFja2V0IGVuZD0iciI/PgH//v38+/r5+Pf29fTz8vHw7+7t7Ovq6ejn5uXk4+Lh4N/e3dzb2tnY19bV1NPS0dDPzs3My8rJyMfGxcTDwsHAv769vLu6ubi3trW0s7KxsK+urayrqqmop6alpKOioaCfnp2cm5qZmJeWlZSTkpGQj46NjIuKiYiHhoWEg4KBgH9+fXx7enl4d3Z1dHNycXBvbm1sa2ppaGdmZWRjYmFgX15dXFtaWVhXVlVUU1JRUE9OTUxLSklIR0ZFRENCQUA/Pj08Ozo5ODc2NTQzMjEwLy4tLCsqKSgnJiUkIyIhIB8eHRwbGhkYFxYVFBMSERAPDg0MCwoJCAcGBQQDAgEAADs=')";
 
 function componentWrapperBorder(config: DevSiteDesignSystem): string {
-    return `1px solid ${config.background300}`;
+    return `1px solid ${config.background300 ||
+        devSiteDesignSystemDefaults.background300}`;
 }
 
 const styles: ComponentStyles<ComponentWrapperManagedClasses, DevSiteDesignSystem> = {
@@ -67,7 +68,8 @@ const styles: ComponentStyles<ComponentWrapperManagedClasses, DevSiteDesignSyste
             border: `${toPx(10)} solid transparent`,
             opacity: ".5",
             borderRight: (config: DevSiteDesignSystem): string => {
-                return `${toPx(10)} solid ${config.brandColor}`;
+                return `${toPx(10)} solid ${config.brandColor ||
+                    devSiteDesignSystemDefaults.brandColor}`;
             },
         },
     },

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { DevSiteDesignSystem } from "../design-system";
+import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import manageJss, {
     ComponentStyles,
@@ -23,7 +23,9 @@ const style: ComponentStyles<BreadcrumbItemManagedClasses, DevSiteDesignSystem> 
         "&::after": {
             content: "'\\002F'",
             padding: `0 0 0 ${toPx(10)}`,
-            color: (config: DevSiteDesignSystem): string => config.foreground300,
+            color: (config: DevSiteDesignSystem): string => {
+                return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
+            },
         },
         "&:last-child": {
             "&::after": {

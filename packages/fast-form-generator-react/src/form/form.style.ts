@@ -1,4 +1,4 @@
-import { applyCleanListStyle, colors } from "../utilities/";
+import { applyCleanListStyle, pink } from "./";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { FormClassNameContract } from "../class-name-contracts/";
 
@@ -23,7 +23,7 @@ const styles: ComponentStyles<FormClassNameContract, {}> = {
                 paddingLeft: "0",
             },
             "& a": {
-                color: colors.pink,
+                color: pink,
             },
         },
     },

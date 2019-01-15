@@ -9,8 +9,10 @@ import {
     applyLabelStyle,
     applyRemoveItemStyle,
     applySoftRemove,
-    colors,
-} from "../utilities/";
+    background100,
+    foreground300,
+    pink,
+} from "./";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormItemChildrenClassNameContract } from "../class-name-contracts/";
 
@@ -36,8 +38,8 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
     },
     formItemChildren_existingChildren__sorting: {
         fontSize: "11px",
-        color: colors.foreground300,
-        backgroundColor: `${colors.background100} !important`,
+        color: foreground300,
+        backgroundColor: `${background100} !important`,
     },
     formItemChildren_existingChildrenItem: {
         position: "relative",
@@ -60,9 +62,9 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
     formItemChildren_childrenList: {
         ...applyCleanListStyle(),
         ...applyAriaHiddenStyles(),
-        color: colors.foreground300,
+        color: foreground300,
         msOverflowStyle: "none",
-        background: colors.background100,
+        background: background100,
         maxHeight: "200px",
         position: "absolute",
         width: "calc(100% - 30px)",
@@ -82,7 +84,7 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
         alignItems: "center",
         padding: "0 5px",
         '&[aria-selected="true"]': {
-            background: colors.pink,
+            background: pink,
         },
     },
     formItemChildren_childrenListControl: {
@@ -110,7 +112,7 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
             right: "4px",
             borderLeft: "3px solid transparent",
             borderRight: "3px solid transparent",
-            borderTop: `3px solid ${colors.foreground300}`,
+            borderTop: `3px solid ${foreground300}`,
         },
     },
     formItemChildren_delete: {

@@ -38,7 +38,9 @@ const styles: ComponentStyles<
                 bottom: toPx(-1),
                 borderRadius: `${toPx(2)} ${toPx(2)} 0 0`,
                 height: toPx(2),
-                background: (config: DevSiteDesignSystem): string => config.brandColor,
+                background: (config: DevSiteDesignSystem): string => {
+                    return config.brandColor || devSiteDesignSystemDefaults.brandColor;
+                },
             },
         },
         "&:hover": {

@@ -6,9 +6,11 @@ import {
     applyGlobalStyle,
     applyLabelStyle,
     applyRemoveItemStyle,
-    colors,
+    background100,
+    foreground300,
     insetStrongBoxShadow,
-} from "../utilities/";
+    pink,
+} from "./";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormItemArrayClassNameContract } from "../class-name-contracts/";
 
@@ -37,7 +39,7 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
         zIndex: "1",
         borderRadius: "2px",
         [`&${focusVisible()}`]: {
-            ...insetStrongBoxShadow(colors.pink),
+            ...insetStrongBoxShadow(pink),
             outline: "none",
         },
         "&::before": {
@@ -48,7 +50,7 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
             height: "1px",
             left: "5.5px",
             top: "9.5px",
-            background: colors.foreground300,
+            background: foreground300,
         },
         "&::after": {
             position: "absolute",
@@ -58,7 +60,7 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
             height: "9px",
             left: "9.5px",
             top: "5.5px",
-            background: colors.foreground300,
+            background: foreground300,
         },
     },
     formItemArray_controlLabel: {
@@ -71,8 +73,8 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
     },
     formItemArray_existingItemList__sorting: {
         fontSize: "11px",
-        color: colors.foreground300,
-        backgroundColor: `${colors.background100} !important`,
+        color: foreground300,
+        backgroundColor: `${background100} !important`,
     },
     formItemArray_existingItemListItem: {
         position: "relative",

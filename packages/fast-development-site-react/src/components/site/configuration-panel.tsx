@@ -104,7 +104,9 @@ const style: ComponentStyles<ConfigurationPanelManagedClasses, DevSiteDesignSyst
                 content: "''",
                 height: toPx(2),
                 borderRadius: `${toPx(2)} ${toPx(2)} 0 0`,
-                background: "#FB356D",
+                background: (config: DevSiteDesignSystem): string => {
+                    return config.brandColor || devSiteDesignSystemDefaults.brandColor;
+                },
             },
         },
     },

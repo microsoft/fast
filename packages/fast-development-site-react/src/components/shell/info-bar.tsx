@@ -20,7 +20,9 @@ const style: ComponentStyles<ShellInfoBarManagedClasses, DevSiteDesignSystem> = 
         color: (config: DevSiteDesignSystem): string => {
             return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
         },
-        background: "#111",
+        background: (config: DevSiteDesignSystem): string => {
+            return config.background050 || devSiteDesignSystemDefaults.background050;
+        },
         cursor: "default",
         minHeight: (config: DevSiteDesignSystem): string => {
             return toPx(config.navigationBarHeight / 2);

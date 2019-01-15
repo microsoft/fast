@@ -8,7 +8,7 @@ import {
     applySoftRemove,
     applySoftRemoveInput,
     DISABLED_OPACITY,
-} from "../utilities/form-input.style";
+} from "./";
 import { FormItemSelectClassNameContract } from "../class-name-contracts/";
 
 const styles: ComponentStyles<FormItemSelectClassNameContract, {}> = {

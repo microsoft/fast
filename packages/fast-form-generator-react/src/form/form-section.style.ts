@@ -4,8 +4,8 @@ import {
     applyLabelStyle,
     applySelectInputStyles,
     applySelectSpanStyles,
-    colors,
-} from "../utilities/";
+    background800,
+} from "./";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormSectionClassNameContract } from "../class-name-contracts/";
 
@@ -13,7 +13,7 @@ const styles: ComponentStyles<FormSectionClassNameContract, {}> = {
     formSection: {
         display: "block",
         "& h3": {
-            borderBottom: `1px solid ${colors.background800}`,
+            borderBottom: `1px solid ${background800}`,
             paddingBottom: "12px",
             marginBottom: "0",
         },

@@ -5,10 +5,11 @@ import {
     applyLabelStyle,
     applySoftRemove,
     applySoftRemoveInput,
-    colors,
     DISABLED_OPACITY,
+    foreground300,
+    foreground800,
     insetStrongBoxShadow,
-} from "../utilities/";
+} from "./";
 
 const styles: ComponentStyles<FormItemCheckboxClassNameContract, {}> = {
     formItemCheckbox: {
@@ -32,7 +33,7 @@ const styles: ComponentStyles<FormItemCheckboxClassNameContract, {}> = {
         height: "14px",
         boxSizing: "border-box",
         borderRadius: "2px",
-        border: `1px solid ${colors.foreground800}`,
+        border: `1px solid ${foreground800}`,
         float: "right",
         zIndex: "1",
         margin: "0",
@@ -40,11 +41,11 @@ const styles: ComponentStyles<FormItemCheckboxClassNameContract, {}> = {
             cursor: "not-allowed",
         },
         "&:hover": {
-            border: `1px solid ${colors.foreground300}`,
+            border: `1px solid ${foreground300}`,
         },
         "&:focus": {
             outline: "none",
-            ...insetStrongBoxShadow(colors.foreground300),
+            ...insetStrongBoxShadow(foreground300),
         },
         "& + span": {
             position: "absolute",
@@ -56,7 +57,7 @@ const styles: ComponentStyles<FormItemCheckboxClassNameContract, {}> = {
                 display: "block",
                 content: "''",
                 width: "1px",
-                background: colors.foreground300,
+                background: foreground300,
             },
         },
         "&:checked": {

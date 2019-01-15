@@ -1,4 +1,4 @@
-import { colors } from "../utilities/";
+import { background200, background800, foreground300 } from "./";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormCategoryClassNameContract } from "../class-name-contracts/";
 
@@ -8,12 +8,12 @@ const styles: ComponentStyles<FormCategoryClassNameContract, {}> = {
         boxSizing: "border-box",
         outline: "0",
         fontWeight: "600",
-        color: colors.foreground300,
+        color: foreground300,
         textTransform: "uppercase",
         border: "none",
-        background: colors.background200,
-        borderTop: `1px solid ${colors.background800}`,
-        borderBottom: `1px solid ${colors.background800}`,
+        background: background200,
+        borderTop: `1px solid ${background800}`,
+        borderBottom: `1px solid ${background800}`,
         position: "relative",
         width: "calc(100% + 10px)",
         fontFamily: "inherit",
@@ -41,7 +41,7 @@ const styles: ComponentStyles<FormCategoryClassNameContract, {}> = {
             right: "10px",
             top: "12px",
             transform: "rotate(45deg)",
-            background: colors.foreground300,
+            background: foreground300,
         },
         "&::after": {
             position: "absolute",
@@ -52,7 +52,7 @@ const styles: ComponentStyles<FormCategoryClassNameContract, {}> = {
             right: "14px",
             top: "12px",
             transform: "rotate(-45deg)",
-            background: colors.foreground300,
+            background: foreground300,
         },
     },
     formCategory_header: {
@@ -66,9 +66,9 @@ const styles: ComponentStyles<FormCategoryClassNameContract, {}> = {
         fontSize: "11px",
         padding: "0 0 0 10px",
         marginLeft: "-10px",
-        background: colors.background200,
-        borderTop: `1px solid ${colors.background800}`,
-        borderBottom: `1px solid ${colors.background800}`,
+        background: background200,
+        borderTop: `1px solid ${background800}`,
+        borderBottom: `1px solid ${background800}`,
         "& h3": {
             margin: "0",
         },

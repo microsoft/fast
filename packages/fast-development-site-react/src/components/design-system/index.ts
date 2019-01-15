@@ -3,6 +3,7 @@ export interface DevSiteDesignSystem {
     backgroundColor: string;
     brandColor: string;
     background000?: string;
+    background050?: string;
     background100?: string;
     background200?: string;
     background300?: string;
@@ -19,6 +20,7 @@ const devSiteDesignSystemDefaults: DevSiteDesignSystem = {
     backgroundColor: "#FFF",
     brandColor: "#FB356D",
     background000: "#000",
+    background050: "#111",
     background100: "#1A1A1A",
     background200: "#1E1E1E",
     background300: "#212121",
