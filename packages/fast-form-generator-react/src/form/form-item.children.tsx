@@ -430,7 +430,7 @@ class FormItemChildren extends FormItemBase<
      * Keydown handler for the child option filter
      */
     private handleChildrenListInputKeydown = (
-        e: React.KeyboardEvent<HTMLButtonElement>
+        e: React.KeyboardEvent<HTMLInputElement>
     ): void => {
         switch (e.keyCode) {
             case KeyCodes.enter:
