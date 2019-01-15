@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Listbox",
+    "description": "A listbox component's schema definition.",
+    "type": "object",
+    "id": "listbox",
+    "properties": {
+        "typeAheadPropName": {
+            "title": "Type ahead property name",
+            "type": "string"
+        }
+    },
+    "reactProperties": {
+        "children": {
+            "title": "Building blocks",
+            "type": "children",
+            "defaults": [
+                "text"
+            ]
+        }
+    }
+}
