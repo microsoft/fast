@@ -7,7 +7,7 @@ import {
     applySoftRemoveInput,
     background300,
     pink,
-} from "./";
+} from "../utilities";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormItemAlignHorizontalClassNameContract } from "../class-name-contracts/";
 

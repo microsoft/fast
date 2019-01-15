@@ -10,7 +10,7 @@ import {
     foreground300,
     insetStrongBoxShadow,
     pink,
-} from "./";
+} from "../utilities";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormItemArrayClassNameContract } from "../class-name-contracts/";
 

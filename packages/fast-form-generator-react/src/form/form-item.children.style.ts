@@ -12,7 +12,7 @@ import {
     background100,
     foreground300,
     pink,
-} from "./";
+} from "../utilities";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormItemChildrenClassNameContract } from "../class-name-contracts/";
 

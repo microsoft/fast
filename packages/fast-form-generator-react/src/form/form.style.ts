@@ -1,4 +1,4 @@
-import { applyCleanListStyle, pink } from "./";
+import { applyCleanListStyle, pink } from "../utilities";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { FormClassNameContract } from "../class-name-contracts/";
 

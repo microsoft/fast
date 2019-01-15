@@ -5,7 +5,7 @@ import {
     applySelectInputStyles,
     applySelectSpanStyles,
     background800,
-} from "./";
+} from "../utilities";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormSectionClassNameContract } from "../class-name-contracts/";
 

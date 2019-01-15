@@ -1,6 +1,10 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { ellipsis } from "@microsoft/fast-jss-utilities";
-import { applyControlSingleLineWrapper, applySoftRemove, applySoftRemoveInput } from "./";
+import {
+    applyControlSingleLineWrapper,
+    applySoftRemove,
+    applySoftRemoveInput,
+} from "../utilities";
 import { FormItemSectionLinkClassNameContract } from "../class-name-contracts";
 
 const styles: ComponentStyles<FormItemSectionLinkClassNameContract, {}> = {

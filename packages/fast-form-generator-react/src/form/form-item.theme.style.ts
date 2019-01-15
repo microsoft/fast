@@ -10,7 +10,7 @@ import {
     foreground300,
     lightTheme,
     pink,
-} from "./";
+} from "../utilities";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormItemThemeClassNameContract } from "../class-name-contracts/";
 

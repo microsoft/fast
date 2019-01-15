@@ -11,7 +11,7 @@ import {
     FormProps,
 } from "../src/form/form.props";
 import * as testConfigs from "./configs";
-import { background300, foreground300 } from "../src/form";
+import { background300, foreground300 } from "../src/utilities";
 
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
 

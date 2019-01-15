@@ -9,7 +9,7 @@ import {
     foreground300,
     foreground800,
     insetStrongBoxShadow,
-} from "./";
+} from "../utilities";
 
 const styles: ComponentStyles<FormItemCheckboxClassNameContract, {}> = {
     formItemCheckbox: {
