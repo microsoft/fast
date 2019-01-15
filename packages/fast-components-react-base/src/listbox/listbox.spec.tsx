@@ -192,7 +192,7 @@ describe("context menu", (): void => {
         expect(rendered.state("focusIndex")).toBe(2);
     });
 
-    test("should not move focus characters are typed that don't have matches", (): void => {
+    test("should not move focus if characters are typed that don't have matches", (): void => {
         const rendered: any = mount(
             <Listbox typeAheadPropName="title">
                 <div role="option" title="a">
@@ -210,16 +210,10 @@ describe("context menu", (): void => {
 
         expect(rendered.state("focusIndex")).toBe(0);
 
-        rendered.childAt(0).simulate("keydown", { key: "x" });
-        expect(rendered.state("focusIndex")).toBe(0);
-
-        rendered.childAt(0).simulate("keydown", { key: "a" });
-        expect(rendered.state("focusIndex")).toBe(0);
-
         rendered.childAt(0).simulate("keydown", { key: "b" });
-        expect(rendered.state("focusIndex")).toBe(0);
+        expect(rendered.state("focusIndex")).toBe(1);
 
-        rendered.childAt(0).simulate("keydown", { key: "c" });
-        expect(rendered.state("focusIndex")).toBe(0);
+        rendered.childAt(0).simulate("keydown", { key: "x" });
+        expect(rendered.state("focusIndex")).toBe(1);
     });
 });
