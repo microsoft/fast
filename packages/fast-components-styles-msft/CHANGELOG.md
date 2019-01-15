@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.6.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.5.0...@microsoft/fast-components-styles-msft@3.6.0) (2019-01-15)
+
+
+### Bug Fixes
+
+* ensure font family is inherited for inputs rather than defaulting to system-ui ([#1281](https://github.com/Microsoft/fast-dna/issues/1281)) ([d00b578](https://github.com/Microsoft/fast-dna/commit/d00b578))
+* remove browser inner-focus rect applied on HTML button elements in Firefox ([#1280](https://github.com/Microsoft/fast-dna/issues/1280)) ([cebe717](https://github.com/Microsoft/fast-dna/commit/cebe717))
+* update button to properly target fill color based on appearance ([#1272](https://github.com/Microsoft/fast-dna/issues/1272)) ([5463135](https://github.com/Microsoft/fast-dna/commit/5463135))
+* update disabled action toggle glyph color ([#1298](https://github.com/Microsoft/fast-dna/issues/1298)) ([0a5689f](https://github.com/Microsoft/fast-dna/commit/0a5689f))
+
+
+### Features
+
+* add action toggle component  ([#1257](https://github.com/Microsoft/fast-dna/issues/1257)) ([d93508e](https://github.com/Microsoft/fast-dna/commit/d93508e))
+* add render props for before and after slots in button ([#1266](https://github.com/Microsoft/fast-dna/issues/1266)) ([e4ecc12](https://github.com/Microsoft/fast-dna/commit/e4ecc12))
+* add rounded corners to MSFT card and dialog components ([#1285](https://github.com/Microsoft/fast-dna/issues/1285)) ([53da6f4](https://github.com/Microsoft/fast-dna/commit/53da6f4))
+* add text area as a new component ([#1267](https://github.com/Microsoft/fast-dna/issues/1267)) ([0bdd43f](https://github.com/Microsoft/fast-dna/commit/0bdd43f))
+* update MSFT headings to semibold ([#1268](https://github.com/Microsoft/fast-dna/issues/1268)) ([2327b66](https://github.com/Microsoft/fast-dna/commit/2327b66))
+
+
+
+
+
 # [3.5.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.4.1...@microsoft/fast-components-styles-msft@3.5.0) (2018-12-31)
 
 

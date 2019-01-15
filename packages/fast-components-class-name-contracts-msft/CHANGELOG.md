@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@3.3.0...@microsoft/fast-components-class-name-contracts-msft@3.4.0) (2019-01-15)
+
+
+### Features
+
+* add action toggle component  ([#1257](https://github.com/Microsoft/fast-dna/issues/1257)) ([d93508e](https://github.com/Microsoft/fast-dna/commit/d93508e))
+* add render props for before and after slots in button ([#1266](https://github.com/Microsoft/fast-dna/issues/1266)) ([e4ecc12](https://github.com/Microsoft/fast-dna/commit/e4ecc12))
+
+
+
+
+
 # [3.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@3.2.1...@microsoft/fast-components-class-name-contracts-msft@3.3.0) (2018-12-31)
 
 

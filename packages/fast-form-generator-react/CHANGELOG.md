@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-form-generator-react@3.3.1...@microsoft/fast-form-generator-react@3.4.0) (2019-01-15)
+
+
+### Features
+
+* Form items should be able to be disabled ([#1251](https://github.com/Microsoft/fast-dna/issues/1251)) ([cdabd44](https://github.com/Microsoft/fast-dna/commit/cdabd44))
+* simplify the UI for editing array and children data types ([b1f1975](https://github.com/Microsoft/fast-dna/commit/b1f1975))
+
+
+
+
+
 ## [3.3.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-form-generator-react@3.3.0...@microsoft/fast-form-generator-react@3.3.1) (2018-12-31)
 
 **Note:** Version bump only for package @microsoft/fast-form-generator-react

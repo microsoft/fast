@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.6.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.5.0...@microsoft/fast-components-react-msft@3.6.0) (2019-01-15)
+
+
+### Bug Fixes
+
+* normalized text area name and case ([#1294](https://github.com/Microsoft/fast-dna/issues/1294)) ([2ef6027](https://github.com/Microsoft/fast-dna/commit/2ef6027))
+* update button to properly target fill color based on appearance ([#1272](https://github.com/Microsoft/fast-dna/issues/1272)) ([5463135](https://github.com/Microsoft/fast-dna/commit/5463135))
+
+
+### Features
+
+* add action toggle component  ([#1257](https://github.com/Microsoft/fast-dna/issues/1257)) ([d93508e](https://github.com/Microsoft/fast-dna/commit/d93508e))
+* add render props for before and after slots in button ([#1266](https://github.com/Microsoft/fast-dna/issues/1266)) ([e4ecc12](https://github.com/Microsoft/fast-dna/commit/e4ecc12))
+* add text area as a new component ([#1267](https://github.com/Microsoft/fast-dna/issues/1267)) ([0bdd43f](https://github.com/Microsoft/fast-dna/commit/0bdd43f))
+
+
+
+
+
 # [3.5.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.4.1...@microsoft/fast-components-react-msft@3.5.0) (2018-12-31)
 
 

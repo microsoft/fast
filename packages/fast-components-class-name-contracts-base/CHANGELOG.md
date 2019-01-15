@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.5.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-base@3.4.0...@microsoft/fast-components-class-name-contracts-base@3.5.0) (2019-01-15)
+
+
+### Features
+
+* add text area as a new component ([#1267](https://github.com/Microsoft/fast-dna/issues/1267)) ([0bdd43f](https://github.com/Microsoft/fast-dna/commit/0bdd43f))
+
+
+
+
+
 # [3.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-base@3.3.1...@microsoft/fast-components-class-name-contracts-base@3.4.0) (2018-12-31)
 
 
