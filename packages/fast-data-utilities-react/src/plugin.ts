@@ -4,7 +4,7 @@ export interface PluginProps {
     /**
      * The string(s) associated by the plugin
      */
-    pluginResolverId: string | string[];
+    id: string | string[];
 }
 
 export default abstract class Plugin<C extends PluginProps> {
@@ -13,17 +13,17 @@ export default abstract class Plugin<C extends PluginProps> {
     constructor(config: C) {
         this.config = config;
 
-        this.config.pluginResolverId = Array.isArray(this.config.pluginResolverId)
-            ? this.config.pluginResolverId
-            : [this.config.pluginResolverId];
+        this.config.id = Array.isArray(this.config.id)
+            ? this.config.id
+            : [this.config.id];
     }
 
     /**
      * Determines if there is a match for the IDs set for the plugin
      * and a provided ID
      */
-    public resolvesForId(pluginResolverId: string): boolean {
-        return this.config.pluginResolverId.indexOf(pluginResolverId) !== -1;
+    public resolvesForId(id: string): boolean {
+        return this.config.id.indexOf(id) !== -1;
     }
 
     /**

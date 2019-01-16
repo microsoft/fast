@@ -86,7 +86,7 @@ Schema example for the React render prop plugin example:
         "children": {
             "title": "Children",
             "type": "children",
-            "pluginResolverId": "my-plugin"
+            "pluginId": "my-plugin"
         }
     }
 }
@@ -95,11 +95,11 @@ Schema example for the React render prop plugin example:
 ```jsx
 /**
  * The plugins take a configuration that includes a string or an array of strings
- * mapping them to schema properties which also have a `pluginResolverId`
+ * mapping them to schema properties which also have a `pluginId`
  */
 const plugins = [
     new MyPlugin({
-        pluginResolverId: "my-plugin"
+        id: "my-plugin"
     })
 ];
 

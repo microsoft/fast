@@ -4,7 +4,7 @@ export interface ChildrenProps {
     /**
      * React children using a render prop
      */
-    children: (className: string) => React.ReactNode;
+    render: (className: string) => React.ReactNode;
 }
 
 /**
@@ -15,6 +15,6 @@ export default class ChildrenWithRenderProp extends React.Component<ChildrenProp
     public static displayName: string = "ChildrenWithRenderProp";
 
     public render(): JSX.Element {
-        return <span>{this.props.children}</span>;
+        return <span>{this.props.render}</span>;
     }
 }

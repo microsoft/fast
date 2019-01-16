@@ -4,5 +4,5 @@
     "description": "A test component's schema definition.",
     "type": "string",
     "id": "component-with-plugin-interpretation",
-    "pluginResolverId": "string-plugin-resolver"
+    "pluginId": "string-plugin-resolver"
 }

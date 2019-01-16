@@ -8,12 +8,12 @@
         "boolean": {
             "title": "Boolean",
             "type": "boolean",
-            "pluginResolverId": "boolean-plugin-resolver"
+            "pluginId": "boolean-plugin-resolver"
         },
         "array": {
             "title": "Array of strings",
             "type": "array",
-            "pluginResolverId": "array-plugin-resolver",
+            "pluginId": "array-plugin-resolver",
             "items": {
                 "title": "String",
                 "type": "string"
@@ -21,10 +21,10 @@
         }
     },
     "reactProperties": {
-        "children": {
+        "render": {
             "title": "Children",
             "type": "children",
-            "pluginResolverId": "children-plugin-resolver",
+            "pluginId": "children-plugin-resolver",
             "defaults": [
                 "text"
             ]

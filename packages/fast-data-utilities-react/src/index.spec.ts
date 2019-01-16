@@ -169,7 +169,7 @@ describe("getDataLocationsOfPlugins", () => {
 
     test("should return the data location of a single react child", () => {
         const data: any = {
-            children: {
+            render: {
                 id: childrenSchema.id,
                 props: {},
             },
@@ -182,7 +182,7 @@ describe("getDataLocationsOfPlugins", () => {
         );
 
         expect(dataLocationsOfPlugins.length).toBe(1);
-        expect(dataLocationsOfPlugins[0].dataLocation).toBe("children");
+        expect(dataLocationsOfPlugins[0].dataLocation).toBe("render");
     });
     test("should return the data location of a nested react child", () => {
         const data: any = {
@@ -195,7 +195,7 @@ describe("getDataLocationsOfPlugins", () => {
                             children: {
                                 id: childrenWithPluginPropsSchema.id,
                                 props: {
-                                    children: {
+                                    render: {
                                         id: childrenSchema.id,
                                         props: {},
                                     },
@@ -215,7 +215,7 @@ describe("getDataLocationsOfPlugins", () => {
 
         expect(dataLocationsOfPlugins.length).toBe(1);
         expect(dataLocationsOfPlugins[0].dataLocation).toBe(
-            "children.props.children.props.children.props.children"
+            "children.props.children.props.children.props.render"
         );
     });
     test("should return the data locations of multiple children", () => {
@@ -223,7 +223,7 @@ describe("getDataLocationsOfPlugins", () => {
             children: {
                 id: childrenWithPluginPropsSchema.id,
                 props: {
-                    children: {
+                    render: {
                         id: childrenSchema.id,
                         props: {},
                     },
@@ -232,7 +232,7 @@ describe("getDataLocationsOfPlugins", () => {
             restrictedWithChildren: {
                 id: childrenWithPluginPropsSchema.id,
                 props: {
-                    children: {
+                    render: {
                         id: childrenSchema.id,
                         props: {},
                     },
@@ -247,9 +247,9 @@ describe("getDataLocationsOfPlugins", () => {
         );
 
         expect(dataLocationsOfPlugins.length).toBe(2);
-        expect(dataLocationsOfPlugins[0].dataLocation).toBe("children.props.children");
+        expect(dataLocationsOfPlugins[0].dataLocation).toBe("children.props.render");
         expect(dataLocationsOfPlugins[1].dataLocation).toBe(
-            "restrictedWithChildren.props.children"
+            "restrictedWithChildren.props.render"
         );
     });
     test("should return data locations of nested react child with multiple children", () => {
@@ -263,7 +263,7 @@ describe("getDataLocationsOfPlugins", () => {
                             children: {
                                 id: childrenWithPluginPropsSchema.id,
                                 props: {
-                                    children: {
+                                    render: {
                                         id: childrenSchema.id,
                                         props: {},
                                     },
@@ -272,7 +272,7 @@ describe("getDataLocationsOfPlugins", () => {
                             restrictedWithChildren: {
                                 id: childrenWithPluginPropsSchema.id,
                                 props: {
-                                    children: {
+                                    render: {
                                         id: childrenSchema.id,
                                         props: {},
                                     },
@@ -292,10 +292,10 @@ describe("getDataLocationsOfPlugins", () => {
 
         expect(dataLocationsOfPlugins.length).toBe(2);
         expect(dataLocationsOfPlugins[0].dataLocation).toBe(
-            "children.props.children.props.children.props.children"
+            "children.props.children.props.children.props.render"
         );
         expect(dataLocationsOfPlugins[1].dataLocation).toBe(
-            "children.props.children.props.restrictedWithChildren.props.children"
+            "children.props.children.props.restrictedWithChildren.props.render"
         );
     });
     test("should return data locations of an array of nested react children with multiple children", () => {
@@ -303,7 +303,7 @@ describe("getDataLocationsOfPlugins", () => {
             children: {
                 id: childrenWithPluginPropsSchema.id,
                 props: {
-                    children: [
+                    render: [
                         {
                             id: childrenSchema.id,
                             props: {
@@ -322,7 +322,7 @@ describe("getDataLocationsOfPlugins", () => {
             restrictedWithChildren: {
                 id: childrenWithPluginPropsSchema.id,
                 props: {
-                    children: {
+                    render: {
                         id: childrenSchema.id,
                         props: {
                             children: "bat",
@@ -339,9 +339,9 @@ describe("getDataLocationsOfPlugins", () => {
         );
 
         expect(dataLocationsOfPlugins).toHaveLength(2);
-        expect(dataLocationsOfPlugins[0].dataLocation).toBe("children.props.children");
+        expect(dataLocationsOfPlugins[0].dataLocation).toBe("children.props.render");
         expect(dataLocationsOfPlugins[1].dataLocation).toBe(
-            "restrictedWithChildren.props.children"
+            "restrictedWithChildren.props.render"
         );
     });
     test("should return data locations of an array of items", () => {
@@ -550,11 +550,11 @@ describe("getDataLocationsOfChildren", () => {
 
 describe("mapDataToComponent", () => {
     const childrenPluginResolverId: string =
-        childrenWithPluginPropsSchema.reactProperties.children.pluginResolverId;
+        childrenWithPluginPropsSchema.reactProperties.render.pluginId;
     const arrayPluginResolverId: string =
-        childrenWithPluginPropsSchema.properties.array.pluginResolverId;
+        childrenWithPluginPropsSchema.properties.array.pluginId;
     const booleanPluginResolverId: string =
-        childrenWithPluginPropsSchema.properties.boolean.pluginResolverId;
+        childrenWithPluginPropsSchema.properties.boolean.pluginId;
     const childOptions: ChildOptionItem[] = [
         { component: Children, schema: childrenSchema },
         { component: TextField, schema: textFieldSchema },
@@ -637,7 +637,7 @@ describe("mapDataToComponent", () => {
     });
     test("should map data to a plugin", () => {
         const data: any = {
-            children: [
+            render: [
                 {
                     id: textFieldSchema.id,
                     props: {},
@@ -653,13 +653,13 @@ describe("mapDataToComponent", () => {
             childOptions,
             [
                 new MapChildrenPropToCallbackPassingClassName({
-                    pluginResolverId: childrenPluginResolverId,
+                    id: childrenPluginResolverId,
                 }),
                 new MapBooleanPropToString({
-                    pluginResolverId: [booleanPluginResolverId],
+                    id: [booleanPluginResolverId],
                 }),
                 new MapArrayPropToObject({
-                    pluginResolverId: arrayPluginResolverId,
+                    id: arrayPluginResolverId,
                 }),
             ]
         );
@@ -669,8 +669,8 @@ describe("mapDataToComponent", () => {
         expect(mappedData.array.foo).toEqual(0);
         expect(mappedData.array.bar).toEqual(1);
         expect(mappedData.array.bat).toEqual(2);
-        expect(typeof mappedData.children).toBe("function");
-        expect(mappedData.children).toHaveLength(1);
-        expect(mappedData.children(testClass).props.className).toBe(testClass);
+        expect(typeof mappedData.render).toBe("function");
+        expect(mappedData.render).toHaveLength(1);
+        expect(mappedData.render(testClass).props.className).toBe(testClass);
     });
 });

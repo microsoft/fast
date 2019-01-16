@@ -3,7 +3,7 @@ import { cloneDeep, get, isPlainObject, set } from "lodash-es";
 import * as tv4 from "tv4";
 import Plugin, { PluginProps } from "./plugin";
 
-const pluginResolverIdKeyword: string = "pluginResolverId";
+const pluginIdKeyword: string = "pluginId";
 const typeKeyword: string = "type";
 const squareBracketsRegex: RegExp = /\[(\d+?)\]/g;
 const propsKeyword: string = "props";
@@ -365,7 +365,7 @@ export function getDataLocationsOfPlugins(
 
             // check to see if the data location matches with the current schema and includes a plugin identifier
             if (
-                typeof get(subSchema, pluginResolverIdKeyword) === "string" &&
+                typeof get(subSchema, pluginIdKeyword) === "string" &&
                 dataLocationsOfPlugins.findIndex(
                     pluginPartialFindIndexCallback(dataLocationOfPlugin)
                 ) === -1
@@ -544,13 +544,13 @@ export function mapDataToComponent(
                 data,
                 schema
             );
-            const pluginResolverId: string = get(
+            const pluginId: string = get(
                 pluginModifiedDataLocation.schema,
-                `${pluginModifiedSchemaLocation}.${pluginResolverIdKeyword}`
+                `${pluginModifiedSchemaLocation}.${pluginIdKeyword}`
             );
             const pluginResolver: Plugin<PluginProps> = plugins.find(
                 (plugin: Plugin<PluginProps>): boolean => {
-                    return plugin.resolvesForId(pluginResolverId);
+                    return plugin.resolvesForId(pluginId);
                 }
             );
 
