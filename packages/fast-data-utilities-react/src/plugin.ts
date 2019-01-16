@@ -2,7 +2,11 @@ import { ChildOptionItem } from "./";
 
 export interface PluginProps {
     /**
-     * The string(s) associated by the plugin
+     * The string(s) used to identify the plugin instance,
+     *
+     * Typically used in conjunction with the `pluginId` property
+     * in a JSON schema and identified in the `mapDataToComponent`
+     * exported function.
      */
     id: string | string[];
 }
