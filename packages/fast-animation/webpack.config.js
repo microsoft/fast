@@ -73,7 +73,7 @@ module.exports = (env, args) => {
         },   
         plugins: [
             new ForkTsCheckerWebpackPlugin({
-                tslint: path.resolve(__dirname, '../tslint.json')
+                tslint: path.resolve(__dirname, 'tslint.json')
             }),
             new HtmlWebpackPlugin({
                 title: 'Animation system examples',
