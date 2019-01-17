@@ -1,5 +1,6 @@
 import { Direction } from "@microsoft/fast-application-utilities";
 import { memoize } from "lodash-es";
+import { withDefaults } from "@microsoft/fast-jss-utilities";
 
 export interface DesignSystem {
     /**
@@ -64,13 +65,9 @@ const designSystemDefaults: DesignSystem = {
 /**
  * Ensure that all properties of the design system are assigned
  */
-export const withDesignSystemDefaults: (
+export const withDesignSystemDefaults: (config: DesignSystem) => DesignSystem = (
     config: Partial<DesignSystem>
-) => DesignSystem = memoize(
-    (config: Partial<DesignSystem>): DesignSystem => {
-        return Object.assign({}, designSystemDefaults, config);
-    }
-);
+): DesignSystem => withDefaults(designSystemDefaults)(config);
 
 /**
  * Safely retrieves a single property from a design system
