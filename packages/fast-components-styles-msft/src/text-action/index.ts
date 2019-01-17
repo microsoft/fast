@@ -25,6 +25,7 @@ import {
 import { density } from "../utilities/density";
 import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
 import outlinePattern from "../patterns/outline";
+import { focus } from "../utilities/focus";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
 export const textFieldOverrides: ComponentStyles<
@@ -37,10 +38,13 @@ export const textFieldOverrides: ComponentStyles<
         flex: "1 0 0",
         background: "transparent",
         minWidth: "inherit",
-        "&:hover, &:focus, &:disabled": {
+        "&:hover, &:disabled": {
             border: "none",
             boxShadow: "none",
         },
+        ...focus({
+            boxShadow: "none",
+        }),
     },
 };
 

@@ -18,6 +18,7 @@ import {
 import outlinePattern from "../patterns/outline";
 import switchFieldPattern from "../patterns/switch-field";
 import typographyPattern from "../patterns/typography";
+import { focus } from "../utilities/focus";
 
 const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -60,13 +61,9 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
             "&:hover": {
                 ...outlinePattern.hover,
             },
-            "&:focus": {
-                outline: "none",
-            },
-            [`&${focusVisible()}`]: {
-                outline: "none",
+            ...focus({
                 ...outlinePattern.focus,
-            },
+            }),
         },
         radio_stateIndicator: {
             position: "relative",

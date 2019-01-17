@@ -15,6 +15,7 @@ import {
 } from "../utilities/colors";
 import { get } from "lodash-es";
 import outlinePattern from "../patterns/outline";
+import { focus } from "../utilities/focus";
 
 const eastFlipperTransform: string = "translateX(-3px) rotate(45deg)";
 const westFlipperTransform: string = "translateX(3px) rotate(-135deg)";
@@ -52,10 +53,9 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
                     },
                 },
             },
-            "&:focus": {
-                outline: "none",
-                ...outlinePattern.disabled,
-            },
+            ...focus({
+                ...outlinePattern.focus,
+            }),
             "&::-moz-focus-inner": {
                 border: "0",
             },

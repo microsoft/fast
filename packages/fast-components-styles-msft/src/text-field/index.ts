@@ -10,6 +10,7 @@ import { density } from "../utilities/density";
 import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
 import outlinePattern from "../patterns/outline";
 import typographyPattern from "../patterns/typography";
+import { focus } from "../utilities/focus";
 
 const styles: ComponentStyles<TextFieldClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -33,13 +34,9 @@ const styles: ComponentStyles<TextFieldClassNameContract, DesignSystem> = (
             "&:hover": {
                 ...outlinePattern.hover,
             },
-            "&:focus": {
-                outline: "none",
-            },
-            [`&${focusVisible()}`]: {
-                outline: "none",
+            ...focus({
                 ...outlinePattern.focus,
-            },
+            }),
             "&:disabled": {
                 ...outlinePattern.disabled,
                 ...typographyPattern.disabled,

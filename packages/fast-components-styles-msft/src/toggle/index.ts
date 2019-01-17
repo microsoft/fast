@@ -21,6 +21,7 @@ import Chroma from "chroma-js";
 import outlinePattern from "../patterns/outline";
 import switchFieldPattern from "../patterns/switch-field";
 import typographyPattern from "../patterns/typography";
+import { focus } from "../utilities/focus";
 
 const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -82,9 +83,9 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             "&:hover": {
                 ...outlinePattern.hover,
             },
-            [`&${focusVisible()}`]: {
+            ...focus({
                 ...outlinePattern.focus,
-            },
+            }),
         },
         toggle__disabled: {
             ...typographyPattern.disabled,
@@ -115,9 +116,9 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             "& $toggle_input": {
                 backgroundColor: brandColor,
                 borderColor: brandColor,
-                [`&${focusVisible()}`]: {
+                ...focus({
                     ...outlinePattern.focus,
-                },
+                }),
                 "& + $toggle_stateIndicator": {
                     left: "28px",
                     backgroundColor,

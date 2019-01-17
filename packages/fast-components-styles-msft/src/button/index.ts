@@ -28,6 +28,7 @@ import Chroma from "chroma-js";
 import { density } from "../utilities/density";
 import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
 import outlinePattern from "../patterns/outline";
+import { focus } from "../utilities/focus";
 
 function applyTransparentBackplateStyles(
     designSystem: DesignSystem
@@ -206,14 +207,10 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             "&:hover": {
                 backgroundColor: secondaryHoverBackgroundColor,
             },
-            "&:focus": {
-                outline: "none",
-            },
-            [`&${focusVisible()}`]: {
-                outline: "none",
+            ...focus({
                 borderColor: secondaryFocusBorderColor,
                 boxShadow: secondaryFocusBoxShadow,
-            },
+            }),
             "&$button__disabled": {
                 cursor: "not-allowed",
                 backgroundColor: secondaryDisabledBackgroundColor,
@@ -234,10 +231,10 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             "&:hover": {
                 backgroundColor: primaryHoverBackground,
             },
-            [`&${focusVisible()}`]: {
+            ...focus({
                 borderColor: primaryFocusBorderColor,
                 boxShadow: primaryFocusBoxShadow,
-            },
+            }),
             "&$button__disabled": {
                 color: primaryDisabledColor,
                 fill: primaryDisabledColor,
@@ -259,10 +256,10 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             "&:hover": {
                 ...outlinePattern.hover,
             },
-            [`&${focusVisible()}`]: {
+            ...focus({
                 ...applyTransparentBackground(),
                 ...outlinePattern.focus,
-            },
+            }),
             "&$button__disabled": {
                 ...applyTransparentBackground(),
                 ...outlinePattern.disabled,
