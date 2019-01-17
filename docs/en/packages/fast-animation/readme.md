@@ -6,7 +6,7 @@ sidebar_label: Animation
 
 # FAST Animation
 
-Fast Animation is a library for simplifying the creation of animations and interactions using the Web Animation API. For additional details visit our [API documentation](https://microsoft.github.io/fast-dna/docs/en/contributing/packages/fast-animation/api/index.html).
+Fast Animation is a library for simplifying the creation of animations and interactions using the Web Animation API. 
 
 ![JavaScript](https://img.shields.io/badge/ES6-Supported-yellow.svg?style=for-the-badge&logo=JavaScript) &nbsp; ![TypeScript](https://img.shields.io/badge/TypeScript-Supported-blue.svg?style=for-the-badge) &nbsp; ![TypeScript](https://img.shields.io/badge/WAAPI-Supported-purple.svg?style=for-the-badge)
 
@@ -17,6 +17,7 @@ Fast Animation is a library for simplifying the creation of animations and inter
 * Provides mechanisms for sequencing and grouping animation effects between elements.
 
 ## Usage
+[API Reference](https://microsoft.github.io/fast-dna/docs/en/contributing/packages/fast-animation/api/index.html)
 
 ### Installation
 
