@@ -96,6 +96,7 @@
     "ts-node": "^5.0.1",
     "tslint": "^5.9.1",
     "typedoc": "^0.14.1",
+    "typedocs": "^0.6.5",
     "typescript": "^3.0.1",
     "yargs": "^11.0.0"
   },
