@@ -92,6 +92,7 @@
     "eyes.images": "0.0.52",
     "favicons-webpack-plugin": "0.0.9",
     "file-loader": "^1.1.11",
+    "focus-visible": "^4.1.5",
     "html-webpack-plugin": "^3.0.4",
     "jest": "^23.6.0",
     "lodash-es": "^4.0.0",
