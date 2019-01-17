@@ -1,11 +1,14 @@
 # FAST colors
+
 A color utility library designed to make working with colors easier.
 
 A huge thanks to [bobbyrayit](https://github.com/bobbyrayit) and [mlijanto](https://github.com/mlijanto) for creating the algorithm implemented in the `range` function.
 This code borrows heavily from their original implementation.
 
 ## range(color, [options])
-A function that converts a single color input into a range of outputs, from lightest to darkest. 
+
+A function that converts a single color input into a range of outputs, from lightest to darkest.
+
 - `color: string` - a HEX or RGB color represented as a string (eg, `"#FFF"` or `"rgb(0, 0, 0)"`)
 - `options: object`
     - `count: number` - the number of colors to create in the count. Defaults to `7`.
@@ -21,6 +24,7 @@ A function that converts a single color input into a range of outputs, from ligh
     - `filterMultiplyDark: number` - the amount of a multiply filter to apply to dark values. Defaults to `0`.
 
 ### Usage
+
 ```js
 import { range } from "@microsoft/fast-colors";
 
@@ -34,13 +38,17 @@ const range = range("#dddddd", {
     paddingDark: .2
 }); // [ '#f1f1f1`, `#dddddd`, `#777777` ]
 ```
+
 ## contrast(ratio, operand, reference)
-A function that adjust an color (`operand`) to meet a contrast ratio (`ratio`) against another color (`reference`).
+
+A function that adjust a color (`operand`) to meet a contrast ratio (`ratio`) against another color (`reference`).
+
 - `ratio: number` - the desired contrast ratio of the returned color.
-- `operand: string` - a string representation of a color that will be adjusted to meet `ratio` against `reference`.
-- `reference: string` - a string representation of a color that will the `operand` will meet a contrast ratio against.
+- `operand: string` - a string representation of the color that will be adjusted to meet `ratio` against `reference`.
+- `reference: string` - a string representation of the color that the `operand` will meet a contrast ratio against.
 
 ### Usage
+
 ```js
 import { contrast } from "@microsoft/fast-colors"
 
