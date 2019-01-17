@@ -17,11 +17,11 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc -p ./lib/tsconfig.json",
-    "build:app": "webpack --config webpack/webpack.config.js --mode=production",
+    "build:app": "webpack --mode=production",
     "prepare": "npm run build",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
-    "start": "node_modules/.bin/webpack-dev-server --config webpack/webpack.config.js --progress",
+    "start": "node_modules/.bin/webpack-dev-server --progress",
     "test": "npm run unit-tests && npm run build:app",
     "tslint": "tslint -c ./tslint.json '**/*.ts{,x}'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'",
