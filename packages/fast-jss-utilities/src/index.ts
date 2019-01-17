@@ -9,3 +9,4 @@ export * from "./screen-reader";
 export * from "./truncation";
 export * from "./units";
 export * from "./focus";
+export * from "./with-defaults";
