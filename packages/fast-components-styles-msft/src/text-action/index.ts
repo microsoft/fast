@@ -81,6 +81,7 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
 
     return {
         textAction: {
+            boxSizing: "border-box",
             position: "relative",
             height: density(defaultHeight)(designSystem),
             minHeight: toPx(minHeight),
@@ -114,7 +115,7 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
         },
         textAction_button: {
             borderColor: "transparent",
-            height: `calc(${density(defaultHeight)(designSystem)} - 4px)`,
+            height: `calc(${density(defaultHeight)(designSystem)} - 6px)`,
             minHeight: toPx(minHeight),
             maxHeight: toPx(maxHeight),
             minWidth: "fit-content",
