@@ -56,6 +56,56 @@ function render() {
 render();
 ```
 
+#### Plugins
+As an optional argument to `mapDataToComponent`, plugins may be used. Plugins must be extended from the `Plugin` class export and provide a `resolver` method. In this way functional code can be mapped to a component.
+
+React render prop plugin example:
+```jsx
+import { mapDataToComponent, Plugin } from "@microsoft/fast-data-utilities-react";
+
+class MyPlugin extends Plugin {
+    resolver(data, childOption) {
+        return (className) => {
+            return React.createElement(
+                childOption.component,
+                Object.assign({}, data.props, { className })
+            );
+        };
+    }
+}
+```
+
+Schema example for the React render prop plugin example:
+```json
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Component with custom properties",
+    "type": "object",
+    "id": "component-with-react-render-prop",
+    "reactProperties": {
+        "children": {
+            "title": "Children",
+            "type": "children",
+            "pluginId": "my-plugin"
+        }
+    }
+}
+```
+
+```jsx
+/**
+ * The plugins take a configuration that includes a string or an array of strings
+ * mapping them to schema properties which also have a `pluginId`
+ */
+const plugins = [
+    new MyPlugin({
+        id: "my-plugin"
+    })
+];
+
+mapDataToComponent(schema, data, childOptions, plugins);
+```
+
 ### `getChildOptionBySchemaId`
 The `getChildOptionBySchemaId` accepts a list of child options and returns the one that matches the schema ID.
 
