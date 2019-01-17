@@ -673,4 +673,30 @@ describe("mapDataToComponent", () => {
         expect(mappedData.render).toHaveLength(1);
         expect(mappedData.render(testClass).props.className).toBe(testClass);
     });
+    test("should not map data to a plugin if a plugin is not available but a pluginId has been specified", () => {
+        const data: any = {
+            render: [
+                {
+                    id: textFieldSchema.id,
+                    props: {},
+                },
+            ],
+            boolean: true,
+            array: ["foo", "bar", "bat"],
+        };
+        const mappedData: any = mapDataToComponent(
+            childrenWithPluginPropsSchema,
+            data,
+            childOptions,
+            [
+                new MapBooleanPropToString({
+                    id: booleanPluginResolverId,
+                }),
+            ]
+        );
+
+        expect(typeof mappedData.boolean).toBe("string");
+        expect(Array.isArray(mappedData.array)).toBe(true);
+        expect(mappedData.render[0].props).toEqual({});
+    });
 });
