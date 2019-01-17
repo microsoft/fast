@@ -635,26 +635,16 @@ describe("mapDataToComponent", () => {
         expect(typeof get(mappedData, "children[1].type")).toBe("function");
         expect(get(mappedData, "children[1].type.displayName")).toBe("Text field");
     });
-    test("should map data to a plugin", () => {
+    test("should map simple data to a plugin", () => {
         const data: any = {
-            render: [
-                {
-                    id: textFieldSchema.id,
-                    props: {},
-                },
-            ],
             boolean: true,
             array: ["foo", "bar", "bat"],
         };
-        const testClass: string = "Hello world";
         const mappedData: any = mapDataToComponent(
             childrenWithPluginPropsSchema,
             data,
             childOptions,
             [
-                new MapChildrenPropToCallbackPassingClassName({
-                    id: childrenPluginResolverId,
-                }),
                 new MapBooleanPropToString({
                     id: [booleanPluginResolverId],
                 }),
@@ -669,9 +659,64 @@ describe("mapDataToComponent", () => {
         expect(mappedData.array.foo).toEqual(0);
         expect(mappedData.array.bar).toEqual(1);
         expect(mappedData.array.bat).toEqual(2);
-        expect(typeof mappedData.render).toBe("function");
+    });
+    test("should map children to a plugin", () => {
+        const data: any = {
+            render: {
+                id: textFieldSchema.id,
+                props: {},
+            },
+        };
+        const testClass: string = "Hello world";
+        const mappedData: any = mapDataToComponent(
+            childrenWithPluginPropsSchema,
+            data,
+            childOptions,
+            [
+                new MapChildrenPropToCallbackPassingClassName({
+                    id: childrenPluginResolverId,
+                }),
+            ]
+        );
+
         expect(mappedData.render).toHaveLength(1);
+        expect(typeof mappedData.render).toBe("function");
+        expect(mappedData.render(testClass).type.displayName).toEqual("Text field");
         expect(mappedData.render(testClass).props.className).toBe(testClass);
+    });
+    test("should map arrays of children to plugins", () => {
+        const data: any = {
+            render: [
+                {
+                    id: textFieldSchema.id,
+                    props: {},
+                },
+                {
+                    id: childrenSchema.id,
+                    props: {},
+                },
+            ],
+        };
+        const testClass1: string = "Foo";
+        const testClass2: string = "Bar";
+        const mappedData: any = mapDataToComponent(
+            childrenWithPluginPropsSchema,
+            data,
+            childOptions,
+            [
+                new MapChildrenPropToCallbackPassingClassName({
+                    id: childrenPluginResolverId,
+                }),
+            ]
+        );
+
+        expect(mappedData.render).toHaveLength(2);
+        expect(typeof mappedData.render[0]).toBe("function");
+        expect(mappedData.render[0](testClass1).type.displayName).toEqual("Text field");
+        expect(mappedData.render[0](testClass1).props.className).toBe(testClass1);
+        expect(typeof mappedData.render[1]).toBe("function");
+        expect(mappedData.render[1](testClass2).type.displayName).toEqual("Children");
+        expect(mappedData.render[1](testClass2).props.className).toBe(testClass2);
     });
     test("should not map data to a plugin if a plugin is not available but a pluginId has been specified", () => {
         const data: any = {

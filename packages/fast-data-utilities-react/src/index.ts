@@ -5,6 +5,7 @@ import Plugin, { PluginProps } from "./plugin";
 
 const pluginIdKeyword: string = "pluginId";
 const typeKeyword: string = "type";
+const childrenKeyword: string = "children";
 const squareBracketsRegex: RegExp = /\[(\d+?)\]/g;
 const propsKeyword: string = "props";
 
@@ -64,6 +65,45 @@ export interface PluginLocation {
      * The schema related to the data location
      */
     schema: any;
+}
+
+interface PluginResolverDataMap {
+    /**
+     * Data location for the resolved data
+     */
+    dataLocation: string;
+
+    /**
+     * Resolved data
+     */
+    data: any;
+}
+
+interface PluginResolverDataMapConfig {
+    /**
+     * Is this data React children
+     */
+    isReactChildren: boolean;
+
+    /**
+     * The data to supply to the plugin
+     */
+    pluginData: any;
+
+    /**
+     * The plugin to use to resolve the data
+     */
+    pluginResolver: Plugin<PluginProps>;
+
+    /**
+     * The React children to pass to the plugin
+     */
+    childOptions: ChildOptionItem[];
+
+    /**
+     * The data location derived from the schema location
+     */
+    dataLocation: string;
 }
 
 /**
@@ -202,7 +242,7 @@ function getSchemaLocationSegmentsFromDataLocationSegment(
         schema,
         `${PropertyKeyword.reactProperties}.${normalizedDataLocationForArrayRemoval}`
     );
-    const isChildren: boolean = subSchema && subSchema.type === "children";
+    const isChildren: boolean = subSchema && subSchema.type === childrenKeyword;
 
     if (isPlainObject(data)) {
         schemaLocationSegments.push(getObjectPropertyKeyword(subSchema));
@@ -294,7 +334,7 @@ function getReactChildrenLocationsFromSchema(
         (schemaLocation: string): boolean => {
             return (
                 !!schemaLocation.match(/reactProperties\..+?\b/) &&
-                get(schema, schemaLocation).type === "children"
+                get(schema, schemaLocation).type === childrenKeyword
             );
         }
     );
@@ -387,7 +427,7 @@ export function getDataLocationsOfPlugins(
                             ? typeKeyword
                             : `${schemaLocation}.${typeKeyword}`
                     }`
-                ) === "children"
+                ) === childrenKeyword
             ) {
                 // resolve the child id with a child option
                 const childOption: ChildOptionItem = getChildOptionBySchemaId(
@@ -498,6 +538,72 @@ export function getDataLocationsOfChildren(
 }
 
 /**
+ * Gets resolved children back from the plugin
+ */
+function getPluginResolvedChildren(
+    pluginData: any,
+    pluginResolver: Plugin<PluginProps>,
+    childOptions: ChildOptionItem[]
+): any {
+    return pluginResolver.resolver(
+        get(pluginData, propsKeyword),
+        getChildOptionBySchemaId(pluginData.id, childOptions)
+    );
+}
+
+/**
+ * Get the resolved data from a plugin and the data location to map to
+ */
+function getPluginResolverDataMap(
+    pluginResolverDataMapConfig: PluginResolverDataMapConfig
+): PluginResolverDataMap[] {
+    const pluginResolverMapping: PluginResolverDataMap[] = [];
+
+    if (pluginResolverDataMapConfig.isReactChildren) {
+        if (Array.isArray(pluginResolverDataMapConfig.pluginData)) {
+            pluginResolverDataMapConfig.pluginData.forEach(
+                (pluginDataItem: any, index: number): void => {
+                    const pluginResolverMappingItem: PluginResolverDataMap = {
+                        data: getPluginResolvedChildren(
+                            pluginDataItem,
+                            pluginResolverDataMapConfig.pluginResolver,
+                            pluginResolverDataMapConfig.childOptions
+                        ),
+                        dataLocation: `${
+                            pluginResolverDataMapConfig.dataLocation
+                        }.${index}`,
+                    };
+
+                    pluginResolverMapping.push(pluginResolverMappingItem);
+                }
+            );
+        } else {
+            const pluginResolverMappingItem: PluginResolverDataMap = {
+                data: getPluginResolvedChildren(
+                    pluginResolverDataMapConfig.pluginData,
+                    pluginResolverDataMapConfig.pluginResolver,
+                    pluginResolverDataMapConfig.childOptions
+                ),
+                dataLocation: pluginResolverDataMapConfig.dataLocation,
+            };
+
+            pluginResolverMapping.push(pluginResolverMappingItem);
+        }
+    } else {
+        const pluginResolverMappingItem: PluginResolverDataMap = {
+            dataLocation: pluginResolverDataMapConfig.dataLocation,
+            data: pluginResolverDataMapConfig.pluginResolver.resolver(
+                pluginResolverDataMapConfig.pluginData
+            ),
+        };
+
+        pluginResolverMapping.push(pluginResolverMappingItem);
+    }
+
+    return pluginResolverMapping;
+}
+
+/**
  * Maps data returned from the form generator to the React components
  */
 export function mapDataToComponent(
@@ -555,18 +661,32 @@ export function mapDataToComponent(
                     return plugin.matches(pluginId);
                 }
             );
+            const pluginData: any = get(data, pluginModifiedDataLocation.dataLocation);
+            const isReactChildren: boolean =
+                get(
+                    pluginModifiedDataLocation.schema,
+                    `${pluginModifiedSchemaLocation}.${typeKeyword}`
+                ) === childrenKeyword;
 
             if (pluginResolver !== undefined) {
-                set(
-                    mappedData,
-                    pluginModifiedDataLocation.dataLocation,
-                    pluginResolver.resolver(
-                        get(data, pluginModifiedDataLocation.dataLocation),
-                        getChildOptionBySchemaId(
-                            pluginModifiedDataLocation.schema.id,
-                            childOptions
-                        )
-                    )
+                const pluginResolverMapping: PluginResolverDataMap[] = getPluginResolverDataMap(
+                    {
+                        isReactChildren,
+                        pluginData,
+                        pluginResolver,
+                        childOptions,
+                        dataLocation: pluginModifiedDataLocation.dataLocation,
+                    }
+                );
+
+                pluginResolverMapping.forEach(
+                    (pluginResolverMappingItem: PluginResolverDataMap): void => {
+                        set(
+                            mappedData,
+                            pluginResolverMappingItem.dataLocation,
+                            pluginResolverMappingItem.data
+                        );
+                    }
                 );
             }
         }

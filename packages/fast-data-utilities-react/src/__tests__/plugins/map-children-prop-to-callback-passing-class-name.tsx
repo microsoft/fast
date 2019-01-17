@@ -9,7 +9,7 @@ export default class MapChildrenPropToCallbackPassingClassName extends Plugin<
         return (className: string): React.ReactNode => {
             return React.createElement(
                 childOption.component,
-                Object.assign({}, data.props, { className })
+                Object.assign({}, data, { className })
             );
         };
     }
