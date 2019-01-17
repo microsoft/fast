@@ -112,3 +112,20 @@ const styles = {
     }
 };
 ```
+
+### withDefaults
+The `withDefaults` function can be used to ensure that all properties of a given object are assigned values.
+
+```ts
+import { withDefaults } from "@microsoft/fast-jss-utilities";
+
+const globalVariableDefaults: GlobalConfig = {
+    backgroundColor: "#000",
+    foregroundColor: "#FFF",
+    accentColor: "#FB356D"
+};
+
+const withGlobalDefaults: (config: Partial<GlobalDefaults>) => GlobalDefaults = (
+    config: Partial<GlobalDefaults>
+): GlobalDefaults => withDefaults(globalVariableDefaults)(config);
+```
