@@ -65,7 +65,7 @@ const designSystemDefaults: DesignSystem = {
 /**
  * Ensure that all properties of the design system are assigned
  */
-export const withDesignSystemDefaults: (config: DesignSystem) => DesignSystem = (
+export const withDesignSystemDefaults: (config: Partial<DesignSystem>) => DesignSystem = (
     config: Partial<DesignSystem>
 ): DesignSystem => withDefaults(designSystemDefaults)(config);
 
