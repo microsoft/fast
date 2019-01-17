@@ -14,10 +14,8 @@ describe("withDefaults", (): void => {
     test("should return an empty object if no arguments are passed", (): void => {
         expect(withDefaults<WithDefaultsTest>({})({})).toEqual({});
         expect(withDefaults<WithDefaultsTest>(void 0)({})).toEqual({});
-        expect(withDefaults<WithDefaultsTest>(void 0)(void 0)).toEqual({});
-        expect(withDefaults<WithDefaultsTest>(void 0)(undefined)).toEqual({});
         expect(withDefaults<WithDefaultsTest>({})(void 0)).toEqual({});
-        expect(withDefaults<WithDefaultsTest>(undefined)(void 0)).toEqual({});
+        expect(withDefaults<WithDefaultsTest>(void 0)(void 0)).toEqual({});
     });
 
     test("return object should contain all keys from the default object with defined values", () => {
