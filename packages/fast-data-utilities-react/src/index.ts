@@ -328,7 +328,9 @@ function getLocationsFromObject(data: any, location: string = ""): string[] {
 /**
  * Callback to determine if a string is found within an array of plugin locations
  */
-function pluginPartialFindIndexCallback(location: string): any {
+function pluginPartialFindIndexCallback(
+    location: string
+): (locationItem: PluginLocation) => boolean {
     return (locationItem: PluginLocation): boolean => {
         return location.includes(locationItem.dataLocation);
     };
@@ -525,7 +527,7 @@ export function mapDataToComponent(
 
     // remove any children data locations from plugin modified locations
     reactChildrenDataLocations = reactChildrenDataLocations.map(
-        (reactChildrenDataLocation: string): string => {
+        (reactChildrenDataLocation: string): string | undefined => {
             if (
                 pluginModifiedDataLocations.findIndex(
                     pluginPartialFindIndexCallback(reactChildrenDataLocation)
@@ -550,7 +552,7 @@ export function mapDataToComponent(
             );
             const pluginResolver: Plugin<PluginProps> = plugins.find(
                 (plugin: Plugin<PluginProps>): boolean => {
-                    return plugin.resolvesForId(pluginId);
+                    return plugin.matches(pluginId);
                 }
             );
 

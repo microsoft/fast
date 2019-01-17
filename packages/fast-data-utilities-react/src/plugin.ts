@@ -26,7 +26,7 @@ export default abstract class Plugin<C extends PluginProps> {
      * Determines if there is a match for the IDs set for the plugin
      * and a provided ID
      */
-    public resolvesForId(id: string): boolean {
+    public matches(id: string): boolean {
         return this.config.id.indexOf(id) !== -1;
     }
 
