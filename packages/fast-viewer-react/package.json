@@ -23,7 +23,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc -p ./tsconfig.json",
-    "build:app": "webpack --progress",
+    "build:app": "webpack --progress --mode=production",
     "clean:dist": "node ../../build/clean.js dist",
     "prepare": "npm run clean:dist && npm run build",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
@@ -116,7 +116,7 @@
     "typescript": "^3.0.1",
     "webpack": "^4.0.1",
     "webpack-cli": "^3.1.1",
-    "webpack-dev-server": "^3.1.0"
+    "webpack-dev-server": "^3.1.14"
   },
   "dependencies": {
     "@microsoft/fast-application-utilities": "^3.0.4",
