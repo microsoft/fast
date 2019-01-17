@@ -504,7 +504,7 @@ export function mapDataToComponent(
     schema: any,
     data: any,
     childOptions: ChildOptionItem[],
-    plugins?: Array<Plugin<PluginProps>>
+    plugins: Array<Plugin<PluginProps>> = []
 ): any {
     const mappedData: any = cloneDeep(data);
 
@@ -556,17 +556,19 @@ export function mapDataToComponent(
                 }
             );
 
-            set(
-                mappedData,
-                pluginModifiedDataLocation.dataLocation,
-                pluginResolver.resolver(
-                    get(data, pluginModifiedDataLocation.dataLocation),
-                    getChildOptionBySchemaId(
-                        pluginModifiedDataLocation.schema.id,
-                        childOptions
+            if (pluginResolver !== undefined) {
+                set(
+                    mappedData,
+                    pluginModifiedDataLocation.dataLocation,
+                    pluginResolver.resolver(
+                        get(data, pluginModifiedDataLocation.dataLocation),
+                        getChildOptionBySchemaId(
+                            pluginModifiedDataLocation.schema.id,
+                            childOptions
+                        )
                     )
-                )
-            );
+                );
+            }
         }
     );
 
