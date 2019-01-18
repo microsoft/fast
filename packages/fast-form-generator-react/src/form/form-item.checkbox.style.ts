@@ -1,71 +1,86 @@
-import { toPx } from "@microsoft/fast-jss-utilities";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormItemCheckboxClassNameContract } from "../class-name-contracts/";
 import {
+    applyControlSingleLineWrapper,
     applyLabelStyle,
+    applySoftRemove,
     applySoftRemoveInput,
-    applyWrapperStyle,
-    colors,
+    DISABLED_OPACITY,
+    foreground300,
+    foreground800,
     insetStrongBoxShadow,
-} from "../utilities/form-input.style";
+} from "../utilities";
 
 const styles: ComponentStyles<FormItemCheckboxClassNameContract, {}> = {
     formItemCheckbox: {
-        ...applyWrapperStyle(),
+        ...applyControlSingleLineWrapper(),
         position: "relative",
+    },
+    formItemCheckbox__disabled: {
+        opacity: `${DISABLED_OPACITY}`,
+        cursor: "not-allowed",
+        "& $formItemCheckbox_label": {
+            cursor: "not-allowed",
+        },
     },
     formItemCheckbox_label: {
         ...applyLabelStyle(),
-        marginLeft: "16px",
+        marginLeft: "8px",
     },
     formItemCheckbox_input: {
         appearance: "none",
-        width: toPx(20),
-        height: toPx(20),
-        borderRadius: toPx(2),
-        boxShadow: `inset ${toPx(0)} 0${toPx(0)} ${toPx(4)} ${colors.boxShadow}`,
-        backgroundColor: colors.grayBackground,
+        width: "14px",
+        height: "14px",
+        boxSizing: "border-box",
+        borderRadius: "2px",
+        border: `1px solid ${foreground800}`,
         float: "right",
         zIndex: "1",
         margin: "0",
+        "&:disabled": {
+            cursor: "not-allowed",
+        },
         "&:hover": {
-            ...insetStrongBoxShadow(colors.hover),
+            border: `1px solid ${foreground300}`,
         },
         "&:focus": {
             outline: "none",
-            ...insetStrongBoxShadow(colors.pink),
+            ...insetStrongBoxShadow(foreground300),
         },
         "& + span": {
             position: "absolute",
             left: "0",
-            width: toPx(20),
-            height: toPx(20),
+            width: "14px",
+            height: "14px",
             "&::after, &::before": {
                 position: "absolute",
                 display: "block",
                 content: "''",
-                width: toPx(1),
-                background: colors.pink,
+                width: "1px",
+                background: foreground300,
             },
         },
         "&:checked": {
             "& + span": {
                 "&::before": {
-                    height: toPx(5),
-                    left: toPx(6),
-                    top: toPx(10),
+                    height: "3px",
+                    left: "4px",
+                    top: "7px",
                     transform: "rotate(-45deg)",
                 },
                 "&::after": {
-                    height: toPx(12),
-                    left: toPx(12),
-                    top: toPx(4),
+                    height: "8px",
+                    left: "8px",
+                    top: "2px",
                     transform: "rotate(45deg)",
                 },
             },
         },
     },
     formItemCheckbox_softRemove: {
+        ...applySoftRemove(),
+    },
+    formItemCheckbox_softRemoveInput: {
         ...applySoftRemoveInput(),
     },
 };

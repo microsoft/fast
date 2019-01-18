@@ -5,7 +5,7 @@ import manageJss, {
     ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import { DevSiteDesignSystem } from "../design-system";
+import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
 import { Pane, Row, RowClassNamesContract } from "@microsoft/fast-layouts-react";
 
 class ShellHeader extends React.Component<{}, {}> {
@@ -16,7 +16,7 @@ class ShellHeader extends React.Component<{}, {}> {
             background: "#343434",
             alignItems: "center",
             color: (config: DevSiteDesignSystem): string => {
-                return config.backgroundColor;
+                return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
             },
             textAlign: "left",
             minHeight: toPx(34),

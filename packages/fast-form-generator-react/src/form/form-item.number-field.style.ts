@@ -1,30 +1,27 @@
-import { toPx } from "@microsoft/fast-jss-utilities";
 import {
     applyControl,
+    applyControlWrapper,
     applyInputStyle,
     applyLabelStyle,
     applySoftRemove,
     applySoftRemoveInput,
-    applyWrapperStyle,
-} from "../utilities/form-input.style";
+} from "../utilities";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { FormItemNumberFieldClassNameContract } from "../class-name-contracts/";
 
 const styles: ComponentStyles<FormItemNumberFieldClassNameContract, {}> = {
     formItemNumberField: {
-        position: "relative",
+        display: "flex",
+        ...applyControlWrapper(),
     },
     formItemNumberField_control: {
         ...applyControl(),
     },
     formItemNumberField_controlLabel: {
         ...applyLabelStyle(),
-        display: "block",
-        marginTop: toPx(12),
     },
     formItemNumberField_controlInput: {
         ...applyInputStyle(),
-        marginTop: toPx(8),
         width: "100%",
     },
     formItemNumberField_softRemove: {

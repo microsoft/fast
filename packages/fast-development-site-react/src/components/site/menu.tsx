@@ -5,7 +5,7 @@ import manageJss, {
     ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import { DevSiteDesignSystem } from "../design-system";
+import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
 
 export interface SiteMenuProps {
     slot: string;
@@ -56,10 +56,18 @@ const style: ComponentStyles<SiteNavClassNameContract, DevSiteDesignSystem> = {
     siteMenu: {
         display: "inline-block",
         verticalAlign: "middle",
+        color: (config: DevSiteDesignSystem): string => {
+            return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
+        },
     },
     siteMenu_nav: {
         position: "absolute",
-        background: "#FFFFFF",
+        background: (config: DevSiteDesignSystem): string => {
+            return config.background200 || devSiteDesignSystemDefaults.background200;
+        },
+        color: (config: DevSiteDesignSystem): string => {
+            return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
+        },
         zIndex: "5",
         height: "100vh",
         top: "0",
@@ -106,12 +114,12 @@ const style: ComponentStyles<SiteNavClassNameContract, DevSiteDesignSystem> = {
     },
     siteMenu_buttonGlyph__open: {
         fill: (config: DevSiteDesignSystem): string => {
-            return config.backgroundColor;
+            return config.foreground300;
         },
     },
     siteMenu_buttonGlyph__close: {
         fill: (config: DevSiteDesignSystem): string => {
-            return config.foregroundColor;
+            return config.foreground300;
         },
     },
     siteMenu_ul: {

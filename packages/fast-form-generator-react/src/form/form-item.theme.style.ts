@@ -1,41 +1,41 @@
-import { toPx } from "@microsoft/fast-jss-utilities";
 import {
     applyControl,
-    applyInputContainerStyle,
-    applyInputStyle,
+    applyControlWrapper,
     applyLabelStyle,
     applySoftRemove,
     applySoftRemoveInput,
-    applyWrapperStyle,
-    colors,
+    background000,
     darkTheme,
+    foreground200,
+    foreground300,
     lightTheme,
-} from "../utilities/form-input.style";
+    pink,
+} from "../utilities";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormItemThemeClassNameContract } from "../class-name-contracts/";
 
 function applyThemeInputBackplateStyle(): CSSRules<{}> {
     return {
         appearance: "none",
-        border: `${toPx(2)} solid ${colors.containerBackground}`,
-        height: toPx(36),
-        width: toPx(36),
-        margin: toPx(0),
-        borderRadius: toPx(2),
+        border: `2px solid ${foreground200}`,
+        height: "20px",
+        width: "20px",
+        margin: "0",
+        borderRadius: "2px",
         "&:checked, &:focus": {
             outline: "none",
-            borderColor: colors.pink,
+            borderColor: pink,
         },
         "&:hover": {
-            borderColor: colors.black,
+            borderColor: background000,
         },
     };
 }
 
 const styles: ComponentStyles<FormItemThemeClassNameContract, {}> = {
     formItemTheme: {
-        display: "block",
-        position: "relative",
+        display: "flex",
+        ...applyControlWrapper(),
     },
     formItemTheme_control: {
         ...applyControl(),
@@ -43,18 +43,16 @@ const styles: ComponentStyles<FormItemThemeClassNameContract, {}> = {
     formItemTheme_controlLabel: {
         ...applyLabelStyle(),
     },
-    formItemTheme_controlInputContainer: {
-        ...applyInputContainerStyle(),
-    },
+    formItemTheme_controlInputContainer: {},
     formItemTheme_controlInput__light: {
         ...applyThemeInputBackplateStyle(),
         background: lightTheme,
-        backgroundColor: colors.white,
+        backgroundColor: foreground300,
     },
     formItemTheme_controlInput__dark: {
         ...applyThemeInputBackplateStyle(),
         background: darkTheme,
-        backgroundColor: colors.black,
+        backgroundColor: background000,
     },
     formItemTheme_softRemove: {
         ...applySoftRemove(),

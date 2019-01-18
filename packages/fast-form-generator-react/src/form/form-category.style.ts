@@ -1,49 +1,77 @@
-import { toPx } from "@microsoft/fast-jss-utilities";
-import { applyHeaderStyle } from "../utilities/form-input.style";
+import { background200, background800, foreground300 } from "../utilities";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormCategoryClassNameContract } from "../class-name-contracts/";
-import formCategory from "./form-category";
-
-// tslint:disable-next-line
-const dropdownArrow: string =
-    "PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHRpdGxlPmNoZXZyb24tZG93bjwvdGl0bGU+PHBhdGggZD0iTTMwLjUsNy4yOSwzMS45LDguNywxNi4yLDI0LjQuNSw4LjcsMS45LDcuMjlsMTQuMywxNC4zWiIvPjwvc3ZnPg==";
 
 const styles: ComponentStyles<FormCategoryClassNameContract, {}> = {
     formCategory_button: {
-        margin: `${toPx(20)} 0 0 0`,
-        minHeight: toPx(40),
-        fontWeight: "bold",
-        background: "none",
+        minHeight: "30px",
+        boxSizing: "border-box",
         outline: "0",
+        fontWeight: "600",
+        color: foreground300,
+        textTransform: "uppercase",
         border: "none",
+        background: background200,
+        borderTop: `1px solid ${background800}`,
+        borderBottom: `1px solid ${background800}`,
         position: "relative",
-        width: "100%",
+        width: "calc(100% + 10px)",
         fontFamily: "inherit",
-        fontSize: toPx(14),
-        padding: `${toPx(10)} 0`,
+        fontSize: "11px",
+        padding: "0 0 0 10px",
+        marginLeft: "-10px",
         textAlign: "left",
-        "&[aria-expanded='true']": {
-            "&::after": {
-                transform: "rotate(180deg)",
-            },
-        },
         "&:hover": {
             cursor: "pointer",
         },
-        "&::after": {
-            content: `url('data:image/svg+xml;base64,${dropdownArrow}')`,
-            fill: "white",
+        '&[aria-expanded="true"]': {
+            "&::before": {
+                transform: "rotate(-45deg)",
+            },
+            "&::after": {
+                transform: "rotate(45deg)",
+            },
+        },
+        "&::before": {
             position: "absolute",
-            right: toPx(11),
-            top: toPx(16),
-            display: "inline-block",
-            width: toPx(11),
-            height: toPx(11),
+            content: "''",
+            pointerEvents: "none",
+            width: "1px",
+            height: "6px",
+            right: "10px",
+            top: "12px",
+            transform: "rotate(45deg)",
+            background: foreground300,
+        },
+        "&::after": {
+            position: "absolute",
+            content: "''",
+            pointerEvents: "none",
+            width: "1px",
+            height: "6px",
+            right: "14px",
+            top: "12px",
+            transform: "rotate(-45deg)",
+            background: foreground300,
         },
     },
     formCategory_header: {
-        ...applyHeaderStyle(),
-        fontSize: toPx(14),
+        display: "flex",
+        alignItems: "center",
+        textTransform: "uppercase",
+        minHeight: "30px",
+        margin: "0",
+        fontWeight: "600",
+        boxSizing: "border-box",
+        fontSize: "11px",
+        padding: "0 0 0 10px",
+        marginLeft: "-10px",
+        background: background200,
+        borderTop: `1px solid ${background800}`,
+        borderBottom: `1px solid ${background800}`,
+        "& h3": {
+            margin: "0",
+        },
     },
     formCategory__collapsed: {
         display: "none",

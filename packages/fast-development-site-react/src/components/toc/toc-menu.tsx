@@ -33,6 +33,9 @@ const style: ComponentStyles<TocMenuManagedClasses, DevSiteDesignSystem> = {
     tocMenu_button: {
         background: "none",
         outline: "0",
+        color: (config: DevSiteDesignSystem): string => {
+            return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
+        },
         border: `${toPx(1)} solid transparent`,
         position: "relative",
         width: "100%",
@@ -47,7 +50,7 @@ const style: ComponentStyles<TocMenuManagedClasses, DevSiteDesignSystem> = {
         },
         "&:hover": {
             cursor: "pointer",
-            backgroundColor: "rgba(0, 0, 0, 0.04)",
+            backgroundColor: "rgba(255, 255, 255, 0.04)",
         },
         "&:focus": {
             border: (config: DevSiteDesignSystem): string => {
@@ -57,7 +60,7 @@ const style: ComponentStyles<TocMenuManagedClasses, DevSiteDesignSystem> = {
         },
         "&::after": {
             content: `url('data:image/svg+xml;base64,${dropdownInactive}')`,
-            fill: "white",
+            filter: "invert(1)",
             position: "absolute",
             right: toPx(11),
             top: toPx(11),

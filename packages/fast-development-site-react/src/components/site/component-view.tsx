@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Route, Switch, withRouter } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
-import { DevSiteDesignSystem } from "../design-system";
-import { toPx } from "@microsoft/fast-jss-utilities";
+import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
+import { applyScrollbarStyle } from "../../utilities";
 import manageJss, {
     ComponentStyles,
     ManagedClasses,
@@ -33,11 +33,21 @@ const style: ComponentStyles<ComponentViewManagedClasses, DevSiteDesignSystem> =
         width: "100%",
         display: "grid",
         gridTemplateColumns: "1fr 1fr 1fr",
-        backgroundColor: (config: DevSiteDesignSystem): string => config.backgroundColor,
+        backgroundColor: (config: DevSiteDesignSystem): string => {
+            return config.backgroundColor || devSiteDesignSystemDefaults.backgroundColor;
+        },
+        ...applyScrollbarStyle(),
     },
     componentDetailView: {
         overflow: "auto",
         flexGrow: "1",
+        background: (config: DevSiteDesignSystem): string => {
+            return config.background100 || devSiteDesignSystemDefaults.background100;
+        },
+        color: (config: DevSiteDesignSystem): string => {
+            return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
+        },
+        ...applyScrollbarStyle(),
     },
 };
 

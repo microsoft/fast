@@ -25,6 +25,9 @@ const styles: ComponentStyles<
         justifyContent: "center",
         borderRadius: toPx(2),
         margin: toPx(2),
+        fill: (config: DevSiteDesignSystem): string => {
+            return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
+        },
         '&[aria-current="page"]': {
             "&::before": {
                 content: "''",
@@ -35,7 +38,9 @@ const styles: ComponentStyles<
                 bottom: toPx(-1),
                 borderRadius: `${toPx(2)} ${toPx(2)} 0 0`,
                 height: toPx(2),
-                background: (config: DevSiteDesignSystem): string => config.brandColor,
+                background: (config: DevSiteDesignSystem): string => {
+                    return config.brandColor || devSiteDesignSystemDefaults.brandColor;
+                },
             },
         },
         "&:hover": {
@@ -45,7 +50,7 @@ const styles: ComponentStyles<
         "&:focus": {
             outline: "none",
             border: (config: DevSiteDesignSystem): string => {
-                return `${toPx(1)} solid ${config.brandColor ||
+                return `1px solid ${config.brandColor ||
                     devSiteDesignSystemDefaults.brandColor}`;
             },
         },

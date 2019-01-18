@@ -10,6 +10,8 @@ export { componentDetailExampleFactory };
 import componentExampleFactory from "./component-example-factory";
 export { componentExampleFactory };
 
+export * from "./component.style";
+
 import formChildFromExamplesFactory from "./form-child-from-examples-factory";
 export { formChildFromExamplesFactory };
 

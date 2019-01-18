@@ -397,6 +397,8 @@ class FormItemChildren extends FormItemBase<
     private renderExistingChildren(): JSX.Element {
         const props: any = Object.assign({}, sortingProps, {
             onSortEnd: this.handleSort,
+            helperClass: this.props.managedClasses
+                .formItemChildren_existingChildren__sorting,
         });
 
         const childItems: JSX.Element | JSX.Element[] = this.renderExistingChildItems();
@@ -428,7 +430,7 @@ class FormItemChildren extends FormItemBase<
      * Keydown handler for the child option filter
      */
     private handleChildrenListInputKeydown = (
-        e: React.KeyboardEvent<HTMLButtonElement>
+        e: React.KeyboardEvent<HTMLInputElement>
     ): void => {
         switch (e.keyCode) {
             case KeyCodes.enter:

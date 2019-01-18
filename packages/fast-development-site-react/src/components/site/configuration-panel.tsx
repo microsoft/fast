@@ -1,6 +1,7 @@
 import * as React from "react";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
+import { applyScrollbarStyle } from "../../utilities";
 import Form from "@microsoft/fast-form-generator-react";
 import manageJss, {
     ComponentStyles,
@@ -39,6 +40,10 @@ const style: ComponentStyles<ConfigurationPanelManagedClasses, DevSiteDesignSyst
         width: "100%",
         height: "100%",
         overflowX: "auto",
+        color: (config: DevSiteDesignSystem): string => {
+            return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
+        },
+        ...applyScrollbarStyle(),
     },
     configurationPanel_controls: {
         display: "flex",
@@ -57,15 +62,18 @@ const style: ComponentStyles<ConfigurationPanelManagedClasses, DevSiteDesignSyst
             padding: `${toPx(6)} ${toPx(8)}`,
             margin: toPx(2),
             minWidth: toPx(25),
+            color: (config: DevSiteDesignSystem): string => {
+                return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
+            },
             backgroundPosition: "center",
             "&:hover": {
                 cursor: "pointer",
-                background: "rgba(0, 0, 0, 0.04)",
+                background: "rgba(255, 255, 255, 0.04)",
             },
             "&:focus": {
                 outline: "none",
                 border: (config: DevSiteDesignSystem): string => {
-                    return `${toPx(1)} solid ${config.brandColor ||
+                    return `1px solid ${config.brandColor ||
                         devSiteDesignSystemDefaults.brandColor}`;
                 },
             },
@@ -96,7 +104,9 @@ const style: ComponentStyles<ConfigurationPanelManagedClasses, DevSiteDesignSyst
                 content: "''",
                 height: toPx(2),
                 borderRadius: `${toPx(2)} ${toPx(2)} 0 0`,
-                background: "#FB356D",
+                background: (config: DevSiteDesignSystem): string => {
+                    return config.brandColor || devSiteDesignSystemDefaults.brandColor;
+                },
             },
         },
     },
@@ -106,7 +116,7 @@ const style: ComponentStyles<ConfigurationPanelManagedClasses, DevSiteDesignSyst
         },
     },
     configurationPanel_paneForm: {
-        padding: toPx(12),
+        paddingLeft: "10px",
     },
 };
 

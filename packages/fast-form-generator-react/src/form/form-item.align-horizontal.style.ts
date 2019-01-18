@@ -1,68 +1,65 @@
 import {
     applyControl,
+    applyControlWrapper,
     applyInputBackplateStyle,
-    applyInputContainerStyle,
     applyLabelStyle,
     applySoftRemove,
     applySoftRemoveInput,
-    colors,
-} from "../utilities/form-input.style";
+    background300,
+    pink,
+} from "../utilities";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormItemAlignHorizontalClassNameContract } from "../class-name-contracts/";
 
 /* tslint:disable */
-const leftDark: string =
-    "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxNiAxMyIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48ZyBpZD0iQ2FudmFzIiBmaWxsPSJub25lIj48ZyBpZD0iJiMyMzg7JiMxMzQ7JiMxNjI7Ij48cGF0aCBkPSJNIDE2IDFMIDE2IDJMIDAgMkwgMCAxTCAxNiAxWk0gMTYgMTRMIDAgMTRMIDAgMTNMIDE2IDEzTCAxNiAxNFpNIDE2IDhMIDAgOEwgMCA3TCAxNiA3TCAxNiA4Wk0gMTIgNUwgMCA1TCAwIDRMIDEyIDRMIDEyIDVaTSAxMiAxMUwgMCAxMUwgMCAxMEwgMTIgMTBMIDEyIDExWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAtMSkiIGZpbGw9ImJsYWNrIi8+PC9nPjwvZz48L3N2Zz4=) center no-repeat";
 const leftLight: string =
-    "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxNiAxMyIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48ZyBpZD0iQ2FudmFzIiBmaWxsPSJub25lIj48ZyBpZD0iJiMyMzg7JiMxMzQ7JiMxNjI7Ij48cGF0aCBkPSJNIDE2IDFMIDE2IDJMIDAgMkwgMCAxTCAxNiAxWk0gMTYgMTRMIDAgMTRMIDAgMTNMIDE2IDEzTCAxNiAxNFpNIDE2IDhMIDAgOEwgMCA3TCAxNiA3TCAxNiA4Wk0gMTIgNUwgMCA1TCAwIDRMIDEyIDRMIDEyIDVaTSAxMiAxMUwgMCAxMUwgMCAxMEwgMTIgMTBMIDEyIDExWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAtMSkiIGZpbGw9IndoaXRlIi8+PC9nPjwvZz48L3N2Zz4=) center no-repeat";
-const centerDark: string =
-    "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxNiAxMyIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48ZyBpZD0iQ2FudmFzIiBmaWxsPSJub25lIj48ZyBpZD0iJiMyMzg7JiMxMzQ7JiMxNjE7Ij48cGF0aCBkPSJNIDAgMUwgMTYgMUwgMTYgMkwgMCAyTCAwIDFaTSAyIDRMIDE0IDRMIDE0IDVMIDIgNUwgMiA0Wk0gMiAxMEwgMTQgMTBMIDE0IDExTCAyIDExTCAyIDEwWk0gMCAxNEwgMCAxM0wgMTYgMTNMIDE2IDE0TCAwIDE0Wk0gMCA4TCAwIDdMIDE2IDdMIDE2IDhMIDAgOFoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgLTEpIiBmaWxsPSJibGFjayIvPjwvZz48L2c+PC9zdmc+) center no-repeat";
+    "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTAiIHZpZXdCb3g9IjAgMCAxMiAxMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTAgMEgxMlYxSDBWMFoiIGZpbGw9IiNDNEM0QzQiLz4KPHBhdGggZD0iTTAgNkgxMlY3SDBWNloiIGZpbGw9IiNDNEM0QzQiLz4KPHBhdGggZD0iTTAgM0g4VjRIMFYzWiIgZmlsbD0iI0M0QzRDNCIvPgo8cGF0aCBkPSJNMCA5SDhWMTBIMFY5WiIgZmlsbD0iI0M0QzRDNCIvPgo8L3N2Zz4K) center no-repeat";
 const centerLight: string =
-    "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxNiAxMyIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48ZyBpZD0iQ2FudmFzIiBmaWxsPSJub25lIj48ZyBpZD0iJiMyMzg7JiMxMzQ7JiMxNjE7Ij48cGF0aCBkPSJNIDAgMUwgMTYgMUwgMTYgMkwgMCAyTCAwIDFaTSAyIDRMIDE0IDRMIDE0IDVMIDIgNUwgMiA0Wk0gMiAxMEwgMTQgMTBMIDE0IDExTCAyIDExTCAyIDEwWk0gMCAxNEwgMCAxM0wgMTYgMTNMIDE2IDE0TCAwIDE0Wk0gMCA4TCAwIDdMIDE2IDdMIDE2IDhMIDAgOFoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgLTEpIiBmaWxsPSJ3aGl0ZSIvPjwvZz48L2c+PC9zdmc+) center no-repeat";
-const rightDark: string =
-    "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxNiAxMyIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48ZyBpZD0iQ2FudmFzIiBmaWxsPSJub25lIj48ZyBpZD0iJiMyMzg7JiMxMzQ7JiMxNjA7Ij48cGF0aCBkPSJNIDAgMUwgMTYgMUwgMTYgMkwgMCAyTCAwIDFaTSAwIDE0TCAwIDEzTCAxNiAxM0wgMTYgMTRMIDAgMTRaTSAwIDhMIDAgN0wgMTYgN0wgMTYgOEwgMCA4Wk0gNCA1TCA0IDRMIDE2IDRMIDE2IDVMIDQgNVpNIDQgMTFMIDQgMTBMIDE2IDEwTCAxNiAxMUwgNCAxMVoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgLTEpIiBmaWxsPSJibGFjayIvPjwvZz48L2c+PC9zdmc+) center no-repeat";
+    "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTAiIHZpZXdCb3g9IjAgMCAxMiAxMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTAgMEgxMlYxSDBWMFoiIGZpbGw9IiNDNEM0QzQiLz4KPHBhdGggZD0iTTAgNkgxMlY3SDBWNloiIGZpbGw9IiNDNEM0QzQiLz4KPHBhdGggZD0iTTIgM0gxMFY0SDJWM1oiIGZpbGw9IiNDNEM0QzQiLz4KPHBhdGggZD0iTTIgOUgxMFYxMEgyVjlaIiBmaWxsPSIjQzRDNEM0Ii8+Cjwvc3ZnPgo=) center no-repeat";
 const rightLight: string =
-    "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxNiAxMyIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48ZyBpZD0iQ2FudmFzIiBmaWxsPSJub25lIj48ZyBpZD0iJiMyMzg7JiMxMzQ7JiMxNjA7Ij48cGF0aCBkPSJNIDAgMUwgMTYgMUwgMTYgMkwgMCAyTCAwIDFaTSAwIDE0TCAwIDEzTCAxNiAxM0wgMTYgMTRMIDAgMTRaTSAwIDhMIDAgN0wgMTYgN0wgMTYgOEwgMCA4Wk0gNCA1TCA0IDRMIDE2IDRMIDE2IDVMIDQgNVpNIDQgMTFMIDQgMTBMIDE2IDEwTCAxNiAxMUwgNCAxMVoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgLTEpIiBmaWxsPSJ3aGl0ZSIvPjwvZz48L2c+PC9zdmc+) center no-repeat";
+    "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTAiIHZpZXdCb3g9IjAgMCAxMiAxMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTAgMEgxMlYxSDBWMFoiIGZpbGw9IiNDNEM0QzQiLz4KPHBhdGggZD0iTTAgNkgxMlY3SDBWNloiIGZpbGw9IiNDNEM0QzQiLz4KPHBhdGggZD0iTTQgM0gxMlY0SDRWM1oiIGZpbGw9IiNDNEM0QzQiLz4KPHBhdGggZD0iTTQgOUgxMlYxMEg0VjlaIiBmaWxsPSIjQzRDNEM0Ii8+Cjwvc3ZnPgo=) center no-repeat";
+// TODO #1275: https://github.com/Microsoft/fast-dna/issues/1275
+const justifyLight: string =
+    "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTAiIHZpZXdCb3g9IjAgMCAxMiAxMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTAgMEgxMlYxSDBWMFoiIGZpbGw9IiNDNEM0QzQiLz4KPHBhdGggZD0iTTAgNkgxMlY3SDBWNloiIGZpbGw9IiNDNEM0QzQiLz4KPHBhdGggZD0iTTAgM0gxMlY0SDBWM1oiIGZpbGw9IiNDNEM0QzQiLz4KPHBhdGggZD0iTTAgOUgxMlYxMEgwVjlaIiBmaWxsPSIjQzRDNEM0Ii8+Cjwvc3ZnPgo=) center no-repeat";
 /* tslint:enable */
 
 const styles: ComponentStyles<FormItemAlignHorizontalClassNameContract, {}> = {
     formItemAlignHorizontal: {
-        display: "block",
-        position: "relative",
+        display: "flex",
+        ...applyControlWrapper(),
     },
     formItemAlignHorizontal_control: {
         ...applyControl(),
     },
     formItemAlignHorizontal_controlLabel: {
         ...applyLabelStyle(),
-        display: "block",
-        marginTop: "12px",
     },
     formItemAlignHorizontal_controlInputContainer: {
-        ...applyInputContainerStyle(),
+        height: "20px",
     },
     formItemAlignHorizontal_controlInput__left: {
         ...applyInputBackplateStyle(),
-        background: leftDark,
+        borderRadius: "2px 0px 0px 2px",
+        background: leftLight,
         "&:checked": {
-            background: leftLight,
-            backgroundColor: colors.pink,
+            backgroundColor: pink,
         },
     },
     formItemAlignHorizontal_controlInput__center: {
         ...applyInputBackplateStyle(),
-        background: centerDark,
+        borderRight: `1px solid ${background300}`,
+        borderLeft: `1px solid ${background300}`,
+        background: centerLight,
         "&:checked": {
-            background: centerLight,
-            backgroundColor: colors.pink,
+            backgroundColor: pink,
         },
     },
     formItemAlignHorizontal_controlInput__right: {
         ...applyInputBackplateStyle(),
-        background: rightDark,
+        borderRadius: "0px 2px 2px 0px",
+        background: rightLight,
         "&:checked": {
-            background: rightLight,
-            backgroundColor: colors.pink,
+            backgroundColor: pink,
         },
     },
     formItemAlignHorizontal_softRemove: {

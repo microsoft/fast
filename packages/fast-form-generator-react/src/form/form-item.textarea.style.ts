@@ -1,36 +1,29 @@
 import {
     applyControl,
+    applyControlWrapper,
     applyInputStyle,
     applyLabelStyle,
     applySoftRemove,
     applySoftRemoveInput,
-    applyWrapperStyle,
-    colors,
-    insetStrongBoxShadow,
-} from "../utilities/form-input.style";
-import { toPx } from "@microsoft/fast-jss-utilities";
+} from "../utilities";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { FormItemTextareaClassNameContract } from "../class-name-contracts/";
 
 const styles: ComponentStyles<FormItemTextareaClassNameContract, {}> = {
     formItemTextarea: {
-        display: "block",
-        position: "relative",
+        display: "flex",
+        ...applyControlWrapper(),
     },
     formItemTextarea_control: {
         ...applyControl(),
     },
     formItemTextarea_controlLabel: {
         ...applyLabelStyle(),
-        display: "block",
-        marginTop: toPx(12),
     },
     formItemTextarea_controlTextarea: {
         ...applyInputStyle(),
         width: "100%",
-        marginTop: toPx(8),
-        marginBottom: toPx(2),
-        resize: "vertical",
+        resize: "none",
         fontFamily: "inherit",
     },
     formItemTextarea_softRemove: {

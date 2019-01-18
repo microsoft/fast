@@ -1,5 +1,4 @@
-import { toPx } from "@microsoft/fast-jss-utilities";
-import { applyCleanListStyle, colors } from "../utilities/form-input.style";
+import { applyCleanListStyle, pink } from "../utilities";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { FormClassNameContract } from "../class-name-contracts/";
 
@@ -7,22 +6,24 @@ const styles: ComponentStyles<FormClassNameContract, {}> = {
     form_breadcrumbs: {
         display: "flex",
         flexWrap: "wrap",
-        marginTop: toPx(4),
-        paddingBottom: toPx(24),
+        marginTop: "4px",
+        fontSize: "11px",
+        lineHeight: "15px",
+        paddingBottom: "12px",
         ...applyCleanListStyle(),
         "& li": {
             display: "inline-block",
-            paddingRight: toPx(8),
+            paddingRight: "8px",
             "&::after": {
                 content: "'/'",
-                paddingLeft: toPx(8),
+                paddingLeft: "8px",
             },
             "&:last-child::after": {
                 content: "''",
                 paddingLeft: "0",
             },
             "& a": {
-                color: colors.pink,
+                color: pink,
             },
         },
     },

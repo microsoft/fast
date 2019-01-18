@@ -1,15 +1,11 @@
-import { toPx } from "@microsoft/fast-jss-utilities";
 import {
-    applyCleanListStyle,
-    applyHeaderStyle,
+    applyControl,
+    applyControlWrapper,
     applyLabelStyle,
-    applyListItemStyle,
     applySelectInputStyles,
     applySelectSpanStyles,
-    applyWrapperStyle,
-    colors,
-    rightArrow,
-} from "../utilities/form-input.style";
+    background800,
+} from "../utilities";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormSectionClassNameContract } from "../class-name-contracts/";
 
@@ -17,16 +13,14 @@ const styles: ComponentStyles<FormSectionClassNameContract, {}> = {
     formSection: {
         display: "block",
         "& h3": {
-            borderBottom: `${toPx(1)} solid ${colors.border}`,
-            paddingBottom: toPx(12),
+            borderBottom: `1px solid ${background800}`,
+            paddingBottom: "12px",
             marginBottom: "0",
         },
     },
     formSection_selectWrapper: {
-        ...applyWrapperStyle(),
-        borderBottom: `${toPx(1)} solid ${colors.border}`,
-        paddingBottom: toPx(12),
-        marginBottom: toPx(4),
+        ...applyControl(),
+        ...applyControlWrapper(),
     },
     formSection_selectSpan: {
         ...applySelectSpanStyles(),

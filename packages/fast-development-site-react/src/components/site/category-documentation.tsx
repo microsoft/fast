@@ -6,7 +6,7 @@ import manageJss, {
     ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import { DevSiteDesignSystem } from "../design-system";
+import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
 
 export interface CategoryDocumentationProps {
     slot: string;
@@ -20,6 +20,11 @@ const style: ComponentStyles<CategoryDocumentationManagedClasses, DevSiteDesignS
     documentationPanel: {
         maxWidth: "1000px",
         padding: "14px",
+        "& a": {
+            color: (config: DevSiteDesignSystem): string => {
+                return config.brandColor || devSiteDesignSystemDefaults.brandColor;
+            },
+        },
     },
 };
 
