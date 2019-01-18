@@ -36,16 +36,16 @@ const style: ComponentStyles<TocMenuManagedClasses, DevSiteDesignSystem> = {
         color: (config: DevSiteDesignSystem): string => {
             return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
         },
-        border: `${toPx(1)} solid transparent`,
+        border: "1px solid transparent",
         position: "relative",
         width: "100%",
+        height: "20px",
         fontFamily: "inherit",
-        fontSize: toPx(14),
-        padding: `${toPx(9)} ${toPx(31)}`,
-        textAlign: "left",
+        fontSize: "inherit",
+        padding: "0 36px",
         "&[aria-expanded='true']": {
             "&::after": {
-                content: `url('data:image/svg+xml;base64,${dropdownActive}')`,
+                transform: "rotate(0deg)",
             },
         },
         "&:hover": {
@@ -59,15 +59,17 @@ const style: ComponentStyles<TocMenuManagedClasses, DevSiteDesignSystem> = {
             },
         },
         "&::after": {
-            content: `url('data:image/svg+xml;base64,${dropdownInactive}')`,
-            filter: "invert(1)",
+            content: "''",
             position: "absolute",
-            right: toPx(11),
-            top: toPx(11),
-            verticalAlign: "middle",
-            display: "inline-block",
-            width: toPx(11),
-            height: toPx(11),
+            left: "24px",
+            top: "8px",
+            transform: "rotate(-90deg)",
+            borderTop: (config: DevSiteDesignSystem): string => {
+                return `3px solid ${config.foreground300 ||
+                    devSiteDesignSystemDefaults.foreground300}`;
+            },
+            borderLeft: "3px solid transparent",
+            borderRight: "3px solid transparent",
         },
     },
 };

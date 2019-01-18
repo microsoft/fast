@@ -144,13 +144,13 @@ const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
     "@global": {
         "body, html": {
             fontFamily: "Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif",
-            fontSize: toPx(14),
-            padding: toPx(0),
-            margin: toPx(0),
+            fontSize: "11px",
+            padding: "0",
+            margin: "0",
         },
     },
     site_canvasContent: {
-        height: "calc(100% - 45px)",
+        height: "calc(100% - 30px)",
         display: "flex",
         flexDirection: "column",
     },
@@ -162,48 +162,38 @@ const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
     site_infoBarConfiguration: {
         display: "flex",
         alignItems: "center",
-        padding: toPx(4),
+        padding: "2px",
     },
     site_infoBarConfiguration_base: {
         position: "relative",
-        "&::before, &::after": {
+        "&::before": {
+            right: "8px",
+            top: "9px",
             content: "''",
             position: "absolute",
-            top: toPx(11),
-            zIndex: "1",
-            borderRadius: toPx(2),
-            width: toPx(1),
-            height: toPx(10),
-            background: (config: DevSiteDesignSystem): string => {
-                return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
+            borderTop: (config: DevSiteDesignSystem): string => {
+                return `3px solid ${config.foreground300 ||
+                    devSiteDesignSystemDefaults.foreground300}`;
             },
-        },
-        "&::before": {
-            right: toPx(15),
-            transform: "rotate(45deg)",
-        },
-        "&::after": {
-            right: toPx(22),
-            transform: "rotate(-45deg)",
+            borderLeft: "3px solid transparent",
+            borderRight: "3px solid transparent",
         },
     },
     site_infoBarConfiguration_theme: {
         marginRight: toPx(4),
     },
     site_infoBarConfiguration_input: {
-        lineHeight: toPx(16),
-        fontSize: toPx(14),
         backgroundColor: (config: DevSiteDesignSystem): string => {
             return config.background350 || devSiteDesignSystemDefaults.background350;
         },
         color: (config: DevSiteDesignSystem): string => {
             return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
         },
+        fontFamily: "inherit",
+        fontSize: "inherit",
         borderRadius: toPx(2),
         appearance: "none",
-        padding: localizeSpacing(Direction.ltr)(
-            `${toPx(8)} ${toPx(36)} ${toPx(8)} ${toPx(10)}`
-        ),
+        padding: localizeSpacing(Direction.ltr)("2px 36px 3px 10px"),
         border: "none",
         outline: "none",
         "&:-ms-expand": {
@@ -225,6 +215,7 @@ const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
     },
     site_paneToc: {
         padding: "0",
+        margin: "8px 0 0 0",
         overflow: "auto",
         ...applyScrollbarStyle(),
     },
@@ -235,7 +226,8 @@ const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
     },
     site_paneTocTitle: {
         fontWeight: "bold",
-        marginLeft: toPx(-8),
+        marginLeft: "-4px",
+        lineHeight: "30px",
         textOverflow: ellipsis().textOverflow,
         whiteSpace: "nowrap",
         overflow: "hidden",
@@ -244,7 +236,7 @@ const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
     site_paneToggleButton: {
         border: "none",
         background: "none",
-        padding: toPx(12),
+        padding: "6px 12px",
         outline: "0",
         alignSelf: "flex-start",
     },
@@ -252,34 +244,36 @@ const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
         fill: (config: DevSiteDesignSystem): string => {
             return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
         },
-        height: toPx(16),
-        width: toPx(16),
+        height: "16px",
+        width: "16px",
         justifyContent: "center",
-        fontSize: toPx(16),
-        paddingTop: toPx(2),
+        fontSize: "11px",
         display: "inline-block",
     },
     site_paneToggleButtonIconLayout: {
-        height: toPx(40),
-        width: toPx(40),
-        display: "flex",
+        height: "30px",
+        width: "40px",
         alignItems: "center",
         justifyContent: "center",
+        display: "flex",
     },
     site_transparencyToggleButton: {
         fill: (config: DevSiteDesignSystem): string => {
             return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
         },
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
         border: "none",
-        borderRadius: toPx(2),
+        borderRadius: "2px",
         background: "none",
-        height: toPx(32),
-        width: toPx(32),
+        height: "20px",
+        width: "20px",
         cursor: "pointer",
         outline: "0",
-        marginRight: toPx(4),
         opacity: ".5",
-        paddingTop: toPx(4),
+        marginRight: "4px",
+        paddingTop: "2px",
         "&:hover": {
             opacity: "1",
         },
@@ -613,7 +607,7 @@ class Site extends React.Component<
                     </div>
                 </Pane>
                 <Canvas>
-                    <Row>
+                    <Row style={{ minHeight: "30px", flexBasis: "30px" }}>
                         <ActionBar
                             onComponentViewChange={this.onComponentViewChange}
                             onFormToggle={this.onFormToggle}

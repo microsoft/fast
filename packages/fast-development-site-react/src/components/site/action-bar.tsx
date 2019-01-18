@@ -65,19 +65,19 @@ export interface ActionBarClassNameContract {
 function menuButtonBase(): CSSRules<DevSiteDesignSystem> {
     return {
         position: "relative",
-        border: `${toPx(1)} solid transparent`,
-        height: toPx(40),
-        borderRadius: toPx(2),
+        border: "1px solid transparent",
+        height: "30px",
+        borderRadius: "2px",
         background: "none",
-        padding: `0 ${toPx(12)}`,
-        margin: toPx(2),
-        fontSize: toPx(14),
         fill: (config: DevSiteDesignSystem): string => {
             return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
         },
         color: (config: DevSiteDesignSystem): string => {
             return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
         },
+        padding: "0 12px",
+        fontSize: "inherit",
+        fontFamily: "inherit",
         "& span": {
             width: toPx(16),
             height: toPx(16),
@@ -111,6 +111,8 @@ const styles: ComponentStyles<ActionBarClassNameContract, DevSiteDesignSystem> =
         background: (config: DevSiteDesignSystem): string => {
             return config.background100 || devSiteDesignSystemDefaults.background100;
         },
+        boxSizing: "border-box",
+        height: "30px",
     },
     actionBar_componentViewToggles: {
         display: "flex",
@@ -154,11 +156,6 @@ class ActionBar extends React.Component<
                         )}
                         onClick={this.props.onFormToggle}
                     >
-                        <span
-                            dangerouslySetInnerHTML={{
-                                __html: glyphBuildingblocks,
-                            }}
-                        />
                         Configure
                     </button>
                     <button

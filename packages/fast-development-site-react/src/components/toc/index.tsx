@@ -20,9 +20,8 @@ export interface TocManagedClasses {
 
 const style: ComponentStyles<TocManagedClasses, DevSiteDesignSystem> = {
     toc: {
-        margin: "0",
+        margin: "0 0 10px 0",
         padding: "0",
-        fontSize: toPx(14),
         "&[aria-hidden='true']": {
             display: "none",
         },
