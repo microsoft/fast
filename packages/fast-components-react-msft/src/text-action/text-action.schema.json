@@ -14,5 +14,16 @@
             "type": "string"
         }
     },
-    "reactProperties": {}
+    "reactProperties": {
+        "beforeGlyph": {
+            "title": "Before glyph",
+            "type": "children",
+            "pluginId": "@microsoft/fast-components-react-msft/text-action/beforeGlyph"
+        },
+        "afterGlyph": {
+            "title": "After glyph",
+            "type": "children",
+            "pluginId": "@microsoft/fast-components-react-msft/text-action/afterGlyph"
+        }
+    }
 }

@@ -19,8 +19,13 @@ const label: any = {
     label: "breadcrumb",
 };
 
-function renderSeparator(): (className?: string) => React.ReactNode {
-    return (className?: string): React.ReactNode => <div className={className}>\</div>;
+function separator(): any {
+    return {
+        id: reactHTMLElementSchema.id,
+        props: {
+            children: "\\",
+        },
+    };
 }
 
 const examples: ComponentFactoryExample<BreadcrumbProps> = {
@@ -31,7 +36,7 @@ const examples: ComponentFactoryExample<BreadcrumbProps> = {
     detailData: {
         ...managedClasses,
         ...label,
-        separator: renderSeparator(),
+        separator: separator(),
         children: [
             {
                 id: "hypertext",
@@ -59,7 +64,7 @@ const examples: ComponentFactoryExample<BreadcrumbProps> = {
         {
             ...managedClasses,
             ...label,
-            separator: renderSeparator(),
+            separator: separator(),
             children: [
                 {
                     id: "hypertext",
@@ -86,7 +91,7 @@ const examples: ComponentFactoryExample<BreadcrumbProps> = {
         {
             ...managedClasses,
             ...label,
-            separator: renderSeparator(),
+            separator: separator(),
             children: [
                 {
                     id: reactHTMLElementSchema.id,
