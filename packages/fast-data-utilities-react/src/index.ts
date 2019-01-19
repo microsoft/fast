@@ -369,10 +369,13 @@ function getLocationsFromObject(data: any, location: string = ""): string[] {
  * Callback to determine if a string is found within an array of plugin locations
  */
 function pluginPartialFindIndexCallback(
-    location: string
-): (locationItem: PluginLocation) => boolean {
-    return (locationItem: PluginLocation): boolean => {
-        return location.includes(locationItem.dataLocation);
+    dataLocation: string
+): (pluginLocation: PluginLocation) => boolean {
+    return (pluginLocation: PluginLocation): boolean => {
+        return (
+            dataLocation.slice(0, pluginLocation.dataLocation.length) ===
+            pluginLocation.dataLocation
+        );
     };
 }
 
