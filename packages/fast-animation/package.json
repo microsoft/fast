@@ -92,12 +92,5 @@
     "webpack-bundle-analyzer": "^2.8.2",
     "webpack-cli": "^3.2.1",
     "webpack-dev-server": "^3.1.14"
-  },
-  "peerDependencies": {
-    "ajv": "^6.0.0",
-    "babel-core": "6.0.0",
-    "lodash-es": "^4.0.0",
-    "typescript": "^2.2.0",
-    "webpack": "^2.2.0"
   }
 }
