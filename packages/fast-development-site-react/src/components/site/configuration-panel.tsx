@@ -57,14 +57,13 @@ const style: ComponentStyles<ConfigurationPanelManagedClasses, DevSiteDesignSyst
             },
         },
         "& button": {
-            border: `${toPx(1)} solid transparent`,
-            height: toPx(40),
-            padding: `${toPx(6)} ${toPx(8)}`,
-            margin: toPx(2),
-            minWidth: toPx(25),
             color: (config: DevSiteDesignSystem): string => {
                 return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
             },
+            border: "1px solid transparent",
+            height: "30px",
+            padding: "0 8px",
+            minWidth: "25px",
             backgroundPosition: "center",
             "&:hover": {
                 cursor: "pointer",
@@ -84,6 +83,8 @@ const style: ComponentStyles<ConfigurationPanelManagedClasses, DevSiteDesignSyst
     },
     configurationPanel_tab: {
         "& button": {
+            fontFamily: "inherit",
+            fontSize: "inherit",
             background: "none",
             borderRadius: toPx(2),
             position: "relative",

@@ -22,7 +22,7 @@ class Shell extends React.Component<{}, {}> {
     > = {
         container: {
             fontFamily: "Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif",
-            fontSize: toPx(14),
+            fontSize: "11px",
             height: "100vh",
         },
     };
