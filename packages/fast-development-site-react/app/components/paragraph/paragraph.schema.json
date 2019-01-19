@@ -8,6 +8,7 @@
         "text": {
             "title": "Text",
             "type": "string",
+            "pluginId": "text-plugin",
             "example": "Submit"
         }
     }
