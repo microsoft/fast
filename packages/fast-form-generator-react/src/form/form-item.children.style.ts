@@ -39,14 +39,21 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
     formItemChildren_existingChildren__sorting: {
         fontSize: "11px",
         color: foreground300,
+        cursor: "pointer",
         backgroundColor: `${background100} !important`,
     },
     formItemChildren_existingChildrenItem: {
         position: "relative",
         height: "30px",
+        marginLeft: "-10px",
+        paddingLeft: "10px",
         fontSize: "11px",
+        cursor: "pointer",
         display: "flex",
         alignItems: "center",
+        "&:hover": {
+            backgroundColor: "rgba(255, 255, 255, 0.04)",
+        },
     },
     formItemChildren_existingChildrenItemLink: {
         width: "calc(100% - 36px)",
