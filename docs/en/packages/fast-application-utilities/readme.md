@@ -6,9 +6,10 @@ sidebar_label: Application Utilities
 
 # FAST application utilities
 
-A list of utilities used by FAST applications. 
+A list of utilities used by FAST applications.
 
 ## Usage
+
 [API Reference](https://microsoft.github.io/fast-dna/docs/en/contributing/packages/fast-application-utilities/api/index.html)
 
 ## Localization
