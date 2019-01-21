@@ -74,14 +74,19 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
     formItemArray_existingItemList__sorting: {
         fontSize: "11px",
         color: foreground300,
+        cursor: "pointer",
         backgroundColor: `${background100} !important`,
     },
     formItemArray_existingItemListItem: {
         position: "relative",
         paddingLeft: "10px",
         marginLeft: "-10px",
+        cursor: "pointer",
         height: "30px",
         lineHeight: "30px",
+        "&:hover": {
+            backgroundColor: "rgba(255, 255, 255, 0.04)",
+        },
     },
     formItemArray_existingItemListItemLink: {
         ...ellipsis(),
