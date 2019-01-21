@@ -13,6 +13,7 @@ import {
 } from "@microsoft/fast-glyphs-msft";
 import { mapDataToComponent } from "@microsoft/fast-form-generator-react";
 import { applyScrollbarStyle } from "../../utilities";
+import { Plugin, PluginProps } from "@microsoft/fast-data-utilities-react";
 import { get, uniqueId } from "lodash-es";
 import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
 import Shell, { ShellHeader, ShellInfoBar, ShellPaneCollapse, ShellSlot } from "../shell";
@@ -53,6 +54,7 @@ export enum ComponentViewSlot {
 
 export interface SiteProps {
     formChildOptions: FormChildOption[];
+    formPlugins?: Array<Plugin<PluginProps>>;
     onUpdateDirection?: (ltr: Direction) => void;
     onUpdateTheme?: (theme: string) => void;
     locales?: string[];
@@ -434,7 +436,8 @@ class Site extends React.Component<
                     componentData[route.route][index] = mapDataToComponent(
                         route.schema,
                         routeChild.props.data,
-                        this.props.formChildOptions
+                        this.props.formChildOptions,
+                        this.props.formPlugins
                     );
                 } else {
                     componentData[route.route][index] = routeChild.props.data;
@@ -484,7 +487,8 @@ class Site extends React.Component<
                         componentData[route.route] = mapDataToComponent(
                             route.schema,
                             routeChild.props.data,
-                            this.props.formChildOptions
+                            this.props.formChildOptions,
+                            this.props.formPlugins
                         );
                     } else {
                         componentData[route.route] = routeChild.props.data;
@@ -712,7 +716,8 @@ class Site extends React.Component<
         const dataMappedToComponent: any = mapDataToComponent(
             this.state.componentSchema[currentPath],
             data,
-            this.props.formChildOptions
+            this.props.formChildOptions,
+            this.props.formPlugins
         );
 
         if (this.state.componentView === ComponentViewTypes.examples) {

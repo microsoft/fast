@@ -22,6 +22,8 @@ import { SiteCategoryProps, Status } from "../src/components/site/category";
 import ParagraphDocs from "./components/paragraph/.tmp/documentation";
 import ButtonDocs from "./components/button/.tmp/documentation";
 import { Framework } from "../src/components/site/dev-tools";
+import TextPlugin from "./plugins/text-plugin";
+import { Plugin, PluginProps } from "@microsoft/fast-data-utilities-react";
 
 export interface AppState {
     direction: Direction;
@@ -53,6 +55,12 @@ export default class App extends React.Component<{}, AppState> {
         },
     ];
 
+    private formPlugins: Array<Plugin<PluginProps>> = [
+        new TextPlugin({
+            id: "text-plugin",
+        }),
+    ];
+
     private frameworks: Framework[];
 
     constructor(props: {}) {
@@ -70,6 +78,7 @@ export default class App extends React.Component<{}, AppState> {
         return (
             <Site
                 formChildOptions={this.formChildOptions}
+                formPlugins={this.formPlugins}
                 frameworks={this.frameworks}
                 onUpdateDirection={this.handleUpdateDirection}
                 themes={themes}

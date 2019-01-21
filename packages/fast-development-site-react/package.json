@@ -42,6 +42,7 @@
   },
   "devDependencies": {
     "@microsoft/fast-components-class-name-contracts-base": "^3.5.0",
+    "@microsoft/fast-data-utilities-react": "^1.1.0",
     "@microsoft/fast-jss-manager": "^3.0.8",
     "@microsoft/fast-tslint-rules": "^3.0.1",
     "@polymer/polymer": "^3.0.0-pre.10",
