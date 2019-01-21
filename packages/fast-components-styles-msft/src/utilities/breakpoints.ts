@@ -1,3 +1,7 @@
+/**
+ * The Breakpoints interface
+ * @deprecated
+ */
 export interface Breakpoints {
     vp1: number;
     vp2: number;
@@ -9,6 +13,7 @@ export interface Breakpoints {
 
 /**
  * These are the minimum widths for the breakpoint
+ * @deprecated
  */
 export const breakpoints: Breakpoints = {
     vp1: 0,
@@ -19,6 +24,10 @@ export const breakpoints: Breakpoints = {
     vp6: 1779,
 };
 
+/**
+ * These are the minimum widths for the breakpoint
+ * @deprecated
+ */
 export function applyBreakpoint(breakpoint: keyof Breakpoints): string {
     return `@media only screen and (min-width: ${breakpoints[breakpoint]}px)`;
 }
