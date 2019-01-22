@@ -1,4 +1,5 @@
 # FAST application utilities
+**FAST application utilities has been deprecated. Use `@microsoft/fast-web-utilities` instead.**
 
 A list of utilities used by FAST applications.
 
