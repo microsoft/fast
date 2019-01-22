@@ -18,6 +18,8 @@ import { Tab, TabItem, TabPanel } from "../src";
 import TabSchema from "../src/tabs/tab.schema.json";
 import TabItemSchema from "../src/tabs/tab-item.schema.json";
 import TabPanelSchema from "../src/tabs/tab-panel.schema.json";
+import { Plugin, PluginProps } from "@microsoft/fast-data-utilities-react";
+import ClassNamePlugin from "./utilities/class-name.plugin";
 
 /**
  * Create the root node
@@ -48,10 +50,20 @@ formChildOptions = formChildOptions.concat([
     },
 ]);
 
+const formPlugins: Array<Plugin<PluginProps>> = [
+    new ClassNamePlugin({
+        id: ["@microsoft/fast-components-react-base/breadcrumb/separator"],
+    }),
+];
+
 /* tslint:disable */
 function render(): void {
     ReactDOM.render(
-        <Site formChildOptions={formChildOptions} showTransparencyToggle={true}>
+        <Site
+            formChildOptions={formChildOptions}
+            formPlugins={formPlugins}
+            showTransparencyToggle={true}
+        >
             <SiteTitle slot={"title"}>
                 <SiteTitleBrand>FAST</SiteTitleBrand> base component documentation
             </SiteTitle>

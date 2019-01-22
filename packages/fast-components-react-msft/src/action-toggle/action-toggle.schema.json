@@ -23,6 +23,16 @@
         }
     },
     "reactProperties": {
+        "selectedGlyph": {
+            "title": "Selected glyph",
+            "type": "children",
+            "pluginId": "@microsoft/fast-components-react-msft/action-toggle/selectedGlyph"
+        },
+        "unselectedGlyph": {
+            "title": "Unselected glyph",
+            "type": "children",
+            "pluginId": "@microsoft/fast-components-react-msft/action-toggle/unselectedGlyph"
+        },
         "selectedContent": {
             "title": "Selected content",
             "type": "children"

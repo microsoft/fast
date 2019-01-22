@@ -76,6 +76,7 @@
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
     "@microsoft/fast-components-class-name-contracts-base": "^3.5.0",
+    "@microsoft/fast-data-utilities-react": "^1.1.0",
     "@microsoft/fast-development-site-react": "^3.3.0",
     "@microsoft/fast-jss-manager": "^3.0.8",
     "@microsoft/fast-sketch-library": "^3.0.3",

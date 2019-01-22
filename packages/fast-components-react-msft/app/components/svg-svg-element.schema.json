@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "SVG Test Element",
+    "description": "An arbitrary SVG svg element component's schema definition.",
+    "id": "svg-svg-element",
+    "type": "object",
+    "properties": {
+        "path": {
+            "title": "Glyph",
+            "type": "string",
+            "enum": [
+                "play",
+                "pause",
+                "robot",
+                "user",
+                "arrow",
+                "download"
+            ],
+            "default": "play"
+        }
+    }
+}

@@ -31,6 +31,16 @@
             "defaults": [
                 "text"
             ]
+        },
+        "beforeContent": {
+            "title": "Before content",
+            "type": "children",
+            "pluginId": "@microsoft/fast-components-react-msft/button/beforeContent"
+        },
+        "afterContent": {
+            "title": "After content",
+            "type": "children",
+            "pluginId": "@microsoft/fast-components-react-msft/button/afterContent"
         }
     }
 }

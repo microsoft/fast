@@ -26,5 +26,14 @@
         }
     },
     "reactProperties": {
+        "children": {
+            "title": "Children",
+            "type": "children"
+        },
+        "glyph": {
+            "title": "Glyph",
+            "type": "children",
+            "pluginId": "@microsoft/fast-components-react-msft/action-trigger/glyph"
+        }
     }
 }
