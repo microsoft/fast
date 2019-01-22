@@ -87,12 +87,6 @@ module.exports = (env, args) => {
         ],
         resolve: {
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
-            alias: {
-                fbjs: path.resolve('./node_modules/fbjs'),
-                'lodash-es': path.resolve('./node_modules/lodash-es'),
-                react: path.resolve('./node_modules/react'),
-                'react-dom': path.resolve('./node_modules/react-dom'),
-            }
         },
     }
 };
