@@ -8,7 +8,6 @@ export enum Direction {
 
 export const localeDirectionMapping: { [key: string]: Direction } = {
     en: Direction.ltr,
-    "en-rtl": Direction.rtl,
 };
 
 export default function isRTL(locale: string): boolean {
