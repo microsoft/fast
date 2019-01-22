@@ -26,24 +26,9 @@ module.exports = (env, args) => {
             overlay: true,
             port: 9005
         },
-        entry: appDir + '/app.tsx',
         devtool: isProduction ? "none" : "inline-source-map",
+        entry: appDir + '/app.tsx',
         mode: args.mode || "development",
-        optimization: {
-            splitChunks: {
-                chunks: "all",
-                cacheGroups: {
-                    vendor: {
-                        test: /[\\/]node_modules[\\/]/,
-                    },
-                },
-            }
-        },
-        output: {
-            path: outDir,
-            publicPath: "/",
-            filename: isProduction ? "[name]-[contenthash].js" : "[name].js",
-        },
         module: {
             rules: [
             {
@@ -71,6 +56,21 @@ module.exports = (env, args) => {
                 ]
             }]
         },   
+        optimization: {
+            splitChunks: {
+                chunks: "all",
+                cacheGroups: {
+                    vendor: {
+                        test: /[\\/]node_modules[\\/]/,
+                    },
+                },
+            }
+        },
+        output: {
+            path: outDir,
+            publicPath: "/",
+            filename: isProduction ? "[name]-[contenthash].js" : "[name].js",
+        },
         plugins: [
             new ForkTsCheckerWebpackPlugin({
                 tslint: path.resolve(__dirname, 'tslint.json')
