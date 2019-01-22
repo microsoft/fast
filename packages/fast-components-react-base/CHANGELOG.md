@@ -3,30 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [3.6.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@3.5.0...@microsoft/fast-components-react-base@3.6.0) (2019-01-15)
+<a name="3.6.1"></a>
+## [3.6.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@3.6.0...@microsoft/fast-components-react-base@3.6.1) (2019-01-22)
 
-
-### Bug Fixes
-
-* ensure onClick and onKeyDown unhandledProps on ContextMenuItem work as expected ([#1284](https://github.com/Microsoft/fast-dna/issues/1284)) ([dd3172f](https://github.com/Microsoft/fast-dna/commit/dd3172f))
-* make sure all components check for their base elements ([#1296](https://github.com/Microsoft/fast-dna/issues/1296)) ([4c622c4](https://github.com/Microsoft/fast-dna/commit/4c622c4))
-* normalized text area name and case ([#1294](https://github.com/Microsoft/fast-dna/issues/1294)) ([2ef6027](https://github.com/Microsoft/fast-dna/commit/2ef6027))
-
-
-### Features
-
-* add text area as a new component ([#1267](https://github.com/Microsoft/fast-dna/issues/1267)) ([0bdd43f](https://github.com/Microsoft/fast-dna/commit/0bdd43f))
-
-
-
-
-
-# [3.5.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@3.4.1...@microsoft/fast-components-react-base@3.5.0) (2018-12-31)
-
-
-### Features
-
-* add support for render props to tabs  ([#1199](https://github.com/Microsoft/fast-dna/issues/1199)) ([19f482e](https://github.com/Microsoft/fast-dna/commit/19f482e))
+**Note:** Version bump only for package @microsoft/fast-components-react-base
 
 
 

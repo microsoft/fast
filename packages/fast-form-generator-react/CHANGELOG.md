@@ -3,21 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [3.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-form-generator-react@3.3.1...@microsoft/fast-form-generator-react@3.4.0) (2019-01-15)
+<a name="3.5.0"></a>
+# [3.5.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-form-generator-react@3.4.0...@microsoft/fast-form-generator-react@3.5.0) (2019-01-22)
+
+
+### Bug Fixes
+
+* added hover state and updated cursor on form array & form children ([#1322](https://github.com/Microsoft/fast-dna/issues/1322)) ([14d0a02](https://github.com/Microsoft/fast-dna/commit/14d0a02))
+* expanded state is null in fast category ([#1300](https://github.com/Microsoft/fast-dna/issues/1300)) ([412980a](https://github.com/Microsoft/fast-dna/commit/412980a))
 
 
 ### Features
 
-* Form items should be able to be disabled ([#1251](https://github.com/Microsoft/fast-dna/issues/1251)) ([cdabd44](https://github.com/Microsoft/fast-dna/commit/cdabd44))
-* simplify the UI for editing array and children data types ([b1f1975](https://github.com/Microsoft/fast-dna/commit/b1f1975))
-
-
-
-
-
-## [3.3.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-form-generator-react@3.3.0...@microsoft/fast-form-generator-react@3.3.1) (2018-12-31)
-
-**Note:** Version bump only for package @microsoft/fast-form-generator-react
+* add dark theme and set as default to fast-development-site ([#1283](https://github.com/Microsoft/fast-dna/issues/1283)) ([4679b46](https://github.com/Microsoft/fast-dna/commit/4679b46))
 
 
 

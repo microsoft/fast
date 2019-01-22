@@ -3,15 +3,8 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [4.1.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-css-editor-react@4.1.3...@microsoft/fast-css-editor-react@4.1.4) (2019-01-15)
-
-**Note:** Version bump only for package @microsoft/fast-css-editor-react
-
-
-
-
-
-## [4.1.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-css-editor-react@4.1.2...@microsoft/fast-css-editor-react@4.1.3) (2018-12-31)
+<a name="4.1.5"></a>
+## [4.1.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-css-editor-react@4.1.4...@microsoft/fast-css-editor-react@4.1.5) (2019-01-22)
 
 **Note:** Version bump only for package @microsoft/fast-css-editor-react
 

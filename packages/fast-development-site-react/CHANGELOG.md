@@ -3,17 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [3.2.6](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@3.2.5...@microsoft/fast-development-site-react@3.2.6) (2019-01-15)
-
-**Note:** Version bump only for package @microsoft/fast-development-site-react
-
+<a name="3.3.0"></a>
+# [3.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@3.2.6...@microsoft/fast-development-site-react@3.3.0) (2019-01-22)
 
 
+### Features
 
-
-## [3.2.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@3.2.4...@microsoft/fast-development-site-react@3.2.5) (2018-12-31)
-
-**Note:** Version bump only for package @microsoft/fast-development-site-react
+* add dark theme and set as default to fast-development-site ([#1283](https://github.com/Microsoft/fast-dna/issues/1283)) ([4679b46](https://github.com/Microsoft/fast-dna/commit/4679b46))
+* add form plugin option to development site ([#1321](https://github.com/Microsoft/fast-dna/issues/1321)) ([3e131e3](https://github.com/Microsoft/fast-dna/commit/3e131e3))
+* increase density os dev site ([#1319](https://github.com/Microsoft/fast-dna/issues/1319)) ([dfa7e58](https://github.com/Microsoft/fast-dna/commit/dfa7e58))
 
 
 

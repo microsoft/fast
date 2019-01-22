@@ -3,17 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [3.0.8](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@3.0.7...@microsoft/fast-jss-utilities@3.0.8) (2019-01-15)
-
-**Note:** Version bump only for package @microsoft/fast-jss-utilities
-
+<a name="3.1.0"></a>
+# [3.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@3.0.8...@microsoft/fast-jss-utilities@3.1.0) (2019-01-22)
 
 
+### Features
 
-
-## [3.0.7](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@3.0.6...@microsoft/fast-jss-utilities@3.0.7) (2018-12-31)
-
-**Note:** Version bump only for package @microsoft/fast-jss-utilities
+* add generic function for deep merging two objects for use with design system defaults ([#1305](https://github.com/Microsoft/fast-dna/issues/1305)) ([25389f0](https://github.com/Microsoft/fast-dna/commit/25389f0))
 
 
 

@@ -3,40 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [3.6.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.5.0...@microsoft/fast-components-styles-msft@3.6.0) (2019-01-15)
+<a name="3.7.0"></a>
+# [3.7.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.6.0...@microsoft/fast-components-styles-msft@3.7.0) (2019-01-22)
 
 
 ### Bug Fixes
 
-* ensure font family is inherited for inputs rather than defaulting to system-ui ([#1281](https://github.com/Microsoft/fast-dna/issues/1281)) ([d00b578](https://github.com/Microsoft/fast-dna/commit/d00b578))
-* remove browser inner-focus rect applied on HTML button elements in Firefox ([#1280](https://github.com/Microsoft/fast-dna/issues/1280)) ([cebe717](https://github.com/Microsoft/fast-dna/commit/cebe717))
-* update button to properly target fill color based on appearance ([#1272](https://github.com/Microsoft/fast-dna/issues/1272)) ([5463135](https://github.com/Microsoft/fast-dna/commit/5463135))
-* update disabled action toggle glyph color ([#1298](https://github.com/Microsoft/fast-dna/issues/1298)) ([0a5689f](https://github.com/Microsoft/fast-dna/commit/0a5689f))
+* adjust text action height to be 32 total pixels ([#1306](https://github.com/Microsoft/fast-dna/issues/1306)) ([16adaf1](https://github.com/Microsoft/fast-dna/commit/16adaf1))
 
 
 ### Features
 
-* add action toggle component  ([#1257](https://github.com/Microsoft/fast-dna/issues/1257)) ([d93508e](https://github.com/Microsoft/fast-dna/commit/d93508e))
-* add render props for before and after slots in button ([#1266](https://github.com/Microsoft/fast-dna/issues/1266)) ([e4ecc12](https://github.com/Microsoft/fast-dna/commit/e4ecc12))
-* add rounded corners to MSFT card and dialog components ([#1285](https://github.com/Microsoft/fast-dna/issues/1285)) ([53da6f4](https://github.com/Microsoft/fast-dna/commit/53da6f4))
-* add text area as a new component ([#1267](https://github.com/Microsoft/fast-dna/issues/1267)) ([0bdd43f](https://github.com/Microsoft/fast-dna/commit/0bdd43f))
-* update MSFT headings to semibold ([#1268](https://github.com/Microsoft/fast-dna/issues/1268)) ([2327b66](https://github.com/Microsoft/fast-dna/commit/2327b66))
-
-
-
-
-
-# [3.5.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.4.1...@microsoft/fast-components-styles-msft@3.5.0) (2018-12-31)
-
-
-### Bug Fixes
-
-* remove margins from components and fix text-field placeholder color in disabled state ([#1240](https://github.com/Microsoft/fast-dna/issues/1240)) ([2871d66](https://github.com/Microsoft/fast-dna/commit/2871d66))
-
-
-### Features
-
-* add text action as a component ([#1208](https://github.com/Microsoft/fast-dna/issues/1208)) ([d7a7686](https://github.com/Microsoft/fast-dna/commit/d7a7686))
+* add generic function for deep merging two objects for use with design system defaults ([#1305](https://github.com/Microsoft/fast-dna/issues/1305)) ([25389f0](https://github.com/Microsoft/fast-dna/commit/25389f0))
+* deprecate breakpoint interface, breakpoint values, and applyBreakpoint function ([#1316](https://github.com/Microsoft/fast-dna/issues/1316)) ([2a09680](https://github.com/Microsoft/fast-dna/commit/2a09680))
 
 
 
