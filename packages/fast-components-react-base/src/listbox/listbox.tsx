@@ -16,6 +16,7 @@ export interface ListboxState {
      * The index of the focusable child
      */
     focusIndex: number;
+    focussedItemId: string;
 }
 
 export interface TypeAheadDataItem {
@@ -30,10 +31,14 @@ class Listbox extends Foundation<
 > {
     public static displayName: string = "Listbox";
 
+    public static defaultProps: Partial<ListboxProps> = {
+        multiselectible: false,
+    };
+
     protected handledProps: HandledProps<ListboxHandledProps> = {
         children: void 0,
         managedClasses: void 0,
-        typeAheadPropName: void 0,
+        typeAheadPropertyKey: void 0,
     };
 
     private rootElement: React.RefObject<HTMLDivElement> = React.createRef<
@@ -49,6 +54,7 @@ class Listbox extends Foundation<
 
         this.state = {
             focusIndex: -1,
+            focussedItemId: "",
         };
     }
 
@@ -61,6 +67,8 @@ class Listbox extends Foundation<
                 {...this.unhandledProps()}
                 ref={this.rootElement}
                 role="listbox"
+                aria-multiselectable={this.props.multiselectible}
+                aria-activedescendant={this.state.focussedItemId}
                 className={this.generateClassNames()}
                 onKeyDown={this.handleMenuKeyDown}
             >
@@ -88,7 +96,7 @@ class Listbox extends Foundation<
      * Create class names
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(get(this.props.managedClasses, "listbox"));
+        return super.generateClassNames(get(this.props.managedClasses, "listbox", ""));
     }
 
     /**
@@ -106,10 +114,10 @@ class Listbox extends Foundation<
         child: React.ReactElement<any>,
         index: number
     ): React.ReactChild => {
-        if (child.props[this.props.typeAheadPropName] !== undefined) {
+        if (child.props[this.props.typeAheadPropertyKey] !== undefined) {
             this.typeAheadData.push({
                 index,
-                compareString: child.props[this.props.typeAheadPropName].toLowerCase(),
+                compareString: child.props[this.props.typeAheadPropertyKey].toLowerCase(),
             });
         }
         return React.cloneElement(child, {
@@ -182,6 +190,7 @@ class Listbox extends Foundation<
 
                 this.setState({
                     focusIndex,
+                    focussedItemId: child.id === undefined ? "" : child.id,
                 });
 
                 break;
@@ -230,48 +239,9 @@ class Listbox extends Foundation<
     };
 
     private processTypeAhead = (e: React.KeyboardEvent<HTMLDivElement>): void => {
-        const acceptedChars: string[] = [
-            "a",
-            "b",
-            "c",
-            "d",
-            "e",
-            "f",
-            "g",
-            "h",
-            "i",
-            "j",
-            "k",
-            "l",
-            "m",
-            "n",
-            "o",
-            "p",
-            "q",
-            "r",
-            "s",
-            "t",
-            "u",
-            "v",
-            "w",
-            "x",
-            "y",
-            "z",
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "0",
-        ];
-
         const newChar: string = e.key.toLowerCase();
 
-        if (acceptedChars.indexOf(newChar) === -1) {
+        if (!/^[a-z0-9\s]+$/i.test(newChar)) {
             return;
         }
 
@@ -284,7 +254,7 @@ class Listbox extends Foundation<
         let matchIndex: number = -1;
         this.typeAheadData.some(
             (typeAheadData: TypeAheadDataItem, index: number): boolean => {
-                if (typeAheadData.compareString.includes(this.typeAheadString)) {
+                if (typeAheadData.compareString.startsWith(this.typeAheadString)) {
                     matchIndex = typeAheadData.index;
                     return true;
                 }

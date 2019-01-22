@@ -19,11 +19,12 @@ const examples: ComponentFactoryExample<ListboxProps> = {
     documentation: <Documentation />,
     detailData: {
         ...managedClasses,
-        typeAheadPropName: "displayString",
+        typeAheadPropertyKey: "displayString",
         children: [
             {
                 id: "react-html-element",
                 props: {
+                    id: "option-a",
                     role: "option",
                     displayString: "Option A",
                     children: "Option A",
@@ -32,6 +33,7 @@ const examples: ComponentFactoryExample<ListboxProps> = {
             {
                 id: "react-html-element",
                 props: {
+                    id: "option-b",
                     role: "option",
                     displayString: "Option B",
                     children: "Option B",
@@ -40,6 +42,7 @@ const examples: ComponentFactoryExample<ListboxProps> = {
             {
                 id: "react-html-element",
                 props: {
+                    id: "option-c",
                     role: "option",
                     displayString: "Option C",
                     children: "Option C",
@@ -54,6 +57,7 @@ const examples: ComponentFactoryExample<ListboxProps> = {
                 {
                     id: "react-html-element",
                     props: {
+                        id: "option-a",
                         role: "option",
                         displayString: "Option A",
                         children: "Option A",
@@ -62,6 +66,7 @@ const examples: ComponentFactoryExample<ListboxProps> = {
                 {
                     id: "react-html-element",
                     props: {
+                        id: "option-b",
                         role: "option",
                         displayString: "Option B",
                         children: "Option B",
@@ -70,6 +75,7 @@ const examples: ComponentFactoryExample<ListboxProps> = {
                 {
                     id: "react-html-element",
                     props: {
+                        id: "option-c",
                         role: "option",
                         displayString: "Option C",
                         children: "Option C",

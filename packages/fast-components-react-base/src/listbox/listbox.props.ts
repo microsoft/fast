@@ -13,9 +13,14 @@ export interface ListboxHandledProps extends ListboxManagedClasses {
     children?: React.ReactNode;
 
     /**
-     * The name of the prop on child components that is used as the data for type ahead focus (default is 'value')
+     * The name of the prop on child components that is used as the data for type ahead focus
      */
-    typeAheadPropName?: string;
+    typeAheadPropertyKey?: string;
+
+    /**
+     * Whether this listbox supports multi-selection (default is 'false')
+     */
+    multiselectible?: boolean;
 }
 
 export type ListboxProps = ListboxHandledProps & ListboxUnhandledProps;
