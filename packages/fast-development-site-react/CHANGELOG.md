@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="3.3.1"></a>
+## [3.3.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@3.3.0...@microsoft/fast-development-site-react@3.3.1) (2019-01-22)
+
+
+### Bug Fixes
+
+* Margin should be remove don component view toggle ([#1333](https://github.com/Microsoft/fast-dna/issues/1333)) ([804faff](https://github.com/Microsoft/fast-dna/commit/804faff))
+* prevent scroll bar from pushing content in config panel ([#1334](https://github.com/Microsoft/fast-dna/issues/1334)) ([a458c22](https://github.com/Microsoft/fast-dna/commit/a458c22))
+
+
+
+
+
 <a name="3.3.0"></a>
 # [3.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@3.2.6...@microsoft/fast-development-site-react@3.3.0) (2019-01-22)
 

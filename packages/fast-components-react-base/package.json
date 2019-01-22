@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components-react-base",
   "description": "FAST base components implemented in React.",
   "sideEffects": false,
-  "version": "3.6.1",
+  "version": "3.6.2",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -72,7 +72,7 @@
     "@microsoft/fast-application-utilities": "^3.0.4",
     "@microsoft/fast-components-foundation-react": "^2.1.1",
     "@microsoft/fast-data-utilities-react": "^1.1.0",
-    "@microsoft/fast-development-site-react": "^3.3.0",
+    "@microsoft/fast-development-site-react": "^3.3.1",
     "@microsoft/fast-tslint-rules": "^3.0.1",
     "@microsoft/fast-web-utilities": "^3.0.4",
     "@types/enzyme": "^3.1.15",
