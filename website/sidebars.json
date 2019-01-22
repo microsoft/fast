@@ -10,7 +10,32 @@
       "en/contributing/policies"
     ],
     "Packages": [
-      "en/packages/fast-animation"
-    ]
+      "en/packages/fast-animation/index",
+      "en/packages/fast-breakpoint-tracker-react/index",
+      "en/packages/fast-browser-extensions/index",
+      "en/packages/fast-colors/index",
+      "en/packages/fast-components-class-name-contracts-base/index",
+      "en/packages/fast-components-class-name-contracts-msft/index",
+      "en/packages/fast-components-foundation-react/index",
+      "en/packages/fast-components-react-base/index",
+      "en/packages/fast-components-react-msft/index",
+      "en/packages/fast-components-styles-msft/index",
+      "en/packages/fast-css-editor-react/index",
+      "en/packages/fast-data-utilities-react/index",
+      "en/packages/fast-development-site-react/index",
+      "en/packages/fast-form-generator-react/index",
+      "en/packages/fast-glyphs-msft/index",
+      "en/packages/fast-jest-snapshots-react/index",
+      "en/packages/fast-jss-manager/index",
+      "en/packages/fast-jss-manager-angular/index",
+      "en/packages/fast-jss-manager-react/index",
+      "en/packages/fast-jss-utilities/index",
+      "en/packages/fast-layouts-react/index",
+      "en/packages/fast-markdown-msft-react/index",
+      "en/packages/fast-permutator/index",
+      "en/packages/fast-sketch-library/index",
+      "en/packages/fast-tslint-rules/index",
+      "en/packages/fast-viewer-react/index",
+      "en/packages/fast-web-utilities/index"    ]
   }
 }

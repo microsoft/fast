@@ -1,7 +1,7 @@
 ---
-id: fast-animation
+id: index
 title: FAST Animation
-sidebar_label: Fast Animation
+sidebar_label: Animation
 ---
 
 # FAST Animation
@@ -17,6 +17,8 @@ Fast Animation is a library for simplifying the creation of animations and inter
 * Provides mechanisms for sequencing and grouping animation effects between elements.
 
 ## Usage
+
+[API Reference](https://microsoft.github.io/fast-dna/docs/en/contributing/packages/fast-animation/api/index.html)
 
 ### Installation
 

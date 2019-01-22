@@ -39,7 +39,7 @@ const siteConfig = {
 
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
-    {doc: 'en/contributing/install', label: 'Documentation'},
+    {doc: 'en/contributing/install', label: 'Guide'},
     {href: "https://github.com/microsoft/fast-dna", label: "GitHub"},
     {href: "https://msft-docs.fast-dna.net", label: "Components"}
     // {doc: 'doc4', label: 'API'},
