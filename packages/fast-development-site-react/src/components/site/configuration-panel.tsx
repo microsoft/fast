@@ -39,6 +39,7 @@ const style: ComponentStyles<ConfigurationPanelManagedClasses, DevSiteDesignSyst
     configurationPanel: {
         width: "100%",
         height: "100%",
+        overflowY: "scroll",
         overflowX: "auto",
         color: (config: DevSiteDesignSystem): string => {
             return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
