@@ -1,5 +1,4 @@
 import * as React from "react";
-import { toPx } from "@microsoft/fast-jss-utilities";
 import { Link, withRouter } from "react-router-dom";
 import manageJss, {
     ComponentStyles,
@@ -23,7 +22,7 @@ const styles: ComponentStyles<
         alignItems: "center",
         border: "1px solid transparent",
         justifyContent: "center",
-        margin: toPx(2),
+        margin: "0",
         fill: (config: DevSiteDesignSystem): string => {
             return config.foreground300 || devSiteDesignSystemDefaults.foreground300;
         },
