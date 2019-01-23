@@ -201,10 +201,10 @@ describe("listbox", (): void => {
                 <div role="option" title="a">
                     a
                 </div>
-                <div role="option" title="ab">
+                <div role="option" title="b">
                     ab
                 </div>
-                <div role="option" title="abc">
+                <div role="option" title="c">
                     abc
                 </div>
                 <div>four</div>
@@ -218,5 +218,44 @@ describe("listbox", (): void => {
 
         rendered.childAt(0).simulate("keydown", { key: "x" });
         expect(rendered.state("focusIndex")).toBe(1);
+    });
+
+    test("aria-activedescendant value should change with focus changes", (): void => {
+        const rendered: any = mount(
+            <Listbox>
+                <div role="option" id="1">
+                    1
+                </div>
+                <div role="option" id="2">
+                    2
+                </div>
+            </Listbox>
+        );
+
+        expect(rendered.childAt(0).prop("aria-activedescendant")).toBe("");
+
+        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowDown });
+        expect(rendered.childAt(0).prop("aria-activedescendant")).toBe("2");
+    });
+
+    test("aria-multiselectable value should be false by default", (): void => {
+        const rendered: any = mount(
+            <Listbox>
+                <div role="option" id="1">
+                    1
+                </div>
+                <div role="option" id="2">
+                    2
+                </div>
+            </Listbox>
+        );
+
+        expect(rendered.childAt(0).prop("aria-multiselectable")).toBe(false);
+    });
+
+    test("aria-multiselectable value should be true when in multi-select mode", (): void => {
+        const rendered: any = mount(<Listbox multiselectible={true} />);
+
+        expect(rendered.childAt(0).prop("aria-multiselectable")).toBe(true);
     });
 });
