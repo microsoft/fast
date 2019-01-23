@@ -313,7 +313,7 @@ class FormItemArray extends FormItemBase<
         const props: any = Object.assign({}, sortingProps, {
             onSortEnd: this.handleSort,
             helperClass: this.props.managedClasses
-                .formItemArray_existingItemList__sorting,
+                .formItemArray_existingItemListItem__sorting,
         });
 
         if (arraySections.length > 0) {

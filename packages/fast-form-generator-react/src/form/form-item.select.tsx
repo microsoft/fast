@@ -46,7 +46,7 @@ class FormItemSelect extends FormItemBase<
                     >
                         {this.props.label}
                     </label>
-                    <span className={this.generateClassNames()}>
+                    <span className={this.generateControlSpanClassNames()}>
                         <select
                             className={
                                 this.props.managedClasses.formItemSelect_controlInput
@@ -71,7 +71,7 @@ class FormItemSelect extends FormItemBase<
     /**
      * Generates class names
      */
-    protected generateClassNames(): string {
+    protected generateControlSpanClassNames(): string {
         let classNames: string = this.props.managedClasses.formItemSelect_controlSpan;
 
         if (this.props.disabled) {

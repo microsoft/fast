@@ -398,7 +398,7 @@ class FormItemChildren extends FormItemBase<
         const props: any = Object.assign({}, sortingProps, {
             onSortEnd: this.handleSort,
             helperClass: this.props.managedClasses
-                .formItemChildren_existingChildren__sorting,
+                .formItemChildren_existingChildrenItem__sorting,
         });
 
         const childItems: JSX.Element | JSX.Element[] = this.renderExistingChildItems();

@@ -1,4 +1,5 @@
 import { ellipsis, focusVisible } from "@microsoft/fast-jss-utilities";
+import { accent, background100, foreground300 } from "./form.constants.style";
 import {
     applyCleanListStyle,
     applyControl,
@@ -6,11 +7,8 @@ import {
     applyGlobalStyle,
     applyLabelStyle,
     applyRemoveItemStyle,
-    background100,
-    foreground300,
     insetStrongBoxShadow,
-    pink,
-} from "../utilities";
+} from "./form.utilities.style";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormItemArrayClassNameContract } from "../class-name-contracts/";
 
@@ -39,7 +37,7 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
         zIndex: "1",
         borderRadius: "2px",
         [`&${focusVisible()}`]: {
-            ...insetStrongBoxShadow(pink),
+            ...insetStrongBoxShadow(accent),
             outline: "none",
         },
         "&::before": {
@@ -71,11 +69,10 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
         ...applyCleanListStyle(),
         fontSize: "11px",
     },
-    formItemArray_existingItemList__sorting: {
+    formItemArray_existingItemListItem__sorting: {
         fontSize: "11px",
         color: foreground300,
         cursor: "pointer",
-        backgroundColor: `${background100} !important`,
     },
     formItemArray_existingItemListItem: {
         position: "relative",
@@ -84,6 +81,9 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
         cursor: "pointer",
         height: "30px",
         lineHeight: "30px",
+        "&$formItemArray_existingItemListItem__sorting": {
+            backgroundColor: background100,
+        },
         "&:hover": {
             backgroundColor: "rgba(255, 255, 255, 0.04)",
         },

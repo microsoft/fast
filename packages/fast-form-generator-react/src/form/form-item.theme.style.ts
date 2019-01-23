@@ -1,16 +1,18 @@
 import {
+    accent,
+    background000,
+    foreground200,
+    foreground300,
+} from "./form.constants.style";
+import {
     applyControl,
     applyControlWrapper,
     applyLabelStyle,
     applySoftRemove,
     applySoftRemoveInput,
-    background000,
     darkTheme,
-    foreground200,
-    foreground300,
     lightTheme,
-    pink,
-} from "../utilities";
+} from "./form.utilities.style";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormItemThemeClassNameContract } from "../class-name-contracts/";
 
@@ -24,7 +26,7 @@ function applyThemeInputBackplateStyle(): CSSRules<{}> {
         borderRadius: "2px",
         "&:checked, &:focus": {
             outline: "none",
-            borderColor: pink,
+            borderColor: accent,
         },
         "&:hover": {
             borderColor: background000,

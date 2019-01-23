@@ -6,14 +6,15 @@ import {
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import {
+    accent,
     background300,
     background800,
+    disabledOpacity,
     foreground000,
     foreground200,
     foreground300,
     foreground800,
-    pink,
-} from "./";
+} from "./form.constants.style";
 
 /**
  * Base64 encoded svgs
@@ -33,8 +34,6 @@ export interface BoxShadowConfig {
     color: string;
     inset?: boolean;
 }
-
-export const DISABLED_OPACITY: number = 0.3;
 
 export function localizePadding(
     top: number,
@@ -101,11 +100,11 @@ export function applyInputStyle(): CSSRules<{}> {
         boxSizing: "border-box",
         color: foreground300,
         "&:disabled": {
-            opacity: `${DISABLED_OPACITY}`,
+            opacity: `${disabledOpacity}`,
             cursor: "not-allowed",
         },
         "&:focus": {
-            ...insetStrongBoxShadow(pink),
+            ...insetStrongBoxShadow(accent),
         },
     };
 }
@@ -183,7 +182,7 @@ export function applySelectInputStyles(): CSSRules<{}> {
             cursor: "not-allowed",
         },
         "&:focus": {
-            ...insetStrongBoxShadow(pink),
+            ...insetStrongBoxShadow(accent),
         },
     };
 }
@@ -219,7 +218,7 @@ export function applyRemoveItemStyle(): CSSRules<{}> {
         zIndex: "1",
         borderRadius: "2px",
         "&:focus": {
-            ...insetStrongBoxShadow(pink),
+            ...insetStrongBoxShadow(accent),
             outline: "none",
         },
         "&::before": {
@@ -280,7 +279,7 @@ export function applySoftRemoveInput(): CSSRules<{}> {
         zIndex: "1",
         borderRadius: "2px",
         "&:focus": {
-            ...insetStrongBoxShadow(pink),
+            ...insetStrongBoxShadow(accent),
             outline: "none",
         },
         "&:checked + svg": {

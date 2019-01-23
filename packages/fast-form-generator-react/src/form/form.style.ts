@@ -1,4 +1,5 @@
-import { applyCleanListStyle, pink } from "../utilities";
+import { accent } from "./form.constants.style";
+import { applyCleanListStyle } from "./form.utilities.style";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { FormClassNameContract } from "../class-name-contracts/";
 
@@ -23,7 +24,7 @@ const styles: ComponentStyles<FormClassNameContract, {}> = {
                 paddingLeft: "0",
             },
             "& a": {
-                color: pink,
+                color: accent,
             },
         },
     },

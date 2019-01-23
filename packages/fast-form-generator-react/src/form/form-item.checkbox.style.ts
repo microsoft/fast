@@ -1,15 +1,13 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormItemCheckboxClassNameContract } from "../class-name-contracts/";
+import { disabledOpacity, foreground300, foreground800 } from "./form.constants.style";
 import {
     applyControlSingleLineWrapper,
     applyLabelStyle,
     applySoftRemove,
     applySoftRemoveInput,
-    DISABLED_OPACITY,
-    foreground300,
-    foreground800,
     insetStrongBoxShadow,
-} from "../utilities";
+} from "./form.utilities.style";
 
 const styles: ComponentStyles<FormItemCheckboxClassNameContract, {}> = {
     formItemCheckbox: {
@@ -17,7 +15,7 @@ const styles: ComponentStyles<FormItemCheckboxClassNameContract, {}> = {
         position: "relative",
     },
     formItemCheckbox__disabled: {
-        opacity: `${DISABLED_OPACITY}`,
+        opacity: `${disabledOpacity}`,
         cursor: "not-allowed",
         "& $formItemCheckbox_label": {
             cursor: "not-allowed",

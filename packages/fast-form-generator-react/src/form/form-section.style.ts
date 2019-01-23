@@ -1,11 +1,11 @@
+import { background800 } from "./form.constants.style";
 import {
     applyControl,
     applyControlWrapper,
     applyLabelStyle,
     applySelectInputStyles,
     applySelectSpanStyles,
-    background800,
-} from "../utilities";
+} from "./form.utilities.style";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormSectionClassNameContract } from "../class-name-contracts/";
 
