@@ -1,5 +1,5 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
-import { DISABLED_OPACITY } from "./form.constants.style";
+import { disabledOpacity } from "./form.constants.style";
 import {
     applyControl,
     applyControlWrapper,
@@ -26,7 +26,7 @@ const styles: ComponentStyles<FormItemSelectClassNameContract, {}> = {
         ...applySelectSpanStyles(),
     },
     formItemSelect_controlSpan__disabled: {
-        opacity: `${DISABLED_OPACITY}`,
+        opacity: `${disabledOpacity}`,
     },
     formItemSelect_controlInput: {
         ...applySelectInputStyles(),

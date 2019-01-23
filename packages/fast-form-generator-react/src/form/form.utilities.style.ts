@@ -9,7 +9,7 @@ import {
     accent,
     background300,
     background800,
-    DISABLED_OPACITY,
+    disabledOpacity,
     foreground000,
     foreground200,
     foreground300,
@@ -100,7 +100,7 @@ export function applyInputStyle(): CSSRules<{}> {
         boxSizing: "border-box",
         color: foreground300,
         "&:disabled": {
-            opacity: `${DISABLED_OPACITY}`,
+            opacity: `${disabledOpacity}`,
             cursor: "not-allowed",
         },
         "&:focus": {

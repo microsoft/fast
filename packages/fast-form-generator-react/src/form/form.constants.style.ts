@@ -9,4 +9,4 @@ export const foreground300: string = "#F2F2F2";
 export const foreground800: string = "#D5D5D5";
 export const accent: string = "#FB356D";
 
-export const DISABLED_OPACITY: number = 0.3;
+export const disabledOpacity: number = 0.3;
