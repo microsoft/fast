@@ -13,7 +13,7 @@ export function focusVisibleSelector(selector: string = ""): string {
 /**
  * Returns the selector for the focus-visible polyfill
  */
-export function focusVisiblePollyfillSelector(selector: string = ""): string {
+export function focusVisiblePolyfillSelector(selector: string = ""): string {
     return `body:not(.js-focus-visible) &:focus${selector}, .js-focus-visible &.focus-visible${selector}`;
 }
 
@@ -50,7 +50,7 @@ export function focus(
                   [focusVisibleSelector(selector)]: styles,
               }
             : {
-                  [focusVisiblePollyfillSelector(selector)]: styles,
+                  [focusVisiblePolyfillSelector(selector)]: styles,
               }
     );
 }
