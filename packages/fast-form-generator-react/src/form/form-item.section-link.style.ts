@@ -4,7 +4,7 @@ import {
     applyControlSingleLineWrapper,
     applySoftRemove,
     applySoftRemoveInput,
-} from "../utilities";
+} from "./form.utilities.style";
 import { FormItemSectionLinkClassNameContract } from "../class-name-contracts";
 
 const styles: ComponentStyles<FormItemSectionLinkClassNameContract, {}> = {

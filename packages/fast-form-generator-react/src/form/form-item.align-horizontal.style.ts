@@ -1,3 +1,4 @@
+import { accent, background300 } from "./form.constants.style";
 import {
     applyControl,
     applyControlWrapper,
@@ -5,9 +6,7 @@ import {
     applyLabelStyle,
     applySoftRemove,
     applySoftRemoveInput,
-    background300,
-    pink,
-} from "../utilities";
+} from "./form.utilities.style";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormItemAlignHorizontalClassNameContract } from "../class-name-contracts/";
 
@@ -42,7 +41,7 @@ const styles: ComponentStyles<FormItemAlignHorizontalClassNameContract, {}> = {
         borderRadius: "2px 0px 0px 2px",
         background: leftLight,
         "&:checked": {
-            backgroundColor: pink,
+            backgroundColor: accent,
         },
     },
     formItemAlignHorizontal_controlInput__center: {
@@ -51,7 +50,7 @@ const styles: ComponentStyles<FormItemAlignHorizontalClassNameContract, {}> = {
         borderLeft: `1px solid ${background300}`,
         background: centerLight,
         "&:checked": {
-            backgroundColor: pink,
+            backgroundColor: accent,
         },
     },
     formItemAlignHorizontal_controlInput__right: {
@@ -59,7 +58,7 @@ const styles: ComponentStyles<FormItemAlignHorizontalClassNameContract, {}> = {
         borderRadius: "0px 2px 2px 0px",
         background: rightLight,
         "&:checked": {
-            backgroundColor: pink,
+            backgroundColor: accent,
         },
     },
     formItemAlignHorizontal_softRemove: {

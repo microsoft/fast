@@ -1,4 +1,5 @@
 import { ellipsis } from "@microsoft/fast-jss-utilities";
+import { accent, background100, foreground300 } from "./form.constants.style";
 import {
     applyAriaHiddenStyles,
     applyCleanListStyle,
@@ -9,10 +10,7 @@ import {
     applyLabelStyle,
     applyRemoveItemStyle,
     applySoftRemove,
-    background100,
-    foreground300,
-    pink,
-} from "../utilities";
+} from "./form.utilities.style";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormItemChildrenClassNameContract } from "../class-name-contracts/";
 
@@ -36,11 +34,10 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
     formItemChildren_existingChildren: {
         ...applyCleanListStyle(),
     },
-    formItemChildren_existingChildren__sorting: {
+    formItemChildren_existingChildrenItem__sorting: {
         fontSize: "11px",
         color: foreground300,
         cursor: "pointer",
-        backgroundColor: `${background100} !important`,
     },
     formItemChildren_existingChildrenItem: {
         position: "relative",
@@ -51,6 +48,9 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
         cursor: "pointer",
         display: "flex",
         alignItems: "center",
+        "&$formItemChildren_existingChildrenItem__sorting": {
+            backgroundColor: background100,
+        },
         "&:hover": {
             backgroundColor: "rgba(255, 255, 255, 0.04)",
         },
@@ -91,7 +91,7 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
         alignItems: "center",
         padding: "0 5px",
         '&[aria-selected="true"]': {
-            background: pink,
+            background: accent,
         },
     },
     formItemChildren_childrenListControl: {

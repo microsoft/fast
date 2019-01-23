@@ -5,7 +5,7 @@ import {
     applyLabelStyle,
     applySoftRemove,
     applySoftRemoveInput,
-} from "../utilities";
+} from "./form.utilities.style";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { FormItemNumberFieldClassNameContract } from "../class-name-contracts/";
 

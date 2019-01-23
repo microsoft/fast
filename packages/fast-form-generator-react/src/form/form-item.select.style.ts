@@ -1,4 +1,5 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
+import { DISABLED_OPACITY } from "./form.constants.style";
 import {
     applyControl,
     applyControlWrapper,
@@ -7,8 +8,7 @@ import {
     applySelectSpanStyles,
     applySoftRemove,
     applySoftRemoveInput,
-    DISABLED_OPACITY,
-} from "../utilities";
+} from "./form.utilities.style";
 import { FormItemSelectClassNameContract } from "../class-name-contracts/";
 
 const styles: ComponentStyles<FormItemSelectClassNameContract, {}> = {

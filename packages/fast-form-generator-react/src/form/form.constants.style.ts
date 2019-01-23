@@ -7,4 +7,6 @@ export const foreground000: string = "#FFF";
 export const foreground200: string = "#F6F6F6";
 export const foreground300: string = "#F2F2F2";
 export const foreground800: string = "#D5D5D5";
-export const pink: string = "#FB356D";
+export const accent: string = "#FB356D";
+
+export const DISABLED_OPACITY: number = 0.3;

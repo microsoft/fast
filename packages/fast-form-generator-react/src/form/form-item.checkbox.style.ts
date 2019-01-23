@@ -1,15 +1,13 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormItemCheckboxClassNameContract } from "../class-name-contracts/";
+import { DISABLED_OPACITY, foreground300, foreground800 } from "./form.constants.style";
 import {
     applyControlSingleLineWrapper,
     applyLabelStyle,
     applySoftRemove,
     applySoftRemoveInput,
-    DISABLED_OPACITY,
-    foreground300,
-    foreground800,
     insetStrongBoxShadow,
-} from "../utilities";
+} from "./form.utilities.style";
 
 const styles: ComponentStyles<FormItemCheckboxClassNameContract, {}> = {
     formItemCheckbox: {

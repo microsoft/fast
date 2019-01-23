@@ -1,4 +1,4 @@
-import { background200, background800, foreground300 } from "../utilities";
+import { background200, background800, foreground300 } from "./form.constants.style";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { FormCategoryClassNameContract } from "../class-name-contracts/";
 
