@@ -60,6 +60,27 @@ handleKeyPress = (e) => {
 }
 ```
 
+### Localization utilities
+
+#### isRTL
+The `isRTL` utility determines if a string which should correspond to a language or language-locale is right to left.
+
+```typescript
+import { isRTL } from "@microsoft/fast-application-utilities";
+
+isRTL("en");
+```
+
+#### Typescript enum
+
+The `Direction` enum contains the `ltr` and `rtl` enum for use in a Typescript project.
+
+```typescript
+import { Direction } from "@microsoft/fast-application-utilities";
+
+let direction: Direction = Direction.ltr;
+```
+
 ### Number utilities
 
 #### limit
