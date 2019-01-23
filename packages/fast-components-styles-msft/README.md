@@ -24,3 +24,41 @@ class Button extends React.Component {
 
 export default manageJss(ButtonStyles)(Button);
 ```
+## Utilities
+
+### `focus`
+`focus` accepts style(s) and an optional selector string. `focus` assumes assignment of `border: none`.
+
+This function is meant to be used in conjuction with a library like JSS. Styles that are given will be returned with a focus selector that is based on whether there is a focus polyfill for focus-visible. If a selector has been passed, this will be added to the focus selector string for the styles. If yopu are padding a selector be surer to include a space before the selector so it appends properly.
+
+```js
+import { focus } from "@microsoft/fast-components-styles-msft";
+
+const styles = {
+    myComponent: {
+        background: "blue",
+        ...focus({
+            background: "red",
+        }),
+    },
+    myOtherComponent: {
+        ...focus("& $optionalSelectorClass", {
+            background: "red"
+        })
+    }
+}
+```
+
+```css
+    myComponent {
+        background: blue;
+    }
+
+    myComponent:focus-visible {
+        background: red;
+    }
+
+    myOtherComponent:focus-visible .optionalSelectorClass {
+        background: red;
+    }
+```
