@@ -5,6 +5,7 @@ export * from "./button";
 export * from "./call-to-action";
 export * from "./caption";
 export * from "./card";
+export * from "./carousel";
 export * from "./checkbox";
 export * from "./context-menu";
 export * from "./context-menu-item";

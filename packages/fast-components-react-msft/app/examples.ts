@@ -16,6 +16,9 @@ export { CallToActionExamples };
 import CaptionExamples from "../src/caption/examples.data";
 export { CaptionExamples };
 
+import CarouselExamples from "../src/carousel/examples.data";
+export { CarouselExamples };
+
 import ContextMenu from "../src/context-menu/examples.data";
 export { ContextMenu };
 
