@@ -57,9 +57,4 @@ export interface CarouselClassNameContract {
      * The dark slide theme
      */
     theme__dark?: string;
-
-    /**
-     * Autoplay toggle
-     */
-    carousel_autoplay?: string;
 }
