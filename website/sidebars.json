@@ -11,6 +11,7 @@
     ],
     "Packages": [
       "en/packages/fast-animation/index",
+      "en/packages/fast-application-utilities/index",
       "en/packages/fast-breakpoint-tracker-react/index",
       "en/packages/fast-browser-extensions/index",
       "en/packages/fast-colors/index",
@@ -26,16 +27,16 @@
       "en/packages/fast-form-generator-react/index",
       "en/packages/fast-glyphs-msft/index",
       "en/packages/fast-jest-snapshots-react/index",
-      "en/packages/fast-jss-manager/index",
       "en/packages/fast-jss-manager-angular/index",
       "en/packages/fast-jss-manager-react/index",
+      "en/packages/fast-jss-manager/index",
       "en/packages/fast-jss-utilities/index",
       "en/packages/fast-layouts-react/index",
       "en/packages/fast-markdown-msft-react/index",
       "en/packages/fast-permutator/index",
-      "en/packages/fast-sketch-library/index",
       "en/packages/fast-tslint-rules/index",
       "en/packages/fast-viewer-react/index",
-      "en/packages/fast-web-utilities/index"    ]
+      "en/packages/fast-web-utilities/index"
+    ]
   }
 }
