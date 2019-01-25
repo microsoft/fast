@@ -117,13 +117,6 @@ export default class App extends React.Component<{}, AppState> {
                 activeTheme={this.getThemeById(this.state.theme)}
                 showTransparencyToggle={true}
             >
-                <SiteMenu slot={"header"}>
-                    <SiteMenuItem>
-                        <Hypertext jssStyleSheet={hypertextStyles} href={sketchDesignKit}>
-                            Download design kit - sketch
-                        </Hypertext>
-                    </SiteMenuItem>
-                </SiteMenu>
                 <SiteTitle slot={"title"}>
                     <SiteTitleBrand>FAST</SiteTitleBrand> Documentation
                 </SiteTitle>
