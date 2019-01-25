@@ -9,11 +9,9 @@ import {
     CSSRules,
 } from "@microsoft/fast-jss-manager";
 import {
+    applyFocusVisible,
     applyLocalizedProperty,
     Direction,
-    ensureContrast,
-    focusVisible,
-    toPx,
 } from "@microsoft/fast-jss-utilities";
 import { applyTypeRampConfig } from "../utilities/typography";
 import { ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
@@ -21,7 +19,6 @@ import Chroma from "chroma-js";
 import outlinePattern from "../patterns/outline";
 import switchFieldPattern from "../patterns/switch-field";
 import typographyPattern from "../patterns/typography";
-import { focus } from "../utilities/focus";
 
 const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -83,7 +80,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             "&:hover": {
                 ...outlinePattern.hover,
             },
-            ...focus({
+            ...applyFocusVisible({
                 ...outlinePattern.focus,
             }),
         },
@@ -116,7 +113,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             "& $toggle_input": {
                 backgroundColor: brandColor,
                 borderColor: brandColor,
-                ...focus({
+                ...applyFocusVisible({
                     ...outlinePattern.focus,
                 }),
                 "& + $toggle_stateIndicator": {

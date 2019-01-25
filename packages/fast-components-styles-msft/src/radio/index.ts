@@ -6,9 +6,9 @@ import {
 } from "@microsoft/fast-jss-manager";
 import { RadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
+    applyFocusVisible,
     applyLocalizedProperty,
     Direction,
-    focusVisible,
 } from "@microsoft/fast-jss-utilities";
 import {
     disabledContrast,
@@ -18,7 +18,6 @@ import {
 import outlinePattern from "../patterns/outline";
 import switchFieldPattern from "../patterns/switch-field";
 import typographyPattern from "../patterns/typography";
-import { focus } from "../utilities/focus";
 
 const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -61,7 +60,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
             "&:hover": {
                 ...outlinePattern.hover,
             },
-            ...focus({
+            ...applyFocusVisible({
                 ...outlinePattern.focus,
             }),
         },

@@ -7,10 +7,9 @@ import {
 import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
+    applyFocusVisible,
     applyLocalizedProperty,
-    contrast,
     Direction,
-    focusVisible,
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import {
@@ -25,7 +24,6 @@ import {
 import { density } from "../utilities/density";
 import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
 import outlinePattern from "../patterns/outline";
-import { focus } from "../utilities/focus";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
 export const textFieldOverrides: ComponentStyles<
@@ -42,7 +40,7 @@ export const textFieldOverrides: ComponentStyles<
             border: "none",
             boxShadow: "none",
         },
-        ...focus({
+        ...applyFocusVisible({
             boxShadow: "none",
         }),
     },

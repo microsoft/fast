@@ -6,9 +6,8 @@ import {
     CSSRules,
 } from "@microsoft/fast-jss-manager";
 import { HypertextClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { focusVisible } from "@microsoft/fast-jss-utilities";
+import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
 import typographyPattern from "../patterns/typography";
-import { focus } from "../utilities/focus";
 
 const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -24,7 +23,7 @@ const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = (
                 "&:hover": {
                     borderBottom: `2px solid ${ensureBrandNormal(config)}`,
                 },
-                ...focus({
+                ...applyFocusVisible({
                     borderBottom: `2px solid ${ensureForegroundNormal(config)}`,
                 }),
             },

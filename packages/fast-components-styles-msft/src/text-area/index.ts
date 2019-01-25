@@ -1,12 +1,7 @@
 import { applyTypeRampConfig } from "../utilities/typography";
 import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { TextAreaClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import {
-    adjustContrast,
-    contrast,
-    focusVisible,
-    toPx,
-} from "@microsoft/fast-jss-utilities";
+import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
 import { get } from "lodash-es";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { fontWeight } from "../utilities/fonts";
@@ -19,7 +14,6 @@ import { density } from "../utilities/density";
 import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
 import outlinePattern from "../patterns/outline";
 import typographyPattern from "../patterns/typography";
-import { focus } from "../utilities/focus";
 
 const styles: ComponentStyles<TextAreaClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -44,7 +38,7 @@ const styles: ComponentStyles<TextAreaClassNameContract, DesignSystem> = (
             "&:hover": {
                 ...outlinePattern.hover,
             },
-            ...focus({
+            ...applyFocusVisible({
                 ...outlinePattern.focus,
             }),
             "&:disabled": {

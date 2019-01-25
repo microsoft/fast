@@ -6,6 +6,7 @@ import {
 import { applyTypeRampConfig } from "../utilities/typography";
 import { ButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
+    applyFocusVisible,
     applyLocalizedProperty,
     contrast,
     Direction,
@@ -28,7 +29,6 @@ import Chroma from "chroma-js";
 import { density } from "../utilities/density";
 import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
 import outlinePattern from "../patterns/outline";
-import { focus } from "../utilities/focus";
 
 function applyTransparentBackplateStyles(
     designSystem: DesignSystem
@@ -207,7 +207,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             "&:hover": {
                 backgroundColor: secondaryHoverBackgroundColor,
             },
-            ...focus({
+            ...applyFocusVisible({
                 borderColor: secondaryFocusBorderColor,
                 boxShadow: secondaryFocusBoxShadow,
             }),
@@ -231,7 +231,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             "&:hover": {
                 backgroundColor: primaryHoverBackground,
             },
-            ...focus({
+            ...applyFocusVisible({
                 borderColor: primaryFocusBorderColor,
                 boxShadow: primaryFocusBoxShadow,
             }),
@@ -256,7 +256,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             "&:hover": {
                 ...outlinePattern.hover,
             },
-            ...focus({
+            ...applyFocusVisible({
                 ...applyTransparentBackground(),
                 ...outlinePattern.focus,
             }),

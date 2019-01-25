@@ -2,6 +2,7 @@
  * Export utilities
  */
 export * from "./acrylic";
+export * from "./apply-focus-visible";
 export * from "./colors";
 export * from "./localization";
 export * from "./max-lines";

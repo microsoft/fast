@@ -7,10 +7,9 @@ import {
 import { CheckboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyTypeRampConfig } from "../utilities/typography";
 import {
+    applyFocusVisible,
     applyLocalizedProperty,
-    contrast,
     Direction,
-    focusVisible,
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import {
@@ -21,7 +20,6 @@ import {
 import outlinePattern from "../patterns/outline";
 import switchFieldPattern from "../patterns/switch-field";
 import typographyPattern from "../patterns/typography";
-import { focus } from "../utilities/focus";
 
 const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -52,7 +50,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
             "&:hover": {
                 ...outlinePattern.hover,
             },
-            ...focus({
+            ...applyFocusVisible({
                 ...outlinePattern.focus,
             }),
         },

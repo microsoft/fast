@@ -1,32 +1,28 @@
 import { canUseFocusVisible } from "@microsoft/fast-web-utilities";
-import { DesignSystem } from "../design-system";
 import { CSSRules } from "@microsoft/fast-jss-manager";
 import { isPlainObject } from "lodash-es";
 
 /**
  * Returns the selector for the browser native :focus-visible implementation
  */
-export function focusVisibleSelector(selector: string = ""): string {
+export function applyFocusVisibleSelector(selector: string = ""): string {
     return `&:focus-visible${selector}`;
 }
 
 /**
  * Returns the selector for the focus-visible polyfill
  */
-export function focusVisiblePolyfillSelector(selector: string = ""): string {
+export function applyFocusVisiblePolyfillSelector(selector: string = ""): string {
     return `body:not(.js-focus-visible) &:focus${selector}, .js-focus-visible &.focus-visible${selector}`;
 }
 
-export function focus(styles: CSSRules<DesignSystem>): CSSRules<DesignSystem>;
-export function focus(
-    selector: string,
-    styles: CSSRules<DesignSystem>
-): CSSRules<DesignSystem>;
-export function focus(
-    a: CSSRules<DesignSystem> | string,
-    b?: CSSRules<DesignSystem>
-): CSSRules<DesignSystem> {
-    let styles: CSSRules<DesignSystem>;
+export function applyFocusVisible<T>(styles: CSSRules<T>): CSSRules<T>;
+export function applyFocusVisible<T>(selector: string, styles: CSSRules<T>): CSSRules<T>;
+export function applyFocusVisible<T>(
+    a: CSSRules<T> | string,
+    b?: CSSRules<T>
+): CSSRules<T> {
+    let styles: CSSRules<T>;
     let selector: string;
 
     if (typeof a === "object" && a !== null) {
@@ -47,10 +43,10 @@ export function focus(
         },
         canUseFocusVisible()
             ? {
-                  [focusVisibleSelector(selector)]: styles,
+                  [applyFocusVisibleSelector(selector)]: styles,
               }
             : {
-                  [focusVisiblePolyfillSelector(selector)]: styles,
+                  [applyFocusVisiblePolyfillSelector(selector)]: styles,
               }
     );
 }

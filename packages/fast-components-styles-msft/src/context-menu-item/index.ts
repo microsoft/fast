@@ -12,10 +12,9 @@ import {
     ensureForegroundNormal,
     hoverContrast,
 } from "../utilities/colors";
-import { contrast, focusVisible, scaleContrast } from "@microsoft/fast-jss-utilities";
+import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
 import { applyTypeRampConfig } from "../utilities/typography";
 import typographyPattern from "../patterns/typography";
-import { focus } from "../utilities/focus";
 
 const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = {
     contextMenuItem: {
@@ -33,7 +32,7 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         ...applyTypeRampConfig("t7"),
         background: backgroundColor,
         border: "2px solid transparent",
-        ...focus({
+        ...applyFocusVisible({
             borderColor: ensureForegroundNormal,
         }),
         "&:hover": {
@@ -55,7 +54,7 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         "&:hover": {
             background: backgroundColor,
         },
-        ...focus({
+        ...applyFocusVisible({
             background: backgroundColor,
         }),
     },

@@ -8,13 +8,12 @@ import {
     CallToActionClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
+    applyFocusVisible,
     applyLocalizedProperty,
     Direction,
-    localizeSpacing,
 } from "@microsoft/fast-jss-utilities";
 import { DesignSystem, withDesignSystemDefaults } from "../design-system/index";
 import { disabledContrast, ensureNormalContrast } from "../utilities/colors";
-import { focus } from "../utilities/focus";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
 export const callToActionButtonOverrides: ComponentStyles<
@@ -74,7 +73,6 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
             whiteSpace: "nowrap",
             transition: "all 0.2s ease-in-out",
             "&:hover": {
-                outline: "none",
                 "& $callToAction_glyph": {
                     transform:
                         direction === Direction.ltr
@@ -83,7 +81,7 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
                     position: "relative",
                 },
             },
-            ...focus("& $callToAction_glyph", {
+            ...applyFocusVisible("& $callToAction_glyph", {
                 transform:
                     direction === Direction.ltr
                         ? "translateX(4px)"

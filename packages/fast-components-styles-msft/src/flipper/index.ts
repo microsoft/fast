@@ -2,10 +2,9 @@ import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { FlipperClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
+    applyFocusVisible,
     applyLocalizedProperty,
-    contrast,
     Direction,
-    toPx,
 } from "@microsoft/fast-jss-utilities";
 import {
     applyMixedColor,
@@ -15,7 +14,6 @@ import {
 } from "../utilities/colors";
 import { get } from "lodash-es";
 import outlinePattern from "../patterns/outline";
-import { focus } from "../utilities/focus";
 
 const eastFlipperTransform: string = "translateX(-3px) rotate(45deg)";
 const westFlipperTransform: string = "translateX(3px) rotate(-135deg)";
@@ -53,7 +51,7 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
                     },
                 },
             },
-            ...focus({
+            ...applyFocusVisible({
                 ...outlinePattern.focus,
             }),
             "&::-moz-focus-inner": {
