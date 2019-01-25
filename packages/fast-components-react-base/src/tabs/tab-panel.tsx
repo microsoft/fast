@@ -59,3 +59,4 @@ class TabPanel extends Foundation<TabPanelHandledProps, TabPanelUnhandledProps, 
 
 export default TabPanel;
 export * from "./tab-panel.props";
+export { TabPanelClassNameContract };

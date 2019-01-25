@@ -418,3 +418,4 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
 
 export default Tabs;
 export * from "./tabs.props";
+export { TabsClassNameContract };
