@@ -7,10 +7,9 @@ import {
 import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
+    applyFocusVisible,
     applyLocalizedProperty,
-    contrast,
     Direction,
-    focusVisible,
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import {
@@ -37,10 +36,13 @@ export const textFieldOverrides: ComponentStyles<
         flex: "1 0 0",
         background: "transparent",
         minWidth: "inherit",
-        "&:hover, &:focus, &:disabled": {
+        "&:hover, &:disabled": {
             border: "none",
             boxShadow: "none",
         },
+        ...applyFocusVisible({
+            boxShadow: "none",
+        }),
     },
 };
 

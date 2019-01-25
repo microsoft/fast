@@ -2,10 +2,9 @@ import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { FlipperClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
+    applyFocusVisible,
     applyLocalizedProperty,
-    contrast,
     Direction,
-    toPx,
 } from "@microsoft/fast-jss-utilities";
 import {
     applyMixedColor,
@@ -52,10 +51,9 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
                     },
                 },
             },
-            "&:focus": {
-                outline: "none",
-                ...outlinePattern.disabled,
-            },
+            ...applyFocusVisible({
+                ...outlinePattern.focus,
+            }),
             "&::-moz-focus-inner": {
                 border: "0",
             },

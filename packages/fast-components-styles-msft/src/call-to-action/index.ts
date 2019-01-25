@@ -8,9 +8,9 @@ import {
     CallToActionClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
+    applyFocusVisible,
     applyLocalizedProperty,
     Direction,
-    localizeSpacing,
 } from "@microsoft/fast-jss-utilities";
 import { DesignSystem, withDesignSystemDefaults } from "../design-system/index";
 import { disabledContrast, ensureNormalContrast } from "../utilities/colors";
@@ -72,8 +72,7 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
             textDecoration: "none",
             whiteSpace: "nowrap",
             transition: "all 0.2s ease-in-out",
-            "&:hover, &:focus": {
-                outline: "none",
+            "&:hover": {
                 "& $callToAction_glyph": {
                     transform:
                         direction === Direction.ltr
@@ -82,6 +81,13 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
                     position: "relative",
                 },
             },
+            ...applyFocusVisible("& $callToAction_glyph", {
+                transform:
+                    direction === Direction.ltr
+                        ? "translateX(4px)"
+                        : "rotate(180deg) translateX(4px)",
+                position: "relative",
+            }),
         },
         callToAction_glyph: {
             fill: color,

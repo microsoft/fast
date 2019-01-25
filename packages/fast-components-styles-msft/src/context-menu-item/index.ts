@@ -12,7 +12,7 @@ import {
     ensureForegroundNormal,
     hoverContrast,
 } from "../utilities/colors";
-import { contrast, focusVisible, scaleContrast } from "@microsoft/fast-jss-utilities";
+import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
 import { applyTypeRampConfig } from "../utilities/typography";
 import typographyPattern from "../patterns/typography";
 
@@ -32,13 +32,9 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         ...applyTypeRampConfig("t7"),
         background: backgroundColor,
         border: "2px solid transparent",
-        "&:focus": {
-            outline: "none",
-        },
-        [`&${focusVisible()}`]: {
-            outline: "none",
+        ...applyFocusVisible({
             borderColor: ensureForegroundNormal,
-        },
+        }),
         "&:hover": {
             background: (config: DesignSystem): string => {
                 const designSystem: DesignSystem = withDesignSystemDefaults(config);
@@ -55,9 +51,12 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
     contextMenuItem__disabled: {
         cursor: "not-allowed",
         ...typographyPattern.disabled,
-        [`&:hover, &${focusVisible()}`]: {
+        "&:hover": {
             background: backgroundColor,
         },
+        ...applyFocusVisible({
+            background: backgroundColor,
+        }),
     },
 };
 

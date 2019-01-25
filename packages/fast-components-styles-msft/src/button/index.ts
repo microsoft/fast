@@ -6,6 +6,7 @@ import {
 import { applyTypeRampConfig } from "../utilities/typography";
 import { ButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
+    applyFocusVisible,
     applyLocalizedProperty,
     contrast,
     Direction,
@@ -206,14 +207,10 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             "&:hover": {
                 backgroundColor: secondaryHoverBackgroundColor,
             },
-            "&:focus": {
-                outline: "none",
-            },
-            [`&${focusVisible()}`]: {
-                outline: "none",
+            ...applyFocusVisible({
                 borderColor: secondaryFocusBorderColor,
                 boxShadow: secondaryFocusBoxShadow,
-            },
+            }),
             "&$button__disabled": {
                 cursor: "not-allowed",
                 backgroundColor: secondaryDisabledBackgroundColor,
@@ -234,10 +231,10 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             "&:hover": {
                 backgroundColor: primaryHoverBackground,
             },
-            [`&${focusVisible()}`]: {
+            ...applyFocusVisible({
                 borderColor: primaryFocusBorderColor,
                 boxShadow: primaryFocusBoxShadow,
-            },
+            }),
             "&$button__disabled": {
                 color: primaryDisabledColor,
                 fill: primaryDisabledColor,
@@ -259,10 +256,10 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             "&:hover": {
                 ...outlinePattern.hover,
             },
-            [`&${focusVisible()}`]: {
+            ...applyFocusVisible({
                 ...applyTransparentBackground(),
                 ...outlinePattern.focus,
-            },
+            }),
             "&$button__disabled": {
                 ...applyTransparentBackground(),
                 ...outlinePattern.disabled,
