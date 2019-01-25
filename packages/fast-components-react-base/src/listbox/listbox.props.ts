@@ -21,6 +21,12 @@ export interface ListboxHandledProps extends ListboxManagedClasses {
      * Whether this listbox supports multi-selection (default is 'false')
      */
     multiselectible?: boolean;
+
+    /**
+     * The aria-labelledby attribute to link the listbox to an existing
+     * element that provides it an accessible name
+     */
+    labelledBy?: string;
 }
 
 export type ListboxProps = ListboxHandledProps & ListboxUnhandledProps;

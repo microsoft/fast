@@ -238,21 +238,6 @@ describe("listbox", (): void => {
         expect(rendered.childAt(0).prop("aria-activedescendant")).toBe("2");
     });
 
-    test("aria-multiselectable value should be false by default", (): void => {
-        const rendered: any = mount(
-            <Listbox>
-                <div role="option" id="1">
-                    1
-                </div>
-                <div role="option" id="2">
-                    2
-                </div>
-            </Listbox>
-        );
-
-        expect(rendered.childAt(0).prop("aria-multiselectable")).toBe(false);
-    });
-
     test("aria-multiselectable value should be true when in multi-select mode", (): void => {
         const rendered: any = mount(<Listbox multiselectible={true} />);
 

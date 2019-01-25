@@ -5,9 +5,17 @@
     "type": "object",
     "id": "listbox",
     "properties": {
-        "typeAheadPropName": {
-            "title": "Type ahead property name",
+        "typeAheadPropertyKey": {
+            "title": "Type ahead property key",
             "type": "string"
+        },
+        "labelledBy": {
+            "title": "Labelled by",
+            "type": "string"
+        },
+        "multiselectible": {
+            "title": "Multi-selectable",
+            "type": "boolean"
         }
     },
     "reactProperties": {

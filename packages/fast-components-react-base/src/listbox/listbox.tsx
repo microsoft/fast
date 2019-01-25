@@ -37,6 +37,7 @@ class Listbox extends Foundation<
 
     protected handledProps: HandledProps<ListboxHandledProps> = {
         children: void 0,
+        labelledBy: void 0,
         managedClasses: void 0,
         typeAheadPropertyKey: void 0,
     };
@@ -46,7 +47,7 @@ class Listbox extends Foundation<
     >();
 
     private typeAheadString: string = "";
-    private typeAheadTimer: any;
+    private typeAheadTimer: NodeJS.Timer;
     private typeAheadData: TypeAheadDataItem[] = [];
 
     constructor(props: ListboxProps) {
@@ -67,8 +68,9 @@ class Listbox extends Foundation<
                 {...this.unhandledProps()}
                 ref={this.rootElement}
                 role="listbox"
-                aria-multiselectable={this.props.multiselectible}
+                aria-multiselectable={this.props.multiselectible || null}
                 aria-activedescendant={this.state.focussedItemId}
+                aria-labelledby={this.props.labelledBy || null}
                 className={this.generateClassNames()}
                 onKeyDown={this.handleMenuKeyDown}
             >
