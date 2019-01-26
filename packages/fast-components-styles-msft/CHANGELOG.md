@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="3.8.0"></a>
+# [3.8.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.7.1...@microsoft/fast-components-styles-msft@3.8.0) (2019-01-26)
+
+
+### Features
+
+* add focus-visible support ([#1335](https://github.com/Microsoft/fast-dna/issues/1335)) ([1360ef6](https://github.com/Microsoft/fast-dna/commit/1360ef6))
+
+
+
+
+
 <a name="3.7.1"></a>
 ## [3.7.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.7.0...@microsoft/fast-components-styles-msft@3.7.1) (2019-01-22)
 

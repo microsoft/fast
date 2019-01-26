@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="3.1.12"></a>
+## [3.1.12](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@3.1.11...@microsoft/fast-layouts-react@3.1.12) (2019-01-26)
+
+**Note:** Version bump only for package @microsoft/fast-layouts-react
+
+
+
+
+
 <a name="3.1.11"></a>
 ## [3.1.11](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@3.1.10...@microsoft/fast-layouts-react@3.1.11) (2019-01-22)
 

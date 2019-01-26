@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="3.7.0"></a>
+# [3.7.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.6.2...@microsoft/fast-components-react-msft@3.7.0) (2019-01-26)
+
+
+### Features
+
+* add focus-visible support ([#1335](https://github.com/Microsoft/fast-dna/issues/1335)) ([1360ef6](https://github.com/Microsoft/fast-dna/commit/1360ef6))
+
+
+
+
+
 <a name="3.6.2"></a>
 ## [3.6.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.6.1...@microsoft/fast-components-react-msft@3.6.2) (2019-01-22)
 
