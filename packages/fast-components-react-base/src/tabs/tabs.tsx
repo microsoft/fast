@@ -13,9 +13,9 @@ import {
     TabsProps,
     TabsUnhandledProps,
 } from "./tabs.props";
-import Tab from "./tab";
+import Tab, { TabManagedClasses } from "./tab";
 import TabItem from "./tab-item";
-import TabPanel from "./tab-panel";
+import TabPanel, { TabPanelManagedClasses } from "./tab-panel";
 
 export enum TabLocation {
     first,
@@ -157,20 +157,24 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
     /**
      * Create tab class names
      */
-    protected generateTabClassNames(): any {
+    protected generateTabClassNames(): TabManagedClasses {
         return {
-            tab: `${get(this.props, "managedClasses.tab", "")}`,
-            tab__active: `${get(this.props, "managedClasses.tab__active", "")}`,
+            managedClasses: {
+                tab: get(this.props, "managedClasses.tab"),
+                tab__active: get(this.props, "managedClasses.tab__active"),
+            },
         };
     }
 
     /**
      * Create tab panel class names
      */
-    protected generateTabPanelClassNames(): any {
+    protected generateTabPanelClassNames(): TabPanelManagedClasses {
         return {
-            tabPanel: `${get(this.props, "managedClasses.tabPanel", "")}`,
-            tabPanel__hidden: `${get(this.props, "managedClasses.tabPanel__hidden", "")}`,
+            managedClasses: {
+                tabPanel: get(this.props, "managedClasses.tabPanel"),
+                tabPanel__hidden: get(this.props, "managedClasses.tabPanel__hidden"),
+            },
         };
     }
 
@@ -195,7 +199,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
                 return (
                     <TabItem key={tabItem.id} id={tabItem.id} slot={TabsSlot.tabItem}>
                         <Tab
-                            managedClasses={this.generateTabClassNames()}
+                            {...this.generateTabClassNames()}
                             slot={TabsSlot.tab}
                             key={tabItem.id}
                             aria-controls={tabItem.id}
@@ -207,7 +211,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
                             {tabItem.tab(this.generateTabContentClassNames())}
                         </Tab>
                         <TabPanel
-                            managedClasses={this.generateTabPanelClassNames()}
+                            {...this.generateTabPanelClassNames()}
                             slot={TabsSlot.tabPanel}
                             key={tabItem.id}
                             id={tabItem.id}
