@@ -38,8 +38,8 @@ class ActionTrigger extends Foundation<
                     ButtonAppearance[ActionTriggerAppearance[this.props.appearance]]
                 }
                 jssStyleSheet={actionTriggerButtonOverrides}
+                beforeContent={this.generateGlyph}
             >
-                {this.props.glyph(get(this.props, "managedClasses.actionTrigger_glyph"))}
                 {this.props.children}
             </Button>
         );
@@ -92,6 +92,10 @@ class ActionTrigger extends Foundation<
 
         return super.generateClassNames(classNames);
     }
+
+    private generateGlyph = (): React.ReactNode => {
+        return this.props.glyph(get(this.props, "managedClasses.actionTrigger_glyph"));
+    };
 }
 
 export default ActionTrigger;
