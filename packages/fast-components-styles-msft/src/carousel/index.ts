@@ -1,32 +1,12 @@
-import designSystemDefaults, {
-    DesignSystem,
-    withDesignSystemDefaults,
-} from "../design-system";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import {
     ComponentStyles,
     ComponentStyleSheet,
     CSSRules,
 } from "@microsoft/fast-jss-manager";
-import {
-    applyLocalizedProperty,
-    Direction,
-    localizeSpacing,
-} from "@microsoft/fast-jss-utilities";
-import {
-    applyMixedColor,
-    ensureNormalContrast,
-    hoverContrast,
-    normalContrast,
-} from "../utilities/colors";
-import Chroma from "chroma-js";
+import { applyLocalizedProperty, Direction } from "@microsoft/fast-jss-utilities";
+import { hoverContrast } from "../utilities/colors";
 import { CarouselClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-
-function flipperStyles(): CSSRules<{}> {
-    return {
-        position: "absolute",
-        top: "calc(50% - 20px)",
-    };
-}
 
 const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -34,23 +14,28 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const direction: Direction = designSystem.direction;
 
+    function flipperStyles(): CSSRules<{}> {
+        return {
+            position: "absolute",
+            top: "calc(50% - 20px)",
+        };
+    }
+
     return {
         carousel: {
             position: "relative",
         },
-        carousel_tabs: {
-            '& > [role="tablist"]': {
-                position: "absolute",
-                bottom: "8px",
-                display: "block",
-                padding: "0",
-                textAlign: "center",
-                width: "100%",
-                zIndex: "100",
-            },
+        carousel_slides: {},
+        carousel_sequenceIndicators: {
+            position: "absolute",
+            bottom: "8px",
+            display: "block",
+            padding: "0",
+            textAlign: "center",
+            width: "100%",
+            zIndex: "100",
         },
-        carousel_tabsTabItem: {},
-        carousel_tabsTabItemTab: {
+        carousel_sequenceIndicator: {
             display: "inline-block",
             background: "transparent",
             border: "0",
@@ -68,14 +53,15 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
                 width: "100%",
             },
         },
-        carousel_tabsTabItemTabPanel: {
-            display: "none",
-            '&[aria-hidden="false"]': {
-                display: "block",
-            },
+        carousel_sequenceIndicator__active: {},
+        carousel_tabPanel: {
+            display: "block",
         },
-        carousel_tabsTabItemTabContent: {},
-        carousel_tabsTabItemTabPanelContent: {},
+        carousel_tabPanel__hidden: {
+            display: "none",
+        },
+        carousel_tabPanels: {},
+        carousel_tabPanelContent: {},
         carousel_flipperPrevious: {
             ...flipperStyles(),
             [applyLocalizedProperty("left", "right", direction)]: "6px",
@@ -98,7 +84,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
                     },
                 },
             },
-            "& $carousel_tabsTabItemTab": {
+            "& $carousel_sequenceIndicator": {
                 "&::before": {
                     border: "1px solid white",
                 },
@@ -107,10 +93,10 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
                         boxShadow: "0 0 0 1px white",
                     },
                 },
-                '&[aria-selected="true"]': {
-                    "&::before": {
-                        background: "white",
-                    },
+            },
+            "& $carousel_sequenceIndicator__active": {
+                "&::before": {
+                    background: "white",
                 },
             },
         },
@@ -128,19 +114,19 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
                     },
                 },
             },
-            "& $carousel_tabsTabItemTab": {
+            "& $carousel_sequenceIndicator": {
                 "&::before": {
                     border: "1px solid black",
                 },
-                '&[aria-selected="true"]': {
+                "&:focus": {
                     "&::before": {
-                        background: "black",
+                        boxShadow: "0 0 0 1px black",
                     },
-                    "&:focus": {
-                        "&::before": {
-                            boxShadow: "0 0 0 1px black",
-                        },
-                    },
+                },
+            },
+            "& $carousel_sequenceIndicator__active": {
+                "&::before": {
+                    background: "black",
                 },
             },
         },

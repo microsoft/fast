@@ -1,6 +1,4 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { get } from "lodash-es";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
     CarouselHandledProps,
@@ -10,16 +8,17 @@ import {
     SlideTheme,
 } from "./carousel.props";
 import { Flipper, FlipperDirection } from "../flipper";
-import {
-    Tab,
-    TabItem,
-    TabPanel,
-    Tabs,
-    TabsItem,
-    TabsSlot,
-} from "@microsoft/fast-components-react-base";
+import { Tabs } from "@microsoft/fast-components-react-base";
+import { TabsClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { get } from "lodash-es";
 
+/**
+ * The carousel state interface
+ */
 export interface CarouselState {
+    /**
+     * Holds the active tab id to share with other controls
+     */
     activeId: string;
 }
 
@@ -87,10 +86,9 @@ class Carousel extends Foundation<
                     label={this.props.label}
                     activeId={this.state.activeId}
                     onUpdate={this.handleUpdate}
-                    className={get(this.props, "managedClasses.carousel_tabs", "")}
-                >
-                    {this.renderItems()}
-                </Tabs>
+                    items={this.slides}
+                    managedClasses={this.generateTabsClassNames()}
+                />
                 <Flipper
                     direction={FlipperDirection.next}
                     onClick={this.handleNextInvoke}
@@ -117,6 +115,38 @@ class Carousel extends Foundation<
         }
 
         return super.generateClassNames(className);
+    }
+
+    /**
+     * Returns tabs managedclasses with new carousel-specific JSS
+     */
+    protected generateTabsClassNames(): TabsClassNameContract {
+        return {
+            tabs: get(this.props, "managedClasses.carousel_slides", ""),
+            tabs_tabPanels: get(this.props, "managedClasses.carousel_tabPanels", ""),
+            tabs_tabList: get(
+                this.props,
+                "managedClasses.carousel_sequenceIndicators",
+                ""
+            ),
+            tabs_tabPanelContent: get(
+                this.props,
+                "managedClasses.carousel_tabPanelContent",
+                ""
+            ),
+            tab: get(this.props, "managedClasses.carousel_sequenceIndicator", ""),
+            tab__active: get(
+                this.props,
+                "managedClasses.carousel_sequenceIndicator__active",
+                ""
+            ),
+            tabPanel: get(this.props, "managedClasses.carousel_tabPanel", ""),
+            tabPanel__hidden: get(
+                this.props,
+                "managedClasses.carousel_tabPanel__hidden",
+                ""
+            ),
+        };
     }
 
     /**
@@ -190,75 +220,6 @@ class Carousel extends Foundation<
         this.setState({
             activeId: this.slides[position].id,
         });
-    }
-
-    /**
-     * Renders the tab item
-     */
-    private renderItems = (): JSX.Element[] => {
-        if (!this.slides || this.slides.length <= 0) {
-            return;
-        }
-
-        return this.slides.map(
-            (item: TabsItem, index: number): JSX.Element => {
-                return (
-                    <TabItem
-                        key={index}
-                        slot={TabsSlot.tabItem}
-                        id={item.id}
-                        className={get(
-                            this.props,
-                            "managedClasses.carousel_tabsTabItem",
-                            ""
-                        )}
-                    >
-                        <Tab
-                            slot={TabsSlot.tab}
-                            className={get(
-                                this.props,
-                                "managedClasses.carousel_tabsTabItemTab",
-                                ""
-                            )}
-                        >
-                            {this.renderTab(item)}
-                        </Tab>
-                        <TabPanel
-                            slot={TabsSlot.tabPanel}
-                            className={get(
-                                this.props,
-                                "managedClasses.carousel_tabsTabItemTabPanel",
-                                ""
-                            )}
-                        >
-                            {this.renderTabPanel(item)}
-                        </TabPanel>
-                    </TabItem>
-                );
-            }
-        );
-    };
-
-    /**
-     * Render tab
-     */
-    private renderTab(item: TabsItem): React.ReactNode {
-        if (typeof item.tab === "function") {
-            return item.tab(
-                get(this.props, "managedClasses.carousel_tabsTabItemTabContent", "")
-            );
-        }
-    }
-
-    /**
-     * Render tab panel
-     */
-    private renderTabPanel(item: TabsItem): React.ReactNode {
-        if (typeof item.content === "function") {
-            return item.content(
-                get(this.props, "managedClasses.carousel_tabsTabItemTabPanelContent", "")
-            );
-        }
     }
 }
 

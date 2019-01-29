@@ -9,42 +9,52 @@ export interface CarouselClassNameContract {
     carousel?: string;
 
     /**
-     * The carousel tabs
+     * The collection of tabs and tab panels
      */
-    carousel_tabs?: string;
+    carousel_slides?: string;
 
     /**
-     * The carousel tab items
+     * The collection of sequence indicators
      */
-    carousel_tabsTabItem?: string;
+    carousel_sequenceIndicators?: string;
 
     /**
-     * The carousel tab item tab
+     * The sequence indicator
      */
-    carousel_tabsTabItemTab?: string;
+    carousel_sequenceIndicator?: string;
 
     /**
-     * The carousel tab item tab panel
+     * The active carousel sequence indicator
      */
-    carousel_tabsTabItemTabPanel?: string;
+    carousel_sequenceIndicator__active?: string;
 
     /**
-     * The carousel tab item tab content
+     * The collection of tab panels
      */
-    tabsTabItemTabContent?: string;
+    carousel_tabPanels?: string;
 
     /**
-     * The carousel tab item tab panel content
+     * The tab panel
      */
-    carousel_tabsTabItemTabPanelContent?: string;
+    carousel_tabPanel?: string;
 
     /**
-     * The carousels previous flipper
+     * The hidden tab panel
+     */
+    carousel_tabPanel__hidden?: string;
+
+    /**
+     * The tab panel content
+     */
+    carousel_tabPanelContent?: string;
+
+    /**
+     * The carousel's previous flipper
      */
     carousel_flipperPrevious?: string;
 
     /**
-     * The carousels next flipper
+     * The carousel's next flipper
      */
     carousel_flipperNext?: string;
 
