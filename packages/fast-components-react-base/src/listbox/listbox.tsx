@@ -243,7 +243,7 @@ class Listbox extends Foundation<
 
         let matchIndex: number = -1;
 
-        const children: React.ReactChild[] = React.Children.toArray(this.props.children);
+        const children: React.ReactNode[] = React.Children.toArray(this.props.children);
 
         children.some(
             (child: React.ReactElement<any>, index: number): boolean => {
@@ -332,10 +332,10 @@ class Listbox extends Foundation<
         item: ListboxItemData,
         event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>
     ): void => {
-        const children: React.ReactChild[] = React.Children.toArray(this.props.children);
+        const children: React.ReactNode[] = React.Children.toArray(this.props.children);
         const target: Element = event.currentTarget;
         const itemIndex: number = this.domChildren().indexOf(target);
-        const selectedChildren: React.ReactChild[] = children.slice(
+        const selectedChildren: React.ReactNode[] = children.slice(
             this.shiftRangeSelectStartIndex >= itemIndex
                 ? itemIndex
                 : this.shiftRangeSelectStartIndex,

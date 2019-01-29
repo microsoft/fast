@@ -6,4 +6,9 @@ export interface ListboxItemClassNameContract {
      * The root of the listbox-item component
      */
     listboxItem?: string;
+
+    /**
+     * The disabled modifier
+     */
+    listboxItem__disabled?: string;
 }
