@@ -1,7 +1,9 @@
 /**
  * The class name contract for the tabs component
  */
-export interface TabsClassNameContract {
+export interface TabsClassNameContract
+    extends TabClassNameContract,
+        TabPanelClassNameContract {
     /**
      * The root of the tabs component
      */

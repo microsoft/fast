@@ -31,18 +31,8 @@ const tabsManagedClasses: TabsManagedClasses = {
         tabs: "tabs-class",
         tabs_tabContent: "tabs_tab_content-class",
         tabs_tabPanelContent: "tabs_tabPanel_content-class",
-    },
-};
-
-const tabManagedClasses: TabManagedClasses = {
-    managedClasses: {
         tab: "tab-class",
         tab__active: "tab__active-class",
-    },
-};
-
-const tabPanelManagedClasses: TabPanelManagedClasses = {
-    managedClasses: {
         tabPanel: "tab_panel-class",
         tabPanel__hidden: "tab_panel__hidden-class",
     },
@@ -56,7 +46,6 @@ function getTabElementOne(): any {
         id: tabSchema.id,
         props: {
             slot: TabsSlot.tab,
-            ...tabManagedClasses,
             children: "tab one",
         },
     };
@@ -70,7 +59,6 @@ function getTabPanelOne(): any {
         id: tabPanelSchema.id,
         props: {
             slot: TabsSlot.tabPanel,
-            ...tabPanelManagedClasses,
             children: "tab one content",
         },
     };
@@ -98,7 +86,6 @@ function getTabElementTwo(): any {
         id: tabSchema.id,
         props: {
             slot: TabsSlot.tab,
-            ...tabManagedClasses,
             children: "tab two",
         },
     };
@@ -112,7 +99,6 @@ function getTabPanelTwo(): any {
         id: tabPanelSchema.id,
         props: {
             slot: TabsSlot.tabPanel,
-            ...tabPanelManagedClasses,
             children: "tab two content",
         },
     };
@@ -140,7 +126,6 @@ function getTabElementThree(): any {
         id: tabSchema.id,
         props: {
             slot: TabsSlot.tab,
-            ...tabManagedClasses,
             children: "tab three",
         },
     };
@@ -154,7 +139,6 @@ function getTabPanelThree(): any {
         id: tabPanelSchema.id,
         props: {
             slot: TabsSlot.tabPanel,
-            ...tabPanelManagedClasses,
             children: "tab three content",
         },
     };
@@ -182,7 +166,6 @@ function getTabElementFour(): any {
         id: tabSchema.id,
         props: {
             slot: TabsSlot.tab,
-            ...tabManagedClasses,
             children: "tab four",
         },
     };
@@ -196,7 +179,6 @@ function getTabPanelFour(): any {
         id: tabPanelSchema.id,
         props: {
             slot: TabsSlot.tabPanel,
-            ...tabPanelManagedClasses,
             children: "tab four content",
         },
     };
@@ -234,7 +216,6 @@ const exampleChildren1: any[] = [
                 id: tabSchema.id,
                 props: {
                     slot: TabsSlot.tab,
-                    ...tabManagedClasses,
                     children: "tab one - missing panel",
                 },
             },
@@ -259,7 +240,6 @@ const exampleChildren2: JSX.Element[] = [
                 id: tabPanelSchema.id,
                 props: {
                     slot: TabsSlot.tabPanel,
-                    ...tabPanelManagedClasses,
                     children: "tab two missing tab",
                 },
             },
