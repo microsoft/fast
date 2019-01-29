@@ -27,3 +27,5 @@ function cleanPath(cleanPath) {
 if (Array.isArray(paths)) {
     paths.forEach(cleanPath);
 }
+
+
