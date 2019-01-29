@@ -8,8 +8,9 @@ import {
 } from "./listbox.props";
 import * as React from "react";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
-import { get, inRange, invert } from "lodash-es";
+import { get, inRange, isEqual } from "lodash-es";
 import { canUseDOM } from "exenv-es6";
+import { ListboxContext, ListboxItemData } from "./listbox-context";
 
 export interface ListboxState {
     /**
@@ -17,11 +18,7 @@ export interface ListboxState {
      */
     focusIndex: number;
     focussedItemId: string;
-}
-
-export interface TypeAheadDataItem {
-    index: number;
-    compareString: string;
+    selectedItems: ListboxItemData[];
 }
 
 class Listbox extends Foundation<
@@ -30,15 +27,23 @@ class Listbox extends Foundation<
     ListboxState
 > {
     public static displayName: string = "Listbox";
+    public static valuePropertyKey: string = "value";
+    public static displayStringPropertyKey: string = "displayString";
 
     public static defaultProps: Partial<ListboxProps> = {
-        multiselectible: false,
+        multiselectable: false,
+        defaultSelection: [],
+        selectedItems: [],
     };
 
     protected handledProps: HandledProps<ListboxHandledProps> = {
         children: void 0,
+        defaultSelection: void 0,
         labelledBy: void 0,
         managedClasses: void 0,
+        multiselectable: void 0,
+        onSelectionChange: void 0,
+        selectedItems: void 0,
         typeAheadPropertyKey: void 0,
     };
 
@@ -48,7 +53,7 @@ class Listbox extends Foundation<
 
     private typeAheadString: string = "";
     private typeAheadTimer: NodeJS.Timer;
-    private typeAheadData: TypeAheadDataItem[] = [];
+    private shiftRangeSelectStartIndex: number = -1;
 
     constructor(props: ListboxProps) {
         super(props);
@@ -56,6 +61,9 @@ class Listbox extends Foundation<
         this.state = {
             focusIndex: -1,
             focussedItemId: "",
+            selectedItems: this.props.selectedItems
+                ? this.props.defaultSelection
+                : this.props.selectedItems,
         };
     }
 
@@ -68,13 +76,21 @@ class Listbox extends Foundation<
                 {...this.unhandledProps()}
                 ref={this.rootElement}
                 role="listbox"
-                aria-multiselectable={this.props.multiselectible || null}
+                aria-multiselectable={this.props.multiselectable || null}
                 aria-activedescendant={this.state.focussedItemId}
                 aria-labelledby={this.props.labelledBy || null}
                 className={this.generateClassNames()}
                 onKeyDown={this.handleMenuKeyDown}
             >
-                {this.renderChildren()}
+                <ListboxContext.Provider
+                    value={{
+                        selectedItems: this.state.selectedItems,
+                        itemFocused: this.listboxItemfocused,
+                        itemInvoked: this.listboxItemInvoked,
+                    }}
+                >
+                    {this.renderChildren()}
+                </ListboxContext.Provider>
             </div>
         );
     }
@@ -105,7 +121,6 @@ class Listbox extends Foundation<
      * Render all child elements
      */
     private renderChildren(): React.ReactChild[] {
-        this.typeAheadData = [];
         return React.Children.map(this.props.children, this.renderChild);
     }
 
@@ -116,12 +131,6 @@ class Listbox extends Foundation<
         child: React.ReactElement<any>,
         index: number
     ): React.ReactChild => {
-        if (child.props[this.props.typeAheadPropertyKey] !== undefined) {
-            this.typeAheadData.push({
-                index,
-                compareString: child.props[this.props.typeAheadPropertyKey].toLowerCase(),
-            });
-        }
         return React.cloneElement(child, {
             tabIndex: index === this.state.focusIndex ? 0 : -1,
         });
@@ -155,24 +164,6 @@ class Listbox extends Foundation<
             ? Array.from(this.rootElement.current.children)
             : [];
     }
-
-    /**
-     * Ensure we always validate our internal state on item focus events, otherwise
-     * the component can get out of sync from click events
-     */
-    private handleMenuItemFocus = (e: React.FocusEvent<HTMLElement>): void => {
-        const target: Element = e.currentTarget;
-        const focusIndex: number = this.domChildren().indexOf(target);
-
-        if (this.isDisabledElement(target)) {
-            target.blur();
-            return;
-        }
-
-        if (focusIndex !== this.state.focusIndex && focusIndex !== -1) {
-            this.setFocus(focusIndex, focusIndex > this.state.focusIndex ? 1 : -1);
-        }
-    };
 
     /**
      * Sets focus to the nearest focusable element to the supplied focusIndex.
@@ -240,28 +231,33 @@ class Listbox extends Foundation<
         }
     };
 
+    /**
+     * Sets focus based on characters typed
+     */
     private processTypeAhead = (e: React.KeyboardEvent<HTMLDivElement>): void => {
-        const newChar: string = e.key.toLowerCase();
-
-        if (!/^[a-z0-9\s]+$/i.test(newChar)) {
-            return;
-        }
-
         e.preventDefault();
 
         clearTimeout(this.typeAheadTimer);
 
-        this.typeAheadString = this.typeAheadString + newChar;
-        const children: Element[] = this.domChildren();
+        this.typeAheadString = this.typeAheadString + e.key.toLowerCase();
+
         let matchIndex: number = -1;
-        this.typeAheadData.some(
-            (typeAheadData: TypeAheadDataItem, index: number): boolean => {
-                if (typeAheadData.compareString.startsWith(this.typeAheadString)) {
-                    matchIndex = typeAheadData.index;
+
+        const children: React.ReactChild[] = React.Children.toArray(this.props.children);
+
+        children.some(
+            (child: React.ReactElement<any>, index: number): boolean => {
+                if (child.props[this.props.typeAheadPropertyKey] === undefined) {
+                    return false;
+                }
+                if (
+                    child.props[this.props.typeAheadPropertyKey]
+                        .toLowerCase()
+                        .startsWith(this.typeAheadString)
+                ) {
+                    matchIndex = index;
                     return true;
                 }
-
-                return false;
             }
         );
 
@@ -278,6 +274,143 @@ class Listbox extends Foundation<
     private typeAheadTimerExpired = (): void => {
         this.typeAheadString = "";
         clearTimeout(this.typeAheadTimer);
+    };
+
+    /**
+     * Function called by child items when they have been invoked
+     */
+    private listboxItemInvoked = (
+        item: ListboxItemData,
+        event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>
+    ): void => {
+        if (this.props.multiselectable) {
+            const target: Element = event.currentTarget;
+            const itemIndex: number = this.domChildren().indexOf(target);
+
+            if (!event.shiftKey || this.shiftRangeSelectStartIndex === -1) {
+                this.shiftRangeSelectStartIndex = itemIndex;
+            }
+
+            if (event.ctrlKey) {
+                this.processCtrlMultiSelect(item, event);
+            } else if (event.shiftKey) {
+                this.processShiftMultiSelect(item, event);
+            } else {
+                this.updateSelection([item]);
+            }
+        } else {
+            this.updateSelection([item]);
+        }
+    };
+
+    /**
+     * Resolves selection when control key is pressed (multi select only)
+     */
+    private processCtrlMultiSelect = (
+        item: ListboxItemData,
+        event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>
+    ): void => {
+        if (
+            this.state.selectedItems.filter((listboxItem: ListboxItemData) => {
+                return listboxItem.id === listboxItem.id;
+            }).length === 1
+        ) {
+            return;
+        }
+
+        const newSelectedItems: ListboxItemData[] = [item].concat(
+            this.state.selectedItems
+        );
+
+        this.updateSelection(newSelectedItems);
+    };
+
+    /**
+     * Resolves selection when shift key is pressed (multi select only)
+     */
+    private processShiftMultiSelect = (
+        item: ListboxItemData,
+        event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>
+    ): void => {
+        const children: React.ReactChild[] = React.Children.toArray(this.props.children);
+        const target: Element = event.currentTarget;
+        const itemIndex: number = this.domChildren().indexOf(target);
+        const selectedChildren: React.ReactChild[] = children.slice(
+            this.shiftRangeSelectStartIndex >= itemIndex
+                ? itemIndex
+                : this.shiftRangeSelectStartIndex,
+            this.shiftRangeSelectStartIndex >= itemIndex
+                ? this.shiftRangeSelectStartIndex + 1
+                : itemIndex + 1
+        );
+
+        const newSelectedItems: ListboxItemData[] = selectedChildren.map(
+            (child: React.ReactElement<any>) => {
+                let value: string = "";
+                let displayString: string = "";
+
+                if (child.props[Listbox.valuePropertyKey] !== undefined) {
+                    value = child.props[Listbox.valuePropertyKey];
+                }
+
+                if (child.props[Listbox.displayStringPropertyKey] !== undefined) {
+                    displayString = child.props[Listbox.displayStringPropertyKey];
+                }
+
+                const thisItemData: ListboxItemData = {
+                    id: child.props.id,
+                    value,
+                    displayString,
+                };
+
+                return thisItemData;
+            }
+        );
+
+        this.updateSelection(newSelectedItems);
+    };
+
+    /**
+     * Function called by child select options when they have been focused
+     * Ensure we always validate our internal state on item focus events, otherwise
+     * the component can get out of sync from click events
+     */
+    private listboxItemfocused = (
+        item: ListboxItemData,
+        event: React.FocusEvent<HTMLDivElement>
+    ): void => {
+        const target: Element = event.currentTarget;
+        const focusIndex: number = this.domChildren().indexOf(target);
+
+        if (this.isDisabledElement(target)) {
+            target.blur();
+            return;
+        }
+
+        this.updateSelection([item]);
+
+        if (focusIndex !== this.state.focusIndex && focusIndex !== -1) {
+            this.setFocus(focusIndex, focusIndex > this.state.focusIndex ? 1 : -1);
+        }
+    };
+
+    /**
+     * Updates selection state (should be the only place this is done outside of initialization)
+     */
+    private updateSelection = (newSelection: ListboxItemData[]): void => {
+        if (isEqual(newSelection, this.state.selectedItems)) {
+            return;
+        }
+
+        if (this.props.selectedItems === undefined) {
+            this.setState({
+                selectedItems: newSelection,
+            });
+        }
+
+        if (this.props.onSelectionChange) {
+            this.props.onSelectionChange(newSelection);
+        }
     };
 }
 

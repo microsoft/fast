@@ -2,9 +2,20 @@ import * as React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import schema from "./listbox.schema.json";
 import Listbox, { ListboxManagedClasses, ListboxProps } from "./listbox";
-import { ContextMenuItemProps } from "../context-menu-item";
-import { noop } from "lodash-es";
+import { ListboxItemProps } from "../listbox-item";
 import Documentation from "./.tmp/documentation";
+
+function listboxItemPropFactory(id: string): ListboxItemProps {
+    return {
+        managedClasses: {
+            listboxItem: "listbox-item",
+        },
+        id: "option-" + id,
+        value: id,
+        role: "option",
+        displayString: "Option-" + id,
+    };
+}
 
 const managedClasses: ListboxManagedClasses = {
     managedClasses: {
@@ -22,30 +33,21 @@ const examples: ComponentFactoryExample<ListboxProps> = {
         typeAheadPropertyKey: "displayString",
         children: [
             {
-                id: "react-html-element",
+                id: "listbox-item",
                 props: {
-                    id: "option-a",
-                    role: "option",
-                    displayString: "Option A",
-                    children: "Option A",
+                    ...listboxItemPropFactory("a"),
                 },
             },
             {
-                id: "react-html-element",
+                id: "listbox-item",
                 props: {
-                    id: "option-b",
-                    role: "option",
-                    displayString: "Option B",
-                    children: "Option B",
+                    ...listboxItemPropFactory("b"),
                 },
             },
             {
-                id: "react-html-element",
+                id: "listbox-item",
                 props: {
-                    id: "option-c",
-                    role: "option",
-                    displayString: "Option C",
-                    children: "Option C",
+                    ...listboxItemPropFactory("c"),
                 },
             },
         ],
@@ -55,30 +57,21 @@ const examples: ComponentFactoryExample<ListboxProps> = {
             ...managedClasses,
             children: [
                 {
-                    id: "react-html-element",
+                    id: "listbox-item",
                     props: {
-                        id: "option-a",
-                        role: "option",
-                        displayString: "Option A",
-                        children: "Option A",
+                        ...listboxItemPropFactory("a"),
                     },
                 },
                 {
-                    id: "react-html-element",
+                    id: "listbox-item",
                     props: {
-                        id: "option-b",
-                        role: "option",
-                        displayString: "Option B",
-                        children: "Option B",
+                        ...listboxItemPropFactory("b"),
                     },
                 },
                 {
-                    id: "react-html-element",
+                    id: "listbox-item",
                     props: {
-                        id: "option-c",
-                        role: "option",
-                        displayString: "Option C",
-                        children: "Option C",
+                        ...listboxItemPropFactory("c"),
                     },
                 },
             ],

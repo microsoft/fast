@@ -1,0 +1,35 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Listbox item",
+    "description": "A listbox item component's schema definition.",
+    "type": "object",
+    "id": "listbox-item",
+    "properties": {
+        "disabled": {
+            "title": "Disabled",
+            "type": "boolean"
+        },
+        "displayString": {
+            "title": "Display string",
+            "type": "string"
+        },
+        "id": {
+            "title": "Id",
+            "type": "string"
+        },
+        "value": {
+            "title": "Value",
+            "type": "string"
+        }
+    },
+    "reactProperties": {
+        "children": {
+            "title": "Building blocks",
+            "type": "children",
+            "defaults": [
+                "text"
+            ]
+        }
+    }
+}
+

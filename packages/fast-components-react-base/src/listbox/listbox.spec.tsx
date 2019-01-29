@@ -239,8 +239,7 @@ describe("listbox", (): void => {
     });
 
     test("aria-multiselectable value should be true when in multi-select mode", (): void => {
-        const rendered: any = mount(<Listbox multiselectible={true} />);
-
+        const rendered: any = mount(<Listbox multiselectable={true} />);
         expect(rendered.childAt(0).prop("aria-multiselectable")).toBe(true);
     });
 });

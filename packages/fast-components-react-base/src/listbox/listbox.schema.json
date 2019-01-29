@@ -13,7 +13,7 @@
             "title": "Labelled by",
             "type": "string"
         },
-        "multiselectible": {
+        "multiselectable": {
             "title": "Multi-selectable",
             "type": "boolean"
         }

@@ -11,6 +11,7 @@ export * from "./hypertext";
 export * from "./image";
 export * from "./label";
 export * from "./listbox";
+export * from "./listbox-item";
 export * from "./managed-classes";
 export * from "./progress";
 export * from "./radio";

@@ -3,6 +3,7 @@ import {
     ListboxClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
+import { ListboxItemData } from "./listbox-context";
 
 export interface ListboxManagedClasses extends ManagedClasses<ListboxClassNameContract> {}
 export interface ListboxUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
@@ -20,13 +21,28 @@ export interface ListboxHandledProps extends ListboxManagedClasses {
     /**
      * Whether this listbox supports multi-selection (default is 'false')
      */
-    multiselectible?: boolean;
+    multiselectable?: boolean;
 
     /**
      * The aria-labelledby attribute to link the listbox to an existing
      * element that provides it an accessible name
      */
     labelledBy?: string;
+
+    /**
+     * Selected options(controlled mode)
+     */
+    selectedItems?: ListboxItemData[];
+
+    /**
+     * Id's that are initially selected
+     */
+    defaultSelection?: ListboxItemData[];
+
+    /**
+     * The onSelectionChange event handler
+     */
+    onSelectionChange?: (selectedItems: ListboxItemData[]) => void;
 }
 
 export type ListboxProps = ListboxHandledProps & ListboxUnhandledProps;

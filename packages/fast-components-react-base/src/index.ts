@@ -50,6 +50,10 @@ import Listbox from "./listbox";
 export { Listbox };
 export * from "./listbox";
 
+import ListboxItem from "./listbox-item";
+export { ListboxItem };
+export * from "./listbox-item";
+
 import Progress from "./progress";
 export { Progress };
 export * from "./progress";
