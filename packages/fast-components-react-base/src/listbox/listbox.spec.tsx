@@ -2,6 +2,7 @@ import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import Listbox, { ListboxUnhandledProps } from "./listbox";
+import ListboxItem from "../listbox-item";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 /*
@@ -241,5 +242,35 @@ describe("listbox", (): void => {
     test("aria-multiselectable value should be true when in multi-select mode", (): void => {
         const rendered: any = mount(<Listbox multiselectable={true} />);
         expect(rendered.childAt(0).prop("aria-multiselectable")).toBe(true);
+    });
+
+    test("should move selection with focus when no modifier key is pressed", (): void => {
+        const rendered: any = mount(
+            <Listbox>
+                <ListboxItem id="a" value="a">
+                    a
+                </ListboxItem>
+                <ListboxItem id="b" value="b">
+                    b
+                </ListboxItem>
+            </Listbox>,
+            { attachTo: document.body }
+        );
+
+        expect(rendered.state("selectedItems").length).toBe(0);
+
+        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowDown });
+        expect(rendered.state("selectedItems").length).toBe(1);
+        expect(rendered.state("selectedItems")[0].id).toBe("b");
+        let element: HTMLElement = document.getElementById("b");
+        expect(element.getAttribute("aria-selected")).toBe("true");
+
+        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowUp });
+        expect(rendered.state("selectedItems").length).toBe(1);
+        expect(rendered.state("selectedItems")[0].id).toBe("a");
+        element = document.getElementById("a");
+        expect(element.getAttribute("aria-selected")).toBe("true");
+        element = document.getElementById("b");
+        expect(element.getAttribute("aria-selected")).toBe("false");
     });
 });

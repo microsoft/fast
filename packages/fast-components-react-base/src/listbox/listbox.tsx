@@ -33,7 +33,6 @@ class Listbox extends Foundation<
     public static defaultProps: Partial<ListboxProps> = {
         multiselectable: false,
         defaultSelection: [],
-        selectedItems: [],
     };
 
     protected handledProps: HandledProps<ListboxHandledProps> = {
@@ -61,9 +60,10 @@ class Listbox extends Foundation<
         this.state = {
             focusIndex: -1,
             focussedItemId: "",
-            selectedItems: this.props.selectedItems
-                ? this.props.defaultSelection
-                : this.props.selectedItems,
+            selectedItems:
+                this.props.selectedItems === undefined
+                    ? this.props.defaultSelection
+                    : this.props.selectedItems,
         };
     }
 
@@ -87,6 +87,7 @@ class Listbox extends Foundation<
                         selectedItems: this.state.selectedItems,
                         itemFocused: this.listboxItemfocused,
                         itemInvoked: this.listboxItemInvoked,
+                        multiselectable: this.props.multiselectable,
                     }}
                 >
                     {this.renderChildren()}
@@ -283,20 +284,24 @@ class Listbox extends Foundation<
         item: ListboxItemData,
         event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>
     ): void => {
-        if (this.props.multiselectable) {
-            const target: Element = event.currentTarget;
-            const itemIndex: number = this.domChildren().indexOf(target);
-
+        const target: Element = event.currentTarget;
+        const itemIndex: number = this.domChildren().indexOf(target);
+        if (this.props.multiselectable && event.type === "click") {
             if (!event.shiftKey || this.shiftRangeSelectStartIndex === -1) {
                 this.shiftRangeSelectStartIndex = itemIndex;
             }
-
             if (event.ctrlKey) {
-                this.processCtrlMultiSelect(item, event);
+                this.toggleInvokedItem(item, event);
             } else if (event.shiftKey) {
-                this.processShiftMultiSelect(item, event);
+                this.selectRange(item, event);
             } else {
                 this.updateSelection([item]);
+            }
+        } else if (this.props.multiselectable && event.type === "keydown") {
+            if (event.shiftKey) {
+                this.selectRange(item, event);
+            } else {
+                this.toggleInvokedItem(item, event);
             }
         } else {
             this.updateSelection([item]);
@@ -304,31 +309,31 @@ class Listbox extends Foundation<
     };
 
     /**
-     * Resolves selection when control key is pressed (multi select only)
+     * Toggle the selection state of the item
      */
-    private processCtrlMultiSelect = (
+    private toggleInvokedItem = (
         item: ListboxItemData,
         event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>
     ): void => {
-        if (
-            this.state.selectedItems.filter((listboxItem: ListboxItemData) => {
-                return listboxItem.id === listboxItem.id;
-            }).length === 1
-        ) {
-            return;
-        }
-
-        const newSelectedItems: ListboxItemData[] = [item].concat(
-            this.state.selectedItems
+        const culledSelection: ListboxItemData[] = this.state.selectedItems.filter(
+            (listboxItem: ListboxItemData) => {
+                return listboxItem.id !== item.id;
+            }
         );
-
-        this.updateSelection(newSelectedItems);
+        if (culledSelection.length < this.state.selectedItems.length) {
+            this.updateSelection(culledSelection);
+        } else {
+            const newSelectedItems: ListboxItemData[] = [item].concat(
+                this.state.selectedItems
+            );
+            this.updateSelection(newSelectedItems);
+        }
     };
 
     /**
-     * Resolves selection when shift key is pressed (multi select only)
+     * Select a range of items
      */
-    private processShiftMultiSelect = (
+    private selectRange = (
         item: ListboxItemData,
         event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>
     ): void => {
@@ -387,7 +392,9 @@ class Listbox extends Foundation<
             return;
         }
 
-        this.updateSelection([item]);
+        if (!this.props.multiselectable) {
+            this.updateSelection([item]);
+        }
 
         if (focusIndex !== this.state.focusIndex && focusIndex !== -1) {
             this.setFocus(focusIndex, focusIndex > this.state.focusIndex ? 1 : -1);

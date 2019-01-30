@@ -35,7 +35,7 @@ export interface ListboxHandledProps extends ListboxManagedClasses {
     selectedItems?: ListboxItemData[];
 
     /**
-     * Id's that are initially selected
+     * Options that are initially selected
      */
     defaultSelection?: ListboxItemData[];
 

@@ -16,10 +16,12 @@ export interface ListboxContextType {
         event: React.FocusEvent<HTMLDivElement>
     ) => void;
     selectedItems: ListboxItemData[];
+    multiselectable: boolean;
 }
 
 export const ListboxContext: React.Context<ListboxContextType> = React.createContext({
     itemInvoked: null,
     itemFocused: null,
     selectedItems: [],
+    multiselectable: false,
 });
