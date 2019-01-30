@@ -51,7 +51,7 @@ describe("listbox item", (): void => {
         const onInvoke: any = jest.fn();
         const rendered: any = shallow(<ListboxItem onInvoke={onInvoke} />);
 
-        rendered.simulate("click");
+        rendered.simulate("click", { preventDefault: noop });
 
         expect(onInvoke).toHaveBeenCalledTimes(1);
     });
@@ -62,7 +62,7 @@ describe("listbox item", (): void => {
             <ListboxItem onInvoke={onInvoke} disabled={true} />
         );
 
-        rendered.simulate("click");
+        rendered.simulate("click", { preventDefault: noop });
 
         expect(onInvoke).toHaveBeenCalledTimes(0);
     });

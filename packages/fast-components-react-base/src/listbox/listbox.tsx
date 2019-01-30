@@ -203,7 +203,12 @@ class Listbox extends Foundation<
      * Handle the keydown event of the root menu
      */
     private handleMenuKeyDown = (event: React.KeyboardEvent<HTMLDivElement>): void => {
+        if (event.defaultPrevented) {
+            return;
+        }
+
         let focusItemId: string;
+
         switch (event.keyCode) {
             case KeyCodes.arrowDown:
             case KeyCodes.arrowRight:
@@ -233,18 +238,30 @@ class Listbox extends Foundation<
 
             case KeyCodes.end:
                 event.preventDefault();
+                if (this.props.multiselectable && event.shiftKey && event.ctrlKey) {
+                    this.selectRange(
+                        this.state.focusIndex,
+                        this.domChildren().length - 1
+                    );
+                }
                 this.setFocus(this.domChildren().length - 1, -1);
 
                 break;
 
             case KeyCodes.home:
                 event.preventDefault();
+                if (this.props.multiselectable && event.shiftKey && event.ctrlKey) {
+                    this.selectRange(0, this.state.focusIndex);
+                }
                 this.setFocus(0, 1);
 
                 break;
 
             default:
-                if (!event.ctrlKey) {
+                if (event.key === "A") {
+                    event.preventDefault();
+                    this.selectRange(0, this.domChildren().length);
+                } else if (!event.ctrlKey) {
                     this.processTypeAhead(event);
                 }
         }
@@ -345,13 +362,13 @@ class Listbox extends Foundation<
             if (event.ctrlKey) {
                 this.toggleItem(item, event);
             } else if (event.shiftKey) {
-                this.selectRange(item, event);
+                this.selectRange(this.shiftRangeSelectStartIndex, itemIndex);
             } else {
                 this.updateSelection([item]);
             }
         } else if (this.props.multiselectable && event.type === "keydown") {
             if (event.shiftKey) {
-                this.selectRange(item, event);
+                this.selectRange(this.shiftRangeSelectStartIndex, itemIndex);
             } else {
                 this.toggleItem(item, event);
             }
@@ -385,39 +402,31 @@ class Listbox extends Foundation<
     /**
      * Select a range of items
      */
-    private selectRange = (
-        item: ListboxItemData,
-        event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>
-    ): void => {
+    private selectRange = (startIndex: number, endIndex: number): void => {
         const children: React.ReactNode[] = React.Children.toArray(this.props.children);
-        const target: Element = event.currentTarget;
-        const itemIndex: number = this.domChildren().indexOf(target);
-        const selectedChildren: React.ReactNode[] = children.slice(
-            this.shiftRangeSelectStartIndex >= itemIndex
-                ? itemIndex
-                : this.shiftRangeSelectStartIndex,
-            this.shiftRangeSelectStartIndex >= itemIndex
-                ? this.shiftRangeSelectStartIndex + 1
-                : itemIndex + 1
+        const childrenInRange: React.ReactNode[] = children.slice(
+            startIndex >= endIndex ? endIndex : startIndex,
+            startIndex >= endIndex ? startIndex + 1 : endIndex + 1
         );
 
-        const newSelectedItems: ListboxItemData[] = selectedChildren.map(
+        const selectableChildren: React.ReactNode[] = childrenInRange.filter(
             (child: React.ReactElement<any>) => {
-                let value: string = "";
-                let displayString: string = "";
-
-                if (child.props[Listbox.valuePropertyKey] !== undefined) {
-                    value = child.props[Listbox.valuePropertyKey];
+                if (
+                    child.props[Listbox.valuePropertyKey] === undefined ||
+                    child.props[Listbox.displayStringPropertyKey] === undefined
+                ) {
+                    return false;
                 }
+                return true;
+            }
+        );
 
-                if (child.props[Listbox.displayStringPropertyKey] !== undefined) {
-                    displayString = child.props[Listbox.displayStringPropertyKey];
-                }
-
+        const newSelectedItems: ListboxItemData[] = selectableChildren.map(
+            (child: React.ReactElement<any>) => {
                 const thisItemData: ListboxItemData = {
                     id: child.props.id,
-                    value,
-                    displayString,
+                    value: child.props[Listbox.valuePropertyKey],
+                    displayString: child.props[Listbox.displayStringPropertyKey],
                 };
 
                 return thisItemData;

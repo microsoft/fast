@@ -138,6 +138,7 @@ class ListboxItem extends Foundation<
             return;
         }
 
+        e.preventDefault();
         this.invokeOption(e);
 
         if (typeof this.props.onClick === "function") {
