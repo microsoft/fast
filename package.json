@@ -85,7 +85,7 @@
     "babel-preset-env": "^1.6.1",
     "docusaurus-init": "^1.0.2",
     "dotenv": "^6.0.0",
-    "eyes.selenium": "0.0.83",
+    "eyes.selenium": "3.6.2",
     "glob": "^7.1.2",
     "husky": "^1.1.2",
     "jest": "^23.6.0",
