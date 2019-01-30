@@ -28,6 +28,7 @@ class Listbox extends Foundation<
 > {
     public static displayName: string = "Listbox";
     public static valuePropertyKey: string = "value";
+    public static idPropertyKey: string = "id";
     public static displayStringPropertyKey: string = "displayString";
 
     public static defaultProps: Partial<ListboxProps> = {
@@ -171,20 +172,22 @@ class Listbox extends Foundation<
      * The adjustment controls how the function searches for other focusable elements
      * if the element at the focusIndex is not focusable. A positive number will search
      * towards the end of the children array, whereas a negative number will search towards
-     * the beginning of the children array.
+     * the beginning of the children array.  Returns the focussed item id or an empty string
+     * if none found
      */
-    private setFocus(focusIndex: number, adjustment: number): void {
+    private setFocus(focusIndex: number, adjustment: number): string {
         const children: Element[] = this.domChildren();
+        let focusItemId: string = "";
 
         while (inRange(focusIndex, children.length)) {
             const child: Element = children[focusIndex];
-
+            focusItemId = child.id;
             if (this.isFocusableElement(child)) {
                 child.focus();
 
                 this.setState({
                     focusIndex,
-                    focussedItemId: child.id === undefined ? "" : child.id,
+                    focussedItemId: child.id === undefined ? "" : focusItemId,
                 });
 
                 break;
@@ -192,44 +195,90 @@ class Listbox extends Foundation<
 
             focusIndex += adjustment;
         }
+
+        return focusItemId;
     }
 
     /**
      * Handle the keydown event of the root menu
      */
-    private handleMenuKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
-        switch (e.keyCode) {
+    private handleMenuKeyDown = (event: React.KeyboardEvent<HTMLDivElement>): void => {
+        let focusItemId: string;
+        switch (event.keyCode) {
             case KeyCodes.arrowDown:
             case KeyCodes.arrowRight:
-                e.preventDefault();
-                this.setFocus(this.state.focusIndex + 1, 1);
+                event.preventDefault();
+                focusItemId = this.setFocus(this.state.focusIndex + 1, 1);
+
+                if (this.props.multiselectable && event.shiftKey && focusItemId !== "") {
+                    const itemData: ListboxItemData = this.getItemDataById(focusItemId);
+                    if (itemData !== null) {
+                        this.toggleItem(itemData, event);
+                    }
+                }
 
                 break;
 
             case KeyCodes.arrowUp:
             case KeyCodes.arrowLeft:
-                e.preventDefault();
-                this.setFocus(this.state.focusIndex - 1, -1);
-
+                event.preventDefault();
+                focusItemId = this.setFocus(this.state.focusIndex - 1, -1);
+                if (this.props.multiselectable && event.shiftKey && focusItemId !== "") {
+                    const itemData: ListboxItemData = this.getItemDataById(focusItemId);
+                    if (itemData !== null) {
+                        this.toggleItem(itemData, event);
+                    }
+                }
                 break;
 
             case KeyCodes.end:
-                e.preventDefault();
+                event.preventDefault();
                 this.setFocus(this.domChildren().length - 1, -1);
 
                 break;
 
             case KeyCodes.home:
-                e.preventDefault();
+                event.preventDefault();
                 this.setFocus(0, 1);
 
                 break;
 
             default:
-                if (!e.ctrlKey) {
-                    this.processTypeAhead(e);
+                if (!event.ctrlKey) {
+                    this.processTypeAhead(event);
                 }
         }
+    };
+
+    private getItemDataById = (itemId: string): ListboxItemData => {
+        const children: React.ReactNode[] = React.Children.toArray(this.props.children);
+
+        const focusChild: React.ReactNode = children.find(
+            (child: React.ReactElement<any>): boolean => {
+                if (
+                    child.props[Listbox.idPropertyKey] === undefined ||
+                    child.props[Listbox.idPropertyKey] !== itemId
+                ) {
+                    return false;
+                }
+                return true;
+            }
+        );
+
+        if (focusChild) {
+            const itemData: ListboxItemData = {
+                id: itemId,
+                displayString: (focusChild as React.ReactElement<any>).props[
+                    Listbox.displayStringPropertyKey
+                ],
+                value: (focusChild as React.ReactElement<any>).props[
+                    Listbox.valuePropertyKey
+                ],
+            };
+            return itemData;
+        }
+
+        return null;
     };
 
     /**
@@ -272,6 +321,9 @@ class Listbox extends Foundation<
         }
     };
 
+    /**
+     * clears the type ahead buffer after specified time of no typing
+     */
     private typeAheadTimerExpired = (): void => {
         this.typeAheadString = "";
         clearTimeout(this.typeAheadTimer);
@@ -291,7 +343,7 @@ class Listbox extends Foundation<
                 this.shiftRangeSelectStartIndex = itemIndex;
             }
             if (event.ctrlKey) {
-                this.toggleInvokedItem(item, event);
+                this.toggleItem(item, event);
             } else if (event.shiftKey) {
                 this.selectRange(item, event);
             } else {
@@ -301,7 +353,7 @@ class Listbox extends Foundation<
             if (event.shiftKey) {
                 this.selectRange(item, event);
             } else {
-                this.toggleInvokedItem(item, event);
+                this.toggleItem(item, event);
             }
         } else {
             this.updateSelection([item]);
@@ -311,7 +363,7 @@ class Listbox extends Foundation<
     /**
      * Toggle the selection state of the item
      */
-    private toggleInvokedItem = (
+    private toggleItem = (
         item: ListboxItemData,
         event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>
     ): void => {
