@@ -79,8 +79,8 @@ class ActionToggle extends Foundation<
                     ButtonAppearance[ActionToggleAppearance[this.getAppearance()]]
                 }
                 jssStyleSheet={actionToggleButtonOverrides}
+                beforeContent={this.renderGlyph}
             >
-                {this.renderGlyph()}
                 {this.renderLabel()}
             </Button>
         );
@@ -166,13 +166,13 @@ class ActionToggle extends Foundation<
     /**
      * Render Glyphs
      */
-    private renderGlyph(): React.ReactNode {
+    private renderGlyph = (): React.ReactNode => {
         if (this.state.selected) {
             return this.renderSelectedGlyph();
         }
 
         return this.renderUnselectedGlyph();
-    }
+    };
 
     private renderSelectedGlyph(): React.ReactNode {
         if (typeof this.props.selectedGlyph === "function") {
