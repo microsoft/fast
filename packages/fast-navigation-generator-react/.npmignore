@@ -1,0 +1,15 @@
+tslint.json
+tsconfig.json
+webpack.config.js
+babel.config.js
+app/
+coverage/
+node_modules/
+src/
+www/
+
+# Tests
+__tests__/
+__snapshots__/
+*.spec.*
+*.test.*
