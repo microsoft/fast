@@ -30,6 +30,7 @@ class Listbox extends Foundation<
     public static valuePropertyKey: string = "value";
     public static idPropertyKey: string = "id";
     public static displayStringPropertyKey: string = "displayString";
+    public static disabledPropertyKey: string = "disabled";
 
     public static defaultProps: Partial<ListboxProps> = {
         multiselectable: false,
@@ -267,10 +268,13 @@ class Listbox extends Foundation<
         }
     };
 
-    private getItemDataById = (itemId: string): ListboxItemData => {
+    /**
+     * Gets a child node from it's id by examining children props
+     */
+    private getNodeById = (itemId: string): React.ReactNode => {
         const children: React.ReactNode[] = React.Children.toArray(this.props.children);
 
-        const focusChild: React.ReactNode = children.find(
+        const matchNode: React.ReactNode = children.find(
             (child: React.ReactElement<any>): boolean => {
                 if (
                     child.props[Listbox.idPropertyKey] === undefined ||
@@ -282,13 +286,22 @@ class Listbox extends Foundation<
             }
         );
 
-        if (focusChild) {
+        return matchNode;
+    };
+
+    /**
+     * Gets the listItemData of an item from it's id by examining children props
+     */
+    private getItemDataById = (itemId: string): ListboxItemData => {
+        const matchNode: React.ReactNode = this.getNodeById(itemId);
+
+        if (matchNode !== undefined) {
             const itemData: ListboxItemData = {
                 id: itemId,
-                displayString: (focusChild as React.ReactElement<any>).props[
+                displayString: (matchNode as React.ReactElement<any>).props[
                     Listbox.displayStringPropertyKey
                 ],
-                value: (focusChild as React.ReactElement<any>).props[
+                value: (matchNode as React.ReactElement<any>).props[
                     Listbox.valuePropertyKey
                 ],
             };
@@ -413,7 +426,8 @@ class Listbox extends Foundation<
             (child: React.ReactElement<any>) => {
                 if (
                     child.props[Listbox.valuePropertyKey] === undefined ||
-                    child.props[Listbox.displayStringPropertyKey] === undefined
+                    child.props[Listbox.displayStringPropertyKey] === undefined ||
+                    child.props[Listbox.disabledPropertyKey] === true
                 ) {
                     return false;
                 }
@@ -466,19 +480,49 @@ class Listbox extends Foundation<
      * Updates selection state (should be the only place this is done outside of initialization)
      */
     private updateSelection = (newSelection: ListboxItemData[]): void => {
-        if (isEqual(newSelection, this.state.selectedItems)) {
+        const validatedSelection: ListboxItemData[] = this.removeInvalidOptions(
+            newSelection
+        );
+
+        if (isEqual(validatedSelection, this.state.selectedItems)) {
             return;
         }
 
         if (this.props.selectedItems === undefined) {
             this.setState({
-                selectedItems: newSelection,
+                selectedItems: validatedSelection,
             });
         }
 
         if (this.props.onSelectionChange) {
-            this.props.onSelectionChange(newSelection);
+            this.props.onSelectionChange(validatedSelection);
         }
+    };
+
+    /**
+     * validates selected options against child props and returns only the valid ones
+     * (ie. such an option id exists and the option is not disabled)
+     */
+    private removeInvalidOptions = (items: ListboxItemData[]): ListboxItemData[] => {
+        const children: React.ReactNode[] = React.Children.toArray(this.props.children);
+        const validSelection: ListboxItemData[] = items.filter(
+            (listboxItem: ListboxItemData) => {
+                const itemNode: React.ReactNode = this.getNodeById(listboxItem.id);
+                if (itemNode === undefined) {
+                    return false;
+                }
+                if (
+                    (itemNode as React.ReactElement<any>).props[
+                        Listbox.disabledPropertyKey
+                    ] === "true"
+                ) {
+                    return false;
+                }
+                return true;
+            }
+        );
+
+        return validSelection;
     };
 }
 
