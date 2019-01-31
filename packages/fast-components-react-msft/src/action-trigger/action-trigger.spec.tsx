@@ -47,10 +47,10 @@ describe("action trigger", (): void => {
         }).not.toThrow();
     });
 
-    test("should throw if glyph prop is not provided", () => {
+    test("should not throw if glyph prop is not provided", () => {
         expect(() => {
             shallow(<MSFTActionTrigger glyph={null} />);
-        }).toThrow();
+        }).not.toThrow();
     });
 
     test("should create glyph element passed in", () => {
