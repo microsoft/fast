@@ -208,6 +208,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
                             onKeyDown={this.handleKeyDown}
                             tabIndex={this.setActive(tabItem, index) ? 0 : -1}
                         >
+                            {console.log(tabItem.tab)}
                             {tabItem.tab(this.generateTabContentClassNames())}
                         </Tab>
                         <TabPanel

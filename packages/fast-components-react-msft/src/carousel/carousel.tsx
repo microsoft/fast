@@ -174,7 +174,8 @@ class Carousel extends Foundation<
      */
     private updateSlides(): void {
         if (this.props.items.length > 0) {
-            this.slides = this.props.items.map((item: Slide): Slide => item);
+            // this.slides = this.props.items.map((item: Slide): Slide => item);
+            this.slides = this.props.items.slice();
         }
     }
 

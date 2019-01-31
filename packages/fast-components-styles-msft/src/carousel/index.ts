@@ -18,6 +18,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
         return {
             position: "absolute",
             top: "calc(50% - 20px)",
+            zIndex: "100",
         };
     }
 
