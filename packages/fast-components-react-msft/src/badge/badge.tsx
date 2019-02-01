@@ -7,6 +7,7 @@ import {
     BadgeSize,
     BadgeUnhandledProps,
 } from "./badge.props";
+import { Badge as BaseBadge } from "@microsoft/fast-components-react-base";
 import { get } from "lodash-es";
 
 class Badge extends Foundation<BadgeHandledProps, BadgeUnhandledProps, {}> {
@@ -28,9 +29,13 @@ class Badge extends Foundation<BadgeHandledProps, BadgeUnhandledProps, {}> {
      */
     public render(): JSX.Element {
         return (
-            <span {...this.unhandledProps()} className={this.generateClassNames()}>
+            <BaseBadge
+                {...this.unhandledProps()}
+                className={this.generateClassNames()}
+                managedClasses={this.props.managedClasses}
+            >
                 {this.props.children}
-            </span>
+            </BaseBadge>
         );
     }
 
@@ -38,7 +43,7 @@ class Badge extends Foundation<BadgeHandledProps, BadgeUnhandledProps, {}> {
      * Generates class names
      */
     protected generateClassNames(): string {
-        let classNames: string = get(this.props, "managedClasses.badge", "");
+        let classNames: string = "";
 
         switch (this.props.appearance) {
             case BadgeAppearance.highlight:

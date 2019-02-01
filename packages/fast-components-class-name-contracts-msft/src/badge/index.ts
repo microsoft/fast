@@ -1,12 +1,9 @@
+import { BadgeClassNameContract as BaseBadgeClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+
 /**
  * The class name contract for the badge component
  */
-export interface BadgeClassNameContract {
-    /**
-     * The root of the badge component
-     */
-    badge?: string;
-
+export interface BadgeClassNameContract extends BaseBadgeClassNameContract {
     /**
      * The small size
      */

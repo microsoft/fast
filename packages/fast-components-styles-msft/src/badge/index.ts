@@ -39,6 +39,7 @@ function largeBadgeStyle(direction: Direction): CSSRules<DesignSystem> {
 function backplateStyle(designSystem: DesignSystem): CSSRules<DesignSystem> {
     return {
         borderRadius: toPx(designSystem.cornerRadius),
+        fontWeight: `${fontWeight.normal}`,
     };
 }
 
@@ -78,7 +79,7 @@ const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
             fontWeight: `${fontWeight.semibold}`,
             letterSpacing: "0.075em",
             display: "inline-block",
-            maxWidth: "100%",
+            maxWidth: "350px",
             color: designSystem.foregroundColor,
         },
         badge__highlight: {
