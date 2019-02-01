@@ -40,9 +40,9 @@ export interface ListboxHandledProps extends ListboxManagedClasses {
     defaultSelection?: ListboxItemData[];
 
     /**
-     * The onSelectionChange event handler
+     * The  onSelectedItemsChange event handler
      */
-    onSelectionChange?: (selectedItems: ListboxItemData[]) => void;
+    onSelectedItemsChange?: (selectedItems: ListboxItemData[]) => void;
 }
 
 export type ListboxProps = ListboxHandledProps & ListboxUnhandledProps;

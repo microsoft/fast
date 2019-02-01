@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
-import { configure, mount, shallow } from "enzyme";
+import { configure, mount, render, shallow } from "enzyme";
 import Listbox, { ListboxUnhandledProps } from "./listbox";
 import ListboxItem from "../listbox-item";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
@@ -45,7 +45,7 @@ describe("listbox", (): void => {
         const rendered: any = mount(
             <Listbox>
                 <div>not a focusable element</div>
-                <div role="option">focusable element</div>
+                <ListboxItem>focusable element</ListboxItem>
             </Listbox>
         );
 
@@ -55,9 +55,10 @@ describe("listbox", (): void => {
     test("should move focus down when the down arrow is pressed", (): void => {
         const rendered: any = mount(
             <Listbox>
-                <div role="option">one</div>
-                <div role="option">two</div>
-            </Listbox>
+                <ListboxItem>one</ListboxItem>
+                <ListboxItem>two</ListboxItem>
+            </Listbox>,
+            { attachTo: document.body }
         );
 
         expect(rendered.state("focusIndex")).toBe(0);
@@ -69,9 +70,10 @@ describe("listbox", (): void => {
     test("should move focus down when the right arrow is pressed", (): void => {
         const rendered: any = mount(
             <Listbox>
-                <div role="option">one</div>
-                <div role="option">two</div>
-            </Listbox>
+                <ListboxItem>one</ListboxItem>
+                <ListboxItem>two</ListboxItem>
+            </Listbox>,
+            { attachTo: document.body }
         );
 
         expect(rendered.state("focusIndex")).toBe(0);
@@ -83,9 +85,10 @@ describe("listbox", (): void => {
     test("should move focus up when the up arrow is pressed", (): void => {
         const rendered: any = mount(
             <Listbox>
-                <div role="option">one</div>
-                <div role="option">two</div>
-            </Listbox>
+                <ListboxItem>one</ListboxItem>
+                <ListboxItem>two</ListboxItem>
+            </Listbox>,
+            { attachTo: document.body }
         );
 
         rendered.setState({ focusIndex: 1 });
@@ -98,9 +101,10 @@ describe("listbox", (): void => {
     test("should move focus up when the left arrow is pressed", (): void => {
         const rendered: any = mount(
             <Listbox>
-                <div role="option">one</div>
-                <div role="option">two</div>
-            </Listbox>
+                <ListboxItem>one</ListboxItem>
+                <ListboxItem>two</ListboxItem>
+            </Listbox>,
+            { attachTo: document.body }
         );
 
         rendered.setState({ focusIndex: 1 });
@@ -113,11 +117,12 @@ describe("listbox", (): void => {
     test("should move focus the last focusable element when the end key is pressed", (): void => {
         const rendered: any = mount(
             <Listbox>
-                <div role="option">one</div>
-                <div role="option">two</div>
-                <div role="option">three</div>
+                <ListboxItem>one</ListboxItem>
+                <ListboxItem>two</ListboxItem>
+                <ListboxItem>three</ListboxItem>
                 <div>four</div>
-            </Listbox>
+            </Listbox>,
+            { attachTo: document.body }
         );
 
         expect(rendered.state("focusIndex")).toBe(0);
@@ -130,10 +135,11 @@ describe("listbox", (): void => {
         const rendered: any = mount(
             <Listbox>
                 <div>one</div>
-                <div role="option">two</div>
-                <div role="option">three</div>
-                <div role="option">four</div>
-            </Listbox>
+                <ListboxItem>two</ListboxItem>
+                <ListboxItem>three</ListboxItem>
+                <ListboxItem>four</ListboxItem>
+            </Listbox>,
+            { attachTo: document.body }
         );
 
         rendered.setState({ focusIndex: 3 });
@@ -147,13 +153,14 @@ describe("listbox", (): void => {
         const rendered: any = mount(
             <Listbox>
                 <div />
-                <div role="option">two</div>
+                <ListboxItem>two</ListboxItem>
                 <div />
-                <div role="option">three</div>
+                <ListboxItem>three</ListboxItem>
                 <div />
-                <div role="option">four</div>
+                <ListboxItem>four</ListboxItem>
                 <div />
-            </Listbox>
+            </Listbox>,
+            { attachTo: document.body }
         );
 
         expect(rendered.state("focusIndex")).toBe(1);
@@ -168,17 +175,12 @@ describe("listbox", (): void => {
     test("should move focus to matching items as characters are typed", (): void => {
         const rendered: any = mount(
             <Listbox typeAheadPropertyKey="title">
-                <div role="option" title="a">
-                    a
-                </div>
-                <div role="option" title="ab">
-                    ab
-                </div>
-                <div role="option" title="abc">
-                    abc
-                </div>
+                <ListboxItem title="a">a</ListboxItem>
+                <ListboxItem title="ab">ab</ListboxItem>
+                <ListboxItem title="abc">abc</ListboxItem>
                 <div>four</div>
-            </Listbox>
+            </Listbox>,
+            { attachTo: document.body }
         );
 
         expect(rendered.state("focusIndex")).toBe(0);
@@ -199,17 +201,12 @@ describe("listbox", (): void => {
     test("should not move focus if characters are typed that don't have matches", (): void => {
         const rendered: any = mount(
             <Listbox typeAheadPropertyKey="title">
-                <div role="option" title="a">
-                    a
-                </div>
-                <div role="option" title="b">
-                    ab
-                </div>
-                <div role="option" title="c">
-                    abc
-                </div>
+                <ListboxItem title="a">a</ListboxItem>
+                <ListboxItem title="b">ab</ListboxItem>
+                <ListboxItem title="c">abc</ListboxItem>
                 <div>four</div>
-            </Listbox>
+            </Listbox>,
+            { attachTo: document.body }
         );
 
         expect(rendered.state("focusIndex")).toBe(0);
@@ -224,13 +221,10 @@ describe("listbox", (): void => {
     test("aria-activedescendant value should change with focus changes", (): void => {
         const rendered: any = mount(
             <Listbox>
-                <div role="option" id="1">
-                    1
-                </div>
-                <div role="option" id="2">
-                    2
-                </div>
-            </Listbox>
+                <ListboxItem id="1">1</ListboxItem>
+                <ListboxItem id="2">2</ListboxItem>
+            </Listbox>,
+            { attachTo: document.body }
         );
 
         expect(rendered.childAt(0).prop("aria-activedescendant")).toBe("");
@@ -530,13 +524,11 @@ describe("listbox", (): void => {
         expect(rendered.state("focusIndex")).toBe(1);
         expect(rendered.state("selectedItems").length).toBe(0);
 
-        rendered
-            .childAt(0)
-            .simulate("keydown", {
-                keyCode: KeyCodes.end,
-                shiftKey: true,
-                ctrlKey: true,
-            });
+        rendered.childAt(0).simulate("keydown", {
+            keyCode: KeyCodes.end,
+            shiftKey: true,
+            ctrlKey: true,
+        });
         expect(rendered.state("focusIndex")).toBe(2);
         expect(rendered.state("selectedItems").length).toBe(2);
         expect(rendered.state("selectedItems")[0].id).toBe("b");
@@ -567,13 +559,11 @@ describe("listbox", (): void => {
         expect(rendered.state("focusIndex")).toBe(1);
         expect(rendered.state("selectedItems").length).toBe(0);
 
-        rendered
-            .childAt(0)
-            .simulate("keydown", {
-                keyCode: KeyCodes.home,
-                shiftKey: true,
-                ctrlKey: true,
-            });
+        rendered.childAt(0).simulate("keydown", {
+            keyCode: KeyCodes.home,
+            shiftKey: true,
+            ctrlKey: true,
+        });
         expect(rendered.state("focusIndex")).toBe(0);
         expect(rendered.state("selectedItems").length).toBe(2);
         expect(rendered.state("selectedItems")[0].id).toBe("a");
@@ -604,5 +594,92 @@ describe("listbox", (): void => {
 
         rendered.childAt(0).simulate("keydown", { key: "A", shiftKey: true });
         expect(rendered.state("selectedItems").length).toBe(3);
+    });
+
+    test("Setting selected items in props (controlled mode) should override selections made in ui", (): void => {
+        const rendered: any = mount(
+            <Listbox selectedItems={[{ id: "b", value: "b", displayString: "b" }]}>
+                <ListboxItem id="a" value="a">
+                    a
+                </ListboxItem>
+                <ListboxItem id="b" value="b">
+                    b
+                </ListboxItem>
+                <ListboxItem id="c" value="c">
+                    c
+                </ListboxItem>
+            </Listbox>,
+            { attachTo: document.body }
+        );
+
+        expect(rendered.state("selectedItems").length).toBe(1);
+        expect(rendered.state("selectedItems")[0].id).toBe("b");
+        let element: HTMLElement = document.getElementById("b");
+        expect(element.getAttribute("aria-selected")).toBe("true");
+
+        rendered.childAt(0).simulate("keydown", { key: "a" });
+        expect(rendered.state("selectedItems").length).toBe(1);
+        expect(rendered.state("selectedItems")[0].id).toBe("b");
+        element = document.getElementById("b");
+        expect(element.getAttribute("aria-selected")).toBe("true");
+
+        rendered
+            .childAt(0)
+            .childAt(2)
+            .simulate("click", { shiftKey: true });
+        expect(rendered.state("selectedItems").length).toBe(1);
+        expect(rendered.state("selectedItems")[0].id).toBe("b");
+        element = document.getElementById("b");
+        expect(element.getAttribute("aria-selected")).toBe("true");
+    });
+
+    test("Setting default selection should work", (): void => {
+        const rendered: any = mount(
+            <Listbox
+                multiselectable={true}
+                defaultSelection={[{ id: "b", value: "b", displayString: "b" }]}
+            >
+                <ListboxItem id="a" value="a">
+                    a
+                </ListboxItem>
+                <ListboxItem id="b" value="b">
+                    b
+                </ListboxItem>
+                <ListboxItem id="c" value="c">
+                    c
+                </ListboxItem>
+            </Listbox>,
+            { attachTo: document.body }
+        );
+
+        expect(rendered.state("selectedItems").length).toBe(1);
+        expect(rendered.state("selectedItems")[0].id).toBe("b");
+        const element: HTMLElement = document.getElementById("b");
+        expect(element.getAttribute("aria-selected")).toBe("true");
+    });
+
+    test("should call a registered callback after selection change", (): void => {
+        const onSelectedItemsChange: any = jest.fn();
+        const rendered: any = mount(
+            <Listbox onSelectedItemsChange={onSelectedItemsChange}>
+                <ListboxItem id="a" value="a">
+                    a
+                </ListboxItem>
+                <ListboxItem id="b" value="b">
+                    b
+                </ListboxItem>
+            </Listbox>,
+            { attachTo: document.body }
+        );
+
+        expect(rendered.state("selectedItems").length).toBe(0);
+        expect(onSelectedItemsChange).toHaveBeenCalledTimes(0);
+        rendered
+            .childAt(0)
+            .childAt(0)
+            .simulate("click");
+        expect(onSelectedItemsChange).toHaveBeenCalledTimes(1);
+        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowDown });
+        expect(onSelectedItemsChange).toHaveBeenCalledTimes(2);
     });
 });

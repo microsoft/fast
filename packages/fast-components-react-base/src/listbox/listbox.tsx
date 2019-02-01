@@ -43,7 +43,7 @@ class Listbox extends Foundation<
         labelledBy: void 0,
         managedClasses: void 0,
         multiselectable: void 0,
-        onSelectionChange: void 0,
+        onSelectedItemsChange: void 0,
         selectedItems: void 0,
         typeAheadPropertyKey: void 0,
     };
@@ -144,7 +144,9 @@ class Listbox extends Foundation<
      */
     private isFocusableElement = (element: Element): element is HTMLElement => {
         return (
-            element instanceof HTMLElement && element.getAttribute("role") === "option"
+            element instanceof HTMLElement &&
+            element.getAttribute("role") === "option" &&
+            !this.isDisabledElement(element)
         );
     };
 
@@ -185,12 +187,6 @@ class Listbox extends Foundation<
             focusItemId = child.id;
             if (this.isFocusableElement(child)) {
                 child.focus();
-
-                this.setState({
-                    focusIndex,
-                    focussedItemId: child.id === undefined ? "" : focusItemId,
-                });
-
                 break;
             }
 
@@ -199,6 +195,31 @@ class Listbox extends Foundation<
 
         return focusItemId;
     }
+
+    /**
+     * Function called by child select options when they have been focused
+     */
+    private listboxItemfocused = (
+        item: ListboxItemData,
+        event: React.FocusEvent<HTMLDivElement>
+    ): void => {
+        const target: Element = event.currentTarget;
+        const focusIndex: number = this.domChildren().indexOf(target);
+
+        if (this.isDisabledElement(target)) {
+            target.blur();
+            return;
+        }
+
+        this.setState({
+            focusIndex,
+            focussedItemId: item.id,
+        });
+
+        if (!this.props.multiselectable) {
+            this.updateSelection([item]);
+        }
+    };
 
     /**
      * Handle the keydown event of the root menu
@@ -447,32 +468,6 @@ class Listbox extends Foundation<
     };
 
     /**
-     * Function called by child select options when they have been focused
-     * Ensure we always validate our internal state on item focus events, otherwise
-     * the component can get out of sync from click events
-     */
-    private listboxItemfocused = (
-        item: ListboxItemData,
-        event: React.FocusEvent<HTMLDivElement>
-    ): void => {
-        const target: Element = event.currentTarget;
-        const focusIndex: number = this.domChildren().indexOf(target);
-
-        if (this.isDisabledElement(target)) {
-            target.blur();
-            return;
-        }
-
-        if (!this.props.multiselectable) {
-            this.updateSelection([item]);
-        }
-
-        if (focusIndex !== this.state.focusIndex && focusIndex !== -1) {
-            this.setFocus(focusIndex, focusIndex > this.state.focusIndex ? 1 : -1);
-        }
-    };
-
-    /**
      * Updates selection state (should be the only place this is done outside of initialization)
      */
     private updateSelection = (newSelection: ListboxItemData[]): void => {
@@ -490,8 +485,8 @@ class Listbox extends Foundation<
             });
         }
 
-        if (this.props.onSelectionChange) {
-            this.props.onSelectionChange(validatedSelection);
+        if (this.props.onSelectedItemsChange) {
+            this.props.onSelectedItemsChange(validatedSelection);
         }
     };
 
