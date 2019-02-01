@@ -21,7 +21,7 @@ const styles: ComponentStyles<ContextMenuClassNameContract, DesignSystem> = (
             padding: "4px 0",
             maxWidth: "368px",
             minWidth: "64px",
-            borderRadius: "2px",
+            borderRadius: "4px",
         },
     };
 };

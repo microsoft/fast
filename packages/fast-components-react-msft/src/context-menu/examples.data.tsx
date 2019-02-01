@@ -9,7 +9,7 @@ const divider: any = {
     props: {
         jssStyleSheet: {
             divider: {
-                margin: "0 4px",
+                margin: "4px 0",
                 opacity: ".5",
             },
         },

@@ -19,18 +19,20 @@ import typographyPattern from "../patterns/typography";
 const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = {
     contextMenuItem: {
         listStyleType: "none",
-        height: density(40),
+        height: density(32),
         display: "grid",
-        gridTemplateColumns: "38px auto 38px",
+        gridTemplateColumns: "32px auto 32px",
         gridTemplateRows: "auto",
         alignItems: "center",
         padding: "0",
+        margin: "0 4px",
         ...typographyPattern.rest,
         whiteSpace: "nowrap",
         overflow: "hidden",
         cursor: "default",
         ...applyTypeRampConfig("t7"),
         background: backgroundColor,
+        borderRadius: "2px",
         border: "2px solid transparent",
         ...applyFocusVisible({
             borderColor: ensureForegroundNormal,
