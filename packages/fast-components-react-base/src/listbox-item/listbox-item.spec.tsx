@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
-import { configure, shallow } from "enzyme";
+import { configure, mount, shallow } from "enzyme";
 import ListboxItem, {
     ListboxItemHandledProps,
     ListboxItemProps,
@@ -49,51 +49,74 @@ describe("listbox item", (): void => {
 
     test("should call a registered callback after a click event", (): void => {
         const onInvoke: any = jest.fn();
-        const rendered: any = shallow(<ListboxItem onInvoke={onInvoke} />);
+        const onClick: any = jest.fn();
+        const rendered: any = shallow(
+            <ListboxItem onInvoke={onInvoke} onClick={onClick} />
+        );
 
         rendered.simulate("click", { preventDefault: noop });
 
         expect(onInvoke).toHaveBeenCalledTimes(1);
+        expect(onClick).toHaveBeenCalledTimes(1);
     });
 
     test("should not call a registered callback after a click event because it is disabled", (): void => {
         const onInvoke: any = jest.fn();
+        const onClick: any = jest.fn();
         const rendered: any = shallow(
-            <ListboxItem onInvoke={onInvoke} disabled={true} />
+            <ListboxItem onInvoke={onInvoke} onClick={onClick} disabled={true} />
         );
 
         rendered.simulate("click", { preventDefault: noop });
 
         expect(onInvoke).toHaveBeenCalledTimes(0);
+        expect(onClick).toHaveBeenCalledTimes(0);
     });
 
-    test("should call a registered callback after spacebar is pressed", (): void => {
+    test("should call a registered callback after enter/space key is pressed", (): void => {
         const onInvoke: any = jest.fn();
-        const rendered: any = shallow(<ListboxItem onInvoke={onInvoke} />);
-
-        rendered.simulate("keydown", { keyCode: KeyCodes.space, preventDefault: noop });
-
-        expect(onInvoke).toHaveBeenCalledTimes(1);
-    });
-
-    test("should call a registered callback after enter key is pressed", (): void => {
-        const onInvoke: any = jest.fn();
-        const rendered: any = shallow(<ListboxItem onInvoke={onInvoke} />);
-
-        rendered.simulate("keydown", { keyCode: KeyCodes.enter, preventDefault: noop });
-
-        expect(onInvoke).toHaveBeenCalledTimes(1);
-    });
-
-    test("should not call a registered callback after enter key is pressed because it is disabled", (): void => {
-        const onInvoke: any = jest.fn();
+        const onKeyDown: any = jest.fn();
         const rendered: any = shallow(
-            <ListboxItem onInvoke={onInvoke} disabled={true} />
+            <ListboxItem onInvoke={onInvoke} onKeyDown={onKeyDown} />
         );
 
         rendered.simulate("keydown", { keyCode: KeyCodes.enter, preventDefault: noop });
+        rendered.simulate("keydown", { keyCode: KeyCodes.space, preventDefault: noop });
+
+        expect(onInvoke).toHaveBeenCalledTimes(2);
+        expect(onKeyDown).toHaveBeenCalledTimes(2);
+    });
+
+    test("should not call a registered callback after enter/space key is pressed because it is disabled", (): void => {
+        const onInvoke: any = jest.fn();
+        const onKeyDown: any = jest.fn();
+        const rendered: any = shallow(
+            <ListboxItem onInvoke={onInvoke} onKeyDown={onKeyDown} disabled={true} />
+        );
+
+        rendered.simulate("keydown", { keyCode: KeyCodes.enter, preventDefault: noop });
+        rendered.simulate("keydown", { keyCode: KeyCodes.space, preventDefault: noop });
 
         expect(onInvoke).toHaveBeenCalledTimes(0);
+        expect(onKeyDown).toHaveBeenCalledTimes(0);
+    });
+
+    test("should call a registered callback after component gets focus", (): void => {
+        const onFocus: any = jest.fn();
+        const rendered: any = mount(<ListboxItem onFocus={onFocus} />);
+
+        rendered.first().simulate("focus");
+
+        expect(onFocus).toHaveBeenCalledTimes(1);
+    });
+
+    test("should not call a registered callback after component gets focus if disabled", (): void => {
+        const onFocus: any = jest.fn();
+        const rendered: any = mount(<ListboxItem onFocus={onFocus} disabled={true} />);
+
+        rendered.first().simulate("focus");
+
+        expect(onFocus).toHaveBeenCalledTimes(0);
     });
 
     // parametrized listbox-item class name tests

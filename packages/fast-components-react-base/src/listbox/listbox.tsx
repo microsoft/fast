@@ -219,7 +219,7 @@ class Listbox extends Foundation<
                 if (this.props.multiselectable && event.shiftKey && focusItemId !== "") {
                     const itemData: ListboxItemData = this.getItemDataById(focusItemId);
                     if (itemData !== null) {
-                        this.toggleItem(itemData, event);
+                        this.toggleItem(itemData);
                     }
                 }
 
@@ -232,7 +232,7 @@ class Listbox extends Foundation<
                 if (this.props.multiselectable && event.shiftKey && focusItemId !== "") {
                     const itemData: ListboxItemData = this.getItemDataById(focusItemId);
                     if (itemData !== null) {
-                        this.toggleItem(itemData, event);
+                        this.toggleItem(itemData);
                     }
                 }
                 break;
@@ -373,7 +373,7 @@ class Listbox extends Foundation<
                 this.shiftRangeSelectStartIndex = itemIndex;
             }
             if (event.ctrlKey) {
-                this.toggleItem(item, event);
+                this.toggleItem(item);
             } else if (event.shiftKey) {
                 this.selectRange(this.shiftRangeSelectStartIndex, itemIndex);
             } else {
@@ -383,7 +383,7 @@ class Listbox extends Foundation<
             if (event.shiftKey) {
                 this.selectRange(this.shiftRangeSelectStartIndex, itemIndex);
             } else {
-                this.toggleItem(item, event);
+                this.toggleItem(item);
             }
         } else {
             this.updateSelection([item]);
@@ -393,10 +393,7 @@ class Listbox extends Foundation<
     /**
      * Toggle the selection state of the item
      */
-    private toggleItem = (
-        item: ListboxItemData,
-        event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>
-    ): void => {
+    private toggleItem = (item: ListboxItemData): void => {
         const culledSelection: ListboxItemData[] = this.state.selectedItems.filter(
             (listboxItem: ListboxItemData) => {
                 return listboxItem.id !== item.id;
@@ -426,7 +423,6 @@ class Listbox extends Foundation<
             (child: React.ReactElement<any>) => {
                 if (
                     child.props[Listbox.valuePropertyKey] === undefined ||
-                    child.props[Listbox.displayStringPropertyKey] === undefined ||
                     child.props[Listbox.disabledPropertyKey] === true
                 ) {
                     return false;

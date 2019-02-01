@@ -68,31 +68,6 @@ class ListboxItem extends Foundation<
     }
 
     /**
-     * Invoke this option
-     */
-    public invokeOption(
-        event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>
-    ): void {
-        if (this.props.disabled) {
-            return;
-        }
-
-        const itemData: ListboxItemData = {
-            id: this.props.id,
-            value: this.props.value,
-            displayString: this.props.displayString,
-        };
-
-        if ((this.context as ListboxContextType).itemInvoked) {
-            (this.context as ListboxContextType).itemInvoked(itemData, event);
-        }
-
-        if (typeof this.props.onInvoke === "function") {
-            this.props.onInvoke(event, this.props);
-        }
-    }
-
-    /**
      * Create class-names
      */
     protected generateClassNames(): string {
@@ -107,6 +82,27 @@ class ListboxItem extends Foundation<
         }
 
         return super.generateClassNames(classNames);
+    }
+
+    /**
+     * Invoke this option
+     */
+    private invokeOption(
+        event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>
+    ): void {
+        const itemData: ListboxItemData = {
+            id: this.props.id,
+            value: this.props.value,
+            displayString: this.props.displayString,
+        };
+
+        if ((this.context as ListboxContextType).itemInvoked) {
+            (this.context as ListboxContextType).itemInvoked(itemData, event);
+        }
+
+        if (typeof this.props.onInvoke === "function") {
+            this.props.onInvoke(event, this.props);
+        }
     }
 
     /**
@@ -150,6 +146,10 @@ class ListboxItem extends Foundation<
      * Handle focus event
      */
     private handleFocus = (e: React.FocusEvent<HTMLDivElement>): void => {
+        if (this.props.disabled) {
+            return;
+        }
+
         const itemData: ListboxItemData = {
             id: this.props.id,
             value: this.props.value,

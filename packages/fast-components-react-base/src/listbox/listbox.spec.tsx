@@ -244,7 +244,7 @@ describe("listbox", (): void => {
         expect(rendered.childAt(0).prop("aria-multiselectable")).toBe(true);
     });
 
-    test("should move selection with focus when no modifier key is pressed", (): void => {
+    test("should move selection with focus in single select mode", (): void => {
         const rendered: any = mount(
             <Listbox>
                 <ListboxItem id="a" value="a">
@@ -272,5 +272,337 @@ describe("listbox", (): void => {
         expect(element.getAttribute("aria-selected")).toBe("true");
         element = document.getElementById("b");
         expect(element.getAttribute("aria-selected")).toBe("false");
+    });
+
+    test("should not move selection with focus in multiple select mode", (): void => {
+        const rendered: any = mount(
+            <Listbox multiselectable={true}>
+                <ListboxItem id="a" value="a">
+                    a
+                </ListboxItem>
+                <ListboxItem id="b" value="b">
+                    b
+                </ListboxItem>
+            </Listbox>,
+            { attachTo: document.body }
+        );
+
+        expect(rendered.state("selectedItems").length).toBe(0);
+
+        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowDown });
+        expect(rendered.state("selectedItems").length).toBe(0);
+
+        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowUp });
+        expect(rendered.state("selectedItems").length).toBe(0);
+    });
+
+    test("should toggle selection with arrow key navigation in multiple select mode when shift key pressed", (): void => {
+        const rendered: any = mount(
+            <Listbox multiselectable={true}>
+                <ListboxItem id="a" value="a">
+                    a
+                </ListboxItem>
+                <ListboxItem id="b" value="b">
+                    b
+                </ListboxItem>
+            </Listbox>,
+            { attachTo: document.body }
+        );
+
+        expect(rendered.state("selectedItems").length).toBe(0);
+
+        rendered
+            .childAt(0)
+            .simulate("keydown", { keyCode: KeyCodes.arrowDown, shiftKey: true });
+        expect(rendered.state("selectedItems").length).toBe(1);
+        expect(rendered.state("selectedItems")[0].id).toBe("b");
+        let element: HTMLElement = document.getElementById("b");
+        expect(element.getAttribute("aria-selected")).toBe("true");
+
+        rendered
+            .childAt(0)
+            .simulate("keydown", { keyCode: KeyCodes.arrowUp, shiftKey: true });
+        expect(rendered.state("selectedItems").length).toBe(2);
+        expect(rendered.state("selectedItems")[0].id).toBe("a");
+        expect(rendered.state("selectedItems")[1].id).toBe("b");
+        element = document.getElementById("a");
+        expect(element.getAttribute("aria-selected")).toBe("true");
+        element = document.getElementById("b");
+        expect(element.getAttribute("aria-selected")).toBe("true");
+
+        rendered
+            .childAt(0)
+            .simulate("keydown", { keyCode: KeyCodes.arrowDown, shiftKey: true });
+        expect(rendered.state("selectedItems").length).toBe(1);
+        expect(rendered.state("selectedItems")[0].id).toBe("a");
+        element = document.getElementById("a");
+        expect(element.getAttribute("aria-selected")).toBe("true");
+    });
+
+    test("should move selection on click in single select mode", (): void => {
+        const rendered: any = mount(
+            <Listbox>
+                <ListboxItem id="a" value="a">
+                    a
+                </ListboxItem>
+                <ListboxItem id="b" value="b">
+                    b
+                </ListboxItem>
+            </Listbox>,
+            { attachTo: document.body }
+        );
+
+        expect(rendered.state("selectedItems").length).toBe(0);
+
+        rendered
+            .childAt(0)
+            .childAt(0)
+            .simulate("click");
+        expect(rendered.state("selectedItems").length).toBe(1);
+        expect(rendered.state("selectedItems")[0].id).toBe("a");
+        let element: HTMLElement = document.getElementById("a");
+        expect(element.getAttribute("aria-selected")).toBe("true");
+
+        rendered
+            .childAt(0)
+            .childAt(1)
+            .simulate("click");
+        expect(rendered.state("selectedItems").length).toBe(1);
+        expect(rendered.state("selectedItems")[0].id).toBe("b");
+        element = document.getElementById("b");
+        expect(element.getAttribute("aria-selected")).toBe("true");
+    });
+
+    test("should move selection on click in multi select mode", (): void => {
+        const rendered: any = mount(
+            <Listbox multiselectable={true}>
+                <ListboxItem id="a" value="a">
+                    a
+                </ListboxItem>
+                <ListboxItem id="b" value="b">
+                    b
+                </ListboxItem>
+            </Listbox>,
+            { attachTo: document.body }
+        );
+
+        expect(rendered.state("selectedItems").length).toBe(0);
+
+        rendered
+            .childAt(0)
+            .childAt(0)
+            .simulate("click");
+        expect(rendered.state("selectedItems").length).toBe(1);
+        expect(rendered.state("selectedItems")[0].id).toBe("a");
+        let element: HTMLElement = document.getElementById("a");
+        expect(element.getAttribute("aria-selected")).toBe("true");
+
+        rendered
+            .childAt(0)
+            .childAt(1)
+            .simulate("click");
+        expect(rendered.state("selectedItems").length).toBe(1);
+        expect(rendered.state("selectedItems")[0].id).toBe("b");
+        element = document.getElementById("b");
+        expect(element.getAttribute("aria-selected")).toBe("true");
+    });
+
+    test("ctlr click in multi select mode should toggle clicked selection but keep others", (): void => {
+        const rendered: any = mount(
+            <Listbox multiselectable={true}>
+                <ListboxItem id="a" value="a">
+                    a
+                </ListboxItem>
+                <ListboxItem id="b" value="b">
+                    b
+                </ListboxItem>
+                <ListboxItem id="c" value="c">
+                    c
+                </ListboxItem>
+            </Listbox>,
+            { attachTo: document.body }
+        );
+
+        expect(rendered.state("selectedItems").length).toBe(0);
+
+        rendered
+            .childAt(0)
+            .childAt(1)
+            .simulate("click");
+        expect(rendered.state("selectedItems").length).toBe(1);
+        expect(rendered.state("selectedItems")[0].id).toBe("b");
+        let element: HTMLElement = document.getElementById("b");
+        expect(element.getAttribute("aria-selected")).toBe("true");
+
+        rendered
+            .childAt(0)
+            .childAt(0)
+            .simulate("click", { ctrlKey: true });
+        expect(rendered.state("selectedItems").length).toBe(2);
+        expect(rendered.state("selectedItems")[0].id).toBe("a");
+        expect(rendered.state("selectedItems")[1].id).toBe("b");
+        element = document.getElementById("a");
+        expect(element.getAttribute("aria-selected")).toBe("true");
+        element = document.getElementById("b");
+        expect(element.getAttribute("aria-selected")).toBe("true");
+
+        rendered
+            .childAt(0)
+            .childAt(0)
+            .simulate("click", { ctrlKey: true });
+        expect(rendered.state("selectedItems").length).toBe(1);
+        expect(rendered.state("selectedItems")[0].id).toBe("b");
+        element = document.getElementById("a");
+        expect(element.getAttribute("aria-selected")).toBe("false");
+        element = document.getElementById("b");
+        expect(element.getAttribute("aria-selected")).toBe("true");
+    });
+
+    test("shift click in multi select mode should select a range", (): void => {
+        const rendered: any = mount(
+            <Listbox multiselectable={true}>
+                <ListboxItem id="a" value="a">
+                    a
+                </ListboxItem>
+                <ListboxItem id="b" value="b">
+                    b
+                </ListboxItem>
+                <ListboxItem id="c" value="c">
+                    c
+                </ListboxItem>
+            </Listbox>,
+            { attachTo: document.body }
+        );
+
+        expect(rendered.state("selectedItems").length).toBe(0);
+
+        rendered
+            .childAt(0)
+            .childAt(1)
+            .simulate("click");
+        expect(rendered.state("selectedItems").length).toBe(1);
+        expect(rendered.state("selectedItems")[0].id).toBe("b");
+        let element: HTMLElement = document.getElementById("b");
+        expect(element.getAttribute("aria-selected")).toBe("true");
+
+        rendered
+            .childAt(0)
+            .childAt(0)
+            .simulate("click", { shiftKey: true });
+        expect(rendered.state("selectedItems").length).toBe(2);
+        expect(rendered.state("selectedItems")[0].id).toBe("a");
+        expect(rendered.state("selectedItems")[1].id).toBe("b");
+        element = document.getElementById("a");
+        expect(element.getAttribute("aria-selected")).toBe("true");
+        element = document.getElementById("b");
+        expect(element.getAttribute("aria-selected")).toBe("true");
+
+        rendered
+            .childAt(0)
+            .childAt(2)
+            .simulate("click", { shiftKey: true });
+        expect(rendered.state("selectedItems").length).toBe(2);
+        expect(rendered.state("selectedItems")[0].id).toBe("b");
+        expect(rendered.state("selectedItems")[1].id).toBe("c");
+        element = document.getElementById("b");
+        expect(element.getAttribute("aria-selected")).toBe("true");
+        element = document.getElementById("c");
+        expect(element.getAttribute("aria-selected")).toBe("true");
+    });
+
+    test("should select a range and move focus to the end when ctrl-shift-end is pressed in multi-select mode", (): void => {
+        const rendered: any = mount(
+            <Listbox multiselectable={true}>
+                <ListboxItem id="a" value="a">
+                    a
+                </ListboxItem>
+                <ListboxItem id="b" value="b">
+                    b
+                </ListboxItem>
+                <ListboxItem id="c" value="c">
+                    c
+                </ListboxItem>
+            </Listbox>,
+            { attachTo: document.body }
+        );
+
+        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowDown });
+        expect(rendered.state("focusIndex")).toBe(1);
+        expect(rendered.state("selectedItems").length).toBe(0);
+
+        rendered
+            .childAt(0)
+            .simulate("keydown", {
+                keyCode: KeyCodes.end,
+                shiftKey: true,
+                ctrlKey: true,
+            });
+        expect(rendered.state("focusIndex")).toBe(2);
+        expect(rendered.state("selectedItems").length).toBe(2);
+        expect(rendered.state("selectedItems")[0].id).toBe("b");
+        expect(rendered.state("selectedItems")[1].id).toBe("c");
+        let element: HTMLElement = document.getElementById("b");
+        expect(element.getAttribute("aria-selected")).toBe("true");
+        element = document.getElementById("c");
+        expect(element.getAttribute("aria-selected")).toBe("true");
+    });
+
+    test("should select a range and move focus to beginning when ctrl-shift-home is pressed in multi-select mode", (): void => {
+        const rendered: any = mount(
+            <Listbox multiselectable={true}>
+                <ListboxItem id="a" value="a">
+                    a
+                </ListboxItem>
+                <ListboxItem id="b" value="b">
+                    b
+                </ListboxItem>
+                <ListboxItem id="c" value="c">
+                    c
+                </ListboxItem>
+            </Listbox>,
+            { attachTo: document.body }
+        );
+
+        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowDown });
+        expect(rendered.state("focusIndex")).toBe(1);
+        expect(rendered.state("selectedItems").length).toBe(0);
+
+        rendered
+            .childAt(0)
+            .simulate("keydown", {
+                keyCode: KeyCodes.home,
+                shiftKey: true,
+                ctrlKey: true,
+            });
+        expect(rendered.state("focusIndex")).toBe(0);
+        expect(rendered.state("selectedItems").length).toBe(2);
+        expect(rendered.state("selectedItems")[0].id).toBe("a");
+        expect(rendered.state("selectedItems")[1].id).toBe("b");
+        let element: HTMLElement = document.getElementById("a");
+        expect(element.getAttribute("aria-selected")).toBe("true");
+        element = document.getElementById("b");
+        expect(element.getAttribute("aria-selected")).toBe("true");
+    });
+
+    test("Shift-a should select entire list in multi select mode", (): void => {
+        const rendered: any = mount(
+            <Listbox multiselectable={true}>
+                <ListboxItem id="a" value="a">
+                    a
+                </ListboxItem>
+                <ListboxItem id="b" value="b">
+                    b
+                </ListboxItem>
+                <ListboxItem id="c" value="c">
+                    c
+                </ListboxItem>
+            </Listbox>,
+            { attachTo: document.body }
+        );
+
+        expect(rendered.state("selectedItems").length).toBe(0);
+
+        rendered.childAt(0).simulate("keydown", { key: "A", shiftKey: true });
+        expect(rendered.state("selectedItems").length).toBe(3);
     });
 });
