@@ -43,7 +43,7 @@ class Listbox extends Foundation<
         labelledBy: void 0,
         managedClasses: void 0,
         multiselectable: void 0,
-        onSelectedItemsChange: void 0,
+        onSelectedItemsChanged: void 0,
         selectedItems: void 0,
         typeAheadPropertyKey: void 0,
     };
@@ -59,12 +59,19 @@ class Listbox extends Foundation<
     constructor(props: ListboxProps) {
         super(props);
 
+        let initialSelection: ListboxItemData[] = this.removeInvalidOptions(
+            this.props.defaultSelection
+        );
+        if (!this.props.multiselectable && initialSelection.length > 1) {
+            initialSelection = initialSelection.slice(0, 1);
+        }
+
         this.state = {
             focusIndex: -1,
             focussedItemId: "",
             selectedItems:
                 this.props.selectedItems === undefined
-                    ? this.props.defaultSelection
+                    ? initialSelection
                     : this.props.selectedItems,
         };
     }
@@ -485,8 +492,8 @@ class Listbox extends Foundation<
             });
         }
 
-        if (this.props.onSelectedItemsChange) {
-            this.props.onSelectedItemsChange(validatedSelection);
+        if (this.props.onSelectedItemsChanged) {
+            this.props.onSelectedItemsChanged(validatedSelection);
         }
     };
 

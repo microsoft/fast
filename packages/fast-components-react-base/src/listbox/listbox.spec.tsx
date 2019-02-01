@@ -659,9 +659,9 @@ describe("listbox", (): void => {
     });
 
     test("should call a registered callback after selection change", (): void => {
-        const onSelectedItemsChange: any = jest.fn();
+        const onSelectedItemsChanged: any = jest.fn();
         const rendered: any = mount(
-            <Listbox onSelectedItemsChange={onSelectedItemsChange}>
+            <Listbox onSelectedItemsChanged={onSelectedItemsChanged}>
                 <ListboxItem id="a" value="a">
                     a
                 </ListboxItem>
@@ -673,13 +673,13 @@ describe("listbox", (): void => {
         );
 
         expect(rendered.state("selectedItems").length).toBe(0);
-        expect(onSelectedItemsChange).toHaveBeenCalledTimes(0);
+        expect(onSelectedItemsChanged).toHaveBeenCalledTimes(0);
         rendered
             .childAt(0)
             .childAt(0)
             .simulate("click");
-        expect(onSelectedItemsChange).toHaveBeenCalledTimes(1);
+        expect(onSelectedItemsChanged).toHaveBeenCalledTimes(1);
         rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowDown });
-        expect(onSelectedItemsChange).toHaveBeenCalledTimes(2);
+        expect(onSelectedItemsChanged).toHaveBeenCalledTimes(2);
     });
 });
