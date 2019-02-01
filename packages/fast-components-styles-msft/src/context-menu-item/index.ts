@@ -15,6 +15,7 @@ import {
 import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
 import { applyTypeRampConfig } from "../utilities/typography";
 import typographyPattern from "../patterns/typography";
+import { toPx } from "@microsoft/fast-jss-utilities";
 
 const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = {
     contextMenuItem: {
@@ -32,7 +33,11 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         cursor: "default",
         ...applyTypeRampConfig("t7"),
         background: backgroundColor,
-        borderRadius: "2px",
+        borderRadius: (config: DesignSystem): string => {
+            const designSystem: DesignSystem = withDesignSystemDefaults(config);
+
+            return toPx(designSystem.cornerRadius);
+        },
         border: "2px solid transparent",
         ...applyFocusVisible({
             borderColor: ensureForegroundNormal,
