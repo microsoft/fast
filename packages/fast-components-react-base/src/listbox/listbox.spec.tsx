@@ -658,6 +658,59 @@ describe("listbox", (): void => {
         expect(element.getAttribute("aria-selected")).toBe("true");
     });
 
+    test("Invalid default items should be culled from the list", (): void => {
+        const rendered: any = mount(
+            <Listbox
+                multiselectable={true}
+                defaultSelection={[
+                    { id: "a", value: "a", displayString: "a" },
+                    { id: "b", value: "b", displayString: "b" },
+                    { id: "z", value: "z", displayString: "z" },
+                ]}
+            >
+                <ListboxItem id="a" value="a" disabled={true}>
+                    a
+                </ListboxItem>
+                <ListboxItem id="b" value="b">
+                    b
+                </ListboxItem>
+                <ListboxItem id="c" value="c">
+                    c
+                </ListboxItem>
+            </Listbox>,
+            { attachTo: document.body }
+        );
+
+        expect(rendered.state("selectedItems").length).toBe(1);
+        expect(rendered.state("selectedItems")[0].id).toBe("b");
+    });
+
+    test("In single select mode only the first valid default item should be selected", (): void => {
+        const rendered: any = mount(
+            <Listbox
+                defaultSelection={[
+                    { id: "z", value: "z", displayString: "z" },
+                    { id: "a", value: "a", displayString: "a" },
+                    { id: "b", value: "b", displayString: "b" },
+                ]}
+            >
+                <ListboxItem id="a" value="a" disabled={true}>
+                    a
+                </ListboxItem>
+                <ListboxItem id="b" value="b">
+                    b
+                </ListboxItem>
+                <ListboxItem id="c" value="c">
+                    c
+                </ListboxItem>
+            </Listbox>,
+            { attachTo: document.body }
+        );
+
+        expect(rendered.state("selectedItems").length).toBe(1);
+        expect(rendered.state("selectedItems")[0].id).toBe("b");
+    });
+
     test("should call a registered callback after selection change", (): void => {
         const onSelectedItemsChanged: any = jest.fn();
         const rendered: any = mount(

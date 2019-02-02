@@ -447,19 +447,7 @@ class Listbox extends Foundation<
             startIndex >= endIndex ? startIndex + 1 : endIndex + 1
         );
 
-        const selectableChildren: React.ReactNode[] = childrenInRange.filter(
-            (child: React.ReactElement<any>) => {
-                if (
-                    child.props[Listbox.valuePropertyKey] === undefined ||
-                    child.props[Listbox.disabledPropertyKey] === true
-                ) {
-                    return false;
-                }
-                return true;
-            }
-        );
-
-        const newSelectedItems: ListboxItemData[] = selectableChildren.map(
+        const newSelectedItems: ListboxItemData[] = childrenInRange.map(
             (child: React.ReactElement<any>) => {
                 const thisItemData: ListboxItemData = {
                     id: child.props.id,
@@ -471,7 +459,7 @@ class Listbox extends Foundation<
             }
         );
 
-        this.updateSelection(newSelectedItems);
+        this.updateSelection(this.removeInvalidOptions(newSelectedItems));
     };
 
     /**
@@ -502,7 +490,6 @@ class Listbox extends Foundation<
      * (ie. such an option id exists and the option is not disabled)
      */
     private removeInvalidOptions = (items: ListboxItemData[]): ListboxItemData[] => {
-        const children: React.ReactNode[] = React.Children.toArray(this.props.children);
         const validSelection: ListboxItemData[] = items.filter(
             (listboxItem: ListboxItemData) => {
                 const itemNode: React.ReactNode = this.getNodeById(listboxItem.id);
@@ -512,7 +499,7 @@ class Listbox extends Foundation<
                 if (
                     (itemNode as React.ReactElement<any>).props[
                         Listbox.disabledPropertyKey
-                    ] === "true"
+                    ] === true
                 ) {
                     return false;
                 }
