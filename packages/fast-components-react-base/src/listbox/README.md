@@ -6,18 +6,16 @@ The *listbox* will accept any child elements but the only children that should r
 
 The *listbox* "typeAheadPropertyKey" prop indicates which prop the *listbox* examines on children to manage focus when text entry is used to control focus.  The referenced property must be a string and the default value is '"displayString"' which matches the prop intended for user friendly strings on *listbox-item*.
 
-A number of the *listbox* interfaces use data formatted as ListboxItemData objects which have the following properties:
+To get results from user interaction with the *listbox* hook up to the '"onSelectedItemsChanged"' callback prop.  Whenever selection changes this function is called with the new array of selected '"ListboxItemData"' objects which have the following properties:
 - id:  the unique id of the corresponding option
 - value: the string value associated with the option
 - displayString: optional, a user friendly version of the value to display in ui.
 
-To get results from user interaction with the listbox provide a callback function to the *listbox* '"onSelectedItemsChanged"' prop.  Whenever selection changes this function is called with the new array of selected '"ListboxItemData"' objects.
-
-Use the optional '"defaultSelection"' prop to provide intially selected options to the component.  This props accepts an array of '"ListboxItemData"' objects.
+Use the optional '"defaultSelection"' prop to provide a string[] of the id's of selected items to the component.
 
 Invalid items (ie. that don't have matching non-disabled items with the same id as children of the *listbox*) are removed and in single select mode only the first valid item is relevant.
 
-Use the '"selectedItems"' prop for a fully controlled mode.  The options provided with this prop override all the *listbox* internal selection logic.
+Use the '"selectedItems"' prop for a fully controlled mode.  The string[] of item ids provided with this prop override all the *listbox* internal selection logic.
 
 ### Accessibility
 Listbox implements the recommended keyboard navigation scheme described [here](https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox).

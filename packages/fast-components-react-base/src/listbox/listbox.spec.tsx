@@ -10,6 +10,13 @@ import { KeyCodes } from "@microsoft/fast-web-utilities";
  */
 configure({ adapter: new Adapter() });
 
+const itemA: JSX.Element = <ListboxItem id="a" value="a" displayString="a" />;
+const itemADisabled: JSX.Element = (
+    <ListboxItem id="a" value="a" displayString="a" disabled={true} />
+);
+const itemB: JSX.Element = <ListboxItem id="b" value="b" displayString="ab" />;
+const itemC: JSX.Element = <ListboxItem id="c" value="c" displayString="abc" />;
+
 describe("listbox", (): void => {
     test("should have a displayName that matches the component name", () => {
         expect((Listbox as any).name).toBe(Listbox.displayName);
@@ -45,7 +52,7 @@ describe("listbox", (): void => {
         const rendered: any = mount(
             <Listbox>
                 <div>not a focusable element</div>
-                <ListboxItem>focusable element</ListboxItem>
+                {itemA}
             </Listbox>
         );
 
@@ -55,8 +62,8 @@ describe("listbox", (): void => {
     test("should move focus down when the down arrow is pressed", (): void => {
         const rendered: any = mount(
             <Listbox>
-                <ListboxItem>one</ListboxItem>
-                <ListboxItem>two</ListboxItem>
+                {itemA}
+                {itemB}
             </Listbox>,
             { attachTo: document.body }
         );
@@ -70,8 +77,8 @@ describe("listbox", (): void => {
     test("should move focus down when the right arrow is pressed", (): void => {
         const rendered: any = mount(
             <Listbox>
-                <ListboxItem>one</ListboxItem>
-                <ListboxItem>two</ListboxItem>
+                {itemA}
+                {itemB}
             </Listbox>,
             { attachTo: document.body }
         );
@@ -85,8 +92,8 @@ describe("listbox", (): void => {
     test("should move focus up when the up arrow is pressed", (): void => {
         const rendered: any = mount(
             <Listbox>
-                <ListboxItem>one</ListboxItem>
-                <ListboxItem>two</ListboxItem>
+                {itemA}
+                {itemB}
             </Listbox>,
             { attachTo: document.body }
         );
@@ -101,8 +108,8 @@ describe("listbox", (): void => {
     test("should move focus up when the left arrow is pressed", (): void => {
         const rendered: any = mount(
             <Listbox>
-                <ListboxItem>one</ListboxItem>
-                <ListboxItem>two</ListboxItem>
+                {itemA}
+                {itemB}
             </Listbox>,
             { attachTo: document.body }
         );
@@ -117,9 +124,9 @@ describe("listbox", (): void => {
     test("should move focus the last focusable element when the end key is pressed", (): void => {
         const rendered: any = mount(
             <Listbox>
-                <ListboxItem>one</ListboxItem>
-                <ListboxItem>two</ListboxItem>
-                <ListboxItem>three</ListboxItem>
+                {itemA}
+                {itemB}
+                {itemC}
                 <div>four</div>
             </Listbox>,
             { attachTo: document.body }
@@ -135,9 +142,9 @@ describe("listbox", (): void => {
         const rendered: any = mount(
             <Listbox>
                 <div>one</div>
-                <ListboxItem>two</ListboxItem>
-                <ListboxItem>three</ListboxItem>
-                <ListboxItem>four</ListboxItem>
+                {itemA}
+                {itemB}
+                {itemC}
             </Listbox>,
             { attachTo: document.body }
         );
@@ -153,11 +160,11 @@ describe("listbox", (): void => {
         const rendered: any = mount(
             <Listbox>
                 <div />
-                <ListboxItem>two</ListboxItem>
+                {itemA}
                 <div />
-                <ListboxItem>three</ListboxItem>
+                {itemB}
                 <div />
-                <ListboxItem>four</ListboxItem>
+                {itemC}
                 <div />
             </Listbox>,
             { attachTo: document.body }
@@ -174,10 +181,10 @@ describe("listbox", (): void => {
 
     test("should move focus to matching items as characters are typed", (): void => {
         const rendered: any = mount(
-            <Listbox typeAheadPropertyKey="title">
-                <ListboxItem title="a">a</ListboxItem>
-                <ListboxItem title="ab">ab</ListboxItem>
-                <ListboxItem title="abc">abc</ListboxItem>
+            <Listbox>
+                {itemA}
+                {itemB}
+                {itemC}
                 <div>four</div>
             </Listbox>,
             { attachTo: document.body }
@@ -200,10 +207,10 @@ describe("listbox", (): void => {
 
     test("should not move focus if characters are typed that don't have matches", (): void => {
         const rendered: any = mount(
-            <Listbox typeAheadPropertyKey="title">
-                <ListboxItem title="a">a</ListboxItem>
-                <ListboxItem title="b">ab</ListboxItem>
-                <ListboxItem title="c">abc</ListboxItem>
+            <Listbox>
+                {itemA}
+                {itemB}
+                {itemC}
                 <div>four</div>
             </Listbox>,
             { attachTo: document.body }
@@ -211,6 +218,7 @@ describe("listbox", (): void => {
 
         expect(rendered.state("focusIndex")).toBe(0);
 
+        rendered.childAt(0).simulate("keydown", { key: "a" });
         rendered.childAt(0).simulate("keydown", { key: "b" });
         expect(rendered.state("focusIndex")).toBe(1);
 
@@ -221,8 +229,8 @@ describe("listbox", (): void => {
     test("aria-activedescendant value should change with focus changes", (): void => {
         const rendered: any = mount(
             <Listbox>
-                <ListboxItem id="1">1</ListboxItem>
-                <ListboxItem id="2">2</ListboxItem>
+                {itemA}
+                {itemB}
             </Listbox>,
             { attachTo: document.body }
         );
@@ -230,7 +238,7 @@ describe("listbox", (): void => {
         expect(rendered.childAt(0).prop("aria-activedescendant")).toBe("");
 
         rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowDown });
-        expect(rendered.childAt(0).prop("aria-activedescendant")).toBe("2");
+        expect(rendered.childAt(0).prop("aria-activedescendant")).toBe("b");
     });
 
     test("aria-multiselectable value should be true when in multi-select mode", (): void => {
@@ -241,12 +249,9 @@ describe("listbox", (): void => {
     test("should move selection with focus in single select mode", (): void => {
         const rendered: any = mount(
             <Listbox>
-                <ListboxItem id="a" value="a">
-                    a
-                </ListboxItem>
-                <ListboxItem id="b" value="b">
-                    b
-                </ListboxItem>
+                {itemA}
+                {itemB}
+                {itemC}
             </Listbox>,
             { attachTo: document.body }
         );
@@ -271,12 +276,9 @@ describe("listbox", (): void => {
     test("should not move selection with focus in multiple select mode", (): void => {
         const rendered: any = mount(
             <Listbox multiselectable={true}>
-                <ListboxItem id="a" value="a">
-                    a
-                </ListboxItem>
-                <ListboxItem id="b" value="b">
-                    b
-                </ListboxItem>
+                {itemA}
+                {itemB}
+                {itemC}
             </Listbox>,
             { attachTo: document.body }
         );
@@ -293,12 +295,9 @@ describe("listbox", (): void => {
     test("should toggle selection with arrow key navigation in multiple select mode when shift key pressed", (): void => {
         const rendered: any = mount(
             <Listbox multiselectable={true}>
-                <ListboxItem id="a" value="a">
-                    a
-                </ListboxItem>
-                <ListboxItem id="b" value="b">
-                    b
-                </ListboxItem>
+                {itemA}
+                {itemB}
+                {itemC}
             </Listbox>,
             { attachTo: document.body }
         );
@@ -336,12 +335,9 @@ describe("listbox", (): void => {
     test("should move selection on click in single select mode", (): void => {
         const rendered: any = mount(
             <Listbox>
-                <ListboxItem id="a" value="a">
-                    a
-                </ListboxItem>
-                <ListboxItem id="b" value="b">
-                    b
-                </ListboxItem>
+                {itemA}
+                {itemB}
+                {itemC}
             </Listbox>,
             { attachTo: document.body }
         );
@@ -370,12 +366,9 @@ describe("listbox", (): void => {
     test("should move selection on click in multi select mode", (): void => {
         const rendered: any = mount(
             <Listbox multiselectable={true}>
-                <ListboxItem id="a" value="a">
-                    a
-                </ListboxItem>
-                <ListboxItem id="b" value="b">
-                    b
-                </ListboxItem>
+                {itemA}
+                {itemB}
+                {itemC}
             </Listbox>,
             { attachTo: document.body }
         );
@@ -404,15 +397,9 @@ describe("listbox", (): void => {
     test("ctlr click in multi select mode should toggle clicked selection but keep others", (): void => {
         const rendered: any = mount(
             <Listbox multiselectable={true}>
-                <ListboxItem id="a" value="a">
-                    a
-                </ListboxItem>
-                <ListboxItem id="b" value="b">
-                    b
-                </ListboxItem>
-                <ListboxItem id="c" value="c">
-                    c
-                </ListboxItem>
+                {itemA}
+                {itemB}
+                {itemC}
             </Listbox>,
             { attachTo: document.body }
         );
@@ -455,15 +442,9 @@ describe("listbox", (): void => {
     test("shift click in multi select mode should select a range", (): void => {
         const rendered: any = mount(
             <Listbox multiselectable={true}>
-                <ListboxItem id="a" value="a">
-                    a
-                </ListboxItem>
-                <ListboxItem id="b" value="b">
-                    b
-                </ListboxItem>
-                <ListboxItem id="c" value="c">
-                    c
-                </ListboxItem>
+                {itemA}
+                {itemB}
+                {itemC}
             </Listbox>,
             { attachTo: document.body }
         );
@@ -507,15 +488,9 @@ describe("listbox", (): void => {
     test("should select a range and move focus to the end when ctrl-shift-end is pressed in multi-select mode", (): void => {
         const rendered: any = mount(
             <Listbox multiselectable={true}>
-                <ListboxItem id="a" value="a">
-                    a
-                </ListboxItem>
-                <ListboxItem id="b" value="b">
-                    b
-                </ListboxItem>
-                <ListboxItem id="c" value="c">
-                    c
-                </ListboxItem>
+                {itemA}
+                {itemB}
+                {itemC}
             </Listbox>,
             { attachTo: document.body }
         );
@@ -542,15 +517,9 @@ describe("listbox", (): void => {
     test("should select a range and move focus to beginning when ctrl-shift-home is pressed in multi-select mode", (): void => {
         const rendered: any = mount(
             <Listbox multiselectable={true}>
-                <ListboxItem id="a" value="a">
-                    a
-                </ListboxItem>
-                <ListboxItem id="b" value="b">
-                    b
-                </ListboxItem>
-                <ListboxItem id="c" value="c">
-                    c
-                </ListboxItem>
+                {itemA}
+                {itemB}
+                {itemC}
             </Listbox>,
             { attachTo: document.body }
         );
@@ -577,15 +546,9 @@ describe("listbox", (): void => {
     test("Shift-a should select entire list in multi select mode", (): void => {
         const rendered: any = mount(
             <Listbox multiselectable={true}>
-                <ListboxItem id="a" value="a">
-                    a
-                </ListboxItem>
-                <ListboxItem id="b" value="b">
-                    b
-                </ListboxItem>
-                <ListboxItem id="c" value="c">
-                    c
-                </ListboxItem>
+                {itemA}
+                {itemB}
+                {itemC}
             </Listbox>,
             { attachTo: document.body }
         );
@@ -598,16 +561,10 @@ describe("listbox", (): void => {
 
     test("Setting selected items in props (controlled mode) should override selections made in ui", (): void => {
         const rendered: any = mount(
-            <Listbox selectedItems={[{ id: "b", value: "b", displayString: "b" }]}>
-                <ListboxItem id="a" value="a">
-                    a
-                </ListboxItem>
-                <ListboxItem id="b" value="b">
-                    b
-                </ListboxItem>
-                <ListboxItem id="c" value="c">
-                    c
-                </ListboxItem>
+            <Listbox selectedItems={["b"]}>
+                {itemA}
+                {itemB}
+                {itemC}
             </Listbox>,
             { attachTo: document.body }
         );
@@ -635,19 +592,10 @@ describe("listbox", (): void => {
 
     test("Setting default selection should work", (): void => {
         const rendered: any = mount(
-            <Listbox
-                multiselectable={true}
-                defaultSelection={[{ id: "b", value: "b", displayString: "b" }]}
-            >
-                <ListboxItem id="a" value="a">
-                    a
-                </ListboxItem>
-                <ListboxItem id="b" value="b">
-                    b
-                </ListboxItem>
-                <ListboxItem id="c" value="c">
-                    c
-                </ListboxItem>
+            <Listbox multiselectable={true} defaultSelection={["b"]}>
+                {itemA}
+                {itemB}
+                {itemC}
             </Listbox>,
             { attachTo: document.body }
         );
@@ -660,23 +608,10 @@ describe("listbox", (): void => {
 
     test("Invalid default items should be culled from the list", (): void => {
         const rendered: any = mount(
-            <Listbox
-                multiselectable={true}
-                defaultSelection={[
-                    { id: "a", value: "a", displayString: "a" },
-                    { id: "b", value: "b", displayString: "b" },
-                    { id: "z", value: "z", displayString: "z" },
-                ]}
-            >
-                <ListboxItem id="a" value="a" disabled={true}>
-                    a
-                </ListboxItem>
-                <ListboxItem id="b" value="b">
-                    b
-                </ListboxItem>
-                <ListboxItem id="c" value="c">
-                    c
-                </ListboxItem>
+            <Listbox multiselectable={true} defaultSelection={["a", "b", "z"]}>
+                {itemADisabled}
+                {itemB}
+                {itemC}
             </Listbox>,
             { attachTo: document.body }
         );
@@ -687,22 +622,10 @@ describe("listbox", (): void => {
 
     test("In single select mode only the first valid default item should be selected", (): void => {
         const rendered: any = mount(
-            <Listbox
-                defaultSelection={[
-                    { id: "z", value: "z", displayString: "z" },
-                    { id: "a", value: "a", displayString: "a" },
-                    { id: "b", value: "b", displayString: "b" },
-                ]}
-            >
-                <ListboxItem id="a" value="a" disabled={true}>
-                    a
-                </ListboxItem>
-                <ListboxItem id="b" value="b">
-                    b
-                </ListboxItem>
-                <ListboxItem id="c" value="c">
-                    c
-                </ListboxItem>
+            <Listbox defaultSelection={["z", "a", "b"]}>
+                {itemADisabled}
+                {itemB}
+                {itemC}
             </Listbox>,
             { attachTo: document.body }
         );
@@ -715,12 +638,9 @@ describe("listbox", (): void => {
         const onSelectedItemsChanged: any = jest.fn();
         const rendered: any = mount(
             <Listbox onSelectedItemsChanged={onSelectedItemsChanged}>
-                <ListboxItem id="a" value="a">
-                    a
-                </ListboxItem>
-                <ListboxItem id="b" value="b">
-                    b
-                </ListboxItem>
+                {itemA}
+                {itemB}
+                {itemC}
             </Listbox>,
             { attachTo: document.body }
         );

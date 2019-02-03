@@ -10,7 +10,7 @@ function listboxItemPropFactory(id: string): ListboxItemProps {
         managedClasses: {
             listboxItem: "listbox-item",
         },
-        id: "option-" + id,
+        id,
         value: id,
         role: "option",
         displayString: "Option-" + id,
