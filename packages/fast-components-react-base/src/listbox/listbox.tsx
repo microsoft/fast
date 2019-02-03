@@ -38,6 +38,124 @@ class Listbox extends Foundation<
         typeAheadPropertyKey: "displayString",
     };
 
+    /**
+     * converts an array of item id's to an array of ListboxItemData objects populated by data
+     * extracted from the provided children based on id match
+     */
+    public static getListboxItemDataFromIds(
+        selectedIds: string[],
+        children: React.ReactNode
+    ): ListboxItemData[] {
+        const selectedItems: ListboxItemData[] = Listbox.validateSelection(
+            Listbox.asItemData(selectedIds),
+            children
+        );
+        return selectedItems;
+    }
+
+    /**
+     * converts an array of item id's to an array of "empty" ListboxItemData objects
+     */
+    private static asItemData(items: string[]): ListboxItemData[] {
+        const itemsToReturn: ListboxItemData[] = items.map((item: string) => {
+            const newItem: ListboxItemData = {
+                id: item,
+                displayString: "",
+                value: "",
+            };
+            return newItem;
+        });
+        return itemsToReturn;
+    }
+
+    /**
+     * Gets a child node from it's id by examining provided children
+     */
+    private static getNodeById(
+        itemId: string,
+        children: React.ReactNode
+    ): React.ReactNode {
+        const childrenAsArray: React.ReactNode[] = React.Children.toArray(children);
+
+        const matchNode: React.ReactNode = childrenAsArray.find(
+            (child: React.ReactElement<any>): boolean => {
+                if (
+                    child.props[Listbox.idPropertyKey] === undefined ||
+                    child.props[Listbox.idPropertyKey] !== itemId
+                ) {
+                    return false;
+                }
+                return true;
+            }
+        );
+
+        return matchNode;
+    }
+
+    /**
+     * Gets the listItemData of an item from it's id by examining children props
+     */
+    private static getItemDataById(
+        itemId: string,
+        children: React.ReactNode
+    ): ListboxItemData {
+        const matchNode: React.ReactNode = this.getNodeById(itemId, children);
+
+        if (matchNode !== undefined) {
+            const itemData: ListboxItemData = {
+                id: itemId,
+                displayString: (matchNode as React.ReactElement<any>).props[
+                    Listbox.displayStringPropertyKey
+                ],
+                value: (matchNode as React.ReactElement<any>).props[
+                    Listbox.valuePropertyKey
+                ],
+            };
+            return itemData;
+        }
+
+        return null;
+    }
+
+    /**
+     * validates selected options against child props and returns only the valid ones
+     * (ie. such an option id exists and the option is not disabled),
+     * the values of the returned data objects are updated to reflect values of child object
+     * with matching id.
+     */
+    private static validateSelection(
+        items: ListboxItemData[],
+        children: React.ReactNode
+    ): ListboxItemData[] {
+        const validSelection: ListboxItemData[] = items
+            .map((item: ListboxItemData) => {
+                const itemNode: React.ReactElement<any> = this.getNodeById(
+                    item.id,
+                    children
+                ) as React.ReactElement<any>;
+                if (
+                    itemNode === undefined ||
+                    itemNode.props[Listbox.disabledPropertyKey] === true ||
+                    itemNode.props[Listbox.valuePropertyKey] === undefined
+                ) {
+                    return null;
+                }
+
+                const itemData: ListboxItemData = {
+                    id: item.id,
+                    value: itemNode.props[Listbox.valuePropertyKey],
+                    displayString: itemNode.props[Listbox.displayStringPropertyKey],
+                };
+
+                return itemData;
+            })
+            .filter((listboxItem: ListboxItemData) => {
+                return listboxItem !== null;
+            });
+
+        return validSelection;
+    }
+
     protected handledProps: HandledProps<ListboxHandledProps> = {
         children: void 0,
         defaultSelection: void 0,
@@ -60,9 +178,19 @@ class Listbox extends Foundation<
     constructor(props: ListboxProps) {
         super(props);
 
-        let initialSelection: ListboxItemData[] = this.validateSelection(
-            this.asItemData(this.props.defaultSelection)
-        );
+        let initialSelection: ListboxItemData[];
+        if (this.props.selectedItems !== undefined) {
+            initialSelection = Listbox.getListboxItemDataFromIds(
+                this.props.selectedItems,
+                this.props.children
+            );
+        } else {
+            initialSelection = Listbox.getListboxItemDataFromIds(
+                this.props.defaultSelection,
+                this.props.children
+            );
+        }
+
         if (!this.props.multiselectable && initialSelection.length > 1) {
             initialSelection = initialSelection.slice(0, 1);
         }
@@ -70,10 +198,7 @@ class Listbox extends Foundation<
         this.state = {
             focusIndex: -1,
             focussedItemId: "",
-            selectedItems:
-                this.props.selectedItems === undefined
-                    ? initialSelection
-                    : this.validateSelection(this.asItemData(this.props.selectedItems)),
+            selectedItems: initialSelection,
         };
     }
 
@@ -246,7 +371,10 @@ class Listbox extends Foundation<
                 focusItemId = this.setFocus(this.state.focusIndex + 1, 1);
 
                 if (this.props.multiselectable && event.shiftKey && focusItemId !== "") {
-                    const itemData: ListboxItemData = this.getItemDataById(focusItemId);
+                    const itemData: ListboxItemData = Listbox.getItemDataById(
+                        focusItemId,
+                        this.props.children
+                    );
                     if (itemData !== null) {
                         this.toggleItem(itemData);
                     }
@@ -259,7 +387,10 @@ class Listbox extends Foundation<
                 event.preventDefault();
                 focusItemId = this.setFocus(this.state.focusIndex - 1, -1);
                 if (this.props.multiselectable && event.shiftKey && focusItemId !== "") {
-                    const itemData: ListboxItemData = this.getItemDataById(focusItemId);
+                    const itemData: ListboxItemData = Listbox.getItemDataById(
+                        focusItemId,
+                        this.props.children
+                    );
                     if (itemData !== null) {
                         this.toggleItem(itemData);
                     }
@@ -319,28 +450,6 @@ class Listbox extends Foundation<
         );
 
         return matchNode;
-    };
-
-    /**
-     * Gets the listItemData of an item from it's id by examining children props
-     */
-    private getItemDataById = (itemId: string): ListboxItemData => {
-        const matchNode: React.ReactNode = this.getNodeById(itemId, this.props.children);
-
-        if (matchNode !== undefined) {
-            const itemData: ListboxItemData = {
-                id: itemId,
-                displayString: (matchNode as React.ReactElement<any>).props[
-                    Listbox.displayStringPropertyKey
-                ],
-                value: (matchNode as React.ReactElement<any>).props[
-                    Listbox.valuePropertyKey
-                ],
-            };
-            return itemData;
-        }
-
-        return null;
     };
 
     /**
@@ -463,15 +572,18 @@ class Listbox extends Foundation<
             }
         );
 
-        this.updateSelection(this.validateSelection(newSelectedItems));
+        this.updateSelection(
+            Listbox.validateSelection(newSelectedItems, this.props.children)
+        );
     };
 
     /**
      * Updates selection state (should be the only place this is done outside of initialization)
      */
     private updateSelection = (newSelection: ListboxItemData[]): void => {
-        const validatedSelection: ListboxItemData[] = this.validateSelection(
-            newSelection
+        const validatedSelection: ListboxItemData[] = Listbox.validateSelection(
+            newSelection,
+            this.props.children
         );
 
         if (isEqual(validatedSelection, this.state.selectedItems)) {
@@ -487,57 +599,6 @@ class Listbox extends Foundation<
         if (this.props.onSelectedItemsChanged) {
             this.props.onSelectedItemsChanged(validatedSelection);
         }
-    };
-
-    /**
-     * validates selected options against child props and returns only the valid ones
-     * (ie. such an option id exists and the option is not disabled),
-     * the values of the returned data objects are updated to reflect values of child object
-     * with matching id.
-     */
-    private validateSelection = (items: ListboxItemData[]): ListboxItemData[] => {
-        const validSelection: ListboxItemData[] = items
-            .map((item: ListboxItemData) => {
-                const itemNode: React.ReactElement<any> = this.getNodeById(
-                    item.id,
-                    this.props.children
-                ) as React.ReactElement<any>;
-                if (
-                    itemNode === undefined ||
-                    itemNode.props[Listbox.disabledPropertyKey] === true ||
-                    itemNode.props[Listbox.valuePropertyKey] === undefined
-                ) {
-                    return null;
-                }
-
-                const itemData: ListboxItemData = {
-                    id: item.id,
-                    value: itemNode.props[Listbox.valuePropertyKey],
-                    displayString: itemNode.props[Listbox.displayStringPropertyKey],
-                };
-
-                return itemData;
-            })
-            .filter((listboxItem: ListboxItemData) => {
-                return listboxItem !== null;
-            });
-
-        return validSelection;
-    };
-
-    /**
-     * converts an array of item id's to an array of "empty" ListboxItemData objects
-     */
-    private asItemData = (items: string[]): ListboxItemData[] => {
-        const itemsToReturn: ListboxItemData[] = items.map((item: string) => {
-            const newItem: ListboxItemData = {
-                id: item,
-                displayString: "",
-                value: "",
-            };
-            return newItem;
-        });
-        return itemsToReturn;
     };
 }
 
