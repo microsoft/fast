@@ -1,22 +1,22 @@
 import * as React from "react";
-import {
-    Tabs as BaseTabs,
-    TabsHandledProps as BaseTabsHandledProps,
-    TabsManagedClasses,
-    TabsProps as BaseTabsProps,
-    TabsUnhandledProps as PivotUnhandledProps,
-} from "@microsoft/fast-components-react-base";
+import MSFTPivot, {
+    PivotHandledProps as MSFTPivotHandledProps,
+    PivotManagedClasses,
+    PivotProps as MSFTPivotProps,
+    PivotUnhandledProps,
+} from "./pivot";
 import { PivotClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { PivotStyles, DesignSystem } from "@microsoft/fast-components-styles-msft";
 import { Subtract } from "utility-types";
 
 /*tslint:disable-next-line:typedef */
-const Pivot = manageJss(PivotStyles)(BaseTabs);
+const Pivot = manageJss(PivotStyles)(MSFTPivot);
 type Pivot = InstanceType<typeof Pivot>;
 
-interface PivotHandledProps extends Subtract<BaseTabsHandledProps, TabsManagedClasses> {}
-type PivotProps = ManagedJSSProps<BaseTabsProps, PivotClassNameContract, DesignSystem>;
+interface PivotHandledProps
+    extends Subtract<MSFTPivotHandledProps, PivotManagedClasses> {}
+type PivotProps = ManagedJSSProps<MSFTPivotProps, PivotClassNameContract, DesignSystem>;
 
 export * from "./pivot";
 

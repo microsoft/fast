@@ -4,6 +4,7 @@ import {
     TabsHandledProps as BaseTabsHandledProps,
     TabsManagedClasses as BaseTabsManagedClasses,
     TabsUnhandledProps as BaseTabsUnhandledProps,
+    TabsItem,
 } from "@microsoft/fast-components-react-base";
 import {
     PivotClassNameContract,
@@ -15,14 +16,14 @@ export interface PivotHandledProps
     extends PivotManagedClasses,
         Subtract<BaseTabsHandledProps, BaseTabsManagedClasses> {
     /**
-     * The preceding content
+     * The aria-label applied to the tablist for the pivot items
      */
-    beforeContent?: (classname?: string) => React.ReactNode;
+    label: string;
 
     /**
-     * The trailing content
+     * The pivots' pivot item
      */
-    afterContent?: (classname?: string) => React.ReactNode;
+    items: TabsItem[];
 }
 
 /* tslint:disable-next-line:no-empty-interface */

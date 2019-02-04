@@ -13,8 +13,8 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, {}> {
     public static displayName: string = "Pivot";
 
     protected handledProps: HandledProps<PivotHandledProps> = {
-        afterContent: void 0,
         label: void 0,
+        items: void 0,
         managedClasses: void 0,
     };
 
@@ -25,7 +25,6 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, {}> {
         return (
             <BaseTabs
                 {...this.unhandledProps()}
-                className={this.generateClassNames()}
                 managedClasses={this.generatePivotClassNames()}
                 items={this.props.items}
                 label={this.props.label}

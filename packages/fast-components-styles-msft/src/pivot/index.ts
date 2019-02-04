@@ -15,9 +15,24 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
     const direction: Direction = designSystem.direction;
 
     return {
-        pivot: {},
-        pivot_itemList: {},
-        pivot_item: {},
+        pivot: {
+            color: "black",
+        },
+        pivot_itemList: {
+            display: "flex",
+        },
+        pivot_item: {
+            minHeight: "32px",
+            padding: "0 12px",
+            fontSize: "14px",
+            "&:hover": {
+                opacity: "0.8",
+            },
+            "&:focus": {
+                outline: "none",
+                opacity: "0.6",
+            },
+        },
         pivot_item__active: {},
         pivot_tabPanel: {
             display: "block",
