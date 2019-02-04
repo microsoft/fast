@@ -15,6 +15,7 @@ import {
 } from "../index";
 import { Slide, SlideTheme } from "./carousel.props";
 import { get, uniqueId } from "lodash-es";
+import carouselHeroContentSchema from "../../app/components/carousel-hero-content.schema.json";
 
 function contentOne(): (className?: string) => React.ReactNode {
     return (className?: string): React.ReactNode => (
@@ -114,31 +115,41 @@ function mockHero(): (className?: string) => React.ReactNode {
 
 const detailTabItem: Slide[] = [
     {
-        tab: (): React.ReactNode => <React.Fragment />,
-        content: contentOne(),
+        content: {
+            id: carouselHeroContentSchema.id,
+            props: {},
+        },
         id: uniqueId(),
     },
     {
-        tab: (): React.ReactNode => <React.Fragment />,
-        content: mockHero(),
-        id: uniqueId(),
-        theme: SlideTheme.dark,
-    },
-    {
-        tab: (): React.ReactNode => <React.Fragment />,
-        content: contentTwo(),
+        content: {
+            id: carouselHeroContentSchema.id,
+            props: {},
+        },
         id: uniqueId(),
         theme: SlideTheme.dark,
     },
     {
-        tab: (): React.ReactNode => <React.Fragment />,
-        content: contentThree(),
+        content: {
+            id: carouselHeroContentSchema.id,
+            props: {},
+        },
         id: uniqueId(),
         theme: SlideTheme.dark,
     },
     {
-        tab: (): React.ReactNode => <React.Fragment />,
-        content: contentFour(),
+        content: {
+            id: carouselHeroContentSchema.id,
+            props: {},
+        },
+        id: uniqueId(),
+        theme: SlideTheme.dark,
+    },
+    {
+        content: {
+            id: carouselHeroContentSchema.id,
+            props: {},
+        },
         id: uniqueId(),
         theme: SlideTheme.light,
     },
@@ -146,8 +157,10 @@ const detailTabItem: Slide[] = [
 
 const singleTabItem: Slide[] = [
     {
-        tab: (): React.ReactNode => <React.Fragment />,
-        content: contentOne(),
+        content: {
+            id: carouselHeroContentSchema.id,
+            props: {},
+        },
         id: uniqueId(),
     },
 ];

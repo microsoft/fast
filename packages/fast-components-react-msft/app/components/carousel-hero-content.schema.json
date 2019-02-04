@@ -1,0 +1,8 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Carousel Hero Content Test Element",
+    "description": "A carousel hero content component's schema definition.",
+    "id": "carousel-hero-content",
+    "type": "object",
+    "properties": {}
+}

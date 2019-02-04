@@ -3,14 +3,15 @@ import {
     CarouselClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-msft";
-import { TabsItem } from "@microsoft/fast-components-react-base";
 
 export enum SlideTheme {
     light = "light",
     dark = "dark",
 }
 
-export interface Slide extends TabsItem {
+export interface Slide {
+    content: (className?: string) => React.ReactNode;
+    id: string;
     theme?: SlideTheme;
 }
 

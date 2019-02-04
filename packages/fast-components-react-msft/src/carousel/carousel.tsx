@@ -8,7 +8,7 @@ import {
     SlideTheme,
 } from "./carousel.props";
 import { Flipper, FlipperDirection } from "../flipper";
-import { Tabs } from "@microsoft/fast-components-react-base";
+import { Tabs, TabsItem } from "@microsoft/fast-components-react-base";
 import { TabsClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
 
@@ -48,6 +48,9 @@ class Carousel extends Foundation<
         return null;
     }
 
+    /**
+     * Handled props
+     */
     protected handledProps: HandledProps<CarouselHandledProps> = {
         managedClasses: void 0,
         label: void 0,
@@ -90,7 +93,7 @@ class Carousel extends Foundation<
                     label={this.props.label}
                     activeId={this.state.activeId}
                     onUpdate={this.handleUpdate}
-                    items={this.slides}
+                    items={this.slides as TabsItem[]}
                     managedClasses={this.generateTabsClassNames()}
                 />
                 <Flipper
@@ -155,9 +158,18 @@ class Carousel extends Foundation<
 
     /**
      * Get an array of slides
+     * Coerce tab shape
      */
     private get slides(): Slide[] {
-        return Array.isArray(this.props.items) ? this.props.items : [];
+        if (Array.isArray(this.props.items)) {
+            return this.props.items.map((slide: any) =>
+                Object.assign({}, slide, {
+                    tab: (): React.ReactNode => <React.Fragment />,
+                })
+            );
+        } else {
+            return [];
+        }
     }
 
     /**

@@ -84,18 +84,15 @@ function mockHero(): (className?: string) => React.ReactNode {
 
 const detailTabItem: Slide[] = [
     {
-        tab: (): React.ReactNode => <React.Fragment />,
         content: contentOne(),
         id: "id01",
     },
     {
-        tab: (): React.ReactNode => <React.Fragment />,
         content: mockHero(),
         id: "id02",
         theme: SlideTheme.dark,
     },
     {
-        tab: (): React.ReactNode => <React.Fragment />,
         content: mockHero(),
         id: "id03",
         theme: SlideTheme.light,
@@ -104,12 +101,10 @@ const detailTabItem: Slide[] = [
 
 const detailNull: Slide[] = [
     {
-        tab: null,
         content: null,
         id: "id01",
     },
     {
-        tab: null,
         content: null,
         id: "id02",
         theme: SlideTheme.dark,
