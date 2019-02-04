@@ -19,12 +19,19 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
             position: "absolute",
             top: "calc(50% - 20px)",
             zIndex: "100",
+            display: "none",
         };
     }
 
     return {
         carousel: {
             position: "relative",
+            width: "fit-content",
+            "&:hover": {
+                "& $carousel_flipperPrevious, & $carousel_flipperNext": {
+                    display: "block",
+                },
+            },
         },
         carousel_slides: {},
         carousel_sequenceIndicators: {

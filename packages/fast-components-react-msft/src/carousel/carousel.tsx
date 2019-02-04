@@ -44,7 +44,7 @@ class Carousel extends Foundation<
     constructor(props: CarouselProps) {
         super(props);
 
-        if (this.props.items) {
+        if (Array.isArray(this.props.items)) {
             this.state = {
                 activeId:
                     typeof this.props.activeId === "string"
@@ -75,7 +75,7 @@ class Carousel extends Foundation<
             <div {...this.unhandledProps()} className={this.generateClassNames()}>
                 <Flipper
                     direction={FlipperDirection.previous}
-                    onClick={this.handlePreviousInvoke}
+                    onClick={this.handlePreviousClick}
                     className={get(
                         this.props,
                         "managedClasses.carousel_flipperPrevious",
@@ -91,7 +91,7 @@ class Carousel extends Foundation<
                 />
                 <Flipper
                     direction={FlipperDirection.next}
-                    onClick={this.handleNextInvoke}
+                    onClick={this.handleNextClick}
                     className={get(this.props, "managedClasses.carousel_flipperNext", "")}
                 />
             </div>
@@ -173,10 +173,7 @@ class Carousel extends Foundation<
      * Updates slides
      */
     private updateSlides(): void {
-        if (this.props.items.length > 0) {
-            // this.slides = this.props.items.map((item: Slide): Slide => item);
-            this.slides = this.props.items.slice();
-        }
+        this.slides = this.props.items.slice();
     }
 
     /**
@@ -191,7 +188,7 @@ class Carousel extends Foundation<
     /**
      * Move to previous slide if applicable
      */
-    private handlePreviousInvoke = (): void => {
+    private handlePreviousClick = (): void => {
         let newPosition: number = this.getActiveIndex() - 1;
 
         if (newPosition < 0) {
@@ -204,7 +201,7 @@ class Carousel extends Foundation<
     /**
      * Move to next slide if applicable
      */
-    private handleNextInvoke = (): void => {
+    private handleNextClick = (): void => {
         let newPosition: number = this.getActiveIndex() + 1;
 
         if (newPosition > this.slides.length - 1) {
