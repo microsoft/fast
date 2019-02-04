@@ -34,7 +34,7 @@ class Listbox extends Foundation<
 
     public static defaultProps: Partial<ListboxProps> = {
         multiselectable: false,
-        defaultSelection: ["y", "z", "x"],
+        defaultSelection: [],
         typeAheadPropertyKey: "displayString",
     };
 
@@ -572,9 +572,7 @@ class Listbox extends Foundation<
             }
         );
 
-        this.updateSelection(
-            Listbox.validateSelection(newSelectedItems, this.props.children)
-        );
+        this.updateSelection(newSelectedItems);
     };
 
     /**
