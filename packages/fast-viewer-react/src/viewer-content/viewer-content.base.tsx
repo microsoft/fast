@@ -105,5 +105,3 @@ export default class ViewerContent extends Foundation<
         }
     };
 }
-
-export { ViewerContent };
