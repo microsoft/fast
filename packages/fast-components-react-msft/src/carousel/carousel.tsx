@@ -55,8 +55,6 @@ class Carousel extends Foundation<
         items: void 0,
     };
 
-    private slides: Slide[];
-
     /**
      * Define constructor
      */
@@ -70,17 +68,6 @@ class Carousel extends Foundation<
                         ? this.props.activeId
                         : get(this.props.items[0], "id", ""),
             };
-
-            this.updateSlides();
-        }
-    }
-
-    /**
-     * React life-cycle method
-     */
-    public componentDidUpdate(): void {
-        if (this.slides !== this.props.items) {
-            this.updateSlides();
         }
     }
 
@@ -167,6 +154,13 @@ class Carousel extends Foundation<
     }
 
     /**
+     * Get an array of slides
+     */
+    private get slides(): Slide[] {
+        return Array.isArray(this.props.items) ? this.props.items : [];
+    }
+
+    /**
      * Get the active slide index
      */
     private getActiveIndex(): number {
@@ -177,20 +171,13 @@ class Carousel extends Foundation<
      * Get the current slide theme (needed for UI overlay contrast)
      */
     private getSlideTheme(): string {
-        if (!this.slides || this.slides.length <= 0) {
+        if (this.slides.length <= 0) {
             return;
         }
 
         return this.slides[this.getActiveIndex()].theme
             ? this.slides[this.getActiveIndex()].theme
             : SlideTheme.dark;
-    }
-
-    /**
-     * Updates slides
-     */
-    private updateSlides(): void {
-        this.slides = this.props.items.slice();
     }
 
     /**
