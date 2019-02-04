@@ -78,7 +78,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
             ...flipperStyles(),
             [applyLocalizedProperty("right", "left", direction)]: "6px",
         },
-        theme__dark: {
+        carousel__themeDark: {
             "& $carousel_flipperPrevious, & $carousel_flipperNext": {
                 color: "black",
                 fill: "black",
@@ -108,7 +108,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
                 },
             },
         },
-        theme__light: {
+        carousel__themeLight: {
             "& $carousel_flipperPrevious, & $carousel_flipperNext": {
                 color: "white",
                 fill: "white",

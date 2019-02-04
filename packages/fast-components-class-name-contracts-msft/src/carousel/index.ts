@@ -61,10 +61,10 @@ export interface CarouselClassNameContract {
     /**
      * The light slide theme
      */
-    theme__light?: string;
+    carousel__themeLight?: string;
 
     /**
      * The dark slide theme
      */
-    theme__dark?: string;
+    carousel__themeDark?: string;
 }

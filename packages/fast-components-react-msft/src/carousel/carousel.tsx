@@ -29,6 +29,25 @@ class Carousel extends Foundation<
 > {
     public static displayName: string = "Carousel";
 
+    /**
+     * React life-cycle method
+     */
+    public static getDerivedStateFromProps(
+        nextProps: CarouselProps,
+        prevState: CarouselState
+    ): null | Partial<CarouselState> {
+        if (
+            typeof nextProps.activeId === "string" &&
+            nextProps.activeId !== prevState.activeId
+        ) {
+            return {
+                activeId: nextProps.activeId,
+            };
+        }
+
+        return null;
+    }
+
     protected handledProps: HandledProps<CarouselHandledProps> = {
         managedClasses: void 0,
         label: void 0,
@@ -49,9 +68,7 @@ class Carousel extends Foundation<
                 activeId:
                     typeof this.props.activeId === "string"
                         ? this.props.activeId
-                        : this.props.items.length > 0
-                            ? get(this.props.items[0], "id")
-                            : "",
+                        : get(this.props.items[0], "id", ""),
             };
 
             this.updateSlides();
@@ -108,8 +125,8 @@ class Carousel extends Foundation<
         if (this.getSlideTheme()) {
             theme =
                 this.getSlideTheme() === SlideTheme.light
-                    ? get(this.props, "managedClasses.theme__light", "")
-                    : get(this.props, "managedClasses.theme__dark", "");
+                    ? get(this.props, "managedClasses.carousel__themeLight", "")
+                    : get(this.props, "managedClasses.carousel__themeDark", "");
 
             className += ` ${theme}`;
         }
