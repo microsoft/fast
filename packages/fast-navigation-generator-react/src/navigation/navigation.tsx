@@ -69,7 +69,7 @@ export default class Navigation extends Foundation<
         level: number
     ): React.ReactNode {
         return (
-            <div className={this.props.managedClasses.navigation_itemList}>
+            <div className={this.props.managedClasses.navigation_itemList} role={"group"}>
                 {this.renderTreeItems(navigation, level + 1)}
             </div>
         );
@@ -150,7 +150,7 @@ export default class Navigation extends Foundation<
         });
     }
 
-    private focusNextTreeItem(dataLocation: string): HTMLSpanElement | HTMLAnchorElement {
+    private focusNextTreeItem(dataLocation: string): void {
         if (canUseDOM()) {
             const nodes: HTMLElement[] = this.getTreeItemNodes();
             const currentIndex: number = this.findCurrentTreeItemIndex(
@@ -163,13 +163,9 @@ export default class Navigation extends Foundation<
                     : nodes.length - 1;
             nodes[nextIndex].focus();
         }
-
-        return null;
     }
 
-    private focusPreviousTreeItem(
-        dataLocation: string
-    ): HTMLSpanElement | HTMLAnchorElement {
+    private focusPreviousTreeItem(dataLocation: string): void {
         if (canUseDOM()) {
             const nodes: HTMLElement[] = this.getTreeItemNodes();
             const currentIndex: number = this.findCurrentTreeItemIndex(
@@ -180,8 +176,6 @@ export default class Navigation extends Foundation<
                 currentIndex !== -1 && currentIndex !== 0 ? currentIndex - 1 : 0;
             nodes[previousIndex].focus();
         }
-
-        return null;
     }
 
     private focusFirstTreeItem(): void {

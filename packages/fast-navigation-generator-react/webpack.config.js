@@ -5,6 +5,14 @@ const appDir = path.resolve(__dirname, "./app");
 const outDir = path.resolve(__dirname, "./www");
 
 module.exports = {
+    devServer: {
+        compress: false,
+        historyApiFallback: true,
+        open: true,
+        overlay: true,
+        port: 7002
+    },
+    devtool: process.env.NODE_ENV === "production" ? "none" : "inline-source-map",
     entry: path.resolve(appDir, "index.tsx"),
     output: {
         path: outDir,
@@ -34,12 +42,5 @@ module.exports = {
     ],
     resolve: {
         extensions: [".js", ".tsx", ".ts", ".json"],
-    },
-    devServer: {
-        compress: false,
-        historyApiFallback: true,
-        open: true,
-        overlay: true,
-        port: 7002
     }
 }

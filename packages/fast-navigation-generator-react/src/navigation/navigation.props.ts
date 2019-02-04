@@ -28,7 +28,7 @@ export enum ItemType {
 
 export interface TreeNavigation {
     /**
-     * The text to be used
+     * The navigation item text
      */
     text: string;
 
