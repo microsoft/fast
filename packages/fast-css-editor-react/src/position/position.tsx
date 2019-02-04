@@ -32,11 +32,9 @@ export default class CSSPosition extends Foundation<
     public render(): React.ReactNode {
         return (
             <div className={this.props.managedClasses.cssPosition}>
-                <span className={this.props.managedClasses.cssPosition_selectContainer}>
+                <span className={this.props.managedClasses.cssPosition_control}>
                     <select
-                        className={
-                            this.props.managedClasses.cssPosition_selectContainer_select
-                        }
+                        className={this.props.managedClasses.cssPosition_select}
                         onChange={this.handlePositionOnChange}
                         value={
                             this.props.position
@@ -57,13 +55,22 @@ export default class CSSPosition extends Foundation<
         switch (position) {
             case PositionValue.absolute:
                 return (
-                    <div>
+                    <div className={this.props.managedClasses.absoluteInput}>
                         <div className={this.props.managedClasses.absoluteInput_row}>
                             {this.renderLocationInput(Location.top)}
                         </div>
                         <div className={this.props.managedClasses.absoluteInput_row}>
                             {this.renderLocationInput(Location.left)}
-                            <div className={this.generateCenterRowClassNames()} />
+                            <div className={this.generateCenterRowClassNames()}>
+                                <div
+                                    className={
+                                        this.props.managedClasses
+                                            .absoluteInput_centerRowContent
+                                    }
+                                >
+                                    {"offset".toUpperCase()}
+                                </div>
+                            </div>
                             {this.renderLocationInput(Location.right)}
                         </div>
                         <div className={this.props.managedClasses.absoluteInput_row}>
@@ -89,26 +96,25 @@ export default class CSSPosition extends Foundation<
     }
 
     private generateCenterRowClassNames(): string {
-        let classNames: string = this.props.managedClasses.absoluteInput_row_center;
+        let classNames: string = this.props.managedClasses.absoluteInput_centerRow;
 
         [
             {
                 location: Location.top,
-                className: this.props.managedClasses.absoluteInput_row_center__activeTop,
+                className: this.props.managedClasses.absoluteInput_centerRow__activeTop,
             },
             {
                 location: Location.bottom,
                 className: this.props.managedClasses
-                    .absoluteInput_row_center__activeBottom,
+                    .absoluteInput_centerRow__activeBottom,
             },
             {
                 location: Location.left,
-                className: this.props.managedClasses.absoluteInput_row_center__activeLeft,
+                className: this.props.managedClasses.absoluteInput_centerRow__activeLeft,
             },
             {
                 location: Location.right,
-                className: this.props.managedClasses
-                    .absoluteInput_row_center__activeRight,
+                className: this.props.managedClasses.absoluteInput_centerRow__activeRight,
             },
         ].forEach(
             (locationsMappedToClassNames: LocationsMappedToClassNames): void => {

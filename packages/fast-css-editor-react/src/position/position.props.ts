@@ -31,6 +31,9 @@ export interface CSSPositionValues {
 export interface CSSPositionHandledProps
     extends ManagedClasses<CSSPositionClassNameContract>,
         CSSPositionValues {
+    /**
+     * The callback for position update
+     */
     onPositionUpdate?: (position: CSSPositionValues) => void;
 }
 

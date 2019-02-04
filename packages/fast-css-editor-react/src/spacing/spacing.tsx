@@ -141,20 +141,23 @@ export default class CSSSpacing extends Foundation<
 
         classes += ` ${get(
             this.props,
-            `managedClasses.cssSpacing_type__${spacingType}`
+            `managedClasses.cssSpacing_type__${spacingType}`,
+            ""
         )}`;
 
         if (spacingType === this.state.activeType) {
             classes += ` ${get(
                 this.props,
-                `managedClasses.cssSpacing_type__${spacingType}Active`
+                `managedClasses.cssSpacing_type__${spacingType}Active`,
+                ""
             )}`;
         }
 
         if (spacingType === this.state.hoverType) {
             classes += ` ${get(
                 this.props,
-                `managedClasses.cssSpacing_type__${spacingType}Hover`
+                `managedClasses.cssSpacing_type__${spacingType}Hover`,
+                ""
             )}`;
         }
 

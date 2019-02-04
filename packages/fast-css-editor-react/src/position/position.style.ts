@@ -1,89 +1,107 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
-import { toPx } from "@microsoft/fast-jss-utilities";
+import { background800, foreground800 } from "../editor.constants.style";
+import {
+    applyInputStyle,
+    applySelectInputStyles,
+    applySelectSpanStyles,
+} from "../editor.utilities.style";
 
 export interface CSSPositionClassNameContract {
     cssPosition?: string;
-    cssPosition_selectContainer?: string;
-    cssPosition_selectContainer_select?: string;
+    cssPosition_control?: string;
+    cssPosition_select?: string;
     cssPosition_input?: string;
     absoluteInput_row?: string;
-    absoluteInput_row_center?: string;
-    absoluteInput_row_center__activeTop?: string;
-    absoluteInput_row_center__activeBottom?: string;
-    absoluteInput_row_center__activeLeft?: string;
-    absoluteInput_row_center__activeRight?: string;
+    absoluteInput?: string;
+    absoluteInput_centerRow?: string;
+    absoluteInput_centerRow__activeTop?: string;
+    absoluteInput_centerRow__activeBottom?: string;
+    absoluteInput_centerRow__activeLeft?: string;
+    absoluteInput_centerRow__activeRight?: string;
+    absoluteInput_centerRowContent?: string;
 }
 
 const styles: ComponentStyles<CSSPositionClassNameContract, {}> = {
-    cssPosition: {},
-    cssPosition_selectContainer: {
-        display: "flex",
-        position: "relative",
-        "&::before, &::after": {
-            top: toPx(12),
-            width: toPx(1),
-            height: toPx(10),
-            content: "''",
-            zIndex: "1",
-            position: "absolute",
-            background: "#000",
-            borderRadius: toPx(2),
-        },
-        "&::before": {
-            right: toPx(15),
-            transform: "rotate(45deg)",
-        },
-        "&::after": {
-            right: toPx(22),
-            transform: "rotate(-45deg)",
-        },
+    cssPosition: {
+        fontSize: "11px",
     },
-    cssPosition_selectContainer_select: {
-        marginBottom: toPx(5),
-        height: toPx(36),
-        width: "100%",
-        border: "none",
-        padding: `${toPx(10)} ${toPx(36)} ${toPx(10)} ${toPx(10)}`,
-        outline: "none",
-        fontSize: toPx(14),
-        boxShadow: `inset 0 0 ${toPx(4)} 0 rgba(0, 0, 0, 0.08)`,
-        lineHeight: toPx(16),
-        borderRadius: toPx(2),
-        backgroundColor: "rgba(0, 0, 0, 0.04)",
-        appearance: "none",
+    cssPosition_control: {
+        ...applySelectSpanStyles(),
+    },
+    cssPosition_select: {
+        ...applySelectInputStyles(),
     },
     cssPosition_input: {
-        width: toPx(46),
-        height: toPx(16),
-        border: "none",
-        padding: `${toPx(10)} ${toPx(8)} ${toPx(10)}`,
-        outline: "none",
-        fontSize: toPx(14),
-        boxShadow: `inset 0 0 ${toPx(9)} 0 rgba(0, 0, 0, 0.08)`,
-        lineHeight: toPx(16),
-        borderRadius: toPx(2),
-        backgroundColor: "rgba(0, 0, 0, 0.04)",
+        ...applyInputStyle(),
+        alignSelf: "center",
+        width: "45px",
+    },
+    absoluteInput: {
+        marginTop: "10px",
     },
     absoluteInput_row: {
         display: "flex",
         justifyContent: "center",
     },
-    absoluteInput_row_center: {
-        width: toPx(50),
-        height: toPx(25),
-        border: `${toPx(5)} solid transparent`,
+    absoluteInput_centerRow: {
+        position: "relative",
+        padding: "10px",
+        "&::before, &::after": {
+            content: "''",
+            position: "absolute",
+            top: "calc(50% - 1px)",
+            width: "5px",
+            height: "2px",
+            background: background800,
+            zIndex: 1,
+        },
+        "&::before": {
+            left: "2px",
+        },
+        "&::after": {
+            right: "2px",
+        },
     },
-    absoluteInput_row_center__activeTop: {
-        borderTopColor: "#FB356D",
+    absoluteInput_centerRow__activeTop: {
+        "& $absoluteInput_centerRowContent": {
+            "&::before": {
+                background: foreground800,
+            },
+        },
     },
-    absoluteInput_row_center__activeBottom: {
-        borderBottomColor: "#FB356D",
+    absoluteInput_centerRow__activeBottom: {
+        "& $absoluteInput_centerRowContent": {
+            "&::after": {
+                background: foreground800,
+            },
+        },
     },
-    absoluteInput_row_center__activeLeft: {
-        borderLeftColor: "#FB356D",
+    absoluteInput_centerRow__activeLeft: {
+        "&::before": {
+            background: foreground800,
+        },
     },
-    absoluteInput_row_center__activeRight: {
-        borderRightColor: "#FB356D",
+    absoluteInput_centerRow__activeRight: {
+        "&::after": {
+            background: foreground800,
+        },
+    },
+    absoluteInput_centerRowContent: {
+        "&::before, &::after": {
+            content: "''",
+            position: "absolute",
+            left: "calc(50% - 1px)",
+            width: "2px",
+            height: "5px",
+            background: background800,
+            zIndex: 1,
+        },
+        "&::before": {
+            top: "2px",
+        },
+        "&::after": {
+            bottom: "2px",
+        },
     },
 };
 

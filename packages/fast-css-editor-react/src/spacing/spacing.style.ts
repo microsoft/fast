@@ -1,5 +1,7 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { toPx } from "@microsoft/fast-jss-utilities";
+import { applyInputStyle } from "../editor.utilities.style";
+import { background000 } from "../editor.constants.style";
 
 export interface CSSSpacingClassNameContract {
     cssSpacing?: string;
@@ -17,16 +19,18 @@ export interface CSSSpacingClassNameContract {
 
 const typeThickness: number = 11;
 const outlineStrokeThickness: number = 2;
-const locationIndicatorHight: number = typeThickness - 4;
+const locationIndicatorHeight: number = typeThickness - 4;
 const marginTypeColor: string = "1, 209, 199";
 const paddingTypeColor: string = "118, 108, 255";
 const leftRightPositionActiveMargin: number = typeThickness - 1;
-const topBottomPositionActiveMargin: number = 2 * locationIndicatorHight + 4;
+const topBottomPositionActiveMargin: number = 2 * locationIndicatorHeight + 4;
 const leftRightPositionActivePadding: number = 1;
 const topBottomPositionActivePadding: number = typeThickness / 2 + 1;
 
 const styles: ComponentStyles<CSSSpacingClassNameContract, {}> = {
-    cssSpacing: {},
+    cssSpacing: {
+        fontSize: "11px",
+    },
     cssSpacing_row: {
         display: "flex",
         justifyContent: "center",
@@ -34,12 +38,12 @@ const styles: ComponentStyles<CSSSpacingClassNameContract, {}> = {
     cssSpacing_type: {
         position: "relative",
         borderRadius: "2px",
-        width: "155px",
+        width: "135px",
         height: "48px",
         "&::before, &::after": {
             content: "''",
             position: "absolute",
-            width: toPx(locationIndicatorHight),
+            width: toPx(locationIndicatorHeight),
             height: "2px",
             background: "white",
             zIndex: 1,
@@ -113,16 +117,9 @@ const styles: ComponentStyles<CSSSpacingClassNameContract, {}> = {
         borderColor: `rgba(${paddingTypeColor}, 1)`,
     },
     cssSpacing_input: {
-        width: "46px",
+        ...applyInputStyle(),
         alignSelf: "center",
-        border: "none",
-        padding: "10px",
-        outline: "none",
-        fontSize: "14px",
-        boxShadow: "inset 0px 0px 4px 0px rgba(0, 0, 0, 0.08)",
-        lineHeight: "16px",
-        borderRadius: "2px",
-        backgroundColor: "rgba(0, 0, 0, 0.04)",
+        width: "45px",
     },
 };
 
