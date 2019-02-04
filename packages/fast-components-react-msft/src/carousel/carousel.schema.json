@@ -21,11 +21,11 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "title": "ID",
+                        "title": "HTML id attribute",
                         "type": "string"
                     },
                     "theme": {
-                        "title": "Slide theme",
+                        "title": "Theme",
                         "type": "string",
                         "enum": [
                             "dark",
@@ -34,7 +34,7 @@
                     },
                     "content": {
                         "title": "Slide content",
-                        "type": "string",
+                        "type": "object",
                         "pluginId": "@microsoft/fast-components-react-msft/carousel/content"
                     }
                 }

@@ -118,22 +118,14 @@ const detailTabItem: Slide[] = [
         content: {
             id: carouselHeroContentSchema.id,
             props: {},
-        },
+        } as any,
         id: uniqueId(),
     },
     {
         content: {
             id: carouselHeroContentSchema.id,
             props: {},
-        },
-        id: uniqueId(),
-        theme: SlideTheme.dark,
-    },
-    {
-        content: {
-            id: carouselHeroContentSchema.id,
-            props: {},
-        },
+        } as any,
         id: uniqueId(),
         theme: SlideTheme.dark,
     },
@@ -141,7 +133,7 @@ const detailTabItem: Slide[] = [
         content: {
             id: carouselHeroContentSchema.id,
             props: {},
-        },
+        } as any,
         id: uniqueId(),
         theme: SlideTheme.dark,
     },
@@ -149,7 +141,15 @@ const detailTabItem: Slide[] = [
         content: {
             id: carouselHeroContentSchema.id,
             props: {},
-        },
+        } as any,
+        id: uniqueId(),
+        theme: SlideTheme.dark,
+    },
+    {
+        content: {
+            id: carouselHeroContentSchema.id,
+            props: {},
+        } as any,
         id: uniqueId(),
         theme: SlideTheme.light,
     },
@@ -160,7 +160,7 @@ const singleTabItem: Slide[] = [
         content: {
             id: carouselHeroContentSchema.id,
             props: {},
-        },
+        } as any,
         id: uniqueId(),
     },
 ];
