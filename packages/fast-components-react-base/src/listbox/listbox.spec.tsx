@@ -59,6 +59,30 @@ describe("listbox", (): void => {
         expect(rendered.state("focusIndex")).toBe(1);
     });
 
+    test("should not throw with a single focusable child in single select mode", (): void => {
+        const rendered: any = mount(<Listbox>{itemA}</Listbox>, {
+            attachTo: document.body,
+        });
+
+        expect(rendered.state("focusIndex")).toBe(0);
+        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowDown });
+        expect(rendered.state("focusIndex")).toBe(0);
+        rendered.childAt(0).simulate("keydown", { key: "a" });
+        expect(rendered.state("focusIndex")).toBe(0);
+    });
+
+    test("should not throw with a single focusable child in multi select mode", (): void => {
+        const rendered: any = mount(<Listbox multiselectable={true}>{itemA}</Listbox>, {
+            attachTo: document.body,
+        });
+
+        expect(rendered.state("focusIndex")).toBe(0);
+        rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowDown });
+        expect(rendered.state("focusIndex")).toBe(0);
+        rendered.childAt(0).simulate("keydown", { key: "a" });
+        expect(rendered.state("focusIndex")).toBe(0);
+    });
+
     test("should move focus down when the down arrow is pressed", (): void => {
         const rendered: any = mount(
             <Listbox>
