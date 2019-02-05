@@ -406,7 +406,10 @@ export function getDataLocationsOfPlugins(
             const dataLocationOfPlugin: string =
                 dataLocationPrefix === ""
                     ? dataLocation
-                    : `${dataLocationPrefix}.${propsKeyword}.${dataLocation}`;
+                    : `${dataLocationPrefix}.${propsKeyword}.${normalizeDataLocation(
+                          dataLocation,
+                          data
+                      )}`;
 
             // check to see if the data location matches with the current schema and includes a plugin identifier
             if (

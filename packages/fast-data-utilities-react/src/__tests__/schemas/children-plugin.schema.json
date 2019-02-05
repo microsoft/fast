@@ -18,6 +18,20 @@
                 "title": "String",
                 "type": "string"
             }
+        },
+        "arrayObject": {
+            "title": "Array of objects",
+            "type": "array",
+            "items": {
+                "title": "Object",
+                "type": "object",
+                "reactProperties": {
+                    "content": {
+                        "type": "children",
+                        "pluginId": "children-plugin-resolver"
+                    }
+                }
+            }
         }
     },
     "reactProperties": {
