@@ -16,6 +16,14 @@
         "multiselectable": {
             "title": "Multi-selectable",
             "type": "boolean"
+        },
+        "selectedItems": {
+            "title":"Selected items",
+            "type":"string"
+        },
+        "defaultSelection": {
+            "title":"Default selection",
+            "type":"string"
         }
     },
     "reactProperties": {

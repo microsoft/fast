@@ -7,7 +7,7 @@ import {
     ListboxUnhandledProps,
 } from "./listbox.props";
 import * as React from "react";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { KeyCodes, startsWith } from "@microsoft/fast-web-utilities";
 import { get, inRange, isEqual } from "lodash-es";
 import { canUseDOM } from "exenv-es6";
 import { ListboxContext, ListboxItemData } from "./listbox-context";
@@ -27,10 +27,6 @@ class Listbox extends Foundation<
     ListboxState
 > {
     public static displayName: string = "Listbox";
-    public static valuePropertyKey: string = "value";
-    public static idPropertyKey: string = "id";
-    public static displayStringPropertyKey: string = "displayString";
-    public static disabledPropertyKey: string = "disabled";
 
     public static defaultProps: Partial<ListboxProps> = {
         multiselectable: false,
@@ -53,19 +49,22 @@ class Listbox extends Foundation<
         return selectedItems;
     }
 
+    private static valuePropertyKey: string = "value";
+    private static idPropertyKey: string = "id";
+    private static displayStringPropertyKey: string = "displayString";
+    private static disabledPropertyKey: string = "disabled";
+
     /**
      * converts an array of item id's to an array of "empty" ListboxItemData objects
      */
     private static asItemData(items: string[]): ListboxItemData[] {
-        const itemsToReturn: ListboxItemData[] = items.map((item: string) => {
-            const newItem: ListboxItemData = {
+        return items.map((item: string) => {
+            return {
                 id: item,
                 displayString: "",
                 value: "",
             };
-            return newItem;
         });
-        return itemsToReturn;
     }
 
     /**
@@ -102,7 +101,7 @@ class Listbox extends Foundation<
         const matchNode: React.ReactNode = this.getNodeById(itemId, children);
 
         if (matchNode !== undefined) {
-            const itemData: ListboxItemData = {
+            return {
                 id: itemId,
                 displayString: (matchNode as React.ReactElement<any>).props[
                     Listbox.displayStringPropertyKey
@@ -111,7 +110,6 @@ class Listbox extends Foundation<
                     Listbox.valuePropertyKey
                 ],
             };
-            return itemData;
         }
 
         return null;
@@ -219,10 +217,10 @@ class Listbox extends Foundation<
             >
                 <ListboxContext.Provider
                     value={{
-                        selectedItems: this.state.selectedItems,
-                        itemFocused: this.listboxItemfocused,
-                        itemInvoked: this.listboxItemInvoked,
-                        multiselectable: this.props.multiselectable,
+                        listboxSelectedItems: this.state.selectedItems,
+                        listboxItemFocused: this.listboxItemfocused,
+                        listboxItemInvoked: this.listboxItemInvoked,
+                        listboxMultiselectable: this.props.multiselectable,
                     }}
                 >
                     {this.renderChildren()}
@@ -435,9 +433,7 @@ class Listbox extends Foundation<
         itemId: string,
         children: React.ReactNode
     ): React.ReactNode => {
-        const childrenAsArray: React.ReactNode[] = React.Children.toArray(children);
-
-        const matchNode: React.ReactNode = childrenAsArray.find(
+        return React.Children.toArray(children).find(
             (child: React.ReactElement<any>): boolean => {
                 if (
                     child.props[Listbox.idPropertyKey] === undefined ||
@@ -448,8 +444,6 @@ class Listbox extends Foundation<
                 return true;
             }
         );
-
-        return matchNode;
     };
 
     /**
@@ -472,9 +466,10 @@ class Listbox extends Foundation<
                     return false;
                 }
                 if (
-                    child.props[this.props.typeAheadPropertyKey]
-                        .toLowerCase()
-                        .startsWith(this.typeAheadString)
+                    startsWith(
+                        child.props[this.props.typeAheadPropertyKey].toLowerCase(),
+                        this.typeAheadString
+                    )
                 ) {
                     matchIndex = index;
                     return true;

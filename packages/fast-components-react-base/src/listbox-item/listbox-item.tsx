@@ -41,9 +41,9 @@ class ListboxItem extends Foundation<
      */
     public render(): React.ReactElement<HTMLDivElement> {
         let isSelected: boolean = false;
-        if ((this.context as ListboxContextType).selectedItems !== undefined) {
+        if ((this.context as ListboxContextType).listboxSelectedItems !== undefined) {
             isSelected =
-                (this.context as ListboxContextType).selectedItems.filter(
+                (this.context as ListboxContextType).listboxSelectedItems.filter(
                     (item: ListboxItemData) => {
                         return item.id === this.props.id;
                     }
@@ -96,8 +96,8 @@ class ListboxItem extends Foundation<
             displayString: this.props.displayString,
         };
 
-        if ((this.context as ListboxContextType).itemInvoked) {
-            (this.context as ListboxContextType).itemInvoked(itemData, event);
+        if ((this.context as ListboxContextType).listboxItemInvoked) {
+            (this.context as ListboxContextType).listboxItemInvoked(itemData, event);
         }
 
         if (typeof this.props.onInvoke === "function") {
@@ -156,8 +156,10 @@ class ListboxItem extends Foundation<
             displayString: this.props.displayString,
         };
 
-        if (typeof (this.context as ListboxContextType).itemFocused === "function") {
-            (this.context as ListboxContextType).itemFocused(itemData, e);
+        if (
+            typeof (this.context as ListboxContextType).listboxItemFocused === "function"
+        ) {
+            (this.context as ListboxContextType).listboxItemFocused(itemData, e);
         }
 
         if (typeof this.props.onFocus === "function") {

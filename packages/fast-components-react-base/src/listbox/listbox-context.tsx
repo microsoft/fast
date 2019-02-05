@@ -7,21 +7,21 @@ export interface ListboxItemData {
 }
 
 export interface ListboxContextType {
-    itemInvoked: (
+    listboxItemInvoked: (
         itemInvoked: ListboxItemData,
         event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>
     ) => void;
-    itemFocused: (
+    listboxItemFocused: (
         itemFocused: ListboxItemData,
         event: React.FocusEvent<HTMLDivElement>
     ) => void;
-    selectedItems: ListboxItemData[];
-    multiselectable: boolean;
+    listboxSelectedItems: ListboxItemData[];
+    listboxMultiselectable: boolean;
 }
 
 export const ListboxContext: React.Context<ListboxContextType> = React.createContext({
-    itemInvoked: null,
-    itemFocused: null,
-    selectedItems: [],
-    multiselectable: false,
+    listboxItemInvoked: null,
+    listboxItemFocused: null,
+    listboxSelectedItems: [],
+    listboxMultiselectable: false,
 });

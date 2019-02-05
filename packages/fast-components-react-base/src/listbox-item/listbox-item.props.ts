@@ -19,7 +19,7 @@ export interface ListboxItemHandledProps extends ListboxItemManagedClasses {
     disabled?: boolean;
 
     /**
-     * the value of the item
+     * The value of the item
      */
     value: string;
 
@@ -29,7 +29,7 @@ export interface ListboxItemHandledProps extends ListboxItemManagedClasses {
     id: string;
 
     /**
-     * Friendly string that may be used in ui display
+     * Friendly string that may be used in UI display
      */
     displayString?: string;
 
