@@ -33,7 +33,7 @@ import { Hypertext } from "../src/hypertext";
 import ColorPicker, { ColorConfig } from "./color-picker";
 import reactHTMLElementExamples from "./components/react-html-element-child-option";
 import reactSVGElementExamples from "./components/svg-svg-element-child-option";
-import carouselHeroContentExamples from "./components/svg-svg-element-child-option";
+import carouselHeroContentExamples from "./components/carousel-hero-content-child-options";
 import { Label } from "../src/label";
 
 /* tslint:disable-next-line */
