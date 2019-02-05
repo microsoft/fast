@@ -9,7 +9,6 @@ import Textarea, { FormItemTextareaProps } from "./form-item.textarea";
 configure({ adapter: new Adapter() });
 
 const textareaProps: FormItemTextareaProps = {
-    key: "1",
     index: 1,
     dataLocation: "",
     data: "",

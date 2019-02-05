@@ -9,7 +9,6 @@ import Select, { FormItemSelectProps } from "./form-item.select";
 configure({ adapter: new Adapter() });
 
 const selectProps: FormItemSelectProps = {
-    key: "1",
     index: 1,
     dataLocation: "",
     data: "",

@@ -10,7 +10,6 @@ import { FormItemComponentMappingToProperyNamesProps, mappingName } from "./form
 configure({ adapter: new Adapter() });
 
 const fileUploadProps: FormItemComponentMappingToProperyNamesProps = {
-    key: "1",
     name: mappingName.fileUpload,
     options: [],
     index: 1,

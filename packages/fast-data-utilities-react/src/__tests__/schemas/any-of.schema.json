@@ -6,6 +6,7 @@
     "id": "anyOf",
     "anyOf": [
         {
+            "additionalProperties": false,
             "description": "String",
             "type": "object",
             "properties": {
@@ -19,6 +20,7 @@
             ]
         },
         {
+            "additionalProperties": false,
             "description": "Number",
             "type": "object",
             "properties": {
@@ -32,6 +34,7 @@
             ]
         },
         {
+            "additionalProperties": false,
             "type": "object",
             "properties": {
                 "nestedAnyOf": {
@@ -87,7 +90,63 @@
                         }
                     ]
                 }
-            }
+            },
+            "required": [
+                "nestedAnyOf"
+            ]
+        },
+        {
+            "additionalProperties": false,
+            "description": "Number or String",
+            "type": "object",
+            "properties": {
+                "numberOrString": {
+                    "anyOf": [
+                        {
+                            "title": "Number",
+                            "type": "number"
+                        },
+                        {
+                            "title": "String",
+                            "type": "string"
+                        },
+                        {
+                            "title": "Array",
+                            "type": "array",
+                            "items": {
+                                "title": "Array item",
+                                "type": "string"
+                            }
+                        },
+                        {
+                            "title": "Array with anyOf in items",
+                            "type": "array",
+                            "items": {
+                                "anyOf": [
+                                    {
+                                        "additionalProperties": false,
+                                        "title": "Array item object",
+                                        "type": "object",
+                                        "properties": {
+                                            "string": {
+                                                "title": "Array item object string",
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "title": "Array item number",
+                                        "type": "number"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "required": [
+                "numberOrString"
+            ]
         }
     ]
 }

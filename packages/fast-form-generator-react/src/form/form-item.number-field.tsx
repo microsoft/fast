@@ -32,6 +32,8 @@ class FormItemNumberField extends FormItemBase<
     FormItemNumberFieldProps & ManagedClasses<FormItemNumberFieldClassNameContract>,
     {}
 > {
+    public static displayName: string = "FormItemNumberField";
+
     public render(): JSX.Element {
         const value: string = getStringValue(this.props.data, this.props.default);
 

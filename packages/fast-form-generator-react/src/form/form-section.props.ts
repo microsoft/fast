@@ -13,6 +13,18 @@ export enum oneOfAnyOfType {
     oneOf = "oneOf",
 }
 
+export interface InitialOneOfAnyOfState {
+    /**
+     * The current schema
+     */
+    schema: any;
+
+    /**
+     * Whether there is a oneOf/anyOf at the root level
+     */
+    oneOfAnyOf?: OneOfAnyOf;
+}
+
 export interface OneOfAnyOf {
     /**
      * The type (oneOf/anyOf)
@@ -31,22 +43,8 @@ export type updateActiveSection = (
     schema?: any
 ) => void;
 
-export interface FormSectionState {
-    /**
-     * The current schema
-     */
-    schema: any;
-
-    /**
-     * Whether there is a oneOf/anyOf at the root level
-     */
-    oneOfAnyOf?: OneOfAnyOf;
-
-    /**
-     * The potential sections inside this schema
-     */
-    sections: FormSectionProps[];
-}
+/* tslint:disable-next-line */
+export interface FormSectionState extends InitialOneOfAnyOfState {}
 
 export interface FormSectionProps {
     /**
@@ -115,7 +113,7 @@ export interface FormSectionProps {
     orderByPropertyNames?: FormOrderByPropertyNamesProps;
 }
 
-export interface FormCategoriesItems {
+export interface FormCategoryItems {
     /**
      * The items weight
      */
@@ -127,7 +125,7 @@ export interface FormCategoriesItems {
     params: FormItemParameters;
 }
 
-export interface FormCategories {
+export interface FormCategoryProps {
     /**
      * The category weight
      */
@@ -136,7 +134,7 @@ export interface FormCategories {
     /**
      * The category form items
      */
-    items: FormCategoriesItems[];
+    items: FormCategoryItems[];
 
     /**
      * The category title
@@ -153,7 +151,7 @@ export interface FormItemParameters {
     /**
      * The schema property
      */
-    property: any;
+    schema: any;
 
     /**
      * The index
@@ -161,9 +159,19 @@ export interface FormItemParameters {
     index: number;
 
     /**
+     * The location of the data via lodash path syntax
+     */
+    dataLocation: string;
+
+    /**
+     * The location of the schema via lodash path syntax
+     */
+    schemaLocation: string;
+
+    /**
      * The property name
      */
-    item: string;
+    propertyName: string;
 
     /**
      * The required status of this property
@@ -209,7 +217,7 @@ export interface FormItemsWithConfigOptions {
     /**
      * Form items which conform to a section
      */
-    items: JSX.Element[];
+    items: React.ReactNode[];
 }
 
 export interface OptionalToggleConfig {

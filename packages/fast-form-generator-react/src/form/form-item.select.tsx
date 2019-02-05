@@ -25,6 +25,8 @@ class FormItemSelect extends FormItemBase<
     FormItemSelectProps & ManagedClasses<FormItemSelectClassNameContract>,
     {}
 > {
+    public static displayName: string = "FormItemSelect";
+
     /**
      * Renders the component
      */

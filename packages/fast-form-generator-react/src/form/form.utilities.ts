@@ -167,11 +167,37 @@ export function getNavigation(
                 dataLocationItem,
                 lastComponentDataLocation
             );
-            const currentSchemaLocation: string = mapSchemaLocationFromDataLocation(
+            let currentSchemaLocation: string = mapSchemaLocationFromDataLocation(
                 isRoot ? dataLocationItem : dataLocationFromLastComponent,
                 isRoot ? data : get(data, dataLocationItem),
                 currentComponentSchema
             );
+            const currentSchemaLocationSegments: string[] = currentSchemaLocation.split(
+                "."
+            );
+            const currentSchemaLocationSegmentsLength: number =
+                currentSchemaLocationSegments.length;
+            if (
+                !isNaN(
+                    parseInt(
+                        currentSchemaLocationSegments[
+                            currentSchemaLocationSegmentsLength - 1
+                        ],
+                        10
+                    )
+                ) &&
+                (currentSchemaLocationSegments[
+                    currentSchemaLocationSegmentsLength - 2
+                ] === "oneOf" ||
+                    currentSchemaLocationSegments[
+                        currentSchemaLocationSegmentsLength - 2
+                    ] === "anyOf")
+            ) {
+                currentSchemaLocation = currentSchemaLocationSegments
+                    .slice(0, currentSchemaLocationSegmentsLength - 2)
+                    .join(".");
+            }
+
             const currentSchema: any =
                 dataLocationFromLastComponent === ""
                     ? currentComponentSchema

@@ -32,10 +32,14 @@
             ]
         },
         {
+            "title": "Nested anyOf",
+            "description": "Nested anyOf",
             "type": "object",
+            "additionalProperties": false,
             "properties": {
                 "nestedAnyOf": {
                     "title": "Nested anyOf",
+                    "description": "Nested anyOf Configuration",
                     "anyOf": [
                         {
                             "description": "Object",

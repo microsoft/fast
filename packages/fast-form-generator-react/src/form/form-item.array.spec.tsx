@@ -10,7 +10,6 @@ import { FormItemArrayClassNameContract } from "../class-name-contracts";
 configure({ adapter: new Adapter() });
 
 const arrayProps: FormItemArrayProps = {
-    key: "1",
     untitled: "",
     index: 1,
     dataLocation: "",

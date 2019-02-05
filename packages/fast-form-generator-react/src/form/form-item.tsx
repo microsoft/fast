@@ -1,10 +1,5 @@
 export default interface FormItemCommon {
     /**
-     * The unique key for React components
-     */
-    key: string | number;
-
-    /**
      * The index to assign as a React key for mapping
      */
     index: number;

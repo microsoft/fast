@@ -9,8 +9,8 @@ import FormCategory, { FormCategoryProps } from "./form-category";
 configure({ adapter: new Adapter() });
 
 const formCategoryProps: FormCategoryProps = {
-    categoryItem: [<div key="1">foo</div>, <div key="2">bar</div>],
     title: "",
+    id: "Foo",
 };
 
 describe("FormCategory", () => {

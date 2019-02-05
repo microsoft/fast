@@ -1,6 +1,5 @@
 import * as React from "react";
 import { get, uniqueId } from "lodash-es";
-import { canUseDOM } from "exenv-es6";
 import { arrayMove, SortableContainer, SortableElement } from "react-sortable-hoc";
 import { SortableConfig, SortableListItem, sortingProps } from "./sorting";
 import FormItemCommon from "./form-item";
@@ -14,6 +13,7 @@ import { FormItemArrayClassNameContract } from "../class-name-contracts/";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import FormItemBase from "./form-item.base";
+import { mapSchemaLocationFromDataLocation } from "@microsoft/fast-data-utilities-react";
 
 export enum ItemConstraints {
     minItems = "minItems",
@@ -65,7 +65,9 @@ class FormItemArray extends FormItemBase<
     FormItemArrayProps & ManagedClasses<FormItemArrayClassNameContract>,
     {}
 > {
-    public render(): JSX.Element {
+    public static displayName: string = "FormItemArray";
+
+    public render(): React.ReactNode {
         return (
             <div className={this.props.managedClasses.formItemArray}>
                 {this.renderLabel()}
@@ -75,13 +77,10 @@ class FormItemArray extends FormItemBase<
     }
 
     private renderLabel(): React.ReactNode {
-        const schema: any =
-            this.props.schemaLocation !== ""
-                ? get(this.props.schema, this.props.schemaLocation)
-                : this.props.schema;
-        const label: string = schema
-            ? schema.title || schema.description || this.props.untitled
-            : null;
+        const label: string =
+            get(this.props.schema, "title") ||
+            get(this.props.schema, "description") ||
+            this.props.untitled;
 
         return (
             <div className={this.props.managedClasses.formItemArray_control}>
@@ -114,7 +113,6 @@ class FormItemArray extends FormItemBase<
                     aria-label={"Select to add item"}
                     onClick={this.arrayItemClickHandlerFactory(
                         this.props.dataLocation,
-                        this.props.schema,
                         ArrayAction.add
                     )}
                 />
@@ -126,10 +124,7 @@ class FormItemArray extends FormItemBase<
      * Render a button for removing an item from the array
      */
     private renderDeleteArrayItemTrigger(index: number): React.ReactNode {
-        const minItems: number =
-            this.props.schemaLocation === ""
-                ? get(this.props, "schema.minItems", 0)
-                : get(this.props, `schema.${this.props.schemaLocation}.minItems`, 0);
+        const minItems: number = get(this.props, "schema.minItems", 0);
 
         if (
             !Array.isArray(this.props.data) ||
@@ -143,7 +138,6 @@ class FormItemArray extends FormItemBase<
                     aria-label={"Select to remove item"}
                     onClick={this.arrayItemClickHandlerFactory(
                         this.props.dataLocation,
-                        this.props.schema,
                         ArrayAction.remove,
                         index
                     )}
@@ -152,16 +146,11 @@ class FormItemArray extends FormItemBase<
         }
     }
 
-    private getLabelId(): string {
-        return `${this.props.dataLocation}-label`;
-    }
-
     /**
      * Array add/remove item click handler factory
      */
     private arrayItemClickHandlerFactory(
         dataLocation: string,
-        schema: any,
         type: ArrayAction,
         index?: number
     ): (e: React.MouseEvent<HTMLButtonElement>) => void {
@@ -169,7 +158,7 @@ class FormItemArray extends FormItemBase<
             e.preventDefault();
 
             type === ArrayAction.add
-                ? this.handleAddArrayItem(dataLocation, schema)
+                ? this.handleAddArrayItem(dataLocation)
                 : this.handleRemoveArrayItem(dataLocation, index);
         };
     }
@@ -213,7 +202,7 @@ class FormItemArray extends FormItemBase<
                 this.props.onUpdateActiveSection(
                     schemaLocation,
                     `${this.props.dataLocation}[${index}]`,
-                    get(this.props.schema, schemaLocation)
+                    this.props.schema
                 );
             }
         };
@@ -222,24 +211,15 @@ class FormItemArray extends FormItemBase<
     /**
      * Handles adding an array item
      */
-    private handleAddArrayItem(dataLocation: string, schema: any): void {
-        const itemsKeyword: string =
-            this.props.schemaLocation === "" ? "items" : ".items";
-
+    private handleAddArrayItem(dataLocation: string): void {
         if (typeof this.props.data === "undefined") {
             this.props.onChange(dataLocation, [
-                generateExampleData(
-                    this.props.schema,
-                    `${this.props.schemaLocation}${itemsKeyword}`
-                ),
+                generateExampleData(this.props.schema, "items"),
             ]);
         } else {
             this.props.onChange(
                 dataLocation,
-                generateExampleData(
-                    this.props.schema,
-                    `${this.props.schemaLocation}${itemsKeyword}`
-                ),
+                generateExampleData(this.props.schema, "items"),
                 true
             );
         }
@@ -255,7 +235,7 @@ class FormItemArray extends FormItemBase<
     /**
      * Generates UI representing an item of an array
      */
-    private generateArrayLinkItem = (value: any, index: number): JSX.Element => {
+    private generateArrayLinkItem = (value: any, index: number): React.ReactNode => {
         return (
             <SortableListItem
                 className={this.props.managedClasses.formItemArray_existingItemListItem}
@@ -278,9 +258,9 @@ class FormItemArray extends FormItemBase<
     /**
      * Generates UI for all items in an array
      */
-    private generateArrayLinkItems(): JSX.Element[] {
+    private generateArrayLinkItems(): React.ReactNode {
         return getArrayLinks(this.props.data).map(
-            (value: any, index: number): JSX.Element => {
+            (value: any, index: number): React.ReactNode => {
                 const options: SortableConfig = {
                     key: `item-${index}`,
                     index,
@@ -308,7 +288,7 @@ class FormItemArray extends FormItemBase<
     /**
      * Generates the links to an array section to be activated
      */
-    private renderExistingArrayItems(): JSX.Element {
+    private renderExistingArrayItems(): React.ReactNode {
         const arraySections: string[] = getArrayLinks(this.props.data);
         const props: any = Object.assign({}, sortingProps, {
             onSortEnd: this.handleSort,

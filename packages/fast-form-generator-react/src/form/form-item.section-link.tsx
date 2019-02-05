@@ -30,6 +30,8 @@ class FormItemSectionLink extends FormItemBase<
     FormItemSectionLinkProps & ManagedClasses<FormItemSectionLinkClassNameContract>,
     {}
 > {
+    public static displayName: string = "FormItemSectionLink";
+
     /**
      * Renders the component
      */

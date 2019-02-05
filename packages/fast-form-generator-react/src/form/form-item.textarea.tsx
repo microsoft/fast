@@ -27,6 +27,8 @@ class FormItemTextarea extends FormItemBase<
     FormItemTextareaProps & ManagedClasses<FormItemTextareaClassNameContract>,
     {}
 > {
+    public static displayName: string = "FormItemTextarea";
+
     public render(): JSX.Element {
         return (
             <div className={this.props.managedClasses.formItemTextarea}>

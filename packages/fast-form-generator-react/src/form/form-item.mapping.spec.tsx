@@ -10,7 +10,6 @@ import { FormItemComponentMappingToProperyNamesProps, mappingName } from "./form
 configure({ adapter: new Adapter() });
 
 const mappingProps: FormItemComponentMappingToProperyNamesProps = {
-    key: "1",
     index: 1,
     dataLocation: "",
     data: {},
