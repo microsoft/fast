@@ -403,13 +403,14 @@ export function getDataLocationsOfPlugins(
             );
             const subSchema: any =
                 schemaLocation === "" ? schema : get(schema, schemaLocation);
+            const normalizedDataLocation: string = normalizeDataLocation(
+                dataLocation,
+                data
+            );
             const dataLocationOfPlugin: string =
                 dataLocationPrefix === ""
-                    ? dataLocation
-                    : `${dataLocationPrefix}.${propsKeyword}.${normalizeDataLocation(
-                          dataLocation,
-                          data
-                      )}`;
+                    ? normalizedDataLocation
+                    : `${dataLocationPrefix}.${propsKeyword}.${normalizedDataLocation}`;
 
             // check to see if the data location matches with the current schema and includes a plugin identifier
             if (
