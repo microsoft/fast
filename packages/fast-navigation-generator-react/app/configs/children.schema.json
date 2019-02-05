@@ -1,0 +1,18 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Component with children",
+    "description": "A test component's schema definition.",
+    "type": "object",
+    "id": "children",
+    "reactProperties": {
+        "children": {
+            "title": "Children",
+            "type": "children",
+            "defaults": [
+                "text"
+            ]
+        }
+    },
+    "properties": {
+    }
+}
