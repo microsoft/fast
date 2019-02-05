@@ -17,6 +17,7 @@ export * from "./number-field";
 export * from "./managed-classes";
 export * from "./progress";
 export * from "./radio";
+export * from "./select";
 export * from "./tabs";
 export * from "./text-area";
 export * from "./text-field";
