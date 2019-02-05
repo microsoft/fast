@@ -31,10 +31,12 @@
                             "dark",
                             "light"
                         ]
-                    },
+                    }
+                },
+                "reactProperties": {
                     "content": {
                         "title": "Slide content",
-                        "type": "object",
+                        "type": "children",
                         "pluginId": "@microsoft/fast-components-react-msft/carousel/content"
                     }
                 }
