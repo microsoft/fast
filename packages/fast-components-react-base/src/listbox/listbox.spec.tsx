@@ -229,6 +229,26 @@ describe("listbox", (): void => {
         expect(rendered.state("focusIndex")).toBe(2);
     });
 
+    test("changing the typeahead property key should work", (): void => {
+        const rendered: any = mount(
+            <Listbox typeAheadPropertyKey="value">
+                {itemA}
+                {itemB}
+                {itemC}
+                <div>four</div>
+            </Listbox>,
+            { attachTo: document.body }
+        );
+
+        expect(rendered.state("focusIndex")).toBe(0);
+
+        rendered.childAt(0).simulate("keydown", { key: "c" });
+        expect(rendered.state("focusIndex")).toBe(2);
+
+        rendered.childAt(0).simulate("keydown", { key: "d" });
+        expect(rendered.state("focusIndex")).toBe(2);
+    });
+
     test("should not move focus if characters are typed that don't have matches", (): void => {
         const rendered: any = mount(
             <Listbox>

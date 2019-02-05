@@ -361,11 +361,11 @@ class Listbox extends Foundation<
         }
 
         let focusItemId: string;
+        event.preventDefault();
 
         switch (event.keyCode) {
             case KeyCodes.arrowDown:
             case KeyCodes.arrowRight:
-                event.preventDefault();
                 focusItemId = this.setFocus(this.state.focusIndex + 1, 1);
 
                 if (this.props.multiselectable && event.shiftKey && focusItemId !== "") {
@@ -382,7 +382,6 @@ class Listbox extends Foundation<
 
             case KeyCodes.arrowUp:
             case KeyCodes.arrowLeft:
-                event.preventDefault();
                 focusItemId = this.setFocus(this.state.focusIndex - 1, -1);
                 if (this.props.multiselectable && event.shiftKey && focusItemId !== "") {
                     const itemData: ListboxItemData = Listbox.getItemDataById(
@@ -396,7 +395,6 @@ class Listbox extends Foundation<
                 break;
 
             case KeyCodes.end:
-                event.preventDefault();
                 if (this.props.multiselectable && event.shiftKey && event.ctrlKey) {
                     this.selectRange(
                         this.state.focusIndex,
@@ -408,7 +406,6 @@ class Listbox extends Foundation<
                 break;
 
             case KeyCodes.home:
-                event.preventDefault();
                 if (this.props.multiselectable && event.shiftKey && event.ctrlKey) {
                     this.selectRange(0, this.state.focusIndex);
                 }
@@ -418,7 +415,6 @@ class Listbox extends Foundation<
 
             default:
                 if (event.key === "A") {
-                    event.preventDefault();
                     this.selectRange(0, this.domChildren().length);
                 } else if (!event.ctrlKey) {
                     this.processTypeAhead(event);
@@ -450,8 +446,6 @@ class Listbox extends Foundation<
      * Sets focus based on characters typed
      */
     private processTypeAhead = (e: React.KeyboardEvent<HTMLDivElement>): void => {
-        e.preventDefault();
-
         clearTimeout(this.typeAheadTimer);
 
         this.typeAheadString = this.typeAheadString + e.key.toLowerCase();
