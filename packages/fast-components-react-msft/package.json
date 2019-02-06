@@ -32,7 +32,7 @@
     "test": "npm run convert:readme && npm run tslint && npm run unit-tests && npm run build:app",
     "tslint": "tslint -c ./tslint.json '**/*.ts{,x}'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'",
-    "unit-tests": "jest --maxWorkers=4",
+    "unit-tests": "jest --maxWorkers=2",
     "unit-tests:watch": "jest --watch",
     "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput"
   },

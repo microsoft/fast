@@ -25,7 +25,7 @@
     "test": "npm run unit-tests && npm run build:app",
     "tslint": "tslint -c ./tslint.json '**/*.ts{,x}'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'",
-    "unit-tests": "jest",
+    "unit-tests": "jest --maxWorkers=2",
     "watch": "npm run build -- -w --preserveWatchOutput"
   },
   "jest": {
