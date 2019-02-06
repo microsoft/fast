@@ -22,7 +22,7 @@
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.js\" --list-different",
     "test": "npm run eslint && npm run unit-tests",
     "eslint": "eslint src/**",
-    "unit-tests": "jest --maxWorkers=4"
+    "unit-tests": "jest --maxWorkers=2"
   },
   "jest": {
     "verbose": true,

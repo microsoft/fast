@@ -20,7 +20,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -p ./tsconfig.json && npm run copy:all",
-    "build:app": "webpack --progress",
+    "build:app": "webpack --progress --mode=production",
     "clean:dist": "node ../../build/clean.js dist",
     "copy:all": "npm run copy:json-schema",
     "copy:json-schema": "node ../../build/copy-schemas.js",
@@ -28,10 +28,10 @@
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
     "start": "webpack-dev-server",
-    "test": "npm run unit-tests && npm run tslint && npm run build:app",
+    "test": "npm run tslint && npm run unit-tests && npm run build:app",
     "tslint": "tslint -c ./tslint.json '**/*.ts{,x}'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'",
-    "unit-tests": "jest --maxWorkers=4",
+    "unit-tests": "jest --maxWorkers=2",
     "unit-tests:watch": "jest --watch",
     "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput"
   },

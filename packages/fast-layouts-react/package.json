@@ -19,7 +19,7 @@
   "type": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -p ./tsconfig.json",
-    "build:app": "webpack --progress",
+    "build:app": "webpack --progress --mode=production",
     "clean:dist": "node ../../build/clean.js dist",
     "prepare": "npm run clean:dist && npm run build",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
@@ -28,7 +28,7 @@
     "test": "npm run tslint && npm run unit-tests && npm run build:app",
     "tslint": "tslint -c ./tslint.json '**/*.ts{,x}'",
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts{,x}'",
-    "unit-tests": "jest --maxWorkers=4",
+    "unit-tests": "jest --maxWorkers=2",
     "unit-tests:update": "jest --updateSnapshot",
     "unit-tests:watch": "jest --watch",
     "watch": "npm run build -- -w --preserveWatchOutput"

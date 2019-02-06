@@ -19,7 +19,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -p ./tsconfig.json && npm run copy:all",
-    "build:app": "webpack --progress",
+    "build:app": "webpack --progress --mode=production",
     "clean:dist": "node ../../build/clean.js dist",
     "convert:readme": "node ../../build/convert-readme.js .tmp",
     "copy:all": "npm run copy:json-schema && npm run copy:readme",
@@ -32,7 +32,7 @@
     "test": "npm run convert:readme && npm run tslint && npm run unit-tests && npm run build:app",
     "tslint": "tslint -c ./tslint.json 'src/**/*.ts{,x}' '**/*.ts{,x}'",
     "tslint:fix": "tslint -c ./tslint.json --fix 'src/**/*.ts{,x}' '**/*.ts{,x}'",
-    "unit-tests": "jest --maxWorkers=4 --env=jsdom --setupTestFrameworkScriptFile=raf/polyfill",
+    "unit-tests": "jest --maxWorkers=2 --env=jsdom --setupTestFrameworkScriptFile=raf/polyfill",
     "unit-tests:watch": "jest --watch",
     "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput"
   },
