@@ -1,0 +1,8 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Carousel Dark Image Content Test Element",
+    "description": "A carousel dark image content component's schema definition.",
+    "id": "carousel-dark-image-content",
+    "type": "object",
+    "properties": {}
+}

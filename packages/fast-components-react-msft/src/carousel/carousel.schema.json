@@ -33,14 +33,20 @@
                         ]
                     }
                 },
+                "required": [
+                    "id"
+                ],
                 "reactProperties": {
                     "content": {
                         "title": "Slide content",
                         "type": "children",
-                        "pluginId": "@microsoft/fast-components-react-msft/carousel/content"
+                        "pluginId": "@microsoft/fast-components-react-msft/carousel/items/content"
                     }
                 }
             }
         }
-    }
+    },
+    "required": [
+        "content"
+    ]
 }
