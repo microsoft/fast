@@ -32,12 +32,12 @@ export interface ListboxHandledProps extends ListboxManagedClasses {
     /**
      * Selected options(controlled mode)
      */
-    selectedItems?: string[];
+    selectedItems?: string[] | ListboxItemData[];
 
     /**
      * Options that are initially selected
      */
-    defaultSelection?: string[];
+    defaultSelection?: string[] | ListboxItemData[];
 
     /**
      * The  onSelectedItemsChanged event handler

@@ -11,6 +11,7 @@ import { KeyCodes, startsWith } from "@microsoft/fast-web-utilities";
 import { get, inRange, isEqual } from "lodash-es";
 import { canUseDOM } from "exenv-es6";
 import { ListboxContext, ListboxItemData } from "./listbox-context";
+import ListboxItem from "src/listbox-item";
 
 export interface ListboxState {
     /**
@@ -39,7 +40,7 @@ class Listbox extends Foundation<
      * extracted from the provided children based on id match
      */
     public static getListboxItemDataFromIds(
-        selectedIds: string[],
+        selectedIds: Array<string | ListboxItemData>,
         children: React.ReactNode
     ): ListboxItemData[] {
         const selectedItems: ListboxItemData[] = Listbox.validateSelection(
@@ -57,14 +58,22 @@ class Listbox extends Foundation<
     /**
      * converts an array of item id's to an array of "empty" ListboxItemData objects
      */
-    private static asItemData(items: string[]): ListboxItemData[] {
-        return items.map((item: string) => {
-            return {
-                id: item,
-                displayString: "",
-                value: "",
-            };
-        });
+    private static asItemData(items: Array<string | ListboxItemData>): ListboxItemData[] {
+        return items.map(
+            (item: string | ListboxItemData): ListboxItemData => {
+                const itemToReturn: ListboxItemData = {
+                    id: "",
+                    displayString: "",
+                    value: "",
+                };
+                if (typeof item === "string") {
+                    itemToReturn.id = item;
+                } else {
+                    itemToReturn.id = item.id;
+                }
+                return itemToReturn;
+            }
+        );
     }
 
     /**
