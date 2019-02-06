@@ -19,7 +19,7 @@
   "type": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -p ./tsconfig.json",
-    "build:app": "webpack --progress",
+    "build:app": "webpack --progress --mode=production",
     "clean:dist": "node ../../build/clean.js dist",
     "prepare": "npm run clean:dist && npm run build",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",

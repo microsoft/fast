@@ -20,7 +20,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -p ./tsconfig.json && npm run copy:all",
-    "build:app": "webpack --progress",
+    "build:app": "webpack --progress --mode=production",
     "clean:dist": "node ../../build/clean.js dist",
     "copy:all": "npm run copy:json-schema",
     "copy:json-schema": "node ../../build/copy-schemas.js",
