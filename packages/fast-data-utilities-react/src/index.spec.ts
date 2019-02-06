@@ -363,7 +363,39 @@ describe("getDataLocationsOfPlugins", () => {
         expect(dataLocationsOfPlugins).toHaveLength(1);
         expect(dataLocationsOfPlugins[0].dataLocation).toBe("children.props.array");
     });
-    test("should return data locations of children nested in an array of items", () => {
+    test("should return data locations of children in an array of items", () => {
+        const data: any = {
+            arrayObject: [
+                {
+                    content: {
+                        id: childrenSchema.id,
+                        props: {
+                            children: "foo",
+                        },
+                    },
+                },
+                {
+                    content: {
+                        id: childrenSchema.id,
+                        props: {
+                            children: "bar",
+                        },
+                    },
+                },
+            ],
+        };
+
+        const dataLocationsOfPlugins: PluginLocation[] = getDataLocationsOfPlugins(
+            childrenWithPluginPropsSchema,
+            data,
+            childOptions
+        );
+
+        expect(dataLocationsOfPlugins).toHaveLength(2);
+        expect(dataLocationsOfPlugins[0].dataLocation).toBe("arrayObject[0].content");
+        expect(dataLocationsOfPlugins[1].dataLocation).toBe("arrayObject[1].content");
+    });
+    test("should return data locations of nested children in an array of items", () => {
         const data: any = {
             children: {
                 id: childrenWithPluginPropsSchema.id,
