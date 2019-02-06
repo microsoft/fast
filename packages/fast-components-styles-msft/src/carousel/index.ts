@@ -26,7 +26,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
     return {
         carousel: {
             position: "relative",
-            width: "fit-content",
+            display: "inline-block",
             "&:hover": {
                 "& $carousel_flipperPrevious, & $carousel_flipperNext": {
                     display: "block",
