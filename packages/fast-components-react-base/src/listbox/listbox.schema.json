@@ -31,7 +31,7 @@
             "title": "Building blocks",
             "type": "children",
             "defaults": [
-                "text"
+                "listbox-item"
             ]
         }
     }

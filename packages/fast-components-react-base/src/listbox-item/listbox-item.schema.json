@@ -14,7 +14,7 @@
             "type": "string"
         },
         "id": {
-            "title": "ID",
+            "title": "Unique ID",
             "type": "string"
         },
         "value": {

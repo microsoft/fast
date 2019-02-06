@@ -40,22 +40,13 @@ class ListboxItem extends Foundation<
      * Renders the component
      */
     public render(): React.ReactElement<HTMLDivElement> {
-        let isSelected: boolean = false;
-        if ((this.context as ListboxContextType).listboxSelectedItems !== undefined) {
-            isSelected =
-                (this.context as ListboxContextType).listboxSelectedItems.filter(
-                    (item: ListboxItemData) => {
-                        return item.id === this.props.id;
-                    }
-                ).length === 1;
-        }
         return (
             <div
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
                 role="option"
                 id={this.props.id}
-                aria-selected={isSelected}
+                aria-selected={this.isItemSelected()}
                 aria-disabled={this.props.disabled}
                 onClick={this.handleClick}
                 onFocus={this.handleFocus}
@@ -83,6 +74,22 @@ class ListboxItem extends Foundation<
 
         return super.generateClassNames(classNames);
     }
+
+    /**
+     * Check context to determine if this item is selected
+     */
+    private isItemSelected = (): boolean => {
+        let isSelected: boolean = false;
+        if ((this.context as ListboxContextType).listboxSelectedItems !== undefined) {
+            isSelected =
+                (this.context as ListboxContextType).listboxSelectedItems.filter(
+                    (item: ListboxItemData) => {
+                        return item.id === this.props.id;
+                    }
+                ).length === 1;
+        }
+        return isSelected;
+    };
 
     /**
      * Invoke this option
