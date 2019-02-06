@@ -3,7 +3,7 @@ import {
     ManagedClasses,
     SelectClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
-import { ListboxItemData } from "../listbox/listbox-context";
+import { ListboxItemProps } from "../listbox-item";
 
 export interface SelectManagedClasses extends ManagedClasses<SelectClassNameContract> {}
 export interface SelectUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
@@ -18,22 +18,36 @@ export interface SelectHandledProps extends SelectManagedClasses {
      * Function which renders the base display of the control
      */
     contentDisplayRenderFunction?: (
-        selectedItems: ListboxItemData[],
-        value: string
+        selectedItems: ListboxItemProps[],
+        value: string,
+        displayString: string
     ) => React.ReactNode;
 
     /**
      * Function which renders the menu display of the control
      */
     menuRenderFunction?: (
-        selectedItems: ListboxItemData[],
+        selectedItems: ListboxItemProps[],
         children: React.ReactNode
     ) => React.ReactNode;
 
     /**
-     * Function which converts and formats the string[] selected values to a the string value to be returned by the control (ie. what gets sent back as a form result)
+     * Function which converts and formats the selected options to a the string value to be returned by the control
+     * (ie. what gets sent back as a form result)
      */
-    dataValueFormatterFunction?: (selectedValues: string[], selectName: string) => string;
+    dataValueFormatterFunction?: (
+        selectedOptions: ListboxItemProps[],
+        selectName: string
+    ) => string;
+
+    /**
+     * Function which converts and formats the string may be displayed in the ui
+     * in the UI
+     */
+    displayStringFormatterFunction?: (
+        selectedOptions: ListboxItemProps[],
+        placeholder: string
+    ) => string;
 
     /**
      * Selected option id's (controlled mode)
@@ -83,7 +97,17 @@ export interface SelectHandledProps extends SelectManagedClasses {
     /**
      * The onValueChange event handler (note: using "onChange" at the event name caused type conflict issues)
      */
-    onValueChange?: (newValue: string, selectedItems: ListboxItemData[]) => void;
+    onValueChange?: (
+        newValue: string,
+        selectedItems: ListboxItemProps[],
+        displayString: string
+    ) => void;
+
+    /**
+     * Whether a listitem should automatically get focus when this component is mounted
+     * (multi-select only)
+     */
+    autoFocus?: boolean;
 }
 
 export type SelectProps = SelectHandledProps & SelectUnhandledProps;

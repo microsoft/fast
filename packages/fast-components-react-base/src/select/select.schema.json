@@ -21,8 +21,8 @@
             "title": "IsMenuOpen",
             "type": "boolean"
         },
-        "multiple": {
-            "title": "Multiple",
+        "multiselectable": {
+            "title": "Multiselectable",
             "type": "boolean"
         },
         "selectedItems": {
@@ -38,8 +38,8 @@
         "children": {
             "title": "Building blocks",
             "type": "children",
-            "ids": [
-                "select-option"
+            "defaults": [
+                "text"
             ]
         }
     }

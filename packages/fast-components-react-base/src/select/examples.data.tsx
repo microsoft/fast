@@ -31,22 +31,22 @@ const examples: ComponentFactoryExample<SelectProps> = {
     documentation: <Documentation />,
     detailData: {
         ...managedClasses,
-        placeholder: "placeholder",
+        placeholder: "Select an option",
         children: [
             {
-                id: "select-option",
+                id: "listbox-item",
                 props: {
                     ...listboxItemPropFactory("a"),
                 },
             },
             {
-                id: "select-option",
+                id: "listbox-item",
                 props: {
                     ...listboxItemPropFactory("b"),
                 },
             },
             {
-                id: "select-option",
+                id: "listbox-item",
                 props: {
                     ...listboxItemPropFactory("c"),
                 },
@@ -59,7 +59,7 @@ const examples: ComponentFactoryExample<SelectProps> = {
             placeholder: "placeholder",
             children: [
                 {
-                    id: "select-option",
+                    id: "listbox-item",
                     props: {
                         ...listboxItemPropFactory("value 1"),
                         children: "select option 1",
@@ -67,14 +67,14 @@ const examples: ComponentFactoryExample<SelectProps> = {
                     },
                 },
                 {
-                    id: "select-option",
+                    id: "listbox-item",
                     props: {
                         ...listboxItemPropFactory("value 2"),
                         children: "select option 2",
                     },
                 },
                 {
-                    id: "select-option",
+                    id: "listbox-item",
                     props: {
                         ...listboxItemPropFactory("value 3"),
                         children: "select option 3",
