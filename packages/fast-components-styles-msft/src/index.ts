@@ -22,6 +22,9 @@ export * from "./call-to-action";
 import CaptionStyles from "./caption";
 export { CaptionStyles };
 
+import CarouselStyles from "./carousel";
+export { CarouselStyles };
+
 import CardStyles from "./card";
 export { CardStyles };
 

@@ -33,6 +33,9 @@ import { Hypertext } from "../src/hypertext";
 import ColorPicker, { ColorConfig } from "./color-picker";
 import reactHTMLElementExamples from "./components/react-html-element-child-option";
 import reactSVGElementExamples from "./components/svg-svg-element-child-option";
+import carouselHeroContentExamples from "./components/carousel-hero-content-child-options";
+import carouselDarkImageContentExamples from "./components/carousel-dark-image-content-child-options";
+import carouselLightImageContentExamples from "./components/carousel-light-image-content-child-options";
 import { Label } from "../src/label";
 
 /* tslint:disable-next-line */
@@ -41,6 +44,9 @@ const sketchDesignKit = require("./fast-dna-msft-design-kit.sketch");
 const formChildOptions: FormChildOption[] = [
     reactHTMLElementExamples,
     reactSVGElementExamples,
+    carouselHeroContentExamples,
+    carouselDarkImageContentExamples,
+    carouselLightImageContentExamples,
 ].concat(formChildFromExamplesFactory(examples));
 
 const formPlugins: Array<Plugin<PluginProps>> = [
@@ -51,6 +57,7 @@ const formPlugins: Array<Plugin<PluginProps>> = [
             "@microsoft/fast-components-react-msft/action-trigger/glyph",
             "@microsoft/fast-components-react-msft/button/beforeContent",
             "@microsoft/fast-components-react-msft/button/afterContent",
+            "@microsoft/fast-components-react-msft/carousel/items/content",
             "@microsoft/fast-components-react-msft/text-action/beforeGlyph",
             "@microsoft/fast-components-react-msft/text-action/afterGlyph",
         ],
