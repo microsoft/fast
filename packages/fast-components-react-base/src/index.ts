@@ -1,3 +1,7 @@
+import Badge from "./badge";
+export { Badge };
+export * from "./badge";
+
 import Breadcrumb from "./breadcrumb";
 export { Breadcrumb };
 export * from "./breadcrumb";

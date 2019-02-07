@@ -9,6 +9,9 @@ import ActionTriggerStyles from "./action-trigger";
 export { ActionTriggerStyles };
 export * from "./action-trigger";
 
+import BadgeStyles from "./badge";
+export { BadgeStyles };
+
 import BreadcrumbStyles from "./breadcrumb";
 export { BreadcrumbStyles };
 
