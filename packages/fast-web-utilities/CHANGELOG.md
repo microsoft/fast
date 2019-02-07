@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-web-utilities@3.1.0...@microsoft/fast-web-utilities@3.1.1) (2019-02-07)
+
+**Note:** Version bump only for package @microsoft/fast-web-utilities
+
+
+
+
+
 <a name="3.1.0"></a>
 # [3.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-web-utilities@3.0.4...@microsoft/fast-web-utilities@3.1.0) (2019-01-26)
 

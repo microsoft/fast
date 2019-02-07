@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-data-utilities-react@1.2.0...@microsoft/fast-data-utilities-react@1.2.1) (2019-02-07)
+
+
+### Bug Fixes
+
+* add additional check on array normalization when items are not nested ([#1362](https://github.com/Microsoft/fast-dna/issues/1362)) ([4bcd591](https://github.com/Microsoft/fast-dna/commit/4bcd591))
+* add missing check for array syntax when resolving paths to plugin IDs ([#1359](https://github.com/Microsoft/fast-dna/issues/1359)) ([d23ff00](https://github.com/Microsoft/fast-dna/commit/d23ff00))
+
+
+
+
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-data-utilities-react@1.1.0...@microsoft/fast-data-utilities-react@1.2.0) (2019-01-22)
 

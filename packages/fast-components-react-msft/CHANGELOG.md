@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.8.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.7.0...@microsoft/fast-components-react-msft@3.8.0) (2019-02-07)
+
+
+### Bug Fixes
+
+* context menu styles to match new designs ([#1355](https://github.com/Microsoft/fast-dna/issues/1355)) ([8a3295d](https://github.com/Microsoft/fast-dna/commit/8a3295d))
+* pass action toggle glyph to beforeContent to ensure that underline only covers the text ([#1348](https://github.com/Microsoft/fast-dna/issues/1348)) ([5fef862](https://github.com/Microsoft/fast-dna/commit/5fef862))
+* pass action trigger glyph to beforeContent to ensure underline on hover only impacts text ([#1349](https://github.com/Microsoft/fast-dna/issues/1349)) ([ead4468](https://github.com/Microsoft/fast-dna/commit/ead4468))
+
+
+### Features
+
+* add badge as an MSFT component ([#1278](https://github.com/Microsoft/fast-dna/issues/1278)) ([79ce26c](https://github.com/Microsoft/fast-dna/commit/79ce26c))
+* add carousel as a MSFT component ([#1338](https://github.com/Microsoft/fast-dna/issues/1338)) ([b23e2c1](https://github.com/Microsoft/fast-dna/commit/b23e2c1))
+
+
+
+
+
 <a name="3.7.0"></a>
 # [3.7.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.6.2...@microsoft/fast-components-react-msft@3.7.0) (2019-01-26)
 

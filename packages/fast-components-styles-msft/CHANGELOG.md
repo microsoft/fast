@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.9.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.8.0...@microsoft/fast-components-styles-msft@3.9.0) (2019-02-07)
+
+
+### Bug Fixes
+
+* card and dialog shadows should always be black regardless of theming ([#1364](https://github.com/Microsoft/fast-dna/issues/1364)) ([c5bda31](https://github.com/Microsoft/fast-dna/commit/c5bda31))
+* context menu styles to match new designs ([#1355](https://github.com/Microsoft/fast-dna/issues/1355)) ([8a3295d](https://github.com/Microsoft/fast-dna/commit/8a3295d))
+
+
+### Features
+
+* add badge as an MSFT component ([#1278](https://github.com/Microsoft/fast-dna/issues/1278)) ([79ce26c](https://github.com/Microsoft/fast-dna/commit/79ce26c))
+* add carousel as a MSFT component ([#1338](https://github.com/Microsoft/fast-dna/issues/1338)) ([b23e2c1](https://github.com/Microsoft/fast-dna/commit/b23e2c1))
+
+
+
+
+
 <a name="3.8.0"></a>
 # [3.8.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.7.1...@microsoft/fast-components-styles-msft@3.8.0) (2019-01-26)
 

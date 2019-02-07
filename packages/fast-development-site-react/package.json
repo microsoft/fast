@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-development-site-react",
   "description": "FAST development testing site for React",
   "sideEffects": false,
-  "version": "3.3.2",
+  "version": "3.3.3",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -32,18 +32,18 @@
     "watch": "npm run build -- -w --preserveWatchOutput"
   },
   "dependencies": {
-    "@microsoft/fast-application-utilities": "^3.1.0",
-    "@microsoft/fast-form-generator-react": "^3.5.1",
+    "@microsoft/fast-application-utilities": "^3.1.1",
+    "@microsoft/fast-form-generator-react": "^3.5.2",
     "@microsoft/fast-glyphs-msft": "^3.1.0",
-    "@microsoft/fast-jss-manager-react": "^3.1.9",
-    "@microsoft/fast-jss-utilities": "^3.2.0",
-    "@microsoft/fast-layouts-react": "^3.1.12",
+    "@microsoft/fast-jss-manager-react": "^3.1.10",
+    "@microsoft/fast-jss-utilities": "^3.2.1",
+    "@microsoft/fast-layouts-react": "^3.1.13",
     "react-syntax-highlighter": "^7.0.4"
   },
   "devDependencies": {
-    "@microsoft/fast-components-class-name-contracts-base": "^3.5.0",
-    "@microsoft/fast-data-utilities-react": "^1.2.0",
-    "@microsoft/fast-jss-manager": "^3.0.8",
+    "@microsoft/fast-components-class-name-contracts-base": "^3.6.0",
+    "@microsoft/fast-data-utilities-react": "^1.2.1",
+    "@microsoft/fast-jss-manager": "^3.0.9",
     "@microsoft/fast-tslint-rules": "^3.0.1",
     "@polymer/polymer": "^3.0.0-pre.10",
     "@types/lodash-es": "^4.17.0",

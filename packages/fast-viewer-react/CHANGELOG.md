@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.13](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-viewer-react@4.0.12...@microsoft/fast-viewer-react@4.0.13) (2019-02-07)
+
+
+### Bug Fixes
+
+* remove duplicate export of viewer content base component ([#1358](https://github.com/Microsoft/fast-dna/issues/1358)) ([1cd789a](https://github.com/Microsoft/fast-dna/commit/1cd789a))
+
+
+
+
+
 <a name="4.0.12"></a>
 ## [4.0.12](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-viewer-react@4.0.11...@microsoft/fast-viewer-react@4.0.12) (2019-01-26)
 

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.7.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@3.6.3...@microsoft/fast-components-react-base@3.7.0) (2019-02-07)
+
+
+### Bug Fixes
+
+* child component class name assignment in tabs ([#1345](https://github.com/Microsoft/fast-dna/issues/1345)) ([769aa2b](https://github.com/Microsoft/fast-dna/commit/769aa2b))
+
+
+### Features
+
+* add badge as an MSFT component ([#1278](https://github.com/Microsoft/fast-dna/issues/1278)) ([79ce26c](https://github.com/Microsoft/fast-dna/commit/79ce26c))
+* add listbox base component ([#1304](https://github.com/Microsoft/fast-dna/issues/1304)) ([0ad4cbe](https://github.com/Microsoft/fast-dna/commit/0ad4cbe))
+
+
+
+
+
 <a name="3.6.3"></a>
 ## [3.6.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@3.6.2...@microsoft/fast-components-react-base@3.6.3) (2019-01-26)
 

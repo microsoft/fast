@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-css-editor-react@4.1.7...@microsoft/fast-css-editor-react@4.2.0) (2019-02-07)
+
+
+### Features
+
+* update styling to match the FAST form generator ([#1351](https://github.com/Microsoft/fast-dna/issues/1351)) ([fe83dbd](https://github.com/Microsoft/fast-dna/commit/fe83dbd))
+
+
+
+
+
 <a name="4.1.7"></a>
 ## [4.1.7](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-css-editor-react@4.1.6...@microsoft/fast-css-editor-react@4.1.7) (2019-01-26)
 

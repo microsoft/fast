@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-navigation-generator-react",
   "description": "A self generating user interface.",
   "sideEffects": false,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -82,15 +82,15 @@
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
-    "@microsoft/fast-components-class-name-contracts-base": "^3.5.0",
-    "@microsoft/fast-components-foundation-react": "^2.1.1",
-    "@microsoft/fast-data-utilities-react": "^1.2.0",
-    "@microsoft/fast-jss-manager": "^3.0.8",
-    "@microsoft/fast-jss-manager-react": "^3.1.9",
-    "@microsoft/fast-jss-utilities": "^3.2.0",
-    "@microsoft/fast-permutator": "^2.2.4",
+    "@microsoft/fast-components-class-name-contracts-base": "^3.6.0",
+    "@microsoft/fast-components-foundation-react": "^2.1.2",
+    "@microsoft/fast-data-utilities-react": "^1.2.1",
+    "@microsoft/fast-jss-manager": "^3.0.9",
+    "@microsoft/fast-jss-manager-react": "^3.1.10",
+    "@microsoft/fast-jss-utilities": "^3.2.1",
+    "@microsoft/fast-permutator": "^2.2.5",
     "@microsoft/fast-tslint-rules": "^3.0.1",
-    "@microsoft/fast-web-utilities": "^3.1.0",
+    "@microsoft/fast-web-utilities": "^3.1.1",
     "@types/jest": "^23.3.5",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.6",
@@ -108,9 +108,9 @@
     "prettier": "1.14.3",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
-    "react-test-renderer": "^16.6.3",
     "react-redux": "^5.0.7",
     "react-sortable-hoc": "^0.6.8",
+    "react-test-renderer": "^16.6.3",
     "ts-jest": "^23.10.4",
     "ts-loader": "^4.0.1",
     "tslint": "^5.9.1",
@@ -122,7 +122,5 @@
     "webpack-cli": "^3.1.1",
     "webpack-dev-server": "^3.1.0",
     "yargs": "^11.0.0"
-  },
-  "dependencies": {
   }
 }
