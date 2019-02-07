@@ -27,7 +27,7 @@ export default manageJss(ButtonStyles)(Button);
 
 ## Color
 
-Color palettes are the core of the how color is applied in MSFT stylesheets. There are two core color palettes that are exposed by the design system that are used to derive color; the *neutral* palette and the *accent* palette. The provided color utilities always derive the colors they return from one of these two palettes. They generally also derive the color from the input *design system*, allowing them to work across a wide variety for background colors.
+Color palettes are the core of the how color is applied in MSFT stylesheets. There are two core color palettes that are exposed by the design system that are used to derive color; the *neutral* palette and the *accent* palette. The provided color utilities always derive the colors they return from one of these two palettes. They generally also derive the color from the input *design system*, allowing them to work across a wide variety of background colors.
 
 ### Utilities
 
