@@ -23,6 +23,15 @@ export type StatefulSwatchResolver = DesignSystemResolver<StatefulSwatch> &
     BackgroundSwatchResolver<StatefulSwatch>;
 
 /**
+ * The states that a swatch can have
+ */
+export enum SwatchStates {
+    rest = "rest",
+    hover = "hover",
+    active = "active",
+}
+
+/**
  * Interface describing a group of swatches representing UI states of a single swatch
  */
 export interface StatefulSwatch {
@@ -58,19 +67,19 @@ export type ColorRecipe = SwatchResolver & BackgroundSwatchResolver<Swatch>;
  */
 export function StatefulSwatchToColorRecipeFactory(
     type: keyof StatefulSwatch,
-    cb: StatefulSwatchResolver
+    callback: StatefulSwatchResolver
 ): ColorRecipe {
     return (arg: DesignSystem | SwatchResolver): any => {
         if (typeof arg === "function") {
             return (designSystem: DesignSystem): Swatch => {
-                return cb(
+                return callback(
                     Object.assign({}, designSystem, {
                         backgroundColor: arg(designSystem),
                     })
                 )[type];
             };
         } else {
-            return cb(arg)[type];
+            return callback(arg)[type];
         }
     };
 }

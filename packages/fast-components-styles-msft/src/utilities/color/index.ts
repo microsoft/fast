@@ -61,4 +61,4 @@ export {
  * Export supporting types
  */
 export { neutralPaletteSource, accentPaletteSource } from "./color-constants";
-export { palette, Palettes, Palette } from "./palette";
+export { palette, PaletteType, Palette } from "./palette";

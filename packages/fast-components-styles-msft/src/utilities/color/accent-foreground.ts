@@ -3,14 +3,15 @@ import {
     ensureDesignSystemDefaults,
     withDesignSystemDefaults,
 } from "../../design-system";
-import { memoize } from "lodash";
+import { memoize } from "lodash-es";
 import { accentSwatch, findAccessibleAccentSwatchIndexs } from "./accent";
-import { palette, Palette, Palettes, Swatch } from "./palette";
+import { palette, Palette, PaletteType, Swatch } from "./palette";
 import {
     ColorRecipe,
     StatefulSwatch,
     StatefulSwatchResolver,
     StatefulSwatchToColorRecipeFactory,
+    SwatchStates,
 } from "./common";
 
 /**
@@ -25,7 +26,7 @@ const accentForegroundAlgorithm: (
     contrastTarget: number
 ) => StatefulSwatch = memoize(
     (designSystem: DesignSystem, contrastTarget: number): StatefulSwatch => {
-        const accentPalette: Palette = palette(Palettes.accent)(designSystem);
+        const accentPalette: Palette = palette(PaletteType.accent)(designSystem);
         const indexes: {
             rest: number;
             hover: number;
@@ -83,27 +84,27 @@ export const accentForeground: StatefulSwatchResolver = accentForegroundFactory(
 export const accentForegroundLarge: StatefulSwatchResolver = accentForegroundFactory(3);
 
 export const accentForegroundRest: ColorRecipe = StatefulSwatchToColorRecipeFactory(
-    "rest",
+    SwatchStates.rest,
     accentForeground
 );
 export const accentForegroundHover: ColorRecipe = StatefulSwatchToColorRecipeFactory(
-    "hover",
+    SwatchStates.hover,
     accentForeground
 );
 export const accentForegroundActive: ColorRecipe = StatefulSwatchToColorRecipeFactory(
-    "active",
+    SwatchStates.active,
     accentForeground
 );
 
 export const accentForegroundLargeRest: ColorRecipe = StatefulSwatchToColorRecipeFactory(
-    "rest",
+    SwatchStates.rest,
     accentForegroundLarge
 );
 export const accentForegroundLargeHover: ColorRecipe = StatefulSwatchToColorRecipeFactory(
-    "hover",
+    SwatchStates.hover,
     accentForegroundLarge
 );
 export const accentForegroundLargeActive: ColorRecipe = StatefulSwatchToColorRecipeFactory(
-    "active",
+    SwatchStates.active,
     accentForegroundLarge
 );

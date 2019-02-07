@@ -5,12 +5,12 @@ import {
     neutralFillRest,
 } from "./neutral-fill";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
-import { palette, Palette, Palettes, Swatch } from "./palette";
+import { palette, Palette, PaletteType, Swatch } from "./palette";
 import { StatefulSwatch } from "./common";
 
 describe("neutralFill", (): void => {
-    const neutralPalette: Palette = palette(Palettes.neutral)(designSystemDefaults);
-    const accentPalette: Palette = palette(Palettes.accent)(designSystemDefaults);
+    const neutralPalette: Palette = palette(PaletteType.neutral)(designSystemDefaults);
+    const accentPalette: Palette = palette(PaletteType.accent)(designSystemDefaults);
 
     test("should opperate on design system defaults", (): void => {
         expect(neutralFillRest({} as DesignSystem)).toBe("#EFEFEF");

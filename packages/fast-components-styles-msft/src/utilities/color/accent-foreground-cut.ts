@@ -1,7 +1,7 @@
 import { Swatch } from "./palette";
 import { black, white } from "./color-constants";
 import chroma from "chroma-js";
-import { memoize } from "lodash";
+import { memoize } from "lodash-es";
 import { DesignSystem, ensureDesignSystemDefaults } from "../../design-system";
 import { accentSwatch } from "./accent";
 import { ColorRecipe } from "./common";

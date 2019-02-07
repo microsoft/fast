@@ -12,7 +12,7 @@ import { neutralForegroundDark, neutralForegroundLight } from "./neutral-foregro
 /**
  * The named palettes of the MSFT design system
  */
-export enum Palettes {
+export enum PaletteType {
     neutral = "neutral",
     accent = "accent",
 }
@@ -46,16 +46,18 @@ const generatePalette: (source: string[]) => Palette = memoize(
  * Retrieves a palette by name. This function returns a function that accepts
  * a design system, returning a palette a palette or null
  */
-export function palette(paletteType: Palettes): (designSystem: DesignSystem) => Palette {
+export function palette(
+    paletteType: PaletteType
+): (designSystem: DesignSystem) => Palette {
     return ensureDesignSystemDefaults(
         (designSystem: DesignSystem): Palette => {
             let source: Palette;
 
             switch (paletteType) {
-                case Palettes.accent:
+                case PaletteType.accent:
                     source = designSystem.accentPaletteSource;
                     break;
-                case Palettes.neutral:
+                case PaletteType.neutral:
                 default:
                     source = designSystem.neutralPaletteSource;
                     break;
@@ -71,7 +73,7 @@ export function palette(paletteType: Palettes): (designSystem: DesignSystem) => 
  * otherwise it will return -1
  */
 export function findSwatchIndex(
-    paletteType: Palettes,
+    paletteType: PaletteType,
     swatch: Swatch
 ): (designSystem: DesignSystem) => number {
     return (designSystem: DesignSystem): number => {
@@ -94,7 +96,7 @@ export function findSwatchIndex(
  * If the input swatch cannot be converted to a color, 0 will be returned
  */
 export function findClosestSwatchIndex(
-    paletteType: Palettes,
+    paletteType: PaletteType,
     swatch: Swatch
 ): (designSystem: DesignSystem) => number {
     return ensureDesignSystemDefaults(

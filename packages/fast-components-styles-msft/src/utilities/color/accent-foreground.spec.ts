@@ -7,12 +7,12 @@ import {
     accentForegroundRest,
 } from "./accent-foreground";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
-import { palette, Palette, Palettes, Swatch } from "./palette";
+import { palette, Palette, PaletteType, Swatch } from "./palette";
 import { contrast } from "./common";
 
 describe("accentForeground", (): void => {
-    const neutralPalette: Palette = palette(Palettes.neutral)(designSystemDefaults);
-    const accentPalette: Palette = palette(Palettes.accent)(designSystemDefaults);
+    const neutralPalette: Palette = palette(PaletteType.neutral)(designSystemDefaults);
+    const accentPalette: Palette = palette(PaletteType.accent)(designSystemDefaults);
 
     test("should opperate on design system defaults", (): void => {
         expect(accentForegroundRest({} as DesignSystem)).toBe(accentPalette[32]);

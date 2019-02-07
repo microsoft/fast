@@ -8,15 +8,16 @@ import {
     isDarkTheme,
     palette,
     Palette,
-    Palettes,
+    PaletteType,
     Swatch,
 } from "./palette";
 import {
     ColorRecipe,
     StatefulSwatch,
     StatefulSwatchToColorRecipeFactory,
+    SwatchStates,
 } from "./common";
-import { clamp, memoize } from "lodash";
+import { clamp, memoize } from "lodash-es";
 
 /**
  * Deltas to derive state swatches from the background
@@ -27,9 +28,9 @@ export const neutralOutlineDeltaActive: number = 42;
 
 const neutralOutlineAlgorithm: (designSystem: DesignSystem) => StatefulSwatch = memoize(
     (designSystem: DesignSystem): StatefulSwatch => {
-        const neutralPalette: Palette = palette(Palettes.neutral)(designSystem);
+        const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
         const backgroundIndex: number = findClosestSwatchIndex(
-            Palettes.neutral,
+            PaletteType.neutral,
             designSystem.backgroundColor
         )(designSystem);
         const direction: 1 | -1 = isDarkTheme(designSystem) ? -1 : 1;
@@ -82,14 +83,14 @@ export function neutralOutline(arg: any): any {
 }
 
 export const neutralOutlineRest: ColorRecipe = StatefulSwatchToColorRecipeFactory(
-    "rest",
+    SwatchStates.rest,
     neutralOutline
 );
 export const neutralOutlineHover: ColorRecipe = StatefulSwatchToColorRecipeFactory(
-    "hover",
+    SwatchStates.hover,
     neutralOutline
 );
 export const neutralOutlineActive: ColorRecipe = StatefulSwatchToColorRecipeFactory(
-    "active",
+    SwatchStates.active,
     neutralOutline
 );

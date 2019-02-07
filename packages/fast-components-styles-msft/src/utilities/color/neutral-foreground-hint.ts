@@ -3,9 +3,9 @@ import {
     ensureDesignSystemDefaults,
     withDesignSystemDefaults,
 } from "../../design-system";
-import { findSwatchIndex, Palette, palette, Palettes, Swatch } from "./palette";
+import { findSwatchIndex, Palette, palette, PaletteType, Swatch } from "./palette";
 import { neutralForeground } from "./neutral-foreground";
-import { inRange, memoize } from "lodash";
+import { inRange, memoize } from "lodash-es";
 import { ColorRecipe, contrast, SwatchResolver } from "./common";
 
 const neutralForegroundHintAlgorithm: (
@@ -14,10 +14,10 @@ const neutralForegroundHintAlgorithm: (
 ) => Swatch = memoize(
     (designSystem: DesignSystem, targetContrast: number): Swatch => {
         const contrastTarget: number = targetContrast;
-        const neutralPalette: Palette = palette(Palettes.neutral)(designSystem);
+        const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
         const neutralPaletteLength: number = neutralPalette.length;
         const neutralForegroundIndex: number = findSwatchIndex(
-            Palettes.neutral,
+            PaletteType.neutral,
             neutralForeground(designSystem)
         )(designSystem);
         const direction: 1 | -1 =

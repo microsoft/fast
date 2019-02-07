@@ -4,12 +4,13 @@ import {
     ensureDesignSystemDefaults,
     withDesignSystemDefaults,
 } from "../../design-system";
-import { memoize } from "lodash";
-import { findClosestSwatchIndex, palette, Palette, Palettes, Swatch } from "./palette";
+import { memoize } from "lodash-es";
+import { findClosestSwatchIndex, palette, Palette, PaletteType, Swatch } from "./palette";
 import {
     ColorRecipe,
     StatefulSwatch,
     StatefulSwatchToColorRecipeFactory,
+    SwatchStates,
 } from "./common";
 import {
     neutralFillDeltaActive,
@@ -38,9 +39,9 @@ const swapThreshold: number = Math.max(
  */
 const neutralFillStealthAlgorithm: DesignSystemResolver<StatefulSwatch> = memoize(
     (designSystem: DesignSystem): StatefulSwatch => {
-        const neutralPalette: Palette = palette(Palettes.neutral)(designSystem);
+        const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
         const backgroundIndex: number = findClosestSwatchIndex(
-            Palettes.neutral,
+            PaletteType.neutral,
             designSystem.backgroundColor
         )(designSystem);
         const direction: number = backgroundIndex >= swapThreshold ? -1 : 1;
@@ -84,14 +85,14 @@ export function neutralFillStealth(arg: any): any {
 }
 
 export const neutralFillStealthRest: ColorRecipe = StatefulSwatchToColorRecipeFactory(
-    "rest",
+    SwatchStates.rest,
     neutralFillStealth
 );
 export const neutralFillStealthHover: ColorRecipe = StatefulSwatchToColorRecipeFactory(
-    "hover",
+    SwatchStates.hover,
     neutralFillStealth
 );
 export const neutralFillStealthActive: ColorRecipe = StatefulSwatchToColorRecipeFactory(
-    "active",
+    SwatchStates.active,
     neutralFillStealth
 );

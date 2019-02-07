@@ -1,16 +1,16 @@
 import { DesignSystem, ensureDesignSystemDefaults } from "../../design-system";
-import { Palette, palette, Palettes, Swatch } from "./palette";
+import { Palette, palette, PaletteType, Swatch } from "./palette";
 import { accent } from "./color-constants";
 import { findClosestSwatchIndex, isDarkTheme } from "./palette";
 import { contrast, SwatchResolver } from "./common";
-import { clamp, inRange } from "lodash";
+import { clamp, inRange } from "lodash-es";
 
 /**
  * Returns a swatch from the middle of the accent palette
  */
 export const accentSwatch: SwatchResolver = ensureDesignSystemDefaults(
     (designSystem: DesignSystem): Swatch => {
-        const accentPalette: Palette | null = palette(Palettes.accent)(designSystem);
+        const accentPalette: Palette | null = palette(PaletteType.accent)(designSystem);
 
         return accentPalette === null
             ? accent
@@ -36,13 +36,13 @@ export function findAccessibleAccentSwatchIndexs(
     active: number;
 } {
     const accentColor: Swatch = accentSwatch(designSystem);
-    const accentPalette: Palette = palette(Palettes.accent)(designSystem);
+    const accentPalette: Palette = palette(PaletteType.accent)(designSystem);
     const darkTheme: boolean = isDarkTheme(designSystem);
     const stateDirection: 1 | -1 = darkTheme ? 1 : -1;
     const accessibleTextDirection: 1 | -1 = darkTheme ? -1 : 1;
     const maxIndex: number = accentPalette.length - 1;
     let accessibleAccentIndex: number = findClosestSwatchIndex(
-        Palettes.accent,
+        PaletteType.accent,
         accentColor
     )(designSystem);
 

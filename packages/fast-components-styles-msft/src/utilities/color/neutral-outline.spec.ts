@@ -5,13 +5,13 @@ import {
     neutralOutlineRest,
 } from "./neutral-outline";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
-import { palette, Palette, Palettes, Swatch } from "./palette";
+import { palette, Palette, PaletteType, Swatch } from "./palette";
 import { StatefulSwatch } from "./common";
 import chroma from "chroma-js";
 
 describe("neutralOutline", (): void => {
-    const neutralPalette: Palette = palette(Palettes.neutral)(designSystemDefaults);
-    const accentPalette: Palette = palette(Palettes.accent)(designSystemDefaults);
+    const neutralPalette: Palette = palette(PaletteType.neutral)(designSystemDefaults);
+    const accentPalette: Palette = palette(PaletteType.accent)(designSystemDefaults);
 
     test("should return by default", (): void => {
         expect(neutralOutlineRest({} as DesignSystem)).toBe("#737373");

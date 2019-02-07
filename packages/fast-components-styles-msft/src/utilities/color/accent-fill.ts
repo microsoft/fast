@@ -8,11 +8,12 @@ import {
     StatefulSwatch,
     StatefulSwatchResolver,
     StatefulSwatchToColorRecipeFactory,
+    SwatchStates,
 } from "./common";
 import { accentSwatch, findAccessibleAccentSwatchIndexs } from "./accent";
-import { isDarkTheme, Palette, palette, Palettes, Swatch } from "./palette";
+import { isDarkTheme, Palette, palette, PaletteType, Swatch } from "./palette";
 import { accentForegroundCut } from "./accent-foreground-cut";
-import { memoize } from "lodash";
+import { memoize } from "lodash-es";
 
 /**
  * Deltas to derive state swatches from the background
@@ -21,12 +22,15 @@ export const accentFillDeltaRest: number = 0;
 export const accentFillDeltaHover: number = 2;
 export const accentFillDeltaActive: number = 4;
 
+/**
+ * Derives rest/hover/active active fill colors
+ */
 export const accentFillAlgorithm: (
     designSystem: DesignSystem,
     contrastTarget: number
 ) => StatefulSwatch = memoize(
     (designSystem: DesignSystem, contrastTarget: number): StatefulSwatch => {
-        const accentPalette: Palette = palette(Palettes.accent)(designSystem);
+        const accentPalette: Palette = palette(PaletteType.accent)(designSystem);
         const accent: Swatch = accentSwatch(designSystem);
         const textColor: Swatch = accentForegroundCut(
             Object.assign({}, designSystem, {
@@ -56,6 +60,9 @@ export const accentFillAlgorithm: (
     }
 );
 
+/**
+ * Factory to create accent-fill functions based on an input contrast target
+ */
 function accentFillFactory(contrast: number): StatefulSwatchResolver {
     function accentFillInternal(designSystem: DesignSystem): StatefulSwatch;
     function accentFillInternal(
@@ -85,27 +92,27 @@ export const accentFill: StatefulSwatchResolver = accentFillFactory(4.5);
 export const accentFillLarge: StatefulSwatchResolver = accentFillFactory(3);
 
 export const accentFillRest: ColorRecipe = StatefulSwatchToColorRecipeFactory(
-    "rest",
+    SwatchStates.rest,
     accentFill
 );
 export const accentFillHover: ColorRecipe = StatefulSwatchToColorRecipeFactory(
-    "hover",
+    SwatchStates.hover,
     accentFill
 );
 export const accentFillActive: ColorRecipe = StatefulSwatchToColorRecipeFactory(
-    "active",
+    SwatchStates.active,
     accentFill
 );
 
 export const accentFillLargeRest: ColorRecipe = StatefulSwatchToColorRecipeFactory(
-    "rest",
+    SwatchStates.rest,
     accentFillLarge
 );
 export const accentFillLargeHover: ColorRecipe = StatefulSwatchToColorRecipeFactory(
-    "hover",
+    SwatchStates.hover,
     accentFillLarge
 );
 export const accentFillLargeActive: ColorRecipe = StatefulSwatchToColorRecipeFactory(
-    "active",
+    SwatchStates.active,
     accentFillLarge
 );
