@@ -156,3 +156,4 @@ export * from "./utilities/fonts";
 export * from "./utilities/height";
 export * from "./utilities/keyof-to-type";
 export * from "./utilities/typography";
+export * from "./utilities/color";
