@@ -36,7 +36,6 @@ describe("badge", (): void => {
             shallow(<MSFTBadge />);
             shallow(<MSFTBadge appearance={BadgeAppearance.lowlight} />);
             shallow(<MSFTBadge appearance={BadgeAppearance.highlight} />);
-            shallow(<MSFTBadge appearance={BadgeAppearance.lightweight} />);
             shallow(<MSFTBadge appearance={BadgeAppearance.accent} />);
         }).not.toThrow();
     });

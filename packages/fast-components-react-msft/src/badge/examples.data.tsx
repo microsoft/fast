@@ -46,13 +46,11 @@ export default {
             size: BadgeSize.small,
         },
         {
-            children: "Badge lightweight small",
-            appearance: BadgeAppearance.lightweight,
+            children: "Badge default small",
             size: BadgeSize.small,
         },
         {
-            children: "Badge lightweight large",
-            appearance: BadgeAppearance.lightweight,
+            children: "Badge default large",
             size: BadgeSize.large,
         } as any,
     ],

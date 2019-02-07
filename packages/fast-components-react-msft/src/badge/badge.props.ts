@@ -8,7 +8,6 @@ export enum BadgeAppearance {
     accent = "accent",
     highlight = "highlight",
     lowlight = "lowlight",
-    lightweight = "lightweight",
 }
 
 export enum BadgeSize {

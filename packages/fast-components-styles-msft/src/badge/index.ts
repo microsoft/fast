@@ -16,22 +16,23 @@ import { applyTypeRampConfig } from "../utilities/typography";
 import { ensureNormalContrast } from "../utilities/colors";
 import { fontWeight } from "../utilities/fonts";
 
-function smallBadgeStyle(direction: Direction): CSSRules<DesignSystem> {
+function smallBadgeStyle(): CSSRules<DesignSystem> {
     return {
-        padding: localizeSpacing(Direction.ltr)(`0 ${toPx(7)} ${toPx(5)} 0`),
-        height: "13px",
+        ...applyTypeRampConfig("t8"),
+        padding: localizeSpacing(Direction.ltr)(`2px ${toPx(8)} 0 0`),
+        height: "17px",
         "&$badge__highlight, &$badge__lowlight, &$badge__accent": {
-            padding: "0 7px 7px",
+            padding: "1px 8px 2px",
         },
     };
 }
 
 function largeBadgeStyle(direction: Direction): CSSRules<DesignSystem> {
     return {
-        [applyLocalizedProperty("paddingRight", "paddingLeft", direction)]: "14px",
+        [applyLocalizedProperty("paddingRight", "paddingLeft", direction)]: "12px",
         height: "20px",
         "&$badge__highlight, &$badge__lowlight, &$badge__accent": {
-            padding: "3px 14px 3px",
+            padding: "3px 12px",
         },
     };
 }
@@ -77,9 +78,8 @@ const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
             ...ellipsis(),
             overflow: "hidden",
             fontWeight: `${fontWeight.semibold}`,
-            letterSpacing: "0.075em",
             display: "inline-block",
-            maxWidth: "350px",
+            maxWidth: "215px",
             color: designSystem.foregroundColor,
         },
         badge__highlight: {
@@ -98,7 +98,7 @@ const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
             color: accentForegroundColor,
         },
         badge__small: {
-            ...smallBadgeStyle(direction),
+            ...smallBadgeStyle(),
         },
         badge__large: {
             ...largeBadgeStyle(direction),

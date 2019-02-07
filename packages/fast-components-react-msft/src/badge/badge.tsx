@@ -14,7 +14,6 @@ class Badge extends Foundation<BadgeHandledProps, BadgeUnhandledProps, {}> {
     public static displayName: string = "Badge";
 
     public static defaultProps: Partial<BadgeProps> = {
-        appearance: BadgeAppearance.lowlight,
         size: BadgeSize.small,
     };
 
@@ -66,6 +65,8 @@ class Badge extends Foundation<BadgeHandledProps, BadgeUnhandledProps, {}> {
                     "managedClasses.badge__accent",
                     ""
                 )}`;
+                break;
+            default:
                 break;
         }
 
