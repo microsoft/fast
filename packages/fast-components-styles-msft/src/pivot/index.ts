@@ -17,6 +17,7 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
     return {
         pivot: {
             color: "black",
+            position: "relative",
         },
         pivot_itemList: {
             display: "flex",
@@ -25,6 +26,7 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
             minHeight: "32px",
             padding: "0 12px",
             fontSize: "14px",
+            whiteSpace: "nowrap",
             "&:hover": {
                 opacity: "0.8",
             },
@@ -34,6 +36,17 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
             },
         },
         pivot_item__active: {},
+        pivot_item__activeIndicator: {
+            position: "absolute",
+            borderRadius: "2px",
+            top: "24px",
+            left: "-10px",
+            transition: "0.2s ease-in-out",
+            width: "20px",
+            height: "3px",
+            display: "block",
+            background: "purple",
+        },
         pivot_tabPanel: {
             display: "block",
         },

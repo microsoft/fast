@@ -10,19 +10,24 @@ export interface PivotClassNameContract extends BaseTabsClassNameContract {
     pivot?: string;
 
     /**
-     * The collection of sequence indicators
+     * The collection of pivot items
      */
     pivot_itemList?: string;
 
     /**
-     * The sequence indicator
+     * The pivot item
      */
     pivot_item?: string;
 
     /**
-     * The active pivot sequence indicator
+     * The active pivot item
      */
     pivot_item__active?: string;
+
+    /**
+     * The active picot item indicator
+     */
+    pivot_item__activeIndicator?: string;
 
     /**
      * The collection of tab panels

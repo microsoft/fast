@@ -1,10 +1,9 @@
 import * as React from "react";
-import { Pivot, PivotProps, PivotManagedClasses } from "./index";
+import { Pivot, PivotHandledProps, PivotProps, PivotManagedClasses } from "./index";
 import { TabsItem } from "@microsoft/fast-components-react-base";
 import schema from "./pivot.schema.json";
 import Documentation from "./.tmp/documentation";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { PivotHandledProps } from "./pivot.props";
 
 const pivotManagedClasses: PivotManagedClasses = {
     managedClasses: {
@@ -57,7 +56,11 @@ const pivotItem4: TabsItem = {
     id: "pivot04",
 };
 
-const detailPivotItem: TabsItem[] = [pivotItem1, pivotItem2, pivotItem3];
+const detailPivotItem: TabsItem[] = [
+    Object.assign({}, pivotItem1),
+    Object.assign({}, pivotItem2),
+    Object.assign({}, pivotItem3),
+];
 
 const examplePivotItem1: TabsItem[] = [
     {
@@ -65,12 +68,12 @@ const examplePivotItem1: TabsItem[] = [
         content: renderPivotContent(""),
         id: "pivot01",
     },
-    pivotItem2,
-    pivotItem3,
-    pivotItem4,
+    Object.assign({}, pivotItem2),
+    Object.assign({}, pivotItem3),
+    Object.assign({}, pivotItem4),
 ];
 
-const examples: ComponentFactoryExample<PivotHandledProps> = {
+const examples: ComponentFactoryExample<PivotProps> = {
     name: "Pivot",
     component: Pivot,
     schema: schema as any,

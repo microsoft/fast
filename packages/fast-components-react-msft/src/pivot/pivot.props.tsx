@@ -23,7 +23,7 @@ export interface PivotHandledProps
     /**
      * The pivots' pivot item
      */
-    items: TabsItem[];
+    items?: TabsItem[];
 }
 
 /* tslint:disable-next-line:no-empty-interface */
