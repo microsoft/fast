@@ -1,14 +1,14 @@
-import { DesignSystem, ensureDesignSystemDefaults } from "./design-system";
-import { Swatch, Palette, Palettes, palette } from "./palette";
+import { DesignSystem, ensureDesignSystemDefaults } from "../../design-system";
+import { Palette, palette, Palettes, Swatch } from "./palette";
 import { accent } from "./color-constants";
-import { isDarkTheme, findClosestSwatchIndex } from "./palette";
-import { contrast } from "./common";
-import { inRange, clamp } from "lodash";
+import { findClosestSwatchIndex, isDarkTheme } from "./palette";
+import { contrast, SwatchResolver } from "./common";
+import { clamp, inRange } from "lodash";
 
 /**
  * Returns a swatch from the middle of the accent palette
  */
-export const accentSwatch = ensureDesignSystemDefaults(
+export const accentSwatch: SwatchResolver = ensureDesignSystemDefaults(
     (designSystem: DesignSystem): Swatch => {
         const accentPalette: Palette | null = palette(Palettes.accent)(designSystem);
 
@@ -21,7 +21,7 @@ export const accentSwatch = ensureDesignSystemDefaults(
 /**
  * Returns indexes for accent UI states that are accessible against an input reference color.
  */
-export const findAccessibleAccentSwatchIndexs = (
+export function findAccessibleAccentSwatchIndexs(
     designSystem: DesignSystem,
     contrastTarget: number,
     referenceColor: Swatch,
@@ -34,7 +34,7 @@ export const findAccessibleAccentSwatchIndexs = (
     rest: number;
     hover: number;
     active: number;
-} => {
+} {
     const accentColor: Swatch = accentSwatch(designSystem);
     const accentPalette: Palette = palette(Palettes.accent)(designSystem);
     const darkTheme: boolean = isDarkTheme(designSystem);
@@ -73,4 +73,4 @@ export const findAccessibleAccentSwatchIndexs = (
             maxIndex
         ),
     };
-};
+}

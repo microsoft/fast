@@ -1,4 +1,4 @@
-import { isValidColor, colorMatches, contrast } from "./common";
+import { colorMatches, contrast, isValidColor } from "./common";
 
 describe("isValidColor", (): void => {
     test("should return true when input is a color", (): void => {

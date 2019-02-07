@@ -1,13 +1,13 @@
 import {
-    accentForegroundRest,
-    accentForegroundHover,
     accentForegroundActive,
-    accentForegroundLargeRest,
-    accentForegroundLargeHover,
+    accentForegroundHover,
     accentForegroundLargeActive,
+    accentForegroundLargeHover,
+    accentForegroundLargeRest,
+    accentForegroundRest,
 } from "./accent-foreground";
-import { designSystemDefaults, DesignSystem } from "./design-system";
-import { Swatch, Palettes, palette, Palette } from "./palette";
+import designSystemDefaults, { DesignSystem } from "../../design-system";
+import { palette, Palette, Palettes, Swatch } from "./palette";
 import { contrast } from "./common";
 
 describe("accentForeground", (): void => {

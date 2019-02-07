@@ -1,15 +1,18 @@
 import { Swatch } from "./palette";
-import { white, black } from "./color-constants";
+import { black, white } from "./color-constants";
 import chroma from "chroma-js";
 import { memoize } from "lodash";
-import { DesignSystem, ensureDesignSystemDefaults } from "./design-system";
+import { DesignSystem, ensureDesignSystemDefaults } from "../../design-system";
 import { accentSwatch } from "./accent";
 import { ColorRecipe } from "./common";
 
 /**
  * Function to derive accentForegroundCut from an input background and target contrast ratio
  */
-const accentForegroundCutAlgorithm = memoize(
+const accentForegroundCutAlgorithm: (
+    backgroundColor: Swatch,
+    targetContrast: number
+) => Swatch = memoize(
     (backgroundColor: Swatch, targetContrast: number): Swatch => {
         return chroma.contrast(white, backgroundColor) >= targetContrast ? white : black;
     },
@@ -22,11 +25,11 @@ const accentForegroundCutAlgorithm = memoize(
  * Factory to create a accent-foreground-cut function that operates on a target contrast ratio
  */
 function accentForegroundCutFactory(contrast: number): ColorRecipe {
-    function accentForegroundCut(designSystem: DesignSystem): Swatch;
-    function accentForegroundCut(
+    function accentForegroundCutInternal(designSystem: DesignSystem): Swatch;
+    function accentForegroundCutInternal(
         backgroundResolver: (d: DesignSystem) => Swatch
     ): (designSystem: DesignSystem) => Swatch;
-    function accentForegroundCut(arg: any): any {
+    function accentForegroundCutInternal(arg: any): any {
         if (typeof arg === "function") {
             return ensureDesignSystemDefaults(
                 (designSystem: DesignSystem): Swatch => {
@@ -38,7 +41,7 @@ function accentForegroundCutFactory(contrast: number): ColorRecipe {
         }
     }
 
-    return accentForegroundCut;
+    return accentForegroundCutInternal;
 }
 
 /**

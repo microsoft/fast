@@ -20,7 +20,7 @@ export {
 } from "./accent-foreground";
 
 /**
- * Backplate exports
+ * Fill exports
  */
 export {
     neutralFill,
@@ -60,6 +60,6 @@ export {
 /**
  * Export supporting types
  */
-export { DesignSystem } from "./design-system";
+export { DesignSystem } from "../../design-system";
 export { neutralPaletteSource, accentPaletteSource } from "./color-constants";
 export { palette, Palettes, Palette } from "./palette";

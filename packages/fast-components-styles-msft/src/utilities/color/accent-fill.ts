@@ -2,15 +2,15 @@ import {
     DesignSystem,
     ensureDesignSystemDefaults,
     withDesignSystemDefaults,
-} from "./design-system";
+} from "../../design-system";
 import {
+    ColorRecipe,
     StatefulSwatch,
     StatefulSwatchResolver,
-    ColorRecipe,
     StatefulSwatchToColorRecipeFactory,
 } from "./common";
 import { accentSwatch, findAccessibleAccentSwatchIndexs } from "./accent";
-import { Swatch, isDarkTheme, Palettes, Palette, palette } from "./palette";
+import { isDarkTheme, Palette, palette, Palettes, Swatch } from "./palette";
 import { accentForegroundCut } from "./accent-foreground-cut";
 import { memoize } from "lodash";
 
@@ -21,7 +21,10 @@ export const accentFillDeltaRest: number = 0;
 export const accentFillDeltaHover: number = 2;
 export const accentFillDeltaActive: number = 4;
 
-export const accentFillAlgorithm = memoize(
+export const accentFillAlgorithm: (
+    designSystem: DesignSystem,
+    contrastTarget: number
+) => StatefulSwatch = memoize(
     (designSystem: DesignSystem, contrastTarget: number): StatefulSwatch => {
         const accentPalette: Palette = palette(Palettes.accent)(designSystem);
         const accent: Swatch = accentSwatch(designSystem);
@@ -54,11 +57,11 @@ export const accentFillAlgorithm = memoize(
 );
 
 function accentFillFactory(contrast: number): StatefulSwatchResolver {
-    function accentFill(designSystem: DesignSystem): StatefulSwatch;
-    function accentFill(
+    function accentFillInternal(designSystem: DesignSystem): StatefulSwatch;
+    function accentFillInternal(
         backgroundResolver: (designSystem: DesignSystem) => Swatch
     ): (designSystem: DesignSystem) => StatefulSwatch;
-    function accentFill(arg: any): any {
+    function accentFillInternal(arg: any): any {
         if (typeof arg === "function") {
             return ensureDesignSystemDefaults(
                 (designSystem: DesignSystem): StatefulSwatch => {
@@ -75,7 +78,7 @@ function accentFillFactory(contrast: number): StatefulSwatchResolver {
         }
     }
 
-    return accentFill;
+    return accentFillInternal;
 }
 
 export const accentFill: StatefulSwatchResolver = accentFillFactory(4.5);

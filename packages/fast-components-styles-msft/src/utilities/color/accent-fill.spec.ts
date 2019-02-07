@@ -1,13 +1,13 @@
 import {
-    accentFillRest,
-    accentFillHover,
     accentFillActive,
-    accentFillLargeRest,
-    accentFillLargeHover,
+    accentFillHover,
     accentFillLargeActive,
+    accentFillLargeHover,
+    accentFillLargeRest,
+    accentFillRest,
 } from "./accent-fill";
-import { designSystemDefaults, DesignSystem } from "./design-system";
-import { Swatch, Palettes, palette, Palette } from "./palette";
+import designSystemDefaults, { DesignSystem } from "../../design-system";
+import { palette, Palette, Palettes, Swatch } from "./palette";
 import { contrast } from "./common";
 import { accentForegroundCut } from "./accent-foreground-cut";
 

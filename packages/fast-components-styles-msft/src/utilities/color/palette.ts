@@ -1,9 +1,13 @@
 import { neutralPaletteSource } from "./color-constants";
-import { DesignSystem, ensureDesignSystemDefaults } from "./design-system";
+import {
+    DesignSystem,
+    DesignSystemResolver,
+    ensureDesignSystemDefaults,
+} from "../../design-system";
 import chroma from "chroma-js";
 import { memoize } from "lodash"; // TODO: lodash-es throws in jest
-import { isValidColor, colorMatches, luminance } from "./common";
-import { neutralForegroundLight, neutralForegroundDark } from "./neutral-foreground";
+import { colorMatches, isValidColor, luminance } from "./common";
+import { neutralForegroundDark, neutralForegroundLight } from "./neutral-foreground";
 
 /**
  * The named palettes of the MSFT design system
@@ -42,12 +46,12 @@ const generatePalette: (source: string[]) => Palette = memoize(
  * Retrieves a palette by name. This function returns a function that accepts
  * a design system, returning a palette a palette or null
  */
-export function palette(palette: Palettes): (designSystem: DesignSystem) => Palette {
+export function palette(paletteType: Palettes): (designSystem: DesignSystem) => Palette {
     return ensureDesignSystemDefaults(
         (designSystem: DesignSystem): Palette => {
             let source: Palette;
 
-            switch (palette) {
+            switch (paletteType) {
                 case Palettes.accent:
                     source = designSystem.accentPaletteSource;
                     break;
@@ -72,7 +76,7 @@ export function findSwatchIndex(
 ): (designSystem: DesignSystem) => number {
     return (designSystem: DesignSystem): number => {
         const colorPalette: Palette = palette(paletteType)(designSystem);
-        const index = colorPalette.indexOf(swatch);
+        const index: number = colorPalette.indexOf(swatch);
 
         // If we don't find the string exactly, it might be because of color formatting differences
         return index !== -1
@@ -95,26 +99,29 @@ export function findClosestSwatchIndex(
 ): (designSystem: DesignSystem) => number {
     return ensureDesignSystemDefaults(
         (designSystem: DesignSystem): number => {
-            let index: number = findSwatchIndex(paletteType, swatch)(designSystem);
+            const index: number = findSwatchIndex(paletteType, swatch)(designSystem);
 
             if (index !== -1) {
                 return index;
             }
 
-            const swatchLuminance = luminance(swatch);
+            const swatchLuminance: number = luminance(swatch);
 
             if (swatchLuminance === -1) {
                 return 0;
             }
 
-            type LuminanceMap = { luminance: number; index: number };
+            interface LuminanceMap {
+                luminance: number;
+                index: number;
+            }
 
             return palette(paletteType)(designSystem)
                 .map(
-                    (swatch: Swatch, index: number): LuminanceMap => {
+                    (mappedSwatch: Swatch, mappedIndex: number): LuminanceMap => {
                         return {
-                            luminance: luminance(swatch),
-                            index,
+                            luminance: luminance(mappedSwatch),
+                            index: mappedIndex,
                         };
                     }
                 )
@@ -137,7 +144,7 @@ export function findClosestSwatchIndex(
  * of light key text and dark key text to the background. If light key text
  * has a higher contrast, then we're in a dark theme
  */
-export const isDarkTheme = memoize(
+export const isDarkTheme: DesignSystemResolver<boolean> = memoize(
     (designSystem: DesignSystem): boolean => {
         try {
             return (

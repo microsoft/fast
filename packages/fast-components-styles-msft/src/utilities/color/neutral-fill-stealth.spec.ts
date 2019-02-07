@@ -1,11 +1,11 @@
 import {
     neutralFillStealth,
-    neutralFillStealthRest,
-    neutralFillStealthHover,
     neutralFillStealthActive,
+    neutralFillStealthHover,
+    neutralFillStealthRest,
 } from "./neutral-fill-stealth";
-import { designSystemDefaults, DesignSystem } from "./design-system";
-import { Swatch, palette, Palettes, Palette } from "./palette";
+import designSystemDefaults, { DesignSystem } from "../../design-system";
+import { palette, Palette, Palettes, Swatch } from "./palette";
 import { StatefulSwatch } from "./common";
 
 describe("neutralFillStealth", (): void => {

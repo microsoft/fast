@@ -2,15 +2,15 @@ import {
     DesignSystem,
     ensureDesignSystemDefaults,
     withDesignSystemDefaults,
-} from "./design-system";
+} from "../../design-system";
 import { memoize } from "lodash";
 import { accentSwatch, findAccessibleAccentSwatchIndexs } from "./accent";
 import { palette, Palette, Palettes, Swatch } from "./palette";
 import {
+    ColorRecipe,
     StatefulSwatch,
     StatefulSwatchResolver,
     StatefulSwatchToColorRecipeFactory,
-    ColorRecipe,
 } from "./common";
 
 /**
@@ -20,7 +20,10 @@ export const accentForegroundDeltaRest: number = 0;
 export const accentForegroundDeltaHover: number = 1;
 export const accentForegroundDeltaActive: number = 2;
 
-const accentForegroundAlgorithm = memoize(
+const accentForegroundAlgorithm: (
+    designSystem: DesignSystem,
+    contrastTarget: number
+) => StatefulSwatch = memoize(
     (designSystem: DesignSystem, contrastTarget: number): StatefulSwatch => {
         const accentPalette: Palette = palette(Palettes.accent)(designSystem);
         const indexes: {
@@ -52,11 +55,11 @@ const accentForegroundAlgorithm = memoize(
 );
 
 function accentForegroundFactory(contrast: number): StatefulSwatchResolver {
-    function accentForeground(designSystem: DesignSystem): StatefulSwatch;
-    function accentForeground(
+    function accentForegroundInternal(designSystem: DesignSystem): StatefulSwatch;
+    function accentForegroundInternal(
         backgroundResolver: (designSystem: DesignSystem) => Swatch
     ): (designSystem: DesignSystem) => StatefulSwatch;
-    function accentForeground(arg: any): any {
+    function accentForegroundInternal(arg: any): any {
         if (typeof arg === "function") {
             return ensureDesignSystemDefaults(
                 (designSystem: DesignSystem): StatefulSwatch => {
@@ -73,7 +76,7 @@ function accentForegroundFactory(contrast: number): StatefulSwatchResolver {
         }
     }
 
-    return accentForeground;
+    return accentForegroundInternal;
 }
 
 export const accentForeground: StatefulSwatchResolver = accentForegroundFactory(4.5);

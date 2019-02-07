@@ -1,5 +1,5 @@
 import { accentSwatch } from "./accent";
-import { DesignSystem } from "./design-system";
+import { DesignSystem } from "../../design-system";
 
 describe("accentSwatch", (): void => {
     test("should return #0078D4 by default", (): void => {

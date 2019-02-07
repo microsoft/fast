@@ -1,12 +1,12 @@
 import {
-    palette,
-    Palettes,
-    Palette,
-    Swatch,
-    findSwatchIndex,
     findClosestSwatchIndex,
+    findSwatchIndex,
+    palette,
+    Palette,
+    Palettes,
+    Swatch,
 } from "./palette";
-import { designSystemDefaults, DesignSystem } from "./design-system";
+import designSystemDefaults, { DesignSystem } from "../../design-system";
 import { accent } from "./color-constants";
 
 describe("palette", (): void => {

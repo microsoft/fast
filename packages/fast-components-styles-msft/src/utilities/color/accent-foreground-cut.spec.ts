@@ -1,5 +1,5 @@
 import { accentForegroundCut, accentForegroundCutLarge } from "./accent-foreground-cut";
-import { DesignSystem, designSystemDefaults } from "./design-system";
+import designSystemDefaults, { DesignSystem } from "../../design-system";
 
 describe("Cut text", (): void => {
     test("should return white by by default", (): void => {

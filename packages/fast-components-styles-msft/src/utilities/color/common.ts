@@ -1,4 +1,4 @@
-import { DesignSystem, DesignSystemResolver } from "./design-system";
+import { DesignSystem, DesignSystemResolver } from "../../design-system";
 import { Swatch } from "./palette";
 import chroma from "chroma-js";
 
