@@ -24,9 +24,7 @@ const styles: ComponentStyles<CardClassNameContract, DesignSystem> = (
             height: "100%",
             background: designSystem.backgroundColor,
             borderRadius: toPx(designSystem.cornerRadius),
-            ...elevation(ElevationMultiplier.e4, designSystem.foregroundColor)(
-                designSystem
-            ),
+            ...elevation(ElevationMultiplier.e4, "#000")(designSystem),
         },
     };
 };
