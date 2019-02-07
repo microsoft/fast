@@ -1,21 +1,16 @@
 import * as React from "react";
-
-export interface ListboxItemData {
-    id: string;
-    value: string;
-    displayString: string;
-}
+import { ListboxItemProps } from "../listbox-item";
 
 export interface ListboxContextType {
     listboxItemInvoked: (
-        itemInvoked: ListboxItemData,
+        itemInvoked: ListboxItemProps,
         event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>
     ) => void;
     listboxItemFocused: (
-        itemFocused: ListboxItemData,
+        itemFocused: ListboxItemProps,
         event: React.FocusEvent<HTMLDivElement>
     ) => void;
-    listboxSelectedItems: ListboxItemData[];
+    listboxSelectedItems: ListboxItemProps[];
     listboxMultiselectable: boolean;
 }
 

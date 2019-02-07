@@ -7,11 +7,7 @@ import {
     ListboxItemProps,
     ListboxItemUnhandledProps,
 } from "./listbox-item.props";
-import {
-    ListboxContext,
-    ListboxContextType,
-    ListboxItemData,
-} from "../listbox/listbox-context";
+import { ListboxContext, ListboxContextType } from "../listbox/listbox-context";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 class ListboxItem extends Foundation<
@@ -83,7 +79,7 @@ class ListboxItem extends Foundation<
         if ((this.context as ListboxContextType).listboxSelectedItems !== undefined) {
             isSelected =
                 (this.context as ListboxContextType).listboxSelectedItems.filter(
-                    (item: ListboxItemData) => {
+                    (item: ListboxItemProps) => {
                         return item.id === this.props.id;
                     }
                 ).length === 1;
@@ -97,14 +93,8 @@ class ListboxItem extends Foundation<
     private invokeOption(
         event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>
     ): void {
-        const itemData: ListboxItemData = {
-            id: this.props.id,
-            value: this.props.value,
-            displayString: this.props.displayString,
-        };
-
         if ((this.context as ListboxContextType).listboxItemInvoked) {
-            (this.context as ListboxContextType).listboxItemInvoked(itemData, event);
+            (this.context as ListboxContextType).listboxItemInvoked(this.props, event);
         }
 
         if (typeof this.props.onInvoke === "function") {
@@ -157,16 +147,10 @@ class ListboxItem extends Foundation<
             return;
         }
 
-        const itemData: ListboxItemData = {
-            id: this.props.id,
-            value: this.props.value,
-            displayString: this.props.displayString,
-        };
-
         if (
             typeof (this.context as ListboxContextType).listboxItemFocused === "function"
         ) {
-            (this.context as ListboxContextType).listboxItemFocused(itemData, e);
+            (this.context as ListboxContextType).listboxItemFocused(this.props, e);
         }
 
         if (typeof this.props.onFocus === "function") {

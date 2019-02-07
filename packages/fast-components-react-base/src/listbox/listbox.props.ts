@@ -3,7 +3,7 @@ import {
     ListboxClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
-import { ListboxItemData } from "./listbox-context";
+import { ListboxItemProps } from "../listbox-item";
 
 export interface ListboxManagedClasses extends ManagedClasses<ListboxClassNameContract> {}
 export interface ListboxUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
@@ -32,17 +32,17 @@ export interface ListboxHandledProps extends ListboxManagedClasses {
     /**
      * Selected options(controlled mode)
      */
-    selectedItems?: string[] | ListboxItemData[];
+    selectedItems?: string[] | ListboxItemProps[];
 
     /**
      * Options that are initially selected
      */
-    defaultSelection?: string[] | ListboxItemData[];
+    defaultSelection?: string[] | ListboxItemProps[];
 
     /**
      * The  onSelectedItemsChanged event handler
      */
-    onSelectedItemsChanged?: (selectedItems: ListboxItemData[]) => void;
+    onSelectedItemsChanged?: (selectedItems: ListboxItemProps[]) => void;
 }
 
 export type ListboxProps = ListboxHandledProps & ListboxUnhandledProps;
