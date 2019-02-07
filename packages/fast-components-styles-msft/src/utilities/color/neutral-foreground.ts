@@ -1,9 +1,8 @@
-import { memoize } from "lodash"; // TODO: lodash-es failing in jest
+import { memoize } from "lodash-es";
 import { isDarkTheme, palette, Palettes, Swatch } from "./palette";
 import { SwatchResolver } from "./common";
 import {
     DesignSystem,
-    DesignSystemResolver,
     ensureDesignSystemDefaults,
     withDesignSystemDefaults,
 } from "../../design-system";

@@ -5,7 +5,7 @@ import {
     ensureDesignSystemDefaults,
 } from "../../design-system";
 import chroma from "chroma-js";
-import { memoize } from "lodash"; // TODO: lodash-es throws in jest
+import { memoize } from "lodash-es";
 import { colorMatches, isValidColor, luminance } from "./common";
 import { neutralForegroundDark, neutralForegroundLight } from "./neutral-foreground";
 
@@ -34,7 +34,7 @@ const generatePalette: (source: string[]) => Palette = memoize(
         return chroma
             .scale(sanitizedSource)
             .mode("rgb")
-            .colors(63) // TODO: can this value be dynamic?
+            .colors(63)
             .map((color: string) => color.toUpperCase());
     },
     (source: string[]): string => {
