@@ -11,7 +11,7 @@ import { KeyCodes, startsWith } from "@microsoft/fast-web-utilities";
 import { get, inRange, isEqual } from "lodash-es";
 import { canUseDOM } from "exenv-es6";
 import { ListboxContext } from "./listbox-context";
-import { ListboxItemProps } from "src/listbox-item";
+import { ListboxItemProps } from "../listbox-item";
 
 export interface ListboxState {
     /**
