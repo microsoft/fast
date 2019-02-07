@@ -2,21 +2,21 @@ import {
     DesignSystem,
     ensureDesignSystemDefaults,
     withDesignSystemDefaults,
-} from "./design-system";
+} from "../../design-system";
 import {
-    Swatch,
+    findClosestSwatchIndex,
+    isDarkTheme,
     palette,
     Palette,
     Palettes,
-    findClosestSwatchIndex,
-    isDarkTheme,
+    Swatch,
 } from "./palette";
 import {
-    StatefulSwatch,
     ColorRecipe,
+    StatefulSwatch,
     StatefulSwatchToColorRecipeFactory,
 } from "./common";
-import { memoize, clamp } from "lodash";
+import { clamp, memoize } from "lodash";
 
 /**
  * Deltas to derive state swatches from the background

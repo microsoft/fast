@@ -1,10 +1,12 @@
 import { memoize } from "lodash"; // TODO: lodash-es failing in jest
-import { Swatch, Palettes, palette, isDarkTheme } from "./palette";
+import { isDarkTheme, palette, Palettes, Swatch } from "./palette";
+import { SwatchResolver } from "./common";
 import {
     DesignSystem,
+    DesignSystemResolver,
     ensureDesignSystemDefaults,
     withDesignSystemDefaults,
-} from "./design-system";
+} from "../../design-system";
 
 /**
  * Function to derive neutralForeground from color inputs.
@@ -12,7 +14,7 @@ import {
  * the color that has the most contrast against the background. If contrast
  * cannot be retrieved correctly, function returns black.
  */
-const neutralForegroundAlgorithm = memoize(
+const neutralForegroundAlgorithm: SwatchResolver = memoize(
     (designSystem: DesignSystem): Swatch => {
         return isDarkTheme(designSystem)
             ? neutralForegroundLight(designSystem)

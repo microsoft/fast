@@ -2,13 +2,16 @@ import {
     DesignSystem,
     ensureDesignSystemDefaults,
     withDesignSystemDefaults,
-} from "./design-system";
-import { Swatch, Palette, Palettes, palette, findSwatchIndex } from "./palette";
+} from "../../design-system";
+import { findSwatchIndex, Palette, palette, Palettes, Swatch } from "./palette";
 import { neutralForeground } from "./neutral-foreground";
 import { inRange, memoize } from "lodash";
-import { contrast, ColorRecipe } from "./common";
+import { ColorRecipe, contrast, SwatchResolver } from "./common";
 
-const neutralForegroundHintAlgorithm = memoize(
+const neutralForegroundHintAlgorithm: (
+    designSystem: DesignSystem,
+    targetContrast: number
+) => Swatch = memoize(
     (designSystem: DesignSystem, targetContrast: number): Swatch => {
         const contrastTarget: number = targetContrast;
         const neutralPalette: Palette = palette(Palettes.neutral)(designSystem);
@@ -43,11 +46,11 @@ const neutralForegroundHintAlgorithm = memoize(
  * Factory to create neutral-foreground-hint functions based on an input contrast target
  */
 function neutralForegroundHintFactory(contrastTarget: number): ColorRecipe {
-    function neutralForegroundHint(designSystem: DesignSystem): Swatch;
-    function neutralForegroundHint(
-        backgroundResolver: (designSystem: DesignSystem) => Swatch
-    ): (designSystem: DesignSystem) => Swatch;
-    function neutralForegroundHint(arg: any): any {
+    function neutralForegroundHintInternal(designSystem: DesignSystem): Swatch;
+    function neutralForegroundHintInternal(
+        backgroundResolver: SwatchResolver
+    ): SwatchResolver;
+    function neutralForegroundHintInternal(arg: any): any {
         if (typeof arg === "function") {
             return ensureDesignSystemDefaults(
                 (designSystem: DesignSystem): Swatch => {
@@ -67,7 +70,7 @@ function neutralForegroundHintFactory(contrastTarget: number): ColorRecipe {
         }
     }
 
-    return neutralForegroundHint;
+    return neutralForegroundHintInternal;
 }
 
 /**

@@ -1,13 +1,14 @@
 import {
     DesignSystem,
+    DesignSystemResolver,
     ensureDesignSystemDefaults,
     withDesignSystemDefaults,
-} from "./design-system";
+} from "../../design-system";
 import { memoize } from "lodash";
-import { palette, Palette, Swatch, findClosestSwatchIndex, Palettes } from "./palette";
+import { findClosestSwatchIndex, palette, Palette, Palettes, Swatch } from "./palette";
 import {
-    StatefulSwatch,
     ColorRecipe,
+    StatefulSwatch,
     StatefulSwatchToColorRecipeFactory,
 } from "./common";
 
@@ -30,7 +31,7 @@ const swapThreshold: number = Math.max(
 /**
  * Algorithm for determining neutral backplate colors
  */
-const neutralFillAlgorithm = memoize(
+const neutralFillAlgorithm: DesignSystemResolver<StatefulSwatch> = memoize(
     (designSystem: DesignSystem): StatefulSwatch => {
         const neutralPalette: Palette = palette(Palettes.neutral)(designSystem);
         const backgroundIndex: number = findClosestSwatchIndex(

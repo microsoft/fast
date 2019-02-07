@@ -1,5 +1,5 @@
 import { neutralForeground } from "./neutral-foreground";
-import { designSystemDefaults } from "./design-system";
+import designSystemDefaults from "../../design-system";
 
 describe("neutralForeground", (): void => {
     test("should return a string when invoked with an object", (): void => {

@@ -1,11 +1,11 @@
 import {
     neutralOutline,
-    neutralOutlineRest,
-    neutralOutlineHover,
     neutralOutlineActive,
+    neutralOutlineHover,
+    neutralOutlineRest,
 } from "./neutral-outline";
-import { designSystemDefaults, DesignSystem } from "./design-system";
-import { Swatch, palette, Palettes, Palette } from "./palette";
+import designSystemDefaults, { DesignSystem } from "../../design-system";
+import { palette, Palette, Palettes, Swatch } from "./palette";
 import { StatefulSwatch } from "./common";
 import chroma from "chroma-js";
 

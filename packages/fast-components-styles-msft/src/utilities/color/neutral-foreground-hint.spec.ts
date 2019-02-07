@@ -2,9 +2,9 @@ import {
     neutralForegroundHint,
     neutralForegroundHintLarge,
 } from "./neutral-foreground-hint";
-import { designSystemDefaults } from "./design-system";
-import { Palette, Palettes, palette, Swatch } from "./palette";
-import { contrast, ColorRecipe } from "./common";
+import designSystemDefaults from "../../design-system";
+import { Palette, palette, Palettes, Swatch } from "./palette";
+import { ColorRecipe, contrast } from "./common";
 
 describe("neutralForegroundHint", (): void => {
     const neutralPalette: Palette = palette(Palettes.neutral)(designSystemDefaults);
@@ -48,11 +48,14 @@ describe("neutralForegroundHint", (): void => {
     test("should always return a color that has at least 4.5 : 1 against the background", (): void => {
         neutralPalette.concat(accentPalette).forEach(
             (swatch: Swatch): void => {
-                function retrieveContrast(swatch: Swatch, fn: ColorRecipe): number {
+                function retrieveContrast(
+                    resolvedSwatch: Swatch,
+                    fn: ColorRecipe
+                ): number {
                     return parseFloat(
                         contrast(
-                            fn(() => swatch)(designSystemDefaults),
-                            swatch
+                            fn(() => resolvedSwatch)(designSystemDefaults),
+                            resolvedSwatch
                         ).toPrecision(3)
                     );
                 }
