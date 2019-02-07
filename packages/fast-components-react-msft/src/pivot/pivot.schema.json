@@ -20,21 +20,6 @@
                 "horizontal",
                 "vertical"
             ]
-        },
-        "tabItemSlot": {
-            "title": "Pivot item slot",
-            "type": "string",
-            "default": "tab-item"
-        },
-        "tabPanelSlot": {
-            "title": "Pivot panel slot",
-            "type": "string",
-            "default": "tab-panel"
-        },
-        "tabSlot": {
-            "title": "Pivot slot",
-            "type": "string",
-            "default": "tab"
         }
     },
     "reactProperties": {
