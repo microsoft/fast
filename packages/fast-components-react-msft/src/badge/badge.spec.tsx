@@ -96,4 +96,10 @@ describe("badge", (): void => {
             managedClasses.badge__large
         );
     });
+
+    test("should apply only a 'badge' html class when no appearance is passed", () => {
+        const rendered: any = mount(<Badge />);
+
+        expect(rendered.find("span").prop("className")).toContain(managedClasses.badge);
+    });
 });
