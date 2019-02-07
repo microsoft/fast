@@ -24,3 +24,6 @@ class Button extends React.Component {
 
 export default manageJss(ButtonStyles)(Button);
 ```
+
+## Color
+Color palettes are the core of the how color is applied in MSFT stylesheets. There are two major color palettes that are exposed by the design-system that are used to derive color; the *accent* palette and the *neutral* palette.
