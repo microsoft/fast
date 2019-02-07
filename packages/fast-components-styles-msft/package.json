@@ -29,15 +29,43 @@
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.ts\" --list-different",
     "watch": "npm run build -- -w --preserveWatchOutput"
   },
+  "jest": {
+    "collectCoverage": true,
+    "coverageThreshold": {
+      "global": {
+        "statements": 80,
+        "branches": 80,
+        "functions": 80,
+        "lines": 80
+      }
+    },
+    "testURL": "http://localhost",
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest",
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "!<rootDir>/node_modules/lodash-es"
+    ],
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(js|ts)$",
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ]
+  },
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@microsoft/fast-application-utilities": "^3.1.3",
     "@microsoft/fast-tslint-rules": "^3.0.2",
+    "@types/jest": "^24.0.0",
     "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^24.1.0",
     "chroma-js": "^1.3.0",
+    "jest": "^24.1.0",
     "lodash-es": "^4.0.0",
     "prettier": "1.14.3",
+    "ts-jest": "^23.10.5",
     "tslint": "^5.9.1",
     "tslint-config-prettier": "^1.15.0",
     "typescript": "^3.0.1"
