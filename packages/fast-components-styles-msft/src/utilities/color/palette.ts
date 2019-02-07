@@ -111,7 +111,6 @@ export function findClosestSwatchIndex(
         }
     );
 }
-
 /**
  * Determines if we're in a dark theme, determined by comparing the contrast
  * of light neutral-foreground and dark neutral-foreground to the background. If light neutral-foreground
