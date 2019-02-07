@@ -25,14 +25,14 @@ const neutralForegroundAlgorithm: SwatchResolver = memoize(
 );
 
 /**
- * Retrieve light key text color for use on dark backgrounds
+ * Retrieve light neutral-foreground color for use on dark backgrounds
  */
 export function neutralForegroundLight(designSystem: DesignSystem): Swatch {
     return palette(PaletteType.neutral)(designSystem)[0];
 }
 
 /**
- * Retrieve dark key text color for use on light backgrounds
+ * Retrieve dark neutral-foreground color for use on light backgrounds
  */
 export function neutralForegroundDark(designSystem: DesignSystem): Swatch {
     return palette(PaletteType.neutral)(designSystem)[58];

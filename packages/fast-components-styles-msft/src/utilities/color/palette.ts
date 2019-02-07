@@ -143,7 +143,7 @@ export function findClosestSwatchIndex(
 }
 /**
  * Determines if we're in a dark theme, determined by comparing the contrast
- * of light key text and dark key text to the background. If light key text
+ * of light neutral-foreground and dark neutral-foreground to the background. If light neutral-foreground
  * has a higher contrast, then we're in a dark theme
  */
 export const isDarkTheme: DesignSystemResolver<boolean> = memoize(
