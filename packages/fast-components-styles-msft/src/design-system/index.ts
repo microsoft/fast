@@ -1,6 +1,10 @@
 import { Direction } from "@microsoft/fast-application-utilities";
-import { memoize } from "lodash-es";
 import { withDefaults } from "@microsoft/fast-jss-utilities";
+import {
+    accentPaletteSource,
+    neutralPaletteSource,
+    white,
+} from "../utilities/color/color-constants";
 
 export interface DesignSystem {
     /**
@@ -9,8 +13,22 @@ export interface DesignSystem {
     backgroundColor: string;
 
     /**
+     * The source colors used to create the neutral color palette.
+     * This should be an array of strings representing colors in
+     * RGB or HEX format. Color sources should be ordered from light to dark
+     */
+    neutralPaletteSource: string[];
+
+    /**
+     * The source colors used to create the accent color palette.
+     * This should be an array of strings representing colors in
+     * RGB or HEX format. Color sources should be ordered from light to dark
+     */
+    accentPaletteSource: string[];
+
+    /**
      * The brand color used as color accents.
-     *
+     * @deprecated
      */
     brandColor: string;
 
@@ -36,6 +54,7 @@ export interface DesignSystem {
 
     /**
      * The value typically used for foreground elements, such as text
+     * @deprecated
      */
     foregroundColor: string;
 
@@ -51,15 +70,19 @@ export interface DesignSystem {
 }
 
 const designSystemDefaults: DesignSystem = {
-    backgroundColor: "#FFF",
-    brandColor: "#0078D4",
+    backgroundColor: white,
     contrast: 0,
     density: 1,
     designUnit: 4,
     direction: Direction.ltr,
-    foregroundColor: "#111",
     cornerRadius: 2,
     outlinePatternOutlineWidth: 1,
+    neutralPaletteSource,
+    accentPaletteSource,
+
+    // @deprecated
+    foregroundColor: "#111",
+    brandColor: "#0078D4",
 };
 
 /**
@@ -72,10 +95,26 @@ export const withDesignSystemDefaults: (config: Partial<DesignSystem>) => Design
 /**
  * Safely retrieves a single property from a design system
  */
-export function getDesignSystemProperty(key: string): (config: DesignSystem) => string {
+export function getDesignSystemProperty(key: string): DesignSystemResolver<string> {
     return function(config: DesignSystem): string {
         return withDesignSystemDefaults(config)[key];
     };
 }
+
+/**
+ * Returns a function that calls the callback with designSystemDefaults ensured.
+ */
+export function ensureDesignSystemDefaults<T>(
+    callback: (designSystem: DesignSystem) => T
+): (designSystem: DesignSystem) => T {
+    return (designSystem: DesignSystem): T => {
+        return callback(withDesignSystemDefaults(designSystem));
+    };
+}
+
+/**
+ * A function that accepts a design system and returns a generic type
+ */
+export type DesignSystemResolver<T> = (designSystem: DesignSystem) => T;
 
 export default designSystemDefaults;
