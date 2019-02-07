@@ -95,7 +95,7 @@ export const withDesignSystemDefaults: (config: Partial<DesignSystem>) => Design
 /**
  * Safely retrieves a single property from a design system
  */
-export function getDesignSystemProperty(key: string): (config: DesignSystem) => string {
+export function getDesignSystemProperty(key: string): DesignSystemResolver<string> {
     return function(config: DesignSystem): string {
         return withDesignSystemDefaults(config)[key];
     };
@@ -105,10 +105,10 @@ export function getDesignSystemProperty(key: string): (config: DesignSystem) => 
  * Returns a function that calls the callback with designSystemDefaults ensured.
  */
 export function ensureDesignSystemDefaults<T>(
-    func: (designSystem: DesignSystem) => T
+    callback: (designSystem: DesignSystem) => T
 ): (designSystem: DesignSystem) => T {
     return (designSystem: DesignSystem): T => {
-        return func(withDesignSystemDefaults(designSystem));
+        return callback(withDesignSystemDefaults(designSystem));
     };
 }
 

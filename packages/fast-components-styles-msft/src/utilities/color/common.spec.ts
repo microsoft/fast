@@ -8,7 +8,6 @@ describe("isValidColor", (): void => {
     test("should return false when input is not a color", (): void => {
         expect(isValidColor(undefined as any)).toBeFalsy();
         expect(isValidColor(null as any)).toBeFalsy();
-        expect(isValidColor(["red"] as any)).toBeFalsy();
         expect(isValidColor("ooggabooga")).toBeFalsy();
     });
 });
