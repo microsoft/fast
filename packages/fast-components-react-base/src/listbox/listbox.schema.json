@@ -1,0 +1,38 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Listbox",
+    "description": "A listbox component's schema definition.",
+    "type": "object",
+    "id": "listbox",
+    "properties": {
+        "typeAheadPropertyKey": {
+            "title": "Type ahead property key",
+            "type": "string"
+        },
+        "labelledBy": {
+            "title": "Labelled by",
+            "type": "string"
+        },
+        "multiselectable": {
+            "title": "Multi-selectable",
+            "type": "boolean"
+        },
+        "selectedItems": {
+            "title":"Selected items",
+            "type":"string"
+        },
+        "defaultSelection": {
+            "title":"Default selection",
+            "type":"string"
+        }
+    },
+    "reactProperties": {
+        "children": {
+            "title": "Building blocks",
+            "type": "children",
+            "defaults": [
+                "listbox-item"
+            ]
+        }
+    }
+}
