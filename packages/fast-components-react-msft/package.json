@@ -90,6 +90,7 @@
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "eyes.images": "3.6.2",
+    "exenv-es6": "^1.0.0",
     "favicons-webpack-plugin": "0.0.9",
     "file-loader": "^1.1.11",
     "focus-visible": "^4.1.5",

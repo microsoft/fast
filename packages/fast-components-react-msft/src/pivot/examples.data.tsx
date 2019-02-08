@@ -62,12 +62,7 @@ const pivotItem4: TabsItem = {
     id: "pivot04",
 };
 
-const detailPivotItem: TabsItem[] = [
-    Object.assign({}, pivotItem1),
-    Object.assign({}, pivotItem2),
-    Object.assign({}, pivotItem3),
-    Object.assign({}, pivotItem4),
-];
+const detailPivotItem: TabsItem[] = [pivotItem1, pivotItem2, pivotItem3, pivotItem4];
 
 const examplePivotItem1: TabsItem[] = [
     {
@@ -75,9 +70,9 @@ const examplePivotItem1: TabsItem[] = [
         content: renderPivotContent(""),
         id: "pivot01",
     },
-    Object.assign({}, pivotItem2),
-    Object.assign({}, pivotItem3),
-    Object.assign({}, pivotItem4),
+    pivotItem2,
+    pivotItem3,
+    pivotItem4,
 ];
 
 const examples: ComponentFactoryExample<PivotProps> = {
@@ -90,14 +85,12 @@ const examples: ComponentFactoryExample<PivotProps> = {
         label: "A set of example text content",
         // activeId: "pivot03",
         items: detailPivotItem,
-        children: ["child 1", "child 2"],
     },
     data: [
         {
             ...pivotManagedClasses,
             label: "A set of example text content",
             items: detailPivotItem,
-            children: ["child 1", "child 2"],
         },
         {
             ...pivotManagedClasses,

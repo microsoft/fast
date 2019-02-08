@@ -1,6 +1,7 @@
 import * as React from "react";
 import { get } from "lodash-es";
 import * as ReactDOM from "react-dom";
+import { canUseDOM } from "exenv-es6";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
     PivotHandledProps,
@@ -203,7 +204,7 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
     }
 
     private updateTabPanelIndex(): number {
-        if (this.tabsRef.current && this.props.items) {
+        if (canUseDOM() && this.tabsRef.current && this.props.items) {
             const tabElement: HTMLElement = ReactDOM.findDOMNode(
                 this.tabsRef.current
             ) as HTMLElement;
@@ -240,7 +241,7 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
     }
 
     private setActiveIndicatorOffset(): void {
-        if (this.tabsRef.current && this.props.items) {
+        if (canUseDOM() && this.tabsRef.current && this.props.items) {
             const tabElement: HTMLElement = ReactDOM.findDOMNode(
                 this.tabsRef.current
             ) as HTMLElement;
