@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Pivot, PivotHandledProps, PivotProps, PivotManagedClasses } from "./index";
+import { Pivot, PivotHandledProps, PivotManagedClasses, PivotProps } from "./index";
 import { TabsItem } from "@microsoft/fast-components-react-base";
 import schema from "./pivot.schema.json";
 import Documentation from "./.tmp/documentation";
@@ -28,7 +28,13 @@ function renderPivotContent(
     pivotContent: string
 ): (className?: string) => React.ReactNode {
     return (className?: string): React.ReactNode => (
-        <div className={className}>{pivotContent}</div>
+        <div className={className}>
+            {pivotContent} adding a nunch more content here to see how this is all fitting
+            adding a nunch more content here to see how this is all fitting adding a nunch
+            more content here to see how this is all fitting adding a nunch more content
+            here to see how this is all fitting adding a nunch more content here to see
+            how this is all fitting
+        </div>
     );
 }
 
@@ -60,6 +66,7 @@ const detailPivotItem: TabsItem[] = [
     Object.assign({}, pivotItem1),
     Object.assign({}, pivotItem2),
     Object.assign({}, pivotItem3),
+    Object.assign({}, pivotItem4),
 ];
 
 const examplePivotItem1: TabsItem[] = [
@@ -81,7 +88,7 @@ const examples: ComponentFactoryExample<PivotProps> = {
     detailData: {
         ...pivotManagedClasses,
         label: "A set of example text content",
-        activeId: "pivot03",
+        // activeId: "pivot03",
         items: detailPivotItem,
         children: ["child 1", "child 2"],
     },

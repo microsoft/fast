@@ -2,13 +2,13 @@ import * as React from "react";
 import { Subtract } from "utility-types";
 import {
     TabsHandledProps as BaseTabsHandledProps,
+    TabsItem,
     TabsManagedClasses as BaseTabsManagedClasses,
     TabsUnhandledProps as BaseTabsUnhandledProps,
-    TabsItem,
 } from "@microsoft/fast-components-react-base";
 import {
-    PivotClassNameContract,
     ManagedClasses,
+    PivotClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 
 export interface PivotManagedClasses extends ManagedClasses<PivotClassNameContract> {}

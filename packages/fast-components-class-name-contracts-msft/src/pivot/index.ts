@@ -10,6 +10,16 @@ export interface PivotClassNameContract extends BaseTabsClassNameContract {
     pivot?: string;
 
     /**
+     * The active pivot indicator
+     */
+    pivot_activeIndicator?: string;
+
+    /**
+     * The active pivot indicator that is focused
+     */
+    pivot_activeIndicator__focused?: string;
+
+    /**
      * The collection of pivot items
      */
     pivot_itemList?: string;
@@ -25,14 +35,19 @@ export interface PivotClassNameContract extends BaseTabsClassNameContract {
     pivot_item__active?: string;
 
     /**
-     * The active picot item indicator
-     */
-    pivot_item__activeIndicator?: string;
-
-    /**
      * The collection of tab panels
      */
     pivot_tabPanels?: string;
+
+    /**
+     * The tab panel from left
+     */
+    pivot_tabPanels__fromLeft?: string;
+
+    /**
+     * The tab panel from right
+     */
+    pivot_tabPanels__fromRight?: string;
 
     /**
      * The tab panel
