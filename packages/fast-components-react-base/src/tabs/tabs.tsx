@@ -127,9 +127,12 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
             const items: React.ReactNode[] = React.Children.toArray(this.tabItems());
             const currentItemIndex: number = items.findIndex(this.getCurrentIndexById);
 
-            (Array.from(this.tabListRef.current.children)[
-                currentItemIndex
-            ] as HTMLButtonElement).focus();
+            // Do nothing if current item index is not found
+            if (currentItemIndex !== -1) {
+                (Array.from(this.tabListRef.current.children)[
+                    currentItemIndex
+                ] as HTMLButtonElement).focus();
+            }
         }
     }
 

@@ -284,6 +284,35 @@ describe("tabs", (): void => {
         expect(renderedWithChildren.find("Tab").length).toEqual(3);
     });
 
+    test("should handle non existing active id set in props by keeping previous tab active.", () => {
+        const renderedWithChildren: ShallowWrapper = shallow(
+            <Tabs managedClasses={tabsManagedClasses} label={"items"} activeId={id0}>
+                {children}
+            </Tabs>
+        );
+
+        expect(renderedWithChildren.find("Tab").length).toEqual(3);
+
+        const tab1: any = renderedWithChildren.find("Tab").at(0);
+        const tab2: any = renderedWithChildren.find("Tab").at(1);
+
+        expect(tab1.prop("active")).toEqual(true);
+        expect(tab2.prop("active")).toEqual(false);
+
+        const handledProps: TabsHandledProps & TabsManagedClasses = {
+            managedClasses: tabsManagedClasses,
+            children,
+            label: "items",
+            activeId: "nonExistingTabId",
+        };
+
+        const props: TabsProps = { ...handledProps };
+        renderedWithChildren.setProps(props);
+
+        expect(tab1.prop("active")).toEqual(true);
+        expect(tab2.prop("active")).toEqual(false);
+    });
+
     test("should generate an ID if none has been provided", () => {
         const renderedWithChildren: any = shallow(
             <Tabs managedClasses={tabsManagedClasses} label={"items"}>
