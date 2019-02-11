@@ -31,7 +31,7 @@ const styles = {
 ### applyFocusVisible
 `applyFocusVisible` accepts style(s) and an optional selector string. `applyFocusVisible` automatically removes user-agent focus outlines by setting `outline: "none"`.
 
-This function implements the utility for all focus states, if you want to enable focus-visible support you should implement the focus-visible polyfill[focus-visible polyfill](https://www.npmjs.com/package/focus-visible). Styles that are given will be returned with a focus selector that is based on whether focus-visible is supported natively by the browser, if focus-visible is not supported we apply selectors that mimic polyfill's behavior. If a selector has been passed, this will be added to the focus selector string for the styles. If you are padding a selector be sure to include a space before the selector so it appends properly.
+This function implements the utility for all focus states, if you want to enable focus-visible support you should implement the [focus-visible polyfill](https://www.npmjs.com/package/focus-visible). Styles that are given will be returned with a focus selector that is based on whether focus-visible is supported natively by the browser, if focus-visible is not supported we apply selectors that mimic polyfill's behavior. If a selector has been passed, this will be added to the focus selector string for the styles. If you are padding a selector be sure to include a space before the selector so it appends properly.
 
 ```js
 import { applyFocusVisible } from "@microsoft/fast-components-styles-msft";
