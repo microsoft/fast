@@ -6,6 +6,7 @@ import { DesignSystem } from "../../design-system";
 export interface ButtonProps {
     text: string;
     object: any;
+    style?: any;
 }
 
 export interface TestButtonClassNameContract {
@@ -29,7 +30,7 @@ class Button extends React.Component<
 > {
     public render(): JSX.Element {
         return (
-            <button className={this.props.managedClasses.button}>
+            <button className={this.props.managedClasses.button} style={this.props.style}>
                 {this.props.children}
             </button>
         );

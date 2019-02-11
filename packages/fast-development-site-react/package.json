@@ -33,11 +33,13 @@
   },
   "dependencies": {
     "@microsoft/fast-application-utilities": "^3.1.1",
+    "@microsoft/fast-css-editor-react": "^4.2.0",
     "@microsoft/fast-form-generator-react": "^3.5.2",
     "@microsoft/fast-glyphs-msft": "^3.1.0",
     "@microsoft/fast-jss-manager-react": "^3.1.10",
     "@microsoft/fast-jss-utilities": "^3.2.1",
     "@microsoft/fast-layouts-react": "^3.1.13",
+    "@microsoft/fast-navigation-generator-react": "^0.1.0",
     "react-syntax-highlighter": "^7.0.4"
   },
   "devDependencies": {
