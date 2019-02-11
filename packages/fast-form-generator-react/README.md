@@ -270,7 +270,7 @@ Example:
 Because the style is optional, you can toggle to add it. The schema form generator will see that color is a required piece of data and use the example given to fill in.
 
 ### oneOf & anyOf
-The oneOf and anyOf keywords can be used inside a property and at the root level of a schema. This will create a select dropdown so that the user can switch between them. If data has been provided, it will select the first oneOf/anyOf instance it can validate against. The contents of a 'description' property will be used for the contents of the dropdown.
+The oneOf and anyOf keywords can be used inside a property and at the root level of a schema. This will create a select dropdown so that the user can switch between them. If data has been provided, it will select the first oneOf/anyOf instance it can validate against. The contents of a 'title' property will be used for the contents of the dropdown.
 
 Example: 
 ```json
@@ -280,7 +280,7 @@ Example:
     "title": "My component",
     "oneOf": [
         {
-            "description": "color",
+            "title": "color",
             "type": "object",
             "properties": {
                 "color": {
@@ -291,7 +291,7 @@ Example:
             }
         },
         {
-            "description": "text",
+            "title": "text",
             "type": "object",
             "properties": {
                 "text": {

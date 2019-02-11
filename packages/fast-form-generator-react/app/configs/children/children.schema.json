@@ -50,6 +50,7 @@
             "title": "Array with nested children",
             "type": "array",
             "items": {
+                "title": "Nested array item",
                 "type": "object",
                 "reactProperties": {
                     "nestedArrayChildren": {

@@ -233,19 +233,24 @@ function getSchemaLocationSegmentsFromDataLocationSegment(
     schema: any,
     data: any
 ): string[] {
-    const schemaLocationSegments: string[] = [];
+    let schemaLocationSegments: string[] = [];
     const normalizedDataLocationForArrayRemoval: string = dataLocation.replace(
-        /\[\d+\]/g,
+        squareBracketsRegex,
         ""
     );
-    const subSchema: any = get(
+    const childrensSubSchema: any = get(
         schema,
         `${PropertyKeyword.reactProperties}.${normalizedDataLocationForArrayRemoval}`
     );
-    const isChildren: boolean = subSchema && subSchema.type === childrenKeyword;
+    const isChildren: boolean =
+        childrensSubSchema && childrensSubSchema.type === childrenKeyword;
+    const objectSubSchema: any = get(
+        schema,
+        `${PropertyKeyword.properties}.${normalizedDataLocationForArrayRemoval}`
+    );
 
     if (isPlainObject(data)) {
-        schemaLocationSegments.push(getObjectPropertyKeyword(subSchema));
+        schemaLocationSegments.push(getObjectPropertyKeyword(childrensSubSchema));
     }
 
     schemaLocationSegments.push(
@@ -255,10 +260,41 @@ function getSchemaLocationSegmentsFromDataLocationSegment(
     // In the case that this is an array and not an array of children,
     // add the JSON schema "items" keyword
     if (isDataLocationArrayItem(dataLocation) && !isChildren) {
+        if (hasOneOfOrAnyOf(objectSubSchema)) {
+            schemaLocationSegments = schemaLocationSegments.concat(
+                getSchemaOneOfAnyOfLocationSegments(
+                    getPartialData(
+                        normalizeSchemaLocation(schemaLocationSegments.join(".")),
+                        schema
+                    ),
+                    getPartialData(dataLocation.replace(squareBracketsRegex, ""), data)
+                )
+            );
+        }
+
         schemaLocationSegments.push("items");
     }
 
+    if (hasOneOfOrAnyOf(objectSubSchema)) {
+        schemaLocationSegments = schemaLocationSegments.concat(
+            getSchemaOneOfAnyOfLocationSegments(
+                getPartialData(
+                    normalizeSchemaLocation(schemaLocationSegments.join(".")),
+                    schema
+                ),
+                getPartialData(dataLocation, data)
+            )
+        );
+    }
+
     return schemaLocationSegments;
+}
+
+/**
+ * Determines if a schema has a oneOf or anyOf at root level
+ */
+function hasOneOfOrAnyOf(schema: any): boolean {
+    return schema && (schema.oneOf || schema.anyOf);
 }
 
 /**

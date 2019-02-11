@@ -10,7 +10,6 @@ import Checkbox from "./form-item.checkbox";
 configure({ adapter: new Adapter() });
 
 const checkboxProps: FormItemCommon = {
-    key: "1",
     index: 1,
     dataLocation: "",
     data: false,

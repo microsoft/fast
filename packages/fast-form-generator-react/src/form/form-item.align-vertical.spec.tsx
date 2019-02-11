@@ -10,7 +10,6 @@ import { FormItemComponentMappingToProperyNamesProps, mappingName } from "./form
 configure({ adapter: new Adapter() });
 
 const alignVerticalProps: FormItemComponentMappingToProperyNamesProps = {
-    key: "1",
     name: mappingName.alignVertical,
     options: ["top", "center", "bottom"],
     index: 1,

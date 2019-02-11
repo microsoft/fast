@@ -1,27 +1,52 @@
 import * as React from "react";
-import { cloneDeep, get, isEqual, mergeWith, set, uniqueId, unset } from "lodash-es";
+import { cloneDeep, get, mergeWith, set, unset } from "lodash-es";
 import { getExample } from "@microsoft/fast-permutator";
 import tv4 from "tv4";
 import {
     AttributeSettingsMappingToPropertyNames,
     FormComponentMappingToPropertyNamesProps,
     FormOrderByPropertyNamesCategories,
-    FormOrderByPropertyNamesProperties,
     FormOrderByPropertyNamesProps,
 } from "./form.props";
 import { isRootLocation } from "./form.utilities";
 import {
     AssignedCategoryParams,
     AssignedParamsByCategoryConfig,
-    FormCategories,
+    FormCategoryProps,
     FormItemParameters,
     FormItemsWithConfigOptions,
     FormSectionProps,
+    InitialOneOfAnyOfState,
     OneOfAnyOf,
     oneOfAnyOfType,
-    SchemaSubsectionConfig,
 } from "./form-section.props";
 import { mappingName } from "./form-item";
+import { FormControlProps } from "./form-control.props";
+
+export function getInitialOneOfAnyOfState(
+    schema: any,
+    data: any
+): InitialOneOfAnyOfState {
+    let oneOfAnyOf: oneOfAnyOfType;
+    let oneOfAnyOfState: OneOfAnyOf;
+    let activeIndex: number;
+    let updatedSchema: any = schema;
+
+    if (schema.oneOf || schema.anyOf) {
+        oneOfAnyOf = schema.oneOf ? oneOfAnyOfType.oneOf : oneOfAnyOfType.anyOf;
+        activeIndex = getOneOfAnyOfActiveIndex(oneOfAnyOf, schema, data);
+        updatedSchema = schema[oneOfAnyOf][activeIndex];
+        oneOfAnyOfState = {
+            type: oneOfAnyOf,
+            activeIndex,
+        };
+    }
+
+    return {
+        schema: updatedSchema,
+        oneOfAnyOf: oneOfAnyOfState,
+    };
+}
 
 /**
  * Validate a schema against a set of data
@@ -74,9 +99,7 @@ export function getOneOfAnyOfSelectOptions(schema: any, state: any): JSX.Element
         (option: any, index: number): JSX.Element => {
             return (
                 <option key={index} value={index}>
-                    {get(option, "description") ||
-                        get(option, "title") ||
-                        "No description"}
+                    {get(option, "title") || get(option, "description") || "No title"}
                 </option>
             );
         }
@@ -86,12 +109,14 @@ export function getOneOfAnyOfSelectOptions(schema: any, state: any): JSX.Element
 function removeUndefinedKeys(data: any): any {
     const clonedData: any = cloneDeep(data);
 
-    Object.keys(clonedData).forEach((key: string) => {
-        if (typeof clonedData[key] === "undefined") {
-            // if this is a child we may be getting undefined default props, remove these
-            delete clonedData[key];
-        }
-    });
+    if (clonedData !== undefined) {
+        Object.keys(clonedData).forEach((key: string) => {
+            if (typeof clonedData[key] === "undefined") {
+                // if this is a child we may be getting undefined default props, remove these
+                delete clonedData[key];
+            }
+        });
+    }
 
     return clonedData;
 }
@@ -226,111 +251,6 @@ export function generateExampleData(schema: any, propertyLocation: string): any 
     return getExample(schemaSection);
 }
 
-function getSchemaLocation(schemaLocation: string, oneOfAnyOf: any): string {
-    const schemaLocationClone: string = oneOfAnyOf
-        ? `${oneOfAnyOf.type}[${oneOfAnyOf.activeIndex}]${schemaLocation}`
-        : schemaLocation;
-    return schemaLocationClone === "" ? "" : `${schemaLocationClone}.`;
-}
-
-function getDataLocation(dataLocation: string, location: string): string {
-    return dataLocation === "" ? "" : `${dataLocation}${location ? "" : "."}`;
-}
-
-function checkIsObjectOrOneOfAnyOf(property: any): boolean {
-    return (
-        property.type === "object" ||
-        property.properties ||
-        property.anyOf ||
-        property.oneOf
-    );
-}
-
-function getSubsectionOneOfAnyOf(oneOfAnyOf: any, objectProperty: any): string {
-    return typeof oneOfAnyOf !== "undefined"
-        ? `${oneOfAnyOf.type}[${oneOfAnyOf.activeIndex}]`
-        : "";
-}
-
-function getSchemaSubsectionText(state: any, objectProperty: string): string {
-    return state.schema.properties[objectProperty].title || "Untitled";
-}
-
-function getSchemaSubsectionSchemaLocation(config: SchemaSubsectionConfig): string {
-    return `${config.props.location ? config.schemaLocation : ""}${
-        config.oneOfAnyOf
-    }properties.${config.objectProperty}`;
-}
-
-function getSchemaSubsectionDataLocation(config: SchemaSubsectionConfig): string {
-    return config.props.location
-        ? config.dataLocation
-        : `${config.dataLocation}${config.objectProperty}`;
-}
-
-function getSchemaSubsection(schemaSubsectionConfig: SchemaSubsectionConfig): any {
-    return {
-        text: getSchemaSubsectionText(
-            schemaSubsectionConfig.state,
-            schemaSubsectionConfig.objectProperty
-        ),
-        schemaLocation: getSchemaSubsectionSchemaLocation(schemaSubsectionConfig),
-        dataLocation: getSchemaSubsectionDataLocation(schemaSubsectionConfig),
-        active: get(
-            schemaSubsectionConfig.props.data,
-            schemaSubsectionConfig.objectProperty
-        ),
-        required: getIsRequired(
-            schemaSubsectionConfig.objectProperty,
-            schemaSubsectionConfig.state.schema.required
-        ),
-    };
-}
-
-/**
- * Gets the schemas subsections
- */
-export function getSchemaSubsections(state: any, props: any): any[] {
-    const subSections: any[] = [];
-
-    if (typeof state.schema.properties === "undefined") {
-        return subSections;
-    }
-
-    const objectProperties: string[] = Object.keys(state.schema.properties);
-    const schemaLocationClone: string = getSchemaLocation(
-        props.schemaLocation,
-        state.oneOfAnyOf
-    );
-    const dataLocationClone: string = getDataLocation(props.dataLocation, props.location);
-
-    for (
-        let i: number = 0, objectPropertiesLength: number = objectProperties.length;
-        i < objectPropertiesLength;
-        i++
-    ) {
-        if (checkIsObjectOrOneOfAnyOf(state.schema.properties[objectProperties[i]])) {
-            const oneOfAnyOf: string = getSubsectionOneOfAnyOf(
-                state.oneOfAnyOf,
-                objectProperties[i]
-            );
-
-            subSections.push(
-                getSchemaSubsection({
-                    oneOfAnyOf,
-                    objectProperty: objectProperties[i],
-                    dataLocation: dataLocationClone,
-                    schemaLocation: schemaLocationClone,
-                    state,
-                    props,
-                })
-            );
-        }
-    }
-
-    return subSections;
-}
-
 /**
  * Get the array location
  */
@@ -415,9 +335,9 @@ export function checkIsDifferentData(currentData: any, nextData: any): boolean {
 
 export function getOneOfAnyOfState(
     oneOfAnyOf: OneOfAnyOf,
-    nextProps: FormSectionProps
+    nextProps: FormSectionProps | FormControlProps
 ): OneOfAnyOf {
-    const oneOfAnyOfState: Partial<OneOfAnyOf> = oneOfAnyOf || {};
+    const oneOfAnyOfState: Partial<OneOfAnyOf> = {};
 
     oneOfAnyOfState.type = nextProps.schema.oneOf
         ? oneOfAnyOfType.oneOf
@@ -452,8 +372,8 @@ export function isSelect(property: any): boolean {
  * Organizes the categories and items by weight
  */
 export function getWeightedCategoriesAndItems(
-    categoryParams: FormCategories[]
-): FormCategories[] {
+    categoryParams: FormCategoryProps[]
+): FormCategoryProps[] {
     categoryParams.sort(function(a: any, b: any): number {
         return b.weight - a.weight;
     });
@@ -468,14 +388,14 @@ export function getWeightedCategoriesAndItems(
 }
 
 export function checkIsObject(property: any, schema: any): boolean {
-    return property.properties && property === schema;
+    return (property.properties || property.type === "object") && property === schema;
 }
 
 export function findAssignedParamsByCategoryProperties(
     config: AssignedParamsByCategoryConfig
 ): AssignedCategoryParams {
     for (const propertyName of config.categoryProperties) {
-        if (propertyName === config.formItemParameter.item) {
+        if (propertyName === config.formItemParameter.propertyName) {
             return {
                 category: config.category.title,
                 expandable: config.category.expandable,
@@ -488,7 +408,7 @@ export function findAssignedParamsByCategoryProperties(
 
 export function getCategoryIndex(
     assignedCategoryParams: AssignedCategoryParams,
-    categoryParams: FormCategories[]
+    categoryParams: FormCategoryProps[]
 ): number {
     for (
         let i: number = 0, categoryParamsLength: number = categoryParams.length;
@@ -564,8 +484,8 @@ function getAssignedCategoryParams(
 export function getCategoryParams(
     formItemParameters: FormItemParameters[],
     orderByPropertyNames: FormOrderByPropertyNamesProps
-): FormCategories[] {
-    const categoryParams: FormCategories[] = [];
+): FormCategoryProps[] {
+    const categoryParams: FormCategoryProps[] = [];
 
     for (const formItemParameter of formItemParameters) {
         const assignedCategoryParams: AssignedCategoryParams = getAssignedCategoryParams(

@@ -93,9 +93,51 @@ describe("mapSchemaLocationFromDataLocation", () => {
             anyOfSchema
         );
 
-        expect(schemaLocationRootProperty).toBe("anyOf.2.properties.nestedAnyOf");
+        expect(schemaLocationRootProperty).toBe("anyOf.2.properties.nestedAnyOf.anyOf.1");
         expect(schemaLocation).toBe(
             "anyOf.2.properties.nestedAnyOf.anyOf.1.properties.string"
+        );
+    });
+    test("should return a schema location from a non-object anyOf/oneOf location", () => {
+        const schemaLocationNumber: string = mapSchemaLocationFromDataLocation(
+            "numberOrString",
+            { numberOrString: 50 },
+            anyOfSchema
+        );
+        const schemaLocationString: string = mapSchemaLocationFromDataLocation(
+            "numberOrString",
+            { numberOrString: "foo" },
+            anyOfSchema
+        );
+
+        expect(schemaLocationNumber).toBe("anyOf.3.properties.numberOrString.anyOf.0");
+        expect(schemaLocationString).toBe("anyOf.3.properties.numberOrString.anyOf.1");
+    });
+    test("should return a schema location from a non-object anyOf/oneOf location in an array", () => {
+        const chemaLocationArrayOfStrings: string = mapSchemaLocationFromDataLocation(
+            "numberOrString.0",
+            { numberOrString: ["Foo"] },
+            anyOfSchema
+        );
+        const schemaLocationArrayOfObjects: string = mapSchemaLocationFromDataLocation(
+            "numberOrString[0].string",
+            { numberOrString: [{ string: "Foo" }] },
+            anyOfSchema
+        );
+        const schemaLocationArrayOfNumbers: string = mapSchemaLocationFromDataLocation(
+            "numberOrString[0]",
+            { numberOrString: [1, 2, 3] },
+            anyOfSchema
+        );
+
+        expect(chemaLocationArrayOfStrings).toBe(
+            "anyOf.3.properties.numberOrString.anyOf.2.items"
+        );
+        expect(schemaLocationArrayOfObjects).toBe(
+            "anyOf.3.properties.numberOrString.anyOf.3.items.anyOf.0.properties.string"
+        );
+        expect(schemaLocationArrayOfNumbers).toBe(
+            "anyOf.3.properties.numberOrString.anyOf.3.items.anyOf.1"
         );
     });
     test("should return a schema location from a child location", () => {

@@ -10,7 +10,6 @@ import NumberField from "./form-item.number-field";
 configure({ adapter: new Adapter() });
 
 const numberFieldProps: FormItemCommon = {
-    key: "1",
     index: 1,
     dataLocation: "",
     data: "",

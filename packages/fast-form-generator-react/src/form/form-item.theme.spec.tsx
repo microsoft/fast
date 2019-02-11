@@ -12,7 +12,6 @@ configure({ adapter: new Adapter() });
 const themeProps: FormItemComponentMappingToProperyNamesProps = {
     name: mappingName.theme,
     options: ["dark", "light"],
-    key: "1",
     index: 1,
     dataLocation: "",
     data: "",

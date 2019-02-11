@@ -14,6 +14,8 @@ class FormItemCheckbox extends FormItemBase<
     FormItemCommon & ManagedClasses<FormItemCheckboxClassNameContract>,
     {}
 > {
+    public static displayName: string = "FormItemCheckbox";
+
     public render(): JSX.Element {
         const value: boolean =
             typeof this.props.data === "boolean"

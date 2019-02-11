@@ -9,7 +9,6 @@ import FormItemSectionLink, { FormItemSectionLinkProps } from "./form-item.secti
 configure({ adapter: new Adapter() });
 
 const formItemSectionLinkProps: FormItemSectionLinkProps = {
-    key: "1",
     index: 1,
     dataLocation: "",
     schemaLocation: "",

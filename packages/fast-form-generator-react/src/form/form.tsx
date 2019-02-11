@@ -1,12 +1,6 @@
 import FormSection from "./form-section";
 import * as React from "react";
-import {
-    BreadcrumbItemEventHandler,
-    FormProps,
-    FormState,
-    LocationOnChange,
-} from "./form.props";
-import { FormSectionProps } from "./form-section.props";
+import { BreadcrumbItemEventHandler, FormProps, FormState } from "./form.props";
 import {
     BreadcrumbItem,
     getActiveComponentAndSection,
@@ -69,8 +63,8 @@ class Form extends React.Component<
         return (
             <div className={this.props.className || null}>
                 <form onSubmit={this.handleSubmit}>
-                    {this.generateBreadcrumbs()}
-                    {this.generateSection()}
+                    {this.renderBreadcrumbs()}
+                    {this.renderSection()}
                 </form>
             </div>
         );
@@ -206,7 +200,7 @@ class Form extends React.Component<
     /**
      * Generates the breadcrumb navigation
      */
-    private generateBreadcrumbs(): JSX.Element {
+    private renderBreadcrumbs(): JSX.Element {
         const breadcrumbs: BreadcrumbItem[] = getBreadcrumbs(
             this.state.navigation,
             this.handleBreadcrumbClick
@@ -215,25 +209,13 @@ class Form extends React.Component<
         if (breadcrumbs.length > 1) {
             return (
                 <ul className={this.props.managedClasses.form_breadcrumbs}>
-                    {this.generateBreadcrumbItems(breadcrumbs)}
+                    {this.renderBreadcrumbItems(breadcrumbs)}
                 </ul>
             );
         }
     }
 
-    private handleBreadcrumbClick = (
-        schemaLocation: string,
-        dataLocation: string,
-        schema: any
-    ): BreadcrumbItemEventHandler => {
-        return (e: React.MouseEvent): void => {
-            e.preventDefault();
-
-            this.handleUpdateActiveSection(schemaLocation, dataLocation, schema);
-        };
-    };
-
-    private generateBreadcrumbItems(items: BreadcrumbItem[]): JSX.Element[] {
+    private renderBreadcrumbItems(items: BreadcrumbItem[]): React.ReactNode {
         return items.map(
             (item: BreadcrumbItem, index: number): JSX.Element => {
                 if (index === items.length - 1) {
@@ -262,28 +244,43 @@ class Form extends React.Component<
     }
 
     /**
-     * Generate the section to be shown
+     * Render the section to be shown
      */
-    private generateSection(): JSX.Element {
-        const sectionProps: FormSectionProps = {
-            schema: this.state.navigation[this.state.navigation.length - 1].schema,
-            onChange: this.handleOnChange,
-            onUpdateActiveSection: this.handleUpdateActiveSection,
-            data: this.getData("data", "props"),
-            dataCache: this.getData("dataCache", "state"),
-            schemaLocation: this.state.activeSchemaLocation,
-            dataLocation: this.state.activeDataLocation,
-            untitled: this.untitled,
-            childOptions: this.props.childOptions,
-            location: this.props.location,
-            componentMappingToPropertyNames: this.props.componentMappingToPropertyNames,
-            attributeSettingsMappingToPropertyNames: this.props
-                .attributeSettingsMappingToPropertyNames,
-            orderByPropertyNames: this.props.orderByPropertyNames,
-        };
-
-        return <FormSection {...sectionProps} />;
+    private renderSection(): React.ReactNode {
+        return (
+            <FormSection
+                schema={this.state.navigation[this.state.navigation.length - 1].schema}
+                onChange={this.handleOnChange}
+                onUpdateActiveSection={this.handleUpdateActiveSection}
+                data={this.getData("data", "props")}
+                dataCache={this.getData("dataCache", "state")}
+                schemaLocation={this.state.activeSchemaLocation}
+                dataLocation={this.state.activeDataLocation}
+                untitled={this.untitled}
+                childOptions={this.props.childOptions}
+                location={this.props.location}
+                componentMappingToPropertyNames={
+                    this.props.componentMappingToPropertyNames
+                }
+                attributeSettingsMappingToPropertyNames={
+                    this.props.attributeSettingsMappingToPropertyNames
+                }
+                orderByPropertyNames={this.props.orderByPropertyNames}
+            />
+        );
     }
+
+    private handleBreadcrumbClick = (
+        schemaLocation: string,
+        dataLocation: string,
+        schema: any
+    ): BreadcrumbItemEventHandler => {
+        return (e: React.MouseEvent): void => {
+            e.preventDefault();
+
+            this.handleUpdateActiveSection(schemaLocation, dataLocation, schema);
+        };
+    };
 
     private handleOnChange = (
         location: string,

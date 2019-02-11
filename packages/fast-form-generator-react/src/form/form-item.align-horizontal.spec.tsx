@@ -10,7 +10,6 @@ import { FormItemComponentMappingToProperyNamesProps, mappingName } from "./form
 configure({ adapter: new Adapter() });
 
 const alignHorizontalProps: FormItemComponentMappingToProperyNamesProps = {
-    key: "1",
     name: mappingName.alignHorizontal,
     options: ["left", "center", "right"],
     index: 1,

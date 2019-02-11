@@ -10,7 +10,6 @@ import { KeyCodes } from "../../../fast-web-utilities/dist";
 configure({ adapter: new Adapter() });
 
 const childrenProps: FormItemChildrenProps = {
-    key: "key",
     index: 0,
     required: false,
     label: "label",

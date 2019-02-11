@@ -10,11 +10,6 @@ import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-
  */
 export interface FormCategoryProps {
     /**
-     * Passes the category item
-     */
-    categoryItem: JSX.Element[];
-
-    /**
      * Passes the category title
      */
     title: string;
@@ -55,18 +50,9 @@ class FormCategory extends React.Component<
     /**
      * Renders the component
      */
-    public render(): JSX.Element {
-        // Exit if the array is only one item long and that item is null or undefined
-        if (
-            (this.props.categoryItem.length < 1 && this.props.categoryItem[0] === null) ||
-            (this.props.categoryItem.length < 1 &&
-                this.props.categoryItem[0] === undefined)
-        ) {
-            return;
-        }
-
+    public render(): React.ReactNode {
         return (
-            <div key={this.props.id}>
+            <div>
                 {this.props.expandable
                     ? this.renderHeaderButton()
                     : this.renderHeaderTitle()}
@@ -74,7 +60,7 @@ class FormCategory extends React.Component<
                     className={this.getClassNames()}
                     {...this.generateContainerAttributes()}
                 >
-                    {this.props.categoryItem}
+                    {this.props.children}
                 </div>
             </div>
         );
