@@ -3,6 +3,7 @@ import { get } from "lodash-es";
 import * as ReactDOM from "react-dom";
 import { canUseDOM } from "exenv-es6";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { canUseFocusVisible } from "@microsoft/fast-web-utilities";
 import {
     PivotHandledProps,
     PivotManagedClasses,
@@ -149,12 +150,13 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
         ) as HTMLElement;
 
         const mytabs: NodeListOf<Element> = tabElement.querySelectorAll(
-            "[role='tab']:focus-visible"
+            canUseFocusVisible() ? "[role='tab']:focus-visible" : "[role='tab']:focus"
         );
 
         if (mytabs.length > 0) {
             this.setState({ focused: true });
         }
+        //this.setState({ focused: true });
     };
 
     /**
