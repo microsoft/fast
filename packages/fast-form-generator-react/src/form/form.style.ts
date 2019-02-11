@@ -8,8 +8,8 @@ const styles: ComponentStyles<FormClassNameContract, {}> = {
         display: "flex",
         flexWrap: "wrap",
         marginTop: "4px",
-        fontSize: "11px",
-        lineHeight: "15px",
+        fontSize: "12px",
+        lineHeight: "16px",
         paddingBottom: "12px",
         ...applyCleanListStyle(),
         "& li": {

@@ -31,7 +31,7 @@ export function localizePadding(
 export function applyTriggerStyle(color: string): CSSRules<{}> {
     return {
         lineHeight: "16px",
-        fontSize: "11px",
+        fontSize: "12px",
         ...localizePadding(3, 5, 2, 5),
         border: "none",
         outline: "none",

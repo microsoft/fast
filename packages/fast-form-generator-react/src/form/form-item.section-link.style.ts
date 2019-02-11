@@ -15,8 +15,8 @@ const styles: ComponentStyles<FormItemSectionLinkClassNameContract, {}> = {
         ...ellipsis(),
         width: "calc(100% - 30px)",
         cursor: "pointer",
-        fontSize: "11px",
-        lineHeight: "15px",
+        fontSize: "12px",
+        lineHeight: "16px",
     },
     formItemSectionLink_softRemove: {
         ...applySoftRemove(),

@@ -35,7 +35,7 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
         ...applyCleanListStyle(),
     },
     formItemChildren_existingChildrenItem__sorting: {
-        fontSize: "11px",
+        fontSize: "12px",
         color: foreground300,
         cursor: "pointer",
     },
@@ -44,7 +44,7 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
         height: "30px",
         marginLeft: "-10px",
         paddingLeft: "10px",
-        fontSize: "11px",
+        fontSize: "12px",
         cursor: "pointer",
         display: "flex",
         alignItems: "center",
@@ -85,8 +85,8 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
     },
     formItemChildren_childrenListItem: {
         minHeight: "30px",
-        fontSize: "11px",
-        lineHeight: "15px",
+        fontSize: "12px",
+        lineHeight: "16px",
         display: "flex",
         alignItems: "center",
         padding: "0 5px",

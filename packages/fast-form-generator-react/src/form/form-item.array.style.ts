@@ -67,10 +67,10 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
     },
     formItemArray_existingItemList: {
         ...applyCleanListStyle(),
-        fontSize: "11px",
+        fontSize: "12px",
     },
     formItemArray_existingItemListItem__sorting: {
-        fontSize: "11px",
+        fontSize: "12px",
         color: foreground300,
         cursor: "pointer",
     },
