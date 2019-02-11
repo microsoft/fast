@@ -260,7 +260,7 @@ function getSchemaLocationSegmentsFromDataLocationSegment(
     // In the case that this is an array and not an array of children,
     // add the JSON schema "items" keyword
     if (isDataLocationArrayItem(dataLocation) && !isChildren) {
-        if (objectSubSchema && (objectSubSchema.oneOf || objectSubSchema.anyOf)) {
+        if (hasOneOfOrAnyOf(objectSubSchema)) {
             schemaLocationSegments = schemaLocationSegments.concat(
                 getSchemaOneOfAnyOfLocationSegments(
                     getPartialData(
@@ -275,7 +275,7 @@ function getSchemaLocationSegmentsFromDataLocationSegment(
         schemaLocationSegments.push("items");
     }
 
-    if (objectSubSchema && (objectSubSchema.oneOf || objectSubSchema.anyOf)) {
+    if (hasOneOfOrAnyOf(objectSubSchema)) {
         schemaLocationSegments = schemaLocationSegments.concat(
             getSchemaOneOfAnyOfLocationSegments(
                 getPartialData(
@@ -288,6 +288,13 @@ function getSchemaLocationSegmentsFromDataLocationSegment(
     }
 
     return schemaLocationSegments;
+}
+
+/**
+ * Determines if a schema has a oneOf or anyOf at root level
+ */
+function hasOneOfOrAnyOf(schema: any): boolean {
+    return schema && (schema.oneOf || schema.anyOf);
 }
 
 /**
