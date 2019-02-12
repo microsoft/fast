@@ -75,6 +75,10 @@ class NumberField extends Foundation<
             attributes.placeholder = this.props.placeholder;
         }
 
+        if (typeof this.props.name === "string") {
+            attributes.name = this.props.name;
+        }
+
         if (typeof this.props.readOnly === "boolean") {
             attributes.readOnly = true;
         }

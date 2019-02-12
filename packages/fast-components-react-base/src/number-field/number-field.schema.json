@@ -5,16 +5,16 @@
     "type": "object",
     "id": "number-field",
     "properties": {
-        "disabled": {
-            "title": "HTML disabled attribute",
-            "type": "boolean"
+        "min": {
+            "title": "HTML min attribute",
+            "type": "number"
         },
         "max": {
             "title": "HTML max attribute",
             "type": "number"
         },
-        "min": {
-            "title": "HTML min attribute",
+        "step": {
+            "title": "HTML step attribute",
             "type": "number"
         },
         "name": {
@@ -25,6 +25,10 @@
             "title": "HTML placeholder attribute",
             "type": "string"
         },
+        "disabled": {
+            "title": "HTML disabled attribute",
+            "type": "boolean"
+        },
         "readOnly": {
             "title": "HTML readOnly attribute",
             "type": "boolean"
@@ -32,10 +36,6 @@
         "required": {
             "title": "HTML required attribute",
             "type": "boolean"
-        },
-        "step": {
-            "title": "HTML step attribute",
-            "type": "number"
         }
     }
 }
