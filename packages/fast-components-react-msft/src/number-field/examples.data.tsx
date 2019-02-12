@@ -1,20 +1,44 @@
 import * as React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { NumberField, NumberFieldProps } from "./index";
-import schema from "@microsoft/fast-components-react-base/dist/label/label.schema.json";
+import schema from "@microsoft/fast-components-react-base/dist/number-field/number-field.schema.json";
 import Documentation from "./.tmp/documentation";
 
 export default {
-    name: "NumberField",
+    name: "Number field",
     component: NumberField,
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
-        step: 0.1,
+        name: "Number field",
+        step: 10,
+        min: 0,
+        max: 100,
     },
     data: [
         {
             step: 0.1,
+        },
+        {
+            min: 1,
+        },
+        {
+            max: 100,
+        },
+        {
+            disabled: true,
+        },
+        {
+            readOnly: true,
+        },
+        {
+            required: true,
+        },
+        {
+            placeholder: "Placeholder",
+        },
+        {
+            name: "Name",
         },
     ],
 } as ComponentFactoryExample<NumberFieldProps>;

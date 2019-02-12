@@ -29,7 +29,10 @@ class NumberField extends Foundation<
         min: void 0,
         max: void 0,
         name: void 0,
+        placeholder: void 0,
         step: void 0,
+        readOnly: void 0,
+        required: void 0,
     };
 
     /**

@@ -9,7 +9,7 @@ export interface NumberFieldManagedClasses
 export interface NumberFieldUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
 export interface NumberFieldHandledProps extends NumberFieldManagedClasses {
     /**
-     * Disabled state
+     * HTML disabled attribute
      */
     disabled?: boolean;
 
