@@ -56,7 +56,7 @@ export default class Navigation extends Foundation<
                 role={"tree"}
                 className={this.props.managedClasses.navigation}
             >
-                {this.renderTreeItems(this.state.navigation, 1)}
+                {this.renderTreeItem(this.state.navigation, 1, 1, 1, 0)}
             </div>
         );
     }
@@ -75,6 +75,64 @@ export default class Navigation extends Foundation<
         );
     }
 
+    private renderTreeItem(
+        navigation: TreeNavigation,
+        level: number,
+        navigationLength: number,
+        positionInNavigation: number,
+        index: number
+    ): React.ReactNode {
+        if (Array.isArray(navigation.items)) {
+            return (
+                <div
+                    className={this.props.managedClasses.navigation_item}
+                    key={index}
+                    role={"treeitem"}
+                    aria-level={level}
+                    aria-setsize={navigationLength}
+                    aria-posinset={positionInNavigation}
+                    aria-expanded={this.isExpanded(navigation.dataLocation)}
+                    onClick={this.handleTreeItemClick(navigation.dataLocation)}
+                    onKeyUp={this.handleTreeItemKeyUp(navigation.dataLocation)}
+                >
+                    <span
+                        className={this.getTriggerClassNames(navigation.dataLocation)}
+                        onClick={this.handleTreeItemClick(navigation.dataLocation)}
+                        onKeyUp={this.handleTreeItemKeyUp(navigation.dataLocation)}
+                        tabIndex={0}
+                        data-location={navigation.dataLocation}
+                    >
+                        {navigation.text}
+                    </span>
+                    {this.renderTreeItemContainer(navigation.items, level)}
+                </div>
+            );
+        }
+
+        return (
+            <div
+                className={this.props.managedClasses.navigation_item}
+                key={index}
+                role={"none"}
+            >
+                <a
+                    className={this.getLinkClassNames(navigation.dataLocation)}
+                    role={"treeitem"}
+                    data-location={navigation.dataLocation}
+                    aria-level={level}
+                    aria-setsize={navigationLength}
+                    aria-posinset={positionInNavigation}
+                    href={"#"}
+                    onClick={this.handleTreeItemClick(navigation.dataLocation)}
+                    onKeyUp={this.handleTreeItemKeyUp(navigation.dataLocation)}
+                    tabIndex={0}
+                >
+                    {navigation.text}
+                </a>
+            </div>
+        );
+    }
+
     /**
      * Renders tree items
      */
@@ -86,60 +144,12 @@ export default class Navigation extends Foundation<
             const navigationLength: number = navigation.length;
             const positionInNavigation: number = index + 1;
 
-            if (Array.isArray(navigationItem.items)) {
-                return (
-                    <div
-                        className={this.props.managedClasses.navigation_item}
-                        key={index}
-                        role={"treeitem"}
-                        aria-level={level}
-                        aria-setsize={navigationLength}
-                        aria-posinset={positionInNavigation}
-                        aria-expanded={this.isExpanded(navigationItem.dataLocation)}
-                        onClick={this.handleTreeItemClick(navigationItem.dataLocation)}
-                        onKeyUp={this.handleTreeItemKeyUp(navigationItem.dataLocation)}
-                    >
-                        <span
-                            className={this.getTriggerClassNames(
-                                navigationItem.dataLocation
-                            )}
-                            onClick={this.handleTreeItemClick(
-                                navigationItem.dataLocation
-                            )}
-                            onKeyUp={this.handleTreeItemKeyUp(
-                                navigationItem.dataLocation
-                            )}
-                            tabIndex={0}
-                            data-location={navigationItem.dataLocation}
-                        >
-                            {navigationItem.text}
-                        </span>
-                        {this.renderTreeItemContainer(navigationItem.items, level)}
-                    </div>
-                );
-            }
-
-            return (
-                <div
-                    className={this.props.managedClasses.navigation_item}
-                    key={index}
-                    role={"none"}
-                >
-                    <a
-                        className={this.getLinkClassNames(navigationItem.dataLocation)}
-                        role={"treeitem"}
-                        data-location={navigationItem.dataLocation}
-                        aria-level={level}
-                        aria-setsize={navigationLength}
-                        aria-posinset={positionInNavigation}
-                        href={"#"}
-                        onClick={this.handleTreeItemClick(navigationItem.dataLocation)}
-                        onKeyUp={this.handleTreeItemKeyUp(navigationItem.dataLocation)}
-                        tabIndex={0}
-                    >
-                        {navigationItem.text}
-                    </a>
-                </div>
+            return this.renderTreeItem(
+                navigationItem,
+                level,
+                navigationLength,
+                positionInNavigation,
+                index
             );
         });
     }
@@ -376,7 +386,7 @@ export default class Navigation extends Foundation<
             this.state.openItems.find(
                 (openItem: string) =>
                     openItem.slice(0, dataLocation.length) === dataLocation
-            )
+            ) !== undefined
         ) {
             return true;
         }

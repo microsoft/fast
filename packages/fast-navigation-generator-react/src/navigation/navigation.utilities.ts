@@ -88,7 +88,9 @@ function getNavigationFromChildLocations(
                     updatedNavigation.push({
                         text: get(subSchema, "schema.title")
                             ? subSchema.schema.title
-                            : "Undefined",
+                            : typeof get(data, childrenDataLocation) === "string"
+                                ? get(data, childrenDataLocation)
+                                : "Undefined",
                         dataLocation: childrenDataLocation,
                         type: ItemType.children,
                     });
@@ -104,7 +106,7 @@ export function getNavigationFromData(
     data: any,
     schema: any,
     childOptions: ChildOptionItem[]
-): TreeNavigation[] {
+): TreeNavigation {
     const childrenDataLocations: string[] = getDataLocationsOfChildren(
         schema,
         data,
@@ -118,5 +120,10 @@ export function getNavigationFromData(
         childOptions
     );
 
-    return navigation;
+    return {
+        text: schema.title ? schema.title : "Undefined",
+        dataLocation: "",
+        items: navigation,
+        type: ItemType.children,
+    };
 }

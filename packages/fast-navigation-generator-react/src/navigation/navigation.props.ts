@@ -6,7 +6,7 @@ export interface NavigationState {
     /**
      * The navigation data
      */
-    navigation: TreeNavigation[];
+    navigation: TreeNavigation;
 
     /**
      * The open items tracked by data location
