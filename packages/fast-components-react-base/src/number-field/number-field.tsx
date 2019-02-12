@@ -33,6 +33,7 @@ class NumberField extends Foundation<
         step: void 0,
         readOnly: void 0,
         required: void 0,
+        value: void 0,
     };
 
     /**
@@ -44,6 +45,7 @@ class NumberField extends Foundation<
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
                 type={TextFieldType.number}
+                defaultValue={get(this.props, "value", undefined)}
                 {...this.assignAttributes()}
             />
         );

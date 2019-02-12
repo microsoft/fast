@@ -6,7 +6,8 @@ import {
 
 export interface NumberFieldManagedClasses
     extends ManagedClasses<NumberFieldClassNameContract> {}
-export interface NumberFieldUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface NumberFieldUnhandledProps
+    extends React.HTMLAttributes<HTMLInputElement> {}
 export interface NumberFieldHandledProps extends NumberFieldManagedClasses {
     /**
      * HTML disabled attribute
@@ -47,6 +48,11 @@ export interface NumberFieldHandledProps extends NumberFieldManagedClasses {
      * HTML step attribute
      */
     step?: number;
+
+    /**
+     * HTML value attribute
+     */
+    value?: number;
 }
 
 export type NumberFieldProps = NumberFieldHandledProps & NumberFieldUnhandledProps;

@@ -41,6 +41,10 @@ const examples: ComponentFactoryExample<NumberFieldHandledProps> = {
         },
         {
             ...classes,
+            value: 100,
+        },
+        {
+            ...classes,
             disabled: true,
         },
         {

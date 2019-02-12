@@ -36,6 +36,10 @@
         "required": {
             "title": "HTML required attribute",
             "type": "boolean"
+        },
+        "value": {
+            "title": "HTML value attribute",
+            "type": "number"
         }
     }
 }
