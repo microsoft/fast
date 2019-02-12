@@ -30,6 +30,17 @@ const examples: ComponentFactoryExample<NumberFieldHandledProps> = {
         {
             ...classes,
             step: 0.1,
+        },
+        {
+            ...classes,
+            min: 1,
+        },
+        {
+            ...classes,
+            max: 100,
+        },
+        {
+            ...classes,
             disabled: true,
         },
         {
@@ -43,6 +54,10 @@ const examples: ComponentFactoryExample<NumberFieldHandledProps> = {
         {
             ...classes,
             placeholder: "Placeholder",
+        },
+        {
+            ...classes,
+            name: "Name",
         },
     ],
 };
