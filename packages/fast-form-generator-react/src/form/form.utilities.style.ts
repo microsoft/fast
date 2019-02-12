@@ -78,8 +78,8 @@ export function insetStrongBoxShadow(color: string): CSSRules<{}> {
 export function applyLabelStyle(): CSSRules<{}> {
     return {
         flexGrow: "1",
-        lineHeight: "15px",
-        fontSize: "11px",
+        lineHeight: "16px",
+        fontSize: "12px",
         minHeight: "30px",
         display: "flex",
         boxSizing: "border-box",
@@ -90,8 +90,8 @@ export function applyLabelStyle(): CSSRules<{}> {
 
 export function applyInputStyle(): CSSRules<{}> {
     return {
-        lineHeight: "15px",
-        fontSize: "11px",
+        lineHeight: "16px",
+        fontSize: "12px",
         backgroundColor: background800,
         borderRadius: "2px",
         ...localizePadding(3, 5, 2, 5),
@@ -163,8 +163,8 @@ export function applyInputBackplateStyle(): CSSRules<{}> {
 export function applySelectInputStyles(): CSSRules<{}> {
     return {
         width: "100%",
-        lineHeight: "15px",
-        fontSize: "11px",
+        lineHeight: "16px",
+        fontSize: "12px",
         backgroundColor: background800,
         borderRadius: "2px",
         appearance: "none",

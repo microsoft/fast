@@ -19,7 +19,7 @@ export interface NavigationClassNameContract {
 
 const styles: ComponentStyles<NavigationClassNameContract, {}> = {
     navigation: {
-        fontSize: "11px",
+        fontSize: "12px",
         background: background100,
         height: "100%",
     },

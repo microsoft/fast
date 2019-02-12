@@ -146,7 +146,7 @@ const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
     "@global": {
         "body, html": {
             fontFamily: "Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif",
-            fontSize: "11px",
+            fontSize: "12px",
             padding: "0",
             margin: "0",
         },
@@ -249,7 +249,7 @@ const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
         height: "16px",
         width: "16px",
         justifyContent: "center",
-        fontSize: "11px",
+        fontSize: "12px",
         display: "inline-block",
     },
     site_paneToggleButtonIconLayout: {
