@@ -16,6 +16,8 @@
     "url": "https://github.com/Microsoft/fast-dna/issues/new/choose"
   },
   "scripts": {
+    "docs:dry-run": "node build/documentation/copy-package-readme.js --dry-run",
+    "docs:build": "node build/documentation/copy-package-readme.js",
     "integration-tests:alpha": "node build/testing/sauce-labs/test-browsers.js alpha",
     "integration-tests:beta": "node build/testing/sauce-labs/test-browsers.js beta",
     "integration-tests:release": "node build/testing/sauce-labs/test-browsers.js release",
@@ -24,9 +26,7 @@
     "tslint:fix": "tslint -c ./tslint.json --fix 'build/**/*.ts'",
     "unit-tests": "jest --maxWorkers=4",
     "unit-tests:watch": "jest --watch",
-    "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput",
-    "docs:dry-run": "node build/documentation/copy-package-readme.js --dry-run",
-    "docs:build": "node build/documentation/copy-package-readme.js"
+    "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput"
   },
   "husky": {
     "hooks": {
