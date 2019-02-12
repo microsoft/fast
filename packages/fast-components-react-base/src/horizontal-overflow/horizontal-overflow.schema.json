@@ -12,7 +12,7 @@
     },
     "reactProperties": {
         "children": {
-            "title": "Building blocks",
+            "title": "Children",
             "type": "children",
             "defaults": [
                 "text"

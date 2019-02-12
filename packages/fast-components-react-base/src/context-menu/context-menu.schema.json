@@ -8,7 +8,7 @@
     },
     "reactProperties": {
         "children": {
-            "title": "Building blocks",
+            "title": "Children",
             "type": "children",
             "ids": [
                 "context-menu-item",
