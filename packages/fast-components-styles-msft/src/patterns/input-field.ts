@@ -7,6 +7,10 @@ import { DesignSystem } from "src/design-system";
 import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
 import { foregroundNormal } from "../utilities/colors";
 
+/**
+ * Shared input field styles
+ * @param designSystem
+ */
 export function inputFieldStyles(designSystem: DesignSystem): CSSRules<{}> {
     return {
         ...applyTypeRampConfig("t7"),
