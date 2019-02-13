@@ -36,7 +36,7 @@ describe("Select", () => {
 
         expect(rendered.find("select")).toHaveLength(0);
     });
-    xtest("should generate an HTML select element when there is only one option and select is optional", () => {
+    test("should generate an HTML select element when there is only one option and select is optional", () => {
         const rendered: any = mount(<Select {...selectProps} options={["foo"]} />);
 
         expect(rendered.find("select")).toHaveLength(1);

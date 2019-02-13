@@ -11,7 +11,7 @@ import { SortableListItem, sortingProps } from "./sorting";
 import { cloneDeep, uniqueId } from "lodash-es";
 import { updateActiveSection } from "./form-section.props";
 import FormItemCommon from "./form-item";
-import { DataOnChange } from "./form.props";
+import { DataOnChange, FormLocation } from "./form.props";
 import { reactChildrenStringSchema } from "./form-item.children.text";
 import styles from "./form-item.children.style";
 import { FormItemChildrenClassNameContract } from "../class-name-contracts/";
@@ -63,6 +63,11 @@ export interface FormItemChildrenProps extends FormItemCommon {
      * The default children to be added
      */
     defaultChildOptions?: string[];
+
+    /**
+     * The location passed
+     */
+    location?: FormLocation;
 }
 
 export enum Action {
@@ -547,11 +552,11 @@ class FormItemChildren extends FormItemBase<
             });
         }
 
-        this.props.onUpdateActiveSection(
-            "",
-            `${this.getDataLocation(component, index)}`,
-            childSchema
-        );
+        const dataLocation: string = this.getDataLocation(component, index);
+
+        this.props.location && this.props.location.onChange
+            ? this.props.location.onChange(dataLocation)
+            : this.props.onUpdateActiveSection("", dataLocation, childSchema);
     }
 
     /**
@@ -710,7 +715,7 @@ class FormItemChildren extends FormItemBase<
         currentChildren: ChildComponent[],
         item: ChildOptionItem
     ): ChildComponent[] {
-        const components: ChildComponent[] = currentChildren;
+        const components: ChildComponent[] = [].concat(currentChildren);
         components.push(this.getChildComponent(item));
 
         return components;

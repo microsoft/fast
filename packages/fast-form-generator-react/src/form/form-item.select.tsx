@@ -31,7 +31,7 @@ class FormItemSelect extends FormItemBase<
      * Renders the component
      */
     public render(): JSX.Element {
-        if (this.props.options.length === 1) {
+        if (this.props.options.length === 1 && this.props.required) {
             return null;
         }
 

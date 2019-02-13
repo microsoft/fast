@@ -85,6 +85,7 @@ class FormControl extends React.Component<FormControlProps, FormControlState> {
                 index={this.props.index}
                 label={this.props.schema.title || this.props.untitled}
                 dataLocation={this.props.dataLocation}
+                location={this.props.location}
                 data={this.props.data}
                 schema={this.props.schema}
                 onChange={this.props.onChange}
@@ -105,6 +106,7 @@ class FormControl extends React.Component<FormControlProps, FormControlState> {
                 schemaLocation={this.props.schemaLocation}
                 untitled={this.props.untitled}
                 onUpdateActiveSection={this.props.onUpdateActiveSection}
+                location={this.props.location}
                 {...this.getFormItemCommonProps()}
             />
         );
@@ -248,7 +250,7 @@ class FormControl extends React.Component<FormControlProps, FormControlState> {
         dataLocation: string
     ): void => {
         this.props.location && this.props.location.onChange
-            ? this.props.location.onChange(schemaLocation, dataLocation)
+            ? this.props.location.onChange(dataLocation)
             : this.handleUpdateSection(schemaLocation, dataLocation);
     };
 

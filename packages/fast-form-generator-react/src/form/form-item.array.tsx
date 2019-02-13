@@ -13,7 +13,6 @@ import { FormItemArrayClassNameContract } from "../class-name-contracts/";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import FormItemBase from "./form-item.base";
-import { mapSchemaLocationFromDataLocation } from "@microsoft/fast-data-utilities-react";
 
 export enum ItemConstraints {
     minItems = "minItems",
@@ -173,31 +172,12 @@ class FormItemArray extends FormItemBase<
         return (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>): void => {
             e.preventDefault();
 
-            const oneOfAnyOfRegex: RegExp = /(oneOf|anyOf)\[\d+\]/;
             const schemaLocation: string = isRootLocation(this.props.schemaLocation)
                 ? "items"
                 : `${this.props.schemaLocation}.items`;
-            let coercedSchemaLocation: string = this.props.schemaLocation;
-
-            if (this.props.schemaLocation.replace(oneOfAnyOfRegex, "") === "") {
-                coercedSchemaLocation = this.props.schemaLocation.replace(
-                    oneOfAnyOfRegex,
-                    ""
-                );
-            }
 
             if (this.props.location && this.props.location.onChange) {
-                const itemsKeyword: string =
-                    coercedSchemaLocation === "" ? "items" : ".items";
-
-                this.props.location.onChange(
-                    this.props.location.schemaLocation === ""
-                        ? `${coercedSchemaLocation}${itemsKeyword}`
-                        : `${
-                              this.props.location.schemaLocation
-                          }.${coercedSchemaLocation}${itemsKeyword}`,
-                    `${this.props.dataLocation}[${index}]`
-                );
+                this.props.location.onChange(`${this.props.dataLocation}[${index}]`);
             } else {
                 this.props.onUpdateActiveSection(
                     schemaLocation,
