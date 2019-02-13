@@ -3,13 +3,12 @@ import { fontWeight } from "../utilities/fonts";
 import outlinePattern from "../patterns/outline";
 import typographyPattern from "../patterns/typography";
 import { CSSRules } from "@microsoft/fast-jss-manager";
-import { DesignSystem } from "src/design-system";
+import { DesignSystem } from "../design-system";
 import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
 import { foregroundNormal } from "../utilities/colors";
 
 /**
  * Shared input field styles
- * @param designSystem
  */
 export function inputFieldStyles(designSystem: DesignSystem): CSSRules<{}> {
     return {
