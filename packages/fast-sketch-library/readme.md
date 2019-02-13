@@ -1,7 +1,9 @@
-# FAST sketch library
+# Sketch library
+
 `@microsoft/fast-sketch-library` is a tool for quickly extracting sketch libraries from a website. It uses [https://github.com/brainly/html-sketchapp/](https://github.com/brainly/html-sketchapp/) to create an "almost sketch" JSON file which can be loaded into sketch using the plugin provided by `html-sketchapp`.
 
 ## Usage
+
 Install the package
 `npm i -D @microsoft/fast-sketch-library`
 
@@ -29,12 +31,12 @@ extractSymbolLibrary(config).then((value) => {
 ```
 
 ### Config options
+
 `extractSymbolLibrary` expects a configuration object with the following:
 
 - *name*: `string` - the name of the sketch page
 - *pageWidth*: `number` - the width of the created sketch page
 - *pageHeight*: `number` - the width of the created sketch page
 - *sources*: `object | array` a single object or array of:
-    - *url*: `string` - the url to extract symbols from
-    - *selectors*: `string | string[]` - CSS selectors to source symbols from
-
+    -- *url*: `string` - the url to extract symbols from
+    -- *selectors*: `string | string[]` - CSS selectors to source symbols from

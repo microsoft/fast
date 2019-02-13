@@ -1,16 +1,19 @@
-# fast-tslint-rules
+# TSLINT rules
+
 This project provides [tslint](https://github.com/palantir/tslint) rules for all FAST projects.
 
 ## Usage
+
 ### Installation
+
 Install the package:
 
 ```shell
 npm i @microsoft/fast-tslint-rules
 ```
 
-
 ### Configure your tslint config
+
 Add *fast-tslint-rules* as an extension to your `tslint.json`:
 
 ```json

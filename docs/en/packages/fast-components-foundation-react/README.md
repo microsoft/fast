@@ -4,14 +4,18 @@ title: FAST Components Foundation React
 sidebar_label: Components Foundation React
 ---
 
-# FAST Components Foundation React
+# Components foundation React
+
 The foundation component for FAST component packages in React. The default export is an extension from the `React.Component` and includes additional functionality for extension by React component libraries.
 
 ## Installation
+
 `npm i --save @microsoft/fast-components-foundation-react`
 
 ## Usage
+
 ### Basic implementation
+
 ```jsx
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -27,9 +31,11 @@ export default MyComponent;
 ```
 
 ### Unhandled props
+
 A method which allows any property that has not been specified by the component extending `Foundation` to be accessed, eg. `onClick`, `aria` and datasets.
 
 Component example:
+
 ```jsx
 class MyComponent extends Foundation {
     render() {
@@ -39,16 +45,19 @@ class MyComponent extends Foundation {
 ```
 
 Component implementation:
+
 ```jsx
 <MyComponent id={"my-component"} aria-hidden={true} />
 ```
 
 Rendered result:
+
 ```html
 <div id="my-component" aria-hidden="true"></div>
 ```
 
 ### `setRef` and `getRef`
+
 The `setRef` and `getRef` use lodash's get/set API, so the provided `string` can be `my-component-element`, `my-component-element[0]` etc.
 
 ```jsx
@@ -66,9 +75,11 @@ class MyComponent extends Foundation {
 ```
 
 ### `generateClassNames`
+
 This method can be used to pass any className when it is passed.
 
 Component example:
+
 ```jsx
 class MyComponent extends Foundation {
     render() {
@@ -78,19 +89,23 @@ class MyComponent extends Foundation {
 ```
 
 Component implementation:
+
 ```jsx
 <MyComponent className={"my-class-name"} />
 ```
 
 Rendered result:
+
 ```html
 <div class="my-class-name"></div>
 ```
 
 ### `withSlot`
+
 Gets all children with the `slot` prop that matches a given string, example: `this.withSlot("after")`.
 
 Component example:
+
 ```jsx
 class MyComponent extends Foundation {
     render() {
@@ -104,6 +119,7 @@ class MyComponent extends Foundation {
 ```
 
 Component implementation:
+
 ```jsx
 <MyComponent>
     <span slot="foo">
@@ -113,6 +129,7 @@ Component implementation:
 ```
 
 Rendered result:
+
 ```html
 <div>
     <span>
@@ -122,9 +139,11 @@ Rendered result:
 ```
 
 ### `withoutSlot`
+
 Gets all children with the `slot` prop that does not match a given string, example: `this.withoutSlot("after")`.
 
 Component example:
+
 ```jsx
 class MyComponent extends Foundation {
     render() {
@@ -138,6 +157,7 @@ class MyComponent extends Foundation {
 ```
 
 Component implementation:
+
 ```jsx
 <MyComponent>
     <span slot="foo">
@@ -153,6 +173,7 @@ Component implementation:
 ```
 
 Rendered result:
+
 ```html
 <div>
     <h1>

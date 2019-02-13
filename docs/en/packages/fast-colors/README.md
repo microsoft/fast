@@ -4,7 +4,7 @@ title: FAST Colors
 sidebar_label: Colors
 ---
 
-# FAST colors
+# Colors
 
 A color utility library designed to make working with colors easier.
 
@@ -17,17 +17,17 @@ A function that converts a single color input into a range of outputs, from ligh
 
 - `color: string` - a HEX or RGB color represented as a string (eg, `"#FFF"` or `"rgb(0, 0, 0)"`)
 - `options: object`
-    - `count: number` - the number of colors to create in the count. Defaults to `7`.
-    - `paddingLight: number` - the amount to reduce the color-range of light values by. Defaults to `0.185`.
-    - `paddingDark: number` - the amount to reduce the color-range of dark values by. Defaults to `0.185`.
-    - `saturationLight: number` - the amount to adjust the saturation of light values by. Defaults to `0.35`.
-    - `saturationDark: number` - the amount to adjust the saturation of dark values by. Defaults to `1.25`.
-    - `brightnessLight: number` - the amount to adjust the brightness of light values by. Defaults to `0`.
-    - `brightnessDark: number` - the amount to adjust the brightness of dark values by. Defaults to `0`.
-    - `filterOverlayLight: number` - the amount of an overlay filter to apply to light values. Defaults to `0`.
-    - `filterOverlayDark: number` - the amount of an overlay filter to apply to dark values. Defaults to `0.25`.
-    - `filterMultiplyLight: number` - the amount of a multiply filter to apply to light values. Defaults to `0`.
-    - `filterMultiplyDark: number` - the amount of a multiply filter to apply to dark values. Defaults to `0`.
+    -- `count: number` - the number of colors to create in the count. Defaults to `7`.
+    -- `paddingLight: number` - the amount to reduce the color-range of light values by. Defaults to `0.185`.
+    -- `paddingDark: number` - the amount to reduce the color-range of dark values by. Defaults to `0.185`.
+    -- `saturationLight: number` - the amount to adjust the saturation of light values by. Defaults to `0.35`.
+    -- `saturationDark: number` - the amount to adjust the saturation of dark values by. Defaults to `1.25`.
+    -- `brightnessLight: number` - the amount to adjust the brightness of light values by. Defaults to `0`.
+    -- `brightnessDark: number` - the amount to adjust the brightness of dark values by. Defaults to `0`.
+    -- `filterOverlayLight: number` - the amount of an overlay filter to apply to light values. Defaults to `0`.
+    -- `filterOverlayDark: number` - the amount of an overlay filter to apply to dark values. Defaults to `0.25`.
+    -- `filterMultiplyLight: number` - the amount of a multiply filter to apply to light values. Defaults to `0`.
+    -- `filterMultiplyDark: number` - the amount of a multiply filter to apply to dark values. Defaults to `0`.
 
 ### Usage
 

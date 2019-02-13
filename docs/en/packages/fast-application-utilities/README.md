@@ -4,7 +4,8 @@ title: FAST Application Utilities
 sidebar_label: Application Utilities
 ---
 
-# FAST application utilities
+# Application utilities
+
 **FAST application utilities has been deprecated. Use [FAST web utilities](https://www.npmjs.com/package/@microsoft/fast-web-utilities) instead.**
 
 A list of utilities used by FAST applications.

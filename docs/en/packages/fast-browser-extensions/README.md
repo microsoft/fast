@@ -5,7 +5,7 @@ sidebar_label: Browser Extensions
 ---
 
 
-# FAST browser extension
+# Browser extensions
 
 A Chrome extension for testing real-world localization, theming, and other production type scenarios in web development.
 

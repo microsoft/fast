@@ -4,13 +4,16 @@ title: FAST Components React Msft
 sidebar_label: Components React Msft
 ---
 
-# FAST Components React Microsoft
+# Components React MSFT
+
 A set of React components which implements the Microsoft styling.
 
 ## Installation
+
 `npm i --save @microsoft/fast-components-react-msft`
 
 ## Usage
+
 An example of using one of the components from the `@microsoft/fast-components-react-msft` package:
 
 ```tsx
@@ -35,4 +38,5 @@ render();
 ```
 
 ## Documentation site
+
 [FAST Components React Microsoft](https://msft-docs.azurewebsites.net/)

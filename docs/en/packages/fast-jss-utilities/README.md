@@ -4,15 +4,18 @@ title: FAST Jss Utilities
 sidebar_label: Jss Utilities
 ---
 
-# FAST - JSS Utilities
+# JSS utilities
+
 This package is a collection of utilities intended to be used with JSS (JavaScript Style Sheets) projects.
 
 ## Installation
+
 `npm i --save @microsoft/fast-jss-utilities`
 
 ## Usage
 
 ### Direction
+
 The `Direction` is an enum which can be either ltr or rtl.
 
 ```ts
@@ -22,6 +25,7 @@ const direction = Direction.ltr;
 ```
 
 ### localizeSpacing
+
 The `localizeSpacing` function should be used in conjuction with `Direction` to switch the spacing on a padding or margin.
 
 ```ts
@@ -35,9 +39,10 @@ const styles = {
 ```
 
 ### applyFocusVisible
+
 `applyFocusVisible` accepts style(s) and an optional selector string. `applyFocusVisible` automatically removes user-agent focus outlines by setting `outline: "none"`.
 
-This function implements the utility for all focus states, if you want to enable focus-visible support you should implement the focus-visible polyfill[focus-visible polyfill](https://www.npmjs.com/package/focus-visible). Styles that are given will be returned with a focus selector that is based on whether focus-visible is supported natively by the browser, if focus-visible is not supported we apply selectors that mimic polyfill's behavior. If a selector has been passed, this will be added to the focus selector string for the styles. If you are padding a selector be sure to include a space before the selector so it appends properly.
+This function implements the utility for all focus states, if you want to enable focus-visible support you should implement the [focus-visible polyfill](https://www.npmjs.com/package/focus-visible). Styles that are given will be returned with a focus selector that is based on whether focus-visible is supported natively by the browser, if focus-visible is not supported we apply selectors that mimic polyfill's behavior. If a selector has been passed, this will be added to the focus selector string for the styles. If you are padding a selector be sure to include a space before the selector so it appends properly.
 
 ```js
 import { applyFocusVisible } from "@microsoft/fast-components-styles-msft";
@@ -72,6 +77,7 @@ const styles = {
 ```
 
 ### applyLocalizedProperty
+
 The `applyLocalizedProperty` function will swap the strings for the property based on the `Direction`.
 
 ```ts
@@ -85,6 +91,7 @@ const styles = {
 ```
 
 ### toPx
+
 The `toPx` function transforms a number to a string appended with `px`.
 
 ```ts
@@ -98,6 +105,7 @@ const styles = {
 ```
 
 ### applyMaxLines
+
 The `applyMaxLines` function is used whenever there is a limit on the number of lines shown. It takes two parameters, the number of lines and the line-height in px.
 
 ```ts
@@ -111,6 +119,7 @@ const styles = {
 ```
 
 ### applyScreenReader
+
 The `applyScreenReader` function should be used whenever there is an item that is hidden from a sighted user but visible to screen readers.
 
 ```ts
@@ -124,6 +133,7 @@ const styles = {
 ```
 
 ### ellipsis
+
 The `ellipsis` function will create the standard CSS needed to give an element with text an ellipsis.
 
 ```ts
@@ -137,6 +147,7 @@ const styles = {
 ```
 
 ### applyAcrylic
+
 The `applyAcrylic` function can be used to create a partially transparent texture for the background of a specific element.
 
 ```ts
@@ -157,6 +168,7 @@ const styles = {
 ```
 
 ### withDefaults
+
 The `withDefaults` function can be used to ensure that all properties of a given object are assigned values.
 
 ```ts
