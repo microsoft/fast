@@ -9,6 +9,10 @@
             "title": "Placeholder",
             "type": "string"
         },
+        "name": {
+            "title": "Name",
+            "type": "string"
+        },
         "form": {
             "title": "Form",
             "type": "string"
@@ -19,6 +23,10 @@
         },
         "isMenuOpen": {
             "title": "IsMenuOpen",
+            "type": "boolean"
+        },
+        "required": {
+            "title": "Required",
             "type": "boolean"
         },
         "multiselectable": {

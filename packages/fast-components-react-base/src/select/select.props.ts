@@ -20,15 +20,8 @@ export interface SelectHandledProps extends SelectManagedClasses {
     contentDisplayRenderFunction?: (
         selectedItems: ListboxItemProps[],
         value: string,
-        displayString: string
-    ) => React.ReactNode;
-
-    /**
-     * Function which renders the menu display of the control
-     */
-    menuRenderFunction?: (
-        selectedItems: ListboxItemProps[],
-        children: React.ReactNode
+        displayString: string,
+        props: SelectProps
     ) => React.ReactNode;
 
     /**
@@ -52,12 +45,12 @@ export interface SelectHandledProps extends SelectManagedClasses {
     /**
      * Selected option id's (controlled mode)
      */
-    selectedItems?: string[];
+    selectedItems?: string[] | ListboxItemProps[];
 
     /**
      * Id's that are initially selected
      */
-    defaultSelection?: string[];
+    defaultSelection?: string[] | ListboxItemProps[];
 
     /**
      * Specifies that the drop-down list is open
@@ -95,7 +88,7 @@ export interface SelectHandledProps extends SelectManagedClasses {
     required?: boolean;
 
     /**
-     * The onValueChange event handler (note: using "onChange" at the event name caused type conflict issues)
+     * The onValueChange event handler
      */
     onValueChange?: (
         newValue: string,
@@ -108,6 +101,12 @@ export interface SelectHandledProps extends SelectManagedClasses {
      * (multi-select only)
      */
     autoFocus?: boolean;
+
+    /**
+     * The aria-labelledby attribute to link the select to an existing
+     * element that provides it an accessible name
+     */
+    labelledBy?: string;
 }
 
 export type SelectProps = SelectHandledProps & SelectUnhandledProps;

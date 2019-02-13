@@ -25,7 +25,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         placeholder: "",
     };
 
-    public static idPropertyKey: string = "id";
+    private static idPropertyKey: string = "id";
 
     /**
      * Handled props instantiation
@@ -34,9 +34,9 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         isMenuOpen: void 0,
         disabled: void 0,
         form: void 0,
+        labelledBy: void 0,
         multiselectable: void 0,
         contentDisplayRenderFunction: void 0,
-        menuRenderFunction: void 0,
         dataValueFormatterFunction: void 0,
         required: void 0,
         managedClasses: void 0,
@@ -57,19 +57,11 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     constructor(props: SelectProps) {
         super(props);
 
-        let shouldMenuBeOpen: boolean = false;
-
-        if (this.props.isMenuOpen !== undefined) {
-            shouldMenuBeOpen = this.props.isMenuOpen;
-        } else if (this.props.multiselectable === true) {
-            shouldMenuBeOpen = true;
-        }
-
         this.state = {
             selectedItems: [],
             value: "",
             displayString: "",
-            isMenuOpen: shouldMenuBeOpen,
+            isMenuOpen: false,
         };
     }
 
@@ -89,6 +81,9 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 this.updateSelection([this.state.selectedItems[0]]);
             }
             this.toggleMenu(this.props.multiselectable);
+        }
+        if (prevProps.isMenuOpen !== this.props.isMenuOpen) {
+            this.toggleMenu(this.props.multiselectable ? true : false);
         }
     }
 
@@ -111,6 +106,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         }
 
         this.updateSelection(initialSelection);
+        this.toggleMenu(this.props.multiselectable ? true : false);
     }
 
     /**
@@ -121,7 +117,6 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
             <div
                 {...this.unhandledProps()}
                 ref={this.rootElement}
-                aria-disabled={this.props.disabled || false}
                 className={this.generateClassNames()}
                 onKeyDown={this.handleKeydown}
                 onClick={this.selectClicked}
@@ -150,16 +145,33 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     }
 
     /**
+     * Determine menu state based on props
+     */
+    private checkPropsForMenuState = (): boolean => {
+        let shouldMenuBeOpen: boolean = false;
+
+        if (this.props.isMenuOpen !== undefined) {
+            shouldMenuBeOpen = this.props.isMenuOpen;
+        } else if (this.props.multiselectable === true) {
+            shouldMenuBeOpen = true;
+        }
+
+        return shouldMenuBeOpen;
+    };
+
+    /**
      * Renders a hidden select element which can interact with a
      * form hosting this component
      */
     private renderHiddenSelectElement(): React.ReactNode {
         return (
             <select
-                name={this.props.name}
-                form={this.props.form}
+                required={this.props.required || null}
+                name={this.props.name || null}
+                form={this.props.form || null}
                 value={this.state.value}
-                multiple={this.props.multiselectable}
+                multiple={this.props.multiselectable || null}
+                disabled={this.props.disabled || null}
                 style={{
                     display: "none",
                 }}
@@ -172,20 +184,19 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
      * and invokes it
      */
     private renderContentDisplay(): React.ReactNode {
-        if (this.props.multiselectable) {
-            return null;
-        }
         if (this.props.contentDisplayRenderFunction !== undefined) {
             return this.props.contentDisplayRenderFunction(
                 this.state.selectedItems,
                 this.state.value,
-                this.state.displayString
+                this.state.displayString,
+                this.props
             );
         } else {
             return this.defaultDisplayRenderFunction(
                 this.state.selectedItems,
                 this.state.value,
-                this.state.displayString
+                this.state.displayString,
+                this.props
             );
         }
     }
@@ -194,15 +205,11 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
      * Deternmines which function to use to render the menu and invokes it
      */
     private renderMenu(): React.ReactNode {
-        let shouldAutofocus: boolean = this.props.autoFocus;
-        if (shouldAutofocus === undefined) {
-            shouldAutofocus = this.props.multiselectable ? false : true;
-        }
-
         if (this.state.isMenuOpen) {
             return (
                 <Listbox
-                    autoFocus={shouldAutofocus}
+                    labelledBy={this.getListboxLabelledBy()}
+                    autoFocus={this.shouldAutoFocusListbox()}
                     multiselectable={this.props.multiselectable}
                     defaultSelection={this.state.selectedItems}
                     selectedItems={this.props.selectedItems}
@@ -213,6 +220,27 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
             );
         }
     }
+
+    /**
+     * Determines desired value of listbox labelledBy prop
+     */
+    private getListboxLabelledBy = (): string => {
+        if (this.props.labelledBy !== undefined && this.props.multiselectable) {
+            return this.props.labelledBy;
+        }
+        return null;
+    };
+
+    /**
+     * Determines desired value of listbox autofocus prop
+     */
+    private shouldAutoFocusListbox = (): boolean => {
+        let shouldAutofocus: boolean = this.props.autoFocus;
+        if (shouldAutofocus === undefined) {
+            shouldAutofocus = this.props.multiselectable ? false : true;
+        }
+        return shouldAutofocus;
+    };
 
     /**
      * Updates selection state and associated values
@@ -236,9 +264,22 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     private defaultDisplayRenderFunction = (
         selectedOptions: ListboxItemProps[],
         formattedValue: string,
-        formattedDisplayString: string
+        formattedDisplayString: string,
+        props: SelectProps
     ): React.ReactNode => {
-        return <Button>{formattedDisplayString}</Button>;
+        if (props.multiselectable) {
+            return null;
+        }
+        return (
+            <Button
+                disabled={props.disabled}
+                aria-labelledby={props.labelledBy || null}
+                aria-haspopup={true}
+                aria-expanded={this.state.isMenuOpen}
+            >
+                {formattedDisplayString}
+            </Button>
+        );
     };
 
     /**
@@ -293,8 +334,8 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     /**
      * Handles clicks
      */
-    private selectClicked = (event: React.MouseEvent): void => {
-        if (this.props.disabled || event.defaultPrevented) {
+    private selectClicked = (e: React.MouseEvent): void => {
+        if (this.props.disabled || e.defaultPrevented) {
             return;
         }
         this.state.isMenuOpen ? this.toggleMenu(false) : this.toggleMenu(true);
@@ -304,7 +345,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
      * Handles key events
      */
     private handleKeydown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
-        if (e.defaultPrevented) {
+        if (this.props.disabled || e.defaultPrevented) {
             return;
         }
         switch (e.keyCode) {
