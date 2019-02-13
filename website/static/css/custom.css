@@ -324,10 +324,8 @@ a:focus {
 }
 
 .toc .toggleNav ul li a {
-    color: #eee;
-    padding: 0;
-    line-height: 32px;
-    padding: 0 0 0 16px;
+    line-height: 20px;
+    padding: 6px 0 6px 16px;
     outline: none;
     border-radius: 2px;
     cursor: default;
