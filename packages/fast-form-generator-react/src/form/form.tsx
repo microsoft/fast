@@ -273,7 +273,6 @@ class Form extends React.Component<
                 dataLocation={this.state.activeDataLocation}
                 untitled={this.untitled}
                 childOptions={this.props.childOptions}
-                location={this.props.location}
                 componentMappingToPropertyNames={
                     this.props.componentMappingToPropertyNames
                 }
@@ -358,20 +357,24 @@ class Form extends React.Component<
         dataLocation: string,
         schema: any
     ): void => {
-        const state: Partial<FormState> = getActiveComponentAndSection(
-            schemaLocation,
-            dataLocation,
-            schema
-        );
+        if (this.props.location && this.props.location.onChange) {
+            this.props.location.onChange(dataLocation);
+        } else {
+            const state: Partial<FormState> = getActiveComponentAndSection(
+                schemaLocation,
+                dataLocation,
+                schema
+            );
 
-        state.navigation = getNavigation(
-            dataLocation || "",
-            this.props.data,
-            this.props.schema,
-            this.props.childOptions
-        );
+            state.navigation = getNavigation(
+                dataLocation || "",
+                this.props.data,
+                this.props.schema,
+                this.props.childOptions
+            );
 
-        this.setState(state as FormState);
+            this.setState(state as FormState);
+        }
     };
 }
 

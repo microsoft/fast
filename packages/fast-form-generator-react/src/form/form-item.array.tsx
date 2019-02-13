@@ -5,7 +5,6 @@ import { SortableConfig, SortableListItem, sortingProps } from "./sorting";
 import FormItemCommon from "./form-item";
 import { updateActiveSection } from "./form-section.props";
 import { generateExampleData } from "./form-section.utilities";
-import { FormLocation } from "./form.props";
 import { isRootLocation } from "./form.utilities";
 import { getArrayLinks } from "./form-item.array.utilities";
 import styles from "./form-item.array.style";
@@ -49,11 +48,6 @@ export interface FormItemArrayProps extends FormItemCommon {
      * The callback to update a different active section and/or component
      */
     onUpdateActiveSection: updateActiveSection;
-
-    /**
-     * The location passed
-     */
-    location?: FormLocation;
 }
 
 /**
@@ -176,15 +170,11 @@ class FormItemArray extends FormItemBase<
                 ? "items"
                 : `${this.props.schemaLocation}.items`;
 
-            if (this.props.location && this.props.location.onChange) {
-                this.props.location.onChange(`${this.props.dataLocation}[${index}]`);
-            } else {
-                this.props.onUpdateActiveSection(
-                    schemaLocation,
-                    `${this.props.dataLocation}[${index}]`,
-                    this.props.schema
-                );
-            }
+            this.props.onUpdateActiveSection(
+                schemaLocation,
+                `${this.props.dataLocation}[${index}]`,
+                this.props.schema
+            );
         };
     };
 

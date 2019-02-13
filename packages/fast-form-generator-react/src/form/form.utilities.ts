@@ -1,6 +1,5 @@
 import * as React from "react";
-import { clone, cloneDeep, get, isEqual, isPlainObject, mergeWith, set } from "lodash-es";
-import * as tv4 from "tv4";
+import { cloneDeep, get, mergeWith } from "lodash-es";
 import {
     ChildOptionItem,
     getChildOptionBySchemaId,

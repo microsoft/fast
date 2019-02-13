@@ -1,5 +1,4 @@
 import * as React from "react";
-import FormItemCommon from "./form-item";
 import styles from "./form-category.style";
 import { FormCategoryClassNameContract } from "../class-name-contracts/";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";

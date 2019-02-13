@@ -554,9 +554,7 @@ class FormItemChildren extends FormItemBase<
 
         const dataLocation: string = this.getDataLocation(component, index);
 
-        this.props.location && this.props.location.onChange
-            ? this.props.location.onChange(dataLocation)
-            : this.props.onUpdateActiveSection("", dataLocation, childSchema);
+        this.props.onUpdateActiveSection("", dataLocation, childSchema);
     }
 
     /**

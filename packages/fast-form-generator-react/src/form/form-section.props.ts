@@ -93,11 +93,6 @@ export interface FormSectionProps {
     untitled: string;
 
     /**
-     * The custom passed location of a subsection to initially activate
-     */
-    location?: FormLocation;
-
-    /**
      * The configuration to map property names to custom controls
      */
     componentMappingToPropertyNames?: FormComponentMappingToPropertyNamesProps;

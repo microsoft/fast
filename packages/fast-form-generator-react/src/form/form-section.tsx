@@ -119,7 +119,6 @@ class FormSection extends React.Component<
                 dataLocation={dataLocation}
                 schemaLocation={schemaLocation}
                 childOptions={this.props.childOptions}
-                location={this.props.location}
                 propertyName={propertyName}
                 schema={schema}
                 onChange={this.props.onChange}
