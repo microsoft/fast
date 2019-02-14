@@ -28,13 +28,7 @@ function renderPivotContent(
     pivotContent: string
 ): (className?: string) => React.ReactNode {
     return (className?: string): React.ReactNode => (
-        <div className={className}>
-            {pivotContent} adding a nunch more content here to see how this is all fitting
-            adding a nunch more content here to see how this is all fitting adding a nunch
-            more content here to see how this is all fitting adding a nunch more content
-            here to see how this is all fitting adding a nunch more content here to see
-            how this is all fitting
-        </div>
+        <div className={className}>{pivotContent}</div>
     );
 }
 

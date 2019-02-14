@@ -156,7 +156,6 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
         if (mytabs.length > 0) {
             this.setState({ focused: true });
         }
-        //this.setState({ focused: true });
     };
 
     /**

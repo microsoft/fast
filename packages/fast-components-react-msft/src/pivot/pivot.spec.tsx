@@ -76,7 +76,7 @@ describe("pivot", (): void => {
         ).toContain("translateX(50px)");
     });
 
-    test("should render with focus class if focus is true", () => {
+    test("should render active indicator with focus class if focus is true", () => {
         const rendered: any = mount(
             <MSFTPivot managedClasses={managedClasses} label="label for testing" />
         );
@@ -98,34 +98,34 @@ describe("pivot", (): void => {
         );
     });
 
-    function renderTab(tabTitle: string, className?: string): () => React.ReactNode {
-        return (): React.ReactNode => <div className={className}>{tabTitle}</div>;
+    function renderPivot(pivotTitle: string, className?: string): () => React.ReactNode {
+        return (): React.ReactNode => <div className={className}>{pivotTitle}</div>;
     }
 
-    function renderTabContent(
-        tabContent: string,
+    function renderPivotContent(
+        pivotContent: string,
         className?: string
     ): () => React.ReactNode {
-        return (): React.ReactNode => <div className={className}>{tabContent}</div>;
+        return (): React.ReactNode => <div className={className}>{pivotContent}</div>;
     }
-    const tabItem1: TabsItem = {
-        tab: renderTab("tab one"),
-        content: renderTabContent("tab one content"),
+    const pivotItem1: TabsItem = {
+        tab: renderPivot("pivot one"),
+        content: renderPivotContent("pivot one content"),
         id: id0,
     };
 
-    const tabItem2: TabsItem = {
-        tab: renderTab("tab two"),
-        content: renderTabContent("tab two content"),
+    const pivotItem2: TabsItem = {
+        tab: renderPivot("pivot two"),
+        content: renderPivotContent("pivot two content"),
         id: id1,
     };
 
-    const tabItem3: TabsItem = {
-        tab: renderTab("tab three"),
-        content: renderTabContent("tab three content"),
+    const pivotItem3: TabsItem = {
+        tab: renderPivot("pivot three"),
+        content: renderPivotContent("pivot three content"),
         id: id2,
     };
-    const detailTabItemData: TabsItem[] = [tabItem1, tabItem2, tabItem3];
+    const detailPivotItemData: TabsItem[] = [pivotItem1, pivotItem2, pivotItem3];
 
     test("should correctly set active ID", () => {
         const renderedWithChildren: any = mount(
@@ -133,7 +133,7 @@ describe("pivot", (): void => {
                 managedClasses={managedClasses}
                 label={"items"}
                 activeId={id1}
-                items={detailTabItemData}
+                items={detailPivotItemData}
             />
         );
 
@@ -145,13 +145,13 @@ describe("pivot", (): void => {
         ).toEqual(0);
     });
 
-    test("should correctly set tab class", () => {
+    test("should correctly set pivot item class", () => {
         const renderedWithChildren: any = mount(
             <MSFTPivot
                 managedClasses={managedClasses}
                 label={"items"}
                 activeId={id1}
-                items={detailTabItemData}
+                items={detailPivotItemData}
             />
         );
 
@@ -164,13 +164,13 @@ describe("pivot", (): void => {
         ).toContain(`${managedClasses.pivot_item}`);
     });
 
-    test("should correctly set tabPanel class", () => {
+    test("should correctly set pivot tabPanel class", () => {
         const renderedWithChildren: any = mount(
             <MSFTPivot
                 managedClasses={managedClasses}
                 label={"items"}
                 activeId={id1}
-                items={detailTabItemData}
+                items={detailPivotItemData}
             />
         );
 

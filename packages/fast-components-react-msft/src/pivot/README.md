@@ -1,5 +1,5 @@
 # Pivot
-Use *pivot* when there is a paged interface where one controlling tab element corresponds to one tab panel.
+Use *pivot* when there is a paged interface where one controlling tpivot element corresponds to one pivot panel.
 
 ## Usage
 The *pivot* component can be passed a collection of *tabitems* via the `items` prop. The `items` prop expects an array of the interface `Item`. `Item` consists of `tab`, `content` and `id`. `tab` and `content` will render a ReactNode and `id` is a string that represents its unique identifier.
