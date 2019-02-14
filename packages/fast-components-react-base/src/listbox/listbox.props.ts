@@ -43,6 +43,16 @@ export interface ListboxHandledProps extends ListboxManagedClasses {
      * The  onSelectedItemsChanged event handler
      */
     onSelectedItemsChanged?: (selectedItems: ListboxItemProps[]) => void;
+
+    /**
+     * Whether a listitem should automatically get focus when this component is mounted
+     */
+    autoFocus?: boolean;
+
+    /**
+     * Specifies that the control is disabled
+     */
+    disabled?: boolean;
 }
 
 export type ListboxProps = ListboxHandledProps & ListboxUnhandledProps;

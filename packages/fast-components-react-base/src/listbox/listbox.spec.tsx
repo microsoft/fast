@@ -48,15 +48,39 @@ describe("listbox", (): void => {
         expect(rendered.state("focusIndex")).toBe(-1);
     });
 
-    test("should set focusIndex to the first focusable element on mount", (): void => {
+    test("should set focusIndex to the first focusable element on mount but not set focus to it", (): void => {
         const rendered: any = mount(
             <Listbox>
                 <div>not a focusable element</div>
                 {itemA}
-            </Listbox>
+            </Listbox>,
+            { attachTo: document.body }
         );
 
         expect(rendered.state("focusIndex")).toBe(1);
+        expect(document.activeElement.id).toBe("");
+    });
+
+    test("should set focus to listitem when autofocus is set to true", (): void => {
+        const rendered: any = mount(
+            <Listbox autoFocus={true}>
+                <div>not a focusable element</div>
+                {itemA}
+            </Listbox>,
+            { attachTo: document.body }
+        );
+
+        expect(rendered.state("focusIndex")).toBe(1);
+        expect(document.activeElement.id).toBe("a");
+    });
+
+    test("should not set focus to listitem when disabled", (): void => {
+        const rendered: any = mount(<Listbox disabled={true}>{itemA}</Listbox>, {
+            attachTo: document.body,
+        });
+
+        expect(rendered.state("focusIndex")).toBe(-1);
+        expect(document.activeElement.id).toBe("");
     });
 
     test("should not throw with a single focusable child in single select mode", (): void => {
@@ -360,8 +384,8 @@ describe("listbox", (): void => {
             .childAt(0)
             .simulate("keydown", { keyCode: KeyCodes.arrowUp, shiftKey: true });
         expect(rendered.state("selectedItems").length).toBe(2);
-        expect(rendered.state("selectedItems")[0].id).toBe("a");
-        expect(rendered.state("selectedItems")[1].id).toBe("b");
+        expect(rendered.state("selectedItems")[0].id).toBe("b");
+        expect(rendered.state("selectedItems")[1].id).toBe("a");
         element = document.getElementById("a");
         expect(element.getAttribute("aria-selected")).toBe("true");
         element = document.getElementById("b");
@@ -464,8 +488,8 @@ describe("listbox", (): void => {
             .childAt(0)
             .simulate("click", { ctrlKey: true });
         expect(rendered.state("selectedItems").length).toBe(2);
-        expect(rendered.state("selectedItems")[0].id).toBe("a");
-        expect(rendered.state("selectedItems")[1].id).toBe("b");
+        expect(rendered.state("selectedItems")[0].id).toBe("b");
+        expect(rendered.state("selectedItems")[1].id).toBe("a");
         element = document.getElementById("a");
         expect(element.getAttribute("aria-selected")).toBe("true");
         element = document.getElementById("b");
