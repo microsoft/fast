@@ -162,13 +162,16 @@ export function getNavigation(
             }
         } else {
             const isRoot: boolean = isRootLocation(lastComponentDataLocation);
+            const rootLocationOfComponent: string = isRoot
+                ? ""
+                : lastComponentDataLocation.replace(dataLocationItem, "");
             const dataLocationFromLastComponent: string = getCurrentComponentDataLocation(
                 dataLocationItem,
                 lastComponentDataLocation
             );
             let currentSchemaLocation: string = mapSchemaLocationFromDataLocation(
                 isRoot ? dataLocationItem : dataLocationFromLastComponent,
-                isRoot ? data : get(data, dataLocationItem),
+                isRoot ? data : get(data, rootLocationOfComponent),
                 currentComponentSchema
             );
             const currentSchemaLocationSegments: string[] = currentSchemaLocation.split(
