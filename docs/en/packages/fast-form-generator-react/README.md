@@ -111,6 +111,29 @@ import { Button, ButtonSchema } from "@microsoft/fast-components-react-msft";
 />
 ```
 
+**location** - The location prop allows the user to control which piece of JSON schema the form is pointing to and has two required properties. It takes `dataLocation` which is the location of the data to be edited, and `onChange` which will fire an update when the user performs an action on the form that would change the visible data to be edited. An example of this would be clicking on an array item to edit that item.
+
+```jsx
+import Form from "@microsoft/fast-form-generator-react";
+
+<Form
+    data={this.state.currentComponentData}
+    schema={currentComponentSchema}
+    onChange={handleChange}
+    location={{
+        dataLocation: this.state.dataLocation,
+        onChange: this.handleChange
+    }}
+/>
+
+// example method to use for the location onChange
+handleChange = (dataLocation) => {
+    this.setState({
+        dataLocation: dataLocation
+    });
+}
+```
+
 **componentMappingToPropertyNames** - There are special components that can be mapped to property names so that they are used. An example would be `alignHorizontal` which when mapped will show alignment controls instead of a select dropdown. You can map them to one or more different property names so if your component has a property `alignHorizontalSpacingForTitle` and `alignHorizontalSpacingForImage`:
 
 ```jsx
@@ -129,7 +152,7 @@ import Form from "@microsoft/fast-form-generator-react";
 />
 ```
 
-Each special component is listed in the form component [README.md](./src/form/README.md)
+[//]: <> (todo: Include resolution for https://github.com/Microsoft/fast-dna/issues/1384)
 
 **attributeSettingsMappingToPropertyNames** - The attributes of a form item can be mapped to by this prop. An example of updating the textarea row to be 1 when the property name is `text`:
 

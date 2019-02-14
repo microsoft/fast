@@ -146,7 +146,7 @@ import Form from "@microsoft/fast-form-generator-react";
 />
 ```
 
-Each special component is listed in the form component [README.md](./src/form/README.md)
+[//]: <> (todo: Include resolution for https://github.com/Microsoft/fast-dna/issues/1384)
 
 **attributeSettingsMappingToPropertyNames** - The attributes of a form item can be mapped to by this prop. An example of updating the textarea row to be 1 when the property name is `text`:
 
