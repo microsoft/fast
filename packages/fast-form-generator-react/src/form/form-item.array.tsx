@@ -5,7 +5,6 @@ import { SortableConfig, SortableListItem, sortingProps } from "./sorting";
 import FormItemCommon from "./form-item";
 import { updateActiveSection } from "./form-section.props";
 import { generateExampleData } from "./form-section.utilities";
-import { FormLocation } from "./form.props";
 import { isRootLocation } from "./form.utilities";
 import { getArrayLinks } from "./form-item.array.utilities";
 import styles from "./form-item.array.style";
@@ -13,7 +12,6 @@ import { FormItemArrayClassNameContract } from "../class-name-contracts/";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import FormItemBase from "./form-item.base";
-import { mapSchemaLocationFromDataLocation } from "@microsoft/fast-data-utilities-react";
 
 export enum ItemConstraints {
     minItems = "minItems",
@@ -50,11 +48,6 @@ export interface FormItemArrayProps extends FormItemCommon {
      * The callback to update a different active section and/or component
      */
     onUpdateActiveSection: updateActiveSection;
-
-    /**
-     * The location passed
-     */
-    location?: FormLocation;
 }
 
 /**
@@ -173,38 +166,15 @@ class FormItemArray extends FormItemBase<
         return (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>): void => {
             e.preventDefault();
 
-            const oneOfAnyOfRegex: RegExp = /(oneOf|anyOf)\[\d+\]/;
             const schemaLocation: string = isRootLocation(this.props.schemaLocation)
                 ? "items"
                 : `${this.props.schemaLocation}.items`;
-            let coercedSchemaLocation: string = this.props.schemaLocation;
 
-            if (this.props.schemaLocation.replace(oneOfAnyOfRegex, "") === "") {
-                coercedSchemaLocation = this.props.schemaLocation.replace(
-                    oneOfAnyOfRegex,
-                    ""
-                );
-            }
-
-            if (this.props.location && this.props.location.onChange) {
-                const itemsKeyword: string =
-                    coercedSchemaLocation === "" ? "items" : ".items";
-
-                this.props.location.onChange(
-                    this.props.location.schemaLocation === ""
-                        ? `${coercedSchemaLocation}${itemsKeyword}`
-                        : `${
-                              this.props.location.schemaLocation
-                          }.${coercedSchemaLocation}${itemsKeyword}`,
-                    `${this.props.dataLocation}[${index}]`
-                );
-            } else {
-                this.props.onUpdateActiveSection(
-                    schemaLocation,
-                    `${this.props.dataLocation}[${index}]`,
-                    this.props.schema
-                );
-            }
+            this.props.onUpdateActiveSection(
+                schemaLocation,
+                `${this.props.dataLocation}[${index}]`,
+                this.props.schema
+            );
         };
     };
 

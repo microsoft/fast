@@ -9,7 +9,12 @@ import FormItemTheme from "./form-item.theme";
  * Schema form component definition
  * @extends React.Component
  */
-class FormItem extends React.Component<FormItemComponentMappingToProperyNamesProps, {}> {
+class FormItemMapping extends React.Component<
+    FormItemComponentMappingToProperyNamesProps,
+    {}
+> {
+    public static displayName: string = "FormItemMapping";
+
     public render(): JSX.Element {
         return <div>{this.renderCustomLayout()}</div>;
     }
@@ -30,4 +35,4 @@ class FormItem extends React.Component<FormItemComponentMappingToProperyNamesPro
     }
 }
 
-export default FormItem;
+export default FormItemMapping;

@@ -22,6 +22,8 @@ class FormItemFileUpload extends React.Component<
     FormItemComponentMappingToProperyNamesProps,
     FormItemFileUploadState
 > {
+    public static displayName: string = "FormItemFileUpload";
+
     /**
      * The id of the file input
      */

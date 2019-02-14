@@ -21,9 +21,10 @@ import {
 import { TextareaAttributeSettingsMappingToPropertyNames } from "./form.props";
 import FormOneOfAnyOf from "./form-one-of-any-of";
 import FormItemCommon, { mappingName } from "./form-item";
-import { uniqueId } from "lodash-es";
 
 class FormControl extends React.Component<FormControlProps, FormControlState> {
+    public static displayName: string = "FormControl";
+
     constructor(props: FormControlProps) {
         super(props);
 
@@ -247,9 +248,7 @@ class FormControl extends React.Component<FormControlProps, FormControlState> {
         schemaLocation: string,
         dataLocation: string
     ): void => {
-        this.props.location && this.props.location.onChange
-            ? this.props.location.onChange(schemaLocation, dataLocation)
-            : this.handleUpdateSection(schemaLocation, dataLocation);
+        this.handleUpdateSection(schemaLocation, dataLocation);
     };
 
     /**

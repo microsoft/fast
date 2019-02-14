@@ -1,5 +1,4 @@
 import * as React from "react";
-import FormItemCommon from "./form-item";
 import styles from "./form-category.style";
 import { FormCategoryClassNameContract } from "../class-name-contracts/";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
@@ -38,6 +37,8 @@ class FormCategory extends React.Component<
     FormCategoryProps & ManagedClasses<FormCategoryClassNameContract>,
     FormCategoryState
 > {
+    public static displayName: string = "FormCategory";
+
     constructor(
         props: FormCategoryProps & ManagedClasses<FormCategoryClassNameContract>
     ) {

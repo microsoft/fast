@@ -37,6 +37,8 @@ class FormSection extends React.Component<
     FormSectionProps & ManagedClasses<FormSectionClassNameContract>,
     FormSectionState
 > {
+    public static displayName: string = "FormSection";
+
     constructor(props: FormSectionProps & ManagedClasses<FormSectionClassNameContract>) {
         super(props);
 
@@ -119,7 +121,6 @@ class FormSection extends React.Component<
                 dataLocation={dataLocation}
                 schemaLocation={schemaLocation}
                 childOptions={this.props.childOptions}
-                location={this.props.location}
                 propertyName={propertyName}
                 schema={schema}
                 onChange={this.props.onChange}

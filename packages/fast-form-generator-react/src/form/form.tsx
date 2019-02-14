@@ -1,6 +1,11 @@
+import { ChildComponent } from "./form-item.children";
 import FormSection from "./form-section";
-import * as React from "react";
-import { BreadcrumbItemEventHandler, FormProps, FormState } from "./form.props";
+import {
+    BreadcrumbItemEventHandler,
+    FormLocation,
+    FormProps,
+    FormState,
+} from "./form.props";
 import {
     BreadcrumbItem,
     getActiveComponentAndSection,
@@ -11,9 +16,10 @@ import {
     NavigationItem,
 } from "./form.utilities";
 import { cloneDeep, get, set, unset } from "lodash-es";
-import { ChildComponent } from "./form-item.children";
+import * as React from "react";
 import styles from "./form.style";
 import { FormClassNameContract } from "../class-name-contracts/";
+import { mapSchemaLocationFromDataLocation } from "@microsoft/fast-data-utilities-react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 
@@ -25,6 +31,8 @@ class Form extends React.Component<
     FormProps & ManagedClasses<FormClassNameContract>,
     FormState
 > {
+    public static displayName: string = "Form";
+
     /**
      * The default untitled string
      */
@@ -39,8 +47,10 @@ class Form extends React.Component<
             titleProps:
                 props.schema && props.schema.title ? props.schema.title : this.untitled,
             schema: this.props.schema,
-            activeSchemaLocation: "",
-            activeDataLocation: "",
+            activeDataLocation:
+                props.location && typeof props.location === "string"
+                    ? props.location
+                    : "",
             dataCache: this.props.data,
             navigation:
                 typeof this.props.location !== "undefined" // Location has been passed
@@ -154,7 +164,6 @@ class Form extends React.Component<
             titleProps:
                 props.schema && props.schema.title ? props.schema.title : this.untitled,
             schema: props.schema,
-            activeSchemaLocation: "",
             activeDataLocation: "",
             dataCache: cloneDeep(props.data),
             navigation: this.getUpdatedNavigation(props, state),
@@ -170,15 +179,19 @@ class Form extends React.Component<
         props: FormProps,
         state: Partial<FormState>
     ): Partial<FormState> {
+        const location: FormLocation = props.location
+            ? {
+                  dataLocation: props.location.dataLocation,
+                  onChange: props.location.onChange,
+              }
+            : void 0;
         const locationState: Partial<FormState> = {
-            activeSchemaLocation: props.location.schemaLocation,
-            activeDataLocation: props.location.dataLocation,
+            activeDataLocation:
+                props.location && props.location.dataLocation
+                    ? props.location.dataLocation
+                    : "",
             schema: props.schema,
-            location: {
-                dataLocation: props.location.dataLocation,
-                schemaLocation: props.location.schemaLocation,
-                onChange: props.location.onChange,
-            },
+            location,
             navigation: this.getUpdatedNavigation(props, state),
         };
 
@@ -254,11 +267,14 @@ class Form extends React.Component<
                 onUpdateActiveSection={this.handleUpdateActiveSection}
                 data={this.getData("data", "props")}
                 dataCache={this.getData("dataCache", "state")}
-                schemaLocation={this.state.activeSchemaLocation}
+                schemaLocation={mapSchemaLocationFromDataLocation(
+                    this.state.activeDataLocation,
+                    this.props.data,
+                    this.props.schema
+                )}
                 dataLocation={this.state.activeDataLocation}
                 untitled={this.untitled}
                 childOptions={this.props.childOptions}
-                location={this.props.location}
                 componentMappingToPropertyNames={
                     this.props.componentMappingToPropertyNames
                 }
@@ -339,20 +355,24 @@ class Form extends React.Component<
         dataLocation: string,
         schema: any
     ): void => {
-        const state: Partial<FormState> = getActiveComponentAndSection(
-            schemaLocation,
-            dataLocation,
-            schema
-        );
+        if (this.props.location && this.props.location.onChange) {
+            this.props.location.onChange(dataLocation);
+        } else {
+            const state: Partial<FormState> = getActiveComponentAndSection(
+                schemaLocation,
+                dataLocation,
+                schema
+            );
 
-        state.navigation = getNavigation(
-            dataLocation || "",
-            this.props.data,
-            this.props.schema,
-            this.props.childOptions
-        );
+            state.navigation = getNavigation(
+                dataLocation || "",
+                this.props.data,
+                this.props.schema,
+                this.props.childOptions
+            );
 
-        this.setState(state as FormState);
+            this.setState(state as FormState);
+        }
     };
 }
 

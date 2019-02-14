@@ -2,17 +2,11 @@ import FormItemCommon from "./form-item";
 import {
     FormAttributeSettingsMappingToPropertyNames,
     FormComponentMappingToPropertyNamesProps,
-    FormLocation,
 } from "./form.props";
 import { InitialOneOfAnyOfState, updateActiveSection } from "./form-section.props";
 import { ChildOptionItem } from "@microsoft/fast-data-utilities-react";
 
 export interface FormControlProps extends FormItemCommon {
-    /**
-     * The controlled location
-     */
-    location?: FormLocation;
-
     /**
      * The name of the property
      */

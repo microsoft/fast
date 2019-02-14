@@ -7,6 +7,7 @@ import Form, { mapDataToComponent } from "../src";
 import {
     FormAttributeSettingsMappingToPropertyNames,
     FormComponentMappingToPropertyNamesProps,
+    FormLocation,
     FormOrderByPropertyNamesProps,
     FormProps,
 } from "../src/form/form.props";
@@ -24,7 +25,7 @@ export interface AppState {
     onChange: componentDataOnChange;
     showExtendedControls: boolean;
     dataLocation: string;
-    schemaLocation: string;
+    controlled: ControlledState;
 }
 
 export interface Option {
@@ -35,6 +36,11 @@ export interface Option {
 export interface GroupItem {
     items: any;
     type: string;
+}
+
+enum ControlledState {
+    controlled = "controlled",
+    uncontrolled = "uncontrolled",
 }
 
 const designSystemDefaults: any = {
@@ -62,8 +68,8 @@ export default class App extends React.Component<{}, AppState> {
             attributeAssignment: void 0,
             onChange: this.onChange,
             showExtendedControls: false,
-            schemaLocation: void 0,
-            dataLocation: void 0,
+            dataLocation: "",
+            controlled: ControlledState.uncontrolled,
         };
     }
 
@@ -96,6 +102,22 @@ export default class App extends React.Component<{}, AppState> {
                         }}
                     >
                         <div>
+                            <button
+                                onClick={this.handleUpdateControlledState(
+                                    ControlledState.controlled
+                                )}
+                                style={this.getStyle(ControlledState.controlled)}
+                            >
+                                Controlled
+                            </button>
+                            <button
+                                onClick={this.handleUpdateControlledState(
+                                    ControlledState.uncontrolled
+                                )}
+                                style={this.getStyle(ControlledState.uncontrolled)}
+                            >
+                                Uncontrolled
+                            </button>
                             <select onChange={this.handleComponentUpdate}>
                                 {this.getComponentOptions()}
                             </select>
@@ -157,29 +179,26 @@ export default class App extends React.Component<{}, AppState> {
             orderByPropertyNames: this.state.orderByPropertyNames,
         };
 
-        if (
-            typeof this.state.dataLocation !== "undefined" &&
-            typeof this.state.schemaLocation !== "undefined"
-        ) {
-            formProps.location = {
+        if (this.state.controlled === ControlledState.uncontrolled) {
+            return formProps;
+        } else {
+            const location: FormLocation = {
                 dataLocation: this.state.dataLocation,
-                schemaLocation: this.state.schemaLocation,
                 onChange: this.handleLocationOnChange,
             };
-        }
 
-        return formProps;
+            return {
+                ...formProps,
+                location,
+            };
+        }
     }
 
     /**
      * Handles the change in location
      */
-    private handleLocationOnChange = (
-        schemaLocation: string,
-        dataLocation: string
-    ): void => {
+    private handleLocationOnChange = (dataLocation: string): void => {
         this.setState({
-            schemaLocation,
             dataLocation,
         });
     };
@@ -191,6 +210,25 @@ export default class App extends React.Component<{}, AppState> {
         this.setState({
             data,
         });
+    };
+
+    private getStyle(controlledState: ControlledState): any {
+        if (controlledState === this.state.controlled) {
+            return {
+                background: "#414141",
+                color: "white",
+            };
+        }
+    }
+
+    private handleUpdateControlledState = (
+        controlledState: ControlledState
+    ): ((e: React.MouseEvent<HTMLButtonElement>) => void) => {
+        return (e: React.MouseEvent<HTMLButtonElement>): void => {
+            this.setState({
+                controlled: controlledState,
+            });
+        };
     };
 
     private handleComponentUpdate = (e: React.ChangeEvent<HTMLSelectElement>): void => {

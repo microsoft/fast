@@ -90,6 +90,8 @@ class FormItemChildren extends FormItemBase<
     FormItemChildrenProps & ManagedClasses<FormItemChildrenClassNameContract>,
     FormItemChildrenState
 > {
+    public static displayName: string = "FormItemChildren";
+
     /**
      * Store a reference to the children list
      */
@@ -547,11 +549,9 @@ class FormItemChildren extends FormItemBase<
             });
         }
 
-        this.props.onUpdateActiveSection(
-            "",
-            `${this.getDataLocation(component, index)}`,
-            childSchema
-        );
+        const dataLocation: string = this.getDataLocation(component, index);
+
+        this.props.onUpdateActiveSection("", dataLocation, childSchema);
     }
 
     /**
@@ -710,7 +710,7 @@ class FormItemChildren extends FormItemBase<
         currentChildren: ChildComponent[],
         item: ChildOptionItem
     ): ChildComponent[] {
-        const components: ChildComponent[] = currentChildren;
+        const components: ChildComponent[] = [].concat(currentChildren);
         components.push(this.getChildComponent(item));
 
         return components;

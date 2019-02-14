@@ -1,4 +1,3 @@
-import { updateActiveSection } from "./form-section.props";
 import { NavigationItem } from "./form.utilities";
 import { ChildOptionItem } from "@microsoft/fast-data-utilities-react";
 
@@ -12,7 +11,7 @@ export type DataOnChange = (
     isChildren?: boolean
 ) => void;
 
-export type LocationOnChange = (schemaLocation: string, dataLocation: string) => void;
+export type LocationOnChange = (dataLocation: string) => void;
 
 export type BreadcrumbItemEventHandler = (e: React.MouseEvent<HTMLAnchorElement>) => void;
 
@@ -83,11 +82,6 @@ export interface FormState {
     schema: any;
 
     /**
-     * Current active schema location
-     */
-    activeSchemaLocation: string;
-
-    /**
      * Current active data location
      */
     activeDataLocation: string;
@@ -106,7 +100,7 @@ export interface FormState {
      * The location, which can be the root or a sub location,
      * which corresponds to a different section
      */
-    location?: any;
+    location?: FormLocation;
 }
 
 export interface FormLocation {
@@ -114,11 +108,6 @@ export interface FormLocation {
      * The data location
      */
     dataLocation: string;
-
-    /**
-     * The schema location
-     */
-    schemaLocation: string;
 
     /**
      * The location change callback
