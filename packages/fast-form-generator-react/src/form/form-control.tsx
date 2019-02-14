@@ -23,6 +23,8 @@ import FormOneOfAnyOf from "./form-one-of-any-of";
 import FormItemCommon, { mappingName } from "./form-item";
 
 class FormControl extends React.Component<FormControlProps, FormControlState> {
+    public static displayName: string = "FormControl";
+
     constructor(props: FormControlProps) {
         super(props);
 

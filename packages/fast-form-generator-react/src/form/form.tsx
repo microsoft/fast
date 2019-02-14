@@ -31,6 +31,8 @@ class Form extends React.Component<
     FormProps & ManagedClasses<FormClassNameContract>,
     FormState
 > {
+    public static displayName: string = "Form";
+
     /**
      * The default untitled string
      */

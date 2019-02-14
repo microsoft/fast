@@ -16,6 +16,8 @@ class FormItemTheme extends FormItemBase<
         ManagedClasses<FormItemThemeClassNameContract>,
     {}
 > {
+    public static displayName: string = "FormItemTheme";
+
     public render(): JSX.Element {
         return (
             <div className={this.props.managedClasses.formItemTheme}>

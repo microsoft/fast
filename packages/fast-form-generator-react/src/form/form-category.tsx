@@ -37,6 +37,8 @@ class FormCategory extends React.Component<
     FormCategoryProps & ManagedClasses<FormCategoryClassNameContract>,
     FormCategoryState
 > {
+    public static displayName: string = "FormCategory";
+
     constructor(
         props: FormCategoryProps & ManagedClasses<FormCategoryClassNameContract>
     ) {

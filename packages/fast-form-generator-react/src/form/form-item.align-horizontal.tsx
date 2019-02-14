@@ -17,6 +17,8 @@ class FormItemAlignHorizontal extends FormItemBase<
         ManagedClasses<FormItemAlignHorizontalClassNameContract>,
     {}
 > {
+    public static displayName: string = "FormItemAlignHorizontal";
+
     public render(): JSX.Element {
         return (
             <div className={this.props.managedClasses.formItemAlignHorizontal}>

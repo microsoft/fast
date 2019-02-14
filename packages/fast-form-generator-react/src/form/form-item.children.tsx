@@ -95,6 +95,8 @@ class FormItemChildren extends FormItemBase<
     FormItemChildrenProps & ManagedClasses<FormItemChildrenClassNameContract>,
     FormItemChildrenState
 > {
+    public static displayName: string = "FormItemChildren";
+
     /**
      * Store a reference to the children list
      */
