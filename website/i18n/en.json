@@ -37,6 +37,10 @@
         "title": "FAST Animation",
         "sidebar_label": "Animation"
       },
+      "en/packages/fast-application-utilities/index": {
+        "title": "FAST Application Utilities",
+        "sidebar_label": "Application Utilities"
+      },
       "readme": {
         "title": "FAST-DNA",
         "sidebar_label": "What is FAST-DNA"
