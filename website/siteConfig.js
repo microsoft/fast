@@ -41,7 +41,7 @@ const siteConfig = {
   headerLinks: [
     {doc: 'en/contributing/install', label: 'Guide'},
     {href: "https://github.com/microsoft/fast-dna", label: "GitHub"},
-    {href: "https://msft-docs.fast-dna.net", label: "Components"}
+    {href: "https://explore.fastdna.net", label: "Components"}
     // {doc: 'doc4', label: 'API'},
     // {page: 'help', label: 'Help'},
     // {blog: true, label: 'Blog'},
