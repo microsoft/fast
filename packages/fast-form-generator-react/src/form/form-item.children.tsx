@@ -11,7 +11,7 @@ import { SortableListItem, sortingProps } from "./sorting";
 import { cloneDeep, uniqueId } from "lodash-es";
 import { updateActiveSection } from "./form-section.props";
 import FormItemCommon from "./form-item";
-import { DataOnChange, FormLocation } from "./form.props";
+import { DataOnChange } from "./form.props";
 import { reactChildrenStringSchema } from "./form-item.children.text";
 import styles from "./form-item.children.style";
 import { FormItemChildrenClassNameContract } from "../class-name-contracts/";
@@ -63,11 +63,6 @@ export interface FormItemChildrenProps extends FormItemCommon {
      * The default children to be added
      */
     defaultChildOptions?: string[];
-
-    /**
-     * The location passed
-     */
-    location?: FormLocation;
 }
 
 export enum Action {

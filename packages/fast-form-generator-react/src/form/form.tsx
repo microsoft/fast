@@ -294,11 +294,7 @@ class Form extends React.Component<
         return (e: React.MouseEvent): void => {
             e.preventDefault();
 
-            if (this.props.location && this.props.location.onChange) {
-                this.props.location.onChange(dataLocation);
-            } else {
-                this.handleUpdateActiveSection(schemaLocation, dataLocation, schema);
-            }
+            this.handleUpdateActiveSection(schemaLocation, dataLocation, schema);
         };
     };
 
