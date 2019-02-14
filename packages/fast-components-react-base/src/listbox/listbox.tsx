@@ -294,7 +294,16 @@ class Listbox extends Foundation<
      * Create class names
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(get(this.props.managedClasses, "listbox", ""));
+        let className: string = get(this.props.managedClasses, "listbox", "");
+
+        if (this.props.disabled) {
+            className = className.concat(
+                " ",
+                get(this.props.managedClasses, "listbox__disabled")
+            );
+        }
+
+        return super.generateClassNames(className);
     }
 
     /**
