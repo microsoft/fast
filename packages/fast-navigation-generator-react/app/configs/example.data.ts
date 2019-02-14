@@ -11,6 +11,7 @@ const noChildren: any = {
 
 const children: any = {
     children: [
+        "Foo",
         {
             id: get(noChildrenSchema, "id"),
             props: noChildren,

@@ -21,8 +21,29 @@ const childOptions: ChildOptionItem[] = [
  * Gets the navigation
  */
 describe("getNavigationFromData", () => {
-    test("should return an empty array if no data is passed", () => {
-        expect(getNavigationFromData({}, {}, [])).toEqual([]);
+    test("should return a single item if no data is passed", () => {
+        expect(getNavigationFromData({}, {}, [])).toEqual({
+            dataLocation: "",
+            items: [],
+            text: "Undefined",
+            type: "children",
+        });
+    });
+    test("should return a single item if a single string child has been passed", () => {
+        const childrenText: string = "Foo";
+        const data: any = {
+            children: childrenText,
+        };
+        const navigationFromData: TreeNavigation[] = getNavigationFromData(
+            data,
+            childrenSchema,
+            childOptions
+        ).items;
+        expect(navigationFromData).toHaveLength(1);
+        expect(navigationFromData[0].items).toEqual(undefined);
+        expect(navigationFromData[0].dataLocation).toEqual("children");
+        expect(navigationFromData[0].text).toEqual(childrenText);
+        expect(navigationFromData[0].type).toEqual(ItemType.children);
     });
     test("should return a single item if a single child has been passed", () => {
         const data: any = {
@@ -36,7 +57,7 @@ describe("getNavigationFromData", () => {
             data,
             childrenSchema,
             childOptions
-        );
+        ).items;
         expect(navigationFromData).toHaveLength(1);
         expect(navigationFromData[0].items).toEqual(undefined);
         expect(navigationFromData[0].dataLocation).toEqual("children");
@@ -44,6 +65,7 @@ describe("getNavigationFromData", () => {
         expect(navigationFromData[0].type).toEqual(ItemType.children);
     });
     test("should return multiple items if multiple children have been passed", () => {
+        const childrenText: string = "Bar";
         const data: any = {
             children: [
                 {
@@ -54,6 +76,7 @@ describe("getNavigationFromData", () => {
                     id: childOptions[0].schema.id,
                     props: {},
                 },
+                childrenText,
             ],
         };
 
@@ -61,9 +84,9 @@ describe("getNavigationFromData", () => {
             data,
             childrenSchema,
             childOptions
-        );
+        ).items;
 
-        expect(navigationFromData).toHaveLength(2);
+        expect(navigationFromData).toHaveLength(3);
         expect(navigationFromData[0].items).toEqual(undefined);
         expect(navigationFromData[0].dataLocation).toEqual("children[0]");
         expect(navigationFromData[0].text).toEqual(childOptions[0].schema.title);
@@ -72,6 +95,10 @@ describe("getNavigationFromData", () => {
         expect(navigationFromData[1].dataLocation).toEqual("children[1]");
         expect(navigationFromData[1].text).toEqual(childOptions[0].schema.title);
         expect(navigationFromData[1].type).toEqual(ItemType.children);
+        expect(navigationFromData[2].items).toEqual(undefined);
+        expect(navigationFromData[2].dataLocation).toEqual("children[2]");
+        expect(navigationFromData[2].text).toEqual(childrenText);
+        expect(navigationFromData[2].type).toEqual(ItemType.children);
     });
     test("should return a nested item if nested children have been passed", () => {
         const data: any = {
@@ -90,7 +117,7 @@ describe("getNavigationFromData", () => {
             data,
             childrenSchema,
             childOptions
-        );
+        ).items;
         expect(navigationFromData).toHaveLength(1);
         expect(navigationFromData[0].dataLocation).toEqual("children");
         expect(navigationFromData[0].text).toEqual(childOptions[1].schema.title);
@@ -127,7 +154,7 @@ describe("getNavigationFromData", () => {
             data,
             childrenSchema,
             childOptions
-        );
+        ).items;
         expect(navigationFromData).toHaveLength(1);
         expect(navigationFromData[0].dataLocation).toEqual("children");
         expect(navigationFromData[0].text).toEqual(childOptions[1].schema.title);
@@ -181,7 +208,7 @@ describe("getNavigationFromData", () => {
             data,
             childrenSchema,
             childOptions
-        );
+        ).items;
         expect(navigationFromData).toHaveLength(2);
         expect(navigationFromData[0].dataLocation).toEqual("children[0]");
         expect(navigationFromData[0].text).toEqual(childOptions[1].schema.title);
