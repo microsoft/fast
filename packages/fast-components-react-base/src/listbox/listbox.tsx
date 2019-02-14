@@ -87,13 +87,18 @@ class Listbox extends Foundation<
         );
     }
 
+    private static valuePropertyKey: string = "value";
+    private static idPropertyKey: string = "id";
+    private static displayStringPropertyKey: string = "displayString";
+    private static disabledPropertyKey: string = "disabled";
+
     /**
      * tests whether a React.ReactElement is a valid item to select
      * (ie. such an option id exists and the option is not disabled),
      * the values of the returned data objects are updated to reflect values of child object
      * with matching id.
      */
-    public static isValidSelectedItem(itemNode: React.ReactElement<any>): boolean {
+    private static isValidSelectedItem(itemNode: React.ReactElement<any>): boolean {
         if (
             itemNode === undefined ||
             itemNode.props[Listbox.disabledPropertyKey] === true ||
@@ -104,11 +109,6 @@ class Listbox extends Foundation<
 
         return true;
     }
-
-    private static valuePropertyKey: string = "value";
-    private static idPropertyKey: string = "id";
-    private static displayStringPropertyKey: string = "displayString";
-    private static disabledPropertyKey: string = "disabled";
 
     /**
      * Gets a child node from it's id by examining provided children
