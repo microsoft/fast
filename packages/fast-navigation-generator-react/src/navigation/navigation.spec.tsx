@@ -9,6 +9,7 @@ import * as noChildrenSchema from "../../app/configs/no-children.schema.json";
 import * as childrenSchema from "../../app/configs/children.schema.json";
 import { NavigationClassNameContract } from "./navigation.style";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { TreeNavigation } from "../../dist";
 
 const childOptions: ChildOptionItem[] = [
     {
@@ -557,5 +558,70 @@ describe("Navigation", () => {
                 .parent()
                 .props()["aria-expanded"]
         ).toEqual(false);
+    });
+    test("should update the state with the `dataLocation` prop if it has been passed", () => {
+        const props: NavigationProps = {
+            ...navigationProps,
+            data: {
+                children: {
+                    id: childOptions[0].schema.id,
+                    props: {},
+                },
+            },
+            dataLocation: "",
+            managedClasses,
+        };
+
+        const rendered: any = shallow(<Navigation {...props} />);
+        expect(rendered.state().activeItem).toEqual("");
+        rendered.setProps({ ...props, dataLocation: "children" });
+        expect(rendered.state().activeItem).toEqual("children");
+    });
+    test("should update the state with the openItems if the `dataLocation` prop is updated", () => {
+        const props: NavigationProps = {
+            ...navigationProps,
+            data: {
+                children: {
+                    id: childOptions[0].schema.id,
+                    props: {},
+                },
+            },
+            dataLocation: "",
+            managedClasses,
+        };
+
+        const rendered: any = shallow(<Navigation {...props} />);
+        expect(rendered.state().openItems).toEqual([""]);
+        rendered.setProps({ ...props, dataLocation: "children" });
+        expect(rendered.state().openItems).toEqual(["", "children"]);
+    });
+    test("should update the navigation if the `data` prop has been updated", () => {
+        const props: NavigationProps = {
+            ...navigationProps,
+            data: {
+                children: {
+                    id: childOptions[0].schema.id,
+                    props: {},
+                },
+            },
+            managedClasses,
+        };
+
+        const rendered: any = shallow(<Navigation {...props} />);
+        const initialNavigation: TreeNavigation = rendered.state().navigation;
+        rendered.setProps({
+            ...props,
+            data: {
+                children: [
+                    {
+                        id: childOptions[0].schema.id,
+                        props: {},
+                    },
+                    "Foo",
+                ],
+            },
+        });
+        const updatedNavigation: TreeNavigation = rendered.state().navigation;
+        expect(updatedNavigation).not.toEqual(initialNavigation);
     });
 });
