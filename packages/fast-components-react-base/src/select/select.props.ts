@@ -4,6 +4,7 @@ import {
     SelectClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { ListboxItemProps } from "../listbox-item";
+import { SelectState } from "./select";
 
 export interface SelectManagedClasses extends ManagedClasses<SelectClassNameContract> {}
 export interface SelectUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
@@ -15,23 +16,21 @@ export interface SelectHandledProps extends SelectManagedClasses {
     children?: React.ReactNode | React.ReactNode[];
 
     /**
-     * Function which renders the base display of the control
+     * Custom function to render the base display of the control
      */
     contentDisplayRenderFunction?: (
-        selectedItems: ListboxItemProps[],
-        value: string,
-        displayString: string,
-        props: SelectProps
+        props: SelectProps,
+        state: SelectState
     ) => React.ReactNode;
 
     /**
-     * Function which converts and formats the selected options to a the string value to be returned by the control
-     * (ie. what gets sent back as a form result)
+     * Custom function to render the menu of the control
      */
-    dataValueFormatterFunction?: (
-        selectedOptions: ListboxItemProps[],
-        selectName: string
-    ) => string;
+    menuRenderFunction?: (
+        props: SelectProps,
+        state: SelectState,
+        changeCallback: (selectedItems: ListboxItemProps[]) => void
+    ) => React.ReactNode;
 
     /**
      * Function which converts and formats the string may be displayed in the ui
@@ -91,7 +90,7 @@ export interface SelectHandledProps extends SelectManagedClasses {
      * The onValueChange event handler
      */
     onValueChange?: (
-        newValue: string,
+        newValue: string | string[],
         selectedItems: ListboxItemProps[],
         displayString: string
     ) => void;

@@ -17,6 +17,9 @@ const itemADisabled: JSX.Element = (
 const itemB: JSX.Element = <ListboxItem id="b" value="b" displayString="ab" />;
 const itemC: JSX.Element = <ListboxItem id="c" value="c" displayString="abc" />;
 
+const container: HTMLDivElement = document.createElement("div");
+document.body.appendChild(container);
+
 describe("select", (): void => {
     test("should have a displayName that matches the component name", () => {
         expect((Select as any).name).toBe(Select.displayName);
@@ -140,7 +143,7 @@ describe("select", (): void => {
                 {itemB}
                 {itemC}
             </Select>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         expect(rendered.state("selectedItems").length).toBe(0);
@@ -205,47 +208,40 @@ describe("select", (): void => {
                 {itemB}
                 {itemC}
             </Select>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         expect(rendered.state("displayString")).toBe("");
-        expect(rendered.state("value")).toBe("");
+        expect(rendered.state("value")).toEqual([]);
 
         rendered
             .find('[displayString="a"]')
             .simulate("keydown", { keyCode: KeyCodes.space });
         expect(rendered.state("displayString")).toBe("a");
-        expect(rendered.state("value")).toBe("test=a");
+        expect(rendered.state("value")).toEqual(["a"]);
 
         rendered
             .find('[displayString="a"]')
             .simulate("keydown", { keyCode: KeyCodes.arrowDown, shiftKey: true });
         expect(rendered.state("displayString")).toBe("a, ab");
-        expect(rendered.state("value")).toBe("test=a&test=b");
+        expect(rendered.state("value")).toEqual(["a", "b"]);
     });
 
-    test("Custom value and display formatters are called", (): void => {
-        const valueFormatter: any = jest.fn();
-        valueFormatter.mockReturnValue("formatted values");
+    test("Custom display formatter is called", (): void => {
         const displayFormatter: any = jest.fn();
         displayFormatter.mockReturnValue("formatted display");
         const rendered: any = mount(
-            <Select
-                displayStringFormatterFunction={displayFormatter}
-                dataValueFormatterFunction={valueFormatter}
-            >
+            <Select displayStringFormatterFunction={displayFormatter}>
                 {itemA}
                 {itemB}
                 {itemC}
             </Select>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
-        expect(valueFormatter).toHaveBeenCalledTimes(1);
         expect(displayFormatter).toHaveBeenCalledTimes(1);
 
         rendered.simulate("keydown", { keyCode: KeyCodes.arrowUp });
-        expect(valueFormatter).toHaveBeenCalledTimes(2);
         expect(displayFormatter).toHaveBeenCalledTimes(2);
     });
 
@@ -258,9 +254,23 @@ describe("select", (): void => {
                 {itemB}
                 {itemC}
             </Select>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
         expect(displayRenderFn).toHaveBeenCalledTimes(2);
+    });
+
+    test("Custom menu render function is called", (): void => {
+        const menuRenderFn: any = jest.fn();
+        menuRenderFn.mockReturnValue("Test");
+        const rendered: any = mount(
+            <Select isMenuOpen={true} menuRenderFunction={menuRenderFn}>
+                {itemA}
+                {itemB}
+                {itemC}
+            </Select>,
+            { attachTo: container }
+        );
+        expect(menuRenderFn).toHaveBeenCalledTimes(1);
     });
 
     test("Hidden select element exists and it's value and props are populated", (): void => {
@@ -275,11 +285,11 @@ describe("select", (): void => {
                 {itemB}
                 {itemC}
             </Select>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         const select: any = rendered.find("select");
-        expect(select.prop("value")).toBe("");
+        expect(select.prop("value")).toEqual([]);
         expect(select.prop("multiple")).toBe(true);
         expect(select.prop("required")).toBe(true);
         expect(select.prop("name")).toBe("testName");
@@ -288,11 +298,48 @@ describe("select", (): void => {
         rendered
             .find('[displayString="a"]')
             .simulate("keydown", { keyCode: KeyCodes.space });
-        expect(rendered.find("select").prop("value")).toBe("testName=a");
+        expect(rendered.find("select").prop("value")).toEqual(["a"]);
 
         rendered
             .find('[displayString="a"]')
             .simulate("keydown", { keyCode: KeyCodes.arrowDown, shiftKey: true });
-        expect(rendered.find("select").prop("value")).toBe("testName=a&testName=b");
+        expect(rendered.find("select").prop("value")).toEqual(["a", "b"]);
+    });
+
+    test("IsMenuOpen prop set to false overrides default behavior in single select mode", (): void => {
+        const rendered: any = mount(
+            <Select isMenuOpen={false}>
+                {itemA}
+                {itemB}
+                {itemC}
+            </Select>
+        );
+
+        rendered.simulate("click");
+        expect(rendered.state("isMenuOpen")).toBe(false);
+    });
+
+    test("IsMenuOpen prop set to true overrides default behavior in single select mode", (): void => {
+        const rendered: any = mount(
+            <Select isMenuOpen={true}>
+                {itemA}
+                {itemB}
+                {itemC}
+            </Select>
+        );
+
+        expect(rendered.state("isMenuOpen")).toBe(true);
+    });
+
+    test("IsMenuOpen prop set to false overrides default behavior in multiple select mode", (): void => {
+        const rendered: any = mount(
+            <Select isMenuOpen={false} multiselectable={true}>
+                {itemA}
+                {itemB}
+                {itemC}
+            </Select>
+        );
+
+        expect(rendered.state("isMenuOpen")).toBe(false);
     });
 });

@@ -2,8 +2,8 @@ import * as React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import schema from "./select.schema.json";
 import Select, { SelectManagedClasses, SelectProps } from "./select";
-import ListboxItem, { ListboxItemProps } from "../listbox-item";
-import { noop } from "lodash-es";
+import Listbox, { ListboxManagedClasses, ListboxProps } from "../listbox";
+import { ListboxItemProps } from "../listbox-item";
 import Documentation from "./.tmp/documentation";
 
 function listboxItemPropFactory(id: string): ListboxItemProps {
@@ -15,12 +15,14 @@ function listboxItemPropFactory(id: string): ListboxItemProps {
         value: id,
         role: "option",
         displayString: "Option-" + id,
+        children: "Child-" + id,
     };
 }
 
 const managedClasses: SelectManagedClasses = {
     managedClasses: {
         select: "select",
+        select__disabled: "select__disabled",
     },
 };
 

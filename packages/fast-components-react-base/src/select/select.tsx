@@ -9,7 +9,7 @@ import Listbox from "../listbox";
 import Button from "../button";
 
 export interface SelectState {
-    value: string;
+    value: string | string[];
     displayString: string;
     selectedItems: ListboxItemProps[];
     isMenuOpen: boolean;
@@ -33,11 +33,12 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     protected handledProps: HandledProps<SelectHandledProps> = {
         isMenuOpen: void 0,
         disabled: void 0,
+        displayStringFormatterFunction: void 0,
         form: void 0,
         labelledBy: void 0,
         multiselectable: void 0,
         contentDisplayRenderFunction: void 0,
-        dataValueFormatterFunction: void 0,
+        menuRenderFunction: void 0,
         required: void 0,
         managedClasses: void 0,
         selectedItems: void 0,
@@ -80,10 +81,10 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
             ) {
                 this.updateSelection([this.state.selectedItems[0]]);
             }
-            this.toggleMenu(this.props.multiselectable);
+            this.toggleMenu(this.checkPropsForMenuState());
         }
         if (prevProps.isMenuOpen !== this.props.isMenuOpen) {
-            this.toggleMenu(this.props.multiselectable ? true : false);
+            this.toggleMenu(this.checkPropsForMenuState());
         }
     }
 
@@ -106,7 +107,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         }
 
         this.updateSelection(initialSelection);
-        this.toggleMenu(this.props.multiselectable ? true : false);
+        this.toggleMenu(this.checkPropsForMenuState());
     }
 
     /**
@@ -116,6 +117,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         return (
             <div
                 {...this.unhandledProps()}
+                aria-disabled={this.props.disabled || null}
                 ref={this.rootElement}
                 className={this.generateClassNames()}
                 onKeyDown={this.handleKeydown}
@@ -137,7 +139,14 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         if (this.props.disabled) {
             className = className.concat(
                 " ",
-                get(this.props.managedClasses, "select__disabled")
+                get(this.props.managedClasses, "select__disabled", "")
+            );
+        }
+
+        if (this.state.isMenuOpen) {
+            className = className.concat(
+                " ",
+                get(this.props.managedClasses, "select__menuOpen", "")
             );
         }
 
@@ -172,6 +181,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 value={this.state.value}
                 multiple={this.props.multiselectable || null}
                 disabled={this.props.disabled || null}
+                onChange={this.onSelectValueChange}
                 style={{
                     display: "none",
                 }}
@@ -180,24 +190,21 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     }
 
     /**
+     * This exists only to suppress a build warning
+     */
+    private onSelectValueChange = (event: React.ChangeEvent): void => {
+        return null;
+    };
+
+    /**
      * Deternmines which function to use to render content display (ie. the part of the control that shows when the menu isn't open)
      * and invokes it
      */
     private renderContentDisplay(): React.ReactNode {
         if (this.props.contentDisplayRenderFunction !== undefined) {
-            return this.props.contentDisplayRenderFunction(
-                this.state.selectedItems,
-                this.state.value,
-                this.state.displayString,
-                this.props
-            );
+            return this.props.contentDisplayRenderFunction(this.props, this.state);
         } else {
-            return this.defaultDisplayRenderFunction(
-                this.state.selectedItems,
-                this.state.value,
-                this.state.displayString,
-                this.props
-            );
+            return this.defaultDisplayRenderFunction(this.props, this.state);
         }
     }
 
@@ -205,48 +212,56 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
      * Deternmines which function to use to render the menu and invokes it
      */
     private renderMenu(): React.ReactNode {
-        if (this.state.isMenuOpen) {
-            return (
-                <Listbox
-                    labelledBy={this.getListboxLabelledBy()}
-                    autoFocus={this.shouldAutoFocusListbox()}
-                    multiselectable={this.props.multiselectable}
-                    defaultSelection={this.state.selectedItems}
-                    selectedItems={this.props.selectedItems}
-                    onSelectedItemsChanged={this.updateSelection}
-                >
-                    {this.props.children}
-                </Listbox>
+        if (!this.state.isMenuOpen) {
+            return;
+        }
+
+        if (this.props.menuRenderFunction !== undefined) {
+            return this.props.menuRenderFunction(
+                this.props,
+                this.state,
+                this.updateSelection
+            );
+        } else {
+            return this.defaultMenuRenderFunction(
+                this.props,
+                this.state,
+                this.updateSelection
             );
         }
     }
 
     /**
-     * Determines desired value of listbox labelledBy prop
+     * default menu render function
      */
-    private getListboxLabelledBy = (): string => {
-        if (this.props.labelledBy !== undefined && this.props.multiselectable) {
-            return this.props.labelledBy;
+    private defaultMenuRenderFunction(
+        props: SelectProps,
+        state: SelectState,
+        changeCallback: (selectedItems: ListboxItemProps[]) => void
+    ): React.ReactNode {
+        let shouldfocus: boolean = this.props.autoFocus;
+        if (shouldfocus === undefined) {
+            shouldfocus = this.props.multiselectable ? false : true;
         }
-        return null;
-    };
-
-    /**
-     * Determines desired value of listbox autofocus prop
-     */
-    private shouldAutoFocusListbox = (): boolean => {
-        let shouldAutofocus: boolean = this.props.autoFocus;
-        if (shouldAutofocus === undefined) {
-            shouldAutofocus = this.props.multiselectable ? false : true;
-        }
-        return shouldAutofocus;
-    };
+        return (
+            <Listbox
+                labelledBy={props.labelledBy}
+                focusItemOnMount={shouldfocus}
+                multiselectable={props.multiselectable}
+                defaultSelection={state.selectedItems}
+                selectedItems={props.selectedItems}
+                onSelectedItemsChanged={changeCallback}
+            >
+                {props.children}
+            </Listbox>
+        );
+    }
 
     /**
      * Updates selection state and associated values
      */
     private updateSelection = (newSelection: ListboxItemProps[]): void => {
-        const newValue: string = this.getFormattedValueString(newSelection);
+        const newValue: string | string[] = this.getValueFromSelection(newSelection);
         const newDisplayString: string = this.getFormattedDisplayString(newSelection);
         this.setState({
             selectedItems: newSelection,
@@ -259,13 +274,30 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     };
 
     /**
+     * Extracts values in the correct format (string in single select and string[] in multi-select) from an array of items.
+     */
+    private getValueFromSelection = (
+        newSelection: ListboxItemProps[]
+    ): string | string[] => {
+        if (this.props.multiselectable) {
+            return newSelection.map((thisItem: ListboxItemProps) => {
+                return thisItem.value;
+            });
+        } else {
+            if (newSelection.length === 0) {
+                return "";
+            } else {
+                return newSelection[0].value;
+            }
+        }
+    };
+
+    /**
      * The default function that renders an unstyled content display
      */
     private defaultDisplayRenderFunction = (
-        selectedOptions: ListboxItemProps[],
-        formattedValue: string,
-        formattedDisplayString: string,
-        props: SelectProps
+        props: SelectProps,
+        state: SelectState
     ): React.ReactNode => {
         if (props.multiselectable) {
             return null;
@@ -275,32 +307,11 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 disabled={props.disabled}
                 aria-labelledby={props.labelledBy || null}
                 aria-haspopup={true}
-                aria-expanded={this.state.isMenuOpen}
+                aria-expanded={state.isMenuOpen}
             >
-                {formattedDisplayString}
+                {state.displayString}
             </Button>
         );
-    };
-
-    /**
-     * The default function that formats the value string generated based on selection.
-     * This implementation should match the default formatting a base html select control applies.
-     * Developers can provide an alternate formatter if desired.
-     */
-    private defaultDataValueFormatter = (
-        selectedOptions: ListboxItemProps[],
-        selectName: string
-    ): string => {
-        const separator: string = "&";
-        const prefix: string = selectName !== undefined ? selectName + "=" : "";
-        let formattedValue: string = "";
-        selectedOptions.forEach((thisOption: ListboxItemProps) => {
-            if (formattedValue.length > 0) {
-                formattedValue = formattedValue + separator;
-            }
-            formattedValue = formattedValue + prefix + thisOption.value;
-        });
-        return formattedValue;
     };
 
     /**
@@ -420,7 +431,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     };
 
     /**
-     * opens/closes the menu
+     * Toggles the menu
      */
     private toggleMenu = (isMenuOpen: boolean): void => {
         let shouldOpenMenu: boolean = isMenuOpen;
@@ -441,22 +452,12 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     };
 
     /**
-     * tried to close the menu when when there are clicks outside
+     * Close the menu when when there are clicks outside
      */
     private handleWindowClick = (event: MouseEvent): void => {
         if (!this.rootElement.current.contains(event.target as Element)) {
             this.toggleMenu(false);
         }
-    };
-
-    /**
-     * Determines what function needs to be called to format the result string and
-     * calls it with the appropriate params
-     */
-    private getFormattedValueString = (selectedOptions: ListboxItemProps[]): string => {
-        return this.props.dataValueFormatterFunction === undefined
-            ? this.defaultDataValueFormatter(selectedOptions, this.props.name)
-            : this.props.dataValueFormatterFunction(selectedOptions, this.props.name);
     };
 
     /**

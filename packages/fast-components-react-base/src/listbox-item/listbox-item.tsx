@@ -125,10 +125,9 @@ class ListboxItem extends Foundation<
      * Handle the keydown event of the item
      */
     private handleClick = (e: React.MouseEvent<HTMLDivElement>): void => {
-        if (this.props.disabled) {
+        if (this.props.disabled || e.defaultPrevented) {
             return;
         }
-
         this.invokeOption(e);
 
         if (typeof this.props.onClick === "function") {
