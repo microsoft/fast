@@ -265,17 +265,14 @@ class Listbox extends Foundation<
     }
 
     public componentDidMount(): void {
-        let focusIndex: number = -1;
+        const focusIndex: number =
+            this.state.selectedItems.length > 0
+                ? Listbox.getItemIndexById(
+                      this.state.selectedItems[0].id,
+                      this.props.children
+                  )
+                : this.domChildren().findIndex(this.isFocusableElement);
 
-        if (this.state.selectedItems.length > 0) {
-            focusIndex = Listbox.getItemIndexById(
-                this.state.selectedItems[0].id,
-                this.props.children
-            );
-        } else {
-            const children: Element[] = this.domChildren();
-            focusIndex = children.findIndex(this.isFocusableElement);
-        }
         if (focusIndex !== -1) {
             if (this.props.autoFocus) {
                 this.setFocus(focusIndex, +1);
@@ -297,10 +294,11 @@ class Listbox extends Foundation<
         let className: string = get(this.props.managedClasses, "listbox", "");
 
         if (this.props.disabled) {
-            className = className.concat(
-                " ",
-                get(this.props.managedClasses, "listbox__disabled")
-            );
+            className = `${className} ${get(
+                this.props,
+                "managedClasses.listbox__disabled",
+                ""
+            )}`;
         }
 
         return super.generateClassNames(className);

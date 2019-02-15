@@ -14,6 +14,7 @@ function listboxItemPropFactory(id: string): ListboxItemProps {
         value: id,
         role: "option",
         displayString: "Option-" + id,
+        children: "Child-" + id,
     };
 }
 

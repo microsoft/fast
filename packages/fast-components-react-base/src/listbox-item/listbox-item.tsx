@@ -48,7 +48,6 @@ class ListboxItem extends Foundation<
                 onFocus={this.handleFocus}
                 onKeyDown={this.handleKeyDown}
             >
-                {this.props.displayString}
                 {this.props.children}
             </div>
         );
