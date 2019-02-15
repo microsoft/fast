@@ -12,7 +12,7 @@ Fast Animation is a library for simplifying the creation of animations and inter
 
 ## Usage
 
-[API Reference](https://microsoft.github.io/fast-dna/docs/en/packages/fast-animation/api/index.html)
+[//]: <> (todo: Implement once subsites for API exist [API Reference]https://microsoft.github.io/fast-dna/docs/en/packages/fast-animation/api/index.html)
 
 ### Installation
 
