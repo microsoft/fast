@@ -472,6 +472,129 @@ describe("getNavigation", () => {
             string: "Foo",
         });
     });
+    test("should return navigation items for oneOf/anyOf nested objects", () => {
+        const navigation: NavigationItem[] = getNavigation(
+            "numberOrString.object",
+            {
+                numberOrString: {
+                    object: {
+                        number: 47,
+                    },
+                },
+            },
+            oneOfSchema,
+            childOptions
+        );
+
+        expect(navigation.length).toBe(3);
+        expect(navigation[0].dataLocation).toBe("");
+        expect(navigation[0].schema).toEqual(oneOfSchema);
+        expect(navigation[0].data).toEqual({
+            numberOrString: {
+                object: {
+                    number: 47,
+                },
+            },
+        });
+        expect(navigation[1].dataLocation).toBe("numberOrString");
+        expect(navigation[1].schema).toEqual(
+            oneOfSchema.oneOf[2].properties.numberOrString
+        );
+        expect(navigation[1].data).toEqual({
+            object: {
+                number: 47,
+            },
+        });
+        expect(navigation[2].dataLocation).toBe("numberOrString.object");
+        expect(navigation[2].schema).toEqual(
+            oneOfSchema.oneOf[2].properties.numberOrString.oneOf[2].properties.object
+        );
+        expect(navigation[2].data).toEqual({
+            number: 47,
+        });
+    });
+    test("should return navigation items for oneOf/anyOf nested arrays", () => {
+        const navigation: NavigationItem[] = getNavigation(
+            "numberOrString[0]",
+            {
+                numberOrString: ["foo", "bar"],
+            },
+            oneOfSchema,
+            childOptions
+        );
+
+        expect(navigation.length).toBe(2);
+        expect(navigation[0].dataLocation).toBe("");
+        expect(navigation[0].schema).toEqual(oneOfSchema);
+        expect(navigation[0].data).toEqual({
+            numberOrString: ["foo", "bar"],
+        });
+        expect(navigation[1].dataLocation).toBe("numberOrString[0]");
+        expect(navigation[1].schema).toEqual(
+            oneOfSchema.oneOf[2].properties.numberOrString.oneOf[3].items
+        );
+        expect(navigation[1].data).toEqual("foo");
+    });
+    test("should return navigation items for oneOf/anyOf nested objects inside children", () => {
+        const navigation: NavigationItem[] = getNavigation(
+            "children.props.numberOrString.object",
+            {
+                children: {
+                    id: oneOfSchema.id,
+                    props: {
+                        numberOrString: {
+                            object: {
+                                number: 47,
+                            },
+                        },
+                    },
+                },
+            },
+            childrenSchema,
+            childOptions
+        );
+
+        expect(navigation.length).toBe(4);
+        expect(navigation[0].dataLocation).toBe("");
+        expect(navigation[0].schema).toEqual(childrenSchema);
+        expect(navigation[0].data).toEqual({
+            children: {
+                id: oneOfSchema.id,
+                props: {
+                    numberOrString: {
+                        object: {
+                            number: 47,
+                        },
+                    },
+                },
+            },
+        });
+        expect(navigation[1].dataLocation).toBe("children.props");
+        expect(navigation[1].schema).toEqual(oneOfSchema);
+        expect(navigation[1].data).toEqual({
+            numberOrString: {
+                object: {
+                    number: 47,
+                },
+            },
+        });
+        expect(navigation[2].dataLocation).toBe("children.props.numberOrString");
+        expect(navigation[2].schema).toEqual(
+            oneOfSchema.oneOf[2].properties.numberOrString
+        );
+        expect(navigation[2].data).toEqual({
+            object: {
+                number: 47,
+            },
+        });
+        expect(navigation[3].dataLocation).toBe("children.props.numberOrString.object");
+        expect(navigation[3].schema).toEqual(
+            oneOfSchema.oneOf[2].properties.numberOrString.oneOf[2].properties.object
+        );
+        expect(navigation[3].data).toEqual({
+            number: 47,
+        });
+    });
 });
 
 /**
