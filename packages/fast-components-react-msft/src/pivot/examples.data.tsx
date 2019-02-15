@@ -8,9 +8,9 @@ import { ComponentFactoryExample } from "@microsoft/fast-development-site-react"
 const pivotManagedClasses: PivotManagedClasses = {
     managedClasses: {
         pivot: "pivot-class",
-        pivot_itemList: "pivot_itemList-class",
-        pivot_item: "pivot_item-class",
-        pivot_item__active: "pivot_item__active-class",
+        pivot_tabList: "pivot_tabList-class",
+        pivot_tab: "pivot_tabclass",
+        pivot_tab__active: "pivot_tab__active-class",
         pivot_tabPanels: "pivot_tabPanels-class",
         pivot_tabPanel: "pivot_tabPanel-class",
         pivot_tabPanel__hidden: "pivot_tabPanel__hidden-class",
@@ -77,8 +77,8 @@ const examples: ComponentFactoryExample<PivotProps> = {
     detailData: {
         ...pivotManagedClasses,
         label: "A set of example text content",
-        // activeId: "pivot03",
-        items: detailPivotItem,
+        activeId: "pivot03",
+        items: [],
     },
     data: [
         {

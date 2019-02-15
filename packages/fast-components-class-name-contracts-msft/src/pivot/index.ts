@@ -22,17 +22,17 @@ export interface PivotClassNameContract extends BaseTabsClassNameContract {
     /**
      * The collection of pivot items
      */
-    pivot_itemList?: string;
+    pivot_tabList?: string;
 
     /**
      * The pivot item
      */
-    pivot_item?: string;
+    pivot_tab?: string;
 
     /**
      * The active pivot item
      */
-    pivot_item__active?: string;
+    pivot_tab__active?: string;
 
     /**
      * The collection of tab panels

@@ -62,17 +62,16 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
     constructor(props: PivotProps) {
         super(props);
 
-        const activeId: string = !this.props.activeId
-            ? this.props.items
-                ? this.props.items[0].id
-                : ""
-            : this.props.activeId;
-
-        this.state = {
-            offsetX: 0,
-            activeId,
-            focused: false,
-        };
+        if (Array.isArray(this.props.items)) {
+            this.state = {
+                offsetX: 0,
+                focused: false,
+                activeId:
+                    typeof this.props.activeId === "string"
+                        ? this.props.activeId
+                        : get(this.props.items[0], "id", ""),
+            };
+        }
 
         this.tabsRef = React.createRef();
     }
@@ -121,14 +120,14 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
         return {
             tabs: get(this.props, "managedClasses.pivot", ""),
             tabs_tabPanels: this.generateTabPanelsClassNames(),
-            tabs_tabList: get(this.props, "managedClasses.pivot_itemList", ""),
+            tabs_tabList: get(this.props, "managedClasses.pivot_tabList", ""),
             tabs_tabPanelContent: get(
                 this.props,
                 "managedClasses.pivot_tabPanelContent",
                 ""
             ),
-            tab: get(this.props, "managedClasses.pivot_item", ""),
-            tab__active: get(this.props, "managedClasses.pivot_item__active", ""),
+            tab: get(this.props, "managedClasses.pivot_tab", ""),
+            tab__active: get(this.props, "managedClasses.pivot_tab_active", ""),
             tabPanel: get(this.props, "managedClasses.pivot_tabPanel", ""),
             tabPanel__hidden: get(
                 this.props,
@@ -205,7 +204,7 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
     }
 
     private updateTabPanelIndex(): number {
-        if (canUseDOM() && this.tabsRef.current && this.props.items) {
+        if (canUseDOM() && this.tabsRef.current && Array.isArray(this.props.items)) {
             const tabElement: HTMLElement = ReactDOM.findDOMNode(
                 this.tabsRef.current
             ) as HTMLElement;
@@ -220,29 +219,27 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
 
     private generateTabPanelsClassNames(): string {
         let className: string = get(this.props, "managedClasses.pivot_tabPanels", "");
-        if (this.props.items) {
-            if (this.tabPanelIndex === this.updateTabPanelIndex()) {
-                className = className;
-            } else if (this.tabPanelIndex < this.updateTabPanelIndex()) {
-                className = `${className} ${get(
-                    this.props,
-                    "managedClasses.pivot_tabPanels__fromLeft",
-                    ""
-                )}`;
-            } else {
-                className = `${className} ${get(
-                    this.props,
-                    "managedClasses.pivot_tabPanels__fromRight",
-                    ""
-                )}`;
-            }
+        if (this.tabPanelIndex === this.updateTabPanelIndex()) {
+            className = className;
+        } else if (this.tabPanelIndex < this.updateTabPanelIndex()) {
+            className = `${className} ${get(
+                this.props,
+                "managedClasses.pivot_tabPanels__fromLeft",
+                ""
+            )}`;
+        } else {
+            className = `${className} ${get(
+                this.props,
+                "managedClasses.pivot_tabPanels__fromRight",
+                ""
+            )}`;
         }
         this.tabPanelIndex = this.updateTabPanelIndex();
         return className;
     }
 
     private setActiveIndicatorOffset(): void {
-        if (canUseDOM() && this.tabsRef.current && this.props.items) {
+        if (canUseDOM() && this.tabsRef.current && Array.isArray(this.props.items)) {
             const tabElement: HTMLElement = ReactDOM.findDOMNode(
                 this.tabsRef.current
             ) as HTMLElement;
@@ -251,17 +248,19 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
                 "[aria-selected='true']"
             );
 
-            const width: number = mytabs[0].getBoundingClientRect().width;
-            const center: number = width / 2;
-            const offsetX: number =
-                mytabs[0].getBoundingClientRect().left -
-                tabElement.getBoundingClientRect().left +
-                center;
+            if (mytabs[0] !== undefined && tabElement !== undefined) {
+                const width: number = mytabs[0].getBoundingClientRect().width;
+                const center: number = width / 2;
+                const offsetX: number =
+                    mytabs[0].getBoundingClientRect().left -
+                    tabElement.getBoundingClientRect().left +
+                    center;
 
-            if (offsetX !== this.state.offsetX) {
-                this.setState({
-                    offsetX,
-                });
+                if (offsetX !== this.state.offsetX) {
+                    this.setState({
+                        offsetX,
+                    });
+                }
             }
         }
     }

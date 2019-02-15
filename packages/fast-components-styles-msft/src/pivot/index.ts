@@ -26,11 +26,11 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
             color: designSystem.foregroundColor,
             overflow: "hidden",
         },
-        pivot_itemList: {
+        pivot_tabList: {
             display: "flex",
             boxSizing: "border-box",
         },
-        pivot_item: {
+        pivot_tab: {
             minHeight: "32px",
             padding: "0 12px",
             fontSize: "14px",
@@ -50,7 +50,7 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
             },
             ...applyFocusVisible({}),
         },
-        pivot_item__active: {},
+        pivot_tab__active: {},
         pivot_activeIndicator: {
             position: "absolute",
             borderRadius: toPx(designSystem.cornerRadius),

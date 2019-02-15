@@ -16,14 +16,9 @@ export interface PivotHandledProps
     extends PivotManagedClasses,
         Subtract<BaseTabsHandledProps, BaseTabsManagedClasses> {
     /**
-     * The aria-label applied to the tablist for the pivot items
-     */
-    label: string;
-
-    /**
      * The pivots' pivot item
      */
-    items?: TabsItem[];
+    items: TabsItem[];
 }
 
 /* tslint:disable-next-line:no-empty-interface */
