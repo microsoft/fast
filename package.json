@@ -16,8 +16,8 @@
     "url": "https://github.com/Microsoft/fast-dna/issues/new/choose"
   },
   "scripts": {
-    "docs:dry-run": "node build/documentation/copy-package-readme.js --dry-run",
     "docs:build": "node build/documentation/copy-package-readme.js",
+    "docs:dry-run": "node build/documentation/copy-package-readme.js --dry-run",
     "integration-tests:alpha": "node build/testing/sauce-labs/test-browsers.js alpha",
     "integration-tests:beta": "node build/testing/sauce-labs/test-browsers.js beta",
     "integration-tests:release": "node build/testing/sauce-labs/test-browsers.js release",
