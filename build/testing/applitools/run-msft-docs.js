@@ -7,9 +7,9 @@ let spawn = require("child_process").spawnSync;
  */
 class Config {
     constructor() {
-        this.domainName = "https://msft-docs.fast-dna.net";
-        this.appName = "FAST-DNA";
-        this.siteName = "MSFT Doc Site";
+        this.domainName = "https://explore.fastdna.net";
+        this.appName = "FASTDNA";
+        this.siteName = "Component explorer";
     }
 
     /**
