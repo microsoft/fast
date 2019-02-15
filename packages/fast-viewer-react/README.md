@@ -1,5 +1,5 @@
 
-# Viewer React
+# FAST Viewer React
 
 A React component which shows content in an iframe via a provided route.
 This can be used to as a method for previewing a React component(s) or an entire page.

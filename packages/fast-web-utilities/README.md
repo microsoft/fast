@@ -1,4 +1,4 @@
-# Web utilities
+# FAST Web utilities
 
 This package is a collection of utilities intended to be used for web projects.
 

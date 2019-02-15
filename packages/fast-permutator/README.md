@@ -1,4 +1,4 @@
-# Permutator
+# FAST Permutator
 
 The FAST permutator creates all possible data permutations from a given JSON Schema, allowing for deep testing or display of complex data sets.
 

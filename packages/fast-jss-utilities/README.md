@@ -1,4 +1,4 @@
-# JSS utilities
+# FAST JSS utilities
 
 This package is a collection of utilities intended to be used with JSS (JavaScript Style Sheets) projects.
 

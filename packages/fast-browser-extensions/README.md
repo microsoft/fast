@@ -1,5 +1,5 @@
 
-# Browser extensions
+# FAST Browser extensions
 
 A Chrome extension for testing real-world localization, theming, and other production type scenarios in web development.
 

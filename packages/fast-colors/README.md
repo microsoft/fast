@@ -1,4 +1,4 @@
-# Colors
+# FAST Colors
 
 A color utility library designed to make working with colors easier.
 

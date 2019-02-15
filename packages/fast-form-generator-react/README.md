@@ -1,5 +1,5 @@
 
-# Form generator React
+# FAST Form generator React
 
 A self generating UI based on JSON Schemas.
 

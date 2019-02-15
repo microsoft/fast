@@ -1,4 +1,4 @@
-# Application utilities
+# FAST Application utilities
 
 **FAST application utilities has been deprecated. Use [FAST web utilities](https://www.npmjs.com/package/@microsoft/fast-web-utilities) instead.**
 

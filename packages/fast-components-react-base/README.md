@@ -1,4 +1,4 @@
-# Components React base
+# FAST Components React base
 
 Base components are the structural, semantic, and interactive core of a piece of UI without any explicit visual representation. For the most part, base components are only as opinionated as they have to be to support the semantic, structural, and accessibility related goals. In rare cases, there are structural changes made to support external styling (such as native elements like an input of type checkbox). Base components are useful when building out a new design system, or when you have two components that require the same base functionality and structure, but completely different visual represenations (button vs flipper).
 

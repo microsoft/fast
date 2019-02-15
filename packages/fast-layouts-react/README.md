@@ -1,4 +1,4 @@
-# Layouts React
+# FAST Layouts React
 
 A collection of components used to form various layouts built using React.
 

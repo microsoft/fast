@@ -1,4 +1,4 @@
-# Glyphs MSFT
+# FAST Glyphs MSFT
 
 This is a distribution of Microsoft glyphs which are exported as strings.
 

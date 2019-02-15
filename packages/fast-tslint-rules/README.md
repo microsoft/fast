@@ -1,4 +1,4 @@
-# TSLINT rules
+# FAST TSLINT rules
 
 This project provides [tslint](https://github.com/palantir/tslint) rules for all FAST projects.
 

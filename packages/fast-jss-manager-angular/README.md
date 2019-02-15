@@ -1,4 +1,4 @@
-# JSS manager Angular
+# FAST JSS manager Angular
 
 An Angular directive and component library for managing component JSS (JavaScript Style Sheets). It allows top-down variable injection into JSS stylesheet functions using the exported `DesignSystem`.
 

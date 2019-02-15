@@ -1,4 +1,4 @@
-# Breakpoint tracker React
+# FAST Breakpoint tracker React
 
 A library for managing viewport breakpoints. Given a set of breakpoints, this component will monitor the width of the browser window and track the current active breakpoint.
 

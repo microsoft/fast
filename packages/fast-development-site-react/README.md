@@ -1,4 +1,4 @@
-# Development site React
+# FAST Development site React
 
 A boilerplate development site that can be used to show a library of React components. All necessary navigational elements and routing will be generated to provide a full site for the documentation and testing of components.
 

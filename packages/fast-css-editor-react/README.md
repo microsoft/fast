@@ -1,4 +1,4 @@
-# CSS editor React
+# FAST CSS editor React
 
 A set of React components that allows the user to edit CSS properties.
 

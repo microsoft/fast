@@ -1,4 +1,4 @@
-# Components class name contracts base
+# FAST Components class name contracts base
 
 This package provides the TypeScript typings for all FAST components class-name contracts. These contracts enable strict typing of JSS stylesheets and each component's expectation of which class-names will be made available (and under which keys those class-names reside) to the component at runtime.
 

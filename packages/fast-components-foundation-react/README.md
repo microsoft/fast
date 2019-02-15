@@ -1,4 +1,4 @@
-# Components foundation React
+# FAST Components foundation React
 
 The foundation component for FAST component packages in React. The default export is an extension from the `React.Component` and includes additional functionality for extension by React component libraries.
 

@@ -1,4 +1,4 @@
-# Components React MSFT
+# FAST Components React MSFT
 
 A set of React components which implements the Microsoft styling.
 
