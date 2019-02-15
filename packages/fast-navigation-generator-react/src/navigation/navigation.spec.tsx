@@ -9,7 +9,7 @@ import * as noChildrenSchema from "../../app/configs/no-children.schema.json";
 import * as childrenSchema from "../../app/configs/children.schema.json";
 import { NavigationClassNameContract } from "./navigation.style";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
-import { TreeNavigation } from "../../dist";
+import { TreeNavigation } from "./";
 
 const childOptions: ChildOptionItem[] = [
     {
