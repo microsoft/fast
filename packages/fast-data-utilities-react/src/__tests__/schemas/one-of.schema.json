@@ -8,7 +8,7 @@
         {
             "description": "string",
             "type": "object",
-          	"additionalProperties": false,
+            "additionalProperties": false,
             "properties": {
                 "string": {
                     "title": "string",
