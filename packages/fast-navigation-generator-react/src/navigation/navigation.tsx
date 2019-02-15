@@ -22,11 +22,43 @@ export default class Navigation extends Foundation<
 > {
     public static displayName: string = "Navigation";
 
+    public static getDerivedStateFromProps(
+        props: NavigationProps,
+        state: NavigationState
+    ): Partial<NavigationState> {
+        const updatedState: Partial<NavigationState> = {};
+        const updatedNavigation: TreeNavigation = getNavigationFromData(
+            props.data,
+            props.schema,
+            props.childOptions
+        );
+
+        if (props.dataLocation !== state.activeItem && props.dataLocation !== undefined) {
+            updatedState.activeItem = props.dataLocation;
+
+            // openItems is cast as any due to missing type on string array
+            if (
+                typeof props.dataLocation === "string" &&
+                !(state.openItems as any).includes(props.dataLocation)
+            ) {
+                updatedState.openItems = state.openItems;
+                updatedState.openItems.push(props.dataLocation);
+            }
+        }
+
+        if (updatedNavigation !== state.navigation) {
+            updatedState.navigation = updatedNavigation;
+        }
+
+        return updatedState;
+    }
+
     protected handledProps: HandledProps<NavigationHandledProps> = {
         schema: void 0,
         data: void 0,
         childOptions: void 0,
         onLocationUpdate: void 0,
+        dataLocation: void 0,
         managedClasses: void 0,
     };
 
@@ -41,8 +73,10 @@ export default class Navigation extends Foundation<
                 this.props.schema,
                 this.props.childOptions
             ),
-            openItems: [],
-            activeItem: null,
+            openItems:
+                this.props.dataLocation !== undefined ? [this.props.dataLocation] : [],
+            activeItem:
+                this.props.dataLocation !== undefined ? this.props.dataLocation : null,
         };
 
         this.rootElement = React.createRef();
@@ -354,24 +388,21 @@ export default class Navigation extends Foundation<
      */
     private toggleItems(dataLocation: string): void {
         const isExpanded: boolean = this.isExpanded(dataLocation);
+        const updatedState: Partial<NavigationState> = {};
 
         if (!isExpanded) {
-            this.setState({
-                openItems: this.state.openItems.concat(dataLocation),
-                activeItem: dataLocation,
-            });
+            updatedState.openItems = this.state.openItems.concat(dataLocation);
         } else {
-            const updatedOpenItems: string[] = this.state.openItems.filter(
-                (openItem: string) => {
-                    return openItem.slice(0, dataLocation.length) !== dataLocation;
-                }
-            );
-
-            this.setState({
-                openItems: updatedOpenItems,
-                activeItem: dataLocation,
+            updatedState.openItems = this.state.openItems.filter((openItem: string) => {
+                return openItem.slice(0, dataLocation.length) !== dataLocation;
             });
         }
+
+        if (this.props.dataLocation === undefined) {
+            updatedState.activeItem = dataLocation;
+        }
+
+        this.setState(updatedState as NavigationState);
 
         if (typeof this.props.onLocationUpdate === "function") {
             this.props.onLocationUpdate(dataLocation);

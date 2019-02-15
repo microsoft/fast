@@ -69,6 +69,11 @@ export interface NavigationHandledProps
     childOptions?: ChildOptionItem[];
 
     /**
+     * The data location if the component is controlled
+     */
+    dataLocation?: string;
+
+    /**
      * The location update
      */
     onLocationUpdate?: (dataLocation: string) => void;

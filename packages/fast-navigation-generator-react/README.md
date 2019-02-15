@@ -9,7 +9,58 @@ The default export is the navigation component.
 
 **Example schemas can be found [here](https://github.com/Microsoft/fast-dna/tree/master/packages/fast-navigation-generator-react/app/configs/children.schema.json) and [here](https://github.com/Microsoft/fast-dna/tree/master/packages/fast-navigation-generator-react/app/configs/no-children.schema.json)**
 
-Example:
+Uncontrolled example:
+
+```jsx
+import * as React from "react";
+import CSSEditor from "@microsoft/fast-navigation-generator-react";
+import noChildrenSchema from "./no-children.schema.json";
+import childrenSchema from "./children.schema.json";
+
+export class Example extends React.Component {
+    render() {
+        return (
+            <Navigation
+                data={this.getData()}
+                schema={childrenSchema}
+                childOptions={this.getChildOptions()}
+            />
+        );
+    }
+
+    getData() {
+        return {
+            children: [
+                {
+                    id: get(childrenSchema, "id"),
+                    props: {
+                        children: {
+                            id: get(noChildrenSchema, "id"),
+                            props: noChildren,
+                        }
+                    }
+                }
+            ]
+        };
+    }
+
+    getChildOptions() {
+        return [
+            {
+                component: null,
+                schema: noChildrenSchema,
+            },
+            {
+                component: null,
+                schema: childrenSchema,
+            },
+        ];
+    }
+}
+```
+
+Controlled example:
+Both the `dataLocation` and `onLocationUpdate` props are optional, including both of them will allow the component to be fully controlled.
 
 ```jsx
 import * as React from "react";
@@ -32,6 +83,7 @@ export class Example extends React.Component {
                 data={this.getData()}
                 schema={childrenSchema}
                 childOptions={this.getChildOptions()}
+                dataLocation={this.state.dataLocation}
                 onLocationUpdate={this.handleLocationUpdate}
             />
         );
