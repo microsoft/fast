@@ -17,6 +17,8 @@ export * from "./heading";
 export * from "./hypertext";
 export * from "./image";
 export * from "./label";
+export * from "./listbox";
+export * from "./listbox-item";
 export * from "./metatext";
 export * from "./number-field";
 export * from "./paragraph";

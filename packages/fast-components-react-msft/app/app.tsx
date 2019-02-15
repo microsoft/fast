@@ -57,6 +57,7 @@ const formPlugins: Array<Plugin<PluginProps>> = [
             "@microsoft/fast-components-react-msft/action-trigger/glyph",
             "@microsoft/fast-components-react-msft/button/beforeContent",
             "@microsoft/fast-components-react-msft/button/afterContent",
+            "@microsoft/fast-components-react-msft/listbox-item/glyph",
             "@microsoft/fast-components-react-msft/carousel/items/content",
             "@microsoft/fast-components-react-msft/text-action/beforeGlyph",
             "@microsoft/fast-components-react-msft/text-action/afterGlyph",

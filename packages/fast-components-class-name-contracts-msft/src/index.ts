@@ -8,6 +8,7 @@ export * from "./carousel";
 export * from "./context-menu-item";
 export * from "./flipper";
 export * from "./heading";
+export * from "./listbox-item";
 export * from "./managed-classes";
 export * from "./metatext";
 export * from "./paragraph";
