@@ -62,7 +62,7 @@ describe("pivot", (): void => {
         expect(rendered.prop("aria-hidden")).toEqual(true);
     });
 
-    test("should set offsetX state to when offsetX state is set", () => {
+    test("should set active indicator style translate property when offsetX state is set", () => {
         const rendered: any = mount(<MSFTPivot label="label for testing" />);
 
         rendered.setState({ offsetX: 50 });
