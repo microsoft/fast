@@ -1,14 +1,18 @@
 
-# ReactJS FAST form generator
+# FAST Form generator React
+
 A self generating UI based on JSON Schemas.
 
 Dynamically generates a form user interface based on incoming JSON Schemas to change data values of a React component.
 
 ## Installing
+
 `npm i --save @microsoft/fast-form-generator-react`
 
 ## Using the form generator
+
 ### Basic usage
+
 The required properties are the data, schema, and onChange function. The data should be tied to your state as the data will change when editing the form.
 
 ```jsx
@@ -25,12 +29,15 @@ import Form from "@microsoft/fast-form-generator-react";
 ```
 
 ### onChange
+
 The onChange is used as a callback, it should take one argument that is the data that should be updated when any data has been changed from within the generated form.
 
 ## Data and data mapping
+
 Component data passed to the form generator as plain data, there is a `mapDataToComponent` export from the package which converts any children data to executable React components. It is required that any component that would be mapped from data should be supplied in the `childOptions` prop.
 
 Example onChange:
+
 ```jsx
 import { mapDataToComponent } from "@microsoft/fast-form-generator-react";
 
@@ -45,6 +52,7 @@ onChange = (data) => {
 ```
 
 ### Simple data
+
 Where the component is a button and the data being passed to the `onChange` is:
 
 ```json
@@ -55,9 +63,11 @@ Where the component is a button and the data being passed to the `onChange` is:
 ```
 
 ### Data with component children
+
 Where the component contains a button and the data being passed to the `onChange` is:
 
 Example data:
+
 ```json
 {
     "children": {
@@ -72,6 +82,7 @@ Example data:
 The `id` corresponds to the components' JSON schema id and the `props` corresponds to the data being passed to the component.
 
 ### Advanced usage
+
 Outside of the basic use case you can provide some additional functionality through optional properties.
 
 **childOptions** - Children by default only include text elements. If you want to add some child components you are providing, you can do this through the `childOptions`.
@@ -135,7 +146,7 @@ import Form from "@microsoft/fast-form-generator-react";
 />
 ```
 
-Each special component is listed in the form component [README.md](./src/form/README.md)
+[//]: <> (todo: Include resolution for https://github.com/Microsoft/fast-dna/issues/1384)
 
 **attributeSettingsMappingToPropertyNames** - The attributes of a form item can be mapped to by this prop. An example of updating the textarea row to be 1 when the property name is `text`:
 
@@ -197,12 +208,15 @@ import Form from "@microsoft/fast-form-generator-react";
 ```
 
 ## Writing JSON Schemas
+
 The schema form generator can interpret most [JSON schemas](http://json-schema.org/), however there are some things to note when writing JSON schemas that make for a better UI.
 
 ### title
+
 Using a title will add a label to the left or top of the corresponding form element. All properties are required to have a title.
 
 Example:
+
 ```json
 {
     "$schema": "http://json-schema.org/schema#",
@@ -230,9 +244,11 @@ Example:
 ```
 
 ### disabled
+
 Disabled flag is optional and item will be disabled if flag is set to true.
 
 Example:
+
 ```json
 {
     "$schema": "http://json-schema.org/schema#",
@@ -254,9 +270,11 @@ Example:
 ```
 
 ### examples & default
+
 Providing an example or default value will replace the placeholder 'example text' or randomly generated number. It is generally better to add this extra information in case the schema form generator needs to create a new set of data.
 
 Example:
+
 ```json
 {
     "$schema": "http://json-schema.org/schema#",
@@ -293,9 +311,11 @@ Example:
 Because the style is optional, you can toggle to add it. The schema form generator will see that color is a required piece of data and use the example given to fill in.
 
 ### oneOf & anyOf
+
 The oneOf and anyOf keywords can be used inside a property and at the root level of a schema. This will create a select dropdown so that the user can switch between them. If data has been provided, it will select the first oneOf/anyOf instance it can validate against. The contents of a 'title' property will be used for the contents of the dropdown.
 
-Example: 
+Example:
+
 ```json
 {
     "$schema": "http://json-schema.org/schema#",
@@ -328,7 +348,8 @@ Example:
 }
 ```
 
-### enums
+### Enums
+
 Any enums will be converted to a select dropdown.
 
 ```json
@@ -354,9 +375,11 @@ Any enums will be converted to a select dropdown.
 ```
 
 ### React children
+
 React children are treated as special objects instead of simple properties and can be defined in an object as `reactProperties`. They can specify `ids` from the given `childOptions` and can be given defaults, currently there is one default `text`. If no `ids` are specified all `childOptions` are considered valid.
 
 Example of an object that includes children with specific ids and the text default:
+
 ```json
 {
     "$schema": "http://json-schema.org/schema#",
@@ -385,10 +408,12 @@ Example of an object that includes children with specific ids and the text defau
 }
 ```
 
-### type object
+### Type object
+
 The object type will create its own section which can be navigated to via a link that is created on its parent object. Once it has been navigated to, breadcrumbs will appear above allowing the user to navigate back to the parent object.
 
 ### Keywords that cannot be interpreted
 
 #### allOf & $ref
+
 The allOf and $ref keywords cannot be interpreted by the schema form generator. To allow for most of the functionality there is a tool inside the @microsoft/fast-permutator which will simplify the schema and merge allOf arrays when it finds them, see `simplifySchemas`.

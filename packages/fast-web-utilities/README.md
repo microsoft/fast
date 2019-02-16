@@ -1,7 +1,9 @@
-# FAST - Web Utilities
+# FAST Web utilities
+
 This package is a collection of utilities intended to be used for web projects.
 
 ## Installation
+
 `npm i --save @microsoft/fast-web-utilities`
 
 ## Usage
@@ -9,6 +11,7 @@ This package is a collection of utilities intended to be used for web projects.
 ### DOM utilities
 
 #### getKeyCode
+
 The `getKeyCode` function gets the numeric key code associated with a keyboard event. This method is for use with DOM level 3 events that still use the deprecated keyCode property.
 
 ```js
@@ -24,6 +27,7 @@ handleKeyPress = (e) => {
 ### HTML utilities
 
 #### getClientRectWithMargin
+
 The `getClientRectWithMargin` function gets the client bounding rectangle including any margins of an element.
 
 ```js
@@ -34,6 +38,7 @@ const itemHeight = getClientRectWithMargin(item).height;
 ```
 
 #### convertStylePropertyPixelsToNumber
+
 The `convertStylePropertyPixelsToNumber` function will convert a property value from an elements computed style from pixels to a number value.
 
 ```js
@@ -45,6 +50,7 @@ const elementTopMargin = convertStylePropertyPixelsToNumber(style, "margin-top")
 ### Key code utilities
 
 #### KeyCodes (enum)
+
 ```js
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
@@ -63,6 +69,7 @@ handleKeyPress = (e) => {
 ### Localization utilities
 
 #### isRTL
+
 The `isRTL` utility determines if a string which should correspond to a language or language-locale is right to left.
 
 ```typescript
@@ -83,7 +90,8 @@ let direction: Direction = Direction.ltr;
 
 ### Number utilities
 
-#### limit
+#### Limit
+
 The `limit` function ensures that a value is between a min and max value. If the value is lower than min, min will be returned. If the value is greater than max, max will be retured.
 
 ```js
@@ -93,6 +101,7 @@ const setNumberByLimit = limit(0, 10, incomingNumber); // returns 10
 ```
 
 #### wrapInBounds
+
 The `wrapInBounds` function keeps a given value within the bounds of a min and max value. If the value is larger than the max, the minimum value will be returned. If the value is smaller than the minimum, the maximum will be returned. Otherwise, the value is returned un-changed.
 
 ```js
@@ -104,7 +113,8 @@ const activeIndex = wrapInBounds(0, this.slides.length - 1, index) // returns 0
 
 ### String utilities
 
-#### format
+#### Format
+
 The `format` function builds a string from a format specifier and replacement parameters.
 
 ```js
@@ -116,6 +126,7 @@ const newString = format(formatterString, "page", "4")); // "View page 4"
 ```
 
 #### startsWith
+
 The `startsWith` function checks to see if one string starts with another. The function is case sensitive.
 
 ```js
@@ -126,6 +137,7 @@ const matchIsTrue = startsWith("HelloWorld", "Hello"); // true
 ```
 
 #### isNullOrWhiteSpace
+
 The `isNullOrWhiteSpace` function determines if the specified string is undefined, null, empty, or whitespace. The function returns true if the value is undefined, null, empty, or whitespace, otherwise false.
 
 ```js
@@ -136,6 +148,7 @@ const checkWhitespace = isNullOrWhiteSpace(myAnchor.href);
 ```
 
 #### pascalCase
+
 The `pascalCase` function converts a string to Pascal Case
 
 ```js

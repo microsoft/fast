@@ -1,11 +1,15 @@
-# FAST React data utilities
+# FAST Data utilities React
+
 React data utilities are used to map data to components and perform other actions that may be necessary to pass data to other FAST-DNA libraries for manipulation, data validation, or storage. It relies on the creation of relevant JSON schemas for components, JSON schemas for the purposes of React use additional keyword of `reactProperties` for React children with the "type" of "children".
 
 ## Installation
+
 `npm i --save @microsoft/fast-data-utilities-react`
 
 ## Usage
+
 ### `mapDataToComponent`
+
 The `mapDataToComponent` function can be used to map data to a React component. It uses JSON Schema, IDs, as well as data to create components from plain data.
 
 An example of mapping data to a component from the `@microsoft/fast-data-utilities-react` package:

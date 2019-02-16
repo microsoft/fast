@@ -21,7 +21,7 @@ const users = [
 ];
 
 const siteConfig = {
-  title: 'FAST-DNA', // Title for your website.
+  title: 'Documentation', // Title for your website.
   tagline: 'An unopinionated system of components, development tools, and utilities used à la carte or as a suite to build enterprise-grade websites and applications.',
   url: 'https://microsoft.github.io', // Your website URL
   baseUrl: '/fast-dna/', 

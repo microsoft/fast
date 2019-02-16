@@ -41,6 +41,114 @@
         "title": "FAST Application Utilities",
         "sidebar_label": "Application Utilities"
       },
+      "en/packages/fast-breakpoint-tracker-react/index": {
+        "title": "FAST Breakpoint Tracker React",
+        "sidebar_label": "Breakpoint Tracker React"
+      },
+      "en/packages/fast-browser-extensions/index": {
+        "title": "FAST Browser Extensions",
+        "sidebar_label": "Browser Extensions"
+      },
+      "en/packages/fast-colors/index": {
+        "title": "FAST Colors",
+        "sidebar_label": "Colors"
+      },
+      "en/packages/fast-components-class-name-contracts-base/index": {
+        "title": "FAST Components Class Name Contracts Base",
+        "sidebar_label": "Components Class Name Contracts Base"
+      },
+      "en/packages/fast-components-class-name-contracts-msft/index": {
+        "title": "FAST Components Class Name Contracts Msft",
+        "sidebar_label": "Components Class Name Contracts Msft"
+      },
+      "en/packages/fast-components-foundation-react/index": {
+        "title": "FAST Components Foundation React",
+        "sidebar_label": "Components Foundation React"
+      },
+      "en/packages/fast-components-react-base/index": {
+        "title": "FAST Components React Base",
+        "sidebar_label": "Components React Base"
+      },
+      "en/packages/fast-components-react-msft/index": {
+        "title": "FAST Components React Msft",
+        "sidebar_label": "Components React Msft"
+      },
+      "en/packages/fast-components-styles-msft/index": {
+        "title": "FAST Components Styles Msft",
+        "sidebar_label": "Components Styles Msft"
+      },
+      "en/packages/fast-css-editor-react/index": {
+        "title": "FAST Css Editor React",
+        "sidebar_label": "Css Editor React"
+      },
+      "en/packages/fast-data-utilities-react/index": {
+        "title": "FAST Data Utilities React",
+        "sidebar_label": "Data Utilities React"
+      },
+      "en/packages/fast-development-site-react/index": {
+        "title": "FAST Development Site React",
+        "sidebar_label": "Development Site React"
+      },
+      "en/packages/fast-form-generator-react/index": {
+        "title": "FAST Form Generator React",
+        "sidebar_label": "Form Generator React"
+      },
+      "en/packages/fast-glyphs-msft/index": {
+        "title": "FAST Glyphs Msft",
+        "sidebar_label": "Glyphs Msft"
+      },
+      "en/packages/fast-jest-snapshots-react/index": {
+        "title": "FAST Jest Snapshots React",
+        "sidebar_label": "Jest Snapshots React"
+      },
+      "en/packages/fast-jss-manager-angular/index": {
+        "title": "FAST Jss Manager Angular",
+        "sidebar_label": "Jss Manager Angular"
+      },
+      "en/packages/fast-jss-manager-react/index": {
+        "title": "FAST Jss Manager React",
+        "sidebar_label": "Jss Manager React"
+      },
+      "en/packages/fast-jss-manager/index": {
+        "title": "FAST Jss Manager",
+        "sidebar_label": "Jss Manager"
+      },
+      "en/packages/fast-jss-utilities/index": {
+        "title": "FAST Jss Utilities",
+        "sidebar_label": "Jss Utilities"
+      },
+      "en/packages/fast-layouts-react/index": {
+        "title": "FAST Layouts React",
+        "sidebar_label": "Layouts React"
+      },
+      "en/packages/fast-markdown-msft-react/index": {
+        "title": "FAST Markdown Msft React",
+        "sidebar_label": "Markdown Msft React"
+      },
+      "en/packages/fast-navigation-generator-react/index": {
+        "title": "FAST Navigation Generator React",
+        "sidebar_label": "Navigation Generator React"
+      },
+      "en/packages/fast-permutator/index": {
+        "title": "FAST Permutator",
+        "sidebar_label": "Permutator"
+      },
+      "en/packages/fast-sketch-library/index": {
+        "title": "FAST Sketch Library",
+        "sidebar_label": "Sketch Library"
+      },
+      "en/packages/fast-tslint-rules/index": {
+        "title": "FAST Tslint Rules",
+        "sidebar_label": "Tslint Rules"
+      },
+      "en/packages/fast-viewer-react/index": {
+        "title": "FAST Viewer React",
+        "sidebar_label": "Viewer React"
+      },
+      "en/packages/fast-web-utilities/index": {
+        "title": "FAST Web Utilities",
+        "sidebar_label": "Web Utilities"
+      },
       "readme": {
         "title": "FAST-DNA",
         "sidebar_label": "What is FAST-DNA"

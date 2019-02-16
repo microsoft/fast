@@ -1,10 +1,13 @@
-# ReactJS FAST navigation generator
+# FAST Navigation generator React
+
 A React component which generates a tree view navigation. This component is intended to be used in conjunction with `@microsoft/fast-form-generator-react`. It uses a data location (via lodash path syntax) to indicate the active item.
 
 ## Installation
+
 `npm i --save @microsoft/fast-navigation-generator-react`
 
 ## Usage
+
 The default export is the navigation component.
 
 **Example schemas can be found [here](https://github.com/Microsoft/fast-dna/tree/master/packages/fast-navigation-generator-react/app/configs/children.schema.json) and [here](https://github.com/Microsoft/fast-dna/tree/master/packages/fast-navigation-generator-react/app/configs/no-children.schema.json)**
