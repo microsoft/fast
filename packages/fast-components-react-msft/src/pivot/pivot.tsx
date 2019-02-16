@@ -23,6 +23,7 @@ export interface PivotState {
     offsetX: number;
     activeId: string;
     focused: boolean;
+    tabPanelIndex: number;
 }
 
 class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotState> {
@@ -54,7 +55,7 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
 
     private ltr: Direction;
 
-    private tabPanelIndex: number;
+    private prevTabPanelIndex: number;
 
     /**
      * The constructor
@@ -65,6 +66,7 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
         if (Array.isArray(this.props.items)) {
             this.state = {
                 offsetX: 0,
+                tabPanelIndex: 0,
                 focused: false,
                 activeId:
                     typeof this.props.activeId === "string"
@@ -79,13 +81,18 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
     public componentDidMount(): void {
         this.ltr = this.getLTR();
         this.setActiveIndicatorOffset();
-        this.tabPanelIndex = this.updateTabPanelIndex();
+        this.prevTabPanelIndex = this.state.tabPanelIndex;
     }
 
-    public componentDidUpdate(): void {
+    public componentDidUpdate(prevProps: PivotProps, prevState: PivotState): void {
         if (this.ltr !== this.getLTR()) {
             this.setActiveIndicatorOffset();
             this.ltr = this.getLTR();
+        }
+
+        if (this.state.activeId !== prevState.activeId) {
+            this.setActiveIndicatorOffset();
+            this.updateTabPanelIndex();
         }
     }
 
@@ -127,7 +134,7 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
                 ""
             ),
             tab: get(this.props, "managedClasses.pivot_tab", ""),
-            tab__active: get(this.props, "managedClasses.pivot_tab_active", ""),
+            tab__active: get(this.props, "managedClasses.pivot_tab__active", ""),
             tabPanel: get(this.props, "managedClasses.pivot_tabPanel", ""),
             tabPanel__hidden: get(
                 this.props,
@@ -144,16 +151,18 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
      * focus-visual via style
      */
     private handleOnFocus = (): void => {
-        const tabElement: HTMLElement = ReactDOM.findDOMNode(
-            this.tabsRef.current
-        ) as HTMLElement;
+        if (canUseDOM()) {
+            const tabElement: HTMLElement = ReactDOM.findDOMNode(
+                this.tabsRef.current
+            ) as HTMLElement;
 
-        const mytabs: NodeListOf<Element> = tabElement.querySelectorAll(
-            canUseFocusVisible() ? "[role='tab']:focus-visible" : "[role='tab']:focus"
-        );
+            const mytabs: NodeListOf<Element> = tabElement.querySelectorAll(
+                canUseFocusVisible() ? "[role='tab']:focus-visible" : "[role='tab']:focus"
+            );
 
-        if (mytabs.length > 0) {
-            this.setState({ focused: true });
+            if (mytabs.length > 0) {
+                this.setState({ focused: true });
+            }
         }
     };
 
@@ -186,24 +195,16 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
     }
 
     private handleTabsUpdate = (activeTabId: string): void => {
-        this.updateTabPanelIndex();
-        if (this.props.activeId) {
-            this.props.onUpdate(activeTabId);
-        } else {
-            this.setState(
-                {
-                    activeId: activeTabId,
-                },
-                this.setActiveIndicatorOffset
-            );
-        }
+        this.setState({
+            activeId: activeTabId,
+        });
     };
 
     private isSelected(element: HTMLElement): boolean {
         return element.className.includes("active") === true;
     }
 
-    private updateTabPanelIndex(): number {
+    private updateTabPanelIndex(): void {
         if (canUseDOM() && this.tabsRef.current && Array.isArray(this.props.items)) {
             const tabElement: HTMLElement = ReactDOM.findDOMNode(
                 this.tabsRef.current
@@ -212,29 +213,30 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
             const mytabsArray: HTMLElement[] = Array.prototype.slice.call(
                 tabElement.querySelectorAll("[role='tab']")
             );
-
-            return mytabsArray.findIndex(this.isSelected);
+            this.setState({
+                tabPanelIndex: mytabsArray.findIndex(this.isSelected),
+            });
         }
     }
 
     private generateTabPanelsClassNames(): string {
         let className: string = get(this.props, "managedClasses.pivot_tabPanels", "");
-        if (this.tabPanelIndex === this.updateTabPanelIndex()) {
+        if (this.state.tabPanelIndex === this.prevTabPanelIndex) {
             className = className;
-        } else if (this.tabPanelIndex < this.updateTabPanelIndex()) {
+        } else if (this.state.tabPanelIndex < this.prevTabPanelIndex) {
             className = `${className} ${get(
                 this.props,
                 "managedClasses.pivot_tabPanels__fromLeft",
-                ""
+                "Error"
             )}`;
         } else {
             className = `${className} ${get(
                 this.props,
                 "managedClasses.pivot_tabPanels__fromRight",
-                ""
+                "Error"
             )}`;
         }
-        this.tabPanelIndex = this.updateTabPanelIndex();
+        this.prevTabPanelIndex = this.state.tabPanelIndex;
         return className;
     }
 
@@ -269,15 +271,17 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
      * Gets the direction of the element
      */
     private getLTR(): Direction {
-        const tabElement: HTMLElement = ReactDOM.findDOMNode(
-            this.tabsRef.current
-        ) as HTMLElement;
+        if (canUseDOM()) {
+            const tabElement: HTMLElement = ReactDOM.findDOMNode(
+                this.tabsRef.current
+            ) as HTMLElement;
 
-        return !tabElement
-            ? Direction.ltr
-            : getComputedStyle(tabElement).direction === Direction.rtl
-                ? Direction.rtl
-                : Direction.ltr;
+            return !tabElement
+                ? Direction.ltr
+                : getComputedStyle(tabElement).direction === Direction.rtl
+                    ? Direction.rtl
+                    : Direction.ltr;
+        }
     }
 }
 

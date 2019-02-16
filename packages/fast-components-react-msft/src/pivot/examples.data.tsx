@@ -77,8 +77,7 @@ const examples: ComponentFactoryExample<PivotProps> = {
     detailData: {
         ...pivotManagedClasses,
         label: "A set of example text content",
-        activeId: "pivot03",
-        items: [],
+        items: detailPivotItem,
     },
     data: [
         {
