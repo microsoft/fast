@@ -2,6 +2,7 @@ import * as React from "react";
 import NumberField, {
     NumberFieldHandledProps,
     NumberFieldManagedClasses,
+    NumberFieldProps,
     NumberFieldUnhandledProps,
 } from "./number-field";
 import schema from "./number-field.schema.json";
@@ -25,7 +26,8 @@ const examples: ComponentFactoryExample<NumberFieldHandledProps> = {
         min: 0,
         max: 1000,
         step: 100,
-    },
+        value: 100,
+    } as any,
     data: [
         {
             ...classes,
@@ -62,7 +64,7 @@ const examples: ComponentFactoryExample<NumberFieldHandledProps> = {
         {
             ...classes,
             name: "Name",
-        },
+        } as any,
     ],
 };
 

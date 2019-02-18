@@ -25,14 +25,6 @@ class NumberField extends Foundation<
 
     protected handledProps: HandledProps<NumberFieldHandledProps> = {
         managedClasses: void 0,
-        disabled: void 0,
-        min: void 0,
-        max: void 0,
-        name: void 0,
-        placeholder: void 0,
-        step: void 0,
-        readOnly: void 0,
-        required: void 0,
         value: void 0,
     };
 
@@ -45,7 +37,6 @@ class NumberField extends Foundation<
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
                 type={TextFieldType.number}
-                defaultValue={get(this.props, "value", undefined)}
                 {...this.assignAttributes()}
             />
         );
@@ -61,42 +52,10 @@ class NumberField extends Foundation<
     /**
      * Generates attributes based on props
      */
-    private assignAttributes(): Partial<NumberFieldHandledProps> {
-        const attributes: Partial<NumberFieldHandledProps> = {};
-
-        if (typeof this.props.disabled === "boolean") {
-            attributes.disabled = true;
+    private assignAttributes(): Partial<NumberFieldUnhandledProps> {
+        if (typeof this.props.value === "number") {
+            return { defaultValue: `${this.props.value}` };
         }
-
-        if (typeof this.props.max === "number") {
-            attributes.max = this.props.max;
-        }
-
-        if (typeof this.props.min === "number") {
-            attributes.min = this.props.min;
-        }
-
-        if (typeof this.props.placeholder === "string") {
-            attributes.placeholder = this.props.placeholder;
-        }
-
-        if (typeof this.props.name === "string") {
-            attributes.name = this.props.name;
-        }
-
-        if (typeof this.props.readOnly === "boolean") {
-            attributes.readOnly = true;
-        }
-
-        if (typeof this.props.required === "boolean") {
-            attributes.required = true;
-        }
-
-        if (typeof this.props.step === "number") {
-            attributes.step = this.props.step;
-        }
-
-        return attributes;
     }
 }
 
