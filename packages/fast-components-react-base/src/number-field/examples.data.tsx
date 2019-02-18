@@ -26,7 +26,6 @@ const examples: ComponentFactoryExample<NumberFieldHandledProps> = {
         min: 0,
         max: 1000,
         step: 100,
-        value: 100,
     } as any,
     data: [
         {
