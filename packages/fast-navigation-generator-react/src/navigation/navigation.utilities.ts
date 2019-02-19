@@ -5,6 +5,8 @@ import {
 } from "@microsoft/fast-data-utilities-react";
 import { ItemType, TreeNavigation } from "./navigation.props";
 
+const propsKeyword: string = "props";
+
 function getDataLocationParentLocation(
     dataLocations: string[],
     dataLocation: string
@@ -39,10 +41,12 @@ function getNavigationFromChildLocations(
             );
 
             // check against other data locations to determine where this item should be set
-            if (parentLocation) {
+            if (parentLocation !== undefined) {
+                const parentPropLocation: string = `${parentLocation}.${propsKeyword}`;
+
                 updatedNavigation.forEach(
                     (navigationItem: TreeNavigation): void => {
-                        if (navigationItem.dataLocation === parentLocation) {
+                        if (navigationItem.dataLocation === parentPropLocation) {
                             navigationItem.items = Array.isArray(navigationItem.items)
                                 ? navigationItem.items
                                 : [];
@@ -53,9 +57,9 @@ function getNavigationFromChildLocations(
                                     return (
                                         childrenDataLocationItem.slice(
                                             0,
-                                            parentLocation.length
-                                        ) === parentLocation &&
-                                        childrenDataLocationItem !== parentLocation
+                                            parentPropLocation.length
+                                        ) === parentPropLocation &&
+                                        childrenDataLocationItem !== parentPropLocation
                                     );
                                 }
                             );
@@ -74,7 +78,9 @@ function getNavigationFromChildLocations(
                 const itemAdded: TreeNavigation = updatedNavigation.find(
                     (updatedNavigationItem: TreeNavigation) => {
                         return (
-                            updatedNavigationItem.dataLocation === childrenDataLocation
+                            updatedNavigationItem.dataLocation === childrenDataLocation ||
+                            updatedNavigationItem.dataLocation ===
+                                `${childrenDataLocation}.${propsKeyword}`
                         );
                     }
                 );
@@ -84,14 +90,18 @@ function getNavigationFromChildLocations(
                         (childOption: ChildOptionItem) =>
                             get(data, childrenDataLocation).id === childOption.schema.id
                     );
+                    const isString: boolean =
+                        typeof get(data, childrenDataLocation) === "string";
 
                     updatedNavigation.push({
                         text: get(subSchema, "schema.title")
                             ? subSchema.schema.title
-                            : typeof get(data, childrenDataLocation) === "string"
+                            : isString
                                 ? get(data, childrenDataLocation)
                                 : "Undefined",
-                        dataLocation: childrenDataLocation,
+                        dataLocation: isString
+                            ? childrenDataLocation
+                            : `${childrenDataLocation}.${propsKeyword}`,
                         type: ItemType.children,
                     });
                 }

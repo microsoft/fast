@@ -60,7 +60,7 @@ describe("getNavigationFromData", () => {
         ).items;
         expect(navigationFromData).toHaveLength(1);
         expect(navigationFromData[0].items).toEqual(undefined);
-        expect(navigationFromData[0].dataLocation).toEqual("children");
+        expect(navigationFromData[0].dataLocation).toEqual("children.props");
         expect(navigationFromData[0].text).toEqual(childOptions[0].schema.title);
         expect(navigationFromData[0].type).toEqual(ItemType.children);
     });
@@ -88,11 +88,11 @@ describe("getNavigationFromData", () => {
 
         expect(navigationFromData).toHaveLength(3);
         expect(navigationFromData[0].items).toEqual(undefined);
-        expect(navigationFromData[0].dataLocation).toEqual("children[0]");
+        expect(navigationFromData[0].dataLocation).toEqual("children[0].props");
         expect(navigationFromData[0].text).toEqual(childOptions[0].schema.title);
         expect(navigationFromData[0].type).toEqual(ItemType.children);
         expect(navigationFromData[1].items).toEqual(undefined);
-        expect(navigationFromData[1].dataLocation).toEqual("children[1]");
+        expect(navigationFromData[1].dataLocation).toEqual("children[1].props");
         expect(navigationFromData[1].text).toEqual(childOptions[0].schema.title);
         expect(navigationFromData[1].type).toEqual(ItemType.children);
         expect(navigationFromData[2].items).toEqual(undefined);
@@ -119,13 +119,13 @@ describe("getNavigationFromData", () => {
             childOptions
         ).items;
         expect(navigationFromData).toHaveLength(1);
-        expect(navigationFromData[0].dataLocation).toEqual("children");
+        expect(navigationFromData[0].dataLocation).toEqual("children.props");
         expect(navigationFromData[0].text).toEqual(childOptions[1].schema.title);
         expect(navigationFromData[0].type).toEqual(ItemType.children);
         expect(navigationFromData[0].items).toHaveProperty("length");
         expect(navigationFromData[0].items).toHaveLength(1);
         expect(navigationFromData[0].items[0].dataLocation).toEqual(
-            "children.props.children"
+            "children.props.children.props"
         );
         expect(navigationFromData[0].items[0].text).toEqual(childOptions[0].schema.title);
         expect(navigationFromData[0].items[0].type).toEqual(ItemType.children);
@@ -156,19 +156,19 @@ describe("getNavigationFromData", () => {
             childOptions
         ).items;
         expect(navigationFromData).toHaveLength(1);
-        expect(navigationFromData[0].dataLocation).toEqual("children");
+        expect(navigationFromData[0].dataLocation).toEqual("children.props");
         expect(navigationFromData[0].text).toEqual(childOptions[1].schema.title);
         expect(navigationFromData[0].type).toEqual(ItemType.children);
         expect(navigationFromData[0].items).toHaveProperty("length");
         expect(navigationFromData[0].items).toHaveLength(2);
         expect(navigationFromData[0].items[0].dataLocation).toEqual(
-            "children.props.children[0]"
+            "children.props.children[0].props"
         );
         expect(navigationFromData[0].items[0].text).toEqual(childOptions[0].schema.title);
         expect(navigationFromData[0].items[0].type).toEqual(ItemType.children);
         expect(navigationFromData[0].items[0].items).toEqual(undefined);
         expect(navigationFromData[0].items[1].dataLocation).toEqual(
-            "children.props.children[1]"
+            "children.props.children[1].props"
         );
         expect(navigationFromData[0].items[1].text).toEqual(childOptions[0].schema.title);
         expect(navigationFromData[0].items[1].type).toEqual(ItemType.children);
@@ -210,30 +210,30 @@ describe("getNavigationFromData", () => {
             childOptions
         ).items;
         expect(navigationFromData).toHaveLength(2);
-        expect(navigationFromData[0].dataLocation).toEqual("children[0]");
+        expect(navigationFromData[0].dataLocation).toEqual("children[0].props");
         expect(navigationFromData[0].text).toEqual(childOptions[1].schema.title);
         expect(navigationFromData[0].type).toEqual(ItemType.children);
         expect(navigationFromData[0].items).toHaveProperty("length");
         expect(navigationFromData[0].items).toHaveLength(2);
         expect(navigationFromData[0].items[0].dataLocation).toEqual(
-            "children[0].props.children[0]"
+            "children[0].props.children[0].props"
         );
         expect(navigationFromData[0].items[0].text).toEqual(childOptions[0].schema.title);
         expect(navigationFromData[0].items[0].type).toEqual(ItemType.children);
         expect(navigationFromData[0].items[0].items).toEqual(undefined);
         expect(navigationFromData[0].items[1].dataLocation).toEqual(
-            "children[0].props.children[1]"
+            "children[0].props.children[1].props"
         );
         expect(navigationFromData[0].items[1].text).toEqual(childOptions[0].schema.title);
         expect(navigationFromData[0].items[1].type).toEqual(ItemType.children);
         expect(navigationFromData[0].items[1].items).toEqual(undefined);
-        expect(navigationFromData[1].dataLocation).toEqual("children[1]");
+        expect(navigationFromData[1].dataLocation).toEqual("children[1].props");
         expect(navigationFromData[1].text).toEqual(childOptions[1].schema.title);
         expect(navigationFromData[1].type).toEqual(ItemType.children);
         expect(navigationFromData[1].items).toHaveProperty("length");
         expect(navigationFromData[1].items).toHaveLength(1);
         expect(navigationFromData[1].items[0].dataLocation).toEqual(
-            "children[1].props.children"
+            "children[1].props.children.props"
         );
         expect(navigationFromData[1].items[0].text).toEqual(childOptions[0].schema.title);
         expect(navigationFromData[1].items[0].type).toEqual(ItemType.children);
