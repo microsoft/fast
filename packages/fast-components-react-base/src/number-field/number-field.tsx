@@ -19,13 +19,10 @@ class NumberField extends Foundation<
     NumberFieldUnhandledProps,
     {}
 > {
-    public static defaultProps: Partial<NumberFieldProps> = {};
-
     public static displayName: string = "NumberField";
 
     protected handledProps: HandledProps<NumberFieldHandledProps> = {
         managedClasses: void 0,
-        value: void 0,
     };
 
     /**
@@ -37,7 +34,6 @@ class NumberField extends Foundation<
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
                 type={TextFieldType.number}
-                {...this.assignAttributes()}
             />
         );
     }
@@ -47,15 +43,6 @@ class NumberField extends Foundation<
      */
     protected generateClassNames(): string {
         return super.generateClassNames(get(this.props, "managedClasses.numberField"));
-    }
-
-    /**
-     * Generates attributes based on props
-     */
-    private assignAttributes(): Partial<NumberFieldUnhandledProps> {
-        if (typeof this.props.value === "number") {
-            return { defaultValue: `${this.props.value}` };
-        }
     }
 }
 

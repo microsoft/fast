@@ -24,8 +24,9 @@ const examples: ComponentFactoryExample<NumberFieldHandledProps> = {
         ...classes,
         name: "Number field",
         min: 0,
-        max: 1000,
-        step: 100,
+        max: 100,
+        step: 10,
+        defaultValue: 0,
     } as any,
     data: [
         {
@@ -43,6 +44,10 @@ const examples: ComponentFactoryExample<NumberFieldHandledProps> = {
         {
             ...classes,
             value: 100,
+        },
+        {
+            ...classes,
+            defaultValue: 100,
         },
         {
             ...classes,

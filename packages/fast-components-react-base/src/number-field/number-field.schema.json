@@ -37,6 +37,10 @@
             "title": "HTML required attribute",
             "type": "boolean"
         },
+        "defaultValue": {
+            "title": "Initial value",
+            "type": "number"
+        },
         "value": {
             "title": "HTML value attribute",
             "type": "number"
