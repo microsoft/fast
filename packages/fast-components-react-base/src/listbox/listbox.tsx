@@ -33,7 +33,7 @@ class Listbox extends Foundation<
         multiselectable: false,
         defaultSelection: [],
         typeAheadPropertyKey: "displayString",
-        autoFocus: false,
+        focusItemOnMount: false,
     };
 
     /**
@@ -196,7 +196,7 @@ class Listbox extends Foundation<
         onSelectedItemsChanged: void 0,
         selectedItems: void 0,
         typeAheadPropertyKey: void 0,
-        autoFocus: void 0,
+        focusItemOnMount: void 0,
     };
 
     private rootElement: React.RefObject<HTMLDivElement> = React.createRef<
@@ -274,7 +274,7 @@ class Listbox extends Foundation<
                 : this.domChildren().findIndex(this.isFocusableElement);
 
         if (focusIndex !== -1) {
-            if (this.props.autoFocus) {
+            if (this.props.focusItemOnMount) {
                 this.setFocus(focusIndex, +1);
             }
             this.setState({

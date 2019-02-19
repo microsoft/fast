@@ -61,9 +61,9 @@ describe("listbox", (): void => {
         expect(document.activeElement.id).toBe("");
     });
 
-    test("should set focus to listitem when autofocus is set to true", (): void => {
+    test("should set focus to listitem when focusItemOnMount is set to true", (): void => {
         const rendered: any = mount(
-            <Listbox autoFocus={true}>
+            <Listbox focusItemOnMount={true}>
                 <div>not a focusable element</div>
                 {itemA}
             </Listbox>,

@@ -47,7 +47,7 @@ export interface ListboxHandledProps extends ListboxManagedClasses {
     /**
      * Whether a listitem should automatically get focus when this component is mounted
      */
-    autoFocus?: boolean;
+    focusItemOnMount?: boolean;
 
     /**
      * Specifies that the control is disabled
