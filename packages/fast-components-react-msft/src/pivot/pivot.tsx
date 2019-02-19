@@ -22,7 +22,6 @@ import { PivotProps } from ".";
 export interface PivotState {
     offsetX: number;
     activeId: string;
-    focused: boolean;
     tabPanelIndex: number;
 }
 
@@ -67,7 +66,6 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
             this.state = {
                 offsetX: 0,
                 tabPanelIndex: 0,
-                focused: false,
                 activeId:
                     typeof this.props.activeId === "string"
                         ? this.props.activeId
@@ -109,12 +107,14 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
                 onUpdate={this.handleTabsUpdate}
                 items={this.props.items}
                 label={this.props.label}
-                onBlur={this.handleOnBlur}
-                onFocus={this.handleOnFocus}
             >
                 <span
                     style={{ transform: `translateX(${toPx(this.state.offsetX)})` }}
-                    className={this.generateActiveIndicatorClassNames()}
+                    className={get(
+                        this.props,
+                        "managedClasses.pivot_activeIndicator",
+                        ""
+                    )}
                 />
             </BaseTabs>
         );
@@ -142,56 +142,6 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
                 ""
             ),
         };
-    }
-
-    /**
-     * Adds focus state to outer wrapper
-     * In order perfomantly apply focus to activeIndicator,
-     * a class must be added instead of using
-     * focus-visual via style
-     */
-    private handleOnFocus = (): void => {
-        if (canUseDOM()) {
-            const tabElement: HTMLElement = ReactDOM.findDOMNode(
-                this.tabsRef.current
-            ) as HTMLElement;
-
-            const mytabs: NodeListOf<Element> = tabElement.querySelectorAll(
-                canUseFocusVisible() ? "[role='tab']:focus-visible" : "[role='tab']:focus"
-            );
-
-            if (mytabs.length > 0) {
-                this.setState({ focused: true });
-            }
-        }
-    };
-
-    /**
-     * Removes focus state
-     */
-    private handleOnBlur = (): void => {
-        this.setState({ focused: false });
-    };
-
-    /**
-     * Generates class names
-     */
-    private generateActiveIndicatorClassNames(): string {
-        let classNames: string = get(
-            this.props,
-            "managedClasses.pivot_activeIndicator",
-            ""
-        );
-
-        if (this.state.focused) {
-            classNames = `${classNames} ${get(
-                this.props,
-                "managedClasses.pivot_activeIndicator__focused",
-                ""
-            )}`;
-        }
-
-        return classNames;
     }
 
     private handleTabsUpdate = (activeTabId: string): void => {

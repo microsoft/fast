@@ -36,7 +36,7 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
             fontSize: "14px",
             whiteSpace: "nowrap",
             display: "flex",
-            border: "1px solid",
+            border: "2px solid",
             borderColor: "transparent",
             alignItems: "center",
             boxSizing: "border-box",
@@ -48,7 +48,9 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
             "&:active": {
                 opacity: "0.6",
             },
-            ...applyFocusVisible({}),
+            ...applyFocusVisible({
+                borderColor: designSystem.foregroundColor,
+            }),
         },
         pivot_tab__active: {},
         pivot_activeIndicator: {
@@ -61,11 +63,6 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
             height: "3px",
             display: "block",
             background: ensureBrandNormal,
-        },
-        pivot_activeIndicator__focused: {
-            width: "30px",
-            left: "-15px",
-            background: "black",
         },
         pivot_tabPanel: {
             display: "block",

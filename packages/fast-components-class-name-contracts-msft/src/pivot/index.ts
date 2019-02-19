@@ -15,11 +15,6 @@ export interface PivotClassNameContract extends BaseTabsClassNameContract {
     pivot_activeIndicator?: string;
 
     /**
-     * The active pivot indicator that is focused
-     */
-    pivot_activeIndicator__focused?: string;
-
-    /**
      * The collection of pivot items
      */
     pivot_tabList?: string;

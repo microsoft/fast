@@ -16,7 +16,6 @@ configure({ adapter: new Adapter() });
 const managedClasses: PivotClassNameContract = {
     pivot: "pivot-class",
     pivot_activeIndicator: "pivot_activeIndicator-class",
-    pivot_activeIndicator__focused: "pivot_activeIndicator__focused-class",
     pivot_tab: "pivot_tab-class",
     pivot_tab__active: "pivot_tab__active-class",
     pivot_tabList: "pivot_tabList-class",
@@ -154,32 +153,6 @@ describe("pivot", (): void => {
                 .first()
                 .html()
         ).toContain("translateX(50px)");
-    });
-
-    test("should render active indicator with focus class if focus is true", () => {
-        const rendered: any = mount(
-            <MSFTPivot
-                managedClasses={managedClasses}
-                label={"foo"}
-                items={detailPivotItemData}
-            />
-        );
-
-        expect(rendered.state("focused")).toBe(false);
-
-        rendered.setState({ focused: true });
-
-        expect(rendered.state("focused")).toBe(true);
-        expect(
-            rendered
-                .find("span")
-                .first()
-                .prop("className")
-        ).toContain(
-            `${managedClasses.pivot_activeIndicator} ${
-                managedClasses.pivot_activeIndicator__focused
-            }`
-        );
     });
 
     test("should correctly set active ID", () => {
