@@ -42,9 +42,11 @@ process.argv.forEach(function (val, index) {
  */
 function copyReadmeFiles() {
 
-    if (dryRun) console.log("In docs/en/packages/, this script would...");
-
     const resolvedSrcReadmePaths = path.resolve(rootDir, srcReadmePaths);
+
+    if (dryRun) console.log(`For ${destDir}, this script would...`);
+
+    createDirectory(destDir);
     glob(resolvedSrcReadmePaths, {realpath:true}, function(error, srcFiles) {
 
         srcFiles.forEach((srcReadmePath) => {    
@@ -91,18 +93,14 @@ function createDestReadme(srcReadmePath) {
         `sidebar_label: ${title}\n` +
         `---\n\n`;
 
-    if (!fs.existsSync(destDirPath)) {
-        dryRun ? console.log(`...CREATE folder '${folderName}'`) : fs.mkdirSync(destDirPath);
-    }
+    createDirectory(destDirPath);
 
     if (dryRun) {
-
         if (fs.existsSync(destReadmePath)) {
             console.log(`...REPLACE readme.md in the '${folderName}' folder`);
         } else {
             console.log(`...ADD readme.md into the '${folderName}' folder`);
         }
-
     } else {
         try {
             fs.writeFileSync(destReadmePath, docusaurusHeader);
@@ -138,6 +136,16 @@ function updateSidebar() {
         }); 
     }
 
+}
+
+/**
+ * Utility function that creates new folders
+ * based off dir argument
+ */
+function createDirectory(dir) {
+    if (!fs.existsSync(dir)) {
+        dryRun ? console.log(`...CREATE the '${dir}' folder.`) : fs.mkdirSync(dir);
+    }
 }
 
 /**
