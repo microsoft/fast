@@ -1,6 +1,6 @@
 # FAST Components foundation React
 
-The foundation component for FAST component packages in React. The default export is an extension from the `React.Component` and includes additional functionality for extension by React component libraries.
+The foundation component for FAST component packages in React. The default export is an extension from the `React.Component` and includes additional functionality for extension by React component libraries. There is also a named export for `PureFoundation` which is an extension from `React.PureComponent`.
 
 ## Installation
 
@@ -94,9 +94,9 @@ Rendered result:
 <div class="my-class-name"></div>
 ```
 
-### `withSlot`
+### `withSlot` (Foundation only)
 
-Gets all children with the `slot` prop that matches a given string, example: `this.withSlot("after")`.
+Gets all children with the `slot` prop that matches a given string, example: `this.withSlot("after")`. 
 
 Component example:
 
@@ -132,7 +132,7 @@ Rendered result:
 </div>
 ```
 
-### `withoutSlot`
+### `withoutSlot` (Foundation only)
 
 Gets all children with the `slot` prop that does not match a given string, example: `this.withoutSlot("after")`.
 
