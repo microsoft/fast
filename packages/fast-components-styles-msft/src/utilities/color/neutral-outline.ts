@@ -22,9 +22,9 @@ import { clamp, memoize } from "lodash-es";
 /**
  * Deltas to derive state swatches from the background
  */
-export const neutralOutlineDeltaRest: number = 34;
-export const neutralOutlineDeltaHover: number = 38;
-export const neutralOutlineDeltaActive: number = 42;
+export const neutralOutlineDeltaRest: number = 12;
+export const neutralOutlineDeltaHover: number = 24;
+export const neutralOutlineDeltaActive: number = 18;
 
 const neutralOutlineAlgorithm: (designSystem: DesignSystem) => StatefulSwatch = memoize(
     (designSystem: DesignSystem): StatefulSwatch => {
