@@ -19,8 +19,8 @@ import {
 } from "./neutral-fill";
 
 export const neutralFillStealthDeltaRest: number = 0;
-export const neutralFillStealthDeltaHover: number = 2;
-export const neutralFillStealthDeltaActive: number = 1;
+export const neutralFillStealthDeltaHover: number = 3;
+export const neutralFillStealthDeltaActive: number = 2;
 
 /**
  * The minimum offset before which we can switch fill directions
