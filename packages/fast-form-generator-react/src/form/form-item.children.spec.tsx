@@ -262,7 +262,18 @@ describe("Children", () => {
                 .find("li")
         ).toHaveLength(1);
 
-        const renderedWithTwoChildren: any = mount(
+        const renderedWithOneChildString: any = mount(
+            <Children {...childrenProps} data={"hello world"} />
+        );
+
+        expect(
+            renderedWithOneChild
+                .find("ul")
+                .at(0)
+                .find("li")
+        ).toHaveLength(1);
+
+        const renderedWithThreeChildren: any = mount(
             <Children
                 {...childrenProps}
                 data={[
@@ -274,16 +285,17 @@ describe("Children", () => {
                         id: "beta 1",
                         props: {},
                     },
+                    "hello world",
                 ]}
             />
         );
 
         expect(
-            renderedWithTwoChildren
+            renderedWithThreeChildren
                 .find("ul")
                 .at(0)
                 .find("li")
-        ).toHaveLength(2);
+        ).toHaveLength(3);
     });
     test("should fire a callback to update the data when an `option` in the `listbox` is clicked", () => {
         const callback: any = jest.fn();
@@ -299,6 +311,28 @@ describe("Children", () => {
         expect(callback).toHaveBeenCalled();
         expect(callback.mock.calls[0][0]).toEqual("locationOfChildren");
         expect(callback.mock.calls[0][1]).toEqual([{ id: "beta 1", props: {} }]);
+    });
+    test("should fire a callback to update the data when a default text `option` in the `listbox` is clicked", () => {
+        const callback: any = jest.fn();
+        const rendered: any = mount(
+            <Children
+                {...childrenProps}
+                defaultChildOptions={["text"]}
+                onChange={callback}
+            />
+        );
+
+        rendered
+            .find("ul")
+            .at(0)
+            .find("li")
+            .at(0)
+            .simulate("click");
+
+        expect(callback).toHaveBeenCalled();
+        expect(callback.mock.calls[0][0]).toEqual("locationOfChildren");
+        expect(Array.isArray(callback.mock.calls[0][1])).toBe(true);
+        expect(typeof callback.mock.calls[0][1][0]).toEqual("string");
     });
     test("should not add a child option to the data when a value has been added to the `input` that is an empty string", () => {
         const callback: any = jest.fn();
