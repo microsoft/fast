@@ -58,6 +58,9 @@ export { LabelExamples };
 import MetatextExamples from "../src/metatext/examples.data";
 export { MetatextExamples };
 
+import NumberFieldExamples from "../src/number-field/examples.data";
+export { NumberFieldExamples };
+
 import ParagraphExamples from "../src/paragraph/examples.data";
 export { ParagraphExamples };
 

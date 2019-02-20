@@ -90,6 +90,12 @@ import MetatextStyles from "./metatext";
 export { MetatextStyles };
 
 /**
+ * Export metatext styles
+ */
+import NumberFieldStyles from "./number-field";
+export { NumberFieldStyles };
+
+/**
  * Export paragraph styles
  */
 import ParagraphStyles from "./paragraph";

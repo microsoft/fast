@@ -58,6 +58,10 @@ import ListboxItem from "./listbox-item";
 export { ListboxItem };
 export * from "./listbox-item";
 
+import NumberField from "./number-field";
+export { NumberField };
+export * from "./number-field";
+
 import Progress from "./progress";
 export { Progress };
 export * from "./progress";
