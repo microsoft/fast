@@ -21,6 +21,10 @@
         "title": "Standards",
         "sidebar_label": "Standards"
       },
+      "en/contributing/status": {
+        "title": "Status",
+        "sidebar_label": "Status"
+      },
       "en/contributing/testing": {
         "title": "Testing",
         "sidebar_label": "Testing"
