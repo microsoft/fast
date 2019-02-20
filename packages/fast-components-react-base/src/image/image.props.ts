@@ -6,10 +6,7 @@ import {
 import { Omit } from "utility-types";
 
 export interface ImageUnhandledProps
-    extends Omit<
-            React.HTMLAttributes<HTMLImageElement | HTMLPictureElement>,
-            "children"
-        > {}
+    extends React.HTMLAttributes<HTMLImageElement | HTMLPictureElement> {}
 export interface ImageManagedClasses extends ManagedClasses<ImageClassNameContract> {}
 export interface ImageHandledProps extends ImageManagedClasses {
     /**
@@ -37,8 +34,8 @@ export interface ImageHandledProps extends ImageManagedClasses {
      * The image children
      */
     children?:
-        | React.ReactElement<HTMLSourceElement>
-        | Array<React.ReactElement<HTMLSourceElement>>;
+        | Array<React.ReactElement<HTMLSourceElement>>
+        | React.ReactElement<HTMLSourceElement>;
 }
 
 export type ImageProps = ImageHandledProps & ImageUnhandledProps;

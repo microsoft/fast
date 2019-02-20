@@ -7,13 +7,8 @@ import {
 export interface HypertextManagedClasses
     extends ManagedClasses<HypertextClassNameContract> {}
 export interface HypertextUnhandledProps
-    extends React.HTMLAttributes<HTMLAnchorElement> {}
+    extends React.AnchorHTMLAttributes<HTMLAnchorElement> {}
 export interface HypertextHandledProps extends HypertextManagedClasses {
-    /**
-     * The destination address
-     */
-    href?: string;
-
     /**
      * The hypertext content
      */
