@@ -23,6 +23,7 @@ const examples: ComponentFactoryExample<ListboxItemHandledProps> = {
         value: "Test value",
         displayString: "Test Display",
         id: "TestID",
+        children: "Child",
     },
     data: [
         {
@@ -30,6 +31,7 @@ const examples: ComponentFactoryExample<ListboxItemHandledProps> = {
             value: "Test value",
             id: "TestID",
             displayString: "Test Display",
+            children: "child",
         },
     ],
 };

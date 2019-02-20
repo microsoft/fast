@@ -48,7 +48,6 @@ class ListboxItem extends Foundation<
                 onFocus={this.handleFocus}
                 onKeyDown={this.handleKeyDown}
             >
-                {this.props.displayString}
                 {this.props.children}
             </div>
         );
@@ -113,7 +112,6 @@ class ListboxItem extends Foundation<
         switch (e.keyCode) {
             case KeyCodes.enter:
             case KeyCodes.space:
-                e.preventDefault();
                 this.invokeOption(e);
                 break;
         }
@@ -131,7 +129,6 @@ class ListboxItem extends Foundation<
             return;
         }
 
-        e.preventDefault();
         this.invokeOption(e);
 
         if (typeof this.props.onClick === "function") {
