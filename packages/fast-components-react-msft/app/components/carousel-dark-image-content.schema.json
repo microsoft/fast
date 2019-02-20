@@ -4,5 +4,14 @@
     "description": "A carousel dark image content component's schema definition.",
     "id": "carousel-dark-image-content",
     "type": "object",
-    "properties": {}
+    "properties": {
+        "src": {
+            "title": "HTML src attribute",
+            "type": "string"
+        },
+        "alt": {
+            "title": "HTML alt attribute",
+            "type": "string"
+        }
+    }
 }

@@ -20,7 +20,12 @@ const detailTabItem: Slide[] = [
     {
         content: {
             id: carouselDarkImageContentSchema.id,
-            props: {},
+            props: {
+                image: {
+                    src: "http://placehold.it/1399x600/2F2F2F/171717",
+                    alt: "Placeholder image",
+                },
+            },
         } as any,
         id: uniqueId(),
         theme: SlideTheme.dark,
@@ -36,7 +41,12 @@ const detailTabItem: Slide[] = [
     {
         content: {
             id: carouselDarkImageContentSchema.id,
-            props: {},
+            props: {
+                image: {
+                    src: "http://placehold.it/1399x600/2F2F2F/171717",
+                    alt: "Placeholder image",
+                },
+            },
         } as any,
         id: uniqueId(),
         theme: SlideTheme.dark,
@@ -55,7 +65,12 @@ const singleTabItem: Slide[] = [
     {
         content: {
             id: carouselDarkImageContentSchema.id,
-            props: {},
+            props: {
+                image: {
+                    src: "http://placehold.it/1399x600/2F2F2F/171717",
+                    alt: "Placeholder image",
+                },
+            },
         } as any,
         id: uniqueId(),
     },
