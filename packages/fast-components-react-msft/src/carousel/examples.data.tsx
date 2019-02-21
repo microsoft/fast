@@ -3,6 +3,7 @@ import { ComponentFactoryExample } from "@microsoft/fast-development-site-react"
 import { Carousel, CarouselProps } from "./index";
 import Documentation from "./.tmp/documentation";
 import { Slide, SlideTheme } from "./carousel.props";
+import { CallToActionAppearance } from "../call-to-action";
 import { uniqueId } from "lodash-es";
 import schema from "./carousel.schema.json";
 import carouselHeroContentSchema from "../../app/components/carousel-hero-content.schema.json";
@@ -13,9 +14,26 @@ const detailTabItem: Slide[] = [
     {
         content: {
             id: carouselHeroContentSchema.id,
-            props: {},
+            props: {
+                heading: {
+                    children: "Heading text",
+                },
+                paragraph: {
+                    children: "Hero paragraph test test",
+                },
+                callToAction: {
+                    children: "Call to action",
+                    href: "#",
+                    appearance: CallToActionAppearance.primary,
+                },
+                image: {
+                    src: "http://placehold.it/1399x600/2F2F2F/171717",
+                    alt: "Placeholder image",
+                },
+            },
         } as any,
         id: uniqueId(),
+        theme: SlideTheme.dark,
     },
     {
         content: {
@@ -33,7 +51,12 @@ const detailTabItem: Slide[] = [
     {
         content: {
             id: carouselLightImageContentSchema.id,
-            props: {},
+            props: {
+                image: {
+                    src: "http://placehold.it/1399x600/DDD/222",
+                    alt: "Placeholder image",
+                },
+            },
         } as any,
         id: uniqueId(),
         theme: SlideTheme.light,
@@ -54,7 +77,23 @@ const detailTabItem: Slide[] = [
     {
         content: {
             id: carouselHeroContentSchema.id,
-            props: {},
+            props: {
+                heading: {
+                    children: "Heading text",
+                },
+                paragraph: {
+                    children: "Hero paragraph test test",
+                },
+                callToAction: {
+                    children: "Call to action",
+                    href: "#",
+                    appearance: CallToActionAppearance.primary,
+                },
+                image: {
+                    src: "http://placehold.it/1399x600/2F2F2F/171717",
+                    alt: "Placeholder image",
+                },
+            },
         } as any,
         id: uniqueId(),
         theme: SlideTheme.dark,
@@ -89,6 +128,7 @@ export default {
         {
             label: "A set of example text content",
             items: detailTabItem,
+            activeId: detailTabItem[2].id,
         },
         {
             label: "A set of example text content",

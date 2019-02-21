@@ -67,4 +67,14 @@ export interface CarouselClassNameContract {
      * The dark slide theme
      */
     carousel__themeDark?: string;
+
+    /**
+     * The previous slide transition
+     */
+    carousel__slideTransitionDirectionPrevious?: string;
+
+    /**
+     * The next slide transition
+     */
+    carousel__slideTransitionDirectionNext?: string;
 }

@@ -19,7 +19,9 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
             position: "absolute",
             top: "calc(50% - 20px)",
             zIndex: "100",
-            display: "none",
+            display: "block",
+            opacity: "0",
+            transition: "all 0.2s ease-in-out",
         };
     }
 
@@ -29,7 +31,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
             display: "inline-block",
             "&:hover": {
                 "& $carousel_flipperPrevious, & $carousel_flipperNext": {
-                    display: "block",
+                    opacity: "1",
                 },
             },
         },
@@ -45,20 +47,24 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
         },
         carousel_sequenceIndicator: {
             display: "inline-block",
-            background: "transparent",
-            border: "0",
-            height: "10px",
-            padding: "2px 3px",
-            width: "10px",
+            padding: "0 2px",
             "&:focus": {
                 outline: "none",
             },
             "&::before": {
-                borderRadius: "50%",
+                opacity: "0.2",
+                border: "1px solid transparent",
+                borderRadius: "40px",
                 content: "''",
                 display: "block",
-                height: "100%",
-                width: "100%",
+                height: "4px",
+                width: "32px",
+                transition: "all 0.2s ease-in-out",
+            },
+            "&:hover": {
+                "&::before": {
+                    opacity: "0.5",
+                },
             },
         },
         carousel_sequenceIndicator__active: {},
@@ -82,11 +88,13 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
             "& $carousel_flipperPrevious, & $carousel_flipperNext": {
                 color: "black",
                 fill: "black",
-                background: "white",
+                background: "rgba(255, 255, 255, 0.6)",
+                border: "1px solid #CECECE",
                 "& span::before": {
                     borderColor: "black",
                 },
                 "&:hover": {
+                    background: "white",
                     "& span::before": {
                         borderColor: hoverContrast(config.contrast, "black"),
                     },
@@ -94,17 +102,14 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
             },
             "& $carousel_sequenceIndicator": {
                 "&::before": {
-                    border: "1px solid white",
-                },
-                "&:focus": {
-                    "&::before": {
-                        boxShadow: "0 0 0 1px white",
-                    },
-                },
-            },
-            "& $carousel_sequenceIndicator__active": {
-                "&::before": {
                     background: "white",
+                    borderColor: "#CECECE",
+                },
+                "&$carousel_sequenceIndicator__active": {
+                    "&::before": {
+                        opacity: "1",
+                        background: "white",
+                    },
                 },
             },
         },
@@ -112,11 +117,13 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
             "& $carousel_flipperPrevious, & $carousel_flipperNext": {
                 color: "white",
                 fill: "white",
-                background: "black",
+                background: "rgba(0, 0, 0, 0.6)",
+                border: "1px solid #CECECE",
                 "& span::before": {
                     borderColor: "white",
                 },
                 "&:hover": {
+                    background: "black",
                     "& span::before": {
                         borderColor: hoverContrast(config.contrast, "white"),
                     },
@@ -124,20 +131,19 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
             },
             "& $carousel_sequenceIndicator": {
                 "&::before": {
-                    border: "1px solid black",
-                },
-                "&:focus": {
-                    "&::before": {
-                        boxShadow: "0 0 0 1px black",
-                    },
+                    background: "black",
+                    borderColor: "#CECECE",
                 },
             },
             "& $carousel_sequenceIndicator__active": {
                 "&::before": {
+                    opacity: "1",
                     background: "black",
                 },
             },
         },
+        carousel__slideTransitionDirectionPrevious: {},
+        carousel__slideTransitionDirectionNext: {},
     };
 };
 

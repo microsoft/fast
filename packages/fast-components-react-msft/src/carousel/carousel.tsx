@@ -22,6 +22,12 @@ export interface CarouselState {
     activeId: string;
 }
 
+export enum SlideTransitionDirection {
+    previous = "previous",
+    next = "next",
+    initial = "",
+}
+
 class Carousel extends Foundation<
     CarouselHandledProps,
     CarouselUnhandledProps,
@@ -57,6 +63,9 @@ class Carousel extends Foundation<
         activeId: void 0,
         items: void 0,
     };
+
+    private slideTransitionDirection: Partial<SlideTransitionDirection> =
+        SlideTransitionDirection.initial;
 
     /**
      * Define constructor
@@ -111,6 +120,7 @@ class Carousel extends Foundation<
     protected generateClassNames(): string {
         let className: string = get(this.props, "managedClasses.carousel", "");
         let theme: string = "";
+        let transitionDirection: string = "";
 
         if (this.getSlideTheme()) {
             theme =
@@ -119,6 +129,26 @@ class Carousel extends Foundation<
                     : get(this.props, "managedClasses.carousel__themeDark", "");
 
             className += ` ${theme}`;
+        }
+
+        if (
+            this.slideTransitionDirection === SlideTransitionDirection.next ||
+            this.slideTransitionDirection === SlideTransitionDirection.previous
+        ) {
+            transitionDirection =
+                this.slideTransitionDirection === SlideTransitionDirection.next
+                    ? get(
+                          this.props,
+                          "managedClasses.carousel__slideTransitionDirectionNext",
+                          ""
+                      )
+                    : get(
+                          this.props,
+                          "managedClasses.carousel__slideTransitionDirectionPrevious",
+                          ""
+                      );
+
+            className += ` ${transitionDirection}`;
         }
 
         return super.generateClassNames(className);
@@ -199,6 +229,16 @@ class Carousel extends Foundation<
         this.setState({
             activeId: activeTab,
         });
+
+        const activeTabIndex: number = this.slides
+            .map((slide: Slide) => slide.id)
+            .indexOf(activeTab);
+
+        if (this.getActiveIndex() < activeTabIndex) {
+            this.slideTransitionDirection = SlideTransitionDirection.next;
+        } else {
+            this.slideTransitionDirection = SlideTransitionDirection.previous;
+        }
     };
 
     /**
@@ -209,6 +249,12 @@ class Carousel extends Foundation<
 
         if (newPosition < 0) {
             newPosition = this.slides.length - 1;
+        }
+
+        if (this.getActiveIndex() < newPosition) {
+            this.slideTransitionDirection = SlideTransitionDirection.next;
+        } else {
+            this.slideTransitionDirection = SlideTransitionDirection.previous;
         }
 
         this.setNewSlidePosition(newPosition);
@@ -222,6 +268,12 @@ class Carousel extends Foundation<
 
         if (newPosition > this.slides.length - 1) {
             newPosition = 0;
+        }
+
+        if (this.getActiveIndex() > newPosition) {
+            this.slideTransitionDirection = SlideTransitionDirection.previous;
+        } else {
+            this.slideTransitionDirection = SlideTransitionDirection.next;
         }
 
         this.setNewSlidePosition(newPosition);
