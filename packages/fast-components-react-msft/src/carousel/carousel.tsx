@@ -119,11 +119,9 @@ class Carousel extends Foundation<
      */
     protected generateClassNames(): string {
         let className: string = get(this.props, "managedClasses.carousel", "");
-        let theme: string = "";
-        let transitionDirection: string = "";
 
         if (this.getSlideTheme()) {
-            theme =
+            const theme: string =
                 this.getSlideTheme() === SlideTheme.light
                     ? get(this.props, "managedClasses.carousel__themeLight", "")
                     : get(this.props, "managedClasses.carousel__themeDark", "");
@@ -135,7 +133,7 @@ class Carousel extends Foundation<
             this.slideTransitionDirection === SlideTransitionDirection.next ||
             this.slideTransitionDirection === SlideTransitionDirection.previous
         ) {
-            transitionDirection =
+            const transitionDirection: string =
                 this.slideTransitionDirection === SlideTransitionDirection.next
                     ? get(
                           this.props,
@@ -223,6 +221,17 @@ class Carousel extends Foundation<
     }
 
     /**
+     * Set the transition direction based on incoming index
+     */
+    private setTransitionDirection(incomingIndex: number): void {
+        if (this.getActiveIndex() < incomingIndex) {
+            this.slideTransitionDirection = SlideTransitionDirection.next;
+        } else {
+            this.slideTransitionDirection = SlideTransitionDirection.previous;
+        }
+    }
+
+    /**
      * Change active tab
      */
     private handleUpdate = (activeTab: string): void => {
@@ -234,11 +243,7 @@ class Carousel extends Foundation<
             .map((slide: Slide) => slide.id)
             .indexOf(activeTab);
 
-        if (this.getActiveIndex() < activeTabIndex) {
-            this.slideTransitionDirection = SlideTransitionDirection.next;
-        } else {
-            this.slideTransitionDirection = SlideTransitionDirection.previous;
-        }
+        this.setTransitionDirection(activeTabIndex);
     };
 
     /**
@@ -251,12 +256,7 @@ class Carousel extends Foundation<
             newPosition = this.slides.length - 1;
         }
 
-        if (this.getActiveIndex() < newPosition) {
-            this.slideTransitionDirection = SlideTransitionDirection.next;
-        } else {
-            this.slideTransitionDirection = SlideTransitionDirection.previous;
-        }
-
+        this.setTransitionDirection(newPosition);
         this.setNewSlidePosition(newPosition);
     };
 
@@ -270,12 +270,7 @@ class Carousel extends Foundation<
             newPosition = 0;
         }
 
-        if (this.getActiveIndex() > newPosition) {
-            this.slideTransitionDirection = SlideTransitionDirection.previous;
-        } else {
-            this.slideTransitionDirection = SlideTransitionDirection.next;
-        }
-
+        this.setTransitionDirection(newPosition);
         this.setNewSlidePosition(newPosition);
     };
 
