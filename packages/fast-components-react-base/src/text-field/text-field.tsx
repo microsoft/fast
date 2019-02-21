@@ -17,8 +17,6 @@ class TextField extends Foundation<TextFieldHandledProps, TextFieldUnhandledProp
     public static displayName: string = "TextField";
 
     protected handledProps: HandledProps<TextFieldHandledProps> = {
-        disabled: void 0,
-        placeholder: void 0,
         managedClasses: void 0,
         type: void 0,
     };
@@ -31,8 +29,8 @@ class TextField extends Foundation<TextFieldHandledProps, TextFieldUnhandledProp
             <input
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
-                disabled={this.props.disabled || null}
-                placeholder={this.props.placeholder || null}
+                disabled={get(this.props, "disabled", null)}
+                placeholder={get(this.props, "placeholder", null)}
                 type={this.props.type || TextFieldType.text}
             />
         );
