@@ -8,7 +8,7 @@ export interface RadioHandledProps extends RadioManagedClasses {
     /**
      * Unique Id
      */
-    id: string;
+    inputId: string;
 
     /**
      * The checked state

@@ -41,23 +41,23 @@ export default {
     documentation: <Documentation />,
     detailData: {
         children: slotRadioExample,
-        id: "radio01",
+        inputId: "radio01",
     },
     data: [
         {
             children: slotRadioExample,
-            id: "radio01",
+            inputId: "radio01",
         },
         {
             checked: true,
             onChange: noop,
             children: slotCheckedExample,
-            id: "checked",
+            inputId: "checked",
         },
         {
             disabled: true,
             children: slotDisabledExample,
-            id: "disabled",
+            inputId: "disabled",
         },
     ],
 } as ComponentFactoryExample<RadioProps>;
