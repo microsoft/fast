@@ -16,8 +16,6 @@ class TextArea extends Foundation<TextAreaHandledProps, TextAreaUnhandledProps, 
     public static displayName: string = "TextArea";
 
     protected handledProps: HandledProps<TextAreaHandledProps> = {
-        disabled: void 0,
-        placeholder: void 0,
         managedClasses: void 0,
     };
 
@@ -29,8 +27,8 @@ class TextArea extends Foundation<TextAreaHandledProps, TextAreaUnhandledProps, 
             <textarea
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
-                disabled={this.props.disabled || null}
-                placeholder={this.props.placeholder || null}
+                disabled={get(this.props, "disabled", null)}
+                placeholder={get(this.props, "placeholder", null)}
             />
         );
     }

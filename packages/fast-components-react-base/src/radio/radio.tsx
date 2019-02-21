@@ -47,7 +47,7 @@ class Radio extends Foundation<RadioHandledProps, RadioUnhandledProps, RadioStat
      * Handled props instantiation
      */
     protected handledProps: HandledProps<RadioHandledProps> = {
-        id: void 0,
+        inputId: void 0,
         checked: void 0,
         disabled: void 0,
         managedClasses: void 0,
@@ -69,7 +69,7 @@ class Radio extends Foundation<RadioHandledProps, RadioUnhandledProps, RadioStat
                 <input
                     className={get(this.props, "managedClasses.radio_input")}
                     type="radio"
-                    id={this.props.id}
+                    id={this.props.inputId}
                     onChange={this.handleRadioChange}
                     disabled={this.props.disabled || null}
                     checked={this.state.checked}

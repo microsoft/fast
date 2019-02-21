@@ -3,25 +3,13 @@ import {
     ManagedClasses,
     TextAreaClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
-import { Subtract } from "utility-types";
 
 export interface TextAreaManagedClasses
     extends ManagedClasses<TextAreaClassNameContract> {}
 export interface TextAreaUnhandledProps
-    extends Subtract<
-            React.TextareaHTMLAttributes<HTMLTextAreaElement>,
-            TextAreaHandledProps
-        > {}
-export interface TextAreaHandledProps extends TextAreaManagedClasses {
-    /**
-     * The disabled state
-     */
-    disabled?: boolean;
+    extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
 
-    /**
-     * Placeholder Text for text area
-     */
-    placeholder?: string;
-}
+/* tslint:disable-next-line:no-empty-interface */
+export interface TextAreaHandledProps extends TextAreaManagedClasses {}
 
 export type TextAreaProps = TextAreaHandledProps & TextAreaUnhandledProps;
