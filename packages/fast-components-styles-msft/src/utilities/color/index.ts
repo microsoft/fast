@@ -27,6 +27,7 @@ export {
     neutralFillRest,
     neutralFillHover,
     neutralFillActive,
+    neutralFillSelected,
 } from "./neutral-fill";
 
 export {
@@ -34,6 +35,7 @@ export {
     neutralFillStealthRest,
     neutralFillStealthHover,
     neutralFillStealthActive,
+    neutralFillStealthSelected,
 } from "./neutral-fill-stealth";
 
 export {
