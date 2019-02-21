@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.10.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.9.0...@microsoft/fast-components-styles-msft@3.10.0) (2019-02-21)
+
+
+### Bug Fixes
+
+* remove focus visible from text field in text action ([#1419](https://github.com/Microsoft/fast-dna/issues/1419)) ([2570ad4](https://github.com/Microsoft/fast-dna/commit/2570ad4))
+
+
+### Features
+
+* add common MSFT input field style pattern ([#1375](https://github.com/Microsoft/fast-dna/issues/1375)) ([3ff26f9](https://github.com/Microsoft/fast-dna/commit/3ff26f9))
+* create number field as base and MSFT component ([#1371](https://github.com/Microsoft/fast-dna/issues/1371)) ([d440b5f](https://github.com/Microsoft/fast-dna/commit/d440b5f))
+
+
+
+
+
 # [3.9.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.8.0...@microsoft/fast-components-styles-msft@3.9.0) (2019-02-07)
 
 

@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-navigation-generator-react@0.1.0...@microsoft/fast-navigation-generator-react@0.2.0) (2019-02-21)
+
+
+### Bug Fixes
+
+* font size in fast form and fast site ([#1369](https://github.com/Microsoft/fast-dna/issues/1369)) ([90de283](https://github.com/Microsoft/fast-dna/commit/90de283))
+* matches dataLocations from the form generator by including the keyword 'props' ([#1391](https://github.com/Microsoft/fast-dna/issues/1391)) ([beb2773](https://github.com/Microsoft/fast-dna/commit/beb2773))
+* normalize colors and backgrounds across tooling packages ([#1421](https://github.com/Microsoft/fast-dna/issues/1421)) ([2ba5dec](https://github.com/Microsoft/fast-dna/commit/2ba5dec))
+
+
+### Features
+
+* add root level component navigation and ability to have string children ([#1372](https://github.com/Microsoft/fast-dna/issues/1372)) ([2a8be6d](https://github.com/Microsoft/fast-dna/commit/2a8be6d))
+* add the ability to control the navigation via props ([#1390](https://github.com/Microsoft/fast-dna/issues/1390)) ([a073da5](https://github.com/Microsoft/fast-dna/commit/a073da5))
+
+
+
+
+
 # 0.1.0 (2019-02-07)
 
 

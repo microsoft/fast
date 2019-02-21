@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.10](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-angular@3.0.9...@microsoft/fast-jss-manager-angular@3.0.10) (2019-02-21)
+
+**Note:** Version bump only for package @microsoft/fast-jss-manager-angular
+
+
+
+
+
 ## [3.0.9](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-angular@3.0.8...@microsoft/fast-jss-manager-angular@3.0.9) (2019-02-07)
 
 **Note:** Version bump only for package @microsoft/fast-jss-manager-angular
