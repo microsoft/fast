@@ -8,6 +8,7 @@ import App from "./app";
 const root: HTMLElement = document.createElement("div");
 root.setAttribute("id", "root");
 document.body.appendChild(root);
+document.body.setAttribute("style", "margin: 0");
 
 /* tslint:disable */
 function render(): void {
