@@ -17,6 +17,9 @@ const itemADisabled: JSX.Element = (
 const itemB: JSX.Element = <ListboxItem id="b" value="b" displayString="ab" />;
 const itemC: JSX.Element = <ListboxItem id="c" value="c" displayString="abc" />;
 
+const container: HTMLDivElement = document.createElement("div");
+document.body.appendChild(container);
+
 describe("listbox", (): void => {
     test("should have a displayName that matches the component name", () => {
         expect((Listbox as any).name).toBe(Listbox.displayName);
@@ -54,7 +57,7 @@ describe("listbox", (): void => {
                 <div>not a focusable element</div>
                 {itemA}
             </Listbox>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         expect(rendered.state("focusIndex")).toBe(1);
@@ -67,7 +70,7 @@ describe("listbox", (): void => {
                 <div>not a focusable element</div>
                 {itemA}
             </Listbox>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         expect(rendered.state("focusIndex")).toBe(1);
@@ -76,7 +79,7 @@ describe("listbox", (): void => {
 
     test("should not set focus to listitem when disabled", (): void => {
         const rendered: any = mount(<Listbox disabled={true}>{itemA}</Listbox>, {
-            attachTo: document.body,
+            attachTo: container,
         });
 
         expect(rendered.state("focusIndex")).toBe(-1);
@@ -85,7 +88,7 @@ describe("listbox", (): void => {
 
     test("should not throw with a single focusable child in single select mode", (): void => {
         const rendered: any = mount(<Listbox>{itemA}</Listbox>, {
-            attachTo: document.body,
+            attachTo: container,
         });
 
         expect(rendered.state("focusIndex")).toBe(0);
@@ -97,7 +100,7 @@ describe("listbox", (): void => {
 
     test("should not throw with a single focusable child in multi select mode", (): void => {
         const rendered: any = mount(<Listbox multiselectable={true}>{itemA}</Listbox>, {
-            attachTo: document.body,
+            attachTo: container,
         });
 
         expect(rendered.state("focusIndex")).toBe(0);
@@ -113,7 +116,7 @@ describe("listbox", (): void => {
                 {itemA}
                 {itemB}
             </Listbox>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         expect(rendered.state("focusIndex")).toBe(0);
@@ -128,7 +131,7 @@ describe("listbox", (): void => {
                 {itemA}
                 {itemB}
             </Listbox>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         expect(rendered.state("focusIndex")).toBe(0);
@@ -143,7 +146,7 @@ describe("listbox", (): void => {
                 {itemA}
                 {itemB}
             </Listbox>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         rendered.setState({ focusIndex: 1 });
@@ -159,7 +162,7 @@ describe("listbox", (): void => {
                 {itemA}
                 {itemB}
             </Listbox>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         rendered.setState({ focusIndex: 1 });
@@ -177,7 +180,7 @@ describe("listbox", (): void => {
                 {itemC}
                 <div>four</div>
             </Listbox>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         expect(rendered.state("focusIndex")).toBe(0);
@@ -194,7 +197,7 @@ describe("listbox", (): void => {
                 {itemB}
                 {itemC}
             </Listbox>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         rendered.setState({ focusIndex: 3 });
@@ -215,7 +218,7 @@ describe("listbox", (): void => {
                 {itemC}
                 <div />
             </Listbox>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         expect(rendered.state("focusIndex")).toBe(1);
@@ -235,7 +238,7 @@ describe("listbox", (): void => {
                 {itemC}
                 <div>four</div>
             </Listbox>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         expect(rendered.state("focusIndex")).toBe(0);
@@ -261,7 +264,7 @@ describe("listbox", (): void => {
                 {itemC}
                 <div>four</div>
             </Listbox>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         expect(rendered.state("focusIndex")).toBe(0);
@@ -281,7 +284,7 @@ describe("listbox", (): void => {
                 {itemC}
                 <div>four</div>
             </Listbox>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         expect(rendered.state("focusIndex")).toBe(0);
@@ -300,7 +303,7 @@ describe("listbox", (): void => {
                 {itemA}
                 {itemB}
             </Listbox>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         expect(rendered.childAt(0).prop("aria-activedescendant")).toBe("");
@@ -321,7 +324,7 @@ describe("listbox", (): void => {
                 {itemB}
                 {itemC}
             </Listbox>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         expect(rendered.state("selectedItems").length).toBe(0);
@@ -348,7 +351,7 @@ describe("listbox", (): void => {
                 {itemB}
                 {itemC}
             </Listbox>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         expect(rendered.state("selectedItems").length).toBe(0);
@@ -367,7 +370,7 @@ describe("listbox", (): void => {
                 {itemB}
                 {itemC}
             </Listbox>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         expect(rendered.state("selectedItems").length).toBe(0);
@@ -407,7 +410,7 @@ describe("listbox", (): void => {
                 {itemB}
                 {itemC}
             </Listbox>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         expect(rendered.state("selectedItems").length).toBe(0);
@@ -438,7 +441,7 @@ describe("listbox", (): void => {
                 {itemB}
                 {itemC}
             </Listbox>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         expect(rendered.state("selectedItems").length).toBe(0);
@@ -469,7 +472,7 @@ describe("listbox", (): void => {
                 {itemB}
                 {itemC}
             </Listbox>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         expect(rendered.state("selectedItems").length).toBe(0);
@@ -514,7 +517,7 @@ describe("listbox", (): void => {
                 {itemB}
                 {itemC}
             </Listbox>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         expect(rendered.state("selectedItems").length).toBe(0);
@@ -560,7 +563,7 @@ describe("listbox", (): void => {
                 {itemB}
                 {itemC}
             </Listbox>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowDown });
@@ -589,7 +592,7 @@ describe("listbox", (): void => {
                 {itemB}
                 {itemC}
             </Listbox>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowDown });
@@ -618,7 +621,7 @@ describe("listbox", (): void => {
                 {itemB}
                 {itemC}
             </Listbox>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         expect(rendered.state("selectedItems").length).toBe(0);
@@ -634,7 +637,7 @@ describe("listbox", (): void => {
                 {itemB}
                 {itemC}
             </Listbox>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         expect(rendered.state("selectedItems").length).toBe(1);
@@ -665,7 +668,7 @@ describe("listbox", (): void => {
                 {itemB}
                 {itemC}
             </Listbox>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         expect(rendered.state("selectedItems").length).toBe(1);
@@ -681,7 +684,7 @@ describe("listbox", (): void => {
                 {itemB}
                 {itemC}
             </Listbox>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         expect(rendered.state("selectedItems").length).toBe(1);
@@ -695,7 +698,7 @@ describe("listbox", (): void => {
                 {itemB}
                 {itemC}
             </Listbox>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         expect(rendered.state("selectedItems").length).toBe(1);
@@ -710,7 +713,7 @@ describe("listbox", (): void => {
                 {itemB}
                 {itemC}
             </Listbox>,
-            { attachTo: document.body }
+            { attachTo: container }
         );
 
         expect(rendered.state("selectedItems").length).toBe(0);
