@@ -73,7 +73,6 @@
     "@babel/preset-react": "^7.0.0",
     "@microsoft/fast-application-utilities": "^3.1.1",
     "@microsoft/fast-components-class-name-contracts-base": "^3.6.0",
-    "@microsoft/fast-development-site-react": "^3.3.3",
     "@microsoft/fast-glyphs-msft": "^3.1.0",
     "@microsoft/fast-jss-manager": "^3.0.9",
     "@microsoft/fast-jss-manager-react": "^3.1.10",
