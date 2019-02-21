@@ -21,16 +21,6 @@ export interface TextFieldUnhandledProps
     extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {}
 export interface TextFieldHandledProps extends TextFieldManagedClasses {
     /**
-     * The disabled state
-     */
-    disabled?: boolean;
-
-    /**
-     * Placeholder Text for input field
-     */
-    placeholder?: string;
-
-    /**
      * The text field input type
      */
     type?: TextFieldType;

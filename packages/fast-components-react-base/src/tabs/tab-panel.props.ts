@@ -7,7 +7,7 @@ import { TabsSlot } from "./tabs";
 
 export interface TabPanelManagedClasses
     extends ManagedClasses<TabPanelClassNameContract> {}
-export interface TabPanelUnhandledProps extends React.AllHTMLAttributes<HTMLElement> {}
+export interface TabPanelUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
 export interface TabPanelHandledProps extends TabPanelManagedClasses {
     /**
      * The slot identifying this component to the TabPanel component as a tab-panel
