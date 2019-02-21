@@ -5,10 +5,17 @@ import {
     withDesignSystemDefaults,
 } from "../../design-system";
 import { memoize } from "lodash-es";
-import { findClosestSwatchIndex, palette, Palette, PaletteType, Swatch } from "./palette";
+import {
+    findClosestSwatchIndex,
+    isDarkTheme,
+    palette,
+    Palette,
+    PaletteType,
+    Swatch,
+} from "./palette";
 import {
     ColorRecipe,
-    StatefulSwatch,
+    FillSwatch,
     StatefulSwatchToColorRecipeFactory,
     SwatchStates,
 } from "./common";
@@ -21,6 +28,7 @@ import {
 export const neutralFillStealthDeltaRest: number = 0;
 export const neutralFillStealthDeltaHover: number = 3;
 export const neutralFillStealthDeltaActive: number = 2;
+export const neutralFillStealthDeltaSelected: number = 12;
 
 /**
  * The minimum offset before which we can switch fill directions
@@ -37,18 +45,19 @@ const swapThreshold: number = Math.max(
 /**
  * Algorithm for determining stealth fill colors
  */
-const neutralFillStealthAlgorithm: DesignSystemResolver<StatefulSwatch> = memoize(
-    (designSystem: DesignSystem): StatefulSwatch => {
+const neutralFillStealthAlgorithm: DesignSystemResolver<FillSwatch> = memoize(
+    (designSystem: DesignSystem): FillSwatch => {
         const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
         const backgroundIndex: number = findClosestSwatchIndex(
             PaletteType.neutral,
             designSystem.backgroundColor
         )(designSystem);
         const direction: number = backgroundIndex >= swapThreshold ? -1 : 1;
+        const restIndex: number =
+            backgroundIndex + direction * neutralFillStealthDeltaRest;
 
         return {
-            rest:
-                neutralPalette[backgroundIndex + direction * neutralFillStealthDeltaRest],
+            rest: neutralPalette[restIndex],
             hover:
                 neutralPalette[
                     backgroundIndex + direction * neutralFillStealthDeltaHover
@@ -57,6 +66,13 @@ const neutralFillStealthAlgorithm: DesignSystemResolver<StatefulSwatch> = memoiz
                 neutralPalette[
                     backgroundIndex + direction * neutralFillStealthDeltaActive
                 ],
+            selected:
+                neutralPalette[
+                    restIndex +
+                        (isDarkTheme(designSystem)
+                            ? neutralFillStealthDeltaSelected * -1
+                            : neutralFillStealthDeltaSelected)
+                ],
         };
     },
     (designSystem: DesignSystem): string => {
@@ -64,14 +80,14 @@ const neutralFillStealthAlgorithm: DesignSystemResolver<StatefulSwatch> = memoiz
     }
 );
 
-export function neutralFillStealth(designSystem: DesignSystem): StatefulSwatch;
+export function neutralFillStealth(designSystem: DesignSystem): FillSwatch;
 export function neutralFillStealth(
     backgroundResolver: (designSystem: DesignSystem) => Swatch
-): (designSystem: DesignSystem) => StatefulSwatch;
+): (designSystem: DesignSystem) => FillSwatch;
 export function neutralFillStealth(arg: any): any {
     if (typeof arg === "function") {
         return ensureDesignSystemDefaults(
-            (designSystem: DesignSystem): StatefulSwatch => {
+            (designSystem: DesignSystem): FillSwatch => {
                 return neutralFillStealthAlgorithm(
                     Object.assign({}, designSystem, {
                         backgroundColor: arg(designSystem),
@@ -84,15 +100,15 @@ export function neutralFillStealth(arg: any): any {
     }
 }
 
-export const neutralFillStealthRest: ColorRecipe = StatefulSwatchToColorRecipeFactory(
-    SwatchStates.rest,
-    neutralFillStealth
-);
-export const neutralFillStealthHover: ColorRecipe = StatefulSwatchToColorRecipeFactory(
-    SwatchStates.hover,
-    neutralFillStealth
-);
-export const neutralFillStealthActive: ColorRecipe = StatefulSwatchToColorRecipeFactory(
-    SwatchStates.active,
-    neutralFillStealth
-);
+export const neutralFillStealthRest: ColorRecipe = StatefulSwatchToColorRecipeFactory<
+    FillSwatch
+>(SwatchStates.rest, neutralFillStealth);
+export const neutralFillStealthHover: ColorRecipe = StatefulSwatchToColorRecipeFactory<
+    FillSwatch
+>(SwatchStates.hover, neutralFillStealth);
+export const neutralFillStealthActive: ColorRecipe = StatefulSwatchToColorRecipeFactory<
+    FillSwatch
+>(SwatchStates.active, neutralFillStealth);
+export const neutralFillStealthSelected: ColorRecipe = StatefulSwatchToColorRecipeFactory<
+    FillSwatch
+>(SwatchStates.selected, neutralFillStealth);
