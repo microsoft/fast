@@ -9,7 +9,7 @@
             "title": "Disabled",
             "type": "boolean"
         },
-        "id": {
+        "inputId": {
             "title": "HTML id attribute",
             "type": "string"
         },

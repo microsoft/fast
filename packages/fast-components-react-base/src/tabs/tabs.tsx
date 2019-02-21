@@ -285,7 +285,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
     /**
      * Handles the click event on the tab element
      */
-    private handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
+    private handleClick = (e: React.MouseEvent<HTMLDivElement>): void => {
         if (!this.props.activeId) {
             this.setState({
                 activeId: e.currentTarget.getAttribute("aria-controls"),
@@ -298,7 +298,7 @@ class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
     /**
      * Handles the keydown event on the tab element
      */
-    private handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>): void => {
+    private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
         switch (e.keyCode) {
             case KeyCodes.arrowLeft:
             case KeyCodes.arrowUp:
