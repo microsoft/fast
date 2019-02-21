@@ -409,7 +409,7 @@ class HorizontalOverflow extends Foundation<
             );
         }
 
-        return distance;
+        return Math.ceil(distance);
     }
 
     /**
