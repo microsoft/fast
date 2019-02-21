@@ -1,6 +1,9 @@
 import {
     neutralOutline,
     neutralOutlineActive,
+    neutralOutlineDeltaActive,
+    neutralOutlineDeltaHover,
+    neutralOutlineDeltaRest,
     neutralOutlineHover,
     neutralOutlineRest,
 } from "./neutral-outline";
@@ -14,9 +17,15 @@ describe("neutralOutline", (): void => {
     const accentPalette: Palette = palette(PaletteType.accent)(designSystemDefaults);
 
     test("should return by default", (): void => {
-        expect(neutralOutlineRest({} as DesignSystem)).toBe("#737373");
-        expect(neutralOutlineHover({} as DesignSystem)).toBe("#636363");
-        expect(neutralOutlineActive({} as DesignSystem)).toBe("#525252");
+        expect(neutralOutlineRest({} as DesignSystem)).toBe(
+            neutralPalette[neutralOutlineDeltaRest]
+        );
+        expect(neutralOutlineHover({} as DesignSystem)).toBe(
+            neutralPalette[neutralOutlineDeltaHover]
+        );
+        expect(neutralOutlineActive({} as DesignSystem)).toBe(
+            neutralPalette[neutralOutlineDeltaActive]
+        );
     });
 
     test("should always return a color", (): void => {
