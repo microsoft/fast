@@ -1,10 +1,16 @@
 import {
     accentFillActive,
+    accentFillDeltaActive,
+    accentFillDeltaHover,
+    accentFillDeltaRest,
+    accentFillDeltaSelected,
     accentFillHover,
     accentFillLargeActive,
     accentFillLargeHover,
     accentFillLargeRest,
+    accentFillLargeSelected,
     accentFillRest,
+    accentFillSelected,
 } from "./accent-fill";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
 import { palette, Palette, PaletteType, Swatch } from "./palette";
@@ -15,13 +21,35 @@ describe("accentFill", (): void => {
     const neutralPalette: Palette = palette(PaletteType.neutral)(designSystemDefaults);
     const accentPalette: Palette = palette(PaletteType.accent)(designSystemDefaults);
 
+    const accentIndex: number =
+        Math.floor(accentPalette.length / 2) + accentFillDeltaHover;
+    const largeAccentIndex: number = accentIndex - accentFillDeltaHover;
+
     test("should operate on design system defaults", (): void => {
-        expect(accentFillRest({} as DesignSystem)).toBe(accentPalette[33]);
-        expect(accentFillHover({} as DesignSystem)).toBe(accentPalette[31]);
-        expect(accentFillActive({} as DesignSystem)).toBe(accentPalette[29]);
-        expect(accentFillLargeRest({} as DesignSystem)).toBe(accentPalette[31]);
-        expect(accentFillLargeHover({} as DesignSystem)).toBe(accentPalette[29]);
-        expect(accentFillLargeActive({} as DesignSystem)).toBe(accentPalette[27]);
+        expect(accentFillRest({} as DesignSystem)).toBe(
+            accentPalette[accentIndex - accentFillDeltaRest]
+        );
+        expect(accentFillHover({} as DesignSystem)).toBe(
+            accentPalette[accentIndex - accentFillDeltaHover]
+        );
+        expect(accentFillActive({} as DesignSystem)).toBe(
+            accentPalette[accentIndex - accentFillDeltaActive]
+        );
+        expect(accentFillSelected({} as DesignSystem)).toBe(
+            accentPalette[accentIndex + accentFillDeltaSelected]
+        );
+        expect(accentFillLargeRest({} as DesignSystem)).toBe(
+            accentPalette[largeAccentIndex - accentFillDeltaRest]
+        );
+        expect(accentFillLargeHover({} as DesignSystem)).toBe(
+            accentPalette[largeAccentIndex - accentFillDeltaHover]
+        );
+        expect(accentFillLargeActive({} as DesignSystem)).toBe(
+            accentPalette[largeAccentIndex - accentFillDeltaActive]
+        );
+        expect(accentFillLargeSelected({} as DesignSystem)).toBe(
+            accentPalette[largeAccentIndex + accentFillDeltaSelected]
+        );
     });
 
     test("should accept a function that resolves a background swatch", (): void => {

@@ -4,12 +4,14 @@ import {
     neutralFillDeltaActive,
     neutralFillDeltaHover,
     neutralFillDeltaRest,
+    neutralFillDeltaSelected,
     neutralFillHover,
     neutralFillRest,
+    neutralFillSelected,
 } from "./neutral-fill";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
 import { palette, Palette, PaletteType, Swatch } from "./palette";
-import { StatefulSwatch } from "./common";
+import { FillSwatch } from "./common";
 
 describe("neutralFill", (): void => {
     const neutralPalette: Palette = palette(PaletteType.neutral)(designSystemDefaults);
@@ -25,23 +27,32 @@ describe("neutralFill", (): void => {
         expect(neutralFillActive({} as DesignSystem)).toBe(
             neutralPalette[neutralFillDeltaActive]
         );
+        expect(neutralFillSelected({} as DesignSystem)).toBe(
+            neutralPalette[neutralFillDeltaRest + neutralFillDeltaSelected]
+        );
     });
 
     test("should switch from dark to light after 4 swatches", (): void => {
-        expect(neutralFillRest(designSystemDefaults)).toBe("#EFEFEF");
-        expect(neutralFillHover(designSystemDefaults)).toBe("#F3F3F3");
-        expect(neutralFillActive(designSystemDefaults)).toBe("#F7F7F7");
+        expect(neutralFillRest(designSystemDefaults)).toBe(
+            neutralPalette[neutralFillDeltaRest]
+        );
+        expect(neutralFillHover(designSystemDefaults)).toBe(
+            neutralPalette[neutralFillDeltaHover]
+        );
+        expect(neutralFillActive(designSystemDefaults)).toBe(
+            neutralPalette[neutralFillDeltaActive]
+        );
         expect(neutralFillRest(() => neutralPalette[1])(designSystemDefaults)).toBe(
-            "#EAEAEA"
+            neutralPalette[neutralFillDeltaRest + 1]
         );
         expect(neutralFillRest(() => neutralPalette[2])(designSystemDefaults)).toBe(
-            "#E6E6E6"
+            neutralPalette[neutralFillDeltaRest + 2]
         );
         expect(neutralFillRest(() => neutralPalette[3])(designSystemDefaults)).toBe(
-            "#E2E2E2"
+            neutralPalette[neutralFillDeltaRest + 3]
         );
         expect(neutralFillRest(() => neutralPalette[4])(designSystemDefaults)).toBe(
-            "#FFFFFF"
+            neutralPalette[0]
         );
     });
 
@@ -69,6 +80,13 @@ describe("neutralFill", (): void => {
                         })
                     )
                 );
+                expect(neutralFillSelected(() => swatch)(designSystemDefaults)).toBe(
+                    neutralFillSelected(
+                        Object.assign({}, designSystemDefaults, {
+                            backgroundColor: swatch,
+                        })
+                    )
+                );
             }
         );
     });
@@ -76,7 +94,7 @@ describe("neutralFill", (): void => {
     test("should have consistent return values", (): void => {
         neutralPalette.concat(accentPalette).forEach(
             (swatch: Swatch): void => {
-                const backplates: StatefulSwatch = neutralFill(() => swatch)(
+                const backplates: FillSwatch = neutralFill(() => swatch)(
                     designSystemDefaults
                 );
                 const rest: Swatch = neutralFillRest(() => swatch)(designSystemDefaults);
@@ -86,10 +104,14 @@ describe("neutralFill", (): void => {
                 const active: Swatch = neutralFillActive(() => swatch)(
                     designSystemDefaults
                 );
+                const selected: Swatch = neutralFillSelected(() => swatch)(
+                    designSystemDefaults
+                );
 
                 expect(backplates.rest).toBe(rest);
                 expect(backplates.hover).toBe(hover);
                 expect(backplates.active).toBe(active);
+                expect(backplates.selected).toBe(selected);
             }
         );
     });
