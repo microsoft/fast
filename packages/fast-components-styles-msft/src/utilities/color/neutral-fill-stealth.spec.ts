@@ -1,6 +1,9 @@
 import {
     neutralFillStealth,
     neutralFillStealthActive,
+    neutralFillStealthDeltaActive,
+    neutralFillStealthDeltaHover,
+    neutralFillStealthDeltaRest,
     neutralFillStealthHover,
     neutralFillStealthRest,
 } from "./neutral-fill-stealth";
@@ -13,25 +16,33 @@ describe("neutralFillStealth", (): void => {
     const accentPalette: Palette = palette(PaletteType.accent)(designSystemDefaults);
 
     test("should opperate on design system defaults", (): void => {
-        expect(neutralFillStealthRest({} as DesignSystem)).toBe("#FFFFFF");
-        expect(neutralFillStealthHover({} as DesignSystem)).toBe("#F7F7F7");
-        expect(neutralFillStealthActive({} as DesignSystem)).toBe("#FBFBFB");
+        expect(neutralFillStealthRest({} as DesignSystem)).toBe(
+            neutralPalette[neutralFillStealthDeltaRest]
+        );
+        expect(neutralFillStealthHover({} as DesignSystem)).toBe(
+            neutralPalette[neutralFillStealthDeltaHover]
+        );
+        expect(neutralFillStealthActive({} as DesignSystem)).toBe(
+            neutralPalette[neutralFillStealthDeltaActive]
+        );
     });
 
     test("should switch from dark to light after 4 swatches", (): void => {
-        expect(neutralFillStealthHover(designSystemDefaults)).toBe("#F7F7F7");
+        expect(neutralFillStealthHover(designSystemDefaults)).toBe(
+            neutralPalette[neutralFillStealthDeltaHover]
+        );
         expect(
             neutralFillStealthHover(() => neutralPalette[1])(designSystemDefaults)
-        ).toBe(neutralPalette[3]);
+        ).toBe(neutralPalette[neutralFillStealthDeltaHover + 1]);
         expect(
             neutralFillStealthHover(() => neutralPalette[2])(designSystemDefaults)
-        ).toBe(neutralPalette[4]);
+        ).toBe(neutralPalette[neutralFillStealthDeltaHover + 2]);
         expect(
             neutralFillStealthHover(() => neutralPalette[3])(designSystemDefaults)
-        ).toBe(neutralPalette[5]);
+        ).toBe(neutralPalette[neutralFillStealthDeltaHover + 3]);
         expect(
             neutralFillStealthHover(() => neutralPalette[4])(designSystemDefaults)
-        ).toBe(neutralPalette[2]);
+        ).toBe(neutralPalette[4 - neutralFillStealthDeltaHover]);
     });
 
     test("should return the same color from both implementations", (): void => {
