@@ -85,6 +85,7 @@ export default class App extends React.Component<{}, AppState> {
                 onUpdateTheme={this.handleUpdateTheme}
                 showComponentStatus={true}
                 showTransparencyToggle={true}
+                styleEditing={true}
             >
                 {this.renderSiteTitle()}
                 {this.renderSiteMenu()}
