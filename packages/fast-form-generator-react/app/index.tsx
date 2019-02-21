@@ -85,11 +85,7 @@ export default class App extends React.Component<{}, AppState> {
                     <div
                         style={{
                             width: "250px",
-                            minHeight: "100vh",
-                            padding: "0 0 0 10px",
-                            boxSizing: "border-box",
-                            color: foreground300,
-                            background: background300,
+                            height: "100vh",
                             float: "left",
                         }}
                     >

@@ -24,6 +24,7 @@ export interface CSSPositionClassNameContract {
 const styles: ComponentStyles<CSSPositionClassNameContract, {}> = {
     cssPosition: {
         fontSize: "11px",
+        paddingRight: "10px",
     },
     cssPosition_control: {
         ...applySelectSpanStyles(),

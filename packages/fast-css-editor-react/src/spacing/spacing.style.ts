@@ -30,6 +30,7 @@ const topBottomPositionActivePadding: number = typeThickness / 2 + 1;
 const styles: ComponentStyles<CSSSpacingClassNameContract, {}> = {
     cssSpacing: {
         fontSize: "11px",
+        paddingRight: "10px",
     },
     cssSpacing_row: {
         display: "flex",
