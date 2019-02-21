@@ -28,7 +28,8 @@
     "tslint:fix": "tslint -c ./tslint.json --fix '**/*.ts'",
     "unit-tests": "jest --maxWorkers=2",
     "unit-tests:watch": "jest --watch",
-    "watch": "npm run build -- -w --preserveWatchOutput"
+    "watch": "npm run build -- -w --preserveWatchOutput",
+    "example": "react-scripts-ts start"
   },
   "jest": {
     "collectCoverage": true,
@@ -53,18 +54,30 @@
     ]
   },
   "devDependencies": {
+    "@microsoft/fast-jss-manager": "^3.0.4",
+    "@microsoft/fast-jss-manager-react": "^3.1.10",
+    "@microsoft/fast-layouts-react": "^3.1.7",
+    "@microsoft/fast-web-utilities": "^3.0.3",
+    "jss": "^9.8.7",
+    "jss-preset-default": "^10.0.0-alpha.7",
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1",
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@microsoft/fast-tslint-rules": "^3.0.1",
     "@types/jest": "^23.3.5",
+    "@types/react": "^16.8.2",
+    "@types/react-dom": "^16.8.0",
     "babel-core": "^7.0.0-bridge.0",
     "chroma-js": "^1.3.0",
     "jest": "^23.6.0",
     "prettier": "1.14.3",
+    "react-scripts-ts": "^3.1.0",
     "ts-jest": "^23.10.4",
     "tslint": "^5.9.1",
     "tslint-config-prettier": "^1.15.0",
-    "typescript": "^3.0.1"
+    "typescript": "^3.0.1",
+    "typescript-react-kit": "^0.1.0"
   },
   "peerDependencies": {
     "chroma-js": "^1.3.0"
