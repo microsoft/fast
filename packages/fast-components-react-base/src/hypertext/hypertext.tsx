@@ -16,7 +16,6 @@ class Hypertext extends Foundation<HypertextHandledProps, HypertextUnhandledProp
     public static displayName: string = "Hypertext";
 
     protected handledProps: HandledProps<HypertextHandledProps> = {
-        href: void 0,
         managedClasses: void 0,
     };
 
@@ -27,7 +26,7 @@ class Hypertext extends Foundation<HypertextHandledProps, HypertextUnhandledProp
         return (
             <a
                 {...this.unhandledProps()}
-                href={this.props.href || null}
+                href={get(this.props, "href", null)}
                 className={this.generateClassNames()}
             >
                 {this.props.children}
@@ -39,7 +38,7 @@ class Hypertext extends Foundation<HypertextHandledProps, HypertextUnhandledProp
      * Generates class names
      */
     protected generateClassNames(): string {
-        return super.generateClassNames(get(this.props, "managedClasses.hypertext"));
+        return super.generateClassNames(get(this.props, "managedClasses.hypertext", ""));
     }
 }
 

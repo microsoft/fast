@@ -48,5 +48,6 @@ export interface HeadingHandledProps extends HeadingManagedClasses {
 }
 
 /* tslint:disable-next-line:no-empty-interface */
-export interface HeadingUnhandledProps extends TypographyUnhandledProps {}
+export interface HeadingUnhandledProps
+    extends React.HTMLAttributes<HTMLHeadingElement | HTMLParagraphElement> {}
 export type HeadingProps = HeadingHandledProps & HeadingUnhandledProps;
