@@ -4,12 +4,14 @@ import {
     neutralFillStealthDeltaActive,
     neutralFillStealthDeltaHover,
     neutralFillStealthDeltaRest,
+    neutralFillStealthDeltaSelected,
     neutralFillStealthHover,
     neutralFillStealthRest,
+    neutralFillStealthSelected,
 } from "./neutral-fill-stealth";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
 import { palette, Palette, PaletteType, Swatch } from "./palette";
-import { StatefulSwatch } from "./common";
+import { FillSwatch } from "./common";
 
 describe("neutralFillStealth", (): void => {
     const neutralPalette: Palette = palette(PaletteType.neutral)(designSystemDefaults);
@@ -24,6 +26,9 @@ describe("neutralFillStealth", (): void => {
         );
         expect(neutralFillStealthActive({} as DesignSystem)).toBe(
             neutralPalette[neutralFillStealthDeltaActive]
+        );
+        expect(neutralFillStealthSelected({} as DesignSystem)).toBe(
+            neutralPalette[neutralFillStealthDeltaRest + neutralFillStealthDeltaSelected]
         );
     });
 
@@ -69,6 +74,15 @@ describe("neutralFillStealth", (): void => {
                         })
                     )
                 );
+                expect(
+                    neutralFillStealthSelected(() => swatch)(designSystemDefaults)
+                ).toBe(
+                    neutralFillStealthSelected(
+                        Object.assign({}, designSystemDefaults, {
+                            backgroundColor: swatch,
+                        })
+                    )
+                );
             }
         );
     });
@@ -76,7 +90,7 @@ describe("neutralFillStealth", (): void => {
     test("should have consistent return values", (): void => {
         neutralPalette.concat(accentPalette).forEach(
             (swatch: Swatch): void => {
-                const backplates: StatefulSwatch = neutralFillStealth(() => swatch)(
+                const backplates: FillSwatch = neutralFillStealth(() => swatch)(
                     designSystemDefaults
                 );
                 const rest: Swatch = neutralFillStealthRest(() => swatch)(
@@ -88,10 +102,14 @@ describe("neutralFillStealth", (): void => {
                 const active: Swatch = neutralFillStealthActive(() => swatch)(
                     designSystemDefaults
                 );
+                const selected: Swatch = neutralFillStealthSelected(() => swatch)(
+                    designSystemDefaults
+                );
 
                 expect(backplates.rest).toBe(rest);
                 expect(backplates.hover).toBe(hover);
                 expect(backplates.active).toBe(active);
+                expect(backplates.selected).toBe(selected);
             }
         );
     });
