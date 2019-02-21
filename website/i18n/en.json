@@ -37,10 +37,6 @@
         "title": "Writing style guide",
         "sidebar_label": "Writing style guide"
       },
-      "en/packages/fast-animation/index": {
-        "title": "FAST Animation",
-        "sidebar_label": "Animation"
-      },
       "en/packages/fast-application-utilities/index": {
         "title": "FAST Application Utilities",
         "sidebar_label": "Application Utilities"
