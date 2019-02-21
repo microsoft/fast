@@ -22,7 +22,7 @@ export interface CarouselState {
     activeId: string;
 }
 
-export enum SlideTransitionDirection {
+enum SlideTransitionDirection {
     previous = "previous",
     next = "next",
     initial = "",
