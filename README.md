@@ -46,9 +46,17 @@ Because FAST-DNA has abstracted base components from their style, you get a head
 
 FAST-DNA is a mono repository managed with [Lerna](https://github.com/lerna/lerna). Users choose à la carte which package to use in their project.
 
+### Component Explorer
+
+Launch our [Component Explorer](https://explore.fast-dna.net) to experience our [Microsoft React Components](https://github.com/Microsoft/fast-dna/tree/master/packages/fast-components-react-msft) package and development tools.
+
 ## Documentation
 
-Check out our [developer documentation](https://microsoft.github.io/fast-dna/docs/en/contributing/install) to get started.
+Visit our [developer documentation](https://microsoft.github.io/fast-dna/docs/en/contributing/install) to get started.
+
+## Troubleshooting
+
+Experiencing problems? Check our infrastructure [health status](https://microsoft.github.io/fast-dna/docs/en/contributing/status).
 
 ## Contact
 
