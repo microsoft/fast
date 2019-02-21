@@ -15,12 +15,19 @@ export type BackgroundSwatchResolver<T> = (
     resolver: SwatchResolver
 ) => DesignSystemResolver<T>;
 
+export type SwatchFamilyResolver<T> = DesignSystemResolver<T> &
+    BackgroundSwatchResolver<T>;
 /**
  * A function that returns a StatefulSwatch or a function that resolves a background swatch
  * and *then* resolves a StatefulSwatch
  */
-export type StatefulSwatchResolver = DesignSystemResolver<StatefulSwatch> &
-    BackgroundSwatchResolver<StatefulSwatch>;
+export type StatefulSwatchResolver = SwatchFamilyResolver<StatefulSwatch>;
+
+/**
+ * A function that returns a FillSwatch or a function that resolves a background swatch
+ * and *then* resolves a FillSwatch
+ */
+export type FillSwatchResolver = SwatchFamilyResolver<FillSwatch>;
 
 /**
  * The states that a swatch can have
@@ -29,6 +36,7 @@ export enum SwatchStates {
     rest = "rest",
     hover = "hover",
     active = "active",
+    selected = "selected",
 }
 
 /**
@@ -51,6 +59,13 @@ export interface StatefulSwatch {
     active: Swatch;
 }
 
+export interface FillSwatch extends StatefulSwatch {
+    /**
+     * The selected color of a brush
+     */
+    selected: Swatch;
+}
+
 /**
  * A function to apply a named style or recipe. A ColorRecipe has several behaviors:
  * 1. When provided a callback function, the color Recipe returns a function that expects a design-system.
@@ -65,9 +80,9 @@ export type ColorRecipe = SwatchResolver & BackgroundSwatchResolver<Swatch>;
  * Helper function to transform a StatefulSwatchResolver into simple ColorRecipe for simple use
  * use in stylesheets.
  */
-export function StatefulSwatchToColorRecipeFactory(
-    type: keyof StatefulSwatch,
-    callback: StatefulSwatchResolver
+export function StatefulSwatchToColorRecipeFactory<T extends StatefulSwatch>(
+    type: keyof T,
+    callback: SwatchFamilyResolver<T>
 ): ColorRecipe {
     return (arg: DesignSystem | SwatchResolver): any => {
         if (typeof arg === "function") {
@@ -76,7 +91,7 @@ export function StatefulSwatchToColorRecipeFactory(
                     Object.assign({}, designSystem, {
                         backgroundColor: arg(designSystem),
                     })
-                )[type];
+                )[type as string];
             };
         } else {
             return callback(arg)[type];
