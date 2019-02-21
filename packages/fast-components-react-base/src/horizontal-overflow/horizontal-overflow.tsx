@@ -213,7 +213,7 @@ class HorizontalOverflow extends Foundation<
         prevProps: HorizontalOverflowProps,
         prevState: HorizontalOverflowState,
         snapshot: boolean | null
-    ) {
+    ): void {
         if (snapshot !== null) {
             this.handleOverflowChange();
         }
