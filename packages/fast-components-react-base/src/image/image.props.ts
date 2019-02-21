@@ -6,7 +6,10 @@ import {
 import { Omit } from "utility-types";
 
 export interface ImageUnhandledProps
-    extends React.HTMLAttributes<HTMLImageElement | HTMLPictureElement> {}
+    extends Omit<
+            React.HTMLAttributes<HTMLImageElement | HTMLPictureElement>,
+            "children"
+        > {}
 export interface ImageManagedClasses extends ManagedClasses<ImageClassNameContract> {}
 export interface ImageHandledProps extends ImageManagedClasses {
     /**

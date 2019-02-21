@@ -64,7 +64,7 @@ describe("radio", (): void => {
 
     test("should render a child if one is passed as a child with the `label` slot prop", () => {
         const rendered: any = mount(
-            <Radio managedClasses={managedClasses} id="radio03">
+            <Radio managedClasses={managedClasses} inputId="radio03">
                 <div id="testLabel" slot={RadioSlot.label}>
                     Label
                 </div>
