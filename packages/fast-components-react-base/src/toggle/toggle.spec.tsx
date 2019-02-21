@@ -27,7 +27,7 @@ describe("toggle", (): void => {
     };
     const handledProps: ToggleHandledProps = {
         managedClasses,
-        id: "id",
+        inputId: "id",
         selectedMessage: "selected-message",
         statusMessageId: "status-message-id",
         unselectedMessage: "unselected-message",
@@ -48,7 +48,7 @@ describe("toggle", (): void => {
         expect(() => {
             shallow(
                 <Toggle
-                    id="id"
+                    inputId="id"
                     selectedMessage="selectedString"
                     unselectedMessage="selectedString"
                     statusMessageId="statusLabelId"

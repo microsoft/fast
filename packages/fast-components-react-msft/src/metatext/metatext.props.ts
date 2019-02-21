@@ -25,5 +25,6 @@ export interface MetatextHandledProps extends MetatextManagedClasses {
 }
 
 /* tslint:disable-next-line:no-empty-interface */
-export interface MetatextUnhandledProps extends TypographyUnhandledProps {}
+export interface MetatextUnhandledProps
+    extends React.HTMLAttributes<HTMLParagraphElement | HTMLSpanElement> {}
 export type MetatextProps = MetatextHandledProps & MetatextUnhandledProps;
