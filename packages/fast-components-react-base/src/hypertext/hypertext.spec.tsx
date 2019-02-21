@@ -53,7 +53,7 @@ describe("hypertext", (): void => {
         expect(rendered.prop("aria-hidden")).toEqual(true);
     });
 
-    test("should render with an attribute of `href` if `href` prop is passed", () => {
+    test("should render with an attribute of `href` if `href` is passed as an unhandled prop", () => {
         const testHref: string = "http://www.microsoft.com";
         const rendered: any = shallow(
             <Hypertext href={testHref} managedClasses={managedClasses} />
@@ -62,14 +62,14 @@ describe("hypertext", (): void => {
         expect(rendered.prop("href")).toBe(testHref);
     });
 
-    test("should NOT render with an attribute of `href` if no `href` prop is passed", () => {
+    test("should NOT render with an attribute of `href` if `href` prop is NOT passed", () => {
         const rendered: any = shallow(<Hypertext managedClasses={managedClasses} />);
 
         expect(rendered.prop("href")).toBe(null);
     });
 
     test("should correctly handle children", () => {
-        const handledProps: HypertextHandledProps & HypertextManagedClasses = {
+        const handledProps: HypertextProps = {
             managedClasses,
             href: "http://www.microsoft.com",
         };
