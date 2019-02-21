@@ -1,6 +1,9 @@
 import {
     neutralFill,
     neutralFillActive,
+    neutralFillDeltaActive,
+    neutralFillDeltaHover,
+    neutralFillDeltaRest,
     neutralFillHover,
     neutralFillRest,
 } from "./neutral-fill";
@@ -13,9 +16,15 @@ describe("neutralFill", (): void => {
     const accentPalette: Palette = palette(PaletteType.accent)(designSystemDefaults);
 
     test("should opperate on design system defaults", (): void => {
-        expect(neutralFillRest({} as DesignSystem)).toBe("#EFEFEF");
-        expect(neutralFillHover({} as DesignSystem)).toBe("#F3F3F3");
-        expect(neutralFillActive({} as DesignSystem)).toBe("#F7F7F7");
+        expect(neutralFillRest({} as DesignSystem)).toBe(
+            neutralPalette[neutralFillDeltaRest]
+        );
+        expect(neutralFillHover({} as DesignSystem)).toBe(
+            neutralPalette[neutralFillDeltaHover]
+        );
+        expect(neutralFillActive({} as DesignSystem)).toBe(
+            neutralPalette[neutralFillDeltaActive]
+        );
     });
 
     test("should switch from dark to light after 4 swatches", (): void => {
