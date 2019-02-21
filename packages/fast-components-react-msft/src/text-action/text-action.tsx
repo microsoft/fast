@@ -56,8 +56,8 @@ class TextAction extends Foundation<
                 {this.generateBeforeGlyph()}
                 <TextField
                     {...this.unhandledProps()}
-                    disabled={this.props.disabled}
-                    placeholder={this.props.placeholder}
+                    disabled={get(this.props, "disabled", null)}
+                    placeholder={get(this.props, "placeholder", null)}
                     jssStyleSheet={textFieldOverrides}
                     onBlur={this.handleOnBlur}
                     onFocus={this.handleOnFocus}
