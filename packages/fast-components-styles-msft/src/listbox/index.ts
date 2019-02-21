@@ -4,9 +4,6 @@ import designSystemDefaults, {
 } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { ListboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { foregroundLarge } from "../utilities/colors";
-import { elevation, ElevationMultiplier } from "../utilities/elevation";
-import { toPx } from "@microsoft/fast-jss-utilities";
 
 const styles: ComponentStyles<ListboxClassNameContract, DesignSystem> = (
     config: DesignSystem
