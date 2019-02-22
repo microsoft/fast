@@ -2,7 +2,7 @@
   IMPORTS
 ----------*/
 
-import * as React from "react";
+import React from "react";
 import manageJss, { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import { ColorRGBA64, contrastRatio } from "../../../src/colorlib";
 
