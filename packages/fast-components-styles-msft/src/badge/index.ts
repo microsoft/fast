@@ -58,7 +58,7 @@ const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
     const accentBackground: string = designSystem.brandColor;
     const accentForegroundColor: string = ensureNormalContrast(
         contrast,
-        foregroundColor,
+        backgroundColor,
         accentBackground
     );
     const hightlightForegroundColor: string = ensureNormalContrast(
