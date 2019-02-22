@@ -44,6 +44,9 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
             textAlign: "center",
             width: "100%",
             zIndex: "100",
+            "& > :first-child:nth-last-child(1)": {
+                display: "none",
+            },
         },
         carousel_sequenceIndicator: {
             display: "inline-block",
@@ -89,7 +92,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
                 color: "black",
                 fill: "black",
                 background: "rgba(255, 255, 255, 0.6)",
-                border: "1px solid #CECECE",
+                border: "1px solid rgba(206, 206, 206, 0.6)",
                 "& span::before": {
                     borderColor: "black",
                 },
@@ -103,7 +106,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
             "& $carousel_sequenceIndicator": {
                 "&::before": {
                     background: "white",
-                    borderColor: "#CECECE",
+                    borderColor: "rgb(206, 206, 206)",
                 },
                 "&$carousel_sequenceIndicator__active": {
                     "&::before": {
@@ -118,7 +121,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
                 color: "white",
                 fill: "white",
                 background: "rgba(0, 0, 0, 0.6)",
-                border: "1px solid #CECECE",
+                border: "1px solid rgba(206, 206, 206, 0.6)",
                 "& span::before": {
                     borderColor: "white",
                 },
@@ -132,7 +135,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
             "& $carousel_sequenceIndicator": {
                 "&::before": {
                     background: "black",
-                    borderColor: "#CECECE",
+                    borderColor: "rgb(206, 206, 206)",
                 },
             },
             "& $carousel_sequenceIndicator__active": {

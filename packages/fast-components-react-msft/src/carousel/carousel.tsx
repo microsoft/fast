@@ -89,15 +89,17 @@ class Carousel extends Foundation<
     public render(): React.ReactElement<HTMLDivElement> {
         return (
             <div {...this.unhandledProps()} className={this.generateClassNames()}>
-                <Flipper
-                    direction={FlipperDirection.previous}
-                    onClick={this.handlePreviousClick}
-                    className={get(
-                        this.props,
-                        "managedClasses.carousel_flipperPrevious",
-                        ""
-                    )}
-                />
+                {this.slides.length !== 1 && (
+                    <Flipper
+                        direction={FlipperDirection.previous}
+                        onClick={this.handlePreviousClick}
+                        className={get(
+                            this.props,
+                            "managedClasses.carousel_flipperPrevious",
+                            ""
+                        )}
+                    />
+                )}
                 <Tabs
                     label={this.props.label}
                     activeId={this.state.activeId}
@@ -105,11 +107,17 @@ class Carousel extends Foundation<
                     items={this.slides as TabsItem[]}
                     managedClasses={this.generateTabsClassNames()}
                 />
-                <Flipper
-                    direction={FlipperDirection.next}
-                    onClick={this.handleNextClick}
-                    className={get(this.props, "managedClasses.carousel_flipperNext", "")}
-                />
+                {this.slides.length !== 1 && (
+                    <Flipper
+                        direction={FlipperDirection.next}
+                        onClick={this.handleNextClick}
+                        className={get(
+                            this.props,
+                            "managedClasses.carousel_flipperNext",
+                            ""
+                        )}
+                    />
+                )}
             </div>
         );
     }
@@ -121,32 +129,14 @@ class Carousel extends Foundation<
         let className: string = get(this.props, "managedClasses.carousel", "");
 
         if (this.getSlideTheme()) {
-            const theme: string =
-                this.getSlideTheme() === SlideTheme.light
-                    ? get(this.props, "managedClasses.carousel__themeLight", "")
-                    : get(this.props, "managedClasses.carousel__themeDark", "");
-
-            className += ` ${theme}`;
+            className += this.assignSlideThemeClassName();
         }
 
         if (
             this.slideTransitionDirection === SlideTransitionDirection.next ||
             this.slideTransitionDirection === SlideTransitionDirection.previous
         ) {
-            const transitionDirection: string =
-                this.slideTransitionDirection === SlideTransitionDirection.next
-                    ? get(
-                          this.props,
-                          "managedClasses.carousel__slideTransitionDirectionNext",
-                          ""
-                      )
-                    : get(
-                          this.props,
-                          "managedClasses.carousel__slideTransitionDirectionPrevious",
-                          ""
-                      );
-
-            className += ` ${transitionDirection}`;
+            className += this.assignTransitionDirectionClassName();
         }
 
         return super.generateClassNames(className);
@@ -229,6 +219,38 @@ class Carousel extends Foundation<
         } else {
             this.slideTransitionDirection = SlideTransitionDirection.previous;
         }
+    }
+
+    /**
+     * Return transition direction class name
+     */
+    private assignTransitionDirectionClassName(): string {
+        const transitionDirection: string =
+            this.slideTransitionDirection === SlideTransitionDirection.next
+                ? get(
+                      this.props,
+                      "managedClasses.carousel__slideTransitionDirectionNext",
+                      ""
+                  )
+                : get(
+                      this.props,
+                      "managedClasses.carousel__slideTransitionDirectionPrevious",
+                      ""
+                  );
+
+        return ` ${transitionDirection}`;
+    }
+
+    /**
+     * Return slide theme class name
+     */
+    private assignSlideThemeClassName(): string {
+        const theme: string =
+            this.getSlideTheme() === SlideTheme.light
+                ? get(this.props, "managedClasses.carousel__themeLight", "")
+                : get(this.props, "managedClasses.carousel__themeDark", "");
+
+        return ` ${theme}`;
     }
 
     /**
