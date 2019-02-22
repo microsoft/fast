@@ -1,7 +1,9 @@
 # Number field
 
-A *number field* is a form component which allows users to input and edit numerical data.
+A *number field* is an input element of `type=number` that allows users to input and edit numerical data.
 
 ## Usage
 
-The *number field* is not appropriate for input that happens to only consist of numbers but isn’t strictly speaking a number. For example, it would be inappropriate for credit card numbers or US postal codes. A simple way of determining whether to use the *number field* is to consider whether it would make sense for the input control to have a spinbox interface (e.g., with “up” and “down” arrows). When a number field is not appropriate, use text field instead.
+As an `<input>` element of `type=number`, *number field* is used to let the user enter purely numerical values, such as quantity. Inputs of `type=number` include built-in validation to reject non-numerical entries. The browser provides default stepper arrows (i.e. the up and down arrows found within the input control) to let the user increase and decrease the value using either mouse or keyboard. *Number field* is not appropriate for all input value that happen to contain numbers, only when increment and decrement are useful operations on the value &mdash; typically, these operations are not useful on numbers used as identifiers (credit card numbers or postal codes). When a number field is not appropriate, use text field instead.
+
+Use attributes such as `min`, `max`, and `step` to control the expected value within *number field*. A complete list of appropriate attributes can be found [here](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/number).

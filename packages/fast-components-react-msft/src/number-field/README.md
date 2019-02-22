@@ -1,11 +1,9 @@
-# Label
+# Number field
 
-A *number field* is a form component which allows users to input and edit numerical data.
+A *number field* is an input element of `type=number` that allows users to input and edit numerical data.
 
 ## Usage
 
-Use sentence case (e.g. "Last name"), but avoid punctuation such as colons. *Label* text should be short and succinct, not a full sentence. When labeling components, write the *label* text as a noun or a concise noun phrase, without using full sentences. Using commas to separate list items is an exception to this rule.
+As an `<input>` element of `type=number`, *number field* is used to let the user enter purely numerical values, such as quantity. Inputs of `type=number` include built-in validation to reject non-numerical entries. *Number field* is not appropriate for all input value that happen to contain numbers, only when increment and decrement are useful operations on the value &mdash; typically, these operations are not useful on numbers used as identifiers (credit card numbers or postal codes). When a number field is not appropriate, use text field instead.
 
-## Behavioral guidance
-
-Use *number field* when numeric values of input are required. Use step to control number accuracy. It is recommended to have a label above the number field to indicate its usage.
+Use attributes such as `min`, `max`, and `step` to control the expected value within *number field*. A complete list of appropriate attributes can be found [here](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/number).
