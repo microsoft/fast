@@ -128,6 +128,7 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
             tabs: get(this.props, "managedClasses.pivot", ""),
             tabs_tabPanels: this.generateTabPanelsClassNames(),
             tabs_tabList: get(this.props, "managedClasses.pivot_tabList", ""),
+            tabs_tabContent: get(this.props, "managedClasses.pivot_tabContent", ""),
             tabs_tabPanelContent: get(
                 this.props,
                 "managedClasses.pivot_tabPanelContent",
@@ -176,13 +177,13 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
         } else if (this.state.tabPanelIndex < this.prevTabPanelIndex) {
             className = `${className} ${get(
                 this.props,
-                "managedClasses.pivot_tabPanels__fromLeft",
+                "managedClasses.pivot_tabPanels__previous",
                 "Error"
             )}`;
         } else {
             className = `${className} ${get(
                 this.props,
-                "managedClasses.pivot_tabPanels__fromRight",
+                "managedClasses.pivot_tabPanels__next",
                 "Error"
             )}`;
         }

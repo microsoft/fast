@@ -23,8 +23,8 @@ const managedClasses: PivotClassNameContract = {
     pivot_tabPanel__hidden: "pivot_tabPanel__hidden-class",
     pivot_tabPanelContent: "pivot_tabPanelContent-class",
     pivot_tabPanels: "pivot_tabPanels-class",
-    pivot_tabPanels__fromLeft: "pivot_tabPanels__fromLeft-class",
-    pivot_tabPanels__fromRight: "pivot_tabPanels__fromRight-class",
+    pivot_tabPanels__previous: "pivot_tabPanels__previous-class",
+    pivot_tabPanels__next: "pivot_tabPanels__next-class",
 };
 
 const id0: string = "pivot01";

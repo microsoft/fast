@@ -30,19 +30,24 @@ export interface PivotClassNameContract extends BaseTabsClassNameContract {
     pivot_tab__active?: string;
 
     /**
+     * The pivot tab content
+     */
+    pivot_tabContent?: string;
+
+    /**
      * The collection of tab panels
      */
     pivot_tabPanels?: string;
 
     /**
-     * The tab panel from left
+     * The previous panel from left
      */
-    pivot_tabPanels__fromLeft?: string;
+    pivot_tabPanels__previous?: string;
 
     /**
-     * The tab panel from right
+     * The next tab panel
      */
-    pivot_tabPanels__fromRight?: string;
+    pivot_tabPanels__next?: string;
 
     /**
      * The tab panel

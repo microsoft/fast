@@ -10,6 +10,7 @@ import {
     Direction,
     toPx,
 } from "@microsoft/fast-jss-utilities";
+import { applyTypeRampConfig } from "../utilities/typography";
 import { ensureBrandNormal, hoverContrast } from "../utilities/colors";
 import outlinePattern from "../patterns/outline";
 import { PivotClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
@@ -33,7 +34,6 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
         pivot_tab: {
             minHeight: "32px",
             padding: "0 12px",
-            fontSize: "14px",
             whiteSpace: "nowrap",
             display: "flex",
             border: "2px solid",
@@ -53,6 +53,9 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
             }),
         },
         pivot_tab__active: {},
+        pivot_tabContent: {
+            ...applyTypeRampConfig("t7"),
+        },
         pivot_activeIndicator: {
             position: "absolute",
             borderRadius: toPx(designSystem.cornerRadius),
@@ -73,11 +76,19 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
         pivot_tabPanels: {
             animationTimingFunction: "cubic-bezier(0.4, 0.0, 0.6, 1.0)",
         },
-        pivot_tabPanels__fromLeft: {
-            animation: "fromLeft 0.2s",
+        pivot_tabPanels__previous: {
+            animation: `${applyLocalizedProperty(
+                "fromLeft",
+                "fromRight",
+                direction
+            )} 0.2s`,
         },
-        pivot_tabPanels__fromRight: {
-            animation: "fromRight 0.2s",
+        pivot_tabPanels__next: {
+            animation: `${applyLocalizedProperty(
+                "fromRight",
+                "fromLeft",
+                direction
+            )} 0.2s`,
         },
         pivot_tabPanelContent: {},
         "@keyframes fromRight": {
