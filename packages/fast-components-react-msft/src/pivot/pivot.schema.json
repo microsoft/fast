@@ -20,18 +20,39 @@
                 "horizontal",
                 "vertical"
             ]
-        }
-    },
-    "reactProperties": {
-        "children": {
-            "title": "Building blocks",
-            "type": "children",
-            "ids": [
-                "tab-item"
-            ]
+        },
+        "items": {
+            "title": "Items",
+            "type": "array",
+            "items": {
+                "title": "Item",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "HTML id attribute",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id"
+                ],
+                "reactProperties": {
+                    "tab": {
+                        "title": "Pivot tab",
+                        "type": "children",
+                        "pluginId": "@microsoft/fast-components-react-msft/pivot/items/tab"
+                    },
+                    "content": {
+                        "title": "Pivot content",
+                        "type": "children",
+                        "pluginId": "@microsoft/fast-components-react-msft/pivot/items/content"
+                    }
+                }
+            }
         }
     },
     "required": [
-        "label"
+        "tab",
+        "content"
     ]
 }
