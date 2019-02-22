@@ -15,7 +15,7 @@ const classes: NumberFieldManagedClasses = {
     },
 };
 
-const examples: ComponentFactoryExample<NumberFieldHandledProps> = {
+const examples: ComponentFactoryExample<NumberFieldProps> = {
     name: "Number field",
     component: NumberField,
     schema: schema as any,
@@ -26,8 +26,7 @@ const examples: ComponentFactoryExample<NumberFieldHandledProps> = {
         min: 0,
         max: 100,
         step: 10,
-        defaultValue: 0,
-    } as any,
+    },
     data: [
         {
             ...classes,
@@ -44,10 +43,6 @@ const examples: ComponentFactoryExample<NumberFieldHandledProps> = {
         {
             ...classes,
             value: 100,
-        },
-        {
-            ...classes,
-            defaultValue: 100,
         },
         {
             ...classes,
@@ -68,7 +63,7 @@ const examples: ComponentFactoryExample<NumberFieldHandledProps> = {
         {
             ...classes,
             name: "Name",
-        } as any,
+        },
     ],
 };
 
