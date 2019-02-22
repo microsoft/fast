@@ -11,6 +11,7 @@ import {
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import { applyTypeRampConfig } from "../utilities/typography";
+import { density } from "../utilities/density";
 import { ensureBrandNormal, hoverContrast } from "../utilities/colors";
 import outlinePattern from "../patterns/outline";
 import { PivotClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
@@ -32,7 +33,7 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
             boxSizing: "border-box",
         },
         pivot_tab: {
-            minHeight: "32px",
+            minHeight: density(32),
             padding: "0 12px",
             whiteSpace: "nowrap",
             display: "flex",
@@ -59,7 +60,7 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
         pivot_activeIndicator: {
             position: "absolute",
             borderRadius: toPx(designSystem.cornerRadius),
-            top: "27px",
+            top: density(27),
             left: "-10px",
             transition: "0.2s ease-in-out",
             width: "20px",
