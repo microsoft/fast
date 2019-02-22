@@ -89,7 +89,7 @@ class Carousel extends Foundation<
     public render(): React.ReactElement<HTMLDivElement> {
         return (
             <div {...this.unhandledProps()} className={this.generateClassNames()}>
-                {this.slides.length !== 1 && (
+                {this.isSingleSlide && (
                     <Flipper
                         direction={FlipperDirection.previous}
                         onClick={this.handlePreviousClick}
@@ -107,7 +107,7 @@ class Carousel extends Foundation<
                     items={this.slides as TabsItem[]}
                     managedClasses={this.generateTabsClassNames()}
                 />
-                {this.slides.length !== 1 && (
+                {this.isSingleSlide && (
                     <Flipper
                         direction={FlipperDirection.next}
                         onClick={this.handleNextClick}
@@ -188,6 +188,13 @@ class Carousel extends Foundation<
         } else {
             return [];
         }
+    }
+
+    /**
+     * Single slide carousels do not require certain interface elements
+     */
+    private get isSingleSlide(): boolean {
+        return this.slides.length !== 1;
     }
 
     /**

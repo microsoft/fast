@@ -10,27 +10,40 @@ import carouselHeroContentSchema from "../../app/components/carousel-hero-conten
 import carouselDarkImageContentSchema from "../../app/components/carousel-dark-image-content.schema.json";
 import carouselLightImageContentSchema from "../../app/components/carousel-light-image-content.schema.json";
 
+const heroContentProps: object = {
+    props: {
+        heading: {
+            children: "Heading text",
+        },
+        paragraph: {
+            children: "Hero paragraph test test",
+        },
+        callToAction: {
+            children: "Call to action",
+            href: "#",
+            appearance: CallToActionAppearance.primary,
+        },
+        image: {
+            src: "http://placehold.it/1399x600/2F2F2F/171717",
+            alt: "Placeholder image",
+        },
+    },
+};
+
+const darkImageProps: object = {
+    props: {
+        image: {
+            src: "http://placehold.it/1399x600/2F2F2F/171717",
+            alt: "Placeholder image",
+        },
+    },
+};
+
 const detailTabItem: Slide[] = [
     {
         content: {
             id: carouselHeroContentSchema.id,
-            props: {
-                heading: {
-                    children: "Heading text",
-                },
-                paragraph: {
-                    children: "Hero paragraph test test",
-                },
-                callToAction: {
-                    children: "Call to action",
-                    href: "#",
-                    appearance: CallToActionAppearance.primary,
-                },
-                image: {
-                    src: "http://placehold.it/1399x600/2F2F2F/171717",
-                    alt: "Placeholder image",
-                },
-            },
+            heroContentProps,
         } as any,
         id: uniqueId(),
         theme: SlideTheme.dark,
@@ -38,12 +51,7 @@ const detailTabItem: Slide[] = [
     {
         content: {
             id: carouselDarkImageContentSchema.id,
-            props: {
-                image: {
-                    src: "http://placehold.it/1399x600/2F2F2F/171717",
-                    alt: "Placeholder image",
-                },
-            },
+            darkImageProps,
         } as any,
         id: uniqueId(),
         theme: SlideTheme.dark,
@@ -64,12 +72,7 @@ const detailTabItem: Slide[] = [
     {
         content: {
             id: carouselDarkImageContentSchema.id,
-            props: {
-                image: {
-                    src: "http://placehold.it/1399x600/2F2F2F/171717",
-                    alt: "Placeholder image",
-                },
-            },
+            darkImageProps,
         } as any,
         id: uniqueId(),
         theme: SlideTheme.dark,
@@ -77,23 +80,7 @@ const detailTabItem: Slide[] = [
     {
         content: {
             id: carouselHeroContentSchema.id,
-            props: {
-                heading: {
-                    children: "Heading text",
-                },
-                paragraph: {
-                    children: "Hero paragraph test test",
-                },
-                callToAction: {
-                    children: "Call to action",
-                    href: "#",
-                    appearance: CallToActionAppearance.primary,
-                },
-                image: {
-                    src: "http://placehold.it/1399x600/2F2F2F/171717",
-                    alt: "Placeholder image",
-                },
-            },
+            heroContentProps,
         } as any,
         id: uniqueId(),
         theme: SlideTheme.dark,
@@ -104,12 +91,7 @@ const singleTabItem: Slide[] = [
     {
         content: {
             id: carouselDarkImageContentSchema.id,
-            props: {
-                image: {
-                    src: "http://placehold.it/1399x600/2F2F2F/171717",
-                    alt: "Placeholder image",
-                },
-            },
+            darkImageProps,
         } as any,
         id: uniqueId(),
     },
@@ -126,12 +108,12 @@ export default {
     },
     data: [
         {
-            label: "A set of example text content",
+            label: "A carousel of items",
             items: detailTabItem,
             activeId: detailTabItem[2].id,
         },
         {
-            label: "A set of example text content",
+            label: "A single slide carousel",
             items: singleTabItem,
         } as any,
     ],
