@@ -16,7 +16,7 @@ const heroContentProps: object = {
             children: "Heading text",
         },
         paragraph: {
-            children: "Hero paragraph test test",
+            children: "Hero paragraph test text",
         },
         callToAction: {
             children: "Call to action",

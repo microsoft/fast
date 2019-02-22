@@ -34,7 +34,7 @@ export default class CarouselHeroContent extends React.Component<
             children: "Heading text",
         },
         paragraph: {
-            children: "Hero paragraph test test",
+            children: "Hero paragraph test text",
         },
         image: {
             src: "http://placehold.it/1399x600/2F2F2F/171717",
