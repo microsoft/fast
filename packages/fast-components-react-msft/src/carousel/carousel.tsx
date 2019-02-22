@@ -25,7 +25,6 @@ export interface CarouselState {
 enum SlideTransitionDirection {
     previous = "previous",
     next = "next",
-    initial = "",
 }
 
 class Carousel extends Foundation<
@@ -64,8 +63,10 @@ class Carousel extends Foundation<
         items: void 0,
     };
 
-    private slideTransitionDirection: Partial<SlideTransitionDirection> =
-        SlideTransitionDirection.initial;
+    /**
+     * Initial slide transition direction is none (on carousel load)
+     */
+    private slideTransitionDirection: SlideTransitionDirection | "" = "";
 
     /**
      * Define constructor
@@ -132,10 +133,7 @@ class Carousel extends Foundation<
             className += this.assignSlideThemeClassName();
         }
 
-        if (
-            this.slideTransitionDirection === SlideTransitionDirection.next ||
-            this.slideTransitionDirection === SlideTransitionDirection.previous
-        ) {
+        if (this.slideTransitionDirection) {
             className += this.assignTransitionDirectionClassName();
         }
 
