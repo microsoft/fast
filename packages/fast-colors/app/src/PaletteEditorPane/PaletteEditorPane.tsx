@@ -4,7 +4,7 @@
 
 import * as React from "react";
 import manageJss, { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import { ColorInterpolationSpace, ColorPalette, ColorRGBA64, parseColor } from 'colorlib';
+import { ColorInterpolationSpace, ColorPalette, ColorRGBA64, parseColor } from '../../../src/colorlib';
 
 /*----------------
   EVENT ARGS

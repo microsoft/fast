@@ -7,7 +7,7 @@ import manageJss, { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import PaletteEditorPane from "./PaletteEditorPane/PaletteEditorPane";
 import { IPaletteEditorPaneParamsChangedArgs } from "./PaletteEditorPane/PaletteEditorPane";
 import PaletteDisplay from "./PaletteDisplay/PaletteDisplay";
-import { ColorInterpolationSpace, ColorRGBA64, parseColor } from "colorlib";
+import { ColorInterpolationSpace, ColorRGBA64, parseColor } from "../../src/colorlib";
 
 /*------------
   JSS STYLES

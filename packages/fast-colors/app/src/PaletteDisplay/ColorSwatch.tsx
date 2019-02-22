@@ -4,7 +4,7 @@
 
 import * as React from "react";
 import manageJss, { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import { ColorRGBA64, contrastRatio } from "colorlib";
+import { ColorRGBA64, contrastRatio } from "../../../src/colorlib";
 
 /*------------
   JSS STYLES

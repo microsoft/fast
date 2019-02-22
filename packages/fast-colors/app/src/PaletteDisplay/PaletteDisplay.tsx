@@ -9,7 +9,7 @@ import {
   ColorPalette,
   ColorRGBA64,
   parseColor
-} from "colorlib";
+} from "../../../src/colorlib";
 import ColorSwatch from "./ColorSwatch";
 
 /*------------
