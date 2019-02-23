@@ -55,11 +55,7 @@ export class ColorRGBA64 {
     // #RRGGBBAA
     public toStringHexRGBA(): string {
         return (
-            "#" +
-            getHexStringForByte(denormalize(this.r, 0.0, 255.0)) +
-            getHexStringForByte(denormalize(this.g, 0.0, 255.0)) +
-            getHexStringForByte(denormalize(this.b, 0.0, 255.0)) +
-            getHexStringForByte(denormalize(this.a, 0.0, 255.0))
+            this.toStringHexRGB() + getHexStringForByte(denormalize(this.a, 0.0, 255.0))
         );
     }
 
