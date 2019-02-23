@@ -1,19 +1,33 @@
 // tslint:disable:no-string-literal
 // tslint:disable:no-console
 
-import { ColorRGBA64, parseColor } from "../src/colorlib";
+import {
+    ColorRGBA64,
+    parseColor,
+    parseColorHexRGB,
+    parseColorHexRGBA,
+    parseColorNamed,
+    parseColorWebRGB,
+    parseColorWebRGBA,
+} from "../src/colorlib";
 
 import { testData } from "../testData";
 
 const testPrecision: number = 4;
 
 describe("Color parsing and toString", () => {
-    test("parseColorHexShort", () => {
+    test("parseColorHexRGB", () => {
         function testColor(data: any): void {
-            const rgb: ColorRGBA64 | null = parseColor(data.hexRGBString);
+            let rgb: ColorRGBA64 | null = parseColor(data.hexRGBString);
 
             expect(rgb).toBeDefined();
+            expect(rgb!.r).toBeCloseTo(data.rgba.r, testPrecision);
+            expect(rgb!.g).toBeCloseTo(data.rgba.g, testPrecision);
+            expect(rgb!.b).toBeCloseTo(data.rgba.b, testPrecision);
+            expect(rgb!.a).toBe(1);
 
+            rgb = parseColorHexRGB(data.hexRGBString);
+            expect(rgb).toBeDefined();
             expect(rgb!.r).toBeCloseTo(data.rgba.r, testPrecision);
             expect(rgb!.g).toBeCloseTo(data.rgba.g, testPrecision);
             expect(rgb!.b).toBeCloseTo(data.rgba.b, testPrecision);
@@ -24,12 +38,34 @@ describe("Color parsing and toString", () => {
         }
     });
 
-    test("parseColorHexLong", () => {
+    test("parseColorHexARGB", () => {
         function testColor(data: any): void {
-            const rgba: ColorRGBA64 | null = parseColor(data.hexARGBString);
+            let rgba: ColorRGBA64 | null = parseColor(data.hexARGBString);
 
             expect(rgba).toBeDefined();
+            expect(rgba!.r).toBeCloseTo(data.rgba.r, testPrecision);
+            expect(rgba!.g).toBeCloseTo(data.rgba.g, testPrecision);
+            expect(rgba!.b).toBeCloseTo(data.rgba.b, testPrecision);
+            expect(rgba!.a).toBeCloseTo(data.rgba.a, testPrecision);
 
+            rgba = parseColor(data.hexARGBString);
+
+            expect(rgba).toBeDefined();
+            expect(rgba!.r).toBeCloseTo(data.rgba.r, testPrecision);
+            expect(rgba!.g).toBeCloseTo(data.rgba.g, testPrecision);
+            expect(rgba!.b).toBeCloseTo(data.rgba.b, testPrecision);
+            expect(rgba!.a).toBeCloseTo(data.rgba.a, testPrecision);
+        }
+        for (const data of testData.namedColors) {
+            testColor(data);
+        }
+    });
+
+    test("parseColorHexRGBA", () => {
+        function testColor(data: any): void {
+            const rgba: ColorRGBA64 | null = parseColorHexRGBA(data.hexRGBAString);
+
+            expect(rgba).toBeDefined();
             expect(rgba!.r).toBeCloseTo(data.rgba.r, testPrecision);
             expect(rgba!.g).toBeCloseTo(data.rgba.g, testPrecision);
             expect(rgba!.b).toBeCloseTo(data.rgba.b, testPrecision);
@@ -42,10 +78,16 @@ describe("Color parsing and toString", () => {
 
     test("parseColorWebShort", () => {
         function testColor(data: any): void {
-            const rgb: ColorRGBA64 | null = parseColor(data.webRGBString);
+            let rgb: ColorRGBA64 | null = parseColor(data.webRGBString);
 
             expect(rgb).toBeDefined();
+            expect(rgb!.r).toBeCloseTo(data.rgba.r, testPrecision);
+            expect(rgb!.g).toBeCloseTo(data.rgba.g, testPrecision);
+            expect(rgb!.b).toBeCloseTo(data.rgba.b, testPrecision);
+            expect(rgb!.a).toBe(1);
 
+            rgb = parseColorWebRGB(data.webRGBString);
+            expect(rgb).toBeDefined();
             expect(rgb!.r).toBeCloseTo(data.rgba.r, testPrecision);
             expect(rgb!.g).toBeCloseTo(data.rgba.g, testPrecision);
             expect(rgb!.b).toBeCloseTo(data.rgba.b, testPrecision);
@@ -58,10 +100,16 @@ describe("Color parsing and toString", () => {
 
     test("parseColorWebLong", () => {
         function testColor(data: any): void {
-            const rgba: ColorRGBA64 | null = parseColor(data.webRGBAString);
+            let rgba: ColorRGBA64 | null = parseColor(data.webRGBAString);
 
             expect(rgba).toBeDefined();
+            expect(rgba!.r).toBeCloseTo(data.rgba.r, testPrecision);
+            expect(rgba!.g).toBeCloseTo(data.rgba.g, testPrecision);
+            expect(rgba!.b).toBeCloseTo(data.rgba.b, testPrecision);
+            expect(rgba!.a).toBeCloseTo(data.rgba.a, testPrecision);
 
+            rgba = parseColorWebRGBA(data.webRGBAString);
+            expect(rgba).toBeDefined();
             expect(rgba!.r).toBeCloseTo(data.rgba.r, testPrecision);
             expect(rgba!.g).toBeCloseTo(data.rgba.g, testPrecision);
             expect(rgba!.b).toBeCloseTo(data.rgba.b, testPrecision);
@@ -74,10 +122,16 @@ describe("Color parsing and toString", () => {
 
     test("parseColorNamed", () => {
         function testColor(data: any): void {
-            const rgba: ColorRGBA64 | null = parseColor(data.name);
+            let rgba: ColorRGBA64 | null = parseColor(data.name);
 
             expect(rgba).toBeDefined();
+            expect(rgba!.r).toBeCloseTo(data.rgba.r, testPrecision);
+            expect(rgba!.g).toBeCloseTo(data.rgba.g, testPrecision);
+            expect(rgba!.b).toBeCloseTo(data.rgba.b, testPrecision);
+            expect(rgba!.a).toBeCloseTo(data.rgba.a, testPrecision);
 
+            rgba = parseColorNamed(data.name);
+            expect(rgba).toBeDefined();
             expect(rgba!.r).toBeCloseTo(data.rgba.r, testPrecision);
             expect(rgba!.g).toBeCloseTo(data.rgba.g, testPrecision);
             expect(rgba!.b).toBeCloseTo(data.rgba.b, testPrecision);

@@ -10,7 +10,7 @@ export class ColorLAB {
     public static readonly epsilon: number = 216 / 24389;
     public static readonly kappa: number = 24389 / 27;
 
-    public static fromObject(data: any): ColorLAB | null {
+    public static fromObject(data: { l: number; a: number; b: number }): ColorLAB | null {
         if (data && !isNaN(data.l) && !isNaN(data.a) && !isNaN(data.b)) {
             return new ColorLAB(data.l, data.a, data.b);
         }
@@ -39,7 +39,7 @@ export class ColorLAB {
         );
     }
 
-    public toObject(): object {
+    public toObject(): { l: number; a: number; b: number } {
         return { l: this.l, a: this.a, b: this.b };
     }
 }

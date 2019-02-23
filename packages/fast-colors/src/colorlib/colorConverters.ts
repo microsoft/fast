@@ -35,19 +35,19 @@ export function rgbToLuminance(rgb: ColorRGBA64): number {
 
 // The alpha channel of the input is ignored
 export function contrastRatio(a: ColorRGBA64, b: ColorRGBA64): number {
-    const la: number = rgbToLuminance(a);
-    const lb: number = rgbToLuminance(b);
-    if (la > lb) {
-        return (la + 0.05) / (lb + 0.05);
+    const luminanceA: number = rgbToLuminance(a);
+    const luminanceB: number = rgbToLuminance(b);
+    if (luminanceA > luminanceB) {
+        return (luminanceA + 0.05) / (luminanceB + 0.05);
     } else {
-        return (lb + 0.05) / (la + 0.05);
+        return (luminanceB + 0.05) / (luminanceA + 0.05);
     }
 }
 
 // The alpha channel of the input is ignored
 export function rgbToHSL(rgb: ColorRGBA64): ColorHSL {
-    const max: number = Math.max(rgb.r, Math.max(rgb.g, rgb.b));
-    const min: number = Math.min(rgb.r, Math.min(rgb.g, rgb.b));
+    const max: number = Math.max(rgb.r, rgb.g, rgb.b);
+    const min: number = Math.min(rgb.r, rgb.g, rgb.b);
     const delta: number = max - min;
 
     let hue: number = 0;
@@ -114,8 +114,8 @@ export function hslToRGB(hsl: ColorHSL, alpha: number = 1): ColorRGBA64 {
 
 // The alpha channel of the input is ignored
 export function rgbToHSV(rgb: ColorRGBA64): ColorHSV {
-    const max: number = Math.max(rgb.r, Math.max(rgb.g, rgb.b));
-    const min: number = Math.min(rgb.r, Math.min(rgb.g, rgb.b));
+    const max: number = Math.max(rgb.r, rgb.g, rgb.b);
+    const min: number = Math.min(rgb.r, rgb.g, rgb.b);
     const delta: number = max - min;
 
     let hue: number = 0;
@@ -190,6 +190,7 @@ export function lchToLAB(lch: ColorLCH): ColorLAB {
 
 // The discontinuity in the C parameter at 0 means that floating point errors will often result in values near 0 giving unpredictable results.
 // EG: 0.0000001 gives a very different result than -0.0000001
+// More info about the atan2 function: https://en.wikipedia.org/wiki/Atan2
 export function labToLCH(lab: ColorLAB): ColorLCH {
     let h: number = 0;
     if (lab.b !== 0 || lab.a !== 0) {

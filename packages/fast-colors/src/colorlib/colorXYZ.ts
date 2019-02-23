@@ -10,7 +10,7 @@ export class ColorXYZ {
     // D65 2 degree white point
     public static readonly whitePoint: ColorXYZ = new ColorXYZ(0.95047, 1.0, 1.08883);
 
-    public static fromObject(data: any): ColorXYZ | null {
+    public static fromObject(data: { x: number; y: number; z: number }): ColorXYZ | null {
         if (data && !isNaN(data.x) && !isNaN(data.y) && !isNaN(data.z)) {
             return new ColorXYZ(data.x, data.y, data.z);
         }
@@ -39,7 +39,7 @@ export class ColorXYZ {
         );
     }
 
-    public toObject(): object {
+    public toObject(): { x: number; y: number; z: number } {
         return { x: this.x, y: this.y, z: this.z };
     }
 }

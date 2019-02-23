@@ -154,64 +154,133 @@ export const namedColors: object = {
     yellowgreen: new ColorRGBA64(0.603922, 0.803922, 0.196078, 1),
 };
 
-// accepts formats
+// Expects format #RRGGBB
+export function parseColorHexRGB(raw: string): ColorRGBA64 | null {
+    if (raw.length !== 7) {
+        return null;
+    }
+    const rawInt: number = parseInt(raw.slice(1, 7), 16);
+    if (isNaN(rawInt)) {
+        return null;
+    }
+    // Note the use of >>> rather than >> as we want JS to manipulate these as unsigned numbers
+    return new ColorRGBA64(
+        normalize((rawInt & 0xff0000) >>> 16, 0, 255),
+        normalize((rawInt & 0x00ff00) >>> 8, 0, 255),
+        normalize(rawInt & 0x0000ff, 0, 255),
+        1
+    );
+}
+
+// Expects format #AARRGGBB
+export function parseColorHexARGB(raw: string): ColorRGBA64 | null {
+    if (raw.length !== 9) {
+        return null;
+    }
+    const rawInt: number = parseInt(raw.slice(1, 9), 16);
+    if (isNaN(rawInt)) {
+        return null;
+    }
+    // Note the use of >>> rather than >> as we want JS to manipulate these as unsigned numbers
+    return new ColorRGBA64(
+        normalize((rawInt & 0x00ff0000) >>> 16, 0, 255),
+        normalize((rawInt & 0x0000ff00) >>> 8, 0, 255),
+        normalize(rawInt & 0x000000ff, 0, 255),
+        normalize((rawInt & 0xff000000) >>> 24, 0, 255)
+    );
+}
+
+// Expects format #RRGGBBAA
+export function parseColorHexRGBA(raw: string): ColorRGBA64 | null {
+    if (raw.length !== 9) {
+        return null;
+    }
+    const rawInt: number = parseInt(raw.slice(1, 9), 16);
+    if (isNaN(rawInt)) {
+        return null;
+    }
+    // Note the use of >>> rather than >> as we want JS to manipulate these as unsigned numbers
+    return new ColorRGBA64(
+        normalize((rawInt & 0xff000000) >>> 24, 0, 255),
+        normalize((rawInt & 0x00ff0000) >>> 16, 0, 255),
+        normalize((rawInt & 0x0000ff00) >>> 8, 0, 255),
+        normalize(rawInt & 0x000000ff, 0, 255)
+    );
+}
+
+// Expects format rgb(RR,GG,BB) where RR,GG,BB are [0,255]
+export function parseColorWebRGB(raw: string): ColorRGBA64 | null {
+    let rawLower: string = raw.toLowerCase();
+    if (!rawLower.startsWith("rgb(")) {
+        return null;
+    }
+    if (rawLower.endsWith(";")) {
+        rawLower = rawLower.slice(0, rawLower.length - 1);
+    }
+    const split: string[] = rawLower.slice(4, -1).split(",");
+    if (split.length === 3) {
+        return new ColorRGBA64(
+            normalize(Number(split[0]), 0, 255),
+            normalize(Number(split[1]), 0, 255),
+            normalize(Number(split[2]), 0, 255),
+            1
+        );
+    } else {
+        return null;
+    }
+}
+
+// Expects format rgba(RR,GG,BB,a) where RR,GG,BB are [0,255] and a is [0,1]
+export function parseColorWebRGBA(raw: string): ColorRGBA64 | null {
+    let rawLower: string = raw.toLowerCase();
+    if (!rawLower.startsWith("rgba(")) {
+        return null;
+    }
+    if (rawLower.endsWith(";")) {
+        rawLower = rawLower.slice(0, rawLower.length - 1);
+    }
+    const split: string[] = rawLower.slice(5, -1).split(",");
+    if (split.length === 4) {
+        return new ColorRGBA64(
+            normalize(Number(split[0]), 0, 255),
+            normalize(Number(split[1]), 0, 255),
+            normalize(Number(split[2]), 0, 255),
+            Number(split[3])
+        );
+    } else {
+        return null;
+    }
+}
+
+// Expects any of the CSS color names https://www.w3schools.com/colors/colors_names.asp
+export function parseColorNamed(raw: string): ColorRGBA64 | null {
+    const rawLower: string = raw.toLowerCase();
+    if (namedColors[rawLower]) {
+        return namedColors[rawLower];
+    }
+    return null;
+}
+
+// Expects any of the following and attempts to determine which is being used
 // #RRGGBB
 // #AARRGGBB
 // rgb(RR,GG,BB)
 // rgba(RR,GG,BB,a)
 // or any of the CSS color names https://www.w3schools.com/colors/colors_names.asp
 export function parseColor(raw: string): ColorRGBA64 | null {
-    let rawLower: string = raw.toLowerCase();
+    const rawLower: string = raw.toLowerCase();
     if (rawLower.startsWith("#")) {
         if (rawLower.length === 7) {
-            const rawInt: number = parseInt(rawLower.slice(1, 7), 16);
-            return new ColorRGBA64(
-                normalize((rawInt & 0xff0000) >>> 16, 0, 255),
-                normalize((rawInt & 0x00ff00) >>> 8, 0, 255),
-                normalize(rawInt & 0x0000ff, 0, 255),
-                1
-            );
+            return parseColorHexRGB(rawLower);
         } else if (rawLower.length === 9) {
-            const rawInt: number = parseInt(rawLower.slice(1, 9), 16);
-            return new ColorRGBA64(
-                normalize((rawInt & 0x00ff0000) >>> 16, 0, 255),
-                normalize((rawInt & 0x0000ff00) >>> 8, 0, 255),
-                normalize(rawInt & 0x000000ff, 0, 255),
-                normalize((rawInt & 0xff000000) >>> 24, 0, 255)
-            );
+            return parseColorHexARGB(rawLower);
         } else {
             return null;
         }
     } else if (rawLower.startsWith("rgb(")) {
-        if (rawLower.endsWith(";")) {
-            rawLower = rawLower.slice(0, rawLower.length - 1);
-        }
-        const split: string[] = rawLower.slice(4, -1).split(",");
-        if (split.length === 3) {
-            return new ColorRGBA64(
-                normalize(Number(split[0]), 0, 255),
-                normalize(Number(split[1]), 0, 255),
-                normalize(Number(split[2]), 0, 255),
-                1
-            );
-        } else {
-            return null;
-        }
+        return parseColorWebRGB(rawLower);
     } else if (rawLower.startsWith("rgba(")) {
-        if (rawLower.endsWith(";")) {
-            rawLower = rawLower.slice(0, rawLower.length - 1);
-        }
-        const split: string[] = rawLower.slice(5, -1).split(",");
-        if (split.length === 4) {
-            return new ColorRGBA64(
-                normalize(Number(split[0]), 0, 255),
-                normalize(Number(split[1]), 0, 255),
-                normalize(Number(split[2]), 0, 255),
-                Number(split[3])
-            );
-        } else {
-            return null;
-        }
+        return parseColorWebRGBA(rawLower);
     } else if (namedColors[rawLower]) {
         return namedColors[rawLower];
     }

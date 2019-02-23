@@ -9,7 +9,7 @@ import { roundToPrecisionSmall } from "./mathUtils";
 // https://en.wikipedia.org/wiki/Illuminant_D65
 // These constants determine how the XYZ, LCH and LAB colors convert to/from RGB.
 export class ColorLCH {
-    public static fromObject(data: any): ColorLCH | null {
+    public static fromObject(data: { l: number; c: number; h: number }): ColorLCH | null {
         if (data && !isNaN(data.l) && !isNaN(data.c) && !isNaN(data.h)) {
             return new ColorLCH(data.l, data.c, data.h);
         }
@@ -38,7 +38,7 @@ export class ColorLCH {
         );
     }
 
-    public toObject(): object {
+    public toObject(): { l: number; c: number; h: number } {
         return { l: this.l, c: this.c, h: this.h };
     }
 }

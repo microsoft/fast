@@ -3,7 +3,7 @@ import { roundToPrecisionSmall } from "./mathUtils";
 
 // This uses Hue values in "degree" format. So expect a range of [0,360]. Some other implementations instead uses radians or a normalized Hue with range [0,1]. Be aware of this when checking values or using other libraries.
 export class ColorHSV {
-    public static fromObject(data: any): ColorHSV | null {
+    public static fromObject(data: { h: number; s: number; v: number }): ColorHSV | null {
         if (data && !isNaN(data.h) && !isNaN(data.s) && !isNaN(data.v)) {
             return new ColorHSV(data.h, data.s, data.v);
         }
@@ -32,7 +32,7 @@ export class ColorHSV {
         );
     }
 
-    public toObject(): object {
+    public toObject(): { h: number; s: number; v: number } {
         return { h: this.h, s: this.s, v: this.v };
     }
 }
