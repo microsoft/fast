@@ -44,6 +44,7 @@ export default class CSSPosition extends Foundation<
                     >
                         <option value={PositionValue.static}>Static</option>
                         <option value={PositionValue.absolute}>Absolute</option>
+                        <option value={PositionValue.relative}>Relative</option>
                     </select>
                 </span>
                 {this.renderControls(this.props.position)}
