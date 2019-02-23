@@ -14,8 +14,7 @@ export default {
         step: 10,
         min: 0,
         max: 100,
-        defaultValue: 0,
-    } as any,
+    },
     data: [
         {
             step: 0.1,
@@ -28,9 +27,6 @@ export default {
         },
         {
             value: 100,
-        },
-        {
-            defaultValue: 0,
         },
         {
             disabled: true,
