@@ -24,39 +24,46 @@ describe("CSSPosition", () => {
     test("should have a displayName that matches the component name", () => {
         expect((Position as any).name).toBe(Position.displayName);
     });
-    test("should show the absolute position input elements if the position prop is set to `absolute`", () => {
+    test("should show the position input elements if the position prop is set to `absolute`", () => {
         const rendered: any = mount(<CSSPosition position={PositionValue.absolute} />);
 
         expect(rendered.find("input").length).toBe(4);
     });
-    test("should not show show the relative position input elements if the position prop is set to `relative`", () => {
+    test("should show show the position input elements if the position prop is set to `fixed`", () => {
         const rendered: any = mount(<CSSPosition position={PositionValue.relative} />);
 
-        expect(rendered.find("input").length).toBe(0);
+        expect(rendered.find("input").length).toBe(4);
     });
-    test("should not show the absolute position input elements if the position is not set to `absolute`", () => {
+    test("should show show the position input elements if the position prop is set to `relative`", () => {
+        const rendered: any = mount(<CSSPosition position={PositionValue.relative} />);
+
+        expect(rendered.find("input").length).toBe(4);
+    });
+    test("should not show the position input elements if the position is not set to `absolute`", () => {
         const rendered: any = mount(<CSSPosition position={PositionValue.static} />);
 
         expect(rendered.find("input").length).toBe(0);
     });
     test("should pass the `position` prop values to the select element", () => {
-        const renderedStatic: any = mount(
-            <CSSPosition position={PositionValue.static} />
-        );
         const renderedAbsolute: any = mount(
             <CSSPosition position={PositionValue.absolute} />
         );
+        const renderedFixed: any = mount(<CSSPosition position={PositionValue.fixed} />);
         const renderedRelative: any = mount(
             <CSSPosition position={PositionValue.relative} />
         );
+        const renderedStatic: any = mount(
+            <CSSPosition position={PositionValue.static} />
+        );
 
-        expect(renderedStatic.find("select").prop("value")).toBe(PositionValue.static);
         expect(renderedAbsolute.find("select").prop("value")).toBe(
             PositionValue.absolute
         );
+        expect(renderedFixed.find("select").prop("value")).toBe(PositionValue.fixed);
         expect(renderedRelative.find("select").prop("value")).toBe(
             PositionValue.relative
         );
+        expect(renderedStatic.find("select").prop("value")).toBe(PositionValue.static);
     });
     test("should pass the `top` prop values to the top input", () => {
         const value: string = "25px";
