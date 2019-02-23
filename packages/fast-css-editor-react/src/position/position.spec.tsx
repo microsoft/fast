@@ -29,6 +29,11 @@ describe("CSSPosition", () => {
 
         expect(rendered.find("input").length).toBe(4);
     });
+    test("should not show show the relative position input elements if the position prop is set to `relative`", () => {
+        const rendered: any = mount(<CSSPosition position={PositionValue.relative} />);
+
+        expect(rendered.find("input").length).toBe(0);
+    });
     test("should not show the absolute position input elements if the position is not set to `absolute`", () => {
         const rendered: any = mount(<CSSPosition position={PositionValue.static} />);
 
@@ -41,10 +46,16 @@ describe("CSSPosition", () => {
         const renderedAbsolute: any = mount(
             <CSSPosition position={PositionValue.absolute} />
         );
+        const renderedRelative: any = mount(
+            <CSSPosition position={PositionValue.relative} />
+        );
 
         expect(renderedStatic.find("select").prop("value")).toBe(PositionValue.static);
         expect(renderedAbsolute.find("select").prop("value")).toBe(
             PositionValue.absolute
+        );
+        expect(renderedRelative.find("select").prop("value")).toBe(
+            PositionValue.relative
         );
     });
     test("should pass the `top` prop values to the top input", () => {
