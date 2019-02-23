@@ -8,6 +8,11 @@ export interface DialogClassNameContract {
     dialog?: string;
 
     /**
+     * The positioning region for the dialog
+     */
+    dialog_positioningRegion?: string;
+
+    /**
      * The element that overlays the page while the modal is visible
      */
     dialog_modalOverlay?: string;

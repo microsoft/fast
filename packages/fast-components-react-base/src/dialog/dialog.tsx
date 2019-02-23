@@ -46,20 +46,28 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
                 className={this.generateClassNames()}
                 aria-hidden={!this.props.visible}
             >
-                {this.renderModalOverlay()}
                 <div
-                    role="dialog"
-                    tabIndex={-1}
-                    className={get(this.props, "managedClasses.dialog_contentRegion")}
-                    style={{
-                        height: this.props.contentHeight,
-                        width: this.props.contentWidth,
-                    }}
-                    aria-describedby={this.props.describedBy}
-                    aria-labelledby={this.props.labelledBy}
-                    aria-label={this.props.label}
+                    className={get(
+                        this.props.managedClasses,
+                        "dialog_positioningRegion",
+                        ""
+                    )}
                 >
-                    {this.props.children}
+                    {this.renderModalOverlay()}
+                    <div
+                        role="dialog"
+                        tabIndex={-1}
+                        className={get(this.props, "managedClasses.dialog_contentRegion")}
+                        style={{
+                            height: this.props.contentHeight,
+                            width: this.props.contentWidth,
+                        }}
+                        aria-describedby={this.props.describedBy}
+                        aria-labelledby={this.props.labelledBy}
+                        aria-label={this.props.label}
+                    >
+                        {this.props.children}
+                    </div>
                 </div>
             </div>
         );

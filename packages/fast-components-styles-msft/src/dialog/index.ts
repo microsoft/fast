@@ -22,6 +22,16 @@ const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = (
                 display: "block",
             },
         },
+        dialog_wrapper: {
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            position: "fixed",
+            top: "0",
+            bottom: "0",
+            left: "0",
+            right: "0",
+        },
         dialog_modalOverlay: {
             position: "fixed",
             top: "0",
@@ -31,12 +41,9 @@ const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = (
             ...applyAcrylicMaterial(backgroundColor, 0.6, 0.9, true),
         },
         dialog_contentRegion: {
-            position: "fixed",
-            left: "50%",
-            top: "50%",
-            transform: "translate(-50%, -50%)",
             background: backgroundColor,
             borderRadius: toPx(designSystem.cornerRadius * 2),
+            zIndex: "1",
             ...elevation(ElevationMultiplier.e14, "#000")(designSystem),
         },
     };
