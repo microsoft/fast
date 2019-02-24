@@ -120,6 +120,19 @@ import RadioStyles from "./radio";
 export { RadioStyles };
 
 /**
+ * Export select styles
+ */
+import SelectStyles from "./select";
+export { SelectStyles };
+export * from "./select";
+
+/**
+ * Export select option styles
+ */
+import SelectOptionStyles from "./select-option";
+export { SelectOptionStyles };
+
+/**
  * Export subheading styles
  */
 import SubheadingStyles from "./subheading";

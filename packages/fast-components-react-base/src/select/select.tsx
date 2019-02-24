@@ -25,8 +25,6 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         placeholder: "",
     };
 
-    private static idPropertyKey: string = "id";
-
     /**
      * Handled props instantiation
      */
@@ -38,7 +36,6 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         labelledBy: void 0,
         multiselectable: void 0,
         contentDisplayRenderFunction: void 0,
-        menuRenderFunction: void 0,
         required: void 0,
         managedClasses: void 0,
         selectedItems: void 0,
@@ -108,6 +105,12 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
 
         this.updateSelection(initialSelection);
         this.toggleMenu(this.checkPropsForMenuState());
+    }
+
+    public componentWillUnmount(): void {
+        if (this.state.isMenuOpen) {
+            window.removeEventListener("click", this.handleWindowClick);
+        }
     }
 
     /**
@@ -215,44 +218,29 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         if (!this.state.isMenuOpen) {
             return;
         }
-
-        if (this.props.menuRenderFunction !== undefined) {
-            return this.props.menuRenderFunction(
-                this.props,
-                this.state,
-                this.updateSelection
-            );
-        } else {
-            return this.defaultMenuRenderFunction(
-                this.props,
-                this.state,
-                this.updateSelection
-            );
-        }
-    }
-
-    /**
-     * default menu render function
-     */
-    private defaultMenuRenderFunction(
-        props: SelectProps,
-        state: SelectState,
-        changeCallback: (selectedItems: ListboxItemProps[]) => void
-    ): React.ReactNode {
         let shouldfocus: boolean = this.props.autoFocus;
         if (shouldfocus === undefined) {
             shouldfocus = this.props.multiselectable ? false : true;
         }
         return (
             <Listbox
-                labelledBy={props.labelledBy}
+                labelledBy={this.props.labelledBy}
+                disabled={this.props.disabled}
                 focusItemOnMount={shouldfocus}
-                multiselectable={props.multiselectable}
-                defaultSelection={state.selectedItems}
-                selectedItems={props.selectedItems}
-                onSelectedItemsChanged={changeCallback}
+                multiselectable={this.props.multiselectable}
+                defaultSelection={this.state.selectedItems}
+                selectedItems={this.props.selectedItems}
+                onSelectedItemsChanged={this.updateSelection}
+                managedClasses={{
+                    listbox: get(this.props.managedClasses, "select_menu", ""),
+                    listbox__disabled: get(
+                        this.props.managedClasses,
+                        "select_menuDisabled",
+                        ""
+                    ),
+                }}
             >
-                {props.children}
+                {this.props.children}
             </Listbox>
         );
     }
@@ -455,7 +443,10 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
      * Close the menu when when there are clicks outside
      */
     private handleWindowClick = (event: MouseEvent): void => {
-        if (!this.rootElement.current.contains(event.target as Element)) {
+        if (
+            this.rootElement.current !== null &&
+            !this.rootElement.current.contains(event.target as Element)
+        ) {
             this.toggleMenu(false);
         }
     };

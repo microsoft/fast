@@ -1,34 +1,18 @@
 import * as React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import schema from "./select.schema.json";
-import Select, { SelectManagedClasses, SelectProps } from "./select";
-import { ListboxItemProps } from "../listbox-item";
+import { Select, SelectProps } from "./index";
+import { SelectOptionProps } from "../select-option";
 import Documentation from "./.tmp/documentation";
 
-function ListboxItemPropFactory(id: string): ListboxItemProps {
+function selectOptionPropFactory(id: string): SelectOptionProps {
     return {
-        managedClasses: {
-            listboxItem: "listboxItem",
-            listboxItem__disabled: "listboxItem__disabled",
-            listboxItem__selected: "listboxItem__selected",
-        },
         id,
         value: id,
         role: "option",
         displayString: "Option-" + id,
-        children: "Child-" + id,
     };
 }
-
-const managedClasses: SelectManagedClasses = {
-    managedClasses: {
-        select: "select",
-        select__disabled: "select__disabled",
-        select_menu: "select_menu",
-        select__menuOpen: "select__menuOpen",
-        select__menuDisabled: "select__menuDisabled",
-    },
-};
 
 const examples: ComponentFactoryExample<SelectProps> = {
     name: "Select",
@@ -36,53 +20,51 @@ const examples: ComponentFactoryExample<SelectProps> = {
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
-        ...managedClasses,
         placeholder: "Select an option",
         children: [
             {
-                id: "listbox-item",
+                id: "select-option",
                 props: {
-                    ...ListboxItemPropFactory("a"),
+                    ...selectOptionPropFactory("a"),
                 },
             },
             {
-                id: "listbox-item",
+                id: "select-option",
                 props: {
-                    ...ListboxItemPropFactory("b"),
+                    ...selectOptionPropFactory("b"),
                 },
             },
             {
-                id: "listbox-item",
+                id: "select-option",
                 props: {
-                    ...ListboxItemPropFactory("c"),
+                    ...selectOptionPropFactory("c"),
                 },
             },
         ],
     },
     data: [
         {
-            ...managedClasses,
             placeholder: "placeholder",
             children: [
                 {
-                    id: "listbox-item",
+                    id: "select-option",
                     props: {
-                        ...ListboxItemPropFactory("value 1"),
+                        ...selectOptionPropFactory("value 1"),
                         children: "select option 1",
                         selected: true,
                     },
                 },
                 {
-                    id: "listbox-item",
+                    id: "select-option",
                     props: {
-                        ...ListboxItemPropFactory("value 2"),
+                        ...selectOptionPropFactory("value 2"),
                         children: "select option 2",
                     },
                 },
                 {
-                    id: "listbox-item",
+                    id: "select-option",
                     props: {
-                        ...ListboxItemPropFactory("value 3"),
+                        ...selectOptionPropFactory("value 3"),
                         children: "select option 3",
                     },
                 },

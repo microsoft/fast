@@ -259,20 +259,6 @@ describe("select", (): void => {
         expect(displayRenderFn).toHaveBeenCalledTimes(2);
     });
 
-    test("Custom menu render function is called", (): void => {
-        const menuRenderFn: any = jest.fn();
-        menuRenderFn.mockReturnValue("Test");
-        const rendered: any = mount(
-            <Select isMenuOpen={true} menuRenderFunction={menuRenderFn}>
-                {itemA}
-                {itemB}
-                {itemC}
-            </Select>,
-            { attachTo: container }
-        );
-        expect(menuRenderFn).toHaveBeenCalledTimes(1);
-    });
-
     test("Hidden select element exists and it's value and props are populated", (): void => {
         const rendered: any = mount(
             <Select

@@ -67,6 +67,14 @@ class ListboxItem extends Foundation<
             )}`;
         }
 
+        if (this.isItemSelected()) {
+            classNames = `${classNames} ${get(
+                this.props,
+                "managedClasses.listboxItem__selected",
+                ""
+            )}`;
+        }
+
         return super.generateClassNames(classNames);
     }
 

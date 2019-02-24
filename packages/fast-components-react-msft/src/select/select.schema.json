@@ -1,0 +1,54 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Select",
+    "description": "A select component's schema definition.",
+    "type": "object",
+    "id": "select",
+    "properties": {
+        "placeholder": {
+            "title": "Placeholder",
+            "type": "string"
+        },
+        "name": {
+            "title": "Name",
+            "type": "string"
+        },
+        "form": {
+            "title": "Form",
+            "type": "string"
+        },
+        "disabled": {
+            "title": "Disabled",
+            "type": "boolean"
+        },
+        "isMenuOpen": {
+            "title": "IsMenuOpen",
+            "type": "boolean"
+        },
+        "required": {
+            "title": "Required",
+            "type": "boolean"
+        },
+        "multiselectable": {
+            "title": "Multiselectable",
+            "type": "boolean"
+        },
+        "selectedItems": {
+            "title":"Selected items",
+            "type":"string"
+        },
+        "defaultSelection": {
+            "title":"Default selection",
+            "type":"string"
+        }
+    },
+    "reactProperties": {
+        "children": {
+            "title": "Building blocks",
+            "type": "children",
+            "defaults": [
+                "text"
+            ]
+        }
+    }
+}
