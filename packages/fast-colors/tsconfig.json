@@ -6,6 +6,7 @@
         "target": "ES6",
         "baseUrl": ".",
         "declaration": true,
+        "jsx": "react",
         "outDir": "./dist"
     },
     "include": [
