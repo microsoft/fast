@@ -49,7 +49,7 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
         managedClasses: void 0,
     };
 
-    private tabsRef: React.RefObject<any>;
+    private tabsRef: React.RefObject<BaseTabs>;
 
     private ltr: Direction;
 
@@ -91,12 +91,16 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
             this.setActiveIndicatorOffset();
             this.updateTabPanelIndex();
         }
+
+        if (this.state.tabPanelIndex !== prevState.tabPanelIndex) {
+            this.prevTabPanelIndex = this.state.tabPanelIndex;
+        }
     }
 
     /**
      * Renders the component
      */
-    public render(): React.ReactElement<HTMLButtonElement | HTMLAnchorElement> {
+    public render(): React.ReactElement<HTMLDivElement> {
         return (
             <BaseTabs
                 {...this.unhandledProps()}
@@ -151,7 +155,7 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
     };
 
     private isSelected(element: HTMLElement): boolean {
-        return element.className.includes("active") === true;
+        return element.attributes["aria-selected"].value === "true";
     }
 
     private updateTabPanelIndex(): void {
@@ -163,6 +167,7 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
             const mytabsArray: HTMLElement[] = Array.prototype.slice.call(
                 tabElement.querySelectorAll("[role='tab']")
             );
+
             this.setState({
                 tabPanelIndex: mytabsArray.findIndex(this.isSelected),
             });
@@ -172,7 +177,7 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
     private generateTabPanelsClassNames(): string {
         let className: string = get(this.props, "managedClasses.pivot_tabPanels", "");
         if (this.state.tabPanelIndex === this.prevTabPanelIndex) {
-            className = className;
+            return className;
         } else if (this.state.tabPanelIndex < this.prevTabPanelIndex) {
             className = `${className} ${get(
                 this.props,
@@ -186,7 +191,7 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
                 ""
             )}`;
         }
-        this.prevTabPanelIndex = this.state.tabPanelIndex;
+
         return className;
     }
 
@@ -196,15 +201,13 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
                 this.tabsRef.current
             ) as HTMLElement;
 
-            const mytabs: NodeListOf<Element> = tabElement.querySelectorAll(
-                "[aria-selected='true']"
-            );
+            const mytab: HTMLElement = tabElement.querySelector("[aria-selected='true']");
 
-            if (mytabs[0] !== undefined && tabElement !== undefined) {
-                const width: number = mytabs[0].getBoundingClientRect().width;
+            if (mytab !== null && tabElement !== null) {
+                const width: number = mytab.getBoundingClientRect().width;
                 const center: number = width / 2;
                 const offsetX: number =
-                    mytabs[0].getBoundingClientRect().left -
+                    mytab.getBoundingClientRect().left -
                     tabElement.getBoundingClientRect().left +
                     center;
 
@@ -217,6 +220,7 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
         }
     }
 
+    // TODO #1438: Add optional direction prop to Pivot and Horizontal overflow
     /**
      * Gets the direction of the element
      */
