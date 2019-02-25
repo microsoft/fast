@@ -177,13 +177,13 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
             className = `${className} ${get(
                 this.props,
                 "managedClasses.pivot_tabPanels__previous",
-                "Error"
+                ""
             )}`;
         } else {
             className = `${className} ${get(
                 this.props,
                 "managedClasses.pivot_tabPanels__next",
-                "Error"
+                ""
             )}`;
         }
         this.prevTabPanelIndex = this.state.tabPanelIndex;
