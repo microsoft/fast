@@ -3,9 +3,8 @@ export function clamp(i: number, min: number, max: number): number {
         return min;
     } else if (i >= max) {
         return max;
-    } else {
-        return i;
     }
+    return i;
 }
 
 export function normalize(i: number, min: number, max: number): number {
@@ -13,9 +12,8 @@ export function normalize(i: number, min: number, max: number): number {
         return 0.0;
     } else if (i >= max) {
         return 1.0;
-    } else {
-        return i / (max - min);
     }
+    return i / (max - min);
 }
 
 export function denormalize(i: number, min: number, max: number): number {
@@ -37,9 +35,8 @@ export function getHexStringForByte(i: number): string {
     const s: string = Math.round(clamp(i, 0.0, 255.0)).toString(16);
     if (s.length === 1) {
         return "0" + s;
-    } else {
-        return s;
     }
+    return s;
 }
 
 export function lerp(i: number, min: number, max: number): number {
@@ -47,9 +44,8 @@ export function lerp(i: number, min: number, max: number): number {
         return min;
     } else if (i >= 1.0) {
         return max;
-    } else {
-        return min + i * (max - min);
     }
+    return min + i * (max - min);
 }
 
 export function lerpAnglesInDegrees(i: number, min: number, max: number): number {
@@ -62,9 +58,8 @@ export function lerpAnglesInDegrees(i: number, min: number, max: number): number
     const b: number = (max - min + 360.0) % 360.0;
     if (a <= b) {
         return (min - a * i + 360.0) % 360.0;
-    } else {
-        return (min + a * i + 360.0) % 360.0;
     }
+    return (min + a * i + 360.0) % 360.0;
 }
 
 const TwoPI: number = Math.PI * 2;
@@ -79,12 +74,11 @@ export function lerpAnglesInRadians(i: number, min: number, max: number): number
     const b: number = (max - min + TwoPI) % TwoPI;
     if (a <= b) {
         return (min - a * i + TwoPI) % TwoPI;
-    } else {
-        return (min + a * i + TwoPI) % TwoPI;
     }
+    return (min + a * i + TwoPI) % TwoPI;
 }
 
-// More effecient, will return infinity if i*10^(precision) overflows number
+// Will return infinity if i*10^(precision) overflows number
 // note that floating point rounding rules come into play here so values that end up rouding on a .5 round to the nearest even not always up
 // so 2.5 rounds to 2
 export function roundToPrecisionSmall(i: number, precision: number): number {

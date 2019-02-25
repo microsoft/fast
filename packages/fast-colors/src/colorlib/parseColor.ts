@@ -225,9 +225,8 @@ export function parseColorWebRGB(raw: string): ColorRGBA64 | null {
             normalize(Number(split[2]), 0, 255),
             1
         );
-    } else {
-        return null;
     }
+    return null;
 }
 
 // Expects format rgba(RR,GG,BB,a) where RR,GG,BB are [0,255] and a is [0,1]
@@ -247,9 +246,8 @@ export function parseColorWebRGBA(raw: string): ColorRGBA64 | null {
             normalize(Number(split[2]), 0, 255),
             Number(split[3])
         );
-    } else {
-        return null;
     }
+    return null;
 }
 
 // Expects any of the CSS color names https://www.w3schools.com/colors/colors_names.asp

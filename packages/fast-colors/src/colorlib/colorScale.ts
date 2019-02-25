@@ -1,12 +1,11 @@
 // tslint:disable:member-ordering
 // tslint:disable:prefer-for-of
-// tslint:disable:interface-name
 
 import { contrastRatio } from "./colorConverters";
 import { ColorInterpolationSpace, interpolateByColorSpace } from "./colorInterpolation";
 import { ColorRGBA64 } from "./colorRGBA64";
 
-export interface IColorScaleStop {
+export interface ColorScaleStop {
     color: ColorRGBA64;
     position: number;
 }
@@ -17,7 +16,7 @@ export class ColorScale {
             throw new Error("The colors argument must be non-empty");
         }
 
-        const stops: IColorScaleStop[] = new Array(colors.length);
+        const stops: ColorScaleStop[] = new Array(colors.length);
         for (let i: number = 0; i < colors.length; i++) {
             // Special case first and last in order to avoid floating point jaggies
             if (i === 0) {
@@ -35,7 +34,7 @@ export class ColorScale {
         return new ColorScale(stops);
     }
 
-    constructor(stops: IColorScaleStop[]) {
+    constructor(stops: ColorScaleStop[]) {
         if (stops == null || stops.length === 0) {
             throw new Error("The stops argument must be non-empty");
         } else {
@@ -43,7 +42,7 @@ export class ColorScale {
         }
     }
 
-    private readonly stops: IColorScaleStop[];
+    private readonly stops: ColorScaleStop[];
 
     public getColor(
         position: number,
@@ -94,7 +93,7 @@ export class ColorScale {
             ]);
         }
 
-        const containedStops: IColorScaleStop[] = [];
+        const containedStops: ColorScaleStop[] = [];
 
         for (let i: number = 0; i < this.stops.length; i++) {
             if (
@@ -126,7 +125,7 @@ export class ColorScale {
         }
 
         const range: number = upperBound - lowerBound;
-        const finalStops: IColorScaleStop[] = new Array(containedStops.length);
+        const finalStops: ColorScaleStop[] = new Array(containedStops.length);
         for (let i: number = 0; i < containedStops.length; i++) {
             finalStops[i] = {
                 color: containedStops[i].color,
@@ -191,7 +190,7 @@ export class ColorScale {
     }
 
     public clone(): ColorScale {
-        const newStops: IColorScaleStop[] = new Array(this.stops.length);
+        const newStops: ColorScaleStop[] = new Array(this.stops.length);
         for (let i: number = 0; i < newStops.length; i++) {
             newStops[i] = {
                 color: this.stops[i].color,

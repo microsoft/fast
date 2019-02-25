@@ -21,9 +21,8 @@ export function rgbToLuminance(rgb: ColorRGBA64): number {
     function luminanceHelper(i: number): number {
         if (i <= 0.03928) {
             return i / 12.92;
-        } else {
-            return Math.pow((i + 0.055) / 1.055, 2.4);
         }
+        return Math.pow((i + 0.055) / 1.055, 2.4);
     }
 
     const r: number = luminanceHelper(rgb.r);
@@ -39,9 +38,8 @@ export function contrastRatio(a: ColorRGBA64, b: ColorRGBA64): number {
     const luminanceB: number = rgbToLuminance(b);
     if (luminanceA > luminanceB) {
         return (luminanceA + 0.05) / (luminanceB + 0.05);
-    } else {
-        return (luminanceB + 0.05) / (luminanceA + 0.05);
     }
+    return (luminanceB + 0.05) / (luminanceA + 0.05);
 }
 
 // The alpha channel of the input is ignored
@@ -245,9 +243,8 @@ export function xyzToLAB(xyz: ColorXYZ): ColorLAB {
     function xyzToLABHelper(i: number): number {
         if (i > ColorLAB.epsilon) {
             return Math.pow(i, 1 / 3);
-        } else {
-            return (ColorLAB.kappa * i + 16) / 116;
         }
+        return (ColorLAB.kappa * i + 16) / 116;
     }
 
     const x: number = xyzToLABHelper(xyz.x / ColorXYZ.whitePoint.x);
@@ -266,9 +263,8 @@ export function rgbToXYZ(rgb: ColorRGBA64): ColorXYZ {
     function rgbToXYZHelper(i: number): number {
         if (i <= 0.04045) {
             return i / 12.92;
-        } else {
-            return Math.pow((i + 0.055) / 1.055, 2.4);
         }
+        return Math.pow((i + 0.055) / 1.055, 2.4);
     }
 
     const r: number = rgbToXYZHelper(rgb.r);
@@ -287,9 +283,8 @@ export function xyzToRGB(xyz: ColorXYZ, alpha: number = 1): ColorRGBA64 {
     function xyzToRGBHelper(i: number): number {
         if (i <= 0.0031308) {
             return i * 12.92;
-        } else {
-            return 1.055 * Math.pow(i, 1 / 2.4) - 0.055;
         }
+        return 1.055 * Math.pow(i, 1 / 2.4) - 0.055;
     }
 
     const r: number = xyzToRGBHelper(

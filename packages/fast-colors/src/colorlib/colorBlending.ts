@@ -131,9 +131,8 @@ export function blendMultiply(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA6
 export function blendOverlayChannel(bottom: number, top: number): number {
     if (bottom < 0.5) {
         return clamp(2.0 * top * bottom, 0, 1);
-    } else {
-        return clamp(1.0 - 2.0 * (1.0 - top) * (1.0 - bottom), 0, 1);
     }
+    return clamp(1.0 - 2.0 * (1.0 - top) * (1.0 - bottom), 0, 1);
 }
 
 // The alpha channel of the input is ignored
