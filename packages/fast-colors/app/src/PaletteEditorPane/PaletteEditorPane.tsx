@@ -3,25 +3,9 @@ import manageJss, { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import {
     ColorInterpolationSpace,
     ColorPalette,
-    ColorRGBA64,
+    IColorPaletteConfig,
     parseColor,
 } from "../../../src/colorlib";
-
-export interface IPaletteEditorPaneParamsChangedArgs {
-    steps: number;
-    interpolationMode: ColorInterpolationSpace;
-    scaleColorLight: ColorRGBA64;
-    scaleColorDark: ColorRGBA64;
-    clipLight: number;
-    clipDark: number;
-    saturationAdjustmentCutoff: number;
-    saturationLight: number;
-    saturationDark: number;
-    overlayLight: number;
-    overlayDark: number;
-    multiplyLight: number;
-    multiplyDark: number;
-}
 
 interface IPaletteEditorPaneNameContract {
     outerContainer: string;
@@ -37,20 +21,8 @@ const styles: ComponentStyles<IPaletteEditorPaneNameContract, any> = {
 
 interface IPaletteEditorPaneProps {
     managedClasses: IPaletteEditorPaneNameContract;
-    onParamsChanged?: (e: IPaletteEditorPaneParamsChangedArgs) => void;
-    steps?: number;
-    interpolationMode?: ColorInterpolationSpace;
-    scaleColorLight?: ColorRGBA64;
-    scaleColorDark?: ColorRGBA64;
-    clipLight?: number;
-    clipDark?: number;
-    saturationAdjustmentCutoff?: number;
-    saturationLight?: number;
-    saturationDark?: number;
-    overlayLight?: number;
-    overlayDark?: number;
-    multiplyLight?: number;
-    multiplyDark?: number;
+    onParamsChanged?: (e: IColorPaletteConfig) => void;
+    paletteConfig: IColorPaletteConfig;
 }
 
 class PaletteEditorPane extends React.Component<IPaletteEditorPaneProps> {
@@ -60,68 +32,60 @@ class PaletteEditorPane extends React.Component<IPaletteEditorPaneProps> {
 
     public resetToDefault(): void {
         if (this.props.onParamsChanged) {
-            this.props.onParamsChanged({
-                steps: ColorPalette.defaultSteps,
-                interpolationMode: ColorPalette.defaultInterpolationMode,
-                scaleColorLight: ColorPalette.defaultScaleColorLight,
-                scaleColorDark: ColorPalette.defaultScaleColorDark,
-                clipLight: ColorPalette.defaultClipLight,
-                clipDark: ColorPalette.defaultClipDark,
-                saturationAdjustmentCutoff:
-                    ColorPalette.defaultSaturationAdjustmentCutoff,
-                saturationLight: ColorPalette.defaultSaturationLight,
-                saturationDark: ColorPalette.defaultSaturationDark,
-                overlayLight: ColorPalette.defaultOverlayLight,
-                overlayDark: ColorPalette.defaultOverlayDark,
-                multiplyLight: ColorPalette.defaultMultiplyLight,
-                multiplyDark: ColorPalette.defaultMultiplyDark,
-            });
+            this.props.onParamsChanged(ColorPalette.defaultPaletteConfig);
         }
+    }
+
+    private generateArgs(): IColorPaletteConfig {
+        return {
+            steps: this.props.paletteConfig.steps
+                ? this.props.paletteConfig.steps
+                : ColorPalette.defaultPaletteConfig.steps,
+            interpolationMode: this.props.paletteConfig.interpolationMode
+                ? this.props.paletteConfig.interpolationMode
+                : ColorPalette.defaultPaletteConfig.interpolationMode,
+            scaleColorLight: this.props.paletteConfig.scaleColorLight
+                ? this.props.paletteConfig.scaleColorLight
+                : ColorPalette.defaultPaletteConfig.scaleColorLight,
+            scaleColorDark: this.props.paletteConfig.scaleColorDark
+                ? this.props.paletteConfig.scaleColorDark
+                : ColorPalette.defaultPaletteConfig.scaleColorDark,
+            clipLight: this.props.paletteConfig.clipLight
+                ? this.props.paletteConfig.clipLight
+                : ColorPalette.defaultPaletteConfig.clipLight,
+            clipDark: this.props.paletteConfig.clipDark
+                ? this.props.paletteConfig.clipDark
+                : ColorPalette.defaultPaletteConfig.clipDark,
+            saturationAdjustmentCutoff: this.props.paletteConfig
+                .saturationAdjustmentCutoff
+                ? this.props.paletteConfig.saturationAdjustmentCutoff
+                : ColorPalette.defaultPaletteConfig.saturationAdjustmentCutoff,
+            saturationLight: this.props.paletteConfig.saturationLight
+                ? this.props.paletteConfig.saturationLight
+                : ColorPalette.defaultPaletteConfig.saturationLight,
+            saturationDark: this.props.paletteConfig.saturationDark
+                ? this.props.paletteConfig.saturationDark
+                : ColorPalette.defaultPaletteConfig.saturationDark,
+            overlayLight: this.props.paletteConfig.overlayLight
+                ? this.props.paletteConfig.overlayLight
+                : ColorPalette.defaultPaletteConfig.overlayLight,
+            overlayDark: this.props.paletteConfig.overlayDark
+                ? this.props.paletteConfig.overlayDark
+                : ColorPalette.defaultPaletteConfig.overlayDark,
+            multiplyLight: this.props.paletteConfig.multiplyLight
+                ? this.props.paletteConfig.multiplyLight
+                : ColorPalette.defaultPaletteConfig.multiplyLight,
+            multiplyDark: this.props.paletteConfig.multiplyDark
+                ? this.props.paletteConfig.multiplyDark
+                : ColorPalette.defaultPaletteConfig.multiplyDark,
+        };
     }
 
     private onSelectFieldChanged(e: React.ChangeEvent<HTMLSelectElement>): void {
         if (!this.props.onParamsChanged) {
             return;
         }
-        const args: IPaletteEditorPaneParamsChangedArgs = {
-            steps: this.props.steps ? this.props.steps : ColorPalette.defaultSteps,
-            interpolationMode: this.props.interpolationMode
-                ? this.props.interpolationMode
-                : ColorPalette.defaultInterpolationMode,
-            scaleColorLight: this.props.scaleColorLight
-                ? this.props.scaleColorLight
-                : ColorPalette.defaultScaleColorLight,
-            scaleColorDark: this.props.scaleColorDark
-                ? this.props.scaleColorDark
-                : ColorPalette.defaultScaleColorDark,
-            clipLight: this.props.clipLight
-                ? this.props.clipLight
-                : ColorPalette.defaultClipLight,
-            clipDark: this.props.clipDark
-                ? this.props.clipDark
-                : ColorPalette.defaultClipDark,
-            saturationAdjustmentCutoff: this.props.saturationAdjustmentCutoff
-                ? this.props.saturationAdjustmentCutoff
-                : ColorPalette.defaultSaturationAdjustmentCutoff,
-            saturationLight: this.props.saturationLight
-                ? this.props.saturationLight
-                : ColorPalette.defaultSaturationLight,
-            saturationDark: this.props.saturationDark
-                ? this.props.saturationDark
-                : ColorPalette.defaultSaturationDark,
-            overlayLight: this.props.overlayLight
-                ? this.props.overlayLight
-                : ColorPalette.defaultOverlayLight,
-            overlayDark: this.props.overlayDark
-                ? this.props.overlayDark
-                : ColorPalette.defaultOverlayDark,
-            multiplyLight: this.props.multiplyLight
-                ? this.props.multiplyLight
-                : ColorPalette.defaultMultiplyLight,
-            multiplyDark: this.props.multiplyDark
-                ? this.props.multiplyDark
-                : ColorPalette.defaultMultiplyDark,
-        };
+        const args: IColorPaletteConfig = this.generateArgs();
 
         if (e.target.id === "interpolationModeInput") {
             args.interpolationMode = Number(e.target.value) as ColorInterpolationSpace;
@@ -134,45 +98,7 @@ class PaletteEditorPane extends React.Component<IPaletteEditorPaneProps> {
         if (!this.props.onParamsChanged) {
             return;
         }
-        const args: IPaletteEditorPaneParamsChangedArgs = {
-            steps: this.props.steps ? this.props.steps : ColorPalette.defaultSteps,
-            interpolationMode: this.props.interpolationMode
-                ? this.props.interpolationMode
-                : ColorPalette.defaultInterpolationMode,
-            scaleColorLight: this.props.scaleColorLight
-                ? this.props.scaleColorLight
-                : ColorPalette.defaultScaleColorLight,
-            scaleColorDark: this.props.scaleColorDark
-                ? this.props.scaleColorDark
-                : ColorPalette.defaultScaleColorDark,
-            clipLight: this.props.clipLight
-                ? this.props.clipLight
-                : ColorPalette.defaultClipLight,
-            clipDark: this.props.clipDark
-                ? this.props.clipDark
-                : ColorPalette.defaultClipDark,
-            saturationAdjustmentCutoff: this.props.saturationAdjustmentCutoff
-                ? this.props.saturationAdjustmentCutoff
-                : ColorPalette.defaultSaturationAdjustmentCutoff,
-            saturationLight: this.props.saturationLight
-                ? this.props.saturationLight
-                : ColorPalette.defaultSaturationLight,
-            saturationDark: this.props.saturationDark
-                ? this.props.saturationDark
-                : ColorPalette.defaultSaturationDark,
-            overlayLight: this.props.overlayLight
-                ? this.props.overlayLight
-                : ColorPalette.defaultOverlayLight,
-            overlayDark: this.props.overlayDark
-                ? this.props.overlayDark
-                : ColorPalette.defaultOverlayDark,
-            multiplyLight: this.props.multiplyLight
-                ? this.props.multiplyLight
-                : ColorPalette.defaultMultiplyLight,
-            multiplyDark: this.props.multiplyDark
-                ? this.props.multiplyDark
-                : ColorPalette.defaultMultiplyDark,
-        };
+        const args: IColorPaletteConfig = this.generateArgs();
 
         switch (e.target.id) {
             case "stepsInput":
@@ -228,7 +154,9 @@ class PaletteEditorPane extends React.Component<IPaletteEditorPaneProps> {
                     min={1}
                     max={100}
                     value={
-                        this.props.steps ? this.props.steps : ColorPalette.defaultSteps
+                        this.props.paletteConfig.steps
+                            ? this.props.paletteConfig.steps
+                            : ColorPalette.defaultPaletteConfig.steps
                     }
                     onChange={e => this.onInputFieldChanged(e)}
                 />
@@ -238,9 +166,9 @@ class PaletteEditorPane extends React.Component<IPaletteEditorPaneProps> {
                 </label>
                 <select
                     value={
-                        this.props.interpolationMode
-                            ? this.props.interpolationMode
-                            : ColorPalette.defaultInterpolationMode
+                        this.props.paletteConfig.interpolationMode
+                            ? this.props.paletteConfig.interpolationMode
+                            : ColorPalette.defaultPaletteConfig.interpolationMode
                     }
                     id="interpolationModeInput"
                     onChange={e => this.onSelectFieldChanged(e)}
@@ -260,9 +188,9 @@ class PaletteEditorPane extends React.Component<IPaletteEditorPaneProps> {
                     id="scaleColorLightInput"
                     type="color"
                     value={
-                        this.props.scaleColorLight
-                            ? this.props.scaleColorLight.toStringHexRGB()
-                            : ColorPalette.defaultScaleColorLight.toStringHexRGB()
+                        this.props.paletteConfig.scaleColorLight
+                            ? this.props.paletteConfig.scaleColorLight.toStringHexRGB()
+                            : ColorPalette.defaultPaletteConfig.scaleColorLight.toStringHexRGB()
                     }
                     onChange={e => this.onInputFieldChanged(e)}
                 />
@@ -274,9 +202,9 @@ class PaletteEditorPane extends React.Component<IPaletteEditorPaneProps> {
                     id="scaleColorDarkInput"
                     type="color"
                     value={
-                        this.props.scaleColorDark
-                            ? this.props.scaleColorDark.toStringHexRGB()
-                            : ColorPalette.defaultScaleColorDark.toStringHexRGB()
+                        this.props.paletteConfig.scaleColorDark
+                            ? this.props.paletteConfig.scaleColorDark.toStringHexRGB()
+                            : ColorPalette.defaultPaletteConfig.scaleColorDark.toStringHexRGB()
                     }
                     onChange={e => this.onInputFieldChanged(e)}
                 />
@@ -290,9 +218,9 @@ class PaletteEditorPane extends React.Component<IPaletteEditorPaneProps> {
                     min={0}
                     max={0.5}
                     value={
-                        this.props.clipLight
-                            ? this.props.clipLight
-                            : ColorPalette.defaultClipLight
+                        this.props.paletteConfig.clipLight
+                            ? this.props.paletteConfig.clipLight
+                            : ColorPalette.defaultPaletteConfig.clipLight
                     }
                     onChange={e => this.onInputFieldChanged(e)}
                 />
@@ -306,9 +234,9 @@ class PaletteEditorPane extends React.Component<IPaletteEditorPaneProps> {
                     min={0}
                     max={0.5}
                     value={
-                        this.props.clipDark
-                            ? this.props.clipDark
-                            : ColorPalette.defaultClipDark
+                        this.props.paletteConfig.clipDark
+                            ? this.props.paletteConfig.clipDark
+                            : ColorPalette.defaultPaletteConfig.clipDark
                     }
                     onChange={e => this.onInputFieldChanged(e)}
                 />
@@ -323,9 +251,9 @@ class PaletteEditorPane extends React.Component<IPaletteEditorPaneProps> {
                     min={0}
                     max={1}
                     value={
-                        this.props.saturationAdjustmentCutoff
-                            ? this.props.saturationAdjustmentCutoff
-                            : ColorPalette.defaultSaturationAdjustmentCutoff
+                        this.props.paletteConfig.saturationAdjustmentCutoff
+                            ? this.props.paletteConfig.saturationAdjustmentCutoff
+                            : ColorPalette.defaultPaletteConfig.saturationAdjustmentCutoff
                     }
                     onChange={e => this.onInputFieldChanged(e)}
                 />
@@ -340,9 +268,9 @@ class PaletteEditorPane extends React.Component<IPaletteEditorPaneProps> {
                     min={0}
                     max={3}
                     value={
-                        this.props.saturationLight
-                            ? this.props.saturationLight
-                            : ColorPalette.defaultSaturationLight
+                        this.props.paletteConfig.saturationLight
+                            ? this.props.paletteConfig.saturationLight
+                            : ColorPalette.defaultPaletteConfig.saturationLight
                     }
                     onChange={e => this.onInputFieldChanged(e)}
                 />
@@ -357,9 +285,9 @@ class PaletteEditorPane extends React.Component<IPaletteEditorPaneProps> {
                     min={0}
                     max={3}
                     value={
-                        this.props.saturationDark
-                            ? this.props.saturationDark
-                            : ColorPalette.defaultSaturationDark
+                        this.props.paletteConfig.saturationDark
+                            ? this.props.paletteConfig.saturationDark
+                            : ColorPalette.defaultPaletteConfig.saturationDark
                     }
                     onChange={e => this.onInputFieldChanged(e)}
                 />
@@ -373,9 +301,9 @@ class PaletteEditorPane extends React.Component<IPaletteEditorPaneProps> {
                     min={0}
                     max={1}
                     value={
-                        this.props.overlayLight
-                            ? this.props.overlayLight
-                            : ColorPalette.defaultOverlayLight
+                        this.props.paletteConfig.overlayLight
+                            ? this.props.paletteConfig.overlayLight
+                            : ColorPalette.defaultPaletteConfig.overlayLight
                     }
                     onChange={e => this.onInputFieldChanged(e)}
                 />
@@ -389,9 +317,9 @@ class PaletteEditorPane extends React.Component<IPaletteEditorPaneProps> {
                     min={0}
                     max={1}
                     value={
-                        this.props.overlayDark
-                            ? this.props.overlayDark
-                            : ColorPalette.defaultOverlayDark
+                        this.props.paletteConfig.overlayDark
+                            ? this.props.paletteConfig.overlayDark
+                            : ColorPalette.defaultPaletteConfig.overlayDark
                     }
                     onChange={e => this.onInputFieldChanged(e)}
                 />
@@ -405,9 +333,9 @@ class PaletteEditorPane extends React.Component<IPaletteEditorPaneProps> {
                     min={0}
                     max={1}
                     value={
-                        this.props.multiplyLight
-                            ? this.props.multiplyLight
-                            : ColorPalette.defaultMultiplyLight
+                        this.props.paletteConfig.multiplyLight
+                            ? this.props.paletteConfig.multiplyLight
+                            : ColorPalette.defaultPaletteConfig.multiplyLight
                     }
                     onChange={e => this.onInputFieldChanged(e)}
                 />
@@ -421,9 +349,9 @@ class PaletteEditorPane extends React.Component<IPaletteEditorPaneProps> {
                     min={0}
                     max={1}
                     value={
-                        this.props.multiplyDark
-                            ? this.props.multiplyDark
-                            : ColorPalette.defaultMultiplyDark
+                        this.props.paletteConfig.multiplyDark
+                            ? this.props.paletteConfig.multiplyDark
+                            : ColorPalette.defaultPaletteConfig.multiplyDark
                     }
                     onChange={e => this.onInputFieldChanged(e)}
                 />

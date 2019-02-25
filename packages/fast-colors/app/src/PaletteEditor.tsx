@@ -1,9 +1,8 @@
 import React from "react";
 import manageJss, { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import PaletteEditorPane from "./PaletteEditorPane/PaletteEditorPane";
-import { IPaletteEditorPaneParamsChangedArgs } from "./PaletteEditorPane/PaletteEditorPane";
 import PaletteDisplay from "./PaletteDisplay/PaletteDisplay";
-import { ColorInterpolationSpace, ColorRGBA64, parseColor } from "../../src/colorlib";
+import { ColorRGBA64, IColorPaletteConfig, parseColor } from "../../src/colorlib";
 
 interface IPaletteEditorNameContract {
     outerContainer: string;
@@ -44,19 +43,7 @@ interface IPaletteEditorProps {
 
 interface IPaletteEditorState {
     paletteList: ColorRGBA64[];
-    steps?: number;
-    interpolationMode?: ColorInterpolationSpace;
-    scaleColorLight?: ColorRGBA64;
-    scaleColorDark?: ColorRGBA64;
-    clipLight?: number;
-    clipDark?: number;
-    saturationAdjustmentCutoff?: number;
-    saturationLight?: number;
-    saturationDark?: number;
-    overlayLight?: number;
-    overlayDark?: number;
-    multiplyLight?: number;
-    multiplyDark?: number;
+    paletteConfig: IColorPaletteConfig;
 }
 
 class PaletteEditor extends React.Component<IPaletteEditorProps, IPaletteEditorState> {
@@ -68,11 +55,14 @@ class PaletteEditor extends React.Component<IPaletteEditorProps, IPaletteEditorS
                 parseColor("#e74856")!,
                 parseColor("#e74856")!,
             ],
+            paletteConfig: {},
         };
     }
 
-    private onPaletteParamsChanged(e: IPaletteEditorPaneParamsChangedArgs): void {
-        this.setState(e);
+    private onPaletteParamsChanged(e: IColorPaletteConfig): void {
+        this.setState({
+            paletteConfig: e,
+        });
     }
 
     private onPaletteBaseColorChanged(sourceId: number, newColor: ColorRGBA64): void {
@@ -105,6 +95,8 @@ class PaletteEditor extends React.Component<IPaletteEditorProps, IPaletteEditorS
     public render(): JSX.Element {
         const paletteDisplayDivs: JSX.Element[] = this.state.paletteList.map(
             (a: ColorRGBA64, index: number) => {
+                const config: IColorPaletteConfig = { ...this.state.paletteConfig };
+                config.baseColor = a;
                 return (
                     <PaletteDisplay
                         key={index}
@@ -112,20 +104,7 @@ class PaletteEditor extends React.Component<IPaletteEditorProps, IPaletteEditorS
                         onBaseColorChanged={(a, index) =>
                             this.onPaletteBaseColorChanged(a, index)
                         }
-                        baseColor={a}
-                        steps={this.state.steps}
-                        interpolationMode={this.state.interpolationMode}
-                        scaleColorLight={this.state.scaleColorLight}
-                        scaleColorDark={this.state.scaleColorDark}
-                        clipLight={this.state.clipLight}
-                        clipDark={this.state.clipDark}
-                        saturationAdjustmentCutoff={this.state.saturationAdjustmentCutoff}
-                        saturationLight={this.state.saturationLight}
-                        saturationDark={this.state.saturationDark}
-                        overlayLight={this.state.overlayLight}
-                        overlayDark={this.state.overlayDark}
-                        multiplyLight={this.state.multiplyLight}
-                        multiplyDark={this.state.multiplyDark}
+                        paletteConfig={config}
                     />
                 );
             }
@@ -144,19 +123,7 @@ class PaletteEditor extends React.Component<IPaletteEditorProps, IPaletteEditorS
                 <div className={this.props.managedClasses.editorPane}>
                     <PaletteEditorPane
                         onParamsChanged={e => this.onPaletteParamsChanged(e)}
-                        steps={this.state.steps}
-                        interpolationMode={this.state.interpolationMode}
-                        scaleColorLight={this.state.scaleColorLight}
-                        scaleColorDark={this.state.scaleColorDark}
-                        clipLight={this.state.clipLight}
-                        clipDark={this.state.clipDark}
-                        saturationAdjustmentCutoff={this.state.saturationAdjustmentCutoff}
-                        saturationLight={this.state.saturationLight}
-                        saturationDark={this.state.saturationDark}
-                        overlayLight={this.state.overlayLight}
-                        overlayDark={this.state.overlayDark}
-                        multiplyLight={this.state.multiplyLight}
-                        multiplyDark={this.state.multiplyDark}
+                        paletteConfig={this.state.paletteConfig}
                     />
                 </div>
             </div>

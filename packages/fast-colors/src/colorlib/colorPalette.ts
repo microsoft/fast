@@ -1,5 +1,6 @@
 // tslint:disable:member-ordering
 // tslint:disable:prefer-for-of
+// tslint:disable:interface-name
 
 import { blendMultiply, blendOverlay, saturateViaLCH } from "./colorBlending";
 import { rgbToHSL } from "./colorConverters";
@@ -8,157 +9,168 @@ import { ColorInterpolationSpace, interpolateByColorSpace } from "./colorInterpo
 import { ColorRGBA64 } from "./colorRGBA64";
 import { ColorScale } from "./colorScale";
 
-export class ColorPalette {
-    public static readonly defaultSteps: number = 7;
-    public static readonly defaultInterpolationMode: ColorInterpolationSpace =
-        ColorInterpolationSpace.RGB;
-    public static readonly defaultScaleColorLight: ColorRGBA64 = new ColorRGBA64(
-        1,
-        1,
-        1,
-        1
-    );
-    public static readonly defaultScaleColorDark: ColorRGBA64 = new ColorRGBA64(
-        0,
-        0,
-        0,
-        1
-    );
-    public static readonly defaultClipLight: number = 0.185;
-    public static readonly defaultClipDark: number = 0.16;
-    public static readonly defaultSaturationAdjustmentCutoff: number = 0.05;
-    public static readonly defaultSaturationLight: number = 0.35;
-    public static readonly defaultSaturationDark: number = 1.25;
-    public static readonly defaultOverlayLight: number = 0;
-    public static readonly defaultOverlayDark: number = 0.25;
-    public static readonly defaultMultiplyLight: number = 0;
-    public static readonly defaultMultiplyDark: number = 0;
+export interface IColorPaletteConfig {
+    baseColor?: ColorRGBA64;
+    steps?: number;
+    interpolationMode?: ColorInterpolationSpace;
+    scaleColorLight?: ColorRGBA64;
+    scaleColorDark?: ColorRGBA64;
+    clipLight?: number;
+    clipDark?: number;
+    saturationAdjustmentCutoff?: number;
+    saturationLight?: number;
+    saturationDark?: number;
+    overlayLight?: number;
+    overlayDark?: number;
+    multiplyLight?: number;
+    multiplyDark?: number;
+}
 
-    constructor(
-        baseColor: ColorRGBA64,
-        steps: number,
-        interpolationMode: ColorInterpolationSpace | null = null,
-        scaleColorLight: ColorRGBA64 | null = null,
-        scaleColorDark: ColorRGBA64 | null = null,
-        clipLight: number | null = null,
-        clipDark: number | null = null,
-        saturationAdjustmentCutoff: number | null = null,
-        saturationLight: number | null = null,
-        saturationDark: number | null = null,
-        overlayLight: number | null = null,
-        overlayDark: number | null = null,
-        multiplyLight: number | null = null,
-        multiplyDark: number | null = null
-    ) {
-        this.baseColor = baseColor;
-        this.steps = steps;
+export class ColorPalette {
+    public static readonly defaultPaletteConfig: IColorPaletteConfig = {
+        baseColor: new ColorRGBA64(0.5, 0.5, 0.5, 1),
+        steps: 7,
+        interpolationMode: ColorInterpolationSpace.RGB,
+        scaleColorLight: new ColorRGBA64(1, 1, 1, 1),
+        scaleColorDark: new ColorRGBA64(0, 0, 0, 1),
+        clipLight: 0.185,
+        clipDark: 0.16,
+        saturationAdjustmentCutoff: 0.05,
+        saturationLight: 0.35,
+        saturationDark: 1.25,
+        overlayLight: 0,
+        overlayDark: 0.25,
+        multiplyLight: 0,
+        multiplyDark: 0,
+    };
+
+    constructor(config: IColorPaletteConfig) {
+        this.config = {
+            baseColor: config.baseColor
+                ? config.baseColor
+                : ColorPalette.defaultPaletteConfig.baseColor,
+            steps: config.steps ? config.steps : ColorPalette.defaultPaletteConfig.steps,
+            interpolationMode: config.interpolationMode
+                ? config.interpolationMode
+                : ColorPalette.defaultPaletteConfig.interpolationMode,
+            scaleColorLight: config.scaleColorLight
+                ? config.scaleColorLight
+                : ColorPalette.defaultPaletteConfig.scaleColorLight,
+            scaleColorDark: config.scaleColorDark
+                ? config.scaleColorDark
+                : ColorPalette.defaultPaletteConfig.scaleColorDark,
+            clipLight: config.clipLight
+                ? config.clipLight
+                : ColorPalette.defaultPaletteConfig.clipLight,
+            clipDark: config.clipDark
+                ? config.clipDark
+                : ColorPalette.defaultPaletteConfig.clipDark,
+            saturationAdjustmentCutoff: config.saturationAdjustmentCutoff
+                ? config.saturationAdjustmentCutoff
+                : ColorPalette.defaultPaletteConfig.saturationAdjustmentCutoff,
+            saturationLight: config.saturationLight
+                ? config.saturationLight
+                : ColorPalette.defaultPaletteConfig.saturationLight,
+            saturationDark: config.saturationDark
+                ? config.saturationDark
+                : ColorPalette.defaultPaletteConfig.saturationDark,
+            overlayLight: config.overlayLight
+                ? config.overlayLight
+                : ColorPalette.defaultPaletteConfig.overlayLight,
+            overlayDark: config.overlayDark
+                ? config.overlayDark
+                : ColorPalette.defaultPaletteConfig.overlayDark,
+            multiplyLight: config.multiplyLight
+                ? config.multiplyLight
+                : ColorPalette.defaultPaletteConfig.multiplyLight,
+            multiplyDark: config.multiplyDark
+                ? config.multiplyDark
+                : ColorPalette.defaultPaletteConfig.multiplyDark,
+        };
+
         this.palette = [];
-        if (
-            !this.updatePaletteGenerationValues(
-                interpolationMode,
-                scaleColorLight,
-                scaleColorDark,
-                clipLight,
-                clipDark,
-                saturationAdjustmentCutoff,
-                saturationLight,
-                saturationDark,
-                overlayLight,
-                overlayDark,
-                multiplyLight,
-                multiplyDark
-            )
-        ) {
-            this.updatePaletteColors();
-        }
+        this.updatePaletteColors();
     }
 
-    public readonly baseColor: ColorRGBA64;
-    public readonly steps: number;
+    private readonly config: IColorPaletteConfig;
     public readonly palette: ColorRGBA64[];
 
-    private interpolationMode: ColorInterpolationSpace =
-        ColorPalette.defaultInterpolationMode;
-    private scaleColorLight: ColorRGBA64 = ColorPalette.defaultScaleColorLight;
-    private scaleColorDark: ColorRGBA64 = ColorPalette.defaultScaleColorDark;
-    private clipLight: number = ColorPalette.defaultClipLight;
-    private clipDark: number = ColorPalette.defaultClipDark;
-    private saturationAdjustmentCutoff: number =
-        ColorPalette.defaultSaturationAdjustmentCutoff;
-    private saturationLight: number = ColorPalette.defaultSaturationLight;
-    private saturationDark: number = ColorPalette.defaultSaturationDark;
-    private overlayLight: number = ColorPalette.defaultOverlayLight;
-    private overlayDark: number = ColorPalette.defaultOverlayDark;
-    private multiplyLight: number = ColorPalette.defaultMultiplyLight;
-    private multiplyDark: number = ColorPalette.defaultMultiplyDark;
-
-    public updatePaletteGenerationValues(
-        interpolationMode: ColorInterpolationSpace | null,
-        scaleColorLight: ColorRGBA64 | null,
-        scaleColorDark: ColorRGBA64 | null,
-        clipLight: number | null,
-        clipDark: number | null,
-        saturationAdjustmentCutoff: number | null,
-        saturationLight: number | null,
-        saturationDark: number | null,
-        overlayLight: number | null,
-        overlayDark: number | null,
-        multiplyLight: number | null,
-        multiplyDark: number | null
-    ): boolean {
+    public updatePaletteGenerationValues(newConfig: IColorPaletteConfig): boolean {
         let changed: boolean = false;
-        if (interpolationMode != null && interpolationMode !== this.interpolationMode) {
-            this.interpolationMode = interpolationMode;
+        if (
+            newConfig.interpolationMode &&
+            newConfig.interpolationMode !== this.config.interpolationMode
+        ) {
+            this.config.interpolationMode = newConfig.interpolationMode;
             changed = true;
         }
         if (
-            scaleColorLight != null &&
-            !this.scaleColorLight.equalValue(scaleColorLight)
+            newConfig.scaleColorLight &&
+            !newConfig.scaleColorLight.equalValue(this.config.scaleColorLight)
         ) {
-            this.scaleColorLight = scaleColorLight;
-            changed = true;
-        }
-        if (scaleColorDark != null && !this.scaleColorDark.equalValue(scaleColorDark)) {
-            this.scaleColorDark = scaleColorDark;
-            changed = true;
-        }
-        if (clipLight != null && this.clipLight !== clipLight) {
-            this.clipLight = clipLight;
-            changed = true;
-        }
-        if (clipDark != null && this.clipDark !== clipDark) {
-            this.clipDark = clipDark;
+            this.config.scaleColorLight = newConfig.scaleColorLight;
             changed = true;
         }
         if (
-            saturationAdjustmentCutoff != null &&
-            this.saturationAdjustmentCutoff !== saturationAdjustmentCutoff
+            newConfig.scaleColorDark &&
+            !newConfig.scaleColorDark.equalValue(this.config.scaleColorDark)
         ) {
-            this.saturationAdjustmentCutoff = saturationAdjustmentCutoff;
+            this.config.scaleColorDark = newConfig.scaleColorDark;
             changed = true;
         }
-        if (saturationLight != null && this.saturationLight !== saturationLight) {
-            this.saturationLight = saturationLight;
+        if (newConfig.clipLight && newConfig.clipLight !== this.config.clipLight) {
+            this.config.clipLight = newConfig.clipLight;
             changed = true;
         }
-        if (saturationDark != null && this.saturationDark !== saturationDark) {
-            this.saturationDark = saturationDark;
+        if (newConfig.clipDark && newConfig.clipDark !== this.config.clipDark) {
+            this.config.clipDark = newConfig.clipDark;
             changed = true;
         }
-        if (overlayLight != null && this.overlayLight !== overlayLight) {
-            this.overlayLight = overlayLight;
+        if (
+            newConfig.saturationAdjustmentCutoff &&
+            newConfig.saturationAdjustmentCutoff !==
+                this.config.saturationAdjustmentCutoff
+        ) {
+            this.config.saturationAdjustmentCutoff = newConfig.saturationAdjustmentCutoff;
             changed = true;
         }
-        if (overlayDark != null && this.overlayDark !== overlayDark) {
-            this.overlayDark = overlayDark;
+        if (
+            newConfig.saturationLight &&
+            newConfig.saturationLight !== this.config.saturationLight
+        ) {
+            this.config.saturationLight = newConfig.saturationLight;
             changed = true;
         }
-        if (multiplyLight != null && this.multiplyLight !== multiplyLight) {
-            this.multiplyLight = multiplyLight;
+        if (
+            newConfig.saturationDark &&
+            newConfig.saturationDark !== this.config.saturationDark
+        ) {
+            this.config.saturationDark = newConfig.saturationDark;
             changed = true;
         }
-        if (multiplyDark != null && this.multiplyDark !== multiplyDark) {
-            this.multiplyDark = multiplyDark;
+        if (
+            newConfig.overlayLight &&
+            newConfig.overlayLight !== this.config.overlayLight
+        ) {
+            this.config.overlayLight = newConfig.overlayLight;
+            changed = true;
+        }
+        if (newConfig.overlayDark && newConfig.overlayDark !== this.config.overlayDark) {
+            this.config.overlayDark = newConfig.overlayDark;
+            changed = true;
+        }
+        if (
+            newConfig.multiplyLight &&
+            newConfig.multiplyLight !== this.config.multiplyLight
+        ) {
+            this.config.multiplyLight = newConfig.multiplyLight;
+            changed = true;
+        }
+        if (
+            newConfig.multiplyDark &&
+            newConfig.multiplyDark !== this.config.multiplyDark
+        ) {
+            this.config.multiplyDark = newConfig.multiplyDark;
             changed = true;
         }
         if (changed) {
@@ -169,70 +181,82 @@ export class ColorPalette {
 
     private updatePaletteColors(): void {
         const scale: ColorScale = this.generatePaletteColorScale();
-        for (let i: number = 0; i < this.steps; i++) {
+        for (let i: number = 0; i < this.config.steps; i++) {
             this.palette[i] = scale.getColor(
-                i / (this.steps - 1),
-                this.interpolationMode
+                i / (this.config.steps - 1),
+                this.config.interpolationMode
             );
         }
     }
 
     public generatePaletteColorScale(): ColorScale {
-        const baseColorHSL: ColorHSL = rgbToHSL(this.baseColor);
+        const baseColorHSL: ColorHSL = rgbToHSL(this.config.baseColor);
         const baseScale: ColorScale = new ColorScale([
-            { position: 0, color: this.scaleColorLight },
-            { position: 0.5, color: this.baseColor },
-            { position: 1, color: this.scaleColorDark },
+            { position: 0, color: this.config.scaleColorLight },
+            { position: 0.5, color: this.config.baseColor },
+            { position: 1, color: this.config.scaleColorDark },
         ]);
         const trimmedScale: ColorScale = baseScale.trim(
-            this.clipLight,
-            1 - this.clipDark
+            this.config.clipLight,
+            1 - this.config.clipDark
         );
         const trimmedLight: ColorRGBA64 = trimmedScale.getColor(0);
         const trimmedDark: ColorRGBA64 = trimmedScale.getColor(1);
         let adjustedLight: ColorRGBA64 = trimmedLight;
         let adjustedDark: ColorRGBA64 = trimmedDark;
 
-        if (baseColorHSL.s >= this.saturationAdjustmentCutoff) {
-            adjustedLight = saturateViaLCH(adjustedLight, this.saturationLight);
-            adjustedDark = saturateViaLCH(adjustedDark, this.saturationDark);
+        if (baseColorHSL.s >= this.config.saturationAdjustmentCutoff) {
+            adjustedLight = saturateViaLCH(adjustedLight, this.config.saturationLight);
+            adjustedDark = saturateViaLCH(adjustedDark, this.config.saturationDark);
         }
 
-        if (this.multiplyLight !== 0) {
-            const multiply: ColorRGBA64 = blendMultiply(this.baseColor, adjustedLight);
+        if (this.config.multiplyLight !== 0) {
+            const multiply: ColorRGBA64 = blendMultiply(
+                this.config.baseColor,
+                adjustedLight
+            );
             adjustedLight = interpolateByColorSpace(
-                this.multiplyLight,
-                this.interpolationMode,
+                this.config.multiplyLight,
+                this.config.interpolationMode,
                 adjustedLight,
                 multiply
             );
         }
 
-        if (this.multiplyDark !== 0) {
-            const multiply: ColorRGBA64 = blendMultiply(this.baseColor, adjustedDark);
+        if (this.config.multiplyDark !== 0) {
+            const multiply: ColorRGBA64 = blendMultiply(
+                this.config.baseColor,
+                adjustedDark
+            );
             adjustedDark = interpolateByColorSpace(
-                this.multiplyDark,
-                this.interpolationMode,
+                this.config.multiplyDark,
+                this.config.interpolationMode,
                 adjustedDark,
                 multiply
             );
         }
 
-        if (this.overlayLight !== 0) {
-            const overlay: ColorRGBA64 = blendOverlay(this.baseColor, adjustedLight);
+        if (this.config.overlayLight !== 0) {
+            const overlay: ColorRGBA64 = blendOverlay(
+                this.config.baseColor,
+                adjustedLight
+            );
             adjustedLight = interpolateByColorSpace(
-                this.overlayLight,
-                this.interpolationMode,
+                this.config.overlayLight,
+                this.config.interpolationMode,
                 adjustedLight,
                 overlay
             );
         }
 
-        if (this.overlayDark !== 0) {
-            const overlay: ColorRGBA64 = blendOverlay(this.baseColor, adjustedDark);
+        if (this.config.overlayDark !== 0) {
+            const overlay: ColorRGBA64 = blendOverlay(
+                this.config.baseColor,
+                adjustedDark
+            );
             adjustedDark = interpolateByColorSpace(
-                this.overlayDark,
-                this.interpolationMode,
+                this.config.overlayDark,
+                this.config.interpolationMode,
                 adjustedDark,
                 overlay
             );
@@ -240,7 +264,7 @@ export class ColorPalette {
 
         return new ColorScale([
             { position: 0, color: adjustedLight.clamp() },
-            { position: 0.5, color: this.baseColor },
+            { position: 0.5, color: this.config.baseColor },
             { position: 1, color: adjustedDark.clamp() },
         ]);
     }

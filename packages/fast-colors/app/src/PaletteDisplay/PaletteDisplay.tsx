@@ -1,9 +1,9 @@
 import React from "react";
 import manageJss, { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import {
-    ColorInterpolationSpace,
     ColorPalette,
     ColorRGBA64,
+    IColorPaletteConfig,
     parseColor,
 } from "../../../src/colorlib";
 import ColorSwatch from "./ColorSwatch";
@@ -25,20 +25,7 @@ interface IPaletteDisplayProps {
     id: number;
     managedClasses: IPaletteDisplayNameContract;
     onBaseColorChanged?: (sourceId: number, newColor: ColorRGBA64) => void;
-    steps?: number;
-    baseColor: ColorRGBA64;
-    interpolationMode?: ColorInterpolationSpace;
-    scaleColorLight?: ColorRGBA64;
-    scaleColorDark?: ColorRGBA64;
-    clipLight?: number;
-    clipDark?: number;
-    saturationAdjustmentCutoff?: number;
-    saturationLight?: number;
-    saturationDark?: number;
-    overlayLight?: number;
-    overlayDark?: number;
-    multiplyLight?: number;
-    multiplyDark?: number;
+    paletteConfig: IColorPaletteConfig;
 }
 
 class PaletteDisplay extends React.Component<IPaletteDisplayProps> {
@@ -54,24 +41,7 @@ class PaletteDisplay extends React.Component<IPaletteDisplayProps> {
     }
 
     public render(): JSX.Element {
-        const palette: ColorPalette = new ColorPalette(
-            this.props.baseColor,
-            this.props.steps ? this.props.steps : 7,
-            this.props.interpolationMode ? this.props.interpolationMode : null,
-            this.props.scaleColorLight ? this.props.scaleColorLight : null,
-            this.props.scaleColorDark ? this.props.scaleColorDark : null,
-            this.props.clipLight ? this.props.clipLight : null,
-            this.props.clipDark ? this.props.clipDark : null,
-            this.props.saturationAdjustmentCutoff
-                ? this.props.saturationAdjustmentCutoff
-                : null,
-            this.props.saturationLight ? this.props.saturationLight : null,
-            this.props.saturationDark ? this.props.saturationDark : null,
-            this.props.overlayLight ? this.props.overlayLight : null,
-            this.props.overlayDark ? this.props.overlayDark : null,
-            this.props.multiplyLight ? this.props.multiplyLight : null,
-            this.props.multiplyDark ? this.props.multiplyDark : null
-        );
+        const palette: ColorPalette = new ColorPalette(this.props.paletteConfig);
 
         const paletteItemDivs: JSX.Element[] = palette.palette.map(
             (a: ColorRGBA64, index: number) => {
@@ -87,7 +57,7 @@ class PaletteDisplay extends React.Component<IPaletteDisplayProps> {
                 <input
                     id="scaleColorLightInput"
                     type="color"
-                    value={this.props.baseColor.toStringHexRGB()}
+                    value={this.props.paletteConfig.baseColor.toStringHexRGB()}
                     onChange={e => this.onBaseColorInputChanged(e)}
                 />
                 {paletteItemDivs}
