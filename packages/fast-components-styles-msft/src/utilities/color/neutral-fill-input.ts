@@ -62,9 +62,9 @@ export function neutralFillInput(arg: any): any {
                 );
             }
         );
-    } else {
-        return neutralFillInputAlgorithm(withDesignSystemDefaults(arg));
     }
+
+    return neutralFillInputAlgorithm(withDesignSystemDefaults(arg));
 }
 
 export const neutralFillInputRest: ColorRecipe = StatefulSwatchToColorRecipeFactory<
