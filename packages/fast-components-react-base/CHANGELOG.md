@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.8.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@3.7.0...@microsoft/fast-components-react-base@3.8.0) (2019-02-21)
+
+
+### Bug Fixes
+
+* account for partial pixels when scrolling by rounding up ([#1409](https://github.com/Microsoft/fast-dna/issues/1409)) ([ebb9e50](https://github.com/Microsoft/fast-dna/commit/ebb9e50))
+* Changing activeID on Tabs component causes type error ([#1366](https://github.com/Microsoft/fast-dna/issues/1366)) ([f23e927](https://github.com/Microsoft/fast-dna/commit/f23e927))
+* update to the Horizontal Overflow component to fire the overflow callback when more children have been added ([#1413](https://github.com/Microsoft/fast-dna/issues/1413)) ([69e24fb](https://github.com/Microsoft/fast-dna/commit/69e24fb))
+
+
+### Features
+
+* add additional functionality to listbox base ([#1381](https://github.com/Microsoft/fast-dna/issues/1381)) ([48d9c31](https://github.com/Microsoft/fast-dna/commit/48d9c31))
+* create number field as base and MSFT component ([#1371](https://github.com/Microsoft/fast-dna/issues/1371)) ([d440b5f](https://github.com/Microsoft/fast-dna/commit/d440b5f))
+
+
+
+
+
 # [3.7.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@3.6.3...@microsoft/fast-components-react-base@3.7.0) (2019-02-07)
 
 

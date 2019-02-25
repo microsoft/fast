@@ -123,6 +123,7 @@ export default class App extends React.Component<{}, AppState> {
                 themes={this.themes}
                 activeTheme={this.getThemeById(this.state.theme)}
                 showTransparencyToggle={true}
+                styleEditing={true}
             >
                 <SiteTitle slot={"title"}>
                     <SiteTitleBrand>FAST</SiteTitleBrand> Documentation

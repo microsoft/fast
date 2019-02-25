@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-css-editor-react@4.2.0...@microsoft/fast-css-editor-react@4.2.1) (2019-02-21)
+
+
+### Bug Fixes
+
+* normalize colors and backgrounds across tooling packages ([#1421](https://github.com/Microsoft/fast-dna/issues/1421)) ([2ba5dec](https://github.com/Microsoft/fast-dna/commit/2ba5dec))
+
+
+
+
+
 # [4.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-css-editor-react@4.1.7...@microsoft/fast-css-editor-react@4.2.0) (2019-02-07)
 
 

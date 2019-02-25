@@ -63,6 +63,7 @@ function render(): void {
             formChildOptions={formChildOptions}
             formPlugins={formPlugins}
             showTransparencyToggle={true}
+            styleEditing={true}
         >
             <SiteTitle slot={"title"}>
                 <SiteTitleBrand>FAST</SiteTitleBrand> base component documentation

@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components-class-name-contracts-msft",
   "description": "Type descriptions for the classnames that any given component can expect as props.",
   "sideEffects": false,
-  "version": "3.5.0",
+  "version": "3.5.1",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -29,13 +29,13 @@
     "watch": "npm run build -- -w --preserveWatchOutput"
   },
   "devDependencies": {
-    "@microsoft/fast-tslint-rules": "^3.0.1",
+    "@microsoft/fast-tslint-rules": "^3.0.2",
     "prettier": "1.14.3",
     "tslint": "^5.9.1",
     "tslint-config-prettier": "^1.15.0",
     "typescript": "^3.0.1"
   },
   "dependencies": {
-    "@microsoft/fast-components-class-name-contracts-base": "^3.6.0"
+    "@microsoft/fast-components-class-name-contracts-base": "^3.7.0"
   }
 }

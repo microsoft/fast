@@ -42,11 +42,7 @@ class App extends React.Component<{}, AppState> {
                     <div
                         style={{
                             minWidth: "250px",
-                            minHeight: "100vh",
-                            padding: "0 0 0 10px",
-                            boxSizing: "border-box",
-                            color: designSystemDefaults.foregroundColor,
-                            background: designSystemDefaults.backgroundColor,
+                            height: "100vh",
                             float: "left",
                         }}
                     >

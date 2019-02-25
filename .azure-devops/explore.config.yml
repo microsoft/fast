@@ -1,0 +1,44 @@
+resources:
+- repo: self
+  clean: true
+
+pool:
+  name: Team Pool
+  demands: npm
+
+steps:
+- task: NodeTool@0
+  displayName: 'Use Node 10.14.x'
+  inputs:
+    versionSpec: 10.14.x
+
+- task: Npm@1
+  displayName: 'Install Lerna'
+  inputs:
+    command: custom
+    verbose: false
+    customCommand: 'i lerna -g'
+
+- task: Npm@1
+  displayName: 'Install Package Dependencies'
+  inputs:
+    verbose: false
+
+- script: 'lerna bootstrap'
+  displayName: 'Lerna Bootstrap'
+
+- task: Npm@1
+  displayName: 'Build Component Explorer Website'
+  inputs:
+    command: custom
+    workingDir: 'packages/fast-components-react-msft'
+    verbose: false
+    customCommand: 'run build:app --production'
+
+- task: PublishPipelineArtifact@0
+  inputs:
+    targetPath: '$(System.DefaultWorkingDirectory)/packages/fast-components-react-msft/www/'
+    artifactName: 'drop'
+
+- task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
+  displayName: 'Component Detection'

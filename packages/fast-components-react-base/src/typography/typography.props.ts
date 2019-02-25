@@ -30,7 +30,7 @@ export enum TypographySize {
 }
 
 export interface TypographyUnhandledProps
-    extends React.BaseHTMLAttributes<
+    extends React.HTMLAttributes<
             | HTMLHeadingElement
             | HTMLParagraphElement
             | HTMLSpanElement

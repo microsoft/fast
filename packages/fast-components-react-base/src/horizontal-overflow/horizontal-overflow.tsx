@@ -193,6 +193,33 @@ class HorizontalOverflow extends Foundation<
     }
 
     /**
+     * React life-cycle method
+     */
+    public getSnapshotBeforeUpdate(prevProps: HorizontalOverflowProps): boolean | null {
+        if (
+            React.Children.toArray(prevProps.children).length <
+            React.Children.toArray(this.props.children).length
+        ) {
+            return true;
+        }
+
+        return null;
+    }
+
+    /**
+     * React life-cycle method
+     */
+    public componentDidUpdate(
+        prevProps: HorizontalOverflowProps,
+        prevState: HorizontalOverflowState,
+        snapshot: boolean | null
+    ): void {
+        if (snapshot !== null) {
+            this.handleOverflowChange();
+        }
+    }
+
+    /**
      * Generates class names
      */
     protected generateClassNames(): string {
@@ -409,7 +436,7 @@ class HorizontalOverflow extends Foundation<
             );
         }
 
-        return distance;
+        return Math.ceil(distance);
     }
 
     /**
