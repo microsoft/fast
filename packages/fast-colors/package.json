@@ -35,10 +35,10 @@
     "testURL": "http://localhost",
     "coverageThreshold": {
       "global": {
-        "statements": 100,
-        "branches": 71,
-        "functions": 100,
-        "lines": 100
+        "statements": 70,
+        "branches": 50,
+        "functions": 70,
+        "lines": 70
       }
     },
     "transform": {
