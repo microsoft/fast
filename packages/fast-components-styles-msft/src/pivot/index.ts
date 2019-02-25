@@ -12,8 +12,7 @@ import {
 } from "@microsoft/fast-jss-utilities";
 import { applyTypeRampConfig } from "../utilities/typography";
 import { density } from "../utilities/density";
-import { ensureBrandNormal, hoverContrast } from "../utilities/colors";
-import outlinePattern from "../patterns/outline";
+import { ensureBrandNormal } from "../utilities/colors";
 import { PivotClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 
 const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (

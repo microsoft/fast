@@ -3,7 +3,6 @@ import { get } from "lodash-es";
 import * as ReactDOM from "react-dom";
 import { canUseDOM } from "exenv-es6";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
-import { canUseFocusVisible } from "@microsoft/fast-web-utilities";
 import {
     PivotHandledProps,
     PivotManagedClasses,
