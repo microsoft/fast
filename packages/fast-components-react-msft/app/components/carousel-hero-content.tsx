@@ -17,8 +17,8 @@ import {
 export interface CarouselHeroContentProps {
     heading?: HeadingProps;
     paragraph?: ParagraphProps;
-    callToAction: CallToActionProps;
-    image: ImageProps;
+    callToAction?: CallToActionProps;
+    image?: ImageProps;
     className?: string;
 }
 

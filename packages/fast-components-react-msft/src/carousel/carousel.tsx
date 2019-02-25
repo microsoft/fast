@@ -22,36 +22,12 @@ export interface CarouselState {
     activeId: string;
 }
 
-enum SlideTransitionDirection {
-    previous = "previous",
-    next = "next",
-}
-
 class Carousel extends Foundation<
     CarouselHandledProps,
     CarouselUnhandledProps,
     CarouselState
 > {
     public static displayName: string = "Carousel";
-
-    /**
-     * React life-cycle method
-     */
-    public static getDerivedStateFromProps(
-        nextProps: CarouselProps,
-        prevState: CarouselState
-    ): null | Partial<CarouselState> {
-        if (
-            typeof nextProps.activeId === "string" &&
-            nextProps.activeId !== prevState.activeId
-        ) {
-            return {
-                activeId: nextProps.activeId,
-            };
-        }
-
-        return null;
-    }
 
     /**
      * Handled props
@@ -66,7 +42,7 @@ class Carousel extends Foundation<
     /**
      * Initial slide transition direction is none (on carousel load)
      */
-    private slideTransitionDirection: SlideTransitionDirection | "" = "";
+    private slideTransitionDirection: FlipperDirection = null;
 
     /**
      * Define constructor
@@ -90,17 +66,7 @@ class Carousel extends Foundation<
     public render(): React.ReactElement<HTMLDivElement> {
         return (
             <div {...this.unhandledProps()} className={this.generateClassNames()}>
-                {this.isSingleSlide && (
-                    <Flipper
-                        direction={FlipperDirection.previous}
-                        onClick={this.handlePreviousClick}
-                        className={get(
-                            this.props,
-                            "managedClasses.carousel_flipperPrevious",
-                            ""
-                        )}
-                    />
-                )}
+                {this.generatePreviousFlipper()}
                 <Tabs
                     label={this.props.label}
                     activeId={this.state.activeId}
@@ -108,17 +74,7 @@ class Carousel extends Foundation<
                     items={this.slides as TabsItem[]}
                     managedClasses={this.generateTabsClassNames()}
                 />
-                {this.isSingleSlide && (
-                    <Flipper
-                        direction={FlipperDirection.next}
-                        onClick={this.handleNextClick}
-                        className={get(
-                            this.props,
-                            "managedClasses.carousel_flipperNext",
-                            ""
-                        )}
-                    />
-                )}
+                {this.generateNextFlipper()}
             </div>
         );
     }
@@ -191,7 +147,7 @@ class Carousel extends Foundation<
     /**
      * Single slide carousels do not require certain interface elements
      */
-    private get isSingleSlide(): boolean {
+    private get isMultipleSlides(): boolean {
         return this.slides.length !== 1;
     }
 
@@ -220,9 +176,9 @@ class Carousel extends Foundation<
      */
     private setTransitionDirection(incomingIndex: number): void {
         if (this.getActiveIndex() < incomingIndex) {
-            this.slideTransitionDirection = SlideTransitionDirection.next;
+            this.slideTransitionDirection = FlipperDirection.next;
         } else {
-            this.slideTransitionDirection = SlideTransitionDirection.previous;
+            this.slideTransitionDirection = FlipperDirection.previous;
         }
     }
 
@@ -231,7 +187,7 @@ class Carousel extends Foundation<
      */
     private assignTransitionDirectionClassName(): string {
         const transitionDirection: string =
-            this.slideTransitionDirection === SlideTransitionDirection.next
+            this.slideTransitionDirection === FlipperDirection.next
                 ? get(
                       this.props,
                       "managedClasses.carousel__slideTransitionDirectionNext",
@@ -256,6 +212,40 @@ class Carousel extends Foundation<
                 : get(this.props, "managedClasses.carousel__themeDark", "");
 
         return ` ${theme}`;
+    }
+
+    /**
+     * Generates previous flipper if more than one slide
+     */
+    private generatePreviousFlipper(): any {
+        if (this.isMultipleSlides) {
+            return (
+                <Flipper
+                    direction={FlipperDirection.previous}
+                    onClick={this.handlePreviousClick}
+                    className={get(
+                        this.props,
+                        "managedClasses.carousel_flipperPrevious",
+                        ""
+                    )}
+                />
+            );
+        }
+    }
+
+    /**
+     * Generates next flipper if more than one slide
+     */
+    private generateNextFlipper(): any {
+        if (this.isMultipleSlides) {
+            return (
+                <Flipper
+                    direction={FlipperDirection.next}
+                    onClick={this.handleNextClick}
+                    className={get(this.props, "managedClasses.carousel_flipperNext", "")}
+                />
+            );
+        }
     }
 
     /**
