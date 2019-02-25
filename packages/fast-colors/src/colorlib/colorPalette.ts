@@ -54,7 +54,7 @@ export class ColorPalette {
 
     public updatePaletteGenerationValues(newConfig: ColorPaletteConfig): boolean {
         let changed: boolean = false;
-        for (var key in newConfig) {
+        for (const key in newConfig) {
             if (this.config[key]) {
                 if (this.config[key].equalValue) {
                     if (!this.config[key].equalValue(newConfig[key])) {
