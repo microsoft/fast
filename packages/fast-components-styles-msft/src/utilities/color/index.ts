@@ -27,6 +27,7 @@ export {
     neutralFillRest,
     neutralFillHover,
     neutralFillActive,
+    neutralFillSelected,
 } from "./neutral-fill";
 
 export {
@@ -34,17 +35,28 @@ export {
     neutralFillStealthRest,
     neutralFillStealthHover,
     neutralFillStealthActive,
+    neutralFillStealthSelected,
 } from "./neutral-fill-stealth";
+
+export {
+    neutralFillInput,
+    neutralFillInputRest,
+    neutralFillInputHover,
+    neutralFillInputActive,
+    neutralFillInputSelected,
+} from "./neutral-fill-input";
 
 export {
     accentFill,
     accentFillRest,
     accentFillHover,
     accentFillActive,
+    accentFillSelected,
     accentFillLarge,
     accentFillLargeRest,
     accentFillLargeHover,
     accentFillLargeActive,
+    accentFillLargeSelected,
 } from "./accent-fill";
 
 /**

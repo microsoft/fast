@@ -48,7 +48,7 @@ class Toggle extends Foundation<ToggleHandledProps, ToggleUnhandledProps, Toggle
     protected handledProps: HandledProps<ToggleHandledProps> = {
         managedClasses: void 0,
         disabled: void 0,
-        id: void 0,
+        inputId: void 0,
         labelId: void 0,
         selected: void 0,
         selectedMessage: void 0,
@@ -83,7 +83,7 @@ class Toggle extends Foundation<ToggleHandledProps, ToggleUnhandledProps, Toggle
                     <input
                         className={get(this.props, "managedClasses.toggle_input")}
                         type="checkbox"
-                        id={this.props.id}
+                        id={this.props.inputId}
                         aria-describedby={this.props.statusMessageId}
                         disabled={this.props.disabled}
                         value={this.generateToggleStateLabel()}
@@ -163,7 +163,7 @@ class Toggle extends Foundation<ToggleHandledProps, ToggleUnhandledProps, Toggle
                 <label
                     className={get(this.props, "managedClasses.toggle_label")}
                     id={this.props.labelId}
-                    htmlFor={this.props.id}
+                    htmlFor={this.props.inputId}
                 >
                     {this.props.children}
                 </label>

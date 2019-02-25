@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@3.3.3...@microsoft/fast-development-site-react@3.4.0) (2019-02-21)
+
+
+### Bug Fixes
+
+* font size in fast form and fast site ([#1369](https://github.com/Microsoft/fast-dna/issues/1369)) ([90de283](https://github.com/Microsoft/fast-dna/commit/90de283))
+
+
+### Features
+
+* add a component navigation and css editor ([#1402](https://github.com/Microsoft/fast-dna/issues/1402)) ([0e5002e](https://github.com/Microsoft/fast-dna/commit/0e5002e))
+
+
+
+
+
 ## [3.3.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@3.3.2...@microsoft/fast-development-site-react@3.3.3) (2019-02-07)
 
 **Note:** Version bump only for package @microsoft/fast-development-site-react

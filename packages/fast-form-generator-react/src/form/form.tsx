@@ -71,7 +71,7 @@ class Form extends React.Component<
 
     public render(): JSX.Element {
         return (
-            <div className={this.props.className || null}>
+            <div className={this.getClassNames()}>
                 <form onSubmit={this.handleSubmit}>
                     {this.renderBreadcrumbs()}
                     {this.renderSection()}
@@ -94,6 +94,16 @@ class Form extends React.Component<
         if (state) {
             this.setState(state as FormState);
         }
+    }
+
+    private getClassNames(): string {
+        let classNames: string = get(this.props, "managedClasses.form", "");
+
+        if (typeof this.props.className === "string") {
+            classNames = `${classNames} ${this.props.className}`;
+        }
+
+        return classNames;
     }
 
     /**

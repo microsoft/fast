@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.6.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-form-generator-react@3.5.2...@microsoft/fast-form-generator-react@3.6.0) (2019-02-21)
+
+
+### Bug Fixes
+
+* allows a oneOf with a nested object to be used ([#1386](https://github.com/Microsoft/fast-dna/issues/1386)) ([db825a7](https://github.com/Microsoft/fast-dna/commit/db825a7))
+* fixes an issue where objects were returned when strings were selected in the children UI ([#1401](https://github.com/Microsoft/fast-dna/issues/1401)) ([040e742](https://github.com/Microsoft/fast-dna/commit/040e742))
+* font size in fast form and fast site ([#1369](https://github.com/Microsoft/fast-dna/issues/1369)) ([90de283](https://github.com/Microsoft/fast-dna/commit/90de283))
+* normalize colors and backgrounds across tooling packages ([#1421](https://github.com/Microsoft/fast-dna/issues/1421)) ([2ba5dec](https://github.com/Microsoft/fast-dna/commit/2ba5dec))
+
+
+### Features
+
+* add a controlled location state ([#1377](https://github.com/Microsoft/fast-dna/issues/1377)) ([2e767f8](https://github.com/Microsoft/fast-dna/commit/2e767f8))
+* add ability to control oneOf/anyOf from any property type ([#1367](https://github.com/Microsoft/fast-dna/issues/1367)) ([1c849df](https://github.com/Microsoft/fast-dna/commit/1c849df))
+
+
+
+
+
 ## [3.5.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-form-generator-react@3.5.1...@microsoft/fast-form-generator-react@3.5.2) (2019-02-07)
 
 **Note:** Version bump only for package @microsoft/fast-form-generator-react

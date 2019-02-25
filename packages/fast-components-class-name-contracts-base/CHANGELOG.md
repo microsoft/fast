@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.7.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-base@3.6.0...@microsoft/fast-components-class-name-contracts-base@3.7.0) (2019-02-21)
+
+
+### Features
+
+* add additional functionality to listbox base ([#1381](https://github.com/Microsoft/fast-dna/issues/1381)) ([48d9c31](https://github.com/Microsoft/fast-dna/commit/48d9c31))
+* create number field as base and MSFT component ([#1371](https://github.com/Microsoft/fast-dna/issues/1371)) ([d440b5f](https://github.com/Microsoft/fast-dna/commit/d440b5f))
+
+
+
+
+
 # [3.6.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-base@3.5.0...@microsoft/fast-components-class-name-contracts-base@3.6.0) (2019-02-07)
 
 

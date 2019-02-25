@@ -711,7 +711,8 @@ class FormItemChildren extends FormItemBase<
         item: ChildOptionItem
     ): ChildComponent[] {
         const components: ChildComponent[] = [].concat(currentChildren);
-        components.push(this.getChildComponent(item));
+        const isString: boolean = item.schema === reactChildrenStringSchema;
+        components.push(this.getChildComponent(item, isString));
 
         return components;
     }
@@ -737,7 +738,14 @@ class FormItemChildren extends FormItemBase<
                 : [];
     }
 
-    private getChildComponent(item: ChildOptionItem): ChildComponentConfig {
+    private getChildComponent(
+        item: ChildOptionItem,
+        isString?: boolean
+    ): ChildComponentConfig {
+        if (!!isString) {
+            return generateExampleData(item.schema, "");
+        }
+
         return {
             id: item.schema.id,
             props: generateExampleData(item.schema, ""),

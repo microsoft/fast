@@ -6,7 +6,7 @@
     "id": "radio",
     "children": true,
     "properties": {
-        "id": {
+        "inputId": {
             "title": "Unique Id",
             "type": "string"
         },

@@ -1,9 +1,15 @@
-import { accent } from "./form.constants.style";
+import { accent, background300, foreground300 } from "./form.constants.style";
 import { applyCleanListStyle } from "./form.utilities.style";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { FormClassNameContract } from "../class-name-contracts/";
 
 const styles: ComponentStyles<FormClassNameContract, {}> = {
+    form: {
+        background: background300,
+        color: foreground300,
+        height: "100%",
+        padding: "0 0 0 10px",
+    },
     form_breadcrumbs: {
         display: "flex",
         flexWrap: "wrap",

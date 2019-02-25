@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-data-utilities-react@1.2.1...@microsoft/fast-data-utilities-react@1.3.0) (2019-02-21)
+
+
+### Bug Fixes
+
+* allows a oneOf with a nested object to be used ([#1386](https://github.com/Microsoft/fast-dna/issues/1386)) ([db825a7](https://github.com/Microsoft/fast-dna/commit/db825a7))
+
+
+### Features
+
+* add ability to control oneOf/anyOf from any property type ([#1367](https://github.com/Microsoft/fast-dna/issues/1367)) ([1c849df](https://github.com/Microsoft/fast-dna/commit/1c849df))
+
+
+
+
+
 ## [1.2.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-data-utilities-react@1.2.0...@microsoft/fast-data-utilities-react@1.2.1) (2019-02-07)
 
 

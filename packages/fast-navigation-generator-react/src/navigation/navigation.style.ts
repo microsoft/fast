@@ -2,7 +2,7 @@ import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { applyTriggerStyle, insetStrongBoxShadow } from "./navigation.utilities.style";
 import {
     accent,
-    background100,
+    background300,
     background800,
     foreground300,
 } from "./navigation.constants.style";
@@ -20,7 +20,8 @@ export interface NavigationClassNameContract {
 const styles: ComponentStyles<NavigationClassNameContract, {}> = {
     navigation: {
         fontSize: "12px",
-        background: background100,
+        background: background300,
+        color: foreground300,
         height: "100%",
     },
     navigation_item: {

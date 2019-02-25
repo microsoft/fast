@@ -1,12 +1,14 @@
 import React from "react";
-import SiteTitleBrand from "./title-brand";
+import SiteTitle from "./title";
 import manageJss, {
     ComponentStyles,
     DesignSystemProvider,
     ManagedClasses,
     ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
+import Navigation from "@microsoft/fast-navigation-generator-react";
 import {
+    glyphArrowright,
     glyphBuildingblocks,
     glyphGlobalnavbutton,
     glyphTransparency,
@@ -21,7 +23,7 @@ import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { ellipsis, localizeSpacing, toPx } from "@microsoft/fast-jss-utilities";
 import ComponentWrapper from "./component-wrapper";
 import CategoryList from "./category-list";
-import SiteTitle from "./title";
+import SiteTitleBrand from "./title-brand";
 import Toc, { TocItem } from "../toc";
 import SiteMenu from "./menu";
 import SiteMenuItem from "./menu-item";
@@ -57,6 +59,7 @@ export interface SiteProps {
     formPlugins?: Array<Plugin<PluginProps>>;
     onUpdateDirection?: (ltr: Direction) => void;
     onUpdateTheme?: (theme: string) => void;
+    styleEditing?: boolean;
     locales?: string[];
     themes?: Theme[];
     activeTheme?: Theme;
@@ -87,11 +90,17 @@ export interface ComponentData {
     [T: string]: any[];
 }
 
+enum NavigationLevel {
+    catalog = "catalog",
+    component = "component",
+}
+
 export interface SiteState {
     currentPath: string;
     activeComponentIndex: number;
     componentName: string;
     componentData: ComponentData;
+    componentDataLocation: string;
     componentSchema: ComponentData;
     componentDataMappedToComponent: ComponentData;
     componentStatus: Status;
@@ -104,6 +113,7 @@ export interface SiteState {
     devToolsView: boolean;
     locale: string;
     theme: Theme;
+    navigationLevel: NavigationLevel;
 }
 
 export enum SiteSlot {
@@ -126,6 +136,7 @@ export interface SiteManagedClasses {
     site_infoBarConfiguration_theme: string;
     site_pane: string;
     site_paneForm: string;
+    site_paneNavigationCloseButton: string;
     site_paneToc: string;
     site_paneTocRow: string;
     site_paneTocTitle: string;
@@ -214,6 +225,16 @@ const styles: ComponentStyles<SiteManagedClasses, DevSiteDesignSystem> = {
     },
     site_paneForm: {
         padding: toPx(12),
+    },
+    site_paneNavigationCloseButton: {
+        border: "none",
+        height: "32px",
+        alignSelf: "flex-end",
+        background: "rgb(30, 30, 30)",
+        padding: "6px 12px",
+        outline: "none",
+        color: "white",
+        cursor: "pointer",
     },
     site_paneToc: {
         padding: "0",
@@ -360,6 +381,7 @@ class Site extends React.Component<
             componentView: ComponentViewTypes.examples,
             componentName: this.getComponentName(this.initialPath),
             componentData: this.getComponentData(),
+            componentDataLocation: "",
             componentSchema: this.getComponentSchema(),
             componentDataMappedToComponent: this.getComponentData(true),
             componentStatus: this.getComponentStatus(this.initialPath),
@@ -371,6 +393,7 @@ class Site extends React.Component<
             devToolsView: false,
             locale: "en",
             theme: this.props.activeTheme || this.getInitialTheme(),
+            navigationLevel: NavigationLevel.catalog,
         };
     }
 
@@ -597,19 +620,18 @@ class Site extends React.Component<
                     jssStyleSheet={paneStyleSheet}
                     minWidth={200}
                 >
-                    <div className={this.props.managedClasses.site_pane}>
-                        {this.renderPaneCollapseToggle()}
-                        {this.renderChildrenBySlot(this, ShellSlot.pane)}
-                        <ul className={this.props.managedClasses.site_paneToc}>
-                            {this.renderRootToc(
-                                this.props.children,
-                                SiteSlot.category,
-                                route.route,
-                                "/"
-                            )}
-                        </ul>
-                    </div>
+                    {this.generateNavigation(
+                        route.exampleView,
+                        route.schema,
+                        route.route
+                    )}
                 </Pane>
+                {this.generateChildrenNavigation(
+                    route.exampleView,
+                    route.schema,
+                    route.route,
+                    paneStyleSheet
+                )}
                 <Canvas>
                     <Row style={{ minHeight: "30px", flexBasis: "30px" }}>
                         <ActionBar
@@ -775,6 +797,106 @@ class Site extends React.Component<
             : window.location.pathname.slice(0, window.location.pathname.length - 9);
     };
 
+    private generateNavigation(
+        component: JSX.Element[],
+        schema: any,
+        route: string
+    ): React.ReactNode {
+        if (component && schema) {
+            const componentData: any =
+                this.state.componentView === ComponentViewTypes.examples
+                    ? Object.assign(
+                          {},
+                          this.state.componentData[route][this.state.activeComponentIndex]
+                      )
+                    : Object.assign({}, this.state.detailViewComponentData[route]);
+
+            return (
+                <div className={this.props.managedClasses.site_pane}>
+                    {this.renderPaneCollapseToggle()}
+                    {this.renderChildrenBySlot(this, ShellSlot.pane)}
+                    <ul className={this.props.managedClasses.site_paneToc}>
+                        {this.renderRootToc(
+                            this.props.children,
+                            SiteSlot.category,
+                            route,
+                            "/"
+                        )}
+                    </ul>
+                </div>
+            );
+        }
+    }
+
+    private generateChildrenNavigation(
+        component: JSX.Element[],
+        schema: any,
+        route: string,
+        paneStyleSheet: any
+    ): React.ReactNode {
+        if (
+            component &&
+            schema &&
+            !!this.props.styleEditing &&
+            this.state.navigationLevel === NavigationLevel.component
+        ) {
+            const componentData: any =
+                this.state.componentView === ComponentViewTypes.examples
+                    ? Object.assign(
+                          {},
+                          this.state.componentData[route][this.state.activeComponentIndex]
+                      )
+                    : Object.assign({}, this.state.detailViewComponentData[route]);
+
+            return (
+                <Pane
+                    resizable={true}
+                    resizeFrom={PaneResizeDirection.east}
+                    jssStyleSheet={paneStyleSheet}
+                    minWidth={200}
+                    style={{ background: "rgb(30, 30, 30)" }}
+                >
+                    <button
+                        className={
+                            this.props.managedClasses.site_paneNavigationCloseButton
+                        }
+                        onClick={this.handleCloseChildrenNavigation}
+                    >
+                        <span
+                            className={
+                                this.props.managedClasses.site_paneToggleButtonIcon
+                            }
+                            style={{ width: "unset", lineHeight: "18px" }}
+                        >
+                            <svg
+                                width="14"
+                                height="14"
+                                viewBox="0 0 14 14"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    d="M7.71094 7L13.1016 12.3984L12.3984 13.1016L7 7.71094L1.60156 13.1016L0.898438 12.3984L6.28906 7L0.898438 1.60156L1.60156 0.898438L7 6.28906L12.3984 0.898438L13.1016 1.60156L7.71094 7Z"
+                                    fill="white"
+                                />
+                            </svg>
+                        </span>
+                    </button>
+                    <Navigation
+                        data={componentData}
+                        schema={schema}
+                        childOptions={this.props.formChildOptions}
+                        onLocationUpdate={this.handleLocationUpdate}
+                        dataLocation={this.state.componentDataLocation}
+                        jssStyleSheet={{ navigation: { background: "rgb(30, 30, 30)" } }}
+                    />
+                </Pane>
+            );
+        }
+
+        return null;
+    }
+
     private generateForm(
         component: JSX.Element[],
         schema: any,
@@ -793,8 +915,11 @@ class Site extends React.Component<
                 <ConfigurationPanel
                     schema={schema}
                     data={componentData}
+                    dataLocation={this.state.componentDataLocation}
                     onChange={this.handleComponentDataChange.bind(route)}
                     formChildOptions={this.props.formChildOptions}
+                    onLocationUpdate={this.handleLocationUpdate}
+                    styleEditing={this.props.styleEditing}
                 />
             );
         }
@@ -902,9 +1027,21 @@ class Site extends React.Component<
         return null;
     }
 
+    private handleLocationUpdate = (dataLocation: string): void => {
+        this.setState({
+            componentDataLocation: dataLocation,
+        });
+    };
+
     private handleComponentClick = (activeIndex: number): void => {
         this.setState({
             activeComponentIndex: activeIndex,
+        });
+    };
+
+    private handleCloseChildrenNavigation = (): void => {
+        this.setState({
+            navigationLevel: NavigationLevel.catalog,
         });
     };
 
@@ -1280,6 +1417,8 @@ class Site extends React.Component<
                     componentName: this.getComponentName(tocItemPath),
                     componentStatus: this.getComponentStatus(tocItemPath),
                     currentPath: tocItemPath,
+                    navigationLevel: NavigationLevel.component,
+                    componentDataLocation: "",
                 });
             },
         };

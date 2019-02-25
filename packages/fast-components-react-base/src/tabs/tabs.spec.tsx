@@ -1228,7 +1228,7 @@ describe("Tab", (): void => {
     test("should not throw if managedClasses are not provided", () => {
         expect(() => {
             shallow(<Tab slot={TabsSlot.tab} />);
-            shallow(<Tab slot={TabsSlot.tab} selected={true} />);
+            shallow(<Tab slot={TabsSlot.tab} active={true} />);
         }).not.toThrow();
     });
 });

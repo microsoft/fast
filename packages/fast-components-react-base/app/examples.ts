@@ -43,6 +43,9 @@ export { ListboxExamples };
 import ListboxItemExamples from "../src/listbox-item/examples.data";
 export { ListboxItemExamples };
 
+import NumberFieldExamples from "../src/number-field/examples.data";
+export { NumberFieldExamples };
+
 import ProgressExamples from "../src/progress/examples.data";
 export { ProgressExamples };
 

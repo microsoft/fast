@@ -41,6 +41,7 @@ export const textFieldOverrides: ComponentStyles<
             boxShadow: "none",
         },
         ...applyFocusVisible({
+            border: "none",
             boxShadow: "none",
         }),
     },
