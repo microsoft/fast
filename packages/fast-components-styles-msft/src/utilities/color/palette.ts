@@ -148,6 +148,7 @@ export function findClosestSwatchIndex(
  */
 export const isDarkTheme: DesignSystemResolver<boolean> = memoize(
     (designSystem: DesignSystem): boolean => {
+        const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
         try {
             return (
                 chroma.contrast(
