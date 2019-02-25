@@ -2,16 +2,17 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import { getExample } from "@microsoft/fast-permutator";
-import { ChildOptionItem } from "@microsoft/fast-data-utilities-react";
-import Form, { mapDataToComponent } from "../src";
+import Form, { FormPlugin, FormPluginProps } from "../src";
 import {
     FormAttributeSettingsMappingToPropertyNames,
+    FormChildOptionItem,
     FormComponentMappingToPropertyNamesProps,
     FormLocation,
     FormOrderByPropertyNamesProps,
     FormProps,
 } from "../src/form/form.props";
 import * as testConfigs from "./configs";
+import { StringUpdateSchemaPlugin } from "./configs/plugin/plugin";
 import { background300, foreground300 } from "../src/form/form.constants.style";
 
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
@@ -53,7 +54,12 @@ export default class App extends React.Component<{}, AppState> {
     /**
      * These are the children that can be added
      */
-    private childOptions: ChildOptionItem[];
+    private childOptions: FormChildOptionItem[];
+
+    /**
+     * The plugins initialized for the mapPluginsToForm mapper
+     */
+    private plugins: Array<FormPlugin<FormPluginProps>>;
 
     constructor(props: {}) {
         super(props);
@@ -61,9 +67,17 @@ export default class App extends React.Component<{}, AppState> {
         this.childOptions = this.getChildOptions();
         this.onChange = this.onChange.bind(this);
 
+        this.plugins = [
+            new StringUpdateSchemaPlugin({
+                id: "plugins/pluginModifiedString",
+            }),
+        ];
+
+        const exampleData: any = getExample(testConfigs.textField.schema);
+
         this.state = {
             schema: testConfigs.textField.schema,
-            data: getExample(testConfigs.textField.schema),
+            data: exampleData,
             orderByPropertyNames: void 0,
             attributeAssignment: void 0,
             onChange: this.onChange,
@@ -136,8 +150,8 @@ export default class App extends React.Component<{}, AppState> {
     /**
      * Gets the child options for the schema form
      */
-    private getChildOptions(): ChildOptionItem[] {
-        const childOptions: ChildOptionItem[] = [];
+    private getChildOptions(): FormChildOptionItem[] {
+        const childOptions: FormChildOptionItem[] = [];
         const groups: GroupItem[] = [
             {
                 items: testConfigs,
@@ -149,7 +163,7 @@ export default class App extends React.Component<{}, AppState> {
             Object.keys(group.items).map(
                 (itemName: any, key: number): void => {
                     if (typeof testConfigs[itemName].schema !== "undefined") {
-                        const childObj: ChildOptionItem = {
+                        const childObj: FormChildOptionItem = {
                             name: testConfigs[itemName].schema.title || "Untitled",
                             component: testConfigs[itemName].component,
                             schema: testConfigs[itemName].schema,
@@ -169,6 +183,8 @@ export default class App extends React.Component<{}, AppState> {
             schema: this.state.schema,
             data: this.state.data,
             onChange: this.state.onChange,
+            plugins: this.plugins,
+            onSchemaChange: this.handleSchemaChange,
             childOptions: this.childOptions,
             componentMappingToPropertyNames: this.state.config,
             attributeSettingsMappingToPropertyNames: this.state.attributeAssignment,
@@ -189,6 +205,15 @@ export default class App extends React.Component<{}, AppState> {
             };
         }
     }
+
+    /**
+     * Handles the change in schema
+     */
+    private handleSchemaChange = (schema: any): void => {
+        this.setState({
+            schema,
+        });
+    };
 
     /**
      * Handles the change in location

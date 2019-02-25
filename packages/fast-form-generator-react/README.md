@@ -9,11 +9,10 @@ Dynamically generates a form user interface based on incoming JSON Schemas to ch
 
 `npm i --save @microsoft/fast-form-generator-react`
 
-## Using the form generator
+## Basic usage
+---
 
-### Basic usage
-
-The required properties are the data, schema, and onChange function. The data should be tied to your state as the data will change when editing the form.
+The required properties are the `data`, `schema`, and `onChange` function. The data should be tied to your state as the data will change when editing the form.
 
 ```jsx
 import Form from "@microsoft/fast-form-generator-react";
@@ -28,7 +27,7 @@ import Form from "@microsoft/fast-form-generator-react";
 />
 ```
 
-### onChange
+### `onChange`
 
 The onChange is used as a callback, it should take one argument that is the data that should be updated when any data has been changed from within the generated form.
 
@@ -81,11 +80,89 @@ Example data:
 
 The `id` corresponds to the components' JSON schema id and the `props` corresponds to the data being passed to the component.
 
-### Advanced usage
+## Advanced usage
+---
 
 Outside of the basic use case you can provide some additional functionality through optional properties.
 
-**childOptions** - Children by default only include text elements. If you want to add some child components you are providing, you can do this through the `childOptions`.
+### `plugins` and `onSchemaChange`
+
+plugins may be created to determine if a form should change based on data. You can identify a piece of schema that should be updated by adding a unique key to your JSON schema `formPluginId`. When you initialize a custom plugin, you will need to pass that same id to the plugin as part of its configuration.
+
+Example schema:
+```json
+{
+    "$schema": "http://json-schema.org/schema#",
+    "id": "my-component",
+    "title": "My component",
+    "type": "object",
+    "properties": {
+        "text": {
+            "title": "Text",
+            "type": "string",
+            "example": "Hello world",
+            "formPluginId": "my-custom-plugin-identifier"
+        },
+        "weight": {
+            "title": "Weight",
+            "type": "string",
+            "enum": [
+                "heavy",
+                "medium",
+                "light"
+            ]
+        }
+    },
+    "required": [
+        "text"
+    ]
+}
+```
+
+Example plugin which returns an unmodified schema, unless the weight property has been specified, then the options become specific to the data:
+```js
+import { FormPlugin, FormPluginProps } from "@microsoft/fast-form-generator-react";
+
+export class MyCustomSchemaPlugin extends FormPlugin {
+    resolver(schema, data) {
+        switch (data.weight) {
+            case "heavy":
+                return Object.assign({}, schema, { enum: ["heavy text 1", "heavy text 2"] });
+            case "medium":
+                return Object.assign({}, schema, { enum: ["medium text 1", "medium text 2"] });
+            case "light":
+                return Object.assign({}, schema, { enum: ["light text 1", "light text 2"] });
+        }
+
+        return schema;
+    }
+}
+```
+
+Example implementation with the `Form`:
+
+*Note: When the plugins are used the schema tied to the `Form` should be set to a state so that it can be kept up-to-date, you will need to use the `onSchemaChange` callback which will return the newly updated schema.*
+```jsx
+import Form from "@microsoft/fast-form-generator-react";
+import { Button, ButtonSchema } from "@microsoft/fast-components-react-msft";
+import { MyCustomSchemaPlugin } from "./my-custom-schema-plugin";
+
+<Form
+    data={this.state.currentComponentData}
+    schema={this.state.currentComponentSchema}
+    onChange={handleChange}
+    onSchemaChange={handleSchemaChange}
+    plugins={[
+        new MyCustomSchemaPlugin({
+            id: ["my-custom-plugin-identifier"]
+        })
+    ]}
+/>
+```
+
+### `childOptions`
+
+Children by default only include text elements. If you want to add some child components you are providing, you can do this through the `childOptions`.
 
 ```jsx
 import Form from "@microsoft/fast-form-generator-react";
@@ -105,7 +182,9 @@ import { Button, ButtonSchema } from "@microsoft/fast-components-react-msft";
 />
 ```
 
-**location** - The location prop allows the user to control which piece of JSON schema the form is pointing to and has two required properties. It takes `dataLocation` which is the location of the data to be edited, and `onChange` which will fire an update when the user performs an action on the form that would change the visible data to be edited. An example of this would be clicking on an array item to edit that item.
+### `location`
+
+The location prop allows the user to control which piece of JSON schema the form is pointing to and has two required properties. It takes `dataLocation` which is the location of the data to be edited, and `onChange` which will fire an update when the user performs an action on the form that would change the visible data to be edited. An example of this would be clicking on an array item to edit that item.
 
 ```jsx
 import Form from "@microsoft/fast-form-generator-react";

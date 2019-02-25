@@ -104,3 +104,9 @@ export const theme: ExampleComponent = {
     config: ThemeConfig,
     schema: ThemeSchema,
 };
+
+import PluginSchema from "./plugin/plugin.schema.json";
+
+export const plugin: ExampleComponent = {
+    schema: PluginSchema,
+};

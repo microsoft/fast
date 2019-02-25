@@ -22,6 +22,7 @@ import { FormClassNameContract } from "../class-name-contracts/";
 import { mapSchemaLocationFromDataLocation } from "@microsoft/fast-data-utilities-react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { mapPluginsToSchema } from "./form-plugin.utilities";
 
 /**
  * Schema form component definition
@@ -42,11 +43,20 @@ class Form extends React.Component<
         super(props);
 
         this.untitled = "Untitled";
+        const schema: any = mapPluginsToSchema(
+            this.props.schema,
+            this.props.data,
+            this.props.plugins
+        );
+
+        if (JSON.stringify(schema) !== JSON.stringify(this.props.schema)) {
+            this.props.onSchemaChange(schema);
+        }
 
         this.state = {
-            titleProps:
-                props.schema && props.schema.title ? props.schema.title : this.untitled,
-            schema: this.props.schema,
+            titleProps: schema && schema.title ? schema.title : this.untitled,
+            schema:
+                typeof this.props.plugins !== "undefined" ? schema : this.props.schema,
             activeDataLocation:
                 props.location && typeof props.location === "string"
                     ? props.location
@@ -57,15 +67,10 @@ class Form extends React.Component<
                     ? getNavigation(
                           this.props.location.dataLocation,
                           this.props.data,
-                          this.props.schema,
+                          schema,
                           this.props.childOptions
                       )
-                    : getNavigation(
-                          "",
-                          this.props.data,
-                          this.props.schema,
-                          this.props.childOptions
-                      ),
+                    : getNavigation("", this.props.data, schema, this.props.childOptions),
         };
     }
 
@@ -87,7 +92,7 @@ class Form extends React.Component<
         const state: Partial<FormState> = this.updateStateForNewProps(
             nextProps,
             this.props.data !== nextProps.data,
-            this.props.schema.id !== nextProps.schema.id,
+            JSON.stringify(this.props.schema) !== JSON.stringify(nextProps.schema),
             this.props.location !== nextProps.location
         );
 
@@ -136,6 +141,22 @@ class Form extends React.Component<
                 state,
                 this.getStateWithUpdatedLocation(props, state)
             );
+        }
+
+        if (
+            typeof props.plugins !== "undefined" &&
+            typeof props.onSchemaChange === "function" &&
+            (updateData || updateSchema)
+        ) {
+            const updatedSchema: any = mapPluginsToSchema(
+                props.schema,
+                props.data,
+                props.plugins
+            );
+
+            if (JSON.stringify(updatedSchema) !== JSON.stringify(props.schema)) {
+                props.onSchemaChange(updatedSchema);
+            }
         }
 
         if (updateData || updateSchema || updateLocation) {
