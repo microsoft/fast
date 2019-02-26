@@ -38,14 +38,14 @@ export interface PivotClassNameContract {
     pivot_tabPanels?: string;
 
     /**
-     * The previous panel from left
+     * The previous panel animation
      */
-    pivot_tabPanels__previous?: string;
+    pivot_tabPanels__animatePrevious?: string;
 
     /**
-     * The next tab panel
+     * The next tab panel animation
      */
-    pivot_tabPanels__next?: string;
+    pivot_tabPanels__animateNext?: string;
 
     /**
      * The tab panel

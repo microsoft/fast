@@ -76,14 +76,14 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
         pivot_tabPanels: {
             animationTimingFunction: "cubic-bezier(0.4, 0.0, 0.6, 1.0)",
         },
-        pivot_tabPanels__previous: {
+        pivot_tabPanels__animatePrevious: {
             animation: `${applyLocalizedProperty(
                 "fromLeft",
                 "fromRight",
                 direction
             )} 0.2s`,
         },
-        pivot_tabPanels__next: {
+        pivot_tabPanels__animateNext: {
             animation: `${applyLocalizedProperty(
                 "fromRight",
                 "fromLeft",
