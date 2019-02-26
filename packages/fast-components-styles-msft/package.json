@@ -39,6 +39,10 @@
         "lines": 80
       }
     },
+    "coveragePathIgnorePatterns": [
+        "/node_modules",
+        "./src/utilities/color/index.ts"
+    ],
     "testURL": "http://localhost",
     "transform": {
       "^.+\\.tsx?$": "ts-jest",
