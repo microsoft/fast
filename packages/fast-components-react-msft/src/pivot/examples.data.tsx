@@ -1,27 +1,12 @@
 import * as React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
-import { Pivot, PivotHandledProps, PivotManagedClasses, PivotProps } from "./index";
+import { Pivot, PivotHandledProps, PivotProps } from "./index";
 import Documentation from "./.tmp/documentation";
 import { TabsItem } from "@microsoft/fast-components-react-base";
 import { uniqueId } from "lodash-es";
 import schema from "./pivot.schema.json";
 import pivotItemContentSchema from "../../app/components/pivot-item-content.schema.json";
 import pivotItemTabSchema from "../../app/components/pivot-item-tab.schema.json";
-
-const pivotManagedClasses: PivotManagedClasses = {
-    managedClasses: {
-        pivot: "pivot-class",
-        pivot_tabList: "pivot_tabList-class",
-        pivot_tab: "pivot_tab-class",
-        pivot_tab__active: "pivot_tab__active-class",
-        pivot_tabPanels: "pivot_tabPanels-class",
-        pivot_tabPanels__previous: "pivot_tabPanels__previous-class",
-        pivot_tabPanels__next: "pivot_tabPanels__next-class",
-        pivot_tabPanel: "pivot_tabPanel-class",
-        pivot_tabPanel__hidden: "pivot_tabPanel__hidden-class",
-        pivot_tabPanelContent: "pivot_tabPanelContent-class",
-    },
-};
 
 const pivotItem1: TabsItem = {
     tab: {
@@ -112,18 +97,15 @@ const examples: ComponentFactoryExample<PivotProps> = {
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
-        ...pivotManagedClasses,
         label: "A set of example text content",
         items: detailPivotItem,
     },
     data: [
         {
-            ...pivotManagedClasses,
             label: "A set of example text content",
             items: detailPivotItem,
         },
         {
-            ...pivotManagedClasses,
             label: "A set of example text content",
             items: examplePivotItem1,
         },

@@ -18,4 +18,10 @@ interface PivotHandledProps
     extends Subtract<MSFTPivotHandledProps, PivotManagedClasses> {}
 type PivotProps = ManagedJSSProps<MSFTPivotProps, PivotClassNameContract, DesignSystem>;
 
-export { Pivot, PivotProps, PivotHandledProps, PivotManagedClasses, PivotUnhandledProps };
+export {
+    Pivot,
+    PivotClassNameContract,
+    PivotProps,
+    PivotHandledProps,
+    PivotUnhandledProps,
+};
