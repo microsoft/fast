@@ -124,7 +124,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 ref={this.rootElement}
                 className={this.generateClassNames()}
                 onKeyDown={this.handleKeydown}
-                onClick={this.selectClicked}
+                onClick={this.handleClick}
             >
                 {this.renderContentDisplay()}
                 {this.renderHiddenSelectElement()}
@@ -200,7 +200,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     };
 
     /**
-     * Deternmines which function to use to render content display (ie. the part of the control that shows when the menu isn't open)
+     * Determine which function to use to render content display (ie. the part of the control that shows when the menu isn't open)
      * and invokes it
      */
     private renderContentDisplay(): React.ReactNode {
@@ -212,7 +212,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     }
 
     /**
-     * Deternmines which function to use to render the menu and invokes it
+     * Determine which function to use to render the menu and invokes it
      */
     private renderMenu(): React.ReactNode {
         if (!this.state.isMenuOpen) {
@@ -274,9 +274,8 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         } else {
             if (newSelection.length === 0) {
                 return "";
-            } else {
-                return newSelection[0].value;
             }
+            return newSelection[0].value;
         }
     };
 
@@ -333,11 +332,11 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     /**
      * Handles clicks
      */
-    private selectClicked = (e: React.MouseEvent): void => {
+    private handleClick = (e: React.MouseEvent): void => {
         if (this.props.disabled || e.defaultPrevented) {
             return;
         }
-        this.state.isMenuOpen ? this.toggleMenu(false) : this.toggleMenu(true);
+        this.toggleMenu(!this.state.isMenuOpen);
     };
 
     /**
@@ -434,9 +433,11 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 window.removeEventListener("click", this.handleWindowClick);
             }
         }
-        this.setState({
-            isMenuOpen: shouldOpenMenu,
-        });
+        if (shouldOpenMenu !== this.state.isMenuOpen) {
+            this.setState({
+                isMenuOpen: shouldOpenMenu,
+            });
+        }
     };
 
     /**

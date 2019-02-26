@@ -11,11 +11,6 @@ export interface SelectUnhandledProps extends React.HTMLAttributes<HTMLDivElemen
 
 export interface SelectHandledProps extends SelectManagedClasses {
     /**
-     * The children populate the select menu, any SelectOption components in the
-     */
-    children?: React.ReactNode | React.ReactNode[];
-
-    /**
      * Custom function to render the base display of the control
      */
     contentDisplayRenderFunction?: (

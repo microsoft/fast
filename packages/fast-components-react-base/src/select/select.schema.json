@@ -14,7 +14,7 @@
             "type": "string"
         },
         "form": {
-            "title": "Form",
+            "title": "Form Id",
             "type": "string"
         },
         "disabled": {
@@ -22,7 +22,7 @@
             "type": "boolean"
         },
         "isMenuOpen": {
-            "title": "IsMenuOpen",
+            "title": "Is menu open",
             "type": "boolean"
         },
         "required": {
