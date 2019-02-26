@@ -11,7 +11,7 @@ import {
 import { palette, Palette, PaletteType, Swatch } from "./palette";
 import designSystemDefaults from "../../design-system";
 
-describe("neutralForegroundRest", (): void => {
+describe("neutralForeground", (): void => {
     test("should return a string when invoked with an object", (): void => {
         expect(typeof neutralForegroundRest(designSystemDefaults)).toBe("string");
         expect(typeof neutralForegroundHover(designSystemDefaults)).toBe("string");
