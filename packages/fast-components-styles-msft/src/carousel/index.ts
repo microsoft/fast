@@ -149,8 +149,8 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
                 },
             },
         },
-        carousel__slideTransitionDirectionPrevious: {},
-        carousel__slideTransitionDirectionNext: {},
+        carousel__slideAnimatePrevious: {},
+        carousel__slideAnimateNext: {},
     };
 };
 

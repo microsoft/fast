@@ -71,10 +71,10 @@ export interface CarouselClassNameContract {
     /**
      * The previous slide transition
      */
-    carousel__slideTransitionDirectionPrevious?: string;
+    carousel__slideAnimatePrevious?: string;
 
     /**
      * The next slide transition
      */
-    carousel__slideTransitionDirectionNext?: string;
+    carousel__slideAnimateNext?: string;
 }

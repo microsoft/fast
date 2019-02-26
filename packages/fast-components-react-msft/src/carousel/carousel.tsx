@@ -188,16 +188,8 @@ class Carousel extends Foundation<
     private assignTransitionDirectionClassName(): string {
         const transitionDirection: string =
             this.slideTransitionDirection === FlipperDirection.next
-                ? get(
-                      this.props,
-                      "managedClasses.carousel__slideTransitionDirectionNext",
-                      ""
-                  )
-                : get(
-                      this.props,
-                      "managedClasses.carousel__slideTransitionDirectionPrevious",
-                      ""
-                  );
+                ? get(this.props, "managedClasses.carousel__slideAnimateNext", "")
+                : get(this.props, "managedClasses.carousel__slideAnimatePrevious", "");
 
         return ` ${transitionDirection}`;
     }
