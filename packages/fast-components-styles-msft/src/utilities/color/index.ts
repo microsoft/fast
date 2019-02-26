@@ -1,7 +1,12 @@
 /**
  * Text exports
  */
-export { neutralForeground } from "./neutral-foreground";
+export {
+    neutralForeground,
+    neutralForegroundRest,
+    neutralForegroundHover,
+    neutralForegroundActive,
+} from "./neutral-foreground";
 export { accentForegroundCut, accentForegroundCutLarge } from "./accent-foreground-cut";
 export {
     neutralForegroundHint,
