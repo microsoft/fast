@@ -13,6 +13,10 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
 ): ComponentStyleSheet<CarouselClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const direction: Direction = designSystem.direction;
+    const white: string = "white";
+    const darkGray: string = "#101010";
+    const lightGray: string = "rgb(206, 206, 206)";
+    const lightGrayRest: string = "rgba(206, 206, 206, 0.6";
 
     function flipperStyles(): CSSRules<{}> {
         return {
@@ -89,59 +93,59 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
         },
         carousel__themeDark: {
             "& $carousel_flipperPrevious, & $carousel_flipperNext": {
-                color: "#101010",
-                fill: "#101010",
+                color: darkGray,
+                fill: darkGray,
                 background: "rgba(255, 255, 255, 0.6)",
-                border: "1px solid rgba(206, 206, 206, 0.6)",
+                border: `1px solid ${lightGrayRest}`,
                 "& span::before": {
-                    borderColor: "#101010",
+                    borderColor: darkGray,
                 },
                 "&:hover": {
-                    background: "white",
+                    background: white,
                     "& span::before": {
-                        borderColor: hoverContrast(config.contrast, "#101010"),
+                        borderColor: hoverContrast(config.contrast, darkGray),
                     },
                 },
             },
             "& $carousel_sequenceIndicator": {
                 "&::before": {
-                    background: "white",
-                    borderColor: "rgb(206, 206, 206)",
+                    background: white,
+                    borderColor: lightGray,
                 },
                 "&$carousel_sequenceIndicator__active": {
                     "&::before": {
                         opacity: "1",
-                        background: "white",
+                        background: white,
                     },
                 },
             },
         },
         carousel__themeLight: {
             "& $carousel_flipperPrevious, & $carousel_flipperNext": {
-                color: "white",
-                fill: "white",
+                color: white,
+                fill: white,
                 background: "rgba(0, 0, 0, 0.6)",
-                border: "1px solid rgba(206, 206, 206, 0.6)",
+                border: `1px solid ${lightGrayRest}`,
                 "& span::before": {
-                    borderColor: "white",
+                    borderColor: white,
                 },
                 "&:hover": {
-                    background: "#101010",
+                    background: darkGray,
                     "& span::before": {
-                        borderColor: hoverContrast(config.contrast, "white"),
+                        borderColor: hoverContrast(config.contrast, white),
                     },
                 },
             },
             "& $carousel_sequenceIndicator": {
                 "&::before": {
-                    background: "#101010",
-                    borderColor: "rgb(206, 206, 206)",
+                    background: darkGray,
+                    borderColor: lightGray,
                 },
             },
             "& $carousel_sequenceIndicator__active": {
                 "&::before": {
                     opacity: "1",
-                    background: "#101010",
+                    background: darkGray,
                 },
             },
         },

@@ -112,9 +112,9 @@ export default {
             items: detailTabItem,
             activeId: detailTabItem[2].id,
         },
-        // {
-        //     label: "A single slide carousel",
-        //     items: singleTabItem,
-        // } as any,
+        {
+            label: "A single slide carousel",
+            items: singleTabItem,
+        } as any,
     ],
 } as ComponentFactoryExample<CarouselProps>;
