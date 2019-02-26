@@ -36,6 +36,8 @@ import reactSVGElementExamples from "./components/svg-svg-element-child-option";
 import carouselHeroContentExamples from "./components/carousel-hero-content-child-options";
 import carouselDarkImageContentExamples from "./components/carousel-dark-image-content-child-options";
 import carouselLightImageContentExamples from "./components/carousel-light-image-content-child-options";
+import pivotItemContentExamples from "./components/pivot-item-content-child-options";
+import pivotItemTabExamples from "./components/pivot-item-tab-child-options";
 import { Label } from "../src/label";
 
 /* tslint:disable-next-line */
@@ -47,6 +49,8 @@ const formChildOptions: FormChildOption[] = [
     carouselHeroContentExamples,
     carouselDarkImageContentExamples,
     carouselLightImageContentExamples,
+    pivotItemContentExamples,
+    pivotItemTabExamples,
 ].concat(formChildFromExamplesFactory(examples));
 
 const formPlugins: Array<Plugin<PluginProps>> = [
@@ -58,6 +62,8 @@ const formPlugins: Array<Plugin<PluginProps>> = [
             "@microsoft/fast-components-react-msft/button/beforeContent",
             "@microsoft/fast-components-react-msft/button/afterContent",
             "@microsoft/fast-components-react-msft/carousel/items/content",
+            "@microsoft/fast-components-react-msft/pivot/items/content",
+            "@microsoft/fast-components-react-msft/pivot/items/tab",
             "@microsoft/fast-components-react-msft/text-action/beforeGlyph",
             "@microsoft/fast-components-react-msft/text-action/afterGlyph",
         ],

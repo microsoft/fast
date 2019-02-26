@@ -20,6 +20,7 @@ export * from "./label";
 export * from "./metatext";
 export * from "./number-field";
 export * from "./paragraph";
+export * from "./pivot";
 export * from "./progress";
 export * from "./radio";
 export * from "./subheading";
