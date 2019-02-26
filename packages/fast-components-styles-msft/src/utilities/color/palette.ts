@@ -40,6 +40,23 @@ const generatePalette: (config: ColorPaletteConfig) => Palette = memoize(
         //             .mode("rgb")
         //             .colors(63)
         //             .map((color: string) => color.toUpperCase());
+    },
+    (config: ColorPaletteConfig): string => {
+        return Object.keys(config).reduce(
+            (reduced: string, value: keyof ColorPaletteConfig): string => {
+                const configValue: ColorPaletteConfig[keyof ColorPaletteConfig] =
+                    config[value];
+
+                if (typeof configValue === "number") {
+                    return reduced.concat(configValue.toString());
+                } else if (configValue instanceof ColorRGBA64) {
+                    return reduced.concat(configValue.toStringWebRGBA());
+                } else {
+                    return "";
+                }
+            },
+            ""
+        );
     }
 );
 
