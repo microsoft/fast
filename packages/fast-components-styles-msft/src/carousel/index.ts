@@ -89,17 +89,17 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
         },
         carousel__themeDark: {
             "& $carousel_flipperPrevious, & $carousel_flipperNext": {
-                color: "black",
-                fill: "black",
+                color: "#101010",
+                fill: "#101010",
                 background: "rgba(255, 255, 255, 0.6)",
                 border: "1px solid rgba(206, 206, 206, 0.6)",
                 "& span::before": {
-                    borderColor: "black",
+                    borderColor: "#101010",
                 },
                 "&:hover": {
                     background: "white",
                     "& span::before": {
-                        borderColor: hoverContrast(config.contrast, "black"),
+                        borderColor: hoverContrast(config.contrast, "#101010"),
                     },
                 },
             },
@@ -126,7 +126,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
                     borderColor: "white",
                 },
                 "&:hover": {
-                    background: "black",
+                    background: "#101010",
                     "& span::before": {
                         borderColor: hoverContrast(config.contrast, "white"),
                     },
@@ -134,14 +134,14 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
             },
             "& $carousel_sequenceIndicator": {
                 "&::before": {
-                    background: "black",
+                    background: "#101010",
                     borderColor: "rgb(206, 206, 206)",
                 },
             },
             "& $carousel_sequenceIndicator__active": {
                 "&::before": {
                     opacity: "1",
-                    background: "black",
+                    background: "#101010",
                 },
             },
         },
