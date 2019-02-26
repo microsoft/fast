@@ -1,9 +1,7 @@
-import { TabsClassNameContract as BaseTabsClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-
 /**
  * The class name contract for the pivot component
  */
-export interface PivotClassNameContract extends BaseTabsClassNameContract {
+export interface PivotClassNameContract {
     /**
      * The root of the pivot component
      */

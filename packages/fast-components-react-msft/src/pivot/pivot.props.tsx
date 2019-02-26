@@ -16,7 +16,7 @@ export interface PivotHandledProps
     extends PivotManagedClasses,
         Subtract<BaseTabsHandledProps, BaseTabsManagedClasses> {
     /**
-     * The pivots' pivot item
+     * Items that will make up the pivot and pivot content
      */
     items: TabsItem[];
 }

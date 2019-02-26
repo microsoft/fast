@@ -102,7 +102,7 @@ import ParagraphStyles from "./paragraph";
 export { ParagraphStyles };
 
 /**
- * Export paragraph styles
+ * Export pivot styles
  */
 import PivotStyles from "./pivot";
 export { PivotStyles };

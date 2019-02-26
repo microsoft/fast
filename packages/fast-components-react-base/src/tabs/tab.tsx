@@ -59,4 +59,3 @@ class Tab extends Foundation<TabHandledProps, TabUnhandledProps, {}> {
 
 export default Tab;
 export * from "./tab.props";
-export { TabClassNameContract };

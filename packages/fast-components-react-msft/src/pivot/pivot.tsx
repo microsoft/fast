@@ -12,9 +12,9 @@ import {
     ManagedClasses,
     PivotClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
+import { TabsClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { Direction } from "@microsoft/fast-application-utilities";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import { TabsClassNameContract } from "@microsoft/fast-components-react-base";
 import { Tabs as BaseTabs } from "@microsoft/fast-components-react-base";
 import { PivotProps } from ".";
 
@@ -127,25 +127,25 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
      * Returns tabs managedclasses with new carousel-specific JSS
      */
     protected generatePivotClassNames(): TabsClassNameContract {
-        return {
-            tabs: get(this.props, "managedClasses.pivot", ""),
-            tabs_tabPanels: this.generateTabPanelsClassNames(),
-            tabs_tabList: get(this.props, "managedClasses.pivot_tabList", ""),
-            tabs_tabContent: get(this.props, "managedClasses.pivot_tabContent", ""),
-            tabs_tabPanelContent: get(
-                this.props,
-                "managedClasses.pivot_tabPanelContent",
-                ""
-            ),
-            tab: get(this.props, "managedClasses.pivot_tab", ""),
-            tab__active: get(this.props, "managedClasses.pivot_tab__active", ""),
-            tabPanel: get(this.props, "managedClasses.pivot_tabPanel", ""),
-            tabPanel__hidden: get(
-                this.props,
-                "managedClasses.pivot_tabPanel__hidden",
-                ""
-            ),
-        };
+        if (typeof get(this.props, "managedClasses") === "object") {
+            return {
+                tabs: get(this.props, "managedClasses.pivot"),
+                tabs_tabPanels: this.generateTabPanelsClassNames(),
+                tabs_tabList: get(this.props, "managedClasses.pivot_tabList"),
+                tabs_tabContent: get(this.props, "managedClasses.pivot_tabContent"),
+                tabs_tabPanelContent: get(
+                    this.props,
+                    "managedClasses.pivot_tabPanelContent"
+                ),
+                tab: get(this.props, "managedClasses.pivot_tab"),
+                tab__active: get(this.props, "managedClasses.pivot_tab__active"),
+                tabPanel: get(this.props, "managedClasses.pivot_tabPanel"),
+                tabPanel__hidden: get(
+                    this.props,
+                    "managedClasses.pivot_tabPanel__hidden"
+                ),
+            };
+        }
     }
 
     private handleTabsUpdate = (activeTabId: string): void => {
@@ -175,24 +175,26 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
     }
 
     private generateTabPanelsClassNames(): string {
-        let className: string = get(this.props, "managedClasses.pivot_tabPanels", "");
-        if (this.state.tabPanelIndex === this.prevTabPanelIndex) {
-            return className;
-        } else if (this.state.tabPanelIndex < this.prevTabPanelIndex) {
-            className = `${className} ${get(
-                this.props,
-                "managedClasses.pivot_tabPanels__previous",
-                ""
-            )}`;
-        } else {
-            className = `${className} ${get(
-                this.props,
-                "managedClasses.pivot_tabPanels__next",
-                ""
-            )}`;
-        }
+        let className: string = get(this.props, "managedClasses.pivot_tabPanels");
+        if (typeof className === "string") {
+            if (this.state.tabPanelIndex === this.prevTabPanelIndex) {
+                return className;
+            } else if (this.state.tabPanelIndex < this.prevTabPanelIndex) {
+                className = `${className} ${get(
+                    this.props,
+                    "managedClasses.pivot_tabPanels__previous",
+                    ""
+                )}`;
+            } else {
+                className = `${className} ${get(
+                    this.props,
+                    "managedClasses.pivot_tabPanels__next",
+                    ""
+                )}`;
+            }
 
-        return className;
+            return className;
+        }
     }
 
     private setActiveIndicatorOffset(): void {
@@ -241,4 +243,3 @@ class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotStat
 
 export default Pivot;
 export * from "./pivot.props";
-export { PivotClassNameContract };
