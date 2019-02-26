@@ -33,6 +33,7 @@ class ContextMenu extends Foundation<
     protected handledProps: HandledProps<ContextMenuHandledProps> = {
         children: void 0,
         managedClasses: void 0,
+        enableAutoFocus: void 0,
     };
 
     private rootElement: React.RefObject<HTMLDivElement> = React.createRef<
@@ -73,6 +74,17 @@ class ContextMenu extends Foundation<
                 focusIndex,
             });
         }
+
+        if (this.props.enableAutoFocus) {
+            this.focus();
+        }
+    }
+
+    /**
+     * Brings focus to the appropriate menu-item
+     */
+    public focus(): void {
+        this.setFocus(this.state.focusIndex === -1 ? 0 : this.state.focusIndex, 1);
     }
 
     /**

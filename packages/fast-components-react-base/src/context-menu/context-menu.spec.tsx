@@ -188,4 +188,40 @@ describe("context menu", (): void => {
         rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowDown });
         expect(rendered.state("focusIndex")).toBe(5);
     });
+
+    test("should not call focus on mount when enableAutoFocus is false", (): void => {
+        const spy: jest.SpyInstance = jest.spyOn(ContextMenu.prototype, "focus" as any);
+
+        const rendered: any = mount(
+            <ContextMenu enableAutoFocus={false}>
+                <div role="menuitem">two</div>
+                <div role="menuitem">three</div>
+                <div role="menuitem">four</div>
+            </ContextMenu>
+        );
+
+        const defaultRendered: any = mount(
+            <ContextMenu>
+                <div role="menuitem">two</div>
+                <div role="menuitem">three</div>
+                <div role="menuitem">four</div>
+            </ContextMenu>
+        );
+
+        expect(spy).toHaveBeenCalledTimes(0);
+    });
+
+    test("should call focus on mount when enableAutoFocus is true", (): void => {
+        const spy: jest.SpyInstance = jest.spyOn(ContextMenu.prototype, "focus" as any);
+
+        const rendered: any = mount(
+            <ContextMenu enableAutoFocus={true}>
+                <div role="menuitem">two</div>
+                <div role="menuitem">three</div>
+                <div role="menuitem">four</div>
+            </ContextMenu>
+        );
+
+        expect(spy).toHaveBeenCalledTimes(1);
+    });
 });
