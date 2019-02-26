@@ -26,11 +26,7 @@ import {
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { glyphBuildingblocks } from "@microsoft/fast-glyphs-msft";
 import React from "react";
-<<<<<<< HEAD
 import { Direction } from "@microsoft/fast-web-utilities";
-=======
-import { Direction } from "@microsoft/fast-application-utilities";
->>>>>>> fix: update to use esModuleInterop in the TypeScript configuration files (#1211)
 import AdditionalPropsPlugin from "./utilities/additional-props.plugin";
 import * as examples from "./examples";
 import { Hypertext } from "../src/hypertext";
@@ -63,13 +59,15 @@ const formPlugins: Array<Plugin<PluginProps>> = [
             "@microsoft/fast-components-react-msft/action-toggle/selectedGlyph",
             "@microsoft/fast-components-react-msft/action-toggle/unselectedGlyph",
             "@microsoft/fast-components-react-msft/action-trigger/glyph",
+            "@microsoft/fast-components-react-msft/breadcrumb/separator",
             "@microsoft/fast-components-react-msft/button/beforeContent",
             "@microsoft/fast-components-react-msft/button/afterContent",
             "@microsoft/fast-components-react-msft/carousel/items/content",
             "@microsoft/fast-components-react-msft/pivot/items/content",
             "@microsoft/fast-components-react-msft/pivot/items/tab",
-            "@microsoft/fast-components-react-msft/text-action/beforeGlyph",
             "@microsoft/fast-components-react-msft/text-action/afterGlyph",
+            "@microsoft/fast-components-react-msft/text-action/beforeGlyph",
+            "@microsoft/fast-components-react-msft/text-action/button",
         ],
     }),
 ];

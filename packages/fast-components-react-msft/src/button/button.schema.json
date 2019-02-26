@@ -3,7 +3,7 @@
     "title": "Button",
     "description": "A button component's schema definition.",
     "type": "object",
-    "id": "button",
+    "id": "@microsoft/fast-components-react-msft/button",
     "properties": {
         "disabled": {
             "title": "Disabled",
