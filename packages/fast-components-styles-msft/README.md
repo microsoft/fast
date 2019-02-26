@@ -63,11 +63,11 @@ The state that the color should be applied to:
 Refers to the *size* of text that the color is designed to work with. [color-contrast](https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html) requirements vary depending on both font-size and weight. By default, all utilities target normal text and a contrast ratio of 4.5:1. If a utility name has the "large" keyword at the end, it means it is targeting "large" text and a contrast ratio of 3:1.
 
 Component stylesheets can mix and match these utilities to achieve the component design. For example, a secondary button may use:
--  `neutralForeground` for text color
+-  `neutralForegroundRest` for text color
 -  `neutralFillRest` / `neutralFillHover` / `neutralFillActive` for background colors
 
 A ghost button may use:
--  `neutralForeground` for text color
+-  `neutralForegroundRest` for text color
 -  `neutralFillStealthRest` / `neutralFillStealthHover` / `neutralFillActive` for background colors
 -  `neutralOutlineRest` / `neutralOutlineHover` / `neutralOutlineActive` for border colors
 
@@ -82,7 +82,7 @@ When a color utility is invoked with a `DesignSystem`, that `DesignSystem` is us
 ```JavaScript
 const StyleSheet = {
     button: {
-        color: neutralForeground,
+        color: neutralForegroundRest,
         background: neutralFillRest,
         "&:hover": {
             background: neutralFillHover,
@@ -101,10 +101,10 @@ Color utilities can also be invoked with a callback as their sole argument. When
 ```JavaScript
 const StyleSheet = {
     button: {
-        color: neutralForeground(neutralFillRest),
+        color: neutralForegroundRest(neutralFillRest),
         background: neutralFillRest,
         "&:hover": {
-            color: neutralForeground(() => "#FF0"),
+            color: neutralForegroundRest(() => "#FF0"),
             background: "#FF0",
         },
         "&:active": {
