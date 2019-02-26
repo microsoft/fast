@@ -24,11 +24,11 @@ describe("neutralForeground", (): void => {
         expect(typeof neutralForegroundActive(() => "#FFF")).toBe("function");
     });
 
-    test("should opperate on default design system if no design system is supplied", (): void => {
+    test("should operate on default design system if no design system is supplied", (): void => {
         const neutralPalette: Palette = palette(PaletteType.neutral)(
             designSystemDefaults
         );
-        expect(neutralForegroundRest(undefined! as any)).toBe(
+        expect(neutralForegroundRest(undefined as any)).toBe(
             neutralForegroundDark(undefined)
         );
         expect(neutralForegroundRest(() => undefined as any)(undefined as any)).toBe(
