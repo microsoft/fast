@@ -29,6 +29,15 @@
     "watch": "npm run build -- -w --preserveWatchOutput"
   },
   "jest": {
+    "collectCoverage": true,
+    "coverageThreshold": {
+      "global": {
+        "statements": 100,
+        "branches": 100,
+        "functions": 100,
+        "lines": 100
+      }
+    },
     "testURL": "http://localhost",
     "transform": {
       "^.+\\.tsx?$": "ts-jest",
