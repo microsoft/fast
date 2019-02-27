@@ -11,6 +11,11 @@ import {
     localizeSpacing,
     toPx,
 } from "@microsoft/fast-jss-utilities";
+import {
+    accentForegroundCut,
+    accentFillRest,
+    neutralForegroundRest,
+} from "../utilities/color";
 import { DesignSystem, withDesignSystemDefaults } from "../design-system/index";
 import { applyTypeRampConfig } from "../utilities/typography";
 import { ensureNormalContrast } from "../utilities/colors";
@@ -51,26 +56,9 @@ const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
     const direction: Direction = designSystem.direction;
     const contrast: number = designSystem.contrast;
     // Badges do not switch color on theme change
-    const foregroundColor: string = "#111";
     const backgroundColor: string = "#FFF";
     const lowlightBackground: string = "#333";
     const highlightBackground: string = "#FFD800";
-    const accentBackground: string = designSystem.brandColor;
-    const accentForegroundColor: string = ensureNormalContrast(
-        contrast,
-        backgroundColor,
-        accentBackground
-    );
-    const hightlightForegroundColor: string = ensureNormalContrast(
-        contrast,
-        foregroundColor,
-        highlightBackground
-    );
-    const lowlightForegroundColor: string = ensureNormalContrast(
-        contrast,
-        backgroundColor,
-        lowlightBackground
-    );
 
     return {
         badge: {
@@ -80,22 +68,23 @@ const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
             fontWeight: `${fontWeight.semibold}`,
             display: "inline-block",
             maxWidth: "215px",
-            color: designSystem.foregroundColor,
+            color: neutralForegroundRest,
         },
         badge__highlight: {
             ...backplateStyle(designSystem),
             backgroundColor: highlightBackground,
-            color: hightlightForegroundColor,
+            color: accentForegroundCut((): string => highlightBackground),
         },
+        // TODO: No solution for this
         badge__lowlight: {
             ...backplateStyle(designSystem),
             backgroundColor: lowlightBackground,
-            color: lowlightForegroundColor,
+            color: backgroundColor,
         },
         badge__accent: {
             ...backplateStyle(designSystem),
-            backgroundColor: accentBackground,
-            color: accentForegroundColor,
+            backgroundColor: accentFillRest,
+            color: accentForegroundCut,
         },
         badge__small: {
             ...smallBadgeStyle(),

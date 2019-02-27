@@ -12,13 +12,13 @@ import {
     Direction,
     localizeSpacing,
 } from "@microsoft/fast-jss-utilities";
-import { curry } from "lodash-es";
 import { DesignSystem, withDesignSystemDefaults } from "../design-system/index";
 import {
-    disabledContrast,
-    ensureNormalContrast,
-    normalContrast,
-} from "../utilities/colors";
+    accentForegroundCut,
+    accentFillRest,
+    neutralForegroundRest,
+    neutralFillRest,
+} from "../utilities/color";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
 export const actionToggleButtonOverrides: ComponentStyles<
@@ -39,67 +39,9 @@ export const actionToggleButtonOverrides: ComponentStyles<
 const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<ActionToggleClassNameContract, DesignSystem> => {
-    type ContrastFunction = (operandColor: string, referenceColor: string) => string;
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    const contrastScale: number = designSystem.contrast;
-    const foregroundColor: string = designSystem.foregroundColor;
-    const backgroundColor: string = designSystem.backgroundColor;
-    const brandColor: string = designSystem.brandColor;
     const direction: Direction = designSystem.direction;
-    const scaledNormalContrast: ContrastFunction = curry(normalContrast)(contrastScale);
-    const scaledEnsureNormalContrast: ContrastFunction = curry(ensureNormalContrast)(
-        contrastScale
-    );
 
-    // Define secondary button colors
-    const color: string = "white";
-    const secondaryBackgroundColor: string = scaledEnsureNormalContrast(
-        scaledNormalContrast(backgroundColor, foregroundColor),
-        color
-    );
-    const secondaryFocusBorderColor: string = scaledEnsureNormalContrast(
-        scaledEnsureNormalContrast(foregroundColor, backgroundColor),
-        secondaryBackgroundColor
-    );
-    const secondaryDisabledBackgroundColor: string = disabledContrast(
-        contrastScale,
-        secondaryBackgroundColor,
-        backgroundColor
-    );
-    const secondaryDisabledColor: string = disabledContrast(
-        contrastScale,
-        foregroundColor,
-        designSystem.brandColor
-    );
-    // Define primary button colors
-    const primaryRestBackgroundColor: string = scaledEnsureNormalContrast(
-        scaledEnsureNormalContrast(brandColor, backgroundColor),
-        color
-    );
-    const primaryDisabledBackground: string = disabledContrast(
-        contrastScale,
-        primaryRestBackgroundColor,
-        backgroundColor
-    );
-    const primaryDisabledColor: string = disabledContrast(
-        contrastScale,
-        color,
-        primaryDisabledBackground
-    );
-    const outlineColor: string = scaledEnsureNormalContrast(
-        foregroundColor,
-        backgroundColor
-    );
-    const outlineBorderColor: string = scaledNormalContrast(
-        foregroundColor,
-        backgroundColor
-    );
-    const outlineDisabledColor: string = disabledContrast(
-        designSystem.contrast,
-        outlineColor,
-        backgroundColor
-    );
-    const outlineDisabledBorderColor: string = outlineDisabledColor;
     return {
         actionToggle: {
             display: "inline-flex",
@@ -119,35 +61,35 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = (
         },
         actionToggle__primary: {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-                fill: color,
+                fill: accentForegroundCut,
             },
             "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
-                fill: primaryDisabledColor,
+                fill: accentForegroundCut,
             },
         },
         actionToggle__lightweight: {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-                fill: primaryRestBackgroundColor,
+                fill: accentFillRest,
             },
             "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
-                fill: outlineDisabledColor,
+                fill: neutralForegroundRest,
             },
         },
         actionToggle__justified: {
             [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "-10px",
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-                fill: primaryRestBackgroundColor,
+                fill: accentFillRest,
             },
             "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
-                fill: secondaryDisabledColor,
+                fill: neutralForegroundRest,
             },
         },
         actionToggle__outline: {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-                fill: outlineColor,
+                fill: neutralForegroundRest,
             },
             "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
-                fill: outlineDisabledColor,
+                fill: neutralForegroundRest,
             },
         },
         actionToggle__disabled: {},

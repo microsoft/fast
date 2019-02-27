@@ -8,7 +8,7 @@ import {
     Direction,
     focusVisible,
 } from "@microsoft/fast-jss-utilities";
-import { ensureBrandNormal, ensureForegroundNormal } from "../utilities/colors";
+import { accentFillRest } from "../utilities/color";
 import { BreadcrumbClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyTypeRampConfig } from "../utilities/typography";
 import { fontWeight } from "../utilities/fonts";
@@ -29,7 +29,7 @@ const styles: ComponentStyles<BreadcrumbClassNameContract, DesignSystem> = (
             ...typographyPattern.rest,
             ...applyTypeRampConfig("t7"),
             "&:link, &:visited": {
-                color: ensureBrandNormal,
+                color: accentFillRest,
                 borderBottom: "0px",
             },
         },
