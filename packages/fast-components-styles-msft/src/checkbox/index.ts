@@ -13,20 +13,16 @@ import {
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import {
-    disabledContrast,
-    ensureNormalContrast,
-    normalContrast,
-} from "../utilities/colors";
-import outlinePattern from "../patterns/outline";
-import switchFieldPattern from "../patterns/switch-field";
-import typographyPattern from "../patterns/typography";
+    neutralFillStealthRest,
+    neutralForegroundRest,
+    neutralOutlineHover,
+    neutralOutlineRest,
+} from "../utilities/color";
 
 const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<CheckboxClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    const backgroundColor: string = designSystem.backgroundColor;
-    const foregroundColor: string = designSystem.foregroundColor;
     const direction: Direction = designSystem.direction;
 
     return {
@@ -45,13 +41,20 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
             boxSizing: "border-box",
             margin: "0",
             zIndex: "1",
-            background: backgroundColor,
-            ...outlinePattern.rest,
+            background: neutralFillStealthRest,
+            border: `${toPx(
+                designSystem.outlinePatternOutlineWidth
+            )} solid ${neutralOutlineRest(designSystem)}`,
             "&:hover": {
-                ...outlinePattern.hover,
+                border: `${toPx(
+                    designSystem.outlinePatternOutlineWidth
+                )} solid ${neutralOutlineHover(designSystem)}`,
             },
             ...applyFocusVisible({
-                ...outlinePattern.focus,
+                boxShadow: `0 0 0 1px ${designSystem.foregroundColor} inset`,
+                border: `${toPx(
+                    designSystem.outlinePatternOutlineWidth
+                )} solid ${neutralOutlineHover(designSystem)}`,
             }),
         },
         checkbox_stateIndicator: {
@@ -82,7 +85,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
             },
         },
         checkbox_label: {
-            ...typographyPattern.rest,
+            color: neutralForegroundRest,
             ...applyTypeRampConfig("t7"),
             [applyLocalizedProperty("paddingLeft", "paddingRight", direction)]: "8px",
         },
@@ -93,7 +96,10 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
                     zIndex: "1",
                     content: '""',
                     borderRadius: toPx(designSystem.cornerRadius),
-                    ...switchFieldPattern.rest.stateIndicator,
+                    background: neutralForegroundRest,
+                    "@media (-ms-high-contrast:active)": {
+                        backgroundColor: "ButtonHighlight",
+                    },
                 },
             },
         },
@@ -106,7 +112,10 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
                     top: "5px",
                     height: "10px",
                     width: "10px",
-                    ...switchFieldPattern.rest.stateIndicator,
+                    background: neutralForegroundRest,
+                    "@media (-ms-high-contrast:active)": {
+                        backgroundColor: "ButtonHighlight",
+                    },
                 },
                 "&::after": {
                     content: "none",
@@ -114,22 +123,8 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
             },
         },
         checkbox__disabled: {
-            "& $checkbox_input, & $checkbox_label,": {
-                cursor: "not-allowed",
-            },
-            "& $checkbox_input": {
-                ...outlinePattern.disabled,
-            },
-            "&$checkbox__checked": {
-                "& $checkbox_stateIndicator": {
-                    "&::after, &::before": {
-                        ...switchFieldPattern.disabled.stateIndicator,
-                    },
-                },
-            },
-            "& $checkbox_label": {
-                ...typographyPattern.disabled,
-            },
+            opacity: "0.3",
+            cursor: "not-allowed",
         },
     };
 };

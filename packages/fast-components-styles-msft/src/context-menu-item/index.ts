@@ -5,16 +5,9 @@ import designSystemDefaults, {
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { ContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { density } from "../utilities/density";
-import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
-import {
-    backgroundColor,
-    disabledContrast,
-    ensureForegroundNormal,
-    hoverContrast,
-} from "../utilities/colors";
+import { neutralForegroundRest, neutralFillStealthHover } from "../utilities/color";
 import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
 import { applyTypeRampConfig } from "../utilities/typography";
-import typographyPattern from "../patterns/typography";
 import { toPx } from "@microsoft/fast-jss-utilities";
 
 const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = {
@@ -27,12 +20,11 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         alignItems: "center",
         padding: "0",
         margin: "0 4px",
-        ...typographyPattern.rest,
+        color: neutralForegroundRest,
         whiteSpace: "nowrap",
         overflow: "hidden",
         cursor: "default",
         ...applyTypeRampConfig("t7"),
-        background: backgroundColor,
         borderRadius: (config: DesignSystem): string => {
             const designSystem: DesignSystem = withDesignSystemDefaults(config);
 
@@ -40,14 +32,13 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         },
         border: "2px solid transparent",
         ...applyFocusVisible({
-            borderColor: ensureForegroundNormal,
+            borderColor: (config: DesignSystem): string => {
+                const designSystem: DesignSystem = withDesignSystemDefaults(config);
+                return designSystem.foregroundColor;
+            },
         }),
         "&:hover": {
-            background: (config: DesignSystem): string => {
-                const designSystem: DesignSystem = withDesignSystemDefaults(config);
-
-                return hoverContrast(designSystem.contrast, designSystem.backgroundColor);
-            },
+            background: neutralFillStealthHover,
         },
     },
     contextMenuItem_contentRegion: {
@@ -57,13 +48,7 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
     },
     contextMenuItem__disabled: {
         cursor: "not-allowed",
-        ...typographyPattern.disabled,
-        "&:hover": {
-            background: backgroundColor,
-        },
-        ...applyFocusVisible({
-            background: backgroundColor,
-        }),
+        opacity: "0.3",
     },
 };
 
