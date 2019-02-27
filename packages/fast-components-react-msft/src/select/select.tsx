@@ -28,7 +28,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
                 {...this.unhandledProps()}
                 managedClasses={this.props.managedClasses}
                 disabled={this.props.disabled}
-                contentDisplayRenderFunction={this.displayRenderFunction}
+                trigger={this.renderTrigger}
             >
                 {this.props.children}
             </BaseSelect>
@@ -38,10 +38,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
     /**
      * The function that renders a styled content display
      */
-    public displayRenderFunction = (
-        props: SelectProps,
-        state: SelectState
-    ): React.ReactNode => {
+    public renderTrigger = (props: SelectProps, state: SelectState): React.ReactNode => {
         if (props.multiselectable) {
             return null;
         }

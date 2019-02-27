@@ -20,12 +20,12 @@ export interface SelectClassNameContract {
     /**
      * The menu open modifier
      */
-    select__menuOpen?: string;
+    select_menu__open?: string;
 
     /**
      * The disable menu modifier
      */
-    select__menuDisabled?: string;
+    select_menu__disabled?: string;
 
     /**
      * The multi select modifier

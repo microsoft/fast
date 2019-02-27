@@ -117,15 +117,19 @@ class ListboxItem extends Foundation<
             return;
         }
 
+        if (typeof this.props.onKeyDown === "function") {
+            this.props.onKeyDown(e);
+        }
+
+        if (e.defaultPrevented) {
+            return;
+        }
+
         switch (e.keyCode) {
             case KeyCodes.enter:
             case KeyCodes.space:
                 this.invokeOption(e);
                 break;
-        }
-
-        if (typeof this.props.onKeyDown === "function") {
-            this.props.onKeyDown(e);
         }
     };
 
@@ -133,14 +137,19 @@ class ListboxItem extends Foundation<
      * Handle the keydown event of the item
      */
     private handleClick = (e: React.MouseEvent<HTMLDivElement>): void => {
-        if (this.props.disabled || e.defaultPrevented) {
+        if (this.props.disabled) {
             return;
         }
-        this.invokeOption(e);
 
         if (typeof this.props.onClick === "function") {
             this.props.onClick(e);
         }
+
+        if (e.defaultPrevented) {
+            return;
+        }
+
+        this.invokeOption(e);
     };
 
     /**

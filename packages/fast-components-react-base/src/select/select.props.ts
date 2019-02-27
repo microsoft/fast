@@ -11,18 +11,16 @@ export interface SelectUnhandledProps extends React.HTMLAttributes<HTMLDivElemen
 
 export interface SelectHandledProps extends SelectManagedClasses {
     /**
-     * Custom function to render the base display of the control
+     * Custom function to render the trigger of the control
+     * (ie. the ui that typically displays the current value and opens the menu in single select mode)
      */
-    contentDisplayRenderFunction?: (
-        props: SelectProps,
-        state: SelectState
-    ) => React.ReactNode;
+    trigger?: (props: SelectProps, state: SelectState) => React.ReactNode;
 
     /**
      * Function which converts and formats the string may be displayed in the ui
      * in the UI
      */
-    displayStringFormatterFunction?: (
+    displayStringFormatter?: (
         selectedOptions: ListboxItemProps[],
         placeholder: string
     ) => string;
@@ -50,7 +48,7 @@ export interface SelectHandledProps extends SelectManagedClasses {
     /**
      * Defines one or more forms the select field belongs to
      */
-    formId?: string;
+    form?: string;
 
     /**
      * Specifies that multiple options can be selected at once

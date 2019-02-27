@@ -93,9 +93,9 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = (
             },
         },
 
-        select__menuOpen: {},
+        select_menu__open: {},
 
-        select__menuDisabled: {},
+        select_menu__disabled: {},
     };
 };
 

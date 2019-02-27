@@ -231,7 +231,7 @@ describe("select", (): void => {
         const displayFormatter: any = jest.fn();
         displayFormatter.mockReturnValue("formatted display");
         const rendered: any = mount(
-            <Select displayStringFormatterFunction={displayFormatter}>
+            <Select displayStringFormatter={displayFormatter}>
                 {itemA}
                 {itemB}
                 {itemC}
@@ -249,7 +249,7 @@ describe("select", (): void => {
         const displayRenderFn: any = jest.fn();
         displayRenderFn.mockReturnValue("Test");
         const rendered: any = mount(
-            <Select contentDisplayRenderFunction={displayRenderFn}>
+            <Select trigger={displayRenderFn}>
                 {itemA}
                 {itemB}
                 {itemC}
@@ -264,7 +264,7 @@ describe("select", (): void => {
             <Select
                 multiselectable={true}
                 name="testName"
-                formId="testForm"
+                form="testForm"
                 required={true}
             >
                 {itemA}

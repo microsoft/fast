@@ -13,12 +13,7 @@ import {
 export interface SelectManagedClasses extends ManagedClasses<SelectClassNameContract> {}
 export interface SelectHandledProps
     extends SelectManagedClasses,
-        Subtract<BaseSelectHandledProps, BaseSelectManagedClasses> {
-    /**
-     * The trailing content
-     */
-    placeholdertemp?: string;
-}
+        Subtract<BaseSelectHandledProps, BaseSelectManagedClasses> {}
 
 /* tslint:disable-next-line:no-empty-interface */
 export interface SelectUnhandledProps extends BaseSelectUnhandledProps {}
