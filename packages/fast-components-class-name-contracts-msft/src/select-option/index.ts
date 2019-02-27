@@ -1,7 +1,7 @@
 import { ListboxItemClassNameContract as BaseListboxItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 
 /**
- * The class name contract for the context menu item component
+ * The class name contract for the select option component
  */
 export interface SelectOptionClassNameContract extends BaseListboxItemClassNameContract {
     /**

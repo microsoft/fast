@@ -9,6 +9,14 @@ import ActionTriggerStyles from "./action-trigger";
 export { ActionTriggerStyles };
 export * from "./action-trigger";
 
+import AutoSuggestStyles from "./auto-suggest";
+export { AutoSuggestStyles };
+export * from "./auto-suggest";
+
+import AutoSuggestOptionStyles from "./auto-suggest-option";
+export { AutoSuggestOptionStyles };
+export * from "./auto-suggest-option";
+
 import BadgeStyles from "./badge";
 export { BadgeStyles };
 

@@ -1,3 +1,7 @@
+import AutoSuggest from "./auto-suggest";
+export { AutoSuggest };
+export * from "./auto-suggest";
+
 import Badge from "./badge";
 export { Badge };
 export * from "./badge";

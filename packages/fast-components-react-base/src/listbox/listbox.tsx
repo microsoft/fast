@@ -10,7 +10,7 @@ import * as React from "react";
 import { KeyCodes, startsWith } from "@microsoft/fast-web-utilities";
 import { get, inRange, isEqual } from "lodash-es";
 import { canUseDOM } from "exenv-es6";
-import { ListboxContext } from "./listbox-context";
+import { ListboxContext, ListboxContextType } from "./listbox-context";
 import { ListboxItemProps } from "../listbox-item";
 
 export interface ListboxState {
@@ -668,4 +668,4 @@ class Listbox extends Foundation<
 
 export default Listbox;
 export * from "./listbox.props";
-export { ListboxClassNameContract };
+export { ListboxClassNameContract, ListboxContext, ListboxContextType };

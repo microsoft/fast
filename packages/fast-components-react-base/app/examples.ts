@@ -1,3 +1,6 @@
+import AutoSuggestExamples from "../src/auto-suggest/examples.data";
+export { AutoSuggestExamples };
+
 import BadgeExamples from "../src/badge/examples.data";
 export { BadgeExamples };
 

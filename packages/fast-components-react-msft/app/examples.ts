@@ -4,6 +4,12 @@ export { ActionToggleExamples };
 import ActionTriggerExamples from "../src/action-trigger/examples.data";
 export { ActionTriggerExamples };
 
+import AutoSuggestExamples from "../src/auto-suggest/examples.data";
+export { AutoSuggestExamples };
+
+import AutoSuggestOptionExamples from "../src/auto-suggest-option/examples.data";
+export { AutoSuggestOptionExamples };
+
 import BadgeExamples from "../src/badge/examples.data";
 export { BadgeExamples };
 

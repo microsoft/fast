@@ -131,6 +131,7 @@
     "@microsoft/fast-components-styles-msft": "^3.13.0",
     "@microsoft/fast-glyphs-msft": "^3.1.1",
     "@microsoft/fast-jss-manager-react": "^3.1.13",
-    "@microsoft/fast-jss-utilities": "^3.2.4"
+    "@microsoft/fast-jss-utilities": "^3.2.4",
+    "@microsoft/fast-web-utilities": "^3.1.2"
   }
 }
