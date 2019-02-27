@@ -29,6 +29,7 @@ const imageSet1: JSX.Element[] = [
 const managedClasses: HorizontalOverflowClassNameContract = {
     horizontalOverflow: "horizontal-overflow-class",
     horizontalOverflow_contentRegion: "horizontal-overflow-items-class",
+    horizontalOverflow_item: "horizontal-overflow-item-class",
     horizontalOverflow_next: "horizontal-overflow-next-class",
     horizontalOverflow_previous: "horizontal-overflow-previous-class",
 };
@@ -64,7 +65,7 @@ describe("horizontal overflow server-side", (): void => {
 
         /* tslint:disable:max-line-length */
         expect(renderedWithImagesAndNextAndPrevious).toEqual(
-            '<div class="horizontal-overflow-class" data-reactroot=""><div style="height:0px;position:relative;overflow:hidden"><ul class="horizontal-overflow-items-class" style="position:relative;white-space:nowrap;overflow-x:scroll;padding:0;margin:0"><li style="display:inline-block"><img src="https://placehold.it/200x200?text=1"/></li><li style="display:inline-block"><img src="https://placehold.it/200x200?text=2"/></li><li style="display:inline-block"><img src="https://placehold.it/200x200?text=3"/></li><li style="display:inline-block"><img src="https://placehold.it/200x200?text=4"/></li><li style="display:inline-block"><img src="https://placehold.it/200x200?text=5"/></li><li style="display:inline-block"><img src="https://placehold.it/200x200?text=6"/></li></ul></div><div class="horizontal-overflow-previous-class"><button id="testButtonPrevious" slot="previous">previous</button></div><div class="horizontal-overflow-next-class"><button id="testButtonNext" slot="next">next</button></div></div>'
+            '<div class="horizontal-overflow-class" data-reactroot=""><div style="height:0px;position:relative;overflow:hidden"><ul class="horizontal-overflow-items-class" style="position:relative;white-space:nowrap;overflow-x:scroll;padding:0;margin:0"><li class="horizontal-overflow-item-class" style="display:inline-block"><img src="https://placehold.it/200x200?text=1"/></li><li class="horizontal-overflow-item-class" style="display:inline-block"><img src="https://placehold.it/200x200?text=2"/></li><li class="horizontal-overflow-item-class" style="display:inline-block"><img src="https://placehold.it/200x200?text=3"/></li><li class="horizontal-overflow-item-class" style="display:inline-block"><img src="https://placehold.it/200x200?text=4"/></li><li class="horizontal-overflow-item-class" style="display:inline-block"><img src="https://placehold.it/200x200?text=5"/></li><li class="horizontal-overflow-item-class" style="display:inline-block"><img src="https://placehold.it/200x200?text=6"/></li></ul></div><div class="horizontal-overflow-previous-class"><button id="testButtonPrevious" slot="previous">previous</button></div><div class="horizontal-overflow-next-class"><button id="testButtonNext" slot="next">next</button></div></div>'
         );
         /* tslint:enable:max-line-length */
     });
