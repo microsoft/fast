@@ -12,13 +12,13 @@ import {
     Direction,
     localizeSpacing,
 } from "@microsoft/fast-jss-utilities";
-import { curry } from "lodash-es";
 import { DesignSystem, withDesignSystemDefaults } from "../design-system/index";
 import {
-    disabledContrast,
-    ensureNormalContrast,
-    normalContrast,
-} from "../utilities/colors";
+    accentFillRest,
+    accentForegroundCut,
+    neutralFillRest,
+    neutralForegroundRest,
+} from "../utilities/color";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
 export const actionTriggerButtonOverrides: ComponentStyles<
@@ -39,67 +39,9 @@ export const actionTriggerButtonOverrides: ComponentStyles<
 const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<ActionTriggerClassNameContract, DesignSystem> => {
-    type ContrastFunction = (operandColor: string, referenceColor: string) => string;
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    const contrastScale: number = designSystem.contrast;
-    const foregroundColor: string = designSystem.foregroundColor;
-    const backgroundColor: string = designSystem.backgroundColor;
-    const brandColor: string = designSystem.brandColor;
     const direction: Direction = designSystem.direction;
-    const scaledNormalContrast: ContrastFunction = curry(normalContrast)(contrastScale);
-    const scaledEnsureNormalContrast: ContrastFunction = curry(ensureNormalContrast)(
-        contrastScale
-    );
 
-    // Define secondary button colors
-    const color: string = "white";
-    const secondaryBackgroundColor: string = scaledEnsureNormalContrast(
-        scaledNormalContrast(backgroundColor, foregroundColor),
-        color
-    );
-    const secondaryFocusBorderColor: string = scaledEnsureNormalContrast(
-        scaledEnsureNormalContrast(foregroundColor, backgroundColor),
-        secondaryBackgroundColor
-    );
-    const secondaryDisabledBackgroundColor: string = disabledContrast(
-        contrastScale,
-        secondaryBackgroundColor,
-        backgroundColor
-    );
-    const secondaryDisabledColor: string = disabledContrast(
-        contrastScale,
-        foregroundColor,
-        designSystem.brandColor
-    );
-    // Define primary button colors
-    const primaryRestBackgroundColor: string = scaledEnsureNormalContrast(
-        scaledEnsureNormalContrast(brandColor, backgroundColor),
-        color
-    );
-    const primaryDisabledBackground: string = disabledContrast(
-        contrastScale,
-        primaryRestBackgroundColor,
-        backgroundColor
-    );
-    const primaryDisabledColor: string = disabledContrast(
-        contrastScale,
-        color,
-        primaryDisabledBackground
-    );
-    const outlineColor: string = scaledEnsureNormalContrast(
-        foregroundColor,
-        backgroundColor
-    );
-    const outlineBorderColor: string = scaledNormalContrast(
-        foregroundColor,
-        backgroundColor
-    );
-    const outlineDisabledColor: string = disabledContrast(
-        designSystem.contrast,
-        outlineColor,
-        backgroundColor
-    );
-    const outlineDisabledBorderColor: string = outlineDisabledColor;
     return {
         actionTrigger: {
             display: "inline-flex",
@@ -114,34 +56,34 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = (
         },
         actionTrigger__primary: {
             "& $actionTrigger_glyph": {
-                fill: color,
+                fill: accentForegroundCut,
             },
             "&$actionTrigger__disabled $actionTrigger_glyph": {
-                fill: primaryDisabledColor,
+                fill: accentForegroundCut,
             },
         },
         actionTrigger__lightweight: {
             "& $actionTrigger_glyph": {
-                fill: primaryRestBackgroundColor,
+                fill: accentFillRest,
             },
             "&$actionTrigger__disabled $actionTrigger_glyph": {
-                fill: outlineDisabledColor,
+                fill: neutralForegroundRest,
             },
         },
         actionTrigger__justified: {
             "& $actionTrigger_glyph": {
-                fill: primaryRestBackgroundColor,
+                fill: accentFillRest,
             },
             "&$actionTrigger__disabled $actionTrigger_glyph": {
-                fill: secondaryDisabledColor,
+                fill: neutralForegroundRest,
             },
         },
         actionTrigger__outline: {
             "& $actionTrigger_glyph": {
-                fill: outlineColor,
+                fill: neutralForegroundRest,
             },
             "&$actionTrigger__disabled $actionTrigger_glyph": {
-                fill: outlineDisabledColor,
+                fill: neutralForegroundRest,
             },
         },
         actionTrigger__disabled: {},
