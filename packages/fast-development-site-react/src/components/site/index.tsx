@@ -46,7 +46,7 @@ import {
     Row,
     RowResizeDirection,
 } from "@microsoft/fast-layouts-react";
-import { Direction, isRTL } from "@microsoft/fast-application-utilities";
+import { Direction, isRTL } from "@microsoft/fast-web-utilities";
 
 export enum ComponentViewSlot {
     example = "canvas-example-view",

@@ -1,4 +1,4 @@
-import isRTL from "./localization";
+import { isRTL } from "./localization";
 
 describe("Check to see if a locale is RTL", (): void => {
     test("should return false if locale is not valid", (): void => {
