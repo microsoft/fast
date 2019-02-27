@@ -20,6 +20,14 @@ configure({ adapter: new Adapter() });
 
 describe("action toggle", (): void => {
     const href: string = "#";
+    const classes: ActionToggleClassNameContract = {
+        actionToggle: "actionToggle",
+        actionToggle__primary: "actionToggle__primary",
+        actionToggle__lightweight: "actionToggle__lightweight",
+        actionToggle__justified: "actionToggle__justified",
+        actionToggle__outline: "actionToggle__outline",
+        actionToggle__disabled: "actionToggle__disabled",
+    };
 
     test("should have a displayName that matches the component name", () => {
         expect((MSFTActionToggle as any).name).toBe(MSFTActionToggle.displayName);
@@ -86,20 +94,6 @@ describe("action toggle", (): void => {
         expect(rendered.first().prop("aria-label")).toEqual("label");
     });
 
-    test("should apply a 'disabled' html class when prop disabled is passed", () => {
-        const props: ActionToggleHandledProps = {
-            selectedLabel: "selected",
-            unselectedLabel: "unselected",
-            disabled: true,
-        };
-
-        const rendered: any = mount(<ActionToggle {...props} />);
-
-        expect(rendered.find("button").prop("className")).toContain(
-            "actionToggle__disabled"
-        );
-    });
-
     test("should add a custom class name if a class name has been provided", () => {
         const props: ActionToggleHandledProps = {
             selectedLabel: "selected",
@@ -111,6 +105,85 @@ describe("action toggle", (): void => {
         );
 
         expect(rendered.find("button").prop("className")).toContain("custom-class-name");
+    });
+
+    test("should apply a 'disabled' html class when prop disabled is passed", () => {
+        const props: ActionToggleHandledProps = {
+            selectedLabel: "selected",
+            unselectedLabel: "unselected",
+            disabled: true,
+            managedClasses: classes,
+        };
+
+        const rendered: any = mount(<MSFTActionToggle {...props} />);
+
+        expect(rendered.find("button").prop("className")).toContain(
+            "actionToggle__disabled"
+        );
+    });
+
+    test("should apply a 'primary' html class when appearance is primary", () => {
+        const props: ActionToggleHandledProps = {
+            selectedLabel: "selected",
+            unselectedLabel: "unselected",
+            selected: true,
+            appearance: ActionToggleAppearance.primary,
+            managedClasses: classes,
+        };
+
+        const rendered: any = mount(<MSFTActionToggle {...props} />);
+
+        expect(rendered.find("button").prop("className")).toContain(
+            "actionToggle__primary"
+        );
+    });
+
+    test("should apply a 'lightweight' html class when appearance is lightweight", () => {
+        const props: ActionToggleHandledProps = {
+            selectedLabel: "selected",
+            unselectedLabel: "unselected",
+            selected: true,
+            appearance: ActionToggleAppearance.lightweight,
+            managedClasses: classes,
+        };
+
+        const rendered: any = mount(<MSFTActionToggle {...props} />);
+
+        expect(rendered.find("button").prop("className")).toContain(
+            "actionToggle__lightweight"
+        );
+    });
+
+    test("should apply a 'justified' html class when appearance is justified", () => {
+        const props: ActionToggleHandledProps = {
+            selectedLabel: "selected",
+            unselectedLabel: "unselected",
+            selected: true,
+            appearance: ActionToggleAppearance.justified,
+            managedClasses: classes,
+        };
+
+        const rendered: any = mount(<MSFTActionToggle {...props} />);
+
+        expect(rendered.find("button").prop("className")).toContain(
+            "actionToggle__justified"
+        );
+    });
+
+    test("should apply a 'outline' html class when appearance is outline", () => {
+        const props: ActionToggleHandledProps = {
+            selectedLabel: "selected",
+            unselectedLabel: "unselected",
+            selected: true,
+            appearance: ActionToggleAppearance.outline,
+            managedClasses: classes,
+        };
+
+        const rendered: any = mount(<MSFTActionToggle {...props} />);
+
+        expect(rendered.find("button").prop("className")).toContain(
+            "actionToggle__outline"
+        );
     });
 
     test("should apply selected ARIA label if prop is set", () => {

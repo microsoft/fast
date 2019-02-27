@@ -33,6 +33,16 @@ export interface ActionToggleClassNameContract {
     actionToggle__lightweight?: string;
 
     /**
+     * The justified appearance modifier
+     */
+    actionToggle__justified?: string;
+
+    /**
+     * The outline appearance modifier
+     */
+    actionToggle__outline?: string;
+
+    /**
      * The disabled modifier
      */
     actionToggle__disabled?: string;
