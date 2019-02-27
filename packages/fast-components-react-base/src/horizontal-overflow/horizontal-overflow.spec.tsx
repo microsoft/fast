@@ -46,6 +46,7 @@ const imageSet2: JSX.Element[] = [
 const managedClasses: HorizontalOverflowClassNameContract = {
     horizontalOverflow: "horizontal-overflow-class",
     horizontalOverflow_contentRegion: "horizontal-overflow-items-class",
+    horizontalOverflow_item: "horizontal-overflow-item",
     horizontalOverflow_next: "horizontal-overflow-next-class",
     horizontalOverflow_previous: "horizontal-overflow-previous-class",
 };
@@ -135,6 +136,21 @@ describe("horizontal overflow", (): void => {
                 .find("img")
                 .prop("id")
         ).toBe(id6);
+    });
+
+    test("should add a style of `display: inline-block` to the list item containing each item", () => {
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        expect(
+            rendered
+                .find("li")
+                .at(0)
+                .props().style
+        ).toEqual({ display: "inline-block" });
     });
 
     test("should render a previous button if one is passed as a child with the appropriate slot prop", () => {

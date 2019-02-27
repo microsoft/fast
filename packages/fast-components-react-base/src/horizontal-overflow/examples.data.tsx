@@ -12,7 +12,8 @@ import { ComponentFactoryExample } from "@microsoft/fast-development-site-react"
 const classes: HorizontalOverflowManagedClasses = {
     managedClasses: {
         horizontalOverflow: "horizontal-overflow",
-        horizontalOverflow_contentRegion: "horizontal-overflow_items",
+        horizontalOverflow_contentRegion: "horizontal-overflow_content",
+        horizontalOverflow_item: "horizontal-overflow_item",
         horizontalOverflow_next: "horizontal-overflow_next",
         horizontalOverflow_previous: "horizontal-overflow_previous",
     },
@@ -157,7 +158,6 @@ const examples: ComponentFactoryExample<HorizontalOverflowHandledProps> = {
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
-        ...classes,
         children: [
             {
                 id: ButtonSchema.id,
@@ -246,7 +246,7 @@ const examples: ComponentFactoryExample<HorizontalOverflowHandledProps> = {
             children: [...images],
         },
         {
-            ...classes,
+            children: [...images],
         },
     ],
 };

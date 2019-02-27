@@ -377,7 +377,18 @@ class HorizontalOverflow extends Foundation<
         return React.Children.map(
             this.withoutSlot([ButtonDirection.previous, ButtonDirection.next]),
             (child: React.ReactNode): React.ReactElement<HTMLLIElement> => {
-                return <li style={{ display: "inline-block" }}>{child}</li>;
+                return (
+                    <li
+                        className={get(
+                            this.props.managedClasses,
+                            "horizontalOverflow_item",
+                            ""
+                        )}
+                        style={{ display: "inline-block" }}
+                    >
+                        {child}
+                    </li>
+                );
             }
         );
     }
