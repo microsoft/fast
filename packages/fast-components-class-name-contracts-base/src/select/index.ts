@@ -26,4 +26,9 @@ export interface SelectClassNameContract {
      * The disable menu modifier
      */
     select__menuDisabled?: string;
+
+    /**
+     * The multi select modifier
+     */
+    select__multiSelectable?: string;
 }

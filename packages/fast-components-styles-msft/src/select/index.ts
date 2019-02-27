@@ -81,9 +81,16 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = (
             width: "100%",
             margin: "0",
             padding: "4px 0",
-            maxWidth: "368px",
+            maxWidth: "374px",
             minWidth: "276px",
             borderRadius: toPx(designSystem.cornerRadius * 2),
+        },
+
+        select__multiSelectable: {
+            "& $select_menu": {
+                position: "static",
+                boxShadow: "none",
+            },
         },
 
         select__menuOpen: {},

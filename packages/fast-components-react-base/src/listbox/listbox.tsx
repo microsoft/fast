@@ -432,7 +432,6 @@ class Listbox extends Foundation<
             case KeyCodes.arrowDown:
             case KeyCodes.arrowRight:
                 focusItemId = this.setFocus(this.state.focusIndex + 1, 1);
-                event.preventDefault();
                 if (this.props.multiselectable && event.shiftKey && focusItemId !== "") {
                     const itemProps: ListboxItemProps = Listbox.getItemPropsById(
                         focusItemId,
@@ -448,7 +447,6 @@ class Listbox extends Foundation<
             case KeyCodes.arrowUp:
             case KeyCodes.arrowLeft:
                 focusItemId = this.setFocus(this.state.focusIndex - 1, -1);
-                event.preventDefault();
                 if (this.props.multiselectable && event.shiftKey && focusItemId !== "") {
                     const itemData: ListboxItemProps = Listbox.getItemPropsById(
                         focusItemId,

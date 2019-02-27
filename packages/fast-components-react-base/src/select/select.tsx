@@ -32,7 +32,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         isMenuOpen: void 0,
         disabled: void 0,
         displayStringFormatterFunction: void 0,
-        form: void 0,
+        formId: void 0,
         labelledBy: void 0,
         multiselectable: void 0,
         contentDisplayRenderFunction: void 0,
@@ -103,14 +103,14 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
             initialSelection = initialSelection.slice(0, 1);
         }
 
+        window.addEventListener("click", this.handleWindowClick);
+
         this.updateSelection(initialSelection);
         this.toggleMenu(this.checkPropsForMenuState());
     }
 
     public componentWillUnmount(): void {
-        if (this.state.isMenuOpen) {
-            window.removeEventListener("click", this.handleWindowClick);
-        }
+        window.removeEventListener("click", this.handleWindowClick);
     }
 
     /**
@@ -153,6 +153,13 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
             );
         }
 
+        if (this.props.multiselectable) {
+            className = className.concat(
+                " ",
+                get(this.props.managedClasses, "select__multiSelectable", "")
+            );
+        }
+
         return super.generateClassNames(className);
     }
 
@@ -180,7 +187,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
             <select
                 required={this.props.required || null}
                 name={this.props.name || null}
-                form={this.props.form || null}
+                form={this.props.formId || null}
                 value={this.state.value}
                 multiple={this.props.multiselectable || null}
                 disabled={this.props.disabled || null}
@@ -356,13 +363,13 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 break;
             case KeyCodes.arrowDown:
             case KeyCodes.arrowRight:
-                if (!this.props.multiselectable && !e.defaultPrevented) {
+                if (!this.props.multiselectable && !this.state.isMenuOpen) {
                     this.incrementSelectedOption(+1);
                 }
                 break;
             case KeyCodes.arrowUp:
             case KeyCodes.arrowLeft:
-                if (!this.props.multiselectable && !e.defaultPrevented) {
+                if (!this.props.multiselectable && !this.state.isMenuOpen) {
                     this.incrementSelectedOption(-1);
                 }
                 break;
@@ -376,14 +383,14 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         const childrenAsArray: React.ReactNode[] = React.Children.toArray(
             this.props.children
         );
-        const iterationIncrement: number = increment > -1 ? 1 : -1;
+
         if (this.state.selectedItems.length === 1) {
             const selectedItemIndex: number = Listbox.getItemIndexById(
                 this.state.selectedItems[0].id,
                 this.props.children
             );
             if (selectedItemIndex !== -1) {
-                const startIndex: number = selectedItemIndex + iterationIncrement;
+                const startIndex: number = selectedItemIndex + increment > -1 ? 1 : -1;
                 const endIndex: number = increment > -1 ? 0 : childrenAsArray.length - 1;
                 if (startIndex >= 0 && startIndex < childrenAsArray.length) {
                     const validOption: React.ReactNode = Listbox.getFirstValidOptionInRange(
@@ -414,7 +421,6 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         }
 
         this.toggleMenu(true);
-        return;
     };
 
     /**
@@ -426,12 +432,6 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
             shouldOpenMenu = this.props.isMenuOpen;
         } else if (this.props.multiselectable === true) {
             shouldOpenMenu = true;
-        } else {
-            if (shouldOpenMenu) {
-                window.addEventListener("click", this.handleWindowClick);
-            } else {
-                window.removeEventListener("click", this.handleWindowClick);
-            }
         }
         if (shouldOpenMenu !== this.state.isMenuOpen) {
             this.setState({
@@ -445,6 +445,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
      */
     private handleWindowClick = (event: MouseEvent): void => {
         if (
+            this.state.isMenuOpen &&
             this.rootElement.current !== null &&
             !this.rootElement.current.contains(event.target as Element)
         ) {

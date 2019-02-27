@@ -13,7 +13,7 @@
             "title": "Name",
             "type": "string"
         },
-        "form": {
+        "formIc": {
             "title": "Form Id",
             "type": "string"
         },

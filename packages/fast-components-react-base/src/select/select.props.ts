@@ -50,7 +50,7 @@ export interface SelectHandledProps extends SelectManagedClasses {
     /**
      * Defines one or more forms the select field belongs to
      */
-    form?: string;
+    formId?: string;
 
     /**
      * Specifies that multiple options can be selected at once

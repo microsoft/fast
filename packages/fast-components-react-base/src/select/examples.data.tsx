@@ -27,6 +27,7 @@ const managedClasses: SelectManagedClasses = {
         select_menu: "select_menu",
         select__menuOpen: "select__menuOpen",
         select__menuDisabled: "select__menuDisabled",
+        select__multiSelectable: "select__multiSelectable",
     },
 };
 

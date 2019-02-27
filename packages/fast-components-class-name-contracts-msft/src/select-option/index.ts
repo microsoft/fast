@@ -7,17 +7,17 @@ export interface SelectOptionClassNameContract extends BaseListboxItemClassNameC
     /**
      * The root of the select option component
      */
-    SelectOption?: string;
+    selectOption?: string;
 
     /**
      * The disabled modifier
      */
-    SelectOption__disabled?: string;
+    selectOption__disabled?: string;
 
     /**
      * The selected modifier
      */
-    SelectOption__selected?: string;
+    selectOption__selected?: string;
 
     /**
      * Select option content region
