@@ -12,6 +12,7 @@ const examples: ComponentFactoryExample<ActionToggleProps> = {
     schema: schema as any,
     documentation: <Documentation />,
     detailData: {
+        appearance: ActionToggleAppearance.primary,
         selectedContent: "Pause",
         unselectedContent: "Play",
         selectedLabel: "Pause",
@@ -47,7 +48,67 @@ const examples: ComponentFactoryExample<ActionToggleProps> = {
                     path: SVGGlyph.play,
                 },
             } as any,
-            "data-sketch-symbol": "Action toggle - primary",
+            "data-sketch-symbol": "Action toggle",
+        },
+        {
+            appearance: ActionToggleAppearance.lightweight,
+            selectedContent: "Pause",
+            unselectedContent: "Play",
+            selectedLabel: "Pause",
+            unselectedLabel: "Play",
+            selectedGlyph: {
+                id: svgSchema.id,
+                props: {
+                    path: SVGGlyph.pause,
+                },
+            } as any,
+            unselectedGlyph: {
+                id: svgSchema.id,
+                props: {
+                    path: SVGGlyph.play,
+                },
+            } as any,
+            "data-sketch-symbol": "Action toggle - lightweight",
+        } as any,
+        {
+            appearance: ActionToggleAppearance.outline,
+            selectedContent: "Pause",
+            unselectedContent: "Play",
+            selectedLabel: "Pause",
+            unselectedLabel: "Play",
+            selectedGlyph: {
+                id: svgSchema.id,
+                props: {
+                    path: SVGGlyph.pause,
+                },
+            } as any,
+            unselectedGlyph: {
+                id: svgSchema.id,
+                props: {
+                    path: SVGGlyph.play,
+                },
+            } as any,
+            "data-sketch-symbol": "Action toggle - outline",
+        } as any,
+        {
+            appearance: ActionToggleAppearance.justified,
+            selectedContent: "Pause",
+            unselectedContent: "Play",
+            selectedLabel: "Pause",
+            unselectedLabel: "Play",
+            selectedGlyph: {
+                id: svgSchema.id,
+                props: {
+                    path: SVGGlyph.pause,
+                },
+            } as any,
+            unselectedGlyph: {
+                id: svgSchema.id,
+                props: {
+                    path: SVGGlyph.play,
+                },
+            } as any,
+            "data-sketch-symbol": "Action toggle - justified",
         } as any,
     ],
 };
