@@ -54,7 +54,6 @@ const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
 ): ComponentStyleSheet<BadgeClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const direction: Direction = designSystem.direction;
-    const contrast: number = designSystem.contrast;
     // Badges do not switch color on theme change
     const backgroundColor: string = "#FFF";
     const lowlightBackground: string = "#333";

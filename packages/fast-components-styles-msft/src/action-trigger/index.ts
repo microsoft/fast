@@ -41,7 +41,6 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = (
 ): ComponentStyleSheet<ActionTriggerClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const direction: Direction = designSystem.direction;
-    const color: string = "white";
 
     return {
         actionTrigger: {
