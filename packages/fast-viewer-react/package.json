@@ -119,13 +119,13 @@
     "webpack-dev-server": "^3.1.14"
   },
   "dependencies": {
-    "@microsoft/fast-application-utilities": "^3.1.2",
     "@microsoft/fast-components-class-name-contracts-base": "^3.8.0",
     "@microsoft/fast-components-foundation-react": "^2.1.3",
     "@microsoft/fast-data-utilities-react": "^1.4.1",
     "@microsoft/fast-jss-manager": "^3.0.11",
     "@microsoft/fast-jss-manager-react": "^3.1.12",
     "@microsoft/fast-jss-utilities": "^3.2.3",
+    "@microsoft/fast-web-utilities": "^3.1.2",
     "exenv-es6": "^1.0.0",
     "utility-types": "^2.1.0"
   }

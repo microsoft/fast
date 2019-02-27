@@ -1,4 +1,4 @@
-import { Direction } from "@microsoft/fast-application-utilities";
+import { Direction } from "@microsoft/fast-web-utilities";
 import { memoize } from "lodash-es";
 
 export interface DesignSystem {
