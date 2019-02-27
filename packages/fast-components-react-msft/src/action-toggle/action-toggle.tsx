@@ -43,6 +43,7 @@ class ActionToggle extends Foundation<
 
     protected handledProps: HandledProps<ActionToggleHandledProps> = {
         managedClasses: void 0,
+        appearance: void 0,
         disabled: void 0,
         selected: void 0,
         selectedGlyph: void 0,
@@ -76,7 +77,7 @@ class ActionToggle extends Foundation<
                 onClick={this.handleToggleChange}
                 aria-label={this.renderARIALabel()}
                 appearance={
-                    ButtonAppearance[ActionToggleAppearance[this.getAppearance()]]
+                    ButtonAppearance[ActionToggleAppearance[this.props.appearance]]
                 }
                 jssStyleSheet={actionToggleButtonOverrides}
                 beforeContent={this.renderGlyph}
@@ -106,15 +107,12 @@ class ActionToggle extends Foundation<
                 "managedClasses.actionToggle__selected",
                 ""
             )}`;
+        }
+
+        if (this.props.appearance) {
             classNames = `${classNames} ${get(
                 this.props,
-                "managedClasses.actionToggle__primary",
-                ""
-            )}`;
-        } else {
-            classNames = `${classNames} ${get(
-                this.props,
-                "managedClasses.actionToggle__lightweight",
+                `managedClasses.actionToggle__${this.props.appearance}`,
                 ""
             )}`;
         }
@@ -128,17 +126,6 @@ class ActionToggle extends Foundation<
         }
 
         return super.generateClassNames(classNames);
-    }
-
-    /**
-     * Returns the appearance enum value to use based on current select state
-     */
-    private getAppearance(): ActionToggleAppearance {
-        if (this.state.selected) {
-            return ActionToggleAppearance.primary;
-        }
-
-        return ActionToggleAppearance.lightweight;
     }
 
     /**
