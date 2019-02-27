@@ -1,14 +1,18 @@
 import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import { SelectClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import MSFTSelect from "./select";
+import { SelectOption } from "../select-option";
 import { Select, SelectHandledProps, SelectProps, SelectUnhandledProps } from "./index";
 
 /*
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
+
+const itemA: JSX.Element = <SelectOption id="a" value="a" displayString="a" />;
+const itemB: JSX.Element = <SelectOption id="b" value="b" displayString="ab" />;
+const itemC: JSX.Element = <SelectOption id="c" value="c" displayString="abc" />;
 
 describe("button", (): void => {
     const href: string = "https://www.microsoft.com";
@@ -17,151 +21,34 @@ describe("button", (): void => {
         expect((MSFTSelect as any).name).toBe(MSFTSelect.displayName);
     });
 
-    // test("should not throw if managedClasses are not provided", () => {
-    //     expect(() => {
-    //         shallow(<MSFTButton />);
-    //         shallow(<MSFTButton appearance={ButtonAppearance.justified} />);
-    //         shallow(<MSFTButton appearance={ButtonAppearance.outline} />);
-    //         shallow(<MSFTButton appearance={ButtonAppearance.lightweight} />);
-    //         shallow(<MSFTButton appearance={ButtonAppearance.primary} />);
-    //     }).not.toThrow();
-    // });
+    test("should not throw if managedClasses are not provided", () => {
+        expect(() => {
+            shallow(<MSFTSelect />);
+        }).not.toThrow();
+    });
 
-    // test("should accept unhandledProps", () => {
-    //     const handledProps: ButtonHandledProps = {
-    //         href,
-    //     };
+    test("should implement unhandledProps", (): void => {
+        const unhandledProps: SelectUnhandledProps = {
+            "aria-label": "label",
+        };
 
-    //     const unhandledProps: ButtonUnhandledProps = {
-    //         "aria-hidden": true,
-    //     };
+        const rendered: any = shallow(<MSFTSelect {...unhandledProps} />);
 
-    //     const props: ButtonProps = { ...handledProps, ...unhandledProps };
+        expect(rendered.first().prop("aria-label")).toEqual("label");
+    });
 
-    //     const rendered: any = mount(<Button {...props} />);
+    test("default trigger attributes are set correctly", (): void => {
+        const rendered: any = mount(
+            <Select labelledBy="test-labelledBy">
+                {itemA}
+                {itemB}
+                {itemC}
+            </Select>
+        );
 
-    //     expect(rendered.find("a").prop("aria-hidden")).toEqual(true);
-    // });
-
-    // /* tslint:disable-next-line */
-    // test("should apply a 'primary' html class when appearance is primary", () => {
-    //     const rendered: any = mount(<Button appearance={ButtonAppearance.primary} />);
-
-    //     expect(rendered.find("button").prop("className")).toContain("button__primary");
-    // });
-
-    // /* tslint:disable-next-line */
-    // test("should apply an 'outline' html class when appearance is outline", () => {
-    //     const rendered: any = mount(<Button appearance={ButtonAppearance.outline} />);
-
-    //     expect(rendered.find("button").prop("className")).toContain("button__outline");
-    // });
-
-    // /* tslint:disable-next-line */
-    // test("should apply a 'lightweight' html class when appearance is lightweight", () => {
-    //     const rendered: any = mount(<Button appearance={ButtonAppearance.lightweight} />);
-
-    //     expect(rendered.find("button").prop("className")).toContain(
-    //         "button__lightweight"
-    //     );
-    // });
-
-    // test("should apply a 'justified' html class when appearance is justified", () => {
-    //     const rendered: any = mount(<Button appearance={ButtonAppearance.justified} />);
-
-    //     expect(rendered.find("button").prop("className")).toContain("button__justified");
-    // });
-
-    // test("should set a custom class name when passed", () => {
-    //     const customClassNameString: string = "customClassName";
-    //     const rendered: any = mount(<Button className={customClassNameString} />);
-
-    //     expect(rendered.find("button").prop("className")).toContain(
-    //         customClassNameString
-    //     );
-    // });
-
-    // test("should add a child element with the slot prop set to 'before' into the before slot location", () => {
-    //     const props: ButtonHandledProps = {
-    //         appearance: ButtonAppearance.lightweight,
-    //         href: "#",
-    //         children: ["foo", beforeSlotExample],
-    //     };
-
-    //     const rendered: any = mount(<MSFTButton {...props} />);
-
-    //     expect(rendered.instance().props.children[1].props.slot).toBe("before");
-    //     expect(rendered.find("div.slotBefore").length).toBe(1);
-    // });
-
-    // test("should render prop into the before content location if prop exists", () => {
-    //     const props: ButtonHandledProps = {
-    //         children: "Foo",
-    //         beforeContent: (classname?: string): React.ReactNode => {
-    //             return (
-    //                 <svg
-    //                     width="16"
-    //                     height="16"
-    //                     viewBox="0 0 16 16"
-    //                     xmlns="http://www.w3.org/2000/svg"
-    //                     className={classname}
-    //                 >
-    //                     <path d="M10.3906 9.39844C11.099 9.64323" fill="black" />
-    //                 </svg>
-    //             );
-    //         },
-    //     };
-
-    //     const rendered: any = mount(<MSFTButton {...props} />);
-
-    //     expect(rendered.find("svg")).not.toBe(undefined);
-    //     expect(
-    //         rendered
-    //             .find("button")
-    //             .childAt(0)
-    //             .type()
-    //     ).toEqual("svg");
-    // });
-
-    // test("should add a child element with the slot prop set to 'after' into the after slot location", () => {
-    //     const props: ButtonHandledProps = {
-    //         appearance: ButtonAppearance.lightweight,
-    //         href: "#",
-    //         children: ["foo", afterSlotExample],
-    //     };
-
-    //     const rendered: any = mount(<MSFTButton {...props} />);
-
-    //     expect(rendered.instance().props.children[1].props.slot).toBe("after");
-    //     expect(rendered.find("div.slotAfter").length).toBe(1);
-    // });
-
-    // test("should render prop into the after content location if prop exists", () => {
-    //     const props: ButtonHandledProps = {
-    //         children: "Foo",
-    //         afterContent: (classname?: string): React.ReactNode => {
-    //             return (
-    //                 <svg
-    //                     width="16"
-    //                     height="16"
-    //                     viewBox="0 0 16 16"
-    //                     xmlns="http://www.w3.org/2000/svg"
-    //                     className={classname}
-    //                 >
-    //                     <path d="M10.3906 9.39844C11.099 9.64323" fill="black" />
-    //                 </svg>
-    //             );
-    //         },
-    //     };
-
-    //     const rendered: any = mount(<MSFTButton {...props} />);
-
-    //     expect(rendered.find("svg")).not.toBe(undefined);
-    //     expect(
-    //         rendered
-    //             .find("button")
-    //             .childAt(1)
-    //             .type()
-    //     ).toEqual("svg");
-    // });
+        const trigger: any = rendered.find("button");
+        expect(trigger.prop("aria-labelledby")).toEqual("test-labelledBy");
+        expect(trigger.prop("aria-haspopup")).toEqual(true);
+        expect(trigger.prop("aria-expanded")).toEqual(false);
+    });
 });

@@ -53,6 +53,21 @@ describe("select", (): void => {
         expect(rendered.state("selectedItems").length).toBe(0);
     });
 
+    test("default trigger attributes are set correctly", (): void => {
+        const rendered: any = mount(
+            <Select labelledBy="test-labelledBy">
+                {itemA}
+                {itemB}
+                {itemC}
+            </Select>
+        );
+
+        const trigger: any = rendered.find("button");
+        expect(trigger.prop("aria-labelledby")).toEqual("test-labelledBy");
+        expect(trigger.prop("aria-haspopup")).toEqual(true);
+        expect(trigger.prop("aria-expanded")).toEqual(false);
+    });
+
     test("menu should open and close on select click in single mode and aria-expanded is set properly", (): void => {
         const rendered: any = mount(
             <Select>

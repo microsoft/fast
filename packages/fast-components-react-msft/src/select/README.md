@@ -3,10 +3,10 @@ The *select* component allows the user to select string values from a list and s
 
 ### Usage
 The *select* component can be thought of as having two parts:
-- the "display" portion of the component which shows in single select mode, basically a button which displays the current value and can toggle the menu.
+- the "trigger" portion of the component which shows in single select mode, basically a button which displays the current value and can toggle the menu.
 - the "menu" portion which consists of a *listbox* which displays the list of available options.
 
-By default, the display portion of the component only shows up in single selection mode as the behavior in multi-select mode is to only show the list and to always keep it open. Developers can create alternate behaviors by controlling the isMenuOpen prop and providing a custom trigger to the component.
+By default, the trigger portion of the component only shows up in single selection mode as the behavior in multi-select mode is to only show the list and to always keep it open. Developers can create alternate behaviors by controlling the isMenuOpen prop and providing a custom trigger to the component.
 
 As the user makes selection changes in the *select* component the output of the component can be used in two ways:
 - If the *select* component is part of a form the results will be submitted along with the form. This is because the *select* component maintains a hidden native HTML select element in the dom and updates the "value" attribute of the native component as selection changes.
