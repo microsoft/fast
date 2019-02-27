@@ -6,7 +6,7 @@ import {
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { getClientRectWithMargin } from "@microsoft/fast-web-utilities";
-import { Direction } from "@microsoft/fast-application-utilities";
+import { Direction } from "@microsoft/fast-web-utilities";
 import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import {
     HorizontalOverflowHandledProps,
