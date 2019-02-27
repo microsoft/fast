@@ -12,7 +12,9 @@ import {
 } from "../button/button.props";
 
 export enum ActionToggleAppearance {
+    justified = ButtonAppearance.justified,
     lightweight = ButtonAppearance.lightweight,
+    outline = ButtonAppearance.outline,
     primary = ButtonAppearance.primary,
 }
 
@@ -21,6 +23,11 @@ export interface ActionToggleManagedClasses
 export interface ActionToggleHandledProps
     extends Omit<ButtonHandledProps, "appearance" | keyof ButtonManagedClasses>,
         ActionToggleManagedClasses {
+    /**
+     * The action toggle appearance
+     */
+    appearance?: ActionToggleAppearance;
+
     /**
      * The action toggle selected state glyph
      */

@@ -5,6 +5,17 @@
     "type": "object",
     "id": "action-toggle",
     "properties": {
+        "appearance": {
+            "title": "Appearance",
+            "type": "string",
+            "default": "primary",
+            "enum": [
+                "primary",
+                "justified",
+                "lightweight",
+                "outline"
+            ]
+        },
         "disabled": {
             "title": "Disabled",
             "type": "boolean"
