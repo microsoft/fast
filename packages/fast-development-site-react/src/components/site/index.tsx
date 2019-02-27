@@ -46,7 +46,19 @@ import {
     Row,
     RowResizeDirection,
 } from "@microsoft/fast-layouts-react";
-import { Direction, isRTL } from "@microsoft/fast-web-utilities";
+import { Direction } from "@microsoft/fast-web-utilities";
+
+export const localeDirectionMapping: { [key: string]: Direction } = {
+    en: Direction.ltr,
+};
+
+export function isRTL(locale: string): boolean {
+    if (localeDirectionMapping[locale]) {
+        return localeDirectionMapping[locale] === Direction.rtl;
+    }
+
+    return false;
+}
 
 export enum ComponentViewSlot {
     example = "canvas-example-view",
