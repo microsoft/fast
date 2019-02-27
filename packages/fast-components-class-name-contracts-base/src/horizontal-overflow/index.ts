@@ -8,9 +8,14 @@ export interface HorizontalOverflowClassNameContract {
     horizontalOverflow?: string;
 
     /**
-     * The overflow items
+     * The overflow items container
      */
     horizontalOverflow_contentRegion?: string;
+
+    /**
+     * The overflow item(s)
+     */
+    horizontalOverflow_item?: string;
 
     /**
      * The next scroll control
