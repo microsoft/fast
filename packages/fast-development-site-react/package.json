@@ -32,6 +32,7 @@
     "watch": "npm run build -- -w --preserveWatchOutput"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@microsoft/fast-css-editor-react": "^4.3.1",
     "@microsoft/fast-form-generator-react": "^3.6.2",
     "@microsoft/fast-glyphs-msft": "^3.1.1",
@@ -39,6 +40,15 @@
     "@microsoft/fast-jss-utilities": "^3.2.3",
     "@microsoft/fast-layouts-react": "^3.1.15",
     "@microsoft/fast-navigation-generator-react": "^0.2.2",
+=======
+    "@microsoft/fast-css-editor-react": "^4.2.1",
+    "@microsoft/fast-form-generator-react": "^3.6.0",
+    "@microsoft/fast-glyphs-msft": "^3.1.1",
+    "@microsoft/fast-jss-manager-react": "^3.1.11",
+    "@microsoft/fast-jss-utilities": "^3.2.2",
+    "@microsoft/fast-layouts-react": "^3.1.14",
+    "@microsoft/fast-navigation-generator-react": "^0.2.0",
+>>>>>>> feat: remove fast-application-utilities package (#1455)
     "@microsoft/fast-web-utilities": "^3.1.2",
     "react-syntax-highlighter": "^7.0.4"
   },

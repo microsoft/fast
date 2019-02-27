@@ -71,7 +71,11 @@
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
+<<<<<<< HEAD
     "@microsoft/fast-components-class-name-contracts-base": "^3.8.0",
+=======
+    "@microsoft/fast-components-class-name-contracts-base": "^3.7.0",
+>>>>>>> feat: remove fast-application-utilities package (#1455)
     "@microsoft/fast-glyphs-msft": "^3.1.1",
     "@microsoft/fast-jss-manager": "^3.0.11",
     "@microsoft/fast-jss-manager-react": "^3.1.12",
