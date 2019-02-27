@@ -12,8 +12,8 @@ import {
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import {
-    accentForegroundCut,
     accentFillRest,
+    accentForegroundCut,
     neutralForegroundRest,
 } from "../utilities/color";
 import { DesignSystem, withDesignSystemDefaults } from "../design-system/index";

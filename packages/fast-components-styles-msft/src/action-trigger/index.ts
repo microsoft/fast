@@ -16,8 +16,8 @@ import { DesignSystem, withDesignSystemDefaults } from "../design-system/index";
 import {
     accentFillRest,
     accentForegroundCut,
-    neutralForegroundRest,
     neutralFillRest,
+    neutralForegroundRest,
 } from "../utilities/color";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
