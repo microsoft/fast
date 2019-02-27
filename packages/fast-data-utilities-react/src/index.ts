@@ -379,7 +379,7 @@ function getReactChildrenLocationsFromSchema(
 /**
  * Finds the locations throughout an object
  */
-function getLocationsFromObject(data: any, location: string = ""): string[] {
+export function getLocationsFromObject(data: any, location: string = ""): string[] {
     let updatedLocations: string[] = [];
 
     if (typeof data === "string" || data === null || data === undefined) {
