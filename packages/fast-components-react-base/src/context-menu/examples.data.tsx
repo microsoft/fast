@@ -55,6 +55,7 @@ const examples: ComponentFactoryExample<ContextMenuProps> = {
     data: [
         {
             ...managedClasses,
+            enableAutoFocus: true,
             children: [
                 {
                     id: "context-menu-item",
