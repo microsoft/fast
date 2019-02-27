@@ -5,7 +5,7 @@ import designSystemDefaults, {
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { ContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { density } from "../utilities/density";
-import { neutralForegroundRest, neutralFillStealthHover } from "../utilities/color";
+import { neutralFillStealthHover, neutralForegroundRest } from "../utilities/color";
 import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
 import { applyTypeRampConfig } from "../utilities/typography";
 import { toPx } from "@microsoft/fast-jss-utilities";
