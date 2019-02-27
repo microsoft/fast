@@ -13,7 +13,7 @@ import {
     PivotClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 import { TabsClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { Direction } from "@microsoft/fast-application-utilities";
+import { Direction } from "@microsoft/fast-web-utilities";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { Tabs as BaseTabs } from "@microsoft/fast-components-react-base";
 import { PivotProps } from ".";
