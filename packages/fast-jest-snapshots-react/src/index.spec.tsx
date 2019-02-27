@@ -29,3 +29,14 @@ const testSuite: SnapshotTestSuite<TestComponentProps> = {
  * Test snapshot generation
  */
 generateSnapshots(testSuite);
+
+test("should not throw if no data is provided", (): void => {
+    const adjustedTestSuite: any = Object.assign({}, testSuite);
+    delete adjustedTestSuite.data;
+
+    expect(
+        (): void => {
+            generateSnapshots(adjustedTestSuite);
+        }
+    ).not.toThrow();
+});

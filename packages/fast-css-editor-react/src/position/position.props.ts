@@ -4,6 +4,8 @@ import { CSSPositionClassNameContract } from "./position.style";
 export enum PositionValue {
     static = "static",
     absolute = "absolute",
+    relative = "relative",
+    fixed = "fixed",
 }
 
 export enum Location {

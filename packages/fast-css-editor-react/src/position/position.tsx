@@ -42,8 +42,10 @@ export default class CSSPosition extends Foundation<
                                 : PositionValue.static
                         }
                     >
-                        <option value={PositionValue.static}>Static</option>
                         <option value={PositionValue.absolute}>Absolute</option>
+                        <option value={PositionValue.fixed}>Fixed</option>
+                        <option value={PositionValue.relative}>Relative</option>
+                        <option value={PositionValue.static}>Static</option>
                     </select>
                 </span>
                 {this.renderControls(this.props.position)}
@@ -54,6 +56,8 @@ export default class CSSPosition extends Foundation<
     private renderControls(position?: PositionValue): JSX.Element {
         switch (position) {
             case PositionValue.absolute:
+            case PositionValue.fixed:
+            case PositionValue.relative:
                 return (
                     <div className={this.props.managedClasses.absoluteInput}>
                         <div className={this.props.managedClasses.absoluteInput_row}>

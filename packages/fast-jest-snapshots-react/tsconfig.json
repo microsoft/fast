@@ -10,6 +10,7 @@
         "outDir": "./dist"
     },
     "include": [
-        "src/**/*"
+        "src/**/*",
+        "**/*.spec.ts"
     ]
 }
