@@ -113,11 +113,14 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
         callToAction__disabled: {
             "& $callToAction_glyph": {
                 fill: neutralForegroundRest,
+<<<<<<< HEAD
             },
             "&:hover": {
                 "& $callToAction_glyph": {
                     transform: "none",
                 },
+=======
+>>>>>>> feat: add new color system to call to action, card, checkbox and context menu (#1459)
             },
         },
     };
