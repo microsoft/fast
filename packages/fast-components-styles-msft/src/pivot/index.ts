@@ -13,10 +13,10 @@ import {
 import { applyTypeRampConfig } from "../utilities/typography";
 import { density } from "../utilities/density";
 import {
+    accentFillRest,
     neutralForegroundActive,
     neutralForegroundHover,
     neutralForegroundRest,
-    accentFillRest,
 } from "../utilities/color";
 import { PivotClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 
