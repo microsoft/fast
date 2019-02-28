@@ -206,7 +206,7 @@ describe("getDataLocationsOfPlugins", () => {
         );
 
         expect(dataLocationsOfPlugins.length).toBe(1);
-        expect(dataLocationsOfPlugins[0].dataLocation).toBe("");
+        expect(dataLocationsOfPlugins[0].absoluteDataLocation).toBe("");
     });
 
     test("should return the data location of a single react child", () => {
@@ -224,7 +224,7 @@ describe("getDataLocationsOfPlugins", () => {
         );
 
         expect(dataLocationsOfPlugins.length).toBe(1);
-        expect(dataLocationsOfPlugins[0].dataLocation).toBe("render");
+        expect(dataLocationsOfPlugins[0].absoluteDataLocation).toBe("render");
     });
     test("should return the data location of a nested react child", () => {
         const data: any = {
@@ -256,7 +256,7 @@ describe("getDataLocationsOfPlugins", () => {
         );
 
         expect(dataLocationsOfPlugins.length).toBe(1);
-        expect(dataLocationsOfPlugins[0].dataLocation).toBe(
+        expect(dataLocationsOfPlugins[0].absoluteDataLocation).toBe(
             "children.props.children.props.children.props.render"
         );
     });
@@ -289,8 +289,10 @@ describe("getDataLocationsOfPlugins", () => {
         );
 
         expect(dataLocationsOfPlugins.length).toBe(2);
-        expect(dataLocationsOfPlugins[0].dataLocation).toBe("children.props.render");
-        expect(dataLocationsOfPlugins[1].dataLocation).toBe(
+        expect(dataLocationsOfPlugins[0].absoluteDataLocation).toBe(
+            "children.props.render"
+        );
+        expect(dataLocationsOfPlugins[1].absoluteDataLocation).toBe(
             "restrictedWithChildren.props.render"
         );
     });
@@ -333,10 +335,10 @@ describe("getDataLocationsOfPlugins", () => {
         );
 
         expect(dataLocationsOfPlugins.length).toBe(2);
-        expect(dataLocationsOfPlugins[0].dataLocation).toBe(
+        expect(dataLocationsOfPlugins[0].absoluteDataLocation).toBe(
             "children.props.children.props.children.props.render"
         );
-        expect(dataLocationsOfPlugins[1].dataLocation).toBe(
+        expect(dataLocationsOfPlugins[1].absoluteDataLocation).toBe(
             "children.props.children.props.restrictedWithChildren.props.render"
         );
     });
@@ -380,9 +382,14 @@ describe("getDataLocationsOfPlugins", () => {
             childOptions
         );
 
-        expect(dataLocationsOfPlugins).toHaveLength(2);
-        expect(dataLocationsOfPlugins[0].dataLocation).toBe("children.props.render");
-        expect(dataLocationsOfPlugins[1].dataLocation).toBe(
+        expect(dataLocationsOfPlugins).toHaveLength(3);
+        expect(dataLocationsOfPlugins[0].absoluteDataLocation).toBe(
+            "children.props.render[0]"
+        );
+        expect(dataLocationsOfPlugins[1].absoluteDataLocation).toBe(
+            "children.props.render[1]"
+        );
+        expect(dataLocationsOfPlugins[2].absoluteDataLocation).toBe(
             "restrictedWithChildren.props.render"
         );
     });
@@ -403,7 +410,9 @@ describe("getDataLocationsOfPlugins", () => {
         );
 
         expect(dataLocationsOfPlugins).toHaveLength(1);
-        expect(dataLocationsOfPlugins[0].dataLocation).toBe("children.props.array");
+        expect(dataLocationsOfPlugins[0].absoluteDataLocation).toBe(
+            "children.props.array"
+        );
     });
     test("should return data locations of children in an array of items", () => {
         const data: any = {
@@ -434,8 +443,12 @@ describe("getDataLocationsOfPlugins", () => {
         );
 
         expect(dataLocationsOfPlugins).toHaveLength(2);
-        expect(dataLocationsOfPlugins[0].dataLocation).toBe("arrayObject[0].content");
-        expect(dataLocationsOfPlugins[1].dataLocation).toBe("arrayObject[1].content");
+        expect(dataLocationsOfPlugins[0].absoluteDataLocation).toBe(
+            "arrayObject[0].content"
+        );
+        expect(dataLocationsOfPlugins[1].absoluteDataLocation).toBe(
+            "arrayObject[1].content"
+        );
     });
     test("should return data locations of nested children in an array of items", () => {
         const data: any = {
@@ -471,10 +484,10 @@ describe("getDataLocationsOfPlugins", () => {
         );
 
         expect(dataLocationsOfPlugins).toHaveLength(2);
-        expect(dataLocationsOfPlugins[0].dataLocation).toBe(
+        expect(dataLocationsOfPlugins[0].absoluteDataLocation).toBe(
             "children.props.arrayObject[0].content"
         );
-        expect(dataLocationsOfPlugins[1].dataLocation).toBe(
+        expect(dataLocationsOfPlugins[1].absoluteDataLocation).toBe(
             "children.props.arrayObject[1].content"
         );
     });
@@ -832,6 +845,68 @@ describe("mapDataToComponent", () => {
         expect(typeof mappedData.render[1]).toBe("function");
         expect(mappedData.render[1](testClass2).type.displayName).toEqual("Children");
         expect(mappedData.render[1](testClass2).props.className).toBe(testClass2);
+    });
+    test("should map children to a plugin nested inside a child", () => {
+        const data: any = {
+            children: {
+                id: childrenWithPluginPropsSchema.id,
+                props: {
+                    render: {
+                        id: textFieldSchema.id,
+                        props: {},
+                    },
+                },
+            },
+        };
+
+        const testClass: string = "Foo";
+        const mappedData: any = mapDataToComponent(childrenSchema, data, childOptions, [
+            new MapChildrenPropToCallbackPassingClassName({
+                id: childrenPluginResolverId,
+            }),
+        ]);
+
+        expect(typeof get(mappedData, "children.type")).toBe("function");
+        expect(get(mappedData, "children.type.displayName")).toBe(
+            "ChildrenWithRenderProp"
+        );
+        expect(get(mappedData, "children.props.render")(testClass).props.className).toBe(
+            testClass
+        );
+    });
+    test("should map a child nested inside a children plugin", () => {
+        const data: any = {
+            render: {
+                id: childrenSchema.id,
+                props: {
+                    children: {
+                        id: textFieldSchema.id,
+                        props: {},
+                    },
+                },
+            },
+        };
+
+        const testClass: string = "Foo";
+        const mappedData: any = mapDataToComponent(
+            childrenWithPluginPropsSchema,
+            data,
+            childOptions,
+            [
+                new MapChildrenPropToCallbackPassingClassName({
+                    id: childrenPluginResolverId,
+                }),
+            ]
+        );
+
+        const executedRenderProp: any = get(mappedData, "render")(testClass);
+
+        expect(executedRenderProp.props.className).toBe(testClass);
+
+        expect(typeof get(executedRenderProp, "props.children.type")).toBe("function");
+        expect(get(executedRenderProp, "props.children.type.displayName")).toBe(
+            "Text field"
+        );
     });
     test("should not map data to a plugin if a plugin is not available but a pluginId has been specified", () => {
         const data: any = {
