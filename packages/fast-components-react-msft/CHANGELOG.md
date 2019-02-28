@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.10.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.9.0...@microsoft/fast-components-react-msft@3.10.0) (2019-02-28)
+
+
+### Bug Fixes
+
+* remove defaultValue from number field schema and examples ([#1426](https://github.com/Microsoft/fast-dna/issues/1426)) ([06c2d67](https://github.com/Microsoft/fast-dna/commit/06c2d67))
+
+
+### Features
+
+* add pivot msft component ([#1385](https://github.com/Microsoft/fast-dna/issues/1385)) ([e81f01c](https://github.com/Microsoft/fast-dna/commit/e81f01c))
+
+
+
+
+
 # [3.9.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.8.0...@microsoft/fast-components-react-msft@3.9.0) (2019-02-21)
 
 

@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.9.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@3.8.0...@microsoft/fast-components-react-base@3.9.0) (2019-02-28)
+
+
+### Bug Fixes
+
+* add additional wrapper to dialog to prevent subpixel aliasing due to css transforms ([#1431](https://github.com/Microsoft/fast-dna/issues/1431)) ([1fad8fe](https://github.com/Microsoft/fast-dna/commit/1fad8fe))
+* remove defaultValue from number field schema and examples ([#1426](https://github.com/Microsoft/fast-dna/issues/1426)) ([06c2d67](https://github.com/Microsoft/fast-dna/commit/06c2d67))
+
+
+### Features
+
+* add class name for horizontal overflow items ([#1448](https://github.com/Microsoft/fast-dna/issues/1448)) ([ffb6d87](https://github.com/Microsoft/fast-dna/commit/ffb6d87))
+* add focus features to ContextMenu ([#1446](https://github.com/Microsoft/fast-dna/issues/1446)) ([ab06478](https://github.com/Microsoft/fast-dna/commit/ab06478))
+
+
+
+
+
 # [3.8.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@3.7.0...@microsoft/fast-components-react-base@3.8.0) (2019-02-21)
 
 

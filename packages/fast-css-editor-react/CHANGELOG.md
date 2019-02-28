@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-css-editor-react@4.2.1...@microsoft/fast-css-editor-react@4.3.0) (2019-02-28)
+
+
+### Features
+
+* add "relative" and "fixed" to the position options ([#1434](https://github.com/Microsoft/fast-dna/issues/1434)) ([0b94bbe](https://github.com/Microsoft/fast-dna/commit/0b94bbe))
+
+
+
+
+
 ## [4.2.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-css-editor-react@4.2.0...@microsoft/fast-css-editor-react@4.2.1) (2019-02-21)
 
 

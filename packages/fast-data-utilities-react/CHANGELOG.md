@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-data-utilities-react@1.3.0...@microsoft/fast-data-utilities-react@1.4.0) (2019-02-28)
+
+
+### Features
+
+* add a function to generate lodash path locations from an object to the exports ([#1457](https://github.com/Microsoft/fast-dna/issues/1457)) ([9539f18](https://github.com/Microsoft/fast-dna/commit/9539f18))
+
+
+
+
+
 # [1.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-data-utilities-react@1.2.1...@microsoft/fast-data-utilities-react@1.3.0) (2019-02-21)
 
 

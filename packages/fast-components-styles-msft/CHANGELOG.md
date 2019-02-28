@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.11.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.10.0...@microsoft/fast-components-styles-msft@3.11.0) (2019-02-28)
+
+
+### Bug Fixes
+
+* add additional wrapper to dialog to prevent subpixel aliasing due to css transforms ([#1431](https://github.com/Microsoft/fast-dna/issues/1431)) ([1fad8fe](https://github.com/Microsoft/fast-dna/commit/1fad8fe))
+* change badge accent color to background color ([#1427](https://github.com/Microsoft/fast-dna/issues/1427)) ([12b0b2a](https://github.com/Microsoft/fast-dna/commit/12b0b2a))
+
+
+### Features
+
+* add pivot msft component ([#1385](https://github.com/Microsoft/fast-dna/issues/1385)) ([e81f01c](https://github.com/Microsoft/fast-dna/commit/e81f01c))
+
+
+
+
+
 # [3.10.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.9.0...@microsoft/fast-components-styles-msft@3.10.0) (2019-02-21)
 
 

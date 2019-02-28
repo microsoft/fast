@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.8.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-base@3.7.0...@microsoft/fast-components-class-name-contracts-base@3.8.0) (2019-02-28)
+
+
+### Bug Fixes
+
+* add additional wrapper to dialog to prevent subpixel aliasing due to css transforms ([#1431](https://github.com/Microsoft/fast-dna/issues/1431)) ([1fad8fe](https://github.com/Microsoft/fast-dna/commit/1fad8fe))
+
+
+### Features
+
+* add class name for horizontal overflow items ([#1448](https://github.com/Microsoft/fast-dna/issues/1448)) ([ffb6d87](https://github.com/Microsoft/fast-dna/commit/ffb6d87))
+
+
+
+
+
 # [3.7.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-base@3.6.0...@microsoft/fast-components-class-name-contracts-base@3.7.0) (2019-02-21)
 
 

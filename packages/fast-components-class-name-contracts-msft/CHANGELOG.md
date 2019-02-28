@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.6.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@3.5.1...@microsoft/fast-components-class-name-contracts-msft@3.6.0) (2019-02-28)
+
+
+### Features
+
+* add pivot msft component ([#1385](https://github.com/Microsoft/fast-dna/issues/1385)) ([e81f01c](https://github.com/Microsoft/fast-dna/commit/e81f01c))
+
+
+
+
+
 ## [3.5.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@3.5.0...@microsoft/fast-components-class-name-contracts-msft@3.5.1) (2019-02-21)
 
 **Note:** Version bump only for package @microsoft/fast-components-class-name-contracts-msft
