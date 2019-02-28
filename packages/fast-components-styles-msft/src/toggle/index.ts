@@ -99,10 +99,10 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             "& $toggle_input": {
                 background: accentFillRest,
                 borderColor: accentFillRest,
-                "& + $toggle_stateIndicator": {
-                    left: "28px",
-                    background: accentForegroundCut,
-                },
+            },
+            "& $toggle_stateIndicator": {
+                left: "28px",
+                background: accentForegroundCut,
             },
         },
         toggle__disabled: {
@@ -111,9 +111,9 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             "& $toggle_input": {
                 background: neutralFillSelected,
                 borderColor: neutralFillSelected,
-                "& + $toggle_stateIndicator": {
-                    background: neutralForegroundRest,
-                },
+            },
+            "& $toggle_stateIndicator": {
+                background: neutralForegroundRest,
             },
             "& $toggle_input, & $toggle_label, & $toggle_statusMessage": {
                 cursor: "not-allowed",
