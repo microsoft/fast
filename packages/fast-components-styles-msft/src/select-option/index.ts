@@ -5,7 +5,6 @@ import designSystemDefaults, {
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { SelectOptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { density } from "../utilities/density";
-import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
 import {
     disabledContrast,
     ensureForegroundNormal,
@@ -15,7 +14,12 @@ import {
 import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
 import { applyTypeRampConfig } from "../utilities/typography";
 import typographyPattern from "../patterns/typography";
-import { contrast, toPx } from "@microsoft/fast-jss-utilities";
+import {
+    applyLocalizedProperty,
+    contrast,
+    Direction,
+    toPx,
+} from "@microsoft/fast-jss-utilities";
 import { curry } from "lodash-es";
 
 const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = (
@@ -23,6 +27,7 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = (
 ): ComponentStyleSheet<SelectOptionClassNameContract, DesignSystem> => {
     type ContrastFunction = (operandColor: string, referenceColor: string) => string;
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
+    const direction: Direction = designSystem.direction;
     const contrastScale: number = designSystem.contrast;
     const brandColor: string = designSystem.brandColor;
     const color: string = designSystem.foregroundColor;
@@ -53,7 +58,11 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = (
             listStyleType: "none",
             height: density(32),
             display: "grid",
-            gridTemplateColumns: "12px auto auto 1fr 12px",
+            gridTemplateColumns: `${applyLocalizedProperty(
+                "12px auto auto 1fr 12px",
+                "12px 1fr auto auto 12px",
+                direction
+            )}`,
             gridTemplateRows: "auto",
             alignItems: "center",
             padding: "0",
@@ -82,7 +91,7 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = (
             textOverflow: "ellipsis",
         },
         selectOption_glyph: {
-            gridColumnStart: "2",
+            gridColumnStart: `${applyLocalizedProperty("2", "4", direction)}`,
             display: "inline-block",
             position: "relative",
             maxWidth: "16px",

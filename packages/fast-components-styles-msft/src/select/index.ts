@@ -7,17 +7,10 @@ import {
     ButtonClassNameContract,
     SelectClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
-import { applyLocalizedProperty, Direction } from "@microsoft/fast-jss-utilities";
 import { elevation, ElevationMultiplier } from "../utilities/elevation";
-import { toPx } from "@microsoft/fast-jss-utilities";
-import {
-    applyMixedColor,
-    ensureNormalContrast,
-    hoverContrast,
-    normalContrast,
-} from "../utilities/colors";
-import outlinePattern from "../patterns/outline";
-import { isAbsolute } from "path";
+import { contrast, toPx } from "@microsoft/fast-jss-utilities";
+import { disabledContrast, ensureNormalContrast } from "../utilities/colors";
+import { curry } from "lodash-es";
 
 export const selectDisplayButtonOverrides: ComponentStyles<
     Partial<ButtonClassNameContract>,
@@ -38,14 +31,38 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = (
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
 
     const backgroundColor: string = designSystem.backgroundColor;
-    const direction: Direction = designSystem.direction;
     const foregroundColor: string = ensureNormalContrast(
         designSystem.contrast,
         designSystem.foregroundColor,
         designSystem.backgroundColor
     );
 
-    const glyphColorHover: string = hoverContrast(config.contrast, foregroundColor);
+    type ContrastFunction = (operandColor: string, referenceColor: string) => string;
+    const contrastScale: number = designSystem.contrast;
+    const brandColor: string = designSystem.brandColor;
+    const color: string = designSystem.foregroundColor;
+    const scaledEnsureNormalContrast: ContrastFunction = curry(ensureNormalContrast)(
+        contrastScale
+    );
+    const primaryRestBackgroundColor: string = scaledEnsureNormalContrast(
+        scaledEnsureNormalContrast(brandColor, designSystem.backgroundColor),
+        color
+    );
+    const primaryDisabledBackground: string = disabledContrast(
+        contrastScale,
+        primaryRestBackgroundColor,
+        designSystem.backgroundColor
+    );
+    const primaryDisabledColor: string = disabledContrast(
+        contrastScale,
+        color,
+        primaryDisabledBackground
+    );
+    const primarySelectedBackground: string = contrast(
+        1.7,
+        designSystem.foregroundColor,
+        designSystem.backgroundColor
+    );
 
     return {
         select: {
@@ -69,7 +86,11 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = (
             },
         },
 
-        select__disabled: {},
+        select__disabled: {
+            "&$select__multiSelectable $select_menu": {
+                borderColor: primaryDisabledColor,
+            },
+        },
 
         select_menu: {
             ...elevation(ElevationMultiplier.e11, designSystem.foregroundColor)(
@@ -90,12 +111,12 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = (
             "& $select_menu": {
                 position: "static",
                 boxShadow: "none",
+                border: "1px solid",
+                borderColor: foregroundColor,
             },
         },
 
         select_menu__open: {},
-
-        select_menu__disabled: {},
     };
 };
 

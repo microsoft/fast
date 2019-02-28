@@ -16,7 +16,7 @@ export default {
         glyph: {
             id: svgSchema.id,
             props: {
-                path: SVGGlyph.arrow,
+                path: SVGGlyph.user,
             },
         } as any,
     },
@@ -29,7 +29,7 @@ export default {
             glyph: {
                 id: svgSchema.id,
                 props: {
-                    path: SVGGlyph.arrow,
+                    path: SVGGlyph.user,
                 },
             } as any,
         },
@@ -43,7 +43,7 @@ export default {
             glyph: {
                 id: svgSchema.id,
                 props: {
-                    path: SVGGlyph.arrow,
+                    path: SVGGlyph.user,
                 },
             } as any,
         },
