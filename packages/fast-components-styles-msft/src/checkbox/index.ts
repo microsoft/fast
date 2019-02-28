@@ -13,6 +13,8 @@ import {
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import {
+    neutralFillInputActive,
+    neutralFillInputHover,
     neutralFillInputRest,
     neutralForegroundRest,
     neutralOutlineActive,
@@ -47,11 +49,13 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
                 designSystem.outlinePatternOutlineWidth
             )} solid ${neutralOutlineRest(designSystem)}`,
             "&:hover": {
+                background: neutralFillInputHover,
                 border: `${toPx(
                     designSystem.outlinePatternOutlineWidth
                 )} solid ${neutralOutlineHover(designSystem)}`,
             },
             "&:active": {
+                background: neutralFillInputActive,
                 border: `${toPx(
                     designSystem.outlinePatternOutlineWidth
                 )} solid ${neutralOutlineActive(designSystem)}`,
