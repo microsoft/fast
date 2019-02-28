@@ -380,9 +380,10 @@ describe("getDataLocationsOfPlugins", () => {
             childOptions
         );
 
-        expect(dataLocationsOfPlugins).toHaveLength(2);
-        expect(dataLocationsOfPlugins[0].dataLocation).toBe("children.props.render");
-        expect(dataLocationsOfPlugins[1].dataLocation).toBe(
+        expect(dataLocationsOfPlugins).toHaveLength(3);
+        expect(dataLocationsOfPlugins[0].dataLocation).toBe("children.props.render[0]");
+        expect(dataLocationsOfPlugins[1].dataLocation).toBe("children.props.render[1]");
+        expect(dataLocationsOfPlugins[2].dataLocation).toBe(
             "restrictedWithChildren.props.render"
         );
     });
@@ -832,6 +833,68 @@ describe("mapDataToComponent", () => {
         expect(typeof mappedData.render[1]).toBe("function");
         expect(mappedData.render[1](testClass2).type.displayName).toEqual("Children");
         expect(mappedData.render[1](testClass2).props.className).toBe(testClass2);
+    });
+    test("should map children to a plugin nested inside a child", () => {
+        const data: any = {
+            children: {
+                id: childrenWithPluginPropsSchema.id,
+                props: {
+                    render: {
+                        id: textFieldSchema.id,
+                        props: {},
+                    },
+                },
+            },
+        };
+
+        const testClass: string = "Foo";
+        const mappedData: any = mapDataToComponent(childrenSchema, data, childOptions, [
+            new MapChildrenPropToCallbackPassingClassName({
+                id: childrenPluginResolverId,
+            }),
+        ]);
+
+        expect(typeof get(mappedData, "children.type")).toBe("function");
+        expect(get(mappedData, "children.type.displayName")).toBe(
+            "ChildrenWithRenderProp"
+        );
+        expect(get(mappedData, "children.props.render")(testClass).props.className).toBe(
+            testClass
+        );
+    });
+    test("should map a child nested inside a children plugin", () => {
+        const data: any = {
+            render: {
+                id: childrenSchema.id,
+                props: {
+                    children: {
+                        id: textFieldSchema.id,
+                        props: {},
+                    },
+                },
+            },
+        };
+
+        const testClass: string = "Foo";
+        const mappedData: any = mapDataToComponent(
+            childrenWithPluginPropsSchema,
+            data,
+            childOptions,
+            [
+                new MapChildrenPropToCallbackPassingClassName({
+                    id: childrenPluginResolverId,
+                }),
+            ]
+        );
+
+        const executedRenderProp: any = get(mappedData, "render")(testClass);
+
+        expect(executedRenderProp.props.className).toBe(testClass);
+
+        expect(typeof get(executedRenderProp, "props.children.type")).toBe("function");
+        expect(get(executedRenderProp, "props.children.type.displayName")).toBe(
+            "Text field"
+        );
     });
     test("should not map data to a plugin if a plugin is not available but a pluginId has been specified", () => {
         const data: any = {
