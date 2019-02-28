@@ -5,15 +5,19 @@ import {
     applyFocusVisible,
     applyLocalizedProperty,
     Direction,
+    toPx,
 } from "@microsoft/fast-jss-utilities";
 import {
-    applyMixedColor,
-    ensureNormalContrast,
-    hoverContrast,
-    normalContrast,
-} from "../utilities/colors";
-import { get } from "lodash-es";
-import outlinePattern from "../patterns/outline";
+    neutralFillStealthActive,
+    neutralFillStealthHover,
+    neutralFillStealthRest,
+    neutralForegroundActive,
+    neutralForegroundHover,
+    neutralForegroundRest,
+    neutralOutlineActive,
+    neutralOutlineHover,
+    neutralOutlineRest,
+} from "../utilities/color";
 
 const eastFlipperTransform: string = "translateX(-3px) rotate(45deg)";
 const westFlipperTransform: string = "translateX(3px) rotate(-135deg)";
@@ -22,37 +26,45 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<FlipperClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
-
-    const backgroundColor: string = designSystem.backgroundColor;
     const direction: Direction = designSystem.direction;
-    const foregroundColor: string = ensureNormalContrast(
-        designSystem.contrast,
-        designSystem.foregroundColor,
-        designSystem.backgroundColor
-    );
-
-    const glyphColorHover: string = hoverContrast(config.contrast, foregroundColor);
 
     return {
         flipper: {
             width: "40px",
             height: "40px",
             margin: "0",
-            color: foregroundColor,
-            ...outlinePattern.rest,
+            color: neutralForegroundRest,
+            background: neutralFillStealthRest,
+            border: `${toPx(
+                designSystem.outlinePatternOutlineWidth
+            )} solid ${neutralOutlineRest(designSystem)}`,
             borderRadius: "50%",
             padding: "0",
             "&:hover": {
-                ...outlinePattern.hover,
+                background: neutralFillStealthHover,
+                color: neutralForegroundHover,
+                border: `${toPx(
+                    designSystem.outlinePatternOutlineWidth
+                )} solid ${neutralOutlineHover(designSystem)}`,
                 "& $flipper_glyph": {
                     "&::before": {
-                        borderRightColor: glyphColorHover,
-                        borderTopColor: glyphColorHover,
+                        borderRightColor: neutralForegroundRest,
+                        borderTopColor: neutralForegroundRest,
                     },
                 },
             },
+            "&:active": {
+                background: neutralFillStealthActive,
+                color: neutralForegroundActive,
+                border: `${toPx(
+                    designSystem.outlinePatternOutlineWidth
+                )} solid ${neutralOutlineActive(designSystem)}`,
+            },
             ...applyFocusVisible({
-                ...outlinePattern.focus,
+                boxShadow: `0 0 0 1px ${designSystem.foregroundColor} inset`,
+                border: `${toPx(designSystem.outlinePatternOutlineWidth)} solid ${
+                    designSystem.foregroundColor
+                }`,
             }),
             "&::-moz-focus-inner": {
                 border: "0",
@@ -69,8 +81,8 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
                 height: "12px",
                 width: "12px",
                 content: '""',
-                borderRight: `1px solid ${foregroundColor}`,
-                borderTop: `1px solid ${foregroundColor}`,
+                borderRight: `1px solid ${neutralForegroundRest(designSystem)}`,
+                borderTop: `1px solid ${neutralForegroundRest(designSystem)}`,
             },
         },
         flipper__next: {
