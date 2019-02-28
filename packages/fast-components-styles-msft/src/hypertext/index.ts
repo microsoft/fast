@@ -1,8 +1,9 @@
 import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import {
-    accentFillRest,
+    accentForegroundRest,
+    accentForegroundHover,
+    accentForegroundActive,
     neutralForegroundRest,
-    neutralOutlineHover,
 } from "../utilities/color";
 import {
     ComponentStyles,
@@ -23,10 +24,15 @@ const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = (
             textDecoration: "none",
             color: neutralForegroundRest,
             "&:link, &:visited": {
-                borderBottom: `1px solid ${accentFillRest(designSystem)}`,
-                color: accentFillRest,
+                borderBottom: `1px solid ${accentForegroundRest(designSystem)}`,
+                color: accentForegroundRest,
                 "&:hover": {
-                    borderBottom: `2px solid ${accentFillRest(designSystem)}`,
+                    borderBottom: `2px solid ${accentForegroundHover(designSystem)}`,
+                    color: accentForegroundHover,
+                },
+                "&:active": {
+                    borderBottom: `2px solid ${accentForegroundActive(designSystem)}`,
+                    color: accentForegroundActive,
                 },
                 ...applyFocusVisible({
                     borderBottom: `2px solid ${designSystem.foregroundColor}`,
