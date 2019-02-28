@@ -78,14 +78,15 @@ function createDestReadme(srcReadmePath) {
         .split(path.sep)
         .pop();
 
-    var title = folderName
-        .replace(/-/g, ' ')
-        .replace(/fast /g, '')
-        .toLowerCase()
-        .split(' ')
-        .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-        .join(' ');
+    var lines = fs.readFileSync(srcReadmePath, 'utf-8')
+        .split('\n')
+        .filter(Boolean);
 
+    var title = lines[0]
+        .replace(/#/g, '')
+        .replace(/FAST/g, '')
+        .trim();
+            
     var docusaurusHeader = 
         `---\n` + 
         `id: index\n` + 
@@ -99,7 +100,7 @@ function createDestReadme(srcReadmePath) {
         if (fs.existsSync(destReadmePath)) {
             console.log(`...REPLACE readme.md in the '${folderName}' folder`);
         } else {
-            console.log(`...ADD readme.md into the '${folderName}' folder`);
+            console.log(`...ADD readme.md to the '${folderName}' folder`);
         }
     } else {
         try {
