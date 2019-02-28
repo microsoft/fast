@@ -13,13 +13,19 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
 ): ComponentStyleSheet<CarouselClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const direction: Direction = designSystem.direction;
+    const white: string = "white";
+    const darkGray: string = "#101010";
+    const lightGray: string = "rgb(206, 206, 206)";
+    const lightGrayRest: string = "rgba(206, 206, 206, 0.6";
 
     function flipperStyles(): CSSRules<{}> {
         return {
             position: "absolute",
             top: "calc(50% - 20px)",
             zIndex: "100",
-            display: "none",
+            display: "block",
+            opacity: "0",
+            transition: "all 0.2s ease-in-out",
         };
     }
 
@@ -29,7 +35,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
             display: "inline-block",
             "&:hover": {
                 "& $carousel_flipperPrevious, & $carousel_flipperNext": {
-                    display: "block",
+                    opacity: "1",
                 },
             },
         },
@@ -42,23 +48,30 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
             textAlign: "center",
             width: "100%",
             zIndex: "100",
+            "& > :first-child:nth-last-child(1)": {
+                display: "none",
+            },
         },
         carousel_sequenceIndicator: {
             display: "inline-block",
-            background: "transparent",
-            border: "0",
-            height: "10px",
-            padding: "2px 3px",
-            width: "10px",
+            padding: "0 2px",
             "&:focus": {
                 outline: "none",
             },
             "&::before": {
-                borderRadius: "50%",
+                opacity: "0.2",
+                border: "1px solid transparent",
+                borderRadius: "40px",
                 content: "''",
                 display: "block",
-                height: "100%",
-                width: "100%",
+                height: "4px",
+                width: "32px",
+                transition: "all 0.2s ease-in-out",
+            },
+            "&:hover": {
+                "&::before": {
+                    opacity: "0.5",
+                },
             },
         },
         carousel_sequenceIndicator__active: {},
@@ -80,64 +93,64 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
         },
         carousel__themeDark: {
             "& $carousel_flipperPrevious, & $carousel_flipperNext": {
-                color: "black",
-                fill: "black",
-                background: "white",
+                color: darkGray,
+                fill: darkGray,
+                background: "rgba(255, 255, 255, 0.6)",
+                border: `1px solid ${lightGrayRest}`,
                 "& span::before": {
-                    borderColor: "black",
+                    borderColor: darkGray,
                 },
                 "&:hover": {
+                    background: white,
                     "& span::before": {
-                        borderColor: hoverContrast(config.contrast, "black"),
+                        borderColor: hoverContrast(config.contrast, darkGray),
                     },
                 },
             },
             "& $carousel_sequenceIndicator": {
                 "&::before": {
-                    border: "1px solid white",
+                    background: white,
+                    borderColor: lightGray,
                 },
-                "&:focus": {
+                "&$carousel_sequenceIndicator__active": {
                     "&::before": {
-                        boxShadow: "0 0 0 1px white",
+                        opacity: "1",
+                        background: white,
                     },
-                },
-            },
-            "& $carousel_sequenceIndicator__active": {
-                "&::before": {
-                    background: "white",
                 },
             },
         },
         carousel__themeLight: {
             "& $carousel_flipperPrevious, & $carousel_flipperNext": {
-                color: "white",
-                fill: "white",
-                background: "black",
+                color: white,
+                fill: white,
+                background: "rgba(0, 0, 0, 0.6)",
+                border: `1px solid ${lightGrayRest}`,
                 "& span::before": {
-                    borderColor: "white",
+                    borderColor: white,
                 },
                 "&:hover": {
+                    background: darkGray,
                     "& span::before": {
-                        borderColor: hoverContrast(config.contrast, "white"),
+                        borderColor: hoverContrast(config.contrast, white),
                     },
                 },
             },
             "& $carousel_sequenceIndicator": {
                 "&::before": {
-                    border: "1px solid black",
-                },
-                "&:focus": {
-                    "&::before": {
-                        boxShadow: "0 0 0 1px black",
-                    },
+                    background: darkGray,
+                    borderColor: lightGray,
                 },
             },
             "& $carousel_sequenceIndicator__active": {
                 "&::before": {
-                    background: "black",
+                    opacity: "1",
+                    background: darkGray,
                 },
             },
         },
+        carousel__slideAnimatePrevious: {},
+        carousel__slideAnimateNext: {},
     };
 };
 
