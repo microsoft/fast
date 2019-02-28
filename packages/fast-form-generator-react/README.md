@@ -87,7 +87,7 @@ Outside of the basic use case you can provide some additional functionality thro
 
 ### `plugins` and `onSchemaChange`
 
-plugins may be created to determine if a form should change based on data. You can identify a piece of schema that should be updated by adding a unique key to your JSON schema `formPluginId`. When you initialize a custom plugin, you will need to pass that same id to the plugin as part of its configuration.
+Plugins may be created to determine if a form should change based on data. You can identify a piece of schema that should be updated by adding a unique key to your JSON schema `formPluginId`. When you initialize a custom plugin you will need to pass that same id to the plugin as part of its configuration.
 
 Example schema:
 ```json
