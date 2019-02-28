@@ -709,9 +709,6 @@ export function mapDataToComponent(
         childOptions
     );
 
-    // organize by length using split "."
-    reactChildrenDataLocations.sort(orderChildrenByDataLocation);
-
     // find locations of all items of data that are overridden by mappings
     const pluginModifiedDataLocations: PluginLocation[] = getDataLocationsOfPlugins(
         schema,
@@ -800,15 +797,13 @@ function mapPluginToData(
     const pluginData: any = get(data, pluginModifiedDataLocation.dataLocation);
 
     if (pluginResolver !== undefined) {
-        const pluginResolverMapping: PluginResolverDataMap[] = getPluginResolverDataMap({
+        getPluginResolverDataMap({
             isReactChildren: pluginModifiedDataLocation.type === DataType.children,
             pluginData,
             pluginResolver,
             childOptions,
             dataLocation: pluginModifiedDataLocation.dataLocation,
-        });
-
-        pluginResolverMapping.forEach(
+        }).forEach(
             (pluginResolverMappingItem: PluginResolverDataMap): void => {
                 set(
                     mappedData,
