@@ -13,17 +13,16 @@ import {
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import {
-    applyMixedColor,
-    disabledContrast,
-    ensureNormalContrast,
-    ensuresBackgroundNormal,
-    foregroundNormal,
-    hoverContrast,
-    normalContrast,
-} from "../utilities/colors";
+    neutralFillInputActive,
+    neutralFillInputHover,
+    neutralFillInputRest,
+    neutralForegroundRest,
+    neutralOutlineActive,
+    neutralOutlineHover,
+    neutralOutlineRest,
+} from "../utilities/color";
 import { density } from "../utilities/density";
 import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
-import outlinePattern from "../patterns/outline";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
 export const textFieldOverrides: ComponentStyles<
@@ -31,42 +30,18 @@ export const textFieldOverrides: ComponentStyles<
     DesignSystem
 > = {
     textField: {
-        height: "100%",
+        height: "calc(100% - 2px)",
+        margin: "1px",
         border: "none",
         flex: "1 0 0",
         background: "transparent",
         minWidth: "inherit",
-        "&:hover, &:disabled": {
+        "&:hover, &:disabled, &:active, &:focus": {
             border: "none",
             boxShadow: "none",
         },
-        ...applyFocusVisible({
-            border: "none",
-            boxShadow: "none",
-        }),
     },
 };
-
-/**
- * Retrieves the disabled color
- */
-function disabledColor(config: DesignSystem): string {
-    const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    return disabledContrast(
-        designSystem.contrast,
-        foregroundNormal(designSystem),
-        designSystem.backgroundColor
-    );
-}
-
-function hoverColor(config: DesignSystem): string {
-    const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    return hoverContrast(
-        designSystem.contrast,
-        foregroundNormal(designSystem),
-        designSystem.backgroundColor
-    );
-}
 
 /* tslint:disable:max-line-length */
 const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
@@ -79,7 +54,7 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
         width: "auto",
         marginTop: "8px",
         margin: "auto",
-        fill: designSystem.foregroundColor,
+        fill: neutralForegroundRest,
     };
 
     return {
@@ -91,30 +66,42 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
             maxHeight: toPx(maxHeight),
             margin: "0",
             minWidth: "92px",
-            ...outlinePattern.rest,
-            background: ensuresBackgroundNormal,
+            border: `${toPx(
+                designSystem.outlinePatternOutlineWidth
+            )} solid ${neutralOutlineRest(designSystem)}`,
+            background: neutralFillInputRest,
             borderRadius: toPx(designSystem.cornerRadius),
             display: "flex",
             flexDirection: "row",
             transition: "all 0.2s ease-in-out",
             "&:hover": {
-                ...outlinePattern.hover,
+                background: neutralFillInputHover,
+                border: `${toPx(
+                    designSystem.outlinePatternOutlineWidth
+                )} solid ${neutralOutlineHover(designSystem)}`,
+            },
+            "&:active": {
+                background: neutralFillInputActive,
+                border: `${toPx(
+                    designSystem.outlinePatternOutlineWidth
+                )} solid ${neutralOutlineActive(designSystem)}`,
             },
         },
         textAction__focus: {
-            outline: "none",
-            ...outlinePattern.focus,
+            boxShadow: `0 0 0 1px ${designSystem.foregroundColor} inset`,
+            border: `${toPx(designSystem.outlinePatternOutlineWidth)} solid ${
+                designSystem.foregroundColor
+            }`,
+            "&:hover": {
+                boxShadow: `0 0 0 1px ${designSystem.foregroundColor} inset`,
+                border: `${toPx(designSystem.outlinePatternOutlineWidth)} solid ${
+                    designSystem.foregroundColor
+                }`,
+            },
         },
         textAction__disabled: {
-            borderColor: disabledColor(designSystem),
-            color: disabledColor(designSystem),
             cursor: "not-allowed",
-            "&:hover": {
-                borderColor: disabledColor(designSystem),
-            },
-            "& $textAction_beforeGlyph, & $textAction_afterGlyph": {
-                opacity: ".5",
-            },
+            opacity: "0.3",
         },
         textAction_button: {
             borderColor: "transparent",
