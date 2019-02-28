@@ -1,7 +1,7 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow, ShallowWrapper } from "enzyme";
-import AlignVertical from "./form-item.align-vertical";
+import ObjectAlign from "./form-item.object-align";
 import { FormItemComponentMappingToProperyNamesProps, mappingName } from "./form-item";
 
 /*
@@ -9,8 +9,8 @@ import { FormItemComponentMappingToProperyNamesProps, mappingName } from "./form
  */
 configure({ adapter: new Adapter() });
 
-const alignVerticalProps: FormItemComponentMappingToProperyNamesProps = {
-    name: mappingName.alignVertical,
+const objectAlignProps: FormItemComponentMappingToProperyNamesProps = {
+    name: mappingName.objectAlign,
     options: ["top", "center", "bottom"],
     index: 1,
     dataLocation: "",
@@ -20,24 +20,24 @@ const alignVerticalProps: FormItemComponentMappingToProperyNamesProps = {
     onChange: jest.fn(),
 };
 
-describe("AlignVertical", () => {
+describe("ObjectAlign", () => {
     test("should not throw", () => {
         expect(() => {
-            shallow(<AlignVertical {...alignVerticalProps} />);
+            shallow(<ObjectAlign {...objectAlignProps} />);
         }).not.toThrow();
     });
     test("should generate HTML input elements", () => {
-        const rendered: any = mount(<AlignVertical {...alignVerticalProps} />);
+        const rendered: any = mount(<ObjectAlign {...objectAlignProps} />);
 
         expect(rendered.find("input")).toHaveLength(4);
     });
     test("should generate an HTML label element", () => {
-        const rendered: any = mount(<AlignVertical {...alignVerticalProps} />);
+        const rendered: any = mount(<ObjectAlign {...objectAlignProps} />);
 
         expect(rendered.find("label")).toHaveLength(1);
     });
     test("should have an `id` attribute on the HTML input elements and a corresponding `for` attribute on the HTML label element", () => {
-        const rendered: any = mount(<AlignVertical {...alignVerticalProps} />);
+        const rendered: any = mount(<ObjectAlign {...objectAlignProps} />);
         const label: any = rendered.find("label");
         const inputs: any = rendered.find("input");
 
@@ -48,7 +48,7 @@ describe("AlignVertical", () => {
     test("should fire an `onChange` callback when an input has been changed", () => {
         const handleChange: any = jest.fn();
         const rendered: any = mount(
-            <AlignVertical {...alignVerticalProps} onChange={handleChange} />
+            <ObjectAlign {...objectAlignProps} onChange={handleChange} />
         );
 
         rendered
@@ -61,7 +61,7 @@ describe("AlignVertical", () => {
     });
     test("should be disabled if disabled props is passed", () => {
         const rendered: any = mount(
-            <AlignVertical {...alignVerticalProps} disabled={true} />
+            <ObjectAlign {...objectAlignProps} disabled={true} />
         );
         const inputs: ShallowWrapper = rendered.find("input");
 
@@ -73,7 +73,7 @@ describe("AlignVertical", () => {
     test("should remove the data if the soft remove is triggered", () => {
         const handleChange: any = jest.fn();
         const rendered: any = mount(
-            <AlignVertical {...alignVerticalProps} data={"top"} onChange={handleChange} />
+            <ObjectAlign {...objectAlignProps} data={"top"} onChange={handleChange} />
         );
 
         rendered
@@ -88,7 +88,7 @@ describe("AlignVertical", () => {
         const handleChange: any = jest.fn();
         const data: string = "top";
         const rendered: any = mount(
-            <AlignVertical {...alignVerticalProps} data={data} onChange={handleChange} />
+            <ObjectAlign {...objectAlignProps} data={data} onChange={handleChange} />
         );
 
         rendered

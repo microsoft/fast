@@ -1,7 +1,7 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow, ShallowWrapper } from "enzyme";
-import AlignHorizontal from "./form-item.align-horizontal";
+import TextAlign from "./form-item.text-align";
 import { FormItemComponentMappingToProperyNamesProps, mappingName } from "./form-item";
 
 /*
@@ -9,8 +9,8 @@ import { FormItemComponentMappingToProperyNamesProps, mappingName } from "./form
  */
 configure({ adapter: new Adapter() });
 
-const alignHorizontalProps: FormItemComponentMappingToProperyNamesProps = {
-    name: mappingName.alignHorizontal,
+const textAlignProps: FormItemComponentMappingToProperyNamesProps = {
+    name: mappingName.textAlign,
     options: ["left", "center", "right"],
     index: 1,
     dataLocation: "",
@@ -20,24 +20,24 @@ const alignHorizontalProps: FormItemComponentMappingToProperyNamesProps = {
     onChange: jest.fn(),
 };
 
-describe("AlignHorizontal", () => {
+describe("TextAlign", () => {
     test("should not throw", () => {
         expect(() => {
-            shallow(<AlignHorizontal {...alignHorizontalProps} />);
+            shallow(<TextAlign {...textAlignProps} />);
         }).not.toThrow();
     });
     test("should generate HTML input elements", () => {
-        const rendered: any = mount(<AlignHorizontal {...alignHorizontalProps} />);
+        const rendered: any = mount(<TextAlign {...textAlignProps} />);
 
         expect(rendered.find("input")).toHaveLength(4);
     });
     test("should generate an HTML label element", () => {
-        const rendered: any = mount(<AlignHorizontal {...alignHorizontalProps} />);
+        const rendered: any = mount(<TextAlign {...textAlignProps} />);
 
         expect(rendered.find("label")).toHaveLength(1);
     });
     test("should have an `id` attribute on the HTML input elements and a corresponding `for` attribute on the HTML label element", () => {
-        const rendered: any = mount(<AlignHorizontal {...alignHorizontalProps} />);
+        const rendered: any = mount(<TextAlign {...textAlignProps} />);
         const label: ShallowWrapper = rendered.find("label");
         const inputs: ShallowWrapper = rendered.find("input");
 
@@ -48,7 +48,7 @@ describe("AlignHorizontal", () => {
     test("should fire an `onChange` callback when an input has been changed", () => {
         const handleChange: any = jest.fn();
         const rendered: any = mount(
-            <AlignHorizontal {...alignHorizontalProps} onChange={handleChange} />
+            <TextAlign {...textAlignProps} onChange={handleChange} />
         );
 
         rendered
@@ -60,9 +60,7 @@ describe("AlignHorizontal", () => {
         expect(handleChange.mock.calls[0][1]).toEqual("left");
     });
     test("should be disabled if disabled props is passed", () => {
-        const rendered: any = mount(
-            <AlignHorizontal {...alignHorizontalProps} disabled={true} />
-        );
+        const rendered: any = mount(<TextAlign {...textAlignProps} disabled={true} />);
         const inputs: ShallowWrapper = rendered.find("input");
 
         expect(inputs).toHaveLength(4);
@@ -73,11 +71,7 @@ describe("AlignHorizontal", () => {
     test("should remove the data if the soft remove is triggered", () => {
         const handleChange: any = jest.fn();
         const rendered: any = mount(
-            <AlignHorizontal
-                {...alignHorizontalProps}
-                data={"left"}
-                onChange={handleChange}
-            />
+            <TextAlign {...textAlignProps} data={"left"} onChange={handleChange} />
         );
 
         rendered
@@ -92,11 +86,7 @@ describe("AlignHorizontal", () => {
         const handleChange: any = jest.fn();
         const data: string = "left";
         const rendered: any = mount(
-            <AlignHorizontal
-                {...alignHorizontalProps}
-                data={data}
-                onChange={handleChange}
-            />
+            <TextAlign {...textAlignProps} data={data} onChange={handleChange} />
         );
 
         rendered

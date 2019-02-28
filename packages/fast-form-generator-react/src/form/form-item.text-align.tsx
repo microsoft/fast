@@ -1,30 +1,31 @@
 import React from "react";
 import { FormItemComponentMappingToProperyNamesProps } from "./form-item";
-import styles from "./form-item.align-vertical.style";
-import { FormItemAlignVerticalClassNameContract } from "../class-name-contracts/";
+import styles from "./form-item.text-align.style";
+import { FormItemTextAlignClassNameContract } from "../class-name-contracts/";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import FormItemBase from "./form-item.base";
+import { Direction } from "@microsoft/fast-jss-utilities";
 
 /**
  * Schema form component definition
  * @extends React.Component
  */
 /* tslint:disable-next-line */
-class FormItemAlignVertical extends FormItemBase<
+class FormItemTextAlign extends FormItemBase<
     FormItemComponentMappingToProperyNamesProps &
-        ManagedClasses<FormItemAlignVerticalClassNameContract>,
+        ManagedClasses<FormItemTextAlignClassNameContract>,
     {}
 > {
-    public static displayName: string = "FormItemAlignVertical";
+    public static displayName: string = "formItemTextAlign";
 
     public render(): JSX.Element {
         return (
-            <div className={this.props.managedClasses.formItemAlignVertical}>
-                <div className={this.props.managedClasses.formItemAlignVertical_control}>
+            <div className={this.props.managedClasses.formItemTextAlign}>
+                <div className={this.props.managedClasses.formItemTextAlign_control}>
                     <label
                         className={
-                            this.props.managedClasses.formItemAlignVertical_controlLabel
+                            this.props.managedClasses.formItemTextAlign_controlLabel
                         }
                         htmlFor={this.props.dataLocation}
                     >
@@ -33,19 +34,17 @@ class FormItemAlignVertical extends FormItemBase<
                     <div
                         className={
                             this.props.managedClasses
-                                .formItemAlignVertical_controlInputContainer
+                                .formItemTextAlign_controlInputContainer
                         }
                     >
-                        {this.renderInput("top", 1)}
+                        {this.renderInput("left", 1)}
                         {this.renderInput("center", 2)}
-                        {this.renderInput("bottom", 3)}
+                        {this.renderInput("right", 3)}
                     </div>
                 </div>
-                <div
-                    className={this.props.managedClasses.formItemAlignVertical_softRemove}
-                >
+                <div className={this.props.managedClasses.formItemTextAlign_softRemove}>
                     {this.renderSoftRemove(
-                        this.props.managedClasses.formItemAlignVertical_softRemoveInput
+                        this.props.managedClasses.formItemTextAlign_softRemoveInput
                     )}
                 </div>
             </div>
@@ -65,14 +64,12 @@ class FormItemAlignVertical extends FormItemBase<
 
     private getInputClassName(direction: string): string {
         switch (direction) {
-            case "top":
-                return this.props.managedClasses.formItemAlignVertical_controlInput__top;
+            case "left":
+                return this.props.managedClasses.formItemTextAlign_controlInput__left;
             case "center":
-                return this.props.managedClasses
-                    .formItemAlignVertical_controlInput__center;
-            case "bottom":
-                return this.props.managedClasses
-                    .formItemAlignVertical_controlInput__bottom;
+                return this.props.managedClasses.formItemTextAlign_controlInput__center;
+            case "right":
+                return this.props.managedClasses.formItemTextAlign_controlInput__right;
         }
     }
 
@@ -105,4 +102,4 @@ class FormItemAlignVertical extends FormItemBase<
     }
 }
 
-export default manageJss(styles)(FormItemAlignVertical);
+export default manageJss(styles)(FormItemTextAlign);

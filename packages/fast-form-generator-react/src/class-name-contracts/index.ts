@@ -4,11 +4,11 @@ export { FormCategoryClassNameContract };
 import FormClassNameContract from "./form.class-name-contract";
 export { FormClassNameContract };
 
-import FormItemAlignHorizontalClassNameContract from "./form-item.align-horizontal.class-name-contract";
-export { FormItemAlignHorizontalClassNameContract };
+import FormItemTextAlignClassNameContract from "./form-item.text-align.class-name-contract";
+export { FormItemTextAlignClassNameContract };
 
-import FormItemAlignVerticalClassNameContract from "./form-item.align-vertical.class-name-contract";
-export { FormItemAlignVerticalClassNameContract };
+import FormItemObjectAlignClassNameContract from "./form-item.object-align.class-name-contract";
+export { FormItemObjectAlignClassNameContract };
 
 import FormItemArrayClassNameContract from "./form-item.array.class-name-contract";
 export { FormItemArrayClassNameContract };

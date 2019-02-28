@@ -8,7 +8,7 @@ import {
     applySoftRemoveInput,
 } from "./form.utilities.style";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
-import { FormItemAlignHorizontalClassNameContract } from "../class-name-contracts/";
+import { FormItemTextAlignClassNameContract } from "../class-name-contracts/";
 
 /* tslint:disable */
 const leftLight: string =
@@ -22,21 +22,21 @@ const justifyLight: string =
     "url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTAiIHZpZXdCb3g9IjAgMCAxMiAxMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTAgMEgxMlYxSDBWMFoiIGZpbGw9IiNDNEM0QzQiLz4KPHBhdGggZD0iTTAgNkgxMlY3SDBWNloiIGZpbGw9IiNDNEM0QzQiLz4KPHBhdGggZD0iTTAgM0gxMlY0SDBWM1oiIGZpbGw9IiNDNEM0QzQiLz4KPHBhdGggZD0iTTAgOUgxMlYxMEgwVjlaIiBmaWxsPSIjQzRDNEM0Ii8+Cjwvc3ZnPgo=) center no-repeat";
 /* tslint:enable */
 
-const styles: ComponentStyles<FormItemAlignHorizontalClassNameContract, {}> = {
-    formItemAlignHorizontal: {
+const styles: ComponentStyles<FormItemTextAlignClassNameContract, {}> = {
+    formItemTextAlign: {
         display: "flex",
         ...applyControlWrapper(),
     },
-    formItemAlignHorizontal_control: {
+    formItemTextAlign_control: {
         ...applyControl(),
     },
-    formItemAlignHorizontal_controlLabel: {
+    formItemTextAlign_controlLabel: {
         ...applyLabelStyle(),
     },
-    formItemAlignHorizontal_controlInputContainer: {
+    formItemTextAlign_controlInputContainer: {
         height: "20px",
     },
-    formItemAlignHorizontal_controlInput__left: {
+    formItemTextAlign_controlInput__left: {
         ...applyInputBackplateStyle(),
         borderRadius: "2px 0px 0px 2px",
         background: leftLight,
@@ -44,7 +44,7 @@ const styles: ComponentStyles<FormItemAlignHorizontalClassNameContract, {}> = {
             backgroundColor: accent,
         },
     },
-    formItemAlignHorizontal_controlInput__center: {
+    formItemTextAlign_controlInput__center: {
         ...applyInputBackplateStyle(),
         borderRight: `1px solid ${background300}`,
         borderLeft: `1px solid ${background300}`,
@@ -53,7 +53,7 @@ const styles: ComponentStyles<FormItemAlignHorizontalClassNameContract, {}> = {
             backgroundColor: accent,
         },
     },
-    formItemAlignHorizontal_controlInput__right: {
+    formItemTextAlign_controlInput__right: {
         ...applyInputBackplateStyle(),
         borderRadius: "0px 2px 2px 0px",
         background: rightLight,
@@ -61,10 +61,10 @@ const styles: ComponentStyles<FormItemAlignHorizontalClassNameContract, {}> = {
             backgroundColor: accent,
         },
     },
-    formItemAlignHorizontal_softRemove: {
+    formItemTextAlign_softRemove: {
         ...applySoftRemove(),
     },
-    formItemAlignHorizontal_softRemoveInput: {
+    formItemTextAlign_softRemoveInput: {
         ...applySoftRemoveInput(),
     },
 };

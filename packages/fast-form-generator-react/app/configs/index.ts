@@ -53,20 +53,20 @@ export const children: ExampleComponent = {
     schema: ChildrenSchema,
 };
 
-import AlignHorizontalConfig from "./align-horizontal/align-horizontal.config";
-import AlignHorizontalSchema from "./align-horizontal/align-horizontal.schema.json";
+import TextAlignConfig from "./text-align/text-align.config";
+import TextAlignSchema from "./text-align/text-align.schema.json";
 
-export const alignHorizontal: ExampleComponent = {
-    config: AlignHorizontalConfig,
-    schema: AlignHorizontalSchema,
+export const textAlign: ExampleComponent = {
+    config: TextAlignConfig,
+    schema: TextAlignSchema,
 };
 
-import AlignVerticalConfig from "./align-vertical/align-vertical.config";
-import AlignVerticalSchema from "./align-vertical/align-vertical.schema.json";
+import ObjectAlignConfig from "./object-align/object-align.config";
+import ObjectAlignSchema from "./object-align/object-align.schema.json";
 
-export const alignVertical: ExampleComponent = {
-    config: AlignVerticalConfig,
-    schema: AlignVerticalSchema,
+export const objectAlign: ExampleComponent = {
+    config: ObjectAlignConfig,
+    schema: ObjectAlignSchema,
 };
 
 import {

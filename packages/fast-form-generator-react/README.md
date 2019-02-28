@@ -207,7 +207,7 @@ handleChange = (dataLocation) => {
 }
 ```
 
-**componentMappingToPropertyNames** - There are special components that can be mapped to property names so that they are used. An example would be `alignHorizontal` which when mapped will show alignment controls instead of a select dropdown. You can map them to one or more different property names so if your component has a property `alignHorizontalSpacingForTitle` and `alignHorizontalSpacingForImage`:
+**componentMappingToPropertyNames** - There are special components that can be mapped to property names so that they are used. An example would be `textAlign` which when mapped will show alignment controls instead of a select dropdown. You can map them to one or more different property names so if your component has a property `textAlignSpacingForTitle` and `textAlignSpacingForImage`:
 
 ```jsx
 import Form from "@microsoft/fast-form-generator-react";
@@ -217,9 +217,9 @@ import Form from "@microsoft/fast-form-generator-react";
     schema={currentComponentSchema}
     onChange={handleChange}
     componentMappingToPropertyNames={{
-        alignHorizontal: [
-            "alignHorizontalSpacingForTitle",
-            "alignHorizontalSpacingForImage"
+        textAlign: [
+            "textAlignSpacingForTitle",
+            "textAlignSpacingForImage"
         ]
     }}
 />
@@ -277,8 +277,8 @@ import Form from "@microsoft/fast-form-generator-react";
                 title: "Formatting",
                 weight: 40,
                 properties: [
-                    { weight: 9, propertyName: "alignVertical" },
-                    { weight: 7, propertyName: "alignHorizontal" }
+                    { weight: 9, propertyName: "objectAlign" },
+                    { weight: 7, propertyName: "textAlign" }
                 ]
             }
         ]

@@ -1,7 +1,7 @@
 import React from "react";
 import { FormItemComponentMappingToProperyNamesProps, mappingName } from "./form-item";
-import FormItemAlignHorizontal from "./form-item.align-horizontal";
-import FormItemAlignVertical from "./form-item.align-vertical";
+import FormItemTextAlign from "./form-item.text-align";
+import FormItemObjectAlign from "./form-item.object-align";
 import FormItemFileUpload from "./form-item.file-upload";
 import FormItemTheme from "./form-item.theme";
 
@@ -21,10 +21,10 @@ class FormItemMapping extends React.Component<
 
     private renderCustomLayout(): JSX.Element {
         switch (this.props.name) {
-            case mappingName.alignVertical:
-                return <FormItemAlignVertical {...this.props} />;
-            case mappingName.alignHorizontal:
-                return <FormItemAlignHorizontal {...this.props} />;
+            case mappingName.objectAlign:
+                return <FormItemObjectAlign {...this.props} />;
+            case mappingName.textAlign:
+                return <FormItemTextAlign {...this.props} />;
             case mappingName.fileUpload:
                 return <FormItemFileUpload {...this.props} />;
             case mappingName.theme:

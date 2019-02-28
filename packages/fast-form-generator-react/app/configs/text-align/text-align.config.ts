@@ -1,5 +1,5 @@
 import { FormComponentMappingToPropertyNamesProps } from "../../../src/form/form.props";
 
 export default {
-    alignHorizontal: ["alignHorizontal", "optionalAlignHorizontal"],
+    textAlign: ["textAlign", "optionalTextAlign"],
 } as FormComponentMappingToPropertyNamesProps;

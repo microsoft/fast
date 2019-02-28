@@ -1,12 +1,12 @@
 {
     "$schema": "http://json-schema.org/schema#",
-    "title": "Component with align horizontal",
+    "title": "Component with text align",
     "description": "A test component's schema definition.",
     "type": "object",
-    "id": "alignHorizontal",
+    "id": "textAlign",
     "properties": {
-        "alignHorizontal": {
-            "title": "Align horizontal",
+        "textAlign": {
+            "title": "Text align",
             "type": "string",
             "enum": [
                 "left",
@@ -14,8 +14,8 @@
                 "right"
             ]
         },
-        "optionalAlignHorizontal": {
-            "title": "Optional align horizontal",
+        "optionalTextAlign": {
+            "title": "Optional text align",
             "type": "string",
             "enum": [
                 "left",
@@ -25,6 +25,6 @@
         }
     },
     "required": [
-        "alignHorizontal"
+        "textAlign"
     ]
 }
