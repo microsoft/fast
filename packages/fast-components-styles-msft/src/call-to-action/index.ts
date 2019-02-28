@@ -13,7 +13,11 @@ import {
     Direction,
 } from "@microsoft/fast-jss-utilities";
 import { DesignSystem, withDesignSystemDefaults } from "../design-system/index";
-import { disabledContrast, ensureNormalContrast } from "../utilities/colors";
+import {
+    accentFillRest,
+    accentForegroundCut,
+    neutralForegroundRest,
+} from "../utilities/color";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
 export const callToActionButtonOverrides: ComponentStyles<
@@ -46,22 +50,6 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
 ): ComponentStyleSheet<CallToActionClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const direction: Direction = designSystem.direction;
-    const color: string = "white";
-    const primaryRestBackgroundColor: string = ensureNormalContrast(
-        designSystem.contrast,
-        designSystem.brandColor,
-        designSystem.backgroundColor
-    );
-    const primaryDisabledBackground: string = disabledContrast(
-        designSystem.contrast,
-        primaryRestBackgroundColor,
-        designSystem.backgroundColor
-    );
-    const primaryDisabledColor: string = disabledContrast(
-        designSystem.contrast,
-        color,
-        primaryDisabledBackground
-    );
 
     return {
         callToAction: {
@@ -90,7 +78,7 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
             }),
         },
         callToAction_glyph: {
-            fill: color,
+            fill: accentForegroundCut,
             display: "inline-block",
             position: "relative",
             width: "8px",
@@ -101,23 +89,23 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
         },
         callToAction__primary: {
             "& $callToAction_glyph": {
-                fill: color,
+                fill: accentForegroundCut,
             },
         },
         callToAction__lightweight: {
             "& $callToAction_glyph": {
-                fill: primaryRestBackgroundColor,
+                fill: accentFillRest,
             },
         },
         callToAction__justified: {
             [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "-10px",
             "& $callToAction_glyph": {
-                fill: primaryRestBackgroundColor,
+                fill: accentFillRest,
             },
         },
         callToAction__disabled: {
             "& $callToAction_glyph": {
-                fill: primaryDisabledColor,
+                fill: neutralForegroundRest,
             },
         },
     };
