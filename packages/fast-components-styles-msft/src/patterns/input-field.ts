@@ -4,10 +4,11 @@ import { CSSRules } from "@microsoft/fast-jss-manager";
 import { DesignSystem } from "../design-system";
 import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
 import {
+    neutralFillInputActive,
+    neutralFillInputHover,
     neutralFillInputRest,
-    neutralForegroundActive,
-    neutralForegroundHover,
     neutralForegroundRest,
+    neutralForegroundHint,
     neutralOutlineActive,
     neutralOutlineHover,
     neutralOutlineRest,
@@ -31,29 +32,30 @@ export function inputFieldStyles(designSystem: DesignSystem): CSSRules<{}> {
         padding: "10px",
         margin: "0",
         "&:hover": {
-            color: neutralForegroundHover,
+            background: neutralFillInputHover,
             border: `${toPx(
                 designSystem.outlinePatternOutlineWidth
             )} solid ${neutralOutlineHover(designSystem)}`,
         },
         "&:active": {
-            color: neutralForegroundActive,
+            background: neutralFillInputActive,
             border: `${toPx(
                 designSystem.outlinePatternOutlineWidth
             )} solid ${neutralOutlineActive(designSystem)}`,
         },
-        ...applyFocusVisible({
+        "&:focus": {
             boxShadow: `0 0 0 1px ${designSystem.foregroundColor} inset`,
             border: `${toPx(designSystem.outlinePatternOutlineWidth)} solid ${
                 designSystem.foregroundColor
             }`,
-        }),
+            outline: "none",
+        },
         "&:disabled": {
             cursor: "not-allowed",
             opacity: "0.3",
         },
         "&::placeholder": {
-            color: neutralForegroundRest,
+            color: neutralForegroundHint,
         },
     };
 }
