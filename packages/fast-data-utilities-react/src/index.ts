@@ -700,7 +700,7 @@ export function mapDataToComponent(
     childOptions: ChildOptionItem[],
     plugins: Array<Plugin<PluginProps>> = []
 ): any {
-    let mappedData: any = cloneDeep(data);
+    const mappedData: any = cloneDeep(data);
 
     // find locations of all items of data that are react children
     let reactChildrenDataLocations: string[] = getDataLocationsOfChildren(
@@ -733,7 +733,7 @@ export function mapDataToComponent(
     );
 
     // merge the plugin modified data locations with the children option data locations and categorize them
-    const mappedDataLocations: MappedDataLocation[] = []
+    return []
         .concat(
             reactChildrenDataLocations.map(
                 (childDataLocation: string): ChildrenLocation => {
@@ -745,21 +745,15 @@ export function mapDataToComponent(
             ),
             pluginModifiedDataLocations
         )
-        .sort(orderMappedDataByDataLocation);
-
-    // going from the longest length to the shortest, resolve the data
-    mappedDataLocations.forEach(
-        (mappedDataLocation: MappedDataLocation): void => {
-            mappedData = resolveData(
+        .sort(orderMappedDataByDataLocation)
+        .reduce((mappedDataReduced: any, mappedDataLocation: MappedDataLocation): any => {
+            return resolveData(
                 mappedDataLocation,
-                mappedData,
+                mappedDataReduced,
                 plugins,
                 childOptions
             );
-        }
-    );
-
-    return mappedData;
+        }, mappedData);
 }
 
 function resolveData(
