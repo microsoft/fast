@@ -19,7 +19,7 @@ export enum PropertyKeyword {
     reactProperties = "reactProperties",
 }
 
-export enum dataType {
+export enum DataType {
     number = "number",
     string = "string",
     boolean = "boolean",
@@ -71,7 +71,7 @@ export interface PluginLocation {
     /**
      * The type of data this represents
      */
-    type: dataType;
+    type: DataType;
 
     /**
      * The mapping type
@@ -280,7 +280,7 @@ function getSchemaLocationSegmentsFromDataLocationSegment(
         `${PropertyKeyword.reactProperties}.${normalizedDataLocationForArrayRemoval}`
     );
     const isChildren: boolean =
-        childrensSubSchema && childrensSubSchema.type === dataType.children;
+        childrensSubSchema && childrensSubSchema.type === DataType.children;
     const objectSubSchema: any = get(
         schema,
         `${PropertyKeyword.properties}.${normalizedDataLocationForArrayRemoval}`
@@ -407,7 +407,7 @@ function getReactChildrenLocationsFromSchema(
         (schemaLocation: string): boolean => {
             return (
                 !!schemaLocation.match(/reactProperties\..+?\b/) &&
-                get(schema, schemaLocation).type === dataType.children
+                get(schema, schemaLocation).type === DataType.children
             );
         }
     );
@@ -489,7 +489,7 @@ export function getDataLocationsOfPlugins(
                             ? typeKeyword
                             : `${schemaLocation}.${typeKeyword}`
                     }`
-                ) === dataType.children;
+                ) === DataType.children;
             const subData: any = get(data, `${dataLocation}.${propsKeyword}`);
             const isNotAnArrayOfChildren: boolean =
                 (isChildComponent && typeof subData !== "undefined") || !isChildComponent;
@@ -811,7 +811,7 @@ function mapPluginToData(
 
     if (pluginResolver !== undefined) {
         const pluginResolverMapping: PluginResolverDataMap[] = getPluginResolverDataMap({
-            isReactChildren: pluginModifiedDataLocation.type === dataType.children,
+            isReactChildren: pluginModifiedDataLocation.type === DataType.children,
             pluginData,
             pluginResolver,
             childOptions,
