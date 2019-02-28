@@ -1,11 +1,17 @@
 import { applyTypeRampConfig } from "../utilities/typography";
 import { fontWeight } from "../utilities/fonts";
-import outlinePattern from "../patterns/outline";
-import typographyPattern from "../patterns/typography";
 import { CSSRules } from "@microsoft/fast-jss-manager";
 import { DesignSystem } from "../design-system";
 import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
-import { foregroundNormal } from "../utilities/colors";
+import {
+    neutralFillInputRest,
+    neutralForegroundActive,
+    neutralForegroundHover,
+    neutralForegroundRest,
+    neutralOutlineActive,
+    neutralOutlineHover,
+    neutralOutlineRest,
+} from "../utilities/color";
 
 /**
  * Shared input field styles
@@ -13,8 +19,11 @@ import { foregroundNormal } from "../utilities/colors";
 export function inputFieldStyles(designSystem: DesignSystem): CSSRules<{}> {
     return {
         ...applyTypeRampConfig("t7"),
-        ...outlinePattern.rest,
-        ...typographyPattern.rest,
+        background: neutralFillInputRest,
+        border: `${toPx(
+            designSystem.outlinePatternOutlineWidth
+        )} solid ${neutralOutlineRest(designSystem)}`,
+        color: neutralForegroundRest,
         fontFamily: "inherit",
         fontWeight: fontWeight.normal.toString(),
         boxSizing: "border-box",
@@ -22,21 +31,29 @@ export function inputFieldStyles(designSystem: DesignSystem): CSSRules<{}> {
         padding: "10px",
         margin: "0",
         "&:hover": {
-            ...outlinePattern.hover,
+            color: neutralForegroundHover,
+            border: `${toPx(
+                designSystem.outlinePatternOutlineWidth
+            )} solid ${neutralOutlineHover(designSystem)}`,
+        },
+        "&:active": {
+            color: neutralForegroundActive,
+            border: `${toPx(
+                designSystem.outlinePatternOutlineWidth
+            )} solid ${neutralOutlineActive(designSystem)}`,
         },
         ...applyFocusVisible({
-            ...outlinePattern.focus,
+            boxShadow: `0 0 0 1px ${designSystem.foregroundColor} inset`,
+            border: `${toPx(designSystem.outlinePatternOutlineWidth)} solid ${
+                designSystem.foregroundColor
+            }`,
         }),
         "&:disabled": {
-            ...outlinePattern.disabled,
-            ...typographyPattern.disabled,
             cursor: "not-allowed",
-            "&::placeholder": {
-                ...typographyPattern.disabled,
-            },
+            opacity: "0.3",
         },
         "&::placeholder": {
-            color: foregroundNormal,
+            color: neutralForegroundRest,
         },
     };
 }
