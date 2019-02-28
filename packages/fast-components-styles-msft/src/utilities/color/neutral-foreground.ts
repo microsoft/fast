@@ -13,8 +13,8 @@ import {
     withDesignSystemDefaults,
 } from "../../design-system";
 
-export const neutralForegroundDeltaHover: number = 4;
-export const neutralForegroundDeltaActive: number = 8;
+export const neutralForegroundDeltaHover: number = 8;
+export const neutralForegroundDeltaActive: number = 16;
 
 /**
  * Function to derive neutralForeground from color inputs.
