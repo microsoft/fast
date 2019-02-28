@@ -4,8 +4,11 @@ import { CSSRules } from "@microsoft/fast-jss-manager";
 import { DesignSystem } from "../design-system";
 import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
 import {
-    neutralFillStealthRest,
+    neutralFillInputRest,
+    neutralForegroundActive,
+    neutralForegroundHover,
     neutralForegroundRest,
+    neutralOutlineActive,
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
@@ -16,7 +19,7 @@ import {
 export function inputFieldStyles(designSystem: DesignSystem): CSSRules<{}> {
     return {
         ...applyTypeRampConfig("t7"),
-        background: neutralFillStealthRest,
+        background: neutralFillInputRest,
         border: `${toPx(
             designSystem.outlinePatternOutlineWidth
         )} solid ${neutralOutlineRest(designSystem)}`,
@@ -28,9 +31,16 @@ export function inputFieldStyles(designSystem: DesignSystem): CSSRules<{}> {
         padding: "10px",
         margin: "0",
         "&:hover": {
+            color: neutralForegroundHover,
             border: `${toPx(
                 designSystem.outlinePatternOutlineWidth
             )} solid ${neutralOutlineHover(designSystem)}`,
+        },
+        "&:active": {
+            color: neutralForegroundActive,
+            border: `${toPx(
+                designSystem.outlinePatternOutlineWidth
+            )} solid ${neutralOutlineActive(designSystem)}`,
         },
         ...applyFocusVisible({
             boxShadow: `0 0 0 1px ${designSystem.foregroundColor} inset`,

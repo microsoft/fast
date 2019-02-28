@@ -1,8 +1,8 @@
 import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import {
-    accentForegroundRest,
-    accentForegroundHover,
     accentForegroundActive,
+    accentForegroundHover,
+    accentForegroundRest,
     neutralForegroundRest,
 } from "../utilities/color";
 import {

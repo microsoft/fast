@@ -8,8 +8,13 @@ import {
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import {
+    neutralFillStealthActive,
+    neutralFillStealthHover,
     neutralFillStealthRest,
+    neutralForegroundActive,
+    neutralForegroundHover,
     neutralForegroundRest,
+    neutralOutlineActive,
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
@@ -36,6 +41,8 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
             borderRadius: "50%",
             padding: "0",
             "&:hover": {
+                background: neutralFillStealthHover,
+                color: neutralForegroundHover,
                 border: `${toPx(
                     designSystem.outlinePatternOutlineWidth
                 )} solid ${neutralOutlineHover(designSystem)}`,
@@ -45,6 +52,13 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
                         borderTopColor: neutralForegroundRest,
                     },
                 },
+            },
+            "&:active": {
+                background: neutralFillStealthActive,
+                color: neutralForegroundActive,
+                border: `${toPx(
+                    designSystem.outlinePatternOutlineWidth
+                )} solid ${neutralOutlineActive(designSystem)}`,
             },
             ...applyFocusVisible({
                 boxShadow: `0 0 0 1px ${designSystem.foregroundColor} inset`,
