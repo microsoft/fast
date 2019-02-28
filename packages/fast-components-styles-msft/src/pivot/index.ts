@@ -12,7 +12,12 @@ import {
 } from "@microsoft/fast-jss-utilities";
 import { applyTypeRampConfig } from "../utilities/typography";
 import { density } from "../utilities/density";
-import { ensureBrandNormal } from "../utilities/colors";
+import {
+    accentFillRest,
+    neutralForegroundActive,
+    neutralForegroundHover,
+    neutralForegroundRest,
+} from "../utilities/color";
 import { PivotClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 
 const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
@@ -24,8 +29,8 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
     return {
         pivot: {
             position: "relative",
-            color: designSystem.foregroundColor,
             overflow: "hidden",
+            color: neutralForegroundRest,
         },
         pivot_tabList: {
             display: "flex",
@@ -41,12 +46,13 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
             alignItems: "center",
             boxSizing: "border-box",
             userSelect: "none",
+            color: neutralForegroundRest,
             borderRadius: toPx(designSystem.cornerRadius),
             "&:hover": {
-                opacity: "0.8",
+                color: neutralForegroundHover,
             },
             "&:active": {
-                opacity: "0.6",
+                color: neutralForegroundActive,
             },
             ...applyFocusVisible({
                 borderColor: designSystem.foregroundColor,
@@ -65,7 +71,7 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
             width: "20px",
             height: "3px",
             display: "block",
-            background: ensureBrandNormal,
+            background: accentFillRest,
         },
         pivot_tabPanel: {
             display: "block",
