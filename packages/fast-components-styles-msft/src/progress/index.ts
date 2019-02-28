@@ -4,20 +4,13 @@ import designSystemDefaults, {
 } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { ProgressClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { ensureBrandNormal, largeContrast } from "../utilities/colors";
-import { get } from "lodash-es";
+import { accentFillRest, neutralFillRest } from "../utilities/color";
 import { toPx } from "@microsoft/fast-jss-utilities";
 
 const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<ProgressClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    const brandColor: string = ensureBrandNormal(config);
-    const backgroundColor: string = largeContrast(
-        designSystem.contrast,
-        designSystem.backgroundColor,
-        brandColor
-    );
 
     return {
         progress: {
@@ -28,7 +21,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = (
             textAlign: "left",
         },
         progress_valueIndicator: {
-            background: brandColor,
+            background: accentFillRest,
             borderRadius: "100px",
             height: "100%",
             "@media (-ms-high-contrast:active)": {
@@ -43,7 +36,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = (
             overflow: "hidden",
             borderRadius: "100px",
             height: toPx(designSystem.designUnit),
-            background: backgroundColor,
+            background: neutralFillRest,
             maskImage: "-webkit-radial-gradient(white, black)",
         },
         progress_indicator__determinate: {
@@ -57,7 +50,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = (
             position: "absolute",
             opacity: "0",
             height: "100%",
-            backgroundColor: brandColor,
+            backgroundColor: accentFillRest,
             borderRadius: "100px",
             animationTimingFunction: "cubic-bezier(0.4, 0.0, 0.6, 1.0)",
             "@media (-ms-high-contrast:active)": {
