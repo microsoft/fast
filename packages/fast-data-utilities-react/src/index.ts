@@ -66,7 +66,7 @@ export interface PluginLocation {
     /**
      * The data location to be interpreted by the plugin
      */
-    absoluteDataLocation: string;
+    dataLocation: string;
 
     /**
      * The type of data this represents
@@ -82,7 +82,7 @@ export interface PluginLocation {
      * The data location of the data
      * relative to the schema
      */
-    dataLocation: string;
+    relativeDataLocation: string;
 
     /**
      * The schema related to the data location
@@ -94,7 +94,7 @@ export interface ChildrenLocation {
     /**
      * The data location of the child component
      */
-    absoluteDataLocation: string;
+    dataLocation: string;
 
     /**
      * The mapping type
@@ -445,7 +445,7 @@ function pluginFindIndexCallback(
     dataLocation: string
 ): (pluginLocation: PluginLocation) => boolean {
     return (pluginLocation: PluginLocation): boolean => {
-        return dataLocation === pluginLocation.absoluteDataLocation;
+        return dataLocation === pluginLocation.dataLocation;
     };
 }
 
@@ -506,8 +506,8 @@ export function getDataLocationsOfPlugins(
                     schema,
                     type: get(subSchema, typeKeyword),
                     mappingType: DataResolverType.plugin,
-                    absoluteDataLocation: dataLocationOfPlugin,
-                    dataLocation: normalizedDataLocation,
+                    dataLocation: dataLocationOfPlugin,
+                    relativeDataLocation: normalizedDataLocation,
                 });
             }
 
@@ -739,7 +739,7 @@ export function mapDataToComponent(
                 (childDataLocation: string): ChildrenLocation => {
                     return {
                         mappingType: DataResolverType.component,
-                        absoluteDataLocation: childDataLocation,
+                        dataLocation: childDataLocation,
                     };
                 }
             ),
@@ -778,11 +778,7 @@ function resolveData(
             );
         case DataResolverType.component:
         default:
-            return mapDataToChildren(
-                data,
-                mappedDataLocation.absoluteDataLocation,
-                childOptions
-            );
+            return mapDataToChildren(data, mappedDataLocation.dataLocation, childOptions);
     }
 }
 
@@ -794,7 +790,7 @@ function mapPluginToData(
 ): any {
     const mappedData: any = cloneDeep(data);
     const pluginModifiedSchemaLocation: string = mapSchemaLocationFromDataLocation(
-        pluginModifiedDataLocation.dataLocation,
+        pluginModifiedDataLocation.relativeDataLocation,
         data,
         pluginModifiedDataLocation.schema
     );
@@ -807,7 +803,7 @@ function mapPluginToData(
             return plugin.matches(pluginId);
         }
     );
-    const pluginData: any = get(data, pluginModifiedDataLocation.absoluteDataLocation);
+    const pluginData: any = get(data, pluginModifiedDataLocation.dataLocation);
 
     if (pluginResolver !== undefined) {
         const pluginResolverMapping: PluginResolverDataMap[] = getPluginResolverDataMap({
@@ -815,7 +811,7 @@ function mapPluginToData(
             pluginData,
             pluginResolver,
             childOptions,
-            dataLocation: pluginModifiedDataLocation.absoluteDataLocation,
+            dataLocation: pluginModifiedDataLocation.dataLocation,
         });
 
         pluginResolverMapping.forEach(
@@ -918,10 +914,8 @@ function orderMappedDataByDataLocation(
     firstMapping: MappedDataLocation,
     secondMapping: MappedDataLocation
 ): number {
-    const firstLocationLength: number = firstMapping.absoluteDataLocation.split(".")
-        .length;
-    const secondLocationLength: number = secondMapping.absoluteDataLocation.split(".")
-        .length;
+    const firstLocationLength: number = firstMapping.dataLocation.split(".").length;
+    const secondLocationLength: number = secondMapping.dataLocation.split(".").length;
 
     if (firstLocationLength > secondLocationLength) {
         return -1;
