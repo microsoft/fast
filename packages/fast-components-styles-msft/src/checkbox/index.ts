@@ -52,9 +52,9 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
             },
             ...applyFocusVisible({
                 boxShadow: `0 0 0 1px ${designSystem.foregroundColor} inset`,
-                border: `${toPx(
-                    designSystem.outlinePatternOutlineWidth
-                )} solid ${neutralOutlineHover(designSystem)}`,
+                border: `${toPx(designSystem.outlinePatternOutlineWidth)} solid ${
+                    designSystem.foregroundColor
+                }`,
             }),
         },
         checkbox_stateIndicator: {
