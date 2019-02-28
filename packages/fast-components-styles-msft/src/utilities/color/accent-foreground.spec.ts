@@ -9,6 +9,8 @@ import {
 import designSystemDefaults, { DesignSystem } from "../../design-system";
 import { palette, Palette, PaletteType, Swatch } from "./palette";
 import { contrast } from "./common";
+import { accentPaletteConfig } from "./color-constants";
+import { parseColorHexRGB } from "@microsoft/fast-colors";
 
 describe("accentForeground", (): void => {
     const neutralPalette: Palette = palette(PaletteType.neutral)(designSystemDefaults);
@@ -69,7 +71,11 @@ describe("accentForeground", (): void => {
                             designSystemDefaults,
                             {
                                 backgroundColor: swatch,
-                                accentPaletteSource: ["#FFF", accent, "#000"],
+                                accentPaletteConfig: Object.assign(
+                                    {},
+                                    accentPaletteConfig,
+                                    { baseColor: parseColorHexRGB(swatch) }
+                                ),
                             }
                         );
 
