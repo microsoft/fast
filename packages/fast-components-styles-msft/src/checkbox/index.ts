@@ -13,8 +13,9 @@ import {
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import {
-    neutralFillStealthRest,
+    neutralFillInputRest,
     neutralForegroundRest,
+    neutralOutlineActive,
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
@@ -41,7 +42,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
             boxSizing: "border-box",
             margin: "0",
             zIndex: "1",
-            background: neutralFillStealthRest,
+            background: neutralFillInputRest,
             border: `${toPx(
                 designSystem.outlinePatternOutlineWidth
             )} solid ${neutralOutlineRest(designSystem)}`,
@@ -49,6 +50,11 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
                 border: `${toPx(
                     designSystem.outlinePatternOutlineWidth
                 )} solid ${neutralOutlineHover(designSystem)}`,
+            },
+            "&:active": {
+                border: `${toPx(
+                    designSystem.outlinePatternOutlineWidth
+                )} solid ${neutralOutlineActive(designSystem)}`,
             },
             ...applyFocusVisible({
                 boxShadow: `0 0 0 1px ${designSystem.foregroundColor} inset`,

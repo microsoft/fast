@@ -5,7 +5,13 @@ import designSystemDefaults, {
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { ContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { density } from "../utilities/density";
-import { neutralFillStealthHover, neutralForegroundRest } from "../utilities/color";
+import {
+    neutralFillStealthActive,
+    neutralFillStealthHover,
+    neutralForegroundActive,
+    neutralForegroundHover,
+    neutralForegroundRest,
+} from "../utilities/color";
 import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
 import { applyTypeRampConfig } from "../utilities/typography";
 import { toPx } from "@microsoft/fast-jss-utilities";
@@ -38,7 +44,12 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
             },
         }),
         "&:hover": {
+            color: neutralForegroundHover,
             background: neutralFillStealthHover,
+        },
+        "&:active": {
+            color: neutralForegroundActive,
+            background: neutralFillStealthActive,
         },
     },
     contextMenuItem_contentRegion: {
