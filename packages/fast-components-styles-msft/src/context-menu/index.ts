@@ -15,13 +15,12 @@ const styles: ComponentStyles<ContextMenuClassNameContract, DesignSystem> = (
 
     return {
         contextMenu: {
-            ...elevation(ElevationMultiplier.e11, designSystem.foregroundColor)(
-                designSystem
-            ),
+            ...elevation(ElevationMultiplier.e11, "#000")(designSystem),
             margin: "0",
             padding: "4px 0",
             maxWidth: "368px",
             minWidth: "64px",
+            background: designSystem.backgroundColor,
             borderRadius: toPx(designSystem.cornerRadius * 2),
         },
     };
