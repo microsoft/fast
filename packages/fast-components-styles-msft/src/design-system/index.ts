@@ -14,16 +14,12 @@ export interface DesignSystem {
     backgroundColor: string;
 
     /**
-     * The source colors used to create the neutral color palette.
-     * This should be an array of strings representing colors in
-     * RGB or HEX format. Color sources should be ordered from light to dark
+     * Configuration object to derive the neutral palette. Expects a ColorPaletteConfig from @microsoft/fast-colors
      */
     neutralPaletteConfig: ColorPaletteConfig;
 
     /**
-     * The source colors used to create the accent color palette.
-     * This should be an array of strings representing colors in
-     * RGB or HEX format. Color sources should be ordered from light to dark
+     * Configuration object to derive the accent palette. Expects a ColorPaletteConfig from @microsoft/fast-colors
      */
     accentPaletteConfig: ColorPaletteConfig;
 

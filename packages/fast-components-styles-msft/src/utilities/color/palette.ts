@@ -32,14 +32,6 @@ const generatePalette: (config: ColorPaletteConfig) => Palette = memoize(
         return new ColorPalette(config).palette.map(
             (color: ColorRGBA64): string => color.toStringHexRGB().toUpperCase()
         );
-        //         const isValid: boolean = source.every(isValidColor);
-        //         const sanitizedSource: string[] = isValid ? source : neutralPaletteConfig;
-        //
-        //         return chroma
-        //             .scale(sanitizedSource)
-        //             .mode("rgb")
-        //             .colors(63)
-        //             .map((color: string) => color.toUpperCase());
     },
     (config: ColorPaletteConfig): string => {
         return Object.keys(config).reduce(
