@@ -55,18 +55,12 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     constructor(props: SelectProps) {
         super(props);
 
-        let initialSelection: ListboxItemProps[];
-        if (this.props.selectedItems !== undefined) {
-            initialSelection = Listbox.getListboxItemDataFromIds(
-                this.props.selectedItems,
-                this.props.children
-            );
-        } else {
-            initialSelection = Listbox.getListboxItemDataFromIds(
-                this.props.defaultSelection,
-                this.props.children
-            );
-        }
+        let initialSelection: ListboxItemProps[] = Listbox.getListboxItemDataFromIds(
+            this.props.selectedItems !== undefined
+                ? this.props.selectedItems
+                : this.props.defaultSelection,
+            this.props.children
+        );
 
         if (!this.props.multiselectable && initialSelection.length > 1) {
             initialSelection = initialSelection.slice(0, 1);
@@ -81,40 +75,49 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     }
 
     public componentDidUpdate(prevProps: SelectProps): void {
+        let updatedSelection: ListboxItemProps[];
+        let updatedMenuVisibility: boolean = this.state.isMenuOpen;
+
         if (prevProps.selectedItems !== this.props.selectedItems) {
-            const newSelection: ListboxItemProps[] = Listbox.getListboxItemDataFromIds(
+            updatedSelection = Listbox.getListboxItemDataFromIds(
                 this.props.selectedItems,
                 this.props.children
             );
-            this.updateSelection(newSelection);
         }
+
         if (prevProps.multiselectable !== this.props.multiselectable) {
+            // in the case that the multiselect is turned off but there are multiple items selected,
+            // choose the first item in the list of selected items
             if (
                 this.props.multiselectable === false &&
                 this.state.selectedItems.length > 1
             ) {
-                this.updateSelection([this.state.selectedItems[0]]);
+                updatedSelection = [this.state.selectedItems[0]];
             }
-            this.toggleMenu(this.checkPropsForMenuState());
+
+            updatedMenuVisibility = this.checkPropsForMenuState();
         }
+
         if (prevProps.isMenuOpen !== this.props.isMenuOpen) {
-            this.toggleMenu(this.checkPropsForMenuState());
+            updatedMenuVisibility = this.checkPropsForMenuState();
+        }
+
+        if (updatedSelection !== undefined) {
+            this.updateSelection(updatedSelection);
+        }
+
+        if (updatedMenuVisibility !== this.state.isMenuOpen) {
+            this.toggleMenu(updatedMenuVisibility);
         }
     }
 
     public componentDidMount(): void {
-        let initialSelection: ListboxItemProps[];
-        if (this.props.selectedItems !== undefined) {
-            initialSelection = Listbox.getListboxItemDataFromIds(
-                this.props.selectedItems,
-                this.props.children
-            );
-        } else {
-            initialSelection = Listbox.getListboxItemDataFromIds(
-                this.props.defaultSelection,
-                this.props.children
-            );
-        }
+        let initialSelection: ListboxItemProps[] = Listbox.getListboxItemDataFromIds(
+            this.props.selectedItems !== undefined
+                ? this.props.selectedItems
+                : this.props.defaultSelection,
+            this.props.children
+        );
 
         if (!this.props.multiselectable && initialSelection.length > 1) {
             initialSelection = initialSelection.slice(0, 1);
@@ -280,7 +283,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
             value: newValue,
             displayString: newDisplayString,
         });
-        if (this.props.onValueChange) {
+        if (typeof this.props.onValueChange === "function") {
             this.props.onValueChange(newValue, newSelection, newDisplayString);
         }
     };
@@ -334,23 +337,13 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         selectedOptions: ListboxItemProps[],
         placeholder: string
     ): string => {
-        const separator: string = ", ";
-        let returnValue: string = "";
-        if (selectedOptions.length > 0) {
-            selectedOptions.forEach((thisOption: ListboxItemProps) => {
-                if (returnValue.length > 0) {
-                    returnValue = returnValue + separator;
-                }
-                returnValue =
-                    returnValue +
-                    (thisOption.displayString === undefined
-                        ? thisOption.value
-                        : thisOption.displayString);
-            });
-        } else {
-            returnValue = placeholder;
-        }
-        return returnValue;
+        const optionValues: string[] = selectedOptions.map(
+            (selectedOption: ListboxItemProps): string => {
+                return selectedOption.displayString || selectedOption.value;
+            }
+        );
+
+        return selectedOptions.length > 0 ? optionValues.join(", ") : placeholder;
     };
 
     /**
@@ -449,10 +442,10 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
      * Toggles the menu
      */
     private toggleMenu = (desiredMenuState: boolean): void => {
-        const shouldOpenMenu: boolean = this.validateMenuState(desiredMenuState);
-        if (shouldOpenMenu !== this.state.isMenuOpen) {
+        const updatedIsMenuOpen: boolean = this.validateMenuState(desiredMenuState);
+        if (updatedIsMenuOpen !== this.state.isMenuOpen) {
             this.setState({
-                isMenuOpen: shouldOpenMenu,
+                isMenuOpen: updatedIsMenuOpen,
             });
         }
     };
