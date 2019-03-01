@@ -32,7 +32,7 @@ export function applyTriggerStyle(color: string): CSSRules<{}> {
     return {
         lineHeight: "16px",
         fontSize: "12px",
-        ...localizePadding(3, 5, 2, 5),
+        ...localizePadding(3, 5, 2, 16),
         border: "none",
         outline: "none",
         boxSizing: "border-box",

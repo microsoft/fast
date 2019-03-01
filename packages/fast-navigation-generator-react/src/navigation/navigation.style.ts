@@ -34,6 +34,7 @@ const styles: ComponentStyles<NavigationClassNameContract, {}> = {
         '&[aria-expanded="false"] > $navigation_itemExpandListTrigger::before, &[aria-expanded="true"] > $navigation_itemExpandListTrigger::before': {
             content: "''",
             display: "inline-block",
+            marginLeft: "-11px",
             marginRight: "5px",
         },
         '&[aria-expanded="false"] > $navigation_itemExpandListTrigger::before': {
