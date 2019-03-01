@@ -75,6 +75,7 @@
     "typescript": "^3.0.1"
   },
   "dependencies": {
+    "@microsoft/fast-colors": "^3.1.5",
     "@microsoft/fast-components-class-name-contracts-base": "^3.7.0",
     "@microsoft/fast-components-class-name-contracts-msft": "^3.5.1",
     "@microsoft/fast-jss-manager": "^3.0.10",
