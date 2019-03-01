@@ -5,6 +5,7 @@ import {
 } from "../../design-system";
 import {
     findClosestSwatchIndex,
+    getPaletteIndex,
     isDarkTheme,
     palette,
     Palette,
@@ -34,27 +35,20 @@ const neutralOutlineAlgorithm: (designSystem: DesignSystem) => StatefulSwatch = 
             designSystem.backgroundColor
         )(designSystem);
         const direction: 1 | -1 = isDarkTheme(designSystem) ? -1 : 1;
-        const maxIndex: number = neutralPalette.length - 1;
-        const restIndex: number = clamp(
-            backgroundIndex + direction * neutralOutlineDeltaRest,
-            0,
-            maxIndex
-        );
-        const hoverIndex: number = clamp(
-            backgroundIndex + direction * neutralOutlineDeltaHover,
-            0,
-            maxIndex
-        );
-        const activeIndex: number = clamp(
-            backgroundIndex + direction * neutralOutlineDeltaActive,
-            0,
-            maxIndex
-        );
 
         return {
-            rest: neutralPalette[restIndex],
-            hover: neutralPalette[hoverIndex],
-            active: neutralPalette[activeIndex],
+            rest: getPaletteIndex(
+                backgroundIndex + direction * neutralOutlineDeltaRest,
+                neutralPalette
+            ),
+            hover: getPaletteIndex(
+                backgroundIndex + direction * neutralOutlineDeltaHover,
+                neutralPalette
+            ),
+            active: getPaletteIndex(
+                backgroundIndex + direction * neutralOutlineDeltaActive,
+                neutralPalette
+            ),
         };
     },
     (designSystem: DesignSystem): string => {

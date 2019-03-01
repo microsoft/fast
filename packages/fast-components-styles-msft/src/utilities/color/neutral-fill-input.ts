@@ -5,7 +5,14 @@ import {
     withDesignSystemDefaults,
 } from "../../design-system";
 import { clamp, memoize } from "lodash-es";
-import { findClosestSwatchIndex, palette, Palette, PaletteType, Swatch } from "./palette";
+import {
+    findClosestSwatchIndex,
+    getPaletteIndex,
+    palette,
+    Palette,
+    PaletteType,
+    Swatch,
+} from "./palette";
 import {
     ColorRecipe,
     FillSwatch,
@@ -29,17 +36,16 @@ const neutralFillInputAlgorithm: DesignSystemResolver<FillSwatch> = memoize(
             PaletteType.neutral,
             designSystem.backgroundColor
         )(designSystem);
-        const fillIndex: number = clamp(
+        const color: Swatch = getPaletteIndex(
             backgroundIndex - neutralFillInputDelta,
-            0,
-            neutralPalette.length - 1
+            neutralPalette
         );
 
         return {
-            rest: neutralPalette[fillIndex],
-            hover: neutralPalette[fillIndex],
-            active: neutralPalette[fillIndex],
-            selected: neutralPalette[fillIndex],
+            rest: color,
+            hover: color,
+            active: color,
+            selected: color,
         };
     },
     (designSystem: DesignSystem): string => {
