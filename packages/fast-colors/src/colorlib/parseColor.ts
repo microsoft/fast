@@ -157,42 +157,42 @@ export const namedColors: object = {
 /**
  * Test if a string looks like a hexadecimal color
  */
-function isHex(raw: string): boolean {
+function isColorStringHex(raw: string): boolean {
     return raw.charAt(0) === "#";
 }
 
 /**
  * Test if a color matches #RRGGBB
  */
-export function isHexRGB(raw: string): boolean {
-    return isHex(raw) && raw.length === 7;
+export function isColorStringHexRGB(raw: string): boolean {
+    return isColorStringHex(raw) && raw.length === 7;
 }
 
 /**
  * Test if a color matches #RRGGBBAA
  */
-export function isHexRGBA(raw: string): boolean {
-    return isHexARGB(raw); // No way to differentiate these two formats, so just use the same test
+export function isColorStringHexRGBA(raw: string): boolean {
+    return isColorStringHexARGB(raw); // No way to differentiate these two formats, so just use the same test
 }
 
 /**
  * Test if a color matches #AARRGGBB
  */
-export function isHexARGB(raw: string): boolean {
-    return isHex(raw) && raw.length === 9;
+export function isColorStringHexARGB(raw: string): boolean {
+    return isColorStringHex(raw) && raw.length === 9;
 }
 
 /**
  * Test if a color matches rgb(rr, gg, bb)
  */
-export function isWebRGB(raw: string): boolean {
+export function isColorStringWebRGB(raw: string): boolean {
     return /^rgb\(/i.test(raw);
 }
 
 /**
  * Test if a color matches rgba(rr, gg, bb, aa)
  */
-export function isWebRGBA(raw: string): boolean {
+export function isColorStringWebRGBA(raw: string): boolean {
     return /^rgba\(/i.test(raw);
 }
 
@@ -310,13 +310,13 @@ export function parseColorNamed(raw: string): ColorRGBA64 | null {
 export function parseColor(raw: string): ColorRGBA64 | null {
     const rawLower: string = raw.toLowerCase();
 
-    if (isHexRGB(rawLower)) {
+    if (isColorStringHexRGB(rawLower)) {
         return parseColorHexRGB(rawLower);
-    } else if (isHexRGBA(rawLower)) {
+    } else if (isColorStringHexRGBA(rawLower)) {
         return parseColorHexARGB(rawLower);
-    } else if (isWebRGB(rawLower)) {
+    } else if (isColorStringWebRGB(rawLower)) {
         return parseColorWebRGB(rawLower);
-    } else if (isWebRGBA(rawLower)) {
+    } else if (isColorStringWebRGBA(rawLower)) {
         return parseColorWebRGBA(rawLower);
     } else if (namedColors[rawLower]) {
         return namedColors[rawLower];

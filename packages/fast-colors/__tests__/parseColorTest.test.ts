@@ -3,11 +3,11 @@
 
 import {
     ColorRGBA64,
-    isHexARGB,
-    isHexRGB,
-    isHexRGBA,
-    isWebRGB,
-    isWebRGBA,
+    isColorStringHexARGB,
+    isColorStringHexRGB,
+    isColorStringHexRGBA,
+    isColorStringWebRGB,
+    isColorStringWebRGBA,
     parseColor,
     parseColorHexRGB,
     parseColorHexRGBA,
@@ -209,111 +209,111 @@ describe("Color parsing and toString", (): void => {
 });
 
 describe("Color identification", (): void => {
-    describe("isHexRGB", (): void => {
+    describe("isColorStringHexRGB", (): void => {
         test("should return false when invoked with a HexRGBA color", (): void => {
-            expect(isHexRGB("#000000FF")).toBe(false);
+            expect(isColorStringHexRGB("#000000FF")).toBe(false);
         });
 
         test("should return false when invoked with a HexARGB color", (): void => {
-            expect(isHexRGB("#FF000000")).toBe(false);
+            expect(isColorStringHexRGB("#FF000000")).toBe(false);
         });
 
         test("should return false when invoked with a WebRGB color", (): void => {
-            expect(isHexRGB("rgb(255, 255, 255)")).toBe(false);
+            expect(isColorStringHexRGB("rgb(255, 255, 255)")).toBe(false);
         });
 
         test("should return false when invoked with a WebRGBA color", (): void => {
-            expect(isHexRGB("rgba(255, 255, 255, 1)")).toBe(false);
+            expect(isColorStringHexRGB("rgba(255, 255, 255, 1)")).toBe(false);
         });
 
         test("should return true when invoked with a HexRGB color", (): void => {
-            expect(isHexRGB("#000000")).toBe(true);
+            expect(isColorStringHexRGB("#000000")).toBe(true);
         });
     });
 
-    describe("isHexRGBA", (): void => {
+    describe("isColorStringHexRGBA", (): void => {
         test("should return false when invoked with a HexRGB color", (): void => {
-            expect(isHexRGBA("#000000")).toBe(false);
+            expect(isColorStringHexRGBA("#000000")).toBe(false);
         });
 
         test("should return true when invoked with a HexARGB color", (): void => {
-            expect(isHexRGBA("#FF000000")).toBe(true); // No way to differentiate between HexARGB and HexRGBA
+            expect(isColorStringHexRGBA("#FF000000")).toBe(true); // No way to differentiate between HexARGB and HexRGBA
         });
 
         test("should return false when invoked with a WebRGB color", (): void => {
-            expect(isHexRGBA("rgb(255, 255, 255)")).toBe(false);
+            expect(isColorStringHexRGBA("rgb(255, 255, 255)")).toBe(false);
         });
 
         test("should return false when invoked with a WebRGBA color", (): void => {
-            expect(isHexRGBA("rgba(255, 255, 255, 1)")).toBe(false);
+            expect(isColorStringHexRGBA("rgba(255, 255, 255, 1)")).toBe(false);
         });
 
         test("should return true when invoked with a HexRGBA color", (): void => {
-            expect(isHexRGBA("#000000FF")).toBe(true);
+            expect(isColorStringHexRGBA("#000000FF")).toBe(true);
         });
     });
 
-    describe("isHexARGB", (): void => {
+    describe("isColorStringHexARGB", (): void => {
         test("should return false when invoked with a HexRGB color", (): void => {
-            expect(isHexARGB("#000000")).toBe(false);
+            expect(isColorStringHexARGB("#000000")).toBe(false);
         });
 
         test("should return true when invoked with a HexRGBA color", (): void => {
-            expect(isHexARGB("#000000FF")).toBe(true); // No way to differentiate between HexARGB and HexRGBA
+            expect(isColorStringHexARGB("#000000FF")).toBe(true); // No way to differentiate between HexARGB and HexRGBA
         });
 
         test("should return false when invoked with a WebRGB color", (): void => {
-            expect(isHexARGB("rgb(255, 255, 255)")).toBe(false);
+            expect(isColorStringHexARGB("rgb(255, 255, 255)")).toBe(false);
         });
 
         test("should return false when invoked with a WebRGBA color", (): void => {
-            expect(isHexARGB("rgba(255, 255, 255, 1)")).toBe(false);
+            expect(isColorStringHexARGB("rgba(255, 255, 255, 1)")).toBe(false);
         });
 
         test("should return true when invoked with a HexARGB color", (): void => {
-            expect(isHexARGB("#FF000000")).toBe(true);
+            expect(isColorStringHexARGB("#FF000000")).toBe(true);
         });
     });
-    describe("isWebRGB", (): void => {
+    describe("isColorStringWebRGB", (): void => {
         test("should return false when invoked with a HexRGB color", (): void => {
-            expect(isWebRGB("#000000")).toBe(false);
+            expect(isColorStringWebRGB("#000000")).toBe(false);
         });
 
         test("should return true when invoked with a HexRGBA color", (): void => {
-            expect(isWebRGB("#000000FF")).toBe(false);
+            expect(isColorStringWebRGB("#000000FF")).toBe(false);
         });
 
         test("should return true when invoked with a HexARGB color", (): void => {
-            expect(isWebRGB("#FF000000")).toBe(false);
+            expect(isColorStringWebRGB("#FF000000")).toBe(false);
         });
 
         test("should return false when invoked with a WebRGBA color", (): void => {
-            expect(isWebRGB("rgba(255, 255, 255, 1)")).toBe(false);
+            expect(isColorStringWebRGB("rgba(255, 255, 255, 1)")).toBe(false);
         });
 
         test("should return true when invoked with a WebRGB color", (): void => {
-            expect(isWebRGB("rgb(255, 255, 255)")).toBe(true);
+            expect(isColorStringWebRGB("rgb(255, 255, 255)")).toBe(true);
         });
     });
-    describe("isWebRGBA", (): void => {
+    describe("isColorStringWebRGBA", (): void => {
         test("should return false when invoked with a HexRGB color", (): void => {
-            expect(isWebRGBA("#000000")).toBe(false);
+            expect(isColorStringWebRGBA("#000000")).toBe(false);
         });
 
         test("should return true when invoked with a HexRGBA color", (): void => {
-            expect(isWebRGBA("#000000FF")).toBe(false);
+            expect(isColorStringWebRGBA("#000000FF")).toBe(false);
         });
 
         test("should return true when invoked with a HexARGB color", (): void => {
-            expect(isWebRGBA("#FF000000")).toBe(false);
+            expect(isColorStringWebRGBA("#FF000000")).toBe(false);
         });
 
         test("should return true when invoked with a WebRGBA color", (): void => {
-            expect(isWebRGBA("rgba(255, 255, 255, 1)")).toBe(true);
+            expect(isColorStringWebRGBA("rgba(255, 255, 255, 1)")).toBe(true);
         });
 
         test("should return false when invoked with a WebRGB color", (): void => {
-            expect(isWebRGBA("rgb(255, 255, 255)")).toBe(false);
+            expect(isColorStringWebRGBA("rgb(255, 255, 255)")).toBe(false);
         });
     });
 });
