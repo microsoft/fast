@@ -22,7 +22,7 @@ const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = (
                 display: "block",
             },
         },
-        dialog_wrapper: {
+        dialog_positioningRegion: {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
