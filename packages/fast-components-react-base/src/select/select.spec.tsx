@@ -116,7 +116,7 @@ describe("select", (): void => {
         );
 
         expect(rendered.state("selectedItems").length).toBe(1);
-        expect(onValueChange).toHaveBeenCalledTimes(1);
+        expect(onValueChange).toHaveBeenCalledTimes(0);
 
         rendered.simulate("click");
         expect(rendered.state("isMenuOpen")).toBe(true);
@@ -125,7 +125,7 @@ describe("select", (): void => {
             .find('[displayString="a"]')
             .simulate("keydown", { keyCode: KeyCodes.space });
         expect(rendered.state("selectedItems").length).toBe(1);
-        expect(onValueChange).toHaveBeenCalledTimes(2);
+        expect(onValueChange).toHaveBeenCalledTimes(1);
     });
 
     test("provided callback function is not called when selected item is reselected", (): void => {
@@ -139,7 +139,7 @@ describe("select", (): void => {
         );
 
         expect(rendered.state("selectedItems").length).toBe(1);
-        expect(onValueChange).toHaveBeenCalledTimes(1);
+        expect(onValueChange).toHaveBeenCalledTimes(0);
 
         rendered.simulate("click");
         expect(rendered.state("isMenuOpen")).toBe(true);
@@ -148,7 +148,7 @@ describe("select", (): void => {
             .find('[displayString="ab"]')
             .simulate("keydown", { keyCode: KeyCodes.space });
         expect(rendered.state("selectedItems").length).toBe(1);
-        expect(onValueChange).toHaveBeenCalledTimes(1);
+        expect(onValueChange).toHaveBeenCalledTimes(0);
     });
 
     test("Arrow keys open menu and increment selection in single select mode", (): void => {
@@ -271,7 +271,7 @@ describe("select", (): void => {
             </Select>,
             { attachTo: container }
         );
-        expect(displayRenderFn).toHaveBeenCalledTimes(2);
+        expect(displayRenderFn).toHaveBeenCalledTimes(1);
     });
 
     test("Hidden select element exists and it's value and props are populated", (): void => {

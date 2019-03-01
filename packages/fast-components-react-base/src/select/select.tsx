@@ -69,8 +69,8 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
 
         this.state = {
             selectedItems: initialSelection,
-            value: "",
-            displayString: "",
+            value: this.getValueFromSelection(initialSelection),
+            displayString: this.getFormattedDisplayString(initialSelection),
             isMenuOpen: this.validateMenuState(false),
         };
     }
@@ -113,20 +113,20 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     }
 
     public componentDidMount(): void {
-        let initialSelection: ListboxItemProps[] = Listbox.getListboxItemDataFromIds(
-            this.props.selectedItems !== undefined
-                ? this.props.selectedItems
-                : this.props.defaultSelection,
-            this.props.children
-        );
+        // let initialSelection: ListboxItemProps[] = Listbox.getListboxItemDataFromIds(
+        //     this.props.selectedItems !== undefined
+        //         ? this.props.selectedItems
+        //         : this.props.defaultSelection,
+        //     this.props.children
+        // );
 
-        if (!this.props.multiselectable && initialSelection.length > 1) {
-            initialSelection = initialSelection.slice(0, 1);
-        }
+        // if (!this.props.multiselectable && initialSelection.length > 1) {
+        //     initialSelection = initialSelection.slice(0, 1);
+        // }
 
         window.addEventListener("click", this.handleWindowClick);
 
-        this.updateSelection(initialSelection);
+        // this.updateSelection(initialSelection);
         this.toggleMenu(this.checkPropsForMenuState());
         if (
             this.props.autoFocus &&
@@ -464,7 +464,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     };
 
     /**
-     * Close the menu when when there are clicks outside
+     * Validate desired menu state against props
      */
     private validateMenuState = (desiredMenuState: boolean): boolean => {
         let shouldOpenMenu: boolean = desiredMenuState;
