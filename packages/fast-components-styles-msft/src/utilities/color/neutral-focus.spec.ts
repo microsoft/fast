@@ -3,7 +3,7 @@ import { palette, Palette, PaletteType, Swatch } from "./palette";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
 import { neutralFocus } from "./neutral-focus";
 
-describe("neutralForeground", (): void => {
+describe("neutralFocus", (): void => {
     test("should return a string when invoked with an object", (): void => {
         expect(typeof neutralFocus(designSystemDefaults)).toBe("string");
     });
