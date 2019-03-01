@@ -1,10 +1,11 @@
 import { Direction } from "@microsoft/fast-web-utilities";
 import { withDefaults } from "@microsoft/fast-jss-utilities";
 import {
-    accentPaletteSource,
-    neutralPaletteSource,
+    accentPaletteConfig,
+    neutralPaletteConfig,
     white,
 } from "../utilities/color/color-constants";
+import { ColorPaletteConfig } from "@microsoft/fast-colors";
 
 export interface DesignSystem {
     /**
@@ -13,18 +14,14 @@ export interface DesignSystem {
     backgroundColor: string;
 
     /**
-     * The source colors used to create the neutral color palette.
-     * This should be an array of strings representing colors in
-     * RGB or HEX format. Color sources should be ordered from light to dark
+     * Configuration object to derive the neutral palette. Expects a ColorPaletteConfig from @microsoft/fast-colors
      */
-    neutralPaletteSource: string[];
+    neutralPaletteConfig: ColorPaletteConfig;
 
     /**
-     * The source colors used to create the accent color palette.
-     * This should be an array of strings representing colors in
-     * RGB or HEX format. Color sources should be ordered from light to dark
+     * Configuration object to derive the accent palette. Expects a ColorPaletteConfig from @microsoft/fast-colors
      */
-    accentPaletteSource: string[];
+    accentPaletteConfig: ColorPaletteConfig;
 
     /**
      * The brand color used as color accents.
@@ -77,8 +74,8 @@ const designSystemDefaults: DesignSystem = {
     direction: Direction.ltr,
     cornerRadius: 2,
     outlinePatternOutlineWidth: 1,
-    neutralPaletteSource,
-    accentPaletteSource,
+    neutralPaletteConfig,
+    accentPaletteConfig,
 
     // @deprecated
     foregroundColor: "#111",
