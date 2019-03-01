@@ -18,6 +18,10 @@
                 "justified",
                 "lightweight"
             ]
+        },
+        "disabled": {
+            "title": "Disabled",
+            "type": "boolean"
         }
     },
     "reactProperties": {
