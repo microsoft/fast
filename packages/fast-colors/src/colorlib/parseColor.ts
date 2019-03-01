@@ -172,7 +172,7 @@ export function isHexRGB(raw: string): boolean {
  * Test if a color matches #RRGGBBAA
  */
 export function isHexRGBA(raw: string): boolean {
-    return isHex(raw) && raw.length === 9;
+    return isHexARGB(raw); // No way to differentiate these two formats, so just use the same test
 }
 
 /**
