@@ -154,6 +154,48 @@ export const namedColors: object = {
     yellowgreen: new ColorRGBA64(0.603922, 0.803922, 0.196078, 1),
 };
 
+/**
+ * Test if a string looks like a hexadecimal color
+ */
+function isHex(raw: string): boolean {
+    return raw.charAt(0) === "#";
+}
+
+/**
+ * Test if a color matches #RRGGBB
+ */
+export function isHexRGB(raw: string): boolean {
+    return isHex(raw) && raw.length === 7;
+}
+
+/**
+ * Test if a color matches #RRGGBBAA
+ */
+export function isHexRGBA(raw: string): boolean {
+    return isHex(raw) && raw.length === 9;
+}
+
+/**
+ * Test if a color matches #AARRGGBB
+ */
+export function isHexARGB(raw: string): boolean {
+    return isHex(raw) && raw.length === 9;
+}
+
+/**
+ * Test if a color matches rgb(rr, gg, bb)
+ */
+export function isWebRGB(raw: string): boolean {
+    return /^rgb\(/i.test(raw);
+}
+
+/**
+ * Test if a color matches rgba(rr, gg, bb, aa)
+ */
+export function isWebRGBA(raw: string): boolean {
+    return /^rgba\(/i.test(raw);
+}
+
 // Expects format #RRGGBB
 export function parseColorHexRGB(raw: string): ColorRGBA64 | null {
     if (raw.length !== 7) {
@@ -267,20 +309,18 @@ export function parseColorNamed(raw: string): ColorRGBA64 | null {
 // or any of the CSS color names https://www.w3schools.com/colors/colors_names.asp
 export function parseColor(raw: string): ColorRGBA64 | null {
     const rawLower: string = raw.toLowerCase();
-    if (rawLower.startsWith("#")) {
-        if (rawLower.length === 7) {
-            return parseColorHexRGB(rawLower);
-        } else if (rawLower.length === 9) {
-            return parseColorHexARGB(rawLower);
-        } else {
-            return null;
-        }
-    } else if (rawLower.startsWith("rgb(")) {
+
+    if (isHexRGB(rawLower)) {
+        return parseColorHexRGB(rawLower);
+    } else if (isHexRGBA(rawLower)) {
+        return parseColorHexARGB(rawLower);
+    } else if (isWebRGB(rawLower)) {
         return parseColorWebRGB(rawLower);
-    } else if (rawLower.startsWith("rgba(")) {
+    } else if (isWebRGBA(rawLower)) {
         return parseColorWebRGBA(rawLower);
     } else if (namedColors[rawLower]) {
         return namedColors[rawLower];
     }
+
     return null;
 }
