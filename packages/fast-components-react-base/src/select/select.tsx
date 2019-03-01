@@ -7,6 +7,7 @@ import { SelectHandledProps, SelectProps, SelectUnhandledProps } from "./select.
 import { ListboxItemProps } from "../listbox-item";
 import Listbox from "../listbox";
 import Button from "../button";
+import { canUseDOM } from "exenv-es6";
 
 export interface SelectState {
     value: string | string[];
@@ -127,6 +128,16 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
 
         this.updateSelection(initialSelection);
         this.toggleMenu(this.checkPropsForMenuState());
+        if (
+            this.props.autoFocus &&
+            !this.state.isMenuOpen &&
+            !this.props.multiselectable
+        ) {
+            const triggerButton: HTMLButtonElement = this.getTriggerButton();
+            if (triggerButton !== null) {
+                triggerButton.focus();
+            }
+        }
     }
 
     public componentWillUnmount(): void {
@@ -245,15 +256,17 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         if (!this.state.isMenuOpen) {
             return;
         }
-        let shouldfocus: boolean = this.props.autoFocus;
-        if (shouldfocus === undefined) {
-            shouldfocus = this.props.multiselectable ? false : true;
+        // in single select mode we always focus on an item when menu is opened,
+        // multi-select lists only auto focus on an item if explicitly set to do so via props
+        let shouldFocusOnMount: boolean = !this.props.multiselectable;
+        if (this.props.multiselectable && this.props.autoFocus) {
+            shouldFocusOnMount = this.props.multiselectable;
         }
         return (
             <Listbox
                 labelledBy={this.props.labelledBy}
                 disabled={this.props.disabled}
-                focusItemOnMount={shouldfocus}
+                focusItemOnMount={shouldFocusOnMount}
                 multiselectable={this.props.multiselectable}
                 defaultSelection={this.state.selectedItems}
                 selectedItems={this.props.selectedItems}
@@ -484,6 +497,32 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         return this.props.displayStringFormatter === undefined
             ? this.defaultDisplayStringFormatter(selectedOptions, this.props.placeholder)
             : this.props.displayStringFormatter(selectedOptions, this.props.placeholder);
+    };
+
+    /**
+     * Return the first child of the select that is a non-disabled button
+     */
+    private getTriggerButton(): HTMLButtonElement {
+        const children: Element[] =
+            canUseDOM() && this.rootElement.current instanceof HTMLElement
+                ? Array.from(this.rootElement.current.children)
+                : [];
+
+        const focusChildIndex: number = children.findIndex(this.isFocusableButton);
+
+        return focusChildIndex !== -1
+            ? (children[focusChildIndex] as HTMLButtonElement)
+            : null;
+    }
+
+    /**
+     * Determines if a given element is a focusable button
+     */
+    private isFocusableButton = (element: Element): element is HTMLElement => {
+        return (
+            element instanceof HTMLButtonElement &&
+            element.getAttribute("aria-disabled") !== "true"
+        );
     };
 }
 

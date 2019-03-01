@@ -13,7 +13,7 @@
             "title": "Name",
             "type": "string"
         },
-        "formIc": {
+        "form": {
             "title": "Form Id",
             "type": "string"
         },
@@ -39,6 +39,14 @@
         },
         "defaultSelection": {
             "title":"Default selection",
+            "type":"string"
+        },
+        "autoFocus": {
+            "title": "Auto focus",
+            "type": "boolean"
+        },
+        "labelledBy": {
+            "title":"Labelled by",
             "type":"string"
         }
     },
