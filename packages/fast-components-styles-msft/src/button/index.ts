@@ -1,76 +1,69 @@
-import {
-    ComponentStyles,
-    ComponentStyleSheet,
-    CSSRules,
-} from "@microsoft/fast-jss-manager";
 import { applyTypeRampConfig } from "../utilities/typography";
 import { ButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
     applyFocusVisible,
     applyLocalizedProperty,
-    contrast,
     Direction,
-    focusVisible,
-    scaleContrast,
     toPx,
 } from "@microsoft/fast-jss-utilities";
-import { curry } from "lodash-es";
 import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import {
-    disabledContrast,
-    ensureBrandNormal,
-    ensureForegroundNormal,
-    ensureLargeContrast,
-    ensureNormalContrast,
-    hoverContrast,
-    scaleContrastNormal,
-} from "../utilities/colors";
-import Chroma from "chroma-js";
+    ComponentStyles,
+    ComponentStyleSheet,
+    CSSRules,
+} from "@microsoft/fast-jss-manager";
 import { density } from "../utilities/density";
 import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
-import outlinePattern from "../patterns/outline";
+import {
+    accentFillActive,
+    accentFillHover,
+    accentFillRest,
+    accentForegroundActive,
+    accentForegroundCut,
+    accentForegroundHover,
+    accentForegroundRest,
+    neutralFillActive,
+    neutralFillHover,
+    neutralFillRest,
+    neutralFillStealthActive,
+    neutralFillStealthHover,
+    neutralFillStealthRest,
+    neutralForegroundRest,
+    neutralOutlineActive,
+    neutralOutlineHover,
+    neutralOutlineRest,
+} from "../utilities/color";
 
 function applyTransparentBackplateStyles(
     designSystem: DesignSystem
 ): CSSRules<DesignSystem> {
     return {
-        color: ensureBrandNormal(designSystem),
-        fill: ensureBrandNormal(designSystem),
+        color: accentForegroundRest(designSystem),
+        fill: accentForegroundRest(designSystem),
         ...applyTransparentBackground(),
-        [`&:hover, &${focusVisible()}`]: {
+        ...applyFocusVisible({
             borderColor: "transparent",
             boxShadow: "none",
-            ...applyTransparentBackground(),
-        },
+            "& $button_contentRegion::before": {
+                background: neutralForegroundRest,
+            },
+        }),
+        // Underline
         "&:active $button_contentRegion::before, &:hover $button_contentRegion::before": {
-            background: ensureBrandNormal(designSystem),
-        },
-        [`&${focusVisible()} $button_contentRegion::before`]: {
-            background: ensureForegroundNormal,
+            background: accentFillRest,
         },
         "&$button__disabled, &$button__disabled $button_contentRegion::before": {
             ...applyTransparentBackground(),
         },
-        "&$button__disabled": {
-            borderColor: "transparent",
-            color: disabledForegroundContrast(designSystem),
-            fill: disabledForegroundContrast(designSystem),
-            "& $button_beforeContent, & $button_afterContent": {
-                fill: disabledForegroundContrast(designSystem),
-            },
+        "&:hover": {
+            color: accentForegroundHover(designSystem),
+            ...applyTransparentBackground(),
         },
-        "& $button_beforeContent, & $button_afterContent": {
-            fill: ensureBrandNormal(designSystem),
+        "&:active": {
+            color: accentForegroundActive(designSystem),
+            ...applyTransparentBackground(),
         },
     };
-}
-
-function disabledForegroundContrast(designSystem: DesignSystem): string {
-    return disabledContrast(
-        designSystem.contrast,
-        designSystem.foregroundColor,
-        designSystem.backgroundColor
-    );
 }
 
 function applyTransparentBackground(): CSSRules<DesignSystem> {
@@ -82,102 +75,8 @@ function applyTransparentBackground(): CSSRules<DesignSystem> {
 const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<ButtonClassNameContract, DesignSystem> => {
-    type ContrastFunction = (operandColor: string, referenceColor: string) => string;
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    const contrastScale: number = designSystem.contrast;
-    const foregroundColor: string = designSystem.foregroundColor;
-    const backgroundColor: string = designSystem.backgroundColor;
-    const brandColor: string = designSystem.brandColor;
     const direction: Direction = designSystem.direction;
-    const scaledEnsureNormalContrast: ContrastFunction = curry(ensureNormalContrast)(
-        contrastScale
-    );
-    const scaledEnsureLargeContrast: ContrastFunction = curry(ensureLargeContrast)(
-        contrastScale
-    );
-    const focusBoxShadowDefaults: string = "inset 0 0 0 2px";
-
-    // Define secondary button colors
-    const color: string = "white";
-    const secondaryForegroundColor: string = designSystem.foregroundColor;
-    const secondaryBackgroundColor: string = scaledEnsureNormalContrast(
-        contrast(
-            scaleContrast(1.32, contrastScale),
-            designSystem.foregroundColor,
-            designSystem.backgroundColor
-        ),
-        secondaryForegroundColor
-    );
-    const secondaryHoverBackgroundColor: string = hoverContrast(
-        designSystem.contrast,
-        secondaryBackgroundColor
-    );
-    const secondaryFocusBorderColor: string = scaledEnsureNormalContrast(
-        scaledEnsureNormalContrast(foregroundColor, backgroundColor),
-        secondaryBackgroundColor
-    );
-    const secondaryFocusBoxShadow: string =
-        Chroma.contrast(secondaryBackgroundColor, secondaryFocusBorderColor) <
-        scaleContrastNormal(contrastScale)
-            ? `${focusBoxShadowDefaults} ${ensureNormalContrast(
-                  contrastScale,
-                  secondaryBackgroundColor,
-                  secondaryFocusBorderColor
-              )}`
-            : "none";
-    const secondaryDisabledBackgroundColor: string = disabledContrast(
-        contrastScale,
-        secondaryBackgroundColor,
-        backgroundColor
-    );
-    const secondaryDisabledColor: string = disabledContrast(
-        contrastScale,
-        secondaryForegroundColor,
-        secondaryDisabledBackgroundColor
-    );
-
-    // Define primary button colors
-    const primaryRestBackgroundColor: string = scaledEnsureLargeContrast(
-        scaledEnsureNormalContrast(brandColor, backgroundColor),
-        color
-    );
-    const primaryHoverBackground: string = hoverContrast(
-        designSystem.contrast,
-        primaryRestBackgroundColor
-    );
-    const primaryFocusBorderColor: string = scaledEnsureNormalContrast(
-        scaledEnsureNormalContrast(foregroundColor, backgroundColor),
-        primaryRestBackgroundColor
-    );
-    const primaryFocusBoxShadow: string =
-        Chroma.contrast(primaryRestBackgroundColor, primaryFocusBorderColor) <
-        scaleContrastNormal(contrastScale)
-            ? `${focusBoxShadowDefaults} ${ensureNormalContrast(
-                  contrastScale,
-                  primaryRestBackgroundColor,
-                  primaryFocusBorderColor
-              )}`
-            : "none";
-    const primaryDisabledBackground: string = disabledContrast(
-        contrastScale,
-        primaryRestBackgroundColor,
-        backgroundColor
-    );
-    const primaryDisabledColor: string = disabledContrast(
-        contrastScale,
-        color,
-        primaryDisabledBackground
-    );
-
-    const outlineColor: string = scaledEnsureNormalContrast(
-        foregroundColor,
-        backgroundColor
-    );
-    const outlineDisabledColor: string = disabledContrast(
-        designSystem.contrast,
-        outlineColor,
-        backgroundColor
-    );
 
     return {
         button: {
@@ -200,72 +99,54 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             overflow: "hidden",
             textDecoration: "none",
             whiteSpace: "nowrap",
-            transition: "all 0.2s ease-in-out",
-            color: secondaryForegroundColor,
-            fill: secondaryForegroundColor,
-            backgroundColor: secondaryBackgroundColor,
+            transition: "all 0.1s ease-in-out",
+            color: neutralForegroundRest,
+            fill: neutralForegroundRest,
+            background: neutralFillRest,
             "&:hover": {
-                backgroundColor: secondaryHoverBackgroundColor,
+                background: neutralFillHover,
+            },
+            "&:active": {
+                background: neutralFillActive,
             },
             ...applyFocusVisible({
-                borderColor: secondaryFocusBorderColor,
-                boxShadow: secondaryFocusBoxShadow,
+                borderColor: designSystem.foregroundColor, // TODO Need to create focus utilities
             }),
-            "&$button__disabled": {
-                cursor: "not-allowed",
-                backgroundColor: secondaryDisabledBackgroundColor,
-                color: secondaryDisabledColor,
-                fill: secondaryDisabledColor,
-                "& $button_beforeContent, & $button_afterContent": {
-                    fill: secondaryDisabledColor,
-                },
-            },
             "&::-moz-focus-inner": {
                 border: "0",
             },
         },
         button__primary: {
-            color,
-            fill: color,
-            backgroundColor: primaryRestBackgroundColor,
+            color: accentForegroundCut,
+            fill: accentForegroundCut,
+            background: accentFillRest,
             "&:hover": {
-                backgroundColor: primaryHoverBackground,
+                background: accentFillHover,
+            },
+            "&:active": {
+                background: accentFillActive,
             },
             ...applyFocusVisible({
-                borderColor: primaryFocusBorderColor,
-                boxShadow: primaryFocusBoxShadow,
+                borderColor: designSystem.foregroundColor, // TODO Need to create focus utilities
             }),
-            "&$button__disabled": {
-                color: primaryDisabledColor,
-                fill: primaryDisabledColor,
-                backgroundColor: primaryDisabledBackground,
-                "& $button_beforeContent, & $button_afterContent": {
-                    fill: primaryDisabledColor,
-                },
-            },
             "& $button_beforeContent, & $button_afterContent": {
-                fill: color,
+                fill: accentForegroundCut,
             },
         },
         button__outline: {
-            ...outlinePattern.rest,
-            "&, &:hover": {
-                color: outlineColor,
-                ...applyTransparentBackground(),
-            },
+            background: neutralFillStealthRest,
+            border: `1px solid ${neutralOutlineRest(designSystem)}`,
             "&:hover": {
-                ...outlinePattern.hover,
+                background: neutralFillStealthHover,
+                border: `1px solid ${neutralOutlineHover(designSystem)}`,
+            },
+            "&:active": {
+                background: neutralFillStealthActive,
+                border: `1px solid ${neutralOutlineActive(designSystem)}`,
             },
             ...applyFocusVisible({
-                ...applyTransparentBackground(),
-                ...outlinePattern.focus,
+                borderColor: designSystem.foregroundColor, // TODO Need to create focus utilities
             }),
-            "&$button__disabled": {
-                ...applyTransparentBackground(),
-                ...outlinePattern.disabled,
-                color: outlineDisabledColor,
-                fill: outlineDisabledColor,
-            },
         },
         button__lightweight: {
             ...applyTransparentBackplateStyles(designSystem),
@@ -288,7 +169,10 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
                 [applyLocalizedProperty("left", "right", direction)]: "0",
             },
         },
-        button__disabled: {},
+        button__disabled: {
+            cursor: "not-allowed",
+            opacity: "0.3",
+        },
         button_beforeContent: {},
         button_afterContent: {},
     };
