@@ -1,5 +1,6 @@
 import { accentForegroundCut, accentForegroundCutLarge } from "./accent-foreground-cut";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
+import { Swatch } from "./palette";
 
 describe("Cut text", (): void => {
     test("should return white by by default", (): void => {
@@ -7,16 +8,8 @@ describe("Cut text", (): void => {
         expect(accentForegroundCutLarge(undefined as any)).toBe("#FFFFFF");
     });
     test("should return black when background does not meet contrast ratio", (): void => {
-        expect(
-            accentForegroundCut({
-                accentPaletteSource: ["#FFF", "#FFF"],
-            } as DesignSystem)
-        ).toBe("#000000");
-        expect(
-            accentForegroundCutLarge({
-                accentPaletteSource: ["#FFF", "#FFF"],
-            } as DesignSystem)
-        ).toBe("#000000");
+        expect(accentForegroundCut((): Swatch => "#FFF")({} as any)).toBe("#000000");
+        expect(accentForegroundCutLarge((): Swatch => "#FFF")({} as any)).toBe("#000000");
 
         expect(
             accentForegroundCut((designSystem: DesignSystem) => "#FFF")(
