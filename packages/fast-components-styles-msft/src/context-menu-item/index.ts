@@ -8,6 +8,7 @@ import { density } from "../utilities/density";
 import {
     neutralFillStealthActive,
     neutralFillStealthHover,
+    neutralFocus,
     neutralForegroundActive,
     neutralForegroundHover,
     neutralForegroundRest,
@@ -40,7 +41,7 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         ...applyFocusVisible({
             borderColor: (config: DesignSystem): string => {
                 const designSystem: DesignSystem = withDesignSystemDefaults(config);
-                return designSystem.foregroundColor;
+                return neutralFocus(designSystem);
             },
         }),
         "&:hover": {

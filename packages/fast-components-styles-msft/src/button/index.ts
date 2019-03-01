@@ -28,6 +28,7 @@ import {
     neutralFillStealthActive,
     neutralFillStealthHover,
     neutralFillStealthRest,
+    neutralFocus,
     neutralForegroundRest,
     neutralOutlineActive,
     neutralOutlineHover,
@@ -110,7 +111,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
                 background: neutralFillActive,
             },
             ...applyFocusVisible({
-                borderColor: designSystem.foregroundColor, // TODO Need to create focus utilities
+                borderColor: neutralFocus(designSystem),
             }),
             "&::-moz-focus-inner": {
                 border: "0",
@@ -127,7 +128,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
                 background: accentFillActive,
             },
             ...applyFocusVisible({
-                borderColor: designSystem.foregroundColor, // TODO Need to create focus utilities
+                borderColor: neutralFocus(designSystem),
             }),
             "& $button_beforeContent, & $button_afterContent": {
                 fill: accentForegroundCut,
@@ -145,7 +146,8 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
                 border: `1px solid ${neutralOutlineActive(designSystem)}`,
             },
             ...applyFocusVisible({
-                borderColor: designSystem.foregroundColor, // TODO Need to create focus utilities
+                boxShadow: `0 0 0 1px ${neutralFocus(designSystem)} inset`,
+                borderColor: neutralFocus(designSystem),
             }),
         },
         button__lightweight: {

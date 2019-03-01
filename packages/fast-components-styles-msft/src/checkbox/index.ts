@@ -16,6 +16,7 @@ import {
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
+    neutralFocus,
     neutralForegroundRest,
     neutralOutlineActive,
     neutralOutlineHover,
@@ -61,10 +62,10 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
                 )} solid ${neutralOutlineActive(designSystem)}`,
             },
             ...applyFocusVisible({
-                boxShadow: `0 0 0 1px ${designSystem.foregroundColor} inset`,
-                border: `${toPx(designSystem.outlinePatternOutlineWidth)} solid ${
-                    designSystem.foregroundColor
-                }`,
+                boxShadow: `0 0 0 1px ${neutralFocus(designSystem)} inset`,
+                border: `${toPx(
+                    designSystem.outlinePatternOutlineWidth
+                )} solid ${neutralFocus(designSystem)}`,
             }),
         },
         checkbox_stateIndicator: {

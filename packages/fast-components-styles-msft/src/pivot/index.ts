@@ -14,6 +14,7 @@ import { applyTypeRampConfig } from "../utilities/typography";
 import { density } from "../utilities/density";
 import {
     accentFillRest,
+    neutralFocus,
     neutralForegroundActive,
     neutralForegroundHover,
     neutralForegroundRest,
@@ -55,7 +56,7 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
                 color: neutralForegroundActive,
             },
             ...applyFocusVisible({
-                borderColor: designSystem.foregroundColor,
+                borderColor: neutralFocus(designSystem),
             }),
         },
         pivot_tab__active: {},
