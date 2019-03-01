@@ -1,5 +1,7 @@
 # FAST Data utilities React
 
+**FAST Data utilities React has been deprecated. Use [FAST Tooling React](https://www.npmjs.com/package/@microsoft/fast-tooling-react) instead.**
+
 React data utilities are used to map data to components and perform other actions that may be necessary to pass data to other FAST-DNA libraries for manipulation, data validation, or storage. It relies on the creation of relevant JSON schemas for components, JSON schemas for the purposes of React use additional keyword of `reactProperties` for React children with the "type" of "children".
 
 ## Installation
