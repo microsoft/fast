@@ -78,7 +78,8 @@
     "@microsoft/fast-components-class-name-contracts-base": "^3.10.0",
     "@microsoft/fast-components-class-name-contracts-msft": "^3.9.0",
     "@microsoft/fast-jss-manager": "^3.0.13",
-    "@microsoft/fast-jss-utilities": "^3.2.5"
+    "@microsoft/fast-jss-utilities": "^3.2.5",
+    "@microsoft/fast-colors": "^3.1.5"
   },
   "peerDependencies": {
     "@microsoft/fast-web-utilities": "^3.1.0",
