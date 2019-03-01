@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.7.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@3.6.0...@microsoft/fast-components-class-name-contracts-msft@3.7.0) (2019-03-01)
+
+
+### Features
+
+* update carousel functionality and design ([#1411](https://github.com/Microsoft/fast-dna/issues/1411)) ([fce4723](https://github.com/Microsoft/fast-dna/commit/fce4723))
+
+
+
+
+
 # [3.6.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@3.5.1...@microsoft/fast-components-class-name-contracts-msft@3.6.0) (2019-02-28)
 
 

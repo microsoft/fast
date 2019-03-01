@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-data-utilities-react@1.4.0...@microsoft/fast-data-utilities-react@1.4.1) (2019-03-01)
+
+
+### Bug Fixes
+
+* update to allow nesting to occur within plugins and components when resolving executable data structures and resolves an issue with passing all children back to a plugin instead of resolving each child ([#1464](https://github.com/Microsoft/fast-dna/issues/1464)) ([baac945](https://github.com/Microsoft/fast-dna/commit/baac945))
+
+
+
+
+
 # [1.4.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-data-utilities-react@1.3.0...@microsoft/fast-data-utilities-react@1.4.0) (2019-02-28)
 
 

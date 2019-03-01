@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.11.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.10.0...@microsoft/fast-components-react-msft@3.11.0) (2019-03-01)
+
+
+### Features
+
+* update carousel functionality and design ([#1411](https://github.com/Microsoft/fast-dna/issues/1411)) ([fce4723](https://github.com/Microsoft/fast-dna/commit/fce4723))
+
+
+
+
+
 # [3.10.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.9.0...@microsoft/fast-components-react-msft@3.10.0) (2019-02-28)
 
 
