@@ -75,6 +75,11 @@ export {
 } from "./neutral-outline";
 
 /**
+ * Focus colors
+ */
+export { neutralFocus } from "./neutral-focus";
+
+/**
  * Export supporting types
  */
 export { neutralPaletteConfig, accentPaletteConfig } from "./color-constants";
