@@ -1,7 +1,7 @@
 import { memoize } from "lodash-es";
-import { isDarkTheme, palette, Palette, PaletteType, Swatch } from "./palette";
+import { isDarkTheme, Swatch } from "./palette";
 import { neutralForegroundDark, neutralForegroundLight } from "./neutral-foreground";
-import { ColorRecipe, SwatchResolver } from "./common";
+import { SwatchResolver } from "./common";
 import {
     DesignSystem,
     ensureDesignSystemDefaults,
