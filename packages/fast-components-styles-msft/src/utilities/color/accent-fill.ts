@@ -11,7 +11,14 @@ import {
     SwatchStates,
 } from "./common";
 import { accentSwatch, findAccessibleAccentSwatchIndexs } from "./accent";
-import { isDarkTheme, Palette, palette, PaletteType, Swatch } from "./palette";
+import {
+    getPaletteIndex,
+    isDarkTheme,
+    Palette,
+    palette,
+    PaletteType,
+    Swatch,
+} from "./palette";
 import { accentForegroundCut } from "./accent-foreground-cut";
 import { memoize } from "lodash-es";
 
@@ -49,16 +56,16 @@ export const accentFillAlgorithm: (
         });
 
         return {
-            rest: accentPalette[indexes.rest],
-            hover: accentPalette[indexes.hover],
-            active: accentPalette[indexes.active],
-            selected:
-                accentPalette[
-                    indexes.rest +
-                        (isDarkTheme(designSystem)
-                            ? accentFillDeltaSelected * -1
-                            : accentFillDeltaSelected)
-                ],
+            rest: getPaletteIndex(indexes.rest, accentPalette),
+            hover: getPaletteIndex(indexes.hover, accentPalette),
+            active: getPaletteIndex(indexes.active, accentPalette),
+            selected: getPaletteIndex(
+                indexes.rest +
+                    (isDarkTheme(designSystem)
+                        ? accentFillDeltaSelected * -1
+                        : accentFillDeltaSelected),
+                accentPalette
+            ),
         };
     },
     (designSystem: DesignSystem, contrastTarget: number): string => {

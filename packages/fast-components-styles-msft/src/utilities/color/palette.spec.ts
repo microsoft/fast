@@ -1,6 +1,7 @@
 import {
     findClosestSwatchIndex,
     findSwatchIndex,
+    getPaletteIndex,
     palette,
     Palette,
     PaletteType,
@@ -132,5 +133,23 @@ describe("findClosestSwatchIndex", (): void => {
         expect(
             findClosestSwatchIndex(PaletteType.neutral, "#F589FF")({} as DesignSystem)
         ).toBe(19);
+    });
+});
+
+describe("getPaletteIndex", (): void => {
+    const colorPalette: Palette = ["#FFF", "#F00", "#000"];
+
+    test("should return the first color when the input index is less than 0", (): void => {
+        expect(getPaletteIndex(-1, colorPalette)).toBe("#FFF");
+    });
+
+    test("should return the last color when the input index is greater than the last index of the palette", (): void => {
+        expect(getPaletteIndex(4, colorPalette)).toBe("#000");
+    });
+
+    test("should return the color at the provided index if the index is within the bounds of the array", (): void => {
+        expect(getPaletteIndex(0, colorPalette)).toBe("#FFF");
+        expect(getPaletteIndex(1, colorPalette)).toBe("#F00");
+        expect(getPaletteIndex(2, colorPalette)).toBe("#000");
     });
 });

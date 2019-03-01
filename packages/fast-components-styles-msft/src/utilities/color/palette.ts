@@ -5,7 +5,7 @@ import {
     ensureDesignSystemDefaults,
 } from "../../design-system";
 import chroma from "chroma-js";
-import { memoize } from "lodash-es";
+import { clamp, memoize } from "lodash-es";
 import { colorMatches, isValidColor, luminance } from "./common";
 import { neutralForegroundDark, neutralForegroundLight } from "./neutral-foreground";
 import { ColorPalette, ColorPaletteConfig, ColorRGBA64 } from "@microsoft/fast-colors";
@@ -151,6 +151,7 @@ export function findClosestSwatchIndex(
         }
     );
 }
+
 /**
  * Determines if we're in a dark theme, determined by comparing the contrast
  * of light neutral-foreground and dark neutral-foreground to the background. If light neutral-foreground
@@ -177,3 +178,11 @@ export const isDarkTheme: DesignSystemResolver<boolean> = memoize(
         return designSystem.backgroundColor;
     }
 );
+
+/**
+ * Safely retrieves an index of a palette. The index is clamped to valid
+ * array indexes so that a swatch is always returned
+ */
+export function getPaletteIndex(index: number, colorPalette: Swatch[]): Swatch {
+    return colorPalette[clamp(index, 0, colorPalette.length - 1)];
+}
