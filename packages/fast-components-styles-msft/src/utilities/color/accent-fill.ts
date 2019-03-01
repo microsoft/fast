@@ -11,14 +11,7 @@ import {
     SwatchStates,
 } from "./common";
 import { accentSwatch, findAccessibleAccentSwatchIndexs } from "./accent";
-import {
-    getPaletteIndex,
-    isDarkTheme,
-    Palette,
-    palette,
-    PaletteType,
-    Swatch,
-} from "./palette";
+import { getSwatch, isDarkTheme, Palette, palette, PaletteType, Swatch } from "./palette";
 import { accentForegroundCut } from "./accent-foreground-cut";
 import { memoize } from "lodash-es";
 
@@ -56,10 +49,10 @@ export const accentFillAlgorithm: (
         });
 
         return {
-            rest: getPaletteIndex(indexes.rest, accentPalette),
-            hover: getPaletteIndex(indexes.hover, accentPalette),
-            active: getPaletteIndex(indexes.active, accentPalette),
-            selected: getPaletteIndex(
+            rest: getSwatch(indexes.rest, accentPalette),
+            hover: getSwatch(indexes.hover, accentPalette),
+            active: getSwatch(indexes.active, accentPalette),
+            selected: getSwatch(
                 indexes.rest +
                     (isDarkTheme(designSystem)
                         ? accentFillDeltaSelected * -1

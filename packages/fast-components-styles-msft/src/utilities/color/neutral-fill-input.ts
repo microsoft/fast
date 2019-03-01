@@ -7,7 +7,7 @@ import {
 import { clamp, memoize } from "lodash-es";
 import {
     findClosestSwatchIndex,
-    getPaletteIndex,
+    getSwatch,
     palette,
     Palette,
     PaletteType,
@@ -36,7 +36,7 @@ const neutralFillInputAlgorithm: DesignSystemResolver<FillSwatch> = memoize(
             PaletteType.neutral,
             designSystem.backgroundColor
         )(designSystem);
-        const color: Swatch = getPaletteIndex(
+        const color: Swatch = getSwatch(
             backgroundIndex - neutralFillInputDelta,
             neutralPalette
         );

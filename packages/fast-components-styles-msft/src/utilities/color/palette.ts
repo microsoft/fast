@@ -183,6 +183,6 @@ export const isDarkTheme: DesignSystemResolver<boolean> = memoize(
  * Safely retrieves an index of a palette. The index is clamped to valid
  * array indexes so that a swatch is always returned
  */
-export function getPaletteIndex(index: number, colorPalette: Swatch[]): Swatch {
+export function getSwatch(index: number, colorPalette: Swatch[]): Swatch {
     return colorPalette[clamp(index, 0, colorPalette.length - 1)];
 }

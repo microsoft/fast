@@ -7,7 +7,7 @@ import {
 import { clamp, memoize } from "lodash-es";
 import {
     findClosestSwatchIndex,
-    getPaletteIndex,
+    getSwatch,
     isDarkTheme,
     palette,
     Palette,
@@ -52,16 +52,16 @@ const neutralFillAlgorithm: DesignSystemResolver<FillSwatch> = memoize(
         const restIndex: number = backgroundIndex + direction * neutralFillDeltaRest;
 
         return {
-            rest: getPaletteIndex(restIndex, neutralPalette),
-            hover: getPaletteIndex(
+            rest: getSwatch(restIndex, neutralPalette),
+            hover: getSwatch(
                 backgroundIndex + direction * neutralFillDeltaHover,
                 neutralPalette
             ),
-            active: getPaletteIndex(
+            active: getSwatch(
                 backgroundIndex + direction * neutralFillDeltaActive,
                 neutralPalette
             ),
-            selected: getPaletteIndex(
+            selected: getSwatch(
                 restIndex +
                     (isDarkTheme(designSystem)
                         ? neutralFillDeltaSelected * -1

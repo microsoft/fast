@@ -5,7 +5,7 @@ import {
 } from "../../design-system";
 import {
     findClosestSwatchIndex,
-    getPaletteIndex,
+    getSwatch,
     isDarkTheme,
     palette,
     Palette,
@@ -37,15 +37,15 @@ const neutralOutlineAlgorithm: (designSystem: DesignSystem) => StatefulSwatch = 
         const direction: 1 | -1 = isDarkTheme(designSystem) ? -1 : 1;
 
         return {
-            rest: getPaletteIndex(
+            rest: getSwatch(
                 backgroundIndex + direction * neutralOutlineDeltaRest,
                 neutralPalette
             ),
-            hover: getPaletteIndex(
+            hover: getSwatch(
                 backgroundIndex + direction * neutralOutlineDeltaHover,
                 neutralPalette
             ),
-            active: getPaletteIndex(
+            active: getSwatch(
                 backgroundIndex + direction * neutralOutlineDeltaActive,
                 neutralPalette
             ),
