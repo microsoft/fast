@@ -75,11 +75,19 @@
     "typescript": "^3.0.1"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@microsoft/fast-components-class-name-contracts-base": "^3.8.0",
     "@microsoft/fast-components-class-name-contracts-msft": "^3.7.0",
     "@microsoft/fast-jss-manager": "^3.0.11",
     "@microsoft/fast-jss-utilities": "^3.2.3",
     "@microsoft/fast-colors": "^3.1.5"
+=======
+    "@microsoft/fast-colors": "^3.1.5",
+    "@microsoft/fast-components-class-name-contracts-base": "^3.7.0",
+    "@microsoft/fast-components-class-name-contracts-msft": "^3.5.1",
+    "@microsoft/fast-jss-manager": "^3.0.10",
+    "@microsoft/fast-jss-utilities": "^3.2.2"
+>>>>>>> feat: integrate fast-dna/colors palette generation into msft color utilities (#1467)
   },
   "peerDependencies": {
     "@microsoft/fast-web-utilities": "^3.1.0",
