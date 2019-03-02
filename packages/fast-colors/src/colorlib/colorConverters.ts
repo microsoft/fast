@@ -25,24 +25,15 @@ export function rgbToLuminance(rgb: ColorRGBA64): number {
         return Math.pow((i + 0.055) / 1.055, 2.4);
     }
 
-    let r: number;
-    let g: number;
-    let b: number;
-    try {
-        r = luminanceHelper(rgb.r);
-        g = luminanceHelper(rgb.g);
-        b = luminanceHelper(rgb.b);
-    } catch (e) {
-        //  console.log(rgb)
-        throw e;
-    }
+    const r: number = luminanceHelper(rgb.r);
+    const g: number = luminanceHelper(rgb.g);
+    const b: number = luminanceHelper(rgb.b);
 
     return r * 0.2126 + g * 0.7152 + b * 0.0722;
 }
 
 // The alpha channel of the input is ignored
 export function contrastRatio(a: ColorRGBA64, b: ColorRGBA64): number {
-    // console.log(a, b)
     const luminanceA: number = rgbToLuminance(a);
     const luminanceB: number = rgbToLuminance(b);
     if (luminanceA > luminanceB) {
