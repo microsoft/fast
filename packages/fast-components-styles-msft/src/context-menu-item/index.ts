@@ -38,11 +38,8 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
             return toPx(designSystem.cornerRadius);
         },
         border: "2px solid transparent",
-        ...applyFocusVisible({
-            borderColor: (config: DesignSystem): string => {
-                const designSystem: DesignSystem = withDesignSystemDefaults(config);
-                return neutralFocus(designSystem);
-            },
+        ...applyFocusVisible<DesignSystem>({
+            borderColor: neutralFocus,
         }),
         "&:hover": {
             color: neutralForegroundHover,

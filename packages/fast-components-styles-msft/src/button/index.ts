@@ -110,8 +110,8 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             "&:active": {
                 background: neutralFillActive,
             },
-            ...applyFocusVisible({
-                borderColor: neutralFocus(designSystem),
+            ...applyFocusVisible<DesignSystem>({
+                borderColor: neutralFocus,
             }),
             "&::-moz-focus-inner": {
                 border: "0",
@@ -127,8 +127,8 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             "&:active": {
                 background: accentFillActive,
             },
-            ...applyFocusVisible({
-                borderColor: neutralFocus(designSystem),
+            ...applyFocusVisible<DesignSystem>({
+                borderColor: neutralFocus,
             }),
             "& $button_beforeContent, & $button_afterContent": {
                 fill: accentForegroundCut,
@@ -145,9 +145,9 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
                 background: neutralFillStealthActive,
                 border: `1px solid ${neutralOutlineActive(designSystem)}`,
             },
-            ...applyFocusVisible({
+            ...applyFocusVisible<DesignSystem>({
                 boxShadow: `0 0 0 1px ${neutralFocus(designSystem)} inset`,
-                borderColor: neutralFocus(designSystem),
+                borderColor: neutralFocus,
             }),
         },
         button__lightweight: {

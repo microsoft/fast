@@ -55,8 +55,8 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
             "&:active": {
                 color: neutralForegroundActive,
             },
-            ...applyFocusVisible({
-                borderColor: neutralFocus(designSystem),
+            ...applyFocusVisible<DesignSystem>({
+                borderColor: neutralFocus,
             }),
         },
         pivot_tab__active: {},
