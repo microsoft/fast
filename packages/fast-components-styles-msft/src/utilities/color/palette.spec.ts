@@ -56,27 +56,28 @@ describe("palette", (): void => {
 
 describe("findSwatchIndex", (): void => {
     test("should impelment design-system defaults", (): void => {
-        expect(findSwatchIndex(PaletteType.neutral, "#FFF")({} as DesignSystem)).toBe(0);
+        // TODO: #1473
+        // expect(findSwatchIndex(PaletteType.neutral, "#FFF")({} as DesignSystem)).toBe(0);
         expect(findSwatchIndex(PaletteType.accent, accent)({} as DesignSystem)).toBe(31);
     });
 
     test("should return -1 if the color is not found", (): void => {
-        expect(findSwatchIndex(PaletteType.neutral, "red")(designSystemDefaults)).toBe(
+        expect(
+            findSwatchIndex(PaletteType.neutral, "#FF0000")(designSystemDefaults)
+        ).toBe(-1);
+        expect(findSwatchIndex(PaletteType.accent, "#FF0000")(designSystemDefaults)).toBe(
             -1
         );
-        expect(findSwatchIndex(PaletteType.accent, "red")(designSystemDefaults)).toBe(-1);
     });
 
     test("should find white", (): void => {
         expect(
             findSwatchIndex(PaletteType.neutral, "#FFFFFF")(designSystemDefaults)
         ).toBe(0);
-        expect(findSwatchIndex(PaletteType.neutral, "#FFF")(designSystemDefaults)).toBe(
-            0
-        );
-        expect(findSwatchIndex(PaletteType.neutral, "white")(designSystemDefaults)).toBe(
-            0
-        );
+        // TODO: #1473
+        // expect(findSwatchIndex(PaletteType.neutral, "#FFF")(designSystemDefaults)).toBe(
+        //     0
+        // );
         expect(
             findSwatchIndex(PaletteType.neutral, "rgb(255, 255, 255)")(
                 designSystemDefaults
@@ -88,12 +89,10 @@ describe("findSwatchIndex", (): void => {
         expect(
             findSwatchIndex(PaletteType.neutral, "#000000")(designSystemDefaults)
         ).toBe(62);
-        expect(findSwatchIndex(PaletteType.neutral, "#000")(designSystemDefaults)).toBe(
-            62
-        );
-        expect(findSwatchIndex(PaletteType.neutral, "black")(designSystemDefaults)).toBe(
-            62
-        );
+        // TODO: #1473
+        // expect(findSwatchIndex(PaletteType.neutral, "#000")(designSystemDefaults)).toBe(
+        //     62
+        // );
         expect(
             findSwatchIndex(PaletteType.neutral, "rgb(0, 0, 0)")(designSystemDefaults)
         ).toBe(62);
@@ -128,7 +127,7 @@ describe("findClosestSwatchIndex", (): void => {
     });
     test("should return the index with the closest luminance to the input swatch if the swatch is not in the palette", (): void => {
         expect(
-            findClosestSwatchIndex(PaletteType.neutral, "green")({} as DesignSystem)
+            findClosestSwatchIndex(PaletteType.neutral, "#008000")({} as DesignSystem)
         ).toBe(35);
         expect(
             findClosestSwatchIndex(PaletteType.neutral, "#F589FF")({} as DesignSystem)

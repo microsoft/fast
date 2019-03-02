@@ -26,8 +26,13 @@ describe("accentForeground", (): void => {
     });
 
     test("should accept a function that resolves a background swatch", (): void => {
-        expect(typeof accentForegroundRest(() => "#FFF")).toBe("function");
-        expect(accentForegroundRest(() => "#000")({} as DesignSystem)).toBe(
+        // TODO: #1473
+        // expect(typeof accentForegroundRest(() => "#FFF")).toBe("function");
+        // expect(accentForegroundRest(() => "#000")({} as DesignSystem)).toBe(
+        //     accentPalette[30]
+        // );
+        expect(typeof accentForegroundRest(() => "#FFFFFF")).toBe("function");
+        expect(accentForegroundRest(() => "#000000")({} as DesignSystem)).toBe(
             accentPalette[30]
         );
     });
@@ -38,7 +43,11 @@ describe("accentForeground", (): void => {
         ).toBeLessThanOrEqual(
             accentPalette.indexOf(
                 accentForegroundHover(
-                    Object.assign({}, designSystemDefaults, { backgroundColor: "#000" })
+                    // TODO: #1473
+                    // Object.assign({}, designSystemDefaults, { backgroundColor: "#000" })
+                    Object.assign({}, designSystemDefaults, {
+                        backgroundColor: "#000000",
+                    })
                 )
             )
         );
@@ -47,7 +56,11 @@ describe("accentForeground", (): void => {
         ).toBeLessThan(
             accentPalette.indexOf(
                 accentForegroundActive(
-                    Object.assign({}, designSystemDefaults, { backgroundColor: "#000" })
+                    // TODO: #1473
+                    // Object.assign({}, designSystemDefaults, { backgroundColor: "#000" })
+                    Object.assign({}, designSystemDefaults, {
+                        backgroundColor: "#000000",
+                    })
                 )
             )
         );

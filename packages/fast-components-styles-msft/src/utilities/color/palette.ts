@@ -1,12 +1,12 @@
 import { neutralPaletteConfig } from "./color-constants";
+import React from "react";
 import {
     DesignSystem,
     DesignSystemResolver,
     ensureDesignSystemDefaults,
 } from "../../design-system";
-import chroma from "chroma-js";
 import { clamp, memoize } from "lodash-es";
-import { colorMatches, isValidColor, luminance } from "./common";
+import { colorMatches, contrast, isValidColor, luminance } from "./common";
 import { neutralForegroundDark, neutralForegroundLight } from "./neutral-foreground";
 import { ColorPalette, ColorPaletteConfig, ColorRGBA64 } from "@microsoft/fast-colors";
 
@@ -159,20 +159,13 @@ export function findClosestSwatchIndex(
  */
 export const isDarkTheme: DesignSystemResolver<boolean> = memoize(
     (designSystem: DesignSystem): boolean => {
-        try {
-            return (
-                chroma.contrast(
-                    neutralForegroundLight(designSystem),
-                    designSystem.backgroundColor
-                ) >
-                chroma.contrast(
-                    neutralForegroundDark(designSystem),
-                    designSystem.backgroundColor
-                )
-            );
-        } catch (e) {
-            return false;
-        }
+        return (
+            contrast(
+                neutralForegroundLight(designSystem),
+                designSystem.backgroundColor
+            ) >=
+            contrast(neutralForegroundDark(designSystem), designSystem.backgroundColor)
+        );
     },
     (designSystem: DesignSystem): string => {
         return designSystem.backgroundColor;
