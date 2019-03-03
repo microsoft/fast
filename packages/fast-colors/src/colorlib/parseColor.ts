@@ -154,57 +154,64 @@ export const namedColors: object = {
     yellowgreen: new ColorRGBA64(0.603922, 0.803922, 0.196078, 1),
 };
 
-/**
- * Test if a string looks like a hexadecimal color
- */
-function isColorStringHex(raw: string): boolean {
-    return typeof raw === "string" && raw.charAt(0) === "#";
-}
+// Matches rgb(R, G, B) where R, G, and B are integers [0 - 255]
+const webRGBRegex: RegExp = /^rgb\(\s*((?:(?:25[0-5]|2[0-4]\d|1\d\d|\d{1,2})\s*,\s*){2}(?:25[0-5]|2[0-4]\d|1\d\d|\d{1,2})\s*)\)$/i;
+// Matches rgb(R, G, B, A) where R, G, and B are integers [0 - 255] and A is [0-1] floating
+const webRGBARegex: RegExp = /^rgba\(\s*((?:(?:25[0-5]|2[0-4]\d|1\d\d|\d{1,2})\s*,\s*){3}(?:0|1|0?\.\d*)\s*)\)$/i;
+// Matches #RGB and #RRGGBB, where R, G, and B are [0-9] or [A-F]
+const hexRGBRegex: RegExp = /^#((?:[0-9a-f]{6}|[0-9a-f]{3}))$/i
+// Matches #RGB and #RRGGBBAA, where R, G, B, and A are [0-9] or [A-F]
+const hexRGBARegex: RegExp = /^#((?:[0-9a-f]{8}|[0-9a-f]{4}))$/i
 
 /**
- * Test if a color matches #RRGGBB
+ * Test if a color matches #RRGGBB or #RGB
  */
 export function isColorStringHexRGB(raw: string): boolean {
-    return isColorStringHex(raw) && raw.length === 7;
+    return hexRGBRegex.test(raw);
 }
 
 /**
- * Test if a color matches #RRGGBBAA
+ * Test if a color matches #RRGGBBAA or #RGBA
  */
 export function isColorStringHexRGBA(raw: string): boolean {
     return isColorStringHexARGB(raw); // No way to differentiate these two formats, so just use the same test
 }
 
 /**
- * Test if a color matches #AARRGGBB
+ * Test if a color matches #AARRGGBB or #ARGB
  */
 export function isColorStringHexARGB(raw: string): boolean {
-    return isColorStringHex(raw) && raw.length === 9;
+    return hexRGBARegex.test(raw);
 }
 
 /**
  * Test if a color matches rgb(rr, gg, bb)
  */
 export function isColorStringWebRGB(raw: string): boolean {
-    return /^rgb\(/i.test(raw);
+    return webRGBRegex.test(raw);
 }
 
 /**
  * Test if a color matches rgba(rr, gg, bb, aa)
  */
 export function isColorStringWebRGBA(raw: string): boolean {
-    return /^rgba\(/i.test(raw);
+    return webRGBARegex.test(raw);
 }
 
-// Expects format #RRGGBB
+// Expects format #RRGGBB or #RGB
 export function parseColorHexRGB(raw: string): ColorRGBA64 | null {
-    if (raw.length !== 7) {
+    const result: string[] | null = hexRGBRegex.exec(raw);
+
+    if (result === null) {
         return null;
     }
-    const rawInt: number = parseInt(raw.slice(1, 7), 16);
+
+    const rawInt: number = parseInt(result[1], 16);
+
     if (isNaN(rawInt)) {
         return null;
     }
+
     // Note the use of >>> rather than >> as we want JS to manipulate these as unsigned numbers
     return new ColorRGBA64(
         normalize((rawInt & 0xff0000) >>> 16, 0, 255),
@@ -216,13 +223,18 @@ export function parseColorHexRGB(raw: string): ColorRGBA64 | null {
 
 // Expects format #AARRGGBB
 export function parseColorHexARGB(raw: string): ColorRGBA64 | null {
-    if (raw.length !== 9) {
+    const result: string[] | null = hexRGBARegex.exec(raw);
+
+    if (result === null) {
         return null;
     }
-    const rawInt: number = parseInt(raw.slice(1, 9), 16);
+
+    const rawInt: number = parseInt(result[1], 16);
+
     if (isNaN(rawInt)) {
         return null;
     }
+    
     // Note the use of >>> rather than >> as we want JS to manipulate these as unsigned numbers
     return new ColorRGBA64(
         normalize((rawInt & 0x00ff0000) >>> 16, 0, 255),
@@ -232,15 +244,20 @@ export function parseColorHexARGB(raw: string): ColorRGBA64 | null {
     );
 }
 
-// Expects format #RRGGBBAA
+// Expects format #RRGGBBAA or #RGBA
 export function parseColorHexRGBA(raw: string): ColorRGBA64 | null {
-    if (raw.length !== 9) {
+    const result: string[] | null = hexRGBARegex.exec(raw);
+
+    if (result === null) {
         return null;
     }
-    const rawInt: number = parseInt(raw.slice(1, 9), 16);
+
+    const rawInt: number = parseInt(result[1], 16);
+
     if (isNaN(rawInt)) {
         return null;
     }
+
     // Note the use of >>> rather than >> as we want JS to manipulate these as unsigned numbers
     return new ColorRGBA64(
         normalize((rawInt & 0xff000000) >>> 24, 0, 255),
@@ -252,35 +269,32 @@ export function parseColorHexRGBA(raw: string): ColorRGBA64 | null {
 
 // Expects format rgb(RR,GG,BB) where RR,GG,BB are [0,255]
 export function parseColorWebRGB(raw: string): ColorRGBA64 | null {
-    let rawLower: string = raw.toLowerCase();
-    if (!rawLower.startsWith("rgb(")) {
+    const result: string[] | null = webRGBRegex.exec(raw);
+
+    if (result === null) {
         return null;
     }
-    if (rawLower.endsWith(";")) {
-        rawLower = rawLower.slice(0, rawLower.length - 1);
-    }
-    const split: string[] = rawLower.slice(4, -1).split(",");
-    if (split.length === 3) {
-        return new ColorRGBA64(
-            normalize(Number(split[0]), 0, 255),
-            normalize(Number(split[1]), 0, 255),
-            normalize(Number(split[2]), 0, 255),
-            1
-        );
-    }
-    return null;
+
+    const split: string[] = result[1].split(",");
+
+    return new ColorRGBA64(
+        normalize(Number(split[0]), 0, 255),
+        normalize(Number(split[1]), 0, 255),
+        normalize(Number(split[2]), 0, 255),
+        1
+    );
 }
 
 // Expects format rgba(RR,GG,BB,a) where RR,GG,BB are [0,255] and a is [0,1]
 export function parseColorWebRGBA(raw: string): ColorRGBA64 | null {
-    let rawLower: string = raw.toLowerCase();
-    if (!rawLower.startsWith("rgba(")) {
+    const result: string[] | null = webRGBARegex.exec(raw);
+
+    if (result === null) {
         return null;
     }
-    if (rawLower.endsWith(";")) {
-        rawLower = rawLower.slice(0, rawLower.length - 1);
-    }
-    const split: string[] = rawLower.slice(5, -1).split(",");
+
+    const split: string[] = result[1].split(",");
+
     if (split.length === 4) {
         return new ColorRGBA64(
             normalize(Number(split[0]), 0, 255),
