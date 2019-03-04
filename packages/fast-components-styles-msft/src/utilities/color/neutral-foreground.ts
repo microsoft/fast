@@ -1,5 +1,5 @@
 import { memoize } from "lodash-es";
-import { isDarkTheme, palette, Palette, PaletteType, Swatch } from "./palette";
+import { getSwatch, isDarkTheme, palette, Palette, PaletteType, Swatch } from "./palette";
 import {
     ColorRecipe,
     StatefulSwatch,
@@ -37,9 +37,9 @@ const neutralForegroundAlgorithm: (
         const activeIndex: number = restIndex + neutralForegroundDeltaActive * direction;
 
         return {
-            rest: neutralPalette[restIndex],
-            hover: neutralPalette[hoverIndex],
-            active: neutralPalette[activeIndex],
+            rest: restColor,
+            hover: getSwatch(hoverIndex, neutralPalette),
+            active: getSwatch(activeIndex, neutralPalette),
         };
     },
     (designSystem: DesignSystem): string => {
@@ -51,14 +51,14 @@ const neutralForegroundAlgorithm: (
  * Retrieve light neutral-foreground color for use on dark backgrounds
  */
 export function neutralForegroundLight(designSystem: DesignSystem): Swatch {
-    return palette(PaletteType.neutral)(designSystem)[0];
+    return getSwatch(0, palette(PaletteType.neutral)(designSystem));
 }
 
 /**
  * Retrieve dark neutral-foreground color for use on light backgrounds
  */
 export function neutralForegroundDark(designSystem: DesignSystem): Swatch {
-    return palette(PaletteType.neutral)(designSystem)[58];
+    return getSwatch(58, palette(PaletteType.neutral)(designSystem));
 }
 
 export function neutralForeground(designSystem: DesignSystem): StatefulSwatch;
