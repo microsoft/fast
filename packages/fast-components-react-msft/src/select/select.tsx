@@ -50,12 +50,28 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
                 aria-haspopup={true}
                 aria-expanded={state.isMenuOpen}
                 appearance={ButtonAppearance.outline}
+                afterContent={this.generateGlyph}
             >
                 {state.displayString}
-                <span
-                    className={get(this.props, "managedClasses.select_toggleGlyph", "")}
-                />
             </Button>
+        );
+    };
+
+    /**
+     * Gets the dropdown glyph
+     * TODO: scomea - replace with ref to a glyph resource
+     */
+    private generateGlyph = (): React.ReactNode => {
+        return (
+            <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                className={get(this.props, "managedClasses.select_toggleGlyph", "")}
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path d="M11.3613 2.73633L11.8887 3.26367L6 9.15234L0.111328 3.26367L0.638672 2.73633L6 8.09766L11.3613 2.73633Z" />
+            </svg>
         );
     };
 }

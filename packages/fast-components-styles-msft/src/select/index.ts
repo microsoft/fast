@@ -18,6 +18,7 @@ export const selectDisplayButtonOverrides: ComponentStyles<
 > = {
     button: {
         width: "100%",
+        padding: "0 10px",
     },
     button_contentRegion: {
         width: "100%",
@@ -67,23 +68,11 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = (
     return {
         select: {
             minWidth: "276px",
+            maxWidth: "374px",
         },
 
         select_toggleGlyph: {
-            display: "inline-flex",
-            position: "absolute",
-            right: "0",
-            width: "12px",
-            height: "12px",
-            "&::after": {
-                boxSizing: "border-box",
-                transform: "translateX(-3px) rotate(135deg)",
-                height: "12px",
-                width: "12px",
-                content: '""',
-                borderRight: `1px solid ${foregroundColor}`,
-                borderTop: `1px solid ${foregroundColor}`,
-            },
+            fill: { foregroundColor },
         },
 
         select__disabled: {
@@ -104,6 +93,8 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = (
             padding: "4px 0",
             maxWidth: "374px",
             minWidth: "276px",
+            maxHeight: "328px",
+            overflow: "auto",
             borderRadius: toPx(designSystem.cornerRadius * 2),
         },
 
