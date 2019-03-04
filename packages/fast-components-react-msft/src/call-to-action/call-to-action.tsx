@@ -33,7 +33,7 @@ class CallToAction extends Foundation<
                 {...this.unhandledProps()}
                 className={this.generateClassNames()}
                 disabled={this.props.disabled}
-                href={this.props.disabled ? null : this.props.href}
+                href={this.props.href}
                 appearance={
                     ButtonAppearance[CallToActionAppearance[this.props.appearance]]
                 }
