@@ -1,5 +1,4 @@
 import { neutralPaletteConfig } from "./color-constants";
-import React from "react";
 import {
     DesignSystem,
     DesignSystemResolver,

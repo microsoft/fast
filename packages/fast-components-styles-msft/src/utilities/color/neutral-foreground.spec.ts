@@ -34,7 +34,7 @@ describe("neutralForeground", (): void => {
         expect(neutralForegroundRest(() => undefined as any)(undefined as any)).toBe(
             neutralForegroundDark(undefined)
         );
-        // TODO: #1473
+        // TODO: https://github.com/Microsoft/fast-dna/issues/1473
         // expect(neutralForegroundRest(() => "#FFF")(undefined as any)).toBe(
         //     neutralForegroundDark(undefined)
         // );
@@ -54,7 +54,7 @@ describe("neutralForeground", (): void => {
                     neutralForegroundDeltaHover
             ]
         );
-        // TODO: #1473
+        // TODO: https://github.com/Microsoft/fast-dna/issues/1473
         // expect(neutralForegroundHover(() => "#FFF")(undefined as any)).toBe(
         //     neutralPalette[
         //         neutralPalette.indexOf(neutralForegroundDark(undefined)) -
@@ -79,7 +79,7 @@ describe("neutralForeground", (): void => {
                     neutralForegroundDeltaActive
             ]
         );
-        // TODO: #1473
+        // TODO: https://github.com/Microsoft/fast-dna/issues/1473
         // expect(neutralForegroundActive(() => "#FFF")(undefined as any)).toBe(
         //     neutralPalette[
         //         neutralPalette.indexOf(neutralForegroundDark(undefined)) -

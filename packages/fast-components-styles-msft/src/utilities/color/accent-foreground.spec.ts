@@ -26,7 +26,7 @@ describe("accentForeground", (): void => {
     });
 
     test("should accept a function that resolves a background swatch", (): void => {
-        // TODO: #1473
+        // TODO: https://github.com/Microsoft/fast-dna/issues/1473
         // expect(typeof accentForegroundRest(() => "#FFF")).toBe("function");
         // expect(accentForegroundRest(() => "#000")({} as DesignSystem)).toBe(
         //     accentPalette[30]
@@ -43,7 +43,7 @@ describe("accentForeground", (): void => {
         ).toBeLessThanOrEqual(
             accentPalette.indexOf(
                 accentForegroundHover(
-                    // TODO: #1473
+                    // TODO: https://github.com/Microsoft/fast-dna/issues/1473
                     // Object.assign({}, designSystemDefaults, { backgroundColor: "#000" })
                     Object.assign({}, designSystemDefaults, {
                         backgroundColor: "#000000",
@@ -56,7 +56,7 @@ describe("accentForeground", (): void => {
         ).toBeLessThan(
             accentPalette.indexOf(
                 accentForegroundActive(
-                    // TODO: #1473
+                    // TODO: https://github.com/Microsoft/fast-dna/issues/1473
                     // Object.assign({}, designSystemDefaults, { backgroundColor: "#000" })
                     Object.assign({}, designSystemDefaults, {
                         backgroundColor: "#000000",
