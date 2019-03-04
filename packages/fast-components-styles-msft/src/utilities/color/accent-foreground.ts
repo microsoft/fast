@@ -5,7 +5,7 @@ import {
 } from "../../design-system";
 import { memoize } from "lodash-es";
 import { accentSwatch, findAccessibleAccentSwatchIndexs } from "./accent";
-import { palette, Palette, PaletteType, Swatch } from "./palette";
+import { getSwatch, palette, Palette, PaletteType, Swatch } from "./palette";
 import {
     ColorRecipe,
     StatefulSwatch,
@@ -43,9 +43,9 @@ const accentForegroundAlgorithm: (
         );
 
         return {
-            rest: accentPalette[indexes.rest],
-            hover: accentPalette[indexes.hover],
-            active: accentPalette[indexes.active],
+            rest: getSwatch(indexes.rest, accentPalette),
+            hover: getSwatch(indexes.hover, accentPalette),
+            active: getSwatch(indexes.active, accentPalette),
         };
     },
     (designSystem: DesignSystem, contrastTarget: number): string => {
