@@ -1,5 +1,7 @@
 import { accentSwatch } from "./accent";
-import { DesignSystem } from "../../design-system";
+import designSystemDefaults, { DesignSystem } from "../../design-system";
+import { accentPaletteConfig } from "./color-constants";
+import { parseColorHexRGB } from "@microsoft/fast-colors";
 
 describe("accentSwatch", (): void => {
     test("should return #0078D4 by default", (): void => {
@@ -7,9 +9,13 @@ describe("accentSwatch", (): void => {
     });
     test("should return the middle of the accentPaletteSource", (): void => {
         expect(
-            accentSwatch({
-                accentPaletteSource: ["#FFF", "#F2C812", "#000"],
-            } as DesignSystem)
+            accentSwatch(
+                Object.assign({}, designSystemDefaults, {
+                    accentPaletteConfig: Object.assign({}, accentPaletteConfig, {
+                        baseColor: parseColorHexRGB("#F2C812"),
+                    }),
+                })
+            )
         ).toBe("#F2C812");
     });
 });

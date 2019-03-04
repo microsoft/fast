@@ -1,13 +1,14 @@
-import { neutralPaletteSource } from "./color-constants";
+import { neutralPaletteConfig } from "./color-constants";
 import {
     DesignSystem,
     DesignSystemResolver,
     ensureDesignSystemDefaults,
 } from "../../design-system";
 import chroma from "chroma-js";
-import { memoize } from "lodash-es";
+import { clamp, memoize } from "lodash-es";
 import { colorMatches, isValidColor, luminance } from "./common";
 import { neutralForegroundDark, neutralForegroundLight } from "./neutral-foreground";
+import { ColorPalette, ColorPaletteConfig, ColorRGBA64 } from "@microsoft/fast-colors";
 
 /**
  * The named palettes of the MSFT design system
@@ -26,19 +27,28 @@ export type Swatch = string;
  */
 export type Palette = Swatch[];
 
-const generatePalette: (source: string[]) => Palette = memoize(
-    (source: string[]): Palette => {
-        const isValid: boolean = source.every(isValidColor);
-        const sanitizedSource: string[] = isValid ? source : neutralPaletteSource;
-
-        return chroma
-            .scale(sanitizedSource)
-            .mode("rgb")
-            .colors(63)
-            .map((color: string) => color.toUpperCase());
+const generatePalette: (config: ColorPaletteConfig) => Palette = memoize(
+    (config: ColorPaletteConfig): Palette => {
+        return new ColorPalette(config).palette.map(
+            (color: ColorRGBA64): string => color.toStringHexRGB().toUpperCase()
+        );
     },
-    (source: string[]): string => {
-        return Array.isArray(source) ? source.join("") : source;
+    (config: ColorPaletteConfig): string => {
+        return Object.keys(config).reduce(
+            (reduced: string, value: keyof ColorPaletteConfig): string => {
+                const configValue: ColorPaletteConfig[keyof ColorPaletteConfig] =
+                    config[value];
+
+                if (typeof configValue === "number") {
+                    return reduced.concat(configValue.toString());
+                } else if (configValue instanceof ColorRGBA64) {
+                    return reduced.concat(configValue.toStringWebRGBA());
+                } else {
+                    return "";
+                }
+            },
+            ""
+        );
     }
 );
 
@@ -51,19 +61,19 @@ export function palette(
 ): (designSystem: DesignSystem) => Palette {
     return ensureDesignSystemDefaults(
         (designSystem: DesignSystem): Palette => {
-            let source: Palette;
+            let config: ColorPaletteConfig;
 
             switch (paletteType) {
                 case PaletteType.accent:
-                    source = designSystem.accentPaletteSource;
+                    config = designSystem.accentPaletteConfig;
                     break;
                 case PaletteType.neutral:
                 default:
-                    source = designSystem.neutralPaletteSource;
+                    config = designSystem.neutralPaletteConfig;
                     break;
             }
 
-            return generatePalette(source);
+            return generatePalette(config);
         }
     );
 }
@@ -141,6 +151,7 @@ export function findClosestSwatchIndex(
         }
     );
 }
+
 /**
  * Determines if we're in a dark theme, determined by comparing the contrast
  * of light neutral-foreground and dark neutral-foreground to the background. If light neutral-foreground
@@ -167,3 +178,11 @@ export const isDarkTheme: DesignSystemResolver<boolean> = memoize(
         return designSystem.backgroundColor;
     }
 );
+
+/**
+ * Safely retrieves an index of a palette. The index is clamped to valid
+ * array indexes so that a swatch is always returned
+ */
+export function getSwatch(index: number, colorPalette: Swatch[]): Swatch {
+    return colorPalette[clamp(index, 0, colorPalette.length - 1)];
+}
