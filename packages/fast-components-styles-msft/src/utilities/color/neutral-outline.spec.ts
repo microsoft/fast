@@ -10,7 +10,7 @@ import {
 import designSystemDefaults, { DesignSystem } from "../../design-system";
 import { palette, Palette, PaletteType, Swatch } from "./palette";
 import { StatefulSwatch } from "./common";
-import chroma from "chroma-js";
+import { isColorStringHexRGB } from "@microsoft/fast-colors";
 
 describe("neutralOutline", (): void => {
     const neutralPalette: Palette = palette(PaletteType.neutral)(designSystemDefaults);
@@ -31,9 +31,11 @@ describe("neutralOutline", (): void => {
     test("should always return a color", (): void => {
         neutralPalette.concat(accentPalette).forEach(
             (swatch: Swatch): void => {
-                expect(() => {
-                    chroma(neutralOutlineRest(() => swatch)({} as DesignSystem));
-                }).not.toThrow();
+                expect(
+                    isColorStringHexRGB(
+                        neutralOutlineRest(() => swatch)({} as DesignSystem)
+                    )
+                ).toBe(true);
             }
         );
     });
