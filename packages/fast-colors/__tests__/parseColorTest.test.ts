@@ -441,8 +441,28 @@ describe("Color identification", (): void => {
         });
 
         test("should return false a color channel is greater than 255 or less than 0", (): void => {
-            expect(isColorStringWebRGB("rgba(256, 255, 255)")).toBe(false);
-            expect(isColorStringWebRGB("rgba(-1, 255, 255)")).toBe(false);
+            expect(isColorStringWebRGBA("rgba(256, 255, 255, 1)")).toBe(false);
+            expect(isColorStringWebRGBA("rgba(-1, 255, 255, 1)")).toBe(false);
+        });
+
+        test("should return true when invoked with an opacity decimal with a preceding 0", (): void => {
+            expect(isColorStringWebRGBA("rgba(255, 255, 255, 0.1)")).toBe(true);
+        });
+
+        test("should return true when invoked with an opacity decimal without a preceding 0", (): void => {
+            expect(isColorStringWebRGBA("rgba(255, 255, 255, .1)")).toBe(true);
+        });
+
+        test("should return false when invoked with an opacity value greater than 1", (): void => {
+            expect(isColorStringWebRGBA("rgba(255, 255, 255, 1.2)")).toBe(false);
+            expect(isColorStringWebRGBA("rgba(255, 255, 255, 2)")).toBe(false);
+            expect(isColorStringWebRGBA("rgba(255, 255, 255, 20)")).toBe(false);
+        });
+
+        test("should return false when invoked with an opacity less than 0", (): void => {
+            expect(isColorStringWebRGBA("rgba(255, 255, 255, -.2)")).toBe(false);
+            expect(isColorStringWebRGBA("rgba(255, 255, 255, -2)")).toBe(false);
+            expect(isColorStringWebRGBA("rgba(255, 255, 255, -20)")).toBe(false);
         });
     });
 });
