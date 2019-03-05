@@ -1,6 +1,14 @@
 import { DesignSystem, DesignSystemResolver } from "../../design-system";
 import { Swatch } from "./palette";
-import chroma from "chroma-js";
+import {
+    ColorRGBA64,
+    contrastRatio,
+    isColorStringHexRGB,
+    isColorStringWebRGB,
+    parseColorHexRGB,
+    parseColorWebRGB,
+    rgbToLuminance,
+} from "@microsoft/fast-colors";
 
 /**
  * A function type that resolves a color from a design system
@@ -100,45 +108,53 @@ export function StatefulSwatchToColorRecipeFactory<T extends StatefulSwatch>(
 }
 
 /**
+ * Converts a color string into a ColorRGBA64 instance. Returns null if the string cannot be converted.
+ * Supports #RRGGBB and rgb(r, g, b) formats
+ */
+export function parseColorString(color: string): ColorRGBA64 | null {
+    return isColorStringHexRGB(color)
+        ? parseColorHexRGB(color)
+        : isColorStringWebRGB(color)
+            ? parseColorWebRGB(color)
+            : null;
+}
+
+/**
  * Determines if a string value represents a color
+ * Supports #RRGGBB and rgb(r, g, b) formats
  */
 export function isValidColor(color: string): boolean {
-    try {
-        return Boolean(chroma(color));
-    } catch (e) {
-        return false;
-    }
+    return isColorStringHexRGB(color) || isColorStringWebRGB(color);
 }
 
 /**
- * Determines if a color matches another color, regardless of color format
+ * Determines if a color string matches another color.
+ * Supports #RRGGBB and rgb(r, g, b) formats
  */
-export function colorMatches(a: any, b: any): boolean {
-    try {
-        return chroma.distance(a, b, "rgb") === 0;
-    } catch (e) {
-        return false;
-    }
+export function colorMatches(a: string, b: string): boolean {
+    const alpha: ColorRGBA64 | null = parseColorString(a);
+    const beta: ColorRGBA64 | null = parseColorString(b);
+
+    return alpha !== null && beta !== null && alpha.equalValue(beta);
 }
 
 /**
- * Returns the contrast value between two colors. If either value is not a color, 0 will be returned
+ * Returns the contrast value between two colors. If either value is not a color, -1 will be returned
+ * Supports #RRGGBB and rgb(r, g, b) formats
  */
-export function contrast(a: any, b: any): number {
-    try {
-        return chroma.contrast(a, b, "rgb");
-    } catch (e) {
-        return 0;
-    }
+export function contrast(a: string, b: string): number {
+    const alpha: ColorRGBA64 | null = parseColorString(a);
+    const beta: ColorRGBA64 | null = parseColorString(b);
+
+    return alpha === null || beta === null ? -1 : contrastRatio(alpha, beta);
 }
 
 /**
  * Returns the relative luminance of a color. If the value is not a color, -1 will be returned
+ * Supports #RRGGBB and rgb(r, g, b) formats
  */
 export function luminance(color: any): number {
-    try {
-        return chroma(color).luminance();
-    } catch (e) {
-        return -1;
-    }
+    const parsedColor: ColorRGBA64 | null = parseColorString(color);
+
+    return parsedColor === null ? -1 : rgbToLuminance(parsedColor);
 }
