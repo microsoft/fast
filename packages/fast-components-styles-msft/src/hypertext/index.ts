@@ -3,6 +3,7 @@ import {
     accentForegroundActive,
     accentForegroundHover,
     accentForegroundRest,
+    neutralFocus,
     neutralForegroundRest,
 } from "../utilities/color";
 import {
@@ -35,7 +36,7 @@ const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = (
                     color: accentForegroundActive,
                 },
                 ...applyFocusVisible({
-                    borderBottom: `2px solid ${designSystem.foregroundColor}`,
+                    borderBottom: `2px solid ${neutralFocus(designSystem)}`,
                 }),
             },
         },
