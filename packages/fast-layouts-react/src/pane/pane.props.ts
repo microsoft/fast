@@ -14,6 +14,11 @@ export interface PaneManagedClasses extends ManagedClasses<PaneClassNamesContrac
 export interface PaneUnhandledProps extends React.HTMLAttributes<HTMLDivElement> {}
 export interface PaneHandledProps extends PaneManagedClasses {
     /**
+     * The initial width of the pane
+     */
+    initialWidth?: number;
+
+    /**
      * The minimum width of the pane
      */
     minWidth?: number;
@@ -24,7 +29,7 @@ export interface PaneHandledProps extends PaneManagedClasses {
     maxWidth?: number;
 
     /**
-     * The initial width of the pane
+     * The width of the pane (fixed)
      */
     width?: number;
 
