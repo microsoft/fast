@@ -39,6 +39,13 @@ export const callToActionButtonOverrides: ComponentStyles<
             },
         },
     },
+    button__disabled: {
+        "&:hover": {
+            "& $button_contentRegion": {
+                transform: "none",
+            },
+        },
+    },
 };
 
 const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
@@ -118,6 +125,11 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
         callToAction__disabled: {
             "& $callToAction_glyph": {
                 fill: primaryDisabledColor,
+            },
+            "&:hover": {
+                "& $callToAction_glyph": {
+                    transform: "none",
+                },
             },
         },
     };
