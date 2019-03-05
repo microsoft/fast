@@ -231,7 +231,7 @@ const data = getDataFromSchema(schema);
 
 #### Adding children as options
 
-Children can also be auto-generated provided that they are not accompanied by `default` or `defaults` in the schema, which will be used first to add children. The first child in a list of provided `ids` will be used to create React children.
+Children can also be auto-generated provided that they are not accompanied by `default`, `examples` or `defaults` in the schema, which will be used first to add children. The first child in a list of provided `ids` will be used to create React children.
 
 An example of generating data with other React children:
 

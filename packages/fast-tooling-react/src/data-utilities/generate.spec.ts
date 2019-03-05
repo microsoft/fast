@@ -6,6 +6,28 @@ import { ChildOptionItem } from ".";
  * Gets an example from a schema
  */
 describe("getDataFromSchema", () => {
+    test("should return a default even if no type has been specified", () => {
+        const schema: any = {
+            default: "foo",
+        };
+
+        expect(getDataFromSchema(schema)).toEqual("foo");
+    });
+    test("should return an example from the examples array", () => {
+        const schema: any = {
+            examples: ["bar", "bat"],
+        };
+
+        expect(getDataFromSchema(schema)).toEqual("bar");
+    });
+    test("should not return an example if a default is available", () => {
+        const schema: any = {
+            default: "foo",
+            examples: ["bar", "bat"],
+        };
+
+        expect(getDataFromSchema(schema)).toEqual("foo");
+    });
     test("should return an enum value", () => {
         const schema: any = {
             enum: ["foo", "bar"],

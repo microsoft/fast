@@ -51,8 +51,16 @@ function getDataFromSchema(schema: any, childOptions?: ChildOptionItem[]): any {
  * Gets an example by the type of data
  */
 function getDataFromSchemaByDataType(schema: any): any {
+    if (typeof schema.default !== "undefined") {
+        return schema.default;
+    }
+
+    if (Array.isArray(schema.examples) && schema.examples.length > 0) {
+        return schema.examples[0];
+    }
+
     if (hasEnum(schema)) {
-        return typeof schema.default !== "undefined" ? schema.default : schema.enum[0];
+        return schema.enum[0];
     }
 
     if (isObjectDataType(schema)) {
@@ -74,17 +82,13 @@ function getDataFromSchemaByDataType(schema: any): any {
 
             return arrayData;
         case DataType.boolean:
-            return typeof schema.default === DataType.boolean ? schema.default : true;
+            return true;
         case DataType.null:
             return null;
         case DataType.string:
-            return typeof schema.default === DataType.string
-                ? schema.default
-                : exampleString;
+            return exampleString;
         case DataType.number:
-            return typeof schema.default === DataType.number
-                ? schema.default
-                : Math.round(Math.random() * 100);
+            return Math.round(Math.random() * 100);
         default:
             if (schema[CombiningKeyword.oneOf] || schema[CombiningKeyword.anyOf]) {
                 const oneOfAnyOf: CombiningKeyword = schema[CombiningKeyword.oneOf]
@@ -103,6 +107,10 @@ function getDataFromSchemaByDataType(schema: any): any {
 function getReactChildrenFromSchema(schema: any, childOptions?: ChildOptionItem[]): any {
     if (typeof schema.default !== "undefined") {
         return schema.default;
+    }
+
+    if (Array.isArray(schema.examples) && schema.examples.length > 0) {
+        return schema.examples[0];
     }
 
     if (Array.isArray(schema.defaults) && schema.defaults.includes("text")) {
