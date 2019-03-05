@@ -99,6 +99,7 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
      * The default props of the Pane component
      */
     public static defaultProps: Partial<PaneProps> = {
+        initialWidth: 300,
         minWidth: 100,
         maxWidth: 800,
         resizable: false,
@@ -116,6 +117,7 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
      * All handled props
      */
     protected handledProps: HandledProps<PaneHandledProps> = {
+        initialWidth: void 0,
         minWidth: void 0,
         maxWidth: void 0,
         width: void 0,
@@ -138,7 +140,7 @@ export class Pane extends Foundation<PaneHandledProps, PaneUnhandledProps, PaneS
         this.state = {
             resizing: false,
             dragReference: null,
-            width: 300,
+            width: this.props.initialWidth,
         };
 
         this.onMouseMove = throttle(this.onMouseMove, 16);
