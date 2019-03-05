@@ -16,6 +16,7 @@ import {
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
+    neutralFocus,
     neutralForegroundRest,
     neutralOutlineActive,
     neutralOutlineHover,
@@ -88,10 +89,10 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
             },
         },
         textAction__focus: {
-            boxShadow: `0 0 0 1px ${designSystem.foregroundColor} inset`,
-            border: `${toPx(designSystem.outlinePatternOutlineWidth)} solid ${
-                designSystem.foregroundColor
-            }`,
+            boxShadow: `0 0 0 1px ${neutralFocus(designSystem)} inset`,
+            border: `${toPx(
+                designSystem.outlinePatternOutlineWidth
+            )} solid ${neutralFocus(designSystem)}`,
             "&:hover": {
                 boxShadow: `0 0 0 1px ${designSystem.foregroundColor} inset`,
                 border: `${toPx(designSystem.outlinePatternOutlineWidth)} solid ${

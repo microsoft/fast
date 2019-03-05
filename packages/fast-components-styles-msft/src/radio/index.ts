@@ -12,11 +12,11 @@ import {
     Direction,
     toPx,
 } from "@microsoft/fast-jss-utilities";
-import outlinePattern from "../patterns/outline";
 import {
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
+    neutralFocus,
     neutralForegroundRest,
     neutralOutlineActive,
     neutralOutlineHover,
@@ -48,9 +48,6 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
             border: `${toPx(
                 designSystem.outlinePatternOutlineWidth
             )} solid ${neutralOutlineRest(designSystem)}`,
-            ...applyFocusVisible({
-                ...outlinePattern.focus,
-            }),
             "&:hover": {
                 background: neutralFillInputHover,
                 border: `${toPx(
@@ -64,10 +61,10 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
                 )} solid ${neutralOutlineActive(designSystem)}`,
             },
             ...applyFocusVisible({
-                boxShadow: `0 0 0 1px ${designSystem.foregroundColor} inset`,
-                border: `${toPx(designSystem.outlinePatternOutlineWidth)} solid ${
-                    designSystem.foregroundColor
-                }`,
+                boxShadow: `0 0 0 1px ${neutralFocus(designSystem)} inset`,
+                border: `${toPx(
+                    designSystem.outlinePatternOutlineWidth
+                )} solid ${neutralFocus(designSystem)}`,
             }),
         },
         radio_stateIndicator: {
