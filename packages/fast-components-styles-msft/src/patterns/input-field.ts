@@ -7,6 +7,7 @@ import {
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
+    neutralFocus,
     neutralForegroundHint,
     neutralForegroundRest,
     neutralOutlineActive,
@@ -44,10 +45,10 @@ export function inputFieldStyles(designSystem: DesignSystem): CSSRules<{}> {
             )} solid ${neutralOutlineActive(designSystem)}`,
         },
         "&:focus": {
-            boxShadow: `0 0 0 1px ${designSystem.foregroundColor} inset`,
-            border: `${toPx(designSystem.outlinePatternOutlineWidth)} solid ${
-                designSystem.foregroundColor
-            }`,
+            boxShadow: `0 0 0 1px ${neutralFocus(designSystem)} inset`,
+            border: `${toPx(
+                designSystem.outlinePatternOutlineWidth
+            )} solid ${neutralFocus(designSystem)}`,
             outline: "none",
         },
         "&:disabled": {
