@@ -9,6 +9,7 @@ import {
     neutralFillInputHover,
     neutralFillInputRest,
     neutralFillSelected,
+    neutralFocus,
     neutralForegroundRest,
     neutralOutlineActive,
     neutralOutlineHover,
@@ -89,16 +90,22 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
                 )} solid ${neutralOutlineActive(designSystem)}`,
             },
             ...applyFocusVisible({
-                boxShadow: `0 0 0 1px ${designSystem.foregroundColor} inset`,
-                border: `${toPx(designSystem.outlinePatternOutlineWidth)} solid ${
-                    designSystem.foregroundColor
-                }`,
+                boxShadow: `0 0 0 1px ${neutralFocus(designSystem)} inset`,
+                border: `${toPx(
+                    designSystem.outlinePatternOutlineWidth
+                )} solid ${neutralFocus(designSystem)}`,
             }),
         },
         toggle__checked: {
             "& $toggle_input": {
                 background: accentFillRest,
                 borderColor: accentFillRest,
+                ...applyFocusVisible({
+                    boxShadow: `0 0 0 1px ${neutralFocus(designSystem)} inset`,
+                    border: `${toPx(
+                        designSystem.outlinePatternOutlineWidth
+                    )} solid ${neutralFocus(designSystem)}`,
+                }),
             },
             "& $toggle_stateIndicator": {
                 left: "28px",
