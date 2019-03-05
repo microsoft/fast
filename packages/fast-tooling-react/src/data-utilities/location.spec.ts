@@ -3,9 +3,9 @@ import {
     getDataLocationsOfChildren,
     getDataLocationsOfPlugins,
     mapSchemaLocationFromDataLocation,
-    PluginLocation,
-} from "./location.utilities";
-import { ChildOptionItem } from "./";
+} from "./location";
+import { ChildOptionItem } from ".";
+import { PluginLocation } from "./types";
 
 import ChildrenWithRenderProp from "./__tests__/components/children-plugin";
 import Children from "./__tests__/components/children";

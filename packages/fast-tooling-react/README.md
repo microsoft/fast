@@ -12,7 +12,8 @@ The tooling available in FAST Tooling React can be used together to create UI fo
 - [Data utilities](#data-utilities)
     - [Mapping data to a React component](#mapping-data-to-a-react-component)
         - [Child options](#child-options)
-        - [Using plugins](#using-plugins)   
+        - [Using plugins](#using-plugins)
+    - [Generating data from a JSON schema](#generating-data-from-a-json-schema) 
 
 ## Benefits
 
@@ -204,4 +205,38 @@ const plugins = [
 ];
 
 mapDataToComponent(schema, data, childOptions, plugins);
+```
+
+### Generating data from a JSON schema
+
+Data may be generated from a JSON schema using the `getDataFromSchema` export. This will only generate the required items as dictated by the JSON schema, and will always choose the first potential match in any situation, for example if a property is an enum and is required, it will add the first value in the enum list.
+
+An example of generating data from the `@microsoft/fast-tooling-react` package:
+
+```javascript
+import { getDataFromSchema } from "@microsoft/fast-tooling-react";
+import * as headingSchema from "@microsoft/fast-components-react-msft/dist/heading/heading.schema.json";
+
+const data = getDataFromSchema(schema);
+```
+
+#### Adding children as options
+
+Children can also be auto-generated provided that they are not accompanied by `default` or `defaults` in the schema, which will be used first to add children. The first child in a list of provided `ids` will be used to create React children.
+
+An example of generating data with other React children:
+
+```javascript
+import { getDataFromSchema } from "@microsoft/fast-tooling-react";
+import * as contextMenu from "@microsoft/fast-components-react-msft/dist/context-menu/context-menu.schema.json";
+import * as contextMenuItem from "@microsoft/fast-components-react-msft/dist/context-menu-item/context-menu-item.schema.json";
+
+const childOptions = [
+    {
+        schema: contextMenuItem,
+        component: null
+    }
+];
+
+const data = getDataFromSchema(schema, childOptions);
 ```

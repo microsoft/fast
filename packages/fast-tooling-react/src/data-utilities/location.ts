@@ -1,78 +1,23 @@
 import { get, isPlainObject } from "lodash-es";
 import * as tv4 from "tv4";
+import {
+    CombiningKeyword,
+    DataResolverType,
+    DataType,
+    idKeyword,
+    pluginIdKeyword,
+    PluginLocation,
+    PropertyKeyword,
+    propsKeyword,
+    typeKeyword,
+} from "./types";
 import { ChildOptionItem } from "./";
 
-const typeKeyword: string = "type";
+/**
+ * This file contains all functionality for the manipulation of lodash paths
+ */
+
 const squareBracketsRegex: RegExp = /\[(\d+?)\]/g;
-export const pluginIdKeyword: string = "pluginId";
-export const propsKeyword: string = "props";
-export const idKeyword: string = "id";
-
-export enum DataResolverType {
-    plugin = "plugin",
-    component = "component",
-}
-
-export enum DataType {
-    number = "number",
-    string = "string",
-    boolean = "boolean",
-    array = "array",
-    children = "children",
-}
-
-enum PropertyKeyword {
-    properties = "properties",
-    reactProperties = "reactProperties",
-}
-
-enum CombiningKeyword {
-    anyOf = "anyOf",
-    oneOf = "oneOf",
-    allOf = "allOf",
-}
-
-export interface PluginLocation {
-    /**
-     * The data location to be interpreted by the plugin
-     */
-    dataLocation: string;
-
-    /**
-     * The type of data this represents
-     */
-    type: DataType;
-
-    /**
-     * The mapping type
-     */
-    mappingType: DataResolverType.plugin;
-
-    /**
-     * The data location of the data
-     * relative to the schema
-     */
-    relativeDataLocation: string;
-
-    /**
-     * The schema related to the data location
-     */
-    schema: any;
-}
-
-interface ChildrenLocation {
-    /**
-     * The data location of the child component
-     */
-    dataLocation: string;
-
-    /**
-     * The mapping type
-     */
-    mappingType: DataResolverType.component;
-}
-
-export type MappedDataLocation = PluginLocation | ChildrenLocation;
 
 /**
  * Finds the child option using the schema id

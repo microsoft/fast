@@ -11,7 +11,7 @@ export interface PluginProps {
     id: string | string[];
 }
 
-export default abstract class Plugin<C extends PluginProps> {
+export abstract class Plugin<C extends PluginProps> {
     private config: C;
 
     constructor(config: C) {
