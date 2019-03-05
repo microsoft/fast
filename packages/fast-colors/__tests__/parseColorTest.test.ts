@@ -74,13 +74,9 @@ describe("Color parsing and toString", (): void => {
                     const hexColor: ColorRGBA64 = parseColorHexRGB(hex);
                     const hexShorthandColor: ColorRGBA64 = parseColorHexRGB(shorthandHex);
 
-                    if (hexColor === null || hexShorthandColor === null) {
-                        console.log(r, g, b);
-                    } else {
-                        expect(hexColor!.r).toBe(hexShorthandColor!.r);
-                        expect(hexColor!.g).toBe(hexShorthandColor!.g);
-                        expect(hexColor!.b).toBe(hexShorthandColor!.b);
-                    }
+                    expect(hexColor!.r).toBe(hexShorthandColor!.r);
+                    expect(hexColor!.g).toBe(hexShorthandColor!.g);
+                    expect(hexColor!.b).toBe(hexShorthandColor!.b);
                 }
             }
         }
