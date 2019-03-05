@@ -7,6 +7,9 @@ import { FormProps } from "./form.props";
 import * as objectSchema from "../../app/configs/objects/objects.schema.json";
 import * as arraySchema from "../../app/configs/arrays/arrays.schema.json";
 import * as childrenSchema from "../../app/configs/children/children.schema.json";
+import * as pluginSchema from "../../app/configs/plugin/plugin.schema.json";
+
+import { StringUpdateSchemaPlugin } from "../../app/configs/plugin/plugin";
 
 /*
  * Configure Enzyme
@@ -233,5 +236,89 @@ describe("Form", () => {
         expect(form.state("navigation")).toHaveLength(2);
         expect(locationCallback).toHaveBeenCalled();
         expect(locationCallback.mock.calls[0][0]).toEqual("");
+    });
+    test("should not trigger the `onSchemaChange` if the schema does not have plugins", () => {
+        const callback: any = jest.fn();
+        const plugins: any = [
+            new StringUpdateSchemaPlugin({
+                id: "plugins/pluginModifiedString",
+            }),
+        ];
+        const rendered: any = mount(
+            <Form
+                schema={objectSchema}
+                data={{}}
+                onChange={jest.fn()}
+                plugins={plugins}
+                onSchemaChange={callback}
+            />
+        );
+
+        expect(callback).toHaveBeenCalledTimes(0);
+    });
+    test("should trigger the `onSchemaChange`if the schema has plugins", () => {
+        const callback: any = jest.fn();
+        const plugins: any = [
+            new StringUpdateSchemaPlugin({
+                id: "plugins/pluginModifiedString",
+            }),
+        ];
+        const rendered: any = mount(
+            <Form
+                schema={pluginSchema}
+                data={{}}
+                onChange={jest.fn()}
+                plugins={plugins}
+                onSchemaChange={callback}
+            />
+        );
+
+        expect(callback).toHaveBeenCalledTimes(1);
+    });
+    test("should not trigger the `onSchemaChange` if the schema has been changed and the schema does not have plugins", () => {
+        const callback: any = jest.fn();
+        const plugins: any = [
+            new StringUpdateSchemaPlugin({
+                id: "plugins/pluginModifiedString",
+            }),
+        ];
+        const rendered: any = mount(
+            <Form
+                schema={pluginSchema}
+                data={{}}
+                onChange={jest.fn()}
+                plugins={plugins}
+                onSchemaChange={callback}
+            />
+        );
+
+        expect(callback).toHaveBeenCalledTimes(1);
+
+        rendered.setProps({ schema: objectSchema });
+
+        expect(callback).toHaveBeenCalledTimes(1);
+    });
+    test("should trigger the `onSchemaChange` if the schema has been changed and the schema has plugins", () => {
+        const callback: any = jest.fn();
+        const plugins: any = [
+            new StringUpdateSchemaPlugin({
+                id: "plugins/pluginModifiedString",
+            }),
+        ];
+        const rendered: any = mount(
+            <Form
+                schema={objectSchema}
+                data={{}}
+                onChange={jest.fn()}
+                plugins={plugins}
+                onSchemaChange={callback}
+            />
+        );
+
+        expect(callback).toHaveBeenCalledTimes(0);
+
+        rendered.setProps({ schema: pluginSchema });
+
+        expect(callback).toHaveBeenCalledTimes(1);
     });
 });

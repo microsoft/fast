@@ -1,6 +1,4 @@
 import "jest";
-import { get } from "lodash-es";
-import { ChildOptionItem } from "@microsoft/fast-data-utilities-react";
 import {
     BreadcrumbItem,
     getBreadcrumbs,
@@ -9,7 +7,7 @@ import {
     HandleBreadcrumbClick,
     NavigationItem,
 } from "./form.utilities";
-import { BreadcrumbItemEventHandler } from "./form.props";
+import { BreadcrumbItemEventHandler, FormChildOptionItem } from "./form.props";
 import Children from "../../app/configs/children";
 import General from "../../app/configs/general";
 import Textarea from "../../app/configs/textarea";
@@ -29,7 +27,7 @@ import { reactChildrenStringSchema } from "./form-item.children.text";
  * Gets the navigation
  */
 describe("getNavigation", () => {
-    const childOptions: ChildOptionItem[] = [
+    const childOptions: FormChildOptionItem[] = [
         {
             name: childrenSchema.id,
             component: Children,
@@ -610,7 +608,7 @@ describe("getBreadcrumbs", () => {
             e.preventDefault();
         };
     };
-    const childOptions: ChildOptionItem[] = [
+    const childOptions: FormChildOptionItem[] = [
         {
             name: childrenSchema.id,
             component: Children,

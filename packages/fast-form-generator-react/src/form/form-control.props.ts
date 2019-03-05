@@ -1,10 +1,10 @@
 import FormItemCommon from "./form-item";
 import {
     FormAttributeSettingsMappingToPropertyNames,
+    FormChildOptionItem,
     FormComponentMappingToPropertyNamesProps,
 } from "./form.props";
 import { InitialOneOfAnyOfState, updateActiveSection } from "./form-section.props";
-import { ChildOptionItem } from "@microsoft/fast-data-utilities-react";
 
 export interface FormControlProps extends FormItemCommon {
     /**
@@ -30,7 +30,7 @@ export interface FormControlProps extends FormItemCommon {
     /**
      * The possible child options
      */
-    childOptions: ChildOptionItem[];
+    childOptions: FormChildOptionItem[];
 
     /**
      * The additional attributes mapped to a property name

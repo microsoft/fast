@@ -1,14 +1,13 @@
 import * as React from "react";
 import { cloneDeep, get, mergeWith } from "lodash-es";
 import {
-    ChildOptionItem,
     getChildOptionBySchemaId,
     getDataLocationsOfChildren,
     getPartialData,
     mapSchemaLocationFromDataLocation,
     normalizeDataLocation,
 } from "@microsoft/fast-data-utilities-react";
-import { BreadcrumbItemEventHandler, FormState } from "./form.props";
+import { BreadcrumbItemEventHandler, FormChildOptionItem, FormState } from "./form.props";
 import { reactChildrenStringSchema } from "./form-item.children.text";
 
 const squareBracketsRegex: RegExp = /\[(\d+?)\]/g;
@@ -114,9 +113,9 @@ export function getNavigation(
     dataLocation: string,
     data: any,
     schema: any,
-    childOptions: ChildOptionItem[]
+    childOptions: FormChildOptionItem[]
 ): NavigationItem[] {
-    const allChildOptions: ChildOptionItem[] = getReactDefaultChildren().concat(
+    const allChildOptions: FormChildOptionItem[] = getReactDefaultChildren().concat(
         childOptions
     );
     const dataLocationsOfChildren: string[] = getDataLocationsOfChildren(
@@ -240,7 +239,7 @@ export function getNavigationItem(
 /**
  * Get React's default children
  */
-export function getReactDefaultChildren(): ChildOptionItem[] {
+export function getReactDefaultChildren(): FormChildOptionItem[] {
     return [
         {
             name: "Text",
@@ -303,7 +302,7 @@ export function getSchemaByDataLocation(
     currentSchema: any,
     data: any,
     dataLocation: string,
-    childOptions: ChildOptionItem[]
+    childOptions: FormChildOptionItem[]
 ): any {
     if (dataLocation === "") {
         return currentSchema;
@@ -312,7 +311,7 @@ export function getSchemaByDataLocation(
     const subData: any = get(data, dataLocation);
     const id: string | undefined = subData ? subData.id : void 0;
     const childOptionWithMatchingSchemaId: any = childOptions.find(
-        (childOption: ChildOptionItem) => {
+        (childOption: FormChildOptionItem) => {
             return childOption.schema.id === id;
         }
     );
@@ -327,9 +326,9 @@ export function getSchemaByDataLocation(
  */
 export function getComponentByDataLocation(
     id: string,
-    childOptions: ChildOptionItem[]
+    childOptions: FormChildOptionItem[]
 ): any {
-    const childOption: ChildOptionItem = getChildOptionBySchemaId(id, childOptions);
+    const childOption: FormChildOptionItem = getChildOptionBySchemaId(id, childOptions);
 
     return childOption ? childOption.component : null;
 }
