@@ -158,7 +158,7 @@ export const namedColors: object = {
  * Test if a string looks like a hexadecimal color
  */
 function isColorStringHex(raw: string): boolean {
-    return raw.charAt(0) === "#";
+    return typeof raw === "string" && raw.charAt(0) === "#";
 }
 
 /**
