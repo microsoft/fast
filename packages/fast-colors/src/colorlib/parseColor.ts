@@ -159,9 +159,22 @@ const webRGBRegex: RegExp = /^rgb\(\s*((?:(?:25[0-5]|2[0-4]\d|1\d\d|\d{1,2})\s*,
 // Matches rgb(R, G, B, A) where R, G, and B are integers [0 - 255] and A is [0-1] floating
 const webRGBARegex: RegExp = /^rgba\(\s*((?:(?:25[0-5]|2[0-4]\d|1\d\d|\d{1,2})\s*,\s*){3}(?:0|1|0?\.\d*)\s*)\)$/i;
 // Matches #RGB and #RRGGBB, where R, G, and B are [0-9] or [A-F]
-const hexRGBRegex: RegExp = /^#((?:[0-9a-f]{6}|[0-9a-f]{3}))$/i
+const hexRGBRegex: RegExp = /^#((?:[0-9a-f]{6}|[0-9a-f]{3}))$/i;
 // Matches #RGB and #RRGGBBAA, where R, G, B, and A are [0-9] or [A-F]
-const hexRGBARegex: RegExp = /^#((?:[0-9a-f]{8}|[0-9a-f]{4}))$/i
+const hexRGBARegex: RegExp = /^#((?:[0-9a-f]{8}|[0-9a-f]{4}))$/i;
+
+/**
+ * Duplicates every hex digit to convert shorthand to longhand, eg #FA0 -> #FFAA00
+ * Input string should not contain the '#' prefix
+ */
+function hexShorthandToLonghand(hexDigits: string): string {
+    return hexDigits
+        .split("")
+        .reduce(
+            (reduced: string, value: string): string => reduced.concat(value, value),
+            ""
+        );
+}
 
 /**
  * Test if a color matches #RRGGBB or #RGB
@@ -206,7 +219,13 @@ export function parseColorHexRGB(raw: string): ColorRGBA64 | null {
         return null;
     }
 
-    const rawInt: number = parseInt(result[1], 16);
+    let digits: string = result[1];
+
+    if (digits.length === 3) {
+        digits = hexShorthandToLonghand(digits);
+    }
+
+    const rawInt: number = parseInt(digits, 16);
 
     if (isNaN(rawInt)) {
         return null;
@@ -229,12 +248,18 @@ export function parseColorHexARGB(raw: string): ColorRGBA64 | null {
         return null;
     }
 
-    const rawInt: number = parseInt(result[1], 16);
+    let digits: string = result[1];
+
+    if (digits.length === 4) {
+        digits = hexShorthandToLonghand(digits);
+    }
+
+    const rawInt: number = parseInt(digits, 16);
 
     if (isNaN(rawInt)) {
         return null;
     }
-    
+
     // Note the use of >>> rather than >> as we want JS to manipulate these as unsigned numbers
     return new ColorRGBA64(
         normalize((rawInt & 0x00ff0000) >>> 16, 0, 255),
@@ -252,7 +277,13 @@ export function parseColorHexRGBA(raw: string): ColorRGBA64 | null {
         return null;
     }
 
-    const rawInt: number = parseInt(result[1], 16);
+    let digits: string = result[1];
+
+    if (digits.length === 4) {
+        digits = hexShorthandToLonghand(digits);
+    }
+
+    const rawInt: number = parseInt(digits, 16);
 
     if (isNaN(rawInt)) {
         return null;
