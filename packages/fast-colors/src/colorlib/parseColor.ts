@@ -242,12 +242,12 @@ export function parseColorHexARGB(raw: string): ColorRGBA64 | null {
     let digits: string = result[1];
 
     if (digits.length === 4) {
-        const r: string = digits.charAt(0);
-        const g: string = digits.charAt(1);
-        const b: string = digits.charAt(2);
-        const a: string = digits.charAt(3);
+        const a: string = digits.charAt(0);
+        const r: string = digits.charAt(1);
+        const g: string = digits.charAt(2);
+        const b: string = digits.charAt(3);
 
-        digits = r.concat(r, g, g, b, b, a, a);
+        digits = a.concat(a, r, r, g, g, b, b);
     }
 
     const rawInt: number = parseInt(digits, 16);
@@ -276,12 +276,12 @@ export function parseColorHexRGBA(raw: string): ColorRGBA64 | null {
     let digits: string = result[1];
 
     if (digits.length === 4) {
-        const a: string = digits.charAt(0);
-        const r: string = digits.charAt(1);
-        const g: string = digits.charAt(2);
-        const b: string = digits.charAt(3);
+        const r: string = digits.charAt(0);
+        const g: string = digits.charAt(1);
+        const b: string = digits.charAt(2);
+        const a: string = digits.charAt(3);
 
-        digits = a.concat(a, r, r, g, g, b, b);
+        digits = r.concat(r, g, g, b, b, a, a);
     }
 
     const rawInt: number = parseInt(digits, 16);
