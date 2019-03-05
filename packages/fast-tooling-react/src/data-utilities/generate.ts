@@ -36,6 +36,7 @@ function getDataFromSchema(schema: any, childOptions?: ChildOptionItem[]): any {
                             schema[propertyType][requiredItem],
                             childOptions
                         );
+                        break;
                 }
             }
         }
