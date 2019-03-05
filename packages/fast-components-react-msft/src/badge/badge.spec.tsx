@@ -55,7 +55,7 @@ describe("badge", (): void => {
         const rendered: any = mount(<Badge filled={true} />);
 
         expect(rendered.find("span").prop("className")).toContain(
-            managedClasses.badge__lowlight
+            managedClasses.badge__filled
         );
     });
 
