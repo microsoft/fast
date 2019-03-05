@@ -1,10 +1,9 @@
 import { Swatch } from "./palette";
 import { black, white } from "./color-constants";
-import chroma from "chroma-js";
 import { memoize } from "lodash-es";
 import { DesignSystem, ensureDesignSystemDefaults } from "../../design-system";
 import { accentSwatch } from "./accent";
-import { ColorRecipe } from "./common";
+import { ColorRecipe, contrast } from "./common";
 
 /**
  * Function to derive accentForegroundCut from an input background and target contrast ratio
@@ -14,7 +13,7 @@ const accentForegroundCutAlgorithm: (
     targetContrast: number
 ) => Swatch = memoize(
     (backgroundColor: Swatch, targetContrast: number): Swatch => {
-        return chroma.contrast(white, backgroundColor) >= targetContrast ? white : black;
+        return contrast(white, backgroundColor) >= targetContrast ? white : black;
     },
     (backgroundColor: Swatch, targetContrast: number): string => {
         return backgroundColor.concat(targetContrast.toString());
@@ -24,7 +23,7 @@ const accentForegroundCutAlgorithm: (
 /**
  * Factory to create a accent-foreground-cut function that operates on a target contrast ratio
  */
-function accentForegroundCutFactory(contrast: number): ColorRecipe {
+function accentForegroundCutFactory(targetContrast: number): ColorRecipe {
     function accentForegroundCutInternal(designSystem: DesignSystem): Swatch;
     function accentForegroundCutInternal(
         backgroundResolver: (d: DesignSystem) => Swatch
@@ -33,11 +32,14 @@ function accentForegroundCutFactory(contrast: number): ColorRecipe {
         if (typeof arg === "function") {
             return ensureDesignSystemDefaults(
                 (designSystem: DesignSystem): Swatch => {
-                    return accentForegroundCutAlgorithm(arg(designSystem), contrast);
+                    return accentForegroundCutAlgorithm(
+                        arg(designSystem),
+                        targetContrast
+                    );
                 }
             );
         } else {
-            return accentForegroundCutAlgorithm(accentSwatch(arg), contrast);
+            return accentForegroundCutAlgorithm(accentSwatch(arg), targetContrast);
         }
     }
 
