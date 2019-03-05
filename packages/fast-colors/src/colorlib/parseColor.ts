@@ -164,19 +164,6 @@ const hexRGBRegex: RegExp = /^#((?:[0-9a-f]{6}|[0-9a-f]{3}))$/i;
 const hexRGBARegex: RegExp = /^#((?:[0-9a-f]{8}|[0-9a-f]{4}))$/i;
 
 /**
- * Duplicates every hex digit to convert shorthand to longhand, eg #FA0 -> #FFAA00
- * Input string should not contain the '#' prefix
- */
-function hexShorthandToLonghand(hexDigits: string): string {
-    return hexDigits
-        .split("")
-        .reduce(
-            (reduced: string, value: string): string => reduced.concat(value, value),
-            ""
-        );
-}
-
-/**
  * Test if a color matches #RRGGBB or #RGB
  */
 export function isColorStringHexRGB(raw: string): boolean {
@@ -222,7 +209,11 @@ export function parseColorHexRGB(raw: string): ColorRGBA64 | null {
     let digits: string = result[1];
 
     if (digits.length === 3) {
-        digits = hexShorthandToLonghand(digits);
+        const r: string = digits.charAt(0);
+        const g: string = digits.charAt(1);
+        const b: string = digits.charAt(2);
+
+        digits = r.concat(r, g, g, b, b);
     }
 
     const rawInt: number = parseInt(digits, 16);
@@ -251,7 +242,12 @@ export function parseColorHexARGB(raw: string): ColorRGBA64 | null {
     let digits: string = result[1];
 
     if (digits.length === 4) {
-        digits = hexShorthandToLonghand(digits);
+        const r: string = digits.charAt(0);
+        const g: string = digits.charAt(1);
+        const b: string = digits.charAt(2);
+        const a: string = digits.charAt(3);
+
+        digits = r.concat(r, g, g, b, b, a, a);
     }
 
     const rawInt: number = parseInt(digits, 16);
@@ -280,7 +276,12 @@ export function parseColorHexRGBA(raw: string): ColorRGBA64 | null {
     let digits: string = result[1];
 
     if (digits.length === 4) {
-        digits = hexShorthandToLonghand(digits);
+        const a: string = digits.charAt(0);
+        const r: string = digits.charAt(1);
+        const g: string = digits.charAt(2);
+        const b: string = digits.charAt(3);
+
+        digits = a.concat(a, r, r, g, g, b, b);
     }
 
     const rawInt: number = parseInt(digits, 16);
