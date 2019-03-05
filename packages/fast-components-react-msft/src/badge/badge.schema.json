@@ -5,15 +5,9 @@
     "type": "object",
     "id": "@microsoft/fast-components-react-msft/badge",
     "properties": {
-        "appearance": {
-            "title": "Appearance",
-            "type": "string",
-            "default": "lowlight",
-            "enum": [
-                "lowlight",
-                "highlight",
-                "accent"
-            ]
+        "filled": {
+            "title": "Backplate",
+            "type": "boolean"
         },
         "size": {
             "title": "Size",
