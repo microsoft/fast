@@ -18,6 +18,7 @@ import {
     applyLocalizedProperty,
     contrast,
     Direction,
+    ellipsis,
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import { curry } from "lodash-es";
@@ -88,14 +89,14 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = (
         selectOption_contentRegion: {
             gridColumnStart: "3",
             overflow: "hidden",
-            textOverflow: "ellipsis",
+            ...ellipsis(),
         },
         selectOption_glyph: {
             gridColumnStart: `${applyLocalizedProperty("2", "4", direction)}`,
             display: "inline-block",
             position: "relative",
             maxWidth: "16px",
-            margin: "0 12px 0 0",
+            margin: `${applyLocalizedProperty("0 12px 0 0", "0 0 0 12px", direction)}`,
         },
         selectOption__disabled: {
             cursor: "not-allowed",

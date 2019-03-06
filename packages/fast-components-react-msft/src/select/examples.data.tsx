@@ -23,19 +23,19 @@ const examples: ComponentFactoryExample<SelectProps> = {
         placeholder: "Select an option",
         children: [
             {
-                id: "select-option",
+                id: "@microsoft/fast-components-react-base/select-option",
                 props: {
                     ...selectOptionPropFactory("a"),
                 },
             },
             {
-                id: "select-option",
+                id: "@microsoft/fast-components-react-base/select-option",
                 props: {
                     ...selectOptionPropFactory("b"),
                 },
             },
             {
-                id: "select-option",
+                id: "@microsoft/fast-components-react-base/select-option",
                 props: {
                     ...selectOptionPropFactory("c"),
                 },
@@ -47,7 +47,7 @@ const examples: ComponentFactoryExample<SelectProps> = {
             placeholder: "placeholder",
             children: [
                 {
-                    id: "select-option",
+                    id: "@microsoft/fast-components-react-base/select-option",
                     props: {
                         ...selectOptionPropFactory("value 1"),
                         children: "select option 1",
@@ -55,14 +55,14 @@ const examples: ComponentFactoryExample<SelectProps> = {
                     },
                 },
                 {
-                    id: "select-option",
+                    id: "@microsoft/fast-components-react-base/select-option",
                     props: {
                         ...selectOptionPropFactory("value 2"),
                         children: "select option 2",
                     },
                 },
                 {
-                    id: "select-option",
+                    id: "@microsoft/fast-components-react-base/select-option",
                     props: {
                         ...selectOptionPropFactory("value 3"),
                         children: "select option 3",

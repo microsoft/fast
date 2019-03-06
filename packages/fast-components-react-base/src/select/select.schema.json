@@ -3,7 +3,7 @@
     "title": "Select",
     "description": "A select component's schema definition.",
     "type": "object",
-    "id": "select",
+    "id": "@microsoft/fast-components-react-base/select",
     "properties": {
         "placeholder": {
             "title": "Placeholder",
@@ -55,7 +55,7 @@
             "title": "Building blocks",
             "type": "children",
             "defaults": [
-                "text"
+                "listbox-item"
             ]
         }
     }

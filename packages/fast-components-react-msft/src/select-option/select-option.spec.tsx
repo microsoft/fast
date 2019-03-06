@@ -1,12 +1,10 @@
 import * as React from "react";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import { ListboxItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import MSFTSelectOption from "./select-option";
 import {
     SelectOption,
     SelectOptionHandledProps,
-    SelectOptionProps,
     SelectOptionUnhandledProps,
 } from "./index";
 
@@ -15,7 +13,7 @@ import {
  */
 configure({ adapter: new Adapter() });
 
-describe("listbox menu item", (): void => {
+describe("select option", (): void => {
     test("should have a displayName that matches the component name", () => {
         expect((MSFTSelectOption as any).name).toBe(MSFTSelectOption.displayName);
     });

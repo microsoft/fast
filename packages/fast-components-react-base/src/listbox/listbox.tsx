@@ -60,7 +60,7 @@ class Listbox extends Foundation<
         childrenAsArray: React.ReactNode[],
         increment: number
     ): React.ReactNode => {
-        for (let i: number = startIndex; i !== endIndex; i = 1 + increment) {
+        for (let i: number = startIndex; i !== endIndex; i = i + increment) {
             const thisOption: React.ReactNode = childrenAsArray[i] as React.ReactNode;
             if (Listbox.isValidSelectedItem(thisOption as React.ReactElement<any>)) {
                 return thisOption;

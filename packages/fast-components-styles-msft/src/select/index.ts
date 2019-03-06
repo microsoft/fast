@@ -72,7 +72,7 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = (
         },
 
         select_toggleGlyph: {
-            fill: { foregroundColor },
+            fill: foregroundColor,
         },
 
         select__disabled: {
@@ -106,7 +106,6 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = (
                 borderColor: foregroundColor,
             },
         },
-
         select_menu__open: {},
     };
 };
