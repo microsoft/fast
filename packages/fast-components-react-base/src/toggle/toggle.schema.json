@@ -3,7 +3,7 @@
     "title": "Toggle",
     "description": "A toggle component's schema definition.",
     "type": "object",
-    "id": "toggle",
+    "id": "@microsoft/fast-components-react-base/toggle",
     "properties": {
         "disabled": {
             "title": "Disabled",
