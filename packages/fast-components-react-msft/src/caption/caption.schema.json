@@ -3,7 +3,7 @@
     "title": "Caption",
     "description": "A caption component's schema definition.",
     "type": "object",
-    "id": "caption",
+    "id": "@microsoft/fast-components-react-msft/caption",
     "properties": {
         "tag": {
             "title": "HTML tag",
