@@ -13,7 +13,8 @@ The tooling available in FAST Tooling React can be used together to create UI fo
     - [Mapping data to a React component](#mapping-data-to-a-react-component)
         - [Child options](#child-options)
         - [Using plugins](#using-plugins)
-    - [Generating data from a JSON schema](#generating-data-from-a-json-schema) 
+    - [Generating data from a JSON schema](#generating-data-from-a-json-schema)
+- [Navigation](#navigation)
 
 ## Benefits
 
@@ -239,4 +240,127 @@ const childOptions = [
 ];
 
 const data = getDataFromSchema(schema, childOptions);
+```
+
+## Navigation
+
+The Navigation uses data structures as specified by the [children](#data-structures-for-react-children) data structure to create a treeview. It includes a callback for updating the data location if you are using it with other exports from this package and can be controlled or uncontrolled.
+
+**Schemas used by the examples below can be found [here](https://github.com/Microsoft/fast-dna/tree/master/packages/fast-tooling-react/app/configs/children.schema.json) and [here](https://github.com/Microsoft/fast-dna/tree/master/packages/fast-tooling-react/app/configs/no-children.schema.json)**
+
+**Uncontrolled example**:
+
+```jsx
+import React from "react";
+import { Navigation } from "@microsoft/fast-tooling-react";
+import noChildrenSchema from "./no-children.schema.json";
+import childrenSchema from "./children.schema.json";
+
+export class Example extends React.Component {
+    render() {
+        return (
+            <Navigation
+                data={this.getData()}
+                schema={childrenSchema}
+                childOptions={this.getChildOptions()}
+            />
+        );
+    }
+
+    getData() {
+        return {
+            children: [
+                {
+                    id: get(childrenSchema, "id"),
+                    props: {
+                        children: {
+                            id: get(noChildrenSchema, "id"),
+                            props: noChildren,
+                        }
+                    }
+                }
+            ]
+        };
+    }
+
+    getChildOptions() {
+        return [
+            {
+                component: null,
+                schema: noChildrenSchema,
+            },
+            {
+                component: null,
+                schema: childrenSchema,
+            },
+        ];
+    }
+}
+```
+
+**Controlled example**:
+Both the `dataLocation` and `onLocationUpdate` props are optional, including both of them will allow the component to be fully controlled.
+
+```jsx
+import * as React from "react";
+import { Navigation } from "@microsoft/fast-tooling-react";
+import noChildrenSchema from "./no-children.schema.json";
+import childrenSchema from "./children.schema.json";
+
+export class Example extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            dataLocation: ""
+        };
+    }
+
+    render() {
+        return (
+            <Navigation
+                data={this.getData()}
+                schema={childrenSchema}
+                childOptions={this.getChildOptions()}
+                dataLocation={this.state.dataLocation}
+                onLocationUpdate={this.handleLocationUpdate}
+            />
+        );
+    }
+
+    getData() {
+        return {
+            children: [
+                {
+                    id: get(childrenSchema, "id"),
+                    props: {
+                        children: {
+                            id: get(noChildrenSchema, "id"),
+                            props: noChildren,
+                        }
+                    }
+                }
+            ]
+        };
+    }
+
+    getChildOptions() {
+        return [
+            {
+                component: null,
+                schema: noChildrenSchema,
+            },
+            {
+                component: null,
+                schema: childrenSchema,
+            },
+        ];
+    }
+
+    handleLocationUpdate = (newDataLocation) => {
+        this.setState({
+            dataLocation: newDataLocation
+        });
+    }
+}
 ```
