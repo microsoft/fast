@@ -1,6 +1,8 @@
 
 # FAST Viewer React
 
+**FAST Viewer React has been deprecated. Use [FAST Tooling React](https://www.npmjs.com/package/@microsoft/fast-tooling-react) instead.**
+
 A React component which shows content in an iframe via a provided route.
 This can be used to as a method for previewing a React component(s) or an entire page.
 
