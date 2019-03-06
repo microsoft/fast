@@ -31,6 +31,6 @@ export default {
             children: "Filled badge small",
             filled: true,
             size: BadgeSize.small,
-        } as any,
+        },
     ],
 } as ComponentFactoryExample<BadgeProps>;

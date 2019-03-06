@@ -8,4 +8,4 @@ Keep the *badge* label short and succinct &ndash; it should not be a sentence or
 
 ## Style guidance
 
-Use the small or large size best suited for the specific *badge* usage. The `filled` prop adds a backplate to the badge with default styling. Additional styling can be modified by applying CSS `color` and `background` using the `jssStyleSheet` override.
+Use the small or large size best suited for the specific *badge* usage. The `filled` prop adds a backplate to the badge with default styling. Additional styling can be modified by applying CSS `color` and `background` using the `jssStyleSheet` prop.
