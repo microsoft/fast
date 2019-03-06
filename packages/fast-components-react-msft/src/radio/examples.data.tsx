@@ -1,11 +1,11 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { Radio, RadioProps } from "./index";
-import schema from "@microsoft/fast-components-react-base/dist/radio/radio.schema.json";
+import schema from "./radio.schema.json";
 import Documentation from "./.tmp/documentation";
 import { Label } from "../label";
 import { noop } from "lodash-es";
-import labelSchema from "../../../fast-components-react-base/src/label/label.schema.json";
+import labelSchema from "../label/label.schema.json";
 
 const slotRadioExample: any = {
     id: labelSchema.id,
