@@ -1,0 +1,190 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Component with plugins",
+    "description": "A test component's schema definition.",
+    "type": "object",
+    "id": "plugin",
+    "formPluginId": "plugins",
+    "properties": {
+        "string": {
+            "title": "String",
+            "type": "string"
+        },
+        "pluginModifiedString": {
+            "title": "Plugin modified string",
+            "type": "string",
+            "formPluginId": "plugins/pluginModifiedString"
+        },
+        "boolean": {
+            "title": "Boolean",
+            "type": "boolean"
+        },
+        "pluginModifiedBoolean": {
+            "title": "Plugin modified boolean",
+            "type": "boolean",
+            "formPluginId": "plugins/pluginModifiedBoolean"
+        },
+        "number": {
+            "title": "Number",
+            "type": "number"
+        },
+        "pluginModifiedNumber": {
+            "title": "Number, change to update the schema",
+            "type": "number",
+            "formPluginId": "plugins/pluginModifiedNumber",
+            "enum": [
+                1,
+                2,
+                3
+            ]
+        },
+        "object": {
+            "title": "Object",
+            "type": "object",
+            "properties": {
+                "string": {
+                    "title": "String",
+                    "type": "string"
+                }
+            }
+        },
+        "pluginModifiedObject": {
+            "title": "Plugin modified object",
+            "type": "object",
+            "formPluginId": "plugins/pluginModifiedObject",
+            "properties": {
+                "string": {
+                    "title": "String",
+                    "type": "string"
+                },
+                "pluginModifiedString": {
+                    "title": "Plugin modified string",
+                    "type": "string",
+                    "formPluginId": "plugins/pluginModifiedObject/pluginModifiedString"
+                }
+            }
+        },
+        "nestedObject": {
+            "title": "Nested Object",
+            "type": "object",
+            "properties": {
+                "pluginModifiedObject": {
+                    "title": "Plugin modified object",
+                    "type": "object",
+                    "formPluginId": "plugins/nestedObject/pluginModifiedObject",
+                    "properties": {
+                        "pluginModifiedString": {
+                            "title": "Plugin modified string",
+                            "type": "string",
+                            "formPluginId": "plugins/nestedObject/pluginModifiedObject/pluginModifiedString"
+                        }
+                    }
+                }
+            }
+        },
+        "arrays": {
+            "title": "Array of strings",
+            "type": "array",
+            "items": {
+                "title": "String",
+                "type": "string"
+            },
+            "minItems": 2,
+            "maxItems": 5
+        },
+        "pluginModifiedArrays": {
+            "title": "Plugin modified array of strings",
+            "type": "array",
+            "formPluginId": "plugins/pluginModifiedArrays",
+            "items": {
+                "title": "Plugin modified string",
+                "type": "string",
+                "formPluginId": "plugins/pluginModifiedArrays/items"
+            },
+            "minItems": 2,
+            "maxItems": 5
+        },
+        "nestedArrays": {
+            "title": "Array of objects",
+            "type": "array",
+            "items": {
+                "title": "Object",
+                "type": "object",
+                "properties": {
+                    "string": {
+                        "title": "String",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "string"
+                ]
+            }
+        },
+        "pluginModifiedNestedArrays": {
+            "title": "Plugin modified array of objects",
+            "type": "array",
+            "items": {
+                "title": "Object",
+                "type": "object",
+                "properties": {
+                    "string": {
+                        "title": "Plugin modified string",
+                        "type": "string",
+                        "formPluginId": "plugins/pluginModifiedNestedArrays/items/string"
+                    }
+                },
+                "required": [
+                    "string"
+                ]
+            }
+        },
+        "oneOfs": {
+            "title": "oneOfs",
+            "oneOf": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "pluginModifiedString": {
+                            "title": "Plugin modified string",
+                            "type": "string",
+                            "formPluginId": "plugins/pluginModifiedString"
+                        },
+                        "boolean": {
+                            "title": "Boolean",
+                            "type": "boolean"
+                        }
+                    },
+                    "required": [
+                        "pluginModifiedString",
+                        "boolean"
+                    ]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "pluginModifiedNumber": {
+                            "title": "Plugin modified number",
+                            "type": "number",
+                            "formPluginId": "plugins/pluginModifiedNumber"
+                        },
+                        "object": {
+                            "title": "Object",
+                            "type": "object",
+                            "properties": {
+                                "string": {
+                                    "title": "String",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "required": [
+                        "pluginModifiedNumber",
+                        "object"
+                    ]
+                }
+            ]
+        }
+    }
+}

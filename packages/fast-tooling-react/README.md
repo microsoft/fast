@@ -23,6 +23,22 @@ The tooling available in FAST Tooling React can be used together to create UI fo
         - [Devices](#devices)
     - [Rotate](#rotate)
 - [CSS Editor](#css-editor)
+    - [Spacing](#spacing)
+    - [Position](#position)
+- [Form](#form)
+    - [Using form plugins](#using-form-plugins)
+    - [React children as options](#react-children-as-options)
+    - [Controlling the visible section](#controlling-the-visible-section)
+    - [JSON schema metadata](#json-schema-metadata)
+        - [Title](#title)
+        - [Disabled](#disabled)
+        - [Examples & default](#examples-&-default)
+    - [JSON schema keywords](#json-schema-keywords)
+        - [oneOf & anyOf](#oneof-&-anyof)
+        - [Enums](#enums)
+        - [React children](#react-children)
+        - [allOf & $ref](#allof-&-ref)
+
 
 ## Benefits
 
@@ -647,3 +663,367 @@ export class Example extends React.Component {
     }
 }
 ```
+
+## Form
+
+The required properties are the `data`, `schema`, and `onChange` function. The data should be tied to your state as the data will change when editing the form. The `onChange` is used as a callback, it should take one argument that is the data that should be updated when any data has been changed from within the generated form.
+
+Example:
+```jsx
+import Form from "@microsoft/fast-tooling-react";
+
+/**
+ * Add to your render function
+ */
+<Form
+    data={this.state.data}
+    schema={schema}
+    onChange={this.handleChange}
+/>
+
+/**
+ * onChange handler
+ */
+handleChange = (data) => {
+    this.setState({
+        data
+    });
+}
+```
+
+### Using form plugins
+
+Plugins may be created to determine if a form should change based on data. You can identify a piece of schema that should be updated by adding a unique key to your JSON schema `formPluginId`. When you initialize a custom plugin you will need to pass that same id to the plugin as part of its configuration.
+
+Example schema:
+```json
+{
+    "$schema": "http://json-schema.org/schema#",
+    "id": "my-component",
+    "title": "My component",
+    "type": "object",
+    "properties": {
+        "text": {
+            "title": "Text",
+            "type": "string",
+            "example": "Hello world",
+            "formPluginId": "my-custom-plugin-identifier"
+        },
+        "weight": {
+            "title": "Weight",
+            "type": "string",
+            "enum": [
+                "heavy",
+                "medium",
+                "light"
+            ]
+        }
+    },
+    "required": [
+        "text"
+    ]
+}
+```
+
+Example plugin which returns an unmodified schema, unless the weight property has been specified, then the options become specific to the data:
+
+```js
+import { FormPlugin, FormPluginProps } from "@microsoft/fast-tooling-react";
+
+export class MyCustomSchemaPlugin extends FormPlugin {
+    resolver(schema, data) {
+        switch (data.weight) {
+            case "heavy":
+                return Object.assign({}, schema, { enum: ["heavy text 1", "heavy text 2"] });
+            case "medium":
+                return Object.assign({}, schema, { enum: ["medium text 1", "medium text 2"] });
+            case "light":
+                return Object.assign({}, schema, { enum: ["light text 1", "light text 2"] });
+        }
+
+        return schema;
+    }
+}
+```
+
+Example implementation with the `Form`:
+
+*Note: When the plugins are used the schema tied to the `Form` should be set to a state so that it can be kept up-to-date, you will need to use the `onSchemaChange` callback which will return the newly updated schema.*
+
+```jsx
+import Form from "@microsoft/fast-tooling-react";
+import { Button, ButtonSchema } from "@microsoft/fast-components-react-msft";
+import { MyCustomSchemaPlugin } from "./my-custom-schema-plugin";
+
+<Form
+    data={this.state.currentComponentData}
+    schema={this.state.currentComponentSchema}
+    onChange={handleChange}
+    onSchemaChange={handleSchemaChange}
+    plugins={[
+        new MyCustomSchemaPlugin({
+            id: ["my-custom-plugin-identifier"]
+        })
+    ]}
+/>
+```
+
+### React children as options
+
+Children by default only include text elements. If you want to add some child components you are providing, you can do this through the `childOptions`.
+
+```jsx
+import Form from "@microsoft/fast-tooling-react";
+import { Button, ButtonSchema } from "@microsoft/fast-components-react-msft";
+
+<Form
+    data={this.state.currentComponentData}
+    schema={currentComponentSchema}
+    onChange={handleChange}
+    childOptions={[
+        {
+            name: "Button",
+            component: Button,
+            schema: ButtonSchema
+        }
+    ]}
+/>
+```
+
+### Controlling the visible section
+
+The location prop allows the user to control which piece of JSON schema the form is pointing to and has two required properties. It takes `dataLocation` which is the location of the data to be edited, and `onChange` which will fire an update when the user performs an action on the form that would change the visible data to be edited. An example of this would be clicking on an array item to edit that item.
+
+```jsx
+import Form from "@microsoft/fast-tooling-react";
+
+<Form
+    data={this.state.currentComponentData}
+    schema={currentComponentSchema}
+    onChange={handleChange}
+    location={{
+        dataLocation: this.state.dataLocation,
+        onChange: this.handleChange
+    }}
+/>
+
+// example method to use for the location onChange
+handleChange = (dataLocation) => {
+    this.setState({
+        dataLocation: dataLocation
+    });
+}
+```
+
+### JSON schema metadata
+
+The schema form generator can interpret most [JSON schemas](http://json-schema.org/), however there are some things to note when writing JSON schemas that make for a better UI.
+
+#### Title
+
+Using a title will add a label to the corresponding form element. All properties are required to have a title.
+
+Example:
+
+```json
+{
+    "$schema": "http://json-schema.org/schema#",
+    "id": "my-component",
+    "title": "My component",
+    "type": "object",
+    "properties": {
+        "text": {
+            "title": "Text",
+            "type": "string",
+            "example": "Hello world"
+        },
+        "weight": {
+            "title": "Weight",
+            "type": "string",
+            "enum": [
+                "heavy"
+            ]
+        }
+    },
+    "required": [
+        "text"
+    ]
+}
+```
+
+#### Disabled
+
+The disabled flag is optional and the form item representing this section of the schema will be disabled if flag is set to true.
+
+Example:
+
+```json
+{
+    "$schema": "http://json-schema.org/schema#",
+    "id": "my-component",
+    "title": "My component",
+    "type": "object",
+    "properties": {
+        "text": {
+            "title": "Text",
+            "type": "string",
+            "example": "Hello world",
+            "disabled": true
+        }
+    },
+    "required": [
+        "text"
+    ]
+}
+```
+
+#### Examples & default
+
+Providing an examples or default value will replace the placeholder 'example text' or randomly generated number. It is generally better to add this extra information in case the schema form generator needs to create a new set of data.
+
+Example:
+
+```json
+{
+    "$schema": "http://json-schema.org/schema#",
+    "id": "my-component",
+    "title": "My component",
+    "type": "object",
+    "properties": {
+        "text": {
+            "title": "Text",
+            "type": "string",
+            "examples": [
+                "Hello world"
+            ]
+        },
+        "style": {
+            "title": "Style",
+            "type": "object",
+            "properties": {
+                "color": {
+                    "title": "HEX Color",
+                    "type": "string",
+                    "examples": [
+                        "#FF0000"
+                    ]
+                }
+            },
+            "required": [
+                "color"
+            ]
+        }
+    },
+    "required": [
+        "text"
+    ]
+}
+```
+
+Because the style is optional, you can toggle to add it. The schema form generator will see that color is a required piece of data and use the example given to fill in.
+
+### JSON schema keywords
+
+Certain JSON schema keywords are interpreted to provide a better UI.
+
+#### oneOf & anyOf
+
+The oneOf and anyOf keywords can be used inside a property and at the root level of a schema. This will create a select dropdown so that the user can switch between them. If data has been provided, it will select the first oneOf/anyOf instance it can validate against. The contents of a 'title' property will be used for the contents of the dropdown.
+
+Example:
+
+```json
+{
+    "$schema": "http://json-schema.org/schema#",
+    "id": "my-component",
+    "title": "My component",
+    "oneOf": [
+        {
+            "title": "color",
+            "type": "object",
+            "properties": {
+                "color": {
+                    "title": "HEX Color",
+                    "type": "string",
+                    "example": "#FF0000"
+                }
+            }
+        },
+        {
+            "title": "text",
+            "type": "object",
+            "properties": {
+                "text": {
+                    "title": "Text",
+                    "type": "string",
+                    "example": "Hello world"
+                }
+            }
+        }
+    ]
+}
+```
+
+#### Enums
+
+Any enums will be converted to a select dropdown.
+
+```json
+{
+    "$schema": "http://json-schema.org/schema#",
+    "id": "my-component",
+    "title": "My component",
+    "type": "object",
+    "properties": {
+        "color": {
+            "title": "Color",
+            "type": "string",
+            "enum" : [
+                "red",
+                "green",
+                "blue",
+                "yellow"
+            ],
+            "default": "red"
+        }
+    }
+}
+```
+
+#### React children
+
+React children are treated as special objects instead of simple properties and can be defined in an object as `reactProperties`. They can specify `ids` from the given `childOptions` and can be given defaults, currently there is one default `text`. If no `ids` are specified all `childOptions` are considered valid.
+
+Example of an object that includes children with specific ids and the text default:
+
+```json
+{
+    "$schema": "http://json-schema.org/schema#",
+    "id": "my-component",
+    "title": "My component",
+    "type": "object",
+    "properties": {
+        "color": {
+            "title": "Color",
+            "type": "string"
+        }
+    },
+    "reactProperties": {
+        "children": {
+            "title": "Components",
+            "type": "children",
+            "ids": [
+                "my-component",
+                "my-button-component"
+            ],
+            "defaults": [
+                "text"
+            ]
+        }
+    }
+}
+```
+
+#### allOf & $ref
+
+The allOf and $ref keywords cannot be interpreted by the schema form generator. To allow for most of the functionality there is a tool inside the @microsoft/fast-permutator which will simplify the schema and merge allOf arrays when it finds them, see `simplifySchemas`.

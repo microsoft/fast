@@ -5,7 +5,16 @@ import {
     localizeSpacing,
     toPx,
 } from "@microsoft/fast-jss-utilities";
-import { accent, background300, background800, foreground300 } from "./constants";
+import {
+    accent,
+    background300,
+    background800,
+    disabledOpacity,
+    foreground000,
+    foreground200,
+    foreground300,
+    foreground800,
+} from "./constants";
 
 export interface BoxShadowConfig {
     offsetX: number;
@@ -39,6 +48,16 @@ export function applyTriggerStyle(color: string): CSSRules<{}> {
         boxSizing: "border-box",
         color,
         ...ellipsis(),
+    };
+}
+
+export function applyFormItemDisabled(): CSSRules<{}> {
+    return {
+        opacity: `${disabledOpacity}`,
+        cursor: "not-allowed",
+        "& label": {
+            cursor: "not-allowed",
+        },
     };
 }
 
@@ -129,6 +148,19 @@ export function insetStrongBoxShadow(color: string): CSSRules<{}> {
     };
 }
 
+export function applyLabelStyle(): CSSRules<{}> {
+    return {
+        flexGrow: "1",
+        lineHeight: "16px",
+        fontSize: "12px",
+        minHeight: "30px",
+        display: "flex",
+        boxSizing: "border-box",
+        paddingTop: "7px",
+        ...ellipsis(),
+    };
+}
+
 export function applyInputStyle(): CSSRules<{}> {
     return {
         lineHeight: "16px",
@@ -145,6 +177,128 @@ export function applyInputStyle(): CSSRules<{}> {
         },
         "&:focus": {
             ...insetStrongBoxShadow(accent),
+        },
+    };
+}
+
+/**
+ * Common wrapper that surrounds a label and an input
+ */
+export function applyCleanListStyle(): CSSRules<{}> {
+    return {
+        listStyle: "none",
+        margin: "0",
+        padding: "0",
+        listStylePosition: "outside",
+    };
+}
+
+export function applyGlobalStyle(): CSSRules<{}> {
+    return {
+        'body > li[draggable="true"]': {
+            boxShadow: `0 4px 4px 4px rgba(0, 0, 0, 0.15)`,
+            borderColor: "transparent",
+            listStyleType: "none",
+            listStyle: "none",
+            background: foreground200,
+        },
+    };
+}
+
+export function applyAriaHiddenStyles(): CSSRules<{}> {
+    return {
+        '&[aria-hidden="true"]': {
+            display: "none",
+        },
+        '&[aria-hidden="false"]': {
+            display: "block",
+        },
+    };
+}
+
+export function applyRemoveItemStyle(): CSSRules<{}> {
+    return {
+        position: "absolute",
+        right: "5px",
+        top: "5px",
+        appearance: "none",
+        background: "none",
+        border: "none",
+        padding: "0",
+        width: "20px",
+        height: "20px",
+        zIndex: "1",
+        borderRadius: "2px",
+        "&:focus": {
+            ...insetStrongBoxShadow(accent),
+            outline: "none",
+        },
+        "&::before": {
+            position: "absolute",
+            content: "''",
+            pointerEvents: "none",
+            width: "9px",
+            height: "1px",
+            left: "5.5px",
+            top: "9.5px",
+            background: foreground300,
+        },
+    };
+}
+
+export function applyControlWrapper(): CSSRules<{}> {
+    return {
+        marginBottom: "12px",
+    };
+}
+
+export function applyControlSingleLineWrapper(): CSSRules<{}> {
+    return {
+        display: "flex",
+        minHeight: "30px",
+        alignItems: "center",
+    };
+}
+
+export function applyControl(): CSSRules<{}> {
+    return {
+        display: "grid",
+        width: `calc(100% - 30px)`,
+    };
+}
+
+export function applySoftRemove(): CSSRules<{}> {
+    return {
+        display: "flex",
+        height: "30px",
+        width: "30px",
+        position: "relative",
+        justifyContent: "center",
+        alignItems: "center",
+    };
+}
+
+export function applySoftRemoveInput(): CSSRules<{}> {
+    return {
+        appearance: "none",
+        background: "none",
+        position: "absolute",
+        right: "5px",
+        border: "none",
+        width: "20px",
+        margin: "0",
+        height: "20px",
+        zIndex: "1",
+        borderRadius: "2px",
+        "&:focus": {
+            ...insetStrongBoxShadow(accent),
+            outline: "none",
+        },
+        "& + svg": {
+            fill: foreground800,
+        },
+        "&:disabled + svg": {
+            opacity: `${disabledOpacity}`,
         },
     };
 }

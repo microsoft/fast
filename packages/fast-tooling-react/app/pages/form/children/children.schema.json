@@ -1,0 +1,64 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Component with children",
+    "description": "A test component's schema definition.",
+    "type": "object",
+    "id": "children",
+    "reactProperties": {
+        "children": {
+            "title": "Children",
+            "type": "children",
+            "defaults": [
+                "text"
+            ]
+        },
+        "restrictedWithChildren": {
+            "title": "Restricted children with react defaults",
+            "type": "children",
+            "ids": [
+                "alignHorizontal",
+                "objects",
+                "arrays",
+                "anyOf"
+            ],
+            "defaults": [
+                "text"
+            ]
+        },
+        "restrictedChildrenWithReactDefaults": {
+            "title": "Restricted children without react defaults",
+            "type": "children",
+            "ids": [
+                "alignVertical",
+                "children",
+                "theme"
+            ]
+        }
+    },
+    "properties": {
+        "objectContainingNestedChildren": {
+            "title": "Object with nested children",
+            "type": "object",
+            "reactProperties": {
+                "nestedObjectChildren": {
+                    "title": "Children in object",
+                    "type": "children"
+                }
+            }
+        },
+        "arrayContainingNestedChildren": {
+            "title": "Array with nested children",
+            "type": "array",
+            "items": {
+                "title": "Nested array item",
+                "type": "object",
+                "reactProperties": {
+                    "nestedArrayChildren": {
+                        "title": "Children",
+                        "type": "children"
+                    }
+                }
+            }
+        }
+    }
+}

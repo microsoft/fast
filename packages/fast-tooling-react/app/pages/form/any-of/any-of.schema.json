@@ -1,0 +1,97 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Component with anyOf",
+    "description": "A test component's schema definition.",
+    "type": "object",
+    "id": "anyOf",
+    "anyOf": [
+        {
+            "description": "String",
+            "type": "object",
+            "properties": {
+                "string": {
+                    "title": "String",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "string"
+            ]
+        },
+        {
+            "description": "Number",
+            "type": "object",
+            "properties": {
+                "number": {
+                    "title": "Number",
+                    "type": "number"
+                }
+            },
+            "required": [
+                "number"
+            ]
+        },
+        {
+            "title": "Nested anyOf",
+            "description": "Nested anyOf",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "nestedAnyOf": {
+                    "title": "Nested anyOf",
+                    "description": "Nested anyOf Configuration",
+                    "anyOf": [
+                        {
+                            "description": "Object",
+                            "type": "object",
+                            "properties": {
+                                "object": {
+                                    "title": "String",
+                                    "type": "object",
+                                    "properties": {
+                                        "string": {
+                                            "title": "String",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "string"
+                                    ]
+                                }
+                            },
+                            "required": [
+                                "object"
+                            ]
+                        },
+                        {
+                            "description": "String",
+                            "type": "object",
+                            "properties": {
+                                "string": {
+                                    "title": "String",
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "string"
+                            ]
+                        },
+                        {
+                            "description": "Number",
+                            "type": "object",
+                            "properties": {
+                                "number": {
+                                    "title": "Number",
+                                    "type": "number"
+                                }
+                            },
+                            "required": [
+                                "number"
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}
