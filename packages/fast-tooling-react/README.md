@@ -244,7 +244,7 @@ const data = getDataFromSchema(schema, childOptions);
 
 ## Navigation
 
-The Navigation uses data structures as specified by the [children](#data-structures-for-react-children) data structure to create a treeview. It includes a callback for updating the data location if you are using it with other exports from this package and can be controlled or uncontrolled.
+The `Navigation` component uses data structures as specified by the [children](#data-structures-for-react-children) data structure to create a tree view. It includes a callback for updating the data location if you are using it with other exports from this package and can be controlled or uncontrolled.
 
 **Schemas used by the examples below can be found [here](https://github.com/Microsoft/fast-dna/tree/master/packages/fast-tooling-react/app/configs/children.schema.json) and [here](https://github.com/Microsoft/fast-dna/tree/master/packages/fast-tooling-react/app/configs/no-children.schema.json)**
 
