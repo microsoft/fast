@@ -3,7 +3,7 @@
     "title": "Tab panel",
     "description": "A tab panel component's schema definition.",
     "type": "object",
-    "id": "tab-panel",
+    "id": "@microsoft/fast-components-react-base/tab-panel",
     "properties": {
         "slot": {
             "title": "Slot",

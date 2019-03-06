@@ -3,7 +3,7 @@
     "title": "Text action",
     "description": "A text action component's schema definition.",
     "type": "object",
-    "id": "text-action",
+    "id": "@microsoft/fast-components-react-msft/text-action",
     "properties": {
         "disabled": {
             "title": "Disabled",
@@ -19,6 +19,11 @@
             "title": "Before glyph",
             "type": "children",
             "pluginId": "@microsoft/fast-components-react-msft/text-action/beforeGlyph"
+        },
+        "button": {
+            "title": "Button",
+            "type": "children",
+            "pluginId": "@microsoft/fast-components-react-msft/text-action/button"
         },
         "afterGlyph": {
             "title": "After glyph",

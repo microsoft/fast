@@ -3,7 +3,7 @@
     "title": "Progress",
     "description": "A progress component's schema definition.",
     "type": "object",
-    "id": "progress",
+    "id": "@microsoft/fast-components-react-base/progress",
     "properties": {
         "value": {
             "title": "HTML value attribute",

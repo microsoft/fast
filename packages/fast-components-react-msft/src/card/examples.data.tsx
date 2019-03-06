@@ -1,8 +1,8 @@
 import React from "react";
 import { Card } from "./index";
 import { CardHandledProps, CardProps, CardTag, CardUnhandledProps } from "./index";
-import schema from "@microsoft/fast-components-react-base/dist/card/card.schema.json";
-import ImageSchema from "@microsoft/fast-components-react-base/dist/image/image.schema.json";
+import schema from "./card.schema.json";
+import ImageSchema from "../image/image.schema.json";
 import HeadingSchema from "../heading/heading.schema.json";
 import { HeadingSize, HeadingTag } from "../heading";
 import Documentation from "./.tmp/documentation";

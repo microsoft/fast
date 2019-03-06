@@ -3,7 +3,7 @@
     "title": "Context menu",
     "description": "A context menu component's schema definition.",
     "type": "object",
-    "id": "context-menu",
+    "id": "@microsoft/fast-components-react-base/context-menu",
     "properties": {
     },
     "reactProperties": {
