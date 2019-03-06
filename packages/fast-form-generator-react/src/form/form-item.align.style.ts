@@ -8,7 +8,7 @@ import {
     applySoftRemoveInput,
 } from "./form.utilities.style";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
-import { FormItemObjectAlignClassNameContract } from "../class-name-contracts/";
+import { FormItemAlignClassNameContract } from "../class-name-contracts/";
 
 /* tslint:disable */
 const topLight: string =
@@ -19,21 +19,21 @@ const bottomLight: string =
     "url(data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZmlsbD0id2hpdGUiIGRhdGEtbmFtZT0iTGF5ZXIgMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgMTYgMTYiPjx0aXRsZT52YjI8L3RpdGxlPjxwYXRoIGQ9Ik0xMS42MywxMXYuNDZINC4zN1YxMVptLTQuMDktLjQ3SDUuNzJWNC41Nkg3LjU0Wk03LjA3LDVINi4xNHY1aC45M1ptMy4yMSw1LjQ5SDguNDZWNi40MmgxLjgyWk05LjgxLDYuODRIOC44OHYzLjIxaC45M1oiLz48L3N2Zz4=) center no-repeat";
 /* tslint:enable */
 
-const styles: ComponentStyles<FormItemObjectAlignClassNameContract, {}> = {
-    formItemObjectAlign: {
+const styles: ComponentStyles<FormItemAlignClassNameContract, {}> = {
+    formItemAlign: {
         display: "flex",
         ...applyControlWrapper(),
     },
-    formItemObjectAlign_control: {
+    formItemAlign_control: {
         ...applyControl(),
     },
-    formItemObjectAlign_controlLabel: {
+    formItemAlign_controlLabel: {
         ...applyLabelStyle(),
     },
-    formItemObjectAlign_controlInputContainer: {
+    formItemAlign_controlInputContainer: {
         height: "20px",
     },
-    formItemObjectAlign_controlInput__top: {
+    formItemAlign_controlInput__top: {
         ...applyInputBackplateStyle(),
         borderRadius: "2px 0px 0px 2px",
         background: topLight,
@@ -41,7 +41,7 @@ const styles: ComponentStyles<FormItemObjectAlignClassNameContract, {}> = {
             backgroundColor: accent,
         },
     },
-    formItemObjectAlign_controlInput__center: {
+    formItemAlign_controlInput__center: {
         ...applyInputBackplateStyle(),
         borderRight: `1px solid ${background300}`,
         borderLeft: `1px solid ${background300}`,
@@ -50,7 +50,7 @@ const styles: ComponentStyles<FormItemObjectAlignClassNameContract, {}> = {
             backgroundColor: accent,
         },
     },
-    formItemObjectAlign_controlInput__bottom: {
+    formItemAlign_controlInput__bottom: {
         ...applyInputBackplateStyle(),
         borderRadius: "0px 2px 2px 0px",
         background: bottomLight,
@@ -58,10 +58,10 @@ const styles: ComponentStyles<FormItemObjectAlignClassNameContract, {}> = {
             backgroundColor: accent,
         },
     },
-    formItemObjectAlign_softRemove: {
+    formItemAlign_softRemove: {
         ...applySoftRemove(),
     },
-    formItemObjectAlign_softRemoveInput: {
+    formItemAlign_softRemoveInput: {
         ...applySoftRemoveInput(),
     },
 };

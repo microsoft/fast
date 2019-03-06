@@ -7,8 +7,8 @@ export { FormClassNameContract };
 import FormItemTextAlignClassNameContract from "./form-item.text-align.class-name-contract";
 export { FormItemTextAlignClassNameContract };
 
-import FormItemObjectAlignClassNameContract from "./form-item.object-align.class-name-contract";
-export { FormItemObjectAlignClassNameContract };
+import FormItemAlignClassNameContract from "./form-item.align.class-name-contract";
+export { FormItemAlignClassNameContract };
 
 import FormItemArrayClassNameContract from "./form-item.array.class-name-contract";
 export { FormItemArrayClassNameContract };

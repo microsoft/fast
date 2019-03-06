@@ -1,12 +1,12 @@
 {
     "$schema": "http://json-schema.org/schema#",
-    "title": "Component with object align",
+    "title": "Component with align",
     "description": "A test component's schema definition.",
     "type": "object",
-    "id": "objectAlign",
+    "id": "align",
     "properties": {
-        "objectAlign": {
-            "title": "Object align",
+        "align": {
+            "title": "Align",
             "type": "string",
             "enum": [
                 "top",
@@ -15,8 +15,8 @@
             ],
             "disabled": true
         },
-        "optionalObjectAlign": {
-            "title": "Optional object align",
+        "optionalAlign": {
+            "title": "Align",
             "type": "string",
             "enum": [
                 "top",
@@ -26,6 +26,6 @@
         }
     },
     "required": [
-        "objectAlign"
+        "align"
     ]
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow, ShallowWrapper } from "enzyme";
-import ObjectAlign from "./form-item.object-align";
+import Align from "./form-item.align";
 import { FormItemComponentMappingToProperyNamesProps, mappingName } from "./form-item";
 
 /*
@@ -9,8 +9,8 @@ import { FormItemComponentMappingToProperyNamesProps, mappingName } from "./form
  */
 configure({ adapter: new Adapter() });
 
-const objectAlignProps: FormItemComponentMappingToProperyNamesProps = {
-    name: mappingName.objectAlign,
+const alignProps: FormItemComponentMappingToProperyNamesProps = {
+    name: mappingName.align,
     options: ["top", "center", "bottom"],
     index: 1,
     dataLocation: "",
@@ -20,24 +20,24 @@ const objectAlignProps: FormItemComponentMappingToProperyNamesProps = {
     onChange: jest.fn(),
 };
 
-describe("ObjectAlign", () => {
+describe("Align", () => {
     test("should not throw", () => {
         expect(() => {
-            shallow(<ObjectAlign {...objectAlignProps} />);
+            shallow(<Align {...alignProps} />);
         }).not.toThrow();
     });
     test("should generate HTML input elements", () => {
-        const rendered: any = mount(<ObjectAlign {...objectAlignProps} />);
+        const rendered: any = mount(<Align {...alignProps} />);
 
         expect(rendered.find("input")).toHaveLength(4);
     });
     test("should generate an HTML label element", () => {
-        const rendered: any = mount(<ObjectAlign {...objectAlignProps} />);
+        const rendered: any = mount(<Align {...alignProps} />);
 
         expect(rendered.find("label")).toHaveLength(1);
     });
     test("should have an `id` attribute on the HTML input elements and a corresponding `for` attribute on the HTML label element", () => {
-        const rendered: any = mount(<ObjectAlign {...objectAlignProps} />);
+        const rendered: any = mount(<Align {...alignProps} />);
         const label: any = rendered.find("label");
         const inputs: any = rendered.find("input");
 
@@ -47,9 +47,7 @@ describe("ObjectAlign", () => {
     });
     test("should fire an `onChange` callback when an input has been changed", () => {
         const handleChange: any = jest.fn();
-        const rendered: any = mount(
-            <ObjectAlign {...objectAlignProps} onChange={handleChange} />
-        );
+        const rendered: any = mount(<Align {...alignProps} onChange={handleChange} />);
 
         rendered
             .find("input")
@@ -60,9 +58,7 @@ describe("ObjectAlign", () => {
         expect(handleChange.mock.calls[0][1]).toEqual("top");
     });
     test("should be disabled if disabled props is passed", () => {
-        const rendered: any = mount(
-            <ObjectAlign {...objectAlignProps} disabled={true} />
-        );
+        const rendered: any = mount(<Align {...alignProps} disabled={true} />);
         const inputs: ShallowWrapper = rendered.find("input");
 
         expect(inputs).toHaveLength(4);
@@ -73,7 +69,7 @@ describe("ObjectAlign", () => {
     test("should remove the data if the soft remove is triggered", () => {
         const handleChange: any = jest.fn();
         const rendered: any = mount(
-            <ObjectAlign {...objectAlignProps} data={"top"} onChange={handleChange} />
+            <Align {...alignProps} data={"top"} onChange={handleChange} />
         );
 
         rendered
@@ -88,7 +84,7 @@ describe("ObjectAlign", () => {
         const handleChange: any = jest.fn();
         const data: string = "top";
         const rendered: any = mount(
-            <ObjectAlign {...objectAlignProps} data={data} onChange={handleChange} />
+            <Align {...alignProps} data={data} onChange={handleChange} />
         );
 
         rendered

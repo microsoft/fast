@@ -1,7 +1,7 @@
 import React from "react";
 import { FormItemComponentMappingToProperyNamesProps } from "./form-item";
-import styles from "./form-item.object-align.style";
-import { FormItemObjectAlignClassNameContract } from "../class-name-contracts/";
+import styles from "./form-item.align.style";
+import { FormItemAlignClassNameContract } from "../class-name-contracts/";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import FormItemBase from "./form-item.base";
@@ -11,29 +11,26 @@ import FormItemBase from "./form-item.base";
  * @extends React.Component
  */
 /* tslint:disable-next-line */
-class FormItemObjectAlign extends FormItemBase<
+class FormItemAlign extends FormItemBase<
     FormItemComponentMappingToProperyNamesProps &
-        ManagedClasses<FormItemObjectAlignClassNameContract>,
+        ManagedClasses<FormItemAlignClassNameContract>,
     {}
 > {
-    public static displayName: string = "formItemObjectAlign";
+    public static displayName: string = "formItemAlign";
 
     public render(): JSX.Element {
         return (
-            <div className={this.props.managedClasses.formItemObjectAlign}>
-                <div className={this.props.managedClasses.formItemObjectAlign_control}>
+            <div className={this.props.managedClasses.formItemAlign}>
+                <div className={this.props.managedClasses.formItemAlign_control}>
                     <label
-                        className={
-                            this.props.managedClasses.formItemObjectAlign_controlLabel
-                        }
+                        className={this.props.managedClasses.formItemAlign_controlLabel}
                         htmlFor={this.props.dataLocation}
                     >
                         {this.props.label}
                     </label>
                     <div
                         className={
-                            this.props.managedClasses
-                                .formItemObjectAlign_controlInputContainer
+                            this.props.managedClasses.formItemAlign_controlInputContainer
                         }
                     >
                         {this.renderInput("top", 1)}
@@ -41,9 +38,9 @@ class FormItemObjectAlign extends FormItemBase<
                         {this.renderInput("bottom", 3)}
                     </div>
                 </div>
-                <div className={this.props.managedClasses.formItemObjectAlign_softRemove}>
+                <div className={this.props.managedClasses.formItemAlign_softRemove}>
                     {this.renderSoftRemove(
-                        this.props.managedClasses.formItemObjectAlign_softRemoveInput
+                        this.props.managedClasses.formItemAlign_softRemoveInput
                     )}
                 </div>
             </div>
@@ -64,11 +61,11 @@ class FormItemObjectAlign extends FormItemBase<
     private getInputClassName(direction: string): string {
         switch (direction) {
             case "top":
-                return this.props.managedClasses.formItemObjectAlign_controlInput__top;
+                return this.props.managedClasses.formItemAlign_controlInput__top;
             case "center":
-                return this.props.managedClasses.formItemObjectAlign_controlInput__center;
+                return this.props.managedClasses.formItemAlign_controlInput__center;
             case "bottom":
-                return this.props.managedClasses.formItemObjectAlign_controlInput__bottom;
+                return this.props.managedClasses.formItemAlign_controlInput__bottom;
         }
     }
 
@@ -101,4 +98,4 @@ class FormItemObjectAlign extends FormItemBase<
     }
 }
 
-export default manageJss(styles)(FormItemObjectAlign);
+export default manageJss(styles)(FormItemAlign);

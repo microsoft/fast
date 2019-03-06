@@ -1,5 +1,5 @@
 import { FormComponentMappingToPropertyNamesProps } from "../../../src/form/form.props";
 
 export default {
-    objectAlign: ["objectAlign", "optionalObjectAlign"],
+    align: ["align", "optionalAlign"],
 } as FormComponentMappingToPropertyNamesProps;

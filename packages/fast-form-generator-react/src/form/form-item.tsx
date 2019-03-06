@@ -46,7 +46,7 @@ export default interface FormItemCommon {
 }
 
 export enum mappingName {
-    objectAlign = "objectAlign",
+    align = "align",
     textAlign = "textAlign",
     swatch = "swatch",
     customColor = "customColor",

@@ -277,7 +277,7 @@ import Form from "@microsoft/fast-form-generator-react";
                 title: "Formatting",
                 weight: 40,
                 properties: [
-                    { weight: 9, propertyName: "objectAlign" },
+                    { weight: 9, propertyName: "align" },
                     { weight: 7, propertyName: "textAlign" }
                 ]
             }
