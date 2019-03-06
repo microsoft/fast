@@ -13,5 +13,7 @@ export * from "./metatext";
 export * from "./paragraph";
 export * from "./pivot";
 export * from "./progress";
+export * from "./select";
+export * from "./select-option";
 export * from "./subheading";
 export * from "./text-action";
