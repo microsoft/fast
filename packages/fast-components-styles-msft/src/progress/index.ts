@@ -46,7 +46,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = (
                 background: "ButtonShadow",
             },
         },
-        progress_dot: {
+        progress_indicator__indeterminate: {
             position: "absolute",
             opacity: "0",
             height: "100%",
@@ -58,12 +58,12 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = (
                 opacity: "1 !important",
             },
         },
-        progress_dot__1: {
+        progress_indicator1__indeterminate: {
             width: "40%",
             transform: "translateX(-100%)",
             animation: "indeterminate-1 2s infinite",
         },
-        progress_dot__2: {
+        progress_indicator2__indeterminate: {
             width: "60%",
             transform: "translateX(-150%)",
             animation: "indeterminate-2 2s infinite",

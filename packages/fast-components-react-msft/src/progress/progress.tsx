@@ -79,10 +79,13 @@ class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, 
         return new Array(Progress.indicatorCount)
             .fill(undefined)
             .map((item: undefined, index: number) => {
-                let className: string = get(this.props, "managedClasses.progress_dot");
+                let className: string = get(
+                    this.props,
+                    "managedClasses.progress_indicator__indeterminate"
+                );
                 className = `${className} ${get(
                     this.props,
-                    `managedClasses.progress_dot__${index + 1}`
+                    `managedClasses.progress_indicator${index + 1}__indeterminate`
                 )}`;
 
                 return <span className={className} key={index} />;
