@@ -59,9 +59,9 @@ export default class CarouselHeroContent extends React.Component<
                         height: "100%",
                         alignItems: "flex-end",
                         display: "flex",
-                        JustifyContent: "center",
                         left: "0",
                         right: "0",
+                        overflow: "hidden",
                     }}
                 >
                     <div

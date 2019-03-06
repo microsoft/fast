@@ -66,15 +66,21 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
                 display: "block",
                 height: "4px",
                 width: "32px",
-                transition: "all 0.2s ease-in-out",
+                transition: "all 0.05s ease-in-out",
             },
-            "&:hover": {
-                "&::before": {
-                    opacity: "0.5",
+            "&:not($carousel_sequenceIndicator__active)": {
+                "&:hover": {
+                    "&::before": {
+                        opacity: "0.5",
+                    },
                 },
             },
         },
-        carousel_sequenceIndicator__active: {},
+        carousel_sequenceIndicator__active: {
+            "&::before": {
+                opacity: "1",
+            },
+        },
         carousel_tabPanel: {
             display: "block",
         },
@@ -114,7 +120,6 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
                 },
                 "&$carousel_sequenceIndicator__active": {
                     "&::before": {
-                        opacity: "1",
                         background: white,
                     },
                 },
@@ -144,7 +149,6 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
             },
             "& $carousel_sequenceIndicator__active": {
                 "&::before": {
-                    opacity: "1",
                     background: darkGray,
                 },
             },
