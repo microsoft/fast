@@ -18,8 +18,10 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
 ): ComponentStyleSheet<CarouselClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const direction: Direction = designSystem.direction;
-    const white: string = "#FFF";
-    const black: string = "#101010";
+    const white: string = "white";
+    const darkGray: string = "#101010";
+    const lightGray: string = "rgb(206, 206, 206)";
+    const lightGrayRest: string = "rgba(206, 206, 206, 0.6)";
 
     function flipperStyles(): CSSRules<{}> {
         return {
