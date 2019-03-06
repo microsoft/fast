@@ -26,15 +26,7 @@ import {
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { glyphBuildingblocks } from "@microsoft/fast-glyphs-msft";
 import React from "react";
-<<<<<<< HEAD
-<<<<<<< HEAD
 import { Direction } from "@microsoft/fast-web-utilities";
-=======
-import { Direction } from "@microsoft/fast-application-utilities";
->>>>>>> fix: update to use esModuleInterop in the TypeScript configuration files (#1211)
-=======
-import { Direction } from "@microsoft/fast-web-utilities";
->>>>>>> feat: remove fast-application-utilities package (#1455)
 import AdditionalPropsPlugin from "./utilities/additional-props.plugin";
 import * as examples from "./examples";
 import { Hypertext } from "../src/hypertext";

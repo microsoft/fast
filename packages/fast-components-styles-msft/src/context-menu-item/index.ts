@@ -8,10 +8,7 @@ import { density } from "../utilities/density";
 import {
     neutralFillStealthActive,
     neutralFillStealthHover,
-<<<<<<< HEAD
     neutralFocus,
-=======
->>>>>>> feat: add new color system to call to action, card, checkbox and context menu (#1459)
     neutralForegroundActive,
     neutralForegroundHover,
     neutralForegroundRest,
@@ -41,16 +38,8 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
             return toPx(designSystem.cornerRadius);
         },
         border: "2px solid transparent",
-<<<<<<< HEAD
         ...applyFocusVisible<DesignSystem>({
             borderColor: neutralFocus,
-=======
-        ...applyFocusVisible({
-            borderColor: (config: DesignSystem): string => {
-                const designSystem: DesignSystem = withDesignSystemDefaults(config);
-                return designSystem.foregroundColor;
-            },
->>>>>>> feat: add new color system to call to action, card, checkbox and context menu (#1459)
         }),
         "&:hover": {
             color: neutralForegroundHover,

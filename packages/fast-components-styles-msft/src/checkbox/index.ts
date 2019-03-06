@@ -13,14 +13,10 @@ import {
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import {
-<<<<<<< HEAD
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
     neutralFocus,
-=======
-    neutralFillInputRest,
->>>>>>> feat: add new color system to call to action, card, checkbox and context menu (#1459)
     neutralForegroundRest,
     neutralOutlineActive,
     neutralOutlineHover,
@@ -54,35 +50,22 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
                 designSystem.outlinePatternOutlineWidth
             )} solid ${neutralOutlineRest(designSystem)}`,
             "&:hover": {
-<<<<<<< HEAD
                 background: neutralFillInputHover,
-=======
->>>>>>> feat: add new color system to call to action, card, checkbox and context menu (#1459)
                 border: `${toPx(
                     designSystem.outlinePatternOutlineWidth
                 )} solid ${neutralOutlineHover(designSystem)}`,
             },
             "&:active": {
-<<<<<<< HEAD
                 background: neutralFillInputActive,
-=======
->>>>>>> feat: add new color system to call to action, card, checkbox and context menu (#1459)
                 border: `${toPx(
                     designSystem.outlinePatternOutlineWidth
                 )} solid ${neutralOutlineActive(designSystem)}`,
             },
             ...applyFocusVisible({
-<<<<<<< HEAD
                 boxShadow: `0 0 0 1px ${neutralFocus(designSystem)} inset`,
                 border: `${toPx(
                     designSystem.outlinePatternOutlineWidth
                 )} solid ${neutralFocus(designSystem)}`,
-=======
-                boxShadow: `0 0 0 1px ${designSystem.foregroundColor} inset`,
-                border: `${toPx(designSystem.outlinePatternOutlineWidth)} solid ${
-                    designSystem.foregroundColor
-                }`,
->>>>>>> feat: add new color system to call to action, card, checkbox and context menu (#1459)
             }),
         },
         checkbox_stateIndicator: {

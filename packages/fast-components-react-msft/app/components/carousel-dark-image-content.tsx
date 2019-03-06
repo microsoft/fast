@@ -1,14 +1,10 @@
 import React from "react";
-<<<<<<< HEAD
 import { Image, ImageProps } from "../../src/index";
 
 export interface CarouselDarkImageContentProps {
     image: ImageProps;
     className?: string;
 }
-=======
-import { Image } from "../../src/index";
->>>>>>> fix: update to use esModuleInterop in the TypeScript configuration files (#1211)
 
 /**
  * A stand-in dark image
