@@ -23,19 +23,19 @@ const examples: ComponentFactoryExample<SelectProps> = {
         placeholder: "Select an option",
         children: [
             {
-                id: "@microsoft/fast-components-react-base/select-option",
+                id: "@microsoft/fast-components-react-msft/select-option",
                 props: {
                     ...selectOptionPropFactory("a"),
                 },
             },
             {
-                id: "@microsoft/fast-components-react-base/select-option",
+                id: "@microsoft/fast-components-react-msft/select-option",
                 props: {
                     ...selectOptionPropFactory("b"),
                 },
             },
             {
-                id: "@microsoft/fast-components-react-base/select-option",
+                id: "@microsoft/fast-components-react-msft/select-option",
                 props: {
                     ...selectOptionPropFactory("c"),
                 },
@@ -47,7 +47,7 @@ const examples: ComponentFactoryExample<SelectProps> = {
             placeholder: "placeholder",
             children: [
                 {
-                    id: "@microsoft/fast-components-react-base/select-option",
+                    id: "@microsoft/fast-components-react-msft/select-option",
                     props: {
                         ...selectOptionPropFactory("value 1"),
                         children: "select option 1",
@@ -55,14 +55,14 @@ const examples: ComponentFactoryExample<SelectProps> = {
                     },
                 },
                 {
-                    id: "@microsoft/fast-components-react-base/select-option",
+                    id: "@microsoft/fast-components-react-msft/select-option",
                     props: {
                         ...selectOptionPropFactory("value 2"),
                         children: "select option 2",
                     },
                 },
                 {
-                    id: "@microsoft/fast-components-react-base/select-option",
+                    id: "@microsoft/fast-components-react-msft/select-option",
                     props: {
                         ...selectOptionPropFactory("value 3"),
                         children: "select option 3",

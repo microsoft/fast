@@ -3,7 +3,7 @@
     "title": "Select option",
     "description": "A select option component's schema definition.",
     "type": "object",
-    "id": "@microsoft/fast-components-react-base/select-option",
+    "id": "@microsoft/fast-components-react-msft/select-option",
     "properties": {
         "disabled": {
             "title": "Disabled",
