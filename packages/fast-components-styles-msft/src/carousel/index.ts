@@ -16,7 +16,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
     const white: string = "white";
     const darkGray: string = "#101010";
     const lightGray: string = "rgb(206, 206, 206)";
-    const lightGrayRest: string = "rgba(206, 206, 206, 0.6";
+    const lightGrayRest: string = "rgba(206, 206, 206, 0.6)";
 
     function flipperStyles(): CSSRules<{}> {
         return {
