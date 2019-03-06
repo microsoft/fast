@@ -3,7 +3,7 @@
     "title": "Metatext",
     "description": "A metatext component's schema definition.",
     "type": "object",
-    "id": "metatext",
+    "id": "@microsoft/fast-components-react-msft/metatext",
     "properties": {
         "tag": {
             "title": "HTML tag",

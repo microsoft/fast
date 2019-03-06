@@ -3,7 +3,7 @@
     "title": "Paragraph",
     "description": "A paragraph component's schema definition.",
     "type": "object",
-    "id": "paragraph",
+    "id": "@microsoft/fast-components-react-msft/paragraph",
     "properties": {
         "size": {
             "title": "Size",

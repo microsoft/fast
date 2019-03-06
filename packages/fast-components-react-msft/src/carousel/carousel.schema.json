@@ -3,7 +3,7 @@
     "title": "Carousel",
     "description": "A carousel component's schema definition.",
     "type": "object",
-    "id": "carousel",
+    "id": "@microsoft/fast-components-react-msft/carousel",
     "properties": {
         "label": {
             "title": "Carousel accessible label",

@@ -3,7 +3,7 @@
     "title": "Listbox",
     "description": "A listbox component's schema definition.",
     "type": "object",
-    "id": "listbox",
+    "id": "@microsoft/fast-components-react-base/listbox",
     "properties": {
         "typeAheadPropertyKey": {
             "title": "Type ahead property key",
