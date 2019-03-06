@@ -1,0 +1,31 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Image",
+    "description": "An image component's schema definition.",
+    "type": "object",
+    "id": "@microsoft/fast-components-react-msft/image",
+    "properties": {
+        "alt": {
+            "title": "HTML alt attribute",
+            "type": "string",
+            "example": "HTML alt attribute example text"
+        },
+        "sizes": {
+            "title": "HTML sizes attribute",
+            "type": "string"
+        },
+        "src": {
+            "title": "HTML src attribute",
+            "type": "string",
+            "example": "https://placehold.it/80x80"
+        },
+        "srcSet": {
+            "title": "HTML srcSet attribute",
+            "type": "string"
+        }
+    },
+    "required": [
+        "src",
+        "alt"
+    ]
+}

@@ -3,7 +3,7 @@
     "title": "Horizontal overflow",
     "description": "A horizontal overflow component's schema definition.",
     "type": "object",
-    "id": "horizontal-overflow",
+    "id": "@microsoft/fast-components-react-base/horizontal-overflow",
     "properties": {
         "scrollDuration": {
             "title": "Scroll duration",

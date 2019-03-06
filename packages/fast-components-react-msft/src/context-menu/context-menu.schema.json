@@ -1,0 +1,19 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Context menu",
+    "description": "A context menu component's schema definition.",
+    "type": "object",
+    "id": "@microsoft/fast-components-react-msft/context-menu",
+    "properties": {
+    },
+    "reactProperties": {
+        "children": {
+            "title": "Children",
+            "type": "children",
+            "ids": [
+                "context-menu-item",
+                "divider"
+            ]
+        }
+    }
+}

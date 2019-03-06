@@ -3,6 +3,7 @@ import { ComponentFactoryExample } from "@microsoft/fast-development-site-react"
 import schema from "./breadcrumb.schema.json";
 import Breadcrumb, { BreadcrumbManagedClasses, BreadcrumbProps } from "./breadcrumb";
 import Documentation from "./.tmp/documentation";
+import hypertextSchema from "../hypertext/hypertext.schema.json";
 import reactHTMLElementSchema from "../../app/components/react-html-element.schema.json";
 
 const managedClasses: BreadcrumbManagedClasses = {
@@ -39,21 +40,21 @@ const examples: ComponentFactoryExample<BreadcrumbProps> = {
         separator: separator(),
         children: [
             {
-                id: "hypertext",
+                id: hypertextSchema.id,
                 props: {
                     href: "https://www.microsoft.com/en-us/",
                     children: "breadcrumb item 1",
                 },
             },
             {
-                id: "hypertext",
+                id: hypertextSchema.id,
                 props: {
                     href: "https://www.microsoft.com/en-us/",
                     children: "breadcrumb item 2",
                 },
             },
             {
-                id: "hypertext",
+                id: hypertextSchema.id,
                 props: {
                     children: "breadcrumb item 3",
                 },
@@ -67,21 +68,21 @@ const examples: ComponentFactoryExample<BreadcrumbProps> = {
             separator: separator(),
             children: [
                 {
-                    id: "hypertext",
+                    id: hypertextSchema.id,
                     props: {
                         href: "https://www.microsoft.com/en-us/",
                         children: "breadcrumb item 1",
                     },
                 },
                 {
-                    id: "hypertext",
+                    id: hypertextSchema.id,
                     props: {
                         href: "https://www.microsoft.com/en-us/",
                         children: "breadcrumb item 2",
                     },
                 },
                 {
-                    id: "hypertext",
+                    id: hypertextSchema.id,
                     props: {
                         children: "breadcrumb item 3",
                     },
