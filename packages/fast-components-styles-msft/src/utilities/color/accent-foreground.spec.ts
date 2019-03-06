@@ -26,11 +26,10 @@ describe("accentForeground", (): void => {
     });
 
     test("should accept a function that resolves a background swatch", (): void => {
-        // TODO: https://github.com/Microsoft/fast-dna/issues/1473
-        // expect(typeof accentForegroundRest(() => "#FFF")).toBe("function");
-        // expect(accentForegroundRest(() => "#000")({} as DesignSystem)).toBe(
-        //     accentPalette[30]
-        // );
+        expect(typeof accentForegroundRest(() => "#FFF")).toBe("function");
+        expect(accentForegroundRest(() => "#000")({} as DesignSystem)).toBe(
+            accentPalette[30]
+        );
         expect(typeof accentForegroundRest(() => "#FFFFFF")).toBe("function");
         expect(accentForegroundRest(() => "#000000")({} as DesignSystem)).toBe(
             accentPalette[30]
@@ -43,11 +42,18 @@ describe("accentForeground", (): void => {
         ).toBeLessThanOrEqual(
             accentPalette.indexOf(
                 accentForegroundHover(
-                    // TODO: https://github.com/Microsoft/fast-dna/issues/1473
-                    // Object.assign({}, designSystemDefaults, { backgroundColor: "#000" })
                     Object.assign({}, designSystemDefaults, {
                         backgroundColor: "#000000",
                     })
+                )
+            )
+        );
+        expect(
+            accentPalette.indexOf(accentForegroundHover(designSystemDefaults))
+        ).toBeLessThanOrEqual(
+            accentPalette.indexOf(
+                accentForegroundHover(
+                    Object.assign({}, designSystemDefaults, { backgroundColor: "#000" })
                 )
             )
         );
@@ -56,11 +62,16 @@ describe("accentForeground", (): void => {
         ).toBeLessThan(
             accentPalette.indexOf(
                 accentForegroundActive(
-                    // TODO: https://github.com/Microsoft/fast-dna/issues/1473
-                    // Object.assign({}, designSystemDefaults, { backgroundColor: "#000" })
-                    Object.assign({}, designSystemDefaults, {
-                        backgroundColor: "#000000",
-                    })
+                    Object.assign({}, designSystemDefaults, { backgroundColor: "#000" })
+                )
+            )
+        );
+        expect(
+            accentPalette.indexOf(accentForegroundActive(designSystemDefaults))
+        ).toBeLessThan(
+            accentPalette.indexOf(
+                accentForegroundActive(
+                    Object.assign({}, designSystemDefaults, { backgroundColor: "#000" })
                 )
             )
         );
