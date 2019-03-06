@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Hypertext",
+    "description": "A hypertext component's schema definition.",
+    "type": "object",
+    "id": "@microsoft/fast-components-react-msft/hypertext",
+    "properties": {
+        "href": {
+            "title": "HTML href attribute",
+            "type": "string"
+        }
+    },
+    "reactProperties": {
+        "children": {
+            "title": "Children",
+            "type": "children",
+            "defaults": [
+                "text"
+            ]
+        }
+    }
+}

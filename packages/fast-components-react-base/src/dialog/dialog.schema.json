@@ -3,7 +3,7 @@
     "title": "Dialog",
     "description": "A dialog component's schema definition.",
     "type": "object",
-    "id": "dialog",
+    "id": "@microsoft/fast-components-react-base/dialog",
     "properties": {
         "describedBy": {
             "title": "HTML aria-describedby attribute",

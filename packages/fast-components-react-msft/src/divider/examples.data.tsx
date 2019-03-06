@@ -1,7 +1,7 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { Divider, DividerProps, DividerRoles } from "./index";
-import schema from "@microsoft/fast-components-react-base/dist/divider/divider.schema.json";
+import schema from "./divider.schema.json";
 import Documentation from "./.tmp/documentation";
 
 export default {
