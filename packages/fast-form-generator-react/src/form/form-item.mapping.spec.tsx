@@ -16,7 +16,7 @@ const mappingProps: FormItemComponentMappingToProperyNamesProps = {
     required: false,
     label: "",
     onChange: jest.fn(),
-    name: mappingName.alignHorizontal,
+    name: mappingName.textAlign,
     options: [],
 };
 

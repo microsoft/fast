@@ -13,7 +13,7 @@ import General from "../../app/configs/general";
 import Textarea from "../../app/configs/textarea";
 import OneOf from "../../app/configs/one-of";
 
-import alignHorizontalSchema from "../../app/configs/align-horizontal/align-horizontal.schema.json";
+import textAlignSchema from "../../app/configs/text-align/text-align.schema.json";
 import arraysSchema from "../../app/configs/arrays/arrays.schema.json";
 import generalSchema from "../../app/configs/general/general.schema.json";
 import objectsSchema from "../../app/configs/objects/objects.schema.json";
@@ -47,13 +47,13 @@ describe("getNavigation", () => {
             {
                 alignHorizontal: "left",
             },
-            alignHorizontalSchema,
+            textAlignSchema,
             childOptions
         );
 
         expect(navigation.length).toBe(1);
         expect(navigation[0].dataLocation).toBe("");
-        expect(navigation[0].schema).toEqual(alignHorizontalSchema);
+        expect(navigation[0].schema).toEqual(textAlignSchema);
         expect(navigation[0].data).toEqual({
             alignHorizontal: "left",
         });
@@ -628,7 +628,7 @@ describe("getBreadcrumbs", () => {
             {
                 alignHorizontal: "left",
             },
-            alignHorizontalSchema,
+            textAlignSchema,
             childOptions
         );
         const breadcrumbs: BreadcrumbItem[] = getBreadcrumbs(
@@ -638,7 +638,7 @@ describe("getBreadcrumbs", () => {
 
         expect(breadcrumbs.length).toBe(1);
         expect(breadcrumbs[0].href).toBe("");
-        expect(breadcrumbs[0].text).toBe("Component with align horizontal");
+        expect(breadcrumbs[0].text).toBe("Component with text align");
     });
     test("should return breadcrumbs for nested property locations", () => {
         const navigation: NavigationItem[] = getNavigation(
