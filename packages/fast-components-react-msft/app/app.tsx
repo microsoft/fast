@@ -63,6 +63,7 @@ const formPlugins: Array<Plugin<PluginProps>> = [
             "@microsoft/fast-components-react-msft/button/beforeContent",
             "@microsoft/fast-components-react-msft/button/afterContent",
             "@microsoft/fast-components-react-msft/carousel/items/content",
+            "@microsoft/fast-components-react-msft/select-option/glyph",
             "@microsoft/fast-components-react-msft/pivot/items/content",
             "@microsoft/fast-components-react-msft/pivot/items/tab",
             "@microsoft/fast-components-react-msft/text-action/afterGlyph",

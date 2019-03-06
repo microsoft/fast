@@ -52,6 +52,9 @@ export { ProgressExamples };
 import RadioExamples from "../src/radio/examples.data";
 export { RadioExamples };
 
+import SelectExamples from "../src/select/examples.data";
+export { SelectExamples };
+
 import TabsExamples from "../src/tabs/examples.data";
 export { TabsExamples };
 

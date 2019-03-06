@@ -9,7 +9,9 @@ import Documentation from "./.tmp/documentation";
 
 const managedClasses: ListboxItemManagedClasses = {
     managedClasses: {
-        listboxItem: "listbox-item",
+        listboxItem: "listboxItem",
+        listboxItem__disabled: "listboxItem__disabled",
+        listboxItem__selected: "listboxItem__selected",
     },
 };
 

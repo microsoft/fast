@@ -11,4 +11,9 @@ export interface ListboxItemClassNameContract {
      * The disabled modifier
      */
     listboxItem__disabled?: string;
+
+    /**
+     * The selected modifier
+     */
+    listboxItem__selected?: string;
 }
