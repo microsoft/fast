@@ -3,7 +3,7 @@
     "title": "Radio",
     "description": "A radio component's schema definition",
     "type": "object",
-    "id": "radio",
+    "id": "@microsoft/fast-components-react-base/radio",
     "children": true,
     "properties": {
         "inputId": {

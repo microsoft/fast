@@ -1,7 +1,7 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import { Toggle, ToggleProps } from "./index";
-import schema from "@microsoft/fast-components-react-base/dist/toggle/toggle.schema.json";
+import schema from "./toggle.schema.json";
 import Documentation from "./.tmp/documentation";
 
 export default {

@@ -3,7 +3,7 @@
     "title": "Action toggle",
     "description": "An action toggle component's schema definition.",
     "type": "object",
-    "id": "action-toggle",
+    "id": "@microsoft/fast-components-react-msft/action-toggle",
     "properties": {
         "appearance": {
             "title": "Appearance",

@@ -3,7 +3,7 @@
     "title": "Listbox item",
     "description": "A listbox item component's schema definition.",
     "type": "object",
-    "id": "listbox-item",
+    "id": "@microsoft/fast-components-react-base/listbox-item",
     "properties": {
         "disabled": {
             "title": "Disabled",

@@ -3,7 +3,7 @@
     "title": "Text area",
     "description": "A text area component's schema definition.",
     "type": "object",
-    "id": "text-area",
+    "id": "@microsoft/fast-components-react-base/text-area",
     "properties": {
         "disabled": {
             "title": "Disabled",

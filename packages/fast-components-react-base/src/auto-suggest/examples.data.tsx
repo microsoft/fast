@@ -1,6 +1,7 @@
 import React from "react";
 import { ComponentFactoryExample } from "@microsoft/fast-development-site-react";
 import schema from "./auto-suggest.schema.json";
+import listboxItemSchema from "../listbox-item/listbox-item.schema.json";
 import AutoSuggest, { AutoSuggestManagedClasses, AutoSuggestProps } from "./auto-suggest";
 import { ListboxItemProps } from "../listbox-item";
 import Documentation from "./.tmp/documentation";
@@ -40,19 +41,19 @@ const examples: ComponentFactoryExample<AutoSuggestProps> = {
         listboxId: "listboxId",
         children: [
             {
-                id: "listbox-item",
+                id: listboxItemSchema.id,
                 props: {
                     ...ListboxItemPropFactory("a"),
                 },
             },
             {
-                id: "listbox-item",
+                id: listboxItemSchema.id,
                 props: {
                     ...ListboxItemPropFactory("b"),
                 },
             },
             {
-                id: "listbox-item",
+                id: listboxItemSchema.id,
                 props: {
                     ...ListboxItemPropFactory("c"),
                 },
@@ -66,7 +67,7 @@ const examples: ComponentFactoryExample<AutoSuggestProps> = {
             placeholder: "placeholder",
             children: [
                 {
-                    id: "listbox-item",
+                    id: listboxItemSchema.id,
                     props: {
                         ...ListboxItemPropFactory("value 1"),
                         children: "select option 1",
@@ -74,14 +75,14 @@ const examples: ComponentFactoryExample<AutoSuggestProps> = {
                     },
                 },
                 {
-                    id: "listbox-item",
+                    id: listboxItemSchema.id,
                     props: {
                         ...ListboxItemPropFactory("value 2"),
                         children: "select option 2",
                     },
                 },
                 {
-                    id: "listbox-item",
+                    id: listboxItemSchema.id,
                     props: {
                         ...ListboxItemPropFactory("value 3"),
                         children: "select option 3",

@@ -3,7 +3,7 @@
     "title": "Breadcrumb",
     "description": "A breadcrumb component's schema definition.",
     "type": "object",
-    "id": "breadcrumb",
+    "id": "@microsoft/fast-components-react-base/breadcrumb",
     "properties": {
         "label": {
             "title": "label",
