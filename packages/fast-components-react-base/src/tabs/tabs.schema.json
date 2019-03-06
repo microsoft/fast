@@ -3,7 +3,7 @@
     "title": "Tabs",
     "description": "A tabs component's schema definition.",
     "type": "object",
-    "id": "tabs",
+    "id": "@microsoft/fast-components-react-base/tabs",
     "properties": {
         "activeId": {
             "title": "Active tab ID",

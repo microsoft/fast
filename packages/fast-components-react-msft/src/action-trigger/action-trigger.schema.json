@@ -3,7 +3,7 @@
     "title": "Action trigger",
     "description": "An action trigger component's schema definition.",
     "type": "object",
-    "id": "action-trigger",
+    "id": "@microsoft/fast-components-react-msft/action-trigger",
     "properties": {
         "disabled": {
             "title": "Disabled",
