@@ -16,7 +16,7 @@ html {
     background-color: #212121;
 }
 
-/* 
+/*
  * Headers
  *********/
 
@@ -30,7 +30,7 @@ h6 {
     margin: 0;
 }
 
-/* 
+/*
  * Anchors
  *********/
 
@@ -54,7 +54,7 @@ a:focus {
   Header on each page of the site.
 \*------------------------------------*/
 
-/* 
+/*
  * Fixed header Container
  ************************/
 
@@ -97,7 +97,7 @@ a:focus {
     border: 0;
 }
 
-/* 
+/*
  * Sliding Nav: UL
  *************/
 
@@ -144,7 +144,7 @@ a:focus {
     border-radius: 2px;
 }
 
-/* 
+/*
  * Navigation Breadcrumb
  ***********************/
 
@@ -158,7 +158,7 @@ a:focus {
     color: #eee;
 }
 
-/* 
+/*
  * Icon for Table of contents
  ****************************/
 
@@ -169,7 +169,7 @@ a:focus {
     border: 1px solid #eee;
 }
 
-/* 
+/*
  * Nav toggle
  ****************************/
 
@@ -184,7 +184,7 @@ a:focus {
     border-width: 5px 0;
 }
 
-/* 
+/*
  * Breadcrumb sheveron
  ****************************/
 
@@ -198,7 +198,7 @@ a:focus {
   Buttons at bottom of each docs page.
 \*------------------------------------*/
 
-/* 
+/*
  * Next / Previous buttons
  ****************************/
 
@@ -274,7 +274,7 @@ a:focus {
 }
 
 /*------------------------------------*\
-  Post header title: 
+  Post header title:
   Title that at top of each doc page.
 \*------------------------------------*/
 
@@ -289,11 +289,11 @@ a:focus {
 }
 
 /*------------------------------------*\
-  Left navigation: 
+  Left navigation:
   Nav list on the left (ltr) of doc pages.
 \*------------------------------------*/
 
-/* 
+/*
  * Article navigation title
  ****************************/
 
@@ -309,7 +309,7 @@ a:focus {
     cursor: default;
 }
 
-/* 
+/*
  * Article navigation
  ****************************/
 
@@ -321,6 +321,7 @@ a:focus {
     color: #eee;
     padding: 0;
     border-radius: 2px;
+    font-size: 14px;
 }
 
 .toc .toggleNav ul li a {
@@ -339,6 +340,11 @@ a:focus {
 .toc .toggleNav ul li a:focus {
     color: #eee;
     box-shadow: inset 0 0 0 2px #fff;
+}
+
+.toc .toggleNav ul li.navListItem a {
+    color:rgba(255, 255, 255, 0.8);
+    position: relative;
 }
 
 .toc .toggleNav ul li.navListItemActive a {
@@ -367,7 +373,7 @@ p a {
     border-bottom: 1px solid #fb356d;
 }
 
-/* 
+/*
  * Image and caption
  ****************************/
 
@@ -381,7 +387,7 @@ article p img + em {
     display: block;
 }
 
-/* 
+/*
  * Hash link
  ****************************/
 
@@ -401,7 +407,7 @@ a.hash-link:hover {
     fill: #fb356d;
 }
 
-/* 
+/*
  * Nav pusher (pushes body down below header)
  ****************************/
 
@@ -409,7 +415,7 @@ a.hash-link:hover {
     padding-top: 127px;
 }
 
-/* 
+/*
  * Elements in article
  ****************************/
  article blockquote {
@@ -516,11 +522,11 @@ article ul li {
 }
 
 /*------------------------------------*\
-  Table of contents 
+  Table of contents
   Navigation area on Right pane (LTR).
 \*------------------------------------*/
 
-/* 
+/*
  * Table of contents
  ****************************/
 
@@ -591,7 +597,7 @@ ul.toc-headings li a:focus {
   Intro page of site.
 \*------------------------------------*/
 
-/* 
+/*
  * Project title
  ****************************/
 
@@ -610,7 +616,7 @@ ul.toc-headings li a:focus {
     margin: 8px 0 0 0;
 }
 
-/* 
+/*
  * Promo section
  ****************************/
 
@@ -627,7 +633,7 @@ ul.toc-headings li a:focus {
     padding: 0 4px;
 }
 
-/* 
+/*
  * Promo section buttons
  ****************************/
 
@@ -759,7 +765,7 @@ ul.toc-headings li a:focus {
 
 @media only screen and (min-width: 1024px) {
 
-    
+
     .docsNavContainer {
         top: 64px;
     }
