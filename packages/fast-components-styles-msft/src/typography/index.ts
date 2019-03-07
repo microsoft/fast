@@ -13,42 +13,35 @@ const paragraphDefaults: CSSRules<DesignSystem> = {
 };
 
 const styles: ComponentStyles<TypographyClassNameContract, DesignSystem> = {
-    typography: {},
+    typography: {
+        ...paragraphDefaults,
+    },
     typography__1: {
         ...applyTypeRampConfig("t1"),
-        ...paragraphDefaults,
     },
     typography__2: {
         ...applyTypeRampConfig("t2"),
-        ...paragraphDefaults,
     },
     typography__3: {
         ...applyTypeRampConfig("t3"),
-        ...paragraphDefaults,
     },
     typography__4: {
         ...applyTypeRampConfig("t4"),
-        ...paragraphDefaults,
     },
     typography__5: {
         ...applyTypeRampConfig("t5"),
-        ...paragraphDefaults,
     },
     typography__6: {
         ...applyTypeRampConfig("t6"),
-        ...paragraphDefaults,
     },
     typography__7: {
         ...applyTypeRampConfig("t7"),
-        ...paragraphDefaults,
     },
     typography__8: {
         ...applyTypeRampConfig("t8"),
-        ...paragraphDefaults,
     },
     typography__9: {
         ...applyTypeRampConfig("t9"),
-        ...paragraphDefaults,
     },
 };
 

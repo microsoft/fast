@@ -27,6 +27,7 @@ export const actionTriggerButtonOverrides: ComponentStyles<
 > = {
     button: {
         maxWidth: "100%",
+        minWidth: "14px",
     },
     button_contentRegion: {
         transition: "all 600ms cubic-bezier(0.19, 1, 0.22, 1)",
@@ -43,11 +44,7 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = (
     const direction: Direction = designSystem.direction;
 
     return {
-        actionTrigger: {
-            display: "inline-flex",
-            maxWidth: "100%",
-            minWidth: "14px",
-        },
+        actionTrigger: {},
         actionTrigger_glyph: {
             display: "inline-block",
             position: "relative",
