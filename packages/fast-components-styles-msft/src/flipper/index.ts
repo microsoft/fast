@@ -62,12 +62,6 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
                         designSystem.outlinePatternOutlineWidth
                     )} solid ${neutralOutlineHover(designSystem)}`,
                 },
-                "& $flipper_glyph": {
-                    "&::before": {
-                        borderRightColor: neutralForegroundRest,
-                        borderTopColor: neutralForegroundRest,
-                    },
-                },
             },
             "&:active": {
                 color: neutralForegroundActive,
