@@ -27,6 +27,7 @@ export const actionToggleButtonOverrides: ComponentStyles<
 > = {
     button: {
         maxWidth: "100%",
+        minWidth: "14px",
     },
     button_contentRegion: {
         alignItems: "center",
@@ -43,11 +44,7 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = (
     const direction: Direction = designSystem.direction;
 
     return {
-        actionToggle: {
-            display: "inline-flex",
-            maxWidth: "100%",
-            minWidth: "14px",
-        },
+        actionToggle: {},
         actionToggle__selected: {},
         actionToggle_selectedGlyph: {
             display: "inline-block",
