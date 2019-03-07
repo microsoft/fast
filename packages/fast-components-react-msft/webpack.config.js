@@ -62,7 +62,7 @@ module.exports = (env, args) => {
         },
         plugins: [
             new HtmlWebpackPlugin({
-                title: "FAST documentation",
+                title: "FAST Component explorer",
                 contentBase: outDir,
             }),
             new WebpackShellPlugin({
