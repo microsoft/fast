@@ -121,10 +121,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
             !this.state.isMenuOpen &&
             !this.props.multiselectable
         ) {
-            const triggerButton: HTMLButtonElement = this.getTriggerButton();
-            if (triggerButton !== null) {
-                triggerButton.focus();
-            }
+            this.focusOnTrigger();
         }
     }
 
@@ -364,13 +361,19 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         if (this.props.disabled || e.defaultPrevented) {
             return;
         }
+
         switch (e.keyCode) {
             case KeyCodes.enter:
             case KeyCodes.space:
+                e.preventDefault();
                 this.toggleMenu(!this.state.isMenuOpen);
+                if (this.state.isMenuOpen && this.props.isMenuOpen !== true) {
+                    this.focusOnTrigger();
+                }
                 break;
             case KeyCodes.escape:
                 this.toggleMenu(false);
+                this.focusOnTrigger();
                 break;
             case KeyCodes.arrowDown:
             case KeyCodes.arrowRight:
@@ -415,7 +418,6 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 increment
             );
         }
-
         this.toggleMenu(true);
     };
 
@@ -511,6 +513,16 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
             element instanceof HTMLButtonElement &&
             element.getAttribute("aria-disabled") !== "true"
         );
+    };
+
+    /**
+     * focus on the trigger button
+     */
+    private focusOnTrigger = (): void => {
+        const triggerButton: HTMLButtonElement = this.getTriggerButton();
+        if (triggerButton !== null) {
+            triggerButton.focus();
+        }
     };
 }
 
