@@ -18,6 +18,7 @@ const styles: ComponentStyles<NumberFieldClassNameContract, DesignSystem> = (
             height: density(defaultHeight)(designSystem),
             minHeight: toPx(minHeight),
             maxHeight: toPx(maxHeight),
+            padding: "6px 6px 6px 12px",
         },
     };
 };

@@ -12,7 +12,6 @@ const divider: any = {
         jssStyleSheet: {
             divider: {
                 margin: "4px 0",
-                opacity: ".5",
             },
         },
     },

@@ -39,6 +39,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
         toggle: {
             display: "inline-block",
             color: neutralForegroundRest,
+            transition: "all 0.2s ease-in-out",
         },
         toggle_label: {
             ...applyTypeRampConfig("t8"),
