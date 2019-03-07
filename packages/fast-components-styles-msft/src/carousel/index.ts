@@ -5,7 +5,6 @@ import {
     CSSRules,
 } from "@microsoft/fast-jss-manager";
 import { applyLocalizedProperty, Direction } from "@microsoft/fast-jss-utilities";
-import { hoverContrast } from "../utilities/colors";
 import { CarouselClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 
 const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
@@ -103,7 +102,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
                 "&:hover": {
                     background: white,
                     "& span::before": {
-                        borderColor: hoverContrast(config.contrast, darkGray),
+                        opacity: ".8",
                     },
                 },
             },
@@ -132,7 +131,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
                 "&:hover": {
                     background: darkGray,
                     "& span::before": {
-                        borderColor: hoverContrast(config.contrast, white),
+                        opacity: ".8",
                     },
                 },
             },

@@ -63,7 +63,7 @@ export const directionalShadowConfig: ShadowConfig = {
  */
 export function elevation(
     elevationValue: ElevationMultiplier | number,
-    color: string = designSystemDefaults.foregroundColor
+    color: string = "#000"
 ): (config: DesignSystem) => CSSRules<DesignSystem> {
     return (config: DesignSystem): CSSRules<DesignSystem> => {
         const ambientShadow: string = elevationShadow(
