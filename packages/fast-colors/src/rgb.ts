@@ -1,3 +1,6 @@
+/**
+ * @deprecated
+ */
 export function hexToRgb(hex: string): string {
     const processedHex: RgbJSON = properRGBValues(hex);
     const r: string = processedHex.r;

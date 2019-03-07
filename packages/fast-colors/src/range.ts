@@ -2,6 +2,7 @@ import Chroma from "chroma-js";
 
 /**
  * Interface that describes the configuration options of the color algorithm .
+ * @deprecated
  */
 export interface ColorConfig {
     /**
@@ -67,6 +68,7 @@ export type Color = string;
 
 /**
  * A function that applies a filter to a color
+ * @deprecated
  */
 export type FilterFunction = (
     background: Color,
@@ -125,6 +127,7 @@ function adjustThreshold(
 /**
  * Algorithm to generate a range of color variants based on a single color, where the input color is the middle
  * of the returned color range.
+ * @deprecated
  */
 export function range(color: Color, options: Partial<ColorConfig> = {}): Color[] {
     color = Chroma(color).hex("rgb");
