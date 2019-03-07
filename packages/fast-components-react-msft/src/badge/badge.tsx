@@ -14,7 +14,7 @@ class Badge extends Foundation<BadgeHandledProps, BadgeUnhandledProps, {}> {
 
     public static defaultProps: Partial<BadgeProps> = {
         size: BadgeSize.small,
-        filled: false,
+        filled: true,
     };
 
     protected handledProps: HandledProps<BadgeHandledProps> = {

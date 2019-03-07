@@ -24,12 +24,12 @@ export default {
         },
         {
             children: "Filled badge large",
-            filled: true,
+            filled: false,
             size: BadgeSize.large,
         },
         {
             children: "Filled badge small",
-            filled: true,
+            filled: false,
             size: BadgeSize.small,
         },
     ],

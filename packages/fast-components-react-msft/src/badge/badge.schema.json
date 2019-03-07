@@ -6,7 +6,7 @@
     "id": "@microsoft/fast-components-react-msft/badge",
     "properties": {
         "filled": {
-            "title": "Backplate",
+            "title": "Filled",
             "type": "boolean"
         },
         "size": {
