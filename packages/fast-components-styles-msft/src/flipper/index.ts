@@ -34,38 +34,51 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
             width: "40px",
             height: "40px",
             margin: "0",
+            position: "relative",
             color: neutralForegroundRest,
-            background: neutralFillStealthRest,
-            border: `${toPx(
-                designSystem.outlinePatternOutlineWidth
-            )} solid ${neutralOutlineRest(designSystem)}`,
+            background: "transparent",
+            border: `${toPx(designSystem.outlinePatternOutlineWidth)} solid transparent`,
             borderRadius: "50%",
             padding: "0",
-            "&:hover": {
-                background: neutralFillStealthHover,
-                color: neutralForegroundHover,
+            "&::before": {
+                content: "''",
+                top: `-${toPx(designSystem.outlinePatternOutlineWidth)}`,
+                right: `-${toPx(designSystem.outlinePatternOutlineWidth)}`,
+                bottom: `-${toPx(designSystem.outlinePatternOutlineWidth)}`,
+                left: `-${toPx(designSystem.outlinePatternOutlineWidth)}`,
+                opacity: "0.8",
+                background: neutralFillStealthRest,
                 border: `${toPx(
                     designSystem.outlinePatternOutlineWidth
-                )} solid ${neutralOutlineHover(designSystem)}`,
-                "& $flipper_glyph": {
-                    "&::before": {
-                        borderRightColor: neutralForegroundRest,
-                        borderTopColor: neutralForegroundRest,
-                    },
+                )} solid ${neutralOutlineRest(designSystem)}`,
+                borderRadius: "50%",
+                position: "absolute",
+            },
+            "&:hover": {
+                color: neutralForegroundHover,
+                "&::before": {
+                    background: neutralFillStealthHover,
+                    border: `${toPx(
+                        designSystem.outlinePatternOutlineWidth
+                    )} solid ${neutralOutlineHover(designSystem)}`,
                 },
             },
             "&:active": {
-                background: neutralFillStealthActive,
                 color: neutralForegroundActive,
-                border: `${toPx(
-                    designSystem.outlinePatternOutlineWidth
-                )} solid ${neutralOutlineActive(designSystem)}`,
+                "&::before": {
+                    background: neutralFillStealthActive,
+                    border: `${toPx(
+                        designSystem.outlinePatternOutlineWidth
+                    )} solid ${neutralOutlineActive(designSystem)}`,
+                },
             },
             ...applyFocusVisible({
-                boxShadow: `0 0 0 1px ${neutralFocus(designSystem)} inset`,
-                border: `${toPx(
-                    designSystem.outlinePatternOutlineWidth
-                )} solid ${neutralFocus(designSystem)}`,
+                "&::before": {
+                    boxShadow: `0 0 0 1px ${neutralFocus(designSystem)} inset`,
+                    border: `${toPx(
+                        designSystem.outlinePatternOutlineWidth
+                    )} solid ${neutralFocus(designSystem)}`,
+                },
             }),
             "&::-moz-focus-inner": {
                 border: "0",
