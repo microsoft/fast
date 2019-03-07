@@ -4,7 +4,7 @@ import {
     ComponentStyleSheet,
     CSSRules,
 } from "@microsoft/fast-jss-manager";
-import { applyLocalizedProperty, Direction } from "@microsoft/fast-jss-utilities";
+import { applyLocalizedProperty, Direction, toPx } from "@microsoft/fast-jss-utilities";
 import {
     neutralFillStealthHover,
     neutralFillStealthRest,
@@ -19,7 +19,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const direction: Direction = designSystem.direction;
     const white: string = "#FFF";
-    const black: string = "#111";
+    const black: string = "#101010";
 
     function flipperStyles(): CSSRules<{}> {
         return {
@@ -106,7 +106,9 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
                     color: neutralForegroundRest((): string => black),
                     fill: neutralForegroundRest((): string => black),
                     background: neutralFillStealthRest((): string => black),
-                    border: `1px solid ${neutralOutlineRest((): string => black)}`,
+                    border: `${toPx(
+                        designSystem.outlinePatternOutlineWidth
+                    )} solid ${neutralOutlineRest((): string => black)}`,
                 },
                 "& span::before": {
                     borderColor: neutralForegroundRest((): string => black),
@@ -138,7 +140,9 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
                     color: neutralForegroundRest((): string => white),
                     fill: neutralForegroundRest((): string => white),
                     background: neutralFillStealthRest((): string => white),
-                    border: `1px solid ${neutralOutlineRest((): string => white)}`,
+                    border: `${toPx(
+                        designSystem.outlinePatternOutlineWidth
+                    )} solid ${neutralOutlineRest((): string => white)}`,
                 },
                 "& span::before": {
                     borderColor: neutralForegroundRest((): string => white),

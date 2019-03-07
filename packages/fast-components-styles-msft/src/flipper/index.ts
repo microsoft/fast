@@ -42,10 +42,10 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
             padding: "0",
             "&::before": {
                 content: "''",
-                top: "-1px",
-                right: "-1px",
-                bottom: "-1px",
-                left: "-1px",
+                top: `-${toPx(designSystem.outlinePatternOutlineWidth)}`,
+                right: `-${toPx(designSystem.outlinePatternOutlineWidth)}`,
+                bottom: `-${toPx(designSystem.outlinePatternOutlineWidth)}`,
+                left: `-${toPx(designSystem.outlinePatternOutlineWidth)}`,
                 opacity: "0.8",
                 background: neutralFillStealthRest,
                 border: `${toPx(
