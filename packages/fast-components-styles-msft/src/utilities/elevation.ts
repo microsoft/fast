@@ -3,6 +3,7 @@ import { toPx } from "@microsoft/fast-jss-utilities";
 import { CSSRules } from "@microsoft/fast-jss-manager";
 import designSystemDefaults, { DesignSystem } from "../design-system";
 import { density } from "./density";
+import { black } from "../utilities/color/color-constants";
 
 /**
  * Shadow config
@@ -63,7 +64,7 @@ export const directionalShadowConfig: ShadowConfig = {
  */
 export function elevation(
     elevationValue: ElevationMultiplier | number,
-    color: string = "#000"
+    color: string = black
 ): (config: DesignSystem) => CSSRules<DesignSystem> {
     return (config: DesignSystem): CSSRules<DesignSystem> => {
         const ambientShadow: string = elevationShadow(
