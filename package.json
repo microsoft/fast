@@ -16,8 +16,10 @@
     "url": "https://github.com/Microsoft/fast-dna/issues/new/choose"
   },
   "scripts": {
-    "docs:build": "node build/documentation/copy-package-readme.js",
-    "docs:dry-run": "node build/documentation/copy-package-readme.js --dry-run",
+    "docs:build": "node build/documentation/generate-typedocs.js",
+    "docs:build:dry-run": "node build/documentation/generate-typedocs.js --dry-run",
+    "docs:build:readme": "node build/documentation/copy-package-readme.js",
+    "docs:build:api": "node build/documentation/generate-typedocs.js",
     "integration-tests:alpha": "node build/testing/sauce-labs/test-browsers.js alpha",
     "integration-tests:beta": "node build/testing/sauce-labs/test-browsers.js beta",
     "integration-tests:release": "node build/testing/sauce-labs/test-browsers.js release",
@@ -83,6 +85,7 @@
     "babel-core": "^6.26.0",
     "babel-jest": "^23.6.0",
     "babel-preset-env": "^1.6.1",
+    "chalk": "^2.4.2",
     "docusaurus-init": "^1.0.2",
     "dotenv": "^6.0.0",
     "eyes.selenium": "3.6.2",
@@ -97,6 +100,8 @@
     "ts-jest": "^23.10.4",
     "ts-node": "^5.0.1",
     "tslint": "^5.9.1",
+    "typedoc": "^0.14.2",
+    "typedoc-plugin-markdown": "^1.1.27",
     "typescript": "^3.0.1",
     "yargs": "^11.0.0"
   },
