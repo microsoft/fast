@@ -161,7 +161,6 @@ export { TypographyStyles };
  */
 export * from "./utilities/acrylic";
 export * from "./utilities/breakpoints";
-export * from "./utilities/colors";
 export * from "./utilities/density";
 export * from "./utilities/elevation";
 export * from "./utilities/fonts";

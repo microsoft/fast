@@ -1,19 +1,10 @@
-import { disabledContrast, ensureForegroundNormal } from "../utilities/colors";
-import { DesignSystem, withDesignSystemDefaults } from "../design-system";
+import { neutralForegroundRest } from "../utilities/color";
 
 export default {
     rest: {
-        color: ensureForegroundNormal,
+        color: neutralForegroundRest,
     },
     disabled: {
-        color: (config: DesignSystem): string => {
-            const designSystem: DesignSystem = withDesignSystemDefaults(config);
-
-            return disabledContrast(
-                designSystem.contrast,
-                designSystem.foregroundColor,
-                designSystem.backgroundColor
-            );
-        },
+        opacity: ".3",
     },
 };
