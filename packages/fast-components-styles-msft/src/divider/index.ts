@@ -18,6 +18,7 @@ const styles: ComponentStyles<DividerClassNameContract, DesignSystem> = (
             margin: "0",
             border: "none",
             borderTop: `1px solid ${neutralOutlineRest(designSystem)}`,
+            transition: "all 0.2s ease-in-out",
         },
     };
 };
