@@ -44,9 +44,13 @@ const detailTabItem: Slide[] = [
     {
         content: {
             id: carouselHeroContentSchema.id,
+<<<<<<< HEAD
             props: {},
             // TODO: https://github.com/Microsoft/fast-dna/issues/1493
             // heroContentProps,
+=======
+            ...heroContentProps,
+>>>>>>> chore: update carousel example data to use correct JSS styles (#1495)
         } as any,
         id: uniqueId(),
         theme: SlideTheme.dark,
@@ -54,9 +58,13 @@ const detailTabItem: Slide[] = [
     {
         content: {
             id: carouselDarkImageContentSchema.id,
+<<<<<<< HEAD
             props: {},
             // TODO: https://github.com/Microsoft/fast-dna/issues/1493
             // darkImageProps,
+=======
+            ...darkImageProps,
+>>>>>>> chore: update carousel example data to use correct JSS styles (#1495)
         } as any,
         id: uniqueId(),
         theme: SlideTheme.dark,
@@ -79,9 +87,13 @@ const detailTabItem: Slide[] = [
     {
         content: {
             id: carouselDarkImageContentSchema.id,
+<<<<<<< HEAD
             props: {},
             // TODO: https://github.com/Microsoft/fast-dna/issues/1493
             // darkImageProps,
+=======
+            ...darkImageProps,
+>>>>>>> chore: update carousel example data to use correct JSS styles (#1495)
         } as any,
         id: uniqueId(),
         theme: SlideTheme.dark,
@@ -89,9 +101,13 @@ const detailTabItem: Slide[] = [
     {
         content: {
             id: carouselHeroContentSchema.id,
+<<<<<<< HEAD
             props: {},
             // TODO: https://github.com/Microsoft/fast-dna/issues/1493
             // heroContentProps,
+=======
+            ...heroContentProps,
+>>>>>>> chore: update carousel example data to use correct JSS styles (#1495)
         } as any,
         id: uniqueId(),
         theme: SlideTheme.dark,
@@ -102,9 +118,13 @@ const singleTabItem: Slide[] = [
     {
         content: {
             id: carouselDarkImageContentSchema.id,
+<<<<<<< HEAD
             props: {},
             // TODO: https://github.com/Microsoft/fast-dna/issues/1493
             // darkImageProps,
+=======
+            ...darkImageProps,
+>>>>>>> chore: update carousel example data to use correct JSS styles (#1495)
         } as any,
         id: uniqueId(),
     },
