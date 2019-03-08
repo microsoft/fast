@@ -48,7 +48,7 @@ class TextAction extends Foundation<
      */
     public render(): JSX.Element {
         return (
-            <div className={this.generateClassNames()} {...this.unhandledProps()}>
+            <div {...this.unhandledProps()} className={this.generateClassNames()}>
                 {this.buttonExists() &&
                 this.props.buttonPosition === TextActionButtonPosition.before
                     ? this.generateButton()
