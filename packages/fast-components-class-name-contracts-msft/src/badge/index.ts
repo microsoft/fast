@@ -15,17 +15,7 @@ export interface BadgeClassNameContract extends BaseBadgeClassNameContract {
     badge__large?: string;
 
     /**
-     * The lowlight appearance style
+     * The filled backplate appearance style
      */
-    badge__lowlight: string;
-
-    /**
-     * The highlight appearance style
-     */
-    badge__highlight: string;
-
-    /**
-     * The accent appearance style
-     */
-    badge__accent: string;
+    badge__filled: string;
 }
