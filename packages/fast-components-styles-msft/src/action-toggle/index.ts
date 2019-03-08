@@ -14,9 +14,10 @@ import {
 } from "@microsoft/fast-jss-utilities";
 import { DesignSystem, withDesignSystemDefaults } from "../design-system/index";
 import {
-    accentFillRest,
+    accentForegroundActive,
     accentForegroundCut,
-    neutralFillRest,
+    accentForegroundHover,
+    accentForegroundRest,
     neutralForegroundRest,
 } from "../utilities/color";
 
@@ -66,7 +67,17 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = (
         },
         actionToggle__lightweight: {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-                fill: accentFillRest,
+                fill: accentForegroundRest,
+            },
+            "&:hover": {
+                "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
+                    fill: accentForegroundHover,
+                },
+            },
+            "&:active": {
+                "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
+                    fill: accentForegroundActive,
+                },
             },
             "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
                 fill: neutralForegroundRest,
@@ -74,7 +85,17 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = (
         },
         actionToggle__justified: {
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
-                fill: accentFillRest,
+                fill: accentForegroundRest,
+            },
+            "&:hover": {
+                "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
+                    fill: accentForegroundHover,
+                },
+            },
+            "&:active": {
+                "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
+                    fill: accentForegroundActive,
+                },
             },
             "&$actionToggle__disabled $actionToggle_selectedGlyph, &$actionToggle__disabled $actionToggle_unselectedGlyph": {
                 fill: neutralForegroundRest,

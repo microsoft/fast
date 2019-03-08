@@ -23,6 +23,7 @@ const styles: ComponentStyles<CardClassNameContract, DesignSystem> = (
             background: designSystem.backgroundColor,
             borderRadius: toPx(designSystem.cornerRadius),
             ...elevation(ElevationMultiplier.e4, "#000")(designSystem),
+            transition: "all 0.2s ease-in-out",
         },
     };
 };
