@@ -77,7 +77,7 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
         width: "calc(100% - 30px)",
         right: "0",
         left: "0",
-        zIndex: "2",
+        zIndex: "1",
         overflow: "auto",
         "&::-webkit-scrollbar": {
             width: "0 !important",
