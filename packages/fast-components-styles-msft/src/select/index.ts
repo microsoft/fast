@@ -8,8 +8,12 @@ import {
     SelectClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 import { elevation, ElevationMultiplier } from "../utilities/elevation";
+import {
+    neutralFillStealthRest,
+    neutralForegroundRest,
+    neutralOutlineRest,
+} from "../utilities/color";
 import { contrast, toPx } from "@microsoft/fast-jss-utilities";
-import { disabledContrast, ensureNormalContrast } from "../utilities/colors";
 import { curry } from "lodash-es";
 
 export const selectDisplayButtonOverrides: ComponentStyles<
@@ -31,40 +35,6 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = (
 ): ComponentStyleSheet<SelectClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
 
-    const backgroundColor: string = designSystem.backgroundColor;
-    const foregroundColor: string = ensureNormalContrast(
-        designSystem.contrast,
-        designSystem.foregroundColor,
-        designSystem.backgroundColor
-    );
-
-    type ContrastFunction = (operandColor: string, referenceColor: string) => string;
-    const contrastScale: number = designSystem.contrast;
-    const brandColor: string = designSystem.brandColor;
-    const color: string = designSystem.foregroundColor;
-    const scaledEnsureNormalContrast: ContrastFunction = curry(ensureNormalContrast)(
-        contrastScale
-    );
-    const primaryRestBackgroundColor: string = scaledEnsureNormalContrast(
-        scaledEnsureNormalContrast(brandColor, designSystem.backgroundColor),
-        color
-    );
-    const primaryDisabledBackground: string = disabledContrast(
-        contrastScale,
-        primaryRestBackgroundColor,
-        designSystem.backgroundColor
-    );
-    const primaryDisabledColor: string = disabledContrast(
-        contrastScale,
-        color,
-        primaryDisabledBackground
-    );
-    const primarySelectedBackground: string = contrast(
-        1.7,
-        designSystem.foregroundColor,
-        designSystem.backgroundColor
-    );
-
     return {
         select: {
             minWidth: "276px",
@@ -72,20 +42,18 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = (
         },
 
         select_toggleGlyph: {
-            fill: foregroundColor,
+            fill: neutralForegroundRest,
         },
 
         select__disabled: {
-            "&$select__multiSelectable $select_menu": {
-                borderColor: primaryDisabledColor,
-            },
+            opacity: ".3",
         },
 
         select_menu: {
             ...elevation(ElevationMultiplier.e11, designSystem.foregroundColor)(
                 designSystem
             ),
-            background: backgroundColor,
+            background: neutralFillStealthRest,
             zIndex: "1",
             position: "absolute",
             width: "100%",
@@ -103,7 +71,7 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = (
                 position: "static",
                 boxShadow: "none",
                 border: "1px solid",
-                borderColor: foregroundColor,
+                borderColor: neutralOutlineRest,
             },
         },
         select_menu__open: {},
