@@ -3,9 +3,32 @@ import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import { SubheadingClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { fontWeight } from "../utilities/fonts";
 
+function applySubeadingStyles(): CSSRules<DesignSystem> {
+    return {
+        fontWeight: `${fontWeight.normal}`,
+    };
+}
+
 const styles: ComponentStyles<SubheadingClassNameContract, DesignSystem> = {
     subheading: {
-        fontWeight: `${fontWeight.normal}`,
+        "&$subheading__1": {
+            ...applySubeadingStyles(),
+        },
+        "&$subheading__2": {
+            ...applySubeadingStyles(),
+        },
+        "&$subheading__3": {
+            ...applySubeadingStyles(),
+        },
+        "&$subheading__4": {
+            ...applySubeadingStyles(),
+        },
+        "&$subheading__5": {
+            ...applySubeadingStyles(),
+        },
+        "&$subheading__6": {
+            ...applySubeadingStyles(),
+        },
     },
     subheading__1: {},
     subheading__2: {},
