@@ -18,7 +18,6 @@ import {
 } from "../utilities/color";
 import { DesignSystem, withDesignSystemDefaults } from "../design-system/index";
 import { applyTypeRampConfig } from "../utilities/typography";
-import { ensureNormalContrast } from "../utilities/colors";
 import { fontWeight } from "../utilities/fonts";
 
 function smallBadgeStyle(): CSSRules<DesignSystem> {
