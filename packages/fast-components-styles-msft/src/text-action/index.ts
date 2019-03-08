@@ -116,7 +116,7 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
         },
         textAction_beforeGlyph: {
             ...glyphStyles,
-            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "8px",
+            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "12px",
         },
         textAction_afterGlyph: {
             ...glyphStyles,

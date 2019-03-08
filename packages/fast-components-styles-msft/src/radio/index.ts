@@ -35,6 +35,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
             display: "inline-flex",
             flexDirection: "row",
             alignItems: "center",
+            transition: "all 0.2s ease-in-out",
         },
         radio_input: {
             position: "absolute",
@@ -45,6 +46,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
             margin: "0",
             zIndex: "1",
             background: neutralFillInputRest,
+            transition: "all 0.2s ease-in-out",
             border: `${toPx(
                 designSystem.outlinePatternOutlineWidth
             )} solid ${neutralOutlineRest(designSystem)}`,

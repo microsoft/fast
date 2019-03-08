@@ -4,7 +4,7 @@ import designSystemDefaults, {
 } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { applyLocalizedProperty, Direction } from "@microsoft/fast-jss-utilities";
-import { accentFillRest, neutralForegroundRest } from "../utilities/color";
+import { accentForegroundRest, neutralForegroundRest } from "../utilities/color";
 import { BreadcrumbClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyTypeRampConfig } from "../utilities/typography";
 import { fontWeight } from "../utilities/fonts";
@@ -21,12 +21,13 @@ const styles: ComponentStyles<BreadcrumbClassNameContract, DesignSystem> = (
             ...applyTypeRampConfig("t7"),
         },
         breadcrumb_item: {
-            fontWeight: `${fontWeight.bold}`,
+            fontWeight: `${fontWeight.semibold}`,
             display: "inline",
             outline: "none",
             textDecoration: "none",
+            transition: "all 0.2s ease-in-out",
             "&:link, &:visited": {
-                color: accentFillRest,
+                color: accentForegroundRest,
                 borderBottom: "0px",
             },
         },
