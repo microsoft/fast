@@ -6,14 +6,22 @@ import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manage
 import { SelectOptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { density } from "../utilities/density";
 import {
-    disabledContrast,
-    ensureForegroundNormal,
-    ensureNormalContrast,
-    hoverContrast,
-} from "../utilities/colors";
+    neutralFillStealthActive,
+    neutralFillStealthHover,
+    neutralFillStealthRest,
+    neutralFillStealthSelected,
+    neutralFocus,
+    neutralForegroundRest,
+} from "../utilities/color";
+// import {
+//     disabledContrast,
+//     ensureForegroundNormal,
+//     ensureNormalContrast,
+//     hoverContrast,
+// } from "../utilities/colors";
 import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
 import { applyTypeRampConfig } from "../utilities/typography";
-import typographyPattern from "../patterns/typography";
+// import typographyPattern from "../patterns/typography";
 import {
     applyLocalizedProperty,
     contrast,
@@ -26,34 +34,9 @@ import { curry } from "lodash-es";
 const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<SelectOptionClassNameContract, DesignSystem> => {
-    type ContrastFunction = (operandColor: string, referenceColor: string) => string;
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const direction: Direction = designSystem.direction;
-    const contrastScale: number = designSystem.contrast;
-    const brandColor: string = designSystem.brandColor;
-    const color: string = designSystem.foregroundColor;
-    const scaledEnsureNormalContrast: ContrastFunction = curry(ensureNormalContrast)(
-        contrastScale
-    );
-    const primaryRestBackgroundColor: string = scaledEnsureNormalContrast(
-        scaledEnsureNormalContrast(brandColor, designSystem.backgroundColor),
-        color
-    );
-    const primaryDisabledBackground: string = disabledContrast(
-        contrastScale,
-        primaryRestBackgroundColor,
-        designSystem.backgroundColor
-    );
-    const primaryDisabledColor: string = disabledContrast(
-        contrastScale,
-        color,
-        primaryDisabledBackground
-    );
-    const primarySelectedBackground: string = contrast(
-        1.7,
-        designSystem.foregroundColor,
-        designSystem.backgroundColor
-    );
+
     return {
         selectOption: {
             listStyleType: "none",
@@ -67,23 +50,20 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = (
             gridTemplateRows: "auto",
             alignItems: "center",
             padding: "0",
-            margin: "0 4px",
-            ...typographyPattern.rest,
+            mneutralForegroundRestargin: "0 4px",
+            color: neutralForegroundRest,
             whiteSpace: "nowrap",
             overflow: "hidden",
             cursor: "default",
             ...applyTypeRampConfig("t7"),
-            background: designSystem.backgroundColor,
+            background: neutralFillStealthRest,
             borderRadius: toPx(designSystem.cornerRadius),
             border: "2px solid transparent",
-            ...applyFocusVisible({
-                borderColor: ensureForegroundNormal,
+            ...applyFocusVisible<DesignSystem>({
+                borderColor: neutralFocus,
             }),
             "&:hover": {
-                background: hoverContrast(
-                    designSystem.contrast,
-                    designSystem.backgroundColor
-                ),
+                background: neutralFillStealthHover,
             },
         },
         selectOption_contentRegion: {
@@ -100,21 +80,15 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = (
         },
         selectOption__disabled: {
             cursor: "not-allowed",
-            ...typographyPattern.disabled,
-            "&:hover": {
-                background: designSystem.backgroundColor,
-            },
-            ...applyFocusVisible({
-                background: designSystem.backgroundColor,
-            }),
-            "& $selectOption_glyph": {
-                fill: primaryDisabledColor,
+            opacity: ".3",
+            "&, &:hover": {
+                background: neutralFillStealthRest,
             },
         },
         selectOption__selected: {
-            background: primarySelectedBackground,
+            background: neutralFillStealthSelected,
             "&:hover": {
-                background: primarySelectedBackground,
+                background: neutralFillStealthSelected,
             },
         },
     };
