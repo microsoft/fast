@@ -4,12 +4,6 @@ import {
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 
-export enum BadgeAppearance {
-    accent = "accent",
-    highlight = "highlight",
-    lowlight = "lowlight",
-}
-
 export enum BadgeSize {
     small = "small",
     large = "large",
@@ -18,9 +12,9 @@ export enum BadgeSize {
 export interface BadgeManagedClasses extends ManagedClasses<BadgeClassNameContract> {}
 export interface BadgeHandledProps extends BadgeManagedClasses {
     /**
-     * The badge appearance
+     * The badge backplate appearance
      */
-    appearance?: BadgeAppearance;
+    filled?: boolean;
 
     /**
      * The badge size
