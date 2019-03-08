@@ -401,13 +401,6 @@ class Site extends React.Component<
     }
 
     public render(): JSX.Element {
-        console.info("PATH INFO");
-        console.info(this.initialPath);
-        console.info(this.state.currentPath);
-        console.info(window.location.pathname);
-        console.info(
-            window.location.pathname.slice(0, window.location.pathname.indexOf("/", 1))
-        );
         return (
             <DesignSystemProvider designSystem={devSiteDesignSystemDefaults}>
                 <BrowserRouter>
@@ -1410,16 +1403,6 @@ class Site extends React.Component<
     ): JSX.Element {
         const tocItemPath: string = this.convertToHyphenated(
             `${itemsPath}${items.props.name}/`
-        );
-        console.info("CURRENT ITEM:");
-        console.info(tocItemPath);
-        console.info(
-            "(" +
-                (currentPath.match(tocItemPath) !== null) +
-                ") => " +
-                currentPath +
-                " : " +
-                tocItemPath
         );
         const contentId: string = uniqueId(this.convertToHyphenated(items.props.name));
         const active: boolean = currentPath.match(tocItemPath) !== null;
