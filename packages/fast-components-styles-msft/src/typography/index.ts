@@ -1,16 +1,15 @@
 import { DesignSystem } from "../design-system";
-import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { TypographyClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyTypeRampConfig } from "../utilities/typography";
 import { neutralForegroundRest } from "../utilities/color";
-import { toPx } from "@microsoft/fast-jss-utilities";
-import { get } from "lodash-es";
 
 const styles: ComponentStyles<TypographyClassNameContract, DesignSystem> = {
     typography: {
         color: neutralForegroundRest,
         marginTop: "0",
         marginBottom: "0",
+        transition: "all 0.2s ease-in-out",
     },
     typography__1: {
         ...applyTypeRampConfig("t1"),
