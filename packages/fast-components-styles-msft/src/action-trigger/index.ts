@@ -79,7 +79,6 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = (
             },
         },
         actionTrigger__justified: {
-            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "-10px",
             "& $actionTrigger_glyph": {
                 fill: accentForegroundRest,
             },
@@ -98,7 +97,6 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = (
             },
         },
         actionTrigger__outline: {
-            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "-10px",
             "& $actionTrigger_glyph": {
                 fill: neutralForegroundRest,
             },

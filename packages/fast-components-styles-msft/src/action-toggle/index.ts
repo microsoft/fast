@@ -84,7 +84,6 @@ const styles: ComponentStyles<ActionToggleClassNameContract, DesignSystem> = (
             },
         },
         actionToggle__justified: {
-            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "-10px",
             "& $actionToggle_selectedGlyph, & $actionToggle_unselectedGlyph": {
                 fill: accentForegroundRest,
             },
