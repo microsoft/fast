@@ -60,12 +60,6 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
 
     return {
         callToAction: {
-            display: "inline-flex",
-            maxWidth: "100%",
-            border: "2px solid transparent",
-            lineHeight: "1",
-            textDecoration: "none",
-            whiteSpace: "nowrap",
             transition: "all 0.2s ease-in-out",
             "&:hover": {
                 "& $callToAction_glyph": {
