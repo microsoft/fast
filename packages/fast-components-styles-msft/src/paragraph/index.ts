@@ -4,16 +4,20 @@ import { ParagraphClassNameContract } from "@microsoft/fast-components-class-nam
 import { fontWeight } from "../utilities/fonts";
 
 const styles: ComponentStyles<ParagraphClassNameContract, DesignSystem> = {
-    paragraph: {},
-    paragraph__1: {
-        fontWeight: `${fontWeight.semilight}`,
+    paragraph: {
+        "&$paragraph__1": {
+            fontWeight: `${fontWeight.semilight}`,
+        },
+        "&$paragraph__2": {
+            fontWeight: `${fontWeight.normal}`,
+        },
+        "&$paragraph__3": {
+            fontWeight: `${fontWeight.normal}`,
+        },
     },
-    paragraph__2: {
-        fontWeight: `${fontWeight.normal}`,
-    },
-    paragraph__3: {
-        fontWeight: `${fontWeight.normal}`,
-    },
+    paragraph__1: {},
+    paragraph__2: {},
+    paragraph__3: {},
 };
 
 export default styles;
