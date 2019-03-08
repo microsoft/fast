@@ -21,6 +21,7 @@ const styles: ComponentStyles<ContextMenuClassNameContract, DesignSystem> = (
             minWidth: "64px",
             background: designSystem.backgroundColor,
             borderRadius: toPx(designSystem.cornerRadius * 2),
+            transition: "all 0.2s ease-in-out",
         },
     };
 };

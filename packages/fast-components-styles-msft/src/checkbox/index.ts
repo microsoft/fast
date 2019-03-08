@@ -35,6 +35,10 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
             display: "inline-flex",
             flexDirection: "row",
             alignItems: "center",
+            transition: "all 0.2s ease-in-out",
+            "& $checkbox_label": {
+                [applyLocalizedProperty("paddingLeft", "paddingRight", direction)]: "8px",
+            },
         },
         checkbox_input: {
             position: "absolute",
@@ -46,6 +50,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
             margin: "0",
             zIndex: "1",
             background: neutralFillInputRest,
+            transition: "all 0.2s ease-in-out",
             border: `${toPx(
                 designSystem.outlinePatternOutlineWidth
             )} solid ${neutralOutlineRest(designSystem)}`,
@@ -98,7 +103,6 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
         checkbox_label: {
             color: neutralForegroundRest,
             ...applyTypeRampConfig("t7"),
-            [applyLocalizedProperty("paddingLeft", "paddingRight", direction)]: "8px",
         },
         checkbox__checked: {
             "& $checkbox_stateIndicator": {

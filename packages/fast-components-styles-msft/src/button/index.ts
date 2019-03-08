@@ -13,6 +13,7 @@ import {
     CSSRules,
 } from "@microsoft/fast-jss-manager";
 import { density } from "../utilities/density";
+import { fontWeight } from "../utilities/fonts";
 import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
 import {
     accentFillActive,
@@ -39,8 +40,8 @@ function applyTransparentBackplateStyles(
     designSystem: DesignSystem
 ): CSSRules<DesignSystem> {
     return {
-        color: accentForegroundRest(designSystem),
-        fill: accentForegroundRest(designSystem),
+        color: accentForegroundRest,
+        fill: accentForegroundRest,
         ...applyTransparentBackground(),
         ...applyFocusVisible({
             borderColor: "transparent",
@@ -51,17 +52,17 @@ function applyTransparentBackplateStyles(
         }),
         // Underline
         "&:active $button_contentRegion::before, &:hover $button_contentRegion::before": {
-            background: accentFillRest,
+            background: accentForegroundHover,
         },
         "&$button__disabled, &$button__disabled $button_contentRegion::before": {
             ...applyTransparentBackground(),
         },
         "&:hover": {
-            color: accentForegroundHover(designSystem),
+            color: accentForegroundHover,
             ...applyTransparentBackground(),
         },
         "&:active": {
-            color: accentForegroundActive(designSystem),
+            color: accentForegroundActive,
             ...applyTransparentBackground(),
         },
     };
@@ -83,10 +84,11 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
         button: {
             ...applyTypeRampConfig("t7"),
             fontFamily: "inherit",
+            fontWeight: `${fontWeight.semibold}`,
             boxSizing: "border-box",
             maxWidth: "374px",
             minWidth: "120px",
-            padding: "0 16px",
+            padding: "0 12px",
             display: "inline-flex",
             justifyContent: "center",
             alignItems: "center",
