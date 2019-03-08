@@ -51,16 +51,10 @@ function getDataFromSchema(schema: any, childOptions?: ChildOptionItem[]): any {
  * Gets an example by the type of data
  */
 function getDataFromSchemaByDataType(schema: any): any {
-    if (typeof schema.default !== "undefined") {
-        return schema.default;
-    }
+    const defaultOrExample: any = getDefaultOrExample(schema);
 
-    if (Array.isArray(schema.examples) && schema.examples.length > 0) {
-        return schema.examples[0];
-    }
-
-    if (hasEnum(schema)) {
-        return schema.enum[0];
+    if (typeof defaultOrExample !== "undefined") {
+        return defaultOrExample;
     }
 
     if (isObjectDataType(schema)) {
@@ -105,12 +99,10 @@ function getDataFromSchemaByDataType(schema: any): any {
  * Gets a react child example
  */
 function getReactChildrenFromSchema(schema: any, childOptions?: ChildOptionItem[]): any {
-    if (typeof schema.default !== "undefined") {
-        return schema.default;
-    }
+    const defaultOrExample: any = getDefaultOrExample(schema);
 
-    if (Array.isArray(schema.examples) && schema.examples.length > 0) {
-        return schema.examples[0];
+    if (typeof defaultOrExample !== "undefined") {
+        return defaultOrExample;
     }
 
     if (Array.isArray(schema.defaults) && schema.defaults.includes("text")) {
@@ -131,8 +123,30 @@ function getReactChildrenFromSchema(schema: any, childOptions?: ChildOptionItem[
     }
 }
 
+/**
+ * If there is a default value or example values,
+ * return a value to use
+ */
+function getDefaultOrExample(schema: any): any | void {
+    if (typeof schema.default !== "undefined") {
+        return schema.default;
+    }
+
+    if (hasExample(schema.examples)) {
+        return schema.examples[0];
+    }
+
+    if (hasEnum(schema)) {
+        return schema.enum[0];
+    }
+}
+
 function isObjectDataType(schema: any): boolean {
     return schema.type === DataType.object || schema[PropertyKeyword.properties];
+}
+
+function hasExample(examples: any[]): boolean {
+    return Array.isArray(examples) && examples.length > 0;
 }
 
 function hasRequired(schema: any): boolean {

@@ -13,7 +13,7 @@ describe("getDataFromSchema", () => {
 
         expect(getDataFromSchema(schema)).toEqual("foo");
     });
-    test("should return an example from the examples array", () => {
+    test("should return the first example from the examples array", () => {
         const schema: any = {
             examples: ["bar", "bat"],
         };
