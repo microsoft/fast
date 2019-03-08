@@ -48,14 +48,13 @@ class TextAction extends Foundation<
      */
     public render(): JSX.Element {
         return (
-            <div className={this.generateClassNames()}>
+            <div className={this.generateClassNames()} {...this.unhandledProps()}>
                 {this.buttonExists() &&
                 this.props.buttonPosition === TextActionButtonPosition.before
                     ? this.generateButton()
                     : null}
                 {this.generateBeforeGlyph()}
                 <TextField
-                    {...this.unhandledProps()}
                     disabled={get(this.props, "disabled", null)}
                     placeholder={get(this.props, "placeholder", null)}
                     jssStyleSheet={textFieldOverrides}
