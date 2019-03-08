@@ -2,6 +2,7 @@ import Chroma from "chroma-js";
 
 /**
  * Type definition for a luminosity switch
+ * @deprecated
  */
 export type LuminositySwitch = (a: any, b: any) => any;
 
@@ -10,6 +11,7 @@ export type LuminositySwitch = (a: any, b: any) => any;
  * https://github.com/gka/chroma.js/blob/master/src/io/luminance.coffee, except that
  * it accepts a rounding function. This is necessary to prevent contrast ratios being slightly below
  * their target due to rounding RGB channel values the wrong direction.
+ * @deprecated
  */
 export function luminance(
     targetLuminance: number,
@@ -62,6 +64,7 @@ function adjustLuminance(
 
 /**
  * Returns a function that selects one of two arguments based on the value of luminance inputs.
+ * @deprecated
  */
 export function luminanceSwitch(
     operandLuminance: number,

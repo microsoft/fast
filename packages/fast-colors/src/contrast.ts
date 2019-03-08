@@ -3,6 +3,7 @@ import { luminance, luminanceSwitch, LuminositySwitch } from "./luminosity";
 
 /**
  * A function to manipulate contrast of two colors.
+ * @deprecated
  */
 export type ContrastFunction = (
     targetRatio: number,
@@ -12,6 +13,7 @@ export type ContrastFunction = (
 
 /**
  * Adjust the darkness/lightness of a foreground color so that it matches a target contrast ratio against a background color
+ * @deprecated
  * @param targetRatio - The desired contrast ratio to bring the operandColor to against the referenceColor
  * @param operand - The color value to manipulate
  * @param referenceColor - The color value to evaluate contrast against
@@ -64,6 +66,7 @@ function L2(contrastRatio: number, l1: number): number {
 /**
  * Ensures that two colors achieve a target contrast ratio. If they don't reach the target contrast ratio, the operandColor will
  * be adjusted to meet the target contrast ratio.
+ * @deprecated
  */
 export function ensureContrast(
     targetRatio: number,
@@ -85,6 +88,7 @@ export function ensureContrast(
 
 /**
  * Adjusts the contrast between two colors by a given ratio adjustment
+ * @deprecated
  */
 export function adjustContrast(
     adjustment: number,

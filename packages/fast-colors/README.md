@@ -5,6 +5,9 @@ A color utility library designed to make working with colors easier.
 A huge thanks to [bobbyrayit](https://github.com/bobbyrayit) and [mlijanto](https://github.com/mlijanto) for creating the algorithm implemented in the `range` function.
 This code borrows heavily from their original implementation.
 
+## DEPRECATION NOTICE
+`@microsoft/fast-colors` is undergoing a major overhaul for v4 - as such all of the functions exported from this package will be either renamed or removed as of version 4.0.
+
 ## range(color, [options])
 
 A function that converts a single color input into a range of outputs, from lightest to darkest.
