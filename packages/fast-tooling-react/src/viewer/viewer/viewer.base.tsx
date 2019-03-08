@@ -85,10 +85,10 @@ export class Viewer extends Foundation<
             }
 
             if (
-                JSON.stringify(prevProps.viewerMessage) !==
-                JSON.stringify(this.props.viewerMessage)
+                JSON.stringify(prevProps.iframePostMessage) !==
+                JSON.stringify(this.props.iframePostMessage)
             ) {
-                this.updateMessage(this.props.viewerMessage);
+                this.updateMessage(this.props.iframePostMessage);
             } else if (
                 JSON.stringify(prevProps.viewerContentProps) !==
                 JSON.stringify(this.props.viewerContentProps)

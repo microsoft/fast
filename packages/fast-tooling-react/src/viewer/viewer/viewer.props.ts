@@ -19,14 +19,14 @@ export interface ViewerHandledProps extends ViewerManagedClasses {
     iframeSrc: string;
 
     /**
-     * The props to be assigned to the viewer content
+     * The props to be assigned to the ViewerContent component
      */
     viewerContentProps?: any;
 
     /**
      * Custom message to pass to the iframe
      */
-    viewerMessage?: CustomViewerMessage;
+    iframePostMessage?: CustomViewerMessage;
 
     /**
      * The responsive, resizable functionality for the viewer

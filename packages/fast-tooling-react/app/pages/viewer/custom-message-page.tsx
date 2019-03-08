@@ -30,7 +30,7 @@ class CustomMessagePage extends React.Component<{}, PageState> {
                     responsive={true}
                     onUpdateHeight={this.handleUpdatedHeight}
                     onUpdateWidth={this.handleUpdatedWidth}
-                    viewerMessage={this.state.message}
+                    iframePostMessage={this.state.message}
                 />
             </div>
         );
