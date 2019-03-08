@@ -22,7 +22,8 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         listStyleType: "none",
         height: density(32),
         display: "grid",
-        gridTemplateColumns: "32px auto 32px",
+        boxSizing: "border-box",
+        gridTemplateColumns: "40px auto 40px",
         gridTemplateRows: "auto",
         alignItems: "center",
         padding: "0",
@@ -31,6 +32,7 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
         whiteSpace: "nowrap",
         overflow: "hidden",
         cursor: "default",
+        transition: "all 0.2s ease-in-out",
         ...applyTypeRampConfig("t7"),
         borderRadius: (config: DesignSystem): string => {
             const designSystem: DesignSystem = withDesignSystemDefaults(config);
@@ -42,11 +44,9 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
             borderColor: neutralFocus,
         }),
         "&:hover": {
-            color: neutralForegroundHover,
             background: neutralFillStealthHover,
         },
         "&:active": {
-            color: neutralForegroundActive,
             background: neutralFillStealthActive,
         },
     },

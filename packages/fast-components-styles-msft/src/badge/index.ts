@@ -61,6 +61,7 @@ const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
             display: "inline-block",
             maxWidth: "215px",
             color: neutralForegroundRest,
+            transition: "all 0.2s ease-in-out",
         },
         badge__filled: {
             ...backplateStyle(designSystem),

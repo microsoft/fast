@@ -24,6 +24,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = (
             background: accentFillRest,
             borderRadius: "100px",
             height: "100%",
+            transition: "all 0.2s ease-in-out",
             "@media (-ms-high-contrast:active)": {
                 background: "ButtonText",
             },
@@ -37,6 +38,7 @@ const styles: ComponentStyles<ProgressClassNameContract, DesignSystem> = (
             borderRadius: "100px",
             height: toPx(designSystem.designUnit),
             background: neutralFillRest,
+            transition: "all 0.2s ease-in-out",
             maskImage: "-webkit-radial-gradient(white, black)",
         },
         progress_indicator__determinate: {

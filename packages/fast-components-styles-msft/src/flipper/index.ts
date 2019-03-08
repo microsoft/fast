@@ -41,6 +41,7 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
             borderRadius: "50%",
             padding: "0",
             "&::before": {
+                transition: "all 0.2s ease-in-out",
                 content: "''",
                 top: `-${toPx(designSystem.outlinePatternOutlineWidth)}`,
                 right: `-${toPx(designSystem.outlinePatternOutlineWidth)}`,
@@ -54,22 +55,20 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
                 borderRadius: "50%",
                 position: "absolute",
             },
-            "&:hover": {
-                color: neutralForegroundHover,
-                "&::before": {
-                    background: neutralFillStealthHover,
-                    border: `${toPx(
-                        designSystem.outlinePatternOutlineWidth
-                    )} solid ${neutralOutlineHover(designSystem)}`,
-                },
-            },
             "&:active": {
-                color: neutralForegroundActive,
                 "&::before": {
                     background: neutralFillStealthActive,
                     border: `${toPx(
                         designSystem.outlinePatternOutlineWidth
                     )} solid ${neutralOutlineActive(designSystem)}`,
+                },
+            },
+            "&:hover": {
+                "&::before": {
+                    background: neutralFillStealthHover,
+                    border: `${toPx(
+                        designSystem.outlinePatternOutlineWidth
+                    )} solid ${neutralOutlineHover(designSystem)}`,
                 },
             },
             ...applyFocusVisible({
