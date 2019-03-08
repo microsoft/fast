@@ -117,7 +117,6 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
             },
         },
         callToAction__justified: {
-            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "-10px",
             "& $callToAction_glyph": {
                 fill: primaryRestBackgroundColor,
             },
