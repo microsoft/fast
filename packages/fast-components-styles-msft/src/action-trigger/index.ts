@@ -14,9 +14,10 @@ import {
 } from "@microsoft/fast-jss-utilities";
 import { DesignSystem, withDesignSystemDefaults } from "../design-system/index";
 import {
-    accentFillRest,
+    accentForegroundActive,
     accentForegroundCut,
-    neutralFillRest,
+    accentForegroundHover,
+    accentForegroundRest,
     neutralForegroundRest,
 } from "../utilities/color";
 
@@ -61,7 +62,17 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = (
         },
         actionTrigger__lightweight: {
             "& $actionTrigger_glyph": {
-                fill: accentFillRest,
+                fill: accentForegroundRest,
+            },
+            "&:hover": {
+                "& $actionTrigger_glyph": {
+                    fill: accentForegroundHover,
+                },
+            },
+            "&:active": {
+                "& $actionTrigger_glyph": {
+                    fill: accentForegroundActive,
+                },
             },
             "&$actionTrigger__disabled $actionTrigger_glyph": {
                 fill: neutralForegroundRest,
@@ -69,7 +80,17 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = (
         },
         actionTrigger__justified: {
             "& $actionTrigger_glyph": {
-                fill: accentFillRest,
+                fill: accentForegroundRest,
+            },
+            "&:hover": {
+                "& $actionTrigger_glyph": {
+                    fill: accentForegroundHover,
+                },
+            },
+            "&:active": {
+                "& $actionTrigger_glyph": {
+                    fill: accentForegroundActive,
+                },
             },
             "&$actionTrigger__disabled $actionTrigger_glyph": {
                 fill: neutralForegroundRest,
