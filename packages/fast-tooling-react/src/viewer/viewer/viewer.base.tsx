@@ -14,6 +14,7 @@ import {
     ViewerMessageTarget,
     ViewerMessageType,
 } from "../utilities/message-system";
+import { ViewerProps } from "./viewer";
 
 export interface ViewerState {
     /**
@@ -76,25 +77,8 @@ export class Viewer extends Foundation<
         prevState: ViewerState
     ): void {
         if (canUseDOM()) {
-            if (this.state.resizing && !prevState.resizing) {
-                document.addEventListener("mouseup", this.handleMouseUp);
-                document.addEventListener("mousemove", this.handleMouseMove);
-            } else if (!this.state.resizing && prevState.resizing) {
-                document.removeEventListener("mouseup", this.handleMouseUp);
-                document.removeEventListener("mousemove", this.handleMouseMove);
-            }
-
-            if (
-                JSON.stringify(prevProps.iframePostMessage) !==
-                JSON.stringify(this.props.iframePostMessage)
-            ) {
-                this.updateMessage(this.props.iframePostMessage);
-            } else if (
-                JSON.stringify(prevProps.viewerContentProps) !==
-                JSON.stringify(this.props.viewerContentProps)
-            ) {
-                this.updateMessage();
-            }
+            this.shouldUpdateResizingEventListeners(prevState);
+            this.shouldSendUpdateMessage(prevProps);
         }
     }
 
@@ -188,6 +172,30 @@ export class Viewer extends Foundation<
                     />
                 </React.Fragment>
             );
+        }
+    }
+
+    private shouldUpdateResizingEventListeners(prevState: ViewerState): void {
+        if (this.state.resizing && !prevState.resizing) {
+            document.addEventListener("mouseup", this.handleMouseUp);
+            document.addEventListener("mousemove", this.handleMouseMove);
+        } else if (!this.state.resizing && prevState.resizing) {
+            document.removeEventListener("mouseup", this.handleMouseUp);
+            document.removeEventListener("mousemove", this.handleMouseMove);
+        }
+    }
+
+    private shouldSendUpdateMessage(prevProps: ViewerProps): void {
+        if (
+            JSON.stringify(prevProps.iframePostMessage) !==
+            JSON.stringify(this.props.iframePostMessage)
+        ) {
+            this.updateMessage(this.props.iframePostMessage);
+        } else if (
+            JSON.stringify(prevProps.viewerContentProps) !==
+            JSON.stringify(this.props.viewerContentProps)
+        ) {
+            this.updateMessage();
         }
     }
 

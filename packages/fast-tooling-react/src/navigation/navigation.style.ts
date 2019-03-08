@@ -1,5 +1,5 @@
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
-import { applyTriggerStyle, insetStrongBoxShadow } from "./navigation.utilities.style";
+import { applyTriggerStyle, insetStrongBoxShadow } from "../style";
 import { accent, background300, background800, foreground300 } from "../style/constants";
 
 export interface NavigationClassNameContract {
