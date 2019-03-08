@@ -32,6 +32,7 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
             position: "relative",
             overflow: "hidden",
             color: neutralForegroundRest,
+            transition: "all 0.2s ease-in-out",
         },
         pivot_tabList: {
             display: "flex",
@@ -61,6 +62,7 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
         },
         pivot_tab__active: {},
         pivot_tabContent: {
+            transition: "all 0.2s ease-in-out",
             ...applyTypeRampConfig("t7"),
         },
         pivot_activeIndicator: {

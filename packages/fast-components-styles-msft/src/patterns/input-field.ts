@@ -30,8 +30,9 @@ export function inputFieldStyles(designSystem: DesignSystem): CSSRules<{}> {
         fontWeight: fontWeight.normal.toString(),
         boxSizing: "border-box",
         borderRadius: toPx(designSystem.cornerRadius),
-        padding: "10px",
+        padding: "6px 12px",
         margin: "0",
+        transition: "all 0.2s ease-in-out",
         "&:hover": {
             background: neutralFillInputHover,
             border: `${toPx(
