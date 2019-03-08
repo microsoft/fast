@@ -31,8 +31,8 @@ export const textFieldOverrides: ComponentStyles<
     DesignSystem
 > = {
     textField: {
-        height: "calc(100% - 2px)",
-        margin: "1px",
+        height: "calc(100% - 4px)",
+        margin: "2px 1px",
         border: "none",
         flex: "1 0 0",
         background: "transparent",
@@ -89,15 +89,11 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
             },
         },
         textAction__focus: {
-            boxShadow: `0 0 0 1px ${neutralFocus(designSystem)} inset`,
-            border: `${toPx(
-                designSystem.outlinePatternOutlineWidth
-            )} solid ${neutralFocus(designSystem)}`,
-            "&:hover": {
-                boxShadow: `0 0 0 1px ${designSystem.foregroundColor} inset`,
-                border: `${toPx(designSystem.outlinePatternOutlineWidth)} solid ${
-                    designSystem.foregroundColor
-                }`,
+            "&, &:hover": {
+                boxShadow: `0 0 0 1px ${neutralFocus(designSystem)} inset`,
+                border: `${toPx(
+                    designSystem.outlinePatternOutlineWidth
+                )} solid ${neutralFocus(designSystem)}`,
             },
         },
         textAction__disabled: {

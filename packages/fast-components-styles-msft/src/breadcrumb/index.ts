@@ -8,7 +8,6 @@ import { accentFillRest, neutralForegroundRest } from "../utilities/color";
 import { BreadcrumbClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyTypeRampConfig } from "../utilities/typography";
 import { fontWeight } from "../utilities/fonts";
-import typographyPattern from "../patterns/typography";
 
 const styles: ComponentStyles<BreadcrumbClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -17,13 +16,15 @@ const styles: ComponentStyles<BreadcrumbClassNameContract, DesignSystem> = (
     const direction: Direction = designSystem.direction;
 
     return {
+        breadcrumb: {
+            color: neutralForegroundRest,
+            ...applyTypeRampConfig("t7"),
+        },
         breadcrumb_item: {
             fontWeight: `${fontWeight.bold}`,
             display: "inline",
             outline: "none",
             textDecoration: "none",
-            color: neutralForegroundRest,
-            ...applyTypeRampConfig("t7"),
             "&:link, &:visited": {
                 color: accentFillRest,
                 borderBottom: "0px",
@@ -39,8 +40,6 @@ const styles: ComponentStyles<BreadcrumbClassNameContract, DesignSystem> = (
         breadcrumb_separator: {
             fontWeight: `${fontWeight.normal}`,
             display: "inline-block",
-            ...applyTypeRampConfig("t7"),
-            ...typographyPattern.rest,
             margin: "0 6px",
         },
     };
