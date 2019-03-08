@@ -24,6 +24,7 @@ const styles: ComponentStyles<HypertextClassNameContract, DesignSystem> = (
             outline: "none",
             textDecoration: "none",
             color: neutralForegroundRest,
+            transition: "all 0.2s ease-in-out, border 0.03s ease-in-out",
             "&:link, &:visited": {
                 borderBottom: `1px solid ${accentForegroundRest(designSystem)}`,
                 color: accentForegroundRest,
