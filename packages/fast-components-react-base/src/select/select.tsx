@@ -121,7 +121,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
             !this.state.isMenuOpen &&
             !this.props.multiselectable
         ) {
-            this.focusOnTrigger();
+            this.focusTriggerElement();
         }
     }
 
@@ -365,15 +365,17 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
         switch (e.keyCode) {
             case KeyCodes.enter:
             case KeyCodes.space:
+                // preventing default here because when we change focus to the trigger the keydown event gets
+                // emitted from the button again which otherwise toggles the menu a second time on a single key press
                 e.preventDefault();
                 this.toggleMenu(!this.state.isMenuOpen);
-                if (this.state.isMenuOpen && this.props.isMenuOpen !== true) {
-                    this.focusOnTrigger();
+                if (this.validateMenuState(!this.state.isMenuOpen) === false) {
+                    this.focusTriggerElement();
                 }
                 break;
             case KeyCodes.escape:
                 this.toggleMenu(false);
-                this.focusOnTrigger();
+                this.focusTriggerElement();
                 break;
             case KeyCodes.arrowDown:
             case KeyCodes.arrowRight:
@@ -518,7 +520,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     /**
      * focus on the trigger button
      */
-    private focusOnTrigger = (): void => {
+    private focusTriggerElement = (): void => {
         const triggerButton: HTMLButtonElement = this.getTriggerButton();
         if (triggerButton !== null) {
             triggerButton.focus();
