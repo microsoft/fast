@@ -40,8 +40,8 @@ export class ViewerContent extends Foundation<
         }
     }
 
-    public render(): JSX.Element {
-        return <React.Fragment>{this.renderComponents()}</React.Fragment>;
+    public render(): React.ReactNode {
+        return this.renderComponents();
     }
 
     public componentDidMount(): void {
