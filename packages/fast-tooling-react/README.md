@@ -15,6 +15,13 @@ The tooling available in FAST Tooling React can be used together to create UI fo
         - [Using plugins](#using-plugins)
     - [Generating data from a JSON schema](#generating-data-from-a-json-schema)
 - [Navigation](#navigation)
+- [Viewer](#viewer)
+    - [Setting width and height](#setting-width-and-height)
+    - [Custom messaging](#custom-messaging)
+    - [Viewer content](#viewer-content)
+    - [Select device](#select-device)
+        - [Devices](#devices)
+    - [Rotate](#rotate)
 
 ## Benefits
 
@@ -363,4 +370,166 @@ export class Example extends React.Component {
         });
     }
 }
+```
+
+## Viewer
+
+The `Viewer` component creates an iframe, it can pass props to a communication system and listen for any messages posted to the iframe window. It can have a fixed or adjustable width and height and can be used independently or as a set with the `ViewerContent`, `SelectDevice` and `Rotate` components.
+
+Example:
+
+```jsx
+import React from "react";
+import ReactDOM from "react-dom";
+import Viewer from "@microsoft/fast-tooling-react";
+
+const root = document.createElement("div");
+root.setAttribute("id", "root");
+document.body.appendChild(root);
+
+function render() {
+    ReactDOM.render(
+        <Viewer iframeSrc={"/example-content"} />,
+        root
+    );
+}
+
+render();
+```
+
+### Setting width and height
+
+The `width` and `height` can be set on the `Viewer` component which will be used as pixel values:
+
+Example:
+
+```jsx
+<Viewer
+    iframeSrc={"/example-content"}
+    width={500}
+    height={300}
+/>
+```
+
+To create a responsive width an height, the `width` and `height` can be tied to values in state and combined with the `onUpdateHeight`, `onUpdateWidth` and `responsive` props. This creates draggable borders around the iframe.
+
+Exampe:
+
+```jsx
+<Viewer
+    iframeSrc={"/example-content"}
+    width={this.state.viewerWidth}
+    height={this.state.viewerHeight}
+    responsive={true}
+    onUpdateHeight={this.handleUpdateViewerHeight}
+    onUpdateWidth={this.handleUpdateViewerWidth}
+/>
+
+// handlers for the `onUpdateHeight` and `onUpdateWidth` callbacks
+handleUpdateViewerHeight = (newViewerHeight) => {
+    this.setState({
+        viewerHeight: newViewerHeight
+    });
+}
+
+handleUpdateViewerWidth = (newViewerWidth) => {
+    this.setState({
+        viewerWidth: newViewerWidth
+    });
+}
+
+```
+
+### Custom messaging
+
+A custom post message may be sent through the viewer to the iframe via the `viewerMessage` prop. Anytime this prop is update a message will be sent.
+
+### Viewer content
+
+Using the `Viewer` when the provided `iframeSrc` is pointing to a route that contains the `ViewerContent` component.
+
+Example:
+
+```jsx
+<Viewer
+    iframeSrc={"/example-content"}
+    viewerContentProps={[{id: "example", props: {}}]}
+/>
+```
+
+Using the `ViewerContent` on the route provided to the `Viewer` will allow for the dynamic creation of provided components.
+
+Example component provided in the "/example-content" route for the `Viewer` impplementation example:
+
+```jsx
+import as React from "react";
+import { ViewerContent } from "@microsoft/fast-tooling-react";
+import MyComponent from "./my-component";
+
+class ExampleContent extends React.Component<{}, {}> {
+    public render(): JSX.Element {
+        return <ViewerContent components={[{id: "example", component: MyComponent }]} />;
+    }
+}
+
+export default UpdatePropsViewerContent;
+```
+
+### Select device
+
+Use the `SelectDevice` component to select from provided default devices or provide your own custom device configurations. This component accepts a list of configured devices via the `devices` prop, some default devices are included with the package as a secondary export. It also accepts an `activeDeviceId` prop which maps to the current device id of the provided devices. In addition there is a callback `onUpdateDevice` which will fire a provided function with the new device id selected.
+
+Example:
+
+```jsx
+import {
+    defaultDevices,
+    SelectDevice,
+} from "@microsoft/fast-tooling-react";
+
+<SelectDevice
+    devices={defaultDevices}
+    onUpdateDevice={this.handleDeviceUpdate}
+    activeDeviceId={this.state.activeDevice.id}
+/>
+```
+
+#### Devices
+
+A device can be either "responsive" or "fixed", if it is responsive it does not take a width and height. The current active device can be used to activate the `responsive` prop on the `Viewer` component.
+
+Example of custom devices passed to the `devices` prop:
+
+```json
+[
+    {
+        "id": "responsive",
+        "displayName": "Responsive display",
+        "display": "responsive"
+    },
+    {
+        "id": "phoneDevice",
+        "displayName": "Phone device",
+        "display": "fixed",
+        "height": 800,
+        "width": 320
+    }
+]
+```
+
+### Rotate
+
+Use the `Rotate` component to switch between landscape and portrait view. This component accepts an `orientation` prop which can be either "landscape" or "portrait". It also accepts an `onUpdateOrientation` callback which will fire a provided function with the new orientation selected.
+
+Example:
+
+```jsx
+import {
+    Rotate,
+} from "@microsoft/fast-tooling-react";
+
+<Rotate
+    orientation={this.state.orientation}
+    onUpdateOrientation={this.handleOrientationUpdate}
+/>
 ```

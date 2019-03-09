@@ -5,6 +5,7 @@ import {
     localizeSpacing,
     toPx,
 } from "@microsoft/fast-jss-utilities";
+import { accent, background300, background800, foreground300 } from "./constants";
 
 export interface BoxShadowConfig {
     offsetX: number;
@@ -38,6 +39,66 @@ export function applyTriggerStyle(color: string): CSSRules<{}> {
         boxSizing: "border-box",
         color,
         ...ellipsis(),
+    };
+}
+
+/**
+ * Used for styles radio buttons (vertical and horizontal alignment)
+ */
+export function applyInputBackplateStyle(): CSSRules<{}> {
+    return {
+        appearance: "none",
+        height: "20px",
+        width: "20px",
+        margin: "0",
+        backgroundColor: background800,
+        "&:focus, &:hover": {
+            outline: "none",
+        },
+    };
+}
+
+export function applySelectSpanStyles(): CSSRules<{}> {
+    return {
+        position: "relative",
+        display: "flex",
+        "&::before": {
+            content: "''",
+            position: "absolute",
+            top: "9px",
+            right: "4px",
+            zIndex: "1",
+            borderLeft: "3px solid transparent",
+            borderRight: "3px solid transparent",
+            borderTop: `3px solid ${foreground300}`,
+        },
+    };
+}
+
+export function applySelectInputStyles(): CSSRules<{}> {
+    return {
+        width: "100%",
+        lineHeight: "16px",
+        fontSize: "12px",
+        backgroundColor: background800,
+        borderRadius: "2px",
+        appearance: "none",
+        outline: "none",
+        ...localizePadding(3, 5, 2, 5),
+        border: "none",
+        color: foreground300,
+        "&:-ms-expand": {
+            display: "none",
+        },
+        "& option": {
+            background: background300,
+        },
+        "&:disabled": {
+            cursor: "not-allowed",
+        },
+        "&:focus": {
+            ...insetStrongBoxShadow(accent),
+        },
     };
 }
 
