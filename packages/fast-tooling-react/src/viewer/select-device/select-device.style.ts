@@ -9,8 +9,12 @@ import {
     ellipsis,
 } from "@microsoft/fast-jss-utilities";
 import { SelectDeviceClassNameContract } from "./select-device.class-name-contract";
-import { DesignSystem, withDesignSystemDefaults } from "../utilities/design-system";
-import { applySelectInputStyles, applySelectSpanStyles } from "../../style/utilities";
+import {
+    applySelectInputStyles,
+    applySelectSpanStyles,
+    DesignSystem,
+    withDesignSystemDefaults,
+} from "../../style";
 
 const styles: ComponentStyles<
     SelectDeviceClassNameContract,
