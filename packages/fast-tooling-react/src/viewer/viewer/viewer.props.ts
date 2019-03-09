@@ -56,12 +56,12 @@ export interface ViewerHandledProps extends ViewerManagedClasses {
     /**
      * A callback for when content props have been requested to be updated
      */
-    onUpdateContentProps?: (message: ViewerMessage) => void;
+    onUpdateViewerContentProps?: (message: ViewerMessage) => void;
 
     /**
      * A callback for when content props are requested to be initialized
      */
-    onInitializeContentProps?: (message: ViewerMessage) => void;
+    onInitializeViewerContentProps?: (message: ViewerMessage) => void;
 }
 
 export type ViewerProps = ViewerUnhandledProps & ViewerHandledProps;

@@ -259,8 +259,8 @@ export class Viewer extends Foundation<
                         props: this.props.viewerContentProps,
                     };
 
-                    if (typeof this.props.onInitializeContentProps === "function") {
-                        this.props.onInitializeContentProps(initMessage);
+                    if (typeof this.props.onInitializeViewerContentProps === "function") {
+                        this.props.onInitializeViewerContentProps(initMessage);
                     } else {
                         this.postMessage(initMessage);
                     }
@@ -273,8 +273,8 @@ export class Viewer extends Foundation<
                         props: message.props,
                     };
 
-                    if (typeof this.props.onUpdateContentProps === "function") {
-                        this.props.onUpdateContentProps(updateMessage);
+                    if (typeof this.props.onUpdateViewerContentProps === "function") {
+                        this.props.onUpdateViewerContentProps(updateMessage);
                     } else {
                         this.postMessage(updateMessage);
                     }

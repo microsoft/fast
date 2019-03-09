@@ -46,7 +46,7 @@ class UpdatePropsPage extends React.Component<{}, PageState> {
                     responsive={true}
                     onUpdateHeight={this.handleUpdatedHeight}
                     onUpdateWidth={this.handleUpdatedWidth}
-                    onUpdateContentProps={this.handleUpdateContentProps}
+                    onUpdateViewerContentProps={this.handleUpdateContentProps}
                 />
             </div>
         );
