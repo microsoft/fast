@@ -64,7 +64,13 @@ const styles: ComponentStyles<FormItemChildrenClassNameContract, {}> = {
             verticalAlign: "bottom",
         },
     },
-    formItemChildren_existingChildrenItemName: {},
+    formItemChildren_existingChildrenItemName: {
+        overflow: "hidden",
+        display: "inline-block",
+        width: "100%",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+    },
     formItemChildren_existingChildrenItemContent: {},
     formItemChildren_childrenList: {
         ...applyCleanListStyle(),
