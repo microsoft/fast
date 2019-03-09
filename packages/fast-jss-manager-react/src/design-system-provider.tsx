@@ -26,40 +26,58 @@ export class DesignSystemProvider<T> extends React.Component<
      * because React doesn't give good tools to know
      * when the context has changed.
      */
-    private currentContext: T;
-    private currentPropsDesignSystem: T;
-    private currentDesignSystem: T;
+    private upstreamDesignSystem: T;
+
+    /**
+     * A copy of this.props.designSystem -
+     * we need to store this as a property so that we can
+     * determine if designSystem props have changed in the render method.
+     * We need to determine if it has changed in render as opposed to componentDidUpdate
+     * to avoid a re-render
+     */
+    private designSystemOverrides: T;
+
+    /**
+     * The merged upstreamDesignSystem and designSystemOverrides -
+     * store this so the object reference doesn't change between
+     * renders if both props.designSystem and context don't change
+     */
+    private downstreamDesignSystem: T;
 
     constructor(props: DesignSystemProviderProps<T>, context: T) {
         super(props);
 
-        this.currentContext = context;
-        this.currentPropsDesignSystem = props.designSystem;
-
-        this.currentDesignSystem = this.createDesignSystem();
+        this.updateDownstreamDesignSystem();
     }
 
     public render(): React.ReactNode {
+        this.updateDownstreamDesignSystem();
+
+        return (
+            <Provider value={this.downstreamDesignSystem}>{this.props.children}</Provider>
+        );
+    }
+
+    /**
+     * Updates the downstreamDesignSystem if either this.props.designSystem
+     * or this.context has changed
+     */
+    private updateDownstreamDesignSystem(): void {
         let shouldUpdate: boolean = false;
 
-        if (this.context !== this.currentContext) {
-            // React doesn't give us good tools to tell when this.context
-            this.currentContext = this.context;
+        if (this.upstreamDesignSystem !== this.context) {
+            this.upstreamDesignSystem = this.context;
             shouldUpdate = true;
         }
 
-        if (this.props.designSystem !== this.currentPropsDesignSystem) {
-            this.currentPropsDesignSystem = this.props.designSystem;
+        if (this.designSystemOverrides !== this.props.designSystem) {
+            this.designSystemOverrides = this.props.designSystem;
             shouldUpdate = true;
         }
 
         if (shouldUpdate) {
-            this.currentDesignSystem = this.createDesignSystem();
+            this.downstreamDesignSystem = this.createDesignSystem();
         }
-
-        return (
-            <Provider value={this.currentDesignSystem}>{this.props.children}</Provider>
-        );
     }
 
     /**
@@ -67,7 +85,7 @@ export class DesignSystemProvider<T> extends React.Component<
      * Returns a new object
      */
     private createDesignSystem(): T {
-        return merge({}, this.currentContext, this.currentPropsDesignSystem);
+        return merge({}, this.upstreamDesignSystem, this.designSystemOverrides);
     }
 }
 
