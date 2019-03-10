@@ -5,8 +5,8 @@
  * to all JSS rules defined as a function
  */
 import * as React from "react";
-import * as propTypes from "prop-types";
-import { Consumer, Provider } from "./context";
+import { designSystemContext, Provider } from "./context";
+import { merge } from "lodash-es";
 
 export type DesignSystem<T> = T extends { [key: string]: unknown } ? T : never;
 /**
@@ -19,17 +19,74 @@ export interface DesignSystemProviderProps<T> {
 
 export class DesignSystemProvider<T> extends React.Component<
     DesignSystemProviderProps<T>,
-    {}
+    { designSystem: T }
 > {
-    public render(): React.ReactNode {
-        return <Consumer>{this.renderProvider}</Consumer>;
+    /**
+     * We need to store a copy of the context object
+     * because React doesn't give good tools to know
+     * when the context has changed.
+     */
+    private upstreamDesignSystem: T;
+
+    /**
+     * A copy of this.props.designSystem -
+     * we need to store this as a property so that we can
+     * determine if designSystem props have changed in the render method.
+     * We need to determine if it has changed in render as opposed to componentDidUpdate
+     * to avoid a re-render
+     */
+    private designSystemOverrides: T;
+
+    /**
+     * The merged upstreamDesignSystem and designSystemOverrides -
+     * store this so the object reference doesn't change between
+     * renders if both props.designSystem and context don't change
+     */
+    private downstreamDesignSystem: T;
+
+    constructor(props: DesignSystemProviderProps<T>, context: T) {
+        super(props);
+
+        this.updateDownstreamDesignSystem();
     }
 
-    private renderProvider = (designSystem: T): React.ReactNode => {
+    public render(): React.ReactNode {
+        this.updateDownstreamDesignSystem();
+
         return (
-            <Provider value={Object.assign({}, designSystem, this.props.designSystem)}>
-                {this.props.children}
-            </Provider>
+            <Provider value={this.downstreamDesignSystem}>{this.props.children}</Provider>
         );
-    };
+    }
+
+    /**
+     * Updates the downstreamDesignSystem if either this.props.designSystem
+     * or this.context has changed
+     */
+    private updateDownstreamDesignSystem(): void {
+        let shouldUpdate: boolean = false;
+
+        if (this.upstreamDesignSystem !== this.context) {
+            this.upstreamDesignSystem = this.context;
+            shouldUpdate = true;
+        }
+
+        if (this.designSystemOverrides !== this.props.designSystem) {
+            this.designSystemOverrides = this.props.designSystem;
+            shouldUpdate = true;
+        }
+
+        if (shouldUpdate) {
+            this.downstreamDesignSystem = this.createDesignSystem();
+        }
+    }
+
+    /**
+     * Merges locally stored context with designSystem props.
+     * Returns a new object
+     */
+    private createDesignSystem(): T {
+        return merge({}, this.upstreamDesignSystem, this.designSystemOverrides);
+    }
 }
+
+DesignSystemProvider.contextType = designSystemContext;

@@ -3,7 +3,7 @@ import { DesignSystemProvider } from "./design-system-provider";
 import * as ShallowRenderer from "react-test-renderer/shallow";
 import * as Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow, ShallowWrapper } from "enzyme";
-import { Consumer } from "./context";
+import { Consumer, designSystemContext } from "./context";
 
 configure({ adapter: new Adapter() });
 
