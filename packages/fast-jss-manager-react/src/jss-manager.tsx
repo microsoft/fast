@@ -14,8 +14,16 @@ import { designSystemContext } from "./context";
  * Describes an interface for adjusting a styled component
  * per component instance
  */
-export interface JSSManagedComponentProps<S, C> {
+export interface JSSManagedComponentProps<T, S, C> {
+    /**
+     * The component instance stylesheet
+     */
     jssStyleSheet?: Partial<ComponentStyles<S, C>>;
+
+    /**
+     * React reference to the component instance managed by the JSSManager
+     */
+    innerRef?: React.LegacyRef<React.Component<T & ManagedClasses<S>>>;
 }
 
 /** Describes the JSS StyleSheet object
@@ -36,7 +44,7 @@ export type ManagedJSSProps<T, S, C> = Pick<
     T,
     Exclude<keyof T, keyof ManagedClasses<C>>
 > &
-    JSSManagedComponentProps<S, C>;
+    JSSManagedComponentProps<T, S, C>;
 
 export function mergeClassNames(a: string | void, b: string | void): string | void {
     if (typeof a === "string" && typeof b === "string") {
@@ -239,9 +247,11 @@ abstract class JSSManager<T, S, C> extends React.Component<ManagedJSSProps<T, S,
         const props: ManagedJSSProps<T, S, C> = {
             ...(this.props as any),
             managedClasses: this.getManagedClassNames(),
+            ref: this.props.innerRef,
         };
 
         delete props.jssStyleSheet;
+        delete props.innerRef;
 
         return props as T & ManagedClasses<S>;
     }
