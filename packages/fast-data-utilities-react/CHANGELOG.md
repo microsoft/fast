@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-data-utilities-react@1.4.1...@microsoft/fast-data-utilities-react@1.5.0) (2019-03-11)
+
+
+### Features
+
+* add a new tooling package and deprecate the existing [@microsoft](https://github.com/microsoft)/fast-data-utilities-react package ([#1469](https://github.com/Microsoft/fast-dna/issues/1469)) ([8330615](https://github.com/Microsoft/fast-dna/commit/8330615))
+
+
+
+
+
 ## [1.4.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-data-utilities-react@1.4.0...@microsoft/fast-data-utilities-react@1.4.1) (2019-03-01)
 
 

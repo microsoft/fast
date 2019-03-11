@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.7.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-form-generator-react@3.6.2...@microsoft/fast-form-generator-react@3.7.0) (2019-03-11)
+
+
+### Bug Fixes
+
+* text from warpping in child item of fast form ([#1518](https://github.com/Microsoft/fast-dna/issues/1518)) ([345c954](https://github.com/Microsoft/fast-dna/commit/345c954))
+
+
+### Features
+
+* add plugin system ([#1449](https://github.com/Microsoft/fast-dna/issues/1449)) ([68238cb](https://github.com/Microsoft/fast-dna/commit/68238cb))
+
+
+
+
+
 ## [3.6.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-form-generator-react@3.6.1...@microsoft/fast-form-generator-react@3.6.2) (2019-03-01)
 
 **Note:** Version bump only for package @microsoft/fast-form-generator-react

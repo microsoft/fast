@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-colors@3.1.5...@microsoft/fast-colors@3.2.0) (2019-03-11)
+
+
+### Features
+
+* add deprecation warnings ([#1500](https://github.com/Microsoft/fast-dna/issues/1500)) ([ff9317e](https://github.com/Microsoft/fast-dna/commit/ff9317e))
+
+
+
+
+
 ## [3.1.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-colors@3.1.4...@microsoft/fast-colors@3.1.5) (2019-02-21)
 
 **Note:** Version bump only for package @microsoft/fast-colors

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-navigation-generator-react@0.2.2...@microsoft/fast-navigation-generator-react@0.3.0) (2019-03-11)
+
+
+### Bug Fixes
+
+* update alignment to be relative to letters and not the dropdown arrows ([#1475](https://github.com/Microsoft/fast-dna/issues/1475)) ([ce50448](https://github.com/Microsoft/fast-dna/commit/ce50448))
+
+
+### Features
+
+* add navigation to the tooling package ([#1492](https://github.com/Microsoft/fast-dna/issues/1492)) ([3a988d3](https://github.com/Microsoft/fast-dna/commit/3a988d3))
+
+
+
+
+
 ## [0.2.2](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-navigation-generator-react@0.2.1...@microsoft/fast-navigation-generator-react@0.2.2) (2019-03-01)
 
 **Note:** Version bump only for package @microsoft/fast-navigation-generator-react

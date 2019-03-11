@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.12.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.11.0...@microsoft/fast-components-react-msft@3.12.0) (2019-03-11)
+
+
+### Bug Fixes
+
+* update call to action to handle disabled state correctly ([#1477](https://github.com/Microsoft/fast-dna/issues/1477)) ([9c6e75f](https://github.com/Microsoft/fast-dna/commit/9c6e75f))
+
+
+### Features
+
+* add base select component ([#1422](https://github.com/Microsoft/fast-dna/issues/1422)) ([b77a25e](https://github.com/Microsoft/fast-dna/commit/b77a25e))
+
+
+
+
+
 # [3.11.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.10.0...@microsoft/fast-components-react-msft@3.11.0) (2019-03-01)
 
 

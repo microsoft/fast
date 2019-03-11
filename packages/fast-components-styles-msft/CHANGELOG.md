@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.13.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.12.0...@microsoft/fast-components-styles-msft@3.13.0) (2019-03-11)
+
+
+### Bug Fixes
+
+* const in carousel styles is missing closing ) ([#1496](https://github.com/Microsoft/fast-dna/issues/1496)) ([6fdd98c](https://github.com/Microsoft/fast-dna/commit/6fdd98c))
+* remove -10 margin from components that use Justified appearance ([#1519](https://github.com/Microsoft/fast-dna/issues/1519)) ([b3a495c](https://github.com/Microsoft/fast-dna/commit/b3a495c))
+* update call to action to handle disabled state correctly ([#1477](https://github.com/Microsoft/fast-dna/issues/1477)) ([9c6e75f](https://github.com/Microsoft/fast-dna/commit/9c6e75f))
+
+
+### Features
+
+* add base select component ([#1422](https://github.com/Microsoft/fast-dna/issues/1422)) ([b77a25e](https://github.com/Microsoft/fast-dna/commit/b77a25e))
+
+
+
+
+
 # [3.12.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.11.0...@microsoft/fast-components-styles-msft@3.12.0) (2019-03-01)
 
 

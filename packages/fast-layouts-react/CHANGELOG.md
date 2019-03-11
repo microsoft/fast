@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@3.1.15...@microsoft/fast-layouts-react@3.2.0) (2019-03-11)
+
+
+### Features
+
+* add prop to support setting initial width on Pane ([#1486](https://github.com/Microsoft/fast-dna/issues/1486)) ([bd32ec0](https://github.com/Microsoft/fast-dna/commit/bd32ec0))
+
+
+
+
+
 ## [3.1.15](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-layouts-react@3.1.14...@microsoft/fast-layouts-react@3.1.15) (2019-02-28)
 
 **Note:** Version bump only for package @microsoft/fast-layouts-react
