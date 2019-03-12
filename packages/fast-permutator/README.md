@@ -1,5 +1,7 @@
 # FAST Permutator
 
+**FAST Permutator has been deprecated. Use [FAST Tooling React](https://www.npmjs.com/package/@microsoft/fast-tooling-react) instead.**
+
 The FAST permutator creates all possible data permutations from a given JSON Schema, allowing for deep testing or display of complex data sets.
 
 ## Use
