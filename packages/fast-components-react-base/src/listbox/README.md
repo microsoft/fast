@@ -11,7 +11,7 @@ To get results from user interaction with the *listbox* hook up to the "onSelect
 - value: the string value associated with the option
 - displayString: optional, a user friendly version of the value to display in ui.
 
-Use the optional "defaultSelection" prop to provide a string[] of the id's of selected items to the component.
+Use the optional "defaultSelection" prop to provide a string[] of the id's of selected items to the component.  Providing a new value for the defaultSelection prop in uncontrolled  mode after the component has intitially mounted will cause the component to reset its selection and focus accordingly.  "defaultSelection" has no effect in controlled mode ("ie. when the "selectedItems" prop is defined).
 
 Invalid items (ie. that don't have matching non-disabled items with the same id as children of the *listbox*) are removed and in single select mode only the first valid item is relevant.
 
