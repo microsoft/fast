@@ -128,3 +128,23 @@ export function insetStrongBoxShadow(color: string): CSSRules<{}> {
         ...boxShadow(shadow),
     };
 }
+
+export function applyInputStyle(): CSSRules<{}> {
+    return {
+        lineHeight: "16px",
+        fontSize: "12px",
+        backgroundColor: background800,
+        borderRadius: "2px",
+        ...localizePadding(3, 5, 2, 5),
+        border: "none",
+        outline: "none",
+        boxSizing: "border-box",
+        color: foreground300,
+        "&:disabled": {
+            cursor: "not-allowed",
+        },
+        "&:focus": {
+            ...insetStrongBoxShadow(accent),
+        },
+    };
+}

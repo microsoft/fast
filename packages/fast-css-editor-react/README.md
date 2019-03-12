@@ -1,5 +1,7 @@
 # FAST CSS editor React
 
+**FAST CSS editor React has been deprecated. Use [FAST Tooling React](https://www.npmjs.com/package/@microsoft/fast-tooling-react) instead.**
+
 A set of React components that allows the user to edit CSS properties.
 
 ## Installation
