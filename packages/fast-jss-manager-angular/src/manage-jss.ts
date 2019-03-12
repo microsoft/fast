@@ -1,8 +1,8 @@
 import { Component, ElementRef, Input, SimpleChanges } from "@angular/core";
-import { SheetsManager, StyleSheet } from "jss";
+import { SheetsManager } from "jss";
 import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { eventNames } from "./utilities/get-event-names";
-import jss, { stylesheetManager } from "./jss";
+import jss, { stylesheetManager } from "./jss-instance";
 
 /**
  * State interface for JSS manager

@@ -50,7 +50,7 @@
     "@babel/preset-env": "^7.1.0",
     "babel-core": "^7.0.0-bridge.0",
     "eslint": "^3.19.0",
-    "jest": "^23.6.0",
+    "jest": "^24.5.0",
     "lodash-es": "^4.17.10",
     "prettier": "1.14.3"
   },
