@@ -33,6 +33,7 @@ class Listbox extends Foundation<
         multiselectable: false,
         defaultSelection: [],
         typeAheadPropertyKey: "displayString",
+        typeAheadEnabled: true,
         focusItemOnMount: false,
     };
 
@@ -60,7 +61,7 @@ class Listbox extends Foundation<
         childrenAsArray: React.ReactNode[],
         increment: number
     ): React.ReactNode => {
-        for (let i: number = startIndex; i !== endIndex; i = i + increment) {
+        for (let i: number = startIndex; i !== endIndex + increment; i = i + increment) {
             const thisOption: React.ReactNode = childrenAsArray[i] as React.ReactNode;
             if (Listbox.isValidSelectedItem(thisOption as React.ReactElement<any>)) {
                 return thisOption;
@@ -195,6 +196,7 @@ class Listbox extends Foundation<
         multiselectable: void 0,
         onSelectedItemsChanged: void 0,
         selectedItems: void 0,
+        typeAheadEnabled: void 0,
         typeAheadPropertyKey: void 0,
         focusItemOnMount: void 0,
     };
@@ -210,27 +212,10 @@ class Listbox extends Foundation<
     constructor(props: ListboxProps) {
         super(props);
 
-        let initialSelection: ListboxItemProps[];
-        if (this.props.selectedItems !== undefined) {
-            initialSelection = Listbox.getListboxItemDataFromIds(
-                this.props.selectedItems,
-                this.props.children
-            );
-        } else {
-            initialSelection = Listbox.getListboxItemDataFromIds(
-                this.props.defaultSelection,
-                this.props.children
-            );
-        }
-
-        if (!this.props.multiselectable && initialSelection.length > 1) {
-            initialSelection = initialSelection.slice(0, 1);
-        }
-
         this.state = {
             focusIndex: -1,
             focussedItemId: "",
-            selectedItems: initialSelection,
+            selectedItems: this.getInitialSelection(),
         };
     }
 
@@ -264,23 +249,21 @@ class Listbox extends Foundation<
         );
     }
 
-    public componentDidMount(): void {
-        const focusIndex: number =
-            this.state.selectedItems.length > 0
-                ? Listbox.getItemIndexById(
-                      this.state.selectedItems[0].id,
-                      this.props.children
-                  )
-                : this.domChildren().findIndex(this.isFocusableElement);
-
-        if (focusIndex !== -1) {
-            if (this.props.focusItemOnMount) {
-                this.setFocus(focusIndex, +1);
-            }
-            this.setState({
-                focusIndex,
-            });
+    public componentDidUpdate(prevProps: ListboxProps): void {
+        // if default selection changes between renders we treat as a effective reset
+        // of selection and focus in uncontrolled mode
+        if (
+            !isEqual(prevProps.defaultSelection, this.props.defaultSelection) &&
+            this.props.selectedItems === undefined
+        ) {
+            const updatedSelection: ListboxItemProps[] = this.getInitialSelection();
+            this.updateSelection(updatedSelection);
+            this.setInitialFocus(updatedSelection);
         }
+    }
+
+    public componentDidMount(): void {
+        this.setInitialFocus(this.state.selectedItems);
     }
 
     public componentWillUnmount(): void {
@@ -384,6 +367,52 @@ class Listbox extends Foundation<
     }
 
     /**
+     * sets focus state and selection when component is initially mounted
+     * or when default selection changes
+     */
+    private setInitialFocus = (selection: ListboxItemProps[]): void => {
+        let focusIndex: number = -1;
+
+        focusIndex =
+            selection.length > 0
+                ? Listbox.getItemIndexById(selection[0].id, this.props.children)
+                : this.domChildren().findIndex(this.isFocusableElement);
+
+        if (focusIndex !== -1) {
+            if (this.props.focusItemOnMount) {
+                this.setFocus(focusIndex, +1);
+            }
+            this.setState({
+                focusIndex,
+            });
+        }
+    };
+
+    /**
+     * gets the initial selection state based on props
+     */
+    private getInitialSelection = (): ListboxItemProps[] => {
+        let initialSelection: ListboxItemProps[];
+        if (this.props.selectedItems !== undefined) {
+            initialSelection = Listbox.getListboxItemDataFromIds(
+                this.props.selectedItems,
+                this.props.children
+            );
+        } else {
+            initialSelection = Listbox.getListboxItemDataFromIds(
+                this.props.defaultSelection,
+                this.props.children
+            );
+        }
+
+        if (!this.props.multiselectable && initialSelection.length > 1) {
+            initialSelection = initialSelection.slice(0, 1);
+        }
+
+        return initialSelection;
+    };
+
+    /**
      * Function called by child select options when they have been focused
      */
     private listboxItemfocused = (
@@ -416,6 +445,9 @@ class Listbox extends Foundation<
      * Handle the keydown event of the root menu
      */
     private handleMenuKeyDown = (event: React.KeyboardEvent<HTMLDivElement>): void => {
+        if (typeof this.props.onKeyDown === "function") {
+            this.props.onKeyDown(event);
+        }
         if (event.defaultPrevented || this.props.disabled) {
             return;
         }
@@ -480,7 +512,7 @@ class Listbox extends Foundation<
             default:
                 if (event.key === "A") {
                     this.selectRange(0, this.domChildren().length);
-                } else if (!event.ctrlKey) {
+                } else if (!event.ctrlKey && this.props.typeAheadEnabled) {
                     this.processTypeAhead(event);
                 }
         }
@@ -542,6 +574,9 @@ class Listbox extends Foundation<
     ): void => {
         if (this.props.disabled) {
             return;
+        }
+        if (typeof this.props.onItemInvoked === "function") {
+            this.props.onItemInvoked(item);
         }
         const target: Element = event.currentTarget;
         const itemIndex: number = this.domChildren().indexOf(target);
