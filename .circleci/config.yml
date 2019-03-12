@@ -1,7 +1,7 @@
 aliases:
     - &container_config
         docker:
-            - image: "circleci/node:latest"
+            - image: "circleci/node:11.10.0"
         working_directory: ~/fast-dna
       
     - &node_install
