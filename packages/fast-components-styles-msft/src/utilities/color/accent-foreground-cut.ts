@@ -1,6 +1,5 @@
 import { Swatch } from "./palette";
 import { black, white } from "./color-constants";
-import { memoize } from "lodash-es";
 import { DesignSystem, ensureDesignSystemDefaults } from "../../design-system";
 import { accentSwatch } from "./accent";
 import { ColorRecipe, contrast } from "./common";
