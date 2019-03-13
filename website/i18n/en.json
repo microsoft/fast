@@ -37,117 +37,125 @@
         "title": "Writing style guide",
         "sidebar_label": "Writing style guide"
       },
+      "en/packages/fast-animation/index": {
+        "title": "FAST Animation",
+        "sidebar_label": "Animation"
+      },
       "en/packages/fast-application-utilities/index": {
-        "title": "FAST Application Utilities",
-        "sidebar_label": "Application Utilities"
+        "title": "FAST Application utilities",
+        "sidebar_label": "Application utilities"
       },
       "en/packages/fast-breakpoint-tracker-react/index": {
-        "title": "FAST Breakpoint Tracker React",
-        "sidebar_label": "Breakpoint Tracker React"
+        "title": "FAST Breakpoint tracker React",
+        "sidebar_label": "Breakpoint tracker React"
       },
       "en/packages/fast-browser-extensions/index": {
-        "title": "FAST Browser Extensions",
-        "sidebar_label": "Browser Extensions"
+        "title": "FAST Browser extensions",
+        "sidebar_label": "Browser extensions"
       },
       "en/packages/fast-colors/index": {
         "title": "FAST Colors",
         "sidebar_label": "Colors"
       },
       "en/packages/fast-components-class-name-contracts-base/index": {
-        "title": "FAST Components Class Name Contracts Base",
-        "sidebar_label": "Components Class Name Contracts Base"
+        "title": "FAST Components class name contracts base",
+        "sidebar_label": "Components class name contracts base"
       },
       "en/packages/fast-components-class-name-contracts-msft/index": {
-        "title": "FAST Components Class Name Contracts Msft",
-        "sidebar_label": "Components Class Name Contracts Msft"
+        "title": "FAST Components class name contracts MSFT",
+        "sidebar_label": "Components class name contracts MSFT"
       },
       "en/packages/fast-components-foundation-react/index": {
-        "title": "FAST Components Foundation React",
-        "sidebar_label": "Components Foundation React"
+        "title": "FAST Components foundation React",
+        "sidebar_label": "Components foundation React"
       },
       "en/packages/fast-components-react-base/index": {
-        "title": "FAST Components React Base",
-        "sidebar_label": "Components React Base"
+        "title": "FAST Components React base",
+        "sidebar_label": "Components React base"
       },
       "en/packages/fast-components-react-msft/index": {
-        "title": "FAST Components React Msft",
-        "sidebar_label": "Components React Msft"
+        "title": "FAST Components React MSFT",
+        "sidebar_label": "Components React MSFT"
       },
       "en/packages/fast-components-styles-msft/index": {
-        "title": "FAST Components Styles Msft",
-        "sidebar_label": "Components Styles Msft"
+        "title": "FAST Components styles MSFT",
+        "sidebar_label": "Components styles MSFT"
       },
       "en/packages/fast-css-editor-react/index": {
-        "title": "FAST Css Editor React",
-        "sidebar_label": "Css Editor React"
+        "title": "FAST CSS editor React",
+        "sidebar_label": "CSS editor React"
       },
       "en/packages/fast-data-utilities-react/index": {
-        "title": "FAST Data Utilities React",
-        "sidebar_label": "Data Utilities React"
+        "title": "FAST Data utilities React",
+        "sidebar_label": "Data utilities React"
       },
       "en/packages/fast-development-site-react/index": {
-        "title": "FAST Development Site React",
-        "sidebar_label": "Development Site React"
+        "title": "FAST Development site React",
+        "sidebar_label": "Development site React"
       },
       "en/packages/fast-form-generator-react/index": {
-        "title": "FAST Form Generator React",
-        "sidebar_label": "Form Generator React"
+        "title": "FAST Form generator React",
+        "sidebar_label": "Form generator React"
       },
       "en/packages/fast-glyphs-msft/index": {
-        "title": "FAST Glyphs Msft",
-        "sidebar_label": "Glyphs Msft"
+        "title": "FAST Glyphs MSFT",
+        "sidebar_label": "Glyphs MSFT"
       },
       "en/packages/fast-jest-snapshots-react/index": {
-        "title": "FAST Jest Snapshots React",
-        "sidebar_label": "Jest Snapshots React"
+        "title": "FAST Jest snapshots React",
+        "sidebar_label": "Jest snapshots React"
       },
       "en/packages/fast-jss-manager-angular/index": {
-        "title": "FAST Jss Manager Angular",
-        "sidebar_label": "Jss Manager Angular"
+        "title": "FAST JSS manager Angular",
+        "sidebar_label": "JSS manager Angular"
       },
       "en/packages/fast-jss-manager-react/index": {
-        "title": "FAST Jss Manager React",
-        "sidebar_label": "Jss Manager React"
+        "title": "FAST JSS manager React",
+        "sidebar_label": "JSS manager React"
       },
       "en/packages/fast-jss-manager/index": {
-        "title": "FAST Jss Manager",
-        "sidebar_label": "Jss Manager"
+        "title": "FAST JSS manager",
+        "sidebar_label": "JSS manager"
       },
       "en/packages/fast-jss-utilities/index": {
-        "title": "FAST Jss Utilities",
-        "sidebar_label": "Jss Utilities"
+        "title": "FAST JSS utilities",
+        "sidebar_label": "JSS utilities"
       },
       "en/packages/fast-layouts-react/index": {
         "title": "FAST Layouts React",
         "sidebar_label": "Layouts React"
       },
       "en/packages/fast-markdown-msft-react/index": {
-        "title": "FAST Markdown Msft React",
-        "sidebar_label": "Markdown Msft React"
+        "title": "FAST Markdown MSFT React",
+        "sidebar_label": "Markdown MSFT React"
       },
       "en/packages/fast-navigation-generator-react/index": {
-        "title": "FAST Navigation Generator React",
-        "sidebar_label": "Navigation Generator React"
+        "title": "FAST Navigation generator React",
+        "sidebar_label": "Navigation generator React"
       },
       "en/packages/fast-permutator/index": {
         "title": "FAST Permutator",
         "sidebar_label": "Permutator"
       },
       "en/packages/fast-sketch-library/index": {
-        "title": "FAST Sketch Library",
-        "sidebar_label": "Sketch Library"
+        "title": "FAST Sketch library",
+        "sidebar_label": "Sketch library"
+      },
+      "en/packages/fast-tooling-react/index": {
+        "title": "FAST Tooling React",
+        "sidebar_label": "Tooling React"
       },
       "en/packages/fast-tslint-rules/index": {
-        "title": "FAST Tslint Rules",
-        "sidebar_label": "Tslint Rules"
+        "title": "FAST TSLINT rules",
+        "sidebar_label": "TSLINT rules"
       },
       "en/packages/fast-viewer-react/index": {
         "title": "FAST Viewer React",
         "sidebar_label": "Viewer React"
       },
       "en/packages/fast-web-utilities/index": {
-        "title": "FAST Web Utilities",
-        "sidebar_label": "Web Utilities"
+        "title": "FAST Web utilities",
+        "sidebar_label": "Web utilities"
       },
       "readme": {
         "title": "FAST-DNA",

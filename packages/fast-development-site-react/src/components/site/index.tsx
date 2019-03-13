@@ -371,10 +371,8 @@ class Site extends React.Component<
         super(props);
 
         this.initialPath = this.getInitialPath();
-        const path: string =
-            this.initialPath === this.getCurrentPath()
-                ? this.initialPath
-                : this.getCurrentPath();
+        const path: string = this.getCurrentPath();
+
         this.state = {
             currentPath: path,
             activeComponentIndex: 0,
