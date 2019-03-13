@@ -13,7 +13,6 @@ import {
 import { accentSwatch, findAccessibleAccentSwatchIndexs } from "./accent";
 import { getSwatch, isDarkTheme, Palette, palette, PaletteType, Swatch } from "./palette";
 import { accentForegroundCut } from "./accent-foreground-cut";
-import { memoize } from "lodash-es";
 
 /**
  * Deltas to derive state swatches from the background
@@ -29,44 +28,37 @@ export const accentFillDeltaSelected: number = 12;
 export const accentFillAlgorithm: (
     designSystem: DesignSystem,
     contrastTarget: number
-) => FillSwatch = memoize(
-    (designSystem: DesignSystem, contrastTarget: number): FillSwatch => {
-        const accentPalette: Palette = palette(PaletteType.accent)(designSystem);
-        const accent: Swatch = accentSwatch(designSystem);
-        const textColor: Swatch = accentForegroundCut(
-            Object.assign({}, designSystem, {
-                backgroundColor: accent,
-            })
-        );
-        const indexes: {
-            rest: number;
-            hover: number;
-            active: number;
-        } = findAccessibleAccentSwatchIndexs(designSystem, contrastTarget, textColor, {
-            rest: accentFillDeltaRest,
-            hover: accentFillDeltaHover,
-            active: accentFillDeltaActive,
-        });
+) => FillSwatch = (designSystem: DesignSystem, contrastTarget: number): FillSwatch => {
+    const accentPalette: Palette = palette(PaletteType.accent)(designSystem);
+    const accent: Swatch = accentSwatch(designSystem);
+    const textColor: Swatch = accentForegroundCut(
+        Object.assign({}, designSystem, {
+            backgroundColor: accent,
+        })
+    );
+    const indexes: {
+        rest: number;
+        hover: number;
+        active: number;
+    } = findAccessibleAccentSwatchIndexs(designSystem, contrastTarget, textColor, {
+        rest: accentFillDeltaRest,
+        hover: accentFillDeltaHover,
+        active: accentFillDeltaActive,
+    });
 
-        return {
-            rest: getSwatch(indexes.rest, accentPalette),
-            hover: getSwatch(indexes.hover, accentPalette),
-            active: getSwatch(indexes.active, accentPalette),
-            selected: getSwatch(
-                indexes.rest +
-                    (isDarkTheme(designSystem)
-                        ? accentFillDeltaSelected * -1
-                        : accentFillDeltaSelected),
-                accentPalette
-            ),
-        };
-    },
-    (designSystem: DesignSystem, contrastTarget: number): string => {
-        return accentSwatch(designSystem)
-            .concat(contrastTarget.toString())
-            .concat(isDarkTheme(designSystem) ? "dark" : "light");
-    }
-);
+    return {
+        rest: getSwatch(indexes.rest, accentPalette),
+        hover: getSwatch(indexes.hover, accentPalette),
+        active: getSwatch(indexes.active, accentPalette),
+        selected: getSwatch(
+            indexes.rest +
+                (isDarkTheme(designSystem)
+                    ? accentFillDeltaSelected * -1
+                    : accentFillDeltaSelected),
+            accentPalette
+        ),
+    };
+};
 
 /**
  * Factory to create accent-fill functions based on an input contrast target
