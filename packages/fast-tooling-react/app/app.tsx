@@ -9,6 +9,7 @@ import DevicePage from "./pages/viewer/device-page";
 import DevicePageViewerContent from "./pages/viewer/device-page.viewer-content";
 import UpdatePropsPage from "./pages/viewer/update-props-page";
 import UpdatePropsViewerContent from "./pages/viewer/update-props-page.viewer-content";
+import { CSSEditorTestPage } from "./pages/css-editor";
 
 class App extends React.Component<{}, {}> {
     public render(): React.ReactNode {
@@ -17,6 +18,11 @@ class App extends React.Component<{}, {}> {
                 <div>
                     {this.renderLinks()}
                     <Switch>
+                        <Route
+                            exact={true}
+                            path={"/css-editor"}
+                            component={CSSEditorTestPage}
+                        />
                         <Route
                             exact={true}
                             path={"/navigation"}
@@ -76,6 +82,9 @@ class App extends React.Component<{}, {}> {
             return (
                 <React.Fragment>
                     <ul>
+                        <li>
+                            <Link to="/css-editor">CSS Editor</Link>
+                        </li>
                         <li>
                             <Link to="/navigation">Navigation</Link>
                         </li>
