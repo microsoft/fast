@@ -1,4 +1,3 @@
-import { memoize } from "lodash-es";
 import { isDarkTheme, Swatch } from "./palette";
 import { neutralForegroundDark, neutralForegroundLight } from "./neutral-foreground";
 import { SwatchResolver } from "./common";
@@ -11,16 +10,13 @@ import {
 /**
  * Function to derive neutralFocus from color inputs.
  */
-const neutralFocusAlgorithm: (designSystem: DesignSystem) => Swatch = memoize(
-    (designSystem: DesignSystem): Swatch => {
-        return isDarkTheme(designSystem)
-            ? neutralForegroundLight(designSystem)
-            : neutralForegroundDark(designSystem);
-    },
-    (designSystem: DesignSystem): string => {
-        return designSystem.backgroundColor;
-    }
-);
+const neutralFocusAlgorithm: (designSystem: DesignSystem) => Swatch = (
+    designSystem: DesignSystem
+): Swatch => {
+    return isDarkTheme(designSystem)
+        ? neutralForegroundLight(designSystem)
+        : neutralForegroundDark(designSystem);
+};
 
 export function neutralFocus(designSystem: DesignSystem): Swatch;
 export function neutralFocus(backgroundResolver: SwatchResolver): SwatchResolver;

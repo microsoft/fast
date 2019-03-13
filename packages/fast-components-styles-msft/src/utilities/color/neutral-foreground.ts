@@ -1,4 +1,3 @@
-import { memoize } from "lodash-es";
 import { getSwatch, isDarkTheme, palette, Palette, PaletteType, Swatch } from "./palette";
 import {
     ColorRecipe,
@@ -22,30 +21,25 @@ export const neutralForegroundDeltaActive: number = 16;
  * the color that has the most contrast against the background. If contrast
  * cannot be retrieved correctly, function returns black.
  */
-const neutralForegroundAlgorithm: (
+const neutralForegroundAlgorithm: (designSystem: DesignSystem) => StatefulSwatch = (
     designSystem: DesignSystem
-) => StatefulSwatch = memoize(
-    (designSystem: DesignSystem): StatefulSwatch => {
-        const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
-        const isDark: boolean = isDarkTheme(designSystem);
-        const direction: 1 | -1 = isDark ? 1 : -1;
-        const restColor: Swatch = isDark
-            ? neutralForegroundLight(designSystem)
-            : neutralForegroundDark(designSystem);
-        const restIndex: number = neutralPalette.indexOf(restColor);
-        const hoverIndex: number = restIndex + neutralForegroundDeltaHover * direction;
-        const activeIndex: number = restIndex + neutralForegroundDeltaActive * direction;
+): StatefulSwatch => {
+    const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
+    const isDark: boolean = isDarkTheme(designSystem);
+    const direction: 1 | -1 = isDark ? 1 : -1;
+    const restColor: Swatch = isDark
+        ? neutralForegroundLight(designSystem)
+        : neutralForegroundDark(designSystem);
+    const restIndex: number = neutralPalette.indexOf(restColor);
+    const hoverIndex: number = restIndex + neutralForegroundDeltaHover * direction;
+    const activeIndex: number = restIndex + neutralForegroundDeltaActive * direction;
 
-        return {
-            rest: restColor,
-            hover: getSwatch(hoverIndex, neutralPalette),
-            active: getSwatch(activeIndex, neutralPalette),
-        };
-    },
-    (designSystem: DesignSystem): string => {
-        return designSystem.backgroundColor;
-    }
-);
+    return {
+        rest: restColor,
+        hover: getSwatch(hoverIndex, neutralPalette),
+        active: getSwatch(activeIndex, neutralPalette),
+    };
+};
 
 /**
  * Retrieve light neutral-foreground color for use on dark backgrounds
