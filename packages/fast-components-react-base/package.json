@@ -62,7 +62,8 @@
       "ts",
       "tsx",
       "js",
-      "jsx"
+      "jsx",
+      "json"
     ]
   },
   "devDependencies": {
