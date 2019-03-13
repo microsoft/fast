@@ -4,7 +4,6 @@ import {
     ensureDesignSystemDefaults,
     withDesignSystemDefaults,
 } from "../../design-system";
-import { memoize } from "lodash-es";
 import {
     findClosestSwatchIndex,
     getSwatch,
@@ -46,40 +45,36 @@ const swapThreshold: number = Math.max(
 /**
  * Algorithm for determining stealth fill colors
  */
-const neutralFillStealthAlgorithm: DesignSystemResolver<FillSwatch> = memoize(
-    (designSystem: DesignSystem): FillSwatch => {
-        const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
-        const backgroundIndex: number = findClosestSwatchIndex(
-            PaletteType.neutral,
-            designSystem.backgroundColor
-        )(designSystem);
-        const direction: number = backgroundIndex >= swapThreshold ? -1 : 1;
-        const restIndex: number =
-            backgroundIndex + direction * neutralFillStealthDeltaRest;
+const neutralFillStealthAlgorithm: DesignSystemResolver<FillSwatch> = (
+    designSystem: DesignSystem
+): FillSwatch => {
+    const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
+    const backgroundIndex: number = findClosestSwatchIndex(
+        PaletteType.neutral,
+        designSystem.backgroundColor
+    )(designSystem);
+    const direction: number = backgroundIndex >= swapThreshold ? -1 : 1;
+    const restIndex: number = backgroundIndex + direction * neutralFillStealthDeltaRest;
 
-        return {
-            rest: getSwatch(restIndex, neutralPalette),
-            hover: getSwatch(
-                backgroundIndex + direction * neutralFillStealthDeltaHover,
-                neutralPalette
-            ),
-            active: getSwatch(
-                backgroundIndex + direction * neutralFillStealthDeltaActive,
-                neutralPalette
-            ),
-            selected: getSwatch(
-                restIndex +
-                    (isDarkTheme(designSystem)
-                        ? neutralFillStealthDeltaSelected * -1
-                        : neutralFillStealthDeltaSelected),
-                neutralPalette
-            ),
-        };
-    },
-    (designSystem: DesignSystem): string => {
-        return designSystem.backgroundColor;
-    }
-);
+    return {
+        rest: getSwatch(restIndex, neutralPalette),
+        hover: getSwatch(
+            backgroundIndex + direction * neutralFillStealthDeltaHover,
+            neutralPalette
+        ),
+        active: getSwatch(
+            backgroundIndex + direction * neutralFillStealthDeltaActive,
+            neutralPalette
+        ),
+        selected: getSwatch(
+            restIndex +
+                (isDarkTheme(designSystem)
+                    ? neutralFillStealthDeltaSelected * -1
+                    : neutralFillStealthDeltaSelected),
+            neutralPalette
+        ),
+    };
+};
 
 export function neutralFillStealth(designSystem: DesignSystem): FillSwatch;
 export function neutralFillStealth(
