@@ -6,6 +6,7 @@ import HorizontalOverflow, {
     HorizontalOverflowClassNameContract,
 } from "./";
 import "raf/polyfill";
+import { ConstructableResizeObserver } from "./resize-observer";
 
 /*
  * Configure Enzyme
@@ -526,6 +527,57 @@ describe("horizontal overflow", (): void => {
         expect(resizeCallback).toHaveBeenCalledTimes(1);
         expect(window.removeEventListener).toHaveBeenCalled();
         expect(resizeCallback.mock.calls[0][0]).not.toBe("resize");
+    });
+    test("should create a resize observer if it is available", (): void => {
+        const ActualObserver: ConstructableResizeObserver = (window as WindowWithResizeObserver)
+            .ResizeObserver;
+        const construct: jest.Mock<any, any> = jest.fn();
+        // Mock the resize observer
+        class MockObserver {
+            public observe: jest.Mock<any, any> = jest.fn();
+            public unobserve: jest.Mock<any, any> = jest.fn();
+            public disconnect: jest.Mock<any, any> = jest.fn();
+            constructor() {
+                construct();
+            }
+        }
+        (window as WindowWithResizeObserver).ResizeObserver = MockObserver;
+
+        // Render the component
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+
+        expect(construct).toBeCalledTimes(1);
+        // Replace the window to it's original state
+        (window as WindowWithResizeObserver).ResizeObserver = ActualObserver;
+    });
+    test("should disconnect the resize observer when unmounted", (): void => {
+        const ActualObserver: ConstructableResizeObserver = (window as WindowWithResizeObserver)
+            .ResizeObserver;
+        const disconnect: jest.Mock<any, any> = jest.fn();
+        // Mock the resize observer
+        // tslint:disable-next-line:max-classes-per-file
+        class MockObserver {
+            public observe: jest.Mock<any, any> = jest.fn();
+            public unobserve: jest.Mock<any, any> = jest.fn();
+            public disconnect: jest.Mock<any, any> = disconnect;
+        }
+        (window as WindowWithResizeObserver).ResizeObserver = MockObserver;
+
+        const rendered: any = mount(
+            <HorizontalOverflow managedClasses={managedClasses}>
+                {imageSet1}
+            </HorizontalOverflow>
+        );
+        // Unmount the component to trigger lifecycle methods
+        rendered.unmount();
+
+        expect(disconnect).toBeCalledTimes(1);
+        // Replace the window to it's original state
+        (window as WindowWithResizeObserver).ResizeObserver = ActualObserver;
     });
 });
 /* tslint:enable:no-string-literal */
