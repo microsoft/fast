@@ -4,7 +4,7 @@ import {
     ensureDesignSystemDefaults,
     withDesignSystemDefaults,
 } from "../../design-system";
-import { clamp, memoize } from "lodash-es";
+import { clamp } from "lodash-es";
 import {
     findClosestSwatchIndex,
     getSwatch,
@@ -29,29 +29,26 @@ export const neutralFillInputDelta: number = 4;
 /**
  * Algorithm for determining neutral backplate colors
  */
-const neutralFillInputAlgorithm: DesignSystemResolver<FillSwatch> = memoize(
-    (designSystem: DesignSystem): FillSwatch => {
-        const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
-        const backgroundIndex: number = findClosestSwatchIndex(
-            PaletteType.neutral,
-            designSystem.backgroundColor
-        )(designSystem);
-        const color: Swatch = getSwatch(
-            backgroundIndex - neutralFillInputDelta,
-            neutralPalette
-        );
+const neutralFillInputAlgorithm: DesignSystemResolver<FillSwatch> = (
+    designSystem: DesignSystem
+): FillSwatch => {
+    const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
+    const backgroundIndex: number = findClosestSwatchIndex(
+        PaletteType.neutral,
+        designSystem.backgroundColor
+    )(designSystem);
+    const color: Swatch = getSwatch(
+        backgroundIndex - neutralFillInputDelta,
+        neutralPalette
+    );
 
-        return {
-            rest: color,
-            hover: color,
-            active: color,
-            selected: color,
-        };
-    },
-    (designSystem: DesignSystem): string => {
-        return designSystem.backgroundColor;
-    }
-);
+    return {
+        rest: color,
+        hover: color,
+        active: color,
+        selected: color,
+    };
+};
 
 export function neutralFillInput(designSystem: DesignSystem): FillSwatch;
 export function neutralFillInput(

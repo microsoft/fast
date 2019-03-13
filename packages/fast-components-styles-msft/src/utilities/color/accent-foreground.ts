@@ -3,7 +3,6 @@ import {
     ensureDesignSystemDefaults,
     withDesignSystemDefaults,
 } from "../../design-system";
-import { memoize } from "lodash-es";
 import { accentSwatch, findAccessibleAccentSwatchIndexs } from "./accent";
 import { getSwatch, palette, Palette, PaletteType, Swatch } from "./palette";
 import {
@@ -24,36 +23,32 @@ export const accentForegroundDeltaActive: number = 2;
 const accentForegroundAlgorithm: (
     designSystem: DesignSystem,
     contrastTarget: number
-) => StatefulSwatch = memoize(
-    (designSystem: DesignSystem, contrastTarget: number): StatefulSwatch => {
-        const accentPalette: Palette = palette(PaletteType.accent)(designSystem);
-        const indexes: {
-            rest: number;
-            hover: number;
-            active: number;
-        } = findAccessibleAccentSwatchIndexs(
-            designSystem,
-            contrastTarget,
-            designSystem.backgroundColor,
-            {
-                rest: accentForegroundDeltaRest,
-                hover: accentForegroundDeltaHover,
-                active: accentForegroundDeltaActive,
-            }
-        );
+) => StatefulSwatch = (
+    designSystem: DesignSystem,
+    contrastTarget: number
+): StatefulSwatch => {
+    const accentPalette: Palette = palette(PaletteType.accent)(designSystem);
+    const indexes: {
+        rest: number;
+        hover: number;
+        active: number;
+    } = findAccessibleAccentSwatchIndexs(
+        designSystem,
+        contrastTarget,
+        designSystem.backgroundColor,
+        {
+            rest: accentForegroundDeltaRest,
+            hover: accentForegroundDeltaHover,
+            active: accentForegroundDeltaActive,
+        }
+    );
 
-        return {
-            rest: getSwatch(indexes.rest, accentPalette),
-            hover: getSwatch(indexes.hover, accentPalette),
-            active: getSwatch(indexes.active, accentPalette),
-        };
-    },
-    (designSystem: DesignSystem, contrastTarget: number): string => {
-        return accentSwatch(designSystem)
-            .concat(contrastTarget.toString())
-            .concat(designSystem.backgroundColor);
-    }
-);
+    return {
+        rest: getSwatch(indexes.rest, accentPalette),
+        hover: getSwatch(indexes.hover, accentPalette),
+        active: getSwatch(indexes.active, accentPalette),
+    };
+};
 
 function accentForegroundFactory(contrast: number): StatefulSwatchResolver {
     function accentForegroundInternal(designSystem: DesignSystem): StatefulSwatch;
