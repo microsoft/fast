@@ -222,8 +222,7 @@ describe("select", (): void => {
                 {itemA}
                 {itemB}
                 {itemC}
-            </Select>,
-            { attachTo: container }
+            </Select>
         );
 
         expect(rendered.state("displayString")).toBe("");
@@ -232,12 +231,14 @@ describe("select", (): void => {
         rendered
             .find('[displayString="a"]')
             .simulate("keydown", { keyCode: KeyCodes.space });
+
         expect(rendered.state("displayString")).toBe("a");
         expect(rendered.state("value")).toEqual(["a"]);
 
         rendered
             .find('[displayString="a"]')
             .simulate("keydown", { keyCode: KeyCodes.arrowDown, shiftKey: true });
+
         expect(rendered.state("displayString")).toBe("a, ab");
         expect(rendered.state("value")).toEqual(["a", "b"]);
     });
@@ -250,8 +251,7 @@ describe("select", (): void => {
                 {itemA}
                 {itemB}
                 {itemC}
-            </Select>,
-            { attachTo: container }
+            </Select>
         );
 
         expect(displayFormatter).toHaveBeenCalledTimes(1);
@@ -268,8 +268,7 @@ describe("select", (): void => {
                 {itemA}
                 {itemB}
                 {itemC}
-            </Select>,
-            { attachTo: container }
+            </Select>
         );
         expect(displayRenderFn).toHaveBeenCalledTimes(1);
     });
@@ -285,8 +284,7 @@ describe("select", (): void => {
                 {itemA}
                 {itemB}
                 {itemC}
-            </Select>,
-            { attachTo: container }
+            </Select>
         );
 
         const select: any = rendered.find("select");
