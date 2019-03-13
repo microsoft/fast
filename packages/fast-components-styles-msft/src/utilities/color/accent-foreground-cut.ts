@@ -1,6 +1,5 @@
 import { Swatch } from "./palette";
 import { black, white } from "./color-constants";
-import { memoize } from "lodash-es";
 import { DesignSystem, ensureDesignSystemDefaults } from "../../design-system";
 import { accentSwatch } from "./accent";
 import { ColorRecipe, contrast } from "./common";
@@ -11,14 +10,9 @@ import { ColorRecipe, contrast } from "./common";
 const accentForegroundCutAlgorithm: (
     backgroundColor: Swatch,
     targetContrast: number
-) => Swatch = memoize(
-    (backgroundColor: Swatch, targetContrast: number): Swatch => {
-        return contrast(white, backgroundColor) >= targetContrast ? white : black;
-    },
-    (backgroundColor: Swatch, targetContrast: number): string => {
-        return backgroundColor.concat(targetContrast.toString());
-    }
-);
+) => Swatch = (backgroundColor: Swatch, targetContrast: number): Swatch => {
+    return contrast(white, backgroundColor) >= targetContrast ? white : black;
+};
 
 /**
  * Factory to create a accent-foreground-cut function that operates on a target contrast ratio

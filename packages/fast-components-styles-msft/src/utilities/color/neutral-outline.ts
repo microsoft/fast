@@ -18,7 +18,7 @@ import {
     StatefulSwatchToColorRecipeFactory,
     SwatchStates,
 } from "./common";
-import { clamp, memoize } from "lodash-es";
+import { clamp } from "lodash-es";
 
 /**
  * Deltas to derive state swatches from the background
@@ -27,34 +27,31 @@ export const neutralOutlineDeltaRest: number = 12;
 export const neutralOutlineDeltaHover: number = 24;
 export const neutralOutlineDeltaActive: number = 18;
 
-const neutralOutlineAlgorithm: (designSystem: DesignSystem) => StatefulSwatch = memoize(
-    (designSystem: DesignSystem): StatefulSwatch => {
-        const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
-        const backgroundIndex: number = findClosestSwatchIndex(
-            PaletteType.neutral,
-            designSystem.backgroundColor
-        )(designSystem);
-        const direction: 1 | -1 = isDarkTheme(designSystem) ? -1 : 1;
+const neutralOutlineAlgorithm: (designSystem: DesignSystem) => StatefulSwatch = (
+    designSystem: DesignSystem
+): StatefulSwatch => {
+    const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
+    const backgroundIndex: number = findClosestSwatchIndex(
+        PaletteType.neutral,
+        designSystem.backgroundColor
+    )(designSystem);
+    const direction: 1 | -1 = isDarkTheme(designSystem) ? -1 : 1;
 
-        return {
-            rest: getSwatch(
-                backgroundIndex + direction * neutralOutlineDeltaRest,
-                neutralPalette
-            ),
-            hover: getSwatch(
-                backgroundIndex + direction * neutralOutlineDeltaHover,
-                neutralPalette
-            ),
-            active: getSwatch(
-                backgroundIndex + direction * neutralOutlineDeltaActive,
-                neutralPalette
-            ),
-        };
-    },
-    (designSystem: DesignSystem): string => {
-        return designSystem.backgroundColor;
-    }
-);
+    return {
+        rest: getSwatch(
+            backgroundIndex + direction * neutralOutlineDeltaRest,
+            neutralPalette
+        ),
+        hover: getSwatch(
+            backgroundIndex + direction * neutralOutlineDeltaHover,
+            neutralPalette
+        ),
+        active: getSwatch(
+            backgroundIndex + direction * neutralOutlineDeltaActive,
+            neutralPalette
+        ),
+    };
+};
 
 export function neutralOutline(designSystem: DesignSystem): StatefulSwatch;
 export function neutralOutline(
