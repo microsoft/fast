@@ -19,6 +19,11 @@ export interface ListboxHandledProps extends ListboxManagedClasses {
     typeAheadPropertyKey?: string;
 
     /**
+     * Enable type ahead
+     */
+    typeAheadEnabled?: boolean;
+
+    /**
      * Whether this listbox supports multi-selection (default is 'false')
      */
     multiselectable?: boolean;
@@ -43,6 +48,11 @@ export interface ListboxHandledProps extends ListboxManagedClasses {
      * The  onSelectedItemsChanged event handler
      */
     onSelectedItemsChanged?: (selectedItems: ListboxItemProps[]) => void;
+
+    /**
+     * The onItemInvoked event handler
+     */
+    onItemInvoked?: (item: ListboxItemProps) => void;
 
     /**
      * Whether a listitem should automatically get focus when this component is mounted

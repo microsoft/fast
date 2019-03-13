@@ -230,13 +230,12 @@ describe("listbox", (): void => {
         expect(rendered.state("focusIndex")).toBe(5);
     });
 
-    test("should move focus to matching items as characters are typed", (): void => {
+    test("typeahead should be disabled when prop is set to false", (): void => {
         const rendered: any = mount(
-            <Listbox>
+            <Listbox typeAheadEnabled={false}>
                 {itemA}
                 {itemB}
                 {itemC}
-                <div>four</div>
             </Listbox>,
             { attachTo: container }
         );
@@ -247,13 +246,7 @@ describe("listbox", (): void => {
         expect(rendered.state("focusIndex")).toBe(0);
 
         rendered.childAt(0).simulate("keydown", { key: "b" });
-        expect(rendered.state("focusIndex")).toBe(1);
-
-        rendered.childAt(0).simulate("keydown", { key: "c" });
-        expect(rendered.state("focusIndex")).toBe(2);
-
-        rendered.childAt(0).simulate("keydown", { key: "d" });
-        expect(rendered.state("focusIndex")).toBe(2);
+        expect(rendered.state("focusIndex")).toBe(0);
     });
 
     test("changing the typeahead property key should work", (): void => {
@@ -725,5 +718,24 @@ describe("listbox", (): void => {
         expect(onSelectedItemsChanged).toHaveBeenCalledTimes(1);
         rendered.childAt(0).simulate("keydown", { keyCode: KeyCodes.arrowDown });
         expect(onSelectedItemsChanged).toHaveBeenCalledTimes(2);
+    });
+
+    test("should call a registered callback after selection invoked", (): void => {
+        const onItemInvoked: any = jest.fn();
+        const rendered: any = mount(
+            <Listbox onItemInvoked={onItemInvoked}>
+                {itemA}
+                {itemB}
+                {itemC}
+            </Listbox>,
+            { attachTo: container }
+        );
+
+        expect(onItemInvoked).toHaveBeenCalledTimes(0);
+        rendered
+            .childAt(0)
+            .childAt(0)
+            .simulate("click");
+        expect(onItemInvoked).toHaveBeenCalledTimes(1);
     });
 });
