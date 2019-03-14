@@ -194,6 +194,7 @@ class Listbox extends Foundation<
         labelledBy: void 0,
         managedClasses: void 0,
         multiselectable: void 0,
+        onItemInvoked: void 0,
         onSelectedItemsChanged: void 0,
         selectedItems: void 0,
         typeAheadEnabled: void 0,

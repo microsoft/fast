@@ -50,7 +50,8 @@
       "ts",
       "tsx",
       "js",
-      "jsx"
+      "jsx",
+      "json"
     ],
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$"
   },

@@ -60,7 +60,8 @@
       "ts",
       "tsx",
       "js",
-      "jsx"
+      "jsx",
+      "json"
     ],
     "moduleDirectories": [
       "node_modules",
