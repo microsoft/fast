@@ -572,8 +572,8 @@ export class Example extends React.Component {
     render() {
         return (
             <CSSEditor
-                {...this.state.CSSValues}
-                onPositionUpdate={this.handleCssValueUpdate}
+                data={this.state.CSSValues}
+                onUpdate={this.handleCssValueUpdate}
             />
         );
     }
@@ -588,7 +588,7 @@ export class Example extends React.Component {
 
 ### Spacing
 
-The `CSSSpacing` component shows the CSS spacing (margin and padding) value as four input elements, it will also provide a callback for updating this values. When the `spacingType` is set to "margin" the inputs will adjust the top/bottom/left/right margins and when `spacingType` is set to "padding" it will adjust the top/bottom/left/right padding. The components `spacingType` will default to "margin" if not set.
+The `CSSSpacing` component shows the CSS spacing (margin and padding) value as four input elements, when the spacing is set to "margin" the inputs will adjust the top/bottom/left/right margins and when the spacing is set to "padding" it will adjust the top/bottom/left/right padding.
 
 Example:
 
@@ -611,8 +611,8 @@ export class Example extends React.Component {
     render() {
         return (
             <CSSSpacing
-                {...this.state.spacingValues}
-                onSpacingUpdate={this.handleSpacingValueUpdate}
+                data={this.state.spacingValues}
+                onUpdate={this.handleSpacingValueUpdate}
             />
         );
     }
@@ -640,7 +640,7 @@ export class Example extends React.Component {
         super(props);
 
         this.state = {
-            positionValues: {
+            cssValues: {
                 position: "absolute",
                 left: "0"
             }
@@ -650,15 +650,15 @@ export class Example extends React.Component {
     render() {
         return (
             <CSSPosition
-                {...this.state.positionValues}
-                onPositionUpdate={this.handlePositionValueUpdate}
+                data={this.state.cssValues}
+                onUpdate={this.handleCSSValueUpdate}
             />
         );
     }
 
-    handlePositionValueUpdate = (updatedPositionValues) => {
+    handleCSSValueUpdate = (updatedPositionValues) => {
         this.setState({
-            positionValues: updatedPositionValues
+            cssValues: updatedPositionValues
         });
     }
 }

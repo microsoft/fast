@@ -45,22 +45,16 @@ export interface CSSSpacingValues {
 }
 
 export interface CSSSpacingHandledProps
-    extends ManagedClasses<CSSSpacingClassNameContract>,
-        CSSSpacingValues {
+    extends ManagedClasses<CSSSpacingClassNameContract> {
     /**
-     * The type of spacing margin/padding
+     * The data
      */
-    spacingType?: SpacingType;
+    data?: CSSSpacingValues;
 
     /**
-     * The spacing update callback
+     * The update callback
      */
-    onSpacingUpdate?: (spacing: CSSSpacingValues) => void;
-
-    /**
-     * The spacing type update callback
-     */
-    onSpacingTypeUpdate?: (spacingType: SpacingType) => void;
+    onUpdate?: (data: CSSSpacingValues) => void;
 }
 
 export type CSSSpacingProps = CSSSpacingHandledProps & CSSSpacingUnhandledProps;

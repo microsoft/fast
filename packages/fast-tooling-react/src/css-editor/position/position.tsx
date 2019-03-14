@@ -1,4 +1,5 @@
 import React from "react";
+import { get, pick } from "lodash-es";
 import Foundation, {
     FoundationProps,
     HandledProps,
@@ -20,27 +21,25 @@ export default class CSSPosition extends Foundation<
     public static displayName: string = "CSSPosition";
 
     protected handledProps: HandledProps<CSSPositionHandledProps> = {
-        position: void 0,
-        top: void 0,
-        bottom: void 0,
-        left: void 0,
-        right: void 0,
-        onPositionUpdate: void 0,
+        data: void 0,
+        onUpdate: void 0,
         managedClasses: void 0,
     };
 
     public render(): React.ReactNode {
+        const position: PositionValue = get(
+            this.props,
+            `data.position`,
+            PositionValue.static
+        );
+
         return (
             <div className={this.props.managedClasses.cssPosition}>
                 <span className={this.props.managedClasses.cssPosition_control}>
                     <select
                         className={this.props.managedClasses.cssPosition_select}
                         onChange={this.handlePositionOnChange}
-                        value={
-                            this.props.position
-                                ? this.props.position
-                                : PositionValue.static
-                        }
+                        value={position}
                     >
                         <option value={PositionValue.absolute}>Absolute</option>
                         <option value={PositionValue.fixed}>Fixed</option>
@@ -48,7 +47,7 @@ export default class CSSPosition extends Foundation<
                         <option value={PositionValue.static}>Static</option>
                     </select>
                 </span>
-                {this.renderControls(this.props.position)}
+                {this.renderControls(position)}
             </div>
         );
     }
@@ -94,7 +93,7 @@ export default class CSSPosition extends Foundation<
                 type="text"
                 className={this.props.managedClasses.cssPosition_input}
                 onChange={this.handleLocationInputOnChange(location)}
-                value={this.props[location] || ""}
+                value={get(this.props, `data.${location}`, "")}
             />
         );
     }
@@ -150,8 +149,8 @@ export default class CSSPosition extends Foundation<
             value
         );
 
-        if (this.props.onPositionUpdate) {
-            this.props.onPositionUpdate(updatedProps);
+        if (typeof this.props.onUpdate === "function") {
+            this.props.onUpdate(updatedProps);
         }
     };
 
@@ -175,6 +174,12 @@ export default class CSSPosition extends Foundation<
                     updatedPropKey,
                     updatedPropValue
                 );
+
+                const position: PositionValue = get(this.props, "data.position");
+
+                if (typeof position !== "undefined") {
+                    updatedProps.position = position;
+                }
                 break;
         }
 
@@ -185,8 +190,8 @@ export default class CSSPosition extends Foundation<
         props: string[],
         updatedPropKey: Location,
         updatedPropValue: string
-    ): Partial<CSSPositionHandledProps> {
-        const updatedProps: Partial<CSSPositionHandledProps> = {};
+    ): Partial<CSSPositionValues> {
+        const updatedProps: Partial<CSSPositionValues> = {};
         const excludedProp: Location = this.getExcludedLocation(updatedPropKey);
 
         props.forEach(

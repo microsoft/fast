@@ -1,11 +1,11 @@
 import React from "react";
-import { omit } from "lodash-es";
+import { get, pick } from "lodash-es";
 import Foundation, {
     FoundationProps,
     HandledProps,
 } from "@microsoft/fast-components-foundation-react";
 import { CSSEditorHandledProps, CSSEditorUnhandledProps } from "./editor.props";
-import { CSSPosition, CSSPositionValues, Location } from "./position";
+import { CSSPosition, CSSPositionValues, Location, PositionValue } from "./position";
 import { CSSSpacing, CSSSpacingValues, SpacingProperty } from "./spacing";
 
 export default class CSSEditor extends Foundation<
@@ -16,22 +16,8 @@ export default class CSSEditor extends Foundation<
     public static displayName: string = "CSSEditor";
 
     protected handledProps: HandledProps<CSSEditorHandledProps> = {
-        position: void 0,
-        top: void 0,
-        bottom: void 0,
-        left: void 0,
-        right: void 0,
-        onPositionUpdate: void 0,
-        spacingType: void 0,
-        marginBottom: void 0,
-        marginTop: void 0,
-        marginLeft: void 0,
-        marginRight: void 0,
-        paddingBottom: void 0,
-        paddingTop: void 0,
-        paddingLeft: void 0,
-        paddingRight: void 0,
-        onSpacingUpdate: void 0,
+        data: void 0,
+        onUpdate: void 0,
         managedClasses: void 0,
     };
 
@@ -48,66 +34,47 @@ export default class CSSEditor extends Foundation<
             <React.Fragment>
                 <CSSSpacing
                     jssStyleSheet={{ cssSpacing: { marginBottom: "10px" } }}
-                    spacingType={this.props.spacingType}
-                    marginBottom={this.props.marginBottom}
-                    marginTop={this.props.marginTop}
-                    marginLeft={this.props.marginLeft}
-                    marginRight={this.props.marginRight}
-                    paddingBottom={this.props.paddingBottom}
-                    paddingTop={this.props.paddingTop}
-                    paddingLeft={this.props.paddingLeft}
-                    paddingRight={this.props.paddingRight}
-                    onSpacingUpdate={this.handleSpacingUpdate}
+                    data={this.getSpacingData()}
+                    onUpdate={this.handleCSSUpdate}
                 />
                 <CSSPosition
-                    position={this.props.position}
-                    top={this.props.top}
-                    bottom={this.props.bottom}
-                    left={this.props.left}
-                    right={this.props.right}
-                    onPositionUpdate={this.handlePositionUpdate}
+                    data={this.getPositionData()}
+                    onUpdate={this.handleCSSUpdate}
                 />
             </React.Fragment>
         );
     }
 
-    private getOmittedProps(): string[] {
-        return ["managedClasses", "onChange", "onPositionUpdate", "spacingType"];
+    private getSpacingData(): CSSSpacingValues {
+        const spacingData: CSSSpacingValues = pick(this.props.data, [
+            SpacingProperty.marginBottom,
+            SpacingProperty.marginLeft,
+            SpacingProperty.marginRight,
+            SpacingProperty.marginTop,
+            SpacingProperty.paddingBottom,
+            SpacingProperty.paddingLeft,
+            SpacingProperty.paddingRight,
+            SpacingProperty.paddingTop,
+        ]);
+
+        return spacingData;
     }
 
-    private handlePositionUpdate = (position: CSSPositionValues): void => {
-        this.props.onChange(
-            Object.assign(
-                {},
-                omit(this.props, [
-                    ...this.getOmittedProps(),
-                    Location.top,
-                    Location.left,
-                    Location.bottom,
-                    Location.right,
-                ]),
-                position
-            )
-        );
-    };
+    private getPositionData(): CSSPositionValues {
+        const positionData: CSSPositionValues = pick(this.props.data, [
+            "position",
+            Location.left,
+            Location.right,
+            Location.top,
+            Location.bottom,
+        ]);
 
-    private handleSpacingUpdate = (spacing: CSSSpacingValues): void => {
-        this.props.onChange(
-            Object.assign(
-                {},
-                omit(this.props, [
-                    ...this.getOmittedProps(),
-                    SpacingProperty.marginBottom,
-                    SpacingProperty.marginTop,
-                    SpacingProperty.marginLeft,
-                    SpacingProperty.marginRight,
-                    SpacingProperty.paddingBottom,
-                    SpacingProperty.paddingTop,
-                    SpacingProperty.paddingLeft,
-                    SpacingProperty.paddingRight,
-                ]),
-                spacing
-            )
-        );
+        return positionData;
+    }
+
+    private handleCSSUpdate = <D extends {}>(updatedCSS: D): void => {
+        if (typeof this.props.onUpdate === "function") {
+            this.props.onUpdate(Object.assign({}, this.props.data, updatedCSS));
+        }
     };
 }
