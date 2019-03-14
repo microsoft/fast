@@ -11,7 +11,7 @@ const glob = require("glob");
 const chalk = require('chalk');
 
 const rootDir = path.resolve(process.cwd());
-const srcReadmePaths = "packages/*/README.md";
+const srcReadmePaths = "packages/*/?(readme.md|README.md)";
 const destDir = path.join("docs", "en", "packages");
 const srcSidebar = path.join("website", "sidebars.json");
 
