@@ -1,6 +1,8 @@
 
 # FAST Form generator React
 
+**FAST Form generator React has been deprecated. Use [FAST Tooling React](https://www.npmjs.com/package/@microsoft/fast-tooling-react) instead.**
+
 A self generating UI based on JSON Schemas.
 
 Dynamically generates a form user interface based on incoming JSON Schemas to change data values of a React component.

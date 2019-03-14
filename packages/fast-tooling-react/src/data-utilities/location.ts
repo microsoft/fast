@@ -250,7 +250,7 @@ function getReactChildrenLocationsFromSchema(
 /**
  * Finds the locations throughout an object
  */
-function getLocationsFromObject(data: any, location: string = ""): string[] {
+export function getLocationsFromObject(data: any, location: string = ""): string[] {
     let updatedLocations: string[] = [];
 
     if (typeof data === "string" || data === null || data === undefined) {
@@ -464,14 +464,14 @@ function getValidAnyOfOneOfIndex(oneOfAnyOf: string, data: any, schema: any): nu
 /**
  * Gets data from a data and location
  */
-function getPartialData(location: string, data: any): any {
+export function getPartialData(location: string, data: any): any {
     return location === "" ? data : get(data, location);
 }
 
 /**
  * Converts all property locations to dot notation and all array item references to bracket notation
  */
-function normalizeDataLocation(dataLocation: string, data: any): string {
+export function normalizeDataLocation(dataLocation: string, data: any): string {
     const normalizedDataLocation: string = dataLocation.replace(
         squareBracketsRegex,
         `.$1`
