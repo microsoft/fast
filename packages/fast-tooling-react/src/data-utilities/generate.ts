@@ -51,8 +51,10 @@ function getDataFromSchema(schema: any, childOptions?: ChildOptionItem[]): any {
  * Gets an example by the type of data
  */
 function getDataFromSchemaByDataType(schema: any): any {
-    if (hasEnum(schema)) {
-        return typeof schema.default !== "undefined" ? schema.default : schema.enum[0];
+    const defaultOrExample: any = getDefaultOrExample(schema);
+
+    if (typeof defaultOrExample !== "undefined") {
+        return defaultOrExample;
     }
 
     if (isObjectDataType(schema)) {
@@ -74,17 +76,13 @@ function getDataFromSchemaByDataType(schema: any): any {
 
             return arrayData;
         case DataType.boolean:
-            return typeof schema.default === DataType.boolean ? schema.default : true;
+            return true;
         case DataType.null:
             return null;
         case DataType.string:
-            return typeof schema.default === DataType.string
-                ? schema.default
-                : exampleString;
+            return exampleString;
         case DataType.number:
-            return typeof schema.default === DataType.number
-                ? schema.default
-                : Math.round(Math.random() * 100);
+            return Math.round(Math.random() * 100);
         default:
             if (schema[CombiningKeyword.oneOf] || schema[CombiningKeyword.anyOf]) {
                 const oneOfAnyOf: CombiningKeyword = schema[CombiningKeyword.oneOf]
@@ -101,8 +99,10 @@ function getDataFromSchemaByDataType(schema: any): any {
  * Gets a react child example
  */
 function getReactChildrenFromSchema(schema: any, childOptions?: ChildOptionItem[]): any {
-    if (typeof schema.default !== "undefined") {
-        return schema.default;
+    const defaultOrExample: any = getDefaultOrExample(schema);
+
+    if (typeof defaultOrExample !== "undefined") {
+        return defaultOrExample;
     }
 
     if (Array.isArray(schema.defaults) && schema.defaults.includes("text")) {
@@ -123,8 +123,30 @@ function getReactChildrenFromSchema(schema: any, childOptions?: ChildOptionItem[
     }
 }
 
+/**
+ * If there is a default value or example values,
+ * return a value to use
+ */
+function getDefaultOrExample(schema: any): any | void {
+    if (typeof schema.default !== "undefined") {
+        return schema.default;
+    }
+
+    if (hasExample(schema.examples)) {
+        return schema.examples[0];
+    }
+
+    if (hasEnum(schema)) {
+        return schema.enum[0];
+    }
+}
+
 function isObjectDataType(schema: any): boolean {
     return schema.type === DataType.object || schema[PropertyKeyword.properties];
+}
+
+function hasExample(examples: any[]): boolean {
+    return Array.isArray(examples) && examples.length > 0;
 }
 
 function hasRequired(schema: any): boolean {
