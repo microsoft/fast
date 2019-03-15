@@ -371,20 +371,21 @@ class Site extends React.Component<
         super(props);
 
         this.initialPath = this.getInitialPath();
+        const path: string = this.getCurrentPath();
 
         this.state = {
-            currentPath: this.initialPath,
+            currentPath: path,
             activeComponentIndex: 0,
             tableOfContentsCollapsed: this.props.collapsed || false,
             componentBackgroundTransparent:
                 this.props.componentBackgroundTransparent || false,
             componentView: ComponentViewTypes.examples,
-            componentName: this.getComponentName(this.initialPath),
+            componentName: this.getComponentName(path),
             componentData: this.getComponentData(),
             componentDataLocation: "",
             componentSchema: this.getComponentSchema(),
             componentDataMappedToComponent: this.getComponentData(true),
-            componentStatus: this.getComponentStatus(this.initialPath),
+            componentStatus: this.getComponentStatus(path),
             detailViewComponentData: this.getDetailViewComponentData(),
             detailViewComponentDataMappedToComponent: this.getDetailViewComponentData(
                 true
@@ -794,7 +795,7 @@ class Site extends React.Component<
     private getCurrentPath = (): string => {
         return this.getComponentViewTypesByLocation() === ComponentViewTypes.detail
             ? window.location.pathname
-            : window.location.pathname.slice(0, window.location.pathname.length - 9);
+            : window.location.pathname.slice(0, window.location.pathname.indexOf("/", 1));
     };
 
     private generateNavigation(
@@ -1355,10 +1356,8 @@ class Site extends React.Component<
         const categoryItems: JSX.Element[] = [];
         const rootTocItems: JSX.Element[] = [];
         const tocItems: any[] = Array.isArray(items) ? items : [items];
-
         tocItems.forEach((item: JSX.Element) => {
             const isInSlot: boolean = item && item.props && item.props.slot === slot;
-
             if (
                 isInSlot &&
                 ((collapsed && this.renderTocItemCategoryIcon(item)) || !collapsed)
