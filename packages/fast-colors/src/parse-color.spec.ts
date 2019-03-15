@@ -15,7 +15,7 @@ import {
     parseColorNamed,
     parseColorWebRGB,
     parseColorWebRGBA,
-} from "../src/colorlib";
+} from "../src";
 
 import { testData } from "../testData";
 
