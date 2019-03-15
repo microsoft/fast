@@ -244,9 +244,6 @@ describe("unhandledProps", () => {
         unhandledPropsTestComponentDirty = new ReactTestUtils.renderIntoDocument(
             <UnhandledPropsTestComponent {...merge(cleanProps, dirtyProps)} />
         );
-        nullHandledpropsTestComponent = new ReactTestUtils.renderIntoDocument(
-            <UnhandledPropsOnlyTestComponent {...dirtyProps} />
-        );
     });
 
     test("should return an object", () => {
@@ -293,6 +290,9 @@ describe("unhandledProps", () => {
     });
 
     test("shoult not throw exeption if unhandled props are passed in without handledprops", () => {
+        nullHandledpropsTestComponent = new ReactTestUtils.renderIntoDocument(
+            <UnhandledPropsOnlyTestComponent {...dirtyProps} />
+        );
         expect(typeof nullHandledpropsTestComponent["unhandledProps"]()).toBe("object");
     });
 });
