@@ -1,7 +1,7 @@
 // tslint:disable:no-bitwise
 
-import { ColorRGBA64 } from "./colorRGBA64";
-import { normalize } from "./mathUtils";
+import { ColorRGBA64 } from "./color-rgba-64";
+import { normalize } from "./math-utilities";
 
 export const namedColors: object = {
     aliceblue: new ColorRGBA64(0.941176, 0.972549, 1, 1),

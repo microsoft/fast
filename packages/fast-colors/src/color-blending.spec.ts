@@ -15,7 +15,7 @@ import {
     desaturateViaLCH,
     lightenViaLAB,
     saturateViaLCH,
-} from "../src/colorlib";
+} from "../src";
 
 import { testData } from "../testData";
 

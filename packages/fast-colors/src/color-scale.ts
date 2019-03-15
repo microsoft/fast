@@ -1,9 +1,9 @@
 // tslint:disable:member-ordering
 // tslint:disable:prefer-for-of
 
-import { contrastRatio } from "./colorConverters";
-import { ColorInterpolationSpace, interpolateByColorSpace } from "./colorInterpolation";
-import { ColorRGBA64 } from "./colorRGBA64";
+import { contrastRatio } from "./color-converters";
+import { ColorInterpolationSpace, interpolateByColorSpace } from "./color-interpolation";
+import { ColorRGBA64 } from "./color-rgba-64";
 
 export interface ColorScaleStop {
     color: ColorRGBA64;

@@ -9,14 +9,14 @@ import {
     rgbToLCH,
     rgbToXYZ,
     xyzToRGB,
-} from "./colorConverters";
-import { ColorHSL } from "./colorHSL";
-import { ColorHSV } from "./colorHSV";
-import { ColorLAB } from "./colorLAB";
-import { ColorLCH } from "./colorLCH";
-import { ColorRGBA64 } from "./colorRGBA64";
-import { ColorXYZ } from "./colorXYZ";
-import { lerp, lerpAnglesInDegrees } from "./mathUtils";
+} from "./color-converters";
+import { ColorHSL } from "./color-hsl";
+import { ColorHSV } from "./color-hsv";
+import { ColorLAB } from "./color-lab";
+import { ColorLCH } from "./color-lch";
+import { ColorRGBA64 } from "./color-rgba-64";
+import { ColorXYZ } from "./color-xyz";
+import { lerp, lerpAnglesInDegrees } from "./math-utilities";
 
 export function interpolateRGB(
     position: number,

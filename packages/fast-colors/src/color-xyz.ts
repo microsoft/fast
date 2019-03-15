@@ -1,5 +1,5 @@
 // tslint:disable:member-ordering
-import { roundToPrecisionSmall } from "./mathUtils";
+import { roundToPrecisionSmall } from "./math-utilities";
 
 // XYZ color space
 // https://en.wikipedia.org/wiki/CIE_1931_color_space
