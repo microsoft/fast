@@ -4,6 +4,7 @@
     "description": "A metatext component's schema definition.",
     "type": "object",
     "id": "@microsoft/fast-components-react-msft/metatext",
+    "formPluginId": "@microsoft/fast-components-react-msft/metatext",
     "properties": {
         "tag": {
             "title": "HTML tag",
@@ -18,6 +19,7 @@
         "children": {
             "title": "Children",
             "type": "children",
+            "formPluginId": "@microsoft/fast-components-react-msft/metatext/children",
             "defaults": [
                 "text"
             ]

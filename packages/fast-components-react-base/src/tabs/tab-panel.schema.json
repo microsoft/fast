@@ -4,6 +4,7 @@
     "description": "A tab panel component's schema definition.",
     "type": "object",
     "id": "@microsoft/fast-components-react-base/tab-panel",
+    "formPluginId": "@microsoft/fast-components-react-base/tab-panel",
     "properties": {
         "slot": {
             "title": "Slot",
@@ -15,6 +16,7 @@
         "children": {
             "title": "Children",
             "type": "children",
+            "formPluginId": "@microsoft/fast-components-react-base/tab-panel/children",
             "defaults": [
                 "text"
             ]
