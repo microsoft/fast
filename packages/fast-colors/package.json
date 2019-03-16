@@ -65,8 +65,5 @@
     "tslint": "^5.9.1",
     "tslint-config-prettier": "^1.15.0",
     "typescript": "^3.0.1"
-  },
-  "peerDependencies": {
-    "chroma-js": "^1.3.0"
   }
 }
