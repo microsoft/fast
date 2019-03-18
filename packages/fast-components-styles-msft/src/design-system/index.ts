@@ -5,7 +5,13 @@ import {
     neutralPaletteConfig,
     white,
 } from "../utilities/color/color-constants";
-import { ColorPaletteConfig } from "@microsoft/fast-colors";
+import {
+    ColorPalette,
+    ColorPaletteConfig,
+    ColorRGBA64,
+    parseColorHexRGB,
+} from "@microsoft/fast-colors";
+import { Palette } from "../utilities/color/palette";
 
 export interface DesignSystem {
     /**
@@ -16,12 +22,12 @@ export interface DesignSystem {
     /**
      * Configuration object to derive the neutral palette. Expects a ColorPaletteConfig from @microsoft/fast-colors
      */
-    neutralPaletteConfig: ColorPaletteConfig;
+    neutralPalette: Palette;
 
     /**
      * Configuration object to derive the accent palette. Expects a ColorPaletteConfig from @microsoft/fast-colors
      */
-    accentPaletteConfig: ColorPaletteConfig;
+    accentPalette: Palette;
 
     /**
      * The brand color used as color accents.
@@ -66,6 +72,19 @@ export interface DesignSystem {
     outlinePatternOutlineWidth?: number;
 }
 
+function createColorPalette(baseColor: ColorRGBA64): Palette {
+    return new ColorPalette({
+        baseColor,
+        clipDark: 0,
+        clipLight: 0,
+        overlayDark: 0,
+        overlayLight: 0,
+        saturationDark: 0,
+        saturationLight: 0,
+        steps: 63,
+    }).palette.map((color: ColorRGBA64) => color.toStringHexRGB());
+}
+
 const designSystemDefaults: DesignSystem = {
     backgroundColor: white,
     contrast: 0,
@@ -74,8 +93,8 @@ const designSystemDefaults: DesignSystem = {
     direction: Direction.ltr,
     cornerRadius: 2,
     outlinePatternOutlineWidth: 1,
-    neutralPaletteConfig,
-    accentPaletteConfig,
+    neutralPalette: createColorPalette(new ColorRGBA64(0.5, 0.5, 0.5, 1)),
+    accentPalette: createColorPalette(parseColorHexRGB("#0078D4")),
 
     // @deprecated
     foregroundColor: "#111",
