@@ -114,7 +114,7 @@ abstract class Foundation<H, U, S> extends React.Component<H & U & FoundationPro
             (key: string) => {
                 return (
                     !(Foundation.defaultHandledProps.indexOf(key) > -1) &&
-                    !this.handledProps.hasOwnProperty(key)
+                    (this.handledProps && !this.handledProps.hasOwnProperty(key))
                 );
             }
         );

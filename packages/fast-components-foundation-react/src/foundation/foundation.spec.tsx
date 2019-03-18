@@ -223,8 +223,19 @@ describe("unhandledProps", () => {
         }
     }
 
+    class UnhandledPropsOnlyTestComponent extends Foundation<
+        any,
+        TestComponentUnhandledProps,
+        undefined
+    > {
+        public render(): JSX.Element {
+            return <h1>hello world</h1>;
+        }
+    }
+
     let unhandledPropsTestComponentClean: UnhandledPropsTestComponent;
     let unhandledPropsTestComponentDirty: UnhandledPropsTestComponent;
+    let nullHandledpropsTestComponent: UnhandledPropsOnlyTestComponent;
 
     beforeEach(() => {
         unhandledPropsTestComponentClean = new ReactTestUtils.renderIntoDocument(
@@ -276,6 +287,13 @@ describe("unhandledProps", () => {
         expect(has(unhandledProps, "number")).toBe(false);
         expect(has(unhandledProps, "undefined")).toBe(false);
         expect(has(unhandledProps, "null")).toBe(false);
+    });
+
+    test("shoult not throw exeption if unhandled props are passed in without handledprops", () => {
+        nullHandledpropsTestComponent = new ReactTestUtils.renderIntoDocument(
+            <UnhandledPropsOnlyTestComponent {...dirtyProps} />
+        );
+        expect(typeof nullHandledpropsTestComponent["unhandledProps"]()).toBe("object");
     });
 });
 
