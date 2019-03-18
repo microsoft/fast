@@ -19,7 +19,7 @@ import {
     DesignSystem,
     DesignSystemDefaults,
 } from "@microsoft/fast-components-styles-msft";
-import { Plugin, PluginProps } from "@microsoft/fast-data-utilities-react";
+import { Plugin, PluginProps } from "@microsoft/fast-tooling-react";
 import {
     HypertextClassNameContract,
     ManagedClasses,
