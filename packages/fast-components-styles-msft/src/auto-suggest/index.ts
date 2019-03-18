@@ -73,7 +73,7 @@ const styles: ComponentStyles<AutoSuggestClassNameContract, DesignSystem> = (
             borderRadius: toPx(designSystem.cornerRadius * 2),
         },
 
-        autoSuggest_menu__open: {},
+        autoSuggest__menuOpen: {},
     };
 };
 

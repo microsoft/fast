@@ -24,8 +24,8 @@ const managedClasses: AutoSuggestManagedClasses = {
     managedClasses: {
         autoSuggest: "autoSuggest",
         autoSuggest__disabled: "autoSuggest__disabled",
-        autoSuggest_menu: "sautoSuggest_menu",
-        autoSuggest_menu__open: "autoSuggest_menu__open",
+        autoSuggest_menu: "autoSuggest_menu",
+        autoSuggest__menuOpen: "autoSuggest__menuOpen",
     },
 };
 

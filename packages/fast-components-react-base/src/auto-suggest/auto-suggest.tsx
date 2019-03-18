@@ -133,14 +133,7 @@ class AutoSuggest extends Foundation<
         if (this.state.isMenuOpen) {
             className = className.concat(
                 " ",
-                get(this.props.managedClasses, "autoSuggest_menu__open", "")
-            );
-        }
-
-        if (this.state.value === "") {
-            className = className.concat(
-                " ",
-                get(this.props.managedClasses, "autoSuggest_showPlaceholder", "")
+                get(this.props.managedClasses, "autoSuggest__menuOpen", "")
             );
         }
 
@@ -152,7 +145,7 @@ class AutoSuggest extends Foundation<
      * and invokes it
      */
     private renderInputRegion(): React.ReactNode {
-        if (this.props.inputRegion !== undefined) {
+        if (typeof this.props.inputRegion === "function") {
             return this.props.inputRegion(
                 this.props,
                 this.state,
@@ -354,11 +347,15 @@ class AutoSuggest extends Foundation<
                 break;
 
             case KeyCodes.arrowDown:
-                this.checkForMenuEnd(1);
+                if (this.checkForMenuEnd(1) === true) {
+                    e.preventDefault();
+                }
                 break;
 
             case KeyCodes.arrowUp:
-                this.checkForMenuEnd(-1);
+                if (this.checkForMenuEnd(-1) === true) {
+                    e.preventDefault();
+                }
                 break;
 
             default:
@@ -386,11 +383,12 @@ class AutoSuggest extends Foundation<
     };
 
     /**
-     * Passes focus to the input element if focus would bump up against the ends of the menu
+     * Passes focus to the input element if focus would bump up against the ends of the menu,
+     * return true if result was focusing on input region
      */
-    private checkForMenuEnd = (increment: number): void => {
+    private checkForMenuEnd = (increment: number): boolean => {
         if (this.state.focusedItem === null) {
-            return;
+            return false;
         }
 
         const childrenAsArray: React.ReactNode[] = React.Children.toArray(
@@ -402,7 +400,14 @@ class AutoSuggest extends Foundation<
             this.props.children
         );
 
-        const startIndex: number = currentItemIndex;
+        const startIndex: number = currentItemIndex + increment;
+
+        if (startIndex > childrenAsArray.length - 1 || startIndex < 0) {
+            // at the end of the list, focus on input
+            this.focusOnInput();
+            return true;
+        }
+
         const endIndex: number = increment > -1 ? childrenAsArray.length - 1 : 0;
 
         const nextFocusableItem: ListboxItemProps = (Listbox.getFirstValidOptionInRange(
@@ -418,7 +423,10 @@ class AutoSuggest extends Foundation<
         ) {
             // at the end of the list, focus on input
             this.focusOnInput();
+            return true;
         }
+
+        return false;
     };
 
     /**
@@ -480,6 +488,9 @@ class AutoSuggest extends Foundation<
      * Focus on the input element
      */
     private focusOnInput = (): void => {
+        if (this.rootElement.current === null) {
+            return;
+        }
         const inputElements: HTMLCollectionOf<
             HTMLInputElement
         > = this.rootElement.current.getElementsByTagName("input");
@@ -493,16 +504,11 @@ class AutoSuggest extends Foundation<
      * Determine menu state by comparing desired state to props
      */
     private validateMenuState = (desiredMenuState: boolean): boolean => {
-        let shouldOpenMenu: boolean = desiredMenuState;
-
-        if (React.Children.count(this.props.children) === 0) {
-            shouldOpenMenu = false;
-        }
-
-        if (this.props.isMenuOpen !== undefined) {
-            shouldOpenMenu = this.props.isMenuOpen;
-        }
-        return shouldOpenMenu;
+        return typeof this.props.isMenuOpen === "boolean"
+            ? this.props.isMenuOpen
+            : React.Children.count(this.props.children) === 0
+                ? false
+                : desiredMenuState;
     };
 
     /**

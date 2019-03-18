@@ -20,5 +20,5 @@ export interface AutoSuggestClassNameContract {
     /**
      * The menu open modifier
      */
-    autoSuggest_menu__open?: string;
+    autoSuggest__menuOpen?: string;
 }

@@ -23,7 +23,6 @@ export interface AutoSuggestOptionHandledProps
     /**
      * Flag that enables/disables display formatting, default is true
      */
-
     formatDisplayString?: boolean;
 }
 
