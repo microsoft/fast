@@ -6,16 +6,19 @@ import manageJss, {
     ManagedClasses,
     ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
-import Navigation from "@microsoft/fast-navigation-generator-react";
 import {
     glyphArrowright,
     glyphBuildingblocks,
     glyphGlobalnavbutton,
     glyphTransparency,
 } from "@microsoft/fast-glyphs-msft";
-import { mapDataToComponent } from "@microsoft/fast-form-generator-react";
+import {
+    mapDataToComponent,
+    Navigation,
+    Plugin,
+    PluginProps,
+} from "@microsoft/fast-tooling-react";
 import { applyScrollbarStyle } from "../../utilities";
-import { Plugin, PluginProps } from "@microsoft/fast-data-utilities-react";
 import { get, uniqueId } from "lodash-es";
 import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
 import Shell, { ShellHeader, ShellInfoBar, ShellPaneCollapse, ShellSlot } from "../shell";
