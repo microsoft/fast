@@ -32,19 +32,16 @@
     "watch": "npm run build -- -w --preserveWatchOutput"
   },
   "dependencies": {
-    "@microsoft/fast-css-editor-react": "^4.4.0",
-    "@microsoft/fast-form-generator-react": "^3.8.0",
     "@microsoft/fast-glyphs-msft": "^3.1.1",
     "@microsoft/fast-jss-manager-react": "^3.1.14",
     "@microsoft/fast-jss-utilities": "^3.2.5",
     "@microsoft/fast-layouts-react": "^3.2.1",
-    "@microsoft/fast-navigation-generator-react": "^0.3.1",
+    "@microsoft/fast-tooling-react": "^0.2.0",
     "@microsoft/fast-web-utilities": "^3.1.2",
     "react-syntax-highlighter": "^7.0.4"
   },
   "devDependencies": {
     "@microsoft/fast-components-class-name-contracts-base": "^3.10.0",
-    "@microsoft/fast-data-utilities-react": "^1.5.1",
     "@microsoft/fast-jss-manager": "^3.0.13",
     "@microsoft/fast-tslint-rules": "^3.0.2",
     "@polymer/polymer": "^3.0.0-pre.10",

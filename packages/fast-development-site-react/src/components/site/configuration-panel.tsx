@@ -3,14 +3,12 @@ import { toPx } from "@microsoft/fast-jss-utilities";
 import { get, set } from "lodash-es";
 import devSiteDesignSystemDefaults, { DevSiteDesignSystem } from "../design-system";
 import { applyScrollbarStyle } from "../../utilities";
-import Form from "@microsoft/fast-form-generator-react";
-import CSSEditor from "@microsoft/fast-css-editor-react";
+import { CSSEditor, Form } from "@microsoft/fast-tooling-react";
 import manageJss, {
     ComponentStyles,
     ManagedClasses,
     ManagedJSSProps,
 } from "@microsoft/fast-jss-manager-react";
-import { mapSchemaLocationFromDataLocation } from "@microsoft/fast-data-utilities-react";
 
 export enum TabType {
     presets = "Presets",
@@ -224,23 +222,7 @@ class ConfigurationPanel extends React.Component<
 
     private renderCSSEditor(): React.ReactNode {
         if (!!this.props.styleEditing) {
-            const schemaLocation: string = mapSchemaLocationFromDataLocation(
-                this.props.dataLocation,
-                this.props.data,
-                this.props.schema
-            );
-            const schemaLocationSegments: string[] = schemaLocation.split(".");
-            const isChild: boolean =
-                this.props.dataLocation === "" ||
-                (typeof get(this.props.data, this.props.dataLocation) !== "string" &&
-                    schemaLocationSegments[schemaLocationSegments.length - 1] ===
-                        "props"); // HACK: there is no garauntee that there will be no property named "props"
-
-            if (isChild) {
-                return (
-                    <CSSEditor onChange={this.handleStyleChange} {...this.getStyle()} />
-                );
-            }
+            return <CSSEditor onChange={this.handleStyleChange} {...this.getStyle()} />;
         }
 
         return null;
