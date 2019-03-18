@@ -270,6 +270,7 @@ class AutoSuggest extends Foundation<
      */
     private handleItemInvoked = (item: ListboxItemProps): void => {
         this.invoke(item.value, item);
+        this.toggleMenu(false);
     };
 
     /**

@@ -14,7 +14,7 @@ const itemA: JSX.Element = <ListboxItem id="a" value="a" displayString="a" />;
 const itemB: JSX.Element = <ListboxItem id="b" value="b" displayString="ab" />;
 const itemC: JSX.Element = <ListboxItem id="c" value="c" displayString="abc" />;
 
-describe("auto select", (): void => {
+describe("auto suggest", (): void => {
     test("should have a displayName that matches the component name", () => {
         expect((AutoSuggest as any).name).toBe(AutoSuggest.displayName);
     });
@@ -51,9 +51,23 @@ describe("auto select", (): void => {
         expect(rendered.state("isMenuOpen")).toBe(false);
     });
 
-    test("default input region attributes are set correctly", (): void => {
+    test("input region accessibility attributes are set correctly (autocomplete='both', )", (): void => {
         const rendered: any = mount(
-            <AutoSuggest listboxId="listboxId" label="test-label" disabled={true}>
+            <AutoSuggest listboxId="listboxId">
+                {itemA}
+                {itemB}
+                {itemC}
+            </AutoSuggest>
+        );
+
+        const input: any = rendered.find("input");
+        expect(input.prop("aria-autocomplete")).toEqual("both");
+        expect(input.prop("role")).toEqual("combobox");
+    });
+
+    test("input region gets label applied from props", (): void => {
+        const rendered: any = mount(
+            <AutoSuggest listboxId="listboxId" label="test-label">
                 {itemA}
                 {itemB}
                 {itemC}
@@ -62,15 +76,22 @@ describe("auto select", (): void => {
 
         const input: any = rendered.find("input");
         expect(input.prop("aria-label")).toEqual("test-label");
-        expect(input.prop("aria-autocomplete")).toEqual("both");
-        expect(input.prop("aria-activedescendant")).toEqual(null);
-        expect(input.prop("aria-owns")).toEqual(null);
-        expect(input.prop("aria-controls")).toEqual(null);
-        expect(input.prop("disabled")).toBe(true);
-        expect(input.prop("role")).toEqual("combobox");
     });
 
-    test("input region attributes change correctly as options list navigated", (): void => {
+    test("input region is disabled when component is disabled", (): void => {
+        const rendered: any = mount(
+            <AutoSuggest listboxId="listboxId" disabled={true}>
+                {itemA}
+                {itemB}
+                {itemC}
+            </AutoSuggest>
+        );
+
+        const input: any = rendered.find("input");
+        expect(input.prop("disabled")).toBe(true);
+    });
+
+    test("input region 'aria-owns' and 'aria-controls' attributes are null by default and point to listbox id when listbox is open", (): void => {
         const container: HTMLDivElement = document.createElement("div");
         document.body.appendChild(container);
 
@@ -84,6 +105,9 @@ describe("auto select", (): void => {
         );
 
         let input: any = rendered.find("input");
+        expect(input.prop("aria-owns")).toBe(null);
+        expect(input.prop("aria-controls")).toBe(null);
+        expect(input.prop("aria-activedescendant")).toBe(null);
         input.simulate("keydown", { keyCode: KeyCodes.arrowDown });
 
         input = rendered.find("input");
@@ -97,6 +121,67 @@ describe("auto select", (): void => {
         input = rendered.find("input");
         expect(input.prop("aria-owns")).toEqual("listboxId");
         expect(input.prop("aria-controls")).toEqual("listboxId");
+        expect(input.prop("aria-activedescendant")).toEqual("b");
+
+        document.body.removeChild(container);
+    });
+
+    test("input region 'aria-owns' and 'aria-controls' attributes are null by default and point to listbox id when listbox is open", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+
+        const rendered: any = mount(
+            <AutoSuggest listboxId="listboxId">
+                {itemA}
+                {itemB}
+                {itemC}
+            </AutoSuggest>,
+            { attachTo: container }
+        );
+
+        let input: any = rendered.find("input");
+        expect(input.prop("aria-owns")).toBe(null);
+        expect(input.prop("aria-controls")).toBe(null);
+        input.simulate("keydown", { keyCode: KeyCodes.arrowDown });
+
+        input = rendered.find("input");
+        expect(input.prop("aria-owns")).toEqual("listboxId");
+        expect(input.prop("aria-controls")).toEqual("listboxId");
+
+        rendered
+            .find('[displayString="a"]')
+            .simulate("keydown", { keyCode: KeyCodes.arrowDown });
+        input = rendered.find("input");
+        expect(input.prop("aria-owns")).toEqual("listboxId");
+        expect(input.prop("aria-controls")).toEqual("listboxId");
+
+        document.body.removeChild(container);
+    });
+
+    test("input region 'aria-activedescendant' is initially null and tracks focused item in listbox", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+
+        const rendered: any = mount(
+            <AutoSuggest listboxId="listboxId">
+                {itemA}
+                {itemB}
+                {itemC}
+            </AutoSuggest>,
+            { attachTo: container }
+        );
+
+        let input: any = rendered.find("input");
+        expect(input.prop("aria-activedescendant")).toBe(null);
+        input.simulate("keydown", { keyCode: KeyCodes.arrowDown });
+
+        input = rendered.find("input");
+        expect(input.prop("aria-activedescendant")).toEqual("a");
+
+        rendered
+            .find('[displayString="a"]')
+            .simulate("keydown", { keyCode: KeyCodes.arrowDown });
+        input = rendered.find("input");
         expect(input.prop("aria-activedescendant")).toEqual("b");
 
         document.body.removeChild(container);
@@ -120,7 +205,7 @@ describe("auto select", (): void => {
         expect(listbox.prop("id")).toBe("listboxId");
     });
 
-    test("arrow keys properly traverse the listbox and input region, value changes appropriately", (): void => {
+    test("arrow keys properly traverse the listbox and input region and cause focus and value to changes appropriately", (): void => {
         const container: HTMLDivElement = document.createElement("div");
         document.body.appendChild(container);
 
@@ -199,7 +284,7 @@ describe("auto select", (): void => {
         document.body.removeChild(container);
     });
 
-    test("onInvoked event handler called appropriately", (): void => {
+    test("onInvoked event handler called on keydown of list item", (): void => {
         const container: HTMLDivElement = document.createElement("div");
         document.body.appendChild(container);
 
@@ -220,11 +305,28 @@ describe("auto select", (): void => {
             .find('[displayString="a"]')
             .simulate("keydown", { keyCode: KeyCodes.enter });
         expect(onInvoked).toHaveBeenCalledTimes(1);
-        rendered
-            .find('[displayString="a"]')
-            .simulate("keydown", { keyCode: KeyCodes.arrowUp });
+
+        document.body.removeChild(container);
+    });
+
+    test("onInvoked event handler called on keydown of input element", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+
+        const onInvoked: any = jest.fn();
+        const rendered: any = mount(
+            <AutoSuggest listboxId="listboxId" onInvoked={onInvoked}>
+                {itemA}
+                {itemB}
+                {itemC}
+            </AutoSuggest>,
+            { attachTo: container }
+        );
+
+        expect(onInvoked).toHaveBeenCalledTimes(0);
+        const input: any = rendered.find("input");
         input.simulate("keydown", { keyCode: KeyCodes.enter });
-        expect(onInvoked).toHaveBeenCalledTimes(2);
+        expect(onInvoked).toHaveBeenCalledTimes(1);
 
         document.body.removeChild(container);
     });
@@ -242,25 +344,6 @@ describe("auto select", (): void => {
             { attachTo: container }
         );
         expect(rendered.state("value")).toBe("test");
-
-        document.body.removeChild(container);
-    });
-
-    test("disabled prop applied correctly", (): void => {
-        const container: HTMLDivElement = document.createElement("div");
-        document.body.appendChild(container);
-
-        const rendered: any = mount(
-            <AutoSuggest listboxId="listboxId" disabled={true}>
-                {itemA}
-                {itemB}
-                {itemC}
-            </AutoSuggest>,
-            { attachTo: container }
-        );
-
-        const input: any = rendered.find("input");
-        expect(input.prop("disabled")).toEqual(true);
 
         document.body.removeChild(container);
     });

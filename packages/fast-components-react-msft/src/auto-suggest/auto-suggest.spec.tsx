@@ -16,11 +16,11 @@ import { KeyCodes } from "@microsoft/fast-web-utilities";
  */
 configure({ adapter: new Adapter() });
 
-const itemA: JSX.Element = <AutoSuggestOption id="a" value="a" />;
-const itemB: JSX.Element = <AutoSuggestOption id="b" value="b" />;
-const itemC: JSX.Element = <AutoSuggestOption id="c" value="c" />;
+const itemA: JSX.Element = <AutoSuggestOption id="a" value="a" displayString="a" />;
+const itemB: JSX.Element = <AutoSuggestOption id="b" value="b" displayString="ab" />;
+const itemC: JSX.Element = <AutoSuggestOption id="c" value="c" displayString="abc" />;
 
-describe("button", (): void => {
+describe("auto suggest", (): void => {
     const href: string = "https://www.microsoft.com";
 
     test("should have a displayName that matches the component name", () => {
@@ -45,6 +45,19 @@ describe("button", (): void => {
         expect(rendered.first().prop("aria-label")).toEqual("label");
     });
 
+    test("input region is disabled when component is disabled", (): void => {
+        const rendered: any = mount(
+            <AutoSuggest listboxId="listboxId" disabled={true}>
+                {itemA}
+                {itemB}
+                {itemC}
+            </AutoSuggest>
+        );
+
+        const input: any = rendered.find("input");
+        expect(input.prop("disabled")).toBe(true);
+    });
+
     test("Custom input region render function is called", (): void => {
         const container: HTMLDivElement = document.createElement("div");
         document.body.appendChild(container);
@@ -64,40 +77,25 @@ describe("button", (): void => {
         document.body.removeChild(container);
     });
 
-    test("default input region attributes are set correctly", (): void => {
+    test("onInvoked event handler called on keydown of input element", (): void => {
+        const container: HTMLDivElement = document.createElement("div");
+        document.body.appendChild(container);
+
+        const onInvoked: any = jest.fn();
         const rendered: any = mount(
-            <AutoSuggest listboxId="listboxId" label="test-label" disabled={true}>
+            <AutoSuggest listboxId="listboxId" onInvoked={onInvoked}>
                 {itemA}
                 {itemB}
                 {itemC}
-            </AutoSuggest>
+            </AutoSuggest>,
+            { attachTo: container }
         );
 
+        expect(onInvoked).toHaveBeenCalledTimes(0);
         const input: any = rendered.find("input");
-        expect(input.prop("aria-label")).toEqual("test-label");
-        expect(input.prop("aria-autocomplete")).toEqual("both");
-        expect(input.prop("aria-activedescendant")).toEqual(null);
-        expect(input.prop("aria-owns")).toEqual(null);
-        expect(input.prop("aria-controls")).toEqual(null);
-        expect(input.prop("disabled")).toBe(true);
-        expect(input.prop("role")).toEqual("combobox");
-    });
+        input.simulate("keydown", { keyCode: KeyCodes.enter });
+        expect(onInvoked).toHaveBeenCalledTimes(1);
 
-    test("default input region attributes change correctly as options list navigated", (): void => {
-        const rendered: any = mount(
-            <AutoSuggest listboxId="listboxId">
-                {itemA}
-                {itemB}
-                {itemC}
-            </AutoSuggest>
-        );
-
-        let input: any = rendered.find("input");
-        input.simulate("keydown", { keyCode: KeyCodes.arrowDown });
-
-        input = rendered.find("input");
-        expect(input.prop("aria-owns")).toEqual("listboxId");
-        expect(input.prop("aria-controls")).toEqual("listboxId");
-        expect(input.prop("aria-activedescendant")).toEqual("a");
+        document.body.removeChild(container);
     });
 });
