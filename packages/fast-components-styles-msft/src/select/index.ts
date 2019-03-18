@@ -1,4 +1,5 @@
-import designSystemDefaults, {
+import {
+    applyCornerRadius,
     DesignSystem,
     withDesignSystemDefaults,
 } from "../design-system";
@@ -13,8 +14,6 @@ import {
     neutralForegroundRest,
     neutralOutlineRest,
 } from "../utilities/color";
-import { contrast, toPx } from "@microsoft/fast-jss-utilities";
-import { curry } from "lodash-es";
 
 export const selectDisplayButtonOverrides: ComponentStyles<
     Partial<ButtonClassNameContract>,
@@ -50,10 +49,9 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = (
         },
 
         select_menu: {
-            ...elevation(ElevationMultiplier.e11, designSystem.foregroundColor)(
-                designSystem
-            ),
             background: neutralFillStealthRest,
+            ...applyCornerRadius(designSystem, true),
+            ...elevation(ElevationMultiplier.e11)(designSystem),
             zIndex: "1",
             position: "absolute",
             width: "100%",
@@ -63,7 +61,6 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = (
             minWidth: "276px",
             maxHeight: "328px",
             overflow: "auto",
-            borderRadius: toPx(designSystem.cornerRadius * 2),
         },
 
         select__multiSelectable: {

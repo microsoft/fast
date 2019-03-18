@@ -4,42 +4,46 @@ import {
     CSSRules,
 } from "@microsoft/fast-jss-manager";
 import { BadgeClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import {
-    applyLocalizedProperty,
-    Direction,
-    ellipsis,
-    localizeSpacing,
-    toPx,
-} from "@microsoft/fast-jss-utilities";
+import { Direction, ellipsis, toPx } from "@microsoft/fast-jss-utilities";
 import { accentForegroundCut, neutralForegroundRest } from "../utilities/color";
-import { DesignSystem, withDesignSystemDefaults } from "../design-system/index";
-import { applyTypeRampConfig } from "../utilities/typography";
+import {
+    applyCornerRadius,
+    DesignSystem,
+    withDesignSystemDefaults,
+} from "../design-system/index";
 import { fontWeight } from "../utilities/fonts";
+import { applyFontSize, padding } from "../utilities/density";
+import { Swatch } from "../utilities/color/palette";
+import { applyCursorDefault } from "../utilities/cursor";
 
-function smallBadgeStyle(): CSSRules<DesignSystem> {
+function smallBadgeStyle(designSystem: DesignSystem): CSSRules<DesignSystem> {
     return {
-        ...applyTypeRampConfig("t8"),
-        padding: localizeSpacing(Direction.ltr)(`2px ${toPx(8)} 0 0`),
-        height: "17px",
+        ...applyFontSize(designSystem, -1),
+        lineHeight: "13px",
+        height: "16px",
         "&$badge__filled": {
-            padding: "1px 8px 2px",
+            padding: `1px ${toPx(designSystem.designUnit * 2)}`,
         },
     };
 }
 
-function largeBadgeStyle(direction: Direction): CSSRules<DesignSystem> {
+function largeBadgeStyle(designSystem: DesignSystem): CSSRules<DesignSystem> {
+    const height: number =
+        (designSystem.defaultHeightMultiplier + designSystem.density - 2) *
+        designSystem.designUnit;
+
     return {
-        [applyLocalizedProperty("paddingRight", "paddingLeft", direction)]: "12px",
-        height: "20px",
+        height: toPx(height),
+        lineHeight: toPx(height),
         "&$badge__filled": {
-            padding: "3px 12px",
+            padding: `0 ${padding()(designSystem)}`,
         },
     };
 }
 
 function backplateStyle(designSystem: DesignSystem): CSSRules<DesignSystem> {
     return {
-        borderRadius: toPx(designSystem.cornerRadius),
+        ...applyCornerRadius(designSystem),
         fontWeight: `${fontWeight.normal}`,
     };
 }
@@ -54,9 +58,11 @@ const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
 
     return {
         badge: {
-            ...applyTypeRampConfig("t7"),
+            ...applyFontSize(designSystem),
             ...ellipsis(),
             overflow: "hidden",
+            ...applyCursorDefault(),
+            boxSizing: "border-box",
             fontWeight: `${fontWeight.semibold}`,
             display: "inline-block",
             maxWidth: "215px",
@@ -66,13 +72,13 @@ const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
         badge__filled: {
             ...backplateStyle(designSystem),
             backgroundColor: filledBackground,
-            color: accentForegroundCut,
+            color: accentForegroundCut((): Swatch => filledBackground),
         },
         badge__small: {
-            ...smallBadgeStyle(),
+            ...smallBadgeStyle(designSystem),
         },
         badge__large: {
-            ...largeBadgeStyle(direction),
+            ...largeBadgeStyle(designSystem),
         },
     };
 };

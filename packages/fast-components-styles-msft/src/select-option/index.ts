@@ -1,35 +1,27 @@
-import designSystemDefaults, {
+import {
+    applyCornerRadius,
+    applyDisabledState,
+    applyFocusPlaceholderBorder,
     DesignSystem,
     withDesignSystemDefaults,
 } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { SelectOptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { density } from "../utilities/density";
+import { applyFontSize, height, padding } from "../utilities/density";
 import {
-    neutralFillStealthActive,
     neutralFillStealthHover,
     neutralFillStealthRest,
     neutralFillStealthSelected,
     neutralFocus,
     neutralForegroundRest,
 } from "../utilities/color";
-// import {
-//     disabledContrast,
-//     ensureForegroundNormal,
-//     ensureNormalContrast,
-//     hoverContrast,
-// } from "../utilities/colors";
-import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
-import { applyTypeRampConfig } from "../utilities/typography";
-// import typographyPattern from "../patterns/typography";
+import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
 import {
     applyLocalizedProperty,
-    contrast,
     Direction,
     ellipsis,
-    toPx,
 } from "@microsoft/fast-jss-utilities";
-import { curry } from "lodash-es";
+import { applyCursorPointer } from "../utilities/cursor";
 
 const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -40,25 +32,22 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = (
     return {
         selectOption: {
             listStyleType: "none",
-            height: density(32),
-            display: "grid",
-            gridTemplateColumns: `${applyLocalizedProperty(
-                "12px auto auto 1fr 12px",
-                "12px 1fr auto auto 12px",
-                direction
-            )}`,
-            gridTemplateRows: "auto",
+            boxSizing: "border-box",
+            height: height()(designSystem),
+            display: "flex",
             alignItems: "center",
-            padding: "0",
-            mneutralForegroundRestargin: "0 4px",
+            padding: `0 ${padding(designSystem.focusOutlineWidth)(designSystem)}`,
+            margin: `0 ${toPx(designSystem.designUnit)}`,
             color: neutralForegroundRest,
+            fill: neutralForegroundRest,
             whiteSpace: "nowrap",
             overflow: "hidden",
             cursor: "default",
-            ...applyTypeRampConfig("t7"),
+            ...applyFontSize(designSystem),
             background: neutralFillStealthRest,
-            borderRadius: toPx(designSystem.cornerRadius),
-            border: "2px solid transparent",
+            ...applyCursorPointer(),
+            ...applyCornerRadius(designSystem),
+            ...applyFocusPlaceholderBorder(designSystem),
             ...applyFocusVisible<DesignSystem>({
                 borderColor: neutralFocus,
             }),
@@ -67,20 +56,22 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = (
             },
         },
         selectOption_contentRegion: {
-            gridColumnStart: "3",
             overflow: "hidden",
             ...ellipsis(),
         },
         selectOption_glyph: {
-            gridColumnStart: `${applyLocalizedProperty("2", "4", direction)}`,
             display: "inline-block",
             position: "relative",
             maxWidth: "16px",
-            margin: `${applyLocalizedProperty("0 12px 0 0", "0 0 0 12px", direction)}`,
+            flexShrink: "0",
+            margin: `${applyLocalizedProperty(
+                `0 ${padding()(designSystem)} 0 0`,
+                `0 0 0 ${padding()(designSystem)}`,
+                direction
+            )}`,
         },
         selectOption__disabled: {
-            cursor: "not-allowed",
-            opacity: ".3",
+            ...applyDisabledState(designSystem),
             "&, &:hover": {
                 background: neutralFillStealthRest,
             },

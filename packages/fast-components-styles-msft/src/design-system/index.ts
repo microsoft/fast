@@ -1,10 +1,12 @@
 import { Direction } from "@microsoft/fast-web-utilities";
-import { withDefaults } from "@microsoft/fast-jss-utilities";
+import { CSSRules } from "@microsoft/fast-jss-manager";
+import { toPx, withDefaults } from "@microsoft/fast-jss-utilities";
 import {
     accentPaletteConfig,
     neutralPaletteConfig,
     white,
 } from "../utilities/color/color-constants";
+import { applyCursorDisabled } from "../utilities/cursor";
 import { ColorPaletteConfig } from "@microsoft/fast-colors";
 
 export interface DesignSystem {
@@ -35,7 +37,7 @@ export interface DesignSystem {
     contrast: number;
 
     /**
-     * The density multiplier
+     * The density offset. Plus or minus 1 - 3.
      */
     density: number;
 
@@ -43,6 +45,21 @@ export interface DesignSystem {
      * The grid-unit that UI dimensions are derived from
      */
     designUnit: number;
+
+    /**
+     * The number of designUnits in the default height at the base density (0).
+     */
+    defaultHeightMultiplier: number;
+
+    /**
+     * The number of designUnits used for horizontal padding at the base density (0).
+     */
+    defaultPaddingMultiplier: number;
+
+    /**
+     * The type ramp size to use at the base density (0).
+     */
+    defaultTypeRampSize: number;
 
     /**
      * The primary direction of the view.
@@ -60,22 +77,37 @@ export interface DesignSystem {
      */
     cornerRadius?: number;
 
-    /*
+    /**
      * The width of the outline in pixels applied to outline components
      */
     outlinePatternOutlineWidth?: number;
+
+    /**
+     * The width of the outline for focus state in pixels.
+     */
+    focusOutlineWidth: number;
+
+    /**
+     * The opacity to use for disabled component state.
+     */
+    disabledOpacity: number;
 }
 
 const designSystemDefaults: DesignSystem = {
     backgroundColor: white,
     contrast: 0,
-    density: 1,
+    density: 0,
     designUnit: 4,
+    defaultHeightMultiplier: 8,
+    defaultPaddingMultiplier: 3,
+    defaultTypeRampSize: 7,
     direction: Direction.ltr,
     cornerRadius: 2,
     outlinePatternOutlineWidth: 1,
+    focusOutlineWidth: 2,
     neutralPaletteConfig,
     accentPaletteConfig,
+    disabledOpacity: 0.3,
 
     // @deprecated
     foregroundColor: "#111",
@@ -106,6 +138,37 @@ export function ensureDesignSystemDefaults<T>(
 ): (designSystem: DesignSystem) => T {
     return (designSystem: DesignSystem): T => {
         return callback(withDesignSystemDefaults(designSystem));
+    };
+}
+
+export function applyCornerRadius(
+    designSystem: DesignSystem,
+    floating: boolean = false
+): CSSRules<DesignSystem> {
+    return {
+        borderRadius: toPx(designSystem.cornerRadius * (floating ? 2 : 1)),
+    };
+}
+
+/**
+ * Sets the border width, style, and color to reserve the space for the focus indicator.
+ *
+ * @param config The design system config
+ */
+export function applyFocusPlaceholderBorder(
+    config: DesignSystem
+): CSSRules<DesignSystem> {
+    const designSystem: DesignSystem = withDesignSystemDefaults(config);
+    return {
+        border: `${toPx(designSystem.focusOutlineWidth)} solid transparent`,
+    };
+}
+
+export function applyDisabledState(config: DesignSystem): CSSRules<DesignSystem> {
+    const designSystem: DesignSystem = withDesignSystemDefaults(config);
+    return {
+        opacity: `${designSystem.disabledOpacity}`,
+        ...applyCursorDisabled(),
     };
 }
 

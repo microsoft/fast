@@ -12,8 +12,6 @@ import {
     neutralFillStealthHover,
     neutralFillStealthRest,
     neutralFocus,
-    neutralForegroundActive,
-    neutralForegroundHover,
     neutralForegroundRest,
     neutralOutlineActive,
     neutralOutlineHover,
@@ -31,22 +29,21 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
 
     return {
         flipper: {
-            width: "40px",
-            height: "40px",
+            width: toPx(
+                (designSystem.defaultHeightMultiplier + 2) * designSystem.designUnit
+            ),
+            height: toPx(
+                (designSystem.defaultHeightMultiplier + 2) * designSystem.designUnit
+            ),
             margin: "0",
             position: "relative",
             color: neutralForegroundRest,
             background: "transparent",
-            border: `${toPx(designSystem.outlinePatternOutlineWidth)} solid transparent`,
-            borderRadius: "50%",
+            border: "none",
             padding: "0",
             "&::before": {
-                transition: "all 0.2s ease-in-out",
+                transition: "all 0.1s ease-in-out",
                 content: "''",
-                top: `-${toPx(designSystem.outlinePatternOutlineWidth)}`,
-                right: `-${toPx(designSystem.outlinePatternOutlineWidth)}`,
-                bottom: `-${toPx(designSystem.outlinePatternOutlineWidth)}`,
-                left: `-${toPx(designSystem.outlinePatternOutlineWidth)}`,
                 opacity: "0.8",
                 background: neutralFillStealthRest,
                 border: `${toPx(
@@ -54,29 +51,27 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
                 )} solid ${neutralOutlineRest(designSystem)}`,
                 borderRadius: "50%",
                 position: "absolute",
+                top: "0",
+                right: "0",
+                bottom: "0",
+                left: "0",
             },
             "&:active": {
                 "&::before": {
                     background: neutralFillStealthActive,
-                    border: `${toPx(
-                        designSystem.outlinePatternOutlineWidth
-                    )} solid ${neutralOutlineActive(designSystem)}`,
+                    borderColor: neutralOutlineActive,
                 },
             },
             "&:hover": {
                 "&::before": {
                     background: neutralFillStealthHover,
-                    border: `${toPx(
-                        designSystem.outlinePatternOutlineWidth
-                    )} solid ${neutralOutlineHover(designSystem)}`,
+                    borderColor: neutralOutlineHover,
                 },
             },
             ...applyFocusVisible({
                 "&::before": {
                     boxShadow: `0 0 0 1px ${neutralFocus(designSystem)} inset`,
-                    border: `${toPx(
-                        designSystem.outlinePatternOutlineWidth
-                    )} solid ${neutralFocus(designSystem)}`,
+                    border: neutralFocus,
                 },
             }),
             "&::-moz-focus-inner": {

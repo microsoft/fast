@@ -17,8 +17,8 @@ import {
  * Deltas to derive state swatches from the background
  */
 export const accentForegroundDeltaRest: number = 0;
-export const accentForegroundDeltaHover: number = 1;
-export const accentForegroundDeltaActive: number = 2;
+export const accentForegroundDeltaHover: number = 4;
+export const accentForegroundDeltaActive: number = 8;
 
 const accentForegroundAlgorithm: (
     designSystem: DesignSystem,
