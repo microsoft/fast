@@ -70,6 +70,60 @@ export interface DesignSystem {
      * The width of the outline in pixels applied to outline components
      */
     outlinePatternOutlineWidth?: number;
+
+    /**
+     * Color swatch deltas for accent-fill recipe
+     */
+    accentFillRestDelta: number;
+    accentFillHoverDelta: number;
+    accentFillActiveDelta: number;
+    accentFillSelectedDelta: number;
+
+    /**
+     * Color swatch deltas for accent-foreground recipe
+     */
+    accentForegroundRestDelta: number;
+    accentForegroundHoverDelta: number;
+    accentForegroundActiveDelta: number;
+
+    /*
+     * Color swatch deltas for neutral-fill recipe
+     */
+    neutralFillRestDelta: number;
+    neutralFillHoverDelta: number;
+    neutralFillActiveDelta: number;
+    neutralFillSelectedDelta: number;
+
+    /**
+     * Color swatch deltas for neutral-fill-input recipe
+     */
+    neutralFillInputRestDelta: number;
+    neutralFillInputHoverDelta: number;
+    neutralFillInputActiveDelta: number;
+    neutralFillInputSelectedDelta: number;
+
+    /**
+     * Color swatch deltas for neutral-fill-stealth recipe
+     */
+    neutralFillStealthRestDelta: number;
+    neutralFillStealthHoverDelta: number;
+    neutralFillStealthActiveDelta: number;
+    neutralFillStealthSelectedDelta: number;
+
+    /**
+     * Color swatch deltas for neutral-foreground
+     */
+    neutralForegroundDarkIndex: number;
+    neutralForegroundLightIndex: number;
+    neutralForegroundHoverDelta: number;
+    neutralForegroundActiveDelta: number;
+
+    /**
+     * Color swatch deltas for neutral-outline
+     */
+    neutralOutlineRestDelta: number;
+    neutralOutlineHoverDelta: number;
+    neutralOutlineActiveDelta: number;
 }
 
 function createColorPalette(baseColor: ColorRGBA64): Palette {
@@ -95,6 +149,42 @@ const designSystemDefaults: DesignSystem = {
     outlinePatternOutlineWidth: 1,
     neutralPalette: createColorPalette(new ColorRGBA64(0.5, 0.5, 0.5, 1)),
     accentPalette: createColorPalette(parseColorHexRGB("#0078D4")),
+
+    /**
+     * Recipe Deltas
+     */
+    accentFillRestDelta: 0,
+    accentFillHoverDelta: 2,
+    accentFillActiveDelta: 4,
+    accentFillSelectedDelta: 12,
+
+    accentForegroundRestDelta: 0,
+    accentForegroundHoverDelta: 1,
+    accentForegroundActiveDelta: 2,
+
+    neutralFillRestDelta: 4,
+    neutralFillHoverDelta: 3,
+    neutralFillActiveDelta: 2,
+    neutralFillSelectedDelta: 16,
+
+    neutralFillInputRestDelta: 4,
+    neutralFillInputHoverDelta: 4,
+    neutralFillInputActiveDelta: 4,
+    neutralFillInputSelectedDelta: 4,
+
+    neutralFillStealthRestDelta: 0,
+    neutralFillStealthHoverDelta: 3,
+    neutralFillStealthActiveDelta: 2,
+    neutralFillStealthSelectedDelta: 12,
+
+    neutralForegroundDarkIndex: 58,
+    neutralForegroundLightIndex: 0,
+    neutralForegroundHoverDelta: 8,
+    neutralForegroundActiveDelta: 16,
+
+    neutralOutlineRestDelta: 12,
+    neutralOutlineHoverDelta: 24,
+    neutralOutlineActiveDelta: 18,
 
     // @deprecated
     foregroundColor: "#111",
