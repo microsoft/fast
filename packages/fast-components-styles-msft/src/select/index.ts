@@ -1,4 +1,8 @@
-import { DesignSystem, withDesignSystemDefaults } from "../design-system";
+import {
+    applyCornerRadius,
+    DesignSystem,
+    withDesignSystemDefaults,
+} from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import {
     ButtonClassNameContract,
@@ -10,7 +14,6 @@ import {
     neutralForegroundRest,
     neutralOutlineRest,
 } from "../utilities/color";
-import { toPx } from "@microsoft/fast-jss-utilities";
 
 export const selectDisplayButtonOverrides: ComponentStyles<
     Partial<ButtonClassNameContract>,
@@ -46,10 +49,9 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = (
         },
 
         select_menu: {
-            ...elevation(ElevationMultiplier.e11, designSystem.foregroundColor)(
-                designSystem
-            ),
             background: neutralFillStealthRest,
+            ...applyCornerRadius(designSystem, true),
+            ...elevation(ElevationMultiplier.e11)(designSystem),
             zIndex: "1",
             position: "absolute",
             width: "100%",
@@ -59,7 +61,6 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = (
             minWidth: "276px",
             maxHeight: "328px",
             overflow: "auto",
-            borderRadius: toPx(designSystem.cornerRadius * 2),
         },
 
         select__multiSelectable: {

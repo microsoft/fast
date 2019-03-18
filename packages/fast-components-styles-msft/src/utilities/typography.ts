@@ -50,8 +50,8 @@ export const typeRamp: TypeRamp = {
         lineHeight: 44,
     },
     t4: {
-        fontSize: 24,
-        lineHeight: 32,
+        fontSize: 28,
+        lineHeight: 36,
     },
     t5: {
         fontSize: 20,
@@ -71,7 +71,7 @@ export const typeRamp: TypeRamp = {
     },
     t9: {
         fontSize: 10,
-        lineHeight: 12,
+        lineHeight: 16,
     },
 };
 

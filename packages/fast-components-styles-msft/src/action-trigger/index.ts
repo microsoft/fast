@@ -20,6 +20,7 @@ import {
     accentForegroundRest,
     neutralForegroundRest,
 } from "../utilities/color";
+import { padding } from "../utilities/density";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
 export const actionTriggerButtonOverrides: ComponentStyles<
@@ -50,7 +51,10 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = (
             display: "inline-block",
             position: "relative",
             maxWidth: "16px",
-            [applyLocalizedProperty("marginRight", "marginLeft", direction)]: "6px",
+            flexShrink: "0",
+            [applyLocalizedProperty("marginRight", "marginLeft", direction)]: padding()(
+                designSystem
+            ),
         },
         actionTrigger__primary: {
             "& $actionTrigger_glyph": {

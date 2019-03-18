@@ -1,4 +1,5 @@
-import designSystemDefaults, {
+import {
+    applyDisabledState,
     DesignSystem,
     withDesignSystemDefaults,
 } from "../design-system";
@@ -15,19 +16,15 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
-import {
-    ComponentStyles,
-    ComponentStyleSheet,
-    CSSRules,
-} from "@microsoft/fast-jss-manager";
+import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import {
     applyFocusVisible,
     applyLocalizedProperty,
     Direction,
     toPx,
 } from "@microsoft/fast-jss-utilities";
-import { applyTypeRampConfig } from "../utilities/typography";
 import { ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { applyFontSize } from "../utilities/density";
 
 const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -42,7 +39,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             transition: "all 0.2s ease-in-out",
         },
         toggle_label: {
-            ...applyTypeRampConfig("t8"),
+            ...applyFontSize(designSystem),
             display: "block",
             paddingBottom: "7px",
             clear: "both",
@@ -80,21 +77,15 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             outline: "none",
             "&:hover": {
                 background: neutralFillInputHover,
-                border: `${toPx(
-                    designSystem.outlinePatternOutlineWidth
-                )} solid ${neutralOutlineHover(designSystem)}`,
+                borderColor: neutralOutlineHover,
             },
             "&:active": {
                 background: neutralFillInputActive,
-                border: `${toPx(
-                    designSystem.outlinePatternOutlineWidth
-                )} solid ${neutralOutlineActive(designSystem)}`,
+                borderColor: neutralOutlineActive,
             },
             ...applyFocusVisible({
                 boxShadow: `0 0 0 1px ${neutralFocus(designSystem)} inset`,
-                border: `${toPx(
-                    designSystem.outlinePatternOutlineWidth
-                )} solid ${neutralFocus(designSystem)}`,
+                borderColor: neutralFocus(designSystem),
             }),
         },
         toggle__checked: {
@@ -103,9 +94,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
                 borderColor: accentFillRest,
                 ...applyFocusVisible({
                     boxShadow: `0 0 0 1px ${neutralFocus(designSystem)} inset`,
-                    border: `${toPx(
-                        designSystem.outlinePatternOutlineWidth
-                    )} solid ${neutralFocus(designSystem)}`,
+                    borderColor: neutralFocus(designSystem),
                 }),
             },
             "& $toggle_stateIndicator": {
@@ -114,8 +103,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             },
         },
         toggle__disabled: {
-            cursor: "not-allowed",
-            opacity: "0.3",
+            ...applyDisabledState(designSystem),
             "& $toggle_input": {
                 background: neutralFillSelected,
                 borderColor: neutralFillSelected,
@@ -128,6 +116,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             },
         },
         toggle_statusMessage: {
+            ...applyFontSize(designSystem),
             float: applyLocalizedProperty("left", "right", direction),
             [applyLocalizedProperty("padding-left", "padding-right", direction)]: "5px",
             userSelect: "none",

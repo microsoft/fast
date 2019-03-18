@@ -2,8 +2,7 @@ import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
-import { density } from "../utilities/density";
-import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
+import { height, maxHeight, minHeight } from "../utilities/density";
 import { inputFieldStyles } from "../patterns/input-field";
 
 const styles: ComponentStyles<TextFieldClassNameContract, DesignSystem> = (
@@ -14,9 +13,9 @@ const styles: ComponentStyles<TextFieldClassNameContract, DesignSystem> = (
     return {
         textField: {
             ...inputFieldStyles(designSystem),
-            height: density(defaultHeight)(designSystem),
-            minHeight: toPx(minHeight),
-            maxHeight: toPx(maxHeight),
+            height: height()(designSystem),
+            minHeight: minHeight()(designSystem),
+            maxHeight: maxHeight()(designSystem),
         },
     };
 };

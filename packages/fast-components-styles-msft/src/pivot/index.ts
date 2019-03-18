@@ -1,4 +1,9 @@
-import { DesignSystem, withDesignSystemDefaults } from "../design-system";
+import {
+    applyCornerRadius,
+    applyFocusPlaceholderBorder,
+    DesignSystem,
+    withDesignSystemDefaults,
+} from "../design-system";
 import {
     ComponentStyles,
     ComponentStyleSheet,
@@ -10,8 +15,7 @@ import {
     Direction,
     toPx,
 } from "@microsoft/fast-jss-utilities";
-import { applyTypeRampConfig } from "../utilities/typography";
-import { density } from "../utilities/density";
+import { applyFontSize, height, heightNumber, padding } from "../utilities/density";
 import {
     accentFillRest,
     neutralFocus,
@@ -39,17 +43,16 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
             boxSizing: "border-box",
         },
         pivot_tab: {
-            minHeight: density(32),
-            padding: "0 12px",
+            height: height()(designSystem),
+            padding: `0 ${padding(2)(designSystem)}`,
             whiteSpace: "nowrap",
             display: "flex",
-            border: "2px solid",
-            borderColor: "transparent",
+            ...applyFocusPlaceholderBorder(designSystem),
             alignItems: "center",
             boxSizing: "border-box",
             userSelect: "none",
             color: neutralForegroundRest,
-            borderRadius: toPx(designSystem.cornerRadius),
+            ...applyCornerRadius(designSystem),
             "&:hover": {
                 color: neutralForegroundHover,
             },
@@ -63,12 +66,14 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
         pivot_tab__active: {},
         pivot_tabContent: {
             transition: "all 0.2s ease-in-out",
-            ...applyTypeRampConfig("t7"),
+            ...applyFontSize(designSystem),
+            position: "relative",
+            top: "-2px",
         },
         pivot_activeIndicator: {
             position: "absolute",
-            borderRadius: toPx(designSystem.cornerRadius),
-            top: density(27),
+            ...applyCornerRadius(designSystem),
+            top: toPx(heightNumber(1)(designSystem) - 3 - 2) /* height & padding */,
             left: "-10px",
             transition: "0.2s ease-in-out",
             width: "20px",
