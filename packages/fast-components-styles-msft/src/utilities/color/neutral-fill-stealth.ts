@@ -19,28 +19,6 @@ import {
     StatefulSwatchToColorRecipeFactory,
     SwatchStates,
 } from "./common";
-import {
-    neutralFillDeltaActive,
-    neutralFillDeltaHover,
-    neutralFillDeltaRest,
-} from "./neutral-fill";
-
-export const neutralFillStealthDeltaRest: number = 0;
-export const neutralFillStealthDeltaHover: number = 3;
-export const neutralFillStealthDeltaActive: number = 2;
-export const neutralFillStealthDeltaSelected: number = 12;
-
-/**
- * The minimum offset before which we can switch fill directions
- */
-const swapThreshold: number = Math.max(
-    neutralFillDeltaRest,
-    neutralFillDeltaHover,
-    neutralFillDeltaActive,
-    neutralFillStealthDeltaRest,
-    neutralFillStealthDeltaHover,
-    neutralFillStealthDeltaActive
-);
 
 /**
  * Algorithm for determining stealth fill colors
@@ -53,24 +31,33 @@ const neutralFillStealthAlgorithm: DesignSystemResolver<FillSwatch> = (
         PaletteType.neutral,
         designSystem.backgroundColor
     )(designSystem);
+    const swapThreshold: number = Math.max(
+        designSystem.neutralFillRestDelta,
+        designSystem.neutralFillHoverDelta,
+        designSystem.neutralFillActiveDelta,
+        designSystem.neutralFillStealthRestDelta,
+        designSystem.neutralFillStealthHoverDelta,
+        designSystem.neutralFillStealthActiveDelta
+    );
     const direction: number = backgroundIndex >= swapThreshold ? -1 : 1;
-    const restIndex: number = backgroundIndex + direction * neutralFillStealthDeltaRest;
+    const restIndex: number =
+        backgroundIndex + direction * designSystem.neutralFillStealthRestDelta;
 
     return {
         rest: getSwatch(restIndex, neutralPalette),
         hover: getSwatch(
-            backgroundIndex + direction * neutralFillStealthDeltaHover,
+            backgroundIndex + direction * designSystem.neutralFillStealthHoverDelta,
             neutralPalette
         ),
         active: getSwatch(
-            backgroundIndex + direction * neutralFillStealthDeltaActive,
+            backgroundIndex + direction * designSystem.neutralFillStealthActiveDelta,
             neutralPalette
         ),
         selected: getSwatch(
             restIndex +
                 (isDarkTheme(designSystem)
-                    ? neutralFillStealthDeltaSelected * -1
-                    : neutralFillStealthDeltaSelected),
+                    ? designSystem.neutralFillStealthActiveDelta * -1
+                    : designSystem.neutralFillStealthActiveDelta),
             neutralPalette
         ),
     };
