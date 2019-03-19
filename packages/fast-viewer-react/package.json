@@ -70,6 +70,7 @@
     ]
   },
   "peerDependencies": {
+    "@microsoft/fast-jss-manager-react": "^3.1.13",
     "jss": "^9.8.0",
     "jss-preset-default": "^4.3.0",
     "lodash-es": "^4.0.0",
@@ -82,6 +83,7 @@
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
+    "@microsoft/fast-jss-manager-react": "^3.1.13",
     "@microsoft/fast-tslint-rules": "^3.0.2",
     "@types/jest": "^24.0.11",
     "@types/lodash-es": "^4.17.0",
