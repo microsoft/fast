@@ -1,7 +1,4 @@
-import designSystemDefaults, {
-    DesignSystem,
-    withDesignSystemDefaults,
-} from "../design-system";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import {
     ButtonClassNameContract,
@@ -13,8 +10,7 @@ import {
     neutralForegroundRest,
     neutralOutlineRest,
 } from "../utilities/color";
-import { contrast, toPx } from "@microsoft/fast-jss-utilities";
-import { curry } from "lodash-es";
+import { toPx } from "@microsoft/fast-jss-utilities";
 
 export const selectDisplayButtonOverrides: ComponentStyles<
     Partial<ButtonClassNameContract>,

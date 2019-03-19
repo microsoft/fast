@@ -1,12 +1,12 @@
 // tslint:disable:member-ordering
 // tslint:disable:prefer-for-of
 
-import { blendMultiply, blendOverlay, saturateViaLCH } from "./colorBlending";
-import { rgbToHSL } from "./colorConverters";
-import { ColorHSL } from "./colorHSL";
-import { ColorInterpolationSpace, interpolateByColorSpace } from "./colorInterpolation";
-import { ColorRGBA64 } from "./colorRGBA64";
-import { ColorScale } from "./colorScale";
+import { blendMultiply, blendOverlay, saturateViaLCH } from "./color-blending";
+import { rgbToHSL } from "./color-converters";
+import { ColorHSL } from "./color-hsl";
+import { ColorInterpolationSpace, interpolateByColorSpace } from "./color-interpolation";
+import { ColorRGBA64 } from "./color-rgba-64";
+import { ColorScale } from "./color-scale";
 
 export interface ColorPaletteConfig {
     baseColor?: ColorRGBA64;
