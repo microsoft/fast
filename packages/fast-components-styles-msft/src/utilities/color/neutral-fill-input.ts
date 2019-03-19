@@ -21,12 +21,6 @@ import {
 } from "./common";
 
 /**
- * Deltas to derive state swatches from the background
- * All states have the same delta.
- */
-export const neutralFillInputDelta: number = 4;
-
-/**
  * Algorithm for determining neutral backplate colors
  */
 const neutralFillInputAlgorithm: DesignSystemResolver<FillSwatch> = (
@@ -37,16 +31,23 @@ const neutralFillInputAlgorithm: DesignSystemResolver<FillSwatch> = (
         PaletteType.neutral,
         designSystem.backgroundColor
     )(designSystem);
-    const color: Swatch = getSwatch(
-        backgroundIndex - neutralFillInputDelta,
-        neutralPalette
-    );
-
     return {
-        rest: color,
-        hover: color,
-        active: color,
-        selected: color,
+        rest: getSwatch(
+            backgroundIndex - designSystem.neutralFillInputRestDelta,
+            neutralPalette
+        ),
+        hover: getSwatch(
+            backgroundIndex - designSystem.neutralFillInputHoverDelta,
+            neutralPalette
+        ),
+        active: getSwatch(
+            backgroundIndex - designSystem.neutralFillInputActiveDelta,
+            neutralPalette
+        ),
+        selected: getSwatch(
+            backgroundIndex - designSystem.neutralFillInputSelectedDelta,
+            neutralPalette
+        ),
     };
 };
 

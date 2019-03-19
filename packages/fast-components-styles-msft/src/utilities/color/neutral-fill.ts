@@ -22,23 +22,6 @@ import {
 } from "./common";
 
 /**
- * Deltas to derive state swatches from the background
- */
-export const neutralFillDeltaRest: number = 4;
-export const neutralFillDeltaHover: number = 3;
-export const neutralFillDeltaActive: number = 2;
-export const neutralFillDeltaSelected: number = 16;
-
-/**
- * The minimum offset before which we can switch backplate directions
- */
-const swapThreshold: number = Math.max(
-    neutralFillDeltaRest,
-    neutralFillDeltaHover,
-    neutralFillDeltaActive
-);
-
-/**
  * Algorithm for determining neutral backplate colors
  */
 const neutralFillAlgorithm: DesignSystemResolver<FillSwatch> = (
@@ -49,24 +32,30 @@ const neutralFillAlgorithm: DesignSystemResolver<FillSwatch> = (
         PaletteType.neutral,
         designSystem.backgroundColor
     )(designSystem);
+    const swapThreshold: number = Math.max(
+        designSystem.neutralFillRestDelta,
+        designSystem.neutralFillHoverDelta,
+        designSystem.neutralFillActiveDelta
+    );
     const direction: number = backgroundIndex >= swapThreshold ? -1 : 1;
-    const restIndex: number = backgroundIndex + direction * neutralFillDeltaRest;
+    const restIndex: number =
+        backgroundIndex + direction * designSystem.neutralFillRestDelta;
 
     return {
         rest: getSwatch(restIndex, neutralPalette),
         hover: getSwatch(
-            backgroundIndex + direction * neutralFillDeltaHover,
+            backgroundIndex + direction * designSystem.neutralFillHoverDelta,
             neutralPalette
         ),
         active: getSwatch(
-            backgroundIndex + direction * neutralFillDeltaActive,
+            backgroundIndex + direction * designSystem.neutralFillActiveDelta,
             neutralPalette
         ),
         selected: getSwatch(
             restIndex +
                 (isDarkTheme(designSystem)
-                    ? neutralFillDeltaSelected * -1
-                    : neutralFillDeltaSelected),
+                    ? designSystem.neutralFillSelectedDelta * -1
+                    : designSystem.neutralFillSelectedDelta),
             neutralPalette
         ),
     };
