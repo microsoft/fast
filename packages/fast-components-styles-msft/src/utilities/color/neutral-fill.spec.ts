@@ -1,17 +1,13 @@
 import {
     neutralFill,
     neutralFillActive,
-    neutralFillDeltaActive,
-    neutralFillDeltaHover,
-    neutralFillDeltaRest,
-    neutralFillDeltaSelected,
     neutralFillHover,
     neutralFillRest,
     neutralFillSelected,
 } from "./neutral-fill";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
-import { palette, Palette, PaletteType, Swatch } from "./palette";
-import { FillSwatchFamily } from "./common";
+import { palette, Palette, PaletteType } from "./palette";
+import { FillSwatchFamily, Swatch } from "./common";
 
 describe("neutralFill", (): void => {
     const neutralPalette: Palette = palette(PaletteType.neutral)(designSystemDefaults);
@@ -19,37 +15,40 @@ describe("neutralFill", (): void => {
 
     test("should opperate on design system defaults", (): void => {
         expect(neutralFillRest({} as DesignSystem)).toBe(
-            neutralPalette[neutralFillDeltaRest]
+            neutralPalette[designSystemDefaults.neutralFillRestDelta]
         );
         expect(neutralFillHover({} as DesignSystem)).toBe(
-            neutralPalette[neutralFillDeltaHover]
+            neutralPalette[designSystemDefaults.neutralFillHoverDelta]
         );
         expect(neutralFillActive({} as DesignSystem)).toBe(
-            neutralPalette[neutralFillDeltaActive]
+            neutralPalette[designSystemDefaults.neutralFillActiveDelta]
         );
         expect(neutralFillSelected({} as DesignSystem)).toBe(
-            neutralPalette[neutralFillDeltaRest + neutralFillDeltaSelected]
+            neutralPalette[
+                designSystemDefaults.neutralFillRestDelta +
+                    designSystemDefaults.neutralFillSelectedDelta
+            ]
         );
     });
 
     test("should switch from dark to light after 4 swatches", (): void => {
         expect(neutralFillRest(designSystemDefaults)).toBe(
-            neutralPalette[neutralFillDeltaRest]
+            neutralPalette[designSystemDefaults.neutralFillRestDelta]
         );
         expect(neutralFillHover(designSystemDefaults)).toBe(
-            neutralPalette[neutralFillDeltaHover]
+            neutralPalette[designSystemDefaults.neutralFillHoverDelta]
         );
         expect(neutralFillActive(designSystemDefaults)).toBe(
-            neutralPalette[neutralFillDeltaActive]
+            neutralPalette[designSystemDefaults.neutralFillActiveDelta]
         );
         expect(neutralFillRest(() => neutralPalette[1])(designSystemDefaults)).toBe(
-            neutralPalette[neutralFillDeltaRest + 1]
+            neutralPalette[designSystemDefaults.neutralFillRestDelta + 1]
         );
         expect(neutralFillRest(() => neutralPalette[2])(designSystemDefaults)).toBe(
-            neutralPalette[neutralFillDeltaRest + 2]
+            neutralPalette[designSystemDefaults.neutralFillRestDelta + 2]
         );
         expect(neutralFillRest(() => neutralPalette[3])(designSystemDefaults)).toBe(
-            neutralPalette[neutralFillDeltaRest + 3]
+            neutralPalette[designSystemDefaults.neutralFillRestDelta + 3]
         );
         expect(neutralFillRest(() => neutralPalette[4])(designSystemDefaults)).toBe(
             neutralPalette[0]

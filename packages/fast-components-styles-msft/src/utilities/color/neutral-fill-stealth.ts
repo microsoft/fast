@@ -14,7 +14,6 @@ import {
 } from "./palette";
 import {
     FillSwatchFamily,
-    Swatch,
     swatchFamilyToSwatchRecipeFactory,
     SwatchFamilyType,
     SwatchRecipe,

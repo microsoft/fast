@@ -4,11 +4,9 @@ import {
     ensureDesignSystemDefaults,
     withDesignSystemDefaults,
 } from "../../design-system";
-import { accentSwatch, findAccessibleAccentSwatchIndexs } from "./accent";
+import { findAccessibleAccentSwatchIndexs } from "./accent";
 import { getSwatch, palette, Palette, PaletteType } from "./palette";
 import {
-    ColorRecipe,
-    Swatch,
     SwatchFamily,
     SwatchFamilyResolver,
     swatchFamilyToSwatchRecipeFactory,

@@ -13,7 +13,6 @@ import {
     ensureDesignSystemDefaults,
     withDesignSystemDefaults,
 } from "../../design-system";
-import { neutralFillRest } from "./neutral-fill";
 
 /**
  * Function to derive neutralForeground from color inputs.

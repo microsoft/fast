@@ -5,7 +5,6 @@ import {
     withDesignSystemDefaults,
 } from "../../design-system";
 import {
-    ColorRecipe,
     FillSwatchFamily,
     Swatch,
     SwatchFamilyResolver,

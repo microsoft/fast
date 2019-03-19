@@ -19,7 +19,6 @@ import {
     SwatchFamilyType,
     SwatchRecipe,
 } from "./common";
-import { clamp } from "lodash-es";
 
 const neutralOutlineAlgorithm: SwatchFamilyResolver = (
     designSystem: DesignSystem

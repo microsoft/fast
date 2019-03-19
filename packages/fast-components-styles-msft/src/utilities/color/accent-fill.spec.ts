@@ -1,9 +1,5 @@
 import {
     accentFillActive,
-    accentFillDeltaActive,
-    accentFillDeltaHover,
-    accentFillDeltaRest,
-    accentFillDeltaSelected,
     accentFillHover,
     accentFillLargeActive,
     accentFillLargeHover,
@@ -13,8 +9,8 @@ import {
     accentFillSelected,
 } from "./accent-fill";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
-import { palette, Palette, PaletteType, Swatch } from "./palette";
-import { contrast } from "./common";
+import { palette, Palette, PaletteType } from "./palette";
+import { contrast, Swatch } from "./common";
 import { accentForegroundCut } from "./accent-foreground-cut";
 
 describe("accentFill", (): void => {
@@ -22,33 +18,34 @@ describe("accentFill", (): void => {
     const accentPalette: Palette = palette(PaletteType.accent)(designSystemDefaults);
 
     const accentIndex: number =
-        Math.floor(accentPalette.length / 2) + accentFillDeltaHover;
-    const largeAccentIndex: number = accentIndex - accentFillDeltaHover;
+        Math.floor(accentPalette.length / 2) + designSystemDefaults.accentFillHoverDelta;
+    const largeAccentIndex: number =
+        accentIndex - designSystemDefaults.accentFillHoverDelta;
 
     test("should operate on design system defaults", (): void => {
         expect(accentFillRest({} as DesignSystem)).toBe(
-            accentPalette[accentIndex - accentFillDeltaRest]
+            accentPalette[accentIndex - designSystemDefaults.accentFillRestDelta]
         );
         expect(accentFillHover({} as DesignSystem)).toBe(
-            accentPalette[accentIndex - accentFillDeltaHover]
+            accentPalette[accentIndex - designSystemDefaults.accentFillHoverDelta]
         );
         expect(accentFillActive({} as DesignSystem)).toBe(
-            accentPalette[accentIndex - accentFillDeltaActive]
+            accentPalette[accentIndex - designSystemDefaults.accentFillActiveDelta]
         );
         expect(accentFillSelected({} as DesignSystem)).toBe(
-            accentPalette[accentIndex + accentFillDeltaSelected]
+            accentPalette[accentIndex + designSystemDefaults.accentFillSelectedDelta]
         );
         expect(accentFillLargeRest({} as DesignSystem)).toBe(
-            accentPalette[largeAccentIndex - accentFillDeltaRest]
+            accentPalette[largeAccentIndex - designSystemDefaults.accentFillRestDelta]
         );
         expect(accentFillLargeHover({} as DesignSystem)).toBe(
-            accentPalette[largeAccentIndex - accentFillDeltaHover]
+            accentPalette[largeAccentIndex - designSystemDefaults.accentFillHoverDelta]
         );
         expect(accentFillLargeActive({} as DesignSystem)).toBe(
-            accentPalette[largeAccentIndex - accentFillDeltaActive]
+            accentPalette[largeAccentIndex - designSystemDefaults.accentFillActiveDelta]
         );
         expect(accentFillLargeSelected({} as DesignSystem)).toBe(
-            accentPalette[largeAccentIndex + accentFillDeltaSelected]
+            accentPalette[largeAccentIndex + designSystemDefaults.accentFillSelectedDelta]
         );
     });
 

@@ -1,14 +1,13 @@
 import {
     neutralFillInput,
     neutralFillInputActive,
-    neutralFillInputDelta,
     neutralFillInputHover,
     neutralFillInputRest,
     neutralFillInputSelected,
 } from "./neutral-fill-input";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
-import { palette, Palette, PaletteType, Swatch } from "./palette";
-import { FillSwatchFamily } from "./common";
+import { palette, Palette, PaletteType } from "./palette";
+import { FillSwatchFamily, Swatch } from "./common";
 import { clamp } from "lodash-es";
 
 describe("neutralFillInput", (): void => {
@@ -31,7 +30,11 @@ describe("neutralFillInput", (): void => {
                     } as DesignSystem)
                 ).toBe(
                     neutralPalette[
-                        clamp(index - neutralFillInputDelta, 0, neutralPalette.length - 1)
+                        clamp(
+                            index - designSystemDefaults.neutralFillInputRestDelta,
+                            0,
+                            neutralPalette.length - 1
+                        )
                     ]
                 );
             }

@@ -4,7 +4,6 @@ import {
     ensureDesignSystemDefaults,
     withDesignSystemDefaults,
 } from "../../design-system";
-import { clamp } from "lodash-es";
 import {
     findClosestSwatchIndex,
     getSwatch,
@@ -15,7 +14,6 @@ import {
 } from "./palette";
 import {
     FillSwatchFamily,
-    Swatch,
     swatchFamilyToSwatchRecipeFactory,
     SwatchFamilyType,
     SwatchRecipe,
