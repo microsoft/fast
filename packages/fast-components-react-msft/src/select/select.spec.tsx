@@ -51,4 +51,17 @@ describe("button", (): void => {
         expect(trigger.prop("aria-haspopup")).toEqual(true);
         expect(trigger.prop("aria-expanded")).toEqual(false);
     });
+
+    test("Custom trigger render function is called", (): void => {
+        const triggerRenderFn: any = jest.fn();
+        triggerRenderFn.mockReturnValue("Test");
+        const rendered: any = mount(
+            <Select trigger={triggerRenderFn}>
+                {itemA}
+                {itemB}
+                {itemC}
+            </Select>
+        );
+        expect(triggerRenderFn).toHaveBeenCalledTimes(1);
+    });
 });

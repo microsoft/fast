@@ -142,7 +142,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
                 onKeyDown={this.handleKeydown}
                 onClick={this.handleClick}
             >
-                {this.renderContentDisplay()}
+                {this.renderTrigger()}
                 {this.renderHiddenSelectElement()}
                 {this.renderMenu()}
             </div>
@@ -223,14 +223,14 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     };
 
     /**
-     * Determine which function to use to render content display (ie. the part of the control that shows when the menu isn't open)
+     * Determine which function to use to render the trigger (ie. the part of the control that shows when the menu isn't open)
      * and invokes it
      */
-    private renderContentDisplay(): React.ReactNode {
+    private renderTrigger(): React.ReactNode {
         if (this.props.trigger !== undefined) {
             return this.props.trigger(this.props, this.state);
         } else {
-            return this.defaultDisplayRenderFunction(this.props, this.state);
+            return this.defaultTriggerRenderFunction(this.props, this.state);
         }
     }
 
@@ -307,7 +307,7 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, Select
     /**
      * The default function that renders an unstyled content display
      */
-    private defaultDisplayRenderFunction = (
+    private defaultTriggerRenderFunction = (
         props: SelectProps,
         state: SelectState
     ): React.ReactNode => {

@@ -28,7 +28,11 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
                 {...this.unhandledProps()}
                 managedClasses={this.props.managedClasses}
                 disabled={this.props.disabled}
-                trigger={this.renderTrigger}
+                trigger={
+                    typeof this.props.trigger === "function"
+                        ? this.props.trigger
+                        : this.defaultTriggerRenderFunction
+                }
             >
                 {this.props.children}
             </BaseSelect>
@@ -36,9 +40,12 @@ class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, {}> {
     }
 
     /**
-     * The function that renders a styled content display
+     * The function that renders the default styled trigger
      */
-    public renderTrigger = (props: SelectProps, state: SelectState): React.ReactNode => {
+    private defaultTriggerRenderFunction = (
+        props: SelectProps,
+        state: SelectState
+    ): React.ReactNode => {
         if (props.multiselectable) {
             return null;
         }

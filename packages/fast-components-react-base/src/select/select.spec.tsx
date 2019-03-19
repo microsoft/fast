@@ -260,17 +260,17 @@ describe("select", (): void => {
         expect(displayFormatter).toHaveBeenCalledTimes(2);
     });
 
-    test("Custom display render function is called", (): void => {
-        const displayRenderFn: any = jest.fn();
-        displayRenderFn.mockReturnValue("Test");
+    test("Custom trigger render function is called", (): void => {
+        const triggerRenderFn: any = jest.fn();
+        triggerRenderFn.mockReturnValue("Test");
         const rendered: any = mount(
-            <Select trigger={displayRenderFn}>
+            <Select trigger={triggerRenderFn}>
                 {itemA}
                 {itemB}
                 {itemC}
             </Select>
         );
-        expect(displayRenderFn).toHaveBeenCalledTimes(1);
+        expect(triggerRenderFn).toHaveBeenCalledTimes(1);
     });
 
     test("Hidden select element exists and it's value and props are populated", (): void => {
