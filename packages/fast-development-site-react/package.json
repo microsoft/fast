@@ -33,7 +33,6 @@
   },
   "dependencies": {
     "@microsoft/fast-glyphs-msft": "^3.1.1",
-    "@microsoft/fast-jss-manager-react": "^3.1.14",
     "@microsoft/fast-jss-utilities": "^3.2.5",
     "@microsoft/fast-layouts-react": "^3.2.1",
     "@microsoft/fast-tooling-react": "^0.3.0",
@@ -43,6 +42,7 @@
   "devDependencies": {
     "@microsoft/fast-components-class-name-contracts-base": "^3.10.0",
     "@microsoft/fast-jss-manager": "^3.0.13",
+    "@microsoft/fast-jss-manager-react": "^3.1.13",
     "@microsoft/fast-tslint-rules": "^3.0.2",
     "@polymer/polymer": "^3.0.0-pre.10",
     "@types/lodash-es": "^4.17.0",
@@ -70,6 +70,7 @@
     "yargs": "^11.0.0"
   },
   "peerDependencies": {
+    "@microsoft/fast-jss-manager-react": "^3.1.13",
     "lodash-es": "^4.0.0",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
