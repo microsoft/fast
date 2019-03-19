@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@3.4.3...@microsoft/fast-development-site-react@3.4.4) (2019-03-19)
+
+
+### Bug Fixes
+
+* update component status bar to always reflect the active component ([#1513](https://github.com/Microsoft/fast-dna/issues/1513)) ([37a64c0](https://github.com/Microsoft/fast-dna/commit/37a64c0))
+
+
+
+
+
 ## [3.4.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@3.4.2...@microsoft/fast-development-site-react@3.4.3) (2019-03-11)
 
 **Note:** Version bump only for package @microsoft/fast-development-site-react

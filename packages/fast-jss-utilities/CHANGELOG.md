@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@3.2.4...@microsoft/fast-jss-utilities@3.2.5) (2019-03-19)
+
+
+### Bug Fixes
+
+* update jest to fix build break ([#1531](https://github.com/Microsoft/fast-dna/issues/1531)) ([73ae6de](https://github.com/Microsoft/fast-dna/commit/73ae6de))
+
+
+
+
+
 ## [3.2.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@3.2.3...@microsoft/fast-jss-utilities@3.2.4) (2019-03-11)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-data-utilities-react@1.5.0...@microsoft/fast-data-utilities-react@1.5.1) (2019-03-19)
+
+
+### Bug Fixes
+
+* update jest to fix build break ([#1531](https://github.com/Microsoft/fast-dna/issues/1531)) ([73ae6de](https://github.com/Microsoft/fast-dna/commit/73ae6de))
+
+
+
+
+
 # [1.5.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-data-utilities-react@1.4.1...@microsoft/fast-data-utilities-react@1.5.0) (2019-03-11)
 
 

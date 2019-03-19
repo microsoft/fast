@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.8.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-form-generator-react@3.7.0...@microsoft/fast-form-generator-react@3.8.0) (2019-03-19)
+
+
+### Bug Fixes
+
+* update jest to fix build break ([#1531](https://github.com/Microsoft/fast-dna/issues/1531)) ([73ae6de](https://github.com/Microsoft/fast-dna/commit/73ae6de))
+
+
+### Features
+
+* add the form generator to tooling ([#1523](https://github.com/Microsoft/fast-dna/issues/1523)) ([7d8012d](https://github.com/Microsoft/fast-dna/commit/7d8012d))
+
+
+
+
+
 # [3.7.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-form-generator-react@3.6.2...@microsoft/fast-form-generator-react@3.7.0) (2019-03-11)
 
 

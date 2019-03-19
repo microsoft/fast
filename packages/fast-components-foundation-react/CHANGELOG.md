@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-foundation-react@2.1.3...@microsoft/fast-components-foundation-react@2.1.4) (2019-03-19)
+
+
+### Bug Fixes
+
+* added test for bug [#1329](https://github.com/Microsoft/fast-dna/issues/1329) and fixed the bug ([#1547](https://github.com/Microsoft/fast-dna/issues/1547)) ([ebd3dfa](https://github.com/Microsoft/fast-dna/commit/ebd3dfa))
+* update jest to fix build break ([#1531](https://github.com/Microsoft/fast-dna/issues/1531)) ([73ae6de](https://github.com/Microsoft/fast-dna/commit/73ae6de))
+
+
+
+
+
 ## [2.1.3](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-foundation-react@2.1.2...@microsoft/fast-components-foundation-react@2.1.3) (2019-02-21)
 
 **Note:** Version bump only for package @microsoft/fast-components-foundation-react

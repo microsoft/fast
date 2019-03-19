@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-permutator@2.2.6...@microsoft/fast-permutator@2.3.0) (2019-03-19)
+
+
+### Bug Fixes
+
+* update jest to fix build break ([#1531](https://github.com/Microsoft/fast-dna/issues/1531)) ([73ae6de](https://github.com/Microsoft/fast-dna/commit/73ae6de))
+
+
+### Features
+
+* deprecate the permutator package ([#1530](https://github.com/Microsoft/fast-dna/issues/1530)) ([6e70855](https://github.com/Microsoft/fast-dna/commit/6e70855))
+
+
+
+
+
 ## [2.2.6](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-permutator@2.2.5...@microsoft/fast-permutator@2.2.6) (2019-02-21)
 
 **Note:** Version bump only for package @microsoft/fast-permutator

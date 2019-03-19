@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-tooling-react",
   "description": "FAST Tooling React",
   "sideEffects": false,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -65,12 +65,12 @@
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
-    "@microsoft/fast-components-foundation-react": "^2.1.1",
-    "@microsoft/fast-jss-manager": "^3.0.12",
-    "@microsoft/fast-jss-manager-react": "^3.1.13",
-    "@microsoft/fast-jss-utilities": "^3.2.4",
+    "@microsoft/fast-components-foundation-react": "^2.1.4",
+    "@microsoft/fast-jss-manager": "^3.0.13",
+    "@microsoft/fast-jss-manager-react": "^3.1.14",
+    "@microsoft/fast-jss-utilities": "^3.2.5",
     "@microsoft/fast-tslint-rules": "^3.0.2",
-    "@microsoft/fast-web-utilities": "^3.1.0",
+    "@microsoft/fast-web-utilities": "^3.1.3",
     "@types/jest": "^24.0.11",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.6.7",
@@ -121,6 +121,6 @@
     "utility-types": "^3.4.1"
   },
   "dependencies": {
-    "@microsoft/fast-components-class-name-contracts-base": "^3.9.0"
+    "@microsoft/fast-components-class-name-contracts-base": "^3.10.0"
   }
 }

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-viewer-react@4.1.0...@microsoft/fast-viewer-react@4.1.1) (2019-03-19)
+
+
+### Bug Fixes
+
+* update jest to fix build break ([#1531](https://github.com/Microsoft/fast-dna/issues/1531)) ([73ae6de](https://github.com/Microsoft/fast-dna/commit/73ae6de))
+
+
+
+
+
 # [4.1.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-viewer-react@4.0.16...@microsoft/fast-viewer-react@4.1.0) (2019-03-11)
 
 

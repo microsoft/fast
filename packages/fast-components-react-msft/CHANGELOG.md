@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.13.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.12.0...@microsoft/fast-components-react-msft@3.13.0) (2019-03-19)
+
+
+### Bug Fixes
+
+* update jest to fix build break ([#1531](https://github.com/Microsoft/fast-dna/issues/1531)) ([73ae6de](https://github.com/Microsoft/fast-dna/commit/73ae6de))
+
+
+### Features
+
+* add auto suggest component ([#1551](https://github.com/Microsoft/fast-dna/issues/1551)) ([660fc41](https://github.com/Microsoft/fast-dna/commit/660fc41))
+
+
+
+
+
 # [3.12.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.11.0...@microsoft/fast-components-react-msft@3.12.0) (2019-03-11)
 
 

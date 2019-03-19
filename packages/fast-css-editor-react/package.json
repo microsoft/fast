@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-css-editor-react",
-  "version": "4.3.2",
+  "version": "4.4.0",
   "description": "A set of React components that allows the user to edit CSS properties",
   "sideEffects": false,
   "author": {
@@ -72,12 +72,12 @@
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
-    "@microsoft/fast-application-utilities": "^3.1.2",
-    "@microsoft/fast-components-class-name-contracts-base": "^3.9.0",
+    "@microsoft/fast-application-utilities": "^3.1.3",
+    "@microsoft/fast-components-class-name-contracts-base": "^3.10.0",
     "@microsoft/fast-glyphs-msft": "^3.1.1",
-    "@microsoft/fast-jss-manager": "^3.0.12",
-    "@microsoft/fast-jss-manager-react": "^3.1.13",
-    "@microsoft/fast-jss-utilities": "^3.2.4",
+    "@microsoft/fast-jss-manager": "^3.0.13",
+    "@microsoft/fast-jss-manager-react": "^3.1.14",
+    "@microsoft/fast-jss-utilities": "^3.2.5",
     "@microsoft/fast-sketch-library": "^3.0.5",
     "@microsoft/fast-tslint-rules": "^3.0.2",
     "@types/jest": "^24.0.11",
@@ -115,7 +115,7 @@
     "react-dom": "^16.6.0"
   },
   "dependencies": {
-    "@microsoft/fast-components-foundation-react": "^2.1.3",
+    "@microsoft/fast-components-foundation-react": "^2.1.4",
     "utility-types": "^2.1.0"
   }
 }

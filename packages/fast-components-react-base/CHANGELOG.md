@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.11.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@3.10.0...@microsoft/fast-components-react-base@3.11.0) (2019-03-19)
+
+
+### Bug Fixes
+
+* update jest to fix build break ([#1531](https://github.com/Microsoft/fast-dna/issues/1531)) ([73ae6de](https://github.com/Microsoft/fast-dna/commit/73ae6de))
+* update to disconnect the resize observer on component will unmount [#1529](https://github.com/Microsoft/fast-dna/issues/1529) ([164dd3c](https://github.com/Microsoft/fast-dna/commit/164dd3c))
+
+
+### Features
+
+* add auto suggest component ([#1551](https://github.com/Microsoft/fast-dna/issues/1551)) ([660fc41](https://github.com/Microsoft/fast-dna/commit/660fc41))
+* add enhancements for auto-suggest ([#1528](https://github.com/Microsoft/fast-dna/issues/1528)) ([74a87f1](https://github.com/Microsoft/fast-dna/commit/74a87f1))
+
+
+
+
+
 # [3.10.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@3.9.1...@microsoft/fast-components-react-base@3.10.0) (2019-03-11)
 
 

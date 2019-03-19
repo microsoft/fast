@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.23](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-markdown-msft-react@3.0.22...@microsoft/fast-markdown-msft-react@3.0.23) (2019-03-19)
+
+
+### Bug Fixes
+
+* update jest to fix build break ([#1531](https://github.com/Microsoft/fast-dna/issues/1531)) ([73ae6de](https://github.com/Microsoft/fast-dna/commit/73ae6de))
+
+
+
+
+
 ## [3.0.22](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-markdown-msft-react@3.0.21...@microsoft/fast-markdown-msft-react@3.0.22) (2019-03-11)
 
 **Note:** Version bump only for package @microsoft/fast-markdown-msft-react

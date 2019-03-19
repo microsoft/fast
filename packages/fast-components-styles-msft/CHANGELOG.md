@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.14.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.13.0...@microsoft/fast-components-styles-msft@3.14.0) (2019-03-19)
+
+
+### Features
+
+* add auto suggest component ([#1551](https://github.com/Microsoft/fast-dna/issues/1551)) ([660fc41](https://github.com/Microsoft/fast-dna/commit/660fc41))
+
+
+
+
+
 # [3.13.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.12.0...@microsoft/fast-components-styles-msft@3.13.0) (2019-03-11)
 
 
