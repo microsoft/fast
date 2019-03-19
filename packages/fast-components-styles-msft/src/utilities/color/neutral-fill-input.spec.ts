@@ -8,7 +8,7 @@ import {
 } from "./neutral-fill-input";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
 import { palette, Palette, PaletteType, Swatch } from "./palette";
-import { FillSwatch } from "./common";
+import { FillSwatchFamily } from "./common";
 import { clamp } from "lodash-es";
 
 describe("neutralFillInput", (): void => {
@@ -76,7 +76,7 @@ describe("neutralFillInput", (): void => {
     test("should have consistent return values", (): void => {
         neutralPalette.concat(accentPalette).forEach(
             (swatch: Swatch): void => {
-                const backplates: FillSwatch = neutralFillInput(() => swatch)(
+                const backplates: FillSwatchFamily = neutralFillInput(() => swatch)(
                     designSystemDefaults
                 );
                 const rest: Swatch = neutralFillInputRest(() => swatch)(

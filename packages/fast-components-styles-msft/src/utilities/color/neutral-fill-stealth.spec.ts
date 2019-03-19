@@ -11,7 +11,7 @@ import {
 } from "./neutral-fill-stealth";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
 import { palette, Palette, PaletteType, Swatch } from "./palette";
-import { FillSwatch } from "./common";
+import { FillSwatchFamily } from "./common";
 
 describe("neutralFillStealth", (): void => {
     const neutralPalette: Palette = palette(PaletteType.neutral)(designSystemDefaults);
@@ -90,7 +90,7 @@ describe("neutralFillStealth", (): void => {
     test("should have consistent return values", (): void => {
         neutralPalette.concat(accentPalette).forEach(
             (swatch: Swatch): void => {
-                const backplates: FillSwatch = neutralFillStealth(() => swatch)(
+                const backplates: FillSwatchFamily = neutralFillStealth(() => swatch)(
                     designSystemDefaults
                 );
                 const rest: Swatch = neutralFillStealthRest(() => swatch)(

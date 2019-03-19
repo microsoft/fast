@@ -1,16 +1,19 @@
-import { getSwatch, isDarkTheme, palette, Palette, PaletteType, Swatch } from "./palette";
+import { getSwatch, isDarkTheme, palette, Palette, PaletteType } from "./palette";
 import {
-    ColorRecipe,
-    StatefulSwatch,
-    StatefulSwatchToColorRecipeFactory,
+    Swatch,
+    SwatchFamily,
+    SwatchFamilyResolver,
+    swatchFamilyToSwatchRecipeFactory,
+    SwatchFamilyType,
+    SwatchRecipe,
     SwatchResolver,
-    SwatchStates,
 } from "./common";
 import {
     DesignSystem,
     ensureDesignSystemDefaults,
     withDesignSystemDefaults,
 } from "../../design-system";
+import { neutralFillRest } from "./neutral-fill";
 
 /**
  * Function to derive neutralForeground from color inputs.
@@ -18,9 +21,9 @@ import {
  * the color that has the most contrast against the background. If contrast
  * cannot be retrieved correctly, function returns black.
  */
-const neutralForegroundAlgorithm: (designSystem: DesignSystem) => StatefulSwatch = (
+const neutralForegroundAlgorithm: SwatchFamilyResolver = (
     designSystem: DesignSystem
-): StatefulSwatch => {
+): SwatchFamily => {
     const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
     const isDark: boolean = isDarkTheme(designSystem);
     const direction: 1 | -1 = isDark ? 1 : -1;
@@ -60,14 +63,14 @@ export function neutralForegroundDark(designSystem: DesignSystem): Swatch {
     );
 }
 
-export function neutralForeground(designSystem: DesignSystem): StatefulSwatch;
+export function neutralForeground(designSystem: DesignSystem): SwatchFamily;
 export function neutralForeground(
     backgroundResolver: SwatchResolver
-): (designSystem: DesignSystem) => StatefulSwatch;
+): (designSystem: DesignSystem) => SwatchFamily;
 export function neutralForeground(arg: any): any {
     if (typeof arg === "function") {
         return ensureDesignSystemDefaults(
-            (designSystem: DesignSystem): StatefulSwatch => {
+            (designSystem: DesignSystem): SwatchFamily => {
                 const backgroundColor: Swatch = arg(designSystem);
                 return neutralForegroundAlgorithm(
                     Object.assign({}, designSystem, {
@@ -81,15 +84,15 @@ export function neutralForeground(arg: any): any {
     }
 }
 
-export const neutralForegroundRest: ColorRecipe = StatefulSwatchToColorRecipeFactory(
-    SwatchStates.rest,
+export const neutralForegroundRest: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+    SwatchFamilyType.rest,
     neutralForeground
 );
-export const neutralForegroundHover: ColorRecipe = StatefulSwatchToColorRecipeFactory(
-    SwatchStates.hover,
+export const neutralForegroundHover: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+    SwatchFamilyType.hover,
     neutralForeground
 );
-export const neutralForegroundActive: ColorRecipe = StatefulSwatchToColorRecipeFactory(
-    SwatchStates.active,
+export const neutralForegroundActive: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+    SwatchFamilyType.active,
     neutralForeground
 );

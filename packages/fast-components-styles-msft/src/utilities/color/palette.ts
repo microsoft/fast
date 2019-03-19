@@ -5,7 +5,7 @@ import {
     ensureDesignSystemDefaults,
 } from "../../design-system";
 import { clamp, memoize } from "lodash-es";
-import { colorMatches, contrast, isValidColor, luminance } from "./common";
+import { colorMatches, contrast, isValidColor, luminance, Swatch } from "./common";
 import { neutralForegroundDark, neutralForegroundLight } from "./neutral-foreground";
 import { ColorPalette, ColorPaletteConfig, ColorRGBA64 } from "@microsoft/fast-colors";
 
@@ -17,10 +17,6 @@ export enum PaletteType {
     accent = "accent",
 }
 
-/**
- * Describes the format of a single color in a palette
- */
-export type Swatch = string;
 /**
  * The structure of a color palette
  */

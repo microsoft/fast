@@ -9,7 +9,7 @@ import {
 } from "./neutral-outline";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
 import { palette, Palette, PaletteType, Swatch } from "./palette";
-import { StatefulSwatch } from "./common";
+import { SwatchFamily } from "./common";
 import { isColorStringHexRGB } from "@microsoft/fast-colors";
 
 describe("neutralOutline", (): void => {
@@ -71,7 +71,7 @@ describe("neutralOutline", (): void => {
     test("should have consistent return values", (): void => {
         neutralPalette.concat(accentPalette).forEach(
             (swatch: Swatch): void => {
-                const backplates: StatefulSwatch = neutralOutline(() => swatch)(
+                const backplates: SwatchFamily = neutralOutline(() => swatch)(
                     designSystemDefaults
                 );
                 const rest: Swatch = neutralOutlineRest(() => swatch)(

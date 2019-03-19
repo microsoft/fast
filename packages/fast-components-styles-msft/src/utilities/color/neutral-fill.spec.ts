@@ -11,7 +11,7 @@ import {
 } from "./neutral-fill";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
 import { palette, Palette, PaletteType, Swatch } from "./palette";
-import { FillSwatch } from "./common";
+import { FillSwatchFamily } from "./common";
 
 describe("neutralFill", (): void => {
     const neutralPalette: Palette = palette(PaletteType.neutral)(designSystemDefaults);
@@ -94,7 +94,7 @@ describe("neutralFill", (): void => {
     test("should have consistent return values", (): void => {
         neutralPalette.concat(accentPalette).forEach(
             (swatch: Swatch): void => {
-                const backplates: FillSwatch = neutralFill(() => swatch)(
+                const backplates: FillSwatchFamily = neutralFill(() => swatch)(
                     designSystemDefaults
                 );
                 const rest: Swatch = neutralFillRest(() => swatch)(designSystemDefaults);

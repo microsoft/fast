@@ -1,25 +1,29 @@
 import {
     DesignSystem,
+    DesignSystemResolver,
     ensureDesignSystemDefaults,
     withDesignSystemDefaults,
 } from "../../design-system";
 import { accentSwatch, findAccessibleAccentSwatchIndexs } from "./accent";
-import { getSwatch, palette, Palette, PaletteType, Swatch } from "./palette";
+import { getSwatch, palette, Palette, PaletteType } from "./palette";
 import {
     ColorRecipe,
-    StatefulSwatch,
-    StatefulSwatchResolver,
-    StatefulSwatchToColorRecipeFactory,
-    SwatchStates,
+    Swatch,
+    SwatchFamily,
+    SwatchFamilyResolver,
+    swatchFamilyToSwatchRecipeFactory,
+    SwatchFamilyType,
+    SwatchRecipe,
+    SwatchResolver,
 } from "./common";
 
 const accentForegroundAlgorithm: (
     designSystem: DesignSystem,
     contrastTarget: number
-) => StatefulSwatch = (
+) => SwatchFamily = (
     designSystem: DesignSystem,
     contrastTarget: number
-): StatefulSwatch => {
+): SwatchFamily => {
     const accentPalette: Palette = palette(PaletteType.accent)(designSystem);
     const indexes: {
         rest: number;
@@ -43,15 +47,15 @@ const accentForegroundAlgorithm: (
     };
 };
 
-function accentForegroundFactory(contrast: number): StatefulSwatchResolver {
-    function accentForegroundInternal(designSystem: DesignSystem): StatefulSwatch;
+function accentForegroundFactory(contrast: number): SwatchFamilyResolver {
+    function accentForegroundInternal(designSystem: DesignSystem): SwatchFamily;
     function accentForegroundInternal(
-        backgroundResolver: (designSystem: DesignSystem) => Swatch
-    ): (designSystem: DesignSystem) => StatefulSwatch;
+        backgroundResolver: SwatchResolver
+    ): DesignSystemResolver<SwatchFamily>;
     function accentForegroundInternal(arg: any): any {
         if (typeof arg === "function") {
             return ensureDesignSystemDefaults(
-                (designSystem: DesignSystem): StatefulSwatch => {
+                (designSystem: DesignSystem): SwatchFamily => {
                     return accentForegroundAlgorithm(
                         Object.assign({}, designSystem, {
                             backgroundColor: arg(designSystem),
@@ -68,31 +72,31 @@ function accentForegroundFactory(contrast: number): StatefulSwatchResolver {
     return accentForegroundInternal;
 }
 
-export const accentForeground: StatefulSwatchResolver = accentForegroundFactory(4.5);
-export const accentForegroundLarge: StatefulSwatchResolver = accentForegroundFactory(3);
+export const accentForeground: SwatchFamilyResolver = accentForegroundFactory(4.5);
+export const accentForegroundLarge: SwatchFamilyResolver = accentForegroundFactory(3);
 
-export const accentForegroundRest: ColorRecipe = StatefulSwatchToColorRecipeFactory(
-    SwatchStates.rest,
+export const accentForegroundRest: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+    SwatchFamilyType.rest,
     accentForeground
 );
-export const accentForegroundHover: ColorRecipe = StatefulSwatchToColorRecipeFactory(
-    SwatchStates.hover,
+export const accentForegroundHover: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+    SwatchFamilyType.hover,
     accentForeground
 );
-export const accentForegroundActive: ColorRecipe = StatefulSwatchToColorRecipeFactory(
-    SwatchStates.active,
+export const accentForegroundActive: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+    SwatchFamilyType.active,
     accentForeground
 );
 
-export const accentForegroundLargeRest: ColorRecipe = StatefulSwatchToColorRecipeFactory(
-    SwatchStates.rest,
+export const accentForegroundLargeRest: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+    SwatchFamilyType.rest,
     accentForegroundLarge
 );
-export const accentForegroundLargeHover: ColorRecipe = StatefulSwatchToColorRecipeFactory(
-    SwatchStates.hover,
+export const accentForegroundLargeHover: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+    SwatchFamilyType.hover,
     accentForegroundLarge
 );
-export const accentForegroundLargeActive: ColorRecipe = StatefulSwatchToColorRecipeFactory(
-    SwatchStates.active,
+export const accentForegroundLargeActive: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+    SwatchFamilyType.active,
     accentForegroundLarge
 );
