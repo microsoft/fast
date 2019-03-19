@@ -1,3 +1,4 @@
+export * from "./auto-suggest";
 export * from "./badge";
 export * from "./breadcrumb";
 export * from "./button";

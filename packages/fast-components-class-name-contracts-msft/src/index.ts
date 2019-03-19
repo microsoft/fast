@@ -1,5 +1,7 @@
 export * from "./action-toggle";
 export * from "./action-trigger";
+export * from "./auto-suggest";
+export * from "./auto-suggest-option";
 export * from "./badge";
 export * from "./button";
 export * from "./call-to-action";
