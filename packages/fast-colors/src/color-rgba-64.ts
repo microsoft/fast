@@ -4,7 +4,7 @@ import {
     denormalize,
     getHexStringForByte,
     roundToPrecisionSmall,
-} from "./mathUtils";
+} from "./math-utilities";
 
 export class ColorRGBA64 {
     public static fromObject(data: {

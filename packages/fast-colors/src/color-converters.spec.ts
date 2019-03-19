@@ -26,7 +26,7 @@ import {
     temperatureToRGB,
     xyzToLAB,
     xyzToRGB,
-} from "../src/colorlib";
+} from "../src";
 
 import { testData } from "../testData";
 
