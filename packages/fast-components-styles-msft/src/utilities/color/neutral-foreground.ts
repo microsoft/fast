@@ -12,9 +12,6 @@ import {
     withDesignSystemDefaults,
 } from "../../design-system";
 
-export const neutralForegroundDeltaHover: number = 8;
-export const neutralForegroundDeltaActive: number = 16;
-
 /**
  * Function to derive neutralForeground from color inputs.
  * Performs a simple contrast check against the colors and returns
@@ -31,8 +28,10 @@ const neutralForegroundAlgorithm: (designSystem: DesignSystem) => StatefulSwatch
         ? neutralForegroundLight(designSystem)
         : neutralForegroundDark(designSystem);
     const restIndex: number = neutralPalette.indexOf(restColor);
-    const hoverIndex: number = restIndex + neutralForegroundDeltaHover * direction;
-    const activeIndex: number = restIndex + neutralForegroundDeltaActive * direction;
+    const hoverIndex: number =
+        restIndex + designSystem.neutralForegroundHoverDelta * direction;
+    const activeIndex: number =
+        restIndex + designSystem.neutralForegroundActiveDelta * direction;
 
     return {
         rest: restColor,
@@ -45,14 +44,20 @@ const neutralForegroundAlgorithm: (designSystem: DesignSystem) => StatefulSwatch
  * Retrieve light neutral-foreground color for use on dark backgrounds
  */
 export function neutralForegroundLight(designSystem: DesignSystem): Swatch {
-    return getSwatch(0, palette(PaletteType.neutral)(designSystem));
+    return getSwatch(
+        designSystem.neutralForegroundLightIndex,
+        palette(PaletteType.neutral)(designSystem)
+    );
 }
 
 /**
  * Retrieve dark neutral-foreground color for use on light backgrounds
  */
 export function neutralForegroundDark(designSystem: DesignSystem): Swatch {
-    return getSwatch(58, palette(PaletteType.neutral)(designSystem));
+    return getSwatch(
+        designSystem.neutralForegroundDarkIndex,
+        palette(PaletteType.neutral)(designSystem)
+    );
 }
 
 export function neutralForeground(designSystem: DesignSystem): StatefulSwatch;

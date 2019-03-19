@@ -20,13 +20,6 @@ import {
 } from "./common";
 import { clamp } from "lodash-es";
 
-/**
- * Deltas to derive state swatches from the background
- */
-export const neutralOutlineDeltaRest: number = 12;
-export const neutralOutlineDeltaHover: number = 24;
-export const neutralOutlineDeltaActive: number = 18;
-
 const neutralOutlineAlgorithm: (designSystem: DesignSystem) => StatefulSwatch = (
     designSystem: DesignSystem
 ): StatefulSwatch => {
@@ -39,15 +32,15 @@ const neutralOutlineAlgorithm: (designSystem: DesignSystem) => StatefulSwatch = 
 
     return {
         rest: getSwatch(
-            backgroundIndex + direction * neutralOutlineDeltaRest,
+            backgroundIndex + direction * designSystem.neutralOutlineRestDelta,
             neutralPalette
         ),
         hover: getSwatch(
-            backgroundIndex + direction * neutralOutlineDeltaHover,
+            backgroundIndex + direction * designSystem.neutralOutlineHoverDelta,
             neutralPalette
         ),
         active: getSwatch(
-            backgroundIndex + direction * neutralOutlineDeltaActive,
+            backgroundIndex + direction * designSystem.neutralOutlineActiveDelta,
             neutralPalette
         ),
     };

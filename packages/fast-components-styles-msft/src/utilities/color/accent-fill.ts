@@ -15,14 +15,6 @@ import { getSwatch, isDarkTheme, Palette, palette, PaletteType, Swatch } from ".
 import { accentForegroundCut } from "./accent-foreground-cut";
 
 /**
- * Deltas to derive state swatches from the background
- */
-export const accentFillDeltaRest: number = 0;
-export const accentFillDeltaHover: number = 2;
-export const accentFillDeltaActive: number = 4;
-export const accentFillDeltaSelected: number = 12;
-
-/**
  * Derives rest/hover/active active fill colors
  */
 export const accentFillAlgorithm: (
@@ -41,9 +33,9 @@ export const accentFillAlgorithm: (
         hover: number;
         active: number;
     } = findAccessibleAccentSwatchIndexs(designSystem, contrastTarget, textColor, {
-        rest: accentFillDeltaRest,
-        hover: accentFillDeltaHover,
-        active: accentFillDeltaActive,
+        rest: designSystem.accentFillRestDelta,
+        hover: designSystem.accentFillHoverDelta,
+        active: designSystem.accentFillActiveDelta,
     });
 
     return {
@@ -53,8 +45,8 @@ export const accentFillAlgorithm: (
         selected: getSwatch(
             indexes.rest +
                 (isDarkTheme(designSystem)
-                    ? accentFillDeltaSelected * -1
-                    : accentFillDeltaSelected),
+                    ? designSystem.accentFillSelectedDelta * -1
+                    : designSystem.accentFillSelectedDelta),
             accentPalette
         ),
     };
