@@ -26,53 +26,20 @@ export type Swatch = string;
  */
 export type Palette = Swatch[];
 
-const generatePalette: (config: ColorPaletteConfig) => Palette = memoize(
-    (config: ColorPaletteConfig): Palette => {
-        return new ColorPalette(config).palette.map(
-            (color: ColorRGBA64): string => color.toStringHexRGB().toUpperCase()
-        );
-    },
-    (config: ColorPaletteConfig): string => {
-        return Object.keys(config).reduce(
-            (reduced: string, value: keyof ColorPaletteConfig): string => {
-                const configValue: ColorPaletteConfig[keyof ColorPaletteConfig] =
-                    config[value];
-
-                if (typeof configValue === "number") {
-                    return reduced.concat(configValue.toString());
-                } else if (configValue instanceof ColorRGBA64) {
-                    return reduced.concat(configValue.toStringWebRGBA());
-                } else {
-                    return "";
-                }
-            },
-            ""
-        );
-    }
-);
-
 /**
  * Retrieves a palette by name. This function returns a function that accepts
  * a design system, returning a palette a palette or null
  */
-export function palette(
-    paletteType: PaletteType
-): (designSystem: DesignSystem) => Palette {
+export function palette(paletteType: PaletteType): DesignSystemResolver<Palette> {
     return ensureDesignSystemDefaults(
         (designSystem: DesignSystem): Palette => {
-            let config: ColorPaletteConfig;
-
             switch (paletteType) {
                 case PaletteType.accent:
-                    config = designSystem.accentPaletteConfig;
-                    break;
+                    return designSystem.accentPalette;
                 case PaletteType.neutral:
                 default:
-                    config = designSystem.neutralPaletteConfig;
-                    break;
+                    return designSystem.neutralPalette;
             }
-
-            return generatePalette(config);
         }
     );
 }
@@ -84,7 +51,7 @@ export function palette(
 export function findSwatchIndex(
     paletteType: PaletteType,
     swatch: Swatch
-): (designSystem: DesignSystem) => number {
+): DesignSystemResolver<number> {
     return (designSystem: DesignSystem): number => {
         const colorPalette: Palette = palette(paletteType)(designSystem);
         const index: number = colorPalette.indexOf(swatch);
@@ -107,7 +74,7 @@ export function findSwatchIndex(
 export function findClosestSwatchIndex(
     paletteType: PaletteType,
     swatch: Swatch
-): (designSystem: DesignSystem) => number {
+): DesignSystemResolver<number> {
     return ensureDesignSystemDefaults(
         (designSystem: DesignSystem): number => {
             const index: number = findSwatchIndex(paletteType, swatch)(designSystem);
@@ -156,25 +123,17 @@ export function findClosestSwatchIndex(
  * of light neutral-foreground and dark neutral-foreground to the background. If light neutral-foreground
  * has a higher contrast, then we're in a dark theme
  */
-export const isDarkTheme: DesignSystemResolver<boolean> = memoize(
-    (designSystem: DesignSystem): boolean => {
-        return (
-            contrast(
-                neutralForegroundLight(designSystem),
-                designSystem.backgroundColor
-            ) >=
-            contrast(neutralForegroundDark(designSystem), designSystem.backgroundColor)
-        );
-    },
-    (designSystem: DesignSystem): string => {
-        return designSystem.backgroundColor;
-    }
-);
+export function isDarkTheme(designSystem: DesignSystem): boolean {
+    return (
+        contrast(neutralForegroundLight(designSystem), designSystem.backgroundColor) >=
+        contrast(neutralForegroundDark(designSystem), designSystem.backgroundColor)
+    );
+}
 
 /**
  * Safely retrieves an index of a palette. The index is clamped to valid
  * array indexes so that a swatch is always returned
  */
-export function getSwatch(index: number, colorPalette: Swatch[]): Swatch {
+export function getSwatch(index: number, colorPalette: Palette): Swatch {
     return colorPalette[clamp(index, 0, colorPalette.length - 1)];
 }

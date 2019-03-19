@@ -13,13 +13,6 @@ import {
     SwatchStates,
 } from "./common";
 
-/**
- * Deltas to derive state swatches from the background
- */
-export const accentForegroundDeltaRest: number = 0;
-export const accentForegroundDeltaHover: number = 1;
-export const accentForegroundDeltaActive: number = 2;
-
 const accentForegroundAlgorithm: (
     designSystem: DesignSystem,
     contrastTarget: number
@@ -37,9 +30,9 @@ const accentForegroundAlgorithm: (
         contrastTarget,
         designSystem.backgroundColor,
         {
-            rest: accentForegroundDeltaRest,
-            hover: accentForegroundDeltaHover,
-            active: accentForegroundDeltaActive,
+            rest: designSystem.accentForegroundRestDelta,
+            hover: designSystem.accentForegroundHoverDelta,
+            active: designSystem.accentForegroundActiveDelta,
         }
     );
 
