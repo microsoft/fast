@@ -10,9 +10,9 @@ import { KeyCodes } from "@microsoft/fast-web-utilities";
  */
 configure({ adapter: new Adapter() });
 
-const itemA: JSX.Element = <ListboxItem id="a" value="a" displayString="a" />;
-const itemB: JSX.Element = <ListboxItem id="b" value="b" displayString="ab" />;
-const itemC: JSX.Element = <ListboxItem id="c" value="c" displayString="abc" />;
+const itemA: JSX.Element = <ListboxItem id="a" value="a" />;
+const itemB: JSX.Element = <ListboxItem id="b" value="b" />;
+const itemC: JSX.Element = <ListboxItem id="c" value="c" />;
 
 describe("auto suggest", (): void => {
     test("should have a displayName that matches the component name", () => {
@@ -116,7 +116,8 @@ describe("auto suggest", (): void => {
         expect(input.prop("aria-activedescendant")).toEqual("a");
 
         rendered
-            .find('[displayString="a"]')
+            .find({ id: "a" })
+            .find("ListboxItem")
             .simulate("keydown", { keyCode: KeyCodes.arrowDown });
         input = rendered.find("input");
         expect(input.prop("aria-owns")).toEqual("listboxId");
@@ -149,7 +150,8 @@ describe("auto suggest", (): void => {
         expect(input.prop("aria-controls")).toEqual("listboxId");
 
         rendered
-            .find('[displayString="a"]')
+            .find({ id: "a" })
+            .find("ListboxItem")
             .simulate("keydown", { keyCode: KeyCodes.arrowDown });
         input = rendered.find("input");
         expect(input.prop("aria-owns")).toEqual("listboxId");
@@ -179,7 +181,8 @@ describe("auto suggest", (): void => {
         expect(input.prop("aria-activedescendant")).toEqual("a");
 
         rendered
-            .find('[displayString="a"]')
+            .find({ id: "a" })
+            .find("ListboxItem")
             .simulate("keydown", { keyCode: KeyCodes.arrowDown });
         input = rendered.find("input");
         expect(input.prop("aria-activedescendant")).toEqual("b");
@@ -224,17 +227,20 @@ describe("auto suggest", (): void => {
         expect(document.activeElement.id).toBe("a");
         expect(rendered.state("value")).toEqual("a");
         rendered
-            .find('[displayString="a"]')
+            .find({ id: "a" })
+            .find("ListboxItem")
             .simulate("keydown", { keyCode: KeyCodes.arrowDown });
         expect(document.activeElement.id).toBe("b");
         expect(rendered.state("value")).toEqual("b");
         rendered
-            .find('[displayString="ab"]')
+            .find({ id: "b" })
+            .find("ListboxItem")
             .simulate("keydown", { keyCode: KeyCodes.arrowDown });
         expect(document.activeElement.id).toBe("c");
         expect(rendered.state("value")).toEqual("c");
         rendered
-            .find('[displayString="abc"]')
+            .find({ id: "c" })
+            .find("ListboxItem")
             .simulate("keydown", { keyCode: KeyCodes.arrowDown });
         expect(document.activeElement.id).toBe("");
         expect(rendered.state("value")).toEqual("c");
@@ -242,17 +248,20 @@ describe("auto suggest", (): void => {
         expect(document.activeElement.id).toBe("c");
         expect(rendered.state("value")).toEqual("c");
         rendered
-            .find('[displayString="abc"]')
+            .find({ id: "c" })
+            .find("ListboxItem")
             .simulate("keydown", { keyCode: KeyCodes.arrowUp });
         expect(document.activeElement.id).toBe("b");
         expect(rendered.state("value")).toEqual("b");
         rendered
-            .find('[displayString="ab"]')
+            .find({ id: "b" })
+            .find("ListboxItem")
             .simulate("keydown", { keyCode: KeyCodes.arrowUp });
         expect(document.activeElement.id).toBe("a");
         expect(rendered.state("value")).toEqual("a");
         rendered
-            .find('[displayString="a"]')
+            .find({ id: "a" })
+            .find("ListboxItem")
             .simulate("keydown", { keyCode: KeyCodes.arrowUp });
         expect(document.activeElement.id).toBe("");
         expect(rendered.state("value")).toEqual("a");
@@ -302,7 +311,8 @@ describe("auto suggest", (): void => {
         const input: any = rendered.find("input");
         input.simulate("keydown", { keyCode: KeyCodes.arrowDown });
         rendered
-            .find('[displayString="a"]')
+            .find({ id: "a" })
+            .find("ListboxItem")
             .simulate("keydown", { keyCode: KeyCodes.enter });
         expect(onInvoked).toHaveBeenCalledTimes(1);
 

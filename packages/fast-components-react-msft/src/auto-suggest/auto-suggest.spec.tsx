@@ -16,9 +16,9 @@ import { KeyCodes } from "@microsoft/fast-web-utilities";
  */
 configure({ adapter: new Adapter() });
 
-const itemA: JSX.Element = <AutoSuggestOption id="a" value="a" displayString="a" />;
-const itemB: JSX.Element = <AutoSuggestOption id="b" value="b" displayString="ab" />;
-const itemC: JSX.Element = <AutoSuggestOption id="c" value="c" displayString="abc" />;
+const itemA: JSX.Element = <AutoSuggestOption id="a" value="a" />;
+const itemB: JSX.Element = <AutoSuggestOption id="b" value="b" />;
+const itemC: JSX.Element = <AutoSuggestOption id="c" value="c" />;
 
 describe("auto suggest", (): void => {
     const href: string = "https://www.microsoft.com";
