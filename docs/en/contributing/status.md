@@ -18,13 +18,12 @@ This page can be used to display the health of FAST-DNA systems.
 
 #### Builds (CI)
 
-[![Build status](https://dev.azure.com/edgewebui/Edge%20Zero/_apis/build/status/Sites/Component%20Explorer%20-%20CI%20(FASTDNA))](https://dev.azure.com/edgewebui/Edge%20Zero/_build/latest?definitionId=44)
-
+[![Build Status](https://dev.azure.com/edgewebui/FAST/_apis/build/status/Component%20Explorer%20-%20CI?branchName=master)](https://dev.azure.com/edgewebui/FAST/_build/latest?definitionId=65&branchName=master)
 
 #### Deployments (CD)
 
 | Staging | Production |
 |--|--|
-|[![Build status](https://vsrm.dev.azure.com/edgewebui/_apis/public/Release/badge/8965118a-33a2-4d12-a643-9044a1430ae7/1/1)](https://explore-stage.fastdna.net) |[![Build Status](https://vsrm.dev.azure.com/edgewebui/_apis/public/Release/badge/8965118a-33a2-4d12-a643-9044a1430ae7/1/2)](https://explore.fastdna.net) |
+|[![Build status](https://vsrm.dev.azure.com/edgewebui/_apis/public/Release/badge/db5c5831-7b32-4ef1-9e7d-205361d49e08/2/2)](https://explore-stage.fastdna.net) |[![Build Status](https://vsrm.dev.azure.com/edgewebui/_apis/public/Release/badge/db5c5831-7b32-4ef1-9e7d-205361d49e08/2/3)](https://explore.fastdna.net) |
 | https://explore-stage.fastdna.net | https://explore.fastdna.net | 
 * Automatically released after commit to master | * Manually released after design approval
