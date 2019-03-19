@@ -13,23 +13,14 @@ import {
     neutralFocus,
     neutralForegroundRest,
 } from "../utilities/color";
-// import {
-//     disabledContrast,
-//     ensureForegroundNormal,
-//     ensureNormalContrast,
-//     hoverContrast,
-// } from "../utilities/colors";
 import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
 import { applyTypeRampConfig } from "../utilities/typography";
-// import typographyPattern from "../patterns/typography";
 import {
     applyLocalizedProperty,
-    contrast,
     Direction,
     ellipsis,
     toPx,
 } from "@microsoft/fast-jss-utilities";
-import { curry } from "lodash-es";
 
 const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = (
     config: DesignSystem

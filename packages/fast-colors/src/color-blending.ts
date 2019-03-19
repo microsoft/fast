@@ -1,8 +1,8 @@
-import { labToRGB, lchToRGB, rgbToLAB, rgbToLCH } from "./colorConverters";
-import { ColorLAB } from "./colorLAB";
-import { ColorLCH } from "./colorLCH";
-import { ColorRGBA64 } from "./colorRGBA64";
-import { clamp } from "./mathUtils";
+import { labToRGB, lchToRGB, rgbToLAB, rgbToLCH } from "./color-converters";
+import { ColorLAB } from "./color-lab";
+import { ColorLCH } from "./color-lch";
+import { ColorRGBA64 } from "./color-rgba-64";
+import { clamp } from "./math-utilities";
 
 // The alpha channel of the input is ignored
 export function saturateViaLCH(
