@@ -1,5 +1,5 @@
 // tslint:disable:member-ordering
-import { roundToPrecisionSmall } from "./mathUtils";
+import { roundToPrecisionSmall } from "./math-utilities";
 
 // CIELCH color space
 // https://en.wikipedia.org/wiki/CIELAB_color_space

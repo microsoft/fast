@@ -1,7 +1,7 @@
 // tslint:disable:no-string-literal
 // tslint:disable:prefer-for-of
 
-import { ColorPalette, ColorRGBA64 } from "../src/colorlib";
+import { ColorPalette, ColorRGBA64 } from "../src";
 
 import { testData } from "../testData";
 
