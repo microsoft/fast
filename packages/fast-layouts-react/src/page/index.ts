@@ -1,3 +1,4 @@
+import * as React from "react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import {
     Page as BasePage,
