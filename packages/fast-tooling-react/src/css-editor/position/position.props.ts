@@ -31,12 +31,16 @@ export interface CSSPositionValues {
 }
 
 export interface CSSPositionHandledProps
-    extends ManagedClasses<CSSPositionClassNameContract>,
-        CSSPositionValues {
+    extends ManagedClasses<CSSPositionClassNameContract> {
     /**
-     * The callback for position update
+     * The data
      */
-    onPositionUpdate?: (position: CSSPositionValues) => void;
+    data?: CSSPositionValues;
+
+    /**
+     * The onChange callback
+     */
+    onChange?: (position: CSSPositionValues) => void;
 }
 
 export type CSSPositionProps = CSSPositionHandledProps & CSSPositionUnhandledProps;
