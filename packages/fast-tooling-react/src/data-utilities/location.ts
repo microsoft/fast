@@ -1,5 +1,5 @@
 import { get, isPlainObject } from "lodash-es";
-import * as tv4 from "tv4";
+import ajv from "ajv";
 import {
     CombiningKeyword,
     DataResolverType,
@@ -458,7 +458,10 @@ function getSchemaOneOfAnyOfLocationSegments(schema: any, data: any): string[] {
  * Gets the index from a JSON schemas oneOf/anyOf array that validates against the data
  */
 function getValidAnyOfOneOfIndex(oneOfAnyOf: string, data: any, schema: any): number {
-    return schema[oneOfAnyOf].findIndex((item: any): number => tv4.validate(data, item));
+    const validation: ajv.Ajv = new ajv({ schemaId: "auto" });
+    return schema[oneOfAnyOf].findIndex(
+        (item: any): boolean | PromiseLike<any> => validation.validate(item, data)
+    );
 }
 
 /**
