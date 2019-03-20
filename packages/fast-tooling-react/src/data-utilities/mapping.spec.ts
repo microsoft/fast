@@ -6,9 +6,9 @@ import ChildrenWithRenderProp from "./__tests__/components/children-plugin";
 import Children from "./__tests__/components/children";
 import TextField from "./__tests__/components/text-field";
 
-import * as childrenSchema from "./__tests__/schemas/children.schema.json";
-import * as childrenWithPluginPropsSchema from "./__tests__/schemas/children-plugin.schema.json";
-import * as textFieldSchema from "./__tests__/schemas/text-field.schema.json";
+import childrenSchema from "../__tests__/schemas/children.schema.json";
+import childrenWithPluginPropsSchema from "../__tests__/schemas/children-plugin.schema.json";
+import textFieldSchema from "../__tests__/schemas/text-field.schema.json";
 import MapChildrenPropToCallbackPassingClassName from "./__tests__/plugins/map-children-prop-to-callback-passing-class-name";
 import MapBooleanPropToString from "./__tests__/plugins/map-boolean-prop-to-string";
 import MapArrayPropToObject from "./__tests__/plugins/map-array-prop-to-object";

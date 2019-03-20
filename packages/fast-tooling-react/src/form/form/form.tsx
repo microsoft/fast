@@ -392,7 +392,8 @@ class Form extends React.Component<
                 dataLocation || "",
                 this.props.data,
                 this.props.schema,
-                this.props.childOptions
+                this.props.childOptions,
+                schemaLocation
             );
 
             this.setState(state as FormState);

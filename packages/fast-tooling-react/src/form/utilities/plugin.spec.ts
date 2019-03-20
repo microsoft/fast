@@ -4,7 +4,7 @@ import { cloneDeep, set, unset } from "lodash-es";
 import { mapPluginsToSchema } from "./plugin";
 import { FormPlugin, FormPluginProps } from "../plugin";
 
-import pluginSchema from "../../../app/pages/form/plugin/plugin.schema.json";
+import pluginSchema from "../../__tests__/schemas/plugin.schema.json";
 
 describe("mapPluginsToSchema", () => {
     test("should map a single datatype to another datatype", () => {

@@ -668,7 +668,8 @@ export function getNavigation(
     dataLocation: string,
     data: any,
     schema: any,
-    childOptions: FormChildOptionItem[]
+    childOptions: FormChildOptionItem[],
+    schemaLocation?: string
 ): NavigationItem[] {
     const allChildOptions: FormChildOptionItem[] = getReactDefaultChildren().concat(
         childOptions
@@ -723,11 +724,13 @@ export function getNavigation(
                 dataLocationItem,
                 lastComponentDataLocation
             );
-            let currentSchemaLocation: string = mapSchemaLocationFromDataLocation(
-                isRoot ? dataLocationItem : dataLocationFromLastComponent,
-                isRoot ? data : get(data, rootLocationOfComponent),
-                currentComponentSchema
-            );
+            let currentSchemaLocation: string =
+                schemaLocation ||
+                mapSchemaLocationFromDataLocation(
+                    isRoot ? dataLocationItem : dataLocationFromLastComponent,
+                    isRoot ? data : get(data, rootLocationOfComponent),
+                    currentComponentSchema
+                );
             const currentSchemaLocationSegments: string[] = currentSchemaLocation.split(
                 "."
             );
