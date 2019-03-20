@@ -1,9 +1,5 @@
 import * as React from "react";
-import manageJss, {
-    ComponentStyles,
-    CSSRules,
-    ManagedJSSProps,
-} from "@microsoft/fast-jss-manager-react";
+import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import BreakpointTracker from "../utilities/breakpoint-tracker";
 import { getValueByBreakpoint } from "../utilities/breakpoints";
 import {
@@ -13,10 +9,7 @@ import {
     GridTag,
     GridUnhandledProps,
 } from "./grid.props";
-import Foundation, {
-    FoundationProps,
-    HandledProps,
-} from "@microsoft/fast-components-foundation-react";
+import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
 import { Column } from "../column";
 
 export interface GridClassNamesContract {
@@ -146,8 +139,9 @@ export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
         this.forceUpdate();
     };
 
-    private generateStyleAttributes(): React.HTMLAttributes<HTMLDivElement> {
-        return Object.assign({}, this.unhandledProps().style, {
+    private generateStyleAttributes(): React.CSSProperties {
+        return {
+            ...this.unhandledProps().style,
             gridColumn: this.props.gridColumn,
             gridTemplateColumns: `repeat(${this.props.columnCount}, 1fr)`,
             gridColumnGap: `${this.generateGutter()}px`,
@@ -157,7 +151,7 @@ export class Grid extends Foundation<GridHandledProps, GridUnhandledProps, {}> {
             msGridColumns: `1fr (${this.generateGutter()})[${this.props.columnCount -
                 1}]`,
             ["msGridRow" as any]: this.props.row,
-        });
+        };
     }
 
     /**

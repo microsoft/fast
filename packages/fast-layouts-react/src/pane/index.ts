@@ -1,4 +1,3 @@
-import * as React from "react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import {
     Pane as BasePane,
