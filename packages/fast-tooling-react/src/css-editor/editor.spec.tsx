@@ -39,7 +39,7 @@ describe("CSSEditor", () => {
             bottom: bottomValue,
             right: rightValue,
         };
-        const rendered: any = mount(<CSSEditor data={data} onUpdate={callback} />);
+        const rendered: any = mount(<CSSEditor data={data} onChange={callback} />);
 
         const cssPosition: any = rendered.find("CSSPosition");
 
@@ -48,9 +48,9 @@ describe("CSSEditor", () => {
         expect(cssPosition.prop("data").left).toBe(leftValue);
         expect(cssPosition.prop("data").bottom).toBe(bottomValue);
         expect(cssPosition.prop("data").right).toBe(rightValue);
-        expect(typeof cssPosition.prop("onUpdate")).toEqual(typeof Function);
+        expect(typeof cssPosition.prop("onChange")).toEqual(typeof Function);
     });
-    test("should execute the `onUpdate` callback to recieve the correct CSSPosition props", () => {
+    test("should execute the `onChange` callback to recieve the correct CSSPosition props", () => {
         const updatedPositionValue: string = "5";
         const positionValue: PositionValue = PositionValue.absolute;
         const topValue: string = "1";
@@ -70,7 +70,7 @@ describe("CSSEditor", () => {
             left: leftValue,
         };
         const rendered: any = mount(
-            <CSSEditor data={data} onUpdate={callbackPosition} />
+            <CSSEditor data={data} onChange={callbackPosition} />
         );
 
         const renderedCSSPosition: any = rendered.find("CSSPosition");
@@ -98,7 +98,7 @@ describe("CSSEditor", () => {
             paddingRight: rightValue,
         };
 
-        const rendered: any = mount(<CSSEditor data={data} onUpdate={callback} />);
+        const rendered: any = mount(<CSSEditor data={data} onChange={callback} />);
 
         const cssPosition: any = rendered.find("CSSSpacing");
 
@@ -110,9 +110,9 @@ describe("CSSEditor", () => {
         expect(cssPosition.prop("data")[SpacingProperty.paddingLeft]).toBe(leftValue);
         expect(cssPosition.prop("data")[SpacingProperty.paddingBottom]).toBe(bottomValue);
         expect(cssPosition.prop("data")[SpacingProperty.paddingRight]).toBe(rightValue);
-        expect(typeof cssPosition.prop("onUpdate")).toEqual(typeof Function);
+        expect(typeof cssPosition.prop("onChange")).toEqual(typeof Function);
     });
-    test("should execute the `onUpdate` callback to receive the correct CSSSpacing props", () => {
+    test("should execute the `onChange` callback to receive the correct CSSSpacing props", () => {
         const updatedSpacingValue: string = "5";
         const topValue: string = "1";
         const leftValue: string = "2";
@@ -128,7 +128,7 @@ describe("CSSEditor", () => {
             marginTop: topValue,
             marginLeft: leftValue,
         };
-        const rendered: any = mount(<CSSEditor data={data} onUpdate={callbackSpacing} />);
+        const rendered: any = mount(<CSSEditor data={data} onChange={callbackSpacing} />);
 
         const renderedCSSSpacing: any = rendered.find("CSSSpacing");
         const topSpacingInput: any = renderedCSSSpacing.find("input").at(0);

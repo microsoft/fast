@@ -17,7 +17,7 @@ export default class CSSEditor extends Foundation<
 
     protected handledProps: HandledProps<CSSEditorHandledProps> = {
         data: void 0,
-        onUpdate: void 0,
+        onChange: void 0,
         managedClasses: void 0,
     };
 
@@ -35,11 +35,11 @@ export default class CSSEditor extends Foundation<
                 <CSSSpacing
                     jssStyleSheet={{ cssSpacing: { marginBottom: "10px" } }}
                     data={this.getSpacingData()}
-                    onUpdate={this.handleCSSUpdate}
+                    onChange={this.handleCSSUpdate}
                 />
                 <CSSPosition
                     data={this.getPositionData()}
-                    onUpdate={this.handleCSSUpdate}
+                    onChange={this.handleCSSUpdate}
                 />
             </React.Fragment>
         );
@@ -73,8 +73,8 @@ export default class CSSEditor extends Foundation<
     }
 
     private handleCSSUpdate = <D extends {}>(updatedCSS: D): void => {
-        if (typeof this.props.onUpdate === "function") {
-            this.props.onUpdate(Object.assign({}, this.props.data, updatedCSS));
+        if (typeof this.props.onChange === "function") {
+            this.props.onChange(Object.assign({}, this.props.data, updatedCSS));
         }
     };
 }

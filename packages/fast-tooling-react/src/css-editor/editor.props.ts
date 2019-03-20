@@ -12,9 +12,9 @@ export interface CSSEditorUnhandledProps extends React.HTMLAttributes<HTMLDivEle
 export interface CSSEditorHandledProps
     extends ManagedClasses<CSSEditorClassNameContract> {
     /**
-     * The onUpdate event for updating the data
+     * The onChange event for updating the data
      */
-    onUpdate?: CSSOnChange;
+    onChange?: CSSOnChange;
 
     /**
      * The CSS data

@@ -22,7 +22,7 @@ export default class CSSPosition extends Foundation<
 
     protected handledProps: HandledProps<CSSPositionHandledProps> = {
         data: void 0,
-        onUpdate: void 0,
+        onChange: void 0,
         managedClasses: void 0,
     };
 
@@ -149,8 +149,8 @@ export default class CSSPosition extends Foundation<
             value
         );
 
-        if (typeof this.props.onUpdate === "function") {
-            this.props.onUpdate(updatedProps);
+        if (typeof this.props.onChange === "function") {
+            this.props.onChange(updatedProps);
         }
     };
 

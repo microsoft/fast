@@ -38,9 +38,9 @@ export interface CSSPositionHandledProps
     data?: CSSPositionValues;
 
     /**
-     * The update callback
+     * The onChange callback
      */
-    onUpdate?: (position: CSSPositionValues) => void;
+    onChange?: (position: CSSPositionValues) => void;
 }
 
 export type CSSPositionProps = CSSPositionHandledProps & CSSPositionUnhandledProps;

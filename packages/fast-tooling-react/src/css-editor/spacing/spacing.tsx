@@ -23,7 +23,7 @@ export default class CSSSpacing extends Foundation<
 
     protected handledProps: HandledProps<CSSSpacingHandledProps> = {
         data: void 0,
-        onUpdate: void 0,
+        onChange: void 0,
         managedClasses: void 0,
     };
 
@@ -199,7 +199,7 @@ export default class CSSSpacing extends Foundation<
 
             spacing[cssKey] = e.target.value;
 
-            this.props.onUpdate(spacing);
+            this.props.onChange(spacing);
         };
     }
 }

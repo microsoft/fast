@@ -111,7 +111,7 @@ describe("CSSPosition", () => {
 
         expect(input.prop("value")).toBe(value);
     });
-    test("should fire `onUpdate` callback if the `position` prop is changed", () => {
+    test("should fire `onChange` callback if the `position` prop is changed", () => {
         const callback: any = jest.fn(
             (args: any): void => {
                 expect(args.position).toBe(PositionValue.static);
@@ -120,7 +120,7 @@ describe("CSSPosition", () => {
         const rendered: any = mount(
             <CSSPosition
                 data={{ position: PositionValue.absolute }}
-                onUpdate={callback}
+                onChange={callback}
             />
         );
         rendered.find("select").simulate("change", {
@@ -131,7 +131,7 @@ describe("CSSPosition", () => {
 
         expect(callback).toHaveBeenCalled();
     });
-    test("should fire `onUpdate` callback if the `top` prop is changed", () => {
+    test("should fire `onChange` callback if the `top` prop is changed", () => {
         const value: string = "25px";
         const callback: any = jest.fn(
             (args: any): void => {
@@ -141,7 +141,7 @@ describe("CSSPosition", () => {
         const rendered: any = mount(
             <CSSPosition
                 data={{ position: PositionValue.absolute }}
-                onUpdate={callback}
+                onChange={callback}
             />
         );
         const input: any = rendered.find("input").at(topPosition);
@@ -151,7 +151,7 @@ describe("CSSPosition", () => {
 
         expect(callback).toHaveBeenCalled();
     });
-    test("should fire `onUpdate` callback if the `left` prop is changed", () => {
+    test("should fire `onChange` callback if the `left` prop is changed", () => {
         const value: string = "25px";
         const callback: any = jest.fn(
             (args: any): void => {
@@ -161,7 +161,7 @@ describe("CSSPosition", () => {
         const rendered: any = mount(
             <CSSPosition
                 data={{ position: PositionValue.absolute }}
-                onUpdate={callback}
+                onChange={callback}
             />
         );
         const input: any = rendered.find("input").at(leftPosition);
@@ -171,7 +171,7 @@ describe("CSSPosition", () => {
 
         expect(callback).toHaveBeenCalled();
     });
-    test("should fire `onUpdate` callback if the `right` prop is changed", () => {
+    test("should fire `onChange` callback if the `right` prop is changed", () => {
         const value: string = "25px";
         const callback: any = jest.fn(
             (args: any): void => {
@@ -181,7 +181,7 @@ describe("CSSPosition", () => {
         const rendered: any = mount(
             <CSSPosition
                 data={{ position: PositionValue.absolute }}
-                onUpdate={callback}
+                onChange={callback}
             />
         );
         const input: any = rendered.find("input").at(rightPosition);
@@ -191,7 +191,7 @@ describe("CSSPosition", () => {
 
         expect(callback).toHaveBeenCalled();
     });
-    test("should fire `onUpdate` callback if the `bottom` prop is changed", () => {
+    test("should fire `onChange` callback if the `bottom` prop is changed", () => {
         const value: string = "25px";
         const callback: any = jest.fn(
             (args: any): void => {
@@ -201,7 +201,7 @@ describe("CSSPosition", () => {
         const rendered: any = mount(
             <CSSPosition
                 data={{ position: PositionValue.absolute }}
-                onUpdate={callback}
+                onChange={callback}
             />
         );
         const input: any = rendered.find("input").at(bottomPosition);
@@ -211,7 +211,7 @@ describe("CSSPosition", () => {
 
         expect(callback).toHaveBeenCalled();
     });
-    test("should not allow the `left` prop value to be added to the `onUpdate` callback if the `right` prop is being set", () => {
+    test("should not allow the `left` prop value to be added to the `onChange` callback if the `right` prop is being set", () => {
         const value: string = "25px";
         const callback: any = jest.fn(
             (args: any): void => {
@@ -223,7 +223,7 @@ describe("CSSPosition", () => {
         const rendered: any = mount(
             <CSSPosition
                 data={{ position: PositionValue.absolute, left: value }}
-                onUpdate={callback}
+                onChange={callback}
             />
         );
         const input: any = rendered.find("input").at(rightPosition);
@@ -233,7 +233,7 @@ describe("CSSPosition", () => {
 
         expect(callback).toHaveBeenCalled();
     });
-    test("should not allow the `right` prop value to be added to the `onUpdate` callback if the `left` prop is being set", () => {
+    test("should not allow the `right` prop value to be added to the `onChange` callback if the `left` prop is being set", () => {
         const value: string = "25px";
         const callback: any = jest.fn(
             (args: any): void => {
@@ -245,7 +245,7 @@ describe("CSSPosition", () => {
         const rendered: any = mount(
             <CSSPosition
                 data={{ position: PositionValue.absolute, right: value }}
-                onUpdate={callback}
+                onChange={callback}
             />
         );
         const input: any = rendered.find("input").at(leftPosition);
@@ -255,7 +255,7 @@ describe("CSSPosition", () => {
 
         expect(callback).toHaveBeenCalled();
     });
-    test("should not allow the `bottom` prop value to be added to the `onUpdate` callback if the `top` prop is being set", () => {
+    test("should not allow the `bottom` prop value to be added to the `onChange` callback if the `top` prop is being set", () => {
         const value: string = "25px";
         const callback: any = jest.fn(
             (args: any): void => {
@@ -267,7 +267,7 @@ describe("CSSPosition", () => {
         const rendered: any = mount(
             <CSSPosition
                 data={{ position: PositionValue.absolute, bottom: value }}
-                onUpdate={callback}
+                onChange={callback}
             />
         );
         const input: any = rendered.find("input").at(topPosition);
@@ -277,7 +277,7 @@ describe("CSSPosition", () => {
 
         expect(callback).toHaveBeenCalled();
     });
-    test("should not allow the `top` prop value to be added to the `onUpdate` callback if the `bottom` prop is being set", () => {
+    test("should not allow the `top` prop value to be added to the `onChange` callback if the `bottom` prop is being set", () => {
         const value: string = "25px";
         const callback: any = jest.fn(
             (args: any): void => {
@@ -289,7 +289,7 @@ describe("CSSPosition", () => {
         const rendered: any = mount(
             <CSSPosition
                 data={{ position: PositionValue.absolute, top: value }}
-                onUpdate={callback}
+                onChange={callback}
             />
         );
         const input: any = rendered.find("input").at(bottomPosition);

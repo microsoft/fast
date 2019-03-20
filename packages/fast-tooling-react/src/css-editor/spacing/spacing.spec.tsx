@@ -171,11 +171,11 @@ describe("CSSSpacing", () => {
             )
         ).toBe(undefined);
     });
-    test("should fire the `onUpdate` callback when the top margin input values are changed", () => {
+    test("should fire the `onChange` callback when the top margin input values are changed", () => {
         const value: string = "top-value-example";
-        const onUpdateCallback: any = jest.fn();
+        const onChangeCallback: any = jest.fn();
         const rendered: any = mount(
-            <Spacing onUpdate={onUpdateCallback} managedClasses={managedClasses} />
+            <Spacing onChange={onChangeCallback} managedClasses={managedClasses} />
         );
 
         rendered
@@ -183,14 +183,14 @@ describe("CSSSpacing", () => {
             .at(top)
             .simulate("change", { target: { value } });
 
-        expect(onUpdateCallback).toHaveBeenCalled();
-        expect(onUpdateCallback.mock.calls[0][0]).toEqual({ marginTop: value });
+        expect(onChangeCallback).toHaveBeenCalled();
+        expect(onChangeCallback.mock.calls[0][0]).toEqual({ marginTop: value });
     });
-    test("should fire the `onUpdate` callback when the bottom margin input values are changed", () => {
+    test("should fire the `onChange` callback when the bottom margin input values are changed", () => {
         const value: string = "bottom-value-example";
-        const onUpdateCallback: any = jest.fn();
+        const onChangeCallback: any = jest.fn();
         const rendered: any = mount(
-            <Spacing onUpdate={onUpdateCallback} managedClasses={managedClasses} />
+            <Spacing onChange={onChangeCallback} managedClasses={managedClasses} />
         );
 
         rendered
@@ -198,14 +198,14 @@ describe("CSSSpacing", () => {
             .at(bottom)
             .simulate("change", { target: { value } });
 
-        expect(onUpdateCallback).toHaveBeenCalled();
-        expect(onUpdateCallback.mock.calls[0][0]).toEqual({ marginBottom: value });
+        expect(onChangeCallback).toHaveBeenCalled();
+        expect(onChangeCallback.mock.calls[0][0]).toEqual({ marginBottom: value });
     });
-    test("should fire the `onUpdate` callback when the left margin input values are changed", () => {
+    test("should fire the `onChange` callback when the left margin input values are changed", () => {
         const value: string = "left-value-example";
-        const onUpdateCallback: any = jest.fn();
+        const onChangeCallback: any = jest.fn();
         const rendered: any = mount(
-            <Spacing onUpdate={onUpdateCallback} managedClasses={managedClasses} />
+            <Spacing onChange={onChangeCallback} managedClasses={managedClasses} />
         );
 
         rendered
@@ -213,14 +213,14 @@ describe("CSSSpacing", () => {
             .at(left)
             .simulate("change", { target: { value } });
 
-        expect(onUpdateCallback).toHaveBeenCalled();
-        expect(onUpdateCallback.mock.calls[0][0]).toEqual({ marginLeft: value });
+        expect(onChangeCallback).toHaveBeenCalled();
+        expect(onChangeCallback.mock.calls[0][0]).toEqual({ marginLeft: value });
     });
-    test("should fire the `onUpdate` callback when the right margin input values are changed", () => {
+    test("should fire the `onChange` callback when the right margin input values are changed", () => {
         const value: string = "right-value-example";
-        const onUpdateCallback: any = jest.fn();
+        const onChangeCallback: any = jest.fn();
         const rendered: any = mount(
-            <Spacing onUpdate={onUpdateCallback} managedClasses={managedClasses} />
+            <Spacing onChange={onChangeCallback} managedClasses={managedClasses} />
         );
 
         rendered
@@ -228,17 +228,17 @@ describe("CSSSpacing", () => {
             .at(right)
             .simulate("change", { target: { value } });
 
-        expect(onUpdateCallback).toHaveBeenCalled();
-        expect(onUpdateCallback.mock.calls[0][0]).toEqual({ marginRight: value });
+        expect(onChangeCallback).toHaveBeenCalled();
+        expect(onChangeCallback.mock.calls[0][0]).toEqual({ marginRight: value });
     });
-    test("should fire the `onUpdate` callback when multiple margin input values are changed", () => {
+    test("should fire the `onChange` callback when multiple margin input values are changed", () => {
         const rightValue: string = "right-value-example";
         const leftValue: string = "left-value-example";
-        const onUpdateCallback: any = jest.fn();
+        const onChangeCallback: any = jest.fn();
         const rendered: any = mount(
             <Spacing
                 data={{ marginRight: rightValue }}
-                onUpdate={onUpdateCallback}
+                onChange={onChangeCallback}
                 managedClasses={managedClasses}
             />
         );
@@ -248,17 +248,17 @@ describe("CSSSpacing", () => {
             .at(left)
             .simulate("change", { target: { value: leftValue } });
 
-        expect(onUpdateCallback).toHaveBeenCalled();
-        expect(onUpdateCallback.mock.calls[0][0]).toEqual({
+        expect(onChangeCallback).toHaveBeenCalled();
+        expect(onChangeCallback.mock.calls[0][0]).toEqual({
             marginRight: rightValue,
             marginLeft: leftValue,
         });
     });
-    test("should fire the `onUpdate` callback when the top padding input values are changed", () => {
+    test("should fire the `onChange` callback when the top padding input values are changed", () => {
         const value: string = "top-value-example";
-        const onUpdateCallback: any = jest.fn();
+        const onChangeCallback: any = jest.fn();
         const rendered: any = mount(
-            <Spacing onUpdate={onUpdateCallback} managedClasses={managedClasses} />
+            <Spacing onChange={onChangeCallback} managedClasses={managedClasses} />
         );
 
         rendered.setState({ activeType: SpacingType.padding });
@@ -268,14 +268,14 @@ describe("CSSSpacing", () => {
             .at(top)
             .simulate("change", { target: { value } });
 
-        expect(onUpdateCallback).toHaveBeenCalled();
-        expect(onUpdateCallback.mock.calls[0][0]).toEqual({ paddingTop: value });
+        expect(onChangeCallback).toHaveBeenCalled();
+        expect(onChangeCallback.mock.calls[0][0]).toEqual({ paddingTop: value });
     });
-    test("should fire the `onUpdate` callback when the bottom padding input values are changed", () => {
+    test("should fire the `onChange` callback when the bottom padding input values are changed", () => {
         const value: string = "bottom-value-example";
-        const onUpdateCallback: any = jest.fn();
+        const onChangeCallback: any = jest.fn();
         const rendered: any = mount(
-            <Spacing onUpdate={onUpdateCallback} managedClasses={managedClasses} />
+            <Spacing onChange={onChangeCallback} managedClasses={managedClasses} />
         );
 
         rendered.setState({ activeType: SpacingType.padding });
@@ -285,16 +285,16 @@ describe("CSSSpacing", () => {
             .at(bottom)
             .simulate("change", { target: { value } });
 
-        expect(onUpdateCallback).toHaveBeenCalled();
-        expect(onUpdateCallback.mock.calls[0][0]).toEqual({
+        expect(onChangeCallback).toHaveBeenCalled();
+        expect(onChangeCallback.mock.calls[0][0]).toEqual({
             paddingBottom: value,
         });
     });
-    test("should fire the `onUpdate` callback when the left padding input values are changed", () => {
+    test("should fire the `onChange` callback when the left padding input values are changed", () => {
         const value: string = "left-value-example";
-        const onUpdateCallback: any = jest.fn();
+        const onChangeCallback: any = jest.fn();
         const rendered: any = mount(
-            <Spacing onUpdate={onUpdateCallback} managedClasses={managedClasses} />
+            <Spacing onChange={onChangeCallback} managedClasses={managedClasses} />
         );
 
         rendered.setState({ activeType: SpacingType.padding });
@@ -304,14 +304,14 @@ describe("CSSSpacing", () => {
             .at(left)
             .simulate("change", { target: { value } });
 
-        expect(onUpdateCallback).toHaveBeenCalled();
-        expect(onUpdateCallback.mock.calls[0][0]).toEqual({ paddingLeft: value });
+        expect(onChangeCallback).toHaveBeenCalled();
+        expect(onChangeCallback.mock.calls[0][0]).toEqual({ paddingLeft: value });
     });
-    test("should fire the `onUpdate` callback when the right padding input values are changed", () => {
+    test("should fire the `onChange` callback when the right padding input values are changed", () => {
         const value: string = "right-value-example";
-        const onUpdateCallback: any = jest.fn();
+        const onChangeCallback: any = jest.fn();
         const rendered: any = mount(
-            <Spacing onUpdate={onUpdateCallback} managedClasses={managedClasses} />
+            <Spacing onChange={onChangeCallback} managedClasses={managedClasses} />
         );
 
         rendered.setState({ activeType: SpacingType.padding });
@@ -321,19 +321,19 @@ describe("CSSSpacing", () => {
             .at(right)
             .simulate("change", { target: { value } });
 
-        expect(onUpdateCallback).toHaveBeenCalled();
-        expect(onUpdateCallback.mock.calls[0][0]).toEqual({ paddingRight: value });
+        expect(onChangeCallback).toHaveBeenCalled();
+        expect(onChangeCallback.mock.calls[0][0]).toEqual({ paddingRight: value });
     });
-    test("should fire the `onUpdate` callback when multiple padding input values are changed", () => {
+    test("should fire the `onChange` callback when multiple padding input values are changed", () => {
         const rightValue: string = "right-value-example";
         const leftValue: string = "left-value-example";
-        const onUpdateCallback: any = jest.fn();
+        const onChangeCallback: any = jest.fn();
         const rendered: any = mount(
             <Spacing
                 data={{
                     paddingRight: rightValue,
                 }}
-                onUpdate={onUpdateCallback}
+                onChange={onChangeCallback}
                 managedClasses={managedClasses}
             />
         );
@@ -345,24 +345,24 @@ describe("CSSSpacing", () => {
             .at(left)
             .simulate("change", { target: { value: leftValue } });
 
-        expect(onUpdateCallback).toHaveBeenCalled();
-        expect(onUpdateCallback.mock.calls[0][0]).toEqual({
+        expect(onChangeCallback).toHaveBeenCalled();
+        expect(onChangeCallback.mock.calls[0][0]).toEqual({
             paddingRight: rightValue,
             paddingLeft: leftValue,
         });
     });
-    test("should fire the `onUpdate` callback when multiple margin input values and padding values are changed", () => {
+    test("should fire the `onChange` callback when multiple margin input values and padding values are changed", () => {
         const rightValue: string = "right-value-example";
         const leftValue: string = "left-value-example";
         const topValue: string = "top-value-example";
-        const onUpdateCallback: any = jest.fn();
+        const onChangeCallback: any = jest.fn();
         const rendered: any = mount(
             <Spacing
                 data={{
                     paddingRight: rightValue,
                     marginTop: topValue,
                 }}
-                onUpdate={onUpdateCallback}
+                onChange={onChangeCallback}
                 managedClasses={managedClasses}
             />
         );
@@ -374,8 +374,8 @@ describe("CSSSpacing", () => {
             .at(left)
             .simulate("change", { target: { value: leftValue } });
 
-        expect(onUpdateCallback).toHaveBeenCalled();
-        expect(onUpdateCallback.mock.calls[0][0]).toEqual({
+        expect(onChangeCallback).toHaveBeenCalled();
+        expect(onChangeCallback.mock.calls[0][0]).toEqual({
             paddingRight: rightValue,
             paddingLeft: leftValue,
             marginTop: topValue,

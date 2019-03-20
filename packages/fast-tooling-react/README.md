@@ -573,7 +573,7 @@ export class Example extends React.Component {
         return (
             <CSSEditor
                 data={this.state.CSSValues}
-                onUpdate={this.handleCssValueUpdate}
+                onChange={this.handleCssValueUpdate}
             />
         );
     }
@@ -612,7 +612,7 @@ export class Example extends React.Component {
         return (
             <CSSSpacing
                 data={this.state.spacingValues}
-                onUpdate={this.handleSpacingValueUpdate}
+                onChange={this.handleSpacingValueUpdate}
             />
         );
     }
@@ -651,7 +651,7 @@ export class Example extends React.Component {
         return (
             <CSSPosition
                 data={this.state.cssValues}
-                onUpdate={this.handleCSSValueUpdate}
+                onChange={this.handleCSSValueUpdate}
             />
         );
     }

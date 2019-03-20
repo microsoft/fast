@@ -54,7 +54,7 @@ export interface CSSSpacingHandledProps
     /**
      * The update callback
      */
-    onUpdate?: (data: CSSSpacingValues) => void;
+    onChange?: (data: CSSSpacingValues) => void;
 }
 
 export type CSSSpacingProps = CSSSpacingHandledProps & CSSSpacingUnhandledProps;
