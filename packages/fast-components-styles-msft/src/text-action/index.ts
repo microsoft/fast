@@ -1,9 +1,4 @@
-import {
-    applyCornerRadius,
-    applyDisabledState,
-    DesignSystem,
-    withDesignSystemDefaults,
-} from "../design-system";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import {
     ComponentStyles,
     ComponentStyleSheet,
@@ -27,7 +22,9 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
+import { applyCornerRadius } from "../utilities/border";
 import { height, maxHeight, minHeight, padding } from "../utilities/density";
+import { applyDisabledState } from "../utilities/disabled";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
 export const textFieldOverrides: ComponentStyles<

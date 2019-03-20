@@ -23,12 +23,11 @@ export function densityToTypeOffset(designSystem: DesignSystem): number {
  */
 export function height(
     lines: number = 1,
-    minusBorder: number = 0,
     unit?: string
 ): (config: DesignSystem) => string {
     return (config: DesignSystem): string => {
         const designSystem: DesignSystem = withDesignSystemDefaults(config);
-        const value: number = heightNumber(lines, minusBorder)(designSystem);
+        const value: number = heightNumber(lines)(designSystem);
         return typeof unit === "string" ? `${value}${unit}` : toPx(value);
     };
 }
@@ -37,45 +36,32 @@ export function height(
  * Returns the component height as a number.
  *
  * @param lines The logical number of lines the component takes, typically 1.
- * @param minusBorder Any border that should be removed from the overall height.
  */
-export function heightNumber(
-    lines: number,
-    minusBorder: number = 0
-): (config: DesignSystem) => number {
+export function heightNumber(lines: number): (config: DesignSystem) => number {
     return (config: DesignSystem): number => {
         const designSystem: DesignSystem = withDesignSystemDefaults(config);
         const value: number =
             (designSystem.defaultHeightMultiplier + designSystem.density) *
-                designSystem.designUnit *
-                lines -
-            minusBorder;
+            designSystem.designUnit *
+            lines;
         return value;
     };
 }
 
-export function minHeight(
-    lines: number = 1,
-    minusBorder: number = 0
-): (config: DesignSystem) => string {
+export function minHeight(lines: number = 1): (config: DesignSystem) => string {
     return (config: DesignSystem): string => {
         const designSystem: DesignSystem = withDesignSystemDefaults(config);
         const value: number =
-            (designSystem.defaultHeightMultiplier - 3) * designSystem.designUnit * lines -
-            minusBorder;
+            (designSystem.defaultHeightMultiplier - 3) * designSystem.designUnit * lines;
         return toPx(value);
     };
 }
 
-export function maxHeight(
-    lines: number = 1,
-    minusBorder: number = 0
-): (config: DesignSystem) => string {
+export function maxHeight(lines: number = 1): (config: DesignSystem) => string {
     return (config: DesignSystem): string => {
         const designSystem: DesignSystem = withDesignSystemDefaults(config);
         const value: number =
-            (designSystem.defaultHeightMultiplier + 3) * designSystem.designUnit * lines -
-            minusBorder;
+            (designSystem.defaultHeightMultiplier + 3) * designSystem.designUnit * lines;
         return toPx(value);
     };
 }
@@ -102,7 +88,6 @@ export function padding(
  * Returns the standard horizontal padding for text and icons as a number.
  *
  * @param minusBorder Any border that should be removed from the overall content padding.
- * @param unit The unit of measurement; px by default.
  */
 export function paddingNumber(minusBorder: number = 0): (config: DesignSystem) => number {
     return (config: DesignSystem): number => {
@@ -119,6 +104,7 @@ export function paddingNumber(minusBorder: number = 0): (config: DesignSystem) =
  * Adds the font size and line height attributes for the type ramp according to the design system config.
  *
  * @param config The design system config.
+ * @param offset Manually adjusts the density for smaller or larger components.
  */
 export function applyFontSize(
     config: DesignSystem,
@@ -141,7 +127,7 @@ export function applyFontSize(
 }
 
 /**
- * @deprecated Use defaultHeight instead.
+ * @deprecated Use height instead.
  * @param value
  * @param unit
  */

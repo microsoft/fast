@@ -1,9 +1,4 @@
-import {
-    applyCornerRadius,
-    applyFocusPlaceholderBorder,
-    DesignSystem,
-    withDesignSystemDefaults,
-} from "../design-system";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import {
     ComponentStyles,
     ComponentStyleSheet,
@@ -24,6 +19,7 @@ import {
     neutralForegroundRest,
 } from "../utilities/color";
 import { PivotClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 
 const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
     config: DesignSystem

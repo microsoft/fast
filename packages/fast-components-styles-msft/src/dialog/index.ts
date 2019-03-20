@@ -1,12 +1,8 @@
-import {
-    applyCornerRadius,
-    DesignSystem,
-    withDesignSystemDefaults,
-} from "../design-system";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { DialogClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { toPx } from "@microsoft/fast-jss-utilities";
 import { applyAcrylicMaterial } from "../utilities/acrylic";
+import { applyCornerRadius } from "../utilities/border";
 import { elevation, ElevationMultiplier } from "../utilities/elevation";
 
 /* tslint:disable-next-line */

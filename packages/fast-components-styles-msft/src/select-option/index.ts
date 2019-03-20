@@ -1,10 +1,4 @@
-import {
-    applyCornerRadius,
-    applyDisabledState,
-    applyFocusPlaceholderBorder,
-    DesignSystem,
-    withDesignSystemDefaults,
-} from "../design-system";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { SelectOptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { applyFontSize, height, padding } from "../utilities/density";
@@ -21,7 +15,9 @@ import {
     Direction,
     ellipsis,
 } from "@microsoft/fast-jss-utilities";
+import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { applyCursorPointer } from "../utilities/cursor";
+import { applyDisabledState } from "../utilities/disabled";
 
 const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = (
     config: DesignSystem

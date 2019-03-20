@@ -1,7 +1,7 @@
 import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { NumberFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { applyLocalizedProperty, Direction, toPx } from "@microsoft/fast-jss-utilities";
+import { Direction, localizeSpacing } from "@microsoft/fast-jss-utilities";
 import { height, maxHeight, minHeight, padding } from "../utilities/density";
 import { inputFieldStyles } from "../patterns/input-field";
 
@@ -18,11 +18,7 @@ const styles: ComponentStyles<NumberFieldClassNameContract, DesignSystem> = (
             height: height()(designSystem),
             minHeight: minHeight()(designSystem),
             maxHeight: maxHeight()(designSystem),
-            padding: applyLocalizedProperty(
-                `0 6px 0 ${padding()(designSystem)}`,
-                `0 ${padding(2)(designSystem)} 0 6px`,
-                direction
-            ),
+            padding: localizeSpacing(direction)(`0 6px 0 ${padding()(designSystem)}`),
         },
     };
 };

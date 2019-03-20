@@ -1,7 +1,7 @@
 import { applyFontSize, padding } from "../utilities/density";
 import { fontWeight } from "../utilities/fonts";
 import { CSSRules } from "@microsoft/fast-jss-manager";
-import { applyCornerRadius, applyDisabledState, DesignSystem } from "../design-system";
+import { DesignSystem } from "../design-system";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import {
     neutralFillInputActive,
@@ -14,6 +14,8 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
+import { applyCornerRadius } from "../utilities/border";
+import { applyDisabledState } from "../utilities/disabled";
 
 /**
  * Shared input field styles

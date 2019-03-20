@@ -1,8 +1,4 @@
-import {
-    applyCornerRadius,
-    DesignSystem,
-    withDesignSystemDefaults,
-} from "../design-system";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import {
     ButtonClassNameContract,
@@ -14,6 +10,7 @@ import {
     neutralForegroundRest,
     neutralOutlineRest,
 } from "../utilities/color";
+import { applyCornerRadius } from "../utilities/border";
 
 export const selectDisplayButtonOverrides: ComponentStyles<
     Partial<ButtonClassNameContract>,

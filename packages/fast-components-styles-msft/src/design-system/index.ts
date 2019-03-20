@@ -1,11 +1,9 @@
 import { Direction } from "@microsoft/fast-web-utilities";
-import { CSSRules } from "@microsoft/fast-jss-manager";
-import { toPx, withDefaults } from "@microsoft/fast-jss-utilities";
 import { white } from "../utilities/color/color-constants";
 import { ColorPalette, ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
 import { Palette } from "../utilities/color/palette";
-import { applyCursorDisabled } from "../utilities/cursor";
 import { TypeRamp } from "../utilities/typography";
+import { withDefaults } from "@microsoft/fast-jss-utilities";
 
 export interface DesignSystem {
     /**
@@ -240,37 +238,6 @@ export function ensureDesignSystemDefaults<T>(
 ): (designSystem: DesignSystem) => T {
     return (designSystem: DesignSystem): T => {
         return callback(withDesignSystemDefaults(designSystem));
-    };
-}
-
-export function applyCornerRadius(
-    designSystem: DesignSystem,
-    floating: boolean = false
-): CSSRules<DesignSystem> {
-    return {
-        borderRadius: toPx(designSystem.cornerRadius * (floating ? 2 : 1)),
-    };
-}
-
-/**
- * Sets the border width, style, and color to reserve the space for the focus indicator.
- *
- * @param config The design system config
- */
-export function applyFocusPlaceholderBorder(
-    config: DesignSystem
-): CSSRules<DesignSystem> {
-    const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    return {
-        border: `${toPx(designSystem.focusOutlineWidth)} solid transparent`,
-    };
-}
-
-export function applyDisabledState(config: DesignSystem): CSSRules<DesignSystem> {
-    const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    return {
-        opacity: `${designSystem.disabledOpacity}`,
-        ...applyCursorDisabled(),
     };
 }
 

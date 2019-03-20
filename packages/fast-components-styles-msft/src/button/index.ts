@@ -5,13 +5,7 @@ import {
     Direction,
     toPx,
 } from "@microsoft/fast-jss-utilities";
-import {
-    applyCornerRadius,
-    applyDisabledState,
-    applyFocusPlaceholderBorder,
-    DesignSystem,
-    withDesignSystemDefaults,
-} from "../design-system";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import {
     ComponentStyles,
     ComponentStyleSheet,
@@ -24,7 +18,6 @@ import {
     minHeight,
     padding,
 } from "../utilities/density";
-import { fontWeight } from "../utilities/fonts";
 import {
     accentFillActive,
     accentFillHover,
@@ -46,6 +39,8 @@ import {
     neutralOutlineRest,
 } from "../utilities/color";
 import { applyCursorPointer } from "../utilities/cursor";
+import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
+import { applyDisabledState } from "../utilities/disabled";
 
 function applyTransparentBackplateStyles(
     designSystem: DesignSystem
@@ -100,7 +95,6 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
         button: {
             ...applyFontSize(designSystem),
             fontFamily: "inherit",
-            fontWeight: `${fontWeight.semibold}`,
             ...applyCursorPointer(),
             boxSizing: "border-box",
             maxWidth: "374px",
