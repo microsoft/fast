@@ -6,6 +6,7 @@ import Foundation, {
 import { get, pick } from "lodash-es";
 import {
     CSSSpacingHandledProps,
+    CSSSpacingProps,
     CSSSpacingState,
     CSSSpacingUnhandledProps,
     CSSSpacingValues,
@@ -21,27 +22,16 @@ export default class CSSSpacing extends Foundation<
     public static displayName: string = "CSSSpacing";
 
     protected handledProps: HandledProps<CSSSpacingHandledProps> = {
-        spacingType: void 0,
-        marginTop: void 0,
-        marginRight: void 0,
-        marginBottom: void 0,
-        marginLeft: void 0,
-        paddingTop: void 0,
-        paddingRight: void 0,
-        paddingBottom: void 0,
-        paddingLeft: void 0,
-        onSpacingTypeUpdate: void 0,
-        onSpacingUpdate: void 0,
+        data: void 0,
+        onChange: void 0,
         managedClasses: void 0,
     };
 
-    constructor(props: CSSSpacingHandledProps) {
+    constructor(props: CSSSpacingProps) {
         super(props);
 
         this.state = {
-            activeType: this.props.spacingType
-                ? this.props.spacingType
-                : SpacingType.margin,
+            activeType: SpacingType.margin,
             hoverType: void 0,
         };
     }
@@ -52,14 +42,6 @@ export default class CSSSpacing extends Foundation<
                 {this.renderGrid()}
             </div>
         );
-    }
-
-    public componentWillReceiveProps(nextProps: CSSSpacingHandledProps): void {
-        if (nextProps.spacingType !== this.props.spacingType) {
-            this.setState({
-                activeType: nextProps.spacingType,
-            });
-        }
     }
 
     private renderBase(activeType: SpacingType): React.ReactNode {
@@ -131,7 +113,7 @@ export default class CSSSpacing extends Foundation<
                 type="text"
                 className={this.props.managedClasses.cssSpacing_input}
                 onChange={this.handleInputOnChange(spacingKey)}
-                value={this.props[spacingKey] || ""}
+                value={get(this.props, `data.${spacingKey}`, "")}
             />
         );
     }
@@ -169,13 +151,9 @@ export default class CSSSpacing extends Foundation<
     ): (e: React.MouseEvent<HTMLDivElement>) => void {
         return (e: React.MouseEvent<HTMLDivElement>): void => {
             if (e.currentTarget === e.target) {
-                if (typeof this.props.onSpacingTypeUpdate === "function") {
-                    this.props.onSpacingTypeUpdate(spacingType);
-                } else if (this.props.spacingType === undefined) {
-                    this.setState({
-                        activeType: spacingType,
-                    });
-                }
+                this.setState({
+                    activeType: spacingType,
+                });
             }
         };
     }
@@ -208,7 +186,7 @@ export default class CSSSpacing extends Foundation<
         cssKey: SpacingProperty
     ): (e: React.ChangeEvent<HTMLInputElement>) => void {
         return (e: React.ChangeEvent<HTMLInputElement>): void => {
-            const spacing: CSSSpacingValues = pick(this.props, [
+            const spacing: CSSSpacingValues = pick(this.props.data, [
                 SpacingProperty.marginBottom,
                 SpacingProperty.marginTop,
                 SpacingProperty.marginLeft,
@@ -221,7 +199,7 @@ export default class CSSSpacing extends Foundation<
 
             spacing[cssKey] = e.target.value;
 
-            this.props.onSpacingUpdate(spacing);
+            this.props.onChange(spacing);
         };
     }
 }
