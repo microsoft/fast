@@ -7,7 +7,6 @@ import { BadgeClassNameContract } from "@microsoft/fast-components-class-name-co
 import { Direction, ellipsis, toPx } from "@microsoft/fast-jss-utilities";
 import { accentForegroundCut, neutralForegroundRest } from "../utilities/color";
 import {
-    applyCornerRadius,
     DesignSystem,
     withDesignSystemDefaults,
 } from "../design-system/index";
@@ -15,31 +14,7 @@ import { fontWeight } from "../utilities/fonts";
 import { applyFontSize, padding } from "../utilities/density";
 import { Swatch } from "../utilities/color/palette";
 import { applyCursorDefault } from "../utilities/cursor";
-
-function smallBadgeStyle(designSystem: DesignSystem): CSSRules<DesignSystem> {
-    return {
-        ...applyFontSize(designSystem, -1),
-        lineHeight: "13px",
-        height: "16px",
-        "&$badge__filled": {
-            padding: `1px ${toPx(designSystem.designUnit * 2)}`,
-        },
-    };
-}
-
-function largeBadgeStyle(designSystem: DesignSystem): CSSRules<DesignSystem> {
-    const height: number =
-        (designSystem.defaultHeightMultiplier + designSystem.density - 2) *
-        designSystem.designUnit;
-
-    return {
-        height: toPx(height),
-        lineHeight: toPx(height),
-        "&$badge__filled": {
-            padding: `0 ${padding()(designSystem)}`,
-        },
-    };
-}
+import { applyCornerRadius } from "../utilities/border";
 
 function backplateStyle(designSystem: DesignSystem): CSSRules<DesignSystem> {
     return {
@@ -55,6 +30,7 @@ const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
     const direction: Direction = designSystem.direction;
     // Badges do not switch color on theme change
     const filledBackground: string = "#FFD800";
+    const largeHeight: number = (designSystem.defaultHeightMultiplier + designSystem.density - 2) * designSystem.designUnit;
 
     return {
         badge: {
@@ -75,10 +51,19 @@ const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
             color: accentForegroundCut((): Swatch => filledBackground),
         },
         badge__small: {
-            ...smallBadgeStyle(designSystem),
+            ...applyFontSize(designSystem, -1),
+            lineHeight: "13px",
+            height: "16px",
+            "&$badge__filled": {
+                padding: `1px ${toPx(designSystem.designUnit * 2)}`,
+            },
         },
         badge__large: {
-            ...largeBadgeStyle(designSystem),
+            height: toPx(largeHeight),
+            lineHeight: toPx(largeHeight),
+            "&$badge__filled": {
+                padding: `0 ${padding()(designSystem)}`,
+            },
         },
     };
 };

@@ -1,10 +1,7 @@
-import {
-    applyCornerRadius,
-    DesignSystem,
-    withDesignSystemDefaults,
-} from "../design-system";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { CardClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { applyCornerRadius } from "../utilities/border";
 import { elevation, ElevationMultiplier } from "../utilities/elevation";
 
 const styles: ComponentStyles<CardClassNameContract, DesignSystem> = (

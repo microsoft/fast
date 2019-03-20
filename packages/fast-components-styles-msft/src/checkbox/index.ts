@@ -1,9 +1,4 @@
-import {
-    applyCornerRadius,
-    applyDisabledState,
-    DesignSystem,
-    withDesignSystemDefaults,
-} from "../design-system";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { CheckboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
@@ -22,7 +17,9 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
+import { applyCornerRadius } from "../utilities/border";
 import { applyFontSize, densityToTypeOffset, padding } from "../utilities/density";
+import { applyDisabledState } from "../utilities/disabled";
 
 const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
     config: DesignSystem

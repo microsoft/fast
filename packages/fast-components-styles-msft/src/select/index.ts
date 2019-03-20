@@ -1,5 +1,4 @@
 import {
-    applyCornerRadius,
     DesignSystem,
     withDesignSystemDefaults,
 } from "../design-system";
@@ -14,6 +13,7 @@ import {
     neutralForegroundRest,
     neutralOutlineRest,
 } from "../utilities/color";
+import { applyCornerRadius } from "../utilities/border";
 
 export const selectDisplayButtonOverrides: ComponentStyles<
     Partial<ButtonClassNameContract>,

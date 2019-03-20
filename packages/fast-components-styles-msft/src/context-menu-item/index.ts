@@ -1,10 +1,4 @@
-import {
-    applyCornerRadius,
-    applyDisabledState,
-    applyFocusPlaceholderBorder,
-    DesignSystem,
-    withDesignSystemDefaults,
-} from "../design-system";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { ContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { applyFontSize, height, paddingNumber } from "../utilities/density";
@@ -17,6 +11,8 @@ import {
     neutralForegroundRest,
 } from "../utilities/color";
 import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
+import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
+import { applyDisabledState } from "../utilities/disabled";
 
 const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = (
     config: DesignSystem

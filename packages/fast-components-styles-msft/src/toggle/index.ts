@@ -1,8 +1,4 @@
-import {
-    applyDisabledState,
-    DesignSystem,
-    withDesignSystemDefaults,
-} from "../design-system";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import {
     accentFillRest,
     accentForegroundCut,
@@ -25,6 +21,7 @@ import {
 } from "@microsoft/fast-jss-utilities";
 import { ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyFontSize } from "../utilities/density";
+import { applyDisabledState } from "../utilities/disabled";
 
 const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
     config: DesignSystem

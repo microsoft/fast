@@ -1,5 +1,4 @@
 import {
-    applyDisabledState,
     DesignSystem,
     withDesignSystemDefaults,
 } from "../design-system";
@@ -26,6 +25,7 @@ import {
     neutralOutlineRest,
 } from "../utilities/color";
 import { applyFontSize, densityToTypeOffset, padding } from "../utilities/density";
+import { applyDisabledState } from "../utilities/disabled";
 
 const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
     config: DesignSystem
