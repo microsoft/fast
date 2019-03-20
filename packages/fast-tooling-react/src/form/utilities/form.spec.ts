@@ -8,18 +8,14 @@ import {
     NavigationItem,
 } from "./form";
 import { BreadcrumbItemEventHandler, FormChildOptionItem } from "../form/form.props";
-import Children from "../../../app/pages/form/children";
-import General from "../../../app/pages/form/general";
-import Textarea from "../../../app/pages/form/textarea";
-import OneOf from "../../../app/pages/form/one-of";
 
-import arraysSchema from "../../../app/pages/form/arrays/arrays.schema.json";
-import generalSchema from "../../../app/pages/form/general/general.schema.json";
-import objectsSchema from "../../../app/pages/form/objects/objects.schema.json";
-import oneOfSchema from "../../../app/pages/form/one-of/one-of.schema.json";
-import anyOfSchema from "../../../app/pages/form/any-of/any-of.schema.json";
-import childrenSchema from "../../../app/pages/form/children/children.schema.json";
-import textFieldSchema from "../../../app/pages/form/textarea/textarea.schema.json";
+import arraysSchema from "../../__tests__/schemas/arrays.schema.json";
+import generalSchema from "../../__tests__/schemas/general.schema.json";
+import objectsSchema from "../../__tests__/schemas/objects.schema.json";
+import oneOfSchema from "../../__tests__/schemas/one-of.schema.json";
+import anyOfSchema from "../../__tests__/schemas/any-of.schema.json";
+import childrenSchema from "../../__tests__/schemas/children.schema.json";
+import textFieldSchema from "../../__tests__/schemas/textarea.schema.json";
 import { reactChildrenStringSchema } from "../form/form-item.children.text";
 
 /**
@@ -29,15 +25,15 @@ describe("getNavigation", () => {
     const childOptions: FormChildOptionItem[] = [
         {
             name: childrenSchema.id,
-            component: Children,
+            component: null,
             schema: childrenSchema,
         },
         {
             name: textFieldSchema.id,
-            component: Textarea,
+            component: null,
             schema: textFieldSchema,
         },
-        { name: oneOfSchema.id, component: OneOf, schema: oneOfSchema },
+        { name: oneOfSchema.id, component: null, schema: oneOfSchema },
     ];
 
     test("should return a single navigation item when the location is at the root", () => {
@@ -143,7 +139,7 @@ describe("getNavigation", () => {
         expect(stringNavigation[1].schema).toEqual(arraysSchema.properties.strings.items);
         expect(stringNavigation[1].data).toEqual("bar");
     });
-    test("should return navigation items for a anyOf/oneOfs", () => {
+    test("should return navigation items when the schema includes an anyOf", () => {
         const navigationRoot: NavigationItem[] = getNavigation(
             "",
             { nestedAnyOf: { string: "foo" } },
@@ -156,10 +152,11 @@ describe("getNavigation", () => {
             anyOfSchema,
             childOptions
         );
-        const navigationNonObject: NavigationItem[] = getNavigation(
-            "numberOrString",
-            { numberOrString: 54 },
-            oneOfSchema,
+
+        const navigationObject: NavigationItem[] = getNavigation(
+            "subObjectAlpha",
+            { subObjectAlpha: {} },
+            anyOfSchema,
             childOptions
         );
 
@@ -173,8 +170,26 @@ describe("getNavigation", () => {
         expect(navigation[0].schema).toEqual(anyOfSchema);
         expect(navigation[0].data).toEqual({ nestedAnyOf: { string: "foo" } });
         expect(navigation[1].dataLocation).toBe("nestedAnyOf");
-        expect(navigation[1].schema).toEqual(anyOfSchema.anyOf[2].properties.nestedAnyOf);
+        expect(navigation[1].schema).toEqual(anyOfSchema.anyOf[4].properties.nestedAnyOf);
         expect(navigation[1].data).toEqual({ string: "foo" });
+
+        expect(navigationObject.length).toBe(2);
+        expect(navigationObject[0].dataLocation).toBe("");
+        expect(navigationObject[0].schema).toEqual(anyOfSchema);
+        expect(navigationObject[0].data).toEqual({ subObjectAlpha: {} });
+        expect(navigationObject[1].dataLocation).toBe("subObjectAlpha");
+        expect(navigationObject[1].schema).toEqual(
+            anyOfSchema.anyOf[2].properties.subObjectAlpha
+        );
+        expect(navigationObject[1].data).toEqual({});
+    });
+    test("should return navigation items when the schema includes a oneOf", () => {
+        const navigationNonObject: NavigationItem[] = getNavigation(
+            "numberOrString",
+            { numberOrString: 54 },
+            oneOfSchema,
+            childOptions
+        );
 
         expect(navigationNonObject.length).toBe(2);
         expect(navigationNonObject[0].dataLocation).toBe("");
@@ -610,15 +625,15 @@ describe("getBreadcrumbs", () => {
     const childOptions: FormChildOptionItem[] = [
         {
             name: childrenSchema.id,
-            component: Children,
+            component: null,
             schema: childrenSchema,
         },
         {
             name: textFieldSchema.id,
-            component: Textarea,
+            component: null,
             schema: textFieldSchema,
         },
-        { name: generalSchema.id, component: General, schema: generalSchema },
+        { name: generalSchema.id, component: null, schema: generalSchema },
     ];
 
     test("should return a single breadcrumb item", () => {
@@ -726,7 +741,7 @@ describe("getSchemaByDataLocation", () => {
         const schema: any = getSchemaByDataLocation(textFieldSchema, data, "", [
             {
                 name: "textarea",
-                component: Textarea,
+                component: null,
                 schema: textFieldSchema,
             },
         ]);
@@ -761,7 +776,7 @@ describe("getSchemaByDataLocation", () => {
             [
                 {
                     name: "textarea",
-                    component: Textarea,
+                    component: null,
                     schema: textFieldSchema,
                 },
             ]
@@ -775,7 +790,7 @@ describe("getSchemaByDataLocation", () => {
             [
                 {
                     name: "textarea",
-                    component: Textarea,
+                    component: null,
                     schema: textFieldSchema,
                 },
             ]

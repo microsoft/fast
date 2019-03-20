@@ -1,44 +1,75 @@
 {
     "$schema": "http://json-schema.org/schema#",
-    "title": "Component with the JSON schema anyOf keyword for multiple interface options",
+    "title": "Component with anyOf",
     "description": "A test component's schema definition.",
     "type": "object",
     "id": "anyOf",
     "anyOf": [
         {
-            "additionalProperties": false,
             "description": "String",
             "type": "object",
+            "additionalProperties": false,
             "properties": {
                 "string": {
                     "title": "String",
                     "type": "string"
                 }
-            },
-            "required": [
-                "string"
-            ]
+            }
         },
         {
-            "additionalProperties": false,
             "description": "Number",
             "type": "object",
+            "additionalProperties": false,
             "properties": {
                 "number": {
                     "title": "Number",
                     "type": "number"
                 }
-            },
-            "required": [
-                "number"
-            ]
+            }
         },
         {
-            "additionalProperties": false,
+            "description": "Sub-object alpha",
             "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "subObjectAlpha": {
+                    "title": "Sub-object alpha",
+                    "type": "object",
+                    "properties": {
+                        "foo": {
+                            "title": "Sub-object alpha foo",
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "description": "Sub-object beta",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "subObjectBeta": {
+                    "title": "Sub-object beta",
+                    "type": "object",
+                    "properties": {
+                        "bar": {
+                            "title": "Sub-object alpha bar",
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "title": "Nested anyOf",
+            "description": "Nested anyOf",
+            "type": "object",
+            "additionalProperties": false,
             "properties": {
                 "nestedAnyOf": {
                     "title": "Nested anyOf",
+                    "description": "Nested anyOf Configuration",
                     "anyOf": [
                         {
                             "description": "Object",
@@ -90,10 +121,7 @@
                         }
                     ]
                 }
-            },
-            "required": [
-                "nestedAnyOf"
-            ]
+            }
         },
         {
             "additionalProperties": false,
