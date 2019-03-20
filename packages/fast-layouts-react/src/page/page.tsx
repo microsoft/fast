@@ -45,10 +45,17 @@ export class Page extends Foundation<PageHandledProps, PageUnhandledProps, {}> {
             this.props.margin
         }`;
 
-        return {
+        const attributes: React.HTMLAttributes<HTMLDivElement> = {
             ...this.unhandledProps(),
             className: super.generateClassNames(this.props.managedClasses.page),
+        };
+
+        return {
+            ...attributes,
             style: {
+                // attributes.style has to be spread here again in order to
+                // merge the styles attribute, otherwise it is just overriden
+                ...attributes.style,
                 gridTemplateColumns: columns,
                 msGridColumns: columns,
             },
