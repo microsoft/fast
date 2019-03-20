@@ -2,32 +2,38 @@
     "$schema": "http://json-schema.org/schema#",
     "title": "CSS Position",
     "description": "A CSS position component's schema definition.",
-    "id": "css-position",
+    "id": "@microsoft/fast-tooling-react/css-position",
     "type": "object",
     "properties": {
-        "position": {
-            "title": "Position",
-            "type": "string",
-            "enum": [
-                "absolute",
-                "static"
-            ]
-        },
-        "left": {
-            "title": "Left",
-            "type": "string"
-        },
-        "right": {
-            "title": "Right",
-            "type": "string"
-        },
-        "top": {
-            "title": "Top",
-            "type": "string"
-        },
-        "bottom": {
-            "title": "Bottom",
-            "type": "string"
+        "data": {
+            "title": "CSS Values",
+            "type": "object",
+            "properties": {
+                "position": {
+                    "title": "Position",
+                    "type": "string",
+                    "enum": [
+                        "absolute",
+                        "static"
+                    ]
+                },
+                "left": {
+                    "title": "Left",
+                    "type": "string"
+                },
+                "right": {
+                    "title": "Right",
+                    "type": "string"
+                },
+                "top": {
+                    "title": "Top",
+                    "type": "string"
+                },
+                "bottom": {
+                    "title": "Bottom",
+                    "type": "string"
+                }
+            }
         }
     }
 }
