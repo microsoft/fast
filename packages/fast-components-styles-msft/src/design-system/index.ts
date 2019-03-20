@@ -24,12 +24,6 @@ export interface DesignSystem {
     accentPalette: Palette;
 
     /**
-     * The brand color used as color accents.
-     * @deprecated
-     */
-    brandColor: string;
-
-    /**
      * A number between 0 and 100 that represents the contrast scale value.
      */
     contrast: number;
@@ -58,12 +52,6 @@ export interface DesignSystem {
      * The primary direction of the view.
      */
     direction: Direction;
-
-    /**
-     * The value typically used for foreground elements, such as text.
-     * @deprecated
-     */
-    foregroundColor: string;
 
     /**
      * The corner default radius applied to controls.
@@ -203,10 +191,6 @@ const designSystemDefaults: DesignSystem = {
     neutralOutlineRestDelta: 12,
     neutralOutlineHoverDelta: 24,
     neutralOutlineActiveDelta: 18,
-
-    // @deprecated
-    foregroundColor: "#111",
-    brandColor: "#0078D4",
 };
 
 /**

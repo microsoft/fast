@@ -6,7 +6,6 @@ import manageJss, {
 import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 
 export interface ColorConfig {
-    foregroundColor: string;
     backgroundColor: string;
     accentColor: string;
 }
