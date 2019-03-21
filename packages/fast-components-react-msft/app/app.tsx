@@ -162,10 +162,7 @@ export default class App extends React.Component<{}, AppState> {
                             height: "100%",
                         }}
                     >
-                        {/* Re-implement density slider with: https://github.com/Microsoft/fast-dna/issues/1139 */}
-                        <Label style={{ marginRight: "8px", display: "none" }}>
-                            density
-                        </Label>
+                        <label style={{ marginRight: "8px" }}>density</label>
                         <input
                             type="range"
                             name="density"
@@ -173,7 +170,6 @@ export default class App extends React.Component<{}, AppState> {
                             min="-3"
                             max="3"
                             onChange={this.handleDensityUpdate}
-                            style={{ display: "none" }}
                         />
                         <ColorPicker
                             foregroundColor={this.state.foregroundColor}
