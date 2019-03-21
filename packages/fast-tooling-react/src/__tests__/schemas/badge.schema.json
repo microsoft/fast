@@ -1,0 +1,66 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Badge",
+    "description": "A test component's schema definition.",
+    "type": "object",
+    "id": "badge",
+    "properties": {
+        "string": {
+            "title": "Textarea",
+            "badge": "info",
+            "badgeDescription": "More information is provided",
+            "type": "string"
+        },
+        "boolean": {
+            "title": "Checkbox",
+            "badge": "warning",
+            "badgeDescription": "Warning message",
+            "type": "boolean"
+        },
+        "enum": {
+            "title": "Select",
+            "badge": "locked",
+            "badgeDescription": "This field is locked",
+            "type": "string",
+            "enum": [
+                "span",
+                "button"
+            ]
+        },
+        "number": {
+            "title": "Numberfield",
+            "badge": "info",
+            "badgeDescription": "More information is provided",
+            "type": "number"
+        },
+        "object": {
+            "title": "Object (no required items)",
+            "badge": "warning",
+            "badgeDescription": "Warning message",
+            "type": "object",
+            "properties": {
+                "number": {
+                    "type": "number"
+                }
+            }
+        },
+        "array": {
+            "title": "Array",
+            "type": "array",
+            "badge": "warning",
+            "badgeDescription": "Warning message",
+            "items": {
+                "title": "String item",
+                "type": "string"
+            }
+        }
+    },
+    "reactProperties": {
+        "children": {
+            "title": "Children",
+            "type": "children",
+            "badge": "warning",
+            "badgeDescription": "Warning message"
+        }
+    }
+}

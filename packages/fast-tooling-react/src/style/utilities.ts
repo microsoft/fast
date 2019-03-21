@@ -51,6 +51,16 @@ export function applyTriggerStyle(color: string): CSSRules<{}> {
     };
 }
 
+export function applyFormItemBadge(): CSSRules<{}> {
+    return {
+        fill: foreground300,
+        height: "14px",
+        padding: "0 5px",
+        alignSelf: "center",
+        minWidth: "14px",
+    };
+}
+
 export function applyFormItemDisabled(): CSSRules<{}> {
     return {
         opacity: `${disabledOpacity}`,
@@ -151,13 +161,18 @@ export function insetStrongBoxShadow(color: string): CSSRules<{}> {
 export function applyLabelStyle(): CSSRules<{}> {
     return {
         flexGrow: "1",
-        lineHeight: "16px",
+        lineHeight: "23px",
         fontSize: "12px",
-        minHeight: "30px",
-        display: "flex",
+        minHeight: "23px",
         boxSizing: "border-box",
-        paddingTop: "7px",
         ...ellipsis(),
+    };
+}
+
+export function applyLabelRegionStyle(): CSSRules<{}> {
+    return {
+        display: "flex",
+        maxWidth: "100%",
     };
 }
 
@@ -248,6 +263,7 @@ export function applyRemoveItemStyle(): CSSRules<{}> {
 
 export function applyControlWrapper(): CSSRules<{}> {
     return {
+        paddingTop: "7px",
         marginBottom: "12px",
     };
 }
@@ -262,7 +278,6 @@ export function applyControlSingleLineWrapper(): CSSRules<{}> {
 
 export function applyControl(): CSSRules<{}> {
     return {
-        display: "grid",
         width: `calc(100% - 30px)`,
     };
 }
@@ -270,8 +285,8 @@ export function applyControl(): CSSRules<{}> {
 export function applySoftRemove(): CSSRules<{}> {
     return {
         display: "flex",
-        height: "30px",
-        width: "30px",
+        height: "23px",
+        minWidth: "30px",
         position: "relative",
         justifyContent: "center",
         alignItems: "center",

@@ -5,7 +5,9 @@ import {
     applyCleanListStyle,
     applyControl,
     applyControlWrapper,
+    applyFormItemBadge,
     applyGlobalStyle,
+    applyLabelRegionStyle,
     applyLabelStyle,
     applyRemoveItemStyle,
     background100,
@@ -19,8 +21,10 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
         ...applyGlobalStyle(),
     },
     formItemArray: {
-        display: "grid",
         ...applyControlWrapper(),
+    },
+    formItemArray_badge: {
+        ...applyFormItemBadge(),
     },
     formItemArray_control: {
         width: "100%",
@@ -30,7 +34,7 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
     formItemArray_controlAddButton: {
         position: "absolute",
         right: "5px",
-        top: "5px",
+        top: "1px",
         appearance: "none",
         background: "none",
         border: "none",
@@ -65,7 +69,10 @@ const styles: ComponentStyles<FormItemArrayClassNameContract, {}> = {
     },
     formItemArray_controlLabel: {
         ...applyLabelStyle(),
-        ...applyControl(),
+    },
+    formItemArray_controlLabelRegion: {
+        ...applyLabelRegionStyle(),
+        width: "calc(100% - 30px)",
     },
     formItemArray_existingItemList: {
         ...applyCleanListStyle(),

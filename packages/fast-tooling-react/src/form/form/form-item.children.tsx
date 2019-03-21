@@ -94,14 +94,24 @@ class FormItemChildren extends FormItemBase<
         return (
             <div className={this.props.managedClasses.formItemChildren}>
                 <div className={this.props.managedClasses.formItemChildren_control}>
-                    <label
-                        className={
-                            this.props.managedClasses.formItemChildren_controlLabel
-                        }
-                        id={this.getLabelId()}
+                    <div
+                        className={get(
+                            this.props,
+                            "managedClasses.formItemChildren_controlLabelRegion"
+                        )}
                     >
-                        {this.props.label}
-                    </label>
+                        <label
+                            className={
+                                this.props.managedClasses.formItemChildren_controlLabel
+                            }
+                            id={this.getLabelId()}
+                        >
+                            {this.props.label}
+                        </label>
+                        {this.renderBadge(
+                            get(this.props, "managedClasses.formItemChildren_badge")
+                        )}
+                    </div>
                 </div>
                 {this.renderExistingChildren()}
                 {this.renderAddChild()}

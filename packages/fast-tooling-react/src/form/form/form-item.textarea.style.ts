@@ -2,8 +2,10 @@ import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import {
     applyControl,
     applyControlWrapper,
+    applyFormItemBadge,
     applyFormItemDisabled,
     applyInputStyle,
+    applyLabelRegionStyle,
     applyLabelStyle,
     applySoftRemove,
     applySoftRemoveInput,
@@ -18,11 +20,17 @@ const styles: ComponentStyles<FormItemTextareaClassNameContract, {}> = {
     formItemTextarea__disabled: {
         ...applyFormItemDisabled(),
     },
+    formItemTextarea_badge: {
+        ...applyFormItemBadge(),
+    },
     formItemTextarea_control: {
         ...applyControl(),
     },
     formItemTextarea_controlLabel: {
         ...applyLabelStyle(),
+    },
+    formItemTextarea_controlLabelRegion: {
+        ...applyLabelRegionStyle(),
     },
     formItemTextarea_controlTextarea: {
         ...applyInputStyle(),
