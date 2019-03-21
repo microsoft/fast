@@ -1,6 +1,11 @@
 import { BadgeType } from "./form-item.props";
 
-export interface BadgeProps {
+export interface BadgeControlProps {
+    /**
+     * The badge to use
+     */
+    type: BadgeType;
+
     /**
      * The HTML class to assign to the badge
      */
@@ -10,11 +15,4 @@ export interface BadgeProps {
      * The description which is used as a tooltip
      */
     description?: string;
-}
-
-export interface BadgeControlProps extends BadgeProps {
-    /**
-     * The badge to use
-     */
-    type: BadgeType;
 }

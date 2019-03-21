@@ -2,7 +2,7 @@ import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount } from "enzyme";
 import BadgeControl from "./badge-control";
-import { BadgeControlProps } from "./badge.props";
+import { BadgeControlProps } from "./badge-control.props";
 import { BadgeType } from "./form-item.props";
 
 /*
@@ -16,53 +16,22 @@ describe("BadgeControl", () => {
             mount(<BadgeControl type={BadgeType.info} />);
         }).not.toThrow();
     });
-    test("should return the `InfoBadge` if the type is `info`", () => {
-        const props: BadgeControlProps = {
-            type: BadgeType.info,
-        };
+    test("should create an SVG title element if a description has been passed", () => {
+        const description: string = "foo";
+        const rendered: any = mount(
+            <BadgeControl type={BadgeType.info} description={description} />
+        );
+        const title: any = rendered.find("title");
 
-        const rendered: any = mount(<BadgeControl {...props} />);
-
-        expect(rendered.find("InfoBadge")).toHaveLength(1);
+        expect(title).toHaveLength(1);
+        expect(title.text()).toEqual(description);
     });
-    test("should return the `WarningBadge` if the type is `warning`", () => {
-        const props: BadgeControlProps = {
-            type: BadgeType.warning,
-        };
+    test("should add a `className` to an SVG element if it has been passed", () => {
+        const className: string = "bar";
+        const rendered: any = mount(
+            <BadgeControl type={BadgeType.info} className={className} />
+        );
 
-        const rendered: any = mount(<BadgeControl {...props} />);
-
-        expect(rendered.find("WarningBadge")).toHaveLength(1);
-    });
-    test("should return the `LockedBadge` if the type is `locked`", () => {
-        const props: BadgeControlProps = {
-            type: BadgeType.locked,
-        };
-
-        const rendered: any = mount(<BadgeControl {...props} />);
-
-        expect(rendered.find("LockedBadge")).toHaveLength(1);
-    });
-    test("should pass the className", () => {
-        const className: string = "foo";
-        const props: BadgeControlProps = {
-            type: BadgeType.locked,
-            className,
-        };
-
-        const rendered: any = mount(<BadgeControl {...props} />);
-
-        expect(rendered.props().className).toEqual(className);
-    });
-    test("should pass the description", () => {
-        const description: string = "bar";
-        const props: BadgeControlProps = {
-            type: BadgeType.locked,
-            description,
-        };
-
-        const rendered: any = mount(<BadgeControl {...props} />);
-
-        expect(rendered.props().description).toEqual(description);
+        expect(rendered.find("svg").props().className).toEqual(className);
     });
 });

@@ -10,7 +10,6 @@ import {
     background300,
     background800,
     disabledOpacity,
-    foreground000,
     foreground200,
     foreground300,
     foreground800,
@@ -53,11 +52,10 @@ export function applyTriggerStyle(color: string): CSSRules<{}> {
 
 export function applyFormItemBadge(): CSSRules<{}> {
     return {
-        fill: foreground300,
-        height: "14px",
+        fill: foreground800,
         padding: "0 5px",
         alignSelf: "center",
-        minWidth: "14px",
+        minWidth: "12px",
     };
 }
 
@@ -234,7 +232,6 @@ export function applyAriaHiddenStyles(): CSSRules<{}> {
 export function applyRemoveItemStyle(): CSSRules<{}> {
     return {
         position: "absolute",
-        right: "5px",
         top: "5px",
         appearance: "none",
         background: "none",
@@ -298,7 +295,6 @@ export function applySoftRemoveInput(): CSSRules<{}> {
         appearance: "none",
         background: "none",
         position: "absolute",
-        right: "5px",
         border: "none",
         width: "20px",
         margin: "0",
