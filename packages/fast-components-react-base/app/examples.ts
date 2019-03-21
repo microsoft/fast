@@ -58,6 +58,9 @@ export { RadioExamples };
 import SelectExamples from "../src/select/examples.data";
 export { SelectExamples };
 
+import SliderExamples from "../src/slider/examples.data";
+export { SliderExamples };
+
 import TabsExamples from "../src/tabs/examples.data";
 export { TabsExamples };
 

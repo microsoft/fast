@@ -78,6 +78,10 @@ import Select from "./select";
 export { Select };
 export * from "./select";
 
+import Slider from "./slider";
+export { Slider };
+export * from "./slider";
+
 import Tabs from "./tabs";
 export { Tabs };
 export * from "./tabs";
