@@ -126,7 +126,11 @@ export function applyFontSize(
 ): CSSRules<DesignSystem> {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const densityOffset: number = densityToTypeOffset(designSystem);
-    const size: number = designSystem.defaultTypeRampSize - densityOffset - offset;
+    const rampInt: number = parseInt(
+        designSystem.defaultTypeRampSize.replace("t", ""),
+        10
+    );
+    const size: number = rampInt - densityOffset - offset;
     const key: keyof TypeRamp | string = "t" + size;
 
     if (key in typeRamp) {

@@ -5,6 +5,7 @@ import { white } from "../utilities/color/color-constants";
 import { ColorPalette, ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
 import { Palette } from "../utilities/color/palette";
 import { applyCursorDisabled } from "../utilities/cursor";
+import { TypeRamp } from "../utilities/typography";
 
 export interface DesignSystem {
     /**
@@ -34,9 +35,9 @@ export interface DesignSystem {
     contrast: number;
 
     /**
-     * The density offset. Plus or minus 1 - 3.
+     * The density offset.
      */
-    density: number;
+    density: -3 | -2 | -1 | 0 | 1 | 2 | 3;
 
     /**
      * The grid-unit that UI dimensions are derived from
@@ -44,19 +45,19 @@ export interface DesignSystem {
     designUnit: number;
 
     /**
-     * The number of designUnits in the default height at the base density (0).
+     * The number of designUnits in the default height at the base density.
      */
     defaultHeightMultiplier: number;
 
     /**
-     * The number of designUnits used for horizontal padding at the base density (0).
+     * The number of designUnits used for horizontal padding at the base density.
      */
     defaultPaddingMultiplier: number;
 
     /**
-     * The type ramp size to use at the base density (0).
+     * The type ramp size to use at the base density.
      */
-    defaultTypeRampSize: number;
+    defaultTypeRampSize: keyof TypeRamp;
 
     /**
      * The primary direction of the view.
@@ -164,10 +165,13 @@ const designSystemDefaults: DesignSystem = {
     designUnit: 4,
     defaultHeightMultiplier: 8,
     defaultPaddingMultiplier: 3,
-    defaultTypeRampSize: 7,
+    defaultTypeRampSize: "t7",
     direction: Direction.ltr,
     cornerRadius: 2,
     outlinePatternOutlineWidth: 1,
+    focusOutlineWidth: 2,
+    disabledOpacity: 0.3,
+
     neutralPalette: createColorPalette(new ColorRGBA64(0.5, 0.5, 0.5, 1)),
     accentPalette: createColorPalette(parseColorHexRGB("#0078D4")),
 
@@ -206,8 +210,6 @@ const designSystemDefaults: DesignSystem = {
     neutralOutlineRestDelta: 12,
     neutralOutlineHoverDelta: 24,
     neutralOutlineActiveDelta: 18,
-    focusOutlineWidth: 2,
-    disabledOpacity: 0.3,
 
     // @deprecated
     foregroundColor: "#111",
