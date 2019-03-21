@@ -1,9 +1,10 @@
-import Chroma from "chroma-js";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { CSSRules } from "@microsoft/fast-jss-manager";
 import designSystemDefaults, { DesignSystem } from "../design-system";
 import { density } from "./density";
 import { black } from "../utilities/color/color-constants";
+import { parseColorString } from "../utilities/color/common";
+import { ColorRGBA64 } from "@microsoft/fast-colors";
 
 /**
  * Shadow config
@@ -108,8 +109,8 @@ export function elevationShadow(
         );
         const opacity: number = shadowConfig.opacity;
 
-        return `${xOffset} ${yOffset} ${blur} ${Chroma(color)
-            .alpha(opacity)
-            .css()}`;
+        return `${xOffset} ${yOffset} ${blur} ${ColorRGBA64.fromObject(
+            Object.assign(parseColorString(color).toObject(), { a: opacity })
+        ).toStringWebRGBA()}`;
     };
 }
