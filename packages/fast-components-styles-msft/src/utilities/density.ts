@@ -64,16 +64,16 @@ export function getDensityCategory(designSystem: DesignSystem): DensityCategory 
 /**
  * Returns the standard horizontal spacing for text and icons formatted in the provided unit or px by default.
  *
- * @param minusBorder Any border that should be removed from the overall content spacing.
+ * @param adjustment Any border that should be removed from the overall content spacing.
  * @param unit The unit of measurement; px by default.
  */
 export function horizontalSpacing(
-    minusBorder: number = 0,
+    adjustment: number = 0,
     unit?: string
 ): DesignSystemResolver<string> {
     return ensureDesignSystemDefaults(
         (designSystem: DesignSystem): string => {
-            const value: number = horizontalSpacingNumber(minusBorder)(designSystem);
+            const value: number = horizontalSpacingNumber(adjustment)(designSystem);
             return typeof unit === "string" ? `${value}${unit}` : toPx(value);
         }
     );
@@ -82,10 +82,10 @@ export function horizontalSpacing(
 /**
  * Returns the standard horizontal spacing for text and icons as a number.
  *
- * @param minusBorder Any border that should be removed from the overall content spacing.
+ * @param adjustment Any border that should be removed from the overall content spacing.
  */
 export function horizontalSpacingNumber(
-    minusBorder: number = 0
+    adjustment: number = 0
 ): DesignSystemResolver<number> {
     return ensureDesignSystemDefaults(
         (designSystem: DesignSystem): number => {
@@ -99,7 +99,7 @@ export function horizontalSpacingNumber(
             const value: number =
                 (designSystem.baseHorizontalSpacingMultiplier + densityOffset) *
                     designSystem.designUnit -
-                minusBorder;
+                adjustment;
             return value;
         }
     );
