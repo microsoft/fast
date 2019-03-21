@@ -3,8 +3,8 @@ import {
     neutralForegroundHintLarge,
 } from "./neutral-foreground-hint";
 import designSystemDefaults from "../../design-system";
-import { Palette, palette, PaletteType, Swatch } from "./palette";
-import { ColorRecipe, contrast } from "./common";
+import { Palette, palette, PaletteType } from "./palette";
+import { contrast, Swatch, SwatchRecipe } from "./common";
 
 describe("neutralForegroundHint", (): void => {
     const neutralPalette: Palette = palette(PaletteType.neutral)(designSystemDefaults);
@@ -50,7 +50,7 @@ describe("neutralForegroundHint", (): void => {
             (swatch: Swatch): void => {
                 function retrieveContrast(
                     resolvedSwatch: Swatch,
-                    fn: ColorRecipe
+                    fn: SwatchRecipe
                 ): number {
                     return parseFloat(
                         contrast(
