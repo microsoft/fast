@@ -7,8 +7,8 @@ import {
     accentForegroundRest,
 } from "./accent-foreground";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
-import { palette, Palette, PaletteType, Swatch } from "./palette";
-import { contrast } from "./common";
+import { palette, Palette, PaletteType } from "./palette";
+import { contrast, Swatch } from "./common";
 import { accentPaletteConfig } from "./color-constants";
 import { parseColorHexRGB } from "@microsoft/fast-colors";
 

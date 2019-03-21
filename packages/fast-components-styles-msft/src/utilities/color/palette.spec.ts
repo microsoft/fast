@@ -5,10 +5,10 @@ import {
     palette,
     Palette,
     PaletteType,
-    Swatch,
 } from "./palette";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
 import { accent } from "./color-constants";
+import { Swatch } from "./common";
 
 describe("palette", (): void => {
     test("should return a function", (): void => {
