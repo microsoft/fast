@@ -1,13 +1,11 @@
-import { neutralPaletteConfig } from "./color-constants";
 import {
     DesignSystem,
     DesignSystemResolver,
     ensureDesignSystemDefaults,
 } from "../../design-system";
-import { clamp, memoize } from "lodash-es";
-import { colorMatches, contrast, isValidColor, luminance } from "./common";
+import { clamp } from "lodash-es";
+import { colorMatches, contrast, luminance, Swatch } from "./common";
 import { neutralForegroundDark, neutralForegroundLight } from "./neutral-foreground";
-import { ColorPalette, ColorPaletteConfig, ColorRGBA64 } from "@microsoft/fast-colors";
 
 /**
  * The named palettes of the MSFT design system
@@ -17,10 +15,6 @@ export enum PaletteType {
     accent = "accent",
 }
 
-/**
- * Describes the format of a single color in a palette
- */
-export type Swatch = string;
 /**
  * The structure of a color palette
  */

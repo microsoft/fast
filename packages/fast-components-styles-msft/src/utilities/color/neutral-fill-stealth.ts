@@ -11,21 +11,21 @@ import {
     palette,
     Palette,
     PaletteType,
-    Swatch,
 } from "./palette";
 import {
-    ColorRecipe,
-    FillSwatch,
-    StatefulSwatchToColorRecipeFactory,
-    SwatchStates,
+    FillSwatchFamily,
+    swatchFamilyToSwatchRecipeFactory,
+    SwatchFamilyType,
+    SwatchRecipe,
+    SwatchResolver,
 } from "./common";
 
 /**
  * Algorithm for determining stealth fill colors
  */
-const neutralFillStealthAlgorithm: DesignSystemResolver<FillSwatch> = (
+const neutralFillStealthAlgorithm: DesignSystemResolver<FillSwatchFamily> = (
     designSystem: DesignSystem
-): FillSwatch => {
+): FillSwatchFamily => {
     const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
     const backgroundIndex: number = findClosestSwatchIndex(
         PaletteType.neutral,
@@ -63,14 +63,14 @@ const neutralFillStealthAlgorithm: DesignSystemResolver<FillSwatch> = (
     };
 };
 
-export function neutralFillStealth(designSystem: DesignSystem): FillSwatch;
+export function neutralFillStealth(designSystem: DesignSystem): FillSwatchFamily;
 export function neutralFillStealth(
-    backgroundResolver: (designSystem: DesignSystem) => Swatch
-): (designSystem: DesignSystem) => FillSwatch;
+    backgroundResolver: SwatchResolver
+): (designSystem: DesignSystem) => FillSwatchFamily;
 export function neutralFillStealth(arg: any): any {
     if (typeof arg === "function") {
         return ensureDesignSystemDefaults(
-            (designSystem: DesignSystem): FillSwatch => {
+            (designSystem: DesignSystem): FillSwatchFamily => {
                 return neutralFillStealthAlgorithm(
                     Object.assign({}, designSystem, {
                         backgroundColor: arg(designSystem),
@@ -83,15 +83,15 @@ export function neutralFillStealth(arg: any): any {
     }
 }
 
-export const neutralFillStealthRest: ColorRecipe = StatefulSwatchToColorRecipeFactory<
-    FillSwatch
->(SwatchStates.rest, neutralFillStealth);
-export const neutralFillStealthHover: ColorRecipe = StatefulSwatchToColorRecipeFactory<
-    FillSwatch
->(SwatchStates.hover, neutralFillStealth);
-export const neutralFillStealthActive: ColorRecipe = StatefulSwatchToColorRecipeFactory<
-    FillSwatch
->(SwatchStates.active, neutralFillStealth);
-export const neutralFillStealthSelected: ColorRecipe = StatefulSwatchToColorRecipeFactory<
-    FillSwatch
->(SwatchStates.selected, neutralFillStealth);
+export const neutralFillStealthRest: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
+    FillSwatchFamily
+>(SwatchFamilyType.rest, neutralFillStealth);
+export const neutralFillStealthHover: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
+    FillSwatchFamily
+>(SwatchFamilyType.hover, neutralFillStealth);
+export const neutralFillStealthActive: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
+    FillSwatchFamily
+>(SwatchFamilyType.active, neutralFillStealth);
+export const neutralFillStealthSelected: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
+    FillSwatchFamily
+>(SwatchFamilyType.selected, neutralFillStealth);
