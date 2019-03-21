@@ -9,7 +9,7 @@ import {
 
 export type BreakpointTrackerCallback = (breakpoint: Breakpoint) => void;
 
-export class BreakpointTracker {
+class BreakpointTracker {
     /**
      * The default array of breakpoint values
      */
