@@ -61,9 +61,9 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
             height: height(),
             margin: "0",
             minWidth: "92px",
-            border: `${toPx(
-                designSystem.outlinePatternOutlineWidth
-            )} solid ${neutralOutlineRest(designSystem)}`,
+            border: `${toPx(designSystem.outlineWidth)} solid ${neutralOutlineRest(
+                designSystem
+            )}`,
             background: neutralFillInputRest,
             ...applyCornerRadius(designSystem),
             display: "flex",
@@ -82,10 +82,10 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
             "&, &:hover": {
                 boxShadow: `0 0 0 ${toPx(
                     designSystem.focusOutlineWidth -
-                        designSystem.outlinePatternOutlineWidth
+                        designSystem.outlineWidth
                 )} ${neutralFocus(designSystem)} inset`,
                 border: `${toPx(
-                    designSystem.outlinePatternOutlineWidth
+                    designSystem.outlineWidth
                 )} solid ${neutralFocus(designSystem)}`,
             },
         },

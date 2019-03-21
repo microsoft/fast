@@ -25,9 +25,9 @@ export function inputFieldStyles(designSystem: DesignSystem): CSSRules<{}> {
     return {
         ...applyScaledTypeRamp(designSystem, "t7"),
         background: neutralFillInputRest,
-        border: `${toPx(
-            designSystem.outlinePatternOutlineWidth
-        )} solid ${neutralOutlineRest(designSystem)}`,
+        border: `${toPx(designSystem.outlineWidth)} solid ${neutralOutlineRest(
+            designSystem
+        )}`,
         color: neutralForegroundRest,
         fontFamily: "inherit",
         fontWeight: fontWeight.normal.toString(),

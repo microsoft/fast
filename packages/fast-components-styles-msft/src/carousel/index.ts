@@ -107,7 +107,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
                     fill: neutralForegroundRest((): string => black),
                     background: neutralFillStealthRest((): string => black),
                     border: `${toPx(
-                        designSystem.outlinePatternOutlineWidth
+                        designSystem.outlineWidth
                     )} solid ${neutralOutlineRest((): string => black)}`,
                 },
                 "& span::before": {
@@ -141,7 +141,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
                     fill: neutralForegroundRest((): string => white),
                     background: neutralFillStealthRest((): string => white),
                     border: `${toPx(
-                        designSystem.outlinePatternOutlineWidth
+                        designSystem.outlineWidth
                     )} solid ${neutralOutlineRest((): string => white)}`,
                 },
                 "& span::before": {
