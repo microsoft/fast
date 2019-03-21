@@ -9,6 +9,7 @@ import TextAction, {
 } from "./text-action";
 import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { Button } from "../button";
+import { DisplayNamePrefix } from "../utilities";
 
 const managedClasses: TextActionClassNameContract = {
     textAction: "text-action",
@@ -26,7 +27,9 @@ configure({ adapter: new Adapter() });
 
 describe("text-action", (): void => {
     test("should have a displayName that matches the component name", () => {
-        expect((TextAction as any).name).toBe(TextAction.displayName);
+        expect(`${DisplayNamePrefix}${(TextAction as any).name}`).toBe(
+            TextAction.displayName
+        );
     });
 
     test("should not throw if managedClasses are not provided", () => {

@@ -10,6 +10,7 @@ import Hypertext, {
     HypertextProps,
     HypertextUnhandledProps,
 } from "./hypertext";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -22,7 +23,9 @@ describe("hypertext", (): void => {
     };
 
     test("should have a displayName that matches the component name", () => {
-        expect((Hypertext as any).name).toBe(Hypertext.displayName);
+        expect(`${DisplayNamePrefix}${(Hypertext as any).name}`).toBe(
+            Hypertext.displayName
+        );
     });
 
     test("should have correct root element type 'a'", () => {

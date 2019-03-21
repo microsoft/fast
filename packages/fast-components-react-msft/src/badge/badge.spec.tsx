@@ -10,6 +10,7 @@ import {
     BadgeSize,
     BadgeUnhandledProps,
 } from "./index";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -25,7 +26,9 @@ describe("badge", (): void => {
     };
 
     test("should have a displayName that matches the component name", () => {
-        expect((MSFTBadge as any).name).toBe(MSFTBadge.displayName);
+        expect(`${DisplayNamePrefix}${(MSFTBadge as any).name}`).toBe(
+            MSFTBadge.displayName
+        );
     });
 
     test("should not throw if managedClasses are not provided", () => {

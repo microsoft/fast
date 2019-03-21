@@ -9,6 +9,7 @@ import Radio, {
     RadioSlot,
 } from "./radio";
 import Label from "../label";
+import { DisplayNamePrefix } from "../utilities";
 
 /**
  * Configure Enzyme
@@ -27,7 +28,7 @@ describe("radio", (): void => {
     const inputSelector: string = `.${managedClasses.radio_input}`;
 
     test("should have a displayName that matches the component name", () => {
-        expect((Radio as any).name).toBe(Radio.displayName);
+        expect(`${DisplayNamePrefix}${(Radio as any).name}`).toBe(Radio.displayName);
     });
 
     test("should have correct input type attribute 'radio'", () => {

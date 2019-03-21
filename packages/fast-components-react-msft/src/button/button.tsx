@@ -8,6 +8,7 @@ import {
     ButtonUnhandledProps,
 } from "./button.props";
 import { Button as BaseButton } from "@microsoft/fast-components-react-base";
+import { DisplayNamePrefix } from "../utilities";
 
 /**
  * Button slot options
@@ -18,7 +19,7 @@ export enum ButtonSlot {
 }
 
 class Button extends Foundation<ButtonHandledProps, ButtonUnhandledProps, {}> {
-    public static displayName: string = "Button";
+    public static displayName: string = `${DisplayNamePrefix}Button`;
 
     protected handledProps: HandledProps<ButtonHandledProps> = {
         appearance: void 0,

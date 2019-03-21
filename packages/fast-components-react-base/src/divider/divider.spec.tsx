@@ -10,6 +10,7 @@ import Divider, {
     DividerRoles,
     DividerUnhandledProps,
 } from "./divider";
+import { DisplayNamePrefix } from "../utilities";
 
 configure({ adapter: new Adapter() });
 
@@ -19,7 +20,7 @@ describe("divider", (): void => {
     };
 
     test("should have a displayName that matches the component name", () => {
-        expect((Divider as any).name).toBe(Divider.displayName);
+        expect(`${DisplayNamePrefix}${(Divider as any).name}`).toBe(Divider.displayName);
     });
 
     test("should have correct root element type 'hr'", () => {

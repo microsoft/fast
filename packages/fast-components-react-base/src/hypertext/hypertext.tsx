@@ -11,9 +11,10 @@ import {
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
+import { DisplayNamePrefix } from "../utilities";
 
 class Hypertext extends Foundation<HypertextHandledProps, HypertextUnhandledProps, {}> {
-    public static displayName: string = "Hypertext";
+    public static displayName: string = `${DisplayNamePrefix}Hypertext`;
 
     protected handledProps: HandledProps<HypertextHandledProps> = {
         managedClasses: void 0,

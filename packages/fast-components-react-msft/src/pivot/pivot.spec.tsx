@@ -1,9 +1,10 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
-import { TabsItem } from "@microsoft/fast-components-react-base";
+import { Tab, TabPanel, TabsItem } from "@microsoft/fast-components-react-base";
 import { PivotClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import MSFTPivot, { PivotHandledProps, PivotUnhandledProps } from "./pivot";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -72,7 +73,9 @@ const detailNull: TabsItem[] = [
 
 describe("pivot", (): void => {
     test("should have a displayName that matches the component name", () => {
-        expect((MSFTPivot as any).name).toBe(MSFTPivot.displayName);
+        expect(`${DisplayNamePrefix}${(MSFTPivot as any).name}`).toBe(
+            MSFTPivot.displayName
+        );
     });
 
     test("should not throw if managedClasses are not provided", () => {
@@ -164,7 +167,7 @@ describe("pivot", (): void => {
 
         expect(
             renderedWithChildren
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(1)
                 .prop("tabIndex")
         ).toEqual(0);
@@ -182,7 +185,7 @@ describe("pivot", (): void => {
 
         expect(
             renderedWithChildren
-                .find("Tab")
+                .find(Tab.displayName)
                 .at(0)
                 .childAt(0)
                 .prop("className")
@@ -201,7 +204,7 @@ describe("pivot", (): void => {
 
         expect(
             renderedWithChildren
-                .find("TabPanel")
+                .find(TabPanel.displayName)
                 .at(0)
                 .childAt(0)
                 .prop("className")
