@@ -48,14 +48,13 @@ Example titles:
         - fix: A change which fixes an issue.
         - feat: A that adds functionality.
 
-    <description> is required and speaks to what the user gets from this PR:
+    <description> is required for the CHANGELOG and speaks to what the user gets from this PR:
 
         - Be concise.
         - Use all lowercase characters. 
         - Use imperative, present tense (e.g. `add` not `adds`.)
         - Do not end your description with a period.
         - Avoid redundant words.
-        - Start your description with `add`, `update`, or `remove.`
 
 For additional information regarding working on FAST-DNA, check out our documentation site:
 https://microsoft.github.io/fast-dna/docs/en/contributing/working
