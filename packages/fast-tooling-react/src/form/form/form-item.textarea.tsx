@@ -23,14 +23,24 @@ class FormItemTextarea extends FormItemBase<
         return (
             <div className={this.generateClassNames()}>
                 <div className={this.props.managedClasses.formItemTextarea_control}>
-                    <label
-                        htmlFor={this.props.dataLocation}
-                        className={
-                            this.props.managedClasses.formItemTextarea_controlLabel
-                        }
+                    <div
+                        className={get(
+                            this.props,
+                            "managedClasses.formItemTextarea_controlLabelRegion"
+                        )}
                     >
-                        {this.props.label}
-                    </label>
+                        <label
+                            htmlFor={this.props.dataLocation}
+                            className={
+                                this.props.managedClasses.formItemTextarea_controlLabel
+                            }
+                        >
+                            {this.props.label}
+                        </label>
+                        {this.renderBadge(
+                            get(this.props, "managedClasses.formItemTextarea_badge")
+                        )}
+                    </div>
                     <textarea
                         className={
                             this.props.managedClasses.formItemTextarea_controlTextarea

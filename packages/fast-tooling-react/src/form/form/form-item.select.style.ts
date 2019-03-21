@@ -2,7 +2,9 @@ import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
 import {
     applyControl,
     applyControlWrapper,
+    applyFormItemBadge,
     applyFormItemDisabled,
+    applyLabelRegionStyle,
     applyLabelStyle,
     applySelectInputStyles,
     applySelectSpanStyles,
@@ -19,11 +21,17 @@ const styles: ComponentStyles<FormItemSelectClassNameContract, {}> = {
     formItemSelect__disabled: {
         ...applyFormItemDisabled(),
     },
+    formItemSelect_badge: {
+        ...applyFormItemBadge(),
+    },
     formItemSelect_control: {
         ...applyControl(),
     },
     formItemSelect_controlLabel: {
         ...applyLabelStyle(),
+    },
+    formItemSelect_controlLabelRegion: {
+        ...applyLabelRegionStyle(),
     },
     formItemSelect_controlSpan: {
         ...applySelectSpanStyles(),

@@ -1,6 +1,7 @@
 import React from "react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { get } from "lodash-es";
 import FormItemCommon from "./form-item.props";
 import styles from "./form-item.checkbox.style";
 import { FormItemCheckboxClassNameContract } from "./form-item.checkbox.props";
@@ -40,6 +41,9 @@ class FormItemCheckbox extends FormItemBase<
                 >
                     {this.props.label}
                 </label>
+                {this.renderBadge(
+                    get(this.props, "managedClasses.formItemCheckbox_badge")
+                )}
                 <div className={this.props.managedClasses.formItemCheckbox_softRemove}>
                     {this.renderSoftRemove(
                         this.props.managedClasses.formItemCheckbox_softRemoveInput

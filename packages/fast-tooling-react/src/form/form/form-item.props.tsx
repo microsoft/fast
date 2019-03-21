@@ -1,3 +1,9 @@
+export enum BadgeType {
+    warning = "warning",
+    info = "info",
+    locked = "locked",
+}
+
 export default interface FormItemCommon {
     /**
      * The index to assign as a React key for mapping
@@ -43,6 +49,16 @@ export default interface FormItemCommon {
      * The defaut data (if available)
      */
     default?: any;
+
+    /**
+     * The badge to use next to a form items label
+     */
+    badge?: BadgeType;
+
+    /**
+     * The badge description which is used as an HTML title
+     */
+    badgeDescription?: string;
 }
 
 export interface CustomFormItemComponent extends FormItemCommon {

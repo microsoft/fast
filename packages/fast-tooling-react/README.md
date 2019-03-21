@@ -33,6 +33,7 @@ The tooling available in FAST Tooling React can be used together to create UI fo
         - [Title](#title)
         - [Disabled](#disabled)
         - [Examples & default](#examples-&-default)
+        - [Badges](#badges)
     - [JSON schema keywords](#json-schema-keywords)
         - [oneOf & anyOf](#oneof-&-anyof)
         - [Enums](#enums)
@@ -921,6 +922,20 @@ Example:
 ```
 
 Because the style is optional, you can toggle to add it. The schema form generator will see that color is a required piece of data and use the example given to fill in.
+
+#### Badges
+
+To allow more detail about a field two additional fields can be added to JSON schemas, `badge` and `badgeDescription`. The `badge` can have the values "info", "warning" and "locked" which will create the related icons. Adding a `badgeDescription` will add a native tooltip when the badge is hovered.
+
+Example:
+
+```json
+{
+    "type": "string",
+    "badge": "warning",
+    "badgeDescription": "Setting this field will cause adverse effects"
+}
+```
 
 ### JSON schema keywords
 
