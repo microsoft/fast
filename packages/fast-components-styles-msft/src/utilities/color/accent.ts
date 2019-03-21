@@ -1,8 +1,8 @@
 import { DesignSystem, ensureDesignSystemDefaults } from "../../design-system";
-import { Palette, palette, PaletteType, Swatch } from "./palette";
+import { Palette, palette, PaletteType } from "./palette";
 import { accent } from "./color-constants";
 import { findClosestSwatchIndex, isDarkTheme } from "./palette";
-import { contrast, SwatchResolver } from "./common";
+import { contrast, Swatch, SwatchResolver } from "./common";
 import { clamp, inRange } from "lodash-es";
 
 /**

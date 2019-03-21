@@ -1,5 +1,4 @@
 import { DesignSystem, DesignSystemResolver } from "../../design-system";
-import { Swatch } from "./palette";
 import {
     ColorRGBA64,
     contrastRatio,
@@ -11,68 +10,74 @@ import {
 } from "@microsoft/fast-colors";
 
 /**
- * A function type that resolves a color from a design system
+ * Describes the format of a single color in a palette
+ */
+export type Swatch = string;
+
+/**
+ * Interface describing a family of swatches.
+ */
+export interface SwatchFamily {
+    /**
+     * The swatch to apply to the rest state
+     */
+    rest: Swatch;
+
+    /**
+     * The swatch to apply to the hover state
+     */
+    hover: Swatch;
+
+    /**
+     * The swatch to apply to the active state
+     */
+    active: Swatch;
+}
+
+/**
+ * Interface describing a family of swatches applied as fills
+ */
+export interface FillSwatchFamily extends SwatchFamily {
+    /**
+     * The swatch to apply to the selected state
+     */
+    selected: Swatch;
+}
+
+/**
+ * A DesignSystemResolver that resolves a Swatch
  */
 export type SwatchResolver = DesignSystemResolver<Swatch>;
 
 /**
- * A function type that resolves a background color from a SwatchResolver
- * and applies it to the design system of the returned DesignSystemResolver
+ * A function that accepts a design system and resolves a SwatchFamily or FillSwatchFamily
  */
-export type BackgroundSwatchResolver<T> = (
+export type SwatchFamilyResolver<
+    T extends SwatchFamily = SwatchFamily
+> = DesignSystemResolver<T>;
+
+/**
+ * A function type that resolves a Swatch from a SwatchResolver
+ * and applies it to the backgroundColor property of the design system
+ * of the returned DesignSystemResolver
+ */
+export type DesignSystemResolverFromSwatchResolver<T> = (
     resolver: SwatchResolver
 ) => DesignSystemResolver<T>;
-
-export type SwatchFamilyResolver<T> = DesignSystemResolver<T> &
-    BackgroundSwatchResolver<T>;
-/**
- * A function that returns a StatefulSwatch or a function that resolves a background swatch
- * and *then* resolves a StatefulSwatch
- */
-export type StatefulSwatchResolver = SwatchFamilyResolver<StatefulSwatch>;
-
-/**
- * A function that returns a FillSwatch or a function that resolves a background swatch
- * and *then* resolves a FillSwatch
- */
-export type FillSwatchResolver = SwatchFamilyResolver<FillSwatch>;
 
 /**
  * The states that a swatch can have
  */
-export enum SwatchStates {
+export enum SwatchFamilyType {
     rest = "rest",
     hover = "hover",
     active = "active",
     selected = "selected",
 }
 
-/**
- * Interface describing a group of swatches representing UI states of a single swatch
- */
-export interface StatefulSwatch {
-    /**
-     * The rest color of a brush
-     */
-    rest: Swatch;
-
-    /**
-     * The hover color of a brush
-     */
-    hover: Swatch;
-
-    /**
-     * The active color of a brush
-     */
-    active: Swatch;
-}
-
-export interface FillSwatch extends StatefulSwatch {
-    /**
-     * The selected color of a brush
-     */
-    selected: Swatch;
-}
+export type ColorRecipe<
+    T extends Swatch | SwatchFamily | FillSwatchFamily
+> = DesignSystemResolver<T> & DesignSystemResolverFromSwatchResolver<T>;
 
 /**
  * A function to apply a named style or recipe. A ColorRecipe has several behaviors:
@@ -82,16 +87,16 @@ export interface FillSwatch extends StatefulSwatch {
  * other than the design system backgroundColor
  * 2. When provided a design system, the recipe will use that design-system to generate the color
  */
-export type ColorRecipe = SwatchResolver & BackgroundSwatchResolver<Swatch>;
+export type SwatchRecipe = ColorRecipe<Swatch>;
 
 /**
- * Helper function to transform a StatefulSwatchResolver into simple ColorRecipe for simple use
+ * Helper function to transform a SwatchFamilyResolver into simple ColorRecipe for simple use
  * use in stylesheets.
  */
-export function StatefulSwatchToColorRecipeFactory<T extends StatefulSwatch>(
+export function swatchFamilyToSwatchRecipeFactory<T extends SwatchFamily>(
     type: keyof T,
     callback: SwatchFamilyResolver<T>
-): ColorRecipe {
+): SwatchRecipe {
     return (arg: DesignSystem | SwatchResolver): any => {
         if (typeof arg === "function") {
             return (designSystem: DesignSystem): Swatch => {

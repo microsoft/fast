@@ -1,14 +1,10 @@
 import {
-    neutralForeground,
     neutralForegroundActive,
     neutralForegroundDark,
-    neutralForegroundDeltaActive,
-    neutralForegroundDeltaHover,
     neutralForegroundHover,
-    neutralForegroundLight,
     neutralForegroundRest,
 } from "./neutral-foreground";
-import { palette, Palette, PaletteType, Swatch } from "./palette";
+import { palette, Palette, PaletteType } from "./palette";
 import designSystemDefaults from "../../design-system";
 
 describe("neutralForeground", (): void => {
@@ -44,49 +40,49 @@ describe("neutralForeground", (): void => {
         expect(neutralForegroundHover(undefined! as any)).toBe(
             neutralPalette[
                 neutralPalette.indexOf(neutralForegroundDark(undefined)) -
-                    neutralForegroundDeltaHover
+                    designSystemDefaults.neutralForegroundHoverDelta
             ]
         );
         expect(neutralForegroundHover(() => undefined as any)(undefined as any)).toBe(
             neutralPalette[
                 neutralPalette.indexOf(neutralForegroundDark(undefined)) -
-                    neutralForegroundDeltaHover
+                    designSystemDefaults.neutralForegroundHoverDelta
             ]
         );
         expect(neutralForegroundHover(() => "#FFF")(undefined as any)).toBe(
             neutralPalette[
                 neutralPalette.indexOf(neutralForegroundDark(undefined)) -
-                    neutralForegroundDeltaHover
+                    designSystemDefaults.neutralForegroundHoverDelta
             ]
         );
         expect(neutralForegroundHover(() => "#FFFFFF")(undefined as any)).toBe(
             neutralPalette[
                 neutralPalette.indexOf(neutralForegroundDark(undefined)) -
-                    neutralForegroundDeltaHover
+                    designSystemDefaults.neutralForegroundHoverDelta
             ]
         );
         expect(neutralForegroundActive(undefined! as any)).toBe(
             neutralPalette[
                 neutralPalette.indexOf(neutralForegroundDark(undefined)) -
-                    neutralForegroundDeltaActive
+                    designSystemDefaults.neutralForegroundActiveDelta
             ]
         );
         expect(neutralForegroundActive(() => undefined as any)(undefined as any)).toBe(
             neutralPalette[
                 neutralPalette.indexOf(neutralForegroundDark(undefined)) -
-                    neutralForegroundDeltaActive
+                    designSystemDefaults.neutralForegroundActiveDelta
             ]
         );
         expect(neutralForegroundActive(() => "#FFF")(undefined as any)).toBe(
             neutralPalette[
                 neutralPalette.indexOf(neutralForegroundDark(undefined)) -
-                    neutralForegroundDeltaActive
+                    designSystemDefaults.neutralForegroundActiveDelta
             ]
         );
         expect(neutralForegroundActive(() => "#FFFFFF")(undefined as any)).toBe(
             neutralPalette[
                 neutralPalette.indexOf(neutralForegroundDark(undefined)) -
-                    neutralForegroundDeltaActive
+                    designSystemDefaults.neutralForegroundActiveDelta
             ]
         );
     });

@@ -1,6 +1,6 @@
-import { isDarkTheme, Swatch } from "./palette";
+import { isDarkTheme } from "./palette";
 import { neutralForegroundDark, neutralForegroundLight } from "./neutral-foreground";
-import { SwatchResolver } from "./common";
+import { Swatch, SwatchResolver } from "./common";
 import {
     DesignSystem,
     ensureDesignSystemDefaults,
@@ -10,9 +10,7 @@ import {
 /**
  * Function to derive neutralFocus from color inputs.
  */
-const neutralFocusAlgorithm: (designSystem: DesignSystem) => Swatch = (
-    designSystem: DesignSystem
-): Swatch => {
+const neutralFocusAlgorithm: SwatchResolver = (designSystem: DesignSystem): Swatch => {
     return isDarkTheme(designSystem)
         ? neutralForegroundLight(designSystem)
         : neutralForegroundDark(designSystem);

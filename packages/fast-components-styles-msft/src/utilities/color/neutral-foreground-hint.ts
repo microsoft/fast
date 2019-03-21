@@ -3,10 +3,10 @@ import {
     ensureDesignSystemDefaults,
     withDesignSystemDefaults,
 } from "../../design-system";
-import { findSwatchIndex, Palette, palette, PaletteType, Swatch } from "./palette";
+import { findSwatchIndex, Palette, palette, PaletteType } from "./palette";
 import { neutralForegroundRest } from "./neutral-foreground";
 import { inRange } from "lodash-es";
-import { ColorRecipe, contrast, SwatchResolver } from "./common";
+import { contrast, Swatch, SwatchRecipe, SwatchResolver } from "./common";
 
 const neutralForegroundHintAlgorithm: (
     designSystem: DesignSystem,
@@ -40,7 +40,7 @@ const neutralForegroundHintAlgorithm: (
 /**
  * Factory to create neutral-foreground-hint functions based on an input contrast target
  */
-function neutralForegroundHintFactory(contrastTarget: number): ColorRecipe {
+function neutralForegroundHintFactory(contrastTarget: number): SwatchRecipe {
     function neutralForegroundHintInternal(designSystem: DesignSystem): Swatch;
     function neutralForegroundHintInternal(
         backgroundResolver: SwatchResolver
@@ -71,9 +71,9 @@ function neutralForegroundHintFactory(contrastTarget: number): ColorRecipe {
 /**
  * Hint text for normal sized text, less than 18pt normal weight
  */
-export const neutralForegroundHint: ColorRecipe = neutralForegroundHintFactory(4.5);
+export const neutralForegroundHint: SwatchRecipe = neutralForegroundHintFactory(4.5);
 
 /**
  * Hint text for large sized text, greater than 18pt or 16pt and bold
  */
-export const neutralForegroundHintLarge: ColorRecipe = neutralForegroundHintFactory(3);
+export const neutralForegroundHintLarge: SwatchRecipe = neutralForegroundHintFactory(3);

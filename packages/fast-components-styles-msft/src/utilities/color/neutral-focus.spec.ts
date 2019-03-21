@@ -1,7 +1,8 @@
 import { neutralForegroundRest } from "./neutral-foreground";
-import { palette, Palette, PaletteType, Swatch } from "./palette";
+import { palette, PaletteType } from "./palette";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
 import { neutralFocus } from "./neutral-focus";
+import { Swatch } from "./common";
 
 describe("neutralFocus", (): void => {
     test("should return a string when invoked with an object", (): void => {

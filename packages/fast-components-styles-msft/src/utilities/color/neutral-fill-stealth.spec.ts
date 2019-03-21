@@ -1,17 +1,13 @@
 import {
     neutralFillStealth,
     neutralFillStealthActive,
-    neutralFillStealthDeltaActive,
-    neutralFillStealthDeltaHover,
-    neutralFillStealthDeltaRest,
-    neutralFillStealthDeltaSelected,
     neutralFillStealthHover,
     neutralFillStealthRest,
     neutralFillStealthSelected,
 } from "./neutral-fill-stealth";
 import designSystemDefaults, { DesignSystem } from "../../design-system";
-import { palette, Palette, PaletteType, Swatch } from "./palette";
-import { FillSwatch } from "./common";
+import { palette, Palette, PaletteType } from "./palette";
+import { FillSwatchFamily, Swatch } from "./common";
 
 describe("neutralFillStealth", (): void => {
     const neutralPalette: Palette = palette(PaletteType.neutral)(designSystemDefaults);
@@ -19,35 +15,38 @@ describe("neutralFillStealth", (): void => {
 
     test("should opperate on design system defaults", (): void => {
         expect(neutralFillStealthRest({} as DesignSystem)).toBe(
-            neutralPalette[neutralFillStealthDeltaRest]
+            neutralPalette[designSystemDefaults.neutralFillStealthRestDelta]
         );
         expect(neutralFillStealthHover({} as DesignSystem)).toBe(
-            neutralPalette[neutralFillStealthDeltaHover]
+            neutralPalette[designSystemDefaults.neutralFillStealthHoverDelta]
         );
         expect(neutralFillStealthActive({} as DesignSystem)).toBe(
-            neutralPalette[neutralFillStealthDeltaActive]
+            neutralPalette[designSystemDefaults.neutralFillStealthActiveDelta]
         );
         expect(neutralFillStealthSelected({} as DesignSystem)).toBe(
-            neutralPalette[neutralFillStealthDeltaRest + neutralFillStealthDeltaSelected]
+            neutralPalette[
+                designSystemDefaults.neutralFillStealthRestDelta +
+                    designSystemDefaults.neutralFillStealthSelectedDelta
+            ]
         );
     });
 
     test("should switch from dark to light after 4 swatches", (): void => {
         expect(neutralFillStealthHover(designSystemDefaults)).toBe(
-            neutralPalette[neutralFillStealthDeltaHover]
+            neutralPalette[designSystemDefaults.neutralFillStealthHoverDelta]
         );
         expect(
             neutralFillStealthHover(() => neutralPalette[1])(designSystemDefaults)
-        ).toBe(neutralPalette[neutralFillStealthDeltaHover + 1]);
+        ).toBe(neutralPalette[designSystemDefaults.neutralFillStealthHoverDelta + 1]);
         expect(
             neutralFillStealthHover(() => neutralPalette[2])(designSystemDefaults)
-        ).toBe(neutralPalette[neutralFillStealthDeltaHover + 2]);
+        ).toBe(neutralPalette[designSystemDefaults.neutralFillStealthHoverDelta + 2]);
         expect(
             neutralFillStealthHover(() => neutralPalette[3])(designSystemDefaults)
-        ).toBe(neutralPalette[neutralFillStealthDeltaHover + 3]);
+        ).toBe(neutralPalette[designSystemDefaults.neutralFillStealthHoverDelta + 3]);
         expect(
             neutralFillStealthHover(() => neutralPalette[4])(designSystemDefaults)
-        ).toBe(neutralPalette[4 - neutralFillStealthDeltaHover]);
+        ).toBe(neutralPalette[4 - designSystemDefaults.neutralFillStealthHoverDelta]);
     });
 
     test("should return the same color from both implementations", (): void => {
@@ -90,7 +89,7 @@ describe("neutralFillStealth", (): void => {
     test("should have consistent return values", (): void => {
         neutralPalette.concat(accentPalette).forEach(
             (swatch: Swatch): void => {
-                const backplates: FillSwatch = neutralFillStealth(() => swatch)(
+                const backplates: FillSwatchFamily = neutralFillStealth(() => swatch)(
                     designSystemDefaults
                 );
                 const rest: Swatch = neutralFillStealthRest(() => swatch)(

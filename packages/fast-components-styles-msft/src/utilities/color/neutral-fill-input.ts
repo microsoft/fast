@@ -4,28 +4,27 @@ import {
     ensureDesignSystemDefaults,
     withDesignSystemDefaults,
 } from "../../design-system";
-import { clamp } from "lodash-es";
 import {
     findClosestSwatchIndex,
     getSwatch,
     palette,
     Palette,
     PaletteType,
-    Swatch,
 } from "./palette";
 import {
-    ColorRecipe,
-    FillSwatch,
-    StatefulSwatchToColorRecipeFactory,
-    SwatchStates,
+    FillSwatchFamily,
+    swatchFamilyToSwatchRecipeFactory,
+    SwatchFamilyType,
+    SwatchRecipe,
+    SwatchResolver,
 } from "./common";
 
 /**
  * Algorithm for determining neutral backplate colors
  */
-const neutralFillInputAlgorithm: DesignSystemResolver<FillSwatch> = (
+const neutralFillInputAlgorithm: DesignSystemResolver<FillSwatchFamily> = (
     designSystem: DesignSystem
-): FillSwatch => {
+): FillSwatchFamily => {
     const neutralPalette: Palette = palette(PaletteType.neutral)(designSystem);
     const backgroundIndex: number = findClosestSwatchIndex(
         PaletteType.neutral,
@@ -51,14 +50,14 @@ const neutralFillInputAlgorithm: DesignSystemResolver<FillSwatch> = (
     };
 };
 
-export function neutralFillInput(designSystem: DesignSystem): FillSwatch;
+export function neutralFillInput(designSystem: DesignSystem): FillSwatchFamily;
 export function neutralFillInput(
-    backgroundResolver: (designSystem: DesignSystem) => Swatch
-): (designSystem: DesignSystem) => FillSwatch;
+    backgroundResolver: SwatchResolver
+): (designSystem: DesignSystem) => FillSwatchFamily;
 export function neutralFillInput(arg: any): any {
     if (typeof arg === "function") {
         return ensureDesignSystemDefaults(
-            (designSystem: DesignSystem): FillSwatch => {
+            (designSystem: DesignSystem): FillSwatchFamily => {
                 return neutralFillInputAlgorithm(
                     Object.assign({}, designSystem, {
                         backgroundColor: arg(designSystem),
@@ -71,15 +70,15 @@ export function neutralFillInput(arg: any): any {
     return neutralFillInputAlgorithm(withDesignSystemDefaults(arg));
 }
 
-export const neutralFillInputRest: ColorRecipe = StatefulSwatchToColorRecipeFactory<
-    FillSwatch
->(SwatchStates.rest, neutralFillInput);
-export const neutralFillInputHover: ColorRecipe = StatefulSwatchToColorRecipeFactory<
-    FillSwatch
->(SwatchStates.hover, neutralFillInput);
-export const neutralFillInputActive: ColorRecipe = StatefulSwatchToColorRecipeFactory<
-    FillSwatch
->(SwatchStates.active, neutralFillInput);
-export const neutralFillInputSelected: ColorRecipe = StatefulSwatchToColorRecipeFactory<
-    FillSwatch
->(SwatchStates.selected, neutralFillInput);
+export const neutralFillInputRest: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
+    FillSwatchFamily
+>(SwatchFamilyType.rest, neutralFillInput);
+export const neutralFillInputHover: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
+    FillSwatchFamily
+>(SwatchFamilyType.hover, neutralFillInput);
+export const neutralFillInputActive: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
+    FillSwatchFamily
+>(SwatchFamilyType.active, neutralFillInput);
+export const neutralFillInputSelected: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
+    FillSwatchFamily
+>(SwatchFamilyType.selected, neutralFillInput);
