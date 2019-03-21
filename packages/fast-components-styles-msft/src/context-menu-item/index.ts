@@ -1,7 +1,7 @@
 import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { ContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { applyFontSize, height, paddingNumber } from "../utilities/density";
+import { height, horizontalSpacingNumber } from "../utilities/density";
 import {
     neutralFillStealthActive,
     neutralFillStealthHover,
@@ -13,19 +13,22 @@ import {
 import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { applyDisabledState } from "../utilities/disabled";
+import { scaleApplyTypeRampConfigWithDensity } from "../utilities/typography";
 
 const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<ContextMenuItemClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const padding: number =
-        paddingNumber(-2)(designSystem) + 16 + paddingNumber()(designSystem);
+        horizontalSpacingNumber(-2)(designSystem) +
+        16 +
+        horizontalSpacingNumber()(designSystem);
 
     return {
         contextMenuItem: {
             listStyleType: "none",
             boxSizing: "border-box",
-            height: height()(designSystem),
+            height: height(),
             display: "grid",
             gridTemplateColumns: `${toPx(padding)} auto ${toPx(padding)}`,
             gridTemplateRows: "auto",
@@ -38,7 +41,7 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
             whiteSpace: "nowrap",
             overflow: "hidden",
             cursor: "default",
-            ...applyFontSize(designSystem),
+            ...scaleApplyTypeRampConfigWithDensity(designSystem, "t7"),
             ...applyCornerRadius(designSystem),
             ...applyFocusPlaceholderBorder(designSystem),
             ...applyFocusVisible<DesignSystem>({

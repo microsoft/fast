@@ -2,7 +2,12 @@ import { toPx } from "@microsoft/fast-jss-utilities";
 import { Breakpoints } from "../utilities/breakpoints";
 import { KeyOfToType } from "./keyof-to-type";
 import { CSSRules } from "@microsoft/fast-jss-manager";
-import { DesignSystem } from "../design-system";
+import {
+    DesignSystem,
+    ensureDesignSystemDefaults,
+    withDesignSystemDefaults,
+} from "../design-system";
+import { DensityCategory, getDensityCategory } from "./density";
 
 /**
  * The type ramp item config
@@ -104,4 +109,33 @@ export function applyTypeRampConfig(typeConfig: keyof TypeRamp): CSSRules<Design
         fontSize: toPx(typeRamp[typeConfig].fontSize),
         lineHeight: toPx(typeRamp[typeConfig].lineHeight),
     };
+}
+
+/**
+ * Adds the font size and line height attributes for the type ramp, scaled according to the design system density config.
+ *
+ * @param config The design system config.
+ * @param typeConfig The default type ramp config at base density.
+ */
+export function scaleApplyTypeRampConfigWithDensity(
+    config: DesignSystem,
+    typeConfig: keyof TypeRamp
+): CSSRules<DesignSystem> {
+    const designSystem: DesignSystem = withDesignSystemDefaults(config);
+    const category: DensityCategory = getDensityCategory(designSystem);
+    const densityOffset: number =
+        category === DensityCategory.compact
+            ? -1
+            : category === DensityCategory.spacious
+                ? 1
+                : 0;
+    const typeConfigNumber: number = parseInt(typeConfig.replace("t", ""), 10);
+    const size: number = typeConfigNumber - densityOffset;
+    const key: keyof TypeRamp | string = "t" + size;
+
+    if (key in typeRamp) {
+        return applyTypeRampConfig(key as keyof TypeRamp);
+    } else {
+        return applyTypeRampConfig(typeConfig);
+    }
 }

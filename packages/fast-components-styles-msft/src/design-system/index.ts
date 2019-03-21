@@ -5,6 +5,8 @@ import { Palette } from "../utilities/color/palette";
 import { TypeRamp } from "../utilities/typography";
 import { withDefaults } from "@microsoft/fast-jss-utilities";
 
+export type DensityOffset = -3 | -2 | -1 | 0 | 1 | 2 | 3;
+
 export interface DesignSystem {
     /**
      * The value typically used for backgrounds of elements
@@ -33,29 +35,24 @@ export interface DesignSystem {
     contrast: number;
 
     /**
-     * The density offset.
+     * The density offset, used with designUnit to calculate height and spacing.
      */
-    density: -3 | -2 | -1 | 0 | 1 | 2 | 3;
+    density: DensityOffset;
 
     /**
-     * The grid-unit that UI dimensions are derived from
+     * The grid-unit that UI dimensions are derived from in pixels.
      */
     designUnit: number;
 
     /**
-     * The number of designUnits in the default height at the base density.
+     * The number of designUnits used for component height at the base density.
      */
-    defaultHeightMultiplier: number;
+    baseHeightMultiplier: number;
 
     /**
-     * The number of designUnits used for horizontal padding at the base density.
+     * The number of designUnits used for horizontal spacing at the base density.
      */
-    defaultPaddingMultiplier: number;
-
-    /**
-     * The type ramp size to use at the base density.
-     */
-    defaultTypeRampSize: keyof TypeRamp;
+    baseHorizontalSpacingMultiplier: number;
 
     /**
      * The primary direction of the view.
@@ -63,18 +60,18 @@ export interface DesignSystem {
     direction: Direction;
 
     /**
-     * The value typically used for foreground elements, such as text
+     * The value typically used for foreground elements, such as text.
      * @deprecated
      */
     foregroundColor: string;
 
     /**
-     * The corner default radius applied to controls
+     * The corner default radius applied to controls.
      */
     cornerRadius?: number;
 
     /**
-     * The width of the outline in pixels applied to outline components
+     * The width of the outline in pixels applied to outline components.
      */
     outlinePatternOutlineWidth?: number;
 
@@ -161,9 +158,8 @@ const designSystemDefaults: DesignSystem = {
     contrast: 0,
     density: 0,
     designUnit: 4,
-    defaultHeightMultiplier: 8,
-    defaultPaddingMultiplier: 3,
-    defaultTypeRampSize: "t7",
+    baseHeightMultiplier: 8,
+    baseHorizontalSpacingMultiplier: 3,
     direction: Direction.ltr,
     cornerRadius: 2,
     outlinePatternOutlineWidth: 1,

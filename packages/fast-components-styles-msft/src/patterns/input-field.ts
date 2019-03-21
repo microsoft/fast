@@ -1,4 +1,4 @@
-import { applyFontSize, padding } from "../utilities/density";
+import { horizontalSpacing } from "../utilities/density";
 import { fontWeight } from "../utilities/fonts";
 import { CSSRules } from "@microsoft/fast-jss-manager";
 import { DesignSystem } from "../design-system";
@@ -16,13 +16,14 @@ import {
 } from "../utilities/color";
 import { applyCornerRadius } from "../utilities/border";
 import { applyDisabledState } from "../utilities/disabled";
+import { scaleApplyTypeRampConfigWithDensity } from "../utilities/typography";
 
 /**
  * Shared input field styles
  */
 export function inputFieldStyles(designSystem: DesignSystem): CSSRules<{}> {
     return {
-        ...applyFontSize(designSystem),
+        ...scaleApplyTypeRampConfigWithDensity(designSystem, "t7"),
         background: neutralFillInputRest,
         border: `${toPx(
             designSystem.outlinePatternOutlineWidth
@@ -32,7 +33,9 @@ export function inputFieldStyles(designSystem: DesignSystem): CSSRules<{}> {
         fontWeight: fontWeight.normal.toString(),
         boxSizing: "border-box",
         ...applyCornerRadius(designSystem),
-        padding: `0 ${padding(designSystem.outlinePatternOutlineWidth)(designSystem)}`,
+        padding: `0 ${horizontalSpacing(designSystem.outlinePatternOutlineWidth)(
+            designSystem
+        )}`,
         margin: "0",
         transition: "all 0.2s ease-in-out",
         "&:hover:enabled": {

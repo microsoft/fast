@@ -1,9 +1,5 @@
 import { DesignSystem, withDesignSystemDefaults } from "../design-system";
-import {
-    ComponentStyles,
-    ComponentStyleSheet,
-    CSSRules,
-} from "@microsoft/fast-jss-manager";
+import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { RadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import {
     applyFocusVisible,
@@ -21,21 +17,31 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
-import { applyFontSize, densityToTypeOffset, padding } from "../utilities/density";
+import {
+    DensityCategory,
+    getDensityCategory,
+    heightNumber,
+    horizontalSpacing,
+} from "../utilities/density";
 import { applyDisabledState } from "../utilities/disabled";
+import { scaleApplyTypeRampConfigWithDensity } from "../utilities/typography";
 
 const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<RadioClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const direction: Direction = designSystem.direction;
-    const size: number =
-        (designSystem.defaultHeightMultiplier + designSystem.density) *
-            (designSystem.designUnit / 2) +
-        designSystem.designUnit;
-    const indicatorMargin: string = toPx(
-        designSystem.designUnit + densityToTypeOffset(designSystem)
-    );
+    const size: number = heightNumber()(designSystem) / 2 + designSystem.designUnit;
+
+    const category: DensityCategory = getDensityCategory(designSystem);
+    const indicatorMarginOffset: number =
+        category === DensityCategory.compact
+            ? -1
+            : category === DensityCategory.spacious
+                ? 1
+                : 0;
+
+    const indicatorMargin: string = toPx(designSystem.designUnit + indicatorMarginOffset);
 
     return {
         radio: {
@@ -93,10 +99,12 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
         },
         radio_label: {
             color: neutralForegroundRest,
-            ...applyFontSize(designSystem),
-            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: padding(2)(
-                designSystem
-            ),
+            ...scaleApplyTypeRampConfigWithDensity(designSystem, "t7"),
+            [applyLocalizedProperty(
+                "marginLeft",
+                "marginRight",
+                direction
+            )]: horizontalSpacing(2)(designSystem),
         },
         radio__checked: {
             "& $radio_stateIndicator": {

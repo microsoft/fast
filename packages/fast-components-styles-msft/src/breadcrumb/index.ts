@@ -6,9 +6,9 @@ import {
     neutralForegroundHint,
     neutralForegroundRest,
 } from "../utilities/color";
-import { applyFontSize } from "../utilities/density";
 import { BreadcrumbClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyCursorDefault } from "../utilities/cursor";
+import { scaleApplyTypeRampConfigWithDensity } from "../utilities/typography";
 
 const styles: ComponentStyles<BreadcrumbClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -19,7 +19,7 @@ const styles: ComponentStyles<BreadcrumbClassNameContract, DesignSystem> = (
     return {
         breadcrumb: {
             color: neutralForegroundRest,
-            ...applyFontSize(designSystem),
+            ...scaleApplyTypeRampConfigWithDensity(designSystem, "t7"),
             ...applyCursorDefault(),
         },
         breadcrumb_item: {

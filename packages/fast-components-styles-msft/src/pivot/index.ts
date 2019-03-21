@@ -10,7 +10,7 @@ import {
     Direction,
     toPx,
 } from "@microsoft/fast-jss-utilities";
-import { applyFontSize, height, heightNumber, padding } from "../utilities/density";
+import { height, heightNumber, horizontalSpacing } from "../utilities/density";
 import {
     accentFillRest,
     neutralFocus,
@@ -20,6 +20,7 @@ import {
 } from "../utilities/color";
 import { PivotClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
+import { scaleApplyTypeRampConfigWithDensity } from "../utilities/typography";
 
 const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -39,8 +40,8 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
             boxSizing: "border-box",
         },
         pivot_tab: {
-            height: height()(designSystem),
-            padding: `0 ${padding(2)(designSystem)}`,
+            height: height(),
+            padding: `0 ${horizontalSpacing(2)(designSystem)}`,
             whiteSpace: "nowrap",
             display: "flex",
             ...applyFocusPlaceholderBorder(designSystem),
@@ -62,7 +63,7 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
         pivot_tab__active: {},
         pivot_tabContent: {
             transition: "all 0.2s ease-in-out",
-            ...applyFontSize(designSystem),
+            ...scaleApplyTypeRampConfigWithDensity(designSystem, "t7"),
             position: "relative",
             top: "-2px",
         },

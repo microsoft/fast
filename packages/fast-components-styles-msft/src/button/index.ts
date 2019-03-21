@@ -11,13 +11,7 @@ import {
     ComponentStyleSheet,
     CSSRules,
 } from "@microsoft/fast-jss-manager";
-import {
-    applyFontSize,
-    height,
-    maxHeight,
-    minHeight,
-    padding,
-} from "../utilities/density";
+import { height, horizontalSpacing } from "../utilities/density";
 import {
     accentFillActive,
     accentFillHover,
@@ -41,6 +35,7 @@ import {
 import { applyCursorPointer } from "../utilities/cursor";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { applyDisabledState } from "../utilities/disabled";
+import { scaleApplyTypeRampConfigWithDensity } from "../utilities/typography";
 
 function applyTransparentBackplateStyles(
     designSystem: DesignSystem
@@ -93,19 +88,19 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
 
     return {
         button: {
-            ...applyFontSize(designSystem),
+            ...scaleApplyTypeRampConfigWithDensity(designSystem, "t7"),
             fontFamily: "inherit",
             ...applyCursorPointer(),
             boxSizing: "border-box",
             maxWidth: "374px",
             minWidth: designSystem.density <= -2 ? "100px" : "120px",
-            padding: `0 ${padding(designSystem.focusOutlineWidth)(designSystem)}`,
+            padding: `0 ${horizontalSpacing(designSystem.focusOutlineWidth)(
+                designSystem
+            )}`,
             display: "inline-flex",
             justifyContent: "center",
             alignItems: "center",
-            height: height()(designSystem),
-            minHeight: minHeight()(designSystem),
-            maxHeight: maxHeight()(designSystem),
+            height: height(),
             ...applyFocusPlaceholderBorder(designSystem),
             ...applyCornerRadius(designSystem),
             lineHeight: "1",
@@ -151,7 +146,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             border: `${toPx(
                 designSystem.outlinePatternOutlineWidth
             )} solid ${neutralOutlineRest(designSystem)}`,
-            padding: `0 ${padding(designSystem.outlinePatternOutlineWidth)(
+            padding: `0 ${horizontalSpacing(designSystem.outlinePatternOutlineWidth)(
                 designSystem
             )}`,
             "&:hover:enabled": {

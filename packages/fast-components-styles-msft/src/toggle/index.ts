@@ -20,8 +20,8 @@ import {
     toPx,
 } from "@microsoft/fast-jss-utilities";
 import { ToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { applyFontSize } from "../utilities/density";
 import { applyDisabledState } from "../utilities/disabled";
+import { scaleApplyTypeRampConfigWithDensity } from "../utilities/typography";
 
 const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -36,7 +36,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             transition: "all 0.2s ease-in-out",
         },
         toggle_label: {
-            ...applyFontSize(designSystem),
+            ...scaleApplyTypeRampConfigWithDensity(designSystem, "t7"),
             display: "block",
             paddingBottom: "7px",
             clear: "both",
@@ -113,7 +113,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             },
         },
         toggle_statusMessage: {
-            ...applyFontSize(designSystem),
+            ...scaleApplyTypeRampConfigWithDensity(designSystem, "t7"),
             float: applyLocalizedProperty("left", "right", direction),
             [applyLocalizedProperty("padding-left", "padding-right", direction)]: "5px",
             userSelect: "none",

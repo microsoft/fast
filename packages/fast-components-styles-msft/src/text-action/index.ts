@@ -6,12 +6,7 @@ import {
 } from "@microsoft/fast-jss-manager";
 import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import {
-    applyFocusVisible,
-    applyLocalizedProperty,
-    Direction,
-    toPx,
-} from "@microsoft/fast-jss-utilities";
+import { applyLocalizedProperty, Direction, toPx } from "@microsoft/fast-jss-utilities";
 import {
     neutralFillInputActive,
     neutralFillInputHover,
@@ -23,7 +18,7 @@ import {
     neutralOutlineRest,
 } from "../utilities/color";
 import { applyCornerRadius } from "../utilities/border";
-import { height, maxHeight, minHeight, padding } from "../utilities/density";
+import { height, horizontalSpacing } from "../utilities/density";
 import { applyDisabledState } from "../utilities/disabled";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
@@ -63,9 +58,7 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
         textAction: {
             boxSizing: "border-box",
             position: "relative",
-            height: height()(designSystem),
-            minHeight: minHeight()(designSystem),
-            maxHeight: maxHeight()(designSystem),
+            height: height(),
             margin: "0",
             minWidth: "92px",
             border: `${toPx(
@@ -104,8 +97,6 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
             color: neutralForegroundRest,
             fill: neutralForegroundRest,
             height: `calc(${height()(designSystem)} - 6px)`,
-            minHeight: minHeight()(designSystem),
-            maxHeight: maxHeight()(designSystem),
             minWidth: "fit-content",
             margin: "2px",
             padding: `0 5px`,
@@ -117,9 +108,11 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
         },
         textAction_beforeGlyph: {
             ...glyphStyles,
-            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: padding(1)(
-                designSystem
-            ),
+            [applyLocalizedProperty(
+                "marginLeft",
+                "marginRight",
+                direction
+            )]: horizontalSpacing(1)(designSystem),
         },
         textAction_afterGlyph: {
             ...glyphStyles,

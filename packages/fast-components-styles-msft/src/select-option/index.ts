@@ -1,7 +1,7 @@
 import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { SelectOptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { applyFontSize, height, padding } from "../utilities/density";
+import { height, horizontalSpacing } from "../utilities/density";
 import {
     neutralFillStealthHover,
     neutralFillStealthRest,
@@ -18,6 +18,7 @@ import {
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { applyCursorPointer } from "../utilities/cursor";
 import { applyDisabledState } from "../utilities/disabled";
+import { scaleApplyTypeRampConfigWithDensity } from "../utilities/typography";
 
 const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -29,17 +30,19 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = (
         selectOption: {
             listStyleType: "none",
             boxSizing: "border-box",
-            height: height()(designSystem),
+            height: height(),
             display: "flex",
             alignItems: "center",
-            padding: `0 ${padding(designSystem.focusOutlineWidth)(designSystem)}`,
+            padding: `0 ${horizontalSpacing(designSystem.focusOutlineWidth)(
+                designSystem
+            )}`,
             margin: `0 ${toPx(designSystem.designUnit)}`,
             color: neutralForegroundRest,
             fill: neutralForegroundRest,
             whiteSpace: "nowrap",
             overflow: "hidden",
             cursor: "default",
-            ...applyFontSize(designSystem),
+            ...scaleApplyTypeRampConfigWithDensity(designSystem, "t7"),
             background: neutralFillStealthRest,
             ...applyCursorPointer(),
             ...applyCornerRadius(designSystem),
@@ -61,8 +64,8 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = (
             maxWidth: "16px",
             flexShrink: "0",
             margin: `${applyLocalizedProperty(
-                `0 ${padding()(designSystem)} 0 0`,
-                `0 0 0 ${padding()(designSystem)}`,
+                `0 ${horizontalSpacing()(designSystem)} 0 0`,
+                `0 0 0 ${horizontalSpacing()(designSystem)}`,
                 direction
             )}`,
         },

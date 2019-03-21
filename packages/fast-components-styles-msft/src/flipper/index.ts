@@ -30,10 +30,10 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
     return {
         flipper: {
             width: toPx(
-                (designSystem.defaultHeightMultiplier + 2) * designSystem.designUnit
+                (designSystem.baseHeightMultiplier + 2) * designSystem.designUnit
             ),
             height: toPx(
-                (designSystem.defaultHeightMultiplier + 2) * designSystem.designUnit
+                (designSystem.baseHeightMultiplier + 2) * designSystem.designUnit
             ),
             margin: "0",
             position: "relative",

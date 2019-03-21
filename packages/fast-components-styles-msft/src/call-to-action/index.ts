@@ -55,7 +55,7 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
 ): ComponentStyleSheet<CallToActionClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const direction: Direction = designSystem.direction;
-    const xTranslatePx: string = toPx(designSystem.designUnit);
+    const translateXValue: string = toPx(designSystem.designUnit);
 
     return {
         callToAction: {
@@ -69,16 +69,16 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
                 "& $callToAction_glyph": {
                     transform:
                         direction === Direction.ltr
-                            ? `translateX(${xTranslatePx})`
-                            : `rotate(180deg) translateX(${xTranslatePx})`,
+                            ? `translateX(${translateXValue})`
+                            : `rotate(180deg) translateX(${translateXValue})`,
                     position: "relative",
                 },
             },
             ...applyFocusVisible("& $callToAction_glyph", {
                 transform:
                     direction === Direction.ltr
-                        ? `translateX(${xTranslatePx})`
-                        : `rotate(180deg) translateX(${xTranslatePx})`,
+                        ? `translateX(${translateXValue})`
+                        : `rotate(180deg) translateX(${translateXValue})`,
                 position: "relative",
             }),
         },
@@ -90,7 +90,7 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
             [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "6px",
             transform: direction === Direction.ltr ? "none" : "rotate(180deg)",
             transition: "all 600ms cubic-bezier(0.19, 1, 0.22, 1)",
-            marginTop: direction === Direction.ltr ? xTranslatePx : "0",
+            marginTop: direction === Direction.ltr ? translateXValue : "0",
         },
         callToAction__primary: {
             "& $callToAction_glyph": {
@@ -103,7 +103,11 @@ const styles: ComponentStyles<CallToActionClassNameContract, DesignSystem> = (
             },
         },
         callToAction__justified: {
-            paddingRight: xTranslatePx,
+            [applyLocalizedProperty(
+                "paddingRight",
+                "paddingLeft",
+                direction
+            )]: translateXValue,
             "& $callToAction_glyph": {
                 fill: accentFillRest,
             },

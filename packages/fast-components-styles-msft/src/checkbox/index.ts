@@ -18,21 +18,33 @@ import {
     neutralOutlineRest,
 } from "../utilities/color";
 import { applyCornerRadius } from "../utilities/border";
-import { applyFontSize, densityToTypeOffset, padding } from "../utilities/density";
+import {
+    DensityCategory,
+    getDensityCategory,
+    heightNumber,
+    horizontalSpacing,
+} from "../utilities/density";
 import { applyDisabledState } from "../utilities/disabled";
+import { scaleApplyTypeRampConfigWithDensity } from "../utilities/typography";
 
 const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<CheckboxClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const direction: Direction = designSystem.direction;
-    const size: number =
-        (designSystem.defaultHeightMultiplier + designSystem.density) *
-            (designSystem.designUnit / 2) +
-        designSystem.designUnit;
-    const indicatorMargin: string = toPx(
-        designSystem.designUnit + densityToTypeOffset(designSystem)
+    const size: number = heightNumber()(designSystem) / 2 + designSystem.designUnit;
+
+    const category: DensityCategory = getDensityCategory(designSystem);
+    const indicatorMarginOffset: number =
+        category === DensityCategory.compact
+            ? -1
+            : category === DensityCategory.spacious
+                ? 1
+                : 0;
+    const indeterminateIndicatorMargin: string = toPx(
+        designSystem.designUnit + indicatorMarginOffset
     );
+
     const indicatorSvg: string = `<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill="${encodeURIComponent(
         neutralForegroundRest(designSystem)
     )}" fill-rule="evenodd" clip-rule="evenodd" d="M8.143 12.6697L15.235 4.5L16.8 5.90363L8.23812 15.7667L3.80005 11.2556L5.27591 9.7555L8.143 12.6697Z"/></svg>`;
@@ -50,7 +62,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
                     "paddingLeft",
                     "paddingRight",
                     direction
-                )]: padding(2)(designSystem),
+                )]: horizontalSpacing(2),
             },
         },
         checkbox_input: {
@@ -100,7 +112,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
         },
         checkbox_label: {
             color: neutralForegroundRest,
-            ...applyFontSize(designSystem),
+            ...scaleApplyTypeRampConfigWithDensity(designSystem, "t7"),
         },
         checkbox__checked: {
             "& $checkbox_stateIndicator": {
@@ -117,10 +129,10 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
                 "&::before": {
                     ...applyCornerRadius(designSystem),
                     transform: "none",
-                    [applyLocalizedProperty("left", "right", direction)]: indicatorMargin,
-                    top: indicatorMargin,
-                    bottom: indicatorMargin,
-                    right: indicatorMargin,
+                    top: indeterminateIndicatorMargin,
+                    right: indeterminateIndicatorMargin,
+                    bottom: indeterminateIndicatorMargin,
+                    left: indeterminateIndicatorMargin,
                     width: "auto",
                     height: "auto",
                     background: neutralForegroundRest,

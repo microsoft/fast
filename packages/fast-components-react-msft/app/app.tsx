@@ -1,4 +1,20 @@
+import * as examples from "./examples";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
+import manageJss, { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
+import {
+    DensityOffset,
+    DesignSystem,
+    DesignSystemDefaults,
+} from "@microsoft/fast-components-styles-msft";
+import { Plugin, PluginProps } from "@microsoft/fast-tooling-react";
+import {
+    HypertextClassNameContract,
+    ManagedClasses,
+} from "@microsoft/fast-components-class-name-contracts-base";
+import { glyphBuildingblocks } from "@microsoft/fast-glyphs-msft";
+import React from "react";
+import { Direction } from "@microsoft/fast-web-utilities";
+import AdditionalPropsPlugin from "./utilities/additional-props.plugin";
 import Site, {
     componentFactory,
     formChildFromExamplesFactory,
@@ -14,21 +30,6 @@ import Site, {
     SiteTitleBrand,
     Theme,
 } from "@microsoft/fast-development-site-react";
-import manageJss, { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
-import {
-    DesignSystem,
-    DesignSystemDefaults,
-} from "@microsoft/fast-components-styles-msft";
-import { Plugin, PluginProps } from "@microsoft/fast-tooling-react";
-import {
-    HypertextClassNameContract,
-    ManagedClasses,
-} from "@microsoft/fast-components-class-name-contracts-base";
-import { glyphBuildingblocks } from "@microsoft/fast-glyphs-msft";
-import React from "react";
-import { Direction } from "@microsoft/fast-web-utilities";
-import AdditionalPropsPlugin from "./utilities/additional-props.plugin";
-import * as examples from "./examples";
 import { Hypertext } from "../src/hypertext";
 import ColorPicker, { ColorConfig } from "./color-picker";
 import reactHTMLElementExamples from "./components/react-html-element-child-option";
@@ -91,7 +92,7 @@ enum ThemeName {
 export interface AppState extends ColorConfig {
     theme: ThemeName;
     direction: Direction;
-    density: number;
+    density: DensityOffset;
 }
 
 export default class App extends React.Component<{}, AppState> {
@@ -168,9 +169,9 @@ export default class App extends React.Component<{}, AppState> {
                         <input
                             type="range"
                             name="density"
-                            defaultValue="1"
-                            min="0"
-                            max="2"
+                            defaultValue="0"
+                            min="-3"
+                            max="3"
                             onChange={this.handleDensityUpdate}
                             style={{ display: "none" }}
                         />
@@ -259,7 +260,7 @@ export default class App extends React.Component<{}, AppState> {
 
     private handleDensityUpdate = (e: React.ChangeEvent<HTMLInputElement>): void => {
         this.setState({
-            density: parseInt(e.target.value, 10),
+            density: parseInt(e.target.value, 10) as DensityOffset,
         });
     };
     /**
