@@ -11,14 +11,14 @@ export type BreakpointTrackerCallback = (breakpoint: Breakpoint) => void;
 
 export class BreakpointTracker {
     /**
-     * The current breakpoint.
+     * The default array of breakpoint values
      */
-    private breakpoint: number;
+    private _breakpoints: Breakpoints = defaultBreakpoints;
 
     /**
      * The current breakpoint.
      */
-    private breakpointConfig: Breakpoints = defaultBreakpoints;
+    private breakpoint: number;
 
     /**
      * Track if we have an open animation frame request
@@ -26,7 +26,7 @@ export class BreakpointTracker {
     private openRequestAnimationFrame: boolean;
 
     /**
-     *
+     * The subscriptions
      */
     private subscriptions: BreakpointTrackerCallback[];
 
@@ -39,22 +39,29 @@ export class BreakpointTracker {
         }
 
         this.subscriptions = [];
-        this.breakpoint = identifyBreakpoint(window.innerWidth, this.breakpointConfig);
+        this.breakpoint = identifyBreakpoint(window.innerWidth, this._breakpoints);
 
         window.addEventListener("resize", this.requestFrame);
     }
 
     /**
+     * Gets breakpoint values
+     */
+    public get breakpoints(): Breakpoints {
+        return this._breakpoints;
+    }
+
+    /**
+     * Sets breakpoint values
+     */
+    public set breakpoints(breakpointConfig: Breakpoints) {
+        this._breakpoints = breakpointConfig;
+    }
+
+    /**
      * Subscribes a callback to be called when breakpoints change
      */
-    public subscribe(
-        callback: BreakpointTrackerCallback,
-        breakpointConfig?: Breakpoints
-    ): void {
-        if (breakpointConfig) {
-            this.breakpointConfig = breakpointConfig;
-        }
-
+    public subscribe(callback: BreakpointTrackerCallback): void {
         if (!this.subscriptions.includes(callback)) {
             this.subscriptions.push(callback);
         }
@@ -74,10 +81,7 @@ export class BreakpointTracker {
      */
     public update = (): void => {
         const windowWidth: number = window.innerWidth;
-        const breakpoint: Breakpoint = identifyBreakpoint(
-            windowWidth,
-            this.breakpointConfig
-        );
+        const breakpoint: Breakpoint = identifyBreakpoint(windowWidth, this._breakpoints);
 
         if (this.breakpoint !== breakpoint) {
             this.breakpoint = breakpoint;
