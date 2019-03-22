@@ -1,62 +1,84 @@
 # FAST Colors
 
-A color utility library designed to make working with colors easier.
+`@microsoft/fast-colors` includes a number of color classes and utilities designed to make parsing and manipulating colors easy, fast, and light-weight.
 
-A huge thanks to [bobbyrayit](https://github.com/bobbyrayit) and [mlijanto](https://github.com/mlijanto) for creating the algorithm implemented in the `range` function.
-This code borrows heavily from their original implementation.
+## Color classes
 
-## DEPRECATION NOTICE
-`@microsoft/fast-colors` is undergoing a major overhaul for v4 - as such all of the functions exported from this package will be either renamed or removed as of version 4.0.
+There are a number of color classes exported for common color formats. These include:
 
-## range(color, [options])
+- `ColorHSL`
+- `ColorHSV`
+- `ColorLAB`
+- `ColorLCH`
+- `ColorRGBA64` (note each channel is a number from 0-1)
+- `ColorXYZ`
 
-A function that converts a single color input into a range of outputs, from lightest to darkest.
+```ts
+const myColor: new ColorRGBA64(0, 0, 0, 1);
 
-- `color: string` - a HEX or RGB color represented as a string (eg, `"#FFF"` or `"rgb(0, 0, 0)"`)
-- `options: object`
-  - `count: number` - the number of colors to create in the count. Defaults to `7`.
-  - `paddingLight: number` - the amount to reduce the color-range of light values by. Defaults to `0.185`.
-  - `paddingDark: number` - the amount to reduce the color-range of dark values by. Defaults to `0.185`.
-  - `saturationLight: number` - the amount to adjust the saturation of light values by. Defaults to `0.35`.
-  - `saturationDark: number` - the amount to adjust the saturation of dark values by. Defaults to `1.25`.
-  - `brightnessLight: number` - the amount to adjust the brightness of light values by. Defaults to `0`.
-  - `brightnessDark: number` - the amount to adjust the brightness of dark values by. Defaults to `0`.
-  - `filterOverlayLight: number` - the amount of an overlay filter to apply to light values. Defaults to `0`.
-  - `filterOverlayDark: number` - the amount of an overlay filter to apply to dark values. Defaults to `0.25`.
-  - `filterMultiplyLight: number` - the amount of a multiply filter to apply to light values. Defaults to `0`.
-  - `filterMultiplyDark: number` - the amount of a multiply filter to apply to dark values. Defaults to `0`.
-
-### Usage
-
-```js
-import { range } from "@microsoft/fast-colors";
-
-// Default usage
-const range = range("#dddddd"); // [ '#f2f2f2', '#ebebeb', '#e4e4e4', '#dddddd', '#b6b6b6', '#8f8f8f', '#696969' ]
-
-// Custom configuration
-const range = range("#dddddd", {
-    count: 3,
-    paddingLight: .2,
-    paddingDark: .2
-}); // [ '#f1f1f1`, `#dddddd`, `#777777` ]
+myColor.toStringHexRGB() // "#000000"
 ```
 
-## contrast(ratio, operand, reference)
+## Color parsers
 
-A function that adjust a color (`operand`) to meet a contrast ratio (`ratio`) against another color (`reference`).
+A number of color parsers are also available to parse a variety of different color formats.
 
-- `ratio: number` - the desired contrast ratio of the returned color.
-- `operand: string` - a string representation of the color that will be adjusted to meet `ratio` against `reference`.
-- `reference: string` - a string representation of the color that the `operand` will meet a contrast ratio against.
+- `parseColorHexRGB(raw: string): ColorRGBA64 | null` parses `#RGB` or `#RRGGBB` color strings
+- `parseColorHexARGB(raw: string): ColorRGBA64 | null` parses `#ARGB` or `#AARRGGBB` color strings
+- `parseColorHexRGBA(raw: string): ColorRGBA64 | null` parses `#RGBA` or `#RRGGBBAA` color strings
+- `parseColorWebRGB(raw: string): ColorRGBA64 | null` parses `#rgb(R, G, B)` color strings
+- `parseColorWebRGBA(raw: string): ColorRGBA64 | null` parses `#rgb(R, G, B, A)` color strings
+- `parseColorNamned(raw: string): ColorRGBA64 | null` parses [named color strings](https://www.w3schools.com/colors/colors_names.asp)
 
-### Usage
+## Color Palette
 
-```js
-import { contrast } from "@microsoft/fast-colors"
+A utility for creating a palette of colors from a source color and configuration options:
 
-const background = "#FFF";
-const foreground = "#000";
+- `baseColor?: ColorRGBA64`
+- `steps?: number`
+- `interpolationMode?: ColorInterpolationSpace`
+- `scaleColorLight?: ColorRGBA64`
+- `scaleColorDark?: ColorRGBA64`
+- `clipLight?: number`
+- `clipDark?: number`
+- `saturationAdjustmentCutoff?: number`
+- `saturationLight?: number`
+- `saturationDark?: number`
+- `overlayLight?: number`
+- `overlayDark?: number`
+- `multiplyLight?: number`
+- `multiplyDark?: number`
 
-const buttonTextColor = contrast(4.5, foreground, background); // -> #767675 with a contrast ratio of 4.54
+Example:
+
+```ts
+const palette: ColorPalette = new ColorPalette({
+    baseColor: new ColorRGBA64(.4, .4, .7, 1),
+    steps: 99,
+    interpolationMode: ColorInterpolationSpace.RGB
+})
+```
+
+## Color converters
+
+A number of color converters are available to convert one color format to the other. Each color accepts a color class of the source type and returns a color class of the converted type:
+
+- `hslToRGB`
+- `rgbToHSL`
+- `rgbToHSV`
+- `hsvToRGB`
+- `lchToLAB`
+- `labToLCH`
+- `labToXYZ`
+- `xyzToLAB`
+- `rgbToXYZ`
+- `xyzToRGB`
+- `rgbToLAB`
+- `labToRGB`
+- `rgbToLCH`
+- `lchToRGB`
+
+```ts
+const rgb: ColorRGBA64 = new ColorRGBA64(.5, .5, .5, 1);
+const hsl: ColorHSL = rgbToHSL(rgb);
 ```
