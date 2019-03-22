@@ -4,6 +4,7 @@
     "description": "A Text Field component's schema definition.",
     "type": "object",
     "id": "@microsoft/fast-components-react-base/text-field",
+    "formPluginId": "@microsoft/fast-components-react-base/text-field",
     "properties": {
         "disabled": {
             "title": "Disabled",

@@ -4,6 +4,7 @@
     "description": "A select component's schema definition.",
     "type": "object",
     "id": "@microsoft/fast-components-react-msft/select",
+    "formPluginId": "@microsoft/fast-components-react-msft/select",
     "properties": {
         "placeholder": {
             "title": "Placeholder",
@@ -54,7 +55,8 @@
         "children": {
             "title": "Building blocks",
             "type": "children",
-            "defaults": [
+            "formPluginId": "@microsoft/fast-components-react-msft/select/children",
+            "ids": [
                 "@microsoft/fast-components-react-msft/select-option"
             ]
         }

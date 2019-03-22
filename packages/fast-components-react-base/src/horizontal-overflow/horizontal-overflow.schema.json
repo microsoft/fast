@@ -4,6 +4,7 @@
     "description": "A horizontal overflow component's schema definition.",
     "type": "object",
     "id": "@microsoft/fast-components-react-base/horizontal-overflow",
+    "formPluginId": "@microsoft/fast-components-react-base/horizontal-overflow",
     "properties": {
         "scrollDuration": {
             "title": "Scroll duration",
@@ -14,6 +15,7 @@
         "children": {
             "title": "Children",
             "type": "children",
+            "formPluginId": "@microsoft/fast-components-react-base/horizontal-overflow/children",
             "defaults": [
                 "text"
             ]

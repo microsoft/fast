@@ -4,6 +4,7 @@
     "description": "A number field component's schema definition.",
     "type": "object",
     "id": "@microsoft/fast-components-react-base/number-field",
+    "formPluginId": "@microsoft/fast-components-react-base/number-field",
     "properties": {
         "min": {
             "title": "HTML min attribute",
