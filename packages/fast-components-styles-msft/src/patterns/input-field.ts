@@ -25,17 +25,15 @@ export function inputFieldStyles(designSystem: DesignSystem): CSSRules<{}> {
     return {
         ...applyScaledTypeRamp(designSystem, "t7"),
         background: neutralFillInputRest,
-        border: `${toPx(
-            designSystem.outlinePatternOutlineWidth
-        )} solid ${neutralOutlineRest(designSystem)}`,
+        border: `${toPx(designSystem.outlineWidth)} solid ${neutralOutlineRest(
+            designSystem
+        )}`,
         color: neutralForegroundRest,
         fontFamily: "inherit",
         fontWeight: fontWeight.normal.toString(),
         boxSizing: "border-box",
         ...applyCornerRadius(designSystem),
-        padding: `0 ${horizontalSpacing(designSystem.outlinePatternOutlineWidth)(
-            designSystem
-        )}`,
+        padding: `0 ${horizontalSpacing(designSystem.outlineWidth)(designSystem)}`,
         margin: "0",
         transition: "all 0.2s ease-in-out",
         "&:hover:enabled": {
