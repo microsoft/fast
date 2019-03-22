@@ -12,6 +12,7 @@ import Checkbox, {
     CheckboxState,
     CheckboxUnhandledProps,
 } from "./checkbox";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -30,7 +31,9 @@ describe("checkbox", (): void => {
     const inputSelector: string = `.${managedClasses.checkbox_input}`;
 
     test("should have a displayName that matches the component name", () => {
-        expect((Checkbox as any).name).toBe(Checkbox.displayName);
+        expect(`${DisplayNamePrefix}${(Checkbox as any).name}`).toBe(
+            Checkbox.displayName
+        );
     });
 
     test("should have correct input attribute type 'checkbox'", () => {

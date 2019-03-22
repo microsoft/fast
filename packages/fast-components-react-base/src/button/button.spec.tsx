@@ -11,6 +11,7 @@ import Button, {
     ButtonProps,
     ButtonUnhandledProps,
 } from "./button";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -24,7 +25,7 @@ describe("button", (): void => {
     const href: string = "https://www.microsoft.com";
 
     test("should have a displayName that matches the component name", () => {
-        expect((Button as any).name).toBe(Button.displayName);
+        expect(`${DisplayNamePrefix}${(Button as any).name}`).toBe(Button.displayName);
     });
 
     test("should not throw if managedClasses are not provided", () => {

@@ -6,13 +6,14 @@ import {
 } from "./select-option.props";
 import { ListboxItem as BaseListboxItem } from "@microsoft/fast-components-react-base";
 import { get } from "lodash-es";
+import { DisplayNamePrefix } from "../utilities";
 
 class SelectOption extends Foundation<
     SelectOptionHandledProps,
     SelectOptionUnhandledProps,
     {}
 > {
-    public static displayName: string = "SelectOption";
+    public static displayName: string = `${DisplayNamePrefix}SelectOption`;
 
     protected handledProps: HandledProps<SelectOptionHandledProps> = {
         glyph: void 0,

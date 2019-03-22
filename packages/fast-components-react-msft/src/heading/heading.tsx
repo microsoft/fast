@@ -14,9 +14,10 @@ import {
     HeadingClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-msft";
+import { DisplayNamePrefix } from "../utilities";
 
 class Heading extends Foundation<HeadingHandledProps, HeadingUnhandledProps, {}> {
-    public static displayName: string = "Heading";
+    public static displayName: string = `${DisplayNamePrefix}Heading`;
 
     protected handledProps: HandledProps<HeadingHandledProps> = {
         size: void 0,

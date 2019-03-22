@@ -10,6 +10,7 @@ import MSFTParagraph, {
     ParagraphUnhandledProps,
 } from "./paragraph";
 import { Paragraph } from "./index";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -18,7 +19,9 @@ configure({ adapter: new Adapter() });
 
 describe("paragraph", (): void => {
     test("should have a displayName that matches the component name", () => {
-        expect((MSFTParagraph as any).name).toBe(MSFTParagraph.displayName);
+        expect(`${DisplayNamePrefix}${(MSFTParagraph as any).name}`).toBe(
+            MSFTParagraph.displayName
+        );
     });
 
     test("should not throw if managedClasses are not provided", () => {

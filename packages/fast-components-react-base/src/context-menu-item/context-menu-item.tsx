@@ -8,6 +8,7 @@ import {
     ContextMenuItemProps,
     ContextMenuItemUnhandledProps,
 } from "./context-menu-item.props";
+import { DisplayNamePrefix } from "../utilities";
 
 export enum ContextMenuItemRole {
     menuItem = "menuitem",
@@ -20,7 +21,7 @@ class ContextMenuItem extends Foundation<
     ContextMenuItemUnhandledProps,
     {}
 > {
-    public static displayName: string = "ContextMenuItem";
+    public static displayName: string = `${DisplayNamePrefix}ContextMenuItem`;
 
     public static defaultProps: Partial<ContextMenuItemProps> = {
         role: ContextMenuItemRole.menuItem,

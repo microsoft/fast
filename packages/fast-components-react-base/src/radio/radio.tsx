@@ -12,6 +12,7 @@ import {
     RadioClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
+import { DisplayNamePrefix } from "../utilities";
 
 /**
  * Radio slot options
@@ -25,7 +26,7 @@ interface RadioState {
 }
 
 class Radio extends Foundation<RadioHandledProps, RadioUnhandledProps, RadioState> {
-    public static displayName: string = "Radio";
+    public static displayName: string = `${DisplayNamePrefix}Radio`;
 
     public static getDerivedStateFromProps(
         nextProps: RadioProps,

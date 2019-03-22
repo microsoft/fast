@@ -13,9 +13,10 @@ import {
     FlipperClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-msft";
+import { DisplayNamePrefix } from "../utilities";
 
 class Flipper extends Foundation<FlipperHandledProps, FlipperUnhandledProps, {}> {
-    public static displayName: string = "Flipper";
+    public static displayName: string = `${DisplayNamePrefix}Flipper`;
 
     protected handledProps: HandledProps<FlipperHandledProps> = {
         label: void 0,

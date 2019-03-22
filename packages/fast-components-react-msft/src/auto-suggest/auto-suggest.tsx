@@ -11,13 +11,14 @@ import {
     AutoSuggestState,
 } from "@microsoft/fast-components-react-base";
 import { TextAction } from "../text-action";
+import { DisplayNamePrefix } from "../utilities";
 
 class AutoSuggest extends Foundation<
     AutoSuggestHandledProps,
     AutoSuggestUnhandledProps,
     {}
 > {
-    public static displayName: string = "AutoSuggest";
+    public static displayName: string = `${DisplayNamePrefix}AutoSuggest`;
 
     protected handledProps: HandledProps<AutoSuggestHandledProps> = {
         listboxId: void 0,
