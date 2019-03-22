@@ -33,9 +33,7 @@ export function inputFieldStyles(designSystem: DesignSystem): CSSRules<{}> {
         fontWeight: fontWeight.normal.toString(),
         boxSizing: "border-box",
         ...applyCornerRadius(designSystem),
-        padding: `0 ${horizontalSpacing(designSystem.outlinePatternOutlineWidth)(
-            designSystem
-        )}`,
+        padding: `0 ${horizontalSpacing(designSystem.outlineWidth)(designSystem)}`,
         margin: "0",
         transition: "all 0.2s ease-in-out",
         "&:hover:enabled": {

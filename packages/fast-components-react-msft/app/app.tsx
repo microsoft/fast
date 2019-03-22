@@ -16,9 +16,7 @@ import {
     DesignSystemDefaults,
 } from "@microsoft/fast-components-styles-msft";
 import { Plugin, PluginProps } from "@microsoft/fast-tooling-react";
-import {
-    HypertextClassNameContract,
-} from "@microsoft/fast-components-class-name-contracts-base";
+import { HypertextClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { glyphBuildingblocks } from "@microsoft/fast-glyphs-msft";
 import React from "react";
 import { Direction } from "@microsoft/fast-web-utilities";

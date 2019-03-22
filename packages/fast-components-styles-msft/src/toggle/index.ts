@@ -73,9 +73,9 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             width: toPx(width),
             height: toPx(height),
             background: neutralFillInputRest,
-            border: `${toPx(
-                designSystem.outlineWidth
-            )} solid ${neutralOutlineRest(designSystem)}`,
+            border: `${toPx(designSystem.outlineWidth)} solid ${neutralOutlineRest(
+                designSystem
+            )}`,
             borderRadius: toPx(height),
             appearance: "none",
             outline: "none",

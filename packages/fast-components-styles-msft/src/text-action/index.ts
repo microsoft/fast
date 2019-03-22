@@ -81,12 +81,11 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
         textAction__focus: {
             "&, &:hover": {
                 boxShadow: `0 0 0 ${toPx(
-                    designSystem.focusOutlineWidth -
-                        designSystem.outlineWidth
+                    designSystem.focusOutlineWidth - designSystem.outlineWidth
                 )} ${neutralFocus(designSystem)} inset`,
-                border: `${toPx(
-                    designSystem.outlineWidth
-                )} solid ${neutralFocus(designSystem)}`,
+                border: `${toPx(designSystem.outlineWidth)} solid ${neutralFocus(
+                    designSystem
+                )}`,
             },
         },
         textAction__disabled: {
