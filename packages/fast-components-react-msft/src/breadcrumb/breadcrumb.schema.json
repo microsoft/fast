@@ -4,6 +4,7 @@
     "description": "A breadcrumb component's schema definition.",
     "type": "object",
     "id": "@microsoft/fast-components-react-msft/breadcrumb",
+    "formPluginId": "@microsoft/fast-components-react-msft/breadcrumb",
     "properties": {
         "label": {
             "title": "label",
@@ -19,6 +20,7 @@
             "title": "Separator",
             "type": "children",
             "pluginId": "@microsoft/fast-components-react-msft/breadcrumb/separator",
+            "formPluginId": "@microsoft/fast-components-react-msft/breadcrumb/separator",
             "defaults": [
                 "text"
             ]

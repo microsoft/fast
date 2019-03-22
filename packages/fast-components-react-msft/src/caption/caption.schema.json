@@ -4,6 +4,7 @@
     "description": "A caption component's schema definition.",
     "type": "object",
     "id": "@microsoft/fast-components-react-msft/caption",
+    "formPluginId": "@microsoft/fast-components-react-msft/caption",
     "properties": {
         "tag": {
             "title": "HTML tag",
@@ -30,6 +31,7 @@
         "children": {
             "title": "Children",
             "type": "children",
+            "formPluginId": "@microsoft/fast-components-react-msft/caption/children",
             "defaults": [
                 "text"
             ]

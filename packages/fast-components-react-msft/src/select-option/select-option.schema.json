@@ -4,6 +4,7 @@
     "description": "A select option component's schema definition.",
     "type": "object",
     "id": "@microsoft/fast-components-react-msft/select-option",
+    "formPluginId": "@microsoft/fast-components-react-msft/select-option",
     "properties": {
         "disabled": {
             "title": "Disabled",
@@ -26,6 +27,7 @@
         "children": {
             "title": "Children",
             "type": "children",
+            "formPluginId": "@microsoft/fast-components-react-msft/select-option/children",
             "defaults": [
                 "text"
             ]
@@ -33,6 +35,7 @@
         "glyph": {
             "title": "Glyph",
             "type": "children",
+            "formPluginId": "@microsoft/fast-components-react-msft/select-option/glyph",
             "pluginId": "@microsoft/fast-components-react-msft/select-option/glyph"
         }
     },
