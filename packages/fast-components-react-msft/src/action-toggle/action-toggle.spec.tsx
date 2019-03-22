@@ -12,6 +12,7 @@ import MSFTActionToggle, {
 } from "./action-toggle";
 import { ActionToggle } from "./index";
 import { ActionToggleClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -30,7 +31,9 @@ describe("action toggle", (): void => {
     };
 
     test("should have a displayName that matches the component name", () => {
-        expect((MSFTActionToggle as any).name).toBe(MSFTActionToggle.displayName);
+        expect(`${DisplayNamePrefix}${(MSFTActionToggle as any).name}`).toBe(
+            MSFTActionToggle.displayName
+        );
     });
 
     test("should not throw if managedClasses are not provided", () => {

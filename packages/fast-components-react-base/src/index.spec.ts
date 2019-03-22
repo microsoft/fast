@@ -4,7 +4,9 @@ import { includesAllSubdirectoriesAsNamedExports } from "../../../build/helpers/
 describe("index.ts", (): void => {
     test("should export all components in the src directory", () => {
         expect(() => {
-            includesAllSubdirectoriesAsNamedExports(path.resolve(__dirname, "index.ts"));
+            includesAllSubdirectoriesAsNamedExports(path.resolve(__dirname, "index.ts"), [
+                "utilities",
+            ]);
         }).not.toThrow();
     });
 });

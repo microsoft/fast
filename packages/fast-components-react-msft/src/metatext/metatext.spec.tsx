@@ -10,6 +10,7 @@ import MSFTMetatext, {
     MetatextUnhandledProps,
 } from "./metatext";
 import { Metatext } from "./index";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -18,7 +19,9 @@ configure({ adapter: new Adapter() });
 
 describe("metatext", (): void => {
     test("should have a displayName that matches the component name", () => {
-        expect((MSFTMetatext as any).name).toBe(MSFTMetatext.displayName);
+        expect(`${DisplayNamePrefix}${(MSFTMetatext as any).name}`).toBe(
+            MSFTMetatext.displayName
+        );
     });
 
     test("should not throw if managedClasses are not provided", () => {

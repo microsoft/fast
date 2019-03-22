@@ -12,6 +12,7 @@ import Typography, {
     TypographyTag,
     TypographyUnhandledProps,
 } from "./typography";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -32,7 +33,9 @@ describe("typography", (): void => {
     };
 
     test("should have a displayName that matches the component name", () => {
-        expect((Typography as any).name).toBe(Typography.displayName);
+        expect(`${DisplayNamePrefix}${(Typography as any).name}`).toBe(
+            Typography.displayName
+        );
     });
 
     test("should not throw if managedClasses are not provided", () => {

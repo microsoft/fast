@@ -16,6 +16,7 @@ import {
 import Tab, { TabManagedClasses } from "./tab";
 import TabItem from "./tab-item";
 import TabPanel, { TabPanelManagedClasses } from "./tab-panel";
+import { DisplayNamePrefix } from "../utilities";
 
 export enum TabLocation {
     first,
@@ -35,7 +36,7 @@ export interface TabsState {
 }
 
 class Tabs extends Foundation<TabsHandledProps, TabsUnhandledProps, TabsState> {
-    public static displayName: string = "Tabs";
+    public static displayName: string = `${DisplayNamePrefix}Tabs`;
 
     /**
      * React life-cycle method

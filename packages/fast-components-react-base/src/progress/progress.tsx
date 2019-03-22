@@ -12,6 +12,7 @@ import {
     ManagedClasses,
     ProgressClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
+import { DisplayNamePrefix } from "../utilities";
 
 export enum ProgressType {
     determinate = "determinate",
@@ -24,7 +25,7 @@ class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, 
         maxValue: 100,
     };
 
-    public static displayName: string = "Progress";
+    public static displayName: string = `${DisplayNamePrefix}Progress`;
 
     protected handledProps: HandledProps<ProgressHandledProps> = {
         children: void 0,

@@ -17,6 +17,7 @@ import { Direction } from "@microsoft/fast-web-utilities";
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { Tabs as BaseTabs } from "@microsoft/fast-components-react-base";
 import { PivotProps } from ".";
+import { DisplayNamePrefix } from "../utilities";
 
 export interface PivotState {
     offsetX: number;
@@ -25,7 +26,7 @@ export interface PivotState {
 }
 
 class Pivot extends Foundation<PivotHandledProps, PivotUnhandledProps, PivotState> {
-    public static displayName: string = "Pivot";
+    public static displayName: string = `${DisplayNamePrefix}Pivot`;
 
     /**
      * React life-cycle method

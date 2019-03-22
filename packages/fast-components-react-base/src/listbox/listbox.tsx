@@ -12,7 +12,7 @@ import { get, inRange, isEqual } from "lodash-es";
 import { canUseDOM } from "exenv-es6";
 import { ListboxContext, ListboxContextType } from "./listbox-context";
 import { ListboxItemProps } from "../listbox-item";
-
+import { DisplayNamePrefix } from "../utilities";
 export interface ListboxState {
     /**
      * The index of the focusable child
@@ -27,7 +27,7 @@ class Listbox extends Foundation<
     ListboxUnhandledProps,
     ListboxState
 > {
-    public static displayName: string = "Listbox";
+    public static displayName: string = `${DisplayNamePrefix}Listbox`;
 
     public static defaultProps: Partial<ListboxProps> = {
         multiselectable: false,

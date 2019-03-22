@@ -8,13 +8,14 @@ import {
     BreadcrumbUnhandledProps,
 } from "./breadcrumb.props";
 import { get } from "lodash-es";
+import { DisplayNamePrefix } from "../utilities";
 
 class Breadcrumb extends Foundation<
     BreadcrumbHandledProps,
     BreadcrumbUnhandledProps,
     {}
 > {
-    public static displayName: string = "Breadcrumb";
+    public static displayName: string = `${DisplayNamePrefix}Breadcrumb`;
 
     protected handledProps: HandledProps<BreadcrumbHandledProps> = {
         children: void 0,

@@ -5,6 +5,7 @@ import Breadcrumb, {
     BreadcrumbClassNameContract,
     BreadcrumbUnhandledProps,
 } from "./breadcrumb";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -21,7 +22,9 @@ const managedClasses: BreadcrumbClassNameContract = {
 
 describe("breadcrumb", (): void => {
     test("should have a displayName that matches the component name", () => {
-        expect((Breadcrumb as any).name).toBe(Breadcrumb.displayName);
+        expect(`${DisplayNamePrefix}${(Breadcrumb as any).name}`).toBe(
+            Breadcrumb.displayName
+        );
     });
 
     test("should have correct root element type 'nav'", () => {

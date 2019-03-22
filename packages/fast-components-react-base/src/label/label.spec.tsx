@@ -11,6 +11,7 @@ import Label, {
     LabelTag,
     LabelUnhandledProps,
 } from "./label";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -24,7 +25,7 @@ describe("label", (): void => {
     };
 
     test("should have a displayName that matches the component name", () => {
-        expect((Label as any).name).toBe(Label.displayName);
+        expect(`${DisplayNamePrefix}${(Label as any).name}`).toBe(Label.displayName);
     });
 
     test("should not throw if managedClasses are not provided", () => {

@@ -9,13 +9,14 @@ import {
 } from "./listbox-item.props";
 import { ListboxContext, ListboxContextType } from "../listbox/listbox-context";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { DisplayNamePrefix } from "../utilities";
 
 class ListboxItem extends Foundation<
     ListboxItemHandledProps,
     ListboxItemUnhandledProps,
     {}
 > {
-    public static displayName: string = "ListboxItem";
+    public static displayName: string = `${DisplayNamePrefix}ListboxItem`;
 
     public static contextType: React.Context<ListboxContextType> = ListboxContext;
 

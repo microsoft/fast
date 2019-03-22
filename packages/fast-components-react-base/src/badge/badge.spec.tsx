@@ -2,6 +2,7 @@ import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import Badge, { BadgeHandledProps, BadgeProps, BadgeUnhandledProps } from "./index";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -9,8 +10,8 @@ import Badge, { BadgeHandledProps, BadgeProps, BadgeUnhandledProps } from "./ind
 configure({ adapter: new Adapter() });
 
 describe("badge", (): void => {
-    test("should have a displayName that matches the component name", () => {
-        expect((Badge as any).name).toBe(Badge.displayName);
+    test("should have a displayName that includes the component name", () => {
+        expect(`${DisplayNamePrefix}${(Badge as any).name}`).toBe(Badge.displayName);
     });
 
     test("should not throw if managedClasses are not provided", () => {

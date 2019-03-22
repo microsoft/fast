@@ -20,6 +20,7 @@ import {
     ResizeObserverClassDefinition,
 } from "./resize-observer";
 import { ResizeObserverEntry } from "./resize-observer-entry";
+import { DisplayNamePrefix } from "../utilities";
 
 export enum ButtonDirection {
     previous = "previous",
@@ -41,7 +42,7 @@ class HorizontalOverflow extends Foundation<
     HorizontalOverflowUnhandledProps,
     HorizontalOverflowState
 > {
-    public static displayName: string = "HorizontalOverflow";
+    public static displayName: string = `${DisplayNamePrefix}HorizontalOverflow`;
 
     protected handledProps: HandledProps<HorizontalOverflowHandledProps> = {
         scrollDuration: void 0,
