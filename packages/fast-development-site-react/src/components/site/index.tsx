@@ -793,9 +793,11 @@ class Site extends React.Component<
     };
 
     private getCurrentPath = (): string => {
+        const splitPath: string[] = window.location.pathname.split("/");
+
         return this.getComponentViewTypesByLocation() === ComponentViewTypes.detail
             ? window.location.pathname
-            : window.location.pathname.slice(0, window.location.pathname.indexOf("/", 1));
+            : `${splitPath.slice(0, splitPath.length - 2).join("/")}/`;
     };
 
     private generateNavigation(
