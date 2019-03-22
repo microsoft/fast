@@ -10,6 +10,7 @@ import {
 } from "./action-toggle.props";
 import { actionToggleButtonOverrides } from "@microsoft/fast-components-styles-msft";
 import { isNullOrUndefined } from "util";
+import { DisplayNamePrefix } from "../utilities";
 
 export interface ActionToggleState {
     selected: boolean;
@@ -20,7 +21,7 @@ class ActionToggle extends Foundation<
     ActionToggleUnhandledProps,
     ActionToggleState
 > {
-    public static displayName: string = "ActionToggle";
+    public static displayName: string = `${DisplayNamePrefix}ActionToggle`;
 
     /**
      * React life-cycle method

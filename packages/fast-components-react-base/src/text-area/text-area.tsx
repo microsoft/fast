@@ -11,9 +11,10 @@ import {
     TextAreaClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
+import { DisplayNamePrefix } from "../utilities";
 
 class TextArea extends Foundation<TextAreaHandledProps, TextAreaUnhandledProps, {}> {
-    public static displayName: string = "TextArea";
+    public static displayName: string = `${DisplayNamePrefix}TextArea`;
 
     protected handledProps: HandledProps<TextAreaHandledProps> = {
         managedClasses: void 0,

@@ -15,13 +15,14 @@ import {
     ManagedClasses,
     MetatextClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
+import { DisplayNamePrefix } from "../utilities";
 
 class Metatext extends Foundation<MetatextHandledProps, MetatextUnhandledProps, {}> {
     public static defaultProps: Partial<MetatextProps> = {
         tag: MetatextTag.span,
     };
 
-    public static displayName: string = "Metatext";
+    public static displayName: string = `${DisplayNamePrefix}Metatext`;
 
     protected handledProps: HandledProps<MetatextHandledProps> = {
         managedClasses: void 0,

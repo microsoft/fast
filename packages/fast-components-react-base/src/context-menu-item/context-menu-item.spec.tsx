@@ -8,6 +8,7 @@ import ContextMenuItem, {
     ContextMenuItemUnhandledProps,
 } from "./context-menu-item";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -16,7 +17,9 @@ configure({ adapter: new Adapter() });
 
 describe("context menu item", (): void => {
     test("should have a displayName that matches the component name", () => {
-        expect((ContextMenuItem as any).name).toBe(ContextMenuItem.displayName);
+        expect(`${DisplayNamePrefix}${(ContextMenuItem as any).name}`).toBe(
+            ContextMenuItem.displayName
+        );
     });
 
     test("should not throw if managedClasses are not provided", () => {

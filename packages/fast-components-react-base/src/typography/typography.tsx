@@ -14,6 +14,7 @@ import {
     ManagedClasses,
     TypographyClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
+import { DisplayNamePrefix } from "../utilities";
 
 class Typography extends Foundation<
     TypographyHandledProps,
@@ -24,7 +25,7 @@ class Typography extends Foundation<
         tag: TypographyTag.p,
     };
 
-    public static displayName: string = "Typography";
+    public static displayName: string = `${DisplayNamePrefix}Typography`;
 
     protected handledProps: HandledProps<TypographyHandledProps> = {
         managedClasses: void 0,

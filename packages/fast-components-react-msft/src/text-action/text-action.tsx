@@ -9,6 +9,7 @@ import {
 import { textFieldOverrides } from "@microsoft/fast-components-styles-msft";
 import { TextField } from "../text-field";
 import { get } from "lodash-es";
+import { DisplayNamePrefix } from "../utilities";
 
 /**
  * Text action state interface
@@ -21,7 +22,7 @@ class TextAction extends Foundation<
     TextActionUnhandledProps,
     TextActionState
 > {
-    public static displayName: string = "TextAction";
+    public static displayName: string = `${DisplayNamePrefix}TextAction`;
 
     public static defaultProps: Partial<TextActionProps> = {
         buttonPosition: TextActionButtonPosition.after,

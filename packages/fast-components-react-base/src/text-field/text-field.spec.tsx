@@ -11,6 +11,7 @@ import TextField, {
     TextFieldType,
     TextFieldUnhandledProps,
 } from "./text-field";
+import { DisplayNamePrefix } from "../utilities";
 
 const managedClasses: TextFieldClassNameContract = {
     textField: "text-field-class",
@@ -23,7 +24,9 @@ configure({ adapter: new Adapter() });
 
 describe("text-field", (): void => {
     test("should have a displayName that matches the component name", () => {
-        expect((TextField as any).name).toBe(TextField.displayName);
+        expect(`${DisplayNamePrefix}${(TextField as any).name}`).toBe(
+            TextField.displayName
+        );
     });
 
     test("should have correct root element type 'input'", () => {

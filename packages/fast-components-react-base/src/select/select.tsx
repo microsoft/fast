@@ -8,6 +8,7 @@ import { ListboxItemProps } from "../listbox-item";
 import Listbox from "../listbox";
 import Button from "../button";
 import { canUseDOM } from "exenv-es6";
+import { DisplayNamePrefix } from "../utilities";
 
 export interface SelectState {
     value: string | string[];
@@ -17,7 +18,7 @@ export interface SelectState {
 }
 
 class Select extends Foundation<SelectHandledProps, SelectUnhandledProps, SelectState> {
-    public static displayName: string = "Select";
+    public static displayName: string = `${DisplayNamePrefix}Select`;
 
     public static defaultProps: Partial<SelectProps> = {
         multiselectable: false,

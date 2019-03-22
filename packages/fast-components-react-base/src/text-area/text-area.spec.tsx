@@ -10,6 +10,7 @@ import TextArea, {
     TextAreaProps,
     TextAreaUnhandledProps,
 } from "./text-area";
+import { DisplayNamePrefix } from "../utilities";
 
 const managedClasses: TextAreaClassNameContract = {
     textArea: "text-area-class",
@@ -22,7 +23,9 @@ configure({ adapter: new Adapter() });
 
 describe("text-area", (): void => {
     test("should have a displayName that matches the component name", () => {
-        expect((TextArea as any).name).toBe(TextArea.displayName);
+        expect(`${DisplayNamePrefix}${(TextArea as any).name}`).toBe(
+            TextArea.displayName
+        );
     });
 
     test("should have correct root element type 'textarea'", () => {

@@ -12,6 +12,7 @@ import MSFTCallToAction, {
 } from "./call-to-action";
 import { CallToAction } from "./index";
 import { CallToActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -30,7 +31,9 @@ describe("call to action", (): void => {
     const href: string = "#";
 
     test("should have a displayName that matches the component name", () => {
-        expect((MSFTCallToAction as any).name).toBe(MSFTCallToAction.displayName);
+        expect(`${DisplayNamePrefix}${(MSFTCallToAction as any).name}`).toBe(
+            MSFTCallToAction.displayName
+        );
     });
 
     test("should not throw if managedClasses are not provided", () => {

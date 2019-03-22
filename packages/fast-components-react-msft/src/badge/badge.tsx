@@ -8,9 +8,10 @@ import {
 } from "./badge.props";
 import { Badge as BaseBadge } from "@microsoft/fast-components-react-base";
 import { get } from "lodash-es";
+import { DisplayNamePrefix } from "../utilities";
 
 class Badge extends Foundation<BadgeHandledProps, BadgeUnhandledProps, {}> {
-    public static displayName: string = "Badge";
+    public static displayName: string = `${DisplayNamePrefix}Badge`;
 
     public static defaultProps: Partial<BadgeProps> = {
         size: BadgeSize.small,

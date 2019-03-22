@@ -11,6 +11,7 @@ import Image, {
     ImageSlot,
     ImageUnhandledProps,
 } from "./image";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -25,7 +26,7 @@ describe("image", (): void => {
     const alt: string = "Image alt text test string";
 
     test("should have a displayName that matches the component name", () => {
-        expect((Image as any).name).toBe(Image.displayName);
+        expect(`${DisplayNamePrefix}${(Image as any).name}`).toBe(Image.displayName);
     });
 
     test("should not throw if managedClasses are not provided", () => {

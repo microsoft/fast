@@ -12,6 +12,7 @@ import { ListboxItemProps } from "../listbox-item";
 import Listbox from "../listbox";
 import TextField, { TextFieldType } from "../text-field";
 import { AutoSuggestContext, AutoSuggestContextType } from "./auto-suggest-context";
+import { DisplayNamePrefix } from "../utilities";
 
 export interface AutoSuggestState {
     value: string;
@@ -24,7 +25,7 @@ class AutoSuggest extends Foundation<
     AutoSuggestUnhandledProps,
     AutoSuggestState
 > {
-    public static displayName: string = "AutoSuggest";
+    public static displayName: string = `${DisplayNamePrefix}AutoSuggest`;
 
     public static defaultProps: Partial<AutoSuggestProps> = {
         initialValue: "",

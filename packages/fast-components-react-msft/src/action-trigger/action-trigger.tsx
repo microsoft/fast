@@ -8,13 +8,14 @@ import {
     ActionTriggerUnhandledProps,
 } from "./action-trigger.props";
 import { actionTriggerButtonOverrides } from "@microsoft/fast-components-styles-msft";
+import { DisplayNamePrefix } from "../utilities";
 
 class ActionTrigger extends Foundation<
     ActionTriggerHandledProps,
     ActionTriggerUnhandledProps,
     {}
 > {
-    public static displayName: string = "ActionTrigger";
+    public static displayName: string = `${DisplayNamePrefix}ActionTrigger`;
 
     protected handledProps: HandledProps<ActionTriggerHandledProps> = {
         appearance: void 0,
