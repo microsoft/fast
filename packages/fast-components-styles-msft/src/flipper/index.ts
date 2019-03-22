@@ -46,9 +46,9 @@ const styles: ComponentStyles<FlipperClassNameContract, DesignSystem> = (
                 content: "''",
                 opacity: "0.8",
                 background: neutralFillStealthRest,
-                border: `${toPx(
-                    designSystem.outlinePatternOutlineWidth
-                )} solid ${neutralOutlineRest(designSystem)}`,
+                border: `${toPx(designSystem.outlineWidth)} solid ${neutralOutlineRest(
+                    designSystem
+                )}`,
                 borderRadius: "50%",
                 position: "absolute",
                 top: "0",
