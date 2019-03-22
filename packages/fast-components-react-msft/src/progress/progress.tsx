@@ -14,6 +14,7 @@ import {
     ProgressClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
 import { Progress as BaseProgress } from "@microsoft/fast-components-react-base";
+import { DisplayNamePrefix } from "../utilities";
 
 class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, {}> {
     public static defaultProps: Partial<ProgressProps> = {
@@ -21,7 +22,7 @@ class Progress extends Foundation<ProgressHandledProps, ProgressUnhandledProps, 
         maxValue: 100,
     };
 
-    public static displayName: string = "Progress";
+    public static displayName: string = `${DisplayNamePrefix}Progress`;
 
     private static indicatorCount: number = 2;
 

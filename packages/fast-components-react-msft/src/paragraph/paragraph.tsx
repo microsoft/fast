@@ -15,13 +15,14 @@ import {
     ManagedClasses,
     ParagraphClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
+import { DisplayNamePrefix } from "../utilities";
 
 class Paragraph extends Foundation<ParagraphHandledProps, ParagraphUnhandledProps, {}> {
     public static defaultProps: Partial<ParagraphProps> = {
         size: ParagraphSize._3,
     };
 
-    public static displayName: string = "Paragraph";
+    public static displayName: string = `${DisplayNamePrefix}Paragraph`;
 
     protected handledProps: HandledProps<ParagraphHandledProps> = {
         size: void 0,

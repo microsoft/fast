@@ -10,6 +10,7 @@ import Card, {
     CardTag,
     CardUnhandledProps,
 } from "./card";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -22,7 +23,7 @@ describe("card", (): void => {
     };
 
     test("should have a displayName that matches the component name", () => {
-        expect((Card as any).name).toBe(Card.displayName);
+        expect(`${DisplayNamePrefix}${(Card as any).name}`).toBe(Card.displayName);
     });
 
     test("should return an object that includes all valid props which are not enumerated as handledProps", () => {

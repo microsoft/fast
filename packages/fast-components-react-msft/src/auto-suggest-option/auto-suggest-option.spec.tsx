@@ -11,6 +11,7 @@ import {
     AutoSuggestContext,
     AutoSuggestContextType,
 } from "@microsoft/fast-components-react-base";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -19,7 +20,7 @@ configure({ adapter: new Adapter() });
 
 describe("auto suggest option", (): void => {
     test("should have a displayName that matches the component name", () => {
-        expect((MSFTAutoSuggestOption as any).name).toBe(
+        expect(`${DisplayNamePrefix}${(MSFTAutoSuggestOption as any).name}`).toBe(
             MSFTAutoSuggestOption.displayName
         );
     });

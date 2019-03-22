@@ -12,6 +12,7 @@ import {
     ManagedClasses,
     ToggleClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
+import { DisplayNamePrefix } from "../utilities";
 
 /**
  * Toggle state interface
@@ -24,7 +25,7 @@ export interface ToggleState {
  * Toggle base component
  */
 class Toggle extends Foundation<ToggleHandledProps, ToggleUnhandledProps, ToggleState> {
-    public static displayName: string = "Toggle";
+    public static displayName: string = `${DisplayNamePrefix}Toggle`;
 
     /**
      * React life-cycle method

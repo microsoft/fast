@@ -9,6 +9,7 @@ import {
     ContextMenuItemProps,
     ContextMenuItemUnhandledProps,
 } from "./index";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -19,7 +20,9 @@ describe("context menu item", (): void => {
     const beforeExample: JSX.Element = <div className={"before"}>before</div>;
 
     test("should have a displayName that matches the component name", () => {
-        expect((MSFTContextMenuItem as any).name).toBe(MSFTContextMenuItem.displayName);
+        expect(`${DisplayNamePrefix}${(MSFTContextMenuItem as any).name}`).toBe(
+            MSFTContextMenuItem.displayName
+        );
     });
 
     test("should not throw if managedClasses are not provided", () => {

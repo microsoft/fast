@@ -10,6 +10,7 @@ import MSFTCaption, {
     CaptionUnhandledProps,
 } from "./caption";
 import { Caption, CaptionProps } from "./index";
+import { DisplayNamePrefix } from "../utilities";
 
 /**
  * Configure Enzyme
@@ -18,7 +19,9 @@ configure({ adapter: new Adapter() });
 
 describe("caption", (): void => {
     test("should have a displayName that matches the component name", () => {
-        expect((MSFTCaption as any).name).toBe(MSFTCaption.displayName);
+        expect(`${DisplayNamePrefix}${(MSFTCaption as any).name}`).toBe(
+            MSFTCaption.displayName
+        );
     });
 
     test("should not throw if managedClasses are not provided", () => {

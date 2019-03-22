@@ -9,13 +9,14 @@ import {
 import { get } from "lodash-es";
 import { glyphArrowright } from "@microsoft/fast-glyphs-msft";
 import { callToActionButtonOverrides } from "@microsoft/fast-components-styles-msft";
+import { DisplayNamePrefix } from "../utilities";
 
 class CallToAction extends Foundation<
     CallToActionHandledProps,
     CallToActionUnhandledProps,
     {}
 > {
-    public static displayName: string = "CallToAction";
+    public static displayName: string = `${DisplayNamePrefix}CallToAction`;
 
     protected handledProps: HandledProps<CallToActionHandledProps> = {
         appearance: void 0,

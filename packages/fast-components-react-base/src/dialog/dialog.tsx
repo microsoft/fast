@@ -14,6 +14,7 @@ import {
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { canUseDOM } from "exenv-es6";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { DisplayNamePrefix } from "../utilities";
 
 class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
     public static defaultProps: Partial<DialogProps> = {
@@ -22,7 +23,7 @@ class Dialog extends Foundation<DialogHandledProps, DialogUnhandledProps, {}> {
         visible: false,
     };
 
-    public static displayName: string = "Dialog";
+    public static displayName: string = `${DisplayNamePrefix}Dialog`;
 
     protected handledProps: HandledProps<DialogHandledProps> = {
         describedBy: void 0,

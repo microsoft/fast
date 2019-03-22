@@ -11,6 +11,7 @@ import {
     ButtonProps,
     ButtonUnhandledProps,
 } from "./index";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -33,7 +34,9 @@ describe("button", (): void => {
     );
 
     test("should have a displayName that matches the component name", () => {
-        expect((MSFTButton as any).name).toBe(MSFTButton.displayName);
+        expect(`${DisplayNamePrefix}${(MSFTButton as any).name}`).toBe(
+            MSFTButton.displayName
+        );
     });
 
     test("should not throw if managedClasses are not provided", () => {

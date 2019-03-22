@@ -11,6 +11,7 @@ import Toggle, {
     ToggleState,
     ToggleUnhandledProps,
 } from "./toggle";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -36,7 +37,7 @@ describe("toggle", (): void => {
     const inputSelector: string = `.${managedClasses.toggle_input}`;
 
     test("should have a displayName that matches the component name", () => {
-        expect((Toggle as any).name).toBe(Toggle.displayName);
+        expect(`${DisplayNamePrefix}${(Toggle as any).name}`).toBe(Toggle.displayName);
     });
 
     test("should have correct input type attribute 'checkbox'", () => {

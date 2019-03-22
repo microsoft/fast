@@ -12,9 +12,10 @@ import {
     TextFieldClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-base";
 import { get } from "lodash-es";
+import { DisplayNamePrefix } from "../utilities";
 
 class TextField extends Foundation<TextFieldHandledProps, TextFieldUnhandledProps, {}> {
-    public static displayName: string = "TextField";
+    public static displayName: string = `${DisplayNamePrefix}TextField`;
 
     protected handledProps: HandledProps<TextFieldHandledProps> = {
         managedClasses: void 0,

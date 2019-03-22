@@ -12,9 +12,9 @@ import {
     CardClassNameContract,
     ManagedClasses,
 } from "@microsoft/fast-components-class-name-contracts-base";
-
+import { DisplayNamePrefix } from "../utilities";
 class Card extends Foundation<CardHandledProps, CardUnhandledProps, {}> {
-    public static displayName: string = "Card";
+    public static displayName: string = `${DisplayNamePrefix}Card`;
 
     protected handledProps: HandledProps<CardHandledProps> = {
         children: void 0,

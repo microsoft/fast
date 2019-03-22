@@ -12,6 +12,7 @@ import Dialog, {
     DialogUnhandledProps,
 } from "./dialog";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -26,7 +27,7 @@ describe("dialog", (): void => {
     };
 
     test("should have a displayName that matches the component name", () => {
-        expect((Dialog as any).name).toBe(Dialog.displayName);
+        expect(`${DisplayNamePrefix}${(Dialog as any).name}`).toBe(Dialog.displayName);
     });
 
     test("should have correct element attribute role 'dialog'", () => {

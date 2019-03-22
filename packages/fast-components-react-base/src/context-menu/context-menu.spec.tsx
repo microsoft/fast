@@ -4,6 +4,7 @@ import { configure, mount, shallow, ShallowWrapper } from "enzyme";
 import ContextMenu, { ContextMenuUnhandledProps } from "./context-menu";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 import { ContextMenuItemRole } from "../context-menu-item";
+import { DisplayNamePrefix } from "../utilities";
 
 /*
  * Configure Enzyme
@@ -12,7 +13,9 @@ configure({ adapter: new Adapter() });
 
 describe("context menu", (): void => {
     test("should have a displayName that matches the component name", () => {
-        expect((ContextMenu as any).name).toBe(ContextMenu.displayName);
+        expect(`${DisplayNamePrefix}${(ContextMenu as any).name}`).toBe(
+            ContextMenu.displayName
+        );
     });
 
     test("should have correct role attribute 'menu'", () => {
