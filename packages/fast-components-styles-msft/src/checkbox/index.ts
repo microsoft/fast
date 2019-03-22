@@ -70,7 +70,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
             width: toPx(size),
             height: toPx(size),
             appearance: "none",
-            ...applyCornerRadius(designSystem),
+            ...applyCornerRadius(),
             boxSizing: "border-box",
             margin: "0",
             zIndex: "1",
@@ -94,7 +94,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
         },
         checkbox_stateIndicator: {
             position: "relative",
-            ...applyCornerRadius(designSystem),
+            ...applyCornerRadius(),
             display: "inline-block",
             width: toPx(size),
             height: toPx(size),
@@ -127,7 +127,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
         checkbox__indeterminate: {
             "& $checkbox_stateIndicator": {
                 "&::before": {
-                    ...applyCornerRadius(designSystem),
+                    ...applyCornerRadius(),
                     transform: "none",
                     top: indeterminateIndicatorMargin,
                     right: indeterminateIndicatorMargin,

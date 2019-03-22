@@ -102,7 +102,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             alignItems: "center",
             height: height(),
             ...applyFocusPlaceholderBorder(designSystem),
-            ...applyCornerRadius(designSystem),
+            ...applyCornerRadius(),
             lineHeight: "1",
             overflow: "hidden",
             textDecoration: "none",

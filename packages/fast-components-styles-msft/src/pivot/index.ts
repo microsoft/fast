@@ -50,7 +50,7 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
             boxSizing: "border-box",
             userSelect: "none",
             color: neutralForegroundRest,
-            ...applyCornerRadius(designSystem),
+            ...applyCornerRadius(),
             "&:hover": {
                 color: neutralForegroundHover,
             },
@@ -70,7 +70,7 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
         },
         pivot_activeIndicator: {
             position: "absolute",
-            ...applyCornerRadius(designSystem),
+            ...applyCornerRadius(),
             top: toPx(
                 heightNumber(1)(designSystem) -
                     activeIndicatorHeight -

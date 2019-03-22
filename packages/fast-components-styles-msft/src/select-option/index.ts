@@ -45,7 +45,7 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = (
             ...applyScaledTypeRamp("t7"),
             background: neutralFillStealthRest,
             ...applyCursorPointer(),
-            ...applyCornerRadius(designSystem),
+            ...applyCornerRadius(),
             ...applyFocusPlaceholderBorder(designSystem),
             ...applyFocusVisible<DesignSystem>({
                 borderColor: neutralFocus,

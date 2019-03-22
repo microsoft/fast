@@ -65,7 +65,7 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
                 designSystem
             )}`,
             background: neutralFillInputRest,
-            ...applyCornerRadius(designSystem),
+            ...applyCornerRadius(),
             display: "flex",
             flexDirection: "row",
             transition: "all 0.2s ease-in-out",

@@ -44,7 +44,7 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
             overflow: "hidden",
             ...applyCursorDefault(),
             ...applyScaledTypeRamp("t7"),
-            ...applyCornerRadius(designSystem),
+            ...applyCornerRadius(),
             ...applyFocusPlaceholderBorder(designSystem),
             ...applyFocusVisible<DesignSystem>({
                 borderColor: neutralFocus,
