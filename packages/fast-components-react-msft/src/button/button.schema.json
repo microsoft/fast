@@ -4,6 +4,7 @@
     "description": "A button component's schema definition.",
     "type": "object",
     "id": "@microsoft/fast-components-react-msft/button",
+    "formPluginId": "@microsoft/fast-components-react-msft/button",
     "properties": {
         "disabled": {
             "title": "Disabled",
@@ -28,6 +29,7 @@
         "children": {
             "title": "Children",
             "type": "children",
+            "formPluginId": "@microsoft/fast-components-react-msft/button/children",
             "defaults": [
                 "text"
             ]
@@ -35,11 +37,13 @@
         "beforeContent": {
             "title": "Before content",
             "type": "children",
+            "formPluginId": "@microsoft/fast-components-react-msft/button/beforeContent",
             "pluginId": "@microsoft/fast-components-react-msft/button/beforeContent"
         },
         "afterContent": {
             "title": "After content",
             "type": "children",
+            "formPluginId": "@microsoft/fast-components-react-msft/button/afterContent",
             "pluginId": "@microsoft/fast-components-react-msft/button/afterContent"
         }
     }

@@ -3,7 +3,8 @@
     "title": "Pivot",
     "description": "A pivot component's schema definition.",
     "type": "object",
-    "id": "pivot",
+    "id": "@microsoft/fast-components-react-msft/pivot",
+    "formPluginId": "@microsoft/fast-components-react-msft/pivot",
     "properties": {
         "activeId": {
             "title": "Active pivot ID",
@@ -42,11 +43,13 @@
                     "tab": {
                         "title": "Pivot tab",
                         "type": "children",
+                        "formPluginId": "@microsoft/fast-components-react-msft/pivot/items/tab",
                         "pluginId": "@microsoft/fast-components-react-msft/pivot/items/tab"
                     },
                     "content": {
                         "title": "Pivot content",
                         "type": "children",
+                        "formPluginId": "@microsoft/fast-components-react-msft/pivot/items/content",
                         "pluginId": "@microsoft/fast-components-react-msft/pivot/items/content"
                     }
                 }

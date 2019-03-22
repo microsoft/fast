@@ -4,6 +4,7 @@
     "description": "A select component's schema definition.",
     "type": "object",
     "id": "@microsoft/fast-components-react-base/select",
+    "formPluginId": "@microsoft/fast-components-react-base/select",
     "properties": {
         "placeholder": {
             "title": "Placeholder",
@@ -54,6 +55,7 @@
         "children": {
             "title": "Building blocks",
             "type": "children",
+            "formPluginId": "@microsoft/fast-components-react-base/select/children",
             "defaults": [
                 "listbox-item"
             ]
