@@ -1,11 +1,6 @@
 import { DesignSystem, withDesignSystemDefaults } from "../design-system";
-import {
-    ComponentStyles,
-    ComponentStyleSheet,
-    CSSRules,
-} from "@microsoft/fast-jss-manager";
+import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { CheckboxClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { applyTypeRampConfig } from "../utilities/typography";
 import {
     applyFocusVisible,
     applyLocalizedProperty,
@@ -22,12 +17,38 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
+import { applyCornerRadius } from "../utilities/border";
+import {
+    DensityCategory,
+    getDensityCategory,
+    heightNumber,
+    horizontalSpacing,
+} from "../utilities/density";
+import { applyDisabledState } from "../utilities/disabled";
+import { applyScaledTypeRamp } from "../utilities/typography";
 
 const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<CheckboxClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const direction: Direction = designSystem.direction;
+    const size: number = heightNumber()(designSystem) / 2 + designSystem.designUnit;
+
+    const category: DensityCategory = getDensityCategory(designSystem);
+    const indicatorMarginOffset: number =
+        category === DensityCategory.compact
+            ? -1
+            : category === DensityCategory.spacious
+                ? 1
+                : 0;
+    const indeterminateIndicatorMargin: string = toPx(
+        designSystem.designUnit + indicatorMarginOffset
+    );
+
+    const indicatorSvg: string = `<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill="${encodeURIComponent(
+        neutralForegroundRest(designSystem)
+    )}" fill-rule="evenodd" clip-rule="evenodd" d="M8.143 12.6697L15.235 4.5L16.8 5.90363L8.23812 15.7667L3.80005 11.2556L5.27591 9.7555L8.143 12.6697Z"/></svg>`;
+    const indicatorSvgHc: string = `<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill="ButtonHighlight" fill-rule="evenodd" clip-rule="evenodd" d="M8.143 12.6697L15.235 4.5L16.8 5.90363L8.23812 15.7667L3.80005 11.2556L5.27591 9.7555L8.143 12.6697Z"/></svg>`;
 
     return {
         checkbox: {
@@ -37,15 +58,19 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
             alignItems: "center",
             transition: "all 0.2s ease-in-out",
             "& $checkbox_label": {
-                [applyLocalizedProperty("paddingLeft", "paddingRight", direction)]: "8px",
+                [applyLocalizedProperty(
+                    "paddingLeft",
+                    "paddingRight",
+                    direction
+                )]: horizontalSpacing(2),
             },
         },
         checkbox_input: {
             position: "absolute",
-            width: "20px",
-            height: "20px",
+            width: toPx(size),
+            height: toPx(size),
             appearance: "none",
-            borderRadius: "2px",
+            ...applyCornerRadius(designSystem),
             boxSizing: "border-box",
             margin: "0",
             zIndex: "1",
@@ -56,64 +81,45 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
             )} solid ${neutralOutlineRest(designSystem)}`,
             "&:hover": {
                 background: neutralFillInputHover,
-                border: `${toPx(
-                    designSystem.outlinePatternOutlineWidth
-                )} solid ${neutralOutlineHover(designSystem)}`,
+                borderColor: neutralOutlineHover,
             },
             "&:active": {
                 background: neutralFillInputActive,
-                border: `${toPx(
-                    designSystem.outlinePatternOutlineWidth
-                )} solid ${neutralOutlineActive(designSystem)}`,
+                borderColor: neutralOutlineActive,
             },
             ...applyFocusVisible({
                 boxShadow: `0 0 0 1px ${neutralFocus(designSystem)} inset`,
-                border: `${toPx(
-                    designSystem.outlinePatternOutlineWidth
-                )} solid ${neutralFocus(designSystem)}`,
+                borderColor: neutralFocus(designSystem),
             }),
         },
         checkbox_stateIndicator: {
             position: "relative",
-            borderRadius: "2px",
+            ...applyCornerRadius(designSystem),
             display: "inline-block",
-            width: "20px",
-            height: "20px",
+            width: toPx(size),
+            height: toPx(size),
             flexShrink: "0",
-            "&::before, &::after": {
+            "&::before": {
                 content: "''",
                 pointerEvents: "none",
-                width: "2px",
                 position: "absolute",
                 zIndex: "1",
-            },
-            "&::before": {
-                top: "4px",
-                left: "11px",
-                height: "12px",
-                transform: "rotate(40deg)",
-            },
-            "&::after": {
-                top: "9px",
-                left: "6px",
-                height: "6px",
-                transform: "rotate(-45deg)",
+                top: "0",
+                left: "0",
+                width: toPx(size),
+                height: toPx(size),
             },
         },
         checkbox_label: {
             color: neutralForegroundRest,
-            ...applyTypeRampConfig("t7"),
+            ...applyScaledTypeRamp(designSystem, "t7"),
         },
         checkbox__checked: {
             "& $checkbox_stateIndicator": {
-                "&::after, &::before": {
-                    position: "absolute",
-                    zIndex: "1",
-                    content: '""',
-                    borderRadius: toPx(designSystem.cornerRadius),
-                    background: neutralForegroundRest,
+                "&::before": {
+                    background: `url('data:image/svg+xml;utf8,${indicatorSvg}')`,
                     "@media (-ms-high-contrast:active)": {
-                        backgroundColor: "ButtonHighlight",
+                        background: `url('data:image/svg+xml;utf8,${indicatorSvgHc}')`,
                     },
                 },
             },
@@ -121,25 +127,23 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
         checkbox__indeterminate: {
             "& $checkbox_stateIndicator": {
                 "&::before": {
-                    borderRadius: toPx(designSystem.cornerRadius),
+                    ...applyCornerRadius(designSystem),
                     transform: "none",
-                    [applyLocalizedProperty("left", "right", direction)]: "5px",
-                    top: "5px",
-                    height: "10px",
-                    width: "10px",
+                    top: indeterminateIndicatorMargin,
+                    right: indeterminateIndicatorMargin,
+                    bottom: indeterminateIndicatorMargin,
+                    left: indeterminateIndicatorMargin,
+                    width: "auto",
+                    height: "auto",
                     background: neutralForegroundRest,
                     "@media (-ms-high-contrast:active)": {
                         backgroundColor: "ButtonHighlight",
                     },
                 },
-                "&::after": {
-                    content: "none",
-                },
             },
         },
         checkbox__disabled: {
-            opacity: "0.3",
-            cursor: "not-allowed",
+            ...applyDisabledState(designSystem),
         },
     };
 };

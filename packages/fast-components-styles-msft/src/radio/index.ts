@@ -1,11 +1,6 @@
 import { DesignSystem, withDesignSystemDefaults } from "../design-system";
-import {
-    ComponentStyles,
-    ComponentStyleSheet,
-    CSSRules,
-} from "@microsoft/fast-jss-manager";
+import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { RadioClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { applyTypeRampConfig } from "../utilities/typography";
 import {
     applyFocusVisible,
     applyLocalizedProperty,
@@ -22,12 +17,31 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
+import {
+    DensityCategory,
+    getDensityCategory,
+    heightNumber,
+    horizontalSpacing,
+} from "../utilities/density";
+import { applyDisabledState } from "../utilities/disabled";
+import { applyScaledTypeRamp } from "../utilities/typography";
 
 const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<RadioClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const direction: Direction = designSystem.direction;
+    const size: number = heightNumber()(designSystem) / 2 + designSystem.designUnit;
+
+    const category: DensityCategory = getDensityCategory(designSystem);
+    const indicatorMarginOffset: number =
+        category === DensityCategory.compact
+            ? -1
+            : category === DensityCategory.spacious
+                ? 1
+                : 0;
+
+    const indicatorMargin: string = toPx(designSystem.designUnit + indicatorMarginOffset);
 
     return {
         radio: {
@@ -39,8 +53,8 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
         },
         radio_input: {
             position: "absolute",
-            width: "20px",
-            height: "20px",
+            width: toPx(size),
+            height: toPx(size),
             appearance: "none",
             borderRadius: "50%",
             margin: "0",
@@ -52,29 +66,23 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
             )} solid ${neutralOutlineRest(designSystem)}`,
             "&:hover": {
                 background: neutralFillInputHover,
-                border: `${toPx(
-                    designSystem.outlinePatternOutlineWidth
-                )} solid ${neutralOutlineHover(designSystem)}`,
+                borderColor: neutralOutlineHover,
             },
             "&:active": {
                 background: neutralFillInputActive,
-                border: `${toPx(
-                    designSystem.outlinePatternOutlineWidth
-                )} solid ${neutralOutlineActive(designSystem)}`,
+                borderColor: neutralOutlineActive,
             },
             ...applyFocusVisible({
                 boxShadow: `0 0 0 1px ${neutralFocus(designSystem)} inset`,
-                border: `${toPx(
-                    designSystem.outlinePatternOutlineWidth
-                )} solid ${neutralFocus(designSystem)}`,
+                borderColor: neutralFocus(designSystem),
             }),
         },
         radio_stateIndicator: {
             position: "relative",
             borderRadius: "50%",
             display: "inline-block",
-            width: "20px",
-            height: "20px",
+            width: toPx(size),
+            height: toPx(size),
             flexShrink: "0",
             "&::before": {
                 pointerEvents: "none",
@@ -82,17 +90,21 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
                 zIndex: "1",
                 content: '""',
                 borderRadius: "50%",
-                top: "4px",
-                left: "4px",
-                height: "12px",
-                width: "12px",
+                top: indicatorMargin,
+                left: indicatorMargin,
+                bottom: indicatorMargin,
+                right: indicatorMargin,
                 background: "transparent",
             },
         },
         radio_label: {
             color: neutralForegroundRest,
-            ...applyTypeRampConfig("t7"),
-            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "8px",
+            ...applyScaledTypeRamp(designSystem, "t7"),
+            [applyLocalizedProperty(
+                "marginLeft",
+                "marginRight",
+                direction
+            )]: horizontalSpacing(2)(designSystem),
         },
         radio__checked: {
             "& $radio_stateIndicator": {
@@ -105,8 +117,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
             },
         },
         radio__disabled: {
-            opacity: "0.3",
-            cursor: "not-allowed",
+            ...applyDisabledState(designSystem),
         },
     };
 };

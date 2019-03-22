@@ -6,12 +6,7 @@ import {
 } from "@microsoft/fast-jss-manager";
 import { TextActionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { TextFieldClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import {
-    applyFocusVisible,
-    applyLocalizedProperty,
-    Direction,
-    toPx,
-} from "@microsoft/fast-jss-utilities";
+import { applyLocalizedProperty, Direction, toPx } from "@microsoft/fast-jss-utilities";
 import {
     neutralFillInputActive,
     neutralFillInputHover,
@@ -22,8 +17,9 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
-import { density } from "../utilities/density";
-import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
+import { applyCornerRadius } from "../utilities/border";
+import { height, horizontalSpacing } from "../utilities/density";
+import { applyDisabledState } from "../utilities/disabled";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
 export const textFieldOverrides: ComponentStyles<
@@ -62,52 +58,48 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
         textAction: {
             boxSizing: "border-box",
             position: "relative",
-            height: density(defaultHeight)(designSystem),
-            minHeight: toPx(minHeight),
-            maxHeight: toPx(maxHeight),
+            height: height(),
             margin: "0",
             minWidth: "92px",
             border: `${toPx(
                 designSystem.outlinePatternOutlineWidth
             )} solid ${neutralOutlineRest(designSystem)}`,
             background: neutralFillInputRest,
-            borderRadius: toPx(designSystem.cornerRadius),
+            ...applyCornerRadius(designSystem),
             display: "flex",
             flexDirection: "row",
             transition: "all 0.2s ease-in-out",
-            "&:hover": {
+            "&:hover:enabled": {
                 background: neutralFillInputHover,
-                border: `${toPx(
-                    designSystem.outlinePatternOutlineWidth
-                )} solid ${neutralOutlineHover(designSystem)}`,
+                borderColor: neutralOutlineHover,
             },
-            "&:active": {
+            "&:active:enabled": {
                 background: neutralFillInputActive,
-                border: `${toPx(
-                    designSystem.outlinePatternOutlineWidth
-                )} solid ${neutralOutlineActive(designSystem)}`,
+                borderColor: neutralOutlineActive,
             },
         },
         textAction__focus: {
             "&, &:hover": {
-                boxShadow: `0 0 0 1px ${neutralFocus(designSystem)} inset`,
+                boxShadow: `0 0 0 ${toPx(
+                    designSystem.focusOutlineWidth -
+                        designSystem.outlinePatternOutlineWidth
+                )} ${neutralFocus(designSystem)} inset`,
                 border: `${toPx(
                     designSystem.outlinePatternOutlineWidth
                 )} solid ${neutralFocus(designSystem)}`,
             },
         },
         textAction__disabled: {
-            cursor: "not-allowed",
-            opacity: "0.3",
+            ...applyDisabledState(designSystem),
         },
         textAction_button: {
             borderColor: "transparent",
-            height: `calc(${density(defaultHeight)(designSystem)} - 6px)`,
-            minHeight: toPx(minHeight),
-            maxHeight: toPx(maxHeight),
+            color: neutralForegroundRest,
+            fill: neutralForegroundRest,
+            height: `calc(${height()(designSystem)} - 6px)`,
             minWidth: "fit-content",
             margin: "2px",
-            padding: "0 16px",
+            padding: `0 5px`,
             [applyLocalizedProperty("right", "left", direction)]: "0",
             top: "0",
             transition: "color .1s, background-color .1s, border-color 0.2s ease-in-out",
@@ -116,7 +108,11 @@ const styles: ComponentStyles<TextActionClassNameContract, DesignSystem> = (
         },
         textAction_beforeGlyph: {
             ...glyphStyles,
-            [applyLocalizedProperty("marginLeft", "marginRight", direction)]: "12px",
+            [applyLocalizedProperty(
+                "marginLeft",
+                "marginRight",
+                direction
+            )]: horizontalSpacing(1)(designSystem),
         },
         textAction_afterGlyph: {
             ...glyphStyles,

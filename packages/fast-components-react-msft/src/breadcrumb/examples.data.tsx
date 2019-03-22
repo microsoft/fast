@@ -11,7 +11,7 @@ const label: any = {
 };
 
 function renderSeparator(): (className?: string) => React.ReactNode {
-    return (className?: string): React.ReactNode => <div className={className}>\</div>;
+    return (className?: string): React.ReactNode => <div className={className}>/</div>;
 }
 
 export default {
@@ -24,7 +24,7 @@ export default {
         separator: {
             id: ReactHTMLElementSchema.id,
             props: {
-                children: "\\",
+                children: "/",
             },
         },
         children: [
@@ -56,7 +56,7 @@ export default {
             separator: {
                 id: ReactHTMLElementSchema.id,
                 props: {
-                    children: "\\",
+                    children: "/",
                 },
             },
             children: [
@@ -87,7 +87,7 @@ export default {
             separator: {
                 id: ReactHTMLElementSchema.id,
                 props: {
-                    children: "\\",
+                    children: "/",
                 },
             },
             children: [

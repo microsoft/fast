@@ -15,20 +15,20 @@ export default {
     },
     data: [
         {
-            children: "Badge large",
-            size: BadgeSize.large,
-        },
-        {
-            children: "Badge small",
-            size: BadgeSize.small,
-        },
-        {
             children: "Filled badge large",
-            filled: false,
             size: BadgeSize.large,
         },
         {
             children: "Filled badge small",
+            size: BadgeSize.small,
+        },
+        {
+            children: "Badge large",
+            filled: false,
+            size: BadgeSize.large,
+        },
+        {
+            children: "Badge small",
             filled: false,
             size: BadgeSize.small,
         },

@@ -1,13 +1,14 @@
-import designSystemDefaults, {
-    DesignSystem,
-    withDesignSystemDefaults,
-} from "../design-system";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { applyLocalizedProperty, Direction } from "@microsoft/fast-jss-utilities";
-import { accentForegroundRest, neutralForegroundRest } from "../utilities/color";
+import {
+    accentForegroundRest,
+    neutralForegroundHint,
+    neutralForegroundRest,
+} from "../utilities/color";
 import { BreadcrumbClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { applyTypeRampConfig } from "../utilities/typography";
-import { fontWeight } from "../utilities/fonts";
+import { applyCursorDefault } from "../utilities/cursor";
+import { applyScaledTypeRamp } from "../utilities/typography";
 
 const styles: ComponentStyles<BreadcrumbClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -18,10 +19,10 @@ const styles: ComponentStyles<BreadcrumbClassNameContract, DesignSystem> = (
     return {
         breadcrumb: {
             color: neutralForegroundRest,
-            ...applyTypeRampConfig("t7"),
+            ...applyScaledTypeRamp(designSystem, "t7"),
+            ...applyCursorDefault(),
         },
         breadcrumb_item: {
-            fontWeight: `${fontWeight.semibold}`,
             display: "inline",
             outline: "none",
             textDecoration: "none",
@@ -39,8 +40,9 @@ const styles: ComponentStyles<BreadcrumbClassNameContract, DesignSystem> = (
             flexWrap: "wrap",
         },
         breadcrumb_separator: {
-            fontWeight: `${fontWeight.normal}`,
             display: "inline-block",
+            ...applyCursorDefault(),
+            color: neutralForegroundHint,
             margin: "0 6px",
         },
     };
