@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@3.4.4...@microsoft/fast-development-site-react@3.4.5) (2019-03-22)
+
+
+### Bug Fixes
+
+* resolve an issue with the examples route not being editable ([#1580](https://github.com/Microsoft/fast-dna/issues/1580)) ([77dfabc](https://github.com/Microsoft/fast-dna/commit/77dfabc))
+
+
+
+
+
 ## [3.4.4](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-development-site-react@3.4.3...@microsoft/fast-development-site-react@3.4.4) (2019-03-19)
 
 

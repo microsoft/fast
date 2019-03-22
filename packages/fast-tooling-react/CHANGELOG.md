@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@0.2.0...@microsoft/fast-tooling-react@0.3.0) (2019-03-22)
+
+
+### Bug Fixes
+
+* add an optional schemaLocation to be used instead of an automated mapping ([#1563](https://github.com/Microsoft/fast-dna/issues/1563)) ([e0c7545](https://github.com/Microsoft/fast-dna/commit/e0c7545))
+
+
+### Features
+
+* add badges ([#1568](https://github.com/Microsoft/fast-dna/issues/1568)) ([91568aa](https://github.com/Microsoft/fast-dna/commit/91568aa))
+
+
+
+
+
 # [0.2.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@0.1.0...@microsoft/fast-tooling-react@0.2.0) (2019-03-19)
 
 
