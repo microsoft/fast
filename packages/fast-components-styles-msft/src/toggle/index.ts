@@ -43,7 +43,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             transition: "all 0.2s ease-in-out",
         },
         toggle_label: {
-            ...applyScaledTypeRamp(designSystem, "t7"),
+            ...applyScaledTypeRamp("t7"),
             display: "block",
             paddingBottom: "7px",
             clear: "both",
@@ -120,7 +120,7 @@ const styles: ComponentStyles<ToggleClassNameContract, DesignSystem> = (
             },
         },
         toggle_statusMessage: {
-            ...applyScaledTypeRamp(designSystem, "t7"),
+            ...applyScaledTypeRamp("t7"),
             float: applyLocalizedProperty("left", "right", direction),
             [applyLocalizedProperty("padding-left", "padding-right", direction)]: "5px",
             userSelect: "none",

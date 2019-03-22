@@ -99,7 +99,7 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
         },
         radio_label: {
             color: neutralForegroundRest,
-            ...applyScaledTypeRamp(designSystem, "t7"),
+            ...applyScaledTypeRamp("t7"),
             [applyLocalizedProperty(
                 "marginLeft",
                 "marginRight",

@@ -64,7 +64,7 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
         pivot_tab__active: {},
         pivot_tabContent: {
             transition: "all 0.2s ease-in-out",
-            ...applyScaledTypeRamp(designSystem, "t7"),
+            ...applyScaledTypeRamp("t7"),
             position: "relative",
             top: "-2px",
         },

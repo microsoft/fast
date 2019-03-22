@@ -43,7 +43,7 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
             whiteSpace: "nowrap",
             overflow: "hidden",
             ...applyCursorDefault(),
-            ...applyScaledTypeRamp(designSystem, "t7"),
+            ...applyScaledTypeRamp("t7"),
             ...applyCornerRadius(designSystem),
             ...applyFocusPlaceholderBorder(designSystem),
             ...applyFocusVisible<DesignSystem>({

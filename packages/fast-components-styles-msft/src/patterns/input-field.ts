@@ -23,7 +23,7 @@ import { applyScaledTypeRamp } from "../utilities/typography";
  */
 export function inputFieldStyles(designSystem: DesignSystem): CSSRules<{}> {
     return {
-        ...applyScaledTypeRamp(designSystem, "t7"),
+        ...applyScaledTypeRamp("t7"),
         background: neutralFillInputRest,
         border: `${toPx(designSystem.outlineWidth)} solid ${neutralOutlineRest(
             designSystem

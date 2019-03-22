@@ -88,7 +88,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
 
     return {
         button: {
-            ...applyScaledTypeRamp(designSystem, "t7"),
+            ...applyScaledTypeRamp("t7"),
             fontFamily: "inherit",
             ...applyCursorPointer(),
             boxSizing: "border-box",

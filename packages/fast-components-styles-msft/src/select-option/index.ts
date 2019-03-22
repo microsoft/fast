@@ -42,7 +42,7 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = (
             whiteSpace: "nowrap",
             overflow: "hidden",
             ...applyCursorDefault(),
-            ...applyScaledTypeRamp(designSystem, "t7"),
+            ...applyScaledTypeRamp("t7"),
             background: neutralFillStealthRest,
             ...applyCursorPointer(),
             ...applyCornerRadius(designSystem),

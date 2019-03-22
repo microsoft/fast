@@ -33,7 +33,7 @@ const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
 
     return {
         badge: {
-            ...applyScaledTypeRamp(designSystem, "t7"),
+            ...applyScaledTypeRamp("t7"),
             ...ellipsis(),
             overflow: "hidden",
             ...applyCursorDefault(),
@@ -50,7 +50,7 @@ const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
             color: accentForegroundCut((): Swatch => filledBackground),
         },
         badge__small: {
-            ...applyScaledTypeRamp(designSystem, "t8"),
+            ...applyScaledTypeRamp("t8"),
             lineHeight: "13px",
             height: "16px",
             "&$badge__filled": {

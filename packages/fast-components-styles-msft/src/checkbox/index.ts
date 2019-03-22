@@ -112,7 +112,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
         },
         checkbox_label: {
             color: neutralForegroundRest,
-            ...applyScaledTypeRamp(designSystem, "t7"),
+            ...applyScaledTypeRamp("t7"),
         },
         checkbox__checked: {
             "& $checkbox_stateIndicator": {
