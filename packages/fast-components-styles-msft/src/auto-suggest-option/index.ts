@@ -4,7 +4,7 @@ import designSystemDefaults, {
 } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { AutoSuggestOptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { density } from "../utilities/density";
+import { height } from "../utilities/density";
 import {
     neutralFillStealthHover,
     neutralFillStealthRest,
@@ -31,7 +31,7 @@ const styles: ComponentStyles<AutoSuggestOptionClassNameContract, DesignSystem> 
     return {
         autoSuggestOption: {
             listStyleType: "none",
-            height: density(32),
+            height: height(),
             display: "grid",
             gridTemplateColumns: `${applyLocalizedProperty(
                 "12px auto auto 1fr 12px",

@@ -1,20 +1,17 @@
-import designSystemDefaults, { DesignSystem } from "../design-system";
-import {
-    ComponentStyles,
-    ComponentStyleSheet,
-    CSSRules,
-} from "@microsoft/fast-jss-manager";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
+import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { MetatextClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { neutralForegroundHint } from "../utilities/color";
-import { applyTypeRampConfig } from "../utilities/typography";
+import { applyScaledTypeRamp } from "../utilities/typography";
 
-/* tslint:disable-next-line */
 const styles: ComponentStyles<MetatextClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<MetatextClassNameContract, DesignSystem> => {
+    const designSystem: DesignSystem = withDesignSystemDefaults(config);
+
     return {
         metatext: {
-            ...applyTypeRampConfig("t7"),
+            ...applyScaledTypeRamp(designSystem, "t7"),
             color: neutralForegroundHint,
         },
     };

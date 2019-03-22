@@ -1,20 +1,26 @@
-import { DesignSystem } from "../design-system";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
+import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { LabelClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { applyTypeRampConfig } from "../utilities/typography";
 import { applyScreenReader } from "@microsoft/fast-jss-utilities";
 import { neutralForegroundRest } from "../utilities/color";
+import { applyScaledTypeRamp } from "../utilities/typography";
 
-const styles: ComponentStyles<LabelClassNameContract, DesignSystem> = {
-    label: {
-        ...applyTypeRampConfig("t7"),
-        display: "inline-block",
-        color: neutralForegroundRest,
-        padding: "0",
-    },
-    label__hidden: {
-        ...applyScreenReader(),
-    },
+const styles: ComponentStyles<LabelClassNameContract, DesignSystem> = (
+    config: DesignSystem
+): ComponentStyleSheet<LabelClassNameContract, DesignSystem> => {
+    const designSystem: DesignSystem = withDesignSystemDefaults(config);
+
+    return {
+        label: {
+            ...applyScaledTypeRamp(designSystem, "t7"),
+            display: "inline-block",
+            color: neutralForegroundRest,
+            padding: "0",
+        },
+        label__hidden: {
+            ...applyScreenReader(),
+        },
+    };
 };
 
 export default styles;

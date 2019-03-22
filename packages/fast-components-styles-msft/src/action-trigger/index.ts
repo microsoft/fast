@@ -1,17 +1,9 @@
-import {
-    ComponentStyles,
-    ComponentStyleSheet,
-    CSSRules,
-} from "@microsoft/fast-jss-manager";
+import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import {
     ActionTriggerClassNameContract,
     ButtonClassNameContract,
 } from "@microsoft/fast-components-class-name-contracts-msft";
-import {
-    applyLocalizedProperty,
-    Direction,
-    localizeSpacing,
-} from "@microsoft/fast-jss-utilities";
+import { applyLocalizedProperty, Direction } from "@microsoft/fast-jss-utilities";
 import { DesignSystem, withDesignSystemDefaults } from "../design-system/index";
 import {
     accentForegroundActive,
@@ -20,6 +12,7 @@ import {
     accentForegroundRest,
     neutralForegroundRest,
 } from "../utilities/color";
+import { horizontalSpacing } from "../utilities/density";
 
 // Since MSFT button is already styled, we need to override in this way to alter button classes
 export const actionTriggerButtonOverrides: ComponentStyles<
@@ -50,7 +43,12 @@ const styles: ComponentStyles<ActionTriggerClassNameContract, DesignSystem> = (
             display: "inline-block",
             position: "relative",
             maxWidth: "16px",
-            [applyLocalizedProperty("marginRight", "marginLeft", direction)]: "6px",
+            flexShrink: "0",
+            [applyLocalizedProperty(
+                "marginRight",
+                "marginLeft",
+                direction
+            )]: horizontalSpacing(),
         },
         actionTrigger__primary: {
             "& $actionTrigger_glyph": {

@@ -10,8 +10,7 @@ import {
     Direction,
     toPx,
 } from "@microsoft/fast-jss-utilities";
-import { applyTypeRampConfig } from "../utilities/typography";
-import { density } from "../utilities/density";
+import { height, heightNumber, horizontalSpacing } from "../utilities/density";
 import {
     accentFillRest,
     neutralFocus,
@@ -20,12 +19,15 @@ import {
     neutralForegroundRest,
 } from "../utilities/color";
 import { PivotClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
+import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
+import { applyScaledTypeRamp } from "../utilities/typography";
 
 const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<PivotClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const direction: Direction = designSystem.direction;
+    const activeIndicatorHeight: number = 3;
 
     return {
         pivot: {
@@ -39,17 +41,16 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
             boxSizing: "border-box",
         },
         pivot_tab: {
-            minHeight: density(32),
-            padding: "0 12px",
+            height: height(),
+            padding: `0 ${horizontalSpacing(2)(designSystem)}`,
             whiteSpace: "nowrap",
             display: "flex",
-            border: "2px solid",
-            borderColor: "transparent",
+            ...applyFocusPlaceholderBorder(designSystem),
             alignItems: "center",
             boxSizing: "border-box",
             userSelect: "none",
             color: neutralForegroundRest,
-            borderRadius: toPx(designSystem.cornerRadius),
+            ...applyCornerRadius(designSystem),
             "&:hover": {
                 color: neutralForegroundHover,
             },
@@ -63,16 +64,22 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
         pivot_tab__active: {},
         pivot_tabContent: {
             transition: "all 0.2s ease-in-out",
-            ...applyTypeRampConfig("t7"),
+            ...applyScaledTypeRamp(designSystem, "t7"),
+            position: "relative",
+            top: "-2px",
         },
         pivot_activeIndicator: {
             position: "absolute",
-            borderRadius: toPx(designSystem.cornerRadius),
-            top: density(27),
+            ...applyCornerRadius(designSystem),
+            top: toPx(
+                heightNumber(1)(designSystem) -
+                    activeIndicatorHeight -
+                    designSystem.focusOutlineWidth
+            ),
             left: "-10px",
             transition: "0.2s ease-in-out",
             width: "20px",
-            height: "3px",
+            height: toPx(activeIndicatorHeight),
             display: "block",
             background: accentFillRest,
         },
