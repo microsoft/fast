@@ -84,7 +84,7 @@ export const typeRamp: TypeRamp = {
 /**
  * Scales a typeramp ID by density
  */
-function scaleTyperampId(key: keyof TypeRamp): DesignSystemResolver<keyof TypeRamp> {
+function scaleTypeRampId(key: keyof TypeRamp): DesignSystemResolver<keyof TypeRamp> {
     return ensureDesignSystemDefaults(
         (designSystem: DesignSystem): keyof TypeRamp => {
             const category: DensityCategory = getDensityCategory(designSystem);
@@ -96,7 +96,7 @@ function scaleTyperampId(key: keyof TypeRamp): DesignSystemResolver<keyof TypeRa
                         : 0;
             const typeConfigNumber: number = parseInt(key.replace("t", ""), 10);
             const size: number = typeConfigNumber - densityOffset;
-            return sanitizeTypeRampID("t".concat(size.toString()) as keyof TypeRamp);
+            return sanitizeTypeRampId("t".concat(size.toString()) as keyof TypeRamp);
         }
     );
 }
@@ -104,7 +104,7 @@ function scaleTyperampId(key: keyof TypeRamp): DesignSystemResolver<keyof TypeRa
 /*
  * Ensures that a TypeRamp key is in the TypeRamp
  */
-function sanitizeTypeRampID(key: keyof TypeRamp): keyof TypeRamp {
+function sanitizeTypeRampId(key: keyof TypeRamp): keyof TypeRamp {
     return typeRamp.hasOwnProperty(key) ? key : "t7";
 }
 
@@ -120,14 +120,14 @@ export function applyTypeRampConfig(typeConfig: keyof TypeRamp): CSSRules<Design
  * Retrieves the font-size from a TypeRamp ID
  */
 export function applyFontSize(key: keyof TypeRamp): string {
-    return toPx(typeRamp[sanitizeTypeRampID(key)].fontSize);
+    return toPx(typeRamp[sanitizeTypeRampId(key)].fontSize);
 }
 
 /**
  * Retrieves the line-height from a TypeRamp ID
  */
 export function applyLineHeight(key: keyof TypeRamp): string {
-    return toPx(typeRamp[sanitizeTypeRampID(key)].lineHeight);
+    return toPx(typeRamp[sanitizeTypeRampId(key)].lineHeight);
 }
 
 /**
@@ -135,7 +135,7 @@ export function applyLineHeight(key: keyof TypeRamp): string {
  */
 export function applyScaledFontSize(key: keyof TypeRamp): DesignSystemResolver<string> {
     return (designSystem: DesignSystem): string => {
-        return applyFontSize(scaleTyperampId(key)(designSystem));
+        return applyFontSize(scaleTypeRampId(key)(designSystem));
     };
 }
 
@@ -144,7 +144,7 @@ export function applyScaledFontSize(key: keyof TypeRamp): DesignSystemResolver<s
  */
 export function applyScaledLineHeight(key: keyof TypeRamp): DesignSystemResolver<string> {
     return (designSystem: DesignSystem): string => {
-        return applyLineHeight(scaleTyperampId(key)(designSystem));
+        return applyLineHeight(scaleTypeRampId(key)(designSystem));
     };
 }
 
