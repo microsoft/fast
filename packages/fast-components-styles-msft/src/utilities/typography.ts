@@ -1,8 +1,8 @@
 import { toPx } from "@microsoft/fast-jss-utilities";
-import { Breakpoints } from "../utilities/breakpoints";
 import { KeyOfToType } from "./keyof-to-type";
 import { CSSRules } from "@microsoft/fast-jss-manager";
-import { DesignSystem } from "../design-system";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
+import { DensityCategory, getDensityCategory } from "./density";
 
 /**
  * The type ramp item config
@@ -50,8 +50,8 @@ export const typeRamp: TypeRamp = {
         lineHeight: 44,
     },
     t4: {
-        fontSize: 24,
-        lineHeight: 32,
+        fontSize: 28,
+        lineHeight: 36,
     },
     t5: {
         fontSize: 20,
@@ -71,30 +71,9 @@ export const typeRamp: TypeRamp = {
     },
     t9: {
         fontSize: 10,
-        lineHeight: 12,
+        lineHeight: 16,
     },
 };
-
-/**
- * Applies a type ramp config instance based on viewport
- * @deprecated
- */
-export function applyType(
-    typeConfig: keyof TypeRamp,
-    viewport?: keyof KeyOfToType<Breakpoints, TypeRampItemConfig>
-): CSSRules<DesignSystem> {
-    if (viewport) {
-        /* tslint:disable-next-line:no-console */
-        console.warn(
-            "The applyType function has been deprecated. Please use applyTypeRampConfig instead"
-        );
-    }
-
-    return {
-        fontSize: toPx(typeRamp[typeConfig].fontSize),
-        lineHeight: toPx(typeRamp[typeConfig].lineHeight),
-    };
-}
 
 /**
  * Takes a param of type ramp key (string) and returns a type ramp configuration
@@ -104,4 +83,33 @@ export function applyTypeRampConfig(typeConfig: keyof TypeRamp): CSSRules<Design
         fontSize: toPx(typeRamp[typeConfig].fontSize),
         lineHeight: toPx(typeRamp[typeConfig].lineHeight),
     };
+}
+
+/**
+ * Adds the font size and line height attributes for the type ramp, scaled according to the design system density config.
+ *
+ * @param config The design system config.
+ * @param typeConfig The default type ramp config at base density.
+ */
+export function applyScaledTypeRamp(
+    config: DesignSystem,
+    typeConfig: keyof TypeRamp
+): CSSRules<DesignSystem> {
+    const designSystem: DesignSystem = withDesignSystemDefaults(config);
+    const category: DensityCategory = getDensityCategory(designSystem);
+    const densityOffset: number =
+        category === DensityCategory.compact
+            ? -1
+            : category === DensityCategory.spacious
+                ? 1
+                : 0;
+    const typeConfigNumber: number = parseInt(typeConfig.replace("t", ""), 10);
+    const size: number = typeConfigNumber - densityOffset;
+    const key: keyof TypeRamp | string = "t" + size;
+
+    if (key in typeRamp) {
+        return applyTypeRampConfig(key as keyof TypeRamp);
+    } else {
+        return applyTypeRampConfig(typeConfig);
+    }
 }

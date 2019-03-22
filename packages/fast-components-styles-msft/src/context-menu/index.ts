@@ -1,11 +1,9 @@
-import designSystemDefaults, {
-    DesignSystem,
-    withDesignSystemDefaults,
-} from "../design-system";
-import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { ContextMenuClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
-import { elevation, ElevationMultiplier } from "../utilities/elevation";
+import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { toPx } from "@microsoft/fast-jss-utilities";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
+import { applyCornerRadius } from "../utilities/border";
+import { elevation, ElevationMultiplier } from "../utilities/elevation";
 
 const styles: ComponentStyles<ContextMenuClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -14,13 +12,13 @@ const styles: ComponentStyles<ContextMenuClassNameContract, DesignSystem> = (
 
     return {
         contextMenu: {
-            ...elevation(ElevationMultiplier.e11, "#000")(designSystem),
+            background: designSystem.backgroundColor,
+            ...applyCornerRadius(designSystem, true),
+            ...elevation(ElevationMultiplier.e11)(designSystem),
             margin: "0",
-            padding: "4px 0",
+            padding: `${toPx(designSystem.designUnit)} 0`,
             maxWidth: "368px",
             minWidth: "64px",
-            background: designSystem.backgroundColor,
-            borderRadius: toPx(designSystem.cornerRadius * 2),
             transition: "all 0.2s ease-in-out",
         },
     };

@@ -1,10 +1,7 @@
-import designSystemDefaults, {
-    DesignSystem,
-    withDesignSystemDefaults,
-} from "../design-system";
-import { ComponentStyles } from "@microsoft/fast-jss-manager";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
+import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { ContextMenuItemClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import { density } from "../utilities/density";
+import { height, horizontalSpacingNumber } from "../utilities/density";
 import {
     neutralFillStealthActive,
     neutralFillStealthHover,
@@ -13,52 +10,64 @@ import {
     neutralForegroundHover,
     neutralForegroundRest,
 } from "../utilities/color";
-import { applyFocusVisible } from "@microsoft/fast-jss-utilities";
-import { applyTypeRampConfig } from "../utilities/typography";
-import { toPx } from "@microsoft/fast-jss-utilities";
+import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
+import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
+import { applyCursorDefault } from "../utilities/cursor";
+import { applyDisabledState } from "../utilities/disabled";
+import { applyScaledTypeRamp } from "../utilities/typography";
 
-const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = {
-    contextMenuItem: {
-        listStyleType: "none",
-        height: density(32),
-        display: "grid",
-        boxSizing: "border-box",
-        gridTemplateColumns: "40px auto 40px",
-        gridTemplateRows: "auto",
-        alignItems: "center",
-        padding: "0",
-        margin: "0 4px",
-        color: neutralForegroundRest,
-        whiteSpace: "nowrap",
-        overflow: "hidden",
-        cursor: "default",
-        transition: "all 0.2s ease-in-out",
-        ...applyTypeRampConfig("t7"),
-        borderRadius: (config: DesignSystem): string => {
-            const designSystem: DesignSystem = withDesignSystemDefaults(config);
+const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = (
+    config: DesignSystem
+): ComponentStyleSheet<ContextMenuItemClassNameContract, DesignSystem> => {
+    const designSystem: DesignSystem = withDesignSystemDefaults(config);
+    const glyphWidth: number = 16;
+    const padding: number =
+        horizontalSpacingNumber(-2)(designSystem) +
+        glyphWidth +
+        horizontalSpacingNumber()(designSystem);
 
-            return toPx(designSystem.cornerRadius);
+    return {
+        contextMenuItem: {
+            listStyleType: "none",
+            boxSizing: "border-box",
+            height: height(),
+            display: "grid",
+            gridTemplateColumns: `${toPx(padding)} auto ${toPx(padding)}`,
+            gridTemplateRows: "auto",
+            justifyItems: "center",
+            alignItems: "center",
+            padding: "0",
+            margin: `0 ${toPx(designSystem.designUnit)}`,
+            color: neutralForegroundRest,
+            fill: neutralForegroundRest,
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            ...applyCursorDefault(),
+            ...applyScaledTypeRamp(designSystem, "t7"),
+            ...applyCornerRadius(designSystem),
+            ...applyFocusPlaceholderBorder(designSystem),
+            ...applyFocusVisible<DesignSystem>({
+                borderColor: neutralFocus,
+            }),
+            "&:hover": {
+                color: neutralForegroundHover,
+                background: neutralFillStealthHover,
+            },
+            "&:active": {
+                color: neutralForegroundActive,
+                background: neutralFillStealthActive,
+            },
         },
-        border: "2px solid transparent",
-        ...applyFocusVisible<DesignSystem>({
-            borderColor: neutralFocus,
-        }),
-        "&:hover": {
-            background: neutralFillStealthHover,
+        contextMenuItem_contentRegion: {
+            gridColumnStart: "2",
+            justifySelf: "start",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
         },
-        "&:active": {
-            background: neutralFillStealthActive,
+        contextMenuItem__disabled: {
+            ...applyDisabledState(designSystem),
         },
-    },
-    contextMenuItem_contentRegion: {
-        gridColumnStart: "2",
-        overflow: "hidden",
-        textOverflow: "ellipsis",
-    },
-    contextMenuItem__disabled: {
-        cursor: "not-allowed",
-        opacity: "0.3",
-    },
+    };
 };
 
 export default styles;

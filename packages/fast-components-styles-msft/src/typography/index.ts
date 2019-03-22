@@ -3,9 +3,11 @@ import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { TypographyClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyTypeRampConfig } from "../utilities/typography";
 import { neutralForegroundRest } from "../utilities/color";
+import { applyCursorDefault } from "../utilities/cursor";
 
 const styles: ComponentStyles<TypographyClassNameContract, DesignSystem> = {
     typography: {
+        ...applyCursorDefault(),
         color: neutralForegroundRest,
         marginTop: "0",
         marginBottom: "0",
