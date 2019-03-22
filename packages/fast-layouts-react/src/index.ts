@@ -5,3 +5,4 @@ export * from "./grid";
 export * from "./page";
 export * from "./pane";
 export * from "./row";
+export * from "./utilities";
