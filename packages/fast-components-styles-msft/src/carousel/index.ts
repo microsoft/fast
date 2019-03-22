@@ -67,7 +67,7 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
                 borderRadius: "40px",
                 content: "''",
                 display: "block",
-                height: "4px",
+                height: toPx(designSystem.designUnit),
                 width: "32px",
                 transition: "all 0.05s ease-in-out",
             },

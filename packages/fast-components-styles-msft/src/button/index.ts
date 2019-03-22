@@ -35,7 +35,7 @@ import {
 import { applyCursorPointer } from "../utilities/cursor";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
 import { applyDisabledState } from "../utilities/disabled";
-import { scaleApplyTypeRampConfigWithDensity } from "../utilities/typography";
+import { applyScaledTypeRamp } from "../utilities/typography";
 
 function applyTransparentBackplateStyles(
     designSystem: DesignSystem
@@ -88,7 +88,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
 
     return {
         button: {
-            ...scaleApplyTypeRampConfigWithDensity(designSystem, "t7"),
+            ...applyScaledTypeRamp(designSystem, "t7"),
             fontFamily: "inherit",
             ...applyCursorPointer(),
             boxSizing: "border-box",

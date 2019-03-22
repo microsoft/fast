@@ -16,14 +16,14 @@ import {
 } from "../utilities/color";
 import { applyCornerRadius } from "../utilities/border";
 import { applyDisabledState } from "../utilities/disabled";
-import { scaleApplyTypeRampConfigWithDensity } from "../utilities/typography";
+import { applyScaledTypeRamp } from "../utilities/typography";
 
 /**
  * Shared input field styles
  */
 export function inputFieldStyles(designSystem: DesignSystem): CSSRules<{}> {
     return {
-        ...scaleApplyTypeRampConfigWithDensity(designSystem, "t7"),
+        ...applyScaledTypeRamp(designSystem, "t7"),
         background: neutralFillInputRest,
         border: `${toPx(
             designSystem.outlinePatternOutlineWidth

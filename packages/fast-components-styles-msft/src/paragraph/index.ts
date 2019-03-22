@@ -1,5 +1,5 @@
 import { DesignSystem } from "../design-system";
-import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
+import { ComponentStyles } from "@microsoft/fast-jss-manager";
 import { ParagraphClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { fontWeight } from "../utilities/fonts";
 

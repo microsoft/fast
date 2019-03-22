@@ -2,11 +2,7 @@ import { toPx } from "@microsoft/fast-jss-utilities";
 import { Breakpoints } from "../utilities/breakpoints";
 import { KeyOfToType } from "./keyof-to-type";
 import { CSSRules } from "@microsoft/fast-jss-manager";
-import {
-    DesignSystem,
-    ensureDesignSystemDefaults,
-    withDesignSystemDefaults,
-} from "../design-system";
+import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { DensityCategory, getDensityCategory } from "./density";
 
 /**
@@ -117,7 +113,7 @@ export function applyTypeRampConfig(typeConfig: keyof TypeRamp): CSSRules<Design
  * @param config The design system config.
  * @param typeConfig The default type ramp config at base density.
  */
-export function scaleApplyTypeRampConfigWithDensity(
+export function applyScaledTypeRamp(
     config: DesignSystem,
     typeConfig: keyof TypeRamp
 ): CSSRules<DesignSystem> {

@@ -20,13 +20,14 @@ import {
 } from "../utilities/color";
 import { PivotClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
-import { scaleApplyTypeRampConfigWithDensity } from "../utilities/typography";
+import { applyScaledTypeRamp } from "../utilities/typography";
 
 const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<PivotClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
     const direction: Direction = designSystem.direction;
+    const activeIndicatorHeight: number = 3;
 
     return {
         pivot: {
@@ -63,18 +64,22 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
         pivot_tab__active: {},
         pivot_tabContent: {
             transition: "all 0.2s ease-in-out",
-            ...scaleApplyTypeRampConfigWithDensity(designSystem, "t7"),
+            ...applyScaledTypeRamp(designSystem, "t7"),
             position: "relative",
             top: "-2px",
         },
         pivot_activeIndicator: {
             position: "absolute",
             ...applyCornerRadius(designSystem),
-            top: toPx(heightNumber(1)(designSystem) - 3 - 2) /* height & padding */,
+            top: toPx(
+                heightNumber(1)(designSystem) -
+                    activeIndicatorHeight -
+                    designSystem.focusOutlineWidth
+            ),
             left: "-10px",
             transition: "0.2s ease-in-out",
             width: "20px",
-            height: "3px",
+            height: toPx(activeIndicatorHeight),
             display: "block",
             background: accentFillRest,
         },

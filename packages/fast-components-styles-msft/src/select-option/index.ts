@@ -1,5 +1,5 @@
+import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
 import { DesignSystem, withDesignSystemDefaults } from "../design-system";
-import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { SelectOptionClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import { height, horizontalSpacing } from "../utilities/density";
 import {
@@ -9,16 +9,16 @@ import {
     neutralFocus,
     neutralForegroundRest,
 } from "../utilities/color";
-import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
+import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import {
     applyLocalizedProperty,
     Direction,
     ellipsis,
 } from "@microsoft/fast-jss-utilities";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
-import { applyCursorPointer } from "../utilities/cursor";
+import { applyCursorDefault, applyCursorPointer } from "../utilities/cursor";
 import { applyDisabledState } from "../utilities/disabled";
-import { scaleApplyTypeRampConfigWithDensity } from "../utilities/typography";
+import { applyScaledTypeRamp } from "../utilities/typography";
 
 const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -41,8 +41,8 @@ const styles: ComponentStyles<SelectOptionClassNameContract, DesignSystem> = (
             fill: neutralForegroundRest,
             whiteSpace: "nowrap",
             overflow: "hidden",
-            cursor: "default",
-            ...scaleApplyTypeRampConfigWithDensity(designSystem, "t7"),
+            ...applyCursorDefault(),
+            ...applyScaledTypeRamp(designSystem, "t7"),
             background: neutralFillStealthRest,
             ...applyCursorPointer(),
             ...applyCornerRadius(designSystem),

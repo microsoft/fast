@@ -3,7 +3,7 @@ import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manage
 import { LabelClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyScreenReader } from "@microsoft/fast-jss-utilities";
 import { neutralForegroundRest } from "../utilities/color";
-import { scaleApplyTypeRampConfigWithDensity } from "../utilities/typography";
+import { applyScaledTypeRamp } from "../utilities/typography";
 
 const styles: ComponentStyles<LabelClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -12,7 +12,7 @@ const styles: ComponentStyles<LabelClassNameContract, DesignSystem> = (
 
     return {
         label: {
-            ...scaleApplyTypeRampConfigWithDensity(designSystem, "t7"),
+            ...applyScaledTypeRamp(designSystem, "t7"),
             display: "inline-block",
             color: neutralForegroundRest,
             padding: "0",

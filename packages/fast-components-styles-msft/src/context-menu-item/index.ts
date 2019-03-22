@@ -12,16 +12,18 @@ import {
 } from "../utilities/color";
 import { applyFocusVisible, toPx } from "@microsoft/fast-jss-utilities";
 import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
+import { applyCursorDefault } from "../utilities/cursor";
 import { applyDisabledState } from "../utilities/disabled";
-import { scaleApplyTypeRampConfigWithDensity } from "../utilities/typography";
+import { applyScaledTypeRamp } from "../utilities/typography";
 
 const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<ContextMenuItemClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
+    const glyphWidth: number = 16;
     const padding: number =
         horizontalSpacingNumber(-2)(designSystem) +
-        16 +
+        glyphWidth +
         horizontalSpacingNumber()(designSystem);
 
     return {
@@ -35,13 +37,13 @@ const styles: ComponentStyles<ContextMenuItemClassNameContract, DesignSystem> = 
             justifyItems: "center",
             alignItems: "center",
             padding: "0",
-            margin: "0 4px",
+            margin: `0 ${toPx(designSystem.designUnit)}`,
             color: neutralForegroundRest,
             fill: neutralForegroundRest,
             whiteSpace: "nowrap",
             overflow: "hidden",
-            cursor: "default",
-            ...scaleApplyTypeRampConfigWithDensity(designSystem, "t7"),
+            ...applyCursorDefault(),
+            ...applyScaledTypeRamp(designSystem, "t7"),
             ...applyCornerRadius(designSystem),
             ...applyFocusPlaceholderBorder(designSystem),
             ...applyFocusVisible<DesignSystem>({

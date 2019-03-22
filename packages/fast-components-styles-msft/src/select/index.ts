@@ -1,5 +1,6 @@
 import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
+import { toPx } from "@microsoft/fast-jss-utilities";
 import {
     ButtonClassNameContract,
     SelectClassNameContract,
@@ -53,7 +54,7 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = (
             position: "absolute",
             width: "100%",
             margin: "0",
-            padding: "4px 0",
+            padding: `${toPx(designSystem.designUnit)} 0`,
             maxWidth: "374px",
             minWidth: "276px",
             maxHeight: "328px",

@@ -12,7 +12,7 @@ import { Swatch } from "../utilities/color/palette";
 import { applyCursorDefault } from "../utilities/cursor";
 import { horizontalSpacing } from "../utilities/density";
 import { fontWeight } from "../utilities/fonts";
-import { scaleApplyTypeRampConfigWithDensity } from "../utilities/typography";
+import { applyScaledTypeRamp } from "../utilities/typography";
 
 function backplateStyle(designSystem: DesignSystem): CSSRules<DesignSystem> {
     return {
@@ -33,7 +33,7 @@ const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
 
     return {
         badge: {
-            ...scaleApplyTypeRampConfigWithDensity(designSystem, "t7"),
+            ...applyScaledTypeRamp(designSystem, "t7"),
             ...ellipsis(),
             overflow: "hidden",
             ...applyCursorDefault(),
@@ -50,7 +50,7 @@ const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
             color: accentForegroundCut((): Swatch => filledBackground),
         },
         badge__small: {
-            ...scaleApplyTypeRampConfigWithDensity(designSystem, "t8"),
+            ...applyScaledTypeRamp(designSystem, "t8"),
             lineHeight: "13px",
             height: "16px",
             "&$badge__filled": {

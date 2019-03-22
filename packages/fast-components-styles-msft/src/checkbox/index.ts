@@ -25,7 +25,7 @@ import {
     horizontalSpacing,
 } from "../utilities/density";
 import { applyDisabledState } from "../utilities/disabled";
-import { scaleApplyTypeRampConfigWithDensity } from "../utilities/typography";
+import { applyScaledTypeRamp } from "../utilities/typography";
 
 const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
     config: DesignSystem
@@ -112,7 +112,7 @@ const styles: ComponentStyles<CheckboxClassNameContract, DesignSystem> = (
         },
         checkbox_label: {
             color: neutralForegroundRest,
-            ...scaleApplyTypeRampConfigWithDensity(designSystem, "t7"),
+            ...applyScaledTypeRamp(designSystem, "t7"),
         },
         checkbox__checked: {
             "& $checkbox_stateIndicator": {
