@@ -4,6 +4,7 @@
     "description": "A hypertext component's schema definition.",
     "type": "object",
     "id": "@microsoft/fast-components-react-base/hypertext",
+    "formPluginId": "@microsoft/fast-components-react-base/hypertext",
     "properties": {
         "href": {
             "title": "HTML href attribute",
@@ -14,6 +15,7 @@
         "children": {
             "title": "Children",
             "type": "children",
+            "formPluginId": "@microsoft/fast-components-react-base/hypertext/children",
             "defaults": [
                 "text"
             ]

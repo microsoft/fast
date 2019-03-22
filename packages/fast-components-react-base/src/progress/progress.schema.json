@@ -4,6 +4,7 @@
     "description": "A progress component's schema definition.",
     "type": "object",
     "id": "@microsoft/fast-components-react-base/progress",
+    "formPluginId": "@microsoft/fast-components-react-base/progress",
     "properties": {
         "value": {
             "title": "HTML value attribute",
@@ -21,7 +22,8 @@
     "reactProperties": {
         "children": {
             "title": "Children",
-            "type": "children"
+            "type": "children",
+            "formPluginId": "@microsoft/fast-components-react-base/progress/children"
         }
     }
 }
