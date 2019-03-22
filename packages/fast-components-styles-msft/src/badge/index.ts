@@ -8,7 +8,7 @@ import { ellipsis, toPx } from "@microsoft/fast-jss-utilities";
 import { DesignSystem, withDesignSystemDefaults } from "../design-system/index";
 import { applyCornerRadius } from "../utilities/border";
 import { accentForegroundCut, neutralForegroundRest } from "../utilities/color";
-import { Swatch } from "../utilities/color/palette";
+import { Swatch } from "../utilities/color/common";
 import { applyCursorDefault } from "../utilities/cursor";
 import { horizontalSpacing } from "../utilities/density";
 import { fontWeight } from "../utilities/fonts";
