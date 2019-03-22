@@ -62,19 +62,19 @@ const styles: ComponentStyles<CarouselClassNameContract, DesignSystem> = (
                 outline: "none",
             },
             "&::before": {
-                opacity: "0.2",
+                opacity: "0.45",
                 border: "1px solid transparent",
                 borderRadius: "40px",
                 content: "''",
                 display: "block",
-                height: "4px",
+                height: toPx(designSystem.designUnit),
                 width: "32px",
                 transition: "all 0.05s ease-in-out",
             },
             "&:not($carousel_sequenceIndicator__active)": {
                 "&:hover": {
                     "&::before": {
-                        opacity: "0.5",
+                        opacity: "0.9",
                     },
                 },
             },

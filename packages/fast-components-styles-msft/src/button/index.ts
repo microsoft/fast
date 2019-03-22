@@ -1,4 +1,3 @@
-import { applyTypeRampConfig } from "../utilities/typography";
 import { ButtonClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
     applyFocusVisible,
@@ -12,9 +11,7 @@ import {
     ComponentStyleSheet,
     CSSRules,
 } from "@microsoft/fast-jss-manager";
-import { density } from "../utilities/density";
-import { fontWeight } from "../utilities/fonts";
-import { defaultHeight, maxHeight, minHeight } from "../utilities/height";
+import { height, horizontalSpacing } from "../utilities/density";
 import {
     accentFillActive,
     accentFillHover,
@@ -35,6 +32,10 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../utilities/color";
+import { applyCursorPointer } from "../utilities/cursor";
+import { applyCornerRadius, applyFocusPlaceholderBorder } from "../utilities/border";
+import { applyDisabledState } from "../utilities/disabled";
+import { applyScaledTypeRamp } from "../utilities/typography";
 
 function applyTransparentBackplateStyles(
     designSystem: DesignSystem
@@ -51,18 +52,23 @@ function applyTransparentBackplateStyles(
             },
         }),
         // Underline
-        "&:active $button_contentRegion::before, &:hover $button_contentRegion::before": {
+        "&:hover $button_contentRegion::before": {
             background: accentForegroundHover,
+        },
+        "&:active $button_contentRegion::before": {
+            background: accentForegroundActive,
         },
         "&$button__disabled, &$button__disabled $button_contentRegion::before": {
             ...applyTransparentBackground(),
         },
-        "&:hover": {
+        "&:hover:enabled": {
             color: accentForegroundHover,
+            fill: accentForegroundHover,
             ...applyTransparentBackground(),
         },
-        "&:active": {
+        "&:active:enabled": {
             color: accentForegroundActive,
+            fill: accentForegroundActive,
             ...applyTransparentBackground(),
         },
     };
@@ -82,22 +88,21 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
 
     return {
         button: {
-            ...applyTypeRampConfig("t7"),
+            ...applyScaledTypeRamp(designSystem, "t7"),
             fontFamily: "inherit",
-            fontWeight: `${fontWeight.semibold}`,
+            ...applyCursorPointer(),
             boxSizing: "border-box",
             maxWidth: "374px",
-            minWidth: "120px",
-            padding: "0 12px",
+            minWidth: designSystem.density <= -2 ? "100px" : "120px",
+            padding: `0 ${horizontalSpacing(designSystem.focusOutlineWidth)(
+                designSystem
+            )}`,
             display: "inline-flex",
             justifyContent: "center",
             alignItems: "center",
-            height: density(defaultHeight)(designSystem),
-            minHeight: toPx(minHeight),
-            maxHeight: toPx(maxHeight),
-            border: "2px solid",
-            borderColor: "transparent",
-            borderRadius: "2px",
+            height: height(),
+            ...applyFocusPlaceholderBorder(designSystem),
+            ...applyCornerRadius(designSystem),
             lineHeight: "1",
             overflow: "hidden",
             textDecoration: "none",
@@ -106,10 +111,10 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             color: neutralForegroundRest,
             fill: neutralForegroundRest,
             background: neutralFillRest,
-            "&:hover": {
+            "&:hover:enabled": {
                 background: neutralFillHover,
             },
-            "&:active": {
+            "&:active:enabled": {
                 background: neutralFillActive,
             },
             ...applyFocusVisible<DesignSystem>({
@@ -123,10 +128,10 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             color: accentForegroundCut,
             fill: accentForegroundCut,
             background: accentFillRest,
-            "&:hover": {
+            "&:hover:enabled": {
                 background: accentFillHover,
             },
-            "&:active": {
+            "&:active:enabled": {
                 background: accentFillActive,
             },
             ...applyFocusVisible<DesignSystem>({
@@ -138,17 +143,29 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
         },
         button__outline: {
             background: neutralFillStealthRest,
-            border: `1px solid ${neutralOutlineRest(designSystem)}`,
-            "&:hover": {
+            border: `${toPx(
+                designSystem.outlinePatternOutlineWidth
+            )} solid ${neutralOutlineRest(designSystem)}`,
+            padding: `0 ${horizontalSpacing(designSystem.outlinePatternOutlineWidth)(
+                designSystem
+            )}`,
+            "&:hover:enabled": {
                 background: neutralFillStealthHover,
-                border: `1px solid ${neutralOutlineHover(designSystem)}`,
+                border: `${toPx(
+                    designSystem.outlinePatternOutlineWidth
+                )} solid ${neutralOutlineHover(designSystem)}`,
             },
-            "&:active": {
+            "&:active:enabled": {
                 background: neutralFillStealthActive,
-                border: `1px solid ${neutralOutlineActive(designSystem)}`,
+                border: `${toPx(
+                    designSystem.outlinePatternOutlineWidth
+                )} solid ${neutralOutlineActive(designSystem)}`,
             },
             ...applyFocusVisible<DesignSystem>({
-                boxShadow: `0 0 0 1px ${neutralFocus(designSystem)} inset`,
+                boxShadow: `0 0 0 ${toPx(
+                    designSystem.focusOutlineWidth -
+                        designSystem.outlinePatternOutlineWidth
+                )} ${neutralFocus(designSystem)} inset`,
                 borderColor: neutralFocus,
             }),
         },
@@ -158,7 +175,9 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
         button__justified: {
             ...applyTransparentBackplateStyles(designSystem),
             minWidth: "74px",
-            [applyLocalizedProperty("paddingLeft", "paddingRight", direction)]: "0",
+            paddingLeft: "0",
+            paddingRight: "0",
+            borderWidth: "0",
             justifyContent: "flex-start",
         },
         button_contentRegion: {
@@ -166,7 +185,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             "&::before": {
                 content: "''",
                 display: "block",
-                height: "2px",
+                height: toPx(designSystem.focusOutlineWidth),
                 position: "absolute",
                 bottom: "-3px",
                 width: "100%",
@@ -174,8 +193,7 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
             },
         },
         button__disabled: {
-            cursor: "not-allowed",
-            opacity: "0.3",
+            ...applyDisabledState(designSystem),
         },
         button_beforeContent: {},
         button_afterContent: {},

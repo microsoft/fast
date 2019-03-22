@@ -1,45 +1,22 @@
+import { BadgeClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
 import {
     ComponentStyles,
     ComponentStyleSheet,
     CSSRules,
 } from "@microsoft/fast-jss-manager";
-import { BadgeClassNameContract } from "@microsoft/fast-components-class-name-contracts-msft";
-import {
-    applyLocalizedProperty,
-    Direction,
-    ellipsis,
-    localizeSpacing,
-    toPx,
-} from "@microsoft/fast-jss-utilities";
-import { accentForegroundCut, neutralForegroundRest } from "../utilities/color";
+import { ellipsis, toPx } from "@microsoft/fast-jss-utilities";
 import { DesignSystem, withDesignSystemDefaults } from "../design-system/index";
-import { applyTypeRampConfig } from "../utilities/typography";
+import { applyCornerRadius } from "../utilities/border";
+import { accentForegroundCut, neutralForegroundRest } from "../utilities/color";
+import { Swatch } from "../utilities/color/common";
+import { applyCursorDefault } from "../utilities/cursor";
+import { horizontalSpacing } from "../utilities/density";
 import { fontWeight } from "../utilities/fonts";
-
-function smallBadgeStyle(): CSSRules<DesignSystem> {
-    return {
-        ...applyTypeRampConfig("t8"),
-        padding: localizeSpacing(Direction.ltr)(`2px ${toPx(8)} 0 0`),
-        height: "17px",
-        "&$badge__filled": {
-            padding: "1px 8px 2px",
-        },
-    };
-}
-
-function largeBadgeStyle(direction: Direction): CSSRules<DesignSystem> {
-    return {
-        [applyLocalizedProperty("paddingRight", "paddingLeft", direction)]: "12px",
-        height: "20px",
-        "&$badge__filled": {
-            padding: "3px 12px",
-        },
-    };
-}
+import { applyScaledTypeRamp } from "../utilities/typography";
 
 function backplateStyle(designSystem: DesignSystem): CSSRules<DesignSystem> {
     return {
-        borderRadius: toPx(designSystem.cornerRadius),
+        ...applyCornerRadius(designSystem),
         fontWeight: `${fontWeight.normal}`,
     };
 }
@@ -48,15 +25,19 @@ const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<BadgeClassNameContract, DesignSystem> => {
     const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    const direction: Direction = designSystem.direction;
     // Badges do not switch color on theme change
     const filledBackground: string = "#FFD800";
+    const largeHeight: number =
+        (designSystem.baseHeightMultiplier + designSystem.density - 2) *
+        designSystem.designUnit;
 
     return {
         badge: {
-            ...applyTypeRampConfig("t7"),
+            ...applyScaledTypeRamp(designSystem, "t7"),
             ...ellipsis(),
             overflow: "hidden",
+            ...applyCursorDefault(),
+            boxSizing: "border-box",
             fontWeight: `${fontWeight.semibold}`,
             display: "inline-block",
             maxWidth: "215px",
@@ -66,13 +47,25 @@ const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
         badge__filled: {
             ...backplateStyle(designSystem),
             backgroundColor: filledBackground,
-            color: accentForegroundCut,
+            color: accentForegroundCut((): Swatch => filledBackground),
         },
         badge__small: {
-            ...smallBadgeStyle(),
+            ...applyScaledTypeRamp(designSystem, "t8"),
+            lineHeight: "13px",
+            height: "16px",
+            "&$badge__filled": {
+                padding: `1px ${toPx(
+                    designSystem.designUnit *
+                        (designSystem.baseHorizontalSpacingMultiplier - 1)
+                )}`,
+            },
         },
         badge__large: {
-            ...largeBadgeStyle(direction),
+            height: toPx(largeHeight),
+            lineHeight: toPx(largeHeight),
+            "&$badge__filled": {
+                padding: `0 ${horizontalSpacing()(designSystem)}`,
+            },
         },
     };
 };

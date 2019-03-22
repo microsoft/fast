@@ -1,17 +1,11 @@
 import { Direction } from "@microsoft/fast-web-utilities";
-import { withDefaults } from "@microsoft/fast-jss-utilities";
-import {
-    accentPaletteConfig,
-    neutralPaletteConfig,
-    white,
-} from "../utilities/color/color-constants";
-import {
-    ColorPalette,
-    ColorPaletteConfig,
-    ColorRGBA64,
-    parseColorHexRGB,
-} from "@microsoft/fast-colors";
+import { white } from "../utilities/color/color-constants";
+import { ColorPalette, ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
 import { Palette } from "../utilities/color/palette";
+import { TypeRamp } from "../utilities/typography";
+import { withDefaults } from "@microsoft/fast-jss-utilities";
+
+export type DensityOffset = -3 | -2 | -1 | 0 | 1 | 2 | 3;
 
 export interface DesignSystem {
     /**
@@ -41,14 +35,24 @@ export interface DesignSystem {
     contrast: number;
 
     /**
-     * The density multiplier
+     * The density offset, used with designUnit to calculate height and spacing.
      */
-    density: number;
+    density: DensityOffset;
 
     /**
-     * The grid-unit that UI dimensions are derived from
+     * The grid-unit that UI dimensions are derived from in pixels.
      */
     designUnit: number;
+
+    /**
+     * The number of designUnits used for component height at the base density.
+     */
+    baseHeightMultiplier: number;
+
+    /**
+     * The number of designUnits used for horizontal spacing at the base density.
+     */
+    baseHorizontalSpacingMultiplier: number;
 
     /**
      * The primary direction of the view.
@@ -56,20 +60,30 @@ export interface DesignSystem {
     direction: Direction;
 
     /**
-     * The value typically used for foreground elements, such as text
+     * The value typically used for foreground elements, such as text.
      * @deprecated
      */
     foregroundColor: string;
 
     /**
-     * The corner default radius applied to controls
+     * The corner default radius applied to controls.
      */
     cornerRadius?: number;
 
-    /*
-     * The width of the outline in pixels applied to outline components
+    /**
+     * The width of the outline in pixels applied to outline components.
      */
     outlinePatternOutlineWidth?: number;
+
+    /**
+     * The width of the outline for focus state in pixels.
+     */
+    focusOutlineWidth: number;
+
+    /**
+     * The opacity to use for disabled component state.
+     */
+    disabledOpacity: number;
 
     /**
      * Color swatch deltas for accent-fill recipe
@@ -142,11 +156,16 @@ function createColorPalette(baseColor: ColorRGBA64): Palette {
 const designSystemDefaults: DesignSystem = {
     backgroundColor: white,
     contrast: 0,
-    density: 1,
+    density: 0,
     designUnit: 4,
+    baseHeightMultiplier: 8,
+    baseHorizontalSpacingMultiplier: 3,
     direction: Direction.ltr,
     cornerRadius: 2,
     outlinePatternOutlineWidth: 1,
+    focusOutlineWidth: 2,
+    disabledOpacity: 0.3,
+
     neutralPalette: createColorPalette(new ColorRGBA64(0.5, 0.5, 0.5, 1)),
     accentPalette: createColorPalette(parseColorHexRGB("#0078D4")),
 
@@ -159,8 +178,8 @@ const designSystemDefaults: DesignSystem = {
     accentFillSelectedDelta: 12,
 
     accentForegroundRestDelta: 0,
-    accentForegroundHoverDelta: 1,
-    accentForegroundActiveDelta: 2,
+    accentForegroundHoverDelta: 4,
+    accentForegroundActiveDelta: 8,
 
     neutralFillRestDelta: 4,
     neutralFillHoverDelta: 3,

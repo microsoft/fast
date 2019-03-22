@@ -1,7 +1,6 @@
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { CSSRules } from "@microsoft/fast-jss-manager";
-import designSystemDefaults, { DesignSystem } from "../design-system";
-import { density } from "./density";
+import { DesignSystem } from "../design-system";
 import { black } from "../utilities/color/color-constants";
 import { parseColorString } from "../utilities/color/common";
 import { ColorRGBA64 } from "@microsoft/fast-colors";
@@ -102,12 +101,13 @@ export function elevationShadow(
             (shadowConfig.yOffsetMultiplier * elevationValue).toFixed(1)
         );
 
-        const xOffset: string = density(xValue)(config);
-        const yOffset: string = density(yValue)(config);
-        const blur: string = density(shadowConfig.blurMultiplier * elevationValue)(
-            config
-        );
-        const opacity: number = shadowConfig.opacity;
+        const xOffset: string = toPx(xValue);
+        const yOffset: string = toPx(yValue);
+        const blur: string = toPx(shadowConfig.blurMultiplier * elevationValue);
+        const opacity: number =
+            elevationValue > 24
+                ? shadowConfig.opacity
+                : Math.round(shadowConfig.opacity * 100 * 0.6) / 100;
 
         return `${xOffset} ${yOffset} ${blur} ${ColorRGBA64.fromObject(
             Object.assign(parseColorString(color).toObject(), { a: opacity })
