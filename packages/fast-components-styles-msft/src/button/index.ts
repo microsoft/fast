@@ -143,28 +143,25 @@ const styles: ComponentStyles<ButtonClassNameContract, DesignSystem> = (
         },
         button__outline: {
             background: neutralFillStealthRest,
-            border: `${toPx(
-                designSystem.outlinePatternOutlineWidth
-            )} solid ${neutralOutlineRest(designSystem)}`,
-            padding: `0 ${horizontalSpacing(designSystem.outlinePatternOutlineWidth)(
+            border: `${toPx(designSystem.outlineWidth)} solid ${neutralOutlineRest(
                 designSystem
             )}`,
+            padding: `0 ${horizontalSpacing(designSystem.outlineWidth)(designSystem)}`,
             "&:hover:enabled": {
                 background: neutralFillStealthHover,
-                border: `${toPx(
-                    designSystem.outlinePatternOutlineWidth
-                )} solid ${neutralOutlineHover(designSystem)}`,
+                border: `${toPx(designSystem.outlineWidth)} solid ${neutralOutlineHover(
+                    designSystem
+                )}`,
             },
             "&:active:enabled": {
                 background: neutralFillStealthActive,
-                border: `${toPx(
-                    designSystem.outlinePatternOutlineWidth
-                )} solid ${neutralOutlineActive(designSystem)}`,
+                border: `${toPx(designSystem.outlineWidth)} solid ${neutralOutlineActive(
+                    designSystem
+                )}`,
             },
             ...applyFocusVisible<DesignSystem>({
                 boxShadow: `0 0 0 ${toPx(
-                    designSystem.focusOutlineWidth -
-                        designSystem.outlinePatternOutlineWidth
+                    designSystem.focusOutlineWidth - designSystem.outlineWidth
                 )} ${neutralFocus(designSystem)} inset`,
                 borderColor: neutralFocus,
             }),

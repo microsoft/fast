@@ -61,9 +61,9 @@ const styles: ComponentStyles<RadioClassNameContract, DesignSystem> = (
             zIndex: "1",
             background: neutralFillInputRest,
             transition: "all 0.2s ease-in-out",
-            border: `${toPx(
-                designSystem.outlinePatternOutlineWidth
-            )} solid ${neutralOutlineRest(designSystem)}`,
+            border: `${toPx(designSystem.outlineWidth)} solid ${neutralOutlineRest(
+                designSystem
+            )}`,
             "&:hover": {
                 background: neutralFillInputHover,
                 borderColor: neutralOutlineHover,

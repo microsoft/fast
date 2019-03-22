@@ -24,12 +24,6 @@ export interface DesignSystem {
     accentPalette: Palette;
 
     /**
-     * The brand color used as color accents.
-     * @deprecated
-     */
-    brandColor: string;
-
-    /**
      * A number between 0 and 100 that represents the contrast scale value.
      */
     contrast: number;
@@ -60,12 +54,6 @@ export interface DesignSystem {
     direction: Direction;
 
     /**
-     * The value typically used for foreground elements, such as text.
-     * @deprecated
-     */
-    foregroundColor: string;
-
-    /**
      * The corner default radius applied to controls.
      */
     cornerRadius?: number;
@@ -73,7 +61,7 @@ export interface DesignSystem {
     /**
      * The width of the outline in pixels applied to outline components.
      */
-    outlinePatternOutlineWidth?: number;
+    outlineWidth?: number;
 
     /**
      * The width of the outline for focus state in pixels.
@@ -162,10 +150,9 @@ const designSystemDefaults: DesignSystem = {
     baseHorizontalSpacingMultiplier: 3,
     direction: Direction.ltr,
     cornerRadius: 2,
-    outlinePatternOutlineWidth: 1,
     focusOutlineWidth: 2,
     disabledOpacity: 0.3,
-
+    outlineWidth: 1,
     neutralPalette: createColorPalette(new ColorRGBA64(0.5, 0.5, 0.5, 1)),
     accentPalette: createColorPalette(parseColorHexRGB("#0078D4")),
 
@@ -204,10 +191,6 @@ const designSystemDefaults: DesignSystem = {
     neutralOutlineRestDelta: 12,
     neutralOutlineHoverDelta: 24,
     neutralOutlineActiveDelta: 18,
-
-    // @deprecated
-    foregroundColor: "#111",
-    brandColor: "#0078D4",
 };
 
 /**

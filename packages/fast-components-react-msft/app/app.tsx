@@ -1,20 +1,4 @@
-import * as examples from "./examples";
 import { ComponentStyles, CSSRules } from "@microsoft/fast-jss-manager";
-import manageJss, { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
-import {
-    DensityOffset,
-    DesignSystem,
-    DesignSystemDefaults,
-} from "@microsoft/fast-components-styles-msft";
-import { Plugin, PluginProps } from "@microsoft/fast-tooling-react";
-import {
-    HypertextClassNameContract,
-    ManagedClasses,
-} from "@microsoft/fast-components-class-name-contracts-base";
-import { glyphBuildingblocks } from "@microsoft/fast-glyphs-msft";
-import React from "react";
-import { Direction } from "@microsoft/fast-web-utilities";
-import AdditionalPropsPlugin from "./utilities/additional-props.plugin";
 import Site, {
     componentFactory,
     formChildFromExamplesFactory,
@@ -22,15 +6,22 @@ import Site, {
     ShellSlot,
     SiteCategory,
     SiteCategoryIcon,
-    SiteCategoryItem,
-    SiteMenu,
-    SiteMenuItem,
-    SiteProps,
     SiteTitle,
     SiteTitleBrand,
     Theme,
 } from "@microsoft/fast-development-site-react";
-import { Hypertext } from "../src/hypertext";
+import {
+    DensityOffset,
+    DesignSystem,
+    DesignSystemDefaults,
+} from "@microsoft/fast-components-styles-msft";
+import { Plugin, PluginProps } from "@microsoft/fast-tooling-react";
+import { HypertextClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
+import { glyphBuildingblocks } from "@microsoft/fast-glyphs-msft";
+import React from "react";
+import { Direction } from "@microsoft/fast-web-utilities";
+import AdditionalPropsPlugin from "./utilities/additional-props.plugin";
+import * as examples from "./examples";
 import ColorPicker, { ColorConfig } from "./color-picker";
 import reactHTMLElementExamples from "./components/react-html-element-child-option";
 import reactSVGElementExamples from "./components/svg-svg-element-child-option";
@@ -39,7 +30,14 @@ import carouselDarkImageContentExamples from "./components/carousel-dark-image-c
 import carouselLightImageContentExamples from "./components/carousel-light-image-content-child-options";
 import pivotItemContentExamples from "./components/pivot-item-content-child-options";
 import pivotItemTabExamples from "./components/pivot-item-tab-child-options";
-import { Label } from "../src/label";
+import {
+    ColorHSL,
+    ColorPalette,
+    ColorRGBA64,
+    hslToRGB,
+    parseColor,
+    rgbToHSL,
+} from "@microsoft/fast-colors";
 
 /* tslint:disable-next-line */
 const sketchDesignKit = require("./fast-dna-msft-design-kit.sketch");
@@ -53,6 +51,10 @@ const formChildOptions: FormChildOption[] = [
     pivotItemContentExamples,
     pivotItemTabExamples,
 ].concat(formChildFromExamplesFactory(examples));
+
+const dark: string = "#111111";
+const light: string = "#FFFFFF";
+const accent: string = "#0078D4";
 
 const formPlugins: Array<Plugin<PluginProps>> = [
     new AdditionalPropsPlugin({
@@ -90,6 +92,8 @@ enum ThemeName {
 }
 
 export interface AppState extends ColorConfig {
+    accentPalette: string[];
+    neutralPalette: string[];
     theme: ThemeName;
     direction: Direction;
     density: DensityOffset;
@@ -100,12 +104,12 @@ export default class App extends React.Component<{}, AppState> {
         {
             id: ThemeName.light,
             displayName: ThemeName.light,
-            background: DesignSystemDefaults.backgroundColor,
+            background: light,
         },
         {
             id: ThemeName.dark,
             displayName: ThemeName.dark,
-            background: DesignSystemDefaults.foregroundColor,
+            background: dark,
         },
         { id: ThemeName.custom, displayName: ThemeName.custom },
     ];
@@ -114,10 +118,11 @@ export default class App extends React.Component<{}, AppState> {
         super(props);
 
         this.state = {
+            accentColor: accent,
+            accentPalette: this.createColorPalette(parseColor(accent)),
+            neutralPalette: this.createColorPalette(new ColorRGBA64(0.5, 0.5, 0.5, 1)),
             direction: Direction.ltr,
-            foregroundColor: DesignSystemDefaults.foregroundColor,
             backgroundColor: DesignSystemDefaults.backgroundColor,
-            accentColor: DesignSystemDefaults.brandColor,
             theme: ThemeName.light,
             density: DesignSystemDefaults.density,
         };
@@ -172,7 +177,6 @@ export default class App extends React.Component<{}, AppState> {
                             onChange={this.handleDensityUpdate}
                         />
                         <ColorPicker
-                            foregroundColor={this.state.foregroundColor}
                             backgroundColor={this.state.backgroundColor}
                             accentColor={this.state.accentColor}
                             onColorUpdate={this.handleColorUpdate}
@@ -193,10 +197,10 @@ export default class App extends React.Component<{}, AppState> {
 
     private generateDesignSystem(): DesignSystem {
         const designSystem: Partial<DesignSystem> = {
+            accentPalette: this.state.accentPalette,
+            neutralPalette: this.state.neutralPalette,
             direction: this.state.direction,
-            foregroundColor: this.state.foregroundColor,
             backgroundColor: this.state.backgroundColor,
-            brandColor: this.state.accentColor,
             density: this.state.density,
         };
 
@@ -220,14 +224,7 @@ export default class App extends React.Component<{}, AppState> {
         if (theme !== ThemeName.custom) {
             this.setState({
                 theme,
-                foregroundColor:
-                    theme === ThemeName.dark
-                        ? DesignSystemDefaults.backgroundColor
-                        : DesignSystemDefaults.foregroundColor,
-                backgroundColor:
-                    theme === ThemeName.dark
-                        ? DesignSystemDefaults.foregroundColor
-                        : DesignSystemDefaults.backgroundColor,
+                backgroundColor: theme === ThemeName.dark ? dark : light,
             });
         } else {
             this.setCustomThemeBackground(this.state.backgroundColor);
@@ -244,15 +241,38 @@ export default class App extends React.Component<{}, AppState> {
         this.setCustomThemeBackground(config.backgroundColor);
         const updates: Partial<AppState> = { ...config };
 
-        if (
-            config.backgroundColor !== this.state.backgroundColor ||
-            config.foregroundColor !== this.state.foregroundColor
-        ) {
-            updates.theme = ThemeName.custom;
+        if (config.backgroundColor !== this.state.backgroundColor) {
+            if (this.state.theme !== ThemeName.custom) {
+                updates.theme = ThemeName.custom;
+            }
+
+            const color: ColorRGBA64 = parseColor(config.backgroundColor);
+            const hslColor: ColorHSL = rgbToHSL(color);
+            const augmentedHSLColor: ColorHSL = ColorHSL.fromObject({
+                h: hslColor.h,
+                s: hslColor.s,
+                l: 0.5,
+            });
+            updates.neutralPalette = this.createColorPalette(hslToRGB(augmentedHSLColor));
+        }
+
+        if (config.accentColor !== this.state.accentColor) {
+            updates.accentPalette = this.createColorPalette(
+                parseColor(config.accentColor)
+            );
         }
 
         this.setState(updates as AppState);
     };
+
+    private createColorPalette(baseColor: ColorRGBA64): string[] {
+        return new ColorPalette({
+            baseColor,
+            steps: 63,
+            clipLight: 0,
+            clipDark: 0,
+        }).palette.map((color: ColorRGBA64): string => color.toStringHexRGB());
+    }
 
     private handleDensityUpdate = (e: React.ChangeEvent<HTMLInputElement>): void => {
         this.setState({
