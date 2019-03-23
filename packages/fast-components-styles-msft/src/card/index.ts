@@ -14,7 +14,7 @@ const styles: ComponentStyles<CardClassNameContract, DesignSystem> = (
             width: "100%",
             height: "100%",
             background: designSystem.backgroundColor,
-            ...applyCornerRadius(designSystem),
+            ...applyCornerRadius(),
             ...elevation(ElevationMultiplier.e4)(designSystem),
             transition: "all 0.2s ease-in-out",
         },

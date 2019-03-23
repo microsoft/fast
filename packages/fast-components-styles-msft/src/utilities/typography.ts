@@ -1,7 +1,12 @@
 import { toPx } from "@microsoft/fast-jss-utilities";
 import { KeyOfToType } from "./keyof-to-type";
 import { CSSRules } from "@microsoft/fast-jss-manager";
-import { DesignSystem, withDesignSystemDefaults } from "../design-system";
+import {
+    DesignSystem,
+    DesignSystemResolver,
+    ensureDesignSystemDefaults,
+    withDesignSystemDefaults,
+} from "../design-system";
 import { DensityCategory, getDensityCategory } from "./density";
 
 /**
@@ -76,9 +81,76 @@ export const typeRamp: TypeRamp = {
 };
 
 /**
+ * Scales a typeramp ID by density
+ */
+function scaleTypeRampId(key: keyof TypeRamp): DesignSystemResolver<keyof TypeRamp> {
+    return ensureDesignSystemDefaults(
+        (designSystem: DesignSystem): keyof TypeRamp => {
+            const category: DensityCategory = getDensityCategory(designSystem);
+            const densityOffset: number =
+                category === DensityCategory.compact
+                    ? -1
+                    : category === DensityCategory.spacious
+                        ? 1
+                        : 0;
+            const typeConfigNumber: number = parseInt(key.replace("t", ""), 10);
+            const size: number = typeConfigNumber - densityOffset;
+            return sanitizeTypeRampId("t".concat(size.toString()) as keyof TypeRamp);
+        }
+    );
+}
+
+/*
+ * Ensures that a TypeRamp key is in the TypeRamp
+ */
+function sanitizeTypeRampId(key: keyof TypeRamp): keyof TypeRamp {
+    return typeRamp.hasOwnProperty(key) ? key : "t7";
+}
+
+/**
  * Takes a param of type ramp key (string) and returns a type ramp configuration
+ * @deprecated - please use applyTypeRamp
  */
 export function applyTypeRampConfig(typeConfig: keyof TypeRamp): CSSRules<DesignSystem> {
+    return applyTypeRamp(typeConfig);
+}
+
+/**
+ * Retrieves the font-size from a TypeRamp ID
+ */
+export function applyFontSize(key: keyof TypeRamp): string {
+    return toPx(typeRamp[sanitizeTypeRampId(key)].fontSize);
+}
+
+/**
+ * Retrieves the line-height from a TypeRamp ID
+ */
+export function applyLineHeight(key: keyof TypeRamp): string {
+    return toPx(typeRamp[sanitizeTypeRampId(key)].lineHeight);
+}
+
+/**
+ * Retrieves the font-size from a TypeRamp ID, scaled with the design-system density
+ */
+export function applyScaledFontSize(key: keyof TypeRamp): DesignSystemResolver<string> {
+    return (designSystem: DesignSystem): string => {
+        return applyFontSize(scaleTypeRampId(key)(designSystem));
+    };
+}
+
+/**
+ * Retrieves the line-height from a TypeRamp ID, scaled with the design-system density
+ */
+export function applyScaledLineHeight(key: keyof TypeRamp): DesignSystemResolver<string> {
+    return (designSystem: DesignSystem): string => {
+        return applyLineHeight(scaleTypeRampId(key)(designSystem));
+    };
+}
+
+/**
+ * Applies font size and line-height properties from the typeramp
+ */
+export function applyTypeRamp(typeConfig: keyof TypeRamp): CSSRules<DesignSystem> {
     return {
         fontSize: toPx(typeRamp[typeConfig].fontSize),
         lineHeight: toPx(typeRamp[typeConfig].lineHeight),
@@ -86,30 +158,11 @@ export function applyTypeRampConfig(typeConfig: keyof TypeRamp): CSSRules<Design
 }
 
 /**
- * Adds the font size and line height attributes for the type ramp, scaled according to the design system density config.
- *
- * @param config The design system config.
- * @param typeConfig The default type ramp config at base density.
+ * Applies font size and line-height from the type ramp, scaled with design system density
  */
-export function applyScaledTypeRamp(
-    config: DesignSystem,
-    typeConfig: keyof TypeRamp
-): CSSRules<DesignSystem> {
-    const designSystem: DesignSystem = withDesignSystemDefaults(config);
-    const category: DensityCategory = getDensityCategory(designSystem);
-    const densityOffset: number =
-        category === DensityCategory.compact
-            ? -1
-            : category === DensityCategory.spacious
-                ? 1
-                : 0;
-    const typeConfigNumber: number = parseInt(typeConfig.replace("t", ""), 10);
-    const size: number = typeConfigNumber - densityOffset;
-    const key: keyof TypeRamp | string = "t" + size;
-
-    if (key in typeRamp) {
-        return applyTypeRampConfig(key as keyof TypeRamp);
-    } else {
-        return applyTypeRampConfig(typeConfig);
-    }
+export function applyScaledTypeRamp(key: keyof TypeRamp): CSSRules<DesignSystem> {
+    return {
+        fontSize: applyScaledFontSize(key),
+        lineHeight: applyScaledLineHeight(key),
+    };
 }

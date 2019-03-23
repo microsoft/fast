@@ -19,7 +19,7 @@ const styles: ComponentStyles<BreadcrumbClassNameContract, DesignSystem> = (
     return {
         breadcrumb: {
             color: neutralForegroundRest,
-            ...applyScaledTypeRamp(designSystem, "t7"),
+            ...applyScaledTypeRamp("t7"),
             ...applyCursorDefault(),
         },
         breadcrumb_item: {
