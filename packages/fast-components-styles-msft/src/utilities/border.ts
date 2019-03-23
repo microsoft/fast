@@ -7,8 +7,6 @@ import {
     withDesignSystemDefaults,
 } from "../design-system";
 
-export const floatingCornerRadiusMultiplier: number = 2;
-
 function cornerRadius(designSystem: DesignSystem): string;
 function cornerRadius(multiplier: number): DesignSystemResolver<string>;
 function cornerRadius(arg: any): any {
