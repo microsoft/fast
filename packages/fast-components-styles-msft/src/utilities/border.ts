@@ -1,14 +1,32 @@
 import { CSSRules } from "@microsoft/fast-jss-manager";
 import { toPx } from "@microsoft/fast-jss-utilities";
-import { DesignSystem, withDesignSystemDefaults } from "../design-system";
+import {
+    DesignSystem,
+    DesignSystemResolver,
+    ensureDesignSystemDefaults,
+    withDesignSystemDefaults,
+} from "../design-system";
 
-export function applyCornerRadius(
-    designSystem: DesignSystem,
-    floating: boolean = false
-): CSSRules<DesignSystem> {
-    return {
-        borderRadius: toPx(designSystem.cornerRadius * (floating ? 2 : 1)),
-    };
+function cornerRadius(designSystem: DesignSystem): string;
+function cornerRadius(multiplier: number): DesignSystemResolver<string>;
+function cornerRadius(arg: any): any {
+    if (typeof arg === "number") {
+        return ensureDesignSystemDefaults(
+            (designSystem: DesignSystem): string => {
+                return toPx(designSystem.cornerRadius * arg);
+            }
+        );
+    }
+
+    return toPx(arg.cornerRadius);
+}
+
+export function applyCornerRadius(): CSSRules<DesignSystem> {
+    return { borderRadius: cornerRadius };
+}
+
+export function applyFloatingCornerRadius(): CSSRules<DesignSystem> {
+    return { borderRadius: cornerRadius(2) };
 }
 
 /**

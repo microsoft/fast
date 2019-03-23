@@ -14,13 +14,6 @@ import { horizontalSpacing } from "../utilities/density";
 import { fontWeight } from "../utilities/fonts";
 import { applyScaledTypeRamp } from "../utilities/typography";
 
-function backplateStyle(designSystem: DesignSystem): CSSRules<DesignSystem> {
-    return {
-        ...applyCornerRadius(designSystem),
-        fontWeight: `${fontWeight.normal}`,
-    };
-}
-
 const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
     config: DesignSystem
 ): ComponentStyleSheet<BadgeClassNameContract, DesignSystem> => {
@@ -33,7 +26,7 @@ const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
 
     return {
         badge: {
-            ...applyScaledTypeRamp(designSystem, "t7"),
+            ...applyScaledTypeRamp("t7"),
             ...ellipsis(),
             overflow: "hidden",
             ...applyCursorDefault(),
@@ -45,12 +38,13 @@ const styles: ComponentStyles<BadgeClassNameContract, DesignSystem> = (
             transition: "all 0.2s ease-in-out",
         },
         badge__filled: {
-            ...backplateStyle(designSystem),
+            ...applyCornerRadius(),
+            fontWeight: `${fontWeight.normal}`,
             backgroundColor: filledBackground,
             color: accentForegroundCut((): Swatch => filledBackground),
         },
         badge__small: {
-            ...applyScaledTypeRamp(designSystem, "t8"),
+            ...applyScaledTypeRamp("t8"),
             lineHeight: "13px",
             height: "16px",
             "&$badge__filled": {

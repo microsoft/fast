@@ -11,7 +11,7 @@ import {
     neutralForegroundRest,
     neutralOutlineRest,
 } from "../utilities/color";
-import { applyCornerRadius } from "../utilities/border";
+import { applyFloatingCornerRadius } from "../utilities/border";
 
 export const selectDisplayButtonOverrides: ComponentStyles<
     Partial<ButtonClassNameContract>,
@@ -48,7 +48,7 @@ const styles: ComponentStyles<SelectClassNameContract, DesignSystem> = (
 
         select_menu: {
             background: neutralFillStealthRest,
-            ...applyCornerRadius(designSystem, true),
+            ...applyFloatingCornerRadius(),
             ...elevation(ElevationMultiplier.e11)(designSystem),
             zIndex: "1",
             position: "absolute",

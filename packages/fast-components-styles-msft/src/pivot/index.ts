@@ -50,7 +50,7 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
             boxSizing: "border-box",
             userSelect: "none",
             color: neutralForegroundRest,
-            ...applyCornerRadius(designSystem),
+            ...applyCornerRadius(),
             "&:hover": {
                 color: neutralForegroundHover,
             },
@@ -64,13 +64,13 @@ const styles: ComponentStyles<PivotClassNameContract, DesignSystem> = (
         pivot_tab__active: {},
         pivot_tabContent: {
             transition: "all 0.2s ease-in-out",
-            ...applyScaledTypeRamp(designSystem, "t7"),
+            ...applyScaledTypeRamp("t7"),
             position: "relative",
             top: "-2px",
         },
         pivot_activeIndicator: {
             position: "absolute",
-            ...applyCornerRadius(designSystem),
+            ...applyCornerRadius(),
             top: toPx(
                 heightNumber(1)(designSystem) -
                     activeIndicatorHeight -

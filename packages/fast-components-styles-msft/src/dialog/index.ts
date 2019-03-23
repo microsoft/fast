@@ -2,7 +2,7 @@ import { DesignSystem, withDesignSystemDefaults } from "../design-system";
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager";
 import { DialogClassNameContract } from "@microsoft/fast-components-class-name-contracts-base";
 import { applyAcrylicMaterial } from "../utilities/acrylic";
-import { applyCornerRadius } from "../utilities/border";
+import { applyFloatingCornerRadius } from "../utilities/border";
 import { elevation, ElevationMultiplier } from "../utilities/elevation";
 
 /* tslint:disable-next-line */
@@ -39,7 +39,7 @@ const styles: ComponentStyles<DialogClassNameContract, DesignSystem> = (
         },
         dialog_contentRegion: {
             background: backgroundColor,
-            ...applyCornerRadius(designSystem, true),
+            ...applyFloatingCornerRadius(),
             ...elevation(ElevationMultiplier.e14)(designSystem),
             zIndex: "1",
         },

@@ -12,7 +12,7 @@ const styles: ComponentStyles<LabelClassNameContract, DesignSystem> = (
 
     return {
         label: {
-            ...applyScaledTypeRamp(designSystem, "t7"),
+            ...applyScaledTypeRamp("t7"),
             display: "inline-block",
             color: neutralForegroundRest,
             padding: "0",

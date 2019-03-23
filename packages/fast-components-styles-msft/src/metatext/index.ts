@@ -11,7 +11,7 @@ const styles: ComponentStyles<MetatextClassNameContract, DesignSystem> = (
 
     return {
         metatext: {
-            ...applyScaledTypeRamp(designSystem, "t7"),
+            ...applyScaledTypeRamp("t7"),
             color: neutralForegroundHint,
         },
     };
