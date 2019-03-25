@@ -63,7 +63,7 @@ You will see that a lot of the components require the passing of a property call
 ### Site
 The `Site` component should be used as the wrapping component for the development site.
 
-**formChildOptions** - The form child options are the optional children that can be added to a component that can have children, as specified in its JSON schema. The options are provided to the implementation the FAST development site makes of the `@microsoft/fast-form-generator-react`, the data structure that is used is from the `Form` property `childOptions` and can be referenced [here](../fast-form-generator-react/README.md).
+**formChildOptions** - The form child options are the optional children that can be added to a component that can have children, as specified in its JSON schema. The options are provided to the implementation the FAST development site makes of the `@microsoft/fast-tooling-react`, the data structure that is used is from the `Form` property `childOptions` and can be referenced [here](../fast-tooling-react/README.md).
 
 **onUpdateDirection** - The callback provided for an update in RTL, it will execute the given callback with "rtl" or "ltr".
 

@@ -1,1 +1,0 @@
-# TODO: Hook this up to further testing with E2E, due to react sortable hoc this cannot be tested with Jest
