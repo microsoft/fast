@@ -21,6 +21,8 @@ export class DesignSystemProvider<T> extends React.Component<
     DesignSystemProviderProps<T>,
     { designSystem: T }
 > {
+    public static contextType: React.Context<unknown> = designSystemContext;
+
     /**
      * We need to store a copy of the context object
      * because React doesn't give good tools to know
@@ -88,5 +90,3 @@ export class DesignSystemProvider<T> extends React.Component<
         return merge({}, this.upstreamDesignSystem, this.designSystemOverrides);
     }
 }
-
-DesignSystemProvider.contextType = designSystemContext;
