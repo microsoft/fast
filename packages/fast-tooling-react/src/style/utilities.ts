@@ -233,6 +233,7 @@ export function applyRemoveItemStyle(): CSSRules<{}> {
     return {
         position: "absolute",
         top: "5px",
+        right: "5px",
         appearance: "none",
         background: "none",
         border: "none",
