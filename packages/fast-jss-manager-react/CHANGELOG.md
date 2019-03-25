@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-react@3.1.14...@microsoft/fast-jss-manager-react@4.0.0) (2019-03-25)
+
+
+### Bug Fixes
+
+* update to use esModuleInterop in the TypeScript configuration files ([#1211](https://github.com/Microsoft/fast-dna/issues/1211)) ([2ec0644](https://github.com/Microsoft/fast-dna/commit/2ec0644))
+
+
+### Features
+
+* add inner-ref capability to jss-manager ([#1512](https://github.com/Microsoft/fast-dna/issues/1512)) ([ad4d06f](https://github.com/Microsoft/fast-dna/commit/ad4d06f))
+
+
+### BREAKING CHANGES
+
+* significant prop API change
+* This will affect how imports will be handled by
+consumers
+
+
+
+
+
 ## [3.1.14](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-manager-react@3.1.13...@microsoft/fast-jss-manager-react@3.1.14) (2019-03-19)
 
 

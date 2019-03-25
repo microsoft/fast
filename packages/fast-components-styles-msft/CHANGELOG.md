@@ -3,6 +3,64 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.14.0...@microsoft/fast-components-styles-msft@4.0.0) (2019-03-25)
+
+
+### Bug Fixes
+
+* increase specificity on MSFT styled components which are derived from other MSFT components ([#1508](https://github.com/Microsoft/fast-dna/issues/1508)) ([aad072c](https://github.com/Microsoft/fast-dna/commit/aad072c))
+* remove memoization from color utilities ([#1524](https://github.com/Microsoft/fast-dna/issues/1524)) ([f16529a](https://github.com/Microsoft/fast-dna/commit/f16529a))
+* update color utility typings ([#1561](https://github.com/Microsoft/fast-dna/issues/1561)) ([395546a](https://github.com/Microsoft/fast-dna/commit/395546a))
+* update to improve animations functionality and style ([#1507](https://github.com/Microsoft/fast-dna/issues/1507)) ([7179a6c](https://github.com/Microsoft/fast-dna/commit/7179a6c))
+* update to not return undefined when trying to return colors ([#1476](https://github.com/Microsoft/fast-dna/issues/1476)) ([715138b](https://github.com/Microsoft/fast-dna/commit/715138b))
+* update to use esModuleInterop in the TypeScript configuration files ([#1211](https://github.com/Microsoft/fast-dna/issues/1211)) ([2ec0644](https://github.com/Microsoft/fast-dna/commit/2ec0644))
+
+
+### Features
+
+* add deltas to design-system and update palettes to be an array of swatches ([#1554](https://github.com/Microsoft/fast-dna/issues/1554)) ([2556588](https://github.com/Microsoft/fast-dna/commit/2556588))
+* add MSFT palette-based color utilities ([#1363](https://github.com/Microsoft/fast-dna/issues/1363)) ([b4f632e](https://github.com/Microsoft/fast-dna/commit/b4f632e))
+* add neutral fill input recipe ([#1425](https://github.com/Microsoft/fast-dna/issues/1425)) ([05614d8](https://github.com/Microsoft/fast-dna/commit/05614d8))
+* add neutral-focus recipe ([#1468](https://github.com/Microsoft/fast-dna/issues/1468)) ([2bd9902](https://github.com/Microsoft/fast-dna/commit/2bd9902))
+* add neutral-foreground states ([#1439](https://github.com/Microsoft/fast-dna/issues/1439)) ([6f054c6](https://github.com/Microsoft/fast-dna/commit/6f054c6))
+* add neutralFocus across components ([#1480](https://github.com/Microsoft/fast-dna/issues/1480)) ([3aa6a80](https://github.com/Microsoft/fast-dna/commit/3aa6a80))
+* add new color system to action toggle, action trigger, badge and breadcrumb ([#1453](https://github.com/Microsoft/fast-dna/issues/1453)) ([c28c455](https://github.com/Microsoft/fast-dna/commit/c28c455))
+* add new color system to button ([#1466](https://github.com/Microsoft/fast-dna/issues/1466)) ([eb301bb](https://github.com/Microsoft/fast-dna/commit/eb301bb))
+* add new color system to call to action, card, checkbox and context menu ([#1459](https://github.com/Microsoft/fast-dna/issues/1459)) ([a343432](https://github.com/Microsoft/fast-dna/commit/a343432))
+* add new color system to dialog, divider, flipper, hypertext, label, metatext and input field ([#1460](https://github.com/Microsoft/fast-dna/issues/1460)) ([db8a35f](https://github.com/Microsoft/fast-dna/commit/db8a35f))
+* add new color system to pivot, progress, radio, text action, auto-suggest, and toggle ([#1465](https://github.com/Microsoft/fast-dna/issues/1465)) ([2334975](https://github.com/Microsoft/fast-dna/commit/2334975))
+* add selected color to all fill recipes  ([#1420](https://github.com/Microsoft/fast-dna/issues/1420)) ([8ff219d](https://github.com/Microsoft/fast-dna/commit/8ff219d))
+* adds shorthand hex parsing to color parsers ([#1487](https://github.com/Microsoft/fast-dna/issues/1487)) ([e3d3397](https://github.com/Microsoft/fast-dna/commit/e3d3397))
+* apply new color system to carousel ([#1501](https://github.com/Microsoft/fast-dna/issues/1501)) ([d9ca212](https://github.com/Microsoft/fast-dna/commit/d9ca212))
+* change utilities to work with non-function stylesheets ([#1581](https://github.com/Microsoft/fast-dna/issues/1581)) ([2dafe1c](https://github.com/Microsoft/fast-dna/commit/2dafe1c))
+* integrate fast-dna/colors palette generation into msft color utilities ([#1467](https://github.com/Microsoft/fast-dna/issues/1467)) ([5ee3f07](https://github.com/Microsoft/fast-dna/commit/5ee3f07))
+* remove appearance prop and add filled prop to control backplate usage ([#1485](https://github.com/Microsoft/fast-dna/issues/1485)) ([87515ac](https://github.com/Microsoft/fast-dna/commit/87515ac))
+* remove chroma ([#1562](https://github.com/Microsoft/fast-dna/issues/1562)) ([df249b7](https://github.com/Microsoft/fast-dna/commit/df249b7))
+* remove chroma from color utilities ([#1482](https://github.com/Microsoft/fast-dna/issues/1482)) ([b82fe4c](https://github.com/Microsoft/fast-dna/commit/b82fe4c))
+* remove deprecated design-system values ([#1567](https://github.com/Microsoft/fast-dna/issues/1567)) ([e55929d](https://github.com/Microsoft/fast-dna/commit/e55929d))
+* remove fast-application-utilities package ([#1455](https://github.com/Microsoft/fast-dna/issues/1455)) ([7ee34fa](https://github.com/Microsoft/fast-dna/commit/7ee34fa))
+* remove legacy color utils ([#1557](https://github.com/Microsoft/fast-dna/issues/1557)) ([3f39ff9](https://github.com/Microsoft/fast-dna/commit/3f39ff9))
+* remove legacy style color utilities ([#1504](https://github.com/Microsoft/fast-dna/issues/1504)) ([3db5131](https://github.com/Microsoft/fast-dna/commit/3db5131))
+* update neutral-outline and neutral-stealth offsets ([#1403](https://github.com/Microsoft/fast-dna/issues/1403)) ([f8ac8ac](https://github.com/Microsoft/fast-dna/commit/f8ac8ac))
+* update styles and design system density. ([#1573](https://github.com/Microsoft/fast-dna/issues/1573)) ([d8f85c2](https://github.com/Microsoft/fast-dna/commit/d8f85c2))
+
+
+### BREAKING CHANGES
+
+* removes/renames design system values
+* Breakpoint helpers and interfaces and applyType method has been removed
+* removes legacy color utilities
+* Style specificity has changed to ensure that MSFT components are styled as expected. This change may cause regressions to existing styles or overrides.
+* removes appearance property for badge in favor of filled property
+* removes styling utilities no longer reccomended for use.
+* removal of fast-application-utilities-package
+* This will affect how imports will be handled by
+consumers
+
+
+
+
+
 # [3.14.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-styles-msft@3.13.0...@microsoft/fast-components-styles-msft@3.14.0) (2019-03-19)
 
 

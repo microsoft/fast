@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@3.9.0...@microsoft/fast-components-class-name-contracts-msft@4.0.0) (2019-03-25)
+
+
+### Bug Fixes
+
+* update to use esModuleInterop in the TypeScript configuration files ([#1211](https://github.com/Microsoft/fast-dna/issues/1211)) ([2ec0644](https://github.com/Microsoft/fast-dna/commit/2ec0644))
+
+
+### Features
+
+* remove appearance prop and add filled prop to control backplate usage ([#1485](https://github.com/Microsoft/fast-dna/issues/1485)) ([87515ac](https://github.com/Microsoft/fast-dna/commit/87515ac))
+* update action toggle to be styled based off appearance rather than selected state ([#1451](https://github.com/Microsoft/fast-dna/issues/1451)) ([b598457](https://github.com/Microsoft/fast-dna/commit/b598457))
+
+
+### BREAKING CHANGES
+
+* removes appearance property for badge in favor of filled property
+* This will affect how imports will be handled by
+consumers
+
+
+
+
+
 # [3.9.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-class-name-contracts-msft@3.8.0...@microsoft/fast-components-class-name-contracts-msft@3.9.0) (2019-03-19)
 
 

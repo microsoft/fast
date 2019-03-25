@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-colors@3.2.1...@microsoft/fast-colors@4.0.0) (2019-03-25)
+
+
+### Bug Fixes
+
+* fixes jest failure due to upgrade ([543922b](https://github.com/Microsoft/fast-dna/commit/543922b))
+* update to use esModuleInterop in the TypeScript configuration files ([#1211](https://github.com/Microsoft/fast-dna/issues/1211)) ([2ec0644](https://github.com/Microsoft/fast-dna/commit/2ec0644))
+
+
+### Features
+
+* add color identifier functions ([#1471](https://github.com/Microsoft/fast-dna/issues/1471)) ([9431278](https://github.com/Microsoft/fast-dna/commit/9431278))
+* add color library with color space conversions (rpg, hsl, hsv, xyz, lab, lch), blending functions, and palette generation ([#1432](https://github.com/Microsoft/fast-dna/issues/1432)) ([fe10b9f](https://github.com/Microsoft/fast-dna/commit/fe10b9f))
+* adds shorthand hex parsing to color parsers ([#1487](https://github.com/Microsoft/fast-dna/issues/1487)) ([e3d3397](https://github.com/Microsoft/fast-dna/commit/e3d3397))
+* remove chroma from color utilities ([#1482](https://github.com/Microsoft/fast-dna/issues/1482)) ([b82fe4c](https://github.com/Microsoft/fast-dna/commit/b82fe4c))
+* remove legacy color utils ([#1557](https://github.com/Microsoft/fast-dna/issues/1557)) ([3f39ff9](https://github.com/Microsoft/fast-dna/commit/3f39ff9))
+
+
+### BREAKING CHANGES
+
+* removes legacy color utilities
+* This will affect how imports will be handled by
+consumers
+
+
+
+
+
 ## [3.2.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-colors@3.2.0...@microsoft/fast-colors@3.2.1) (2019-03-19)
 
 

@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@3.2.5...@microsoft/fast-jss-utilities@4.0.0) (2019-03-25)
+
+
+### Bug Fixes
+
+* update to use esModuleInterop in the TypeScript configuration files ([#1211](https://github.com/Microsoft/fast-dna/issues/1211)) ([2ec0644](https://github.com/Microsoft/fast-dna/commit/2ec0644))
+
+
+### Features
+
+* add MSFT palette-based color utilities ([#1363](https://github.com/Microsoft/fast-dna/issues/1363)) ([b4f632e](https://github.com/Microsoft/fast-dna/commit/b4f632e))
+* remove legacy color utils ([#1557](https://github.com/Microsoft/fast-dna/issues/1557)) ([3f39ff9](https://github.com/Microsoft/fast-dna/commit/3f39ff9))
+
+
+### BREAKING CHANGES
+
+* removes legacy color utilities
+* This will affect how imports will be handled by
+consumers
+
+
+
+
+
 ## [3.2.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-jss-utilities@3.2.4...@microsoft/fast-jss-utilities@3.2.5) (2019-03-19)
 
 

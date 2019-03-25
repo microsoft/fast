@@ -3,6 +3,37 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@3.11.1...@microsoft/fast-components-react-base@4.0.0) (2019-03-25)
+
+
+### Bug Fixes
+
+* update to use esModuleInterop in the TypeScript configuration files ([#1211](https://github.com/Microsoft/fast-dna/issues/1211)) ([2ec0644](https://github.com/Microsoft/fast-dna/commit/2ec0644))
+
+
+### Features
+
+* add form plugin ids to schemas in component libraries ([#1548](https://github.com/Microsoft/fast-dna/issues/1548)) ([f56a97c](https://github.com/Microsoft/fast-dna/commit/f56a97c))
+* audit and update component handled and unhandled prop contracts ([#1417](https://github.com/Microsoft/fast-dna/issues/1417)) ([6cdd63f](https://github.com/Microsoft/fast-dna/commit/6cdd63f))
+* remove fast-application-utilities package ([#1455](https://github.com/Microsoft/fast-dna/issues/1455)) ([7ee34fa](https://github.com/Microsoft/fast-dna/commit/7ee34fa))
+* rename component display names, update directory export tests ([#1572](https://github.com/Microsoft/fast-dna/issues/1572)) ([52953ce](https://github.com/Microsoft/fast-dna/commit/52953ce))
+* update namespace component schema id's to prevent conflicts ([#1444](https://github.com/Microsoft/fast-dna/issues/1444)) ([0828a59](https://github.com/Microsoft/fast-dna/commit/0828a59))
+* update the dependencies of the development site ([#1545](https://github.com/Microsoft/fast-dna/issues/1545)) ([9475fa2](https://github.com/Microsoft/fast-dna/commit/9475fa2))
+
+
+### BREAKING CHANGES
+
+* Component display names are now prefixed to improve discoverability
+* schema ids are now namespaced to prevent conflicts
+* removal of fast-application-utilities-package
+* Significant API changes to component handled and unhandled prop contracts.
+* This will affect how imports will be handled by
+consumers
+
+
+
+
+
 ## [3.11.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-base@3.11.0...@microsoft/fast-components-react-base@3.11.1) (2019-03-22)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-base

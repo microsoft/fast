@@ -3,6 +3,48 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.13.1...@microsoft/fast-components-react-msft@4.0.0) (2019-03-25)
+
+
+### Bug Fixes
+
+* lower jest branch requirements to fix build break ([2d4259c](https://github.com/Microsoft/fast-dna/commit/2d4259c))
+* update to improve animations functionality and style ([#1507](https://github.com/Microsoft/fast-dna/issues/1507)) ([7179a6c](https://github.com/Microsoft/fast-dna/commit/7179a6c))
+* update to use esModuleInterop in the TypeScript configuration files ([#1211](https://github.com/Microsoft/fast-dna/issues/1211)) ([2ec0644](https://github.com/Microsoft/fast-dna/commit/2ec0644))
+
+
+### Features
+
+* add form plugin ids to schemas in component libraries ([#1548](https://github.com/Microsoft/fast-dna/issues/1548)) ([f56a97c](https://github.com/Microsoft/fast-dna/commit/f56a97c))
+* applies fast-jss-manager-react as peer dependency ([#1556](https://github.com/Microsoft/fast-dna/issues/1556)) ([f63c0c7](https://github.com/Microsoft/fast-dna/commit/f63c0c7))
+* audit and update component handled and unhandled prop contracts ([#1417](https://github.com/Microsoft/fast-dna/issues/1417)) ([6cdd63f](https://github.com/Microsoft/fast-dna/commit/6cdd63f))
+* remove appearance prop and add filled prop to control backplate usage ([#1485](https://github.com/Microsoft/fast-dna/issues/1485)) ([87515ac](https://github.com/Microsoft/fast-dna/commit/87515ac))
+* remove deprecated design-system values ([#1567](https://github.com/Microsoft/fast-dna/issues/1567)) ([e55929d](https://github.com/Microsoft/fast-dna/commit/e55929d))
+* remove fast-application-utilities package ([#1455](https://github.com/Microsoft/fast-dna/issues/1455)) ([7ee34fa](https://github.com/Microsoft/fast-dna/commit/7ee34fa))
+* rename component display names, update directory export tests ([#1572](https://github.com/Microsoft/fast-dna/issues/1572)) ([52953ce](https://github.com/Microsoft/fast-dna/commit/52953ce))
+* update action toggle to be styled based off appearance rather than selected state ([#1451](https://github.com/Microsoft/fast-dna/issues/1451)) ([b598457](https://github.com/Microsoft/fast-dna/commit/b598457))
+* update namespace component schema id's to prevent conflicts ([#1444](https://github.com/Microsoft/fast-dna/issues/1444)) ([0828a59](https://github.com/Microsoft/fast-dna/commit/0828a59))
+* update styles and design system density. ([#1573](https://github.com/Microsoft/fast-dna/issues/1573)) ([d8f85c2](https://github.com/Microsoft/fast-dna/commit/d8f85c2))
+* update the dependencies of the development site ([#1545](https://github.com/Microsoft/fast-dna/issues/1545)) ([9475fa2](https://github.com/Microsoft/fast-dna/commit/9475fa2))
+
+
+### BREAKING CHANGES
+
+* removes/renames design system values
+* Breakpoint helpers and interfaces and applyType method has been removed
+* Component display names are now prefixed to improve discoverability
+* moves dependency to peer dependency
+* removes appearance property for badge in favor of filled property
+* schema ids are now namespaced to prevent conflicts
+* removal of fast-application-utilities-package
+* Significant API changes to component handled and unhandled prop contracts.
+* This will affect how imports will be handled by
+consumers
+
+
+
+
+
 ## [3.13.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-components-react-msft@3.13.0...@microsoft/fast-components-react-msft@3.13.1) (2019-03-22)
 
 **Note:** Version bump only for package @microsoft/fast-components-react-msft

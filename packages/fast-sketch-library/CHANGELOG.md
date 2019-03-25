@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-sketch-library@3.0.5...@microsoft/fast-sketch-library@4.0.0) (2019-03-25)
+
+
+### Bug Fixes
+
+* update to use esModuleInterop in the TypeScript configuration files ([#1211](https://github.com/Microsoft/fast-dna/issues/1211)) ([2ec0644](https://github.com/Microsoft/fast-dna/commit/2ec0644))
+
+
+### BREAKING CHANGES
+
+* This will affect how imports will be handled by
+consumers
+
+
+
+
+
 ## [3.0.5](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-sketch-library@3.0.4...@microsoft/fast-sketch-library@3.0.5) (2019-03-01)
 
 **Note:** Version bump only for package @microsoft/fast-sketch-library

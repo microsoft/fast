@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@0.3.0...@microsoft/fast-tooling-react@1.0.0) (2019-03-25)
+
+
+### Bug Fixes
+
+* update to use esModuleInterop in the TypeScript configuration files ([#1211](https://github.com/Microsoft/fast-dna/issues/1211)) ([2ec0644](https://github.com/Microsoft/fast-dna/commit/2ec0644))
+
+
+### Features
+
+* update and refactor the CSS editor ([#1543](https://github.com/Microsoft/fast-dna/issues/1543)) ([defcce4](https://github.com/Microsoft/fast-dna/commit/defcce4))
+* update to use ajv as the JSON schema validator ([#1564](https://github.com/Microsoft/fast-dna/issues/1564)) ([939bdb4](https://github.com/Microsoft/fast-dna/commit/939bdb4))
+
+
+### BREAKING CHANGES
+
+* This changes the API of the CSS editor to be more
+consistent with the API of similar tooling package exports such as the
+form.
+* This will affect how imports will be handled by
+consumers
+
+
+
+
+
 # [0.3.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@0.2.0...@microsoft/fast-tooling-react@0.3.0) (2019-03-22)
 
 
