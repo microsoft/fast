@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.1](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@1.0.0...@microsoft/fast-tooling-react@1.0.1) (2019-03-25)
+
+
+### Bug Fixes
+
+* updates the styling of children and array items so that the remove button is inline with the add button ([#1586](https://github.com/Microsoft/fast-dna/issues/1586)) ([b9aa9ef](https://github.com/Microsoft/fast-dna/commit/b9aa9ef))
+
+
+
+
+
 # [1.0.0](https://github.com/Microsoft/fast-dna/compare/@microsoft/fast-tooling-react@0.3.0...@microsoft/fast-tooling-react@1.0.0) (2019-03-25)
 
 
