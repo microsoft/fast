@@ -7,5 +7,6 @@ export {
 } from "./design-system-provider";
 export { stylesheetRegistry, jss } from "./jss";
 export { ManagedJSSProps } from "./jss-manager";
+export { Consumer as DesignSystemConsumer } from "./context";
 export * from "./design-system-provider";
 export * from "@microsoft/fast-jss-manager";
